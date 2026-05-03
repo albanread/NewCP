@@ -290,6 +290,8 @@ Observable artifact:
 
 ### LLVM IR generation
 
+We have elected to use the `inkwell` crate for LLVM bindings. It provides a safe, strongly-typed Rust wrapper over the LLVM C API, which significantly reduces the likelihood of segfaults and mismatched types during code generation.
+
 LLVM IR generation is responsible for:
 
 - target data layout for a 64-bit process
