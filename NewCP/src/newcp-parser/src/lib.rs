@@ -628,7 +628,12 @@ impl Parser {
     fn parse_procedure_declaration(&mut self) -> Result<ProcedureDecl, String> {
         let start = self.current_start();
         let heading = self.parse_procedure_heading()?;
-        let body = if self.match_symbol(";") {
+        let body = if matches!(
+            heading.attributes.flavor,
+            Some(MethodFlavor::Abstract | MethodFlavor::Empty)
+        ) {
+            None
+        } else if self.match_symbol(";") {
             let body_start = self.previous_end();
             let declarations = self.parse_declaration_sequence()?;
             let body = if self.match_keyword("BEGIN") {
@@ -1115,9 +1120,14 @@ impl Parser {
 
     fn parse_with_arm(&mut self) -> Result<WithArm, String> {
         let start = self.current_start();
-        let guard = Some(self.parse_guard()?);
-        self.expect_keyword("DO")?;
-        let body = self.parse_statement_sequence(&["|", "ELSE", "END"])?;
+        let (guard, body) = if self.can_start_guard() {
+            let guard = Some(self.parse_guard()?);
+            self.expect_keyword("DO")?;
+            let body = self.parse_statement_sequence(&["|", "ELSE", "END"])?;
+            (guard, body)
+        } else {
+            (None, Vec::new())
+        };
         Ok(WithArm {
             span: self.span_from(start),
             guard,
@@ -1466,6 +1476,23 @@ impl Parser {
             || self.check_symbol("~")
             || self.check_symbol("+")
             || self.check_symbol("-")
+    }
+
+    fn can_start_guard(&self) -> bool {
+        if !self.check_identifier() {
+            return false;
+        }
+
+        let mut index = self.index + 1;
+        if self.check_token(index, TokenKind::Symbol, Some(".")) {
+            index += 1;
+            if !self.check_token(index, TokenKind::Identifier, None) {
+                return false;
+            }
+            index += 1;
+        }
+
+        self.check_token(index, TokenKind::Symbol, Some(":"))
     }
 
     fn lookahead_is_receiver(&self) -> bool {
@@ -2100,6 +2127,33 @@ mod tests {
     use super::*;
 
     #[test]
+    fn parser_accepts_with_arm_without_guard() {
+        let module = parse_module_ast(
+            "MODULE Demo;\nPROCEDURE Run;\nBEGIN\nWITH rec: T DO | ELSE END\nEND Run;\nEND Demo.",
+        )
+        .expect("module should parse");
+
+        let body = module
+            .declarations
+            .iter()
+            .find_map(|declaration| match declaration {
+                Declaration::Procedure(procedure) => procedure.body.as_ref(),
+                _ => None,
+            })
+            .and_then(|body| body.body.as_ref())
+            .expect("procedure body");
+
+        let Statement::With { arms, else_branch, .. } = &body[0] else {
+            panic!("expected WITH statement");
+        };
+        assert_eq!(arms.len(), 2);
+        assert!(arms[0].guard.is_some());
+        assert!(arms[1].guard.is_none());
+        assert!(arms[1].body.is_empty());
+        assert!(else_branch.is_some());
+    }
+
+    #[test]
     fn parses_simple_module_source() {
         let source = "MODULE HostMenus;\nIMPORT Kernel;\nCONST Version* = 1;\nTYPE Menu* = RECORD END;\nVAR Current* : INTEGER;\nPROCEDURE OpenApp*;\nBEGIN\nEND OpenApp;\nPROCEDURE Install*(x: INTEGER);\nBEGIN\nEND Install;\nBEGIN\nEND HostMenus.";
         let spec = parse_source_module(source).expect("module should parse");
@@ -2197,6 +2251,30 @@ mod tests {
         assert_eq!(body.body.as_ref().expect("statements").len(), 3);
         assert_eq!(module.body.as_ref().expect("module body").len(), 1);
         assert_eq!(module.close.as_ref().expect("close body").len(), 1);
+    }
+
+    #[test]
+    fn parses_header_only_abstract_and_empty_methods() {
+        let source = "MODULE Demo;\nTYPE Base = ABSTRACT RECORD END;\nPROCEDURE (self: Base) Draw(), NEW, ABSTRACT;\nPROCEDURE (self: Base) Notify(), NEW, EMPTY;\nEND Demo.";
+
+        let module = parse_module_ast(source).expect("module should parse");
+        assert_eq!(module.declarations.len(), 3);
+
+        let methods = module
+            .declarations
+            .iter()
+            .filter_map(|declaration| match declaration {
+                Declaration::Procedure(procedure) => Some(procedure),
+                _ => None,
+            })
+            .collect::<Vec<_>>();
+        assert_eq!(methods.len(), 2);
+        assert_eq!(methods[0].heading.name.name, "Draw");
+        assert_eq!(methods[0].heading.attributes.flavor, Some(MethodFlavor::Abstract));
+        assert!(methods[0].body.is_none());
+        assert_eq!(methods[1].heading.name.name, "Notify");
+        assert_eq!(methods[1].heading.attributes.flavor, Some(MethodFlavor::Empty));
+        assert!(methods[1].body.is_none());
     }
 
     #[test]

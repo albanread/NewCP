@@ -2,9 +2,9 @@ use std::collections::HashSet;
 use std::path::Path;
 
 use newcp_parser::{
-    read_module_ast, BinaryOp, Declaration, Designator, Expr, FPSection, FieldDecl,
+    read_module_ast, BinaryOp, Declaration, Designator, ExportMark, Expr, FPSection, FieldDecl,
     FormalParameters, Guard, MethodFlavor, ModuleAst, ParamMode, ProcedureBody, ProcedureDecl,
-    QualIdent, RecordFlavor, Selector, Statement, TypeExpr,
+    QualIdent, RecordFlavor, Selector, Statement, TypeDecl, TypeExpr,
 };
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -32,6 +32,8 @@ pub enum BuiltinType {
     ShortChar,
     ShortInt,
     ShortReal,
+    String,
+    ShortString,
 }
 
 impl BuiltinType {
@@ -46,9 +48,64 @@ impl BuiltinType {
             Self::LongInt => "LONGINT",
             Self::Real => "REAL",
             Self::Set => "SET",
+            Self::String => "String",
             Self::ShortChar => "SHORTCHAR",
             Self::ShortInt => "SHORTINT",
             Self::ShortReal => "SHORTREAL",
+            Self::ShortString => "Shortstring",
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum BuiltinProc {
+    Abs,
+    Ash,
+    Assert,
+    Bits,
+    Cap,
+    Chr,
+    Dec,
+    Entier,
+    Excl,
+    Halt,
+    Inc,
+    Incl,
+    Len,
+    Long,
+    Max,
+    Min,
+    New,
+    Odd,
+    Ord,
+    Short,
+    Size,
+}
+
+impl BuiltinProc {
+    fn name(self) -> &'static str {
+        match self {
+            Self::Abs => "ABS",
+            Self::Ash => "ASH",
+            Self::Assert => "ASSERT",
+            Self::Bits => "BITS",
+            Self::Cap => "CAP",
+            Self::Chr => "CHR",
+            Self::Dec => "DEC",
+            Self::Entier => "ENTIER",
+            Self::Excl => "EXCL",
+            Self::Halt => "HALT",
+            Self::Inc => "INC",
+            Self::Incl => "INCL",
+            Self::Len => "LEN",
+            Self::Long => "LONG",
+            Self::Max => "MAX",
+            Self::Min => "MIN",
+            Self::New => "NEW",
+            Self::Odd => "ODD",
+            Self::Ord => "ORD",
+            Self::Short => "SHORT",
+            Self::Size => "SIZE",
         }
     }
 }
@@ -64,6 +121,12 @@ pub enum NamedTypeKind {
 pub struct FieldType {
     pub names: Vec<String>,
     pub ty: SemanticType,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct MethodType {
+    pub name: String,
+    pub signature: ProcedureType,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -134,8 +197,16 @@ pub struct SimdShape {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
+enum RecordMember {
+    Field(SemanticType),
+    Method(ProcedureType),
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum SemanticType {
     Builtin(BuiltinType),
+    BuiltinProc(BuiltinProc),
+    Nil,
     Named {
         module: Option<String>,
         name: String,
@@ -149,6 +220,7 @@ pub enum SemanticType {
         flavor: Option<RecordFlavor>,
         base: Option<Box<SemanticType>>,
         fields: Vec<FieldType>,
+        methods: Vec<MethodType>,
     },
     Pointer {
         target: Box<SemanticType>,
@@ -260,6 +332,7 @@ impl<'a> Analyzer<'a> {
 
     fn analyze(&mut self) -> SemanticModule {
         self.collect_module_symbols();
+        self.validate_module_method_contracts();
         let mut pending_diagnostics = Vec::new();
         self.validate_forward_declarations(
             &self.module.declarations,
@@ -276,6 +349,34 @@ impl<'a> Analyzer<'a> {
             }
         }
 
+        let empty_locals = Vec::new();
+        let mut module_resolutions = Vec::new();
+        let mut module_diagnostics = Vec::new();
+        if let Some(statements) = &self.module.body {
+            self.walk_statements(
+                statements,
+                None,
+                &self.module_type_names,
+                &empty_locals,
+                None,
+                &mut module_resolutions,
+                &mut module_diagnostics,
+            );
+        }
+        if let Some(statements) = &self.module.close {
+            self.walk_statements(
+                statements,
+                None,
+                &self.module_type_names,
+                &empty_locals,
+                None,
+                &mut module_resolutions,
+                &mut module_diagnostics,
+            );
+        }
+        self.selector_resolutions.extend(module_resolutions);
+        self.diagnostics.extend(module_diagnostics);
+
         SemanticModule {
             name: self.module.name.clone(),
             imports: self.module.imports.iter().map(|item| item.name.clone()).collect(),
@@ -288,6 +389,8 @@ impl<'a> Analyzer<'a> {
 
     fn collect_module_symbols(&mut self) {
         let mut scope_names = HashSet::new();
+        let mut forward_procedure_names = HashSet::new();
+        let mut implemented_procedure_names = HashSet::new();
 
         for declaration in &self.module.declarations {
             if let Declaration::Type(item) = declaration {
@@ -336,7 +439,11 @@ impl<'a> Analyzer<'a> {
                         name: item.name.name.clone(),
                         kind: SymbolKind::Type,
                         exported: item.name.export.is_some(),
-                        declared_type: Some(self.resolve_type_expr(&item.ty, &self.module_type_names)),
+                        declared_type: Some(self.resolve_type_decl(
+                            Some(&item.name.name),
+                            &item.ty,
+                            &self.module_type_names,
+                        )),
                         const_value: None,
                         simd_shape: None,
                     })
@@ -357,10 +464,10 @@ impl<'a> Analyzer<'a> {
                     }
                 }
                 Declaration::Procedure(item) => {
-                    Self::record_identdef_duplicate(
-                        &mut scope_names,
-                        &item.heading.name,
-                        None,
+                    Self::record_module_procedure_duplicate(
+                        &mut implemented_procedure_names,
+                        Some(&forward_procedure_names),
+                        &item.heading,
                         "duplicate module-scope declaration",
                         &mut self.diagnostics,
                     );
@@ -377,10 +484,10 @@ impl<'a> Analyzer<'a> {
                     })
                 }
                 Declaration::Forward(item) => {
-                    Self::record_identdef_duplicate(
-                        &mut scope_names,
-                        &item.heading.name,
-                        None,
+                    Self::record_module_procedure_duplicate(
+                        &mut forward_procedure_names,
+                        Some(&implemented_procedure_names),
+                        &item.heading,
                         "duplicate module-scope declaration",
                         &mut self.diagnostics,
                     );
@@ -493,6 +600,327 @@ impl<'a> Analyzer<'a> {
         }
     }
 
+    fn validate_module_method_contracts(&mut self) {
+        for declaration in &self.module.declarations {
+            let Declaration::Procedure(procedure) = declaration else {
+                continue;
+            };
+            let Some(receiver) = &procedure.heading.receiver else {
+                continue;
+            };
+
+            let Some(record_decl) = self.find_record_decl(&receiver.ty) else {
+                continue;
+            };
+            let record_flavor = match &record_decl.ty {
+                TypeExpr::Record { flavor, .. } => flavor.clone(),
+                _ => None,
+            };
+            let base_name = match &record_decl.ty {
+                TypeExpr::Record { base, .. } => base.as_ref().map(|item| item.name.clone()),
+                _ => None,
+            };
+            let procedure_name = &procedure.heading.name.name;
+
+            match procedure.heading.attributes.flavor {
+                Some(MethodFlavor::Abstract | MethodFlavor::Empty) => {
+                    if procedure.body.is_some() {
+                        self.diagnostics.push(make_diagnostic(
+                            None,
+                            procedure.heading.span.start.line,
+                            procedure.heading.span.start.column,
+                            format!(
+                                "{} method {} must not have a procedure body",
+                                method_flavor_name(procedure.heading.attributes.flavor.unwrap()),
+                                procedure_name
+                            ),
+                        ));
+                    }
+                }
+                _ => {
+                    if procedure.body.is_none() {
+                        self.diagnostics.push(make_diagnostic(
+                            None,
+                            procedure.heading.span.start.line,
+                            procedure.heading.span.start.column,
+                            format!("concrete method {} must have a procedure body", procedure_name),
+                        ));
+                    }
+                }
+            }
+
+            if procedure.heading.attributes.flavor == Some(MethodFlavor::Empty) {
+                if procedure
+                    .heading
+                    .formal_parameters
+                    .as_ref()
+                    .is_some_and(|parameters| parameters.result_type.is_some())
+                {
+                    self.diagnostics.push(make_diagnostic(
+                        None,
+                        procedure.heading.span.start.line,
+                        procedure.heading.span.start.column,
+                        format!("empty method {} must not return a result", procedure_name),
+                    ));
+                }
+
+                if procedure
+                    .heading
+                    .formal_parameters
+                    .as_ref()
+                    .is_some_and(has_out_parameter)
+                {
+                    self.diagnostics.push(make_diagnostic(
+                        None,
+                        procedure.heading.span.start.line,
+                        procedure.heading.span.start.column,
+                        format!("empty method {} must not have OUT parameters", procedure_name),
+                    ));
+                }
+            }
+
+            if procedure.heading.attributes.flavor == Some(MethodFlavor::Abstract)
+                && record_decl.name.export.is_some()
+                && procedure.heading.name.export.is_none()
+            {
+                self.diagnostics.push(make_diagnostic(
+                    None,
+                    procedure.heading.span.start.line,
+                    procedure.heading.span.start.column,
+                    format!(
+                        "abstract method {} of exported record {} must be exported",
+                        procedure_name, receiver.ty
+                    ),
+                ));
+            }
+
+            let inherited = self.find_inherited_method(&receiver.ty, procedure_name);
+            match inherited {
+                Some(base_method) => {
+                    if procedure.heading.attributes.is_new {
+                        self.diagnostics.push(make_diagnostic(
+                            None,
+                            procedure.heading.span.start.line,
+                            procedure.heading.span.start.column,
+                            format!(
+                                "redefining method {} must not use NEW",
+                                procedure_name
+                            ),
+                        ));
+                    }
+
+                    if base_method.heading.attributes.flavor.is_none() {
+                        self.diagnostics.push(make_diagnostic(
+                            None,
+                            procedure.heading.span.start.line,
+                            procedure.heading.span.start.column,
+                            format!(
+                                "method {} cannot redefine final method declared in {}",
+                                procedure_name,
+                                base_method
+                                    .heading
+                                    .receiver
+                                    .as_ref()
+                                    .map(|item| item.ty.as_str())
+                                    .unwrap_or("<unknown>")
+                            ),
+                        ));
+                    }
+
+                    match base_method.heading.name.export {
+                        Some(base_export) => {
+                            if record_decl.name.export.is_some() && procedure.heading.name.export.is_none() {
+                                self.diagnostics.push(make_diagnostic(
+                                    None,
+                                    procedure.heading.span.start.line,
+                                    procedure.heading.span.start.column,
+                                    format!(
+                                        "overriding method {} of exported record {} must be exported",
+                                        procedure_name, receiver.ty
+                                    ),
+                                ));
+                            }
+
+                            if let Some(actual_export) = procedure.heading.name.export
+                                && actual_export != base_export
+                            {
+                                self.diagnostics.push(make_diagnostic(
+                                    None,
+                                    procedure.heading.span.start.line,
+                                    procedure.heading.span.start.column,
+                                    format!(
+                                        "overriding method {} must use the same export mark as the base method ({})",
+                                        procedure_name,
+                                        export_mark_name(base_export)
+                                    ),
+                                ));
+                            }
+                        }
+                        None => {
+                            if procedure.heading.name.export.is_some() {
+                                self.diagnostics.push(make_diagnostic(
+                                    None,
+                                    procedure.heading.span.start.line,
+                                    procedure.heading.span.start.column,
+                                    format!(
+                                        "overriding method {} must not be exported because the base method is not exported",
+                                        procedure_name
+                                    ),
+                                ));
+                            }
+                        }
+                    }
+
+                    let expected = self.resolve_procedure_signature(&self.module_type_names, base_method);
+                    let actual = self.resolve_procedure_signature(&self.module_type_names, procedure);
+                    if !self.method_signatures_match(&expected, &actual) {
+                        self.diagnostics.push(make_diagnostic(
+                            None,
+                            procedure.heading.span.start.line,
+                            procedure.heading.span.start.column,
+                            format!(
+                                "method {} does not match overridden signature",
+                                procedure_name
+                            ),
+                        ));
+                    }
+
+                    if procedure.heading.attributes.flavor == Some(MethodFlavor::Abstract)
+                        && base_method.heading.attributes.flavor != Some(MethodFlavor::Abstract)
+                    {
+                        self.diagnostics.push(make_diagnostic(
+                            None,
+                            procedure.heading.span.start.line,
+                            procedure.heading.span.start.column,
+                            format!(
+                                "abstract method {} may only redefine an abstract method",
+                                procedure_name
+                            ),
+                        ));
+                    }
+
+                    if procedure.heading.attributes.flavor == Some(MethodFlavor::Empty)
+                        && !matches!(
+                            base_method.heading.attributes.flavor,
+                            Some(MethodFlavor::Empty | MethodFlavor::Abstract)
+                        )
+                    {
+                        self.diagnostics.push(make_diagnostic(
+                            None,
+                            procedure.heading.span.start.line,
+                            procedure.heading.span.start.column,
+                            format!(
+                                "empty method {} may only redefine an empty or abstract method",
+                                procedure_name
+                            ),
+                        ));
+                    }
+                }
+                None => {
+                    if !procedure.heading.attributes.is_new {
+                        self.diagnostics.push(make_diagnostic(
+                            None,
+                            procedure.heading.span.start.line,
+                            procedure.heading.span.start.column,
+                            format!(
+                                "newly introduced method {} must use NEW",
+                                procedure_name
+                            ),
+                        ));
+                    }
+                }
+            }
+
+            if procedure.heading.attributes.flavor == Some(MethodFlavor::Abstract)
+                && record_flavor != Some(RecordFlavor::Abstract)
+            {
+                self.diagnostics.push(make_diagnostic(
+                    None,
+                    procedure.heading.span.start.line,
+                    procedure.heading.span.start.column,
+                    format!(
+                        "record {} must be ABSTRACT to declare abstract method {}",
+                        receiver.ty, procedure_name
+                    ),
+                ));
+            }
+
+            if procedure.heading.attributes.flavor == Some(MethodFlavor::Extensible)
+                && !matches!(record_flavor, Some(RecordFlavor::Extensible | RecordFlavor::Abstract))
+            {
+                self.diagnostics.push(make_diagnostic(
+                    None,
+                    procedure.heading.span.start.line,
+                    procedure.heading.span.start.column,
+                    format!(
+                        "record {} must be EXTENSIBLE or ABSTRACT to declare extensible method {}",
+                        receiver.ty, procedure_name
+                    ),
+                ));
+            }
+
+            if procedure.heading.attributes.is_new
+                && procedure.heading.attributes.flavor == Some(MethodFlavor::Empty)
+                && !matches!(record_flavor, Some(RecordFlavor::Extensible | RecordFlavor::Abstract))
+            {
+                self.diagnostics.push(make_diagnostic(
+                    None,
+                    procedure.heading.span.start.line,
+                    procedure.heading.span.start.column,
+                    format!(
+                        "record {} must be EXTENSIBLE or ABSTRACT to declare new empty method {}",
+                        receiver.ty, procedure_name
+                    ),
+                ));
+            }
+
+            if record_flavor == Some(RecordFlavor::Abstract)
+                && let Some(base_name) = base_name.as_deref()
+                && self.record_type_info(base_name).map(|(flavor, _)| flavor) != Some(Some(RecordFlavor::Abstract))
+            {
+                self.diagnostics.push(make_diagnostic(
+                    None,
+                    procedure.heading.span.start.line,
+                    procedure.heading.span.start.column,
+                    format!(
+                        "abstract record {} must extend an abstract base type",
+                        receiver.ty
+                    ),
+                ));
+            }
+        }
+
+        for declaration in &self.module.declarations {
+            let Declaration::Type(type_decl) = declaration else {
+                continue;
+            };
+            let Some((flavor, base_name)) = self.record_type_info(&type_decl.name.name) else {
+                continue;
+            };
+            if flavor == Some(RecordFlavor::Abstract) {
+                continue;
+            }
+            if base_name.is_none() {
+                continue;
+            }
+
+            for method in self.effective_methods_for_type(&type_decl.name.name) {
+                if method.heading.attributes.flavor == Some(MethodFlavor::Abstract) {
+                    self.diagnostics.push(make_diagnostic(
+                        None,
+                        type_decl.span.start.line,
+                        type_decl.span.start.column,
+                        format!(
+                            "concrete record {} must implement abstract method {}",
+                            type_decl.name.name,
+                            method.heading.name.name
+                        ),
+                    ));
+                }
+            }
+        }
+    }
+
     fn validate_forward_declarations(
         &self,
         declarations: &[Declaration],
@@ -506,9 +934,10 @@ impl<'a> Analyzer<'a> {
             };
 
             let expected = self.resolve_heading_signature(&forward.heading, scope_type_names);
+            let forward_identity = module_procedure_identity(&forward.heading);
             let implementation = declarations.iter().find_map(|item| match item {
                 Declaration::Procedure(procedure)
-                    if procedure.heading.name.name == forward.heading.name.name =>
+                    if module_procedure_identity(&procedure.heading) == forward_identity =>
                 {
                     Some(procedure)
                 }
@@ -633,7 +1062,11 @@ impl<'a> Analyzer<'a> {
                         name: item.name.name.clone(),
                         kind: SymbolKind::Type,
                         exported: false,
-                        declared_type: Some(self.resolve_type_expr(&item.ty, scope_type_names)),
+                        declared_type: Some(self.resolve_type_decl(
+                            Some(&item.name.name),
+                            &item.ty,
+                            scope_type_names,
+                        )),
                         const_value: None,
                         simd_shape: None,
                     })
@@ -654,6 +1087,17 @@ impl<'a> Analyzer<'a> {
                     }
                 }
                 Declaration::Procedure(item) => {
+                    if item.heading.receiver.is_some() {
+                        diagnostics.push(make_diagnostic(
+                            procedure_name,
+                            item.heading.span.start.line,
+                            item.heading.span.start.column,
+                            format!(
+                                "method {} must be declared at module scope",
+                                item.heading.name.name
+                            ),
+                        ));
+                    }
                     Self::record_identdef_duplicate(scope_names, &item.heading.name, procedure_name, "duplicate procedure-scope declaration", diagnostics);
                     Self::validate_heading_types(&item.heading, scope_type_names, procedure_name, diagnostics);
                     local_symbols.push(SemanticSymbol {
@@ -669,6 +1113,17 @@ impl<'a> Analyzer<'a> {
                     })
                 }
                 Declaration::Forward(item) => {
+                    if item.heading.receiver.is_some() {
+                        diagnostics.push(make_diagnostic(
+                            procedure_name,
+                            item.heading.span.start.line,
+                            item.heading.span.start.column,
+                            format!(
+                                "method {} must be declared at module scope",
+                                item.heading.name.name
+                            ),
+                        ));
+                    }
                     Self::record_identdef_duplicate(scope_names, &item.heading.name, procedure_name, "duplicate procedure-scope declaration", diagnostics);
                     Self::validate_heading_types(&item.heading, scope_type_names, procedure_name, diagnostics);
                     local_symbols.push(SemanticSymbol {
@@ -703,6 +1158,27 @@ impl<'a> Analyzer<'a> {
             message,
             diagnostics,
         );
+    }
+
+    fn record_module_procedure_duplicate(
+        scope_names: &mut HashSet<String>,
+        _allowed_existing: Option<&HashSet<String>>,
+        heading: &newcp_parser::ProcedureHeading,
+        message: &str,
+        diagnostics: &mut Vec<SemanticDiagnostic>,
+    ) {
+        let identity = module_procedure_identity(heading);
+        if scope_names.contains(&identity) {
+            diagnostics.push(make_diagnostic(
+                None,
+                heading.span.start.line,
+                heading.span.start.column,
+                format!("{}: {}", message, heading.name.name),
+            ));
+            return;
+        }
+
+        scope_names.insert(identity);
     }
 
     fn record_duplicate_name(
@@ -925,6 +1401,15 @@ impl<'a> Analyzer<'a> {
         ty: &TypeExpr,
         scope_type_names: &HashSet<String>,
     ) -> SemanticType {
+        self.resolve_type_decl(None, ty, scope_type_names)
+    }
+
+    fn resolve_type_decl(
+        &self,
+        owner_name: Option<&str>,
+        ty: &TypeExpr,
+        scope_type_names: &HashSet<String>,
+    ) -> SemanticType {
         match ty {
             TypeExpr::QualIdent { ident, .. } => self.resolve_named_type(ident, scope_type_names),
             TypeExpr::Array {
@@ -933,7 +1418,7 @@ impl<'a> Analyzer<'a> {
                 ..
             } => SemanticType::Array {
                 lengths: lengths.iter().map(render_expr).collect(),
-                element_type: Box::new(self.resolve_type_expr(element_type, scope_type_names)),
+                element_type: Box::new(self.resolve_type_decl(None, element_type, scope_type_names)),
             },
             TypeExpr::Record {
                 flavor,
@@ -949,9 +1434,12 @@ impl<'a> Analyzer<'a> {
                     .iter()
                     .map(|field| self.resolve_field_type(field, scope_type_names))
                     .collect(),
+                methods: owner_name
+                    .map(|type_name| self.resolve_record_methods(type_name, scope_type_names))
+                    .unwrap_or_default(),
             },
             TypeExpr::Pointer { target, .. } => SemanticType::Pointer {
-                target: Box::new(self.resolve_type_expr(target, scope_type_names)),
+                target: Box::new(self.resolve_type_decl(None, target, scope_type_names)),
             },
             TypeExpr::Procedure {
                 formal_parameters,
@@ -965,11 +1453,106 @@ impl<'a> Analyzer<'a> {
                 result_type: formal_parameters
                     .as_ref()
                     .and_then(|parameters| parameters.result_type.as_ref())
-                    .map(|result| Box::new(self.resolve_type_expr(result, scope_type_names))),
+                    .map(|result| Box::new(self.resolve_type_decl(None, result, scope_type_names))),
                 is_new: false,
                 flavor: None,
             }),
         }
+    }
+
+    fn resolve_record_methods(
+        &self,
+        type_name: &str,
+        scope_type_names: &HashSet<String>,
+    ) -> Vec<MethodType> {
+        self.module
+            .declarations
+            .iter()
+            .filter_map(|declaration| match declaration {
+                Declaration::Procedure(procedure)
+                    if procedure
+                        .heading
+                        .receiver
+                        .as_ref()
+                        .is_some_and(|receiver| receiver.ty == type_name) =>
+                {
+                    Some(MethodType {
+                        name: procedure.heading.name.name.clone(),
+                        signature: self.resolve_procedure_signature(scope_type_names, procedure),
+                    })
+                }
+                _ => None,
+            })
+            .collect()
+    }
+
+    fn record_type_info(&self, type_name: &str) -> Option<(Option<RecordFlavor>, Option<String>)> {
+        self.module.declarations.iter().find_map(|declaration| match declaration {
+            Declaration::Type(type_decl) if type_decl.name.name == type_name => match &type_decl.ty {
+                TypeExpr::Record { flavor, base, .. } => Some((*flavor, base.as_ref().map(|item| item.name.clone()))),
+                _ => None,
+            },
+            _ => None,
+        })
+    }
+
+    fn find_record_decl(&self, type_name: &str) -> Option<&'a TypeDecl> {
+        self.module.declarations.iter().find_map(|declaration| match declaration {
+            Declaration::Type(type_decl) if type_decl.name.name == type_name => Some(type_decl),
+            _ => None,
+        })
+    }
+
+    fn find_inherited_method(&self, type_name: &str, method_name: &str) -> Option<&'a ProcedureDecl> {
+        let mut current = self.record_type_info(type_name).and_then(|(_, base)| base);
+        while let Some(base_name) = current {
+            if let Some(method) = self.module.declarations.iter().find_map(|declaration| match declaration {
+                Declaration::Procedure(procedure)
+                    if procedure.heading.receiver.as_ref().is_some_and(|receiver| receiver.ty == base_name)
+                        && procedure.heading.name.name == method_name =>
+                {
+                    Some(procedure)
+                }
+                _ => None,
+            }) {
+                return Some(method);
+            }
+            current = self.record_type_info(&base_name).and_then(|(_, base)| base);
+        }
+        None
+    }
+
+    fn effective_methods_for_type(&self, type_name: &str) -> Vec<&'a ProcedureDecl> {
+        let mut methods = self
+            .record_type_info(type_name)
+            .and_then(|(_, base)| base)
+            .map(|base| self.effective_methods_for_type(&base))
+            .unwrap_or_default();
+
+        for declaration in &self.module.declarations {
+            let Declaration::Procedure(procedure) = declaration else {
+                continue;
+            };
+            if !procedure
+                .heading
+                .receiver
+                .as_ref()
+                .is_some_and(|receiver| receiver.ty == type_name)
+            {
+                continue;
+            }
+
+            if let Some(existing_index) = methods
+                .iter()
+                .position(|item| item.heading.name.name == procedure.heading.name.name)
+            {
+                methods[existing_index] = procedure;
+            } else {
+                methods.push(procedure);
+            }
+        }
+
+        methods
     }
 
     fn resolve_field_type(
@@ -1049,7 +1632,11 @@ impl<'a> Analyzer<'a> {
                         self.infer_designator_type(target, local_symbols, scope_type_names),
                         self.infer_expr_type(value, local_symbols, scope_type_names),
                     ) {
-                        if !types_are_assignment_compatible(&target_type, &value_type) {
+                        if !self.types_are_assignment_compatible(
+                            &target_type,
+                            &value_type,
+                            local_symbols,
+                        ) {
                             let (line, column) = statement_position(statement);
                             diagnostics.push(make_diagnostic(
                                 procedure_name,
@@ -1433,7 +2020,11 @@ impl<'a> Analyzer<'a> {
                             if let Some(actual) =
                                 self.infer_expr_type(expr, local_symbols, scope_type_names)
                             {
-                                if !types_are_assignment_compatible(expected, &actual) {
+                                if !self.types_are_assignment_compatible(
+                                    expected,
+                                    &actual,
+                                    local_symbols,
+                                ) {
                                     let (line, column) = statement_position(statement);
                                     diagnostics.push(make_diagnostic(
                                         procedure_name,
@@ -1511,7 +2102,7 @@ impl<'a> Analyzer<'a> {
                     continue;
                 };
 
-                if !types_are_assignment_compatible(&selector_type, &start_type) {
+                if !self.types_are_assignment_compatible(&selector_type, &start_type, local_symbols) {
                     let (line, column) = expr_position(&label.start);
                     diagnostics.push(make_diagnostic(
                         procedure_name,
@@ -1539,7 +2130,11 @@ impl<'a> Analyzer<'a> {
                         }
 
                         if let Some(end_type) = self.infer_expr_type(end, local_symbols, scope_type_names) {
-                            if !types_are_assignment_compatible(&selector_type, &end_type) {
+                            if !self.types_are_assignment_compatible(
+                                &selector_type,
+                                &end_type,
+                                local_symbols,
+                            ) {
                                 let (line, column) = expr_position(end);
                                 diagnostics.push(make_diagnostic(
                                     procedure_name,
@@ -1852,12 +2447,12 @@ impl<'a> Analyzer<'a> {
     ) -> Option<SemanticType> {
         match expr {
             Expr::Literal { value, .. } => match value {
-                newcp_parser::Literal::Integer(_) => Some(SemanticType::Builtin(BuiltinType::Integer)),
+                newcp_parser::Literal::Integer(value) => Some(integer_literal_type(value)),
                 newcp_parser::Literal::Real(_) => Some(SemanticType::Builtin(BuiltinType::Real)),
-                newcp_parser::Literal::Character(_) => Some(SemanticType::Builtin(BuiltinType::Char)),
-                newcp_parser::Literal::String(_) => None,
+                newcp_parser::Literal::Character(value) => Some(character_literal_type(value)),
+                newcp_parser::Literal::String(value) => Some(string_literal_type(value)),
             },
-            Expr::Nil { .. } => None,
+            Expr::Nil { .. } => Some(SemanticType::Nil),
             Expr::Designator(designator) => {
                 self.infer_designator_type(designator, local_symbols, scope_type_names)
             }
@@ -1886,7 +2481,7 @@ impl<'a> Analyzer<'a> {
                 let right_type = self.infer_expr_type(right, local_symbols, scope_type_names);
                 match op {
                     BinaryOp::Add | BinaryOp::Subtract | BinaryOp::Multiply => {
-                        infer_numeric_result(left_type.as_ref(), right_type.as_ref())
+                        infer_additive_or_multiplicative_result(*op, left_type.as_ref(), right_type.as_ref())
                     }
                     BinaryOp::Divide => {
                         if left_type.as_ref().is_some_and(|ty| is_numeric_type(ty))
@@ -1901,7 +2496,7 @@ impl<'a> Analyzer<'a> {
                         if left_type.as_ref().is_some_and(|ty| is_integer_type(ty))
                             && right_type.as_ref().is_some_and(|ty| is_integer_type(ty))
                         {
-                            Some(SemanticType::Builtin(BuiltinType::Integer))
+                            Some(promote_integer_pair(left_type.as_ref()?, right_type.as_ref()?))
                         } else {
                             None
                         }
@@ -1937,6 +2532,12 @@ impl<'a> Analyzer<'a> {
         let mut current = if designator.base.module.is_none() {
             match designator.base.name.as_str() {
                 "TRUE" | "FALSE" => Some(SemanticType::Builtin(BuiltinType::Boolean)),
+                "INF" => Some(SemanticType::Builtin(BuiltinType::Real)),
+                _ if builtin_proc_by_name(&designator.base.name).is_some() => {
+                    Some(SemanticType::BuiltinProc(
+                        builtin_proc_by_name(&designator.base.name).expect("builtin checked"),
+                    ))
+                }
                 _ => self.lookup_symbol_type(&designator.base.name, local_symbols),
             }
         } else {
@@ -2242,6 +2843,42 @@ impl<'a> Analyzer<'a> {
         }
     }
 
+    fn method_signatures_match(&self, expected: &ProcedureType, actual: &ProcedureType) -> bool {
+        self.method_result_types_match(
+            expected.result_type.as_deref(),
+            actual.result_type.as_deref(),
+        )
+            && expected.parameters.len() == actual.parameters.len()
+            && expected
+                .parameters
+                .iter()
+                .zip(&actual.parameters)
+                .all(|(left, right)| left.mode == right.mode && left.ty == right.ty)
+    }
+
+    fn method_result_types_match(
+        &self,
+        expected: Option<&SemanticType>,
+        actual: Option<&SemanticType>,
+    ) -> bool {
+        match (expected, actual) {
+            (None, None) => true,
+            (Some(expected), Some(actual)) if expected == actual => true,
+            (Some(expected), Some(actual)) => {
+                let expected = self.resolve_named_type_one_level(expected, &self.module_symbols);
+                let actual = self.resolve_named_type_one_level(actual, &self.module_symbols);
+                match (&expected, &actual) {
+                    (
+                        SemanticType::Pointer { target: expected_target },
+                        SemanticType::Pointer { target: actual_target },
+                    ) => self.record_type_extends(actual_target, expected_target, &self.module_symbols),
+                    _ => false,
+                }
+            }
+            _ => false,
+        }
+    }
+
     fn semantic_types_match(
         &self,
         left: &SemanticType,
@@ -2344,6 +2981,12 @@ impl<'a> Analyzer<'a> {
         let current = if designator.base.module.is_none() {
             match designator.base.name.as_str() {
                 "TRUE" | "FALSE" => Some(SemanticType::Builtin(BuiltinType::Boolean)),
+                "INF" => Some(SemanticType::Builtin(BuiltinType::Real)),
+                _ if builtin_proc_by_name(&designator.base.name).is_some() => {
+                    Some(SemanticType::BuiltinProc(
+                        builtin_proc_by_name(&designator.base.name).expect("builtin checked"),
+                    ))
+                }
                 _ => self.lookup_symbol_type(&designator.base.name, local_symbols),
             }
         } else {
@@ -2392,24 +3035,22 @@ impl<'a> Analyzer<'a> {
     ) -> Option<SemanticType> {
         let (line, column) = designator_position(designator);
         match selector {
-            Selector::Field(name) => match base {
-                SemanticType::Record { fields, .. } => fields
-                    .iter()
-                    .find(|field| field.names.iter().any(|field_name| field_name == name))
-                    .map(|field| field.ty.clone())
-                    .or_else(|| {
-                        diagnostics.push(make_diagnostic(
-                            procedure_name,
-                            line,
-                            column,
-                            format!(
-                                "field {} does not exist on {}",
-                                name,
-                                render_semantic_type(base)
-                            ),
-                        ));
-                        None
-                    }),
+            Selector::Field(name) => match self.lookup_record_member(base, name, local_symbols) {
+                Some(RecordMember::Field(ty)) => Some(ty),
+                Some(RecordMember::Method(signature)) => Some(SemanticType::Procedure(signature)),
+                None if matches!(base, SemanticType::Record { .. }) => {
+                    diagnostics.push(make_diagnostic(
+                        procedure_name,
+                        line,
+                        column,
+                        format!(
+                            "field {} does not exist on {}",
+                            name,
+                            render_semantic_type(base)
+                        ),
+                    ));
+                    None
+                }
                 _ => {
                     diagnostics.push(make_diagnostic(
                         procedure_name,
@@ -2476,7 +3117,52 @@ impl<'a> Analyzer<'a> {
                 diagnostics,
             ),
             Selector::AmbiguousParen(guard) => {
-                if self.qualident_denotes_type_name(guard, local_symbols) {
+                if matches!(base, SemanticType::Procedure(_) | SemanticType::BuiltinProc(_)) {
+                    let synthetic_arg = Expr::Designator(Designator {
+                        span: guard.span,
+                        base: guard.clone(),
+                        selectors: Vec::new(),
+                    });
+                    self.walk_expr(
+                        &synthetic_arg,
+                        procedure_name,
+                        scope_type_names,
+                        local_symbols,
+                        &mut Vec::new(),
+                        diagnostics,
+                    );
+                    match base {
+                        SemanticType::Procedure(signature) => {
+                            self.validate_call_arguments(
+                                signature,
+                                &[synthetic_arg],
+                                procedure_name,
+                                local_symbols,
+                                scope_type_names,
+                                diagnostics,
+                            );
+                            signature.result_type.as_ref().map(|result| (**result).clone())
+                        }
+                        SemanticType::BuiltinProc(proc) => {
+                            self.validate_builtin_call(
+                                *proc,
+                                &[synthetic_arg.clone()],
+                                procedure_name,
+                                local_symbols,
+                                scope_type_names,
+                                diagnostics,
+                            );
+                            builtin_proc_result_type(
+                                *proc,
+                                &[synthetic_arg],
+                                local_symbols,
+                                &self.module_symbols,
+                                scope_type_names,
+                            )
+                        }
+                        _ => None,
+                    }
+                } else if self.qualident_denotes_type_name(guard, local_symbols) {
                     self.validate_designator_type_guard(
                         base,
                         guard,
@@ -2501,6 +3187,23 @@ impl<'a> Analyzer<'a> {
                         diagnostics,
                     );
                     signature.result_type.as_ref().map(|result| (**result).clone())
+                }
+                SemanticType::BuiltinProc(proc) => {
+                    self.validate_builtin_call(
+                        *proc,
+                        args,
+                        procedure_name,
+                        local_symbols,
+                        scope_type_names,
+                        diagnostics,
+                    );
+                    builtin_proc_result_type(
+                        *proc,
+                        args,
+                        local_symbols,
+                        &self.module_symbols,
+                        scope_type_names,
+                    )
                 }
                 _ => {
                     diagnostics.push(make_diagnostic(
@@ -2585,7 +3288,7 @@ impl<'a> Analyzer<'a> {
             }
 
             if let Some(actual) = self.infer_expr_type(actual_expr, local_symbols, scope_type_names) {
-                if !types_are_assignment_compatible(&expected.ty, &actual) {
+                if !self.types_are_assignment_compatible(&expected.ty, &actual, local_symbols) {
                     let (line, column) = expr_position(actual_expr);
                     diagnostics.push(make_diagnostic(
                         procedure_name,
@@ -2692,6 +3395,20 @@ impl<'a> Analyzer<'a> {
             return;
         }
 
+        if designator.base.module.is_none()
+            && builtin_proc_by_name(&designator.base.name).is_some()
+            && designator.selectors.is_empty()
+        {
+            let (line, column) = designator_position(designator);
+            diagnostics.push(make_diagnostic(
+                procedure_name,
+                line,
+                column,
+                "procedure call is missing required arguments".to_string(),
+            ));
+            return;
+        }
+
         match final_type {
             Some(SemanticType::Procedure(signature)) => {
                 if !signature.parameters.is_empty() {
@@ -2704,6 +3421,7 @@ impl<'a> Analyzer<'a> {
                     ));
                 }
             }
+            Some(SemanticType::BuiltinProc(_)) => {}
             Some(other) => {
                 let (line, column) = designator_position(designator);
                 diagnostics.push(make_diagnostic(
@@ -2727,13 +3445,10 @@ impl<'a> Analyzer<'a> {
         scope_type_names: &HashSet<String>,
     ) -> Option<SemanticType> {
         match selector {
-            Selector::Field(name) => match base {
-                SemanticType::Record { fields, .. } => fields
-                    .iter()
-                    .find(|field| field.names.iter().any(|field_name| field_name == name))
-                    .map(|field| field.ty.clone()),
-                _ => None,
-            },
+            Selector::Field(name) => self.lookup_record_member(base, name, &[]).map(|member| match member {
+                RecordMember::Field(ty) => ty,
+                RecordMember::Method(signature) => SemanticType::Procedure(signature),
+            }),
             Selector::Index(_) => match base {
                 SemanticType::Array { element_type, .. } => Some((**element_type).clone()),
                 _ => None,
@@ -2742,12 +3457,32 @@ impl<'a> Analyzer<'a> {
                 SemanticType::Pointer { target } => Some((**target).clone()),
                 _ => None,
             },
-            Selector::TypeGuard(guard) | Selector::AmbiguousParen(guard) => {
+            Selector::TypeGuard(guard) => {
                 Some(self.resolve_named_type(guard, scope_type_names))
             }
+            Selector::AmbiguousParen(guard) => match base {
+                SemanticType::Procedure(signature) => {
+                    signature.result_type.as_ref().map(|result| (**result).clone())
+                }
+                SemanticType::BuiltinProc(proc) => builtin_proc_result_type(
+                    *proc,
+                    &[Expr::Designator(Designator {
+                        span: guard.span,
+                        base: guard.clone(),
+                        selectors: Vec::new(),
+                    })],
+                    &[],
+                    &self.module_symbols,
+                    scope_type_names,
+                ),
+                _ => Some(self.resolve_named_type(guard, scope_type_names)),
+            },
             Selector::Call(_) => match base {
                 SemanticType::Procedure(signature) => {
                     signature.result_type.as_ref().map(|result| (**result).clone())
+                }
+                SemanticType::BuiltinProc(proc) => {
+                    builtin_proc_result_type(*proc, &[], &[], &self.module_symbols, scope_type_names)
                 }
                 _ => None,
             },
@@ -2774,6 +3509,96 @@ impl<'a> Analyzer<'a> {
             .rev()
             .chain(self.module_symbols.iter().rev())
             .find(|symbol| symbol.name == name)
+    }
+
+    fn types_are_assignment_compatible(
+        &self,
+        expected: &SemanticType,
+        actual: &SemanticType,
+        local_symbols: &[SemanticSymbol],
+    ) -> bool {
+        let expected = self.resolve_named_type_one_level(expected, local_symbols);
+        let actual = self.resolve_named_type_one_level(actual, local_symbols);
+
+        if expected == actual {
+            return true;
+        }
+
+        if matches!(actual, SemanticType::Nil)
+            && matches!(expected, SemanticType::Pointer { .. } | SemanticType::Procedure(_))
+        {
+            return true;
+        }
+
+        if is_numeric_type(&expected) && is_numeric_type(&actual) {
+            return numeric_rank(&actual) <= numeric_rank(&expected);
+        }
+
+        if is_character_like_type(&expected) && is_character_like_type(&actual) {
+            return character_rank(&actual) <= character_rank(&expected);
+        }
+
+        if matches!(
+            actual,
+            SemanticType::Builtin(BuiltinType::ShortString) | SemanticType::Builtin(BuiltinType::String)
+        ) {
+            let accepts_char_array = match &expected {
+                SemanticType::Array { element_type, .. } => matches!(
+                    element_type.as_ref(),
+                    SemanticType::Builtin(BuiltinType::Char)
+                        | SemanticType::Builtin(BuiltinType::ShortChar)
+                ),
+                _ => false,
+            };
+            let requires_shortstring = match &expected {
+                SemanticType::Array { element_type, .. } => {
+                    !matches!(element_type.as_ref(), SemanticType::Builtin(BuiltinType::Char))
+                }
+                _ => false,
+            };
+            return accepts_char_array
+                && (!requires_shortstring
+                    || matches!(actual, SemanticType::Builtin(BuiltinType::ShortString)));
+        }
+
+        match (&expected, &actual) {
+            (SemanticType::Pointer { target: expected_target }, SemanticType::Pointer { target: actual_target }) => {
+                self.record_type_extends(actual_target, expected_target, local_symbols)
+            }
+            (SemanticType::Procedure(expected_sig), SemanticType::Procedure(actual_sig)) => {
+                procedure_types_match(expected_sig, actual_sig)
+            }
+            _ => false,
+        }
+    }
+
+    fn lookup_record_member(
+        &self,
+        ty: &SemanticType,
+        name: &str,
+        local_symbols: &[SemanticSymbol],
+    ) -> Option<RecordMember> {
+        match self.resolve_named_type_one_level(ty, local_symbols) {
+            SemanticType::Record {
+                fields,
+                methods,
+                base,
+                ..
+            } => {
+                if let Some(field) = fields
+                    .iter()
+                    .find(|field| field.names.iter().any(|field_name| field_name == name))
+                {
+                    return Some(RecordMember::Field(field.ty.clone()));
+                }
+                if let Some(method) = methods.iter().find(|method| method.name == name) {
+                    return Some(RecordMember::Method(method.signature.clone()));
+                }
+                base.as_ref()
+                    .and_then(|parent| self.lookup_record_member(parent, name, local_symbols))
+            }
+            _ => None,
+        }
     }
 
     fn record_designator_resolution(
@@ -2820,7 +3645,7 @@ impl<'a> Analyzer<'a> {
 }
 
 fn builtin_symbols() -> Vec<SemanticSymbol> {
-    builtin_types()
+    let mut symbols = builtin_types()
         .iter()
         .map(|builtin| SemanticSymbol {
             name: builtin.name().to_string(),
@@ -2830,7 +3655,45 @@ fn builtin_symbols() -> Vec<SemanticSymbol> {
             const_value: None,
             simd_shape: None,
         })
-        .collect()
+        .collect::<Vec<_>>();
+
+    symbols.extend([
+        SemanticSymbol {
+            name: "TRUE".to_string(),
+            kind: SymbolKind::Constant,
+            exported: false,
+            declared_type: Some(SemanticType::Builtin(BuiltinType::Boolean)),
+            const_value: Some(1),
+            simd_shape: None,
+        },
+        SemanticSymbol {
+            name: "FALSE".to_string(),
+            kind: SymbolKind::Constant,
+            exported: false,
+            declared_type: Some(SemanticType::Builtin(BuiltinType::Boolean)),
+            const_value: Some(0),
+            simd_shape: None,
+        },
+        SemanticSymbol {
+            name: "INF".to_string(),
+            kind: SymbolKind::Constant,
+            exported: false,
+            declared_type: Some(SemanticType::Builtin(BuiltinType::Real)),
+            const_value: None,
+            simd_shape: None,
+        },
+    ]);
+
+    symbols.extend(builtin_procs().iter().map(|builtin| SemanticSymbol {
+        name: builtin.name().to_string(),
+        kind: SymbolKind::Procedure,
+        exported: false,
+        declared_type: Some(SemanticType::BuiltinProc(*builtin)),
+        const_value: None,
+        simd_shape: None,
+    }));
+
+    symbols
 }
 
 fn annotate_simd_shapes(symbols: &mut [SemanticSymbol], outer_symbols: &[SemanticSymbol]) {
@@ -2850,7 +3713,12 @@ fn infer_simd_shape(
     seen_named: &mut HashSet<String>,
 ) -> Option<SimdShape> {
     match resolve_named_type_alias(ty, local_symbols, outer_symbols, seen_named).unwrap_or(ty) {
-        SemanticType::Record { base, flavor, fields } if base.is_none() && flavor.is_none() => {
+        SemanticType::Record {
+            base,
+            flavor,
+            fields,
+            methods,
+        } if base.is_none() && flavor.is_none() && methods.is_empty() => {
             let (lane_kind, lane_count) = infer_homogeneous_record_lanes(
                 fields,
                 local_symbols,
@@ -2985,9 +3853,38 @@ fn builtin_types() -> &'static [BuiltinType] {
         BuiltinType::LongInt,
         BuiltinType::Real,
         BuiltinType::Set,
+        BuiltinType::String,
         BuiltinType::ShortChar,
         BuiltinType::ShortInt,
         BuiltinType::ShortReal,
+        BuiltinType::ShortString,
+    ];
+    BUILTINS
+}
+
+fn builtin_procs() -> &'static [BuiltinProc] {
+    const BUILTINS: &[BuiltinProc] = &[
+        BuiltinProc::Abs,
+        BuiltinProc::Ash,
+        BuiltinProc::Assert,
+        BuiltinProc::Bits,
+        BuiltinProc::Cap,
+        BuiltinProc::Chr,
+        BuiltinProc::Dec,
+        BuiltinProc::Entier,
+        BuiltinProc::Excl,
+        BuiltinProc::Halt,
+        BuiltinProc::Inc,
+        BuiltinProc::Incl,
+        BuiltinProc::Len,
+        BuiltinProc::Long,
+        BuiltinProc::Max,
+        BuiltinProc::Min,
+        BuiltinProc::New,
+        BuiltinProc::Odd,
+        BuiltinProc::Ord,
+        BuiltinProc::Short,
+        BuiltinProc::Size,
     ];
     BUILTINS
 }
@@ -3003,9 +3900,153 @@ fn builtin_type_by_name(name: &str) -> Option<BuiltinType> {
         "LONGINT" => Some(BuiltinType::LongInt),
         "REAL" => Some(BuiltinType::Real),
         "SET" => Some(BuiltinType::Set),
+        "String" => Some(BuiltinType::String),
         "SHORTCHAR" => Some(BuiltinType::ShortChar),
         "SHORTINT" => Some(BuiltinType::ShortInt),
         "SHORTREAL" => Some(BuiltinType::ShortReal),
+        "Shortstring" => Some(BuiltinType::ShortString),
+        _ => None,
+    }
+}
+
+fn builtin_proc_by_name(name: &str) -> Option<BuiltinProc> {
+    builtin_procs().iter().copied().find(|builtin| builtin.name() == name)
+}
+
+fn builtin_proc_result_type(
+    proc: BuiltinProc,
+    args: &[Expr],
+    local_symbols: &[SemanticSymbol],
+    outer_symbols: &[SemanticSymbol],
+    scope_type_names: &HashSet<String>,
+) -> Option<SemanticType> {
+    match proc {
+        BuiltinProc::Len | BuiltinProc::Ord | BuiltinProc::Size => {
+            Some(SemanticType::Builtin(BuiltinType::Integer))
+        }
+        BuiltinProc::Odd => Some(SemanticType::Builtin(BuiltinType::Boolean)),
+        BuiltinProc::Chr => Some(SemanticType::Builtin(BuiltinType::Char)),
+        BuiltinProc::Cap => Some(SemanticType::Builtin(BuiltinType::Char)),
+        BuiltinProc::Bits => Some(SemanticType::Builtin(BuiltinType::Set)),
+        BuiltinProc::Entier => Some(SemanticType::Builtin(BuiltinType::LongInt)),
+        BuiltinProc::Abs => args.first().and_then(|expr| {
+            infer_builtin_arg_type(expr, local_symbols, outer_symbols, scope_type_names)
+                .filter(is_numeric_type)
+        }),
+        BuiltinProc::Long => args.first().and_then(|expr| {
+            infer_builtin_arg_type(expr, local_symbols, outer_symbols, scope_type_names)
+                .and_then(long_result_type)
+        }),
+        BuiltinProc::Short => args.first().and_then(|expr| {
+            infer_builtin_arg_type(expr, local_symbols, outer_symbols, scope_type_names)
+                .and_then(short_result_type)
+        }),
+        BuiltinProc::Max | BuiltinProc::Min => {
+            if args.len() == 1 {
+                args.first().and_then(|expr| {
+                    infer_builtin_arg_type(expr, local_symbols, outer_symbols, scope_type_names)
+                        .map(|ty| match ty {
+                            SemanticType::Builtin(BuiltinType::Set) => {
+                                SemanticType::Builtin(BuiltinType::Integer)
+                            }
+                            other => other,
+                        })
+                })
+            } else {
+                let left = args.first().and_then(|expr| {
+                    infer_builtin_arg_type(expr, local_symbols, outer_symbols, scope_type_names)
+                });
+                let right = args.get(1).and_then(|expr| {
+                    infer_builtin_arg_type(expr, local_symbols, outer_symbols, scope_type_names)
+                });
+                match (left.as_ref(), right.as_ref()) {
+                    (Some(left), Some(right)) if is_numeric_type(left) && is_numeric_type(right) => {
+                        Some(promote_numeric_pair(left, right))
+                    }
+                    (Some(left), Some(right)) if is_character_like_type(left) && is_character_like_type(right) => {
+                        Some(if character_rank(left) >= character_rank(right) {
+                            left.clone()
+                        } else {
+                            right.clone()
+                        })
+                    }
+                    _ => None,
+                }
+            }
+        }
+        BuiltinProc::Ash => args.first().and_then(|expr| {
+            infer_builtin_arg_type(expr, local_symbols, outer_symbols, scope_type_names)
+                .filter(is_integer_type)
+        }),
+        BuiltinProc::New
+        | BuiltinProc::Assert
+        | BuiltinProc::Dec
+        | BuiltinProc::Excl
+        | BuiltinProc::Halt
+        | BuiltinProc::Inc
+        | BuiltinProc::Incl => None,
+    }
+}
+
+fn infer_builtin_arg_type(
+    expr: &Expr,
+    local_symbols: &[SemanticSymbol],
+    outer_symbols: &[SemanticSymbol],
+    scope_type_names: &HashSet<String>,
+) -> Option<SemanticType> {
+    match expr {
+        Expr::Literal { value, .. } => match value {
+            newcp_parser::Literal::Integer(value) => Some(integer_literal_type(value)),
+            newcp_parser::Literal::Real(_) => Some(SemanticType::Builtin(BuiltinType::Real)),
+            newcp_parser::Literal::Character(value) => Some(character_literal_type(value)),
+            newcp_parser::Literal::String(value) => Some(string_literal_type(value)),
+        },
+        Expr::Nil { .. } => Some(SemanticType::Nil),
+        Expr::Designator(designator) if designator.base.module.is_none() && designator.selectors.is_empty() => {
+            if let Some(builtin) = builtin_type_by_name(&designator.base.name) {
+                return Some(SemanticType::Builtin(builtin));
+            }
+            local_symbols
+                .iter()
+                .find(|symbol| symbol.name == designator.base.name)
+                .or_else(|| outer_symbols.iter().find(|symbol| symbol.name == designator.base.name))
+                .and_then(|symbol| symbol.declared_type.clone())
+        }
+        Expr::Designator(designator) if designator.base.module.is_none() && designator.selectors.is_empty() => {
+            if scope_type_names.contains(&designator.base.name) {
+                Some(SemanticType::Named {
+                    module: None,
+                    name: designator.base.name.clone(),
+                    kind: NamedTypeKind::UserDefined,
+                })
+            } else {
+                None
+            }
+        }
+        _ => None,
+    }
+}
+
+fn long_result_type(ty: SemanticType) -> Option<SemanticType> {
+    match ty {
+        SemanticType::Builtin(BuiltinType::Byte) => Some(SemanticType::Builtin(BuiltinType::ShortInt)),
+        SemanticType::Builtin(BuiltinType::ShortInt) => Some(SemanticType::Builtin(BuiltinType::Integer)),
+        SemanticType::Builtin(BuiltinType::Integer) => Some(SemanticType::Builtin(BuiltinType::LongInt)),
+        SemanticType::Builtin(BuiltinType::ShortReal) => Some(SemanticType::Builtin(BuiltinType::Real)),
+        SemanticType::Builtin(BuiltinType::ShortChar) => Some(SemanticType::Builtin(BuiltinType::Char)),
+        SemanticType::Builtin(BuiltinType::ShortString) => Some(SemanticType::Builtin(BuiltinType::String)),
+        _ => None,
+    }
+}
+
+fn short_result_type(ty: SemanticType) -> Option<SemanticType> {
+    match ty {
+        SemanticType::Builtin(BuiltinType::LongInt) => Some(SemanticType::Builtin(BuiltinType::Integer)),
+        SemanticType::Builtin(BuiltinType::Integer) => Some(SemanticType::Builtin(BuiltinType::ShortInt)),
+        SemanticType::Builtin(BuiltinType::ShortInt) => Some(SemanticType::Builtin(BuiltinType::Byte)),
+        SemanticType::Builtin(BuiltinType::Real) => Some(SemanticType::Builtin(BuiltinType::ShortReal)),
+        SemanticType::Builtin(BuiltinType::Char) => Some(SemanticType::Builtin(BuiltinType::ShortChar)),
+        SemanticType::Builtin(BuiltinType::String) => Some(SemanticType::Builtin(BuiltinType::ShortString)),
         _ => None,
     }
 }
@@ -3029,38 +4070,48 @@ fn selector_resolution_kind_for_type(ty: &SemanticType) -> SelectorResolutionKin
     }
 }
 
-fn infer_numeric_result(left: Option<&SemanticType>, right: Option<&SemanticType>) -> Option<SemanticType> {
+fn infer_additive_or_multiplicative_result(
+    op: BinaryOp,
+    left: Option<&SemanticType>,
+    right: Option<&SemanticType>,
+) -> Option<SemanticType> {
     match (left, right) {
         (Some(left), Some(right)) if is_numeric_type(left) && is_numeric_type(right) => {
-            if matches!(left, SemanticType::Builtin(BuiltinType::Real))
-                || matches!(right, SemanticType::Builtin(BuiltinType::Real))
+            Some(promote_numeric_pair(left, right))
+        }
+        (Some(SemanticType::Builtin(BuiltinType::Set)), Some(SemanticType::Builtin(BuiltinType::Set)))
+            if matches!(op, BinaryOp::Add | BinaryOp::Subtract | BinaryOp::Multiply) =>
+        {
+            Some(SemanticType::Builtin(BuiltinType::Set))
+        }
+        (Some(left), Some(right))
+            if op == BinaryOp::Add && is_string_type(left) && is_string_type(right) =>
+        {
+            Some(if matches!(left, SemanticType::Builtin(BuiltinType::ShortString))
+                && matches!(right, SemanticType::Builtin(BuiltinType::ShortString))
             {
-                Some(SemanticType::Builtin(BuiltinType::Real))
+                SemanticType::Builtin(BuiltinType::ShortString)
             } else {
-                Some(SemanticType::Builtin(BuiltinType::Integer))
-            }
+                SemanticType::Builtin(BuiltinType::String)
+            })
         }
         _ => None,
     }
-}
-
-fn types_are_assignment_compatible(expected: &SemanticType, actual: &SemanticType) -> bool {
-    if expected == actual {
-        return true;
-    }
-
-    is_numeric_type(expected) && is_numeric_type(actual)
 }
 
 fn are_relation_compatible(left: &SemanticType, right: &SemanticType) -> bool {
     left == right
         || (is_numeric_type(left) && is_numeric_type(right))
         || (is_character_like_type(left) && is_character_like_type(right))
+        || (is_string_type(left) && is_string_type(right))
+        || (matches!(left, SemanticType::Nil) && matches!(right, SemanticType::Pointer { .. } | SemanticType::Procedure(_)))
+        || (matches!(right, SemanticType::Nil) && matches!(left, SemanticType::Pointer { .. } | SemanticType::Procedure(_)))
 }
 
 fn are_ordered_relation_compatible(left: &SemanticType, right: &SemanticType) -> bool {
     (is_numeric_type(left) && is_numeric_type(right))
         || (is_character_like_type(left) && is_character_like_type(right))
+        || (is_string_type(left) && is_string_type(right))
 }
 
 fn is_boolean_type(ty: &SemanticType) -> bool {
@@ -3091,6 +4142,79 @@ fn is_numeric_type(ty: &SemanticType) -> bool {
             SemanticType::Builtin(BuiltinType::ShortReal)
                 | SemanticType::Builtin(BuiltinType::Real)
         )
+}
+
+fn is_string_type(ty: &SemanticType) -> bool {
+    matches!(
+        ty,
+        SemanticType::Builtin(BuiltinType::ShortString) | SemanticType::Builtin(BuiltinType::String)
+    )
+}
+
+fn integer_literal_type(value: &str) -> SemanticType {
+    if value.ends_with('L') {
+        SemanticType::Builtin(BuiltinType::LongInt)
+    } else {
+        SemanticType::Builtin(BuiltinType::Integer)
+    }
+}
+
+fn character_literal_type(value: &str) -> SemanticType {
+    let digits = value.strip_suffix('X').unwrap_or(value);
+    let ordinal = i64::from_str_radix(digits, 16).ok().unwrap_or(0);
+    if ordinal <= 0xFF {
+        SemanticType::Builtin(BuiltinType::ShortChar)
+    } else {
+        SemanticType::Builtin(BuiltinType::Char)
+    }
+}
+
+fn string_literal_type(value: &str) -> SemanticType {
+    let contains_non_latin1 = value
+        .trim_matches(['\'', '"'])
+        .chars()
+        .any(|ch| (ch as u32) > 0xFF);
+    if contains_non_latin1 {
+        SemanticType::Builtin(BuiltinType::String)
+    } else {
+        SemanticType::Builtin(BuiltinType::ShortString)
+    }
+}
+
+fn promote_integer_pair(left: &SemanticType, right: &SemanticType) -> SemanticType {
+    if numeric_rank(left) >= numeric_rank(right) {
+        left.clone()
+    } else {
+        right.clone()
+    }
+}
+
+fn promote_numeric_pair(left: &SemanticType, right: &SemanticType) -> SemanticType {
+    if numeric_rank(left) >= numeric_rank(right) {
+        left.clone()
+    } else {
+        right.clone()
+    }
+}
+
+fn numeric_rank(ty: &SemanticType) -> usize {
+    match ty {
+        SemanticType::Builtin(BuiltinType::Byte) => 0,
+        SemanticType::Builtin(BuiltinType::ShortInt) => 1,
+        SemanticType::Builtin(BuiltinType::Integer) => 2,
+        SemanticType::Builtin(BuiltinType::LongInt) => 3,
+        SemanticType::Builtin(BuiltinType::ShortReal) => 4,
+        SemanticType::Builtin(BuiltinType::Real) => 5,
+        _ => usize::MAX,
+    }
+}
+
+fn character_rank(ty: &SemanticType) -> usize {
+    match ty {
+        SemanticType::Builtin(BuiltinType::ShortChar) => 0,
+        SemanticType::Builtin(BuiltinType::Char) => 1,
+        _ => usize::MAX,
+    }
 }
 
 fn is_case_selector_type(ty: &SemanticType) -> bool {
@@ -3457,6 +4581,8 @@ fn filter_symbols(symbols: &[SemanticSymbol], kind: SymbolKind, exported: bool) 
 fn render_semantic_type(ty: &SemanticType) -> String {
     match ty {
         SemanticType::Builtin(builtin) => builtin.name().to_string(),
+        SemanticType::BuiltinProc(builtin) => format!("builtin:{}", builtin.name()),
+        SemanticType::Nil => "NIL".to_string(),
         SemanticType::Named { module, name, kind } => match kind {
             NamedTypeKind::UserDefined => format!("type:{}", render_optional_module_name(module, name)),
             NamedTypeKind::Imported => format!("imported:{}", render_optional_module_name(module, name)),
@@ -3466,7 +4592,7 @@ fn render_semantic_type(ty: &SemanticType) -> String {
             lengths,
             element_type,
         } => format!("ARRAY {} OF {}", lengths.join(", "), render_semantic_type(element_type)),
-        SemanticType::Record { flavor, base, fields } => {
+        SemanticType::Record { flavor, base, fields, methods } => {
             let flavor = flavor
                 .map(|item| match item {
                     RecordFlavor::Abstract => "ABSTRACT ",
@@ -3478,16 +4604,21 @@ fn render_semantic_type(ty: &SemanticType) -> String {
                 .as_ref()
                 .map(|item| format!("({}) ", render_semantic_type(item)))
                 .unwrap_or_default();
-            let fields = if fields.is_empty() {
+            let fields = if fields.is_empty() && methods.is_empty() {
                 String::new()
             } else {
+                let mut items = fields
+                    .iter()
+                    .map(|field| format!("{}: {}", field.names.join(", "), render_semantic_type(&field.ty)))
+                    .collect::<Vec<_>>();
+                items.extend(
+                    methods
+                        .iter()
+                        .map(|method| format!("{}: {}", method.name, render_procedure_type(&method.signature))),
+                );
                 format!(
                     " {}",
-                    fields
-                        .iter()
-                        .map(|field| format!("{}: {}", field.names.join(", "), render_semantic_type(&field.ty)))
-                        .collect::<Vec<_>>()
-                        .join("; ")
+                    items.join("; ")
                 )
             };
             format!("{}RECORD {}{} END", flavor, base, fields)
@@ -3546,6 +4677,424 @@ fn render_procedure_type(signature: &ProcedureType) -> String {
         }
     };
     format!("PROCEDURE {}({}){}{}", receiver, parameters, result, attributes)
+}
+
+fn procedure_types_match(expected: &ProcedureType, actual: &ProcedureType) -> bool {
+    expected.result_type == actual.result_type
+        && expected.parameters.len() == actual.parameters.len()
+        && expected
+            .parameters
+            .iter()
+            .zip(&actual.parameters)
+            .all(|(left, right)| left.mode == right.mode && left.ty == right.ty)
+}
+
+fn has_out_parameter(parameters: &FormalParameters) -> bool {
+    parameters
+        .sections
+        .iter()
+        .any(|section| section.mode == Some(ParamMode::Out))
+}
+
+fn method_flavor_name(flavor: MethodFlavor) -> &'static str {
+    match flavor {
+        MethodFlavor::Abstract => "abstract",
+        MethodFlavor::Empty => "empty",
+        MethodFlavor::Extensible => "extensible",
+    }
+}
+
+fn export_mark_name(export: ExportMark) -> &'static str {
+    match export {
+        ExportMark::Exported => "*",
+        ExportMark::ReadOnly => "-",
+    }
+}
+
+fn module_procedure_identity(heading: &newcp_parser::ProcedureHeading) -> String {
+    match &heading.receiver {
+        Some(receiver) => format!("method:{}:{}", receiver.ty, heading.name.name),
+        None => format!("procedure:{}", heading.name.name),
+    }
+}
+
+impl<'a> Analyzer<'a> {
+    fn validate_builtin_call(
+        &self,
+        proc: BuiltinProc,
+        args: &[Expr],
+        procedure_name: Option<&str>,
+        local_symbols: &[SemanticSymbol],
+        scope_type_names: &HashSet<String>,
+        diagnostics: &mut Vec<SemanticDiagnostic>,
+    ) {
+        match proc {
+            BuiltinProc::New => {
+                if args.is_empty() {
+                    diagnostics.push(make_diagnostic(
+                        procedure_name,
+                        0,
+                        0,
+                        "NEW requires at least one argument".to_string(),
+                    ));
+                    return;
+                }
+                self.validate_builtin_var_designator(
+                    "NEW",
+                    1,
+                    &args[0],
+                    procedure_name,
+                    local_symbols,
+                    diagnostics,
+                );
+                if let Some(arg_type) = self.infer_expr_type(&args[0], local_symbols, scope_type_names) {
+                    if !matches!(arg_type, SemanticType::Pointer { .. }) {
+                        let (line, column) = expr_position(&args[0]);
+                        diagnostics.push(make_diagnostic(
+                            procedure_name,
+                            line,
+                            column,
+                            format!("NEW first argument must be a pointer variable, found {}", render_semantic_type(&arg_type)),
+                        ));
+                    }
+                }
+            }
+            BuiltinProc::Abs => self.require_builtin_numeric_args(
+                proc,
+                args,
+                1,
+                procedure_name,
+                local_symbols,
+                scope_type_names,
+                diagnostics,
+            ),
+            BuiltinProc::Ash => {
+                self.require_builtin_exact_arity(proc, args, 2, procedure_name, diagnostics);
+                if args.len() == 2 {
+                    self.require_builtin_integer_arg(
+                        proc,
+                        1,
+                        &args[0],
+                        procedure_name,
+                        local_symbols,
+                        scope_type_names,
+                        diagnostics,
+                    );
+                    self.require_builtin_integer_arg(
+                        proc,
+                        2,
+                        &args[1],
+                        procedure_name,
+                        local_symbols,
+                        scope_type_names,
+                        diagnostics,
+                    );
+                }
+            }
+            BuiltinProc::Bits | BuiltinProc::Chr | BuiltinProc::Odd => {
+                self.require_builtin_exact_arity(proc, args, 1, procedure_name, diagnostics);
+                if args.len() == 1 {
+                    self.require_builtin_integer_arg(
+                        proc,
+                        1,
+                        &args[0],
+                        procedure_name,
+                        local_symbols,
+                        scope_type_names,
+                        diagnostics,
+                    );
+                }
+            }
+            BuiltinProc::Cap => {
+                self.require_builtin_exact_arity(proc, args, 1, procedure_name, diagnostics);
+                if args.len() == 1
+                    && let Some(arg_type) =
+                        self.infer_expr_type(&args[0], local_symbols, scope_type_names)
+                    && !is_character_like_type(&arg_type)
+                {
+                    let (line, column) = expr_position(&args[0]);
+                    diagnostics.push(make_diagnostic(
+                        procedure_name,
+                        line,
+                        column,
+                        format!(
+                            "CAP argument 1 must be a character type, found {}",
+                            render_semantic_type(&arg_type)
+                        ),
+                    ));
+                }
+            }
+            BuiltinProc::Inc | BuiltinProc::Dec => {
+                if !(1..=2).contains(&args.len()) {
+                    diagnostics.push(make_diagnostic(
+                        procedure_name,
+                        0,
+                        0,
+                        format!("{} expects 1 or 2 arguments", proc.name()),
+                    ));
+                    return;
+                }
+                self.validate_builtin_var_designator(
+                    proc.name(),
+                    1,
+                    &args[0],
+                    procedure_name,
+                    local_symbols,
+                    diagnostics,
+                );
+            }
+            BuiltinProc::Incl | BuiltinProc::Excl => {
+                if args.len() != 2 {
+                    diagnostics.push(make_diagnostic(
+                        procedure_name,
+                        0,
+                        0,
+                        format!("{} expects 2 arguments", proc.name()),
+                    ));
+                    return;
+                }
+                self.validate_builtin_var_designator(
+                    proc.name(),
+                    1,
+                    &args[0],
+                    procedure_name,
+                    local_symbols,
+                    diagnostics,
+                );
+            }
+            BuiltinProc::Entier => self.require_builtin_real_args(
+                proc,
+                args,
+                1,
+                procedure_name,
+                local_symbols,
+                scope_type_names,
+                diagnostics,
+            ),
+            BuiltinProc::Len => {
+                if !(1..=2).contains(&args.len()) {
+                    diagnostics.push(make_diagnostic(
+                        procedure_name,
+                        0,
+                        0,
+                        "LEN expects 1 or 2 arguments".to_string(),
+                    ));
+                }
+            }
+            BuiltinProc::Long | BuiltinProc::Short => {
+                self.require_builtin_exact_arity(proc, args, 1, procedure_name, diagnostics);
+            }
+            BuiltinProc::Max | BuiltinProc::Min => {
+                if !(1..=2).contains(&args.len()) {
+                    diagnostics.push(make_diagnostic(
+                        procedure_name,
+                        0,
+                        0,
+                        format!("{} expects 1 or 2 arguments", proc.name()),
+                    ));
+                }
+            }
+            BuiltinProc::Ord => {
+                self.require_builtin_exact_arity(proc, args, 1, procedure_name, diagnostics);
+                if args.len() == 1
+                    && let Some(arg_type) =
+                        self.infer_expr_type(&args[0], local_symbols, scope_type_names)
+                    && !matches!(
+                        arg_type,
+                        SemanticType::Builtin(BuiltinType::Char)
+                            | SemanticType::Builtin(BuiltinType::ShortChar)
+                            | SemanticType::Builtin(BuiltinType::Set)
+                    )
+                {
+                    let (line, column) = expr_position(&args[0]);
+                    diagnostics.push(make_diagnostic(
+                        procedure_name,
+                        line,
+                        column,
+                        format!(
+                            "ORD argument 1 must be CHAR, SHORTCHAR, or SET, found {}",
+                            render_semantic_type(&arg_type)
+                        ),
+                    ));
+                }
+            }
+            BuiltinProc::Size => {
+                self.require_builtin_exact_arity(proc, args, 1, procedure_name, diagnostics)
+            }
+            BuiltinProc::Assert | BuiltinProc::Halt => {}
+        }
+    }
+
+    fn require_builtin_exact_arity(
+        &self,
+        proc: BuiltinProc,
+        args: &[Expr],
+        expected: usize,
+        procedure_name: Option<&str>,
+        diagnostics: &mut Vec<SemanticDiagnostic>,
+    ) {
+        if args.len() != expected {
+            diagnostics.push(make_diagnostic(
+                procedure_name,
+                0,
+                0,
+                format!(
+                    "{} expects {} argument{}",
+                    proc.name(),
+                    expected,
+                    if expected == 1 { "" } else { "s" }
+                ),
+            ));
+        }
+    }
+
+    fn require_builtin_integer_arg(
+        &self,
+        proc: BuiltinProc,
+        index: usize,
+        expr: &Expr,
+        procedure_name: Option<&str>,
+        local_symbols: &[SemanticSymbol],
+        scope_type_names: &HashSet<String>,
+        diagnostics: &mut Vec<SemanticDiagnostic>,
+    ) {
+        if let Some(arg_type) = self.infer_expr_type(expr, local_symbols, scope_type_names)
+            && !is_integer_type(&arg_type)
+        {
+            let (line, column) = expr_position(expr);
+            diagnostics.push(make_diagnostic(
+                procedure_name,
+                line,
+                column,
+                format!(
+                    "{} argument {} must be an integer type, found {}",
+                    proc.name(),
+                    index,
+                    render_semantic_type(&arg_type)
+                ),
+            ));
+        }
+    }
+
+    fn require_builtin_numeric_args(
+        &self,
+        proc: BuiltinProc,
+        args: &[Expr],
+        expected: usize,
+        procedure_name: Option<&str>,
+        local_symbols: &[SemanticSymbol],
+        scope_type_names: &HashSet<String>,
+        diagnostics: &mut Vec<SemanticDiagnostic>,
+    ) {
+        self.require_builtin_exact_arity(proc, args, expected, procedure_name, diagnostics);
+        for (index, arg) in args.iter().enumerate() {
+            if let Some(arg_type) = self.infer_expr_type(arg, local_symbols, scope_type_names)
+                && !is_numeric_type(&arg_type)
+            {
+                let (line, column) = expr_position(arg);
+                diagnostics.push(make_diagnostic(
+                    procedure_name,
+                    line,
+                    column,
+                    format!(
+                        "{} argument {} must be a numeric type, found {}",
+                        proc.name(),
+                        index + 1,
+                        render_semantic_type(&arg_type)
+                    ),
+                ));
+            }
+        }
+    }
+
+    fn require_builtin_real_args(
+        &self,
+        proc: BuiltinProc,
+        args: &[Expr],
+        expected: usize,
+        procedure_name: Option<&str>,
+        local_symbols: &[SemanticSymbol],
+        scope_type_names: &HashSet<String>,
+        diagnostics: &mut Vec<SemanticDiagnostic>,
+    ) {
+        self.require_builtin_exact_arity(proc, args, expected, procedure_name, diagnostics);
+        for (index, arg) in args.iter().enumerate() {
+            if let Some(arg_type) = self.infer_expr_type(arg, local_symbols, scope_type_names)
+                && !matches!(
+                    arg_type,
+                    SemanticType::Builtin(BuiltinType::ShortReal)
+                        | SemanticType::Builtin(BuiltinType::Real)
+                )
+            {
+                let (line, column) = expr_position(arg);
+                diagnostics.push(make_diagnostic(
+                    procedure_name,
+                    line,
+                    column,
+                    format!(
+                        "{} argument {} must be a real type, found {}",
+                        proc.name(),
+                        index + 1,
+                        render_semantic_type(&arg_type)
+                    ),
+                ));
+            }
+        }
+    }
+
+    fn validate_builtin_var_designator(
+        &self,
+        builtin_name: &str,
+        index: usize,
+        actual_expr: &Expr,
+        procedure_name: Option<&str>,
+        local_symbols: &[SemanticSymbol],
+        diagnostics: &mut Vec<SemanticDiagnostic>,
+    ) {
+        let Expr::Designator(designator) = actual_expr else {
+            let (line, column) = expr_position(actual_expr);
+            diagnostics.push(make_diagnostic(
+                procedure_name,
+                line,
+                column,
+                format!("argument {} for {} must be an assignable designator", index, builtin_name),
+            ));
+            return;
+        };
+
+        if designator
+            .selectors
+            .iter()
+            .any(|selector| matches!(selector, Selector::Call(_) | Selector::TypeGuard(_) | Selector::AmbiguousParen(_)))
+        {
+            let (line, column) = designator_position(designator);
+            diagnostics.push(make_diagnostic(
+                procedure_name,
+                line,
+                column,
+                format!("argument {} for {} is not assignable", index, builtin_name),
+            ));
+            return;
+        }
+
+        if let Some(symbol) = self.lookup_symbol(&designator.base.name, local_symbols) {
+            if !matches!(symbol.kind, SymbolKind::Variable | SymbolKind::Parameter | SymbolKind::Receiver) {
+                let (line, column) = designator_position(designator);
+                diagnostics.push(make_diagnostic(
+                    procedure_name,
+                    line,
+                    column,
+                    format!(
+                        "argument {} for {} must name a variable, parameter, or receiver, found {} {}",
+                        index,
+                        builtin_name,
+                        render_symbol_kind(symbol.kind),
+                        symbol.name
+                    ),
+                ));
+            }
+        }
+    }
 }
 
 fn render_optional_module_name(module: &Option<String>, name: &str) -> String {
@@ -4447,6 +5996,433 @@ mod tests {
             sema.diagnostics
                 .iter()
                 .any(|item| item.message.contains("forward declaration for Mismatch does not match implementation")),
+            "{}",
+            messages
+        );
+    }
+
+    #[test]
+    fn sema_accepts_builtin_constants_and_reports_module_body_errors() {
+        let module = parse_module_ast(
+            "MODULE Demo;\nBEGIN\nTRUE := FALSE;\nNEW(x)\nEND Demo.",
+        )
+        .expect("module should parse");
+
+        let sema = analyze_module_ast(&module);
+        let messages = sema
+            .diagnostics
+            .iter()
+            .map(|item| item.message.as_str())
+            .collect::<Vec<_>>()
+            .join(" | ");
+        assert!(
+            sema.diagnostics
+                .iter()
+                .any(|item| item.message.contains("assignment target must be a variable, parameter, or receiver, found constant TRUE")),
+            "{}",
+            messages
+        );
+        assert!(
+            sema.diagnostics
+                .iter()
+                .any(|item| item.message.contains("identifier x is not declared")),
+            "{}",
+            messages
+        );
+    }
+
+    #[test]
+    fn sema_types_strings_sets_and_longint_literals_more_precisely() {
+        let module = parse_module_ast(
+            "MODULE Demo;\nCONST Big = 0FFFF0000L;\nPROCEDURE Run;\nVAR s: ARRAY 8 OF CHAR; setA, setB: SET;\nBEGIN\ns := 'ok';\nsetA := setA + setB;\nEND Run;\nEND Demo.",
+        )
+        .expect("module should parse");
+
+        let sema = analyze_module_ast(&module);
+        let big = sema
+            .symbols
+            .iter()
+            .find(|symbol| symbol.name == "Big")
+            .expect("Big constant exists");
+        assert_eq!(big.const_value, Some(4294901760));
+        assert_eq!(
+            big.declared_type,
+            None,
+            "constant declarations do not currently store declared_type"
+        );
+
+        let set_errors: Vec<_> = sema
+            .diagnostics
+            .iter()
+            .filter(|item| item.message.contains("SET and SET"))
+            .collect();
+        assert!(set_errors.is_empty(), "unexpected set operator errors");
+    }
+
+    #[test]
+    fn sema_accepts_nil_and_pointer_extension_assignments() {
+        let module = parse_module_ast(
+            "MODULE Demo;\nTYPE Base = RECORD END; Child = RECORD (Base) END; Ptr = POINTER TO Base; ChildPtr = POINTER TO Child; Proc = PROCEDURE();\nPROCEDURE Run;\nVAR p: Ptr; cp: ChildPtr; fn: Proc;\nBEGIN\np := cp;\np := NIL;\nfn := NIL\nEND Run;\nEND Demo.",
+        )
+        .expect("module should parse");
+
+        let sema = analyze_module_ast(&module);
+        let mismatch_errors: Vec<_> = sema
+            .diagnostics
+            .iter()
+            .filter(|item| item.message.contains("assignment type mismatch"))
+            .collect();
+        assert!(mismatch_errors.is_empty(), "unexpected assignment mismatch errors");
+    }
+
+    #[test]
+    fn sema_resolves_inherited_fields_and_methods_on_records() {
+        let module = parse_module_ast(
+            "MODULE Demo;\nTYPE Base = RECORD x: INTEGER END; Child = RECORD (Base) END;\nPROCEDURE (self: Base) Ping(y: INTEGER): BOOLEAN, NEW;\nBEGIN\nRETURN TRUE\nEND Ping;\nPROCEDURE Run;\nVAR child: Child; ok: BOOLEAN;\nBEGIN\nchild.x := 1;\nok := child.Ping(1)\nEND Run;\nEND Demo.",
+        )
+        .expect("module should parse");
+
+        let sema = analyze_module_ast(&module);
+        let messages = sema
+            .diagnostics
+            .iter()
+            .map(|item| item.message.as_str())
+            .collect::<Vec<_>>()
+            .join(" | ");
+        assert!(
+            !sema.diagnostics.iter().any(|item| item.message.contains("field x does not exist")),
+            "{}",
+            messages
+        );
+        assert!(
+            !sema.diagnostics.iter().any(|item| item.message.contains("field Ping does not exist")),
+            "{}",
+            messages
+        );
+        assert!(
+            !sema.diagnostics.iter().any(|item| item.message.contains("call selector requires a procedure")),
+            "{}",
+            messages
+        );
+    }
+
+    #[test]
+    fn sema_types_common_builtin_procedure_results() {
+        let module = parse_module_ast(
+            "MODULE Demo;\nPROCEDURE Run;\nVAR i: INTEGER; l: LONGINT; r: REAL; c: CHAR; b: BOOLEAN; s: ARRAY 8 OF CHAR;\nBEGIN\nr := ABS(i);\nl := LONG(i);\ni := SHORT(l);\ni := LEN(s);\ni := ORD(c);\nc := CHR(i);\nb := ODD(i)\nEND Run;\nEND Demo.",
+        )
+        .expect("module should parse");
+
+        let sema = analyze_module_ast(&module);
+        let builtin_errors: Vec<_> = sema
+            .diagnostics
+            .iter()
+            .filter(|item| item.message.contains("ABS argument")
+                || item.message.contains("LONG argument")
+                || item.message.contains("SHORT argument")
+                || item.message.contains("LEN")
+                || item.message.contains("ORD argument")
+                || item.message.contains("CHR argument")
+                || item.message.contains("ODD argument")
+                || item.message.contains("assignment type mismatch"))
+            .collect();
+        assert!(builtin_errors.is_empty(), "unexpected builtin typing errors");
+    }
+
+    #[test]
+    fn sema_rejects_invalid_builtin_procedure_usage() {
+        let module = parse_module_ast(
+            "MODULE Demo;\nPROCEDURE Run;\nVAR b: BOOLEAN; c: CHAR;\nBEGIN\nCHR(b);\nORD(b);\nABS(c);\nBITS(c)\nEND Run;\nEND Demo.",
+        )
+        .expect("module should parse");
+
+        let sema = analyze_module_ast(&module);
+        let messages = sema
+            .diagnostics
+            .iter()
+            .map(|item| item.message.as_str())
+            .collect::<Vec<_>>()
+            .join(" | ");
+        assert!(
+            sema.diagnostics.iter().any(|item| item.message.contains("CHR argument 1 must be an integer type")),
+            "{}",
+            messages
+        );
+        assert!(
+            sema.diagnostics.iter().any(|item| item.message.contains("ORD argument 1 must be CHAR, SHORTCHAR, or SET")),
+            "{}",
+            messages
+        );
+        assert!(
+            sema.diagnostics.iter().any(|item| item.message.contains("ABS argument 1 must be a numeric type")),
+            "{}",
+            messages
+        );
+        assert!(
+            sema.diagnostics.iter().any(|item| item.message.contains("BITS argument 1 must be an integer type")),
+            "{}",
+            messages
+        );
+    }
+
+    #[test]
+    fn sema_rejects_invalid_method_contracts() {
+        let module = parse_module_ast(
+            "MODULE Demo;\nTYPE Base = EXTENSIBLE RECORD END; Child = RECORD (Base) END; Plain = RECORD END; AbstractBase = ABSTRACT RECORD END; Concrete = RECORD (AbstractBase) END;\nPROCEDURE (b: Base) Grow(), NEW;\nBEGIN\nEND Grow;\nPROCEDURE (c: Child) Grow(), NEW;\nBEGIN\nEND Grow;\nPROCEDURE (p: Plain) Fresh();\nBEGIN\nEND Fresh;\nPROCEDURE (p: Plain) Extend(), NEW, EXTENSIBLE;\nBEGIN\nEND Extend;\nPROCEDURE (p: Plain) Stub(), NEW, EMPTY;\nPROCEDURE (a: AbstractBase) Missing(), NEW, ABSTRACT;\nPROCEDURE Nested;\nPROCEDURE (x: Base) Local(), NEW;\nBEGIN\nEND Local;\nBEGIN\nEND Nested;\nEND Demo.",
+        )
+        .expect("module should parse");
+
+        let sema = analyze_module_ast(&module);
+        let messages = sema
+            .diagnostics
+            .iter()
+            .map(|item| item.message.as_str())
+            .collect::<Vec<_>>()
+            .join(" | ");
+        assert!(
+            sema.diagnostics.iter().any(|item| item.message.contains("redefining method Grow must not use NEW")),
+            "{}",
+            messages
+        );
+        assert!(
+            sema.diagnostics.iter().any(|item| item.message.contains("newly introduced method Fresh must use NEW")),
+            "{}",
+            messages
+        );
+        assert!(
+            sema.diagnostics.iter().any(|item| item.message.contains("record Plain must be EXTENSIBLE or ABSTRACT to declare extensible method Extend")),
+            "{}",
+            messages
+        );
+        assert!(
+            sema.diagnostics.iter().any(|item| item.message.contains("record Plain must be EXTENSIBLE or ABSTRACT to declare new empty method Stub")),
+            "{}",
+            messages
+        );
+        assert!(
+            sema.diagnostics.iter().any(|item| item.message.contains("concrete record Concrete must implement abstract method Missing")),
+            "{}",
+            messages
+        );
+        assert!(
+            sema.diagnostics.iter().any(|item| item.message.contains("method Local must be declared at module scope")),
+            "{}",
+            messages
+        );
+    }
+
+    #[test]
+    fn sema_rejects_final_method_override_and_signature_mismatch() {
+        let module = parse_module_ast(
+            "MODULE Demo;\nTYPE Base = EXTENSIBLE RECORD END; Child = RECORD (Base) END; ExtBase = EXTENSIBLE RECORD END; ExtChild = RECORD (ExtBase) END;\nPROCEDURE (b: Base) Seal(x: INTEGER), NEW;\nBEGIN\nEND Seal;\nPROCEDURE (c: Child) Seal(x: INTEGER);\nBEGIN\nEND Seal;\nPROCEDURE (b: ExtBase) Open(x: INTEGER), NEW, EXTENSIBLE;\nBEGIN\nEND Open;\nPROCEDURE (c: ExtChild) Open(x: BOOLEAN);\nBEGIN\nEND Open;\nEND Demo.",
+        )
+        .expect("module should parse");
+
+        let sema = analyze_module_ast(&module);
+        let messages = sema
+            .diagnostics
+            .iter()
+            .map(|item| item.message.as_str())
+            .collect::<Vec<_>>()
+            .join(" | ");
+        assert!(
+            sema.diagnostics.iter().any(|item| item.message.contains("method Seal cannot redefine final method declared in Base")),
+            "{}",
+            messages
+        );
+        assert!(
+            sema.diagnostics.iter().any(|item| item.message.contains("method Open does not match overridden signature")),
+            "{}",
+            messages
+        );
+    }
+
+    #[test]
+    fn sema_rejects_invalid_abstract_and_empty_method_shapes() {
+        let mut module = parse_module_ast(
+            "MODULE Demo;\nTYPE ExportedBase* = ABSTRACT RECORD END; Base = EXTENSIBLE RECORD END; Child = RECORD (Base) END; AbstractChild = ABSTRACT RECORD (Base) END;\nPROCEDURE (e: ExportedBase) Hidden(), NEW, ABSTRACT;\nPROCEDURE (b: Base) MissingBody(), NEW;\nBEGIN\nEND MissingBody;\nPROCEDURE (b: Base) Concrete(), NEW, EXTENSIBLE;\nBEGIN\nEND Concrete;\nPROCEDURE (b: Base) EmptyResult(): INTEGER, NEW, EMPTY;\nPROCEDURE (b: Base) EmptyOut(OUT x: INTEGER), NEW, EMPTY;\nPROCEDURE (b: Base) EmptyBody(), NEW, EMPTY;\nPROCEDURE (b: Base) AbstractBody(), NEW, ABSTRACT;\nPROCEDURE (b: Base) Open(), NEW, EXTENSIBLE;\nBEGIN\nEND Open;\nPROCEDURE (c: Child) Open(), EMPTY;\nPROCEDURE (a: AbstractChild) Concrete(), ABSTRACT;\nEND Demo.",
+        )
+        .expect("module should parse");
+
+        for declaration in &mut module.declarations {
+            let Declaration::Procedure(procedure) = declaration else {
+                continue;
+            };
+            match procedure.heading.name.name.as_str() {
+                "MissingBody" => {
+                    procedure.body = None;
+                }
+                "EmptyBody" | "AbstractBody" => {
+                    procedure.body = Some(ProcedureBody {
+                        span: procedure.span,
+                        declarations: Vec::new(),
+                        body: Some(Vec::new()),
+                    });
+                }
+                _ => {}
+            }
+        }
+
+        let sema = analyze_module_ast(&module);
+        let messages = sema
+            .diagnostics
+            .iter()
+            .map(|item| item.message.as_str())
+            .collect::<Vec<_>>()
+            .join(" | ");
+        assert!(
+            sema.diagnostics.iter().any(|item| item.message.contains("abstract method Hidden of exported record ExportedBase must be exported")),
+            "{}",
+            messages
+        );
+        assert!(
+            sema.diagnostics.iter().any(|item| item.message.contains("concrete method MissingBody must have a procedure body")),
+            "{}",
+            messages
+        );
+        assert!(
+            sema.diagnostics.iter().any(|item| item.message.contains("empty method EmptyResult must not return a result")),
+            "{}",
+            messages
+        );
+        assert!(
+            sema.diagnostics.iter().any(|item| item.message.contains("empty method EmptyOut must not have OUT parameters")),
+            "{}",
+            messages
+        );
+        assert!(
+            sema.diagnostics.iter().any(|item| item.message.contains("empty method EmptyBody must not have a procedure body")),
+            "{}",
+            messages
+        );
+        assert!(
+            sema.diagnostics.iter().any(|item| item.message.contains("abstract method AbstractBody must not have a procedure body")),
+            "{}",
+            messages
+        );
+        assert!(
+            sema.diagnostics.iter().any(|item| item.message.contains("empty method Open may only redefine an empty or abstract method")),
+            "{}",
+            messages
+        );
+        assert!(
+            sema.diagnostics.iter().any(|item| item.message.contains("abstract method Concrete may only redefine an abstract method")),
+            "{}",
+            messages
+        );
+    }
+
+    #[test]
+    fn sema_rejects_method_override_export_mismatches() {
+        let module = parse_module_ast(
+            "MODULE Demo;\nTYPE Base* = EXTENSIBLE RECORD END; Child* = RECORD (Base) END;\nPROCEDURE (b: Base) Visible*(), NEW, EXTENSIBLE;\nBEGIN\nEND Visible;\nPROCEDURE (c: Child) Visible();\nBEGIN\nEND Visible;\nPROCEDURE (b: Base) Hidden(), NEW, EXTENSIBLE;\nBEGIN\nEND Hidden;\nPROCEDURE (c: Child) Hidden*();\nBEGIN\nEND Hidden;\nPROCEDURE (b: Base) ReadOnly-(), NEW, EXTENSIBLE;\nBEGIN\nEND ReadOnly;\nPROCEDURE (c: Child) ReadOnly*();\nBEGIN\nEND ReadOnly;\nEND Demo.",
+        )
+        .expect("module should parse");
+
+        let sema = analyze_module_ast(&module);
+        let messages = sema
+            .diagnostics
+            .iter()
+            .map(|item| item.message.as_str())
+            .collect::<Vec<_>>()
+            .join(" | ");
+        assert!(
+            sema.diagnostics.iter().any(|item| item.message.contains("overriding method Visible of exported record Child must be exported")),
+            "{}",
+            messages
+        );
+        assert!(
+            sema.diagnostics.iter().any(|item| item.message.contains("overriding method Hidden must not be exported because the base method is not exported")),
+            "{}",
+            messages
+        );
+        assert!(
+            sema.diagnostics.iter().any(|item| item.message.contains("overriding method ReadOnly must use the same export mark as the base method (-)")),
+            "{}",
+            messages
+        );
+    }
+
+    #[test]
+    fn sema_accepts_covariant_pointer_method_results() {
+        let module = parse_module_ast(
+            "MODULE Demo;\nTYPE Base = EXTENSIBLE RECORD END; Child = RECORD (Base) END; BasePtr = POINTER TO Base; ChildPtr = POINTER TO Child;\nPROCEDURE (b: Base) Make(): BasePtr, NEW, EXTENSIBLE;\nBEGIN\nRETURN NIL\nEND Make;\nPROCEDURE (c: Child) Make(): ChildPtr;\nBEGIN\nRETURN NIL\nEND Make;\nEND Demo.",
+        )
+        .expect("module should parse");
+
+        let sema = analyze_module_ast(&module);
+        let messages = sema
+            .diagnostics
+            .iter()
+            .map(|item| item.message.as_str())
+            .collect::<Vec<_>>()
+            .join(" | ");
+        assert!(
+            !sema.diagnostics.iter().any(|item| item.message.contains("does not match overridden signature")),
+            "{}",
+            messages
+        );
+    }
+
+    #[test]
+    fn sema_allows_distinct_methods_with_same_name_on_different_receivers() {
+        let module = parse_module_ast(
+            "MODULE Demo;\nTYPE Base = EXTENSIBLE RECORD END; Child = RECORD (Base) END; Sibling = RECORD (Base) END;\nPROCEDURE (c: Child) Ping(), NEW;\nBEGIN\nEND Ping;\nPROCEDURE (s: Sibling) Ping(), NEW;\nBEGIN\nEND Ping;\nEND Demo.",
+        )
+        .expect("module should parse");
+
+        let sema = analyze_module_ast(&module);
+        let messages = sema
+            .diagnostics
+            .iter()
+            .map(|item| item.message.as_str())
+            .collect::<Vec<_>>()
+            .join(" | ");
+        assert!(
+            !sema
+                .diagnostics
+                .iter()
+                .any(|item| item.message.contains("duplicate module-scope declaration: Ping")),
+            "{}",
+            messages
+        );
+    }
+
+    #[test]
+    fn sema_accepts_valid_forward_declarations_without_duplicates() {
+        let module = parse_module_ast(
+            "MODULE Demo;\nTYPE Base = EXTENSIBLE RECORD END;\nPROCEDURE ^ Forwarded(x: INTEGER);\nPROCEDURE ^ (b: Base) Make(), NEW, EXTENSIBLE;\nPROCEDURE Forwarded(x: INTEGER);\nBEGIN\nEND Forwarded;\nPROCEDURE (b: Base) Make(), NEW, EXTENSIBLE;\nBEGIN\nEND Make;\nEND Demo.",
+        )
+        .expect("module should parse");
+
+        let sema = analyze_module_ast(&module);
+        let messages = sema
+            .diagnostics
+            .iter()
+            .map(|item| item.message.as_str())
+            .collect::<Vec<_>>()
+            .join(" | ");
+        assert!(
+            !sema
+                .diagnostics
+                .iter()
+                .any(|item| item.message.contains("duplicate module-scope declaration: Forwarded")),
+            "{}",
+            messages
+        );
+        assert!(
+            !sema
+                .diagnostics
+                .iter()
+                .any(|item| item.message.contains("duplicate module-scope declaration: Make")),
+            "{}",
+            messages
+        );
+        assert!(
+            !sema
+                .diagnostics
+                .iter()
+                .any(|item| item.message.contains("forward declaration for")),
             "{}",
             messages
         );
