@@ -2,6 +2,7 @@ use std::env;
 use std::fs;
 use std::path::Path;
 use std::path::PathBuf;
+use std::io::Write;
 
 use newcp_parser::{parse_source_module, SourceExportKind};
 use newcp_runtime::{BootstrapReport, CompilerService, ExportEntry, ExportKind, ResidentCompiler};
@@ -11,6 +12,8 @@ const COMMANDS: &[&str] = &[
     "invoke-command",
     "describe-interface",
     "load-module",
+    "check-mod",
+    "check-dir",
     "dump-tokens",
     "dump-ast",
     "dump-sema",
@@ -81,6 +84,33 @@ fn main() {
         return;
     }
 
+    // check-mod and check-dir resolve via the Mod/ folder convention
+    if command == "check-mod" {
+        let Some(module_ref) = args.next() else {
+            eprintln!("missing module name or path\n");
+            print_usage();
+            std::process::exit(2);
+        };
+        let path = resolve_module_source(&module_ref);
+        let report = newcp_sema::check_module(&path);
+        println!("{report}");
+        let ok = report.lines().last().map(|l| l == "ok").unwrap_or(false);
+        if !ok {
+            std::process::exit(1);
+        }
+        return;
+    }
+
+    if command == "check-dir" {
+        let Some(dir_ref) = args.next() else {
+            eprintln!("missing directory path\n");
+            print_usage();
+            std::process::exit(2);
+        };
+        let exit_code = run_check_dir(Path::new(&dir_ref));
+        std::process::exit(exit_code);
+    }
+
     let Some(input_path) = args.next() else {
         eprintln!("missing input path\n");
         print_usage();
@@ -131,12 +161,51 @@ fn print_usage() {
     eprintln!("  newcp-driver invoke-command <Module.Command>");
     eprintln!("  newcp-driver describe-interface <Module>");
     eprintln!("  newcp-driver load-module <Module|Path> [Module.Command]");
+    eprintln!("  newcp-driver check-mod <Module|Path>");
+    eprintln!("  newcp-driver check-dir <dir>");
     eprintln!("  newcp-driver <dump-command> <file>");
     eprintln!();
     eprintln!("commands:");
     for command in COMMANDS {
         eprintln!("  {command}");
     }
+}
+
+/// Check every `.cp` file in `dir`, print a report per file, exit 0 if all clean.
+fn run_check_dir(dir: &Path) -> i32 {
+    let stdout = std::io::stdout();
+    let mut out = stdout.lock();
+
+    let entries = match std::fs::read_dir(dir) {
+        Ok(e) => e,
+        Err(err) => {
+            eprintln!("check-dir: cannot read {}: {err}", dir.display());
+            return 2;
+        }
+    };
+
+    let mut files: Vec<PathBuf> = entries
+        .filter_map(|entry| entry.ok().map(|e| e.path()))
+        .filter(|p| p.extension().and_then(|ext| ext.to_str()) == Some("cp"))
+        .collect();
+    files.sort();
+
+    if files.is_empty() {
+        eprintln!("check-dir: no .cp files found in {}", dir.display());
+        return 2;
+    }
+
+    let mut any_errors = false;
+    for path in &files {
+        let report = newcp_sema::check_module(path);
+        let _ = writeln!(out, "{report}");
+        let clean = report.lines().last().map(|l| l == "ok").unwrap_or(false);
+        if !clean {
+            any_errors = true;
+        }
+    }
+
+    if any_errors { 1 } else { 0 }
 }
 
 fn load_module_from_source(module_ref: &str, command_path: Option<&str>) -> Result<String, String> {

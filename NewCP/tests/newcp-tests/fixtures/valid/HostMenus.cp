@@ -6,7 +6,7 @@ CONST Version* = 1;
 
 TYPE Menu* = RECORD END;
 
-VAR Current* : INTEGER;
+VAR Current*: INTEGER;
 
 PROCEDURE OpenApp*;
 BEGIN

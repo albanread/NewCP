@@ -229,8 +229,7 @@ impl<'a> Lexer<'a> {
             }
         }
 
-        let upper = latin1_uppercase(&lexeme);
-        let kind = if is_keyword(&upper) {
+        let kind = if is_keyword(&lexeme) {
             TokenKind::Keyword
         } else {
             TokenKind::Identifier
@@ -569,21 +568,6 @@ fn is_cp_letter(character: char) -> bool {
 
 fn is_hex_digit(character: char) -> bool {
     matches!(character, 'A'..='F' | '0'..='9')
-}
-
-fn latin1_uppercase(input: &str) -> String {
-    input.chars().map(upper_latin1_char).collect()
-}
-
-fn upper_latin1_char(character: char) -> char {
-    match character {
-        'a'..='z' => character.to_ascii_uppercase(),
-        '\u{00E0}'..='\u{00F6}' | '\u{00F8}'..='\u{00FE}' => {
-            char::from_u32((character as u32) - 32).unwrap_or(character)
-        }
-        '\u{00FF}' => '\u{0178}',
-        _ => character,
-    }
 }
 
 fn render_token(token: &Token) -> String {

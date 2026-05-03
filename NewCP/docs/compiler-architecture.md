@@ -122,21 +122,27 @@ Responsibilities:
 - extension hierarchy validation
 - method rules and override checks
 - parameter passing mode validation
-- constant folding where unambiguous
+- constant folding for all literal types (integer, real, char, string, boolean)
 - export surface construction
+
+**Constant values:** the `ConstValue` enum carries typed constant results — `Integer(i128)`, `Real(f64)`, `Char(char)`, `String(String)`, `Boolean(bool)`. Every `SemanticSymbol` of kind `Constant` has a `const_value` and an inferred `declared_type`.
+
+**Builtin scope:** every module analysis begins with a preloaded set of builtin types (`INTEGER`, `REAL`, `BOOLEAN`, `CHAR`, `BYTE`, etc.), builtin procedures (`INC`, `DEC`, `NEW`, `ASSERT`, `ABS`, `ODD`, etc.), and builtin constants (`TRUE`, `FALSE`, `INF`). These are injected at the start of `module_symbols` before any module declarations are processed.
+
+**Selector resolution:** ambiguous parse nodes (`AmbiguousParen`) are resolved during sema. A single bare-identifier argument `P(Name)` is resolved as a call if `P` is a known procedure, or as a type guard if `Name` is a known type. The resolution is recorded in `SelectorResolution` for each procedure and for module-level statements.
+
+**WITH guards:** sema validates that the guarded variable is a record-typed VAR parameter or receiver (including imported Named types), and that the guard target names a record type that extends the static type of the variable. Resolutions are recorded as `TypeGuard` entries for use by CFG lowering.
+
+**CASE labels:** integer constants, character constants (including single-char string literals `"a"`), and named constants are valid CASE labels. Char range labels (`"a".."z"`) are supported. Duplicate and out-of-order ranges are rejected.
 
 Output:
 
-- typed AST or HIR
-- module symbol table
-- runtime descriptor plan for exported types and procedures
+- `SemanticModule` with `symbols`, `procedures`, `selector_resolutions`, `diagnostics`
+- per-procedure `SemanticProcedure` with `signature`, `local_symbols`, `selector_resolutions`, `diagnostics`
 
 Observable artifacts:
 
-- bound tree dump
-- symbol table dump
-- exported surface dump
-- type descriptor plan dump
+- `dump-sema`: structured per-symbol and per-procedure dump including symbol kinds, types, constant values, selector resolutions, and diagnostics
 
 ## Middle end
 
@@ -157,44 +163,128 @@ Observable artifact:
 
 ### CFG lowering
 
-Each procedure body lowers to a control-flow graph.
+Each procedure body lowers from the typed `SemanticProcedure` to a control-flow graph of basic blocks.
+
+The CFG is built directly from the typed AST — there is no flat TAC pass first. Component Pascal's structured control flow maps directly to CFG shape without needing to first flatten structure that was never lost.
+
+**Basic block definition:**
+
+A `BasicBlock` has an ID, a list of typed instructions, and exactly one terminator. No fall-through between blocks — every block ends with an explicit terminator. This keeps the CFG unambiguous and makes predecessor/successor lists trivially correct.
+
+**Control flow lowering rules:**
+
+| CP construct | CFG shape |
+|---|---|
+| Sequential statements | single block |
+| `IF … ELSIF … ELSE … END` | chain of condition blocks, each branching to body or next test; all arms merge at a join block |
+| `CASE` (integer, char) | decision tree of comparisons (dense ranges: jump table candidate later); each arm block merges at join |
+| `WHILE cond DO … END` | head block tests condition → body block → back-edge to head; else → exit block |
+| `REPEAT … UNTIL cond` | body block → test block → back-edge to body or → exit block |
+| `LOOP … END` | body block → back-edge to body; `EXIT` → explicit branch to loop-exit block |
+| `EXIT` | `Br` to the nearest enclosing loop's exit block (maintained on a loop stack during lowering) |
+| `RETURN` | `Ret` terminator in the logical IR; lowered to `store result_slot, v` + `Br function_exit`; the function-exit block ends with the single physical `ret load result_slot` |
+| `WITH v: T DO … END` | `TypeTest` instruction → conditional branch to guard body; refined type annotation on the guarded variable inside that block |
+
+**`EXIT` and `LOOP` implementation:** the lowering pass maintains a stack of `(loop_continue_target, loop_exit_target)` block IDs. `EXIT` pops the top and emits `Br loop_exit_target`. `LOOP` pushes a new pair before lowering the body. The `Br` emitted by `EXIT` should carry the current loop stack depth as debug metadata — this is invaluable when diagnosing "wrong loop exited" bugs, particularly when `CASE`, `WITH`, or nested `LOOP` statements are involved and the stack depth at the exit site is not obvious from a linear reading of the IR.
+
+**`RETURN` and the function-exit block:** lowering maintains two distinct return forms. The logical IR uses `Ret(v)` / `RetVoid` as emitted by the lowering of `RETURN` statements — these are the instructions that appear in the instruction set definition. Internally, each `Ret(v)` is lowered to:
+
+```
+store result_slot, v
+Br function_exit
+```
+
+The single `function_exit` block then ends with the one physical `ret load result_slot`. This keeps the CFG uniform (every block has exactly one terminator; no block has multiple successors via return), collects all epilogue work — stack cleanup, debug info, ABI return convention — in one place, and produces consistent debug info line mappings across all return paths. For void procedures the result slot is omitted and `function_exit` ends with `RetVoid`. The distinction between logical `Ret` (lowering input) and physical `Br function_exit` (lowering output) should be explicit in the IR representation rather than left implicit.
 
 Responsibilities:
 
 - basic block construction
-- explicit branches for `IF`, `CASE`, loops, `RETURN`, `EXIT`
-- explicit exception/trap edges where needed later
-- data-flow-ready form for optimization and codegen
-
-This is the right place to normalize the language before LLVM lowering.
+- explicit branch terminators for all control flow
+- loop stack for `EXIT` resolution
+- `RETURN` collection at a function-exit block
+- `TypeTest` instruction for `WITH`/`IS` guards
+- data-flow-ready form for later optimization
 
 Observable artifact:
 
-- per-procedure CFG dump with named basic blocks, terminators, and edges
+- per-procedure CFG dump with named basic blocks, instructions, terminators, and edges
+- Graphviz `.dot` output for visual review during bring-up
+- block ordering annotation on every block: both its construction index (the order blocks were created during lowering) and its RPO index (reverse post-order over the finished CFG)
+
+Construction index and RPO index are almost always different, and that difference is where bugs hide. A back-edge to a loop head is obvious in RPO order and invisible if you only see construction order. Conversely, a block that was constructed early but ends up unreachable is obvious in construction order and disappears from RPO. Printing both indices on every block in the textual dump — e.g. `bb3 [c=3 rpo=1]` — costs nothing and removes an entire class of "why is this block here?" debugging sessions.
 
 ### Typed IR
 
-NewCP should own a small typed IR instead of lowering directly from AST to LLVM.
+NewCP owns a small typed IR (`newcp-ir`). The IR is not a separate pass after CFG construction — the CFG **is** the IR. The `IrProcedure` contains basic blocks populated with typed instructions.
 
-Reasons:
+**Instruction set:**
 
-- easier language-specific diagnostics
-- simpler runtime-specific lowering
-- easier descriptor and metadata generation
-- freedom to target other backends later
+Values and data movement:
+```
+t = Const(v, ty)
+t = Load(addr, ty)
+Store(addr, v)
+t = BinOp(op, a, b, ty)        -- add/sub/mul/div/mod/and/or/xor/shl/shr
+t = UnOp(op, a, ty)            -- neg/not/bitnot
+t = Call(f, args, ret_ty)
+t = MethodCall(descriptor, slot, args, ret_ty)
+t = AddrOf(sym, ty)            -- SYSTEM.ADR lowering
+t = BitCast(v, from_ty, to_ty) -- SYSTEM.VAL lowering
+MemCopy(dst, src, len)         -- SYSTEM.MOVE lowering
+```
 
-Recommended properties:
+Control flow (terminators):
+```
+Br(target)
+CondBr(cond, true_target, false_target)
+Ret(v) / RetVoid
+Trap(code)                     -- ASSERT, HALT, array bounds, nil check
+TypeTest(v, ty, true_target, false_target)
+```
 
-- explicit loads/stores
-- typed operations
-- explicit call nodes
-- explicit runtime intrinsics
-- explicit module/global references
-- CFG-based procedures
+**Type system:**
+
+```
+enum IrType {
+    I8, I16, I32, I64,
+    U8, U16, U32,        -- BYTE, SHORTINT unsigned forms
+    F32, F64,            -- SHORTREAL, REAL
+    Bool,
+    Char, ShortChar,
+    Ptr(Box<IrType>),    -- explicit pointer to T
+    Ref(Box<IrType>),    -- VAR parameter reference
+    Named(String),       -- opaque imported or forward type (source-level name)
+    Opaque(String),      -- runtime-internal types: descriptors, vtables, tag words
+    Set(u8),             -- CP SET type; width in bits (32 for SET, extensible later)
+    Void,
+}
+```
+
+`Named` and `Opaque` are intentionally distinct. `Named` refers to a type that has a source-level identity in a Component Pascal module — the name can be resolved against the module graph. `Opaque` refers to runtime-internal structures (type descriptor headers, vtable arrays, module anchor records) that have no CP source definition and should never be exposed to language-level type checking. Keeping them separate prevents the lowering pass from accidentally treating a vtable pointer as a user type.
+
+`Set(width)` is included from the start because CP sets are not integers — they have distinct operations (`INCL`, `EXCL`, `IN`, `*`, `+`, `-`) that lower to bitwise ops but carry set semantics through the IR. Representing them as a plain integer would silently drop that information before codegen has a chance to use it. Width 32 covers the standard `SET` type; the field exists to accommodate `LONGSET` or similar extensions without an IR change.
+
+Typed IR values carry their `IrType` so that LLVM IR generation is a straightforward structural mapping without needing to re-infer types.
+
+**Lowering entry point:**
+
+```rust
+fn lower_procedure(proc: &SemanticProcedure, module_symbols: &[SemanticSymbol]) -> IrProcedure
+```
+
+Sema diagnostics have already been emitted — this pass trusts the types and only lowers. The first working target is a procedure with no control flow; add `IF`, then `WHILE`/`REPEAT`, then `LOOP`/`EXIT`, then `CASE`, then `WITH`.
+
+Reasons for owning this IR:
+
+- language-specific diagnostics (e.g. definite assignment, unreachable code) are expressed cleanly at this level
+- runtime-specific lowering (descriptors, tags, `NEW`, set operations) lives here, not in LLVM IR generation
+- descriptor and metadata generation can walk the IR independently of LLVM
+- freedom to target other backends (e.g. a bytecode interpreter for bootstrap or testing)
 
 Observable artifact:
 
 - stable textual IR dump suitable for tests and manual review
+- one block per line, instructions indented, terminators marked explicitly
 
 ## Backend
 
@@ -351,20 +441,33 @@ This keeps the bootstrap small, explicit, and compatible with the long-term goal
 
 ## First executable slice
 
-The first vertical slice should be:
+Steps and current status:
 
-1. parse a small module with one global and two procedures
-2. dump tokens and AST
-3. type-check it
-4. dump semantic state
-5. build CFG and typed IR
-6. dump CFG and IR
-7. emit LLVM IR
-8. dump LLVM IR and assembly
-9. JIT it
-10. register exports in runtime metadata
-11. invoke an exported command through the runtime
+| # | Step | Status |
+|---|---|---|
+| 1 | parse a module; dump tokens and AST | done — `dump-tokens`, `dump-ast` commands working |
+| 2 | type-check it; dump semantic state | done — `dump-sema` command; all 7+ test modules clean |
+| 3 | driver `check-mod` / `check-dir` commands | done — exit 1 on any diagnostic |
+| 4 | build CFG and typed IR; dump both | next — `newcp-ir` crate is stubbed, needs real lowering |
+| 5 | emit LLVM IR; dump it | pending `newcp-llvm` |
+| 6 | JIT it via ORC | pending |
+| 7 | register exports in runtime metadata | pending |
+| 8 | invoke an exported command through the runtime | pending |
 
-The second slice should add imports and module initialization.
+The second slice adds imports and module initialization order.
 
-After that, the next slice should prove that the live Rust-hosted system can compile and materialize at least one nontrivial Component Pascal support module into the already-running environment.
+After that, the next slice proves that the live Rust-hosted system can compile and materialize at least one nontrivial Component Pascal support module into the already-running environment.
+
+**Test modules in `Mod/` (all pass `check-dir`):**
+
+| Module | Constructs covered |
+|---|---|
+| `Empty.cp` | minimal module, no declarations |
+| `Consts.cp` | exported constants: integer, real, string, char, boolean |
+| `Vars.cp` | basic-type vars, export marks, BEGIN init block |
+| `Procs.cp` | IF/ELSIF, FOR, WHILE, INC/DEC builtins |
+| `Records.cp` | RECORD types, VAR params, field access, SIMD shapes |
+| `Pointers.cp` | POINTER TO RECORD, NEW, ASSERT, pointer field access |
+| `TypeExt.cp` | RECORD extension, inherited field assignment |
+| `Loops.cp` | REPEAT/UNTIL, LOOP/EXIT |
+| `CaseWith.cp` | CASE on integer and char, WITH type-guard dispatch (cross-module) |

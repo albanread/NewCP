@@ -228,14 +228,25 @@ pub enum SemanticType {
     Procedure(ProcedureType),
 }
 
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct SemanticSymbol {
     pub name: String,
     pub kind: SymbolKind,
     pub exported: bool,
+    /// True when this symbol was exported with a '-' mark (read-only for external modules).
+    pub read_only_export: bool,
     pub declared_type: Option<SemanticType>,
-    pub const_value: Option<i128>,
+    pub const_value: Option<ConstValue>,
     pub simd_shape: Option<SimdShape>,
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub enum ConstValue {
+    Integer(i128),
+    Real(f64),
+    String(String),
+    Char(char),
+    Boolean(bool),
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -272,7 +283,7 @@ pub struct SemanticDiagnostic {
     pub message: String,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct SemanticProcedure {
     pub name: String,
     pub exported: bool,
@@ -282,7 +293,7 @@ pub struct SemanticProcedure {
     pub diagnostics: Vec<SemanticDiagnostic>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct SemanticModule {
     pub name: String,
     pub imports: Vec<String>,
@@ -297,6 +308,54 @@ pub fn dump_sema(path: &Path) -> String {
         Ok(module) => render_module_dump(path, &module),
         Err(error) => format!("newcp-sema error\ninput: {}\nerror: {}", path.display(), error),
     }
+}
+
+/// Returns a compact diagnostics report for `path`.
+///
+/// Format when clean:
+/// ```text
+/// check: <path>
+/// ok
+/// ```
+///
+/// Format when errors exist:
+/// ```text
+/// check: <path>
+/// error  <procedure-or-module>@<line>:<col>: <message>
+/// error  ...
+/// ```
+///
+/// Parse errors are reported as a single `parse-error` line.
+pub fn check_module(path: &Path) -> String {
+    let mut lines = vec![format!("check: {}", path.display())];
+    match analyze_module(path) {
+        Ok(module) => {
+            let mut all_diags: Vec<String> = module
+                .diagnostics
+                .iter()
+                .map(|d| format_diagnostic("<module>", d))
+                .collect();
+            for proc in &module.procedures {
+                for d in &proc.diagnostics {
+                    all_diags.push(format_diagnostic(&proc.name, d));
+                }
+            }
+            if all_diags.is_empty() {
+                lines.push("ok".to_string());
+            } else {
+                lines.extend(all_diags);
+            }
+        }
+        Err(parse_error) => {
+            lines.push(format!("parse-error: {parse_error}"));
+        }
+    }
+    lines.join("\n")
+}
+
+fn format_diagnostic(scope: &str, d: &SemanticDiagnostic) -> String {
+    let scope_label = d.procedure.as_deref().unwrap_or(scope);
+    format!("error  {}@{}:{}: {}", scope_label, d.line, d.column, d.message)
 }
 
 pub fn analyze_module(path: &Path) -> Result<SemanticModule, String> {
@@ -412,6 +471,7 @@ impl<'a> Analyzer<'a> {
                 name: import.alias.clone().unwrap_or_else(|| import.name.clone()),
                 kind: SymbolKind::Import,
                 exported: false,
+                read_only_export: false,
                 declared_type: None,
                 const_value: None,
                 simd_shape: None,
@@ -422,12 +482,14 @@ impl<'a> Analyzer<'a> {
             match declaration {
                 Declaration::Const(item) => {
                     Self::record_identdef_duplicate(&mut scope_names, &item.name, None, "duplicate module-scope declaration", &mut self.diagnostics);
-                    let const_value = evaluate_const_integer(&item.value, &[], &self.module_symbols);
+                    let const_value = evaluate_const_expr(&item.value, &[], &self.module_symbols);
+                    let declared_type = const_value_type(&const_value);
                     self.module_symbols.push(SemanticSymbol {
                         name: item.name.name.clone(),
                         kind: SymbolKind::Constant,
                         exported: item.name.export.is_some(),
-                        declared_type: None,
+                        read_only_export: item.name.export == Some(ExportMark::ReadOnly),
+                        declared_type,
                         const_value,
                         simd_shape: None,
                     })
@@ -439,6 +501,7 @@ impl<'a> Analyzer<'a> {
                         name: item.name.name.clone(),
                         kind: SymbolKind::Type,
                         exported: item.name.export.is_some(),
+                        read_only_export: item.name.export == Some(ExportMark::ReadOnly),
                         declared_type: Some(self.resolve_type_decl(
                             Some(&item.name.name),
                             &item.ty,
@@ -457,6 +520,7 @@ impl<'a> Analyzer<'a> {
                             name: name.name.clone(),
                             kind: SymbolKind::Variable,
                             exported: name.export.is_some(),
+                            read_only_export: name.export == Some(ExportMark::ReadOnly),
                             declared_type: Some(declared_type.clone()),
                             const_value: None,
                             simd_shape: None,
@@ -476,6 +540,7 @@ impl<'a> Analyzer<'a> {
                         name: item.heading.name.name.clone(),
                         kind: SymbolKind::Procedure,
                         exported: item.heading.name.export.is_some(),
+                        read_only_export: item.heading.name.export == Some(ExportMark::ReadOnly),
                         declared_type: Some(SemanticType::Procedure(
                             self.resolve_procedure_signature(&self.module_type_names, item),
                         )),
@@ -496,6 +561,7 @@ impl<'a> Analyzer<'a> {
                         name: item.heading.name.name.clone(),
                         kind: SymbolKind::Procedure,
                         exported: item.heading.name.export.is_some(),
+                        read_only_export: item.heading.name.export == Some(ExportMark::ReadOnly),
                         declared_type: Some(SemanticType::Procedure(self.resolve_heading_signature(
                             &item.heading,
                             &self.module_type_names,
@@ -541,6 +607,7 @@ impl<'a> Analyzer<'a> {
                 name: receiver.name.clone(),
                 kind: SymbolKind::Receiver,
                 exported: false,
+                read_only_export: false,
                 declared_type: Some(self.resolve_receiver_type(receiver.ty.as_str(), &scope_type_names)),
                 const_value: None,
                 simd_shape: None,
@@ -1019,6 +1086,7 @@ impl<'a> Analyzer<'a> {
                 name: name.clone(),
                 kind: SymbolKind::Parameter,
                 exported: false,
+                read_only_export: false,
                 declared_type: Some(declared_type.clone()),
                 const_value: None,
                 simd_shape: None,
@@ -1045,12 +1113,14 @@ impl<'a> Analyzer<'a> {
             match declaration {
                 Declaration::Const(item) => {
                     Self::record_identdef_duplicate(scope_names, &item.name, procedure_name, "duplicate procedure-scope declaration", diagnostics);
-                    let const_value = evaluate_const_integer(&item.value, local_symbols, &self.module_symbols);
+                    let const_value = evaluate_const_expr(&item.value, local_symbols, &self.module_symbols);
+                    let declared_type = const_value_type(&const_value);
                     local_symbols.push(SemanticSymbol {
                         name: item.name.name.clone(),
                         kind: SymbolKind::Constant,
                         exported: false,
-                        declared_type: None,
+                        read_only_export: false,
+                        declared_type,
                         const_value,
                         simd_shape: None,
                     })
@@ -1062,6 +1132,7 @@ impl<'a> Analyzer<'a> {
                         name: item.name.name.clone(),
                         kind: SymbolKind::Type,
                         exported: false,
+                        read_only_export: false,
                         declared_type: Some(self.resolve_type_decl(
                             Some(&item.name.name),
                             &item.ty,
@@ -1080,6 +1151,7 @@ impl<'a> Analyzer<'a> {
                             name: name.name.clone(),
                             kind: SymbolKind::Variable,
                             exported: false,
+                            read_only_export: false,
                             declared_type: Some(declared_type.clone()),
                             const_value: None,
                             simd_shape: None,
@@ -1104,6 +1176,7 @@ impl<'a> Analyzer<'a> {
                         name: item.heading.name.name.clone(),
                         kind: SymbolKind::Procedure,
                         exported: false,
+                        read_only_export: false,
                         declared_type: Some(SemanticType::Procedure(self.resolve_procedure_signature(
                             scope_type_names,
                             item,
@@ -1130,6 +1203,7 @@ impl<'a> Analyzer<'a> {
                         name: item.heading.name.name.clone(),
                         kind: SymbolKind::Procedure,
                         exported: false,
+                        read_only_export: false,
                         declared_type: Some(SemanticType::Procedure(self.resolve_heading_signature(
                             &item.heading,
                             scope_type_names,
@@ -1892,7 +1966,7 @@ impl<'a> Analyzer<'a> {
                             "FOR step must be an integer",
                         );
                         match evaluate_const_integer(step, local_symbols, &self.module_symbols) {
-                            Some(0) => {
+                            Some(ConstValue::Integer(0)) => {
                                 let (line, column) = expr_position(step);
                                 diagnostics.push(make_diagnostic(
                                     procedure_name,
@@ -2211,7 +2285,13 @@ impl<'a> Analyzer<'a> {
 
     fn is_case_label_constant(&self, expr: &Expr, local_symbols: &[SemanticSymbol]) -> bool {
         match expr {
-            Expr::Literal { value, .. } => !matches!(value, newcp_parser::Literal::String(_) | newcp_parser::Literal::Real(_)),
+            // Single-character string literals (e.g. "a") are CHAR constants — valid CASE labels.
+            // Multi-character strings and reals are not.
+            Expr::Literal { value, .. } => match value {
+                newcp_parser::Literal::String(s) => s.trim_matches(['\'', '"']).chars().count() == 1,
+                newcp_parser::Literal::Real(_) => false,
+                _ => true,
+            },
             Expr::Designator(designator) => {
                 designator.base.module.is_none()
                     && designator.selectors.is_empty()
@@ -2770,7 +2850,10 @@ impl<'a> Analyzer<'a> {
         };
 
         let target_type = self.resolve_named_type(target_ident, scope_type_names);
-        if !self.is_record_type(&target_type, local_symbols) {
+        // Imported types are opaque — trust that the programmer named an extension record.
+        let target_is_known_record = self.is_record_type(&target_type, local_symbols)
+            || matches!(target_type, SemanticType::Named { kind: NamedTypeKind::Imported, .. });
+        if !target_is_known_record {
             let (line, column) = position;
             diagnostics.push(make_diagnostic(
                 procedure_name,
@@ -2781,7 +2864,10 @@ impl<'a> Analyzer<'a> {
             return;
         }
 
-        if !self.record_type_extends(&target_type, &static_record_type, local_symbols) {
+        // Skip the extends check for imported types — we have no definition to verify against.
+        let either_imported = matches!(target_type, SemanticType::Named { kind: NamedTypeKind::Imported, .. })
+            || matches!(static_record_type, SemanticType::Named { kind: NamedTypeKind::Imported, .. });
+        if !either_imported && !self.record_type_extends(&target_type, &static_record_type, local_symbols) {
             let (line, column) = position;
             diagnostics.push(make_diagnostic(
                 procedure_name,
@@ -2810,7 +2896,8 @@ impl<'a> Analyzer<'a> {
                 }
             }
             _ if matches!(subject_symbol.map(|symbol| symbol.kind), Some(SymbolKind::Parameter | SymbolKind::Receiver))
-                && self.is_record_type(subject_type, local_symbols) =>
+                && (self.is_record_type(subject_type, local_symbols)
+                    || matches!(subject_type, SemanticType::Named { kind: NamedTypeKind::Imported, .. })) =>
             {
                 Some(subject_type.clone())
             }
@@ -3051,6 +3138,14 @@ impl<'a> Analyzer<'a> {
                     ));
                     None
                 }
+                // Imported or cross-module Named types: we can't verify field/method existence
+                // without loading the imported module's symbol table.  Suppress the error and
+                // return None so sema does not cascade false positives on the remaining selectors.
+                None if matches!(
+                    base,
+                    SemanticType::Named { kind: NamedTypeKind::Imported, .. }
+                        | SemanticType::Named { kind: NamedTypeKind::Unresolved, .. }
+                ) => None,
                 _ => {
                     diagnostics.push(make_diagnostic(
                         procedure_name,
@@ -3097,6 +3192,24 @@ impl<'a> Analyzer<'a> {
             }
             Selector::Dereference => match base {
                 SemanticType::Pointer { target } => Some((**target).clone()),
+                SemanticType::Procedure(sig) => {
+                    // Super-call notation: v.M^ — dereference after a method name invokes the
+                    // inherited (base) implementation.  Reject ABSTRACT / EMPTY targets.
+                    if matches!(sig.flavor, Some(MethodFlavor::Abstract) | Some(MethodFlavor::Empty)) {
+                        diagnostics.push(make_diagnostic(
+                            procedure_name,
+                            line,
+                            column,
+                            format!(
+                                "super-call is not permitted on {} methods",
+                                method_flavor_name(sig.flavor.unwrap()),
+                            ),
+                        ));
+                    }
+                    Some(base.clone())
+                }
+                // Imported / unresolved types may well be pointer types — suppress the error.
+                SemanticType::Named { kind: NamedTypeKind::Imported | NamedTypeKind::Unresolved, .. } => None,
                 _ => {
                     diagnostics.push(make_diagnostic(
                         procedure_name,
@@ -3455,6 +3568,10 @@ impl<'a> Analyzer<'a> {
             },
             Selector::Dereference => match base {
                 SemanticType::Pointer { target } => Some((**target).clone()),
+                // Super-call passthrough: v.M^ yields the same procedure type
+                SemanticType::Procedure(_) => Some(base.clone()),
+                // Imported / unresolved named types may be pointers — don't reject them
+                SemanticType::Named { kind: NamedTypeKind::Imported | NamedTypeKind::Unresolved, .. } => None,
                 _ => None,
             },
             Selector::TypeGuard(guard) => {
@@ -3612,16 +3729,36 @@ impl<'a> Analyzer<'a> {
         for selector in &designator.selectors {
             match selector {
                 Selector::AmbiguousParen(qualident) => {
-                    let resolved_type = self.resolve_named_type(qualident, scope_type_names);
+                    // If the base of the designator is a procedure (builtin or user-defined),
+                    // the single-identifier argument is a call argument, not a type guard.
+                    let base_is_procedure = self.module_symbols.iter().any(|s| {
+                        s.name == designator.base.name
+                            && matches!(s.kind, SymbolKind::Procedure)
+                    });
+                    let (kind, reason) = if base_is_procedure {
+                        (
+                            SelectorResolutionKind::ProcedureCall,
+                            format!(
+                                "{} is a procedure; single-identifier argument is a call arg",
+                                designator.base.name
+                            ),
+                        )
+                    } else {
+                        let resolved_type = self.resolve_named_type(qualident, scope_type_names);
+                        (
+                            selector_resolution_kind_for_type(&resolved_type),
+                            format!(
+                                "ambiguous parenthesized selector resolves as {}",
+                                render_semantic_type(&resolved_type)
+                            ),
+                        )
+                    };
                     resolutions.push(SelectorResolution {
                         procedure: procedure_name.map(str::to_string),
                         designator: rendered.clone(),
                         selector: render_qualident(qualident),
-                        kind: selector_resolution_kind_for_type(&resolved_type),
-                        reason: format!(
-                            "ambiguous parenthesized selector resolves as {}",
-                            render_semantic_type(&resolved_type)
-                        ),
+                        kind,
+                        reason,
                     });
                 }
                 Selector::TypeGuard(qualident) => resolutions.push(SelectorResolution {
@@ -3651,6 +3788,7 @@ fn builtin_symbols() -> Vec<SemanticSymbol> {
             name: builtin.name().to_string(),
             kind: SymbolKind::Type,
             exported: false,
+            read_only_export: false,
             declared_type: Some(SemanticType::Builtin(*builtin)),
             const_value: None,
             simd_shape: None,
@@ -3662,22 +3800,25 @@ fn builtin_symbols() -> Vec<SemanticSymbol> {
             name: "TRUE".to_string(),
             kind: SymbolKind::Constant,
             exported: false,
+            read_only_export: false,
             declared_type: Some(SemanticType::Builtin(BuiltinType::Boolean)),
-            const_value: Some(1),
+            const_value: Some(ConstValue::Boolean(true)),
             simd_shape: None,
         },
         SemanticSymbol {
             name: "FALSE".to_string(),
             kind: SymbolKind::Constant,
             exported: false,
+            read_only_export: false,
             declared_type: Some(SemanticType::Builtin(BuiltinType::Boolean)),
-            const_value: Some(0),
+            const_value: Some(ConstValue::Boolean(false)),
             simd_shape: None,
         },
         SemanticSymbol {
             name: "INF".to_string(),
             kind: SymbolKind::Constant,
             exported: false,
+            read_only_export: false,
             declared_type: Some(SemanticType::Builtin(BuiltinType::Real)),
             const_value: None,
             simd_shape: None,
@@ -3688,6 +3829,7 @@ fn builtin_symbols() -> Vec<SemanticSymbol> {
         name: builtin.name().to_string(),
         kind: SymbolKind::Procedure,
         exported: false,
+        read_only_export: false,
         declared_type: Some(SemanticType::BuiltinProc(*builtin)),
         const_value: None,
         simd_shape: None,
@@ -4100,12 +4242,22 @@ fn infer_additive_or_multiplicative_result(
 }
 
 fn are_relation_compatible(left: &SemanticType, right: &SemanticType) -> bool {
+    // NIL is assignment-compatible with any pointer or procedure type,
+    // including named types that alias pointers/procedures.
+    let nil_compatible = |other: &SemanticType| {
+        matches!(
+            other,
+            SemanticType::Pointer { .. }
+                | SemanticType::Procedure(_)
+                | SemanticType::Named { .. }
+        )
+    };
     left == right
         || (is_numeric_type(left) && is_numeric_type(right))
         || (is_character_like_type(left) && is_character_like_type(right))
         || (is_string_type(left) && is_string_type(right))
-        || (matches!(left, SemanticType::Nil) && matches!(right, SemanticType::Pointer { .. } | SemanticType::Procedure(_)))
-        || (matches!(right, SemanticType::Nil) && matches!(left, SemanticType::Pointer { .. } | SemanticType::Procedure(_)))
+        || (matches!(left, SemanticType::Nil) && nil_compatible(right))
+        || (matches!(right, SemanticType::Nil) && nil_compatible(left))
 }
 
 fn are_ordered_relation_compatible(left: &SemanticType, right: &SemanticType) -> bool {
@@ -4170,10 +4322,11 @@ fn character_literal_type(value: &str) -> SemanticType {
 }
 
 fn string_literal_type(value: &str) -> SemanticType {
-    let contains_non_latin1 = value
-        .trim_matches(['\'', '"'])
-        .chars()
-        .any(|ch| (ch as u32) > 0xFF);
+    let inner = value.trim_matches(['\'', '"']);
+    if inner.chars().count() == 1 {
+        return SemanticType::Builtin(BuiltinType::Char);
+    }
+    let contains_non_latin1 = inner.chars().any(|ch| (ch as u32) > 0xFF);
     if contains_non_latin1 {
         SemanticType::Builtin(BuiltinType::String)
     } else {
@@ -4240,49 +4393,138 @@ struct EvaluatedCaseRange {
     end: i128,
 }
 
-fn evaluate_const_integer(
+/// Evaluate any compile-time constant expression into a `ConstValue`.
+/// Returns `None` only for expressions that genuinely cannot be evaluated
+/// at compile time (e.g. function calls, non-const designators).
+fn evaluate_const_expr(
     expr: &Expr,
     local_symbols: &[SemanticSymbol],
     module_symbols: &[SemanticSymbol],
-) -> Option<i128> {
+) -> Option<ConstValue> {
     match expr {
         Expr::Literal { value, .. } => match value {
-            newcp_parser::Literal::Integer(value) => parse_component_pascal_integer(value),
-            _ => None,
+            newcp_parser::Literal::Integer(s) => {
+                parse_component_pascal_integer(s).map(ConstValue::Integer)
+            }
+            newcp_parser::Literal::Real(s) => {
+                s.parse::<f64>().ok().map(ConstValue::Real)
+            }
+            newcp_parser::Literal::String(s) => {
+                // A single-character string literal is a CHAR constant.
+                // The lexer stores the raw delimited form; strip the quotes.
+                let inner = strip_string_delimiters(s);
+                if inner.chars().count() == 1 {
+                    Some(ConstValue::Char(inner.chars().next().unwrap()))
+                } else {
+                    Some(ConstValue::String(inner.to_string()))
+                }
+            }
+            newcp_parser::Literal::Character(s) => {
+                // Character literals are either 'X' or NNX (hex char code).
+                parse_component_pascal_character(s)
+                    .and_then(|code| char::from_u32(code as u32))
+                    .map(ConstValue::Char)
+            }
         },
+        Expr::Nil { .. } => None,
+        Expr::Designator(d) if d.selectors.is_empty() && d.base.module.is_none() => {
+            // TRUE / FALSE are keyword-like but stored as builtin constants.
+            match d.base.name.as_str() {
+                "TRUE"  => return Some(ConstValue::Boolean(true)),
+                "FALSE" => return Some(ConstValue::Boolean(false)),
+                _ => {}
+            }
+            local_symbols.iter().rev()
+                .chain(module_symbols.iter().rev())
+                .find(|s| s.name == d.base.name && s.kind == SymbolKind::Constant)
+                .and_then(|s| s.const_value.clone())
+        }
         Expr::Unary { op, expr, .. } => {
-            let inner = evaluate_const_integer(expr, local_symbols, module_symbols)?;
-            match op {
-                newcp_parser::UnaryOp::Plus => Some(inner),
-                newcp_parser::UnaryOp::Minus => inner.checked_neg(),
+            let inner = evaluate_const_expr(expr, local_symbols, module_symbols)?;
+            match (op, inner) {
+                (newcp_parser::UnaryOp::Plus,  ConstValue::Integer(v)) => Some(ConstValue::Integer(v)),
+                (newcp_parser::UnaryOp::Minus, ConstValue::Integer(v)) => v.checked_neg().map(ConstValue::Integer),
+                (newcp_parser::UnaryOp::Plus,  ConstValue::Real(v))    => Some(ConstValue::Real(v)),
+                (newcp_parser::UnaryOp::Minus, ConstValue::Real(v))    => Some(ConstValue::Real(-v)),
+                (newcp_parser::UnaryOp::Not,   ConstValue::Boolean(v)) => Some(ConstValue::Boolean(!v)),
                 _ => None,
             }
         }
         Expr::Binary { left, op, right, .. } => {
-            let lv = evaluate_const_integer(left, local_symbols, module_symbols)?;
-            let rv = evaluate_const_integer(right, local_symbols, module_symbols)?;
-            match op {
-                BinaryOp::Add => lv.checked_add(rv),
-                BinaryOp::Subtract => lv.checked_sub(rv),
-                BinaryOp::Multiply => lv.checked_mul(rv),
-                BinaryOp::Div => {
-                    if rv == 0 { return None; }
-                    lv.checked_div(rv)
+            let lv = evaluate_const_expr(left, local_symbols, module_symbols)?;
+            let rv = evaluate_const_expr(right, local_symbols, module_symbols)?;
+            match (lv, rv) {
+                (ConstValue::Integer(l), ConstValue::Integer(r)) => {
+                    match op {
+                        BinaryOp::Add      => l.checked_add(r).map(ConstValue::Integer),
+                        BinaryOp::Subtract => l.checked_sub(r).map(ConstValue::Integer),
+                        BinaryOp::Multiply => l.checked_mul(r).map(ConstValue::Integer),
+                        BinaryOp::Div      => if r == 0 { None } else { l.checked_div(r).map(ConstValue::Integer) },
+                        BinaryOp::Mod      => if r == 0 { None } else { l.checked_rem(r).map(ConstValue::Integer) },
+                        BinaryOp::Equal    => Some(ConstValue::Boolean(l == r)),
+                        BinaryOp::NotEqual => Some(ConstValue::Boolean(l != r)),
+                        BinaryOp::Less     => Some(ConstValue::Boolean(l <  r)),
+                        BinaryOp::LessEqual    => Some(ConstValue::Boolean(l <= r)),
+                        BinaryOp::Greater      => Some(ConstValue::Boolean(l >  r)),
+                        BinaryOp::GreaterEqual => Some(ConstValue::Boolean(l >= r)),
+                        _ => None,
+                    }
                 }
-                BinaryOp::Mod => {
-                    if rv == 0 { return None; }
-                    lv.checked_rem(rv)
+                (ConstValue::Real(l), ConstValue::Real(r)) => {
+                    match op {
+                        BinaryOp::Add      => Some(ConstValue::Real(l + r)),
+                        BinaryOp::Subtract => Some(ConstValue::Real(l - r)),
+                        BinaryOp::Multiply => Some(ConstValue::Real(l * r)),
+                        BinaryOp::Divide   => Some(ConstValue::Real(l / r)),
+                        _ => None,
+                    }
+                }
+                (ConstValue::Boolean(l), ConstValue::Boolean(r)) => {
+                    match op {
+                        BinaryOp::And      => Some(ConstValue::Boolean(l && r)),
+                        BinaryOp::Or       => Some(ConstValue::Boolean(l || r)),
+                        BinaryOp::Equal    => Some(ConstValue::Boolean(l == r)),
+                        BinaryOp::NotEqual => Some(ConstValue::Boolean(l != r)),
+                        _ => None,
+                    }
                 }
                 _ => None,
             }
         }
-        Expr::Designator(d) if d.selectors.is_empty() && d.base.module.is_none() => {
-            local_symbols.iter().rev()
-                .chain(module_symbols.iter().rev())
-                .find(|s| s.name == d.base.name && s.kind == SymbolKind::Constant)
-                .and_then(|s| s.const_value)
-        }
         _ => None,
+    }
+}
+
+/// Strip surrounding quote characters from a string literal as stored by the lexer.
+/// Handles both `"..."` and `'...'` forms.
+fn strip_string_delimiters(s: &str) -> &str {
+    if (s.starts_with('"') && s.ends_with('"'))
+        || (s.starts_with('\'') && s.ends_with('\''))
+    {
+        &s[1..s.len() - 1]
+    } else {
+        s
+    }
+}
+
+fn evaluate_const_integer(
+    expr: &Expr,
+    local_symbols: &[SemanticSymbol],
+    module_symbols: &[SemanticSymbol],
+) -> Option<ConstValue> {
+    evaluate_const_expr(expr, local_symbols, module_symbols)
+        .filter(|v| matches!(v, ConstValue::Integer(_)))
+}
+
+/// Infer the CP builtin type that corresponds to a constant value.
+fn const_value_type(value: &Option<ConstValue>) -> Option<SemanticType> {
+    match value {
+        Some(ConstValue::Integer(_)) => Some(SemanticType::Builtin(BuiltinType::Integer)),
+        Some(ConstValue::Real(_))    => Some(SemanticType::Builtin(BuiltinType::Real)),
+        Some(ConstValue::Char(_))    => Some(SemanticType::Builtin(BuiltinType::Char)),
+        Some(ConstValue::String(_))  => Some(SemanticType::Builtin(BuiltinType::String)),
+        Some(ConstValue::Boolean(_)) => Some(SemanticType::Builtin(BuiltinType::Boolean)),
+        None => None,
     }
 }
 
@@ -4434,130 +4676,169 @@ fn designator_position(designator: &Designator) -> (usize, usize) {
     (designator.span.start.line, designator.span.start.column)
 }
 
-fn render_module_dump(path: &Path, module: &SemanticModule) -> String {
-    let exported_constants = filter_symbols(&module.symbols, SymbolKind::Constant, true);
-    let exported_types = filter_symbols(&module.symbols, SymbolKind::Type, true);
-    let exported_variables = filter_symbols(&module.symbols, SymbolKind::Variable, true);
-    let exported_procedures = module
-        .procedures
-        .iter()
-        .filter(|procedure| procedure.exported)
-        .map(|procedure| {
-            format!(
-                "{}:{}",
-                procedure.name,
-                if procedure.signature.parameters.is_empty() && procedure.signature.result_type.is_none() {
-                    "Command"
-                } else {
-                    "Procedure"
-                }
-            )
-        })
-        .collect::<Vec<_>>();
-    let local_procedures = module
-        .procedures
-        .iter()
-        .filter(|procedure| !procedure.exported)
-        .map(|procedure| procedure.name.as_str())
-        .collect::<Vec<_>>();
-    let visible_types = module
-        .symbols
-        .iter()
-        .filter(|symbol| symbol.kind == SymbolKind::Type)
-        .map(|symbol| match &symbol.declared_type {
-            Some(ty) => format!("{}={}", symbol.name, render_semantic_type(ty)),
-            None => symbol.name.clone(),
-        })
-        .collect::<Vec<_>>();
-    let selector_resolutions = if module.selector_resolutions.is_empty() {
-        "<none>".to_string()
+fn render_symbol_row(sym: &SemanticSymbol) -> String {
+    let export_mark = if sym.read_only_export {
+        "-"
+    } else if sym.exported {
+        "*"
     } else {
-        module
-            .selector_resolutions
-            .iter()
-            .map(|item| {
-                let procedure = item.procedure.as_deref().unwrap_or("<module>");
-                format!(
-                    "{}:{}:{} [{}]",
-                    procedure,
-                    item.designator,
-                    item.selector,
-                    item.kind.as_str()
-                )
-            })
-            .collect::<Vec<_>>()
-            .join(", ")
+        " "
     };
-    let typed_variables = module
-        .symbols
-        .iter()
-        .filter(|symbol| symbol.kind == SymbolKind::Variable)
-        .filter_map(|symbol| {
-            symbol
-                .declared_type
-                .as_ref()
-                .map(|ty| format!("{}:{}", symbol.name, render_semantic_type(ty)))
-        })
-        .collect::<Vec<_>>();
-    let simd_candidates = module
-        .symbols
-        .iter()
-        .filter_map(|symbol| {
-            symbol
-                .simd_shape
-                .as_ref()
-                .map(|shape| format!("{}:{}", symbol.name, render_simd_shape(shape)))
-        })
-        .collect::<Vec<_>>();
-    let diagnostics = if module.diagnostics.is_empty() {
-        "<none>".to_string()
-    } else {
-        module
-            .diagnostics
-            .iter()
-            .map(|item| {
-                let procedure = item.procedure.as_deref().unwrap_or("<module>");
-                format!("{}@{}:{}: {}", procedure, item.line, item.column, item.message)
-            })
-            .collect::<Vec<_>>()
-            .join(", ")
+    let kind = match sym.kind {
+        SymbolKind::Constant  => "const",
+        SymbolKind::Type      => "type ",
+        SymbolKind::Variable  => "var  ",
+        SymbolKind::Procedure => "proc ",
+        SymbolKind::Import    => "import",
+        SymbolKind::Parameter => "param",
+        SymbolKind::Receiver  => "recv ",
     };
+    let type_str = sym
+        .declared_type
+        .as_ref()
+        .map(|ty| format!(" : {}", render_semantic_type(ty)))
+        .unwrap_or_default();
+    let val_str = sym
+        .const_value
+        .as_ref()
+        .map(|v| match v {
+            ConstValue::Integer(n) => format!(" = {n}"),
+            ConstValue::Real(f)    => format!(" = {f}"),
+            ConstValue::Char(c)    => format!(" = '{c}'"),
+            ConstValue::String(s)  => format!(" = \"{s}\""),
+            ConstValue::Boolean(b) => format!(" = {b}"),
+        })
+        .unwrap_or_default();
+    let simd_str = sym
+        .simd_shape
+        .as_ref()
+        .map(|s| format!(" [simd:{}]", render_simd_shape(s)))
+        .unwrap_or_default();
+    format!("  {kind} {export_mark}{}{type_str}{val_str}{simd_str}", sym.name)
+}
 
+fn render_resolution(r: &SelectorResolution) -> String {
     format!(
-        concat!(
-            "newcp-sema module dump\n",
-            "input: {}\n",
-            "module: {}\n",
-            "imports: {}\n",
-            "exported-constants: {}\n",
-            "exported-types: {}\n",
-            "exported-variables: {}\n",
-            "exported-procedures: {}\n",
-            "local-procedures: {}\n",
-            "visible-types: {}\n",
-            "typed-variables: {}\n",
-            "simd-candidates: {}\n",
-            "selector-resolutions: {}\n",
-            "diagnostics: {}\n",
-            "interface-symbol-count: {}\n",
-            "procedure-count: {}"
-        ),
-        path.display(),
-        module.name,
-        render_string_list(&module.imports),
-        render_str_list(&exported_constants),
-        render_str_list(&exported_types),
-        render_str_list(&exported_variables),
-        render_string_list(&exported_procedures),
-        render_str_list(&local_procedures),
-        render_string_list(&visible_types),
-        render_string_list(&typed_variables),
-        render_string_list(&simd_candidates),
-        selector_resolutions,
-        diagnostics,
-        module.symbols.iter().filter(|symbol| symbol.exported).count(),
-        module.procedures.len()
+        "    {} `{}` -> [{}]{}",
+        r.designator,
+        r.selector,
+        r.kind.as_str(),
+        if r.reason.is_empty() { String::new() } else { format!(" // {}", r.reason) }
     )
+}
+
+fn render_diagnostic_item(d: &SemanticDiagnostic) -> String {
+    format!("    ERROR {}:{} {}", d.line, d.column, d.message)
+}
+
+fn render_module_dump(path: &Path, module: &SemanticModule) -> String {
+    let mut out = Vec::<String>::new();
+
+    out.push(format!("=== sema dump: {} ===", path.display()));
+    out.push(format!("module: {}", module.name));
+
+    // imports
+    if module.imports.is_empty() {
+        out.push("imports: <none>".to_string());
+    } else {
+        out.push(format!("imports: {}", module.imports.join(", ")));
+    }
+
+    out.push(String::new());
+
+    // module-level symbols
+    out.push("--- module symbols ---".to_string());
+    if module.symbols.is_empty() {
+        out.push("  <none>".to_string());
+    } else {
+        for sym in &module.symbols {
+            out.push(render_symbol_row(sym));
+        }
+    }
+
+    // module-level selector resolutions (body of module BEGIN block)
+    if !module.selector_resolutions.is_empty() {
+        out.push(String::new());
+        out.push("--- module-level selector resolutions ---".to_string());
+        for r in &module.selector_resolutions {
+            out.push(render_resolution(r));
+        }
+    }
+
+    // module-level diagnostics
+    if !module.diagnostics.is_empty() {
+        out.push(String::new());
+        out.push("--- module-level diagnostics ---".to_string());
+        for d in &module.diagnostics {
+            out.push(render_diagnostic_item(d));
+        }
+    }
+
+    // per-procedure detail
+    for proc in &module.procedures {
+        out.push(String::new());
+        let export_mark = if proc.exported { "*" } else { "" };
+        out.push(format!(
+            "--- procedure {}{} ---",
+            export_mark,
+            proc.name
+        ));
+
+        // signature
+        let params: Vec<String> = proc.signature.parameters.iter().map(|p| {
+            let mode = match p.mode {
+                Some(ParamMode::Var) => "VAR ",
+                Some(ParamMode::In)  => "IN ",
+                Some(ParamMode::Out) => "OUT ",
+                None => "",
+            };
+            let names = p.names.join(", ");
+            format!("{}{}: {}", mode, names, render_semantic_type(&p.ty))
+        }).collect();
+        let ret = proc.signature.result_type.as_ref()
+            .map(|t| format!(" : {}", render_semantic_type(t)))
+            .unwrap_or_default();
+        out.push(format!("  signature: ({}){}", params.join("; "), ret));
+
+        // local symbols
+        if proc.local_symbols.is_empty() {
+            out.push("  locals: <none>".to_string());
+        } else {
+            out.push("  locals:".to_string());
+            for sym in &proc.local_symbols {
+                out.push(render_symbol_row(sym));
+            }
+        }
+
+        // selector resolutions
+        if proc.selector_resolutions.is_empty() {
+            out.push("  resolutions: <none>".to_string());
+        } else {
+            out.push("  resolutions:".to_string());
+            for r in &proc.selector_resolutions {
+                out.push(render_resolution(r));
+            }
+        }
+
+        // diagnostics
+        if proc.diagnostics.is_empty() {
+            out.push("  diagnostics: <none>".to_string());
+        } else {
+            out.push("  diagnostics:".to_string());
+            for d in &proc.diagnostics {
+                out.push(render_diagnostic_item(d));
+            }
+        }
+    }
+
+    out.push(String::new());
+    out.push(format!(
+        "=== end: {} symbols, {} procedures ===",
+        module.symbols.len(),
+        module.procedures.len()
+    ));
+
+    out.join("\n")
 }
 
 fn render_simd_shape(shape: &SimdShape) -> String {
@@ -4748,14 +5029,30 @@ impl<'a> Analyzer<'a> {
                     diagnostics,
                 );
                 if let Some(arg_type) = self.infer_expr_type(&args[0], local_symbols, scope_type_names) {
-                    if !matches!(arg_type, SemanticType::Pointer { .. }) {
-                        let (line, column) = expr_position(&args[0]);
-                        diagnostics.push(make_diagnostic(
-                            procedure_name,
-                            line,
-                            column,
-                            format!("NEW first argument must be a pointer variable, found {}", render_semantic_type(&arg_type)),
-                        ));
+                    let resolved = self.resolve_named_type_one_level(&arg_type, local_symbols);
+                    match &resolved {
+                        SemanticType::Pointer { target } => {
+                            // Check that the pointed-to type is not an ABSTRACT record
+                            let target_resolved = self.resolve_named_type_one_level(target, local_symbols);
+                            if matches!(target_resolved, SemanticType::Record { flavor: Some(RecordFlavor::Abstract), .. }) {
+                                let (line, column) = expr_position(&args[0]);
+                                diagnostics.push(make_diagnostic(
+                                    procedure_name,
+                                    line,
+                                    column,
+                                    "NEW cannot allocate an ABSTRACT record type".to_string(),
+                                ));
+                            }
+                        }
+                        _ => {
+                            let (line, column) = expr_position(&args[0]);
+                            diagnostics.push(make_diagnostic(
+                                procedure_name,
+                                line,
+                                column,
+                                format!("NEW first argument must be a pointer variable, found {}", render_semantic_type(&arg_type)),
+                            ));
+                        }
                     }
                 }
             }
@@ -4861,6 +5158,28 @@ impl<'a> Analyzer<'a> {
                     local_symbols,
                     diagnostics,
                 );
+                // First arg must be SET
+                if let Some(arg_type) = self.infer_expr_type(&args[0], local_symbols, scope_type_names) {
+                    if !matches!(arg_type, SemanticType::Builtin(BuiltinType::Set)) {
+                        let (line, column) = expr_position(&args[0]);
+                        diagnostics.push(make_diagnostic(
+                            procedure_name,
+                            line,
+                            column,
+                            format!("{} argument 1 must be SET, found {}", proc.name(), render_semantic_type(&arg_type)),
+                        ));
+                    }
+                }
+                // Second arg must be integer
+                self.require_builtin_integer_arg(
+                    proc,
+                    2,
+                    &args[1],
+                    procedure_name,
+                    local_symbols,
+                    scope_type_names,
+                    diagnostics,
+                );
             }
             BuiltinProc::Entier => self.require_builtin_real_args(
                 proc,
@@ -4879,6 +5198,25 @@ impl<'a> Analyzer<'a> {
                         0,
                         "LEN expects 1 or 2 arguments".to_string(),
                     ));
+                } else if let Some(arg_type) = self.infer_expr_type(&args[0], local_symbols, scope_type_names) {
+                    let is_valid = matches!(
+                        &arg_type,
+                        SemanticType::Array { .. }
+                            | SemanticType::Builtin(BuiltinType::String)
+                            | SemanticType::Builtin(BuiltinType::ShortString)
+                    ) || matches!(&arg_type, SemanticType::Named { .. });
+                    if !is_valid {
+                        let (line, column) = expr_position(&args[0]);
+                        diagnostics.push(make_diagnostic(
+                            procedure_name,
+                            line,
+                            column,
+                            format!(
+                                "LEN argument 1 must be an array or string type, found {}",
+                                render_semantic_type(&arg_type)
+                            ),
+                        ));
+                    }
                 }
             }
             BuiltinProc::Long | BuiltinProc::Short => {
@@ -4921,7 +5259,22 @@ impl<'a> Analyzer<'a> {
             BuiltinProc::Size => {
                 self.require_builtin_exact_arity(proc, args, 1, procedure_name, diagnostics)
             }
-            BuiltinProc::Assert | BuiltinProc::Halt => {}
+            BuiltinProc::Assert | BuiltinProc::Halt => {
+                // ASSERT(condition) or ASSERT(condition, code): first arg must be BOOLEAN
+                if proc == BuiltinProc::Assert && !args.is_empty() {
+                    if let Some(arg_type) = self.infer_expr_type(&args[0], local_symbols, scope_type_names) {
+                        if !is_boolean_type(&arg_type) {
+                            let (line, column) = expr_position(&args[0]);
+                            diagnostics.push(make_diagnostic(
+                                procedure_name,
+                                line,
+                                column,
+                                format!("ASSERT condition must be BOOLEAN, found {}", render_semantic_type(&arg_type)),
+                            ));
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -5338,12 +5691,11 @@ mod tests {
         let dump = dump_sema(&temp);
         let _ = std::fs::remove_file(&temp);
 
-        assert!(dump.contains("module: Demo"));
-        assert!(dump.contains("exported-constants: Version"));
-        assert!(dump.contains("exported-variables: Current"));
-        assert!(dump.contains("exported-procedures: Run:Command"));
-        assert!(dump.contains("typed-variables: Current:INTEGER"));
-        assert!(dump.contains("simd-candidates: <none>"));
+        assert!(dump.contains("module: Demo"), "missing module name\n{dump}");
+        assert!(dump.contains("const *Version"), "missing Version constant\n{dump}");
+        assert!(dump.contains("var   *Current"), "missing Current variable\n{dump}");
+        assert!(dump.contains("proc  *Run"), "missing Run procedure\n{dump}");
+        assert!(dump.contains("var   *Current : INTEGER"), "missing Current type\n{dump}");
     }
 
     #[test]
@@ -5689,8 +6041,8 @@ mod tests {
         let dump = dump_sema(&temp);
         let _ = std::fs::remove_file(&temp);
 
-        assert!(dump.contains("Pair:packed-record:f64x2:16B"));
-        assert!(dump.contains("pairs:array-of-struct:f64x2:16B"));
+        assert!(dump.contains("type   Pair") && dump.contains("packed-record:f64x2:16B"), "missing Pair simd shape\n{dump}");
+        assert!(dump.contains("var    pairs") && dump.contains("array-of-struct:f64x2:16B"), "missing pairs simd shape\n{dump}");
     }
 
     #[test]
@@ -6044,11 +6396,11 @@ mod tests {
             .iter()
             .find(|symbol| symbol.name == "Big")
             .expect("Big constant exists");
-        assert_eq!(big.const_value, Some(4294901760));
+        assert_eq!(big.const_value, Some(ConstValue::Integer(4294901760)));
         assert_eq!(
             big.declared_type,
-            None,
-            "constant declarations do not currently store declared_type"
+            Some(SemanticType::Builtin(BuiltinType::Integer)),
+            "integer constant stores INTEGER declared_type"
         );
 
         let set_errors: Vec<_> = sema
@@ -6425,6 +6777,106 @@ mod tests {
                 .any(|item| item.message.contains("forward declaration for")),
             "{}",
             messages
+        );
+    }
+
+    #[test]
+    fn sema_tracks_read_only_export_on_variables() {
+        // Variables declared with '-' should have read_only_export = true.
+        let module = parse_module_ast(
+            "MODULE Demo;\n\
+             VAR readWrite*: INTEGER; readOnly-: INTEGER; unexported: INTEGER;\n\
+             END Demo.",
+        )
+        .expect("module should parse");
+
+        let sema = analyze_module_ast(&module);
+        let rw = sema.symbols.iter().find(|s| s.name == "readWrite").expect("readWrite");
+        let ro = sema.symbols.iter().find(|s| s.name == "readOnly").expect("readOnly");
+        let un = sema.symbols.iter().find(|s| s.name == "unexported").expect("unexported");
+
+        assert!(rw.exported, "readWrite should be exported");
+        assert!(!rw.read_only_export, "readWrite should not be read-only");
+        assert!(ro.exported, "readOnly should be exported");
+        assert!(ro.read_only_export, "readOnly should be read-only");
+        assert!(!un.exported, "unexported should not be exported");
+        assert!(!un.read_only_export, "unexported should not be read-only");
+    }
+
+    #[test]
+    fn sema_rejects_len_on_non_array() {
+        let module = parse_module_ast(
+            "MODULE Demo;\n\
+             VAR n: INTEGER;\n\
+             BEGIN\n\
+             n := LEN(n);\n\
+             END Demo.",
+        )
+        .expect("module should parse");
+
+        let sema = analyze_module_ast(&module);
+        assert!(
+            sema.diagnostics.iter().any(|item| item.message.contains("LEN argument 1 must be an array")),
+            "expected LEN type error, got: {}",
+            sema.diagnostics.iter().map(|d| d.message.as_str()).collect::<Vec<_>>().join(" | ")
+        );
+    }
+
+    #[test]
+    fn sema_rejects_new_on_abstract_record_pointer() {
+        let module = parse_module_ast(
+            "MODULE Demo;\n\
+             TYPE Abs = ABSTRACT RECORD END; AbsPtr = POINTER TO Abs;\n\
+             VAR p: AbsPtr;\n\
+             BEGIN\n\
+             NEW(p);\n\
+             END Demo.",
+        )
+        .expect("module should parse");
+
+        let sema = analyze_module_ast(&module);
+        assert!(
+            sema.diagnostics.iter().any(|item| item.message.contains("NEW cannot allocate an ABSTRACT record type")),
+            "expected NEW abstract error, got: {}",
+            sema.diagnostics.iter().map(|d| d.message.as_str()).collect::<Vec<_>>().join(" | ")
+        );
+    }
+
+    #[test]
+    fn sema_rejects_incl_with_non_integer_element() {
+        let module = parse_module_ast(
+            "MODULE Demo;\n\
+             VAR s: SET;\n\
+             BEGIN\n\
+             INCL(s, 3.14);\n\
+             END Demo.",
+        )
+        .expect("module should parse");
+
+        let sema = analyze_module_ast(&module);
+        assert!(
+            sema.diagnostics.iter().any(|item| item.message.contains("INCL argument 2 must be an integer")),
+            "expected INCL integer error, got: {}",
+            sema.diagnostics.iter().map(|d| d.message.as_str()).collect::<Vec<_>>().join(" | ")
+        );
+    }
+
+    #[test]
+    fn sema_rejects_assert_with_non_boolean_condition() {
+        let module = parse_module_ast(
+            "MODULE Demo;\n\
+             VAR n: INTEGER;\n\
+             BEGIN\n\
+             ASSERT(n);\n\
+             END Demo.",
+        )
+        .expect("module should parse");
+
+        let sema = analyze_module_ast(&module);
+        assert!(
+            sema.diagnostics.iter().any(|item| item.message.contains("ASSERT condition must be BOOLEAN")),
+            "expected ASSERT boolean error, got: {}",
+            sema.diagnostics.iter().map(|d| d.message.as_str()).collect::<Vec<_>>().join(" | ")
         );
     }
 }
