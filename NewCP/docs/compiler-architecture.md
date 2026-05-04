@@ -473,6 +473,8 @@ After that, the next slice proves that the live Rust-hosted system can compile a
 | `TypeExt.cp` | RECORD extension, inherited field assignment |
 | `Loops.cp` | REPEAT/UNTIL, LOOP/EXIT |
 | `CaseWith.cp` | CASE on integer and char, WITH type-guard dispatch (cross-module) |
+
+
 ## Review and Areas for Improvement
 
 Based on recent pipeline implementation and reviews, the following areas should be addressed as the compiler evolves:
@@ -480,4 +482,4 @@ Based on recent pipeline implementation and reviews, the following areas should 
 1. **AST Node Consistency**: Ensure enums and naming conventions (like BinaryOp::LessEq vs LessEqual) remain highly consistent across the parser, semantic analysis, and backend phases.
 2. **Debug Information Tracking**: Add missing source location data (e.g., span fields in Expr) and propagate it explicitly through the IR's Instr nodes so the LLVM backend can emit accurate debug metadata.
 3. **Local Scope Mapping for Codegen**: Incorporate explicit local slot assignments (e.g., an IrValue::LocalSlot) to make it easier for 
-ewcp-llvm to emit llocas that LLVM's mem2reg pass can easily optimize.
+ewcp-llvm to emit allocas that LLVM's mem2reg pass can easily optimize.

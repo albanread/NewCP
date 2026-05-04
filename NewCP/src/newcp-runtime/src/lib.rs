@@ -1,3 +1,5 @@
+pub mod gc;
+
 use std::collections::HashMap;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
