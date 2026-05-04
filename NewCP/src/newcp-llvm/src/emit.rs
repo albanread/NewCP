@@ -5,7 +5,7 @@ use inkwell::types::BasicTypeEnum;
 use inkwell::values::{BasicMetadataValueEnum, BasicValueEnum, FunctionValue, PointerValue};
 use inkwell::{FloatPredicate, IntPredicate};
 
-use newcp_ir::{BinOp, BlockId, IrProcedure, IrType, IrValue, TempId};
+use newcp_ir::{BinOp, BlockId, IrProcedure, IrType, IrValue, TempId, UnOp};
 
 use crate::error::CodegenError;
 use crate::module::CodegenModule;
@@ -177,6 +177,11 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
                     })?;
                 Ok(())
             }
+            Instr::UnOp { dst, op, operand, ty } => {
+                let value = self.emit_unop(*op, operand, ty, value_map)?;
+                value_map.temp_values.insert(*dst, value);
+                Ok(())
+            }
             Instr::BinOp {
                 dst,
                 op,
@@ -237,6 +242,10 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
             Instr::MemCopy { dst, src, len } => {
                 self.emit_memcopy(dst, src, len, value_map)
             }
+            Instr::TypTag { .. } => Err(CodegenError::Unsupported {
+                stage: "emit_instr",
+                detail: "TypTag requires tagged-record TypeDesc lowering and heap/header ABI support".to_string(),
+            }),
             Instr::SysNew { dst, size } => {
                 let size_value = self.resolve_basic_value(size, value_map)?.into_int_value();
                 let sys_new = self
@@ -265,11 +274,7 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
             }),
         };
 
-        match result {
-            Ok(()) => Ok(()),
-            Err(err) if self.options.strict_unsupported => Err(err),
-            Err(_) => Ok(()),
-        }
+        result
     }
 
     fn emit_terminator(
@@ -630,6 +635,59 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
 
         let _ = ty;
         Ok(value)
+    }
+
+    fn emit_unop(
+        &self,
+        op: UnOp,
+        operand: &IrValue,
+        ty: &IrType,
+        value_map: &mut ValueMap<'ctx>,
+    ) -> Result<BasicValueEnum<'ctx>, CodegenError> {
+        let operand_value = self.resolve_basic_value(operand, value_map)?;
+
+        match op {
+            UnOp::Neg if matches!(operand.ty(), IrType::F32 | IrType::F64) => self
+                .cg
+                .builder
+                .build_float_neg(operand_value.into_float_value(), "fneg")
+                .map(Into::into)
+                .map_err(|e| CodegenError::Unsupported {
+                    stage: "emit_instr",
+                    detail: e.to_string(),
+                }),
+            UnOp::Neg => self
+                .cg
+                .builder
+                .build_int_neg(operand_value.into_int_value(), "neg")
+                .map(Into::into)
+                .map_err(|e| CodegenError::Unsupported {
+                    stage: "emit_instr",
+                    detail: e.to_string(),
+                }),
+            UnOp::Not => self
+                .cg
+                .builder
+                .build_not(operand_value.into_int_value(), "not")
+                .map(Into::into)
+                .map_err(|e| CodegenError::Unsupported {
+                    stage: "emit_instr",
+                    detail: e.to_string(),
+                }),
+            UnOp::BitNot => self
+                .cg
+                .builder
+                .build_not(operand_value.into_int_value(), "bitnot")
+                .map(Into::into)
+                .map_err(|e| CodegenError::Unsupported {
+                    stage: "emit_instr",
+                    detail: e.to_string(),
+                }),
+        }
+        .map(|value| {
+            let _ = ty;
+            value
+        })
     }
 
     fn resolve_raw_pointer(

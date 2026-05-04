@@ -268,4 +268,55 @@ mod tests {
             "expected SYSTEM.ROT to select between left and right rotation paths\noutput:\n{output}"
         );
     }
+
+    #[test]
+    fn dump_llvm_system_typ_fails_explicitly_until_tagged_abi_exists() {
+        let (output, code) = dump_llvm_source(
+            "newcp-system-typ.cp",
+            concat!(
+                "MODULE Demo;\n",
+                "IMPORT SYSTEM;\n",
+                "TYPE Base = RECORD x: INTEGER END;\n",
+                "VAR b: Base; tag: INTEGER;\n",
+                "PROCEDURE Run*;\n",
+                "BEGIN\n",
+                "  tag := SYSTEM.TYP(b)\n",
+                "END Run;\n",
+                "END Demo.\n"
+            ),
+        );
+
+        assert_eq!(code, 0, "expected driver command to complete for SYSTEM.TYP probe\noutput:\n{output}");
+        assert!(
+            output.contains("unsupported at emit_instr: TypTag requires tagged-record TypeDesc lowering and heap/header ABI support"),
+            "expected SYSTEM.TYP to fail explicitly at the TypTag backend boundary\noutput:\n{output}"
+        );
+    }
+
+    #[test]
+    fn dump_llvm_unary_ops_emit_neg_and_not() {
+        let (output, code) = dump_llvm_source(
+            "newcp-unary-probe.cp",
+            concat!(
+                "MODULE Demo;\n",
+                "VAR x, y: INTEGER; b: BOOLEAN;\n",
+                "PROCEDURE Run*;\n",
+                "BEGIN\n",
+                "  x := -y;\n",
+                "  b := ~b\n",
+                "END Run;\n",
+                "END Demo.\n"
+            ),
+        );
+
+        assert_eq!(code, 0, "expected exit 0 for unary probe\noutput:\n{output}");
+        assert!(
+            output.contains("%neg = sub i64 0, %t0"),
+            "expected unary minus to emit integer negation\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("%not = xor i1 %t2, true"),
+            "expected boolean not to emit a logical inversion\noutput:\n{output}"
+        );
+    }
 }

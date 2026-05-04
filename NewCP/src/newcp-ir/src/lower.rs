@@ -557,7 +557,10 @@ impl<'m> LowerCtx<'m> {
                 Some(IrValue::Temp(dst, ty))
             }
             "TYP" => {
-                let value = self.lower_expr(args.first()?);
+                let value = match args.first()? {
+                    Expr::Designator(des) => self.designator_addr(des),
+                    expr => self.lower_expr(expr),
+                };
                 let dst = self.fresh_temp();
                 self.push(Instr::TypTag { dst, value });
                 Some(IrValue::Temp(dst, IrType::I64))
