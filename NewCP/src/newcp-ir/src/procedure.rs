@@ -257,6 +257,22 @@ pub struct IrModule {
     /// Each entry is the flattened ordered field list: `(field_name, field_ir_type)`.
     /// Field index into `Instr::Gep` corresponds to the position in this list.
     pub named_types: std::collections::HashMap<String, Vec<(String, crate::types::IrType)>>,
+    /// Method vtable for each record type that declares or inherits bound procedures.
+    ///
+    /// Key: simple type name (e.g. `"Shape"`, `"Circle"`).
+    /// Value: ordered list of **LLVM function names** filling vtable slots 0, 1, …
+    ///   — each entry is the concrete implementation that should occupy that slot for
+    ///   objects of *this exact type* (i.e., overrides have replaced base entries).
+    ///
+    /// The vtable is used to:
+    ///   1. Emit `@TypeName.vtable` constant arrays in LLVM IR.
+    ///   2. Let the lowerer compute the slot index for a `MethodCall` instruction.
+    pub type_vtables: std::collections::HashMap<String, Vec<String>>,
+    /// Direct base type name for each extensible record type, if any.
+    ///
+    /// Key: simple type name.  Value: `Some("BaseTypeName")` or `None`.
+    /// Used when emitting `TypeDesc.base` to chain the descriptor for `IS`/`WITH`.
+    pub type_bases: std::collections::HashMap<String, Option<String>>,
 }
 
 impl IrModule {

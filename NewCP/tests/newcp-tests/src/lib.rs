@@ -627,5 +627,66 @@ mod tests {
             "expected CollatzLen 3n+1 branch to emit mul then add\noutput:\n{output}"
         );
     }
-}
 
+    #[test]
+    fn dump_llvm_methods_emits_vtable_and_type_desc() {
+        let (output, code) = dump_llvm("Mod/Methods.cp");
+        assert_eq!(code, 0, "expected exit 0 for Methods.cp\noutput:\n{output}");
+
+        // Bound procedures compiled with qualified ReceiverType_MethodName names.
+        assert!(
+            output.contains("@Shape_GetX"),
+            "expected Shape_GetX function\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("@Circle_GetX"),
+            "expected Circle_GetX function\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("@Circle_GetR"),
+            "expected Circle_GetR function\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("@MakeCircle"),
+            "expected MakeCircle function\noutput:\n{output}"
+        );
+
+        // Vtable arrays emitted for both types.
+        assert!(
+            output.contains("@Shape.vtable"),
+            "expected Shape.vtable global\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("@Circle.vtable"),
+            "expected Circle.vtable global\noutput:\n{output}"
+        );
+
+        // Circle vtable has 3 slots; slot 1 is the inherited Shape_GetY.
+        assert!(
+            output.contains("[3 x ptr]") && output.contains("@Shape_GetY"),
+            "expected Circle vtable to have 3 slots and inherit Shape_GetY\noutput:\n{output}"
+        );
+
+        // TypeDesc constants emitted.
+        assert!(
+            output.contains("@Shape.desc"),
+            "expected Shape.desc TypeDesc constant\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("@Circle.desc"),
+            "expected Circle.desc TypeDesc constant\noutput:\n{output}"
+        );
+
+        // Circle.desc links to Shape.desc as its base.
+        assert!(
+            output.contains("ptr @Shape.desc"),
+            "expected Circle.desc base to point to Shape.desc\noutput:\n{output}"
+        );
+
+        // vtable_len fields: Shape=2, Circle=3.
+        assert!(
+            output.contains("i64 2") && output.contains("i64 3"),
+            "expected Shape vtable_len=2 and Circle vtable_len=3\noutput:\n{output}"
+        );
+    }
+}

@@ -93,23 +93,58 @@ pub type Finalizer = unsafe extern "C" fn(*mut u8);
 /// Runtime type descriptor emitted by `newcp-llvm` for every heap-allocated type.
 ///
 /// `newcp-llvm` synthesises one `TypeDesc` global constant per `RECORD` type.
-/// The `ptroffs` trailing array lists payload byte offsets of all pointer-typed
-/// fields, terminated by the first **negative** entry (sentinel, e.g. `-1`).
 ///
-/// The `[isize; 0]` trailing field is a DST proxy for the variably-sized
-/// compiler-emitted array; callers access elements through raw pointer arithmetic
-/// via `pointer_offsets()`.
+/// # Memory layout (64-bit, `#[repr(C)]`)
+///
+/// ```text
+/// offset  0 : size        — payload size in bytes (excl. BlockHeader)
+/// offset  8 : module      — owning ModuleDesc* (null for built-ins)
+/// offset 16 : finalizer   — nullable fn ptr for resource cleanup
+/// offset 24 : base        — TypeDesc* of the direct base type (null if none)
+/// offset 32 : vtable      — *const *const () — pointer to method vtable array
+///                            (null if the type declares or inherits no methods)
+/// offset 40 : vtable_len  — u64 — number of slots in vtable
+/// offset 48 : ptroffs[]   — sentinel-terminated isize array of pointer offsets
+/// ```
+///
+/// The JIT code retrieves the descriptor via `BlockHeader.tag` stored
+/// 16 bytes before the payload pointer. The `ptroffs` trailing array is a DST
+/// proxy; callers use `pointer_offsets()` via raw pointer arithmetic.
+///
+/// # Method dispatch
+///
+/// To call a bound procedure at slot `s` on an object `obj: ptr`:
+/// 1. Load `tag = *(obj - 16)` (the `BlockHeader.tag` field).
+/// 2. Mask the GC mark bit: `desc = tag & !1`.
+/// 3. Load `vtable = *(desc + 32)`.
+/// 4. Load `fn_ptr = *(vtable + s * 8)`.
+/// 5. Call `fn_ptr(obj, args...)`.
 #[repr(C)]
 pub struct TypeDesc {
-    /// Payload size in bytes (does **not** include `BlockHeader`).
+    /// Payload size in bytes (does **not** include `BlockHeader`). Offset 0.
     pub size: isize,
-    /// Owning module, or null for built-in types.
+    /// Owning module, or null for built-in types. Offset 8.
     pub module: *const ModuleDesc,
     /// Optional finalizer; `None` if the type requires no cleanup.
-    /// Same ABI as a nullable function pointer.
+    /// Same ABI as a nullable function pointer. Offset 16.
     pub finalizer: Option<Finalizer>,
+    /// Direct base type descriptor, or null if this type has no base. Offset 24.
+    ///
+    /// Used by the runtime for `IS`/`WITH` type tests: walking the `base` chain
+    /// until a match is found or null is reached.
+    pub base: *const TypeDesc,
+    /// Pointer to the vtable array (array of function pointers), or null if this
+    /// type declares and inherits no bound procedures. Offset 32.
+    ///
+    /// Each element is a `ptr`-sized function pointer at a stable slot index
+    /// assigned by the compiler. The slot assignment is depth-first in the
+    /// inheritance chain: base type's `NEW` methods are slotted first (slot 0,
+    /// 1, …), then each derived type's own `NEW` methods follow in source order.
+    pub vtable: *const *const (),
+    /// Number of slots in `vtable`. Offset 40.
+    pub vtable_len: u64,
     /// Sentinel-terminated (first negative entry) array of payload byte offsets
-    /// where heap-pointer fields reside.
+    /// where heap-pointer fields reside. Offset 48.
     pub ptroffs: [isize; 0],
 }
 
@@ -1054,6 +1089,9 @@ mod tests {
                 size: payload_size as isize,
                 module: std::ptr::null(),
                 finalizer: None,
+                base: std::ptr::null(),
+                vtable: std::ptr::null(),
+                vtable_len: 0,
                 ptroffs: [],
             },
             sentinel: -1,
@@ -1081,6 +1119,9 @@ mod tests {
             (*raw).size = payload_size as isize;
             (*raw).module = std::ptr::null();
             (*raw).finalizer = finalizer;
+            (*raw).base = std::ptr::null();
+            (*raw).vtable = std::ptr::null();
+            (*raw).vtable_len = 0;
             // Write the trailing array immediately past the struct.
             let tail =
                 (raw as *mut u8).add(std::mem::size_of::<TypeDesc>()) as *mut isize;

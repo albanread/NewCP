@@ -390,6 +390,13 @@ impl<'m> LowerCtx<'m> {
     }
 
     fn lower_designator(&mut self, des: &Designator) -> IrValue {
+        // Check for a bound procedure call: obj.Method(args)
+        // Pattern: selectors end with [Field(method_name), Call(args)] and
+        // method_name resolves to a method (not a data field) on the receiver type.
+        if let Some(result) = self.lower_bound_proc_call_expr(des) {
+            return result;
+        }
+
         let des = self.normalize_designator(des);
         let (module_opt, base_name) = match &des.base {
             QualIdent { module: Some(m), name, .. } => (Some(m.clone()), name.clone()),
@@ -473,6 +480,125 @@ impl<'m> LowerCtx<'m> {
             ty: final_ty.clone(),
         });
         IrValue::Temp(t, final_ty)
+    }
+
+    /// Attempt to lower a bound procedure call: `obj.Method(args)` or
+    /// `ptr.Method(args)` (pointer receiver, implicit deref).
+    ///
+    /// Returns `None` if the designator is not a method call and normal
+    /// lowering should continue.
+    fn lower_bound_proc_call_expr(&mut self, des: &Designator) -> Option<IrValue> {
+        // Pattern: selectors end with [.., Field(method_name), Call(args)].
+        let selectors = &des.selectors;
+        let n = selectors.len();
+        if n < 2 {
+            return None;
+        }
+        let (Selector::Field(method_name), Selector::Call(call_args)) =
+            (&selectors[n - 2], &selectors[n - 1])
+        else {
+            return None;
+        };
+
+        // Resolve the receiver designator (everything before the last two selectors).
+        // We need to know the RECORD type of the receiver so we can look up the slot.
+        let prefix_des = Designator {
+            span: des.span,
+            base: des.base.clone(),
+            selectors: selectors[..n - 2].to_vec(),
+        };
+        let prefix_ty = self.designator_ir_type(&prefix_des)?;
+
+        // Strip pointer/ref wrappers to get the Named type.
+        fn inner_named(ty: &IrType) -> Option<&str> {
+            match ty {
+                IrType::Named(n) => Some(n.as_str()),
+                IrType::Ptr(inner) | IrType::UntaggedPtr(inner) | IrType::Ref(inner) => {
+                    inner_named(inner)
+                }
+                _ => None,
+            }
+        }
+        let type_qualified = inner_named(&prefix_ty)?;
+
+        // Strip module qualifier for local lookup (cross-module dispatch deferred).
+        let type_local_name = if let Some((_, local)) = type_qualified.split_once('.') {
+            local
+        } else {
+            type_qualified
+        };
+
+        // Check that method_name is actually a METHOD (not a data field) of this type.
+        // Use the sema symbol table to look at Record.methods.
+        let slot = method_slot_in_vtable(type_local_name, method_name, self.module_symbols)?;
+
+        // Lower the receiver.  For pointer types, load the pointer first; for Ref types
+        // the address already IS the right thing.  We produce the object pointer (ptr).
+        let receiver_ptr: IrValue = {
+            let addr = self.designator_addr(&prefix_des);
+            match addr.ty() {
+                // addr is Ref(Ptr(...)) or Ref(Named(...)) — load to get the ptr value
+                IrType::Ref(inner) if matches!(inner.as_ref(), IrType::Ptr(_) | IrType::Named(_)) => {
+                    let t = self.fresh_temp();
+                    let obj_ty = *inner;
+                    self.push(Instr::Load { dst: t, addr, ty: obj_ty.clone() });
+                    IrValue::Temp(t, obj_ty)
+                }
+                // addr is already a pointer-ish — use it directly
+                _ => addr,
+            }
+        };
+
+        // Build the call args: receiver (ptr) first, then the explicit args.
+        let mut lowered_args: Vec<IrValue> = vec![receiver_ptr.clone()];
+        for arg in call_args {
+            lowered_args.push(self.lower_expr(arg));
+        }
+
+        // Look up the return type from the method's module-level symbol.
+        let ret_ty = self
+            .module_symbols
+            .iter()
+            .find(|s| {
+                s.kind == SymbolKind::Procedure
+                    && s.name == *method_name
+                    && s.declared_type.as_ref().and_then(|t| {
+                        if let SemanticType::Procedure(pt) = t { pt.receiver.as_deref() } else { None }
+                    }).and_then(|r| match r {
+                        SemanticType::Named { name, .. } => Some(name.as_str()),
+                        _ => None,
+                    }) == Some(type_local_name)
+            })
+            .and_then(|s| {
+                if let Some(SemanticType::Procedure(pt)) = &s.declared_type {
+                    Some(pt.result_type.as_ref().map(|t| map_semantic_type(t)).unwrap_or(IrType::Void))
+                } else {
+                    None
+                }
+            })
+            .unwrap_or(IrType::Void);
+
+        if ret_ty == IrType::Void {
+            self.push(Instr::MethodCall {
+                dst: None,
+                descriptor: receiver_ptr,
+                slot,
+                args: lowered_args,
+                ret_ty: IrType::Void,
+            });
+            // Return something innocuous; callers that use the result will get void.
+            return Some(IrValue::ConstBool(false));
+        }
+
+        let t = self.fresh_temp();
+        self.push(Instr::MethodCall {
+            dst: Some(t),
+            descriptor: receiver_ptr,
+            slot,
+            args: lowered_args,
+            ret_ty: ret_ty.clone(),
+        });
+        Some(IrValue::Temp(t, ret_ty))
     }
 
     fn lower_const_designator(
@@ -1634,7 +1760,21 @@ pub fn lower_procedure(
     system_qualifiers: Vec<String>,
     module_symbols: &[SemanticSymbol],
 ) -> IrProcedure {
-    let params: Vec<(String, IrType)> = sema_proc
+    use newcp_sema::SymbolKind;
+
+    // Build LLVM parameter list.  If this is a bound procedure (receiver present),
+    // the receiver is prepended as a VAR (Ref) parameter.
+    let receiver_param: Option<(String, IrType)> = sema_proc
+        .local_symbols
+        .iter()
+        .find(|s| s.kind == SymbolKind::Receiver)
+        .and_then(|s| {
+            let recv_ty = s.declared_type.as_ref().map(map_semantic_type)?;
+            Some((s.name.clone(), IrType::Ref(Box::new(recv_ty))))
+        });
+
+    let mut params: Vec<(String, IrType)> = receiver_param.iter().cloned().collect();
+    params.extend(sema_proc
         .signature
         .parameters
         .iter()
@@ -1648,8 +1788,7 @@ pub fn lower_procedure(
                 None => base_ty,
             };
             param.names.iter().map(move |name| (name.clone(), ir_ty.clone()))
-        })
-        .collect();
+        }));
 
     let ret_ty = sema_proc
         .signature
@@ -1658,8 +1797,20 @@ pub fn lower_procedure(
         .map(|t| map_semantic_type(t))
         .unwrap_or(IrType::Void);
 
+    // Qualify the procedure name when this is a bound procedure to ensure LLVM
+    // uniqueness: "ReceiverType_MethodName".
+    let proc_name = if let Some(recv_ty) = &sema_proc.signature.receiver {
+        let recv_name = match recv_ty.as_ref() {
+            SemanticType::Named { name, .. } => name.clone(),
+            _ => "Unknown".to_string(),
+        };
+        format!("{recv_name}_{}", sema_proc.name)
+    } else {
+        sema_proc.name.clone()
+    };
+
     let mut proc = IrProcedure::new(
-        sema_proc.name.clone(),
+        proc_name,
         sema_proc.exported,
         params,
         ret_ty.clone(),
@@ -1754,40 +1905,198 @@ pub fn lower_module(sema: &SemanticModule, ast: &ModuleAst) -> IrModule {
         })
         .collect();
 
+    let system_qualifiers: Vec<String> = ast.imports
+        .iter()
+        .filter(|item| item.name == "SYSTEM")
+        .flat_map(|item| {
+            let mut names = vec![item.name.clone()];
+            if let Some(alias) = &item.alias {
+                names.push(alias.clone());
+            }
+            names
+        })
+        .collect();
+
     let procedures: Vec<IrProcedure> = sema
         .procedures
         .iter()
         .filter_map(|sema_proc| {
-            // Match by name.
+            // Match by name AND, for bound procedures, by receiver type to handle
+            // multiple overloads with the same name but different receivers.
+            let receiver_type_name: Option<&str> = sema_proc
+                .signature
+                .receiver
+                .as_deref()
+                .and_then(|rt| match rt {
+                    SemanticType::Named { name, .. } => Some(name.as_str()),
+                    _ => None,
+                });
+
             ast_procs
                 .iter()
-                .find(|p| p.heading.name.name == sema_proc.name)
+                .find(|p| {
+                    p.heading.name.name == sema_proc.name
+                        && p.heading.receiver.as_ref().map(|r| r.ty.as_str()) == receiver_type_name
+                })
                 .map(|ast_proc| lower_procedure(
                     sema_proc,
                     ast_proc,
-                    ast.imports
-                        .iter()
-                        .filter(|item| item.name == "SYSTEM")
-                        .flat_map(|item| {
-                            let mut names = vec![item.name.clone()];
-                            if let Some(alias) = &item.alias {
-                                names.push(alias.clone());
-                            }
-                            names
-                        })
-                        .collect(),
+                    system_qualifiers.clone(),
                     &sema.symbols,
                 ))
         })
         .collect();
+
+    let named_types = collect_named_types(&sema.name, &sema.imports, &sema.symbols);
+    let (type_vtables, type_bases) = collect_type_vtables(&sema.name, &sema.symbols);
 
     IrModule {
         name: sema.name.clone(),
         imports: sema.imports.clone(),
         globals,
         procedures,
-        named_types: collect_named_types(&sema.name, &sema.imports, &sema.symbols),
+        named_types,
+        type_vtables,
+        type_bases,
     }
+}
+
+/// Collect vtable information for all record types in the module.
+///
+/// Returns two maps:
+/// - `type_vtables`:  simple type name → ordered list of LLVM function names for each vtable slot.
+///   The list represents the concrete implementations for objects of *exactly* that type:
+///   inherited slots reuse the name of the override if present, otherwise the base implementation.
+/// - `type_bases`:    simple type name → `Some("BaseTypeName")` or `None`.
+fn collect_type_vtables(
+    _module_name: &str,
+    module_symbols: &[SemanticSymbol],
+) -> (
+    std::collections::HashMap<String, Vec<String>>,
+    std::collections::HashMap<String, Option<String>>,
+) {
+    use newcp_sema::SymbolKind;
+    let mut vtables: std::collections::HashMap<String, Vec<String>> = std::collections::HashMap::new();
+    let mut bases:   std::collections::HashMap<String, Option<String>> = std::collections::HashMap::new();
+
+    for sym in module_symbols {
+        if sym.kind != SymbolKind::Type {
+            continue;
+        }
+        let SemanticType::Record { base, methods, .. } =
+            sym.declared_type.as_ref().unwrap_or(&SemanticType::Nil)
+        else {
+            continue;
+        };
+        if methods.is_empty() && base.is_none() {
+            continue; // plain record with no methods — no vtable
+        }
+
+        // Record direct base name (local only for now).
+        let base_name: Option<String> = base.as_deref().and_then(|b| match b {
+            SemanticType::Named { name, module: None, .. } => Some(name.clone()),
+            _ => None,
+        });
+        bases.insert(sym.name.clone(), base_name.clone());
+
+        // Build the vtable for this type.
+        // Strategy: start from the base vtable (if any), then patch in any overrides.
+        let mut vtable: Vec<String> = base_name
+            .as_deref()
+            .and_then(|bn| vtables.get(bn))
+            .cloned()
+            .unwrap_or_default();
+
+        for method in methods {
+            let llvm_name = format!("{}_{}", sym.name, method.name);
+            if method.signature.is_new {
+                // NEW method: extend the vtable.
+                vtable.push(llvm_name);
+            } else {
+                // Override: find the existing slot (from base) and replace.
+                let base_fn = base_name.as_deref()
+                    .and_then(|bn| method_slot_in_vtable(bn, &method.name, module_symbols))
+                    .map(|slot| slot as usize);
+                if let Some(slot) = base_fn {
+                    if slot < vtable.len() {
+                        vtable[slot] = llvm_name;
+                    }
+                }
+            }
+        }
+
+        if !vtable.is_empty() {
+            vtables.insert(sym.name.clone(), vtable);
+        }
+    }
+
+    (vtables, bases)
+}
+
+/// Find the vtable slot index of `method_name` in type `type_name` (within this module).
+///
+/// Returns `None` if the type or method is not found.
+pub fn method_slot_in_vtable(
+    type_name: &str,
+    method_name: &str,
+    module_symbols: &[SemanticSymbol],
+) -> Option<u32> {
+    use newcp_sema::SymbolKind;
+    let sym = module_symbols.iter().find(|s| s.kind == SymbolKind::Type && s.name == type_name)?;
+    let SemanticType::Record { base, methods, .. } = sym.declared_type.as_ref()? else {
+        return None;
+    };
+
+    // Count how many slots the base type has.
+    let base_slot_count: u32 = base
+        .as_deref()
+        .and_then(|b| match b {
+            SemanticType::Named { name, module: None, .. } => {
+                Some(count_vtable_slots(name, module_symbols))
+            }
+            _ => None,
+        })
+        .unwrap_or(0);
+
+    // Check if the method is NEW in this type.
+    let new_methods: Vec<&newcp_sema::MethodType> =
+        methods.iter().filter(|m| m.signature.is_new).collect();
+    if let Some(pos) = new_methods.iter().position(|m| m.name == method_name) {
+        return Some(base_slot_count + pos as u32);
+    }
+
+    // Not NEW here — it's an override; delegate to the base.
+    let base_name = base.as_deref().and_then(|b| match b {
+        SemanticType::Named { name, module: None, .. } => Some(name.as_str()),
+        _ => None,
+    })?;
+    method_slot_in_vtable(base_name, method_name, module_symbols)
+}
+
+/// Total number of vtable slots for a type (inherited + own NEW methods).
+fn count_vtable_slots(type_name: &str, module_symbols: &[SemanticSymbol]) -> u32 {
+    use newcp_sema::SymbolKind;
+    let sym = match module_symbols.iter().find(|s| s.kind == SymbolKind::Type && s.name == type_name) {
+        Some(s) => s,
+        None => return 0,
+    };
+    let ty = match sym.declared_type.as_ref() {
+        Some(ty) => ty,
+        None => return 0,
+    };
+    let (base, methods) = match ty {
+        SemanticType::Record { base, methods, .. } => (base, methods),
+        _ => return 0,
+    };
+    let base_count: u32 = base
+        .as_deref()
+        .and_then(|b| match b {
+            SemanticType::Named { name, module: None, .. } => Some(count_vtable_slots(name, module_symbols)),
+            _ => None,
+        })
+        .unwrap_or(0);
+    let own_new: u32 = methods.iter().filter(|m| m.signature.is_new).count() as u32;
+    base_count + own_new
 }
 
 /// Collect all TYPE declarations in the module that are records.

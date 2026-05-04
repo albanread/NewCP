@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use inkwell::basic_block::BasicBlock;
-use inkwell::types::{BasicTypeEnum, StructType};
+use inkwell::types::{BasicType, BasicTypeEnum, StructType};
 use inkwell::values::{BasicMetadataValueEnum, BasicValueEnum, FunctionValue, PointerValue};
 use inkwell::{FloatPredicate, IntPredicate};
 
@@ -320,11 +320,168 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
                 value_map.temp_values.insert(*dst, value);
                 Ok(())
             }
-            other => Err(CodegenError::Unsupported {
-                stage: "emit_instr",
-                detail: format!("{other:?}"),
-            }),
+            Instr::MethodCall { dst, descriptor, slot, args, ret_ty } => {
+                self.emit_method_call(*dst, descriptor, *slot, args, ret_ty, value_map)
+            }
         }
+    }
+
+    /// Emit a dynamic dispatch call through the object's TypeDesc vtable.
+    ///
+    /// Sequence:
+    /// 1. GEP obj_ptr - 16 bytes → BlockHeader
+    /// 2. Load `tag` (first field of BlockHeader, i64)
+    /// 3. Mask low bit: `desc_ptr = tag & !1`
+    /// 4. GEP into TypeDesc at field 4 (vtable) → load `vtable_ptr`
+    /// 5. GEP vtable_ptr[slot] → load `fn_ptr`
+    /// 6. Build indirect call with `receiver ++ args`
+    fn emit_method_call(
+        &mut self,
+        dst: Option<newcp_ir::TempId>,
+        receiver: &newcp_ir::IrValue,        slot: u32,
+        args: &[newcp_ir::IrValue],
+        ret_ty: &newcp_ir::IrType,
+        value_map: &mut ValueMap<'ctx>,
+    ) -> Result<(), CodegenError> {
+        use inkwell::AddressSpace;
+        use inkwell::types::BasicMetadataTypeEnum;
+        use inkwell::values::BasicMetadataValueEnum;
+
+        let i8_ty  = self.cg.context.i8_type();
+        let i64_ty = self.cg.context.i64_type();
+        let ptr_ty = self.cg.context.ptr_type(AddressSpace::default());
+
+        // 1. Resolve the receiver pointer.
+        let obj_ptr = self
+            .resolve_basic_value(receiver, value_map)?
+            .into_pointer_value();
+
+        // 2. GEP obj_ptr[-16] → start of BlockHeader (tag is its first field).
+        let neg16 = i64_ty.const_int((-16i64) as u64, false);
+        let hdr_ptr = unsafe {
+            self.cg
+                .builder
+                .build_gep(i8_ty, obj_ptr, &[neg16], "hdr_ptr")
+                .map_err(|e| CodegenError::Unsupported {
+                    stage: "emit_method_call",
+                    detail: e.to_string(),
+                })?
+        };
+
+        // 3. Load tag (i64) and strip low bit to get TypeDesc*.
+        let tag_val = self
+            .cg
+            .builder
+            .build_load(i64_ty, hdr_ptr, "tag_raw")
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "emit_method_call",
+                detail: e.to_string(),
+            })?
+            .into_int_value();
+        let mask = i64_ty.const_int(!1u64, false);
+        let tag_clean = self
+            .cg
+            .builder
+            .build_and(tag_val, mask, "tag")
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "emit_method_call",
+                detail: e.to_string(),
+            })?;
+        let desc_ptr = self
+            .cg
+            .builder
+            .build_int_to_ptr(tag_clean, ptr_ty, "desc_ptr")
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "emit_method_call",
+                detail: e.to_string(),
+            })?;
+
+        // 4. TypeDesc field 4 (vtable) is at byte offset 32 in the struct.
+        //    Use a byte GEP rather than struct GEP to avoid needing the named struct.
+        let offset32 = i64_ty.const_int(32, false);
+        let vtable_field_ptr = unsafe {
+            self.cg
+                .builder
+                .build_gep(i8_ty, desc_ptr, &[offset32], "vtable_field_ptr")
+                .map_err(|e| CodegenError::Unsupported {
+                    stage: "emit_method_call",
+                    detail: e.to_string(),
+                })?
+        };
+        let vtable_ptr = self
+            .cg
+            .builder
+            .build_load(ptr_ty, vtable_field_ptr, "vtable_ptr")
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "emit_method_call",
+                detail: e.to_string(),
+            })?
+            .into_pointer_value();
+
+        // 5. vtable_ptr[slot] → fn_ptr.
+        let slot_idx = i64_ty.const_int(slot as u64, false);
+        let fn_ptr_addr = unsafe {
+            self.cg
+                .builder
+                .build_gep(ptr_ty, vtable_ptr, &[slot_idx], "fn_ptr_addr")
+                .map_err(|e| CodegenError::Unsupported {
+                    stage: "emit_method_call",
+                    detail: e.to_string(),
+                })?
+        };
+        let fn_ptr = self
+            .cg
+            .builder
+            .build_load(ptr_ty, fn_ptr_addr, "fn_ptr")
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "emit_method_call",
+                detail: e.to_string(),
+            })?
+            .into_pointer_value();
+
+        // 6. Build argument list (receiver + remaining args).
+        let mut llvm_args: Vec<BasicMetadataValueEnum<'ctx>> = Vec::new();
+        llvm_args.push(obj_ptr.into());
+        for arg in args {
+            llvm_args.push(self.resolve_basic_value(arg, value_map)?.into());
+        }
+
+        // Build fn type: all params are `ptr` (opaque pointers), return type from ret_ty.
+        let type_lowerer = crate::types::TypeLowerer::new(self.cg.context);
+        let ptr_ty_meta = BasicMetadataTypeEnum::from(
+            self.cg.context.ptr_type(inkwell::AddressSpace::default()),
+        );
+        let mut param_types: Vec<BasicMetadataTypeEnum<'ctx>> = vec![ptr_ty_meta]; // receiver
+        for arg in args {
+            let bt = type_lowerer
+                .lower_basic(&arg.ty(), Some(&self.cg.planner.named_struct_types))
+                .unwrap_or_else(|_| self.cg.context.i64_type().into());
+            param_types.push(bt.into());
+        }
+        let fn_ty = if *ret_ty == newcp_ir::IrType::Void {
+            self.cg.context.void_type().fn_type(&param_types, false)
+        } else {
+            let bt = type_lowerer.lower_basic(ret_ty, Some(&self.cg.planner.named_struct_types))
+                .unwrap_or_else(|_| self.cg.context.i64_type().into());
+            bt.fn_type(&param_types, false)
+        };
+
+        let call = self
+            .cg
+            .builder
+            .build_indirect_call(fn_ty, fn_ptr, &llvm_args, "method_ret")
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "emit_method_call",
+                detail: e.to_string(),
+            })?;
+
+        if let Some(t) = dst {
+            if *ret_ty != newcp_ir::IrType::Void {
+                let bv = call.try_as_basic_value().unwrap_basic();
+                value_map.temp_values.insert(t, bv);
+            }
+        }
+        Ok(())
     }
 
     fn emit_terminator(

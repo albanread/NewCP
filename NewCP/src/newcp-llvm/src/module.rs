@@ -2,9 +2,9 @@ use std::collections::HashMap;
 
 use inkwell::builder::Builder;
 use inkwell::context::Context;
-use inkwell::module::Module;
+use inkwell::module::{Linkage, Module};
 use inkwell::types::{BasicTypeEnum, StructType};
-use inkwell::values::{FunctionValue, PointerValue};
+use inkwell::values::{FunctionValue, GlobalValue, PointerValue};
 
 use newcp_ir::{IrGlobal, IrModule, IrProcedure};
 
@@ -28,6 +28,9 @@ pub struct GlobalPlanner<'ctx> {
     /// Interned SHORTCHAR string constant globals, keyed by string content.
     /// Each entry is a `ptr` to the first byte of a null-terminated `[N x i8]` constant.
     pub string_constants: HashMap<String, PointerValue<'ctx>>,
+    /// `@TypeName.desc` global constants emitted for each record type that has methods.
+    /// Used by `emit_method_call` to locate the static TypeDesc for a type.
+    pub type_desc_globals: HashMap<String, GlobalValue<'ctx>>,
 }
 
 impl<'ctx> GlobalPlanner<'ctx> {
@@ -38,6 +41,7 @@ impl<'ctx> GlobalPlanner<'ctx> {
             module_data_ty: None,
             named_struct_types: HashMap::new(),
             string_constants: HashMap::new(),
+            type_desc_globals: HashMap::new(),
         }
     }
 }
@@ -90,8 +94,8 @@ impl<'ctx> CodegenModule<'ctx> {
         // Declare `@__newcp_sys_new(i64) -> ptr` if needed.
         if uses_sys_new(ir_module) {
             self.declare_sys_new();
-        }
-        Ok(())
+        }        // Emit TypeDesc constant globals and vtable arrays for record types with methods.
+        self.declare_type_descs(ir_module);        Ok(())
     }
 
     /// Declare LLVM struct types for all named record types in the module.
@@ -267,11 +271,122 @@ impl<'ctx> CodegenModule<'ctx> {
         ptr
     }
 
+    /// Emit `@TypeName.vtable` and `@TypeName.desc` constant globals for every
+    /// record type in `ir_module.type_vtables`.
+    ///
+    /// # TypeDesc layout (matches `newcp_runtime::gc::TypeDesc` `#[repr(C)]`):
+    /// ```text
+    /// { i64 size, ptr module, ptr finalizer, ptr base, ptr vtable, i64 vtable_len, [1 x i64] ptroffs }
+    /// ```
+    /// `size` is computed from the LLVM struct type.  `module`, `finalizer`, and
+    /// `base` are null for the first slice (runtime registration happens later).
+    fn declare_type_descs(&mut self, ir_module: &IrModule) {
+        let i64_ty  = self.context.i64_type();
+        let ptr_ty  = self.context.ptr_type(inkwell::AddressSpace::default());
+
+        // %TypeDesc = type { i64, ptr, ptr, ptr, ptr, i64, [1 x i64] }
+        // (ptroffs has exactly 1 element — the sentinel -1 — for the first slice,
+        // since we don't yet have pointer-field tracking.  Types with pointer fields
+        // will need more entries; this is sufficient for non-pointer record types.)
+        let ptroffs_arr_ty = i64_ty.array_type(1);
+        let type_desc_ty = self.context.struct_type(
+            &[
+                i64_ty.into(),          // 0: size
+                ptr_ty.into(),          // 1: module
+                ptr_ty.into(),          // 2: finalizer
+                ptr_ty.into(),          // 3: base
+                ptr_ty.into(),          // 4: vtable
+                i64_ty.into(),          // 5: vtable_len
+                ptroffs_arr_ty.into(),  // 6: ptroffs[1] (sentinel -1 only)
+            ],
+            false,
+        );
+
+        // First pass: emit vtable arrays so we have their global addresses for TypeDesc.
+        let mut vtable_globals: HashMap<String, GlobalValue<'ctx>> = HashMap::new();
+        for (type_name, slot_fns) in &ir_module.type_vtables {
+            if slot_fns.is_empty() {
+                continue;
+            }
+            let vtable_ty = ptr_ty.array_type(slot_fns.len() as u32);
+            let vtable_name = format!("{}.vtable", type_name);
+
+            // Build the initializer: [ptr @Fn0, ptr @Fn1, ...]
+            let fn_ptrs: Vec<_> = slot_fns
+                .iter()
+                .map(|fn_name| {
+                    self.module
+                        .get_function(fn_name)
+                        .map(|f| f.as_global_value().as_pointer_value().into())
+                        .unwrap_or_else(|| ptr_ty.const_null().into())
+                })
+                .collect();
+            let vtable_init = ptr_ty.const_array(&fn_ptrs);
+            let vtable_global = self.module.add_global(vtable_ty, None, &vtable_name);
+            vtable_global.set_initializer(&vtable_init);
+            vtable_global.set_constant(true);
+            vtable_global.set_linkage(Linkage::Private);
+            vtable_globals.insert(type_name.clone(), vtable_global);
+        }
+
+        // Second pass: emit TypeDesc constants.
+        for (type_name, slot_fns) in &ir_module.type_vtables {
+            let desc_name = format!("{}.desc", type_name);
+
+            // Compute payload size via LLVM struct size_of.
+            let size_val = self
+                .planner
+                .named_struct_types
+                .get(type_name.as_str())
+                .and_then(|st| st.size_of())
+                .unwrap_or_else(|| i64_ty.const_int(0, false));
+
+            // Base TypeDesc pointer (null for types with no local base in first slice).
+            let base_ptr = ir_module
+                .type_bases
+                .get(type_name.as_str())
+                .and_then(|base_opt| base_opt.as_deref())
+                .and_then(|base_name| {
+                    // The base desc global may not exist yet if the base has no methods,
+                    // or may have already been emitted in this pass.
+                    self.module.get_global(&format!("{base_name}.desc")).map(|g| g.as_pointer_value().into())
+                })
+                .unwrap_or_else(|| ptr_ty.const_null().into());
+
+            // Vtable pointer (null if no slots).
+            let (vtable_ptr, vtable_len) = if slot_fns.is_empty() {
+                (ptr_ty.const_null(), 0u64)
+            } else {
+                let vtg = vtable_globals[type_name.as_str()].as_pointer_value();
+                (vtg, slot_fns.len() as u64)
+            };
+
+            // ptroffs: just the sentinel -1 (no pointer fields tracked yet).
+            let ptroffs_init = i64_ty.const_array(&[i64_ty.const_int(u64::MAX, true)]);
+
+            let desc_init = type_desc_ty.const_named_struct(&[
+                size_val.into(),
+                ptr_ty.const_null().into(),                          // module: null
+                ptr_ty.const_null().into(),                          // finalizer: null
+                base_ptr,                                            // base
+                vtable_ptr.into(),                                   // vtable
+                i64_ty.const_int(vtable_len, false).into(),          // vtable_len
+                ptroffs_init.into(),                                 // ptroffs
+            ]);
+
+            let desc_global = self.module.add_global(type_desc_ty, None, &desc_name);
+            desc_global.set_initializer(&desc_init);
+            desc_global.set_constant(true);
+            desc_global.set_linkage(Linkage::Private);
+            self.planner.type_desc_globals.insert(type_name.clone(), desc_global);
+        }
+    }
+
     /// Declare `@__newcp_sys_new(i64) -> ptr` — part of the backend/runtime ABI.
     fn declare_sys_new(&mut self) {
-        let i64_ty = self.context.i64_type();
         let ptr_ty = self.context.ptr_type(inkwell::AddressSpace::default());
-        let fn_ty = ptr_ty.fn_type(&[i64_ty.into()], false);
+        let i64_ty2 = self.context.i64_type();
+        let fn_ty = ptr_ty.fn_type(&[i64_ty2.into()], false);
         self.module
             .add_function("__newcp_sys_new", fn_ty, Some(inkwell::module::Linkage::External));
     }
