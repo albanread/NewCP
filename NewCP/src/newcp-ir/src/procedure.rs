@@ -252,6 +252,11 @@ pub struct IrModule {
     pub imports: Vec<String>,
     pub globals: Vec<IrGlobal>,
     pub procedures: Vec<IrProcedure>,
+    /// Named record-type declarations, keyed by simple type name.
+    ///
+    /// Each entry is the flattened ordered field list: `(field_name, field_ir_type)`.
+    /// Field index into `Instr::Gep` corresponds to the position in this list.
+    pub named_types: std::collections::HashMap<String, Vec<(String, crate::types::IrType)>>,
 }
 
 impl IrModule {
@@ -347,6 +352,9 @@ fn render_instr(instr: &Instr) -> String {
         }
         TypeCheck { dst, value, ty } => {
             format!("{} : bool = typecheck {} is {}", dst.render(), value.render(), ty.render())
+        }
+        Gep { dst, base, field_index, result_ty } => {
+            format!("{} : ptr<{}> = gep {}, {}", dst.render(), result_ty.render(), base.render(), field_index)
         }
         StoreResult { value } => {
             format!("store result, {}", value.render())

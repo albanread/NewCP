@@ -1,5 +1,7 @@
+use std::collections::HashMap;
+
 use inkwell::context::Context;
-use inkwell::types::{AnyTypeEnum, BasicTypeEnum};
+use inkwell::types::{AnyTypeEnum, BasicTypeEnum, StructType};
 
 use newcp_ir::IrType;
 
@@ -19,9 +21,13 @@ impl<'ctx> TypeLowerer<'ctx> {
 
     /// Lower an `IrType` to a LLVM `BasicTypeEnum`.
     ///
-    /// Returns `Unsupported` for types that require layout knowledge not yet
-    /// available in the first slice (e.g. `Named`, `Opaque` record shapes).
-    pub fn lower_basic(&self, ty: &IrType) -> Result<BasicTypeEnum<'ctx>, CodegenError> {
+    /// `named_types`: optional map from type name to a declared LLVM `StructType`.
+    /// When provided, `Named` types are resolved through this map.
+    pub fn lower_basic(
+        &self,
+        ty: &IrType,
+        named_types: Option<&HashMap<String, StructType<'ctx>>>,
+    ) -> Result<BasicTypeEnum<'ctx>, CodegenError> {
         match ty {
             IrType::I8 | IrType::U8 => Ok(self.context.i8_type().into()),
             IrType::I16 | IrType::U16 => Ok(self.context.i16_type().into()),
@@ -44,22 +50,23 @@ impl<'ctx> TypeLowerer<'ctx> {
                 stage: "type_lowering",
                 detail: format!("SET({w}) is not yet supported; only SET(32)"),
             }),
-            // Untagged records: deferred until layout pass is implemented.
-            IrType::UntaggedRecord { name, .. } => Err(CodegenError::Unsupported {
-                stage: "type_lowering",
-                detail: format!("UntaggedRecord '{name}' layout lowering not yet implemented"),
-            }),
-            // Named and Opaque: conservative — lower to ptr in first slice only
-            // when the caller explicitly requests a pointer-shaped fallback.
-            // Direct use as a value type is unsupported until ABI is known.
-            IrType::Named(name) => Err(CodegenError::Unsupported {
-                stage: "type_lowering",
-                detail: format!("Named type '{name}' requires layout knowledge not yet available"),
-            }),
-            IrType::Opaque(name) => {
-                // Opaque types appear as runtime descriptors passed as pointers.
-                // Lower to ptr as a safe placeholder.
-                let _ = name;
+            // Untagged records: lower to opaque `ptr` in the first slice.
+            IrType::UntaggedRecord { .. } => {
+                Ok(self.context.ptr_type(inkwell::AddressSpace::default()).into())
+            }
+            // Named: look up in declared struct types if provided.
+            IrType::Named(name) => {
+                if let Some(map) = named_types {
+                    if let Some(&st) = map.get(name.as_str()) {
+                        return Ok(st.into());
+                    }
+                }
+                Err(CodegenError::Unsupported {
+                    stage: "type_lowering",
+                    detail: format!("Named type '{name}' requires layout knowledge not yet available"),
+                })
+            }
+            IrType::Opaque(_) => {
                 Ok(self.context.ptr_type(inkwell::AddressSpace::default()).into())
             }
             IrType::Void => Err(CodegenError::Unsupported {
@@ -70,11 +77,15 @@ impl<'ctx> TypeLowerer<'ctx> {
     }
 
     /// Lower an `IrType` for use as a function return type.
-    pub fn lower_return_type(&self, ty: &IrType) -> Result<AnyTypeEnum<'ctx>, CodegenError> {
+    pub fn lower_return_type(
+        &self,
+        ty: &IrType,
+        named_types: Option<&HashMap<String, StructType<'ctx>>>,
+    ) -> Result<AnyTypeEnum<'ctx>, CodegenError> {
         if *ty == IrType::Void {
             return Ok(self.context.void_type().into());
         }
-        let basic = self.lower_basic(ty)?;
+        let basic = self.lower_basic(ty, named_types)?;
         Ok(match basic {
             BasicTypeEnum::ArrayType(t) => t.into(),
             BasicTypeEnum::FloatType(t) => t.into(),

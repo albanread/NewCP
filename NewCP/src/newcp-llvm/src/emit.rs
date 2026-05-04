@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use inkwell::basic_block::BasicBlock;
-use inkwell::types::BasicTypeEnum;
+use inkwell::types::{BasicTypeEnum, StructType};
 use inkwell::values::{BasicMetadataValueEnum, BasicValueEnum, FunctionValue, PointerValue};
 use inkwell::{FloatPredicate, IntPredicate};
 
@@ -39,12 +39,11 @@ impl<'ctx> ValueMap<'ctx> {
 /// Emits one procedure body into the `CodegenModule`.
 pub struct ProcedureEmitter<'ctx, 'm> {
     cg: &'m mut CodegenModule<'ctx>,
-    options: &'m CodegenOptions,
 }
 
 impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
-    pub fn new(cg: &'m mut CodegenModule<'ctx>, options: &'m CodegenOptions) -> Self {
-        Self { cg, options }
+    pub fn new(cg: &'m mut CodegenModule<'ctx>, _options: &'m CodegenOptions) -> Self {
+        Self { cg }
     }
 
     /// Stage 4: emit the body of `proc`.
@@ -277,6 +276,9 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
                 value_map.temp_values.insert(*dst, result);
                 Ok(())
             }
+            Instr::Gep { dst, base, field_index, result_ty } => {
+                self.emit_gep(*dst, base, *field_index, result_ty, value_map)
+            }
             other => Err(CodegenError::Unsupported {
                 stage: "emit_instr",
                 detail: format!("{other:?}"),
@@ -353,21 +355,29 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
                         })?;
                 }
             Terminator::Trap { kind } => {
-                // Emit a call to `llvm.trap` for any trap kind.
-                let trap_fn = self.get_or_declare_llvm_trap();
+                // Map TrapKind to a stable integer code per the design doc ABI.
+                let trap_code: i32 = match kind {
+                    newcp_ir::TrapKind::Assert           => 1,
+                    newcp_ir::TrapKind::Halt(code)       => *code,
+                    newcp_ir::TrapKind::NilDeref         => 2,
+                    newcp_ir::TrapKind::ArrayBounds      => 3,
+                    newcp_ir::TrapKind::TypeGuard        => 4,
+                    newcp_ir::TrapKind::CaseFallthrough  => 5,
+                };
+                let trap_fn = self.get_or_declare_newcp_trap();
+                let code_val = self.cg.context.i32_type().const_int(trap_code as u64, true);
                 self.cg
                     .builder
-                    .build_call(trap_fn, &[], "trap")
+                    .build_call(trap_fn, &[code_val.into()], "trap")
                     .map_err(|e| CodegenError::Unsupported {
                         stage: "emit_terminator",
                         detail: e.to_string(),
                     })?;
-                // After llvm.trap, we still need a terminator. Emit unreachable.
+                // After the noreturn call, we still need a terminator.
                 self.cg.builder.build_unreachable().map_err(|e| CodegenError::Unsupported {
                     stage: "emit_terminator",
                     detail: e.to_string(),
                 })?;
-                let _ = kind;
             }
             Terminator::TypeTest { value, ty, true_target, false_target } => {
                 let cond = self.emit_type_check(value, ty, value_map)?.into_int_value();
@@ -395,13 +405,24 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
         Ok(())
     }
 
-    fn get_or_declare_llvm_trap(&self) -> inkwell::values::FunctionValue<'ctx> {
-        if let Some(f) = self.cg.module.get_function("llvm.trap") {
+    fn get_or_declare_newcp_trap(&self) -> inkwell::values::FunctionValue<'ctx> {
+        const NAME: &str = "__newcp_trap";
+        if let Some(f) = self.cg.module.get_function(NAME) {
             return f;
         }
         let void_ty = self.cg.context.void_type();
-        let fn_ty = void_ty.fn_type(&[], false);
-        self.cg.module.add_function("llvm.trap", fn_ty, None)
+        let i32_ty = self.cg.context.i32_type();
+        let fn_ty = void_ty.fn_type(&[i32_ty.into()], false);
+        let f = self.cg.module.add_function(NAME, fn_ty, Some(inkwell::module::Linkage::External));
+        // Mark as noreturn so LLVM knows the unreachable after it is correct.
+        f.add_attribute(
+            inkwell::attributes::AttributeLoc::Function,
+            self.cg.context.create_enum_attribute(
+                inkwell::attributes::Attribute::get_named_enum_kind_id("noreturn"),
+                0,
+            ),
+        );
+        f
     }
 
     fn bind_proc_slots(
@@ -466,7 +487,9 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
     }
 
     fn lower_basic_type(&self, ty: &IrType) -> Result<BasicTypeEnum<'ctx>, CodegenError> {
-        self.cg.lowerer.lower_basic(ty)
+        self.cg
+            .lowerer
+            .lower_basic(ty, Some(&self.cg.planner.named_struct_types))
     }
 
     fn resolve_pointer(
@@ -1143,7 +1166,11 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
             .map(|arg| self.lower_basic_type(&arg.ty()).map(Into::into))
             .collect::<Result<Vec<_>, _>>()?;
 
-        let fn_type = match self.cg.lowerer.lower_return_type(ret_ty)? {
+        let fn_type = match self
+            .cg
+            .lowerer
+            .lower_return_type(ret_ty, Some(&self.cg.planner.named_struct_types))?
+        {
             inkwell::types::AnyTypeEnum::VoidType(v) => v.fn_type(&param_types, false),
             inkwell::types::AnyTypeEnum::IntType(i) => i.fn_type(&param_types, false),
             inkwell::types::AnyTypeEnum::FloatType(f) => f.fn_type(&param_types, false),
@@ -1202,6 +1229,51 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
     ///
     /// - Named type → calls `@__newcp_type_test(obj_ptr, typedesc_ptr) -> i1`
     /// - Opaque fallback → emits constant `false` (unresolved type at lower time)
+    /// Emit a `getelementptr inbounds` for a named-record field access.
+    ///
+    /// `base` must be a `ptr` to an instance of a named record type.
+    /// The caller supplies `field_index` (0-based, already flattened with inherited fields)
+    /// and `result_ty` (the value type of the field).
+    ///
+    /// The LLVM struct type is looked up from `planner.named_struct_types`.  If the
+    /// struct type is not yet declared (e.g. for imported or unresolved named types),
+    /// we fall back to a byte-offset-free opaque GEP that yields `ptr` (which will
+    /// produce incorrect code but avoids a hard error during the first-slice bring-up).
+    fn emit_gep(
+        &mut self,
+        dst: TempId,
+        base: &IrValue,
+        field_index: u32,
+        _result_ty: &IrType,
+        value_map: &mut ValueMap<'ctx>,
+    ) -> Result<(), CodegenError> {
+        let base_ptr = self.resolve_pointer(base, value_map)?;
+        let struct_ty = named_struct_type_from_ir_type(&base.ty(), &self.cg.planner.named_struct_types)
+            .filter(|st| st.count_fields() > field_index);
+
+        let zero = self.cg.context.i32_type().const_zero();
+        let idx = self.cg.context.i32_type().const_int(field_index as u64, false);
+
+        let field_ptr = if let Some(sty) = struct_ty {
+            unsafe {
+                self.cg
+                    .builder
+                    .build_in_bounds_gep(sty, base_ptr, &[zero, idx], &format!("gep.{field_index}"))
+            }
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "emit_gep",
+                detail: e.to_string(),
+            })?
+        } else {
+            // Fallback: we cannot emit a typed GEP without the struct type.
+            // Emit an identity pointer and hope the generated code is corrected later.
+            base_ptr
+        };
+
+        value_map.temp_values.insert(dst, field_ptr.into());
+        Ok(())
+    }
+
     fn emit_type_check(
         &mut self,
         value: &IrValue,
@@ -1262,6 +1334,19 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
         let global = self.cg.module.add_global(i8_ty, None, &global_name);
         global.set_linkage(inkwell::module::Linkage::External);
         global.as_pointer_value()
+    }
+}
+
+fn named_struct_type_from_ir_type<'ctx>(
+    ty: &IrType,
+    named_struct_types: &HashMap<String, StructType<'ctx>>,
+) -> Option<StructType<'ctx>> {
+    match ty {
+        IrType::Named(name) => named_struct_types.get(name).copied(),
+        IrType::Ref(inner) | IrType::Ptr(inner) | IrType::UntaggedPtr(inner) => {
+            named_struct_type_from_ir_type(inner, named_struct_types)
+        }
+        _ => None,
     }
 }
 

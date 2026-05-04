@@ -18,15 +18,12 @@ mod tests {
             .join("target")
             .join("debug")
             .join(if cfg!(windows) { "newcp-driver.exe" } else { "newcp-driver" });
-        // If the binary doesn't exist yet, build it now so tests can run standalone.
-        if !bin.exists() {
-            let status = Command::new("cargo")
-                .args(["build", "-p", "newcp-driver"])
-                .current_dir(workspace_root())
-                .status()
-                .expect("failed to run cargo build for newcp-driver");
-            assert!(status.success(), "cargo build -p newcp-driver failed");
-        }
+        let status = Command::new("cargo")
+            .args(["build", "-p", "newcp-driver"])
+            .current_dir(workspace_root())
+            .status()
+            .expect("failed to run cargo build for newcp-driver");
+        assert!(status.success(), "cargo build -p newcp-driver failed");
         bin
     }
 
@@ -46,6 +43,18 @@ mod tests {
     fn dump_llvm(path: &str) -> (String, i32) {
         let out = Command::new(driver_bin())
             .args(["dump-llvm", path])
+            .current_dir(workspace_root())
+            .output()
+            .expect("failed to spawn driver binary");
+
+        let stdout = String::from_utf8_lossy(&out.stdout).into_owned();
+        let code = out.status.code().unwrap_or(-1);
+        (stdout, code)
+    }
+
+    fn dump_ir(path: &str) -> (String, i32) {
+        let out = Command::new(driver_bin())
+            .args(["dump-ir", path])
             .current_dir(workspace_root())
             .output()
             .expect("failed to spawn driver binary");
@@ -97,6 +106,40 @@ mod tests {
         assert!(
             output.contains("store i1 false, ptr getelementptr inbounds (%Vars.Data"),
             "expected GEP-based store for boolean field inside @Vars.Data\noutput:\n{output}"
+        );
+    }
+
+    #[test]
+    fn dump_ir_records_uses_gep_for_by_value_record_fields() {
+        let (output, code) = dump_ir("Mod/Records.cp");
+        assert_eq!(code, 0, "expected exit 0 for Records.cp\noutput:\n{output}");
+        assert!(
+            output.contains("proc *Width (r: named:Rect) -> i64")
+                && output.contains("t0 : ptr<i64> = gep r, 2")
+                && output.contains("t2 : ptr<i64> = gep r, 0"),
+            "expected Width to lower record field access through typed GEPs\noutput:\n{output}"
+        );
+        assert!(
+            !output.contains("load r.right") && !output.contains("load r.left"),
+            "expected by-value record fields not to lower as unresolved dotted imports\noutput:\n{output}"
+        );
+    }
+
+    #[test]
+    fn dump_llvm_records_uses_matching_struct_geps() {
+        let (output, code) = dump_llvm("Mod/Records.cp");
+        assert_eq!(code, 0, "expected exit 0 for Records.cp\noutput:\n{output}");
+        assert!(
+            output.contains("define void @SetPoint(ptr %0, i64 %1, i64 %2)")
+                && output.contains("getelementptr inbounds %Point, ptr %t1, i32 0, i32 0")
+                && output.contains("getelementptr inbounds %Point, ptr %t4, i32 0, i32 1"),
+            "expected Point procedures to use %Point GEPs\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("define i1 @Contains(%Rect %0, %Point %1)")
+                && output.contains("getelementptr inbounds %Point, ptr %p, i32 0, i32 0")
+                && output.contains("getelementptr inbounds %Rect, ptr %r, i32 0, i32 0"),
+            "expected mixed Point/Rect accesses to keep the correct parent struct types\noutput:\n{output}"
         );
     }
 

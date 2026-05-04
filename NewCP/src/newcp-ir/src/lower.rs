@@ -105,7 +105,7 @@ struct LowerCtx<'m> {
     result_slot: Option<IrValue>,
     symbols: Vec<SemanticSymbol>,
     system_qualifiers: Vec<String>,
-    _module_symbols: &'m [SemanticSymbol],
+    module_symbols: &'m [SemanticSymbol],
 }
 
 impl<'m> LowerCtx<'m> {
@@ -126,7 +126,7 @@ impl<'m> LowerCtx<'m> {
             result_slot,
             symbols,
             system_qualifiers,
-            _module_symbols: module_symbols,
+            module_symbols,
         }
     }
 
@@ -149,11 +149,105 @@ impl<'m> LowerCtx<'m> {
     fn switch_to(&mut self, block: BlockId) {
         self.current = block;
     }
+
+    /// Look up the `SemanticType::Record` for a named type by its simple name.
+    ///
+    /// Searches procedure-local symbols first (for local type aliases), then
+    /// falls back to module-level symbols (TYPE declarations).
+    fn resolve_record_type(&self, type_name: &str) -> Option<&SemanticType> {
+        let ty = self
+            .symbols
+            .iter()
+            .rev()
+            .chain(self.module_symbols.iter().rev())
+            .find(|sym| sym.kind == SymbolKind::Type && sym.name == type_name)
+            .and_then(|sym| sym.declared_type.as_ref())?;
+
+        match ty {
+            SemanticType::Named { module: None, name, .. } if name != type_name => {
+                self.resolve_record_type(name)
+            }
+            _ => Some(ty),
+        }
+    }
+
+    /// Given a record `SemanticType`, return the flattened list of `(name, SemanticType)` pairs
+    /// for all fields (including inherited ones from the base chain, base fields first).
+    fn flatten_record_fields(ty: &SemanticType) -> Vec<(String, SemanticType)> {
+        let SemanticType::Record { base, fields, .. } = ty else {
+            return Vec::new();
+        };
+        let mut result = Vec::new();
+        // Recursively include base record fields first.
+        if let Some(base_ty) = base {
+            result.extend(Self::flatten_record_fields(base_ty));
+        }
+        for field in fields {
+            for name in &field.names {
+                result.push((name.clone(), field.ty.clone()));
+            }
+        }
+        result
+    }
+
+    /// Resolve the pointee record type from an IrType, stripping one pointer level.
+    ///
+    /// For `Ptr(Named("T"))` or `Named("T")` it looks up `T` in the symbol table.
+    /// Returns `None` when the base type isn't a recognized record-backed pointer.
+    fn resolve_base_record_type(&self, base_ir_ty: &IrType) -> Option<&SemanticType> {
+        let mut cursor = base_ir_ty;
+        loop {
+            match cursor {
+                IrType::Ptr(inner) | IrType::UntaggedPtr(inner) | IrType::Ref(inner) => {
+                    cursor = inner.as_ref();
+                }
+                IrType::Named(n) => break self.resolve_record_type(n.as_str()),
+                _ => break None,
+            }
+        }
+    }
+
+    fn base_symbol_ir_type(&self, qual: &QualIdent) -> Option<IrType> {
+        self.proc
+            .params
+            .iter()
+            .find(|(name, _)| *name == qual.name)
+            .map(|(_, ty)| ty.clone())
+            .or_else(|| {
+                self.symbols
+                    .iter()
+                    .rev()
+                    .find(|symbol| symbol.name == qual.name)
+                    .and_then(|symbol| symbol.declared_type.as_ref())
+                    .map(map_semantic_type)
+            })
+    }
 }
 
 // == Expression lowering ==
 
 impl<'m> LowerCtx<'m> {
+    fn normalize_designator(&self, des: &Designator) -> Designator {
+        let Some(module_name) = des.base.module.as_ref() else {
+            return des.clone();
+        };
+        let local_base = QualIdent {
+            span: des.base.span,
+            module: None,
+            name: module_name.clone(),
+        };
+        if self.base_symbol_ir_type(&local_base).is_none() {
+            return des.clone();
+        }
+
+        let mut normalized = des.clone();
+        let field_name = normalized.base.name.clone();
+        normalized.base.name = module_name.clone();
+        normalized.base.module = None;
+        normalized.selectors.insert(0, Selector::Field(field_name));
+        normalized
+    }
+
     fn lower_expr(&mut self, expr: &Expr) -> IrValue {
         match expr {
             Expr::Literal { value, .. } => self.lower_literal(value),
@@ -202,58 +296,89 @@ impl<'m> LowerCtx<'m> {
     }
 
     fn lower_designator(&mut self, des: &Designator) -> IrValue {
+        let des = self.normalize_designator(des);
         let (module_opt, base_name) = match &des.base {
             QualIdent { module: Some(m), name, .. } => (Some(m.clone()), name.clone()),
             QualIdent { name, .. } => (None, name.clone()),
         };
 
-        let base_ty = self
-            .designator_ir_type(des)
+        let final_ty = self
+            .designator_ir_type(&des)
             .unwrap_or_else(|| IrType::Opaque("unresolved".to_string()));
         if des.selectors.is_empty() {
-            if let Some(value) = self.lower_const_designator(module_opt.as_deref(), &base_name, &base_ty) {
+            if let Some(value) = self.lower_const_designator(module_opt.as_deref(), &base_name, &final_ty) {
                 return value;
             }
         }
-        let mut val: IrValue = if self.is_direct_callee(module_opt.as_deref(), &base_name, &des.selectors) {
-            match module_opt {
-                Some(m) => IrValue::ImportRef(m, base_name, base_ty.clone()),
-                None => IrValue::GlobalRef(base_name, base_ty.clone()),
-            }
-        } else {
-            match module_opt {
-                Some(m) => {
-                    let t = self.fresh_temp();
-                    self.push(Instr::Load {
-                        dst: t,
-                        addr: IrValue::ImportRef(
-                            m.clone(),
-                            base_name.clone(),
-                            IrType::Ref(Box::new(base_ty.clone())),
-                        ),
-                        ty: base_ty.clone(),
-                    });
-                    IrValue::Temp(t, base_ty.clone())
-                }
-                None => {
-                    let t = self.fresh_temp();
-                    self.push(Instr::Load {
-                        dst: t,
-                        addr: IrValue::GlobalRef(
-                            base_name.clone(),
-                            IrType::Ref(Box::new(base_ty.clone())),
-                        ),
-                        ty: base_ty.clone(),
-                    });
-                    IrValue::Temp(t, base_ty.clone())
-                }
-            }
-        };
 
-        for sel in &des.selectors {
-            val = self.lower_selector(val, sel);
+        if self.is_direct_callee(module_opt.as_deref(), &base_name, &des.selectors) {
+            let callee = match module_opt {
+                Some(m) => IrValue::ImportRef(m, base_name, final_ty.clone()),
+                None => IrValue::GlobalRef(base_name, final_ty.clone()),
+            };
+
+            match des.selectors.first() {
+                Some(Selector::Call(args)) => {
+                    let args_lowered = self.lower_call_args(&callee, args);
+                    let ret_ty = self.callee_return_type(&callee);
+                    if ret_ty == IrType::Void {
+                        self.push(Instr::Call {
+                            dst: None,
+                            callee: callee.clone(),
+                            args: args_lowered,
+                            ret_ty,
+                        });
+                        return callee;
+                    }
+
+                    let t = self.fresh_temp();
+                    self.push(Instr::Call {
+                        dst: Some(t),
+                        callee,
+                        args: args_lowered,
+                        ret_ty: ret_ty.clone(),
+                    });
+                    return IrValue::Temp(t, ret_ty);
+                }
+                Some(Selector::AmbiguousParen(qual)) => {
+                    let arg = Expr::Designator(Designator {
+                        span: qual.span,
+                        base: qual.clone(),
+                        selectors: Vec::new(),
+                    });
+                    let args_lowered = self.lower_call_args(&callee, &[arg]);
+                    let ret_ty = self.callee_return_type(&callee);
+                    if ret_ty == IrType::Void {
+                        self.push(Instr::Call {
+                            dst: None,
+                            callee: callee.clone(),
+                            args: args_lowered,
+                            ret_ty,
+                        });
+                        return callee;
+                    }
+
+                    let t = self.fresh_temp();
+                    self.push(Instr::Call {
+                        dst: Some(t),
+                        callee,
+                        args: args_lowered,
+                        ret_ty: ret_ty.clone(),
+                    });
+                    return IrValue::Temp(t, ret_ty);
+                }
+                _ => return callee,
+            }
         }
-        val
+
+        let addr = self.designator_addr(&des);
+        let t = self.fresh_temp();
+        self.push(Instr::Load {
+            dst: t,
+            addr,
+            ty: final_ty.clone(),
+        });
+        IrValue::Temp(t, final_ty)
     }
 
     fn lower_const_designator(
@@ -279,6 +404,79 @@ impl<'m> LowerCtx<'m> {
             ConstValue::Char(value) => IrValue::ConstChar(*value),
             ConstValue::Boolean(value) => IrValue::ConstBool(*value),
         })
+    }
+
+    fn designator_addr(&mut self, des: &Designator) -> IrValue {
+        let des = self.normalize_designator(des);
+        let (module_opt, base_name) = match &des.base {
+            QualIdent { module: Some(m), name, .. } => (Some(m.clone()), name.clone()),
+            QualIdent { name, .. } => (None, name.clone()),
+        };
+        let base_ty = self
+            .base_symbol_ir_type(&des.base)
+            .unwrap_or_else(|| IrType::Opaque("addr".to_string()));
+        let mut addr = match &module_opt {
+            Some(m) => IrValue::ImportRef(m.clone(), base_name.clone(), IrType::Ref(Box::new(base_ty))),
+            None => IrValue::GlobalRef(base_name.clone(), IrType::Ref(Box::new(base_ty))),
+        };
+
+        for selector in &des.selectors {
+            match selector {
+                Selector::Field(fname) => {
+                    let mut gep_base = addr.clone();
+                    let mut base_ty = addr.ty();
+                    if let IrType::Ref(inner) = &base_ty {
+                        if matches!(inner.as_ref(), IrType::Ref(_) | IrType::Ptr(_) | IrType::UntaggedPtr(_)) {
+                            let loaded_ty = inner.as_ref().clone();
+                            let t = self.fresh_temp();
+                            self.push(Instr::Load {
+                                dst: t,
+                                addr: addr.clone(),
+                                ty: loaded_ty.clone(),
+                            });
+                            gep_base = IrValue::Temp(t, loaded_ty.clone());
+                            base_ty = loaded_ty;
+                        }
+                    }
+
+                    if let Some(record_ty) = self.resolve_base_record_type(&base_ty) {
+                        let flat_fields = Self::flatten_record_fields(record_ty);
+                        if let Some((idx, (_, field_sem_ty))) = flat_fields
+                            .iter()
+                            .enumerate()
+                            .find(|(_, (name, _))| name == fname)
+                        {
+                            let field_ty = map_semantic_type(field_sem_ty);
+                            let t = self.fresh_temp();
+                            self.push(Instr::Gep {
+                                dst: t,
+                                base: gep_base,
+                                field_index: idx as u32,
+                                result_ty: field_ty.clone(),
+                            });
+                            addr = IrValue::Temp(t, IrType::Ref(Box::new(field_ty)));
+                            continue;
+                        }
+                    }
+
+                    let unresolved = IrType::Opaque(format!("field:{fname}"));
+                    addr = IrValue::GlobalRef(
+                        format!("field:{fname}"),
+                        IrType::Ref(Box::new(unresolved)),
+                    );
+                }
+                _ => {
+                    let pointee_ty = self
+                        .designator_ir_type(&des)
+                        .unwrap_or_else(|| IrType::Opaque("addr".to_string()));
+                    addr = match &module_opt {
+                        Some(m) => IrValue::ImportRef(m.clone(), des.base.name.clone(), IrType::Ref(Box::new(pointee_ty))),
+                        None => IrValue::GlobalRef(des.base.name.clone(), IrType::Ref(Box::new(pointee_ty))),
+                    };
+                }
+            }
+        }
+        addr
     }
 
     fn is_direct_callee(
@@ -367,83 +565,6 @@ impl<'m> LowerCtx<'m> {
                 _ => self.lower_expr(arg),
             })
             .collect()
-    }
-
-    fn lower_selector(&mut self, base: IrValue, sel: &Selector) -> IrValue {
-        match sel {
-            Selector::Field(fname) => {
-                let t = self.fresh_temp();
-                let ty = IrType::Opaque(format!("field:{fname}"));
-                self.push(Instr::Load {
-                    dst: t,
-                    addr: IrValue::GlobalRef(
-                        format!("field:{fname}"),
-                        IrType::Ref(Box::new(ty.clone())),
-                    ),
-                    ty: ty.clone(),
-                });
-                let _ = base;
-                IrValue::Temp(t, ty)
-            }
-            Selector::Index(_) | Selector::StringDereference => {
-                let t = self.fresh_temp();
-                let ty = IrType::Opaque("array-element".to_string());
-                self.push(Instr::Load { dst: t, addr: base.clone(), ty: ty.clone() });
-                IrValue::Temp(t, ty)
-            }
-            Selector::Dereference => {
-                let t = self.fresh_temp();
-                let ty = IrType::Opaque("deref".to_string());
-                self.push(Instr::Load { dst: t, addr: base.clone(), ty: ty.clone() });
-                IrValue::Temp(t, ty)
-            }
-            Selector::TypeGuard(ty_ident) => {
-                let (module_opt, type_name) = match ty_ident {
-                    QualIdent { module: Some(m), name, .. } => (Some(m.clone()), name.clone()),
-                    QualIdent { name, .. } => (None, name.clone()),
-                };
-                let ir_ty = match module_opt {
-                    Some(m) => IrType::Named(format!("{m}.{type_name}")),
-                    None => IrType::Named(type_name),
-                };
-                let t = self.fresh_temp();
-                self.push(Instr::BitCast { dst: t, value: base, ty: ir_ty.clone() });
-                IrValue::Temp(t, ir_ty)
-            }
-            Selector::Call(args) => {
-                let args_lowered = self.lower_call_args(&base, args);
-                let t = self.fresh_temp();
-                let ret_ty = self.callee_return_type(&base);
-                self.push(Instr::Call {
-                    dst: Some(t),
-                    callee: base,
-                    args: args_lowered,
-                    ret_ty: ret_ty.clone(),
-                });
-                IrValue::Temp(t, ret_ty)
-            }
-            Selector::AmbiguousParen(qual) => {
-                // Parser uses AmbiguousParen when a selector might be either a
-                // call or a type guard. In expression lowering, treat it as a
-                // single-argument call and let the semantic pipeline reject any
-                // shape that was actually a type guard.
-                let arg = Expr::Designator(Designator {
-                    span: qual.span,
-                    base: qual.clone(),
-                    selectors: Vec::new(),
-                });
-                let arg_values = self.lower_call_args(&base, &[arg]);
-                let t = self.fresh_temp();
-                let ret_ty = self.callee_return_type(&base);
-                self.push(Instr::Call {
-                    dst: Some(t),
-                    callee: base,
-                    args: arg_values,
-                    ret_ty: ret_ty.clone(),
-                });
-                IrValue::Temp(t, ret_ty)
-            }
-        }
     }
 
     fn lower_unary(&mut self, op: UnaryOp, expr: &Expr) -> IrValue {
@@ -663,13 +784,8 @@ impl<'m> LowerCtx<'m> {
     }
 
     fn designator_ir_type(&self, des: &Designator) -> Option<IrType> {
-        let mut ty = self
-            .symbols
-            .iter()
-            .rev()
-            .find(|symbol| symbol.name == des.base.name)
-            .and_then(|symbol| symbol.declared_type.as_ref())
-            .map(map_semantic_type)?;
+        let des = self.normalize_designator(des);
+        let mut ty = self.base_symbol_ir_type(&des.base)?;
 
         for selector in &des.selectors {
             ty = match (selector, ty) {
@@ -677,6 +793,19 @@ impl<'m> LowerCtx<'m> {
                 (Selector::Dereference, IrType::UntaggedPtr(inner)) => *inner,
                 (Selector::Index(_), IrType::Ptr(inner)) => *inner,
                 (Selector::Index(_), IrType::UntaggedPtr(inner)) => *inner,
+                (Selector::Field(fname), ref base_ty) => {
+                    // Look up the field type in the resolved record, if possible.
+                    if let Some(record_ty) = self.resolve_base_record_type(base_ty) {
+                        let flat = Self::flatten_record_fields(record_ty);
+                        if let Some((_, field_sem_ty)) = flat.iter().find(|(n, _)| n == fname) {
+                            map_semantic_type(field_sem_ty)
+                        } else {
+                            IrType::Opaque(format!("field:{fname}"))
+                        }
+                    } else {
+                        IrType::Opaque(format!("field:{fname}"))
+                    }
+                }
                 (_, other) => other,
             };
         }
@@ -811,27 +940,6 @@ impl<'m> LowerCtx<'m> {
             Statement::With { arms, else_branch, .. } => {
                 self.lower_with(arms, else_branch.as_deref());
             }
-        }
-    }
-
-    fn designator_addr(&mut self, des: &Designator) -> IrValue {
-        let (module_opt, base_name) = match &des.base {
-            QualIdent { module: Some(m), name, .. } => (Some(m.clone()), name.clone()),
-            QualIdent { name, .. } => (None, name.clone()),
-        };
-        let pointee_ty = self
-            .designator_ir_type(des)
-            .unwrap_or_else(|| IrType::Opaque("addr".to_string()));
-        match module_opt {
-            Some(m) => IrValue::ImportRef(
-                m,
-                base_name,
-                IrType::Ref(Box::new(pointee_ty)),
-            ),
-            None => IrValue::GlobalRef(
-                base_name,
-                IrType::Ref(Box::new(pointee_ty)),
-            ),
         }
     }
 
@@ -1407,5 +1515,60 @@ pub fn lower_module(sema: &SemanticModule, ast: &ModuleAst) -> IrModule {
         imports: sema.imports.clone(),
         globals,
         procedures,
+        named_types: collect_named_types(&sema.symbols),
     }
+}
+
+/// Collect all TYPE declarations in the module that are records.
+///
+/// Returns a map from simple type name to the flattened ordered field list
+/// `(field_name, IrType)`, with inherited fields from the base chain appearing first.
+fn collect_named_types(
+    module_symbols: &[SemanticSymbol],
+) -> std::collections::HashMap<String, Vec<(String, IrType)>> {
+    use newcp_sema::SymbolKind;
+    let mut map = std::collections::HashMap::new();
+    for sym in module_symbols {
+        if sym.kind != SymbolKind::Type {
+            continue;
+        }
+        if let Some(sem_ty) = &sym.declared_type {
+            let flat = flatten_fields_deep(sem_ty, module_symbols);
+            if !flat.is_empty() {
+                map.insert(sym.name.clone(), flat);
+            }
+        }
+    }
+    map
+}
+
+/// Flatten all fields (including inherited ones) for a record-like SemanticType.
+fn flatten_fields_deep(
+    ty: &SemanticType,
+    module_symbols: &[SemanticSymbol],
+) -> Vec<(String, IrType)> {
+    let (base, fields) = match ty {
+        SemanticType::Record { base, fields, .. } => (base.as_deref(), fields.as_slice()),
+        SemanticType::Named { name, module: None, .. } => {
+            // Resolve local named type.
+            if let Some(sym) = module_symbols.iter().find(|s| s.name == *name) {
+                if let Some(resolved) = &sym.declared_type {
+                    return flatten_fields_deep(resolved, module_symbols);
+                }
+            }
+            return Vec::new();
+        }
+        _ => return Vec::new(),
+    };
+    let mut result = Vec::new();
+    if let Some(parent) = base {
+        result.extend(flatten_fields_deep(parent, module_symbols));
+    }
+    for field in fields {
+        let ir_ty = map_semantic_type(&field.ty);
+        for name in &field.names {
+            result.push((name.clone(), ir_ty.clone()));
+        }
+    }
+    result
 }

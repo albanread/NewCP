@@ -22,6 +22,9 @@ pub struct GlobalPlanner<'ctx> {
     /// The LLVM struct type used for `@ModuleName.Data`, or `None` if the
     /// module has no mutable globals.
     pub module_data_ty: Option<StructType<'ctx>>,
+    /// LLVM struct types for named record types, keyed by type name.
+    /// Used by `emit_gep` to emit typed `getelementptr` instructions.
+    pub named_struct_types: HashMap<String, StructType<'ctx>>,
     /// Interned SHORTCHAR string constant globals, keyed by string content.
     /// Each entry is a `ptr` to the first byte of a null-terminated `[N x i8]` constant.
     pub string_constants: HashMap<String, PointerValue<'ctx>>,
@@ -33,6 +36,7 @@ impl<'ctx> GlobalPlanner<'ctx> {
             functions: HashMap::new(),
             globals: HashMap::new(),
             module_data_ty: None,
+            named_struct_types: HashMap::new(),
             string_constants: HashMap::new(),
         }
     }
@@ -76,8 +80,10 @@ impl<'ctx> CodegenModule<'ctx> {
         ir_module: &IrModule,
         options: &CodegenOptions,
     ) -> Result<(), CodegenError> {
+        // Declare LLVM struct types for named records first so that
+        // declare_globals can use them when building @Module.Data.
+        self.declare_named_types(ir_module, options);
         self.declare_globals(ir_module, options)?;
-        // Declare all procedures.
         for proc in &ir_module.procedures {
             self.declare_procedure(proc, options)?;
         }
@@ -86,6 +92,28 @@ impl<'ctx> CodegenModule<'ctx> {
             self.declare_sys_new();
         }
         Ok(())
+    }
+
+    /// Declare LLVM struct types for all named record types in the module.
+    ///
+    /// After this call, `planner.named_struct_types` maps each type name to an
+    /// LLVM `StructType` whose fields are laid out in the same order as
+    /// `ir_module.named_types[name]`.
+    fn declare_named_types(&mut self, ir_module: &IrModule, _options: &CodegenOptions) {
+        let lowerer = TypeLowerer::new(self.context);
+        for (type_name, fields) in &ir_module.named_types {
+            let field_types: Vec<BasicTypeEnum<'ctx>> = fields
+                .iter()
+                .filter_map(|(_, ir_ty)| lowerer.lower_basic(ir_ty, None).ok())
+                .collect();
+            if field_types.len() != fields.len() {
+                // Skip types with unsupported fields for now.
+                continue;
+            }
+            let struct_ty = self.context.opaque_struct_type(type_name.as_str());
+            struct_ty.set_body(field_types.as_slice(), false);
+            self.planner.named_struct_types.insert(type_name.clone(), struct_ty);
+        }
     }
 
     fn declare_globals(
@@ -99,7 +127,10 @@ impl<'ctx> CodegenModule<'ctx> {
             if global.is_const {
                 continue;
             }
-            let llvm_ty = match self.lowerer.lower_basic(&global.ty) {
+            // Use a local lowerer so we can pass named_struct_types (already populated
+            // by declare_named_types which runs before declare_globals).
+            let lowerer = TypeLowerer::new(self.context);
+            let llvm_ty = match lowerer.lower_basic(&global.ty, Some(&self.planner.named_struct_types)) {
                 Ok(ty) => ty,
                 Err(err) => {
                     if options.strict_unsupported {
@@ -152,10 +183,14 @@ impl<'ctx> CodegenModule<'ctx> {
         proc: &IrProcedure,
         options: &CodegenOptions,
     ) -> Result<(), CodegenError> {
+        // Capture named struct types to pass to the type lowerer.
+        let named_types = self.planner.named_struct_types.clone();
+        let lowerer = TypeLowerer::new(self.context);
+
         // Build parameter type list.
         let mut param_types = Vec::new();
         for (_name, ty) in &proc.params {
-            match self.lowerer.lower_basic(ty) {
+            match lowerer.lower_basic(ty, Some(&named_types)) {
                 Ok(t) => param_types.push(t.into()),
                 Err(e) => {
                     if options.strict_unsupported {
@@ -169,7 +204,7 @@ impl<'ctx> CodegenModule<'ctx> {
         }
 
         // Build return type.
-        let fn_type = match self.lowerer.lower_return_type(&proc.ret_ty)? {
+        let fn_type = match lowerer.lower_return_type(&proc.ret_ty, Some(&named_types))? {
             inkwell::types::AnyTypeEnum::VoidType(v) => v.fn_type(&param_types, false),
             inkwell::types::AnyTypeEnum::IntType(i) => i.fn_type(&param_types, false),
             inkwell::types::AnyTypeEnum::FloatType(f) => f.fn_type(&param_types, false),

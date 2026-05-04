@@ -169,6 +169,12 @@ pub enum Instr {
     SysNew { dst: TempId, size: IrValue },
     /// `t = typecheck value is ty`  — IS expression (boolean result)
     TypeCheck { dst: TempId, value: IrValue, ty: IrType },
+    /// `t = gep base, field_index`  — struct field pointer (GEP into a record)
+    ///
+    /// `base` is a pointer to the record. `field_index` is the zero-based
+    /// field index in the flattened field list (accounting for inherited fields).
+    /// `result_ty` is the type of the field (value type, not pointer).
+    Gep { dst: TempId, base: IrValue, field_index: u32, result_ty: IrType },
     /// `store result_slot, value`  — internal: prepare RETURN value before Br function_exit
     StoreResult { value: IrValue },
 }

@@ -2748,6 +2748,7 @@ impl<'a> Analyzer<'a> {
         local_symbols: &[SemanticSymbol],
         scope_type_names: &HashSet<String>,
     ) -> Option<SemanticType> {
+        let designator = self.normalize_designator(designator, local_symbols);
         let mut current = if designator.base.module.is_none() {
             match designator.base.name.as_str() {
                 "TRUE" | "FALSE" => Some(SemanticType::Builtin(BuiltinType::Boolean)),
@@ -2778,7 +2779,8 @@ impl<'a> Analyzer<'a> {
         local_symbols: &[SemanticSymbol],
         diagnostics: &mut Vec<SemanticDiagnostic>,
     ) {
-        let (line, column) = designator_position(designator);
+        let designator = self.normalize_designator(designator, local_symbols);
+        let (line, column) = designator_position(&designator);
 
         if designator
             .selectors
@@ -3212,6 +3214,7 @@ impl<'a> Analyzer<'a> {
         scope_type_names: &HashSet<String>,
         diagnostics: &mut Vec<SemanticDiagnostic>,
     ) -> Option<SemanticType> {
+        let designator = self.normalize_designator(designator, local_symbols);
         let current = if designator.base.module.is_none() {
             match designator.base.name.as_str() {
                 "TRUE" | "FALSE" => Some(SemanticType::Builtin(BuiltinType::Boolean)),
@@ -3229,7 +3232,7 @@ impl<'a> Analyzer<'a> {
         };
 
         if current.is_none() && designator.base.module.is_none() {
-            let (line, column) = designator_position(designator);
+            let (line, column) = designator_position(&designator);
             diagnostics.push(make_diagnostic(
                 procedure_name,
                 line,
@@ -3244,7 +3247,7 @@ impl<'a> Analyzer<'a> {
             match self.validate_selector(
                 &current,
                 selector,
-                designator,
+                &designator,
                 procedure_name,
                 local_symbols,
                 scope_type_names,
@@ -3490,6 +3493,7 @@ impl<'a> Analyzer<'a> {
         scope_type_names: &HashSet<String>,
         diagnostics: &mut Vec<SemanticDiagnostic>,
     ) -> Option<SemanticType> {
+        let designator = self.normalize_designator(designator, local_symbols);
         let subject_symbol = if designator.base.module.is_none() {
             self.lookup_symbol(&designator.base.name, local_symbols)
         } else {
@@ -3503,7 +3507,7 @@ impl<'a> Analyzer<'a> {
             procedure_name,
             scope_type_names,
             local_symbols,
-            designator_position(designator),
+            designator_position(&designator),
             diagnostics,
         );
         Some(self.resolve_named_type(guard, scope_type_names))
@@ -3595,12 +3599,14 @@ impl<'a> Analyzer<'a> {
             return;
         };
 
+        let designator = self.normalize_designator(designator, local_symbols);
+
         if designator
             .selectors
             .iter()
             .any(|selector| matches!(selector, Selector::Call(_) | Selector::TypeGuard(_) | Selector::AmbiguousParen(_)))
         {
-            let (line, column) = designator_position(designator);
+            let (line, column) = designator_position(&designator);
             diagnostics.push(make_diagnostic(
                 procedure_name,
                 line,
@@ -3620,7 +3626,7 @@ impl<'a> Analyzer<'a> {
 
         if let Some(symbol) = self.lookup_symbol(&designator.base.name, local_symbols) {
             if !matches!(symbol.kind, SymbolKind::Variable | SymbolKind::Parameter | SymbolKind::Receiver) {
-                let (line, column) = designator_position(designator);
+                let (line, column) = designator_position(&designator);
                 diagnostics.push(make_diagnostic(
                     procedure_name,
                     line,
@@ -3789,6 +3795,29 @@ impl<'a> Analyzer<'a> {
             .rev()
             .chain(self.module_symbols.iter().rev())
             .find(|symbol| symbol.name == name)
+    }
+
+    fn normalize_designator(
+        &self,
+        designator: &Designator,
+        local_symbols: &[SemanticSymbol],
+    ) -> Designator {
+        let Some(module_name) = designator.base.module.as_ref() else {
+            return designator.clone();
+        };
+        let Some(symbol) = self.lookup_symbol(module_name, local_symbols) else {
+            return designator.clone();
+        };
+        if matches!(symbol.kind, SymbolKind::Import | SymbolKind::Type) {
+            return designator.clone();
+        }
+
+        let mut normalized = designator.clone();
+        let field_name = normalized.base.name.clone();
+        normalized.base.name = module_name.clone();
+        normalized.base.module = None;
+        normalized.selectors.insert(0, Selector::Field(field_name));
+        normalized
     }
 
     fn types_are_assignment_compatible(
@@ -5081,14 +5110,6 @@ fn render_simd_shape(shape: &SimdShape) -> String {
     )
 }
 
-fn filter_symbols(symbols: &[SemanticSymbol], kind: SymbolKind, exported: bool) -> Vec<&str> {
-    symbols
-        .iter()
-        .filter(|symbol| symbol.kind == kind && symbol.exported == exported)
-        .map(|symbol| symbol.name.as_str())
-        .collect()
-}
-
 fn render_semantic_type(ty: &SemanticType) -> String {
     match ty {
         SemanticType::Builtin(builtin) => builtin.name().to_string(),
@@ -5937,22 +5958,6 @@ fn render_param_mode(mode: ParamMode) -> &'static str {
         ParamMode::Var => "VAR",
         ParamMode::In => "IN",
         ParamMode::Out => "OUT",
-    }
-}
-
-fn render_string_list(items: &[String]) -> String {
-    if items.is_empty() {
-        "<none>".to_string()
-    } else {
-        items.join(", ")
-    }
-}
-
-fn render_str_list(items: &[&str]) -> String {
-    if items.is_empty() {
-        "<none>".to_string()
-    } else {
-        items.join(", ")
     }
 }
 
