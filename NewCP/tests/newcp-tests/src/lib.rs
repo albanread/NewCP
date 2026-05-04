@@ -501,5 +501,65 @@ mod tests {
             "expected NEW(d) to emit call to __newcp_sys_new\noutput:\n{output}"
         );
     }
+
+    #[test]
+    fn dump_llvm_case_emits_full_arm_chain() {
+        // Verifies that CASE statements with multiple arms emit a proper test chain:
+        // each arm's labels are tested in a separate block, with a fall-through to the
+        // next arm's tests on miss.  Also verifies that CASE ELSE (without a match) is
+        // reachable and that WITH arms resolve imported record fields correctly.
+        let (output, code) = dump_llvm("Mod/CaseWith.cp");
+        assert_eq!(code, 0, "expected exit 0 for CaseWith.cp\noutput:\n{output}");
+
+        // Sides: three arms tested in sequence.  Each arm's body stores a literal,
+        // so we expect stores for 0, 3, 4, and -1 (the ELSE value).
+        assert!(
+            output.contains("store i64 0,"),
+            "expected Circle arm body (store 0) in Sides\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("store i64 3,"),
+            "expected Triangle arm body (store 3) in Sides\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("store i64 4,"),
+            "expected Square arm body (store 4) in Sides\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("store i64 -1,"),
+            "expected ELSE arm body (store -1) in Sides\noutput:\n{output}"
+        );
+
+        // CharClass: three range-test arms with comparisons for 'a'..'z', 'A'..'Z',
+        // '0'..'9' should produce at least six icmp instructions.
+        let icmp_count = output.matches("icmp").count();
+        assert!(
+            icmp_count >= 6,
+            "expected at least 6 icmp instructions for range-test arms in CharClass, got {icmp_count}\noutput:\n{output}"
+        );
+
+        // Describe (WITH statement): TypeExt.Bird and Fish struct types must be
+        // declared, and their fields accessed via typed GEP.
+        assert!(
+            output.contains("%TypeExt.Bird = type"),
+            "expected %%TypeExt.Bird struct declaration for WITH arm\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("%TypeExt.Fish = type"),
+            "expected %%TypeExt.Fish struct declaration for WITH arm\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("getelementptr inbounds %TypeExt.Bird,"),
+            "expected GEP into %%TypeExt.Bird for canFly field\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("getelementptr inbounds %TypeExt.Fish,"),
+            "expected GEP into %%TypeExt.Fish for fins field\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("getelementptr inbounds %TypeExt.Animal,"),
+            "expected GEP into %%TypeExt.Animal for legs field in ELSE arm\noutput:\n{output}"
+        );
+    }
 }
 

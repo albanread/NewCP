@@ -106,6 +106,8 @@ struct LowerCtx<'m> {
     symbols: Vec<SemanticSymbol>,
     system_qualifiers: Vec<String>,
     module_symbols: &'m [SemanticSymbol],
+    /// Type overrides pushed by WITH arms so field access resolves against the guard type.
+    with_type_overrides: Vec<(String, IrType)>,
 }
 
 impl<'m> LowerCtx<'m> {
@@ -127,6 +129,7 @@ impl<'m> LowerCtx<'m> {
             symbols,
             system_qualifiers,
             module_symbols,
+            with_type_overrides: Vec::new(),
         }
     }
 
@@ -225,23 +228,11 @@ impl<'m> LowerCtx<'m> {
     }
 
     /// Resolve the pointee record type from an IrType, stripping one pointer level.
-    ///
-    /// For `Ptr(Named("T"))` or `Named("T")` it looks up `T` in the symbol table.
-    /// Returns `None` when the base type isn't a recognized record-backed pointer.
-    fn resolve_base_record_type(&self, base_ir_ty: &IrType) -> Option<&SemanticType> {
-        let mut cursor = base_ir_ty;
-        loop {
-            match cursor {
-                IrType::Ptr(inner) | IrType::UntaggedPtr(inner) | IrType::Ref(inner) => {
-                    cursor = inner.as_ref();
-                }
-                IrType::Named(n) => break self.resolve_record_type(n.as_str()),
-                _ => break None,
-            }
-        }
-    }
-
     fn base_symbol_ir_type(&self, qual: &QualIdent) -> Option<IrType> {
+        // WITH-body overrides take priority so field access uses the narrowed type.
+        if let Some((_, ty)) = self.with_type_overrides.iter().rev().find(|(n, _)| n == &qual.name) {
+            return Some(ty.clone());
+        }
         self.proc
             .params
             .iter()
@@ -255,6 +246,95 @@ impl<'m> LowerCtx<'m> {
                     .and_then(|symbol| symbol.declared_type.as_ref())
                     .map(map_semantic_type)
             })
+    }
+
+    /// Flatten record fields for an IR type, including support for dot-qualified
+    /// imported types like `"TypeExt.Bird"`.
+    ///
+    /// Strips pointer/ref wrappers and resolves the inner record's fields.
+    fn flatten_fields_for_ir_type(&self, ir_ty: &IrType) -> Vec<(String, SemanticType)> {
+        let mut cursor = ir_ty;
+        loop {
+            match cursor {
+                IrType::Ptr(inner) | IrType::UntaggedPtr(inner) | IrType::Ref(inner) => {
+                    cursor = inner.as_ref();
+                }
+                IrType::Named(n) => {
+                    if let Some((module, name)) = n.split_once('.') {
+                        return self.flatten_imported_record_fields(module, name);
+                    }
+                    return self
+                        .resolve_record_type(n)
+                        .map(|ty| Self::flatten_record_fields(ty))
+                        .unwrap_or_default();
+                }
+                _ => return Vec::new(),
+            }
+        }
+    }
+
+    /// Load an imported module and flatten the fields of the named record type within it,
+    /// including inherited fields from the base chain.
+    fn flatten_imported_record_fields(&self, module: &str, type_name: &str) -> Vec<(String, SemanticType)> {
+        let path = Path::new("Mod").join(format!("{module}.cp"));
+        let Ok(ast) = read_module_ast(&path) else { return Vec::new() };
+        let sema = analyze_module_ast(&ast);
+        let Some(sym) = sema.symbols.iter().find(|s| s.name == type_name && s.kind == SymbolKind::Type) else {
+            return Vec::new();
+        };
+        Self::flatten_sem_type_fields(sym.declared_type.as_ref(), &sema.symbols)
+    }
+
+    /// Recursively flatten a `SemanticType` (owned reference) with optional module symbols.
+    fn flatten_sem_type_fields(
+        ty: Option<&SemanticType>,
+        module_symbols: &[SemanticSymbol],
+    ) -> Vec<(String, SemanticType)> {
+        let Some(ty) = ty else { return Vec::new() };
+        match ty {
+            SemanticType::Record { base, fields, .. } => {
+                let mut result = Vec::new();
+                if let Some(base_ty) = base {
+                    match base_ty.as_ref() {
+                        SemanticType::Named { module: None, name, .. } => {
+                            // Local base — look up in the same module_symbols.
+                            let sym = module_symbols.iter().find(|s| s.name == *name);
+                            result.extend(Self::flatten_sem_type_fields(
+                                sym.and_then(|s| s.declared_type.as_ref()),
+                                module_symbols,
+                            ));
+                        }
+                        SemanticType::Named { module: Some(m), name, .. } => {
+                            // Cross-module base.
+                            let path = Path::new("Mod").join(format!("{m}.cp"));
+                            if let Ok(base_ast) = read_module_ast(&path) {
+                                let base_sema = analyze_module_ast(&base_ast);
+                                let sym = base_sema.symbols.iter().find(|s| s.name == *name);
+                                let base_fields = Self::flatten_sem_type_fields(
+                                    sym.and_then(|s| s.declared_type.as_ref()),
+                                    &base_sema.symbols,
+                                );
+                                result.extend(base_fields);
+                            }
+                        }
+                        other => {
+                            result.extend(Self::flatten_record_fields(other));
+                        }
+                    }
+                }
+                for field in fields {
+                    for name in &field.names {
+                        result.push((name.clone(), field.ty.clone()));
+                    }
+                }
+                result
+            }
+            SemanticType::Named { module: None, name, .. } => {
+                let sym = module_symbols.iter().find(|s| s.name == *name);
+                Self::flatten_sem_type_fields(sym.and_then(|s| s.declared_type.as_ref()), module_symbols)
+            }
+            _ => Vec::new(),
+        }
     }
 }
 
@@ -484,24 +564,22 @@ impl<'m> LowerCtx<'m> {
                         }
                     }
 
-                    if let Some(record_ty) = self.resolve_base_record_type(&base_ty) {
-                        let flat_fields = Self::flatten_record_fields(record_ty);
-                        if let Some((idx, (_, field_sem_ty))) = flat_fields
-                            .iter()
-                            .enumerate()
-                            .find(|(_, (name, _))| name == fname)
-                        {
-                            let field_ty = map_semantic_type(field_sem_ty);
-                            let t = self.fresh_temp();
-                            self.push(Instr::Gep {
-                                dst: t,
-                                base: gep_base,
-                                field_index: idx as u32,
-                                result_ty: field_ty.clone(),
-                            });
-                            addr = IrValue::Temp(t, IrType::Ref(Box::new(field_ty)));
-                            continue;
-                        }
+                    let flat_fields = self.flatten_fields_for_ir_type(&base_ty);
+                    if let Some((idx, (_, field_sem_ty))) = flat_fields
+                        .iter()
+                        .enumerate()
+                        .find(|(_, (name, _))| name == fname)
+                    {
+                        let field_ty = map_semantic_type(field_sem_ty);
+                        let t = self.fresh_temp();
+                        self.push(Instr::Gep {
+                            dst: t,
+                            base: gep_base,
+                            field_index: idx as u32,
+                            result_ty: field_ty.clone(),
+                        });
+                        addr = IrValue::Temp(t, IrType::Ref(Box::new(field_ty)));
+                        continue;
                     }
 
                     let unresolved = IrType::Opaque(format!("field:{fname}"));
@@ -840,13 +918,9 @@ impl<'m> LowerCtx<'m> {
                 (Selector::Index(_), IrType::UntaggedPtr(inner)) => *inner,
                 (Selector::Field(fname), ref base_ty) => {
                     // Look up the field type in the resolved record, if possible.
-                    if let Some(record_ty) = self.resolve_base_record_type(base_ty) {
-                        let flat = Self::flatten_record_fields(record_ty);
-                        if let Some((_, field_sem_ty)) = flat.iter().find(|(n, _)| n == fname) {
-                            map_semantic_type(field_sem_ty)
-                        } else {
-                            IrType::Opaque(format!("field:{fname}"))
-                        }
+                    let flat = self.flatten_fields_for_ir_type(base_ty);
+                    if let Some((_, field_sem_ty)) = flat.iter().find(|(n, _)| n == fname) {
+                        map_semantic_type(field_sem_ty)
                     } else {
                         IrType::Opaque(format!("field:{fname}"))
                     }
@@ -1316,37 +1390,43 @@ impl<'m> LowerCtx<'m> {
         let subject_val = self.lower_expr(subject);
         let merge_block = self.alloc_block();
 
-        let arm_body_blocks: Vec<BlockId> = arms.iter().map(|_| self.alloc_block()).collect();
-        let else_block = if else_branch.is_some() {
-            Some(self.alloc_block())
-        } else {
-            None
-        };
+        if arms.is_empty() {
+            if let Some(else_stmts) = else_branch {
+                self.lower_statements(else_stmts);
+            }
+            self.set_term(Terminator::Br { target: merge_block });
+            self.switch_to(merge_block);
+            return;
+        }
+
+        // One label-test block per arm and one body block per arm.
+        // The current block branches unconditionally to the first test block.
+        let test_blocks: Vec<BlockId> = arms.iter().map(|_| self.alloc_block()).collect();
+        let body_blocks: Vec<BlockId> = arms.iter().map(|_| self.alloc_block()).collect();
+        let else_block = if else_branch.is_some() { Some(self.alloc_block()) } else { None };
         let trap_block = self.alloc_block();
-        let final_fallthrough = else_block.unwrap_or(trap_block);
+        let final_miss = else_block.unwrap_or(trap_block);
+
+        // Entry → first test block.
+        self.set_term(Terminator::Br { target: test_blocks[0] });
 
         for (arm_idx, arm) in arms.iter().enumerate() {
-            let body_block = arm_body_blocks[arm_idx];
-            let next_test = if arm_idx + 1 < arms.len() {
-                arm_body_blocks[arm_idx + 1]  // we will set current to this below
+            let test_block = test_blocks[arm_idx];
+            let body_block = body_blocks[arm_idx];
+            let miss = if arm_idx + 1 < arms.len() {
+                test_blocks[arm_idx + 1]
             } else {
-                final_fallthrough
+                final_miss
             };
 
-            self.lower_case_labels(&subject_val.clone(), &arm.labels, body_block, next_test);
+            // Emit label comparisons in the test block.
+            self.switch_to(test_block);
+            self.lower_case_labels(&subject_val.clone(), &arm.labels, body_block, miss);
 
+            // Emit arm body.
             self.switch_to(body_block);
             self.lower_statements(&arm.body);
             self.set_term(Terminator::Br { target: merge_block });
-
-            if arm_idx + 1 < arms.len() {
-                // Allocate a fresh test-chain block for the next arm's labels.
-                let next_chain = self.alloc_block();
-                // Rewrite the last ConditionalBr false_target to point to next_chain
-                // instead of next arm body -- handled in lower_case_labels already.
-                self.switch_to(next_chain);
-                let _ = next_test;
-            }
         }
 
         if let (Some(eb), Some(else_stmts)) = (else_block, else_branch) {
@@ -1461,7 +1541,7 @@ impl<'m> LowerCtx<'m> {
                 };
                 let subject_t = self.fresh_temp();
                 let subject_addr = IrValue::GlobalRef(
-                    var_name,
+                    var_name.clone(),
                     IrType::Ref(Box::new(IrType::Opaque("with-subject".to_string()))),
                 );
                 self.push(Instr::Load {
@@ -1476,18 +1556,26 @@ impl<'m> LowerCtx<'m> {
 
                 self.set_term(Terminator::TypeTest {
                     value: subject_val,
-                    ty: guard_ty,
+                    ty: guard_ty.clone(),
                     true_target: body_block,
                     false_target: next_block,
                 });
+
+                self.switch_to(body_block);
+                // Within the body, treat `var_name` as having the narrowed pointer type so
+                // field access resolves against the guard record type (e.g. Bird, not Animal).
+                let guard_ref_ty = IrType::Ref(Box::new(guard_ty));
+                self.with_type_overrides.push((var_name.clone(), guard_ref_ty));
+                self.lower_statements(&arm.body);
+                self.with_type_overrides.pop();
+                self.set_term(Terminator::Br { target: merge_block });
             } else {
                 // ELSE arm -- always taken.
                 self.set_term(Terminator::Br { target: body_block });
+                self.switch_to(body_block);
+                self.lower_statements(&arm.body);
+                self.set_term(Terminator::Br { target: merge_block });
             }
-
-            self.switch_to(body_block);
-            self.lower_statements(&arm.body);
-            self.set_term(Terminator::Br { target: merge_block });
 
             self.switch_to(next_block);
         }
@@ -1663,7 +1751,7 @@ pub fn lower_module(sema: &SemanticModule, ast: &ModuleAst) -> IrModule {
         imports: sema.imports.clone(),
         globals,
         procedures,
-        named_types: collect_named_types(&sema.symbols),
+        named_types: collect_named_types(&sema.name, &sema.imports, &sema.symbols),
     }
 }
 
@@ -1672,10 +1760,14 @@ pub fn lower_module(sema: &SemanticModule, ast: &ModuleAst) -> IrModule {
 /// Returns a map from simple type name to the flattened ordered field list
 /// `(field_name, IrType)`, with inherited fields from the base chain appearing first.
 fn collect_named_types(
+    module_name: &str,
+    imports: &[String],
     module_symbols: &[SemanticSymbol],
 ) -> std::collections::HashMap<String, Vec<(String, IrType)>> {
     use newcp_sema::SymbolKind;
     let mut map = std::collections::HashMap::new();
+
+    // Collect local record types (stored under simple names).
     for sym in module_symbols {
         if sym.kind != SymbolKind::Type {
             continue;
@@ -1683,10 +1775,33 @@ fn collect_named_types(
         if let Some(sem_ty) = &sym.declared_type {
             let flat = flatten_fields_deep(sem_ty, module_symbols);
             if !flat.is_empty() {
+                // Also add with the module-qualified key so cross-module references work.
+                let qualified = format!("{module_name}.{}", sym.name);
+                map.insert(qualified, flat.clone());
                 map.insert(sym.name.clone(), flat);
             }
         }
     }
+
+    // Collect exported record types from imported modules, stored under "Module.Type" keys.
+    for import_name in imports {
+        let path = Path::new("Mod").join(format!("{import_name}.cp"));
+        let Ok(ast) = read_module_ast(&path) else { continue };
+        let sema = analyze_module_ast(&ast);
+        for sym in &sema.symbols {
+            if sym.kind != SymbolKind::Type || !sym.exported {
+                continue;
+            }
+            if let Some(sem_ty) = &sym.declared_type {
+                let flat = flatten_fields_deep_cross_module(sem_ty, &sema.symbols, import_name);
+                if !flat.is_empty() {
+                    let key = format!("{import_name}.{}", sym.name);
+                    map.insert(key, flat);
+                }
+            }
+        }
+    }
+
     map
 }
 
@@ -1711,6 +1826,50 @@ fn flatten_fields_deep(
     let mut result = Vec::new();
     if let Some(parent) = base {
         result.extend(flatten_fields_deep(parent, module_symbols));
+    }
+    for field in fields {
+        let ir_ty = map_semantic_type(&field.ty);
+        for name in &field.names {
+            result.push((name.clone(), ir_ty.clone()));
+        }
+    }
+    result
+}
+
+/// Like `flatten_fields_deep` but handles cross-module base types (e.g. RECORD(TypeExt.Animal)).
+fn flatten_fields_deep_cross_module(
+    ty: &SemanticType,
+    module_symbols: &[SemanticSymbol],
+    current_module: &str,
+) -> Vec<(String, IrType)> {
+    let (base, fields) = match ty {
+        SemanticType::Record { base, fields, .. } => (base.as_deref(), fields.as_slice()),
+        SemanticType::Named { name, module: None, .. } => {
+            if let Some(sym) = module_symbols.iter().find(|s| s.name == *name) {
+                if let Some(resolved) = &sym.declared_type {
+                    return flatten_fields_deep_cross_module(resolved, module_symbols, current_module);
+                }
+            }
+            return Vec::new();
+        }
+        SemanticType::Named { name, module: Some(m), .. } => {
+            // Base type is in another module — load and recurse.
+            let path = Path::new("Mod").join(format!("{m}.cp"));
+            if let Ok(base_ast) = read_module_ast(&path) {
+                let base_sema = analyze_module_ast(&base_ast);
+                if let Some(sym) = base_sema.symbols.iter().find(|s| s.name == *name) {
+                    if let Some(resolved) = &sym.declared_type {
+                        return flatten_fields_deep_cross_module(resolved, &base_sema.symbols, m.as_str());
+                    }
+                }
+            }
+            return Vec::new();
+        }
+        _ => return Vec::new(),
+    };
+    let mut result = Vec::new();
+    if let Some(parent) = base {
+        result.extend(flatten_fields_deep_cross_module(parent, module_symbols, current_module));
     }
     for field in fields {
         let ir_ty = map_semantic_type(&field.ty);
