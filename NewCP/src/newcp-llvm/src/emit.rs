@@ -127,8 +127,34 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
                 value_map.temp_values.insert(*dst, value);
                 Ok(())
             }
+            Instr::LoadRaw { dst, addr, ty } => {
+                let ptr = self.resolve_raw_pointer(addr, ty, value_map)?;
+                let llvm_ty = self.lower_basic_type(ty)?;
+                let value = self
+                    .cg
+                    .builder
+                    .build_load(llvm_ty, ptr, &dst.render())
+                    .map_err(|e| CodegenError::Unsupported {
+                        stage: "emit_instr",
+                        detail: e.to_string(),
+                    })?;
+                value_map.temp_values.insert(*dst, value);
+                Ok(())
+            }
             Instr::Store { addr, value } => {
                 let ptr = self.resolve_pointer(addr, value_map)?;
+                let stored = self.resolve_basic_value(value, value_map)?;
+                self.cg
+                    .builder
+                    .build_store(ptr, stored)
+                    .map_err(|e| CodegenError::Unsupported {
+                        stage: "emit_instr",
+                        detail: e.to_string(),
+                    })?;
+                Ok(())
+            }
+            Instr::StoreRaw { addr, value } => {
+                let ptr = self.resolve_raw_pointer(addr, &value.ty(), value_map)?;
                 let stored = self.resolve_basic_value(value, value_map)?;
                 self.cg
                     .builder
@@ -169,6 +195,69 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
                 ret_ty,
             } => {
                 self.emit_call(*dst, callee, args, ret_ty, value_map)
+            }
+            Instr::AddrOf { dst, sym } => {
+                let ptr = self.resolve_pointer(sym, value_map)?;
+                let value = self
+                    .cg
+                    .builder
+                    .build_ptr_to_int(ptr, self.cg.context.i64_type(), &dst.render())
+                    .map_err(|e| CodegenError::Unsupported {
+                        stage: "emit_instr",
+                        detail: e.to_string(),
+                    })?;
+                value_map.temp_values.insert(*dst, value.into());
+                Ok(())
+            }
+            Instr::BitCast { dst, value, ty } => {
+                let cast = self.emit_bitcast(value, ty, value_map)?;
+                value_map.temp_values.insert(*dst, cast);
+                Ok(())
+            }
+            Instr::Lsh {
+                dst,
+                value,
+                shift,
+                ty,
+            } => {
+                let result = self.emit_lsh(value, shift, ty, value_map)?;
+                value_map.temp_values.insert(*dst, result);
+                Ok(())
+            }
+            Instr::Rot {
+                dst,
+                value,
+                shift,
+                ty,
+            } => {
+                let result = self.emit_rot(value, shift, ty, value_map)?;
+                value_map.temp_values.insert(*dst, result);
+                Ok(())
+            }
+            Instr::MemCopy { dst, src, len } => {
+                self.emit_memcopy(dst, src, len, value_map)
+            }
+            Instr::SysNew { dst, size } => {
+                let size_value = self.resolve_basic_value(size, value_map)?.into_int_value();
+                let sys_new = self
+                    .cg
+                    .module
+                    .get_function("__newcp_sys_new")
+                    .ok_or_else(|| CodegenError::Unsupported {
+                        stage: "emit_instr",
+                        detail: "__newcp_sys_new was not declared during planning".to_string(),
+                    })?;
+                let call = self
+                    .cg
+                    .builder
+                    .build_call(sys_new, &[size_value.into()], &dst.render())
+                    .map_err(|e| CodegenError::Unsupported {
+                        stage: "emit_instr",
+                        detail: e.to_string(),
+                    })?;
+                let value = call.try_as_basic_value().unwrap_basic();
+                value_map.temp_values.insert(*dst, value);
+                Ok(())
             }
             other => Err(CodegenError::Unsupported {
                 stage: "emit_instr",
@@ -541,6 +630,327 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
 
         let _ = ty;
         Ok(value)
+    }
+
+    fn resolve_raw_pointer(
+        &self,
+        addr: &IrValue,
+        pointee_ty: &IrType,
+        value_map: &mut ValueMap<'ctx>,
+    ) -> Result<PointerValue<'ctx>, CodegenError> {
+        let addr_value = self.resolve_basic_value(addr, value_map)?.into_int_value();
+        let _ = self.lower_basic_type(pointee_ty)?;
+        let ptr_ty = self.cg.context.ptr_type(inkwell::AddressSpace::default());
+        self.cg
+            .builder
+            .build_int_to_ptr(addr_value, ptr_ty, "rawptr")
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "emit_instr",
+                detail: e.to_string(),
+            })
+    }
+
+    fn emit_lsh(
+        &self,
+        value: &IrValue,
+        shift: &IrValue,
+        ty: &IrType,
+        value_map: &mut ValueMap<'ctx>,
+    ) -> Result<BasicValueEnum<'ctx>, CodegenError> {
+        let value_int = self.resolve_basic_value(value, value_map)?.into_int_value();
+        let shift_int = self.resolve_basic_value(shift, value_map)?.into_int_value();
+        let value_ty = value_int.get_type();
+        let zero_shift = shift_int.get_type().const_zero();
+        let is_negative = self
+            .cg
+            .builder
+            .build_int_compare(IntPredicate::SLT, shift_int, zero_shift, "lsh.neg")
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "emit_instr",
+                detail: e.to_string(),
+            })?;
+        let neg_shift = self
+            .cg
+            .builder
+            .build_int_neg(shift_int, "lsh.negated")
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "emit_instr",
+                detail: e.to_string(),
+            })?;
+        let left_shift = self.cast_shift_to_width(shift_int, value_ty, "lsh.left")?;
+        let right_shift = self.cast_shift_to_width(neg_shift, value_ty, "lsh.right")?;
+        let shl = self
+            .cg
+            .builder
+            .build_left_shift(value_int, left_shift, "lsh.left.value")
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "emit_instr",
+                detail: e.to_string(),
+            })?;
+        let lshr = self
+            .cg
+            .builder
+            .build_right_shift(value_int, right_shift, false, "lsh.right.value")
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "emit_instr",
+                detail: e.to_string(),
+            })?;
+        let selected = self
+            .cg
+            .builder
+            .build_select(is_negative, lshr, shl, "lsh.result")
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "emit_instr",
+                detail: e.to_string(),
+            })?;
+        let _ = ty;
+        Ok(selected)
+    }
+
+    fn emit_bitcast(
+        &self,
+        value: &IrValue,
+        dest_ty: &IrType,
+        value_map: &mut ValueMap<'ctx>,
+    ) -> Result<BasicValueEnum<'ctx>, CodegenError> {
+        let source = self.resolve_basic_value(value, value_map)?;
+        let source_ty = value.ty();
+
+        if source_ty == *dest_ty {
+            return Ok(source);
+        }
+
+        let dest_basic = self.lower_basic_type(dest_ty)?;
+        match (source, dest_basic) {
+            (BasicValueEnum::IntValue(int_value), BasicTypeEnum::IntType(dest_int_ty)) => {
+                if int_value.get_type() == dest_int_ty {
+                    Ok(int_value.into())
+                } else {
+                    self.cg
+                        .builder
+                        .build_int_cast(int_value, dest_int_ty, "bitcast.int")
+                        .map(Into::into)
+                        .map_err(|e| CodegenError::Unsupported {
+                            stage: "emit_instr",
+                            detail: e.to_string(),
+                        })
+                }
+            }
+            (BasicValueEnum::PointerValue(ptr_value), BasicTypeEnum::PointerType(dest_ptr_ty)) => {
+                self.cg
+                    .builder
+                    .build_pointer_cast(ptr_value, dest_ptr_ty, "bitcast.ptr")
+                    .map(Into::into)
+                    .map_err(|e| CodegenError::Unsupported {
+                        stage: "emit_instr",
+                        detail: e.to_string(),
+                    })
+            }
+            (BasicValueEnum::PointerValue(ptr_value), BasicTypeEnum::IntType(dest_int_ty)) => self
+                .cg
+                .builder
+                .build_ptr_to_int(ptr_value, dest_int_ty, "bitcast.ptrtoint")
+                .map(Into::into)
+                .map_err(|e| CodegenError::Unsupported {
+                    stage: "emit_instr",
+                    detail: e.to_string(),
+                }),
+            (BasicValueEnum::IntValue(int_value), BasicTypeEnum::PointerType(dest_ptr_ty)) => self
+                .cg
+                .builder
+                .build_int_to_ptr(int_value, dest_ptr_ty, "bitcast.inttoptr")
+                .map(Into::into)
+                .map_err(|e| CodegenError::Unsupported {
+                    stage: "emit_instr",
+                    detail: e.to_string(),
+                }),
+            (basic_value, dest_basic_ty) => self
+                .cg
+                .builder
+                .build_bit_cast(basic_value, dest_basic_ty, "bitcast")
+                .map_err(|e| CodegenError::Unsupported {
+                    stage: "emit_instr",
+                    detail: e.to_string(),
+                }),
+        }
+    }
+
+    fn emit_rot(
+        &self,
+        value: &IrValue,
+        shift: &IrValue,
+        ty: &IrType,
+        value_map: &mut ValueMap<'ctx>,
+    ) -> Result<BasicValueEnum<'ctx>, CodegenError> {
+        let value_int = self.resolve_basic_value(value, value_map)?.into_int_value();
+        let shift_int = self.resolve_basic_value(shift, value_map)?.into_int_value();
+        let value_ty = value_int.get_type();
+        let bit_width = value_ty.get_bit_width() as u64;
+        let width_value = value_ty.const_int(bit_width, false);
+        let zero_shift = shift_int.get_type().const_zero();
+        let is_negative = self
+            .cg
+            .builder
+            .build_int_compare(IntPredicate::SLT, shift_int, zero_shift, "rot.neg")
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "emit_instr",
+                detail: e.to_string(),
+            })?;
+        let neg_shift = self
+            .cg
+            .builder
+            .build_int_neg(shift_int, "rot.negated")
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "emit_instr",
+                detail: e.to_string(),
+            })?;
+        let left_shift = self.cast_shift_to_width(shift_int, value_ty, "rot.left.cast")?;
+        let right_shift = self.cast_shift_to_width(neg_shift, value_ty, "rot.right.cast")?;
+        let left_amount = self
+            .cg
+            .builder
+            .build_int_unsigned_rem(left_shift, width_value, "rot.left.amount")
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "emit_instr",
+                detail: e.to_string(),
+            })?;
+        let right_amount = self
+            .cg
+            .builder
+            .build_int_unsigned_rem(right_shift, width_value, "rot.right.amount")
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "emit_instr",
+                detail: e.to_string(),
+            })?;
+        let rotl = self.build_rotate_call(true, value_int, left_amount)?;
+        let rotr = self.build_rotate_call(false, value_int, right_amount)?;
+        let selected = self
+            .cg
+            .builder
+            .build_select(is_negative, rotr, rotl, "rot.result")
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "emit_instr",
+                detail: e.to_string(),
+            })?;
+        let _ = ty;
+        Ok(selected)
+    }
+
+    fn cast_shift_to_width(
+        &self,
+        shift: inkwell::values::IntValue<'ctx>,
+        target_ty: inkwell::types::IntType<'ctx>,
+        name: &str,
+    ) -> Result<inkwell::values::IntValue<'ctx>, CodegenError> {
+        if shift.get_type() == target_ty {
+            return Ok(shift);
+        }
+
+        self.cg
+            .builder
+            .build_int_cast(shift, target_ty, name)
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "emit_instr",
+                detail: e.to_string(),
+            })
+    }
+
+    fn build_rotate_call(
+        &self,
+        left: bool,
+        value: inkwell::values::IntValue<'ctx>,
+        amount: inkwell::values::IntValue<'ctx>,
+    ) -> Result<BasicValueEnum<'ctx>, CodegenError> {
+        let intrinsic = self.get_or_declare_rotate_intrinsic(value.get_type(), left);
+        let call = self
+            .cg
+            .builder
+            .build_call(intrinsic, &[value.into(), value.into(), amount.into()], if left { "rotl" } else { "rotr" })
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "emit_instr",
+                detail: e.to_string(),
+            })?;
+        Ok(call.try_as_basic_value().unwrap_basic())
+    }
+
+    fn get_or_declare_rotate_intrinsic(
+        &self,
+        int_ty: inkwell::types::IntType<'ctx>,
+        left: bool,
+    ) -> FunctionValue<'ctx> {
+        let name = if left {
+            format!("llvm.fshl.i{}", int_ty.get_bit_width())
+        } else {
+            format!("llvm.fshr.i{}", int_ty.get_bit_width())
+        };
+        if let Some(function) = self.cg.module.get_function(&name) {
+            return function;
+        }
+
+        let fn_ty = int_ty.fn_type(&[int_ty.into(), int_ty.into(), int_ty.into()], false);
+        self.cg.module.add_function(&name, fn_ty, None)
+    }
+
+    fn emit_memcopy(
+        &self,
+        dst: &IrValue,
+        src: &IrValue,
+        len: &IrValue,
+        value_map: &mut ValueMap<'ctx>,
+    ) -> Result<(), CodegenError> {
+        let ptr_ty = self.cg.context.ptr_type(inkwell::AddressSpace::default());
+        let i64_ty = self.cg.context.i64_type();
+        let i1_ty = self.cg.context.bool_type();
+        let dst_addr = self.resolve_basic_value(dst, value_map)?.into_int_value();
+        let src_addr = self.resolve_basic_value(src, value_map)?.into_int_value();
+        let len_value = self.resolve_basic_value(len, value_map)?.into_int_value();
+        let dst_ptr = self
+            .cg
+            .builder
+            .build_int_to_ptr(dst_addr, ptr_ty, "memmove.dst")
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "emit_instr",
+                detail: e.to_string(),
+            })?;
+        let src_ptr = self
+            .cg
+            .builder
+            .build_int_to_ptr(src_addr, ptr_ty, "memmove.src")
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "emit_instr",
+                detail: e.to_string(),
+            })?;
+        let len_i64 = self.cast_shift_to_width(len_value, i64_ty, "memmove.len")?;
+        let memmove = self.get_or_declare_memmove();
+        self.cg
+            .builder
+            .build_call(
+                memmove,
+                &[dst_ptr.into(), src_ptr.into(), len_i64.into(), i1_ty.const_zero().into()],
+                "memmove",
+            )
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "emit_instr",
+                detail: e.to_string(),
+            })?;
+        Ok(())
+    }
+
+    fn get_or_declare_memmove(&self) -> FunctionValue<'ctx> {
+        const NAME: &str = "llvm.memmove.p0.p0.i64";
+        if let Some(function) = self.cg.module.get_function(NAME) {
+            return function;
+        }
+
+        let ptr_ty = self.cg.context.ptr_type(inkwell::AddressSpace::default());
+        let i64_ty = self.cg.context.i64_type();
+        let i1_ty = self.cg.context.bool_type();
+        let fn_ty = self
+            .cg
+            .context
+            .void_type()
+            .fn_type(&[ptr_ty.into(), ptr_ty.into(), i64_ty.into(), i1_ty.into()], false);
+        self.cg.module.add_function(NAME, fn_ty, None)
     }
 
     fn emit_call(
