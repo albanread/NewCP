@@ -132,3 +132,31 @@ The `Collect()` operation has two main phases:
 3. **Conservative Scanner:** Write the OS/Arch-specific assembly to capture registers and scan the stack limits.
 4. **Mark and Sweep:** Implement the trace loop utilizing `TypeDesc` and `Module` offsets, and the sweep loop reclaiming unmarked blocks.
 5. **JIT Interface:** Expose `NewRec(tag: *const TypeDesc) -> *mut u8` as an exported symbol to the ORC JIT so compiled LLVM code can call it.
+
+## 7. Multi-thread roadmap
+
+The MVP runtime is single-threaded by deliberate choice (BlackBox's model). The design and implementation are forward-compatible with a future multi-threaded runtime; this section records the contract so that work added today does not have to be revisited.
+
+### 7.1 What stays the same
+
+- `BlockHeader`, `TypeDesc` (including the `finalizer` slot), `ModuleDesc` ABI.
+- `Cluster` data structure: bitmap-indexed block-starts, free-list, sweep + coalescing, finalizer dispatch.
+- `mark_object` work-stack tracer.
+- `resolve_heap_ptr` interior-pointer resolution.
+- The `__newcp_*` JIT-callable ABI as a whole.
+
+### 7.2 Codegen guardrails (do today)
+
+- **All managed allocation funnels through `__newcp_new_rec`.** No other crate touches `GcState` directly. Future TLABs and allocation sampling slot in by replacing this function body without touching call sites.
+- **Emit a `__newcp_safepoint()` poll at every loop back-edge and at function entry.** Today the symbol is a no-op; the call cost is one indirect call and is eliminated by the linker / inliner. When stop-the-world support lands, the poll body is filled in without touching any generated code.
+- **Finalizers are native-only.** They must not allocate, must not retain the payload pointer, and must not re-enter managed code. This rules out the JVM-style "finalizer thread" trap.
+- **The `owner_thread` debug assertion in `gc.rs` is an MVP-internal guard**, not an architectural commitment. It will be replaced by per-thread `MutatorState` registration.
+
+### 7.3 What changes for multi-thread (future work, in priority order)
+
+1. **Per-thread state.** Move `base_stack` and SP capture into a `thread_local!` `MutatorState`. `GcState` keeps a list of registered mutators. Each managed thread registers on entry and unregisters on exit.
+2. **Cooperative safepoints.** The `__newcp_safepoint` body becomes a load + branch on a global "GC requested" flag; on a hit, the mutator spills registers, marks itself parked, and waits on a condvar. Once every mutator is parked, the GC thread runs the cycle against guaranteed-quiescent stacks.
+3. **TLABs (only if profiling shows `NEW` contention).** Each thread carves a small bump-pointer slab from a cluster under the global lock; subsequent allocations within that slab are lock-free.
+4. **Finalizer policy.** Run finalizers on the GC thread (or whichever thread triggered the cycle). Avoid a dedicated finalizer thread.
+
+The heap-representation work (items 2/3 of §5) is reusable as-is. The expensive new work is the safepoint protocol (item 7.3.2), which is unavoidable in any concurrent design.

@@ -510,8 +510,15 @@ struct GcState {
     /// managed threads, this must be decoupled from the global state and
     /// moved to a `thread_local!` cell.
     base_stack: usize,
-    /// Identity of the thread that called `__newcp_init_gc`. All subsequent
-    /// GC entry points must be invoked on this thread; debug builds assert it.
+    /// Identity of the thread that called `__newcp_init_gc`.
+    ///
+    /// **MVP-internal guard.** The current GC is single-threaded, and this
+    /// field lets debug builds catch accidental cross-thread calls inside
+    /// `gc.rs` only — it is *not* an architectural commitment exposed to other
+    /// crates. Multi-thread evolution (per-thread `MutatorState`, cooperative
+    /// safepoints) will replace this with a `thread_local!` registration
+    /// scheme; see the "Multi-thread roadmap" section of
+    /// `docs/garbage-collection.md`.
     /// `None` until the GC has been initialised.
     owner_thread: Option<ThreadId>,
     /// Backing storage for all managed allocations.
@@ -533,10 +540,9 @@ static GC: Mutex<GcState> = Mutex::new(GcState {
 
 /// Debug-asserts that the calling thread is the GC's owning thread.
 ///
-/// The current GC implementation is single-threaded by design (BlackBox's
-/// model). The runtime is responsible for funnelling all managed allocation
-/// and collection through one thread; this check catches accidental
-/// cross-thread calls in debug builds without paying for it in release.
+/// MVP-internal guard against accidental cross-thread calls while the GC is
+/// single-threaded. Will be replaced by per-thread `MutatorState` registration
+/// when stop-the-world cooperative safepoints land. Free in release builds.
 #[inline]
 fn debug_assert_owner_thread(gc: &GcState) {
     if cfg!(debug_assertions) {
@@ -544,7 +550,8 @@ fn debug_assert_owner_thread(gc: &GcState) {
             assert_eq!(
                 owner,
                 std::thread::current().id(),
-                "GC entry point invoked from a non-owner thread; the runtime is single-threaded",
+                "GC entry point invoked from a non-owner thread; the MVP runtime is single-threaded \
+                 (see docs/garbage-collection.md § Multi-thread roadmap)",
             );
         }
     }
@@ -622,6 +629,14 @@ pub unsafe extern "C" fn __newcp_register_module(
 
 /// Allocates and zero-initialises a new heap record.
 ///
+/// **This is the *sole* heap-allocation entry point for managed code.**
+/// All `NEW`, `NEW(..., len)` (array), and any future managed allocators
+/// (closures, boxed primitives, …) must funnel through this function or a
+/// thin wrapper that ultimately calls it. Other crates (loader, sema, codegen)
+/// must never reach into `GcState` directly. Keeping a single chokepoint lets
+/// us later swap in per-thread bump slabs (TLABs), allocation sampling, or a
+/// safepoint poll without touching call sites.
+///
 /// Called directly by JIT-compiled `NEW` expressions. Returns a pointer to the
 /// **payload** region (past the `BlockHeader`).
 ///
@@ -673,6 +688,30 @@ pub unsafe extern "C" fn __newcp_new_rec(tag: *const TypeDesc) -> *mut u8 {
         (*hdr).block_size = total_size;
         block.add(header_size)
     }
+}
+
+/// Cooperative GC safepoint poll.
+///
+/// **Currently a no-op.** This entry point exists so that codegen can emit
+/// safepoint polls now — at every loop back-edge and at function entry —
+/// without paying any runtime cost today, and without a code-rewrite when
+/// stop-the-world support lands.
+///
+/// Future implementation will:
+/// 1. Load a global "GC requested" flag.
+/// 2. If set, spill registers, mark this mutator parked, and block on a
+///    condition variable until the GC cycle finishes.
+///
+/// Codegen contract: the call may clobber no registers beyond the C ABI's
+/// caller-saved set, must be safe to invoke from any managed-code context,
+/// and is allowed to block the calling thread for the duration of a GC cycle.
+///
+/// # Safety
+/// Always safe to call. Marked `unsafe extern "C"` only for ABI symmetry with
+/// the rest of the runtime exports.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn __newcp_safepoint() {
+    // Intentionally empty. See doc comment above.
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
