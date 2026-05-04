@@ -84,13 +84,33 @@ mod tests {
     fn dump_llvm_vars_uses_module_globals() {
         let (output, code) = dump_llvm("Mod/Vars.cp");
         assert_eq!(code, 0, "expected exit 0 for Vars.cp\noutput:\n{output}");
+        // All mutable globals are now collected into a single @Module.Data struct.
         assert!(
-            output.contains("@count = global i64 0"),
-            "expected module global for count\noutput:\n{output}"
+            output.contains("%Vars.Data = type"),
+            "expected @Module.Data struct type declaration\noutput:\n{output}"
         );
         assert!(
-            output.contains("store i1 false, ptr @active"),
-            "expected FALSE to lower as a literal global store\noutput:\n{output}"
+            output.contains("@Vars.Data = global %Vars.Data zeroinitializer"),
+            "expected @Module.Data zeroinitialiser\noutput:\n{output}"
+        );
+        // Stores go through GEP into the struct rather than named flat globals.
+        assert!(
+            output.contains("store i1 false, ptr getelementptr inbounds (%Vars.Data"),
+            "expected GEP-based store for boolean field inside @Vars.Data\noutput:\n{output}"
+        );
+    }
+
+    #[test]
+    fn dump_llvm_const_str_emits_private_string_global() {
+        let (output, code) = dump_llvm("Mod/Strs.cp");
+        assert_eq!(code, 0, "expected exit 0 for Strs.cp\noutput:\n{output}");
+        assert!(
+            output.contains("@.str.0 = private constant [6 x i8] c\"hello\\00\""),
+            "expected private null-terminated string constant\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("call void @StrBase.Print(ptr @.str.0)"),
+            "expected ConstStr passed as ptr to call\noutput:\n{output}"
         );
     }
 
@@ -163,7 +183,7 @@ mod tests {
 
         assert_eq!(code, 0, "expected exit 0 for SYSTEM probe\noutput:\n{output}");
         assert!(
-            output.contains("ptrtoint (ptr @addr to i64)"),
+            output.contains("ptrtoint (ptr") && output.contains("to i64)"),
             "expected SYSTEM.ADR to lower through ptrtoint to i64\noutput:\n{output}"
         );
         assert!(
@@ -229,11 +249,11 @@ mod tests {
 
         assert_eq!(code, 0, "expected exit 0 for SYSTEM.VAL probe\noutput:\n{output}");
         assert!(
-            output.contains("%t0 = load i64, ptr @y") || output.contains("%bitcast"),
+            output.contains("%t0 = load i64, ptr") || output.contains("%bitcast"),
             "expected SYSTEM.VAL to materialize its source value\noutput:\n{output}"
         );
         assert!(
-            output.contains("store i64 %t0, ptr @x") || output.contains("store i64 %bitcast, ptr @x"),
+            output.contains("store i64 %t0, ptr") || output.contains("store i64 %bitcast, ptr"),
             "expected SYSTEM.VAL result to flow into the destination store\noutput:\n{output}"
         );
     }

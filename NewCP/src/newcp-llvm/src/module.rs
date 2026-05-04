@@ -3,8 +3,8 @@ use std::collections::HashMap;
 use inkwell::builder::Builder;
 use inkwell::context::Context;
 use inkwell::module::Module;
-use inkwell::types::BasicTypeEnum;
-use inkwell::values::{FunctionValue, GlobalValue, PointerValue};
+use inkwell::types::{BasicTypeEnum, StructType};
+use inkwell::values::{FunctionValue, PointerValue};
 
 use newcp_ir::{IrGlobal, IrModule, IrProcedure};
 
@@ -16,8 +16,15 @@ use crate::types::TypeLowerer;
 pub struct GlobalPlanner<'ctx> {
     /// LLVM function value for each procedure in the module, by name.
     pub functions: HashMap<String, FunctionValue<'ctx>>,
-    /// LLVM global storage for module-level variables.
+    /// GEP-derived `ptr` for each module-level variable, keyed by IR name.
+    /// Each pointer addresses the corresponding field inside `@ModuleName.Data`.
     pub globals: HashMap<String, PointerValue<'ctx>>,
+    /// The LLVM struct type used for `@ModuleName.Data`, or `None` if the
+    /// module has no mutable globals.
+    pub module_data_ty: Option<StructType<'ctx>>,
+    /// Interned SHORTCHAR string constant globals, keyed by string content.
+    /// Each entry is a `ptr` to the first byte of a null-terminated `[N x i8]` constant.
+    pub string_constants: HashMap<String, PointerValue<'ctx>>,
 }
 
 impl<'ctx> GlobalPlanner<'ctx> {
@@ -25,6 +32,8 @@ impl<'ctx> GlobalPlanner<'ctx> {
         Self {
             functions: HashMap::new(),
             globals: HashMap::new(),
+            module_data_ty: None,
+            string_constants: HashMap::new(),
         }
     }
 }
@@ -84,34 +93,57 @@ impl<'ctx> CodegenModule<'ctx> {
         ir_module: &IrModule,
         options: &CodegenOptions,
     ) -> Result<(), CodegenError> {
+        // Collect the mutable globals and their LLVM types.
+        let mut fields: Vec<(&IrGlobal, BasicTypeEnum<'ctx>)> = Vec::new();
         for global in &ir_module.globals {
             if global.is_const {
                 continue;
             }
-            self.declare_global(global, options)?;
-        }
-        Ok(())
-    }
-
-    fn declare_global(
-        &mut self,
-        global: &IrGlobal,
-        options: &CodegenOptions,
-    ) -> Result<(), CodegenError> {
-        let llvm_ty = match self.lowerer.lower_basic(&global.ty) {
-            Ok(ty) => ty,
-            Err(err) => {
-                if options.strict_unsupported {
-                    return Err(err);
+            let llvm_ty = match self.lowerer.lower_basic(&global.ty) {
+                Ok(ty) => ty,
+                Err(err) => {
+                    if options.strict_unsupported {
+                        return Err(err);
+                    }
+                    self.context.ptr_type(inkwell::AddressSpace::default()).into()
                 }
-                self.context.ptr_type(inkwell::AddressSpace::default()).into()
-            }
-        };
-        let global_value = self.module.add_global(llvm_ty, None, &global.name);
-        initialize_global_to_zero(&global_value, llvm_ty);
-        self.planner
-            .globals
-            .insert(global.name.clone(), global_value.as_pointer_value());
+            };
+            fields.push((global, llvm_ty));
+        }
+
+        if fields.is_empty() {
+            return Ok(());
+        }
+
+        // Build a packed struct type `%ModuleName.Data`.
+        let field_types: Vec<BasicTypeEnum<'ctx>> = fields.iter().map(|(_, ty)| *ty).collect();
+        let struct_name = format!("{}.Data", ir_module.name);
+        let struct_ty = self.context.opaque_struct_type(&struct_name);
+        struct_ty.set_body(&field_types, /*packed=*/ false);
+        self.planner.module_data_ty = Some(struct_ty);
+
+        // Emit the single `@ModuleName.Data` global initialised to zero.
+        let global_val = self
+            .module
+            .add_global(struct_ty, None, &struct_name);
+        global_val.set_initializer(&struct_ty.const_zero());
+
+        // Pre-compute one GEP per field and populate `planner.globals`.
+        let i32_ty = self.context.i32_type();
+        let base_ptr = global_val.as_pointer_value();
+        for (idx, (global, _)) in fields.iter().enumerate() {
+            let field_ptr = unsafe {
+                base_ptr.const_in_bounds_gep(
+                    struct_ty,
+                    &[
+                        i32_ty.const_zero(),
+                        i32_ty.const_int(idx as u64, false),
+                    ],
+                )
+            };
+            self.planner.globals.insert(global.name.clone(), field_ptr);
+        }
+
         Ok(())
     }
 
@@ -159,6 +191,47 @@ impl<'ctx> CodegenModule<'ctx> {
         Ok(())
     }
 
+    /// Get or emit a private `[N x i8]` string constant global for `s`.
+    ///
+    /// Returns a `ptr` pointing at element 0 (the first byte of the null-terminated string).
+    /// Identical string contents share a single global — the cache is keyed by string value.
+    pub fn get_or_emit_string_constant(&mut self, s: &str) -> PointerValue<'ctx> {
+        if let Some(&ptr) = self.planner.string_constants.get(s) {
+            return ptr;
+        }
+
+        // Build a null-terminated byte sequence.
+        let bytes: Vec<u8> = s.bytes().chain(std::iter::once(0u8)).collect();
+        let i8_ty = self.context.i8_type();
+        let array_ty = i8_ty.array_type(bytes.len() as u32);
+
+        // Build the LLVM [N x i8] constant.
+        let byte_vals: Vec<_> = bytes
+            .iter()
+            .map(|&b| i8_ty.const_int(b as u64, false))
+            .collect();
+        let initializer = i8_ty.const_array(&byte_vals);
+
+        // Generate a stable, unique name.
+        let idx = self.planner.string_constants.len();
+        let global_name = format!(".str.{idx}");
+        let global = self.module.add_global(array_ty, None, &global_name);
+        global.set_initializer(&initializer);
+        global.set_constant(true);
+        global.set_linkage(inkwell::module::Linkage::Private);
+
+        // GEP to element 0 to produce a `ptr`.
+        let ptr_ty = self.context.ptr_type(inkwell::AddressSpace::default());
+        let zero = self.context.i32_type().const_zero();
+        let ptr = unsafe {
+            global.as_pointer_value().const_in_bounds_gep(array_ty, &[zero, zero])
+        };
+        // The GEP result is an i8* in modern LLVM; cast to opaque ptr.
+        let _ = ptr_ty;
+        self.planner.string_constants.insert(s.to_string(), ptr);
+        ptr
+    }
+
     /// Declare `@__newcp_sys_new(i64) -> ptr` — part of the backend/runtime ABI.
     fn declare_sys_new(&mut self) {
         let i64_ty = self.context.i64_type();
@@ -181,18 +254,6 @@ impl<'ctx> CodegenModule<'ctx> {
     /// Consume this `CodegenModule` and hand the `Module` to the JIT stage.
     pub fn into_module(self) -> Module<'ctx> {
         self.module
-    }
-}
-
-fn initialize_global_to_zero(global: &GlobalValue<'_>, ty: BasicTypeEnum<'_>) {
-    match ty {
-        BasicTypeEnum::ArrayType(t) => global.set_initializer(&t.const_zero()),
-        BasicTypeEnum::FloatType(t) => global.set_initializer(&t.const_float(0.0)),
-        BasicTypeEnum::IntType(t) => global.set_initializer(&t.const_zero()),
-        BasicTypeEnum::PointerType(t) => global.set_initializer(&t.const_null()),
-        BasicTypeEnum::StructType(t) => global.set_initializer(&t.const_zero()),
-        BasicTypeEnum::VectorType(t) => global.set_initializer(&t.const_zero()),
-        BasicTypeEnum::ScalableVectorType(t) => global.set_initializer(&t.const_zero()),
     }
 }
 

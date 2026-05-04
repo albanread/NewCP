@@ -524,7 +524,7 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
     }
 
     fn resolve_basic_value(
-        &self,
+        &mut self,
         value: &IrValue,
         value_map: &mut ValueMap<'ctx>,
     ) -> Result<BasicValueEnum<'ctx>, CodegenError> {
@@ -542,6 +542,10 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
             IrValue::ConstReal(v, _) => Ok(self.cg.context.f64_type().const_float(*v).into()),
             IrValue::ConstBool(v) => Ok(self.cg.context.bool_type().const_int(u64::from(*v), false).into()),
             IrValue::ConstChar(v) => Ok(self.cg.context.i16_type().const_int(*v as u64, false).into()),
+            IrValue::ConstStr(s) => {
+                let ptr = self.cg.get_or_emit_string_constant(s);
+                Ok(ptr.into())
+            }
             IrValue::Null(_) => Ok(self.cg.context.ptr_type(inkwell::AddressSpace::default()).const_null().into()),
             other => Err(CodegenError::Unsupported {
                 stage: "emit",
@@ -551,7 +555,7 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
     }
 
     fn emit_binop(
-        &self,
+        &mut self,
         op: BinOp,
         left: &IrValue,
         right: &IrValue,
@@ -685,7 +689,7 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
     }
 
     fn emit_unop(
-        &self,
+        &mut self,
         op: UnOp,
         operand: &IrValue,
         ty: &IrType,
@@ -738,7 +742,7 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
     }
 
     fn resolve_raw_pointer(
-        &self,
+        &mut self,
         addr: &IrValue,
         pointee_ty: &IrType,
         value_map: &mut ValueMap<'ctx>,
@@ -756,7 +760,7 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
     }
 
     fn emit_lsh(
-        &self,
+        &mut self,
         value: &IrValue,
         shift: &IrValue,
         ty: &IrType,
@@ -796,7 +800,7 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
     }
 
     fn emit_bitcast(
-        &self,
+        &mut self,
         value: &IrValue,
         dest_ty: &IrType,
         value_map: &mut ValueMap<'ctx>,
@@ -864,7 +868,7 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
     }
 
     fn emit_rot(
-        &self,
+        &mut self,
         value: &IrValue,
         shift: &IrValue,
         ty: &IrType,
@@ -1005,7 +1009,7 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
     }
 
     fn emit_memcopy(
-        &self,
+        &mut self,
         dst: &IrValue,
         src: &IrValue,
         len: &IrValue,
@@ -1067,7 +1071,7 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
     }
 
     fn emit_call(
-        &self,
+        &mut self,
         dst: Option<TempId>,
         callee: &IrValue,
         args: &[IrValue],
@@ -1199,7 +1203,7 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
     /// - Named type → calls `@__newcp_type_test(obj_ptr, typedesc_ptr) -> i1`
     /// - Opaque fallback → emits constant `false` (unresolved type at lower time)
     fn emit_type_check(
-        &self,
+        &mut self,
         value: &IrValue,
         ty: &IrType,
         value_map: &mut ValueMap<'ctx>,
