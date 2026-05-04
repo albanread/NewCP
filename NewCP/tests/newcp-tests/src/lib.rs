@@ -319,4 +319,97 @@ mod tests {
             "expected boolean not to emit a logical inversion\noutput:\n{output}"
         );
     }
+
+    #[test]
+    fn dump_llvm_set_in_emits_bit_test() {
+        let (output, code) = dump_llvm_source(
+            "newcp-set-in-probe.cp",
+            concat!(
+                "MODULE Demo;\n",
+                "VAR s: SET; x: INTEGER; result: BOOLEAN;\n",
+                "PROCEDURE Run*;\n",
+                "BEGIN\n",
+                "  result := x IN s\n",
+                "END Run;\n",
+                "END Demo.\n"
+            ),
+        );
+
+        assert_eq!(code, 0, "expected exit 0 for SET IN probe\noutput:\n{output}");
+        assert!(
+            output.contains("in.shr"),
+            "expected IN to emit a logical right shift\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("in.and"),
+            "expected IN to mask the shifted bit\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("in.ne"),
+            "expected IN to compare the masked bit against zero\noutput:\n{output}"
+        );
+    }
+
+    #[test]
+    fn dump_llvm_type_check_emits_runtime_type_test() {
+        let (output, code) = dump_llvm_source(
+            "newcp-typecheck-probe.cp",
+            concat!(
+                "MODULE Demo;\n",
+                "TYPE Base = RECORD x: INTEGER END;\n",
+                "TYPE Sub = RECORD (Base) y: INTEGER END;\n",
+                "VAR b: POINTER TO Base;\n",
+                "PROCEDURE Run*;\n",
+                "VAR result: BOOLEAN;\n",
+                "BEGIN\n",
+                "  result := b IS Sub\n",
+                "END Run;\n",
+                "END Demo.\n"
+            ),
+        );
+
+        assert_eq!(code, 0, "expected exit 0 for IS probe\noutput:\n{output}");
+        assert!(
+            output.contains("declare i1 @__newcp_type_test(ptr, ptr)"),
+            "expected __newcp_type_test to be declared\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("@__newcp_typedesc_Sub"),
+            "expected TypeDesc sentinel global for Sub\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("%typetest = call i1 @__newcp_type_test"),
+            "expected IS expression to call the type test helper\noutput:\n{output}"
+        );
+    }
+
+    #[test]
+    fn dump_llvm_type_test_terminator_emits_conditional_branch() {
+        let (output, code) = dump_llvm_source(
+            "newcp-typetest-term-probe.cp",
+            concat!(
+                "MODULE Demo;\n",
+                "TYPE Base = RECORD x: INTEGER END;\n",
+                "TYPE Sub = RECORD (Base) y: INTEGER END;\n",
+                "VAR b: POINTER TO Base;\n",
+                "PROCEDURE Run*;\n",
+                "BEGIN\n",
+                "  WITH b: Sub DO\n",
+                "    b.y := 1\n",
+                "  END\n",
+                "END Run;\n",
+                "END Demo.\n"
+            ),
+        );
+
+        assert_eq!(code, 0, "expected exit 0 for WITH/IS probe\noutput:\n{output}");
+        assert!(
+            output.contains("declare i1 @__newcp_type_test(ptr, ptr)"),
+            "expected __newcp_type_test to be declared\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("br i1 %typetest"),
+            "expected TypeTest terminator to produce a conditional branch\noutput:\n{output}"
+        );
+    }
 }

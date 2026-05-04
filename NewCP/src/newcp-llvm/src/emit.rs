@@ -20,6 +20,8 @@ pub struct ValueMap<'ctx> {
     pub block_map: HashMap<BlockId, BasicBlock<'ctx>>,
     pub named_slots: HashMap<String, PointerValue<'ctx>>,
     pub ref_param_slots: HashMap<String, PointerValue<'ctx>>,
+    /// The procedure's entry block — used for `alloca` placement.
+    pub entry_block: Option<BasicBlock<'ctx>>,
 }
 
 impl<'ctx> ValueMap<'ctx> {
@@ -29,6 +31,7 @@ impl<'ctx> ValueMap<'ctx> {
             block_map: HashMap::new(),
             named_slots: HashMap::new(),
             ref_param_slots: HashMap::new(),
+            entry_block: None,
         }
     }
 }
@@ -83,6 +86,7 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
             let llvm_block = self.cg.context.append_basic_block(fn_val, &name);
             value_map.block_map.insert(block.id, llvm_block);
         }
+        value_map.entry_block = value_map.block_map.get(&proc.entry).copied();
     }
 
     /// Pass 2: position the builder at each block and emit its instructions.
@@ -112,7 +116,7 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
     ) -> Result<(), CodegenError> {
         use newcp_ir::Instr;
 
-        let result = match instr {
+        match instr {
             Instr::Load { dst, addr, ty } => {
                 let ptr = self.resolve_pointer(addr, value_map)?;
                 let llvm_ty = self.lower_basic_type(ty)?;
@@ -268,13 +272,16 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
                 value_map.temp_values.insert(*dst, value);
                 Ok(())
             }
+            Instr::TypeCheck { dst, value, ty } => {
+                let result = self.emit_type_check(value, ty, value_map)?;
+                value_map.temp_values.insert(*dst, result);
+                Ok(())
+            }
             other => Err(CodegenError::Unsupported {
                 stage: "emit_instr",
                 detail: format!("{other:?}"),
             }),
-        };
-
-        result
+        }
     }
 
     fn emit_terminator(
@@ -362,19 +369,27 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
                 })?;
                 let _ = kind;
             }
-            other => {
-                let detail = format!("{other:?}");
-                if self.options.strict_unsupported {
-                    return Err(CodegenError::Unsupported {
+            Terminator::TypeTest { value, ty, true_target, false_target } => {
+                let cond = self.emit_type_check(value, ty, value_map)?.into_int_value();
+                let true_block = value_map.block_map.get(true_target).copied().ok_or_else(|| {
+                    CodegenError::Unsupported {
                         stage: "emit_terminator",
-                        detail,
-                    });
-                }
-                // Non-strict fallback: emit unreachable so the block has a terminator.
-                self.cg.builder.build_unreachable().map_err(|e| CodegenError::Unsupported {
-                    stage: "emit_terminator",
-                    detail: e.to_string(),
+                        detail: format!("typetest true target {} not found", true_target.render()),
+                    }
                 })?;
+                let false_block = value_map.block_map.get(false_target).copied().ok_or_else(|| {
+                    CodegenError::Unsupported {
+                        stage: "emit_terminator",
+                        detail: format!("typetest false target {} not found", false_target.render()),
+                    }
+                })?;
+                self.cg
+                    .builder
+                    .build_conditional_branch(cond, true_block, false_block)
+                    .map_err(|e| CodegenError::Unsupported {
+                        stage: "emit_terminator",
+                        detail: e.to_string(),
+                    })?;
             }
         }
         Ok(())
@@ -395,6 +410,10 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
         proc: &IrProcedure,
         value_map: &mut ValueMap<'ctx>,
     ) -> Result<(), CodegenError> {
+        // Position once at the entry block's tail; all param stores go here.
+        // (ensure_named_slot allocates via its own builder instance.)
+        self.cg.builder.position_at_end(value_map.block_map[&proc.entry]);
+
         for (index, (name, ty)) in proc.params.iter().enumerate() {
             let slot = self.ensure_named_slot(name, ty, value_map)?;
             let param = fn_val.get_nth_param(index as u32).ok_or_else(|| CodegenError::Unsupported {
@@ -404,9 +423,6 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
             if matches!(ty, IrType::Ref(_)) {
                 value_map.ref_param_slots.insert(name.clone(), slot);
             }
-            self.cg
-                .builder
-                .position_at_end(value_map.block_map[&proc.entry]);
             self.cg.builder.build_store(slot, param).map_err(|e| CodegenError::Unsupported {
                 stage: "emit",
                 detail: e.to_string(),
@@ -431,11 +447,9 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
         }
 
         let llvm_ty = self.lower_basic_type(ty)?;
-        let entry_block = *value_map.block_map.values().min_by_key(|b| b.get_name().to_str().ok()).ok_or_else(|| {
-            CodegenError::Unsupported {
-                stage: "emit",
-                detail: "no entry block available for slot allocation".to_string(),
-            }
+        let entry_block = value_map.entry_block.ok_or_else(|| CodegenError::Unsupported {
+            stage: "emit",
+            detail: "no entry block recorded for slot allocation".to_string(),
         })?;
         let slot_builder = self.cg.context.create_builder();
         if let Some(first_instr) = entry_block.get_first_instruction() {
@@ -620,12 +634,45 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
                     !self.is_unsigned_type(&left.ty()),
                     "shr",
                 ).map(|v| v.into()),
-                other => {
-                    return Err(CodegenError::Unsupported {
-                        stage: "emit_instr",
-                        detail: format!("unsupported integer binop {other:?}"),
-                    });
+                BinOp::In => {
+                    // x IN s: test whether bit x of set s is set.
+                    // result = (s >> x) & 1 != 0
+                    // `return` diverges this arm's type, bypassing the outer `.map_err`.
+                    let x_cast = self.cast_shift_to_width(lhs, rhs.get_type(), "in.cast")?;
+                    let shifted = self
+                        .cg
+                        .builder
+                        .build_right_shift(rhs, x_cast, false, "in.shr")
+                        .map_err(|e| CodegenError::Unsupported {
+                            stage: "emit_instr",
+                            detail: e.to_string(),
+                        })?;
+                    let one = rhs.get_type().const_int(1, false);
+                    let masked = self
+                        .cg
+                        .builder
+                        .build_and(shifted, one, "in.and")
+                        .map_err(|e| CodegenError::Unsupported {
+                            stage: "emit_instr",
+                            detail: e.to_string(),
+                        })?;
+                    return self
+                        .cg
+                        .builder
+                        .build_int_compare(
+                            IntPredicate::NE,
+                            masked,
+                            rhs.get_type().const_zero(),
+                            "in.ne",
+                        )
+                        .map(|v| BasicValueEnum::from(v))
+                        .map_err(|e| CodegenError::Unsupported {
+                            stage: "emit_instr",
+                            detail: e.to_string(),
+                        });
                 }
+                // Eq/Ne/Lt/Le/Gt/Ge are handled by the predicate path above.
+                _ => unreachable!("binop {op:?} should have been routed through the predicate path"),
             }
         }
         .map_err(|e| CodegenError::Unsupported {
@@ -718,25 +765,8 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
         let value_int = self.resolve_basic_value(value, value_map)?.into_int_value();
         let shift_int = self.resolve_basic_value(shift, value_map)?.into_int_value();
         let value_ty = value_int.get_type();
-        let zero_shift = shift_int.get_type().const_zero();
-        let is_negative = self
-            .cg
-            .builder
-            .build_int_compare(IntPredicate::SLT, shift_int, zero_shift, "lsh.neg")
-            .map_err(|e| CodegenError::Unsupported {
-                stage: "emit_instr",
-                detail: e.to_string(),
-            })?;
-        let neg_shift = self
-            .cg
-            .builder
-            .build_int_neg(shift_int, "lsh.negated")
-            .map_err(|e| CodegenError::Unsupported {
-                stage: "emit_instr",
-                detail: e.to_string(),
-            })?;
-        let left_shift = self.cast_shift_to_width(shift_int, value_ty, "lsh.left")?;
-        let right_shift = self.cast_shift_to_width(neg_shift, value_ty, "lsh.right")?;
+        let (is_negative, left_shift, right_shift) =
+            self.signed_shift_operands(shift_int, value_ty, "lsh")?;
         let shl = self
             .cg
             .builder
@@ -845,25 +875,8 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
         let value_ty = value_int.get_type();
         let bit_width = value_ty.get_bit_width() as u64;
         let width_value = value_ty.const_int(bit_width, false);
-        let zero_shift = shift_int.get_type().const_zero();
-        let is_negative = self
-            .cg
-            .builder
-            .build_int_compare(IntPredicate::SLT, shift_int, zero_shift, "rot.neg")
-            .map_err(|e| CodegenError::Unsupported {
-                stage: "emit_instr",
-                detail: e.to_string(),
-            })?;
-        let neg_shift = self
-            .cg
-            .builder
-            .build_int_neg(shift_int, "rot.negated")
-            .map_err(|e| CodegenError::Unsupported {
-                stage: "emit_instr",
-                detail: e.to_string(),
-            })?;
-        let left_shift = self.cast_shift_to_width(shift_int, value_ty, "rot.left.cast")?;
-        let right_shift = self.cast_shift_to_width(neg_shift, value_ty, "rot.right.cast")?;
+        let (is_negative, left_shift, right_shift) =
+            self.signed_shift_operands(shift_int, value_ty, "rot")?;
         let left_amount = self
             .cg
             .builder
@@ -911,6 +924,48 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
                 stage: "emit_instr",
                 detail: e.to_string(),
             })
+    }
+
+    /// Compute direction-dependent shift operands used by both `emit_lsh` and `emit_rot`.
+    ///
+    /// Returns `(is_negative, left_cast, right_cast)`:
+    /// - `is_negative`: `i1` true when `shift < 0` (right-shift direction)
+    /// - `left_cast`: `shift` zero-/sign-extended to `value_ty` width
+    /// - `right_cast`: `abs(shift)` zero-/sign-extended to `value_ty` width
+    fn signed_shift_operands(
+        &self,
+        shift: inkwell::values::IntValue<'ctx>,
+        value_ty: inkwell::types::IntType<'ctx>,
+        prefix: &str,
+    ) -> Result<
+        (
+            inkwell::values::IntValue<'ctx>,
+            inkwell::values::IntValue<'ctx>,
+            inkwell::values::IntValue<'ctx>,
+        ),
+        CodegenError,
+    > {
+        let zero = shift.get_type().const_zero();
+        let is_negative = self
+            .cg
+            .builder
+            .build_int_compare(IntPredicate::SLT, shift, zero, &format!("{prefix}.neg"))
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "emit_instr",
+                detail: e.to_string(),
+            })?;
+        let neg_shift = self
+            .cg
+            .builder
+            .build_int_neg(shift, &format!("{prefix}.negated"))
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "emit_instr",
+                detail: e.to_string(),
+            })?;
+        let left_cast = self.cast_shift_to_width(shift, value_ty, &format!("{prefix}.left"))?;
+        let right_cast =
+            self.cast_shift_to_width(neg_shift, value_ty, &format!("{prefix}.right"))?;
+        Ok((is_negative, left_cast, right_cast))
     }
 
     fn build_rotate_call(
@@ -1138,4 +1193,71 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
     fn is_unsigned_type(&self, ty: &IrType) -> bool {
         matches!(ty, IrType::U8 | IrType::U16 | IrType::U32 | IrType::Bool | IrType::Char | IrType::ShortChar | IrType::Set(_))
     }
+
+    /// Emit an IS type test for `Instr::TypeCheck` and `Terminator::TypeTest`.
+    ///
+    /// - Named type → calls `@__newcp_type_test(obj_ptr, typedesc_ptr) -> i1`
+    /// - Opaque fallback → emits constant `false` (unresolved type at lower time)
+    fn emit_type_check(
+        &self,
+        value: &IrValue,
+        ty: &IrType,
+        value_map: &mut ValueMap<'ctx>,
+    ) -> Result<BasicValueEnum<'ctx>, CodegenError> {
+        let IrType::Named(type_name) = ty else {
+            // Opaque("is-check") is emitted by lower.rs when the target type was
+            // unresolved.  Produce constant false until the ABI is defined.
+            return Ok(self.cg.context.bool_type().const_zero().into());
+        };
+
+        let obj_ptr = self.resolve_basic_value(value, value_map)?;
+        let typedesc_ptr = self.get_or_declare_typedesc(type_name);
+        let type_test_fn = self.get_or_declare_type_test_fn();
+        let call = self
+            .cg
+            .builder
+            .build_call(
+                type_test_fn,
+                &[obj_ptr.into(), typedesc_ptr.into()],
+                "typetest",
+            )
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "emit_type_check",
+                detail: e.to_string(),
+            })?;
+        Ok(call.try_as_basic_value().unwrap_basic())
+    }
+
+    /// Get or declare `@__newcp_type_test(ptr, ptr) -> i1` — part of the runtime ABI.
+    fn get_or_declare_type_test_fn(&self) -> FunctionValue<'ctx> {
+        const NAME: &str = "__newcp_type_test";
+        if let Some(f) = self.cg.module.get_function(NAME) {
+            return f;
+        }
+        let ptr_ty = self.cg.context.ptr_type(inkwell::AddressSpace::default());
+        let i1_ty = self.cg.context.bool_type();
+        let fn_ty = i1_ty.fn_type(&[ptr_ty.into(), ptr_ty.into()], false);
+        self.cg
+            .module
+            .add_function(NAME, fn_ty, Some(inkwell::module::Linkage::External))
+    }
+
+    /// Get or declare the TypeDesc sentinel global for the named type.
+    ///
+    /// Declares `@__newcp_typedesc_{mangled} = external global i8` (opaque placeholder).
+    /// Dots in the type name are replaced with underscores.
+    fn get_or_declare_typedesc(&self, type_name: &str) -> PointerValue<'ctx> {
+        let mangled = type_name.replace('.', "_");
+        let global_name = format!("__newcp_typedesc_{mangled}");
+        if let Some(g) = self.cg.module.get_global(&global_name) {
+            return g.as_pointer_value();
+        }
+        // Use i8 as opaque placeholder; the actual TypeDesc layout is TBD.
+        // External linkage with no initializer = a declaration, not a definition.
+        let i8_ty = self.cg.context.i8_type();
+        let global = self.cg.module.add_global(i8_ty, None, &global_name);
+        global.set_linkage(inkwell::module::Linkage::External);
+        global.as_pointer_value()
+    }
 }
+
