@@ -132,6 +132,8 @@ struct LowerCtx<'m> {
     nested_proc_upvalues: std::collections::HashMap<String, Vec<(String, SemanticType)>>,
     /// For each local procedure name, its return IrType (used for correct call typing).
     nested_proc_return_types: std::collections::HashMap<String, IrType>,
+    /// Cache of already-parsed-and-analysed imported modules, keyed by module name.
+    import_cache: std::collections::HashMap<String, SemanticModule>,
 }
 
 impl<'m> LowerCtx<'m> {
@@ -157,6 +159,7 @@ impl<'m> LowerCtx<'m> {
             outer_proc_name: None,
             nested_proc_upvalues: std::collections::HashMap::new(),
             nested_proc_return_types: std::collections::HashMap::new(),
+            import_cache: std::collections::HashMap::new(),
         }
     }
 
@@ -251,7 +254,7 @@ impl<'m> LowerCtx<'m> {
     /// imported types like `"TypeExt.Bird"`.
     ///
     /// Strips pointer/ref wrappers and resolves the inner record's fields.
-    fn flatten_fields_for_ir_type(&self, ir_ty: &IrType) -> Vec<(String, SemanticType)> {
+    fn flatten_fields_for_ir_type(&mut self, ir_ty: &IrType) -> Vec<(String, SemanticType)> {
         let mut cursor = ir_ty;
         loop {
             match cursor {
@@ -280,10 +283,9 @@ impl<'m> LowerCtx<'m> {
 
     /// Load an imported module and flatten the fields of the named record type within it,
     /// including inherited fields from the base chain.
-    fn flatten_imported_record_fields(&self, module: &str, type_name: &str) -> Vec<(String, SemanticType)> {
-        let path = Path::new("Mod").join(format!("{module}.cp"));
-        let Ok(ast) = read_module_ast(&path) else { return Vec::new() };
-        let sema = analyze_module_ast(&ast);
+    fn flatten_imported_record_fields(&mut self, module: &str, type_name: &str) -> Vec<(String, SemanticType)> {
+        let sema = load_cached_import(module, &mut self.import_cache);
+        let Some(sema) = sema else { return Vec::new() };
         let Some(sym) = sema.symbols.iter().find(|s| s.name == type_name && s.kind == SymbolKind::Type) else {
             return Vec::new();
         };
@@ -888,7 +890,7 @@ impl<'m> LowerCtx<'m> {
             .unwrap_or(false)
     }
 
-    fn callee_return_type(&self, callee: &IrValue) -> IrType {
+    fn callee_return_type(&mut self, callee: &IrValue) -> IrType {
         match self.callee_procedure_type(callee) {
             Some(proc_ty) => proc_ty
                 .result_type
@@ -910,7 +912,7 @@ impl<'m> LowerCtx<'m> {
         }
     }
 
-    fn callee_procedure_type(&self, callee: &IrValue) -> Option<newcp_sema::ProcedureType> {
+    fn callee_procedure_type(&mut self, callee: &IrValue) -> Option<newcp_sema::ProcedureType> {
         match callee {
             IrValue::GlobalRef(name, _) => self
                 .symbols
@@ -928,13 +930,11 @@ impl<'m> LowerCtx<'m> {
     }
 
     fn imported_callee_procedure_type(
-        &self,
+        &mut self,
         module: &str,
         name: &str,
     ) -> Option<newcp_sema::ProcedureType> {
-        let path = Path::new("Mod").join(format!("{module}.cp"));
-        let ast = read_module_ast(&path).ok()?;
-        let sema = analyze_module_ast(&ast);
+        let sema = load_cached_import(module, &mut self.import_cache)?;
         sema.procedures
             .iter()
             .find(|proc| proc.name == name && proc.exported)
@@ -1236,7 +1236,7 @@ impl<'m> LowerCtx<'m> {
         }
     }
 
-    fn designator_ir_type(&self, des: &Designator) -> Option<IrType> {
+    fn designator_ir_type(&mut self, des: &Designator) -> Option<IrType> {
         let des = self.normalize_designator(des);
         let mut ty = self.base_symbol_ir_type(&des.base)?;
 
@@ -2114,8 +2114,25 @@ pub fn lower_procedure(
 
 // == Module lowering ==
 
+/// Load and semantically analyse an imported module, caching the result.
+/// Subsequent calls with the same module name return the cached `SemanticModule`.
+fn load_cached_import<'c>(
+    module: &str,
+    cache: &'c mut std::collections::HashMap<String, SemanticModule>,
+) -> Option<&'c SemanticModule> {
+    if !cache.contains_key(module) {
+        let path = Path::new("Mod").join(format!("{module}.cp"));
+        let ast = read_module_ast(&path).ok()?;
+        let sema = analyze_module_ast(&ast);
+        cache.insert(module.to_string(), sema);
+    }
+    cache.get(module)
+}
+
 pub fn lower_module(sema: &SemanticModule, ast: &ModuleAst) -> IrModule {
     use newcp_sema::SymbolKind;
+
+    let mut import_cache: std::collections::HashMap<String, SemanticModule> = std::collections::HashMap::new();
 
     let globals: Vec<IrGlobal> = sema
         .symbols
@@ -2219,7 +2236,7 @@ pub fn lower_module(sema: &SemanticModule, ast: &ModuleAst) -> IrModule {
     let mut procedures = procedures;
     procedures.extend(nested_procedures);
 
-    let named_types = collect_named_types(&sema.name, &sema.imports, &sema.symbols);
+    let named_types = collect_named_types(&sema.name, &sema.imports, &sema.symbols, &mut import_cache);
     let (type_vtables, type_bases) = collect_type_vtables(&sema.name, &sema.symbols);
 
     IrModule {
@@ -2379,6 +2396,7 @@ fn collect_named_types(
     module_name: &str,
     imports: &[String],
     module_symbols: &[SemanticSymbol],
+    import_cache: &mut std::collections::HashMap<String, SemanticModule>,
 ) -> std::collections::HashMap<String, Vec<(String, IrType)>> {
     use newcp_sema::SymbolKind;
     let mut map = std::collections::HashMap::new();
@@ -2401,15 +2419,18 @@ fn collect_named_types(
 
     // Collect exported record types from imported modules, stored under "Module.Type" keys.
     for import_name in imports {
-        let path = Path::new("Mod").join(format!("{import_name}.cp"));
-        let Ok(ast) = read_module_ast(&path) else { continue };
-        let sema = analyze_module_ast(&ast);
+        // Load (or retrieve from cache), then clone to release the borrow so we can
+        // pass &mut import_cache to the recursive flatten call below.
+        let sema = match load_cached_import(import_name, import_cache) {
+            Some(s) => s.clone(),
+            None => continue,
+        };
         for sym in &sema.symbols {
             if sym.kind != SymbolKind::Type || !sym.exported {
                 continue;
             }
             if let Some(sem_ty) = &sym.declared_type {
-                let flat = flatten_fields_deep_cross_module(sem_ty, &sema.symbols, import_name);
+                let flat = flatten_fields_deep_cross_module(sem_ty, &sema.symbols, import_name, import_cache);
                 if !flat.is_empty() {
                     let key = format!("{import_name}.{}", sym.name);
                     map.insert(key, flat);
@@ -2457,25 +2478,29 @@ fn flatten_fields_deep_cross_module(
     ty: &SemanticType,
     module_symbols: &[SemanticSymbol],
     current_module: &str,
+    import_cache: &mut std::collections::HashMap<String, SemanticModule>,
 ) -> Vec<(String, IrType)> {
     let (base, fields) = match ty {
         SemanticType::Record { base, fields, .. } => (base.as_deref(), fields.as_slice()),
         SemanticType::Named { name, module: None, .. } => {
             if let Some(sym) = module_symbols.iter().find(|s| s.name == *name) {
                 if let Some(resolved) = &sym.declared_type {
-                    return flatten_fields_deep_cross_module(resolved, module_symbols, current_module);
+                    return flatten_fields_deep_cross_module(resolved, module_symbols, current_module, import_cache);
                 }
             }
             return Vec::new();
         }
         SemanticType::Named { name, module: Some(m), .. } => {
             // Base type is in another module — load and recurse.
-            let path = Path::new("Mod").join(format!("{m}.cp"));
-            if let Ok(base_ast) = read_module_ast(&path) {
-                let base_sema = analyze_module_ast(&base_ast);
+            if let Some(base_sema) = load_cached_import(m.as_str(), import_cache) {
                 if let Some(sym) = base_sema.symbols.iter().find(|s| s.name == *name) {
                     if let Some(resolved) = &sym.declared_type {
-                        return flatten_fields_deep_cross_module(resolved, &base_sema.symbols, m.as_str());
+                        // Clone to avoid borrow conflict after cache lookup
+                        let resolved = resolved.clone();
+                        let symbols: Vec<_> = base_sema.symbols.clone();
+                        let m_str = m.clone();
+                        let _ = base_sema;
+                        return flatten_fields_deep_cross_module(&resolved, &symbols, &m_str, import_cache);
                     }
                 }
             }
@@ -2485,7 +2510,7 @@ fn flatten_fields_deep_cross_module(
     };
     let mut result = Vec::new();
     if let Some(parent) = base {
-        result.extend(flatten_fields_deep_cross_module(parent, module_symbols, current_module));
+        result.extend(flatten_fields_deep_cross_module(parent, module_symbols, current_module, import_cache));
     }
     for field in fields {
         let ir_ty = map_semantic_type(&field.ty);
