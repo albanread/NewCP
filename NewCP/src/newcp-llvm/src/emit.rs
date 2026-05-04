@@ -289,6 +289,9 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
             Instr::Gep { dst, base, field_index, result_ty } => {
                 self.emit_gep(*dst, base, *field_index, result_ty, value_map)
             }
+            Instr::IndexGep { dst, base, index, element_ty } => {
+                self.emit_index_gep(*dst, base, index, element_ty, value_map)
+            }
             Instr::New { dst, record_ty } => {
                 // Compute sizeof(RecordType) via LLVM and call __newcp_sys_new.
                 let struct_ty = named_struct_type_from_ir_type(record_ty, &self.cg.planner.named_struct_types)
@@ -1537,6 +1540,36 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
         };
 
         value_map.temp_values.insert(dst, field_ptr.into());
+        Ok(())
+    }
+
+    fn emit_index_gep(
+        &mut self,
+        dst: TempId,
+        base: &IrValue,
+        index: &IrValue,
+        element_ty: &IrType,
+        value_map: &mut ValueMap<'ctx>,
+    ) -> Result<(), CodegenError> {
+        let base_ptr = self.resolve_pointer(base, value_map)?;
+        let elem_llvm_ty = self.lower_basic_type(element_ty)?;
+        let idx_val = self.resolve_basic_value(index, value_map)?;
+        let idx_int = if let Some(iv) = idx_val.into_int_value().try_into().ok() {
+            iv
+        } else {
+            // Widen to i64 if not already an integer — safety fallback.
+            idx_val.into_int_value()
+        };
+        let elem_ptr = unsafe {
+            self.cg
+                .builder
+                .build_gep(elem_llvm_ty, base_ptr, &[idx_int], "arr_elem")
+        }
+        .map_err(|e| CodegenError::Unsupported {
+            stage: "emit_index_gep",
+            detail: e.to_string(),
+        })?;
+        value_map.temp_values.insert(dst, elem_ptr.into());
         Ok(())
     }
 

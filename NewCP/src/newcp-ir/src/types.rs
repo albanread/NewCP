@@ -47,6 +47,11 @@ pub enum IrType {
     Opaque(String),
     /// CP SET type. `width` is the bit-width (32 for standard SET).
     Set(u8),
+    /// Fixed-length array: `ARRAY len OF element`.
+    ///
+    /// Used for inline (value-type) array storage in records and local variables.
+    /// Open arrays (VAR parameter arrays without a known size) remain as `Ptr(element)`.
+    Array { element: Box<IrType>, len: u64 },
     Void,
 }
 
@@ -74,6 +79,7 @@ impl IrType {
             IrType::Named(name) => format!("named:{name}"),
             IrType::Opaque(name) => format!("opaque:{name}"),
             IrType::Set(w) => format!("set{w}"),
+            IrType::Array { element, len } => format!("[{len} x {}]", element.render()),
             IrType::Void => "void".to_string(),
         }
     }

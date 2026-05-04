@@ -131,8 +131,8 @@ mod tests {
         assert_eq!(code, 0, "expected exit 0 for Records.cp\noutput:\n{output}");
         assert!(
             output.contains("define void @SetPoint(ptr %0, i64 %1, i64 %2)")
-                && output.contains("getelementptr inbounds %Point, ptr %t1, i32 0, i32 0")
-                && output.contains("getelementptr inbounds %Point, ptr %t4, i32 0, i32 1"),
+                && output.contains("getelementptr inbounds %Point, ptr %p_ref, i32 0, i32 0")
+                && output.contains("getelementptr inbounds %Point, ptr %p_ref1, i32 0, i32 1"),
             "expected Point procedures to use %Point GEPs\noutput:\n{output}"
         );
         assert!(
@@ -578,12 +578,12 @@ mod tests {
         );
         // b.legs := 2 → gep %Bird index 0
         assert!(
-            output.contains("getelementptr inbounds %Bird, ptr %t0, i32 0, i32 0"),
+            output.contains("getelementptr inbounds %Bird, ptr %b_ref, i32 0, i32 0"),
             "expected b.legs store to use GEP index 0 into %%Bird\noutput:\n{output}"
         );
         // b.canFly := canFly → gep %Bird index 1
         assert!(
-            output.contains("getelementptr inbounds %Bird, ptr %t3, i32 0, i32 1"),
+            output.contains("getelementptr inbounds %Bird, ptr %b_ref1, i32 0, i32 1"),
             "expected b.canFly store to use GEP index 1 into %%Bird\noutput:\n{output}"
         );
         // No opaque fallback field reference should remain
@@ -689,4 +689,165 @@ mod tests {
             "expected Shape vtable_len=2 and Circle vtable_len=3\noutput:\n{output}"
         );
     }
+
+    #[test]
+    fn dump_llvm_arrays_emit_index_gep() {
+        let (output, code) = dump_llvm("Mod/Arrays.cp");
+        assert_eq!(code, 0, "expected exit 0 for Arrays.cp\noutput:\n{output}");
+
+        // Array global declared.
+        assert!(
+            output.contains("@Arrays.Data"),
+            "expected @data global\noutput:\n{output}"
+        );
+
+        // SetElem and GetElem functions compiled.
+        assert!(
+            output.contains("@SetElem"),
+            "expected @SetElem function\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("@GetElem"),
+            "expected @GetElem function\noutput:\n{output}"
+        );
+
+        // GEP instruction present (array element access).
+        assert!(
+            output.contains("getelementptr") || output.contains("gep"),
+            "expected getelementptr in output\noutput:\n{output}"
+        );
+    }
+
+    #[test]
+    fn dump_llvm_arrays_of_records_field_access() {
+        let (output, code) = dump_llvm("Mod/Arrays.cp");
+        assert_eq!(code, 0, "expected exit 0 for Arrays.cp\noutput:\n{output}");
+
+        // Point struct type declared.
+        assert!(
+            output.contains("%Point = type"),
+            "expected %Point struct type\noutput:\n{output}"
+        );
+
+        // SetPoint, GetX, GetY functions compiled.
+        assert!(
+            output.contains("@SetPoint"),
+            "expected @SetPoint function\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("@GetX"),
+            "expected @GetX function\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("@GetY"),
+            "expected @GetY function\noutput:\n{output}"
+        );
+
+        // Array-index GEP into the Point array, then struct-field GEP for x and y.
+        // The index GEP uses the Point type; the field GEP is inbounds with field indices.
+        assert!(
+            output.contains("getelementptr %Point"),
+            "expected GEP into Point array\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("getelementptr inbounds %Point"),
+            "expected inbounds GEP for Point field\noutput:\n{output}"
+        );
+
+        // Field 0 (x) accessed in GetX.
+        assert!(
+            output.contains("i32 0, i32 0"),
+            "expected field index 0 GEP (x)\noutput:\n{output}"
+        );
+
+        // Field 1 (y) accessed in GetY.
+        assert!(
+            output.contains("i32 0, i32 1"),
+            "expected field index 1 GEP (y)\noutput:\n{output}"
+        );
+    }
+
+    #[test]
+    fn dump_llvm_array_method_call_dispatches_via_vtable() {
+        let (output, code) = dump_llvm("Mod/ArrayMethods.cp");
+        assert_eq!(code, 0, "expected exit 0 for ArrayMethods.cp\noutput:\n{output}");
+
+        // Node struct type and vtable emitted.
+        assert!(
+            output.contains("%Node = type"),
+            "expected %Node struct type\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("@Node.vtable"),
+            "expected @Node.vtable\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("@Node_GetVal"),
+            "expected @Node_GetVal function\noutput:\n{output}"
+        );
+
+        // CallGetVal compiled.
+        assert!(
+            output.contains("@CallGetVal"),
+            "expected @CallGetVal function\noutput:\n{output}"
+        );
+
+        // Array-index GEP selects the right slot.
+        assert!(
+            output.contains("getelementptr ptr"),
+            "expected GEP into pointer array\noutput:\n{output}"
+        );
+
+        // Vtable dispatch sequence: load tag, mask, load vtable, load fn_ptr, indirect call.
+        assert!(
+            output.contains("getelementptr i8") && output.contains("i64 -16"),
+            "expected BlockHeader tag load (obj-16)\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("and i64") && output.contains("-2"),
+            "expected tag masking\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("call i64 %fn_ptr"),
+            "expected indirect method call via fn_ptr\noutput:\n{output}"
+        );
+    }
+
+    #[test]
+    fn dump_llvm_nested_procs_lambda_lifted() {
+        let (output, code) = dump_llvm("Mod/Nested.cp");
+        assert_eq!(code, 0, "expected exit 0 for Nested.cp\noutput:\n{output}");
+
+        // Outer calls Outer_Double — no upvalue args (pure param pass-through).
+        assert!(
+            output.contains("@Outer_Double"),
+            "expected lambda-lifted @Outer_Double\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("call i64 @Outer_Double(i64"),
+            "expected Outer to call Outer_Double with one i64 arg\noutput:\n{output}"
+        );
+
+        // WithCapture_Add receives `offset` as first ptr (upvalue ref param).
+        assert!(
+            output.contains("define i64 @WithCapture_Add(ptr %0, i64 %1)"),
+            "expected WithCapture_Add with ptr upvalue param\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("call i64 @WithCapture_Add(ptr %offset, i64 10)"),
+            "expected WithCapture to pass offset alloca ptr to Add\noutput:\n{output}"
+        );
+
+        // WithMutation_Accumulate receives `accum` as first ptr, returns void.
+        assert!(
+            output.contains("define void @WithMutation_Accumulate(ptr %0, i64 %1)"),
+            "expected WithMutation_Accumulate with ptr upvalue and void return\noutput:\n{output}"
+        );
+        // Accumulate is called twice: once with n, once with n*2.
+        assert!(
+            output.contains("call void @WithMutation_Accumulate(ptr %accum,"),
+            "expected WithMutation to call Accumulate with accum ptr\noutput:\n{output}"
+        );
+    }
 }
+

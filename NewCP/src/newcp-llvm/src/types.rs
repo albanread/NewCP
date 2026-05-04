@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use inkwell::context::Context;
-use inkwell::types::{AnyTypeEnum, BasicTypeEnum, StructType};
+use inkwell::types::{AnyTypeEnum, BasicTypeEnum, BasicType, StructType};
 
 use newcp_ir::IrType;
 
@@ -43,6 +43,11 @@ impl<'ctx> TypeLowerer<'ctx> {
             // All pointer-bearing types lower to opaque `ptr`.
             IrType::Ptr(_) | IrType::UntaggedPtr(_) | IrType::Ref(_) => {
                 Ok(self.context.ptr_type(inkwell::AddressSpace::default()).into())
+            }
+            // Fixed-length array: lower to LLVM [N x T].
+            IrType::Array { element, len } => {
+                let elem_ty = self.lower_basic(element, named_types)?;
+                Ok(elem_ty.array_type(*len as u32).into())
             }
             // SET(32) → i32; other widths deferred.
             IrType::Set(32) => Ok(self.context.i32_type().into()),

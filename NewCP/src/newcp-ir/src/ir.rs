@@ -177,6 +177,12 @@ pub enum Instr {
     /// field index in the flattened field list (accounting for inherited fields).
     /// `result_ty` is the type of the field (value type, not pointer).
     Gep { dst: TempId, base: IrValue, field_index: u32, result_ty: IrType },
+    /// `t = indexgep base[index] : element_ty`  — array element pointer (GEP with dynamic index).
+    ///
+    /// `base` is a pointer to the start of the array data.
+    /// `index` is an integer index value (i64). `element_ty` is the type of each element.
+    /// The result has IR type `Ref(element_ty)` — a pointer to the element.
+    IndexGep { dst: TempId, base: IrValue, index: IrValue, element_ty: IrType },
     /// `t = new RecordType`  — allocate a new GC-managed record of the given type.
     ///
     /// `record_ty` is the IR type of the record (usually `Named("T")`). The backend

@@ -37,11 +37,27 @@ pub fn map_semantic_type(ty: &SemanticType) -> IrType {
             };
             IrType::Named(full)
         }
-        SemanticType::Array { element_type, untagged, .. } => {
-            if *untagged {
-                IrType::UntaggedPtr(Box::new(map_semantic_type(element_type)))
+        SemanticType::Array { lengths, element_type, untagged } => {
+            let elem_ir = map_semantic_type(element_type);
+            if lengths.is_empty() {
+                // Open array (VAR parameter, no explicit length) — lower as pointer to element.
+                if *untagged {
+                    IrType::UntaggedPtr(Box::new(elem_ir))
+                } else {
+                    IrType::Ptr(Box::new(elem_ir))
+                }
             } else {
-                IrType::Ptr(Box::new(map_semantic_type(element_type)))
+                // Fixed-length array — build nested IrType::Array from innermost out.
+                // e.g. ARRAY 10, 20 OF INTEGER  →  [10 x [20 x i64]]
+                // We start from the innermost dimension (last length) and wrap outward.
+                // However, in sema the element_type is already the element (not a nested array
+                // for multi-dim syntax), so we build [len[n-1] x (... [len[0] x elem])].
+                let mut result = elem_ir;
+                for len_str in lengths.iter().rev() {
+                    let len: u64 = len_str.parse().unwrap_or(0);
+                    result = IrType::Array { element: Box::new(result), len };
+                }
+                result
             }
         }
         SemanticType::Record { layout, .. } => match layout {
@@ -108,6 +124,14 @@ struct LowerCtx<'m> {
     module_symbols: &'m [SemanticSymbol],
     /// Type overrides pushed by WITH arms so field access resolves against the guard type.
     with_type_overrides: Vec<(String, IrType)>,
+    /// The unqualified name of the enclosing (outer) procedure, if any.
+    /// Used when rewriting calls to nested procedures (mangling callee name).
+    outer_proc_name: Option<String>,
+    /// For each local procedure name, the list of upvalue (name, type) pairs that
+    /// must be prepended as Ref arguments at every call site.
+    nested_proc_upvalues: std::collections::HashMap<String, Vec<(String, SemanticType)>>,
+    /// For each local procedure name, its return IrType (used for correct call typing).
+    nested_proc_return_types: std::collections::HashMap<String, IrType>,
 }
 
 impl<'m> LowerCtx<'m> {
@@ -130,6 +154,9 @@ impl<'m> LowerCtx<'m> {
             system_qualifiers,
             module_symbols,
             with_type_overrides: Vec::new(),
+            outer_proc_name: None,
+            nested_proc_upvalues: std::collections::HashMap::new(),
+            nested_proc_return_types: std::collections::HashMap::new(),
         }
     }
 
@@ -413,14 +440,36 @@ impl<'m> LowerCtx<'m> {
         }
 
         if self.is_direct_callee(module_opt.as_deref(), &base_name, &des.selectors) {
+            // Detect a call to a local nested procedure: no module qualifier and
+            // the name maps to a local Procedure symbol in this proc's scope.
+            // Rewrite to the flat qualified name and prepend upvalue addr args.
+            let is_local_nested_proc = module_opt.is_none()
+                && self.nested_proc_upvalues.contains_key(&base_name);
+
+            let (callee_name, upvalue_args): (String, Vec<IrValue>) = if is_local_nested_proc {
+                let outer = self.outer_proc_name.as_deref().unwrap_or("");
+                let flat_name = format!("{outer}_{base_name}");
+                let upvalues = self.nested_proc_upvalues[&base_name].clone();
+                let uv_args: Vec<IrValue> = upvalues
+                    .iter()
+                    .map(|(uv_name, uv_ty)| {
+                        IrValue::GlobalRef(uv_name.clone(), IrType::Ref(Box::new(map_semantic_type(uv_ty))))
+                    })
+                    .collect();
+                (flat_name, uv_args)
+            } else {
+                (base_name.clone(), Vec::new())
+            };
+
             let callee = match module_opt {
-                Some(m) => IrValue::ImportRef(m, base_name, final_ty.clone()),
-                None => IrValue::GlobalRef(base_name, final_ty.clone()),
+                Some(m) => IrValue::ImportRef(m, callee_name, final_ty.clone()),
+                None => IrValue::GlobalRef(callee_name, final_ty.clone()),
             };
 
             match des.selectors.first() {
                 Some(Selector::Call(args)) => {
-                    let args_lowered = self.lower_call_args(&callee, args);
+                    let mut args_lowered = upvalue_args;
+                    args_lowered.extend(self.lower_call_args(&callee, args));
                     let ret_ty = self.callee_return_type(&callee);
                     if ret_ty == IrType::Void {
                         self.push(Instr::Call {
@@ -447,7 +496,8 @@ impl<'m> LowerCtx<'m> {
                         base: qual.clone(),
                         selectors: Vec::new(),
                     });
-                    let args_lowered = self.lower_call_args(&callee, &[arg]);
+                    let mut args_lowered = upvalue_args;
+                    args_lowered.extend(self.lower_call_args(&callee, &[arg]));
                     let ret_ty = self.callee_return_type(&callee);
                     if ret_ty == IrType::Void {
                         self.push(Instr::Call {
@@ -647,12 +697,32 @@ impl<'m> LowerCtx<'m> {
                     let mut base_ty = addr.ty();
                     if let IrType::Ref(inner) = &base_ty {
                         // Determine the concrete type to load and use as the GEP base.
-                        // Handle three cases:
-                        //   Ref(Ref|Ptr|UntaggedPtr)  — explicit pointer types
-                        //   Ref(Named("T")) where T = POINTER TO ...  — pointer alias
+                        // We only emit an IR Load here when the variable holds a *pointer* that
+                        // must be dereferenced to reach the struct.  Two sub-cases:
+                        //   Ref(Ptr|UntaggedPtr)          — local/global pointer variable
+                        //   Ref(Ref(Ptr|UntaggedPtr))     — VAR param whose value is a pointer
+                        //   Ref(Named("T")) / Ref(Ref(Named("T"))) where T is a pointer alias
+                        //
+                        // We do NOT emit a Load for Ref(Named) or Ref(Ref(Named)) where Named
+                        // is a plain record type: in that case the LLVM `ref_param_slots`
+                        // mechanism already loads the one-level indirection in `resolve_pointer`,
+                        // and emitting an extra Load here causes a spurious double-dereference.
                         let effective_ty: Option<IrType> =
-                            if matches!(inner.as_ref(), IrType::Ref(_) | IrType::Ptr(_) | IrType::UntaggedPtr(_)) {
+                            if matches!(inner.as_ref(), IrType::Ptr(_) | IrType::UntaggedPtr(_)) {
+                                // Ref(Ptr): local/global pointer variable — load to get pointee ptr
                                 Some(inner.as_ref().clone())
+                            } else if let IrType::Ref(inner2) = inner.as_ref() {
+                                // Ref(Ref(...)): VAR param — only load when the value is a pointer
+                                if matches!(inner2.as_ref(), IrType::Ptr(_) | IrType::UntaggedPtr(_)) {
+                                    Some(inner.as_ref().clone())
+                                } else if let IrType::Named(n) = inner2.as_ref() {
+                                    // VAR param of a pointer type alias
+                                    self.resolve_named_as_ptr_ir_type(n)
+                                        .map(|p| IrType::Ref(Box::new(p)))
+                                } else {
+                                    // VAR plain record param — ref_param_slots handles indirection
+                                    None
+                                }
                             } else if let IrType::Named(n) = inner.as_ref() {
                                 self.resolve_named_as_ptr_ir_type(n)
                             } else {
@@ -693,6 +763,94 @@ impl<'m> LowerCtx<'m> {
                         format!("field:{fname}"),
                         IrType::Ref(Box::new(unresolved)),
                     );
+                }
+                Selector::Index(index_exprs) => {
+                    // For each index expression in the selector (e.g. `a[i, j]` has two),
+                    // emit an IndexGep instruction and update `addr`.
+                    for index_expr in index_exprs {
+                        // Determine the element type and whether we need to load a pointer first.
+                        let addr_ty = addr.ty();
+                        let (gep_base, elem_ty, maybe_len) = match &addr_ty {
+                            // Ref(Array { element, len }) — inline array; the ref IS the array start.
+                            IrType::Ref(inner) => match inner.as_ref() {
+                                IrType::Array { element, len } => {
+                                    (addr.clone(), *element.clone(), Some(*len))
+                                }
+                                // Ref(Ptr(elem)) or Ref(UntaggedPtr(elem)) — need to load the pointer first.
+                                IrType::Ptr(elem) | IrType::UntaggedPtr(elem) => {
+                                    let loaded_ptr_ty = inner.as_ref().clone();
+                                    let t = self.fresh_temp();
+                                    self.push(Instr::Load {
+                                        dst: t,
+                                        addr: addr.clone(),
+                                        ty: loaded_ptr_ty.clone(),
+                                    });
+                                    (IrValue::Temp(t, loaded_ptr_ty), *elem.clone(), None)
+                                }
+                                // Ref(Named) — try to resolve the named type's element.
+                                IrType::Named(_) => {
+                                    // Fall back: just use addr and opaque element.
+                                    (addr.clone(), IrType::Opaque("array-elem".to_string()), None)
+                                }
+                                _ => (addr.clone(), IrType::Opaque("array-elem".to_string()), None),
+                            },
+                            // Already a pointer type (e.g. from a loaded pointer).
+                            IrType::Ptr(elem) | IrType::UntaggedPtr(elem) => {
+                                (addr.clone(), *elem.clone(), None)
+                            }
+                            _ => (addr.clone(), IrType::Opaque("array-elem".to_string()), None),
+                        };
+
+                        // Lower the index expression to an integer value.
+                        let idx_val = self.lower_expr(index_expr);
+
+                        // Optional bounds check: emit CondBr → trap if index ≥ len.
+                        if let Some(len) = maybe_len {
+                            let len_val = IrValue::ConstInt(len as i128, IrType::I64);
+                            let idx_cast = if idx_val.ty() == IrType::I64 {
+                                idx_val.clone()
+                            } else {
+                                let t = self.fresh_temp();
+                                self.push(Instr::BitCast {
+                                    dst: t,
+                                    value: idx_val.clone(),
+                                    ty: IrType::I64,
+                                });
+                                IrValue::Temp(t, IrType::I64)
+                            };
+                            // cond = (0 <= idx) AND (idx < len)
+                            // For simplicity: check idx (as unsigned) < len  via unsigned comparison.
+                            // We use: in_bounds = (idx_u64 < len)
+                            let ok_block = self.alloc_block();
+                            let fail_block = self.alloc_block();
+                            let cmp = self.fresh_temp();
+                            self.push(Instr::BinOp {
+                                dst: cmp,
+                                op: BinOp::Lt,
+                                left: idx_cast,
+                                right: len_val,
+                                ty: IrType::Bool,
+                            });
+                            self.set_term(Terminator::CondBr {
+                                cond: IrValue::Temp(cmp, IrType::Bool),
+                                true_target: ok_block,
+                                false_target: fail_block,
+                            });
+                            self.switch_to(fail_block);
+                            self.set_term(Terminator::Trap { kind: TrapKind::ArrayBounds });
+                            self.switch_to(ok_block);
+                        }
+
+                        // Emit the IndexGep.
+                        let t = self.fresh_temp();
+                        self.push(Instr::IndexGep {
+                            dst: t,
+                            base: gep_base,
+                            index: idx_val,
+                            element_ty: elem_ty.clone(),
+                        });
+                        addr = IrValue::Temp(t, IrType::Ref(Box::new(elem_ty)));
+                    }
                 }
                 _ => {
                     let pointee_ty = self
@@ -737,7 +895,18 @@ impl<'m> LowerCtx<'m> {
                 .as_ref()
                 .map(|ty| map_semantic_type(ty.as_ref()))
                 .unwrap_or(IrType::Void),
-            _ => IrType::Opaque("call-result".to_string()),
+            _ => {
+                // Check if this is a lifted nested procedure call.
+                if let IrValue::GlobalRef(name, _) = callee {
+                    let outer = self.outer_proc_name.as_deref().unwrap_or("");
+                    if let Some(inner) = name.strip_prefix(&format!("{outer}_")) {
+                        if let Some(ret) = self.nested_proc_return_types.get(inner) {
+                            return ret.clone();
+                        }
+                    }
+                }
+                IrType::Opaque("call-result".to_string())
+            }
         }
     }
 
@@ -1072,11 +1241,17 @@ impl<'m> LowerCtx<'m> {
         let mut ty = self.base_symbol_ir_type(&des.base)?;
 
         for selector in &des.selectors {
+            // When traversing into a Ref (VAR param / upvalue), the first selector
+            // implicitly dereferences one level.
+            if let IrType::Ref(inner) = ty {
+                ty = *inner;
+            }
             ty = match (selector, ty) {
                 (Selector::Dereference, IrType::Ptr(inner)) => *inner,
                 (Selector::Dereference, IrType::UntaggedPtr(inner)) => *inner,
                 (Selector::Index(_), IrType::Ptr(inner)) => *inner,
                 (Selector::Index(_), IrType::UntaggedPtr(inner)) => *inner,
+                (Selector::Index(_), IrType::Array { element, .. }) => *element,
                 (Selector::Field(fname), ref base_ty) => {
                     // Look up the field type in the resolved record, if possible.
                     let flat = self.flatten_fields_for_ir_type(base_ty);
@@ -1088,6 +1263,14 @@ impl<'m> LowerCtx<'m> {
                 }
                 (_, other) => other,
             };
+        }
+
+        // For no-selector access to a Ref-typed symbol (VAR/upvalue param),
+        // the value type is the inner type (dereferenced once).
+        if des.selectors.is_empty() {
+            if let IrType::Ref(inner) = ty {
+                return Some(*inner);
+            }
         }
 
         Some(ty)
@@ -1759,21 +1942,34 @@ pub fn lower_procedure(
     ast_proc: &ProcedureDecl,
     system_qualifiers: Vec<String>,
     module_symbols: &[SemanticSymbol],
+    all_sema_procs: &[SemanticProcedure],
 ) -> IrProcedure {
     use newcp_sema::SymbolKind;
 
     // Build LLVM parameter list.  If this is a bound procedure (receiver present),
-    // the receiver is prepended as a VAR (Ref) parameter.
+    // the receiver is prepended as a direct *object pointer* (Ptr), not a VAR (Ref).
+    // The caller always passes the heap pointer directly; Ref would add a spurious
+    // extra dereference on every field access in the callee.
     let receiver_param: Option<(String, IrType)> = sema_proc
         .local_symbols
         .iter()
         .find(|s| s.kind == SymbolKind::Receiver)
         .and_then(|s| {
             let recv_ty = s.declared_type.as_ref().map(map_semantic_type)?;
-            Some((s.name.clone(), IrType::Ref(Box::new(recv_ty))))
+            Some((s.name.clone(), IrType::Ptr(Box::new(recv_ty))))
         });
 
-    let mut params: Vec<(String, IrType)> = receiver_param.iter().cloned().collect();
+    // Nested procedures: captured outer variables are prepended as implicit Ref params,
+    // exactly like VAR params.  This lets the LLVM backend's ref_param_slots mechanism
+    // handle the extra indirection transparently.
+    let upvalue_params: Vec<(String, IrType)> = sema_proc
+        .upvalues
+        .iter()
+        .map(|(name, ty)| (name.clone(), IrType::Ref(Box::new(map_semantic_type(ty)))))
+        .collect();
+
+    let mut params: Vec<(String, IrType)> = upvalue_params;
+    params.extend(receiver_param.iter().cloned());
     params.extend(sema_proc
         .signature
         .parameters
@@ -1797,9 +1993,12 @@ pub fn lower_procedure(
         .map(|t| map_semantic_type(t))
         .unwrap_or(IrType::Void);
 
-    // Qualify the procedure name when this is a bound procedure to ensure LLVM
-    // uniqueness: "ReceiverType_MethodName".
-    let proc_name = if let Some(recv_ty) = &sema_proc.signature.receiver {
+    // Qualified name: nested procs already have "Outer_Inner" in sema_proc.name.
+    // Bound procedures get "ReceiverType_MethodName".
+    let proc_name = if sema_proc.parent_proc.is_some() {
+        // Already qualified in sema.
+        sema_proc.name.clone()
+    } else if let Some(recv_ty) = &sema_proc.signature.receiver {
         let recv_name = match recv_ty.as_ref() {
             SemanticType::Named { name, .. } => name.clone(),
             _ => "Unknown".to_string(),
@@ -1808,6 +2007,42 @@ pub fn lower_procedure(
     } else {
         sema_proc.name.clone()
     };
+
+    // The unqualified name of this procedure (for nested-proc call mangling).
+    // For "Outer_Inner", outer_name = "Outer"; for top-level "Outer", outer_name = "Outer".
+    let outer_name_for_ctx = sema_proc.parent_proc
+        .as_deref()
+        .unwrap_or(&sema_proc.name)
+        .to_string();
+
+    // Map of local proc name → its upvalues and return type, for rewriting call sites.
+    let nested_sema_procs: Vec<_> = all_sema_procs
+        .iter()
+        .filter(|p| p.parent_proc.as_deref() == Some(outer_name_for_ctx.as_str()))
+        .collect();
+    let nested_proc_upvalues: std::collections::HashMap<String, Vec<(String, SemanticType)>> =
+        nested_sema_procs.iter()
+            .map(|p| {
+                let inner_name = p.name
+                    .strip_prefix(&format!("{outer_name_for_ctx}_"))
+                    .unwrap_or(&p.name)
+                    .to_string();
+                (inner_name, p.upvalues.clone())
+            })
+            .collect();
+    let nested_proc_return_types: std::collections::HashMap<String, IrType> =
+        nested_sema_procs.iter()
+            .map(|p| {
+                let inner_name = p.name
+                    .strip_prefix(&format!("{outer_name_for_ctx}_"))
+                    .unwrap_or(&p.name)
+                    .to_string();
+                let ret = p.signature.result_type.as_deref()
+                    .map(map_semantic_type)
+                    .unwrap_or(IrType::Void);
+                (inner_name, ret)
+            })
+            .collect();
 
     let mut proc = IrProcedure::new(
         proc_name,
@@ -1844,6 +2079,9 @@ pub fn lower_procedure(
         system_qualifiers,
         module_symbols,
     );
+    ctx.outer_proc_name = Some(outer_name_for_ctx);
+    ctx.nested_proc_upvalues = nested_proc_upvalues;
+    ctx.nested_proc_return_types = nested_proc_return_types;
 
     ctx.switch_to(entry);
 
@@ -1943,9 +2181,43 @@ pub fn lower_module(sema: &SemanticModule, ast: &ModuleAst) -> IrModule {
                     ast_proc,
                     system_qualifiers.clone(),
                     &sema.symbols,
+                    &sema.procedures,
                 ))
         })
         .collect();
+
+    // Lower nested procedures: their sema entries have parent_proc = Some("OuterName").
+    // The AST for a nested proc lives inside the outer AST proc's body declarations.
+    let nested_procedures: Vec<IrProcedure> = sema
+        .procedures
+        .iter()
+        .filter(|sp| sp.parent_proc.is_some())
+        .filter_map(|sema_nested| {
+            let parent_name = sema_nested.parent_proc.as_deref()?;
+            // Unqualified inner name: strip "ParentName_" prefix from the qualified name.
+            let inner_name = sema_nested.name.strip_prefix(&format!("{parent_name}_"))?;
+            // Find the outer AST proc.
+            let parent_ast = ast_procs.iter().find(|p| p.heading.name.name == parent_name)?;
+            // Find the nested AST proc inside the outer proc's body.
+            let nested_ast = parent_ast
+                .body
+                .as_ref()?
+                .declarations
+                .iter()
+                .filter_map(|d| match d { Declaration::Procedure(p) => Some(p), _ => None })
+                .find(|p| p.heading.name.name == inner_name)?;
+            Some(lower_procedure(
+                sema_nested,
+                nested_ast,
+                system_qualifiers.clone(),
+                &sema.symbols,
+                &sema.procedures,
+            ))
+        })
+        .collect();
+
+    let mut procedures = procedures;
+    procedures.extend(nested_procedures);
 
     let named_types = collect_named_types(&sema.name, &sema.imports, &sema.symbols);
     let (type_vtables, type_bases) = collect_type_vtables(&sema.name, &sema.symbols);

@@ -375,6 +375,9 @@ fn render_instr(instr: &Instr) -> String {
         Gep { dst, base, field_index, result_ty } => {
             format!("{} : ptr<{}> = gep {}, {}", dst.render(), result_ty.render(), base.render(), field_index)
         }
+        IndexGep { dst, base, index, element_ty } => {
+            format!("{} : ref<{}> = indexgep {}[{}]", dst.render(), element_ty.render(), base.render(), index.render())
+        }
         New { dst, record_ty } => {
             format!("{} : ptr = new {}", dst.render(), record_ty.render())
         }

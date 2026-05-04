@@ -337,9 +337,14 @@ pub struct SemanticDiagnostic {
 #[derive(Debug, Clone, PartialEq)]
 pub struct SemanticProcedure {
     pub name: String,
+    /// `Some("Outer")` when this procedure is nested inside `Outer`.
+    pub parent_proc: Option<String>,
     pub exported: bool,
     pub signature: ProcedureType,
     pub local_symbols: Vec<SemanticSymbol>,
+    /// Outer-scope variables captured by this nested procedure, in the order
+    /// they are prepended as implicit pointer parameters at the call site.
+    pub upvalues: Vec<(String, SemanticType)>,
     pub selector_resolutions: Vec<SelectorResolution>,
     pub diagnostics: Vec<SemanticDiagnostic>,
 }
@@ -712,11 +717,147 @@ impl<'a> Analyzer<'a> {
         self.diagnostics.extend(diagnostics.clone());
         annotate_simd_shapes(&mut local_symbols, &self.module_symbols);
 
+        let outer_name = procedure.heading.name.name.clone();
+
+        // Recursively analyze nested procedures and register them in self.procedures
+        // with a qualified name ("Outer_Inner").  They are emitted as flat functions
+        // by the IR lowerer, with captured outer variables passed as implicit Ref params.
+        if let Some(body) = &procedure.body {
+            for declaration in &body.declarations {
+                if let Declaration::Procedure(nested) = declaration {
+                    let nested_sema = self.analyze_nested_procedure(
+                        nested,
+                        &outer_name,
+                        &local_symbols,
+                        &scope_type_names,
+                    );
+                    self.procedures.push(nested_sema);
+                }
+            }
+        }
+
         SemanticProcedure {
-            name: procedure.heading.name.name.clone(),
+            name: outer_name,
+            parent_proc: None,
             exported: procedure.heading.name.export.is_some(),
             signature,
             local_symbols,
+            upvalues: Vec::new(),
+            selector_resolutions,
+            diagnostics,
+        }
+    }
+
+    /// Analyze a procedure nested inside `parent_name`, using `parent_locals`
+    /// for outer-scope variable resolution.  Returns a `SemanticProcedure` with:
+    /// - `name` = "{parent_name}_{nested_name}" (qualified flat name)
+    /// - `parent_proc` = `Some(parent_name.to_string())`
+    /// - `upvalues` = outer variables from `parent_locals` that are referenced in the body
+    fn analyze_nested_procedure(
+        &mut self,
+        nested: &'a ProcedureDecl,
+        parent_name: &str,
+        parent_locals: &[SemanticSymbol],
+        scope_type_names: &HashSet<String>,
+    ) -> SemanticProcedure {
+        let qualified_name = format!("{parent_name}_{}", nested.heading.name.name);
+        let mut scope_type_names = scope_type_names.clone();
+        let mut local_symbols: Vec<SemanticSymbol> = Vec::new();
+        let mut scope_names = HashSet::new();
+        let mut selector_resolutions = Vec::new();
+        let mut diagnostics = Vec::new();
+
+        let signature = self.resolve_procedure_signature(&scope_type_names, nested);
+
+        // Collect the nested proc's own params into local_symbols.
+        if let Some(parameters) = &nested.heading.formal_parameters {
+            self.collect_parameter_symbols(
+                parameters,
+                &mut local_symbols,
+                &mut scope_type_names,
+                &mut scope_names,
+                Some(&qualified_name),
+                &mut diagnostics,
+            );
+        }
+
+        // Collect the nested proc's own local declarations.
+        if let Some(body) = &nested.body {
+            self.collect_local_declaration_symbols(
+                body,
+                &mut local_symbols,
+                &mut scope_type_names,
+                &mut scope_names,
+                Some(&qualified_name),
+                &mut diagnostics,
+            );
+        }
+
+        // Determine which parent-scope variables are referenced in the nested body.
+        let own_names: HashSet<String> = local_symbols.iter().map(|s| s.name.clone()).collect();
+        let free_names: HashSet<String> = nested
+            .body
+            .as_ref()
+            .and_then(|b| b.body.as_ref())
+            .map(|stmts| collect_free_names_in_stmts(stmts))
+            .unwrap_or_default();
+
+        let upvalues: Vec<(String, SemanticType)> = parent_locals
+            .iter()
+            .filter(|s| {
+                matches!(s.kind, SymbolKind::Variable | SymbolKind::Parameter)
+                    && free_names.contains(&s.name)
+                    && !own_names.contains(&s.name)
+            })
+            .filter_map(|s| s.declared_type.as_ref().map(|ty| (s.name.clone(), ty.clone())))
+            .collect();
+
+        // Add upvalue vars to local_symbols so the nested proc's body can resolve them.
+        for (name, ty) in &upvalues {
+            if !own_names.contains(name) {
+                local_symbols.push(SemanticSymbol {
+                    name: name.clone(),
+                    kind: SymbolKind::Variable,
+                    exported: false,
+                    read_only_export: false,
+                    declared_type: Some(ty.clone()),
+                    const_value: None,
+                    simd_shape: None,
+                });
+            }
+        }
+
+        // Build a combined symbol table for walking the nested body.
+        let combined_symbols: Vec<SemanticSymbol> = local_symbols
+            .iter()
+            .cloned()
+            .chain(parent_locals.iter().cloned())
+            .collect();
+
+        if let Some(body) = &nested.body {
+            if let Some(statements) = &body.body {
+                self.walk_statements(
+                    statements,
+                    Some(&qualified_name),
+                    &scope_type_names,
+                    &combined_symbols,
+                    signature.result_type.as_deref(),
+                    &mut selector_resolutions,
+                    &mut diagnostics,
+                );
+            }
+        }
+
+        self.selector_resolutions.extend(selector_resolutions.clone());
+        self.diagnostics.extend(diagnostics.clone());
+
+        SemanticProcedure {
+            name: qualified_name,
+            parent_proc: Some(parent_name.to_string()),
+            exported: false,
+            signature,
+            local_symbols,
+            upvalues,
             selector_resolutions,
             diagnostics,
         }
@@ -4058,6 +4199,107 @@ fn builtin_symbols() -> Vec<SemanticSymbol> {
     }));
 
     symbols
+}
+
+/// Walk a list of statements and collect all unqualified identifier names referenced.
+/// Used to determine which outer-scope variables a nested procedure captures.
+fn collect_free_names_in_stmts(stmts: &[newcp_parser::Statement]) -> HashSet<String> {
+    use newcp_parser::{Expr, Selector, Statement};
+    let mut names = HashSet::new();
+
+    fn walk_expr(expr: &Expr, names: &mut HashSet<String>) {
+        match expr {
+            Expr::Designator(des) => {
+                if des.base.module.is_none() {
+                    names.insert(des.base.name.clone());
+                }
+                for sel in &des.selectors {
+                    match sel {
+                        Selector::Call(args) => {
+                            for a in args { walk_expr(a, names); }
+                        }
+                        Selector::Index(indices) => {
+                            for i in indices { walk_expr(i, names); }
+                        }
+                        Selector::AmbiguousParen(qi) => {
+                            if qi.module.is_none() { names.insert(qi.name.clone()); }
+                        }
+                        _ => {}
+                    }
+                }
+            }
+            Expr::Unary { expr, .. } => walk_expr(expr, names),
+            Expr::Binary { left, right, .. } => {
+                walk_expr(left, names);
+                walk_expr(right, names);
+            }
+            Expr::Set { elements, .. } => {
+                for e in elements {
+                    walk_expr(&e.start, names);
+                    if let Some(end) = &e.end { walk_expr(end, names); }
+                }
+            }
+            _ => {}
+        }
+    }
+
+    fn walk_stmts(stmts: &[newcp_parser::Statement], names: &mut HashSet<String>) {
+        for stmt in stmts {
+            match stmt {
+                Statement::Assignment { target, value, .. } => {
+                    if target.base.module.is_none() { names.insert(target.base.name.clone()); }
+                    walk_expr(value, names);
+                }
+                Statement::ProcedureCall { designator, .. } => {
+                    if designator.base.module.is_none() { names.insert(designator.base.name.clone()); }
+                    for sel in &designator.selectors {
+                        if let Selector::Call(args) = sel {
+                            for a in args { walk_expr(a, names); }
+                        }
+                    }
+                }
+                Statement::Return { expr, .. } => {
+                    if let Some(e) = expr { walk_expr(e, names); }
+                }
+                Statement::If { branches, else_branch, .. } => {
+                    for b in branches {
+                        walk_expr(&b.condition, names);
+                        walk_stmts(&b.body, names);
+                    }
+                    if let Some(eb) = else_branch { walk_stmts(eb, names); }
+                }
+                Statement::While { condition, body, .. } => {
+                    walk_expr(condition, names);
+                    walk_stmts(body, names);
+                }
+                Statement::Repeat { body, until, .. } => {
+                    walk_stmts(body, names);
+                    walk_expr(until, names);
+                }
+                Statement::For { variable, start, end, step, body, .. } => {
+                    names.insert(variable.clone());
+                    walk_expr(start, names);
+                    walk_expr(end, names);
+                    if let Some(s) = step { walk_expr(s, names); }
+                    walk_stmts(body, names);
+                }
+                Statement::Loop { body, .. } => walk_stmts(body, names),
+                Statement::Case { expr, arms, else_branch, .. } => {
+                    walk_expr(expr, names);
+                    for arm in arms { walk_stmts(&arm.body, names); }
+                    if let Some(eb) = else_branch { walk_stmts(eb, names); }
+                }
+                Statement::With { arms, else_branch, .. } => {
+                    for arm in arms { walk_stmts(&arm.body, names); }
+                    if let Some(eb) = else_branch { walk_stmts(eb, names); }
+                }
+                Statement::Empty { .. } | Statement::Exit { .. } => {}
+            }
+        }
+    }
+
+    walk_stmts(stmts, &mut names);
+    names
 }
 
 fn annotate_simd_shapes(symbols: &mut [SemanticSymbol], outer_symbols: &[SemanticSymbol]) {
