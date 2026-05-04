@@ -601,8 +601,9 @@ impl<'m> LowerCtx<'m> {
             }
         };
 
-        // Build the call args: receiver (ptr) first, then the explicit args.
-        let mut lowered_args: Vec<IrValue> = vec![receiver_ptr.clone()];
+        // Build the call args: explicit args only (receiver is carried in MethodCall::descriptor,
+        // and emit_method_call prepends it as the first LLVM argument).
+        let mut lowered_args: Vec<IrValue> = vec![];
         for arg in call_args {
             lowered_args.push(self.lower_expr(arg));
         }
@@ -808,21 +809,19 @@ impl<'m> LowerCtx<'m> {
 
                         // Optional bounds check: emit CondBr → trap if index ≥ len.
                         if let Some(len) = maybe_len {
-                            let len_val = IrValue::ConstInt(len as i128, IrType::I64);
-                            let idx_cast = if idx_val.ty() == IrType::I64 {
-                                idx_val.clone()
-                            } else {
+                            // Use U64 for both operands so the comparison is unsigned (ult),
+                            // catching both negative indices and indices ≥ len in one test.
+                            let len_val = IrValue::ConstInt(len as i128, IrType::U64);
+                            let idx_cast = {
                                 let t = self.fresh_temp();
                                 self.push(Instr::BitCast {
                                     dst: t,
                                     value: idx_val.clone(),
-                                    ty: IrType::I64,
+                                    ty: IrType::U64,
                                 });
-                                IrValue::Temp(t, IrType::I64)
+                                IrValue::Temp(t, IrType::U64)
                             };
-                            // cond = (0 <= idx) AND (idx < len)
-                            // For simplicity: check idx (as unsigned) < len  via unsigned comparison.
-                            // We use: in_bounds = (idx_u64 < len)
+                            // in_bounds = (idx as u64) < len  — unsigned, rejects negatives too
                             let ok_block = self.alloc_block();
                             let fail_block = self.alloc_block();
                             let cmp = self.fresh_temp();

@@ -330,7 +330,21 @@ impl<'ctx> CodegenModule<'ctx> {
         }
 
         // Second pass: emit TypeDesc constants.
-        for (type_name, slot_fns) in &ir_module.type_vtables {
+        // Sort in topological order (base types before derived) so that when we emit
+        // Circle.desc, Shape.desc already exists for the base pointer lookup.
+        let mut ordered: Vec<&String> = ir_module.type_vtables.keys().collect();
+        ordered.sort_by_key(|name| {
+            let mut depth = 0usize;
+            let mut current = name.as_str();
+            while let Some(Some(base)) = ir_module.type_bases.get(current).map(|b| b.as_deref()) {
+                depth += 1;
+                current = base;
+                if depth > 128 { break; }
+            }
+            depth
+        });
+        for type_name in ordered {
+            let slot_fns = &ir_module.type_vtables[type_name];
             let desc_name = format!("{}.desc", type_name);
 
             // Compute payload size via LLVM struct size_of.

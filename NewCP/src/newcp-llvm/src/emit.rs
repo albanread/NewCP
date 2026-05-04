@@ -1491,7 +1491,7 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
     }
 
     fn is_unsigned_type(&self, ty: &IrType) -> bool {
-        matches!(ty, IrType::U8 | IrType::U16 | IrType::U32 | IrType::Bool | IrType::Char | IrType::ShortChar | IrType::Set(_))
+        matches!(ty, IrType::U8 | IrType::U16 | IrType::U32 | IrType::U64 | IrType::Bool | IrType::Char | IrType::ShortChar | IrType::Set(_))
     }
 
     /// Emit an IS type test for `Instr::TypeCheck` and `Terminator::TypeTest`.

@@ -32,7 +32,7 @@ impl<'ctx> TypeLowerer<'ctx> {
             IrType::I8 | IrType::U8 => Ok(self.context.i8_type().into()),
             IrType::I16 | IrType::U16 => Ok(self.context.i16_type().into()),
             IrType::I32 | IrType::U32 => Ok(self.context.i32_type().into()),
-            IrType::I64 => Ok(self.context.i64_type().into()),
+            IrType::I64 | IrType::U64 => Ok(self.context.i64_type().into()),
             IrType::F32 => Ok(self.context.f32_type().into()),
             IrType::F64 => Ok(self.context.f64_type().into()),
             // Bool lowers to i1.

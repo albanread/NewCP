@@ -20,10 +20,11 @@ pub enum IrType {
     I16,
     I32,
     I64,
-    // Integer types — unsigned (BYTE, SHORTCHAR unsigned forms)
+    // Integer types — unsigned (BYTE, SHORTCHAR unsigned forms; U64 for raw index arithmetic)
     U8,
     U16,
     U32,
+    U64,
     // Floating-point
     F32, // SHORTREAL
     F64, // REAL
@@ -65,6 +66,7 @@ impl IrType {
             IrType::U8 => "u8".to_string(),
             IrType::U16 => "u16".to_string(),
             IrType::U32 => "u32".to_string(),
+            IrType::U64 => "u64".to_string(),
             IrType::F32 => "f32".to_string(),
             IrType::F64 => "f64".to_string(),
             IrType::Bool => "bool".to_string(),
