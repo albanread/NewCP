@@ -143,8 +143,12 @@ pub enum Instr {
     UnOp { dst: TempId, op: UnOp, operand: IrValue, ty: IrType },
     /// `t = load addr`
     Load { dst: TempId, addr: IrValue, ty: IrType },
+    /// `t = load_raw addr`
+    LoadRaw { dst: TempId, addr: IrValue, ty: IrType },
     /// `store addr, value`
     Store { addr: IrValue, value: IrValue },
+    /// `store_raw addr, value`
+    StoreRaw { addr: IrValue, value: IrValue },
     /// `t = call f(args)`
     Call { dst: Option<TempId>, callee: IrValue, args: Vec<IrValue>, ret_ty: IrType },
     /// `t = methodcall descriptor, slot, args`
@@ -153,8 +157,16 @@ pub enum Instr {
     AddrOf { dst: TempId, sym: IrValue },
     /// `t = bitcast value to ty`  — SYSTEM.VAL
     BitCast { dst: TempId, value: IrValue, ty: IrType },
+    /// `t = lsh value, shift`  — SYSTEM.LSH
+    Lsh { dst: TempId, value: IrValue, shift: IrValue, ty: IrType },
+    /// `t = rot value, shift`  — SYSTEM.ROT
+    Rot { dst: TempId, value: IrValue, shift: IrValue, ty: IrType },
     /// `memcopy dst, src, len`  — SYSTEM.MOVE
     MemCopy { dst: IrValue, src: IrValue, len: IrValue },
+    /// `t = typ value`  — SYSTEM.TYP
+    TypTag { dst: TempId, value: IrValue },
+    /// `t = sysnew size`  — SYSTEM.NEW
+    SysNew { dst: TempId, size: IrValue },
     /// `t = typecheck value is ty`  — IS expression (boolean result)
     TypeCheck { dst: TempId, value: IrValue, ty: IrType },
     /// `store result_slot, value`  — internal: prepare RETURN value before Br function_exit

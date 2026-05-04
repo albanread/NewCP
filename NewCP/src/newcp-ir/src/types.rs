@@ -4,6 +4,16 @@
 /// types, while keeping CP-specific distinctions (VAR params, sets, opaque
 /// runtime types) explicit.
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub enum RecordLayout {
+    Tagged,
+    Untagged,
+    UntaggedNoAlign,
+    UntaggedAlign2,
+    UntaggedAlign8,
+    Union,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum IrType {
     // Integer types — signed
     I8,
@@ -24,8 +34,12 @@ pub enum IrType {
     // Compound
     /// Pointer to T — a POINTER TO RECORD or any heap reference.
     Ptr(Box<IrType>),
+    /// Pointer to untagged / foreign memory. Not traced by the GC.
+    UntaggedPtr(Box<IrType>),
     /// Reference to T — a VAR parameter; address-of semantics, not heap.
     Ref(Box<IrType>),
+    /// Untagged record layout carried through to LLVM lowering.
+    UntaggedRecord { name: String, layout: RecordLayout },
     /// Source-level named type: has an identity in the CP module graph.
     Named(String),
     /// Runtime-internal opaque type: descriptor headers, vtable arrays, tag
@@ -52,11 +66,28 @@ impl IrType {
             IrType::Char => "char".to_string(),
             IrType::ShortChar => "shortchar".to_string(),
             IrType::Ptr(inner) => format!("ptr<{}>", inner.render()),
+            IrType::UntaggedPtr(inner) => format!("uptr<{}>", inner.render()),
             IrType::Ref(inner) => format!("ref<{}>", inner.render()),
+            IrType::UntaggedRecord { name, layout } => {
+                format!("untagged:{}:{}", layout.render(), name)
+            }
             IrType::Named(name) => format!("named:{name}"),
             IrType::Opaque(name) => format!("opaque:{name}"),
             IrType::Set(w) => format!("set{w}"),
             IrType::Void => "void".to_string(),
+        }
+    }
+}
+
+impl RecordLayout {
+    pub fn render(&self) -> &'static str {
+        match self {
+            RecordLayout::Tagged => "tagged",
+            RecordLayout::Untagged => "untagged",
+            RecordLayout::UntaggedNoAlign => "noalign",
+            RecordLayout::UntaggedAlign2 => "align2",
+            RecordLayout::UntaggedAlign8 => "align8",
+            RecordLayout::Union => "union",
         }
     }
 }

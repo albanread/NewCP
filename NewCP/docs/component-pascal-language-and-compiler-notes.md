@@ -89,6 +89,62 @@ Important non-Pascal properties:
 - `ANYREC` and `ANYPTR` exist as runtime-facing top types
 - dynamic type matters for method dispatch and guards
 
+### Basic type sizes for NewCP
+
+The language report names the basic scalar types, but NewCP still has to choose a concrete target ABI.
+
+NewCP is also allowed to add carefully chosen implementation-oriented extensions where they simplify a 64-bit target model. `INTSHORT` is one such extension: it is not a standard Component Pascal basic type, but it gives NewCP an explicit 32-bit signed source-level integer without forcing `INTEGER` back down to 32 bits.
+
+For the current 64-bit Windows-first target, the working NewCP policy should be:
+
+| Type | NewCP target size | Current compiler status |
+|---|---:|---|
+| `BOOLEAN` | logical boolean, storage not fully frozen yet | IR has `Bool`; backend layout policy still pending |
+| `BYTE` | 8 bits | implemented as `U8` |
+| `SHORTINT` | 16 bits | implemented as `I16` |
+| `INTSHORT` | 32 bits | NewCP extension; implemented as `I32` |
+| `INTEGER` | 64 bits | implemented as `I64` |
+| `LONGINT` | 64 bits for now | also implemented as `I64` |
+| `SHORTCHAR` | 8 bits | implemented as `ShortChar` |
+| `CHAR` | 16 bits | implemented as `Char`; comments already say 16-bit |
+| `SHORTREAL` | 32 bits | implemented as `F32` |
+| `REAL` | 64 bits | implemented as `F64` |
+| `SET` | 32 bits in the current compiler | implemented as `Set(32)` |
+| pointers / addresses / `ANYPTR` | 64 bits | design and SYSTEM lowering already assume 64-bit raw addresses |
+
+There is also an important distinction between source-level basic types and IR storage types:
+
+- NewCP is **not** missing an `I32` IR type. `newcp-ir` already defines `I32`.
+- NewCP now uses `INTSHORT` as the source-level signed 32-bit slot.
+
+Discussion:
+
+- `INTEGER = 64` is already the effective compiler contract, not just a design preference. That choice now drives `SYSTEM.ADR`, `SYSTEM.TYP`, raw loads/stores, and future LLVM lowering.
+- `LONGINT` is currently not wider than `INTEGER`; both lower to 64-bit IR. That is acceptable for bring-up, but it means the source language currently has two names for the same machine width.
+- `INTSHORT` solves the missing 32-bit signed slot without forcing `LONGINT` below `INTEGER`, which would conflict with the official Component Pascal numeric hierarchy.
+- explicit integer literal suffixes now provide a width escape hatch: `...H` literals are treated as `INTSHORT`, while `...L` literals are treated as `LONGINT`.
+- `SET` is still explicitly 32-bit in the IR. That matches the current compiler, but it does not automatically "scale up" just because `INTEGER` does.
+- `BOOLEAN` needs one more explicit storage/layout decision once LLVM data layout and packed-record rules are implemented. Semantically it is boolean already; the remaining question is physical representation in memory, not source typing.
+- `String` and `ShortString` are currently compiler conveniences, not final ABI commitments. In IR they lower to pointers to `SHORTCHAR` storage, while language-level string values remain null-terminated character arrays.
+
+### Comparison with the actual compiler today
+
+The implemented compiler is already close to the table above.
+
+Confirmed in the current source:
+
+- `newcp-sema` recognizes the builtin universe `BOOLEAN`, `BYTE`, `CHAR`, `INTSHORT`, `INTEGER`, `LONGINT`, `REAL`, `SET`, `SHORTCHAR`, `SHORTINT`, `SHORTREAL`, `String`, and `Shortstring`.
+- `newcp-ir` already contains signed integer storage types `I8`, `I16`, `I32`, and `I64`.
+- `newcp-ir` lowering currently maps `BYTE -> U8`, `SHORTINT -> I16`, `INTSHORT -> I32`, `INTEGER -> I64`, `LONGINT -> I64`, `SHORTREAL -> F32`, `REAL -> F64`, and `SET -> Set(32)`.
+- the IR type definitions already document `CHAR` as 16-bit and `SHORTCHAR` as 8-bit.
+
+The integer ladder is now explicit in the compiler rather than implicit in conflicting helper logic:
+
+- `SHORTINT` is the 16-bit signed step
+- `INTSHORT` is the 32-bit signed step
+- `INTEGER` is the 64-bit signed step used by `SYSTEM`
+- `LONGINT` currently remains a 64-bit alias-like top rung for compatibility
+
 ### Object model basics
 
 The language report describes an object model based on extensible records and methods.

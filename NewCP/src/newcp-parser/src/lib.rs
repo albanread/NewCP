@@ -124,6 +124,12 @@ pub struct Import {
     pub name: String,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum SysFlag {
+    Named(String),
+    Numeric(i64),
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ExportMark {
     Exported,
@@ -193,6 +199,7 @@ pub struct ProcedureHeading {
     pub receiver: Option<Receiver>,
     pub name: IdentDef,
     pub formal_parameters: Option<FormalParameters>,
+    pub sys_flag: Option<SysFlag>,
     pub attributes: MethodAttributes,
 }
 
@@ -222,6 +229,7 @@ pub struct FPSection {
     pub span: SourceSpan,
     pub mode: Option<ParamMode>,
     pub names: Vec<String>,
+    pub sys_flag: Option<SysFlag>,
     pub ty: TypeExpr,
 }
 
@@ -261,21 +269,25 @@ pub enum TypeExpr {
     },
     Array {
         span: SourceSpan,
+        sys_flag: Option<SysFlag>,
         lengths: Vec<Expr>,
         element_type: Box<TypeExpr>,
     },
     Record {
         span: SourceSpan,
         flavor: Option<RecordFlavor>,
+        sys_flag: Option<SysFlag>,
         base: Option<QualIdent>,
         fields: Vec<FieldDecl>,
     },
     Pointer {
         span: SourceSpan,
+        sys_flag: Option<SysFlag>,
         target: Box<TypeExpr>,
     },
     Procedure {
         span: SourceSpan,
+        sys_flag: Option<SysFlag>,
         formal_parameters: Option<Box<FormalParameters>>,
     },
 }
@@ -672,6 +684,7 @@ impl Parser {
 
     fn parse_procedure_heading(&mut self) -> Result<ProcedureHeading, String> {
         let start = self.current_start();
+        let sys_flag = self.parse_optional_sys_flag()?;
         let receiver = if self.check_symbol("(") && self.lookahead_is_receiver() {
             Some(self.parse_receiver()?)
         } else {
@@ -690,6 +703,7 @@ impl Parser {
             receiver,
             name,
             formal_parameters,
+            sys_flag,
             attributes,
         })
     }
@@ -780,6 +794,7 @@ impl Parser {
         } else {
             None
         };
+        let sys_flag = self.parse_optional_sys_flag()?;
         let mut names = vec![self.expect_identifier()?];
         while self.match_symbol(",") {
             names.push(self.expect_identifier()?);
@@ -790,6 +805,7 @@ impl Parser {
             span: self.span_from(start),
             mode,
             names,
+            sys_flag,
             ty,
         })
     }
@@ -797,6 +813,7 @@ impl Parser {
     fn parse_type_expr(&mut self) -> Result<TypeExpr, String> {
         let start = self.current_start();
         if self.match_keyword("ARRAY") {
+            let sys_flag = self.parse_optional_sys_flag()?;
             let mut lengths = Vec::new();
             if !self.check_keyword("OF") {
                 lengths.push(self.parse_expr()?);
@@ -808,20 +825,24 @@ impl Parser {
             let element_type = Box::new(self.parse_type_expr()?);
             return Ok(TypeExpr::Array {
                 span: self.span_from(start),
+                sys_flag,
                 lengths,
                 element_type,
             });
         }
 
         if self.match_keyword("POINTER") {
+            let sys_flag = self.parse_optional_sys_flag()?;
             self.expect_keyword("TO")?;
             return Ok(TypeExpr::Pointer {
                 span: self.span_from(start),
+                sys_flag,
                 target: Box::new(self.parse_type_expr()?),
             });
         }
 
         if self.match_keyword("PROCEDURE") {
+            let sys_flag = self.parse_optional_sys_flag()?;
             let formal_parameters = if self.check_symbol("(") {
                 Some(Box::new(self.parse_formal_parameters()?))
             } else {
@@ -829,6 +850,7 @@ impl Parser {
             };
             return Ok(TypeExpr::Procedure {
                 span: self.span_from(start),
+                sys_flag,
                 formal_parameters,
             });
         }
@@ -845,6 +867,7 @@ impl Parser {
 
         if flavor.is_some() || self.check_keyword("RECORD") {
             self.expect_keyword("RECORD")?;
+            let sys_flag = self.parse_optional_sys_flag()?;
             let base = if self.match_symbol("(") {
                 let base = self.parse_qualident()?;
                 self.expect_symbol(")")?;
@@ -864,6 +887,7 @@ impl Parser {
             return Ok(TypeExpr::Record {
                 span: self.span_from(start),
                 flavor,
+                sys_flag,
                 base,
                 fields,
             });
@@ -885,6 +909,33 @@ impl Parser {
             names,
             ty,
         })
+    }
+
+    fn parse_optional_sys_flag(&mut self) -> Result<Option<SysFlag>, String> {
+        if !self.match_symbol("[") {
+            return Ok(None);
+        }
+
+        let flag = if self.check_identifier() {
+            SysFlag::Named(self.expect_identifier()?)
+        } else if self.check_symbol("-") {
+            self.expect_symbol("-")?;
+            if self.current().kind != TokenKind::Integer {
+                return Err(self.error_current("expected integer system flag"));
+            }
+            let value = self.current().lexeme.clone();
+            self.advance();
+            SysFlag::Numeric(-value.parse::<i64>().map_err(|_| self.error_current("invalid integer system flag"))?)
+        } else if self.current().kind == TokenKind::Integer {
+            let value = self.current().lexeme.clone();
+            self.advance();
+            SysFlag::Numeric(value.parse::<i64>().map_err(|_| self.error_current("invalid integer system flag"))?)
+        } else {
+            return Err(self.error_current("expected system flag"));
+        };
+
+        self.expect_symbol("]")?;
+        Ok(Some(flag))
     }
 
     fn parse_statement_sequence(&mut self, stop_markers: &[&str]) -> Result<Vec<Statement>, String> {
@@ -1844,10 +1895,16 @@ fn render_guard(guard: &Guard) -> String {
 fn render_procedure_heading(heading: &ProcedureHeading) -> String {
     let receiver = heading.receiver.as_ref().map(render_receiver).unwrap_or_default();
     let formal_parameters = heading.formal_parameters.as_ref().map(render_formal_parameters).unwrap_or_default();
+    let sys_flag = heading
+        .sys_flag
+        .as_ref()
+        .map(render_sys_flag)
+        .map(|item| format!("{item} "))
+        .unwrap_or_default();
     let attributes = render_method_attributes(&heading.attributes);
     format!(
         "{}{}{}{}",
-        receiver,
+        format!("{sys_flag}{receiver}"),
         render_ident_def(&heading.name),
         formal_parameters,
         attributes
@@ -1875,9 +1932,15 @@ fn render_formal_parameters(parameters: &FormalParameters) -> String {
                 Some(ParamMode::Out) => "OUT ",
                 None => "",
             };
+            let sys_flag = section
+                .sys_flag
+                .as_ref()
+                .map(render_sys_flag)
+                .map(|item| format!("{item} "))
+                .unwrap_or_default();
             format!(
                 "{}{}: {}",
-                mode,
+                format!("{mode}{sys_flag}"),
                 section.names.join(", "),
                 render_type(&section.ty)
             )
@@ -1909,6 +1972,13 @@ fn render_method_attributes(attributes: &MethodAttributes) -> String {
     }
 }
 
+fn render_sys_flag(flag: &SysFlag) -> String {
+    match flag {
+        SysFlag::Named(name) => format!("[{name}]"),
+        SysFlag::Numeric(value) => format!("[{value}]"),
+    }
+}
+
 fn render_ident_def(ident: &IdentDef) -> String {
     match ident.export {
         Some(ExportMark::Exported) => format!("{}*", ident.name),
@@ -1928,19 +1998,26 @@ fn render_type(ty: &TypeExpr) -> String {
     match ty {
         TypeExpr::QualIdent { ident, .. } => render_qualident(ident),
         TypeExpr::Array {
+            sys_flag,
             lengths,
             element_type,
             ..
         } => {
+            let sys_flag = sys_flag
+                .as_ref()
+                .map(render_sys_flag)
+                .map(|item| format!("{item} "))
+                .unwrap_or_default();
             let prefix = if lengths.is_empty() {
                 String::new()
             } else {
                 format!("{} ", lengths.iter().map(render_expr).collect::<Vec<_>>().join(", "))
             };
-            format!("ARRAY {}OF {}", prefix, render_type(element_type))
+            format!("ARRAY {}{}OF {}", sys_flag, prefix, render_type(element_type))
         }
         TypeExpr::Record {
             flavor,
+            sys_flag,
             base,
             fields,
             ..
@@ -1952,6 +2029,11 @@ fn render_type(ty: &TypeExpr) -> String {
                     RecordFlavor::Limited => "LIMITED ",
                 })
                 .unwrap_or("");
+            let sys_flag = sys_flag
+                .as_ref()
+                .map(render_sys_flag)
+                .map(|item| format!("{item} "))
+                .unwrap_or_default();
             let base = base
                 .as_ref()
                 .map(|item| format!("({}) ", render_qualident(item)))
@@ -1971,15 +2053,34 @@ fn render_type(ty: &TypeExpr) -> String {
                     .collect::<Vec<_>>()
                     .join("; ")
             };
-            format!("{}RECORD {}{}END", flavor, base, fields)
+            format!("{}RECORD {}{}{}END", flavor, sys_flag, base, fields)
         }
-        TypeExpr::Pointer { target, .. } => format!("POINTER TO {}", render_type(target)),
+        TypeExpr::Pointer { sys_flag, target, .. } => {
+            let sys_flag = sys_flag
+                .as_ref()
+                .map(render_sys_flag)
+                .map(|item| format!(" {item}"))
+                .unwrap_or_default();
+            format!("POINTER{} TO {}", sys_flag, render_type(target))
+        }
         TypeExpr::Procedure {
+            sys_flag,
             formal_parameters,
             ..
         } => match formal_parameters {
-            Some(parameters) => format!("PROCEDURE {}", render_formal_parameters(parameters)),
-            None => "PROCEDURE".to_string(),
+            Some(parameters) => {
+                let sys_flag = sys_flag
+                    .as_ref()
+                    .map(render_sys_flag)
+                    .map(|item| format!(" {item}"))
+                    .unwrap_or_default();
+                format!("PROCEDURE{} {}", sys_flag, render_formal_parameters(parameters))
+            }
+            None => sys_flag
+                .as_ref()
+                .map(render_sys_flag)
+                .map(|item| format!("PROCEDURE {item}"))
+                .unwrap_or_else(|| "PROCEDURE".to_string()),
         },
     }
 }
@@ -2336,12 +2437,81 @@ mod tests {
         };
         assert_eq!(arms.len(), 2);
         assert!(else_branch.is_some());
-
         let Statement::With { arms, else_branch, .. } = &body[1] else {
             panic!("expected with statement");
         };
         assert_eq!(arms.len(), 2);
         assert!(else_branch.is_some());
+    }
+
+    #[test]
+    fn parses_system_flags_in_type_and_procedure_positions() {
+        let source = concat!(
+            "MODULE Demo;\n",
+            "IMPORT SYSTEM;\n",
+            "TYPE RawPtr = POINTER [untagged] TO RawRec;\n",
+            "RawRec = RECORD [align8] value: INTEGER END;\n",
+            "ByteBuf = ARRAY [noalign] 16 OF BYTE;\n",
+            "Callback = PROCEDURE [ccall] (VAR [nil] p: RawPtr): INTEGER;\n",
+            "PROCEDURE [ccall] Run(x: INTEGER);\n",
+            "BEGIN\n",
+            "END Run;\n",
+            "END Demo."
+        );
+
+        let module = parse_module_ast(source).expect("module should parse");
+
+        let Declaration::Type(raw_ptr) = &module.declarations[0] else {
+            panic!("expected RawPtr type declaration");
+        };
+        let TypeExpr::Pointer { sys_flag, .. } = &raw_ptr.ty else {
+            panic!("expected pointer type");
+        };
+        assert_eq!(sys_flag, &Some(SysFlag::Named("untagged".to_string())));
+
+        let Declaration::Type(raw_rec) = &module.declarations[1] else {
+            panic!("expected RawRec type declaration");
+        };
+        let TypeExpr::Record { sys_flag, .. } = &raw_rec.ty else {
+            panic!("expected record type");
+        };
+        assert_eq!(sys_flag, &Some(SysFlag::Named("align8".to_string())));
+
+        let Declaration::Type(byte_buf) = &module.declarations[2] else {
+            panic!("expected ByteBuf type declaration");
+        };
+        let TypeExpr::Array { sys_flag, .. } = &byte_buf.ty else {
+            panic!("expected array type");
+        };
+        assert_eq!(sys_flag, &Some(SysFlag::Named("noalign".to_string())));
+
+        let Declaration::Type(callback) = &module.declarations[3] else {
+            panic!("expected Callback type declaration");
+        };
+        let TypeExpr::Procedure { sys_flag, formal_parameters, .. } = &callback.ty else {
+            panic!("expected procedure type");
+        };
+        assert_eq!(sys_flag, &Some(SysFlag::Named("ccall".to_string())));
+        let section = &formal_parameters.as_ref().expect("procedure type params").sections[0];
+        assert_eq!(section.sys_flag, Some(SysFlag::Named("nil".to_string())));
+
+        let Declaration::Procedure(run) = &module.declarations[4] else {
+            panic!("expected procedure declaration");
+        };
+        assert_eq!(run.heading.sys_flag, Some(SysFlag::Named("ccall".to_string())));
+    }
+
+    #[test]
+    fn parses_numeric_system_flags() {
+        let source = "MODULE Demo; IMPORT SYSTEM; TYPE T = RECORD [-8] END; END Demo.";
+        let module = parse_module_ast(source).expect("module should parse");
+        let Declaration::Type(type_decl) = &module.declarations[0] else {
+            panic!("expected type declaration");
+        };
+        let TypeExpr::Record { sys_flag, .. } = &type_decl.ty else {
+            panic!("expected record type");
+        };
+        assert_eq!(sys_flag, &Some(SysFlag::Numeric(-8)));
     }
 
     #[test]

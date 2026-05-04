@@ -4,7 +4,7 @@ use std::path::Path;
 use newcp_parser::{
     read_module_ast, BinaryOp, Declaration, Designator, ExportMark, Expr, FPSection, FieldDecl,
     FormalParameters, Guard, MethodFlavor, ModuleAst, ParamMode, ProcedureBody, ProcedureDecl,
-    QualIdent, RecordFlavor, Selector, Statement, TypeDecl, TypeExpr,
+    QualIdent, RecordFlavor, Selector, Statement, SysFlag, TypeDecl, TypeExpr,
 };
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -25,6 +25,7 @@ pub enum BuiltinType {
     Boolean,
     Byte,
     Char,
+    IntShort,
     Integer,
     LongInt,
     Real,
@@ -44,6 +45,7 @@ impl BuiltinType {
             Self::Boolean => "BOOLEAN",
             Self::Byte => "BYTE",
             Self::Char => "CHAR",
+            Self::IntShort => "INTSHORT",
             Self::Integer => "INTEGER",
             Self::LongInt => "LONGINT",
             Self::Real => "REAL",
@@ -80,6 +82,18 @@ pub enum BuiltinProc {
     Ord,
     Short,
     Size,
+    SystemAdr,
+    SystemVal,
+    SystemLsh,
+    SystemRot,
+    SystemTyp,
+    SystemBit,
+    SystemGet,
+    SystemPut,
+    SystemMove,
+    SystemNew,
+    SystemGetReg,
+    SystemPutReg,
 }
 
 impl BuiltinProc {
@@ -106,6 +120,18 @@ impl BuiltinProc {
             Self::Ord => "ORD",
             Self::Short => "SHORT",
             Self::Size => "SIZE",
+            Self::SystemAdr => "ADR",
+            Self::SystemVal => "VAL",
+            Self::SystemLsh => "LSH",
+            Self::SystemRot => "ROT",
+            Self::SystemTyp => "TYP",
+            Self::SystemBit => "BIT",
+            Self::SystemGet => "GET",
+            Self::SystemPut => "PUT",
+            Self::SystemMove => "MOVE",
+            Self::SystemNew => "NEW",
+            Self::SystemGetReg => "GETREG",
+            Self::SystemPutReg => "PUTREG",
         }
     }
 }
@@ -143,6 +169,28 @@ pub struct ProcedureType {
     pub result_type: Option<Box<SemanticType>>,
     pub is_new: bool,
     pub flavor: Option<MethodFlavor>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum RecordLayout {
+    Tagged,
+    Untagged,
+    UntaggedNoAlign,
+    UntaggedAlign2,
+    UntaggedAlign8,
+    Union,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum NormalizedSysFlag {
+    Untagged,
+    NoAlign,
+    Align2,
+    Align8,
+    Union,
+    Nil,
+    CCall,
+    Code,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -215,15 +263,18 @@ pub enum SemanticType {
     Array {
         lengths: Vec<String>,
         element_type: Box<SemanticType>,
+        untagged: bool,
     },
     Record {
         flavor: Option<RecordFlavor>,
+        layout: RecordLayout,
         base: Option<Box<SemanticType>>,
         fields: Vec<FieldType>,
         methods: Vec<MethodType>,
     },
     Pointer {
         target: Box<SemanticType>,
+        untagged: bool,
     },
     Procedure(ProcedureType),
 }
@@ -370,6 +421,7 @@ pub fn analyze_module_ast(module: &ModuleAst) -> SemanticModule {
 
 struct Analyzer<'a> {
     module: &'a ModuleAst,
+    has_system_import: bool,
     module_type_names: HashSet<String>,
     module_symbols: Vec<SemanticSymbol>,
     procedures: Vec<SemanticProcedure>,
@@ -381,6 +433,7 @@ impl<'a> Analyzer<'a> {
     fn new(module: &'a ModuleAst) -> Self {
         Self {
             module,
+            has_system_import: module.imports.iter().any(|item| item.name == "SYSTEM"),
             module_type_names: builtin_type_names(),
             module_symbols: builtin_symbols(),
             procedures: Vec::new(),
@@ -483,7 +536,9 @@ impl<'a> Analyzer<'a> {
                 Declaration::Const(item) => {
                     Self::record_identdef_duplicate(&mut scope_names, &item.name, None, "duplicate module-scope declaration", &mut self.diagnostics);
                     let const_value = evaluate_const_expr(&item.value, &[], &self.module_symbols);
-                    let declared_type = const_value_type(&const_value);
+                    let declared_type = self
+                        .infer_expr_type(&item.value, &[], &self.module_type_names)
+                        .or_else(|| const_value_type(&const_value));
                     self.module_symbols.push(SemanticSymbol {
                         name: item.name.name.clone(),
                         kind: SymbolKind::Constant,
@@ -496,7 +551,7 @@ impl<'a> Analyzer<'a> {
                 }
                 Declaration::Type(item) => {
                     Self::record_identdef_duplicate(&mut scope_names, &item.name, None, "duplicate module-scope declaration", &mut self.diagnostics);
-                    Self::validate_type_expr(&item.ty, &self.module_type_names, None, &mut self.diagnostics);
+                    Self::validate_type_expr(&item.ty, &self.module_type_names, self.has_system_import, None, &mut self.diagnostics);
                     self.module_symbols.push(SemanticSymbol {
                         name: item.name.name.clone(),
                         kind: SymbolKind::Type,
@@ -512,7 +567,7 @@ impl<'a> Analyzer<'a> {
                     })
                 }
                 Declaration::Var(item) => {
-                    Self::validate_type_expr(&item.ty, &self.module_type_names, None, &mut self.diagnostics);
+                    Self::validate_type_expr(&item.ty, &self.module_type_names, self.has_system_import, None, &mut self.diagnostics);
                     let declared_type = self.resolve_type_expr(&item.ty, &self.module_type_names);
                     for name in &item.names {
                         Self::record_identdef_duplicate(&mut scope_names, name, None, "duplicate module-scope declaration", &mut self.diagnostics);
@@ -535,7 +590,7 @@ impl<'a> Analyzer<'a> {
                         "duplicate module-scope declaration",
                         &mut self.diagnostics,
                     );
-                    Self::validate_heading_types(&item.heading, &self.module_type_names, None, &mut self.diagnostics);
+                    Self::validate_heading_types(&item.heading, &self.module_type_names, self.has_system_import, None, &mut self.diagnostics);
                     self.module_symbols.push(SemanticSymbol {
                         name: item.heading.name.name.clone(),
                         kind: SymbolKind::Procedure,
@@ -556,7 +611,7 @@ impl<'a> Analyzer<'a> {
                         "duplicate module-scope declaration",
                         &mut self.diagnostics,
                     );
-                    Self::validate_heading_types(&item.heading, &self.module_type_names, None, &mut self.diagnostics);
+                    Self::validate_heading_types(&item.heading, &self.module_type_names, self.has_system_import, None, &mut self.diagnostics);
                     self.module_symbols.push(SemanticSymbol {
                         name: item.heading.name.name.clone(),
                         kind: SymbolKind::Procedure,
@@ -1070,7 +1125,7 @@ impl<'a> Analyzer<'a> {
         diagnostics: &mut Vec<SemanticDiagnostic>,
     ) {
         self.collect_type_names(&section.ty, scope_type_names);
-        Self::validate_type_expr(&section.ty, scope_type_names, procedure_name, diagnostics);
+        Self::validate_type_expr(&section.ty, scope_type_names, self.has_system_import, procedure_name, diagnostics);
         let declared_type = self.resolve_type_expr(&section.ty, scope_type_names);
         for name in &section.names {
             Self::record_duplicate_name(
@@ -1114,7 +1169,9 @@ impl<'a> Analyzer<'a> {
                 Declaration::Const(item) => {
                     Self::record_identdef_duplicate(scope_names, &item.name, procedure_name, "duplicate procedure-scope declaration", diagnostics);
                     let const_value = evaluate_const_expr(&item.value, local_symbols, &self.module_symbols);
-                    let declared_type = const_value_type(&const_value);
+                    let declared_type = self
+                        .infer_expr_type(&item.value, local_symbols, scope_type_names)
+                        .or_else(|| const_value_type(&const_value));
                     local_symbols.push(SemanticSymbol {
                         name: item.name.name.clone(),
                         kind: SymbolKind::Constant,
@@ -1127,7 +1184,7 @@ impl<'a> Analyzer<'a> {
                 }
                 Declaration::Type(item) => {
                     Self::record_identdef_duplicate(scope_names, &item.name, procedure_name, "duplicate procedure-scope declaration", diagnostics);
-                    Self::validate_type_expr(&item.ty, scope_type_names, procedure_name, diagnostics);
+                    Self::validate_type_expr(&item.ty, scope_type_names, self.has_system_import, procedure_name, diagnostics);
                     local_symbols.push(SemanticSymbol {
                         name: item.name.name.clone(),
                         kind: SymbolKind::Type,
@@ -1143,7 +1200,7 @@ impl<'a> Analyzer<'a> {
                     })
                 }
                 Declaration::Var(item) => {
-                    Self::validate_type_expr(&item.ty, scope_type_names, procedure_name, diagnostics);
+                    Self::validate_type_expr(&item.ty, scope_type_names, self.has_system_import, procedure_name, diagnostics);
                     let declared_type = self.resolve_type_expr(&item.ty, scope_type_names);
                     for name in &item.names {
                         Self::record_identdef_duplicate(scope_names, name, procedure_name, "duplicate procedure-scope declaration", diagnostics);
@@ -1171,7 +1228,7 @@ impl<'a> Analyzer<'a> {
                         ));
                     }
                     Self::record_identdef_duplicate(scope_names, &item.heading.name, procedure_name, "duplicate procedure-scope declaration", diagnostics);
-                    Self::validate_heading_types(&item.heading, scope_type_names, procedure_name, diagnostics);
+                    Self::validate_heading_types(&item.heading, scope_type_names, self.has_system_import, procedure_name, diagnostics);
                     local_symbols.push(SemanticSymbol {
                         name: item.heading.name.name.clone(),
                         kind: SymbolKind::Procedure,
@@ -1198,7 +1255,7 @@ impl<'a> Analyzer<'a> {
                         ));
                     }
                     Self::record_identdef_duplicate(scope_names, &item.heading.name, procedure_name, "duplicate procedure-scope declaration", diagnostics);
-                    Self::validate_heading_types(&item.heading, scope_type_names, procedure_name, diagnostics);
+                    Self::validate_heading_types(&item.heading, scope_type_names, self.has_system_import, procedure_name, diagnostics);
                     local_symbols.push(SemanticSymbol {
                         name: item.heading.name.name.clone(),
                         kind: SymbolKind::Procedure,
@@ -1277,9 +1334,18 @@ impl<'a> Analyzer<'a> {
     fn validate_heading_types(
         heading: &newcp_parser::ProcedureHeading,
         scope_type_names: &HashSet<String>,
+        has_system_import: bool,
         procedure_name: Option<&str>,
         diagnostics: &mut Vec<SemanticDiagnostic>,
     ) {
+        Self::validate_sys_flag(
+            heading.sys_flag.as_ref(),
+            has_system_import,
+            heading.span.start.line,
+            heading.span.start.column,
+            procedure_name,
+            diagnostics,
+        );
         if let Some(receiver) = &heading.receiver {
             Self::validate_receiver_type(
                 receiver.ty.as_str(),
@@ -1292,10 +1358,18 @@ impl<'a> Analyzer<'a> {
         }
         if let Some(parameters) = &heading.formal_parameters {
             for section in &parameters.sections {
-                Self::validate_type_expr(&section.ty, scope_type_names, procedure_name, diagnostics);
+                Self::validate_sys_flag(
+                    section.sys_flag.as_ref(),
+                    has_system_import,
+                    section.span.start.line,
+                    section.span.start.column,
+                    procedure_name,
+                    diagnostics,
+                );
+                Self::validate_type_expr(&section.ty, scope_type_names, has_system_import, procedure_name, diagnostics);
             }
             if let Some(result) = &parameters.result_type {
-                Self::validate_type_expr(result, scope_type_names, procedure_name, diagnostics);
+                Self::validate_type_expr(result, scope_type_names, has_system_import, procedure_name, diagnostics);
             }
         }
     }
@@ -1321,6 +1395,7 @@ impl<'a> Analyzer<'a> {
     fn validate_type_expr(
         ty: &TypeExpr,
         scope_type_names: &HashSet<String>,
+        has_system_import: bool,
         procedure_name: Option<&str>,
         diagnostics: &mut Vec<SemanticDiagnostic>,
     ) {
@@ -1338,10 +1413,12 @@ impl<'a> Analyzer<'a> {
                     ));
                 }
             }
-            TypeExpr::Array { element_type, .. } => {
-                Self::validate_type_expr(element_type, scope_type_names, procedure_name, diagnostics);
+            TypeExpr::Array { span, sys_flag, element_type, .. } => {
+                Self::validate_sys_flag(sys_flag.as_ref(), has_system_import, span.start.line, span.start.column, procedure_name, diagnostics);
+                Self::validate_type_expr(element_type, scope_type_names, has_system_import, procedure_name, diagnostics);
             }
-            TypeExpr::Record { base, fields, .. } => {
+            TypeExpr::Record { span, sys_flag, base, fields, .. } => {
+                Self::validate_sys_flag(sys_flag.as_ref(), has_system_import, span.start.line, span.start.column, procedure_name, diagnostics);
                 if let Some(base) = base {
                     if base.module.is_none()
                         && builtin_type_by_name(&base.name).is_none()
@@ -1356,22 +1433,54 @@ impl<'a> Analyzer<'a> {
                     }
                 }
                 for field in fields {
-                    Self::validate_type_expr(&field.ty, scope_type_names, procedure_name, diagnostics);
+                    Self::validate_type_expr(&field.ty, scope_type_names, has_system_import, procedure_name, diagnostics);
                 }
             }
-            TypeExpr::Pointer { target, .. } => {
-                Self::validate_type_expr(target, scope_type_names, procedure_name, diagnostics);
+            TypeExpr::Pointer { span, sys_flag, target, .. } => {
+                Self::validate_sys_flag(sys_flag.as_ref(), has_system_import, span.start.line, span.start.column, procedure_name, diagnostics);
+                Self::validate_type_expr(target, scope_type_names, has_system_import, procedure_name, diagnostics);
             }
-            TypeExpr::Procedure { formal_parameters, .. } => {
+            TypeExpr::Procedure { span, sys_flag, formal_parameters, .. } => {
+                Self::validate_sys_flag(sys_flag.as_ref(), has_system_import, span.start.line, span.start.column, procedure_name, diagnostics);
                 if let Some(parameters) = formal_parameters {
                     for section in &parameters.sections {
-                        Self::validate_type_expr(&section.ty, scope_type_names, procedure_name, diagnostics);
+                        Self::validate_sys_flag(
+                            section.sys_flag.as_ref(),
+                            has_system_import,
+                            section.span.start.line,
+                            section.span.start.column,
+                            procedure_name,
+                            diagnostics,
+                        );
+                        Self::validate_type_expr(&section.ty, scope_type_names, has_system_import, procedure_name, diagnostics);
                     }
                     if let Some(result) = &parameters.result_type {
-                        Self::validate_type_expr(result, scope_type_names, procedure_name, diagnostics);
+                        Self::validate_type_expr(result, scope_type_names, has_system_import, procedure_name, diagnostics);
                     }
                 }
             }
+        }
+    }
+
+    fn validate_sys_flag(
+        flag: Option<&SysFlag>,
+        has_system_import: bool,
+        line: usize,
+        column: usize,
+        procedure_name: Option<&str>,
+        diagnostics: &mut Vec<SemanticDiagnostic>,
+    ) {
+        let Some(flag) = flag else {
+            return;
+        };
+
+        if !has_system_import {
+            diagnostics.push(make_diagnostic(
+                procedure_name,
+                line,
+                column,
+                format!("system flag {} requires IMPORT SYSTEM", render_sys_flag(flag)),
+            ));
         }
     }
 
@@ -1487,20 +1596,24 @@ impl<'a> Analyzer<'a> {
         match ty {
             TypeExpr::QualIdent { ident, .. } => self.resolve_named_type(ident, scope_type_names),
             TypeExpr::Array {
+                sys_flag,
                 lengths,
                 element_type,
                 ..
             } => SemanticType::Array {
                 lengths: lengths.iter().map(render_expr).collect(),
                 element_type: Box::new(self.resolve_type_decl(None, element_type, scope_type_names)),
+                untagged: matches!(self.normalize_sys_flag(sys_flag.as_ref()), Some(NormalizedSysFlag::Untagged)),
             },
             TypeExpr::Record {
                 flavor,
+                sys_flag,
                 base,
                 fields,
                 ..
             } => SemanticType::Record {
                 flavor: *flavor,
+                layout: self.record_layout_from_flag(sys_flag.as_ref()),
                 base: base
                     .as_ref()
                     .map(|item| Box::new(self.resolve_named_type(item, scope_type_names))),
@@ -1512,8 +1625,9 @@ impl<'a> Analyzer<'a> {
                     .map(|type_name| self.resolve_record_methods(type_name, scope_type_names))
                     .unwrap_or_default(),
             },
-            TypeExpr::Pointer { target, .. } => SemanticType::Pointer {
+            TypeExpr::Pointer { sys_flag, target, .. } => SemanticType::Pointer {
                 target: Box::new(self.resolve_type_decl(None, target, scope_type_names)),
+                untagged: matches!(self.normalize_sys_flag(sys_flag.as_ref()), Some(NormalizedSysFlag::Untagged)),
             },
             TypeExpr::Procedure {
                 formal_parameters,
@@ -1531,6 +1645,31 @@ impl<'a> Analyzer<'a> {
                 is_new: false,
                 flavor: None,
             }),
+        }
+    }
+
+    fn record_layout_from_flag(&self, flag: Option<&SysFlag>) -> RecordLayout {
+        match self.normalize_sys_flag(flag) {
+            Some(NormalizedSysFlag::Untagged) => RecordLayout::Untagged,
+            Some(NormalizedSysFlag::NoAlign) => RecordLayout::UntaggedNoAlign,
+            Some(NormalizedSysFlag::Align2) => RecordLayout::UntaggedAlign2,
+            Some(NormalizedSysFlag::Align8) => RecordLayout::UntaggedAlign8,
+            Some(NormalizedSysFlag::Union) => RecordLayout::Union,
+            _ => RecordLayout::Tagged,
+        }
+    }
+
+    fn normalize_sys_flag(&self, flag: Option<&SysFlag>) -> Option<NormalizedSysFlag> {
+        match flag {
+            Some(SysFlag::Named(name)) if name.eq_ignore_ascii_case("untagged") => Some(NormalizedSysFlag::Untagged),
+            Some(SysFlag::Named(name)) if name.eq_ignore_ascii_case("noalign") => Some(NormalizedSysFlag::NoAlign),
+            Some(SysFlag::Named(name)) if name.eq_ignore_ascii_case("align2") => Some(NormalizedSysFlag::Align2),
+            Some(SysFlag::Named(name)) if name.eq_ignore_ascii_case("align8") => Some(NormalizedSysFlag::Align8),
+            Some(SysFlag::Named(name)) if name.eq_ignore_ascii_case("union") => Some(NormalizedSysFlag::Union),
+            Some(SysFlag::Named(name)) if name.eq_ignore_ascii_case("nil") => Some(NormalizedSysFlag::Nil),
+            Some(SysFlag::Named(name)) if name.eq_ignore_ascii_case("ccall") => Some(NormalizedSysFlag::CCall),
+            Some(SysFlag::Named(name)) if name.eq_ignore_ascii_case("code") => Some(NormalizedSysFlag::Code),
+            _ => None,
         }
     }
 
@@ -2621,7 +2760,8 @@ impl<'a> Analyzer<'a> {
                 _ => self.lookup_symbol_type(&designator.base.name, local_symbols),
             }
         } else {
-            None
+            self.resolve_system_builtin(designator.base.module.as_deref(), &designator.base.name)
+                .map(SemanticType::BuiltinProc)
         }?;
 
         for selector in &designator.selectors {
@@ -2888,7 +3028,7 @@ impl<'a> Analyzer<'a> {
         local_symbols: &[SemanticSymbol],
     ) -> Option<SemanticType> {
         match subject_type {
-            SemanticType::Pointer { target } => {
+            SemanticType::Pointer { target, .. } => {
                 if self.is_record_type(target, local_symbols) {
                     Some((**target).clone())
                 } else {
@@ -2956,8 +3096,8 @@ impl<'a> Analyzer<'a> {
                 let actual = self.resolve_named_type_one_level(actual, &self.module_symbols);
                 match (&expected, &actual) {
                     (
-                        SemanticType::Pointer { target: expected_target },
-                        SemanticType::Pointer { target: actual_target },
+                        SemanticType::Pointer { target: expected_target, .. },
+                        SemanticType::Pointer { target: actual_target, .. },
                     ) => self.record_type_extends(actual_target, expected_target, &self.module_symbols),
                     _ => false,
                 }
@@ -2997,6 +3137,13 @@ impl<'a> Analyzer<'a> {
         resolve_named_type_alias(ty, local_symbols, &self.module_symbols, &mut HashSet::new())
             .cloned()
             .unwrap_or_else(|| ty.clone())
+    }
+
+    fn is_managed_pointer_type(&self, ty: &SemanticType, local_symbols: &[SemanticSymbol]) -> bool {
+        match self.resolve_named_type_one_level(ty, local_symbols) {
+            SemanticType::Pointer { untagged, .. } => !untagged,
+            _ => false,
+        }
     }
 
     fn designator_denotes_type_name(
@@ -3077,7 +3224,8 @@ impl<'a> Analyzer<'a> {
                 _ => self.lookup_symbol_type(&designator.base.name, local_symbols),
             }
         } else {
-            None
+            self.resolve_system_builtin(designator.base.module.as_deref(), &designator.base.name)
+                .map(SemanticType::BuiltinProc)
         };
 
         if current.is_none() && designator.base.module.is_none() {
@@ -3191,7 +3339,7 @@ impl<'a> Analyzer<'a> {
                 }
             }
             Selector::Dereference => match base {
-                SemanticType::Pointer { target } => Some((**target).clone()),
+                SemanticType::Pointer { target, .. } => Some((**target).clone()),
                 SemanticType::Procedure(sig) => {
                     // Super-call notation: v.M^ — dereference after a method name invokes the
                     // inherited (base) implementation.  Reject ABSTRACT / EMPTY targets.
@@ -3522,6 +3670,21 @@ impl<'a> Analyzer<'a> {
             return;
         }
 
+        if self
+            .resolve_system_builtin(designator.base.module.as_deref(), &designator.base.name)
+            .is_some()
+            && designator.selectors.is_empty()
+        {
+            let (line, column) = designator_position(designator);
+            diagnostics.push(make_diagnostic(
+                procedure_name,
+                line,
+                column,
+                "procedure call is missing required arguments".to_string(),
+            ));
+            return;
+        }
+
         match final_type {
             Some(SemanticType::Procedure(signature)) => {
                 if !signature.parameters.is_empty() {
@@ -3567,7 +3730,7 @@ impl<'a> Analyzer<'a> {
                 _ => None,
             },
             Selector::Dereference => match base {
-                SemanticType::Pointer { target } => Some((**target).clone()),
+                SemanticType::Pointer { target, .. } => Some((**target).clone()),
                 // Super-call passthrough: v.M^ yields the same procedure type
                 SemanticType::Procedure(_) => Some(base.clone()),
                 // Imported / unresolved named types may be pointers — don't reject them
@@ -3679,7 +3842,7 @@ impl<'a> Analyzer<'a> {
         }
 
         match (&expected, &actual) {
-            (SemanticType::Pointer { target: expected_target }, SemanticType::Pointer { target: actual_target }) => {
+            (SemanticType::Pointer { target: expected_target, .. }, SemanticType::Pointer { target: actual_target, .. }) => {
                 self.record_type_extends(actual_target, expected_target, local_symbols)
             }
             (SemanticType::Procedure(expected_sig), SemanticType::Procedure(actual_sig)) => {
@@ -3714,6 +3877,36 @@ impl<'a> Analyzer<'a> {
                 base.as_ref()
                     .and_then(|parent| self.lookup_record_member(parent, name, local_symbols))
             }
+            _ => None,
+        }
+    }
+
+    fn resolve_system_builtin(&self, module_qualifier: Option<&str>, name: &str) -> Option<BuiltinProc> {
+        let qualifier = module_qualifier?;
+        if !self.has_system_import {
+            return None;
+        }
+        let matches_system = self.module.imports.iter().any(|item| {
+            item.name == "SYSTEM"
+                && (item.name == qualifier || item.alias.as_deref() == Some(qualifier))
+        });
+        if !matches_system {
+            return None;
+        }
+
+        match name {
+            "ADR" => Some(BuiltinProc::SystemAdr),
+            "VAL" => Some(BuiltinProc::SystemVal),
+            "LSH" => Some(BuiltinProc::SystemLsh),
+            "ROT" => Some(BuiltinProc::SystemRot),
+            "TYP" => Some(BuiltinProc::SystemTyp),
+            "BIT" => Some(BuiltinProc::SystemBit),
+            "GET" => Some(BuiltinProc::SystemGet),
+            "PUT" => Some(BuiltinProc::SystemPut),
+            "MOVE" => Some(BuiltinProc::SystemMove),
+            "NEW" => Some(BuiltinProc::SystemNew),
+            "GETREG" => Some(BuiltinProc::SystemGetReg),
+            "PUTREG" => Some(BuiltinProc::SystemPutReg),
             _ => None,
         }
     }
@@ -3860,6 +4053,7 @@ fn infer_simd_shape(
             flavor,
             fields,
             methods,
+            ..
         } if base.is_none() && flavor.is_none() && methods.is_empty() => {
             let (lane_kind, lane_count) = infer_homogeneous_record_lanes(
                 fields,
@@ -3940,8 +4134,9 @@ fn resolve_simd_scalar_lane(
     match resolve_named_type_alias(ty, local_symbols, outer_symbols, seen_named).unwrap_or(ty) {
         SemanticType::Builtin(BuiltinType::ShortReal) => Some(SimdLaneKind::Float32),
         SemanticType::Builtin(BuiltinType::Real) => Some(SimdLaneKind::Float64),
-        SemanticType::Builtin(BuiltinType::Integer) => Some(SimdLaneKind::Int32),
-        SemanticType::Builtin(BuiltinType::LongInt) => Some(SimdLaneKind::Int64),
+        SemanticType::Builtin(BuiltinType::IntShort) => Some(SimdLaneKind::Int32),
+        SemanticType::Builtin(BuiltinType::Integer)
+        | SemanticType::Builtin(BuiltinType::LongInt) => Some(SimdLaneKind::Int64),
         _ => None,
     }
 }
@@ -3991,6 +4186,7 @@ fn builtin_types() -> &'static [BuiltinType] {
         BuiltinType::Boolean,
         BuiltinType::Byte,
         BuiltinType::Char,
+        BuiltinType::IntShort,
         BuiltinType::Integer,
         BuiltinType::LongInt,
         BuiltinType::Real,
@@ -4027,6 +4223,18 @@ fn builtin_procs() -> &'static [BuiltinProc] {
         BuiltinProc::Ord,
         BuiltinProc::Short,
         BuiltinProc::Size,
+        BuiltinProc::SystemAdr,
+        BuiltinProc::SystemVal,
+        BuiltinProc::SystemLsh,
+        BuiltinProc::SystemRot,
+        BuiltinProc::SystemTyp,
+        BuiltinProc::SystemBit,
+        BuiltinProc::SystemGet,
+        BuiltinProc::SystemPut,
+        BuiltinProc::SystemMove,
+        BuiltinProc::SystemNew,
+        BuiltinProc::SystemGetReg,
+        BuiltinProc::SystemPutReg,
     ];
     BUILTINS
 }
@@ -4038,6 +4246,7 @@ fn builtin_type_by_name(name: &str) -> Option<BuiltinType> {
         "BOOLEAN" => Some(BuiltinType::Boolean),
         "BYTE" => Some(BuiltinType::Byte),
         "CHAR" => Some(BuiltinType::Char),
+        "INTSHORT" => Some(BuiltinType::IntShort),
         "INTEGER" => Some(BuiltinType::Integer),
         "LONGINT" => Some(BuiltinType::LongInt),
         "REAL" => Some(BuiltinType::Real),
@@ -4066,6 +4275,7 @@ fn builtin_proc_result_type(
         BuiltinProc::Len | BuiltinProc::Ord | BuiltinProc::Size => {
             Some(SemanticType::Builtin(BuiltinType::Integer))
         }
+        BuiltinProc::SystemAdr | BuiltinProc::SystemTyp => Some(SemanticType::Builtin(BuiltinType::Integer)),
         BuiltinProc::Odd => Some(SemanticType::Builtin(BuiltinType::Boolean)),
         BuiltinProc::Chr => Some(SemanticType::Builtin(BuiltinType::Char)),
         BuiltinProc::Cap => Some(SemanticType::Builtin(BuiltinType::Char)),
@@ -4120,13 +4330,27 @@ fn builtin_proc_result_type(
             infer_builtin_arg_type(expr, local_symbols, outer_symbols, scope_type_names)
                 .filter(is_integer_type)
         }),
+        BuiltinProc::SystemVal => args.first().and_then(|expr| {
+            infer_builtin_arg_type(expr, local_symbols, outer_symbols, scope_type_names)
+        }),
+        BuiltinProc::SystemLsh | BuiltinProc::SystemRot => args.first().and_then(|expr| {
+            infer_builtin_arg_type(expr, local_symbols, outer_symbols, scope_type_names)
+                .filter(is_integer_type)
+        }),
         BuiltinProc::New
         | BuiltinProc::Assert
         | BuiltinProc::Dec
         | BuiltinProc::Excl
         | BuiltinProc::Halt
         | BuiltinProc::Inc
-        | BuiltinProc::Incl => None,
+        | BuiltinProc::Incl
+        | BuiltinProc::SystemBit
+        | BuiltinProc::SystemGet
+        | BuiltinProc::SystemPut
+        | BuiltinProc::SystemMove
+        | BuiltinProc::SystemNew
+        | BuiltinProc::SystemGetReg
+        | BuiltinProc::SystemPutReg => None,
     }
 }
 
@@ -4172,7 +4396,8 @@ fn infer_builtin_arg_type(
 fn long_result_type(ty: SemanticType) -> Option<SemanticType> {
     match ty {
         SemanticType::Builtin(BuiltinType::Byte) => Some(SemanticType::Builtin(BuiltinType::ShortInt)),
-        SemanticType::Builtin(BuiltinType::ShortInt) => Some(SemanticType::Builtin(BuiltinType::Integer)),
+        SemanticType::Builtin(BuiltinType::ShortInt) => Some(SemanticType::Builtin(BuiltinType::IntShort)),
+        SemanticType::Builtin(BuiltinType::IntShort) => Some(SemanticType::Builtin(BuiltinType::Integer)),
         SemanticType::Builtin(BuiltinType::Integer) => Some(SemanticType::Builtin(BuiltinType::LongInt)),
         SemanticType::Builtin(BuiltinType::ShortReal) => Some(SemanticType::Builtin(BuiltinType::Real)),
         SemanticType::Builtin(BuiltinType::ShortChar) => Some(SemanticType::Builtin(BuiltinType::Char)),
@@ -4184,7 +4409,8 @@ fn long_result_type(ty: SemanticType) -> Option<SemanticType> {
 fn short_result_type(ty: SemanticType) -> Option<SemanticType> {
     match ty {
         SemanticType::Builtin(BuiltinType::LongInt) => Some(SemanticType::Builtin(BuiltinType::Integer)),
-        SemanticType::Builtin(BuiltinType::Integer) => Some(SemanticType::Builtin(BuiltinType::ShortInt)),
+        SemanticType::Builtin(BuiltinType::Integer) => Some(SemanticType::Builtin(BuiltinType::IntShort)),
+        SemanticType::Builtin(BuiltinType::IntShort) => Some(SemanticType::Builtin(BuiltinType::ShortInt)),
         SemanticType::Builtin(BuiltinType::ShortInt) => Some(SemanticType::Builtin(BuiltinType::Byte)),
         SemanticType::Builtin(BuiltinType::Real) => Some(SemanticType::Builtin(BuiltinType::ShortReal)),
         SemanticType::Builtin(BuiltinType::Char) => Some(SemanticType::Builtin(BuiltinType::ShortChar)),
@@ -4282,6 +4508,7 @@ fn is_integer_type(ty: &SemanticType) -> bool {
         ty,
         SemanticType::Builtin(BuiltinType::Byte)
             | SemanticType::Builtin(BuiltinType::ShortInt)
+            | SemanticType::Builtin(BuiltinType::IntShort)
             | SemanticType::Builtin(BuiltinType::Integer)
             | SemanticType::Builtin(BuiltinType::LongInt)
     )
@@ -4306,6 +4533,8 @@ fn is_string_type(ty: &SemanticType) -> bool {
 fn integer_literal_type(value: &str) -> SemanticType {
     if value.ends_with('L') {
         SemanticType::Builtin(BuiltinType::LongInt)
+    } else if value.ends_with('H') {
+        SemanticType::Builtin(BuiltinType::IntShort)
     } else {
         SemanticType::Builtin(BuiltinType::Integer)
     }
@@ -4354,10 +4583,11 @@ fn numeric_rank(ty: &SemanticType) -> usize {
     match ty {
         SemanticType::Builtin(BuiltinType::Byte) => 0,
         SemanticType::Builtin(BuiltinType::ShortInt) => 1,
-        SemanticType::Builtin(BuiltinType::Integer) => 2,
-        SemanticType::Builtin(BuiltinType::LongInt) => 3,
-        SemanticType::Builtin(BuiltinType::ShortReal) => 4,
-        SemanticType::Builtin(BuiltinType::Real) => 5,
+        SemanticType::Builtin(BuiltinType::IntShort) => 2,
+        SemanticType::Builtin(BuiltinType::Integer) => 3,
+        SemanticType::Builtin(BuiltinType::LongInt) => 4,
+        SemanticType::Builtin(BuiltinType::ShortReal) => 5,
+        SemanticType::Builtin(BuiltinType::Real) => 6,
         _ => usize::MAX,
     }
 }
@@ -4872,8 +5102,14 @@ fn render_semantic_type(ty: &SemanticType) -> String {
         SemanticType::Array {
             lengths,
             element_type,
-        } => format!("ARRAY {} OF {}", lengths.join(", "), render_semantic_type(element_type)),
-        SemanticType::Record { flavor, base, fields, methods } => {
+            untagged,
+        } => format!(
+            "ARRAY{} {} OF {}",
+            if *untagged { " [untagged]" } else { "" },
+            lengths.join(", "),
+            render_semantic_type(element_type)
+        ),
+        SemanticType::Record { flavor, layout, base, fields, methods } => {
             let flavor = flavor
                 .map(|item| match item {
                     RecordFlavor::Abstract => "ABSTRACT ",
@@ -4881,6 +5117,7 @@ fn render_semantic_type(ty: &SemanticType) -> String {
                     RecordFlavor::Limited => "LIMITED ",
                 })
                 .unwrap_or("");
+            let layout = render_record_layout(*layout);
             let base = base
                 .as_ref()
                 .map(|item| format!("({}) ", render_semantic_type(item)))
@@ -4902,10 +5139,32 @@ fn render_semantic_type(ty: &SemanticType) -> String {
                     items.join("; ")
                 )
             };
-            format!("{}RECORD {}{} END", flavor, base, fields)
+            format!("{}RECORD {}{}{} END", flavor, layout, base, fields)
         }
-        SemanticType::Pointer { target } => format!("POINTER TO {}", render_semantic_type(target)),
+        SemanticType::Pointer { target, untagged } => format!(
+            "POINTER{} TO {}",
+            if *untagged { " [untagged]" } else { "" },
+            render_semantic_type(target)
+        ),
         SemanticType::Procedure(signature) => render_procedure_type(signature),
+    }
+}
+
+fn render_record_layout(layout: RecordLayout) -> &'static str {
+    match layout {
+        RecordLayout::Tagged => "",
+        RecordLayout::Untagged => "[untagged] ",
+        RecordLayout::UntaggedNoAlign => "[noalign] ",
+        RecordLayout::UntaggedAlign2 => "[align2] ",
+        RecordLayout::UntaggedAlign8 => "[align8] ",
+        RecordLayout::Union => "[union] ",
+    }
+}
+
+fn render_sys_flag(flag: &SysFlag) -> String {
+    match flag {
+        SysFlag::Named(name) => format!("[{name}]"),
+        SysFlag::Numeric(value) => format!("[{value}]"),
     }
 }
 
@@ -5031,7 +5290,7 @@ impl<'a> Analyzer<'a> {
                 if let Some(arg_type) = self.infer_expr_type(&args[0], local_symbols, scope_type_names) {
                     let resolved = self.resolve_named_type_one_level(&arg_type, local_symbols);
                     match &resolved {
-                        SemanticType::Pointer { target } => {
+                        SemanticType::Pointer { target, .. } => {
                             // Check that the pointed-to type is not an ABSTRACT record
                             let target_resolved = self.resolve_named_type_one_level(target, local_symbols);
                             if matches!(target_resolved, SemanticType::Record { flavor: Some(RecordFlavor::Abstract), .. }) {
@@ -5052,6 +5311,102 @@ impl<'a> Analyzer<'a> {
                                 column,
                                 format!("NEW first argument must be a pointer variable, found {}", render_semantic_type(&arg_type)),
                             ));
+                        }
+                    }
+                }
+            }
+            BuiltinProc::SystemAdr => {
+                self.require_builtin_exact_arity(proc, args, 1, procedure_name, diagnostics);
+            }
+            BuiltinProc::SystemVal => {
+                self.require_builtin_exact_arity(proc, args, 2, procedure_name, diagnostics);
+                if args.len() == 2 {
+                    if !matches!(&args[0], Expr::Designator(designator) if self.designator_denotes_type_name(designator, local_symbols)) {
+                        let (line, column) = expr_position(&args[0]);
+                        diagnostics.push(make_diagnostic(
+                            procedure_name,
+                            line,
+                            column,
+                            "VAL argument 1 must be a type".to_string(),
+                        ));
+                    }
+                    if let Some(target_type) = self.infer_expr_type(&args[0], local_symbols, scope_type_names)
+                        && self.is_managed_pointer_type(&target_type, local_symbols)
+                    {
+                        let (line, column) = expr_position(&args[0]);
+                        diagnostics.push(make_diagnostic(
+                            procedure_name,
+                            line,
+                            column,
+                            "SYSTEM.VAL may not produce a managed pointer; use POINTER [untagged]".to_string(),
+                        ));
+                    }
+                }
+            }
+            BuiltinProc::SystemLsh | BuiltinProc::SystemRot => {
+                self.require_builtin_exact_arity(proc, args, 2, procedure_name, diagnostics);
+                if args.len() == 2 {
+                    self.require_builtin_integer_arg(proc, 1, &args[0], procedure_name, local_symbols, scope_type_names, diagnostics);
+                    self.require_builtin_integer_arg(proc, 2, &args[1], procedure_name, local_symbols, scope_type_names, diagnostics);
+                }
+            }
+            BuiltinProc::SystemTyp => {
+                self.require_builtin_exact_arity(proc, args, 1, procedure_name, diagnostics);
+            }
+            BuiltinProc::SystemBit | BuiltinProc::SystemGetReg | BuiltinProc::SystemPutReg => {
+                let (line, column) = args.first().map(expr_position).unwrap_or((0, 0));
+                diagnostics.push(make_diagnostic(
+                    procedure_name,
+                    line,
+                    column,
+                    format!("SYSTEM.{} is x86-32 specific and not supported on this target", proc.name()),
+                ));
+            }
+            BuiltinProc::SystemGet | BuiltinProc::SystemPut => {
+                self.require_builtin_exact_arity(proc, args, 2, procedure_name, diagnostics);
+                if args.len() == 2 {
+                    self.require_builtin_integer_arg(proc, 1, &args[0], procedure_name, local_symbols, scope_type_names, diagnostics);
+                    if proc == BuiltinProc::SystemGet {
+                        self.validate_builtin_var_designator(proc.name(), 2, &args[1], procedure_name, local_symbols, diagnostics);
+                    }
+                    if let Some(arg_type) = self.infer_expr_type(&args[1], local_symbols, scope_type_names)
+                        && self.is_managed_pointer_type(&arg_type, local_symbols)
+                    {
+                        let (line, column) = expr_position(&args[1]);
+                        diagnostics.push(make_diagnostic(
+                            procedure_name,
+                            line,
+                            column,
+                            format!("SYSTEM.{} may not read or write a managed pointer", proc.name()),
+                        ));
+                    }
+                }
+            }
+            BuiltinProc::SystemMove => {
+                self.require_builtin_exact_arity(proc, args, 3, procedure_name, diagnostics);
+                if args.len() == 3 {
+                    self.require_builtin_integer_arg(proc, 1, &args[0], procedure_name, local_symbols, scope_type_names, diagnostics);
+                    self.require_builtin_integer_arg(proc, 2, &args[1], procedure_name, local_symbols, scope_type_names, diagnostics);
+                    self.require_builtin_integer_arg(proc, 3, &args[2], procedure_name, local_symbols, scope_type_names, diagnostics);
+                }
+            }
+            BuiltinProc::SystemNew => {
+                self.require_builtin_exact_arity(proc, args, 2, procedure_name, diagnostics);
+                if args.len() == 2 {
+                    self.validate_builtin_var_designator(proc.name(), 1, &args[0], procedure_name, local_symbols, diagnostics);
+                    self.require_builtin_integer_arg(proc, 2, &args[1], procedure_name, local_symbols, scope_type_names, diagnostics);
+                    if let Some(arg_type) = self.infer_expr_type(&args[0], local_symbols, scope_type_names) {
+                        match self.resolve_named_type_one_level(&arg_type, local_symbols) {
+                            SemanticType::Pointer { untagged: true, .. } => {}
+                            other => {
+                                let (line, column) = expr_position(&args[0]);
+                                diagnostics.push(make_diagnostic(
+                                    procedure_name,
+                                    line,
+                                    column,
+                                    format!("SYSTEM.NEW first argument must be a POINTER [untagged] variable, found {}", render_semantic_type(&other)),
+                                ));
+                            }
                         }
                     }
                 }
@@ -5720,6 +6075,7 @@ mod tests {
                     name: "Node".to_string(),
                     kind: NamedTypeKind::UserDefined,
                 }),
+                untagged: false,
             }
         );
 
@@ -6171,6 +6527,46 @@ mod tests {
     }
 
     #[test]
+    fn sema_rejects_system_usage_without_import() {
+        let module = parse_module_ast(
+            "MODULE Demo;\nTYPE Raw = RECORD [untagged] value: INTEGER END;\nVAR x: INTEGER;\nPROCEDURE Run;\nBEGIN\n  x := SYSTEM.ADR(x)\nEND Run;\nEND Demo.",
+        )
+        .expect("module should parse");
+
+        let sema = analyze_module_ast(&module);
+        let messages = sema
+            .diagnostics
+            .iter()
+            .map(|item| item.message.as_str())
+            .collect::<Vec<_>>()
+            .join(" | ");
+        assert!(
+            sema.diagnostics
+                .iter()
+                .any(|item| item.message.contains("requires IMPORT SYSTEM")),
+            "{}",
+            messages
+        );
+    }
+
+    #[test]
+    fn sema_accepts_system_new_on_untagged_pointer() {
+        let module = parse_module_ast(
+            "MODULE Demo;\nIMPORT SYSTEM;\nTYPE Raw = RECORD [untagged] value: INTEGER END;\nTYPE RawPtr = POINTER [untagged] TO Raw;\nVAR p: RawPtr;\nPROCEDURE Run;\nBEGIN\n  SYSTEM.NEW(p, 64)\nEND Run;\nEND Demo.",
+        )
+        .expect("module should parse");
+
+        let sema = analyze_module_ast(&module);
+        let messages = sema
+            .diagnostics
+            .iter()
+            .map(|item| item.message.as_str())
+            .collect::<Vec<_>>()
+            .join(" | ");
+        assert!(sema.diagnostics.is_empty(), "{}", messages);
+    }
+
+    #[test]
     fn sema_rejects_invalid_operators_and_assignment_targets_early() {
         let module = parse_module_ast(
             "MODULE Demo;\nCONST Flag = TRUE;\nTYPE T = RECORD END;\nPROCEDURE P;\nBEGIN\nEND P;\nPROCEDURE Run;\nVAR i: INTEGER; s: SET;\nBEGIN\nFlag := FALSE;\nP := P;\ni := ~i;\ni := i OR 1;\ni := i IN s;\ni := s / s;\nEND Run;\nEND Demo.",
@@ -6399,8 +6795,8 @@ mod tests {
         assert_eq!(big.const_value, Some(ConstValue::Integer(4294901760)));
         assert_eq!(
             big.declared_type,
-            Some(SemanticType::Builtin(BuiltinType::Integer)),
-            "integer constant stores INTEGER declared_type"
+            Some(SemanticType::Builtin(BuiltinType::LongInt)),
+            "explicit L-suffix constant stores LONGINT declared_type"
         );
 
         let set_errors: Vec<_> = sema
@@ -6479,6 +6875,40 @@ mod tests {
                 || item.message.contains("assignment type mismatch"))
             .collect();
         assert!(builtin_errors.is_empty(), "unexpected builtin typing errors");
+    }
+
+    #[test]
+    fn sema_recognizes_intshort_and_builtin_conversions() {
+        let module = parse_module_ast(
+            "MODULE Demo;\nCONST Hex = 7FFFFFFFH;\nVAR Mid*: INTSHORT;\nPROCEDURE Run;\nVAR s: SHORTINT; m: INTSHORT; i: INTEGER; l: LONGINT;\nBEGIN\nMid := Hex;\nm := LONG(s);\ni := LONG(m);\nl := LONG(i);\ni := SHORT(l);\nm := SHORT(i);\ns := SHORT(m)\nEND Run;\nEND Demo.",
+        )
+        .expect("module should parse");
+
+        let sema = analyze_module_ast(&module);
+        let messages = sema
+            .diagnostics
+            .iter()
+            .map(|item| item.message.as_str())
+            .collect::<Vec<_>>()
+            .join(" | ");
+        assert!(
+            sema.diagnostics.is_empty(),
+            "unexpected INTSHORT diagnostics: {messages}"
+        );
+
+        let mid = sema
+            .symbols
+            .iter()
+            .find(|symbol| symbol.name == "Mid")
+            .expect("Mid symbol exists");
+        assert_eq!(mid.declared_type, Some(SemanticType::Builtin(BuiltinType::IntShort)));
+
+        let hex = sema
+            .symbols
+            .iter()
+            .find(|symbol| symbol.name == "Hex")
+            .expect("Hex constant exists");
+        assert_eq!(hex.declared_type, Some(SemanticType::Builtin(BuiltinType::IntShort)));
     }
 
     #[test]

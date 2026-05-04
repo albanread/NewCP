@@ -1,0 +1,14 @@
+MODULE Calls;
+
+PROCEDURE AddOne(x: INTEGER): INTEGER;
+BEGIN
+    RETURN x + 1
+END AddOne;
+
+PROCEDURE TwiceAddOne*(x: INTEGER): INTEGER;
+BEGIN
+    RETURN AddOne(AddOne(x))
+END TwiceAddOne;
+
+BEGIN
+END Calls.

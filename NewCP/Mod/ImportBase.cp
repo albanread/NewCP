@@ -1,0 +1,9 @@
+MODULE ImportBase;
+
+PROCEDURE AddOne*(x: INTEGER): INTEGER;
+BEGIN
+    RETURN x + 1
+END AddOne;
+
+BEGIN
+END ImportBase.

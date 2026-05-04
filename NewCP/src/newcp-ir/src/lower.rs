@@ -7,18 +7,21 @@
 /// - EXIT inside a LOOP emits Br(loop_exit_target).
 /// - WITH arms with a None guard are the ELSE arm.
 /// - After all blocks are built, RPO is computed and stored on each block.
+use std::path::Path;
+
 use newcp_parser::{
-    BinaryOp, CaseArm, CaseLabel, Declaration, Designator, Expr, Guard, IfBranch, Literal,
-    ModuleAst, ParamMode, ProcedureDecl, QualIdent, Selector, SetElement, Statement, UnaryOp,
+    read_module_ast,
+    BinaryOp, CaseArm, CaseLabel, Declaration, Designator, Expr, IfBranch, Literal,
+    ModuleAst, ParamMode, ProcedureDecl, QualIdent, Selector, Statement, UnaryOp,
     WithArm,
 };
-use newcp_sema::{BuiltinType, SemanticModule, SemanticProcedure, SemanticSymbol, SemanticType};
+use newcp_sema::{analyze_module_ast, BuiltinType, ConstValue, RecordLayout as SemanticRecordLayout, SemanticModule, SemanticProcedure, SemanticSymbol, SemanticType, SymbolKind};
 
 use crate::{
     ir::{BinOp, BlockId, Instr, TempId, Terminator, TrapKind, UnOp},
     ir::IrValue,
     procedure::{IrGlobal, IrModule, IrProcedure},
-    types::IrType,
+    types::{IrType, RecordLayout},
 };
 
 // == Type mapping ==
@@ -34,13 +37,40 @@ pub fn map_semantic_type(ty: &SemanticType) -> IrType {
             };
             IrType::Named(full)
         }
-        SemanticType::Array { element_type, .. } => {
-            IrType::Ptr(Box::new(map_semantic_type(element_type)))
+        SemanticType::Array { element_type, untagged, .. } => {
+            if *untagged {
+                IrType::UntaggedPtr(Box::new(map_semantic_type(element_type)))
+            } else {
+                IrType::Ptr(Box::new(map_semantic_type(element_type)))
+            }
         }
-        SemanticType::Record { .. } => IrType::Opaque("anon-record".to_string()),
-        SemanticType::Pointer { target } => IrType::Ptr(Box::new(map_semantic_type(target))),
+        SemanticType::Record { layout, .. } => match layout {
+            SemanticRecordLayout::Tagged => IrType::Opaque("anon-record".to_string()),
+            _ => IrType::UntaggedRecord {
+                name: "anon-record".to_string(),
+                layout: map_record_layout(*layout),
+            },
+        },
+        SemanticType::Pointer { target, untagged } => {
+            if *untagged {
+                IrType::UntaggedPtr(Box::new(map_semantic_type(target)))
+            } else {
+                IrType::Ptr(Box::new(map_semantic_type(target)))
+            }
+        }
         SemanticType::Procedure(_) => IrType::Opaque("proc-type".to_string()),
         SemanticType::BuiltinProc(_) => IrType::Opaque("builtin-proc".to_string()),
+    }
+}
+
+fn map_record_layout(layout: SemanticRecordLayout) -> RecordLayout {
+    match layout {
+        SemanticRecordLayout::Tagged => RecordLayout::Tagged,
+        SemanticRecordLayout::Untagged => RecordLayout::Untagged,
+        SemanticRecordLayout::UntaggedNoAlign => RecordLayout::UntaggedNoAlign,
+        SemanticRecordLayout::UntaggedAlign2 => RecordLayout::UntaggedAlign2,
+        SemanticRecordLayout::UntaggedAlign8 => RecordLayout::UntaggedAlign8,
+        SemanticRecordLayout::Union => RecordLayout::Union,
     }
 }
 
@@ -50,7 +80,8 @@ fn map_builtin(bt: BuiltinType) -> IrType {
         BuiltinType::Byte => IrType::U8,
         BuiltinType::Char => IrType::Char,
         BuiltinType::ShortChar => IrType::ShortChar,
-        BuiltinType::Integer => IrType::I32,
+        BuiltinType::IntShort => IrType::I32,
+        BuiltinType::Integer => IrType::I64,
         BuiltinType::LongInt => IrType::I64,
         BuiltinType::ShortInt => IrType::I16,
         BuiltinType::Real => IrType::F64,
@@ -72,6 +103,8 @@ struct LowerCtx<'m> {
     loop_stack: Vec<(BlockId, BlockId)>,
     function_exit: BlockId,
     result_slot: Option<IrValue>,
+    symbols: Vec<SemanticSymbol>,
+    system_qualifiers: Vec<String>,
     _module_symbols: &'m [SemanticSymbol],
 }
 
@@ -81,6 +114,8 @@ impl<'m> LowerCtx<'m> {
         entry: BlockId,
         function_exit: BlockId,
         result_slot: Option<IrValue>,
+        symbols: Vec<SemanticSymbol>,
+        system_qualifiers: Vec<String>,
         module_symbols: &'m [SemanticSymbol],
     ) -> Self {
         Self {
@@ -89,6 +124,8 @@ impl<'m> LowerCtx<'m> {
             loop_stack: Vec::new(),
             function_exit,
             result_slot,
+            symbols,
+            system_qualifiers,
             _module_symbols: module_symbols,
         }
     }
@@ -123,7 +160,7 @@ impl<'m> LowerCtx<'m> {
             Expr::Nil { .. } => {
                 IrValue::Null(IrType::Ptr(Box::new(IrType::Opaque("nil".to_string()))))
             }
-            Expr::Designator(des) => self.lower_designator(des),
+            Expr::Designator(des) => self.lower_system_expr(des).unwrap_or_else(|| self.lower_designator(des)),
             Expr::Unary { op, expr, .. } => self.lower_unary(*op, expr),
             Expr::Binary { left, op, right, .. } => self.lower_binary(left, *op, right),
             Expr::Set { .. } => {
@@ -142,7 +179,7 @@ impl<'m> LowerCtx<'m> {
         match lit {
             Literal::Integer(s) => {
                 let v: i128 = s.parse().unwrap_or(0);
-                IrValue::ConstInt(v, IrType::I32)
+                IrValue::ConstInt(v, IrType::I64)
             }
             Literal::Real(s) => {
                 let v: f64 = s.parse().unwrap_or(0.0);
@@ -170,32 +207,46 @@ impl<'m> LowerCtx<'m> {
             QualIdent { name, .. } => (None, name.clone()),
         };
 
-        let base_ty = IrType::Opaque("unresolved".to_string());
-        let mut val: IrValue = match module_opt {
-            Some(m) => {
-                let t = self.fresh_temp();
-                self.push(Instr::Load {
-                    dst: t,
-                    addr: IrValue::ImportRef(
-                        m.clone(),
-                        base_name.clone(),
-                        IrType::Ref(Box::new(base_ty.clone())),
-                    ),
-                    ty: base_ty.clone(),
-                });
-                IrValue::Temp(t, base_ty.clone())
+        let base_ty = self
+            .designator_ir_type(des)
+            .unwrap_or_else(|| IrType::Opaque("unresolved".to_string()));
+        if des.selectors.is_empty() {
+            if let Some(value) = self.lower_const_designator(module_opt.as_deref(), &base_name, &base_ty) {
+                return value;
             }
-            None => {
-                let t = self.fresh_temp();
-                self.push(Instr::Load {
-                    dst: t,
-                    addr: IrValue::GlobalRef(
-                        base_name.clone(),
-                        IrType::Ref(Box::new(base_ty.clone())),
-                    ),
-                    ty: base_ty.clone(),
-                });
-                IrValue::Temp(t, base_ty.clone())
+        }
+        let mut val: IrValue = if self.is_direct_callee(module_opt.as_deref(), &base_name, &des.selectors) {
+            match module_opt {
+                Some(m) => IrValue::ImportRef(m, base_name, base_ty.clone()),
+                None => IrValue::GlobalRef(base_name, base_ty.clone()),
+            }
+        } else {
+            match module_opt {
+                Some(m) => {
+                    let t = self.fresh_temp();
+                    self.push(Instr::Load {
+                        dst: t,
+                        addr: IrValue::ImportRef(
+                            m.clone(),
+                            base_name.clone(),
+                            IrType::Ref(Box::new(base_ty.clone())),
+                        ),
+                        ty: base_ty.clone(),
+                    });
+                    IrValue::Temp(t, base_ty.clone())
+                }
+                None => {
+                    let t = self.fresh_temp();
+                    self.push(Instr::Load {
+                        dst: t,
+                        addr: IrValue::GlobalRef(
+                            base_name.clone(),
+                            IrType::Ref(Box::new(base_ty.clone())),
+                        ),
+                        ty: base_ty.clone(),
+                    });
+                    IrValue::Temp(t, base_ty.clone())
+                }
             }
         };
 
@@ -203,6 +254,119 @@ impl<'m> LowerCtx<'m> {
             val = self.lower_selector(val, sel);
         }
         val
+    }
+
+    fn lower_const_designator(
+        &self,
+        module_name: Option<&str>,
+        base_name: &str,
+        ty: &IrType,
+    ) -> Option<IrValue> {
+        if module_name.is_some() {
+            return None;
+        }
+
+        let symbol = self
+            .symbols
+            .iter()
+            .rev()
+            .find(|symbol| symbol.name == base_name)?;
+        let const_value = symbol.const_value.as_ref()?;
+        Some(match const_value {
+            ConstValue::Integer(value) => IrValue::ConstInt(*value, ty.clone()),
+            ConstValue::Real(value) => IrValue::ConstReal(*value, ty.clone()),
+            ConstValue::String(value) => IrValue::ConstStr(value.clone()),
+            ConstValue::Char(value) => IrValue::ConstChar(*value),
+            ConstValue::Boolean(value) => IrValue::ConstBool(*value),
+        })
+    }
+
+    fn is_direct_callee(
+        &self,
+        module_name: Option<&str>,
+        base_name: &str,
+        selectors: &[Selector],
+    ) -> bool {
+        if !matches!(selectors.first(), Some(Selector::Call(_)) | Some(Selector::AmbiguousParen(_))) {
+            return false;
+        }
+
+        if module_name.is_some() {
+            return true;
+        }
+
+        self.symbols
+            .iter()
+            .rev()
+            .find(|symbol| symbol.name == base_name)
+            .map(|symbol| matches!(symbol.kind, SymbolKind::Procedure))
+            .unwrap_or(false)
+    }
+
+    fn callee_return_type(&self, callee: &IrValue) -> IrType {
+        match self.callee_procedure_type(callee) {
+            Some(proc_ty) => proc_ty
+                .result_type
+                .as_ref()
+                .map(|ty| map_semantic_type(ty.as_ref()))
+                .unwrap_or(IrType::Void),
+            _ => IrType::Opaque("call-result".to_string()),
+        }
+    }
+
+    fn callee_procedure_type(&self, callee: &IrValue) -> Option<newcp_sema::ProcedureType> {
+        match callee {
+            IrValue::GlobalRef(name, _) => self
+                .symbols
+                .iter()
+                .rev()
+                .find(|symbol| symbol.name == *name)
+                .and_then(|symbol| symbol.declared_type.as_ref())
+                .and_then(|ty| match ty {
+                    SemanticType::Procedure(proc_ty) => Some(proc_ty.clone()),
+                    _ => None,
+                }),
+            IrValue::ImportRef(module, name, _) => self.imported_callee_procedure_type(module, name),
+            _ => None,
+        }
+    }
+
+    fn imported_callee_procedure_type(
+        &self,
+        module: &str,
+        name: &str,
+    ) -> Option<newcp_sema::ProcedureType> {
+        let path = Path::new("Mod").join(format!("{module}.cp"));
+        let ast = read_module_ast(&path).ok()?;
+        let sema = analyze_module_ast(&ast);
+        sema.procedures
+            .iter()
+            .find(|proc| proc.name == name && proc.exported)
+            .map(|proc| proc.signature.clone())
+    }
+
+    fn lower_call_args(&mut self, callee: &IrValue, args: &[Expr]) -> Vec<IrValue> {
+        let expected_modes = self
+            .callee_procedure_type(callee)
+            .map(|proc_ty| {
+                proc_ty
+                    .parameters
+                    .iter()
+                    .flat_map(|param| std::iter::repeat_n(param.mode, param.names.len()))
+                    .collect::<Vec<_>>()
+            })
+            .unwrap_or_default();
+
+        args.iter()
+            .enumerate()
+            .map(|(index, arg)| match expected_modes.get(index).copied().flatten() {
+                Some(ParamMode::Var) | Some(ParamMode::Out) => match arg {
+                    Expr::Designator(des) => self.designator_addr(des),
+                    _ => self.lower_expr(arg),
+                },
+                _ => self.lower_expr(arg),
+            })
+            .collect()
     }
 
     fn lower_selector(&mut self, base: IrValue, sel: &Selector) -> IrValue {
@@ -247,9 +411,9 @@ impl<'m> LowerCtx<'m> {
                 IrValue::Temp(t, ir_ty)
             }
             Selector::Call(args) => {
-                let args_lowered: Vec<IrValue> = args.iter().map(|a| self.lower_expr(a)).collect();
+                let args_lowered = self.lower_call_args(&base, args);
                 let t = self.fresh_temp();
-                let ret_ty = IrType::Opaque("call-result".to_string());
+                let ret_ty = self.callee_return_type(&base);
                 self.push(Instr::Call {
                     dst: Some(t),
                     callee: base,
@@ -259,17 +423,24 @@ impl<'m> LowerCtx<'m> {
                 IrValue::Temp(t, ret_ty)
             }
             Selector::AmbiguousParen(qual) => {
-                // Resolved at parse time to either a call or type guard;
-                // here treat as a zero-arg call.
+                // Parser uses AmbiguousParen when a selector might be either a
+                // call or a type guard. In expression lowering, treat it as a
+                // single-argument call and let the semantic pipeline reject any
+                // shape that was actually a type guard.
+                let arg = Expr::Designator(Designator {
+                    span: qual.span,
+                    base: qual.clone(),
+                    selectors: Vec::new(),
+                });
+                let arg_values = self.lower_call_args(&base, &[arg]);
                 let t = self.fresh_temp();
-                let ret_ty = IrType::Opaque("call-result".to_string());
+                let ret_ty = self.callee_return_type(&base);
                 self.push(Instr::Call {
                     dst: Some(t),
                     callee: base,
-                    args: vec![],
+                    args: arg_values,
                     ret_ty: ret_ty.clone(),
                 });
-                let _ = qual;
                 IrValue::Temp(t, ret_ty)
             }
         }
@@ -339,6 +510,176 @@ impl<'m> LowerCtx<'m> {
         self.push(Instr::BinOp { dst: t, op: ir_op, left: lv, right: rv, ty: result_ty.clone() });
         IrValue::Temp(t, result_ty)
     }
+
+    fn lower_system_expr(&mut self, des: &Designator) -> Option<IrValue> {
+        let intrinsic = self.system_intrinsic(des)?;
+        let args: Vec<Expr> = match des.selectors.last()? {
+            Selector::Call(args) => args.clone(),
+            Selector::AmbiguousParen(qual) => vec![Expr::Designator(Designator {
+                span: qual.span,
+                base: qual.clone(),
+                selectors: Vec::new(),
+            })],
+            _ => return None,
+        };
+
+        match intrinsic {
+            "ADR" => {
+                let Expr::Designator(target) = args.first()? else {
+                    return None;
+                };
+                let dst = self.fresh_temp();
+                let sym = self.designator_addr(target);
+                self.push(Instr::AddrOf { dst, sym });
+                Some(IrValue::Temp(dst, IrType::I64))
+            }
+            "VAL" => {
+                let ty = self.ir_type_from_type_arg(args.first()?)?;
+                let value = self.lower_expr(args.get(1)?);
+                let dst = self.fresh_temp();
+                self.push(Instr::BitCast { dst, value, ty: ty.clone() });
+                Some(IrValue::Temp(dst, ty))
+            }
+            "LSH" => {
+                let value = self.lower_expr(args.first()?);
+                let shift = self.lower_expr(args.get(1)?);
+                let dst = self.fresh_temp();
+                let ty = value.ty();
+                self.push(Instr::Lsh { dst, value, shift, ty: ty.clone() });
+                Some(IrValue::Temp(dst, ty))
+            }
+            "ROT" => {
+                let value = self.lower_expr(args.first()?);
+                let shift = self.lower_expr(args.get(1)?);
+                let dst = self.fresh_temp();
+                let ty = value.ty();
+                self.push(Instr::Rot { dst, value, shift, ty: ty.clone() });
+                Some(IrValue::Temp(dst, ty))
+            }
+            "TYP" => {
+                let value = self.lower_expr(args.first()?);
+                let dst = self.fresh_temp();
+                self.push(Instr::TypTag { dst, value });
+                Some(IrValue::Temp(dst, IrType::I64))
+            }
+            _ => None,
+        }
+    }
+
+    fn lower_system_statement(&mut self, des: &Designator) -> bool {
+        let Some(intrinsic) = self.system_intrinsic(des) else {
+            return false;
+        };
+        let Some(Selector::Call(args)) = des.selectors.last() else {
+            return false;
+        };
+
+        match intrinsic {
+            "GET" => {
+                if let (Some(addr_expr), Some(Expr::Designator(target))) = (args.first(), args.get(1)) {
+                    let addr = self.lower_expr(addr_expr);
+                    let ty = self.designator_ir_type(target).unwrap_or(IrType::Opaque("system-get".to_string()));
+                    let tmp = self.fresh_temp();
+                    self.push(Instr::LoadRaw { dst: tmp, addr, ty: ty.clone() });
+                    let target_addr = self.designator_addr(target);
+                    self.push(Instr::Store { addr: target_addr, value: IrValue::Temp(tmp, ty) });
+                    return true;
+                }
+            }
+            "PUT" => {
+                if let (Some(addr_expr), Some(value_expr)) = (args.first(), args.get(1)) {
+                    let addr = self.lower_expr(addr_expr);
+                    let value = self.lower_expr(value_expr);
+                    self.push(Instr::StoreRaw { addr, value });
+                    return true;
+                }
+            }
+            "MOVE" => {
+                if let (Some(dst_expr), Some(src_expr), Some(len_expr)) = (args.first(), args.get(1), args.get(2)) {
+                    let dst = self.lower_expr(dst_expr);
+                    let src = self.lower_expr(src_expr);
+                    let len = self.lower_expr(len_expr);
+                    self.push(Instr::MemCopy { dst, src, len });
+                    return true;
+                }
+            }
+            "NEW" => {
+                if let (Some(Expr::Designator(target)), Some(size_expr)) = (args.first(), args.get(1)) {
+                    let size = self.lower_expr(size_expr);
+                    let tmp = self.fresh_temp();
+                    self.push(Instr::SysNew { dst: tmp, size });
+                    let ptr_ty = self.designator_ir_type(target).unwrap_or(IrType::UntaggedPtr(Box::new(IrType::Opaque("sysnew".to_string()))));
+                    let target_addr = self.designator_addr(target);
+                    self.push(Instr::Store { addr: target_addr, value: IrValue::Temp(tmp, ptr_ty) });
+                    return true;
+                }
+            }
+            _ => {}
+        }
+
+        false
+    }
+
+    fn system_intrinsic(&self, des: &Designator) -> Option<&'static str> {
+        let module = des.base.module.as_deref()?;
+        if des.selectors.len() != 1 || !self.system_qualifiers.iter().any(|item| item == module) {
+            return None;
+        }
+        match des.base.name.as_str() {
+            "ADR" => Some("ADR"),
+            "VAL" => Some("VAL"),
+            "LSH" => Some("LSH"),
+            "ROT" => Some("ROT"),
+            "TYP" => Some("TYP"),
+            "GET" => Some("GET"),
+            "PUT" => Some("PUT"),
+            "MOVE" => Some("MOVE"),
+            "NEW" => Some("NEW"),
+            _ => None,
+        }
+    }
+
+    fn ir_type_from_type_arg(&self, expr: &Expr) -> Option<IrType> {
+        let Expr::Designator(des) = expr else {
+            return None;
+        };
+        if let Some(module) = &des.base.module {
+            return Some(IrType::Named(format!("{module}.{}", des.base.name)));
+        }
+        match des.base.name.as_str() {
+            "BOOLEAN" => Some(IrType::Bool),
+            "BYTE" => Some(IrType::U8),
+            "CHAR" => Some(IrType::Char),
+            "SHORTCHAR" => Some(IrType::ShortChar),
+            "INTEGER" | "LONGINT" => Some(IrType::I64),
+            "SHORTINT" => Some(IrType::I16),
+            "REAL" => Some(IrType::F64),
+            "SHORTREAL" => Some(IrType::F32),
+            _ => Some(IrType::Named(des.base.name.clone())),
+        }
+    }
+
+    fn designator_ir_type(&self, des: &Designator) -> Option<IrType> {
+        let mut ty = self
+            .symbols
+            .iter()
+            .rev()
+            .find(|symbol| symbol.name == des.base.name)
+            .and_then(|symbol| symbol.declared_type.as_ref())
+            .map(map_semantic_type)?;
+
+        for selector in &des.selectors {
+            ty = match (selector, ty) {
+                (Selector::Dereference, IrType::Ptr(inner)) => *inner,
+                (Selector::Dereference, IrType::UntaggedPtr(inner)) => *inner,
+                (Selector::Index(_), IrType::Ptr(inner)) => *inner,
+                (Selector::Index(_), IrType::UntaggedPtr(inner)) => *inner,
+                (_, other) => other,
+            };
+        }
+
+        Some(ty)
+    }
 }
 
 // == Statement lowering ==
@@ -347,6 +688,70 @@ impl<'m> LowerCtx<'m> {
     fn lower_statements(&mut self, stmts: &[Statement]) {
         for stmt in stmts {
             self.lower_statement(stmt);
+        }
+    }
+
+    fn lower_inc_dec_statement(&mut self, des: &Designator) -> bool {
+        if des.base.module.is_some() || des.selectors.len() != 1 {
+            return false;
+        }
+
+        let (target, delta_arg) = match &des.selectors[0] {
+            Selector::Call(args) => {
+                let Some(Expr::Designator(target)) = args.first() else {
+                    return false;
+                };
+                (target.clone(), args.get(1))
+            }
+            Selector::AmbiguousParen(qual) => {
+                (
+                    Designator {
+                        span: qual.span,
+                        base: qual.clone(),
+                        selectors: Vec::new(),
+                    },
+                    None,
+                )
+            }
+            _ => return false,
+        };
+
+        let op = match des.base.name.as_str() {
+            "INC" => BinOp::Add,
+            "DEC" => BinOp::Sub,
+            _ => return false,
+        };
+
+        let ty = self.designator_ir_type(&target).unwrap_or(IrType::I64);
+        let addr = self.designator_addr(&target);
+        let current_tmp = self.fresh_temp();
+        self.push(Instr::Load {
+            dst: current_tmp,
+            addr: addr.clone(),
+            ty: ty.clone(),
+        });
+        let delta = delta_arg
+            .map(|expr| self.lower_expr(expr))
+            .unwrap_or_else(|| self.const_one(&ty));
+        let next_tmp = self.fresh_temp();
+        self.push(Instr::BinOp {
+            dst: next_tmp,
+            op,
+            left: IrValue::Temp(current_tmp, ty.clone()),
+            right: delta,
+            ty: ty.clone(),
+        });
+        self.push(Instr::Store {
+            addr,
+            value: IrValue::Temp(next_tmp, ty),
+        });
+        true
+    }
+
+    fn const_one(&self, ty: &IrType) -> IrValue {
+        match ty {
+            IrType::F32 | IrType::F64 => IrValue::ConstReal(1.0, ty.clone()),
+            _ => IrValue::ConstInt(1, ty.clone()),
         }
     }
 
@@ -361,7 +766,11 @@ impl<'m> LowerCtx<'m> {
             }
 
             Statement::ProcedureCall { designator, .. } => {
-                let _ = self.lower_designator(designator);
+                if !self.lower_inc_dec_statement(designator)
+                    && !self.lower_system_statement(designator)
+                {
+                    let _ = self.lower_designator(designator);
+                }
             }
 
             Statement::If { branches, else_branch, .. } => {
@@ -407,15 +816,18 @@ impl<'m> LowerCtx<'m> {
             QualIdent { module: Some(m), name, .. } => (Some(m.clone()), name.clone()),
             QualIdent { name, .. } => (None, name.clone()),
         };
+        let pointee_ty = self
+            .designator_ir_type(des)
+            .unwrap_or_else(|| IrType::Opaque("addr".to_string()));
         match module_opt {
             Some(m) => IrValue::ImportRef(
                 m,
                 base_name,
-                IrType::Ref(Box::new(IrType::Opaque("addr".to_string()))),
+                IrType::Ref(Box::new(pointee_ty)),
             ),
             None => IrValue::GlobalRef(
                 base_name,
-                IrType::Ref(Box::new(IrType::Opaque("addr".to_string()))),
+                IrType::Ref(Box::new(pointee_ty)),
             ),
         }
     }
@@ -530,7 +942,7 @@ impl<'m> LowerCtx<'m> {
     ) {
         let var_addr = IrValue::GlobalRef(
             variable.to_string(),
-            IrType::Ref(Box::new(IrType::I32)),
+            IrType::Ref(Box::new(IrType::I64)),
         );
 
         let start_val = self.lower_expr(start);
@@ -545,13 +957,13 @@ impl<'m> LowerCtx<'m> {
 
         self.switch_to(cond_block);
         let var_t = self.fresh_temp();
-        self.push(Instr::Load { dst: var_t, addr: var_addr.clone(), ty: IrType::I32 });
+        self.push(Instr::Load { dst: var_t, addr: var_addr.clone(), ty: IrType::I64 });
         let end_val = self.lower_expr(end);
         let cmp_t = self.fresh_temp();
         self.push(Instr::BinOp {
             dst: cmp_t,
             op: BinOp::Le,
-            left: IrValue::Temp(var_t, IrType::I32),
+            left: IrValue::Temp(var_t, IrType::I64),
             right: end_val,
             ty: IrType::Bool,
         });
@@ -567,21 +979,21 @@ impl<'m> LowerCtx<'m> {
 
         self.switch_to(incr_block);
         let var_t2 = self.fresh_temp();
-        self.push(Instr::Load { dst: var_t2, addr: var_addr.clone(), ty: IrType::I32 });
+        self.push(Instr::Load { dst: var_t2, addr: var_addr.clone(), ty: IrType::I64 });
         let step_val = step
             .map(|s| self.lower_expr(s))
-            .unwrap_or(IrValue::ConstInt(1, IrType::I32));
+            .unwrap_or(IrValue::ConstInt(1, IrType::I64));
         let new_t = self.fresh_temp();
         self.push(Instr::BinOp {
             dst: new_t,
             op: BinOp::Add,
-            left: IrValue::Temp(var_t2, IrType::I32),
+            left: IrValue::Temp(var_t2, IrType::I64),
             right: step_val,
-            ty: IrType::I32,
+            ty: IrType::I64,
         });
         self.push(Instr::Store {
             addr: var_addr,
-            value: IrValue::Temp(new_t, IrType::I32),
+            value: IrValue::Temp(new_t, IrType::I64),
         });
         self.set_term(Terminator::Br { target: cond_block });
 
@@ -837,6 +1249,7 @@ impl<'m> LowerCtx<'m> {
 pub fn lower_procedure(
     sema_proc: &SemanticProcedure,
     ast_proc: &ProcedureDecl,
+    system_qualifiers: Vec<String>,
     module_symbols: &[SemanticSymbol],
 ) -> IrProcedure {
     let params: Vec<(String, IrType)> = sema_proc
@@ -890,6 +1303,12 @@ pub fn lower_procedure(
         entry,
         function_exit,
         result_slot.clone(),
+        {
+            let mut symbols = sema_proc.local_symbols.clone();
+            symbols.extend_from_slice(module_symbols);
+            symbols
+        },
+        system_qualifiers,
         module_symbols,
     );
 
@@ -917,6 +1336,7 @@ pub fn lower_procedure(
     };
     ctx.set_term(exit_term);
 
+    ctx.proc.prune_unreachable();
     ctx.proc.compute_rpo();
     ctx.proc
 }
@@ -960,7 +1380,22 @@ pub fn lower_module(sema: &SemanticModule, ast: &ModuleAst) -> IrModule {
             ast_procs
                 .iter()
                 .find(|p| p.heading.name.name == sema_proc.name)
-                .map(|ast_proc| lower_procedure(sema_proc, ast_proc, &sema.symbols))
+                .map(|ast_proc| lower_procedure(
+                    sema_proc,
+                    ast_proc,
+                    ast.imports
+                        .iter()
+                        .filter(|item| item.name == "SYSTEM")
+                        .flat_map(|item| {
+                            let mut names = vec![item.name.clone()];
+                            if let Some(alias) = &item.alias {
+                                names.push(alias.clone());
+                            }
+                            names
+                        })
+                        .collect(),
+                    &sema.symbols,
+                ))
         })
         .collect();
 

@@ -7,6 +7,7 @@ This document defines the design for `newcp-llvm` before implementation.
 Current state:
 
 - `newcp-ir` lowers typed Component Pascal procedures to CFG-shaped IR
+- `newcp-ir` already carries the first `SYSTEM`-driven backend surface: `UntaggedPtr`, `UntaggedRecord`, `AddrOf`, `BitCast`, `LoadRaw`, `StoreRaw`, `Lsh`, `Rot`, `MemCopy`, `TypTag`, and `SysNew`
 - `newcp-llvm` currently emits placeholder text, not real LLVM IR
 - the driver already exposes `dump-llvm` and `dump-asm`
 - the runtime direction is LLVM JIT, not object-file emission first
@@ -94,12 +95,13 @@ It is created at Stage 2 and consumed at Stage 5 to produce the `CompiledModule`
 
 ## Architectural Constraints
 
-The design has to respect four constraints already visible in the repo:
+The design has to respect five constraints already visible in the repo:
 
 1. `newcp-ir` is the controlling input. `newcp-llvm` must not quietly re-derive behavior from the parser or source module surface.
 2. Every major compiler phase is observable. LLVM generation must therefore produce both a programmatic result and a stable textual dump.
 3. The first runtime target is a 64-bit Windows JIT process.
 4. The current IR is intentionally incomplete. Some instructions already map naturally to LLVM, while others are placeholders for later runtime work.
+5. `SYSTEM` raw-address operations are part of the required bring-up surface, and on this target they must lower through 64-bit integer values, not legacy 32-bit x86 assumptions.
 
 That fourth point matters. The code generator should be explicit about which `newcp-ir` constructs are currently executable and which must fail with a structured `Unsupported` error. Silent placeholder emission would make the phase look complete when it is not.
 
@@ -237,6 +239,8 @@ Rule:
 - declaration must happen before body emission so forward references work naturally
 - `@Module.$init` must always be planned, even if the source module body is empty, because the runtime always calls it after loading
 - every `ImportRef` that appears in the IR must have a corresponding LLVM `declare` emitted during this stage; any `ImportRef` that was not planned here must fail with `Unsupported` during value lowering, not silently emit a broken reference
+- when building `@Module.Ptrs`, include only managed pointer roots; `UntaggedPtr`, untagged records, and raw address values introduced for `SYSTEM` must not appear in the pointer-offset table
+- declare `@__newcp_sys_new(i64) -> ptr` whenever `Instr::SysNew` appears in the module; this helper is part of the backend/runtime ABI, not an optional convenience
 
 ### Stage 4: Procedure lowering
 
@@ -300,7 +304,9 @@ The initial type mapping should be simple, explicit, and intentionally conservat
 | `Char` | `i16` | Component Pascal `CHAR` is 16-bit |
 | `ShortChar` | `i8` | |
 | `Ptr(T)` | `ptr` | opaque pointer mode |
+| `UntaggedPtr(T)` | `ptr` | raw, GC-ignored pointer; same LLVM storage type as `Ptr`, different backend metadata and GC treatment |
 | `Ref(T)` | `ptr` | address to storage of `T` |
+| `UntaggedRecord { .. }` | concrete LLVM struct or byte blob | no `TypeDesc`; layout controlled by `RecordLayout` |
 | `Set(32)` | `i32` | initial subset only |
 | `Void` | `void` | function result only |
 | `Named(_)` | lowered underlying runtime representation | see below |
@@ -311,6 +317,23 @@ Rules:
 - LLVM 22 with Inkwell 0.9 uses opaque pointers, so pointer-bearing IR types should lower to `ptr` and keep pointee meaning in NewCP metadata, not in LLVM pointer types
 - signed vs unsigned integers are distinguished by the emitted comparison and division instruction, not by separate LLVM storage types
 - `Named` and `Opaque` types should not pretend to have precise structure layouts until the runtime ABI exists; the first slice should lower them conservatively to pointer-shaped values or reject operations that require layout knowledge
+
+### SYSTEM-Driven Type Requirements
+
+`SYSTEM` makes two type-lowering rules non-optional.
+
+- `IrType::UntaggedPtr(T)` lowers to LLVM `ptr` exactly like `Ptr(T)`, but backend metadata must treat it as GC-opaque: no descriptor assumptions, no root registration, no `@Module.Ptrs` entry.
+- `IrType::UntaggedRecord { name, layout }` is the first record shape that must lower to a concrete layout before the full tagged-record ABI exists.
+
+Required policy for untagged records:
+
+- `Untagged`: LLVM struct with BlackBox's `MIN(4, size)` field alignment rule
+- `UntaggedNoAlign`: packed LLVM struct or explicit byte-offset layout plan
+- `UntaggedAlign2`: LLVM struct with `MIN(2, size)` field alignment
+- `UntaggedAlign8`: LLVM struct with `MIN(8, size)` field alignment
+- `Union`: byte array `[N x i8]` plus field-specific bitcast/GEP views; do not model it as an ordinary non-overlapping struct
+
+No `TypeDesc` global is emitted for an untagged record. Tagged records may remain deferred if their descriptor and header ABI is not yet finalized.
 
 ### Named And Opaque Types
 
@@ -481,7 +504,12 @@ Reason:
 
 Lowering:
 
-- convert a resolvable symbol into its pointer value without loading from it
+- convert a resolvable symbol into its raw address without loading from it
+
+`SYSTEM` requirement:
+
+- `AddrOf` must lower to `ptrtoint ... to i64`, because NewCP `INTEGER` is 64-bit on the current target
+- `AddrOf` of a type symbol means the address of that type's emitted `TypeDesc` global; if the target type is untagged and therefore has no `TypeDesc`, fail with `Unsupported` rather than fabricating one
 
 ### `BitCast`
 
@@ -493,15 +521,90 @@ Rule:
 
 - not every `BitCast` is a valid LLVM bitcast; the code generator must choose the correct conversion family or reject the IR with `Unsupported`
 
+`SYSTEM` requirement:
+
+- `SYSTEM.VAL` is the main consumer of `BitCast`, so backend lowering must explicitly support `ptrtoint`, `inttoptr`, pointer-domain no-op/bitcast, and same-width integer reinterpretation
+- backend assertions should still enforce equal source/destination widths for reinterpreting integer/pointer values even if sema already checked them
+
 ### `MemCopy`
 
 Status:
 
-- supported by lowering to `llvm.memcpy` when source, destination, and length are representable
+- supported by lowering to `llvm.memmove` when source, destination, and length are representable
 
 Note:
 
 - this is worth adding early because it gives a clear path for `SYSTEM.MOVE`
+- use `memmove`, not `memcpy`, because overlap must be correct for BlackBox `MOVE`
+
+### `LoadRaw`
+
+Lowering:
+
+- lower the integer address operand to `i64`
+- emit `inttoptr` to a temporary `ptr`
+- emit a typed `load` of the requested LLVM value type
+
+Rule:
+
+- this is the direct lowering path for `SYSTEM.GET`; it must not introduce GC metadata or descriptor lookups
+
+### `StoreRaw`
+
+Lowering:
+
+- lower the integer address operand to `i64`
+- emit `inttoptr` to a temporary `ptr`
+- emit a typed `store`
+
+Rule:
+
+- this is the direct lowering path for `SYSTEM.PUT`; the destination is foreign/raw memory, not a managed heap object
+
+### `Lsh`
+
+Lowering:
+
+- lower both operands to integer SSA values of the source width
+- if `shift >= 0`, emit `shl value, shift`
+- if `shift < 0`, emit `lshr value, -shift`
+
+Rule:
+
+- this is `SYSTEM.LSH`, not arithmetic right shift; negative shift counts always use logical right shift
+
+### `Rot`
+
+Lowering:
+
+- normalize the shift count modulo the bit width
+- lower to `llvm.fshl` / `llvm.fshr` over the source width
+
+Rule:
+
+- prefer LLVM's rotate intrinsics over open-coded shift/or sequences
+
+### `TypTag`
+
+Lowering:
+
+- for managed heap records: compute the header address from the payload pointer, load the tag word, and strip any GC mark bit encoded in-band
+- for static stack records: lower to the address of the static `TypeDesc`
+
+Rule:
+
+- if tagged-record header layout is not yet stable, `TypTag` may remain explicitly unsupported rather than guessed
+
+### `SysNew`
+
+Lowering:
+
+- emit `call ptr @__newcp_sys_new(i64 %size)`
+- treat the result as an untagged/raw pointer only; no descriptor installation, zeroing, or GC registration is implied
+
+Rule:
+
+- `SysNew` is the LLVM boundary for `SYSTEM.NEW`; it must never lower through `@__newcp_new_rec`
 
 ### `TypeCheck`
 
@@ -599,8 +702,31 @@ Status:
 
 Rule:
 
-- `AddrOf { sym }` means "yield the raw address of `sym` as a pointer value" — it is distinct from the addressable path in that it produces a `ptr` SSA value available for arithmetic or passing to `SYSTEM.PUT`; it does NOT load the symbol's content
+- `AddrOf { sym }` means "yield the raw address of `sym` as an `i64` value" — it is distinct from the addressable path in that it produces an integer SSA value available for `SYSTEM.GET` / `SYSTEM.PUT` / `SYSTEM.MOVE`; it does NOT load the symbol's content
 - the emitter needs two helper paths: one that expects a first-class SSA value and one that expects an addressable pointer value; `GlobalRef`/`ImportRef` of a procedure type must only enter the first-class path, and `GlobalRef`/`ImportRef` of a data type must only enter the addressable path; mixing the two paths silently is the most common source of backend type errors
+
+## SYSTEM Backend Requirements
+
+The language-level policy for `SYSTEM` lives in [system-module.md](system-module.md). This section records the LLVM-specific contract once `newcp-ir` already contains explicit SYSTEM-oriented instructions.
+
+Required first-slice SYSTEM support in `newcp-llvm`:
+
+- support `AddrOf`, `BitCast`, `LoadRaw`, `StoreRaw`, `Lsh`, `Rot`, `MemCopy`, and `SysNew` as real codegen paths
+- keep `TypTag` specified but allowed to remain `Unsupported` until the tagged-record heap/header ABI is stable
+- reject x86-32-only SYSTEM paths with structured `Unsupported` errors if they somehow reach LLVM lowering despite sema gating
+- keep all raw addresses in `i64` on the current target
+- never synthesize GC-visible metadata for untagged pointers, untagged records, or `SYSTEM.NEW` allocations
+
+Required external declarations when used:
+
+```text
+declare ptr @__newcp_sys_new(i64)
+declare void @llvm.memmove.p0.p0.i64(ptr, ptr, i64, i1)
+declare iN @llvm.fshl.iN(iN, iN, iN)
+declare iN @llvm.fshr.iN(iN, iN, iN)
+```
+
+The rotate intrinsic overload depends on the source bit width.
 
 ## Dynamic Modular Environment & Linkage Strategy
 
@@ -689,11 +815,21 @@ The LLVM backend needs tests at three levels.
 
 - input: small CP modules
 - check: stable substrings in emitted LLVM IR
+- include a SYSTEM-focused battery asserting:
+	- `SYSTEM.ADR` emits `ptrtoint ... to i64`
+	- `SYSTEM.GET` / `SYSTEM.PUT` emit `inttoptr` plus `load` / `store`
+	- `SYSTEM.MOVE` emits `llvm.memmove`, not `llvm.memcpy`
+	- `SYSTEM.NEW` emits a call to `@__newcp_sys_new`
+	- untagged globals do not contribute entries to `@Module.Ptrs`
 
 ### 2. Verification tests
 
 - input: hand-constructed or lowered `IrModule`
 - check: module verifies successfully or fails with the expected `Unsupported`
+- include negative cases for:
+	- `AddrOf` of a descriptor-less untagged type
+	- `TypTag` before the tagged-record ABI is implemented
+	- impossible raw-address/type combinations in SYSTEM casts and loads
 
 ### 3. JIT smoke tests
 
@@ -739,6 +875,7 @@ Exit criteria:
 - add constants, temps, arithmetic, loads, stores, branches, and returns
 - add exported symbol manifest
 - add simple JIT wrapper for exported no-arg procedures
+- include the P1 SYSTEM paths that do not depend on tagged-record descriptors: `AddrOf`, `BitCast`, `LoadRaw`, `StoreRaw`, `Lsh`, `MemCopy`, `SysNew`
 
 Exit criteria:
 
@@ -749,6 +886,8 @@ Exit criteria:
 - add trap helper calls
 - add provisional runtime hooks for operations that require runtime knowledge
 - replace placeholder unsupported cases only when the helper ABI is defined
+- add `@__newcp_sys_new` declaration and call emission as a required runtime hook
+- add descriptor/tag-aware lowering for `TypTag` only after the tagged heap/header ABI is stable
 
 Exit criteria:
 
@@ -760,6 +899,7 @@ Exit criteria:
 - imported symbol resolution
 - memory intrinsics and selected casts
 - more complete integer and floating operations
+- untagged record layout emission (`align8`, `align2`, `noalign`, `union`) and exclusion from GC root metadata
 
 Exit criteria:
 

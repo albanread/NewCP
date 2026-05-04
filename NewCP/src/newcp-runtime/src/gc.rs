@@ -690,6 +690,25 @@ pub unsafe extern "C" fn __newcp_new_rec(tag: *const TypeDesc) -> *mut u8 {
     }
 }
 
+/// Allocates `n` bytes of untraced memory for `SYSTEM.NEW`.
+///
+/// This memory never enters the cluster heap, so the collector will neither
+/// scan nor reclaim it.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn __newcp_sys_new(n: usize) -> *mut u8 {
+    if n == 0 {
+        return std::ptr::NonNull::<u8>::dangling().as_ptr();
+    }
+
+    let layout = std::alloc::Layout::from_size_align(n, 16)
+        .expect("__newcp_sys_new: invalid allocation layout");
+    let ptr = unsafe { std::alloc::alloc(layout) };
+    if ptr.is_null() {
+        std::alloc::handle_alloc_error(layout);
+    }
+    ptr
+}
+
 /// Cooperative GC safepoint poll.
 ///
 /// **Currently a no-op.** This entry point exists so that codegen can emit
@@ -1088,6 +1107,18 @@ mod tests {
                 assert_eq!(*p.add(i), 0, "payload byte {i} not zero");
             }
         }
+    }
+
+    #[test]
+    fn system_new_allocates_outside_gc_clusters() {
+        let _t = lock_tests();
+        reset_gc();
+
+        let ptr = unsafe { __newcp_sys_new(64) };
+        assert!(!ptr.is_null());
+
+        let gc = GC.lock().unwrap();
+        assert!(gc.clusters.is_empty());
     }
 
     #[test]

@@ -112,6 +112,43 @@ impl IrProcedure {
         let _ = total; // suppress unused warning
     }
 
+    /// Remove blocks that are unreachable from `entry`, compacting block IDs
+    /// and updating terminator targets to match the new numbering.
+    pub fn prune_unreachable(&mut self) {
+        let mut post_order: Vec<BlockId> = Vec::new();
+        let mut visited: HashSet<u32> = HashSet::new();
+        self.dfs_post(self.entry, &mut visited, &mut post_order);
+
+        if visited.len() == self.blocks.len() {
+            return;
+        }
+
+        let mut id_map: HashMap<u32, BlockId> = HashMap::new();
+        let mut new_blocks = Vec::with_capacity(visited.len());
+
+        for old_block in &self.blocks {
+            if !visited.contains(&old_block.id.0) {
+                continue;
+            }
+            let new_id = BlockId(new_blocks.len() as u32);
+            id_map.insert(old_block.id.0, new_id);
+
+            let mut cloned = old_block.clone();
+            cloned.id = new_id;
+            cloned.construction_index = new_id.0;
+            cloned.rpo_index = None;
+            new_blocks.push(cloned);
+        }
+
+        for block in &mut new_blocks {
+            remap_terminator_targets(&mut block.terminator, &id_map);
+        }
+
+        self.entry = id_map[&self.entry.0];
+        self.exit = id_map[&self.exit.0];
+        self.blocks = new_blocks;
+    }
+
     fn dfs_post(&self, id: BlockId, visited: &mut HashSet<u32>, post_order: &mut Vec<BlockId>) {
         if !visited.insert(id.0) {
             return;
@@ -186,6 +223,28 @@ impl IrProcedure {
     }
 }
 
+fn remap_terminator_targets(term: &mut Terminator, id_map: &HashMap<u32, BlockId>) {
+    match term {
+        Terminator::Br { target } => {
+            *target = id_map[&target.0];
+        }
+        Terminator::CondBr {
+            true_target,
+            false_target,
+            ..
+        }
+        | Terminator::TypeTest {
+            true_target,
+            false_target,
+            ..
+        } => {
+            *true_target = id_map[&true_target.0];
+            *false_target = id_map[&false_target.0];
+        }
+        Terminator::Ret { .. } | Terminator::RetVoid | Terminator::Trap { .. } => {}
+    }
+}
+
 /// An entire module in IR form.
 #[derive(Debug, Clone)]
 pub struct IrModule {
@@ -246,8 +305,14 @@ fn render_instr(instr: &Instr) -> String {
         Load { dst, addr, ty } => {
             format!("{} : {} = load {}", dst.render(), ty.render(), addr.render())
         }
+        LoadRaw { dst, addr, ty } => {
+            format!("{} : {} = load_raw {}", dst.render(), ty.render(), addr.render())
+        }
         Store { addr, value } => {
             format!("store {}, {}", addr.render(), value.render())
+        }
+        StoreRaw { addr, value } => {
+            format!("store_raw {}, {}", addr.render(), value.render())
         }
         Call { dst, callee, args, ret_ty } => {
             let args_str = args.iter().map(|a| a.render()).collect::<Vec<_>>().join(", ");
@@ -265,8 +330,20 @@ fn render_instr(instr: &Instr) -> String {
         BitCast { dst, value, ty } => {
             format!("{} : {} = bitcast {}", dst.render(), ty.render(), value.render())
         }
+        Lsh { dst, value, shift, ty } => {
+            format!("{} : {} = lsh {}, {}", dst.render(), ty.render(), value.render(), shift.render())
+        }
+        Rot { dst, value, shift, ty } => {
+            format!("{} : {} = rot {}, {}", dst.render(), ty.render(), value.render(), shift.render())
+        }
         MemCopy { dst, src, len } => {
             format!("memcopy {}, {}, {}", dst.render(), src.render(), len.render())
+        }
+        TypTag { dst, value } => {
+            format!("{} : i64 = typ {}", dst.render(), value.render())
+        }
+        SysNew { dst, size } => {
+            format!("{} : ptr<u8> = sysnew {}", dst.render(), size.render())
         }
         TypeCheck { dst, value, ty } => {
             format!("{} : bool = typecheck {} is {}", dst.render(), value.render(), ty.render())
