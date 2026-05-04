@@ -475,4 +475,31 @@ mod tests {
             "expected TypeTest terminator to produce a conditional branch\noutput:\n{output}"
         );
     }
+
+    #[test]
+    fn dump_llvm_pointers_field_access_through_pointer_alias() {
+        // Verifies that field access through a POINTER TO record type alias:
+        //   DataPtr = POINTER TO Data
+        //   GetValue(d: DataPtr): INTEGER → RETURN d.value
+        // emits a GEP against the correct struct (%Data), not an opaque fallback,
+        // and that pointer NIL checks emit `icmp ne ptr _, null`.
+        let (output, code) = dump_llvm("Mod/Pointers.cp");
+        assert_eq!(code, 0, "expected exit 0 for Pointers.cp\noutput:\n{output}");
+        // GEP into %Data for field 0 (value: INTEGER)
+        assert!(
+            output.contains("getelementptr inbounds %Data, ptr"),
+            "expected GEP into %%Data for field access\noutput:\n{output}"
+        );
+        // NIL check should be icmp ne ptr
+        assert!(
+            output.contains("icmp ne ptr"),
+            "expected pointer NIL check to use icmp ne ptr\noutput:\n{output}"
+        );
+        // NEW(d) should call __newcp_sys_new
+        assert!(
+            output.contains("call ptr @__newcp_sys_new"),
+            "expected NEW(d) to emit call to __newcp_sys_new\noutput:\n{output}"
+        );
+    }
 }
+

@@ -55,16 +55,15 @@ impl<'ctx> TypeLowerer<'ctx> {
                 Ok(self.context.ptr_type(inkwell::AddressSpace::default()).into())
             }
             // Named: look up in declared struct types if provided.
+            // If not found (e.g. pointer alias or forward ref), fall back to opaque `ptr`.
             IrType::Named(name) => {
                 if let Some(map) = named_types {
                     if let Some(&st) = map.get(name.as_str()) {
                         return Ok(st.into());
                     }
                 }
-                Err(CodegenError::Unsupported {
-                    stage: "type_lowering",
-                    detail: format!("Named type '{name}' requires layout knowledge not yet available"),
-                })
+                // Not a known struct — pointer alias or opaque forward reference.
+                Ok(self.context.ptr_type(inkwell::AddressSpace::default()).into())
             }
             IrType::Opaque(_) => {
                 Ok(self.context.ptr_type(inkwell::AddressSpace::default()).into())

@@ -279,6 +279,37 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
             Instr::Gep { dst, base, field_index, result_ty } => {
                 self.emit_gep(*dst, base, *field_index, result_ty, value_map)
             }
+            Instr::New { dst, record_ty } => {
+                // Compute sizeof(RecordType) via LLVM and call __newcp_sys_new.
+                let struct_ty = named_struct_type_from_ir_type(record_ty, &self.cg.planner.named_struct_types)
+                    .ok_or_else(|| CodegenError::Unsupported {
+                        stage: "emit_instr",
+                        detail: format!("Instr::New: unknown record type {}", record_ty.render()),
+                    })?;
+                let size_val = struct_ty.size_of().ok_or_else(|| CodegenError::Unsupported {
+                    stage: "emit_instr",
+                    detail: format!("Instr::New: struct '{}' has no computable size", record_ty.render()),
+                })?;
+                let sys_new = self
+                    .cg
+                    .module
+                    .get_function("__newcp_sys_new")
+                    .ok_or_else(|| CodegenError::Unsupported {
+                        stage: "emit_instr",
+                        detail: "__newcp_sys_new was not declared during planning".to_string(),
+                    })?;
+                let call = self
+                    .cg
+                    .builder
+                    .build_call(sys_new, &[size_val.into()], &dst.render())
+                    .map_err(|e| CodegenError::Unsupported {
+                        stage: "emit_instr",
+                        detail: e.to_string(),
+                    })?;
+                let value = call.try_as_basic_value().unwrap_basic();
+                value_map.temp_values.insert(*dst, value);
+                Ok(())
+            }
             other => Err(CodegenError::Unsupported {
                 stage: "emit_instr",
                 detail: format!("{other:?}"),
@@ -614,6 +645,33 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
                 detail: e.to_string(),
             })?;
             return Ok(value.into());
+        }
+
+        // Pointer equality / inequality: `ptr == null`, `ptr != null`, `ptr == ptr`.
+        // In opaque-pointer LLVM, use `icmp eq/ne` directly on pointer values.
+        if left_value.is_pointer_value() || right_value.is_pointer_value() {
+            let pred = match op {
+                BinOp::Eq => IntPredicate::EQ,
+                BinOp::Ne => IntPredicate::NE,
+                _ => {
+                    return Err(CodegenError::Unsupported {
+                        stage: "emit_binop",
+                        detail: format!("non-equality pointer comparison {op:?}"),
+                    });
+                }
+            };
+            let null_ptr = self.cg.context.ptr_type(inkwell::AddressSpace::default()).const_null();
+            let lhs_ptr = if left_value.is_pointer_value() { left_value.into_pointer_value() } else { null_ptr };
+            let rhs_ptr = if right_value.is_pointer_value() { right_value.into_pointer_value() } else { null_ptr };
+            return self
+                .cg
+                .builder
+                .build_int_compare(pred, lhs_ptr, rhs_ptr, "pcmp")
+                .map(BasicValueEnum::from)
+                .map_err(|e| CodegenError::Unsupported {
+                    stage: "emit_binop",
+                    detail: e.to_string(),
+                });
         }
 
         let lhs = left_value.into_int_value();

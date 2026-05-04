@@ -175,6 +175,11 @@ pub enum Instr {
     /// field index in the flattened field list (accounting for inherited fields).
     /// `result_ty` is the type of the field (value type, not pointer).
     Gep { dst: TempId, base: IrValue, field_index: u32, result_ty: IrType },
+    /// `t = new RecordType`  — allocate a new GC-managed record of the given type.
+    ///
+    /// `record_ty` is the IR type of the record (usually `Named("T")`). The backend
+    /// computes `sizeof(T)` and calls `__newcp_sys_new`; the result is a `ptr`.
+    New { dst: TempId, record_ty: IrType },
     /// `store result_slot, value`  — internal: prepare RETURN value before Br function_exit
     StoreResult { value: IrValue },
 }

@@ -167,7 +167,41 @@ impl<'m> LowerCtx<'m> {
             SemanticType::Named { module: None, name, .. } if name != type_name => {
                 self.resolve_record_type(name)
             }
+            // Pointer alias (e.g. `DataPtr = POINTER TO Data`): follow through to the target
+            // record so that field access works through pointer aliases.
+            SemanticType::Pointer { target, .. } => match target.as_ref() {
+                SemanticType::Named { module: None, name, .. } => self.resolve_record_type(name),
+                record @ SemanticType::Record { .. } => Some(record),
+                _ => None,
+            },
             _ => Some(ty),
+        }
+    }
+
+    /// If `type_name` is a named pointer alias, return the concrete IR pointer type.
+    ///
+    /// E.g. `DataPtr = POINTER TO Data` → `Some(IrType::Ptr(Named("Data")))`.
+    fn resolve_named_as_ptr_ir_type(&self, type_name: &str) -> Option<IrType> {
+        let ty = self
+            .symbols
+            .iter()
+            .rev()
+            .chain(self.module_symbols.iter().rev())
+            .find(|sym| sym.kind == SymbolKind::Type && sym.name == type_name)
+            .and_then(|sym| sym.declared_type.as_ref())?;
+        match ty {
+            SemanticType::Pointer { target, untagged } => {
+                let inner = map_semantic_type(target);
+                Some(if *untagged {
+                    IrType::UntaggedPtr(Box::new(inner))
+                } else {
+                    IrType::Ptr(Box::new(inner))
+                })
+            }
+            SemanticType::Named { module: None, name, .. } if name != type_name => {
+                self.resolve_named_as_ptr_ir_type(name)
+            }
+            _ => None,
         }
     }
 
@@ -426,8 +460,19 @@ impl<'m> LowerCtx<'m> {
                     let mut gep_base = addr.clone();
                     let mut base_ty = addr.ty();
                     if let IrType::Ref(inner) = &base_ty {
-                        if matches!(inner.as_ref(), IrType::Ref(_) | IrType::Ptr(_) | IrType::UntaggedPtr(_)) {
-                            let loaded_ty = inner.as_ref().clone();
+                        // Determine the concrete type to load and use as the GEP base.
+                        // Handle three cases:
+                        //   Ref(Ref|Ptr|UntaggedPtr)  — explicit pointer types
+                        //   Ref(Named("T")) where T = POINTER TO ...  — pointer alias
+                        let effective_ty: Option<IrType> =
+                            if matches!(inner.as_ref(), IrType::Ref(_) | IrType::Ptr(_) | IrType::UntaggedPtr(_)) {
+                                Some(inner.as_ref().clone())
+                            } else if let IrType::Named(n) = inner.as_ref() {
+                                self.resolve_named_as_ptr_ir_type(n)
+                            } else {
+                                None
+                            };
+                        if let Some(loaded_ty) = effective_ty {
                             let t = self.fresh_temp();
                             self.push(Instr::Load {
                                 dst: t,
@@ -823,6 +868,108 @@ impl<'m> LowerCtx<'m> {
         }
     }
 
+    /// Handle CP language built-in procedure calls:
+    ///   NEW(ptr)        → Instr::New + Store
+    ///   ASSERT(cond)    → CondBr to trap block
+    ///   HALT(n)         → Terminator::Trap
+    ///
+    /// Returns `true` when the statement was handled.
+    fn lower_builtin_statement(&mut self, des: &Designator) -> bool {
+        // Only unqualified, single-call-selector designators.
+        if des.base.module.is_some() {
+            return false;
+        }
+
+        // Extract args from either a Call or AmbiguousParen selector.
+        // AmbiguousParen wraps a single qualident; convert it to a single-element Expr vec.
+        let args_call: Vec<Expr>;
+        let args: &[Expr] = match des.selectors.first() {
+            Some(Selector::Call(args)) => args.as_slice(),
+            Some(Selector::AmbiguousParen(qual)) => {
+                args_call = vec![Expr::Designator(Designator {
+                    span: qual.span,
+                    base: qual.clone(),
+                    selectors: Vec::new(),
+                })];
+                &args_call
+            }
+            _ => return false,
+        };
+
+        match des.base.name.as_str() {
+            "NEW" => {
+                // NEW(ptr_var) — allocate a fresh heap record and store into ptr_var.
+                let Some(Expr::Designator(target)) = args.first() else {
+                    return false;
+                };
+                // Resolve the pointer alias to get the record type to allocate.
+                let ptr_sym_ty = self.base_symbol_ir_type(&target.base)
+                    .unwrap_or(IrType::Opaque("new-ptr".to_string()));
+                let record_ty = match &ptr_sym_ty {
+                    IrType::Ptr(inner) | IrType::UntaggedPtr(inner) => inner.as_ref().clone(),
+                    IrType::Named(n) => {
+                        // Pointer alias — unwrap to the target record type.
+                        self.resolve_named_as_ptr_ir_type(n)
+                            .and_then(|pt| match pt {
+                                IrType::Ptr(inner) | IrType::UntaggedPtr(inner) => Some(*inner),
+                                _ => None,
+                            })
+                            .unwrap_or(IrType::Opaque("new-target".to_string()))
+                    }
+                    other => other.clone(),
+                };
+                let dst = self.fresh_temp();
+                self.push(Instr::New { dst, record_ty: record_ty.clone() });
+                // Compute the concrete IR pointer type for storing back.
+                let ptr_ir_ty = match &ptr_sym_ty {
+                    IrType::Named(n) => self.resolve_named_as_ptr_ir_type(n)
+                        .unwrap_or_else(|| IrType::Ptr(Box::new(record_ty))),
+                    other => other.clone(),
+                };
+                let target_addr = self.designator_addr(target);
+                self.push(Instr::Store {
+                    addr: target_addr,
+                    value: IrValue::Temp(dst, ptr_ir_ty),
+                });
+                true
+            }
+            "ASSERT" => {
+                // ASSERT(cond [, error_code]) — trap if condition is false.
+                let Some(cond_expr) = args.first() else {
+                    return false;
+                };
+                let cond = self.lower_expr(cond_expr);
+                let ok_block = self.alloc_block();
+                let fail_block = self.alloc_block();
+                self.set_term(Terminator::CondBr {
+                    cond,
+                    true_target: ok_block,
+                    false_target: fail_block,
+                });
+                self.switch_to(fail_block);
+                self.set_term(Terminator::Trap { kind: TrapKind::Assert });
+                self.switch_to(ok_block);
+                true
+            }
+            "HALT" => {
+                // HALT(n) — immediate trap with the given code.
+                let code = args.first()
+                    .and_then(|e| if let Expr::Literal { value: newcp_parser::Literal::Integer(s), .. } = e {
+                        s.parse::<i32>().ok()
+                    } else {
+                        None
+                    })
+                    .unwrap_or(0);
+                self.set_term(Terminator::Trap { kind: TrapKind::Halt(code) });
+                // Allocate a fresh unreachable block so the builder stays consistent.
+                let dead = self.alloc_block();
+                self.switch_to(dead);
+                true
+            }
+            _ => false,
+        }
+    }
+
     fn lower_inc_dec_statement(&mut self, des: &Designator) -> bool {
         if des.base.module.is_some() || des.selectors.len() != 1 {
             return false;
@@ -900,6 +1047,7 @@ impl<'m> LowerCtx<'m> {
             Statement::ProcedureCall { designator, .. } => {
                 if !self.lower_inc_dec_statement(designator)
                     && !self.lower_system_statement(designator)
+                    && !self.lower_builtin_statement(designator)
                 {
                     let _ = self.lower_designator(designator);
                 }

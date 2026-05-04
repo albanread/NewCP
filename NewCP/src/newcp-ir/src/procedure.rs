@@ -356,6 +356,9 @@ fn render_instr(instr: &Instr) -> String {
         Gep { dst, base, field_index, result_ty } => {
             format!("{} : ptr<{}> = gep {}, {}", dst.render(), result_ty.render(), base.render(), field_index)
         }
+        New { dst, record_ty } => {
+            format!("{} : ptr = new {}", dst.render(), record_ty.render())
+        }
         StoreResult { value } => {
             format!("store result, {}", value.render())
         }
