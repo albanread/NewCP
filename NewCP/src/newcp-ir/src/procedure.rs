@@ -338,6 +338,9 @@ fn render_instr(instr: &Instr) -> String {
         Lsh { dst, value, shift, ty } => {
             format!("{} : {} = lsh {}, {}", dst.render(), ty.render(), value.render(), shift.render())
         }
+        Ash { dst, value, shift, ty } => {
+            format!("{} : {} = ash {}, {}", dst.render(), ty.render(), value.render(), shift.render())
+        }
         Rot { dst, value, shift, ty } => {
             format!("{} : {} = rot {}, {}", dst.render(), ty.render(), value.render(), shift.render())
         }

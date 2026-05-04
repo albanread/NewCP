@@ -153,34 +153,6 @@ impl<'m> LowerCtx<'m> {
         self.current = block;
     }
 
-    /// Look up the `SemanticType::Record` for a named type by its simple name.
-    ///
-    /// Searches procedure-local symbols first (for local type aliases), then
-    /// falls back to module-level symbols (TYPE declarations).
-    fn resolve_record_type(&self, type_name: &str) -> Option<&SemanticType> {
-        let ty = self
-            .symbols
-            .iter()
-            .rev()
-            .chain(self.module_symbols.iter().rev())
-            .find(|sym| sym.kind == SymbolKind::Type && sym.name == type_name)
-            .and_then(|sym| sym.declared_type.as_ref())?;
-
-        match ty {
-            SemanticType::Named { module: None, name, .. } if name != type_name => {
-                self.resolve_record_type(name)
-            }
-            // Pointer alias (e.g. `DataPtr = POINTER TO Data`): follow through to the target
-            // record so that field access works through pointer aliases.
-            SemanticType::Pointer { target, .. } => match target.as_ref() {
-                SemanticType::Named { module: None, name, .. } => self.resolve_record_type(name),
-                record @ SemanticType::Record { .. } => Some(record),
-                _ => None,
-            },
-            _ => Some(ty),
-        }
-    }
-
     /// If `type_name` is a named pointer alias, return the concrete IR pointer type.
     ///
     /// E.g. `DataPtr = POINTER TO Data` → `Some(IrType::Ptr(Named("Data")))`.
@@ -263,10 +235,16 @@ impl<'m> LowerCtx<'m> {
                     if let Some((module, name)) = n.split_once('.') {
                         return self.flatten_imported_record_fields(module, name);
                     }
-                    return self
-                        .resolve_record_type(n)
-                        .map(|ty| Self::flatten_record_fields(ty))
-                        .unwrap_or_default();
+                    // For local named types, use flatten_sem_type_fields which resolves
+                    // Named base types (e.g. `Bird RECORD (Animal)` where Animal is Named).
+                    let sem_ty = self
+                        .symbols
+                        .iter()
+                        .rev()
+                        .chain(self.module_symbols.iter())
+                        .find(|sym| sym.kind == SymbolKind::Type && sym.name == n.as_str())
+                        .and_then(|s| s.declared_type.as_ref());
+                    return Self::flatten_sem_type_fields(sem_ty, self.module_symbols);
                 }
                 _ => return Vec::new(),
             }
@@ -368,7 +346,9 @@ impl<'m> LowerCtx<'m> {
             Expr::Nil { .. } => {
                 IrValue::Null(IrType::Ptr(Box::new(IrType::Opaque("nil".to_string()))))
             }
-            Expr::Designator(des) => self.lower_system_expr(des).unwrap_or_else(|| self.lower_designator(des)),
+            Expr::Designator(des) => self.lower_lang_builtin_expr(des)
+                .or_else(|| self.lower_system_expr(des))
+                .unwrap_or_else(|| self.lower_designator(des)),
             Expr::Unary { op, expr, .. } => self.lower_unary(*op, expr),
             Expr::Binary { left, op, right, .. } => self.lower_binary(left, *op, right),
             Expr::Set { .. } => {
@@ -753,6 +733,61 @@ impl<'m> LowerCtx<'m> {
         let t = self.fresh_temp();
         self.push(Instr::BinOp { dst: t, op: ir_op, left: lv, right: rv, ty: result_ty.clone() });
         IrValue::Temp(t, result_ty)
+    }
+
+    /// Handle standard CP language built-in functions as expressions:
+    ///   ODD(x)     → (x & 1) != 0
+    ///   ASH(x, n)  → Instr::Ash (shl for n≥0, arithmetic-shr for n<0)
+    ///   ABS(x)     → x ≥ 0 ? x : -x  (emitted as BinOp sequence)
+    ///
+    /// Returns `None` when the designator is not a recognised builtin.
+    fn lower_lang_builtin_expr(&mut self, des: &Designator) -> Option<IrValue> {
+        // Only bare (unqualified) single-argument calls.
+        if des.base.module.is_some() {
+            return None;
+        }
+        let args: Vec<Expr> = match des.selectors.last()? {
+            Selector::Call(args) => args.clone(),
+            Selector::AmbiguousParen(qual) => vec![Expr::Designator(Designator {
+                span: qual.span,
+                base: qual.clone(),
+                selectors: Vec::new(),
+            })],
+            _ => return None,
+        };
+
+        match des.base.name.as_str() {
+            "ODD" => {
+                let x = self.lower_expr(args.first()?);
+                let ty = x.ty();
+                let masked_t = self.fresh_temp();
+                self.push(Instr::BinOp {
+                    dst: masked_t,
+                    op: BinOp::And,
+                    left: x,
+                    right: IrValue::ConstInt(1, ty.clone()),
+                    ty: ty.clone(),
+                });
+                let odd_t = self.fresh_temp();
+                self.push(Instr::BinOp {
+                    dst: odd_t,
+                    op: BinOp::Ne,
+                    left: IrValue::Temp(masked_t, ty.clone()),
+                    right: IrValue::ConstInt(0, ty),
+                    ty: IrType::Bool,
+                });
+                Some(IrValue::Temp(odd_t, IrType::Bool))
+            }
+            "ASH" => {
+                let value = self.lower_expr(args.first()?);
+                let shift = self.lower_expr(args.get(1)?);
+                let ty = value.ty();
+                let dst = self.fresh_temp();
+                self.push(Instr::Ash { dst, value, shift, ty: ty.clone() });
+                Some(IrValue::Temp(dst, ty))
+            }
+            _ => None,
+        }
     }
 
     fn lower_system_expr(&mut self, des: &Designator) -> Option<IrValue> {

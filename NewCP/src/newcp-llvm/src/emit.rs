@@ -232,6 +232,16 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
                 value_map.temp_values.insert(*dst, result);
                 Ok(())
             }
+            Instr::Ash {
+                dst,
+                value,
+                shift,
+                ty,
+            } => {
+                let result = self.emit_ash(value, shift, ty, value_map)?;
+                value_map.temp_values.insert(*dst, result);
+                Ok(())
+            }
             Instr::Rot {
                 dst,
                 value,
@@ -872,6 +882,47 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
             .cg
             .builder
             .build_select(is_negative, lshr, shl, "lsh.result")
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "emit_instr",
+                detail: e.to_string(),
+            })?;
+        let _ = ty;
+        Ok(selected)
+    }
+
+    fn emit_ash(
+        &mut self,
+        value: &IrValue,
+        shift: &IrValue,
+        ty: &IrType,
+        value_map: &mut ValueMap<'ctx>,
+    ) -> Result<BasicValueEnum<'ctx>, CodegenError> {
+        let value_int = self.resolve_basic_value(value, value_map)?.into_int_value();
+        let shift_int = self.resolve_basic_value(shift, value_map)?.into_int_value();
+        let value_ty = value_int.get_type();
+        let (is_negative, left_shift, right_shift) =
+            self.signed_shift_operands(shift_int, value_ty, "ash")?;
+        let shl = self
+            .cg
+            .builder
+            .build_left_shift(value_int, left_shift, "ash.left.value")
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "emit_instr",
+                detail: e.to_string(),
+            })?;
+        // Arithmetic right shift (sign-extends).
+        let ashr = self
+            .cg
+            .builder
+            .build_right_shift(value_int, right_shift, true, "ash.right.value")
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "emit_instr",
+                detail: e.to_string(),
+            })?;
+        let selected = self
+            .cg
+            .builder
+            .build_select(is_negative, ashr, shl, "ash.result")
             .map_err(|e| CodegenError::Unsupported {
                 stage: "emit_instr",
                 detail: e.to_string(),

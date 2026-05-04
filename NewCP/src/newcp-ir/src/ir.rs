@@ -159,6 +159,8 @@ pub enum Instr {
     BitCast { dst: TempId, value: IrValue, ty: IrType },
     /// `t = lsh value, shift`  — SYSTEM.LSH
     Lsh { dst: TempId, value: IrValue, shift: IrValue, ty: IrType },
+    /// `t = ash value, shift`  — ASH builtin (arithmetic shift: shl for n≥0, ashr for n<0)
+    Ash { dst: TempId, value: IrValue, shift: IrValue, ty: IrType },
     /// `t = rot value, shift`  — SYSTEM.ROT
     Rot { dst: TempId, value: IrValue, shift: IrValue, ty: IrType },
     /// `memcopy dst, src, len`  — SYSTEM.MOVE

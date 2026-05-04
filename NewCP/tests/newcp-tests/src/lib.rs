@@ -561,5 +561,71 @@ mod tests {
             "expected GEP into %%TypeExt.Animal for legs field in ELSE arm\noutput:\n{output}"
         );
     }
+
+    #[test]
+    fn dump_llvm_typeext_inherited_field_access() {
+        // MakeBird(VAR b: Bird; canFly: BOOLEAN)
+        //   b.legs   := 2      -- inherited from Animal at Bird field index 0
+        //   b.canFly := canFly -- Bird's own field at index 1
+        // Without the flatten_sem_type_fields fix, b.legs fell back to the opaque
+        // %"field:legs" alloca and canFly landed at index 0 instead of 1.
+        let (output, code) = dump_llvm("Mod/TypeExt.cp");
+        assert_eq!(code, 0, "expected exit 0 for TypeExt.cp\noutput:\n{output}");
+        // struct layout: %Bird = { i64, i1 }
+        assert!(
+            output.contains("%Bird = type { i64, i1 }"),
+            "expected Bird struct with inherited i64 legs and own i1 canFly\noutput:\n{output}"
+        );
+        // b.legs := 2 → gep %Bird index 0
+        assert!(
+            output.contains("getelementptr inbounds %Bird, ptr %t0, i32 0, i32 0"),
+            "expected b.legs store to use GEP index 0 into %%Bird\noutput:\n{output}"
+        );
+        // b.canFly := canFly → gep %Bird index 1
+        assert!(
+            output.contains("getelementptr inbounds %Bird, ptr %t3, i32 0, i32 1"),
+            "expected b.canFly store to use GEP index 1 into %%Bird\noutput:\n{output}"
+        );
+        // No opaque fallback field reference should remain
+        assert!(
+            !output.contains("%\"field:"),
+            "expected no opaque field fallback references in TypeExt output\noutput:\n{output}"
+        );
+    }
+
+    #[test]
+    fn dump_llvm_loops_emit_back_edges_odd_ash() {
+        // SumDown: REPEAT/UNTIL with a back-edge (bb2 → bb2).
+        // PopCount: REPEAT/UNTIL with ODD(x) → and + icmp ne, and ASH(x,-1) → ashr.
+        // IndexOf: LOOP/EXIT with two EXIT branches.
+        // CollatzLen: LOOP with ODD check, 3n+1 arm, ASH halving.
+        let (output, code) = dump_llvm("Mod/Loops.cp");
+        assert_eq!(code, 0, "expected exit 0 for Loops.cp\noutput:\n{output}");
+
+        // SumDown: REPEAT/UNTIL produces a loop with a back-edge.
+        // The loop body block should appear as a predecessor of itself.
+        assert!(
+            output.contains("br label %bb2") && output.contains("preds = %bb2"),
+            "expected SumDown to produce a REPEAT back-edge\noutput:\n{output}"
+        );
+
+        // ODD(x) expands to (x & 1) != 0 — expect 'and i64 ... 1' + 'icmp ne'.
+        assert!(
+            output.contains("and i64 %") && output.contains("icmp ne i64 %and"),
+            "expected ODD(x) to expand to bitwise and + icmp ne\noutput:\n{output}"
+        );
+
+        // ASH(x, -1) expands to arithmetic right shift — expect ashr.
+        assert!(
+            output.contains("ashr i64 %"),
+            "expected ASH(x, -1) to emit arithmetic right shift\noutput:\n{output}"
+        );
+
+        // CollatzLen: 3 * n + 1 arm should produce mul + add.
+        assert!(
+            output.contains("mul i64 3,") && output.contains("add i64 %imul"),
+            "expected CollatzLen 3n+1 branch to emit mul then add\noutput:\n{output}"
+        );
+    }
 }
 
