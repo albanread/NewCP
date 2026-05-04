@@ -222,6 +222,8 @@ Input:
 
 - `IrModule.globals`
 - `IrModule.procedures`
+- `IrModule.type_vtables` — map from type name to ordered list of bound-procedure LLVM names (slot order)
+- `IrModule.type_bases` — map from type name to base type name (or `None`)
 
 Output:
 
@@ -231,6 +233,8 @@ Output:
 - declared LLVM functions
 - external symbol declarations for every `ImportRef` name referenced in the module body
 - synthesized init function declaration: `@Module.$init` with signature `fn() -> void`
+- `@TypeName.vtable` constant globals — one per record type that has at least one bound procedure
+- `@TypeName.desc` constant globals — one per record type that has at least one bound procedure
 - symbol maps keyed by IR/global name and procedure name
 
 Rule:
@@ -241,6 +245,7 @@ Rule:
 - every `ImportRef` that appears in the IR must have a corresponding LLVM `declare` emitted during this stage; any `ImportRef` that was not planned here must fail with `Unsupported` during value lowering, not silently emit a broken reference
 - when building `@Module.Ptrs`, include only managed pointer roots; `UntaggedPtr`, untagged records, and raw address values introduced for `SYSTEM` must not appear in the pointer-offset table
 - declare `@__newcp_sys_new(i64) -> ptr` whenever `Instr::SysNew` appears in the module; this helper is part of the backend/runtime ABI, not an optional convenience
+- vtable and TypeDesc globals are emitted by `declare_type_descs` after all function declarations, so vtable slot entries can reference already-declared function values
 
 ### Stage 4: Procedure lowering
 
@@ -381,12 +386,14 @@ The first slice should use this policy:
 - module global variable: `@Module.Name`
 - internal helper global: `@__newcp.Module.Name`
 - exported procedure: `@Module.Name`
+- bound procedure (method): `@ReceiverType_MethodName` (e.g., `@Shape_GetX`, `@Circle_GetX`)
 - internal non-exported procedure: `@__newcp.Module.Name`
 - runtime trap helper: `@__newcp_trap`
 
 Rules:
 
 - source-exported procedures get public unmangled names of the form `Module.Proc`
+- bound procedures use `ReceiverType_MethodName` to avoid name collisions between override chains where two types both declare a method of the same source-level name; this is not module-qualified because the type name already uniquely identifies the scope within a compilation unit
 - non-exported procedures get a reserved internal prefix to prevent accidental lookup or collision
 - the exported symbol manifest returned by `CompiledModule` should list the public name and exact LLVM symbol name
 - globals and procedures should use the same `Module.Name` convention so driver output and future runtime lookup stay aligned
@@ -494,11 +501,28 @@ First-slice rule:
 
 Status:
 
-- explicitly unsupported in the first slice
+- implemented
 
-Reason:
+Emission sequence (see `emit_method_call` in `emit.rs`):
 
-- it depends on record descriptors, method table layout, and dynamic dispatch ABI that the runtime has not stabilized yet
+1. Resolve the receiver operand to a `ptr` — this is the object payload address.
+2. GEP `obj_ptr - 16` (one `i8` step of -16) to reach the `BlockHeader`.
+3. Load the `tag` word (`i64`) from the block header's first field.
+4. Mask the low bit: `tag & !1u64` strips the GC mark bit and yields the `TypeDesc` address as an integer.
+5. `inttoptr` to `ptr` to get `desc_ptr`.
+6. GEP `desc_ptr + 32` (byte offset into `TypeDesc`) to reach the `vtable` field.
+7. Load `vtable_ptr` (`ptr`).
+8. GEP `vtable_ptr + slot * 8` to reach the correct slot.
+9. Load `fn_ptr` (`ptr`).
+10. Resolve each argument, prepend the receiver pointer, and emit `build_indirect_call` with a function type inferred from the IR slot and return type.
+
+Key rules:
+
+- the receiver is always passed as the first argument to the target function, before any explicit arguments
+- the function type at the indirect call site is built from the IR argument types and `ret_ty`; it must match the signature of the bound procedure as lowered by `newcp-ir`
+- slot numbering is fixed at IR-lowering time by `method_slot_in_vtable` and encoded directly in `Instr::MethodCall { slot }` — the backend does not recompute it
+- `BlockHeader` is always exactly 16 bytes before the payload pointer; this is part of the allocator/runtime ABI
+- byte-GEP (via `i8` element type) is used for the -16 step and the +32 step rather than struct GEP, to avoid requiring the `%TypeDesc` struct type to be declared in every module that dispatches through it
 
 ### `AddrOf`
 
@@ -821,6 +845,11 @@ The LLVM backend needs tests at three levels.
 	- `SYSTEM.MOVE` emits `llvm.memmove`, not `llvm.memcpy`
 	- `SYSTEM.NEW` emits a call to `@__newcp_sys_new`
 	- untagged globals do not contribute entries to `@Module.Ptrs`
+- include a method-dispatch battery asserting:
+	- bound procedures compile with `ReceiverType_MethodName` LLVM names
+	- `@TypeName.vtable` constant arrays are emitted with correct slot order (overrides, inherited, new)
+	- `@TypeName.desc` constants are emitted with correct `size`, `base`, `vtable`, and `vtable_len` fields
+	- derived type descs carry a `ptr @BaseType.desc` in the `base` field
 
 ### 2. Verification tests
 
@@ -850,7 +879,7 @@ The design review already surfaces likely IR follow-ups that should be explicit 
 1. add a clearer distinction between globals, imported symbols, locals, and explicit stack slots
 2. decide whether `StoreResult` remains part of the IR contract or becomes a purely lowering-internal mechanism
 3. decide how function symbols and data symbols are distinguished in `IrValue`
-4. decide how runtime-assisted operations like type tests and method dispatch are represented at the IR boundary
+4. decide how runtime-assisted operations like type tests are represented at the IR boundary (method dispatch is now resolved — see `Instr::MethodCall` above)
 
 These are not blockers for the first executable subset if the subset is narrow. They are blockers for pretending the whole backend is ready.
 
@@ -893,7 +922,16 @@ Exit criteria:
 
 - trap-bearing CFG lowers to verified LLVM with explicit runtime helper calls
 
-### Milestone 4: ABI expansion
+### Milestone 4: Method dispatch
+
+- slot numbering in IR lowerer (`method_slot_in_vtable`, `collect_type_vtables`)
+- bound procedure naming convention (`ReceiverType_MethodName`) and receiver-as-first-param lowering
+- `@TypeName.vtable` and `@TypeName.desc` constant global emission in `declare_type_descs`
+- `Instr::MethodCall` backend emission in `emit_method_call`
+
+Status: **complete** (commit be69bd0).
+
+### Milestone 5: ABI expansion
 
 - parameters beyond the trivial subset
 - imported symbol resolution

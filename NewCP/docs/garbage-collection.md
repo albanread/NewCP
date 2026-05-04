@@ -39,17 +39,25 @@ The `TypeDesc` must contain:
 1. The size of the object.
 2. An owning module pointer (or null for built-in types).
 3. An optional finalizer function pointer; null when the type needs no cleanup.
-4. An array of pointer offsets (`ptroffs`), indicating where pointers reside in the payload. The array is terminated by a sentinel (e.g., `-1`).
+4. A pointer to the base type's `TypeDesc` (null for root/non-extensible records).
+5. A pointer to the vtable array of bound procedure pointers (null for types with no methods).
+6. The number of vtable slots (`vtable_len`).
+7. An array of pointer offsets (`ptroffs`), indicating where pointers reside in the payload. The array is terminated by a sentinel (e.g., `-1`).
 
 ```rust
 #[repr(C)]
 pub struct TypeDesc {
-    pub size: isize,
-    pub module: *const ModuleDesc,
-    pub finalizer: Option<unsafe extern "C" fn(*mut u8)>, // null = none
-    pub ptroffs: [isize; 0], // Dynamically sized array of offsets
+    pub size: isize,                          // offset 0
+    pub module: *const ModuleDesc,            // offset 8
+    pub finalizer: Option<Finalizer>,         // offset 16
+    pub base: *const TypeDesc,                // offset 24 — null for root types
+    pub vtable: *const *const (),             // offset 32 — null for types with no methods
+    pub vtable_len: u64,                      // offset 40
+    pub ptroffs: [isize; 0],                  // offset 48 — dynamically sized, sentinel -1
 }
 ```
+
+The `base` field forms a singly-linked chain from derived to root type, mirroring the extension hierarchy. The runtime uses it for `IS`/`WITH` type tests. The `vtable` field points to a read-only array of function pointers in slot order; the LLVM backend emits one `@TypeName.vtable` constant per extensible record type. `vtable_len` is the number of slots, which equals the number of distinct virtual methods accessible on the type including inherited ones.
 
 If present, the finalizer is invoked exactly once, on the dying block's payload pointer, **before** sweep zeroes the payload and links the block onto the free list. Finalizers must not allocate, must not retain the pointer, and must not perform GC-visible work.
 

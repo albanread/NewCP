@@ -83,6 +83,17 @@ Deliverables:
 - LLVM IR dump support
 - assembly dump support
 
+Implemented so far (as of commit be69bd0):
+
+- real LLVM IR emission from `newcp-ir` via Inkwell (no placeholder)
+- scalar arithmetic, loads, stores, branches, calls, returns
+- `SYSTEM` intrinsics: `AddrOf`, `BitCast`, `LoadRaw`, `StoreRaw`, `Lsh`, `Rot`, `MemCopy`, `SysNew`
+- trap helper calls
+- type tests (`IS`/`WITH`) via `Instr::TypeCheck` + `Terminator::TypeTest`
+- tagged record allocation via `Instr::New` / `@__newcp_new_rec`
+- inherited field access via typed GEP across the extension chain
+- **method dispatch**: vtable and TypeDesc constant globals, `Instr::MethodCall` indirect dispatch, bound-procedure naming and slot numbering
+
 Exit criteria:
 
 - JIT one module and call one exported command

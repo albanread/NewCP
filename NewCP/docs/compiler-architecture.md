@@ -348,11 +348,24 @@ Those structures must be specified for a 64-bit process from the outset, especia
 
 ### Method dispatch
 
-Record-bound procedures should lower to:
+Record-bound procedures lower to vtable-based dynamic dispatch. The full ABI is implemented as of commit be69bd0.
 
-- descriptor-backed dispatch slots
-- runtime-stable method numbering
-- direct or indirect LLVM calls depending on static knowledge
+**Naming.** Each bound procedure compiles to a globally named LLVM function using `ReceiverType_MethodName` (e.g., `Shape_GetX`, `Circle_GetX`). This prevents name collisions in override chains.
+
+**Receiver.** The receiver is prepended as an implicit first `ptr` parameter at the LLVM level.
+
+**Slot numbering.** The IR lowerer (`newcp-ir`) assigns a stable integer slot index to each bound procedure. Base type `NEW` methods take slots 0, 1, ... in declaration order; derived types extend the vtable; overrides reuse the base slot. The slot is encoded in `Instr::MethodCall { slot }`.
+
+**Vtable global.** `@TypeName.vtable` is a `private constant [N x ptr]` array of function pointers in slot order, including inherited entries.
+
+**TypeDesc global.** `@TypeName.desc` is a `private constant` struct with fields: `size`, `module`, `finalizer`, `base` (pointer to base TypeDesc or null), `vtable`, `vtable_len`, `ptroffs` (sentinel array).
+
+**Dispatch sequence.** At call sites, the backend emits:
+1. GEP `obj - 16` → load `tag` (i64)
+2. `tag & !1` → `inttoptr` → `TypeDesc*`
+3. GEP `+32` → load `vtable_ptr`
+4. GEP `vtable_ptr[slot]` → load `fn_ptr`
+5. `build_indirect_call(fn_ptr, [obj, ...args])`
 
 ### Allocation
 
