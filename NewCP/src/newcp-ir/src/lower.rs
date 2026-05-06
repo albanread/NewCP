@@ -1,4 +1,6 @@
-﻿/// Lowering: Component Pascal AST (via SemanticModule + ModuleAst) -> IrModule/IrProcedure.
+﻿#![deny(clippy::unwrap_used)]
+
+/// Lowering: Component Pascal AST (via SemanticModule + ModuleAst) -> IrModule/IrProcedure.
 ///
 /// Design notes:
 /// - The CFG *is* the IR; no separate TAC pass.
@@ -7,7 +9,8 @@
 /// - EXIT inside a LOOP emits Br(loop_exit_target).
 /// - WITH arms with a None guard are the ELSE arm.
 /// - After all blocks are built, RPO is computed and stored on each block.
-use std::path::Path;
+use std::cell::RefCell;
+use std::path::{Path, PathBuf};
 
 use newcp_parser::{
     read_module_ast,
@@ -20,9 +23,35 @@ use newcp_sema::{analyze_module_ast, BuiltinType, ConstValue, RecordLayout as Se
 use crate::{
     ir::{BinOp, BlockId, Instr, TempId, Terminator, TrapKind, UnOp},
     ir::IrValue,
-    procedure::{IrGlobal, IrModule, IrProcedure},
+    procedure::{IrGlobal, IrModule, IrProcedure, LoweringDiagnostic},
     types::{IrType, RecordLayout},
 };
+
+thread_local! {
+    static IMPORT_SEARCH_ROOT: RefCell<Option<PathBuf>> = const { RefCell::new(None) };
+}
+
+pub(crate) struct ImportSearchRootGuard {
+    previous: Option<PathBuf>,
+}
+
+impl Drop for ImportSearchRootGuard {
+    fn drop(&mut self) {
+        IMPORT_SEARCH_ROOT.with(|root| {
+            *root.borrow_mut() = self.previous.take();
+        });
+    }
+}
+
+pub(crate) fn push_import_search_root(path: &Path) -> ImportSearchRootGuard {
+    let next_root = path.parent().map(Path::to_path_buf);
+    let previous = IMPORT_SEARCH_ROOT.with(|root| {
+        let mut root = root.borrow_mut();
+        std::mem::replace(&mut *root, next_root)
+    });
+
+    ImportSearchRootGuard { previous }
+}
 
 // == Type mapping ==
 
@@ -103,9 +132,10 @@ fn map_builtin(bt: BuiltinType) -> IrType {
         BuiltinType::Real => IrType::F64,
         BuiltinType::ShortReal => IrType::F32,
         BuiltinType::Set => IrType::Set(32),
-        BuiltinType::String | BuiltinType::ShortString => {
-            IrType::Ptr(Box::new(IrType::ShortChar))
-        }
+        // String = null-terminated array of CHAR (32-bit Unicode scalar values).
+        // ShortString = null-terminated array of SHORTCHAR (8-bit bytes).
+        BuiltinType::String => IrType::Ptr(Box::new(IrType::Char)),
+        BuiltinType::ShortString => IrType::Ptr(Box::new(IrType::ShortChar)),
         BuiltinType::AnyPtr => IrType::Ptr(Box::new(IrType::Opaque("anyptr".to_string()))),
         BuiltinType::AnyRec => IrType::Opaque("anyrec".to_string()),
     }
@@ -181,6 +211,12 @@ impl<'m> LowerCtx<'m> {
 
     fn switch_to(&mut self, block: BlockId) {
         self.current = block;
+    }
+
+    fn record_diagnostic(&mut self, message: impl Into<String>) {
+        self.proc.diagnostics.push(LoweringDiagnostic {
+            message: message.into(),
+        });
     }
 
     /// If `type_name` is a named pointer alias, return the concrete IR pointer type.
@@ -380,14 +416,91 @@ impl<'m> LowerCtx<'m> {
                 .unwrap_or_else(|| self.lower_designator(des)),
             Expr::Unary { op, expr, .. } => self.lower_unary(*op, expr),
             Expr::Binary { left, op, right, .. } => self.lower_binary(left, *op, right),
-            Expr::Set { .. } => {
-                let t = self.fresh_temp();
-                self.push(Instr::BitCast {
-                    dst: t,
-                    value: IrValue::ConstInt(0, IrType::Set(32)),
-                    ty: IrType::Set(32),
-                });
-                IrValue::Temp(t, IrType::Set(32))
+            Expr::Set { elements, .. } => {
+                // Build the SET value by ORing in each element.
+                // For a singleton element `e`, this is: acc | (1 << e).
+                // For a range element `e1..e2`, we OR in all bits from e1 to e2 inclusive.
+                // Start with an empty set (0) then fold.
+                let mut acc: IrValue = IrValue::ConstInt(0, IrType::Set(32));
+                for elem in elements {
+                    // Evaluate the lower bound.
+                    let start_val = self.lower_expr(&elem.start);
+                    // Widen to i32 if needed (set ops are 32-bit).
+                    let start_i32 = if start_val.ty() != IrType::Set(32) {
+                        let t = self.fresh_temp();
+                        self.push(Instr::Cast { dst: t, value: start_val, to_ty: IrType::Set(32) });
+                        IrValue::Temp(t, IrType::Set(32))
+                    } else {
+                        start_val
+                    };
+
+                    let bit_val = if let Some(end_expr) = &elem.end {
+                        // Range e1..e2: build mask with all bits from e1 to e2.
+                        // mask = ((2 << e2) - 1) & ~((1 << e1) - 1)
+                        // which is simpler as: ((1 << (e2 - e1 + 1)) - 1) << e1
+                        // But to stay general (runtime values): use a loop or the bitmask formula.
+                        // Simpler formula using i64 intermediate:
+                        //   bit_range = ((1u64 << (e2 + 1)) - 1) ^ ((1u64 << e1) - 1)
+                        // We emit: t_two = 2; (t_two << e2) - 1 = mask_high; (1 << e1) - 1 = mask_low; bit_range = mask_high XOR mask_low
+                        let end_val = self.lower_expr(end_expr);
+                        let end_i32 = if end_val.ty() != IrType::Set(32) {
+                            let t = self.fresh_temp();
+                            self.push(Instr::Cast { dst: t, value: end_val, to_ty: IrType::Set(32) });
+                            IrValue::Temp(t, IrType::Set(32))
+                        } else {
+                            end_val
+                        };
+                        // two_shifted_end = 2 << e2  (= 1 << (e2+1))
+                        let t_two = self.fresh_temp();
+                        self.push(Instr::BinOp { dst: t_two, op: BinOp::Shl,
+                            left: IrValue::ConstInt(2, IrType::Set(32)),
+                            right: end_i32,
+                            ty: IrType::Set(32) });
+                        // mask_high = (2 << e2) - 1
+                        let t_mh = self.fresh_temp();
+                        self.push(Instr::BinOp { dst: t_mh, op: BinOp::Sub,
+                            left: IrValue::Temp(t_two, IrType::Set(32)),
+                            right: IrValue::ConstInt(1, IrType::Set(32)),
+                            ty: IrType::Set(32) });
+                        // one_shifted_start = 1 << e1
+                        let t_oss = self.fresh_temp();
+                        self.push(Instr::BinOp { dst: t_oss, op: BinOp::Shl,
+                            left: IrValue::ConstInt(1, IrType::Set(32)),
+                            right: start_i32,
+                            ty: IrType::Set(32) });
+                        // mask_low = (1 << e1) - 1
+                        let t_ml = self.fresh_temp();
+                        self.push(Instr::BinOp { dst: t_ml, op: BinOp::Sub,
+                            left: IrValue::Temp(t_oss, IrType::Set(32)),
+                            right: IrValue::ConstInt(1, IrType::Set(32)),
+                            ty: IrType::Set(32) });
+                        // bit_range = mask_high XOR mask_low (= (2<<e2)-1 minus (1<<e1)-1)
+                        let t_range = self.fresh_temp();
+                        self.push(Instr::BinOp { dst: t_range, op: BinOp::Xor,
+                            left: IrValue::Temp(t_mh, IrType::Set(32)),
+                            right: IrValue::Temp(t_ml, IrType::Set(32)),
+                            ty: IrType::Set(32) });
+                        IrValue::Temp(t_range, IrType::Set(32))
+                    } else {
+                        // Singleton: bit = 1 << e
+                        let t_bit = self.fresh_temp();
+                        self.push(Instr::BinOp { dst: t_bit, op: BinOp::Shl,
+                            left: IrValue::ConstInt(1, IrType::Set(32)),
+                            right: start_i32,
+                            ty: IrType::Set(32) });
+                        IrValue::Temp(t_bit, IrType::Set(32))
+                    };
+
+                    // acc = acc | bit_val
+                    let t_or = self.fresh_temp();
+                    let acc_prev = acc;
+                    self.push(Instr::BinOp { dst: t_or, op: BinOp::Or,
+                        left: acc_prev,
+                        right: bit_val,
+                        ty: IrType::Set(32) });
+                    acc = IrValue::Temp(t_or, IrType::Set(32));
+                }
+                acc
             }
         }
     }
@@ -395,7 +508,7 @@ impl<'m> LowerCtx<'m> {
     fn lower_literal(&self, lit: &Literal) -> IrValue {
         match lit {
             Literal::Integer(s) => {
-                let v: i128 = s.parse().unwrap_or(0);
+                let v: i128 = parse_cp_integer_literal(s);
                 IrValue::ConstInt(v, IrType::I64)
             }
             Literal::Real(s) => {
@@ -403,16 +516,30 @@ impl<'m> LowerCtx<'m> {
                 IrValue::ConstReal(v, IrType::F64)
             }
             Literal::Character(s) => {
-                let inner = s.trim_matches('"').trim_matches('\'');
-                let c = inner.chars().next().unwrap_or('\0');
-                IrValue::ConstChar(c)
+                if s.starts_with('"') || s.starts_with('\'') {
+                    // Quoted single character: 'x' or "x" — CP CHAR (u32/i32).
+                    let inner = &s[1..s.len()-1];
+                    let c = inner.chars().next().unwrap_or('\0');
+                    IrValue::ConstChar(c)
+                } else {
+                    // Hex character literal: NNX — ordinal is the hex value.
+                    // ordinal <= 0xFF → SHORTCHAR (i8); > 0xFF → CHAR (i32/u32).
+                    let hex = s.strip_suffix('X').unwrap_or(s);
+                    let ordinal = i128::from_str_radix(hex, 16).unwrap_or(0);
+                    if ordinal <= 0xFF {
+                        IrValue::ConstInt(ordinal, IrType::ShortChar)
+                    } else {
+                        IrValue::ConstInt(ordinal, IrType::Char)
+                    }
+                }
             }
             Literal::String(s) => {
                 let inner = s.trim_matches('"').trim_matches('\'');
-                if inner.chars().count() == 1 {
-                    IrValue::ConstChar(inner.chars().next().unwrap())
+                let mut chars = inner.chars();
+                if let (Some(c), None) = (chars.next(), chars.next()) {
+                    IrValue::ConstChar(c)
                 } else {
-                    IrValue::ConstStr(inner.to_string())
+                    IrValue::ConstStr(inner.to_string(), IrType::Char)
                 }
             }
         }
@@ -516,6 +643,29 @@ impl<'m> LowerCtx<'m> {
                         dst: Some(t),
                         callee,
                         args: args_lowered,
+                        ret_ty: ret_ty.clone(),
+                    });
+                    return IrValue::Temp(t, ret_ty);
+                }
+                None => {
+                    // Bare procedure call with no parentheses: `Log.Open` or `Flush`
+                    // is valid CP for a parameterless procedure call.
+                    let ret_ty = self.callee_return_type(&callee);
+                    let args = upvalue_args;
+                    if ret_ty == IrType::Void {
+                        self.push(Instr::Call {
+                            dst: None,
+                            callee: callee.clone(),
+                            args,
+                            ret_ty,
+                        });
+                        return callee;
+                    }
+                    let t = self.fresh_temp();
+                    self.push(Instr::Call {
+                        dst: Some(t),
+                        callee,
+                        args,
                         ret_ty: ret_ty.clone(),
                     });
                     return IrValue::Temp(t, ret_ty);
@@ -639,6 +789,7 @@ impl<'m> LowerCtx<'m> {
                 args: lowered_args,
                 ret_ty: IrType::Void,
             });
+            self.record_diagnostic("void method call used as expression");
             // Return something innocuous; callers that use the result will get void.
             return Some(IrValue::ConstBool(false));
         }
@@ -673,7 +824,7 @@ impl<'m> LowerCtx<'m> {
         Some(match const_value {
             ConstValue::Integer(value) => IrValue::ConstInt(*value, ty.clone()),
             ConstValue::Real(value) => IrValue::ConstReal(*value, ty.clone()),
-            ConstValue::String(value) => IrValue::ConstStr(value.clone()),
+            ConstValue::String(value) => IrValue::ConstStr(value.clone(), IrType::Char),
             ConstValue::Char(value) => IrValue::ConstChar(*value),
             ConstValue::Boolean(value) => IrValue::ConstBool(*value),
         })
@@ -790,6 +941,21 @@ impl<'m> LowerCtx<'m> {
                                     });
                                     (IrValue::Temp(t, loaded_ptr_ty), *elem.clone(), None)
                                 }
+                                // Ref(Ref(...)) — VAR param. The LLVM `ref_param_slots`
+                                // mechanism in `resolve_pointer` already loads one level
+                                // of indirection, so we treat `addr` as if it had only one
+                                // outer Ref and pattern-match the inner type accordingly.
+                                IrType::Ref(inner2) => match inner2.as_ref() {
+                                    IrType::Array { element, len } => {
+                                        (addr.clone(), *element.clone(), Some(*len))
+                                    }
+                                    IrType::Ptr(elem) | IrType::UntaggedPtr(elem) => {
+                                        // VAR open-array: addr resolves to the array base
+                                        // pointer directly via ref_param_slots; no extra Load.
+                                        (addr.clone(), *elem.clone(), None)
+                                    }
+                                    _ => (addr.clone(), IrType::Opaque("array-elem".to_string()), None),
+                                },
                                 // Ref(Named) — try to resolve the named type's element.
                                 IrType::Named(_) => {
                                     // Fall back: just use addr and opaque element.
@@ -952,14 +1118,93 @@ impl<'m> LowerCtx<'m> {
             })
             .unwrap_or_default();
 
+        let expected_types = self
+            .callee_procedure_type(callee)
+            .map(|proc_ty| {
+                proc_ty
+                    .parameters
+                    .iter()
+                    .flat_map(|param| {
+                        let ty = param.ty.clone();
+                        std::iter::repeat_n(ty, param.names.len())
+                    })
+                    .collect::<Vec<_>>()
+            })
+            .unwrap_or_default();
+
         args.iter()
             .enumerate()
-            .map(|(index, arg)| match expected_modes.get(index).copied().flatten() {
-                Some(ParamMode::Var) | Some(ParamMode::Out) => match arg {
-                    Expr::Designator(des) => self.designator_addr(des),
-                    _ => self.lower_expr(arg),
-                },
-                _ => self.lower_expr(arg),
+            .map(|(index, arg)| {
+                let mode = expected_modes.get(index).copied().flatten();
+                // VAR/OUT: always pass address
+                if matches!(mode, Some(ParamMode::Var) | Some(ParamMode::Out)) {
+                    return match arg {
+                        Expr::Designator(des) => self.designator_addr(des),
+                        _ => self.lower_expr(arg),
+                    };
+                }
+                // Value open-array param: pass pointer to the array, not a loaded value.
+                // An open array param has an empty `lengths` list in the semantic type.
+                let is_open_array_param = expected_types.get(index).map(|t| {
+                    matches!(t, SemanticType::Array { lengths, .. } if lengths.is_empty())
+                }).unwrap_or(false);
+                if is_open_array_param {
+                    if let Expr::Designator(des) = arg {
+                        if matches!(self.designator_ir_type(des), Some(IrType::Array { .. })) {
+                            // Fixed-size array: pass its base address as the open-array pointer.
+                            return self.designator_addr(des);
+                        }
+                        // Ptr-typed (forwarding an open-array value param): fall through to
+                        // lower_expr, which loads the pointer value from the slot.
+                    }
+                    // String literals and other non-designator args: fall through to lower_expr.
+                }
+                // Determine if the expected param is an open ARRAY OF SHORTCHAR — string
+                // literals must then be emitted as i8 arrays, not the default i32/CHAR.
+                let expects_shortchar_open_array = expected_types.get(index).map(|t| {
+                    matches!(t,
+                        SemanticType::Array { lengths, element_type, .. }
+                        if lengths.is_empty()
+                            && matches!(element_type.as_ref(), SemanticType::Builtin(BuiltinType::ShortChar))
+                    )
+                }).unwrap_or(false);
+                // Fixed-size array arguments are always passed as pointers.
+                // CP arrays cannot be passed by value; the callee always receives
+                // a pointer to the array (pointer to first element).
+                if let Expr::Designator(des) = arg {
+                    if matches!(self.designator_ir_type(des), Some(IrType::Array { .. })) {
+                        return self.designator_addr(des);
+                    }
+                }
+                let mut value = self.lower_expr(arg);
+                if expects_shortchar_open_array {
+                    if let IrValue::ConstStr(_, elem_ty) = &mut value {
+                        *elem_ty = IrType::ShortChar;
+                    }
+                    // Single-char string literals ("]", "A", etc.) are lowered as
+                    // ConstChar but must become a null-terminated [2 x i8] when
+                    // passed to an ARRAY OF SHORTCHAR parameter.
+                    if let IrValue::ConstChar(c) = value {
+                        let mut s = String::with_capacity(1);
+                        s.push(c);
+                        value = IrValue::ConstStr(s, IrType::ShortChar);
+                    }
+                }
+
+                // Widen SHORTCHAR (i8) to CHAR (i32) when the declared parameter
+                // expects CHAR.  `41X` and similar hex literals with ordinal <= 0xFF
+                // are typed as ShortChar by the lexer/lowerer but the runtime ABI
+                // for CHAR parameters uses 32-bit values.
+                let expects_char = expected_types.get(index).map(|t| {
+                    matches!(t, SemanticType::Builtin(BuiltinType::Char))
+                }).unwrap_or(false);
+                if expects_char && value.ty() == IrType::ShortChar {
+                    let t = self.fresh_temp();
+                    self.push(Instr::Cast { dst: t, value: value.clone(), to_ty: IrType::Char });
+                    value = IrValue::Temp(t, IrType::Char);
+                }
+
+                value
             })
             .collect()
     }
@@ -967,6 +1212,18 @@ impl<'m> LowerCtx<'m> {
     fn lower_unary(&mut self, op: UnaryOp, expr: &Expr) -> IrValue {
         let operand = self.lower_expr(expr);
         let ty = operand.ty();
+        // SET monadic minus = complement: -s = s XOR all-ones  (§8.2.3)
+        if op == UnaryOp::Minus && ty == IrType::Set(32) {
+            let t = self.fresh_temp();
+            self.push(Instr::BinOp {
+                dst: t,
+                op: BinOp::Xor,
+                left: operand,
+                right: IrValue::ConstInt(-1, IrType::Set(32)),
+                ty: IrType::Set(32),
+            });
+            return IrValue::Temp(t, IrType::Set(32));
+        }
         let ir_op = match op {
             UnaryOp::Minus => UnOp::Neg,
             UnaryOp::Not => UnOp::Not,
@@ -981,6 +1238,52 @@ impl<'m> LowerCtx<'m> {
         let lv = self.lower_expr(left);
         let rv = self.lower_expr(right);
         let ty = lv.ty();
+
+        // SET arithmetic operators (8.2.3 of CP spec) use bitwise operations.
+        // +  union          → OR
+        // -  difference     → A AND (NOT B)  i.e. A AND (B XOR -1)
+        // *  intersection   → AND
+        // /  sym. diff.     → XOR
+        if ty == IrType::Set(32) {
+            return match op {
+                BinaryOp::Add => {
+                    let t = self.fresh_temp();
+                    self.push(Instr::BinOp { dst: t, op: BinOp::Or, left: lv, right: rv, ty: IrType::Set(32) });
+                    IrValue::Temp(t, IrType::Set(32))
+                }
+                BinaryOp::Multiply => {
+                    let t = self.fresh_temp();
+                    self.push(Instr::BinOp { dst: t, op: BinOp::And, left: lv, right: rv, ty: IrType::Set(32) });
+                    IrValue::Temp(t, IrType::Set(32))
+                }
+                BinaryOp::Subtract => {
+                    // A - B = A AND (NOT B) = A AND (B XOR all-ones)
+                    let t_not = self.fresh_temp();
+                    self.push(Instr::BinOp { dst: t_not, op: BinOp::Xor, left: rv, right: IrValue::ConstInt(-1, IrType::Set(32)), ty: IrType::Set(32) });
+                    let t = self.fresh_temp();
+                    self.push(Instr::BinOp { dst: t, op: BinOp::And, left: lv, right: IrValue::Temp(t_not, IrType::Set(32)), ty: IrType::Set(32) });
+                    IrValue::Temp(t, IrType::Set(32))
+                }
+                BinaryOp::Divide => {
+                    // A / B = A XOR B  (symmetric difference)
+                    let t = self.fresh_temp();
+                    self.push(Instr::BinOp { dst: t, op: BinOp::Xor, left: lv, right: rv, ty: IrType::Set(32) });
+                    IrValue::Temp(t, IrType::Set(32))
+                }
+                // = and # on SET
+                BinaryOp::Equal | BinaryOp::NotEqual => {
+                    let ir_op = if op == BinaryOp::Equal { BinOp::Eq } else { BinOp::Ne };
+                    let t = self.fresh_temp();
+                    self.push(Instr::BinOp { dst: t, op: ir_op, left: lv, right: rv, ty: IrType::Bool });
+                    IrValue::Temp(t, IrType::Bool)
+                }
+                _ => {
+                    self.record_diagnostic(&format!("unsupported SET binary operator {op:?}"));
+                    IrValue::ConstInt(0, IrType::Set(32))
+                }
+            };
+        }
+
         let result_ty = match op {
             BinaryOp::Equal | BinaryOp::NotEqual | BinaryOp::Less | BinaryOp::LessEqual
             | BinaryOp::Greater | BinaryOp::GreaterEqual | BinaryOp::In | BinaryOp::Is
@@ -1007,6 +1310,56 @@ impl<'m> LowerCtx<'m> {
             return IrValue::Temp(t, IrType::Bool);
         }
 
+        // CP integer DIV and MOD require floor semantics (ENTIER(x/y)), not truncation-toward-zero.
+        // Branchless expansion via sign-bit propagation (no branches / select needed):
+        //   r = srem(x, y)
+        //   rn_mask = ASH(r | -r, -bits)   → -1 if r != 0, else 0
+        //   sd_mask = ASH(r XOR y, -bits)  → -1 if sign(r) != sign(y), else 0
+        //   adj_mask = rn_mask AND sd_mask  → -1 iff adjustment required
+        //   FloorMod = r + (adj_mask AND y)
+        //   FloorDiv = sdiv(x, y) + adj_mask
+        if matches!(op, BinaryOp::Div | BinaryOp::Mod)
+            && matches!(ty, IrType::I64 | IrType::I32 | IrType::I16)
+        {
+            let bits: i128 = match &ty { IrType::I32 => 31, IrType::I16 => 15, _ => 63 };
+            // t_r = srem(x, y)
+            let t_r = self.fresh_temp();
+            self.push(Instr::BinOp { dst: t_r, op: BinOp::Mod, left: lv.clone(), right: rv.clone(), ty: ty.clone() });
+            // t_neg_r = 0 - r
+            let t_neg_r = self.fresh_temp();
+            self.push(Instr::BinOp { dst: t_neg_r, op: BinOp::Sub, left: IrValue::ConstInt(0, ty.clone()), right: IrValue::Temp(t_r, ty.clone()), ty: ty.clone() });
+            // t_rn = r | -r  (high bit is set iff r != 0)
+            let t_rn = self.fresh_temp();
+            self.push(Instr::BinOp { dst: t_rn, op: BinOp::Or, left: IrValue::Temp(t_r, ty.clone()), right: IrValue::Temp(t_neg_r, ty.clone()), ty: ty.clone() });
+            // t_rn_mask = ASH(t_rn, -bits)  → -1 if r != 0, else 0
+            let t_rn_mask = self.fresh_temp();
+            self.push(Instr::Ash { dst: t_rn_mask, value: IrValue::Temp(t_rn, ty.clone()), shift: IrValue::ConstInt(-bits, ty.clone()), ty: ty.clone() });
+            // t_sd = r XOR y
+            let t_sd = self.fresh_temp();
+            self.push(Instr::BinOp { dst: t_sd, op: BinOp::Xor, left: IrValue::Temp(t_r, ty.clone()), right: rv.clone(), ty: ty.clone() });
+            // t_sd_mask = ASH(t_sd, -bits)  → -1 if signs differ, else 0
+            let t_sd_mask = self.fresh_temp();
+            self.push(Instr::Ash { dst: t_sd_mask, value: IrValue::Temp(t_sd, ty.clone()), shift: IrValue::ConstInt(-bits, ty.clone()), ty: ty.clone() });
+            // t_adj_mask = t_rn_mask AND t_sd_mask  → -1 iff adjustment needed
+            let t_adj_mask = self.fresh_temp();
+            self.push(Instr::BinOp { dst: t_adj_mask, op: BinOp::And, left: IrValue::Temp(t_rn_mask, ty.clone()), right: IrValue::Temp(t_sd_mask, ty.clone()), ty: ty.clone() });
+            if matches!(op, BinaryOp::Mod) {
+                // floor_r = r + (adj_mask AND y)
+                let t_masked_y = self.fresh_temp();
+                self.push(Instr::BinOp { dst: t_masked_y, op: BinOp::And, left: IrValue::Temp(t_adj_mask, ty.clone()), right: rv, ty: ty.clone() });
+                let t_result = self.fresh_temp();
+                self.push(Instr::BinOp { dst: t_result, op: BinOp::Add, left: IrValue::Temp(t_r, ty.clone()), right: IrValue::Temp(t_masked_y, ty.clone()), ty: ty.clone() });
+                return IrValue::Temp(t_result, ty);
+            } else {
+                // floor_q = sdiv(x, y) + adj_mask
+                let t_q = self.fresh_temp();
+                self.push(Instr::BinOp { dst: t_q, op: BinOp::Div, left: lv, right: rv, ty: ty.clone() });
+                let t_result = self.fresh_temp();
+                self.push(Instr::BinOp { dst: t_result, op: BinOp::Add, left: IrValue::Temp(t_q, ty.clone()), right: IrValue::Temp(t_adj_mask, ty.clone()), ty: ty.clone() });
+                return IrValue::Temp(t_result, ty);
+            }
+        }
+
         let ir_op = match op {
             BinaryOp::Add => BinOp::Add,
             BinaryOp::Subtract => BinOp::Sub,
@@ -1022,7 +1375,11 @@ impl<'m> LowerCtx<'m> {
             BinaryOp::And => BinOp::And,
             BinaryOp::Or => BinOp::Or,
             BinaryOp::In => BinOp::In,
-            BinaryOp::Is => unreachable!(),
+            BinaryOp::Is => {
+                self.record_diagnostic("IS expression reached generic binary lowering path");
+                debug_assert!(false, "lower_binary invariant violated: BinaryOp::Is should have returned via TypeCheck");
+                return IrValue::ConstBool(false);
+            }
         };
         let t = self.fresh_temp();
         self.push(Instr::BinOp { dst: t, op: ir_op, left: lv, right: rv, ty: result_ty.clone() });
@@ -1079,6 +1436,215 @@ impl<'m> LowerCtx<'m> {
                 let dst = self.fresh_temp();
                 self.push(Instr::Ash { dst, value, shift, ty: ty.clone() });
                 Some(IrValue::Temp(dst, ty))
+            }
+            // ORD(c): CHAR/SHORTCHAR → INTEGER (zero-extend to i64)
+            "ORD" => {
+                let x = self.lower_expr(args.first()?);
+                let dst = self.fresh_temp();
+                self.push(Instr::Cast { dst, value: x, to_ty: IrType::I64 });
+                Some(IrValue::Temp(dst, IrType::I64))
+            }
+            // CHR(n): INTEGER → CHAR (truncate to i32, unsigned char code point)
+            "CHR" => {
+                let x = self.lower_expr(args.first()?);
+                let dst = self.fresh_temp();
+                self.push(Instr::Cast { dst, value: x, to_ty: IrType::Char });
+                Some(IrValue::Temp(dst, IrType::Char))
+            }
+            // SHORT: narrows one step in the type hierarchy
+            //   CHAR → SHORTCHAR,  INTEGER → I32,  REAL → F32
+            "SHORT" => {
+                let x = self.lower_expr(args.first()?);
+                let from_ty = x.ty();
+                let to_ty = match &from_ty {
+                    IrType::Char => IrType::ShortChar,
+                    IrType::I64 => IrType::I32,
+                    IrType::F64 => IrType::F32,
+                    IrType::I32 => IrType::I16,
+                    other => other.clone(),
+                };
+                if to_ty == from_ty {
+                    return Some(x);
+                }
+                let dst = self.fresh_temp();
+                self.push(Instr::Cast { dst, value: x, to_ty: to_ty.clone() });
+                Some(IrValue::Temp(dst, to_ty))
+            }
+            // LONG: widens one step in the type hierarchy
+            //   SHORTCHAR → CHAR,  I16/I32 → I64,  F32 → F64
+            "LONG" => {
+                let x = self.lower_expr(args.first()?);
+                let from_ty = x.ty();
+                let to_ty = match &from_ty {
+                    IrType::ShortChar => IrType::Char,
+                    IrType::I16 | IrType::I32 => IrType::I64,
+                    IrType::F32 => IrType::F64,
+                    other => other.clone(),
+                };
+                if to_ty == from_ty {
+                    return Some(x);
+                }
+                let dst = self.fresh_temp();
+                self.push(Instr::Cast { dst, value: x, to_ty: to_ty.clone() });
+                Some(IrValue::Temp(dst, to_ty))
+            }
+            // ABS(x): absolute value
+            //   Float: Cast with same float type (emitter uses llvm.fabs intrinsic)
+            //   Integer: branchless (x XOR mask) - mask  where mask = x ASH -(bits-1)
+            "ABS" => {
+                let x = self.lower_expr(args.first()?);
+                let ty = x.ty();
+                match &ty {
+                    IrType::F32 | IrType::F64 => {
+                        // Use a dedicated "float abs" Cast (same from/to type → emitter uses fabs)
+                        let dst = self.fresh_temp();
+                        self.push(Instr::Cast { dst, value: x, to_ty: ty.clone() });
+                        Some(IrValue::Temp(dst, ty))
+                    }
+                    _ => {
+                        // Branchless integer abs: mask = x ASH -(bits-1), result = (x XOR mask) - mask
+                        let bits: i128 = match &ty {
+                            IrType::I32 => 31,
+                            IrType::I16 => 15,
+                            IrType::I8 => 7,
+                            _ => 63,
+                        };
+                        let shift_const = IrValue::ConstInt(-bits, ty.clone());
+                        let mask_t = self.fresh_temp();
+                        self.push(Instr::Ash {
+                            dst: mask_t,
+                            value: x.clone(),
+                            shift: shift_const,
+                            ty: ty.clone(),
+                        });
+                        let xored_t = self.fresh_temp();
+                        self.push(Instr::BinOp {
+                            dst: xored_t,
+                            op: BinOp::Xor,
+                            left: x,
+                            right: IrValue::Temp(mask_t, ty.clone()),
+                            ty: ty.clone(),
+                        });
+                        let abs_t = self.fresh_temp();
+                        self.push(Instr::BinOp {
+                            dst: abs_t,
+                            op: BinOp::Sub,
+                            left: IrValue::Temp(xored_t, ty.clone()),
+                            right: IrValue::Temp(mask_t, ty.clone()),
+                            ty: ty.clone(),
+                        });
+                        Some(IrValue::Temp(abs_t, ty))
+                    }
+                }
+            }
+            // BITS(x: INTEGER): SET  — §10.3
+            //   Interprets the low 32 bits of x as a bitset.
+            //   Implementation: truncate I64 → Set(32).
+            "BITS" => {
+                let x = self.lower_expr(args.first()?);
+                let dst = self.fresh_temp();
+                self.push(Instr::Cast { dst, value: x, to_ty: IrType::Set(32) });
+                Some(IrValue::Temp(dst, IrType::Set(32)))
+            }
+            // ENTIER(x): floor of x converted to LONGINT (i64).
+            //   Maps to llvm.floor intrinsic + fptosi.
+            "ENTIER" => {
+                let x = self.lower_expr(args.first()?);
+                let dst = self.fresh_temp();
+                self.push(Instr::Entier { dst, value: x });
+                Some(IrValue::Temp(dst, IrType::I64))
+            }
+            // CAP(x): Latin-1 letter → corresponding capital; other chars unchanged.
+            //   Branchless: is_lower = (x >= 'a') AND (x <= 'z')
+            //   result = x - (is_lower ? 32 : 0)
+            //   Works for both CHAR (i32/u32) and SHORTCHAR (i8).
+            "CAP" => {
+                let x = self.lower_expr(args.first()?);
+                let ty = x.ty();
+                let a_ord: i128 = 0x61; // 'a'
+                let z_ord: i128 = 0x7A; // 'z'
+                // ge_a = (x >= 'a')
+                let t_ge = self.fresh_temp();
+                self.push(Instr::BinOp { dst: t_ge, op: BinOp::Ge, left: x.clone(), right: IrValue::ConstInt(a_ord, ty.clone()), ty: IrType::Bool });
+                // le_z = (x <= 'z')
+                let t_le = self.fresh_temp();
+                self.push(Instr::BinOp { dst: t_le, op: BinOp::Le, left: x.clone(), right: IrValue::ConstInt(z_ord, ty.clone()), ty: IrType::Bool });
+                // is_lower = ge_a AND le_z  (bool AND bool)
+                let t_is = self.fresh_temp();
+                self.push(Instr::BinOp { dst: t_is, op: BinOp::And, left: IrValue::Temp(t_ge, IrType::Bool), right: IrValue::Temp(t_le, IrType::Bool), ty: IrType::Bool });
+                // extend bool to the char type: 1 → 1, 0 → 0
+                let t_flag = self.fresh_temp();
+                self.push(Instr::Cast { dst: t_flag, value: IrValue::Temp(t_is, IrType::Bool), to_ty: ty.clone() });
+                // delta = flag * 32
+                let t_delta = self.fresh_temp();
+                self.push(Instr::BinOp { dst: t_delta, op: BinOp::Mul, left: IrValue::Temp(t_flag, ty.clone()), right: IrValue::ConstInt(32, ty.clone()), ty: ty.clone() });
+                // result = x - delta
+                let t_result = self.fresh_temp();
+                self.push(Instr::BinOp { dst: t_result, op: BinOp::Sub, left: x, right: IrValue::Temp(t_delta, ty.clone()), ty: ty.clone() });
+                Some(IrValue::Temp(t_result, ty))
+            }
+            // LEN(v): length of the array in its first dimension.            //   For a fixed-size local/global array (IrType::Array { len, .. }), returns len.
+            //   For an open-array parameter (pointer), the length is not statically known here;
+            //   those callers should pass LEN(v, dim) — unsupported for now.
+            "LEN" => {
+                let arg = args.first()?;
+                // We only need the IR type, not the value (fixed arrays have a statically known length).
+                let ir_ty = match arg {
+                    Expr::Designator(des) => self.designator_ir_type(des),
+                    _ => None,
+                }?;
+                let len = match &ir_ty {
+                    IrType::Array { len, .. } => *len as i128,
+                    // Array stored behind a ref (VAR open-array param): not statically known.
+                    _ => {
+                        self.record_diagnostic("LEN: argument is not a fixed-size array; dynamic LEN not yet supported");
+                        return Some(IrValue::ConstInt(0, IrType::I64));
+                    }
+                };
+                Some(IrValue::ConstInt(len, IrType::I64))
+            }
+            // MAX(x, y): two-argument maximum (branchless via sign-bit mask)            //   diff = x - y
+            //   mask = ASH(diff, -(bits-1))  → -1 if x < y, 0 if x >= y
+            //   not_mask = mask XOR -1
+            //   result = y + (diff AND not_mask)
+            "MAX" if args.len() >= 2 => {
+                let x = self.lower_expr(args.first()?);
+                let y = self.lower_expr(args.get(1)?);
+                let ty = x.ty();
+                let bits: i128 = match &ty { IrType::I32 => 31, IrType::I16 => 15, IrType::I8 => 7, _ => 63 };
+                let t_diff = self.fresh_temp();
+                self.push(Instr::BinOp { dst: t_diff, op: BinOp::Sub, left: x, right: y.clone(), ty: ty.clone() });
+                let t_mask = self.fresh_temp();
+                self.push(Instr::Ash { dst: t_mask, value: IrValue::Temp(t_diff, ty.clone()), shift: IrValue::ConstInt(-bits, ty.clone()), ty: ty.clone() });
+                let t_not_mask = self.fresh_temp();
+                self.push(Instr::BinOp { dst: t_not_mask, op: BinOp::Xor, left: IrValue::Temp(t_mask, ty.clone()), right: IrValue::ConstInt(-1, ty.clone()), ty: ty.clone() });
+                let t_masked = self.fresh_temp();
+                self.push(Instr::BinOp { dst: t_masked, op: BinOp::And, left: IrValue::Temp(t_diff, ty.clone()), right: IrValue::Temp(t_not_mask, ty.clone()), ty: ty.clone() });
+                let t_result = self.fresh_temp();
+                self.push(Instr::BinOp { dst: t_result, op: BinOp::Add, left: y, right: IrValue::Temp(t_masked, ty.clone()), ty: ty.clone() });
+                Some(IrValue::Temp(t_result, ty))
+            }
+            // MIN(x, y): two-argument minimum (branchless via sign-bit mask)
+            //   diff = x - y
+            //   mask = ASH(diff, -(bits-1))  → -1 if x < y, 0 if x >= y
+            //   not_mask = mask XOR -1
+            //   result = x - (diff AND not_mask)
+            "MIN" if args.len() >= 2 => {
+                let x = self.lower_expr(args.first()?);
+                let y = self.lower_expr(args.get(1)?);
+                let ty = x.ty();
+                let bits: i128 = match &ty { IrType::I32 => 31, IrType::I16 => 15, IrType::I8 => 7, _ => 63 };
+                let t_diff = self.fresh_temp();
+                self.push(Instr::BinOp { dst: t_diff, op: BinOp::Sub, left: x.clone(), right: y, ty: ty.clone() });
+                let t_mask = self.fresh_temp();
+                self.push(Instr::Ash { dst: t_mask, value: IrValue::Temp(t_diff, ty.clone()), shift: IrValue::ConstInt(-bits, ty.clone()), ty: ty.clone() });
+                let t_not_mask = self.fresh_temp();
+                self.push(Instr::BinOp { dst: t_not_mask, op: BinOp::Xor, left: IrValue::Temp(t_mask, ty.clone()), right: IrValue::ConstInt(-1, ty.clone()), ty: ty.clone() });
+                let t_masked = self.fresh_temp();
+                self.push(Instr::BinOp { dst: t_masked, op: BinOp::And, left: IrValue::Temp(t_diff, ty.clone()), right: IrValue::Temp(t_not_mask, ty.clone()), ty: ty.clone() });
+                let t_result = self.fresh_temp();
+                self.push(Instr::BinOp { dst: t_result, op: BinOp::Sub, left: x, right: IrValue::Temp(t_masked, ty.clone()), ty: ty.clone() });
+                Some(IrValue::Temp(t_result, ty))
             }
             _ => None,
         }
@@ -1383,6 +1949,44 @@ impl<'m> LowerCtx<'m> {
                 self.switch_to(dead);
                 true
             }
+            // INCL(v, x): v := v + {x}  →  v := v OR (1 << x)
+            "INCL" => {
+                let Some(Expr::Designator(target)) = args.first() else { return false; };
+                let Some(bit_expr) = args.get(1) else { return false; };
+                let addr = self.designator_addr(target);
+                let current = self.fresh_temp();
+                self.push(Instr::Load { dst: current, addr: addr.clone(), ty: IrType::Set(32) });
+                let bit = self.lower_expr(bit_expr);
+                let one = IrValue::ConstInt(1, IrType::Set(32));
+                let bit64 = self.fresh_temp();
+                self.push(Instr::Cast { dst: bit64, value: bit, to_ty: IrType::Set(32) });
+                let shifted = self.fresh_temp();
+                self.push(Instr::BinOp { dst: shifted, op: BinOp::Shl, left: one, right: IrValue::Temp(bit64, IrType::Set(32)), ty: IrType::Set(32) });
+                let result = self.fresh_temp();
+                self.push(Instr::BinOp { dst: result, op: BinOp::Or, left: IrValue::Temp(current, IrType::Set(32)), right: IrValue::Temp(shifted, IrType::Set(32)), ty: IrType::Set(32) });
+                self.push(Instr::Store { addr, value: IrValue::Temp(result, IrType::Set(32)) });
+                true
+            }
+            // EXCL(v, x): v := v - {x}  →  v := v AND NOT (1 << x)  →  v AND ((1<<x) XOR -1)
+            "EXCL" => {
+                let Some(Expr::Designator(target)) = args.first() else { return false; };
+                let Some(bit_expr) = args.get(1) else { return false; };
+                let addr = self.designator_addr(target);
+                let current = self.fresh_temp();
+                self.push(Instr::Load { dst: current, addr: addr.clone(), ty: IrType::Set(32) });
+                let bit = self.lower_expr(bit_expr);
+                let one = IrValue::ConstInt(1, IrType::Set(32));
+                let bit64 = self.fresh_temp();
+                self.push(Instr::Cast { dst: bit64, value: bit, to_ty: IrType::Set(32) });
+                let shifted = self.fresh_temp();
+                self.push(Instr::BinOp { dst: shifted, op: BinOp::Shl, left: one, right: IrValue::Temp(bit64, IrType::Set(32)), ty: IrType::Set(32) });
+                let mask = self.fresh_temp();
+                self.push(Instr::BinOp { dst: mask, op: BinOp::Xor, left: IrValue::Temp(shifted, IrType::Set(32)), right: IrValue::ConstInt(-1, IrType::Set(32)), ty: IrType::Set(32) });
+                let result = self.fresh_temp();
+                self.push(Instr::BinOp { dst: result, op: BinOp::And, left: IrValue::Temp(current, IrType::Set(32)), right: IrValue::Temp(mask, IrType::Set(32)), ty: IrType::Set(32) });
+                self.push(Instr::Store { addr, value: IrValue::Temp(result, IrType::Set(32)) });
+                true
+            }
             _ => false,
         }
     }
@@ -1458,6 +2062,23 @@ impl<'m> LowerCtx<'m> {
             Statement::Assignment { target, value, .. } => {
                 let rhs = self.lower_expr(value);
                 let addr = self.designator_addr(target);
+                // Coerce rhs to match the slot type when they differ.
+                // This handles cases like SHORT(INTEGER)→I32 stored into a SHORTINT:I16 slot.
+                let slot_ty = match addr.ty() {
+                    IrType::Ref(inner) | IrType::Ptr(inner) => Some(*inner),
+                    _ => None,
+                };
+                let rhs = if let Some(slot_ty) = slot_ty {
+                    if slot_ty != rhs.ty() {
+                        let t = self.fresh_temp();
+                        self.push(Instr::Cast { dst: t, value: rhs, to_ty: slot_ty.clone() });
+                        IrValue::Temp(t, slot_ty)
+                    } else {
+                        rhs
+                    }
+                } else {
+                    rhs
+                };
                 self.push(Instr::Store { addr, value: rhs });
             }
 
@@ -1466,7 +2087,38 @@ impl<'m> LowerCtx<'m> {
                     && !self.lower_system_statement(designator)
                     && !self.lower_builtin_statement(designator)
                 {
-                    let _ = self.lower_designator(designator);
+                    // In CP, a parameterless procedure may be called without `()`.
+                    // Detect: qualified or local name with no selectors that resolves
+                    // to a procedure type → emit a zero-arg call directly.
+                    let is_bare_proc_call = {
+                        let (mod_opt, name) = match &designator.base {
+                            QualIdent { module: Some(m), name, .. } => (Some(m.as_str()), name.as_str()),
+                            QualIdent { name, .. } => (None, name.as_str()),
+                        };
+                        designator.selectors.is_empty() && (
+                            mod_opt.is_some() ||
+                            self.symbols.iter().rev()
+                                .find(|s| s.name == name)
+                                .map(|s| matches!(s.kind, SymbolKind::Procedure))
+                                .unwrap_or(false)
+                        )
+                    };
+                    if is_bare_proc_call {
+                        let (mod_opt, name) = match &designator.base {
+                            QualIdent { module: Some(m), name, .. } => (Some(m.clone()), name.clone()),
+                            QualIdent { name, .. } => (None, name.clone()),
+                        };
+                        let final_ty = self.designator_ir_type(designator)
+                            .unwrap_or_else(|| IrType::Opaque("unresolved".to_string()));
+                        let callee = match mod_opt {
+                            Some(m) => IrValue::ImportRef(m, name, final_ty),
+                            None => IrValue::GlobalRef(name, final_ty),
+                        };
+                        let ret_ty = self.callee_return_type(&callee);
+                        self.push(Instr::Call { dst: None, callee, args: vec![], ret_ty });
+                    } else {
+                        let _ = self.lower_designator(designator);
+                    }
                 }
             }
 
@@ -1624,6 +2276,12 @@ impl<'m> LowerCtx<'m> {
         let start_val = self.lower_expr(start);
         self.push(Instr::Store { addr: var_addr.clone(), value: start_val });
 
+        // Pre-evaluate step (always a constant in CP) to determine loop direction.
+        // A negative step means descending: continue while var >= end (Ge).
+        // A positive/absent step means ascending: continue while var <= end (Le).
+        let is_descending = step.map_or(false, |e| matches!(e, Expr::Unary { op: UnaryOp::Minus, .. }));
+        let cond_op = if is_descending { BinOp::Ge } else { BinOp::Le };
+
         let cond_block = self.alloc_block();
         let body_block = self.alloc_block();
         let incr_block = self.alloc_block();
@@ -1638,7 +2296,7 @@ impl<'m> LowerCtx<'m> {
         let cmp_t = self.fresh_temp();
         self.push(Instr::BinOp {
             dst: cmp_t,
-            op: BinOp::Le,
+            op: cond_op,
             left: IrValue::Temp(var_t, IrType::I64),
             right: end_val,
             ty: IrType::Bool,
@@ -2094,13 +2752,19 @@ pub fn lower_procedure(
 
     ctx.switch_to(function_exit);
     let exit_term = if ret_ty != IrType::Void {
-        let t = ctx.fresh_temp();
-        ctx.push(Instr::Load {
-            dst: t,
-            addr: result_slot.unwrap(),
-            ty: ret_ty.clone(),
-        });
-        Terminator::Ret { value: IrValue::Temp(t, ret_ty) }
+        if let Some(result_addr) = result_slot {
+            let t = ctx.fresh_temp();
+            ctx.push(Instr::Load {
+                dst: t,
+                addr: result_addr,
+                ty: ret_ty.clone(),
+            });
+            Terminator::Ret { value: IrValue::Temp(t, ret_ty) }
+        } else {
+            ctx.record_diagnostic("non-void procedure missing result slot at function exit");
+            debug_assert!(false, "lower_procedure invariant violated: non-void procedure missing result slot");
+            Terminator::Trap { kind: TrapKind::Assert }
+        }
     } else {
         Terminator::RetVoid
     };
@@ -2120,12 +2784,47 @@ fn load_cached_import<'c>(
     cache: &'c mut std::collections::HashMap<String, SemanticModule>,
 ) -> Option<&'c SemanticModule> {
     if !cache.contains_key(module) {
-        let path = Path::new("Mod").join(format!("{module}.cp"));
-        let ast = read_module_ast(&path).ok()?;
-        let sema = analyze_module_ast(&ast);
-        cache.insert(module.to_string(), sema);
+        let mut candidate_paths = IMPORT_SEARCH_ROOT.with(|root| {
+            root.borrow()
+                .as_ref()
+                .map(|base| vec![base.join(format!("{module}.cp"))])
+                .unwrap_or_default()
+        });
+        candidate_paths.push(Path::new("Mod").join(format!("{module}.cp")));
+
+        let mut imported_module = None;
+        for path in candidate_paths {
+            let Ok(ast) = read_module_ast(&path) else {
+                continue;
+            };
+            imported_module = Some(analyze_module_ast(&ast));
+            break;
+        }
+
+        cache.insert(module.to_string(), imported_module?);
     }
     cache.get(module)
+}
+
+/// Parse a Component Pascal integer literal.
+///
+/// - Decimal: plain digits, e.g. `255`, `1000`
+/// - Hex with H suffix: `digit {hexDigit} H` — interpreted as 32-bit signed (sign-extends to i128)
+/// - Hex with L suffix: `digit {hexDigit} L` — interpreted as 64-bit signed
+///
+/// Spec §3: `0DH → 13`, `0FFFF0000H → -65536`, `0FFFF0000L → 4294901760`.
+fn parse_cp_integer_literal(s: &str) -> i128 {
+    if let Some(hex) = s.strip_suffix('H') {
+        // 32-bit interpretation: sign-extend i32 → i128
+        let raw = u32::from_str_radix(hex, 16).unwrap_or(0);
+        (raw as i32) as i128
+    } else if let Some(hex) = s.strip_suffix('L') {
+        // 64-bit interpretation: sign-extend i64 → i128
+        let raw = u64::from_str_radix(hex, 16).unwrap_or(0);
+        (raw as i64) as i128
+    } else {
+        s.parse::<i128>().unwrap_or(0)
+    }
 }
 
 pub fn lower_module(sema: &SemanticModule, ast: &ModuleAst) -> IrModule {
@@ -2406,7 +3105,7 @@ fn collect_named_types(
             continue;
         }
         if let Some(sem_ty) = &sym.declared_type {
-            let flat = flatten_fields_deep(sem_ty, module_symbols);
+            let flat = flatten_fields_deep(sem_ty, module_symbols, module_name, import_cache);
             if !flat.is_empty() {
                 // Also add with the module-qualified key so cross-module references work.
                 let qualified = format!("{module_name}.{}", sym.name);
@@ -2429,7 +3128,7 @@ fn collect_named_types(
                 continue;
             }
             if let Some(sem_ty) = &sym.declared_type {
-                let flat = flatten_fields_deep_cross_module(sem_ty, &sema.symbols, import_name, import_cache);
+                let flat = flatten_fields_deep(sem_ty, &sema.symbols, import_name, import_cache);
                 if !flat.is_empty() {
                     let key = format!("{import_name}.{}", sym.name);
                     map.insert(key, flat);
@@ -2445,23 +3144,84 @@ fn collect_named_types(
 fn flatten_fields_deep(
     ty: &SemanticType,
     module_symbols: &[SemanticSymbol],
+    current_module: &str,
+    import_cache: &mut std::collections::HashMap<String, SemanticModule>,
+) -> Vec<(String, IrType)> {
+    let mut visited = std::collections::HashSet::new();
+    flatten_fields_deep_cross_module(ty, module_symbols, current_module, import_cache, &mut visited)
+}
+
+/// Like `flatten_fields_deep` but handles cross-module base types (e.g. RECORD(TypeExt.Animal)).
+fn flatten_fields_deep_cross_module(
+    ty: &SemanticType,
+    module_symbols: &[SemanticSymbol],
+    current_module: &str,
+    import_cache: &mut std::collections::HashMap<String, SemanticModule>,
+    visited: &mut std::collections::HashSet<(String, String)>,
 ) -> Vec<(String, IrType)> {
     let (base, fields) = match ty {
         SemanticType::Record { base, fields, .. } => (base.as_deref(), fields.as_slice()),
         SemanticType::Named { name, module: None, .. } => {
-            // Resolve local named type.
+            let key = (current_module.to_string(), name.clone());
+            if !visited.insert(key.clone()) {
+                return Vec::new();
+            }
             if let Some(sym) = module_symbols.iter().find(|s| s.name == *name) {
                 if let Some(resolved) = &sym.declared_type {
-                    return flatten_fields_deep(resolved, module_symbols);
+                    let resolved_fields = flatten_fields_deep_cross_module(
+                        resolved,
+                        module_symbols,
+                        current_module,
+                        import_cache,
+                        visited,
+                    );
+                    visited.remove(&key);
+                    return resolved_fields;
                 }
             }
+            visited.remove(&key);
+            return Vec::new();
+        }
+        SemanticType::Named { name, module: Some(m), .. } => {
+            let key = (m.clone(), name.clone());
+            if !visited.insert(key.clone()) {
+                return Vec::new();
+            }
+            // Base type is in another module — load and recurse.
+            if let Some(base_sema) = load_cached_import(m.as_str(), import_cache) {
+                if let Some(sym) = base_sema.symbols.iter().find(|s| s.name == *name) {
+                    if let Some(resolved) = &sym.declared_type {
+                        // Clone to avoid borrow conflict after cache lookup
+                        let resolved = resolved.clone();
+                        let symbols: Vec<_> = base_sema.symbols.clone();
+                        let m_str = m.clone();
+                        let _ = base_sema;
+                        let resolved_fields = flatten_fields_deep_cross_module(
+                            &resolved,
+                            &symbols,
+                            &m_str,
+                            import_cache,
+                            visited,
+                        );
+                        visited.remove(&key);
+                        return resolved_fields;
+                    }
+                }
+            }
+            visited.remove(&key);
             return Vec::new();
         }
         _ => return Vec::new(),
     };
     let mut result = Vec::new();
     if let Some(parent) = base {
-        result.extend(flatten_fields_deep(parent, module_symbols));
+        result.extend(flatten_fields_deep_cross_module(
+            parent,
+            module_symbols,
+            current_module,
+            import_cache,
+            visited,
+        ));
     }
     for field in fields {
         let ir_ty = map_semantic_type(&field.ty);
@@ -2472,50 +3232,73 @@ fn flatten_fields_deep(
     result
 }
 
-/// Like `flatten_fields_deep` but handles cross-module base types (e.g. RECORD(TypeExt.Animal)).
-fn flatten_fields_deep_cross_module(
-    ty: &SemanticType,
-    module_symbols: &[SemanticSymbol],
-    current_module: &str,
-    import_cache: &mut std::collections::HashMap<String, SemanticModule>,
-) -> Vec<(String, IrType)> {
-    let (base, fields) = match ty {
-        SemanticType::Record { base, fields, .. } => (base.as_deref(), fields.as_slice()),
-        SemanticType::Named { name, module: None, .. } => {
-            if let Some(sym) = module_symbols.iter().find(|s| s.name == *name) {
-                if let Some(resolved) = &sym.declared_type {
-                    return flatten_fields_deep_cross_module(resolved, module_symbols, current_module, import_cache);
-                }
-            }
-            return Vec::new();
-        }
-        SemanticType::Named { name, module: Some(m), .. } => {
-            // Base type is in another module — load and recurse.
-            if let Some(base_sema) = load_cached_import(m.as_str(), import_cache) {
-                if let Some(sym) = base_sema.symbols.iter().find(|s| s.name == *name) {
-                    if let Some(resolved) = &sym.declared_type {
-                        // Clone to avoid borrow conflict after cache lookup
-                        let resolved = resolved.clone();
-                        let symbols: Vec<_> = base_sema.symbols.clone();
-                        let m_str = m.clone();
-                        let _ = base_sema;
-                        return flatten_fields_deep_cross_module(&resolved, &symbols, &m_str, import_cache);
-                    }
-                }
-            }
-            return Vec::new();
-        }
-        _ => return Vec::new(),
-    };
-    let mut result = Vec::new();
-    if let Some(parent) = base {
-        result.extend(flatten_fields_deep_cross_module(parent, module_symbols, current_module, import_cache));
-    }
-    for field in fields {
-        let ir_ty = map_semantic_type(&field.ty);
-        for name in &field.names {
-            result.push((name.clone(), ir_ty.clone()));
+#[cfg(test)]
+mod tests {
+    use super::collect_named_types;
+    use newcp_sema::{NamedTypeKind, SemanticModule, SemanticSymbol, SemanticType, SymbolKind};
+
+    fn type_symbol(name: &str, exported: bool, declared_type: SemanticType) -> SemanticSymbol {
+        SemanticSymbol {
+            name: name.to_string(),
+            kind: SymbolKind::Type,
+            exported,
+            read_only_export: false,
+            declared_type: Some(declared_type),
+            const_value: None,
+            simd_shape: None,
         }
     }
-    result
+
+    #[test]
+    fn collect_named_types_breaks_cross_module_named_cycles() {
+        let a_symbols = vec![type_symbol(
+            "ARec",
+            true,
+            SemanticType::Named {
+                module: Some("B".to_string()),
+                name: "BRec".to_string(),
+                kind: NamedTypeKind::Imported,
+            },
+        )];
+        let b_symbols = vec![type_symbol(
+            "BRec",
+            true,
+            SemanticType::Named {
+                module: Some("A".to_string()),
+                name: "ARec".to_string(),
+                kind: NamedTypeKind::Imported,
+            },
+        )];
+
+        let mut import_cache = std::collections::HashMap::new();
+        import_cache.insert(
+            "A".to_string(),
+            SemanticModule {
+                name: "A".to_string(),
+                imports: vec!["B".to_string()],
+                symbols: a_symbols.clone(),
+                procedures: Vec::new(),
+                selector_resolutions: Vec::new(),
+                diagnostics: Vec::new(),
+            },
+        );
+        import_cache.insert(
+            "B".to_string(),
+            SemanticModule {
+                name: "B".to_string(),
+                imports: vec!["A".to_string()],
+                symbols: b_symbols,
+                procedures: Vec::new(),
+                selector_resolutions: Vec::new(),
+                diagnostics: Vec::new(),
+            },
+        );
+
+        let named_types = collect_named_types("A", &["B".to_string()], &a_symbols, &mut import_cache);
+
+        assert!(
+            !named_types.contains_key("B.BRec"),
+            "expected cyclic imported named type to be skipped rather than recurse forever"
+        );
+    }
 }

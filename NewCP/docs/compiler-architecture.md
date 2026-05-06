@@ -23,6 +23,51 @@ The pipeline is:
 9. ORC JIT materialization
 10. runtime module registration
 
+## Binding policy
+
+NewCP should distinguish three call-binding modes instead of forcing every module import through one mechanism.
+
+### 1. Direct CP-to-CP binding
+
+Default policy for ordinary Component Pascal modules:
+
+- imported CP procedures lower to direct external calls
+- generated code should keep the fast path that LLVM can reason about easily
+- normal CP module replacement should still happen at module-registration time, not by inserting a dynamic dispatch layer into every imported call
+
+This preserves the efficient case and keeps CP module calls as close as possible to ordinary interprocedural calls.
+
+### 2. Native Rust-hosted module binding
+
+Rust-hosted modules should behave like first-class modules in registration and interface metadata, while still exposing native entry points for execution.
+
+Policy:
+
+- a Rust-hosted module is described by a structured native-module artifact, not by ad hoc symbol-matching code in the backend
+- the artifact owns the hosted-module metadata: module name, imports, exports, init routine, source summary, and command handlers
+- the artifact also owns the native export bindings used by the JIT to map `Module.Export` symbols to Rust function addresses
+- bootstrap registration and JIT symbol binding should both derive from the same artifact definition so they cannot silently drift apart
+
+This gives Rust-backed modules the same registration surface and interface visibility as hosted CP modules, while preserving the efficient direct-call ABI at execution time.
+
+### 3. Late-bound modules
+
+Late-bound modules are a separate, opt-in mechanism for cases that genuinely need runtime indirection.
+
+Use cases:
+
+- hot replacement of implementations while existing code keeps calling through a stable slot
+- interface-module or DLL-style linkage where the target address is not known at compile time
+- plugin-like modules loaded after the main compilation unit has already been JIT-materialized
+
+Expected implementation shape:
+
+- imported calls lower to a module-export lookup or stable export slot instead of a direct symbol call
+- the runtime owns the authoritative binding from `(module, export)` to the current callable address
+- only modules explicitly marked late-bound pay the extra dispatch cost
+
+This mode should not become the default for ordinary CP imports. It is a targeted escape hatch for dynamic behavior, not the baseline module call path.
+
 ## Execution target
 
 The initial NewCP compiler and runtime target is a 64-bit JIT environment.
@@ -73,7 +118,7 @@ This requirement applies at least to:
 - LLVM IR
 - final assembly
 
-The compiler should therefore support commands equivalent to `dump-tokens`, `dump-ast`, `dump-sema`, `dump-module-graph`, `dump-cfg`, `dump-ir`, `dump-llvm`, and `dump-asm`.
+The compiler already supports these via CLI flags such as `--dump-ast`, `--dump-sema`, `--dump-ir`, and `--dump-llvm-ir`; these act as the foundation of our test suite (`tests/newcp-tests`).
 
 ## Front end
 
@@ -125,9 +170,9 @@ Responsibilities:
 - constant folding for all literal types (integer, real, char, string, boolean)
 - export surface construction
 
-**Constant values:** the `ConstValue` enum carries typed constant results — `Integer(i128)`, `Real(f64)`, `Char(char)`, `String(String)`, `Boolean(bool)`. Every `SemanticSymbol` of kind `Constant` has a `const_value` and an inferred `declared_type`.
+**Constant values:** the `ConstValue` enum carries typed constant results — `Integer(i128)`, `Real(f64)`, `Char(char)`, `String(String)`, `Boolean(bool)`, `Set(u32)`. Every `SemanticSymbol` of kind `Constant` has a `const_value` and an inferred `declared_type`.
 
-**Builtin scope:** every module analysis begins with a preloaded set of builtin types (`INTEGER`, `REAL`, `BOOLEAN`, `CHAR`, `BYTE`, etc.), builtin procedures (`INC`, `DEC`, `NEW`, `ASSERT`, `ABS`, `ODD`, etc.), and builtin constants (`TRUE`, `FALSE`, `INF`). These are injected at the start of `module_symbols` before any module declarations are processed.
+**Builtin scope:** every module analysis begins with a preloaded set of builtin types (`INTEGER`, `LONGINT`, `SHORTINT`, `INTSHORT`, `REAL`, `SHORTREAL`, `BOOLEAN`, `CHAR`, `SHORTCHAR`, `BYTE`, `SET`, `String`, `ShortString`), builtin procedures (`INC`, `DEC`, `NEW`, `ASSERT`, `ABS`, `ODD`, `CHR`, `ORD`, `SHORT`, `LONG`, `ENTIER`, `LEN`, `CAP`, `BITS`), and builtin constants (`TRUE`, `FALSE`, `INF`). These are injected at the start of `module_symbols` before any module declarations are processed.
 
 **Selector resolution:** ambiguous parse nodes (`AmbiguousParen`) are resolved during sema. A single bare-identifier argument `P(Name)` is resolved as a call if `P` is a known procedure, or as a type guard if `Name` is a known type. The resolution is recorded in `SelectorResolution` for each procedure and for module-level statements.
 
@@ -143,6 +188,7 @@ Output:
 Observable artifacts:
 
 - `dump-sema`: structured per-symbol and per-procedure dump including symbol kinds, types, constant values, selector resolutions, and diagnostics
+- Extensive integration tests via `cargo test -p newcp-tests` which compile and run valid CP source inputs down through JIT execution to verify semantic correctness and constant folding.
 
 ## Middle end
 
@@ -160,6 +206,188 @@ Responsibilities:
 Observable artifact:
 
 - module graph dump with dependency edges and initialization order
+
+### Loader lifecycle
+
+The primary loader model for NewCP should be source-backed JIT materialization into memory.
+
+Expected lifecycle for an ordinary module request:
+
+1. resolve the requested module name or path to source
+2. parse the root module and discover its import graph
+3. classify each import as either source-backed or runtime-provided
+4. recursively discover all source-backed dependencies
+5. topologically order the source-backed portion of the graph
+6. compile modules into memory in dependency order
+7. register each compiled module in the runtime module table
+8. initialize the requested root through the normal module-init sequence
+9. keep the materialized modules resident until explicitly invalidated or the session ends
+
+This is the normal model for the BlackBox bring-up case. It does not require late binding and it does not require a database in order to be correct.
+
+### Loader sessions and caching
+
+The loader should eventually own a long-lived session object rather than behaving as a one-shot helper around a single root module.
+
+The session should track at least:
+
+- source resolution results
+- discovered import graphs
+- source-backed versus runtime-provided imports
+- compiled-in-memory module residency state
+- invalidation state after replacement or recompilation
+- the compiler and runtime settings that affect materialization
+
+The source files remain the source of truth. Loader state is only a cache and coordination layer.
+
+### Module replacement and code residency
+
+For ordinary CP modules, NewCP should prefer direct recompilation of the changed module plus all affected source-backed importers.
+
+Policy:
+
+- direct CP-to-CP calls remain the fast path
+- recompiling a module requires recompiling any importer whose generated code directly depends on that module's exported code or layout
+- replacement should create a new active materialization generation instead of mutating an old one in place
+- the previous generation should be retired, not immediately destroyed
+- retired generations should remain resident until the loader reaches a quiescent point and can garbage-collect them safely
+
+This is the intended compromise between safety and speed:
+
+- safer than overwriting executable state in place
+- faster than making every CP-to-CP call late-bound
+- compatible with eventual code GC for retired generations
+
+The loader session is therefore responsible for two separate views of a module:
+
+- the currently active generation used for new loads and rebinding
+- one or more retired generations kept alive temporarily so existing execution cannot fall into freed code
+
+The runtime module table exposes only the active generation. Retired generations are a loader-internal residency concern.
+
+### Generation-aware CP export binding
+
+Ordinary CP-to-CP imports should keep stable source-level names, but the executable layer needs generation identity.
+
+Binding policy:
+
+- source-level exported names remain stable as `Module.Export`
+- compiled CP exported procedures are emitted with generation-qualified internal LLVM symbol names
+- imported CP procedures are still declared in the importer as stable public names
+- the loader resolves those imported public names to concrete addresses from the currently selected active generations
+- older importers keep their old bound addresses until they themselves are recompiled or retired
+
+This gives NewCP both properties it needs:
+
+- stable module/interface naming at the language and runtime-metadata level
+- unambiguous executable residency for multiple generations of the same compiled CP module
+
+Practical consequence:
+
+- stable runtime/native services do not need generation-qualified names
+- compiled CP procedure exports do need generation-qualified internal identity or equivalent loader-managed scoping
+- the loader is responsible for supplying address mappings for source-backed CP imports at JIT materialization time
+
+Minimum retirement protocol:
+
+1. detect a changed source-backed module or a dependency-driven importer rebuild
+2. compile a replacement generation
+3. register the replacement as the active runtime module
+4. move the previous generation into a retired set
+5. keep retired generations resident until a quiescent point is observed
+6. garbage-collect only those retired generations whose quiescent safety condition has been met
+
+This keeps the direct-call model intact while avoiding immediate use-after-free hazards for old executable code.
+
+### Quiescence detection
+
+The key question is not whether a newer generation exists. The key question is whether any active execution can still reach an older generation.
+
+For the current NewCP design, quiescence should be detected through loader-owned execution scopes.
+
+Execution-scope model:
+
+- each command invocation, module body execution, or other loader-mediated entry into CP code begins an execution scope
+- beginning a scope records the active generation of every source-backed module in the relevant import graph
+- a retired generation is not collectible while any active execution scope still pins that exact `(module, generation)` pair
+- a quiescent point is observed only when no active execution scope still pins the retired generations under consideration
+
+Practical rule:
+
+- replacement retires old generations immediately
+- retirement alone does not imply collectability
+- garbage collection requires both:
+    - at least one quiescent epoch or explicit reclamation boundary after retirement
+    - zero active execution scopes that still reference the retired generation
+
+This gives NewCP a concrete safety test:
+
+- if a generation is absent from all active execution scopes, then no loader-tracked execution should still be able to enter it
+- if a generation is still pinned by any active scope, it must remain resident
+
+This mechanism is compatible with later refinements:
+
+- explicit command-scope tracking in the UI host
+- thread-local execution scopes for concurrent commands
+- runtime-assisted safe-point reporting for finer-grained reclamation
+
+The first implementation can remain conservative. Conservative quiescence detection is acceptable; premature collection is not.
+
+### SQLite-backed loader cache
+
+SQLite can be useful here, but it should be treated as a cache for warm-start and invalidation, not as the primary module system.
+
+Useful roles for SQLite:
+
+- persist discovered module graph metadata across process restarts
+- cache file identity information such as size, mtime, and content hash
+- record the last known source-backed and runtime-provided import sets for a module
+- speed up repeated startup scans over a few hundred modules
+- support selective invalidation when only a subset of files changes
+
+Poor roles for SQLite:
+
+- deciding final module semantics instead of reparsing source when correctness matters
+- replacing the runtime module table
+- becoming mandatory for the first end-to-end source-to-memory bring-up
+
+If SQLite is introduced, the database should store derived metadata, not authoritative semantics.
+
+Recommended schema direction:
+
+- `files(path, size, mtime_utc, content_hash, last_seen_session)`
+- `modules(name, source_path, content_hash, parse_status, sema_status)`
+- `module_imports(module_name, import_name, import_kind, resolved_path)`
+- `materializations(module_name, target_triple, opt_level, codegen_hash, status)`
+- `sessions(session_id, started_at_utc, target_triple, pointer_width)`
+
+Recommended invalidation policy:
+
+- a source file change invalidates that module record immediately
+- any importer depending on the changed module is marked dirty transitively
+- compiler option changes invalidate codegen and materialization entries, but not necessarily parse/import graph entries
+- runtime-provided imports are validated against the current runtime registry at session start
+
+Recommended adoption order:
+
+1. finish the in-memory loader session model first
+2. make graph discovery, classification, and invalidation behavior stable
+3. add SQLite only as a persistence layer for those already-settled semantics
+
+That sequencing keeps the design honest. Otherwise there is a real risk of using the database to paper over an immature loader model.
+
+### Runtime module registration
+
+The runtime registration layer should preserve a single conceptual module system even when some modules are implemented in Rust.
+
+Requirements:
+
+- compiled CP modules register as JIT-compiled modules with imports, exports, descriptors, interface metadata, and init routine
+- Rust-hosted modules register through the same module-table shape, but use a native-module artifact to also describe their executable native export bindings
+- replacement semantics must be consistent across both forms: registering a replacement invalidates the previous active module record of the same name
+- interface inspection and bootstrap reporting should not need to care whether a module body is CP-generated or Rust-hosted
+
+This keeps the runtime model coherent without forcing the code generator to treat every module import as dynamically dispatched.
 
 ### CFG lowering
 

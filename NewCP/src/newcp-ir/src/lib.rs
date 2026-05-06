@@ -1,11 +1,13 @@
-﻿mod types;
+﻿#![cfg_attr(not(test), deny(clippy::unwrap_used, clippy::expect_used))]
+
+mod types;
 mod ir;
 mod procedure;
 mod lower;
 
 pub use types::{IrType, RecordLayout};
 pub use ir::{BasicBlock, BinOp, BlockId, Instr, IrValue, TempId, Terminator, TrapKind, UnOp};
-pub use procedure::{IrGlobal, IrModule, IrProcedure};
+pub use procedure::{IrGlobal, IrModule, IrProcedure, LoweringDiagnostic};
 pub use lower::{lower_module, lower_procedure, map_semantic_type};
 
 use std::path::Path;
@@ -13,8 +15,21 @@ use newcp_parser::read_module_ast;
 
 /// Parse, analyze, and lower a source file to an `IrModule`.
 pub fn lower_from_path(path: &Path) -> Result<IrModule, String> {
+    let _import_root_guard = lower::push_import_search_root(path);
     let (sema_module, ast) = parse_and_analyze(path)?;
-    Ok(lower_module(&sema_module, &ast))
+    let ir_module = lower_module(&sema_module, &ast);
+    if ir_module.has_lowering_diagnostics() {
+        return Err(format_lowering_diagnostics(&ir_module));
+    }
+    Ok(ir_module)
+}
+
+fn format_lowering_diagnostics(ir_module: &IrModule) -> String {
+    let mut lines = vec![format!("lowering diagnostics for module {}", ir_module.name)];
+    for (procedure, message) in ir_module.lowering_diagnostics() {
+        lines.push(format!("error  {procedure}: {message}"));
+    }
+    lines.join("\n")
 }
 
 fn parse_and_analyze(path: &Path) -> Result<(newcp_sema::SemanticModule, newcp_parser::ModuleAst), String> {
@@ -27,6 +42,7 @@ fn parse_and_analyze(path: &Path) -> Result<(newcp_sema::SemanticModule, newcp_p
 /// module at `path`.  Runs sema first to obtain the typed module, then lowers
 /// to IR and renders the CFG skeleton.
 pub fn dump_cfg(path: &Path) -> String {
+    let _import_root_guard = lower::push_import_search_root(path);
     match parse_and_analyze(path) {
         Ok((sema_module, ast)) => {
             let ir_module = lower_module(&sema_module, &ast);
@@ -35,6 +51,9 @@ pub fn dump_cfg(path: &Path) -> String {
                 format!("input: {}", path.display()),
                 format!("module: {}", ir_module.name),
             ];
+            for (procedure, message) in ir_module.lowering_diagnostics() {
+                lines.push(format!("error  {procedure}: {message}"));
+            }
             if ir_module.procedures.is_empty() {
                 lines.push("procedures: <none>".to_string());
             } else {
@@ -55,6 +74,7 @@ pub fn dump_cfg(path: &Path) -> String {
 
 /// Produce a full IR dump (instructions + terminators) for each procedure.
 pub fn dump_ir(path: &Path) -> String {
+    let _import_root_guard = lower::push_import_search_root(path);
     match parse_and_analyze(path) {
         Ok((sema_module, ast)) => {
             let ir_module = lower_module(&sema_module, &ast);
@@ -62,6 +82,9 @@ pub fn dump_ir(path: &Path) -> String {
                 "newcp-ir module dump".to_string(),
                 format!("input: {}", path.display()),
             ];
+            for (procedure, message) in ir_module.lowering_diagnostics() {
+                lines.push(format!("error  {procedure}: {message}"));
+            }
             lines.push(ir_module.render());
             lines.join("\n")
         }
@@ -148,13 +171,16 @@ fn render_terminator_brief(term: &Terminator) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::procedure::LoweringDiagnostic;
     use newcp_sema::{BuiltinType, SemanticType};
 
     #[test]
     fn cfg_dump_lists_procedure_blocks() {
         let temp = std::env::temp_dir().join("newcp-ir-test.cp");
-        std::fs::write(&temp, "MODULE Demo;\nPROCEDURE Run*;\nBEGIN\nEND Run;\nEND Demo.")
-            .expect("write test module");
+        assert!(
+            std::fs::write(&temp, "MODULE Demo;\nPROCEDURE Run*;\nBEGIN\nEND Run;\nEND Demo.").is_ok(),
+            "write test module"
+        );
 
         let dump = dump_cfg(&temp);
         let _ = std::fs::remove_file(&temp);
@@ -186,7 +212,7 @@ mod tests {
                 "END Demo."
             ),
         )
-        .expect("write test module");
+        .unwrap_or_else(|error| panic!("write test module: {error}"));
 
         let dump = dump_ir(&temp);
         let _ = std::fs::remove_file(&temp);
@@ -203,5 +229,26 @@ mod tests {
             map_semantic_type(&SemanticType::Builtin(BuiltinType::IntShort)),
             IrType::I32
         );
+    }
+
+    #[test]
+    fn format_lowering_diagnostics_lists_procedure_errors() {
+        let mut proc = IrProcedure::new("Run".to_string(), true, Vec::new(), IrType::Void);
+        proc.diagnostics.push(LoweringDiagnostic {
+            message: "void method call used as expression".to_string(),
+        });
+        let module = IrModule {
+            name: "Demo".to_string(),
+            imports: Vec::new(),
+            globals: Vec::new(),
+            procedures: vec![proc],
+            named_types: std::collections::HashMap::new(),
+            type_vtables: std::collections::HashMap::new(),
+            type_bases: std::collections::HashMap::new(),
+        };
+
+        let rendered = format_lowering_diagnostics(&module);
+        assert!(rendered.contains("lowering diagnostics for module Demo"));
+        assert!(rendered.contains("error  Run: void method call used as expression"));
     }
 }

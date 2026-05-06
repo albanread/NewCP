@@ -33,8 +33,11 @@ pub enum IrValue {
     ConstBool(bool),
     /// A character constant (Unicode scalar).
     ConstChar(char),
-    /// A string constant (interned literal).
-    ConstStr(String),
+    /// A string constant (interned literal). The second field is the element type:
+    /// `IrType::Char` for CHAR strings (UTF-32), `IrType::ShortChar` for SHORTCHAR strings
+    /// (Latin-1 / 8-bit). Polymorphic literals default to `Char` and are rewritten to
+    /// `ShortChar` at call sites that expect `ARRAY OF SHORTCHAR`.
+    ConstStr(String, IrType),
     /// The null pointer.
     Null(IrType),
     /// Reference to a named symbol in this module (global variable, procedure).
@@ -51,7 +54,7 @@ impl IrValue {
             IrValue::ConstReal(_, ty) => ty.clone(),
             IrValue::ConstBool(_) => IrType::Bool,
             IrValue::ConstChar(_) => IrType::Char,
-            IrValue::ConstStr(_) => IrType::Ptr(Box::new(IrType::ShortChar)),
+            IrValue::ConstStr(_, elem) => IrType::Ptr(Box::new(elem.clone())),
             IrValue::Null(ty) => ty.clone(),
             IrValue::GlobalRef(_, ty) => ty.clone(),
             IrValue::ImportRef(_, _, ty) => ty.clone(),
@@ -65,7 +68,7 @@ impl IrValue {
             IrValue::ConstReal(v, _) => format!("{v}"),
             IrValue::ConstBool(b) => b.to_string(),
             IrValue::ConstChar(c) => format!("'{c}'"),
-            IrValue::ConstStr(s) => format!("\"{s}\""),
+            IrValue::ConstStr(s, _) => format!("\"{s}\""),
             IrValue::Null(_) => "null".to_string(),
             IrValue::GlobalRef(name, _) => name.clone(),
             IrValue::ImportRef(module, name, _) => format!("{module}.{name}"),
@@ -157,12 +160,19 @@ pub enum Instr {
     AddrOf { dst: TempId, sym: IrValue },
     /// `t = bitcast value to ty`  — SYSTEM.VAL
     BitCast { dst: TempId, value: IrValue, ty: IrType },
+    /// `t = cast value as to_ty`  — numeric/char type conversion (ORD, CHR, SHORT, LONG, ENTIER, ABS)
+    ///
+    /// The correct LLVM operation (trunc/zext/sext/ftrunc/fext/ftoi/itof) is inferred
+    /// by the emitter from the source and destination type pair.
+    Cast { dst: TempId, value: IrValue, to_ty: IrType },
     /// `t = lsh value, shift`  — SYSTEM.LSH
     Lsh { dst: TempId, value: IrValue, shift: IrValue, ty: IrType },
     /// `t = ash value, shift`  — ASH builtin (arithmetic shift: shl for n≥0, ashr for n<0)
     Ash { dst: TempId, value: IrValue, shift: IrValue, ty: IrType },
     /// `t = rot value, shift`  — SYSTEM.ROT
     Rot { dst: TempId, value: IrValue, shift: IrValue, ty: IrType },
+    /// `t = entier value`  — ENTIER builtin: floor(value) cast to i64
+    Entier { dst: TempId, value: IrValue },
     /// `memcopy dst, src, len`  — SYSTEM.MOVE
     MemCopy { dst: IrValue, src: IrValue, len: IrValue },
     /// `t = typ value`  — SYSTEM.TYP

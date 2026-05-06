@@ -3,6 +3,9 @@ name = "newcp-driver"
 version = "0.1.0"
 edition = "2024"
 
+[features]
+gui = ["newcp-runtime/gui"]
+
 [dependencies]
 newcp-ir = { path = "../newcp-ir" }
 newcp-lexer = { path = "../newcp-lexer" }

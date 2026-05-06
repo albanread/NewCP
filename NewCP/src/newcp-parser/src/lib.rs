@@ -30,6 +30,11 @@ pub struct SourceModuleSpec {
     pub imports: Vec<String>,
     pub exports: Vec<SourceExport>,
     pub procedures: Vec<SourceProcedure>,
+    /// True when the source file declares `DEFINITION MODULE Foo;`.
+    /// A definition module provides type signatures for the type-checker and
+    /// IR lowerer but is never compiled into JIT code — the real implementation
+    /// is provided by a Rust-native module registered with the same name.
+    pub is_definition: bool,
 }
 
 impl SourceModuleSpec {
@@ -50,6 +55,8 @@ pub struct ModuleAst {
     pub declarations: Vec<Declaration>,
     pub body: Option<Vec<Statement>>,
     pub close: Option<Vec<Statement>>,
+    /// True when the file opened with `DEFINITION MODULE`.
+    pub is_definition: bool,
 }
 
 impl ModuleAst {
@@ -113,6 +120,7 @@ impl ModuleAst {
             imports: self.imports.iter().map(|item| item.name.clone()).collect(),
             exports,
             procedures,
+            is_definition: self.is_definition,
         }
     }
 }
@@ -477,15 +485,23 @@ pub fn parse_source_module(source_text: &str) -> Result<SourceModuleSpec, String
 struct Parser {
     tokens: Vec<Token>,
     index: usize,
+    is_definition: bool,
 }
 
 impl Parser {
     fn new(tokens: Vec<Token>) -> Self {
-        Self { tokens, index: 0 }
+        Self { tokens, index: 0, is_definition: false }
     }
 
     fn parse_module(&mut self) -> Result<ModuleAst, String> {
         let start = self.current_start();
+        // Accept both:  "MODULE Foo;"  and  "DEFINITION MODULE Foo;"
+        let is_definition = if self.match_keyword("DEFINITION") {
+            true
+        } else {
+            false
+        };
+        self.is_definition = is_definition;
         self.expect_keyword("MODULE")?;
         let name = self.expect_identifier()?;
         self.expect_symbol(";")?;
@@ -525,6 +541,7 @@ impl Parser {
             declarations,
             body,
             close,
+            is_definition,
         })
     }
 
@@ -593,9 +610,17 @@ impl Parser {
                     heading,
                 }));
             } else {
-                declarations.push(Declaration::Procedure(self.parse_procedure_declaration()?));
+                let proc = self.parse_procedure_declaration()?;
+                let has_body = proc.body.is_some();
+                declarations.push(Declaration::Procedure(proc));
+                // Definition modules use bodyless headings; no ";" follows them.
+                if has_body || !self.is_definition {
+                    self.expect_symbol(";")?;
+                } else {
+                    // Optionally consume a ";" if present (allows both styles).
+                    self.match_symbol(";");
+                }
             }
-            self.expect_symbol(";")?;
         }
 
         Ok(declarations)
@@ -645,7 +670,7 @@ impl Parser {
             Some(MethodFlavor::Abstract | MethodFlavor::Empty)
         ) {
             None
-        } else if self.match_symbol(";") {
+        } else if !self.is_definition && self.match_symbol(";") {
             let body_start = self.previous_end();
             let declarations = self.parse_declaration_sequence()?;
             let body = if self.match_keyword("BEGIN") {
@@ -672,6 +697,8 @@ impl Parser {
                 body,
             })
         } else {
+            // In a definition module, consume optional trailing ";" after the heading.
+            if self.is_definition { self.match_symbol(";"); }
             None
         };
 

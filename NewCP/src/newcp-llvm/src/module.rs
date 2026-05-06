@@ -3,14 +3,27 @@ use std::collections::HashMap;
 use inkwell::builder::Builder;
 use inkwell::context::Context;
 use inkwell::module::{Linkage, Module};
+use inkwell::passes::PassBuilderOptions;
+use inkwell::targets::TargetMachine;
 use inkwell::types::{BasicTypeEnum, StructType};
 use inkwell::values::{FunctionValue, GlobalValue, PointerValue};
 
-use newcp_ir::{IrGlobal, IrModule, IrProcedure};
+use newcp_ir::{IrGlobal, IrModule, IrProcedure, IrType};
 
 use crate::error::CodegenError;
-use crate::options::CodegenOptions;
+use crate::options::{CodegenOptions, OptLevel};
 use crate::types::TypeLowerer;
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct BackendDiagnostic {
+    pub message: String,
+}
+
+impl BackendDiagnostic {
+    pub fn render(&self) -> String {
+        self.message.clone()
+    }
+}
 
 /// Holds declared LLVM function values, keyed by procedure name.
 pub struct GlobalPlanner<'ctx> {
@@ -56,16 +69,28 @@ pub struct CodegenModule<'ctx> {
     pub builder: Builder<'ctx>,
     pub planner: GlobalPlanner<'ctx>,
     pub lowerer: TypeLowerer<'ctx>,
+    pub diagnostics: Vec<BackendDiagnostic>,
 }
 
 impl<'ctx> CodegenModule<'ctx> {
     /// Stage 2: create the LLVM context, module, and builder.
+    ///
+    /// The `machine` is used to stamp the module with the correct target triple
+    /// and data layout immediately after creation. Without this the new-style
+    /// `run_passes` optimisation pipeline has no target metadata and silently
+    /// skips all target-dependent transforms, producing identical output at
+    /// every optimisation level.
     pub fn new(
         context: &'ctx Context,
         ir_module: &IrModule,
         _options: &CodegenOptions,
+        machine: &TargetMachine,
     ) -> Result<Self, CodegenError> {
         let module = context.create_module(&ir_module.name);
+        // Stamp triple and data layout so the optimisation pipeline can reason
+        // about pointer sizes, alignment, and target-specific transforms.
+        module.set_triple(&machine.get_triple());
+        module.set_data_layout(&machine.get_target_data().get_data_layout());
         let builder = context.create_builder();
         let lowerer = TypeLowerer::new(context);
         Ok(Self {
@@ -74,7 +99,14 @@ impl<'ctx> CodegenModule<'ctx> {
             builder,
             planner: GlobalPlanner::new(),
             lowerer,
+            diagnostics: Vec::new(),
         })
+    }
+
+    fn record_diagnostic(&mut self, message: impl Into<String>) {
+        self.diagnostics.push(BackendDiagnostic {
+            message: message.into(),
+        });
     }
 
     /// Stage 3: declare all procedures and globals in the LLVM module so that
@@ -89,7 +121,7 @@ impl<'ctx> CodegenModule<'ctx> {
         self.declare_named_types(ir_module, options);
         self.declare_globals(ir_module, options)?;
         for proc in &ir_module.procedures {
-            self.declare_procedure(proc, options)?;
+            self.declare_procedure(ir_module, proc, options)?;
         }
         // Declare `@__newcp_sys_new(i64) -> ptr` if needed.
         if uses_sys_new(ir_module) {
@@ -112,6 +144,9 @@ impl<'ctx> CodegenModule<'ctx> {
                 .collect();
             if field_types.len() != fields.len() {
                 // Skip types with unsupported fields for now.
+                self.record_diagnostic(format!(
+                    "skipping named type '{type_name}' because one or more fields could not be lowered to LLVM"
+                ));
                 continue;
             }
             let struct_ty = self.context.opaque_struct_type(type_name.as_str());
@@ -140,6 +175,10 @@ impl<'ctx> CodegenModule<'ctx> {
                     if options.strict_unsupported {
                         return Err(err);
                     }
+                    self.record_diagnostic(format!(
+                        "global '{}' lowered to opaque ptr fallback: {}",
+                        global.name, err
+                    ));
                     self.context.ptr_type(inkwell::AddressSpace::default()).into()
                 }
             };
@@ -184,6 +223,7 @@ impl<'ctx> CodegenModule<'ctx> {
 
     fn declare_procedure(
         &mut self,
+        ir_module: &IrModule,
         proc: &IrProcedure,
         options: &CodegenOptions,
     ) -> Result<(), CodegenError> {
@@ -201,6 +241,12 @@ impl<'ctx> CodegenModule<'ctx> {
                         return Err(e);
                     }
                     // Degrade unsupported param to ptr; codegen will trap at call sites.
+                    self.record_diagnostic(format!(
+                        "procedure '{}' parameter '{}' lowered to ptr fallback: {}",
+                        proc.name,
+                        ty.render(),
+                        e
+                    ));
                     param_types
                         .push(self.context.ptr_type(inkwell::AddressSpace::default()).into());
                 }
@@ -225,33 +271,46 @@ impl<'ctx> CodegenModule<'ctx> {
             }
         };
 
-        let fn_val = self.module.add_function(&proc.name, fn_type, None);
+        let llvm_name = if proc.exported {
+            options.exported_symbol_name(&ir_module.name, &proc.name)
+        } else {
+            proc.name.clone()
+        };
+
+        let fn_val = self.module.add_function(&llvm_name, fn_type, None);
         self.planner.functions.insert(proc.name.clone(), fn_val);
         Ok(())
     }
 
-    /// Get or emit a private `[N x i8]` string constant global for `s`.
-    ///
-    /// Returns a `ptr` pointing at element 0 (the first byte of the null-terminated string).
-    /// Identical string contents share a single global — the cache is keyed by string value.
-    pub fn get_or_emit_string_constant(&mut self, s: &str) -> PointerValue<'ctx> {
-        if let Some(&ptr) = self.planner.string_constants.get(s) {
+    /// Get or emit a private string constant global for `s` whose element type
+    /// is `elem_ty` (`IrType::Char` → `[N x i32]` UTF-32; `IrType::ShortChar` →
+    /// `[N x i8]` Latin-1). Identical (text, element-type) pairs share one global.
+    pub fn get_or_emit_string_constant(&mut self, s: &str, elem_ty: &IrType) -> PointerValue<'ctx> {
+        let is_short = matches!(elem_ty, IrType::ShortChar | IrType::I8 | IrType::U8);
+        let cache_key = if is_short { format!("s:{s}") } else { format!("c:{s}") };
+        if let Some(&ptr) = self.planner.string_constants.get(&cache_key) {
             return ptr;
         }
 
-        // Build a null-terminated byte sequence.
-        let bytes: Vec<u8> = s.bytes().chain(std::iter::once(0u8)).collect();
-        let i8_ty = self.context.i8_type();
-        let array_ty = i8_ty.array_type(bytes.len() as u32);
+        let (array_ty, initializer) = if is_short {
+            // Null-terminated SHORTCHAR (Latin-1) byte sequence.
+            let i8_ty = self.context.i8_type();
+            let bytes: Vec<u8> = s.chars()
+                .map(|c| if (c as u32) <= 0xFF { c as u8 } else { b'?' })
+                .chain(std::iter::once(0u8))
+                .collect();
+            let arr_ty = i8_ty.array_type(bytes.len() as u32);
+            let vals: Vec<_> = bytes.iter().map(|&b| i8_ty.const_int(b as u64, false)).collect();
+            (arr_ty, i8_ty.const_array(&vals))
+        } else {
+            // Null-terminated UTF-32 code-point sequence.
+            let i32_ty = self.context.i32_type();
+            let codepoints: Vec<u32> = s.chars().map(|c| c as u32).chain(std::iter::once(0u32)).collect();
+            let arr_ty = i32_ty.array_type(codepoints.len() as u32);
+            let vals: Vec<_> = codepoints.iter().map(|&cp| i32_ty.const_int(cp as u64, false)).collect();
+            (arr_ty, i32_ty.const_array(&vals))
+        };
 
-        // Build the LLVM [N x i8] constant.
-        let byte_vals: Vec<_> = bytes
-            .iter()
-            .map(|&b| i8_ty.const_int(b as u64, false))
-            .collect();
-        let initializer = i8_ty.const_array(&byte_vals);
-
-        // Generate a stable, unique name.
         let idx = self.planner.string_constants.len();
         let global_name = format!(".str.{idx}");
         let global = self.module.add_global(array_ty, None, &global_name);
@@ -260,14 +319,11 @@ impl<'ctx> CodegenModule<'ctx> {
         global.set_linkage(inkwell::module::Linkage::Private);
 
         // GEP to element 0 to produce a `ptr`.
-        let ptr_ty = self.context.ptr_type(inkwell::AddressSpace::default());
         let zero = self.context.i32_type().const_zero();
         let ptr = unsafe {
             global.as_pointer_value().const_in_bounds_gep(array_ty, &[zero, zero])
         };
-        // The GEP result is an i8* in modern LLVM; cast to opaque ptr.
-        let _ = ptr_ty;
-        self.planner.string_constants.insert(s.to_string(), ptr);
+        self.planner.string_constants.insert(cache_key, ptr);
         ptr
     }
 
@@ -408,6 +464,26 @@ impl<'ctx> CodegenModule<'ctx> {
     /// Return the LLVM textual IR for the completed module.
     pub fn print_to_string(&self) -> String {
         self.module.print_to_string().to_string()
+    }
+
+    /// Run the configured optimization pipeline.
+    pub fn optimize(&self, opt_level: OptLevel, machine: &TargetMachine) -> Result<(), CodegenError> {
+        if opt_level == OptLevel::None {
+            return Ok(());
+        }
+
+        let pipeline = match opt_level {
+            OptLevel::None => return Ok(()),
+            OptLevel::Less => "default<O1>",
+            OptLevel::Default => "default<O2>",
+            OptLevel::Aggressive => "default<O3>",
+        };
+        let pass_options = PassBuilderOptions::create();
+        pass_options.set_verify_each(false);
+
+        self.module
+            .run_passes(pipeline, machine, pass_options)
+            .map_err(|e| CodegenError::Verify(format!("optimization pipeline '{pipeline}' failed: {e}")))
     }
 
     /// Verify the module; return the error string on failure.

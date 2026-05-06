@@ -1742,7 +1742,15 @@ impl<'a> Analyzer<'a> {
                 element_type,
                 ..
             } => SemanticType::Array {
-                lengths: lengths.iter().map(render_expr).collect(),
+                lengths: lengths.iter().map(|len_expr| {
+                    // Evaluate the length expression to a numeric constant if possible.
+                    // This handles named constants like TextMax as well as literals.
+                    if let Some(ConstValue::Integer(n)) = evaluate_const_expr(len_expr, &[], &self.module_symbols) {
+                        n.to_string()
+                    } else {
+                        render_expr(len_expr)
+                    }
+                }).collect(),
                 element_type: Box::new(self.resolve_type_decl(None, element_type, scope_type_names)),
                 untagged: matches!(self.normalize_sys_flag(sys_flag.as_ref()), Some(NormalizedSysFlag::Untagged)),
             },
@@ -2844,7 +2852,12 @@ impl<'a> Analyzer<'a> {
                         infer_additive_or_multiplicative_result(*op, left_type.as_ref(), right_type.as_ref())
                     }
                     BinaryOp::Divide => {
-                        if left_type.as_ref().is_some_and(|ty| is_numeric_type(ty))
+                        // SET / SET = symmetric difference (→ SET)
+                        if matches!(left_type.as_ref(), Some(SemanticType::Builtin(BuiltinType::Set)))
+                            && matches!(right_type.as_ref(), Some(SemanticType::Builtin(BuiltinType::Set)))
+                        {
+                            Some(SemanticType::Builtin(BuiltinType::Set))
+                        } else if left_type.as_ref().is_some_and(|ty| is_numeric_type(ty))
                             && right_type.as_ref().is_some_and(|ty| is_numeric_type(ty))
                         {
                             Some(SemanticType::Builtin(BuiltinType::Real))
@@ -3015,7 +3028,10 @@ impl<'a> Analyzer<'a> {
                             (is_numeric_type(&left_type) && is_numeric_type(&right_type))
                                 || matches!((&left_type, &right_type), (SemanticType::Builtin(BuiltinType::Set), SemanticType::Builtin(BuiltinType::Set)))
                         }
-                        BinaryOp::Divide => is_numeric_type(&left_type) && is_numeric_type(&right_type),
+                        BinaryOp::Divide => {
+                            (is_numeric_type(&left_type) && is_numeric_type(&right_type))
+                                || matches!((&left_type, &right_type), (SemanticType::Builtin(BuiltinType::Set), SemanticType::Builtin(BuiltinType::Set)))
+                        }
                         BinaryOp::Div | BinaryOp::Mod => is_integer_type(&left_type) && is_integer_type(&right_type),
                         BinaryOp::Or | BinaryOp::And => is_boolean_type(&left_type) && is_boolean_type(&right_type),
                         BinaryOp::Equal | BinaryOp::NotEqual => are_relation_compatible(&left_type, &right_type),
@@ -4017,6 +4033,15 @@ impl<'a> Analyzer<'a> {
             }
             (SemanticType::Procedure(expected_sig), SemanticType::Procedure(actual_sig)) => {
                 procedure_types_match(expected_sig, actual_sig)
+            }
+            // Open array parameter (lengths empty) accepts any concrete array with a
+            // compatible element type.  This is the standard Oberon/CP rule:
+            //   ARRAY OF T  ← ARRAY n OF T  (for any positive n)
+            (
+                SemanticType::Array { lengths: expected_lengths, element_type: expected_elem, .. },
+                SemanticType::Array { element_type: actual_elem, .. },
+            ) if expected_lengths.is_empty() => {
+                self.types_are_assignment_compatible(expected_elem, actual_elem, local_symbols)
             }
             _ => false,
         }
@@ -6862,10 +6887,12 @@ mod tests {
             "{}",
             messages
         );
+        // SET / SET is now valid (symmetric difference); the error should be the
+        // assignment type mismatch: i (INTEGER) := s/s (SET)
         assert!(
             sema.diagnostics
                 .iter()
-                .any(|item| item.message.contains("invalid operands for /: SET and SET")),
+                .any(|item| item.message.contains("assignment type mismatch") && item.message.contains("SET")),
             "{}",
             messages
         );

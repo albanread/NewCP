@@ -13,6 +13,69 @@ mod tests {
             .to_path_buf()
     }
 
+    /// Load a CP module by `module_ref` (name or path) relative to the workspace root,
+    /// call the exported `Module.Proc` procedure (which must have signature `fn() -> i64`
+    /// at the C ABI level), and return the integer result.
+    ///
+    /// Panics if loading fails or the export is not found.
+    fn run_function(module_ref: &str, proc_name: &str) -> i64 {
+        // Resolve to an absolute path so we don't fight over the process cwd.
+        let abs_ref = workspace_root().join(module_ref);
+        let abs_ref_str = abs_ref.to_str().expect("workspace path is UTF-8");
+
+        let mut session = newcp_loader::LoaderSession::new();
+        session
+            .ensure_import_graph_loaded(abs_ref_str)
+            .unwrap_or_else(|e| panic!("load {module_ref}: {e}"));
+
+        let module_name = module_ref
+            .trim_end_matches(".cp")
+            .rsplit(['/', '\\'])
+            .next()
+            .unwrap_or(module_ref)
+            .trim_end_matches(".cp");
+        let export_path = format!("{module_name}.{proc_name}");
+        let address = session
+            .active_export_address(module_name, &export_path)
+            .unwrap_or_else(|| panic!("export not found: {export_path}"));
+
+        let f: unsafe extern "C" fn() -> i64 = unsafe { std::mem::transmute(address) };
+        unsafe { f() }
+    }
+
+    /// Like `run_function` but the procedure writes to the console (void return).
+    /// Returns the captured console output.
+    fn run_void_function(module_ref: &str, proc_name: &str) -> String {
+        let abs_ref = workspace_root().join(module_ref);
+        let abs_ref_str = abs_ref.to_str().expect("workspace path is UTF-8");
+
+        newcp_runtime::console::reset();
+        newcp_runtime::console::begin_capture();
+
+        let mut session = newcp_loader::LoaderSession::new();
+        session
+            .ensure_import_graph_loaded(abs_ref_str)
+            .unwrap_or_else(|e| panic!("load {module_ref}: {e}"));
+
+        let module_name = module_ref
+            .trim_end_matches(".cp")
+            .rsplit(['/', '\\'])
+            .next()
+            .unwrap_or(module_ref)
+            .trim_end_matches(".cp");
+        let export_path = format!("{module_name}.{proc_name}");
+        let address = session
+            .active_export_address(module_name, &export_path)
+            .unwrap_or_else(|| panic!("export not found: {export_path}"));
+
+        let f: unsafe extern "C" fn() = unsafe { std::mem::transmute(address) };
+        unsafe { f() };
+
+        let output = newcp_runtime::console::end_capture();
+        newcp_runtime::console::reset();
+        output
+    }
+
     fn driver_bin() -> PathBuf {
         let bin = workspace_root()
             .join("target")
@@ -77,6 +140,20 @@ mod tests {
         let stdout = String::from_utf8_lossy(&out.stdout).into_owned();
         let code = out.status.code().unwrap_or(-1);
         (stdout, code)
+    }
+
+    /// Run `invoke-command <cmd>` from the workspace root and return (stdout+stderr, exit_code).
+    fn invoke_command(cmd: &str) -> (String, i32) {
+        let out = Command::new(driver_bin())
+            .args(["invoke-command", cmd])
+            .current_dir(workspace_root())
+            .output()
+            .expect("failed to spawn driver binary");
+
+        let mut combined = String::from_utf8_lossy(&out.stdout).into_owned();
+        combined.push_str(&String::from_utf8_lossy(&out.stderr));
+        let code = out.status.code().unwrap_or(-1);
+        (combined, code)
     }
 
     #[test]
@@ -200,6 +277,48 @@ mod tests {
         assert!(
             output.contains("call void @VarBase.Bump(ptr %x)"),
             "expected VAR argument to be passed by address\noutput:\n{output}"
+        );
+    }
+
+    #[test]
+    fn dump_llvm_console_module_emits_imported_console_calls() {
+        let (output, code) = dump_llvm_source(
+            "newcp-console-probe.cp",
+            concat!(
+                "MODULE Demo;\n",
+                "IMPORT Console;\n",
+                "VAR x: INTEGER; ch: CHAR;\n",
+                "PROCEDURE Run*;\n",
+                "BEGIN\n",
+                "  Console.WriteInt(42);\n",
+                "  Console.WriteChar(41X);\n",
+                "  Console.WriteLn;\n",
+                "  Console.ReadInt(x);\n",
+                "  Console.ReadChar(ch)\n",
+                "END Run;\n",
+                "END Demo."
+            ),
+        );
+        assert_eq!(code, 0, "expected exit 0 for Console probe\noutput:\n{output}");
+        assert!(
+            output.contains("declare void @Console.WriteInt(i64)"),
+            "expected imported Console.WriteInt declaration\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("declare void @Console.WriteChar(i32)"),
+            "expected imported Console.WriteChar declaration\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("declare void @Console.WriteLn()"),
+            "expected imported Console.WriteLn declaration\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("declare void @Console.ReadInt(ptr)"),
+            "expected imported Console.ReadInt VAR declaration\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("declare void @Console.ReadChar(ptr)"),
+            "expected imported Console.ReadChar VAR declaration\noutput:\n{output}"
         );
     }
 
@@ -849,5 +968,718 @@ mod tests {
             "expected WithMutation to call Accumulate with accum ptr\noutput:\n{output}"
         );
     }
-}
 
+    // -------------------------------------------------------------------------
+    // String-array execution tests
+    // -------------------------------------------------------------------------
+
+    #[test]
+    fn invoke_str_arrays_fixed_size_passed_as_pointer() {
+        let (output, code) = invoke_command("StrArrays.Run");
+        assert_eq!(code, 0, "expected exit 0 for StrArrays.Run\noutput:\n{output}");
+        assert!(
+            output.contains("hello from literal"),
+            "expected string literal passed through open-array param\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("fixed array copy"),
+            "expected fixed local array passed through open-array param\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("seven!"),
+            "expected small fixed array passed through open-array param\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("global array"),
+            "expected module-global fixed array passed through open-array param\noutput:\n{output}"
+        );
+    }
+
+    #[test]
+    fn invoke_str_arrays_ir_passes_arrays_as_pointers() {
+        let (output, code) = dump_ir("Mod/StrArrays.cp");
+        assert_eq!(code, 0, "expected exit 0 for StrArrays IR dump\noutput:\n{output}");
+        // The fixed-size local arrays must appear as alloca'd slots and be
+        // passed by address (ptr), never loaded as [N x i8] values.
+        assert!(
+            output.contains("call Console.WriteShortString("),
+            "expected WriteShortString call in IR\noutput:\n{output}"
+        );
+        // The call to PrintLn with the local32 array must pass it by address
+        // (i.e., the arg is an IrValue::GlobalRef/Ref or a temp from designator_addr,
+        // not a loaded array value).
+        assert!(
+            !output.contains("load local32") && !output.contains("load local8"),
+            "arrays must not be loaded as values before passing\noutput:\n{output}"
+        );
+    }
+
+    // -------------------------------------------------------------------------
+    // Result-calculation tests (Calc.cp)
+    // These load and JIT Mod/Calc.cp directly via the loader API and call
+    // exported functions by address, asserting on the i64 return value.
+    // No subprocess, no IR text matching, no console output parsing.
+    // -------------------------------------------------------------------------
+
+    #[test]
+    fn calc_arithmetic_add() {
+        assert_eq!(run_function("Mod/Calc.cp", "Add"), 7);
+    }
+
+    #[test]
+    fn calc_arithmetic_sub() {
+        assert_eq!(run_function("Mod/Calc.cp", "Sub"), 7);
+    }
+
+    #[test]
+    fn calc_arithmetic_mul() {
+        assert_eq!(run_function("Mod/Calc.cp", "Mul"), 42);
+    }
+
+    #[test]
+    fn calc_arithmetic_div() {
+        assert_eq!(run_function("Mod/Calc.cp", "DivPos"), 3);
+    }
+
+    #[test]
+    fn calc_arithmetic_mod() {
+        assert_eq!(run_function("Mod/Calc.cp", "ModPos"), 2);
+    }
+
+    #[test]
+    fn calc_arithmetic_neg() {
+        assert_eq!(run_function("Mod/Calc.cp", "NegArith"), -7);
+    }
+
+    #[test]
+    fn calc_cmp_true() {
+        assert_eq!(run_function("Mod/Calc.cp", "CmpTrue"), 1);
+    }
+
+    #[test]
+    fn calc_cmp_false() {
+        assert_eq!(run_function("Mod/Calc.cp", "CmpFalse"), 0);
+    }
+
+    #[test]
+    fn calc_char_ord() {
+        assert_eq!(run_function("Mod/Calc.cp", "CharOrd"), 65);
+    }
+
+    #[test]
+    fn calc_char_hex_literal() {
+        assert_eq!(run_function("Mod/Calc.cp", "CharHex"), 65);
+    }
+
+    #[test]
+    fn calc_char_chr() {
+        assert_eq!(run_function("Mod/Calc.cp", "CharChr"), 90);
+    }
+
+    #[test]
+    fn calc_shortchar_ord() {
+        assert_eq!(run_function("Mod/Calc.cp", "ShortCharOrd"), 97);
+    }
+
+    #[test]
+    fn calc_shortchar_literal() {
+        assert_eq!(run_function("Mod/Calc.cp", "ShortCharLit"), 42);
+    }
+
+    #[test]
+    fn calc_shortchar_array_literal_len() {
+        assert_eq!(run_function("Mod/Calc.cp", "LiteralLen"), 5);
+    }
+
+    #[test]
+    fn calc_shortchar_array_copy_len() {
+        assert_eq!(run_function("Mod/Calc.cp", "ArrayCopy"), 2);
+    }
+
+    #[test]
+    fn calc_set_in() {
+        assert_eq!(run_function("Mod/Calc.cp", "SetIn"), 1);
+    }
+
+    #[test]
+    fn calc_set_not_in() {
+        assert_eq!(run_function("Mod/Calc.cp", "SetNotIn"), 0);
+    }
+
+    #[test]
+    fn calc_loop_sum_to_10() {
+        assert_eq!(run_function("Mod/Calc.cp", "SumTo10"), 55);
+    }
+
+    #[test]
+    fn calc_loop_factorial_5() {
+        assert_eq!(run_function("Mod/Calc.cp", "Factorial5"), 120);
+    }
+
+    #[test]
+    fn calc_case_circle() {
+        assert_eq!(run_function("Mod/Calc.cp", "CaseCircle"), 0);
+    }
+
+    #[test]
+    fn calc_case_triangle() {
+        assert_eq!(run_function("Mod/Calc.cp", "CaseTriangle"), 3);
+    }
+
+    #[test]
+    fn calc_case_else() {
+        assert_eq!(run_function("Mod/Calc.cp", "CaseElse"), -1);
+    }
+
+    // -------------------------------------------------------------------------
+    // Floor DIV/MOD — CP spec: x DIV y = ENTIER(x/y), MOD satisfies
+    //   0 <= (x MOD y) < y  when y > 0  (floor semantics, not truncation)
+    // -------------------------------------------------------------------------
+
+    #[test]
+    fn calc_div_neg_dividend() {
+        // -5 DIV 3 = -2  (floor), not -1 (truncation)
+        assert_eq!(run_function("Mod/Calc.cp", "DivNeg"), -2);
+    }
+
+    #[test]
+    fn calc_mod_neg_dividend() {
+        // -5 MOD 3 = 1  (always non-negative when divisor > 0)
+        assert_eq!(run_function("Mod/Calc.cp", "ModNeg"), 1);
+    }
+
+    #[test]
+    fn calc_div_neg_divisor() {
+        // 5 DIV -3 = -2  (floor)
+        assert_eq!(run_function("Mod/Calc.cp", "DivNegY"), -2);
+    }
+
+    #[test]
+    fn calc_mod_neg_divisor() {
+        // 5 MOD -3 = -1  (always non-positive when divisor < 0)
+        assert_eq!(run_function("Mod/Calc.cp", "ModNegY"), -1);
+    }
+
+    #[test]
+    fn calc_div_both_neg() {
+        // -5 DIV -3 = 1  (floor)
+        assert_eq!(run_function("Mod/Calc.cp", "DivBothNeg"), 1);
+    }
+
+    // -------------------------------------------------------------------------
+    // SET binary operators — +, -, *, / on SET type
+    // -------------------------------------------------------------------------
+
+    #[test]
+    fn calc_set_union() {
+        // {1,2} + {3,4}: 3 should be in result
+        assert_eq!(run_function("Mod/Calc.cp", "SetUnion"), 1);
+    }
+
+    #[test]
+    fn calc_set_intersect() {
+        // {1,2,3} * {2,3,4}: 2 in, 1 not in
+        assert_eq!(run_function("Mod/Calc.cp", "SetIntersect"), 1);
+    }
+
+    #[test]
+    fn calc_set_diff() {
+        // {1,2,3} - {2,3,4}: 1 in, 2 not in
+        assert_eq!(run_function("Mod/Calc.cp", "SetDiff"), 1);
+    }
+
+    #[test]
+    fn calc_set_sym_diff() {
+        // {1,2,3} / {2,3,4}: 1 in, 4 in, 2 not in
+        assert_eq!(run_function("Mod/Calc.cp", "SetSymDiff"), 1);
+    }
+
+    #[test]
+    fn calc_set_range_literal() {
+        // {3..7}: 5 in, 2 not in, 8 not in
+        assert_eq!(run_function("Mod/Calc.cp", "SetRange"), 1);
+    }
+
+    // -------------------------------------------------------------------------
+    // ABS, ODD, ASH
+    // -------------------------------------------------------------------------
+
+    #[test]
+    fn calc_abs_positive() {
+        assert_eq!(run_function("Mod/Calc.cp", "AbsPos"), 7);
+    }
+
+    #[test]
+    fn calc_abs_negative() {
+        assert_eq!(run_function("Mod/Calc.cp", "AbsNeg"), 7);
+    }
+
+    #[test]
+    fn calc_odd_true() {
+        assert_eq!(run_function("Mod/Calc.cp", "OddTrue"), 1);
+    }
+
+    #[test]
+    fn calc_odd_false() {
+        assert_eq!(run_function("Mod/Calc.cp", "OddFalse"), 0);
+    }
+
+    #[test]
+    fn calc_ash_left_shift() {
+        // ASH(1, 4) = 16
+        assert_eq!(run_function("Mod/Calc.cp", "AshLeft"), 16);
+    }
+
+    #[test]
+    fn calc_ash_right_shift() {
+        // ASH(16, -2) = 4
+        assert_eq!(run_function("Mod/Calc.cp", "AshRight"), 4);
+    }
+
+    // -------------------------------------------------------------------------
+    // FOR loop
+    // -------------------------------------------------------------------------
+
+    #[test]
+    fn calc_for_sum_1_to_5() {
+        // 1+2+3+4+5 = 15
+        assert_eq!(run_function("Mod/Calc.cp", "ForSum"), 15);
+    }
+
+    #[test]
+    fn calc_for_by_2() {
+        // 0+2+4+6+8+10 = 30
+        assert_eq!(run_function("Mod/Calc.cp", "ForBy2"), 30);
+    }
+
+    #[test]
+    fn calc_for_count_down() {
+        // 5+4+3+2+1 = 15
+        assert_eq!(run_function("Mod/Calc.cp", "ForDown"), 15);
+    }
+
+    // -------------------------------------------------------------------------
+    // LOOP / EXIT
+    // -------------------------------------------------------------------------
+
+    #[test]
+    fn calc_loop_exit() {
+        // increment until i >= 5, return i
+        assert_eq!(run_function("Mod/Calc.cp", "LoopExit"), 5);
+    }
+
+    // -------------------------------------------------------------------------
+    // Two-argument MAX / MIN
+    // -------------------------------------------------------------------------
+
+    #[test]
+    fn calc_max_of_two() {
+        assert_eq!(run_function("Mod/Calc.cp", "MaxOfTwo"), 7);
+    }
+
+    #[test]
+    fn calc_min_of_two() {
+        assert_eq!(run_function("Mod/Calc.cp", "MinOfTwo"), 3);
+    }
+
+    // -------------------------------------------------------------------------
+    // INC / DEC variants  (§10.3)
+    // -------------------------------------------------------------------------
+
+    #[test]
+    fn calc_inc_step() {
+        // INC(x, 4) with x=3 → 7
+        assert_eq!(run_function("Mod/Calc.cp", "IncStep"), 7);
+    }
+
+    #[test]
+    fn calc_dec_one() {
+        // DEC(x) with x=8 → 7
+        assert_eq!(run_function("Mod/Calc.cp", "DecOne"), 7);
+    }
+
+    #[test]
+    fn calc_dec_step() {
+        // DEC(x, 3) with x=10 → 7
+        assert_eq!(run_function("Mod/Calc.cp", "DecStep"), 7);
+    }
+
+    // -------------------------------------------------------------------------
+    // INCL / EXCL  (§10.3)
+    // -------------------------------------------------------------------------
+
+    #[test]
+    fn calc_incl_excl() {
+        // INCL(s,5); EXCL(s,5); INCL(s,3): 3 in, 5 not in
+        assert_eq!(run_function("Mod/Calc.cp", "InclExcl"), 1);
+    }
+
+    // -------------------------------------------------------------------------
+    // Monadic SET complement  -s = {i | i NOT IN s}  (§8.2.3)
+    // -------------------------------------------------------------------------
+
+    #[test]
+    fn calc_set_complement() {
+        // s={0,1,2}; t:=-s: 0 not in t, 3 in t
+        assert_eq!(run_function("Mod/Calc.cp", "SetComplement"), 1);
+    }
+
+    // -------------------------------------------------------------------------
+    // ELSIF chain  (§9.4)
+    // -------------------------------------------------------------------------
+
+    #[test]
+    fn calc_elsif_chain() {
+        // x=5: matches ELSIF x<10 → 1
+        assert_eq!(run_function("Mod/Calc.cp", "ElsifChain"), 1);
+    }
+
+    // -------------------------------------------------------------------------
+    // CASE with range labels  (§9.5)
+    // -------------------------------------------------------------------------
+
+    #[test]
+    fn calc_case_range() {
+        // x=7: matches arm 7..9 → 3
+        assert_eq!(run_function("Mod/Calc.cp", "CaseRange"), 3);
+    }
+
+    // -------------------------------------------------------------------------
+    // BOOLEAN as an assignable value  (§6.1, §9.1)
+    // -------------------------------------------------------------------------
+
+    #[test]
+    fn calc_bool_val() {
+        // b := 3 > 2 (TRUE); IF b → 1
+        assert_eq!(run_function("Mod/Calc.cp", "BoolVal"), 1);
+    }
+
+    // -------------------------------------------------------------------------
+    // Nested WHILE loop  (§9.6)
+    // -------------------------------------------------------------------------
+
+    #[test]
+    fn calc_double_loop() {
+        // 3×3 iterations → s = 9
+        assert_eq!(run_function("Mod/Calc.cp", "DoubleLoop"), 9);
+    }
+
+    // -------------------------------------------------------------------------
+    // Early RETURN  (§9.10)
+    // -------------------------------------------------------------------------
+
+    #[test]
+    fn calc_early_return() {
+        // returns i immediately when i = 5
+        assert_eq!(run_function("Mod/Calc.cp", "EarlyReturn"), 5);
+    }
+
+    // -------------------------------------------------------------------------
+    // Recursive call  (§10)
+    // -------------------------------------------------------------------------
+
+    #[test]
+    fn calc_recursive_factorial() {
+        // RecFact(5) = 5! = 120
+        assert_eq!(run_function("Mod/Calc.cp", "RecFactorial5"), 120);
+    }
+
+    // -------------------------------------------------------------------------
+    // REPEAT / UNTIL with DEC  (§9.7, §10.3)
+    // -------------------------------------------------------------------------
+
+    #[test]
+    fn calc_repeat_down() {
+        // i=10; REPEAT DEC(i) UNTIL i<=5 → 5
+        assert_eq!(run_function("Mod/Calc.cp", "RepeatDown"), 5);
+    }
+
+    // -------------------------------------------------------------------------
+    // Local CONST declaration  (§5)
+    // -------------------------------------------------------------------------
+
+    #[test]
+    fn calc_local_const() {
+        // CONST N=6; N*N = 36
+        assert_eq!(run_function("Mod/Calc.cp", "LocalConst"), 36);
+    }
+
+    // -------------------------------------------------------------------------
+    // LEN of a fixed-size array  (§10.3)
+    // -------------------------------------------------------------------------
+
+    #[test]
+    fn calc_len_fixed_array() {
+        // VAR a: ARRAY 10 OF INTEGER; LEN(a) = 10
+        assert_eq!(run_function("Mod/Calc.cp", "LenFixed"), 10);
+    }
+
+    // -------------------------------------------------------------------------
+    // ENTIER: floor of real → INTEGER  (§10.3)
+    // -------------------------------------------------------------------------
+
+    #[test]
+    fn calc_entier_floor() {
+        // ENTIER(3.7) = 3
+        assert_eq!(run_function("Mod/Calc.cp", "EntierFloor"), 3);
+    }
+
+    #[test]
+    fn calc_entier_neg() {
+        // ENTIER(-1.2) = -2  (floor, not truncation)
+        assert_eq!(run_function("Mod/Calc.cp", "EntierNeg"), -2);
+    }
+
+    #[test]
+    fn calc_real_add_entier() {
+        // ENTIER(1.5 + 1.5) = 3
+        assert_eq!(run_function("Mod/Calc.cp", "RealAdd"), 3);
+    }
+
+    // -------------------------------------------------------------------------
+    // CAP: capitalize a Latin-1 letter  (§10.3)
+    // -------------------------------------------------------------------------
+
+    #[test]
+    fn calc_cap_lower() {
+        // ORD(CAP('a')) = 65 = ORD('A')
+        assert_eq!(run_function("Mod/Calc.cp", "CapLower"), 65);
+    }
+
+    // =========================================================================
+    // OR operator  (§8.2.1)
+    // =========================================================================
+
+    #[test]
+    fn calc_or_true() {
+        // ODD(3) OR ODD(4) = TRUE OR FALSE = TRUE → 1
+        assert_eq!(run_function("Mod/Calc.cp", "OrTrue"), 1);
+    }
+
+    #[test]
+    fn calc_or_false() {
+        // ODD(4) OR ODD(6) = FALSE OR FALSE = FALSE → 0
+        assert_eq!(run_function("Mod/Calc.cp", "OrFalse"), 0);
+    }
+
+    // =========================================================================
+    // Real division /  (§8.2.2)
+    // =========================================================================
+
+    #[test]
+    fn calc_real_div() {
+        // ENTIER(7.0 / 2.0) = ENTIER(3.5) = 3
+        assert_eq!(run_function("Mod/Calc.cp", "RealDiv"), 3);
+    }
+
+    // =========================================================================
+    // Hex integer literal  H suffix  (§3)
+    // =========================================================================
+
+    #[test]
+    fn calc_hex_lit() {
+        // 0FFH = 255
+        assert_eq!(run_function("Mod/Calc.cp", "HexLit"), 255);
+    }
+
+    // =========================================================================
+    // SHORT / LONG  (§10.3)
+    // =========================================================================
+
+    #[test]
+    fn calc_short_long_roundtrip() {
+        // SHORT(1000): INTEGER→INTSHORT; LONG(x): INTSHORT→INTEGER → 1000
+        assert_eq!(run_function("Mod/Calc.cp", "ShortLong"), 1000);
+    }
+
+    // =========================================================================
+    // ENTIER of SHORTREAL  (§10.3)
+    // =========================================================================
+
+    #[test]
+    fn calc_entier_shortreal() {
+        // ENTIER(SHORT(3.7)) = floor(3.7f32) = 3
+        assert_eq!(run_function("Mod/Calc.cp", "ShortRealFloor"), 3);
+    }
+
+    // =========================================================================
+    // BITS  (§10.3)
+    // =========================================================================
+
+    #[test]
+    fn calc_bits_test() {
+        // BITS(5) = {0,2} since 5 = 101b; test membership
+        assert_eq!(run_function("Mod/Calc.cp", "BitsTest"), 1);
+    }
+
+    // =========================================================================
+    // ORD of SET  (§10.3)
+    // =========================================================================
+
+    #[test]
+    fn calc_ord_set() {
+        // ORD({0,2}) = 2^0 + 2^2 = 1 + 4 = 5
+        assert_eq!(run_function("Mod/Calc.cp", "OrdSet"), 5);
+    }
+
+    // =========================================================================
+    // CASE with CHAR expression and range labels  (§9.5)
+    // =========================================================================
+
+    #[test]
+    fn calc_case_char() {
+        // ch := 'M'; CASE ch OF 'A'..'Z' → 1
+        assert_eq!(run_function("Mod/Calc.cp", "CaseChar"), 1);
+    }
+
+    // =========================================================================
+    // CASE with comma-separated label list  (§9.5)
+    // =========================================================================
+
+    #[test]
+    fn calc_case_multi_label() {
+        // x := 3; CASE x OF 1,3,5 → 1
+        assert_eq!(run_function("Mod/Calc.cp", "CaseMultiLabel"), 1);
+    }
+
+    // =========================================================================
+    // Record field access  (§6.3)
+    // =========================================================================
+
+    #[test]
+    fn calc_record_fields() {
+        // p.x := 3; p.y := 4; p.x + p.y = 7
+        assert_eq!(run_function("Mod/Calc.cp", "RecordFields"), 7);
+    }
+
+    // =========================================================================
+    // 2-dimensional array indexing  (§6.2)
+    // =========================================================================
+
+    #[test]
+    fn calc_array_2d() {
+        // a[1][2] := 7; a[1][2] = 7
+        assert_eq!(run_function("Mod/Calc.cp", "Array2D"), 7);
+    }
+
+    // =========================================================================
+    // ARRAY m,n abbreviated form + a[i,j] multi-index  (§6.2)
+    // =========================================================================
+
+    #[test]
+    fn calc_array_2d_comma() {
+        assert_eq!(run_function("Mod/Calc.cp", "Array2DComma"), 42);
+    }
+
+    // =========================================================================
+    // Comparison operators  # >= <=  (§8.2.5)
+    // =========================================================================
+
+    #[test]
+    fn calc_cmp_neq() {
+        // 3 # 5  → TRUE → 1
+        assert_eq!(run_function("Mod/Calc.cp", "CmpNeq"), 1);
+    }
+
+    #[test]
+    fn calc_cmp_geq() {
+        // 5 >= 5 → TRUE → 1
+        assert_eq!(run_function("Mod/Calc.cp", "CmpGeq"), 1);
+    }
+
+    #[test]
+    fn calc_cmp_leq() {
+        // 3 <= 5 → TRUE → 1
+        assert_eq!(run_function("Mod/Calc.cp", "CmpLeq"), 1);
+    }
+
+    // =========================================================================
+    // Boolean NOT of a variable  (§8.2.1)
+    // =========================================================================
+
+    #[test]
+    fn calc_bool_not() {
+        // b := ~(3 > 5)  = ~FALSE = TRUE → 1
+        assert_eq!(run_function("Mod/Calc.cp", "BoolNot"), 1);
+    }
+
+    // =========================================================================
+    // Module-level global variable  (§7, §11)
+    // =========================================================================
+
+    #[test]
+    fn calc_glob_var() {
+        // globalX := 99; RETURN globalX → 99
+        assert_eq!(run_function("Mod/Calc.cp", "GlobVarTest"), 99);
+    }
+
+    // =========================================================================
+    // L-suffix integer literal → LONGINT  (§3)
+    // =========================================================================
+
+    #[test]
+    fn calc_l_lit() {
+        // 0FFFF0000L = 4294901760
+        assert_eq!(run_function("Mod/Calc.cp", "LLit"), 4294901760_i64);
+    }
+
+    // =========================================================================
+    // VAR parameter (pass by reference)  (§10.1)
+    // =========================================================================
+
+    #[test]
+    fn calc_var_param() {
+        // n := 14; Increment(n) → INC(n) → n = 15
+        assert_eq!(run_function("Mod/Calc.cp", "VarParamTest"), 15);
+    }
+
+    // =========================================================================
+    // LOOP with two EXIT points  (§9.9, §9.10)
+    // =========================================================================
+
+    #[test]
+    fn calc_loop_multi_exit() {
+        // exits when i = 3 (the first EXIT fires before i reaches 10)
+        assert_eq!(run_function("Mod/Calc.cp", "LoopMultiExit"), 3);
+    }
+
+    // =========================================================================
+    // Nested local procedure  (§10 — procedure declarations may be nested)
+    // =========================================================================
+
+    #[test]
+    fn calc_nested_proc() {
+        // NestedProcTest contains local Double(x) = x*2; returns Double(21) = 42
+        assert_eq!(run_function("Mod/Calc.cp", "NestedProcTest"), 42);
+    }
+
+    // =========================================================================
+    // CHAR comparison  (§8.2.5 — relations on character types)
+    // =========================================================================
+
+    #[test]
+    fn calc_char_cmp() {
+        // 'b' > 'a'  (98 > 97) → TRUE → 1
+        assert_eq!(run_function("Mod/Calc.cp", "CharCmp"), 1);
+    }
+
+    // =========================================================================
+    // SHORTINT arithmetic via SHORT / LONG  (§6.1, §10.3)
+    // =========================================================================
+
+    #[test]
+    fn calc_shortint_arith() {
+        // x := SHORT(100): INTEGER→SHORTINT; LONG(x)*2 = 200
+        assert_eq!(run_function("Mod/Calc.cp", "ShortIntArith"), 200);
+    }
+
+    // =========================================================================
+    // IN parameter (read-only open-array formal)  (§10.1)
+    // =========================================================================
+
+    #[test]
+    fn calc_in_param() {
+        // a = [1,2,3,4]; SumArray(a,4) = 10
+        assert_eq!(run_function("Mod/Calc.cp", "InParamTest"), 10);
+    }
+}

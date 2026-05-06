@@ -7,21 +7,128 @@ mod types;
 
 pub use error::CodegenError;
 pub use jit::JitModule;
+pub use module::BackendDiagnostic;
 pub use options::{CodegenOptions, OptLevel};
 
-use std::path::Path;
+use std::collections::HashMap;
+use std::mem::ManuallyDrop;
+use std::path::{Path, PathBuf};
 
 use inkwell::context::Context;
+use inkwell::targets::{CodeModel, RelocMode, Target, TargetMachine};
 
 use newcp_ir::{IrModule, IrType};
+
+fn create_target_machine(options: &CodegenOptions) -> Result<TargetMachine, CodegenError> {
+    let triple = options
+        .target_triple
+        .as_deref()
+        .map(inkwell::targets::TargetTriple::create)
+        .unwrap_or_else(TargetMachine::get_default_triple);
+    let target = Target::from_triple(&triple)
+        .map_err(|e| CodegenError::Jit(format!("target from triple failed: {e}")))?;
+
+    // Use the actual host CPU and its feature set so LLVM can emit and
+    // optimise for the real instruction set (SSE4.2, AVX2, …) rather than a
+    // lowest-common-denominator generic baseline.
+    let cpu = TargetMachine::get_host_cpu_name();
+    let features = TargetMachine::get_host_cpu_features();
+
+    target
+        .create_target_machine(
+            &triple,
+            cpu.to_str().unwrap_or("generic"),
+            features.to_str().unwrap_or(""),
+            options.opt_level.to_llvm(),
+            RelocMode::Default,
+            CodeModel::Default,
+        )
+        .ok_or_else(|| CodegenError::Jit("could not create target machine".to_string()))
+}
 
 /// A compiled module: the verified LLVM IR text and exported symbol manifest.
 pub struct CompiledModule {
     pub module_name: String,
+    pub source_path: Option<PathBuf>,
     /// The textual LLVM IR produced by this compilation. Stable inspection
     /// artifact — matches exactly the IR that was handed to the JIT.
     pub llvm_ir: String,
     pub exported_functions: Vec<ExportedFunction>,
+    pub diagnostics: Vec<BackendDiagnostic>,
+}
+
+/// Owns a JIT module together with the LLVM context it depends on.
+///
+/// `ExecutionEngine` carries a lifetime tied to the `Context`. This wrapper
+/// keeps both in one owner so higher layers can retain and retire executable
+/// generations safely.
+pub struct OwnedJitModule {
+    context: Box<Context>,
+    jit: ManuallyDrop<JitModule<'static>>,
+}
+
+impl OwnedJitModule {
+    pub fn from_compiled(
+        compiled: CompiledModule,
+        options: &CodegenOptions,
+    ) -> Result<Self, CodegenError> {
+        Self::from_compiled_with_symbol_mappings(compiled, options, &HashMap::new())
+    }
+
+    pub fn from_compiled_with_symbol_mappings(
+        compiled: CompiledModule,
+        options: &CodegenOptions,
+        extra_symbol_mappings: &HashMap<String, usize>,
+    ) -> Result<Self, CodegenError> {
+        let context = Box::new(Context::create());
+        let jit = jit_module_with_symbol_mappings(&context, compiled, options, extra_symbol_mappings)?;
+        let jit = unsafe { std::mem::transmute::<JitModule<'_>, JitModule<'static>>(jit) };
+
+        Ok(Self {
+            context,
+            jit: ManuallyDrop::new(jit),
+        })
+    }
+
+    pub fn exported_function_count(&self) -> usize {
+        self.jit.exported_functions.len()
+    }
+
+    pub fn export_address(&self, public_name: &str) -> Result<usize, CodegenError> {
+        self.jit.export_address(public_name)
+    }
+
+    pub fn exported_public_names(&self) -> Vec<String> {
+        self.jit
+            .exported_functions
+            .iter()
+            .map(|export| export.public_name.clone())
+            .collect()
+    }
+
+    pub unsafe fn get_function<F>(&self, public_name: &str) -> Result<F, CodegenError>
+    where
+        F: Copy,
+    {
+        unsafe { self.jit.get_function(public_name) }
+    }
+}
+
+impl Drop for OwnedJitModule {
+    fn drop(&mut self) {
+        unsafe {
+            ManuallyDrop::drop(&mut self.jit);
+        }
+        let _ = &self.context;
+    }
+}
+
+impl std::fmt::Debug for OwnedJitModule {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("OwnedJitModule")
+            .field("exported_function_count", &self.exported_function_count())
+            .finish()
+    }
 }
 
 /// An exported procedure visible to the JIT symbol lookup.
@@ -50,8 +157,10 @@ pub fn compile_ir_module(
         .map_err(|e| CodegenError::Jit(format!("target initialization failed: {e}")))?;
 
     let context = Context::create();
-    // Stage 2: context + module + builder.
-    let mut cg = module::CodegenModule::new(&context, ir_module, options)?;
+    // Stage 2: create target machine first so the module can be stamped with
+    // the correct triple and data layout before any passes or optimisations run.
+    let machine = create_target_machine(options)?;
+    let mut cg = module::CodegenModule::new(&context, ir_module, options, &machine)?;
 
     // Stage 3: declare all globals and procedures.
     cg.plan(ir_module, options)?;
@@ -61,6 +170,8 @@ pub fn compile_ir_module(
         let mut emitter = emit::ProcedureEmitter::new(&mut cg, options);
         emitter.emit(proc)?;
     }
+
+    cg.optimize(options.opt_level, &machine)?;
 
     // Stage 5: verify.
     cg.verify()?;
@@ -73,8 +184,8 @@ pub fn compile_ir_module(
         .iter()
         .filter(|p| p.exported)
         .map(|p| ExportedFunction {
-            public_name: format!("{}.{}", ir_module.name, p.name),
-            llvm_name: p.name.clone(),
+            public_name: CodegenOptions::public_symbol_name(&ir_module.name, &p.name),
+            llvm_name: options.exported_symbol_name(&ir_module.name, &p.name),
             params: p.params.iter().map(|(_, ty)| ty.clone()).collect(),
             ret_ty: p.ret_ty.clone(),
         })
@@ -82,8 +193,10 @@ pub fn compile_ir_module(
 
     Ok(CompiledModule {
         module_name: ir_module.name.clone(),
+        source_path: None,
         llvm_ir,
         exported_functions,
+        diagnostics: cg.diagnostics.clone(),
     })
 }
 
@@ -94,20 +207,32 @@ pub fn compile_ir_module(
 pub fn jit_module<'ctx>(
     context: &'ctx Context,
     compiled: CompiledModule,
-    _options: &CodegenOptions,
+    options: &CodegenOptions,
+) -> Result<JitModule<'ctx>, CodegenError> {
+    jit_module_with_symbol_mappings(context, compiled, options, &HashMap::new())
+}
+
+pub fn jit_module_with_symbol_mappings<'ctx>(
+    context: &'ctx Context,
+    compiled: CompiledModule,
+    options: &CodegenOptions,
+    extra_symbol_mappings: &HashMap<String, usize>,
 ) -> Result<JitModule<'ctx>, CodegenError> {
     // Re-parse the verified IR string back into an LLVM module so we can hand
     // it to the JIT. This round-trip is intentional: it proves the textual dump
     // is the exact artifact that gets executed.
+    let mut llvm_ir = compiled.llvm_ir.into_bytes();
+    llvm_ir.push(0);
     let memory_buf = inkwell::memory_buffer::MemoryBuffer::create_from_memory_range(
-        compiled.llvm_ir.as_bytes(),
+        &llvm_ir,
         &compiled.module_name,
     );
     let module = context
         .create_module_from_ir(memory_buf)
         .map_err(|e| CodegenError::Jit(format!("IR round-trip parse failed: {e}")))?;
+    let global_mappings = jit::collect_global_mappings(&module, extra_symbol_mappings)?;
 
-    JitModule::from_module(module, compiled.exported_functions)
+    JitModule::from_module(module, compiled.exported_functions, options.opt_level, global_mappings)
 }
 
 // ─── Convenience path-based helpers ──────────────────────────────────────────
@@ -118,12 +243,22 @@ pub fn compile_from_path(
     options: &CodegenOptions,
 ) -> Result<CompiledModule, CodegenError> {
     let ir_module = lower_from_path(path)?;
-    compile_ir_module(&ir_module, options)
+    let mut compiled = compile_ir_module(&ir_module, options)?;
+    compiled.source_path = Some(path.to_path_buf());
+    Ok(compiled)
 }
 
 fn lower_from_path(path: &Path) -> Result<IrModule, CodegenError> {
     newcp_ir::lower_from_path(path).map_err(CodegenError::Parse)
 }
+
+fn render_backend_diagnostics(diagnostics: &[BackendDiagnostic]) -> Vec<String> {
+    diagnostics
+        .iter()
+        .map(|diagnostic| format!("warning: {}", diagnostic.render()))
+        .collect()
+}
+
 
 // ─── Driver-facing string dumps ───────────────────────────────────────────────
 
@@ -131,18 +266,32 @@ fn lower_from_path(path: &Path) -> Result<IrModule, CodegenError> {
 ///
 /// Uses real LLVM IR produced by `compile_ir_module`, not a placeholder.
 pub fn dump_llvm(path: &Path) -> String {
-    let options = CodegenOptions::default();
+    dump_llvm_with_options(path, &CodegenOptions::default())
+}
+
+pub fn dump_llvm_with_options(path: &Path, options: &CodegenOptions) -> String {
     match compile_from_path(path, &options) {
-        Ok(compiled) => compiled.llvm_ir,
+        Ok(compiled) => {
+            if compiled.diagnostics.is_empty() {
+                compiled.llvm_ir
+            } else {
+                let mut lines = render_backend_diagnostics(&compiled.diagnostics);
+                lines.push(compiled.llvm_ir);
+                lines.join("\n")
+            }
+        }
         Err(e) => format!("newcp-llvm error\ninput: {}\nerror: {e}", path.display()),
     }
 }
 
 /// Produce native assembly text for the module at `path`.
 pub fn dump_asm(path: &Path) -> String {
-    use inkwell::targets::{CodeModel, FileType, RelocMode, Target, TargetMachine};
+    dump_asm_with_options(path, &CodegenOptions::default())
+}
 
-    let options = CodegenOptions::default();
+pub fn dump_asm_with_options(path: &Path, options: &CodegenOptions) -> String {
+    use inkwell::targets::FileType;
+
     let ir_module = match lower_from_path(path) {
         Ok(m) => m,
         Err(e) => {
@@ -154,7 +303,15 @@ pub fn dump_asm(path: &Path) -> String {
         .unwrap_or_default();
 
     let context = Context::create();
-    let mut cg = match module::CodegenModule::new(&context, &ir_module, &options) {
+    // Create the target machine first so the module triple and data layout
+    // are stamped correctly before emission and optimisation.
+    let machine = match create_target_machine(options) {
+        Ok(machine) => machine,
+        Err(e) => {
+            return format!("newcp-llvm assembly error\ninput: {}\nerror: {e}", path.display())
+        }
+    };
+    let mut cg = match module::CodegenModule::new(&context, &ir_module, &options, &machine) {
         Ok(c) => c,
         Err(e) => {
             return format!("newcp-llvm assembly error\ninput: {}\nerror: {e}", path.display())
@@ -172,43 +329,84 @@ pub fn dump_asm(path: &Path) -> String {
         }
     }
 
+    if let Err(e) = cg.optimize(options.opt_level, &machine) {
+        return format!("newcp-llvm assembly error\ninput: {}\nerror: {e}", path.display());
+    }
+
     if let Err(e) = cg.verify() {
         return format!("newcp-llvm assembly error\ninput: {}\nerror: {e}", path.display());
     }
 
-    let triple = TargetMachine::get_default_triple();
-    let target = match Target::from_triple(&triple) {
-        Ok(t) => t,
-        Err(e) => {
-            return format!(
-                "newcp-llvm assembly error\ninput: {}\nerror: target from triple: {e}",
-                path.display()
-            )
-        }
-    };
-    let machine = match target.create_target_machine(
-        &triple,
-        "generic",
-        "",
-        inkwell::OptimizationLevel::None,
-        RelocMode::Default,
-        CodeModel::Default,
-    ) {
-        Some(m) => m,
-        None => {
-            return format!(
-                "newcp-llvm assembly error\ninput: {}\nerror: could not create target machine",
-                path.display()
-            )
-        }
-    };
-
+    let diagnostic_lines = render_backend_diagnostics(&cg.diagnostics);
     let module = cg.into_module();
     match machine.write_to_memory_buffer(&module, FileType::Assembly) {
-        Ok(buf) => String::from_utf8_lossy(buf.as_slice()).into_owned(),
+        Ok(buf) => {
+            let assembly = String::from_utf8_lossy(buf.as_slice()).into_owned();
+            if diagnostic_lines.is_empty() {
+                assembly
+            } else {
+                let mut lines = diagnostic_lines;
+                lines.push(assembly);
+                lines.join("\n")
+            }
+        }
         Err(e) => format!(
             "newcp-llvm assembly error\ninput: {}\nerror: {e}",
             path.display()
         ),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use std::path::PathBuf;
+
+    use inkwell::context::Context;
+
+    use newcp_runtime::console;
+
+    use super::{compile_from_path, jit_module, CodegenOptions};
+
+    fn temp_source_path(file_name: &str) -> PathBuf {
+        std::env::temp_dir().join(file_name)
+    }
+
+    #[test]
+    fn jit_executes_imported_console_calls_against_runtime_capture() {
+        let source_path = temp_source_path("newcp-console-exec.cp");
+        std::fs::write(
+            &source_path,
+            concat!(
+                "MODULE Demo;\n",
+                "IMPORT Console;\n",
+                "PROCEDURE Run*;\n",
+                "BEGIN\n",
+                "  Console.WriteInt(21);\n",
+                "  Console.WriteLn()\n",
+                "END Run;\n",
+                "END Demo."
+            ),
+        )
+        .expect("failed to write temporary console execution module");
+
+        console::reset();
+        console::begin_capture();
+
+        let options = CodegenOptions::default();
+        let compiled = compile_from_path(&source_path, &options)
+            .expect("console execution module should compile");
+        let context = Context::create();
+        let jit = jit_module(&context, compiled, &options)
+            .expect("console execution module should JIT materialize");
+
+        type RunFn = unsafe extern "C" fn();
+        let run = unsafe { jit.get_function::<RunFn>("Demo.Run") }
+            .expect("exported Demo.Run should resolve from the JIT");
+        unsafe { run() };
+
+        assert_eq!(console::end_capture(), "21\n");
+        console::reset();
+
+        let _ = std::fs::remove_file(&source_path);
     }
 }

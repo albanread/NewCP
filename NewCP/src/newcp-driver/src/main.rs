@@ -1,11 +1,7 @@
 use std::env;
-use std::fs;
 use std::path::Path;
 use std::path::PathBuf;
 use std::io::Write;
-
-use newcp_parser::{parse_source_module, SourceExportKind};
-use newcp_runtime::{BootstrapReport, CompilerService, ExportEntry, ExportKind, ResidentCompiler};
 
 const COMMANDS: &[&str] = &[
     "bootstrap",
@@ -14,6 +10,8 @@ const COMMANDS: &[&str] = &[
     "load-module",
     "check-mod",
     "check-dir",
+    #[cfg(feature = "gui")]
+    "run-gui",
     "dump-tokens",
     "dump-ast",
     "dump-sema",
@@ -32,10 +30,14 @@ fn main() {
     };
 
     if command == "bootstrap" {
-        println!("{}", newcp_runtime::bootstrap_report());
-        println!();
-        println!("{}", newcp_loader::bootstrap_plan());
+        println!("{}", newcp_loader::bootstrap_report());
         return;
+    }
+
+    #[cfg(feature = "gui")]
+    if command == "run-gui" {
+        let command_path = args.next();
+        std::process::exit(run_gui(command_path.as_deref()));
     }
 
     if command == "invoke-command" {
@@ -45,7 +47,7 @@ fn main() {
             std::process::exit(2);
         };
 
-        println!("{}", newcp_runtime::bootstrap_and_invoke(&command_path));
+        println!("{}", invoke_command(&command_path));
         return;
     }
 
@@ -91,7 +93,7 @@ fn main() {
             print_usage();
             std::process::exit(2);
         };
-        let path = resolve_module_source(&module_ref);
+        let path = newcp_loader::resolve_module_source(Path::new(&module_ref));
         let report = newcp_sema::check_module(&path);
         println!("{report}");
         let ok = report.lines().last().map(|l| l == "ok").unwrap_or(false);
@@ -111,7 +113,24 @@ fn main() {
         std::process::exit(exit_code);
     }
 
-    let Some(input_path) = args.next() else {
+    let mut codegen_options = newcp_llvm::CodegenOptions::default();
+    let mut remaining_args: Vec<String> = args.collect();
+    if let Some(flag_pos) = remaining_args.iter().position(|arg| arg == "--opt") {
+        let Some(level) = remaining_args.get(flag_pos + 1) else {
+            eprintln!("missing value after --opt\n");
+            print_usage();
+            std::process::exit(2);
+        };
+        let Some(opt_level) = newcp_llvm::OptLevel::from_str(level) else {
+            eprintln!("invalid --opt value: {level}\n");
+            print_usage();
+            std::process::exit(2);
+        };
+        codegen_options.opt_level = opt_level;
+        remaining_args.drain(flag_pos..=flag_pos + 1);
+    }
+
+    let Some(input_path) = remaining_args.first() else {
         eprintln!("missing input path\n");
         print_usage();
         std::process::exit(2);
@@ -144,10 +163,10 @@ fn main() {
             println!("{}", newcp_ir::dump_ir(path));
         }
         "dump-llvm" => {
-            println!("{}", newcp_llvm::dump_llvm(path));
+            println!("{}", newcp_llvm::dump_llvm_with_options(path, &codegen_options));
         }
         "dump-asm" => {
-            println!("{}", newcp_llvm::dump_asm(path));
+            println!("{}", newcp_llvm::dump_asm_with_options(path, &codegen_options));
         }
         _ => unreachable!(),
     }
@@ -163,11 +182,93 @@ fn print_usage() {
     eprintln!("  newcp-driver load-module <Module|Path> [Module.Command]");
     eprintln!("  newcp-driver check-mod <Module|Path>");
     eprintln!("  newcp-driver check-dir <dir>");
-    eprintln!("  newcp-driver <dump-command> <file>");
+    eprintln!("  newcp-driver run-gui [Module.Command]");
+    eprintln!("  newcp-driver <dump-command> [--opt <none|less|default|aggressive>] <file>");
     eprintln!();
     eprintln!("commands:");
     for command in COMMANDS {
         eprintln!("  {command}");
+    }
+}
+
+#[cfg(feature = "gui")]
+use std::sync::OnceLock;
+
+/// The spec_bind runtime pointer, stored so the CP worker thread can call
+/// `request_stop` when it is done.
+#[cfg(feature = "gui")]
+static GUI_RUNTIME_PTR: OnceLock<usize> = OnceLock::new();
+
+/// Run the wingui spec_bind host on the main (Win32 message-loop) thread.
+/// A background thread bootstraps the CP kernel and invokes App.cp:App.Run,
+/// which owns the event loop and window layout via WinSpec/HostWindows.
+#[cfg(feature = "gui")]
+fn run_gui(command_path: Option<&str>) -> i32 {
+    use newcp_runtime::wingui_host::{HostConfig, SpecBindRuntime};
+
+    // If a command was given, store it so the worker can pass it to the kernel.
+    // When no command is given the kernel boots and App.Run enters the event loop.
+    static GUI_STARTUP_COMMAND: OnceLock<String> = OnceLock::new();
+    if let Some(path) = command_path {
+        let _ = GUI_STARTUP_COMMAND.set(path.to_owned());
+    }
+
+    let runtime = match SpecBindRuntime::new() {
+        Some(r) => r,
+        None => { eprintln!("[run_gui] SpecBindRuntime::new() failed"); return 1; },
+    };
+    eprintln!("[run_gui] SpecBindRuntime created OK");
+
+    // Store pointer for the worker thread.
+    let _ = GUI_RUNTIME_PTR.set(runtime.as_ptr() as usize);
+
+    // Spawn the CP worker.  It bootstraps the kernel and runs App.Run (or a
+    // command-path override if one was provided on the CLI).
+    let startup_cmd = GUI_STARTUP_COMMAND.get().cloned()
+        .unwrap_or_else(|| "App.Run".to_owned());
+    eprintln!("[run_gui] spawning cp_worker_thread with cmd={:?}", startup_cmd);
+    std::thread::spawn(move || cp_worker_thread(startup_cmd));
+
+    eprintln!("[run_gui] entering runtime.run() on main thread...");
+    let config = HostConfig { title: "NewCP".to_string(), ..Default::default() };
+    let exit_code = runtime.run(&config);
+    eprintln!("[run_gui] runtime.run() returned exit_code={}", exit_code);
+    exit_code
+}
+
+/// Worker thread: JIT-compiles and runs the given CP command via LoaderSession.
+/// When the command exits it requests the GUI to close.
+#[cfg(feature = "gui")]
+fn cp_worker_thread(command_path: String) {
+    use newcp_runtime::wingui_spec_ffi::WinguiSpecBindRuntime;
+
+    eprintln!("[cp-worker] thread started, creating LoaderSession...");
+    let mut session = newcp_loader::LoaderSession::new();
+    eprintln!("{}", session.report().render());
+    eprintln!("[cp-worker] LoaderSession ready, invoking command: {}", command_path);
+    eprintln!("[cp-worker] ensure_command_loaded starting...");
+    let loaded = match session.ensure_command_loaded(&command_path) {
+        Ok(l) => { eprintln!("[cp-worker] ensure_command_loaded OK, load_log: {}", l.load.load_log.join(" | ")); l }
+        Err(err) => { eprintln!("[cp-worker] ensure_command_loaded error: {}", err); return; }
+    };
+    eprintln!("[cp-worker] about to call command_fn (JIT execution)...");
+    match session.invoke_command(&command_path) {
+        Ok(result) => {
+            let mut log = result.load_log;
+            log.extend(result.execution_log);
+            eprintln!("[cp-worker] command-log: {}", log.join(" | "));
+        }
+        Err(err) => eprintln!("[cp-worker] command-error: {}", err),
+    }
+    eprintln!("[cp-worker] command finished");
+    drop(loaded);
+
+    // Close the window once the command exits.
+    if let Some(&ptr) = GUI_RUNTIME_PTR.get() {
+        let r = ptr as *mut WinguiSpecBindRuntime;
+        if !r.is_null() {
+            unsafe { newcp_runtime::wingui_spec_ffi::wingui_spec_bind_runtime_request_stop(r, 0) };
+        }
     }
 }
 
@@ -209,14 +310,11 @@ fn run_check_dir(dir: &Path) -> i32 {
 }
 
 fn load_module_from_source(module_ref: &str, command_path: Option<&str>) -> Result<String, String> {
-    let mut report = BootstrapReport::new();
-    let compiler = ResidentCompiler::bootstrap();
-    let (source_path, spec, load_log) = register_source_module(&mut report, &compiler, module_ref)?;
-    for entry in &load_log {
-        if !report.init_log.iter().any(|existing| existing == entry) {
-            report.init_log.push(entry.clone());
-        }
-    }
+    let mut session = newcp_loader::LoaderSession::new();
+    let result = session.ensure_module_loaded(module_ref)?;
+    let source_path = result.graph.root_path.clone();
+    let spec = result.graph.root_spec().clone();
+    let load_log = result.load_log;
 
     let imports = if spec.imports.is_empty() {
         "<none>".to_string()
@@ -243,7 +341,7 @@ fn load_module_from_source(module_ref: &str, command_path: Option<&str>) -> Resu
 
     let mut output = format!(
         "{}\nsource-module: {}\nmodule-imports: {}\nmodule-exports: {}\nmodule-command-exports: {}\nload-log: {}",
-        report.render(),
+        session.report().render(),
         source_path.display(),
         imports,
         exports,
@@ -252,10 +350,9 @@ fn load_module_from_source(module_ref: &str, command_path: Option<&str>) -> Resu
     );
 
     if let Some(command_path) = command_path {
-        let command_log = report
-            .kernel
-            .invoke_command(command_path)
-            .map_err(|error| error.render())?;
+        let command_result = session.invoke_command(command_path)?;
+        let mut command_log = command_result.load_log;
+        command_log.extend(command_result.execution_log);
         output.push_str(&format!("\ncommand-log: {}", command_log.join(" | ")));
     }
 
@@ -263,11 +360,13 @@ fn load_module_from_source(module_ref: &str, command_path: Option<&str>) -> Resu
 }
 
 fn describe_interface_from_source(module_ref: &str) -> Result<String, String> {
-    let mut report = BootstrapReport::new();
-    let compiler = ResidentCompiler::bootstrap();
-    let requested_module_name = module_name_from_ref(module_ref);
-    let source_details = if can_resolve_module_source(module_ref) {
-        let (source_path, spec, load_log) = register_source_module(&mut report, &compiler, module_ref)?;
+    let mut session = newcp_loader::LoaderSession::new();
+    let requested_module_name = newcp_loader::module_name_from_ref(module_ref);
+    let source_details = if newcp_loader::can_resolve_module_source(module_ref) {
+        let result = session.ensure_module_loaded(module_ref)?;
+        let source_path = result.graph.root_path.clone();
+        let spec = result.graph.root_spec().clone();
+        let load_log = result.load_log;
         Some((source_path, spec, load_log))
     } else {
         None
@@ -278,9 +377,9 @@ fn describe_interface_from_source(module_ref: &str) -> Result<String, String> {
         .map(|(_, spec, _)| spec.name.as_str())
         .unwrap_or(requested_module_name.as_str());
 
-    match report.kernel.describe_interface(module_name) {
+    match session.report().kernel.describe_interface(module_name) {
         Ok(interface) => {
-            let mut output = report.render();
+            let mut output = session.report().render();
             if let Some((source_path, spec, load_log)) = source_details {
                 let imports = if spec.imports.is_empty() {
                     "<none>".to_string()
@@ -308,94 +407,37 @@ fn describe_interface_from_source(module_ref: &str) -> Result<String, String> {
             output.push_str(&format!("\n{}", interface));
             Ok(output)
         }
-        Err(error) => Ok(format!("{}\ninterface-error: {}", report.render(), error.render())),
+        Err(error) => Ok(format!("{}\ninterface-error: {}", session.report().render(), error.render())),
     }
 }
 
-fn register_source_module(
-    report: &mut BootstrapReport,
-    compiler: &ResidentCompiler,
-    module_ref: &str,
-) -> Result<(PathBuf, newcp_parser::SourceModuleSpec, Vec<String>), String> {
-    let source_path = resolve_module_source(module_ref);
-    let source_text = fs::read_to_string(&source_path)
-        .map_err(|error| format!("failed to read {}: {error}", source_path.display()))?;
-    let spec = parse_source_module(&source_text)?;
-
-    let import_refs = spec.imports.iter().map(String::as_str).collect::<Vec<_>>();
-    let exports = spec
-        .exports
-        .iter()
-        .map(|export| ExportEntry {
-            name: export.name.clone(),
-            kind: match export.kind {
-                SourceExportKind::Constant => ExportKind::Constant,
-                SourceExportKind::Type => ExportKind::Type,
-                SourceExportKind::Variable => ExportKind::Variable,
-                SourceExportKind::Procedure => ExportKind::Procedure,
-                SourceExportKind::Command => ExportKind::Command,
-            },
-        })
-        .collect::<Vec<_>>();
-    let artifact = compiler.compile_module(
-        &spec.name,
-        &import_refs,
-        exports,
-        &format!("{}.body", spec.name),
-        &source_path.display().to_string(),
-    );
-
-    report.kernel.register_compiled_module(artifact);
-    report
-        .hosted_modules
-        .retain(|entry| !entry.starts_with(&format!("{} [", spec.name)));
-    report
-        .compiled_modules
-        .retain(|entry| !entry.starts_with(&format!("{} [", spec.name)));
-    report.compiled_modules.push(format!(
-        "{} [compiled by {} from {}]",
-        spec.name,
-        compiler.service_name(),
-        source_path.display()
-    ));
-
-    let load_log = report
-        .kernel
-        .load_mod(&spec.name)
-        .map_err(|error| error.render())?;
-    for entry in &load_log {
-        if !report.init_log.iter().any(|existing| existing == entry) {
-            report.init_log.push(entry.clone());
+fn invoke_command(command_path: &str) -> String {
+    if let Some(module_ref) = command_module_ref(command_path) {
+        if module_ref.contains(std::path::MAIN_SEPARATOR)
+            || module_ref.contains('/')
+            || newcp_loader::can_resolve_module_source(module_ref)
+        {
+            let mut session = newcp_loader::LoaderSession::new();
+            return match session.invoke_command(command_path) {
+                Ok(result) => {
+                    let mut log = result.load_log;
+                    log.extend(result.execution_log);
+                    format!("{}\ncommand-log: {}", session.report().render(), log.join(" | "))
+                }
+                Err(error) => format!("{}\ncommand-error: {}", session.report().render(), error),
+            };
         }
     }
 
-    Ok((source_path, spec, load_log))
+    newcp_runtime::bootstrap_and_invoke(command_path)
 }
 
-fn can_resolve_module_source(module_ref: &str) -> bool {
-    resolve_module_source(module_ref).exists()
-}
-
-fn module_name_from_ref(module_ref: &str) -> String {
-    Path::new(module_ref)
-        .file_stem()
-        .and_then(|stem| stem.to_str())
-        .filter(|name| !name.is_empty())
-        .unwrap_or(module_ref)
-        .to_string()
-}
-
-fn resolve_module_source(module_ref: &str) -> PathBuf {
-    let path = PathBuf::from(module_ref);
-    if path.exists() {
-        return path;
+fn command_module_ref(command_path: &str) -> Option<&str> {
+    if let Some((module_ref, _)) = command_path.rsplit_once("::") {
+        return Some(module_ref);
     }
 
-    if path.extension().is_some() {
-        Path::new("Mod").join(path)
-    } else {
-        Path::new("Mod").join(format!("{module_ref}.cp"))
-    }
+    command_path.split_once('.').map(|(module_name, _)| module_name)
 }
 #[cfg(test)]
 mod tests {
@@ -403,14 +445,14 @@ mod tests {
 
     #[test]
     fn resolves_module_name_to_mod_folder() {
-        let path = resolve_module_source("HostMenus");
+        let path = newcp_loader::resolve_module_source(Path::new("HostMenus"));
 
         assert_eq!(path, PathBuf::from("Mod").join("HostMenus.cp"));
     }
 
     #[test]
     fn derives_module_name_from_path_or_module_ref() {
-        assert_eq!(module_name_from_ref("HostMenus"), "HostMenus");
-        assert_eq!(module_name_from_ref("Mod\\HostMenus.cp"), "HostMenus");
+        assert_eq!(newcp_loader::module_name_from_ref("HostMenus"), "HostMenus");
+        assert_eq!(newcp_loader::module_name_from_ref("Mod/HostMenus.cp"), "HostMenus");
     }
 }

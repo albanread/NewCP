@@ -494,6 +494,7 @@ fn is_keyword(upper: &str) -> bool {
             | "CONST"
             | "DIV"
             | "DO"
+            | "DEFINITION"
             | "ELSE"
             | "ELSIF"
             | "EMPTY"

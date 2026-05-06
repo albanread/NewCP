@@ -15,6 +15,17 @@ pub struct IrGlobal {
     pub is_const: bool,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct LoweringDiagnostic {
+    pub message: String,
+}
+
+impl LoweringDiagnostic {
+    pub fn render(&self) -> String {
+        self.message.clone()
+    }
+}
+
 /// A procedure in IR form: a collection of basic blocks with one entry.
 #[derive(Debug, Clone)]
 pub struct IrProcedure {
@@ -29,6 +40,7 @@ pub struct IrProcedure {
     pub exit: BlockId,
     /// Next TempId counter, used during construction.
     next_temp: u32,
+    pub diagnostics: Vec<LoweringDiagnostic>,
 }
 
 impl IrProcedure {
@@ -47,6 +59,7 @@ impl IrProcedure {
             entry: BlockId(0),
             exit: BlockId(0),
             next_temp: 0,
+            diagnostics: Vec::new(),
         }
     }
 
@@ -201,6 +214,13 @@ impl IrProcedure {
 
         let mut lines = vec![format!("proc {export_mark}{} ({params}){ret} {{", self.name)];
 
+        if !self.diagnostics.is_empty() {
+            lines.push("  diagnostics:".to_string());
+            for diagnostic in &self.diagnostics {
+                lines.push(format!("    error: {}", diagnostic.render()));
+            }
+        }
+
         // Sort blocks by RPO index if available, else construction order.
         let mut ids: Vec<BlockId> = self.blocks.iter().map(|b| b.id).collect();
         ids.sort_by_key(|id| {
@@ -310,6 +330,22 @@ impl IrModule {
 
         lines.join("\n")
     }
+
+    pub fn lowering_diagnostics(&self) -> Vec<(String, String)> {
+        self.procedures
+            .iter()
+            .flat_map(|proc| {
+                proc.diagnostics
+                    .iter()
+                    .map(|diagnostic| (proc.name.clone(), diagnostic.render()))
+                    .collect::<Vec<_>>()
+            })
+            .collect()
+    }
+
+    pub fn has_lowering_diagnostics(&self) -> bool {
+        self.procedures.iter().any(|proc| !proc.diagnostics.is_empty())
+    }
 }
 
 // ── Instruction rendering ────────────────────────────────────────────────────
@@ -351,6 +387,9 @@ fn render_instr(instr: &Instr) -> String {
         BitCast { dst, value, ty } => {
             format!("{} : {} = bitcast {}", dst.render(), ty.render(), value.render())
         }
+        Cast { dst, value, to_ty } => {
+            format!("{} : {} = cast {}", dst.render(), to_ty.render(), value.render())
+        }
         Lsh { dst, value, shift, ty } => {
             format!("{} : {} = lsh {}, {}", dst.render(), ty.render(), value.render(), shift.render())
         }
@@ -359,6 +398,9 @@ fn render_instr(instr: &Instr) -> String {
         }
         Rot { dst, value, shift, ty } => {
             format!("{} : {} = rot {}, {}", dst.render(), ty.render(), value.render(), shift.render())
+        }
+        Entier { dst, value } => {
+            format!("{} : i64 = entier {}", dst.render(), value.render())
         }
         MemCopy { dst, src, len } => {
             format!("memcopy {}, {}, {}", dst.render(), src.render(), len.render())

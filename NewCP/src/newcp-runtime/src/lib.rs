@@ -1,4 +1,11 @@
+pub mod console;
 pub mod gc;
+#[cfg(feature = "gui")]
+pub mod wingui_ffi;
+#[cfg(feature = "gui")]
+pub mod wingui_host;
+#[cfg(feature = "gui")]
+pub mod wingui_spec_ffi;
 
 use std::collections::HashMap;
 
@@ -244,6 +251,43 @@ impl HostedModuleArtifact {
 }
 
 #[derive(Debug, Clone)]
+pub struct NativeExportBinding {
+    pub export: ExportEntry,
+    pub address: usize,
+}
+
+impl NativeExportBinding {
+    pub fn procedure(name: impl Into<String>, address: usize) -> Self {
+        Self {
+            export: ExportEntry::procedure(name),
+            address,
+        }
+    }
+}
+
+#[derive(Debug, Clone)]
+pub struct NativeModuleArtifact {
+    pub hosted: HostedModuleArtifact,
+    pub export_bindings: Vec<NativeExportBinding>,
+}
+
+impl NativeModuleArtifact {
+    pub fn new(hosted: HostedModuleArtifact, export_bindings: Vec<NativeExportBinding>) -> Self {
+        Self {
+            hosted,
+            export_bindings,
+        }
+    }
+
+    pub fn export_address(&self, export_name: &str) -> Option<usize> {
+        self.export_bindings
+            .iter()
+            .find(|binding| binding.export.name == export_name)
+            .map(|binding| binding.address)
+    }
+}
+
+#[derive(Debug, Clone)]
 pub struct CompiledModuleArtifact {
     pub name: String,
     pub imports: Vec<String>,
@@ -466,6 +510,10 @@ impl KernelState {
         });
 
         id
+    }
+
+    pub fn register_native_module(&mut self, artifact: NativeModuleArtifact) -> ModuleId {
+        self.register_hosted_module(artifact.hosted)
     }
 
     pub fn this_mod(&self, name: &str) -> Option<&ModuleRecord> {
@@ -718,6 +766,11 @@ impl BootstrapReport {
         let compiler = ResidentCompiler::bootstrap();
         kernel.register_resident_module("Kernel");
         kernel.register_resident_module("Init");
+        let console_module = console::native_module_artifact();
+        #[cfg(feature = "gui")]
+        let host_windows_module = wingui_host::native_module_artifact();
+        #[cfg(feature = "gui")]
+        let winspec_module = wingui_host::winspec_module_artifact();
         let host_menus = HostedModuleArtifact::new(
             "HostMenus",
             vec!["Kernel".to_string()],
@@ -744,7 +797,10 @@ impl BootstrapReport {
             "MODULE InitShell; IMPORT System, HostMenus; BEGIN END InitShell.",
         );
 
-        let hosted_modules = vec![format!("{} [{}]", host_menus.name, host_menus.source_summary)];
+        let hosted_modules = vec![
+            format!("{} [{}]", console_module.hosted.name, console_module.hosted.source_summary),
+            format!("{} [{}]", host_menus.name, host_menus.source_summary),
+        ];
 
         let compiled_modules = vec![
             format!("{} [{}]", system_artifact.name, system_artifact.source_summary),
@@ -754,6 +810,11 @@ impl BootstrapReport {
             ),
         ];
 
+        kernel.register_native_module(console_module);
+        #[cfg(feature = "gui")]
+        kernel.register_native_module(host_windows_module);
+        #[cfg(feature = "gui")]
+        kernel.register_native_module(winspec_module);
         kernel.register_hosted_module(host_menus);
         kernel.register_compiled_module(system_artifact);
         kernel.register_compiled_module(init_shell_artifact);
@@ -866,6 +927,57 @@ pub fn bootstrap_and_describe_interface(module_name: &str) -> String {
     }
 }
 
+fn builtin_native_modules() -> Vec<NativeModuleArtifact> {
+    let mut modules = vec![console::native_module_artifact()];
+    #[cfg(feature = "gui")]
+    {
+        modules.push(wingui_host::native_module_artifact());
+        modules.push(wingui_host::winspec_module_artifact());
+    }
+    modules
+}
+
+pub fn native_export_address(module_name: &str, export_name: &str) -> Option<usize> {
+    builtin_native_modules()
+        .into_iter()
+        .find(|artifact| artifact.hosted.name == module_name)
+        .and_then(|artifact| artifact.export_address(export_name))
+}
+
+/// Runtime trap handler invoked from JIT code via `@__newcp_trap(i32)`.
+///
+/// `code` follows the ABI defined in `docs/llvm-codegen-design.md`:
+/// 1=Assert, 2=NilDeref, 3=ArrayBounds, 4=TypeGuard, 5=CaseFallthrough, other=Halt.
+#[unsafe(no_mangle)]
+pub extern "C" fn __newcp_trap(code: i32) -> ! {
+    let kind = match code {
+        1 => "ASSERT failed",
+        2 => "NIL pointer dereference",
+        3 => "array index out of bounds",
+        4 => "type guard failed",
+        5 => "CASE fall-through",
+        n => return panic_trap(format!("HALT({n})")),
+    };
+    panic_trap(kind.to_string())
+}
+
+fn panic_trap(message: String) -> ! {
+    eprintln!("newcp trap: {message}");
+    std::process::abort();
+}
+
+pub fn runtime_symbol_address(symbol_name: &str) -> Option<usize> {
+    if symbol_name == "__newcp_sys_new" {
+        return Some(gc::__newcp_sys_new as *const () as usize);
+    }
+    if symbol_name == "__newcp_trap" {
+        return Some(__newcp_trap as *const () as usize);
+    }
+
+    let (module_name, export_name) = symbol_name.split_once('.')?;
+    native_export_address(module_name, export_name)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -878,11 +990,29 @@ mod tests {
         assert!(report.contains("pointer-width: 64"));
         assert!(report.contains("resident-modules: 1:Kernel:resident, 2:Init:resident"));
         assert!(report.contains("compiler-service: resident-compiler:Rust"));
-        assert!(report.contains("hosted-modules: HostMenus [Rust-hosted facade until CP HostMenus is available]"));
+        assert!(report.contains("hosted-modules: Console [Rust-hosted console I/O facade for tests and JIT execution] | HostMenus [Rust-hosted facade until CP HostMenus is available]"));
         assert!(report.contains("compiled-modules: System [compiled by resident-compiler"));
         assert!(report.contains("boot-phases: kernel-ready -> init-ready -> compiler-ready -> jit-ready -> base-modules-ready"));
         assert!(report.contains("module-init-log: init Kernel via bootstrap | init System via System.body | init HostMenus via HostMenus.bootstrap | init InitShell via InitShell.body"));
         assert!(report.contains("status: ready to compile CP modules into memory"));
+    }
+
+    #[test]
+    fn bootstrap_report_exposes_console_interface_metadata() {
+        let report = BootstrapReport::new();
+
+        let interface = report
+            .kernel
+            .describe_interface("Console")
+            .expect("Console hosted interface should be registered during bootstrap");
+
+        assert!(interface.contains("interface-module: Console"));
+        assert!(interface.contains("interface-imports: <none>"));
+        assert!(interface.contains("ReadChar:Procedure:procedure"));
+        assert!(interface.contains("ReadInt:Procedure:procedure"));
+        assert!(interface.contains("WriteChar:Procedure:procedure"));
+        assert!(interface.contains("WriteInt:Procedure:procedure"));
+        assert!(interface.contains("WriteLn:Procedure:procedure"));
     }
 
     #[test]

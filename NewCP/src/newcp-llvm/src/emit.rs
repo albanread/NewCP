@@ -222,6 +222,11 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
                 value_map.temp_values.insert(*dst, cast);
                 Ok(())
             }
+            Instr::Cast { dst, value, to_ty } => {
+                let result = self.emit_cast(value, to_ty, value_map)?;
+                value_map.temp_values.insert(*dst, result);
+                Ok(())
+            }
             Instr::Lsh {
                 dst,
                 value,
@@ -250,6 +255,24 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
             } => {
                 let result = self.emit_rot(value, shift, ty, value_map)?;
                 value_map.temp_values.insert(*dst, result);
+                Ok(())
+            }
+            Instr::Entier { dst, value } => {
+                let fv = self.resolve_basic_value(value, value_map)?.into_float_value();
+                let float_ty = fv.get_type();
+                let bits = float_ty.get_bit_width();
+                let intrinsic_name = if bits == 32 { "llvm.floor.f32" } else { "llvm.floor.f64" };
+                let floor_fn_ty = float_ty.fn_type(&[float_ty.into()], false);
+                let floor_fn = self.cg.module.get_function(intrinsic_name).unwrap_or_else(|| {
+                    self.cg.module.add_function(intrinsic_name, floor_fn_ty, None)
+                });
+                let floored = self.cg.builder.build_call(floor_fn, &[fv.into()], "entier.floor")
+                    .map_err(|e| CodegenError::Unsupported { stage: "emit_instr", detail: e.to_string() })?
+                    .try_as_basic_value().unwrap_basic().into_float_value();
+                let i64_ty = self.cg.context.i64_type();
+                let result = self.cg.builder.build_float_to_signed_int(floored, i64_ty, "entier.cast")
+                    .map_err(|e| CodegenError::Unsupported { stage: "emit_instr", detail: e.to_string() })?;
+                value_map.temp_values.insert(*dst, result.into());
                 Ok(())
             }
             Instr::MemCopy { dst, src, len } => {
@@ -765,9 +788,9 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
             IrValue::ConstReal(v, IrType::F32) => Ok(self.cg.context.f32_type().const_float(*v).into()),
             IrValue::ConstReal(v, _) => Ok(self.cg.context.f64_type().const_float(*v).into()),
             IrValue::ConstBool(v) => Ok(self.cg.context.bool_type().const_int(u64::from(*v), false).into()),
-            IrValue::ConstChar(v) => Ok(self.cg.context.i16_type().const_int(*v as u64, false).into()),
-            IrValue::ConstStr(s) => {
-                let ptr = self.cg.get_or_emit_string_constant(s);
+            IrValue::ConstChar(v) => Ok(self.cg.context.i32_type().const_int(*v as u64, false).into()),
+            IrValue::ConstStr(s, elem_ty) => {
+                let ptr = self.cg.get_or_emit_string_constant(s, elem_ty);
                 Ok(ptr.into())
             }
             IrValue::Null(_) => Ok(self.cg.context.ptr_type(inkwell::AddressSpace::default()).const_null().into()),
@@ -846,6 +869,30 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
 
         let lhs = left_value.into_int_value();
         let rhs = right_value.into_int_value();
+
+        // LLVM ICmp requires both operands to have the same type.
+        // Widen the narrower operand to match the wider one.
+        let (lhs, rhs) = {
+            let lbits = lhs.get_type().get_bit_width();
+            let rbits = rhs.get_type().get_bit_width();
+            if lbits < rbits {
+                let wider = if self.is_unsigned_type(&left.ty()) {
+                    self.cg.builder.build_int_z_extend(lhs, rhs.get_type(), "cmp.zext")
+                } else {
+                    self.cg.builder.build_int_s_extend(lhs, rhs.get_type(), "cmp.sext")
+                }.map_err(|e| CodegenError::Unsupported { stage: "emit_binop", detail: e.to_string() })?;
+                (wider, rhs)
+            } else if rbits < lbits {
+                let wider = if self.is_unsigned_type(&right.ty()) {
+                    self.cg.builder.build_int_z_extend(rhs, lhs.get_type(), "cmp.zext")
+                } else {
+                    self.cg.builder.build_int_s_extend(rhs, lhs.get_type(), "cmp.sext")
+                }.map_err(|e| CodegenError::Unsupported { stage: "emit_binop", detail: e.to_string() })?;
+                (lhs, wider)
+            } else {
+                (lhs, rhs)
+            }
+        };
         let predicate = match op {
             BinOp::Eq => Some(IntPredicate::EQ),
             BinOp::Ne => Some(IntPredicate::NE),
@@ -1159,6 +1206,93 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
         }
     }
 
+    /// Emit a numeric/char type-coercion cast (Instr::Cast).
+    ///
+    /// Rules (by source → destination type):
+    /// - int → wider int (signed src): `sext`
+    /// - int → wider int (unsigned/char src): `zext`
+    /// - int → narrower int / char: `trunc`
+    /// - float → float: `fpext` or `fptrunc`
+    /// - float → int: `fptosi`
+    /// - int → float: `sitofp` / `uitofp`
+    /// - same type: identity (e.g. ABS of same float type uses llvm.fabs intrinsic)
+    fn emit_cast(
+        &mut self,
+        value: &IrValue,
+        to_ty: &IrType,
+        value_map: &mut ValueMap<'ctx>,
+    ) -> Result<BasicValueEnum<'ctx>, CodegenError> {
+        let from_ty = value.ty();
+        let src = self.resolve_basic_value(value, value_map)?;
+
+        // Float absolute value: same-type Cast on floats
+        if from_ty == *to_ty {
+            match src {
+                BasicValueEnum::FloatValue(fv) => {
+                    let intrinsic_name = if matches!(to_ty, IrType::F32) { "llvm.fabs.f32" } else { "llvm.fabs.f64" };
+                    let fabs_ty = fv.get_type().fn_type(&[fv.get_type().into()], false);
+                    let fabs = self.cg.module.get_function(intrinsic_name).unwrap_or_else(|| {
+                        self.cg.module.add_function(intrinsic_name, fabs_ty, None)
+                    });
+                    let result = self.cg.builder.build_call(fabs, &[fv.into()], "fabs")
+                        .map_err(|e| CodegenError::Unsupported { stage: "emit_cast", detail: e.to_string() })?;
+                    return Ok(result.try_as_basic_value().unwrap_basic());
+                }
+                _ => return Ok(src),
+            }
+        }
+
+        let dest_basic = self.lower_basic_type(to_ty)?;
+        match (src, dest_basic) {
+            // Integer → integer
+            (BasicValueEnum::IntValue(iv), BasicTypeEnum::IntType(dest_int)) => {
+                let src_bits = iv.get_type().get_bit_width();
+                let dst_bits = dest_int.get_bit_width();
+                let result = if dst_bits > src_bits {
+                    // widen: use zext for unsigned/char types, sext for signed
+                    if self.is_unsigned_type(&from_ty) {
+                        self.cg.builder.build_int_z_extend(iv, dest_int, "cast.zext")
+                    } else {
+                        self.cg.builder.build_int_s_extend(iv, dest_int, "cast.sext")
+                    }
+                } else {
+                    self.cg.builder.build_int_truncate(iv, dest_int, "cast.trunc")
+                };
+                result.map(Into::into).map_err(|e| CodegenError::Unsupported { stage: "emit_cast", detail: e.to_string() })
+            }
+            // Float → float
+            (BasicValueEnum::FloatValue(fv), BasicTypeEnum::FloatType(dest_float)) => {
+                let src_bits = fv.get_type().get_bit_width();
+                let dst_bits = dest_float.get_bit_width();
+                let result = if dst_bits > src_bits {
+                    self.cg.builder.build_float_ext(fv, dest_float, "cast.fpext")
+                } else {
+                    self.cg.builder.build_float_trunc(fv, dest_float, "cast.fptrunc")
+                };
+                result.map(Into::into).map_err(|e| CodegenError::Unsupported { stage: "emit_cast", detail: e.to_string() })
+            }
+            // Float → int
+            (BasicValueEnum::FloatValue(fv), BasicTypeEnum::IntType(dest_int)) => {
+                self.cg.builder.build_float_to_signed_int(fv, dest_int, "cast.ftoi")
+                    .map(Into::into)
+                    .map_err(|e| CodegenError::Unsupported { stage: "emit_cast", detail: e.to_string() })
+            }
+            // Int → float
+            (BasicValueEnum::IntValue(iv), BasicTypeEnum::FloatType(dest_float)) => {
+                if self.is_unsigned_type(&from_ty) {
+                    self.cg.builder.build_unsigned_int_to_float(iv, dest_float, "cast.uitof")
+                } else {
+                    self.cg.builder.build_signed_int_to_float(iv, dest_float, "cast.sitof")
+                }.map(Into::into).map_err(|e| CodegenError::Unsupported { stage: "emit_cast", detail: e.to_string() })
+            }
+            (sv, _) => Err(CodegenError::Unsupported {
+                stage: "emit_cast",
+                detail: format!("unsupported cast from {:?} to {}", sv.get_type(), to_ty.render()),
+            }),
+        }
+    }
+
+
     fn emit_rot(
         &mut self,
         value: &IrValue,
@@ -1425,7 +1559,7 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
         args: &[IrValue],
         ret_ty: &IrType,
     ) -> Result<FunctionValue<'ctx>, CodegenError> {
-        let symbol_name = format!("{module}.{name}");
+        let symbol_name = CodegenOptions::public_symbol_name(module, name);
         if let Some(function) = self.cg.module.get_function(&symbol_name) {
             return Ok(function);
         }
@@ -1469,8 +1603,8 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
             IrType::I32 => (self.cg.context.i32_type(), true),
             IrType::I64 => (self.cg.context.i64_type(), true),
             IrType::U8 | IrType::ShortChar => (self.cg.context.i8_type(), false),
-            IrType::U16 | IrType::Char => (self.cg.context.i16_type(), false),
-            IrType::U32 | IrType::Set(32) => (self.cg.context.i32_type(), false),
+            IrType::U16 => (self.cg.context.i16_type(), false),
+            IrType::U32 | IrType::Char | IrType::Set(32) => (self.cg.context.i32_type(), false),
             IrType::Bool => (self.cg.context.bool_type(), false),
             _ => (self.cg.context.i64_type(), true),
         };

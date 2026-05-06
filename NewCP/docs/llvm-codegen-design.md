@@ -2,17 +2,17 @@
 
 ## Status
 
-This document defines the design for `newcp-llvm` before implementation.
+This document defines the design for `newcp-llvm` and tracks its implementation progress.
 
 Current state:
 
 - `newcp-ir` lowers typed Component Pascal procedures to CFG-shaped IR
-- `newcp-ir` already carries the first `SYSTEM`-driven backend surface: `UntaggedPtr`, `UntaggedRecord`, `AddrOf`, `BitCast`, `LoadRaw`, `StoreRaw`, `Lsh`, `Rot`, `MemCopy`, `TypTag`, and `SysNew`
-- `newcp-llvm` currently emits placeholder text, not real LLVM IR
-- the driver already exposes `dump-llvm` and `dump-asm`
-- the runtime direction is LLVM JIT, not object-file emission first
+- `newcp-ir` supports robust LLVM emission, carrying `SYSTEM`-driven backend shapes (`BitCast`, `LoadRaw`, `StoreRaw`, `SysNew`, etc.), complex control flow, standard intrinsics, multidimensional arrays, and full method dispatch.
+- `newcp-llvm` is fully implemented using Inkwell. It emits complete, verifiable LLVM IR and performs inline ORC JIT execution.
+- the driver fully exposes `--dump-llvm-ir` and `--run-jit`, powering our regression integration test suite (`tests/newcp-tests/`).
+- JIT emission handles inline string literal allocations, recursive functions, type tests (`IS`/`WITH`), nested procedures (lifted to globals), and JIT-friendly `vtable` emission for tagged records.
 
-This document is intentionally written in stages. The first pass defines the shape of the subsystem. Later passes should refine each section until the implementation can be written component by component without hidden assumptions.
+This document serves as both the original design blueprint and a record of the realized architecture.
 
 ## Goals
 
@@ -95,15 +95,13 @@ It is created at Stage 2 and consumed at Stage 5 to produce the `CompiledModule`
 
 ## Architectural Constraints
 
-The design has to respect five constraints already visible in the repo:
+The design respects five constraints:
 
 1. `newcp-ir` is the controlling input. `newcp-llvm` must not quietly re-derive behavior from the parser or source module surface.
 2. Every major compiler phase is observable. LLVM generation must therefore produce both a programmatic result and a stable textual dump.
-3. The first runtime target is a 64-bit Windows JIT process.
-4. The current IR is intentionally incomplete. Some instructions already map naturally to LLVM, while others are placeholders for later runtime work.
-5. `SYSTEM` raw-address operations are part of the required bring-up surface, and on this target they must lower through 64-bit integer values, not legacy 32-bit x86 assumptions.
-
-That fourth point matters. The code generator should be explicit about which `newcp-ir` constructs are currently executable and which must fail with a structured `Unsupported` error. Silent placeholder emission would make the phase look complete when it is not.
+3. The first runtime target is a 64-bit Windows JIT process (with `pointer` and integer sizes adhering).
+4. The IR is an expressive mid-level representation mapping closely to LLVM intrinsics, but retaining Component Pascal semantics (like `TypeCheck`, `SysNew`, etc.).
+5. `SYSTEM` raw-address operations leverage 64-bit integer values and address spaces instead of legacy 32-bit x86 assumptions.
 
 ## Public API
 
@@ -306,7 +304,7 @@ The initial type mapping should be simple, explicit, and intentionally conservat
 | `F32` | `float` | |
 | `F64` | `double` | |
 | `Bool` | `i1` | branch and compare input |
-| `Char` | `i16` | Component Pascal `CHAR` is 16-bit |
+| `Char` | `i32` | NewCP `CHAR` is a 32-bit Unicode scalar value |
 | `ShortChar` | `i8` | |
 | `Ptr(T)` | `ptr` | opaque pointer mode |
 | `UntaggedPtr(T)` | `ptr` | raw, GC-ignored pointer; same LLVM storage type as `Ptr`, different backend metadata and GC treatment |
@@ -708,10 +706,10 @@ Status:
 - `ConstInt` -> LLVM integer constant with width from `IrType`
 - `ConstReal` -> LLVM float or double constant
 - `ConstBool` -> `i1` constant
-- `ConstChar` -> `i16` constant for `CHAR`
+- `ConstChar` -> `i32` constant for `CHAR` (full Unicode scalar value)
 - `ConstStr` -> private global constant array plus `ptr` to its first element. Encoding and termination policy:
-  - `SHORTCHAR` string literals are emitted as null-terminated `[N x i8]` constants (8-bit, C-compatible)
-  - `CHAR` string literals are emitted as null-terminated `[N x i16]` constants (16-bit, matching Component Pascal `CHAR`)
+  - `String` literals are emitted as null-terminated `[N x i32]` constants (UTF-32; each element is one `CHAR` / Unicode scalar value)
+  - `ShortString` literals are emitted as null-terminated `[N x i8]` constants (8-bit bytes; C-compatible)
   - the pointer value exposed to the IR is always a `ptr` (opaque) pointing at element 0
   - the null terminator is included in the constant's length and is always present; the backend must never omit it
 - `Null` -> null pointer constant

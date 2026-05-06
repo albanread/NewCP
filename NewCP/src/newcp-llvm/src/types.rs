@@ -37,8 +37,8 @@ impl<'ctx> TypeLowerer<'ctx> {
             IrType::F64 => Ok(self.context.f64_type().into()),
             // Bool lowers to i1.
             IrType::Bool => Ok(self.context.bool_type().into()),
-            // CHAR is 16-bit; SHORTCHAR is 8-bit.
-            IrType::Char => Ok(self.context.i16_type().into()),
+            // CHAR is 32-bit (Unicode scalar value); SHORTCHAR is 8-bit (byte).
+            IrType::Char => Ok(self.context.i32_type().into()),
             IrType::ShortChar => Ok(self.context.i8_type().into()),
             // All pointer-bearing types lower to opaque `ptr`.
             IrType::Ptr(_) | IrType::UntaggedPtr(_) | IrType::Ref(_) => {

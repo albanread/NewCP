@@ -83,9 +83,9 @@ Deliverables:
 - LLVM IR dump support
 - assembly dump support
 
-Implemented so far (as of commit be69bd0):
+Implemented so far:
 
-- real LLVM IR emission from `newcp-ir` via Inkwell (no placeholder)
+- real LLVM IR emission from `newcp-ir` via Inkwell
 - scalar arithmetic, loads, stores, branches, calls, returns
 - `SYSTEM` intrinsics: `AddrOf`, `BitCast`, `LoadRaw`, `StoreRaw`, `Lsh`, `Rot`, `MemCopy`, `SysNew`
 - trap helper calls
@@ -93,11 +93,12 @@ Implemented so far (as of commit be69bd0):
 - tagged record allocation via `Instr::New` / `@__newcp_new_rec`
 - inherited field access via typed GEP across the extension chain
 - **method dispatch**: vtable and TypeDesc constant globals, `Instr::MethodCall` indirect dispatch, bound-procedure naming and slot numbering
+- **extensive JIT testing**: Comprehensive integration test suite running 87+ pure-Compute JIT test cases verifying spec compliance including arrays, sets, multidimensional arrays, and arithmetic boundaries.
 
 Exit criteria:
 
-- JIT one module and call one exported command
-- emit reviewable LLVM IR and assembly for that module
+- JIT one module and call one exported command (Achieved)
+- emit reviewable LLVM IR and assembly for that module (Achieved)
 
 ## Phase 5: Runtime compatibility shell
 
@@ -146,16 +147,14 @@ Exit criteria:
 
 ## Immediate next implementation steps
 
-1. create the `src` and `tests` layout under `NewCP`
-2. lock Rust as the implementation language
-3. scaffold the front-end projects
-4. define the first typed IR data model
-5. define the resident runtime interfaces for module registration and symbol lookup
-6. define the textual dump contracts for each phase
-7. write down the first concrete 64-bit layouts for module descriptors, type descriptors, and relocation-bearing metadata
-8. define the Rust `Kernel` and `Init` responsibilities before adding more CP-side modules
-9. define the in-memory interface descriptor model before deciding whether any persisted symbol cache is worth adding
-10. keep the bootstrap module set minimal and justify every additional Rust-hosted module against the self-hosting path
+1. create the `src` and `tests` layout under `NewCP` (Achieved)
+2. lock Rust as the implementation language (Achieved)
+3. scaffold the front-end projects (Achieved)
+4. define the first typed IR data model (Achieved)
+5. expand test suite coverage to encompass broader spec verification in execution (Ongoing)
+6. define the texts dump contracts for each phase (Achieved)
+7. test and stabilize memory residency semantics across cross-module calls (Next phase focus)
+8. scaffold complete execution stack for remaining advanced language features (`ANYREC`, `NEW` pointers, `EXTENSIBLE` modules).
 
 ## Recommendation on host language
 

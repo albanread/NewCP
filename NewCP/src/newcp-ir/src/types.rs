@@ -30,8 +30,8 @@ pub enum IrType {
     F64, // REAL
     // Logical / character
     Bool,
-    Char,      // CHAR (Latin-1, 16-bit in CP)
-    ShortChar, // SHORTCHAR (8-bit)
+    Char,      // CHAR (Unicode scalar value, 32-bit)
+    ShortChar, // SHORTCHAR (byte, 8-bit)
     // Compound
     /// Pointer to T — a POINTER TO RECORD or any heap reference.
     Ptr(Box<IrType>),
