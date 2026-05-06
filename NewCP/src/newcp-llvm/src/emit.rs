@@ -794,6 +794,18 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
                 Ok(ptr.into())
             }
             IrValue::Null(_) => Ok(self.cg.context.ptr_type(inkwell::AddressSpace::default()).const_null().into()),
+            IrValue::GlobalRef(name, _) => {
+                // A bare GlobalRef here means a first-class procedure value
+                // (e.g. `fn := ReturnSeven`).  Return the function pointer.
+                if let Some(&fn_val) = self.cg.planner.functions.get(name.as_str()) {
+                    Ok(fn_val.as_global_value().as_pointer_value().into())
+                } else {
+                    Err(CodegenError::Unsupported {
+                        stage: "emit",
+                        detail: format!("unsupported value operand GlobalRef({name})"),
+                    })
+                }
+            }
             other => Err(CodegenError::Unsupported {
                 stage: "emit",
                 detail: format!("unsupported value operand {other:?}"),
@@ -1285,6 +1297,10 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
                     self.cg.builder.build_signed_int_to_float(iv, dest_float, "cast.sitof")
                 }.map(Into::into).map_err(|e| CodegenError::Unsupported { stage: "emit_cast", detail: e.to_string() })
             }
+            // Pointer → pointer: all pointers are opaque `ptr` in LLVM, so this is
+            // a pass-through.  Arises e.g. when casting a function-pointer value to a
+            // named procedure-type alias (TYPE Handler = PROCEDURE(...)).
+            (BasicValueEnum::PointerValue(pv), BasicTypeEnum::PointerType(_)) => Ok(pv.into()),
             (sv, _) => Err(CodegenError::Unsupported {
                 stage: "emit_cast",
                 detail: format!("unsupported cast from {:?} to {}", sv.get_type(), to_ty.render()),
@@ -1504,6 +1520,77 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
         ret_ty: &IrType,
         value_map: &mut ValueMap<'ctx>,
     ) -> Result<(), CodegenError> {
+        // Resolve arguments first (needed for both direct and indirect calls).
+        let call_args: Vec<BasicMetadataValueEnum<'ctx>> = args
+            .iter()
+            .map(|arg| match arg.ty() {
+                IrType::Ref(_) => self.resolve_pointer(arg, value_map).map(Into::into),
+                _ => self.resolve_basic_value(arg, value_map).map(Into::into),
+            })
+            .collect::<Result<_, _>>()?;
+
+        let call_label = dst.map(|id| id.render()).unwrap_or_else(|| "call".to_owned());
+
+        // Indirect call through a procedure-type variable (IrValue::Temp callee).
+        if let IrValue::Temp(id, _) = callee {
+            let fn_ptr_val = value_map
+                .temp_values
+                .get(id)
+                .copied()
+                .ok_or_else(|| CodegenError::Unsupported {
+                    stage: "emit_instr",
+                    detail: format!("indirect callee temp {} not found", id.render()),
+                })?;
+            let fn_ptr = match fn_ptr_val {
+                BasicValueEnum::PointerValue(pv) => pv,
+                other => {
+                    return Err(CodegenError::Unsupported {
+                        stage: "emit_instr",
+                        detail: format!("indirect callee temp {} is not a pointer: {:?}", id.render(), other.get_type()),
+                    });
+                }
+            };
+            // Build the LLVM function type from the arg types and return type.
+            let param_types: Vec<inkwell::types::BasicMetadataTypeEnum<'ctx>> = args
+                .iter()
+                .map(|arg| match arg.ty() {
+                    IrType::Ref(_) => Ok(self.cg.context.ptr_type(inkwell::AddressSpace::default()).into()),
+                    ty => self.lower_basic_type(&ty).map(Into::into),
+                })
+                .collect::<Result<_, _>>()?;
+            let fn_type = match self
+                .cg
+                .lowerer
+                .lower_return_type(ret_ty, Some(&self.cg.planner.named_struct_types))?
+            {
+                inkwell::types::AnyTypeEnum::VoidType(v) => v.fn_type(&param_types, false),
+                inkwell::types::AnyTypeEnum::IntType(i) => i.fn_type(&param_types, false),
+                inkwell::types::AnyTypeEnum::FloatType(f) => f.fn_type(&param_types, false),
+                inkwell::types::AnyTypeEnum::PointerType(p) => p.fn_type(&param_types, false),
+                other => {
+                    return Err(CodegenError::Unsupported {
+                        stage: "emit_instr",
+                        detail: format!("indirect call produces unsupported LLVM return type {:?}", other),
+                    });
+                }
+            };
+            let call = self
+                .cg
+                .builder
+                .build_indirect_call(fn_type, fn_ptr, &call_args, &call_label)
+                .map_err(|e| CodegenError::Unsupported {
+                    stage: "emit_instr",
+                    detail: e.to_string(),
+                })?;
+            if let Some(dst) = dst {
+                if *ret_ty != IrType::Void {
+                    let value = call.try_as_basic_value().unwrap_basic();
+                    value_map.temp_values.insert(dst, value);
+                }
+            }
+            return Ok(());
+        }
+
         let function = match callee {
             IrValue::GlobalRef(name, _) => self
                 .cg
@@ -1526,17 +1613,10 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
             }
         };
 
-        let call_args: Vec<BasicMetadataValueEnum<'ctx>> = args
-            .iter()
-            .map(|arg| match arg.ty() {
-                IrType::Ref(_) => self.resolve_pointer(arg, value_map).map(Into::into),
-                _ => self.resolve_basic_value(arg, value_map).map(Into::into),
-            })
-            .collect::<Result<_, _>>()?;
         let call = self
             .cg
             .builder
-            .build_call(function, &call_args, dst.map(|id| id.render()).as_deref().unwrap_or("call"))
+            .build_call(function, &call_args, &call_label)
             .map_err(|e| CodegenError::Unsupported {
                 stage: "emit_instr",
                 detail: e.to_string(),

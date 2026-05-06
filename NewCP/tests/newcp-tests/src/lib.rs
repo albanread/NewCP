@@ -1682,4 +1682,28 @@ mod tests {
         // a = [1,2,3,4]; SumArray(a,4) = 10
         assert_eq!(run_function("Mod/Tests/Calc.cp", "InParamTest"), 10);
     }
+
+    #[test]
+    fn calc_proc_type_nullary_call() {
+        // Store ReturnSeven in a NullaryIntProc variable, call it -> 7
+        assert_eq!(run_function("Mod/Tests/Calc.cp", "ProcTypeCall"), 7);
+    }
+
+    #[test]
+    fn calc_proc_type_param_call() {
+        // Store SumTwo in a BinaryIntProc variable, call fn(10, 32) -> 42
+        assert_eq!(run_function("Mod/Tests/Calc.cp", "ProcTypeParamCall"), 42);
+    }
+
+    #[test]
+    fn calc_array_of_record() {
+        // ARRAY 4 OF Pair; pairs[2].a=3; pairs[2].b=4; -> 7
+        assert_eq!(run_function("Mod/Tests/Calc.cp", "ArrayOfRecord"), 7);
+    }
+
+    #[test]
+    fn calc_real_param_and_return() {
+        // AddReal(1.5, 2.5): REAL -> REAL; ENTIER -> 4
+        assert_eq!(run_function("Mod/Tests/Calc.cp", "RealParam"), 4);
+    }
 }

@@ -12,6 +12,11 @@ MODULE Calc;
 (* --- Named record type used by RecordFields test --- *)
 TYPE
   Point = RECORD x, y: INTEGER END;
+  (* --- Procedure types used by ProcTypeCall / ProcTypeParamCall tests --- *)
+  NullaryIntProc  = PROCEDURE(): INTEGER;
+  BinaryIntProc   = PROCEDURE(a, b: INTEGER): INTEGER;
+  (* --- Record type used by ArrayOfRecord test --- *)
+  Pair = RECORD a, b: INTEGER END;
 
 (* --- Module-level variable (tested by GlobVarTest) --- *)
 VAR
@@ -675,5 +680,47 @@ BEGIN
   a[0] := 1; a[1] := 2; a[2] := 3; a[3] := 4;
   RETURN SumArray(a, 4)
 END InParamTest;                                           (* expected 10 *)
+
+(* --- Procedure type: nullary proc stored in a variable (§10.1) --- *)
+
+PROCEDURE ReturnSeven(): INTEGER;
+BEGIN RETURN 7 END ReturnSeven;
+
+PROCEDURE ProcTypeCall*(): INTEGER;
+  VAR fn: NullaryIntProc;
+BEGIN
+  fn := ReturnSeven;
+  RETURN fn()
+END ProcTypeCall;                                          (* expected 7 *)
+
+(* --- Procedure type: proc with parameters stored and called --- *)
+
+PROCEDURE SumTwo(a, b: INTEGER): INTEGER;
+BEGIN RETURN a + b END SumTwo;
+
+PROCEDURE ProcTypeParamCall*(): INTEGER;
+  VAR fn: BinaryIntProc;
+BEGIN
+  fn := SumTwo;
+  RETURN fn(10, 32)
+END ProcTypeParamCall;                                     (* expected 42 *)
+
+(* --- Array of RECORD: index into an array of records --- *)
+
+PROCEDURE ArrayOfRecord*(): INTEGER;
+  VAR pairs: ARRAY 4 OF Pair;
+BEGIN
+  pairs[2].a := 3;
+  pairs[2].b := 4;
+  RETURN pairs[2].a + pairs[2].b
+END ArrayOfRecord;                                         (* expected 7 *)
+
+(* --- REAL as a procedure parameter and return value --- *)
+
+PROCEDURE AddReal(x, y: REAL): REAL;
+BEGIN RETURN x + y END AddReal;
+
+PROCEDURE RealParam*(): LONGINT;
+BEGIN RETURN ENTIER(AddReal(1.5, 2.5)) END RealParam;      (* expected 4 *)
 
 END Calc.

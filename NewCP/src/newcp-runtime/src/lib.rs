@@ -771,6 +771,8 @@ impl BootstrapReport {
         let host_windows_module = wingui_host::native_module_artifact();
         #[cfg(feature = "gui")]
         let winspec_module = wingui_host::winspec_module_artifact();
+        #[cfg(feature = "gui")]
+        let winframe_module = wingui_host::winframe_module_artifact();
         let host_menus = HostedModuleArtifact::new(
             "HostMenus",
             vec!["Kernel".to_string()],
@@ -815,6 +817,8 @@ impl BootstrapReport {
         kernel.register_native_module(host_windows_module);
         #[cfg(feature = "gui")]
         kernel.register_native_module(winspec_module);
+        #[cfg(feature = "gui")]
+        kernel.register_native_module(winframe_module);
         kernel.register_hosted_module(host_menus);
         kernel.register_compiled_module(system_artifact);
         kernel.register_compiled_module(init_shell_artifact);
@@ -933,6 +937,7 @@ fn builtin_native_modules() -> Vec<NativeModuleArtifact> {
     {
         modules.push(wingui_host::native_module_artifact());
         modules.push(wingui_host::winspec_module_artifact());
+        modules.push(wingui_host::winframe_module_artifact());
     }
     modules
 }

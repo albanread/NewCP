@@ -3626,6 +3626,32 @@ impl<'a> Analyzer<'a> {
                         scope_type_names,
                     )
                 }
+                // Named procedure-type alias (e.g. TYPE Handler = PROCEDURE(...)).
+                // Resolve one level and retry so that a variable of a procedure type
+                // is treated as callable.
+                SemanticType::Named { .. } => {
+                    let resolved = self.resolve_named_type_one_level(base, local_symbols);
+                    if let SemanticType::Procedure(signature) = &resolved {
+                        let signature = signature.clone();
+                        self.validate_call_arguments(
+                            &signature,
+                            args,
+                            procedure_name,
+                            local_symbols,
+                            scope_type_names,
+                            diagnostics,
+                        );
+                        signature.result_type.as_ref().map(|result| (**result).clone())
+                    } else {
+                        diagnostics.push(make_diagnostic(
+                            procedure_name,
+                            line,
+                            column,
+                            format!("call selector requires a procedure, found {}", render_semantic_type(base)),
+                        ));
+                        None
+                    }
+                }
                 _ => {
                     diagnostics.push(make_diagnostic(
                         procedure_name,

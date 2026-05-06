@@ -55,3 +55,37 @@ Any exported parameter-less procedure can be executed dynamically. The UI trigge
 
 ## Conclusion for NewCP
 The NewCP project brings Component Pascal into the modern era with LLVM, removing the tight coupling to Microsoft COM and x86 32-bit architecture. However, understanding exactly why `Module` -> `Store` -> `View` -> `Controller` was designed this way helps interpret the design decisions found in existing CP source code, where modules expect a resident, highly interactive runtime environment.
+
+## NewCP vs BlackBox: Source-First Open Architecture
+
+NewCP is philosophically aligned with BlackBox's component model but differs from it in one fundamental respect: **NewCP is entirely source-driven and open source**.
+
+### What NewCP inherits from BlackBox conceptually
+
+- The component model: modules are independently loaded, versioned, and replaceable at runtime.
+- The command model: any exported parameterless procedure is a first-class command.
+- Dynamic module loading and hot-swapping without stopping the process.
+- Garbage-collected heap with precise object metadata (`TypeDesc`).
+- Subsystem organisation: `Mod/` mirrors BlackBox's per-subsystem `Mod/` folder convention. `Mod/Tests/` holds test modules; other subsystem folders (e.g. `Mod/BlackBox/`, `Mod/Std/`) can be added to group related modules.
+
+### Where NewCP fundamentally diverges
+
+| Dimension | BlackBox | NewCP |
+|---|---|---|
+| Distribution | Binary `.ocf` / `.sym` files | **Source `.cp` files only** |
+| Compilation | IDE-internal, produces binaries | **JIT from source at load time** |
+| Interface contract | Binary `.sym` symbol files | **Source `DEFINITION MODULE` or live sema** |
+| Architecture | 32-bit x86 Windows | **64-bit, LLVM-backed, cross-platform** |
+| Licence | Proprietary (Oberon microsystems / ETH) | **Open source** |
+| Bootstrap | Requires pre-built BlackBox environment | **Builds itself from Rust + CP source** |
+
+### The key consequence: no binary artefacts in the repo
+
+NewCP does not ship, load, or link any pre-compiled `.ocf`, `.sym`, or object files. Every module — whether part of the standard library, a subsystem, or an application — is distributed as a `.cp` source file and compiled on demand by the NewCP JIT pipeline.
+
+This means:
+
+- the entire system is auditable at source level
+- the compiler and the runtime are updated together with no ABI slip
+- adding a new module is as simple as dropping a `.cp` file into the right `Mod/` subfolder
+- the loader's recursive `Mod/` search means subsystem folders become first-class citizens with no configuration needed

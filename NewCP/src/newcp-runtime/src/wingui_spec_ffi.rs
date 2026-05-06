@@ -196,6 +196,62 @@ unsafe extern "system" {
 }
 
 // ---------------------------------------------------------------------------
+// FFI declarations — frame-time helpers (valid inside frame callback only)
+// ---------------------------------------------------------------------------
+
+unsafe extern "system" {
+    pub fn wingui_spec_bind_frame_index(
+        frame_view: *const WinguiSpecBindFrameView,
+    ) -> u64;
+
+    pub fn wingui_spec_bind_frame_elapsed_ms(
+        frame_view: *const WinguiSpecBindFrameView,
+    ) -> u64;
+
+    pub fn wingui_spec_bind_frame_delta_ms(
+        frame_view: *const WinguiSpecBindFrameView,
+    ) -> u64;
+
+    pub fn wingui_spec_bind_frame_bind_pane(
+        frame_view: *const WinguiSpecBindFrameView,
+        pane_id: crate::wingui_ffi::SuperTerminalPaneId,
+        out_pane: *mut WinguiSpecBindPaneRef,
+    ) -> i32;
+
+    pub fn wingui_spec_bind_frame_get_pane_layout(
+        frame_view: *const WinguiSpecBindFrameView,
+        pane: WinguiSpecBindPaneRef,
+        out_layout: *mut crate::wingui_ffi::SuperTerminalPaneLayout,
+    ) -> i32;
+
+    pub fn wingui_spec_bind_frame_request_present(
+        frame_view: *const WinguiSpecBindFrameView,
+    ) -> i32;
+
+    // Pane inbox — cross-thread messaging (CP event thread → D3D11 frame thread)
+
+    /// Post a (kind, detail) string pair to pane_id's inbox.
+    /// Callable from any thread.  Returns 1 on success, 0 if full/invalid.
+    pub fn wingui_spec_bind_post_pane_msg(
+        runtime: *mut WinguiSpecBindRuntime,
+        pane_id: crate::wingui_ffi::SuperTerminalPaneId,
+        kind_utf8: *const c_char,
+        detail_utf8: *const c_char,
+    ) -> i32;
+
+    /// Drain one message from pane_id's inbox.
+    /// Frame thread only.  Returns 1 if a message was dequeued, 0 if empty.
+    pub fn wingui_spec_bind_frame_poll_pane_msg(
+        frame_view: *const WinguiSpecBindFrameView,
+        pane_id: crate::wingui_ffi::SuperTerminalPaneId,
+        kind_out: *mut c_char,
+        kind_cap: u32,
+        detail_out: *mut c_char,
+        detail_cap: u32,
+    ) -> i32;
+}
+
+// ---------------------------------------------------------------------------
 // FFI declarations — spec_builder
 // ---------------------------------------------------------------------------
 

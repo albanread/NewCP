@@ -216,3 +216,21 @@ unsafe extern "system" {
         patch_json_utf8: *const c_char,
     ) -> i32;
 }
+
+// ---------------------------------------------------------------------------
+// Pane layout
+// ---------------------------------------------------------------------------
+
+#[repr(C)]
+#[derive(Debug, Copy, Clone, Default)]
+pub struct SuperTerminalPaneLayout {
+    pub x:           i32,
+    pub y:           i32,
+    pub width:       i32,
+    pub height:      i32,
+    pub visible:     i32,
+    pub columns:     u32,
+    pub rows:        u32,
+    pub cell_width:  f32,
+    pub cell_height: f32,
+}

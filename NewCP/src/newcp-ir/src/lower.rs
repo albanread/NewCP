@@ -674,6 +674,92 @@ impl<'m> LowerCtx<'m> {
             }
         }
 
+        // Indirect procedure-variable call: `fn()` or `fn(a, b)` where `fn`
+        // is a local variable declared as a named procedure-type alias.
+        // `is_direct_callee` returned false because the symbol is a local var
+        // (SymbolKind::LocalVar), not a Procedure.  We detect this case here
+        // and emit a Load of the function pointer followed by an indirect Call.
+        if let Some(Selector::Call(call_args)) = des.selectors.first() {
+            if let Some(proc_sig) = self.base_proc_type(&base_name) {
+                let call_args = call_args.clone();
+                // Load the function pointer from the variable (strip the Call selector).
+                let base_des = Designator {
+                    span: des.span,
+                    base: des.base.clone(),
+                    selectors: Vec::new(),
+                };
+                let fn_addr = self.designator_addr(&base_des);
+                let fn_ptr_t = self.fresh_temp();
+                self.push(Instr::Load { dst: fn_ptr_t, addr: fn_addr, ty: final_ty.clone() });
+                let fn_ptr_val = IrValue::Temp(fn_ptr_t, final_ty);
+
+                let ret_ty = proc_sig.result_type.as_ref()
+                    .map(|rt| map_semantic_type(rt.as_ref()))
+                    .unwrap_or(IrType::Void);
+
+                // Lower arguments using the known procedure signature.
+                let param_modes: Vec<Option<ParamMode>> = proc_sig.parameters.iter()
+                    .flat_map(|p| std::iter::repeat_n(p.mode, p.names.len()))
+                    .collect();
+                let param_tys: Vec<SemanticType> = proc_sig.parameters.iter()
+                    .flat_map(|p| std::iter::repeat_n(p.ty.clone(), p.names.len()))
+                    .collect();
+                let call_args_lowered: Vec<IrValue> = call_args.iter().enumerate().map(|(i, arg)| {
+                    let mode = param_modes.get(i).copied().flatten();
+                    if matches!(mode, Some(ParamMode::Var) | Some(ParamMode::Out)) {
+                        match arg {
+                            Expr::Designator(des) => self.designator_addr(des),
+                            _ => self.lower_expr(arg),
+                        }
+                    } else {
+                        let is_open_arr = param_tys.get(i).map(|t| {
+                            matches!(t, SemanticType::Array { lengths, .. } if lengths.is_empty())
+                        }).unwrap_or(false);
+                        if is_open_arr {
+                            if let Expr::Designator(des) = arg {
+                                if matches!(self.designator_ir_type(des), Some(IrType::Array { .. })) {
+                                    return self.designator_addr(des);
+                                }
+                            }
+                        }
+                        self.lower_expr(arg)
+                    }
+                }).collect();
+
+                if ret_ty == IrType::Void {
+                    self.push(Instr::Call {
+                        dst: None,
+                        callee: fn_ptr_val.clone(),
+                        args: call_args_lowered,
+                        ret_ty,
+                    });
+                    return fn_ptr_val;
+                }
+                let call_t = self.fresh_temp();
+                self.push(Instr::Call {
+                    dst: Some(call_t),
+                    callee: fn_ptr_val,
+                    args: call_args_lowered,
+                    ret_ty: ret_ty.clone(),
+                });
+                return IrValue::Temp(call_t, ret_ty);
+            }
+        }
+
+        // Procedure value used as a first-class value (e.g. assigned to a proc-type variable).
+        // When there are no selectors and the base name refers to a procedure (not a var),
+        // return the procedure reference directly without emitting a Load.
+        if des.selectors.is_empty() {
+            let is_procedure = module_opt.is_none() && self.symbols.iter().rev()
+                .chain(self.module_symbols.iter().rev())
+                .find(|s| s.name == base_name)
+                .map(|s| matches!(s.kind, SymbolKind::Procedure))
+                .unwrap_or(false);
+            if is_procedure {
+                return IrValue::GlobalRef(base_name, final_ty);
+            }
+        }
+
         let addr = self.designator_addr(&des);
         let t = self.fresh_temp();
         self.push(Instr::Load {
@@ -1075,6 +1161,35 @@ impl<'m> LowerCtx<'m> {
                 IrType::Opaque("call-result".to_string())
             }
         }
+    }
+
+    /// Resolve the variable `name` to a `ProcedureType` if its declared type is
+    /// a named procedure-type alias (e.g. `fn: NullaryIntProc` where
+    /// `TYPE NullaryIntProc = PROCEDURE(): INTEGER`).
+    fn base_proc_type(&self, name: &str) -> Option<newcp_sema::ProcedureType> {
+        // 1. Find the local / module symbol and its declared semantic type.
+        let sym_ty = self.symbols.iter().rev()
+            .chain(self.module_symbols.iter().rev())
+            .find(|s| s.name == name)?
+            .declared_type.as_ref()?;
+        // 2. If it is directly a procedure type, return it immediately.
+        if let SemanticType::Procedure(sig) = sym_ty {
+            return Some(sig.clone());
+        }
+        // 3. Otherwise it must be a Named alias — extract the alias name.
+        let type_name = match sym_ty {
+            SemanticType::Named { name, module: None, .. } => name.as_str(),
+            _ => return None,
+        };
+        // 4. Look up the type definition and return the procedure signature.
+        self.symbols.iter().rev()
+            .chain(self.module_symbols.iter().rev())
+            .find(|s| s.kind == SymbolKind::Type && s.name == type_name)
+            .and_then(|s| s.declared_type.as_ref())
+            .and_then(|ty| match ty {
+                SemanticType::Procedure(sig) => Some(sig.clone()),
+                _ => None,
+            })
     }
 
     fn callee_procedure_type(&mut self, callee: &IrValue) -> Option<newcp_sema::ProcedureType> {

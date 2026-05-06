@@ -3,17 +3,19 @@
 /// Safe Rust wrappers around wingui's spec_bind APIs.
 ///
 /// Primary entry point: `SpecBindRuntime` - owns `WinguiSpecBindRuntime*`.
-/// JIT-visible shims ("HostWindows.*", "WinSpec.*") are registered via
-/// `native_module_artifact()` / `winspec_module_artifact()`.
+/// JIT-visible shims ("HostWindows.*", "WinSpec.*", "WinFrame.*") are registered via
+/// `native_module_artifact()` / `winspec_module_artifact()` / `winframe_module_artifact()`.
 
 use std::cell::RefCell;
 use std::collections::VecDeque;
 use std::ffi::{CStr, CString, c_void};
 use std::sync::{Condvar, Mutex, OnceLock};
+use std::sync::atomic::{AtomicUsize, Ordering};
 
 use crate::wingui_ffi::SuperTerminalRunResult;
 use crate::wingui_spec_ffi::{
-    WinguiSpecBindEventView, WinguiSpecBindRunDesc, WinguiSpecBindRuntime,
+    WinguiSpecBindEventView, WinguiSpecBindFrameView, WinguiSpecBindRunDesc, WinguiSpecBindRuntime,
+    WinguiSpecBindPaneRef,
 };
 use crate::{
     ExportDirectory, ExportEntry, HostedModuleArtifact, NativeExportBinding, NativeModuleArtifact,
@@ -60,16 +62,58 @@ unsafe extern "system" fn on_event(
     EVENT_QUEUE.ready.notify_one();
 }
 
+// ---------------------------------------------------------------------------
+// WinFrame — global and per-pane renderer table
+// ---------------------------------------------------------------------------
+
+/// Stores the function pointer set by WinFrame.SetRenderer (global frame proc).
+static FRAME_RENDERER: AtomicUsize = AtomicUsize::new(0);
+
+struct PaneRendererEntry {
+    pane_id: u64,
+    fn_ptr:  usize,
+}
+
+fn pane_renderers() -> &'static Mutex<Vec<PaneRendererEntry>> {
+    static PANE_RENDERERS: OnceLock<Mutex<Vec<PaneRendererEntry>>> = OnceLock::new();
+    PANE_RENDERERS.get_or_init(|| Mutex::new(Vec::new()))
+}
+
+/// Thread-local pointer to the current WinguiSpecBindFrameView.
+/// Valid only for the duration of an on_frame call on the D3D11 main thread.
+thread_local! {
+    static FRAME_VIEW: RefCell<*const WinguiSpecBindFrameView> =
+        RefCell::new(std::ptr::null());
+}
+
 unsafe extern "system" fn on_frame(
     _user_data: *mut c_void,
     _runtime: *mut WinguiSpecBindRuntime,
-    _frame_view: *const crate::wingui_spec_ffi::WinguiSpecBindFrameView,
+    frame_view: *const WinguiSpecBindFrameView,
 ) {
-    use std::sync::atomic::{AtomicBool, Ordering};
-    static LOGGED: AtomicBool = AtomicBool::new(false);
-    if !LOGGED.swap(true, Ordering::Relaxed) {
-        eprintln!("[wingui_frame] first frame callback fired");
+    // Store frame_view for the duration of this call so WinFrame.* shims can use it.
+    FRAME_VIEW.with(|fv| *fv.borrow_mut() = frame_view);
+
+    // Call the global frame renderer (WinFrame.SetRenderer), if any.
+    let global_ptr = FRAME_RENDERER.load(Ordering::Relaxed);
+    if global_ptr != 0 {
+        let f: extern "C" fn() = unsafe { std::mem::transmute(global_ptr) };
+        f();
     }
+
+    // Call per-pane renderers (WinFrame.RegisterPaneRenderer).
+    // Snapshot the table to avoid holding the mutex across CP calls.
+    let snapshot: Vec<(u64, usize)> = {
+        let table = pane_renderers().lock().expect("pane_renderers lock poisoned");
+        table.iter().map(|e| (e.pane_id, e.fn_ptr)).collect()
+    };
+    for (pane_id, fn_ptr) in snapshot {
+        let f: extern "C" fn(i64) = unsafe { std::mem::transmute(fn_ptr) };
+        f(pane_id as i64);
+    }
+
+    // Clear frame_view before returning so stale use is caught as a null deref.
+    FRAME_VIEW.with(|fv| *fv.borrow_mut() = std::ptr::null());
 }
 
 // ---------------------------------------------------------------------------
@@ -257,8 +301,202 @@ pub extern "C" fn host_publish_ui(json_ptr: *const u8) {
     eprintln!("[wingui_host] PublishUi: load_spec_json returned {}", ret);
 }
 
-#[unsafe(export_name = "HostWindows.PatchUi")]
-pub extern "C" fn host_patch_ui(_json_ptr: *const u8) {}
+// ---------------------------------------------------------------------------
+// WinFrame shims
+// ---------------------------------------------------------------------------
+
+/// WinFrame.SetRenderer — register a global per-frame procedure.
+/// CP signature: PROCEDURE SetRenderer*(p: FrameProc)
+/// The proc is called with no arguments from the D3D11 frame thread.
+#[unsafe(export_name = "WinFrame.SetRenderer")]
+pub extern "C" fn winframe_set_renderer(fn_ptr: usize) {
+    FRAME_RENDERER.store(fn_ptr, Ordering::Relaxed);
+    eprintln!("[WinFrame.SetRenderer] fn_ptr=0x{:x}", fn_ptr);
+}
+
+/// WinFrame.RegisterPaneRenderer — register a per-pane frame procedure.
+/// CP signature: PROCEDURE RegisterPaneRenderer*(paneId: INTEGER; p: PaneProc)
+#[unsafe(export_name = "WinFrame.RegisterPaneRenderer")]
+pub extern "C" fn winframe_register_pane_renderer(pane_id: i64, fn_ptr: usize) {
+    let mut table = pane_renderers().lock().expect("pane_renderers lock poisoned");
+    if let Some(entry) = table.iter_mut().find(|e| e.pane_id == pane_id as u64) {
+        entry.fn_ptr = fn_ptr;
+    } else {
+        table.push(PaneRendererEntry { pane_id: pane_id as u64, fn_ptr });
+    }
+    eprintln!("[WinFrame.RegisterPaneRenderer] pane_id={} fn_ptr=0x{:x}", pane_id, fn_ptr);
+}
+
+/// WinFrame.UnregisterPaneRenderer
+/// CP signature: PROCEDURE UnregisterPaneRenderer*(paneId: INTEGER)
+#[unsafe(export_name = "WinFrame.UnregisterPaneRenderer")]
+pub extern "C" fn winframe_unregister_pane_renderer(pane_id: i64) {
+    let mut table = pane_renderers().lock().expect("pane_renderers lock poisoned");
+    table.retain(|e| e.pane_id != pane_id as u64);
+}
+
+/// WinFrame.FrameIndex — monotonically increasing frame counter.
+/// Valid only inside a frame proc; returns 0 otherwise.
+#[unsafe(export_name = "WinFrame.FrameIndex")]
+pub extern "C" fn winframe_frame_index() -> i64 {
+    FRAME_VIEW.with(|fv| {
+        let ptr = *fv.borrow();
+        if ptr.is_null() { return 0; }
+        unsafe { crate::wingui_spec_ffi::wingui_spec_bind_frame_index(ptr) as i64 }
+    })
+}
+
+/// WinFrame.ElapsedMs — milliseconds since runtime start.
+#[unsafe(export_name = "WinFrame.ElapsedMs")]
+pub extern "C" fn winframe_elapsed_ms() -> i64 {
+    FRAME_VIEW.with(|fv| {
+        let ptr = *fv.borrow();
+        if ptr.is_null() { return 0; }
+        unsafe { crate::wingui_spec_ffi::wingui_spec_bind_frame_elapsed_ms(ptr) as i64 }
+    })
+}
+
+/// WinFrame.DeltaMs — milliseconds since the previous frame.
+#[unsafe(export_name = "WinFrame.DeltaMs")]
+pub extern "C" fn winframe_delta_ms() -> i64 {
+    FRAME_VIEW.with(|fv| {
+        let ptr = *fv.borrow();
+        if ptr.is_null() { return 0; }
+        unsafe { crate::wingui_spec_ffi::wingui_spec_bind_frame_delta_ms(ptr) as i64 }
+    })
+}
+
+/// WinFrame.ResolvePaneId — resolve widget node id → opaque pane INTEGER.
+/// CP signature: PROCEDURE ResolvePaneId*(nodeId: ARRAY OF SHORTCHAR;
+///                                        VAR paneId: INTEGER): INTSHORT
+/// Call at startup after WinView.Render, not from inside a frame proc.
+#[unsafe(export_name = "WinFrame.ResolvePaneId")]
+pub extern "C" fn winframe_resolve_pane_id(node_id_ptr: *const u8, pane_id_ptr: *mut i64) -> i32 {
+    if node_id_ptr.is_null() || pane_id_ptr.is_null() { return 0; }
+    let r = runtime_ptr();
+    if r.is_null() {
+        eprintln!("[WinFrame.ResolvePaneId] runtime ptr is null");
+        return 0;
+    }
+    let mut pane_id = crate::wingui_ffi::SuperTerminalPaneId { value: 0 };
+    let ret = unsafe {
+        crate::wingui_spec_ffi::wingui_spec_bind_runtime_resolve_pane_id_utf8(
+            r,
+            node_id_ptr as *const std::os::raw::c_char,
+            &mut pane_id,
+        )
+    };
+    if ret != 0 {
+        unsafe { *pane_id_ptr = pane_id.value as i64; }
+        eprintln!("[WinFrame.ResolvePaneId] pane_id={}", pane_id.value);
+        1
+    } else {
+        eprintln!("[WinFrame.ResolvePaneId] resolve failed");
+        0
+    }
+}
+
+/// WinFrame.PaneLayout — get pixel rect of a pane this frame.
+/// CP signature: PROCEDURE PaneLayout*(paneId: INTEGER;
+///                VAR x, y, width, height: INTSHORT): INTSHORT
+/// Valid only inside a frame proc.
+#[unsafe(export_name = "WinFrame.PaneLayout")]
+pub extern "C" fn winframe_pane_layout(
+    pane_id: i64,
+    x_ptr: *mut i32, y_ptr: *mut i32,
+    w_ptr: *mut i32, h_ptr: *mut i32,
+) -> i32 {
+    FRAME_VIEW.with(|fv| {
+        let fv_ptr = *fv.borrow();
+        if fv_ptr.is_null() { return 0; }
+        let mut pane_ref = WinguiSpecBindPaneRef {
+            window_id: crate::wingui_ffi::SuperTerminalWindowId { value: 0 },
+            pane_id:   crate::wingui_ffi::SuperTerminalPaneId { value: pane_id as u64 },
+            buffer_index: 0,
+            active_buffer_index: 0,
+        };
+        let r1 = unsafe {
+            crate::wingui_spec_ffi::wingui_spec_bind_frame_bind_pane(
+                fv_ptr,
+                crate::wingui_ffi::SuperTerminalPaneId { value: pane_id as u64 },
+                &mut pane_ref,
+            )
+        };
+        if r1 == 0 { return 0; }
+        let mut layout = crate::wingui_ffi::SuperTerminalPaneLayout::default();
+        let r2 = unsafe {
+            crate::wingui_spec_ffi::wingui_spec_bind_frame_get_pane_layout(fv_ptr, pane_ref, &mut layout)
+        };
+        if r2 == 0 { return 0; }
+        unsafe {
+            if !x_ptr.is_null() { *x_ptr = layout.x; }
+            if !y_ptr.is_null() { *y_ptr = layout.y; }
+            if !w_ptr.is_null() { *w_ptr = layout.width; }
+            if !h_ptr.is_null() { *h_ptr = layout.height; }
+        }
+        1
+    })
+}
+
+/// WinFrame.RequestPresent — force a present this frame.
+#[unsafe(export_name = "WinFrame.RequestPresent")]
+pub extern "C" fn winframe_request_present() {
+    FRAME_VIEW.with(|fv| {
+        let fv_ptr = *fv.borrow();
+        if fv_ptr.is_null() { return; }
+        unsafe { crate::wingui_spec_ffi::wingui_spec_bind_frame_request_present(fv_ptr); }
+    });
+}
+
+/// WinFrame.PostPaneMsg — post (kind, detail) to pane's inbox from any thread.
+/// CP signature: PROCEDURE PostPaneMsg*(paneId: INTEGER;
+///                 kind, detail: ARRAY OF SHORTCHAR): INTSHORT
+#[unsafe(export_name = "WinFrame.PostPaneMsg")]
+pub extern "C" fn winframe_post_pane_msg(
+    pane_id:    i64,
+    kind_ptr:   *const u8,
+    detail_ptr: *const u8,
+) -> i32 {
+    let r = runtime_ptr();
+    if r.is_null() { return 0; }
+    if kind_ptr.is_null() { return 0; }
+    static EMPTY: &[u8] = b"\0";
+    unsafe {
+        crate::wingui_spec_ffi::wingui_spec_bind_post_pane_msg(
+            r,
+            crate::wingui_ffi::SuperTerminalPaneId { value: pane_id as u64 },
+            kind_ptr as *const std::os::raw::c_char,
+            if detail_ptr.is_null() { EMPTY.as_ptr() as *const std::os::raw::c_char }
+            else { detail_ptr as *const std::os::raw::c_char },
+        )
+    }
+}
+
+/// WinFrame.PollPaneMsg — drain one message from pane's inbox (frame thread only).
+/// CP signature: PROCEDURE PollPaneMsg*(paneId: INTEGER;
+///                 VAR kind: ARRAY OF SHORTCHAR;
+///                 VAR detail: ARRAY OF SHORTCHAR): INTSHORT
+/// kind and detail buffers are assumed to be at least 64 and 128 bytes respectively
+/// (matching CP ARRAY 64 OF SHORTCHAR and ARRAY 128 OF SHORTCHAR fixed arrays).
+#[unsafe(export_name = "WinFrame.PollPaneMsg")]
+pub extern "C" fn winframe_poll_pane_msg(
+    pane_id:    i64,
+    kind_ptr:   *mut u8,
+    detail_ptr: *mut u8,
+) -> i32 {
+    FRAME_VIEW.with(|fv| {
+        let fv_ptr = *fv.borrow();
+        if fv_ptr.is_null() { return 0; }
+        unsafe {
+            crate::wingui_spec_ffi::wingui_spec_bind_frame_poll_pane_msg(
+                fv_ptr,
+                crate::wingui_ffi::SuperTerminalPaneId { value: pane_id as u64 },
+                kind_ptr   as *mut std::os::raw::c_char, 64,
+                detail_ptr as *mut std::os::raw::c_char, 128,
+            )
+        }
+    })
+}
 
 /// WaitNamedEvent: blocks until an event is available or timeout elapses.
 /// Returns 1 on event, 0 on timeout.
@@ -270,7 +508,7 @@ pub extern "C" fn host_patch_ui(_json_ptr: *const u8) {}
 pub extern "C" fn host_wait_named_event(
     name_ptr:    *mut u8,
     payload_ptr: *mut u8,
-    timeout_ms:  i32,
+    timeout_ms:  i64,
 ) -> i32 {
     const NAME_CAP: usize    = 256;
     const PAYLOAD_CAP: usize = 4096;
@@ -440,55 +678,6 @@ pub extern "C" fn winspec_get_spec(buf_ptr: *mut u8) -> i32 {
     1
 }
 
-/// Update a textarea's value in-place inside an existing spec JSON string.
-/// Avoids a full spec rebuild when only output text changes.
-#[unsafe(export_name = "WinSpec.UpdateTextarea")]
-pub extern "C" fn winspec_update_textarea(
-    spec_ptr: *mut u8, spec_len: u32, id_ptr: *const u8, value_ptr: *const u8,
-) -> i32 {
-    if spec_ptr.is_null() || id_ptr.is_null() || value_ptr.is_null() { return 0; }
-    let spec  = unsafe { CStr::from_ptr(spec_ptr  as *const _) }.to_string_lossy().into_owned();
-    let id    = unsafe { CStr::from_ptr(id_ptr    as *const _) }.to_string_lossy().into_owned();
-    let value = escape_json(&unsafe { CStr::from_ptr(value_ptr as *const _) }.to_string_lossy());
-    let result = patch_textarea_value(&spec, &id, &value);
-    let bytes = result.as_bytes();
-    if bytes.len() + 1 > spec_len as usize { return 0; }
-    unsafe {
-        std::ptr::copy_nonoverlapping(bytes.as_ptr(), spec_ptr, bytes.len());
-        *spec_ptr.add(bytes.len()) = 0;
-    }
-    1
-}
-
-fn patch_textarea_value(spec: &str, id: &str, new_val_esc: &str) -> String {
-    let id_marker = format!("\"id\":\"{}\"", id);
-    let obj_start = match spec.find(&id_marker).and_then(|p| spec[..p].rfind('{')) {
-        Some(pos) => pos,
-        None => return spec.to_owned(),
-    };
-    let after = &spec[obj_start..];
-    if let Some(vstart) = after.find("\"value\":\"") {
-        let content_start = obj_start + vstart + 9;
-        if let Some(end) = find_end_quote(&spec[content_start..]) {
-            let mut out = spec.to_owned();
-            out.replace_range(content_start..content_start + end, new_val_esc);
-            return out;
-        }
-    }
-    spec.to_owned()
-}
-
-fn find_end_quote(s: &str) -> Option<usize> {
-    let b = s.as_bytes();
-    let mut i = 0;
-    while i < b.len() {
-        if b[i] == b'\\' { i += 2; continue; }
-        if b[i] == b'"'  { return Some(i); }
-        i += 1;
-    }
-    None
-}
-
 // ---------------------------------------------------------------------------
 // Module artifacts
 // ---------------------------------------------------------------------------
@@ -501,7 +690,6 @@ pub fn native_module_artifact() -> NativeModuleArtifact {
                 ExportEntry::procedure("RequestPresent"),
                 ExportEntry::procedure("RequestClose"),
                 ExportEntry::procedure("PublishUi"),
-                ExportEntry::procedure("PatchUi"),
                 ExportEntry::procedure("WaitNamedEvent"),
             ]),
             "HostWindows.bootstrap",
@@ -512,7 +700,6 @@ pub fn native_module_artifact() -> NativeModuleArtifact {
             NativeExportBinding::procedure("RequestPresent", host_request_present as *const () as usize),
             NativeExportBinding::procedure("RequestClose",   host_request_close   as *const () as usize),
             NativeExportBinding::procedure("PublishUi",      host_publish_ui      as *const () as usize),
-            NativeExportBinding::procedure("PatchUi",        host_patch_ui        as *const () as usize),
             NativeExportBinding::procedure("WaitNamedEvent", host_wait_named_event as *const () as usize),
         ],
     )
@@ -531,7 +718,6 @@ pub fn winspec_module_artifact() -> NativeModuleArtifact {
                 ExportEntry::procedure("AddButton"),
                 ExportEntry::procedure("AddText"),
                 ExportEntry::procedure("GetSpec"),
-                ExportEntry::procedure("UpdateTextarea"),
             ]),
             "WinSpec.bootstrap",
             "Rust-hosted JSON spec builder for wingui layouts",
@@ -546,7 +732,43 @@ pub fn winspec_module_artifact() -> NativeModuleArtifact {
             NativeExportBinding::procedure("AddButton",      winspec_add_button      as *const () as usize),
             NativeExportBinding::procedure("AddText",        winspec_add_text        as *const () as usize),
             NativeExportBinding::procedure("GetSpec",        winspec_get_spec        as *const () as usize),
-            NativeExportBinding::procedure("UpdateTextarea", winspec_update_textarea as *const () as usize),
+        ],
+    )
+}
+
+pub fn winframe_module_artifact() -> NativeModuleArtifact {
+    NativeModuleArtifact::new(
+        HostedModuleArtifact::new(
+            "WinFrame", vec![],
+            ExportDirectory::new(vec![
+                ExportEntry::procedure("SetRenderer"),
+                ExportEntry::procedure("RegisterPaneRenderer"),
+                ExportEntry::procedure("UnregisterPaneRenderer"),
+                ExportEntry::procedure("FrameIndex"),
+                ExportEntry::procedure("ElapsedMs"),
+                ExportEntry::procedure("DeltaMs"),
+                ExportEntry::procedure("ResolvePaneId"),
+                ExportEntry::procedure("PaneLayout"),
+                ExportEntry::procedure("RequestPresent"),
+                ExportEntry::procedure("PostPaneMsg"),
+                ExportEntry::procedure("PollPaneMsg"),
+            ]),
+            "WinFrame.bootstrap",
+            "Rust-hosted per-frame dispatch and pane inbox for wingui MVC",
+            vec![],
+        ),
+        vec![
+            NativeExportBinding::procedure("SetRenderer",            winframe_set_renderer            as *const () as usize),
+            NativeExportBinding::procedure("RegisterPaneRenderer",   winframe_register_pane_renderer  as *const () as usize),
+            NativeExportBinding::procedure("UnregisterPaneRenderer", winframe_unregister_pane_renderer as *const () as usize),
+            NativeExportBinding::procedure("FrameIndex",             winframe_frame_index             as *const () as usize),
+            NativeExportBinding::procedure("ElapsedMs",              winframe_elapsed_ms              as *const () as usize),
+            NativeExportBinding::procedure("DeltaMs",                winframe_delta_ms                as *const () as usize),
+            NativeExportBinding::procedure("ResolvePaneId",          winframe_resolve_pane_id         as *const () as usize),
+            NativeExportBinding::procedure("PaneLayout",             winframe_pane_layout             as *const () as usize),
+            NativeExportBinding::procedure("RequestPresent",         winframe_request_present         as *const () as usize),
+            NativeExportBinding::procedure("PostPaneMsg",            winframe_post_pane_msg           as *const () as usize),
+            NativeExportBinding::procedure("PollPaneMsg",            winframe_poll_pane_msg           as *const () as usize),
         ],
     )
 }

@@ -321,9 +321,15 @@ pub fn native_module_artifact() -> NativeModuleArtifact {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::sync::Mutex;
+
+    // All console tests share CONSOLE_STATE global, so they must not run in
+    // parallel.  Acquire this lock at the top of every test in this module.
+    static CONSOLE_TEST_LOCK: Mutex<()> = Mutex::new(());
 
     #[test]
     fn captured_console_writes_and_reads_integer() {
+        let _guard = CONSOLE_TEST_LOCK.lock().unwrap_or_else(|e| e.into_inner());
         reset();
         begin_capture();
         set_input("41 90");
@@ -340,6 +346,7 @@ mod tests {
 
     #[test]
     fn captured_console_reads_and_writes_char() {
+        let _guard = CONSOLE_TEST_LOCK.lock().unwrap_or_else(|e| e.into_inner());
         reset();
         begin_capture();
         set_input("Az");
@@ -355,6 +362,7 @@ mod tests {
 
     #[test]
     fn write_string_converts_utf32_to_utf8() {
+        let _guard = CONSOLE_TEST_LOCK.lock().unwrap_or_else(|e| e.into_inner());
         reset();
         begin_capture();
 
@@ -368,6 +376,7 @@ mod tests {
 
     #[test]
     fn read_string_decodes_utf8_token_into_utf32() {
+        let _guard = CONSOLE_TEST_LOCK.lock().unwrap_or_else(|e| e.into_inner());
         reset();
         // UTF-8 input: ASCII word then space then another word.
         set_input("hello world");
@@ -384,6 +393,7 @@ mod tests {
 
     #[test]
     fn read_string_handles_multibyte_utf8_input() {
+        let _guard = CONSOLE_TEST_LOCK.lock().unwrap_or_else(|e| e.into_inner());
         reset();
         // UTF-8 encoding of U+00E9 (é): 0xC3 0xA9, followed by a space then more text.
         set_input_bytes(b"caf\xC3\xA9 next");
@@ -400,6 +410,7 @@ mod tests {
 
     #[test]
     fn read_string_truncates_to_max_len() {
+        let _guard = CONSOLE_TEST_LOCK.lock().unwrap_or_else(|e| e.into_inner());
         reset();
         set_input("abcdefgh");
 
@@ -416,6 +427,7 @@ mod tests {
 
     #[test]
     fn read_char_decodes_multibyte_utf8() {
+        let _guard = CONSOLE_TEST_LOCK.lock().unwrap_or_else(|e| e.into_inner());
         reset();
         // UTF-8 for U+00E9 (é): 0xC3 0xA9
         set_input_bytes(b"\xC3\xA9");

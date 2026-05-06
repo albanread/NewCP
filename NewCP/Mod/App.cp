@@ -1,47 +1,34 @@
 MODULE App;
-(**
-   App — NewCP GUI application entry point.
 
-   Run* is invoked by the Rust driver as the startup command when the
-   user calls `newcp-driver run-gui`.
+IMPORT Factorial, Log, WinLoop, WinSpec, WinView;
 
-   Responsibilities:
-     1. Configure and open the log view (Log.Open).
-     2. Run the event loop, blocking on HostWindows.WaitNamedEvent.
-     3. Exit cleanly on "__close_requested" or "__host_stopping".
-
-   All output to the log window goes through Log.*; no direct WinSpec or
-   HostWindows calls are needed here except for the event loop itself.
-*)
-
-IMPORT HostWindows, Log;
-
-(* Compare two SHORTCHAR strings element-by-element.  Returns TRUE if equal. *)
-PROCEDURE StrEq(a, b: ARRAY OF SHORTCHAR): BOOLEAN;
-  VAR i: INTEGER;
+PROCEDURE BuildWindow;
 BEGIN
-  i := 0;
-  WHILE (a[i] = b[i]) & (a[i] # 0X) DO INC(i) END;
-  RETURN a[i] = b[i]
-END StrEq;
+  WinSpec.Begin(WinView.title);
+  WinSpec.OpenStack(-1);
+  WinSpec.OpenRow(-1);
+  WinSpec.AddButton("run_factorial", "Factorial 20", "run_factorial");
+  WinSpec.AddButton("clear_log", "Clear", "clear_log");
+  WinSpec.CloseContainer;
+  WinSpec.AddTextarea("log", "Log", Log.text, 1);
+  WinSpec.CloseContainer
+END BuildWindow;
+
+PROCEDURE OnClose*(name, payload: ARRAY OF SHORTCHAR);
+BEGIN
+END OnClose;
 
 PROCEDURE Run*;
-  VAR
-    name:    ARRAY 256  OF SHORTCHAR;
-    payload: ARRAY 4096 OF SHORTCHAR;
-    ok:      INTEGER;
 BEGIN
-  Log.SetTitle("NewCP");
   Log.Open;
   Log.String("NewCP ready."); Log.Ln;
-
-  LOOP
-    ok := HostWindows.WaitNamedEvent(name, payload, -1);
-    IF ok = 0 THEN (* timeout — not expected with infinite wait *)
-    ELSIF StrEq(name, "__close_requested") OR StrEq(name, "__host_stopping") THEN
-      EXIT
-    END
-  END
+  WinView.SetTitle("NewCP");
+  WinView.SetRenderer(BuildWindow);
+  WinLoop.OnClose(OnClose);
+  WinLoop.Register("run_factorial", Factorial.OnRun);
+  WinLoop.Register("clear_log", Log.OnClear);
+  WinView.Render;
+  WinLoop.Run
 END Run;
 
 END App.

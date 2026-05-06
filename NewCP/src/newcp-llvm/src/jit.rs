@@ -99,6 +99,7 @@ pub(crate) fn collect_global_mappings<'ctx>(
     extra_symbol_mappings: &HashMap<String, usize>,
 ) -> Result<Vec<(FunctionValue<'ctx>, usize)>, CodegenError> {
     let mut mappings = Vec::new();
+    let debug = std::env::var("NEWCP_JIT_DEBUG").is_ok();
 
     for function in module.get_functions() {
         if function.get_linkage() != Linkage::External || function.count_basic_blocks() != 0 {
@@ -111,13 +112,18 @@ pub(crate) fn collect_global_mappings<'ctx>(
             .map_err(|_| CodegenError::Jit("encountered non-UTF8 symbol name".to_string()))?;
 
         if let Some(address) = extra_symbol_mappings.get(symbol_name).copied() {
+            if debug { eprintln!("[jit] map (extra) {symbol_name} -> 0x{address:x}"); }
             mappings.push((function, address));
             continue;
         }
 
         if let Some(address) = newcp_runtime::runtime_symbol_address(symbol_name) {
+            if debug { eprintln!("[jit] map (runtime) {symbol_name} -> 0x{address:x}"); }
             mappings.push((function, address));
+            continue;
         }
+
+        if debug { eprintln!("[jit] UNRESOLVED external symbol: {symbol_name}"); }
     }
 
     Ok(mappings)

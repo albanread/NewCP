@@ -7,7 +7,7 @@ use newcp_llvm::{CodegenOptions, CompiledModule, OwnedJitModule};
 use newcp_parser::{parse_source_module, SourceExportKind, SourceModuleSpec};
 use newcp_runtime::{
     BootstrapReport, CompilerService, ExportEntry, ExportDirectory, ExportKind,
-    HostedModuleArtifact, KernelState, ResidentCompiler, RustCommandHandlerSpec, CommandInvocation,
+    HostedModuleArtifact, KernelState, ModuleKind, ResidentCompiler, RustCommandHandlerSpec, CommandInvocation,
 };
 use newcp_sema::{analyze_module, SemanticDiagnostic, SemanticModule};
 
@@ -783,8 +783,58 @@ impl LoaderSession {
         staged_export_addresses: &HashMap<String, HashMap<String, usize>>,
     ) -> HashMap<String, usize> {
         let mut symbol_mappings = HashMap::new();
+        let debug = std::env::var("NEWCP_JIT_DEBUG").is_ok();
+        if debug {
+            eprintln!(
+                "[loader] collect_import_symbol_mappings for {} (imports: {:?})",
+                module.spec.name, module.spec.imports
+            );
+        }
 
         for import in &module.spec.imports {
+            // Native (Rust-hosted) modules MUST win over any CP stub body that
+            // happens to share the name.  Definition-style CP modules like
+            // `WinSpec.cp` / `HostWindows.cp` exist purely to give sema/IR the
+            // procedure signatures; their empty `BEGIN END` bodies must never
+            // shadow the real Rust shims.
+            if let Some(mod_record) = self.report.kernel.this_mod(import) {
+                if matches!(mod_record.kind, ModuleKind::ResidentRust) {
+                    if debug {
+                        eprintln!(
+                            "[loader]   import {} is native (resident Rust), exports: {:?}",
+                            import,
+                            mod_record.exports.names()
+                        );
+                    }
+                    let mut bound_any = false;
+                    for export_name in mod_record.exports.names() {
+                        if let Some(address) =
+                            newcp_runtime::native_export_address(import, export_name)
+                        {
+                            if debug {
+                                eprintln!(
+                                    "[loader]     {}.{} -> 0x{:x} (native)",
+                                    import, export_name, address
+                                );
+                            }
+                            symbol_mappings
+                                .insert(format!("{}.{}", import, export_name), address);
+                            bound_any = true;
+                        } else if debug {
+                            eprintln!(
+                                "[loader]     {}.{} -> NO ADDRESS (native_export_address returned None)",
+                                import, export_name
+                            );
+                        }
+                    }
+                    if bound_any {
+                        continue;
+                    }
+                    // Fall through if the native module exposes no addresses
+                    // (shouldn't happen, but stay safe).
+                }
+            }
+
             if let Some(export_addresses) = staged_export_addresses.get(import) {
                 for (public_name, address) in export_addresses {
                     symbol_mappings.insert(public_name.clone(), *address);
@@ -796,9 +846,21 @@ impl LoaderSession {
                 for (public_name, address) in &image.export_addresses {
                     symbol_mappings.insert(public_name.clone(), *address);
                 }
+                continue;
+            }
+
+            if debug {
+                eprintln!("[loader]   import {} NOT FOUND in any source", import);
             }
         }
 
+        if debug {
+            eprintln!(
+                "[loader] collected {} symbol mappings for {}",
+                symbol_mappings.len(),
+                module.spec.name
+            );
+        }
         symbol_mappings
     }
 
