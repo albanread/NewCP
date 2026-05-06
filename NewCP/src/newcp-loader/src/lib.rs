@@ -1061,18 +1061,60 @@ fn visit_source_module(path: &Path, state: &mut GraphDiscoveryState) -> Result<(
 }
 
 fn resolve_import_source(import: &str, source_path: &Path) -> Option<PathBuf> {
+    let filename = format!("{import}.cp");
+
+    // 1. Same directory as the importing module (fastest / most common case).
     if let Some(parent) = source_path.parent() {
-        let sibling = parent.join(format!("{import}.cp"));
+        let sibling = parent.join(&filename);
         if sibling.exists() {
             return Some(sibling);
         }
     }
 
-    let workspace_path = Path::new("Mod").join(format!("{import}.cp"));
-    if workspace_path.exists() {
-        return Some(workspace_path);
+    // 2. Walk up from the source file's directory to find the "Mod" root, then
+    //    search it recursively.  This lets modules in Mod/Tests/ import modules
+    //    that live in Mod/ (or any other subfolder under the same root).
+    if let Some(mut dir) = source_path.parent() {
+        // Walk up until we find a directory named "Mod" (case-sensitive).
+        loop {
+            if dir.file_name().and_then(|n| n.to_str()) == Some("Mod") {
+                // Found the module root — search its entire subtree.
+                if let Some(hit) = find_cp_in_dir(dir, &filename) {
+                    return Some(hit);
+                }
+                break;
+            }
+            match dir.parent() {
+                Some(p) => dir = p,
+                None => break,
+            }
+        }
     }
 
+    None
+}
+
+/// Recursively search `dir` for a file named `filename`.  Returns the first
+/// match found (order is unspecified beyond depth-first traversal).
+fn find_cp_in_dir(dir: &Path, filename: &str) -> Option<PathBuf> {
+    let entries = match std::fs::read_dir(dir) {
+        Ok(e) => e,
+        Err(_) => return None,
+    };
+    let mut subdirs: Vec<PathBuf> = Vec::new();
+    for entry in entries.flatten() {
+        let path = entry.path();
+        if path.is_dir() {
+            subdirs.push(path);
+        } else if path.file_name().and_then(|n| n.to_str()) == Some(filename) {
+            return Some(path);
+        }
+    }
+    for sub in subdirs {
+        if let Some(hit) = find_cp_in_dir(&sub, filename) {
+            return Some(hit);
+        }
+    }
     None
 }
 
