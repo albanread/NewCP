@@ -773,6 +773,12 @@ impl BootstrapReport {
         let winspec_module = wingui_host::winspec_module_artifact();
         #[cfg(feature = "gui")]
         let winframe_module = wingui_host::winframe_module_artifact();
+        #[cfg(feature = "gui")]
+        let winpayload_module = wingui_host::winpayload_module_artifact();
+        #[cfg(feature = "gui")]
+        let winbatch_module = wingui_host::winbatch_module_artifact();
+        #[cfg(feature = "gui")]
+        let hostframe_module = wingui_host::hostframe_module_artifact();
         let host_menus = HostedModuleArtifact::new(
             "HostMenus",
             vec!["Kernel".to_string()],
@@ -801,6 +807,8 @@ impl BootstrapReport {
 
         let hosted_modules = vec![
             format!("{} [{}]", console_module.hosted.name, console_module.hosted.source_summary),
+            #[cfg(feature = "gui")]
+            format!("{} [{}]", winbatch_module.hosted.name, winbatch_module.hosted.source_summary),
             format!("{} [{}]", host_menus.name, host_menus.source_summary),
         ];
 
@@ -819,6 +827,12 @@ impl BootstrapReport {
         kernel.register_native_module(winspec_module);
         #[cfg(feature = "gui")]
         kernel.register_native_module(winframe_module);
+        #[cfg(feature = "gui")]
+        kernel.register_native_module(winpayload_module);
+        #[cfg(feature = "gui")]
+        kernel.register_native_module(winbatch_module);
+        #[cfg(feature = "gui")]
+        kernel.register_native_module(hostframe_module);
         kernel.register_hosted_module(host_menus);
         kernel.register_compiled_module(system_artifact);
         kernel.register_compiled_module(init_shell_artifact);
@@ -938,6 +952,9 @@ fn builtin_native_modules() -> Vec<NativeModuleArtifact> {
         modules.push(wingui_host::native_module_artifact());
         modules.push(wingui_host::winspec_module_artifact());
         modules.push(wingui_host::winframe_module_artifact());
+        modules.push(wingui_host::winpayload_module_artifact());
+        modules.push(wingui_host::winbatch_module_artifact());
+        modules.push(wingui_host::hostframe_module_artifact());
     }
     modules
 }

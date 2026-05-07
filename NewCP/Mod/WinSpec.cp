@@ -28,9 +28,23 @@ PROCEDURE AddTextarea*(id, label, value: ARRAY OF SHORTCHAR; readonly: INTSHORT)
 BEGIN
 END AddTextarea;
 
-PROCEDURE GetSpec*(VAR buf: ARRAY OF SHORTCHAR): INTSHORT;
+PROCEDURE AddTextGrid*(id, event: ARRAY OF SHORTCHAR; cols, rows: INTSHORT);
 BEGIN
-  RETURN 0
+END AddTextGrid;
+
+PROCEDURE AddSurface*(id, event: ARRAY OF SHORTCHAR; width, height: INTSHORT);
+BEGIN
+END AddSurface;
+
+PROCEDURE AddRgbaPane*(id, event: ARRAY OF SHORTCHAR; width, height: INTSHORT);
+BEGIN
+END AddRgbaPane;
+
+PROCEDURE GetSpec*(VAR buf: ARRAY OF SHORTCHAR): INTSHORT;
+  VAR ok: INTSHORT;
+BEGIN
+  ok := SHORT(0);
+  RETURN ok
 END GetSpec;
 
 END WinSpec.

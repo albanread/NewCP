@@ -15,8 +15,10 @@ END RequestPresent;
 PROCEDURE WaitNamedEvent*(VAR name: ARRAY OF SHORTCHAR;
                           VAR payload: ARRAY OF SHORTCHAR;
                           timeoutMs: INTEGER): INTSHORT;
+  VAR ok: INTSHORT;
 BEGIN
-  RETURN 0
+  ok := SHORT(0);
+  RETURN ok
 END WaitNamedEvent;
 
 END HostWindows.

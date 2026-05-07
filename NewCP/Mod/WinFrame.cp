@@ -4,22 +4,6 @@ CONST
   BufFrame* = 0;
   BufPersistent* = 1;
 
-TYPE
-  FrameProc* = PROCEDURE;
-  PaneProc* = PROCEDURE (paneId: INTEGER);
-
-PROCEDURE SetRenderer*(p: FrameProc);
-BEGIN
-END SetRenderer;
-
-PROCEDURE RegisterPaneRenderer*(paneId: INTEGER; p: PaneProc);
-BEGIN
-END RegisterPaneRenderer;
-
-PROCEDURE UnregisterPaneRenderer*(paneId: INTEGER);
-BEGIN
-END UnregisterPaneRenderer;
-
 PROCEDURE FrameIndex*(): INTEGER;
 BEGIN
   RETURN 0

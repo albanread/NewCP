@@ -6,15 +6,25 @@ This document outlines the architecture and implementation plan for integrating 
 
 The legacy BlackBox Component Builder tightly coupled its UI and compilation environment to a single Win32 message loop thread. NewCP breaks this coupling using the `multiwingui` SuperTerminal model:
 
-*   **UI Thread (Foreground):** Managed entirely by `multiwingui`. It creates the OS windows, runs the Win32 message pump, maintains the Direct3D 11 rendering contexts, and manages the declarative native UI state (JSON).
-*   **CP Thread (Background):** Managed by `newcp-driver`. The NewCP runtime (JIT, compiler, garbage collector, and the running CP app) operates on a background client thread. It NEVER touches Win32 `HWNDs` or Direct3D APIs directly.
+*   **UI Thread (Foreground):** Managed entirely by `multiwingui`. It creates the OS windows, runs the Win32 message pump, maintains the Direct3D 11 rendering contexts, and manages the declarative native UI state (JSON). It owns panes, GPU resources, and host-native rendering behaviour, but it does not own NewCP's MVC semantics.
+*   **CP Thread (Background):** Managed by `newcp-driver`. The NewCP runtime (JIT, compiler, garbage collector, and the running CP app) operates on a background client thread. It NEVER touches Win32 `HWNDs` or Direct3D APIs directly. It owns the full MVC triad: model mutation, controller dispatch, and logical view composition.
 
 ## 2. Cross-Thread Communication
 
 Communication between the OS UI and the CP application occurs exclusively through typed lock-free queues (channels) exposed via the C API:
 
-*   **Event Queue (UI → CP):** Captures keyboard, mouse, and resize events. The CP standard library (`HostControllers` / `Controllers`) polls this queue to route interactions to the focused CP View.
-*   **Command Queue (CP → UI):** When CP code needs to draw, create a window, or update a form, it pushes commands to this queue. Operations include patching the JSON declarative layout, injecting text into text-grid panes, or writing pixels to RGBA panes.
+*   **Event Queue (UI → CP):** Captures keyboard, mouse, and resize events. The CP standard library (`HostControllers` / `Controllers`) polls this queue to route interactions to the focused CP Controller and View logic.
+*   **JSON Spec Path (CP → UI):** Slow-path declarative updates. When CP code needs to create a window, rebuild layout, or update native widget state, it republishes JSON through `WinView.Render` / `HostWindows.PublishUi`.
+*   **Pane Render Channels (CP → UI):** Fast-path pane-scoped rendering traffic. The CP side may use arbitrarily granular MVC messages internally, but only flattened render commands and pane-scoped invalidation data cross this boundary.
+*   **Status / Response Queue (UI → CP):** Frame execution, hit-testing, visibility changes, selection results, and other UI-thread outcomes are reported back as messages. The UI thread does not call CP procedures directly; it only sends responses back across a queue.
+
+### Thread-ownership rule
+
+- The UI thread is a programmable, hardware-accelerated terminal. It owns Win32, D3D11, spec_bind state, panes, and all rendering.
+- The CP thread owns the entire MVC triad: model mutation, controller logic, logical view composition, micro-view traversal, and render-command generation.
+- Multiple channels in either direction are allowed and expected.
+- The fast channels are owned by panes, not by individual views. Embedded views render into their parent pane's batch.
+- Direct execution of CP/JIT code on the UI thread is not allowed in the final design.
 
 ## 3. Implementation Tracker
 
@@ -46,3 +56,4 @@ Communication between the OS UI and the CP application occurs exclusively throug
 - [x] `run_gui()` calls `wingui_host::run_host()` — blocks the main thread on the Win32 message loop.
 - [x] `cp_worker_startup` callback bootstraps the resident kernel on the background CP thread.
 - [ ] Wire `_command_path` into `cp_worker_startup` to invoke a specific CP command on launch.
+

@@ -7,10 +7,11 @@
 /// `native_module_artifact()` / `winspec_module_artifact()` / `winframe_module_artifact()`.
 
 use std::cell::RefCell;
-use std::collections::VecDeque;
+use std::collections::{HashMap, VecDeque};
 use std::ffi::{CStr, CString, c_void};
 use std::sync::{Condvar, Mutex, OnceLock};
-use std::sync::atomic::{AtomicUsize, Ordering};
+
+use serde_json::Value;
 
 use crate::wingui_ffi::SuperTerminalRunResult;
 use crate::wingui_spec_ffi::{
@@ -63,27 +64,875 @@ unsafe extern "system" fn on_event(
 }
 
 // ---------------------------------------------------------------------------
-// WinFrame — global and per-pane renderer table
+// WinFrame — frame-state access for the host-side frame drain
 // ---------------------------------------------------------------------------
 
-/// Stores the function pointer set by WinFrame.SetRenderer (global frame proc).
-static FRAME_RENDERER: AtomicUsize = AtomicUsize::new(0);
-
-struct PaneRendererEntry {
-    pane_id: u64,
-    fn_ptr:  usize,
-}
-
-fn pane_renderers() -> &'static Mutex<Vec<PaneRendererEntry>> {
-    static PANE_RENDERERS: OnceLock<Mutex<Vec<PaneRendererEntry>>> = OnceLock::new();
-    PANE_RENDERERS.get_or_init(|| Mutex::new(Vec::new()))
-}
-
-/// Thread-local pointer to the current WinguiSpecBindFrameView.
-/// Valid only for the duration of an on_frame call on the D3D11 main thread.
+// Thread-local pointer to the current WinguiSpecBindFrameView.
+// Valid only for the duration of an on_frame call on the D3D11 main thread.
 thread_local! {
     static FRAME_VIEW: RefCell<*const WinguiSpecBindFrameView> =
         RefCell::new(std::ptr::null());
+}
+
+#[derive(Debug, Clone)]
+struct PaneRenderBatch {
+    pane_id: u64,
+    sequence: u64,
+    flags: u32,
+    commands: Vec<PaneRenderCommand>,
+}
+
+#[derive(Debug, Copy, Clone)]
+struct SurfaceRect {
+    x0: f64,
+    y0: f64,
+    x1: f64,
+    y1: f64,
+}
+
+impl SurfaceRect {
+    fn normalize(self) -> Self {
+        Self {
+            x0: self.x0.min(self.x1),
+            y0: self.y0.min(self.y1),
+            x1: self.x0.max(self.x1),
+            y1: self.y0.max(self.y1),
+        }
+    }
+
+    fn translate(self, dx: f64, dy: f64) -> Self {
+        Self {
+            x0: self.x0 + dx,
+            y0: self.y0 + dy,
+            x1: self.x1 + dx,
+            y1: self.y1 + dy,
+        }
+    }
+
+    fn width(self) -> f64 {
+        self.x1 - self.x0
+    }
+
+    fn height(self) -> f64 {
+        self.y1 - self.y0
+    }
+
+    fn intersects(self, other: Self) -> bool {
+        self.x0 < other.x1 && self.x1 > other.x0 && self.y0 < other.y1 && self.y1 > other.y0
+    }
+
+    fn intersect(self, other: Self) -> Option<Self> {
+        let rect = Self {
+            x0: self.x0.max(other.x0),
+            y0: self.y0.max(other.y0),
+            x1: self.x1.min(other.x1),
+            y1: self.y1.min(other.y1),
+        };
+        (rect.width() > 0.0 && rect.height() > 0.0).then_some(rect)
+    }
+}
+
+#[derive(Debug, Clone)]
+enum PaneRenderCommand {
+    Clear {
+        buf_mode: i32,
+        color_r: f64,
+        color_g: f64,
+        color_b: f64,
+        color_a: f64,
+    },
+    PushClipRect {
+        x0: f64,
+        y0: f64,
+        x1: f64,
+        y1: f64,
+    },
+    PopClipRect,
+    PushOffset {
+        dx: f64,
+        dy: f64,
+    },
+    PopOffset,
+    TextCell {
+        row: i32,
+        column: i32,
+        codepoint: i64,
+        fg: i64,
+        bg: i64,
+    },
+    DrawLine {
+        buf_mode: i32,
+        blend_mode: i32,
+        clear_before: i32,
+        clear_r: f64,
+        clear_g: f64,
+        clear_b: f64,
+        clear_a: f64,
+        x0: f64,
+        y0: f64,
+        x1: f64,
+        y1: f64,
+        half_thickness: f64,
+        color_r: f64,
+        color_g: f64,
+        color_b: f64,
+        color_a: f64,
+    },
+    DrawText {
+        buf_mode: i32,
+        blend_mode: i32,
+        clear_before: i32,
+        clear_r: f64,
+        clear_g: f64,
+        clear_b: f64,
+        clear_a: f64,
+        text: String,
+        origin_x: f64,
+        origin_y: f64,
+        color_r: f64,
+        color_g: f64,
+        color_b: f64,
+        color_a: f64,
+    },
+    FillRect {
+        buf_mode: i32,
+        blend_mode: i32,
+        clear_before: i32,
+        clear_r: f64,
+        clear_g: f64,
+        clear_b: f64,
+        clear_a: f64,
+        x0: f64,
+        y0: f64,
+        x1: f64,
+        y1: f64,
+        corner_radius: f64,
+        color_r: f64,
+        color_g: f64,
+        color_b: f64,
+        color_a: f64,
+    },
+    StrokeRect {
+        buf_mode: i32,
+        blend_mode: i32,
+        clear_before: i32,
+        clear_r: f64,
+        clear_g: f64,
+        clear_b: f64,
+        clear_a: f64,
+        x0: f64,
+        y0: f64,
+        x1: f64,
+        y1: f64,
+        half_thickness: f64,
+        corner_radius: f64,
+        color_r: f64,
+        color_g: f64,
+        color_b: f64,
+        color_a: f64,
+    },
+    FillCircle {
+        buf_mode: i32,
+        blend_mode: i32,
+        clear_before: i32,
+        clear_r: f64,
+        clear_g: f64,
+        clear_b: f64,
+        clear_a: f64,
+        cx: f64,
+        cy: f64,
+        radius: f64,
+        color_r: f64,
+        color_g: f64,
+        color_b: f64,
+        color_a: f64,
+    },
+    FillOval {
+        buf_mode: i32,
+        blend_mode: i32,
+        clear_before: i32,
+        clear_r: f64,
+        clear_g: f64,
+        clear_b: f64,
+        clear_a: f64,
+        x0: f64,
+        y0: f64,
+        x1: f64,
+        y1: f64,
+        color_r: f64,
+        color_g: f64,
+        color_b: f64,
+        color_a: f64,
+    },
+    StrokeCircle {
+        buf_mode: i32,
+        blend_mode: i32,
+        clear_before: i32,
+        clear_r: f64,
+        clear_g: f64,
+        clear_b: f64,
+        clear_a: f64,
+        cx: f64,
+        cy: f64,
+        radius: f64,
+        half_thickness: f64,
+        color_r: f64,
+        color_g: f64,
+        color_b: f64,
+        color_a: f64,
+    },
+    StrokeOval {
+        buf_mode: i32,
+        blend_mode: i32,
+        clear_before: i32,
+        clear_r: f64,
+        clear_g: f64,
+        clear_b: f64,
+        clear_a: f64,
+        x0: f64,
+        y0: f64,
+        x1: f64,
+        y1: f64,
+        half_thickness: f64,
+        color_r: f64,
+        color_g: f64,
+        color_b: f64,
+        color_a: f64,
+    },
+    DrawArc {
+        buf_mode: i32,
+        blend_mode: i32,
+        clear_before: i32,
+        clear_r: f64,
+        clear_g: f64,
+        clear_b: f64,
+        clear_a: f64,
+        cx: f64,
+        cy: f64,
+        radius: f64,
+        half_thickness: f64,
+        rotation_rad: f64,
+        half_aperture_rad: f64,
+        color_r: f64,
+        color_g: f64,
+        color_b: f64,
+        color_a: f64,
+    },
+    DrawPath {
+        buf_mode: i32,
+        blend_mode: i32,
+        clear_before: i32,
+        clear_r: f64,
+        clear_g: f64,
+        clear_b: f64,
+        clear_a: f64,
+        points_xy: Vec<f32>,
+        closed: i32,
+        half_thickness: f64,
+        color_r: f64,
+        color_g: f64,
+        color_b: f64,
+        color_a: f64,
+    },
+    MarkRect {
+        mode: i32,
+        x0: f64,
+        y0: f64,
+        x1: f64,
+        y1: f64,
+    },
+    Caret {
+        x0: f64,
+        y0: f64,
+        x1: f64,
+        y1: f64,
+        color_r: f64,
+        color_g: f64,
+        color_b: f64,
+        color_a: f64,
+    },
+    SelectionRange {
+        x0: f64,
+        y0: f64,
+        x1: f64,
+        y1: f64,
+        color_r: f64,
+        color_g: f64,
+        color_b: f64,
+        color_a: f64,
+    },
+    FocusRing {
+        x0: f64,
+        y0: f64,
+        x1: f64,
+        y1: f64,
+        half_thickness: f64,
+        corner_radius: f64,
+        color_r: f64,
+        color_g: f64,
+        color_b: f64,
+        color_a: f64,
+    },
+    ScrollRect {
+        x0: f64,
+        y0: f64,
+        x1: f64,
+        y1: f64,
+        dx: f64,
+        dy: f64,
+    },
+    PresentHint,
+    InstallChildViewBounds {
+        child_id: i32,
+        x0: f64,
+        y0: f64,
+        x1: f64,
+        y1: f64,
+    },
+}
+
+thread_local! {
+    static CURRENT_PANE_BATCH: RefCell<Option<PaneRenderBatch>> =
+        const { RefCell::new(None) };
+}
+
+fn pending_pane_batches() -> &'static Mutex<HashMap<u64, PaneRenderBatch>> {
+    static PENDING_PANE_BATCHES: OnceLock<Mutex<HashMap<u64, PaneRenderBatch>>> = OnceLock::new();
+    PENDING_PANE_BATCHES.get_or_init(|| Mutex::new(HashMap::new()))
+}
+
+fn bind_frame_pane_layout(fv_ptr: *const WinguiSpecBindFrameView, pane_id: u64) -> Option<crate::wingui_ffi::SuperTerminalPaneLayout> {
+    let pane_ref = bind_frame_pane(fv_ptr, pane_id as i64)?;
+    let mut layout = crate::wingui_ffi::SuperTerminalPaneLayout {
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0,
+        visible: 0,
+        columns: 0,
+        rows: 0,
+        cell_width: 0.0,
+        cell_height: 0.0,
+    };
+    let ok = unsafe { crate::wingui_spec_ffi::wingui_spec_bind_frame_get_pane_layout(fv_ptr, pane_ref, &mut layout) };
+    (ok != 0 && layout.visible != 0).then_some(layout)
+}
+
+fn hostframe_rgba_gpu_copy(
+    pane_id: i64,
+    dst_x: f64,
+    dst_y: f64,
+    src_x: f64,
+    src_y: f64,
+    width: f64,
+    height: f64,
+) -> i32 {
+    FRAME_VIEW.with(|fv| {
+        let fv_ptr = *fv.borrow();
+        let Some(pane_ref) = bind_frame_pane(fv_ptr, pane_id) else {
+            return 0;
+        };
+        unsafe {
+            crate::wingui_spec_ffi::wingui_spec_bind_frame_rgba_gpu_copy(
+                fv_ptr,
+                pane_ref,
+                dst_x.max(0.0) as u32,
+                dst_y.max(0.0) as u32,
+                pane_ref,
+                src_x.max(0.0) as u32,
+                src_y.max(0.0) as u32,
+                width.max(0.0) as u32,
+                height.max(0.0) as u32,
+            )
+        }
+    })
+}
+
+fn drain_pane_render_batches() {
+    let pending: Vec<PaneRenderBatch> = {
+        let mut batches = pending_pane_batches().lock().expect("pending pane batches poisoned");
+        let mut pending: Vec<_> = batches.drain().map(|(_, batch)| batch).collect();
+        pending.sort_by_key(|batch| (batch.sequence, batch.pane_id));
+        pending
+    };
+
+    for batch in pending {
+        eprintln!(
+            "[WinBatch] drain pane={} seq={} flags={} commands={}",
+            batch.pane_id,
+            batch.sequence,
+            batch.flags,
+            batch.commands.len()
+        );
+        let _ = hostframe_surface_reset_composition(batch.pane_id as i64);
+        let pane_layout = FRAME_VIEW.with(|fv| {
+            let fv_ptr = *fv.borrow();
+            if fv_ptr.is_null() {
+                None
+            } else {
+                bind_frame_pane_layout(fv_ptr, batch.pane_id)
+            }
+        });
+        for command in batch.commands {
+            match command {
+                PaneRenderCommand::Clear {
+                    buf_mode,
+                    color_r,
+                    color_g,
+                    color_b,
+                    color_a,
+                } => {
+                    if let Some(layout) = pane_layout {
+                        let _ = hostframe_fill_rect(
+                            batch.pane_id as i64,
+                            buf_mode,
+                            0,
+                            1,
+                            color_r,
+                            color_g,
+                            color_b,
+                            color_a,
+                            0.0,
+                            0.0,
+                            layout.width.max(0) as f64,
+                            layout.height.max(0) as f64,
+                            0.0,
+                            color_r,
+                            color_g,
+                            color_b,
+                            color_a,
+                        );
+                    }
+                }
+                PaneRenderCommand::PushClipRect { x0, y0, x1, y1 } => {
+                    let _ = hostframe_surface_push_clip_rect(batch.pane_id as i64, x0, y0, x1, y1);
+                }
+                PaneRenderCommand::PopClipRect => {
+                    let _ = hostframe_surface_pop_clip_rect(batch.pane_id as i64);
+                }
+                PaneRenderCommand::PushOffset { dx, dy } => {
+                    let _ = hostframe_surface_push_offset(batch.pane_id as i64, dx, dy);
+                }
+                PaneRenderCommand::PopOffset => {
+                    let _ = hostframe_surface_pop_offset(batch.pane_id as i64);
+                }
+                PaneRenderCommand::TextCell {
+                    row,
+                    column,
+                    codepoint,
+                    fg,
+                    bg,
+                } => {
+                    let _ = hostframe_text_grid_write_cell(
+                        batch.pane_id as i64,
+                        row,
+                        column,
+                        codepoint,
+                        fg,
+                        bg,
+                    );
+                }
+                PaneRenderCommand::FillRect {
+                    buf_mode,
+                    blend_mode,
+                    clear_before,
+                    clear_r,
+                    clear_g,
+                    clear_b,
+                    clear_a,
+                    x0,
+                    y0,
+                    x1,
+                    y1,
+                    corner_radius,
+                    color_r,
+                    color_g,
+                    color_b,
+                    color_a,
+                } => {
+                    let _ = hostframe_fill_rect(
+                        batch.pane_id as i64,
+                        buf_mode,
+                        blend_mode,
+                        clear_before,
+                        clear_r,
+                        clear_g,
+                        clear_b,
+                        clear_a,
+                        x0,
+                        y0,
+                        x1,
+                        y1,
+                        corner_radius,
+                        color_r,
+                        color_g,
+                        color_b,
+                        color_a,
+                    );
+                }
+                PaneRenderCommand::StrokeRect {
+                    buf_mode,
+                    blend_mode,
+                    clear_before,
+                    clear_r,
+                    clear_g,
+                    clear_b,
+                    clear_a,
+                    x0,
+                    y0,
+                    x1,
+                    y1,
+                    half_thickness,
+                    corner_radius,
+                    color_r,
+                    color_g,
+                    color_b,
+                    color_a,
+                } => {
+                    let _ = hostframe_stroke_rect(
+                        batch.pane_id as i64,
+                        buf_mode,
+                        blend_mode,
+                        clear_before,
+                        clear_r,
+                        clear_g,
+                        clear_b,
+                        clear_a,
+                        x0,
+                        y0,
+                        x1,
+                        y1,
+                        half_thickness,
+                        corner_radius,
+                        color_r,
+                        color_g,
+                        color_b,
+                        color_a,
+                    );
+                }
+                PaneRenderCommand::DrawLine {
+                    buf_mode,
+                    blend_mode,
+                    clear_before,
+                    clear_r,
+                    clear_g,
+                    clear_b,
+                    clear_a,
+                    x0,
+                    y0,
+                    x1,
+                    y1,
+                    half_thickness,
+                    color_r,
+                    color_g,
+                    color_b,
+                    color_a,
+                } => {
+                    let _ = hostframe_draw_line(
+                        batch.pane_id as i64,
+                        buf_mode,
+                        blend_mode,
+                        clear_before,
+                        clear_r,
+                        clear_g,
+                        clear_b,
+                        clear_a,
+                        x0,
+                        y0,
+                        x1,
+                        y1,
+                        half_thickness,
+                        color_r,
+                        color_g,
+                        color_b,
+                        color_a,
+                    );
+                }
+                PaneRenderCommand::FillCircle {
+                    buf_mode,
+                    blend_mode,
+                    clear_before,
+                    clear_r,
+                    clear_g,
+                    clear_b,
+                    clear_a,
+                    cx,
+                    cy,
+                    radius,
+                    color_r,
+                    color_g,
+                    color_b,
+                    color_a,
+                } => {
+                    let _ = hostframe_fill_circle(
+                        batch.pane_id as i64,
+                        buf_mode,
+                        blend_mode,
+                        clear_before,
+                        clear_r,
+                        clear_g,
+                        clear_b,
+                        clear_a,
+                        cx,
+                        cy,
+                        radius,
+                        color_r,
+                        color_g,
+                        color_b,
+                        color_a,
+                    );
+                }
+                PaneRenderCommand::FillOval {
+                    buf_mode,
+                    blend_mode,
+                    clear_before,
+                    clear_r,
+                    clear_g,
+                    clear_b,
+                    clear_a,
+                    x0,
+                    y0,
+                    x1,
+                    y1,
+                    color_r,
+                    color_g,
+                    color_b,
+                    color_a,
+                } => {
+                    let _ = hostframe_fill_oval(
+                        batch.pane_id as i64,
+                        buf_mode,
+                        blend_mode,
+                        clear_before,
+                        clear_r,
+                        clear_g,
+                        clear_b,
+                        clear_a,
+                        x0,
+                        y0,
+                        x1,
+                        y1,
+                        color_r,
+                        color_g,
+                        color_b,
+                        color_a,
+                    );
+                }
+                PaneRenderCommand::StrokeCircle {
+                    buf_mode,
+                    blend_mode,
+                    clear_before,
+                    clear_r,
+                    clear_g,
+                    clear_b,
+                    clear_a,
+                    cx,
+                    cy,
+                    radius,
+                    half_thickness,
+                    color_r,
+                    color_g,
+                    color_b,
+                    color_a,
+                } => {
+                    let _ = hostframe_stroke_circle(
+                        batch.pane_id as i64,
+                        buf_mode,
+                        blend_mode,
+                        clear_before,
+                        clear_r,
+                        clear_g,
+                        clear_b,
+                        clear_a,
+                        cx,
+                        cy,
+                        radius,
+                        half_thickness,
+                        color_r,
+                        color_g,
+                        color_b,
+                        color_a,
+                    );
+                }
+                PaneRenderCommand::StrokeOval {
+                    buf_mode,
+                    blend_mode,
+                    clear_before,
+                    clear_r,
+                    clear_g,
+                    clear_b,
+                    clear_a,
+                    x0,
+                    y0,
+                    x1,
+                    y1,
+                    half_thickness,
+                    color_r,
+                    color_g,
+                    color_b,
+                    color_a,
+                } => {
+                    let _ = hostframe_stroke_oval(
+                        batch.pane_id as i64,
+                        buf_mode,
+                        blend_mode,
+                        clear_before,
+                        clear_r,
+                        clear_g,
+                        clear_b,
+                        clear_a,
+                        x0,
+                        y0,
+                        x1,
+                        y1,
+                        half_thickness,
+                        color_r,
+                        color_g,
+                        color_b,
+                        color_a,
+                    );
+                }
+                PaneRenderCommand::DrawArc {
+                    buf_mode,
+                    blend_mode,
+                    clear_before,
+                    clear_r,
+                    clear_g,
+                    clear_b,
+                    clear_a,
+                    cx,
+                    cy,
+                    radius,
+                    half_thickness,
+                    rotation_rad,
+                    half_aperture_rad,
+                    color_r,
+                    color_g,
+                    color_b,
+                    color_a,
+                } => {
+                    let _ = hostframe_draw_arc(
+                        batch.pane_id as i64,
+                        buf_mode,
+                        blend_mode,
+                        clear_before,
+                        clear_r,
+                        clear_g,
+                        clear_b,
+                        clear_a,
+                        cx,
+                        cy,
+                        radius,
+                        half_thickness,
+                        rotation_rad,
+                        half_aperture_rad,
+                        color_r,
+                        color_g,
+                        color_b,
+                        color_a,
+                    );
+                }
+                PaneRenderCommand::DrawPath {
+                    buf_mode,
+                    blend_mode,
+                    clear_before,
+                    clear_r,
+                    clear_g,
+                    clear_b,
+                    clear_a,
+                    points_xy,
+                    closed,
+                    half_thickness,
+                    color_r,
+                    color_g,
+                    color_b,
+                    color_a,
+                } => {
+                    if points_xy.len() < 4 {
+                        continue;
+                    }
+                    let _ = hostframe_draw_path(
+                        batch.pane_id as i64,
+                        buf_mode,
+                        blend_mode,
+                        clear_before,
+                        clear_r,
+                        clear_g,
+                        clear_b,
+                        clear_a,
+                        points_xy.as_ptr(),
+                        (points_xy.len() / 2) as i32,
+                        closed,
+                        half_thickness,
+                        color_r,
+                        color_g,
+                        color_b,
+                        color_a,
+                    );
+                }
+                PaneRenderCommand::DrawText {
+                    buf_mode,
+                    blend_mode,
+                    clear_before,
+                    clear_r,
+                    clear_g,
+                    clear_b,
+                    clear_a,
+                    text,
+                    origin_x,
+                    origin_y,
+                    color_r,
+                    color_g,
+                    color_b,
+                    color_a,
+                } => {
+                    let text = CString::new(text).unwrap_or_default();
+                    let _ = hostframe_draw_text(
+                        batch.pane_id as i64,
+                        buf_mode,
+                        blend_mode,
+                        clear_before,
+                        clear_r,
+                        clear_g,
+                        clear_b,
+                        clear_a,
+                        text.as_ptr() as *const u8,
+                        origin_x,
+                        origin_y,
+                        color_r,
+                        color_g,
+                        color_b,
+                        color_a,
+                    );
+                }
+                PaneRenderCommand::MarkRect { mode, x0, y0, x1, y1 } => {
+                    let _ = hostframe_mark_rect(batch.pane_id as i64, 1, 0, 0, 0.0, 0.0, 0.0, 0.0, mode, x0, y0, x1, y1);
+                }
+                PaneRenderCommand::Caret { x0, y0, x1, y1, color_r, color_g, color_b, color_a } => {
+                    let _ = hostframe_caret(batch.pane_id as i64, 1, 0, 0, 0.0, 0.0, 0.0, 0.0, x0, y0, x1, y1, color_r, color_g, color_b, color_a);
+                }
+                PaneRenderCommand::SelectionRange { x0, y0, x1, y1, color_r, color_g, color_b, color_a } => {
+                    let _ = hostframe_selection_range(batch.pane_id as i64, 1, 0, 0, 0.0, 0.0, 0.0, 0.0, x0, y0, x1, y1, color_r, color_g, color_b, color_a);
+                }
+                PaneRenderCommand::FocusRing { x0, y0, x1, y1, half_thickness, corner_radius, color_r, color_g, color_b, color_a } => {
+                    let _ = hostframe_focus_ring(batch.pane_id as i64, 1, 0, 0, 0.0, 0.0, 0.0, 0.0, x0, y0, x1, y1, half_thickness, corner_radius, color_r, color_g, color_b, color_a);
+                }
+                PaneRenderCommand::ScrollRect { x0, y0, x1, y1, dx, dy } => {
+                    let src = SurfaceRect { x0, y0, x1, y1 }.normalize();
+                    if src.width() <= 0.0 || src.height() <= 0.0 {
+                        continue;
+                    }
+                    let _ = hostframe_rgba_gpu_copy(batch.pane_id as i64, src.x0 + dx, src.y0 + dy, src.x0, src.y0, src.width(), src.height());
+                }
+                PaneRenderCommand::PresentHint => {
+                    winframe_request_present();
+                }
+                PaneRenderCommand::InstallChildViewBounds { child_id, x0, y0, x1, y1 } => {
+                    let _ = hostframe_surface_install_child_view_bounds(batch.pane_id as i64, child_id, x0, y0, x1, y1);
+                }
+            }
+        }
+    }
 }
 
 unsafe extern "system" fn on_frame(
@@ -94,23 +943,7 @@ unsafe extern "system" fn on_frame(
     // Store frame_view for the duration of this call so WinFrame.* shims can use it.
     FRAME_VIEW.with(|fv| *fv.borrow_mut() = frame_view);
 
-    // Call the global frame renderer (WinFrame.SetRenderer), if any.
-    let global_ptr = FRAME_RENDERER.load(Ordering::Relaxed);
-    if global_ptr != 0 {
-        let f: extern "C" fn() = unsafe { std::mem::transmute(global_ptr) };
-        f();
-    }
-
-    // Call per-pane renderers (WinFrame.RegisterPaneRenderer).
-    // Snapshot the table to avoid holding the mutex across CP calls.
-    let snapshot: Vec<(u64, usize)> = {
-        let table = pane_renderers().lock().expect("pane_renderers lock poisoned");
-        table.iter().map(|e| (e.pane_id, e.fn_ptr)).collect()
-    };
-    for (pane_id, fn_ptr) in snapshot {
-        let f: extern "C" fn(i64) = unsafe { std::mem::transmute(fn_ptr) };
-        f(pane_id as i64);
-    }
+    drain_pane_render_batches();
 
     // Clear frame_view before returning so stale use is caught as a null deref.
     FRAME_VIEW.with(|fv| *fv.borrow_mut() = std::ptr::null());
@@ -263,6 +1096,158 @@ impl Default for HostConfig {
 }
 
 // ---------------------------------------------------------------------------
+// WinPayload helpers
+// ---------------------------------------------------------------------------
+
+const WINPAYLOAD_STR_CAP: usize = 4096;
+
+fn copy_shortchar_string(dst_ptr: *mut u8, cap: usize, value: &str) {
+    if dst_ptr.is_null() || cap == 0 {
+        return;
+    }
+    let bytes = value.as_bytes();
+    let copy_len = (cap - 1).min(bytes.len());
+    unsafe {
+        std::ptr::copy_nonoverlapping(bytes.as_ptr(), dst_ptr, copy_len);
+        *dst_ptr.add(copy_len) = 0;
+    }
+}
+
+fn clear_shortchar_string(dst_ptr: *mut u8, cap: usize) {
+    if dst_ptr.is_null() || cap == 0 {
+        return;
+    }
+    unsafe { *dst_ptr = 0; }
+}
+
+fn parse_payload_value(payload_ptr: *const u8) -> Option<Value> {
+    if payload_ptr.is_null() {
+        return None;
+    }
+    let payload = unsafe { CStr::from_ptr(payload_ptr as *const std::os::raw::c_char) }
+        .to_string_lossy();
+    serde_json::from_str::<Value>(&payload).ok()
+}
+
+fn parse_payload_key(key_ptr: *const u8) -> Option<String> {
+    if key_ptr.is_null() {
+        return None;
+    }
+    Some(
+        unsafe { CStr::from_ptr(key_ptr as *const std::os::raw::c_char) }
+            .to_string_lossy()
+            .into_owned(),
+    )
+}
+
+fn packed_argb_to_rgba(colour: i64) -> [u8; 4] {
+    let raw = colour as u32;
+    let alpha = ((raw >> 24) & 0xff) as u8;
+    [
+        ((raw >> 16) & 0xff) as u8,
+        ((raw >> 8) & 0xff) as u8,
+        (raw & 0xff) as u8,
+        if alpha == 0 { 0xff } else { alpha },
+    ]
+}
+
+fn bind_frame_pane(frame_view: *const WinguiSpecBindFrameView, pane_id: i64) -> Option<WinguiSpecBindPaneRef> {
+    if frame_view.is_null() {
+        return None;
+    }
+    let mut pane_ref = WinguiSpecBindPaneRef {
+        window_id: crate::wingui_ffi::SuperTerminalWindowId { value: 0 },
+        pane_id: crate::wingui_ffi::SuperTerminalPaneId { value: pane_id as u64 },
+        buffer_index: 0,
+        active_buffer_index: 0,
+    };
+    let ok = unsafe {
+        crate::wingui_spec_ffi::wingui_spec_bind_frame_bind_pane(
+            frame_view,
+            crate::wingui_ffi::SuperTerminalPaneId { value: pane_id as u64 },
+            &mut pane_ref,
+        )
+    };
+    if ok == 0 {
+        None
+    } else {
+        Some(pane_ref)
+    }
+}
+
+fn clear_rgba(clear_r: f64, clear_g: f64, clear_b: f64, clear_a: f64) -> [f32; 4] {
+    [clear_r as f32, clear_g as f32, clear_b as f32, clear_a as f32]
+}
+
+#[unsafe(export_name = "WinPayload.GetStr")]
+pub extern "C" fn winpayload_get_str(
+    payload_ptr: *const u8,
+    key_ptr: *const u8,
+    out_ptr: *mut u8,
+) -> i32 {
+    clear_shortchar_string(out_ptr, WINPAYLOAD_STR_CAP);
+    let Some(payload) = parse_payload_value(payload_ptr) else {
+        return 0;
+    };
+    let Some(key) = parse_payload_key(key_ptr) else {
+        return 0;
+    };
+    let Some(value) = payload.get(&key).and_then(Value::as_str) else {
+        return 0;
+    };
+    copy_shortchar_string(out_ptr, WINPAYLOAD_STR_CAP, value);
+    1
+}
+
+#[unsafe(export_name = "WinPayload.GetInt")]
+pub extern "C" fn winpayload_get_int(
+    payload_ptr: *const u8,
+    key_ptr: *const u8,
+    out_ptr: *mut i64,
+) -> i32 {
+    if !out_ptr.is_null() {
+        unsafe { *out_ptr = 0; }
+    }
+    let Some(payload) = parse_payload_value(payload_ptr) else {
+        return 0;
+    };
+    let Some(key) = parse_payload_key(key_ptr) else {
+        return 0;
+    };
+    let Some(value) = payload.get(&key).and_then(Value::as_i64) else {
+        return 0;
+    };
+    if !out_ptr.is_null() {
+        unsafe { *out_ptr = value; }
+    }
+    1
+}
+
+#[unsafe(export_name = "WinPayload.GetBool")]
+pub extern "C" fn winpayload_get_bool(
+    payload_ptr: *const u8,
+    key_ptr: *const u8,
+    out_ptr: *mut i32,
+) -> i32 {
+    if !out_ptr.is_null() {
+        unsafe { *out_ptr = 0; }
+    }
+    let Some(payload) = parse_payload_value(payload_ptr) else {
+        return 0;
+    };
+    let Some(key) = parse_payload_key(key_ptr) else {
+        return 0;
+    };
+    let Some(value) = payload.get(&key).and_then(Value::as_bool) else {
+        return 0;
+    };
+    if !out_ptr.is_null() {
+        unsafe { *out_ptr = if value { 1 } else { 0 }; }
+    }
+    1
+}
+
+// ---------------------------------------------------------------------------
 // HostWindows shims
 // ---------------------------------------------------------------------------
 
@@ -304,36 +1289,6 @@ pub extern "C" fn host_publish_ui(json_ptr: *const u8) {
 // ---------------------------------------------------------------------------
 // WinFrame shims
 // ---------------------------------------------------------------------------
-
-/// WinFrame.SetRenderer — register a global per-frame procedure.
-/// CP signature: PROCEDURE SetRenderer*(p: FrameProc)
-/// The proc is called with no arguments from the D3D11 frame thread.
-#[unsafe(export_name = "WinFrame.SetRenderer")]
-pub extern "C" fn winframe_set_renderer(fn_ptr: usize) {
-    FRAME_RENDERER.store(fn_ptr, Ordering::Relaxed);
-    eprintln!("[WinFrame.SetRenderer] fn_ptr=0x{:x}", fn_ptr);
-}
-
-/// WinFrame.RegisterPaneRenderer — register a per-pane frame procedure.
-/// CP signature: PROCEDURE RegisterPaneRenderer*(paneId: INTEGER; p: PaneProc)
-#[unsafe(export_name = "WinFrame.RegisterPaneRenderer")]
-pub extern "C" fn winframe_register_pane_renderer(pane_id: i64, fn_ptr: usize) {
-    let mut table = pane_renderers().lock().expect("pane_renderers lock poisoned");
-    if let Some(entry) = table.iter_mut().find(|e| e.pane_id == pane_id as u64) {
-        entry.fn_ptr = fn_ptr;
-    } else {
-        table.push(PaneRendererEntry { pane_id: pane_id as u64, fn_ptr });
-    }
-    eprintln!("[WinFrame.RegisterPaneRenderer] pane_id={} fn_ptr=0x{:x}", pane_id, fn_ptr);
-}
-
-/// WinFrame.UnregisterPaneRenderer
-/// CP signature: PROCEDURE UnregisterPaneRenderer*(paneId: INTEGER)
-#[unsafe(export_name = "WinFrame.UnregisterPaneRenderer")]
-pub extern "C" fn winframe_unregister_pane_renderer(pane_id: i64) {
-    let mut table = pane_renderers().lock().expect("pane_renderers lock poisoned");
-    table.retain(|e| e.pane_id != pane_id as u64);
-}
 
 /// WinFrame.FrameIndex — monotonically increasing frame counter.
 /// Valid only inside a frame proc; returns 0 otherwise.
@@ -408,21 +1363,9 @@ pub extern "C" fn winframe_pane_layout(
 ) -> i32 {
     FRAME_VIEW.with(|fv| {
         let fv_ptr = *fv.borrow();
-        if fv_ptr.is_null() { return 0; }
-        let mut pane_ref = WinguiSpecBindPaneRef {
-            window_id: crate::wingui_ffi::SuperTerminalWindowId { value: 0 },
-            pane_id:   crate::wingui_ffi::SuperTerminalPaneId { value: pane_id as u64 },
-            buffer_index: 0,
-            active_buffer_index: 0,
+        let Some(pane_ref) = bind_frame_pane(fv_ptr, pane_id) else {
+            return 0;
         };
-        let r1 = unsafe {
-            crate::wingui_spec_ffi::wingui_spec_bind_frame_bind_pane(
-                fv_ptr,
-                crate::wingui_ffi::SuperTerminalPaneId { value: pane_id as u64 },
-                &mut pane_ref,
-            )
-        };
-        if r1 == 0 { return 0; }
         let mut layout = crate::wingui_ffi::SuperTerminalPaneLayout::default();
         let r2 = unsafe {
             crate::wingui_spec_ffi::wingui_spec_bind_frame_get_pane_layout(fv_ptr, pane_ref, &mut layout)
@@ -446,6 +1389,977 @@ pub extern "C" fn winframe_request_present() {
         if fv_ptr.is_null() { return; }
         unsafe { crate::wingui_spec_ffi::wingui_spec_bind_frame_request_present(fv_ptr); }
     });
+}
+
+#[unsafe(export_name = "HostFrame.TextGridWriteCell")]
+pub extern "C" fn hostframe_text_grid_write_cell(
+    pane_id: i64,
+    row: i32,
+    column: i32,
+    codepoint: i64,
+    fg: i64,
+    bg: i64,
+) -> i32 {
+    FRAME_VIEW.with(|fv| {
+        let fv_ptr = *fv.borrow();
+        let Some(pane_ref) = bind_frame_pane(fv_ptr, pane_id) else {
+            return 0;
+        };
+        let cell = crate::wingui_ffi::SuperTerminalTextGridCell {
+            row: row as u32,
+            column: column as u32,
+            codepoint: codepoint as u32,
+            foreground: packed_argb_to_rgba(fg),
+            background: packed_argb_to_rgba(bg),
+        };
+        unsafe {
+            crate::wingui_spec_ffi::wingui_spec_bind_frame_text_grid_write_cells(
+                fv_ptr,
+                pane_ref,
+                &cell,
+                1,
+            )
+        }
+    })
+}
+
+#[unsafe(export_name = "HostFrame.TextGridClearRegion")]
+pub extern "C" fn hostframe_text_grid_clear_region(
+    pane_id: i64,
+    row: i32,
+    column: i32,
+    width: i32,
+    height: i32,
+    fill_codepoint: i64,
+    fg: i64,
+    bg: i64,
+) -> i32 {
+    FRAME_VIEW.with(|fv| {
+        let fv_ptr = *fv.borrow();
+        let Some(pane_ref) = bind_frame_pane(fv_ptr, pane_id) else {
+            return 0;
+        };
+        unsafe {
+            crate::wingui_spec_ffi::wingui_spec_bind_frame_text_grid_clear_region(
+                fv_ptr,
+                pane_ref,
+                row as u32,
+                column as u32,
+                width as u32,
+                height as u32,
+                fill_codepoint as u32,
+                packed_argb_to_rgba(fg),
+                packed_argb_to_rgba(bg),
+            )
+        }
+    })
+}
+
+#[unsafe(export_name = "HostFrame.DrawLine")]
+pub extern "C" fn hostframe_draw_line(
+    pane_id: i64,
+    buf_mode: i32,
+    blend_mode: i32,
+    clear_before: i32,
+    clear_r: f64,
+    clear_g: f64,
+    clear_b: f64,
+    clear_a: f64,
+    x0: f64,
+    y0: f64,
+    x1: f64,
+    y1: f64,
+    half_thickness: f64,
+    color_r: f64,
+    color_g: f64,
+    color_b: f64,
+    color_a: f64,
+) -> i32 {
+    FRAME_VIEW.with(|fv| {
+        let fv_ptr = *fv.borrow();
+        let Some(pane_ref) = bind_frame_pane(fv_ptr, pane_id) else {
+            return 0;
+        };
+        let clear = clear_rgba(clear_r, clear_g, clear_b, clear_a);
+        unsafe {
+            crate::wingui_spec_ffi::wingui_spec_bind_frame_draw_line(
+                fv_ptr,
+                pane_ref,
+                buf_mode as u32,
+                blend_mode as u32,
+                clear_before,
+                clear.as_ptr(),
+                x0 as f32,
+                y0 as f32,
+                x1 as f32,
+                y1 as f32,
+                half_thickness as f32,
+                color_r as f32,
+                color_g as f32,
+                color_b as f32,
+                color_a as f32,
+            )
+        }
+    })
+}
+
+#[unsafe(export_name = "HostFrame.FillRect")]
+pub extern "C" fn hostframe_fill_rect(
+    pane_id: i64,
+    buf_mode: i32,
+    blend_mode: i32,
+    clear_before: i32,
+    clear_r: f64,
+    clear_g: f64,
+    clear_b: f64,
+    clear_a: f64,
+    x0: f64,
+    y0: f64,
+    x1: f64,
+    y1: f64,
+    corner_radius: f64,
+    color_r: f64,
+    color_g: f64,
+    color_b: f64,
+    color_a: f64,
+) -> i32 {
+    FRAME_VIEW.with(|fv| {
+        let fv_ptr = *fv.borrow();
+        let Some(pane_ref) = bind_frame_pane(fv_ptr, pane_id) else {
+            return 0;
+        };
+        let clear = clear_rgba(clear_r, clear_g, clear_b, clear_a);
+        unsafe {
+            crate::wingui_spec_ffi::wingui_spec_bind_frame_fill_rect(
+                fv_ptr,
+                pane_ref,
+                buf_mode as u32,
+                blend_mode as u32,
+                clear_before,
+                clear.as_ptr(),
+                x0 as f32,
+                y0 as f32,
+                x1 as f32,
+                y1 as f32,
+                corner_radius as f32,
+                color_r as f32,
+                color_g as f32,
+                color_b as f32,
+                color_a as f32,
+            )
+        }
+    })
+}
+
+#[unsafe(export_name = "HostFrame.StrokeRect")]
+pub extern "C" fn hostframe_stroke_rect(
+    pane_id: i64,
+    buf_mode: i32,
+    blend_mode: i32,
+    clear_before: i32,
+    clear_r: f64,
+    clear_g: f64,
+    clear_b: f64,
+    clear_a: f64,
+    x0: f64,
+    y0: f64,
+    x1: f64,
+    y1: f64,
+    half_thickness: f64,
+    corner_radius: f64,
+    color_r: f64,
+    color_g: f64,
+    color_b: f64,
+    color_a: f64,
+) -> i32 {
+    FRAME_VIEW.with(|fv| {
+        let fv_ptr = *fv.borrow();
+        let Some(pane_ref) = bind_frame_pane(fv_ptr, pane_id) else {
+            return 0;
+        };
+        let clear = clear_rgba(clear_r, clear_g, clear_b, clear_a);
+        unsafe {
+            crate::wingui_spec_ffi::wingui_spec_bind_frame_stroke_rect(
+                fv_ptr,
+                pane_ref,
+                buf_mode as u32,
+                blend_mode as u32,
+                clear_before,
+                clear.as_ptr(),
+                x0 as f32,
+                y0 as f32,
+                x1 as f32,
+                y1 as f32,
+                half_thickness as f32,
+                corner_radius as f32,
+                color_r as f32,
+                color_g as f32,
+                color_b as f32,
+                color_a as f32,
+            )
+        }
+    })
+}
+
+#[unsafe(export_name = "HostFrame.MarkRect")]
+pub extern "C" fn hostframe_mark_rect(
+    pane_id: i64,
+    buf_mode: i32,
+    blend_mode: i32,
+    clear_before: i32,
+    clear_r: f64,
+    clear_g: f64,
+    clear_b: f64,
+    clear_a: f64,
+    mode: i32,
+    x0: f64,
+    y0: f64,
+    x1: f64,
+    y1: f64,
+) -> i32 {
+    FRAME_VIEW.with(|fv| {
+        let fv_ptr = *fv.borrow();
+        let Some(pane_ref) = bind_frame_pane(fv_ptr, pane_id) else {
+            return 0;
+        };
+        let clear = clear_rgba(clear_r, clear_g, clear_b, clear_a);
+        unsafe {
+            crate::wingui_spec_ffi::wingui_spec_bind_frame_mark_rect(
+                fv_ptr,
+                pane_ref,
+                buf_mode as u32,
+                blend_mode as u32,
+                clear_before,
+                clear.as_ptr(),
+                mode,
+                x0 as f32,
+                y0 as f32,
+                x1 as f32,
+                y1 as f32,
+            )
+        }
+    })
+}
+
+#[unsafe(export_name = "HostFrame.Caret")]
+pub extern "C" fn hostframe_caret(
+    pane_id: i64,
+    buf_mode: i32,
+    blend_mode: i32,
+    clear_before: i32,
+    clear_r: f64,
+    clear_g: f64,
+    clear_b: f64,
+    clear_a: f64,
+    x0: f64,
+    y0: f64,
+    x1: f64,
+    y1: f64,
+    color_r: f64,
+    color_g: f64,
+    color_b: f64,
+    color_a: f64,
+) -> i32 {
+    FRAME_VIEW.with(|fv| {
+        let fv_ptr = *fv.borrow();
+        let Some(pane_ref) = bind_frame_pane(fv_ptr, pane_id) else {
+            return 0;
+        };
+        let clear = clear_rgba(clear_r, clear_g, clear_b, clear_a);
+        unsafe {
+            crate::wingui_spec_ffi::wingui_spec_bind_frame_caret(
+                fv_ptr,
+                pane_ref,
+                buf_mode as u32,
+                blend_mode as u32,
+                clear_before,
+                clear.as_ptr(),
+                x0 as f32,
+                y0 as f32,
+                x1 as f32,
+                y1 as f32,
+                color_r as f32,
+                color_g as f32,
+                color_b as f32,
+                color_a as f32,
+            )
+        }
+    })
+}
+
+#[unsafe(export_name = "HostFrame.SelectionRange")]
+pub extern "C" fn hostframe_selection_range(
+    pane_id: i64,
+    buf_mode: i32,
+    blend_mode: i32,
+    clear_before: i32,
+    clear_r: f64,
+    clear_g: f64,
+    clear_b: f64,
+    clear_a: f64,
+    x0: f64,
+    y0: f64,
+    x1: f64,
+    y1: f64,
+    color_r: f64,
+    color_g: f64,
+    color_b: f64,
+    color_a: f64,
+) -> i32 {
+    FRAME_VIEW.with(|fv| {
+        let fv_ptr = *fv.borrow();
+        let Some(pane_ref) = bind_frame_pane(fv_ptr, pane_id) else {
+            return 0;
+        };
+        let clear = clear_rgba(clear_r, clear_g, clear_b, clear_a);
+        unsafe {
+            crate::wingui_spec_ffi::wingui_spec_bind_frame_selection_range(
+                fv_ptr,
+                pane_ref,
+                buf_mode as u32,
+                blend_mode as u32,
+                clear_before,
+                clear.as_ptr(),
+                x0 as f32,
+                y0 as f32,
+                x1 as f32,
+                y1 as f32,
+                color_r as f32,
+                color_g as f32,
+                color_b as f32,
+                color_a as f32,
+            )
+        }
+    })
+}
+
+#[unsafe(export_name = "HostFrame.FocusRing")]
+pub extern "C" fn hostframe_focus_ring(
+    pane_id: i64,
+    buf_mode: i32,
+    blend_mode: i32,
+    clear_before: i32,
+    clear_r: f64,
+    clear_g: f64,
+    clear_b: f64,
+    clear_a: f64,
+    x0: f64,
+    y0: f64,
+    x1: f64,
+    y1: f64,
+    half_thickness: f64,
+    corner_radius: f64,
+    color_r: f64,
+    color_g: f64,
+    color_b: f64,
+    color_a: f64,
+) -> i32 {
+    FRAME_VIEW.with(|fv| {
+        let fv_ptr = *fv.borrow();
+        let Some(pane_ref) = bind_frame_pane(fv_ptr, pane_id) else {
+            return 0;
+        };
+        let clear = clear_rgba(clear_r, clear_g, clear_b, clear_a);
+        unsafe {
+            crate::wingui_spec_ffi::wingui_spec_bind_frame_focus_ring(
+                fv_ptr,
+                pane_ref,
+                buf_mode as u32,
+                blend_mode as u32,
+                clear_before,
+                clear.as_ptr(),
+                x0 as f32,
+                y0 as f32,
+                x1 as f32,
+                y1 as f32,
+                half_thickness as f32,
+                corner_radius as f32,
+                color_r as f32,
+                color_g as f32,
+                color_b as f32,
+                color_a as f32,
+            )
+        }
+    })
+}
+
+#[unsafe(export_name = "HostFrame.SurfacePushClipRect")]
+pub extern "C" fn hostframe_surface_push_clip_rect(
+    pane_id: i64,
+    x0: f64,
+    y0: f64,
+    x1: f64,
+    y1: f64,
+) -> i32 {
+    FRAME_VIEW.with(|fv| {
+        let fv_ptr = *fv.borrow();
+        let Some(pane_ref) = bind_frame_pane(fv_ptr, pane_id) else {
+            return 0;
+        };
+        unsafe {
+            crate::wingui_spec_ffi::wingui_spec_bind_frame_surface_push_clip_rect(
+                fv_ptr,
+                pane_ref,
+                x0 as f32,
+                y0 as f32,
+                x1 as f32,
+                y1 as f32,
+            )
+        }
+    })
+}
+
+#[unsafe(export_name = "HostFrame.SurfacePopClipRect")]
+pub extern "C" fn hostframe_surface_pop_clip_rect(pane_id: i64) -> i32 {
+    FRAME_VIEW.with(|fv| {
+        let fv_ptr = *fv.borrow();
+        let Some(pane_ref) = bind_frame_pane(fv_ptr, pane_id) else {
+            return 0;
+        };
+        unsafe { crate::wingui_spec_ffi::wingui_spec_bind_frame_surface_pop_clip_rect(fv_ptr, pane_ref) }
+    })
+}
+
+#[unsafe(export_name = "HostFrame.SurfacePushOffset")]
+pub extern "C" fn hostframe_surface_push_offset(pane_id: i64, dx: f64, dy: f64) -> i32 {
+    FRAME_VIEW.with(|fv| {
+        let fv_ptr = *fv.borrow();
+        let Some(pane_ref) = bind_frame_pane(fv_ptr, pane_id) else {
+            return 0;
+        };
+        unsafe {
+            crate::wingui_spec_ffi::wingui_spec_bind_frame_surface_push_offset(
+                fv_ptr,
+                pane_ref,
+                dx as f32,
+                dy as f32,
+            )
+        }
+    })
+}
+
+#[unsafe(export_name = "HostFrame.SurfacePopOffset")]
+pub extern "C" fn hostframe_surface_pop_offset(pane_id: i64) -> i32 {
+    FRAME_VIEW.with(|fv| {
+        let fv_ptr = *fv.borrow();
+        let Some(pane_ref) = bind_frame_pane(fv_ptr, pane_id) else {
+            return 0;
+        };
+        unsafe { crate::wingui_spec_ffi::wingui_spec_bind_frame_surface_pop_offset(fv_ptr, pane_ref) }
+    })
+}
+
+#[unsafe(export_name = "HostFrame.SurfaceResetComposition")]
+pub extern "C" fn hostframe_surface_reset_composition(pane_id: i64) -> i32 {
+    FRAME_VIEW.with(|fv| {
+        let fv_ptr = *fv.borrow();
+        let Some(pane_ref) = bind_frame_pane(fv_ptr, pane_id) else {
+            return 0;
+        };
+        unsafe { crate::wingui_spec_ffi::wingui_spec_bind_frame_surface_reset_composition(fv_ptr, pane_ref) }
+    })
+}
+
+#[unsafe(export_name = "HostFrame.SurfaceInstallChildViewBounds")]
+pub extern "C" fn hostframe_surface_install_child_view_bounds(
+    pane_id: i64,
+    child_id: i32,
+    x0: f64,
+    y0: f64,
+    x1: f64,
+    y1: f64,
+) -> i32 {
+    FRAME_VIEW.with(|fv| {
+        let fv_ptr = *fv.borrow();
+        let Some(pane_ref) = bind_frame_pane(fv_ptr, pane_id) else {
+            return 0;
+        };
+        unsafe {
+            crate::wingui_spec_ffi::wingui_spec_bind_frame_surface_install_child_view_bounds(
+                fv_ptr,
+                pane_ref,
+                child_id,
+                x0 as f32,
+                y0 as f32,
+                x1 as f32,
+                y1 as f32,
+            )
+        }
+    })
+}
+
+#[unsafe(export_name = "HostFrame.FillCircle")]
+pub extern "C" fn hostframe_fill_circle(
+    pane_id: i64,
+    buf_mode: i32,
+    blend_mode: i32,
+    clear_before: i32,
+    clear_r: f64,
+    clear_g: f64,
+    clear_b: f64,
+    clear_a: f64,
+    cx: f64,
+    cy: f64,
+    radius: f64,
+    color_r: f64,
+    color_g: f64,
+    color_b: f64,
+    color_a: f64,
+) -> i32 {
+    FRAME_VIEW.with(|fv| {
+        let fv_ptr = *fv.borrow();
+        let Some(pane_ref) = bind_frame_pane(fv_ptr, pane_id) else {
+            return 0;
+        };
+        let clear = clear_rgba(clear_r, clear_g, clear_b, clear_a);
+        unsafe {
+            crate::wingui_spec_ffi::wingui_spec_bind_frame_fill_circle(
+                fv_ptr,
+                pane_ref,
+                buf_mode as u32,
+                blend_mode as u32,
+                clear_before,
+                clear.as_ptr(),
+                cx as f32,
+                cy as f32,
+                radius as f32,
+                color_r as f32,
+                color_g as f32,
+                color_b as f32,
+                color_a as f32,
+            )
+        }
+    })
+}
+
+#[unsafe(export_name = "HostFrame.FillOval")]
+pub extern "C" fn hostframe_fill_oval(
+    pane_id: i64,
+    buf_mode: i32,
+    blend_mode: i32,
+    clear_before: i32,
+    clear_r: f64,
+    clear_g: f64,
+    clear_b: f64,
+    clear_a: f64,
+    x0: f64,
+    y0: f64,
+    x1: f64,
+    y1: f64,
+    color_r: f64,
+    color_g: f64,
+    color_b: f64,
+    color_a: f64,
+) -> i32 {
+    FRAME_VIEW.with(|fv| {
+        let fv_ptr = *fv.borrow();
+        let Some(pane_ref) = bind_frame_pane(fv_ptr, pane_id) else {
+            return 0;
+        };
+        let clear = clear_rgba(clear_r, clear_g, clear_b, clear_a);
+        unsafe {
+            crate::wingui_spec_ffi::wingui_spec_bind_frame_fill_oval(
+                fv_ptr,
+                pane_ref,
+                buf_mode as u32,
+                blend_mode as u32,
+                clear_before,
+                clear.as_ptr(),
+                x0 as f32,
+                y0 as f32,
+                x1 as f32,
+                y1 as f32,
+                color_r as f32,
+                color_g as f32,
+                color_b as f32,
+                color_a as f32,
+            )
+        }
+    })
+}
+
+#[unsafe(export_name = "HostFrame.StrokeCircle")]
+pub extern "C" fn hostframe_stroke_circle(
+    pane_id: i64,
+    buf_mode: i32,
+    blend_mode: i32,
+    clear_before: i32,
+    clear_r: f64,
+    clear_g: f64,
+    clear_b: f64,
+    clear_a: f64,
+    cx: f64,
+    cy: f64,
+    radius: f64,
+    half_thickness: f64,
+    color_r: f64,
+    color_g: f64,
+    color_b: f64,
+    color_a: f64,
+) -> i32 {
+    FRAME_VIEW.with(|fv| {
+        let fv_ptr = *fv.borrow();
+        let Some(pane_ref) = bind_frame_pane(fv_ptr, pane_id) else {
+            return 0;
+        };
+        let clear = clear_rgba(clear_r, clear_g, clear_b, clear_a);
+        unsafe {
+            crate::wingui_spec_ffi::wingui_spec_bind_frame_stroke_circle(
+                fv_ptr,
+                pane_ref,
+                buf_mode as u32,
+                blend_mode as u32,
+                clear_before,
+                clear.as_ptr(),
+                cx as f32,
+                cy as f32,
+                radius as f32,
+                half_thickness as f32,
+                color_r as f32,
+                color_g as f32,
+                color_b as f32,
+                color_a as f32,
+            )
+        }
+    })
+}
+
+#[unsafe(export_name = "HostFrame.StrokeOval")]
+pub extern "C" fn hostframe_stroke_oval(
+    pane_id: i64,
+    buf_mode: i32,
+    blend_mode: i32,
+    clear_before: i32,
+    clear_r: f64,
+    clear_g: f64,
+    clear_b: f64,
+    clear_a: f64,
+    x0: f64,
+    y0: f64,
+    x1: f64,
+    y1: f64,
+    half_thickness: f64,
+    color_r: f64,
+    color_g: f64,
+    color_b: f64,
+    color_a: f64,
+) -> i32 {
+    FRAME_VIEW.with(|fv| {
+        let fv_ptr = *fv.borrow();
+        let Some(pane_ref) = bind_frame_pane(fv_ptr, pane_id) else {
+            return 0;
+        };
+        let clear = clear_rgba(clear_r, clear_g, clear_b, clear_a);
+        unsafe {
+            crate::wingui_spec_ffi::wingui_spec_bind_frame_stroke_oval(
+                fv_ptr,
+                pane_ref,
+                buf_mode as u32,
+                blend_mode as u32,
+                clear_before,
+                clear.as_ptr(),
+                x0 as f32,
+                y0 as f32,
+                x1 as f32,
+                y1 as f32,
+                half_thickness as f32,
+                color_r as f32,
+                color_g as f32,
+                color_b as f32,
+                color_a as f32,
+            )
+        }
+    })
+}
+
+#[unsafe(export_name = "HostFrame.DrawArc")]
+pub extern "C" fn hostframe_draw_arc(
+    pane_id: i64,
+    buf_mode: i32,
+    blend_mode: i32,
+    clear_before: i32,
+    clear_r: f64,
+    clear_g: f64,
+    clear_b: f64,
+    clear_a: f64,
+    cx: f64,
+    cy: f64,
+    radius: f64,
+    half_thickness: f64,
+    rotation_rad: f64,
+    half_aperture_rad: f64,
+    color_r: f64,
+    color_g: f64,
+    color_b: f64,
+    color_a: f64,
+) -> i32 {
+    FRAME_VIEW.with(|fv| {
+        let fv_ptr = *fv.borrow();
+        let Some(pane_ref) = bind_frame_pane(fv_ptr, pane_id) else {
+            return 0;
+        };
+        let clear = clear_rgba(clear_r, clear_g, clear_b, clear_a);
+        unsafe {
+            crate::wingui_spec_ffi::wingui_spec_bind_frame_draw_arc(
+                fv_ptr,
+                pane_ref,
+                buf_mode as u32,
+                blend_mode as u32,
+                clear_before,
+                clear.as_ptr(),
+                cx as f32,
+                cy as f32,
+                radius as f32,
+                half_thickness as f32,
+                rotation_rad as f32,
+                half_aperture_rad as f32,
+                color_r as f32,
+                color_g as f32,
+                color_b as f32,
+                color_a as f32,
+            )
+        }
+    })
+}
+
+#[unsafe(export_name = "HostFrame.DrawPath")]
+pub extern "C" fn hostframe_draw_path(
+    pane_id: i64,
+    buf_mode: i32,
+    blend_mode: i32,
+    clear_before: i32,
+    clear_r: f64,
+    clear_g: f64,
+    clear_b: f64,
+    clear_a: f64,
+    points_ptr: *const f32,
+    point_count: i32,
+    closed: i32,
+    half_thickness: f64,
+    color_r: f64,
+    color_g: f64,
+    color_b: f64,
+    color_a: f64,
+) -> i32 {
+    if points_ptr.is_null() || point_count < 2 {
+        return 0;
+    }
+    FRAME_VIEW.with(|fv| {
+        let fv_ptr = *fv.borrow();
+        let Some(pane_ref) = bind_frame_pane(fv_ptr, pane_id) else {
+            return 0;
+        };
+        let clear = clear_rgba(clear_r, clear_g, clear_b, clear_a);
+        unsafe {
+            crate::wingui_spec_ffi::wingui_spec_bind_frame_draw_path(
+                fv_ptr,
+                pane_ref,
+                buf_mode as u32,
+                blend_mode as u32,
+                clear_before,
+                clear.as_ptr(),
+                points_ptr,
+                point_count as u32,
+                closed,
+                half_thickness as f32,
+                color_r as f32,
+                color_g as f32,
+                color_b as f32,
+                color_a as f32,
+            )
+        }
+    })
+}
+
+#[unsafe(export_name = "HostFrame.DrawText")]
+pub extern "C" fn hostframe_draw_text(
+    pane_id: i64,
+    buf_mode: i32,
+    blend_mode: i32,
+    clear_before: i32,
+    clear_r: f64,
+    clear_g: f64,
+    clear_b: f64,
+    clear_a: f64,
+    text_ptr: *const u8,
+    origin_x: f64,
+    origin_y: f64,
+    color_r: f64,
+    color_g: f64,
+    color_b: f64,
+    color_a: f64,
+) -> i32 {
+    if text_ptr.is_null() {
+        return 0;
+    }
+    FRAME_VIEW.with(|fv| {
+        let fv_ptr = *fv.borrow();
+        let Some(pane_ref) = bind_frame_pane(fv_ptr, pane_id) else {
+            return 0;
+        };
+        let clear = clear_rgba(clear_r, clear_g, clear_b, clear_a);
+        unsafe {
+            crate::wingui_spec_ffi::wingui_spec_bind_frame_draw_text_utf8(
+                fv_ptr,
+                pane_ref,
+                buf_mode as u32,
+                blend_mode as u32,
+                clear_before,
+                clear.as_ptr(),
+                text_ptr as *const std::os::raw::c_char,
+                origin_x as f32,
+                origin_y as f32,
+                color_r as f32,
+                color_g as f32,
+                color_b as f32,
+                color_a as f32,
+            )
+        }
+    })
+}
+
+#[unsafe(export_name = "HostFrame.DrawTextRun")]
+pub extern "C" fn hostframe_draw_text_run(
+    pane_id: i64,
+    buf_mode: i32,
+    blend_mode: i32,
+    clear_before: i32,
+    clear_r: f64,
+    clear_g: f64,
+    clear_b: f64,
+    clear_a: f64,
+    text_ptr: *const u8,
+    origin_x: f64,
+    origin_y: f64,
+    color_r: f64,
+    color_g: f64,
+    color_b: f64,
+    color_a: f64,
+) -> i32 {
+    hostframe_draw_text(
+        pane_id,
+        buf_mode,
+        blend_mode,
+        clear_before,
+        clear_r,
+        clear_g,
+        clear_b,
+        clear_a,
+        text_ptr,
+        origin_x,
+        origin_y,
+        color_r,
+        color_g,
+        color_b,
+        color_a,
+    )
+}
+
+#[unsafe(export_name = "HostFrame.MeasureTextRun")]
+pub extern "C" fn hostframe_measure_text_run(
+    text_ptr: *const u8,
+    width_ptr: *mut f64,
+    height_ptr: *mut f64,
+    char_count_ptr: *mut i64,
+) -> i32 {
+    if text_ptr.is_null() || width_ptr.is_null() || height_ptr.is_null() || char_count_ptr.is_null() {
+        return 0;
+    }
+    FRAME_VIEW.with(|fv| {
+        let fv_ptr = *fv.borrow();
+        let mut width = 0.0f32;
+        let mut height = 0.0f32;
+        let mut char_count = 0u32;
+        let ok = unsafe {
+            crate::wingui_spec_ffi::wingui_spec_bind_frame_measure_text_utf8(
+                fv_ptr,
+                text_ptr as *const std::os::raw::c_char,
+                &mut width,
+                &mut height,
+                &mut char_count,
+            )
+        };
+        if ok != 0 {
+            unsafe {
+                *width_ptr = width as f64;
+                *height_ptr = height as f64;
+                *char_count_ptr = char_count as i64;
+            }
+        }
+        ok
+    })
+}
+
+#[unsafe(export_name = "HostFrame.CharIndexAtPoint")]
+pub extern "C" fn hostframe_char_index_at_point(
+    text_ptr: *const u8,
+    origin_x: f64,
+    origin_y: f64,
+    x: f64,
+    y: f64,
+    char_index_ptr: *mut i64,
+) -> i32 {
+    if text_ptr.is_null() || char_index_ptr.is_null() {
+        return 0;
+    }
+    FRAME_VIEW.with(|fv| {
+        let fv_ptr = *fv.borrow();
+        let mut char_index = 0u32;
+        let ok = unsafe {
+            crate::wingui_spec_ffi::wingui_spec_bind_frame_char_index_at_point_utf8(
+                fv_ptr,
+                text_ptr as *const std::os::raw::c_char,
+                origin_x as f32,
+                origin_y as f32,
+                x as f32,
+                y as f32,
+                &mut char_index,
+            )
+        };
+        if ok != 0 {
+            unsafe {
+                *char_index_ptr = char_index as i64;
+            }
+        }
+        ok
+    })
+}
+
+#[unsafe(export_name = "HostFrame.PointAtCharIndex")]
+pub extern "C" fn hostframe_point_at_char_index(
+    text_ptr: *const u8,
+    origin_x: f64,
+    origin_y: f64,
+    char_index: i64,
+    x_ptr: *mut f64,
+    y_ptr: *mut f64,
+) -> i32 {
+    if text_ptr.is_null() || x_ptr.is_null() || y_ptr.is_null() {
+        return 0;
+    }
+    FRAME_VIEW.with(|fv| {
+        let fv_ptr = *fv.borrow();
+        let mut x = 0.0f32;
+        let mut y = 0.0f32;
+        let ok = unsafe {
+            crate::wingui_spec_ffi::wingui_spec_bind_frame_point_at_char_index_utf8(
+                fv_ptr,
+                text_ptr as *const std::os::raw::c_char,
+                origin_x as f32,
+                origin_y as f32,
+                char_index.max(0) as u32,
+                &mut x,
+                &mut y,
+            )
+        };
+        if ok != 0 {
+            unsafe {
+                *x_ptr = x as f64;
+                *y_ptr = y as f64;
+            }
+        }
+        ok
+    })
 }
 
 /// WinFrame.PostPaneMsg — post (kind, detail) to pane's inbox from any thread.
@@ -496,6 +2410,687 @@ pub extern "C" fn winframe_poll_pane_msg(
             )
         }
     })
+}
+
+// ---------------------------------------------------------------------------
+// WinBatch shims
+// ---------------------------------------------------------------------------
+
+#[unsafe(export_name = "WinBatch.Begin")]
+pub extern "C" fn winbatch_begin(pane_id: i64, sequence: i64, flags: i32) -> i32 {
+    CURRENT_PANE_BATCH.with(|current| {
+        *current.borrow_mut() = Some(PaneRenderBatch {
+            pane_id: pane_id as u64,
+            sequence: sequence as u64,
+            flags: flags as u32,
+            commands: Vec::new(),
+        });
+    });
+    1
+}
+
+#[unsafe(export_name = "WinBatch.Clear")]
+pub extern "C" fn winbatch_clear(buf_mode: i32, color_r: f64, color_g: f64, color_b: f64, color_a: f64) -> i32 {
+    CURRENT_PANE_BATCH.with(|current| {
+        let mut current = current.borrow_mut();
+        let Some(batch) = current.as_mut() else { return 0; };
+        batch.commands.push(PaneRenderCommand::Clear { buf_mode, color_r, color_g, color_b, color_a });
+        1
+    })
+}
+
+#[unsafe(export_name = "WinBatch.PushClipRect")]
+pub extern "C" fn winbatch_push_clip_rect(x0: f64, y0: f64, x1: f64, y1: f64) -> i32 {
+    CURRENT_PANE_BATCH.with(|current| {
+        let mut current = current.borrow_mut();
+        let Some(batch) = current.as_mut() else { return 0; };
+        batch.commands.push(PaneRenderCommand::PushClipRect { x0, y0, x1, y1 });
+        1
+    })
+}
+
+#[unsafe(export_name = "WinBatch.PopClipRect")]
+pub extern "C" fn winbatch_pop_clip_rect() -> i32 {
+    CURRENT_PANE_BATCH.with(|current| {
+        let mut current = current.borrow_mut();
+        let Some(batch) = current.as_mut() else { return 0; };
+        batch.commands.push(PaneRenderCommand::PopClipRect);
+        1
+    })
+}
+
+#[unsafe(export_name = "WinBatch.PushOffset")]
+pub extern "C" fn winbatch_push_offset(dx: f64, dy: f64) -> i32 {
+    CURRENT_PANE_BATCH.with(|current| {
+        let mut current = current.borrow_mut();
+        let Some(batch) = current.as_mut() else { return 0; };
+        batch.commands.push(PaneRenderCommand::PushOffset { dx, dy });
+        1
+    })
+}
+
+#[unsafe(export_name = "WinBatch.PopOffset")]
+pub extern "C" fn winbatch_pop_offset() -> i32 {
+    CURRENT_PANE_BATCH.with(|current| {
+        let mut current = current.borrow_mut();
+        let Some(batch) = current.as_mut() else { return 0; };
+        batch.commands.push(PaneRenderCommand::PopOffset);
+        1
+    })
+}
+
+#[unsafe(export_name = "WinBatch.TextCell")]
+pub extern "C" fn winbatch_text_cell(
+    row: i32,
+    column: i32,
+    codepoint: i64,
+    fg: i64,
+    bg: i64,
+) -> i32 {
+    CURRENT_PANE_BATCH.with(|current| {
+        let mut current = current.borrow_mut();
+        let Some(batch) = current.as_mut() else {
+            return 0;
+        };
+        batch.commands.push(PaneRenderCommand::TextCell {
+            row,
+            column,
+            codepoint,
+            fg,
+            bg,
+        });
+        1
+    })
+}
+
+#[unsafe(export_name = "WinBatch.FillRect")]
+pub extern "C" fn winbatch_fill_rect(
+    buf_mode: i32,
+    blend_mode: i32,
+    clear_before: i32,
+    clear_r: f64,
+    clear_g: f64,
+    clear_b: f64,
+    clear_a: f64,
+    x0: f64,
+    y0: f64,
+    x1: f64,
+    y1: f64,
+    corner_radius: f64,
+    color_r: f64,
+    color_g: f64,
+    color_b: f64,
+    color_a: f64,
+) -> i32 {
+    CURRENT_PANE_BATCH.with(|current| {
+        let mut current = current.borrow_mut();
+        let Some(batch) = current.as_mut() else {
+            return 0;
+        };
+        batch.commands.push(PaneRenderCommand::FillRect {
+            buf_mode,
+            blend_mode,
+            clear_before,
+            clear_r,
+            clear_g,
+            clear_b,
+            clear_a,
+            x0,
+            y0,
+            x1,
+            y1,
+            corner_radius,
+            color_r,
+            color_g,
+            color_b,
+            color_a,
+        });
+        1
+    })
+}
+
+#[unsafe(export_name = "WinBatch.StrokeRect")]
+pub extern "C" fn winbatch_stroke_rect(
+    buf_mode: i32,
+    blend_mode: i32,
+    clear_before: i32,
+    clear_r: f64,
+    clear_g: f64,
+    clear_b: f64,
+    clear_a: f64,
+    x0: f64,
+    y0: f64,
+    x1: f64,
+    y1: f64,
+    half_thickness: f64,
+    corner_radius: f64,
+    color_r: f64,
+    color_g: f64,
+    color_b: f64,
+    color_a: f64,
+) -> i32 {
+    CURRENT_PANE_BATCH.with(|current| {
+        let mut current = current.borrow_mut();
+        let Some(batch) = current.as_mut() else {
+            return 0;
+        };
+        batch.commands.push(PaneRenderCommand::StrokeRect {
+            buf_mode,
+            blend_mode,
+            clear_before,
+            clear_r,
+            clear_g,
+            clear_b,
+            clear_a,
+            x0,
+            y0,
+            x1,
+            y1,
+            half_thickness,
+            corner_radius,
+            color_r,
+            color_g,
+            color_b,
+            color_a,
+        });
+        1
+    })
+}
+
+#[unsafe(export_name = "WinBatch.DrawLine")]
+pub extern "C" fn winbatch_draw_line(
+    buf_mode: i32,
+    blend_mode: i32,
+    clear_before: i32,
+    clear_r: f64,
+    clear_g: f64,
+    clear_b: f64,
+    clear_a: f64,
+    x0: f64,
+    y0: f64,
+    x1: f64,
+    y1: f64,
+    half_thickness: f64,
+    color_r: f64,
+    color_g: f64,
+    color_b: f64,
+    color_a: f64,
+) -> i32 {
+    CURRENT_PANE_BATCH.with(|current| {
+        let mut current = current.borrow_mut();
+        let Some(batch) = current.as_mut() else {
+            return 0;
+        };
+        batch.commands.push(PaneRenderCommand::DrawLine {
+            buf_mode,
+            blend_mode,
+            clear_before,
+            clear_r,
+            clear_g,
+            clear_b,
+            clear_a,
+            x0,
+            y0,
+            x1,
+            y1,
+            half_thickness,
+            color_r,
+            color_g,
+            color_b,
+            color_a,
+        });
+        1
+    })
+}
+
+#[unsafe(export_name = "WinBatch.FillCircle")]
+pub extern "C" fn winbatch_fill_circle(
+    buf_mode: i32,
+    blend_mode: i32,
+    clear_before: i32,
+    clear_r: f64,
+    clear_g: f64,
+    clear_b: f64,
+    clear_a: f64,
+    cx: f64,
+    cy: f64,
+    radius: f64,
+    color_r: f64,
+    color_g: f64,
+    color_b: f64,
+    color_a: f64,
+) -> i32 {
+    CURRENT_PANE_BATCH.with(|current| {
+        let mut current = current.borrow_mut();
+        let Some(batch) = current.as_mut() else {
+            return 0;
+        };
+        batch.commands.push(PaneRenderCommand::FillCircle {
+            buf_mode,
+            blend_mode,
+            clear_before,
+            clear_r,
+            clear_g,
+            clear_b,
+            clear_a,
+            cx,
+            cy,
+            radius,
+            color_r,
+            color_g,
+            color_b,
+            color_a,
+        });
+        1
+    })
+}
+
+#[unsafe(export_name = "WinBatch.FillOval")]
+pub extern "C" fn winbatch_fill_oval(
+    buf_mode: i32,
+    blend_mode: i32,
+    clear_before: i32,
+    clear_r: f64,
+    clear_g: f64,
+    clear_b: f64,
+    clear_a: f64,
+    x0: f64,
+    y0: f64,
+    x1: f64,
+    y1: f64,
+    color_r: f64,
+    color_g: f64,
+    color_b: f64,
+    color_a: f64,
+) -> i32 {
+    CURRENT_PANE_BATCH.with(|current| {
+        let mut current = current.borrow_mut();
+        let Some(batch) = current.as_mut() else {
+            return 0;
+        };
+        batch.commands.push(PaneRenderCommand::FillOval {
+            buf_mode,
+            blend_mode,
+            clear_before,
+            clear_r,
+            clear_g,
+            clear_b,
+            clear_a,
+            x0,
+            y0,
+            x1,
+            y1,
+            color_r,
+            color_g,
+            color_b,
+            color_a,
+        });
+        1
+    })
+}
+
+#[unsafe(export_name = "WinBatch.StrokeCircle")]
+pub extern "C" fn winbatch_stroke_circle(
+    buf_mode: i32,
+    blend_mode: i32,
+    clear_before: i32,
+    clear_r: f64,
+    clear_g: f64,
+    clear_b: f64,
+    clear_a: f64,
+    cx: f64,
+    cy: f64,
+    radius: f64,
+    half_thickness: f64,
+    color_r: f64,
+    color_g: f64,
+    color_b: f64,
+    color_a: f64,
+) -> i32 {
+    CURRENT_PANE_BATCH.with(|current| {
+        let mut current = current.borrow_mut();
+        let Some(batch) = current.as_mut() else {
+            return 0;
+        };
+        batch.commands.push(PaneRenderCommand::StrokeCircle {
+            buf_mode,
+            blend_mode,
+            clear_before,
+            clear_r,
+            clear_g,
+            clear_b,
+            clear_a,
+            cx,
+            cy,
+            radius,
+            half_thickness,
+            color_r,
+            color_g,
+            color_b,
+            color_a,
+        });
+        1
+    })
+}
+
+#[unsafe(export_name = "WinBatch.StrokeOval")]
+pub extern "C" fn winbatch_stroke_oval(
+    buf_mode: i32,
+    blend_mode: i32,
+    clear_before: i32,
+    clear_r: f64,
+    clear_g: f64,
+    clear_b: f64,
+    clear_a: f64,
+    x0: f64,
+    y0: f64,
+    x1: f64,
+    y1: f64,
+    half_thickness: f64,
+    color_r: f64,
+    color_g: f64,
+    color_b: f64,
+    color_a: f64,
+) -> i32 {
+    CURRENT_PANE_BATCH.with(|current| {
+        let mut current = current.borrow_mut();
+        let Some(batch) = current.as_mut() else {
+            return 0;
+        };
+        batch.commands.push(PaneRenderCommand::StrokeOval {
+            buf_mode,
+            blend_mode,
+            clear_before,
+            clear_r,
+            clear_g,
+            clear_b,
+            clear_a,
+            x0,
+            y0,
+            x1,
+            y1,
+            half_thickness,
+            color_r,
+            color_g,
+            color_b,
+            color_a,
+        });
+        1
+    })
+}
+
+#[unsafe(export_name = "WinBatch.DrawArc")]
+pub extern "C" fn winbatch_draw_arc(
+    buf_mode: i32,
+    blend_mode: i32,
+    clear_before: i32,
+    clear_r: f64,
+    clear_g: f64,
+    clear_b: f64,
+    clear_a: f64,
+    cx: f64,
+    cy: f64,
+    radius: f64,
+    half_thickness: f64,
+    rotation_rad: f64,
+    half_aperture_rad: f64,
+    color_r: f64,
+    color_g: f64,
+    color_b: f64,
+    color_a: f64,
+) -> i32 {
+    CURRENT_PANE_BATCH.with(|current| {
+        let mut current = current.borrow_mut();
+        let Some(batch) = current.as_mut() else {
+            return 0;
+        };
+        batch.commands.push(PaneRenderCommand::DrawArc {
+            buf_mode,
+            blend_mode,
+            clear_before,
+            clear_r,
+            clear_g,
+            clear_b,
+            clear_a,
+            cx,
+            cy,
+            radius,
+            half_thickness,
+            rotation_rad,
+            half_aperture_rad,
+            color_r,
+            color_g,
+            color_b,
+            color_a,
+        });
+        1
+    })
+}
+
+#[unsafe(export_name = "WinBatch.DrawPath")]
+pub extern "C" fn winbatch_draw_path(
+    buf_mode: i32,
+    blend_mode: i32,
+    clear_before: i32,
+    clear_r: f64,
+    clear_g: f64,
+    clear_b: f64,
+    clear_a: f64,
+    points_ptr: *const f64,
+    point_count: i32,
+    closed: i32,
+    half_thickness: f64,
+    color_r: f64,
+    color_g: f64,
+    color_b: f64,
+    color_a: f64,
+) -> i32 {
+    if points_ptr.is_null() || point_count < 2 {
+        return 0;
+    }
+    let point_count = point_count as usize;
+    let source = unsafe { std::slice::from_raw_parts(points_ptr, point_count * 2) };
+    let mut points_xy = Vec::with_capacity(source.len());
+    points_xy.extend(source.iter().map(|value| *value as f32));
+    CURRENT_PANE_BATCH.with(|current| {
+        let mut current = current.borrow_mut();
+        let Some(batch) = current.as_mut() else {
+            return 0;
+        };
+        batch.commands.push(PaneRenderCommand::DrawPath {
+            buf_mode,
+            blend_mode,
+            clear_before,
+            clear_r,
+            clear_g,
+            clear_b,
+            clear_a,
+            points_xy,
+            closed,
+            half_thickness,
+            color_r,
+            color_g,
+            color_b,
+            color_a,
+        });
+        1
+    })
+}
+
+#[unsafe(export_name = "WinBatch.DrawText")]
+pub extern "C" fn winbatch_draw_text(
+    buf_mode: i32,
+    blend_mode: i32,
+    clear_before: i32,
+    clear_r: f64,
+    clear_g: f64,
+    clear_b: f64,
+    clear_a: f64,
+    text_ptr: *const u8,
+    origin_x: f64,
+    origin_y: f64,
+    color_r: f64,
+    color_g: f64,
+    color_b: f64,
+    color_a: f64,
+) -> i32 {
+    if text_ptr.is_null() {
+        return 0;
+    }
+    let text = unsafe { CStr::from_ptr(text_ptr as *const std::os::raw::c_char) }
+        .to_string_lossy()
+        .into_owned();
+    CURRENT_PANE_BATCH.with(|current| {
+        let mut current = current.borrow_mut();
+        let Some(batch) = current.as_mut() else {
+            return 0;
+        };
+        batch.commands.push(PaneRenderCommand::DrawText {
+            buf_mode,
+            blend_mode,
+            clear_before,
+            clear_r,
+            clear_g,
+            clear_b,
+            clear_a,
+            text,
+            origin_x,
+            origin_y,
+            color_r,
+            color_g,
+            color_b,
+            color_a,
+        });
+        1
+    })
+}
+
+#[unsafe(export_name = "WinBatch.DrawTextRun")]
+pub extern "C" fn winbatch_draw_text_run(
+    buf_mode: i32,
+    blend_mode: i32,
+    clear_before: i32,
+    clear_r: f64,
+    clear_g: f64,
+    clear_b: f64,
+    clear_a: f64,
+    text_ptr: *const u8,
+    origin_x: f64,
+    origin_y: f64,
+    color_r: f64,
+    color_g: f64,
+    color_b: f64,
+    color_a: f64,
+) -> i32 {
+    winbatch_draw_text(
+        buf_mode,
+        blend_mode,
+        clear_before,
+        clear_r,
+        clear_g,
+        clear_b,
+        clear_a,
+        text_ptr,
+        origin_x,
+        origin_y,
+        color_r,
+        color_g,
+        color_b,
+        color_a,
+    )
+}
+
+#[unsafe(export_name = "WinBatch.MarkRect")]
+pub extern "C" fn winbatch_mark_rect(mode: i32, x0: f64, y0: f64, x1: f64, y1: f64) -> i32 {
+    CURRENT_PANE_BATCH.with(|current| {
+        let mut current = current.borrow_mut();
+        let Some(batch) = current.as_mut() else { return 0; };
+        batch.commands.push(PaneRenderCommand::MarkRect { mode, x0, y0, x1, y1 });
+        1
+    })
+}
+
+#[unsafe(export_name = "WinBatch.Caret")]
+pub extern "C" fn winbatch_caret(x0: f64, y0: f64, x1: f64, y1: f64, color_r: f64, color_g: f64, color_b: f64, color_a: f64) -> i32 {
+    CURRENT_PANE_BATCH.with(|current| {
+        let mut current = current.borrow_mut();
+        let Some(batch) = current.as_mut() else { return 0; };
+        batch.commands.push(PaneRenderCommand::Caret { x0, y0, x1, y1, color_r, color_g, color_b, color_a });
+        1
+    })
+}
+
+#[unsafe(export_name = "WinBatch.SelectionRange")]
+pub extern "C" fn winbatch_selection_range(x0: f64, y0: f64, x1: f64, y1: f64, color_r: f64, color_g: f64, color_b: f64, color_a: f64) -> i32 {
+    CURRENT_PANE_BATCH.with(|current| {
+        let mut current = current.borrow_mut();
+        let Some(batch) = current.as_mut() else { return 0; };
+        batch.commands.push(PaneRenderCommand::SelectionRange { x0, y0, x1, y1, color_r, color_g, color_b, color_a });
+        1
+    })
+}
+
+#[unsafe(export_name = "WinBatch.FocusRing")]
+pub extern "C" fn winbatch_focus_ring(x0: f64, y0: f64, x1: f64, y1: f64, half_thickness: f64, corner_radius: f64, color_r: f64, color_g: f64, color_b: f64, color_a: f64) -> i32 {
+    CURRENT_PANE_BATCH.with(|current| {
+        let mut current = current.borrow_mut();
+        let Some(batch) = current.as_mut() else { return 0; };
+        batch.commands.push(PaneRenderCommand::FocusRing { x0, y0, x1, y1, half_thickness, corner_radius, color_r, color_g, color_b, color_a });
+        1
+    })
+}
+
+#[unsafe(export_name = "WinBatch.ScrollRect")]
+pub extern "C" fn winbatch_scroll_rect(x0: f64, y0: f64, x1: f64, y1: f64, dx: f64, dy: f64) -> i32 {
+    CURRENT_PANE_BATCH.with(|current| {
+        let mut current = current.borrow_mut();
+        let Some(batch) = current.as_mut() else { return 0; };
+        batch.commands.push(PaneRenderCommand::ScrollRect { x0, y0, x1, y1, dx, dy });
+        1
+    })
+}
+
+#[unsafe(export_name = "WinBatch.PresentHint")]
+pub extern "C" fn winbatch_present_hint() -> i32 {
+    CURRENT_PANE_BATCH.with(|current| {
+        let mut current = current.borrow_mut();
+        let Some(batch) = current.as_mut() else { return 0; };
+        batch.commands.push(PaneRenderCommand::PresentHint);
+        1
+    })
+}
+
+#[unsafe(export_name = "WinBatch.InstallChildViewBounds")]
+pub extern "C" fn winbatch_install_child_view_bounds(child_id: i32, x0: f64, y0: f64, x1: f64, y1: f64) -> i32 {
+    CURRENT_PANE_BATCH.with(|current| {
+        let mut current = current.borrow_mut();
+        let Some(batch) = current.as_mut() else { return 0; };
+        batch.commands.push(PaneRenderCommand::InstallChildViewBounds { child_id, x0, y0, x1, y1 });
+        1
+    })
+}
+
+#[unsafe(export_name = "WinBatch.Submit")]
+pub extern "C" fn winbatch_submit() -> i32 {
+    let Some(batch) = CURRENT_PANE_BATCH.with(|current| current.borrow_mut().take()) else {
+        return 0;
+    };
+
+    let mut pending = pending_pane_batches().lock().expect("pending pane batches poisoned");
+    match pending.get(&batch.pane_id) {
+        Some(existing) if existing.sequence > batch.sequence => {
+            eprintln!(
+                "[WinBatch] drop stale pane={} seq={} existing_seq={}",
+                batch.pane_id,
+                batch.sequence,
+                existing.sequence
+            );
+            return 0;
+        }
+        _ => {}
+    }
+    pending.insert(batch.pane_id, batch);
+    1
 }
 
 /// WaitNamedEvent: blocks until an event is available or timeout elapses.
@@ -591,7 +3186,7 @@ impl WinSpecBuilder {
     fn build(&self) -> String {
         let body_children = self.stack.last()
             .map(|f| f.children.join(",")).unwrap_or_default();
-        let title_esc = self.title.replace('"', "\\\"");
+        let title_esc = escape_json(&self.title);
         format!(
             "{{\"type\":\"window\",\"title\":\"{}\",\"body\":{{\"type\":\"stack\",\"children\":[{}]}}}}",
             title_esc, body_children
@@ -618,16 +3213,19 @@ pub extern "C" fn winspec_begin(title_ptr: *const u8) {
 
 #[unsafe(export_name = "WinSpec.OpenStack")]
 pub extern "C" fn winspec_open_stack(gap: i32) {
+    eprintln!("[WinSpec.OpenStack] gap={}", gap);
     SPEC.with(|s| s.borrow_mut().open("stack", if gap < 0 { None } else { Some(gap) }));
 }
 
 #[unsafe(export_name = "WinSpec.OpenRow")]
 pub extern "C" fn winspec_open_row(gap: i32) {
+    eprintln!("[WinSpec.OpenRow] gap={}", gap);
     SPEC.with(|s| s.borrow_mut().open("row", if gap < 0 { None } else { Some(gap) }));
 }
 
 #[unsafe(export_name = "WinSpec.CloseContainer")]
 pub extern "C" fn winspec_close_container() {
+    eprintln!("[WinSpec.CloseContainer]");
     SPEC.with(|s| s.borrow_mut().close());
 }
 
@@ -638,6 +3236,7 @@ pub extern "C" fn winspec_add_textarea(
     let id    = unsafe { CStr::from_ptr(id_ptr    as *const _) }.to_string_lossy();
     let label = unsafe { CStr::from_ptr(label_ptr as *const _) }.to_string_lossy();
     let value = escape_json(&unsafe { CStr::from_ptr(value_ptr as *const _) }.to_string_lossy());
+    eprintln!("[WinSpec.AddTextarea] id={:?} label={:?} readonly={}", id, label, readonly);
     let ro = if readonly != 0 { ",\"readonly\":true" } else { "" };
     SPEC.with(|s| s.borrow_mut().push_leaf(format!(
         "{{\"type\":\"textarea\",\"id\":\"{}\",\"label\":\"{}\",\"value\":\"{}\"{}}}",
@@ -650,6 +3249,7 @@ pub extern "C" fn winspec_add_button(id_ptr: *const u8, label_ptr: *const u8, ev
     let id    = unsafe { CStr::from_ptr(id_ptr    as *const _) }.to_string_lossy();
     let label = unsafe { CStr::from_ptr(label_ptr as *const _) }.to_string_lossy();
     let ev    = unsafe { CStr::from_ptr(event_ptr as *const _) }.to_string_lossy();
+    eprintln!("[WinSpec.AddButton] id={:?} event={:?}", id, ev);
     SPEC.with(|s| s.borrow_mut().push_leaf(format!(
         "{{\"type\":\"button\",\"id\":\"{}\",\"text\":\"{}\",\"event\":\"{}\"}}",
         id, label, ev
@@ -659,7 +3259,92 @@ pub extern "C" fn winspec_add_button(id_ptr: *const u8, label_ptr: *const u8, ev
 #[unsafe(export_name = "WinSpec.AddText")]
 pub extern "C" fn winspec_add_text(text_ptr: *const u8) {
     let text = escape_json(&unsafe { CStr::from_ptr(text_ptr as *const _) }.to_string_lossy());
+    eprintln!("[WinSpec.AddText] text={:?}", text);
     SPEC.with(|s| s.borrow_mut().push_leaf(format!("{{\"type\":\"text\",\"text\":\"{}\"}}", text)));
+}
+
+#[unsafe(export_name = "WinSpec.AddTextGrid")]
+pub extern "C" fn winspec_add_text_grid(
+    id_ptr: *const u8,
+    event_ptr: *const u8,
+    cols: i32,
+    rows: i32,
+) {
+    let id = unsafe { CStr::from_ptr(id_ptr as *const _) }.to_string_lossy();
+    let event = if event_ptr.is_null() {
+        String::new()
+    } else {
+        unsafe { CStr::from_ptr(event_ptr as *const _) }.to_string_lossy().into_owned()
+    };
+    eprintln!("[WinSpec.AddTextGrid] id={:?} event={:?} cols={} rows={}", id, event, cols, rows);
+    let event_part = if event.is_empty() {
+        String::new()
+    } else {
+        format!(",\"event\":\"{}\"", escape_json(&event))
+    };
+    SPEC.with(|s| s.borrow_mut().push_leaf(format!(
+        "{{\"type\":\"text-grid\",\"id\":\"{}\",\"columns\":{},\"rows\":{}{}}}",
+        escape_json(&id),
+        cols.max(1),
+        rows.max(1),
+        event_part
+    )));
+}
+
+#[unsafe(export_name = "WinSpec.AddRgbaPane")]
+pub extern "C" fn winspec_add_rgba_pane(
+    id_ptr: *const u8,
+    event_ptr: *const u8,
+    width: i32,
+    height: i32,
+) {
+    let id = unsafe { CStr::from_ptr(id_ptr as *const _) }.to_string_lossy();
+    let event = if event_ptr.is_null() {
+        String::new()
+    } else {
+        unsafe { CStr::from_ptr(event_ptr as *const _) }.to_string_lossy().into_owned()
+    };
+    eprintln!("[WinSpec.AddRgbaPane] id={:?} event={:?} width={} height={}", id, event, width, height);
+    let event_part = if event.is_empty() {
+        String::new()
+    } else {
+        format!(",\"event\":\"{}\"", escape_json(&event))
+    };
+    SPEC.with(|s| s.borrow_mut().push_leaf(format!(
+        "{{\"type\":\"rgba-pane\",\"id\":\"{}\",\"width\":{},\"height\":{}{}}}",
+        escape_json(&id),
+        width.max(1),
+        height.max(1),
+        event_part
+    )));
+}
+
+#[unsafe(export_name = "WinSpec.AddSurface")]
+pub extern "C" fn winspec_add_surface(
+    id_ptr: *const u8,
+    event_ptr: *const u8,
+    width: i32,
+    height: i32,
+) {
+    let id = unsafe { CStr::from_ptr(id_ptr as *const _) }.to_string_lossy();
+    let event = if event_ptr.is_null() {
+        String::new()
+    } else {
+        unsafe { CStr::from_ptr(event_ptr as *const _) }.to_string_lossy().into_owned()
+    };
+    eprintln!("[WinSpec.AddSurface] id={:?} event={:?} width={} height={}", id, event, width, height);
+    let event_part = if event.is_empty() {
+        String::new()
+    } else {
+        format!(",\"event\":\"{}\"", escape_json(&event))
+    };
+    SPEC.with(|s| s.borrow_mut().push_leaf(format!(
+        "{{\"type\":\"surface\",\"id\":\"{}\",\"width\":{},\"height\":{}{}}}",
+        escape_json(&id),
+        width.max(1),
+        height.max(1),
+        event_part
+    )));
 }
 
 #[unsafe(export_name = "WinSpec.GetSpec")]
@@ -717,6 +3402,8 @@ pub fn winspec_module_artifact() -> NativeModuleArtifact {
                 ExportEntry::procedure("AddTextarea"),
                 ExportEntry::procedure("AddButton"),
                 ExportEntry::procedure("AddText"),
+                ExportEntry::procedure("AddTextGrid"),
+                ExportEntry::procedure("AddRgbaPane"),
                 ExportEntry::procedure("GetSpec"),
             ]),
             "WinSpec.bootstrap",
@@ -731,6 +3418,8 @@ pub fn winspec_module_artifact() -> NativeModuleArtifact {
             NativeExportBinding::procedure("AddTextarea",    winspec_add_textarea    as *const () as usize),
             NativeExportBinding::procedure("AddButton",      winspec_add_button      as *const () as usize),
             NativeExportBinding::procedure("AddText",        winspec_add_text        as *const () as usize),
+            NativeExportBinding::procedure("AddTextGrid",    winspec_add_text_grid   as *const () as usize),
+            NativeExportBinding::procedure("AddRgbaPane",    winspec_add_rgba_pane   as *const () as usize),
             NativeExportBinding::procedure("GetSpec",        winspec_get_spec        as *const () as usize),
         ],
     )
@@ -741,9 +3430,6 @@ pub fn winframe_module_artifact() -> NativeModuleArtifact {
         HostedModuleArtifact::new(
             "WinFrame", vec![],
             ExportDirectory::new(vec![
-                ExportEntry::procedure("SetRenderer"),
-                ExportEntry::procedure("RegisterPaneRenderer"),
-                ExportEntry::procedure("UnregisterPaneRenderer"),
                 ExportEntry::procedure("FrameIndex"),
                 ExportEntry::procedure("ElapsedMs"),
                 ExportEntry::procedure("DeltaMs"),
@@ -754,13 +3440,10 @@ pub fn winframe_module_artifact() -> NativeModuleArtifact {
                 ExportEntry::procedure("PollPaneMsg"),
             ]),
             "WinFrame.bootstrap",
-            "Rust-hosted per-frame dispatch and pane inbox for wingui MVC",
+            "Rust-hosted frame-state and pane inbox shims for wingui MVC",
             vec![],
         ),
         vec![
-            NativeExportBinding::procedure("SetRenderer",            winframe_set_renderer            as *const () as usize),
-            NativeExportBinding::procedure("RegisterPaneRenderer",   winframe_register_pane_renderer  as *const () as usize),
-            NativeExportBinding::procedure("UnregisterPaneRenderer", winframe_unregister_pane_renderer as *const () as usize),
             NativeExportBinding::procedure("FrameIndex",             winframe_frame_index             as *const () as usize),
             NativeExportBinding::procedure("ElapsedMs",              winframe_elapsed_ms              as *const () as usize),
             NativeExportBinding::procedure("DeltaMs",                winframe_delta_ms                as *const () as usize),
@@ -769,6 +3452,141 @@ pub fn winframe_module_artifact() -> NativeModuleArtifact {
             NativeExportBinding::procedure("RequestPresent",         winframe_request_present         as *const () as usize),
             NativeExportBinding::procedure("PostPaneMsg",            winframe_post_pane_msg           as *const () as usize),
             NativeExportBinding::procedure("PollPaneMsg",            winframe_poll_pane_msg           as *const () as usize),
+        ],
+    )
+}
+
+pub fn winpayload_module_artifact() -> NativeModuleArtifact {
+    NativeModuleArtifact::new(
+        HostedModuleArtifact::new(
+            "WinPayload", vec![],
+            ExportDirectory::new(vec![
+                ExportEntry::procedure("GetStr"),
+                ExportEntry::procedure("GetInt"),
+                ExportEntry::procedure("GetBool"),
+            ]),
+            "WinPayload.bootstrap",
+            "Rust-hosted JSON payload field extraction for wingui events",
+            vec![],
+        ),
+        vec![
+            NativeExportBinding::procedure("GetStr",  winpayload_get_str  as *const () as usize),
+            NativeExportBinding::procedure("GetInt",  winpayload_get_int  as *const () as usize),
+            NativeExportBinding::procedure("GetBool", winpayload_get_bool as *const () as usize),
+        ],
+    )
+}
+
+pub fn winbatch_module_artifact() -> NativeModuleArtifact {
+    NativeModuleArtifact::new(
+        HostedModuleArtifact::new(
+            "WinBatch", vec![],
+            ExportDirectory::new(vec![
+                ExportEntry::procedure("Begin"),
+                ExportEntry::procedure("Clear"),
+                ExportEntry::procedure("PushClipRect"),
+                ExportEntry::procedure("PopClipRect"),
+                ExportEntry::procedure("PushOffset"),
+                ExportEntry::procedure("PopOffset"),
+                ExportEntry::procedure("TextCell"),
+                ExportEntry::procedure("DrawLine"),
+                ExportEntry::procedure("DrawText"),
+                ExportEntry::procedure("DrawTextRun"),
+                ExportEntry::procedure("FillRect"),
+                ExportEntry::procedure("StrokeRect"),
+                ExportEntry::procedure("FillCircle"),
+                ExportEntry::procedure("FillOval"),
+                ExportEntry::procedure("StrokeCircle"),
+                ExportEntry::procedure("StrokeOval"),
+                ExportEntry::procedure("DrawArc"),
+                ExportEntry::procedure("DrawPath"),
+                ExportEntry::procedure("MarkRect"),
+                ExportEntry::procedure("Caret"),
+                ExportEntry::procedure("SelectionRange"),
+                ExportEntry::procedure("FocusRing"),
+                ExportEntry::procedure("ScrollRect"),
+                ExportEntry::procedure("PresentHint"),
+                ExportEntry::procedure("InstallChildViewBounds"),
+                ExportEntry::procedure("Submit"),
+            ]),
+            "WinBatch.bootstrap",
+            "Rust-hosted typed pane batch staging for wingui MVC",
+            vec![],
+        ),
+        vec![
+            NativeExportBinding::procedure("Begin",    winbatch_begin    as *const () as usize),
+            NativeExportBinding::procedure("Clear",    winbatch_clear    as *const () as usize),
+            NativeExportBinding::procedure("PushClipRect", winbatch_push_clip_rect as *const () as usize),
+            NativeExportBinding::procedure("PopClipRect", winbatch_pop_clip_rect as *const () as usize),
+            NativeExportBinding::procedure("PushOffset", winbatch_push_offset as *const () as usize),
+            NativeExportBinding::procedure("PopOffset", winbatch_pop_offset as *const () as usize),
+            NativeExportBinding::procedure("TextCell", winbatch_text_cell as *const () as usize),
+            NativeExportBinding::procedure("DrawLine", winbatch_draw_line as *const () as usize),
+            NativeExportBinding::procedure("DrawText", winbatch_draw_text as *const () as usize),
+            NativeExportBinding::procedure("DrawTextRun", winbatch_draw_text_run as *const () as usize),
+            NativeExportBinding::procedure("FillRect", winbatch_fill_rect as *const () as usize),
+            NativeExportBinding::procedure("StrokeRect", winbatch_stroke_rect as *const () as usize),
+            NativeExportBinding::procedure("FillCircle", winbatch_fill_circle as *const () as usize),
+            NativeExportBinding::procedure("FillOval", winbatch_fill_oval as *const () as usize),
+            NativeExportBinding::procedure("StrokeCircle", winbatch_stroke_circle as *const () as usize),
+            NativeExportBinding::procedure("StrokeOval", winbatch_stroke_oval as *const () as usize),
+            NativeExportBinding::procedure("DrawArc", winbatch_draw_arc as *const () as usize),
+            NativeExportBinding::procedure("DrawPath", winbatch_draw_path as *const () as usize),
+            NativeExportBinding::procedure("MarkRect", winbatch_mark_rect as *const () as usize),
+            NativeExportBinding::procedure("Caret", winbatch_caret as *const () as usize),
+            NativeExportBinding::procedure("SelectionRange", winbatch_selection_range as *const () as usize),
+            NativeExportBinding::procedure("FocusRing", winbatch_focus_ring as *const () as usize),
+            NativeExportBinding::procedure("ScrollRect", winbatch_scroll_rect as *const () as usize),
+            NativeExportBinding::procedure("PresentHint", winbatch_present_hint as *const () as usize),
+            NativeExportBinding::procedure("InstallChildViewBounds", winbatch_install_child_view_bounds as *const () as usize),
+            NativeExportBinding::procedure("Submit",   winbatch_submit   as *const () as usize),
+        ],
+    )
+}
+
+pub fn hostframe_module_artifact() -> NativeModuleArtifact {
+    NativeModuleArtifact::new(
+        HostedModuleArtifact::new(
+            "HostFrame", vec![],
+            ExportDirectory::new(vec![
+                ExportEntry::procedure("TextGridWriteCell"),
+                ExportEntry::procedure("TextGridClearRegion"),
+                ExportEntry::procedure("DrawLine"),
+                ExportEntry::procedure("FillRect"),
+                ExportEntry::procedure("StrokeRect"),
+                ExportEntry::procedure("FillCircle"),
+                ExportEntry::procedure("FillOval"),
+                ExportEntry::procedure("StrokeCircle"),
+                ExportEntry::procedure("StrokeOval"),
+                ExportEntry::procedure("DrawArc"),
+                ExportEntry::procedure("DrawText"),
+                ExportEntry::procedure("DrawTextRun"),
+                ExportEntry::procedure("DrawPath"),
+                ExportEntry::procedure("MeasureTextRun"),
+                ExportEntry::procedure("CharIndexAtPoint"),
+                ExportEntry::procedure("PointAtCharIndex"),
+            ]),
+            "HostFrame.bootstrap",
+            "Rust-hosted frame-time pane helpers for wingui surfaces",
+            vec![],
+        ),
+        vec![
+            NativeExportBinding::procedure("TextGridWriteCell", hostframe_text_grid_write_cell as *const () as usize),
+            NativeExportBinding::procedure("TextGridClearRegion", hostframe_text_grid_clear_region as *const () as usize),
+            NativeExportBinding::procedure("DrawLine", hostframe_draw_line as *const () as usize),
+            NativeExportBinding::procedure("FillRect", hostframe_fill_rect as *const () as usize),
+            NativeExportBinding::procedure("StrokeRect", hostframe_stroke_rect as *const () as usize),
+            NativeExportBinding::procedure("FillCircle", hostframe_fill_circle as *const () as usize),
+            NativeExportBinding::procedure("FillOval", hostframe_fill_oval as *const () as usize),
+            NativeExportBinding::procedure("StrokeCircle", hostframe_stroke_circle as *const () as usize),
+            NativeExportBinding::procedure("StrokeOval", hostframe_stroke_oval as *const () as usize),
+            NativeExportBinding::procedure("DrawArc", hostframe_draw_arc as *const () as usize),
+            NativeExportBinding::procedure("DrawText", hostframe_draw_text as *const () as usize),
+            NativeExportBinding::procedure("DrawTextRun", hostframe_draw_text_run as *const () as usize),
+            NativeExportBinding::procedure("DrawPath", hostframe_draw_path as *const () as usize),
+            NativeExportBinding::procedure("MeasureTextRun", hostframe_measure_text_run as *const () as usize),
+            NativeExportBinding::procedure("CharIndexAtPoint", hostframe_char_index_at_point as *const () as usize),
+            NativeExportBinding::procedure("PointAtCharIndex", hostframe_point_at_char_index as *const () as usize),
         ],
     )
 }
