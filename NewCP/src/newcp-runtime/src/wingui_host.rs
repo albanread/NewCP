@@ -82,8 +82,9 @@ use crate::{
 // ---------------------------------------------------------------------------
 
 struct GuiEvent {
-    name:    String,
-    payload: String,
+    name:      String,
+    payload:   String,
+    window_id: u64,
 }
 
 struct EventQueue {
@@ -101,6 +102,7 @@ pub fn inject_test_event(name: &str, payload: &str) -> bool {
     q.push_back(GuiEvent {
         name: name.to_string(),
         payload: payload.to_string(),
+        window_id: 0,
     });
     EVENT_QUEUE.ready.notify_one();
     wingui_trace!("kind=test_event_injected name={:?} payload_len={}", name, payload.len());
@@ -197,9 +199,11 @@ unsafe extern "system" fn on_event(
                   else { unsafe { CStr::from_ptr(v.payload_json_utf8) }.to_string_lossy().into_owned() };
     let source = if v.source_utf8.is_null() { String::new() }
                  else { unsafe { CStr::from_ptr(v.source_utf8) }.to_string_lossy().into_owned() };
-    eprintln!("[wingui_event] name={:?} source={:?} payload={:?}", name, source, payload);
+    let window_id = v.window_id.value;
+    eprintln!("[wingui_event] name={:?} source={:?} window_id={} payload={:?}",
+              name, source, window_id, payload);
     let mut q = recover_lock(EVENT_QUEUE.queue.lock(), "EVENT_QUEUE on_event");
-    q.push_back(GuiEvent { name, payload });
+    q.push_back(GuiEvent { name, payload, window_id });
     EVENT_QUEUE.ready.notify_one();
 }
 
@@ -1286,6 +1290,25 @@ pub extern "C" fn host_publish_ui(json_ptr: *const u8) {
     // (drain, presenter_create on the C++ side) can be correlated against
     // exact PublishUi events.
     let publish_id = PUBLISH_UI_COUNT.fetch_add(1, Ordering::Relaxed) + 1;
+
+    // MDI test mode: when NEWCP_MDI_BARE_FRAME=1, suppress the frame's spec
+    // publish so the body is just the MDICLIENT — no buttons, no surface,
+    // no log textarea fighting MDI children for input. This is a Phase 2
+    // diagnostic switch; once the frame's chrome is properly carved into
+    // menu / command bar / status bar regions around the MDICLIENT
+    // (Phase 5+), the suppression is no longer needed.
+    let bare_frame = matches!(
+        std::env::var("NEWCP_MDI_BARE_FRAME").ok().as_deref(),
+        Some("1") | Some("true") | Some("on")
+    );
+    if bare_frame {
+        wingui_trace!(
+            "kind=publish_ui id={} state=suppressed_for_mdi_test",
+            publish_id,
+        );
+        eprintln!("[wingui_host] PublishUi: suppressed (NEWCP_MDI_BARE_FRAME=1)");
+        return;
+    }
 
     let r = runtime_ptr();
     if r.is_null() {
