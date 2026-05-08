@@ -1281,6 +1281,109 @@ pub extern "C" fn host_request_close() {
     unsafe { crate::wingui_spec_ffi::wingui_spec_bind_runtime_request_stop(r, 0) };
 }
 
+/// HostWindows.OpenChildWindow — open an MDI child of `parent_window_id`,
+/// publishing the spec JSON into the child's embedded native UI session.
+/// Returns the new child's WindowId via `out_child_window_id`. Returns 1
+/// on success, 0 on failure (with a stderr line explaining why).
+///
+/// The caller must have created the parent with the SUPERTERMINAL_WINDOW_FLAG_MDI_FRAME
+/// bit set; otherwise the runtime returns an error and we surface 0.
+///
+/// `title_ptr` and `json_ptr` are NUL-terminated UTF-8 strings (CP-side
+/// `ARRAY OF SHORTCHAR`).  Either may be NULL: a NULL title falls back to
+/// "Document"; a NULL JSON publishes nothing into the child (it stays a
+/// bare frame the CP code can publish into later via PublishUi-equivalent).
+#[unsafe(export_name = "HostWindows.OpenChildWindow")]
+pub extern "C" fn host_open_child_window(
+    parent_window_id: i64,
+    title_ptr: *const u8,
+    json_ptr: *const u8,
+    out_child_window_id: *mut i64,
+) -> i32 {
+    let r = runtime_ptr();
+    if r.is_null() {
+        eprintln!("[wingui_host] OpenChildWindow: runtime ptr is null");
+        return 0;
+    }
+    if out_child_window_id.is_null() {
+        eprintln!("[wingui_host] OpenChildWindow: out_child_window_id is null");
+        return 0;
+    }
+    let title_str = if title_ptr.is_null() {
+        String::new()
+    } else {
+        unsafe { CStr::from_ptr(title_ptr as *const std::os::raw::c_char) }
+            .to_string_lossy().into_owned()
+    };
+    let spec_str = if json_ptr.is_null() {
+        String::new()
+    } else {
+        unsafe { CStr::from_ptr(json_ptr as *const std::os::raw::c_char) }
+            .to_string_lossy().into_owned()
+    };
+    let title_c = match CString::new(title_str.as_str()) {
+        Ok(c) => c,
+        Err(_) => { eprintln!("[wingui_host] OpenChildWindow: title contains NUL"); return 0; }
+    };
+    let spec_c = match CString::new(spec_str.as_str()) {
+        Ok(c) => c,
+        Err(_) => { eprintln!("[wingui_host] OpenChildWindow: spec contains NUL"); return 0; }
+    };
+    let desc = crate::wingui_ffi::SuperTerminalWindowDesc {
+        title_utf8: title_c.as_ptr(),
+        columns: 80,
+        rows: 24,
+        flags: 0,
+        command_queue_capacity: 256,
+        event_queue_capacity: 256,
+        font_family_utf8: std::ptr::null(),
+        font_pixel_height: 16,
+        dpi_scale: 1.0,
+        text_shader_path_utf8: std::ptr::null(),
+        initial_ui_json_utf8: if spec_str.is_empty() { std::ptr::null() } else { spec_c.as_ptr() },
+    };
+    let parent = crate::wingui_ffi::SuperTerminalWindowId { value: parent_window_id as u64 };
+    let mut out_id = crate::wingui_ffi::SuperTerminalWindowId { value: 0 };
+    let ret = unsafe {
+        crate::wingui_spec_ffi::wingui_spec_bind_runtime_create_child_window(
+            r, parent, &desc, &mut out_id,
+        )
+    };
+    if ret == 0 {
+        eprintln!("[wingui_host] OpenChildWindow: create_child_window failed (parent={})",
+            parent_window_id);
+        unsafe { *out_child_window_id = 0; }
+        return 0;
+    }
+    unsafe { *out_child_window_id = out_id.value as i64; }
+    wingui_trace!(
+        "kind=open_child_window parent={} child={} title_len={} spec_len={}",
+        parent_window_id, out_id.value, title_str.len(), spec_str.len(),
+    );
+    1
+}
+
+/// HostWindows.CloseChildWindow — request close of the named child. The
+/// runtime cascades through the same path as the X-button (WM_MDIDESTROY
+/// to the parent's MDICLIENT). Returns 1 on success, 0 if the runtime is
+/// not yet attached or the close call rejects.
+#[unsafe(export_name = "HostWindows.CloseChildWindow")]
+pub extern "C" fn host_close_child_window(child_window_id: i64) -> i32 {
+    let r = runtime_ptr();
+    if r.is_null() {
+        eprintln!("[wingui_host] CloseChildWindow: runtime ptr is null");
+        return 0;
+    }
+    let id = crate::wingui_ffi::SuperTerminalWindowId { value: child_window_id as u64 };
+    let ret = unsafe { crate::wingui_spec_ffi::wingui_spec_bind_runtime_close_window(r, id) };
+    if ret == 0 {
+        eprintln!("[wingui_host] CloseChildWindow: close_window({}) failed", child_window_id);
+        return 0;
+    }
+    wingui_trace!("kind=close_child_window child={}", child_window_id);
+    1
+}
+
 #[unsafe(export_name = "HostWindows.PublishUi")]
 pub extern "C" fn host_publish_ui(json_ptr: *const u8) {
     // Spec republish is the prime suspect for the surface-pane "vanish" bug:
@@ -3449,16 +3552,20 @@ pub fn native_module_artifact() -> NativeModuleArtifact {
                 ExportEntry::procedure("RequestClose"),
                 ExportEntry::procedure("PublishUi"),
                 ExportEntry::procedure("WaitNamedEvent"),
+                ExportEntry::procedure("OpenChildWindow"),
+                ExportEntry::procedure("CloseChildWindow"),
             ]),
             "HostWindows.bootstrap",
             "Rust-hosted wingui spec_bind bridge",
             vec![],
         ),
         vec![
-            NativeExportBinding::procedure("RequestPresent", host_request_present as *const () as usize),
-            NativeExportBinding::procedure("RequestClose",   host_request_close   as *const () as usize),
-            NativeExportBinding::procedure("PublishUi",      host_publish_ui      as *const () as usize),
-            NativeExportBinding::procedure("WaitNamedEvent", host_wait_named_event as *const () as usize),
+            NativeExportBinding::procedure("RequestPresent",   host_request_present   as *const () as usize),
+            NativeExportBinding::procedure("RequestClose",     host_request_close     as *const () as usize),
+            NativeExportBinding::procedure("PublishUi",        host_publish_ui        as *const () as usize),
+            NativeExportBinding::procedure("WaitNamedEvent",   host_wait_named_event  as *const () as usize),
+            NativeExportBinding::procedure("OpenChildWindow",  host_open_child_window  as *const () as usize),
+            NativeExportBinding::procedure("CloseChildWindow", host_close_child_window as *const () as usize),
         ],
     )
 }

@@ -46,6 +46,7 @@ BEGIN
   WinSpec.OpenRow(-1);
   WinSpec.AddButton("run_factorial", "Factorial 20", "run_factorial");
   WinSpec.AddButton("clear_log", "Clear", "clear_log");
+  WinSpec.AddButton("open_doc", "Open Document", "open_doc");
   WinSpec.CloseContainer;
   WinSpec.AddText("Frame text-grid pane:");
   WinSpec.AddTextGrid("demo_grid", "", SHORT(40), SHORT(8));
@@ -53,6 +54,27 @@ BEGIN
   WinSpec.AddTextarea("log", "Log", logText, 1);
   WinSpec.CloseContainer
 END BuildWindow;
+
+PROCEDURE OnOpenDoc(name, payload: ARRAY OF SHORTCHAR);
+  VAR id: INTEGER; ok: INTSHORT;
+      spec: ARRAY 1024 OF SHORTCHAR;
+      title: ARRAY 64 OF SHORTCHAR;
+BEGIN
+  (* Minimal demo of HostWindows.OpenChildWindow: create an MDI child
+     under the frame (parent id = 1) carrying a small spec with a button
+     and a surface pane. The button event names are unique per-doc-id
+     in production code; here we just prove the API works. *)
+  title := "Document";
+  spec := "{""type"":""window"",""title"":""Document"",""body"":{""type"":""stack"",""children"":[{""type"":""text"",""text"":""Opened from CP""},{""type"":""surface"",""id"":""doc_surface"",""scrollBars"":""both"",""width"":400,""height"":300}]}}";
+  ok := HostWindows.OpenChildWindow(1, title, spec, id);
+  IF ok # 0 THEN
+    Log.String("Opened MDI child id=");
+    (* Log.Int does not exist; print id as decimal via Log primitives *)
+    Log.String("ok"); Log.Ln
+  ELSE
+    Log.String("OpenChildWindow failed"); Log.Ln
+  END
+END OnOpenDoc;
 
 PROCEDURE OnClose*(name, payload: ARRAY OF SHORTCHAR);
 BEGIN
@@ -83,6 +105,9 @@ BEGIN
         Factorial.OnRun(name, payload)
       ELSIF StrEq(name, "clear_log") THEN
         Log.OnClear(name, payload);
+        WinView.Render
+      ELSIF StrEq(name, "open_doc") THEN
+        OnOpenDoc(name, payload);
         WinView.Render
       END
     END
