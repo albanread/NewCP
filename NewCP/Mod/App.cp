@@ -57,20 +57,21 @@ END BuildWindow;
 
 PROCEDURE OnOpenDoc(name, payload: ARRAY OF SHORTCHAR);
   VAR id: INTEGER; ok: INTSHORT;
-      spec: ARRAY 1024 OF SHORTCHAR;
-      title: ARRAY 64 OF SHORTCHAR;
 BEGIN
   (* Minimal demo of HostWindows.OpenChildWindow: create an MDI child
-     under the frame (parent id = 1) carrying a small spec with a button
-     and a surface pane. The button event names are unique per-doc-id
-     in production code; here we just prove the API works. *)
-  title := "Document";
-  spec := "{""type"":""window"",""title"":""Document"",""body"":{""type"":""stack"",""children"":[{""type"":""text"",""text"":""Opened from CP""},{""type"":""surface"",""id"":""doc_surface"",""scrollBars"":""both"",""width"":400,""height"":300}]}}";
-  ok := HostWindows.OpenChildWindow(1, title, spec, id);
+     under the frame (parent id = 1) carrying a small spec with a text
+     label and a surface pane. CP string literals can be quoted with
+     either " or '; the JSON uses ' so the embedded "..." don't end the
+     string. The literals are passed as open-array arguments directly —
+     assigning a literal to a fixed-size SHORTCHAR array is not yet
+     supported in the IR emitter (unsupported cast). *)
+  ok := HostWindows.OpenChildWindow(
+    1,
+    "Document",
+    '{"type":"window","title":"Document","body":{"type":"stack","children":[{"type":"text","text":"Opened from CP"},{"type":"surface","id":"doc_surface","scrollBars":"both","width":400,"height":300}]}}',
+    id);
   IF ok # 0 THEN
-    Log.String("Opened MDI child id=");
-    (* Log.Int does not exist; print id as decimal via Log primitives *)
-    Log.String("ok"); Log.Ln
+    Log.String("Opened MDI child"); Log.Ln
   ELSE
     Log.String("OpenChildWindow failed"); Log.Ln
   END
@@ -96,6 +97,12 @@ BEGIN
     QueueDemoGrid
   END;
   Graph.Init;
+  (* Phase 4 startup probe: open one MDI child via the JIT-callable
+     HostWindows.OpenChildWindow path. Verifies the export is wired and
+     the spec lands in the child. The child only appears when the frame
+     was created with SUPERTERMINAL_WINDOW_FLAG_MDI_FRAME (env var
+     NEWCP_MDI_FRAME=1); otherwise the call returns 0 and we log it. *)
+  OnOpenDoc(name, payload);
   LOOP
     ok := HostWindows.WaitNamedEvent(name, payload, -1);
     IF ok # 0 THEN
