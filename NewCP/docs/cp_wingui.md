@@ -145,6 +145,12 @@ PROCEDURE WaitNamedEvent*(VAR name:    ARRAY OF SHORTCHAR;
      use WinPayload helpers for that. *)
 ```
 
+The HostWindows surface will grow `OpenChildWindow` / `CloseChildWindow` to
+support an MDI-frame mode in which one top-level window hosts multiple
+document windows as Win32 MDI children. See [mdi_design.md](mdi_design.md)
+for the full design and phased plan; this section will be updated when
+Phase 4 of that design lands the new exports.
+
 ### Rust ABI rules (fixed, must not break)
 
 - CP fixed arrays (`ARRAY N OF T`) and open arrays (`ARRAY OF T`) are both
