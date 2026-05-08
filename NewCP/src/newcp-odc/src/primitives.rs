@@ -198,6 +198,12 @@ impl<'a> Cursor<'a> {
         self.pos += n;
         Ok(())
     }
+
+    /// Slice the underlying data by absolute byte positions. Used during
+    /// reading to capture body byte ranges without disturbing the cursor.
+    pub fn data_slice(&self, start: u64, end: u64) -> &'a [u8] {
+        &self.data[start as usize..end as usize]
+    }
 }
 
 /// Decode an SString interpreted as UTF-8 (matches `Kernel.Utf8ToString`

@@ -22,6 +22,8 @@ mod text_rulers;
 mod text_views;
 mod writer;
 mod yaml;
+mod yaml_lossless;
+mod yaml_parse;
 
 pub use controls::{decode_control, encode_control, matches_control, Control, CtrlString};
 pub use envelope::{read_bytes, read_document, Document, StoreKind, StoreNode};
@@ -41,3 +43,6 @@ pub use text_rulers::{
 pub use text_views::{decode_std_view, matches_std_view, StdViewBody};
 pub use writer::{check_roundtrip, write_document};
 pub use yaml::document_to_yaml;
+pub use yaml_lossless::{
+    check_yaml_roundtrip, document_from_lossless_yaml, document_to_lossless_yaml,
+};

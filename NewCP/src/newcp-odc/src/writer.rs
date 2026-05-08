@@ -183,12 +183,6 @@ fn write_body(
     src: &[u8],
     env: &mut WriterEnvelope,
 ) -> Result<()> {
-    let body_pos = node.body_pos as usize;
-    let body_end = (node.body_pos + node.body_len) as usize;
-    if body_end > src.len() {
-        return Err(OdcError::Inconsistent("body extends past source bytes"));
-    }
-
     // Stage B: when this store has no inline child stores, try a
     // structured leaf encoder. Falls through to verbatim copy if none
     // registered for this type.
@@ -211,32 +205,47 @@ fn write_body(
         return Ok(());
     }
 
+    // Verbatim fallback. Use this store's captured body_data — bytes
+    // between/around children come from there, children get written
+    // recursively. Position arithmetic is parent-relative: each child's
+    // start within body_data is `child.header_pos - parent.body_pos`,
+    // its end is the same minus body_pos applied to body_pos+body_len.
+    let parent_body_start = node.body_pos;
+    let parent_body_data = if !node.body_data.is_empty() {
+        node.body_data.as_slice()
+    } else if (node.body_pos + node.body_len) as usize <= src.len() {
+        &src[node.body_pos as usize..(node.body_pos + node.body_len) as usize]
+    } else {
+        return Err(OdcError::Inconsistent("body extends past source bytes"));
+    };
+
     let mut sorted: Vec<&StoreNode> = node.children.iter().collect();
     sorted.sort_by_key(|c| c.header_pos);
 
-    let mut cur = body_pos;
+    // `cur` is the offset within `parent_body_data` (= bytes since
+    // body started). Each child's start within parent body =
+    // `child.header_pos - parent_body_start`.
+    let body_data_len = parent_body_data.len();
+    let mut cur: usize = 0;
     for child in sorted {
-        let cstart = child.header_pos as usize;
-        let cend = (child.body_pos + child.body_len) as usize;
-        if cstart < cur || cstart >= body_end {
-            return Err(OdcError::Inconsistent("child header_pos outside parent body"));
+        let cstart_abs = child.header_pos;
+        let cend_abs = child.body_pos + child.body_len;
+        if cstart_abs < parent_body_start || cend_abs > parent_body_start + body_data_len as u64 {
+            return Err(OdcError::Inconsistent("child range outside parent body"));
         }
-        if cend > body_end {
-            return Err(OdcError::Inconsistent("child body_end past parent body_end"));
+        let cstart = (cstart_abs - parent_body_start) as usize;
+        let cend = (cend_abs - parent_body_start) as usize;
+        if cstart < cur {
+            return Err(OdcError::Inconsistent("child positions out of order"));
         }
-        // Copy primitive bytes that sit between the previous cursor and
-        // this child verbatim. They're things like version bytes the
-        // parent's Internalize wrote before reading the inline store.
         if cstart > cur {
-            out.extend_from_slice(&src[cur..cstart]);
+            out.extend_from_slice(&parent_body_data[cur..cstart]);
         }
-        // Recurse — the child writes its own envelope plus body, with
-        // the dictionary advancing in the same order the reader used.
         write_one(out, child, src, env)?;
         cur = cend;
     }
-    if cur < body_end {
-        out.extend_from_slice(&src[cur..body_end]);
+    if cur < body_data_len {
+        out.extend_from_slice(&parent_body_data[cur..body_data_len]);
     }
     Ok(())
 }

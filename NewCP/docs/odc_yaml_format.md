@@ -12,7 +12,7 @@ This document specifies a **YAML projection** of the same document model. The go
 - degrades gracefully when a View kind is not yet specified — unknown views appear as opaque blobs rather than blocking the rest of the document
 - is independent of any particular Component Pascal runtime — it is a file format, not an in-memory ABI
 
-It **is** a goal — and one the implementation now achieves — to byte-equal the original `.odc` after a `read → write` cycle, so the format and tooling can be hash-verified against the legacy binary as ground truth. YAML→bin→YAML round-trip identity (Stage C) is a stronger property; the design supports it but the YAML parser is still pending — see [Implementation status](#implementation-status).
+It **is** a goal — and one the implementation now achieves — to byte-equal the original `.odc` after a `read → write` cycle, so the format and tooling can be hash-verified against the legacy binary as ground truth. The same property holds end-to-end through YAML: every file in the BlackBox 1.7 tree round-trips byte-identically through `bin → AST → lossless YAML → AST → bin` — see [Implementation status](#implementation-status).
 
 ## Implementation status
 
@@ -22,15 +22,17 @@ A reference reader / writer crate lives at [`NewCP/src/newcp-odc/`](../src/newcp
 |---|---|---|
 | **A** | Stores envelope reader and writer. Walks the store tree via `down`/`next` offsets without understanding any view body. Verbatim body copies + structured envelope reconstruction. | ✅ Done. **675 / 675** files in the BlackBox 1.7 tree (`C:\projects\BlackBox Component Builder 1.7-a1\`) round-trip byte-identically with `odc-yaml --check`. |
 | **B** | Structured encoders for every decoded view kind: `TextModels.StdModel`, `TextModels.Attributes`, `StdLinks.Link`, `StdLinks.Target`, `StdFolds.Fold`, `TextRulers.StdRuler`, `TextRulers.StdStyle`, `TextRulers.Attributes`, `TextViews.StdView`, `Controls.*`. Each encoder produces wire bytes from decoded fields, not from copied source. | ✅ Done. Same 675 / 675 sweep continues to pass with the structured encoders active, validating that the AST is lossless. |
-| **C** | YAML round-trip — parser from YAML → AST and end-to-end `bin → YAML → bin` hash verification. | ⏳ Pending. The encoders are ready; only the YAML parser and the schema's lossless-mode metadata remain. |
+| **C** | YAML round-trip — lossless YAML schema, parser, and `bin → YAML → bin` hash verification. | ✅ Done. **675 / 675** files round-trip byte-identically end-to-end via YAML. The lossless YAML schema captures every field of the AST including `wirePath`, `comment`, `rawNext`, `rawDown`, `headerPos`, `bodyPos`, and `bodyData` (base64) per store. |
 
 The CLI exposes:
 
 ```text
-odc-yaml <input.odc> [-o output.yaml]   YAML output (default)
-odc-yaml --tree <input.odc>             ASCII tree view of the store hierarchy
-odc-yaml --rewrite <input.odc> -o out   re-serialize binary from the parsed AST
-odc-yaml --check <input.odc>            read, write, compare; reports ok / MISMATCH
+odc-yaml <input.odc> [-o output.yaml]    YAML output, lifted form (default)
+odc-yaml --yaml-lossless <input.odc>     YAML output, lossless schema
+odc-yaml --tree <input.odc>              ASCII tree view of the store hierarchy
+odc-yaml --rewrite <input.odc> -o out    re-serialize binary from the parsed AST
+odc-yaml --check <input.odc>             read, write, compare; reports ok / MISMATCH
+odc-yaml --check-yaml <input.odc>        read, emit YAML, parse, write; compare
 ```
 
 ## Implementation notes — byte-level findings
@@ -622,23 +624,28 @@ A YAML editor can drop `_meta:` blocks before saving; the writer then loses byte
 
 ## What's done and what's left
 
-Stages A and B are complete (see [Implementation status](#implementation-status)) — the binary side of the round-trip is byte-identical across the BlackBox 1.7 corpus, and every decoded view kind has a structured encoder.
+All three core stages (A, B, C) are complete (see [Implementation status](#implementation-status)) — the binary writer reproduces every byte from the AST, every decoded view kind has a structured encoder, and a lossless YAML schema captures the whole AST so `bin → YAML → bin` is byte-identical across the BlackBox 1.7 corpus.
 
-Stage C (YAML round-trip) is the remaining work. It splits into:
+What remains is the *editable* side of the YAML format — the lifted schema described in this document is currently emit-only, so a hand-edit-then-write workflow needs:
 
-1. **YAML parser**: parse a YAML document conforming to this schema back into the existing `Document` / `StoreNode` AST. Must handle both the lifted form (links/targets/folds/rulers as named blocks) and the structural form (raw `view: { kind: ... }` plus the `_meta:` round-trip metadata for currently-unknown kinds).
-2. **`_meta` schema finalisation**: lock down which fields go in `_meta:` per store / view kind. The implementation already captures everything the writer needs — the schema just needs to surface them in YAML in a stable shape.
-3. **`bin → YAML → bin` verification**: extend `odc-yaml --check` with `--check-yaml` mode that completes the loop. Sweep the full 675-file corpus the same way Stage A and B were validated.
-4. **Lift menu resources**: turn `Rsrc/Menus.odc` from "TextView whose content happens to be menu source" into a structured `menu:` block with items / separators / submenus. Hand-authoring menus is the highest-leverage edit case.
-5. **Lift bitmap resources**: surface `HostBitmaps.StdView` as a `!!binary` payload with a hint about the format, plus optional sidecar extraction (`.png`) for diff-ability.
+1. **Lifted-form parser**: extend `document_from_lossless_yaml` (or add a sibling) that accepts the lifted schema (`flow:`, `link:`, `target:`, `fold:`, `ruler:`, etc.) and reconstructs the AST. This is the path a human-edited YAML takes back to a binary `.odc`.
+2. **Lift menu resources**: turn `Rsrc/Menus.odc` from "TextView whose content happens to be menu source" into a structured `menu:` block with items / separators / submenus.
+3. **Lift bitmap resources**: surface `HostBitmaps.StdView` as a `!!binary` payload with a hint about the format, plus optional sidecar extraction (`.png`) for diff-ability.
+4. **Reading projection (`--prose`)**: render just the text content of a Docu, with collapsed folds shown as `[label]` placeholders, links inlined as `[text](target)`, anchors retained. The lossless YAML round-trip gives this a stable foundation.
 
-A nice-to-have output mode, available once Stage C lands:
-
-- `odc-yaml --prose <file>`: render just the text content of a Docu, with collapsed folds shown as `[label]` placeholders the user can click in HTML, links inlined as `[text](target)`, anchors retained. This is what makes the legacy BlackBox documentation actually browsable outside the IDE — and the YAML schema makes it a one-screen change once the parser is in place.
+Until #1 lands, the workflow is "read → lifted YAML → human edits → lossless YAML round-trip back through the lifted form's content". Practical for editing: the *content* of the lifted YAML survives a YAML→AST→YAML cycle via the lossless path.
 
 ## Reference implementation
 
 - Crate: [`NewCP/src/newcp-odc/`](../src/newcp-odc/)
-- Library API: `read_document`, `write_document`, `check_roundtrip`, `document_to_yaml`, plus per-view `decode_*` / `encode_*` functions
+- Library API:
+  - `read_document(path) -> Document`, `write_document(&Document) -> Vec<u8>`
+  - `check_roundtrip(bytes)` — Stage A/B verification
+  - `document_to_yaml(&Document) -> String` — lifted form (editable)
+  - `document_to_lossless_yaml(&Document) -> String` and `document_from_lossless_yaml(yaml) -> Document` — lossless form (round-trip)
+  - `check_yaml_roundtrip(bytes)` — Stage C verification
+  - Per-view `decode_*` / `encode_*` functions
 - CLI: `cargo run -p newcp-odc --bin odc-yaml -- <args>` (or build and run `target/debug/odc-yaml`)
-- Verification: `find <BlackBox>/ -name "*.odc" -exec odc-yaml --check {} \;` reports `ok` for all 675 files
+- Verification:
+  - `find <BlackBox>/ -name "*.odc" -exec odc-yaml --check {} \;` — Stage A/B, reports `ok` for all 675 files
+  - `find <BlackBox>/ -name "*.odc" -exec odc-yaml --check-yaml {} \;` — Stage C, also reports `ok` for all 675 files

@@ -112,6 +112,11 @@ pub struct StoreNode {
     pub raw_next: i32,
     /// Original `down` field. 0 for kinds without one (`nil`, `link`, ...).
     pub raw_down: i32,
+    /// Body bytes captured verbatim from `src[body_pos..body_pos + body_len]`.
+    /// Populated for store/elem kinds; empty for nil/link/newlink. Lets the
+    /// writer reproduce the binary without re-reading source — required for
+    /// the YAML round-trip path where there is no original source file.
+    pub body_data: Vec<u8>,
     /// Children walked via the `down` / `next` offset chain.
     pub children: Vec<StoreNode>,
 }
@@ -227,6 +232,7 @@ fn read_one(cur: &mut Cursor<'_>, env: &mut Envelope) -> Result<(StoreNode, u64)
                     comment,
                     raw_next: next,
                     raw_down: 0,
+                    body_data: Vec::new(),
                     children: Vec::new(),
                 },
                 next_abs,
@@ -250,6 +256,7 @@ fn read_one(cur: &mut Cursor<'_>, env: &mut Envelope) -> Result<(StoreNode, u64)
                     comment,
                     raw_next: next,
                     raw_down: 0,
+                    body_data: Vec::new(),
                     children: Vec::new(),
                 },
                 next_abs,
@@ -308,6 +315,15 @@ fn read_one(cur: &mut Cursor<'_>, env: &mut Envelope) -> Result<(StoreNode, u64)
                 cur.set_pos(body_end)?;
             }
 
+            // Capture the body bytes verbatim. The slice is the entire
+            // [body_pos, body_end) range — this includes the bytes of any
+            // inline child stores. The writer interprets it as the
+            // "with children spliced in" view: it keeps gap bytes between
+            // children and recursively writes children separately.
+            let body_data = cur
+                .data_slice(body_pos, body_end)
+                .to_vec();
+
             Ok((
                 StoreNode {
                     kind,
@@ -321,6 +337,7 @@ fn read_one(cur: &mut Cursor<'_>, env: &mut Envelope) -> Result<(StoreNode, u64)
                     comment,
                     raw_next: next,
                     raw_down: down,
+                    body_data,
                     children,
                 },
                 next_abs,

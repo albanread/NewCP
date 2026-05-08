@@ -14,14 +14,19 @@ use std::io::{self, Write};
 use std::path::PathBuf;
 use std::process::ExitCode;
 
-use newcp_odc::{check_roundtrip, document_to_yaml, read_document, write_document, StoreNode};
+use newcp_odc::{
+    check_roundtrip, check_yaml_roundtrip, document_to_lossless_yaml, document_to_yaml,
+    read_document, write_document, StoreNode,
+};
 
 #[derive(Copy, Clone)]
 enum Mode {
     Yaml,
+    YamlLossless,
     Tree,
     Rewrite,
     Check,
+    CheckYaml,
 }
 
 fn main() -> ExitCode {
@@ -40,6 +45,8 @@ fn main() -> ExitCode {
             "--tree" => mode = Mode::Tree,
             "--rewrite" => mode = Mode::Rewrite,
             "--check" => mode = Mode::Check,
+            "--yaml-lossless" => mode = Mode::YamlLossless,
+            "--check-yaml" => mode = Mode::CheckYaml,
             "-o" | "--output" => match iter.next() {
                 Some(p) => output = Some(PathBuf::from(p)),
                 None => {
@@ -68,6 +75,7 @@ fn main() -> ExitCode {
 
     match mode {
         Mode::Check => return run_check(&path),
+        Mode::CheckYaml => return run_check_yaml(&path),
         Mode::Rewrite => return run_rewrite(&path, output.as_deref()),
         _ => {}
     }
@@ -83,6 +91,7 @@ fn main() -> ExitCode {
     let text = match mode {
         Mode::Tree => tree_view(&doc.root),
         Mode::Yaml => document_to_yaml(&doc),
+        Mode::YamlLossless => document_to_lossless_yaml(&doc),
         _ => unreachable!(),
     };
 
@@ -116,6 +125,33 @@ fn run_check(path: &std::path::Path) -> ExitCode {
         Ok((false, n_in, n_out)) => {
             eprintln!(
                 "MISMATCH  {}  in {n_in} bytes, out {n_out} bytes",
+                path.display()
+            );
+            ExitCode::from(3)
+        }
+        Err(e) => {
+            eprintln!("error: {e}");
+            ExitCode::FAILURE
+        }
+    }
+}
+
+fn run_check_yaml(path: &std::path::Path) -> ExitCode {
+    let bytes = match fs::read(path) {
+        Ok(b) => b,
+        Err(e) => {
+            eprintln!("error: {e}");
+            return ExitCode::FAILURE;
+        }
+    };
+    match check_yaml_roundtrip(bytes) {
+        Ok((true, n, _)) => {
+            println!("ok    {} ({n} bytes)", path.display());
+            ExitCode::SUCCESS
+        }
+        Ok((false, n_in, n_out)) => {
+            eprintln!(
+                "MISMATCH-YAML  {}  in {n_in} bytes, out {n_out} bytes",
                 path.display()
             );
             ExitCode::from(3)
