@@ -281,6 +281,46 @@ fn cp_worker_thread(command_path: String) {
         }
     }
 
+    // Optional dev-time probe: open N stub MDI child windows under the
+    // main frame to exercise the Phase 2 create_child_window path before
+    // the CP-level OpenChildWindow API exists. Requires the main window
+    // to have been created with NEWCP_MDI_FRAME=1 (otherwise the create
+    // call returns an error from the host side).
+    if let Ok(count_str) = std::env::var("NEWCP_TEST_MDI_CHILDREN") {
+        if let Ok(count) = count_str.parse::<u32>() {
+            if count > 0 {
+                let delay_ms: u64 = std::env::var("NEWCP_TEST_MDI_DELAY_MS")
+                    .ok().and_then(|v| v.parse().ok()).unwrap_or(3000);
+                let gap_ms: u64 = std::env::var("NEWCP_TEST_MDI_GAP_MS")
+                    .ok().and_then(|v| v.parse().ok()).unwrap_or(800);
+                std::thread::spawn(move || {
+                    std::thread::sleep(std::time::Duration::from_millis(delay_ms));
+                    // Main window's id is 1 by construction (the runtime's
+                    // next_window_id starts at 1 and increments per window).
+                    let parent = 1u64;
+                    for i in 1..=count {
+                        if i > 1 {
+                            std::thread::sleep(std::time::Duration::from_millis(gap_ms));
+                        }
+                        let title = format!("Document {}", i);
+                        // Phase 4 probe: each child gets a real surface pane
+                        // with intrinsic vertical+horizontal scrollbars, plus
+                        // a button so we can confirm per-window event routing
+                        // (the click event should arrive with window_id=<child>).
+                        let spec = format!(
+                            r#"{{"type":"window","title":"Document {i}","body":{{"type":"stack","children":[{{"type":"button","id":"hello_child_{i}","text":"Click in child {i}","event":"hello_child_{i}"}},{{"type":"surface","id":"doc_surface_{i}","scrollBars":"both","width":800,"height":600}}]}}}}"#,
+                            i = i,
+                        );
+                        eprintln!("[cp-worker-probe] opening MDI child #{}", i);
+                        let result = newcp_runtime::wingui_host::open_test_mdi_child(
+                            parent, &title, &spec);
+                        eprintln!("[cp-worker-probe] MDI child #{} result: {:?}", i, result);
+                    }
+                });
+            }
+        }
+    }
+
     eprintln!("[cp-worker] about to call command_fn (JIT execution)...");
     match session.invoke_command(&command_path) {
         Ok(result) => {

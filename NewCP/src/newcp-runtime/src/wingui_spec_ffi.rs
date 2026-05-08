@@ -156,6 +156,13 @@ unsafe extern "system" {
         out_window_id: *mut SuperTerminalWindowId,
     ) -> i32;
 
+    pub fn wingui_spec_bind_runtime_create_child_window(
+        runtime: *mut WinguiSpecBindRuntime,
+        parent_window_id: SuperTerminalWindowId,
+        desc: *const SuperTerminalWindowDesc,
+        out_window_id: *mut SuperTerminalWindowId,
+    ) -> i32;
+
     pub fn wingui_spec_bind_runtime_close_window(
         runtime: *mut WinguiSpecBindRuntime,
         window_id: SuperTerminalWindowId,

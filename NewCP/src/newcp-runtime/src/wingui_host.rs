@@ -82,8 +82,9 @@ use crate::{
 // ---------------------------------------------------------------------------
 
 struct GuiEvent {
-    name:    String,
-    payload: String,
+    name:      String,
+    payload:   String,
+    window_id: u64,
 }
 
 struct EventQueue {
@@ -101,10 +102,58 @@ pub fn inject_test_event(name: &str, payload: &str) -> bool {
     q.push_back(GuiEvent {
         name: name.to_string(),
         payload: payload.to_string(),
+        window_id: 0,
     });
     EVENT_QUEUE.ready.notify_one();
     wingui_trace!("kind=test_event_injected name={:?} payload_len={}", name, payload.len());
     true
+}
+
+/// Open a stub MDI child window under `parent_window_id` for dev probes.
+///
+/// Used only by the env-gated `NEWCP_TEST_MDI_CHILDREN` test path that
+/// exercises the Phase 2 create_child_window plumbing without needing a
+/// CP-side API yet (CP exports land in MDI Phase 4). The parent must
+/// have been created with `SUPERTERMINAL_WINDOW_FLAG_MDI_FRAME`. Returns
+/// the new child's WindowId on success, or None.
+pub fn open_test_mdi_child(parent_window_id: u64, title: &str, spec_json: &str) -> Option<u64> {
+    let runtime = {
+        let raw = RUNTIME.get().copied().unwrap_or(0);
+        if raw == 0 { return None; }
+        raw as *mut crate::wingui_spec_ffi::WinguiSpecBindRuntime
+    };
+    let title_c = CString::new(title).ok()?;
+    let spec_c = CString::new(spec_json).ok()?;
+    let desc = crate::wingui_ffi::SuperTerminalWindowDesc {
+        title_utf8: title_c.as_ptr(),
+        columns: 60,
+        rows: 20,
+        flags: 0,
+        command_queue_capacity: 256,
+        event_queue_capacity: 256,
+        font_family_utf8: std::ptr::null(),
+        font_pixel_height: 16,
+        dpi_scale: 1.0,
+        text_shader_path_utf8: std::ptr::null(),
+        initial_ui_json_utf8: spec_c.as_ptr(),
+    };
+    let parent = crate::wingui_ffi::SuperTerminalWindowId { value: parent_window_id };
+    let mut out_id = crate::wingui_ffi::SuperTerminalWindowId { value: 0 };
+    let ret = unsafe {
+        crate::wingui_spec_ffi::wingui_spec_bind_runtime_create_child_window(
+            runtime, parent, &desc, &mut out_id,
+        )
+    };
+    if ret == 0 {
+        wingui_trace!("kind=test_mdi_child_create_failed parent={}", parent_window_id);
+        None
+    } else {
+        wingui_trace!(
+            "kind=test_mdi_child_created parent={} child={} title={:?}",
+            parent_window_id, out_id.value, title,
+        );
+        Some(out_id.value)
+    }
 }
 
 static EVENT_QUEUE: EventQueue = EventQueue {
@@ -150,9 +199,11 @@ unsafe extern "system" fn on_event(
                   else { unsafe { CStr::from_ptr(v.payload_json_utf8) }.to_string_lossy().into_owned() };
     let source = if v.source_utf8.is_null() { String::new() }
                  else { unsafe { CStr::from_ptr(v.source_utf8) }.to_string_lossy().into_owned() };
-    eprintln!("[wingui_event] name={:?} source={:?} payload={:?}", name, source, payload);
+    let window_id = v.window_id.value;
+    eprintln!("[wingui_event] name={:?} source={:?} window_id={} payload={:?}",
+              name, source, window_id, payload);
     let mut q = recover_lock(EVENT_QUEUE.queue.lock(), "EVENT_QUEUE on_event");
-    q.push_back(GuiEvent { name, payload });
+    q.push_back(GuiEvent { name, payload, window_id });
     EVENT_QUEUE.ready.notify_one();
 }
 
@@ -986,13 +1037,22 @@ impl SpecBindRuntime {
             .map(|s| CString::new(s).unwrap_or_default());
         let shader_ptr = shader_cstr.as_ref().map(|s| s.as_ptr()).unwrap_or(std::ptr::null());
         let shader_path_display = shader_path_str.as_deref().unwrap_or("<none>");
-        eprintln!("[wingui_host] run desc: title={:?} cols={} rows={} font_px={} shader_path={:?}",
-            config.title, config.columns, config.rows, config.font_pixel_height, shader_path_display);
+        // Phase 1 test path: NEWCP_MDI_FRAME=1 sets the MDI frame flag on
+        // the main window so we can verify the Win32 MDICLIENT child gets
+        // created and rendered. See docs/mdi_design.md.
+        const SUPERTERMINAL_WINDOW_FLAG_MDI_FRAME: u32 = 0x1;
+        let mdi_frame = matches!(
+            std::env::var("NEWCP_MDI_FRAME").ok().as_deref(),
+            Some("1") | Some("true") | Some("on")
+        );
+        let flags = if mdi_frame { SUPERTERMINAL_WINDOW_FLAG_MDI_FRAME } else { 0 };
+        eprintln!("[wingui_host] run desc: title={:?} cols={} rows={} font_px={} shader_path={:?} flags=0x{:x}",
+            config.title, config.columns, config.rows, config.font_pixel_height, shader_path_display, flags);
         let desc = WinguiSpecBindRunDesc {
             title_utf8: title.as_ptr(),
             columns: config.columns,
             rows: config.rows,
-            flags: 0,
+            flags,
             command_queue_capacity: config.command_queue_capacity,
             event_queue_capacity: config.event_queue_capacity,
             font_family_utf8: font_ptr,
@@ -1221,6 +1281,109 @@ pub extern "C" fn host_request_close() {
     unsafe { crate::wingui_spec_ffi::wingui_spec_bind_runtime_request_stop(r, 0) };
 }
 
+/// HostWindows.OpenChildWindow — open an MDI child of `parent_window_id`,
+/// publishing the spec JSON into the child's embedded native UI session.
+/// Returns the new child's WindowId via `out_child_window_id`. Returns 1
+/// on success, 0 on failure (with a stderr line explaining why).
+///
+/// The caller must have created the parent with the SUPERTERMINAL_WINDOW_FLAG_MDI_FRAME
+/// bit set; otherwise the runtime returns an error and we surface 0.
+///
+/// `title_ptr` and `json_ptr` are NUL-terminated UTF-8 strings (CP-side
+/// `ARRAY OF SHORTCHAR`).  Either may be NULL: a NULL title falls back to
+/// "Document"; a NULL JSON publishes nothing into the child (it stays a
+/// bare frame the CP code can publish into later via PublishUi-equivalent).
+#[unsafe(export_name = "HostWindows.OpenChildWindow")]
+pub extern "C" fn host_open_child_window(
+    parent_window_id: i64,
+    title_ptr: *const u8,
+    json_ptr: *const u8,
+    out_child_window_id: *mut i64,
+) -> i32 {
+    let r = runtime_ptr();
+    if r.is_null() {
+        eprintln!("[wingui_host] OpenChildWindow: runtime ptr is null");
+        return 0;
+    }
+    if out_child_window_id.is_null() {
+        eprintln!("[wingui_host] OpenChildWindow: out_child_window_id is null");
+        return 0;
+    }
+    let title_str = if title_ptr.is_null() {
+        String::new()
+    } else {
+        unsafe { CStr::from_ptr(title_ptr as *const std::os::raw::c_char) }
+            .to_string_lossy().into_owned()
+    };
+    let spec_str = if json_ptr.is_null() {
+        String::new()
+    } else {
+        unsafe { CStr::from_ptr(json_ptr as *const std::os::raw::c_char) }
+            .to_string_lossy().into_owned()
+    };
+    let title_c = match CString::new(title_str.as_str()) {
+        Ok(c) => c,
+        Err(_) => { eprintln!("[wingui_host] OpenChildWindow: title contains NUL"); return 0; }
+    };
+    let spec_c = match CString::new(spec_str.as_str()) {
+        Ok(c) => c,
+        Err(_) => { eprintln!("[wingui_host] OpenChildWindow: spec contains NUL"); return 0; }
+    };
+    let desc = crate::wingui_ffi::SuperTerminalWindowDesc {
+        title_utf8: title_c.as_ptr(),
+        columns: 80,
+        rows: 24,
+        flags: 0,
+        command_queue_capacity: 256,
+        event_queue_capacity: 256,
+        font_family_utf8: std::ptr::null(),
+        font_pixel_height: 16,
+        dpi_scale: 1.0,
+        text_shader_path_utf8: std::ptr::null(),
+        initial_ui_json_utf8: if spec_str.is_empty() { std::ptr::null() } else { spec_c.as_ptr() },
+    };
+    let parent = crate::wingui_ffi::SuperTerminalWindowId { value: parent_window_id as u64 };
+    let mut out_id = crate::wingui_ffi::SuperTerminalWindowId { value: 0 };
+    let ret = unsafe {
+        crate::wingui_spec_ffi::wingui_spec_bind_runtime_create_child_window(
+            r, parent, &desc, &mut out_id,
+        )
+    };
+    if ret == 0 {
+        eprintln!("[wingui_host] OpenChildWindow: create_child_window failed (parent={})",
+            parent_window_id);
+        unsafe { *out_child_window_id = 0; }
+        return 0;
+    }
+    unsafe { *out_child_window_id = out_id.value as i64; }
+    wingui_trace!(
+        "kind=open_child_window parent={} child={} title_len={} spec_len={}",
+        parent_window_id, out_id.value, title_str.len(), spec_str.len(),
+    );
+    1
+}
+
+/// HostWindows.CloseChildWindow — request close of the named child. The
+/// runtime cascades through the same path as the X-button (WM_MDIDESTROY
+/// to the parent's MDICLIENT). Returns 1 on success, 0 if the runtime is
+/// not yet attached or the close call rejects.
+#[unsafe(export_name = "HostWindows.CloseChildWindow")]
+pub extern "C" fn host_close_child_window(child_window_id: i64) -> i32 {
+    let r = runtime_ptr();
+    if r.is_null() {
+        eprintln!("[wingui_host] CloseChildWindow: runtime ptr is null");
+        return 0;
+    }
+    let id = crate::wingui_ffi::SuperTerminalWindowId { value: child_window_id as u64 };
+    let ret = unsafe { crate::wingui_spec_ffi::wingui_spec_bind_runtime_close_window(r, id) };
+    if ret == 0 {
+        eprintln!("[wingui_host] CloseChildWindow: close_window({}) failed", child_window_id);
+        return 0;
+    }
+    wingui_trace!("kind=close_child_window child={}", child_window_id);
+    1
+}
+
 #[unsafe(export_name = "HostWindows.PublishUi")]
 pub extern "C" fn host_publish_ui(json_ptr: *const u8) {
     // Spec republish is the prime suspect for the surface-pane "vanish" bug:
@@ -1230,6 +1393,25 @@ pub extern "C" fn host_publish_ui(json_ptr: *const u8) {
     // (drain, presenter_create on the C++ side) can be correlated against
     // exact PublishUi events.
     let publish_id = PUBLISH_UI_COUNT.fetch_add(1, Ordering::Relaxed) + 1;
+
+    // MDI test mode: when NEWCP_MDI_BARE_FRAME=1, suppress the frame's spec
+    // publish so the body is just the MDICLIENT — no buttons, no surface,
+    // no log textarea fighting MDI children for input. This is a Phase 2
+    // diagnostic switch; once the frame's chrome is properly carved into
+    // menu / command bar / status bar regions around the MDICLIENT
+    // (Phase 5+), the suppression is no longer needed.
+    let bare_frame = matches!(
+        std::env::var("NEWCP_MDI_BARE_FRAME").ok().as_deref(),
+        Some("1") | Some("true") | Some("on")
+    );
+    if bare_frame {
+        wingui_trace!(
+            "kind=publish_ui id={} state=suppressed_for_mdi_test",
+            publish_id,
+        );
+        eprintln!("[wingui_host] PublishUi: suppressed (NEWCP_MDI_BARE_FRAME=1)");
+        return;
+    }
 
     let r = runtime_ptr();
     if r.is_null() {
@@ -3370,16 +3552,20 @@ pub fn native_module_artifact() -> NativeModuleArtifact {
                 ExportEntry::procedure("RequestClose"),
                 ExportEntry::procedure("PublishUi"),
                 ExportEntry::procedure("WaitNamedEvent"),
+                ExportEntry::procedure("OpenChildWindow"),
+                ExportEntry::procedure("CloseChildWindow"),
             ]),
             "HostWindows.bootstrap",
             "Rust-hosted wingui spec_bind bridge",
             vec![],
         ),
         vec![
-            NativeExportBinding::procedure("RequestPresent", host_request_present as *const () as usize),
-            NativeExportBinding::procedure("RequestClose",   host_request_close   as *const () as usize),
-            NativeExportBinding::procedure("PublishUi",      host_publish_ui      as *const () as usize),
-            NativeExportBinding::procedure("WaitNamedEvent", host_wait_named_event as *const () as usize),
+            NativeExportBinding::procedure("RequestPresent",   host_request_present   as *const () as usize),
+            NativeExportBinding::procedure("RequestClose",     host_request_close     as *const () as usize),
+            NativeExportBinding::procedure("PublishUi",        host_publish_ui        as *const () as usize),
+            NativeExportBinding::procedure("WaitNamedEvent",   host_wait_named_event  as *const () as usize),
+            NativeExportBinding::procedure("OpenChildWindow",  host_open_child_window  as *const () as usize),
+            NativeExportBinding::procedure("CloseChildWindow", host_close_child_window as *const () as usize),
         ],
     )
 }
