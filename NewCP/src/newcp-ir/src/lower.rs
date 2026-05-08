@@ -266,7 +266,23 @@ impl<'m> LowerCtx<'m> {
     }
 
     /// Resolve the pointee record type from an IrType, stripping one pointer level.
-    fn base_symbol_ir_type(&self, qual: &QualIdent) -> Option<IrType> {
+    fn base_symbol_ir_type(&mut self, qual: &QualIdent) -> Option<IrType> {
+        // A module-qualified base (e.g. `WinFrame.BufPersistent`) refers to an
+        // exported symbol of an imported module — never a local. Look it up in
+        // the imported module's analysed symbol table and bypass the local
+        // chain entirely. Without this, cross-module CONST/VAR references fall
+        // through to the `Opaque("unresolved")` fallback at the call site,
+        // which lowers to `ptr` and silently corrupts the call ABI.
+        if let Some(module_name) = qual.module.as_deref() {
+            let sema = load_cached_import(module_name, &mut self.import_cache)?;
+            return sema
+                .symbols
+                .iter()
+                .find(|symbol| symbol.name == qual.name)
+                .and_then(|symbol| symbol.declared_type.as_ref())
+                .map(map_semantic_type);
+        }
+
         // WITH-body overrides take priority so field access uses the narrowed type.
         if let Some((_, ty)) = self.with_type_overrides.iter().rev().find(|(n, _)| n == &qual.name) {
             return Some(ty.clone());
@@ -384,7 +400,7 @@ impl<'m> LowerCtx<'m> {
 // == Expression lowering ==
 
 impl<'m> LowerCtx<'m> {
-    fn normalize_designator(&self, des: &Designator) -> Designator {
+    fn normalize_designator(&mut self, des: &Designator) -> Designator {
         let Some(module_name) = des.base.module.as_ref() else {
             return des.clone();
         };
@@ -892,27 +908,39 @@ impl<'m> LowerCtx<'m> {
     }
 
     fn lower_const_designator(
-        &self,
+        &mut self,
         module_name: Option<&str>,
         base_name: &str,
         ty: &IrType,
     ) -> Option<IrValue> {
-        if module_name.is_some() {
-            return None;
-        }
-
-        let symbol = self
-            .symbols
-            .iter()
-            .rev()
-            .find(|symbol| symbol.name == base_name)?;
-        let const_value = symbol.const_value.as_ref()?;
+        // Resolve to either a local symbol or an exported symbol of an imported
+        // module. The two arms must agree on the const-value lowering so that
+        // `WinFrame.BufPersistent` produces an `IrValue::ConstInt(1, i32)` exactly
+        // as a local `BufPersistent` would. Without the imported arm the call
+        // site would emit `load WinFrame.BufPersistent` with `Opaque("unresolved")`
+        // type, lower to `ptr` in LLVM, and prepend a phantom argument that
+        // shifts every subsequent argument across the call ABI.
+        let const_value = if let Some(module) = module_name {
+            let sema = load_cached_import(module, &mut self.import_cache)?;
+            let symbol = sema
+                .symbols
+                .iter()
+                .find(|symbol| symbol.name == base_name)?;
+            symbol.const_value.clone()?
+        } else {
+            let symbol = self
+                .symbols
+                .iter()
+                .rev()
+                .find(|symbol| symbol.name == base_name)?;
+            symbol.const_value.clone()?
+        };
         Some(match const_value {
-            ConstValue::Integer(value) => IrValue::ConstInt(*value, ty.clone()),
-            ConstValue::Real(value) => IrValue::ConstReal(*value, ty.clone()),
-            ConstValue::String(value) => IrValue::ConstStr(value.clone(), IrType::Char),
-            ConstValue::Char(value) => IrValue::ConstChar(*value),
-            ConstValue::Boolean(value) => IrValue::ConstBool(*value),
+            ConstValue::Integer(value) => IrValue::ConstInt(value, ty.clone()),
+            ConstValue::Real(value) => IrValue::ConstReal(value, ty.clone()),
+            ConstValue::String(value) => IrValue::ConstStr(value, IrType::Char),
+            ConstValue::Char(value) => IrValue::ConstChar(value),
+            ConstValue::Boolean(value) => IrValue::ConstBool(value),
         })
     }
 
