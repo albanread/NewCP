@@ -251,6 +251,36 @@ fn cp_worker_thread(command_path: String) {
         Ok(l) => { eprintln!("[cp-worker] ensure_command_loaded OK, load_log: {}", l.load.load_log.join(" | ")); l }
         Err(err) => { eprintln!("[cp-worker] ensure_command_loaded error: {}", err); return; }
     };
+    // Optional dev-time probe: synthesize button-click events into the same
+    // EVENT_QUEUE that `on_event` uses, so we can verify the surface pane
+    // survives a `clear_log`-style spec republish without needing a human at
+    // the keyboard. Comma-separated NEWCP_TEST_INJECT_EVENTS=name1,name2;
+    // delay before first inject is NEWCP_TEST_INJECT_DELAY_MS (default 4000),
+    // gap between subsequent injects is NEWCP_TEST_INJECT_GAP_MS (default 2500).
+    if let Ok(names) = std::env::var("NEWCP_TEST_INJECT_EVENTS") {
+        let event_names: Vec<String> = names
+            .split(',')
+            .map(|s| s.trim().to_owned())
+            .filter(|s| !s.is_empty())
+            .collect();
+        if !event_names.is_empty() {
+            let delay_ms: u64 = std::env::var("NEWCP_TEST_INJECT_DELAY_MS")
+                .ok().and_then(|v| v.parse().ok()).unwrap_or(4000);
+            let gap_ms: u64 = std::env::var("NEWCP_TEST_INJECT_GAP_MS")
+                .ok().and_then(|v| v.parse().ok()).unwrap_or(2500);
+            std::thread::spawn(move || {
+                std::thread::sleep(std::time::Duration::from_millis(delay_ms));
+                for (i, name) in event_names.iter().enumerate() {
+                    if i > 0 {
+                        std::thread::sleep(std::time::Duration::from_millis(gap_ms));
+                    }
+                    eprintln!("[cp-worker-probe] injecting event #{}: {:?}", i + 1, name);
+                    let _ = newcp_runtime::wingui_host::inject_test_event(name, "{}");
+                }
+            });
+        }
+    }
+
     eprintln!("[cp-worker] about to call command_fn (JIT execution)...");
     match session.invoke_command(&command_path) {
         Ok(result) => {

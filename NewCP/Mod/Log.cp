@@ -35,6 +35,21 @@ BEGIN
   PutStr(s)
 END String;
 
+PROCEDURE GetText*(VAR dst: ARRAY OF SHORTCHAR; cap: INTEGER);
+  VAR i, limit: INTEGER;
+BEGIN
+  i := 0;
+  limit := cap - 1;
+  IF limit < 0 THEN
+    RETURN
+  END;
+  WHILE (i < limit) & (text[i] # 0X) DO
+    dst[i] := text[i];
+    INC(i)
+  END;
+  dst[i] := 0X
+END GetText;
+
 PROCEDURE Ln*;
 BEGIN
   IF textLen < TextMax - 1 THEN

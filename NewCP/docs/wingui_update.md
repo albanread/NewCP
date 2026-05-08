@@ -24,7 +24,7 @@ and the CP module stubs to support the per-pane MVC design described in
 
 **File**: `multiwingui/include/wingui/spec_bind.h`
 
-**Status**: [ ] not started | [ ] done
+**Status**: [x] done
 
 Add at the end of the extern "C" block, before the closing `}`:
 
@@ -43,7 +43,7 @@ WINGUI_API int32_t WINGUI_CALL wingui_spec_bind_post_pane_msg(
     const char* detail_utf8);
 
 /// Drain one message from pane pane_id's inbox.
-/// Valid only inside a frame callback (frame thread).
+/// Valid only during the host frame drain on the frame thread.
 /// Returns 1 if a message was dequeued into kind_out/detail_out, 0 if empty.
 WINGUI_API int32_t WINGUI_CALL wingui_spec_bind_frame_poll_pane_msg(
     const WinguiSpecBindFrameView* frame_view,
@@ -60,7 +60,7 @@ WINGUI_API int32_t WINGUI_CALL wingui_spec_bind_frame_poll_pane_msg(
 
 **File**: `multiwingui/src/spec_bind.cpp`
 
-**Status**: [ ] not started | [ ] done
+**Status**: [x] done
 
 1. Add `#include <atomic>` and `#include <unordered_map>` to includes.
 2. Add `PaneMsg` and `PaneInbox` structs inside the anonymous namespace.
@@ -77,7 +77,7 @@ Map key is `pane_id.value` (uint64). Inbox is allocated lazily on first `post`.
 
 **File**: `NewCP/src/newcp-runtime/src/wingui_ffi.rs`
 
-**Status**: [ ] not started | [ ] done
+**Status**: [x] done
 
 Add:
 ```rust
@@ -102,7 +102,7 @@ pub struct SuperTerminalPaneLayout {
 
 **File**: `NewCP/src/newcp-runtime/src/wingui_spec_ffi.rs`
 
-**Status**: [ ] not started | [ ] done
+**Status**: [x] done
 
 Add declarations for:
 - `wingui_spec_bind_frame_index` → `u64`
@@ -120,22 +120,17 @@ Add declarations for:
 
 **File**: `NewCP/src/newcp-runtime/src/wingui_host.rs`
 
-**Status**: [ ] not started | [ ] done
+**Status**: [x] done
 
 Changes:
-1. Add `use std::sync::atomic::{AtomicUsize, Ordering}`.
-2. Add `FRAME_RENDERER: AtomicUsize` — stores global frame proc ptr.
-3. Add `PANE_RENDERERS: OnceLock<Mutex<Vec<PaneRendererEntry>>>` — per-pane table.
-4. Add thread-local `FRAME_VIEW: RefCell<*const WinguiSpecBindFrameView>` — valid during `on_frame` only.
-5. Replace no-op `on_frame` with dispatcher that: stores frame_view, calls global renderer, iterates pane table.
+1. Add thread-local `FRAME_VIEW: RefCell<*const WinguiSpecBindFrameView>` — valid during host frame drain only.
+2. Replace no-op `on_frame` with a host-side drain that exposes frame state to `WinFrame.*` shims.
+3. Remove callback-era `WinFrame.SetRenderer` / pane-renderer exports from the host and CP stub.
 6. Add all `WinFrame.*` `#[unsafe(export_name = ...)]` shim functions.
 7. Add `winframe_module_artifact()` function.
 8. Register WinFrame artifact in the module artifact table.
 
 WinFrame exports:
-- `SetRenderer(fn_ptr: usize)`
-- `RegisterPaneRenderer(pane_id: i64, fn_ptr: usize)`
-- `UnregisterPaneRenderer(pane_id: i64)`
 - `FrameIndex() -> i64`
 - `ElapsedMs() -> i64`
 - `DeltaMs() -> i64`
@@ -149,8 +144,109 @@ WinFrame exports:
 
 ### Task 6 — Build verification
 
-Run `cargo build --features gui --bin newcp-driver` from `NewCP/` and confirm zero errors.
-Then build the wingui.dll solution and confirm the new functions link.
+**Status**: [x] done
+
+- `cargo build --features gui --bin newcp-driver` from `NewCP/`: done.
+- Build the wingui.dll solution and confirm the new functions link: done.
+
+---
+
+### Task 7 — typed pane render batch format
+
+**Files**: design first in `cp_wingui.md` / `MVC_summary.md`, then code in `wingui_host.rs` and CP helper modules
+
+**Status**: [~] partial
+
+Define the first concrete fast-path batch format so pane rendering no longer relies
+only on ad hoc `kind/detail` strings.
+
+Minimum target:
+
+1. Batch envelope with pane id, sequence number, and flags.
+2. Fixed command vocabulary for clip rects, text-grid updates, text runs,
+   vector primitives, sprite batches, and caret / selection overlays.
+3. Clear ownership rule: CP builds the batch, UI drains and executes it.
+4. One root view produces one pane batch, even if many micro-views contributed.
+
+Current prototype implemented:
+
+- New `WinBatch` host module and CP stub.
+- Batch envelope with `paneId`, `sequence`, and `flags`.
+- Typed commands implemented end-to-end for text-grid cells, geometry, overlays,
+  clips, offsets, scrolling, and text-path placeholders.
+- Host-side queue drained during `on_frame`, executing through existing `HostFrame.*` helpers.
+- Per-pane pending-batch replacement: newer sequence numbers supersede stale work for the same pane.
+- New declarative `surface` pane kind scaffolded through `WinSpec.AddSurface` so general MVC views can target a distinct pane type before specialized high-speed panes arrive.
+
+Still missing for this task:
+
+- batch consumption from real CP views,
+- sprite batches and richer asset/image commands,
+- explicit response / completion semantics for submitted batches.
+
+---
+
+### Task 8 — DirectWrite surface text engine
+
+**Files**: `multiwingui/include/wingui/wingui.h`, `multiwingui/src/wingui.cpp`, `multiwingui/include/wingui/spec_bind.h`, `multiwingui/src/spec_bind.cpp`, `NewCP/docs/display_primitives.md`, `NewCP/docs/cp_wingui.md`
+
+**Status**: [~] partial
+
+Focused design and execution tracking for the next phase now live in:
+
+- `NewCP/docs/surface_design.md`
+- `NewCP/docs/surface_tracker.md`
+
+`surface` text must be separated cleanly from `text-grid` text.
+
+This is part of a broader pane split that should remain explicit in the design:
+
+- `surface` is the richer, purpose-built target for general MVC rendering.
+- `text-grid`, `rgba-pane`, `indexed-graphics`, and similar fast panes remain
+    specialized rendering paths for workloads that need tighter performance-focused
+    contracts.
+- those specialized panes may later be exposed to MVC through wrapper views or
+    embedded pane abstractions, but they are not substitutes for the general
+    `surface` primitive model.
+
+Requirements:
+
+1. Keep `text-grid` as the specialized monospaced glyph-cell path for very fast
+    code-editor and terminal workloads.
+2. Extend `surface` text to use DirectWrite-backed layout and rendering.
+3. Define `DrawTextRun`, `MeasureTextRun`, `CharIndexAtPoint`, and
+    `PointAtCharIndex` in terms of the same host layout objects.
+4. Support arbitrary font families, size, weight, style, stretch, fallback,
+    and proportional positioning.
+5. Ensure selection and caret geometry comes from the same layout engine used
+    for drawing.
+
+Expected host additions:
+
+- DirectWrite text layout creation for `surface` runs.
+- Rendering path that can draw DirectWrite-shaped runs into a `surface` pane.
+- Replacement of the current atlas-based `surface` text approximation that is
+    still sitting underneath the present `DrawTextRun` / measurement / hit-test exports.
+
+---
+
+### Task 9 — wingui font manager
+
+**Files**: likely new font-manager implementation in `multiwingui`, with public API additions in `wingui.h` and `spec_bind.h`
+
+**Status**: [ ] not started
+
+`wingui` should own a reusable font manager component.
+
+Requirements:
+
+1. Load and cache font families / faces / styles independently of any one pane.
+2. Expose reusable metrics for fonts and text runs.
+3. Measure text runs without requiring a specific `surface` instance to own the
+    font data.
+4. Support retained layout caching for document-oriented MVC panes.
+5. Provide the measurement and hit-test foundation needed by `surface`
+    controller overlays and document layout.
 
 ---
 
@@ -207,7 +303,6 @@ The SPSC property holds because:
 |---|---|---|
 | `post_pane_msg` | CP event thread | `inbox_map_mutex` for inbox creation; atomic write for message post |
 | `frame_poll_pane_msg` | D3D11 frame thread | `inbox_map_mutex` for inbox lookup; atomic read for message poll |
-| `on_frame` dispatcher | D3D11 frame thread | `PANE_RENDERERS` mutex for renderer table snapshot |
-| `RegisterPaneRenderer` | CP startup thread | `PANE_RENDERERS` mutex |
+| host frame drain | D3D11 frame thread | frame-thread only after `FRAME_VIEW` is installed |
 | `FRAME_VIEW` thread-local | D3D11 frame thread only | Thread-local, no sharing |
 | `runtime_ptr()` / `RUNTIME` | Any | `OnceLock` (write-once, then read-only) |

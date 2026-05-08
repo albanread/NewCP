@@ -1,36 +1,28 @@
-MODULE WinSpec;
+DEFINITION MODULE WinSpec;
+
+(* Interface only. The actual implementations are Rust-hosted exports
+   registered by winspec_module_artifact() in newcp-runtime. *)
 
 PROCEDURE Begin*(title: ARRAY OF SHORTCHAR);
-BEGIN
-END Begin;
 
 PROCEDURE OpenStack*(gap: INTSHORT);
-BEGIN
-END OpenStack;
 
 PROCEDURE OpenRow*(gap: INTSHORT);
-BEGIN
-END OpenRow;
 
 PROCEDURE CloseContainer*;
-BEGIN
-END CloseContainer;
 
 PROCEDURE AddButton*(id, label, event: ARRAY OF SHORTCHAR);
-BEGIN
-END AddButton;
 
 PROCEDURE AddText*(text: ARRAY OF SHORTCHAR);
-BEGIN
-END AddText;
 
 PROCEDURE AddTextarea*(id, label, value: ARRAY OF SHORTCHAR; readonly: INTSHORT);
-BEGIN
-END AddTextarea;
+
+PROCEDURE AddTextGrid*(id, event: ARRAY OF SHORTCHAR; cols, rows: INTSHORT);
+
+PROCEDURE AddSurface*(id, event: ARRAY OF SHORTCHAR; width, height: INTSHORT);
+
+PROCEDURE AddRgbaPane*(id, event: ARRAY OF SHORTCHAR; width, height: INTSHORT);
 
 PROCEDURE GetSpec*(VAR buf: ARRAY OF SHORTCHAR): INTSHORT;
-BEGIN
-  RETURN 0
-END GetSpec;
 
 END WinSpec.

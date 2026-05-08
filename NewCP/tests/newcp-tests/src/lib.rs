@@ -76,13 +76,50 @@ mod tests {
         output
     }
 
+    /// Locate `multiwingui/.../wingui.lib` relative to the workspace, in the
+    /// same order `newcp-runtime/build.rs` searches. Returns true if either
+    /// the `manual_build/debug/` or `x64/Debug/` import library is present.
+    ///
+    /// The test harness uses this to decide whether to rebuild the driver
+    /// with `--features gui`. Without this check a plain `cargo build`
+    /// silently strips the gui feature off the on-disk binary and a
+    /// subsequent interactive `run-gui App.Run` returns "unknown command".
+    /// With this check, machines that have multiwingui built keep the gui
+    /// binary; machines without it still get a working CLI driver.
+    fn wingui_lib_available() -> bool {
+        let mut search_root = workspace_root();
+        // Walk up at most a few levels looking for a `multiwingui` directory
+        // — handles both the main checkout layout (sibling of NewCP) and
+        // .claude/worktrees/<name>/NewCP (where multiwingui lives further up).
+        for _ in 0..6 {
+            let candidate = search_root.join("multiwingui");
+            if candidate.is_dir() {
+                let preferred = candidate.join("manual_build").join("debug").join("wingui.lib");
+                let fallback = candidate.join("x64").join("Debug").join("wingui.lib");
+                return preferred.is_file() || fallback.is_file();
+            }
+            match search_root.parent() {
+                Some(parent) => search_root = parent.to_path_buf(),
+                None => break,
+            }
+        }
+        false
+    }
+
     fn driver_bin() -> PathBuf {
         let bin = workspace_root()
             .join("target")
             .join("debug")
             .join(if cfg!(windows) { "newcp-driver.exe" } else { "newcp-driver" });
+
+        let mut args: Vec<&str> = vec!["build", "-p", "newcp-driver"];
+        if wingui_lib_available() {
+            args.push("--features");
+            args.push("gui");
+        }
+
         let status = Command::new("cargo")
-            .args(["build", "-p", "newcp-driver"])
+            .args(&args)
             .current_dir(workspace_root())
             .status()
             .expect("failed to run cargo build for newcp-driver");
@@ -103,9 +140,16 @@ mod tests {
         (stdout, code)
     }
 
+    /// Dump LLVM IR for a CP module at `--opt none`.
+    ///
+    /// These tests grep the IR for shape-level patterns (named struct GEPs,
+    /// per-field stores, vtable globals, direct calls, etc.) that LLVM's
+    /// default `-O2` pass pipeline would inline, hoist, or rewrite into byte-
+    /// offset GEPs and memset/memcpy intrinsics. The unoptimized form is the
+    /// stable surface the dump-llvm tests are written against.
     fn dump_llvm(path: &str) -> (String, i32) {
         let out = Command::new(driver_bin())
-            .args(["dump-llvm", path])
+            .args(["dump-llvm", "--opt", "none", path])
             .current_dir(workspace_root())
             .output()
             .expect("failed to spawn driver binary");
@@ -127,11 +171,18 @@ mod tests {
         (stdout, code)
     }
 
+    /// Like [`dump_llvm`], but for an inline source string written to a
+    /// temporary file. Also pinned to `--opt none` for the same reason.
     fn dump_llvm_source(file_name: &str, source: &str) -> (String, i32) {
         let path = std::env::temp_dir().join(file_name);
         std::fs::write(&path, source).expect("failed to write temporary source module");
         let out = Command::new(driver_bin())
-            .args(["dump-llvm", path.to_str().expect("temporary source path should be UTF-8")])
+            .args([
+                "dump-llvm",
+                "--opt",
+                "none",
+                path.to_str().expect("temporary source path should be UTF-8"),
+            ])
             .current_dir(workspace_root())
             .output()
             .expect("failed to spawn driver binary");
@@ -158,7 +209,7 @@ mod tests {
 
     #[test]
     fn check_mod_empty_is_clean() {
-        let (output, code) = check_mod("Empty");
+        let (output, code) = check_mod("Mod/Tests/Empty.cp");
         assert_eq!(code, 0, "expected exit 0 for Empty.cp\noutput:\n{output}");
         assert!(
             output.trim_end().ends_with("ok"),
@@ -975,7 +1026,7 @@ mod tests {
 
     #[test]
     fn invoke_str_arrays_fixed_size_passed_as_pointer() {
-        let (output, code) = invoke_command("StrArrays.Run");
+        let (output, code) = invoke_command("Mod/Tests/StrArrays.cp::Run");
         assert_eq!(code, 0, "expected exit 0 for StrArrays.Run\noutput:\n{output}");
         assert!(
             output.contains("hello from literal"),

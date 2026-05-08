@@ -37,6 +37,21 @@ BEGIN
   CopyStr(nextTitle, title)
 END SetTitle;
 
+PROCEDURE GetTitle*(VAR dst: ARRAY OF SHORTCHAR; cap: INTEGER);
+  VAR i, limit: INTEGER;
+BEGIN
+  i := 0;
+  limit := cap - 1;
+  IF limit < 0 THEN
+    RETURN
+  END;
+  WHILE (title[i] # 0X) & (i < limit) DO
+    dst[i] := title[i];
+    INC(i)
+  END;
+  dst[i] := 0X
+END GetTitle;
+
 PROCEDURE Render*;
 BEGIN
   IF ~hasRenderer THEN RETURN END;

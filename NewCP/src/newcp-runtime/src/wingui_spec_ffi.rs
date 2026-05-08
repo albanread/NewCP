@@ -228,6 +228,348 @@ unsafe extern "system" {
         frame_view: *const WinguiSpecBindFrameView,
     ) -> i32;
 
+    pub fn wingui_spec_bind_frame_text_grid_write_cells(
+        frame_view: *const WinguiSpecBindFrameView,
+        pane: WinguiSpecBindPaneRef,
+        cells: *const SuperTerminalTextGridCell,
+        cell_count: u32,
+    ) -> i32;
+
+    pub fn wingui_spec_bind_frame_text_grid_clear_region(
+        frame_view: *const WinguiSpecBindFrameView,
+        pane: WinguiSpecBindPaneRef,
+        row: u32,
+        column: u32,
+        width: u32,
+        height: u32,
+        fill_codepoint: u32,
+        foreground: [u8; 4],
+        background: [u8; 4],
+    ) -> i32;
+
+    pub fn wingui_spec_bind_frame_rgba_gpu_copy(
+        frame_view: *const WinguiSpecBindFrameView,
+        dst_pane: WinguiSpecBindPaneRef,
+        dst_x: u32,
+        dst_y: u32,
+        src_pane: WinguiSpecBindPaneRef,
+        src_x: u32,
+        src_y: u32,
+        region_width: u32,
+        region_height: u32,
+    ) -> i32;
+
+    pub fn wingui_spec_bind_frame_draw_line(
+        frame_view: *const WinguiSpecBindFrameView,
+        pane: WinguiSpecBindPaneRef,
+        content_buffer_mode: u32,
+        blend_mode: u32,
+        clear_before: i32,
+        clear_color_rgba: *const f32,
+        x0: f32,
+        y0: f32,
+        x1: f32,
+        y1: f32,
+        half_thickness: f32,
+        color_r: f32,
+        color_g: f32,
+        color_b: f32,
+        color_a: f32,
+    ) -> i32;
+
+    pub fn wingui_spec_bind_frame_fill_rect(
+        frame_view: *const WinguiSpecBindFrameView,
+        pane: WinguiSpecBindPaneRef,
+        content_buffer_mode: u32,
+        blend_mode: u32,
+        clear_before: i32,
+        clear_color_rgba: *const f32,
+        x0: f32,
+        y0: f32,
+        x1: f32,
+        y1: f32,
+        corner_radius: f32,
+        color_r: f32,
+        color_g: f32,
+        color_b: f32,
+        color_a: f32,
+    ) -> i32;
+
+    pub fn wingui_spec_bind_frame_stroke_rect(
+        frame_view: *const WinguiSpecBindFrameView,
+        pane: WinguiSpecBindPaneRef,
+        content_buffer_mode: u32,
+        blend_mode: u32,
+        clear_before: i32,
+        clear_color_rgba: *const f32,
+        x0: f32,
+        y0: f32,
+        x1: f32,
+        y1: f32,
+        half_thickness: f32,
+        corner_radius: f32,
+        color_r: f32,
+        color_g: f32,
+        color_b: f32,
+        color_a: f32,
+    ) -> i32;
+
+    pub fn wingui_spec_bind_frame_fill_circle(
+        frame_view: *const WinguiSpecBindFrameView,
+        pane: WinguiSpecBindPaneRef,
+        content_buffer_mode: u32,
+        blend_mode: u32,
+        clear_before: i32,
+        clear_color_rgba: *const f32,
+        cx: f32,
+        cy: f32,
+        radius: f32,
+        color_r: f32,
+        color_g: f32,
+        color_b: f32,
+        color_a: f32,
+    ) -> i32;
+
+    pub fn wingui_spec_bind_frame_stroke_circle(
+        frame_view: *const WinguiSpecBindFrameView,
+        pane: WinguiSpecBindPaneRef,
+        content_buffer_mode: u32,
+        blend_mode: u32,
+        clear_before: i32,
+        clear_color_rgba: *const f32,
+        cx: f32,
+        cy: f32,
+        radius: f32,
+        half_thickness: f32,
+        color_r: f32,
+        color_g: f32,
+        color_b: f32,
+        color_a: f32,
+    ) -> i32;
+
+    pub fn wingui_spec_bind_frame_draw_arc(
+        frame_view: *const WinguiSpecBindFrameView,
+        pane: WinguiSpecBindPaneRef,
+        content_buffer_mode: u32,
+        blend_mode: u32,
+        clear_before: i32,
+        clear_color_rgba: *const f32,
+        cx: f32,
+        cy: f32,
+        radius: f32,
+        half_thickness: f32,
+        rotation_rad: f32,
+        half_aperture_rad: f32,
+        color_r: f32,
+        color_g: f32,
+        color_b: f32,
+        color_a: f32,
+    ) -> i32;
+
+    pub fn wingui_spec_bind_frame_fill_oval(
+        frame_view: *const WinguiSpecBindFrameView,
+        pane: WinguiSpecBindPaneRef,
+        content_buffer_mode: u32,
+        blend_mode: u32,
+        clear_before: i32,
+        clear_color_rgba: *const f32,
+        x0: f32,
+        y0: f32,
+        x1: f32,
+        y1: f32,
+        color_r: f32,
+        color_g: f32,
+        color_b: f32,
+        color_a: f32,
+    ) -> i32;
+
+    pub fn wingui_spec_bind_frame_stroke_oval(
+        frame_view: *const WinguiSpecBindFrameView,
+        pane: WinguiSpecBindPaneRef,
+        content_buffer_mode: u32,
+        blend_mode: u32,
+        clear_before: i32,
+        clear_color_rgba: *const f32,
+        x0: f32,
+        y0: f32,
+        x1: f32,
+        y1: f32,
+        half_thickness: f32,
+        color_r: f32,
+        color_g: f32,
+        color_b: f32,
+        color_a: f32,
+    ) -> i32;
+
+    pub fn wingui_spec_bind_frame_draw_path(
+        frame_view: *const WinguiSpecBindFrameView,
+        pane: WinguiSpecBindPaneRef,
+        content_buffer_mode: u32,
+        blend_mode: u32,
+        clear_before: i32,
+        clear_color_rgba: *const f32,
+        points_xy: *const f32,
+        point_count: u32,
+        closed: i32,
+        half_thickness: f32,
+        color_r: f32,
+        color_g: f32,
+        color_b: f32,
+        color_a: f32,
+    ) -> i32;
+
+    pub fn wingui_spec_bind_frame_draw_text_utf8(
+        frame_view: *const WinguiSpecBindFrameView,
+        pane: WinguiSpecBindPaneRef,
+        content_buffer_mode: u32,
+        blend_mode: u32,
+        clear_before: i32,
+        clear_color_rgba: *const f32,
+        text_utf8: *const c_char,
+        origin_x: f32,
+        origin_y: f32,
+        color_r: f32,
+        color_g: f32,
+        color_b: f32,
+        color_a: f32,
+    ) -> i32;
+
+    pub fn wingui_spec_bind_frame_mark_rect(
+        frame_view: *const WinguiSpecBindFrameView,
+        pane: WinguiSpecBindPaneRef,
+        content_buffer_mode: u32,
+        blend_mode: u32,
+        clear_before: i32,
+        clear_color_rgba: *const f32,
+        mode: i32,
+        x0: f32,
+        y0: f32,
+        x1: f32,
+        y1: f32,
+    ) -> i32;
+
+    pub fn wingui_spec_bind_frame_caret(
+        frame_view: *const WinguiSpecBindFrameView,
+        pane: WinguiSpecBindPaneRef,
+        content_buffer_mode: u32,
+        blend_mode: u32,
+        clear_before: i32,
+        clear_color_rgba: *const f32,
+        x0: f32,
+        y0: f32,
+        x1: f32,
+        y1: f32,
+        color_r: f32,
+        color_g: f32,
+        color_b: f32,
+        color_a: f32,
+    ) -> i32;
+
+    pub fn wingui_spec_bind_frame_selection_range(
+        frame_view: *const WinguiSpecBindFrameView,
+        pane: WinguiSpecBindPaneRef,
+        content_buffer_mode: u32,
+        blend_mode: u32,
+        clear_before: i32,
+        clear_color_rgba: *const f32,
+        x0: f32,
+        y0: f32,
+        x1: f32,
+        y1: f32,
+        color_r: f32,
+        color_g: f32,
+        color_b: f32,
+        color_a: f32,
+    ) -> i32;
+
+    pub fn wingui_spec_bind_frame_focus_ring(
+        frame_view: *const WinguiSpecBindFrameView,
+        pane: WinguiSpecBindPaneRef,
+        content_buffer_mode: u32,
+        blend_mode: u32,
+        clear_before: i32,
+        clear_color_rgba: *const f32,
+        x0: f32,
+        y0: f32,
+        x1: f32,
+        y1: f32,
+        half_thickness: f32,
+        corner_radius: f32,
+        color_r: f32,
+        color_g: f32,
+        color_b: f32,
+        color_a: f32,
+    ) -> i32;
+
+    pub fn wingui_spec_bind_frame_surface_push_clip_rect(
+        frame_view: *const WinguiSpecBindFrameView,
+        pane: WinguiSpecBindPaneRef,
+        x0: f32,
+        y0: f32,
+        x1: f32,
+        y1: f32,
+    ) -> i32;
+
+    pub fn wingui_spec_bind_frame_surface_pop_clip_rect(
+        frame_view: *const WinguiSpecBindFrameView,
+        pane: WinguiSpecBindPaneRef,
+    ) -> i32;
+
+    pub fn wingui_spec_bind_frame_surface_push_offset(
+        frame_view: *const WinguiSpecBindFrameView,
+        pane: WinguiSpecBindPaneRef,
+        dx: f32,
+        dy: f32,
+    ) -> i32;
+
+    pub fn wingui_spec_bind_frame_surface_pop_offset(
+        frame_view: *const WinguiSpecBindFrameView,
+        pane: WinguiSpecBindPaneRef,
+    ) -> i32;
+
+    pub fn wingui_spec_bind_frame_surface_reset_composition(
+        frame_view: *const WinguiSpecBindFrameView,
+        pane: WinguiSpecBindPaneRef,
+    ) -> i32;
+
+    pub fn wingui_spec_bind_frame_surface_install_child_view_bounds(
+        frame_view: *const WinguiSpecBindFrameView,
+        pane: WinguiSpecBindPaneRef,
+        child_id: i32,
+        x0: f32,
+        y0: f32,
+        x1: f32,
+        y1: f32,
+    ) -> i32;
+
+    pub fn wingui_spec_bind_frame_measure_text_utf8(
+        frame_view: *const WinguiSpecBindFrameView,
+        text_utf8: *const c_char,
+        out_width: *mut f32,
+        out_height: *mut f32,
+        out_char_count: *mut u32,
+    ) -> i32;
+
+    pub fn wingui_spec_bind_frame_char_index_at_point_utf8(
+        frame_view: *const WinguiSpecBindFrameView,
+        text_utf8: *const c_char,
+        origin_x: f32,
+        origin_y: f32,
+        x: f32,
+        y: f32,
+        out_char_index: *mut u32,
+    ) -> i32;
+
+    pub fn wingui_spec_bind_frame_point_at_char_index_utf8(
+        frame_view: *const WinguiSpecBindFrameView,
+        text_utf8: *const c_char,
+        origin_x: f32,
+        origin_y: f32,
+        char_index: u32,
+        out_x: *mut f32,
+        out_y: *mut f32,
+    ) -> i32;
+
     // Pane inbox — cross-thread messaging (CP event thread → D3D11 frame thread)
 
     /// Post a (kind, detail) string pair to pane_id's inbox.

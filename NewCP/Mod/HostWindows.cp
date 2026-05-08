@@ -1,22 +1,16 @@
-MODULE HostWindows;
+DEFINITION MODULE HostWindows;
+
+(* Interface only. The actual implementations are Rust-hosted exports
+   registered by native_module_artifact() in newcp-runtime. *)
 
 PROCEDURE PublishUi*(json: ARRAY OF SHORTCHAR);
-BEGIN
-END PublishUi;
 
 PROCEDURE RequestClose*;
-BEGIN
-END RequestClose;
 
 PROCEDURE RequestPresent*;
-BEGIN
-END RequestPresent;
 
 PROCEDURE WaitNamedEvent*(VAR name: ARRAY OF SHORTCHAR;
                           VAR payload: ARRAY OF SHORTCHAR;
                           timeoutMs: INTEGER): INTSHORT;
-BEGIN
-  RETURN 0
-END WaitNamedEvent;
 
 END HostWindows.
