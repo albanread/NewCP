@@ -10,11 +10,24 @@ fn main() {
         // CARGO_MANIFEST_DIR = …/NewCP/src/newcp-runtime
         // The wingui vcxproj outputs to …/multiwingui/manual_build/debug/
         // (older builds land in x64/Debug/ — we prefer manual_build/debug/).
-        let wingui_root = PathBuf::from(&manifest_dir)
-            .join("..")
-            .join("..")
-            .join("..")
-            .join("multiwingui");
+        //
+        // The path was historically `..\..\..\multiwingui` which assumes the
+        // main checkout layout (multiwingui as sibling of NewCP). git worktrees
+        // under `.claude/worktrees/<name>/NewCP/` break that assumption, so
+        // walk upward until we find a `multiwingui` directory (or the env
+        // override below). Falls back to the original three-up sibling guess
+        // so existing checkouts keep building unchanged.
+        let wingui_root = env::var("NEWCP_WINGUI_DIR")
+            .ok()
+            .map(PathBuf::from)
+            .or_else(|| find_multiwingui_upward(&PathBuf::from(&manifest_dir)))
+            .unwrap_or_else(|| {
+                PathBuf::from(&manifest_dir)
+                    .join("..")
+                    .join("..")
+                    .join("..")
+                    .join("multiwingui")
+            });
 
         let preferred = wingui_root.join("manual_build").join("debug");
         let fallback  = wingui_root.join("x64").join("Debug");
@@ -69,6 +82,23 @@ fn main() {
 
         println!("cargo:rerun-if-changed={}", dll_src.display());
     }
+}
+
+/// Walk up from `start` until a directory named `multiwingui` is found, or
+/// six levels — enough to climb out of `.claude/worktrees/<name>/NewCP/src/
+/// newcp-runtime` and still hit the project root that holds multiwingui as
+/// a sibling.
+fn find_multiwingui_upward(start: &std::path::Path) -> Option<PathBuf> {
+    let mut cursor: Option<&std::path::Path> = Some(start);
+    for _ in 0..8 {
+        let dir = cursor?;
+        let candidate = dir.join("multiwingui");
+        if candidate.is_dir() {
+            return Some(candidate);
+        }
+        cursor = dir.parent();
+    }
+    None
 }
 
 fn copy_dir_all(src: &std::path::Path, dst: &std::path::Path) -> std::io::Result<()> {
