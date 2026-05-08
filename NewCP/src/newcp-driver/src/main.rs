@@ -303,9 +303,13 @@ fn cp_worker_thread(command_path: String) {
                             std::thread::sleep(std::time::Duration::from_millis(gap_ms));
                         }
                         let title = format!("Document {}", i);
+                        // Phase 4 probe: each child gets a real surface pane
+                        // with intrinsic vertical+horizontal scrollbars, plus
+                        // a button so we can confirm per-window event routing
+                        // (the click event should arrive with window_id=<child>).
                         let spec = format!(
-                            r#"{{"type":"window","body":{{"type":"stack","children":[{{"type":"text","text":"MDI child #{}"}}]}}}}"#,
-                            i,
+                            r#"{{"type":"window","title":"Document {i}","body":{{"type":"stack","children":[{{"type":"button","id":"hello_child_{i}","text":"Click in child {i}","event":"hello_child_{i}"}},{{"type":"surface","id":"doc_surface_{i}","scrollBars":"both","width":800,"height":600}}]}}}}"#,
+                            i = i,
                         );
                         eprintln!("[cp-worker-probe] opening MDI child #{}", i);
                         let result = newcp_runtime::wingui_host::open_test_mdi_child(
