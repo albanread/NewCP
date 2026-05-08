@@ -64,11 +64,37 @@ impl StoreKind {
     }
 }
 
+/// Exact wire-format type-path encoding for a store, captured during
+/// reading so the writer can reproduce identical bytes regardless of
+/// which encoding the original writer used.
+#[derive(Debug, Clone)]
+pub enum WirePath {
+    /// Whole chain referenced via `oldType <id>` only.
+    Reference(i32),
+    /// One or more `newExt` entries (in wire order) followed by the
+    /// terminator. `newExt` names include `Stores.ElemDesc` verbatim
+    /// when the original wire did.
+    Extension {
+        extensions: Vec<String>,
+        terminator: WireTerminator,
+    },
+}
+
+#[derive(Debug, Clone)]
+pub enum WireTerminator {
+    NewBase(String),
+    OldType(i32),
+}
+
 #[derive(Debug)]
 pub struct StoreNode {
     pub kind: StoreKind,
     /// Type chain, most-derived first (`Stores.ElemDesc` markers stripped).
+    /// User-facing — for display, dispatch, and identity.
     pub type_path: Vec<String>,
+    /// Original wire-format path encoding. Populated for full stores
+    /// only (`Store` / `Elem`); empty enum value for nil/link/newlink.
+    pub wire_path: Option<WirePath>,
     /// Absolute byte offset of the kind byte that introduced this store.
     pub header_pos: u64,
     /// Offset of the first body byte (just after `next/down/len`).
@@ -79,6 +105,13 @@ pub struct StoreNode {
     pub id: i32,
     /// For Link / NewLink kinds: the referenced id.
     pub link_target: Option<i32>,
+    /// Original `comment` field — preserved verbatim for round-tripping.
+    pub comment: i32,
+    /// Original `next` field as written, before any offset translation.
+    /// Reader interprets this differently per-kind; we just record it raw.
+    pub raw_next: i32,
+    /// Original `down` field. 0 for kinds without one (`nil`, `link`, ...).
+    pub raw_down: i32,
     /// Children walked via the `down` / `next` offset chain.
     pub children: Vec<StoreNode>,
 }
@@ -185,11 +218,15 @@ fn read_one(cur: &mut Cursor<'_>, env: &mut Envelope) -> Result<(StoreNode, u64)
                 StoreNode {
                     kind,
                     type_path: Vec::new(),
+                    wire_path: None,
                     header_pos,
                     body_pos: cur.pos(),
                     body_len: 0,
                     id: -1,
                     link_target: None,
+                    comment,
+                    raw_next: next,
+                    raw_down: 0,
                     children: Vec::new(),
                 },
                 next_abs,
@@ -204,11 +241,15 @@ fn read_one(cur: &mut Cursor<'_>, env: &mut Envelope) -> Result<(StoreNode, u64)
                 StoreNode {
                     kind,
                     type_path: Vec::new(),
+                    wire_path: None,
                     header_pos,
                     body_pos: cur.pos(),
                     body_len: 0,
                     id: target,
                     link_target: Some(target),
+                    comment,
+                    raw_next: next,
+                    raw_down: 0,
                     children: Vec::new(),
                 },
                 next_abs,
@@ -229,9 +270,9 @@ fn read_one(cur: &mut Cursor<'_>, env: &mut Envelope) -> Result<(StoreNode, u64)
                 _ => unreachable!(),
             };
 
-            let type_path = read_path(cur, env)?;
+            let (type_path, wire_path) = read_path(cur, env)?;
 
-            let _comment = cur.read_int()?;
+            let comment = cur.read_int()?;
             let pos1 = cur.pos();
             let next = cur.read_int()?;
             let down = cur.read_int()?;
@@ -271,11 +312,15 @@ fn read_one(cur: &mut Cursor<'_>, env: &mut Envelope) -> Result<(StoreNode, u64)
                 StoreNode {
                     kind,
                     type_path,
+                    wire_path: Some(wire_path),
                     header_pos,
                     body_pos,
                     body_len: len as u64,
                     id,
                     link_target: None,
+                    comment,
+                    raw_next: next,
+                    raw_down: down,
                     children,
                 },
                 next_abs,
@@ -334,17 +379,37 @@ fn compute_next_after_header(pos_after_header: u64, next: i32, comment: i32) -> 
     }
 }
 
-fn read_path(cur: &mut Cursor<'_>, env: &mut Envelope) -> Result<Vec<String>> {
+fn read_path(cur: &mut Cursor<'_>, env: &mut Envelope) -> Result<(Vec<String>, WirePath)> {
     let mut path: Vec<String> = Vec::new();
-    // Index of the entry most recently appended within this path read.
-    // The legacy `Stores.AddBaseId` patches the *previous* entry's base_id
-    // to point at the just-added one, which is the opposite of "new entry
-    // points back at previous". We mirror that: when we add entry N, we
-    // patch prev_idx's base_id to N.
+    // Wire-form capture, populated as we read.
+    let mut wire_extensions: Vec<String> = Vec::new();
     let mut prev_idx: Option<usize> = None;
 
     let first_at = cur.pos();
     let mut kind = cur.read_byte()?;
+
+    // If the very first byte is `oldType`, the entire chain is a
+    // single reference — no `newExt` entries at all. Capture as such.
+    if kind == OLD_TYPE && wire_extensions.is_empty() {
+        let id_at = cur.pos();
+        let id = cur.read_int()?;
+        // Walk the chain to populate user-facing path.
+        let mut walk = id;
+        loop {
+            if walk < 0 || (walk as usize) >= env.type_dict.len() {
+                return Err(OdcError::UnknownTypeId { at: id_at, id: walk });
+            }
+            let entry = &env.type_dict[walk as usize];
+            if entry.name != ELEM_T_NAME {
+                path.push(entry.name.clone());
+            }
+            walk = entry.base_id;
+            if walk == -1 {
+                break;
+            }
+        }
+        return Ok((path, WirePath::Reference(id)));
+    }
 
     while kind == NEW_EXT {
         let at = cur.pos();
@@ -359,13 +424,14 @@ fn read_path(cur: &mut Cursor<'_>, env: &mut Envelope) -> Result<Vec<String>> {
         }
         prev_idx = Some(new_idx);
 
+        wire_extensions.push(name.clone());
         if name != ELEM_T_NAME {
             path.push(name);
         }
         kind = cur.read_byte()?;
     }
 
-    if kind == NEW_BASE {
+    let terminator = if kind == NEW_BASE {
         let at = cur.pos();
         let bytes = cur.read_sstring()?;
         let name = sstring_as_utf8(&bytes, at)?;
@@ -376,11 +442,12 @@ fn read_path(cur: &mut Cursor<'_>, env: &mut Envelope) -> Result<Vec<String>> {
         if let Some(p) = prev_idx {
             env.type_dict[p].base_id = new_idx as i32;
         }
-        path.push(name);
+        path.push(name.clone());
+        WireTerminator::NewBase(name)
     } else if kind == OLD_TYPE {
         let id_at = cur.pos();
         let mut id = cur.read_int()?;
-        // Splice the new most-derived chain into the old base chain.
+        let captured_id = id;
         if let Some(p) = prev_idx {
             env.type_dict[p].base_id = id;
         }
@@ -397,9 +464,16 @@ fn read_path(cur: &mut Cursor<'_>, env: &mut Envelope) -> Result<Vec<String>> {
                 break;
             }
         }
+        WireTerminator::OldType(captured_id)
     } else {
         return Err(OdcError::BadPathKind { at: first_at, kind });
-    }
+    };
 
-    Ok(path)
+    Ok((
+        path,
+        WirePath::Extension {
+            extensions: wire_extensions,
+            terminator,
+        },
+    ))
 }

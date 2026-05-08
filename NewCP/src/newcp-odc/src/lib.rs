@@ -19,6 +19,7 @@ mod text_attributes;
 mod text_model;
 mod text_rulers;
 mod text_views;
+mod writer;
 mod yaml;
 
 pub use controls::{decode_control, matches_control, Control};
@@ -34,4 +35,5 @@ pub use text_rulers::{
     matches_std_style, Tab, TextRulerAttributes,
 };
 pub use text_views::{decode_std_view, matches_std_view, StdViewBody};
+pub use writer::{check_roundtrip, write_document};
 pub use yaml::document_to_yaml;
