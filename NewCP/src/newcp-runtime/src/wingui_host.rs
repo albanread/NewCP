@@ -91,6 +91,22 @@ struct EventQueue {
     ready: Condvar,
 }
 
+/// Push a synthetic event into the queue as if it had come from the UI thread.
+///
+/// Used by tests / dev probes only. Pushes through the same `EVENT_QUEUE` that
+/// `on_event` uses, so the CP-side `HostWindows.WaitNamedEvent` consumer cannot
+/// distinguish this from a real button click. Returns `true` on success.
+pub fn inject_test_event(name: &str, payload: &str) -> bool {
+    let mut q = recover_lock(EVENT_QUEUE.queue.lock(), "EVENT_QUEUE inject_test_event");
+    q.push_back(GuiEvent {
+        name: name.to_string(),
+        payload: payload.to_string(),
+    });
+    EVENT_QUEUE.ready.notify_one();
+    wingui_trace!("kind=test_event_injected name={:?} payload_len={}", name, payload.len());
+    true
+}
+
 static EVENT_QUEUE: EventQueue = EventQueue {
     queue: Mutex::new(VecDeque::new()),
     ready: Condvar::new(),
