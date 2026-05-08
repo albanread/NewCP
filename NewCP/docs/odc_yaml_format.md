@@ -12,7 +12,141 @@ This document specifies a **YAML projection** of the same document model. The go
 - degrades gracefully when a View kind is not yet specified — unknown views appear as opaque blobs rather than blocking the rest of the document
 - is independent of any particular Component Pascal runtime — it is a file format, not an in-memory ABI
 
-It is **not** a goal to byte-equal the original `.odc` after a YAML→binary conversion. It *is* a goal to preserve the document model: same View tree, same text content, same character/paragraph attributes, same anchors, same embedded views.
+It **is** a goal — and one the implementation now achieves — to byte-equal the original `.odc` after a `read → write` cycle, so the format and tooling can be hash-verified against the legacy binary as ground truth. YAML→bin→YAML round-trip identity (Stage C) is a stronger property; the design supports it but the YAML parser is still pending — see [Implementation status](#implementation-status).
+
+## Implementation status
+
+A reference reader / writer crate lives at [`NewCP/src/newcp-odc/`](../src/newcp-odc/). It exposes a CLI (`odc-yaml`) and a library API matching the schema in this document, and is staged as follows:
+
+| Stage | Scope | Status |
+|---|---|---|
+| **A** | Stores envelope reader and writer. Walks the store tree via `down`/`next` offsets without understanding any view body. Verbatim body copies + structured envelope reconstruction. | ✅ Done. **675 / 675** files in the BlackBox 1.7 tree (`C:\projects\BlackBox Component Builder 1.7-a1\`) round-trip byte-identically with `odc-yaml --check`. |
+| **B** | Structured encoders for every decoded view kind: `TextModels.StdModel`, `TextModels.Attributes`, `StdLinks.Link`, `StdLinks.Target`, `StdFolds.Fold`, `TextRulers.StdRuler`, `TextRulers.StdStyle`, `TextRulers.Attributes`, `TextViews.StdView`, `Controls.*`. Each encoder produces wire bytes from decoded fields, not from copied source. | ✅ Done. Same 675 / 675 sweep continues to pass with the structured encoders active, validating that the AST is lossless. |
+| **C** | YAML round-trip — parser from YAML → AST and end-to-end `bin → YAML → bin` hash verification. | ⏳ Pending. The encoders are ready; only the YAML parser and the schema's lossless-mode metadata remain. |
+
+The CLI exposes:
+
+```text
+odc-yaml <input.odc> [-o output.yaml]   YAML output (default)
+odc-yaml --tree <input.odc>             ASCII tree view of the store hierarchy
+odc-yaml --rewrite <input.odc> -o out   re-serialize binary from the parsed AST
+odc-yaml --check <input.odc>            read, write, compare; reports ok / MISMATCH
+```
+
+## Implementation notes — byte-level findings
+
+Several aspects of the binary format are worth recording precisely because they don't appear in the published BlackBox documentation and were learned by reading the legacy `Stores.Reader` source against real files. They affect any future implementation of this format.
+
+### The Stores envelope is more nuanced than the schema implies
+
+Per-store on-wire layout (after the 4-byte `CDOo` magic and 4 zero bytes):
+
+```text
+1 byte    kind:           0x80 nil | 0x81 link | 0x82 store | 0x83 elem | 0x84 newlink
+var       path:           type-chain encoding (see below) — only for store/elem
+4 bytes   comment:        Int — caller-defined annotation; round-trip must preserve
+4 bytes   next:           Int — relative offset to next sibling (or special-case 0 with
+                          `(comment & 1) == 1` meaning "next exists right after"), only
+                          for store/elem; for nil/link/newlink it's a different formula
+4 bytes   down:           Int — relative offset to first child (store/elem only)
+4 bytes   len:            Int — length of body bytes that follow (store/elem only)
+len bytes body:            store-specific data; may itself contain inline child stores
+```
+
+For nil / link / newlink kinds the layout is shorter (`kind + comment + next` for nil, `kind + id + comment + next` for the two link kinds) and they have no body or children.
+
+### Path encoding has multiple wire-equivalent forms
+
+The same logical type chain can be written as any of:
+
+- a sequence of `newExt` entries (`0xF1` + UTF-8 NUL-terminated name) followed by exactly one terminator: either `newBase` (`0xF0` + name) for an entirely-new chain or `oldType` (`0xF2` + 4-byte Int id) splicing into a previously-recorded chain;
+- a single `oldType` reference at the very start, when the entire chain matches an existing dictionary entry's base walk;
+- different mixes of the above when only a tail of the chain is already known.
+
+The reader has an open-ended type-dictionary that grows in encounter order. **Two distinct files writing the same logical type chain may use different on-wire encodings.** The reconstructed `type_path` (with `Stores.ElemDesc` filtered, names normalised) is *lossy* — to round-trip exactly, the AST must preserve the wire encoding per store. The implementation calls this `wire_path: Option<WirePath>` with variants `Reference(i32) | Extension { extensions: Vec<String>, terminator: NewBase(String) | OldType(i32) }`.
+
+### `Stores.ElemDesc` is a marker, not a class
+
+The reader records `Stores.ElemDesc` in the type dictionary but filters it out of the visible `type_path`. Its purpose is to mark — within the dictionary chain — that the chain belongs to an `elem` store rather than a regular one. **Some BlackBox writers emit it as a `newExt` entry between the user's class chain and the `Stores.Store` base; some writers emit it elsewhere; some don't emit it at all** (e.g. when types are written using `*^` / "POINTER TO" naming rather than `*Desc`). The wire varies. Capturing the wire encoding per-store handles all cases.
+
+### Type names use two parallel naming conventions
+
+Within the same BlackBox 1.7 tree:
+
+- most files use `*Desc` names for type descriptors — `Documents.ModelDesc`, `Stores.StoreDesc`, etc.
+- some files use `*^` names for the dereferenced record types — `Documents.Model^`, `Stores.Store^`, etc.
+
+Both encodings are valid and identical in semantics; the reader must accept both, the writer must reproduce whichever the source used. The implementation captures and re-emits them verbatim.
+
+### Every Component Pascal class layer adds a version byte
+
+The legacy `Internalize` pattern is `super^.Internalize(rd); ReadVersion(...); ...`. Each class in the inheritance chain that overrides `Internalize` writes one byte in the body. So a body's prefix is a stack of version bytes, one per layer. For `TextModels.StdModel` (an elem) that's six bytes:
+
+| layer | version byte |
+|---|---|
+| `Stores.Store` | 1 |
+| `Stores.Store` (elem flag adds another) | 1 |
+| `Models.Model` | 1 |
+| `Containers.Model` | 1 |
+| `TextModels.Model` | 1 |
+| `TextModels.StdModel` | 1 |
+
+After the version chain comes the type-specific fields. Every structured decoder must capture every version byte for round-trip — discarding any of them breaks `--check`.
+
+### Two-pass init: `Internalize` and `Internalize2`
+
+`TextViews.View` and its descendants use Component Pascal's two-pass init pattern. `Containers.View.Internalize` reads the model and controller as inline child stores, then calls `v.Internalize2(rd)` which dispatches through a separate vtable. `TextViews.View.Internalize2` and `TextViews.StdView.Internalize2` each write their own version byte, but `TextViews.View.Internalize2` does **not** call its `super^.Internalize2` (the call is commented out in the legacy source: `(*v.Internalize^(rd);*)`). So the body for a `TextViews.StdView` is:
+
+```text
+1 byte  Stores.Store version
+1 byte  Views.View version
+1 byte  Containers.View version
+store   inline Model         (TextModels.StdModel child)
+store   inline Controller    (TextControllers.StdCtrl, or a nil store)
+1 byte  TextViews.View Internalize2 version
+1 byte  TextViews.StdView Internalize2 version
+1 byte  hideMarks Bool
+store   inline default Ruler (TextRulers.StdRuler child)
+store   inline default Attrs (TextModels.Attributes child)
+4 bytes origin Int
+4 bytes dy Int
+```
+
+### View-piece placeholders in the character buffer
+
+A `TextModels.StdModel` body has a run-list section followed by a character buffer. The run list addresses each piece by `(ano: byte, len: Int, optional w/h Ints, optional inline view store)`. **Each embedded view (run with `len = 0`) consumes exactly one byte in the character buffer** — the legacy reader does `INC(org)` without reading the byte's value. The byte itself sits at the slot position in the char buffer; conventionally `0x02` (STX) but **captured per-piece** by our decoder for round-trip safety. Without this, the placeholder bytes leak into the next text piece's content (the bug we hit during initial decoding showed up as stray `\x02` characters in YAML output).
+
+### `TextRulers.Attributes` has a v0 quirk and a tab-overflow corner case
+
+- **v0 rightFixed patch**: the legacy `Internalize` synthetically sets the `rightFixed` opt bit when reading a v0 file, even though the bit isn't on the wire. Round-trip must NOT apply this transform — store `opts` as-read and let any "behavioural" interpretation happen at display time only.
+- **Tab overflow**: the body declares `n` (XInt tab count) but the runtime stores at most `MAX_TABS = 32` tabs. If `n > MAX_TABS`, the trailing `(n - 32)` stops (and types, for v≥2) are read into the cursor but discarded. The implementation captures them in `trash_stops` / `trash_types` and re-emits them so old files with corrupted tab arrays still round-trip.
+
+### Strings: don't transcode through `String`
+
+Three string forms appear on the wire:
+
+- `XString` — 1-byte chars terminated by `0x00` (Latin-1 in legacy files)
+- `String` — 2-byte LE codepoints terminated by `0x0000` (UTF-16 in modern files)
+- `SString` — 1-byte chars, used for path components (UTF-8 in 1.7+ via `Kernel.Utf8ToString`)
+
+Decoding through Rust's `String` (e.g. `String::from_utf16_lossy`) is **lossy** for malformed bytes and surrogate pairs, and the resulting `String` cannot be encoded back as the same wire bytes. The implementation stores raw bytes / `u16`s in dedicated enums (`LinkString::{Narrow|Wide}`, `CtrlString::{Narrow|Wide}`, `FoldLabel::{Narrow|Wide}`) and provides a `to_string()` for display. The encoder writes the raw form unchanged.
+
+### Unknown view kinds round-trip via verbatim splice
+
+When the writer hits a store kind it has no structured encoder for (and it has children), it falls back to copying the parent's body bytes verbatim while recursively writing each child store via its dispatch. This means an unknown leaf type's bytes are copied verbatim from `src`; an unknown parent type's bytes are reconstructed as `(verbatim primitive sections) + (recursive writes of children)`. The recursive write naturally re-encodes any *known* descendant via its structured encoder. The 675 / 675 sweep was achieved with this fallback covering the few view kinds we don't yet decode (`HostBitmaps.StdView`, `StdHeaders.View`, `TextControllers.StdCtrl`, `Documents.Controller`, …).
+
+### Round-trip strategy
+
+The verification approach: read `.odc` → AST → write `.odc`, hash both, compare. With the type-dictionary mirrored in encounter order between reader and writer, every encoding decision (newExt / newBase / oldType) lines up byte-for-byte. The body's primitive sections (version chain, ints, bools, strings, padding) are reproduced from captured fields; inline child stores recurse through the same dispatch. Any discrepancy surfaces as a `MISMATCH` line on the `--check` sweep.
+
+The implementation has been validated against:
+
+- the entire `BlackBox Component Builder 1.7-a1` distribution: 675 `.odc` files spanning resources, source modules, documentation, samples, tutorials, and the `Tour.odc` (49 KB)
+- file kinds: `Empty.odc` (951 bytes — minimal envelope) at the small end, `Std/Docu/TabViews.odc` (207 KB) at the large end
+- both `*Desc`- and `*^`-named type chains
+- elem stores with and without `Stores.ElemDesc` markers
+- folds in collapsed and expanded states
+- legacy `Controls.Control` v0–v2 wire shapes alongside modern v3+
 
 ## Recap of the binary model
 
@@ -445,17 +579,29 @@ This guarantees that any future tool can recognise and re-emit the original bina
 
 ## Round-trip and canonicalisation
 
-A YAML→`.odc`→YAML cycle is required to be **structurally** stable: the second YAML should describe the same View tree as the first. It is **not** required to produce identical bytes, because the binary format has freedoms a writer can resolve differently (attribute-pool ordering, redundant attribute slots, piece coalescing).
+The reference implementation achieves **byte-identical** `.odc → AST → .odc` round-trip across the full BlackBox 1.7 tree (Stage A and B; see [Implementation status](#implementation-status)). For YAML round-trip (`.odc → YAML → .odc`, Stage C), the same byte-identical guarantee is the goal — which means the YAML format must carry every byte the binary holds, including the parts that aren't human-edit-relevant.
 
-For diff-friendliness, a canonical writer should:
+The schema accommodates this in two layers:
 
-- emit `defs` pool entries in name-sorted order,
-- coalesce adjacent text runs that share a `c:` value into one,
-- collapse runs of identical paragraphs (don't repeat `p: body` if it's already active),
-- prefer the shorthand `t: "..."` over `t: { c: <paragraph default>, text: "..." }`,
+1. **Lifted, human-editable form** for the parts that should round-trip via *meaning* (text content, link targets, fold labels, paragraph metrics, control fields, etc.) — these survive normal hand-edits and naturally re-encode.
+
+2. **Round-trip metadata** for the bytes that *must* survive but shouldn't clutter the editable surface: the per-store `wire_path` encoding choice, captured `comment`/`raw_next`/`raw_down` envelope fields, super-class version bytes, the legacy `Controls.Control` v0–v2 auxiliary fields, view-piece placeholder bytes, run-list padding, declared-but-unused tab slots, and any subclass `Internalize2` trailing bytes for view kinds we don't fully decode. The convention: a single `_meta:` map per store containing whatever is needed for byte-identical writeback, ignored by readers that only want the editable content.
+
+A canonical YAML writer should:
+
+- emit `defs` pool entries in name-sorted order;
+- coalesce adjacent text runs that share a `c:` value into one;
+- collapse runs of identical paragraphs (don't repeat `p: body` if it's already active);
+- prefer the shorthand `t: "..."` over `t: { c: <paragraph default>, text: "..." }`;
 - emit anchors as inline `- a: name` pieces and rebuild the offset map on save.
 
-These are output policy, not schema rules — a manually edited file that doesn't follow them is still valid input.
+These are output policy, not schema rules — a manually edited YAML file that doesn't follow them is still valid input.
+
+A YAML editor can drop `_meta:` blocks before saving; the writer then loses byte-identity but preserves *semantic* identity (same View tree, same text, same attributes). This is the same trade-off as VCS auto-rebases or auto-formatters: the lifted content always survives, the wire-byte fidelity is best-effort. The CLI can offer both modes:
+
+- `odc-yaml --check`: read-then-write, byte-identical comparison (already implemented)
+- `odc-yaml --check-yaml`: read .odc → write YAML → parse YAML → write .odc, byte-identical comparison (Stage C target)
+- `odc-yaml --check-semantic`: read .odc → write YAML → parse YAML → write .odc, semantic comparison only (compares decoded ASTs, not bytes — useful for files that have been hand-edited)
 
 ## What this format intentionally leaves out
 
@@ -474,16 +620,25 @@ These are output policy, not schema rules — a manually edited file that doesn'
    The second is much more readable for the common edit case, the first is more uniform. A pragmatic answer is to *accept both* — a converter writes whichever the source warrants and reads either.
 4. **Versioning.** `format:` versions the YAML schema; per-view `version:` versions the binary view's own state. Keeping them separate means the schema can evolve without rewriting every file.
 
-## Suggested next step
+## What's done and what's left
 
-Because every `.odc` is a TextView under a thin `Documents.StdDocument` wrapper, there is no smaller subset to prototype against — the TextView schema must work from day one. A practical staging that keeps each step testable:
+Stages A and B are complete (see [Implementation status](#implementation-status)) — the binary side of the round-trip is byte-identical across the BlackBox 1.7 corpus, and every decoded view kind has a structured encoder.
 
-1. **Plain TextView round-trip** — `defs` + `flow` with text runs only, no embedded views. Target: a Mod source file (e.g. `Comm/Mod/Streams.odc`). The output should diff cleanly against itself across two cycles.
-2. **Add `StdLinks.Target` and `StdLinks.Link`** — enough to round-trip a Docu file's cross-references. Target: `Docu/BB-Rules.odc`, which the binary inspection showed uses `StdLinks` heavily.
-3. **Add `StdFolds.Fold`** — the readability primitive. Target: any Tut-*.odc tutorial in `Docu/`. Verify that flattening collapsed folds produces the trimmed view BlackBox shows by default, and that expanded folds round-trip identically.
-4. **Add menu lifting** — read the textual `MENU "..." ... END` content of `Rsrc/Menus.odc` files, recognise the grammar, lift to the structured `menu:` form on output. This is the first place the converter performs real interpretation rather than transcription, and where edits become hand-authorable.
-5. **Add `Controls.*` and `HostBitmaps.StdView`** — enough to round-trip `Rsrc/About.odc` and similar dialog resources. Bitmap payloads land as `!!binary` blobs; a separate sidecar `.png` extraction can be a tooling option but is not the YAML schema's responsibility.
+Stage C (YAML round-trip) is the remaining work. It splits into:
 
-At every step, files outside the supported subset still parse — they just produce the `body: { raw: !!binary ... }` fallback. That keeps the converter useful while the schema grows.
+1. **YAML parser**: parse a YAML document conforming to this schema back into the existing `Document` / `StoreNode` AST. Must handle both the lifted form (links/targets/folds/rulers as named blocks) and the structural form (raw `view: { kind: ... }` plus the `_meta:` round-trip metadata for currently-unknown kinds).
+2. **`_meta` schema finalisation**: lock down which fields go in `_meta:` per store / view kind. The implementation already captures everything the writer needs — the schema just needs to surface them in YAML in a stable shape.
+3. **`bin → YAML → bin` verification**: extend `odc-yaml --check` with `--check-yaml` mode that completes the loop. Sweep the full 675-file corpus the same way Stage A and B were validated.
+4. **Lift menu resources**: turn `Rsrc/Menus.odc` from "TextView whose content happens to be menu source" into a structured `menu:` block with items / separators / submenus. Hand-authoring menus is the highest-leverage edit case.
+5. **Lift bitmap resources**: surface `HostBitmaps.StdView` as a `!!binary` payload with a hint about the format, plus optional sidecar extraction (`.png`) for diff-ability.
 
-A practical readability win unlocks at step 3: once folds round-trip, the same converter can emit a "reading" projection that drops collapsed folds entirely (or renders them as expandable `<details>` blocks in HTML / GitHub-flavoured markdown). This is the single change most likely to make the existing BlackBox documentation pleasant to browse outside the IDE.
+A nice-to-have output mode, available once Stage C lands:
+
+- `odc-yaml --prose <file>`: render just the text content of a Docu, with collapsed folds shown as `[label]` placeholders the user can click in HTML, links inlined as `[text](target)`, anchors retained. This is what makes the legacy BlackBox documentation actually browsable outside the IDE — and the YAML schema makes it a one-screen change once the parser is in place.
+
+## Reference implementation
+
+- Crate: [`NewCP/src/newcp-odc/`](../src/newcp-odc/)
+- Library API: `read_document`, `write_document`, `check_roundtrip`, `document_to_yaml`, plus per-view `decode_*` / `encode_*` functions
+- CLI: `cargo run -p newcp-odc --bin odc-yaml -- <args>` (or build and run `target/debug/odc-yaml`)
+- Verification: `find <BlackBox>/ -name "*.odc" -exec odc-yaml --check {} \;` reports `ok` for all 675 files
