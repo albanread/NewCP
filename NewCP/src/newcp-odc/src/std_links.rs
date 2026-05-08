@@ -1,4 +1,4 @@
-//! Decode `StdLinks.Link` and `StdLinks.Target`.
+//! Decode and encode `StdLinks.Link` and `StdLinks.Target`.
 //!
 //! Both types are paired views: a left-side piece carries the payload and
 //! a right-side piece marks where the linked range ends. The visible
@@ -28,9 +28,6 @@ use crate::envelope::StoreNode;
 use crate::error::{OdcError, Result};
 use crate::primitives::{string_as_utf16, Cursor};
 
-const VIEW_PREFIX: usize = 3; // Store + View super versions, then own version byte
-                              // We treat the own version as part of the prefix and read it explicitly below.
-
 /// Three-valued enum for which side of a paired range a piece marks.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Side {
@@ -38,23 +35,51 @@ pub enum Side {
     Right,
 }
 
+/// Stored payload string. Either a narrow byte sequence (XString) or a
+/// wide u16 sequence (String). Each variant preserves the raw on-wire
+/// content so the encoder reproduces it without re-transcoding.
+#[derive(Debug, Clone)]
+pub enum LinkString {
+    Narrow(Vec<u8>),
+    Wide(Vec<u16>),
+}
+
+impl LinkString {
+    pub fn to_string(&self) -> String {
+        match self {
+            LinkString::Narrow(b) => match std::str::from_utf8(b) {
+                Ok(s) => s.to_string(),
+                Err(_) => b.iter().map(|&c| c as char).collect(),
+            },
+            LinkString::Wide(w) => string_as_utf16(w),
+        }
+    }
+}
+
 #[derive(Debug, Clone)]
 pub struct Link {
+    pub store_version: u8,
+    pub view_version: u8,
     pub version: u8,
     pub side: Side,
-    /// Command string for left-side links. For right-side links this is `None`.
-    pub cmd: Option<String>,
-    /// Closing behaviour. `None` for version 0 and for right-side links.
-    /// 0 = always close current dialog before invoking, 1 = if shift held, 2 = never.
+    /// Raw `cmdLen` Int read from the wire — preserved verbatim so the
+    /// writer reproduces it (legacy reader uses it as buffer hint, not
+    /// always equal to actual string length).
+    pub cmd_len_raw: i32,
+    /// Command payload for left-side links.
+    pub cmd: Option<LinkString>,
+    /// Closing behaviour. `None` for version 0 and right-side links.
     pub close: Option<i32>,
 }
 
 #[derive(Debug, Clone)]
 pub struct Target {
+    pub store_version: u8,
+    pub view_version: u8,
     pub version: u8,
     pub side: Side,
-    /// Anchor identifier for left-side targets.
-    pub ident: Option<String>,
+    pub ident_len_raw: i32,
+    pub ident: Option<LinkString>,
 }
 
 pub fn matches_link(node: &StoreNode) -> bool {
@@ -76,36 +101,21 @@ pub fn decode_link(file: &[u8], node: &StoreNode) -> Result<Link> {
 
     let mut cur = Cursor::new(&file[..body_end as usize]);
     cur.set_pos(node.body_pos)?;
-
-    // Skip Stores.Store + Views.View super versions.
-    cur.read_byte()?;
-    cur.read_byte()?;
+    let store_version = cur.read_byte()?;
+    let view_version = cur.read_byte()?;
     let version = cur.read_version()?;
-    let _ = VIEW_PREFIX; // documentation marker
 
     let side_bool = cur.read_bool()?;
-    let cmd_len = cur.read_int()?;
+    let cmd_len_raw = cur.read_int()?;
 
     let cmd = if side_bool {
-        // The legacy reader allocates `cmd` of size `len`; the bytes consumed
-        // by the string equal `len` regardless of which encoding is used
-        // (XString = `len` bytes, String = `len` 16-bit codepoints — note this
-        // means `len` for a wide string is in CHARS not bytes).
-        if cmd_len < 0 {
+        if cmd_len_raw < 0 {
             return Err(OdcError::Inconsistent("link cmd length negative"));
         }
-        let n = cmd_len as usize;
         if version <= 1 {
-            // XString: NUL-terminated 1-byte chars; reader scans until NUL.
-            let raw = cur.read_sstring()?;
-            // The legacy reader's `len` is the buffer size including NUL —
-            // we don't validate it strictly, but expect raw.len() + 1 == n.
-            let _ = n;
-            Some(latin1_or_utf8(&raw))
+            Some(LinkString::Narrow(cur.read_sstring()?))
         } else {
-            // String: NUL-terminated 2-byte LE chars.
-            let raw = cur.read_string()?;
-            Some(string_as_utf16(&raw))
+            Some(LinkString::Wide(cur.read_string()?))
         }
     } else {
         None
@@ -118,8 +128,11 @@ pub fn decode_link(file: &[u8], node: &StoreNode) -> Result<Link> {
     };
 
     Ok(Link {
+        store_version,
+        view_version,
         version,
         side: if side_bool { Side::Left } else { Side::Right },
+        cmd_len_raw,
         cmd,
         close,
     })
@@ -136,40 +149,70 @@ pub fn decode_target(file: &[u8], node: &StoreNode) -> Result<Target> {
 
     let mut cur = Cursor::new(&file[..body_end as usize]);
     cur.set_pos(node.body_pos)?;
-    cur.read_byte()?; // Store
-    cur.read_byte()?; // View
+    let store_version = cur.read_byte()?;
+    let view_version = cur.read_byte()?;
     let version = cur.read_version()?;
 
     let side_bool = cur.read_bool()?;
-    let _len = cur.read_int()?;
+    let ident_len_raw = cur.read_int()?;
 
     let ident = if side_bool {
         if version == 0 {
-            let raw = cur.read_sstring()?;
-            Some(latin1_or_utf8(&raw))
+            Some(LinkString::Narrow(cur.read_sstring()?))
         } else {
-            let raw = cur.read_string()?;
-            Some(string_as_utf16(&raw))
+            Some(LinkString::Wide(cur.read_string()?))
         }
     } else {
         None
     };
 
     Ok(Target {
+        store_version,
+        view_version,
         version,
         side: if side_bool { Side::Left } else { Side::Right },
+        ident_len_raw,
         ident,
     })
 }
 
-/// Decode a 1-byte-per-char string. Most BlackBox cmd/ident strings are
-/// pure ASCII, but some legacy files contain Latin-1 bytes (e.g. accented
-/// characters in localised commands). Try UTF-8 first for forward
-/// compatibility with hand-edited files, fall back to Latin-1 mapping.
-fn latin1_or_utf8(bytes: &[u8]) -> String {
-    match std::str::from_utf8(bytes) {
-        Ok(s) => s.to_string(),
-        Err(_) => bytes.iter().map(|&b| b as char).collect(),
+pub fn encode_link(out: &mut Vec<u8>, l: &Link) {
+    out.push(l.store_version);
+    out.push(l.view_version);
+    out.push(l.version);
+    out.push(if l.side == Side::Left { 1 } else { 0 });
+    out.extend_from_slice(&l.cmd_len_raw.to_le_bytes());
+    if let Some(s) = &l.cmd {
+        write_link_string(out, s);
+    }
+    if let Some(c) = l.close {
+        out.extend_from_slice(&c.to_le_bytes());
+    }
+}
+
+pub fn encode_target(out: &mut Vec<u8>, t: &Target) {
+    out.push(t.store_version);
+    out.push(t.view_version);
+    out.push(t.version);
+    out.push(if t.side == Side::Left { 1 } else { 0 });
+    out.extend_from_slice(&t.ident_len_raw.to_le_bytes());
+    if let Some(s) = &t.ident {
+        write_link_string(out, s);
+    }
+}
+
+fn write_link_string(out: &mut Vec<u8>, s: &LinkString) {
+    match s {
+        LinkString::Narrow(b) => {
+            out.extend_from_slice(b);
+            out.push(0);
+        }
+        LinkString::Wide(w) => {
+            for cp in w {
+                out.extend_from_slice(&cp.to_le_bytes());
+            }
+            out.extend_from_slice(&[0u8, 0u8]);
+        }
     }
 }
 

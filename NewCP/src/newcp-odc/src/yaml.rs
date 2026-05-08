@@ -131,7 +131,7 @@ fn emit_store_inner(
             let _ = writeln!(out, "{body_pad}side: {}", side_str(link.side));
             let _ = writeln!(out, "{body_pad}version: {}", link.version);
             if let Some(cmd) = &link.cmd {
-                let _ = writeln!(out, "{body_pad}target: {}", quote(cmd));
+                let _ = writeln!(out, "{body_pad}target: {}", quote(&cmd.to_string()));
             }
             if let Some(close) = link.close {
                 let _ = writeln!(out, "{body_pad}close: {}  # {}", close, close_label(close));
@@ -145,7 +145,7 @@ fn emit_store_inner(
             let _ = writeln!(out, "{body_pad}side: {}", side_str(target.side));
             let _ = writeln!(out, "{body_pad}version: {}", target.version);
             if let Some(ident) = &target.ident {
-                let _ = writeln!(out, "{body_pad}name: {}", quote(ident));
+                let _ = writeln!(out, "{body_pad}name: {}", quote(&ident.to_string()));
             }
             return;
         }
@@ -162,7 +162,7 @@ fn emit_store_inner(
         if let Ok(fold) = decode_fold(file, node) {
             let _ = writeln!(out, "{body_pad}side: {}", side_str(fold.side));
             let _ = writeln!(out, "{body_pad}collapsed: {}", fold.collapsed);
-            let _ = writeln!(out, "{body_pad}label: {}", quote(&fold.label));
+            let _ = writeln!(out, "{body_pad}label: {}", quote(&fold.label.to_string()));
             // Surface the hidden text model (or nil) directly under the fold.
             if let Some(child) = node.children.first() {
                 if matches_std_model(child) {
@@ -432,17 +432,23 @@ fn emit_attr_anchors(out: &mut String, attr_idx: usize, w: i32, h: i32, pad: &st
 }
 
 fn emit_control_body(out: &mut String, c: &Control, pad: &str) {
-    if !c.link.is_empty() {
-        let _ = writeln!(out, "{pad}link: {}", quote(&c.link));
+    let link = c.link.to_string();
+    let label = c.label.to_string();
+    let guard = c.guard.to_string();
+    if !link.is_empty() {
+        let _ = writeln!(out, "{pad}link: {}", quote(&link));
     }
-    if !c.label.is_empty() {
-        let _ = writeln!(out, "{pad}label: {}", quote(&c.label));
+    if !label.is_empty() {
+        let _ = writeln!(out, "{pad}label: {}", quote(&label));
     }
-    if !c.guard.is_empty() {
-        let _ = writeln!(out, "{pad}guard: {}", quote(&c.guard));
+    if !guard.is_empty() {
+        let _ = writeln!(out, "{pad}guard: {}", quote(&guard));
     }
-    if !c.notifier.is_empty() {
-        let _ = writeln!(out, "{pad}notifier: {}", quote(&c.notifier));
+    if let Some(n) = &c.notifier {
+        let s = n.to_string();
+        if !s.is_empty() {
+            let _ = writeln!(out, "{pad}notifier: {}", quote(&s));
+        }
     }
     if c.level != 0 {
         let _ = writeln!(out, "{pad}level: {}", c.level);
@@ -461,8 +467,6 @@ fn emit_control_body(out: &mut String, c: &Control, pad: &str) {
         let _ = writeln!(out, "{pad}controlVersion: {}", c.control_version);
     }
     if !c.trailing.is_empty() {
-        // Subclass-specific Internalize2 bytes — kept as opaque hex-byte
-        // count for now so future round-trips can verify the size matches.
         let _ = writeln!(out, "{pad}trailingBytes: {}", c.trailing.len());
     }
 }

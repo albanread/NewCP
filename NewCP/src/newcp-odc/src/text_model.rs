@@ -1,4 +1,5 @@
-//! Decode `TextModels.StdModel` — the text + piece-list payload.
+//! Decode and encode `TextModels.StdModel` — the text + piece-list
+//! payload.
 //!
 //! Body layout (after the store envelope's `len` field):
 //!
@@ -17,21 +18,15 @@
 //!                 END
 //!                 len: Int
 //!                     >0 ⇒ 1-byte-char text run of `len` chars
-//!                     <0 ⇒ 2-byte-char text run of `-len` bytes (-len/2 chars)
+//!                     <0 ⇒ 2-byte-char text run of `-len` bytes
 //!                     =0 ⇒ embedded view: w: Int, h: Int, then inline view store
-//!     chars     contiguous text bytes for all text runs in run-list order
+//!     chars     contiguous text bytes for all text runs in run-list order;
+//!               each embedded view occupies one placeholder byte at its slot.
 //! ```
 //!
-//! Each text piece's character buffer slice starts at `body_pos + 5 + run_list_len`
-//! and grows by each run's byte length in the order the runs appear.
-//!
-//! The legacy reader inlines new attributes and embedded views as full
-//! sub-stores (`Stores.ReadStore`) right inside the run list. Our envelope
-//! reader has already captured those as children of the StdModel node, so
-//! when decoding the run list we just walk `node.children` in order:
-//! `TextModels.Attributes` children become attribute-pool entries, all
-//! other children become embedded-view pieces. The run-list cursor jumps
-//! past each inline store using the child's known `body_end` offset.
+//! For round-trip the decoder records the on-wire bytes for every piece
+//! (including each text run's raw bytes/words and each view's
+//! placeholder byte) so the encoder can reproduce the file exactly.
 
 use crate::envelope::StoreNode;
 use crate::error::{OdcError, Result};
@@ -43,13 +38,21 @@ const ANO_TERMINATOR: u8 = 0xFF;
 
 #[derive(Debug)]
 pub struct TextModelBody {
+    /// Six-byte super-class version chain at the start of the body.
+    pub super_versions: [u8; STDMODEL_VERSION_PREFIX],
     pub run_list_len: u32,
     pub pieces: Vec<Piece>,
     /// Character-attribute pool, in dictionary order.
     pub attr_pool: Vec<TextAttributes>,
-    /// Indices into `pool` reused across pieces. `None` if a piece has no
-    /// attribute (only happens for malformed files).
     pub view_children: Vec<usize>,
+    /// Bytes between the run-list `0xFF` terminator and the start of
+    /// the character buffer. Zero in modern files; preserved for
+    /// completeness.
+    pub runlist_padding: Vec<u8>,
+    /// Trailing bytes after the last piece's content in the character
+    /// buffer (before `body_end`). Some files reserve a few bytes for
+    /// soft-EOL or padding.
+    pub char_trailing: Vec<u8>,
 }
 
 #[derive(Debug)]
@@ -58,6 +61,10 @@ pub enum Piece {
         attr_idx: usize,
         text: String,
         wide: bool,
+        /// Raw on-wire bytes for this run. `wide=false` ⇒ Latin-1 / ASCII
+        /// 1-byte chars (length == text length). `wide=true` ⇒ UTF-16 LE
+        /// codepoints, length == 2 × text codepoints.
+        raw: Vec<u8>,
     },
     View {
         attr_idx: usize,
@@ -65,6 +72,9 @@ pub enum Piece {
         h: i32,
         /// Index into the parent's `node.children` array.
         child_idx: usize,
+        /// One-byte placeholder this view occupies in the char buffer.
+        /// Conventionally `0x02` (STX) but captured verbatim for safety.
+        placeholder: u8,
     },
 }
 
@@ -85,9 +95,9 @@ pub fn decode_std_model(file: &[u8], node: &StoreNode) -> Result<TextModelBody> 
     let mut cur = Cursor::new(&file[..body_end as usize]);
     cur.set_pos(node.body_pos)?;
 
-    // Skip the super-version chain.
-    for _ in 0..STDMODEL_VERSION_PREFIX {
-        cur.read_byte()?;
+    let mut super_versions = [0u8; STDMODEL_VERSION_PREFIX];
+    for slot in super_versions.iter_mut() {
+        *slot = cur.read_byte()?;
     }
 
     let run_list_len = cur.read_int()?;
@@ -102,14 +112,10 @@ pub fn decode_std_model(file: &[u8], node: &StoreNode) -> Result<TextModelBody> 
         return Err(OdcError::Inconsistent("run list runs past body end"));
     }
 
-    // Walk the run list, building pieces and the attribute pool.
     let mut attr_pool: Vec<TextAttributes> = Vec::new();
     let mut pieces: Vec<Piece> = Vec::new();
-    // Per-text-piece spec: (piece_index, char-buffer org, byte_len, wide).
-    // Embedded views also consume one byte of the char buffer (the
-    // placeholder character) but do not contribute a text-spec entry —
-    // we just bump `org` past their slot.
     let mut text_specs: Vec<(usize, u64, u32, bool)> = Vec::new();
+    let mut view_pieces: Vec<(usize, u64)> = Vec::new(); // (piece_idx, placeholder_org)
     let mut view_children: Vec<usize> = Vec::new();
 
     let mut next_child = 0usize;
@@ -125,8 +131,6 @@ pub fn decode_std_model(file: &[u8], node: &StoreNode) -> Result<TextModelBody> 
         }
 
         let attr_idx: usize = if (ano as usize) == attr_pool.len() {
-            // New pool entry — the next child must be the inline
-            // TextModels.Attributes store at the cursor position.
             let child = node
                 .children
                 .get(next_child)
@@ -142,7 +146,6 @@ pub fn decode_std_model(file: &[u8], node: &StoreNode) -> Result<TextModelBody> 
                 ));
             }
             let attrs = decode_attributes(file, child)?;
-            // Skip over the inline store's bytes.
             cur.set_pos(child.body_pos + child.body_len)?;
             attr_pool.push(attrs);
             next_child += 1;
@@ -158,6 +161,7 @@ pub fn decode_std_model(file: &[u8], node: &StoreNode) -> Result<TextModelBody> 
                 attr_idx,
                 text: String::new(),
                 wide: false,
+                raw: Vec::new(),
             });
             text_specs.push((piece_idx, org, len as u32, false));
             org += len as u64;
@@ -171,12 +175,11 @@ pub fn decode_std_model(file: &[u8], node: &StoreNode) -> Result<TextModelBody> 
                 attr_idx,
                 text: String::new(),
                 wide: true,
+                raw: Vec::new(),
             });
             text_specs.push((piece_idx, org, bytes, true));
             org += bytes as u64;
         } else {
-            // len == 0 ⇒ embedded view. Reader code does INC(org) — each
-            // view occupies one placeholder byte in the char buffer.
             let w = cur.read_int()?;
             let h = cur.read_int()?;
             let child = node
@@ -194,31 +197,37 @@ pub fn decode_std_model(file: &[u8], node: &StoreNode) -> Result<TextModelBody> 
                 ));
             }
             cur.set_pos(child.body_pos + child.body_len)?;
+            let piece_idx = pieces.len();
             pieces.push(Piece::View {
                 attr_idx,
                 w,
                 h,
                 child_idx: next_child,
+                placeholder: 0,
             });
+            view_pieces.push((piece_idx, org));
             view_children.push(next_child);
             next_child += 1;
             org += 1;
         }
     }
 
-    // Cursor should now be at exactly chars_pos (the writer rounds the run
-    // list to use exactly run_list_len bytes).
-    if cur.pos() > chars_pos {
-        return Err(OdcError::Inconsistent("run list overran its declared length"));
-    }
+    // Capture any bytes between the terminator and chars_pos (rare, but
+    // keep verbatim for safety).
+    let runlist_padding_len = (chars_pos - cur.pos()) as usize;
+    let runlist_padding = if runlist_padding_len > 0 {
+        cur.read_bytes(runlist_padding_len)?.to_vec()
+    } else {
+        Vec::new()
+    };
+
     cur.set_pos(chars_pos)?;
 
-    // Read each text piece's bytes from its specific char-buffer org. We
-    // seek per-piece because embedded view placeholders sit between text
-    // runs and we don't want their bytes leaking into the next text run.
+    // Read each text piece's raw bytes and decoded text from its
+    // char-buffer org. Per-piece seek so view placeholders never leak.
     for (piece_idx, piece_org, byte_len, wide) in text_specs {
         cur.set_pos(piece_org)?;
-        let bytes = cur.read_bytes(byte_len as usize)?;
+        let bytes = cur.read_bytes(byte_len as usize)?.to_vec();
         let text = if wide {
             let words: Vec<u16> = bytes
                 .chunks_exact(2)
@@ -228,15 +237,38 @@ pub fn decode_std_model(file: &[u8], node: &StoreNode) -> Result<TextModelBody> 
         } else {
             bytes.iter().map(|&b| b as char).collect()
         };
-        if let Piece::Text { text: dst, .. } = &mut pieces[piece_idx] {
+        if let Piece::Text { text: dst, raw, .. } = &mut pieces[piece_idx] {
             *dst = text;
+            *raw = bytes;
         }
     }
 
+    // Read each view piece's placeholder byte from its slot in the char
+    // buffer.
+    for (piece_idx, view_org) in view_pieces {
+        cur.set_pos(view_org)?;
+        let placeholder = cur.read_byte()?;
+        if let Piece::View { placeholder: slot, .. } = &mut pieces[piece_idx] {
+            *slot = placeholder;
+        }
+    }
+
+    // Trailing chars that weren't covered by any piece (rare).
+    let used_end = org;
+    let char_trailing = if used_end < body_end {
+        cur.set_pos(used_end)?;
+        cur.read_bytes((body_end - used_end) as usize)?.to_vec()
+    } else {
+        Vec::new()
+    };
+
     Ok(TextModelBody {
+        super_versions,
         run_list_len: run_list_len as u32,
         pieces,
         attr_pool,
         view_children,
+        runlist_padding,
+        char_trailing,
     })
 }

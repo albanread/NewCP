@@ -191,12 +191,12 @@ pub fn lift_text_model(
 
 fn classify(file: &[u8], parent: &StoreNode, piece: &Piece) -> Result<Classified> {
     match piece {
-        Piece::Text { attr_idx, text, wide } => Ok(Classified::Text {
+        Piece::Text { attr_idx, text, wide, .. } => Ok(Classified::Text {
             attr_idx: *attr_idx,
             text: text.clone(),
             wide: *wide,
         }),
-        Piece::View { attr_idx, w, h, child_idx } => {
+        Piece::View { attr_idx, w, h, child_idx, .. } => {
             let child = &parent.children[*child_idx];
 
             if matches_link(child) {
@@ -217,7 +217,7 @@ fn classify(file: &[u8], parent: &StoreNode, piece: &Piece) -> Result<Classified
                         child_idx: *child_idx,
                         link: Some(LinkPayload {
                             version: link.version,
-                            cmd: link.cmd.unwrap_or_default(),
+                            cmd: link.cmd.map(|s| s.to_string()).unwrap_or_default(),
                             close: link.close,
                         }),
                         target: None,
@@ -245,7 +245,7 @@ fn classify(file: &[u8], parent: &StoreNode, piece: &Piece) -> Result<Classified
                         link: None,
                         target: Some(TargetPayload {
                             version: t.version,
-                            name: t.ident.unwrap_or_default(),
+                            name: t.ident.map(|s| s.to_string()).unwrap_or_default(),
                         }),
                         fold: None,
                     }),
@@ -286,7 +286,7 @@ fn classify(file: &[u8], parent: &StoreNode, piece: &Piece) -> Result<Classified
                     fold: Some(FoldPayload {
                         version: f.version,
                         collapsed: f.collapsed,
-                        label: f.label,
+                        label: f.label.to_string(),
                         hidden,
                     }),
                 });

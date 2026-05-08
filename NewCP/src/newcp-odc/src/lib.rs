@@ -8,6 +8,7 @@
 //! …) remain opaque sub-stores for now and are referenced from the
 //! decoded piece list by their type name and store id.
 
+mod body_encoders;
 mod controls;
 mod envelope;
 mod error;
@@ -22,17 +23,20 @@ mod text_views;
 mod writer;
 mod yaml;
 
-pub use controls::{decode_control, matches_control, Control};
+pub use controls::{decode_control, encode_control, matches_control, Control, CtrlString};
 pub use envelope::{read_bytes, read_document, Document, StoreKind, StoreNode};
 pub use error::{OdcError, Result};
 pub use lifted::{lift_text_model, LiftedPiece};
-pub use std_folds::{decode_fold, matches_fold, Fold};
-pub use std_links::{close_label, decode_link, decode_target, matches_link, matches_target, Link, Side, Target};
+pub use std_folds::{decode_fold, encode_fold_prefix, matches_fold, Fold, FoldLabel};
+pub use std_links::{
+    close_label, decode_link, decode_target, encode_link, encode_target, matches_link,
+    matches_target, Link, LinkString, Side, Target,
+};
 pub use text_attributes::{decode_attributes, matches_attributes, TextAttributes};
 pub use text_model::{decode_std_model, matches_std_model, Piece, TextModelBody};
 pub use text_rulers::{
-    decode_ruler_attributes, decode_std_ruler, matches_ruler_attributes, matches_std_ruler,
-    matches_std_style, Tab, TextRulerAttributes,
+    decode_ruler_attributes, decode_std_ruler, encode_ruler_attributes, matches_ruler_attributes,
+    matches_std_ruler, matches_std_style, Tab, TextRulerAttributes,
 };
 pub use text_views::{decode_std_view, matches_std_view, StdViewBody};
 pub use writer::{check_roundtrip, write_document};

@@ -34,6 +34,7 @@ use crate::primitives::Cursor;
 
 #[derive(Debug, Clone)]
 pub struct StdViewBody {
+    pub store_version: u8,
     pub view_version: u8,
     pub container_version: u8,
     pub textview_version: u8,
@@ -69,7 +70,7 @@ pub fn decode_std_view(file: &[u8], node: &StoreNode) -> Result<StdViewBody> {
 
     // The first three version bytes from Stores.Store, Views.View,
     // Containers.View. Stores.Store version is always 0 for non-elem.
-    let _store_version = cur.read_byte()?;
+    let store_version = cur.read_byte()?;
     let view_version = cur.read_byte()?;
     let container_version = cur.read_byte()?;
 
@@ -96,6 +97,7 @@ pub fn decode_std_view(file: &[u8], node: &StoreNode) -> Result<StdViewBody> {
     let dy = cur.read_int()?;
 
     Ok(StdViewBody {
+        store_version,
         view_version,
         container_version,
         textview_version,
