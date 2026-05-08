@@ -9,9 +9,64 @@
 use std::cell::RefCell;
 use std::collections::{HashMap, VecDeque};
 use std::ffi::{CStr, CString, c_void};
+use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
 use std::sync::{Condvar, Mutex, MutexGuard, OnceLock, PoisonError};
 
 use serde_json::Value;
+
+// ---------------------------------------------------------------------------
+// Structured tracing
+// ---------------------------------------------------------------------------
+//
+// All surface/MVC pipeline events are tagged `[wingui-trace]` so they can be
+// grepped or filtered out wholesale. This is intentionally always-on during
+// development; set `NEWCP_WINGUI_TRACE=0` to silence.
+//
+// Format convention: key=value pairs, space separated, after a `kind=...`
+// classifier. The kind names are stable enough that downstream tooling (or a
+// human running `findstr`) can rely on them:
+//
+//   submit, submit_dropped_stale,
+//   drain_begin, drain_batch, drain_end,
+//   on_frame, publish_ui, bind_fail,
+//   reset_composition, present_request
+//
+// Per-frame chatter is gated separately by NEWCP_WINGUI_TRACE_FRAMES so the
+// always-on mode stays useful without 60Hz spam.
+
+fn trace_enabled() -> bool {
+    static CACHE: OnceLock<bool> = OnceLock::new();
+    *CACHE.get_or_init(|| match std::env::var("NEWCP_WINGUI_TRACE") {
+        Ok(v) => !matches!(v.trim(), "0" | "false" | "off" | ""),
+        Err(_) => true,
+    })
+}
+
+fn trace_frames_enabled() -> bool {
+    static CACHE: OnceLock<bool> = OnceLock::new();
+    *CACHE.get_or_init(|| match std::env::var("NEWCP_WINGUI_TRACE_FRAMES") {
+        Ok(v) => matches!(v.trim(), "1" | "true" | "on"),
+        Err(_) => false,
+    })
+}
+
+macro_rules! wingui_trace {
+    ($($arg:tt)*) => {
+        if trace_enabled() {
+            eprintln!("[wingui-trace] {}", format_args!($($arg)*));
+        }
+    };
+}
+
+/// Track the most recent `on_frame` index so other trace points can reference
+/// it without plumbing the index through every call.
+static LAST_FRAME_INDEX: AtomicU64 = AtomicU64::new(0);
+/// Bumped each time `host_publish_ui` runs, so we can correlate spec
+/// republish events with surface presenter recreations on the C++ side.
+static PUBLISH_UI_COUNT: AtomicU64 = AtomicU64::new(0);
+/// Set true once we've logged the first on_frame so we can spam-trace the
+/// startup frames specifically.
+static FIRST_FRAME_LOGGED: AtomicBool = AtomicBool::new(false);
 
 use crate::wingui_ffi::SuperTerminalRunResult;
 use crate::wingui_spec_ffi::{
@@ -477,6 +532,23 @@ fn hostframe_rgba_gpu_copy(
 /// keeping this function as a thin orchestrator.
 fn drain_pane_render_batches() {
     let pending = take_pending_batches();
+    if pending.is_empty() {
+        // Optional per-frame trace for empty drains — useful for confirming
+        // on_frame is firing while CP isn't submitting anything (the most
+        // suspicious "vanishes off the window" mode).
+        if trace_frames_enabled() {
+            wingui_trace!(
+                "kind=drain_empty frame_index={} publish_ui_count={}",
+                LAST_FRAME_INDEX.load(Ordering::Relaxed),
+                PUBLISH_UI_COUNT.load(Ordering::Relaxed),
+            );
+        }
+        return;
+    }
+
+    let frame_index = LAST_FRAME_INDEX.load(Ordering::Relaxed);
+    wingui_trace!("kind=drain_begin frame_index={} batches={}", frame_index, pending.len());
+
     for batch in pending {
         eprintln!(
             "[WinBatch] drain pane={} seq={} flags={} commands={}",
@@ -484,11 +556,28 @@ fn drain_pane_render_batches() {
         );
         let _ = hostframe_surface_reset_composition(batch.pane_id as i64);
         let pane_layout = current_pane_layout(batch.pane_id);
+        // Layout is the most informative single signal: if it ever reports
+        // visible=0 or width/height<=0 we'd never see content even if every
+        // FFI call succeeds. Always log it on drain.
+        match pane_layout {
+            Some(l) => wingui_trace!(
+                "kind=drain_batch pane={} seq={} cmds={} flags={} layout=(x={} y={} w={} h={} vis={} cols={} rows={})",
+                batch.pane_id, batch.sequence, batch.commands.len(), batch.flags,
+                l.x, l.y, l.width, l.height, l.visible, l.columns, l.rows,
+            ),
+            None => wingui_trace!(
+                "kind=drain_batch pane={} seq={} cmds={} flags={} layout=none frame_view_null={}",
+                batch.pane_id, batch.sequence, batch.commands.len(), batch.flags,
+                FRAME_VIEW.with(|fv| fv.borrow().is_null()),
+            ),
+        }
         let pane_id_i64 = batch.pane_id as i64;
         for command in batch.commands {
             command.apply(pane_id_i64, pane_layout);
         }
     }
+
+    wingui_trace!("kind=drain_end frame_index={}", frame_index);
 }
 
 /// Drain the queued batches under the global mutex.
@@ -500,6 +589,7 @@ fn take_pending_batches() -> Vec<PaneRenderBatch> {
     let mut guard = match pending_pane_batches().lock() {
         Ok(g) => g,
         Err(poisoned) => {
+            wingui_trace!("kind=pending_batches_poisoned action=drop");
             eprintln!(
                 "[wingui_host] pending pane batches mutex poisoned; dropping queued batches",
             );
@@ -775,6 +865,25 @@ unsafe extern "system" fn on_frame(
     // Store frame_view for the duration of this call so WinFrame.* shims can use it.
     FRAME_VIEW.with(|fv| *fv.borrow_mut() = frame_view);
 
+    let frame_index = if frame_view.is_null() {
+        0
+    } else {
+        unsafe { crate::wingui_spec_ffi::wingui_spec_bind_frame_index(frame_view) as u64 }
+    };
+    LAST_FRAME_INDEX.store(frame_index, Ordering::Relaxed);
+
+    if !FIRST_FRAME_LOGGED.swap(true, Ordering::Relaxed) {
+        wingui_trace!(
+            "kind=on_frame_first frame_index={} frame_view_null={}",
+            frame_index, frame_view.is_null(),
+        );
+    } else if trace_frames_enabled() {
+        wingui_trace!(
+            "kind=on_frame frame_index={} frame_view_null={}",
+            frame_index, frame_view.is_null(),
+        );
+    }
+
     drain_pane_render_batches();
 
     // Clear frame_view before returning so stale use is caught as a null deref.
@@ -985,6 +1094,7 @@ fn packed_argb_to_rgba(colour: i64) -> [u8; 4] {
 
 fn bind_frame_pane(frame_view: *const WinguiSpecBindFrameView, pane_id: i64) -> Option<WinguiSpecBindPaneRef> {
     if frame_view.is_null() {
+        wingui_trace!("kind=bind_fail pane={} reason=frame_view_null", pane_id);
         return None;
     }
     let mut pane_ref = WinguiSpecBindPaneRef {
@@ -1001,6 +1111,11 @@ fn bind_frame_pane(frame_view: *const WinguiSpecBindFrameView, pane_id: i64) -> 
         )
     };
     if ok == 0 {
+        // Silent bind failures are the most common way for a hostframe call
+        // to return 0 with no other signal. Trace once per failure so we can
+        // tell whether a vanish is "we never bound the pane" vs "we drew but
+        // it didn't appear".
+        wingui_trace!("kind=bind_fail pane={} reason=spec_bind_returned_zero", pane_id);
         None
     } else {
         Some(pane_ref)
@@ -1092,25 +1207,42 @@ pub extern "C" fn host_request_close() {
 
 #[unsafe(export_name = "HostWindows.PublishUi")]
 pub extern "C" fn host_publish_ui(json_ptr: *const u8) {
+    // Spec republish is the prime suspect for the surface-pane "vanish" bug:
+    // if the C++ smart-diff destroys and re-creates the surface node's HWND
+    // the host presenter is rebuilt and the buffer content is lost. CP draws
+    // once, so it never repaints. Increment a counter so other trace points
+    // (drain, presenter_create on the C++ side) can be correlated against
+    // exact PublishUi events.
+    let publish_id = PUBLISH_UI_COUNT.fetch_add(1, Ordering::Relaxed) + 1;
+
     let r = runtime_ptr();
     if r.is_null() {
+        wingui_trace!("kind=publish_ui id={} state=runtime_null", publish_id);
         eprintln!("[wingui_host] PublishUi: runtime ptr is null — window not open yet");
         return;
     }
     if json_ptr.is_null() {
+        wingui_trace!("kind=publish_ui id={} state=json_null", publish_id);
         eprintln!("[wingui_host] PublishUi: json_ptr is null");
         return;
     }
-    let json_preview = unsafe {
+    let (json_preview, json_len) = unsafe {
         let s = CStr::from_ptr(json_ptr as *const std::os::raw::c_char).to_string_lossy();
-        if s.len() > 200 { format!("{}...", &s[..200]) } else { s.into_owned() }
+        let len = s.len();
+        let preview = if len > 200 { format!("{}...", &s[..200]) } else { s.into_owned() };
+        (preview, len)
     };
+    wingui_trace!(
+        "kind=publish_ui id={} state=submit json_len={} frame_index={}",
+        publish_id, json_len, LAST_FRAME_INDEX.load(Ordering::Relaxed),
+    );
     eprintln!("[wingui_host] PublishUi: json={}", json_preview);
     let ret = unsafe {
         crate::wingui_spec_ffi::wingui_spec_bind_runtime_load_spec_json(
             r, json_ptr as *const std::os::raw::c_char,
         )
     };
+    wingui_trace!("kind=publish_ui id={} state=done ret={}", publish_id, ret);
     eprintln!("[wingui_host] PublishUi: load_spec_json returned {}", ret);
 }
 
@@ -2901,23 +3033,35 @@ pub extern "C" fn winbatch_install_child_view_bounds(child_id: i32, x0: f64, y0:
 #[unsafe(export_name = "WinBatch.Submit")]
 pub extern "C" fn winbatch_submit() -> i32 {
     let Some(batch) = CURRENT_PANE_BATCH.with(|current| current.borrow_mut().take()) else {
+        wingui_trace!("kind=submit_no_open_batch");
         return 0;
     };
 
-    let mut pending = pending_pane_batches().lock().expect("pending pane batches poisoned");
-    match pending.get(&batch.pane_id) {
-        Some(existing) if existing.sequence > batch.sequence => {
+    let pane_id = batch.pane_id;
+    let sequence = batch.sequence;
+    let cmd_count = batch.commands.len();
+
+    let mut pending = recover_lock(pending_pane_batches().lock(), "pending pane batches submit");
+    if let Some(existing) = pending.get(&pane_id) {
+        if existing.sequence > sequence {
+            wingui_trace!(
+                "kind=submit_dropped_stale pane={} seq={} existing_seq={} cmds={}",
+                pane_id, sequence, existing.sequence, cmd_count,
+            );
+            // Original behavior: log to stderr without trace prefix as well, so the
+            // legacy `[WinBatch]` grep keeps matching.
             eprintln!(
-                "[WinBatch] drop stale pane={} seq={} existing_seq={}",
-                batch.pane_id,
-                batch.sequence,
-                existing.sequence
+                "[WinBatch] drop stale pane={pane_id} seq={sequence} existing_seq={}",
+                existing.sequence,
             );
             return 0;
         }
-        _ => {}
     }
-    pending.insert(batch.pane_id, batch);
+    let replaced = pending.insert(pane_id, batch).is_some();
+    wingui_trace!(
+        "kind=submit pane={} seq={} cmds={} replaced_pending={}",
+        pane_id, sequence, cmd_count, replaced,
+    );
     1
 }
 
