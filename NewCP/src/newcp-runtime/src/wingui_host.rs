@@ -107,6 +107,53 @@ pub fn inject_test_event(name: &str, payload: &str) -> bool {
     true
 }
 
+/// Open a stub MDI child window under `parent_window_id` for dev probes.
+///
+/// Used only by the env-gated `NEWCP_TEST_MDI_CHILDREN` test path that
+/// exercises the Phase 2 create_child_window plumbing without needing a
+/// CP-side API yet (CP exports land in MDI Phase 4). The parent must
+/// have been created with `SUPERTERMINAL_WINDOW_FLAG_MDI_FRAME`. Returns
+/// the new child's WindowId on success, or None.
+pub fn open_test_mdi_child(parent_window_id: u64, title: &str, spec_json: &str) -> Option<u64> {
+    let runtime = {
+        let raw = RUNTIME.get().copied().unwrap_or(0);
+        if raw == 0 { return None; }
+        raw as *mut crate::wingui_spec_ffi::WinguiSpecBindRuntime
+    };
+    let title_c = CString::new(title).ok()?;
+    let spec_c = CString::new(spec_json).ok()?;
+    let desc = crate::wingui_ffi::SuperTerminalWindowDesc {
+        title_utf8: title_c.as_ptr(),
+        columns: 60,
+        rows: 20,
+        flags: 0,
+        command_queue_capacity: 256,
+        event_queue_capacity: 256,
+        font_family_utf8: std::ptr::null(),
+        font_pixel_height: 16,
+        dpi_scale: 1.0,
+        text_shader_path_utf8: std::ptr::null(),
+        initial_ui_json_utf8: spec_c.as_ptr(),
+    };
+    let parent = crate::wingui_ffi::SuperTerminalWindowId { value: parent_window_id };
+    let mut out_id = crate::wingui_ffi::SuperTerminalWindowId { value: 0 };
+    let ret = unsafe {
+        crate::wingui_spec_ffi::wingui_spec_bind_runtime_create_child_window(
+            runtime, parent, &desc, &mut out_id,
+        )
+    };
+    if ret == 0 {
+        wingui_trace!("kind=test_mdi_child_create_failed parent={}", parent_window_id);
+        None
+    } else {
+        wingui_trace!(
+            "kind=test_mdi_child_created parent={} child={} title={:?}",
+            parent_window_id, out_id.value, title,
+        );
+        Some(out_id.value)
+    }
+}
+
 static EVENT_QUEUE: EventQueue = EventQueue {
     queue: Mutex::new(VecDeque::new()),
     ready: Condvar::new(),
