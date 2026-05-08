@@ -172,7 +172,7 @@ mod tests {
 
     #[test]
     fn check_mod_empty_is_clean() {
-        let (output, code) = check_mod("Empty");
+        let (output, code) = check_mod("Mod/Tests/Empty.cp");
         assert_eq!(code, 0, "expected exit 0 for Empty.cp\noutput:\n{output}");
         assert!(
             output.trim_end().ends_with("ok"),
@@ -989,7 +989,7 @@ mod tests {
 
     #[test]
     fn invoke_str_arrays_fixed_size_passed_as_pointer() {
-        let (output, code) = invoke_command("StrArrays.Run");
+        let (output, code) = invoke_command("Mod/Tests/StrArrays.cp::Run");
         assert_eq!(code, 0, "expected exit 0 for StrArrays.Run\noutput:\n{output}");
         assert!(
             output.contains("hello from literal"),
