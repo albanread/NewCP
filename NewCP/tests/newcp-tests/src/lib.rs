@@ -103,9 +103,16 @@ mod tests {
         (stdout, code)
     }
 
+    /// Dump LLVM IR for a CP module at `--opt none`.
+    ///
+    /// These tests grep the IR for shape-level patterns (named struct GEPs,
+    /// per-field stores, vtable globals, direct calls, etc.) that LLVM's
+    /// default `-O2` pass pipeline would inline, hoist, or rewrite into byte-
+    /// offset GEPs and memset/memcpy intrinsics. The unoptimized form is the
+    /// stable surface the dump-llvm tests are written against.
     fn dump_llvm(path: &str) -> (String, i32) {
         let out = Command::new(driver_bin())
-            .args(["dump-llvm", path])
+            .args(["dump-llvm", "--opt", "none", path])
             .current_dir(workspace_root())
             .output()
             .expect("failed to spawn driver binary");
@@ -127,11 +134,18 @@ mod tests {
         (stdout, code)
     }
 
+    /// Like [`dump_llvm`], but for an inline source string written to a
+    /// temporary file. Also pinned to `--opt none` for the same reason.
     fn dump_llvm_source(file_name: &str, source: &str) -> (String, i32) {
         let path = std::env::temp_dir().join(file_name);
         std::fs::write(&path, source).expect("failed to write temporary source module");
         let out = Command::new(driver_bin())
-            .args(["dump-llvm", path.to_str().expect("temporary source path should be UTF-8")])
+            .args([
+                "dump-llvm",
+                "--opt",
+                "none",
+                path.to_str().expect("temporary source path should be UTF-8"),
+            ])
             .current_dir(workspace_root())
             .output()
             .expect("failed to spawn driver binary");
