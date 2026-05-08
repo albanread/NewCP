@@ -986,13 +986,22 @@ impl SpecBindRuntime {
             .map(|s| CString::new(s).unwrap_or_default());
         let shader_ptr = shader_cstr.as_ref().map(|s| s.as_ptr()).unwrap_or(std::ptr::null());
         let shader_path_display = shader_path_str.as_deref().unwrap_or("<none>");
-        eprintln!("[wingui_host] run desc: title={:?} cols={} rows={} font_px={} shader_path={:?}",
-            config.title, config.columns, config.rows, config.font_pixel_height, shader_path_display);
+        // Phase 1 test path: NEWCP_MDI_FRAME=1 sets the MDI frame flag on
+        // the main window so we can verify the Win32 MDICLIENT child gets
+        // created and rendered. See docs/mdi_design.md.
+        const SUPERTERMINAL_WINDOW_FLAG_MDI_FRAME: u32 = 0x1;
+        let mdi_frame = matches!(
+            std::env::var("NEWCP_MDI_FRAME").ok().as_deref(),
+            Some("1") | Some("true") | Some("on")
+        );
+        let flags = if mdi_frame { SUPERTERMINAL_WINDOW_FLAG_MDI_FRAME } else { 0 };
+        eprintln!("[wingui_host] run desc: title={:?} cols={} rows={} font_px={} shader_path={:?} flags=0x{:x}",
+            config.title, config.columns, config.rows, config.font_pixel_height, shader_path_display, flags);
         let desc = WinguiSpecBindRunDesc {
             title_utf8: title.as_ptr(),
             columns: config.columns,
             rows: config.rows,
-            flags: 0,
+            flags,
             command_queue_capacity: config.command_queue_capacity,
             event_queue_capacity: config.event_queue_capacity,
             font_family_utf8: font_ptr,
