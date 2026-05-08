@@ -3382,6 +3382,7 @@ pub fn winspec_module_artifact() -> NativeModuleArtifact {
                 ExportEntry::procedure("AddText"),
                 ExportEntry::procedure("AddTextGrid"),
                 ExportEntry::procedure("AddRgbaPane"),
+                ExportEntry::procedure("AddSurface"),
                 ExportEntry::procedure("GetSpec"),
             ]),
             "WinSpec.bootstrap",
@@ -3398,6 +3399,7 @@ pub fn winspec_module_artifact() -> NativeModuleArtifact {
             NativeExportBinding::procedure("AddText",        winspec_add_text        as *const () as usize),
             NativeExportBinding::procedure("AddTextGrid",    winspec_add_text_grid   as *const () as usize),
             NativeExportBinding::procedure("AddRgbaPane",    winspec_add_rgba_pane   as *const () as usize),
+            NativeExportBinding::procedure("AddSurface",     winspec_add_surface     as *const () as usize),
             NativeExportBinding::procedure("GetSpec",        winspec_get_spec        as *const () as usize),
         ],
     )
