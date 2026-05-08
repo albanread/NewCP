@@ -9,7 +9,7 @@
 use std::cell::RefCell;
 use std::collections::{HashMap, VecDeque};
 use std::ffi::{CStr, CString, c_void};
-use std::sync::{Condvar, Mutex, OnceLock};
+use std::sync::{Condvar, Mutex, MutexGuard, OnceLock, PoisonError};
 
 use serde_json::Value;
 
@@ -41,6 +41,28 @@ static EVENT_QUEUE: EventQueue = EventQueue {
     ready: Condvar::new(),
 };
 
+/// Recover from mutex poisoning by logging once and returning the inner guard.
+///
+/// The wingui host runs both producer (UI thread `on_event`) and consumer
+/// (CP worker thread `host_wait_named_event`) under the same process. A
+/// poisoned mutex means one of those threads panicked while holding the
+/// lock — propagating with `expect` would tear down the surviving thread
+/// too, which is the worst outcome for a render path. Recovering the
+/// inner value lets the system limp on; callers that cannot tolerate a
+/// torn queue should still inspect contents themselves.
+fn recover_lock<'a, T>(
+    result: Result<MutexGuard<'a, T>, PoisonError<MutexGuard<'a, T>>>,
+    site: &str,
+) -> MutexGuard<'a, T> {
+    match result {
+        Ok(guard) => guard,
+        Err(poisoned) => {
+            eprintln!("[wingui_host] mutex poisoned at {site}; recovering inner state");
+            poisoned.into_inner()
+        }
+    }
+}
+
 unsafe extern "system" fn on_event(
     _user_data: *mut c_void,
     _runtime: *mut WinguiSpecBindRuntime,
@@ -58,7 +80,7 @@ unsafe extern "system" fn on_event(
     let source = if v.source_utf8.is_null() { String::new() }
                  else { unsafe { CStr::from_ptr(v.source_utf8) }.to_string_lossy().into_owned() };
     eprintln!("[wingui_event] name={:?} source={:?} payload={:?}", name, source, payload);
-    let mut q = EVENT_QUEUE.queue.lock().expect("event queue poisoned");
+    let mut q = recover_lock(EVENT_QUEUE.queue.lock(), "EVENT_QUEUE on_event");
     q.push_back(GuiEvent { name, payload });
     EVENT_QUEUE.ready.notify_one();
 }
@@ -448,488 +470,298 @@ fn hostframe_rgba_gpu_copy(
     })
 }
 
+/// Drain queued pane render batches and apply each command to the host frame.
+///
+/// Called from `on_frame` while `FRAME_VIEW` is set to a live frame view.
+/// Each batch's commands are dispatched through [`PaneRenderCommand::apply`],
+/// keeping this function as a thin orchestrator.
 fn drain_pane_render_batches() {
-    let pending: Vec<PaneRenderBatch> = {
-        let mut batches = pending_pane_batches().lock().expect("pending pane batches poisoned");
-        let mut pending: Vec<_> = batches.drain().map(|(_, batch)| batch).collect();
-        pending.sort_by_key(|batch| (batch.sequence, batch.pane_id));
-        pending
-    };
-
+    let pending = take_pending_batches();
     for batch in pending {
         eprintln!(
             "[WinBatch] drain pane={} seq={} flags={} commands={}",
-            batch.pane_id,
-            batch.sequence,
-            batch.flags,
-            batch.commands.len()
+            batch.pane_id, batch.sequence, batch.flags, batch.commands.len(),
         );
         let _ = hostframe_surface_reset_composition(batch.pane_id as i64);
-        let pane_layout = FRAME_VIEW.with(|fv| {
-            let fv_ptr = *fv.borrow();
-            if fv_ptr.is_null() {
-                None
-            } else {
-                bind_frame_pane_layout(fv_ptr, batch.pane_id)
-            }
-        });
+        let pane_layout = current_pane_layout(batch.pane_id);
+        let pane_id_i64 = batch.pane_id as i64;
         for command in batch.commands {
-            match command {
-                PaneRenderCommand::Clear {
-                    buf_mode,
-                    color_r,
-                    color_g,
-                    color_b,
-                    color_a,
-                } => {
-                    if let Some(layout) = pane_layout {
-                        let _ = hostframe_fill_rect(
-                            batch.pane_id as i64,
-                            buf_mode,
-                            0,
-                            1,
-                            color_r,
-                            color_g,
-                            color_b,
-                            color_a,
-                            0.0,
-                            0.0,
-                            layout.width.max(0) as f64,
-                            layout.height.max(0) as f64,
-                            0.0,
-                            color_r,
-                            color_g,
-                            color_b,
-                            color_a,
-                        );
-                    }
+            command.apply(pane_id_i64, pane_layout);
+        }
+    }
+}
+
+/// Drain the queued batches under the global mutex.
+///
+/// Returns batches sorted by `(sequence, pane_id)` so frames render in a
+/// deterministic order. On poison the queue is recovered and cleared so we
+/// don't replay state from a thread that crashed mid-update.
+fn take_pending_batches() -> Vec<PaneRenderBatch> {
+    let mut guard = match pending_pane_batches().lock() {
+        Ok(g) => g,
+        Err(poisoned) => {
+            eprintln!(
+                "[wingui_host] pending pane batches mutex poisoned; dropping queued batches",
+            );
+            let mut g = poisoned.into_inner();
+            g.clear();
+            return Vec::new();
+        }
+    };
+    let mut pending: Vec<_> = guard.drain().map(|(_, batch)| batch).collect();
+    pending.sort_by_key(|batch| (batch.sequence, batch.pane_id));
+    pending
+}
+
+/// Resolve the current frame's layout for `pane_id`, if a frame view is live.
+fn current_pane_layout(
+    pane_id: u64,
+) -> Option<crate::wingui_ffi::SuperTerminalPaneLayout> {
+    FRAME_VIEW.with(|fv| {
+        let fv_ptr = *fv.borrow();
+        if fv_ptr.is_null() {
+            None
+        } else {
+            bind_frame_pane_layout(fv_ptr, pane_id)
+        }
+    })
+}
+
+impl PaneRenderCommand {
+    /// Dispatch this command to the host frame against `pane_id`.
+    ///
+    /// `pane_layout` is required only by `Clear`, which sizes its fill to the
+    /// pane rect; if the layout is unknown the clear is silently skipped to
+    /// match the original drain behavior.
+    fn apply(
+        self,
+        pane_id: i64,
+        pane_layout: Option<crate::wingui_ffi::SuperTerminalPaneLayout>,
+    ) {
+        match self {
+            Self::Clear { buf_mode, color_r, color_g, color_b, color_a } => {
+                let Some(layout) = pane_layout else { return };
+                let _ = hostframe_fill_rect(
+                    pane_id,
+                    buf_mode, 0, 1,
+                    color_r, color_g, color_b, color_a,
+                    0.0, 0.0,
+                    layout.width.max(0) as f64,
+                    layout.height.max(0) as f64,
+                    0.0,
+                    color_r, color_g, color_b, color_a,
+                );
+            }
+            Self::PushClipRect { x0, y0, x1, y1 } => {
+                let _ = hostframe_surface_push_clip_rect(pane_id, x0, y0, x1, y1);
+            }
+            Self::PopClipRect => {
+                let _ = hostframe_surface_pop_clip_rect(pane_id);
+            }
+            Self::PushOffset { dx, dy } => {
+                let _ = hostframe_surface_push_offset(pane_id, dx, dy);
+            }
+            Self::PopOffset => {
+                let _ = hostframe_surface_pop_offset(pane_id);
+            }
+            Self::TextCell { row, column, codepoint, fg, bg } => {
+                let _ = hostframe_text_grid_write_cell(pane_id, row, column, codepoint, fg, bg);
+            }
+            Self::FillRect {
+                buf_mode, blend_mode, clear_before,
+                clear_r, clear_g, clear_b, clear_a,
+                x0, y0, x1, y1, corner_radius,
+                color_r, color_g, color_b, color_a,
+            } => {
+                let _ = hostframe_fill_rect(
+                    pane_id,
+                    buf_mode, blend_mode, clear_before,
+                    clear_r, clear_g, clear_b, clear_a,
+                    x0, y0, x1, y1, corner_radius,
+                    color_r, color_g, color_b, color_a,
+                );
+            }
+            Self::StrokeRect {
+                buf_mode, blend_mode, clear_before,
+                clear_r, clear_g, clear_b, clear_a,
+                x0, y0, x1, y1, half_thickness, corner_radius,
+                color_r, color_g, color_b, color_a,
+            } => {
+                let _ = hostframe_stroke_rect(
+                    pane_id,
+                    buf_mode, blend_mode, clear_before,
+                    clear_r, clear_g, clear_b, clear_a,
+                    x0, y0, x1, y1, half_thickness, corner_radius,
+                    color_r, color_g, color_b, color_a,
+                );
+            }
+            Self::DrawLine {
+                buf_mode, blend_mode, clear_before,
+                clear_r, clear_g, clear_b, clear_a,
+                x0, y0, x1, y1, half_thickness,
+                color_r, color_g, color_b, color_a,
+            } => {
+                let _ = hostframe_draw_line(
+                    pane_id,
+                    buf_mode, blend_mode, clear_before,
+                    clear_r, clear_g, clear_b, clear_a,
+                    x0, y0, x1, y1, half_thickness,
+                    color_r, color_g, color_b, color_a,
+                );
+            }
+            Self::FillCircle {
+                buf_mode, blend_mode, clear_before,
+                clear_r, clear_g, clear_b, clear_a,
+                cx, cy, radius,
+                color_r, color_g, color_b, color_a,
+            } => {
+                let _ = hostframe_fill_circle(
+                    pane_id,
+                    buf_mode, blend_mode, clear_before,
+                    clear_r, clear_g, clear_b, clear_a,
+                    cx, cy, radius,
+                    color_r, color_g, color_b, color_a,
+                );
+            }
+            Self::FillOval {
+                buf_mode, blend_mode, clear_before,
+                clear_r, clear_g, clear_b, clear_a,
+                x0, y0, x1, y1,
+                color_r, color_g, color_b, color_a,
+            } => {
+                let _ = hostframe_fill_oval(
+                    pane_id,
+                    buf_mode, blend_mode, clear_before,
+                    clear_r, clear_g, clear_b, clear_a,
+                    x0, y0, x1, y1,
+                    color_r, color_g, color_b, color_a,
+                );
+            }
+            Self::StrokeCircle {
+                buf_mode, blend_mode, clear_before,
+                clear_r, clear_g, clear_b, clear_a,
+                cx, cy, radius, half_thickness,
+                color_r, color_g, color_b, color_a,
+            } => {
+                let _ = hostframe_stroke_circle(
+                    pane_id,
+                    buf_mode, blend_mode, clear_before,
+                    clear_r, clear_g, clear_b, clear_a,
+                    cx, cy, radius, half_thickness,
+                    color_r, color_g, color_b, color_a,
+                );
+            }
+            Self::StrokeOval {
+                buf_mode, blend_mode, clear_before,
+                clear_r, clear_g, clear_b, clear_a,
+                x0, y0, x1, y1, half_thickness,
+                color_r, color_g, color_b, color_a,
+            } => {
+                let _ = hostframe_stroke_oval(
+                    pane_id,
+                    buf_mode, blend_mode, clear_before,
+                    clear_r, clear_g, clear_b, clear_a,
+                    x0, y0, x1, y1, half_thickness,
+                    color_r, color_g, color_b, color_a,
+                );
+            }
+            Self::DrawArc {
+                buf_mode, blend_mode, clear_before,
+                clear_r, clear_g, clear_b, clear_a,
+                cx, cy, radius, half_thickness, rotation_rad, half_aperture_rad,
+                color_r, color_g, color_b, color_a,
+            } => {
+                let _ = hostframe_draw_arc(
+                    pane_id,
+                    buf_mode, blend_mode, clear_before,
+                    clear_r, clear_g, clear_b, clear_a,
+                    cx, cy, radius, half_thickness, rotation_rad, half_aperture_rad,
+                    color_r, color_g, color_b, color_a,
+                );
+            }
+            Self::DrawPath {
+                buf_mode, blend_mode, clear_before,
+                clear_r, clear_g, clear_b, clear_a,
+                points_xy, closed, half_thickness,
+                color_r, color_g, color_b, color_a,
+            } => {
+                if points_xy.len() < 4 {
+                    return;
                 }
-                PaneRenderCommand::PushClipRect { x0, y0, x1, y1 } => {
-                    let _ = hostframe_surface_push_clip_rect(batch.pane_id as i64, x0, y0, x1, y1);
+                let _ = hostframe_draw_path(
+                    pane_id,
+                    buf_mode, blend_mode, clear_before,
+                    clear_r, clear_g, clear_b, clear_a,
+                    points_xy.as_ptr(),
+                    (points_xy.len() / 2) as i32,
+                    closed, half_thickness,
+                    color_r, color_g, color_b, color_a,
+                );
+            }
+            Self::DrawText {
+                buf_mode, blend_mode, clear_before,
+                clear_r, clear_g, clear_b, clear_a,
+                text, origin_x, origin_y,
+                color_r, color_g, color_b, color_a,
+            } => {
+                let text = CString::new(text).unwrap_or_default();
+                let _ = hostframe_draw_text(
+                    pane_id,
+                    buf_mode, blend_mode, clear_before,
+                    clear_r, clear_g, clear_b, clear_a,
+                    text.as_ptr() as *const u8,
+                    origin_x, origin_y,
+                    color_r, color_g, color_b, color_a,
+                );
+            }
+            Self::MarkRect { mode, x0, y0, x1, y1 } => {
+                let _ = hostframe_mark_rect(
+                    pane_id, 1, 0, 0, 0.0, 0.0, 0.0, 0.0, mode, x0, y0, x1, y1,
+                );
+            }
+            Self::Caret { x0, y0, x1, y1, color_r, color_g, color_b, color_a } => {
+                let _ = hostframe_caret(
+                    pane_id, 1, 0, 0, 0.0, 0.0, 0.0, 0.0,
+                    x0, y0, x1, y1,
+                    color_r, color_g, color_b, color_a,
+                );
+            }
+            Self::SelectionRange { x0, y0, x1, y1, color_r, color_g, color_b, color_a } => {
+                let _ = hostframe_selection_range(
+                    pane_id, 1, 0, 0, 0.0, 0.0, 0.0, 0.0,
+                    x0, y0, x1, y1,
+                    color_r, color_g, color_b, color_a,
+                );
+            }
+            Self::FocusRing {
+                x0, y0, x1, y1, half_thickness, corner_radius,
+                color_r, color_g, color_b, color_a,
+            } => {
+                let _ = hostframe_focus_ring(
+                    pane_id, 1, 0, 0, 0.0, 0.0, 0.0, 0.0,
+                    x0, y0, x1, y1, half_thickness, corner_radius,
+                    color_r, color_g, color_b, color_a,
+                );
+            }
+            Self::ScrollRect { x0, y0, x1, y1, dx, dy } => {
+                let src = SurfaceRect { x0, y0, x1, y1 }.normalize();
+                if src.width() <= 0.0 || src.height() <= 0.0 {
+                    return;
                 }
-                PaneRenderCommand::PopClipRect => {
-                    let _ = hostframe_surface_pop_clip_rect(batch.pane_id as i64);
-                }
-                PaneRenderCommand::PushOffset { dx, dy } => {
-                    let _ = hostframe_surface_push_offset(batch.pane_id as i64, dx, dy);
-                }
-                PaneRenderCommand::PopOffset => {
-                    let _ = hostframe_surface_pop_offset(batch.pane_id as i64);
-                }
-                PaneRenderCommand::TextCell {
-                    row,
-                    column,
-                    codepoint,
-                    fg,
-                    bg,
-                } => {
-                    let _ = hostframe_text_grid_write_cell(
-                        batch.pane_id as i64,
-                        row,
-                        column,
-                        codepoint,
-                        fg,
-                        bg,
-                    );
-                }
-                PaneRenderCommand::FillRect {
-                    buf_mode,
-                    blend_mode,
-                    clear_before,
-                    clear_r,
-                    clear_g,
-                    clear_b,
-                    clear_a,
-                    x0,
-                    y0,
-                    x1,
-                    y1,
-                    corner_radius,
-                    color_r,
-                    color_g,
-                    color_b,
-                    color_a,
-                } => {
-                    let _ = hostframe_fill_rect(
-                        batch.pane_id as i64,
-                        buf_mode,
-                        blend_mode,
-                        clear_before,
-                        clear_r,
-                        clear_g,
-                        clear_b,
-                        clear_a,
-                        x0,
-                        y0,
-                        x1,
-                        y1,
-                        corner_radius,
-                        color_r,
-                        color_g,
-                        color_b,
-                        color_a,
-                    );
-                }
-                PaneRenderCommand::StrokeRect {
-                    buf_mode,
-                    blend_mode,
-                    clear_before,
-                    clear_r,
-                    clear_g,
-                    clear_b,
-                    clear_a,
-                    x0,
-                    y0,
-                    x1,
-                    y1,
-                    half_thickness,
-                    corner_radius,
-                    color_r,
-                    color_g,
-                    color_b,
-                    color_a,
-                } => {
-                    let _ = hostframe_stroke_rect(
-                        batch.pane_id as i64,
-                        buf_mode,
-                        blend_mode,
-                        clear_before,
-                        clear_r,
-                        clear_g,
-                        clear_b,
-                        clear_a,
-                        x0,
-                        y0,
-                        x1,
-                        y1,
-                        half_thickness,
-                        corner_radius,
-                        color_r,
-                        color_g,
-                        color_b,
-                        color_a,
-                    );
-                }
-                PaneRenderCommand::DrawLine {
-                    buf_mode,
-                    blend_mode,
-                    clear_before,
-                    clear_r,
-                    clear_g,
-                    clear_b,
-                    clear_a,
-                    x0,
-                    y0,
-                    x1,
-                    y1,
-                    half_thickness,
-                    color_r,
-                    color_g,
-                    color_b,
-                    color_a,
-                } => {
-                    let _ = hostframe_draw_line(
-                        batch.pane_id as i64,
-                        buf_mode,
-                        blend_mode,
-                        clear_before,
-                        clear_r,
-                        clear_g,
-                        clear_b,
-                        clear_a,
-                        x0,
-                        y0,
-                        x1,
-                        y1,
-                        half_thickness,
-                        color_r,
-                        color_g,
-                        color_b,
-                        color_a,
-                    );
-                }
-                PaneRenderCommand::FillCircle {
-                    buf_mode,
-                    blend_mode,
-                    clear_before,
-                    clear_r,
-                    clear_g,
-                    clear_b,
-                    clear_a,
-                    cx,
-                    cy,
-                    radius,
-                    color_r,
-                    color_g,
-                    color_b,
-                    color_a,
-                } => {
-                    let _ = hostframe_fill_circle(
-                        batch.pane_id as i64,
-                        buf_mode,
-                        blend_mode,
-                        clear_before,
-                        clear_r,
-                        clear_g,
-                        clear_b,
-                        clear_a,
-                        cx,
-                        cy,
-                        radius,
-                        color_r,
-                        color_g,
-                        color_b,
-                        color_a,
-                    );
-                }
-                PaneRenderCommand::FillOval {
-                    buf_mode,
-                    blend_mode,
-                    clear_before,
-                    clear_r,
-                    clear_g,
-                    clear_b,
-                    clear_a,
-                    x0,
-                    y0,
-                    x1,
-                    y1,
-                    color_r,
-                    color_g,
-                    color_b,
-                    color_a,
-                } => {
-                    let _ = hostframe_fill_oval(
-                        batch.pane_id as i64,
-                        buf_mode,
-                        blend_mode,
-                        clear_before,
-                        clear_r,
-                        clear_g,
-                        clear_b,
-                        clear_a,
-                        x0,
-                        y0,
-                        x1,
-                        y1,
-                        color_r,
-                        color_g,
-                        color_b,
-                        color_a,
-                    );
-                }
-                PaneRenderCommand::StrokeCircle {
-                    buf_mode,
-                    blend_mode,
-                    clear_before,
-                    clear_r,
-                    clear_g,
-                    clear_b,
-                    clear_a,
-                    cx,
-                    cy,
-                    radius,
-                    half_thickness,
-                    color_r,
-                    color_g,
-                    color_b,
-                    color_a,
-                } => {
-                    let _ = hostframe_stroke_circle(
-                        batch.pane_id as i64,
-                        buf_mode,
-                        blend_mode,
-                        clear_before,
-                        clear_r,
-                        clear_g,
-                        clear_b,
-                        clear_a,
-                        cx,
-                        cy,
-                        radius,
-                        half_thickness,
-                        color_r,
-                        color_g,
-                        color_b,
-                        color_a,
-                    );
-                }
-                PaneRenderCommand::StrokeOval {
-                    buf_mode,
-                    blend_mode,
-                    clear_before,
-                    clear_r,
-                    clear_g,
-                    clear_b,
-                    clear_a,
-                    x0,
-                    y0,
-                    x1,
-                    y1,
-                    half_thickness,
-                    color_r,
-                    color_g,
-                    color_b,
-                    color_a,
-                } => {
-                    let _ = hostframe_stroke_oval(
-                        batch.pane_id as i64,
-                        buf_mode,
-                        blend_mode,
-                        clear_before,
-                        clear_r,
-                        clear_g,
-                        clear_b,
-                        clear_a,
-                        x0,
-                        y0,
-                        x1,
-                        y1,
-                        half_thickness,
-                        color_r,
-                        color_g,
-                        color_b,
-                        color_a,
-                    );
-                }
-                PaneRenderCommand::DrawArc {
-                    buf_mode,
-                    blend_mode,
-                    clear_before,
-                    clear_r,
-                    clear_g,
-                    clear_b,
-                    clear_a,
-                    cx,
-                    cy,
-                    radius,
-                    half_thickness,
-                    rotation_rad,
-                    half_aperture_rad,
-                    color_r,
-                    color_g,
-                    color_b,
-                    color_a,
-                } => {
-                    let _ = hostframe_draw_arc(
-                        batch.pane_id as i64,
-                        buf_mode,
-                        blend_mode,
-                        clear_before,
-                        clear_r,
-                        clear_g,
-                        clear_b,
-                        clear_a,
-                        cx,
-                        cy,
-                        radius,
-                        half_thickness,
-                        rotation_rad,
-                        half_aperture_rad,
-                        color_r,
-                        color_g,
-                        color_b,
-                        color_a,
-                    );
-                }
-                PaneRenderCommand::DrawPath {
-                    buf_mode,
-                    blend_mode,
-                    clear_before,
-                    clear_r,
-                    clear_g,
-                    clear_b,
-                    clear_a,
-                    points_xy,
-                    closed,
-                    half_thickness,
-                    color_r,
-                    color_g,
-                    color_b,
-                    color_a,
-                } => {
-                    if points_xy.len() < 4 {
-                        continue;
-                    }
-                    let _ = hostframe_draw_path(
-                        batch.pane_id as i64,
-                        buf_mode,
-                        blend_mode,
-                        clear_before,
-                        clear_r,
-                        clear_g,
-                        clear_b,
-                        clear_a,
-                        points_xy.as_ptr(),
-                        (points_xy.len() / 2) as i32,
-                        closed,
-                        half_thickness,
-                        color_r,
-                        color_g,
-                        color_b,
-                        color_a,
-                    );
-                }
-                PaneRenderCommand::DrawText {
-                    buf_mode,
-                    blend_mode,
-                    clear_before,
-                    clear_r,
-                    clear_g,
-                    clear_b,
-                    clear_a,
-                    text,
-                    origin_x,
-                    origin_y,
-                    color_r,
-                    color_g,
-                    color_b,
-                    color_a,
-                } => {
-                    let text = CString::new(text).unwrap_or_default();
-                    let _ = hostframe_draw_text(
-                        batch.pane_id as i64,
-                        buf_mode,
-                        blend_mode,
-                        clear_before,
-                        clear_r,
-                        clear_g,
-                        clear_b,
-                        clear_a,
-                        text.as_ptr() as *const u8,
-                        origin_x,
-                        origin_y,
-                        color_r,
-                        color_g,
-                        color_b,
-                        color_a,
-                    );
-                }
-                PaneRenderCommand::MarkRect { mode, x0, y0, x1, y1 } => {
-                    let _ = hostframe_mark_rect(batch.pane_id as i64, 1, 0, 0, 0.0, 0.0, 0.0, 0.0, mode, x0, y0, x1, y1);
-                }
-                PaneRenderCommand::Caret { x0, y0, x1, y1, color_r, color_g, color_b, color_a } => {
-                    let _ = hostframe_caret(batch.pane_id as i64, 1, 0, 0, 0.0, 0.0, 0.0, 0.0, x0, y0, x1, y1, color_r, color_g, color_b, color_a);
-                }
-                PaneRenderCommand::SelectionRange { x0, y0, x1, y1, color_r, color_g, color_b, color_a } => {
-                    let _ = hostframe_selection_range(batch.pane_id as i64, 1, 0, 0, 0.0, 0.0, 0.0, 0.0, x0, y0, x1, y1, color_r, color_g, color_b, color_a);
-                }
-                PaneRenderCommand::FocusRing { x0, y0, x1, y1, half_thickness, corner_radius, color_r, color_g, color_b, color_a } => {
-                    let _ = hostframe_focus_ring(batch.pane_id as i64, 1, 0, 0, 0.0, 0.0, 0.0, 0.0, x0, y0, x1, y1, half_thickness, corner_radius, color_r, color_g, color_b, color_a);
-                }
-                PaneRenderCommand::ScrollRect { x0, y0, x1, y1, dx, dy } => {
-                    let src = SurfaceRect { x0, y0, x1, y1 }.normalize();
-                    if src.width() <= 0.0 || src.height() <= 0.0 {
-                        continue;
-                    }
-                    let _ = hostframe_rgba_gpu_copy(batch.pane_id as i64, src.x0 + dx, src.y0 + dy, src.x0, src.y0, src.width(), src.height());
-                }
-                PaneRenderCommand::PresentHint => {
-                    winframe_request_present();
-                }
-                PaneRenderCommand::InstallChildViewBounds { child_id, x0, y0, x1, y1 } => {
-                    let _ = hostframe_surface_install_child_view_bounds(batch.pane_id as i64, child_id, x0, y0, x1, y1);
-                }
+                let _ = hostframe_rgba_gpu_copy(
+                    pane_id,
+                    src.x0 + dx, src.y0 + dy,
+                    src.x0, src.y0,
+                    src.width(), src.height(),
+                );
+            }
+            Self::PresentHint => {
+                winframe_request_present();
+            }
+            Self::InstallChildViewBounds { child_id, x0, y0, x1, y1 } => {
+                let _ = hostframe_surface_install_child_view_bounds(
+                    pane_id, child_id, x0, y0, x1, y1,
+                );
             }
         }
     }
@@ -1179,6 +1011,18 @@ fn clear_rgba(clear_r: f64, clear_g: f64, clear_b: f64, clear_a: f64) -> [f32; 4
     [clear_r as f32, clear_g as f32, clear_b as f32, clear_a as f32]
 }
 
+/// Parse the JSON payload, look up `key`, and run `extract` to decode the
+/// expected value type. Returns `None` if any step fails.
+fn winpayload_get_field<T>(
+    payload_ptr: *const u8,
+    key_ptr: *const u8,
+    extract: impl FnOnce(&Value) -> Option<T>,
+) -> Option<T> {
+    let payload = parse_payload_value(payload_ptr)?;
+    let key = parse_payload_key(key_ptr)?;
+    payload.get(&key).and_then(extract)
+}
+
 #[unsafe(export_name = "WinPayload.GetStr")]
 pub extern "C" fn winpayload_get_str(
     payload_ptr: *const u8,
@@ -1186,16 +1030,12 @@ pub extern "C" fn winpayload_get_str(
     out_ptr: *mut u8,
 ) -> i32 {
     clear_shortchar_string(out_ptr, WINPAYLOAD_STR_CAP);
-    let Some(payload) = parse_payload_value(payload_ptr) else {
+    let Some(value) = winpayload_get_field(payload_ptr, key_ptr, |v| {
+        v.as_str().map(str::to_owned)
+    }) else {
         return 0;
     };
-    let Some(key) = parse_payload_key(key_ptr) else {
-        return 0;
-    };
-    let Some(value) = payload.get(&key).and_then(Value::as_str) else {
-        return 0;
-    };
-    copy_shortchar_string(out_ptr, WINPAYLOAD_STR_CAP, value);
+    copy_shortchar_string(out_ptr, WINPAYLOAD_STR_CAP, &value);
     1
 }
 
@@ -1208,13 +1048,7 @@ pub extern "C" fn winpayload_get_int(
     if !out_ptr.is_null() {
         unsafe { *out_ptr = 0; }
     }
-    let Some(payload) = parse_payload_value(payload_ptr) else {
-        return 0;
-    };
-    let Some(key) = parse_payload_key(key_ptr) else {
-        return 0;
-    };
-    let Some(value) = payload.get(&key).and_then(Value::as_i64) else {
+    let Some(value) = winpayload_get_field(payload_ptr, key_ptr, Value::as_i64) else {
         return 0;
     };
     if !out_ptr.is_null() {
@@ -1232,13 +1066,7 @@ pub extern "C" fn winpayload_get_bool(
     if !out_ptr.is_null() {
         unsafe { *out_ptr = 0; }
     }
-    let Some(payload) = parse_payload_value(payload_ptr) else {
-        return 0;
-    };
-    let Some(key) = parse_payload_key(key_ptr) else {
-        return 0;
-    };
-    let Some(value) = payload.get(&key).and_then(Value::as_bool) else {
+    let Some(value) = winpayload_get_field(payload_ptr, key_ptr, Value::as_bool) else {
         return 0;
     };
     if !out_ptr.is_null() {
@@ -3109,15 +2937,21 @@ pub extern "C" fn host_wait_named_event(
     const PAYLOAD_CAP: usize = 4096;
     if name_ptr.is_null() { return 0; }
     let event = {
-        let mut q = EVENT_QUEUE.queue.lock().expect("event queue poisoned");
+        let mut q = recover_lock(EVENT_QUEUE.queue.lock(), "EVENT_QUEUE wait_named_event");
         if timeout_ms < 0 {
             loop {
                 if let Some(ev) = q.pop_front() { break ev; }
-                q = EVENT_QUEUE.ready.wait(q).expect("condvar wait failed");
+                q = recover_lock(EVENT_QUEUE.ready.wait(q), "EVENT_QUEUE wait");
             }
         } else {
             let dur = std::time::Duration::from_millis(timeout_ms as u64);
-            let (mut q2, _) = EVENT_QUEUE.ready.wait_timeout(q, dur).expect("condvar timeout failed");
+            let (mut q2, _) = match EVENT_QUEUE.ready.wait_timeout(q, dur) {
+                Ok(pair) => pair,
+                Err(poisoned) => {
+                    eprintln!("[wingui_host] mutex poisoned at EVENT_QUEUE wait_timeout; recovering");
+                    poisoned.into_inner()
+                }
+            };
             match q2.pop_front() {
                 Some(ev) => ev,
                 None => return 0,
