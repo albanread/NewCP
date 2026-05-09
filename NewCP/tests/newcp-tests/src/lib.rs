@@ -1811,6 +1811,132 @@ mod tests {
 
 
     // -------------------------------------------------------------------------
+    // Dates: pure-value arithmetic (no clock dependency)
+    // -------------------------------------------------------------------------
+
+    #[test]
+    fn dates_day_ordinal_for_2026_05_09() {
+        // Sanity check the BlackBox Day formula round-trips. The exact
+        // ordinal value isn't pinned (different epoch from Unix); we
+        // assert the round-trip in `dates_round_trip` below. Here we
+        // just confirm Day returns a reasonably large positive number
+        // for a 2020s date (sanity).
+        let n = run_function("Mod/Tests/DatesArith.cp", "DayOfMay9_2026");
+        assert!(n > 700_000 && n < 800_000, "unexpected ordinal {}", n);
+    }
+
+    #[test]
+    fn dates_day_round_trip() {
+        // Day(2000-02-29) → DayToDate → 2000-02-29.
+        assert_eq!(run_function("Mod/Tests/DatesArith.cp", "RoundTrip"), 1);
+    }
+
+    #[test]
+    fn dates_weekday_may9_2026_is_saturday() {
+        // 2026-05-09 is a Saturday. BlackBox convention: Mon=0..Sun=6.
+        assert_eq!(
+            run_function("Mod/Tests/DatesArith.cp", "WeekdayOfMay9_2026"),
+            5
+        );
+    }
+
+    #[test]
+    fn dates_weekday_2024_jan_1_is_monday() {
+        assert_eq!(
+            run_function("Mod/Tests/DatesArith.cp", "Weekday2024Jan1"),
+            0
+        );
+    }
+
+    #[test]
+    fn dates_easter_2024() {
+        // Easter Sunday 2024 = March 31, 2024 → 3*100 + 31 = 331.
+        assert_eq!(run_function("Mod/Tests/DatesArith.cp", "Easter2024"), 331);
+    }
+
+    #[test]
+    fn dates_easter_2025() {
+        // Easter Sunday 2025 = April 20, 2025 → 4*100 + 20 = 420.
+        assert_eq!(run_function("Mod/Tests/DatesArith.cp", "Easter2025"), 420);
+    }
+
+    #[test]
+    fn dates_feb29_in_leap_year_is_valid() {
+        assert_eq!(
+            run_function("Mod/Tests/DatesArith.cp", "FebInLeapYearIsValid"),
+            1
+        );
+    }
+
+    #[test]
+    fn dates_feb29_in_nonleap_is_invalid() {
+        assert_eq!(
+            run_function("Mod/Tests/DatesArith.cp", "FebInNonLeapIsInvalid"),
+            0
+        );
+    }
+
+    #[test]
+    fn dates_valid_time_midnight() {
+        assert_eq!(run_function("Mod/Tests/DatesArith.cp", "ValidTimeMidnight"), 1);
+    }
+
+    #[test]
+    fn dates_valid_time_24h_rejected() {
+        assert_eq!(
+            run_function("Mod/Tests/DatesArith.cp", "ValidTimeOutOfRange"),
+            0
+        );
+    }
+
+    // -------------------------------------------------------------------------
+    // Dates + HostDates: real clock + formatting via the OOP hook
+    // -------------------------------------------------------------------------
+
+    #[test]
+    fn dates_get_date_returns_recent_year() {
+        // Hook installed by HostDates.body should fetch a sane local date.
+        assert_eq!(
+            run_function("Mod/Tests/DatesClock.cp", "GetDateReturnsRecentYear"),
+            1
+        );
+    }
+
+    #[test]
+    fn dates_get_utc_date_returns_recent_year() {
+        assert_eq!(
+            run_function("Mod/Tests/DatesClock.cp", "GetUTCDateReturnsRecentYear"),
+            1
+        );
+    }
+
+    #[test]
+    fn dates_get_time_fields_in_range() {
+        assert_eq!(
+            run_function("Mod/Tests/DatesClock.cp", "GetTimeFieldsInRange"),
+            1
+        );
+    }
+
+    #[test]
+    fn dates_date_to_string_non_empty() {
+        // Some characters were written for "5/9/2026" — at least one byte.
+        let n = run_function("Mod/Tests/DatesClock.cp", "DateToStringNonEmpty");
+        assert!(n > 0, "expected non-empty formatted date, got {}", n);
+    }
+
+    #[test]
+    fn dates_time_to_string_zero_pads() {
+        // "07:05:03" — first three chars are '0' (0x30), '7' (0x37), ':' (0x3A).
+        // packed: 0x30 * 65536 + 0x37 * 256 + 0x3A
+        let want = 0x30 * 65536 + 0x37 * 256 + 0x3A;
+        assert_eq!(
+            run_function("Mod/Tests/DatesClock.cp", "TimeToStringFirstThree"),
+            want
+        );
+    }
+
+    // -------------------------------------------------------------------------
     // ENTIER: floor of real → INTEGER  (§10.3)
     // -------------------------------------------------------------------------
 

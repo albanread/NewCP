@@ -1509,10 +1509,30 @@ impl<'m> LowerCtx<'m> {
         name: &str,
     ) -> Option<newcp_sema::ProcedureType> {
         let sema = load_cached_import(module, &mut self.import_cache)?;
-        sema.procedures
+        // Param/result types in the imported procedure carry
+        // `Named { module: None, name: T }` for any T defined locally
+        // in that module — but when consulted from outside, those refs
+        // need to be qualified with the source module so downstream IR
+        // routing (record-by-reference detection, fat-pointer length
+        // resolution, …) routes to the right module's symbols.
+        let local_type_names: std::collections::HashSet<String> = sema
+            .symbols
+            .iter()
+            .filter(|sym| sym.kind == SymbolKind::Type)
+            .map(|sym| sym.name.clone())
+            .collect();
+        let mut signature = sema
+            .procedures
             .iter()
             .find(|proc| proc.name == name && proc.exported)
-            .map(|proc| proc.signature.clone())
+            .map(|proc| proc.signature.clone())?;
+        for param in &mut signature.parameters {
+            qualify_local_named_refs_in_sem_type(&mut param.ty, module, &local_type_names);
+        }
+        if let Some(result) = signature.result_type.as_mut() {
+            qualify_local_named_refs_in_sem_type(result, module, &local_type_names);
+        }
+        Some(signature)
     }
 
     /// True when `name` is a parameter whose IR type is `Ref(_)` (i.e.
@@ -1592,6 +1612,42 @@ impl<'m> LowerCtx<'m> {
             }
             IrType::Ref(inner) => self.resolve_fixed_array_len(inner),
             _ => None,
+        }
+    }
+
+    /// True if `ty` is (or resolves through Named aliases to) a Record.
+    /// Pointer-aliased types do NOT count — they're scalars at the ABI
+    /// level. Used by call arg lowering to decide whether a value-mode
+    /// or IN-mode argument needs to be passed by address.
+    fn semantic_resolves_to_record(&mut self, ty: &SemanticType) -> bool {
+        match ty {
+            SemanticType::Record { .. } => true,
+            SemanticType::Pointer { .. } => false,
+            SemanticType::Named { module: Some(m), name, .. } => {
+                find_imported_module_sema(m)
+                    .and_then(|sema| {
+                        sema.symbols
+                            .iter()
+                            .find(|s| s.kind == SymbolKind::Type && s.name == *name)
+                            .and_then(|s| s.declared_type.clone())
+                    })
+                    .map(|inner| self.semantic_resolves_to_record(&inner))
+                    .unwrap_or(false)
+            }
+            SemanticType::Named { module: None, name, .. } => {
+                let resolved = self
+                    .symbols
+                    .iter()
+                    .rev()
+                    .chain(self.module_symbols.iter())
+                    .find(|s| s.kind == SymbolKind::Type && s.name == *name)
+                    .and_then(|s| s.declared_type.clone());
+                match resolved {
+                    Some(inner) => self.semantic_resolves_to_record(&inner),
+                    None => false,
+                }
+            }
+            _ => false,
         }
     }
 
@@ -1683,7 +1739,17 @@ impl<'m> LowerCtx<'m> {
             } else if let Expr::Designator(des) = arg {
                 // Fixed-size array passed to a non-open-array param (e.g. ARRAY 4 OF CHAR
                 // expected type — still passed by reference per CP rules).
-                if matches!(self.designator_ir_type(des), Some(IrType::Array { .. })) {
+                // Also: a record-typed value passed where a record is expected
+                // (IN d: Date / value-mode d: Date) — CP records are passed
+                // by reference at the ABI level. Without this, the caller
+                // emits `load d` (a struct value) and the callee tries to
+                // GEP on the value, which LLVM rejects.
+                let des_ty = self.designator_ir_type(des);
+                let is_record_value = expected_types
+                    .get(index)
+                    .map(|ty| self.semantic_resolves_to_record(ty))
+                    .unwrap_or(false);
+                if matches!(des_ty, Some(IrType::Array { .. })) || is_record_value {
                     value = self.designator_addr(des);
                 } else {
                     value = self.lower_expr(arg);

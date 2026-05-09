@@ -1,5 +1,6 @@
 pub mod console;
 pub mod gc;
+pub mod host_date_sys;
 pub mod host_file_sys;
 pub mod math;
 pub mod smath;
@@ -935,6 +936,7 @@ fn builtin_native_modules() -> Vec<NativeModuleArtifact> {
         math::native_module_artifact(),
         smath::native_module_artifact(),
         host_file_sys::native_module_artifact(),
+        host_date_sys::native_module_artifact(),
     ];
     #[cfg(windows)]
     modules.push(igui::native_module_artifact());
