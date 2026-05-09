@@ -1,11 +1,5 @@
 pub mod console;
 pub mod gc;
-#[cfg(feature = "gui")]
-pub mod wingui_ffi;
-#[cfg(feature = "gui")]
-pub mod wingui_host;
-#[cfg(feature = "gui")]
-pub mod wingui_spec_ffi;
 
 use std::collections::HashMap;
 
@@ -767,18 +761,6 @@ impl BootstrapReport {
         kernel.register_resident_module("Kernel");
         kernel.register_resident_module("Init");
         let console_module = console::native_module_artifact();
-        #[cfg(feature = "gui")]
-        let host_windows_module = wingui_host::native_module_artifact();
-        #[cfg(feature = "gui")]
-        let winspec_module = wingui_host::winspec_module_artifact();
-        #[cfg(feature = "gui")]
-        let winframe_module = wingui_host::winframe_module_artifact();
-        #[cfg(feature = "gui")]
-        let winpayload_module = wingui_host::winpayload_module_artifact();
-        #[cfg(feature = "gui")]
-        let winbatch_module = wingui_host::winbatch_module_artifact();
-        #[cfg(feature = "gui")]
-        let hostframe_module = wingui_host::hostframe_module_artifact();
         let host_menus = HostedModuleArtifact::new(
             "HostMenus",
             vec!["Kernel".to_string()],
@@ -807,8 +789,6 @@ impl BootstrapReport {
 
         let hosted_modules = vec![
             format!("{} [{}]", console_module.hosted.name, console_module.hosted.source_summary),
-            #[cfg(feature = "gui")]
-            format!("{} [{}]", winbatch_module.hosted.name, winbatch_module.hosted.source_summary),
             format!("{} [{}]", host_menus.name, host_menus.source_summary),
         ];
 
@@ -821,18 +801,6 @@ impl BootstrapReport {
         ];
 
         kernel.register_native_module(console_module);
-        #[cfg(feature = "gui")]
-        kernel.register_native_module(host_windows_module);
-        #[cfg(feature = "gui")]
-        kernel.register_native_module(winspec_module);
-        #[cfg(feature = "gui")]
-        kernel.register_native_module(winframe_module);
-        #[cfg(feature = "gui")]
-        kernel.register_native_module(winpayload_module);
-        #[cfg(feature = "gui")]
-        kernel.register_native_module(winbatch_module);
-        #[cfg(feature = "gui")]
-        kernel.register_native_module(hostframe_module);
         kernel.register_hosted_module(host_menus);
         kernel.register_compiled_module(system_artifact);
         kernel.register_compiled_module(init_shell_artifact);
@@ -946,17 +914,7 @@ pub fn bootstrap_and_describe_interface(module_name: &str) -> String {
 }
 
 fn builtin_native_modules() -> Vec<NativeModuleArtifact> {
-    let mut modules = vec![console::native_module_artifact()];
-    #[cfg(feature = "gui")]
-    {
-        modules.push(wingui_host::native_module_artifact());
-        modules.push(wingui_host::winspec_module_artifact());
-        modules.push(wingui_host::winframe_module_artifact());
-        modules.push(wingui_host::winpayload_module_artifact());
-        modules.push(wingui_host::winbatch_module_artifact());
-        modules.push(wingui_host::hostframe_module_artifact());
-    }
-    modules
+    vec![console::native_module_artifact()]
 }
 
 pub fn native_export_address(module_name: &str, export_name: &str) -> Option<usize> {

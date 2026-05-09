@@ -10,8 +10,6 @@ const COMMANDS: &[&str] = &[
     "load-module",
     "check-mod",
     "check-dir",
-    #[cfg(feature = "gui")]
-    "run-gui",
     "dump-tokens",
     "dump-ast",
     "dump-sema",
@@ -32,12 +30,6 @@ fn main() {
     if command == "bootstrap" {
         println!("{}", newcp_loader::bootstrap_report());
         return;
-    }
-
-    #[cfg(feature = "gui")]
-    if command == "run-gui" {
-        let command_path = args.next();
-        std::process::exit(run_gui(command_path.as_deref()));
     }
 
     if command == "invoke-command" {
@@ -182,163 +174,11 @@ fn print_usage() {
     eprintln!("  newcp-driver load-module <Module|Path> [Module.Command]");
     eprintln!("  newcp-driver check-mod <Module|Path>");
     eprintln!("  newcp-driver check-dir <dir>");
-    eprintln!("  newcp-driver run-gui [Module.Command]");
     eprintln!("  newcp-driver <dump-command> [--opt <none|less|default|aggressive>] <file>");
     eprintln!();
     eprintln!("commands:");
     for command in COMMANDS {
         eprintln!("  {command}");
-    }
-}
-
-#[cfg(feature = "gui")]
-use std::sync::OnceLock;
-
-/// The spec_bind runtime pointer, stored so the CP worker thread can call
-/// `request_stop` when it is done.
-#[cfg(feature = "gui")]
-static GUI_RUNTIME_PTR: OnceLock<usize> = OnceLock::new();
-
-/// Run the wingui spec_bind host on the main (Win32 message-loop) thread.
-/// A background thread bootstraps the CP kernel and invokes App.cp:App.Run,
-/// which owns the event loop and window layout via WinSpec/HostWindows.
-#[cfg(feature = "gui")]
-fn run_gui(command_path: Option<&str>) -> i32 {
-    use newcp_runtime::wingui_host::{HostConfig, SpecBindRuntime};
-
-    // If a command was given, store it so the worker can pass it to the kernel.
-    // When no command is given the kernel boots and App.Run enters the event loop.
-    static GUI_STARTUP_COMMAND: OnceLock<String> = OnceLock::new();
-    if let Some(path) = command_path {
-        let _ = GUI_STARTUP_COMMAND.set(path.to_owned());
-    }
-
-    let runtime = match SpecBindRuntime::new() {
-        Some(r) => r,
-        None => { eprintln!("[run_gui] SpecBindRuntime::new() failed"); return 1; },
-    };
-    eprintln!("[run_gui] SpecBindRuntime created OK");
-
-    // Store pointer for the worker thread.
-    let _ = GUI_RUNTIME_PTR.set(runtime.as_ptr() as usize);
-
-    // Spawn the CP worker.  It bootstraps the kernel and runs App.Run (or a
-    // command-path override if one was provided on the CLI).
-    let startup_cmd = GUI_STARTUP_COMMAND.get().cloned()
-        .unwrap_or_else(|| "App.Run".to_owned());
-    eprintln!("[run_gui] spawning cp_worker_thread with cmd={:?}", startup_cmd);
-    std::thread::spawn(move || cp_worker_thread(startup_cmd));
-
-    eprintln!("[run_gui] entering runtime.run() on main thread...");
-    let config = HostConfig { title: "NewCP".to_string(), ..Default::default() };
-    let exit_code = runtime.run(&config);
-    eprintln!("[run_gui] runtime.run() returned exit_code={}", exit_code);
-    exit_code
-}
-
-/// Worker thread: JIT-compiles and runs the given CP command via LoaderSession.
-/// When the command exits it requests the GUI to close.
-#[cfg(feature = "gui")]
-fn cp_worker_thread(command_path: String) {
-    use newcp_runtime::wingui_spec_ffi::WinguiSpecBindRuntime;
-
-    eprintln!("[cp-worker] thread started, creating LoaderSession...");
-    let mut session = newcp_loader::LoaderSession::new();
-    eprintln!("{}", session.report().render());
-    eprintln!("[cp-worker] LoaderSession ready, invoking command: {}", command_path);
-    eprintln!("[cp-worker] ensure_command_loaded starting...");
-    let loaded = match session.ensure_command_loaded(&command_path) {
-        Ok(l) => { eprintln!("[cp-worker] ensure_command_loaded OK, load_log: {}", l.load.load_log.join(" | ")); l }
-        Err(err) => { eprintln!("[cp-worker] ensure_command_loaded error: {}", err); return; }
-    };
-    // Optional dev-time probe: synthesize button-click events into the same
-    // EVENT_QUEUE that `on_event` uses, so we can verify the surface pane
-    // survives a `clear_log`-style spec republish without needing a human at
-    // the keyboard. Comma-separated NEWCP_TEST_INJECT_EVENTS=name1,name2;
-    // delay before first inject is NEWCP_TEST_INJECT_DELAY_MS (default 4000),
-    // gap between subsequent injects is NEWCP_TEST_INJECT_GAP_MS (default 2500).
-    if let Ok(names) = std::env::var("NEWCP_TEST_INJECT_EVENTS") {
-        let event_names: Vec<String> = names
-            .split(',')
-            .map(|s| s.trim().to_owned())
-            .filter(|s| !s.is_empty())
-            .collect();
-        if !event_names.is_empty() {
-            let delay_ms: u64 = std::env::var("NEWCP_TEST_INJECT_DELAY_MS")
-                .ok().and_then(|v| v.parse().ok()).unwrap_or(4000);
-            let gap_ms: u64 = std::env::var("NEWCP_TEST_INJECT_GAP_MS")
-                .ok().and_then(|v| v.parse().ok()).unwrap_or(2500);
-            std::thread::spawn(move || {
-                std::thread::sleep(std::time::Duration::from_millis(delay_ms));
-                for (i, name) in event_names.iter().enumerate() {
-                    if i > 0 {
-                        std::thread::sleep(std::time::Duration::from_millis(gap_ms));
-                    }
-                    eprintln!("[cp-worker-probe] injecting event #{}: {:?}", i + 1, name);
-                    let _ = newcp_runtime::wingui_host::inject_test_event(name, "{}");
-                }
-            });
-        }
-    }
-
-    // Optional dev-time probe: open N stub MDI child windows under the
-    // main frame to exercise the Phase 2 create_child_window path before
-    // the CP-level OpenChildWindow API exists. Requires the main window
-    // to have been created with NEWCP_MDI_FRAME=1 (otherwise the create
-    // call returns an error from the host side).
-    if let Ok(count_str) = std::env::var("NEWCP_TEST_MDI_CHILDREN") {
-        if let Ok(count) = count_str.parse::<u32>() {
-            if count > 0 {
-                let delay_ms: u64 = std::env::var("NEWCP_TEST_MDI_DELAY_MS")
-                    .ok().and_then(|v| v.parse().ok()).unwrap_or(3000);
-                let gap_ms: u64 = std::env::var("NEWCP_TEST_MDI_GAP_MS")
-                    .ok().and_then(|v| v.parse().ok()).unwrap_or(800);
-                std::thread::spawn(move || {
-                    std::thread::sleep(std::time::Duration::from_millis(delay_ms));
-                    // Main window's id is 1 by construction (the runtime's
-                    // next_window_id starts at 1 and increments per window).
-                    let parent = 1u64;
-                    for i in 1..=count {
-                        if i > 1 {
-                            std::thread::sleep(std::time::Duration::from_millis(gap_ms));
-                        }
-                        let title = format!("Document {}", i);
-                        // Phase 4 probe: each child gets a real surface pane
-                        // with intrinsic vertical+horizontal scrollbars, plus
-                        // a button so we can confirm per-window event routing
-                        // (the click event should arrive with window_id=<child>).
-                        let spec = format!(
-                            r#"{{"type":"window","title":"Document {i}","body":{{"type":"stack","children":[{{"type":"button","id":"hello_child_{i}","text":"Click in child {i}","event":"hello_child_{i}"}},{{"type":"surface","id":"doc_surface_{i}","scrollBars":"both","width":800,"height":600}}]}}}}"#,
-                            i = i,
-                        );
-                        eprintln!("[cp-worker-probe] opening MDI child #{}", i);
-                        let result = newcp_runtime::wingui_host::open_test_mdi_child(
-                            parent, &title, &spec);
-                        eprintln!("[cp-worker-probe] MDI child #{} result: {:?}", i, result);
-                    }
-                });
-            }
-        }
-    }
-
-    eprintln!("[cp-worker] about to call command_fn (JIT execution)...");
-    match session.invoke_command(&command_path) {
-        Ok(result) => {
-            let mut log = result.load_log;
-            log.extend(result.execution_log);
-            eprintln!("[cp-worker] command-log: {}", log.join(" | "));
-        }
-        Err(err) => eprintln!("[cp-worker] command-error: {}", err),
-    }
-    eprintln!("[cp-worker] command finished");
-    drop(loaded);
-
-    // Close the window once the command exits.
-    if let Some(&ptr) = GUI_RUNTIME_PTR.get() {
-        let r = ptr as *mut WinguiSpecBindRuntime;
-        if !r.is_null() {
-            unsafe { newcp_runtime::wingui_spec_ffi::wingui_spec_bind_runtime_request_stop(r, 0) };
-        }
     }
 }
 

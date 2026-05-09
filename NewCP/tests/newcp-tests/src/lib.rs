@@ -76,50 +76,14 @@ mod tests {
         output
     }
 
-    /// Locate `multiwingui/.../wingui.lib` relative to the workspace, in the
-    /// same order `newcp-runtime/build.rs` searches. Returns true if either
-    /// the `manual_build/debug/` or `x64/Debug/` import library is present.
-    ///
-    /// The test harness uses this to decide whether to rebuild the driver
-    /// with `--features gui`. Without this check a plain `cargo build`
-    /// silently strips the gui feature off the on-disk binary and a
-    /// subsequent interactive `run-gui App.Run` returns "unknown command".
-    /// With this check, machines that have multiwingui built keep the gui
-    /// binary; machines without it still get a working CLI driver.
-    fn wingui_lib_available() -> bool {
-        let mut search_root = workspace_root();
-        // Walk up at most a few levels looking for a `multiwingui` directory
-        // — handles both the main checkout layout (sibling of NewCP) and
-        // .claude/worktrees/<name>/NewCP (where multiwingui lives further up).
-        for _ in 0..6 {
-            let candidate = search_root.join("multiwingui");
-            if candidate.is_dir() {
-                let preferred = candidate.join("manual_build").join("debug").join("wingui.lib");
-                let fallback = candidate.join("x64").join("Debug").join("wingui.lib");
-                return preferred.is_file() || fallback.is_file();
-            }
-            match search_root.parent() {
-                Some(parent) => search_root = parent.to_path_buf(),
-                None => break,
-            }
-        }
-        false
-    }
-
     fn driver_bin() -> PathBuf {
         let bin = workspace_root()
             .join("target")
             .join("debug")
             .join(if cfg!(windows) { "newcp-driver.exe" } else { "newcp-driver" });
 
-        let mut args: Vec<&str> = vec!["build", "-p", "newcp-driver"];
-        if wingui_lib_available() {
-            args.push("--features");
-            args.push("gui");
-        }
-
         let status = Command::new("cargo")
-            .args(&args)
+            .args(["build", "-p", "newcp-driver"])
             .current_dir(workspace_root())
             .status()
             .expect("failed to run cargo build for newcp-driver");
