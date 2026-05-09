@@ -48,6 +48,21 @@ CONST
   ModWin*     = 8;
   ModCaps*    = 16;
 
+  (* cursor kinds for SetCursor *)
+  CrArrow*       = 0;
+  CrIBeam*       = 1;
+  CrCrosshair*   = 2;
+  CrHand*        = 3;
+  CrWait*        = 4;
+  CrResizeNS*    = 5;
+  CrResizeEW*    = 6;
+  CrResizeNESW*  = 7;
+  CrResizeNWSE*  = 8;
+  CrSizeAll*     = 9;
+  CrNotAllowed*  = 10;
+  CrHelp*        = 11;
+  CrAppStarting* = 12;
+
 (* Block on the event mailbox. Returns 1 if an event was delivered, 0 on
    timeout. timeoutMs < 0 blocks indefinitely. *)
 PROCEDURE NextEvent*(VAR kind, childId, timeMs, p1, p2, p3, p4: INTEGER;
@@ -90,5 +105,27 @@ PROCEDURE EmitStrokeRect*(x0, y0, x1, y1, cornerRadius, halfThickness,
                           r, g, b, a: REAL);
 PROCEDURE EmitDrawLine*(x0, y0, x1, y1, halfThickness,
                         r, g, b, a: REAL);
+
+(* Phase 3c geometry primitives *)
+PROCEDURE EmitFillOval*(x0, y0, x1, y1,
+                        r, g, b, a: REAL);
+PROCEDURE EmitFillCircle*(cx, cy, radius,
+                          r, g, b, a: REAL);
+PROCEDURE EmitStrokeOval*(x0, y0, x1, y1, halfThickness,
+                          r, g, b, a: REAL);
+PROCEDURE EmitStrokeCircle*(cx, cy, radius, halfThickness,
+                            r, g, b, a: REAL);
+PROCEDURE EmitDrawArc*(cx, cy, radius,
+                       rotationRad, halfApertureRad, halfThickness,
+                       r, g, b, a: REAL);
+
+(* ── Phase 3c: per-child cursor + DPI ─────────────────────────────
+   GetDpi reads the child's effective DPI. Returns 1 on success, 0 if
+   the child id is unknown. dpiX = dpiY = 96.0 at 100% scaling.
+   SetCursor sets the cursor shape applied while the pointer is over
+   the child's render area. Picks one of the Cr* constants above. *)
+
+PROCEDURE GetDpi*(childId: INTEGER; VAR dpiX, dpiY: REAL): INTSHORT;
+PROCEDURE SetCursor*(childId: INTEGER; kind: INTSHORT);
 
 END iGui.

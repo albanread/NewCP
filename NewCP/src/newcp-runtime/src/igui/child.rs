@@ -25,12 +25,14 @@ use windows::core::{w, Error, PCWSTR};
 use windows_numerics::Vector2;
 use windows::Win32::Foundation::{HWND, LPARAM, LRESULT, RECT, WPARAM};
 use windows::Win32::Graphics::Direct2D::Common::{
-    D2D_RECT_F, D2D_SIZE_U, D2D1_ALPHA_MODE_IGNORE, D2D1_COLOR_F, D2D1_PIXEL_FORMAT,
+    D2D1_ALPHA_MODE_IGNORE, D2D1_COLOR_F, D2D1_FIGURE_BEGIN_HOLLOW, D2D1_FIGURE_END_OPEN,
+    D2D1_PIXEL_FORMAT, D2D_RECT_F, D2D_SIZE_F, D2D_SIZE_U,
 };
 use windows::Win32::Graphics::Direct2D::{
-    ID2D1HwndRenderTarget, D2D1_FEATURE_LEVEL_DEFAULT, D2D1_HWND_RENDER_TARGET_PROPERTIES,
+    ID2D1HwndRenderTarget, D2D1_ARC_SEGMENT, D2D1_ARC_SIZE_LARGE, D2D1_ARC_SIZE_SMALL,
+    D2D1_ELLIPSE, D2D1_FEATURE_LEVEL_DEFAULT, D2D1_HWND_RENDER_TARGET_PROPERTIES,
     D2D1_PRESENT_OPTIONS_NONE, D2D1_RENDER_TARGET_PROPERTIES, D2D1_RENDER_TARGET_TYPE_DEFAULT,
-    D2D1_RENDER_TARGET_USAGE_NONE, D2D1_ROUNDED_RECT,
+    D2D1_RENDER_TARGET_USAGE_NONE, D2D1_ROUNDED_RECT, D2D1_SWEEP_DIRECTION_CLOCKWISE,
 };
 use windows::Win32::Foundation::COLORREF;
 use windows::Win32::Graphics::Gdi::{
@@ -43,9 +45,9 @@ use windows::Win32::UI::WindowsAndMessaging::{
     CreateWindowExW, DefMDIChildProcW, DefWindowProcW, GetClientRect, GetParent,
     GetWindowLongPtrW, IsWindow, IsWindowVisible, LoadCursorW, RegisterClassExW, SendMessageW,
     SetWindowLongPtrW, SetWindowPos, CREATESTRUCTW, GWLP_USERDATA, IDC_ARROW,
-    MDICREATESTRUCTW, SWP_NOACTIVATE, SWP_NOZORDER, WINDOW_EX_STYLE, WM_ERASEBKGND,
-    WM_MDIDESTROY, WM_NCCREATE, WM_NCDESTROY, WM_PAINT, WM_SETTEXT, WM_SIZE, WNDCLASSEXW,
-    WNDCLASS_STYLES, WS_CHILD, WS_CLIPSIBLINGS, WS_VISIBLE,
+    MDICREATESTRUCTW, SWP_NOACTIVATE, SWP_NOZORDER, WINDOW_EX_STYLE, WM_DPICHANGED_AFTERPARENT,
+    WM_ERASEBKGND, WM_MDIDESTROY, WM_NCCREATE, WM_NCDESTROY, WM_PAINT, WM_SETCURSOR,
+    WM_SETTEXT, WM_SIZE, WNDCLASSEXW, WNDCLASS_STYLES, WS_CHILD, WS_CLIPSIBLINGS, WS_VISIBLE,
 };
 
 use super::batch as batch_mod;
@@ -330,8 +332,155 @@ fn execute_d2d_batch(
                     )
                 };
             }
+            // ─── Phase 3c geometry primitives (HwndRenderTarget) ────────
+            SurfaceCmd::FillOval { rect, color } => {
+                let brush = solid_brush(target, *color)?;
+                let ellipse = ellipse_from_rect(rect);
+                unsafe { target.FillEllipse(&ellipse, &brush) };
+            }
+            SurfaceCmd::FillCircle {
+                center,
+                radius,
+                color,
+            } => {
+                let brush = solid_brush(target, *color)?;
+                let ellipse = D2D1_ELLIPSE {
+                    point: Vector2 { X: center.x, Y: center.y },
+                    radiusX: *radius,
+                    radiusY: *radius,
+                };
+                unsafe { target.FillEllipse(&ellipse, &brush) };
+            }
+            SurfaceCmd::StrokeOval {
+                rect,
+                half_thickness,
+                color,
+            } => {
+                let brush = solid_brush(target, *color)?;
+                let ellipse = ellipse_from_rect(rect);
+                let stroke_w = (2.0 * half_thickness).max(0.0);
+                unsafe { target.DrawEllipse(&ellipse, &brush, stroke_w, None) };
+            }
+            SurfaceCmd::StrokeCircle {
+                center,
+                radius,
+                half_thickness,
+                color,
+            } => {
+                let brush = solid_brush(target, *color)?;
+                let ellipse = D2D1_ELLIPSE {
+                    point: Vector2 { X: center.x, Y: center.y },
+                    radiusX: *radius,
+                    radiusY: *radius,
+                };
+                let stroke_w = (2.0 * half_thickness).max(0.0);
+                unsafe { target.DrawEllipse(&ellipse, &brush, stroke_w, None) };
+            }
+            SurfaceCmd::DrawArc {
+                center,
+                radius,
+                rotation_rad,
+                half_aperture_rad,
+                half_thickness,
+                color,
+            } => {
+                let brush = solid_brush(target, *color)?;
+                let stroke_w = (2.0 * half_thickness).max(0.0);
+                draw_arc_hwnd(
+                    target,
+                    *center,
+                    *radius,
+                    *rotation_rad,
+                    *half_aperture_rad,
+                    stroke_w,
+                    &brush,
+                )?;
+            }
         }
     }
+    Ok(())
+}
+
+fn solid_brush(
+    target: &ID2D1HwndRenderTarget,
+    color: batch_mod::Rgba,
+) -> Result<windows::Win32::Graphics::Direct2D::ID2D1SolidColorBrush, IGuiError> {
+    unsafe {
+        target.CreateSolidColorBrush(
+            &D2D1_COLOR_F {
+                r: color.r,
+                g: color.g,
+                b: color.b,
+                a: color.a,
+            },
+            None,
+        )
+    }
+    .map_err(|e| IGuiError::D2D(format!("CreateSolidColorBrush failed: {e}")))
+}
+
+fn ellipse_from_rect(rect: &batch_mod::Rect) -> D2D1_ELLIPSE {
+    let cx = 0.5 * (rect.x0 + rect.x1);
+    let cy = 0.5 * (rect.y0 + rect.y1);
+    let rx = 0.5 * (rect.x1 - rect.x0).abs();
+    let ry = 0.5 * (rect.y1 - rect.y0).abs();
+    D2D1_ELLIPSE {
+        point: Vector2 { X: cx, Y: cy },
+        radiusX: rx,
+        radiusY: ry,
+    }
+}
+
+fn draw_arc_hwnd(
+    target: &ID2D1HwndRenderTarget,
+    center: batch_mod::Point,
+    radius: f32,
+    rotation_rad: f32,
+    half_aperture_rad: f32,
+    stroke_w: f32,
+    brush: &windows::Win32::Graphics::Direct2D::ID2D1SolidColorBrush,
+) -> Result<(), IGuiError> {
+    let factory = &renderer::ctx().d2d.factory;
+    let geometry = unsafe { factory.CreatePathGeometry() }
+        .map_err(|e| IGuiError::D2D(format!("CreatePathGeometry: {e}")))?;
+    let sink = unsafe { geometry.Open() }
+        .map_err(|e| IGuiError::D2D(format!("PathGeometry::Open: {e}")))?;
+
+    let start_angle = rotation_rad - half_aperture_rad;
+    let end_angle = rotation_rad + half_aperture_rad;
+    let start = Vector2 {
+        X: center.x + radius * start_angle.cos(),
+        Y: center.y + radius * start_angle.sin(),
+    };
+    let end = Vector2 {
+        X: center.x + radius * end_angle.cos(),
+        Y: center.y + radius * end_angle.sin(),
+    };
+    let total_sweep = (2.0 * half_aperture_rad).abs();
+    let arc_size = if total_sweep > std::f32::consts::PI {
+        D2D1_ARC_SIZE_LARGE
+    } else {
+        D2D1_ARC_SIZE_SMALL
+    };
+    let arc_segment = D2D1_ARC_SEGMENT {
+        point: end,
+        size: D2D_SIZE_F {
+            width: radius,
+            height: radius,
+        },
+        rotationAngle: 0.0,
+        sweepDirection: D2D1_SWEEP_DIRECTION_CLOCKWISE,
+        arcSize: arc_size,
+    };
+    unsafe {
+        sink.BeginFigure(start, D2D1_FIGURE_BEGIN_HOLLOW);
+        sink.AddArc(&arc_segment);
+        sink.EndFigure(D2D1_FIGURE_END_OPEN);
+    }
+    unsafe { sink.Close() }
+        .map_err(|e| IGuiError::D2D(format!("GeometrySink::Close: {e}")))?;
+
+    unsafe { target.DrawGeometry(&geometry, brush, stroke_w, None) };
     Ok(())
 }
 
@@ -393,15 +542,33 @@ fn log_ui_batch(child_id: i64, batch: &batch_mod::PaneBatch) {
                 color,
             } => eprintln!(
                 "[igui-batch-ui]   #{index} DrawLine p0=({:.1}, {:.1}) p1=({:.1}, {:.1}) half_thickness={:.1} rgba=({:.3}, {:.3}, {:.3}, {:.3})",
-                p0.x,
-                p0.y,
-                p1.x,
-                p1.y,
-                half_thickness,
-                color.r,
-                color.g,
-                color.b,
-                color.a
+                p0.x, p0.y, p1.x, p1.y, half_thickness,
+                color.r, color.g, color.b, color.a
+            ),
+            SurfaceCmd::FillOval { rect, color } => eprintln!(
+                "[igui-batch-ui]   #{index} FillOval rect=({:.1}, {:.1})-({:.1}, {:.1}) rgba=({:.3}, {:.3}, {:.3}, {:.3})",
+                rect.x0, rect.y0, rect.x1, rect.y1,
+                color.r, color.g, color.b, color.a
+            ),
+            SurfaceCmd::FillCircle { center, radius, color } => eprintln!(
+                "[igui-batch-ui]   #{index} FillCircle center=({:.1}, {:.1}) r={:.1} rgba=({:.3}, {:.3}, {:.3}, {:.3})",
+                center.x, center.y, radius,
+                color.r, color.g, color.b, color.a
+            ),
+            SurfaceCmd::StrokeOval { rect, half_thickness, color } => eprintln!(
+                "[igui-batch-ui]   #{index} StrokeOval rect=({:.1}, {:.1})-({:.1}, {:.1}) ht={:.1} rgba=({:.3}, {:.3}, {:.3}, {:.3})",
+                rect.x0, rect.y0, rect.x1, rect.y1, half_thickness,
+                color.r, color.g, color.b, color.a
+            ),
+            SurfaceCmd::StrokeCircle { center, radius, half_thickness, color } => eprintln!(
+                "[igui-batch-ui]   #{index} StrokeCircle center=({:.1}, {:.1}) r={:.1} ht={:.1} rgba=({:.3}, {:.3}, {:.3}, {:.3})",
+                center.x, center.y, radius, half_thickness,
+                color.r, color.g, color.b, color.a
+            ),
+            SurfaceCmd::DrawArc { center, radius, rotation_rad, half_aperture_rad, half_thickness, color } => eprintln!(
+                "[igui-batch-ui]   #{index} DrawArc center=({:.1}, {:.1}) r={:.1} rot={:.3} half_ap={:.3} ht={:.1} rgba=({:.3}, {:.3}, {:.3}, {:.3})",
+                center.x, center.y, radius, rotation_rad, half_aperture_rad, half_thickness,
+                color.r, color.g, color.b, color.a
             ),
         }
     }
@@ -675,6 +842,19 @@ fn execute_gdi_batch(
                     *half_thickness,
                 )?;
             }
+            // The GDI path is a diagnostic fallback only. Phase 3c
+            // ellipse / circle / arc primitives are not implemented
+            // here; the user only sees this if the D2D HwndRenderTarget
+            // path failed and we logged the error already.
+            SurfaceCmd::FillOval { .. }
+            | SurfaceCmd::FillCircle { .. }
+            | SurfaceCmd::StrokeOval { .. }
+            | SurfaceCmd::StrokeCircle { .. }
+            | SurfaceCmd::DrawArc { .. } => {
+                eprintln!(
+                    "[igui-gdi] Phase 3c primitive in GDI fallback — skipped (D2D path is the real one)"
+                );
+            }
         }
     }
     Ok(())
@@ -866,8 +1046,12 @@ unsafe extern "system" fn render_host_wnd_proc(
             logged_hwnd_status: false,
             last_logged_sequence: None,
         });
+        let child_id = state.child_id;
         let raw = Box::into_raw(state);
         unsafe { SetWindowLongPtrW(hwnd, GWLP_USERDATA, raw as isize) };
+        // Sample the DPI now and emit the initial dpi-change event so
+        // the language thread starts with a known DPI for this child.
+        super::cursor::refresh_for(child_id, hwnd);
 
         return unsafe { DefWindowProcW(hwnd, msg, wparam, lparam) };
     }
@@ -935,8 +1119,33 @@ unsafe extern "system" fn render_host_wnd_proc(
             }
             LRESULT(0)
         }
+        WM_SETCURSOR => {
+            // Apply the per-child cursor only when the cursor is over
+            // the client area; otherwise let DefWindowProc handle the
+            // non-client cases (resize edges, etc.).
+            let hit = (lparam.0 & 0xFFFF) as i16;
+            const HTCLIENT: i16 = 1;
+            if hit == HTCLIENT && !raw.is_null() {
+                let state = unsafe { &*raw };
+                super::cursor::apply(state.child_id);
+                LRESULT(1)
+            } else {
+                unsafe { DefWindowProcW(hwnd, msg, wparam, lparam) }
+            }
+        }
+        WM_DPICHANGED_AFTERPARENT => {
+            // The parent (MDI child) just changed DPI; refresh ours.
+            if !raw.is_null() {
+                let state = unsafe { &*raw };
+                super::cursor::refresh_for(state.child_id, hwnd);
+            }
+            LRESULT(0)
+        }
         WM_NCDESTROY => {
             if !raw.is_null() {
+                let state = unsafe { &*raw };
+                super::cursor::forget_cursor(state.child_id);
+                super::cursor::forget_dpi(state.child_id);
                 unsafe { SetWindowLongPtrW(hwnd, GWLP_USERDATA, 0) };
                 let _ = unsafe { Box::from_raw(raw) };
             }

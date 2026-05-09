@@ -8,9 +8,13 @@ use std::cell::RefCell;
 use std::collections::HashMap;
 
 use windows::core::Interface;
-use windows::Win32::Graphics::Direct2D::Common::{D2D1_COLOR_F, D2D_RECT_F};
+use windows::Win32::Graphics::Direct2D::Common::{
+    D2D1_COLOR_F, D2D1_FIGURE_BEGIN_HOLLOW, D2D1_FIGURE_END_OPEN, D2D_RECT_F, D2D_SIZE_F,
+};
 use windows::Win32::Graphics::Direct2D::{
-    ID2D1Brush, ID2D1DeviceContext, ID2D1SolidColorBrush, ID2D1StrokeStyle, D2D1_ROUNDED_RECT,
+    ID2D1Brush, ID2D1DeviceContext, ID2D1SolidColorBrush, ID2D1StrokeStyle, D2D1_ARC_SEGMENT,
+    D2D1_ARC_SIZE_LARGE, D2D1_ARC_SIZE_SMALL, D2D1_ELLIPSE, D2D1_ROUNDED_RECT,
+    D2D1_SWEEP_DIRECTION_CLOCKWISE,
 };
 use windows_numerics::Vector2;
 
@@ -151,8 +155,146 @@ pub fn execute(batch: &PaneBatch) -> Result<bool, IGuiError> {
                     )
                 };
             }
+            SurfaceCmd::FillOval { rect, color } => {
+                let brush = BRUSHES.with(|c| c.borrow_mut().get(ctx, *color))?;
+                let ellipse = ellipse_from_rect(rect);
+                unsafe { ctx.FillEllipse(&ellipse, &brush) };
+            }
+            SurfaceCmd::FillCircle {
+                center,
+                radius,
+                color,
+            } => {
+                let brush = BRUSHES.with(|c| c.borrow_mut().get(ctx, *color))?;
+                let ellipse = D2D1_ELLIPSE {
+                    point: Vector2 {
+                        X: center.x,
+                        Y: center.y,
+                    },
+                    radiusX: *radius,
+                    radiusY: *radius,
+                };
+                unsafe { ctx.FillEllipse(&ellipse, &brush) };
+            }
+            SurfaceCmd::StrokeOval {
+                rect,
+                half_thickness,
+                color,
+            } => {
+                let brush = BRUSHES.with(|c| c.borrow_mut().get(ctx, *color))?;
+                let ellipse = ellipse_from_rect(rect);
+                let stroke_w = (2.0 * half_thickness).max(0.0);
+                unsafe { ctx.DrawEllipse(&ellipse, &brush, stroke_w, no_stroke) };
+            }
+            SurfaceCmd::StrokeCircle {
+                center,
+                radius,
+                half_thickness,
+                color,
+            } => {
+                let brush = BRUSHES.with(|c| c.borrow_mut().get(ctx, *color))?;
+                let ellipse = D2D1_ELLIPSE {
+                    point: Vector2 {
+                        X: center.x,
+                        Y: center.y,
+                    },
+                    radiusX: *radius,
+                    radiusY: *radius,
+                };
+                let stroke_w = (2.0 * half_thickness).max(0.0);
+                unsafe { ctx.DrawEllipse(&ellipse, &brush, stroke_w, no_stroke) };
+            }
+            SurfaceCmd::DrawArc {
+                center,
+                radius,
+                rotation_rad,
+                half_aperture_rad,
+                half_thickness,
+                color,
+            } => {
+                let brush = BRUSHES.with(|c| c.borrow_mut().get(ctx, *color))?;
+                let stroke_w = (2.0 * half_thickness).max(0.0);
+                draw_arc(ctx, *center, *radius, *rotation_rad, *half_aperture_rad,
+                         stroke_w, &brush, no_stroke)?;
+            }
         }
     }
 
     Ok(want_present)
+}
+
+/// Build a `D2D1_ELLIPSE` from an axis-aligned bounding rect. The
+/// ellipse fits exactly inside the rect.
+fn ellipse_from_rect(rect: &super::batch::Rect) -> D2D1_ELLIPSE {
+    let cx = 0.5 * (rect.x0 + rect.x1);
+    let cy = 0.5 * (rect.y0 + rect.y1);
+    let rx = 0.5 * (rect.x1 - rect.x0).abs();
+    let ry = 0.5 * (rect.y1 - rect.y0).abs();
+    D2D1_ELLIPSE {
+        point: Vector2 { X: cx, Y: cy },
+        radiusX: rx,
+        radiusY: ry,
+    }
+}
+
+/// Stroke a circular arc spanning
+/// `[rotation_rad - half_aperture_rad, rotation_rad + half_aperture_rad]`.
+/// Builds a transient `ID2D1PathGeometry` with one figure containing
+/// a single arc segment, then `DrawGeometry`.
+fn draw_arc(
+    ctx: &ID2D1DeviceContext,
+    center: super::batch::Point,
+    radius: f32,
+    rotation_rad: f32,
+    half_aperture_rad: f32,
+    stroke_w: f32,
+    brush: &ID2D1Brush,
+    no_stroke: Option<&ID2D1StrokeStyle>,
+) -> Result<(), IGuiError> {
+    let factory = &renderer::ctx().d2d.factory;
+    let geometry = unsafe { factory.CreatePathGeometry() }
+        .map_err(|e| IGuiError::D2D(format!("CreatePathGeometry: {e}")))?;
+    let sink = unsafe { geometry.Open() }
+        .map_err(|e| IGuiError::D2D(format!("ID2D1PathGeometry::Open: {e}")))?;
+
+    let start_angle = rotation_rad - half_aperture_rad;
+    let end_angle = rotation_rad + half_aperture_rad;
+    let start = Vector2 {
+        X: center.x + radius * start_angle.cos(),
+        Y: center.y + radius * start_angle.sin(),
+    };
+    let end = Vector2 {
+        X: center.x + radius * end_angle.cos(),
+        Y: center.y + radius * end_angle.sin(),
+    };
+
+    // half_aperture_rad > π/2 ⇒ large arc.
+    let total_sweep = (2.0 * half_aperture_rad).abs();
+    let arc_size = if total_sweep > std::f32::consts::PI {
+        D2D1_ARC_SIZE_LARGE
+    } else {
+        D2D1_ARC_SIZE_SMALL
+    };
+
+    let arc_segment = D2D1_ARC_SEGMENT {
+        point: end,
+        size: D2D_SIZE_F {
+            width: radius,
+            height: radius,
+        },
+        rotationAngle: 0.0,
+        sweepDirection: D2D1_SWEEP_DIRECTION_CLOCKWISE,
+        arcSize: arc_size,
+    };
+
+    unsafe {
+        sink.BeginFigure(start, D2D1_FIGURE_BEGIN_HOLLOW);
+        sink.AddArc(&arc_segment);
+        sink.EndFigure(D2D1_FIGURE_END_OPEN);
+    }
+    unsafe { sink.Close() }
+        .map_err(|e| IGuiError::D2D(format!("ID2D1GeometrySink::Close: {e}")))?;
+
+    unsafe { ctx.DrawGeometry(&geometry, brush, stroke_w, no_stroke) };
+    Ok(())
 }

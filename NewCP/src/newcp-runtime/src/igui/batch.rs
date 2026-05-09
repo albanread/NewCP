@@ -66,6 +66,35 @@ pub enum SurfaceCmd {
         half_thickness: f32,
         color: Rgba,
     },
+    // ─── Phase 3c additions ────────────────────────────────────────
+    FillOval {
+        rect: Rect,
+        color: Rgba,
+    },
+    FillCircle {
+        center: Point,
+        radius: f32,
+        color: Rgba,
+    },
+    StrokeOval {
+        rect: Rect,
+        half_thickness: f32,
+        color: Rgba,
+    },
+    StrokeCircle {
+        center: Point,
+        radius: f32,
+        half_thickness: f32,
+        color: Rgba,
+    },
+    DrawArc {
+        center: Point,
+        radius: f32,
+        rotation_rad: f32,
+        half_aperture_rad: f32,
+        half_thickness: f32,
+        color: Rgba,
+    },
 }
 
 #[derive(Debug, Clone)]

@@ -14,6 +14,7 @@ pub mod batch;
 pub mod channels;
 mod child;
 pub mod cp_exports;
+mod cursor;
 mod d2d;
 mod d3d;
 mod dwrite;

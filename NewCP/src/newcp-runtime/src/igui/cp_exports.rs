@@ -260,6 +260,125 @@ pub extern "C" fn igui_emit_draw_line(
     });
 }
 
+// ─── Phase 3c geometry primitives ────────────────────────────────────
+
+#[unsafe(export_name = "iGui.EmitFillOval")]
+#[allow(clippy::too_many_arguments)]
+pub extern "C" fn igui_emit_fill_oval(
+    x0: f64, y0: f64, x1: f64, y1: f64,
+    r: f64, g: f64, b: f64, a: f64,
+) {
+    batch_mod::push(SurfaceCmd::FillOval {
+        rect: Rect {
+            x0: x0 as f32, y0: y0 as f32, x1: x1 as f32, y1: y1 as f32,
+        },
+        color: Rgba {
+            r: r as f32, g: g as f32, b: b as f32, a: a as f32,
+        },
+    });
+}
+
+#[unsafe(export_name = "iGui.EmitFillCircle")]
+#[allow(clippy::too_many_arguments)]
+pub extern "C" fn igui_emit_fill_circle(
+    cx: f64, cy: f64, radius: f64,
+    r: f64, g: f64, b: f64, a: f64,
+) {
+    batch_mod::push(SurfaceCmd::FillCircle {
+        center: Point { x: cx as f32, y: cy as f32 },
+        radius: radius as f32,
+        color: Rgba {
+            r: r as f32, g: g as f32, b: b as f32, a: a as f32,
+        },
+    });
+}
+
+#[unsafe(export_name = "iGui.EmitStrokeOval")]
+#[allow(clippy::too_many_arguments)]
+pub extern "C" fn igui_emit_stroke_oval(
+    x0: f64, y0: f64, x1: f64, y1: f64,
+    half_thickness: f64,
+    r: f64, g: f64, b: f64, a: f64,
+) {
+    batch_mod::push(SurfaceCmd::StrokeOval {
+        rect: Rect {
+            x0: x0 as f32, y0: y0 as f32, x1: x1 as f32, y1: y1 as f32,
+        },
+        half_thickness: half_thickness as f32,
+        color: Rgba {
+            r: r as f32, g: g as f32, b: b as f32, a: a as f32,
+        },
+    });
+}
+
+#[unsafe(export_name = "iGui.EmitStrokeCircle")]
+#[allow(clippy::too_many_arguments)]
+pub extern "C" fn igui_emit_stroke_circle(
+    cx: f64, cy: f64, radius: f64,
+    half_thickness: f64,
+    r: f64, g: f64, b: f64, a: f64,
+) {
+    batch_mod::push(SurfaceCmd::StrokeCircle {
+        center: Point { x: cx as f32, y: cy as f32 },
+        radius: radius as f32,
+        half_thickness: half_thickness as f32,
+        color: Rgba {
+            r: r as f32, g: g as f32, b: b as f32, a: a as f32,
+        },
+    });
+}
+
+#[unsafe(export_name = "iGui.EmitDrawArc")]
+#[allow(clippy::too_many_arguments)]
+pub extern "C" fn igui_emit_draw_arc(
+    cx: f64, cy: f64, radius: f64,
+    rotation_rad: f64, half_aperture_rad: f64,
+    half_thickness: f64,
+    r: f64, g: f64, b: f64, a: f64,
+) {
+    batch_mod::push(SurfaceCmd::DrawArc {
+        center: Point { x: cx as f32, y: cy as f32 },
+        radius: radius as f32,
+        rotation_rad: rotation_rad as f32,
+        half_aperture_rad: half_aperture_rad as f32,
+        half_thickness: half_thickness as f32,
+        color: Rgba {
+            r: r as f32, g: g as f32, b: b as f32, a: a as f32,
+        },
+    });
+}
+
+// ─── Phase 3c: DPI + cursor ──────────────────────────────────────────
+
+/// `iGui.GetDpi(childId: INTEGER; VAR dpiX, dpiY: REAL): INTSHORT`.
+/// Returns 1 on success, 0 if the child id is unknown.
+#[unsafe(export_name = "iGui.GetDpi")]
+pub extern "C" fn igui_get_dpi(
+    child_id: i64,
+    out_dpi_x: *mut f64,
+    out_dpi_y: *mut f64,
+) -> i32 {
+    if out_dpi_x.is_null() || out_dpi_y.is_null() {
+        return 0;
+    }
+    match super::cursor::get_dpi(child_id) {
+        Some((x, y)) => {
+            unsafe {
+                *out_dpi_x = x as f64;
+                *out_dpi_y = y as f64;
+            }
+            1
+        }
+        None => 0,
+    }
+}
+
+/// `iGui.SetCursor(childId: INTEGER; kind: INTSHORT)`.
+#[unsafe(export_name = "iGui.SetCursor")]
+pub extern "C" fn igui_set_cursor(child_id: i64, kind: i32) {
+    super::cursor::set_kind(child_id, kind);
+}
+
 /// CP `ARRAY OF SHORTCHAR` is passed as a bare pointer to a sequence
 /// of bytes terminated by `0X`. This helper reads up to 4096 bytes,
 /// stops at the first NUL, and returns the lossy UTF-8 decoding.
@@ -431,6 +550,13 @@ pub fn native_module_artifact() -> NativeModuleArtifact {
                 ExportEntry::procedure("EmitFillRect"),
                 ExportEntry::procedure("EmitStrokeRect"),
                 ExportEntry::procedure("EmitDrawLine"),
+                ExportEntry::procedure("EmitFillOval"),
+                ExportEntry::procedure("EmitFillCircle"),
+                ExportEntry::procedure("EmitStrokeOval"),
+                ExportEntry::procedure("EmitStrokeCircle"),
+                ExportEntry::procedure("EmitDrawArc"),
+                ExportEntry::procedure("GetDpi"),
+                ExportEntry::procedure("SetCursor"),
             ]),
             "iGui.bootstrap",
             "Integrated GUI: MDI frame, Direct2D surfaces, typed event mailbox",
@@ -460,6 +586,34 @@ pub fn native_module_artifact() -> NativeModuleArtifact {
             NativeExportBinding::procedure(
                 "EmitDrawLine",
                 igui_emit_draw_line as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "EmitFillOval",
+                igui_emit_fill_oval as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "EmitFillCircle",
+                igui_emit_fill_circle as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "EmitStrokeOval",
+                igui_emit_stroke_oval as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "EmitStrokeCircle",
+                igui_emit_stroke_circle as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "EmitDrawArc",
+                igui_emit_draw_arc as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "GetDpi",
+                igui_get_dpi as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "SetCursor",
+                igui_set_cursor as *const () as usize,
             ),
         ],
     )
