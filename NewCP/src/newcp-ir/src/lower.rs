@@ -314,6 +314,42 @@ impl<'m> LowerCtx<'m> {
     ///
     /// E.g. `DataPtr = POINTER TO Data` → `Some(IrType::Ptr(Named("Data")))`.
     fn resolve_named_as_ptr_ir_type(&self, type_name: &str) -> Option<IrType> {
+        // Cross-module type alias `"Module.Type"` — load the imported
+        // module's sema and resolve there. Required so field-access on a
+        // local var typed as `Mod.Foo` (e.g. `sl: HostFiles.StdLocator`)
+        // sees Foo as a pointer alias and inserts the necessary Load.
+        if let Some((module, name)) = type_name.split_once('.') {
+            let sema = find_imported_module_sema(module)?;
+            let local_type_names: std::collections::HashSet<String> = sema
+                .symbols
+                .iter()
+                .filter(|sym| sym.kind == SymbolKind::Type)
+                .map(|sym| sym.name.clone())
+                .collect();
+            let mut ty = sema
+                .symbols
+                .iter()
+                .find(|sym| sym.kind == SymbolKind::Type && sym.name == name)
+                .and_then(|sym| sym.declared_type.as_ref())?
+                .clone();
+            // Qualify any internal `Named { module: None, name: T }` refs
+            // (e.g. the pointee `StdLocatorDesc` inside the `Pointer`)
+            // with the importing module name so that downstream IR
+            // lookups know to route to the imported module's symbols.
+            qualify_local_named_refs_in_sem_type(&mut ty, module, &local_type_names);
+            return match ty {
+                SemanticType::Pointer { target, untagged } => {
+                    let inner = map_semantic_type(&target);
+                    Some(if untagged {
+                        IrType::UntaggedPtr(Box::new(inner))
+                    } else {
+                        IrType::Ptr(Box::new(inner))
+                    })
+                }
+                _ => None,
+            };
+        }
+
         let ty = self
             .symbols
             .iter()
@@ -366,12 +402,33 @@ impl<'m> LowerCtx<'m> {
         // which lowers to `ptr` and silently corrupts the call ABI.
         if let Some(module_name) = qual.module.as_deref() {
             let sema = load_cached_import(module_name, &mut self.import_cache)?;
+            // Variable declarations in the imported module record their type
+            // unqualified (e.g. `theDir: StdDir` inside `HostFiles.cp`
+            // stores `Named{module: None, name: "StdDir"}`). When we read
+            // that type from outside the module, we must qualify any
+            // module-local Named refs so that downstream IR lookups
+            // (`flatten_fields_for_ir_type`, `lower_bound_proc_call_expr`)
+            // can route to the right module's symbols.
+            let local_type_names: std::collections::HashSet<String> = sema
+                .symbols
+                .iter()
+                .filter(|sym| sym.kind == SymbolKind::Type)
+                .map(|sym| sym.name.clone())
+                .collect();
             return sema
                 .symbols
                 .iter()
                 .find(|symbol| symbol.name == qual.name)
                 .and_then(|symbol| symbol.declared_type.as_ref())
-                .map(map_semantic_type);
+                .cloned()
+                .map(|mut ty| {
+                    qualify_local_named_refs_in_sem_type(
+                        &mut ty,
+                        module_name,
+                        &local_type_names,
+                    );
+                    map_semantic_type(&ty)
+                });
         }
 
         // WITH-body overrides take priority so field access uses the narrowed type.
@@ -405,19 +462,28 @@ impl<'m> LowerCtx<'m> {
                     cursor = inner.as_ref();
                 }
                 IrType::Named(n) => {
-                    if let Some((module, name)) = n.split_once('.') {
-                        return self.flatten_imported_record_fields(module, name);
+                    let result = if let Some((module, name)) = n.split_once('.') {
+                        self.flatten_imported_record_fields(module, name)
+                    } else {
+                        // For local named types, use flatten_sem_type_fields which resolves
+                        // Named base types (e.g. `Bird RECORD (Animal)` where Animal is Named).
+                        let sem_ty = self
+                            .symbols
+                            .iter()
+                            .rev()
+                            .chain(self.module_symbols.iter())
+                            .find(|sym| sym.kind == SymbolKind::Type && sym.name == n.as_str())
+                            .and_then(|s| s.declared_type.as_ref());
+                        Self::flatten_sem_type_fields(sem_ty, self.module_symbols)
+                    };
+                    if std::env::var("NEWCP_IR_DEBUG").is_ok() {
+                        eprintln!(
+                            "[ir] flatten_fields_for {n}: {} fields = {:?}",
+                            result.len(),
+                            result.iter().map(|(n, _)| n.as_str()).collect::<Vec<_>>(),
+                        );
                     }
-                    // For local named types, use flatten_sem_type_fields which resolves
-                    // Named base types (e.g. `Bird RECORD (Animal)` where Animal is Named).
-                    let sem_ty = self
-                        .symbols
-                        .iter()
-                        .rev()
-                        .chain(self.module_symbols.iter())
-                        .find(|sym| sym.kind == SymbolKind::Type && sym.name == n.as_str())
-                        .and_then(|s| s.declared_type.as_ref());
-                    return Self::flatten_sem_type_fields(sem_ty, self.module_symbols);
+                    return result;
                 }
                 _ => return Vec::new(),
             }
@@ -455,10 +521,13 @@ impl<'m> LowerCtx<'m> {
                             ));
                         }
                         SemanticType::Named { module: Some(m), name, .. } => {
-                            // Cross-module base.
-                            let path = Path::new("Mod").join(format!("{m}.cp"));
-                            if let Ok(base_ast) = read_module_ast(&path) {
-                                let base_sema = analyze_module_ast(&base_ast);
+                            // Cross-module base. Use the same path-search
+                            // strategy as `load_cached_import` (sibling-of-
+                            // importing-source, walk-up-to-Mod/, then
+                            // cwd-relative `Mod/`) so fixtures in
+                            // `Mod/Tests/` can find imports next to them
+                            // or in the parent `Mod/` directory.
+                            if let Some(base_sema) = find_imported_module_sema(m) {
                                 let sym = base_sema.symbols.iter().find(|s| s.name == *name);
                                 let base_fields = Self::flatten_sem_type_fields(
                                     sym.and_then(|s| s.declared_type.as_ref()),
@@ -482,6 +551,29 @@ impl<'m> LowerCtx<'m> {
             SemanticType::Named { module: None, name, .. } => {
                 let sym = module_symbols.iter().find(|s| s.name == *name);
                 Self::flatten_sem_type_fields(sym.and_then(|s| s.declared_type.as_ref()), module_symbols)
+            }
+            // Pointer alias (`Foo = POINTER TO FooDesc`): flatten the
+            // pointed-to type. Required so `flatten_fields_for_ir_type`
+            // resolves field accesses on a pointer-aliased type to the
+            // record's fields rather than returning an empty list.
+            SemanticType::Pointer { target, .. } => {
+                Self::flatten_sem_type_fields(Some(target.as_ref()), module_symbols)
+            }
+            // Cross-module Named: load the imported module's symbols and
+            // recurse. Without this, a pointer alias `Foo.Bar` whose
+            // pointee is `Foo.BarDesc` would stop at the Named here.
+            SemanticType::Named { module: Some(m), name, .. } => {
+                if let Some(base_sema) = find_imported_module_sema(m) {
+                    let sym = base_sema
+                        .symbols
+                        .iter()
+                        .find(|s| s.name == *name && s.kind == SymbolKind::Type);
+                    return Self::flatten_sem_type_fields(
+                        sym.and_then(|s| s.declared_type.as_ref()),
+                        &base_sema.symbols,
+                    );
+                }
+                Vec::new()
             }
             _ => Vec::new(),
         }
@@ -899,16 +991,33 @@ impl<'m> LowerCtx<'m> {
         let des_normalized = self.normalize_designator(des);
         let des = &des_normalized;
 
-        // Pattern: selectors end with [.., Field(method_name), Call(args)].
+        // Pattern: selectors end with [.., Field(method_name), Call(args)]
+        // or [.., Field(method_name), AmbiguousParen(single_qualident)].
+        // The parser emits `AmbiguousParen` when the parenthesised content
+        // is a single qualident that could be either a type-guard target
+        // or a one-argument call; for method dispatch it's always a call.
         let selectors = &des.selectors;
         let n = selectors.len();
         if n < 2 {
             return None;
         }
-        let (Selector::Field(method_name), Selector::Call(call_args)) =
-            (&selectors[n - 2], &selectors[n - 1])
-        else {
+        let Selector::Field(method_name) = &selectors[n - 2] else {
             return None;
+        };
+        // Materialise the call arguments. For `Selector::AmbiguousParen`
+        // we synthesise a single-element Vec<Expr> wrapping the qualident.
+        let synthetic_args: Vec<Expr>;
+        let call_args: &Vec<Expr> = match &selectors[n - 1] {
+            Selector::Call(args) => args,
+            Selector::AmbiguousParen(qual) => {
+                synthetic_args = vec![Expr::Designator(Designator {
+                    span: qual.span,
+                    base: qual.clone(),
+                    selectors: Vec::new(),
+                })];
+                &synthetic_args
+            }
+            _ => return None,
         };
 
         // Resolve the receiver designator (everything before the last two selectors).
@@ -918,7 +1027,15 @@ impl<'m> LowerCtx<'m> {
             base: des.base.clone(),
             selectors: selectors[..n - 2].to_vec(),
         };
-        let prefix_ty = self.designator_ir_type(&prefix_des)?;
+        let prefix_ty = self.designator_ir_type(&prefix_des);
+        if std::env::var("NEWCP_IR_DEBUG").is_ok() {
+            eprintln!(
+                "[ir] lower_bound_proc_call_expr method={method_name} \
+                 prefix_des.base={:?}.{:?} prefix_ty={prefix_ty:?}",
+                des.base.module, des.base.name,
+            );
+        }
+        let prefix_ty = prefix_ty?;
 
         // Strip pointer/ref wrappers to get the Named type.
         fn inner_named(ty: &IrType) -> Option<&str> {
@@ -932,19 +1049,27 @@ impl<'m> LowerCtx<'m> {
         }
         let type_qualified = inner_named(&prefix_ty)?;
 
-        // Strip module qualifier for local lookup (cross-module dispatch deferred).
-        let type_local_name = if let Some((_, local)) = type_qualified.split_once('.') {
-            local
-        } else {
-            type_qualified
-        };
+        // The receiver's type may be cross-module (e.g. `f: Files.File`).
+        // For local types the existing `module_symbols` suffice; for
+        // imported types we load the imported module's sema once and
+        // pass its symbols down. We hold the imported `SemanticModule`
+        // for the rest of the function so the symbol slice it provides
+        // remains valid while we build the IR for this call.
+        let (type_local_name, imported_sema_holder): (&str, Option<SemanticModule>) =
+            match type_qualified.split_once('.') {
+                Some((module_name, local_name)) => (local_name, find_imported_module_sema(module_name)),
+                None => (type_qualified, None),
+            };
+        let lookup_symbols: &[SemanticSymbol] = imported_sema_holder
+            .as_ref()
+            .map(|s| s.symbols.as_slice())
+            .unwrap_or(self.module_symbols);
 
         // Resolve a pointer alias (`Foo = POINTER TO FooDesc`) down to the
         // underlying record type name. Methods are declared on the record,
         // not the pointer alias, and the vtable / sema lookups below use
         // the record name.
-        let type_record_name: &str = self
-            .module_symbols
+        let type_record_name: &str = lookup_symbols
             .iter()
             .find(|s| matches!(s.kind, SymbolKind::Type) && s.name == type_local_name)
             .and_then(|s| s.declared_type.as_ref())
@@ -958,8 +1083,16 @@ impl<'m> LowerCtx<'m> {
             .unwrap_or(type_local_name);
 
         // Check that method_name is actually a METHOD (not a data field) of this type.
-        // Use the sema symbol table to look at Record.methods.
-        let slot = method_slot_in_vtable(type_record_name, method_name, self.module_symbols)?;
+        // Use the (possibly imported) sema symbol table to look at Record.methods.
+        if std::env::var("NEWCP_IR_DEBUG").is_ok() {
+            eprintln!(
+                "[ir] dispatch lookup: prefix_ty={prefix_ty:?} type_qualified={type_qualified} \
+                 type_local={type_local_name} type_record={type_record_name} method={method_name} \
+                 imported_sema={}",
+                imported_sema_holder.is_some()
+            );
+        }
+        let slot = method_slot_in_vtable(type_record_name, method_name, lookup_symbols)?;
 
         // Lower the receiver.  For pointer types, load the pointer first; for Ref types
         // the address already IS the right thing.  We produce the object pointer (ptr).
@@ -978,17 +1111,10 @@ impl<'m> LowerCtx<'m> {
             }
         };
 
-        // Build the call args: explicit args only (receiver is carried in MethodCall::descriptor,
-        // and emit_method_call prepends it as the first LLVM argument).
-        let mut lowered_args: Vec<IrValue> = vec![];
-        for arg in call_args {
-            lowered_args.push(self.lower_expr(arg));
-        }
-
-        // Look up the return type from the method's module-level symbol.
-        // Match against `type_record_name` so pointer aliases resolve.
-        let ret_ty = self
-            .module_symbols
+        // Look up the method's full signature in the receiver's module
+        // symbols. We need both the parameter modes/types (for arg
+        // lowering) and the result type (for the call's IR result).
+        let method_sig: Option<newcp_sema::ProcedureType> = lookup_symbols
             .iter()
             .find(|s| {
                 s.kind == SymbolKind::Procedure
@@ -1000,13 +1126,24 @@ impl<'m> LowerCtx<'m> {
                         _ => None,
                     }) == Some(type_record_name)
             })
-            .and_then(|s| {
-                if let Some(SemanticType::Procedure(pt)) = &s.declared_type {
-                    Some(pt.result_type.as_ref().map(|t| map_semantic_type(t)).unwrap_or(IrType::Void))
-                } else {
-                    None
-                }
-            })
+            .and_then(|s| match &s.declared_type {
+                Some(SemanticType::Procedure(pt)) => Some(pt.clone()),
+                _ => None,
+            });
+
+        // Lower the call args using the shared signature-driven helper so
+        // open-array fat-pointer ABI, VAR-mode address passing, fixed-
+        // array-by-reference, and SHORTCHAR widening all work the same
+        // for method calls as they do for direct procedure calls.
+        // (Receiver is carried in MethodCall::descriptor, not in args.)
+        let (expected_modes, expected_types) =
+            flatten_param_modes_and_types(method_sig.as_ref());
+        let lowered_args =
+            self.lower_args_with_signature(call_args, &expected_modes, &expected_types);
+
+        let ret_ty = method_sig
+            .as_ref()
+            .map(|pt| pt.result_type.as_ref().map(|t| map_semantic_type(t)).unwrap_or(IrType::Void))
             .unwrap_or(IrType::Void);
 
         if ret_ty == IrType::Void {
@@ -1410,8 +1547,13 @@ impl<'m> LowerCtx<'m> {
                 }
             }
             // Fixed-size array source: walk the IR type to recover the length.
-            if let Some(IrType::Array { len, .. }) = self.designator_ir_type(des) {
-                return IrValue::ConstInt(len as i128, IrType::I64);
+            // The type may be a `Named` type alias (local OR cross-module);
+            // resolve through aliases until we either reach a concrete
+            // Array or give up.
+            if let Some(ty) = self.designator_ir_type(des) {
+                if let Some(len) = self.resolve_fixed_array_len(&ty) {
+                    return IrValue::ConstInt(len as i128, IrType::I64);
+                }
             }
         }
         // String literal capacity = char count + 1 (for the trailing NUL).
@@ -1421,32 +1563,55 @@ impl<'m> LowerCtx<'m> {
         IrValue::ConstInt(0, IrType::I64)
     }
 
+    /// If `ty` is (or resolves through aliases to) `IrType::Array { len, .. }`,
+    /// return that length. Handles both local Named aliases and cross-module
+    /// `Mod.Type` aliases (e.g. `Files.Name` -> `[256 x char]`).
+    fn resolve_fixed_array_len(&mut self, ty: &IrType) -> Option<u64> {
+        match ty {
+            IrType::Array { len, .. } => Some(*len as u64),
+            IrType::Named(n) => {
+                // Cross-module Named: `"Module.Type"`.
+                if let Some((module, name)) = n.split_once('.') {
+                    let sema = load_cached_import(module, &mut self.import_cache)?;
+                    let sym = sema
+                        .symbols
+                        .iter()
+                        .find(|s| s.kind == SymbolKind::Type && s.name == name)?;
+                    let resolved = map_semantic_type(sym.declared_type.as_ref()?);
+                    return self.resolve_fixed_array_len(&resolved);
+                }
+                // Local Named: walk module symbols.
+                let sym = self
+                    .symbols
+                    .iter()
+                    .rev()
+                    .chain(self.module_symbols.iter())
+                    .find(|s| s.kind == SymbolKind::Type && s.name == n.as_str())?;
+                let resolved = map_semantic_type(sym.declared_type.as_ref()?);
+                self.resolve_fixed_array_len(&resolved)
+            }
+            IrType::Ref(inner) => self.resolve_fixed_array_len(inner),
+            _ => None,
+        }
+    }
+
     fn lower_call_args(&mut self, callee: &IrValue, args: &[Expr]) -> Vec<IrValue> {
-        let expected_modes = self
-            .callee_procedure_type(callee)
-            .map(|proc_ty| {
-                proc_ty
-                    .parameters
-                    .iter()
-                    .flat_map(|param| std::iter::repeat_n(param.mode, param.names.len()))
-                    .collect::<Vec<_>>()
-            })
-            .unwrap_or_default();
+        let proc_ty = self.callee_procedure_type(callee);
+        let (expected_modes, expected_types) = flatten_param_modes_and_types(proc_ty.as_ref());
+        self.lower_args_with_signature(args, &expected_modes, &expected_types)
+    }
 
-        let expected_types = self
-            .callee_procedure_type(callee)
-            .map(|proc_ty| {
-                proc_ty
-                    .parameters
-                    .iter()
-                    .flat_map(|param| {
-                        let ty = param.ty.clone();
-                        std::iter::repeat_n(ty, param.names.len())
-                    })
-                    .collect::<Vec<_>>()
-            })
-            .unwrap_or_default();
-
+    /// Shared arg-lowering used by both direct procedure calls and method
+    /// calls. The caller supplies the per-position `mode` (CP `VAR`/`OUT`/
+    /// `IN`/value) and `expected_type` so this works for any signature
+    /// source (local procedure, imported procedure, or method on an
+    /// imported record).
+    fn lower_args_with_signature(
+        &mut self,
+        args: &[Expr],
+        expected_modes: &[Option<ParamMode>],
+        expected_types: &[SemanticType],
+    ) -> Vec<IrValue> {
         let mut out: Vec<IrValue> = Vec::with_capacity(args.len());
         for (index, arg) in args.iter().enumerate() {
             let mode = expected_modes.get(index).copied().flatten();
@@ -1463,8 +1628,14 @@ impl<'m> LowerCtx<'m> {
             } else if is_open_array_param {
                 // IN or value open-array param.
                 if let Expr::Designator(des) = arg {
-                    if matches!(self.designator_ir_type(des), Some(IrType::Array { .. })) {
-                        // Fixed-size array source: pass its base address.
+                    let des_ty = self.designator_ir_type(des);
+                    let resolves_to_array = des_ty
+                        .as_ref()
+                        .and_then(|ty| self.resolve_fixed_array_len(ty))
+                        .is_some();
+                    if matches!(des_ty, Some(IrType::Array { .. })) || resolves_to_array {
+                        // Fixed-size array source (possibly via a Named alias
+                        // — local or cross-module): pass its base address.
                         value = self.designator_addr(des);
                     } else {
                         // Forwarding another open-array param. Two sub-cases:
@@ -3281,6 +3452,152 @@ fn load_cached_import<'c>(
     cache.get(module)
 }
 
+/// Decompose a procedure signature into per-position `(mode, type)`
+/// vectors with one entry per scalar parameter (parameters declared as
+/// `a, b, c: T` expand to three entries).
+///
+/// Used by both direct-call and method-call argument lowering so the
+/// open-array fat-pointer ABI, VAR-mode address passing, and
+/// SHORTCHAR widening are applied uniformly.
+fn flatten_param_modes_and_types(
+    proc_ty: Option<&newcp_sema::ProcedureType>,
+) -> (Vec<Option<ParamMode>>, Vec<SemanticType>) {
+    let modes = proc_ty
+        .map(|pt| {
+            pt.parameters
+                .iter()
+                .flat_map(|p| std::iter::repeat_n(p.mode, p.names.len()))
+                .collect::<Vec<_>>()
+        })
+        .unwrap_or_default();
+    let types = proc_ty
+        .map(|pt| {
+            pt.parameters
+                .iter()
+                .flat_map(|p| std::iter::repeat_n(p.ty.clone(), p.names.len()))
+                .collect::<Vec<_>>()
+        })
+        .unwrap_or_default();
+    (modes, types)
+}
+
+/// Walk the inheritance chain of `record_name` (within `symbols`) and
+/// return `(declaring_type_name, method_name)` pairs in vtable-slot
+/// order. Used to seed the vtable of a cross-module-extended concrete
+/// record so that override slot indices line up with the imported base.
+///
+/// Each pair represents the function-pointer text the seed vtable holds
+/// for that slot — typically the abstract-method shim emitted by the
+/// declaring module. Concrete subclasses overwrite these slots.
+fn collect_inherited_method_names(
+    record_name: &str,
+    symbols: &[SemanticSymbol],
+) -> Vec<(String, String)> {
+    use newcp_sema::SymbolKind;
+    let Some(sym) = symbols.iter().find(|s| s.kind == SymbolKind::Type && s.name == record_name)
+    else { return Vec::new() };
+    let Some(SemanticType::Record { base, methods, .. }) = sym.declared_type.as_ref()
+    else { return Vec::new() };
+
+    // Inherited slots come first.
+    let mut result: Vec<(String, String)> = match base.as_deref() {
+        Some(SemanticType::Named { name, module: None, .. }) => {
+            collect_inherited_method_names(name, symbols)
+        }
+        Some(SemanticType::Named { name, module: Some(m), .. }) => {
+            find_imported_module_sema(m)
+                .map(|sema| collect_inherited_method_names(name, &sema.symbols))
+                .unwrap_or_default()
+        }
+        _ => Vec::new(),
+    };
+
+    // NEW methods declared on this record extend the vtable; overrides
+    // simply replace existing slots and don't add new ones.
+    for method in methods {
+        if method.signature.is_new {
+            result.push((record_name.to_string(), method.name.clone()));
+        }
+    }
+
+    result
+}
+
+/// Recursively qualify any internal `Named { module: None, name: T }`
+/// references inside `ty` to `Named { module: Some(<module_name>), .. }`
+/// when `T` is one of `local_type_names` (the type names declared at
+/// the top level of the source module). Mirrors sema's
+/// `qualify_local_named_refs` and is required so the IR layer can route
+/// downstream symbol lookups to the right imported module.
+fn qualify_local_named_refs_in_sem_type(
+    ty: &mut SemanticType,
+    module_name: &str,
+    local_type_names: &std::collections::HashSet<String>,
+) {
+    match ty {
+        SemanticType::Named { module, name, .. } => {
+            if module.is_none() && local_type_names.contains(name) {
+                *module = Some(module_name.to_string());
+            }
+        }
+        SemanticType::Array { element_type, .. } => {
+            qualify_local_named_refs_in_sem_type(element_type, module_name, local_type_names);
+        }
+        SemanticType::Record { base, fields, .. } => {
+            if let Some(base) = base.as_deref_mut() {
+                qualify_local_named_refs_in_sem_type(base, module_name, local_type_names);
+            }
+            for field in fields {
+                qualify_local_named_refs_in_sem_type(&mut field.ty, module_name, local_type_names);
+            }
+        }
+        SemanticType::Pointer { target, .. } => {
+            qualify_local_named_refs_in_sem_type(target, module_name, local_type_names);
+        }
+        _ => {}
+    }
+}
+
+/// Locate and analyze an imported module's source by name, using the
+/// same search strategy as `load_cached_import` (sibling-of-importing-
+/// source via `IMPORT_SEARCH_ROOT`, walk up to a `Mod/` parent, then
+/// the cwd-relative `Mod/` fallback).
+///
+/// Used by `flatten_sem_type_fields` for cross-module record bases —
+/// the function is static (no `&mut self`) so it can't reach the
+/// per-LowerCtx import cache, which is fine here because field-flatten
+/// happens once per record traversal during planning.
+fn find_imported_module_sema(module_name: &str) -> Option<SemanticModule> {
+    let filename = format!("{module_name}.cp");
+    let mut candidate_paths: Vec<PathBuf> = Vec::new();
+
+    let import_root = IMPORT_SEARCH_ROOT.with(|root| root.borrow().clone());
+    if let Some(base) = &import_root {
+        candidate_paths.push(base.join(&filename));
+        let mut dir: &Path = base.as_path();
+        loop {
+            if dir.file_name().and_then(|n| n.to_str()) == Some("Mod") {
+                if let Some(hit) = find_cp_in_dir_recursive(dir, &filename) {
+                    candidate_paths.push(hit);
+                }
+                break;
+            }
+            match dir.parent() {
+                Some(p) => dir = p,
+                None => break,
+            }
+        }
+    }
+    candidate_paths.push(Path::new("Mod").join(&filename));
+
+    for path in candidate_paths {
+        if let Ok(ast) = read_module_ast(&path) {
+            return Some(analyze_module_ast(&ast));
+        }
+    }
+    None
+}
+
 /// Recursively search `dir` for a file named `filename`. Used by
 /// `load_cached_import` to resolve sibling-Mod imports across directory
 /// nesting (e.g. `Mod/Tests/Foo.cp` importing `Mod/Bar.cp`).
@@ -3550,20 +3867,49 @@ fn collect_type_vtables(
             continue; // plain record with no methods — no vtable
         }
 
-        // Record direct base name (local only for now).
+        // Record direct base name (local only for now — cross-module
+        // bases stay None here; vtable construction below handles them
+        // separately by reaching into the imported module's sema).
         let base_name: Option<String> = base.as_deref().and_then(|b| match b {
             SemanticType::Named { name, module: None, .. } => Some(name.clone()),
             _ => None,
         });
         bases.insert(sym.name.clone(), base_name.clone());
 
-        // Build the vtable for this type.
-        // Strategy: start from the base vtable (if any), then patch in any overrides.
-        let mut vtable: Vec<String> = base_name
-            .as_deref()
-            .and_then(|bn| vtables.get(bn))
-            .cloned()
-            .unwrap_or_default();
+        // The seed vtable for this type: if the base is local we already
+        // built its vtable in this loop iteration order (sema collects
+        // bases before subclasses for the modules we ship); if the base
+        // is imported, we synthesise a placeholder vec sized to the
+        // imported base's vtable length so override-slot indices stay
+        // correct. The placeholder entries are abstract-method shims —
+        // they should be overwritten by every concrete subclass.
+        let cross_module_base: Option<(String, String)> = base.as_deref().and_then(|b| match b {
+            SemanticType::Named { name, module: Some(m), .. } => {
+                Some((m.clone(), name.clone()))
+            }
+            _ => None,
+        });
+
+        let mut vtable: Vec<String> = if let Some(bn) = base_name.as_deref() {
+            vtables.get(bn).cloned().unwrap_or_default()
+        } else if let Some((module_name, base_record_name)) = cross_module_base.as_ref() {
+            // Pull the imported base's vtable layout. Each slot is seeded
+            // with the base's method (typically an abstract-method shim);
+            // every override on this concrete record replaces the
+            // corresponding slot below.
+            find_imported_module_sema(module_name)
+                .map(|sema| {
+                    collect_inherited_method_names(base_record_name, &sema.symbols)
+                        .into_iter()
+                        .map(|(decl_type_name, method_name)| {
+                            format!("{decl_type_name}_{method_name}")
+                        })
+                        .collect()
+                })
+                .unwrap_or_default()
+        } else {
+            Vec::new()
+        };
 
         for method in methods {
             let llvm_name = format!("{}_{}", sym.name, method.name);
@@ -3572,10 +3918,20 @@ fn collect_type_vtables(
                 vtable.push(llvm_name);
             } else {
                 // Override: find the existing slot (from base) and replace.
-                let base_fn = base_name.as_deref()
-                    .and_then(|bn| method_slot_in_vtable(bn, &method.name, module_symbols))
-                    .map(|slot| slot as usize);
-                if let Some(slot) = base_fn {
+                // The base may be either local or imported — call
+                // method_slot_in_vtable, which handles both.
+                let base_slot = if let Some(bn) = base_name.as_deref() {
+                    method_slot_in_vtable(bn, &method.name, module_symbols)
+                        .map(|slot| slot as usize)
+                } else if let Some((module_name, base_record_name)) = cross_module_base.as_ref() {
+                    find_imported_module_sema(module_name).and_then(|sema| {
+                        method_slot_in_vtable(base_record_name, &method.name, &sema.symbols)
+                            .map(|slot| slot as usize)
+                    })
+                } else {
+                    None
+                };
+                if let Some(slot) = base_slot {
                     if slot < vtable.len() {
                         vtable[slot] = llvm_name;
                     }
@@ -3608,6 +3964,12 @@ pub fn method_slot_in_vtable(
         if let SemanticType::Named { name, module: None, .. } = target.as_ref() {
             return method_slot_in_vtable(name, method_name, module_symbols);
         }
+        if let SemanticType::Named { name, module: Some(m), .. } = target.as_ref() {
+            // Cross-module pointer alias (e.g. `Files.File = POINTER TO Files.FileDesc`
+            // when looked at from outside `Files`).
+            let sema = find_imported_module_sema(m)?;
+            return method_slot_in_vtable(name, method_name, &sema.symbols);
+        }
     }
     let SemanticType::Record { base, methods, .. } = sym.declared_type.as_ref()? else {
         return None;
@@ -3616,11 +3978,16 @@ pub fn method_slot_in_vtable(
     // Count how many slots the base type has.
     let base_slot_count: u32 = base
         .as_deref()
-        .and_then(|b| match b {
+        .map(|b| match b {
             SemanticType::Named { name, module: None, .. } => {
-                Some(count_vtable_slots(name, module_symbols))
+                count_vtable_slots(name, module_symbols)
             }
-            _ => None,
+            SemanticType::Named { name, module: Some(m), .. } => {
+                find_imported_module_sema(m)
+                    .map(|sema| count_vtable_slots(name, &sema.symbols))
+                    .unwrap_or(0)
+            }
+            _ => 0,
         })
         .unwrap_or(0);
 
@@ -3631,12 +3998,18 @@ pub fn method_slot_in_vtable(
         return Some(base_slot_count + pos as u32);
     }
 
-    // Not NEW here — it's an override; delegate to the base.
-    let base_name = base.as_deref().and_then(|b| match b {
-        SemanticType::Named { name, module: None, .. } => Some(name.as_str()),
+    // Not NEW here — it's an override; delegate to the base. Cross-
+    // module bases are loaded via `find_imported_module_sema`.
+    match base.as_deref() {
+        Some(SemanticType::Named { name, module: None, .. }) => {
+            method_slot_in_vtable(name, method_name, module_symbols)
+        }
+        Some(SemanticType::Named { name, module: Some(m), .. }) => {
+            let sema = find_imported_module_sema(m)?;
+            method_slot_in_vtable(name, method_name, &sema.symbols)
+        }
         _ => None,
-    })?;
-    method_slot_in_vtable(base_name, method_name, module_symbols)
+    }
 }
 
 /// Total number of vtable slots for a type (inherited + own NEW methods).
@@ -3656,6 +4029,11 @@ fn count_vtable_slots(type_name: &str, module_symbols: &[SemanticSymbol]) -> u32
         if let SemanticType::Named { name, module: None, .. } = target.as_ref() {
             return count_vtable_slots(name, module_symbols);
         }
+        if let SemanticType::Named { name, module: Some(m), .. } = target.as_ref() {
+            return find_imported_module_sema(m)
+                .map(|sema| count_vtable_slots(name, &sema.symbols))
+                .unwrap_or(0);
+        }
     }
     let (base, methods) = match ty {
         SemanticType::Record { base, methods, .. } => (base, methods),
@@ -3663,9 +4041,14 @@ fn count_vtable_slots(type_name: &str, module_symbols: &[SemanticSymbol]) -> u32
     };
     let base_count: u32 = base
         .as_deref()
-        .and_then(|b| match b {
-            SemanticType::Named { name, module: None, .. } => Some(count_vtable_slots(name, module_symbols)),
-            _ => None,
+        .map(|b| match b {
+            SemanticType::Named { name, module: None, .. } => count_vtable_slots(name, module_symbols),
+            SemanticType::Named { name, module: Some(m), .. } => {
+                find_imported_module_sema(m)
+                    .map(|sema| count_vtable_slots(name, &sema.symbols))
+                    .unwrap_or(0)
+            }
+            _ => 0,
         })
         .unwrap_or(0);
     let own_new: u32 = methods.iter().filter(|m| m.signature.is_new).count() as u32;

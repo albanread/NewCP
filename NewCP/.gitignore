@@ -8,3 +8,7 @@
 /build_output.txt
 /out.log
 /out.txt
+
+# HostFiles round-trip test artifacts (each test writes + deletes its
+# own bin file in cwd, but a crashed test can leave one behind).
+/tests/newcp-tests/*.bin

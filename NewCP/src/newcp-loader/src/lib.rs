@@ -1318,11 +1318,25 @@ fn materialize_compiled_image(
 ) -> Result<(OwnedJitModule, HashMap<String, usize>), String> {
     let mut options = CodegenOptions::default();
     options.export_generation = Some(generation);
-    let public_exports = compiled
+    // Public exports the loader needs to resolve to JIT addresses:
+    //   - emitted procedures from `compiled.exported_functions`
+    //     (correctly excludes abstract/forward declarations that have
+    //     no native body)
+    //   - exported VARiables, picked from the source AST (these aren't
+    //     "functions" so they don't appear in `exported_functions`,
+    //     but tests like `Counter.n` rely on resolving them).
+    let mut public_exports: Vec<String> = compiled
         .exported_functions
         .iter()
         .map(|export| export.public_name.clone())
-        .collect::<Vec<_>>();
+        .collect();
+    if let Ok(module_spec) = newcp_parser::read_source_module(path) {
+        for export in &module_spec.exports {
+            if matches!(export.kind, SourceExportKind::Variable) {
+                public_exports.push(format!("{}.{}", module_spec.name, export.name));
+            }
+        }
+    }
     let image = OwnedJitModule::from_compiled_with_symbol_mappings(compiled, &options, import_symbol_mappings)
         .map_err(|error| format!("failed to JIT materialize executable image from {}: {error}", path.display()))?;
     let export_addresses = public_exports

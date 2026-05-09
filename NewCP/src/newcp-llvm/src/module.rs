@@ -2,6 +2,7 @@ use std::collections::HashMap;
 
 use inkwell::builder::Builder;
 use inkwell::context::Context;
+use inkwell::AddressSpace;
 use inkwell::module::{Linkage, Module};
 use inkwell::passes::PassBuilderOptions;
 use inkwell::targets::TargetMachine;
@@ -29,6 +30,8 @@ impl BackendDiagnostic {
 pub struct GlobalPlanner<'ctx> {
     /// LLVM function value for each procedure in the module, by name.
     pub functions: HashMap<String, FunctionValue<'ctx>>,
+    /// Final emitted LLVM symbol name for each IR procedure name.
+    pub function_llvm_names: HashMap<String, String>,
     /// GEP-derived `ptr` for each module-level variable, keyed by IR name.
     /// Each pointer addresses the corresponding field inside `@ModuleName.Data`.
     pub globals: HashMap<String, PointerValue<'ctx>>,
@@ -44,24 +47,30 @@ pub struct GlobalPlanner<'ctx> {
     /// `@TypeName.desc` global constants emitted for each record type that has methods.
     /// Used by `emit_method_call` to locate the static TypeDesc for a type.
     pub type_desc_globals: HashMap<String, GlobalValue<'ctx>>,
-    /// For each `@TypeName.vtable` global, the ordered list of LLVM function
-    /// names occupying its slots. Recorded so the JIT init step (in jit.rs)
-    /// can patch the vtable contents with the actual function addresses
-    /// after MCJIT has compiled them — MCJIT does not reliably apply
-    /// function-pointer relocations to constant globals on its own.
+    /// `<TypeName>.vtable` -> ordered list of LLVM function names occupying its
+    /// slots. Recorded after procedure declaration so exported methods use
+    /// their final generation-qualified LLVM symbol names.
     pub vtable_slot_functions: HashMap<String, Vec<String>>,
+    /// Legacy field from the abandoned synthetic-init-function approach.
+    pub vtable_init_function_name: Option<String>,
+    /// Ordered list of `(vtable_global_name, slot_count)` for every vtable
+    /// emitted as a mutable global. Retained as metadata only.
+    pub vtable_externs: Vec<(String, usize)>,
 }
 
 impl<'ctx> GlobalPlanner<'ctx> {
     fn new() -> Self {
         Self {
             functions: HashMap::new(),
+            function_llvm_names: HashMap::new(),
             globals: HashMap::new(),
             module_data_ty: None,
             named_struct_types: HashMap::new(),
             string_constants: HashMap::new(),
             type_desc_globals: HashMap::new(),
             vtable_slot_functions: HashMap::new(),
+            vtable_init_function_name: None,
+            vtable_externs: Vec::new(),
         }
     }
 }
@@ -223,6 +232,16 @@ impl<'ctx> CodegenModule<'ctx> {
                 )
             };
             self.planner.globals.insert(global.name.clone(), field_ptr);
+
+            if global.exported {
+                let public_name = CodegenOptions::public_symbol_name(&ir_module.name, &global.name);
+                let export_ptr = self
+                    .module
+                    .add_global(self.context.ptr_type(AddressSpace::default()), None, &public_name);
+                export_ptr.set_initializer(&field_ptr);
+                export_ptr.set_constant(true);
+                export_ptr.set_linkage(Linkage::External);
+            }
         }
 
         Ok(())
@@ -286,6 +305,9 @@ impl<'ctx> CodegenModule<'ctx> {
 
         let fn_val = self.module.add_function(&llvm_name, fn_type, None);
         self.planner.functions.insert(proc.name.clone(), fn_val);
+        self.planner
+            .function_llvm_names
+            .insert(proc.name.clone(), llvm_name);
         Ok(())
     }
 
@@ -365,8 +387,20 @@ impl<'ctx> CodegenModule<'ctx> {
             false,
         );
 
-        // First pass: emit vtable arrays so we have their global addresses for TypeDesc.
+        // First pass: emit zero-initialized vtable arrays.
+        //
+        // We do *not* embed function-pointer constants in the initializer.
+        // MCJIT's RuntimeDyld does not reliably apply function-pointer
+        // relocations to constant data globals — the slots stay at their
+        // pre-link zero value. Instead we emit the vtable as mutable storage
+        // and populate the slots at module-init time via a synthetic
+        // `__newcp_init_vtables` function whose body is a sequence of
+        // `store ptr @Method, ptr @Type.vtable[i]` instructions. Function-
+        // pointer relocations *into instructions* work correctly in MCJIT,
+        // and the references in the init function's body also keep the
+        // method bodies live through DCE.
         let mut vtable_globals: HashMap<String, GlobalValue<'ctx>> = HashMap::new();
+        let mut vtable_slot_bindings: Vec<(GlobalValue<'ctx>, Vec<String>)> = Vec::new();
         for (type_name, slot_fns) in &ir_module.type_vtables {
             if slot_fns.is_empty() {
                 continue;
@@ -374,25 +408,42 @@ impl<'ctx> CodegenModule<'ctx> {
             let vtable_ty = ptr_ty.array_type(slot_fns.len() as u32);
             let vtable_name = format!("{}.vtable", type_name);
 
-            // Build the constant initializer with function-pointer references.
-            let fn_ptrs: Vec<_> = slot_fns
+            // Mutable internal global with zero initializer. We rely on
+            // the documented MCJIT behavior:
+            // - `ptr → data` relocations IN data initializers DO work
+            //   (so TypeDesc.vtable field correctly points at this global).
+            // - The global lives in writable memory; `LLVMGetGlobalValueAddress`
+            //   gives us the address MCJIT placed it at.
+            // The JIT layer patches this from Rust (see jit::from_module):
+            // it reads `get_global_value_address("Type.vtable")` and writes
+            // `get_function_address("Method")` into each slot. This avoids
+            // MCJIT's broken function-pointer-constant-initializer relocation
+            // AND its tendency to ignore add_global_mapping for definitions.
+            let vtable_global = self.module.add_global(vtable_ty, None, &vtable_name);
+            vtable_global.set_initializer(&vtable_ty.const_zero());
+            vtable_global.set_constant(false);
+            // External linkage so `LLVMGetGlobalValueAddress` from the JIT
+            // layer can resolve it by name (internal-linkage globals are
+            // hidden from the address-resolution API).
+            vtable_global.set_linkage(Linkage::External);
+            vtable_globals.insert(type_name.clone(), vtable_global);
+            vtable_slot_bindings.push((vtable_global, slot_fns.clone()));
+            let resolved_slot_fns = slot_fns
                 .iter()
                 .map(|fn_name| {
-                    self.module
-                        .get_function(fn_name)
-                        .map(|f| f.as_global_value().as_pointer_value().into())
-                        .unwrap_or_else(|| ptr_ty.const_null().into())
+                    self.planner
+                        .function_llvm_names
+                        .get(fn_name)
+                        .cloned()
+                        .unwrap_or_else(|| fn_name.clone())
                 })
-                .collect();
-            let vtable_init = ptr_ty.const_array(&fn_ptrs);
-            let vtable_global = self.module.add_global(vtable_ty, None, &vtable_name);
-            vtable_global.set_initializer(&vtable_init);
-            vtable_global.set_constant(true);
-            vtable_global.set_linkage(Linkage::Internal);
-            vtable_globals.insert(type_name.clone(), vtable_global);
+                .collect::<Vec<_>>();
             self.planner
                 .vtable_slot_functions
-                .insert(vtable_name.clone(), slot_fns.clone());
+                .insert(vtable_name.clone(), resolved_slot_fns);
+            self.planner
+                .vtable_externs
+                .push((vtable_name.clone(), slot_fns.len()));
         }
 
         // Second pass: emit TypeDesc constants.
@@ -460,6 +511,41 @@ impl<'ctx> CodegenModule<'ctx> {
             desc_global.set_linkage(Linkage::Internal);
             self.planner.type_desc_globals.insert(type_name.clone(), desc_global);
         }
+
+        // Anchor every method function against DCE (and against MCJIT's
+        // tendency to skip emitting functions that have no IR-level callers)
+        // by appending them all to `@llvm.used`. This is the canonical way
+        // to tell LLVM "these symbols must survive optimization and must be
+        // emitted by the code generator." Without this, calls to
+        // `engine.get_function_address("BoxDesc_Set")` from the JIT layer
+        // return "function not found" because MCJIT only emits functions
+        // reachable from a call site.
+        //
+        // The vtables themselves are populated post-JIT from Rust by writing
+        // method addresses (resolved via `get_function_address`) into each
+        // slot of the vtable storage (located via `LLVMGetGlobalValueAddress`).
+        let mut anchored_fns: Vec<inkwell::values::PointerValue<'ctx>> = Vec::new();
+        for (_vtable_global, slot_fns) in &vtable_slot_bindings {
+            for fn_name in slot_fns {
+                if let Some(fn_val) = self.module.get_function(fn_name) {
+                    anchored_fns.push(fn_val.as_global_value().as_pointer_value());
+                }
+            }
+        }
+        if !anchored_fns.is_empty() {
+            // `@llvm.used = appending global [N x ptr] [ptr @M1, ptr @M2, ...]`
+            // in section "llvm.metadata".
+            let used_arr_ty = ptr_ty.array_type(anchored_fns.len() as u32);
+            let used_init = ptr_ty.const_array(&anchored_fns);
+            let used_global = self.module.add_global(used_arr_ty, None, "llvm.used");
+            used_global.set_linkage(Linkage::Appending);
+            used_global.set_initializer(&used_init);
+            used_global.set_section(Some("llvm.metadata"));
+        }
+
+        // The synthetic init function approach is no longer used. Vtables are
+        // now patched from Rust post-JIT.
+        self.planner.vtable_init_function_name = None;
     }
 
     /// Declare `@__newcp_sys_new(i64) -> ptr` — part of the backend/runtime ABI.

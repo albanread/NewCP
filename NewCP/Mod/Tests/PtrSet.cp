@@ -26,6 +26,20 @@ BEGIN
     RETURN 1
 END Probe;
 
+(* Walk the dispatch chain manually and return vtable[0]. Should be the
+   address of `BoxDesc_Set` after the synthetic init function runs. *)
+PROCEDURE ProbeFn0*(): INTEGER;
+    VAR b: Box; addr, tag, descPtr, vtablePtr, fnPtr: INTEGER;
+BEGIN
+    NEW(b);
+    addr := SYSTEM.VAL(INTEGER, b);
+    SYSTEM.GET(addr - 16, tag);
+    descPtr := tag DIV 2 * 2;
+    SYSTEM.GET(descPtr + 32, vtablePtr);
+    SYSTEM.GET(vtablePtr, fnPtr);
+    RETURN fnPtr
+END ProbeFn0;
+
 (* Full method dispatch — fixture for the post-MCJIT-fix end-to-end test. *)
 PROCEDURE Run*(): INTEGER;
     VAR b: Box;

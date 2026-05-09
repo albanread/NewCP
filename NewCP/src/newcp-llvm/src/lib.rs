@@ -56,10 +56,16 @@ pub struct CompiledModule {
     pub exported_functions: Vec<ExportedFunction>,
     pub diagnostics: Vec<BackendDiagnostic>,
     /// `<TypeName>.vtable` -> ordered list of LLVM function names occupying its
-    /// slots. Recorded so the JIT init step can resolve each function's address
-    /// and write it into a Rust-side vtable buffer (MCJIT does not reliably
-    /// apply function-pointer relocations to constant globals on its own).
+    /// slots. The JIT layer uses these final emitted LLVM names to patch the
+    /// mutable vtable globals after MCJIT materializes the module.
     pub vtable_slot_functions: HashMap<String, Vec<String>>,
+    /// Legacy field from the abandoned synthetic-init-function approach.
+    /// Always `None` in the current post-JIT vtable patching design.
+    pub vtable_init_function_name: Option<String>,
+    /// Legacy metadata retained for compatibility with existing plumbing.
+    /// The current JIT patches the emitted mutable globals in place rather
+    /// than redirecting them through externally allocated storage.
+    pub vtable_externs: Vec<(String, usize)>,
 }
 
 /// Owns a JIT module together with the LLVM context it depends on.
@@ -197,6 +203,8 @@ pub fn compile_ir_module(
         .collect();
 
     let vtable_slot_functions = cg.planner.vtable_slot_functions.clone();
+    let vtable_init_function_name = cg.planner.vtable_init_function_name.clone();
+    let vtable_externs = cg.planner.vtable_externs.clone();
 
     Ok(CompiledModule {
         module_name: ir_module.name.clone(),
@@ -205,6 +213,8 @@ pub fn compile_ir_module(
         exported_functions,
         diagnostics: cg.diagnostics.clone(),
         vtable_slot_functions,
+        vtable_init_function_name,
+        vtable_externs,
     })
 }
 
@@ -226,8 +236,11 @@ pub fn jit_module_with_symbol_mappings<'ctx>(
     options: &CodegenOptions,
     extra_symbol_mappings: &HashMap<String, usize>,
 ) -> Result<JitModule<'ctx>, CodegenError> {
-    // Capture the vtable slot info before consuming `compiled` for IR parsing.
+    // Capture the vtable slot info and init-function name before consuming
+    // `compiled` for IR parsing.
     let vtable_slot_functions = compiled.vtable_slot_functions.clone();
+    let vtable_init_function_name = compiled.vtable_init_function_name.clone();
+    let vtable_externs = compiled.vtable_externs.clone();
     let exported_functions = compiled.exported_functions.clone();
     // Re-parse the verified IR string back into an LLVM module so we can hand
     // it to the JIT. This round-trip is intentional: it proves the textual dump
@@ -249,6 +262,8 @@ pub fn jit_module_with_symbol_mappings<'ctx>(
         options.opt_level,
         global_mappings,
         vtable_slot_functions,
+        vtable_init_function_name,
+        vtable_externs,
     )
 }
 

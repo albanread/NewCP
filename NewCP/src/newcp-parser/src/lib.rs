@@ -1428,11 +1428,18 @@ impl Parser {
             self.parse_expr_list()?
         };
         self.expect_symbol(")")?;
+        // `(qualident)` could be either a one-arg call or a type-guard.
+        // Emit `AmbiguousParen` for both unqualified (`Foo`) and module-
+        // qualified (`Mod.Foo`) single-ident cases so that sema can pick
+        // the right interpretation based on whether the name denotes a
+        // type. Without the qualified case, expressions like
+        // `loc(HostFiles.StdLocator)` were always parsed as a Call and
+        // sema refused them with "call selector requires a procedure".
         if let [Expr::Designator(designator)] = args.as_slice() {
-            if designator.base.module.is_none() && designator.selectors.is_empty() {
+            if designator.selectors.is_empty() {
                 return Ok(Selector::AmbiguousParen(QualIdent {
                     span: designator.base.span,
-                    module: None,
+                    module: designator.base.module.clone(),
                     name: designator.base.name.clone(),
                 }));
             }

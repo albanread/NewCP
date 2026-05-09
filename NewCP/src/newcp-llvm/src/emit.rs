@@ -1,6 +1,8 @@
 use std::collections::HashMap;
 
+use inkwell::AddressSpace;
 use inkwell::basic_block::BasicBlock;
+use inkwell::module::Linkage;
 use inkwell::types::{BasicType, BasicTypeEnum, StructType};
 use inkwell::values::{BasicMetadataValueEnum, BasicValueEnum, FunctionValue, PointerValue};
 use inkwell::{FloatPredicate, IntPredicate};
@@ -513,10 +515,18 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
             .into_pointer_value();
 
         // 6. Build argument list (receiver + remaining args).
+        // Args are dispatched the same way `emit_call` does: a Ref-typed
+        // arg is the address of a CP variable (VAR/OUT mode, or an
+        // open-array fat-pointer's data slot) and resolves through
+        // `resolve_pointer`; everything else is a value.
         let mut llvm_args: Vec<BasicMetadataValueEnum<'ctx>> = Vec::new();
         llvm_args.push(obj_ptr.into());
         for arg in args {
-            llvm_args.push(self.resolve_basic_value(arg, value_map)?.into());
+            let val = match arg.ty() {
+                IrType::Ref(_) => self.resolve_pointer(arg, value_map)?.into(),
+                _ => self.resolve_basic_value(arg, value_map)?,
+            };
+            llvm_args.push(val.into());
         }
 
         // Build fn type: all params are `ptr` (opaque pointers), return type from ret_ty.
@@ -793,8 +803,20 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
                     self.ensure_named_slot(name, inner, value_map)
                 }
             }
-            IrValue::ImportRef(module, name, IrType::Ref(inner)) => {
-                self.ensure_named_slot(&format!("{module}.{name}"), inner, value_map)
+            IrValue::ImportRef(module, name, IrType::Ref(_inner)) => {
+                let slot = self.get_or_declare_imported_global_slot(module, name);
+                self.cg
+                    .builder
+                    .build_load(
+                        self.cg.context.ptr_type(AddressSpace::default()),
+                        slot,
+                        &format!("{module}_{name}_addr"),
+                    )
+                    .map(|value| value.into_pointer_value())
+                    .map_err(|e| CodegenError::Unsupported {
+                        stage: "emit",
+                        detail: e.to_string(),
+                    })
             }
             IrValue::Temp(id, _) => value_map
                 .temp_values
@@ -1721,6 +1743,22 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
             fn_type,
             Some(inkwell::module::Linkage::External),
         ))
+    }
+
+    fn get_or_declare_imported_global_slot(
+        &self,
+        module: &str,
+        name: &str,
+    ) -> PointerValue<'ctx> {
+        let symbol_name = CodegenOptions::public_symbol_name(module, name);
+        if let Some(global) = self.cg.module.get_global(&symbol_name) {
+            return global.as_pointer_value();
+        }
+
+        let ptr_ty = self.cg.context.ptr_type(AddressSpace::default());
+        let global = self.cg.module.add_global(ptr_ty, None, &symbol_name);
+        global.set_linkage(Linkage::External);
+        global.as_pointer_value()
     }
 
     fn const_int(&self, value: i128, ty: &IrType) -> inkwell::values::IntValue<'ctx> {

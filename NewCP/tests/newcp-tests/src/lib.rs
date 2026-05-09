@@ -45,6 +45,7 @@ mod tests {
 
     /// Like `run_function` but the procedure writes to the console (void return).
     /// Returns the captured console output.
+    #[allow(dead_code)]
     fn run_void_function(module_ref: &str, proc_name: &str) -> String {
         let abs_ref = workspace_root().join(module_ref);
         let abs_ref_str = abs_ref.to_str().expect("workspace path is UTF-8");
@@ -294,6 +295,69 @@ mod tests {
             output.contains("call void @VarBase.Bump(ptr %x)"),
             "expected VAR argument to be passed by address\noutput:\n{output}"
         );
+    }
+
+    #[test]
+    fn imported_exported_global_updates_shared_storage() {
+        let temp_root = std::env::temp_dir().join(format!(
+            "newcp-exported-global-{}-{}",
+            std::process::id(),
+            std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .expect("system time before unix epoch")
+                .as_nanos()
+        ));
+        std::fs::create_dir_all(&temp_root).expect("failed to create temporary module dir");
+
+        let counter_path = temp_root.join("Counter.cp");
+        let counter_user_path = temp_root.join("CounterUser.cp");
+
+        std::fs::write(
+            &counter_path,
+            concat!(
+                "MODULE Counter;\n",
+                "  VAR n*: INTEGER;\n",
+                "  PROCEDURE Bump*;\n",
+                "  BEGIN INC(n) END Bump;\n",
+                "BEGIN n := 0 END Counter.\n"
+            ),
+        )
+        .expect("failed to write Counter.cp");
+        std::fs::write(
+            &counter_user_path,
+            concat!(
+                "MODULE CounterUser;\n",
+                "  IMPORT Counter;\n",
+                "  PROCEDURE Run*(): INTEGER;\n",
+                "  BEGIN\n",
+                "    Counter.Bump;\n",
+                "    RETURN Counter.n\n",
+                "  END Run;\n",
+                "END CounterUser.\n"
+            ),
+        )
+        .expect("failed to write CounterUser.cp");
+
+        let mut session = newcp_loader::LoaderSession::new();
+        session
+            .ensure_import_graph_loaded(counter_user_path.to_str().expect("temp path should be UTF-8"))
+            .unwrap_or_else(|e| panic!("load CounterUser: {e}"));
+
+        assert!(
+            session.active_export_address("Counter", "Counter.n").is_some(),
+            "expected exported variable address for Counter.n"
+        );
+
+        let address = session
+            .active_export_address("CounterUser", "CounterUser.Run")
+            .unwrap_or_else(|| panic!("export not found: CounterUser.Run"));
+        let run: unsafe extern "C" fn() -> i64 = unsafe { std::mem::transmute(address) };
+        let result = unsafe { run() };
+        assert_eq!(result, 1, "expected imported Counter.n to observe Bump update");
+
+        let _ = std::fs::remove_file(counter_path);
+        let _ = std::fs::remove_file(counter_user_path);
+        let _ = std::fs::remove_dir_all(temp_root);
     }
 
     #[test]
@@ -1549,10 +1613,8 @@ mod tests {
     // -------------------------------------------------------------------------
     // OOP: pointer-aliased records — sema + IR layers verified.
     //
-    // Full virtual-dispatch JIT execution still requires fixing MCJIT's
-    // vtable-relocation path; tests for `b.Set(42)` style dispatch live in
-    // Mod/Tests/{PtrMethod, AbstractDispatch}.cp but are not yet runnable
-    // end-to-end. See docs/oop_runtime_status.md.
+    // Virtual dispatch is implemented by emitting mutable vtable globals and
+    // patching them post-JIT with the final method addresses.
     // -------------------------------------------------------------------------
 
     #[test]
@@ -1569,6 +1631,174 @@ mod tests {
         // the TypeDesc address with the GC mark bit cleared. Verifies the
         // allocator threads the type descriptor correctly.
         assert_eq!(run_function("Mod/Tests/PtrSet.cp", "Probe"), 1);
+    }
+
+    #[test]
+    fn ptr_set_probe_vtable_fn() {
+        // After post-JIT vtable patching, vtable[0] should be the address of
+        // BoxDesc.Set (non-zero).
+        let v = run_function("Mod/Tests/PtrSet.cp", "ProbeFn0");
+        eprintln!("vtable[0] = 0x{:x}", v as u64);
+        assert!(v != 0, "vtable[0] is zero — post-JIT patching didn't populate it");
+    }
+
+    #[test]
+    fn ptr_method_box_set_get() {
+        // Pointer-aliased OOP: NEW(b) + b.Set(42) + b.Get() -> 42.
+        // Exercises auto-deref of pointer aliases for method receivers
+        // and end-to-end vtable dispatch through the patched mutable vtable.
+        assert_eq!(run_function("Mod/Tests/PtrMethod.cp", "Run"), 42);
+    }
+
+    #[test]
+    fn abstract_dispatch_square() {
+        // Abstract pointer base + concrete subclass + virtual dispatch:
+        // Square(side=5).Area() through Shape -> 25.
+        assert_eq!(run_function("Mod/Tests/AbstractDispatch.cp", "TestSquare"), 25);
+    }
+
+    #[test]
+    fn abstract_dispatch_circle() {
+        // Different concrete subclass: Circle(r=4).Area() -> 3 * 4 * 4 = 48.
+        // Same call site (`AreaOf`) dispatches to the right Area override.
+        assert_eq!(run_function("Mod/Tests/AbstractDispatch.cp", "TestCircle"), 48);
+    }
+
+    /// Helper that returns Err(diagnostic-string) when the loader's sema
+    /// rejects the module — useful for asserting that a specific kind of
+    /// cross-module error is or is not present.
+    fn loader_error(module_ref: &str) -> Option<String> {
+        let abs = workspace_root().join(module_ref);
+        let abs_str = abs.to_str().expect("utf-8 path");
+        let mut session = newcp_loader::LoaderSession::new();
+        match session.ensure_import_graph_loaded(abs_str) {
+            Ok(_) => None,
+            Err(e) => Some(e),
+        }
+    }
+
+    #[test]
+    fn int_literal_narrows_to_byte() {
+        // CP: integer literals are polymorphic and adapt to the static
+        // type of the assignment target. `x := 200` for x: BYTE must
+        // be accepted (200 fits in u8); `x := 0` for x: BYTE likewise.
+        // Used to fail with "expected BYTE, found INTEGER".
+        assert_eq!(run_function("Mod/Tests/IntLitNarrowing.cp", "LitToByte"), 200);
+    }
+
+    #[test]
+    fn int_literal_narrows_to_shortint() {
+        // Same shape, narrower target type.
+        assert_eq!(
+            run_function("Mod/Tests/IntLitNarrowing.cp", "LitToShortInt"),
+            100,
+        );
+    }
+
+    #[test]
+    fn xmod_inherited_field_access_through_pointer_alias() {
+        // Field declared on the imported abstract base, accessed via a
+        // local-subclass pointer. Used to fail with "unsupported cast
+        // from i64 to opaque:field:res" when the IR layer's record-
+        // field flattening didn't follow the inheritance chain across
+        // the source-directory boundary.
+        assert_eq!(
+            run_function("Mod/Tests/XmodSubtype.cp", "TouchInheritedField"),
+            99,
+        );
+    }
+
+    #[test]
+    fn xmod_subtype_assignment() {
+        // Blocker 2: a concrete subclass of an imported abstract base must
+        // be assignable to the base's pointer alias when returned. Sema
+        // currently rejects this with "return type mismatch: expected
+        // imported:<Base>, found type:<Sub>" because record-extends
+        // doesn't follow inheritance through imported parents.
+        let err = loader_error("Mod/Tests/XmodSubtype.cp");
+        assert!(
+            err.is_none(),
+            "expected clean load, got error: {}",
+            err.unwrap_or_default(),
+        );
+    }
+
+    #[test]
+    fn xmod_type_alias_passes_array_of_char_through_imported_typedef() {
+        // Blocker 5: passing a value of an imported typedef'd fixed array
+        // (XmodTypeAliasBase.Name = ARRAY 16 OF CHAR) where ARRAY OF CHAR
+        // is expected. Sema should see through the cross-module alias.
+        // Currently fails with "expected ARRAY OF CHAR, found
+        // imported:XmodTypeAliasBase.Name".
+        let err = loader_error("Mod/Tests/XmodTypeAlias.cp");
+        assert!(
+            err.is_none(),
+            "expected clean load, got error: {}",
+            err.unwrap_or_default(),
+        );
+    }
+
+    #[test]
+    fn host_files_diag_this() {
+        // HostFiles.theDir.This(path) — exercises cross-module method
+        // dispatch on a receiver imported from HostFiles, with the
+        // path argument being a fixed-size local array.
+        assert_eq!(run_function("Mod/Tests/HostFilesRoundTrip.cp", "DiagThis"), 1);
+    }
+
+    #[test]
+    fn host_files_diag_open_direct() {
+        assert_eq!(
+            run_function("Mod/Tests/HostFilesRoundTrip.cp", "DiagOpenDirect"),
+            1,
+        );
+    }
+
+    #[test]
+    fn host_files_diag_flat_open() {
+        // Bypass the OOP layer; verifies the flat HostFileSys API works
+        // from CP without any virtual dispatch.
+        assert_eq!(run_function("Mod/Tests/HostFilesRoundTrip.cp", "DiagFlatOpen"), 1);
+    }
+
+    #[test]
+    fn host_files_diag_open() {
+        assert_eq!(run_function("Mod/Tests/HostFilesRoundTrip.cp", "DiagOpen"), 1);
+    }
+
+    #[test]
+    fn host_files_write_then_read_byte() {
+        // End-to-end Files / HostFiles / HostFileSys path:
+        //   StdDir.This  -> Locator
+        //   StdDir.New   -> File (read+write, fresh truncate)
+        //   File.NewWriter / Writer.WriteByte
+        //   File.NewReader / Reader.ReadByte (OUT BYTE)
+        // Exercises virtual dispatch through every Files.* abstract pointer
+        // type to the concrete HostFiles.Std* subclasses, and round-trips
+        // a byte through std::fs.
+        assert_eq!(
+            run_function("Mod/Tests/HostFilesRoundTrip.cp", "WriteThenReadByte"),
+            0xAA,
+        );
+    }
+
+    #[test]
+    fn host_files_write_then_read_bytes() {
+        assert_eq!(
+            run_function("Mod/Tests/HostFilesRoundTrip.cp", "WriteThenReadBytes"),
+            36,
+        );
+    }
+
+    #[test]
+    fn host_files_length_after_write() {
+        // Calls f.Length() on a Files.File pointer — exercises virtual
+        // dispatch for an abstract method that returns INTEGER through
+        // an imported abstract base.
+        assert_eq!(
+            run_function("Mod/Tests/HostFilesRoundTrip.cp", "LengthAfterWrite"),
+            3,
+        );
     }
 
     #[test]

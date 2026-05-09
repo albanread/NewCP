@@ -1,8 +1,12 @@
 use inkwell::execution_engine::ExecutionEngine;
+use inkwell::llvm_sys::execution_engine::{LLVMGetGlobalValueAddress, LLVMGetPointerToGlobal};
 use inkwell::module::Linkage;
 use inkwell::module::Module;
+use inkwell::values::AsValueRef;
 use inkwell::values::FunctionValue;
+use inkwell::values::GlobalValue;
 use std::collections::HashMap;
+use std::ffi::CString;
 
 use crate::error::CodegenError;
 use crate::options::OptLevel;
@@ -15,49 +19,202 @@ use crate::options::OptLevel;
 pub struct JitModule<'ctx> {
     engine: ExecutionEngine<'ctx>,
     pub exported_functions: Vec<crate::ExportedFunction>,
-    /// Heap-allocated backing storage for each `*.vtable` global. Held here
-    /// so the vtables outlive any JIT-compiled code that dispatches through
-    /// them.
-    _vtable_buffers: Vec<Box<[usize]>>,
+}
+
+pub(crate) enum GlobalMapping<'ctx> {
+    Function(FunctionValue<'ctx>),
+    Global(GlobalValue<'ctx>),
 }
 
 impl<'ctx> JitModule<'ctx> {
     /// Stage 6: materialize a verified LLVM module into native code.
-    pub fn from_module(
+    pub(crate) fn from_module(
         module: Module<'ctx>,
         exported_functions: Vec<crate::ExportedFunction>,
         opt_level: OptLevel,
-        global_mappings: Vec<(FunctionValue<'ctx>, usize)>,
+        global_mappings: Vec<(GlobalMapping<'ctx>, usize)>,
         vtable_slot_functions: HashMap<String, Vec<String>>,
+        vtable_init_function_name: Option<String>,
+        vtable_externs: Vec<(String, usize)>,
     ) -> Result<Self, CodegenError> {
-        // For each `<TypeName>.vtable` declared as `external` in the module,
-        // allocate Rust-side storage and arrange for MCJIT to bind the LLVM
-        // symbol to that buffer. Slots are filled with the JIT-resolved
-        // addresses of the corresponding methods after the engine is created.
-        //
-        // Why this dance: MCJIT does not reliably apply function-pointer
-        // relocations to constant globals — the array entries stay null. By
-        // declaring the vtable as external and providing the storage from
-        // Rust we sidestep MCJIT's relocation machinery for these globals.
-        // `vtable_slot_functions` is plumbed through but unused: the runtime
-        // patching scheme that consumed it doesn't yet work end-to-end (MCJIT
-        // does not reliably apply function-pointer relocations to constant
-        // globals, and `engine.get_function_address` can't resolve methods
-        // referenced only by such initializers). Tracking the real fix in
-        // docs/files_module_investigation.md under "OOP runtime status".
-        let _ = vtable_slot_functions;
+        // No longer used; the LLVM init-function approach was abandoned
+        // because MCJIT does not relocate function pointers in either
+        // constant initializers or instructions reliably enough.
+        let _ = vtable_init_function_name;
+        let _ = vtable_externs;
+
+        let debug = std::env::var("NEWCP_JIT_DEBUG").is_ok();
+
+        // Build a name -> FunctionValue index for every method that the
+        // vtables reference. Some entries may name methods inherited from
+        // a base in another module — those aren't present in this LLVM
+        // module and we leave the corresponding vtable slot NULL. They
+        // become a runtime trap if a virtual call ever lands on that
+        // slot, but unused inherited slots stay benign.
+        let mut method_functions: HashMap<String, FunctionValue<'ctx>> = HashMap::new();
+        for slot_fns in vtable_slot_functions.values() {
+            for fn_name in slot_fns {
+                if method_functions.contains_key(fn_name) {
+                    continue;
+                }
+                if let Some(fn_val) = module.get_function(fn_name) {
+                    method_functions.insert(fn_name.clone(), fn_val);
+                } else if debug {
+                    eprintln!(
+                        "[jit] vtable patch: method function '{fn_name}' not in this LLVM module \
+                         (likely an inherited cross-module method); slot will be left NULL"
+                    );
+                }
+            }
+        }
 
         let engine = module
             .create_jit_execution_engine(opt_level.to_llvm())
             .map_err(|e| CodegenError::Jit(e.to_string()))?;
-        for (function, address) in global_mappings {
-            engine.add_global_mapping(&function, address);
+        for (symbol, address) in global_mappings {
+            match symbol {
+                GlobalMapping::Function(function) => engine.add_global_mapping(&function, address),
+                GlobalMapping::Global(global) => engine.add_global_mapping(&global, address),
+            }
+        }
+
+        // Force MCJIT to finalize this module *before* we resolve any
+        // addresses or patch any vtables. `LLVMGetPointerToGlobal` and
+        // `LLVMGetGlobalValueAddress` would each implicitly trigger
+        // finalization on first use, but relying on that side effect makes
+        // the ordering fragile — and the implicit path only finalizes the
+        // module containing the queried value. If a second module is ever
+        // added to the same engine later, MCJIT will NOT retroactively
+        // re-finalize earlier modules; it will only finalize the one being
+        // queried. The current architecture is single-module-per-engine
+        // (see `OwnedJitModule`), so this call simply makes the dependency
+        // explicit. If incremental compilation is added (multiple modules
+        // per engine, JIT'd in stages), each new module's
+        // `JitModule::from_module`-equivalent must call this again before
+        // resolving addresses for any global it owns.
+        //
+        // We don't emit `llvm.global_ctors`, so this only triggers
+        // `finalizeObject()`; no user constructors run.
+        engine.run_static_constructors();
+
+        // Returns `Ok(Some(addr))` for a resolvable method, `Ok(None)` if
+        // the method is inherited from a base in another module (and thus
+        // not present in this LLVM module — the slot stays NULL), or
+        // `Err` for a true resolution failure on a method that IS in this
+        // module.
+        let resolve_method_address = |fn_name: &str| -> Result<Option<usize>, CodegenError> {
+            let Some(fn_val) = method_functions.get(fn_name) else {
+                return Ok(None);
+            };
+            // SAFETY: `fn_val` belongs to the module now owned by `engine`.
+            let addr = unsafe {
+                LLVMGetPointerToGlobal(engine.as_mut_ptr(), fn_val.as_value_ref())
+            } as usize;
+            if addr == 0 {
+                return Err(CodegenError::Jit(format!(
+                    "vtable patch: method {fn_name} resolved to null address"
+                )));
+            }
+            Ok(Some(addr))
+        };
+
+        // DIAGNOSTIC: probe whether method functions are findable BEFORE
+        // we ask for their addresses for vtable patching. Helps distinguish
+        // "function absent from the module" from "materialization returned
+        // a null code address".
+        if debug {
+            let mut all_method_fns: std::collections::BTreeSet<&str> =
+                std::collections::BTreeSet::new();
+            for slot_fns in vtable_slot_functions.values() {
+                for f in slot_fns { all_method_fns.insert(f.as_str()); }
+            }
+            for fn_name in &all_method_fns {
+                match resolve_method_address(fn_name) {
+                    Ok(Some(a)) => eprintln!("[jit] probe {fn_name} @ 0x{a:x}"),
+                    Ok(None) => eprintln!("[jit] probe {fn_name} (cross-module / NULL slot)"),
+                    Err(e) => eprintln!("[jit] probe {fn_name} FAIL: {e}"),
+                }
+            }
+        }
+
+        // Patch every vtable from Rust. The vtables are emitted by codegen
+        // as mutable globals with zero initializers; the methods are anchored
+        // against DCE via `@llvm.used`. Here we:
+        //   1. Resolve each method's address via `LLVMGetPointerToGlobal`
+        //      on the concrete `FunctionValue`, bypassing MCJIT's fragile
+        //      name-based symbol exposure rules for non-exported methods.
+        //   2. Resolve each vtable's storage address via
+        //      `LLVMGetGlobalValueAddress`.
+        //   3. Write the method addresses into the vtable storage.
+        // The TypeDesc.vtable field is a constant initializer holding a
+        // pointer to the vtable global — MCJIT correctly relocates this
+        // data-pointer-to-data-pointer reference, so dispatch through
+        // `obj → tag → desc.vtable → vtable[i]` reads the patched addresses.
+        for (vtable_name, slot_fns) in &vtable_slot_functions {
+            let cvt_name = match CString::new(vtable_name.as_str()) {
+                Ok(s) => s,
+                Err(_) => continue,
+            };
+            // SAFETY: the engine pointer is valid for the lifetime of `engine`;
+            // LLVMGetGlobalValueAddress returns 0 for unknown symbols.
+            let vt_addr = unsafe {
+                LLVMGetGlobalValueAddress(engine.as_mut_ptr(), cvt_name.as_ptr())
+            };
+            if vt_addr == 0 {
+                if debug {
+                    eprintln!("[jit] vtable {vtable_name}: address 0, skipping patch");
+                }
+                continue;
+            }
+            if debug {
+                eprintln!("[jit] vtable {vtable_name} @ 0x{vt_addr:x} ({} slots)", slot_fns.len());
+            }
+            // Smalltalk-style fallback for inherited concrete methods we
+            // can't bind locally: point the slot at
+            // `__newcp_unimpl_method_trap`, which aborts with a
+            // descriptive message instead of jumping to address 0 / a
+            // garbage pointer if anything ever invokes the slot.
+            let unimpl_addr = newcp_runtime::runtime_symbol_address(
+                "__newcp_unimpl_method_trap",
+            )
+            .expect("__newcp_unimpl_method_trap is always exposed by newcp-runtime");
+
+            let vt_ptr = vt_addr as *mut usize;
+            for (slot_idx, fn_name) in slot_fns.iter().enumerate() {
+                match resolve_method_address(fn_name) {
+                    Ok(Some(fn_addr)) => {
+                        // SAFETY: vt_ptr points at MCJIT-allocated storage of size
+                        // [N x ptr] where N >= slot_fns.len(); we write within bounds.
+                        unsafe { vt_ptr.add(slot_idx).write(fn_addr); }
+                        if debug {
+                            eprintln!("[jit]   {vtable_name}[{slot_idx}] = {fn_name} @ 0x{fn_addr:x}");
+                        }
+                    }
+                    Ok(None) => {
+                        // Inherited concrete method whose body lives in
+                        // another JIT module. Slot is filled with the
+                        // doesNotUnderstand stub so a virtual call lands
+                        // somewhere safe & loud rather than at address 0.
+                        unsafe { vt_ptr.add(slot_idx).write(unimpl_addr); }
+                        if debug {
+                            eprintln!(
+                                "[jit]   {vtable_name}[{slot_idx}] = {fn_name} \
+                                 (UNIMPL — points at __newcp_unimpl_method_trap)"
+                            );
+                        }
+                    }
+                    Err(e) => {
+                        return Err(CodegenError::Jit(format!(
+                            "vtable patch: cannot resolve method {fn_name} for {vtable_name}[{slot_idx}]: {e}"
+                        )));
+                    }
+                }
+            }
         }
 
         Ok(Self {
             engine,
             exported_functions,
-            _vtable_buffers: Vec::new(),
         })
     }
 
@@ -102,7 +259,7 @@ impl<'ctx> JitModule<'ctx> {
             .iter()
             .find(|ef| ef.public_name == public_name)
             .map(|ef| ef.llvm_name.as_str())
-            .ok_or_else(|| CodegenError::Jit(format!("no exported function '{public_name}'")))?;
+            .unwrap_or(public_name);
 
         self.lookup_export_address_by_llvm_name(llvm_name)
             .map_err(|e| CodegenError::Jit(format!(
@@ -111,21 +268,27 @@ impl<'ctx> JitModule<'ctx> {
     }
 
     fn lookup_export_address_by_llvm_name(&self, llvm_name: &str) -> Result<usize, String> {
-        let addr = self
-            .engine
-            .get_function_address(llvm_name)
-            .map_err(|e| e.to_string())?;
-        if addr == 0 {
-            return Err(format!("function '{llvm_name}' resolved to null address"));
+        if let Ok(addr) = self.engine.get_function_address(llvm_name) {
+            if addr != 0 {
+                return Ok(addr as usize);
+            }
         }
-        Ok(addr as usize)
+
+        let symbol_name = CString::new(llvm_name)
+            .map_err(|_| format!("symbol '{llvm_name}' contains an interior NUL byte"))?;
+        let addr = unsafe { LLVMGetGlobalValueAddress(self.engine.as_mut_ptr(), symbol_name.as_ptr()) };
+        if addr != 0 {
+            return Ok(addr as usize);
+        }
+
+        Err(format!("symbol '{llvm_name}' resolved to null address"))
     }
 }
 
 pub(crate) fn collect_global_mappings<'ctx>(
     module: &Module<'ctx>,
     extra_symbol_mappings: &HashMap<String, usize>,
-) -> Result<Vec<(FunctionValue<'ctx>, usize)>, CodegenError> {
+) -> Result<Vec<(GlobalMapping<'ctx>, usize)>, CodegenError> {
     let mut mappings = Vec::new();
     let debug = std::env::var("NEWCP_JIT_DEBUG").is_ok();
 
@@ -141,17 +304,42 @@ pub(crate) fn collect_global_mappings<'ctx>(
 
         if let Some(address) = extra_symbol_mappings.get(symbol_name).copied() {
             if debug { eprintln!("[jit] map (extra) {symbol_name} -> 0x{address:x}"); }
-            mappings.push((function, address));
+            mappings.push((GlobalMapping::Function(function), address));
             continue;
         }
 
         if let Some(address) = newcp_runtime::runtime_symbol_address(symbol_name) {
             if debug { eprintln!("[jit] map (runtime) {symbol_name} -> 0x{address:x}"); }
-            mappings.push((function, address));
+            mappings.push((GlobalMapping::Function(function), address));
             continue;
         }
 
         if debug { eprintln!("[jit] UNRESOLVED external symbol: {symbol_name}"); }
+    }
+
+    for global in module.get_globals() {
+        if global.get_linkage() != Linkage::External || global.get_initializer().is_some() {
+            continue;
+        }
+
+        let symbol_name = global
+            .get_name()
+            .to_str()
+            .map_err(|_| CodegenError::Jit("encountered non-UTF8 symbol name".to_string()))?;
+
+        if let Some(address) = extra_symbol_mappings.get(symbol_name).copied() {
+            if debug { eprintln!("[jit] map (extra global) {symbol_name} -> 0x{address:x}"); }
+            mappings.push((GlobalMapping::Global(global), address));
+            continue;
+        }
+
+        if let Some(address) = newcp_runtime::runtime_symbol_address(symbol_name) {
+            if debug { eprintln!("[jit] map (runtime global) {symbol_name} -> 0x{address:x}"); }
+            mappings.push((GlobalMapping::Global(global), address));
+            continue;
+        }
+
+        if debug { eprintln!("[jit] UNRESOLVED external global: {symbol_name}"); }
     }
 
     Ok(mappings)

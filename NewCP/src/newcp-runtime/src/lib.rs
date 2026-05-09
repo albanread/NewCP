@@ -1,5 +1,6 @@
 pub mod console;
 pub mod gc;
+pub mod host_file_sys;
 pub mod math;
 pub mod smath;
 
@@ -933,6 +934,7 @@ fn builtin_native_modules() -> Vec<NativeModuleArtifact> {
         console::native_module_artifact(),
         math::native_module_artifact(),
         smath::native_module_artifact(),
+        host_file_sys::native_module_artifact(),
     ];
     #[cfg(windows)]
     modules.push(igui::native_module_artifact());
@@ -968,6 +970,26 @@ fn panic_trap(message: String) -> ! {
     std::process::abort();
 }
 
+/// Smalltalk-style `doesNotUnderstand:` for vtable slots that the JIT
+/// couldn't bind to a concrete function (typically because the slot
+/// represents a concrete-but-inherited method whose body lives in a
+/// different JIT module the loader hasn't cross-linked).
+///
+/// The function takes no parameters and returns nothing; calling it
+/// from any virtual-call site is unsound at the ABI level (the caller's
+/// expected signature won't match), but we only ever reach this code
+/// AFTER the indirect call lands here, by which point the only sane
+/// thing to do is abort with a useful message. Any caller-passed args
+/// sit in registers / on the stack but go unread.
+#[unsafe(no_mangle)]
+pub extern "C" fn __newcp_unimpl_method_trap() -> ! {
+    panic_trap(
+        "virtual call to inherited method whose body lives in another \
+         module — vtable slot was left unimplemented at JIT time \
+         (see docs/files_module_investigation.md, item 2)".to_string()
+    )
+}
+
 pub fn runtime_symbol_address(symbol_name: &str) -> Option<usize> {
     if symbol_name == "__newcp_sys_new" {
         return Some(gc::__newcp_sys_new as *const () as usize);
@@ -977,6 +999,9 @@ pub fn runtime_symbol_address(symbol_name: &str) -> Option<usize> {
     }
     if symbol_name == "__newcp_trap" {
         return Some(__newcp_trap as *const () as usize);
+    }
+    if symbol_name == "__newcp_unimpl_method_trap" {
+        return Some(__newcp_unimpl_method_trap as *const () as usize);
     }
 
     let (module_name, export_name) = symbol_name.split_once('.')?;

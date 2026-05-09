@@ -36,8 +36,26 @@
   `ptr_alloc_block_header_tag_is_typedesc` both pass, confirming that
   `__newcp_new_rec` returns a payload whose `BlockHeader.tag` (at
   `obj - 16`) is the TypeDesc address.
+- **JIT dispatch now works at runtime.** Vtables are emitted as mutable
+  globals with zero initializers, and after MCJIT materializes the module
+  the JIT layer:
+  - resolves each vtable global address via `LLVMGetGlobalValueAddress`
+  - resolves each method body via `LLVMGetPointerToGlobal` on the concrete
+    `FunctionValue`, avoiding MCJIT's unreliable name-based lookup for
+    non-exported or generation-qualified methods
+  - writes those addresses into the vtable slots in place
 
-## What's blocked
+  This also handles exported methods correctly because the recorded slot
+  metadata is normalized to the final emitted LLVM symbol name during
+  procedure declaration.
+
+  Verified end-to-end:
+  - `ptr_set_probe_vtable_fn`
+  - `ptr_method_box_set_get`
+  - `abstract_dispatch_square`
+  - `abstract_dispatch_circle`
+
+## Root cause
 
 - **MCJIT does not relocate function-pointer constants in vtable
   initializers.** A `private`/`internal` constant of the form
@@ -61,49 +79,69 @@
     the vtable's array initializer is NOT relocated.
 
   So the relocator handles `ptr → data` references in const initializers
-  but not `ptr → function`. This is a known MCJIT pain-point.
+  but not `ptr → function`. This is the underlying reason the original
+  constant-vtable approach failed.
 
-## What I tried
+## Failed attempts
 
 - **Linkage variants**: `Private` → `Internal` → `External`. None of them
   change the behavior. MCJIT allocates the global at a valid address;
   the array contents stay zero.
-- **Mutable global + post-JIT patching**: declare the vtable as a regular
-  `global` (not `constant`), then after engine creation walk each
-  `*.vtable` global, query `LLVMGetGlobalValueAddress` via raw FFI, and
-  write the function addresses into the storage at runtime. The address
-  resolution works, but `engine.get_function_address("BoxDesc_Set")`
-  returns "Function not found in ExecutionEngine" — MCJIT doesn't know
-  about the symbol because nothing in the live IR references it
-  directly.
+- **Mutable global + post-JIT patching via `get_function_address`**:
+  writing slots post-JIT is the right shape, but MCJIT still refused to
+  expose some method bodies through its symbol table. That variant failed
+  with errors such as `Function not found in ExecutionEngine`.
 - **`add_global_mapping` redirect**: bind the LLVM vtable global to a
   Rust-allocated buffer pre-engine-creation. MCJIT ignores the override
   for definitions (it only honors `add_global_mapping` for declarations
   with no body or initializer).
 
-## Plausible fixes (in increasing scope)
+## Landed fix
 
-1. **Force-emit method functions.** Mark each method function as
-   `appending` in `@llvm.used`. This survives optimization AND ensures
-   MCJIT keeps the symbol findable for `get_function_address`. Then
-   the post-JIT patching path becomes viable. `inkwell` 0.9 doesn't
-   expose `@llvm.used` directly, but it can be built with
-   `Module::add_global` of a `[N x ptr]` constant of section
-   `"llvm.metadata"`.
-2. **Switch from MCJIT to ORC v2.** ORC's symbol table behavior is
-   more predictable for cross-module function references in constants.
-   `inkwell` has partial ORC support; would be a bigger refactor.
-3. **Move dispatch to a runtime helper.** Instead of inlining the
-   `obj → tag → vtable[i]` chain, emit `__newcp_dispatch(obj, slot,
-   args...)` and have a Rust-side vtable registry. This gives up
-   single-call dispatch in exchange for sidestepping MCJIT entirely.
-   Would slow every method call by one extra call frame.
+The working combination is:
 
-For the **Files port** (the original motivator): when the runtime
-dispatch lands, the `Files.cp` interface module + `HostFiles` concrete
-subclasses can be ported faithfully (Path A in
-`files_module_investigation.md`). Until then, the `Files` port either
-needs Path C (flat handle API, no OOP), or to wait.
+1. Emit each vtable as a mutable zero-initialized global.
+2. Anchor method bodies with `@llvm.used` so optimization does not delete
+  them.
+3. Record vtable slot names using the final emitted LLVM symbol names.
+4. After JIT creation and `add_global_mapping`, finalize the engine
+  explicitly via `engine.run_static_constructors()` (we don't emit
+  `llvm.global_ctors`, so this only triggers `MCJIT::finalizeObject()`
+  — no user constructors run). This makes the materialization step a
+  named operation rather than a side effect of the first address lookup.
+5. Resolve each method via `LLVMGetPointerToGlobal` on the actual
+  `FunctionValue` rather than via MCJIT's symbol table.
+6. Patch the vtable storage in place.
+
+This preserves the direct dispatch path in generated code:
+`obj -> tag -> desc.vtable -> vtable[i] -> fn_ptr -> call`.
+
+### Single-module-per-engine assumption
+
+The current architecture creates one `ExecutionEngine` per
+`OwnedJitModule` (no `engine.add_module(...)` path). Step 4 finalizes
+exactly that one module, which is sufficient for everything we ship
+today.
+
+If incremental compilation is added later (multiple modules
+JIT'd into the same engine in stages), MCJIT will **not** retroactively
+re-finalize earlier modules when a new one is added; each newly-added
+module must trigger its own finalization before its globals or
+functions are queried by address. The natural place for this is in
+whatever wraps `engine.add_module(...)` — call
+`engine.run_static_constructors()` (or an equivalent
+`finalizeObject`-bearing API) before doing any address-resolution or
+vtable-patching for the new module.
+
+## Remaining options
+
+- **Switch from MCJIT to ORC v2** for a more principled JIT backend.
+- **Move dispatch to a runtime helper** if future MCJIT edge cases still
+  make direct patching too brittle.
+
+For the **Files port** (the original motivator): the OOP runtime blocker is
+gone for this dispatch path, so the faithful `Files.cp` interface module +
+`HostFiles` concrete subclass port is now technically viable again.
 
 ## Tests in the corpus
 
@@ -113,11 +151,7 @@ Working today (in `tests/newcp-tests/src/lib.rs`):
 |---|---|
 | `ptr_alloc_no_dispatch` | NEW + write field + read field round-trips through `__newcp_new_rec` |
 | `ptr_alloc_block_header_tag_is_typedesc` | `BlockHeader.tag` at `obj - 16` is the TypeDesc address |
-
-Fixtures kept as future regression tests (compile cleanly, JIT crash
-expected until MCJIT fix lands):
-
-- `Mod/Tests/PtrSet.cp` — `Run`: `b.Set(42)` followed by `b.value` read
-- `Mod/Tests/PtrMethod.cp` — `Run`: `b.Set(42); b.Get()`
-- `Mod/Tests/AbstractDispatch.cp` — `TestSquare`/`TestCircle`: virtual
-  dispatch through abstract pointer base
+| `ptr_set_probe_vtable_fn` | `vtable[0]` is patched to a non-zero method address |
+| `ptr_method_box_set_get` | concrete pointer-aliased virtual dispatch works end-to-end |
+| `abstract_dispatch_square` | abstract-base dispatch resolves Square.Area |
+| `abstract_dispatch_circle` | abstract-base dispatch resolves Circle.Area |

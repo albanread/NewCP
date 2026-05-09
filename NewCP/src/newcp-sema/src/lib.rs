@@ -1,10 +1,11 @@
-use std::collections::HashSet;
-use std::path::Path;
+use std::collections::{HashMap, HashSet};
+use std::path::{Path, PathBuf};
 
 use newcp_parser::{
     read_module_ast, BinaryOp, Declaration, Designator, ExportMark, Expr, FPSection, FieldDecl,
-    FormalParameters, Guard, MethodFlavor, ModuleAst, ParamMode, ProcedureBody, ProcedureDecl,
-    QualIdent, RecordFlavor, Selector, Statement, SysFlag, TypeDecl, TypeExpr,
+    FormalParameters, Guard, Literal, MethodFlavor, ModuleAst, ParamMode, ProcedureBody,
+    ProcedureDecl, QualIdent, RecordFlavor, Selector, Statement, SysFlag, TypeDecl, TypeExpr,
+    UnaryOp,
 };
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -416,11 +417,25 @@ fn format_diagnostic(scope: &str, d: &SemanticDiagnostic) -> String {
 
 pub fn analyze_module(path: &Path) -> Result<SemanticModule, String> {
     let module = read_module_ast(path)?;
-    Ok(analyze_module_ast(&module))
+    Ok(analyze_module_ast_with_source_dir(&module, path.parent()))
 }
 
 pub fn analyze_module_ast(module: &ModuleAst) -> SemanticModule {
-    let mut analyzer = Analyzer::new(module);
+    analyze_module_ast_with_source_dir(module, None)
+}
+
+/// Like `analyze_module_ast`, but uses `source_dir` (typically the
+/// directory containing the module's `.cp` file) as the first place to
+/// search for sibling-imported modules' sources, before falling back to
+/// the cwd-relative `Mod/<X>.cp` lookup.
+///
+/// Required for fixtures and consumers that don't sit in the workspace's
+/// top-level `Mod/` directory (e.g. tests in `Mod/Tests/`).
+pub fn analyze_module_ast_with_source_dir(
+    module: &ModuleAst,
+    source_dir: Option<&Path>,
+) -> SemanticModule {
+    let mut analyzer = Analyzer::with_source_dir(module, source_dir);
     analyzer.analyze()
 }
 
@@ -429,6 +444,14 @@ struct Analyzer<'a> {
     has_system_import: bool,
     module_type_names: HashSet<String>,
     module_symbols: Vec<SemanticSymbol>,
+    /// `import_name -> top-level symbols of that module`. Populated by
+    /// recursively analysing each imported `Mod/<X>.cp` source so that
+    /// cross-module type-alias resolution, record-base walks, override
+    /// detection, and subtype assignability all see the imported module's
+    /// definitions. Empty on read failure (the import simply behaves
+    /// opaquely, which preserves the prior "no cross-module sema"
+    /// behaviour for missing-source cases).
+    imported_modules: HashMap<String, Vec<SemanticSymbol>>,
     procedures: Vec<SemanticProcedure>,
     selector_resolutions: Vec<SelectorResolution>,
     diagnostics: Vec<SemanticDiagnostic>,
@@ -436,11 +459,17 @@ struct Analyzer<'a> {
 
 impl<'a> Analyzer<'a> {
     fn new(module: &'a ModuleAst) -> Self {
+        Self::with_source_dir(module, None)
+    }
+
+    fn with_source_dir(module: &'a ModuleAst, source_dir: Option<&Path>) -> Self {
+        let imported_modules = load_imported_module_symbols(module, source_dir);
         Self {
             module,
             has_system_import: module.imports.iter().any(|item| item.name == "SYSTEM"),
             module_type_names: builtin_type_names(),
             module_symbols: builtin_symbols(),
+            imported_modules,
             procedures: Vec::new(),
             selector_resolutions: Vec::new(),
             diagnostics: Vec::new(),
@@ -1080,13 +1109,33 @@ impl<'a> Analyzer<'a> {
                     }
                 }
                 None => {
-                    if !procedure.heading.attributes.is_new {
+                    // Local lookup found nothing. Before flagging "must
+                    // use NEW", check whether the method is inherited
+                    // from an *imported* base — if so, this is a
+                    // cross-module override and should not require NEW.
+                    let cross_module_override = self
+                        .has_inherited_method_anywhere(&receiver.ty, procedure_name);
+                    if !procedure.heading.attributes.is_new && !cross_module_override {
                         self.diagnostics.push(make_diagnostic(
                             None,
                             procedure.heading.span.start.line,
                             procedure.heading.span.start.column,
                             format!(
                                 "newly introduced method {} must use NEW",
+                                procedure_name
+                            ),
+                        ));
+                    }
+                    // The reverse: declares NEW but actually overrides
+                    // an inherited cross-module method — flag it. This
+                    // mirrors the local-base check on the Some branch.
+                    if procedure.heading.attributes.is_new && cross_module_override {
+                        self.diagnostics.push(make_diagnostic(
+                            None,
+                            procedure.heading.span.start.line,
+                            procedure.heading.span.start.column,
+                            format!(
+                                "redefining method {} must not use NEW",
                                 procedure_name
                             ),
                         ));
@@ -1884,6 +1933,109 @@ impl<'a> Analyzer<'a> {
         None
     }
 
+    /// Walks the inheritance chain (including bases declared in imported
+    /// modules) and returns true if any ancestor record has a method
+    /// named `method_name`. Used by the override-detection check so a
+    /// subclass method that overrides an inherited cross-module method
+    /// is not flagged with "newly introduced method must use NEW".
+    fn has_inherited_method_anywhere(&self, type_name: &str, method_name: &str) -> bool {
+        // Walk local bases first (matches find_inherited_method behaviour).
+        let mut current_qualified = self.record_type_info_qualified(type_name).and_then(|(_, base)| base);
+        while let Some((module_qual, base_name)) = current_qualified.clone() {
+            if module_qual.is_none() {
+                // Local base. Look for a same-module ProcedureDecl.
+                let local_hit = self.module.declarations.iter().any(|declaration| match declaration {
+                    Declaration::Procedure(procedure) => procedure
+                        .heading
+                        .receiver
+                        .as_ref()
+                        .is_some_and(|receiver| receiver.ty == base_name)
+                        && procedure.heading.name.name == method_name,
+                    _ => false,
+                });
+                if local_hit {
+                    return true;
+                }
+                current_qualified = self
+                    .record_type_info_qualified(&base_name)
+                    .and_then(|(_, base)| base);
+            } else if let Some(module_name) = module_qual {
+                // Cross-module base: walk the imported record's methods,
+                // then chase its base recursively. The imported record
+                // type is reachable as a SemanticType in
+                // self.imported_modules; its methods carry the names we
+                // need for the override check.
+                return self.imported_record_inherits_method(
+                    &module_name,
+                    &base_name,
+                    method_name,
+                );
+            }
+        }
+        false
+    }
+
+    /// Recursively checks whether the record `record_name` declared in
+    /// `module_name` (or any of its bases) has a method named
+    /// `method_name`. The base may itself be in a third module — handled
+    /// by following the qualified Named refs left in place by
+    /// `qualify_local_named_refs`.
+    fn imported_record_inherits_method(
+        &self,
+        module_name: &str,
+        record_name: &str,
+        method_name: &str,
+    ) -> bool {
+        let Some(symbols) = self.imported_modules.get(module_name) else {
+            return false;
+        };
+        let Some(record_sym) = symbols
+            .iter()
+            .find(|sym| sym.kind == SymbolKind::Type && sym.name == record_name)
+        else {
+            return false;
+        };
+        let Some(record_ty) = record_sym.declared_type.as_ref() else {
+            return false;
+        };
+        let Some(SemanticType::Record { methods, base, .. }) = unwrap_to_record(record_ty) else {
+            return false;
+        };
+        if methods.iter().any(|m| m.name == method_name) {
+            return true;
+        }
+        // Walk into the base.
+        match base.as_deref() {
+            Some(SemanticType::Named { module: Some(base_module), name: base_name, .. }) => {
+                self.imported_record_inherits_method(base_module, base_name, method_name)
+            }
+            Some(SemanticType::Named { module: None, name: base_name, .. }) => {
+                // Local-to-the-imported-module base. Same module.
+                self.imported_record_inherits_method(module_name, base_name, method_name)
+            }
+            _ => false,
+        }
+    }
+
+    /// Like `record_type_info` but returns the base's full qualification
+    /// (`(module, name)`) instead of just the unqualified name. Required
+    /// for the cross-module inheritance walks.
+    fn record_type_info_qualified(
+        &self,
+        type_name: &str,
+    ) -> Option<(Option<RecordFlavor>, Option<(Option<String>, String)>)> {
+        self.module.declarations.iter().find_map(|declaration| match declaration {
+            Declaration::Type(type_decl) if type_decl.name.name == type_name => match &type_decl.ty {
+                TypeExpr::Record { flavor, base, .. } => Some((
+                    *flavor,
+                    base.as_ref().map(|item| (item.module.clone(), item.name.clone())),
+                )),
+                _ => None,
+            },
+            _ => None,
+        })
+    }
+
     fn effective_methods_for_type(&self, type_name: &str) -> Vec<&'a ProcedureDecl> {
         let mut methods = self
             .record_type_info(type_name)
@@ -1994,11 +2146,12 @@ impl<'a> Analyzer<'a> {
                         self.infer_designator_type(target, local_symbols, scope_type_names),
                         self.infer_expr_type(value, local_symbols, scope_type_names),
                     ) {
-                        if !self.types_are_assignment_compatible(
+                        let compatible = self.types_are_assignment_compatible(
                             &target_type,
                             &value_type,
                             local_symbols,
-                        ) {
+                        ) || integer_literal_fits_target(value, &target_type);
+                        if !compatible {
                             let (line, column) = statement_position(statement);
                             diagnostics.push(make_diagnostic(
                                 procedure_name,
@@ -3149,8 +3302,20 @@ impl<'a> Analyzer<'a> {
         };
 
         let target_type = self.resolve_named_type(target_ident, scope_type_names);
+        // CP §11.7: a type guard target may name either a record type
+        // (when the subject is a record receiver/parameter) or a pointer-to-
+        // record type (when the subject is a pointer). Both forms reduce to
+        // the same extends-check on the underlying record.
+        let resolved_target = self.resolve_named_type_one_level(&target_type, local_symbols);
+        let target_pointee_record = match &resolved_target {
+            SemanticType::Pointer { target, .. } if self.is_record_type(target, local_symbols) => {
+                Some((**target).clone())
+            }
+            _ => None,
+        };
         // Imported types are opaque — trust that the programmer named an extension record.
-        let target_is_known_record = self.is_record_type(&target_type, local_symbols)
+        let target_is_known_record = target_pointee_record.is_some()
+            || self.is_record_type(&target_type, local_symbols)
             || matches!(target_type, SemanticType::Named { kind: NamedTypeKind::Imported, .. });
         if !target_is_known_record {
             let (line, column) = position;
@@ -3163,10 +3328,16 @@ impl<'a> Analyzer<'a> {
             return;
         }
 
+        // Pick the record-typed view of the target for the extends check:
+        // if it's `POINTER TO Foo`, compare against `Foo`; otherwise compare
+        // against the named record directly.
+        let target_for_extends = target_pointee_record.unwrap_or_else(|| target_type.clone());
+
         // Skip the extends check for imported types — we have no definition to verify against.
         let either_imported = matches!(target_type, SemanticType::Named { kind: NamedTypeKind::Imported, .. })
-            || matches!(static_record_type, SemanticType::Named { kind: NamedTypeKind::Imported, .. });
-        if !either_imported && !self.record_type_extends(&target_type, &static_record_type, local_symbols) {
+            || matches!(static_record_type, SemanticType::Named { kind: NamedTypeKind::Imported, .. })
+            || matches!(target_for_extends, SemanticType::Named { kind: NamedTypeKind::Imported, .. });
+        if !either_imported && !self.record_type_extends(&target_for_extends, &static_record_type, local_symbols) {
             let (line, column) = position;
             diagnostics.push(make_diagnostic(
                 procedure_name,
@@ -3186,7 +3357,13 @@ impl<'a> Analyzer<'a> {
         subject_type: &SemanticType,
         local_symbols: &[SemanticSymbol],
     ) -> Option<SemanticType> {
-        match subject_type {
+        // Resolve cross-module / local type aliases before deciding what
+        // kind of subject this is. Required so that `loc: Files.Locator`
+        // (which holds `Named { module: Some("Files"), name: "Locator" }`
+        // and resolves to `Pointer { target: Files.LocatorDesc }`) is
+        // recognised as a pointer subject for type-guard purposes.
+        let resolved = self.resolve_named_type_one_level(subject_type, local_symbols);
+        match &resolved {
             SemanticType::Pointer { target, .. } => {
                 if self.is_record_type(target, local_symbols) {
                     Some((**target).clone())
@@ -3195,10 +3372,10 @@ impl<'a> Analyzer<'a> {
                 }
             }
             _ if matches!(subject_symbol.map(|symbol| symbol.kind), Some(SymbolKind::Parameter | SymbolKind::Receiver))
-                && (self.is_record_type(subject_type, local_symbols)
-                    || matches!(subject_type, SemanticType::Named { kind: NamedTypeKind::Imported, .. })) =>
+                && (self.is_record_type(&resolved, local_symbols)
+                    || matches!(resolved, SemanticType::Named { kind: NamedTypeKind::Imported, .. })) =>
             {
-                Some(subject_type.clone())
+                Some(resolved)
             }
             _ => None,
         }
@@ -3293,9 +3470,15 @@ impl<'a> Analyzer<'a> {
         ty: &SemanticType,
         local_symbols: &[SemanticSymbol],
     ) -> SemanticType {
-        resolve_named_type_alias(ty, local_symbols, &self.module_symbols, &mut HashSet::new())
-            .cloned()
-            .unwrap_or_else(|| ty.clone())
+        resolve_named_type_alias(
+            ty,
+            local_symbols,
+            &self.module_symbols,
+            &self.imported_modules,
+            &mut HashSet::new(),
+        )
+        .cloned()
+        .unwrap_or_else(|| ty.clone())
     }
 
     fn is_managed_pointer_type(&self, ty: &SemanticType, local_symbols: &[SemanticSymbol]) -> bool {
@@ -3736,7 +3919,9 @@ impl<'a> Analyzer<'a> {
             }
 
             if let Some(actual) = self.infer_expr_type(actual_expr, local_symbols, scope_type_names) {
-                if !self.types_are_assignment_compatible(&expected.ty, &actual, local_symbols) {
+                let compatible = self.types_are_assignment_compatible(&expected.ty, &actual, local_symbols)
+                    || integer_literal_fits_target(actual_expr, &expected.ty);
+                if !compatible {
                     let (line, column) = expr_position(actual_expr);
                     diagnostics.push(make_diagnostic(
                         procedure_name,
@@ -4361,11 +4546,16 @@ fn collect_free_names_in_stmts(stmts: &[newcp_parser::Statement]) -> HashSet<Str
 
 fn annotate_simd_shapes(symbols: &mut [SemanticSymbol], outer_symbols: &[SemanticSymbol]) {
     let snapshot = symbols.to_vec();
+    // SIMD shape inference for cross-module typedefs is intentionally skipped:
+    // the SIMD-eligible types (packed records of f32/i64/etc.) live in the
+    // module being analysed, not as imports. Pass an empty map to keep the
+    // helpers' signature consistent with the rest of the alias-resolver path.
+    let empty_imports: HashMap<String, Vec<SemanticSymbol>> = HashMap::new();
     for symbol in symbols.iter_mut() {
         symbol.simd_shape = symbol
             .declared_type
             .as_ref()
-            .and_then(|ty| infer_simd_shape(ty, &snapshot, outer_symbols, &mut HashSet::new()));
+            .and_then(|ty| infer_simd_shape(ty, &snapshot, outer_symbols, &empty_imports, &mut HashSet::new()));
     }
 }
 
@@ -4373,9 +4563,10 @@ fn infer_simd_shape(
     ty: &SemanticType,
     local_symbols: &[SemanticSymbol],
     outer_symbols: &[SemanticSymbol],
+    imported_modules: &HashMap<String, Vec<SemanticSymbol>>,
     seen_named: &mut HashSet<String>,
 ) -> Option<SimdShape> {
-    match resolve_named_type_alias(ty, local_symbols, outer_symbols, seen_named).unwrap_or(ty) {
+    match resolve_named_type_alias(ty, local_symbols, outer_symbols, imported_modules, seen_named).unwrap_or(ty) {
         SemanticType::Record {
             base,
             flavor,
@@ -4387,6 +4578,7 @@ fn infer_simd_shape(
                 fields,
                 local_symbols,
                 outer_symbols,
+                imported_modules,
                 seen_named,
             )?;
             Some(make_simd_shape(
@@ -4397,11 +4589,11 @@ fn infer_simd_shape(
         }
         SemanticType::Array { element_type, .. } => {
             if let Some(lane_kind) =
-                resolve_simd_scalar_lane(element_type, local_symbols, outer_symbols, seen_named)
+                resolve_simd_scalar_lane(element_type, local_symbols, outer_symbols, imported_modules, seen_named)
             {
                 return Some(make_simd_shape(SimdLayout::ScalarArray, lane_kind, 1));
             }
-            match infer_simd_shape(element_type, local_symbols, outer_symbols, seen_named)? {
+            match infer_simd_shape(element_type, local_symbols, outer_symbols, imported_modules, seen_named)? {
                 SimdShape {
                     layout: SimdLayout::PackedRecord,
                     lane_kind,
@@ -4428,13 +4620,14 @@ fn infer_homogeneous_record_lanes(
     fields: &[FieldType],
     local_symbols: &[SemanticSymbol],
     outer_symbols: &[SemanticSymbol],
+    imported_modules: &HashMap<String, Vec<SemanticSymbol>>,
     seen_named: &mut HashSet<String>,
 ) -> Option<(SimdLaneKind, usize)> {
     let mut lane_kind = None;
     let mut lane_count = 0usize;
 
     for field in fields {
-        let field_lane = resolve_simd_scalar_lane(&field.ty, local_symbols, outer_symbols, seen_named)?;
+        let field_lane = resolve_simd_scalar_lane(&field.ty, local_symbols, outer_symbols, imported_modules, seen_named)?;
         if let Some(existing) = lane_kind {
             if existing != field_lane {
                 return None;
@@ -4457,9 +4650,10 @@ fn resolve_simd_scalar_lane(
     ty: &SemanticType,
     local_symbols: &[SemanticSymbol],
     outer_symbols: &[SemanticSymbol],
+    imported_modules: &HashMap<String, Vec<SemanticSymbol>>,
     seen_named: &mut HashSet<String>,
 ) -> Option<SimdLaneKind> {
-    match resolve_named_type_alias(ty, local_symbols, outer_symbols, seen_named).unwrap_or(ty) {
+    match resolve_named_type_alias(ty, local_symbols, outer_symbols, imported_modules, seen_named).unwrap_or(ty) {
         SemanticType::Builtin(BuiltinType::ShortReal) => Some(SimdLaneKind::Float32),
         SemanticType::Builtin(BuiltinType::Real) => Some(SimdLaneKind::Float64),
         SemanticType::Builtin(BuiltinType::IntShort) => Some(SimdLaneKind::Int32),
@@ -4473,6 +4667,7 @@ fn resolve_named_type_alias<'a>(
     ty: &'a SemanticType,
     local_symbols: &'a [SemanticSymbol],
     outer_symbols: &'a [SemanticSymbol],
+    imported_modules: &'a HashMap<String, Vec<SemanticSymbol>>,
     seen_named: &mut HashSet<String>,
 ) -> Option<&'a SemanticType> {
     match ty {
@@ -4492,7 +4687,191 @@ fn resolve_named_type_alias<'a>(
             seen_named.remove(name);
             resolved
         }
+        SemanticType::Named {
+            module: Some(module_name),
+            name,
+            kind: NamedTypeKind::UserDefined | NamedTypeKind::Imported,
+        } => {
+            // Cross-module type alias: look the type up in the imported
+            // module's symbol table. Required so checks like "open ARRAY OF
+            // CHAR accepts Files.Name (= ARRAY 16 OF CHAR)" succeed —
+            // without this the check sees `imported:Files.Name` as an
+            // opaque named type and fails.
+            let key = format!("{module_name}::{name}");
+            if !seen_named.insert(key.clone()) {
+                return None;
+            }
+            let resolved = imported_modules
+                .get(module_name)
+                .and_then(|symbols| {
+                    symbols
+                        .iter()
+                        .find(|symbol| {
+                            symbol.kind == SymbolKind::Type
+                                && symbol.name == *name
+                                && symbol.exported
+                        })
+                        .and_then(|symbol| symbol.declared_type.as_ref())
+                });
+            seen_named.remove(&key);
+            resolved
+        }
         _ => None,
+    }
+}
+
+/// Unwrap a possibly-pointer-aliased semantic type down to its
+/// underlying Record. Used to inspect imported record types when
+/// walking inheritance chains across modules (the same module's records
+/// are inspected directly through `module.declarations`).
+fn unwrap_to_record(ty: &SemanticType) -> Option<&SemanticType> {
+    match ty {
+        SemanticType::Record { .. } => Some(ty),
+        SemanticType::Pointer { target, .. } => unwrap_to_record(target),
+        _ => None,
+    }
+}
+
+/// Read `Mod/<import>.cp` for each import in `module` and return
+/// `(import_name, top-level symbols of that module)` pairs.
+///
+/// On any read or parse failure the import is silently omitted; downstream
+/// code then treats that import as opaque (the same behaviour the sema
+/// layer had before cross-module resolution existed). This keeps the
+/// addition non-breaking for tests / fixtures that don't ship sources for
+/// every import (e.g. the resident-module facades like SYSTEM, Console,
+/// Math, …).
+fn load_imported_module_symbols(
+    module: &ModuleAst,
+    source_dir: Option<&Path>,
+) -> HashMap<String, Vec<SemanticSymbol>> {
+    let mut out: HashMap<String, Vec<SemanticSymbol>> = HashMap::new();
+    let debug = std::env::var("NEWCP_SEMA_DEBUG").is_ok();
+    for import in &module.imports {
+        if import.name == "SYSTEM" {
+            // SYSTEM is provided by the analyzer's builtins, not as a
+            // standalone source module.
+            continue;
+        }
+        let mut candidates: Vec<PathBuf> = Vec::new();
+        if let Some(dir) = source_dir {
+            // Sibling of the importing module.
+            candidates.push(dir.join(format!("{}.cp", import.name)));
+            // Sibling Mod/ directory under the importing module's parent.
+            // Handles fixtures in `Mod/Tests/` importing modules in `Mod/`.
+            if let Some(parent) = dir.parent() {
+                candidates.push(parent.join(format!("{}.cp", import.name)));
+            }
+        }
+        // Cwd-relative fallbacks (matches the IR layer's lookup behaviour).
+        candidates.push(PathBuf::from("Mod").join(format!("{}.cp", import.name)));
+        candidates.push(PathBuf::from(format!("{}.cp", import.name)));
+
+        let chosen = candidates
+            .iter()
+            .find_map(|path| read_module_ast(path).ok().map(|ast| (path.clone(), ast)));
+        let Some((found_path, ast)) = chosen else {
+            if debug {
+                eprintln!(
+                    "[sema] import {} for module {} — no source found in any of {:?}",
+                    import.name, module.name, candidates
+                );
+            }
+            continue;
+        };
+        // Recursive analysis is bounded: CP forbids cyclic imports.
+        // Use the source-dir-aware path so the imported module can in
+        // turn locate its own imports.
+        let analyzed = analyze_module_ast_with_source_dir(&ast, found_path.parent());
+        // Walk every symbol's declared_type and qualify any internal
+        // `Named { module: None, name: T }` references with `module:
+        // Some(<this import name>)` when T is a top-level type symbol in
+        // this imported module. Without this, an imported pointer alias
+        // `Base = POINTER TO BaseDesc` appears as
+        // `Pointer{target: Named{module: None, name: "BaseDesc"}}` to the
+        // outer module, defeating cross-module record-extends checks.
+        let local_type_names: HashSet<String> = analyzed
+            .symbols
+            .iter()
+            .filter(|sym| sym.kind == SymbolKind::Type)
+            .map(|sym| sym.name.clone())
+            .collect();
+        let qualified_symbols: Vec<SemanticSymbol> = analyzed
+            .symbols
+            .into_iter()
+            .map(|mut sym| {
+                if let Some(ty) = sym.declared_type.as_mut() {
+                    qualify_local_named_refs(ty, &import.name, &local_type_names);
+                }
+                sym
+            })
+            .collect();
+        if debug {
+            eprintln!(
+                "[sema] import {} for module {} loaded from {} ({} symbols)",
+                import.name,
+                module.name,
+                found_path.display(),
+                qualified_symbols.len()
+            );
+        }
+        out.insert(import.name.clone(), qualified_symbols);
+    }
+    out
+}
+
+/// Recursively rewrite `Named { module: None, name: T, .. }` references
+/// inside `ty` to `Named { module: Some(module_name), name: T, kind:
+/// Imported }` when `T` is in `local_type_names` (the set of top-level
+/// type symbols defined by the imported module). This is the
+/// post-processing step that lets cross-module record-extends checks see
+/// the same canonical name on both sides of an inheritance edge.
+fn qualify_local_named_refs(
+    ty: &mut SemanticType,
+    module_name: &str,
+    local_type_names: &HashSet<String>,
+) {
+    match ty {
+        SemanticType::Named { module: module_field, name, kind } => {
+            if module_field.is_none() && local_type_names.contains(name) {
+                *module_field = Some(module_name.to_string());
+                *kind = NamedTypeKind::Imported;
+            }
+        }
+        SemanticType::Array { element_type, .. } => {
+            qualify_local_named_refs(element_type, module_name, local_type_names);
+        }
+        SemanticType::Record { base, fields, methods, .. } => {
+            if let Some(base) = base.as_deref_mut() {
+                qualify_local_named_refs(base, module_name, local_type_names);
+            }
+            for field in fields {
+                qualify_local_named_refs(&mut field.ty, module_name, local_type_names);
+            }
+            for method in methods {
+                qualify_proc_signature(&mut method.signature, module_name, local_type_names);
+            }
+        }
+        SemanticType::Pointer { target, .. } => {
+            qualify_local_named_refs(target, module_name, local_type_names);
+        }
+        SemanticType::Procedure(sig) => {
+            qualify_proc_signature(sig, module_name, local_type_names);
+        }
+        _ => {}
+    }
+}
+
+fn qualify_proc_signature(
+    sig: &mut ProcedureType,
+    module_name: &str,
+    local_type_names: &HashSet<String>,
+) {
+    for param in &mut sig.parameters {
+        qualify_local_named_refs(&mut param.ty, module_name, local_type_names);
+    }
+    if let Some(result) = sig.result_type.as_mut() {
+        qualify_local_named_refs(result, module_name, local_type_names);
     }
 }
 
@@ -5167,6 +5546,57 @@ fn parse_component_pascal_integer(text: &str) -> Option<i128> {
 fn parse_component_pascal_character(text: &str) -> Option<i128> {
     text.strip_suffix('X')
         .and_then(|value| i128::from_str_radix(value, 16).ok())
+}
+
+/// Extract the compile-time integer value of `expr`, if it is a literal
+/// integer (optionally wrapped in unary `+`/`-`). Returns `None` for
+/// any expression that requires runtime evaluation.
+///
+/// This intentionally does not flow constants through binary expressions
+/// or named CONSTs — the use case is purely "is this an integer literal
+/// that should adapt to the target type", which is the polymorphic-
+/// integer-literal rule in CP.
+fn extract_integer_literal_value(expr: &Expr) -> Option<i128> {
+    match expr {
+        Expr::Literal { value: Literal::Integer(text), .. } => {
+            parse_component_pascal_integer(text)
+        }
+        Expr::Literal { value: Literal::Character(text), .. } => {
+            parse_component_pascal_character(text)
+        }
+        Expr::Unary { op: UnaryOp::Minus, expr: inner, .. } => {
+            extract_integer_literal_value(inner).map(|n| -n)
+        }
+        Expr::Unary { op: UnaryOp::Plus, expr: inner, .. } => {
+            extract_integer_literal_value(inner)
+        }
+        _ => None,
+    }
+}
+
+/// Inclusive `(min, max)` value range for each integer builtin type, in
+/// the i128 domain. Used to check whether a constant literal fits the
+/// target type. Returns `None` for non-integer types (including CHAR
+/// and the SET/REAL/etc. families).
+fn integer_type_range(ty: &SemanticType) -> Option<(i128, i128)> {
+    match ty {
+        SemanticType::Builtin(BuiltinType::Byte) => Some((0, 255)),
+        SemanticType::Builtin(BuiltinType::ShortInt) => Some((i16::MIN as i128, i16::MAX as i128)),
+        SemanticType::Builtin(BuiltinType::IntShort) => Some((i32::MIN as i128, i32::MAX as i128)),
+        SemanticType::Builtin(BuiltinType::Integer)
+        | SemanticType::Builtin(BuiltinType::LongInt) => Some((i64::MIN as i128, i64::MAX as i128)),
+        _ => None,
+    }
+}
+
+/// True if `expr` is a constant integer literal whose value fits in
+/// the integer-typed `target`. Implements the CP rule that integer
+/// literals are polymorphic with respect to the assignment / argument-
+/// passing context.
+fn integer_literal_fits_target(expr: &Expr, target: &SemanticType) -> bool {
+    let Some(value) = extract_integer_literal_value(expr) else { return false };
+    let Some((lo, hi)) = integer_type_range(target) else { return false };
+    value >= lo && value <= hi
 }
 
 fn render_case_value_range(start: i128, end: i128, kind: CaseValueKind) -> String {
