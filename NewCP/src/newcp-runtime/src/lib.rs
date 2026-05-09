@@ -764,6 +764,8 @@ impl BootstrapReport {
         kernel.register_resident_module("Kernel");
         kernel.register_resident_module("Init");
         let console_module = console::native_module_artifact();
+        #[cfg(windows)]
+        let igui_module = igui::native_module_artifact();
         let host_menus = HostedModuleArtifact::new(
             "HostMenus",
             vec!["Kernel".to_string()],
@@ -792,6 +794,8 @@ impl BootstrapReport {
 
         let hosted_modules = vec![
             format!("{} [{}]", console_module.hosted.name, console_module.hosted.source_summary),
+            #[cfg(windows)]
+            format!("{} [{}]", igui_module.hosted.name, igui_module.hosted.source_summary),
             format!("{} [{}]", host_menus.name, host_menus.source_summary),
         ];
 
@@ -804,6 +808,8 @@ impl BootstrapReport {
         ];
 
         kernel.register_native_module(console_module);
+        #[cfg(windows)]
+        kernel.register_native_module(igui_module);
         kernel.register_hosted_module(host_menus);
         kernel.register_compiled_module(system_artifact);
         kernel.register_compiled_module(init_shell_artifact);
@@ -917,7 +923,10 @@ pub fn bootstrap_and_describe_interface(module_name: &str) -> String {
 }
 
 fn builtin_native_modules() -> Vec<NativeModuleArtifact> {
-    vec![console::native_module_artifact()]
+    let mut modules = vec![console::native_module_artifact()];
+    #[cfg(windows)]
+    modules.push(igui::native_module_artifact());
+    modules
 }
 
 pub fn native_export_address(module_name: &str, export_name: &str) -> Option<usize> {

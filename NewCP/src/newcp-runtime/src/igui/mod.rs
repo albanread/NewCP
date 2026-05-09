@@ -10,11 +10,14 @@
 
 #![cfg(windows)]
 
+pub mod channels;
+pub mod cp_exports;
 mod d2d;
 mod d3d;
 mod dwrite;
 mod window;
 
+pub use cp_exports::native_module_artifact;
 pub use window::run;
 
 /// Errors surfaced from iGui startup. Phase 1 keeps this lossy on purpose;

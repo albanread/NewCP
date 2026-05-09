@@ -36,7 +36,8 @@ fn main() {
 
     #[cfg(windows)]
     if command == "run-igui" {
-        std::process::exit(run_igui());
+        let command_path = args.next();
+        std::process::exit(run_igui(command_path.as_deref()));
     }
 
     if command == "invoke-command" {
@@ -181,7 +182,7 @@ fn print_usage() {
     eprintln!("  newcp-driver load-module <Module|Path> [Module.Command]");
     eprintln!("  newcp-driver check-mod <Module|Path>");
     eprintln!("  newcp-driver check-dir <dir>");
-    eprintln!("  newcp-driver run-igui                            (Windows only)");
+    eprintln!("  newcp-driver run-igui [Module.Command]           (Windows only)");
     eprintln!("  newcp-driver <dump-command> [--opt <none|less|default|aggressive>] <file>");
     eprintln!();
     eprintln!("commands:");
@@ -190,18 +191,45 @@ fn print_usage() {
     }
 }
 
-/// Run iGui on the main (Win32 message-loop) thread. Phase 1 just opens
-/// a frame, paints a solid color, and returns the message-pump exit
-/// code.
+/// Run iGui on the main (Win32 message-loop) thread. If a command path
+/// is supplied, a background language thread bootstraps the kernel and
+/// invokes that command; the GUI thread runs the Win32 message pump.
 #[cfg(windows)]
-fn run_igui() -> i32 {
-    match newcp_runtime::igui::run() {
+fn run_igui(command_path: Option<&str>) -> i32 {
+    let worker = command_path.map(|cmd| {
+        let cmd = cmd.to_owned();
+        move || cp_worker_thread(cmd)
+    });
+    match newcp_runtime::igui::run(worker) {
         Ok(code) => code,
         Err(err) => {
             eprintln!("{err}");
             1
         }
     }
+}
+
+/// Background language thread for `run-igui`. Bootstraps the loader,
+/// invokes the supplied command (which is expected to enter an
+/// `iGui.NextEvent` loop), then asks the GUI to close once the command
+/// returns.
+#[cfg(windows)]
+fn cp_worker_thread(command_path: String) {
+    eprintln!("[igui-worker] starting LoaderSession for {command_path}");
+    let mut session = newcp_loader::LoaderSession::new();
+    eprintln!("{}", session.report().render());
+    match session.invoke_command(&command_path) {
+        Ok(result) => {
+            let mut log = result.load_log;
+            log.extend(result.execution_log);
+            if !log.is_empty() {
+                eprintln!("[igui-worker] {}", log.join(" | "));
+            }
+        }
+        Err(err) => eprintln!("[igui-worker] command-error: {err}"),
+    }
+    // Command finished — close the frame.
+    newcp_runtime::igui::cp_exports::igui_quit();
 }
 
 /// Check every `.cp` file in `dir`, print a report per file, exit 0 if all clean.

@@ -21,18 +21,28 @@ use windows::Win32::System::LibraryLoader::GetModuleHandleW;
 use windows::Win32::UI::HiDpi::{
     SetProcessDpiAwarenessContext, DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2,
 };
+use windows::Win32::UI::Input::KeyboardAndMouse::{GetKeyState, VK_CONTROL, VK_LWIN, VK_MENU, VK_RWIN, VK_SHIFT, VK_CAPITAL};
 use windows::Win32::UI::WindowsAndMessaging::{
-    CreateWindowExW, DefWindowProcW, DispatchMessageW, GetClientRect, GetMessageW,
-    GetWindowLongPtrW, LoadCursorW, PostQuitMessage, RegisterClassExW, SetWindowLongPtrW,
-    ShowWindow, TranslateMessage, CREATESTRUCTW, CW_USEDEFAULT, GWLP_USERDATA, IDC_ARROW, MSG,
-    SW_SHOW, WM_CLOSE, WM_DESTROY, WM_NCCREATE, WM_PAINT, WM_SIZE, WNDCLASSEXW, WNDCLASS_STYLES,
-    WS_EX_APPWINDOW, WS_OVERLAPPEDWINDOW, WS_VISIBLE,
+    CreateWindowExW, DefWindowProcW, DispatchMessageW, GetClientRect, GetMessageTime,
+    GetMessageW, GetWindowLongPtrW, LoadCursorW, PostQuitMessage, RegisterClassExW,
+    SetWindowLongPtrW, ShowWindow, TranslateMessage, CREATESTRUCTW, CW_USEDEFAULT,
+    GWLP_USERDATA, IDC_ARROW, MSG, SW_SHOW, WHEEL_DELTA, WM_CHAR, WM_CLOSE, WM_DESTROY,
+    WM_KEYDOWN, WM_KEYUP, WM_KILLFOCUS, WM_LBUTTONDOWN, WM_LBUTTONUP, WM_MBUTTONDOWN,
+    WM_MBUTTONUP, WM_MOUSEMOVE, WM_MOUSEWHEEL, WM_NCCREATE, WM_PAINT, WM_RBUTTONDOWN,
+    WM_RBUTTONUP, WM_SETFOCUS, WM_SIZE, WM_SYSKEYDOWN, WM_SYSKEYUP, WNDCLASSEXW,
+    WNDCLASS_STYLES, WS_EX_APPWINDOW, WS_OVERLAPPEDWINDOW, WS_VISIBLE,
 };
 
+use super::channels::{self, modifier, mouse_op, IGuiEvent};
+use super::cp_exports::FRAME_HWND;
 use super::d2d::{D2dContext, SwapChainTarget};
 use super::d3d::{present, D3dContext};
 use super::dwrite::DWriteContext;
 use super::{IGuiError, PHASE1_BACKGROUND};
+
+/// Frame window's child id is fixed at 1; child documents (Phase 3+)
+/// use higher ids.
+const FRAME_CHILD_ID: i64 = 1;
 
 /// State stored as a Box behind the frame HWND's `GWLP_USERDATA`. The
 /// WndProc reads this pointer on every message; all renderer access
@@ -102,8 +112,14 @@ impl FrameState {
 const FRAME_CLASS: PCWSTR = w!("NewCP.iGui.Frame");
 
 /// Public entry point. Opens the iGui frame, runs the Win32 message
-/// pump until `WM_QUIT`, and returns the quit code.
-pub fn run() -> Result<i32, IGuiError> {
+/// pump until `WM_QUIT`, and returns the quit code. If `worker` is
+/// provided, it is spawned on a background thread once the frame is
+/// up so the language thread can call `iGui.NextEvent` against the
+/// mailbox while the message pump runs here.
+pub fn run<F>(worker: Option<F>) -> Result<i32, IGuiError>
+where
+    F: FnOnce() + Send + 'static,
+{
     // Per-monitor DPI awareness — required for crisp rendering across
     // multi-monitor setups. Failure is non-fatal (older Windows might
     // not support V2); we fall through and accept the default.
@@ -148,7 +164,7 @@ pub fn run() -> Result<i32, IGuiError> {
         CreateWindowExW(
             WS_EX_APPWINDOW,
             FRAME_CLASS,
-            w!("NewCP — iGui (Phase 1)"),
+            w!("NewCP — iGui"),
             WS_OVERLAPPEDWINDOW | WS_VISIBLE,
             CW_USEDEFAULT,
             CW_USEDEFAULT,
@@ -182,8 +198,21 @@ pub fn run() -> Result<i32, IGuiError> {
         SetWindowLongPtrW(hwnd, GWLP_USERDATA, state_ptr as isize);
     }
 
+    // Install the event mailbox before the worker thread is started so
+    // any early `iGui.NextEvent` calls find the channel ready.
+    channels::install();
+    let _ = FRAME_HWND.set(hwnd.0 as isize);
+
     let _ = unsafe { ShowWindow(hwnd, SW_SHOW) };
     let _ = unsafe { UpdateWindow(hwnd) };
+
+    // Spawn the language-thread worker if the caller provided one.
+    if let Some(worker) = worker {
+        std::thread::Builder::new()
+            .name("igui-language".into())
+            .spawn(worker)
+            .map_err(|e| IGuiError::Win32(format!("spawn language thread: {e}")))?;
+    }
 
     // Pump.
     let mut msg = MSG::default();
@@ -244,16 +273,106 @@ unsafe extern "system" fn frame_wnd_proc(
             LRESULT(0)
         }
         WM_SIZE => {
+            let width = (lparam.0 & 0xFFFF) as i64;
+            let height = ((lparam.0 >> 16) & 0xFFFF) as i64;
             if let Some(state) = state {
-                let w = (lparam.0 & 0xFFFF) as u32;
-                let h = ((lparam.0 >> 16) & 0xFFFF) as u32;
-                if let Err(err) = state.handle_resize(w, h) {
+                if let Err(err) = state.handle_resize(width as u32, height as u32) {
                     eprintln!("[igui] resize error: {err}");
                 }
             }
+            channels::push(IGuiEvent::Resize {
+                child_id: FRAME_CHILD_ID,
+                width,
+                height,
+            });
+            LRESULT(0)
+        }
+        WM_KEYDOWN | WM_SYSKEYDOWN => {
+            push_key(true, wparam, lparam);
+            LRESULT(0)
+        }
+        WM_KEYUP | WM_SYSKEYUP => {
+            push_key(false, wparam, lparam);
+            LRESULT(0)
+        }
+        WM_CHAR => {
+            channels::push(IGuiEvent::Char {
+                child_id: FRAME_CHILD_ID,
+                codepoint: wparam.0 as i64,
+                mods: current_modifiers(),
+                time_ms: msg_time(),
+            });
+            LRESULT(0)
+        }
+        WM_MOUSEMOVE => {
+            push_mouse(mouse_op::MOVE, 0, wparam, lparam);
+            LRESULT(0)
+        }
+        WM_LBUTTONDOWN => {
+            push_mouse(mouse_op::LEFT_DOWN, 1, wparam, lparam);
+            LRESULT(0)
+        }
+        WM_LBUTTONUP => {
+            push_mouse(mouse_op::LEFT_UP, 1, wparam, lparam);
+            LRESULT(0)
+        }
+        WM_RBUTTONDOWN => {
+            push_mouse(mouse_op::RIGHT_DOWN, 2, wparam, lparam);
+            LRESULT(0)
+        }
+        WM_RBUTTONUP => {
+            push_mouse(mouse_op::RIGHT_UP, 2, wparam, lparam);
+            LRESULT(0)
+        }
+        WM_MBUTTONDOWN => {
+            push_mouse(mouse_op::MIDDLE_DOWN, 3, wparam, lparam);
+            LRESULT(0)
+        }
+        WM_MBUTTONUP => {
+            push_mouse(mouse_op::MIDDLE_UP, 3, wparam, lparam);
+            LRESULT(0)
+        }
+        WM_MOUSEWHEEL => {
+            // GET_WHEEL_DELTA_WPARAM: high-order signed short of wparam.
+            let raw = ((wparam.0 >> 16) & 0xFFFF) as i16;
+            let delta = raw as i64;
+            let lines = if WHEEL_DELTA != 0 {
+                delta / (WHEEL_DELTA as i64)
+            } else {
+                0
+            };
+            // Mouse wheel uses screen coordinates in lparam; translate
+            // is omitted in Phase 2 — the language thread can ignore
+            // x/y for wheel.
+            channels::push(IGuiEvent::Mouse {
+                child_id: FRAME_CHILD_ID,
+                x: (lparam.0 & 0xFFFF) as i16 as i64,
+                y: ((lparam.0 >> 16) & 0xFFFF) as i16 as i64,
+                op: mouse_op::WHEEL,
+                button: 0,
+                mods: current_modifiers(),
+                wheel_delta: delta,
+                wheel_lines: lines,
+                time_ms: msg_time(),
+            });
+            LRESULT(0)
+        }
+        WM_SETFOCUS => {
+            channels::push(IGuiEvent::Focus {
+                child_id: FRAME_CHILD_ID,
+                gained: true,
+            });
+            LRESULT(0)
+        }
+        WM_KILLFOCUS => {
+            channels::push(IGuiEvent::Focus {
+                child_id: FRAME_CHILD_ID,
+                gained: false,
+            });
             LRESULT(0)
         }
         WM_CLOSE => {
+            channels::push(IGuiEvent::FrameClose);
             // Drop the userdata box before the HWND is destroyed.
             if !raw.is_null() {
                 unsafe { SetWindowLongPtrW(hwnd, GWLP_USERDATA, 0) };
@@ -268,4 +387,66 @@ unsafe extern "system" fn frame_wnd_proc(
         }
         _ => unsafe { DefWindowProcW(hwnd, msg, wparam, lparam) },
     }
+}
+
+fn msg_time() -> i64 {
+    unsafe { GetMessageTime() as i64 }
+}
+
+fn current_modifiers() -> i64 {
+    let mut m = 0i64;
+    unsafe {
+        if (GetKeyState(VK_SHIFT.0 as i32) as i16) < 0 {
+            m |= modifier::SHIFT;
+        }
+        if (GetKeyState(VK_CONTROL.0 as i32) as i16) < 0 {
+            m |= modifier::CONTROL;
+        }
+        if (GetKeyState(VK_MENU.0 as i32) as i16) < 0 {
+            m |= modifier::ALT;
+        }
+        if (GetKeyState(VK_LWIN.0 as i32) as i16) < 0
+            || (GetKeyState(VK_RWIN.0 as i32) as i16) < 0
+        {
+            m |= modifier::WIN;
+        }
+        if (GetKeyState(VK_CAPITAL.0 as i32) & 1) != 0 {
+            m |= modifier::CAPS;
+        }
+    }
+    m
+}
+
+fn push_key(down: bool, wparam: WPARAM, lparam: LPARAM) {
+    let scancode = ((lparam.0 >> 16) & 0xFF) as i64;
+    let repeat = (lparam.0 & 0xFFFF) as i64;
+    channels::push(IGuiEvent::Key {
+        child_id: FRAME_CHILD_ID,
+        vkey: wparam.0 as i64,
+        scancode,
+        mods: current_modifiers(),
+        repeat,
+        down,
+        time_ms: msg_time(),
+    });
+}
+
+fn push_mouse(op: i64, button: i64, wparam: WPARAM, lparam: LPARAM) {
+    let x = (lparam.0 & 0xFFFF) as i16 as i64;
+    let y = ((lparam.0 >> 16) & 0xFFFF) as i16 as i64;
+    // wparam carries pressed buttons + mods (MK_*). For Phase 2 we
+    // ignore the MK_ bits and re-read modifiers from GetKeyState so
+    // every event has a consistent shape.
+    let _ = wparam;
+    channels::push(IGuiEvent::Mouse {
+        child_id: FRAME_CHILD_ID,
+        x,
+        y,
+        op,
+        button,
+        mods: current_modifiers(),
+        wheel_delta: 0,
+        wheel_lines: 0,
+        time_ms: msg_time(),
+    });
 }
