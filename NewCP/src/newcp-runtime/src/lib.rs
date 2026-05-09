@@ -964,8 +964,14 @@ pub fn native_export_address(module_name: &str, export_name: &str) -> Option<usi
 ///
 /// `code` follows the ABI defined in `docs/llvm-codegen-design.md`:
 /// 1=Assert, 2=NilDeref, 3=ArrayBounds, 4=TypeGuard, 5=CaseFallthrough, other=Halt.
+///
+/// Before the abort we walk the thread-local trap-cleaner stack
+/// (`Kernel.PushTrapCleaner` registrations) so transactional state
+/// gets a chance to roll back. A trap inside a cleaner aborts the
+/// recovery walk and falls through to abort directly.
 #[unsafe(no_mangle)]
 pub extern "C" fn __newcp_trap(code: i32) -> ! {
+    kernel_sys::run_trap_cleaners();
     let kind = match code {
         1 => "ASSERT failed",
         2 => "NIL pointer dereference",

@@ -409,6 +409,135 @@ pub extern "C" fn kernel_sys_loop(handler: CpEventHandler) {
     LOOP_DEPTH.with(|d| d.set(d.get().saturating_sub(1)));
 }
 
+// ─── Trap-cleaner stack ──────────────────────────────────────────────────
+
+/// LIFO stack of registered trap cleaners (CP `Kernel.TrapCleaner`
+/// payload pointers). Thread-local because traps fire on the same
+/// thread that triggered them; each language thread gets its own
+/// recovery scope.
+///
+/// Each entry is the *payload* pointer of a TrapCleaner record — the
+/// same value `Kernel.PushTrapCleaner` received. The runtime reads
+/// the block header at `payload - 16` to get the `TypeDesc`, then
+/// dispatches `Cleanup` via vtable slot 0.
+thread_local! {
+    static TRAP_CLEANERS: std::cell::RefCell<Vec<*mut u8>> =
+        const { std::cell::RefCell::new(Vec::new()) };
+}
+
+/// Set while inside `run_trap_cleaners`. A cleaner that traps would
+/// otherwise re-enter the walker and either loop forever or
+/// double-fire registered cleaners; the guard short-circuits the
+/// nested call to a hard abort.
+thread_local! {
+    static IN_TRAP_RECOVERY: std::cell::Cell<bool> = const { std::cell::Cell::new(false) };
+}
+
+/// `Kernel.PushTrapCleaner(c: TrapCleaner)`. Pushes `cleaner` onto
+/// the thread-local recovery stack. The runtime invokes `Cleanup`
+/// LIFO if a trap fires before a matching `PopTrapCleaner`.
+///
+/// `cleaner` must be a non-NIL CP heap pointer — the payload of a
+/// `Kernel.TrapCleaner`-derived record allocated through the GC.
+#[unsafe(no_mangle)]
+pub extern "C" fn kernel_sys_push_trap_cleaner(cleaner: *mut u8) {
+    if cleaner.is_null() {
+        panic!("Kernel.PushTrapCleaner called with NIL cleaner");
+    }
+    TRAP_CLEANERS.with(|stack| stack.borrow_mut().push(cleaner));
+}
+
+/// `Kernel.PopTrapCleaner(c: TrapCleaner)`. Pops the top cleaner.
+/// `cleaner` MUST equal the value most recently pushed; an
+/// unbalanced pop traps. The error message names both pointers so
+/// the calling-site mismatch is visible in a debug build.
+#[unsafe(no_mangle)]
+pub extern "C" fn kernel_sys_pop_trap_cleaner(cleaner: *mut u8) {
+    TRAP_CLEANERS.with(|stack| {
+        let mut stack = stack.borrow_mut();
+        let top = stack.pop();
+        match top {
+            None => panic!("Kernel.PopTrapCleaner: stack empty"),
+            Some(t) if t == cleaner => {}
+            Some(t) => panic!(
+                "Kernel.PopTrapCleaner: stack imbalance — top {:p}, popped {:p}",
+                t, cleaner
+            ),
+        }
+    });
+}
+
+/// Walk the cleaner stack LIFO, invoking each `Cleanup` method, and
+/// drain the stack as we go. Called from `__newcp_trap` just before
+/// process abort, and exposed for unit-test scaffolding.
+///
+/// A cleaner is invoked by reading the block header at `cleaner - 16`,
+/// extracting the `TypeDesc`, reading vtable slot 0 (where the CP
+/// frontend places `TrapCleanerDesc.Cleanup`), and calling it with
+/// the cleaner pointer as the receiver.
+///
+/// # Safety
+/// Each pushed cleaner must remain a live GC allocation until popped.
+/// If the GC reclaimed a block whose payload is still on this stack,
+/// dispatch reads freed memory.
+pub fn run_trap_cleaners() {
+    // Re-entrancy guard. If a cleaner itself traps, we don't re-walk
+    // the (already-being-drained) stack.
+    let already_running = IN_TRAP_RECOVERY.with(|g| {
+        let prev = g.get();
+        g.set(true);
+        prev
+    });
+    if already_running {
+        eprintln!("[trap] cleaner trapped during recovery; aborting without further cleanup");
+        return;
+    }
+
+    // Drain LIFO. Take the whole stack out so a cleaner that
+    // accidentally calls Push during its run doesn't extend our walk.
+    let mut stack: Vec<*mut u8> = TRAP_CLEANERS.with(|s| std::mem::take(&mut *s.borrow_mut()));
+
+    while let Some(cleaner) = stack.pop() {
+        if cleaner.is_null() {
+            continue;
+        }
+        // SAFETY: cleaner is a payload pointer; its block header sits
+        // 16 bytes earlier. The TypeDesc is whatever was tagged when
+        // the record was NEW'd, with the GC mark bit potentially
+        // set; mask the LSB.
+        unsafe {
+            let header_size = std::mem::size_of::<BlockHeader>();
+            let hdr = (cleaner as usize - header_size) as *const BlockHeader;
+            let raw_tag = (*hdr).tag;
+            let td = (raw_tag & !MARK_BIT) as *const TypeDesc;
+            if td.is_null() || (*td).vtable.is_null() || (*td).vtable_len == 0 {
+                eprintln!(
+                    "[trap] cleaner at {:p} has no usable vtable; skipping",
+                    cleaner
+                );
+                continue;
+            }
+            // Slot 0 is `Cleanup` — the only NEW method declared on
+            // Kernel.TrapCleanerDesc, so subclass vtables put their
+            // override at slot 0.
+            let slot_ptr = (*td).vtable;
+            let fn_addr = *slot_ptr;
+            if fn_addr.is_null() {
+                eprintln!(
+                    "[trap] cleaner at {:p} has NULL Cleanup slot; skipping",
+                    cleaner
+                );
+                continue;
+            }
+            type CleanupFn = extern "C" fn(*mut u8);
+            let cleanup: CleanupFn = std::mem::transmute(fn_addr);
+            cleanup(cleaner);
+        }
+    }
+
+    IN_TRAP_RECOVERY.with(|g| g.set(false));
+}
+
 // ─── Native module registrations ─────────────────────────────────────────
 
 /// The set of (cp_name, fn_ptr) entries shared by both `KernelSys` and
@@ -427,6 +556,8 @@ fn kernel_exports() -> Vec<(&'static str, *const ())> {
         ("NewObj",   kernel_sys_new_obj   as *const ()),
         ("Loop",     kernel_sys_loop      as *const ()),
         ("Quit",     kernel_sys_quit      as *const ()),
+        ("PushTrapCleaner", kernel_sys_push_trap_cleaner as *const ()),
+        ("PopTrapCleaner",  kernel_sys_pop_trap_cleaner  as *const ()),
     ]
 }
 
@@ -616,6 +747,115 @@ mod tests {
 
         QUIT_SIGNAL.store(0, Ordering::Relaxed);
     }
+
+    #[test]
+    fn trap_cleaners_fire_lifo_and_drain_the_stack() {
+        let _t = lock_tests();
+        reset_for_test();
+        TRAP_CLEANERS.with(|s| s.borrow_mut().clear());
+
+        // Side-effect log: each cleaner appends an i64 here so we
+        // can verify the LIFO order.
+        static CALL_LOG: std::sync::Mutex<Vec<i64>> = std::sync::Mutex::new(Vec::new());
+        CALL_LOG.lock().unwrap().clear();
+
+        // Two distinct fake "Cleanup" implementations. Each takes
+        // the receiver pointer and reads its first 8 bytes as a
+        // tag value so we know which cleaner ran.
+        extern "C" fn cleanup_a(self_ptr: *mut u8) {
+            let tag = unsafe { *(self_ptr as *const i64) };
+            CALL_LOG.lock().unwrap().push(tag);
+        }
+        extern "C" fn cleanup_b(self_ptr: *mut u8) {
+            let tag = unsafe { *(self_ptr as *const i64) };
+            CALL_LOG.lock().unwrap().push(tag * 1000);
+        }
+
+        // Build two TypeDescs, each with a 1-slot vtable pointing at
+        // a different cleanup function. We leak the boxes so the
+        // pointers stay live for the rest of the process.
+        fn make_typedesc_with_cleanup(cleanup: extern "C" fn(*mut u8)) -> *const TypeDesc {
+            #[repr(C)]
+            struct TdWithVtable {
+                base: TypeDesc,
+                sentinel: isize,
+            }
+            let vtable_box: Box<[*const ()]> = Box::new([cleanup as *const ()]);
+            let vtable_ptr = Box::leak(vtable_box).as_ptr() as *const *const ();
+            let td = Box::new(TdWithVtable {
+                base: TypeDesc {
+                    size: 16,
+                    module: std::ptr::null(),
+                    finalizer: None as Option<Finalizer>,
+                    base: std::ptr::null(),
+                    vtable: vtable_ptr,
+                    vtable_len: 1,
+                    ptroffs: [],
+                },
+                sentinel: -1,
+            });
+            Box::into_raw(td) as *const TypeDesc
+        }
+
+        let td_a = make_typedesc_with_cleanup(cleanup_a);
+        let td_b = make_typedesc_with_cleanup(cleanup_b);
+
+        // Allocate two cleaner blocks via the GC so they have real
+        // BlockHeaders the walker can read.
+        let stack_marker = [0usize; 64];
+        let base = unsafe { stack_marker.as_ptr().add(64) as usize };
+        unsafe { __newcp_init_gc(base as *const u8) };
+
+        let cleaner_a = unsafe { __newcp_new_rec(td_a) };
+        let cleaner_b = unsafe { __newcp_new_rec(td_b) };
+
+        // Tag each payload's first 8 bytes so cleanup_* can read it.
+        unsafe {
+            *(cleaner_a as *mut i64) = 1;
+            *(cleaner_b as *mut i64) = 2;
+        }
+
+        // Push A then B; expect Cleanup to fire B (× 1000) before A.
+        kernel_sys_push_trap_cleaner(cleaner_a);
+        kernel_sys_push_trap_cleaner(cleaner_b);
+        run_trap_cleaners();
+
+        let log = CALL_LOG.lock().unwrap().clone();
+        assert_eq!(log, vec![2 * 1000, 1], "cleaners must fire LIFO");
+
+        // Stack must be empty afterwards.
+        let remaining = TRAP_CLEANERS.with(|s| s.borrow().len());
+        assert_eq!(remaining, 0, "run_trap_cleaners must drain the stack");
+    }
+
+    #[test]
+    fn pop_trap_cleaner_balances_with_push() {
+        let _t = lock_tests();
+        TRAP_CLEANERS.with(|s| s.borrow_mut().clear());
+
+        // Use raw addresses; the cleaner pointers don't have to
+        // resolve through the vtable here because we never call
+        // run_trap_cleaners in this test — we only exercise the
+        // push/pop balance check.
+        let a = 0x1000usize as *mut u8;
+        let b = 0x2000usize as *mut u8;
+
+        kernel_sys_push_trap_cleaner(a);
+        kernel_sys_push_trap_cleaner(b);
+        kernel_sys_pop_trap_cleaner(b);
+        kernel_sys_pop_trap_cleaner(a);
+
+        let depth = TRAP_CLEANERS.with(|s| s.borrow().len());
+        assert_eq!(depth, 0);
+    }
+
+    // Note: there is no unit test for the imbalance-traps case.
+    // `kernel_sys_pop_trap_cleaner` panics on imbalance, but
+    // panicking through an `extern "C"` boundary aborts the
+    // process under the default unwind strategy, which would
+    // tear down the test runner. The behaviour is documented;
+    // production callers detect imbalance through the abort and
+    // its diagnostic message.
 
     #[test]
     fn new_obj_writes_payload_through_var_pointer() {

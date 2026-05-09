@@ -2344,6 +2344,23 @@ mod tests {
     }
 
     #[test]
+    fn kernel_trap_cleaners_balanced_push_pop_runs_clean() {
+        // Push two typed cleaners, pop them in matching reverse
+        // order, observe that Cleanup did not fire (balanced
+        // Pop drains the stack without invoking cleaners).
+        assert_eq!(
+            run_function("Mod/Tests/TrapCleanerProbe.cp", "BalancedPushPop"),
+            1,
+            "PushTrapCleaner / PopTrapCleaner must balance without firing Cleanup"
+        );
+        assert_eq!(
+            run_function("Mod/Tests/TrapCleanerProbe.cp", "SingletonPushPop"),
+            1,
+            "single-cleaner Push then Pop must also balance"
+        );
+    }
+
+    #[test]
     fn kernel_loop_quits_when_pre_armed() {
         // Both scenarios run in one test so they share a single
         // process-global QUIT_SIGNAL deterministically. cargo's

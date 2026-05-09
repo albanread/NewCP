@@ -97,25 +97,22 @@ PROCEDURE NewObj* (VAR p: ANYPTR; typeHandle: INTEGER);
 (* -- Trap-cleaner stack ------------------------------------------------- *)
 
 (** The trap-cleaner stack is invoked LIFO when the runtime traps
-    (HALT, ASSERT failure, panic). Each cleaner is a parameterless
-    procedure value that the runtime calls before unwinding.
+    (HALT, ASSERT failure, panic, NIL deref, ...). The runtime
+    walks the registered stack and calls each cleaner's `Cleanup`
+    method via vtable slot 0 just before aborting.
 
-    The legacy BlackBox surface used a typed `TrapCleaner` record
-    with a `Cleanup` method; the typed wrapping happens in
-    `Kernel.cp`. KernelSys exposes the underlying procedure-pointer
-    contract because it doesn't depend on CP method-dispatch. *)
+    Cleaners are CP heap pointers — the payload of a
+    `Kernel.TrapCleaner`-derived record. The runtime reads the
+    block header to find the TypeDesc and dispatches Cleanup
+    through the standard CP method ABI. *)
 
-PROCEDURE PushTrapCleaner* (cleanup: PROCEDURE; cookie: INTEGER);
-    (** Register a cleanup procedure to be invoked on the next
-        runtime trap. `cookie` is a caller-supplied value passed
-        opaquely back through to the cleanup proc — typically the
-        address of the typed record holding state to roll back. *)
+PROCEDURE PushTrapCleaner* (cleaner: ANYPTR);
+    (** Register a heap-allocated TrapCleaner pointer for invocation
+        on the next runtime trap. *)
 
-PROCEDURE PopTrapCleaner* (cleanup: PROCEDURE; cookie: INTEGER);
-    (** Pop and discard a cleaner registered by `PushTrapCleaner`.
-        The (cleanup, cookie) pair MUST match the top of the stack;
-        a mismatch indicates an unbalanced push/pop and the runtime
-        traps. *)
+PROCEDURE PopTrapCleaner* (cleaner: ANYPTR);
+    (** Pop the top cleaner. `cleaner` MUST equal the value most
+        recently pushed; an unbalanced pop traps. *)
 
 (* -- Loader feedback ---------------------------------------------------- *)
 
