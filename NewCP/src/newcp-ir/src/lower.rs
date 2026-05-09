@@ -131,6 +131,16 @@ fn map_record_layout(layout: SemanticRecordLayout) -> RecordLayout {
     }
 }
 
+fn is_float_ir(ty: &IrType) -> bool { matches!(ty, IrType::F32 | IrType::F64) }
+
+fn is_int_ir(ty: &IrType) -> bool {
+    matches!(
+        ty,
+        IrType::I8 | IrType::I16 | IrType::I32 | IrType::I64
+            | IrType::U8 | IrType::U16 | IrType::U32 | IrType::U64
+    )
+}
+
 /// True when the IR type is a scalar numeric or character value that
 /// `Instr::Cast` knows how to convert (sign/zero-extend, truncate, fp-cast).
 /// Used to gate implicit return-value widening so we don't try to coerce
@@ -1500,8 +1510,28 @@ impl<'m> LowerCtx<'m> {
     }
 
     fn lower_binary(&mut self, left: &Expr, op: BinaryOp, right: &Expr) -> IrValue {
-        let lv = self.lower_expr(left);
-        let rv = self.lower_expr(right);
+        let mut lv = self.lower_expr(left);
+        let mut rv = self.lower_expr(right);
+
+        // Integer -> float promotion for mixed-type expressions. Component
+        // Pascal allows integer operands to participate in REAL/SHORTREAL
+        // arithmetic; the integer is silently converted (`sitofp`) to the
+        // matching float width. Without this, `realvar * (ORD(ch) - ORD('0'))`
+        // crashes the LLVM backend with a type mismatch.
+        let (lf, rf) = (is_float_ir(&lv.ty()), is_float_ir(&rv.ty()));
+        let (li, ri) = (is_int_ir(&lv.ty()), is_int_ir(&rv.ty()));
+        if lf && ri {
+            let to = lv.ty();
+            let t = self.fresh_temp();
+            self.push(Instr::Cast { dst: t, value: rv, to_ty: to.clone() });
+            rv = IrValue::Temp(t, to);
+        } else if rf && li {
+            let to = rv.ty();
+            let t = self.fresh_temp();
+            self.push(Instr::Cast { dst: t, value: lv, to_ty: to.clone() });
+            lv = IrValue::Temp(t, to);
+        }
+
         let ty = lv.ty();
 
         // SET arithmetic operators (8.2.3 of CP spec) use bitwise operations.
@@ -3148,13 +3178,33 @@ fn load_cached_import<'c>(
     cache: &'c mut std::collections::HashMap<String, SemanticModule>,
 ) -> Option<&'c SemanticModule> {
     if !cache.contains_key(module) {
-        let mut candidate_paths = IMPORT_SEARCH_ROOT.with(|root| {
-            root.borrow()
-                .as_ref()
-                .map(|base| vec![base.join(format!("{module}.cp"))])
-                .unwrap_or_default()
-        });
-        candidate_paths.push(Path::new("Mod").join(format!("{module}.cp")));
+        let filename = format!("{module}.cp");
+        let mut candidate_paths: Vec<PathBuf> = Vec::new();
+
+        // 1. Sibling of the importing source file.
+        let import_root = IMPORT_SEARCH_ROOT.with(|root| root.borrow().clone());
+        if let Some(base) = &import_root {
+            candidate_paths.push(base.join(&filename));
+            // 2. Walk up from the importing file's dir until we find a "Mod"
+            //    directory; search it recursively. Mirrors the loader's
+            //    `resolve_import_source` so a module under `Mod/Tests/` can
+            //    import a module that lives in `Mod/` directly.
+            let mut dir: &Path = base.as_path();
+            loop {
+                if dir.file_name().and_then(|n| n.to_str()) == Some("Mod") {
+                    if let Some(hit) = find_cp_in_dir_recursive(dir, &filename) {
+                        candidate_paths.push(hit);
+                    }
+                    break;
+                }
+                match dir.parent() {
+                    Some(p) => dir = p,
+                    None => break,
+                }
+            }
+        }
+        // 3. Cwd-relative `Mod/` fallback (legacy).
+        candidate_paths.push(Path::new("Mod").join(&filename));
 
         let mut imported_module = None;
         for path in candidate_paths {
@@ -3168,6 +3218,28 @@ fn load_cached_import<'c>(
         cache.insert(module.to_string(), imported_module?);
     }
     cache.get(module)
+}
+
+/// Recursively search `dir` for a file named `filename`. Used by
+/// `load_cached_import` to resolve sibling-Mod imports across directory
+/// nesting (e.g. `Mod/Tests/Foo.cp` importing `Mod/Bar.cp`).
+fn find_cp_in_dir_recursive(dir: &Path, filename: &str) -> Option<PathBuf> {
+    let entries = std::fs::read_dir(dir).ok()?;
+    let mut subdirs: Vec<PathBuf> = Vec::new();
+    for entry in entries.flatten() {
+        let path = entry.path();
+        if path.is_dir() {
+            subdirs.push(path);
+        } else if path.file_name().and_then(|n| n.to_str()) == Some(filename) {
+            return Some(path);
+        }
+    }
+    for sub in subdirs {
+        if let Some(hit) = find_cp_in_dir_recursive(&sub, filename) {
+            return Some(hit);
+        }
+    }
+    None
 }
 
 /// Parse a Component Pascal integer literal.

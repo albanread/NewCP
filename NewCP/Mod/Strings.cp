@@ -40,6 +40,8 @@ MODULE Strings;
 	Original module change log preserved at the bottom for provenance.
 *)
 
+	IMPORT Math;
+
 	CONST
 		charCode* = -1;
 		decimal* = 10;
@@ -285,24 +287,115 @@ MODULE Strings;
 	(* Real-number conversions — stubs until Math is ported                *)
 	(* ------------------------------------------------------------------ *)
 
-	(* Real-number stubs return empty/zero with res=1 ("not implemented")
-	   until a Math module exists. We avoid HALT-only bodies because the
-	   IR lowerer panics on procedures whose only path is a trap. *)
+	(* Real-number conversions — simple, working implementations on top of
+	   Math. Full BlackBox `RealToStringForm` parity (precision/width/expW
+	   formatting) is intentionally TODO; what's here covers the common
+	   case of `RealToString` round-tripping for diagnostics and tests. *)
+
+	PROCEDURE AppendCharC (ch: CHAR; VAR pos: INTEGER; OUT s: ARRAY OF CHAR);
+	BEGIN
+		IF pos < LEN(s) - 1 THEN s[pos] := ch; INC(pos); s[pos] := 0X END
+	END AppendCharC;
+
+	PROCEDURE AppendIntC (n: LONGINT; VAR pos: INTEGER; OUT s: ARRAY OF CHAR);
+		VAR buf: ARRAY 32 OF CHAR; i: INTEGER;
+	BEGIN
+		IntToString(n, buf);
+		i := 0;
+		WHILE buf[i] # 0X DO AppendCharC(buf[i], pos, s); INC(i) END
+	END AppendIntC;
 
 	PROCEDURE RealToString* (x: REAL; OUT s: ARRAY OF CHAR);
+		(* Format x as `[-]d.dddddddE[+-]dd` (one int digit, six frac digits,
+		   normalised exponent). Uses Math.Log to find the decimal exponent
+		   and Math.IntPower to scale. *)
+		VAR pos, exp10, intDigit, k: INTEGER;
+			mant, scaled: REAL;
+			frac: LONGINT;
 	BEGIN
-		s[0] := 0X	(* TODO: needs Math.Exponent / Math.Mantissa / Math.IntPower *)
+		pos := 0;
+		IF x < 0.0 THEN AppendCharC("-", pos, s); x := -x END;
+		IF x = 0.0 THEN
+			AppendCharC("0", pos, s); RETURN
+		END;
+		(* Decimal exponent. Math.Log returns log10. Floor-toward-zero is
+		   close enough for the bracket [1, 10); a final renormalisation
+		   below corrects the off-by-one when ENTIER rounds against us. *)
+		exp10 := SHORT(ENTIER(Math.Log(x)));
+		mant := x / Math.IntPower(10.0, exp10);
+		(* Renormalise into [1, 10). *)
+		WHILE mant >= 10.0 DO mant := mant / 10.0; INC(exp10) END;
+		WHILE mant < 1.0 DO mant := mant * 10.0; DEC(exp10) END;
+		(* Integer digit + 6 fractional digits. *)
+		intDigit := SHORT(ENTIER(mant));
+		AppendCharC(CHR(intDigit + ORD("0")), pos, s);
+		AppendCharC(".", pos, s);
+		(* Math.Frac avoids the INTEGER->REAL promotion the parser doesn't do. *)
+		frac := ENTIER(Math.Frac(mant) * 1.0E6);
+		(* Pad to exactly 6 digits with leading zeros. *)
+		k := 100000;
+		WHILE k > 0 DO
+			AppendCharC(CHR(SHORT(frac DIV k) + ORD("0")), pos, s);
+			frac := frac MOD k;
+			k := k DIV 10
+		END;
+		AppendCharC("E", pos, s);
+		IF exp10 >= 0 THEN AppendCharC("+", pos, s) END;
+		AppendIntC(exp10, pos, s)
 	END RealToString;
 
 	PROCEDURE RealToStringForm* (x: REAL; precision, minW, expW: INTEGER;
 															fillCh: CHAR; OUT s: ARRAY OF CHAR);
+		(* Width-aware formatter is TODO. Fall back to RealToString. *)
 	BEGIN
-		s[0] := 0X	(* TODO: needs Math *)
+		RealToString(x, s)
 	END RealToStringForm;
 
 	PROCEDURE StringToReal* (IN s: ARRAY OF CHAR; OUT x: REAL; OUT res: INTEGER);
+		(* Parse `[+-][int].[frac][E[+-]exp]`. res = 0 ok, 2 syntax error.
+		   Uses Math.IntPower for the decimal-exponent scale. *)
+		VAR i, expSign, exp: INTEGER;
+			negative: BOOLEAN;
+			value, scale: REAL;
+			ch: CHAR;
 	BEGIN
-		x := 0; res := 1	(* TODO: needs Math.IntPower; signal "not implemented" *)
+		res := 0; i := 0; ch := s[0]; negative := FALSE; value := 0.0;
+		WHILE (ch # 0X) & (ch <= " ") DO INC(i); ch := s[i] END;
+		IF ch = "-" THEN negative := TRUE; INC(i); ch := s[i]
+		ELSIF ch = "+" THEN INC(i); ch := s[i]
+		END;
+		IF (ch < "0") OR (ch > "9") THEN
+			IF ch # "." THEN res := 2; x := 0.0; RETURN END
+		END;
+		WHILE ("0" <= ch) & (ch <= "9") DO
+			value := value * 10.0 + (ORD(ch) - ORD("0"));
+			INC(i); ch := s[i]
+		END;
+		IF ch = "." THEN
+			INC(i); ch := s[i];
+			scale := 0.1;
+			WHILE ("0" <= ch) & (ch <= "9") DO
+				value := value + (ORD(ch) - ORD("0")) * scale;
+				scale := scale * 0.1;
+				INC(i); ch := s[i]
+			END
+		END;
+		IF (ch = "E") OR (ch = "e") OR (ch = "D") OR (ch = "d") THEN
+			INC(i); ch := s[i]; expSign := 1;
+			IF ch = "-" THEN expSign := -1; INC(i); ch := s[i]
+			ELSIF ch = "+" THEN INC(i); ch := s[i]
+			END;
+			exp := 0;
+			IF (ch < "0") OR (ch > "9") THEN res := 2; x := 0.0; RETURN END;
+			WHILE ("0" <= ch) & (ch <= "9") DO
+				exp := exp * 10 + (ORD(ch) - ORD("0"));
+				INC(i); ch := s[i]
+			END;
+			value := value * Math.IntPower(10.0, expSign * exp)
+		END;
+		IF ch # 0X THEN res := 2; x := 0.0; RETURN END;
+		IF negative THEN value := -value END;
+		x := value
 	END StringToReal;
 
 

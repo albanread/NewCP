@@ -1,5 +1,7 @@
 pub mod console;
 pub mod gc;
+pub mod math;
+pub mod smath;
 
 #[cfg(windows)]
 pub mod igui;
@@ -764,6 +766,8 @@ impl BootstrapReport {
         kernel.register_resident_module("Kernel");
         kernel.register_resident_module("Init");
         let console_module = console::native_module_artifact();
+        let math_module = math::native_module_artifact();
+        let smath_module = smath::native_module_artifact();
         #[cfg(windows)]
         let igui_module = igui::native_module_artifact();
         let host_menus = HostedModuleArtifact::new(
@@ -808,6 +812,8 @@ impl BootstrapReport {
         ];
 
         kernel.register_native_module(console_module);
+        kernel.register_native_module(math_module);
+        kernel.register_native_module(smath_module);
         #[cfg(windows)]
         kernel.register_native_module(igui_module);
         kernel.register_hosted_module(host_menus);
@@ -923,7 +929,11 @@ pub fn bootstrap_and_describe_interface(module_name: &str) -> String {
 }
 
 fn builtin_native_modules() -> Vec<NativeModuleArtifact> {
-    let mut modules = vec![console::native_module_artifact()];
+    let mut modules = vec![
+        console::native_module_artifact(),
+        math::native_module_artifact(),
+        smath::native_module_artifact(),
+    ];
     #[cfg(windows)]
     modules.push(igui::native_module_artifact());
     modules

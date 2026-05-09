@@ -1499,6 +1499,42 @@ mod tests {
     }
 
     // -------------------------------------------------------------------------
+    // Math (Rust-resident native module): cross-module REAL calls
+    // -------------------------------------------------------------------------
+
+    #[test]
+    fn math_sqrt_via_native_module() {
+        // ENTIER(Math.Sqrt(9.0)) = 3
+        assert_eq!(run_function("Mod/Tests/MathSmoke.cp", "Sqrt9"), 3);
+    }
+
+    #[test]
+    fn math_pi_via_native_module() {
+        // ENTIER(Math.Pi() * 2) = 6
+        assert_eq!(run_function("Mod/Tests/MathSmoke.cp", "PiTimes2"), 6);
+    }
+
+    #[test]
+    fn math_int_power_via_native_module() {
+        // Math.IntPower(2.0, 10) = 1024 (exercises the (REAL, INTEGER) -> REAL signature).
+        assert_eq!(run_function("Mod/Tests/MathSmoke.cp", "IntPow"), 1024);
+    }
+
+    #[test]
+    fn math_exponent_decomposition() {
+        // Math.Exponent(8.0) = 3 since 8 = 1.0 * 2^3
+        // Exercises the (REAL) -> INTEGER bit-decomposition path.
+        assert_eq!(run_function("Mod/Tests/MathSmoke.cp", "ExponentOf"), 3);
+    }
+
+    #[test]
+    fn strings_string_to_real_roundtrip() {
+        // Strings.StringToReal("3.14e2", x, res) -> x == 314.0; ENTIER -> 314.
+        // End-to-end check that Strings.cp -> Math (Rust libm) actually links.
+        assert_eq!(run_function("Mod/Tests/MathSmoke.cp", "StringsRoundTrip"), 314);
+    }
+
+    // -------------------------------------------------------------------------
     // ENTIER: floor of real → INTEGER  (§10.3)
     // -------------------------------------------------------------------------
 
