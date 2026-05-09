@@ -11,10 +11,13 @@
 #![cfg(windows)]
 
 pub mod channels;
+mod child;
 pub mod cp_exports;
 mod d2d;
 mod d3d;
 mod dwrite;
+mod registry;
+mod renderer;
 mod window;
 
 pub use cp_exports::native_module_artifact;

@@ -56,4 +56,18 @@ PROCEDURE NextEvent*(VAR kind, childId, timeMs, p1, p2, p3, p4: INTEGER;
 (* Post WM_CLOSE to the iGui frame. The frame tears down on its own. *)
 PROCEDURE Quit*;
 
+(* Open an MDI child window with the given title. The new child has its
+   own swap chain and Direct2D bitmap target. Returns 1 on success, 0
+   on failure (typically: frame not running, or MDI client not yet
+   created). *)
+PROCEDURE OpenChild*(title: ARRAY OF SHORTCHAR;
+                     VAR childId: INTEGER): INTSHORT;
+
+(* Close an MDI child by id. Returns 1 if the child existed, 0 if the
+   id was unknown. *)
+PROCEDURE CloseChild*(childId: INTEGER): INTSHORT;
+
+(* Update the title bar of an MDI child. *)
+PROCEDURE SetTitle*(childId: INTEGER; title: ARRAY OF SHORTCHAR);
+
 END iGui.

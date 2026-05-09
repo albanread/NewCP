@@ -67,6 +67,64 @@ pub extern "C" fn igui_quit() {
     }
 }
 
+/// `iGui.OpenChild(title: ARRAY OF SHORTCHAR; VAR childId: INTEGER): INTSHORT`.
+///
+/// Reads the null-terminated SHORTCHAR title, creates an MDI child via
+/// `SendMessageW(WM_MDICREATE)` on the GUI thread, writes the new
+/// child id to `*out_child`. Returns 1 on success, 0 on failure.
+#[unsafe(export_name = "iGui.OpenChild")]
+pub extern "C" fn igui_open_child(title: *const u8, out_child: *mut i64) -> i32 {
+    if title.is_null() || out_child.is_null() {
+        return 0;
+    }
+    let title_str = unsafe { read_cp_shortstr(title) };
+    match super::window::open_child(&title_str) {
+        Some(id) => {
+            unsafe { *out_child = id };
+            1
+        }
+        None => 0,
+    }
+}
+
+/// `iGui.CloseChild(childId: INTEGER): INTSHORT`. Returns 1 on success,
+/// 0 if the child id is unknown.
+#[unsafe(export_name = "iGui.CloseChild")]
+pub extern "C" fn igui_close_child(child_id: i64) -> i32 {
+    if super::window::close_child(child_id) {
+        1
+    } else {
+        0
+    }
+}
+
+/// `iGui.SetTitle(childId: INTEGER; title: ARRAY OF SHORTCHAR)`.
+#[unsafe(export_name = "iGui.SetTitle")]
+pub extern "C" fn igui_set_title(child_id: i64, title: *const u8) {
+    if title.is_null() {
+        return;
+    }
+    let title_str = unsafe { read_cp_shortstr(title) };
+    super::window::set_child_title(child_id, &title_str);
+}
+
+/// CP `ARRAY OF SHORTCHAR` is passed as a bare pointer to a sequence
+/// of bytes terminated by `0X`. This helper reads up to 4096 bytes,
+/// stops at the first NUL, and returns the lossy UTF-8 decoding.
+unsafe fn read_cp_shortstr(ptr: *const u8) -> String {
+    const MAX: usize = 4096;
+    let mut len = 0usize;
+    while len < MAX {
+        let b = unsafe { *ptr.add(len) };
+        if b == 0 {
+            break;
+        }
+        len += 1;
+    }
+    let slice = unsafe { std::slice::from_raw_parts(ptr, len) };
+    String::from_utf8_lossy(slice).into_owned()
+}
+
 #[allow(clippy::too_many_arguments)]
 #[allow(unused_assignments)] // initial defaults overwritten by every match arm
 fn write_event(
@@ -211,6 +269,9 @@ pub fn native_module_artifact() -> NativeModuleArtifact {
             ExportDirectory::new(vec![
                 ExportEntry::procedure("NextEvent"),
                 ExportEntry::procedure("Quit"),
+                ExportEntry::procedure("OpenChild"),
+                ExportEntry::procedure("CloseChild"),
+                ExportEntry::procedure("SetTitle"),
             ]),
             "iGui.bootstrap",
             "Integrated GUI: MDI frame, Direct2D surfaces, typed event mailbox",
@@ -219,6 +280,9 @@ pub fn native_module_artifact() -> NativeModuleArtifact {
         vec![
             NativeExportBinding::procedure("NextEvent", igui_next_event as *const () as usize),
             NativeExportBinding::procedure("Quit", igui_quit as *const () as usize),
+            NativeExportBinding::procedure("OpenChild", igui_open_child as *const () as usize),
+            NativeExportBinding::procedure("CloseChild", igui_close_child as *const () as usize),
+            NativeExportBinding::procedure("SetTitle", igui_set_title as *const () as usize),
         ],
     )
 }
