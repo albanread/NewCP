@@ -19,6 +19,7 @@ mod d2d;
 mod d3d;
 mod dwrite;
 mod executor;
+mod menu;
 mod registry;
 mod renderer;
 mod replies;

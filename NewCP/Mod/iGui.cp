@@ -300,4 +300,36 @@ PROCEDURE EmitPath*(fillMode: INTSHORT;
 PROCEDURE SystemColor*(kind: INTSHORT;
                        VAR r, g, b, a: REAL): INTSHORT;
 
+(* ── Phase 6: menu + MDI verbs ────────────────────────────────────
+   SetMenu installs a menu bar on the iGui frame from a compact
+   line-oriented spec:
+
+     MENU File
+     ITEM 1001 New
+     ITEM 1002 Open
+     SEP
+     ITEM 1099 Exit
+     MENU Window
+     MDI cascade
+     MDI tile-h
+     MDI tile-v
+     MDI close-all
+     MDI arrange-icons
+
+   ITEM ids must fit in 16 bits and should sit in 0x1000..=0x1FFF
+   (the MDI verb range 0x2000..=0x2010 is reserved for the auto-
+   allocated MDI items). User-item clicks arrive as EvMenu events
+   with item_id = the chosen id; MDI verb clicks are dispatched
+   directly inside iGui — no event reaches the language thread.
+
+   Standard MDI verbs can also be invoked directly from CP code
+   regardless of any menu being installed. *)
+
+PROCEDURE SetMenu*(spec: ARRAY OF SHORTCHAR): INTSHORT;
+PROCEDURE MdiCascade*;
+PROCEDURE MdiTileH*;
+PROCEDURE MdiTileV*;
+PROCEDURE MdiCloseAll*;
+PROCEDURE MdiArrangeIcons*;
+
 END iGui.

@@ -28,7 +28,7 @@ use windows::Win32::UI::WindowsAndMessaging::{
     CreateWindowExW, DefFrameProcW, DispatchMessageW, GetClientRect, GetMessageTime,
     GetMessageW, LoadCursorW, PostQuitMessage, RegisterClassExW, SendMessageW, ShowWindow,
     TranslateMessage, CLIENTCREATESTRUCT, CW_USEDEFAULT, IDC_ARROW, MDICREATESTRUCTW, MSG,
-    SW_SHOW, WHEEL_DELTA, WM_CHAR, WM_CLOSE, WM_DESTROY, WM_KEYDOWN, WM_KEYUP,
+    SW_SHOW, WHEEL_DELTA, WM_CHAR, WM_CLOSE, WM_COMMAND, WM_DESTROY, WM_KEYDOWN, WM_KEYUP,
     WM_KILLFOCUS, WM_LBUTTONDOWN, WM_LBUTTONUP, WM_MBUTTONDOWN, WM_MBUTTONUP, WM_MDICREATE,
     WM_MOUSEMOVE, WM_MOUSEWHEEL, WM_RBUTTONDOWN, WM_RBUTTONUP, WM_SETFOCUS, WM_SIZE,
     WM_SYSCOLORCHANGE, WM_SYSKEYDOWN, WM_SYSKEYUP, WM_THEMECHANGED, WM_USER,
@@ -53,6 +53,8 @@ const FRAME_CLASS: PCWSTR = w!("NewCP.iGui.Frame");
 const WM_IGUI_OPEN_CHILD: u32 = WM_USER + 1;
 const WM_IGUI_CLOSE_CHILD: u32 = WM_USER + 2;
 const WM_IGUI_SET_TITLE: u32 = WM_USER + 3;
+const WM_IGUI_SET_MENU: u32 = WM_USER + 4;
+const WM_IGUI_MDI_VERB: u32 = WM_USER + 5;
 
 /// HWND of the MDI client. Set by `run` after `CreateWindowExW`.
 static MDI_CLIENT: Mutex<Option<isize>> = Mutex::new(None);
@@ -231,6 +233,54 @@ unsafe extern "system" fn frame_wnd_proc(
                     child::set_title(mdi_child, &req.title);
                 }
             }
+            LRESULT(0)
+        }
+        WM_IGUI_SET_MENU => {
+            let req_ptr = lparam.0 as *mut SetMenuRequest;
+            if !req_ptr.is_null() {
+                let req = unsafe { &mut *req_ptr };
+                req.ok = super::menu::install_for_frame(hwnd, mdi, &req.spec);
+            }
+            LRESULT(0)
+        }
+        WM_IGUI_MDI_VERB => {
+            // wparam high byte = verb tag (avoid having to allocate
+            // a request struct).
+            let tag = wparam.0 as u8;
+            if let Some(verb) = mdi_verb_from_tag(tag) {
+                if mdi.0 as isize != 0 {
+                    if matches!(verb, super::menu::MdiVerb::CloseAll) {
+                        for (_id, mdi_child) in registry::snapshot() {
+                            child::close_via_mdi(mdi, mdi_child);
+                        }
+                    } else {
+                        super::menu::dispatch_mdi(mdi, verb);
+                    }
+                }
+            }
+            LRESULT(0)
+        }
+        WM_COMMAND => {
+            let cmd_id = (wparam.0 & 0xFFFF) as u16;
+            // MDI verbs auto-allocated in install_for_frame.
+            if let Some(verb) = super::menu::lookup_mdi_verb(cmd_id) {
+                if mdi.0 as isize != 0 {
+                    if matches!(verb, super::menu::MdiVerb::CloseAll) {
+                        for (_id, mdi_child) in registry::snapshot() {
+                            child::close_via_mdi(mdi, mdi_child);
+                        }
+                    } else {
+                        super::menu::dispatch_mdi(mdi, verb);
+                    }
+                }
+                return LRESULT(0);
+            }
+            // User menu items: push EvMenu so the language thread can
+            // dispatch on item_id.
+            channels::push(IGuiEvent::Menu {
+                menu_id: 0,
+                item_id: cmd_id as i64,
+            });
             LRESULT(0)
         }
         WM_SIZE => {
@@ -455,6 +505,34 @@ pub(crate) struct SetTitleRequest {
     pub title: Vec<u16>,
 }
 
+pub(crate) struct SetMenuRequest {
+    pub spec: String,
+    pub ok: bool,
+}
+
+fn mdi_verb_from_tag(tag: u8) -> Option<super::menu::MdiVerb> {
+    use super::menu::MdiVerb;
+    match tag {
+        1 => Some(MdiVerb::Cascade),
+        2 => Some(MdiVerb::TileH),
+        3 => Some(MdiVerb::TileV),
+        4 => Some(MdiVerb::CloseAll),
+        5 => Some(MdiVerb::ArrangeIcons),
+        _ => None,
+    }
+}
+
+fn mdi_verb_to_tag(verb: super::menu::MdiVerb) -> u8 {
+    use super::menu::MdiVerb;
+    match verb {
+        MdiVerb::Cascade => 1,
+        MdiVerb::TileH => 2,
+        MdiVerb::TileV => 3,
+        MdiVerb::CloseAll => 4,
+        MdiVerb::ArrangeIcons => 5,
+    }
+}
+
 /// Called from the language thread. Marshals to the GUI thread via
 /// SendMessageW; blocks until the child has been created.
 pub fn open_child(title: &str) -> Option<i64> {
@@ -495,6 +573,45 @@ pub fn close_child(child_id: i64) -> bool {
         )
     };
     req.ok
+}
+
+/// Marshal `spec` to the GUI thread, where it's parsed and installed
+/// as the frame's menu bar. Returns true on success.
+pub fn set_menu(spec: &str) -> bool {
+    let Some(frame_raw) = FRAME_HWND.get() else {
+        return false;
+    };
+    let frame = HWND(*frame_raw as *mut _);
+    let mut req = SetMenuRequest {
+        spec: spec.to_owned(),
+        ok: false,
+    };
+    unsafe {
+        SendMessageW(
+            frame,
+            WM_IGUI_SET_MENU,
+            Some(WPARAM(0)),
+            Some(LPARAM(&mut req as *mut _ as isize)),
+        )
+    };
+    req.ok
+}
+
+/// Marshal an MDI verb to the GUI thread for execution.
+pub fn dispatch_mdi_verb(verb: super::menu::MdiVerb) {
+    let Some(frame_raw) = FRAME_HWND.get() else {
+        return;
+    };
+    let frame = HWND(*frame_raw as *mut _);
+    let tag = mdi_verb_to_tag(verb) as usize;
+    unsafe {
+        SendMessageW(
+            frame,
+            WM_IGUI_MDI_VERB,
+            Some(WPARAM(tag)),
+            Some(LPARAM(0)),
+        )
+    };
 }
 
 pub fn set_child_title(child_id: i64, title: &str) {

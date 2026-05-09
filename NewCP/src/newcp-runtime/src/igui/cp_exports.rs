@@ -350,6 +350,45 @@ pub extern "C" fn igui_emit_draw_arc(
     });
 }
 
+// ─── Phase 6: menu + MDI verbs ───────────────────────────────────────
+
+/// `iGui.SetMenu(spec: ARRAY OF SHORTCHAR): INTSHORT`. See
+/// [`super::menu`] for the spec format.
+#[unsafe(export_name = "iGui.SetMenu")]
+pub extern "C" fn igui_set_menu(spec: *const u8, _spec_len: i64) -> i32 {
+    let spec_str = unsafe { read_cp_shortstr(spec) };
+    if super::window::set_menu(&spec_str) {
+        1
+    } else {
+        0
+    }
+}
+
+#[unsafe(export_name = "iGui.MdiCascade")]
+pub extern "C" fn igui_mdi_cascade() {
+    super::window::dispatch_mdi_verb(super::menu::MdiVerb::Cascade);
+}
+
+#[unsafe(export_name = "iGui.MdiTileH")]
+pub extern "C" fn igui_mdi_tile_h() {
+    super::window::dispatch_mdi_verb(super::menu::MdiVerb::TileH);
+}
+
+#[unsafe(export_name = "iGui.MdiTileV")]
+pub extern "C" fn igui_mdi_tile_v() {
+    super::window::dispatch_mdi_verb(super::menu::MdiVerb::TileV);
+}
+
+#[unsafe(export_name = "iGui.MdiCloseAll")]
+pub extern "C" fn igui_mdi_close_all() {
+    super::window::dispatch_mdi_verb(super::menu::MdiVerb::CloseAll);
+}
+
+#[unsafe(export_name = "iGui.MdiArrangeIcons")]
+pub extern "C" fn igui_mdi_arrange_icons() {
+    super::window::dispatch_mdi_verb(super::menu::MdiVerb::ArrangeIcons);
+}
+
 // ─── Phase 5: composition + overlays + paths + system colors ─────
 
 #[unsafe(export_name = "iGui.EmitPushClipRect")]
@@ -1144,6 +1183,12 @@ pub fn native_module_artifact() -> NativeModuleArtifact {
                 ExportEntry::procedure("PathClose"),
                 ExportEntry::procedure("EmitPath"),
                 ExportEntry::procedure("SystemColor"),
+                ExportEntry::procedure("SetMenu"),
+                ExportEntry::procedure("MdiCascade"),
+                ExportEntry::procedure("MdiTileH"),
+                ExportEntry::procedure("MdiTileV"),
+                ExportEntry::procedure("MdiCloseAll"),
+                ExportEntry::procedure("MdiArrangeIcons"),
             ]),
             "iGui.bootstrap",
             "Integrated GUI: MDI frame, Direct2D surfaces, typed event mailbox",
@@ -1304,6 +1349,31 @@ pub fn native_module_artifact() -> NativeModuleArtifact {
             NativeExportBinding::procedure(
                 "SystemColor",
                 igui_system_color as *const () as usize,
+            ),
+            // ─── Phase 6: menu + MDI verbs ────────────────────────
+            NativeExportBinding::procedure(
+                "SetMenu",
+                igui_set_menu as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "MdiCascade",
+                igui_mdi_cascade as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "MdiTileH",
+                igui_mdi_tile_h as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "MdiTileV",
+                igui_mdi_tile_v as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "MdiCloseAll",
+                igui_mdi_close_all as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "MdiArrangeIcons",
+                igui_mdi_arrange_icons as *const () as usize,
             ),
         ],
     )
