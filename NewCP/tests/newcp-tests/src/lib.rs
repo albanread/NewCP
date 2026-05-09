@@ -243,9 +243,10 @@ mod tests {
             output.contains("@.str.0 = private constant [6 x i8] c\"hello\\00\""),
             "expected private null-terminated string constant\noutput:\n{output}"
         );
+        // Open-array param ABI: pointer + hidden length (literal "hello" = 5 chars + NUL = 6).
         assert!(
-            output.contains("call void @StrBase.Print(ptr @.str.0)"),
-            "expected ConstStr passed as ptr to call\noutput:\n{output}"
+            output.contains("call void @StrBase.Print(ptr @.str.0, i64 6)"),
+            "expected ConstStr passed as (ptr, length) pair to open-array param\noutput:\n{output}"
         );
     }
 
@@ -1427,6 +1428,20 @@ mod tests {
     fn calc_len_fixed_array() {
         // VAR a: ARRAY 10 OF INTEGER; LEN(a) = 10
         assert_eq!(run_function("Mod/Tests/Calc.cp", "LenFixed"), 10);
+    }
+
+    #[test]
+    fn calc_len_open_array() {
+        // ARRAY 32 OF SHORTCHAR passed to `IN s: ARRAY OF SHORTCHAR`;
+        // LEN(s) reads the hidden length companion (= 32).
+        assert_eq!(run_function("Mod/Tests/Calc.cp", "LenOpenArray"), 32);
+    }
+
+    #[test]
+    fn calc_len_open_array_forwarded() {
+        // ARRAY 17 OF SHORTCHAR forwarded through one open-array param to another;
+        // hidden length must be threaded (= 17).
+        assert_eq!(run_function("Mod/Tests/Calc.cp", "LenOpenArrayForward"), 17);
     }
 
     // -------------------------------------------------------------------------

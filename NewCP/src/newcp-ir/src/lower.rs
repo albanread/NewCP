@@ -55,6 +55,18 @@ pub(crate) fn push_import_search_root(path: &Path) -> ImportSearchRootGuard {
 
 // == Type mapping ==
 
+/// Open-array param ABI: alongside the array pointer, the callee receives a
+/// hidden `<name>$len: I64` parameter holding the array's element count.
+/// `LEN(arr)` on an open-array param lowers to a load of this hidden slot.
+/// This is the suffix used for the hidden param's name in `IrProcedure.params`.
+pub(crate) const OPEN_ARRAY_LEN_SUFFIX: &str = "$len";
+
+/// Returns true when `ty` is a Component Pascal open array
+/// (i.e. `ARRAY OF T` with no explicit length).
+pub(crate) fn is_open_array(ty: &SemanticType) -> bool {
+    matches!(ty, SemanticType::Array { lengths, .. } if lengths.is_empty())
+}
+
 pub fn map_semantic_type(ty: &SemanticType) -> IrType {
     match ty {
         SemanticType::Builtin(bt) => map_builtin(*bt),
@@ -595,12 +607,21 @@ impl<'m> LowerCtx<'m> {
                 let outer = self.outer_proc_name.as_deref().unwrap_or("");
                 let flat_name = format!("{outer}_{base_name}");
                 let upvalues = self.nested_proc_upvalues[&base_name].clone();
-                let uv_args: Vec<IrValue> = upvalues
-                    .iter()
-                    .map(|(uv_name, uv_ty)| {
-                        IrValue::GlobalRef(uv_name.clone(), IrType::Ref(Box::new(map_semantic_type(uv_ty))))
-                    })
-                    .collect();
+                let mut uv_args: Vec<IrValue> = Vec::with_capacity(upvalues.len());
+                for (uv_name, uv_ty) in &upvalues {
+                    uv_args.push(IrValue::GlobalRef(
+                        uv_name.clone(),
+                        IrType::Ref(Box::new(map_semantic_type(uv_ty))),
+                    ));
+                    // Open-array upvalues travel with their hidden length companion.
+                    if is_open_array(uv_ty) {
+                        let hidden = format!("{uv_name}{OPEN_ARRAY_LEN_SUFFIX}");
+                        uv_args.push(IrValue::GlobalRef(
+                            hidden,
+                            IrType::Ref(Box::new(IrType::I64)),
+                        ));
+                    }
+                }
                 (flat_name, uv_args)
             } else {
                 (base_name.clone(), Vec::new())
@@ -1249,6 +1270,36 @@ impl<'m> LowerCtx<'m> {
             .map(|proc| proc.signature.clone())
     }
 
+    /// Compute the length (element count) to pass for an open-array argument.
+    ///   - Designator → fixed-size array        : statically known length
+    ///   - Designator → forwarded open-array    : load `<src>$len`
+    ///   - String literal (ConstStr)            : char count + 1 (NUL terminator)
+    ///   - Single char promoted to ConstStr     : 2
+    ///   - Anything else                        : 0 (defensive; sema should reject)
+    fn compute_open_array_len(&mut self, arg: &Expr, lowered: &IrValue) -> IrValue {
+        if let Expr::Designator(des) = arg {
+            // Forwarding case: bare param name with a hidden `<name>$len` companion.
+            if des.selectors.is_empty() && des.base.module.is_none() {
+                let hidden = format!("{}{OPEN_ARRAY_LEN_SUFFIX}", des.base.name);
+                if self.proc.params.iter().any(|(n, _)| n == &hidden) {
+                    let addr = IrValue::GlobalRef(hidden, IrType::Ref(Box::new(IrType::I64)));
+                    let t = self.fresh_temp();
+                    self.push(Instr::Load { dst: t, addr, ty: IrType::I64 });
+                    return IrValue::Temp(t, IrType::I64);
+                }
+            }
+            // Fixed-size array source: walk the IR type to recover the length.
+            if let Some(IrType::Array { len, .. }) = self.designator_ir_type(des) {
+                return IrValue::ConstInt(len as i128, IrType::I64);
+            }
+        }
+        // String literal capacity = char count + 1 (for the trailing NUL).
+        if let IrValue::ConstStr(s, _) = lowered {
+            return IrValue::ConstInt((s.chars().count() as i128) + 1, IrType::I64);
+        }
+        IrValue::ConstInt(0, IrType::I64)
+    }
+
     fn lower_call_args(&mut self, callee: &IrValue, args: &[Expr]) -> Vec<IrValue> {
         let expected_modes = self
             .callee_procedure_type(callee)
@@ -1275,81 +1326,83 @@ impl<'m> LowerCtx<'m> {
             })
             .unwrap_or_default();
 
-        args.iter()
-            .enumerate()
-            .map(|(index, arg)| {
-                let mode = expected_modes.get(index).copied().flatten();
+        let mut out: Vec<IrValue> = Vec::with_capacity(args.len());
+        for (index, arg) in args.iter().enumerate() {
+            let mode = expected_modes.get(index).copied().flatten();
+            let is_open_array_param = expected_types.get(index).map(is_open_array).unwrap_or(false);
+
+            // Compute the value (pointer) IR.
+            let value: IrValue;
+            if matches!(mode, Some(ParamMode::Var) | Some(ParamMode::Out)) {
                 // VAR/OUT: always pass address
-                if matches!(mode, Some(ParamMode::Var) | Some(ParamMode::Out)) {
-                    return match arg {
-                        Expr::Designator(des) => self.designator_addr(des),
-                        _ => self.lower_expr(arg),
-                    };
-                }
-                // Value open-array param: pass pointer to the array, not a loaded value.
-                // An open array param has an empty `lengths` list in the semantic type.
-                let is_open_array_param = expected_types.get(index).map(|t| {
-                    matches!(t, SemanticType::Array { lengths, .. } if lengths.is_empty())
-                }).unwrap_or(false);
-                if is_open_array_param {
-                    if let Expr::Designator(des) = arg {
-                        if matches!(self.designator_ir_type(des), Some(IrType::Array { .. })) {
-                            // Fixed-size array: pass its base address as the open-array pointer.
-                            return self.designator_addr(des);
-                        }
-                        // Ptr-typed (forwarding an open-array value param): fall through to
-                        // lower_expr, which loads the pointer value from the slot.
-                    }
-                    // String literals and other non-designator args: fall through to lower_expr.
-                }
-                // Determine if the expected param is an open ARRAY OF SHORTCHAR — string
-                // literals must then be emitted as i8 arrays, not the default i32/CHAR.
-                let expects_shortchar_open_array = expected_types.get(index).map(|t| {
-                    matches!(t,
-                        SemanticType::Array { lengths, element_type, .. }
-                        if lengths.is_empty()
-                            && matches!(element_type.as_ref(), SemanticType::Builtin(BuiltinType::ShortChar))
-                    )
-                }).unwrap_or(false);
-                // Fixed-size array arguments are always passed as pointers.
-                // CP arrays cannot be passed by value; the callee always receives
-                // a pointer to the array (pointer to first element).
+                value = match arg {
+                    Expr::Designator(des) => self.designator_addr(des),
+                    _ => self.lower_expr(arg),
+                };
+            } else if is_open_array_param {
+                // IN or value open-array param.
                 if let Expr::Designator(des) = arg {
                     if matches!(self.designator_ir_type(des), Some(IrType::Array { .. })) {
-                        return self.designator_addr(des);
+                        // Fixed-size array source: pass its base address.
+                        value = self.designator_addr(des);
+                    } else {
+                        // Forwarding an open-array value param: load the pointer.
+                        value = self.lower_expr(arg);
                     }
+                } else {
+                    // String literal etc.
+                    let expects_shortchar = matches!(
+                        expected_types.get(index),
+                        Some(SemanticType::Array { element_type, .. })
+                            if matches!(element_type.as_ref(), SemanticType::Builtin(BuiltinType::ShortChar))
+                    );
+                    let mut v = self.lower_expr(arg);
+                    if expects_shortchar {
+                        if let IrValue::ConstStr(_, elem_ty) = &mut v {
+                            *elem_ty = IrType::ShortChar;
+                        }
+                        if let IrValue::ConstChar(c) = v {
+                            let mut s = String::with_capacity(1);
+                            s.push(c);
+                            v = IrValue::ConstStr(s, IrType::ShortChar);
+                        }
+                    }
+                    value = v;
                 }
-                let mut value = self.lower_expr(arg);
-                if expects_shortchar_open_array {
-                    if let IrValue::ConstStr(_, elem_ty) = &mut value {
-                        *elem_ty = IrType::ShortChar;
-                    }
-                    // Single-char string literals ("]", "A", etc.) are lowered as
-                    // ConstChar but must become a null-terminated [2 x i8] when
-                    // passed to an ARRAY OF SHORTCHAR parameter.
-                    if let IrValue::ConstChar(c) = value {
-                        let mut s = String::with_capacity(1);
-                        s.push(c);
-                        value = IrValue::ConstStr(s, IrType::ShortChar);
-                    }
+            } else if let Expr::Designator(des) = arg {
+                // Fixed-size array passed to a non-open-array param (e.g. ARRAY 4 OF CHAR
+                // expected type — still passed by reference per CP rules).
+                if matches!(self.designator_ir_type(des), Some(IrType::Array { .. })) {
+                    value = self.designator_addr(des);
+                } else {
+                    value = self.lower_expr(arg);
                 }
+            } else {
+                value = self.lower_expr(arg);
+            }
 
-                // Widen SHORTCHAR (i8) to CHAR (i32) when the declared parameter
-                // expects CHAR.  `41X` and similar hex literals with ordinal <= 0xFF
-                // are typed as ShortChar by the lexer/lowerer but the runtime ABI
-                // for CHAR parameters uses 32-bit values.
-                let expects_char = expected_types.get(index).map(|t| {
-                    matches!(t, SemanticType::Builtin(BuiltinType::Char))
-                }).unwrap_or(false);
-                if expects_char && value.ty() == IrType::ShortChar {
-                    let t = self.fresh_temp();
-                    self.push(Instr::Cast { dst: t, value: value.clone(), to_ty: IrType::Char });
-                    value = IrValue::Temp(t, IrType::Char);
-                }
-
+            // Widen SHORTCHAR -> CHAR when the declared param is CHAR.
+            // `41X` and similar hex literals are typed as SHORTCHAR but a CHAR
+            // formal expects a 32-bit value at the ABI level.
+            let expects_char = matches!(expected_types.get(index), Some(SemanticType::Builtin(BuiltinType::Char)));
+            let final_value = if expects_char && value.ty() == IrType::ShortChar {
+                let t = self.fresh_temp();
+                self.push(Instr::Cast { dst: t, value: value.clone(), to_ty: IrType::Char });
+                IrValue::Temp(t, IrType::Char)
+            } else {
                 value
-            })
-            .collect()
+            };
+
+            out.push(final_value.clone());
+
+            // Open-array params travel with a hidden `<name>$len: I64` length arg
+            // (decomposed fat-pointer ABI; mirrors `lower_procedure`).
+            if is_open_array_param {
+                let len = self.compute_open_array_len(arg, &final_value);
+                out.push(len);
+            }
+        }
+        out
     }
 
     fn lower_unary(&mut self, op: UnaryOp, expr: &Expr) -> IrValue {
@@ -1726,25 +1779,36 @@ impl<'m> LowerCtx<'m> {
                 self.push(Instr::BinOp { dst: t_result, op: BinOp::Sub, left: x, right: IrValue::Temp(t_delta, ty.clone()), ty: ty.clone() });
                 Some(IrValue::Temp(t_result, ty))
             }
-            // LEN(v): length of the array in its first dimension.            //   For a fixed-size local/global array (IrType::Array { len, .. }), returns len.
-            //   For an open-array parameter (pointer), the length is not statically known here;
-            //   those callers should pass LEN(v, dim) — unsupported for now.
+            // LEN(v): length of the array in its first dimension.
+            //   - Fixed-size local/global array (IrType::Array { len, .. }): static `len`.
+            //   - Open-array parameter: load the hidden `<name>$len: I64` companion
+            //     param injected by the open-array fat-pointer ABI (see lower_procedure
+            //     and lower_call_args). Multi-dim LEN(v, dim) is not yet supported.
             "LEN" => {
                 let arg = args.first()?;
-                // We only need the IR type, not the value (fixed arrays have a statically known length).
-                let ir_ty = match arg {
-                    Expr::Designator(des) => self.designator_ir_type(des),
-                    _ => None,
-                }?;
-                let len = match &ir_ty {
-                    IrType::Array { len, .. } => *len as i128,
-                    // Array stored behind a ref (VAR open-array param): not statically known.
+                let des = match arg {
+                    Expr::Designator(d) => d,
                     _ => {
-                        self.record_diagnostic("LEN: argument is not a fixed-size array; dynamic LEN not yet supported");
+                        self.record_diagnostic("LEN: argument must be an array designator");
                         return Some(IrValue::ConstInt(0, IrType::I64));
                     }
                 };
-                Some(IrValue::ConstInt(len, IrType::I64))
+                // Open-array param: bare local name with a `<name>$len` companion.
+                if des.selectors.is_empty() && des.base.module.is_none() {
+                    let hidden = format!("{}{OPEN_ARRAY_LEN_SUFFIX}", des.base.name);
+                    if self.proc.params.iter().any(|(n, _)| n == &hidden) {
+                        let addr = IrValue::GlobalRef(hidden, IrType::Ref(Box::new(IrType::I64)));
+                        let t = self.fresh_temp();
+                        self.push(Instr::Load { dst: t, addr, ty: IrType::I64 });
+                        return Some(IrValue::Temp(t, IrType::I64));
+                    }
+                }
+                let ir_ty = self.designator_ir_type(des)?;
+                if let IrType::Array { len, .. } = ir_ty {
+                    return Some(IrValue::ConstInt(len as i128, IrType::I64));
+                }
+                self.record_diagnostic("LEN: argument is not a fixed-size array or open-array param");
+                Some(IrValue::ConstInt(0, IrType::I64))
             }
             // MAX(x, y): two-argument maximum (branchless via sign-bit mask)            //   diff = x - y
             //   mask = ASH(diff, -(bits-1))  → -1 if x < y, 0 if x >= y
@@ -2762,29 +2826,42 @@ pub fn lower_procedure(
     // Nested procedures: captured outer variables are prepended as implicit Ref params,
     // exactly like VAR params.  This lets the LLVM backend's ref_param_slots mechanism
     // handle the extra indirection transparently.
-    let upvalue_params: Vec<(String, IrType)> = sema_proc
-        .upvalues
-        .iter()
-        .map(|(name, ty)| (name.clone(), IrType::Ref(Box::new(map_semantic_type(ty)))))
-        .collect();
+    //
+    // Open-array upvalues also get a companion `<name>$len: Ref(I64)` upvalue so that
+    // `LEN(captured_open_array)` inside the nested proc can resolve.
+    let mut upvalue_params: Vec<(String, IrType)> = Vec::new();
+    for (name, ty) in &sema_proc.upvalues {
+        upvalue_params.push((name.clone(), IrType::Ref(Box::new(map_semantic_type(ty)))));
+        if is_open_array(ty) {
+            upvalue_params.push((
+                format!("{name}{OPEN_ARRAY_LEN_SUFFIX}"),
+                IrType::Ref(Box::new(IrType::I64)),
+            ));
+        }
+    }
 
     let mut params: Vec<(String, IrType)> = upvalue_params;
     params.extend(receiver_param.iter().cloned());
-    params.extend(sema_proc
-        .signature
-        .parameters
-        .iter()
-        .flat_map(|param| {
-            let base_ty = map_semantic_type(&param.ty);
-            let ir_ty = match param.mode {
-                Some(ParamMode::Var) | Some(ParamMode::Out) => {
-                    IrType::Ref(Box::new(base_ty))
-                }
-                Some(ParamMode::In) => IrType::Ref(Box::new(base_ty)),
-                None => base_ty,
-            };
-            param.names.iter().map(move |name| (name.clone(), ir_ty.clone()))
-        }));
+    for param in &sema_proc.signature.parameters {
+        let base_ty = map_semantic_type(&param.ty);
+        let ir_ty = match param.mode {
+            Some(ParamMode::Var) | Some(ParamMode::Out) => {
+                IrType::Ref(Box::new(base_ty))
+            }
+            Some(ParamMode::In) => IrType::Ref(Box::new(base_ty)),
+            None => base_ty,
+        };
+        // For each declared name in this param group, push the user param.
+        // Open-array params get a hidden `<name>$len: I64` immediately after,
+        // implementing CP's decomposed fat-pointer ABI.
+        let is_open = is_open_array(&param.ty);
+        for name in &param.names {
+            params.push((name.clone(), ir_ty.clone()));
+            if is_open {
+                params.push((format!("{name}{OPEN_ARRAY_LEN_SUFFIX}"), IrType::I64));
+            }
+        }
+    }
 
     let ret_ty = sema_proc
         .signature

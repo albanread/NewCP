@@ -449,6 +449,22 @@ PROCEDURE LenFixed*(): INTEGER;
   VAR a: ARRAY 10 OF INTEGER;
 BEGIN RETURN LEN(a) END LenFixed;                      (* expected 10 *)
 
+(* --- LEN of an open-array parameter (fat-pointer ABI) --- *)
+
+PROCEDURE LenOpenArrayHelper(IN s: ARRAY OF SHORTCHAR): INTEGER;
+BEGIN RETURN LEN(s) END LenOpenArrayHelper;
+
+PROCEDURE LenOpenArray*(): INTEGER;
+  VAR a: ARRAY 32 OF SHORTCHAR;
+BEGIN RETURN LenOpenArrayHelper(a) END LenOpenArray;   (* expected 32 *)
+
+PROCEDURE LenOpenArrayForwarder(IN s: ARRAY OF SHORTCHAR): INTEGER;
+BEGIN RETURN LenOpenArrayHelper(s) END LenOpenArrayForwarder;
+
+PROCEDURE LenOpenArrayForward*(): INTEGER;
+  VAR a: ARRAY 17 OF SHORTCHAR;
+BEGIN RETURN LenOpenArrayForwarder(a) END LenOpenArrayForward;  (* expected 17 *)
+
 (* --- ENTIER: floor of a real number → INTEGER (LONGINT in spec) --- *)
 
 PROCEDURE EntierFloor*(): LONGINT;
