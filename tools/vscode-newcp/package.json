@@ -1,0 +1,28 @@
+{
+  "name": "vscode-newcp",
+  "displayName": "Component Pascal (NewCP)",
+  "description": "Syntax highlighting for Component Pascal (.cp) used by NewCP.",
+  "version": "0.1.0",
+  "publisher": "newcp",
+  "engines": {
+    "vscode": "^1.70.0"
+  },
+  "categories": ["Programming Languages"],
+  "contributes": {
+    "languages": [
+      {
+        "id": "newcp",
+        "aliases": ["Component Pascal", "NewCP", "newcp"],
+        "extensions": [".cp", ".Mod"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "newcp",
+        "scopeName": "source.newcp",
+        "path": "./syntaxes/newcp.tmLanguage.json"
+      }
+    ]
+  }
+}

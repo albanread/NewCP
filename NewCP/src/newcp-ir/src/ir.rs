@@ -198,6 +198,15 @@ pub enum Instr {
     /// `record_ty` is the IR type of the record (usually `Named("T")`). The backend
     /// computes `sizeof(T)` and calls `__newcp_sys_new`; the result is a `ptr`.
     New { dst: TempId, record_ty: IrType },
+    /// `t = new array elem_ty[len]` — allocate a heap buffer for a
+    /// `POINTER TO ARRAY OF T` (dynamic open-array pointer). `len` is
+    /// the runtime element count. The backend allocates
+    /// `len * sizeof(elem_ty) + LEN_HEADER_BYTES` bytes via
+    /// `__newcp_sys_new`, stores `len` in the header, and returns a
+    /// pointer to the data area (just past the header). `LEN(p^)`
+    /// reads the length back from the header at offset
+    /// `-LEN_HEADER_BYTES`.
+    NewArray { dst: TempId, elem_ty: IrType, len: IrValue },
     /// `store result_slot, value`  — internal: prepare RETURN value before Br function_exit
     StoreResult { value: IrValue },
 }

@@ -404,6 +404,88 @@ pub extern "C" fn igui_set_menu(spec: *const u8, _spec_len: i64) -> i32 {
     }
 }
 
+/// `iGui.MeasureFont(family, size, weight, italic; OUT ascent, descent,
+///                   lineHeight, advanceM): INTSHORT`.
+///
+/// Synchronous, no childId, no batch — calls into `font_metrics`
+/// directly. Returns 1 on success, 0 if DirectWrite refused the
+/// typeface (caller should retry with a fallback family).
+#[unsafe(export_name = "iGui.MeasureFont")]
+pub extern "C" fn igui_measure_font(
+    family: *const u8,
+    _family_len: i64,
+    size: f64,
+    weight: i64,
+    italic: i32,
+    out_ascent: *mut f64,
+    out_descent: *mut f64,
+    out_line_height: *mut f64,
+    out_advance_m: *mut f64,
+) -> i32 {
+    let family_str = unsafe { read_cp_shortstr(family) };
+    let result = super::font_metrics::measure_font(
+        &family_str,
+        size as f32,
+        weight as u16,
+        italic != 0,
+    );
+    match result {
+        Some(m) => {
+            unsafe {
+                if !out_ascent.is_null() {
+                    *out_ascent = m.ascent as f64;
+                }
+                if !out_descent.is_null() {
+                    *out_descent = m.descent as f64;
+                }
+                if !out_line_height.is_null() {
+                    *out_line_height = m.line_height as f64;
+                }
+                if !out_advance_m.is_null() {
+                    *out_advance_m = m.advance_m as f64;
+                }
+            }
+            1
+        }
+        None => 0,
+    }
+}
+
+/// `iGui.MeasureString(s, family, size, weight, italic; OUT width):
+///                    INTSHORT`. Width is in DIPs.
+#[unsafe(export_name = "iGui.MeasureString")]
+pub extern "C" fn igui_measure_string(
+    text: *const u8,
+    _text_len: i64,
+    family: *const u8,
+    _family_len: i64,
+    size: f64,
+    weight: i64,
+    italic: i32,
+    out_width: *mut f64,
+) -> i32 {
+    let text_str = unsafe { read_cp_shortstr(text) };
+    let family_str = unsafe { read_cp_shortstr(family) };
+    let result = super::font_metrics::measure_string(
+        &text_str,
+        &family_str,
+        size as f32,
+        weight as u16,
+        italic != 0,
+    );
+    match result {
+        Some(w) => {
+            unsafe {
+                if !out_width.is_null() {
+                    *out_width = w as f64;
+                }
+            }
+            1
+        }
+        None => 0,
+    }
+}
+
 /// `iGui.LogAppend(s: ARRAY OF SHORTCHAR)` — push one line into the
 /// process-wide Rust log ring buffer. Identical adjacent lines
 /// coalesce into a count badge instead of producing duplicate
@@ -1248,6 +1330,8 @@ pub fn native_module_artifact() -> NativeModuleArtifact {
                 ExportEntry::procedure("SetRedrawRate"),
                 ExportEntry::procedure("LayoutCacheStats"),
                 ExportEntry::procedure("LogAppend"),
+                ExportEntry::procedure("MeasureFont"),
+                ExportEntry::procedure("MeasureString"),
             ]),
             "iGui.bootstrap",
             "Integrated GUI: MDI frame, Direct2D surfaces, typed event mailbox",
@@ -1446,6 +1530,15 @@ pub fn native_module_artifact() -> NativeModuleArtifact {
             NativeExportBinding::procedure(
                 "LogAppend",
                 igui_log_append as *const () as usize,
+            ),
+            // ─── Standalone font measurement service ──────────────
+            NativeExportBinding::procedure(
+                "MeasureFont",
+                igui_measure_font as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "MeasureString",
+                igui_measure_string as *const () as usize,
             ),
         ],
     )

@@ -1819,6 +1819,19 @@ mod tests {
     // -------------------------------------------------------------------------
 
     #[test]
+    fn dyn_array_new_and_index_round_trip() {
+        // POINTER TO ARRAY OF SHORTINT, NEW(p, 4), p[i] := v, sum.
+        // 7 + 11 + 13 + 17 = 48.
+        assert_eq!(run_function("Mod/Tests/DynArray.cp", "NewAndIndex"), 48);
+    }
+
+    #[test]
+    fn dyn_array_len_reads_back() {
+        // LEN(p^) reads the length stored by NewArray's header.
+        assert_eq!(run_function("Mod/Tests/DynArray.cp", "Length"), 5);
+    }
+
+    #[test]
     fn in_param_write_rejected_by_sema() {
         // Three patterns of write-through-IN that sema should all
         // reject: scalar `n := 7`, field `b.value := 99`, and

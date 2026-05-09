@@ -365,4 +365,36 @@ PROCEDURE LayoutCacheStats*(VAR hits, misses, size: INTEGER): INTSHORT;
 
 PROCEDURE LogAppend*(s: ARRAY OF SHORTCHAR);
 
+(* Standalone font measurement service.
+
+   Synchronous, child-id-less, batch-less DirectWrite measurement.
+   The caller passes a typeface name + DIP size + weight + italic
+   flag; the service builds a one-shot DirectWrite text-format and
+   layout, reads metrics, and returns. Safe to call from any thread
+   because IDWriteFactory2 is free-threaded.
+
+   These primitives are the foundation of the CP-side `Fonts` /
+   `HostFontsSys` / `HostFonts` stack: the Sys layer wraps these to
+   expose CP-shaped helpers, and `HostFonts` converts BlackBox
+   sub-millimeter units to/from DIPs at the boundary.
+
+   Both procedures return 1 on success and 0 on failure (typically
+   "DirectWrite couldn't create a format for that typeface" — caller
+   should retry with a fallback family). *)
+
+PROCEDURE MeasureFont*(
+    family: ARRAY OF SHORTCHAR;
+    size: REAL;             (* DIPs *)
+    weight: INTEGER;        (* 400=normal, 700=bold *)
+    italic: INTSHORT;       (* 0 = upright, 1 = italic *)
+    OUT ascent, descent, lineHeight, advanceM: REAL): INTSHORT;
+
+PROCEDURE MeasureString*(
+    s: ARRAY OF SHORTCHAR;
+    family: ARRAY OF SHORTCHAR;
+    size: REAL;
+    weight: INTEGER;
+    italic: INTSHORT;
+    OUT width: REAL): INTSHORT;
+
 END iGui.

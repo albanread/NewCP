@@ -1,6 +1,7 @@
 DEFINITION MODULE Console;
 
 PROCEDURE WriteInt*(x: INTEGER);
+PROCEDURE WriteReal*(x: REAL);
 PROCEDURE WriteChar*(x: CHAR);
 PROCEDURE WriteString*(s: ARRAY OF CHAR);
 PROCEDURE WriteShortString*(s: ARRAY OF SHORTCHAR);

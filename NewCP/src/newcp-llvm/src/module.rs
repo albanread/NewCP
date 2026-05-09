@@ -608,7 +608,10 @@ fn uses_sys_new(ir_module: &IrModule) -> bool {
     for proc in &ir_module.procedures {
         for block in &proc.blocks {
             for instr in &block.instrs {
-                if matches!(instr, Instr::SysNew { .. } | Instr::New { .. }) {
+                if matches!(
+                    instr,
+                    Instr::SysNew { .. } | Instr::New { .. } | Instr::NewArray { .. }
+                ) {
                     return true;
                 }
             }

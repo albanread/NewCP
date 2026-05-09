@@ -172,6 +172,11 @@ pub extern "C" fn console_write_int(value: i64) {
     write_text(&value.to_string());
 }
 
+#[unsafe(export_name = "Console.WriteReal")]
+pub extern "C" fn console_write_real(value: f64) {
+    write_text(&value.to_string());
+}
+
 #[unsafe(export_name = "Console.WriteChar")]
 pub extern "C" fn console_write_char(value: u32) {
     let ch = char::from_u32(value).unwrap_or('\u{FFFD}');
@@ -293,6 +298,7 @@ pub fn native_module_artifact() -> NativeModuleArtifact {
             vec![],
             ExportDirectory::new(vec![
                 crate::ExportEntry::procedure("WriteInt"),
+                crate::ExportEntry::procedure("WriteReal"),
                 crate::ExportEntry::procedure("WriteChar"),
                 crate::ExportEntry::procedure("WriteString"),
                 crate::ExportEntry::procedure("WriteShortString"),
@@ -307,6 +313,7 @@ pub fn native_module_artifact() -> NativeModuleArtifact {
         ),
         vec![
             NativeExportBinding::procedure("WriteInt", console_write_int as *const () as usize),
+            NativeExportBinding::procedure("WriteReal", console_write_real as *const () as usize),
             NativeExportBinding::procedure("WriteChar", console_write_char as *const () as usize),
             NativeExportBinding::procedure("WriteString", console_write_string as *const () as usize),
             NativeExportBinding::procedure("WriteShortString", console_write_short_string as *const () as usize),
@@ -341,6 +348,19 @@ mod tests {
         console_read_int(&mut value as *mut i64);
         assert_eq!(value, 41);
         assert_eq!(end_capture(), "12\n");
+        reset();
+    }
+
+    #[test]
+    fn captured_console_writes_real() {
+        let _guard = CONSOLE_TEST_LOCK.lock().unwrap_or_else(|e| e.into_inner());
+        reset();
+        begin_capture();
+
+        console_write_real(0.25);
+        console_write_ln();
+
+        assert_eq!(end_capture(), "0.25\n");
         reset();
     }
 

@@ -109,6 +109,21 @@ pub fn map_semantic_type(ty: &SemanticType) -> IrType {
             },
         },
         SemanticType::Pointer { target, untagged } => {
+            // Special case: `POINTER TO ARRAY OF T` (open-array target).
+            // The natural mapping `Ptr(Ptr(T))` (because open arrays
+            // map as `Ptr(elem)` at the type level) gives one level of
+            // indirection too many. The pointer should go directly to
+            // the element data on the heap, so emit `Ptr(elem)` /
+            // `UntaggedPtr(elem)` here.
+            if let SemanticType::Array { lengths, element_type, untagged: arr_untagged } = target.as_ref() {
+                if lengths.is_empty() {
+                    let elem_ir = map_semantic_type(element_type);
+                    if *untagged || *arr_untagged {
+                        return IrType::UntaggedPtr(Box::new(elem_ir));
+                    }
+                    return IrType::Ptr(Box::new(elem_ir));
+                }
+            }
             if *untagged {
                 IrType::UntaggedPtr(Box::new(map_semantic_type(target)))
             } else {
@@ -338,14 +353,7 @@ impl<'m> LowerCtx<'m> {
             // lookups know to route to the imported module's symbols.
             qualify_local_named_refs_in_sem_type(&mut ty, module, &local_type_names);
             return match ty {
-                SemanticType::Pointer { target, untagged } => {
-                    let inner = map_semantic_type(&target);
-                    Some(if untagged {
-                        IrType::UntaggedPtr(Box::new(inner))
-                    } else {
-                        IrType::Ptr(Box::new(inner))
-                    })
-                }
+                SemanticType::Pointer { .. } => Some(map_semantic_type(&ty)),
                 _ => None,
             };
         }
@@ -359,17 +367,50 @@ impl<'m> LowerCtx<'m> {
             .and_then(|sym| sym.declared_type.as_ref())?;
         match ty {
             SemanticType::Pointer { target, untagged } => {
-                let inner = map_semantic_type(target);
-                Some(if *untagged {
-                    IrType::UntaggedPtr(Box::new(inner))
-                } else {
-                    IrType::Ptr(Box::new(inner))
-                })
+                // Special case: if the target is a Named alias that
+                // resolves to an open-array (`Bag = POINTER TO DigitArr;
+                // DigitArr = ARRAY OF SHORTINT`), unwrap one level so
+                // `map_semantic_type`'s open-array-target shortcut fires
+                // and produces `Ptr(SHORTINT)` instead of
+                // `Ptr(Named("DigitArr"))`. For all other targets
+                // (records, etc.) leave the Named in place so
+                // downstream IR can still find the named struct type.
+                let resolved_target = self.resolve_named_sem_type(target);
+                let target_for_map = match &resolved_target {
+                    SemanticType::Array { lengths, .. } if lengths.is_empty() => resolved_target,
+                    _ => target.as_ref().clone(),
+                };
+                let synthesised = SemanticType::Pointer {
+                    target: Box::new(target_for_map),
+                    untagged: *untagged,
+                };
+                Some(map_semantic_type(&synthesised))
             }
             SemanticType::Named { module: None, name, .. } if name != type_name => {
                 self.resolve_named_as_ptr_ir_type(name)
             }
             _ => None,
+        }
+    }
+
+    /// Walk Named-aliased semantic types one level (local symbols only)
+    /// so a `Named { name: T }` referring to a type definition resolves
+    /// to that type's declared form. Used by IR-type derivation to flatten
+    /// `Bag = POINTER TO DigitArr; DigitArr = ARRAY OF SHORTINT` into
+    /// `POINTER TO ARRAY OF SHORTINT` for the special-case mapping in
+    /// `map_semantic_type`.
+    fn resolve_named_sem_type(&self, ty: &SemanticType) -> SemanticType {
+        match ty {
+            SemanticType::Named { module: None, name, .. } => {
+                self.symbols
+                    .iter()
+                    .rev()
+                    .chain(self.module_symbols.iter().rev())
+                    .find(|sym| sym.kind == SymbolKind::Type && sym.name == *name)
+                    .and_then(|sym| sym.declared_type.clone())
+                    .unwrap_or_else(|| ty.clone())
+            }
+            _ => ty.clone(),
         }
     }
 
@@ -1334,12 +1375,67 @@ impl<'m> LowerCtx<'m> {
                                         // pointer directly via ref_param_slots; no extra Load.
                                         (addr.clone(), *elem.clone(), None)
                                     }
+                                    // VAR/OUT param of a pointer-to-array alias
+                                    // (e.g. `OUT quo: Integer` where
+                                    // `Integer = POINTER TO ARRAY OF Digit`).
+                                    // ref_param_slots has already loaded one
+                                    // indirection so addr behaves like
+                                    // `Ref(Named(...))`. Resolve the alias to
+                                    // get the underlying element type, then
+                                    // load the pointer and index.
+                                    IrType::Named(n) => match self.resolve_named_as_ptr_ir_type(n) {
+                                        Some(IrType::Ptr(elem)) => {
+                                            let loaded_ptr_ty = IrType::Ptr(elem.clone());
+                                            let t = self.fresh_temp();
+                                            self.push(Instr::Load {
+                                                dst: t,
+                                                addr: addr.clone(),
+                                                ty: loaded_ptr_ty.clone(),
+                                            });
+                                            (IrValue::Temp(t, loaded_ptr_ty), *elem, None)
+                                        }
+                                        Some(IrType::UntaggedPtr(elem)) => {
+                                            let loaded_ptr_ty = IrType::UntaggedPtr(elem.clone());
+                                            let t = self.fresh_temp();
+                                            self.push(Instr::Load {
+                                                dst: t,
+                                                addr: addr.clone(),
+                                                ty: loaded_ptr_ty.clone(),
+                                            });
+                                            (IrValue::Temp(t, loaded_ptr_ty), *elem, None)
+                                        }
+                                        _ => (addr.clone(), IrType::Opaque("array-elem".to_string()), None),
+                                    },
                                     _ => (addr.clone(), IrType::Opaque("array-elem".to_string()), None),
                                 },
-                                // Ref(Named) — try to resolve the named type's element.
-                                IrType::Named(_) => {
-                                    // Fall back: just use addr and opaque element.
-                                    (addr.clone(), IrType::Opaque("array-elem".to_string()), None)
+                                // Ref(Named) — resolve the named type's underlying form
+                                // and dispatch the same way as the direct Ref(Ptr|Array|...) cases.
+                                // Required for `Bag = POINTER TO ARRAY OF SHORTINT` →
+                                // need to load the pointer, then index by element.
+                                IrType::Named(n) => {
+                                    match self.resolve_named_as_ptr_ir_type(n) {
+                                        Some(IrType::Ptr(elem)) => {
+                                            let loaded_ptr_ty = IrType::Ptr(elem.clone());
+                                            let t = self.fresh_temp();
+                                            self.push(Instr::Load {
+                                                dst: t,
+                                                addr: addr.clone(),
+                                                ty: loaded_ptr_ty.clone(),
+                                            });
+                                            (IrValue::Temp(t, loaded_ptr_ty), *elem, None)
+                                        }
+                                        Some(IrType::UntaggedPtr(elem)) => {
+                                            let loaded_ptr_ty = IrType::UntaggedPtr(elem.clone());
+                                            let t = self.fresh_temp();
+                                            self.push(Instr::Load {
+                                                dst: t,
+                                                addr: addr.clone(),
+                                                ty: loaded_ptr_ty.clone(),
+                                            });
+                                            (IrValue::Temp(t, loaded_ptr_ty), *elem, None)
+                                        }
+                                        _ => (addr.clone(), IrType::Opaque("array-elem".to_string()), None),
+                                    }
                                 }
                                 _ => (addr.clone(), IrType::Opaque("array-elem".to_string()), None),
                             },
@@ -2200,6 +2296,52 @@ impl<'m> LowerCtx<'m> {
                         return Some(IrValue::Temp(t, IrType::I64));
                     }
                 }
+                // Dynamic open-array deref: `LEN(p^)` where p is a
+                // POINTER TO ARRAY OF T. Read the length back from the
+                // 8-byte header that NewArray stored at `p - 8`. We
+                // strip the trailing Dereference selector and load the
+                // pointer value, then emit `LoadRaw (p_int - 8)`.
+                if let Some(Selector::Dereference) = des.selectors.last() {
+                    let prefix_des = Designator {
+                        span: des.span,
+                        base: des.base.clone(),
+                        selectors: des.selectors[..des.selectors.len() - 1].to_vec(),
+                    };
+                    let prefix_ty = self.designator_ir_type(&prefix_des);
+                    let is_dyn_array_ptr = match &prefix_ty {
+                        Some(IrType::Ptr(_)) | Some(IrType::UntaggedPtr(_)) => true,
+                        Some(IrType::Named(n)) => matches!(
+                            self.resolve_named_as_ptr_ir_type(n),
+                            Some(IrType::Ptr(_)) | Some(IrType::UntaggedPtr(_))
+                        ),
+                        _ => false,
+                    };
+                    if is_dyn_array_ptr {
+                        let p_val = self.lower_expr(&Expr::Designator(prefix_des));
+                        // Cast the pointer to i64 so we can subtract.
+                        let p_int = self.fresh_temp();
+                        self.push(Instr::BitCast {
+                            dst: p_int,
+                            value: p_val,
+                            ty: IrType::I64,
+                        });
+                        let header_addr = self.fresh_temp();
+                        self.push(Instr::BinOp {
+                            dst: header_addr,
+                            op: BinOp::Sub,
+                            left: IrValue::Temp(p_int, IrType::I64),
+                            right: IrValue::ConstInt(8, IrType::I64),
+                            ty: IrType::I64,
+                        });
+                        let t = self.fresh_temp();
+                        self.push(Instr::LoadRaw {
+                            dst: t,
+                            addr: IrValue::Temp(header_addr, IrType::I64),
+                            ty: IrType::I64,
+                        });
+                        return Some(IrValue::Temp(t, IrType::I64));
+                    }
+                }
                 let ir_ty = self.designator_ir_type(des)?;
                 if let IrType::Array { len, .. } = ir_ty {
                     return Some(IrValue::ConstInt(len as i128, IrType::I64));
@@ -2216,8 +2358,12 @@ impl<'m> LowerCtx<'m> {
             //   MIN(INTEGER)..    standard signed range
             //   MIN(SET) = 0      MAX(SET) = 31  (returned as INTEGER)
             //   MIN(CHAR) = 0X    MAX(CHAR) = 10FFFFX  (Unicode scalar range)
-            "MAX" if args.len() == 1 => return min_max_one_arg(args.first()?, /*max=*/ true),
-            "MIN" if args.len() == 1 => return min_max_one_arg(args.first()?, /*max=*/ false),
+            "MAX" if args.len() == 1 => {
+                return self.min_max_one_arg_resolving(args.first()?, /*max=*/ true);
+            }
+            "MIN" if args.len() == 1 => {
+                return self.min_max_one_arg_resolving(args.first()?, /*max=*/ false);
+            }
             // MAX(x, y): two-argument maximum (branchless via sign-bit mask)            //   diff = x - y
             //   mask = ASH(diff, -(bits-1))  → -1 if x < y, 0 if x >= y
             //   not_mask = mask XOR -1
@@ -2263,6 +2409,70 @@ impl<'m> LowerCtx<'m> {
             }
             _ => None,
         }
+    }
+
+    /// MAX(T)/MIN(T) for a type-name argument. Resolves user-defined
+    /// transparent aliases (e.g. `TYPE DoubleDigit = INTEGER`) to the
+    /// underlying builtin name before delegating to [`min_max_one_arg`].
+    /// Without this, `MAX(DoubleDigit)` would reach LLVM as an unknown
+    /// direct callee.
+    fn min_max_one_arg_resolving(&self, arg: &Expr, max: bool) -> Option<IrValue> {
+        if let Some(direct) = min_max_one_arg(arg, max) {
+            return Some(direct);
+        }
+        let name = match arg {
+            Expr::Designator(des)
+                if des.base.module.is_none() && des.selectors.is_empty() =>
+            {
+                des.base.name.as_str()
+            }
+            _ => return None,
+        };
+        let mut current = name.to_string();
+        for _ in 0..16 {
+            let symbol = self
+                .module_symbols
+                .iter()
+                .find(|s| s.name == current && s.kind == SymbolKind::Type)?;
+            match symbol.declared_type.as_ref()? {
+                SemanticType::Builtin(builtin) => {
+                    let synth_name = match builtin {
+                        BuiltinType::Byte => "BYTE",
+                        BuiltinType::ShortInt => "SHORTINT",
+                        BuiltinType::IntShort => "INTSHORT",
+                        BuiltinType::Integer => "INTEGER",
+                        BuiltinType::LongInt => "LONGINT",
+                        BuiltinType::Real => "REAL",
+                        BuiltinType::ShortReal => "SHORTREAL",
+                        BuiltinType::Char => "CHAR",
+                        BuiltinType::ShortChar => "SHORTCHAR",
+                        BuiltinType::Set => "SET",
+                        _ => return None,
+                    };
+                    let synth = Expr::Designator(Designator {
+                        span: match arg {
+                            Expr::Designator(d) => d.span,
+                            _ => return None,
+                        },
+                        base: QualIdent {
+                            module: None,
+                            name: synth_name.to_string(),
+                            span: match arg {
+                                Expr::Designator(d) => d.base.span,
+                                _ => return None,
+                            },
+                        },
+                        selectors: Vec::new(),
+                    });
+                    return min_max_one_arg(&synth, max);
+                }
+                SemanticType::Named { module: None, name: alias_name, .. } => {
+                    current = alias_name.clone();
+                }
+                _ => return None,
+            }
+        }
+        None
     }
 
     fn lower_system_expr(&mut self, des: &Designator) -> Option<IrValue> {
@@ -2432,6 +2642,21 @@ impl<'m> LowerCtx<'m> {
                 (Selector::Index(_), IrType::Ptr(inner)) => *inner,
                 (Selector::Index(_), IrType::UntaggedPtr(inner)) => *inner,
                 (Selector::Index(_), IrType::Array { element, .. }) => *element,
+                // Named pointer alias — resolve through `Bag = POINTER TO
+                // ARRAY OF T` to find the element type. Same pattern as the
+                // designator_addr path uses for the same case.
+                (Selector::Index(_), IrType::Named(n)) => {
+                    match self.resolve_named_as_ptr_ir_type(&n) {
+                        Some(IrType::Ptr(elem)) | Some(IrType::UntaggedPtr(elem)) => *elem,
+                        _ => IrType::Opaque("indexed-named".to_string()),
+                    }
+                }
+                (Selector::Dereference, IrType::Named(n)) => {
+                    match self.resolve_named_as_ptr_ir_type(&n) {
+                        Some(IrType::Ptr(inner)) | Some(IrType::UntaggedPtr(inner)) => *inner,
+                        _ => IrType::Opaque("deref-named".to_string()),
+                    }
+                }
                 (Selector::Field(fname), ref base_ty) => {
                     // Look up the field type in the resolved record, if possible.
                     let flat = self.flatten_fields_for_ir_type(base_ty);
@@ -2497,10 +2722,12 @@ impl<'m> LowerCtx<'m> {
         match des.base.name.as_str() {
             "NEW" => {
                 // NEW(ptr_var) — allocate a fresh heap record and store into ptr_var.
+                // NEW(ptr_var, len) — allocate a heap buffer of `len`
+                // elements for a `POINTER TO ARRAY OF T` target.
                 let Some(Expr::Designator(target)) = args.first() else {
                     return false;
                 };
-                // Resolve the pointer alias to get the record type to allocate.
+                // Resolve the pointer alias to get the record/element type to allocate.
                 let ptr_sym_ty = self.base_symbol_ir_type(&target.base)
                     .unwrap_or(IrType::Opaque("new-ptr".to_string()));
                 let record_ty = match &ptr_sym_ty {
@@ -2516,6 +2743,32 @@ impl<'m> LowerCtx<'m> {
                     }
                     other => other.clone(),
                 };
+
+                // Two-arg form: NEW(ptr, len) for POINTER TO ARRAY OF T.
+                // The "record_ty" we resolved above is actually the element
+                // type for this case (the open-array's element).
+                if args.len() == 2 {
+                    let len_val = self.lower_expr(&args[1]);
+                    let dst = self.fresh_temp();
+                    self.push(Instr::NewArray {
+                        dst,
+                        elem_ty: record_ty.clone(),
+                        len: len_val,
+                    });
+                    let ptr_ir_ty = match &ptr_sym_ty {
+                        IrType::Named(n) => self
+                            .resolve_named_as_ptr_ir_type(n)
+                            .unwrap_or_else(|| IrType::Ptr(Box::new(record_ty.clone()))),
+                        other => other.clone(),
+                    };
+                    let target_addr = self.designator_addr(target);
+                    self.push(Instr::Store {
+                        addr: target_addr,
+                        value: IrValue::Temp(dst, ptr_ir_ty),
+                    });
+                    return true;
+                }
+
                 let dst = self.fresh_temp();
                 self.push(Instr::New { dst, record_ty: record_ty.clone() });
                 // Compute the concrete IR pointer type for storing back.
@@ -4281,6 +4534,7 @@ mod tests {
             declared_type: Some(declared_type),
             const_value: None,
             simd_shape: None,
+            param_mode: None,
         }
     }
 

@@ -1,0 +1,6881 @@
+{
+  "modules": {
+    "ComAggregate": {
+      "subsystem": "Com",
+      "file": "Aggregate",
+      "internal_imports": [
+        "StdLog",
+        "WinApi"
+      ],
+      "external_imports": [
+        "COM"
+      ],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ComConnect": {
+      "subsystem": "Com",
+      "file": "Connect",
+      "internal_imports": [
+        "StdLog",
+        "WinApi",
+        "WinOle"
+      ],
+      "external_imports": [
+        "COM"
+      ],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ComEnum": {
+      "subsystem": "Com",
+      "file": "Enum",
+      "internal_imports": [
+        "ComTools",
+        "WinApi",
+        "WinOle"
+      ],
+      "external_imports": [
+        "COM"
+      ],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ComEnumRect": {
+      "subsystem": "Com",
+      "file": "EnumRect",
+      "internal_imports": [
+        "WinApi"
+      ],
+      "external_imports": [
+        "COM"
+      ],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ComKoala": {
+      "subsystem": "Com",
+      "file": "Koala",
+      "internal_imports": [
+        "WinApi",
+        "WinOle"
+      ],
+      "external_imports": [
+        "COM"
+      ],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ComKoalaDll": {
+      "subsystem": "Com",
+      "file": "KoalaDll",
+      "internal_imports": [
+        "WinApi",
+        "WinOle"
+      ],
+      "external_imports": [
+        "COM"
+      ],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ComKoalaExe": {
+      "subsystem": "Com",
+      "file": "KoalaExe",
+      "internal_imports": [
+        "WinApi",
+        "WinOle"
+      ],
+      "external_imports": [
+        "COM",
+        "SYSTEM"
+      ],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ComKoalaTst": {
+      "subsystem": "Com",
+      "file": "KoalaTst",
+      "internal_imports": [
+        "StdLog",
+        "WinApi",
+        "WinOle"
+      ],
+      "external_imports": [
+        "COM"
+      ],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ComObject": {
+      "subsystem": "Com",
+      "file": "Object",
+      "internal_imports": [
+        "ComTools",
+        "WinApi",
+        "WinOle"
+      ],
+      "external_imports": [
+        "COM",
+        "SYSTEM"
+      ],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ComPhoneBook": {
+      "subsystem": "Com",
+      "file": "PhoneBook",
+      "internal_imports": [
+        "ComTools",
+        "WinApi",
+        "WinOle"
+      ],
+      "external_imports": [
+        "COM"
+      ],
+      "fanin": [
+        "ComPhoneBookClient"
+      ],
+      "fanin_count": 1
+    },
+    "ComPhoneBookActiveX": {
+      "subsystem": "Com",
+      "file": "PhoneBookActiveX",
+      "internal_imports": [
+        "ComTools",
+        "WinApi",
+        "WinOle",
+        "WinOleAut"
+      ],
+      "external_imports": [
+        "COM"
+      ],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ComPhoneBookClient": {
+      "subsystem": "Com",
+      "file": "PhoneBookClient",
+      "internal_imports": [
+        "ComPhoneBook",
+        "ComTools",
+        "Dialog",
+        "StdLog",
+        "WinApi",
+        "WinOle"
+      ],
+      "external_imports": [
+        "COM"
+      ],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ComTools": {
+      "subsystem": "Com",
+      "file": "Tools",
+      "internal_imports": [
+        "WinApi",
+        "WinOle"
+      ],
+      "external_imports": [
+        "COM",
+        "SYSTEM"
+      ],
+      "fanin": [
+        "ComEnum",
+        "ComObject",
+        "ComPhoneBook",
+        "ComPhoneBookActiveX",
+        "ComPhoneBookClient"
+      ],
+      "fanin_count": 5
+    },
+    "CommObxStreamsClient": {
+      "subsystem": "Comm",
+      "file": "ObxStreamsClient",
+      "internal_imports": [
+        "CommStreams",
+        "Services",
+        "StdLog",
+        "TextControllers",
+        "TextModels"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "CommObxStreamsServer": {
+      "subsystem": "Comm",
+      "file": "ObxStreamsServer",
+      "internal_imports": [
+        "CommStreams",
+        "Services",
+        "StdLog",
+        "TextModels",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "CommStreams": {
+      "subsystem": "Comm",
+      "file": "Streams",
+      "internal_imports": [
+        "Meta"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "CommObxStreamsClient",
+        "CommObxStreamsServer",
+        "CommTCP"
+      ],
+      "fanin_count": 3
+    },
+    "CommTCP": {
+      "subsystem": "Comm",
+      "file": "TCP",
+      "internal_imports": [
+        "CommStreams",
+        "Dialog",
+        "Strings",
+        "WinApi",
+        "WinNet"
+      ],
+      "external_imports": [
+        "SYSTEM"
+      ],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "CommV24": {
+      "subsystem": "Comm",
+      "file": "V24",
+      "internal_imports": [
+        "WinApi"
+      ],
+      "external_imports": [
+        "SYSTEM"
+      ],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "CtlAccess8": {
+      "subsystem": "Ctl",
+      "file": "Access8",
+      "internal_imports": [
+        "CtlC",
+        "CtlDAO35",
+        "CtlOffice",
+        "CtlT"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "CtlAccess9": {
+      "subsystem": "Ctl",
+      "file": "Access9",
+      "internal_imports": [
+        "CtlADODB",
+        "CtlC",
+        "CtlDAO36",
+        "CtlOffice",
+        "CtlT",
+        "CtlVBIDE"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "CtlADODB": {
+      "subsystem": "Ctl",
+      "file": "ADODB",
+      "internal_imports": [
+        "CtlC",
+        "CtlT"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "CtlAccess9"
+      ],
+      "fanin_count": 1
+    },
+    "CtlC": {
+      "subsystem": "Ctl",
+      "file": "C",
+      "internal_imports": [
+        "CtlT",
+        "WinApi",
+        "WinOle",
+        "WinOleAut"
+      ],
+      "external_imports": [
+        "COM",
+        "SYSTEM"
+      ],
+      "fanin": [
+        "CtlADODB",
+        "CtlAccess8",
+        "CtlAccess9",
+        "CtlDAO35",
+        "CtlDAO36",
+        "CtlExcel5",
+        "CtlExcel8",
+        "CtlExcel9",
+        "CtlGraph8",
+        "CtlGraph9",
+        "CtlMSForms",
+        "CtlOffice",
+        "CtlOfficeBinder",
+        "CtlOutlook8",
+        "CtlOutlook9",
+        "CtlPowerPoint8",
+        "CtlPowerPoint9",
+        "CtlStdType",
+        "CtlVBIDE",
+        "CtlWord8",
+        "CtlWord9"
+      ],
+      "fanin_count": 21
+    },
+    "CtlDAO35": {
+      "subsystem": "Ctl",
+      "file": "DAO35",
+      "internal_imports": [
+        "CtlC",
+        "CtlT"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "CtlAccess8"
+      ],
+      "fanin_count": 1
+    },
+    "CtlDAO36": {
+      "subsystem": "Ctl",
+      "file": "DAO36",
+      "internal_imports": [
+        "CtlC",
+        "CtlT"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "CtlAccess9"
+      ],
+      "fanin_count": 1
+    },
+    "CtlExcel5": {
+      "subsystem": "Ctl",
+      "file": "Excel5",
+      "internal_imports": [
+        "CtlC",
+        "CtlT"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "CtlExcel8": {
+      "subsystem": "Ctl",
+      "file": "Excel8",
+      "internal_imports": [
+        "CtlC",
+        "CtlOffice",
+        "CtlT",
+        "CtlVBIDE"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "CtlExcel9": {
+      "subsystem": "Ctl",
+      "file": "Excel9",
+      "internal_imports": [
+        "CtlC",
+        "CtlOffice",
+        "CtlT",
+        "CtlVBIDE"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "ObxExcel"
+      ],
+      "fanin_count": 1
+    },
+    "CtlGraph8": {
+      "subsystem": "Ctl",
+      "file": "Graph8",
+      "internal_imports": [
+        "CtlC",
+        "CtlOffice",
+        "CtlT"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "CtlGraph9": {
+      "subsystem": "Ctl",
+      "file": "Graph9",
+      "internal_imports": [
+        "CtlC",
+        "CtlOffice",
+        "CtlT"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "CtlMSForms": {
+      "subsystem": "Ctl",
+      "file": "MSForms",
+      "internal_imports": [
+        "CtlC",
+        "CtlStdType",
+        "CtlT"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "CtlOutlook8"
+      ],
+      "fanin_count": 1
+    },
+    "CtlOffice": {
+      "subsystem": "Ctl",
+      "file": "Office",
+      "internal_imports": [
+        "CtlC",
+        "CtlT"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "CtlAccess8",
+        "CtlAccess9",
+        "CtlExcel8",
+        "CtlExcel9",
+        "CtlGraph8",
+        "CtlGraph9",
+        "CtlOutlook8",
+        "CtlOutlook9",
+        "CtlPowerPoint8",
+        "CtlPowerPoint9",
+        "CtlVBIDE",
+        "CtlWord8",
+        "CtlWord9"
+      ],
+      "fanin_count": 13
+    },
+    "CtlOfficeBinder": {
+      "subsystem": "Ctl",
+      "file": "OfficeBinder",
+      "internal_imports": [
+        "CtlC",
+        "CtlT"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "CtlOutlook8": {
+      "subsystem": "Ctl",
+      "file": "Outlook8",
+      "internal_imports": [
+        "CtlC",
+        "CtlMSForms",
+        "CtlOffice",
+        "CtlT"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "CtlOutlook9": {
+      "subsystem": "Ctl",
+      "file": "Outlook9",
+      "internal_imports": [
+        "CtlC",
+        "CtlOffice",
+        "CtlT"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "CtlPowerPoint8": {
+      "subsystem": "Ctl",
+      "file": "PowerPoint8",
+      "internal_imports": [
+        "CtlC",
+        "CtlOffice",
+        "CtlT",
+        "CtlVBIDE"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "CtlPowerPoint9": {
+      "subsystem": "Ctl",
+      "file": "PowerPoint9",
+      "internal_imports": [
+        "CtlC",
+        "CtlOffice",
+        "CtlT",
+        "CtlVBIDE"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "CtlStdType": {
+      "subsystem": "Ctl",
+      "file": "StdType",
+      "internal_imports": [
+        "CtlC",
+        "CtlT"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "CtlMSForms"
+      ],
+      "fanin_count": 1
+    },
+    "CtlT": {
+      "subsystem": "Ctl",
+      "file": "T",
+      "internal_imports": [
+        "Dates",
+        "WinApi",
+        "WinOle",
+        "WinOleAut"
+      ],
+      "external_imports": [
+        "COM",
+        "SYSTEM"
+      ],
+      "fanin": [
+        "CtlADODB",
+        "CtlAccess8",
+        "CtlAccess9",
+        "CtlC",
+        "CtlDAO35",
+        "CtlDAO36",
+        "CtlExcel5",
+        "CtlExcel8",
+        "CtlExcel9",
+        "CtlGraph8",
+        "CtlGraph9",
+        "CtlMSForms",
+        "CtlOffice",
+        "CtlOfficeBinder",
+        "CtlOutlook8",
+        "CtlOutlook9",
+        "CtlPowerPoint8",
+        "CtlPowerPoint9",
+        "CtlStdType",
+        "CtlVBIDE",
+        "CtlWord8",
+        "CtlWord9",
+        "ObxExcel",
+        "ObxWordEdit",
+        "OleViews"
+      ],
+      "fanin_count": 25
+    },
+    "CtlVBIDE": {
+      "subsystem": "Ctl",
+      "file": "VBIDE",
+      "internal_imports": [
+        "CtlC",
+        "CtlOffice",
+        "CtlT"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "CtlAccess9",
+        "CtlExcel8",
+        "CtlExcel9",
+        "CtlPowerPoint8",
+        "CtlPowerPoint9",
+        "CtlWord8",
+        "CtlWord9"
+      ],
+      "fanin_count": 7
+    },
+    "CtlWord8": {
+      "subsystem": "Ctl",
+      "file": "Word8",
+      "internal_imports": [
+        "CtlC",
+        "CtlOffice",
+        "CtlT",
+        "CtlVBIDE"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "CtlWord9": {
+      "subsystem": "Ctl",
+      "file": "Word9",
+      "internal_imports": [
+        "CtlC",
+        "CtlOffice",
+        "CtlT",
+        "CtlVBIDE"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "ObxWordEdit"
+      ],
+      "fanin_count": 1
+    },
+    "DevAlienTool": {
+      "subsystem": "Dev",
+      "file": "AlienTool",
+      "internal_imports": [
+        "Containers",
+        "Controllers",
+        "Dialog",
+        "Documents",
+        "Models",
+        "Ports",
+        "Properties",
+        "Services",
+        "StdFolds",
+        "Stores",
+        "TextMappers",
+        "TextModels",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "DevAnalyzer": {
+      "subsystem": "Dev",
+      "file": "Analyzer",
+      "internal_imports": [
+        "DevCPB",
+        "DevCPM",
+        "DevCPS",
+        "DevCPT",
+        "DevMarkers",
+        "Dialog",
+        "Files",
+        "HostRegistry",
+        "Kernel",
+        "Models",
+        "StdLog",
+        "Stores",
+        "Strings",
+        "TextMappers",
+        "TextModels",
+        "TextViews"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "DevBrowser": {
+      "subsystem": "Dev",
+      "file": "Browser",
+      "internal_imports": [
+        "Dates",
+        "DevCPM",
+        "DevCPT",
+        "Dialog",
+        "Documents",
+        "Files",
+        "Fonts",
+        "HostRegistry",
+        "Kernel",
+        "Ports",
+        "Properties",
+        "StdDialog",
+        "StdFolds",
+        "Stores",
+        "TextControllers",
+        "TextMappers",
+        "TextModels",
+        "TextRulers",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "DevCmds": {
+      "subsystem": "Dev",
+      "file": "Cmds",
+      "internal_imports": [
+        "Containers",
+        "Controllers",
+        "Controls",
+        "Dialog",
+        "Documents",
+        "Files",
+        "Fonts",
+        "HostMenus",
+        "Models",
+        "Ports",
+        "Properties",
+        "Services",
+        "StdCmds",
+        "StdDialog",
+        "Stores",
+        "TextControllers",
+        "TextMappers",
+        "TextModels",
+        "TextRulers",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "DevComDebug": {
+      "subsystem": "Dev",
+      "file": "ComDebug",
+      "internal_imports": [
+        "Containers",
+        "DevDebug",
+        "DevHeapSpy",
+        "Dialog",
+        "Documents",
+        "Fonts",
+        "Kernel",
+        "Models",
+        "Ports",
+        "Properties",
+        "StdLinks",
+        "StdLog",
+        "Stores",
+        "Strings",
+        "TextControllers",
+        "TextMappers",
+        "TextModels",
+        "TextRulers",
+        "TextViews",
+        "Views",
+        "WinApi",
+        "WinOle",
+        "Windows"
+      ],
+      "external_imports": [
+        "COM",
+        "SYSTEM"
+      ],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "DevComInterfaceGen": {
+      "subsystem": "Dev",
+      "file": "ComInterfaceGen",
+      "internal_imports": [
+        "DevTypeLibs",
+        "Dialog",
+        "Files",
+        "HostFiles",
+        "StdDialog",
+        "Strings",
+        "TextModels",
+        "TextViews",
+        "Views",
+        "WinApi",
+        "WinOle",
+        "WinOleAut"
+      ],
+      "external_imports": [
+        "COM"
+      ],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "DevCommanders": {
+      "subsystem": "Dev",
+      "file": "Commanders",
+      "internal_imports": [
+        "Controllers",
+        "Controls",
+        "Dialog",
+        "Fonts",
+        "Kernel",
+        "Models",
+        "Ports",
+        "Properties",
+        "Services",
+        "StdLog",
+        "Stores",
+        "Strings",
+        "TextMappers",
+        "TextModels",
+        "TextSetters",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "DevCompiler",
+        "DevDebug",
+        "DevDependencies",
+        "DevLinker",
+        "DevPacker",
+        "DevSubTool"
+      ],
+      "fanin_count": 6
+    },
+    "DevCompiler": {
+      "subsystem": "Dev",
+      "file": "Compiler",
+      "internal_imports": [
+        "Controls",
+        "DevCPB",
+        "DevCPE",
+        "DevCPM",
+        "DevCPP",
+        "DevCPT",
+        "DevCPV486",
+        "DevCommanders",
+        "DevMarkers",
+        "DevSelectors",
+        "Dialog",
+        "Files",
+        "Kernel",
+        "StdDialog",
+        "StdLog",
+        "Strings",
+        "TextControllers",
+        "TextMappers",
+        "TextModels",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "DevCPB": {
+      "subsystem": "Dev",
+      "file": "CPB",
+      "internal_imports": [
+        "DevCPM",
+        "DevCPT"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "DevAnalyzer",
+        "DevCPP",
+        "DevCompiler"
+      ],
+      "fanin_count": 3
+    },
+    "DevCPC486": {
+      "subsystem": "Dev",
+      "file": "CPC486",
+      "internal_imports": [
+        "DevCPE",
+        "DevCPL486",
+        "DevCPM",
+        "DevCPT"
+      ],
+      "external_imports": [
+        "SYSTEM"
+      ],
+      "fanin": [
+        "DevCPV486"
+      ],
+      "fanin_count": 1
+    },
+    "DevCPE": {
+      "subsystem": "Dev",
+      "file": "CPE",
+      "internal_imports": [
+        "Dates",
+        "DevCPM",
+        "DevCPT"
+      ],
+      "external_imports": [
+        "SYSTEM"
+      ],
+      "fanin": [
+        "DevCPC486",
+        "DevCPL486",
+        "DevCPV486",
+        "DevCompiler"
+      ],
+      "fanin_count": 4
+    },
+    "DevCPH": {
+      "subsystem": "Dev",
+      "file": "CPH",
+      "internal_imports": [
+        "DevCPT"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "DevCPV486"
+      ],
+      "fanin_count": 1
+    },
+    "DevCPL486": {
+      "subsystem": "Dev",
+      "file": "CPL486",
+      "internal_imports": [
+        "DevCPE",
+        "DevCPM",
+        "DevCPT"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "DevCPC486",
+        "DevCPV486"
+      ],
+      "fanin_count": 2
+    },
+    "DevCPM": {
+      "subsystem": "Dev",
+      "file": "CPM",
+      "internal_imports": [
+        "DevMarkers",
+        "Files",
+        "Kernel",
+        "Models",
+        "StdLog",
+        "Stores",
+        "TextModels",
+        "Views"
+      ],
+      "external_imports": [
+        "SYSTEM"
+      ],
+      "fanin": [
+        "DevAnalyzer",
+        "DevBrowser",
+        "DevCPB",
+        "DevCPC486",
+        "DevCPE",
+        "DevCPL486",
+        "DevCPP",
+        "DevCPS",
+        "DevCPT",
+        "DevCPV486",
+        "DevCompiler"
+      ],
+      "fanin_count": 11
+    },
+    "DevCPP": {
+      "subsystem": "Dev",
+      "file": "CPP",
+      "internal_imports": [
+        "DevCPB",
+        "DevCPM",
+        "DevCPS",
+        "DevCPT",
+        "Strings"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "DevCompiler"
+      ],
+      "fanin_count": 1
+    },
+    "DevCPS": {
+      "subsystem": "Dev",
+      "file": "CPS",
+      "internal_imports": [
+        "DevCPM",
+        "DevCPT",
+        "Math",
+        "Strings"
+      ],
+      "external_imports": [
+        "SYSTEM"
+      ],
+      "fanin": [
+        "DevAnalyzer",
+        "DevCPP"
+      ],
+      "fanin_count": 2
+    },
+    "DevCPT": {
+      "subsystem": "Dev",
+      "file": "CPT",
+      "internal_imports": [
+        "DevCPM",
+        "Strings"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "DevAnalyzer",
+        "DevBrowser",
+        "DevCPB",
+        "DevCPC486",
+        "DevCPE",
+        "DevCPH",
+        "DevCPL486",
+        "DevCPP",
+        "DevCPS",
+        "DevCPV486",
+        "DevCompiler"
+      ],
+      "fanin_count": 11
+    },
+    "DevCPV486": {
+      "subsystem": "Dev",
+      "file": "CPV486",
+      "internal_imports": [
+        "DevCPC486",
+        "DevCPE",
+        "DevCPH",
+        "DevCPL486",
+        "DevCPM",
+        "DevCPT"
+      ],
+      "external_imports": [
+        "SYSTEM"
+      ],
+      "fanin": [
+        "DevCompiler"
+      ],
+      "fanin_count": 1
+    },
+    "DevDebug": {
+      "subsystem": "Dev",
+      "file": "Debug",
+      "internal_imports": [
+        "Containers",
+        "Controllers",
+        "Controls",
+        "Converters",
+        "Dates",
+        "DevCommanders",
+        "Dialog",
+        "Files",
+        "Fonts",
+        "Kernel",
+        "Models",
+        "Ports",
+        "Properties",
+        "Services",
+        "StdDialog",
+        "StdFolds",
+        "StdLinks",
+        "StdLog",
+        "Stores",
+        "Strings",
+        "TextControllers",
+        "TextMappers",
+        "TextModels",
+        "TextRulers",
+        "TextViews",
+        "Views",
+        "Windows"
+      ],
+      "external_imports": [
+        "SYSTEM"
+      ],
+      "fanin": [
+        "DevComDebug",
+        "DevHeapSpy",
+        "DevMsgSpy"
+      ],
+      "fanin_count": 3
+    },
+    "DevDependencies": {
+      "subsystem": "Dev",
+      "file": "Dependencies",
+      "internal_imports": [
+        "Controllers",
+        "Dates",
+        "DevCommanders",
+        "Dialog",
+        "Files",
+        "Fonts",
+        "HostMenus",
+        "HostPorts",
+        "Kernel",
+        "Math",
+        "Ports",
+        "Properties",
+        "StdCmds",
+        "StdDialog",
+        "StdFolds",
+        "Stores",
+        "Strings",
+        "TextControllers",
+        "TextMappers",
+        "TextModels",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "DevHeapSpy": {
+      "subsystem": "Dev",
+      "file": "HeapSpy",
+      "internal_imports": [
+        "Controllers",
+        "DevDebug",
+        "Dialog",
+        "Documents",
+        "Kernel",
+        "Models",
+        "Ports",
+        "Properties",
+        "Services",
+        "Stores",
+        "Strings",
+        "Views"
+      ],
+      "external_imports": [
+        "SYSTEM"
+      ],
+      "fanin": [
+        "DevComDebug"
+      ],
+      "fanin_count": 1
+    },
+    "DevInspector": {
+      "subsystem": "Dev",
+      "file": "Inspector",
+      "internal_imports": [
+        "Containers",
+        "Controllers",
+        "Controls",
+        "Dialog",
+        "Kernel",
+        "Properties",
+        "Services",
+        "Stores",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "DevLinkChk": {
+      "subsystem": "Dev",
+      "file": "LinkChk",
+      "internal_imports": [
+        "Containers",
+        "Converters",
+        "Dialog",
+        "Files",
+        "Fonts",
+        "Kernel",
+        "Ports",
+        "StdCmds",
+        "StdLinks",
+        "Strings",
+        "TextControllers",
+        "TextMappers",
+        "TextModels",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "DevLinker": {
+      "subsystem": "Dev",
+      "file": "Linker",
+      "internal_imports": [
+        "Dates",
+        "DevCommanders",
+        "Dialog",
+        "Files",
+        "Kernel",
+        "StdLog",
+        "Strings",
+        "TextMappers",
+        "TextModels",
+        "TextViews"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "DevMarkers": {
+      "subsystem": "Dev",
+      "file": "Markers",
+      "internal_imports": [
+        "Controllers",
+        "Dialog",
+        "Files",
+        "Fonts",
+        "Kernel",
+        "Models",
+        "Ports",
+        "Properties",
+        "Stores",
+        "TextControllers",
+        "TextMappers",
+        "TextModels",
+        "TextSetters",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "DevAnalyzer",
+        "DevCPM",
+        "DevCompiler"
+      ],
+      "fanin_count": 3
+    },
+    "DevMsgSpy": {
+      "subsystem": "Dev",
+      "file": "MsgSpy",
+      "internal_imports": [
+        "Containers",
+        "Controllers",
+        "Converters",
+        "DevDebug",
+        "Dialog",
+        "Files",
+        "FormModels",
+        "FormViews",
+        "Kernel",
+        "Models",
+        "Ports",
+        "Properties",
+        "Services",
+        "StdDialog",
+        "Stores",
+        "Strings",
+        "TextMappers",
+        "TextModels",
+        "TextViews",
+        "Views",
+        "Windows"
+      ],
+      "external_imports": [
+        "SYSTEM"
+      ],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "DevPacker": {
+      "subsystem": "Dev",
+      "file": "Packer",
+      "internal_imports": [
+        "DevCommanders",
+        "Dialog",
+        "Files",
+        "HostFiles",
+        "HostPackedFiles",
+        "Kernel",
+        "Services",
+        "StdLog",
+        "Stores",
+        "Strings",
+        "TextMappers",
+        "TextModels",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "DevProfiler": {
+      "subsystem": "Dev",
+      "file": "Profiler",
+      "internal_imports": [
+        "Dialog",
+        "Fonts",
+        "Kernel",
+        "Ports",
+        "StdLog",
+        "Strings",
+        "TextControllers",
+        "TextMappers",
+        "TextModels",
+        "TextRulers",
+        "TextViews",
+        "Views",
+        "WinApi",
+        "WinMM"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "DevRBrowser": {
+      "subsystem": "Dev",
+      "file": "RBrowser",
+      "internal_imports": [
+        "Containers",
+        "Converters",
+        "Dialog",
+        "Files",
+        "Fonts",
+        "Models",
+        "Ports",
+        "StdFolds",
+        "StdLinks",
+        "Stores",
+        "Strings",
+        "TextControllers",
+        "TextMappers",
+        "TextModels",
+        "TextRulers",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "DevReferences": {
+      "subsystem": "Dev",
+      "file": "References",
+      "internal_imports": [
+        "Containers",
+        "Dialog",
+        "Files",
+        "Fonts",
+        "Kernel",
+        "Models",
+        "StdDialog",
+        "Strings",
+        "TextControllers",
+        "TextMappers",
+        "TextModels",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "DevSearch": {
+      "subsystem": "Dev",
+      "file": "Search",
+      "internal_imports": [
+        "Containers",
+        "Dialog",
+        "Files",
+        "Fonts",
+        "Kernel",
+        "Models",
+        "Ports",
+        "StdLinks",
+        "TextCmds",
+        "TextControllers",
+        "TextMappers",
+        "TextModels",
+        "TextRulers",
+        "TextViews",
+        "Views",
+        "Windows"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "DevSelectors": {
+      "subsystem": "Dev",
+      "file": "Selectors",
+      "internal_imports": [
+        "Controllers",
+        "Fonts",
+        "Models",
+        "Ports",
+        "Properties",
+        "Stores",
+        "TextModels",
+        "TextSetters",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "DevCompiler"
+      ],
+      "fanin_count": 1
+    },
+    "DevSubTool": {
+      "subsystem": "Dev",
+      "file": "SubTool",
+      "internal_imports": [
+        "DevCommanders",
+        "Dialog",
+        "Files",
+        "Fonts",
+        "StdCmds",
+        "Strings",
+        "TextMappers",
+        "TextModels",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "DevTypeLibs": {
+      "subsystem": "Dev",
+      "file": "TypeLibs",
+      "internal_imports": [
+        "TextMappers",
+        "TextModels",
+        "WinOle",
+        "WinOleAut"
+      ],
+      "external_imports": [
+        "COM"
+      ],
+      "fanin": [
+        "DevComInterfaceGen"
+      ],
+      "fanin_count": 1
+    },
+    "FormCmds": {
+      "subsystem": "Form",
+      "file": "Cmds",
+      "internal_imports": [
+        "Containers",
+        "Controls",
+        "Dialog",
+        "FormControllers",
+        "FormModels",
+        "FormViews",
+        "Models",
+        "Ports",
+        "Properties",
+        "StdCmds",
+        "Stores",
+        "Strings",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "FormControllers": {
+      "subsystem": "Form",
+      "file": "Controllers",
+      "internal_imports": [
+        "Containers",
+        "Controllers",
+        "FormModels",
+        "FormViews",
+        "Models",
+        "Ports",
+        "Properties",
+        "Services",
+        "Stores",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "FormCmds",
+        "FormGen",
+        "ObxControlShifter",
+        "ObxLabelLister"
+      ],
+      "fanin_count": 4
+    },
+    "FormGen": {
+      "subsystem": "Form",
+      "file": "Gen",
+      "internal_imports": [
+        "Containers",
+        "Controls",
+        "Dates",
+        "Dialog",
+        "Documents",
+        "Files",
+        "FormControllers",
+        "FormModels",
+        "FormViews",
+        "Meta",
+        "Ports",
+        "Properties",
+        "StdCmds",
+        "StdDialog",
+        "Strings",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "FormModels": {
+      "subsystem": "Form",
+      "file": "Models",
+      "internal_imports": [
+        "Containers",
+        "Models",
+        "Ports",
+        "Properties",
+        "Stores",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "DevMsgSpy",
+        "FormCmds",
+        "FormControllers",
+        "FormGen",
+        "FormViews",
+        "ObxLabelLister"
+      ],
+      "fanin_count": 6
+    },
+    "FormViews": {
+      "subsystem": "Form",
+      "file": "Views",
+      "internal_imports": [
+        "Containers",
+        "Controllers",
+        "Dialog",
+        "FormModels",
+        "Models",
+        "Ports",
+        "Properties",
+        "Stores",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "DevMsgSpy",
+        "FormCmds",
+        "FormControllers",
+        "FormGen",
+        "StdTabViews"
+      ],
+      "fanin_count": 5
+    },
+    "HostBitmaps": {
+      "subsystem": "Host",
+      "file": "Bitmaps",
+      "internal_imports": [
+        "Containers",
+        "Controllers",
+        "Converters",
+        "Dialog",
+        "Files",
+        "Fonts",
+        "HostPorts",
+        "HostWindows",
+        "Models",
+        "Ports",
+        "Properties",
+        "Stores",
+        "Views",
+        "WinApi",
+        "WinOle"
+      ],
+      "external_imports": [
+        "SYSTEM"
+      ],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "HostCFrames": {
+      "subsystem": "Host",
+      "file": "CFrames",
+      "internal_imports": [
+        "Controllers",
+        "Dates",
+        "Dialog",
+        "Fonts",
+        "HostFonts",
+        "HostPorts",
+        "HostRegistry",
+        "HostWindows",
+        "Kernel",
+        "Ports",
+        "StdCFrames",
+        "Strings",
+        "Views",
+        "WinApi",
+        "WinCtl"
+      ],
+      "external_imports": [
+        "SYSTEM"
+      ],
+      "fanin": [
+        "HostDialog",
+        "HostMenus"
+      ],
+      "fanin_count": 2
+    },
+    "HostClipboard": {
+      "subsystem": "Host",
+      "file": "Clipboard",
+      "internal_imports": [
+        "Documents",
+        "HostWindows",
+        "OleData",
+        "Services",
+        "Stores",
+        "Views",
+        "WinApi",
+        "WinOle"
+      ],
+      "external_imports": [
+        "COM"
+      ],
+      "fanin": [
+        "HostCmds",
+        "HostMenus",
+        "HostPictures",
+        "HostTextConv"
+      ],
+      "fanin_count": 4
+    },
+    "HostCmds": {
+      "subsystem": "Host",
+      "file": "Cmds",
+      "internal_imports": [
+        "Controllers",
+        "Converters",
+        "Dialog",
+        "Documents",
+        "Files",
+        "HostClipboard",
+        "HostDialog",
+        "HostFiles",
+        "HostWindows",
+        "Kernel",
+        "Ports",
+        "Printers",
+        "Printing",
+        "Sequencers",
+        "StdCmds",
+        "StdDialog",
+        "Stores",
+        "Views",
+        "Windows"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "HostMenus"
+      ],
+      "fanin_count": 1
+    },
+    "HostDialog": {
+      "subsystem": "Host",
+      "file": "Dialog",
+      "internal_imports": [
+        "Controllers",
+        "Converters",
+        "Dates",
+        "Dialog",
+        "Files",
+        "Fonts",
+        "HostCFrames",
+        "HostFiles",
+        "HostFonts",
+        "HostPorts",
+        "HostPrinters",
+        "HostRegistry",
+        "HostWindows",
+        "Kernel",
+        "Ports",
+        "Printers",
+        "Properties",
+        "Services",
+        "StdCmds",
+        "Stores",
+        "Strings",
+        "Views",
+        "WinApi",
+        "WinDlg",
+        "Windows"
+      ],
+      "external_imports": [
+        "SYSTEM"
+      ],
+      "fanin": [
+        "HostCmds",
+        "HostMenus",
+        "OleServer",
+        "StdLog"
+      ],
+      "fanin_count": 4
+    },
+    "HostFiles": {
+      "subsystem": "Host",
+      "file": "Files",
+      "internal_imports": [
+        "Files",
+        "Kernel",
+        "WinApi"
+      ],
+      "external_imports": [
+        "SYSTEM"
+      ],
+      "fanin": [
+        "DevComInterfaceGen",
+        "DevPacker",
+        "HostCmds",
+        "HostDialog",
+        "HostMail",
+        "HostMenus",
+        "HostPackedFiles",
+        "HostRegistry",
+        "HostWindows"
+      ],
+      "fanin_count": 9
+    },
+    "HostFonts": {
+      "subsystem": "Host",
+      "file": "Fonts",
+      "internal_imports": [
+        "Fonts",
+        "HostRegistry",
+        "Kernel",
+        "WinApi"
+      ],
+      "external_imports": [
+        "SYSTEM"
+      ],
+      "fanin": [
+        "HostCFrames",
+        "HostDialog",
+        "HostMenus",
+        "HostPorts",
+        "HostTabFrames",
+        "HostTextConv"
+      ],
+      "fanin_count": 6
+    },
+    "HostMail": {
+      "subsystem": "Host",
+      "file": "Mail",
+      "internal_imports": [
+        "Converters",
+        "Dialog",
+        "Files",
+        "HostFiles",
+        "TextControllers",
+        "TextModels",
+        "TextViews",
+        "Views",
+        "WinApi",
+        "WinCmc",
+        "Windows"
+      ],
+      "external_imports": [
+        "SYSTEM"
+      ],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "HostMechanisms": {
+      "subsystem": "Host",
+      "file": "Mechanisms",
+      "internal_imports": [
+        "Containers",
+        "Controllers",
+        "Dialog",
+        "Documents",
+        "HostPorts",
+        "Mechanisms",
+        "OleData",
+        "Ports",
+        "Properties",
+        "Services",
+        "Stores",
+        "Views",
+        "WinApi",
+        "WinOle",
+        "Windows"
+      ],
+      "external_imports": [
+        "COM"
+      ],
+      "fanin": [
+        "HostWindows"
+      ],
+      "fanin_count": 1
+    },
+    "HostMenus": {
+      "subsystem": "Host",
+      "file": "Menus",
+      "internal_imports": [
+        "Containers",
+        "Controllers",
+        "Controls",
+        "Converters",
+        "Dialog",
+        "Documents",
+        "Files",
+        "Fonts",
+        "HostCFrames",
+        "HostClipboard",
+        "HostCmds",
+        "HostDialog",
+        "HostFiles",
+        "HostFonts",
+        "HostPorts",
+        "HostWindows",
+        "Kernel",
+        "Log",
+        "Models",
+        "Ports",
+        "Printers",
+        "Properties",
+        "Services",
+        "StdCmds",
+        "StdDialog",
+        "StdInterpreter",
+        "Stores",
+        "Strings",
+        "Views",
+        "WinApi",
+        "Windows"
+      ],
+      "external_imports": [
+        "SYSTEM"
+      ],
+      "fanin": [
+        "DevCmds",
+        "DevDependencies",
+        "Init",
+        "OleClient",
+        "OleServer",
+        "StdMenuTool"
+      ],
+      "fanin_count": 6
+    },
+    "HostPackedFiles": {
+      "subsystem": "Host",
+      "file": "PackedFiles",
+      "internal_imports": [
+        "Files",
+        "HostFiles",
+        "Kernel"
+      ],
+      "external_imports": [
+        "SYSTEM"
+      ],
+      "fanin": [
+        "DevPacker"
+      ],
+      "fanin_count": 1
+    },
+    "HostPictures": {
+      "subsystem": "Host",
+      "file": "Pictures",
+      "internal_imports": [
+        "Controllers",
+        "Converters",
+        "Dialog",
+        "Files",
+        "Fonts",
+        "HostClipboard",
+        "HostPorts",
+        "HostWindows",
+        "Models",
+        "Ports",
+        "Properties",
+        "Stores",
+        "Views",
+        "WinApi",
+        "WinOle"
+      ],
+      "external_imports": [
+        "COM",
+        "SYSTEM"
+      ],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "HostPorts": {
+      "subsystem": "Host",
+      "file": "Ports",
+      "internal_imports": [
+        "Dialog",
+        "Fonts",
+        "HostFonts",
+        "Kernel",
+        "Ports",
+        "Services",
+        "WinApi"
+      ],
+      "external_imports": [
+        "SYSTEM"
+      ],
+      "fanin": [
+        "DevDependencies",
+        "HostBitmaps",
+        "HostCFrames",
+        "HostDialog",
+        "HostMechanisms",
+        "HostMenus",
+        "HostPictures",
+        "HostPrinters",
+        "HostTabFrames",
+        "HostWindows",
+        "ObxBitmap",
+        "OleClient",
+        "OleData",
+        "OleServer",
+        "StdTables",
+        "XYplane"
+      ],
+      "fanin_count": 16
+    },
+    "HostPrinters": {
+      "subsystem": "Host",
+      "file": "Printers",
+      "internal_imports": [
+        "Controllers",
+        "Dialog",
+        "Documents",
+        "Files",
+        "HostPorts",
+        "HostWindows",
+        "Kernel",
+        "Models",
+        "Ports",
+        "Printers",
+        "Printing",
+        "Properties",
+        "Stores",
+        "Views",
+        "WinApi",
+        "WinDlg",
+        "Windows"
+      ],
+      "external_imports": [
+        "SYSTEM"
+      ],
+      "fanin": [
+        "HostDialog"
+      ],
+      "fanin_count": 1
+    },
+    "HostRegistry": {
+      "subsystem": "Host",
+      "file": "Registry",
+      "internal_imports": [
+        "Dialog",
+        "HostFiles",
+        "Strings",
+        "WinApi"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "DevAnalyzer",
+        "DevBrowser",
+        "HostCFrames",
+        "HostDialog",
+        "HostFonts",
+        "HostWindows"
+      ],
+      "fanin_count": 6
+    },
+    "HostTabFrames": {
+      "subsystem": "Host",
+      "file": "TabFrames",
+      "internal_imports": [
+        "Controllers",
+        "Dialog",
+        "Fonts",
+        "HostFonts",
+        "HostPorts",
+        "Kernel",
+        "Ports",
+        "StdTabViews",
+        "Views",
+        "WinApi",
+        "WinCtl"
+      ],
+      "external_imports": [
+        "SYSTEM"
+      ],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "HostTextConv": {
+      "subsystem": "Host",
+      "file": "TextConv",
+      "internal_imports": [
+        "Files",
+        "Fonts",
+        "HostClipboard",
+        "HostFonts",
+        "Ports",
+        "Properties",
+        "Stores",
+        "TextMappers",
+        "TextModels",
+        "TextRulers",
+        "TextViews",
+        "Views",
+        "WinApi",
+        "WinOle"
+      ],
+      "external_imports": [
+        "COM",
+        "SYSTEM"
+      ],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "HostWindows": {
+      "subsystem": "Host",
+      "file": "Windows",
+      "internal_imports": [
+        "Containers",
+        "Controllers",
+        "Converters",
+        "Dialog",
+        "Documents",
+        "Files",
+        "HostFiles",
+        "HostMechanisms",
+        "HostPorts",
+        "HostRegistry",
+        "Kernel",
+        "Log",
+        "Meta",
+        "Ports",
+        "Properties",
+        "Services",
+        "Views",
+        "WinApi",
+        "Windows"
+      ],
+      "external_imports": [
+        "SYSTEM"
+      ],
+      "fanin": [
+        "HostBitmaps",
+        "HostCFrames",
+        "HostClipboard",
+        "HostCmds",
+        "HostDialog",
+        "HostMenus",
+        "HostPictures",
+        "HostPrinters",
+        "OleClient",
+        "OleServer",
+        "SqlOdbc",
+        "SqlOdbc3",
+        "XYplane"
+      ],
+      "fanin_count": 13
+    },
+    "ObxActions": {
+      "subsystem": "Obx",
+      "file": "Actions",
+      "internal_imports": [
+        "Dialog",
+        "Math",
+        "Services",
+        "TextMappers",
+        "TextModels",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxAddress0": {
+      "subsystem": "Obx",
+      "file": "Address0",
+      "internal_imports": [],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxAddress1": {
+      "subsystem": "Obx",
+      "file": "Address1",
+      "internal_imports": [
+        "TextMappers",
+        "TextModels",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxAddress2": {
+      "subsystem": "Obx",
+      "file": "Address2",
+      "internal_imports": [
+        "Converters",
+        "Dialog",
+        "Files",
+        "TextMappers",
+        "TextModels",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxAscii": {
+      "subsystem": "Obx",
+      "file": "Ascii",
+      "internal_imports": [
+        "Converters",
+        "Files",
+        "Stores",
+        "TextMappers",
+        "TextModels",
+        "TextViews"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxBitmap": {
+      "subsystem": "Obx",
+      "file": "Bitmap",
+      "internal_imports": [
+        "HostPorts",
+        "Views",
+        "WinApi"
+      ],
+      "external_imports": [
+        "SYSTEM"
+      ],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxBlackBox": {
+      "subsystem": "Obx",
+      "file": "BlackBox",
+      "internal_imports": [
+        "Controllers",
+        "Dialog",
+        "Fonts",
+        "Models",
+        "Ports",
+        "Properties",
+        "Services",
+        "Stores",
+        "Strings",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxButtons": {
+      "subsystem": "Obx",
+      "file": "Buttons",
+      "internal_imports": [
+        "Controllers",
+        "Controls",
+        "Dialog",
+        "Fonts",
+        "Ports",
+        "Properties",
+        "Stores",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxCalc": {
+      "subsystem": "Obx",
+      "file": "Calc",
+      "internal_imports": [
+        "Controllers",
+        "Dialog",
+        "Fonts",
+        "Ports",
+        "Properties",
+        "Stores",
+        "Strings",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "ObxTabViews"
+      ],
+      "fanin_count": 1
+    },
+    "ObxCaps": {
+      "subsystem": "Obx",
+      "file": "Caps",
+      "internal_imports": [
+        "Models",
+        "Stores",
+        "TextControllers",
+        "TextModels"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxContIter": {
+      "subsystem": "Obx",
+      "file": "ContIter",
+      "internal_imports": [
+        "Containers",
+        "Controls",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxControls": {
+      "subsystem": "Obx",
+      "file": "Controls",
+      "internal_imports": [
+        "Dialog",
+        "Ports",
+        "Properties",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxControlShifter": {
+      "subsystem": "Obx",
+      "file": "ControlShifter",
+      "internal_imports": [
+        "FormControllers",
+        "Ports"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxConv": {
+      "subsystem": "Obx",
+      "file": "Conv",
+      "internal_imports": [
+        "Files",
+        "Stores",
+        "TextModels",
+        "TextViews"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxCount0": {
+      "subsystem": "Obx",
+      "file": "Count0",
+      "internal_imports": [
+        "StdLog",
+        "TextControllers",
+        "TextModels"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxCount1": {
+      "subsystem": "Obx",
+      "file": "Count1",
+      "internal_imports": [
+        "StdLog",
+        "TextControllers",
+        "TextMappers"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxCtrls": {
+      "subsystem": "Obx",
+      "file": "Ctrls",
+      "internal_imports": [
+        "Controllers",
+        "Controls",
+        "Dialog",
+        "Meta",
+        "Ports",
+        "Properties",
+        "Stores",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxCubes": {
+      "subsystem": "Obx",
+      "file": "Cubes",
+      "internal_imports": [
+        "Containers",
+        "Controllers",
+        "Dialog",
+        "Math",
+        "Models",
+        "Ports",
+        "Properties",
+        "Services",
+        "StdCmds",
+        "Stores",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "ObxTabViews"
+      ],
+      "fanin_count": 1
+    },
+    "ObxDb": {
+      "subsystem": "Obx",
+      "file": "Db",
+      "internal_imports": [
+        "TextControllers",
+        "TextMappers",
+        "TextModels",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxDialog": {
+      "subsystem": "Obx",
+      "file": "Dialog",
+      "internal_imports": [
+        "Dialog"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxExcel": {
+      "subsystem": "Obx",
+      "file": "Excel",
+      "internal_imports": [
+        "Containers",
+        "CtlExcel9",
+        "CtlT",
+        "Dates",
+        "OleViews",
+        "StdLog",
+        "TextMappers",
+        "TextModels",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxFact": {
+      "subsystem": "Obx",
+      "file": "Fact",
+      "internal_imports": [
+        "Integers",
+        "Models",
+        "Stores",
+        "TextControllers",
+        "TextModels"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxFern": {
+      "subsystem": "Obx",
+      "file": "Fern",
+      "internal_imports": [
+        "In",
+        "ObxRandom",
+        "Out",
+        "XYplane"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxFileTree": {
+      "subsystem": "Obx",
+      "file": "FileTree",
+      "internal_imports": [
+        "Converters",
+        "Dialog",
+        "Files",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxFldCtrls": {
+      "subsystem": "Obx",
+      "file": "FldCtrls",
+      "internal_imports": [
+        "Controllers",
+        "Controls",
+        "Dialog",
+        "Meta",
+        "Properties",
+        "StdCFrames",
+        "Stores",
+        "Strings",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxGraphs": {
+      "subsystem": "Obx",
+      "file": "Graphs",
+      "internal_imports": [
+        "Controllers",
+        "Models",
+        "Ports",
+        "Properties",
+        "Services",
+        "Stores",
+        "TextMappers",
+        "TextModels",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxHello0": {
+      "subsystem": "Obx",
+      "file": "Hello0",
+      "internal_imports": [
+        "StdLog"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxHello1": {
+      "subsystem": "Obx",
+      "file": "Hello1",
+      "internal_imports": [
+        "TextMappers",
+        "TextModels",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxLabelLister": {
+      "subsystem": "Obx",
+      "file": "LabelLister",
+      "internal_imports": [
+        "Controls",
+        "FormControllers",
+        "FormModels",
+        "StdLog",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxLines": {
+      "subsystem": "Obx",
+      "file": "Lines",
+      "internal_imports": [
+        "Controllers",
+        "Models",
+        "Ports",
+        "Properties",
+        "Stores",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxLinks": {
+      "subsystem": "Obx",
+      "file": "Links",
+      "internal_imports": [
+        "Converters",
+        "Files",
+        "Fonts",
+        "Ports",
+        "StdLinks",
+        "Stores",
+        "TextMappers",
+        "TextModels",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxLookup0": {
+      "subsystem": "Obx",
+      "file": "Lookup0",
+      "internal_imports": [
+        "ObxPhoneDB",
+        "TextControllers",
+        "TextMappers",
+        "TextModels"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxLookup1": {
+      "subsystem": "Obx",
+      "file": "Lookup1",
+      "internal_imports": [
+        "Models",
+        "ObxPhoneDB",
+        "Stores",
+        "TextControllers",
+        "TextMappers",
+        "TextModels"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxMMerge": {
+      "subsystem": "Obx",
+      "file": "MMerge",
+      "internal_imports": [
+        "Dialog",
+        "Files",
+        "TextControllers",
+        "TextModels",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxOmosi": {
+      "subsystem": "Obx",
+      "file": "Omosi",
+      "internal_imports": [
+        "Controllers",
+        "Dialog",
+        "Ports",
+        "Properties",
+        "Stores",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxOpen0": {
+      "subsystem": "Obx",
+      "file": "Open0",
+      "internal_imports": [
+        "Converters",
+        "Files",
+        "TextMappers",
+        "TextModels",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxOpen1": {
+      "subsystem": "Obx",
+      "file": "Open1",
+      "internal_imports": [
+        "Converters",
+        "Files",
+        "TextMappers",
+        "TextModels",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxOrders": {
+      "subsystem": "Obx",
+      "file": "Orders",
+      "internal_imports": [
+        "Dialog",
+        "Files",
+        "Fonts",
+        "StdCmds",
+        "StdStamps",
+        "Stores",
+        "TextMappers",
+        "TextModels",
+        "TextRulers",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxParCmd": {
+      "subsystem": "Obx",
+      "file": "ParCmd",
+      "internal_imports": [
+        "Controls",
+        "Dialog",
+        "Models",
+        "StdLog",
+        "TextMappers",
+        "TextModels"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxPatterns": {
+      "subsystem": "Obx",
+      "file": "Patterns",
+      "internal_imports": [
+        "Ports",
+        "Properties",
+        "Stores",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxPDBRep0": {
+      "subsystem": "Obx",
+      "file": "PDBRep0",
+      "internal_imports": [
+        "ObxPhoneDB",
+        "TextMappers",
+        "TextModels",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxPDBRep1": {
+      "subsystem": "Obx",
+      "file": "PDBRep1",
+      "internal_imports": [
+        "ObxPhoneDB",
+        "Ports",
+        "TextMappers",
+        "TextModels",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxPDBRep2": {
+      "subsystem": "Obx",
+      "file": "PDBRep2",
+      "internal_imports": [
+        "ObxPhoneDB",
+        "Ports",
+        "TextMappers",
+        "TextModels",
+        "TextRulers",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxPDBRep3": {
+      "subsystem": "Obx",
+      "file": "PDBRep3",
+      "internal_imports": [
+        "ObxPhoneDB",
+        "StdFolds",
+        "TextMappers",
+        "TextModels",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxPDBRep4": {
+      "subsystem": "Obx",
+      "file": "PDBRep4",
+      "internal_imports": [
+        "ObxPhoneDB",
+        "StdLinks",
+        "StdLog",
+        "TextMappers",
+        "TextModels",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxPhoneDB": {
+      "subsystem": "Obx",
+      "file": "PhoneDB",
+      "internal_imports": [],
+      "external_imports": [],
+      "fanin": [
+        "ObxLookup0",
+        "ObxLookup1",
+        "ObxPDBRep0",
+        "ObxPDBRep1",
+        "ObxPDBRep2",
+        "ObxPDBRep3",
+        "ObxPDBRep4",
+        "ObxPhoneUI",
+        "ObxPhoneUI1"
+      ],
+      "fanin_count": 9
+    },
+    "ObxPhoneUI": {
+      "subsystem": "Obx",
+      "file": "PhoneUI",
+      "internal_imports": [
+        "Dialog",
+        "ObxPhoneDB"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxPhoneUI1": {
+      "subsystem": "Obx",
+      "file": "PhoneUI1",
+      "internal_imports": [
+        "Dialog",
+        "ObxPhoneDB"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxPi": {
+      "subsystem": "Obx",
+      "file": "Pi",
+      "internal_imports": [
+        "Integers",
+        "StdLog"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxRandom": {
+      "subsystem": "Obx",
+      "file": "Random",
+      "internal_imports": [],
+      "external_imports": [],
+      "fanin": [
+        "ObxFern"
+      ],
+      "fanin_count": 1
+    },
+    "ObxRatCalc": {
+      "subsystem": "Obx",
+      "file": "Ratcalc",
+      "internal_imports": [
+        "Dialog",
+        "Integers",
+        "Models",
+        "Stores",
+        "TextControllers",
+        "TextMappers",
+        "TextModels"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxSample": {
+      "subsystem": "Obx",
+      "file": "Sample",
+      "internal_imports": [],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxScroll": {
+      "subsystem": "Obx",
+      "file": "Scroll",
+      "internal_imports": [
+        "Controllers",
+        "Fonts",
+        "Ports",
+        "Properties",
+        "Stores",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxStores": {
+      "subsystem": "Obx",
+      "file": "Stores",
+      "internal_imports": [
+        "Dialog",
+        "Files",
+        "Stores"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxTabs": {
+      "subsystem": "Obx",
+      "file": "Tabs",
+      "internal_imports": [
+        "TextControllers",
+        "TextModels",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxTabViews": {
+      "subsystem": "Obx",
+      "file": "TabViews",
+      "internal_imports": [
+        "Dialog",
+        "ObxCalc",
+        "ObxCubes",
+        "StdLog",
+        "StdTabViews",
+        "Strings",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxTickers": {
+      "subsystem": "Obx",
+      "file": "Tickers",
+      "internal_imports": [
+        "Models",
+        "Ports",
+        "Properties",
+        "Services",
+        "Stores",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxTrap": {
+      "subsystem": "Obx",
+      "file": "Trap",
+      "internal_imports": [
+        "Controllers",
+        "Dialog",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxTwins": {
+      "subsystem": "Obx",
+      "file": "Twins",
+      "internal_imports": [
+        "Controllers",
+        "Models",
+        "Ports",
+        "Properties",
+        "Services",
+        "Stores",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxUnitConv": {
+      "subsystem": "Obx",
+      "file": "UnitConv",
+      "internal_imports": [
+        "Dialog",
+        "Ports"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxViews0": {
+      "subsystem": "Obx",
+      "file": "Views0",
+      "internal_imports": [
+        "Ports",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxViews1": {
+      "subsystem": "Obx",
+      "file": "Views1",
+      "internal_imports": [
+        "Ports",
+        "Properties",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxViews10": {
+      "subsystem": "Obx",
+      "file": "Views10",
+      "internal_imports": [
+        "Controllers",
+        "Fonts",
+        "Ports",
+        "Properties",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxViews11": {
+      "subsystem": "Obx",
+      "file": "Views11",
+      "internal_imports": [
+        "Controllers",
+        "Fonts",
+        "Ports",
+        "Properties",
+        "Stores",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxViews12": {
+      "subsystem": "Obx",
+      "file": "Views12",
+      "internal_imports": [
+        "Controllers",
+        "Fonts",
+        "Models",
+        "Ports",
+        "Properties",
+        "Stores",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxViews13": {
+      "subsystem": "Obx",
+      "file": "Views13",
+      "internal_imports": [
+        "Controllers",
+        "Fonts",
+        "Models",
+        "Ports",
+        "Properties",
+        "Stores",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxViews14": {
+      "subsystem": "Obx",
+      "file": "Views14",
+      "internal_imports": [
+        "Controllers",
+        "Fonts",
+        "Models",
+        "Ports",
+        "Properties",
+        "Stores",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxViews2": {
+      "subsystem": "Obx",
+      "file": "Views2",
+      "internal_imports": [
+        "Ports",
+        "Properties",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxViews3": {
+      "subsystem": "Obx",
+      "file": "Views3",
+      "internal_imports": [
+        "Ports",
+        "Properties",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxViews4": {
+      "subsystem": "Obx",
+      "file": "Views4",
+      "internal_imports": [
+        "Controllers",
+        "Ports",
+        "Properties",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxViews5": {
+      "subsystem": "Obx",
+      "file": "Views5",
+      "internal_imports": [
+        "Controllers",
+        "Ports",
+        "Properties",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxViews6": {
+      "subsystem": "Obx",
+      "file": "Views6",
+      "internal_imports": [
+        "Controllers",
+        "Ports",
+        "Properties",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxWordEdit": {
+      "subsystem": "Obx",
+      "file": "WordEdit",
+      "internal_imports": [
+        "CtlT",
+        "CtlWord9",
+        "Fonts",
+        "Services",
+        "StdLog"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "ObxWrappers": {
+      "subsystem": "Obx",
+      "file": "Wrappers",
+      "internal_imports": [
+        "Controllers",
+        "Dialog",
+        "Models",
+        "Properties",
+        "StdLog",
+        "Stores",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "OleClient": {
+      "subsystem": "Ole",
+      "file": "Client",
+      "internal_imports": [
+        "Containers",
+        "Controllers",
+        "Controls",
+        "Dialog",
+        "HostMenus",
+        "HostPorts",
+        "HostWindows",
+        "Kernel",
+        "Log",
+        "Meta",
+        "Models",
+        "OleData",
+        "OleServer",
+        "OleStorage",
+        "Ports",
+        "Properties",
+        "Sequencers",
+        "Services",
+        "StdDialog",
+        "Stores",
+        "Views",
+        "WinApi",
+        "WinOle",
+        "WinOleAut",
+        "WinOleCtl",
+        "WinOleDlg"
+      ],
+      "external_imports": [
+        "COM",
+        "SYSTEM"
+      ],
+      "fanin": [
+        "OleViews"
+      ],
+      "fanin_count": 1
+    },
+    "OleData": {
+      "subsystem": "Ole",
+      "file": "Data",
+      "internal_imports": [
+        "Containers",
+        "Dialog",
+        "Files",
+        "HostPorts",
+        "Log",
+        "Meta",
+        "Models",
+        "Ports",
+        "Properties",
+        "Services",
+        "Stores",
+        "Strings",
+        "Views",
+        "WinApi",
+        "WinOle"
+      ],
+      "external_imports": [
+        "COM",
+        "SYSTEM"
+      ],
+      "fanin": [
+        "Config",
+        "HostClipboard",
+        "HostMechanisms",
+        "OleClient",
+        "OleServer"
+      ],
+      "fanin_count": 5
+    },
+    "OleServer": {
+      "subsystem": "Ole",
+      "file": "Server",
+      "internal_imports": [
+        "Containers",
+        "Controllers",
+        "Converters",
+        "Dialog",
+        "Documents",
+        "Files",
+        "HostDialog",
+        "HostMenus",
+        "HostPorts",
+        "HostWindows",
+        "Kernel",
+        "Log",
+        "OleData",
+        "OleStorage",
+        "Ports",
+        "Properties",
+        "Sequencers",
+        "Services",
+        "StdDialog",
+        "Stores",
+        "TextViews",
+        "Views",
+        "WinApi",
+        "WinOle",
+        "Windows"
+      ],
+      "external_imports": [
+        "COM",
+        "SYSTEM"
+      ],
+      "fanin": [
+        "OleClient",
+        "OleViews"
+      ],
+      "fanin_count": 2
+    },
+    "OleStorage": {
+      "subsystem": "Ole",
+      "file": "Storage",
+      "internal_imports": [
+        "Files",
+        "Log",
+        "Stores",
+        "Views",
+        "WinApi",
+        "WinOle"
+      ],
+      "external_imports": [
+        "COM",
+        "SYSTEM"
+      ],
+      "fanin": [
+        "OleClient",
+        "OleServer"
+      ],
+      "fanin_count": 2
+    },
+    "OleViews": {
+      "subsystem": "Ole",
+      "file": "Views",
+      "internal_imports": [
+        "Containers",
+        "CtlT",
+        "OleClient",
+        "OleServer",
+        "Properties",
+        "Views",
+        "WinApi",
+        "WinOle",
+        "WinOleAut",
+        "Windows"
+      ],
+      "external_imports": [
+        "COM"
+      ],
+      "fanin": [
+        "ObxExcel"
+      ],
+      "fanin_count": 1
+    },
+    "SqlBrowser": {
+      "subsystem": "Sql",
+      "file": "Browser",
+      "internal_imports": [
+        "Dialog",
+        "SqlControls",
+        "SqlDB",
+        "TextControllers",
+        "TextModels",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "SqlControls": {
+      "subsystem": "Sql",
+      "file": "Controls",
+      "internal_imports": [
+        "Containers",
+        "Controllers",
+        "Controls",
+        "Dialog",
+        "Fonts",
+        "Meta",
+        "Ports",
+        "Properties",
+        "Sequencers",
+        "SqlDB",
+        "Stores",
+        "TextModels",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [
+        "SYSTEM"
+      ],
+      "fanin": [
+        "SqlBrowser"
+      ],
+      "fanin_count": 1
+    },
+    "SqlDB": {
+      "subsystem": "Sql",
+      "file": "DB",
+      "internal_imports": [
+        "Dates",
+        "Dialog",
+        "Kernel",
+        "Log",
+        "Meta",
+        "Services",
+        "SqlDrivers",
+        "Strings"
+      ],
+      "external_imports": [
+        "SYSTEM"
+      ],
+      "fanin": [
+        "SqlBrowser",
+        "SqlControls",
+        "SqlObxDB",
+        "SqlObxExt",
+        "SqlObxGen",
+        "SqlObxInit",
+        "SqlObxTab",
+        "SqlObxUI"
+      ],
+      "fanin_count": 8
+    },
+    "SqlDrivers": {
+      "subsystem": "Sql",
+      "file": "Drivers",
+      "internal_imports": [
+        "Dates",
+        "Dialog",
+        "Meta"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "SqlDB",
+        "SqlObxDriv",
+        "SqlOdbc",
+        "SqlOdbc3"
+      ],
+      "fanin_count": 4
+    },
+    "SqlObxDB": {
+      "subsystem": "Sql",
+      "file": "ObxDB",
+      "internal_imports": [
+        "Dialog",
+        "SqlDB"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "SqlObxGen",
+        "SqlObxUI"
+      ],
+      "fanin_count": 2
+    },
+    "SqlObxDriv": {
+      "subsystem": "Sql",
+      "file": "ObxDriv",
+      "internal_imports": [
+        "Dates",
+        "Dialog",
+        "Services",
+        "SqlDrivers"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "SqlObxExt": {
+      "subsystem": "Sql",
+      "file": "ObxExt",
+      "internal_imports": [
+        "SqlDB"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "SqlObxGen": {
+      "subsystem": "Sql",
+      "file": "ObxGen",
+      "internal_imports": [
+        "SqlDB",
+        "SqlObxDB",
+        "SqlObxNets",
+        "SqlObxViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "SqlObxInit": {
+      "subsystem": "Sql",
+      "file": "ObxInit",
+      "internal_imports": [
+        "Kernel",
+        "SqlDB"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "SqlObxNets": {
+      "subsystem": "Sql",
+      "file": "ObxNets",
+      "internal_imports": [],
+      "external_imports": [],
+      "fanin": [
+        "SqlObxGen",
+        "SqlObxViews"
+      ],
+      "fanin_count": 2
+    },
+    "SqlObxTab": {
+      "subsystem": "Sql",
+      "file": "ObxTab",
+      "internal_imports": [
+        "Dialog",
+        "Ports",
+        "SqlDB",
+        "TextMappers",
+        "TextModels",
+        "TextRulers",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "SqlObxUI": {
+      "subsystem": "Sql",
+      "file": "ObxUI",
+      "internal_imports": [
+        "Dialog",
+        "SqlDB",
+        "SqlObxDB"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "SqlObxViews": {
+      "subsystem": "Sql",
+      "file": "ObxViews",
+      "internal_imports": [
+        "Controllers",
+        "Fonts",
+        "Mechanisms",
+        "Ports",
+        "Properties",
+        "SqlObxNets",
+        "TextMappers",
+        "TextModels",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "SqlObxGen"
+      ],
+      "fanin_count": 1
+    },
+    "SqlOdbc": {
+      "subsystem": "Sql",
+      "file": "Odbc",
+      "internal_imports": [
+        "Dates",
+        "Dialog",
+        "HostWindows",
+        "Log",
+        "Services",
+        "SqlDrivers",
+        "WinApi",
+        "WinSql"
+      ],
+      "external_imports": [
+        "SYSTEM"
+      ],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "SqlOdbc3": {
+      "subsystem": "Sql",
+      "file": "Odbc3",
+      "internal_imports": [
+        "Dates",
+        "Dialog",
+        "HostWindows",
+        "Log",
+        "Services",
+        "SqlDrivers",
+        "WinApi",
+        "WinSql"
+      ],
+      "external_imports": [
+        "SYSTEM"
+      ],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "StdApi": {
+      "subsystem": "Std",
+      "file": "Api",
+      "internal_imports": [
+        "Containers",
+        "Converters",
+        "Dialog",
+        "Documents",
+        "Files",
+        "Kernel",
+        "Meta",
+        "Sequencers",
+        "StdDialog",
+        "Stores",
+        "Strings",
+        "Views",
+        "Windows"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "StdCmds"
+      ],
+      "fanin_count": 1
+    },
+    "StdCFrames": {
+      "subsystem": "Std",
+      "file": "CFrames",
+      "internal_imports": [
+        "Dates",
+        "Dialog",
+        "Fonts",
+        "Ports",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "Controls",
+        "HostCFrames",
+        "ObxFldCtrls",
+        "StdScrollers",
+        "StdTabViews"
+      ],
+      "fanin_count": 5
+    },
+    "StdClocks": {
+      "subsystem": "Std",
+      "file": "Clocks",
+      "internal_imports": [
+        "Dates",
+        "Math",
+        "Models",
+        "Ports",
+        "Properties",
+        "Services",
+        "Stores",
+        "TextModels",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "StdETHConv"
+      ],
+      "fanin_count": 1
+    },
+    "StdCmds": {
+      "subsystem": "Std",
+      "file": "Cmds",
+      "internal_imports": [
+        "Containers",
+        "Controllers",
+        "Dialog",
+        "Documents",
+        "Fonts",
+        "Models",
+        "Ports",
+        "Properties",
+        "Sequencers",
+        "Services",
+        "StdApi",
+        "StdDialog",
+        "Stores",
+        "Strings",
+        "Views",
+        "Windows"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "DevCmds",
+        "DevDependencies",
+        "DevLinkChk",
+        "DevSubTool",
+        "FormCmds",
+        "FormGen",
+        "HostCmds",
+        "HostDialog",
+        "HostMenus",
+        "ObxCubes",
+        "ObxOrders",
+        "StdCoder",
+        "StdLinks",
+        "StdMenuTool",
+        "StdStamps"
+      ],
+      "fanin_count": 15
+    },
+    "StdCoder": {
+      "subsystem": "Std",
+      "file": "Coder",
+      "internal_imports": [
+        "Controllers",
+        "Converters",
+        "Dialog",
+        "Documents",
+        "Files",
+        "Kernel",
+        "StdCmds",
+        "Stores",
+        "TextControllers",
+        "TextMappers",
+        "TextModels",
+        "TextViews",
+        "Views",
+        "Windows"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "StdDebug": {
+      "subsystem": "Std",
+      "file": "Debug",
+      "internal_imports": [
+        "Containers",
+        "Dialog",
+        "Fonts",
+        "Kernel",
+        "Ports",
+        "Properties",
+        "Services",
+        "StdFolds",
+        "Strings",
+        "TextMappers",
+        "TextModels",
+        "TextRulers",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [
+        "SYSTEM"
+      ],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "StdDialog": {
+      "subsystem": "Std",
+      "file": "Dialog",
+      "internal_imports": [
+        "Containers",
+        "Converters",
+        "Dialog",
+        "Documents",
+        "Files",
+        "Kernel",
+        "Meta",
+        "Models",
+        "Properties",
+        "Sequencers",
+        "Stores",
+        "Strings",
+        "Views",
+        "Windows"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "DevBrowser",
+        "DevCmds",
+        "DevComInterfaceGen",
+        "DevCompiler",
+        "DevDebug",
+        "DevDependencies",
+        "DevMsgSpy",
+        "DevReferences",
+        "FormGen",
+        "HostCmds",
+        "HostMenus",
+        "OleClient",
+        "OleServer",
+        "StdApi",
+        "StdCmds",
+        "StdLog"
+      ],
+      "fanin_count": 16
+    },
+    "StdETHConv": {
+      "subsystem": "Std",
+      "file": "ETHConv",
+      "internal_imports": [
+        "Files",
+        "Fonts",
+        "Ports",
+        "StdClocks",
+        "StdFolds",
+        "StdStamps",
+        "Stores",
+        "TextModels",
+        "TextRulers",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "StdFolds": {
+      "subsystem": "Std",
+      "file": "Folds",
+      "internal_imports": [
+        "Containers",
+        "Controllers",
+        "Controls",
+        "Dialog",
+        "Fonts",
+        "Models",
+        "Ports",
+        "Properties",
+        "Services",
+        "Stores",
+        "TextControllers",
+        "TextModels",
+        "TextSetters",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "DevAlienTool",
+        "DevBrowser",
+        "DevDebug",
+        "DevDependencies",
+        "DevRBrowser",
+        "ObxPDBRep3",
+        "StdDebug",
+        "StdETHConv"
+      ],
+      "fanin_count": 8
+    },
+    "StdHeaders": {
+      "subsystem": "Std",
+      "file": "Headers",
+      "internal_imports": [
+        "Containers",
+        "Controllers",
+        "Dates",
+        "Dialog",
+        "Fonts",
+        "Models",
+        "Ports",
+        "Printing",
+        "Properties",
+        "Stores",
+        "TextModels",
+        "TextViews",
+        "Views",
+        "Windows"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "StdInterpreter": {
+      "subsystem": "Std",
+      "file": "Interpreter",
+      "internal_imports": [
+        "Dialog",
+        "Kernel",
+        "Meta",
+        "Strings",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "HostMenus"
+      ],
+      "fanin_count": 1
+    },
+    "StdLinks": {
+      "subsystem": "Std",
+      "file": "Links",
+      "internal_imports": [
+        "Containers",
+        "Controllers",
+        "Dialog",
+        "Fonts",
+        "Kernel",
+        "Models",
+        "Ports",
+        "Properties",
+        "Services",
+        "StdCmds",
+        "Stores",
+        "Strings",
+        "TextControllers",
+        "TextMappers",
+        "TextModels",
+        "TextRulers",
+        "TextSetters",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "DevComDebug",
+        "DevDebug",
+        "DevLinkChk",
+        "DevRBrowser",
+        "DevSearch",
+        "ObxLinks",
+        "ObxPDBRep4",
+        "StdMenuTool",
+        "XhtmlExporter"
+      ],
+      "fanin_count": 9
+    },
+    "StdLoader": {
+      "subsystem": "Std",
+      "file": "Loader",
+      "internal_imports": [
+        "Files",
+        "Kernel"
+      ],
+      "external_imports": [
+        "SYSTEM"
+      ],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "StdLog": {
+      "subsystem": "Std",
+      "file": "Log",
+      "internal_imports": [
+        "Dialog",
+        "Fonts",
+        "HostDialog",
+        "Log",
+        "Models",
+        "Ports",
+        "StdDialog",
+        "Stores",
+        "TextControllers",
+        "TextMappers",
+        "TextModels",
+        "TextRulers",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "ComAggregate",
+        "ComConnect",
+        "ComKoalaTst",
+        "ComPhoneBookClient",
+        "CommObxStreamsClient",
+        "CommObxStreamsServer",
+        "DevAnalyzer",
+        "DevCPM",
+        "DevComDebug",
+        "DevCommanders",
+        "DevCompiler",
+        "DevDebug",
+        "DevLinker",
+        "DevPacker",
+        "DevProfiler",
+        "ObxCount0",
+        "ObxCount1",
+        "ObxExcel",
+        "ObxHello0",
+        "ObxLabelLister",
+        "ObxPDBRep4",
+        "ObxParCmd",
+        "ObxPi",
+        "ObxTabViews",
+        "ObxWordEdit",
+        "ObxWrappers",
+        "Out"
+      ],
+      "fanin_count": 27
+    },
+    "StdLogos": {
+      "subsystem": "Std",
+      "file": "Logos",
+      "internal_imports": [
+        "Controllers",
+        "Ports",
+        "Properties",
+        "Stores",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "StdMenuTool": {
+      "subsystem": "Std",
+      "file": "MenuTool",
+      "internal_imports": [
+        "Containers",
+        "Dialog",
+        "Documents",
+        "Files",
+        "Fonts",
+        "HostMenus",
+        "Kernel",
+        "Models",
+        "Ports",
+        "Properties",
+        "StdCmds",
+        "StdLinks",
+        "TextControllers",
+        "TextMappers",
+        "TextModels",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "StdScrollers": {
+      "subsystem": "Std",
+      "file": "Scrollers",
+      "internal_imports": [
+        "Controllers",
+        "Dialog",
+        "Models",
+        "Ports",
+        "Properties",
+        "Services",
+        "StdCFrames",
+        "Stores",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "StdStamps": {
+      "subsystem": "Std",
+      "file": "Stamps",
+      "internal_imports": [
+        "Containers",
+        "Controllers",
+        "Dates",
+        "Fonts",
+        "Models",
+        "Ports",
+        "Properties",
+        "StdCmds",
+        "Stores",
+        "Strings",
+        "TextMappers",
+        "TextModels",
+        "TextRulers",
+        "TextSetters",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [
+        "SYSTEM"
+      ],
+      "fanin": [
+        "ObxOrders",
+        "StdETHConv"
+      ],
+      "fanin_count": 2
+    },
+    "StdTables": {
+      "subsystem": "Std",
+      "file": "Tables",
+      "internal_imports": [
+        "Containers",
+        "Controllers",
+        "Controls",
+        "Dialog",
+        "Fonts",
+        "HostPorts",
+        "Meta",
+        "Models",
+        "Ports",
+        "Properties",
+        "Services",
+        "Stores",
+        "TextModels",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "StdTabViews": {
+      "subsystem": "Std",
+      "file": "TabViews",
+      "internal_imports": [
+        "Containers",
+        "Controllers",
+        "Dialog",
+        "Fonts",
+        "FormViews",
+        "Kernel",
+        "Meta",
+        "Models",
+        "Ports",
+        "Properties",
+        "Services",
+        "StdCFrames",
+        "Stores",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "HostTabFrames",
+        "ObxTabViews"
+      ],
+      "fanin_count": 2
+    },
+    "StdViewSizer": {
+      "subsystem": "Std",
+      "file": "ViewSizer",
+      "internal_imports": [
+        "Containers",
+        "Dialog",
+        "Ports",
+        "Properties",
+        "Services",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "Config": {
+      "subsystem": "System",
+      "file": "Config",
+      "internal_imports": [
+        "Converters",
+        "Dialog",
+        "OleData"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "Containers": {
+      "subsystem": "System",
+      "file": "Containers",
+      "internal_imports": [
+        "Controllers",
+        "Dialog",
+        "Kernel",
+        "Mechanisms",
+        "Models",
+        "Ports",
+        "Properties",
+        "Services",
+        "Stores",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "DevAlienTool",
+        "DevCmds",
+        "DevComDebug",
+        "DevDebug",
+        "DevInspector",
+        "DevLinkChk",
+        "DevMsgSpy",
+        "DevRBrowser",
+        "DevReferences",
+        "DevSearch",
+        "Documents",
+        "FormCmds",
+        "FormControllers",
+        "FormGen",
+        "FormModels",
+        "FormViews",
+        "HostBitmaps",
+        "HostMechanisms",
+        "HostMenus",
+        "HostWindows",
+        "ObxContIter",
+        "ObxCubes",
+        "ObxExcel",
+        "OleClient",
+        "OleData",
+        "OleServer",
+        "OleViews",
+        "SqlControls",
+        "StdApi",
+        "StdCmds",
+        "StdDebug",
+        "StdDialog",
+        "StdFolds",
+        "StdHeaders",
+        "StdLinks",
+        "StdMenuTool",
+        "StdStamps",
+        "StdTabViews",
+        "StdTables",
+        "StdViewSizer",
+        "TextCmds",
+        "TextControllers",
+        "TextModels",
+        "TextViews",
+        "Windows"
+      ],
+      "fanin_count": 45
+    },
+    "Controllers": {
+      "subsystem": "System",
+      "file": "Controllers",
+      "internal_imports": [
+        "Kernel",
+        "Models",
+        "Ports",
+        "Services",
+        "Stores",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "Containers",
+        "Controls",
+        "DevAlienTool",
+        "DevCmds",
+        "DevCommanders",
+        "DevDebug",
+        "DevDependencies",
+        "DevHeapSpy",
+        "DevInspector",
+        "DevMarkers",
+        "DevMsgSpy",
+        "DevSelectors",
+        "Documents",
+        "FormControllers",
+        "FormViews",
+        "HostBitmaps",
+        "HostCFrames",
+        "HostCmds",
+        "HostDialog",
+        "HostMechanisms",
+        "HostMenus",
+        "HostPictures",
+        "HostPrinters",
+        "HostTabFrames",
+        "HostWindows",
+        "ObxBlackBox",
+        "ObxButtons",
+        "ObxCalc",
+        "ObxCtrls",
+        "ObxCubes",
+        "ObxFldCtrls",
+        "ObxGraphs",
+        "ObxLines",
+        "ObxOmosi",
+        "ObxScroll",
+        "ObxTrap",
+        "ObxTwins",
+        "ObxViews10",
+        "ObxViews11",
+        "ObxViews12",
+        "ObxViews13",
+        "ObxViews14",
+        "ObxViews4",
+        "ObxViews5",
+        "ObxViews6",
+        "ObxWrappers",
+        "OleClient",
+        "OleServer",
+        "Properties",
+        "SqlControls",
+        "SqlObxViews",
+        "StdCmds",
+        "StdCoder",
+        "StdFolds",
+        "StdHeaders",
+        "StdLinks",
+        "StdLogos",
+        "StdScrollers",
+        "StdStamps",
+        "StdTabViews",
+        "StdTables",
+        "TextCmds",
+        "TextControllers",
+        "TextRulers",
+        "TextViews",
+        "Windows",
+        "XhtmlTextTableMarkers"
+      ],
+      "fanin_count": 67
+    },
+    "Controls": {
+      "subsystem": "System",
+      "file": "Controls",
+      "internal_imports": [
+        "Controllers",
+        "Dates",
+        "Dialog",
+        "Fonts",
+        "Kernel",
+        "Meta",
+        "Ports",
+        "Properties",
+        "Services",
+        "StdCFrames",
+        "Stores",
+        "Strings",
+        "Views",
+        "Windows"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "DevCmds",
+        "DevCommanders",
+        "DevCompiler",
+        "DevDebug",
+        "DevInspector",
+        "FormCmds",
+        "FormGen",
+        "HostMenus",
+        "ObxButtons",
+        "ObxContIter",
+        "ObxCtrls",
+        "ObxFldCtrls",
+        "ObxLabelLister",
+        "ObxParCmd",
+        "OleClient",
+        "SqlControls",
+        "StdFolds",
+        "StdTables"
+      ],
+      "fanin_count": 18
+    },
+    "Converters": {
+      "subsystem": "System",
+      "file": "Converters",
+      "internal_imports": [
+        "Dialog",
+        "Files",
+        "Meta",
+        "Stores"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "Config",
+        "DevDebug",
+        "DevLinkChk",
+        "DevMsgSpy",
+        "DevRBrowser",
+        "HostBitmaps",
+        "HostCmds",
+        "HostDialog",
+        "HostMail",
+        "HostMenus",
+        "HostPictures",
+        "HostWindows",
+        "Init",
+        "ObxAddress2",
+        "ObxAscii",
+        "ObxFileTree",
+        "ObxLinks",
+        "ObxOpen0",
+        "ObxOpen1",
+        "OleServer",
+        "StdApi",
+        "StdCoder",
+        "StdDialog",
+        "Views",
+        "Windows"
+      ],
+      "fanin_count": 25
+    },
+    "Dates": {
+      "subsystem": "System",
+      "file": "Dates",
+      "internal_imports": [
+        "Kernel"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "Controls",
+        "CtlT",
+        "DevBrowser",
+        "DevCPE",
+        "DevDebug",
+        "DevDependencies",
+        "DevLinker",
+        "Documents",
+        "FormGen",
+        "HostCFrames",
+        "HostDialog",
+        "ObxExcel",
+        "Printing",
+        "SqlDB",
+        "SqlDrivers",
+        "SqlObxDriv",
+        "SqlOdbc",
+        "SqlOdbc3",
+        "StdCFrames",
+        "StdClocks",
+        "StdHeaders",
+        "StdStamps"
+      ],
+      "fanin_count": 22
+    },
+    "Dialog": {
+      "subsystem": "System",
+      "file": "Dialog",
+      "internal_imports": [
+        "Files",
+        "Kernel"
+      ],
+      "external_imports": [
+        "SYSTEM"
+      ],
+      "fanin": [
+        "ComPhoneBookClient",
+        "CommTCP",
+        "Config",
+        "Containers",
+        "Controls",
+        "Converters",
+        "DevAlienTool",
+        "DevAnalyzer",
+        "DevBrowser",
+        "DevCmds",
+        "DevComDebug",
+        "DevComInterfaceGen",
+        "DevCommanders",
+        "DevCompiler",
+        "DevDebug",
+        "DevDependencies",
+        "DevHeapSpy",
+        "DevInspector",
+        "DevLinkChk",
+        "DevLinker",
+        "DevMarkers",
+        "DevMsgSpy",
+        "DevPacker",
+        "DevProfiler",
+        "DevRBrowser",
+        "DevReferences",
+        "DevSearch",
+        "DevSubTool",
+        "Documents",
+        "FormCmds",
+        "FormGen",
+        "FormViews",
+        "HostBitmaps",
+        "HostCFrames",
+        "HostCmds",
+        "HostDialog",
+        "HostMail",
+        "HostMechanisms",
+        "HostMenus",
+        "HostPictures",
+        "HostPorts",
+        "HostPrinters",
+        "HostRegistry",
+        "HostTabFrames",
+        "HostWindows",
+        "Init",
+        "ObxActions",
+        "ObxAddress2",
+        "ObxBlackBox",
+        "ObxButtons",
+        "ObxCalc",
+        "ObxControls",
+        "ObxCtrls",
+        "ObxCubes",
+        "ObxDialog",
+        "ObxFileTree",
+        "ObxFldCtrls",
+        "ObxMMerge",
+        "ObxOmosi",
+        "ObxOrders",
+        "ObxParCmd",
+        "ObxPhoneUI",
+        "ObxPhoneUI1",
+        "ObxRatCalc",
+        "ObxStores",
+        "ObxTabViews",
+        "ObxTrap",
+        "ObxUnitConv",
+        "ObxWrappers",
+        "OleClient",
+        "OleData",
+        "OleServer",
+        "Printing",
+        "Properties",
+        "SqlBrowser",
+        "SqlControls",
+        "SqlDB",
+        "SqlDrivers",
+        "SqlObxDB",
+        "SqlObxDriv",
+        "SqlObxTab",
+        "SqlObxUI",
+        "SqlOdbc",
+        "SqlOdbc3",
+        "StdApi",
+        "StdCFrames",
+        "StdCmds",
+        "StdCoder",
+        "StdDebug",
+        "StdDialog",
+        "StdFolds",
+        "StdHeaders",
+        "StdInterpreter",
+        "StdLinks",
+        "StdLog",
+        "StdMenuTool",
+        "StdScrollers",
+        "StdTabViews",
+        "StdTables",
+        "StdViewSizer",
+        "Stores",
+        "TextCmds",
+        "TextControllers",
+        "TextMappers",
+        "TextRulers",
+        "TextViews",
+        "Views",
+        "Windows",
+        "XhtmlExporter"
+      ],
+      "fanin_count": 109
+    },
+    "Documents": {
+      "subsystem": "System",
+      "file": "Documents",
+      "internal_imports": [
+        "Containers",
+        "Controllers",
+        "Dates",
+        "Dialog",
+        "Files",
+        "Kernel",
+        "Models",
+        "Ports",
+        "Printers",
+        "Printing",
+        "Properties",
+        "Sequencers",
+        "Stores",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "DevAlienTool",
+        "DevBrowser",
+        "DevCmds",
+        "DevComDebug",
+        "DevHeapSpy",
+        "FormGen",
+        "HostClipboard",
+        "HostCmds",
+        "HostMechanisms",
+        "HostMenus",
+        "HostPrinters",
+        "HostWindows",
+        "OleServer",
+        "StdApi",
+        "StdCmds",
+        "StdCoder",
+        "StdDialog",
+        "StdMenuTool",
+        "Windows"
+      ],
+      "fanin_count": 19
+    },
+    "Files": {
+      "subsystem": "System",
+      "file": "Files",
+      "internal_imports": [
+        "Kernel"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "Converters",
+        "DevAnalyzer",
+        "DevBrowser",
+        "DevCPM",
+        "DevCmds",
+        "DevComInterfaceGen",
+        "DevCompiler",
+        "DevDebug",
+        "DevDependencies",
+        "DevLinkChk",
+        "DevLinker",
+        "DevMarkers",
+        "DevMsgSpy",
+        "DevPacker",
+        "DevRBrowser",
+        "DevReferences",
+        "DevSearch",
+        "DevSubTool",
+        "Dialog",
+        "Documents",
+        "FormGen",
+        "HostBitmaps",
+        "HostCmds",
+        "HostDialog",
+        "HostFiles",
+        "HostMail",
+        "HostMenus",
+        "HostPackedFiles",
+        "HostPictures",
+        "HostPrinters",
+        "HostTextConv",
+        "HostWindows",
+        "Integers",
+        "ObxAddress2",
+        "ObxAscii",
+        "ObxConv",
+        "ObxFileTree",
+        "ObxLinks",
+        "ObxMMerge",
+        "ObxOpen0",
+        "ObxOpen1",
+        "ObxOrders",
+        "ObxStores",
+        "OleData",
+        "OleServer",
+        "OleStorage",
+        "StdApi",
+        "StdCoder",
+        "StdDialog",
+        "StdETHConv",
+        "StdLoader",
+        "StdMenuTool",
+        "Stores",
+        "TextModels",
+        "Views",
+        "Windows",
+        "XhtmlExporter",
+        "XhtmlStdFileWriters"
+      ],
+      "fanin_count": 58
+    },
+    "Fonts": {
+      "subsystem": "System",
+      "file": "Fonts",
+      "internal_imports": [],
+      "external_imports": [],
+      "fanin": [
+        "Controls",
+        "DevBrowser",
+        "DevCmds",
+        "DevComDebug",
+        "DevCommanders",
+        "DevDebug",
+        "DevDependencies",
+        "DevLinkChk",
+        "DevMarkers",
+        "DevProfiler",
+        "DevRBrowser",
+        "DevReferences",
+        "DevSearch",
+        "DevSelectors",
+        "DevSubTool",
+        "HostBitmaps",
+        "HostCFrames",
+        "HostDialog",
+        "HostFonts",
+        "HostMenus",
+        "HostPictures",
+        "HostPorts",
+        "HostTabFrames",
+        "HostTextConv",
+        "ObxBlackBox",
+        "ObxButtons",
+        "ObxCalc",
+        "ObxLinks",
+        "ObxOrders",
+        "ObxScroll",
+        "ObxViews10",
+        "ObxViews11",
+        "ObxViews12",
+        "ObxViews13",
+        "ObxViews14",
+        "ObxWordEdit",
+        "Ports",
+        "Printing",
+        "Properties",
+        "SqlControls",
+        "SqlObxViews",
+        "StdCFrames",
+        "StdCmds",
+        "StdDebug",
+        "StdETHConv",
+        "StdFolds",
+        "StdHeaders",
+        "StdLinks",
+        "StdLog",
+        "StdMenuTool",
+        "StdStamps",
+        "StdTabViews",
+        "StdTables",
+        "TextModels",
+        "TextRulers",
+        "TextSetters",
+        "TextViews",
+        "Views",
+        "XhtmlExporter"
+      ],
+      "fanin_count": 59
+    },
+    "In": {
+      "subsystem": "System",
+      "file": "In",
+      "internal_imports": [
+        "TextControllers",
+        "TextMappers"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "ObxFern"
+      ],
+      "fanin_count": 1
+    },
+    "Init": {
+      "subsystem": "System",
+      "file": "Init",
+      "internal_imports": [
+        "Converters",
+        "Dialog",
+        "HostMenus",
+        "Kernel"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "Integers": {
+      "subsystem": "System",
+      "file": "Integers",
+      "internal_imports": [
+        "Files",
+        "Math"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "ObxFact",
+        "ObxPi",
+        "ObxRatCalc"
+      ],
+      "fanin_count": 3
+    },
+    "Kernel": {
+      "subsystem": "System",
+      "file": "Kernel",
+      "internal_imports": [
+        "WinApi",
+        "WinOle"
+      ],
+      "external_imports": [
+        "COM",
+        "SYSTEM"
+      ],
+      "fanin": [
+        "Containers",
+        "Controllers",
+        "Controls",
+        "Dates",
+        "DevAnalyzer",
+        "DevBrowser",
+        "DevCPM",
+        "DevComDebug",
+        "DevCommanders",
+        "DevCompiler",
+        "DevDebug",
+        "DevDependencies",
+        "DevHeapSpy",
+        "DevInspector",
+        "DevLinkChk",
+        "DevLinker",
+        "DevMarkers",
+        "DevMsgSpy",
+        "DevPacker",
+        "DevProfiler",
+        "DevReferences",
+        "DevSearch",
+        "Dialog",
+        "Documents",
+        "Files",
+        "HostCFrames",
+        "HostCmds",
+        "HostDialog",
+        "HostFiles",
+        "HostFonts",
+        "HostMenus",
+        "HostPackedFiles",
+        "HostPorts",
+        "HostPrinters",
+        "HostTabFrames",
+        "HostWindows",
+        "Init",
+        "Log",
+        "Mechanisms",
+        "Meta",
+        "Models",
+        "OleClient",
+        "OleServer",
+        "Printing",
+        "Properties",
+        "Services",
+        "SqlDB",
+        "SqlObxInit",
+        "StdApi",
+        "StdCoder",
+        "StdDebug",
+        "StdDialog",
+        "StdInterpreter",
+        "StdLinks",
+        "StdLoader",
+        "StdMenuTool",
+        "StdTabViews",
+        "Stores",
+        "Strings",
+        "TextRulers",
+        "Views",
+        "Windows"
+      ],
+      "fanin_count": 62
+    },
+    "Log": {
+      "subsystem": "System",
+      "file": "Log",
+      "internal_imports": [
+        "Kernel"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "HostMenus",
+        "HostWindows",
+        "OleClient",
+        "OleData",
+        "OleServer",
+        "OleStorage",
+        "SqlDB",
+        "SqlOdbc",
+        "SqlOdbc3",
+        "StdLog",
+        "Views"
+      ],
+      "fanin_count": 11
+    },
+    "Math": {
+      "subsystem": "System",
+      "file": "Math",
+      "internal_imports": [],
+      "external_imports": [
+        "SYSTEM"
+      ],
+      "fanin": [
+        "DevCPS",
+        "DevDependencies",
+        "Integers",
+        "ObxActions",
+        "ObxCubes",
+        "Properties",
+        "StdClocks",
+        "Strings"
+      ],
+      "fanin_count": 8
+    },
+    "Mechanisms": {
+      "subsystem": "System",
+      "file": "Mechanisms",
+      "internal_imports": [
+        "Kernel",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "Containers",
+        "HostMechanisms",
+        "SqlObxViews"
+      ],
+      "fanin_count": 3
+    },
+    "Meta": {
+      "subsystem": "System",
+      "file": "Meta",
+      "internal_imports": [
+        "Kernel",
+        "Strings"
+      ],
+      "external_imports": [
+        "SYSTEM"
+      ],
+      "fanin": [
+        "CommStreams",
+        "Controls",
+        "Converters",
+        "FormGen",
+        "HostWindows",
+        "ObxCtrls",
+        "ObxFldCtrls",
+        "OleClient",
+        "OleData",
+        "SqlControls",
+        "SqlDB",
+        "SqlDrivers",
+        "StdApi",
+        "StdDialog",
+        "StdInterpreter",
+        "StdTabViews",
+        "StdTables"
+      ],
+      "fanin_count": 17
+    },
+    "Models": {
+      "subsystem": "System",
+      "file": "Models",
+      "internal_imports": [
+        "Kernel",
+        "Sequencers",
+        "Stores"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "Containers",
+        "Controllers",
+        "DevAlienTool",
+        "DevAnalyzer",
+        "DevCPM",
+        "DevCmds",
+        "DevComDebug",
+        "DevCommanders",
+        "DevDebug",
+        "DevHeapSpy",
+        "DevMarkers",
+        "DevMsgSpy",
+        "DevRBrowser",
+        "DevReferences",
+        "DevSearch",
+        "DevSelectors",
+        "Documents",
+        "FormCmds",
+        "FormControllers",
+        "FormModels",
+        "FormViews",
+        "HostBitmaps",
+        "HostMenus",
+        "HostPictures",
+        "HostPrinters",
+        "ObxBlackBox",
+        "ObxCaps",
+        "ObxCubes",
+        "ObxFact",
+        "ObxGraphs",
+        "ObxLines",
+        "ObxLookup1",
+        "ObxParCmd",
+        "ObxRatCalc",
+        "ObxTickers",
+        "ObxTwins",
+        "ObxViews12",
+        "ObxViews13",
+        "ObxViews14",
+        "ObxWrappers",
+        "OleClient",
+        "OleData",
+        "StdClocks",
+        "StdCmds",
+        "StdDialog",
+        "StdFolds",
+        "StdHeaders",
+        "StdLinks",
+        "StdLog",
+        "StdMenuTool",
+        "StdScrollers",
+        "StdStamps",
+        "StdTabViews",
+        "StdTables",
+        "TextCmds",
+        "TextControllers",
+        "TextModels",
+        "TextRulers",
+        "TextSetters",
+        "TextViews",
+        "Views",
+        "Windows"
+      ],
+      "fanin_count": 62
+    },
+    "Out": {
+      "subsystem": "System",
+      "file": "Out",
+      "internal_imports": [
+        "StdLog",
+        "TextMappers",
+        "TextModels",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "ObxFern"
+      ],
+      "fanin_count": 1
+    },
+    "Ports": {
+      "subsystem": "System",
+      "file": "Ports",
+      "internal_imports": [
+        "Fonts"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "Containers",
+        "Controllers",
+        "Controls",
+        "DevAlienTool",
+        "DevBrowser",
+        "DevCmds",
+        "DevComDebug",
+        "DevCommanders",
+        "DevDebug",
+        "DevDependencies",
+        "DevHeapSpy",
+        "DevLinkChk",
+        "DevMarkers",
+        "DevMsgSpy",
+        "DevProfiler",
+        "DevRBrowser",
+        "DevSearch",
+        "DevSelectors",
+        "Documents",
+        "FormCmds",
+        "FormControllers",
+        "FormGen",
+        "FormModels",
+        "FormViews",
+        "HostBitmaps",
+        "HostCFrames",
+        "HostCmds",
+        "HostDialog",
+        "HostMechanisms",
+        "HostMenus",
+        "HostPictures",
+        "HostPorts",
+        "HostPrinters",
+        "HostTabFrames",
+        "HostTextConv",
+        "HostWindows",
+        "ObxBlackBox",
+        "ObxButtons",
+        "ObxCalc",
+        "ObxControlShifter",
+        "ObxControls",
+        "ObxCtrls",
+        "ObxCubes",
+        "ObxGraphs",
+        "ObxLines",
+        "ObxLinks",
+        "ObxOmosi",
+        "ObxPDBRep1",
+        "ObxPDBRep2",
+        "ObxPatterns",
+        "ObxScroll",
+        "ObxTickers",
+        "ObxTwins",
+        "ObxUnitConv",
+        "ObxViews0",
+        "ObxViews1",
+        "ObxViews10",
+        "ObxViews11",
+        "ObxViews12",
+        "ObxViews13",
+        "ObxViews14",
+        "ObxViews2",
+        "ObxViews3",
+        "ObxViews4",
+        "ObxViews5",
+        "ObxViews6",
+        "OleClient",
+        "OleData",
+        "OleServer",
+        "Printers",
+        "Printing",
+        "SqlControls",
+        "SqlObxTab",
+        "SqlObxViews",
+        "StdCFrames",
+        "StdClocks",
+        "StdCmds",
+        "StdDebug",
+        "StdETHConv",
+        "StdFolds",
+        "StdHeaders",
+        "StdLinks",
+        "StdLog",
+        "StdLogos",
+        "StdMenuTool",
+        "StdScrollers",
+        "StdStamps",
+        "StdTabViews",
+        "StdTables",
+        "StdViewSizer",
+        "TextCmds",
+        "TextControllers",
+        "TextModels",
+        "TextRulers",
+        "TextSetters",
+        "TextViews",
+        "Views",
+        "Windows",
+        "XYplane",
+        "XhtmlExporter",
+        "XhtmlTextTableMarkers"
+      ],
+      "fanin_count": 101
+    },
+    "Printers": {
+      "subsystem": "System",
+      "file": "Printers",
+      "internal_imports": [
+        "Ports"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "Documents",
+        "HostCmds",
+        "HostDialog",
+        "HostMenus",
+        "HostPrinters",
+        "Printing",
+        "TextSetters"
+      ],
+      "fanin_count": 7
+    },
+    "Printing": {
+      "subsystem": "System",
+      "file": "Printing",
+      "internal_imports": [
+        "Dates",
+        "Dialog",
+        "Fonts",
+        "Kernel",
+        "Ports",
+        "Printers",
+        "Strings",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "Documents",
+        "HostCmds",
+        "HostPrinters",
+        "StdHeaders",
+        "TextViews"
+      ],
+      "fanin_count": 5
+    },
+    "Properties": {
+      "subsystem": "System",
+      "file": "Properties",
+      "internal_imports": [
+        "Controllers",
+        "Dialog",
+        "Fonts",
+        "Kernel",
+        "Math",
+        "Services",
+        "Stores",
+        "Views"
+      ],
+      "external_imports": [
+        "SYSTEM"
+      ],
+      "fanin": [
+        "Containers",
+        "Controls",
+        "DevAlienTool",
+        "DevBrowser",
+        "DevCmds",
+        "DevComDebug",
+        "DevCommanders",
+        "DevDebug",
+        "DevDependencies",
+        "DevHeapSpy",
+        "DevInspector",
+        "DevMarkers",
+        "DevMsgSpy",
+        "DevSelectors",
+        "Documents",
+        "FormCmds",
+        "FormControllers",
+        "FormGen",
+        "FormModels",
+        "FormViews",
+        "HostBitmaps",
+        "HostDialog",
+        "HostMechanisms",
+        "HostMenus",
+        "HostPictures",
+        "HostPrinters",
+        "HostTextConv",
+        "HostWindows",
+        "ObxBlackBox",
+        "ObxButtons",
+        "ObxCalc",
+        "ObxControls",
+        "ObxCtrls",
+        "ObxCubes",
+        "ObxFldCtrls",
+        "ObxGraphs",
+        "ObxLines",
+        "ObxOmosi",
+        "ObxPatterns",
+        "ObxScroll",
+        "ObxTickers",
+        "ObxTwins",
+        "ObxViews1",
+        "ObxViews10",
+        "ObxViews11",
+        "ObxViews12",
+        "ObxViews13",
+        "ObxViews14",
+        "ObxViews2",
+        "ObxViews3",
+        "ObxViews4",
+        "ObxViews5",
+        "ObxViews6",
+        "ObxWrappers",
+        "OleClient",
+        "OleData",
+        "OleServer",
+        "OleViews",
+        "SqlControls",
+        "SqlObxViews",
+        "StdClocks",
+        "StdCmds",
+        "StdDebug",
+        "StdDialog",
+        "StdFolds",
+        "StdHeaders",
+        "StdLinks",
+        "StdLogos",
+        "StdMenuTool",
+        "StdScrollers",
+        "StdStamps",
+        "StdTabViews",
+        "StdTables",
+        "StdViewSizer",
+        "TextCmds",
+        "TextControllers",
+        "TextModels",
+        "TextRulers",
+        "TextSetters",
+        "TextViews",
+        "Windows",
+        "XYplane",
+        "XhtmlExporter",
+        "XhtmlTextTableMarkers"
+      ],
+      "fanin_count": 84
+    },
+    "Sequencers": {
+      "subsystem": "System",
+      "file": "Sequencers",
+      "internal_imports": [
+        "Stores"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "Documents",
+        "HostCmds",
+        "Models",
+        "OleClient",
+        "OleServer",
+        "SqlControls",
+        "StdApi",
+        "StdCmds",
+        "StdDialog",
+        "Views",
+        "Windows"
+      ],
+      "fanin_count": 11
+    },
+    "Services": {
+      "subsystem": "System",
+      "file": "Services",
+      "internal_imports": [
+        "Kernel"
+      ],
+      "external_imports": [
+        "SYSTEM"
+      ],
+      "fanin": [
+        "CommObxStreamsClient",
+        "CommObxStreamsServer",
+        "Containers",
+        "Controllers",
+        "Controls",
+        "DevAlienTool",
+        "DevCmds",
+        "DevCommanders",
+        "DevDebug",
+        "DevHeapSpy",
+        "DevInspector",
+        "DevMsgSpy",
+        "DevPacker",
+        "FormControllers",
+        "HostClipboard",
+        "HostDialog",
+        "HostMechanisms",
+        "HostMenus",
+        "HostPorts",
+        "HostWindows",
+        "ObxActions",
+        "ObxBlackBox",
+        "ObxCubes",
+        "ObxGraphs",
+        "ObxTickers",
+        "ObxTwins",
+        "ObxWordEdit",
+        "OleClient",
+        "OleData",
+        "OleServer",
+        "Properties",
+        "SqlDB",
+        "SqlObxDriv",
+        "SqlOdbc",
+        "SqlOdbc3",
+        "StdClocks",
+        "StdCmds",
+        "StdDebug",
+        "StdFolds",
+        "StdLinks",
+        "StdScrollers",
+        "StdTabViews",
+        "StdTables",
+        "StdViewSizer",
+        "TextControllers",
+        "TextModels",
+        "TextRulers",
+        "TextViews",
+        "Views",
+        "Windows"
+      ],
+      "fanin_count": 50
+    },
+    "SMath": {
+      "subsystem": "System",
+      "file": "SMath",
+      "internal_imports": [],
+      "external_imports": [
+        "SYSTEM"
+      ],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "Stores": {
+      "subsystem": "System",
+      "file": "Stores",
+      "internal_imports": [
+        "Dialog",
+        "Files",
+        "Kernel",
+        "Strings"
+      ],
+      "external_imports": [
+        "SYSTEM"
+      ],
+      "fanin": [
+        "Containers",
+        "Controllers",
+        "Controls",
+        "Converters",
+        "DevAlienTool",
+        "DevAnalyzer",
+        "DevBrowser",
+        "DevCPM",
+        "DevCmds",
+        "DevComDebug",
+        "DevCommanders",
+        "DevDebug",
+        "DevDependencies",
+        "DevHeapSpy",
+        "DevInspector",
+        "DevMarkers",
+        "DevMsgSpy",
+        "DevPacker",
+        "DevRBrowser",
+        "DevSelectors",
+        "Documents",
+        "FormCmds",
+        "FormControllers",
+        "FormModels",
+        "FormViews",
+        "HostBitmaps",
+        "HostClipboard",
+        "HostCmds",
+        "HostDialog",
+        "HostMechanisms",
+        "HostMenus",
+        "HostPictures",
+        "HostPrinters",
+        "HostTextConv",
+        "Models",
+        "ObxAscii",
+        "ObxBlackBox",
+        "ObxButtons",
+        "ObxCalc",
+        "ObxCaps",
+        "ObxConv",
+        "ObxCtrls",
+        "ObxCubes",
+        "ObxFact",
+        "ObxFldCtrls",
+        "ObxGraphs",
+        "ObxLines",
+        "ObxLinks",
+        "ObxLookup1",
+        "ObxOmosi",
+        "ObxOrders",
+        "ObxPatterns",
+        "ObxRatCalc",
+        "ObxScroll",
+        "ObxStores",
+        "ObxTickers",
+        "ObxTwins",
+        "ObxViews11",
+        "ObxViews12",
+        "ObxViews13",
+        "ObxViews14",
+        "ObxWrappers",
+        "OleClient",
+        "OleData",
+        "OleServer",
+        "OleStorage",
+        "Properties",
+        "Sequencers",
+        "SqlControls",
+        "StdApi",
+        "StdClocks",
+        "StdCmds",
+        "StdCoder",
+        "StdDialog",
+        "StdETHConv",
+        "StdFolds",
+        "StdHeaders",
+        "StdLinks",
+        "StdLog",
+        "StdLogos",
+        "StdScrollers",
+        "StdStamps",
+        "StdTabViews",
+        "StdTables",
+        "TextCmds",
+        "TextControllers",
+        "TextModels",
+        "TextRulers",
+        "TextSetters",
+        "TextViews",
+        "Views",
+        "Windows",
+        "XYplane",
+        "XhtmlExporter",
+        "XhtmlTextTableMarkers"
+      ],
+      "fanin_count": 95
+    },
+    "Strings": {
+      "subsystem": "System",
+      "file": "Strings",
+      "internal_imports": [
+        "Kernel",
+        "Math"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "CommTCP",
+        "Controls",
+        "DevAnalyzer",
+        "DevCPP",
+        "DevCPS",
+        "DevCPT",
+        "DevComDebug",
+        "DevComInterfaceGen",
+        "DevCommanders",
+        "DevCompiler",
+        "DevDebug",
+        "DevDependencies",
+        "DevHeapSpy",
+        "DevLinkChk",
+        "DevLinker",
+        "DevMsgSpy",
+        "DevPacker",
+        "DevProfiler",
+        "DevRBrowser",
+        "DevReferences",
+        "DevSubTool",
+        "FormCmds",
+        "FormGen",
+        "HostCFrames",
+        "HostDialog",
+        "HostMenus",
+        "HostRegistry",
+        "Meta",
+        "ObxBlackBox",
+        "ObxCalc",
+        "ObxFldCtrls",
+        "ObxTabViews",
+        "OleData",
+        "Printing",
+        "SqlDB",
+        "StdApi",
+        "StdCmds",
+        "StdDebug",
+        "StdDialog",
+        "StdInterpreter",
+        "StdLinks",
+        "StdStamps",
+        "Stores",
+        "TextCmds",
+        "TextMappers",
+        "TextRulers",
+        "XhtmlExporter"
+      ],
+      "fanin_count": 47
+    },
+    "Views": {
+      "subsystem": "System",
+      "file": "Views",
+      "internal_imports": [
+        "Converters",
+        "Dialog",
+        "Files",
+        "Fonts",
+        "Kernel",
+        "Log",
+        "Models",
+        "Ports",
+        "Sequencers",
+        "Services",
+        "Stores"
+      ],
+      "external_imports": [
+        "SYSTEM"
+      ],
+      "fanin": [
+        "CommObxStreamsServer",
+        "Containers",
+        "Controllers",
+        "Controls",
+        "DevAlienTool",
+        "DevBrowser",
+        "DevCPM",
+        "DevCmds",
+        "DevComDebug",
+        "DevComInterfaceGen",
+        "DevCommanders",
+        "DevCompiler",
+        "DevDebug",
+        "DevDependencies",
+        "DevHeapSpy",
+        "DevInspector",
+        "DevLinkChk",
+        "DevMarkers",
+        "DevMsgSpy",
+        "DevPacker",
+        "DevProfiler",
+        "DevRBrowser",
+        "DevReferences",
+        "DevSearch",
+        "DevSelectors",
+        "DevSubTool",
+        "Documents",
+        "FormCmds",
+        "FormControllers",
+        "FormGen",
+        "FormModels",
+        "FormViews",
+        "HostBitmaps",
+        "HostCFrames",
+        "HostClipboard",
+        "HostCmds",
+        "HostDialog",
+        "HostMail",
+        "HostMechanisms",
+        "HostMenus",
+        "HostPictures",
+        "HostPrinters",
+        "HostTabFrames",
+        "HostTextConv",
+        "HostWindows",
+        "Mechanisms",
+        "ObxActions",
+        "ObxAddress1",
+        "ObxAddress2",
+        "ObxBitmap",
+        "ObxBlackBox",
+        "ObxButtons",
+        "ObxCalc",
+        "ObxContIter",
+        "ObxControls",
+        "ObxCtrls",
+        "ObxCubes",
+        "ObxDb",
+        "ObxExcel",
+        "ObxFileTree",
+        "ObxFldCtrls",
+        "ObxGraphs",
+        "ObxHello1",
+        "ObxLabelLister",
+        "ObxLines",
+        "ObxLinks",
+        "ObxMMerge",
+        "ObxOmosi",
+        "ObxOpen0",
+        "ObxOpen1",
+        "ObxOrders",
+        "ObxPDBRep0",
+        "ObxPDBRep1",
+        "ObxPDBRep2",
+        "ObxPDBRep3",
+        "ObxPDBRep4",
+        "ObxPatterns",
+        "ObxScroll",
+        "ObxTabViews",
+        "ObxTabs",
+        "ObxTickers",
+        "ObxTrap",
+        "ObxTwins",
+        "ObxViews0",
+        "ObxViews1",
+        "ObxViews10",
+        "ObxViews11",
+        "ObxViews12",
+        "ObxViews13",
+        "ObxViews14",
+        "ObxViews2",
+        "ObxViews3",
+        "ObxViews4",
+        "ObxViews5",
+        "ObxViews6",
+        "ObxWrappers",
+        "OleClient",
+        "OleData",
+        "OleServer",
+        "OleStorage",
+        "OleViews",
+        "Out",
+        "Printing",
+        "Properties",
+        "SqlBrowser",
+        "SqlControls",
+        "SqlObxGen",
+        "SqlObxTab",
+        "SqlObxViews",
+        "StdApi",
+        "StdCFrames",
+        "StdClocks",
+        "StdCmds",
+        "StdCoder",
+        "StdDebug",
+        "StdDialog",
+        "StdETHConv",
+        "StdFolds",
+        "StdHeaders",
+        "StdInterpreter",
+        "StdLinks",
+        "StdLog",
+        "StdLogos",
+        "StdMenuTool",
+        "StdScrollers",
+        "StdStamps",
+        "StdTabViews",
+        "StdTables",
+        "StdViewSizer",
+        "TextCmds",
+        "TextControllers",
+        "TextMappers",
+        "TextModels",
+        "TextRulers",
+        "TextSetters",
+        "TextViews",
+        "Windows",
+        "XYplane",
+        "XhtmlExporter",
+        "XhtmlTextTableMarkers"
+      ],
+      "fanin_count": 140
+    },
+    "Windows": {
+      "subsystem": "System",
+      "file": "Windows",
+      "internal_imports": [
+        "Containers",
+        "Controllers",
+        "Converters",
+        "Dialog",
+        "Documents",
+        "Files",
+        "Kernel",
+        "Models",
+        "Ports",
+        "Properties",
+        "Sequencers",
+        "Services",
+        "Stores",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "Controls",
+        "DevComDebug",
+        "DevDebug",
+        "DevMsgSpy",
+        "DevSearch",
+        "HostCmds",
+        "HostDialog",
+        "HostMail",
+        "HostMechanisms",
+        "HostMenus",
+        "HostPrinters",
+        "HostWindows",
+        "OleServer",
+        "OleViews",
+        "StdApi",
+        "StdCmds",
+        "StdCoder",
+        "StdDialog",
+        "StdHeaders"
+      ],
+      "fanin_count": 19
+    },
+    "XYplane": {
+      "subsystem": "System",
+      "file": "XYplane",
+      "internal_imports": [
+        "HostPorts",
+        "HostWindows",
+        "Ports",
+        "Properties",
+        "Stores",
+        "Views",
+        "WinApi"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "ObxFern"
+      ],
+      "fanin_count": 1
+    },
+    "TextCmds": {
+      "subsystem": "Text",
+      "file": "Cmds",
+      "internal_imports": [
+        "Containers",
+        "Controllers",
+        "Dialog",
+        "Models",
+        "Ports",
+        "Properties",
+        "Stores",
+        "Strings",
+        "TextControllers",
+        "TextMappers",
+        "TextModels",
+        "TextRulers",
+        "TextSetters",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "DevSearch"
+      ],
+      "fanin_count": 1
+    },
+    "TextControllers": {
+      "subsystem": "Text",
+      "file": "Controllers",
+      "internal_imports": [
+        "Containers",
+        "Controllers",
+        "Dialog",
+        "Models",
+        "Ports",
+        "Properties",
+        "Services",
+        "Stores",
+        "TextModels",
+        "TextRulers",
+        "TextSetters",
+        "TextViews",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "CommObxStreamsClient",
+        "DevBrowser",
+        "DevCmds",
+        "DevComDebug",
+        "DevCompiler",
+        "DevDebug",
+        "DevDependencies",
+        "DevLinkChk",
+        "DevMarkers",
+        "DevProfiler",
+        "DevRBrowser",
+        "DevReferences",
+        "DevSearch",
+        "HostMail",
+        "In",
+        "ObxCaps",
+        "ObxCount0",
+        "ObxCount1",
+        "ObxDb",
+        "ObxFact",
+        "ObxLookup0",
+        "ObxLookup1",
+        "ObxMMerge",
+        "ObxRatCalc",
+        "ObxTabs",
+        "SqlBrowser",
+        "StdCoder",
+        "StdFolds",
+        "StdLinks",
+        "StdLog",
+        "StdMenuTool",
+        "TextCmds"
+      ],
+      "fanin_count": 32
+    },
+    "TextMappers": {
+      "subsystem": "Text",
+      "file": "Mappers",
+      "internal_imports": [
+        "Dialog",
+        "Strings",
+        "TextModels",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "DevAlienTool",
+        "DevAnalyzer",
+        "DevBrowser",
+        "DevCmds",
+        "DevComDebug",
+        "DevCommanders",
+        "DevCompiler",
+        "DevDebug",
+        "DevDependencies",
+        "DevLinkChk",
+        "DevLinker",
+        "DevMarkers",
+        "DevMsgSpy",
+        "DevPacker",
+        "DevProfiler",
+        "DevRBrowser",
+        "DevReferences",
+        "DevSearch",
+        "DevSubTool",
+        "DevTypeLibs",
+        "HostTextConv",
+        "In",
+        "ObxActions",
+        "ObxAddress1",
+        "ObxAddress2",
+        "ObxAscii",
+        "ObxCount1",
+        "ObxDb",
+        "ObxExcel",
+        "ObxGraphs",
+        "ObxHello1",
+        "ObxLinks",
+        "ObxLookup0",
+        "ObxLookup1",
+        "ObxOpen0",
+        "ObxOpen1",
+        "ObxOrders",
+        "ObxPDBRep0",
+        "ObxPDBRep1",
+        "ObxPDBRep2",
+        "ObxPDBRep3",
+        "ObxPDBRep4",
+        "ObxParCmd",
+        "ObxRatCalc",
+        "Out",
+        "SqlObxTab",
+        "SqlObxViews",
+        "StdCoder",
+        "StdDebug",
+        "StdLinks",
+        "StdLog",
+        "StdMenuTool",
+        "StdStamps",
+        "TextCmds"
+      ],
+      "fanin_count": 54
+    },
+    "TextModels": {
+      "subsystem": "Text",
+      "file": "Models",
+      "internal_imports": [
+        "Containers",
+        "Files",
+        "Fonts",
+        "Models",
+        "Ports",
+        "Properties",
+        "Services",
+        "Stores",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "CommObxStreamsClient",
+        "CommObxStreamsServer",
+        "DevAlienTool",
+        "DevAnalyzer",
+        "DevBrowser",
+        "DevCPM",
+        "DevCmds",
+        "DevComDebug",
+        "DevComInterfaceGen",
+        "DevCommanders",
+        "DevCompiler",
+        "DevDebug",
+        "DevDependencies",
+        "DevLinkChk",
+        "DevLinker",
+        "DevMarkers",
+        "DevMsgSpy",
+        "DevPacker",
+        "DevProfiler",
+        "DevRBrowser",
+        "DevReferences",
+        "DevSearch",
+        "DevSelectors",
+        "DevSubTool",
+        "DevTypeLibs",
+        "HostMail",
+        "HostTextConv",
+        "ObxActions",
+        "ObxAddress1",
+        "ObxAddress2",
+        "ObxAscii",
+        "ObxCaps",
+        "ObxConv",
+        "ObxCount0",
+        "ObxDb",
+        "ObxExcel",
+        "ObxFact",
+        "ObxGraphs",
+        "ObxHello1",
+        "ObxLinks",
+        "ObxLookup0",
+        "ObxLookup1",
+        "ObxMMerge",
+        "ObxOpen0",
+        "ObxOpen1",
+        "ObxOrders",
+        "ObxPDBRep0",
+        "ObxPDBRep1",
+        "ObxPDBRep2",
+        "ObxPDBRep3",
+        "ObxPDBRep4",
+        "ObxParCmd",
+        "ObxRatCalc",
+        "ObxTabs",
+        "Out",
+        "SqlBrowser",
+        "SqlControls",
+        "SqlObxTab",
+        "SqlObxViews",
+        "StdClocks",
+        "StdCoder",
+        "StdDebug",
+        "StdETHConv",
+        "StdFolds",
+        "StdHeaders",
+        "StdLinks",
+        "StdLog",
+        "StdMenuTool",
+        "StdStamps",
+        "StdTables",
+        "TextCmds",
+        "TextControllers",
+        "TextMappers",
+        "TextRulers",
+        "TextSetters",
+        "TextViews",
+        "XhtmlExporter",
+        "XhtmlTextTableMarkers"
+      ],
+      "fanin_count": 78
+    },
+    "TextRulers": {
+      "subsystem": "Text",
+      "file": "Rulers",
+      "internal_imports": [
+        "Controllers",
+        "Dialog",
+        "Fonts",
+        "Kernel",
+        "Models",
+        "Ports",
+        "Properties",
+        "Services",
+        "Stores",
+        "Strings",
+        "TextModels",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "DevBrowser",
+        "DevCmds",
+        "DevComDebug",
+        "DevDebug",
+        "DevProfiler",
+        "DevRBrowser",
+        "DevSearch",
+        "HostTextConv",
+        "ObxOrders",
+        "ObxPDBRep2",
+        "SqlObxTab",
+        "StdDebug",
+        "StdETHConv",
+        "StdLinks",
+        "StdLog",
+        "StdStamps",
+        "TextCmds",
+        "TextControllers",
+        "TextSetters",
+        "TextViews",
+        "XhtmlExporter"
+      ],
+      "fanin_count": 21
+    },
+    "TextSetters": {
+      "subsystem": "Text",
+      "file": "Setters",
+      "internal_imports": [
+        "Fonts",
+        "Models",
+        "Ports",
+        "Printers",
+        "Properties",
+        "Stores",
+        "TextModels",
+        "TextRulers",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "DevCommanders",
+        "DevMarkers",
+        "DevSelectors",
+        "StdFolds",
+        "StdLinks",
+        "StdStamps",
+        "TextCmds",
+        "TextControllers",
+        "TextViews"
+      ],
+      "fanin_count": 9
+    },
+    "TextViews": {
+      "subsystem": "Text",
+      "file": "Views",
+      "internal_imports": [
+        "Containers",
+        "Controllers",
+        "Dialog",
+        "Fonts",
+        "Models",
+        "Ports",
+        "Printing",
+        "Properties",
+        "Services",
+        "Stores",
+        "TextModels",
+        "TextRulers",
+        "TextSetters",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "CommObxStreamsServer",
+        "DevAlienTool",
+        "DevAnalyzer",
+        "DevBrowser",
+        "DevCmds",
+        "DevComDebug",
+        "DevComInterfaceGen",
+        "DevCompiler",
+        "DevDebug",
+        "DevDependencies",
+        "DevLinkChk",
+        "DevLinker",
+        "DevMarkers",
+        "DevMsgSpy",
+        "DevPacker",
+        "DevProfiler",
+        "DevRBrowser",
+        "DevReferences",
+        "DevSearch",
+        "DevSelectors",
+        "DevSubTool",
+        "HostMail",
+        "HostTextConv",
+        "ObxActions",
+        "ObxAddress1",
+        "ObxAddress2",
+        "ObxAscii",
+        "ObxConv",
+        "ObxDb",
+        "ObxExcel",
+        "ObxGraphs",
+        "ObxHello1",
+        "ObxLinks",
+        "ObxMMerge",
+        "ObxOpen0",
+        "ObxOpen1",
+        "ObxOrders",
+        "ObxPDBRep0",
+        "ObxPDBRep1",
+        "ObxPDBRep2",
+        "ObxPDBRep3",
+        "ObxPDBRep4",
+        "ObxTabs",
+        "ObxTwins",
+        "OleServer",
+        "Out",
+        "SqlControls",
+        "SqlObxTab",
+        "SqlObxViews",
+        "StdCoder",
+        "StdDebug",
+        "StdETHConv",
+        "StdFolds",
+        "StdHeaders",
+        "StdLinks",
+        "StdLog",
+        "StdMenuTool",
+        "StdStamps",
+        "StdTables",
+        "TextCmds",
+        "TextControllers",
+        "XhtmlExporter"
+      ],
+      "fanin_count": 62
+    },
+    "WinApi": {
+      "subsystem": "Win",
+      "file": "Api",
+      "internal_imports": [],
+      "external_imports": [
+        "COM",
+        "SYSTEM"
+      ],
+      "fanin": [
+        "ComAggregate",
+        "ComConnect",
+        "ComEnum",
+        "ComEnumRect",
+        "ComKoala",
+        "ComKoalaDll",
+        "ComKoalaExe",
+        "ComKoalaTst",
+        "ComObject",
+        "ComPhoneBook",
+        "ComPhoneBookActiveX",
+        "ComPhoneBookClient",
+        "ComTools",
+        "CommTCP",
+        "CommV24",
+        "CtlC",
+        "CtlT",
+        "DevComDebug",
+        "DevComInterfaceGen",
+        "DevProfiler",
+        "HostBitmaps",
+        "HostCFrames",
+        "HostClipboard",
+        "HostDialog",
+        "HostFiles",
+        "HostFonts",
+        "HostMail",
+        "HostMechanisms",
+        "HostMenus",
+        "HostPictures",
+        "HostPorts",
+        "HostPrinters",
+        "HostRegistry",
+        "HostTabFrames",
+        "HostTextConv",
+        "HostWindows",
+        "Kernel",
+        "ObxBitmap",
+        "OleClient",
+        "OleData",
+        "OleServer",
+        "OleStorage",
+        "OleViews",
+        "SqlOdbc",
+        "SqlOdbc3",
+        "WinCtl",
+        "WinDlg",
+        "WinMM",
+        "WinNet",
+        "WinOle",
+        "WinOleAut",
+        "WinOleCtl",
+        "WinOleDlg",
+        "WinRpc",
+        "XYplane"
+      ],
+      "fanin_count": 55
+    },
+    "WinCmc": {
+      "subsystem": "Win",
+      "file": "Cmc",
+      "internal_imports": [],
+      "external_imports": [],
+      "fanin": [
+        "HostMail"
+      ],
+      "fanin_count": 1
+    },
+    "WinCtl": {
+      "subsystem": "Win",
+      "file": "Ctl",
+      "internal_imports": [
+        "WinApi",
+        "WinOle"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "HostCFrames",
+        "HostTabFrames"
+      ],
+      "fanin_count": 2
+    },
+    "WinDlg": {
+      "subsystem": "Win",
+      "file": "Dlg",
+      "internal_imports": [
+        "WinApi"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "HostDialog",
+        "HostPrinters",
+        "WinOleDlg"
+      ],
+      "fanin_count": 3
+    },
+    "WinGL": {
+      "subsystem": "Win",
+      "file": "GL",
+      "internal_imports": [],
+      "external_imports": [],
+      "fanin": [
+        "WinGLAux",
+        "WinGLUtil"
+      ],
+      "fanin_count": 2
+    },
+    "WinGLAux": {
+      "subsystem": "Win",
+      "file": "GLAux",
+      "internal_imports": [
+        "WinGL"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "WinGLUtil": {
+      "subsystem": "Win",
+      "file": "GLUtil",
+      "internal_imports": [
+        "WinGL"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "WinMM": {
+      "subsystem": "Win",
+      "file": "MM",
+      "internal_imports": [
+        "WinApi"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "DevProfiler"
+      ],
+      "fanin_count": 1
+    },
+    "WinNet": {
+      "subsystem": "Win",
+      "file": "Net",
+      "internal_imports": [
+        "WinApi"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "CommTCP"
+      ],
+      "fanin_count": 1
+    },
+    "WinOle": {
+      "subsystem": "Win",
+      "file": "Ole",
+      "internal_imports": [
+        "WinApi"
+      ],
+      "external_imports": [
+        "COM"
+      ],
+      "fanin": [
+        "ComConnect",
+        "ComEnum",
+        "ComKoala",
+        "ComKoalaDll",
+        "ComKoalaExe",
+        "ComKoalaTst",
+        "ComObject",
+        "ComPhoneBook",
+        "ComPhoneBookActiveX",
+        "ComPhoneBookClient",
+        "ComTools",
+        "CtlC",
+        "CtlT",
+        "DevComDebug",
+        "DevComInterfaceGen",
+        "DevTypeLibs",
+        "HostBitmaps",
+        "HostClipboard",
+        "HostMechanisms",
+        "HostPictures",
+        "HostTextConv",
+        "Kernel",
+        "OleClient",
+        "OleData",
+        "OleServer",
+        "OleStorage",
+        "OleViews",
+        "WinCtl",
+        "WinOleAut",
+        "WinOleCtl",
+        "WinOleDlg",
+        "WinRpc"
+      ],
+      "fanin_count": 32
+    },
+    "WinOleAut": {
+      "subsystem": "Win",
+      "file": "OleAut",
+      "internal_imports": [
+        "WinApi",
+        "WinOle"
+      ],
+      "external_imports": [
+        "COM"
+      ],
+      "fanin": [
+        "ComPhoneBookActiveX",
+        "CtlC",
+        "CtlT",
+        "DevComInterfaceGen",
+        "DevTypeLibs",
+        "OleClient",
+        "OleViews",
+        "WinOleCtl"
+      ],
+      "fanin_count": 8
+    },
+    "WinOleCtl": {
+      "subsystem": "Win",
+      "file": "OleCtl",
+      "internal_imports": [
+        "WinApi",
+        "WinOle",
+        "WinOleAut"
+      ],
+      "external_imports": [
+        "COM"
+      ],
+      "fanin": [
+        "OleClient"
+      ],
+      "fanin_count": 1
+    },
+    "WinOleDlg": {
+      "subsystem": "Win",
+      "file": "OleDlg",
+      "internal_imports": [
+        "WinApi",
+        "WinDlg",
+        "WinOle"
+      ],
+      "external_imports": [
+        "COM",
+        "SYSTEM"
+      ],
+      "fanin": [
+        "OleClient"
+      ],
+      "fanin_count": 1
+    },
+    "WinRpc": {
+      "subsystem": "Win",
+      "file": "Rpc",
+      "internal_imports": [
+        "WinApi",
+        "WinOle"
+      ],
+      "external_imports": [
+        "COM",
+        "SYSTEM"
+      ],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "WinSql": {
+      "subsystem": "Win",
+      "file": "Sql",
+      "internal_imports": [],
+      "external_imports": [],
+      "fanin": [
+        "SqlOdbc",
+        "SqlOdbc3"
+      ],
+      "fanin_count": 2
+    },
+    "XhtmlEntitySets": {
+      "subsystem": "Xhtml",
+      "file": "EntitySets",
+      "internal_imports": [],
+      "external_imports": [],
+      "fanin": [
+        "XhtmlExporter"
+      ],
+      "fanin_count": 1
+    },
+    "XhtmlExporter": {
+      "subsystem": "Xhtml",
+      "file": "Exporter",
+      "internal_imports": [
+        "Dialog",
+        "Files",
+        "Fonts",
+        "Ports",
+        "Properties",
+        "StdLinks",
+        "Stores",
+        "Strings",
+        "TextModels",
+        "TextRulers",
+        "TextViews",
+        "Views",
+        "XhtmlEntitySets",
+        "XhtmlStdFileWriters",
+        "XhtmlTextTableMarkers",
+        "XhtmlWriters"
+      ],
+      "external_imports": [],
+      "fanin": [],
+      "fanin_count": 0
+    },
+    "XhtmlStdFileWriters": {
+      "subsystem": "Xhtml",
+      "file": "StdFileWriters",
+      "internal_imports": [
+        "Files",
+        "XhtmlWriters"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "XhtmlExporter"
+      ],
+      "fanin_count": 1
+    },
+    "XhtmlTextTableMarkers": {
+      "subsystem": "Xhtml",
+      "file": "TextTableMarkers",
+      "internal_imports": [
+        "Controllers",
+        "Ports",
+        "Properties",
+        "Stores",
+        "TextModels",
+        "Views"
+      ],
+      "external_imports": [],
+      "fanin": [
+        "XhtmlExporter"
+      ],
+      "fanin_count": 1
+    },
+    "XhtmlWriters": {
+      "subsystem": "Xhtml",
+      "file": "Writers",
+      "internal_imports": [],
+      "external_imports": [],
+      "fanin": [
+        "XhtmlExporter",
+        "XhtmlStdFileWriters"
+      ],
+      "fanin_count": 2
+    }
+  },
+  "layers": [
+    [
+      "Fonts",
+      "Math",
+      "ObxAddress0",
+      "ObxPhoneDB",
+      "ObxRandom",
+      "ObxSample",
+      "SMath",
+      "SqlObxNets",
+      "WinApi",
+      "WinCmc",
+      "WinGL",
+      "WinSql",
+      "XhtmlEntitySets",
+      "XhtmlWriters"
+    ],
+    [
+      "ComEnumRect",
+      "CommV24",
+      "Ports",
+      "WinDlg",
+      "WinGLAux",
+      "WinGLUtil",
+      "WinMM",
+      "WinNet",
+      "WinOle"
+    ],
+    [
+      "ComKoala",
+      "ComKoalaDll",
+      "ComKoalaExe",
+      "ComTools",
+      "Kernel",
+      "Printers",
+      "WinCtl",
+      "WinOleAut",
+      "WinOleDlg",
+      "WinRpc"
+    ],
+    [
+      "ComEnum",
+      "ComObject",
+      "ComPhoneBook",
+      "ComPhoneBookActiveX",
+      "Dates",
+      "Files",
+      "Log",
+      "Services",
+      "Strings",
+      "WinOleCtl"
+    ],
+    [
+      "CtlT",
+      "Dialog",
+      "HostFiles",
+      "Integers",
+      "Meta",
+      "StdLoader",
+      "XhtmlStdFileWriters"
+    ],
+    [
+      "CommStreams",
+      "CtlC",
+      "HostPackedFiles",
+      "HostRegistry",
+      "ObxDialog",
+      "ObxPhoneUI",
+      "ObxPhoneUI1",
+      "ObxUnitConv",
+      "SqlDrivers",
+      "Stores"
+    ],
+    [
+      "CommTCP",
+      "Converters",
+      "CtlADODB",
+      "CtlDAO35",
+      "CtlDAO36",
+      "CtlExcel5",
+      "CtlOffice",
+      "CtlOfficeBinder",
+      "CtlStdType",
+      "HostFonts",
+      "ObxStores",
+      "Sequencers",
+      "SqlDB",
+      "SqlObxDriv"
+    ],
+    [
+      "CtlAccess8",
+      "CtlGraph8",
+      "CtlGraph9",
+      "CtlMSForms",
+      "CtlOutlook9",
+      "CtlVBIDE",
+      "HostPorts",
+      "Models",
+      "SqlObxDB",
+      "SqlObxExt",
+      "SqlObxInit"
+    ],
+    [
+      "CtlAccess9",
+      "CtlExcel8",
+      "CtlExcel9",
+      "CtlOutlook8",
+      "CtlPowerPoint8",
+      "CtlPowerPoint9",
+      "CtlWord8",
+      "CtlWord9",
+      "SqlObxUI",
+      "Views"
+    ],
+    [
+      "Controllers",
+      "Mechanisms",
+      "ObxBitmap",
+      "ObxFileTree",
+      "ObxViews0",
+      "OleStorage",
+      "Printing",
+      "StdCFrames",
+      "StdInterpreter"
+    ],
+    [
+      "ObxTrap",
+      "Properties"
+    ],
+    [
+      "Containers",
+      "ObxBlackBox",
+      "ObxCalc",
+      "ObxControls",
+      "ObxLines",
+      "ObxOmosi",
+      "ObxPatterns",
+      "ObxScroll",
+      "ObxTickers",
+      "ObxViews1",
+      "ObxViews10",
+      "ObxViews11",
+      "ObxViews12",
+      "ObxViews13",
+      "ObxViews14",
+      "ObxViews2",
+      "ObxViews3",
+      "ObxViews4",
+      "ObxViews5",
+      "ObxViews6",
+      "StdLogos",
+      "StdScrollers"
+    ],
+    [
+      "Documents",
+      "FormModels",
+      "OleData",
+      "StdViewSizer",
+      "TextModels"
+    ],
+    [
+      "Config",
+      "FormViews",
+      "StdClocks",
+      "TextMappers",
+      "TextRulers",
+      "Windows",
+      "XhtmlTextTableMarkers"
+    ],
+    [
+      "Controls",
+      "DevTypeLibs",
+      "FormControllers",
+      "HostMechanisms",
+      "StdDialog",
+      "StdTabViews",
+      "TextSetters"
+    ],
+    [
+      "DevInspector",
+      "HostTabFrames",
+      "HostWindows",
+      "ObxButtons",
+      "ObxContIter",
+      "ObxControlShifter",
+      "ObxCtrls",
+      "ObxFldCtrls",
+      "StdApi",
+      "TextViews"
+    ],
+    [
+      "DevComInterfaceGen",
+      "DevSelectors",
+      "HostBitmaps",
+      "HostCFrames",
+      "HostClipboard",
+      "HostPrinters",
+      "ObxActions",
+      "ObxAddress1",
+      "ObxAddress2",
+      "ObxAscii",
+      "ObxConv",
+      "ObxGraphs",
+      "ObxHello1",
+      "ObxOpen0",
+      "ObxOpen1",
+      "ObxPDBRep0",
+      "ObxPDBRep1",
+      "ObxPDBRep2",
+      "ObxTwins",
+      "SqlControls",
+      "SqlObxTab",
+      "SqlObxViews",
+      "SqlOdbc",
+      "SqlOdbc3",
+      "StdCmds",
+      "StdHeaders",
+      "StdTables",
+      "TextControllers",
+      "XYplane"
+    ],
+    [
+      "DevMarkers",
+      "DevReferences",
+      "FormCmds",
+      "FormGen",
+      "HostDialog",
+      "HostMail",
+      "HostPictures",
+      "HostTextConv",
+      "In",
+      "ObxCaps",
+      "ObxCubes",
+      "ObxDb",
+      "ObxFact",
+      "ObxLookup0",
+      "ObxLookup1",
+      "ObxMMerge",
+      "ObxRatCalc",
+      "ObxTabs",
+      "SqlBrowser",
+      "SqlObxGen",
+      "StdCoder",
+      "StdFolds",
+      "StdLinks",
+      "StdStamps",
+      "TextCmds"
+    ],
+    [
+      "DevAlienTool",
+      "DevLinkChk",
+      "DevRBrowser",
+      "DevSearch",
+      "HostCmds",
+      "ObxLinks",
+      "ObxOrders",
+      "ObxPDBRep3",
+      "StdDebug",
+      "StdETHConv",
+      "StdLog",
+      "XhtmlExporter"
+    ],
+    [
+      "ComAggregate",
+      "ComConnect",
+      "ComKoalaTst",
+      "ComPhoneBookClient",
+      "CommObxStreamsClient",
+      "CommObxStreamsServer",
+      "DevCPM",
+      "DevCommanders",
+      "DevProfiler",
+      "HostMenus",
+      "ObxCount0",
+      "ObxCount1",
+      "ObxHello0",
+      "ObxLabelLister",
+      "ObxPDBRep4",
+      "ObxParCmd",
+      "ObxPi",
+      "ObxTabViews",
+      "ObxWordEdit",
+      "ObxWrappers",
+      "Out"
+    ],
+    [
+      "DevCPT",
+      "DevCmds",
+      "DevDebug",
+      "DevDependencies",
+      "DevLinker",
+      "DevPacker",
+      "DevSubTool",
+      "Init",
+      "ObxFern",
+      "OleServer",
+      "StdMenuTool"
+    ],
+    [
+      "DevBrowser",
+      "DevCPB",
+      "DevCPE",
+      "DevCPH",
+      "DevCPS",
+      "DevHeapSpy",
+      "DevMsgSpy",
+      "OleClient"
+    ],
+    [
+      "DevAnalyzer",
+      "DevCPL486",
+      "DevCPP",
+      "DevComDebug",
+      "OleViews"
+    ],
+    [
+      "DevCPC486",
+      "ObxExcel"
+    ],
+    [
+      "DevCPV486"
+    ],
+    [
+      "DevCompiler"
+    ]
+  ],
+  "subsystem_deps": {
+    "Com": [
+      "Std",
+      "System",
+      "Win"
+    ],
+    "Comm": [
+      "Std",
+      "System",
+      "Text",
+      "Win"
+    ],
+    "Ctl": [
+      "System",
+      "Win"
+    ],
+    "Dev": [
+      "Form",
+      "Host",
+      "Std",
+      "System",
+      "Text",
+      "Win"
+    ],
+    "Form": [
+      "Std",
+      "System"
+    ],
+    "Host": [
+      "Ole",
+      "Std",
+      "System",
+      "Text",
+      "Win"
+    ],
+    "Obx": [
+      "Ctl",
+      "Form",
+      "Host",
+      "Ole",
+      "Std",
+      "System",
+      "Text",
+      "Win"
+    ],
+    "Ole": [
+      "Ctl",
+      "Host",
+      "Std",
+      "System",
+      "Text",
+      "Win"
+    ],
+    "Sql": [
+      "Host",
+      "System",
+      "Text",
+      "Win"
+    ],
+    "Std": [
+      "Form",
+      "Host",
+      "System",
+      "Text"
+    ],
+    "System": [
+      "Host",
+      "Ole",
+      "Std",
+      "Text",
+      "Win"
+    ],
+    "Text": [
+      "System"
+    ],
+    "Xhtml": [
+      "Std",
+      "System",
+      "Text"
+    ]
+  },
+  "subsystem_counts": {
+    "Com": 13,
+    "Comm": 5,
+    "Ctl": 23,
+    "Dev": 34,
+    "Form": 5,
+    "Host": 18,
+    "Obx": 74,
+    "Ole": 5,
+    "Sql": 15,
+    "Std": 21,
+    "System": 32,
+    "Text": 7,
+    "Win": 15,
+    "Xhtml": 5
+  }
+}

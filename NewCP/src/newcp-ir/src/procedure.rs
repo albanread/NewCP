@@ -423,6 +423,15 @@ fn render_instr(instr: &Instr) -> String {
         New { dst, record_ty } => {
             format!("{} : ptr = new {}", dst.render(), record_ty.render())
         }
+        NewArray { dst, elem_ty, len } => {
+            format!(
+                "{} : ptr<{}> = new_array {}[{}]",
+                dst.render(),
+                elem_ty.render(),
+                elem_ty.render(),
+                len.render(),
+            )
+        }
         StoreResult { value } => {
             format!("store result, {}", value.render())
         }

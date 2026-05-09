@@ -398,7 +398,138 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
             Instr::MethodCall { dst, descriptor, slot, args, ret_ty } => {
                 self.emit_method_call(*dst, descriptor, *slot, args, ret_ty, value_map)
             }
+            Instr::NewArray { dst, elem_ty, len } => {
+                self.emit_new_array(*dst, elem_ty, len, value_map)
+            }
         }
+    }
+
+    /// `NEW(p, len)` for `POINTER TO ARRAY OF T`.
+    ///
+    /// Layout:
+    /// ```text
+    ///   alloc_base + 0..8   : header (i64 length)
+    ///   alloc_base + 8..    : data (len * sizeof(elem_ty) bytes)
+    /// ```
+    /// Returns `alloc_base + 8` so callers index directly through the
+    /// element pointer; `LEN(p^)` reads `*(p - 8)`.
+    fn emit_new_array(
+        &mut self,
+        dst: TempId,
+        elem_ty: &IrType,
+        len: &IrValue,
+        value_map: &mut ValueMap<'ctx>,
+    ) -> Result<(), CodegenError> {
+        let i64_ty = self.cg.context.i64_type();
+        let ptr_ty = self.cg.context.ptr_type(inkwell::AddressSpace::default());
+
+        // Resolve element-type size in bytes via LLVM's size_of.
+        let elem_llvm_ty = self.lower_basic_type(elem_ty)?;
+        let elem_size: inkwell::values::IntValue<'ctx> = match elem_llvm_ty {
+            inkwell::types::BasicTypeEnum::IntType(t) => t.size_of(),
+            inkwell::types::BasicTypeEnum::FloatType(t) => t.size_of(),
+            inkwell::types::BasicTypeEnum::PointerType(t) => t.size_of(),
+            inkwell::types::BasicTypeEnum::StructType(t) => t.size_of().ok_or_else(|| {
+                CodegenError::Unsupported {
+                    stage: "emit_new_array",
+                    detail: format!("struct element {elem_ty:?} has no size"),
+                }
+            })?,
+            inkwell::types::BasicTypeEnum::ArrayType(t) => t.size_of().ok_or_else(|| {
+                CodegenError::Unsupported {
+                    stage: "emit_new_array",
+                    detail: format!("array element {elem_ty:?} has no size"),
+                }
+            })?,
+            other => {
+                return Err(CodegenError::Unsupported {
+                    stage: "emit_new_array",
+                    detail: format!("element type {other:?} has no computable size"),
+                });
+            }
+        };
+
+        // total_bytes = len * elem_size + 8 (header)
+        let len_val = self.resolve_basic_value(len, value_map)?.into_int_value();
+        let len_i64 = if len_val.get_type().get_bit_width() == 64 {
+            len_val
+        } else {
+            self.cg
+                .builder
+                .build_int_z_extend(len_val, i64_ty, "len_zx")
+                .map_err(|e| CodegenError::Unsupported {
+                    stage: "emit_new_array",
+                    detail: e.to_string(),
+                })?
+        };
+        let bytes_for_data = self
+            .cg
+            .builder
+            .build_int_mul(len_i64, elem_size, "data_bytes")
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "emit_new_array",
+                detail: e.to_string(),
+            })?;
+        let header_bytes = i64_ty.const_int(8, false);
+        let total_bytes = self
+            .cg
+            .builder
+            .build_int_add(bytes_for_data, header_bytes, "total_bytes")
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "emit_new_array",
+                detail: e.to_string(),
+            })?;
+
+        // Call __newcp_sys_new(total_bytes) -> ptr
+        let sys_new = self
+            .cg
+            .module
+            .get_function("__newcp_sys_new")
+            .ok_or_else(|| CodegenError::Unsupported {
+                stage: "emit_new_array",
+                detail: "__newcp_sys_new was not declared during planning".to_string(),
+            })?;
+        let alloc = self
+            .cg
+            .builder
+            .build_call(sys_new, &[total_bytes.into()], "dyn_arr_alloc")
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "emit_new_array",
+                detail: e.to_string(),
+            })?;
+        let alloc_ptr = alloc
+            .try_as_basic_value()
+            .unwrap_basic()
+            .into_pointer_value();
+
+        // Store len at offset 0 (the header).
+        self.cg
+            .builder
+            .build_store(alloc_ptr, len_i64)
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "emit_new_array",
+                detail: e.to_string(),
+            })?;
+
+        // Return alloc_ptr + 8 (skip the header) as the user-visible pointer.
+        let i8_ty = self.cg.context.i8_type();
+        let header_offset = i64_ty.const_int(8, false);
+        let data_ptr = unsafe {
+            self.cg
+                .builder
+                .build_gep(i8_ty, alloc_ptr, &[header_offset], &dst.render())
+                .map_err(|e| CodegenError::Unsupported {
+                    stage: "emit_new_array",
+                    detail: e.to_string(),
+                })?
+        };
+        // The IR-level type for the result is `ptr` (just an opaque pointer
+        // at LLVM level; the caller's IR type tracks the element type).
+        value_map
+            .temp_values
+            .insert(dst, data_ptr.into());
+        let _ = ptr_ty; // silence unused
+        Ok(())
     }
 
     /// Emit a dynamic dispatch call through the object's TypeDesc vtable.

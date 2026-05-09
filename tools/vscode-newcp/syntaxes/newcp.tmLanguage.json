@@ -1,0 +1,161 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Component Pascal",
+  "scopeName": "source.newcp",
+  "fileTypes": ["cp", "Mod"],
+  "patterns": [
+    { "include": "#comment" },
+    { "include": "#strings" },
+    { "include": "#char-literal" },
+    { "include": "#numbers" },
+    { "include": "#module-decl" },
+    { "include": "#procedure-decl" },
+    { "include": "#keywords" },
+    { "include": "#types" },
+    { "include": "#builtins" },
+    { "include": "#constants" },
+    { "include": "#operators" },
+    { "include": "#export-mark" },
+    { "include": "#identifiers" }
+  ],
+  "repository": {
+    "comment": {
+      "patterns": [
+        {
+          "name": "comment.block.newcp",
+          "begin": "\\(\\*",
+          "end": "\\*\\)",
+          "patterns": [
+            { "include": "#comment" }
+          ]
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.newcp",
+          "begin": "\"",
+          "end": "\"|$",
+          "patterns": [
+            { "name": "constant.character.escape.newcp", "match": "\\\\." }
+          ]
+        },
+        {
+          "name": "string.quoted.single.newcp",
+          "begin": "'",
+          "end": "'|$",
+          "patterns": [
+            { "name": "constant.character.escape.newcp", "match": "\\\\." }
+          ]
+        }
+      ]
+    },
+    "char-literal": {
+      "name": "constant.character.newcp",
+      "match": "\\b[0-9][0-9A-Fa-f]*X\\b"
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.hex.newcp",
+          "match": "\\b[0-9][0-9A-Fa-f]*H\\b"
+        },
+        {
+          "name": "constant.numeric.float.newcp",
+          "match": "\\b[0-9]+\\.[0-9]+([EeDd][+-]?[0-9]+)?\\b"
+        },
+        {
+          "name": "constant.numeric.integer.newcp",
+          "match": "\\b[0-9]+\\b"
+        }
+      ]
+    },
+    "module-decl": {
+      "patterns": [
+        {
+          "match": "\\b(DEFINITION\\s+MODULE|MODULE)\\s+([A-Za-z_][A-Za-z0-9_]*)",
+          "captures": {
+            "1": { "name": "keyword.control.module.newcp" },
+            "2": { "name": "entity.name.namespace.newcp" }
+          }
+        },
+        {
+          "match": "\\b(IMPORT)\\b",
+          "captures": {
+            "1": { "name": "keyword.control.import.newcp" }
+          }
+        }
+      ]
+    },
+    "procedure-decl": {
+      "patterns": [
+        {
+          "match": "\\b(PROCEDURE)\\s*(\\^)?\\s*\\(?\\s*([A-Za-z_][A-Za-z0-9_]*)?\\s*\\)?\\s*([A-Za-z_][A-Za-z0-9_]*)?(\\*|-)?",
+          "captures": {
+            "1": { "name": "keyword.declaration.procedure.newcp" },
+            "2": { "name": "keyword.operator.forward.newcp" },
+            "3": { "name": "variable.parameter.receiver.newcp" },
+            "4": { "name": "entity.name.function.newcp" },
+            "5": { "name": "storage.modifier.export.newcp" }
+          }
+        }
+      ]
+    },
+    "keywords": {
+      "name": "keyword.control.newcp",
+      "match": "\\b(ABSTRACT|ARRAY|BEGIN|BY|CASE|CLOSE|CONST|DEFINITION|DIV|DO|ELSE|ELSIF|EMPTY|END|EXIT|EXTENSIBLE|FOR|IF|IMPORT|IN|IS|LIMITED|LOOP|MOD|MODULE|OBJECT|OF|OR|OUT|POINTER|PROCEDURE|RECORD|REPEAT|RETURN|THEN|TO|TYPE|UNTIL|VAR|WHILE|WITH)\\b"
+    },
+    "types": {
+      "name": "support.type.primitive.newcp",
+      "match": "\\b(BOOLEAN|BYTE|CHAR|SHORTCHAR|SHORTINT|INTEGER|LONGINT|INTSHORT|REAL|SHORTREAL|SET|ANYREC|ANYPTR)\\b"
+    },
+    "builtins": {
+      "name": "support.function.builtin.newcp",
+      "match": "\\b(ABS|ASH|ASSERT|BITS|CAP|CHR|COPY|DEC|ENTIER|EXCL|HALT|INC|INCL|LEN|LONG|MAX|MIN|ODD|ORD|SHORT|SIZE)\\b"
+    },
+    "constants": {
+      "name": "constant.language.newcp",
+      "match": "\\b(TRUE|FALSE|NIL|INF)\\b"
+    },
+    "operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.assignment.newcp",
+          "match": ":="
+        },
+        {
+          "name": "keyword.operator.comparison.newcp",
+          "match": "<=|>=|#|<|>|="
+        },
+        {
+          "name": "keyword.operator.range.newcp",
+          "match": "\\.\\."
+        },
+        {
+          "name": "keyword.operator.arithmetic.newcp",
+          "match": "[+\\-*/&~]"
+        },
+        {
+          "name": "punctuation.separator.newcp",
+          "match": "[,;:.|^]"
+        }
+      ]
+    },
+    "export-mark": {
+      "match": "([A-Za-z_][A-Za-z0-9_]*)(\\*|-)(?=\\s*[:,;()=)\\[]|\\s*$)",
+      "captures": {
+        "1": { "name": "entity.name.newcp" },
+        "2": { "name": "storage.modifier.export.newcp" }
+      }
+    },
+    "identifiers": {
+      "patterns": [
+        {
+          "name": "variable.other.newcp",
+          "match": "\\b[A-Za-z_][A-Za-z0-9_]*\\b"
+        }
+      ]
+    }
+  }
+}

@@ -246,6 +246,52 @@ own small project.
 tree, concatenates text fragments in document order, and respects
 `attr` highlight runs as additional text. ~100 lines of Python.
 
+### 12. `SHORT()` IR lowering doesn't reflect NewCP's collapsed integer widths
+
+**Where**: `newcp-ir` `lower.rs::lower_builtin_expr` "SHORT" arm.
+
+**Workaround**: `SHORT(I64)` always emits a real `i64 → i32` truncation
+in IR. NewCP maps both `LONGINT` and `INTEGER` to `i64`, so a
+BlackBox-style `SHORT(longint_expr)` (semantically `LongInt → Integer`,
+both `i64` in NewCP) erroneously truncates to `i32`. This shows up as
+LLVM verifier failures at call sites whose parameter type is `INTEGER`
+(`i64`) but whose argument has been silently narrowed.
+
+**Why deferred**: SHORT's intent is sema-level, but the IR layer has no
+sema-type-of-expression accessor today. A proper fix needs to plumb the
+sema type of the argument expression into the lowerer's SHORT arm so it
+can produce a no-op when narrowing between two semantic levels that
+share an IR width (LongInt↔Integer).
+
+**Closing it**: add a small `sema_type_of_expr` helper on `LowerCtx`
+that infers the semantic type of an `Expr` against `module_symbols` /
+local symbols (a thin re-implementation of sema's `infer_expr_type`,
+or a public re-export from sema). At the SHORT arm, consult that
+helper to choose the right IR cast — or no cast at all when both
+sides land on the same IR width.
+
+### 13. `Mod/Integers.cp` blocked on SHORT-chain mismatch (port stalled)
+
+**Where**: `Mod/Integers.cp` (full BlackBox bignum module, lifted but
+not yet compiling end-to-end).
+
+**Workaround**: source committed; sema accepts it (after fixes in this
+landing for type-alias resolution into builtins, OUT-pointer-to-array
+indexing, value-mode `Buffer` params switched to `IN` with explicit
+local copies in `KStep`/`AddToBuf`, MAX/MIN with user type alias args).
+LLVM emit fails on calls like `New(SHORT(... + ENTIER(...)))` because
+of item 12 above (the `SHORT` truncates `i64`→`i32` at IR level even
+though `New`'s parameter is also `i64`).
+
+**Why deferred**: the right fix is item 12 — making SHORT semantically
+aware. Hacking the source to drop the SHORTs would diverge it from
+the BlackBox original and lose the type-narrowing intent that other
+back-ends rely on.
+
+**Closing it**: implement item 12, then re-run `check-mod` /
+`dump-llvm` and add `Integers` tests covering `Sum`, `Difference`,
+`Product`, `Quotient`, `Power`, `ConvertFromString`/`ConvertToString`.
+
 ---
 
 ## Conventions for adding entries

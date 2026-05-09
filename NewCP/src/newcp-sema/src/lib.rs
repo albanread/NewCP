@@ -870,10 +870,15 @@ impl<'a> Analyzer<'a> {
         }
 
         // Build a combined symbol table for walking the nested body.
-        let combined_symbols: Vec<SemanticSymbol> = local_symbols
+        // Parent locals come first so that own params/locals — appended
+        // last — appear last in the vector. `lookup_symbol` iterates in
+        // reverse, so the nested proc's own bindings are found first and
+        // correctly shadow same-named parent params (e.g. nested
+        // `Byte(x: INTEGER)` inside `Externalize(.., x: Integer)`).
+        let combined_symbols: Vec<SemanticSymbol> = parent_locals
             .iter()
             .cloned()
-            .chain(parent_locals.iter().cloned())
+            .chain(local_symbols.iter().cloned())
             .collect();
 
         if let Some(body) = &nested.body {
@@ -1977,6 +1982,32 @@ impl<'a> Analyzer<'a> {
         })
     }
 
+    fn resolve_alias_to_builtin_target(&self, name: &str) -> Option<BuiltinType> {
+        let mut current = name.to_string();
+        for _ in 0..16 {
+            let decl = self
+                .module
+                .declarations
+                .iter()
+                .find_map(|declaration| match declaration {
+                    Declaration::Type(type_decl) if type_decl.name.name == current => {
+                        Some(type_decl)
+                    }
+                    _ => None,
+                })?;
+            match &decl.ty {
+                TypeExpr::QualIdent { ident, .. } if ident.module.is_none() => {
+                    if let Some(builtin) = builtin_type_by_name(&ident.name) {
+                        return Some(builtin);
+                    }
+                    current = ident.name.clone();
+                }
+                _ => return None,
+            }
+        }
+        None
+    }
+
     fn find_record_decl(&self, type_name: &str) -> Option<&'a TypeDecl> {
         self.module.declarations.iter().find_map(|declaration| match declaration {
             Declaration::Type(type_decl) if type_decl.name.name == type_name => Some(type_decl),
@@ -2160,6 +2191,16 @@ impl<'a> Analyzer<'a> {
                 return SemanticType::Builtin(builtin);
             }
             if scope_type_names.contains(&ident.name) {
+                // CP §6.3: a TYPE T = U declaration where U is a basic type
+                // (INTEGER, SHORTINT, …) makes T a transparent alias for U.
+                // Resolve to the builtin so downstream numeric checks (binary
+                // operators, ARRAY indices, MOD/DIV) see the underlying type
+                // rather than an opaque named handle. Record/array/pointer
+                // aliases keep their Named identity to preserve nominal
+                // dispatch and assignment compatibility.
+                if let Some(builtin) = self.resolve_alias_to_builtin_target(&ident.name) {
+                    return SemanticType::Builtin(builtin);
+                }
                 return SemanticType::Named {
                     module: None,
                     name: ident.name.clone(),
@@ -3757,8 +3798,19 @@ impl<'a> Analyzer<'a> {
                         }
                     }
                 }
-                match base {
-                    SemanticType::Array { element_type, .. } => Some((**element_type).clone()),
+                // Resolve Named aliases (e.g. `Bag = POINTER TO ARRAY OF
+                // SHORTINT` — base shows up as `Named("Bag")`). Then
+                // auto-dereference through pointer-to-array (CP §6.4
+                // lets `p[i]` mean `p^[i]`).
+                let resolved = self.resolve_named_type_one_level(base, local_symbols);
+                let resolved = match &resolved {
+                    SemanticType::Pointer { target, .. } => {
+                        self.resolve_named_type_one_level(target, local_symbols)
+                    }
+                    _ => resolved,
+                };
+                match resolved {
+                    SemanticType::Array { element_type, .. } => Some(*element_type),
                     _ => {
                         diagnostics.push(make_diagnostic(
                             procedure_name,
@@ -3770,34 +3822,40 @@ impl<'a> Analyzer<'a> {
                     }
                 }
             }
-            Selector::Dereference => match base {
-                SemanticType::Pointer { target, .. } => Some((**target).clone()),
-                SemanticType::Procedure(sig) => {
-                    // Super-call notation: v.M^ — dereference after a method name invokes the
-                    // inherited (base) implementation.  Reject ABSTRACT / EMPTY targets.
-                    if matches!(sig.flavor, Some(MethodFlavor::Abstract) | Some(MethodFlavor::Empty)) {
+            Selector::Dereference => {
+                // Resolve Named aliases so `Bag^` works when
+                // `Bag = POINTER TO ARRAY OF T` (the base's surface
+                // type is `Named("Bag")`).
+                let resolved = self.resolve_named_type_one_level(base, local_symbols);
+                match resolved {
+                    SemanticType::Pointer { target, .. } => Some(*target),
+                    SemanticType::Procedure(sig) => {
+                        // Super-call notation: v.M^ — dereference after a method name invokes the
+                        // inherited (base) implementation.  Reject ABSTRACT / EMPTY targets.
+                        if matches!(sig.flavor, Some(MethodFlavor::Abstract) | Some(MethodFlavor::Empty)) {
+                            diagnostics.push(make_diagnostic(
+                                procedure_name,
+                                line,
+                                column,
+                                format!(
+                                    "super-call is not permitted on {} methods",
+                                    method_flavor_name(sig.flavor.unwrap()),
+                                ),
+                            ));
+                        }
+                        Some(base.clone())
+                    }
+                    // Imported / unresolved types may well be pointer types — suppress the error.
+                    SemanticType::Named { kind: NamedTypeKind::Imported | NamedTypeKind::Unresolved, .. } => None,
+                    _ => {
                         diagnostics.push(make_diagnostic(
                             procedure_name,
                             line,
                             column,
-                            format!(
-                                "super-call is not permitted on {} methods",
-                                method_flavor_name(sig.flavor.unwrap()),
-                            ),
+                            format!("dereference requires a pointer, found {}", render_semantic_type(base)),
                         ));
+                        None
                     }
-                    Some(base.clone())
-                }
-                // Imported / unresolved types may well be pointer types — suppress the error.
-                SemanticType::Named { kind: NamedTypeKind::Imported | NamedTypeKind::Unresolved, .. } => None,
-                _ => {
-                    diagnostics.push(make_diagnostic(
-                        procedure_name,
-                        line,
-                        column,
-                        format!("dereference requires a pointer, found {}", render_semantic_type(base)),
-                    ));
-                    None
                 }
             },
             Selector::TypeGuard(guard) => self.validate_designator_type_guard(

@@ -19,6 +19,7 @@ mod d2d;
 mod d3d;
 mod dwrite;
 mod executor;
+mod font_metrics;
 mod log_view;
 mod menu;
 pub(crate) mod redit;
