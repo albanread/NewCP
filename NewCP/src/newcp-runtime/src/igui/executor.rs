@@ -227,6 +227,22 @@ pub fn execute(batch: &PaneBatch) -> Result<bool, IGuiError> {
             | SurfaceCmd::PointAtCharIndex { .. } => {
                 eprintln!("[igui-executor] text command on dormant DC path — ignored");
             }
+            // Phase 5 — same dormant story.
+            SurfaceCmd::PushClipRect { .. }
+            | SurfaceCmd::PopClipRect
+            | SurfaceCmd::PushOffset { .. }
+            | SurfaceCmd::PopOffset
+            | SurfaceCmd::ScrollRect { .. }
+            | SurfaceCmd::SaveRect { .. }
+            | SurfaceCmd::RestoreRect { .. }
+            | SurfaceCmd::InstallChildViewBounds { .. }
+            | SurfaceCmd::MarkRect { .. }
+            | SurfaceCmd::Caret { .. }
+            | SurfaceCmd::SelectionRange { .. }
+            | SurfaceCmd::FocusRing { .. }
+            | SurfaceCmd::DrawPath { .. } => {
+                eprintln!("[igui-executor] Phase 5 command on dormant DC path — ignored");
+            }
         }
     }
 

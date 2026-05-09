@@ -43,6 +43,59 @@ pub struct Point {
     pub y: f32,
 }
 
+// ─── Phase 5: marks, paths, strokes ──────────────────────────────────
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum MarkMode {
+    Highlight,
+    Invert,
+    Dim25,
+    Dim50,
+    Dim75,
+}
+
+#[derive(Debug, Clone)]
+pub enum PathCmd {
+    MoveTo(Point),
+    LineTo(Point),
+    QuadTo { ctrl: Point, end: Point },
+    CubicTo { c1: Point, c2: Point, end: Point },
+    /// Arc segment ending at `end`. Matches `D2D1_ARC_SEGMENT`
+    /// fields one-to-one. `radius` is per-axis to support elliptical
+    /// arcs; for a circular arc, use the same value for both.
+    ArcTo {
+        radius: Point,
+        rotation_rad: f32,
+        large_arc: bool,
+        sweep_clockwise: bool,
+        end: Point,
+    },
+    Close,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum LineCap {
+    Flat,
+    Round,
+    Square,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum LineJoin {
+    Miter,
+    Round,
+    Bevel,
+}
+
+#[derive(Debug, Clone)]
+pub struct StrokeStyle {
+    pub half_thickness: f32,
+    pub line_cap: LineCap,
+    pub line_join: LineJoin,
+    pub miter_limit: f32,
+    pub dash_pattern: Option<Vec<f32>>,
+}
+
 // ─── Phase 4: text descriptors ───────────────────────────────────────
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
@@ -173,6 +226,57 @@ pub enum SurfaceCmd {
         run: TextRun,
         char_index: u32,
     },
+    // ─── Phase 5: composition + overlays + paths ───────────────────
+    PushClipRect {
+        rect: Rect,
+    },
+    PopClipRect,
+    PushOffset {
+        dx: f32,
+        dy: f32,
+    },
+    PopOffset,
+    ScrollRect {
+        rect: Rect,
+        dx: f32,
+        dy: f32,
+    },
+    /// 8 transient slots per pane. SaveRect captures the pane's
+    /// pixels under `rect` into `slot`; RestoreRect paints them back.
+    SaveRect {
+        slot: u8,
+        rect: Rect,
+    },
+    RestoreRect {
+        slot: u8,
+    },
+    InstallChildViewBounds {
+        child_view_id: u32,
+        rect: Rect,
+    },
+    MarkRect {
+        rect: Rect,
+        mode: MarkMode,
+    },
+    Caret {
+        rect: Rect,
+        color: Rgba,
+    },
+    SelectionRange {
+        rect: Rect,
+        color: Rgba,
+    },
+    FocusRing {
+        rect: Rect,
+        corner_radius: f32,
+        half_thickness: f32,
+        color: Rgba,
+    },
+    DrawPath {
+        commands: Vec<PathCmd>,
+        fill: Option<Rgba>,
+        stroke: Option<(StrokeStyle, Rgba)>,
+    },
 }
 
 #[derive(Debug, Clone)]
@@ -256,6 +360,40 @@ pub fn push(cmd: SurfaceCmd) -> bool {
 
 pub fn finish() -> Option<PaneBatch> {
     CURRENT.with(|slot| slot.borrow_mut().take())
+}
+
+// ─── Phase 5: path builder ──────────────────────────────────────────
+
+thread_local! {
+    /// In-progress path commands accumulated by `path_*` calls until
+    /// the matching `path_finish_*` call wraps them in a
+    /// `SurfaceCmd::DrawPath` and pushes it onto the active batch.
+    static PATH: RefCell<Vec<PathCmd>> = const { RefCell::new(Vec::new()) };
+}
+
+pub fn path_begin() {
+    PATH.with(|c| c.borrow_mut().clear());
+}
+
+pub fn path_push(cmd: PathCmd) {
+    PATH.with(|c| c.borrow_mut().push(cmd));
+}
+
+/// Take the current path command stream and emit a DrawPath into the
+/// active batch with the given fill / stroke options.
+pub fn path_finish(
+    fill: Option<Rgba>,
+    stroke: Option<(StrokeStyle, Rgba)>,
+) -> bool {
+    let commands = PATH.with(|c| std::mem::take(&mut *c.borrow_mut()));
+    if commands.is_empty() {
+        return false;
+    }
+    push(SurfaceCmd::DrawPath {
+        commands,
+        fill,
+        stroke,
+    })
 }
 
 #[allow(dead_code)] // used by the GUI thread when a child window closes

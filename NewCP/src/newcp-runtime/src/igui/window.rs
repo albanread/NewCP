@@ -31,7 +31,8 @@ use windows::Win32::UI::WindowsAndMessaging::{
     SW_SHOW, WHEEL_DELTA, WM_CHAR, WM_CLOSE, WM_DESTROY, WM_KEYDOWN, WM_KEYUP,
     WM_KILLFOCUS, WM_LBUTTONDOWN, WM_LBUTTONUP, WM_MBUTTONDOWN, WM_MBUTTONUP, WM_MDICREATE,
     WM_MOUSEMOVE, WM_MOUSEWHEEL, WM_RBUTTONDOWN, WM_RBUTTONUP, WM_SETFOCUS, WM_SIZE,
-    WM_SYSKEYDOWN, WM_SYSKEYUP, WM_USER, WNDCLASSEXW, WNDCLASS_STYLES, WS_CHILD,
+    WM_SYSCOLORCHANGE, WM_SYSKEYDOWN, WM_SYSKEYUP, WM_THEMECHANGED, WM_USER,
+    WNDCLASSEXW, WNDCLASS_STYLES, WS_CHILD,
     WS_CLIPCHILDREN, WS_EX_APPWINDOW, WS_HSCROLL, WS_OVERLAPPEDWINDOW, WS_VISIBLE, WS_VSCROLL,
 };
 
@@ -160,6 +161,7 @@ where
     }
 
     channels::install();
+    super::system_colors::sample();
 
     let _ = unsafe { ShowWindow(hwnd, SW_SHOW) };
 
@@ -318,6 +320,10 @@ unsafe extern "system" fn frame_wnd_proc(
                 child_id: FRAME_CHILD_ID,
                 gained: false,
             });
+            unsafe { DefFrameProcW(hwnd, Some(mdi), msg, wparam, lparam) }
+        }
+        WM_SYSCOLORCHANGE | WM_THEMECHANGED => {
+            super::system_colors::refresh_and_notify();
             unsafe { DefFrameProcW(hwnd, Some(mdi), msg, wparam, lparam) }
         }
         WM_CLOSE => {

@@ -350,6 +350,290 @@ pub extern "C" fn igui_emit_draw_arc(
     });
 }
 
+// ─── Phase 5: composition + overlays + paths + system colors ─────
+
+#[unsafe(export_name = "iGui.EmitPushClipRect")]
+pub extern "C" fn igui_emit_push_clip_rect(x0: f64, y0: f64, x1: f64, y1: f64) {
+    batch_mod::push(SurfaceCmd::PushClipRect {
+        rect: Rect {
+            x0: x0 as f32, y0: y0 as f32, x1: x1 as f32, y1: y1 as f32,
+        },
+    });
+}
+
+#[unsafe(export_name = "iGui.EmitPopClipRect")]
+pub extern "C" fn igui_emit_pop_clip_rect() {
+    batch_mod::push(SurfaceCmd::PopClipRect);
+}
+
+#[unsafe(export_name = "iGui.EmitPushOffset")]
+pub extern "C" fn igui_emit_push_offset(dx: f64, dy: f64) {
+    batch_mod::push(SurfaceCmd::PushOffset {
+        dx: dx as f32,
+        dy: dy as f32,
+    });
+}
+
+#[unsafe(export_name = "iGui.EmitPopOffset")]
+pub extern "C" fn igui_emit_pop_offset() {
+    batch_mod::push(SurfaceCmd::PopOffset);
+}
+
+#[unsafe(export_name = "iGui.EmitScrollRect")]
+pub extern "C" fn igui_emit_scroll_rect(
+    x0: f64, y0: f64, x1: f64, y1: f64, dx: f64, dy: f64,
+) {
+    batch_mod::push(SurfaceCmd::ScrollRect {
+        rect: Rect {
+            x0: x0 as f32, y0: y0 as f32, x1: x1 as f32, y1: y1 as f32,
+        },
+        dx: dx as f32,
+        dy: dy as f32,
+    });
+}
+
+#[unsafe(export_name = "iGui.EmitSaveRect")]
+pub extern "C" fn igui_emit_save_rect(slot: i32, x0: f64, y0: f64, x1: f64, y1: f64) {
+    batch_mod::push(SurfaceCmd::SaveRect {
+        slot: slot.clamp(0, 7) as u8,
+        rect: Rect {
+            x0: x0 as f32, y0: y0 as f32, x1: x1 as f32, y1: y1 as f32,
+        },
+    });
+}
+
+#[unsafe(export_name = "iGui.EmitRestoreRect")]
+pub extern "C" fn igui_emit_restore_rect(slot: i32) {
+    batch_mod::push(SurfaceCmd::RestoreRect {
+        slot: slot.clamp(0, 7) as u8,
+    });
+}
+
+#[unsafe(export_name = "iGui.EmitInstallChildViewBounds")]
+pub extern "C" fn igui_emit_install_child_view_bounds(
+    child_view_id: i32, x0: f64, y0: f64, x1: f64, y1: f64,
+) {
+    batch_mod::push(SurfaceCmd::InstallChildViewBounds {
+        child_view_id: child_view_id.max(0) as u32,
+        rect: Rect {
+            x0: x0 as f32, y0: y0 as f32, x1: x1 as f32, y1: y1 as f32,
+        },
+    });
+}
+
+#[unsafe(export_name = "iGui.EmitMarkRect")]
+pub extern "C" fn igui_emit_mark_rect(x0: f64, y0: f64, x1: f64, y1: f64, mode: i32) {
+    use batch_mod::MarkMode;
+    let mode = match mode {
+        1 => MarkMode::Invert,
+        2 => MarkMode::Dim25,
+        3 => MarkMode::Dim50,
+        4 => MarkMode::Dim75,
+        _ => MarkMode::Highlight,
+    };
+    batch_mod::push(SurfaceCmd::MarkRect {
+        rect: Rect {
+            x0: x0 as f32, y0: y0 as f32, x1: x1 as f32, y1: y1 as f32,
+        },
+        mode,
+    });
+}
+
+#[unsafe(export_name = "iGui.EmitCaret")]
+#[allow(clippy::too_many_arguments)]
+pub extern "C" fn igui_emit_caret(
+    x0: f64, y0: f64, x1: f64, y1: f64, r: f64, g: f64, b: f64, a: f64,
+) {
+    batch_mod::push(SurfaceCmd::Caret {
+        rect: Rect {
+            x0: x0 as f32, y0: y0 as f32, x1: x1 as f32, y1: y1 as f32,
+        },
+        color: Rgba {
+            r: r as f32, g: g as f32, b: b as f32, a: a as f32,
+        },
+    });
+}
+
+#[unsafe(export_name = "iGui.EmitSelectionRange")]
+#[allow(clippy::too_many_arguments)]
+pub extern "C" fn igui_emit_selection_range(
+    x0: f64, y0: f64, x1: f64, y1: f64, r: f64, g: f64, b: f64, a: f64,
+) {
+    batch_mod::push(SurfaceCmd::SelectionRange {
+        rect: Rect {
+            x0: x0 as f32, y0: y0 as f32, x1: x1 as f32, y1: y1 as f32,
+        },
+        color: Rgba {
+            r: r as f32, g: g as f32, b: b as f32, a: a as f32,
+        },
+    });
+}
+
+#[unsafe(export_name = "iGui.EmitFocusRing")]
+#[allow(clippy::too_many_arguments)]
+pub extern "C" fn igui_emit_focus_ring(
+    x0: f64, y0: f64, x1: f64, y1: f64,
+    corner_radius: f64, half_thickness: f64,
+    r: f64, g: f64, b: f64, a: f64,
+) {
+    batch_mod::push(SurfaceCmd::FocusRing {
+        rect: Rect {
+            x0: x0 as f32, y0: y0 as f32, x1: x1 as f32, y1: y1 as f32,
+        },
+        corner_radius: corner_radius as f32,
+        half_thickness: half_thickness as f32,
+        color: Rgba {
+            r: r as f32, g: g as f32, b: b as f32, a: a as f32,
+        },
+    });
+}
+
+// ─── Path builder ────────────────────────────────────────────────────
+
+#[unsafe(export_name = "iGui.PathBegin")]
+pub extern "C" fn igui_path_begin() {
+    batch_mod::path_begin();
+}
+
+#[unsafe(export_name = "iGui.PathMoveTo")]
+pub extern "C" fn igui_path_move_to(x: f64, y: f64) {
+    batch_mod::path_push(batch_mod::PathCmd::MoveTo(batch_mod::Point {
+        x: x as f32, y: y as f32,
+    }));
+}
+
+#[unsafe(export_name = "iGui.PathLineTo")]
+pub extern "C" fn igui_path_line_to(x: f64, y: f64) {
+    batch_mod::path_push(batch_mod::PathCmd::LineTo(batch_mod::Point {
+        x: x as f32, y: y as f32,
+    }));
+}
+
+#[unsafe(export_name = "iGui.PathQuadTo")]
+pub extern "C" fn igui_path_quad_to(cx: f64, cy: f64, ex: f64, ey: f64) {
+    batch_mod::path_push(batch_mod::PathCmd::QuadTo {
+        ctrl: batch_mod::Point { x: cx as f32, y: cy as f32 },
+        end: batch_mod::Point { x: ex as f32, y: ey as f32 },
+    });
+}
+
+#[unsafe(export_name = "iGui.PathCubicTo")]
+#[allow(clippy::too_many_arguments)]
+pub extern "C" fn igui_path_cubic_to(
+    c1x: f64, c1y: f64, c2x: f64, c2y: f64, ex: f64, ey: f64,
+) {
+    batch_mod::path_push(batch_mod::PathCmd::CubicTo {
+        c1: batch_mod::Point { x: c1x as f32, y: c1y as f32 },
+        c2: batch_mod::Point { x: c2x as f32, y: c2y as f32 },
+        end: batch_mod::Point { x: ex as f32, y: ey as f32 },
+    });
+}
+
+#[unsafe(export_name = "iGui.PathArcTo")]
+#[allow(clippy::too_many_arguments)]
+pub extern "C" fn igui_path_arc_to(
+    rx: f64, ry: f64, rotation_rad: f64,
+    large_arc: i32, sweep_clockwise: i32,
+    ex: f64, ey: f64,
+) {
+    batch_mod::path_push(batch_mod::PathCmd::ArcTo {
+        radius: batch_mod::Point { x: rx as f32, y: ry as f32 },
+        rotation_rad: rotation_rad as f32,
+        large_arc: large_arc != 0,
+        sweep_clockwise: sweep_clockwise != 0,
+        end: batch_mod::Point { x: ex as f32, y: ey as f32 },
+    });
+}
+
+#[unsafe(export_name = "iGui.PathClose")]
+pub extern "C" fn igui_path_close() {
+    batch_mod::path_push(batch_mod::PathCmd::Close);
+}
+
+/// Finish the current path and emit a DrawPath command into the
+/// active batch. `fillMode` and `strokeMode` are 0/1 flags. When
+/// stroking, the cap/join enums use the values defined in
+/// Mod/iGui.cp (Cap*/Join*); dash pattern is unsupported in this
+/// shim — pass any non-zero `dashLen` to enable a default
+/// equal-segment dash pattern of length 4.
+#[unsafe(export_name = "iGui.EmitPath")]
+#[allow(clippy::too_many_arguments)]
+pub extern "C" fn igui_emit_path(
+    fill_mode: i32,
+    fill_r: f64, fill_g: f64, fill_b: f64, fill_a: f64,
+    stroke_mode: i32,
+    stroke_half_thickness: f64,
+    stroke_cap: i32,
+    stroke_join: i32,
+    stroke_miter: f64,
+    stroke_dash_len: i32,
+    stroke_r: f64, stroke_g: f64, stroke_b: f64, stroke_a: f64,
+) -> i32 {
+    use batch_mod::{LineCap, LineJoin, Rgba, StrokeStyle};
+    let fill = if fill_mode != 0 {
+        Some(Rgba {
+            r: fill_r as f32, g: fill_g as f32, b: fill_b as f32, a: fill_a as f32,
+        })
+    } else {
+        None
+    };
+    let stroke = if stroke_mode != 0 {
+        let cap = match stroke_cap {
+            1 => LineCap::Round,
+            2 => LineCap::Square,
+            _ => LineCap::Flat,
+        };
+        let join = match stroke_join {
+            1 => LineJoin::Round,
+            2 => LineJoin::Bevel,
+            _ => LineJoin::Miter,
+        };
+        let dash = if stroke_dash_len > 0 {
+            Some(vec![4.0, 4.0])
+        } else {
+            None
+        };
+        Some((
+            StrokeStyle {
+                half_thickness: stroke_half_thickness as f32,
+                line_cap: cap,
+                line_join: join,
+                miter_limit: stroke_miter as f32,
+                dash_pattern: dash,
+            },
+            Rgba {
+                r: stroke_r as f32,
+                g: stroke_g as f32,
+                b: stroke_b as f32,
+                a: stroke_a as f32,
+            },
+        ))
+    } else {
+        None
+    };
+    if batch_mod::path_finish(fill, stroke) { 1 } else { 0 }
+}
+
+// ─── System colors ───────────────────────────────────────────────────
+
+#[unsafe(export_name = "iGui.SystemColor")]
+pub extern "C" fn igui_system_color(
+    kind: i32,
+    out_r: *mut f64,
+    out_g: *mut f64,
+    out_b: *mut f64,
+    out_a: *mut f64,
+) -> i32 {
+    let c = super::system_colors::lookup(kind);
+    unsafe {
+        if !out_r.is_null() { *out_r = c.r as f64 }
+        if !out_g.is_null() { *out_g = c.g as f64 }
+        if !out_b.is_null() { *out_b = c.b as f64 }
+        if !out_a.is_null() { *out_a = c.a as f64 }
+    }
+    1
+}
+
 // ─── Phase 4: text ───────────────────────────────────────────────────
 
 /// Build a `TextRun` from the wide list of CP-passed scalars.
@@ -839,6 +1123,27 @@ pub fn native_module_artifact() -> NativeModuleArtifact {
                 ExportEntry::procedure("PointAtCharIndex"),
                 ExportEntry::procedure("GetDpi"),
                 ExportEntry::procedure("SetCursor"),
+                ExportEntry::procedure("EmitPushClipRect"),
+                ExportEntry::procedure("EmitPopClipRect"),
+                ExportEntry::procedure("EmitPushOffset"),
+                ExportEntry::procedure("EmitPopOffset"),
+                ExportEntry::procedure("EmitScrollRect"),
+                ExportEntry::procedure("EmitSaveRect"),
+                ExportEntry::procedure("EmitRestoreRect"),
+                ExportEntry::procedure("EmitInstallChildViewBounds"),
+                ExportEntry::procedure("EmitMarkRect"),
+                ExportEntry::procedure("EmitCaret"),
+                ExportEntry::procedure("EmitSelectionRange"),
+                ExportEntry::procedure("EmitFocusRing"),
+                ExportEntry::procedure("PathBegin"),
+                ExportEntry::procedure("PathMoveTo"),
+                ExportEntry::procedure("PathLineTo"),
+                ExportEntry::procedure("PathQuadTo"),
+                ExportEntry::procedure("PathCubicTo"),
+                ExportEntry::procedure("PathArcTo"),
+                ExportEntry::procedure("PathClose"),
+                ExportEntry::procedure("EmitPath"),
+                ExportEntry::procedure("SystemColor"),
             ]),
             "iGui.bootstrap",
             "Integrated GUI: MDI frame, Direct2D surfaces, typed event mailbox",
@@ -912,6 +1217,93 @@ pub fn native_module_artifact() -> NativeModuleArtifact {
             NativeExportBinding::procedure(
                 "SetCursor",
                 igui_set_cursor as *const () as usize,
+            ),
+            // ─── Phase 5: composition ─────────────────────────────
+            NativeExportBinding::procedure(
+                "EmitPushClipRect",
+                igui_emit_push_clip_rect as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "EmitPopClipRect",
+                igui_emit_pop_clip_rect as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "EmitPushOffset",
+                igui_emit_push_offset as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "EmitPopOffset",
+                igui_emit_pop_offset as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "EmitScrollRect",
+                igui_emit_scroll_rect as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "EmitSaveRect",
+                igui_emit_save_rect as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "EmitRestoreRect",
+                igui_emit_restore_rect as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "EmitInstallChildViewBounds",
+                igui_emit_install_child_view_bounds as *const () as usize,
+            ),
+            // ─── Phase 5: overlays ────────────────────────────────
+            NativeExportBinding::procedure(
+                "EmitMarkRect",
+                igui_emit_mark_rect as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "EmitCaret",
+                igui_emit_caret as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "EmitSelectionRange",
+                igui_emit_selection_range as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "EmitFocusRing",
+                igui_emit_focus_ring as *const () as usize,
+            ),
+            // ─── Phase 5: paths ───────────────────────────────────
+            NativeExportBinding::procedure(
+                "PathBegin",
+                igui_path_begin as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "PathMoveTo",
+                igui_path_move_to as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "PathLineTo",
+                igui_path_line_to as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "PathQuadTo",
+                igui_path_quad_to as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "PathCubicTo",
+                igui_path_cubic_to as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "PathArcTo",
+                igui_path_arc_to as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "PathClose",
+                igui_path_close as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "EmitPath",
+                igui_emit_path as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "SystemColor",
+                igui_system_color as *const () as usize,
             ),
         ],
     )

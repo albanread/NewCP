@@ -90,6 +90,37 @@ CONST
   TrimEllipsisChar* = 1;
   TrimEllipsisWord* = 2;
 
+  (* MarkRect modes *)
+  MarkHighlight* = 0;
+  MarkInvert*    = 1;
+  MarkDim25*     = 2;
+  MarkDim50*     = 3;
+  MarkDim75*     = 4;
+
+  (* Path stroke caps *)
+  CapFlat*   = 0;
+  CapRound*  = 1;
+  CapSquare* = 2;
+
+  (* Path stroke joins *)
+  JoinMiter* = 0;
+  JoinRound* = 1;
+  JoinBevel* = 2;
+
+  (* System color kinds *)
+  ScWindowBg*    = 0;
+  ScWindowFg*    = 1;
+  ScControlBg*   = 2;
+  ScControlFg*   = 3;
+  ScSelectionBg* = 4;
+  ScSelectionFg* = 5;
+  ScHighlightBg* = 6;
+  ScHighlightFg* = 7;
+  ScDisabledFg*  = 8;
+  ScCaret*       = 9;
+  ScDialogBg*    = 10;
+  ScDialogFg*    = 11;
+
 (* Block on the event mailbox. Returns 1 if an event was delivered, 0 on
    timeout. timeoutMs < 0 blocks indefinitely. *)
 PROCEDURE NextEvent*(VAR kind, childId, timeMs, p1, p2, p3, p4: INTEGER;
@@ -206,5 +237,67 @@ PROCEDURE PointAtCharIndex*(childId: INTEGER;
                             weight, style: INTSHORT;
                             charIndex: INTEGER;
                             VAR x, y, height: REAL): INTSHORT;
+
+(* ── Phase 5: composition + overlays + paths + system colors ─────
+   Composition state is per-batch: clip and offset stacks reset to
+   identity at BeginBatch. Mismatched push/pop or unknown SaveRect
+   slots produce a runtime warning; the renderer recovers but the
+   results may be visually wrong. *)
+
+PROCEDURE EmitPushClipRect*(x0, y0, x1, y1: REAL);
+PROCEDURE EmitPopClipRect*;
+PROCEDURE EmitPushOffset*(dx, dy: REAL);
+PROCEDURE EmitPopOffset*;
+PROCEDURE EmitScrollRect*(x0, y0, x1, y1, dx, dy: REAL);
+PROCEDURE EmitSaveRect*(slot: INTSHORT; x0, y0, x1, y1: REAL);
+PROCEDURE EmitRestoreRect*(slot: INTSHORT);
+PROCEDURE EmitInstallChildViewBounds*(childViewId: INTSHORT;
+                                       x0, y0, x1, y1: REAL);
+
+(* ── Phase 5: overlays ────────────────────────────────────────────
+   MarkRect picks one of MarkHighlight / MarkInvert / MarkDimNN and
+   resolves the actual color from the system palette at draw time.
+   Caret and SelectionRange take an explicit RGBA so the caller can
+   match its own theme. FocusRing strokes a rounded rect; same shape
+   as StrokeRect but provided as its own command so the platform can
+   later swap in a system focus visual. *)
+
+PROCEDURE EmitMarkRect*(x0, y0, x1, y1: REAL; mode: INTSHORT);
+PROCEDURE EmitCaret*(x0, y0, x1, y1, r, g, b, a: REAL);
+PROCEDURE EmitSelectionRange*(x0, y0, x1, y1, r, g, b, a: REAL);
+PROCEDURE EmitFocusRing*(x0, y0, x1, y1, cornerRadius, halfThickness,
+                         r, g, b, a: REAL);
+
+(* ── Phase 5: path builder ────────────────────────────────────────
+   Build a path with PathBegin / PathMoveTo / PathLineTo / PathQuadTo
+   / PathCubicTo / PathArcTo / PathClose, then call EmitPath to push
+   a DrawPath into the active batch. fillMode and strokeMode are 0/1
+   flags. strokeDashLen != 0 enables a default 4-on/4-off dash. *)
+
+PROCEDURE PathBegin*;
+PROCEDURE PathMoveTo*(x, y: REAL);
+PROCEDURE PathLineTo*(x, y: REAL);
+PROCEDURE PathQuadTo*(cx, cy, ex, ey: REAL);
+PROCEDURE PathCubicTo*(c1x, c1y, c2x, c2y, ex, ey: REAL);
+PROCEDURE PathArcTo*(rx, ry, rotationRad: REAL;
+                     largeArc, sweepClockwise: INTSHORT;
+                     ex, ey: REAL);
+PROCEDURE PathClose*;
+PROCEDURE EmitPath*(fillMode: INTSHORT;
+                    fillR, fillG, fillB, fillA: REAL;
+                    strokeMode: INTSHORT;
+                    strokeHalfThickness: REAL;
+                    strokeCap, strokeJoin: INTSHORT;
+                    strokeMiter: REAL;
+                    strokeDashLen: INTSHORT;
+                    strokeR, strokeG, strokeB, strokeA: REAL): INTSHORT;
+
+(* ── Phase 5: system colors ───────────────────────────────────────
+   Read the current theme palette. Returns 1 always (defaults to
+   sensible mid-light values until the first WM_SYSCOLORCHANGE
+   refresh). EvThemeChange events fire when the OS theme changes. *)
+
+PROCEDURE SystemColor*(kind: INTSHORT;
+                       VAR r, g, b, a: REAL): INTSHORT;
 
 END iGui.

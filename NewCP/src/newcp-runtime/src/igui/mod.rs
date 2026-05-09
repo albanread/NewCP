@@ -22,6 +22,7 @@ mod executor;
 mod registry;
 mod renderer;
 mod replies;
+pub mod system_colors;
 mod window;
 
 pub use cp_exports::native_module_artifact;

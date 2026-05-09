@@ -413,6 +413,125 @@ fn execute_d2d_batch(
             } => {
                 run_hit_test_position(*request_id, run, *char_index);
             }
+            // ─── Phase 5: composition ──────────────────────────────
+            SurfaceCmd::PushClipRect { rect } => {
+                let r2d = D2D_RECT_F {
+                    left: rect.x0, top: rect.y0,
+                    right: rect.x1, bottom: rect.y1,
+                };
+                unsafe {
+                    target.PushAxisAlignedClip(
+                        &r2d,
+                        windows::Win32::Graphics::Direct2D::D2D1_ANTIALIAS_MODE_PER_PRIMITIVE,
+                    )
+                };
+            }
+            SurfaceCmd::PopClipRect => {
+                unsafe { target.PopAxisAlignedClip() };
+            }
+            SurfaceCmd::PushOffset { dx, dy } => {
+                push_offset(target, *dx, *dy);
+            }
+            SurfaceCmd::PopOffset => {
+                pop_offset(target);
+            }
+            SurfaceCmd::ScrollRect { rect, dx, dy } => {
+                // No native intra-buffer copy on ID2D1HwndRenderTarget;
+                // scroll requires a full-buffer save / restore. For
+                // Phase 5 we leave it as a no-op that documents the
+                // intent — most CP-side users will be re-issuing draw
+                // batches after a scroll anyway.
+                eprintln!(
+                    "[igui-d2d] ScrollRect rect=({:.1}, {:.1})-({:.1}, {:.1}) dx={:.1} dy={:.1} — noop (re-submit batch instead)",
+                    rect.x0, rect.y0, rect.x1, rect.y1, dx, dy
+                );
+            }
+            SurfaceCmd::SaveRect { slot, rect } => {
+                save_rect_slot(target, *slot, *rect)?;
+            }
+            SurfaceCmd::RestoreRect { slot } => {
+                restore_rect_slot(target, *slot)?;
+            }
+            SurfaceCmd::InstallChildViewBounds { child_view_id, rect } => {
+                child_bounds_install(*child_view_id, *rect);
+            }
+            // ─── Phase 5: overlays ─────────────────────────────────
+            SurfaceCmd::MarkRect { rect, mode } => {
+                let palette = super::system_colors::lookup;
+                let mark_color = match mode {
+                    batch_mod::MarkMode::Highlight => {
+                        let bg = palette(super::system_colors::kind::SELECTION_BG);
+                        batch_mod::Rgba { r: bg.r, g: bg.g, b: bg.b, a: 0.30 }
+                    }
+                    batch_mod::MarkMode::Invert => {
+                        // Simple invert via ~50% white XOR-ish overlay.
+                        // ID2D1HwndRenderTarget doesn't expose composite
+                        // modes; this is a perceptual approximation.
+                        batch_mod::Rgba { r: 1.0, g: 1.0, b: 1.0, a: 0.50 }
+                    }
+                    batch_mod::MarkMode::Dim25 => {
+                        let bg = palette(super::system_colors::kind::WINDOW_BG);
+                        batch_mod::Rgba { r: bg.r, g: bg.g, b: bg.b, a: 0.25 }
+                    }
+                    batch_mod::MarkMode::Dim50 => {
+                        let bg = palette(super::system_colors::kind::WINDOW_BG);
+                        batch_mod::Rgba { r: bg.r, g: bg.g, b: bg.b, a: 0.50 }
+                    }
+                    batch_mod::MarkMode::Dim75 => {
+                        let bg = palette(super::system_colors::kind::WINDOW_BG);
+                        batch_mod::Rgba { r: bg.r, g: bg.g, b: bg.b, a: 0.75 }
+                    }
+                };
+                let brush = solid_brush(target, mark_color)?;
+                let r2d = D2D_RECT_F {
+                    left: rect.x0, top: rect.y0,
+                    right: rect.x1, bottom: rect.y1,
+                };
+                unsafe { target.FillRectangle(&r2d, &brush) };
+            }
+            SurfaceCmd::Caret { rect, color } => {
+                let brush = solid_brush(target, *color)?;
+                let r2d = D2D_RECT_F {
+                    left: rect.x0, top: rect.y0,
+                    right: rect.x1, bottom: rect.y1,
+                };
+                unsafe { target.FillRectangle(&r2d, &brush) };
+            }
+            SurfaceCmd::SelectionRange { rect, color } => {
+                let brush = solid_brush(target, *color)?;
+                let r2d = D2D_RECT_F {
+                    left: rect.x0, top: rect.y0,
+                    right: rect.x1, bottom: rect.y1,
+                };
+                unsafe { target.FillRectangle(&r2d, &brush) };
+            }
+            SurfaceCmd::FocusRing { rect, corner_radius, half_thickness, color } => {
+                let brush = solid_brush(target, *color)?;
+                let r2d = D2D_RECT_F {
+                    left: rect.x0, top: rect.y0,
+                    right: rect.x1, bottom: rect.y1,
+                };
+                let stroke_w = (2.0 * half_thickness).max(0.0);
+                if *corner_radius <= 0.0 {
+                    unsafe { target.DrawRectangle(&r2d, &brush, stroke_w, None) };
+                } else {
+                    unsafe {
+                        target.DrawRoundedRectangle(
+                            &D2D1_ROUNDED_RECT {
+                                rect: r2d,
+                                radiusX: *corner_radius,
+                                radiusY: *corner_radius,
+                            },
+                            &brush,
+                            stroke_w,
+                            None,
+                        )
+                    };
+                }
+            }
+            SurfaceCmd::DrawPath { commands, fill, stroke } => {
+                draw_path(target, commands, fill, stroke.as_ref())?;
+            }
         }
     }
     Ok(())
@@ -517,6 +636,308 @@ fn run_hit_test_point(request_id: u32, run: &batch_mod::TextRun, point: batch_mo
         },
     };
     super::replies::deliver(request_id, reply);
+}
+
+// ─── Phase 5: composition stacks + paths ────────────────────────────
+
+use std::cell::RefCell;
+use std::collections::HashMap;
+
+thread_local! {
+    static OFFSET_STACK: RefCell<Vec<windows_numerics::Matrix3x2>> =
+        RefCell::new(Vec::new());
+}
+
+fn push_offset(target: &ID2D1HwndRenderTarget, dx: f32, dy: f32) {
+    let mut current = windows_numerics::Matrix3x2::default();
+    unsafe { target.GetTransform(&mut current) };
+    OFFSET_STACK.with(|st| st.borrow_mut().push(current));
+    let translation = windows_numerics::Matrix3x2 {
+        M11: 1.0, M12: 0.0,
+        M21: 0.0, M22: 1.0,
+        M31: dx, M32: dy,
+    };
+    let new_t = mul_matrix(&current, &translation);
+    unsafe { target.SetTransform(&new_t) };
+}
+
+fn pop_offset(target: &ID2D1HwndRenderTarget) {
+    if let Some(prev) = OFFSET_STACK.with(|st| st.borrow_mut().pop()) {
+        unsafe { target.SetTransform(&prev) };
+    } else {
+        eprintln!("[igui-d2d] PopOffset on empty stack — ignored");
+    }
+}
+
+fn mul_matrix(
+    a: &windows_numerics::Matrix3x2,
+    b: &windows_numerics::Matrix3x2,
+) -> windows_numerics::Matrix3x2 {
+    windows_numerics::Matrix3x2 {
+        M11: a.M11 * b.M11 + a.M12 * b.M21,
+        M12: a.M11 * b.M12 + a.M12 * b.M22,
+        M21: a.M21 * b.M11 + a.M22 * b.M21,
+        M22: a.M21 * b.M12 + a.M22 * b.M22,
+        M31: a.M31 * b.M11 + a.M32 * b.M21 + b.M31,
+        M32: a.M31 * b.M12 + a.M32 * b.M22 + b.M32,
+    }
+}
+
+// ─── SaveRect / RestoreRect slots ───────────────────────────────────
+//
+// 8 slots per pane. Each slot stores a (rect, ID2D1Bitmap) pair.
+// Lazy-allocated on first save. Slot bitmaps live in CPU-readable
+// memory because ID2D1HwndRenderTarget doesn't expose direct GPU
+// readback; for Phase 5 we keep this simple and accept the cost.
+
+struct SlotEntry {
+    rect: batch_mod::Rect,
+    bitmap: windows::Win32::Graphics::Direct2D::ID2D1Bitmap,
+}
+
+thread_local! {
+    static SLOTS: RefCell<HashMap<u8, SlotEntry>> = RefCell::new(HashMap::new());
+}
+
+fn save_rect_slot(
+    target: &ID2D1HwndRenderTarget,
+    slot: u8,
+    rect: batch_mod::Rect,
+) -> Result<(), IGuiError> {
+    use windows::Win32::Graphics::Direct2D::Common::{D2D1_ALPHA_MODE_PREMULTIPLIED, D2D1_PIXEL_FORMAT};
+    use windows::Win32::Graphics::Direct2D::{
+        D2D1_BITMAP_PROPERTIES,
+    };
+    use windows::Win32::Graphics::Dxgi::Common::DXGI_FORMAT_B8G8R8A8_UNORM;
+
+    let width = (rect.x1 - rect.x0).abs().ceil().max(1.0) as u32;
+    let height = (rect.y1 - rect.y0).abs().ceil().max(1.0) as u32;
+
+    let bitmap = unsafe {
+        target.CreateBitmap(
+            D2D_SIZE_U { width, height },
+            None,
+            0,
+            &D2D1_BITMAP_PROPERTIES {
+                pixelFormat: D2D1_PIXEL_FORMAT {
+                    format: DXGI_FORMAT_B8G8R8A8_UNORM,
+                    alphaMode: D2D1_ALPHA_MODE_PREMULTIPLIED,
+                },
+                dpiX: 96.0,
+                dpiY: 96.0,
+            },
+        )
+    }
+    .map_err(|e| IGuiError::D2D(format!("CreateBitmap (SaveRect slot): {e}")))?;
+
+    let dst_origin = windows::Win32::Graphics::Direct2D::Common::D2D_POINT_2U { x: 0, y: 0 };
+    let src_rect = windows::Win32::Graphics::Direct2D::Common::D2D_RECT_U {
+        left: rect.x0.max(0.0) as u32,
+        top: rect.y0.max(0.0) as u32,
+        right: rect.x1.max(0.0) as u32,
+        bottom: rect.y1.max(0.0) as u32,
+    };
+    unsafe { bitmap.CopyFromRenderTarget(Some(&dst_origin), target, Some(&src_rect)) }
+        .map_err(|e| IGuiError::D2D(format!("CopyFromRenderTarget: {e}")))?;
+
+    SLOTS.with(|s| {
+        s.borrow_mut().insert(slot, SlotEntry { rect, bitmap });
+    });
+    Ok(())
+}
+
+fn restore_rect_slot(
+    target: &ID2D1HwndRenderTarget,
+    slot: u8,
+) -> Result<(), IGuiError> {
+    let entry = SLOTS.with(|s| {
+        s.borrow().get(&slot).map(|e| (e.rect, e.bitmap.clone()))
+    });
+    let Some((rect, bitmap)) = entry else {
+        eprintln!("[igui-d2d] RestoreRect slot {slot} empty");
+        return Ok(());
+    };
+    let dst = D2D_RECT_F {
+        left: rect.x0, top: rect.y0, right: rect.x1, bottom: rect.y1,
+    };
+    let size = unsafe { bitmap.GetSize() };
+    let src = D2D_RECT_F {
+        left: 0.0, top: 0.0, right: size.width, bottom: size.height,
+    };
+    unsafe {
+        target.DrawBitmap(
+            &bitmap,
+            Some(&dst),
+            1.0,
+            windows::Win32::Graphics::Direct2D::D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,
+            Some(&src),
+        )
+    };
+    Ok(())
+}
+
+// ─── Retained child-view bounds ─────────────────────────────────────
+
+thread_local! {
+    static CHILD_BOUNDS: RefCell<HashMap<u32, batch_mod::Rect>> =
+        RefCell::new(HashMap::new());
+}
+
+fn child_bounds_install(child_view_id: u32, rect: batch_mod::Rect) {
+    CHILD_BOUNDS.with(|c| {
+        c.borrow_mut().insert(child_view_id, rect);
+    });
+}
+
+#[allow(dead_code)] // queried by future render-time child composition
+pub(crate) fn child_bounds_lookup(child_view_id: u32) -> Option<batch_mod::Rect> {
+    CHILD_BOUNDS.with(|c| c.borrow().get(&child_view_id).copied())
+}
+
+// ─── DrawPath via ID2D1PathGeometry ─────────────────────────────────
+
+fn draw_path(
+    target: &ID2D1HwndRenderTarget,
+    commands: &[batch_mod::PathCmd],
+    fill: &Option<batch_mod::Rgba>,
+    stroke: Option<&(batch_mod::StrokeStyle, batch_mod::Rgba)>,
+) -> Result<(), IGuiError> {
+    use windows::Win32::Graphics::Direct2D::Common::{
+        D2D1_FIGURE_BEGIN_FILLED, D2D1_FIGURE_BEGIN_HOLLOW, D2D1_FIGURE_END_CLOSED,
+        D2D1_FIGURE_END_OPEN,
+    };
+    use windows::Win32::Graphics::Direct2D::Common::D2D1_BEZIER_SEGMENT;
+    use windows::Win32::Graphics::Direct2D::{
+        D2D1_ARC_SEGMENT, D2D1_ARC_SIZE_LARGE, D2D1_ARC_SIZE_SMALL,
+        D2D1_QUADRATIC_BEZIER_SEGMENT, D2D1_STROKE_STYLE_PROPERTIES1,
+        D2D1_STROKE_TRANSFORM_TYPE_NORMAL, D2D1_SWEEP_DIRECTION_CLOCKWISE,
+        D2D1_SWEEP_DIRECTION_COUNTER_CLOCKWISE,
+    };
+
+    let factory = &renderer::ctx().d2d.factory;
+    let geometry = unsafe { factory.CreatePathGeometry() }
+        .map_err(|e| IGuiError::D2D(format!("CreatePathGeometry: {e}")))?;
+    let sink = unsafe { geometry.Open() }
+        .map_err(|e| IGuiError::D2D(format!("PathGeometry::Open: {e}")))?;
+
+    let mut figure_open = false;
+    let begin_kind = if fill.is_some() {
+        D2D1_FIGURE_BEGIN_FILLED
+    } else {
+        D2D1_FIGURE_BEGIN_HOLLOW
+    };
+
+    for cmd in commands {
+        match cmd {
+            batch_mod::PathCmd::MoveTo(p) => {
+                if figure_open {
+                    unsafe { sink.EndFigure(D2D1_FIGURE_END_OPEN) };
+                }
+                unsafe {
+                    sink.BeginFigure(
+                        Vector2 { X: p.x, Y: p.y },
+                        begin_kind,
+                    )
+                };
+                figure_open = true;
+            }
+            batch_mod::PathCmd::LineTo(p) => unsafe {
+                sink.AddLine(Vector2 { X: p.x, Y: p.y })
+            },
+            batch_mod::PathCmd::QuadTo { ctrl, end } => unsafe {
+                sink.AddQuadraticBezier(&D2D1_QUADRATIC_BEZIER_SEGMENT {
+                    point1: Vector2 { X: ctrl.x, Y: ctrl.y },
+                    point2: Vector2 { X: end.x, Y: end.y },
+                })
+            },
+            batch_mod::PathCmd::CubicTo { c1, c2, end } => unsafe {
+                sink.AddBezier(&D2D1_BEZIER_SEGMENT {
+                    point1: Vector2 { X: c1.x, Y: c1.y },
+                    point2: Vector2 { X: c2.x, Y: c2.y },
+                    point3: Vector2 { X: end.x, Y: end.y },
+                })
+            },
+            batch_mod::PathCmd::ArcTo {
+                radius,
+                rotation_rad,
+                large_arc,
+                sweep_clockwise,
+                end,
+            } => unsafe {
+                sink.AddArc(&D2D1_ARC_SEGMENT {
+                    point: Vector2 { X: end.x, Y: end.y },
+                    size: D2D_SIZE_F {
+                        width: radius.x,
+                        height: radius.y,
+                    },
+                    rotationAngle: rotation_rad.to_degrees(),
+                    sweepDirection: if *sweep_clockwise {
+                        D2D1_SWEEP_DIRECTION_CLOCKWISE
+                    } else {
+                        D2D1_SWEEP_DIRECTION_COUNTER_CLOCKWISE
+                    },
+                    arcSize: if *large_arc {
+                        D2D1_ARC_SIZE_LARGE
+                    } else {
+                        D2D1_ARC_SIZE_SMALL
+                    },
+                })
+            },
+            batch_mod::PathCmd::Close => {
+                if figure_open {
+                    unsafe { sink.EndFigure(D2D1_FIGURE_END_CLOSED) };
+                    figure_open = false;
+                }
+            }
+        }
+    }
+    if figure_open {
+        unsafe { sink.EndFigure(D2D1_FIGURE_END_OPEN) };
+    }
+    unsafe { sink.Close() }
+        .map_err(|e| IGuiError::D2D(format!("GeometrySink::Close: {e}")))?;
+
+    if let Some(fill_color) = fill {
+        let brush = solid_brush(target, *fill_color)?;
+        unsafe { target.FillGeometry(&geometry, &brush, None) };
+    }
+    if let Some((style, stroke_color)) = stroke {
+        let brush = solid_brush(target, *stroke_color)?;
+        let stroke_w = (2.0 * style.half_thickness).max(0.0);
+        // Stroke style props
+        let cap = match style.line_cap {
+            batch_mod::LineCap::Flat => windows::Win32::Graphics::Direct2D::D2D1_CAP_STYLE_FLAT,
+            batch_mod::LineCap::Round => windows::Win32::Graphics::Direct2D::D2D1_CAP_STYLE_ROUND,
+            batch_mod::LineCap::Square => windows::Win32::Graphics::Direct2D::D2D1_CAP_STYLE_SQUARE,
+        };
+        let join = match style.line_join {
+            batch_mod::LineJoin::Miter => windows::Win32::Graphics::Direct2D::D2D1_LINE_JOIN_MITER,
+            batch_mod::LineJoin::Round => windows::Win32::Graphics::Direct2D::D2D1_LINE_JOIN_ROUND,
+            batch_mod::LineJoin::Bevel => windows::Win32::Graphics::Direct2D::D2D1_LINE_JOIN_BEVEL,
+        };
+        let dash_style = if style.dash_pattern.is_some() {
+            windows::Win32::Graphics::Direct2D::D2D1_DASH_STYLE_CUSTOM
+        } else {
+            windows::Win32::Graphics::Direct2D::D2D1_DASH_STYLE_SOLID
+        };
+        let props = D2D1_STROKE_STYLE_PROPERTIES1 {
+            startCap: cap,
+            endCap: cap,
+            dashCap: cap,
+            lineJoin: join,
+            miterLimit: style.miter_limit.max(1.0),
+            dashStyle: dash_style,
+            dashOffset: 0.0,
+            transformType: D2D1_STROKE_TRANSFORM_TYPE_NORMAL,
+        };
+        let dashes_slice = style.dash_pattern.as_deref();
+        let stroke_style = unsafe {
+            factory.CreateStrokeStyle(&props, dashes_slice)
+        }
+        .map_err(|e| IGuiError::D2D(format!("CreateStrokeStyle: {e}")))?;
+        unsafe { target.DrawGeometry(&geometry, &brush, stroke_w, &stroke_style) };
+    }
+    Ok(())
 }
 
 fn run_hit_test_position(request_id: u32, run: &batch_mod::TextRun, char_index: u32) {
@@ -731,6 +1152,53 @@ fn log_ui_batch(child_id: i64, batch: &batch_mod::PaneBatch) {
             SurfaceCmd::PointAtCharIndex { request_id, run, char_index } => eprintln!(
                 "[igui-batch-ui]   #{index} PointAtCharIndex req={request_id} text=\"{}\" char={}",
                 run.text, char_index
+            ),
+            SurfaceCmd::PushClipRect { rect } => eprintln!(
+                "[igui-batch-ui]   #{index} PushClipRect rect=({:.1}, {:.1})-({:.1}, {:.1})",
+                rect.x0, rect.y0, rect.x1, rect.y1
+            ),
+            SurfaceCmd::PopClipRect => eprintln!("[igui-batch-ui]   #{index} PopClipRect"),
+            SurfaceCmd::PushOffset { dx, dy } => eprintln!(
+                "[igui-batch-ui]   #{index} PushOffset dx={dx:.1} dy={dy:.1}"
+            ),
+            SurfaceCmd::PopOffset => eprintln!("[igui-batch-ui]   #{index} PopOffset"),
+            SurfaceCmd::ScrollRect { rect, dx, dy } => eprintln!(
+                "[igui-batch-ui]   #{index} ScrollRect rect=({:.1}, {:.1})-({:.1}, {:.1}) dx={:.1} dy={:.1}",
+                rect.x0, rect.y0, rect.x1, rect.y1, dx, dy
+            ),
+            SurfaceCmd::SaveRect { slot, rect } => eprintln!(
+                "[igui-batch-ui]   #{index} SaveRect slot={slot} rect=({:.1}, {:.1})-({:.1}, {:.1})",
+                rect.x0, rect.y0, rect.x1, rect.y1
+            ),
+            SurfaceCmd::RestoreRect { slot } => eprintln!(
+                "[igui-batch-ui]   #{index} RestoreRect slot={slot}"
+            ),
+            SurfaceCmd::InstallChildViewBounds { child_view_id, rect } => eprintln!(
+                "[igui-batch-ui]   #{index} InstallChildViewBounds id={child_view_id} rect=({:.1}, {:.1})-({:.1}, {:.1})",
+                rect.x0, rect.y0, rect.x1, rect.y1
+            ),
+            SurfaceCmd::MarkRect { rect, mode } => eprintln!(
+                "[igui-batch-ui]   #{index} MarkRect rect=({:.1}, {:.1})-({:.1}, {:.1}) mode={:?}",
+                rect.x0, rect.y0, rect.x1, rect.y1, mode
+            ),
+            SurfaceCmd::Caret { rect, color } => eprintln!(
+                "[igui-batch-ui]   #{index} Caret rect=({:.1}, {:.1})-({:.1}, {:.1}) rgba=({:.3}, {:.3}, {:.3}, {:.3})",
+                rect.x0, rect.y0, rect.x1, rect.y1, color.r, color.g, color.b, color.a
+            ),
+            SurfaceCmd::SelectionRange { rect, color } => eprintln!(
+                "[igui-batch-ui]   #{index} SelectionRange rect=({:.1}, {:.1})-({:.1}, {:.1}) rgba=({:.3}, {:.3}, {:.3}, {:.3})",
+                rect.x0, rect.y0, rect.x1, rect.y1, color.r, color.g, color.b, color.a
+            ),
+            SurfaceCmd::FocusRing { rect, corner_radius, half_thickness, color } => eprintln!(
+                "[igui-batch-ui]   #{index} FocusRing rect=({:.1}, {:.1})-({:.1}, {:.1}) cr={:.1} ht={:.1} rgba=({:.3}, {:.3}, {:.3}, {:.3})",
+                rect.x0, rect.y0, rect.x1, rect.y1, corner_radius, half_thickness,
+                color.r, color.g, color.b, color.a
+            ),
+            SurfaceCmd::DrawPath { commands, fill, stroke } => eprintln!(
+                "[igui-batch-ui]   #{index} DrawPath commands={} fill={} stroke={}",
+                commands.len(),
+                fill.is_some(),
+                stroke.is_some()
             ),
         }
     }
@@ -1033,6 +1501,23 @@ fn execute_gdi_batch(
                         message: "text query unsupported on GDI fallback".into(),
                     },
                 );
+            }
+            // Phase 5 commands all skipped in the GDI fallback path —
+            // Direct2D is the real path.
+            SurfaceCmd::PushClipRect { .. }
+            | SurfaceCmd::PopClipRect
+            | SurfaceCmd::PushOffset { .. }
+            | SurfaceCmd::PopOffset
+            | SurfaceCmd::ScrollRect { .. }
+            | SurfaceCmd::SaveRect { .. }
+            | SurfaceCmd::RestoreRect { .. }
+            | SurfaceCmd::InstallChildViewBounds { .. }
+            | SurfaceCmd::MarkRect { .. }
+            | SurfaceCmd::Caret { .. }
+            | SurfaceCmd::SelectionRange { .. }
+            | SurfaceCmd::FocusRing { .. }
+            | SurfaceCmd::DrawPath { .. } => {
+                eprintln!("[igui-gdi] Phase 5 primitive in GDI fallback — skipped");
             }
         }
     }
