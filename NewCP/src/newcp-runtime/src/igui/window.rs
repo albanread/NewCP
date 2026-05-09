@@ -27,13 +27,13 @@ use windows::Win32::UI::Input::KeyboardAndMouse::{
 use windows::Win32::UI::WindowsAndMessaging::{
     CreateWindowExW, DefFrameProcW, DispatchMessageW, GetClientRect, GetMessageTime,
     GetMessageW, LoadCursorW, PostQuitMessage, RegisterClassExW, SendMessageW, ShowWindow,
-    TranslateMessage, CLIENTCREATESTRUCT, CW_USEDEFAULT, IDC_ARROW, MDICREATESTRUCTW, MSG,
-    SW_SHOW, WHEEL_DELTA, WM_CHAR, WM_CLOSE, WM_COMMAND, WM_DESTROY, WM_KEYDOWN, WM_KEYUP,
-    WM_KILLFOCUS, WM_LBUTTONDOWN, WM_LBUTTONUP, WM_MBUTTONDOWN, WM_MBUTTONUP, WM_MDICREATE,
-    WM_MOUSEMOVE, WM_MOUSEWHEEL, WM_RBUTTONDOWN, WM_RBUTTONUP, WM_SETFOCUS, WM_SIZE,
-    WM_SYSCOLORCHANGE, WM_SYSKEYDOWN, WM_SYSKEYUP, WM_THEMECHANGED, WM_USER,
-    WNDCLASSEXW, WNDCLASS_STYLES, WS_CHILD,
-    WS_CLIPCHILDREN, WS_EX_APPWINDOW, WS_HSCROLL, WS_OVERLAPPEDWINDOW, WS_VISIBLE, WS_VSCROLL,
+    TranslateAcceleratorW, TranslateMessage, CLIENTCREATESTRUCT, CW_USEDEFAULT, HACCEL,
+    IDC_ARROW, MDICREATESTRUCTW, MSG, SW_SHOW, WHEEL_DELTA, WM_CHAR, WM_CLOSE, WM_COMMAND,
+    WM_DESTROY, WM_KEYDOWN, WM_KEYUP, WM_KILLFOCUS, WM_LBUTTONDOWN, WM_LBUTTONUP,
+    WM_MBUTTONDOWN, WM_MBUTTONUP, WM_MDICREATE, WM_MOUSEMOVE, WM_MOUSEWHEEL, WM_RBUTTONDOWN,
+    WM_RBUTTONUP, WM_SETFOCUS, WM_SIZE, WM_SYSCOLORCHANGE, WM_SYSKEYDOWN, WM_SYSKEYUP,
+    WM_THEMECHANGED, WM_USER, WNDCLASSEXW, WNDCLASS_STYLES, WS_CHILD, WS_CLIPCHILDREN,
+    WS_EX_APPWINDOW, WS_HSCROLL, WS_OVERLAPPEDWINDOW, WS_VISIBLE, WS_VSCROLL,
 };
 
 use super::channels::{self, modifier, mouse_op, IGuiEvent};
@@ -172,6 +172,17 @@ where
     channels::install();
     super::system_colors::sample();
 
+    // Install a default menu so redit is reachable even before any
+    // language-thread code runs. `iGui.SetMenu` from CP will replace
+    // this, but `menu::install_for_frame` always re-appends the redit
+    // entry so the editor stays available.
+    if let Some(default_menu) = super::redit::build_default_menu_bar() {
+        let _ = unsafe {
+            windows::Win32::UI::WindowsAndMessaging::SetMenu(hwnd, Some(default_menu))
+        };
+        let _ = unsafe { windows::Win32::UI::WindowsAndMessaging::DrawMenuBar(hwnd) };
+    }
+
     let _ = unsafe { ShowWindow(hwnd, SW_SHOW) };
 
     if let Some(worker) = worker {
@@ -180,6 +191,11 @@ where
             .spawn(worker)
             .map_err(|e| IGuiError::Win32(format!("spawn language thread: {e}")))?;
     }
+
+    // Frame-level accelerator table. Currently a single binding —
+    // Ctrl+Shift+E maps to the redit menu command, so the failover
+    // editor is reachable by keyboard from any focus state.
+    let accel: Option<HACCEL> = super::redit::build_accelerator_table();
 
     let mut msg = MSG::default();
     let exit_code = unsafe {
@@ -191,9 +207,19 @@ where
             if r.0 == -1 {
                 break 1;
             }
-            // MDI requires TranslateMDISysAccel before TranslateMessage,
-            // but for Phase 3a (no menus, no system accelerators) we
-            // skip it. Add when menus arrive in Phase 6.
+            // Frame accelerators run before MDI accel and TranslateMessage:
+            // they own the highest-priority shortcuts (Ctrl+Shift+E to
+            // open redit) regardless of which child has focus.
+            if let Some(h) = accel {
+                if TranslateAcceleratorW(hwnd, h, &mut msg) != 0 {
+                    continue;
+                }
+            }
+            // MDI requires TranslateMDISysAccel before TranslateMessage
+            // for system MDI shortcuts (Ctrl+F4, Ctrl+F6, etc.).
+            if windows::Win32::UI::WindowsAndMessaging::TranslateMDISysAccel(mdi, &msg).as_bool() {
+                continue;
+            }
             let _ = TranslateMessage(&msg);
             DispatchMessageW(&msg);
         }
@@ -269,6 +295,14 @@ unsafe extern "system" fn frame_wnd_proc(
         }
         WM_COMMAND => {
             let cmd_id = (wparam.0 & 0xFFFF) as u16;
+            // Redit is wired before the user menu so it works even if
+            // no language-thread spec has been installed.
+            if cmd_id == super::redit::MENU_CMD_ID {
+                if mdi.0 as isize != 0 {
+                    super::redit::open(hwnd, mdi);
+                }
+                return LRESULT(0);
+            }
             // MDI verbs auto-allocated in install_for_frame.
             if let Some(verb) = super::menu::lookup_mdi_verb(cmd_id) {
                 if mdi.0 as isize != 0 {

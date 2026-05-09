@@ -20,6 +20,7 @@ mod d3d;
 mod dwrite;
 mod executor;
 mod menu;
+pub(crate) mod redit;
 mod registry;
 mod renderer;
 mod replies;
@@ -27,6 +28,7 @@ pub mod system_colors;
 mod window;
 
 pub use cp_exports::native_module_artifact;
+pub use redit::{install_checker, Diagnostic};
 pub use window::run;
 
 /// Errors surfaced from iGui startup. Phase 1 keeps this lossy on purpose;

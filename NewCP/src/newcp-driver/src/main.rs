@@ -196,6 +196,7 @@ fn print_usage() {
 /// invokes that command; the GUI thread runs the Win32 message pump.
 #[cfg(windows)]
 fn run_igui(command_path: Option<&str>) -> i32 {
+    install_redit_checker();
     let worker = command_path.map(|cmd| {
         let cmd = cmd.to_owned();
         move || cp_worker_thread(cmd)
@@ -207,6 +208,46 @@ fn run_igui(command_path: Option<&str>) -> i32 {
             1
         }
     }
+}
+
+/// Hand redit a closure that runs parser + sema on the buffer text
+/// and returns diagnostics. The runtime crate can't depend on
+/// parser/sema directly (they sit above it in the dep graph), so the
+/// driver injects this at startup. UI-thread only — calls happen on
+/// F7 / after save inside the editor.
+#[cfg(windows)]
+fn install_redit_checker() {
+    use newcp_runtime::igui::Diagnostic;
+    newcp_runtime::igui::install_checker(|src| {
+        match newcp_parser::parse_module_ast(src) {
+            Ok(ast) => {
+                let module = newcp_sema::analyze_module_ast(&ast);
+                let mut out = Vec::new();
+                for d in &module.diagnostics {
+                    out.push(Diagnostic {
+                        line: d.line,
+                        column: d.column,
+                        message: d.message.clone(),
+                    });
+                }
+                for proc in &module.procedures {
+                    for d in &proc.diagnostics {
+                        out.push(Diagnostic {
+                            line: d.line,
+                            column: d.column,
+                            message: format!("{}: {}", proc.name, d.message),
+                        });
+                    }
+                }
+                out
+            }
+            Err(parse_error) => vec![Diagnostic {
+                line: 1,
+                column: 1,
+                message: format!("parse: {parse_error}"),
+            }],
+        }
+    });
 }
 
 /// Background language thread for `run-igui`. Bootstraps the loader,
