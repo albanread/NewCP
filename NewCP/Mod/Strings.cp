@@ -55,6 +55,13 @@ MODULE Strings;
 		digits: ARRAY 17 OF CHAR;
 		minLongIntRev: ARRAY 20 OF CHAR;	(* abs(MIN(LONGINT)) digits, low-to-high *)
 		minLongIntRevS: ARRAY 20 OF SHORTCHAR;
+		(* Real-formatter scratch state, set in Init via Math.
+		   maxExp = max decimal exponent representable in REAL  (~ 308 for f64)
+		   maxDig = number of decimal digits of precision        (~ 15 for f64)
+		   factor = 10^maxDig — used to handle subnormals without overflow *)
+		maxExp: INTEGER;
+		maxDig: INTEGER;
+		factor: REAL;
 
 
 	(* ------------------------------------------------------------------ *)
@@ -287,69 +294,127 @@ MODULE Strings;
 	(* Real-number conversions — stubs until Math is ported                *)
 	(* ------------------------------------------------------------------ *)
 
-	(* Real-number conversions — simple, working implementations on top of
-	   Math. Full BlackBox `RealToStringForm` parity (precision/width/expW
-	   formatting) is intentionally TODO; what's here covers the common
-	   case of `RealToString` round-tripping for diagnostics and tests. *)
+	(* Real-number formatter — line-for-line port of BlackBox's
+	   `Strings.RealToStringForm` from `YAML/System/Mod/Strings.odc`.
 
-	PROCEDURE AppendCharC (ch: CHAR; VAR pos: INTEGER; OUT s: ARRAY OF CHAR);
-	BEGIN
-		IF pos < LEN(s) - 1 THEN s[pos] := ch; INC(pos); s[pos] := 0X END
-	END AppendCharC;
+	     precision  digits of significand precision (1..18)
+	     minW       minimum field width; pad with `fillCh` on the left
+	     expW       0 = decide automatically; <0 = fixed notation with
+	                |expW| fractional digits; >0 = scientific notation
+	                with exactly expW exponent digits
+	     fillCh     pad character ("0" anchors sign to the leftmost slot)
 
-	PROCEDURE AppendIntC (n: LONGINT; VAR pos: INTEGER; OUT s: ARRAY OF CHAR);
-		VAR buf: ARRAY 32 OF CHAR; i: INTEGER;
-	BEGIN
-		IntToString(n, buf);
-		i := 0;
-		WHILE buf[i] # 0X DO AppendCharC(buf[i], pos, s); INC(i) END
-	END AppendIntC;
-
-	PROCEDURE RealToString* (x: REAL; OUT s: ARRAY OF CHAR);
-		(* Format x as `[-]d.dddddddE[+-]dd` (one int digit, six frac digits,
-		   normalised exponent). Uses Math.Log to find the decimal exponent
-		   and Math.IntPower to scale. *)
-		VAR pos, exp10, intDigit, k: INTEGER;
-			mant, scaled: REAL;
-			frac: LONGINT;
-	BEGIN
-		pos := 0;
-		IF x < 0.0 THEN AppendCharC("-", pos, s); x := -x END;
-		IF x = 0.0 THEN
-			AppendCharC("0", pos, s); RETURN
-		END;
-		(* Decimal exponent. Math.Log returns log10. Floor-toward-zero is
-		   close enough for the bracket [1, 10); a final renormalisation
-		   below corrects the off-by-one when ENTIER rounds against us. *)
-		exp10 := SHORT(ENTIER(Math.Log(x)));
-		mant := x / Math.IntPower(10.0, exp10);
-		(* Renormalise into [1, 10). *)
-		WHILE mant >= 10.0 DO mant := mant / 10.0; INC(exp10) END;
-		WHILE mant < 1.0 DO mant := mant * 10.0; DEC(exp10) END;
-		(* Integer digit + 6 fractional digits. *)
-		intDigit := SHORT(ENTIER(mant));
-		AppendCharC(CHR(intDigit + ORD("0")), pos, s);
-		AppendCharC(".", pos, s);
-		(* Math.Frac avoids the INTEGER->REAL promotion the parser doesn't do. *)
-		frac := ENTIER(Math.Frac(mant) * 1.0E6);
-		(* Pad to exactly 6 digits with leading zeros. *)
-		k := 100000;
-		WHILE k > 0 DO
-			AppendCharC(CHR(SHORT(frac DIV k) + ORD("0")), pos, s);
-			frac := frac MOD k;
-			k := k DIV 10
-		END;
-		AppendCharC("E", pos, s);
-		IF exp10 >= 0 THEN AppendCharC("+", pos, s) END;
-		AppendIntC(exp10, pos, s)
-	END RealToString;
+	   Built on Math.Exponent / Math.Mantissa / Math.IntPower; uses the
+	   module-level `maxExp`, `maxDig`, `factor` set in Init. *)
 
 	PROCEDURE RealToStringForm* (x: REAL; precision, minW, expW: INTEGER;
 															fillCh: CHAR; OUT s: ARRAY OF CHAR);
-		(* Width-aware formatter is TODO. Fall back to RealToString. *)
+		VAR exp, len, i, j, n, k, p: INTEGER; m: ARRAY 80 OF CHAR; neg: BOOLEAN;
 	BEGIN
-		RealToString(x, s)
+		ASSERT((precision > 0) (* & (precision <= 18) *), 20);
+		ASSERT((minW >= 0) & (minW < LEN(s)), 21);
+		ASSERT((expW > -LEN(s)) & (expW <= 3), 22);
+		exp := SHORT(Math.Exponent(x));
+		IF exp = MAX(INTEGER) THEN
+			IF fillCh = "0" THEN fillCh := digitspace END;
+			x := Math.Mantissa(x);
+			IF x = -1 THEN m := "-inf"; n := 4
+			ELSIF x = 1 THEN m := "inf"; n := 3
+			ELSE m := "nan"; n := 3
+			END;
+			i := 0; j := 0;
+			WHILE minW > n DO s[i] := fillCh; INC(i); DEC(minW) END;
+			WHILE (j <= n) & (i < LEN(s)) DO s[i] := m[j]; INC(i); INC(j) END
+		ELSE
+			neg := FALSE; len := 1; m := "00";
+			IF x < 0 THEN x := -x; neg := TRUE; DEC(minW) END;
+			IF x # 0 THEN
+				exp := (exp - 8) * 30103 DIV 100000;	(* * log10(2) *)
+				IF exp > 0 THEN
+					n := SHORT(ENTIER(x / Math.IntPower(10.0, exp)));
+					x := x / Math.IntPower(10.0, exp) - n
+				ELSIF exp > -maxExp THEN
+					n := SHORT(ENTIER(x * Math.IntPower(10.0, -exp)));
+					x := x * Math.IntPower(10.0, -exp) - n
+				ELSE
+					n := SHORT(ENTIER(x * Math.IntPower(10.0, -exp - 2 * maxDig) * factor * factor));
+					x := x * Math.IntPower(10.0, -exp - 2 * maxDig) * factor * factor - n
+				END;
+				(* x0 = (n + x) * 10^exp,  200 < n < 5000 *)
+				p := precision - 4;
+				IF n < 1000 THEN INC(p) END;
+				IF (expW < 0) & (p > exp - expW) THEN p := exp - expW END;
+				IF p >= 0 THEN
+					x := x + 0.5 / Math.IntPower(10.0, p);	(* rounding correction *)
+					IF x >= 1 THEN INC(n); x := x - 1 END
+				ELSIF p = -1 THEN INC(n, 5)
+				ELSIF p = -2 THEN INC(n, 50)
+				ELSIF p = -3 THEN INC(n, 500)
+				END;
+				i := 0; k := 1000; INC(exp, 3);
+				IF n < 1000 THEN k := 100; DEC(exp) END;
+				WHILE (i < precision) & ((k > 0) OR (x # 0)) DO
+					IF k > 0 THEN p := n DIV k; n := n MOD k; k := k DIV 10
+					ELSE x := x * 10; p := SHORT(ENTIER(x)); x := x - p
+					END;
+					m[i] := CHR(p + ORD("0")); INC(i);
+					IF p # 0 THEN len := i END
+				END
+			END;
+			(* x0 = m[0].m[1]...m[len-1] * 10^exp *)
+			i := 0;
+			IF (expW < 0) OR (expW = 0) & (exp >= -3) & (exp <= len + 1) THEN
+				n := exp + 1; k := len - n;
+				IF n < 1 THEN n := 1 END;
+				IF expW < 0 THEN k := -expW ELSIF k < 1 THEN k := 1 END;
+				j := minW - n - k - 1; p := -exp;
+				IF neg & (p >= MAX(0, n) + MAX(0, k)) THEN neg := FALSE; INC(j) END
+			ELSE
+				IF ABS(exp) >= 100 THEN expW := 3
+				ELSIF (expW < 2) & (ABS(exp) >= 10) THEN expW := 2
+				ELSIF expW < 1 THEN expW := 1
+				END;
+				IF len < 2 THEN len := 2 END;
+				j := minW - len - 3 - expW; k := len;
+				IF j > 0 THEN
+					k := k + j; j := 0;
+					IF k > precision THEN j := k - precision; k := precision END
+				END;
+				n := 1; DEC(k); p := 0
+			END;
+			IF neg & (fillCh = "0") THEN s[i] := "-"; INC(i); neg := FALSE END;
+			WHILE j > 0 DO s[i] := fillCh; INC(i); DEC(j) END;
+			IF neg & (i < LEN(s)) THEN s[i] := "-"; INC(i) END;
+			j := 0;
+			WHILE (n > 0) & (i < LEN(s)) DO
+				IF (p <= 0) & (j < len) THEN s[i] := m[j]; INC(j) ELSE s[i] := "0" END;
+				INC(i); DEC(n); DEC(p)
+			END;
+			IF i < LEN(s) THEN s[i] := "."; INC(i) END;
+			WHILE (k > 0) & (i < LEN(s)) DO
+				IF (p <= 0) & (j < len) THEN s[i] := m[j]; INC(j) ELSE s[i] := "0" END;
+				INC(i); DEC(k); DEC(p)
+			END;
+			IF expW > 0 THEN
+				IF i < LEN(s) THEN s[i] := "E"; INC(i) END;
+				IF i < LEN(s) THEN
+					IF exp < 0 THEN s[i] := "-"; exp := -exp ELSE s[i] := "+" END;
+					INC(i)
+				END;
+				IF (expW = 3) & (i < LEN(s)) THEN s[i] := CHR(exp DIV 100 + ORD("0")); INC(i) END;
+				IF (expW >= 2) & (i < LEN(s)) THEN s[i] := CHR(exp DIV 10 MOD 10 + ORD("0")); INC(i) END;
+				IF i < LEN(s) THEN s[i] := CHR(exp MOD 10 + ORD("0")); INC(i) END
+			END
+		END;
+		IF i < LEN(s) THEN s[i] := 0X ELSE HALT(23) END
 	END RealToStringForm;
+
+	PROCEDURE RealToString* (x: REAL; OUT s: ARRAY OF CHAR);
+		(* BlackBox default: 16 digits of precision, no width pad,
+		   automatic exponent format, space fill (digitspace). *)
+	BEGIN
+		RealToStringForm(x, 16, 0, 0, digitspace, s)
+	END RealToString;
 
 	PROCEDURE StringToReal* (IN s: ARRAY OF CHAR; OUT x: REAL; OUT res: INTEGER);
 		(* Parse `[+-][int].[frac][E[+-]exp]`. res = 0 ok, 2 syntax error.
@@ -397,6 +462,37 @@ MODULE Strings;
 		IF negative THEN value := -value END;
 		x := value
 	END StringToReal;
+
+
+	(* ------------------------------------------------------------------ *)
+	(* Real-number conversions — SHORTCHAR variants                         *)
+	(* The formatter / parser only need ASCII glyphs (digits, '.', '+',     *)
+	(* '-', 'E', 'e'), all of which fit in SHORTCHAR's 0..127 range.        *)
+	(* So we format / parse via the CHAR procs and Narrow / Widen at the    *)
+	(* boundary — a single extra ASCII-safe pass, no precision loss.        *)
+	(* ------------------------------------------------------------------ *)
+
+	PROCEDURE RealToShortStrForm* (x: REAL; precision, minW, expW: INTEGER;
+																fillCh: SHORTCHAR; OUT s: ARRAY OF SHORTCHAR);
+		VAR wide: ARRAY 80 OF CHAR; res: INTEGER;
+	BEGIN
+		(* Copy fillCh up to CHAR for the inner formatter. *)
+		RealToStringForm(x, precision, minW, expW, CHR(ORD(fillCh)), wide);
+		Narrow(wide, s, res)
+		(* res is 0 — formatter only emits ASCII glyphs — so we ignore it. *)
+	END RealToShortStrForm;
+
+	PROCEDURE RealToShortStr* (x: REAL; OUT s: ARRAY OF SHORTCHAR);
+	BEGIN
+		RealToShortStrForm(x, 16, 0, 0, digitspace (* 8FX is ASCII-safe *), s)
+	END RealToShortStr;
+
+	PROCEDURE ShortStrToReal* (IN s: ARRAY OF SHORTCHAR; OUT x: REAL; OUT res: INTEGER);
+		VAR wide: ARRAY 80 OF CHAR;
+	BEGIN
+		Widen(s, wide);
+		StringToReal(wide, x, res)
+	END ShortStrToReal;
 
 
 	(* ------------------------------------------------------------------ *)
@@ -1206,8 +1302,14 @@ MODULE Strings;
 	BEGIN
 		digits := "0123456789ABCDEF";
 		minLongIntRev := "9223372036854775808";
-		minLongIntRevS := "9223372036854775808"
+		minLongIntRevS := "9223372036854775808";
+		(* Set up real-formatter state — same as BlackBox Init.
+		   For f64: maxExp ≈ 309, maxDig ≈ 15, factor ≈ 1.0e15. *)
+		maxExp := SHORT(ENTIER(Math.Log(MAX(REAL)))) + 1;
+		maxDig := SHORT(ENTIER(-Math.Log(Math.Eps())));
+		factor := Math.IntPower(10.0, maxDig)
 	END Init;
+
 
 BEGIN
 	Init

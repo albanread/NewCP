@@ -743,6 +743,33 @@ impl LoaderSession {
                 .insert(module_name, update.materialized_record);
         }
 
+        // Run each newly-materialized module's CP `BEGIN..END` body once, in
+        // dependency order (graph.modules is already DFS post-order). Without
+        // this, module-level VARs initialised in the body stay at their zero
+        // default, breaking every module that relies on them.
+        //
+        // Compiler emits the body as an exported procedure named "body";
+        // its symbol in the export-address map is `<ModName>.body`.
+        for module in &graph.modules {
+            if !materialized_modules.contains(&module.spec.name) {
+                continue; // skipped above (no recompile needed)
+            }
+            let Some(image) = self.active_executable_images.get(&module.spec.name) else {
+                continue;
+            };
+            let body_symbol = format!("{}.body", module.spec.name);
+            let Some(&addr) = image.export_addresses.get(&body_symbol) else {
+                continue; // module has no body (e.g. DEFINITION MODULE)
+            };
+            // Safety: the JIT-emitted body has signature `extern "C" fn()`.
+            // It's been linked into the active executable image whose lifetime
+            // outlives this call.
+            unsafe {
+                let body_fn: extern "C" fn() = std::mem::transmute(addr);
+                body_fn();
+            }
+        }
+
         Ok(materialized_modules)
     }
 }

@@ -1349,6 +1349,19 @@ impl<'m> LowerCtx<'m> {
             .map(|proc| proc.signature.clone())
     }
 
+    /// True when `name` is a parameter whose IR type is `Ref(_)` (i.e.
+    /// declared with VAR / OUT / IN mode). Used to disambiguate forwarding
+    /// open-array arguments: a Ref param's slot is read via the LLVM
+    /// ref_param_slots indirection (one deref), whereas a value-mode param's
+    /// slot just holds the data pointer (no indirection).
+    fn is_ref_typed_param(&self, name: &str) -> bool {
+        self.proc
+            .params
+            .iter()
+            .find(|(n, _)| n == name)
+            .is_some_and(|(_, ty)| matches!(ty, IrType::Ref(_)))
+    }
+
     /// Compute the length (element count) to pass for an open-array argument.
     ///   - Designator → fixed-size array        : statically known length
     ///   - Designator → forwarded open-array    : load `<src>$len`
@@ -1425,8 +1438,27 @@ impl<'m> LowerCtx<'m> {
                         // Fixed-size array source: pass its base address.
                         value = self.designator_addr(des);
                     } else {
-                        // Forwarding an open-array value param: load the pointer.
-                        value = self.lower_expr(arg);
+                        // Forwarding another open-array param. Two sub-cases:
+                        //
+                        // - source is a Ref-typed param (IN/VAR/OUT mode):
+                        //   `designator_addr` yields `Ref(Ref(Ptr(T)))`; the
+                        //   LLVM `call_args` path then calls `resolve_pointer`
+                        //   which dereferences the ref_param_slot once and
+                        //   gives us the data pointer. Using `lower_expr` here
+                        //   would emit an extra `Load` that *re-dereferences*
+                        //   the data pointer and reads garbage.
+                        //
+                        // - source is a value-mode param (no annotation):
+                        //   the slot stores the data pointer directly with no
+                        //   ref_param_slot indirection. `lower_expr` loads the
+                        //   slot exactly once → data pointer. `designator_addr`
+                        //   would pass the slot address (a ptr-to-ptr).
+                        let is_ref_param = self.is_ref_typed_param(&des.base.name);
+                        value = if is_ref_param {
+                            self.designator_addr(des)
+                        } else {
+                            self.lower_expr(arg)
+                        };
                     }
                 } else {
                     // String literal etc.
@@ -3370,6 +3402,29 @@ pub fn lower_module(sema: &SemanticModule, ast: &ModuleAst) -> IrModule {
     let mut procedures = procedures;
     procedures.extend(nested_procedures);
 
+    // Synthesize the module-body procedure from `MODULE Foo; ... BEGIN <body> END Foo.`.
+    // CP runs this once at module load (after all imports' bodies have run);
+    // it's where module-level VAR initialisation lives. Without it, VARs stay
+    // at their zero default — which silently breaks any module that depends
+    // on them (e.g. Strings.cp's `digits`, `maxExp`, `factor`).
+    //
+    // We emit the body as an exported procedure named "body". The full LLVM
+    // symbol becomes `<ModName>.body` — matches the existing `init_routine`
+    // convention. The loader looks this symbol up after materialization and
+    // JIT-calls it in dependency order.
+    if let Some(body_stmts) = ast.body.as_ref() {
+        if !body_stmts.is_empty() {
+            let body_proc = lower_module_body(
+                &sema.name,
+                body_stmts,
+                system_qualifiers.clone(),
+                &sema.symbols,
+                &sema.procedures,
+            );
+            procedures.push(body_proc);
+        }
+    }
+
     let named_types = collect_named_types(&sema.name, &sema.imports, &sema.symbols, &mut import_cache);
     let (type_vtables, type_bases) = collect_type_vtables(&sema.name, &sema.symbols);
 
@@ -3382,6 +3437,57 @@ pub fn lower_module(sema: &SemanticModule, ast: &ModuleAst) -> IrModule {
         type_vtables,
         type_bases,
     }
+}
+
+/// Synthesize the module-body procedure. Mirrors `lower_procedure` for a
+/// param-less, void-return proc whose body is the module's BEGIN..END.
+fn lower_module_body(
+    module_name: &str,
+    body: &[Statement],
+    system_qualifiers: Vec<String>,
+    module_symbols: &[SemanticSymbol],
+    all_sema_procs: &[SemanticProcedure],
+) -> IrProcedure {
+    let mut proc = IrProcedure::new(
+        "body".to_string(),
+        /*exported=*/ true,
+        Vec::new(),
+        IrType::Void,
+    );
+    let entry = proc.alloc_block();
+    let function_exit = proc.alloc_block();
+    proc.entry = entry;
+    proc.exit = function_exit;
+
+    // Suppress unused-arg warnings — kept as parameters in case future
+    // module-body lowering needs the import-cache or top-level-proc list.
+    let _ = (module_name, all_sema_procs);
+
+    let mut ctx = LowerCtx::new(
+        proc,
+        entry,
+        function_exit,
+        /*result_slot=*/ None,
+        module_symbols.to_vec(),
+        system_qualifiers,
+        module_symbols,
+    );
+    // outer_proc_name stays None: the body isn't a nested proc.
+    // nested_proc_upvalues / return_types stay empty: the body calls
+    // top-level procs via their flat (unmangled) names through the normal
+    // is_direct_callee path.
+
+    ctx.switch_to(entry);
+    ctx.lower_statements(body);
+    ctx.set_term(Terminator::Br { target: function_exit });
+
+    ctx.switch_to(function_exit);
+    ctx.set_term(Terminator::RetVoid);
+
+    let mut proc = ctx.proc;
+    proc.prune_unreachable();
+    proc.compute_rpo();
+    proc
 }
 
 /// Collect vtable information for all record types in the module.

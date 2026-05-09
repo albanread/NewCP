@@ -1534,6 +1534,27 @@ mod tests {
         assert_eq!(run_function("Mod/Tests/MathSmoke.cp", "StringsRoundTrip"), 314);
     }
 
+    #[test]
+    fn strings_real_to_string_round_trip() {
+        // RealToString(12.5) -> some scientific-notation form -> StringToReal -> 12.5 -> ENTIER 12
+        assert_eq!(run_function("Mod/Tests/MathSmoke.cp", "RealToStringRoundTrip"), 12);
+    }
+
+    #[test]
+    fn strings_short_str_to_real() {
+        // SHORTCHAR parser via Widen + StringToReal: "42.5e1" -> 425.0 -> ENTIER 425
+        assert_eq!(run_function("Mod/Tests/MathSmoke.cp", "ShortStrToRealCheck"), 425);
+    }
+
+    #[test]
+    fn strings_real_to_short_str_round_trip() {
+        // Format into SHORTCHAR buffer (via Narrow) then parse back (via Widen).
+        // RealToShortStr(7.5) -> "7.5..." -> ShortStrToReal -> 7.5 -> ENTIER 7.
+        // Exercises both byte<->wide bridges for the real-number procs.
+        assert_eq!(run_function("Mod/Tests/MathSmoke.cp", "RealToShortStrRoundTrip"), 7);
+    }
+
+
     // -------------------------------------------------------------------------
     // ENTIER: floor of real → INTEGER  (§10.3)
     // -------------------------------------------------------------------------
