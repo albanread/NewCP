@@ -49,10 +49,10 @@ MODULE Strings;
 		showBase* = TRUE;
 		hideBase* = FALSE;
 
-		minLongIntRev = "9223372036854775808";	(* abs(MIN(LONGINT)) for 64-bit *)
-
 	VAR
 		digits: ARRAY 17 OF CHAR;
+		minLongIntRev: ARRAY 20 OF CHAR;	(* abs(MIN(LONGINT)) digits, low-to-high *)
+		minLongIntRevS: ARRAY 20 OF SHORTCHAR;
 
 
 	(* ------------------------------------------------------------------ *)
@@ -285,20 +285,24 @@ MODULE Strings;
 	(* Real-number conversions — stubs until Math is ported                *)
 	(* ------------------------------------------------------------------ *)
 
+	(* Real-number stubs return empty/zero with res=1 ("not implemented")
+	   until a Math module exists. We avoid HALT-only bodies because the
+	   IR lowerer panics on procedures whose only path is a trap. *)
+
 	PROCEDURE RealToString* (x: REAL; OUT s: ARRAY OF CHAR);
 	BEGIN
-		HALT(99)	(* TODO: needs Math.Exponent / Math.Mantissa / Math.IntPower *)
+		s[0] := 0X	(* TODO: needs Math.Exponent / Math.Mantissa / Math.IntPower *)
 	END RealToString;
 
 	PROCEDURE RealToStringForm* (x: REAL; precision, minW, expW: INTEGER;
 															fillCh: CHAR; OUT s: ARRAY OF CHAR);
 	BEGIN
-		HALT(99)	(* TODO: needs Math *)
+		s[0] := 0X	(* TODO: needs Math *)
 	END RealToStringForm;
 
 	PROCEDURE StringToReal* (IN s: ARRAY OF CHAR; OUT x: REAL; OUT res: INTEGER);
 	BEGIN
-		HALT(99)	(* TODO: needs Math.IntPower *)
+		x := 0; res := 1	(* TODO: needs Math.IntPower; signal "not implemented" *)
 	END StringToReal;
 
 
@@ -739,8 +743,8 @@ MODULE Strings;
 		ELSE
 			s[0] := 2DX; k := 1;
 			j := 0;
-			WHILE minLongIntRev[j] # 0X DO
-				a[j] := SHORT(minLongIntRev[j]);
+			WHILE minLongIntRevS[j] # 0X DO
+				a[j] := minLongIntRevS[j];
 				INC(j)
 			END
 		END;
@@ -1107,7 +1111,9 @@ MODULE Strings;
 
 	PROCEDURE Init;
 	BEGIN
-		digits := "0123456789ABCDEF"
+		digits := "0123456789ABCDEF";
+		minLongIntRev := "9223372036854775808";
+		minLongIntRevS := "9223372036854775808"
 	END Init;
 
 BEGIN
