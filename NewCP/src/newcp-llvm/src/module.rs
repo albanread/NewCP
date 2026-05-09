@@ -369,10 +369,12 @@ impl<'ctx> CodegenModule<'ctx> {
         let i64_ty  = self.context.i64_type();
         let ptr_ty  = self.context.ptr_type(inkwell::AddressSpace::default());
 
-        // %TypeDesc = type { i64, ptr, ptr, ptr, ptr, i64, [1 x i64] }
-        // (ptroffs has exactly 1 element — the sentinel -1 — for the first slice,
-        // since we don't yet have pointer-field tracking.  Types with pointer fields
-        // will need more entries; this is sufficient for non-pointer record types.)
+        // %TypeDesc = type { i64, ptr, ptr, ptr, ptr, i64, ptr, [1 x i64] }
+        // Field 6 (`name`) is a pointer to a UTF-32 zero-terminated qualified
+        // type name — read by `Kernel.GetTypeName` and the heap-introspection
+        // catalog. Field 7 (`ptroffs`) has exactly 1 element (the sentinel -1)
+        // for the first slice since we don't yet track pointer-field offsets;
+        // types with pointer fields will extend it.
         let ptroffs_arr_ty = i64_ty.array_type(1);
         let type_desc_ty = self.context.struct_type(
             &[
@@ -382,7 +384,8 @@ impl<'ctx> CodegenModule<'ctx> {
                 ptr_ty.into(),          // 3: base
                 ptr_ty.into(),          // 4: vtable
                 i64_ty.into(),          // 5: vtable_len
-                ptroffs_arr_ty.into(),  // 6: ptroffs[1] (sentinel -1 only)
+                ptr_ty.into(),          // 6: name (UTF-32 zero-term, *const u32)
+                ptroffs_arr_ty.into(),  // 7: ptroffs[1] (sentinel -1 only)
             ],
             false,
         );
@@ -495,6 +498,14 @@ impl<'ctx> CodegenModule<'ctx> {
             // ptroffs: just the sentinel -1 (no pointer fields tracked yet).
             let ptroffs_init = i64_ty.const_array(&[i64_ty.const_int(u64::MAX, true)]);
 
+            // Qualified type name as a UTF-32 zero-terminated codepoint
+            // sequence ("Module.Type"). The runtime exposes this via
+            // `Kernel.GetTypeName` (bare suffix) and the heap-introspection
+            // type catalog (full qualified form).
+            let qualified_name = format!("{}.{}", ir_module.name, type_name);
+            let name_global =
+                self.get_or_emit_string_constant(&qualified_name, &IrType::Char);
+
             let desc_init = type_desc_ty.const_named_struct(&[
                 size_val.into(),
                 ptr_ty.const_null().into(),                          // module: null
@@ -502,6 +513,7 @@ impl<'ctx> CodegenModule<'ctx> {
                 base_ptr,                                            // base
                 vtable_ptr.into(),                                   // vtable
                 i64_ty.const_int(vtable_len, false).into(),          // vtable_len
+                name_global.into(),                                  // name (UTF-32 zero-term)
                 ptroffs_init.into(),                                 // ptroffs
             ]);
 

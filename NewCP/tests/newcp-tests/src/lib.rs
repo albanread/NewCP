@@ -2344,6 +2344,29 @@ mod tests {
     }
 
     #[test]
+    fn kernel_probe_get_type_name_returns_bare_name() {
+        // GetTypeName returns "WidgetDesc" — the suffix after the
+        // last `.` in the codegen-emitted qualified name
+        // "KernelProbe.WidgetDesc".
+        assert_eq!(
+            run_function("Mod/Tests/KernelProbe.cp", "WidgetTypeNameMatches"),
+            1,
+            "Kernel.GetTypeName must return the bare type name"
+        );
+    }
+
+    #[test]
+    fn kernel_probe_get_qualified_type_name() {
+        // GetQualifiedTypeName returns the full "Module.Type" form
+        // straight from the codegen-emitted UTF-32 string on TypeDesc.
+        assert_eq!(
+            run_function("Mod/Tests/KernelProbe.cp", "WidgetQualifiedTypeName"),
+            1,
+            "Kernel.GetQualifiedTypeName must return the full qualified name"
+        );
+    }
+
+    #[test]
     fn kernel_trap_cleaners_balanced_push_pop_runs_clean() {
         // Push two typed cleaners, pop them in matching reverse
         // order, observe that Cleanup did not fire (balanced

@@ -409,6 +409,115 @@ pub extern "C" fn kernel_sys_loop(handler: CpEventHandler) {
     LOOP_DEPTH.with(|d| d.set(d.get().saturating_sub(1)));
 }
 
+// ─── Type-name lookup ────────────────────────────────────────────────────
+
+/// Read the UTF-32 zero-terminated name attached to a `TypeDesc` and
+/// return its character count (excluding the terminator). Returns
+/// `None` if the TypeDesc has no name, returns the address of the
+/// codepoint stream and the number of codepoints if it does.
+#[inline]
+fn type_desc_name_codepoints(t: i64) -> Option<(*const u32, usize)> {
+    if t == 0 {
+        return None;
+    }
+    let td = t as *const TypeDesc;
+    let name_ptr = unsafe { (*td).name };
+    if name_ptr.is_null() {
+        return None;
+    }
+    let mut len = 0usize;
+    unsafe {
+        while *name_ptr.add(len) != 0 {
+            len += 1;
+            if len > 4096 {
+                // Defensive: a runaway scan probably means a corrupt
+                // TypeDesc. Don't loop forever.
+                return Some((name_ptr, len));
+            }
+        }
+    }
+    Some((name_ptr, len))
+}
+
+/// Helper: copy `len` codepoints from `src` into the OUT array
+/// `dst` (capped at `cap - 1`), then write a zero terminator.
+/// Mirrors the CP `OUT name: ARRAY OF CHAR` ABI: `dst` is a pointer
+/// to a UTF-32 codepoint buffer and `cap` is the hidden length
+/// argument the open-array convention appends.
+#[inline]
+fn write_codepoints_to_out_array(src: *const u32, len: usize, dst: *mut u32, cap: i64) {
+    if dst.is_null() || cap <= 0 {
+        return;
+    }
+    let cap_chars = (cap as usize).saturating_sub(1); // reserve room for terminator
+    let n = len.min(cap_chars);
+    unsafe {
+        for i in 0..n {
+            *dst.add(i) = *src.add(i);
+        }
+        *dst.add(n) = 0;
+    }
+}
+
+/// `Kernel.GetTypeName(t: Type; OUT name: ARRAY OF CHAR)`. Returns
+/// the *bare* type name (the suffix after the last `.`) — matches
+/// the legacy BlackBox semantics where `t.mod.name + "." +
+/// GetTypeName(t)` produced the qualified form.
+///
+/// `name` is the OUT array's payload pointer; `name_len` is the
+/// hidden length argument the CP open-array ABI appends.
+#[unsafe(no_mangle)]
+pub extern "C" fn kernel_sys_get_type_name(t: i64, name: *mut u32, name_len: i64) {
+    let Some((src, len)) = type_desc_name_codepoints(t) else {
+        // Empty string when no name available.
+        if !name.is_null() && name_len > 0 {
+            unsafe { *name = 0 };
+        }
+        return;
+    };
+    // Find the last `.` (codepoint 0x2E) and start after it.
+    let mut bare_start = 0usize;
+    for i in 0..len {
+        let cp = unsafe { *src.add(i) };
+        if cp == 0x2E {
+            bare_start = i + 1;
+        }
+    }
+    let bare_src = unsafe { src.add(bare_start) };
+    let bare_len = len - bare_start;
+    write_codepoints_to_out_array(bare_src, bare_len, name, name_len);
+}
+
+/// `KernelSys.GetQualifiedTypeName(t: Type; OUT name: ARRAY OF CHAR)`.
+/// Writes the full qualified name (e.g. `"Stores.StoreDesc"`) into
+/// the OUT array. Used by `heap_introspect` and by any code that
+/// wants the qualified form without composing it from parts.
+#[unsafe(no_mangle)]
+pub extern "C" fn kernel_sys_get_qualified_type_name(t: i64, name: *mut u32, name_len: i64) {
+    let Some((src, len)) = type_desc_name_codepoints(t) else {
+        if !name.is_null() && name_len > 0 {
+            unsafe { *name = 0 };
+        }
+        return;
+    };
+    write_codepoints_to_out_array(src, len, name, name_len);
+}
+
+/// Internal helper for `heap_introspect`: build a Rust `String` from
+/// a TypeDesc address. ASCII-only by language rule, so the
+/// codepoint→char conversion is lossless.
+pub(crate) fn type_desc_qualified_name_string(t: i64) -> Option<String> {
+    let (src, len) = type_desc_name_codepoints(t)?;
+    let mut s = String::with_capacity(len);
+    for i in 0..len {
+        let cp = unsafe { *src.add(i) };
+        if let Some(c) = char::from_u32(cp) {
+            s.push(c);
+        }
+    }
+    Some(s)
+}
+
 // ─── Trap-cleaner stack ──────────────────────────────────────────────────
 
 /// LIFO stack of registered trap cleaners (CP `Kernel.TrapCleaner`
@@ -558,6 +667,8 @@ fn kernel_exports() -> Vec<(&'static str, *const ())> {
         ("Quit",     kernel_sys_quit      as *const ()),
         ("PushTrapCleaner", kernel_sys_push_trap_cleaner as *const ()),
         ("PopTrapCleaner",  kernel_sys_pop_trap_cleaner  as *const ()),
+        ("GetTypeName",     kernel_sys_get_type_name     as *const ()),
+        ("GetQualifiedTypeName", kernel_sys_get_qualified_type_name as *const ()),
     ]
 }
 
@@ -622,6 +733,7 @@ mod tests {
                 base: std::ptr::null(),
                 vtable: std::ptr::null(),
                 vtable_len: 0,
+                name: std::ptr::null(),
                 ptroffs: [],
             },
             sentinel: -1,
@@ -643,6 +755,7 @@ mod tests {
                 base,
                 vtable: std::ptr::null(),
                 vtable_len: 0,
+                name: std::ptr::null(),
                 ptroffs: [],
             },
             sentinel: -1,
@@ -790,6 +903,7 @@ mod tests {
                     base: std::ptr::null(),
                     vtable: vtable_ptr,
                     vtable_len: 1,
+                    name: std::ptr::null(),
                     ptroffs: [],
                 },
                 sentinel: -1,
@@ -847,6 +961,60 @@ mod tests {
 
         let depth = TRAP_CLEANERS.with(|s| s.borrow().len());
         assert_eq!(depth, 0);
+    }
+
+    #[test]
+    fn get_qualified_type_name_reads_codegen_emitted_name() {
+        // Build a TypeDesc by hand that points at a UTF-32 codepoint
+        // string; verify the shim reads it back through the same path
+        // CP code uses.
+        let utf32: Vec<u32> = "Stores.StoreDesc"
+            .chars()
+            .map(|c| c as u32)
+            .chain(std::iter::once(0u32))
+            .collect();
+        let utf32_box = utf32.into_boxed_slice();
+        let utf32_ptr = Box::leak(utf32_box).as_ptr();
+
+        #[repr(C)]
+        struct LeafTd {
+            base: TypeDesc,
+            sentinel: isize,
+        }
+        let td = Box::new(LeafTd {
+            base: TypeDesc {
+                size: 16,
+                module: std::ptr::null(),
+                finalizer: None as Option<Finalizer>,
+                base: std::ptr::null(),
+                vtable: std::ptr::null(),
+                vtable_len: 0,
+                name: utf32_ptr,
+                ptroffs: [],
+            },
+            sentinel: -1,
+        });
+        let td_ptr = Box::into_raw(td) as *const TypeDesc;
+
+        // Read the qualified name via the shim.
+        let mut buf = [0u32; 64];
+        kernel_sys_get_qualified_type_name(td_ptr as i64, buf.as_mut_ptr(), 64);
+        let read_back: String = buf
+            .iter()
+            .take_while(|&&c| c != 0)
+            .map(|&c| char::from_u32(c).unwrap())
+            .collect();
+        assert_eq!(read_back, "Stores.StoreDesc");
+
+        // GetTypeName returns the bare suffix.
+        let mut buf2 = [0u32; 64];
+        kernel_sys_get_type_name(td_ptr as i64, buf2.as_mut_ptr(), 64);
+        let bare: String = buf2
+            .iter()
+            .take_while(|&&c| c != 0)
+            .map(|&c| char::from_u32(c).unwrap())
+            .collect();
+        assert_eq!(bare, "StoreDesc");
     }
 
     // Note: there is no unit test for the imbalance-traps case.

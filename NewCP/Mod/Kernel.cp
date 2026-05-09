@@ -136,12 +136,22 @@ PROCEDURE TypeOf* (obj: ANYPTR): Type;
     (** Runtime type of a heap pointer, read from its block
         header. NIL only if `obj = NIL`. *)
 
-PROCEDURE GetTypeName* (t: Type; OUT name: Name);
+PROCEDURE GetTypeName* (t: Type; OUT name: ARRAY OF CHAR);
     (** Bare type name (e.g. "StoreDesc"). For the qualified form,
         callers concatenate `GetModName(ModOf(t))` + "." +
-        `GetTypeName(t)`. *)
+        `GetTypeName(t)`, OR use `GetQualifiedTypeName` directly.
+        `name` is an open-array OUT parameter — the ABI passes the
+        buffer's element count alongside the payload pointer, so
+        callers can use any sized `ARRAY OF CHAR` (typically
+        `Kernel.Name`). The shim caps writes at length-1 and zero-
+        terminates. *)
 
-PROCEDURE GetModName* (m: Module; OUT name: Name);
+PROCEDURE GetQualifiedTypeName* (t: Type; OUT name: ARRAY OF CHAR);
+    (** Full qualified type name (e.g. "Stores.StoreDesc"). The
+        runtime always knows the qualified form; callers that need
+        it directly avoid composing it from parts. *)
+
+PROCEDURE GetModName* (m: Module; OUT name: ARRAY OF CHAR);
     (** Module name (e.g. "Stores"). Empty string if `m = NIL`. *)
 
 PROCEDURE ModOf* (t: Type): Module;

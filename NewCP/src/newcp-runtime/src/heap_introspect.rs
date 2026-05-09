@@ -342,11 +342,14 @@ fn walk_cluster_occupancy(cluster: &Cluster) -> ClusterOccupancy {
     o
 }
 
-/// Best-effort type name. Until `newcp-llvm` co-emits a name field on each
-/// `TypeDesc`, we can only surface its address. This stays lossless — the
-/// address is unique — and gives readers something they can grep for.
+/// Resolve a `TypeDesc` address to its qualified type name (e.g.
+/// `"Stores.StoreDesc"`). Falls back to `Type@0xADDR` for fabricated
+/// or hand-rolled TypeDescs that codegen didn't emit a name for —
+/// chiefly the test helpers; production-emitted TypeDescs always
+/// carry a name pointer.
 fn format_type_name(type_desc_addr: usize) -> String {
-    format!("Type@0x{type_desc_addr:x}")
+    crate::kernel_sys::type_desc_qualified_name_string(type_desc_addr as i64)
+        .unwrap_or_else(|| format!("Type@0x{type_desc_addr:x}"))
 }
 
 fn now_ns() -> u128 {
@@ -643,6 +646,7 @@ mod tests {
                 base: std::ptr::null(),
                 vtable: std::ptr::null(),
                 vtable_len: 0,
+                name: std::ptr::null(),
                 ptroffs: [],
             },
             sentinel: -1,

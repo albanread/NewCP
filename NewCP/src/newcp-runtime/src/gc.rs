@@ -106,7 +106,10 @@ pub type Finalizer = unsafe extern "C" fn(*mut u8);
 /// offset 32 : vtable      — *const *const () — pointer to method vtable array
 ///                            (null if the type declares or inherits no methods)
 /// offset 40 : vtable_len  — u64 — number of slots in vtable
-/// offset 48 : ptroffs[]   — sentinel-terminated isize array of pointer offsets
+/// offset 48 : name        — *const u32 — UTF-32 zero-terminated qualified
+///                            type name (e.g. "Stores.StoreDesc"); null if
+///                            the codegen didn't emit one
+/// offset 56 : ptroffs[]   — sentinel-terminated isize array of pointer offsets
 /// ```
 ///
 /// The JIT code retrieves the descriptor via `BlockHeader.tag` stored
@@ -145,8 +148,16 @@ pub struct TypeDesc {
     pub vtable: *const *const (),
     /// Number of slots in `vtable`. Offset 40.
     pub vtable_len: u64,
+    /// Qualified type name as a zero-terminated UTF-32 codepoint stream
+    /// (e.g. `"Stores.StoreDesc"`), or null if codegen did not emit one
+    /// (e.g. for hand-fabricated TypeDescs in tests). Offset 48.
+    ///
+    /// CP source identifiers are guaranteed ASCII, but the storage format
+    /// is `*const u32` so `Kernel.GetTypeName` can copy directly into a
+    /// CP `ARRAY OF CHAR` (UTF-32) without per-character widening.
+    pub name: *const u32,
     /// Sentinel-terminated (first negative entry) array of payload byte offsets
-    /// where heap-pointer fields reside. Offset 48.
+    /// where heap-pointer fields reside. Offset 56.
     pub ptroffs: [isize; 0],
 }
 
@@ -1353,6 +1364,7 @@ mod tests {
                 base: std::ptr::null(),
                 vtable: std::ptr::null(),
                 vtable_len: 0,
+                name: std::ptr::null(),
                 ptroffs: [],
             },
             sentinel: -1,
@@ -1383,6 +1395,7 @@ mod tests {
             (*raw).base = std::ptr::null();
             (*raw).vtable = std::ptr::null();
             (*raw).vtable_len = 0;
+            (*raw).name = std::ptr::null();
             // Write the trailing array immediately past the struct.
             let tail =
                 (raw as *mut u8).add(std::mem::size_of::<TypeDesc>()) as *mut isize;
