@@ -10,6 +10,8 @@ const COMMANDS: &[&str] = &[
     "load-module",
     "check-mod",
     "check-dir",
+    #[cfg(windows)]
+    "run-igui",
     "dump-tokens",
     "dump-ast",
     "dump-sema",
@@ -30,6 +32,11 @@ fn main() {
     if command == "bootstrap" {
         println!("{}", newcp_loader::bootstrap_report());
         return;
+    }
+
+    #[cfg(windows)]
+    if command == "run-igui" {
+        std::process::exit(run_igui());
     }
 
     if command == "invoke-command" {
@@ -174,11 +181,26 @@ fn print_usage() {
     eprintln!("  newcp-driver load-module <Module|Path> [Module.Command]");
     eprintln!("  newcp-driver check-mod <Module|Path>");
     eprintln!("  newcp-driver check-dir <dir>");
+    eprintln!("  newcp-driver run-igui                            (Windows only)");
     eprintln!("  newcp-driver <dump-command> [--opt <none|less|default|aggressive>] <file>");
     eprintln!();
     eprintln!("commands:");
     for command in COMMANDS {
         eprintln!("  {command}");
+    }
+}
+
+/// Run iGui on the main (Win32 message-loop) thread. Phase 1 just opens
+/// a frame, paints a solid color, and returns the message-pump exit
+/// code.
+#[cfg(windows)]
+fn run_igui() -> i32 {
+    match newcp_runtime::igui::run() {
+        Ok(code) => code,
+        Err(err) => {
+            eprintln!("{err}");
+            1
+        }
     }
 }
 

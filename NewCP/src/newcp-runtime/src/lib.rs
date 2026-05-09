@@ -1,6 +1,9 @@
 pub mod console;
 pub mod gc;
 
+#[cfg(windows)]
+pub mod igui;
+
 use std::collections::HashMap;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
