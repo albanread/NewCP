@@ -1,0 +1,1106 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Dev\\Mod\\CPM.odc"
+  size: 29725
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 29594
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 29408
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 29322
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 27
+                bodyPos: 29443
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 28929
+                runListLen: 4330
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [4]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000000
+                  - # [5]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff00ff
+                    weight: 400
+                    style: 0x00000000
+                  - # [6]
+                    font: "*"
+                    size: 114300
+                    color: 0x000000ff
+                    weight: 400
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE DevCPM; \r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\treferences\t= \"ftp://ftp.inf.ethz.ch/pub/software/Oberon/OberonV4/Docu/OP2.Paper.ps\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- 20070123, bh, GetL added (Unicode support)\r\t- 20070123, bh, MaxStruct increased\r\t- 20070123, bh, support for procedure type sysflags\r\t- 20070224, bh, fingerprints changed to CRC32\r\t"
+                          attr: 0
+                        - text: "- 20080208, bh, file checksum for symbol files"
+                          attr: 1
+                        - text: "\r\t- 20141027, center #19, full Unicode support for Component Pascal identifiers added\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT "
+                    attr: 0
+                  - text: SYSTEM
+                    attr: 3
+                  - text: ", Kernel,"
+                    attr: 0
+                  - text: " "
+                    attr: 4
+                  - text: "Files, Stores, Models, Views, TextModels, StdLog, DevMarkers;\r\r\tCONST\r\t\t"
+                    attr: 0
+                  - text: ProcSize
+                    attr: 3
+                  - text: "* = 4;\t"
+                    attr: 0
+                  - text: "(* PROCEDURE type *)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: PointerSize
+                    attr: 3
+                  - text: "* = 4;\t"
+                    attr: 0
+                  - text: "(* POINTER type *)\r\t\t"
+                    attr: 1
+                  - text: DArrSizeA
+                    attr: 3
+                  - text: "* = 8;"
+                    attr: 0
+                  - text: "\t(* dyn array descriptor *)\r\t\t"
+                    attr: 1
+                  - text: DArrSizeB
+                    attr: 3
+                  - text: "* = 4;"
+                    attr: 0
+                  - text: "\t(* size = A + B * typ.n *)"
+                    attr: 1
+                  - text: "\r\r\t\t"
+                    attr: 0
+                  - text: MaxSet
+                    attr: 3
+                  - text: "* = 31;\r\t\t"
+                    attr: 0
+                  - text: MaxIndex
+                    attr: 3
+                  - text: "* = 7FFFFFFFH;\t"
+                    attr: 0
+                  - text: "(* maximal index value for array declaration *)"
+                    attr: 1
+                  - text: "\r\r\t\tMinReal32Pat = 0FF7FFFFFH;\t"
+                    attr: 0
+                  - text: "(* most positive, 32-bit pattern *)"
+                    attr: 1
+                  - text: "\r\t\tMinReal64PatL = 0FFFFFFFFH;\t"
+                    attr: 0
+                  - text: "(* most  negative, lower 32-bit pattern *)"
+                    attr: 1
+                  - text: "\r\t\tMinReal64PatH = 0FFEFFFFFH;\t"
+                    attr: 0
+                  - text: "(* most  negative, higher 32-bit pattern *)"
+                    attr: 1
+                  - text: "\r\t\tMaxReal32Pat = 07F7FFFFFH;\t"
+                    attr: 0
+                  - text: "(* most positive, 32-bit pattern *)"
+                    attr: 1
+                  - text: "\r\t\tMaxReal64PatL = 0FFFFFFFFH;\t"
+                    attr: 0
+                  - text: "(* most positive, lower 32-bit pattern *)"
+                    attr: 1
+                  - text: "\r\t\tMaxReal64PatH = 07FEFFFFFH;\t"
+                    attr: 0
+                  - text: "(* most positive, higher 32-bit pattern *)\r\t\t"
+                    attr: 1
+                  - text: "InfRealPat = 07F800000H;\t"
+                    attr: 0
+                  - text: "(* real infinity pattern *)"
+                    attr: 1
+                  - text: "\r\r\r\t\t"
+                    attr: 0
+                  - text: "(* inclusive range of parameter of standard procedure HALT *)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: MinHaltNr
+                    attr: 3
+                  - text: "* = 0;\r\t\t"
+                    attr: 0
+                  - text: MaxHaltNr
+                    attr: 3
+                  - text: "* = 128;\r\r\t\t"
+                    attr: 0
+                  - text: "(* inclusive range of register number of procedures SYSTEM.GETREG and SYSTEM.PUTREG *)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: MinRegNr
+                    attr: 3
+                  - text: "* = 0;\r\t\t"
+                    attr: 0
+                  - text: MaxRegN
+                    attr: 3
+                  - text: "r* = 31;\r\r\t\t"
+                    attr: 0
+                  - text: "(* maximal value of flag used to mark interface structures *)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: MaxSysFlag
+                    attr: 3
+                  - text: "* = 127;\t"
+                    attr: 0
+                  - text: "(* shortint *)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: CProcFlag
+                    attr: 3
+                  - text: "* = 1;\t"
+                    attr: 0
+                  - text: "(* code procedures *)\r"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: "(* maximal condition value of parameter of SYSTEM.CC *)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: MaxCC
+                    attr: 3
+                  - text: "* = 15;"
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: "(* initialization of constant address, must be different from any valid constant address *)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: ConstNotAlloc
+                    attr: 3
+                  - text: "* = -1;\r\r\t\t"
+                    attr: 0
+                  - text: "(* whether hidden pointer fields have to be nevertheless exported *)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: ExpHdPtrFld
+                    attr: 3
+                  - text: "* = TRUE;\r\t\t"
+                    attr: 0
+                  - text: HdPtrName
+                    attr: 3
+                  - text: "* = \"@ptr\";\r\r"
+                    attr: 0
+                  - text: "\t\t(* whether hidden untagged pointer fields have to be nevertheless exported *)\r"
+                    attr: 1
+                  - text: "\t\t"
+                    attr: 0
+                  - text: ExpHdUtPtrFld
+                    attr: 3
+                  - text: "* = TRUE;\r\t\t"
+                    attr: 0
+                  - text: HdUtPtrName
+                    attr: 3
+                  - text: "* = \"@utptr\";\r\r\t\t"
+                    attr: 0
+                  - text: "(* whether hidden procedure fields have to be nevertheless exported (may be used for System.Free) *)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: ExpHdProcFld
+                    attr: 3
+                  - text: "* = TRUE;\r\t\t"
+                    attr: 0
+                  - text: HdProcName
+                    attr: 3
+                  - text: "* = \"@proc\";\r\r\t\t"
+                    attr: 0
+                  - text: "(* whether hidden bound procedures have to be nevertheless exported *)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: ExpHdTProc
+                    attr: 3
+                  - text: "* = FALSE;\r\t\t"
+                    attr: 0
+                  - text: HdTProcName
+                    attr: 3
+                  - text: "* = \"@tproc\";\r\r"
+                    attr: 0
+                  - text: "\t\t(* maximal number of exported stuctures: *)\r"
+                    attr: 1
+                  - text: "\t\t"
+                    attr: 0
+                  - text: MaxStruct
+                    attr: 3
+                  - text: "* = 16000;"
+                    attr: 0
+                  - text: "\t(* must be < MAX(INTEGER) DIV 2 in object model *)\r"
+                    attr: 1
+                  - text: "\t\t\r"
+                    attr: 0
+                  - text: "\t\t(* maximal number of record extensions: *)\r"
+                    attr: 1
+                  - text: "\t\t"
+                    attr: 0
+                  - text: MaxExts
+                    attr: 3
+                  - text: "* = 15;"
+                    attr: 0
+                  - text: "\t(* defined by type descriptor layout *)\r"
+                    attr: 1
+                  - text: "\t\t\r\t\t"
+                    attr: 0
+                  - text: "(* whether field leaf of pointer variable p has to be set to FALSE, when NEW(p) or SYSTEM.NEW(p, n) is used *)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: NEWusingAdr
+                    attr: 3
+                  - text: "* = FALSE;\r\r\t\t"
+                    attr: 0
+                  - text: "(* special character (< \" \") returned by procedure Get, if end of text reached *)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: Eot
+                    attr: 3
+                  - text: "* = 0X;\r\t\t\r"
+                    attr: 0
+                  - text: "\t\t(* warnings *)\r\t"
+                    attr: 1
+                  - text: "\t"
+                    attr: 0
+                  - text: longreal
+                    attr: 3
+                  - text: "* = 0; "
+                    attr: 0
+                  - text: largeint
+                    attr: 3
+                  - text: "* = 1;"
+                    attr: 0
+                  - text: " realConst"
+                    attr: 3
+                  - text: "* = 2; "
+                    attr: 0
+                  - text: copy
+                    attr: 3
+                  - text: "* = 3; "
+                    attr: 0
+                  - text: lchr
+                    attr: 3
+                  - text: "* = 4; "
+                    attr: 0
+                  - text: lentier
+                    attr: 3
+                  - text: "* = 5; "
+                    attr: 0
+                  - text: invar
+                    attr: 3
+                  - text: "* = 6; "
+                    attr: 0
+                  - text: outvar
+                    attr: 3
+                  - text: "* = 7;"
+                    attr: 0
+                  - text: "\r\t\t"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: "(* language options *)\r\t\t"
+                    attr: 1
+                  - text: interface
+                    attr: 3
+                  - text: "* = 1;\r\t\t"
+                    attr: 0
+                  - text: com
+                    attr: 3
+                  - text: "* = 2; "
+                    attr: 0
+                  - text: comAware
+                    attr: 3
+                  - text: "* = 3;"
+                    attr: 0
+                  - text: "\r\t\tsom"
+                    attr: 3
+                  - text: "* = 4; "
+                    attr: 0
+                  - text: somAware
+                    attr: 3
+                  - text: "* = 5;\r\t\t"
+                    attr: 0
+                  - text: oberon
+                    attr: 3
+                  - text: "* = 6;\r\t\t"
+                    attr: 0
+                  - text: java
+                    attr: 3
+                  - text: "* = 7; "
+                    attr: 0
+                  - text: javaAware
+                    attr: 3
+                  - text: "* = 8;\r\t\t"
+                    attr: 0
+                  - text: noCode
+                    attr: 3
+                  - text: "* = 9;\r\t\tallSysVal* = 14;\r\t\tsysImp* = 15;\r\t\ttrap* = 31;\r\t\tsys386 = 10; sys68k = 20;\t"
+                    attr: 0
+                  - text: "(* processor type in options if system imported *)\r\t\t\r"
+                    attr: 1
+                  - text: "\tCONST\r\t\tSFdir = \"Sym\";\r\t\tOFdir = \"Code\";\r\t\tSYSdir = \"System\";\r\t\tSFtag = 6F4F5346H;\t"
+                    attr: 0
+                  - text: "(* symbol file tag *)"
+                    attr: 1
+                  - text: "\r\t\tOFtag = 6F4F4346H;\t"
+                    attr: 0
+                  - text: "(* object file tag *)"
+                    attr: 1
+                  - text: "\r\t\tmaxErrors = 64;\r\t\t\r\tVAR\r\t\t"
+                    attr: 0
+                  - text: LEHost
+                    attr: 3
+                  - text: "*: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(* little or big endian host *)\r"
+                    attr: 1
+                  - text: "\t\t"
+                    attr: 0
+                  - text: MinReal32
+                    attr: 3
+                  - text: "*, "
+                    attr: 0
+                  - text: MaxReal32
+                    attr: 3
+                  - text: "*, "
+                    attr: 0
+                  - text: InfReal
+                    attr: 3
+                  - text: "*,\r\t\t"
+                    attr: 0
+                  - text: MinReal64
+                    attr: 3
+                  - text: "*, "
+                    attr: 0
+                  - text: MaxReal64
+                    attr: 3
+                  - text: "*: REAL;\r\t\t"
+                    attr: 0
+                  - text: noerr
+                    attr: 3
+                  - text: "*: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(* no error found until now *)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: curpos
+                    attr: 3
+                  - text: "*, "
+                    attr: 0
+                  - text: "startpos*, errpos*"
+                    attr: 3
+                  - text: ": INTEGER;\t"
+                    attr: 0
+                  - text: "(* character, start, and error position in source file *)\r\t\t"
+                    attr: 1
+                  - text: searchpos
+                    attr: 3
+                  - text: "*: INTEGER;"
+                    attr: 0
+                  - text: "\t(* search position in source file *)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: errors
+                    attr: 3
+                  - text: "*: INTEGER;\r\t\t"
+                    attr: 0
+                  - text: breakpc
+                    attr: 3
+                  - text: "*: INTEGER;\t"
+                    attr: 0
+                  - text: "(* set by OPV.Init *)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: options
+                    attr: 3
+                  - text: "*: SET;\t"
+                    attr: 0
+                  - text: "(* language options *)\r"
+                    attr: 1
+                  - text: "\t\t"
+                    attr: 0
+                  - text: file
+                    attr: 3
+                  - text: "*: Files.File;\t"
+                    attr: 0
+                  - text: "(* used for sym file import *)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: codeDir
+                    attr: 3
+                  - text: "*: ARRAY 16 OF CHAR;\r\t\t"
+                    attr: 0
+                  - text: symDir
+                    attr: 3
+                  - text: "*: ARRAY 16 OF CHAR;\r\t\t"
+                    attr: 0
+                  - text: checksum
+                    attr: 3
+                  - text: "*: INTEGER;\t"
+                    attr: 0
+                  - text: "(* symbol file checksum *)"
+                    attr: 1
+                  - text: "\r\t\t\r\t\tlastpos: INTEGER;\r\t\trealpat: INTEGER;\r\t\tlrealpat: RECORD H, L: INTEGER END;\r\t\tfpi, fpj: SHORTINT; fp: ARRAY 4 OF SHORTCHAR;\r\t\tObjFName: Files.Name;\r\r\t\tin: TextModels.Reader;\r\t\toldSymFile, symFile, objFile: Files.File;\r\t\tinSym: Files.Reader;\r\t\toutSym, outObj: Files.Writer;\r\t\t\r\t\terrNo, errPos: ARRAY maxErrors OF INTEGER;\r\t\t\r\t\tlineReader: TextModels.Reader;\r\t\tlineNum: INTEGER;\r\t\t\r\t\tcrc32tab: ARRAY 256 OF INTEGER;\r\r\r\tPROCEDURE^ "
+                    attr: 0
+                  - text: err
+                    attr: 3
+                  - text: "* (n: INTEGER);\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Init
+                    attr: 3
+                  - text: "* (source: TextModels.Reader; logtext: TextModels.Model);\r\tBEGIN\r\t\tin := source;\r\t\tDevMarkers.Unmark(in.Base());\r\t\tnoerr := TRUE; options := {};\r\t\tcurpos := in.Pos(); errpos := curpos; lastpos := curpos - 11; errors := 0;\r\t\tcodeDir := OFdir; symDir := SFdir\r\tEND Init;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: Close
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\toldSymFile := NIL; inSym := NIL;\r\t\tsymFile := NIL; outSym := NIL;\r\t\tobjFile := NIL; outObj := NIL;\r\t\tin := NIL; lineReader := NIL\r\tEND Close;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Get
+                    attr: 3
+                  - text: "* (VAR ch: CHAR);\r\tBEGIN\r\t\tREPEAT in.ReadChar(ch); INC(curpos) UNTIL ch # TextModels.viewcode;\r\tEND Get;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: LineOf
+                    attr: 3
+                  - text: "* (pos: INTEGER): INTEGER;\r\t\tVAR ch: CHAR;\r\tBEGIN\r\t\tIF lineReader = NIL THEN lineReader := in.Base().NewReader(NIL); lineReader.SetPos(0); lineNum := 0 END;\r\t\tIF lineReader.Pos() > pos THEN lineReader.SetPos(0); lineNum := 0 END;\r\t\tWHILE lineReader.Pos() < pos DO\r\t\t\tlineReader.ReadChar(ch);\r\t\t\tIF ch = 0DX THEN INC(lineNum) END\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " lineNum\r\tEND LineOf;\r\r\tPROCEDURE LoWord (r: REAL): INTEGER;\r\t\tVAR x: INTEGER;\r\tBEGIN\r\t\tx := SYSTEM.ADR(r);\r\t\tIF ~LEHost THEN INC(x, 4) END;\r\t\tSYSTEM.GET(x, x);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " x\r\tEND LoWord;\r\r\tPROCEDURE HiWord (r: REAL): INTEGER;\r\t\tVAR x: INTEGER;\r\tBEGIN\r\t\tx := SYSTEM.ADR(r);\r\t\tIF LEHost THEN INC(x, 4) END;\r\t\tSYSTEM.GET(x, x);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " x\r\tEND HiWord;\r\t\r\tPROCEDURE Compound (lo, hi: INTEGER): REAL;\r\t\tVAR r: REAL;\r\tBEGIN\r\t\tIF LEHost THEN\r\t\t\tSYSTEM.PUT(SYSTEM.ADR(r), lo); SYSTEM.PUT(SYSTEM.ADR(r) + 4, hi)\r\t\tELSE\r\t\t\tSYSTEM.PUT(SYSTEM.ADR(r) + 4, lo); SYSTEM.PUT(SYSTEM.ADR(r), hi)\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " r\r\tEND Compound;\r\r\r\t"
+                    attr: 0
+                  - text: "(* sysflag control *)"
+                    attr: 1
+                  - text: "\r\t\r\tPROCEDURE ValidGuid* (IN str: ARRAY OF SHORTCHAR): BOOLEAN;\r\t\tVAR i: INTEGER; ch: SHORTCHAR;\r\tBEGIN\r\t\tIF (LEN(str$) # 38) OR (str[0] # \"{\") & (str[37] # \"}\") THEN RETURN FALSE END;\r\t\ti := 1;\r\t\tWHILE i < 37 DO\r\t\t\tch := str[i];\r\t\t\tIF (i = 9) OR (i = 14) OR (i = 19) OR (i = 24) THEN\r\t\t\t\tIF ch # \"-\" THEN RETURN FALSE END\r\t\t\tELSE\r\t\t\t\tIF (ch < \"0\") OR (ch > \"9\") & (CAP(ch) < \"A\") OR (CAP(ch) > \"Z\") THEN RETURN FALSE END\r\t\t\tEND;\r\t\t\tINC(i)\r\t\tEND;\r\t\tRETURN TRUE\r\tEND ValidGuid;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: GetProcSysFlag
+                    attr: 3
+                  - text: "* (IN id: ARRAY OF SHORTCHAR; num: SHORTINT; VAR flag: SHORTINT);\r\tBEGIN\r\t\tIF id # \"\" THEN\r\t\t\tIF id = \"code\" THEN num := 1\r\t\t\tELSIF id = \"callback\" THEN num := 2\r\t\t\tELSIF id = \"nostkchk\" THEN num := 4\r\t\t\tELSIF id = \"ccall\" THEN num := -10\r\t\t\tELSIF id = \"guarded\" THEN num := 8\r\t\t\tELSIF id = \"noframe\" THEN num := 16\r\t\t\tELSIF id = \"native\" THEN num := -33\r\t\t\tELSIF id = \"bytecode\" THEN num := -35\r\t\t\tEND\r\t\tEND;\r\t\tIF (options * {sysImp, sys386, sys68k} # {}) & ((num = 1) OR (num = 2)) THEN INC(flag, num)\r\t\tELSIF (sys68k IN options) & (num = 4) THEN INC(flag, num)\r\t\tELSIF (options * {sys386, interface} # {}) & (num = -10) & (flag = 0) THEN flag := -10\r\t\tELSIF (options * {sys386, com} # {}) & (num = 8) & (flag = 0) THEN flag := 8\r\t\tELSIF (options * {sysImp, sys386} # {}) & (num = 16) & (flag = 0) THEN flag := 16\r\t\tELSIF ({sysImp, java} - options = {}) & ((num= -33) OR (num = -35)) & (flag = 0) THEN flag := num\r\t\tELSE err(225); flag := 0"
+                    attr: 0
+                  - text: "\r\t"
+                    attr: 1
+                  - text: "\tEND\r\tEND GetProcSysFlag;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: GetVarParSysFlag
+                    attr: 3
+                  - text: "* (IN id: ARRAY OF SHORTCHAR; num: SHORTINT; VAR flag: SHORTINT);\r"
+                    attr: 0
+                  - text: "\t\t"
+                    attr: 1
+                  - text: "VAR old: SHORTINT;\r\tBEGIN\r\t\told := flag; flag := 0;\r\t\tIF (options * {sys386, sys68k, interface, com} # {}) THEN\r\t\t\tIF (num = 1) OR (id = \"nil\") THEN\r\t\t\t\tIF ~ODD(old) THEN flag := SHORT(old + 1) END\r\t\t\tELSIF ((num = 2) OR (id = \"in\")) & (oberon IN options) THEN\r\t\t\t\tIF old <= 1 THEN flag := SHORT(old + 2) END\r\t\t\tELSIF ((num = 4) OR (id = \"out\")) & (oberon IN options) THEN\r\t\t\t\tIF old <= 1 THEN flag := SHORT(old + 4) END\r\t\t\tELSIF ((num = 8) OR (id = \"new\")) & (options * {com, interface} # {}) THEN\r\t\t\t\tIF old <= 1 THEN flag := SHORT(old + 8) END\r\t\t\tELSIF ((num = 16) OR (id = \"iid\")) & (com IN options) THEN\r\t\t\t\tIF old <= 1 THEN flag := SHORT(old + 16) END\r\t\t\tEND\r\t\tEND;\r\t\tIF flag = 0 THEN err(225) END\r\tEND GetVarParSysFlag;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: GetRecordSysFlag
+                    attr: 3
+                  - text: "* (IN id: ARRAY OF SHORTCHAR; num: SHORTINT; VAR flag: SHORTINT);\r"
+                    attr: 0
+                  - text: "\t\t"
+                    attr: 1
+                  - text: "VAR old: SHORTINT;\r\tBEGIN\r\t\told := flag; flag := 0;\r\t\tIF (num = 1) OR (id = \"untagged\") THEN\r\t\t\tIF (options * {sysImp, sys386, sys68k, interface, com, som} # {}) & (old = 0) THEN flag := 1 END\r\t\tELSIF (num = 3) OR (id = \"noalign\") THEN\r\t\t\tIF (options * {sys386, sys68k, interface, com, som} # {}) & (old = 0) THEN flag := 3 END\r\t\tELSIF (num = 4) OR (id = \"align2\") THEN\r\t\t\tIF (options * {sys386, interface, com} # {}) & (old = 0) THEN flag := 4 END\r\t\tELSIF (num = 5) OR (id = \"align4\") THEN\r\t\t\tIF (options * {sys386, interface, com} # {}) & (old = 0) THEN flag := 5 END\r\t\tELSIF (num = 6) OR (id = \"align8\") THEN\r\t\t\tIF (options * {sys386, interface, com} # {}) & (old = 0) THEN flag := 6 END\r\t\tELSIF (num = 7) OR (id = \"union\") THEN\r\t\t\tIF (options * {sys386, sys68k, interface, com} # {}) & (old = 0) THEN flag := 7 END\r\t\tELSIF (num = 10) OR (id = \"interface\") OR ValidGuid(id) THEN\r\t\t\tIF (com IN options) & (old = 0) THEN flag := 10 END\r\t\tELSIF (num = -11) OR (id = \"jint\") THEN\r\t\t\tIF (java IN options) & (old = 0) THEN flag := -11 END\r\t\tELSIF (num = -13) OR (id = \"jstr\") THEN\r\t\t\tIF (java IN options) & (old = 0) THEN flag := -13 END\r\t\tELSIF (num = 20) OR (id = \"som\") THEN\r\t\t\tIF (som IN options) & (old = 0) THEN flag := 20 END\r\t\tEND;\r\t\tIF flag = 0 THEN err(225) END\r\tEND GetRecordSysFlag;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: GetArraySysFlag
+                    attr: 3
+                  - text: "* (IN id: ARRAY OF SHORTCHAR; num: SHORTINT; VAR flag: SHORTINT);\r"
+                    attr: 0
+                  - text: "\t\t"
+                    attr: 1
+                  - text: "VAR old: SHORTINT;\r\tBEGIN\r\t\told := flag; flag := 0;\r\t\tIF (num = 1) OR (id = \"untagged\") THEN\r\t\t\tIF (options * {sysImp, sys386, sys68k, interface, com, som} # {}) & (old = 0) THEN flag := 1 END\r\t\tELSIF (num = -12) OR (id = \"jarr\") THEN\r\t\t\tIF (java IN options) & (old = 0) THEN flag := -12 END\r\t\tELSIF (num = -13) OR (id = \"jstr\") THEN\r\t\t\tIF (java IN options) & (old = 0) THEN flag := -13 END\r\t\tEND;\r\t\tIF flag = 0 THEN err(225) END\r\tEND GetArraySysFlag;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: GetPointerSysFlag
+                    attr: 3
+                  - text: "* (IN id: ARRAY OF SHORTCHAR; num: SHORTINT; VAR flag: SHORTINT);\r"
+                    attr: 0
+                  - text: "\t\t"
+                    attr: 1
+                  - text: "VAR old: SHORTINT;\r\tBEGIN\r\t\told := flag; flag := 0;\r\t\tIF (num = 1) OR (id = \"untagged\") THEN\r\t\t\tIF (options * {sys386, sys68k, interface, com, som} # {}) & (old = 0) THEN flag := 1 END\r\t\tELSIF (num = 2) OR (id = \"handle\") THEN\r\t\t\tIF (sys68k IN options) & (old = 0) THEN flag := 2 END\r\t\tELSIF (num = 10) OR (id = \"interface\") THEN\r\t\t\tIF (com IN options) & (old = 0) THEN flag := 10 END\r\t\tELSIF (num = 20) OR (id = \"som\") THEN\r\t\t\tIF (som IN options) & (old = 0) THEN flag := 20 END\r\t\tEND;\r\t\tIF flag = 0 THEN err(225) END\r\tEND GetPointerSysFlag;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: GetProcTypSysFlag
+                    attr: 3
+                  - text: "* (IN id: ARRAY OF SHORTCHAR; num: SHORTINT; VAR flag: SHORTINT);\r\tBEGIN\r\t\tIF ((num = -10) OR (id = \"ccall\")) & (options * {sys386, interface} # {}) THEN flag := -10\r\t\tELSE err(225); flag := 0\r\t\tEND\r\tEND GetProcTypSysFlag;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: PropagateRecordSysFlag
+                    attr: 3
+                  - text: "* (baseFlag: SHORTINT; VAR flag: SHORTINT);\r\tBEGIN\r\t\tIF (baseFlag = 1) OR (baseFlag >= 3) & (baseFlag <= 7) THEN\t"
+                    attr: 0
+                  - text: "(* propagate untagged .. union *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF flag = 0 THEN flag := baseFlag\r\t\t\tELSIF (flag = 6) & (baseFlag < 6) THEN (* OK *)\t"
+                    attr: 0
+                  - text: "(* special case for 8 byte aligned records *)"
+                    attr: 1
+                  - text: "\r\t\t\tELSIF flag # baseFlag THEN err(225); flag := 0\r\t\t\tEND\r\t\tELSIF (baseFlag # 10) & (flag = 10) THEN err(225)\r\t\tEND\r\tEND PropagateRecordSysFlag;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: PropagateRecPtrSysFlag
+                    attr: 3
+                  - text: "* (baseFlag: SHORTINT; VAR flag: SHORTINT);\r\tBEGIN\r\t\tIF (baseFlag = 1) OR (baseFlag >= 3) & (baseFlag <= 7) THEN\t"
+                    attr: 0
+                  - text: "(* pointer to untagged .. union is untagged *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF flag = 0 THEN flag := 1\r\t\t\tELSIF (flag # 1) & (flag # 2) THEN err(225); flag := 0\r\t\t\tEND\r\t\tELSIF baseFlag = 10 THEN\t"
+                    attr: 0
+                  - text: "(* pointer to interface is interface *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF flag = 0 THEN flag := 10\r\t\t\tELSIF flag # 10 THEN err(225); flag := 0\r\t\t\tEND\r\t\tELSIF baseFlag = -11 THEN\t"
+                    attr: 0
+                  - text: "(* pointer to java interface is java interface *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF flag # 0 THEN err(225) END;\r\t\t\tflag := -11\r\t\tELSIF baseFlag = -13 THEN\t"
+                    attr: 0
+                  - text: "(* pointer to java string is java string *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF flag # 0 THEN err(225) END;\r\t\t\tflag := -13\r\t\tEND\r\tEND PropagateRecPtrSysFlag;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: PropagateArrPtrSysFlag
+                    attr: 3
+                  - text: "* (baseFlag: SHORTINT; VAR flag: SHORTINT);\r\tBEGIN\r\t\tIF baseFlag = 1 THEN\t"
+                    attr: 0
+                  - text: "(* pointer to untagged or guid is untagged *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF flag = 0 THEN flag := 1\r\t\t\tELSIF (flag # 1) & (flag # 2) THEN err(225); flag := 0\r\t\t\tEND\r\t\tELSIF baseFlag = -12 THEN\t"
+                    attr: 0
+                  - text: "(* pointer to java array is java array *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF flag # 0 THEN err(225) END;\r\t\t\tflag := -12\r\t\tELSIF baseFlag = -13 THEN\t"
+                    attr: 0
+                  - text: "(* pointer to java string is java string *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF flag # 0 THEN err(225) END;\r\t\t\tflag := -13\r\t\tEND\r\tEND PropagateArrPtrSysFlag;\r\t\r\t\r\t"
+                    attr: 0
+                  - text: "(* utf8 strings *)"
+                    attr: 1
+                  - text: "\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: PutUtf8
+                    attr: 3
+                  - text: "* (VAR str: ARRAY OF SHORTCHAR; val: INTEGER; VAR idx: INTEGER);\r\tBEGIN\r\t\tASSERT((val >= 0) & (val < 65536));\r\t\tIF val < 128 THEN\r\t\t\tstr[idx] := SHORT(CHR(val)); INC(idx)\r\t\tELSIF val < 2048 THEN\r\t\t\tstr[idx] := SHORT(CHR(val DIV 64 + 192)); INC(idx);\r\t\t\tstr[idx] := SHORT(CHR(val MOD 64 + 128)); INC(idx)\r\t\tELSE\r\t\t\tstr[idx] := SHORT(CHR(val DIV 4096 + 224)); INC(idx); \r\t\t\tstr[idx] := SHORT(CHR(val DIV 64 MOD 64 + 128)); INC(idx);\r\t\t\tstr[idx] := SHORT(CHR(val MOD 64 + 128)); INC(idx)\r\t\tEND\r\tEND PutUtf8;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: GetUtf8
+                    attr: 3
+                  - text: "* (IN str: ARRAY OF SHORTCHAR; VAR val, idx: INTEGER);\r\t\tVAR ch: SHORTCHAR;\r\tBEGIN\r\t\tch := str[idx]; INC(idx);\r\t\tIF ch < 80X THEN\r\t\t\tval := ORD(ch)\r\t\tELSIF ch < 0E0X THEN\r\t\t\tval := ORD(ch) - 192;\r\t\t\tch := str[idx]; INC(idx); val := val * 64 + ORD(ch) - 128\r\t\tELSE\r\t\t\tval := ORD(ch) - 224;\r\t\t\tch := str[idx]; INC(idx); val := val * 64 + ORD(ch) - 128;\r\t\t\tch := str[idx]; INC(idx); val := val * 64 + ORD(ch) - 128\r\t\tEND\r\tEND GetUtf8;\r\t\r\t\r\t"
+                    attr: 0
+                  - text: "(* log output *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: LogW
+                    attr: 3
+                  - text: "* (ch: CHAR);\r\tBEGIN"
+                    attr: 0
+                  - text: "\r"
+                    attr: 5
+                  - text: "\t\tStdLog.Char(ch)\r\tEND LogW;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: LogWStr
+                    attr: 3
+                  - text: "* (IN s: ARRAY OF CHAR);\r\tBEGIN"
+                    attr: 0
+                  - text: "\r"
+                    attr: 5
+                  - text: "\t\tStdLog.String(s)\r\tEND LogWStr;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: LogWNum
+                    attr: 3
+                  - text: "* (i, len: INTEGER);\r\tBEGIN\r\t\tStdLog.Int(i)\r\tEND LogWNum;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: LogWLn
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tStdLog.Ln\r\tEND LogWLn;\r(*\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: LogW
+                    attr: 3
+                  - text: "* (ch: CHAR);\r\tBEGIN\r\t\tout.WriteChar(ch);\r\tEND LogW;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: LogWStr
+                    attr: 3
+                  - text: "* (s: ARRAY OF CHAR);\r\tBEGIN\r\t\tout.WriteString(s);\r\tEND LogWStr;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: LogWNum
+                    attr: 3
+                  - text: "* (i, len: LONGINT);\r\tBEGIN\r\t\tout.WriteChar(\" \"); out.WriteInt(i);\r\tEND LogWNum;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: LogWLn
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tout.WriteLn;\r\t\tViews.RestoreDomain(logbuf.Domain())\r\tEND LogWLn;\r*)\r\tPROCEDURE "
+                    attr: 0
+                  - text: Mark
+                    attr: 3
+                  - text: "* (n, pos: INTEGER);\r\tBEGIN\r\t\tIF (n >= 0) & ~((oberon IN options) & (n >= 181) & (n <= 190)) THEN\r\t\t\tnoerr := FALSE;\r\t\t\tIF pos < 0 THEN pos := 0 END;\r\t\t\tIF (pos < lastpos) OR (lastpos + 9 < pos) THEN\r\t\t\t\tlastpos := pos;\r\t\t\t\tIF errors < maxErrors THEN\r\t\t\t\t\terrNo[errors] := n; errPos[errors] := pos\r\t\t\t\tEND;\r\t\t\t\tINC(errors)\r\t\t\tEND;\r"
+                    attr: 0
+                  - text: "\t\t\tIF trap IN options THEN HALT(100) END;"
+                    attr: 3
+                  - text: "\r\t\tELSIF (n <= -700) & (errors < maxErrors) THEN\r\t\t\terrNo[errors] := -n; errPos[errors] := pos; INC(errors)\r\t\tEND\r\tEND Mark;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: err
+                    attr: 3
+                  - text: "* (n: INTEGER);\r\tBEGIN\r\t\tMark(n, errpos)\r\tEND err;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: InsertMarks
+                    attr: 3
+                  - text: "* (text: TextModels.Model);\r\t\tVAR i, j, x, y, n: INTEGER; script: Stores.Operation;\r\tBEGIN\r\t\tn := errors;\r\t\tIF n > maxErrors THEN n := maxErrors END;\r\t\t"
+                    attr: 0
+                  - text: "(* sort *)"
+                    attr: 1
+                  - text: "\r\t\ti := 1;\r\t\tWHILE i < n DO\r\t\t\tx := errPos[i]; y := errNo[i]; j := i-1;\r\t\t\tWHILE (j >= 0) & (errPos[j] > x) DO errPos[j+1] := errPos[j]; errNo[j+1] := errNo[j]; DEC(j) END;\r\t\t\terrPos[j+1] := x; errNo[j+1] := y; INC(i)\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: "(* insert *)"
+                    attr: 1
+                  - text: "\r\t\tModels.BeginModification(Models.clean, text);\r\t\tModels.BeginScript(text, \"#Dev:InsertMarkers\", script);\r\t\tWHILE n > 0 DO DEC(n);\r\t\t\tDevMarkers.Insert(text, errPos[n], DevMarkers.dir.New(errNo[n]))\r\t\tEND;\r\t\tModels.EndScript(text, script);\r\t\tModels.EndModification(Models.clean, text);\r\tEND InsertMarks;\r\r\r\t"
+                    attr: 0
+                  - text: "(* fingerprinting *)\r"
+                    attr: 1
+                  - text: "\r\tPROCEDURE InitCrcTab;\r"
+                    attr: 0
+                  - text: "\t\t(* CRC32, high bit first, pre & post inverted *)\r"
+                    attr: 1
+                  - text: "\t\tCONST poly = {0, 1, 2, 4, 5, 7, 8, 10, 11, 12, 16, 22, 23, 26};\t"
+                    attr: 0
+                  - text: "(* CRC32 polynom *)"
+                    attr: 1
+                  - text: "\r\t\tVAR x, c, i: INTEGER;\r\tBEGIN\r\t\tx := 0;\r\t\tWHILE x < 256 DO\r\t\t\tc := x * 1000000H; i := 0;\r\t\t\tWHILE i < 8 DO\r\t\t\t\tIF c < 0 THEN c := ORD(BITS(c * 2) / poly)\r\t\t\t\tELSE c := c * 2\r\t\t\t\tEND;\r\t\t\t\tINC(i)\r\t\t\tEND;\r\t\t\tcrc32tab[ORD(BITS(x) / BITS(255))] := ORD(BITS(c) / BITS(255));\r\t\t\tINC(x)\r\t\tEND\r\tEND InitCrcTab;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: FPrint
+                    attr: 3
+                  - text: "* (VAR fp: INTEGER; val: INTEGER);\r\t\tVAR c: INTEGER;\r\tBEGIN\r(*\r\t\tfp := SYSTEM.ROT(ORD(BITS(fp) / BITS(val)), 1)\t"
+                    attr: 0
+                  - text: "(* bad collision detection *)"
+                    attr: 1
+                  - text: "\r*)\r"
+                    attr: 0
+                  - text: "\t\t(* CRC32, high bit first, pre & post inverted *)\r"
+                    attr: 1
+                  - text: "\t\tc := ORD(BITS(fp * 256) / BITS(crc32tab[ORD(BITS(fp DIV 1000000H) / BITS(val DIV 1000000H)) MOD 256]));\r\t\tc := ORD(BITS(c * 256) / BITS(crc32tab[ORD(BITS(c DIV 1000000H) / BITS(val DIV 10000H)) MOD 256]));\r\t\tc := ORD(BITS(c * 256) / BITS(crc32tab[ORD(BITS(c DIV 1000000H) / BITS(val DIV 100H)) MOD 256]));\r\t\tfp := ORD(BITS(c * 256) / BITS(crc32tab[ORD(BITS(c DIV 1000000H) / BITS(val)) MOD 256]));\r\tEND FPrint;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: FPrintSet
+                    attr: 3
+                  - text: "* (VAR fp: INTEGER; set: SET);\r\tBEGIN FPrint(fp, ORD(set))\r\tEND FPrintSet;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: FPrintReal
+                    attr: 3
+                  - text: "* (VAR fp: INTEGER; real: SHORTREAL);\r\tBEGIN FPrint(fp, SYSTEM.VAL(INTEGER, real))\r\tEND FPrintReal;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: FPrintLReal
+                    attr: 3
+                  - text: "* (VAR fp: INTEGER; lr: REAL);\r\tBEGIN\r\t\tFPrint(fp, LoWord(lr)); FPrint(fp, HiWord(lr))\r\tEND FPrintLReal;\r\r\tPROCEDURE ChkSum (VAR fp: INTEGER; val: INTEGER);"
+                    attr: 0
+                  - text: "\t(* symbolfile checksum *)"
+                    attr: 1
+                  - text: "\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: "(* same as FPrint, 8 bit only *)"
+                    attr: 1
+                  - text: "\r\t\tfp := ORD(BITS(fp * 256) / BITS(crc32tab[ORD(BITS(fp DIV 1000000H) / BITS(val)) MOD 256]))\r\tEND ChkSum;\r\r\r\r\t"
+                    attr: 0
+                  - text: "(* compact format *)\r\t\r"
+                    attr: 1
+                  - text: "\tPROCEDURE WriteLInt (w: Files.Writer; i: INTEGER);\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: "ChkSum(checksum, i);"
+                    attr: 6
+                  - text: "\r\t\tw.WriteByte(SHORT(SHORT(i MOD 256))); i := i DIV 256;\r\t\t"
+                    attr: 0
+                  - text: "ChkSum(checksum, i);"
+                    attr: 6
+                  - text: "\r\t\tw.WriteByte(SHORT(SHORT(i MOD 256))); i := i DIV 256;\r\t\t"
+                    attr: 0
+                  - text: "ChkSum(checksum, i);"
+                    attr: 6
+                  - text: "\r\t\tw.WriteByte(SHORT(SHORT(i MOD 256))); i := i DIV 256;\r\t\t"
+                    attr: 0
+                  - text: "ChkSum(checksum, i);"
+                    attr: 6
+                  - text: "\r\t\tw.WriteByte(SHORT(SHORT(i MOD 256)))\r\tEND WriteLInt;\r\r\tPROCEDURE ReadLInt (r: Files.Reader; VAR i: INTEGER);\r\t\tVAR b: BYTE; x: INTEGER;\r\tBEGIN\r\t\tr.ReadByte(b); x := b MOD 256;\r\t\t"
+                    attr: 0
+                  - text: "ChkSum(checksum, b);"
+                    attr: 6
+                  - text: "\r\t\tr.ReadByte(b); x := x + 100H * (b MOD 256);\r\t\t"
+                    attr: 0
+                  - text: "ChkSum(checksum, b);"
+                    attr: 6
+                  - text: "\r\t\tr.ReadByte(b); x := x + 10000H * (b MOD 256);\r\t\t"
+                    attr: 0
+                  - text: "ChkSum(checksum, b);"
+                    attr: 6
+                  - text: "\r\t\tr.ReadByte(b); i := x + 1000000H * b;\r\t\t"
+                    attr: 0
+                  - text: "ChkSum(checksum, b)"
+                    attr: 6
+                  - text: "\r\tEND ReadLInt;\r\r\tPROCEDURE WriteNum (w: Files.Writer; i: INTEGER);\r\tBEGIN\t"
+                    attr: 0
+                  - text: "(* old format of Oberon *)"
+                    attr: 1
+                  - text: "\r\t\tWHILE (i < -64) OR (i > 63) DO "
+                    attr: 0
+                  - text: "ChkSum(checksum, i MOD 128 - 128); "
+                    attr: 6
+                  - text: "w.WriteByte(SHORT(SHORT(i MOD 128 - 128))); i := i DIV 128 END;\r\t\t"
+                    attr: 0
+                  - text: "ChkSum(checksum, i MOD 128);"
+                    attr: 6
+                  - text: "\r\t\tw.WriteByte(SHORT(SHORT(i MOD 128)))\r\tEND WriteNum;\r\r\tPROCEDURE ReadNum (r: Files.Reader; VAR i: INTEGER);\r\t\tVAR b: BYTE; s, y: INTEGER;\r\tBEGIN\r\t\ts := 0; y := 0; r.ReadByte(b);\r\t\t"
+                    attr: 0
+                  - text: "IF ~r.eof THEN ChkSum(checksum, b) END;"
+                    attr: 6
+                  - text: "\r\t\tWHILE b < 0 DO INC(y, ASH(b + 128, s)); INC(s, 7); r.ReadByte(b); "
+                    attr: 0
+                  - text: "ChkSum(checksum, b)"
+                    attr: 6
+                  - text: " END;\r\t\ti := ASH((b + 64) MOD 128 - 64, s) + y;\r\tEND ReadNum;\r\t\r\tPROCEDURE WriteNumSet (w: Files.Writer; x: SET);\r\tBEGIN\r\t\tWriteNum(w, ORD(x))\r\tEND WriteNumSet;\r\r\tPROCEDURE ReadNumSet (r: Files.Reader; VAR x: SET);\r\t\tVAR i: INTEGER;\r\tBEGIN\r\t\tReadNum(r, i); x := BITS(i)\r\tEND ReadNumSet;\r\r\tPROCEDURE WriteReal (w: Files.Writer; x: SHORTREAL);\r\tBEGIN\r\t\tWriteLInt(w, SYSTEM.VAL(INTEGER, x))\r\tEND WriteReal;\r\r\tPROCEDURE ReadReal (r: Files.Reader; VAR x: SHORTREAL);\r\t\tVAR i: INTEGER;\r\tBEGIN\r\t\tReadLInt(r, i); x := SYSTEM.VAL(SHORTREAL, i)\r\tEND ReadReal;\r\r\tPROCEDURE WriteLReal (w: Files.Writer; x: REAL);\r\tBEGIN\r\t\tWriteLInt(w, LoWord(x)); WriteLInt(w, HiWord(x))\r\tEND WriteLReal;\r\r\tPROCEDURE ReadLReal (r: Files.Reader; VAR x: REAL);\r\t\tVAR h, l: INTEGER;\r\tBEGIN\r\t\tReadLInt(r, l); ReadLInt(r, h); x := Compound(l, h)\r\tEND ReadLReal;\r\r\r\t"
+                    attr: 0
+                  - text: "(* read symbol file *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SymRCh
+                    attr: 3
+                  - text: "* (VAR ch: SHORTCHAR);\r\t\tVAR b: BYTE;\r\tBEGIN\r\t\tinSym.ReadByte(b); ch := SHORT(CHR(b));\r\t\t"
+                    attr: 0
+                  - text: "ChkSum(checksum, b)"
+                    attr: 6
+                  - text: "\r\tEND SymRCh;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: SymRInt
+                    attr: 3
+                  - text: "* (): INTEGER;\r\t\tVAR k: INTEGER;\r\tBEGIN\r\t\tReadNum(inSym, k); RETURN k\r\tEND SymRInt;\r\t\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: SymRSet
+                    attr: 3
+                  - text: "* (VAR s: SET);\r\tBEGIN\r\t\tReadNumSet(inSym, s)\r\tEND SymRSet;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SymRReal
+                    attr: 3
+                  - text: "* (VAR r: SHORTREAL);\r\tBEGIN\r\t\tReadReal(inSym, r)\r\tEND SymRReal;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: SymRLReal
+                    attr: 3
+                  - text: "* (VAR lr: REAL);\r\tBEGIN\r\t\tReadLReal(inSym, lr)\r\tEND SymRLReal;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: eofSF
+                    attr: 3
+                  - text: "* (): BOOLEAN;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " inSym.eof\r\tEND eofSF;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: OldSym
+                    attr: 3
+                  - text: "* (IN modName: ARRAY OF SHORTCHAR; VAR done: BOOLEAN);\r\t\tVAR tag, res: INTEGER; loc: Files.Locator; dir, name: Files.Name;\r\tBEGIN\r\t\tdone := FALSE;\r"
+                    attr: 0
+                  - text: "\t\tIF modName = \"@file\" THEN\r\t\t\toldSymFile := file\r\t\tELSE\r"
+                    attr: 3
+                  - text: "\t\t\tKernel.Utf8ToString(modName, name, res); Kernel.SplitName(name, dir, name);\r\t\t\tKernel.MakeFileName(name, Kernel.symType); \r\t\t\tloc := Files.dir.This(dir); loc := loc.This(symDir);\r\t\t\toldSymFile := Files.dir.Old(loc, name, Files.shared);\r\t\t\tIF (oldSymFile = NIL) & (dir = \"\") THEN\r\t\t\t\tloc := Files.dir.This(SYSdir); loc := loc.This(symDir);\r\t\t\t\toldSymFile := Files.dir.Old(loc, name, Files.shared)\r\t\t\tEND\r\t\tEND;\r\t\tIF oldSymFile # NIL THEN\r\t\t\tinSym := oldSymFile.NewReader(inSym);\r\t\t\tIF inSym # NIL THEN\r\t\t\t\tReadLInt(inSym, tag);\r\t\t\t\tIF tag = SFtag THEN done := TRUE ELSE err(151) END\r\t\t\tEND\r\t\tEND\r\tEND OldSym;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: CloseOldSym
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tIF oldSymFile # NIL THEN oldSymFile.Close; oldSymFile := NIL END\r\tEND CloseOldSym;\r\r\r\t"
+                    attr: 0
+                  - text: "(* write symbol file *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SymWCh
+                    attr: 3
+                  - text: "* (ch: SHORTCHAR);\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: "ChkSum(checksum, ORD(ch));"
+                    attr: 6
+                  - text: "\r\t\toutSym.WriteByte(SHORT(ORD(ch)))\r\tEND SymWCh;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SymWInt
+                    attr: 3
+                  - text: "* (i: INTEGER);\r\tBEGIN\r\t\tWriteNum(outSym, i)\r\tEND SymWInt;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SymWSet
+                    attr: 3
+                  - text: "* (s: SET);\r\tBEGIN\r\t\tWriteNumSet(outSym, s)\r\tEND SymWSet;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SymWReal
+                    attr: 3
+                  - text: "* (r: SHORTREAL);\r\tBEGIN\r\t\tWriteReal(outSym, r)\r\tEND SymWReal;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SymWLReal
+                    attr: 3
+                  - text: "* (r: REAL);\r\tBEGIN\r\t\tWriteLReal(outSym, r)\r\tEND SymWLReal;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SymReset
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\toutSym.SetPos(4)\r\tEND SymReset;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: NewSym
+                    attr: 3
+                  - text: "* (IN modName: ARRAY OF SHORTCHAR);\r\t\tVAR res: INTEGER; loc: Files.Locator; dir: Files.Name;\r\tBEGIN\r\t\tKernel.Utf8ToString(modName, ObjFName, res); Kernel.SplitName(ObjFName, dir, ObjFName);\r\t\tloc := Files.dir.This(dir); loc := loc.This(symDir);\r\t\tsymFile := Files.dir.New(loc, Files.ask);\r\t\tIF symFile # NIL THEN\r\t\t\toutSym := symFile.NewWriter(NIL);\r\t\t\tWriteLInt(outSym, SFtag)\r\t\tELSE\r\t\t\terr(153)\r\t\tEND\r\tEND NewSym;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: RegisterNewSym
+                    attr: 3
+                  - text: "*;\r\t\tVAR res: INTEGER; name: Files.Name;\r\tBEGIN\r\t\tIF symFile # NIL THEN\r\t\t\tname := ObjFName$;\r\t\t\tKernel.MakeFileName(name, Kernel.symType);\r\t\t\tsymFile.Register(name, Kernel.symType, Files.ask, res);\r\t\t\tsymFile := NIL\r\t\tEND\r\tEND RegisterNewSym;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: DeleteNewSym
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tIF symFile # NIL THEN symFile.Close; symFile := NIL END\r\tEND DeleteNewSym;\r\r\r\t"
+                    attr: 0
+                  - text: "(* write object file *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ObjW
+                    attr: 3
+                  - text: "* (ch: SHORTCHAR);\r\tBEGIN\r\t\toutObj.WriteByte(SHORT(ORD(ch)))\r\tEND ObjW;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ObjWNum
+                    attr: 3
+                  - text: "* (i: INTEGER);\r\tBEGIN\r\t\tWriteNum(outObj, i)\r\tEND ObjWNum;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ObjWInt
+                    attr: 3
+                  - text: " (i: SHORTINT);\r\tBEGIN\r\t\toutObj.WriteByte(SHORT(SHORT(i MOD 256)));\r\t\toutObj.WriteByte(SHORT(SHORT(i DIV 256)))\r\tEND ObjWInt;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ObjWLInt
+                    attr: 3
+                  - text: "* (i: INTEGER);\r\tBEGIN\r\t\tObjWInt(SHORT(i MOD 65536));\r\t\tObjWInt(SHORT(i DIV 65536))\r\tEND ObjWLInt;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ObjWBytes
+                    attr: 3
+                  - text: "* (IN bytes: ARRAY OF SHORTCHAR; n: INTEGER);\r\t\tTYPE P = POINTER TO ARRAY [untagged] 100000H OF BYTE;\r\t\tVAR p: P;\r\tBEGIN\r\t\tp := SYSTEM.VAL(P, SYSTEM.ADR(bytes));\r\t\toutObj.WriteBytes(p^, 0, n)\r\tEND ObjWBytes;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: ObjLen
+                    attr: 3
+                  - text: "* (): INTEGER;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " outObj.Pos()\r\tEND ObjLen;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: ObjSet
+                    attr: 3
+                  - text: "* (pos: INTEGER);\r\tBEGIN\r\t\toutObj.SetPos(pos)\r\tEND ObjSet;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: NewObj
+                    attr: 3
+                  - text: "* (IN modName: ARRAY OF SHORTCHAR);\r\t\tVAR res: INTEGER; loc: Files.Locator; dir: Files.Name;\r\tBEGIN\r\t\terrpos := 0;\r\t\tKernel.Utf8ToString(modName, ObjFName, res); Kernel.SplitName(ObjFName, dir, ObjFName);\r\t\tloc := Files.dir.This(dir); loc := loc.This(codeDir);\r\t\tobjFile := Files.dir.New(loc, Files.ask);\r\t\tIF objFile # NIL THEN\r\t\t\toutObj := objFile.NewWriter(NIL);\r\t\t\tWriteLInt(outObj, OFtag)\r\t\tELSE\r\t\t\terr(153)\r\t\tEND\r\tEND NewObj;\r\r"
+                    attr: 0
+                  - text: "\t"
+                    attr: 3
+                  - text: PROCEDURE
+                    attr: 0
+                  - text: " RegisterObj"
+                    attr: 3
+                  - text: "*;\r\t\tVAR res: INTEGER; name: Files.Name;\r\tBEGIN\r\t\tIF objFile # NIL THEN\r\t\t\tname := ObjFName$;\r\t\t\tKernel.MakeFileName(name, Kernel.objType);\r\t\t\tobjFile.Register(name, Kernel.objType, Files.ask, res);\r\t\t\tobjFile := NIL; outObj := NIL\r\t\tEND\r\tEND RegisterObj;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: DeleteObj
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tIF objFile # NIL THEN objFile.Close; objFile := NIL END\r\tEND DeleteObj;\r\r\r\tPROCEDURE InitHost;\r\t\tVAR test: SHORTINT; lo: SHORTCHAR;\r\tBEGIN\r\t\ttest := 1; SYSTEM.GET(SYSTEM.ADR(test), lo); LEHost := lo = 1X;\r\t\tInfReal := SYSTEM.VAL(SHORTREAL, InfRealPat);\r\t\tMinReal32 := SYSTEM.VAL(SHORTREAL, MinReal32Pat);\r\t\tMaxReal32 := SYSTEM.VAL(SHORTREAL, MaxReal32Pat);\r\t\tMinReal64 := Compound(MinReal64PatL, MinReal64PatH);\r\t\tMaxReal64 := Compound(MaxReal64PatL, MaxReal64PatH)\r\tEND InitHost;\r\rBEGIN\r\tInitCrcTab;\r\tInitHost\rEND DevCPM.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 31
+          bodyPos: 29690
+          bodyLen: 8

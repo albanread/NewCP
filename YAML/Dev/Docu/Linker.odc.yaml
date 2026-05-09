@@ -1,0 +1,331 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Dev\\Docu\\Linker.odc"
+  size: 9277
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 9146
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 8960
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 8874
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                lead: 11500
+                asc: 134600
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 10
+                bodyPos: 8874
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 8360
+                runListLen: 851
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: DevLinker
+                    attr: 0
+                  - text: "\r\r"
+                    attr: 1
+                  - text: DevLinker
+                    attr: 2
+                  - text: " is the BlackBox linker. It is used to pack several BlackBox code files together into one executable file ("
+                    attr: 1
+                  - text: .dll
+                    attr: 2
+                  - text: " or "
+                    attr: 1
+                  - text: .exe
+                    attr: 2
+                  - text: "). It can be used to make independent versions of applications based on the BlackBox Component Framework. It can also be used to produce executables written in Component Pascal which don't relate to the BlackBox framework or use only a few BlackBox modules like the "
+                    attr: 1
+                  - text: Kernel
+                    attr: 2
+                  - text: ".\r\rThe linker can be started with one of the commands described below. Each of the commands needs a parameter text with the syntax:\r\r<destFile> := {<module> {option}} {idNumber <resourceFile>}.\r\r"
+                    attr: 1
+                  - text: destFile
+                    attr: 2
+                  - text: " is the name of the executable file to be created.\r"
+                    attr: 1
+                  - text: module
+                    attr: 2
+                  - text: " is a Component Pascal module, the code file is loaded from the corresponding directory.\r"
+                    attr: 1
+                  - text: option
+                    attr: 2
+                  - text: " is one of the following characters:\r\t$ main module: the body of this module is called when the program starts.\r\t+ identifies the kernel. A kernel must be present if the standard function "
+                    attr: 1
+                  - text: NEW
+                    attr: 2
+                  - text: " is used in some module. The kernel must export the procedures "
+                    attr: 1
+                  - text: NewRec
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: NewArr
+                    attr: 2
+                  - text: ".\r\t# interface module: the exported procedures of this module are added to the export list.\r\tSee the description of the individual commands for a list of the legal options.\r"
+                    attr: 1
+                  - text: resourceFile
+                    attr: 2
+                  - text: " is the name of a resource file. Currently icons ("
+                    attr: 1
+                  - text: .ico
+                    attr: 2
+                  - text: "), cursors ("
+                    attr: 1
+                  - text: .cur
+                    attr: 2
+                  - text: "), bitmaps (."
+                    attr: 1
+                  - text: bmp
+                    attr: 2
+                  - text: "), windows resource files (."
+                    attr: 1
+                  - text: res
+                    attr: 2
+                  - text: "), and type libraries (."
+                    attr: 1
+                  - text: tlb
+                    attr: 2
+                  - text: ") are supported. The resource files are loaded from the "
+                    attr: 1
+                  - text: Rsrc
+                    attr: 2
+                  - text: " or "
+                    attr: 1
+                  - text: Win/Rsrc
+                    attr: 2
+                  - text: " directory.\r"
+                    attr: 1
+                  - text: idNumber
+                    attr: 2
+                  - text: " is an integer used to reference the corresponding resource from the program.\r\rThe module list must be sorted such that an imported module textually precedes the module importing it. This rule also applies to the implicit kernel import when using "
+                    attr: 1
+                  - text: NEW
+                    attr: 2
+                  - text: ".\r\r\r"
+                    attr: 1
+                  - text: DevLinker.Link
+                    attr: 3
+                  - text: "\rLinks a module set containing a dynamic module loader to an exe file.\rAt startup, the body of the main module is called.\rInitialization and termination of the other modules is not done by the loader, it must be done by the runtime system (typically the loader).\rBlackBox itself is linked with this command.\rLegal options: $ +\r\r"
+                    attr: 1
+                  - text: DevLinker.LinkExe
+                    attr: 3
+                  - text: "\rLinks an unextensible module set to an exe file (i.e., no loader is included).\rAt startup, the bodies of all modules are called in the correct order.\rWhen the last body terminates, the terminators (CLOSE sections) of all modules are called in reverse order.\rNo runtime system is needed for initialization and termination.\rLegal options: +\r\r"
+                    attr: 1
+                  - text: DevLinker.LinkDll
+                    attr: 3
+                  - text: "\rLinks an unextensible module set to a dll file.\rWhen the dll is attached to a process, the bodies of all modules are called in the correct order.\rWhen the dll is released from the process, the terminators (CLOSE sections) of all modules are called in reverse order.\rNo runtime system is needed for initialization and termination.\rLegal options: + #\r\r"
+                    attr: 1
+                  - text: DevLinker.LinkDynDll
+                    attr: 3
+                  - text: "\r(rarely used, present for completeness)\rLinks a module set containing a dynamic module loader to a dll file.\rWhen the dll is attached to a process, the body of the main module is called.\rWhen the dll is released from the process, the terminator (CLOSE section) of the main module is called.\rInitialization and termination of the other modules must be done by the runtime system.\rLegal options: $ + #\r\rThe reason for the different commands for static and dynamic systems is that there is no statically defined initialization sequence in a system that includes a dynamic loader. In BlackBox the "
+                    attr: 1
+                  - text: Kernel
+                    attr: 2
+                  - text: " (which is the lowest module in the module hierarchy) is specified as the main module. The body of the kernel then calls the bodies of all linked modules dynamically in the correct sequence. If there are no calls to the dynamic loader (via "
+                    attr: 1
+                  - text: Dialog.Call
+                    attr: 2
+                  - text: ") in the module bodies, the modules are initialized in the order in which they appear in the parameter text.\r\r\r"
+                    attr: 1
+                  - text: Examples
+                    attr: 3
+                  - text: "\r\rStandard BlackBox:\r\r"
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 6
+                      bodyPos: 987
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: "DevLinker.Link\rBlackBox.exe := Kernel$+ Files HostFiles StdLoader\r1 Applogo.ico 2 Doclogo.ico 3 SFLogo.ico 4 CFLogo.ico 5 DtyLogo.ico\r1 Move.cur 2 Copy.cur 3 Link.cur 4 Pick.cur 5 Stop.cur 6 Hand.cur 7 Table.cur\r\rFully linked redistributable part of BlackBox:\r\r"
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 7
+                      bodyPos: 1033
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: "DevLinker.Link MyBlackBox.exe :=\rKernel$+ Files HostFiles StdLoader Math Strings Dates Meta Dialog Services\rFonts Ports Stores Log Converters Sequencers Models Printers Views\rControllers Properties Printing Mechanisms Containers\rDocuments Windows StdCFrames Controls StdDialog StdApi StdCmds StdInterpreter\rHostRegistry HostFonts HostPorts OleData HostMechanisms HostWindows \rHostPrinters HostClipboard HostCFrames HostDialog HostCmds\rHostMenus HostPictures TextModels TextRulers TextSetters TextViews\rTextControllers TextMappers StdLog TextCmds\rFormModels FormViews FormControllers FormGen FormCmds\rStdFolds StdLinks StdDebug HostTextConv HostMail\rStdMenuTool StdClocks StdStamps StdLogos StdCoder StdScrollers\rOleStorage OleServer OleClient StdETHConv In Out XYplane Init\r1 applogo.Ico 2 doclogo.Ico 3 SFLogo.ico 4 CFLogo.ico 5 DtyLogo.ico\r1 Move.cur 2 Copy.cur 3 Link.cur 4 Pick.cur 5 Stop.cur 6 Hand.cur 7 Table.cur\r\rSimple independent application:\r\r"
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 8
+                      bodyPos: 1079
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: "DevLinker.LinkExe\rSimple.exe := Simple 1 applogo.Ico ~\r\rSimple DLL:\r\r"
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 9
+                      bodyPos: 1125
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: "DevLinker.LinkDll\rMydll.dll := Mydll# ~\r\r\rMODULE Simple;\r"
+                    attr: 1
+                  - text: "(* simple windows application *)"
+                    attr: 2
+                  - text: "\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - text: "\tIMPORT S := SYSTEM, WinApi;\r\r\tCONST\r\t\tmessage = \"Hello World\";\r\t\ticonId = 1;\r\r\tVAR\r\t\tinstance: WinApi.HINSTANCE;\r\t\tmainWnd: WinApi.HWND;\r\r\tPROCEDURE WndHandler (wnd, msg, wParam, lParam: INTEGER): INTEGER;\r\t\tVAR res: INTEGER; ps: WinApi.PAINTSTRUCT; dc: WinApi.HDC;\r\tBEGIN\r\t\tIF msg = WinApi.WM_DESTROY THEN\r\t\t\tWinApi.PostQuitMessage(0)\r\t\tELSIF msg = WinApi.WM_PAINT THEN\r\t\t\tdc := WinApi.BeginPaint(wnd, ps);\r\t\t\tres := WinApi.TextOut(dc, 50, 50, message, LEN(message));\r\t\t\tres := WinApi.EndPaint(wnd, ps)\r\t\tELSIF msg = WinApi.WM_CHAR THEN\r\t\t\tres := WinApi.Beep(800, 200)\r\t\tELSE\r\t\t\t"
+                    attr: 1
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.DefWindowProc(wnd, msg, wParam, lParam)\r\t\tEND;\r\t\t"
+                    attr: 1
+                  - text: RETURN
+                    attr: 3
+                  - text: " 0\r\tEND WndHandler;\r\r\tPROCEDURE OpenWindow;\r\t\tVAR class: WinApi.WNDCLASS; res: INTEGER;\r\tBEGIN\r\t\tclass.hCursor := WinApi.LoadCursor(0, S.VAL(WinApi.PtrSTR,\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tWinApi.IDC_ARROW));\r\t\tclass.hIcon := WinApi.LoadIcon(instance, S.VAL(WinApi.PtrSTR, iconId));\r\t\tclass.lpszMenuName := NIL;\r\t\tclass.lpszClassName := \"Simple\";\r\t\tclass.hbrBackground := WinApi.GetStockObject(WinApi.WHITE_BRUSH);\r\t\tclass.style := WinApi.CS_VREDRAW + WinApi.CS_HREDRAW\r\t\t\t\t\t\t(* + WinApi.CS_OWNDC + WinApi.CS_PARENTDC *);\r\t\tclass.hInstance := instance;\r\t\tclass.lpfnWndProc := WndHandler;\r\t\tclass.cbClsExtra := 0;\r\t\tclass.cbWndExtra := 0;\r\t\tres := WinApi.RegisterClass(class);\r\t\tmainWnd := WinApi.CreateWindowEx({}, \"Simple\", \"Simple Application\",\r\t\t\t\t\t\t\t\t\t\t\t\t\t\tWinApi.WS_OVERLAPPEDWINDOW,\r\t\t\t\t\t\t\t\t\t\t\t\t\t\tWinApi.CW_USEDEFAULT, WinApi.CW_USEDEFAULT,\r\t\t\t\t\t\t\t\t\t\t\t\t\t\tWinApi.CW_USEDEFAULT, WinApi.CW_USEDEFAULT,\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t0, 0, instance, 0);\r\t\tres := WinApi.ShowWindow(mainWnd, WinApi.SW_SHOWDEFAULT);\r\t\tres := WinApi.UpdateWindow(mainWnd);\r\tEND OpenWindow;\r\r\tPROCEDURE MainLoop;\r\t\tVAR msg: WinApi.MSG; res: INTEGER;\r\tBEGIN\r\t\tWHILE WinApi.GetMessage(msg, 0, 0, 0) # 0 DO\r\t\t\tres := WinApi.TranslateMessage(msg);\r\t\t\tres := WinApi.DispatchMessage(msg);\r\t\tEND;\r\t\tWinApi.ExitProcess(msg.wParam)\r\tEND MainLoop;\r\rBEGIN\r\tinstance := WinApi.GetModuleHandle(NIL);\r\tOpenWindow;\r\tMainLoop\rEND Simple.\r\r\rMODULE Mydll;\r"
+                    attr: 1
+                  - text: "(* sample module to be linked into a dll *)"
+                    attr: 2
+                  - text: "\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - text: "\tPROCEDURE "
+                    attr: 1
+                  - text: Gcd
+                    attr: 3
+                  - text: "* (a, b: INTEGER): INTEGER;\r\tBEGIN\r\t\tWHILE a # b DO\r\t\t\tIF a > b THEN a := a - b ELSE b := b - a END\r\t\tEND;\r\t\t"
+                    attr: 1
+                  - text: RETURN
+                    attr: 3
+                  - text: " a\r\tEND Gcd;\r\t\r\tPROCEDURE "
+                    attr: 1
+                  - text: Lcm
+                    attr: 3
+                  - text: "* (a, b: INTEGER): INTEGER;\r\tBEGIN\r\t\t"
+                    attr: 1
+                  - text: RETURN
+                    attr: 3
+                  - text: " a * b DIV Gcd(a, b)\r\tEND Lcm;\r\t\rEND Mydll.\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 14
+          bodyPos: 9242
+          bodyLen: 8

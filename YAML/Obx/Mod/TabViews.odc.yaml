@@ -1,0 +1,236 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Mod\\TabViews.odc"
+  size: 3871
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 3740
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 3554
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 3468
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: "*"
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 3593
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 3079
+                runListLen: 1713
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE ObxTabViews;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT StdTabViews, Views, Strings, Dialog, StdLog,\r\t\t\t\tObxCalc, ObxCubes;\r\t\r\tVAR \r\t\tst: StdTabViews.View;\r\t\tcalc: Views.View;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: New
+                    attr: 3
+                  - text: "* (): StdTabViews.View;\r\t\tVAR v: Views.View;\r\tBEGIN\r\t\tst := StdTabViews.dir.New();\r\t\tcalc := ObxCalc.New(); v := ObxCubes.New();\r\t\tst.SetItem(0, 'Cube', v);\r\t\tst.SetItem(1, 'Calc 1', calc);\r\t\tst.SetItem(2, 'Calc 2', calc);\r\t\tst.SetNotifier(\"ObxTabViews.Notify\");\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " st\r\tEND New;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Deposit
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tViews.Deposit(New())\r\tEND Deposit;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: AddNewCalc
+                    attr: 3
+                  - text: "*;\r\t\tVAR s: ARRAY 4 OF CHAR;\r\tBEGIN\r\t\tStrings.IntToString(st.NofTabs(), s);\r\t\tst.SetItem(st.NofTabs(), 'Calc ' + s, calc)\r\tEND AddNewCalc;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: DeleteTab
+                    attr: 3
+                  - text: "*;\r\t\tVAR i: INTEGER; s: Dialog.String; v: Views.View;\r\tBEGIN\r\t\tIF st.NofTabs() > 0 THEN\r\t\t\tFOR i := st.Index() TO st.NofTabs() - 2 DO\r\t\t\t\tst.GetItem(i + 1, s, v); st.SetItem(i, s, v)\r\t\t\tEND;\r\t\t\tst.SetNofTabs(st.NofTabs() - 1)\r\t\tEND\r\tEND DeleteTab;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: Notify
+                    attr: 3
+                  - text: "* (v: StdTabViews.View; from, to: INTEGER);\r\tBEGIN\r\t\tStdLog.String(\"Notify: \"); StdLog.Int(from); StdLog.Int(to); StdLog.Ln\r\tEND Notify;\r\t\rEND ObxTabViews.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 3836
+          bodyLen: 8

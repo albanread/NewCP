@@ -1,0 +1,304 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Mod\\Buttons.odc"
+  size: 8468
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 8337
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 8151
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 8065
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 127000
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Helvetica
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 8182
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 7668
+                runListLen: 1893
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE ObxButtons;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- 20070413, mf, minor cleanup\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT Dialog, Stores, Fonts, Ports, Views, Controllers, Properties, Controls;\r\r\tCONST minVersion = 0; maxVersion = 0;\r\r\tTYPE\r\t\tView = POINTER TO RECORD (Views.View)\r\t\t\tfont: Fonts.Font;\r\t\t\tcolor: INTEGER;\r\t\t\tlink: Dialog.String;\r\t\t\tlabel: ARRAY 256 OF CHAR\r\t\tEND;\r\r\r\tPROCEDURE (v: View) Internalize (VAR rd: Stores.Reader);\r\t\tVAR version: INTEGER;\r\tBEGIN\r\t\trd.ReadVersion(minVersion, maxVersion, version);\r\t\tIF ~rd.cancelled THEN\r\t\t\tViews.ReadFont(rd, v.font); rd.ReadInt(v.color); rd.ReadString(v.link); rd.ReadString(v.label)\r\t\tEND\r\tEND Internalize;\r\r\tPROCEDURE (v: View) Externalize (VAR wr: Stores.Writer);\r\tBEGIN\r\t\twr.WriteVersion(maxVersion);\r\t\tViews.WriteFont(wr, v.font); wr.WriteInt(v.color); wr.WriteString(v.link); wr.WriteString(v.label)\r\tEND Externalize;\r\r\tPROCEDURE (v: View) CopyFromSimpleView (source: Views.View);\r\tBEGIN\r\t\tWITH source: View DO\r\t\t\tv.font := source.font; v.color := source.color; v.link := source.link; v.label := source.label\r\t\tEND\r\tEND CopyFromSimpleView;\r\r\tPROCEDURE (v: View) Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\t\tVAR w, h, x, y, asc, dsc, fw: INTEGER;\r\tBEGIN\t"
+                    attr: 0
+                  - text: "(* restore view at least in rectangle (l, t, r, b) *)"
+                    attr: 1
+                  - text: "\r\t\tv.context.GetSize(w, h);\t"
+                    attr: 0
+                  - text: "(* the container context maintains the view's size *)"
+                    attr: 1
+                  - text: "\r\t\tf.DrawRect(0, 0, w, h, f.dot, v.color);\t"
+                    attr: 0
+                  - text: "(* f.dot is close to one point, i.e. 1/72 inch *)"
+                    attr: 1
+                  - text: "\r\t\tx := (w - v.font.StringWidth(v.label)) DIV 2;\r\t\tv.font.GetBounds(asc, dsc, fw);\r\t\ty := h DIV 2 + (asc + dsc) DIV 3;\r\t\tf.DrawString(x, y, v.color, v.label, v.font)\r\tEND Restore;\r\r\tPROCEDURE (v: View) HandleCtrlMsg (\r\t\tf: Views.Frame; VAR msg: Controllers.Message; VAR focus: Views.View\r\t);\r\t\tVAR x, y, w, h, res: INTEGER; modifiers: SET; inside, isDown: BOOLEAN;\r\tBEGIN\r\t\tWITH msg: Controllers.TrackMsg DO\t"
+                    attr: 0
+                  - text: "(* mouse button was pressed *)"
+                    attr: 1
+                  - text: "\r\t\t\tv.context.GetSize(w, h);\r\t\t\tf.MarkRect(0, 0, w, h, Ports.fill, Ports.invert, Ports.show); inside := TRUE;\r\t\t\tREPEAT\t"
+                    attr: 0
+                  - text: "(* mouse tracking loop *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tf.Input(x, y, modifiers, isDown);\r\t\t\t\tIF inside # (x >= 0) & (y >= 0) & (x < w) & (y < h) THEN\t"
+                    attr: 0
+                  - text: "(* toggle state *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tinside := ~inside; f.MarkRect(0, 0, w, h, Ports.fill, Ports.invert, inside)\r\t\t\t\tEND\r\t\t\tUNTIL ~isDown;\r\t\t\tIF inside THEN\t"
+                    attr: 0
+                  - text: "(* mouse was released inside the control *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tf.MarkRect(0, 0, w, h, Ports.fill, Ports.invert, Ports.hide);\r\t\t\t\tIF v.link # \"\" THEN\r\t\t\t\t\tDialog.Call(v.link, \"\", res)\t"
+                    attr: 0
+                  - text: "(* interpret and execute the string in v.link *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tEND\r\t\t\tEND\r\t\tELSE"
+                    attr: 0
+                  - text: "\t(* ignore other messages *)"
+                    attr: 1
+                  - text: "\r\t\tEND\r\tEND HandleCtrlMsg;\r\r\tPROCEDURE GetStdProp (v: View): Properties.Property;\r\t\tVAR prop: Properties.StdProp;\r\tBEGIN\r\t\tNEW(prop);\r\t\tprop.color.val := v.color;\r\t\tprop.typeface := v.font.typeface;\r\t\tprop.size := v.font.size;\r\t\tprop.style.val := v.font.style;\r\t\tprop.weight := v.font.weight;\r\t\tprop.valid := {Properties.color..Properties.weight}; prop.known := prop.valid;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " prop\r\tEND GetStdProp;\r\r\tPROCEDURE SetStdProp (v: View; prop: Properties.StdProp);\r\t\tVAR typeface: Fonts.Typeface; size: INTEGER; style: SET; weight: INTEGER;\r\tBEGIN\r\t\tIF Properties.color IN prop.valid THEN v.color := prop.color.val END;\r\t\ttypeface := v.font.typeface; size := v.font.size; style := v.font.style; weight := v.font.weight;\r\t\tIF Properties.typeface IN prop.valid THEN typeface := prop.typeface END;\r\t\tIF Properties.size IN prop.valid THEN size := prop.size END;\r\t\tIF Properties.style IN prop.valid THEN style := prop.style.val END;\r\t\tIF Properties.weight IN prop.valid THEN weight := prop.weight END;\r\t\tv.font := Fonts.dir.This(typeface, size, style, weight);\t\t\r\tEND SetStdProp;\r\r\tPROCEDURE (v: View) HandlePropMsg (VAR msg: Properties.Message);\r\t\tCONST defaultWidth = 20 * Ports.mm; defaultHeight = 7 * Ports.mm;\r\t\tVAR p: Controls.Prop; prop: Properties.Property;\r\tBEGIN\r\t\tWITH msg: Properties.FocusPref DO\t"
+                    attr: 0
+                  - text: "(* a button is a \"hot focus\", i.e. does not remain focused *)"
+                    attr: 1
+                  - text: "\r\t\t\tmsg.hotFocus := TRUE\r\t\t| msg: Properties.SizePref DO\t"
+                    attr: 0
+                  - text: "(* return the default size of a button *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF msg.w = Views.undefined THEN msg.w := defaultWidth END;\r\t\t\tIF msg.h = Views.undefined THEN msg.h := defaultHeight END\r\t\t| msg: Properties.PollMsg DO\t"
+                    attr: 0
+                  - text: "(* return the standard font, color, and control properties *)"
+                    attr: 1
+                  - text: "\r\t\t\tNEW(p);\r\t\t\tp.link := v.link; p.label := v.label$;\r\t\t\tp.valid := {Controls.link, Controls.label}; p.known := p.valid;\r\t\t\tProperties.Insert(msg.prop, p);\r\t\t\tProperties.Insert(msg.prop, GetStdProp(v))\r\t\t| msg: Properties.SetMsg DO\t"
+                    attr: 0
+                  - text: "(* set the standard font, color, or control properties *)"
+                    attr: 1
+                  - text: "\r\t\t\tprop := msg.prop;\r\t\t\tWHILE prop # NIL DO\r\t\t\t\tWITH prop: Controls.Prop DO\t"
+                    attr: 0
+                  - text: "(* standard control properties *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tViews.BeginModification(Views.notUndoable, v);\r\t\t\t\t\tIF Controls.link IN prop.valid THEN v.link := prop.link; END;\r\t\t\t\t\tIF Controls.label IN prop.valid THEN v.label := prop.label$ END;\r\t\t\t\t\tViews.EndModification(Views.notUndoable, v);\r\t\t\t\t\tViews.Update(v, Views.keepFrames)\t"
+                    attr: 0
+                  - text: "(* causes a delayed redrawing of the view *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t| prop: Properties.StdProp DO\t"
+                    attr: 0
+                  - text: "(* standard font and color properties *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tViews.BeginModification(Views.notUndoable, v);\r\t\t\t\t\tSetStdProp(v, prop);\r\t\t\t\t\tViews.EndModification(Views.notUndoable, v);\r\t\t\t\t\tViews.Update(v, Views.keepFrames)\t"
+                    attr: 0
+                  - text: "(* causes a delayed redrawing of the view *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tELSE\r\t\t\t\tEND;\r\t\t\t\tprop := prop.next\r\t\t\tEND\r\t\tELSE\t"
+                    attr: 0
+                  - text: "(* ignore other messages *)"
+                    attr: 1
+                  - text: "\r\t\tEND\r\tEND HandlePropMsg;\r\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: New
+                    attr: 3
+                  - text: "* (): Views.View;\r\t\tVAR v: View;\r\tBEGIN\t"
+                    attr: 0
+                  - text: "(* create a new button *)"
+                    attr: 1
+                  - text: "\r\t\tNEW(v); v.color := Ports.defaultColor; v.font := Fonts.dir.Default(); v.link := \"\"; v.label := \"\"; "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " v\r\tEND New;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Deposit
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tViews.Deposit(New())\r\tEND Deposit;\r\rEND ObxButtons.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 8433
+          bodyLen: 8

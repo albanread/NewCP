@@ -1,0 +1,228 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Host\\Mod\\Mail.odc"
+  size: 5901
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 5770
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 5584
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 5498
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 5619
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 5105
+                runListLen: 2022
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE HostMail;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- 20070201, bh, Unicode support\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- it is intended that CheckDll is called inside the procedures SendNote/SendDocument and not in the guards.\r\tThere were suspicious/unsolvable problems with these calls (under Windows 3.11) which lead to nasty\r\terror messages. As a consequence, the menu items are always enabled before they are executed for\tthe first time.\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\t\t\t\t\r\tIMPORT \r\t\tSYSTEM, WinCmc, WinApi,\r\t\tFiles, Dialog, Converters, Views, Windows,\r\t\tTextModels, TextViews, TextControllers, HostFiles;\r\t\r\tCONST\r\t\ttempFile = \"_mail_.odc\";\r\t\r\tVAR\r\t\ttempLoc: HostFiles.Locator;\r\t\tchecked: BOOLEAN;\r\t\tsendDocument: PROCEDURE(adr, subject, note: WinCmc.string; flgs: WinCmc.flags;\r\t\t\t\t\t\tpaths, names, delimiter: WinCmc.string; id: WinCmc.ui_id): WinCmc.return_code;\r\r\t\t\r\t\r\tPROCEDURE CheckDll*;\r\t\tVAR dll: WinApi.HINSTANCE;\r\tBEGIN\r\t\tIF ~checked THEN\r\t\t\tdll := WinApi.LoadLibraryW(\"MAPI32\");\r\t\t\tIF dll # 0 THEN\r\t\t\t\tSYSTEM.PUT(SYSTEM.ADR(sendDocument), WinApi.GetProcAddress(dll, \"cmc_send_documents\"));\r\t\t\tEND;\r\t\t\tchecked := TRUE\r\t\tEND\r\tEND CheckDll;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SendNote
+                    attr: 3
+                  - text: "*;\r\t\tVAR c: TextControllers.Controller; r: TextModels.Reader; res: WinCmc.return_code;\r\t\t\ts: POINTER TO ARRAY OF SHORTCHAR; ch: CHAR; beg, end, i: INTEGER; p: WinCmc.string;\r\tBEGIN\r\t\tCheckDll;\r\t\tIF sendDocument # NIL THEN\r\t\t\tc := TextControllers.Focus(); p := NIL;\r\t\t\tIF (c # NIL) & c.HasSelection() THEN\r\t\t\t\tc.GetSelection(beg, end); \r\t\t\t\tr := c.text.NewReader(NIL); r.SetPos(beg);\r\t\t\t\tNEW(s, (end - beg) * 2 + 1); r.ReadChar(ch); i := 0;\r\t\t\t\tWHILE ~r.eot & (r.Pos() <= end) DO\r\t\t\t\t\tIF (r.view = NIL) & (ch < 100X) THEN\r\t\t\t\t\t\ts[i] := SHORT(ch); INC(i);\r\t\t\t\t\t\tIF ch = 13X THEN s[i] := 10X; INC(i) END\r\t\t\t\t\tEND;\r\t\t\t\t\tr.ReadChar(ch)\r\t\t\t\tEND;\r\t\t\t\ts[i] := 0X; p := s^;\r\t\t\tEND;\r\t\t\tres := sendDocument(NIL, NIL, p,\r\t\t\t\tWinCmc.ERROR_UI_ALLOWED + WinCmc.LOGON_UI_ALLOWED + WinCmc.SEND_UI_REQUESTED,\r\t\t\t\tNIL, NIL, \", \", 0)\r\t\tEND\r\tEND SendNote;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: SendDocument
+                    attr: 3
+                  - text: "*;\r\t\tVAR w: Windows.Window; res: WinCmc.return_code; name: HostFiles.FullName; title: Views.Title;\r\t\t\tss: ARRAY 260 OF SHORTCHAR; st: ARRAY 64 OF SHORTCHAR;\r\tBEGIN\r\t\tCheckDll;\r\t\tIF sendDocument # NIL THEN\r\t\t\tw := Windows.dir.First();\r\t\t\tIF w # NIL THEN\r\t\t\t\tConverters.Export(tempLoc, tempFile, NIL, w.doc.ThisView());\r\t\t\t\tname := tempLoc.path + \"\\\" + tempFile;\r\t\t\t\tIF w.name # \"\" THEN title := w.name$\r\t\t\t\tELSE w.GetTitle(title); title := title + \".odc\"\r\t\t\t\tEND;\r\t\t\t\tss := SHORT(name$); st := SHORT(title$);\r\t\t\t\tres := sendDocument(NIL, NIL, NIL,\r\t\t\t\t\tWinCmc.ERROR_UI_ALLOWED\r\t\t\t\t\t+ WinCmc.LOGON_UI_ALLOWED\r\t\t\t\t\t+ WinCmc.SEND_UI_REQUESTED,\r\t\t\t\t\tss, st, \", \", 0);\r\t\t\t\tFiles.dir.Delete(tempLoc, tempFile)\r\t\t\tEND\r\t\tEND\r\tEND SendDocument;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: SendNoteGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\tBEGIN\r\t\tIF checked & (sendDocument = NIL) THEN par.disabled := TRUE END\r\tEND SendNoteGuard;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: SendDocumentGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\tBEGIN\r\t\tIF checked & (sendDocument = NIL) OR (Windows.dir.First() = NIL) THEN par.disabled := TRUE END\r\tEND SendDocumentGuard;\r\t\r\tPROCEDURE Init;\r\t\tVAR res: INTEGER; path: HostFiles.FullName;\r\tBEGIN\r\t\tres := WinApi.GetTempPathW(LEN(path), path);\r\t\ttempLoc := HostFiles.NewLocator(path);\r\tEND Init;\r\t\rBEGIN\r\tInit\rEND HostMail.\r\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 5866
+          bodyLen: 8

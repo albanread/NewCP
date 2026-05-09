@@ -1,0 +1,244 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Mod\\PhoneUI.odc"
+  size: 3787
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 3656
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 3470
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 3384
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 114300
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: "*"
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 3509
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 2995
+                runListLen: 1733
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE ObxPhoneUI;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT Dialog, ObxPhoneDB;\r\r\tVAR\r\t\t"
+                    attr: 0
+                  - text: phone
+                    attr: 3
+                  - text: "*: RECORD\r\t\t\tname*, number*: ObxPhoneDB.String;\r\t\t\tlookupByName*: BOOLEAN\r\t\tEND;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Lookup
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tIF phone.lookupByName THEN\r\t\t\tObxPhoneDB.LookupByName(phone.name, phone.number);\r\t\t\tIF phone.number = \"\" THEN phone.number := \"not found\" END\r\t\tELSE\r\t\t\tObxPhoneDB.LookupByNumber(phone.number, phone.name);\r\t\t\tIF phone.name = \"\" THEN phone.name := \"not found\" END\r\t\tEND;\r\t\tDialog.Update(phone)\r\tEND Lookup;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: LookupGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\tBEGIN\t"
+                    attr: 0
+                  - text: "(* disable if input string is empty *)"
+                    attr: 1
+                  - text: "\r\t\tpar.disabled := phone.lookupByName & (phone.name = \"\") OR\r\t\t\t\t\t\t\t~phone.lookupByName & (phone.number = \"\")\r\tEND LookupGuard;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: NameGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\tBEGIN\t"
+                    attr: 0
+                  - text: "(* make read-only if lookup is by number *)"
+                    attr: 1
+                  - text: "\r\t\tpar.readOnly := ~phone.lookupByName\r\tEND NameGuard;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: NumberGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\tBEGIN\t"
+                    attr: 0
+                  - text: "(* make read-only if lookup is by name *)"
+                    attr: 1
+                  - text: "\r\t\tpar.readOnly := phone.lookupByName\r\tEND NumberGuard;\r\rEND ObxPhoneUI.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 3752
+          bodyLen: 8

@@ -1,0 +1,228 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Mod\\Views5.odc"
+  size: 5025
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 4894
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 4708
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 4622
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 114300
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: "*"
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 4747
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 4233
+                runListLen: 1693
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE ObxViews5;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT Views, Ports, Properties, Controllers;\r\r\tTYPE\r\t\tView = POINTER TO RECORD (Views.View)\r\t"
+                    attr: 0
+                  - text: "\t\tx, y: INTEGER"
+                    attr: 3
+                  - text: "\r\t\tEND;\r\r\tPROCEDURE (v: View)  Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\tBEGIN\r\t\tf.DrawRect(l, t, r, b, Ports.fill, Ports.red);\r\t\t"
+                    attr: 0
+                  - text: "f.DrawLine(v.x, t, v.x, b, 0, Ports.white); f.DrawLine(l, v.y, r, v.y, 0, Ports.white)"
+                    attr: 3
+                  - text: "\r\tEND Restore;\r\r\tPROCEDURE (v: View) HandlePropMsg (VAR msg: Properties.Message);\r\t\tCONST min = 5 * Ports.mm; max = 50 * Ports.mm;\r\tBEGIN\r\t\tWITH msg: Properties.SizePref DO\r\t\t\tIF (msg.w = Views.undefined) OR (msg.h = Views.undefined) THEN\r\t\t\t\t msg.w := 20 * Ports.mm; msg.h := 10 * Ports.mm\r\t\t\tELSE\r\t\t\t\tProperties.ProportionalConstraint(2, 1, msg.fixedW, msg.fixedH,\r\t\t\t\t\t\t\t\t\t\tmsg.w, msg.h);\r\t\t\t\tIF msg.h < min THEN msg.h := min; msg.w := 2 * min\r\t\t\t\tELSIF msg.h > max THEN msg.h := max; msg.w := 2 * max\r\t\t\t\tEND\r\t\t\tEND\r\t\t| msg: Properties.ResizePref DO\r\t\t\tmsg.horFitToWin := TRUE; msg.verFitToWin := TRUE\r\t\t| msg: Properties.FocusPref DO\r\t\t\tmsg.setFocus := TRUE\r\t\tELSE\t(* ignore other messages *)\r\t\tEND\r\tEND HandlePropMsg;\r\r\tPROCEDURE (v: View) HandleCtrlMsg (f: Views.Frame;\r\t\t\t\t\t\t\t\t\t\tVAR msg: Controllers.Message; \r\t\t\t\t\t\t\t\t\t\tVAR focus: Views.View);\r\t\tVAR x, y, w, h: INTEGER; m: SET; isDown: BOOLEAN;\r\tBEGIN\r\t\tWITH msg: Controllers.PollOpsMsg DO\r\t\t\tmsg.valid := {Controllers.paste}; msg.selectable := TRUE;\r\t\t\tmsg.type := \"Obx.Tutorial\"\r\t"
+                    attr: 0
+                  - text: "\t| msg: Controllers.EditMsg DO\r\t\t\tIF msg.op = Controllers.pasteChar THEN\t(* cursor keys *)\r\t\t\t\tIF msg.char = 1DX THEN INC(v.x, Ports.mm)\r\t\t\t\tELSIF msg.char = 1CX THEN DEC(v.x, Ports.mm)\r\t\t\t\tELSIF msg.char  = 1EX THEN DEC(v.y, Ports.mm)\r\t\t\t\tELSIF msg.char  = 1FX THEN INC(v.y, Ports.mm)\r\t\t\t\tEND;\r\t\t\t\tViews.Update(v, Views.keepFrames)\r\t\t\tEND\r\t\t| msg: Controllers.TrackMsg DO\r\t\t\tv.x := msg.x; v.y := msg.y;\r\t\t\tv.context.GetSize(w, h); v.Restore(f, 0, 0, w, h);\r\t\t\tREPEAT\r\t\t\t\tf.Input(x, y, m, isDown);\r\t\t\t\tIF (x # v.x) OR (y # v.y) THEN\r\t\t\t\t\tv.x := x; v.y := y; v.Restore(f, 0, 0, w, h)\r\t\t\t\tEND\r\t\t\tUNTIL ~isDown;\r\t\t\tViews.Update(v, Views.keepFrames)\r\t\t| msg: Controllers.PollCursorMsg DO\r\t\t\tmsg.cursor := Ports.graphicsCursor\r\t\tELSE\t(* ignore other messages *)\r\t\tEND\r"
+                    attr: 3
+                  - text: "\tEND HandleCtrlMsg;\r\r\tPROCEDURE Deposit*;\r\t\tVAR v: View;\r\tBEGIN\r\t\tNEW(v); "
+                    attr: 0
+                  - text: "v.x := 0; v.y := 0; "
+                    attr: 3
+                  - text: "Views.Deposit(v)\r\tEND Deposit;\r\rEND ObxViews5.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 4990
+          bodyLen: 8

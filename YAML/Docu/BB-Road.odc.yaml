@@ -1,0 +1,794 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Docu\\BB-Road.odc"
+  size: 16793
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 16662
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 16476
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 16390
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                asc: 152400
+                dsc: 25400
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 111
+                bodyPos: 16511
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 15997
+                runListLen: 8455
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [5]
+                    font: Arial
+                    size: 127000
+                    color: 0x000000ff
+                    weight: 400
+                    style: 0x00000000
+                flow:
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 3
+                      bodyPos: 521
+                      bodyLen: 72
+                    attr: 0
+                    w: 360000000
+                    h: 158750
+                  - text: Roadmap
+                    attr: 0
+                  - text: "\r\r\r"
+                    attr: 1
+                  - text: Contents
+                    attr: 2
+                  - text: "\r\r"
+                    attr: 1
+                  - link:
+                      target: "StdLinks.ShowTarget('Two')"
+                      body:
+                        - text: 1 Two kinds of components
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+                  - link:
+                      target: "StdLinks.ShowTarget('Commands')"
+                      body:
+                        - text: 2 Commands
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+                  - link:
+                      target: "StdLinks.ShowTarget('Views')"
+                      body:
+                        - text: 3 Views
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+                  - link:
+                      target: "StdLinks.ShowTarget('Overview')"
+                      body:
+                        - text: 4 Overview
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+                  - link:
+                      target: "StdLinks.ShowTarget('Table')"
+                      body:
+                        - text: 5 Table of contents
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r\r\r"
+                    attr: 1
+                  - target:
+                      name: Two
+                      body:
+                        - text: 1 Two kinds of components
+                          attr: 2
+                      attr: 2
+                      w: 150300
+                      h: 142875
+                  - text: "\r\rBlackBox contains a component framework, which is a new concept for most programmers. This document gives a quick overview over which kinds of BlackBox components there are, when you need which, and where the documentation is.\r\rGenerally, BlackBox distinguishes two major categories of components: commands and views. Commands are comparable to traditional scripts or macros, except that they are implemented in a \"real\" programming language, rather than in a limited or inefficient special purpose scripting language. This means that if a problem grows, its programmatic solution can grow along; you'll not suddenly need to switch to another language. Thus commands range from simple automation tasks to complex programs such as compilers. The main purpose of commands is to assemble visual objects, i.e., to make them work together. Views are the visual objects of the BlackBox Component Framework.\r\r\r"
+                    attr: 1
+                  - target:
+                      name: Commands
+                      body:
+                        - text: 2 Commands
+                          attr: 2
+                      attr: 2
+                      w: 150300
+                      h: 142875
+                  - text: "\r\rOften, programs are built around data entry masks; these are "
+                    attr: 1
+                  - text: forms
+                    attr: 4
+                  - text: " in BlackBox. Module "
+                    attr: 1
+                  - text: Controls
+                    attr: 4
+                  - text: " and the form subsystem provide the necessary support to build form-based user interfaces.\rOften, you'll also want to generate texts, e.g., for reporting purposes. You can use all capabilities of the BlackBox text subsystem, including fonts, type sizes, color, embedded components such as stamp views or link views, and so on. An example command which uses both the form and text subsystems is "
+                    attr: 1
+                  - text: ObxOrders
+                    attr: 4
+                  - text: ".\r\rBefore looking at this advanced example, you may want to have a look at simpler text and form sample programs. The "
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Obx/Docu/Sys-Map', 'Map to the Obx subsystem')"
+                      body:
+                        - text: Obx
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: " subsystem (\"Overview by Example\") provides a variety of such examples.\r\rBlackBox programs are document-centric. This means that you typically work with documents and document parts; and not directly with files or windows. Files are used only for simple databases or for manipulating legacy data. Sometimes it's possible to convert legacy data to a BlackBox data type by writing a new converter. "
+                    attr: 1
+                  - text: Obx
+                    attr: 4
+                  - text: " also contains an example of such a converter.\r\r\r"
+                    attr: 1
+                  - target:
+                      name: Views
+                      body:
+                        - text: 3 Views
+                          attr: 2
+                      attr: 2
+                      w: 150300
+                      h: 142875
+                  - text: "\r\rIf the built-in subsystems are not sufficient for your purposes, you need to develop a new BlackBox component. Usually this is a document component, a so-called "
+                    attr: 1
+                  - text: view
+                    attr: 4
+                  - text: " implementation. In contrast to old-style programs, a view only owns a part of a document, and not the whole screen or even a whole window. If the view is the outermost view (root view), the result cannot be distinguished from a traditional application. However, a view is always able to be embedded in texts, forms, and so on. \r\rExamples of views are text views; form views; link views (hypertext); stamp views (time stamps); clock views; Oberon microsystems logo views; bitmap (picture) views; commander views (buttons which execute a command); fold views; error views generated by the compiler; various controls (command buttons, check boxes, edit fields, ...) and so on. Before implementing your own view type, take a look at these views to get an idea of the variety of ways in which views can be used. Sometimes it's not necessary to implement a whole new complex subsystem in order to solve a problem, but rather some additional view which extends the functionality of the existing text subsystem, for example.\r\rViews may or may not have a "
+                    attr: 1
+                  - text: model
+                    attr: 4
+                  - text: ". A model is the datastructure which is visually represented by the view. In simple cases where the view needs no editable persistent state, no model is needed. Examples are logo views, controls, etc. Full-fledged editors on the other hand should contain a separate model. Such more complex views are typically implemented in several modules, while simple views without separate modules are usually implemented in a single module.\r\rAdvanced views may contain other views. Such advanced views are called "
+                    attr: 1
+                  - text: containers
+                    attr: 4
+                  - text: ". There are three useful categories of containers:\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 1
+                    wide: true
+                  - text: " A "
+                    attr: 1
+                  - text: Wrapper
+                    attr: 4
+                  - text: " contains another view and modifies or extends its behavior. Typically, a wrapper has the same size as the wrapped view. For example, a terminal view may wrap a standard text view; it adds the communication facilities, while the text view provides the echoing of communicated text.\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 1
+                    wide: true
+                  - text: " A "
+                    attr: 1
+                  - text: Special Container
+                    attr: 4
+                  - text: " contains one or several embedded views. The container knows about the types of the embedded views and their layout. Views cannot be inserted or deleted. For example, such a special container could have a query view at the top where database queries can be typed in, and a larger text view at the bottom where the results of the query appear. Another example is given in "
+                    attr: 1
+                  - text: ObxTwins
+                    attr: 4
+                  - text: ".\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 1
+                    wide: true
+                  - text: " A "
+                    attr: 1
+                  - text: General Container
+                    attr: 4
+                  - text: " may contain an arbitrary number of embedded views, and they may change over time. This is the most general and most complex kind of view, e.g., the built-in text and form subsystems. The form subsystem is available in source form. Examples for the other kinds of view are available as "
+                    attr: 1
+                  - text: Obx
+                    attr: 4
+                  - text: " examples.\r\rViews may have no programming interface, a simple procedural interface (typically based on properties, see "
+                    attr: 1
+                  - text: Controls
+                    attr: 4
+                  - text: "), or a full-fledged extensible interface. For the latter, it is recommended that the exported interface is separated from the hidden default implementation; in order to achieve maximum extensibility.\r\r\r"
+                    attr: 1
+                  - target:
+                      name: Overview
+                      body:
+                        - text: 4 Overview
+                          attr: 2
+                      attr: 2
+                      w: 150300
+                      h: 142875
+                  - text: "\r\rHow should you start to get acquainted with BlackBox? We suggest that you start with the introduction texts "
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/Tut-A', 'Brief History of Pascal')"
+                      body:
+                        - text: A Brief History of Pascal
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: " and "
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Tour', 'Guided Tour')"
+                      body:
+                        - text: Guided Tour
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: ".\r\rThe rest of the documentation consists of four major parts:\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 1
+                    wide: true
+                  - text: " A "
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('System/Docu/User-Man', 'User Manual')"
+                      body:
+                        - text: user manual
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: " which describes the user interface and most important commands of the BlackBox Component Builder.\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 1
+                    wide: true
+                  - text: " A "
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/Tut-TOC', 'Tutorial Table of Contents')"
+                      body:
+                        - text: tutorial
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: " which discusses general design patterns (chapters 1 to 3) in BlackBox. Then graphical user interfaces, forms, and controls are discussed in "
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/Tut-4', 'Chapter 4')"
+                      body:
+                        - text: chapter 4
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: ", the text subsystem is discussed in "
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/Tut-5', 'Chapter 5')"
+                      body:
+                        - text: chapter 5
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: ". The remaining "
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/Tut-6', 'Chapter 6')"
+                      body:
+                        - text: chapter 6
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: " deals with view programming.\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 1
+                    wide: true
+                  - text: "  "
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Obx/Docu/Sys-Map', 'Map to the Obx Subsystem')"
+                      body:
+                        - text: Overview by Example
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: " is a rich source of examples, ordered by category and difficulty.\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 1
+                    wide: true
+                  - text: " The programmer's reference consists of one documentation file per module. Each subsystem has a "
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('System/Docu/Sys-Map', 'Map to the BlackBox Component Framework')"
+                      body:
+                        - text: Sys-Map
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: " text which contains links to the individual texts.\r\rApart from the "
+                    attr: 1
+                  - text: Obx
+                    attr: 4
+                  - text: " samples and the tutorial examples, another documentation for the most important kinds of BlackBox programs is available in "
+                    attr: 1
+                  - text: Dev/Rsrc/New
+                    attr: 4
+                  - text: ". These are template documents that you can use as basis for your own programs. The template documents' module names are renamed automatically by the "
+                    attr: 1
+                  - text: "Tools->Create Subsystem..."
+                    attr: 4
+                  - text: " command. This command also creates a suitable new subsystem directory structure (see "
+                    attr: 1
+                  - text: DevSubTool
+                    attr: 4
+                  - text: ").\r\rProgrammers who need to interface with non-BlackBox software should consult the text "
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Dev/Docu/P-S-I', 'Platform-Specific Issues')"
+                      body:
+                        - text: Platform-Specific Issues
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: ".\r\rNote that you can reach the entire on-line documentation via the help menu, or from the table of contents below.\r\r\r"
+                    attr: 1
+                  - target:
+                      name: Table
+                      body:
+                        - text: 5 Table of contents
+                          attr: 2
+                      attr: 2
+                      w: 150300
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 3657600 }
+                      attr: 2
+                      w: 360000000
+                      h: 444500
+                  - text: Quick Start
+                    attr: 2
+                  - text: "\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenAux('Tour', 'Guided Tour')"
+                      body:
+                        - text: Guided Tour
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Obx/Docu/Sys-Map', 'Map to the Obx Subsystem')"
+                      body:
+                        - text: Overview by Example
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r\r"
+                    attr: 1
+                  - text: Tutorial
+                    attr: 2
+                  - text: "\t"
+                    attr: 1
+                  - text: "For easier printing:"
+                    attr: 5
+                  - text: "\r"
+                    attr: 2
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/Tut-1', 'User Interaction')"
+                      body:
+                        - text: 1 User Interaction
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\t"
+                    attr: 1
+                  - text: the complete tutorial can be printed
+                    attr: 5
+                  - text: "\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/Tut-2', 'Compound Documents')"
+                      body:
+                        - text: 2 Compound Documents
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\t"
+                    attr: 1
+                  - text: from this
+                    attr: 5
+                  - text: " "
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/Tut-Tot', 'Complete Tutorial Text')"
+                      body:
+                        - text: document
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: ", which contains"
+                    attr: 5
+                  - text: "\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/Tut-3', 'BlackBox Design Practices')"
+                      body:
+                        - text: 3 Design Practices
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\t"
+                    attr: 1
+                  - text: all chapters.
+                    attr: 5
+                  - text: "\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/Tut-4', 'Forms')"
+                      body:
+                        - text: 4 Forms
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/Tut-5', 'Texts')"
+                      body:
+                        - text: 5 Texts
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/Tut-6', 'View Construction')"
+                      body:
+                        - text: 6 View Construction
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/Tut-A', 'A Brief History of Pascal')"
+                      body:
+                        - text: "A: A Brief History of Pascal"
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/Tut-B', 'From Pascal to Component Pascal')"
+                      body:
+                        - text: "B: From Pascal to Component Pascal"
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r\r"
+                    attr: 1
+                  - text: "User Manuals\r"
+                    attr: 2
+                  - link:
+                      target: "StdCmds.OpenBrowser('System/Docu/User-Man', 'System User Manual')"
+                      body:
+                        - text: Framework
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Text/Docu/User-Man', 'Text User Manual')"
+                      body:
+                        - text: Text Subsystem
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Form/Docu/User-Man', 'Form User Manual')"
+                      body:
+                        - text: Form Subsystem
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Dev/Docu/User-Man', 'Dev User Manual')"
+                      body:
+                        - text: Dev Subsystem
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 2
+                  - link:
+                      target: "StdCmds.OpenBrowser('Std/Docu/Sys-Map', 'Map to the Standard Commands')"
+                      body:
+                        - text: Custom Commands
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r\rDeveloper Manuals\r"
+                    attr: 2
+                  - link:
+                      target: "StdCmds.OpenBrowser('System/Docu/Sys-Map', 'System Map')"
+                      body:
+                        - text: Framework
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Text/Docu/Sys-Map', 'Text Map')"
+                      body:
+                        - text: Text Subsystem
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Form/Docu/Sys-Map', 'Form Map')"
+                      body:
+                        - text: Form Subsystem
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Dev/Docu/Sys-Map', 'Dev Map')"
+                      body:
+                        - text: Dev Subsystem
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 2
+                  - link:
+                      target: "StdCmds.OpenBrowser('Sql/Docu/Dev-Man', 'Sql Developer Manual')"
+                      body:
+                        - text: Sql Subsystem
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r\rComponent Pascal\r"
+                    attr: 2
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/CP-Lang', 'Language Reference')"
+                      body:
+                        - text: Language Report
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/CP-New', 'What is New in Component Pascal')"
+                      body:
+                        - text: "What's New?"
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-Chars', 'Character Set')"
+                      body:
+                        - text: Character Set
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-Docu', 'Documentation Conventions')"
+                      body:
+                        - text: Documentation Conventions
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-Rules', 'Programming Conventions')"
+                      body:
+                        - text: Programming Conventions
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r\rMiscellaneous"
+                    attr: 2
+                  - text: "\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: License
+                          attr: 3
+                      attr: 3
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 3
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/Contributors', 'BlackBox Contributors')"
+                      body:
+                        - text: Contributors
+                          attr: 3
+                      attr: 3
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 3
+                  - link:
+                      target: "StdCmds.OpenBrowser('Dev/Docu/P-S-I', 'Platform-Specific Issues')"
+                      body:
+                        - text: Platform-Specific Issues
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 115
+          bodyPos: 16758
+          bodyLen: 8

@@ -1,0 +1,279 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Mod\\Cubes.odc"
+  size: 13229
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 13098
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 12912
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 12826
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: "*"
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 19
+                bodyPos: 12951
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 12437
+                runListLen: 1560
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE ObxCubes;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\treferences\t= \"Adopted from a program written in C in 1986 by Roland Karlsson,\r\t\t    Swedish Institute for Computer Science (SICS), roland@sics.se\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT Views, Ports, Properties, Services, Stores, Models, Math, Controllers, StdCmds, Containers, Dialog;\r\r\tCONST\r\t\tminVersion = 0; maxVersion = 1;\r\t\tpi2 = 255;\r\t\tinvisible = Ports.white;\r\r\tTYPE\r\t\tColors = ARRAY 6 OF Ports.Color;\r\r\t\tView = POINTER TO RECORD (Views.View)\r\t\t\tfi1, fi2: INTEGER;\t"
+                    attr: 0
+                  - text: "(* rotation angles *)"
+                    attr: 1
+                  - text: "\r\t\t\tcolors: Colors\t"
+                    attr: 0
+                  - text: "(* colors of the six sides of the cube *)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\tAction = POINTER TO RECORD (Services.Action) END;\r\r\t\tMsg = RECORD (Models.Message) \r\t\t\tconsumed: BOOLEAN\r\t\tEND;\r\r\tVAR\r\t\t"
+                    attr: 0
+                  - text: para
+                    attr: 3
+                  - text: "*: RECORD\r\t\t\tcolors*: Colors\r\t\tEND;\r\r\t\taction: Action;\r\t\tactionIsAlive: BOOLEAN;\r\t\tactual: View;\r\t\tsinus: ARRAY 256 OF INTEGER;\r\r\r"
+                    attr: 0
+                  - text: "\t(* property dialog *)\r"
+                    attr: 1
+                  - text: "\r\tPROCEDURE Singleton (): View;\r\t\tVAR v: Views.View;\r\tBEGIN\r\t\tControllers.SetCurrentPath(Controllers.targetPath);\r\t\tv := Containers.FocusSingleton();\r\t\tControllers.ResetCurrentPath();\r\t\tIF (v # NIL) & (v IS View) THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " v(View) ELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " NIL END\r\tEND Singleton;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Notify
+                    attr: 3
+                  - text: "* (op, from, to: INTEGER);\r\t\tVAR v: View;\r\tBEGIN\r\t\tv := Singleton();\r\t\tIF v # NIL THEN v.colors := para.colors END\r\tEND Notify;\r\t\r\t"
+                    attr: 0
+                  - text: "(* Action *)"
+                    attr: 1
+                  - text: "\r\t\r\tPROCEDURE (a: Action) Do;\r\t\tVAR msg: Msg; v: View;\r\tBEGIN\r\t\tmsg.consumed := FALSE;\r\t\tViews.Omnicast(msg);\r\t\tIF msg.consumed THEN "
+                    attr: 0
+                  - text: "(* update Color Property Editor *)"
+                    attr: 1
+                  - text: "\r\t\t\tv := Singleton();\r\t\t\tIF (v # NIL) & (actual # v) THEN\r\t\t\t\tpara.colors := v.colors; Dialog.Update(para);\r\t\t\t\tactual := v\r\t\t\tEND;\r\t\t\tServices.DoLater(a, Services.Ticks() + Services.resolution DIV 10)\r\t\t\t\t"
+                    attr: 0
+                  - text: "(* i.e. perform a full rotation through all 256 states in 25.6 seconds *)\r\t\t"
+                    attr: 1
+                  - text: "ELSE\r\t\t\tactionIsAlive := FALSE\r\t\tEND\r\tEND Do;\r\r\t"
+                    attr: 0
+                  - text: "(* View *)\r"
+                    attr: 1
+                  - text: "\r\tPROCEDURE (v: View) Externalize (VAR wr: Stores.Writer);\r\t\tVAR i: INTEGER;\r\tBEGIN\r\t\twr.WriteVersion(maxVersion);\r\t\twr.WriteInt(v.fi1); wr.WriteInt(v.fi2);\r\t\tFOR i := 0 TO 5 DO wr.WriteInt(v.colors[i]) END\r\tEND Externalize;\r\r\tPROCEDURE (v: View) Internalize (VAR rd: Stores.Reader);\r\t\tVAR version: INTEGER; i: INTEGER;\r\tBEGIN\r\t\trd.ReadVersion(minVersion, maxVersion, version);\r\t\tIF ~rd.cancelled THEN\r\t\t\trd.ReadInt(v.fi1); rd.ReadInt(v.fi2);\r\t\t\tIF version = maxVersion THEN\r\t\t\t\tFOR i := 0 TO 5 DO rd.ReadInt(v.colors[i]) END\r\t\t\tELSE\r\t\t\t\tFOR i := 0 TO 5 DO v.colors[i] := invisible END\r\t\t\tEND\r\t\tEND\r\tEND Internalize;\r\r\tPROCEDURE (v: View) CopyFromSimpleView (source: Views.View);\r\tBEGIN\r\t\tWITH source: View DO\r\t\t\tv.fi1 := source.fi1; v.fi2 := source.fi2; \r\t\t\tv.colors := source.colors\r\t\tEND\r\tEND CopyFromSimpleView;\r\r\tPROCEDURE (v: View) HandlePropMsg (VAR msg: Properties.Message);\r\tBEGIN\r\t\tWITH msg: Properties.SizePref DO\r\t\t\tIF (msg.w > Views.undefined) & (msg.h > Views.undefined) THEN\r\t\t\t\tProperties.ProportionalConstraint(1, 1, msg.fixedW, msg.fixedH, msg.w, msg.h);\r\t\t\t\tIF msg.w < 10 * Ports.mm THEN\r\t\t\t\t\tmsg.w := 10 * Ports.mm; msg.h := msg.w\r\t\t\t\tEND\r\t\t\tELSE\r\t\t\t\tmsg.w := 40*Ports.mm; msg.h := msg.w;\r\t\t\tEND\r\t\t| msg: Properties.FocusPref DO\r\t\t\tmsg.hotFocus := TRUE\r\t\tELSE\r\t\tEND\r\tEND HandlePropMsg;\r\r\tPROCEDURE (v: View) HandleCtrlMsg (f: Views.Frame; VAR msg: Controllers.Message;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR focus: Views.View);\r\t\tVAR c: Containers.Controller;\r\tBEGIN\r\t\tWITH msg: Controllers.TrackMsg DO\r\t\t\tIF Controllers.modify IN msg.modifiers THEN\r\t\t\t\tc := Containers.Focus();\r\t\t\t\tIF c.opts # Containers.mask THEN\r\t\t\t\t\tpara.colors := v.colors;\r\t\t\t\t\tStdCmds.OpenToolDialog('Obx/Rsrc/Cubes', 'Cube Colors');\r\t\t\t\t\tc.SetSingleton(v)\r\t\t\t\tEND\r\t\t\tEND\r\t\tELSE\r\t\tEND\r\tEND HandleCtrlMsg;\r\r\tPROCEDURE (v: View) HandleModelMsg (VAR msg: Models.Message);\r\tBEGIN\r\t\tWITH msg: Msg DO\r\t\t\tv.fi1 := (v.fi1 + 7) MOD pi2;\r\t\t\tv.fi2 := (v.fi2 + 1) MOD pi2;\r\t\t\tmsg.consumed := TRUE;\r\t\t\tViews.Update(v, Views.keepFrames)\r\t\tELSE\r\t\tEND\r\tEND HandleModelMsg;\r\r\tPROCEDURE (v: View) Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\t\tVAR\r\t\t\tfi1, fi2, a, c: INTEGER;\r\t\t\tp0h, p0v, p1h, p1v, p2h, p2v, p3h, p3v: INTEGER;\r\t\t\tw, h: INTEGER;\r\t\t\te01, e12, e23, e30,\r\t\t\te45, e56, e67, e74,\r\t\t\te04, e15, e26, e37: BOOLEAN;\r\t\t\tp: ARRAY 4 OF Ports.Point;\r\r\t\tPROCEDURE DrawSides(visible: BOOLEAN);\r\t\tBEGIN\r\t\t\tIF (e01 & e12 & e23 & e30 = visible) & (v.colors[0] # invisible) THEN\r\t\t\t\tp[0].x := (p0h - c) * w; p[0].y := p0v * w;\r\t\t\t\tp[1].x := (p1h - c) * w; p[1].y := p1v * w;\r\t\t\t\tp[2].x := (p2h - c) * w; p[2].y := p2v * w;\r\t\t\t\tp[3].x := (p3h - c) * w; p[3].y := p3v * w;\r\t\t\t\tf.DrawPath(p, 4, Ports.fill, v.colors[0], Ports.closedPoly)\r\t\t\tEND;\r\t\t\tIF (e45 & e56 & e67 & e74 = visible) & (v.colors[1] # invisible)  THEN\r\t\t\t\tp[0].x := (p0h + c) * w; p[0].y := p0v * w;\r\t\t\t\tp[1].x := (p1h + c) * w; p[1].y := p1v * w;\r\t\t\t\tp[2].x := (p2h + c) * w; p[2].y := p2v * w;\r\t\t\t\tp[3].x := (p3h + c) * w; p[3].y := p3v * w;\r\t\t\t\tf.DrawPath(p, 4, Ports.fill, v.colors[1], Ports.closedPoly)\r\t\t\tEND;\r\t\t\tIF (e01 & e15 & e45 & e04 = visible) & (v.colors[2] # invisible)  THEN\r\t\t\t\tp[0].x := (p0h - c) * w; p[0].y := p0v * w;\r\t\t\t\tp[1].x := (p1h - c) * w; p[1].y := p1v * w;\r\t\t\t\tp[2].x := (p1h + c) * w; p[2].y := p1v * w;\r\t\t\t\tp[3].x := (p0h + c) * w; p[3].y := p0v * w;\r\t\t\t\tf.DrawPath(p, 4, Ports.fill, v.colors[2], Ports.closedPoly)\r\t\t\tEND;\r\t\t\tIF (e12 & e26 & e56 & e15 = visible) & (v.colors[3] # invisible)  THEN\r\t\t\t\tp[0].x := (p1h - c) * w; p[0].y := p1v * w;\r\t\t\t\tp[1].x := (p2h - c) * w; p[1].y := p2v * w;\r\t\t\t\tp[2].x := (p2h + c) * w; p[2].y := p2v * w;\r\t\t\t\tp[3].x := (p1h + c) * w; p[3].y := p1v * w;\r\t\t\t\tf.DrawPath(p, 4, Ports.fill, v.colors[3], Ports.closedPoly)\r\t\t\tEND;\r\t\t\tIF (e23 & e37 & e67 & e26 = visible) & (v.colors[4] # invisible)  THEN\r\t\t\t\tp[0].x := (p2h - c) * w; p[0].y := p2v * w;\r\t\t\t\tp[1].x := (p3h - c) * w; p[1].y := p3v * w;\r\t\t\t\tp[2].x := (p3h + c) * w; p[2].y := p3v * w;\r\t\t\t\tp[3].x := (p2h + c) * w; p[3].y := p2v * w;\r\t\t\t\tf.DrawPath(p, 4, Ports.fill, v.colors[4], Ports.closedPoly)\r\t\t\tEND;\r\t\t\tIF (e30 & e04 & e74 & e37 = visible) & (v.colors[5] # invisible)  THEN\r\t\t\t\tp[0].x := (p3h - c) * w; p[0].y := p3v * w;\r\t\t\t\tp[1].x := (p0h - c) * w; p[1].y := p0v * w;\r\t\t\t\tp[2].x := (p0h + c) * w; p[2].y := p0v * w;\r\t\t\t\tp[3].x := (p3h + c) * w; p[3].y := p3v * w;\r\t\t\t\tf.DrawPath(p, 4, Ports.fill, v.colors[5], Ports.closedPoly)\r\t\t\tEND;\r\t\t\tIF e01 = visible THEN\r\t\t\t\tf.DrawLine((p0h - c) * w, p0v * w, (p1h - c) * w, p1v * w, 0, Ports.black)\r\t\t\tEND;\r\t\t\tIF e12 = visible THEN\r\t\t\t\tf.DrawLine((p1h - c) * w, p1v * w, (p2h - c) * w, p2v * w, 0, Ports.black)\r\t\t\tEND;\r\t\t\tIF e23 = visible THEN\r\t\t\t\tf.DrawLine((p2h - c) * w, p2v * w, (p3h - c) * w, p3v * w, 0, Ports.black)\r\t\t\tEND;\r\t\t\tIF e30 = visible THEN\r\t\t\t\tf.DrawLine((p3h - c) * w, p3v * w, (p0h - c) * w, p0v * w, 0, Ports.black)\r\t\t\tEND;\r\t\t\tIF e45 = visible THEN\r\t\t\t\tf.DrawLine((p0h + c) * w, p0v * w, (p1h + c) * w, p1v * w, 0, Ports.black)\r\t\t\tEND;\r\t\t\tIF e56 = visible THEN\r\t\t\t\tf.DrawLine((p1h + c) * w, p1v * w, (p2h + c) * w, p2v * w, 0, Ports.black)\r\t\t\tEND;\r\t\t\tIF e67 = visible THEN\r\t\t\t\tf.DrawLine((p2h + c) * w, p2v * w, (p3h + c) * w, p3v * w, 0, Ports.black)\r\t\t\tEND;\r\t\t\tIF e74 = visible THEN\r\t\t\t\tf.DrawLine((p3h + c) * w, p3v * w, (p0h + c) * w, p0v * w, 0, Ports.black)\r\t\t\tEND;\r\t\t\tIF e04 = visible THEN\r\t\t\t\tf.DrawLine((p0h + c) * w, p0v * w, (p0h - c) * w, p0v * w, 0, Ports.black)\r\t\t\tEND;\r\t\t\tIF e15 = visible THEN\r\t\t\t\tf.DrawLine((p1h + c) * w, p1v * w, (p1h - c) * w, p1v * w, 0, Ports.black)\r\t\t\tEND;\r\t\t\tIF e26 = visible THEN\r\t\t\t\tf.DrawLine((p2h + c) * w, p2v * w, (p2h - c) * w, p2v * w, 0, Ports.black)\r\t\t\tEND;\r\t\t\tIF e37 = visible THEN\r\t\t\t\tf.DrawLine((p3h + c) * w, p3v * w, (p3h - c) * w, p3v * w, 0, Ports.black)\r\t\t\tEND\r\t\tEND DrawSides;\r\r\tBEGIN\r\t\tIF ~actionIsAlive THEN\r\t\t\t actionIsAlive := TRUE; Services.DoLater(action, Services.now)\r\t\tEND;\r\r\t\tv.context.GetSize(w, h); w := (w  DIV 170);\r\r\t\tfi1 := v.fi1;\r\t\tfi2 := v.fi2;\r\r\t\ta := sinus[fi2];\r\t\tc := (sinus[(64 - fi2) MOD pi2] * 91) DIV 128;"
+                    attr: 0
+                  - text: " (* 91/128 := sqrt(2)  *)"
+                    attr: 1
+                  - text: "\r\r\t\tp0v := 85 + sinus[fi1];\r\t\tp0h := 85 + (a * sinus[(64 - fi1) MOD pi2]) DIV 64;\r\r\t\tp1v := 85 + sinus[(64 + fi1) MOD pi2];\r\t\tp1h := 85 + (a * sinus[(-fi1) MOD pi2]) DIV 64;\r\r\t\tp2v := 85 + sinus[(128 + fi1) MOD pi2];\r\t\tp2h := 85 + (a * sinus[(-64 - fi1) MOD pi2]) DIV 64;\r\r\t\tp3v := 85 + sinus[(192 + fi1) MOD pi2];\r\t\tp3h := 85 + (a * sinus[(-128 - fi1) MOD pi2]) DIV 64;\r\r"
+                    attr: 0
+                  - text: "\t\t(* determine visibility of the twelve edges *)\r"
+                    attr: 1
+                  - text: "\r\t\te01 :=  ~((((fi2 - 192) MOD pi2 < 64) & ((fi1 - 32) MOD pi2 < 128))\r\t\t\t\tOR (((fi2 - 128) MOD pi2 < 64) & ((fi1 - 160) MOD pi2 < 128)));\r\t\te12 := ~((((fi2 - 192) MOD pi2 < 64) & ((fi1 - 224) MOD pi2 < 128))\r\t\t\t\tOR (((fi2 - 128) MOD pi2 < 64) & ((fi1 - 96) MOD pi2 < 128)));\r\t\te23 := ~((((fi2 - 192) MOD pi2 < 64) & ((fi1 - 160) MOD pi2 < 128))\r\t\t\t\tOR (((fi2 - 128) MOD pi2 < 64) & ((fi1 - 32) MOD pi2 < 128)));\r\t\te30 := ~((((fi2 - 192) MOD pi2 < 64) & ((fi1 - 96) MOD pi2 < 128))\r\t\t\t\tOR (((fi2 - 128) MOD pi2 < 64) & ((fi1 - 224) MOD pi2 < 128)));\r\t\te45 := ~((((fi2) MOD pi2 < 64) & ((fi1 - 32) MOD pi2 < 128))\r\t\t\t\tOR (((fi2 - 64) MOD pi2 < 64) & ((fi1 - 160) MOD pi2 < 128)));\r\t\te56 := ~((((fi2) MOD pi2 < 64) & ((fi1 - 224) MOD pi2 < 128))\r\t\t\t\tOR (((fi2 - 64) MOD pi2 < 64) & ((fi1 - 96) MOD pi2 < 128)));\r\t\te67 := ~((((fi2) MOD pi2 < 64) & ((fi1 - 160) MOD pi2 < 128))\r\t\t\t\tOR (((fi2 - 64) MOD pi2 < 64) & ((fi1 - 32) MOD pi2 < 128)));\r\t\te74 := ~((((fi2) MOD pi2 < 64) & ((fi1 - 96) MOD pi2 < 128))\r\t\t\t\tOR (((fi2 - 64) MOD pi2 < 64) & ((fi1 - 224) MOD pi2 < 128)));\r\t\te04 := ~((((fi2 - 64) MOD pi2 < 128) & ((fi1 - 224) MOD pi2 < 64))\r\t\t\t\tOR (((fi2 - 192) MOD pi2 < 128) & ((fi1 - 96) MOD pi2 < 64)));\r\t\te15 := ~((((fi2 - 64) MOD pi2 < 128) & ((fi1 - 160) MOD pi2 < 64))\r\t\t\t\tOR (((fi2 - 192) MOD pi2 < 128) & ((fi1 - 32) MOD pi2 < 64)));\r\t\te26 := ~((((fi2 - 64) MOD pi2 < 128) & ((fi1 - 96) MOD pi2 < 64))\r\t\t\t\tOR (((fi2 - 192) MOD pi2 < 128) & ((fi1 - 224) MOD pi2 < 64)));\r\t\te37 := ~((((fi2 - 64) MOD pi2 < 128) & ((fi1 - 32) MOD pi2 < 64))\r\t\t\t\tOR (((fi2 - 192) MOD pi2 < 128) & ((fi1 - 160) MOD pi2 < 64)));\r\r\t\tDrawSides(FALSE);\t"
+                    attr: 0
+                  - text: "(* draw hidden sides and edges *)"
+                    attr: 1
+                  - text: "\r\t\tDrawSides(TRUE)\t"
+                    attr: 0
+                  - text: "(* draw visible sides and edges *)"
+                    attr: 1
+                  - text: "\r\tEND Restore;\r\r\t"
+                    attr: 0
+                  - text: "(* commands *)\r"
+                    attr: 1
+                  - text: "\r\tPROCEDURE "
+                    attr: 0
+                  - text: New
+                    attr: 3
+                  - text: "* (): View;\r\t\tVAR v: View;\r\tBEGIN\r\t\tNEW(v);\r\t\tv.fi1 := 0; v.fi2 := 0;\r\t\tv.colors := para.colors;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " v\r\tEND New;"
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\r\tPROCEDURE "
+                    attr: 0
+                  - text: Deposit
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tViews.Deposit(New())\r\tEND Deposit;\r\r\tPROCEDURE InitData;\r\t\tVAR i: INTEGER;\r\tBEGIN "
+                    attr: 0
+                  - text: "(* Pi = 128 *)"
+                    attr: 1
+                  - text: "\r\t\tFOR i := 0 TO 255 DO\r\t\t\tsinus[i] := SHORT(ENTIER(0.5 + 64 *  Math.Sin(i * 2 * Math.Pi() / 256)))\r\t\tEND;\r\t\tpara.colors[0] := Ports.green;\r\t\tpara.colors[1] := Ports.blue;\r\t\tpara.colors[2] := invisible;\r\t\tpara.colors[3] := Ports.red;\r\t\tpara.colors[4] := invisible;\r\t\tpara.colors[5] := Ports.red + Ports.green\t"
+                    attr: 0
+                  - text: "(* yellow *)"
+                    attr: 1
+                  - text: "\r\tEND InitData;\r\rBEGIN\r\tInitData; NEW(action); actionIsAlive := FALSE\rCLOSE\r\tIF actionIsAlive THEN Services.RemoveAction(action) END\rEND ObxCubes.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 23
+          bodyPos: 13194
+          bodyLen: 8

@@ -1,0 +1,125 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Std\\Docu\\Interpreter.odc"
+  size: 2440
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 2309
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 2123
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 2037
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                lead: 11500
+                asc: 121900
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 5
+                bodyPos: 2037
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 1523
+                runListLen: 224
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                flow:
+                  - text: StdInterpreter
+                    attr: 0
+                  - text: "\r\rDEFINITION StdInterpreter;\r\rEND StdInterpreter.\r\r\rModule "
+                    attr: 1
+                  - text: StdInterpreter
+                    attr: 2
+                  - text: " implements a plug-in service for BlackBox: an interpreter for some forms of Component Pascal procedure calls. The text string to be interpreted must conform to the following syntax:\r\rCommand = Call { \";\" Call }.\rCall = ModuleName \".\" ProcedureName [ \"(\" Parameter { \",\" Parameter } \")\" ].\rParameter = Integer | String.\rInteger = Decimal | Hex.\rDecimal = [ \"-\" ] Digit { Digit }.\rHex = [ \"-\" ] HexDigit { HexDigit } \"H\".\rString = \" ' \" { Char } \" ' \".\r\rThe calls are executed in the given sequence. Parameters corresponding to integers must be of type INTEGER. Parameters corresponding to strings must be value or IN parameters of type ARRAY OF CHAR. The called procedures must not return a value.\r\rFor example, the following string can be used to call the three given procedures:\r\r\t \"TurtleDraw.GotoPos(35, 587); TurtleDraw.ShowPen; TurtleDraw.WriteString('Hello')\".\r\t\r\tPROCEDURE GotoPos (x, y: INTEGER);\r\tPROCEDURE ShowPen;\r\tPROCEDURE WriteText (IN text: ARRAY OF CHAR);\r\rSuch statement sequences are used mainly in menu command configurations and in control properties.\r\rModule "
+                    attr: 1
+                  - text: StdInterpreter
+                    attr: 2
+                  - text: " is installed during startup of BlackBox. Its service is made available through the procedure "
+                    attr: 1
+                  - text: Dialog.Call
+                    attr: 2
+                  - text: ".\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 9
+          bodyPos: 2405
+          bodyLen: 8

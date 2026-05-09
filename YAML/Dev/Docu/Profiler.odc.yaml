@@ -1,0 +1,274 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Dev\\Docu\\Profiler.odc"
+  size: 5575
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 5444
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 5258
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 5172
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                asc: 134600
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000003
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 13
+                bodyPos: 5293
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 4895
+                runListLen: 1588
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: DevProfiler
+                    attr: 0
+                  - text: "\r\rDEFINITION DevProfiler;\r\r PROCEDURE SetProfileList;\r PROCEDURE SetModuleList (list: ARRAY OF CHAR);\r PROCEDURE Start;\r PROCEDURE Stop;\r PROCEDURE ShowProfile;\r PROCEDURE Reset;\r \r PROCEDURE Execute;\r \r PROCEDURE StartGuard (VAR par: Dialog.Par);\r PROCEDURE StopGuard (VAR par: Dialog.Par);\r\rEND DevProfiler.\r\r\r"
+                    attr: 1
+                  - text: DevProfiler
+                    attr: 2
+                  - text: " is a statistical profiler for Component Pascal programs. A profiler measures how much processing time is spent in the individual procedures of a program. A statistical profiler determines at regular time intervals (interrupt-driven) in which procedure of which module the program currently executes. These measurements are stored, and can later be used to display the profile.\rProfiles can be taken over all modules, or over a selected list of particularly interesting modules. Profiling can be started and stopped interactively, or via a programming interface. The latter often allows a more precise measurement.\r\rPossible menus:\r\r"
+                    attr: 1
+                  - text: MENUS
+                    attr: 3
+                  - text: "\r\t \"Set Profile List\" \"\" \"DevProfiler.SetProfileList\" \"DevProfiler.StartGuard\"\r\t \"Start Profiler\" \"\" \"DevProfiler.Start\" \"DevProfiler.StartGuard\"\r\t \"Stop Profiler\" \"\" \"DevProfiler.Stop; DevProfiler.ShowProfile\" \"DevProfiler.StopGuard\"\r\t \"Execute\" \"\" \"DevProfiler.Execute\" \"TextCmds.SelectionGuard\"\r"
+                    attr: 1
+                  - text: END
+                    attr: 3
+                  - text: "\r\r"
+                    attr: 1
+                  - text: Programming Example
+                    attr: 3
+                  - text: "\rThe following example shows how the programming interface of the profiler can be used. It profiles the compilation of a module, i.e., of command "
+                    attr: 1
+                  - text: DevCompiler.Compile
+                    attr: 2
+                  - text: ".\r\r\t PROCEDURE "
+                    attr: 1
+                  - text: ProfiledCompile
+                    attr: 3
+                  - text: "*;\r\t\tVAR res: INTEGER;\r\tBEGIN\r\t\tDevProfiler.SetModuleList(\"DevCPM DevCPS DevCPT DevCPB DevCPP DevHostCPL \r\tDevHostCPC DevHostCPV\");\r\t\tDevProfiler.Start;\r\t\tDialog.Call(\"DevCompiler.Compile\", \"\", res);\r\t\tDevProfiler.Stop;\r\t\tDevProfiler.ShowProfile;\r\t\tDevProfiler.Reset\r\t END ProfiledCompile;\r\rThe above procedure produces something like the following output:\r\r\t"
+                    attr: 1
+                  - view:
+                      kind: TextViews.StdView
+                      storeKind: store
+                      typeChain:
+                        - TextViews.StdViewDesc
+                        - TextViews.ViewDesc
+                        - Containers.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 6
+                      bodyPos: 726
+                      bodyLen: 1112
+                      hideMarks: true
+                      defaultRuler:
+                        left: 0
+                        right: 4680000
+                        asc: 104775
+                        dsc: 28575
+                        grid: 1
+                        opts: 0x00000001
+                        tabs:
+                          - { stop: 144000 }
+                          - { stop: 1800000 }
+                          - { stop: 1944000 }
+                          - { stop: 2520000 }
+                          - { stop: 2664000 }
+                      defaultAttr:
+                        font: Arial
+                        size: 101600
+                        color: 0x01000000
+                        weight: 400
+                        style: 0x00000000
+                      controller:
+                        kind: TextControllers.StdCtrl
+                        storeKind: store
+                        typeChain:
+                          - TextControllers.StdCtrlDesc
+                          - TextControllers.ControllerDesc
+                          - Containers.ControllerDesc
+                          - Controllers.ControllerDesc
+                          - Stores.StoreDesc
+                        id: 9
+                        bodyPos: 1514
+                        bodyLen: 9
+                      content:
+                        kind: TextModels.StdModel
+                        storeKind: elem
+                        typeChain:
+                          - TextModels.StdModelDesc
+                          - TextModels.ModelDesc
+                          - Containers.ModelDesc
+                          - Models.ModelDesc
+                          - Stores.StoreDesc
+                        id: 2
+                        bodyPos: 751
+                        bodyLen: 625
+                        runListLen: 115
+                        attrPool:
+                          - # [0]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 400
+                            style: 0x00000001
+                          - # [1]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 400
+                            style: 0x00000000
+                        flow:
+                          - text: "Module\t% per module\r\tProcedure\t\t% per procedure\r\r"
+                            attr: 0
+                          - text: "DevCPT\t37\r\tInsertImport\t\t7\r\tFind\t\t4\r\tInName\t\t4\r\tInStruct\t\t4\r\tFPrintName\t\t3\r\tFPrintSign\t\t1\r\tIdFPrint\t\t1\r\tFPrintObj\t\t1\r\rDevCPM\t16\r\tReadNum\t\t4\r\tGet\t\t3\r\tFPrint\t\t2\r\tSymRCh\t\t2\r\tSymRInt\t\t2\r\rDevHostCPL\t10\r\tGenByte\t\t1\r\tGenCExt\t\t1\r\tGenMove\t\t1\r\rDevHostCPC\t7\r\tGetReg\t\t1\r\tFree\t\t1\r\rDevCPS\t7\r\tIdentifier\t\t4\r\tGet\t\t1\r\rDevCPB\t6\r\rDevCPP\t6\r\tselector\t\t1\r\rDevHostCPV\t5\r\tCheck\t\t1\r\rsamples:\t782\t100%\r\tin profiled modules\t\t306\t\t39%\r\tother\t\t476\t\t61%\r"
+                            attr: 1
+                    attr: 1
+                    w: 4680000
+                    h: 4876800
+                  - text: "\r\rIn this example, about 37% of the measured time period has been spent in some procedures of module "
+                    attr: 1
+                  - text: DevCPT
+                    attr: 2
+                  - text: ". Procedure "
+                    attr: 1
+                  - text: InsertImport
+                    attr: 2
+                  - text: " alone has taken about 7% of the time. Note that procedures which used less than 1% of the time are not displayed, thus the sum over all "
+                    attr: 1
+                  - text: DevCPT
+                    attr: 2
+                  - text: " procedures doesn't add up to 37%.\rSome time may be spent in modules not measured, or not in Component Pascal modules at all, e.g., in the host operating system's file system implementation. For this reason, and because modules which used less than 1% of the time are not shown, the sum over all modules doesn't add up to 100%.\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetProfileList
+                    attr: 3
+                  - text: "\rThis procedure takes the list of selected module names and registers it. This list of modules will be profiled when "
+                    attr: 1
+                  - text: Start
+                    attr: 2
+                  - text: " is called. If there is no selection, all listed modules will be profiled.\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetModuleList
+                    attr: 3
+                  - text: " (list: ARRAY OF CHAR)\rSame as "
+                    attr: 1
+                  - text: SetProfileList
+                    attr: 2
+                  - text: " but with an explicit parameter instead of the selection as implicit parameter. This procedure is useful when the profiler is called from a program rather than interactively.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Start
+                    attr: 3
+                  - text: "\rStarts profiling.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Stop
+                    attr: 3
+                  - text: "\rStops profiling.\r\rPROCEDURE "
+                    attr: 1
+                  - text: ShowProfile
+                    attr: 3
+                  - text: "\rDisplays the most recently measured profile in a new window.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Reset
+                    attr: 3
+                  - text: "\rReleases memory used for the profiler, including the most recently measured profile and the module list.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Execute
+                    attr: 3
+                  - text: "\rSame as "
+                    attr: 1
+                  - text: DevDebug.Execute
+                    attr: 2
+                  - text: ". The execution time (in milliseconds) is written to the log.\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 17
+          bodyPos: 5540
+          bodyLen: 8

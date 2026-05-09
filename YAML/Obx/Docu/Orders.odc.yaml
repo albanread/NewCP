@@ -1,0 +1,196 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Docu\\Orders.odc"
+  size: 3978
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 3847
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 3661
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 3575
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 152400
+                dsc: 25400
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 13
+                bodyPos: 3575
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 3061
+                runListLen: 835
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                flow:
+                  - text: "Overview by Example: ObxOrders"
+                    attr: 0
+                  - text: "\r\r"
+                    attr: 1
+                  - text: ObxOrders
+                    attr: 2
+                  - text: " is a more realistic example of a program which uses forms for data entry and data manipulation. It lets the user enter new orders, browse through existing orders, and save all orders into a file, or load them from a file. A dialog always shows the current order. For this order, an invoice text can be generated, ready to be printed.\r\tThe order data is stored in a very simple main memory database: each order is represented as a record, and the orders are connected in a doubly-linked ring with a dummy header element. One element of a ring thus contains a "
+                    attr: 1
+                  - text: next
+                    attr: 2
+                  - text: " and a "
+                    attr: 1
+                  - text: prev
+                    attr: 2
+                  - text: " pointer, as well as the data of one order. In this case, the data is directly represented as a variable of the interactor type which is used for data entry. Note that this approach is only possible in very simple cases; normally an interactor would only represent a subset of a tuple stored in the database, and the database representation would be independent of any specific interactor.\r\tThe other aspect of our example program which is simpler than in typical applications is that the database is global: the doubly-linked ring is anchored in a global variable, so there is at most one order database open at any given point in time.\r\rThis example has four noteworthy aspects: The procedure "
+                    attr: 1
+                  - text: NewRuler
+                    attr: 2
+                  - text: " shows how a new text ruler with specific properties can be created, and in procedure "
+                    attr: 1
+                  - text: Invoice
+                    attr: 2
+                  - text: " it can be seen how the text font style can be changed to bold and back to normal when creating a text.\r\tThirdly, the dialog uses "
+                    attr: 1
+                  - text: guard commands
+                    attr: 2
+                  - text: " to disable and enable controls in the dialog: Depending on whether there currently is an open database, the data entry, invoice generation, etc. controls are enabled, otherwise disabled. Depending on whether the current order is the last (first) one, the "
+                    attr: 1
+                  - text: Next (First)
+                    attr: 2
+                  - text: " button is disabled, otherwise enabled.\r\tFourth, the formatter procedure "
+                    attr: 1
+                  - text: WriteView
+                    attr: 2
+                  - text: " is used twice to insert a view into the text: first a ruler view is written, and a bit later a standard clock view is written to the text.\r\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenDoc('Obx/Mod/Orders')"
+                      body:
+                        - text: ObxOrders  sources
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenDoc('Obx/Rsrc/Orders')"
+                      body:
+                        - text: Main dialog
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenDoc('Obx/Rsrc/Orders1')"
+                      body:
+                        - text: "\"Delete\" dialog"
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r\r"
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 12
+                      bodyPos: 1209
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: " \"StdCmds.OpenAuxDialog('Obx/Rsrc/Orders', 'Order Processing')\"\r\rIn Obx/Samples/Odata there is some sample data.\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 17
+          bodyPos: 3943
+          bodyLen: 8

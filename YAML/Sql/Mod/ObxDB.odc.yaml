@@ -1,0 +1,324 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Sql\\Mod\\ObxDB.odc"
+  size: 8333
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 8202
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 8016
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 7930
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 114300
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Helvetica
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 8047
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 7533
+                runListLen: 1933
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE SqlObxDB;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT Dialog, SqlDB;\r\r\tCONST\r\t\tprotocol = \"SqlOdbc\";\r\t\tid = \"\"; password = \"\";\r\t\tdatasource = \"Test Database\";\r\r\tVAR\r\t\t"
+                    attr: 0
+                  - text: company
+                    attr: 3
+                  - text: "*: RECORD\r\t\t\tid*: INTEGER;\r\t\t\tname*: ARRAY 32 OF CHAR;\r\t\t\tceo*: ARRAY 32 OF CHAR;\r\t\t\temployees*: INTEGER\r\t\tEND;\r\t\t\r\t\t"
+                    attr: 0
+                  - text: dirty
+                    attr: 3
+                  - text: "*: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(* company is dirty *)"
+                    attr: 1
+                  - text: "\r\r\t\t"
+                    attr: 0
+                  - text: max
+                    attr: 3
+                  - text: "*: RECORD\r\t\t\tvalue*: INTEGER\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: searchId
+                    attr: 3
+                  - text: "*: INTEGER;\r\r\t"
+                    attr: 0
+                  - text: "\ttable"
+                    attr: 3
+                  - text: "*: SqlDB.Table;\r\t\t\r\r\tPROCEDURE Reset;\r\tBEGIN\r\t\tcompany.id := 0;\r\t\tcompany.name := \"\";\r\t\tcompany.ceo := \"\";\r\t\tcompany.employees := 0;\r\t\tdirty := FALSE;\r\t\tDialog.Update(company)\r\tEND Reset;\r\t\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Open
+                    attr: 3
+                  - text: "*;\r\t\tVAR d: SqlDB.Database; res: INTEGER;\r\tBEGIN\r\t\tSqlDB.OpenDatabase(protocol, id, password, datasource, SqlDB.async, SqlDB.hideErrors, d, res);\r\t\tIF d # NIL THEN\r\t\t\ttable := d.NewTable()\r\t\tEND\r\tEND Open;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Closed
+                    attr: 3
+                  - text: "* (): BOOLEAN;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " table = NIL\r\tEND Closed;\r\t\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Insert
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\ttable.Exec(\"SELECT MAX(id) FROM Companies\");\r\t\ttable.Read(0, max);\r\t\tcompany.id := max.value + 1;\t"
+                    attr: 0
+                  - text: "(* generate a unique key *)"
+                    attr: 1
+                  - text: "\r\t\ttable.base.Exec(\"INSERT INTO Companies VALUES (:SqlObxDB.company)\");\r\t\ttable.base.Commit;\r\t\t"
+                    attr: 0
+                  - text: "(* now the contents of c is inconsistent with database *)"
+                    attr: 1
+                  - text: "\r\t\ttable.Exec(\"SELECT * FROM Companies WHERE id = :SqlObxDB.company.id\");\r\t\ttable.Read(0, company); dirty := FALSE\r\tEND Insert;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Update
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\ttable.base.Exec(\"DELETE FROM Companies WHERE id = :SqlObxDB.company.id\");\r\t\ttable.base.Exec(\"INSERT INTO Companies VALUES (:SqlObxDB.company)\");\r\t\ttable.base.Commit;\r\t\t"
+                    attr: 0
+                  - text: "(* now the contents of table is inconsistent with database *)"
+                    attr: 1
+                  - text: "\r\t\ttable.Exec(\"SELECT * FROM Companies WHERE id = :SqlObxDB.company.id\");\r\t\ttable.Read(0, company); dirty := FALSE\r\tEND Update;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Delete
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\ttable.base.Exec(\"DELETE FROM Companies WHERE id = :SqlObxDB.company.id\");\r\t\ttable.base.Commit;\r\t\t"
+                    attr: 0
+                  - text: "(* now the contents of table is inconsistent with database *)"
+                    attr: 1
+                  - text: "\r\t\ttable.Clear;\t"
+                    attr: 0
+                  - text: "(* company has become stale *)\r\t\t"
+                    attr: 1
+                  - text: "Reset\t"
+                    attr: 0
+                  - text: "(* clear interactor *)"
+                    attr: 1
+                  - text: "\r\tEND Delete;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Revert
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tIF company.id > 0 THEN\r\t\t\ttable.Exec(\"SELECT * FROM Companies WHERE id = :SqlObxDB.company.id\");\r\t\t\ttable.Read(0, company); dirty := FALSE\r\t\tELSE\r\t\t\ttable.Clear;\r"
+                    attr: 0
+                  - text: "\t\t\t"
+                    attr: 1
+                  - text: "Reset\t"
+                    attr: 0
+                  - text: "(* clear interactor *)"
+                    attr: 1
+                  - text: "\r\t\tEND\r\tEND Revert;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Find
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\ttable.Exec(\"SELECT * FROM Companies WHERE id = :SqlObxDB.searchId\");\r\t\ttable.Read(0, company); dirty := FALSE\r\tEND Find;\r\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetTestData
+                    attr: 3
+                  - text: "*;\r\t\tVAR d: SqlDB.Database;\r\tBEGIN\r\t\td := table.base;\r\t\td.Exec(\"DELETE FROM Companies WHERE id > 0\");\r\t\td.Exec(\"DELETE FROM Ownership WHERE owner > 0\");\r\t\t"
+                    attr: 0
+                  - text: "(* single company *)"
+                    attr: 1
+                  - text: "\r\t\td.Exec(\"INSERT INTO Companies VALUES (11, 'Test', 'Bill', 234)\");\r\t\t"
+                    attr: 0
+                  - text: "(* two companies (tree) *)"
+                    attr: 1
+                  - text: "\r\t\td.Exec(\"INSERT INTO Companies VALUES (12, 'Test', 'Bill', 234)\");\r\t\td.Exec(\"INSERT INTO Companies VALUES (13, 'Test company AG', 'John', 45)\");\r\t\td.Exec(\"INSERT INTO Ownership VALUES (12, 13, 100)\");\r\t\t"
+                    attr: 0
+                  - text: "(* four companies (with ring) *)"
+                    attr: 1
+                  - text: "\r\t\td.Exec(\"INSERT INTO Companies VALUES (14, 'Test', 'Bill', 234)\");\r\t\td.Exec(\"INSERT INTO Companies VALUES (15, 'Test company AG', 'John', 45)\");\r\t\td.Exec(\"INSERT INTO Companies VALUES (16, 'Test Services GmbH', 'Jim', 23000)\");\r\t\td.Exec(\"INSERT INTO Companies VALUES (17, 'Test Commands & Co.', 'Mary', 523)\");\r\t\td.Exec(\"INSERT INTO Ownership VALUES (14, 15, 50)\");\r\t\td.Exec(\"INSERT INTO Ownership VALUES (15, 17, 100)\");\r\t\td.Exec(\"INSERT INTO Ownership VALUES (16, 15, 50)\");\r\t\td.Exec(\"INSERT INTO Ownership VALUES (15, 17, 100)\");\r\t\t"
+                    attr: 0
+                  - text: "(* four companies (tree) *)"
+                    attr: 1
+                  - text: "\r\t\td.Exec(\"INSERT INTO Companies VALUES (18, 'Test', 'Bill', 234)\");\r\t\td.Exec(\"INSERT INTO Companies VALUES (19, 'Test company AG', 'John', 45)\");\r\t\td.Exec(\"INSERT INTO Companies VALUES (20, 'Test Services GmbH', 'Jim', 23000)\");\r\t\td.Exec(\"INSERT INTO Companies VALUES (21, 'Test Commands & Co.', 'Mary', 523)\");\r\t\td.Exec(\"INSERT INTO Ownership VALUES (18, 19, 20)\");\r\t\td.Exec(\"INSERT INTO Ownership VALUES (18, 20, 30)\");\r\t\td.Exec(\"INSERT INTO Ownership VALUES (18, 21, 50)\");\r\t\t"
+                    attr: 0
+                  - text: "(* most complex example *)"
+                    attr: 1
+                  - text: "\r\t\td.Exec(\"INSERT INTO Companies VALUES (1, 'Test', 'Bill', 234)\");\r\t\td.Exec(\"INSERT INTO Companies VALUES (2, 'Test company AG', 'John', 45)\");\r\t\td.Exec(\"INSERT INTO Companies VALUES (3, 'Test Services GmbH', 'Jim', 23000)\");\r\t\td.Exec(\"INSERT INTO Companies VALUES (4, 'Test Commands & Co.', 'Mary', 523)\");\r\t\td.Exec(\"INSERT INTO Companies VALUES (5, 'Test Views KG', 'Frank', 17)\");\r\t\td.Exec(\"INSERT INTO Companies VALUES (6, 'Test Genossenschaft', 'Hans', 2109)\");\r\t\td.Exec(\"INSERT INTO Companies VALUES (7, 'Test Mentoring, Inc.', 'Marlis', 128)\");\r\t\td.Exec(\"INSERT INTO Companies VALUES (8, 'Test Training Plc.', 'Paul', 4)\");\r\t\td.Exec(\"INSERT INTO Companies VALUES (9, 'Test Trainers SA', 'Jean', 87)\");\r\t\td.Exec(\"INSERT INTO Companies VALUES (10, 'Test Wrappers AB', 'Gordon', 912)\");\r\t\td.Exec(\"INSERT INTO Ownership VALUES (1, 2, 100)\");\r\t\td.Exec(\"INSERT INTO Ownership VALUES (1, 3, 100)\");\r\t\td.Exec(\"INSERT INTO Ownership VALUES (2, 4, 100)\");\r\t\td.Exec(\"INSERT INTO Ownership VALUES (2, 5, 100)\");\r\t\td.Exec(\"INSERT INTO Ownership VALUES (3, 6, 100)\");\r\t\td.Exec(\"INSERT INTO Ownership VALUES (3, 7, 100)\");\r\t\td.Exec(\"INSERT INTO Ownership VALUES (7, 8, 100)\");\r\t\td.Exec(\"INSERT INTO Ownership VALUES (5, 9, 49)\");\r\t\td.Exec(\"INSERT INTO Ownership VALUES (8, 9, 51)\");\r\t\td.Exec(\"INSERT INTO Ownership VALUES (9, 10, 100)\");\r\t\td.Commit\r\tEND SetTestData;\r\rBEGIN\r\tsearchId := 1\rEND SqlObxDB.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 8298
+          bodyLen: 8

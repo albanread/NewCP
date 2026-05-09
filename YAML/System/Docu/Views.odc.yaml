@@ -1,0 +1,1667 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\System\\Docu\\Views.odc"
+  size: 49250
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 49119
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 48933
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 48847
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                asc: 134600
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000003
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 28
+                bodyPos: 48847
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 48333
+                runListLen: 6631
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: Views
+                    attr: 0
+                  - text: "\r\rDEFINITION Views;\r\r\tIMPORT Files, Fonts, Stores, Ports, Converters, Models;\r\r\tCONST\r\t\tundefined = 0;\r\t\ttransparent = 0FF000000H;\r\t\tdeep = FALSE; shallow = TRUE;\r\t\tkeepFrames = FALSE; rebuildFrames = TRUE;\r\t\tdontAsk = FALSE; ask = TRUE;\r\t\tclean = 0; notUndoable = 1; invisible = 2;\r\r\tTYPE\r\t\tView = POINTER TO ABSTRACT RECORD (Stores.Store)\r\t\t\tcontext-: Models.Context;\r\t\t\t(v: View) InitContext (context: Models.Context), NEW, EXTENSIBLE;\r\t\t\t(v: View) GetBackground (VAR color: Ports.Color), NEW, EMPTY;\r\t\t\t(v: View) Neutralize, NEW, EMPTY;\r\t\t\t(v: View) ConsiderFocusRequestBy- (view: View), NEW, EMPTY;\r\t\t\t(v: View) GetNewFrame (VAR frame: Frame), NEW, EMPTY;\r\t\t\t(v: View) Restore (f: Frame; l, t, r, b: INTEGER), NEW, ABSTRACT;\r\t\t\t(v: View) RestoreMarks (f: Frame; l, t, r, b: INTEGER), NEW, EMPTY;\r\t\t\t(v: View) HandleViewMsg- (f: Frame; VAR msg: Message), NEW, EMPTY;\r\t\t\t(v: View) HandleCtrlMsg (f: Frame; VAR msg: CtrlMessage; VAR focus: View), NEW, EMPTY;\r\t\t\t(v: View) HandlePropMsg- (VAR p: PropMessage), NEW, EMPTY;\r\t\t\t(v: View) HandleModelMsg- (VAR msg: Models.Message), NEW, EMPTY;\r\t\t\t(v: View) CopyFrom- (source: View);\r\t\t\t(v: View) CopyFromSimpleView- (source: View), NEW, EMPTY;\r\t\t\t(v: View) CopyFromModelView- (source: View; model: Models.Model), NEW, EMPTY;\r\t\t\t(v: View) ThisModel (): Models.Model, NEW, EXTENSIBLE\r\t\tEND;\r\r\t\tAlien = POINTER TO LIMITED RECORD (View)\r\t\t\tstore-: Stores.Alien\r\t\tEND;\r\r\t\tMessage = ABSTRACT RECORD\r\t\t\tview-: View\r\t\tEND;\r\r\t\tNotifyMsg = EXTENSIBLE RECORD (Message)\r\t\t\tid0, id1: INTEGER;\r\t\t\topts: SET\r\t\tEND;\r\r\t\tFrame = POINTER TO ABSTRACT RECORD (Ports.Frame)\r\t\t\tl-, t-, r-, b-: INTEGER;\r\t\t\tview-: View;\r\t\t\tfront-, mark-: BOOLEAN;\r\t\t\t(f: Frame) Close, NEW, EMPTY\r\t\tEND;\r\r\t\tRootFrame = POINTER TO RECORD (Frame)\r\t\t\tflags-: SET\r\t\tEND;\r\r\t\tPropMessage = ABSTRACT RECORD END;\r\r\t\tCtrlMessage = ABSTRACT RECORD END;\r\r\t\tCtrlMsgHandler = PROCEDURE (op: INTEGER; f, g: Frame; VAR msg: CtrlMessage;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR mark, front, req: BOOLEAN);\r\r\t\tTitle = ARRAY 64 OF CHAR;\r\r\t\tUpdateCachesMsg = EXTENSIBLE RECORD (Message) END;\r\r\t\tScrollClassMsg = RECORD (Message)\r\t\t\tallowBitmapScrolling: BOOLEAN\r\t\tEND;\r\r\tVAR HandleCtrlMsg-: CtrlMsgHandler;\r\r\tPROCEDURE Broadcast (v: View; VAR msg: Message);\r\tPROCEDURE Domaincast (domain: Stores.Domain; VAR msg: Message);\r\tPROCEDURE Omnicast (VAR msg: ANYREC);\r\tPROCEDURE HandlePropMsg (v: View; VAR msg: PropMessage);\r\tPROCEDURE Era (v: View): INTEGER;\r\tPROCEDURE BeginModification (type: INTEGER; v: View);\r\tPROCEDURE EndModification (type: INTEGER; v: View);\r\tPROCEDURE BeginScript (v: View; name: Stores.OpName; OUT script: Stores.Operation);\r\tPROCEDURE EndScript (v: View; script: Stores.Operation);\r\tPROCEDURE Do (v: View; name: Stores.OpName; op: Stores.Operation);\r\tPROCEDURE LastOp (v: View): Stores.Operation;\r\tPROCEDURE Bunch (v: View);\r\tPROCEDURE StopBunching (v: View);\r\tPROCEDURE ForwardCtrlMsg (f: Frame; VAR msg: CtrlMessage);\r\tPROCEDURE Update (v: View; rebuild: BOOLEAN);\r\tPROCEDURE UpdateIn (v: View; l, t, r, b: INTEGER; rebuild: BOOLEAN);\r\tPROCEDURE ReadView (VAR rd: Stores.Reader; OUT v: View);\r\tPROCEDURE WriteView (VAR wr: Stores.Writer; v: View);\r\tPROCEDURE CopyOf (v: View; shallow: BOOLEAN): View;\r\tPROCEDURE CopyWithNewModel (v: View; m: Models.Model): View;\r\tPROCEDURE ReadFont (VAR rd: Stores.Reader; OUT f: Fonts.Font);\r\tPROCEDURE WriteFont (VAR wr: Stores.Writer; f: Fonts.Font);\r\tPROCEDURE IsPrinterFrame (f: Frame): BOOLEAN;\r\tPROCEDURE InstallFrame (host: Frame; view: View; x, y, level: INTEGER; focus: BOOLEAN);\r\tPROCEDURE ThisFrame (host: Frame; view: View): Frame;\r\tPROCEDURE FrameAt (host: Frame, x, y: INTEGER): Frame;\r\tPROCEDURE Old (ask: BOOLEAN; VAR loc: Files.Locator; VAR name: Files.Name;\r\t\t\t\t\t\t\t\t\tVAR conv: Converters.Converter): View;\r\tPROCEDURE OldView (loc: Files.Locator; name: Files.Name): View;\r\tPROCEDURE Register (view: View; ask: BOOLEAN; VAR loc: Files.Locator; VAR name: Files.Name;\r\t\t\t\t\t\t\t\t\t\tVAR conv: Converters.Converter; OUT res: INTEGER);\r\tPROCEDURE RegisterView (view: View; loc: Files.Locator; name: Files.Name);\r\tPROCEDURE Open (view: View; loc: Files.Locator; name: Files.Name; conv: Converters.Converter);\r\tPROCEDURE OpenView (view: View);\r\tPROCEDURE OpenAux (view: View; title: Title);\r\tPROCEDURE Deposit (view: View);\r\tPROCEDURE RestoreDomain (domain: Stores.Domain);\r\tPROCEDURE Scroll (v: View; dx, dy: INTEGER);\r\tPROCEDURE SetDir (d: Directory);\r\r\tPROCEDURE MarkBorders (root: RootFrame);\r\tPROCEDURE MarkBorder (host: Frame; v: View; l, t, r, b: INTEGER);\r\tPROCEDURE Fetch (OUT view: View);\r\tPROCEDURE Available (): INTEGER;\r\tPROCEDURE ClearQueue;\r\tPROCEDURE RemoveFrame (host, f: Frame);\r\tPROCEDURE RemoveFrames (host: Frame; l, t, r, b: INTEGER);\r\tPROCEDURE BroadcastModelMsg (f: Frame; VAR msg: Models.Message);\r\tPROCEDURE BroadcastViewMsg (f: Frame; VAR msg: Message);\r\tPROCEDURE HandleCtrlMsg (op: INTEGER; f, g: Frame; VAR msg: CtrlMessage;\r\t\t\t\t\t\t\t\t\t\t\t\t\tVAR target, front: BOOLEAN);\r\tPROCEDURE SetRoot (root: RootFrame; view: View; front: BOOLEAN; flags: SET);\r\tPROCEDURE AdaptRoot (root: RootFrame);\r\tPROCEDURE RootOf (f: Frame): RootFrame;\r\tPROCEDURE HostOf (f: Frame): Frame;\r\tPROCEDURE UpdateRoot (root: RootFrame; l, t, r, b: INTEGER; rebuild: BOOLEAN);\r\tPROCEDURE RestoreRoot (root: RootFrame; l, t, r, b: INTEGER);\r\tPROCEDURE ValidateRoot (root: RootFrame);\r\tPROCEDURE InitCtrl (p: CtrlMsgHandler);\r\tPROCEDURE IsInvalid (v: View): BOOLEAN;\r\tPROCEDURE RevalidateView (v: View);\r\rEND Views.\r\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 588
+                      bodyLen: 1135
+                    attr: 1
+                    w: 2628809
+                    h: 1041363
+                  - text: "\r\rFigure 1. Model-View-Controller Separation\r\r\rA "
+                    attr: 1
+                  - text: view
+                    attr: 2
+                  - text: " is a rectangular display object which provides visual presentation of data. Views are storable, and may be embedded recursively.\rA view often contains a "
+                    attr: 1
+                  - text: Models.Model
+                    attr: 2
+                  - text: " which represents some data, and sometimes a "
+                    attr: 1
+                  - text: Controllers.Controller
+                    attr: 2
+                  - text: " which provides interaction of the view with the user. There may be several views for each model simultaneously, but at most one controller per view.\rIf several views share the same model, every change of the model must cause all its views to update their contents accordingly. Module "
+                    attr: 1
+                  - text: Models
+                    attr: 2
+                  - text: " provides a messaging mechanism through which visible views can be notified of model modifications, and thus re-establish the display's consistency.\rIt is possible to implement views which do not contain a model. These views cannot use the messaging mechanism of module "
+                    attr: 1
+                  - text: Models
+                    attr: 2
+                  - text: ". Therefore, such views usually don't share data and are independent from each other. Typically, these views are simple "
+                    attr: 1
+                  - text: controls
+                    attr: 2
+                  - text: " which implement a very specific functionality that relies on cooperation with the control's container, e.g., a form view container.\rIt is also possible to implement views which do not contain a controller. This is possible because all messages to a controller are sent to the controller's view, not directly to the controller itself. Thus a view can decide whether to handle these messages itself, or whether to forward them to a controller. Simple views don't contain a controller.\rBecause a view is an extension of a "
+                    attr: 1
+                  - text: Stores.Store
+                    attr: 2
+                  - text: ", it can be embedded in a model, such that it is externalized and internalized as part of this model. This makes it possible to realize compound documents, which contain views containing views containing views...\rWhen a view needs to draw to the screen (or printer), it can do this through a "
+                    attr: 1
+                  - text: frame
+                    attr: 2
+                  - text: ". A frame is an access path (a mapper) to the port on which the view is presented. Since several windows may show the same document with its hierarchy of views, one and the same view may be visible several times simultaneously. This results in several frames for the same view simultaneously, and therefore in the need to update a view change in several frames.\rIn general, the reaction to a model modification happens in two steps. In the first step, the nature of the model's change is broadcast to all visible views, using the model broadcast mechanism of module "
+                    attr: 1
+                  - text: Models
+                    attr: 2
+                  - text: ". This causes every visible view to update its own state, if necessary. In the second step, every view which has changed its state uses the view broadcast mechanism of module "
+                    attr: 1
+                  - text: Views
+                    attr: 2
+                  - text: ", to notify all frames for this view. In fact, since frames are usually not extended, the view itself performs the update for each of its frames. This second broadcast step is normally invisible to the programmer, because he merely needs to determine the view's region which needs updating. The actual update of this region in each of its frames is done by the framework.\rA view may behave differently depending on the model in which it is embedded, i.e., depending on its context. For this purpose, a variable of type "
+                    attr: 1
+                  - text: Models.Context
+                    attr: 2
+                  - text: " is carried by a view, as a link to its container.\rFor every user interaction, e.g., the press of a key, a view must be defined which should handle this interaction, i.e., a so-called "
+                    attr: 1
+                  - text: focus
+                    attr: 2
+                  - text: ". BlackBox doesn't know which view is the current focus. BlackBox only provides a strategy which decides which window is focus. Since a window may contain a hierarchy of views, a view which has received an interaction message  a controller message  must decide on its own whether it is the focus itself, or whether it contains another view which might be focus instead. In the former case, it handles the messages itself, in the latter case, it forwards the message to this view.\rEvery window contains a tree of frames. This tree corresponds to the visible views of the window. Every view may only draw inside its own borders, drawing outside of its borders must be prevented. Frames provide the necessary clipping facility. The management of the frame tree and of clipping is largely transparent to the view programmer.\r\rExamples:\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Obx/Docu/Patterns', 'ObxPatterns Docu')"
+                      body:
+                        - text: ObxPatterns  docu
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\tviews without models\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Obx/Docu/Calc', 'ObxCalc Docu')"
+                      body:
+                        - text: ObxCalc  docu
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Obx/Docu/Omosi', 'ObxOmosi Docu')"
+                      body:
+                        - text: ObxOmosi  docu
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Obx/Docu/Buttons', 'ObxButtons Docu')"
+                      body:
+                        - text: ObxButtons  docu
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Obx/Docu/Lines', 'ObxLines Docu')"
+                      body:
+                        - text: ObxLines  docu
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\tviews with models\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Obx/Docu/Graphs', 'ObxGraphs Docu')"
+                      body:
+                        - text: ObxGraphs  docu
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Obx/Docu/BlackBox', 'ObxBlackBox Docu')"
+                      body:
+                        - text: ObxBlackBox  docu
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Obx/Docu/Wrappers', 'ObxWrappers Docu')"
+                      body:
+                        - text: ObxWrappers  docu
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\twrapper\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Obx/Docu/Twins', 'ObxTwins Docu')"
+                      body:
+                        - text: ObxTwins  docu
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\tspecial container\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Form/Docu/Sys-Map', 'Map to Form Subsystem')"
+                      body:
+                        - text: Form subsystem  map
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\tgeneral container\r\r\rCONST "
+                    attr: 1
+                  - text: undefined
+                    attr: 4
+                  - text: "\rThis value can be used to denote the width or height of a view as currently undefined.\r\rCONST "
+                    attr: 1
+                  - text: transparent
+                    attr: 4
+                  - text: "\rA view may be asked for its background color. In this case, the view may either return a "
+                    attr: 1
+                  - text: Ports.Color
+                    attr: 2
+                  - text: " value, or the value "
+                    attr: 1
+                  - text: transparent
+                    attr: 2
+                  - text: ". The latter value means that the view's container must find another source for a background color, i.e., for the color which is used to erase the background before the foreground is restored (use "
+                    attr: 1
+                  - text: "Update "
+                    attr: 2
+                  - text: "or "
+                    attr: 1
+                  - text: UpdateIn
+                    attr: 2
+                  - text: " to restore a view's area in all its frames). Transparency is useful if several views are superimposed on each other, which naturally occurs in a compound document.\r\rCONST "
+                    attr: 1
+                  - text: "deep, shallow"
+                    attr: 4
+                  - text: "\rThere are two ways that a view can be copied: "
+                    attr: 1
+                  - text: deep
+                    attr: 2
+                  - text: " or "
+                    attr: 1
+                  - text: shallow
+                    attr: 2
+                  - text: ". This distinction arises from the fact that a view can carry two types of data: data that it owns completely, and data that it can share with other views. The most important example of the latter is the view's model, if it has one.\rWhen a view is copied, it must be decided whether shareable state should actually be shared with the copy (shallow copy), or whether an independent copy of this state should be created (deep copy). These constants can be passed to a parameter of the "
+                    attr: 1
+                  - text: CopyModel
+                    attr: 2
+                  - text: " or the "
+                    attr: 1
+                  - text: "CopyOf "
+                    attr: 2
+                  - text: "procedure.\r\rCONST "
+                    attr: 1
+                  - text: "keepFrames, rebuildFrames"
+                    attr: 4
+                  - text: "\rWhen part of a view's area must be restored (in every frame on it), there are two possible kinds of restoration: a frame may be kept as it is and only its contents be redrawn, or it may be rebuilt, i.e., newly allocated, set up, and redrawn. The latter is less efficient than the former, and only necessary if the following holds: the view must be a container, and the operation which changed the view might have modified a subview's bounding box (and thus invalidated its subframes). In the rare case where frames are extended, it could sometimes also become necessary to rebuild the frames on a view.\r\rCONST "
+                    attr: 1
+                  - text: dontAsk
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: ask
+                    attr: 4
+                  - text: "\rTheses constants may be passed to the "
+                    attr: 1
+                  - text: Old
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: Register
+                    attr: 2
+                  - text: " procedures. They determine whether these procedures allow the user to interactively change "
+                    attr: 1
+                  - text: loc
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: name
+                    attr: 2
+                  - text: ", or "
+                    attr: 1
+                  - text: conv
+                    attr: 2
+                  - text: " used for the operation.\r\rCONST "
+                    attr: 1
+                  - text: clean
+                    attr: 4
+                  - text: "\rPossible value for parameter "
+                    attr: 1
+                  - text: type
+                    attr: 2
+                  - text: " of "
+                    attr: 1
+                  - text: BeginModification/EndModification
+                    attr: 2
+                  - text: ". Indicates an operation that does not make its document \"dirty\". Example: modifying a text in a way that is considered as \"unimportant\", such as collapsing or expanding a text fold (-> StdFolds).\r\rCONST "
+                    attr: 1
+                  - text: invisible
+                    attr: 4
+                  - text: "\rPossible value for parameter "
+                    attr: 1
+                  - text: type
+                    attr: 2
+                  - text: " of "
+                    attr: 1
+                  - text: BeginModification/EndModification
+                    attr: 2
+                  - text: ". Indicates an operation that \"folds together\" with the previous operation, i.e., does not itself become visible in the Undo/Redo menu items. Invisible operations can be used for operations that by themselves may not be expected to appear in an Undo/Redo menu. Example: setting options in a controller. When executing a Redo operation, after a (visible) operation, all invisible operations are executed. When executing an Undo operation, first all invisible operations are undone and afterwards the visible operations.\r\rCONST "
+                    attr: 1
+                  - text: notUndoable
+                    attr: 4
+                  - text: "\rPossible value for parameter "
+                    attr: 1
+                  - text: type
+                    attr: 2
+                  - text: " of "
+                    attr: 1
+                  - text: BeginModification/EndModification
+                    attr: 2
+                  - text: ". Indicates an operation that cannot be reversed (\"undone\"). This is important for operations where the undo feature would be too expensive.\r\r\rTYPE "
+                    attr: 1
+                  - text: View (Stores.Store)
+                    attr: 4
+                  - text: "\rABSTRACT\rA view is a storable object which may contain a model, possibly maintains a scroll position in this model, and generates frames for its display when needed. A view can be regarded as a special editor, and advanced views (containers) are able to contain arbitrary other views as part of their editable data (i.e., of their model).\rViews are allocated by specific view directories, e.g., "
+                    attr: 1
+                  - text: TextViews.dir
+                    attr: 2
+                  - text: ".\rViews are used by commands which manipulate the visual presentation of data.\rViews are extended for new kinds of data to be presented visually. Besides the implementation of new commands, the implementation of new view extensions is the central activity of BlackBox programming.\r"
+                    attr: 1
+                  - text: Restore
+                    attr: 2
+                  - text: " is the only procedure which necessarily must be implemented in an extension of "
+                    attr: 1
+                  - text: View
+                    attr: 2
+                  - text: ". It is called by the framework when the view must be redrawn on a screen or on a printer.\r"
+                    attr: 1
+                  - text: Internalize
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Externalize
+                    attr: 2
+                  - text: " must be implemented in views which contain persistent mutable data. In this case, a view without model should also implement the "
+                    attr: 1
+                  - text: CopyFromSimpleView
+                    attr: 2
+                  - text: " procedure, while a view with a model should implement the "
+                    attr: 1
+                  - text: CopyFromModelView
+                    attr: 2
+                  - text: " procedure instead. "
+                    attr: 1
+                  - text: Internalize
+                    attr: 2
+                  - text: " / "
+                    attr: 1
+                  - text: Externalize
+                    attr: 2
+                  - text: " is called by the framework when the user opens / saves a document. "
+                    attr: 1
+                  - text: CopyFromSimpleView
+                    attr: 2
+                  - text: " / "
+                    attr: 1
+                  - text: CopyFromModelView
+                    attr: 2
+                  - text: " should also be implemented by views with mutable state that should be printable. The reason is that the framework makes a shallow copy of a view that is being printed, in order to avoid the original view to be changed by pagination, scrolling, or similar modifications that may be performed during printing.\r"
+                    attr: 1
+                  - text: ThisModel
+                    attr: 2
+                  - text: " must be implemented in views which contain models. It is called by the framework to find out whether this view should receive model messages for this model.\r"
+                    attr: 1
+                  - text: ConsiderFocusRequestBy
+                    attr: 2
+                  - text: " should be implemented in container views. It can be called by an embedded view that wants to become focus itself.\r"
+                    attr: 1
+                  - text: GetBackground
+                    attr: 2
+                  - text: " must be implemented in views which have non-transparent background colors. It is called by the framework as part of the restore mechanism.\r"
+                    attr: 1
+                  - text: RestoreMarks
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: Neutralize
+                    attr: 2
+                  - text: " must be implemented in views which may contain marks like selections or carets. "
+                    attr: 1
+                  - text: RestoreMarks
+                    attr: 2
+                  - text: " is called by the framework as part of the restore mechanism, after its corresponding "
+                    attr: 1
+                  - text: Restore
+                    attr: 2
+                  - text: " has been called.\r"
+                    attr: 1
+                  - text: HandleModelMsg
+                    attr: 2
+                  - text: " must be implemented in views which support partial view updates after a model change. It is called by the framework in order to deliver notifications about changes to the view's model.\r"
+                    attr: 1
+                  - text: HandleViewMsg
+                    attr: 2
+                  - text: " must be implemented in views which support marks, or which don't use the delayed update mechanism for some other reason. It is called by the framework to deliver view messages via all currently visible paths (i.e., via frames) to this view.\r"
+                    attr: 1
+                  - text: HandleCtrlMsg
+                    attr: 2
+                  - text: " must be implemented in editable views. It is called by the surrounding container if it considers the receiving view to be the current focus.\r"
+                    attr: 1
+                  - text: HandlePropMsg
+                    attr: 2
+                  - text: " must be implemented in views which support preferences and properties (-> Properties). It is called by the surrounding container to find out about the way that the embedded view would like to be treated.\r"
+                    attr: 1
+                  - text: InitContext
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: GetNewFrame
+                    attr: 2
+                  - text: " are usually not extended.\rA view's domain is the same as the domain of its container and of all embedded views and models. The domain identifies the document in which the view, its context, and its contents are embedded. The view's "
+                    attr: 1
+                  - text: PropagateDomain
+                    attr: 2
+                  - text: " procedure propagates the assigned domain to its model, if there is one.\r\r"
+                    attr: 1
+                  - text: context
+                    attr: 4
+                  - text: "-: Models.Context\rThe view's context links the view to its container. Communication between view and container occurs via the context. A context belongs (and is managed by) the container, but carried by the view.\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: InitContext
+                    attr: 4
+                  - text: " (context: Models.Context)\rNEW, EXTENSIBLE\rAssigns "
+                    attr: 1
+                  - text: context
+                    attr: 2
+                  - text: " to "
+                    attr: 1
+                  - text: v.context
+                    attr: 2
+                  - text: ".\r"
+                    attr: 1
+                  - text: InitContext
+                    attr: 2
+                  - text: " is called by "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: "'s container, when v is being embedded in it (which means that the container creates a suitable context for "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: ").\r"
+                    attr: 1
+                  - text: InitContext
+                    attr: 2
+                  - text: " is usually not extended, only view wrappers need to extend it in order to forward a context.\r\rPre\rcontext # NIL\t21\rv.context = NIL OR v.context = context\t22\r\rPost\rv.context = context\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: GetBackground
+                    attr: 4
+                  - text: " (VAR color: Ports.Color)\rNEW, EMPTY\rThis procedure may return a background color of the view. Upon input, "
+                    attr: 1
+                  - text: color = transparent
+                    attr: 2
+                  - text: ".\r"
+                    attr: 1
+                  - text: GetBackground
+                    attr: 2
+                  - text: " is called internally.\r"
+                    attr: 1
+                  - text: GetBackground
+                    attr: 2
+                  - text: " is implemented if a view needs a non-transparent background color.\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: Neutralize
+                    attr: 4
+                  - text: "\rNEW, EMPTY\rThis procedure should remove all marks that a view carries.\r"
+                    attr: 1
+                  - text: Neutralize
+                    attr: 2
+                  - text: " is called by the framework.\r"
+                    attr: 1
+                  - text: Neutralize
+                    attr: 2
+                  - text: " is implemented by views which may contain marks.\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: ConsiderFocusRequestBy-
+                    attr: 4
+                  - text: " (view: View)\rNEW, EMPTY\rA subview of "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: " may request to become focus. Its container may or may not grant this request.\r"
+                    attr: 1
+                  - text: ConsiderFocusRequestBy
+                    attr: 2
+                  - text: " is called by a subview.\r"
+                    attr: 1
+                  - text: ConsiderFocusRequestBy
+                    attr: 2
+                  - text: " is implemented in a container view.\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: GetNewFrame
+                    attr: 4
+                  - text: " (VAR f: Frame)\rNEW, EMPTY\rThe procedure may generate a frame for the view. Upon entry, "
+                    attr: 1
+                  - text: f = NIL
+                    attr: 2
+                  - text: ".\rThis procedure is rarely implemented (mainly in native controls).\r"
+                    attr: 1
+                  - text: GetNewFrame
+                    attr: 2
+                  - text: " is called internally.\r"
+                    attr: 1
+                  - text: GetNewFrame
+                    attr: 2
+                  - text: " is implemented in views which need specialized extended view frames.\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: Restore
+                    attr: 4
+                  - text: " (f: Frame; l, t, r, b: INTEGER)\rNEW, ABSTRACT\rA view implementation must implement this procedure, to draw all or part of its contents. For drawing, a frame is passed to the view, whose drawing procedures can be called in the "
+                    attr: 1
+                  - text: Restore
+                    attr: 2
+                  - text: " procedure.\rOnly the rectangle "
+                    attr: 1
+                  - text: "(l, t, r, b)"
+                    attr: 2
+                  - text: ", which is given in universal coordinates, needs to be restored. Since drawing is clipped to this rectangle automatically, it is sometimes the best solution to simply restore the whole view's contents. However, often it is significantly faster to restore only the contents of the rectangle.\rIf necessary, the size of the view can be determined by calling "
+                    attr: 1
+                  - text: v.context.GetSize
+                    attr: 2
+                  - text: ". Consistent with the frame drawing operations (as described in the documentation of module "
+                    attr: 1
+                  - text: Ports
+                    attr: 2
+                  - text: "), the origin for drawing is the view's top-left corner, with positive x-values to the right, and positive y-values to the bottom.\rFor drawing at screen pixel resolutions without rounding errors, the frame's "
+                    attr: 1
+                  - text: f.dot
+                    attr: 2
+                  - text: " field is useful. The value "
+                    attr: 1
+                  - text: f.unit
+                    attr: 2
+                  - text: " can be inspected to obtain the size of a pixel in universal coordinates (see the documentation of module "
+                    attr: 1
+                  - text: Fonts
+                    attr: 2
+                  - text: "). For example, this allows to adapt to the different resolutions during screen display and during printing.\rIf drawing should be done in different ways depending on whether the view is being displayed on screen or whether it is being printed, then "
+                    attr: 1
+                  - text: Views.IsPrinterFrame(f)
+                    attr: 2
+                  - text: " can be used to determine whether it is being printed or displayed on screen.\r"
+                    attr: 1
+                  - text: Restore
+                    attr: 2
+                  - text: " is called internally by the framework, whenever some part of the view becomes newly visible, or after someone has called "
+                    attr: 1
+                  - text: Views.Update
+                    attr: 2
+                  - text: " or "
+                    attr: 1
+                  - text: Views.UpdateIn
+                    attr: 2
+                  - text: " for this view. "
+                    attr: 1
+                  - text: Restore
+                    attr: 2
+                  - text: " is rarely called directly by a view itself. No assumptions are allowed of when "
+                    attr: 1
+                  - text: Restore
+                    attr: 2
+                  - text: " is called, how often, in which order, etc. "
+                    attr: 1
+                  - text: Restore
+                    attr: 2
+                  - text: " should simply draw everything within the given rectangle, it must not assume that something is still on screen from the last time it was called.\rSince views may be nested, a container must be drawn before the views contained in it are draw. The framework calls "
+                    attr: 1
+                  - text: Restore
+                    attr: 2
+                  - text: " methods in the correct order, from the \"back\" to the \"front\". An embedded view thus lies always \"above\" its container. As an exception of the back-to-front drawing rule, BlackBox allows to draw marks (in particular: selections) of a container "
+                    attr: 1
+                  - text: on top
+                    attr: 2
+                  - text: " of the contained views. This can be achieved by moving the restoration of marks to the view's "
+                    attr: 1
+                  - text: RestoreMarks
+                    attr: 2
+                  - text: " method. This is only necessary for view containers, however.\r"
+                    attr: 1
+                  - text: Restore
+                    attr: 2
+                  - text: " must be implemented in every view extension. It is the only view procedure whose implementation is mandatory, not optional.\r\rPre\rf # NIL\t20\rf.view = v\t21\rv.context # NIL\t22\r0 <= f.l <= l <= r <= f.r <= width of view\t23\r0 <= f.t <= t <= b <= f.b <= height of view\t24\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: RestoreMarks
+                    attr: 4
+                  - text: " (f: Frame; l, t, r, b: INTEGER)\rNEW, EMPTY\rRestore all marks (in particular any selection) of view "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: " via frame "
+                    attr: 1
+                  - text: f
+                    attr: 2
+                  - text: ". Only the rectangle "
+                    attr: 1
+                  - text: "(l, t, r, b)"
+                    attr: 2
+                  - text: ", which is given in universal coordinates, needs to be restored. A frame contains the method "
+                    attr: 1
+                  - text: MarkRect
+                    attr: 2
+                  - text: " which is provided particularly for the drawing of marks.\r"
+                    attr: 1
+                  - text: RestoreMarks
+                    attr: 2
+                  - text: " is called locally by the framework as part of the restore mechanism, after its corresponding "
+                    attr: 1
+                  - text: Restore
+                    attr: 2
+                  - text: " has been called.\r"
+                    attr: 1
+                  - text: RestoreMarks
+                    attr: 2
+                  - text: " is implemented in views which support any kind of marks, e.g., selection, caret, or focus marks.\r\rPre\rf # NIL\t20\rf.view = v\t21\rv.context # NIL\t22\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: HandleViewMsg
+                    attr: 4
+                  - text: "- (f: Frame; VAR msg: Message)\rNEW, EMPTY\rMessage handler for view messages.\r"
+                    attr: 1
+                  - text: HandleViewMsg
+                    attr: 2
+                  - text: " is called locally.\r"
+                    attr: 1
+                  - text: HandleViewMsg
+                    attr: 2
+                  - text: " is implemented in views which support marks (e.g., selection marks), and in views which support different frame contents for the same view (a rare case).\r\rPre\rf # NIL\tguaranteed\rf.view = v\tguaranteed\rv.context # NIL\tguaranteed\rmsg.view = v  OR  msg.view = NIL\tguaranteed\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: HandleCtrlMsg
+                    attr: 4
+                  - text: " (f: Frame; VAR msg: CtrlMessage; VAR focus: View)\rNEW, EMPTY\rMessage handler for messages to the focus.\r"
+                    attr: 1
+                  - text: HandleCtrlMsg
+                    attr: 2
+                  - text: " is called by the view's container, indirectly via "
+                    attr: 1
+                  - text: ForwardCtrlMsg
+                    attr: 2
+                  - text: ". If a controller message needs to be forwarded to an embedded view, set "
+                    attr: 1
+                  - text: focus
+                    attr: 2
+                  - text: " to this view. The framework will perform forwarding after "
+                    attr: 1
+                  - text: HandleCtrlMsg
+                    attr: 2
+                  - text: " returns. In the rare cases where this is not an adequate solution, "
+                    attr: 1
+                  - text: "ForwardCtrlMsg "
+                    attr: 2
+                  - text: "must be used; the embedded view's "
+                    attr: 1
+                  - text: HandleCtrlMsg
+                    attr: 2
+                  - text: " must never be called directly. After "
+                    attr: 1
+                  - text: ForwardCtrlMsg
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: focus
+                    attr: 2
+                  - text: " must be set to "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: ", so that the message is not forwarded twice.\rDuring mouse tracking (i.e., when handling a "
+                    attr: 1
+                  - text: Controllers.TrackMsg
+                    attr: 2
+                  - text: "), drawing should only occur in frame "
+                    attr: 1
+                  - text: f
+                    attr: 2
+                  - text: ". This also implies that during mouse tracking, no update messages should be sent. If necessary, an update model message should be sent after the mouse button was released.\r"
+                    attr: 1
+                  - text: HandleCtrlMsg
+                    attr: 2
+                  - text: " is extended in editable views.\r\rPre\rf # NIL\t20\rf.view = v\t21\rv.context # NIL\t22\rfocus = NIL\t23\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: HandlePropMsg
+                    attr: 4
+                  - text: "- (VAR p: PropMessage)\rNEW, EMPTY\rProperty messages can be passed to a view via its "
+                    attr: 1
+                  - text: HandlePropMsg
+                    attr: 2
+                  - text: " procedure.\r"
+                    attr: 1
+                  - text: HandlePropMsg
+                    attr: 2
+                  - text: " is called by the view's container. The global procedure "
+                    attr: 1
+                  - text: HandlePropMsg
+                    attr: 2
+                  - text: " (see further below) is used to send a property message to a view.\r"
+                    attr: 1
+                  - text: HandlePropMsg
+                    attr: 2
+                  - text: " is called locally.\r"
+                    attr: 1
+                  - text: HandlePropMsg
+                    attr: 2
+                  - text: " is implemented in views which support properties (not described here).\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: HandleModelMsg
+                    attr: 4
+                  - text: "- (VAR msg: Models.Message)\rNEW, EMPTY\rMessage handler for model messages.\r"
+                    attr: 1
+                  - text: HandleModelMsg
+                    attr: 2
+                  - text: " is called locally.\r"
+                    attr: 1
+                  - text: HandleModelMsg
+                    attr: 2
+                  - text: " is implemented in views with a model which support updates after a model modification.\r\rPre\rmsg.model # NIL\t20\rmsg.model = v.ThisModel()\t21\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: CopyFrom
+                    attr: 4
+                  - text: "- (source: Stores.Store)\rThis method has become final. It calls the "
+                    attr: 1
+                  - text: CopyFromSimpleView
+                    attr: 2
+                  - text: " or "
+                    attr: 1
+                  - text: CopyFromModelView
+                    attr: 2
+                  - text: ", respectively. It checks that these procedures don't change the view context.\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: CopyFromSimpleView
+                    attr: 4
+                  - text: "- (source: View)\rNEW, EMPTY\rThe procedure should be implemented in views which have no model. It should copy view-specific data from "
+                    attr: 1
+                  - text: source
+                    attr: 2
+                  - text: ". "
+                    attr: 1
+                  - text: CopyFromSimpleView
+                    attr: 2
+                  - text: " is called as part of module "
+                    attr: 1
+                  - text: Views
+                    attr: 2
+                  - text: "' copy operations ("
+                    attr: 1
+                  - text: CopyOf
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: CopyWithNewModel
+                    attr: 2
+                  - text: ").\rNote: it is not permissible to implement both "
+                    attr: 1
+                  - text: CopyFromModelView
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: CopyFromSimpleView
+                    attr: 2
+                  - text: " simultaneously!\r\rPre\rsource # NIL\tguaranteed\rTYP(source) = TYP(v)\tguaranteed\rCopyFromModelView must not be implemented\t20\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: CopyFromModelView
+                    attr: 4
+                  - text: "- (source: View; model: Models.Model)\rNEW, EMPTY\rThe procedure must be implemented in views which have a model, and only in them. The major exception where a view without model may still implement "
+                    attr: 1
+                  - text: CopyFromModelView
+                    attr: 2
+                  - text: " instead of "
+                    attr: 1
+                  - text: CopyFromSimpleView
+                    attr: 2
+                  - text: " are wrapper views: using "
+                    attr: 1
+                  - text: CopyFromModelView
+                    attr: 2
+                  - text: " they can be implemented flexibly enough to wrap arbitrary views, whether they have models or not.\rThe procedure should initialize its model to "
+                    attr: 1
+                  - text: model
+                    attr: 2
+                  - text: ". If necessary, it can copy view-specific data from "
+                    attr: 1
+                  - text: source
+                    attr: 2
+                  - text: ". "
+                    attr: 1
+                  - text: CopyFromModelView
+                    attr: 2
+                  - text: " is called as part of module "
+                    attr: 1
+                  - text: Views
+                    attr: 2
+                  - text: "' copy operations ("
+                    attr: 1
+                  - text: CopyOf
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: CopyWithNewModel
+                    attr: 2
+                  - text: ").\rNote that if "
+                    attr: 1
+                  - text: model = source.ThisModel()
+                    attr: 2
+                  - text: ", then a shallow copy is being performed.\rNote: it is not permissible to implement both "
+                    attr: 1
+                  - text: CopyFromModelView
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: CopyFromSimpleView
+                    attr: 2
+                  - text: " simultaneously!\r\rPre\rsource # NIL\tguaranteed\rTYP(source) = TYP(v)\tguaranteed\rmodel # NIL  =>  TYP(model) = TYP(source.ThisModel())\tguaranteed\rCopyFromSimpleView must not be implemented\t20\r\rPost\rv.ThisModel() = model\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: ThisModel
+                    attr: 4
+                  - text: " (): Models.Model\rNEW, EXTENSIBLE\rReturns the view's model, if it has one. The default implementation returns "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: ".\r"
+                    attr: 1
+                  - text: ThisModel
+                    attr: 2
+                  - text: " is called internally.\r"
+                    attr: 1
+                  - text: ThisModel
+                    attr: 2
+                  - text: " is replaced by views which contain models. A view with a model must always return the same model, i.e., the one which was assigned to it upon initialization.\r\r\rTYPE "
+                    attr: 1
+                  - text: Alien (View)
+                    attr: 4
+                  - text: "\rLIMITED\rIf the internalization of a view fails, either because its implementing module(s) cannot be loaded, or because it cancelled internalization (e.g., because of a version conflict), an alien is produced instead (this happens in procedure "
+                    attr: 1
+                  - text: ReadView
+                    attr: 2
+                  - text: "). An alien is immutable and doesn't contain a model. It contains an alien store which can be inspected to determine the type of the alien, and the cause for it to be an alien.\rEvery container must be able to operate even if one or several of its embedded views are aliens. If the view's model is an alien store, the view may turn itself into an alien.\rAliens are allocated in "
+                    attr: 1
+                  - text: ReadView
+                    attr: 2
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: store
+                    attr: 4
+                  - text: "-: Stores.Alien\tstore # NIL\rThe alien store which has been generated by a "
+                    attr: 1
+                  - text: Stores.Reader
+                    attr: 2
+                  - text: " during internalization of the view.\r\r\rTYPE "
+                    attr: 1
+                  - text: Message
+                    attr: 4
+                  - text: "\rABSTRACT\rBase type of all view messages. Such messages are sent when a view's state has changed, in order to render the display consistent again. There may be several frames displaying the same view, such that every one of them needs to be updated.\rMessages are sent by views when their states have changed and if they cannot use BlackBox's delayed update mechanism. This is true mainly when drawing marks, e.g., selection marks.\rMessages are extended to indicate what kind of update should be performed on a frame.\r\r"
+                    attr: 1
+                  - text: view
+                    attr: 4
+                  - text: "-: View\rThe view which has changed. If "
+                    attr: 1
+                  - text: view = NIL
+                    attr: 2
+                  - text: ", all frames with the same domain are notified of the view change.\r\r\rTYPE "
+                    attr: 1
+                  - text: NotifyMsg (Message)
+                    attr: 4
+                  - text: "\rEXTENSIBLE\rThis message notifies all visible views about a change in an interactor's state (-> Dialog).\r"
+                    attr: 1
+                  - text: NotifyMsg
+                    attr: 2
+                  - text: " is sent by the interactor procedures "
+                    attr: 1
+                  - text: Update
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: UpdateList
+                    attr: 2
+                  - text: " in module "
+                    attr: 1
+                  - text: Dialog
+                    attr: 2
+                  - text: ".\r"
+                    attr: 1
+                  - text: NotifyMsg
+                    attr: 2
+                  - text: " is never extended.\r"
+                    attr: 1
+                  - text: NotifyMsg
+                    attr: 2
+                  - text: " is sent only internally.\r\r"
+                    attr: 1
+                  - text: "id0, id1"
+                    attr: 4
+                  - text: ": INTEGER\rIdentification of the interactor or of one of its fields.\r\r"
+                    attr: 1
+                  - text: opts
+                    attr: 4
+                  - text: ": SET\rDetermines whether controls (not described here) should check their guards, for example.\r\r\rTYPE "
+                    attr: 1
+                  - text: Frame (Ports.Frame)
+                    attr: 4
+                  - text: "\rABSTRACT\rAll input and output operations of a view pass through a frame. A frame manages the whole layout of views on a port, including clipping. Model and view messages are broadcast along frame trees. A frame tree's internal structure is hidden. Frames are volatile objects, they are allocated and released by BlackBox whenever necessary, e.g., when the frame's window is resized. Thus they cannot be used to carry application-specific state, except for caches.\rFrames are allocated by a view's "
+                    attr: 1
+                  - text: GetNewFrame
+                    attr: 2
+                  - text: " procedure.\rFrames are managed internally, and passed as parameters to view procedures whenever necessary.\rStandard frames are sufficient for most purposes, and thus rarely extended.\r\r"
+                    attr: 1
+                  - text: "l-, t-, r-, b-"
+                    attr: 4
+                  - text: ": INTEGER\t0 <= l <= r  &  0 <= t <= b\rThe visible area of the view in this frame. The values are in universal coordinates, relative to the frame's view's top-left corner.\rFor example, "
+                    attr: 1
+                  - text: f.l + f.gx
+                    attr: 2
+                  - text: " is the distance of the left frame border from the left port (display, printer) border in universal coordinates; "
+                    attr: 1
+                  - text: (f.l + f.gx) DIV f.unit
+                    attr: 2
+                  - text: " is the same distance in pixels.\r\r"
+                    attr: 1
+                  - text: view
+                    attr: 4
+                  - text: "-: View\tview # NIL\rThe frame's view.\r\r"
+                    attr: 1
+                  - text: front-
+                    attr: 4
+                  - text: ": BOOLEAN\rFlag which tells whether the frame is part of the front window\r"
+                    attr: 1
+                  - text: "\rmark-"
+                    attr: 4
+                  - text: ": BOOLEAN\rFlag which tells whether the frame is on its window's focus path, i.e., whether marks (caret, selection) should be drawn. Typically, marking procedures work the following way:\r\r\tIF f.mark THEN\r\t\tIF f.front THEN DrawMark(f) ELSE DrawBackgroundMark(f) END\r\tEND\r\rPROCEDURE (f: Frame) "
+                    attr: 1
+                  - text: Close
+                    attr: 4
+                  - text: "\rNEW, EMPTY\rPerform finalization before the frame is removed.\rAfter a call to "
+                    attr: 1
+                  - text: Close
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: f.view
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: f.rider
+                    attr: 2
+                  - text: " are set to "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: f.ConnectTo(NIL)
+                    attr: 2
+                  - text: " is called.\r"
+                    attr: 1
+                  - text: Close
+                    attr: 2
+                  - text: " is called internally.\r\r\rTYPE "
+                    attr: 1
+                  - text: RootFrame
+                    attr: 4
+                  - text: "\rThis type is used internally.\r\r"
+                    attr: 1
+                  - text: flags
+                    attr: 4
+                  - text: "-: SET\rWindow-specific flags. Reserved for future use.\r\r\rTYPE "
+                    attr: 1
+                  - text: PropMessage
+                    attr: 4
+                  - text: "\rABSTRACT\rUse its alias "
+                    attr: 1
+                  - text: Properties.Message
+                    attr: 2
+                  - text: " instead (properties are not described here).\r\r\rTYPE "
+                    attr: 1
+                  - text: CtrlMessage
+                    attr: 4
+                  - text: "\rABSTRACT\rBase type of all controller messages. Use its alias "
+                    attr: 1
+                  - text: Controllers.Message
+                    attr: 2
+                  - text: " instead.\r\r\rTYPE "
+                    attr: 1
+                  - text: CtrlMsgHandler
+                    attr: 4
+                  - text: "\rUsed internally.\r\r\rTYPE "
+                    attr: 1
+                  - text: Title
+                    attr: 4
+                  - text: "\rType for view titles, e.g., in windows.\r\r\rTYPE "
+                    attr: 1
+                  - text: UpdateCachesMsg (Message)
+                    attr: 4
+                  - text: "\rEXTENSIBLE\rUsed internally.\r\rTYPE "
+                    attr: 1
+                  - text: ScrollClassMsg (Message)
+                    attr: 4
+                  - text: "\rEXTENSIBLE\rUsed internally.\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: Broadcast
+                    attr: 4
+                  - text: " (v: View; VAR msg: Message)\rBroadcast "
+                    attr: 1
+                  - text: msg
+                    attr: 2
+                  - text: " for "
+                    attr: 1
+                  - text: view
+                    attr: 2
+                  - text: ". Before broadcasting, parameter "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: " is assigned to the message's "
+                    attr: 1
+                  - text: view
+                    attr: 2
+                  - text: "-Field. The actual broadcast only takes place if "
+                    attr: 1
+                  - text: "v.domain # NIL"
+                    attr: 2
+                  - text: ".\rBroadcast is called by a view whenever its state has changed and the delayed restore mechanism is not sufficient, e.g., to update frame-specific marks. "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: " will receive "
+                    attr: 1
+                  - text: msg
+                    attr: 2
+                  - text: " once for every visible frame on itself.\rThe handler of a view message may not recursively broadcast another view message, since this could cause the messages to be received in another order than they have been sent, which would result in errors very hard to find.\r\rPre\rv # NIL\t20\rno recursion\t21\r\rPost\rmsg.view = v\r\rPROCEDURE "
+                    attr: 1
+                  - text: Domaincast
+                    attr: 4
+                  - text: " (domain: Stores.Domain; VAR msg: Message)\rBroadcasts "
+                    attr: 1
+                  - text: msg
+                    attr: 2
+                  - text: " inside "
+                    attr: 1
+                  - text: domain
+                    attr: 2
+                  - text: ". For visual objects, the domain corresponds to the object's document. "
+                    attr: 1
+                  - text: Domaincast
+                    attr: 2
+                  - text: " is only necessary in exceptional cases; usually a view message is sent in places where the corresponding view, and not only its domain, is known. In these cases, "
+                    attr: 1
+                  - text: Broadcast
+                    attr: 2
+                  - text: " is the appropriate (and faster) procedure.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Omnicast
+                    attr: 4
+                  - text: " (VAR msg: ANYREC)\rBroadcast "
+                    attr: 1
+                  - text: msg
+                    attr: 2
+                  - text: " to all open views, independent of their domain (i.e., of their document). All views will receive this message with "
+                    attr: 1
+                  - text: msg.view = NIL
+                    attr: 2
+                  - text: ". "
+                    attr: 1
+                  - text: Omnicast
+                    attr: 2
+                  - text: " is slower than "
+                    attr: 1
+                  - text: Broadcast
+                    attr: 2
+                  - text: ", and only necessary in exceptional cases, e.g., for clock views which should be updated every second through a message omnicast.\r\rPROCEDURE "
+                    attr: 1
+                  - text: HandlePropMsg
+                    attr: 4
+                  - text: " (v: View; VAR msg: PropMessage)\rUse this procedure to send a property message to a view. It is equivalent to\r\tv.HandlePropMsg(msg)\rexcept that a much better error handling is performed.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Era
+                    attr: 4
+                  - text: " (v: View): INTEGER\rFor views with models, returns the era in which the view was last synchronized with the model.\r\rPre\rv # NIL\t20\r\rPost\rv.ThisModel() # NIL\r\tin-synch(v) iff Era(v) = Models.Era(v.ThisModel())\r\rPROCEDURE "
+                    attr: 1
+                  - text: BeginModification
+                    attr: 4
+                  - text: " (type: INTEGER; v: View)\rPROCEDURE "
+                    attr: 1
+                  - text: EndModification
+                    attr: 4
+                  - text: " (type: INTEGER; v: View)\rPROCEDURE "
+                    attr: 1
+                  - text: BeginScript
+                    attr: 4
+                  - text: " (v: View; name: Stores.OpName; OUT script: Stores.Operation)\rPROCEDURE "
+                    attr: 1
+                  - text: EndScript
+                    attr: 4
+                  - text: " (v: View; script: Stores.Operation)\rPROCEDURE "
+                    attr: 1
+                  - text: Do
+                    attr: 4
+                  - text: " (v: View; name: Stores.OpName; op: Stores.Operation)\rPROCEDURE "
+                    attr: 1
+                  - text: LastOp
+                    attr: 4
+                  - text: " (v: View): Stores.Operation\rPROCEDURE "
+                    attr: 1
+                  - text: Bunch
+                    attr: 4
+                  - text: " (v: View)\rPROCEDURE "
+                    attr: 1
+                  - text: StopBunching
+                    attr: 4
+                  - text: " (v: View)\rThese procedures handle modifications of a view. They are used in the same way as their model counterparts in module "
+                    attr: 1
+                  - text: Models
+                    attr: 2
+                  - text: " (-> Models). Note that these view procedures are provided for convenience, they are mostly identical to the "
+                    attr: 1
+                  - text: Models
+                    attr: 2
+                  - text: ". The only noticeable difference is that a view operation only affects this view, and doesn't affect other views even if they show the same model. For example, a script that modifies a view's model should use the "
+                    attr: 1
+                  - text: Models
+                    attr: 2
+                  - text: " procedure, so that all views are updated correctly. A script that modifies only a view's private state should use the procedures above.\r\rPROCEDURE "
+                    attr: 1
+                  - text: ForwardCtrlMsg
+                    attr: 4
+                  - text: " (f: Frame; VAR msg: CtrlMessage)\rThis procedure should be used to send a controller message along the focus path. Usually, it is called within an implementation of "
+                    attr: 1
+                  - text: HandleCtrlMsg
+                    attr: 2
+                  - text: ". This is only necessary if it is not sufficient to just set the "
+                    attr: 1
+                  - text: focus
+                    attr: 2
+                  - text: " parameter of "
+                    attr: 1
+                  - text: HandleCtrlMsg
+                    attr: 2
+                  - text: " to the embedded view to which forwarding should occur. This in turn is only necessary if "
+                    attr: 1
+                  - text: HandleCtrlMsg
+                    attr: 2
+                  - text: " needs to do some postprocessing after forwarding has occurred. In this case, it calls "
+                    attr: 1
+                  - text: ForwardCtrlMsg
+                    attr: 2
+                  - text: " and then makes sure that "
+                    attr: 1
+                  - text: focus = NIL
+                    attr: 2
+                  - text: ".\r\rPre\rf # NIL\t20\r\rPROCEDURE "
+                    attr: 1
+                  - text: Update
+                    attr: 4
+                  - text: " (v: View; rebuild: BOOLEAN)\rCauses view "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: " to be restored, in "
+                    attr: 1
+                  - text: all
+                    attr: 2
+                  - text: " frames displaying "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: ". The update occurs delayed, after the currently executing command has terminated. "
+                    attr: 1
+                  - text: rebuild
+                    attr: 2
+                  - text: " should be set to "
+                    attr: 1
+                  - text: keepFrames
+                    attr: 2
+                  - text: " for non-containers or for operations which didn't modify the layout of a container (i.e., the places and sizes of embedded views). Otherwise, "
+                    attr: 1
+                  - text: rebuildFrames
+                    attr: 2
+                  - text: " should be passed.\r\rPre\rv # NIL\t20\r\rPROCEDURE "
+                    attr: 1
+                  - text: UpdateIn
+                    attr: 4
+                  - text: " (v: View; l, t, r, b: INTEGER; rebuild: BOOLEAN)\rCauses rectangle "
+                    attr: 1
+                  - text: "(l, t, r, b)"
+                    attr: 2
+                  - text: " of view "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: " to be restored, in "
+                    attr: 1
+                  - text: all
+                    attr: 2
+                  - text: " frames displaying "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: ". The update occurs delayed, after the currently executing command has terminated. "
+                    attr: 1
+                  - text: rebuild
+                    attr: 2
+                  - text: " should be set to "
+                    attr: 1
+                  - text: keepFrames
+                    attr: 2
+                  - text: " for non-containers or for operations which didn't modify the layout of a container (i.e., the places and sizes of embedded views). Otherwise, "
+                    attr: 1
+                  - text: rebuildFrames
+                    attr: 2
+                  - text: " should be passed.\r\rPre\rv # NIL\t20\r\rPROCEDURE "
+                    attr: 1
+                  - text: ReadView
+                    attr: 4
+                  - text: " (VAR rd: Stores.Reader; OUT v: View)\rReads view "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: ", using reader "
+                    attr: 1
+                  - text: rd
+                    attr: 2
+                  - text: ". If internalization is not possible, an alien view is returned.\r\rPROCEDURE "
+                    attr: 1
+                  - text: WriteView
+                    attr: 4
+                  - text: " (VAR wr: Stores.Writer; v: View)\rWrites view "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: ", using writer "
+                    attr: 1
+                  - text: wr
+                    attr: 2
+                  - text: ". Alien views are handled correctly.\r\rPROCEDURE "
+                    attr: 1
+                  - text: CopyOf
+                    attr: 4
+                  - text: " (v: View; shallow: BOOLEAN): View\rReturns a shallow or deep copy of "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: ".\r\rPre\rv # NIL\t20\r\rPost\rresult # NIL\r\rPROCEDURE "
+                    attr: 1
+                  - text: CopyWithNewModel
+                    attr: 4
+                  - text: " (v: View; m: Models.Model): View\rCopies a view and assigns a new model to the copy.\r\rPre\rv # NIL\t20\rv.ThisModel() # NIL\t21\rm # NIL\t22\rTYP(m) = TYP(v.ThisModel())\t23\r\rPROCEDURE "
+                    attr: 1
+                  - text: ReadFont
+                    attr: 4
+                  - text: " (VAR rd: Stores.Reader; OUT f: Fonts.Font)\rReads a font from a reader.\r\rPost\rf # NIL\r\rPROCEDURE "
+                    attr: 1
+                  - text: WriteFont
+                    attr: 4
+                  - text: " (VAR wr: Stores.Writer; f: Fonts.Font)\rWrites a font to a writer.\r\rPre\rf # NIL\t20\r\rPROCEDURE "
+                    attr: 1
+                  - text: IsPrinterFrame
+                    attr: 4
+                  - text: " (f: Frame): BOOLEAN\rThis function can be used to determine whether "
+                    attr: 1
+                  - text: f
+                    attr: 2
+                  - text: "'s view is currently being restored on a printer or preview port.\r\rPre\rf # NIL\t20\r\rPROCEDURE "
+                    attr: 1
+                  - text: InstallFrame
+                    attr: 4
+                  - text: " (host: Frame; view: View; x, y, level: INTEGER; focus: BOOLEAN)\rIf "
+                    attr: 1
+                  - text: view
+                    attr: 2
+                  - text: " has no corresponding embedded frame in "
+                    attr: 1
+                  - text: host
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Install
+                    attr: 2
+                  - text: " allocates and installs a new one for it, otherwise the existing frame is kept. Parameters "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: y
+                    attr: 2
+                  - text: " give the position of the view's top-left corner relative to the container view's (i.e., "
+                    attr: 1
+                  - text: host.view
+                    attr: 2
+                  - text: ") top-left corner. The frame ordering can be influenced by passing a view level at which "
+                    attr: 1
+                  - text: view
+                    attr: 2
+                  - text: " lies logically. Levels need not be unique (pass 0 if you don't care, e.g., if you never have overlapping frames). A frame always lies \"above\" other frames with smaller levels. Parameter "
+                    attr: 1
+                  - text: focus
+                    attr: 2
+                  - text: " tells whether the frame is part of the focus path.\r\rPre\rhost # NIL\t20\rhost is opened in window\t21\rview # NIL\t22\rview.context # NIL\t23\rview.Domain() # NIL\t24\r\rPROCEDURE "
+                    attr: 1
+                  - text: ThisFrame
+                    attr: 4
+                  - text: " (host: Frame; view: View): Frame\rSearches the embedded frame of "
+                    attr: 1
+                  - text: host
+                    attr: 2
+                  - text: " which contains view "
+                    attr: 1
+                  - text: view
+                    attr: 2
+                  - text: ".\r\rPre\rhost # NIL\t20\r\rPost\rresult = NIL\r\tview = NIL  OR  not found\rresult # NIL\r\tview # NIL  &  found\r\tresult.view = view\r\rPROCEDURE "
+                    attr: 1
+                  - text: FrameAt
+                    attr: 4
+                  - text: " (host: Frame; x, y: INTEGER): Frame\rSearches the embedded frame of "
+                    attr: 1
+                  - text: host
+                    attr: 2
+                  - text: " which contains point "
+                    attr: 1
+                  - text: "(x, y)"
+                    attr: 2
+                  - text: ".\r\rPre\rhost # NIL\t20\r\rPost\rresult = NIL\r\tno embedded frame at (x, y)\rresult # NIL\r\tresult contains (x, y)\r\rPROCEDURE "
+                    attr: 1
+                  - text: Old
+                    attr: 4
+                  - text: " (ask: BOOLEAN; VAR loc: Files.Locator; VAR name: Files.Name;\r\t\t\t\t\t\t\t\tVAR conv: Converters.Converter): View\rThis procedure looks up a file, reads in the document in this file, and then returns the root view of this document. If the file is already opened in a window, the root view of this window's document is returned instead of reading the file. Parameter "
+                    attr: 1
+                  - text: ask
+                    attr: 2
+                  - text: " determines whether or not the user is asked interactively for the triple "
+                    attr: 1
+                  - text: "(loc, name, conv)"
+                    attr: 2
+                  - text: ", via a standard file dialog. With this dialog, the user can navigate in the host file system's directory structure.\r"
+                    attr: 1
+                  - text: "loc, name, conv"
+                    attr: 2
+                  - text: " are treated as in-out parameters. On input, their values are used as defaults. If "
+                    attr: 1
+                  - text: ask
+                    attr: 2
+                  - text: " then the user may cause them to change.\r"
+                    attr: 1
+                  - text: "loc, name"
+                    attr: 2
+                  - text: " determine the file from which the document was read.\r"
+                    attr: 1
+                  - text: conv
+                    attr: 2
+                  - text: " determines the converter which is used for reading the document. "
+                    attr: 1
+                  - text: conv = NIL
+                    attr: 2
+                  - text: " means that no conversion is necessary, i.e., the file format already has the standard BlackBox format.\r\rPre\rask  OR  loc # NIL\t20\rask  OR  name # \"\"\t21\r\rPost\rresult = NIL\r\tloc.res # 0\rresult # NIL\r\tloc.res = 0\r\tresult.context # NIL\r~ask\r\tloc = loc'  &  name = name'  &  conv = conv'\r\rPROCEDURE "
+                    attr: 1
+                  - text: OldView
+                    attr: 4
+                  - text: " (loc: Files.Locator; name: Files.Name): View\r"
+                    attr: 1
+                  - text: OldView
+                    attr: 2
+                  - text: " is an abbreviation of "
+                    attr: 1
+                  - text: "Old(dontAsk, loc, name, NIL)"
+                    attr: 2
+                  - text: ".\r\rPROCEDURE "
+                    attr: 1
+                  - text: Register
+                    attr: 4
+                  - text: " (view: View; ask: BOOLEAN; VAR loc: Files.Locator;\r\t\t\t\t\t\t\t\t\t\tVAR name: Files.Name; VAR conv: Converters.Converter;\r\t\t\t\t\t\t\t\t\t\tOUT res: INTEGER)\rSaves "
+                    attr: 1
+                  - text: view
+                    attr: 2
+                  - text: "'s document in a file. Parameter "
+                    attr: 1
+                  - text: ask
+                    attr: 2
+                  - text: " determines whether or not the user is asked interactively for the triple "
+                    attr: 1
+                  - text: "(loc, name, conv)"
+                    attr: 2
+                  - text: ", via a standard file dialog. With this dialog, the user can navigate in the host file system's directory structure.\r"
+                    attr: 1
+                  - text: "loc, name, conv"
+                    attr: 2
+                  - text: " are treated as in-out parameters. On input, their values are used as defaults. If "
+                    attr: 1
+                  - text: ask
+                    attr: 2
+                  - text: " then the user may cause them to change.\r"
+                    attr: 1
+                  - text: "loc, name"
+                    attr: 2
+                  - text: " determine the file to which the document is written.\r"
+                    attr: 1
+                  - text: conv
+                    attr: 2
+                  - text: " determines the converter which is used for writing the document. "
+                    attr: 1
+                  - text: conv = NIL
+                    attr: 2
+                  - text: " means that no conversion is necessary, i.e., the file format gets the standard BlackBox format.\r\rPre\rview # NIL\t20\rask  OR  loc # NIL\t22\rask  OR  name # \"\"\t23\r\rPost\roperation was successful\r\tres = 0\roperation was not successful\r\tres # 0\r\rPROCEDURE "
+                    attr: 1
+                  - text: RegisterView
+                    attr: 4
+                  - text: " (view: View; loc: Files.Locator; name: Files.Name)\r"
+                    attr: 1
+                  - text: RegisterView
+                    attr: 2
+                  - text: " is an abbreviation of "
+                    attr: 1
+                  - text: "Register(view, dontAsk, loc, name, nil, res)"
+                    attr: 2
+                  - text: ".\r\rPROCEDURE "
+                    attr: 1
+                  - text: Open
+                    attr: 4
+                  - text: " (view: View; loc: Files.Locator; name: Files.Name;\r\t\t\t\t\t\t\t\t\tconv: Converters.Converter)\rOpen "
+                    attr: 1
+                  - text: view
+                    attr: 2
+                  - text: " in a new window. "
+                    attr: 1
+                  - text: "(loc, name)"
+                    attr: 2
+                  - text: " determines the file associated with "
+                    attr: 1
+                  - text: view
+                    attr: 2
+                  - text: ", if there is any. "
+                    attr: 1
+                  - text: conv
+                    attr: 2
+                  - text: " is the converter which will be used when the user saves the document. "
+                    attr: 1
+                  - text: conv = NIL
+                    attr: 2
+                  - text: " is passed when saving in the standard BlackBox file format is desired.\r\rPre\rview # NIL\t20\r(loc = NIL) = (name = \"\")\t21\r\rPROCEDURE "
+                    attr: 1
+                  - text: OpenView
+                    attr: 4
+                  - text: " (view: View)\r"
+                    attr: 1
+                  - text: OpenView
+                    attr: 2
+                  - text: " is an abbreviation of "
+                    attr: 1
+                  - text: "Open(view, NIL, \"\", NIL)"
+                    attr: 2
+                  - text: ".\r\rPROCEDURE "
+                    attr: 1
+                  - text: OpenAux
+                    attr: 4
+                  - text: " (view: View; title: Title)\rOpens "
+                    attr: 1
+                  - text: view
+                    attr: 2
+                  - text: " in an auxiliary window with "
+                    attr: 1
+                  - text: title
+                    attr: 2
+                  - text: " title.\r\rPre\rview # NIL\t20\rtitle # \"\"\t21\r\rPROCEDURE "
+                    attr: 1
+                  - text: Deposit
+                    attr: 4
+                  - text: " (view: View)\rDeposit a view for later use, typically for opening it in a window, or for pasting it to the focus.\rDeposit is used only by allocation commands, i.e., commands which allocate and then deposit a concrete view type.\r\rPre\rview # NIL\t20\r\rPROCEDURE "
+                    attr: 1
+                  - text: RestoreDomain
+                    attr: 4
+                  - text: " (domain: Stores.Domain)\rThis procedure forces a restoration of all update regions on views of "
+                    attr: 1
+                  - text: domain
+                    attr: 2
+                  - text: ".\rNormally, the display is updated in a delayed fashion, i.e., an update region is built for all invalid view areas (using "
+                    attr: 1
+                  - text: Update
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: UpdateIn
+                    attr: 2
+                  - text: "), and the display update according to this region is performed when the framework is idle, i.e., between commands. However, sometimes it is necessary to enforce a display update "
+                    attr: 1
+                  - text: during
+                    attr: 2
+                  - text: " a command, for which this procedure can be used. The need for enforced update comes from scrolling: if a view should be scrolled, the effect of scrolling should become immediately visible.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Scroll
+                    attr: 4
+                  - text: " (v: View; dx, dy: INTEGER)\rScroll the contents of each frame on "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: " by "
+                    attr: 1
+                  - text: "(dx, dy)"
+                    attr: 2
+                  - text: ".\r\rPre\rv # NIL\t20\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetDir
+                    attr: 4
+                  - text: " (d: Directory)\rAssigns directory.\r\rPre\rd # NIL\t20\r\rPost\rstdDir' = NIL\r\tstdDir = d\rstdDir' # NIL\r\tstdDir = stdDir'\rdir = d\r\rThe following procedures are used internally:\r\rPROCEDURE "
+                    attr: 1
+                  - text: MarkBorders
+                    attr: 4
+                  - text: " (root: RootFrame)\rPROCEDURE "
+                    attr: 1
+                  - text: MarkBorder
+                    attr: 4
+                  - text: " (host: Frame; view: View; l, t, r, b: INTEGER)\rPROCEDURE "
+                    attr: 1
+                  - text: Fetch
+                    attr: 4
+                  - text: " (OUT view: View)\rPROCEDURE "
+                    attr: 1
+                  - text: Available
+                    attr: 4
+                  - text: " (): INTEGER\rPROCEDURE "
+                    attr: 1
+                  - text: ClearQueue
+                    attr: 4
+                  - text: "\rPROCEDURE "
+                    attr: 1
+                  - text: RemoveFrame
+                    attr: 4
+                  - text: " (host, f: Frame)\rPROCEDURE "
+                    attr: 1
+                  - text: RemoveFrames
+                    attr: 4
+                  - text: " (host: Frame; l, t, r, b: INTEGER)\rPROCEDURE "
+                    attr: 1
+                  - text: BroadcastModelMsg
+                    attr: 4
+                  - text: " (f: Frame; VAR msg: Models.Message)\rPROCEDURE "
+                    attr: 1
+                  - text: BroadcastViewMsg
+                    attr: 4
+                  - text: " (f: Frame; VAR msg: Message)\rPROCEDURE "
+                    attr: 1
+                  - text: HandleCtrlMsg
+                    attr: 4
+                  - text: " (op: INTEGER; f, g: Frame; VAR msg: CtrlMessage;\r\t\t\t\t\t\t\t\t\t\t\t\t\tVAR target, front, req: BOOLEAN)\rPROCEDURE "
+                    attr: 1
+                  - text: SetRoot
+                    attr: 4
+                  - text: " (root: RootFrame; view: View; front: BOOLEAN; flags: SET)\rPROCEDURE "
+                    attr: 1
+                  - text: AdaptRoot
+                    attr: 4
+                  - text: " (root: RootFrame)\rPROCEDURE "
+                    attr: 1
+                  - text: RootOf
+                    attr: 4
+                  - text: " (f: Frame): RootFrame\rPROCEDURE "
+                    attr: 1
+                  - text: HostOf
+                    attr: 4
+                  - text: " (f: Frame): Frame\rPROCEDURE "
+                    attr: 1
+                  - text: UpdateRoot
+                    attr: 4
+                  - text: " (root: RootFrame; l, t, r, b: INTEGER; rebuild: BOOLEAN)\rPROCEDURE "
+                    attr: 1
+                  - text: RestoreRoot
+                    attr: 4
+                  - text: " (root: RootFrame; l, t, r, b: INTEGER)\rPROCEDURE "
+                    attr: 1
+                  - text: ValidateRoot
+                    attr: 4
+                  - text: " (root: RootFrame)\rPROCEDURE "
+                    attr: 1
+                  - text: InitCtrl
+                    attr: 4
+                  - text: " (p: CtrlMsgHandler)\rPROCEDURE "
+                    attr: 1
+                  - text: IsInvalid
+                    attr: 4
+                  - text: " (v: View): BOOLEAN\rPROCEDURE "
+                    attr: 1
+                  - text: RevalidateView
+                    attr: 4
+                  - text: " (v: View)\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 32
+          bodyPos: 49215
+          bodyLen: 8

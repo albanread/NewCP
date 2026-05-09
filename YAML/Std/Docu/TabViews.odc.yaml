@@ -1,0 +1,1077 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Std\\Docu\\TabViews.odc"
+  size: 207056
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 206925
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 206684
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 206598
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                lead: 11500
+                asc: 121900
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 206507
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 206048
+                runListLen: 192667
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: "*"
+                    size: 101600
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [5]
+                    font: Arial
+                    size: 127000
+                    color: 0x000000ff
+                    weight: 400
+                    style: 0x00000000
+                flow:
+                  - text: StdTabViews
+                    attr: 0
+                  - text: "\r\rDEFINITION StdTabViews;\r\r\tIMPORT Views, Dialog, StdCFrames;\r\r\tCONST\r\t\tnoTab = -1;\r\t\t\r\tTYPE\r\t\tDirectory = POINTER TO ABSTRACT RECORD \r\t\t\t(d: Directory) New (): View, NEW, ABSTRACT\r\t\tEND;\r\r\t\tFrame = POINTER TO ABSTRACT RECORD (StdCFrames.Frame)\r\t\t\t(f: Frame) GetDispSize (OUT x, y, w, h: INTEGER), NEW, ABSTRACT;\r\t\t\t(f: Frame) InDispArea (x, y: INTEGER): BOOLEAN, NEW, ABSTRACT;\r\t\t\t(f: Frame) SetIndex (i: INTEGER), NEW\r\t\tEND;\r\r\t\tFrameDirectory = POINTER TO ABSTRACT RECORD \r\t\t\t(d: FrameDirectory) GetTabSize (VAR w, h: INTEGER), NEW, ABSTRACT;\r\t\t\t(d: FrameDirectory) New (): Frame, NEW, ABSTRACT\r\t\tEND;\r\r\t\tView = POINTER TO LIMITED RECORD (Views.View)\r\t\t\t(tv: View) GetItem (i: INTEGER; OUT label: Dialog.String; OUT v: Views.View), NEW;\r\t\t\t(tv: View) GetNewFrame (VAR frame: Views.Frame);\r\t\t\t(tv: View) GetNotifier (OUT notifier: Dialog.String), NEW;\r\t\t\t(tv: View) HandleCtrlMsg (f: Views.Frame; VAR msg: Views.CtrlMessage; VAR focus: Views.View);\r\t\t\t(tv: View) Index (): INTEGER, NEW;\r\t\t\t(tv: View) Neutralize;\r\t\t\t(tv: View) NofTabs (): INTEGER, NEW;\r\t\t\t(tv: View) Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\t\t\t(tv: View) SetIndex (i: INTEGER), NEW;\r\t\t\t(tv: View) SetItem (i: INTEGER; label: Dialog.String; v: Views.View), NEW;\r\t\t\t(tv: View) SetNofTabs (nofTabs: INTEGER), NEW;\r\t\t\t(tv: View) SetNotifier (IN notifier: ARRAY OF CHAR), NEW\r\t\tEND;\r\t\t\r\t\tNotifierProc = PROCEDURE (tv: View; from, to: INTEGER);\r\r\tVAR\r\t\tdir-: Directory;\r\t\tdlg: RECORD \r\t\t\tname, notifier: Dialog.String"
+                    attr: 1
+                  - text: ;
+                    attr: 2
+                  - text: "\r\t\t\topt: INTEGER\r\t\tEND;\r\t\tframeDir-: FrameDirectory;\r\t\tframeStdDir-: FrameDirectory;\r\t\tsetFocus: BOOLEAN;\r\t\tstdDir-: Directory;\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - text: "\tPROCEDURE AddTab;\r\tPROCEDURE BeginChanges (tv: View);\r\tPROCEDURE Delete;\r\tPROCEDURE DeleteGuard (VAR par: Dialog.Par);\r\tPROCEDURE Deposit;\r\tPROCEDURE EndChanges (tv: View);\r\tPROCEDURE Focus (): View;\r\tPROCEDURE InitDialog;\r\tPROCEDURE LabelGuard (VAR par: Dialog.Par);\r\tPROCEDURE LayoutModeGuard (VAR par: Dialog.Par);\r\tPROCEDURE Left;\r\tPROCEDURE MaskModeGuard (VAR par: Dialog.Par);\r\tPROCEDURE ModeNotifier (op, from, to: INTEGER);\r\tPROCEDURE NewGuard (VAR par: Dialog.Par);\r\tPROCEDURE NotifierGuard (VAR par: Dialog.Par);\r\tPROCEDURE Rename;\r\tPROCEDURE RenameGuard (VAR par: Dialog.Par);\r\tPROCEDURE Right;\r\tPROCEDURE SetDir (d: Directory);\r\tPROCEDURE SetFrameDir (d: FrameDirectory);\r\tPROCEDURE SetGuard (VAR par: Dialog.Par);\r\tPROCEDURE SetNotifier;\r\tPROCEDURE This (v: Views.View): View;\r\rEND StdTabViews.\r\r\rA "
+                    attr: 1
+                  - text: StdTabViews.View
+                    attr: 3
+                  - text: " displays a set of tabs to the user. Each tab consists of a label and a view. When the user clicks on the label, the associated view is displayed. Try it on the example below!\r\r"
+                    attr: 1
+                  - view:
+                      kind: StdTabViews.View
+                      storeKind: store
+                      typeChain:
+                        - StdTabViews.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 6
+                      bodyPos: 714
+                      bodyLen: 760
+                      children:
+                        - kind: FormViews.StdView
+                          storeKind: store
+                          typeChain:
+                            - FormViews.StdViewDesc
+                            - FormViews.ViewDesc
+                            - Containers.ViewDesc
+                            - Views.ViewDesc
+                            - Stores.StoreDesc
+                          id: 7
+                          bodyPos: 802
+                          bodyLen: 395
+                          children:
+                            - kind: FormModels.StdModel
+                              storeKind: elem
+                              typeChain:
+                                - FormModels.StdModelDesc
+                                - FormModels.ModelDesc
+                                - Containers.ModelDesc
+                                - Models.ModelDesc
+                                - Stores.StoreDesc
+                              id: 2
+                              bodyPos: 874
+                              bodyLen: 152
+                              children:
+                                - kind: Controls.PushButton
+                                  storeKind: store
+                                  typeChain:
+                                    - Controls.PushButtonDesc
+                                    - Controls.ControlDesc
+                                    - Views.ViewDesc
+                                    - Stores.StoreDesc
+                                  id: 8
+                                  bodyPos: 949
+                                  bodyLen: 52
+                                  link: Dialog.Beep
+                                  label: Beep
+                                  controlVersion: 4
+                                  trailingBytes: 1
+                                - kind: "<nil>"
+                                  storeKind: nil
+                            - kind: FormControllers.StdController
+                              storeKind: store
+                              typeChain:
+                                - FormControllers.StdControllerDesc
+                                - FormControllers.ControllerDesc
+                                - Containers.ControllerDesc
+                                - Controllers.ControllerDesc
+                                - Stores.StoreDesc
+                              id: 9
+                              bodyPos: 1170
+                              bodyLen: 9
+                        - kind: FormViews.StdView
+                          storeKind: store
+                          typeChain:
+                            - FormViews.StdViewDesc
+                            - FormViews.ViewDesc
+                            - Containers.ViewDesc
+                            - Views.ViewDesc
+                            - Stores.StoreDesc
+                          id: 10
+                          bodyPos: 1229
+                          bodyLen: 205
+                          children:
+                            - kind: FormModels.StdModel
+                              storeKind: elem
+                              typeChain:
+                                - FormModels.StdModelDesc
+                                - FormModels.ModelDesc
+                                - Containers.ModelDesc
+                                - Models.ModelDesc
+                                - Stores.StoreDesc
+                              id: 3
+                              bodyPos: 1254
+                              bodyLen: 131
+                              children:
+                                - kind: Controls.Field
+                                  storeKind: store
+                                  typeChain:
+                                    - Controls.FieldDesc
+                                    - Controls.ControlDesc
+                                    - Views.ViewDesc
+                                    - Stores.StoreDesc
+                                  id: 11
+                                  bodyPos: 1302
+                                  bodyLen: 58
+                                  link: TextCmds.find.find
+                                  opts: [true, false, false, false, false]
+                                  controlVersion: 4
+                                  trailingBytes: 1
+                                - kind: "<nil>"
+                                  storeKind: nil
+                            - kind: FormControllers.StdController
+                              storeKind: store
+                              typeChain:
+                                - FormControllers.StdControllerDesc
+                                - FormControllers.ControllerDesc
+                                - Containers.ControllerDesc
+                                - Controllers.ControllerDesc
+                                - Stores.StoreDesc
+                              id: 12
+                              bodyPos: 1407
+                              bodyLen: 9
+                    attr: 1
+                    w: 1905000
+                    h: 1270000
+                  - text: "\r\r\rThis example was created with "
+                    attr: 1
+                  - text: FormViews
+                    attr: 3
+                  - text: " but any "
+                    attr: 1
+                  - text: Views.View
+                    attr: 3
+                  - text: " can be used in the tabs.\r\rThere are two ways of creating "
+                    attr: 1
+                  - text: StdTabViews
+                    attr: 3
+                  - text: ": The tab can be created programmatically or it can be created using a graphical user interface. In most cases the graphical user interface is enough, and no programming is needed to create a "
+                    attr: 1
+                  - text: StdTabViews.View
+                    attr: 3
+                  - text: ". For more advanced use there exists a programming interface and this will be described further down.\r\rTo use the graphical user interface a "
+                    attr: 1
+                  - text: StdTabViews.View
+                    attr: 3
+                  - text: " needs to be dropped into a document or a form. This can be done by selecting the option "
+                    attr: 1
+                  - text: Insert Tab View
+                    attr: 3
+                  - text: " from the "
+                    attr: 1
+                  - text: Controls
+                    attr: 3
+                  - text: " menu. The new "
+                    attr: 1
+                  - text: StdTabViews.View
+                    attr: 3
+                  - text: " contains two tabs, called "
+                    attr: 1
+                  - text: Tab1
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: Tab2
+                    attr: 3
+                  - text: ", and they each have an (empty) "
+                    attr: 1
+                  - text: FormViews.View
+                    attr: 3
+                  - text: " associated with them. A newly created tab looks like this:\r\r"
+                    attr: 1
+                  - view:
+                      kind: StdTabViews.View
+                      storeKind: store
+                      typeChain:
+                        - StdTabViews.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 13
+                      bodyPos: 1624
+                      bodyLen: 295
+                      children:
+                        - kind: FormViews.StdView
+                          storeKind: store
+                          typeChain:
+                            - FormViews.StdViewDesc
+                            - FormViews.ViewDesc
+                            - Containers.ViewDesc
+                            - Views.ViewDesc
+                            - Stores.StoreDesc
+                          id: 14
+                          bodyPos: 1669
+                          bodyLen: 89
+                          children:
+                            - kind: FormModels.StdModel
+                              storeKind: elem
+                              typeChain:
+                                - FormModels.StdModelDesc
+                                - FormModels.ModelDesc
+                                - Containers.ModelDesc
+                                - Models.ModelDesc
+                                - Stores.StoreDesc
+                              id: 4
+                              bodyPos: 1694
+                              bodyLen: 15
+                              children:
+                                - kind: "<nil>"
+                                  storeKind: nil
+                            - kind: FormControllers.StdController
+                              storeKind: store
+                              typeChain:
+                                - FormControllers.StdControllerDesc
+                                - FormControllers.ControllerDesc
+                                - Containers.ControllerDesc
+                                - Controllers.ControllerDesc
+                                - Stores.StoreDesc
+                              id: 15
+                              bodyPos: 1731
+                              bodyLen: 9
+                        - kind: FormViews.StdView
+                          storeKind: store
+                          typeChain:
+                            - FormViews.StdViewDesc
+                            - FormViews.ViewDesc
+                            - Containers.ViewDesc
+                            - Views.ViewDesc
+                            - Stores.StoreDesc
+                          id: 16
+                          bodyPos: 1790
+                          bodyLen: 89
+                          children:
+                            - kind: FormModels.StdModel
+                              storeKind: elem
+                              typeChain:
+                                - FormModels.StdModelDesc
+                                - FormModels.ModelDesc
+                                - Containers.ModelDesc
+                                - Models.ModelDesc
+                                - Stores.StoreDesc
+                              id: 5
+                              bodyPos: 1815
+                              bodyLen: 15
+                              children:
+                                - kind: "<nil>"
+                                  storeKind: nil
+                            - kind: FormControllers.StdController
+                              storeKind: store
+                              typeChain:
+                                - FormControllers.StdControllerDesc
+                                - FormControllers.ControllerDesc
+                                - Containers.ControllerDesc
+                                - Controllers.ControllerDesc
+                                - Stores.StoreDesc
+                              id: 17
+                              bodyPos: 1852
+                              bodyLen: 9
+                    attr: 1
+                    w: 1905000
+                    h: 1270000
+                  - text: "\r\r\rThe "
+                    attr: 1
+                  - text: StdTabViews.View
+                    attr: 3
+                  - text: " is fully functional, but a bit boring. If the "
+                    attr: 1
+                  - text: StdTabViews.View
+                    attr: 3
+                  - text: " is focused, each tab can be edited just like a normal form. Controls can be dropped into it and moved aound and their properties can be edited. Also this can be tried on the tab above.\r\rTo add, remove or edit the name of tabs the "
+                    attr: 1
+                  - text: StdTabViews
+                    attr: 3
+                  - text: " property editor needs to be started. This is done by selecting the tab and choosing \"Edit->Object Properties...\". The property editor looks like this:\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostBitmaps.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostBitmaps.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 18
+                      bodyPos: 2014
+                      bodyLen: 189075
+                    attr: 1
+                    w: 2849879
+                    h: 2017868
+                  - text: "\r\rThe buttons and fields have the following meaning:\r\r<-\rClicking on this button moves the current tab one step to the left. This can be used to changed the order of the tabs.\r\r"
+                    attr: 1
+                  - text: "->"
+                    attr: 3
+                  - text: "\rClicking on this button moves the current tab one step to the right. This can be used to changed the order of the tabs.\r\r"
+                    attr: 1
+                  - text: Label
+                    attr: 3
+                  - text: "\rDisplays the label of the current tab.\r\r"
+                    attr: 1
+                  - text: Rename
+                    attr: 3
+                  - text: "\rSets the label of the currrent tab to the text displayed in the label field. An empty label is not allowed.\r\r"
+                    attr: 1
+                  - text: New Tab
+                    attr: 3
+                  - text: "\rCreats a new tab and adds it to the list. The label of the new tab is set to the text displayed in the label field. If the text field is empty no new tab can be created.\r\r"
+                    attr: 1
+                  - text: Delete
+                    attr: 3
+                  - text: "\rRemoves the current tab from the tab view.\r\r"
+                    attr: 1
+                  - text: Notifier
+                    attr: 3
+                  - text: "\rDisplays the name of the notifier that is associated with the tab view.\r\r"
+                    attr: 1
+                  - text: Set
+                    attr: 3
+                  - text: "\rSets the notifier of the the tab view to the name displayed in the notifier field.\r\r"
+                    attr: 1
+                  - text: All tabs in Layout Mode
+                    attr: 3
+                  - text: "\rSets all tabs in the Tab View in Layout Mode. Layout Mode is a container mode that allows for editing. For more information about container modes see "
+                    attr: 1
+                  - text: About Container Modes
+                    attr: 3
+                  - text: " futher down.\r\r"
+                    attr: 1
+                  - text: All tabs in Mask Mode
+                    attr: 3
+                  - text: "\rSets all tabs in the Tab View in Mask Mode. Mask Mode is a container mode that doesn't allow selecting of contained views. This mode is used for displaying documents as dialogs. For more information about container modes see "
+                    attr: 1
+                  - text: About Container Modes
+                    attr: 3
+                  - text: " futher down.\r\r"
+                    attr: 1
+                  - text: About Notifiers
+                    attr: 4
+                  - text: "\rThe notifier for "
+                    attr: 1
+                  - text: StdTabViews
+                    attr: 3
+                  - text: " is not the same as a notifier for normal "
+                    attr: 1
+                  - text: Controls
+                    attr: 3
+                  - text: ", but it works in a similar way. The signarure is different and there is just one type of notification sent. "
+                    attr: 1
+                  - text: StdTabViews
+                    attr: 3
+                  - text: " notifiers have the signature described by the type "
+                    attr: 1
+                  - text: StdTabViews.NotifierProc
+                    attr: 3
+                  - text: ".\r\rThe notifier is only called when the current tab is changed. When called, "
+                    attr: 1
+                  - text: tv
+                    attr: 3
+                  - text: " is the "
+                    attr: 1
+                  - text: StdTabViews.View
+                    attr: 3
+                  - text: " that the notification concerns, "
+                    attr: 1
+                  - text: from
+                    attr: 3
+                  - text: " is the tab that used to be the current tab and "
+                    attr: 1
+                  - text: to
+                    attr: 3
+                  - text: " is the new current tab.\r\rWhen a tab is saved the index of the current tab is saved with it and when the tab is internalized the current tab is set to the index that was saved. This enables the designer of  a dialog with a tab to control which tab is the current tab when the dialog is opened. It also provides a way to find a "
+                    attr: 1
+                  - text: StdTabViews.View
+                    attr: 3
+                  - text: " in a dialog. When the current tab is set for the first time during internalization the notifier is called with "
+                    attr: 1
+                  - text: tv
+                    attr: 3
+                  - text: " set to the new "
+                    attr: 1
+                  - text: "StdTabViews.View,"
+                    attr: 3
+                  - text: " "
+                    attr: 1
+                  - text: from
+                    attr: 3
+                  - text: " set to the constant "
+                    attr: 1
+                  - text: noTab
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: to
+                    attr: 3
+                  - text: " set to the index of the current tab saved in externalize.\r\rThis means that whenever a document with a "
+                    attr: 1
+                  - text: StdTabViews.View
+                    attr: 3
+                  - text: " inside is opened the notifier is called and this allows the application to bind to the "
+                    attr: 1
+                  - text: StdTabViews.View
+                    attr: 3
+                  - text: " if needed. This is an easy way to get to the programming interface described below.\r\r"
+                    attr: 1
+                  - text: About Container Modes
+                    attr: 4
+                  - text: "\rContainers can have different modes. A "
+                    attr: 1
+                  - text: FormViews.View
+                    attr: 3
+                  - text: " is a container and can for example be put in "
+                    attr: 1
+                  - text: Layout Mode
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: Mask Mode
+                    attr: 3
+                  - text: ". In "
+                    attr: 1
+                  - text: Layout Mode
+                    attr: 3
+                  - text: " it is possible to select contained views, such as "
+                    attr: 1
+                  - text: Controls
+                    attr: 3
+                  - text: ", and move them around. In "
+                    attr: 1
+                  - text: Mask Mode
+                    attr: 3
+                  - text: ", on the other hand, it is not possible to select or move around contained views.\r\rContainer modes can be changed using the "
+                    attr: 1
+                  - text: Dev
+                    attr: 3
+                  - text: "-menu but normally this is not needed. The normal way is to save a document in "
+                    attr: 1
+                  - text: Edit
+                    attr: 3
+                  - text: " or "
+                    attr: 1
+                  - text: Layout
+                    attr: 3
+                  - text: " "
+                    attr: 1
+                  - text: Mode
+                    attr: 3
+                  - text: " and then open it in the desired mode using the commands provided in "
+                    attr: 1
+                  - text: StdCmds
+                    attr: 3
+                  - text: ". A dialog, for example, is usually saved in "
+                    attr: 1
+                  - text: Layout Mode
+                    attr: 3
+                  - text: " and then opened in "
+                    attr: 1
+                  - text: Mask Mode
+                    attr: 3
+                  - text: " by using "
+                    attr: 1
+                  - text: StdCmds.OpenAuxDialog
+                    attr: 3
+                  - text: ".\r\rThe problem is that "
+                    attr: 1
+                  - text: StdTabViews
+                    attr: 3
+                  - text: " breaks this pattern since each tab can contain its own container with its own mode. It is needed to use the "
+                    attr: 1
+                  - text: Dev
+                    attr: 3
+                  - text: "-menu to put the tabs in the correct mode before saving a dialog. To use the container modes and the "
+                    attr: 1
+                  - text: Dev
+                    attr: 3
+                  - text: "-menu requires some knowledge about Containers. To avoid this requirement the radiobuttons \""
+                    attr: 1
+                  - text: All tabs in Layout Mode
+                    attr: 3
+                  - text: "\" and \""
+                    attr: 1
+                  - text: All tabs in Mask Mode
+                    attr: 3
+                  - text: "\" are provided. These buttons make it possible to set all tabs in Mask mode before saving the dialog or setting all tabs in Layout mode to edit the dialog, thus eliminating the need to use the Dev-menu.\r\rCONST "
+                    attr: 1
+                  - text: noTab
+                    attr: 4
+                  - text: "\rConstant used as "
+                    attr: 1
+                  - text: from
+                    attr: 3
+                  - text: " value to the notifier when a "
+                    attr: 1
+                  - text: StdTabViews.View
+                    attr: 3
+                  - text: " is internalize. \r\rTYPE "
+                    attr: 1
+                  - text: View
+                    attr: 4
+                  - text: " = POINTER TO LIMITED RECORD (Views.View)\rAllows the user to select different views by clicking on tabs.\r\rPROCEDURE (tv: View) "
+                    attr: 1
+                  - text: SetItem
+                    attr: 4
+                  - text: " (i: INTEGER; label: Dialog.String; v: Views.View)\rNEW\rAdds a new tab to "
+                    attr: 1
+                  - text: tv
+                    attr: 3
+                  - text: ". The new tab gets "
+                    attr: 1
+                  - text: label
+                    attr: 3
+                  - text: " as its label and "
+                    attr: 1
+                  - text: v
+                    attr: 3
+                  - text: " as its view. "
+                    attr: 1
+                  - text: "i "
+                    attr: 3
+                  - text: "indicates the position of the tab among the other tabs. IF "
+                    attr: 1
+                  - text: i
+                    attr: 3
+                  - text: " is greater than "
+                    attr: 1
+                  - text: tv.NofTabs()
+                    attr: 3
+                  - text: " then then number of tabs in "
+                    attr: 1
+                  - text: tv
+                    attr: 3
+                  - text: " is increased, if not, the prevous tab at position "
+                    attr: 1
+                  - text: i
+                    attr: 3
+                  - text: " is overwritten. A deep copy of "
+                    attr: 1
+                  - text: v
+                    attr: 3
+                  - text: " is made before it is added to "
+                    attr: 1
+                  - text: tv
+                    attr: 3
+                  - text: ".\r\rPre\ri >= 0\rlabel # \"\"\rv # NIL\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 5
+                  - text: "PROCEDURE (tv: View) "
+                    attr: 1
+                  - text: GetItem
+                    attr: 4
+                  - text: " (i: INTEGER; OUT label: Dialog.String; OUT v: Views.View)\rNEW\rRetrievs the label and the view for tab "
+                    attr: 1
+                  - text: i
+                    attr: 3
+                  - text: ".\r\rPre\ri >= 0\ri < tv.NofTabs()\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 5
+                  - text: "PROCEDURE (tv: View) "
+                    attr: 1
+                  - text: SetNofTabs
+                    attr: 4
+                  - text: " (nofTabs: INTEGER)\rNEW\rMakes sure that "
+                    attr: 1
+                  - text: nofTabs
+                    attr: 3
+                  - text: " tabs are available in "
+                    attr: 1
+                  - text: tv
+                    attr: 3
+                  - text: ".Note that "
+                    attr: 1
+                  - text: SetItem
+                    attr: 3
+                  - text: " also increases the number of tabs of the "
+                    attr: 1
+                  - text: View
+                    attr: 3
+                  - text: " if necessary, so "
+                    attr: 1
+                  - text: SetNofTabs
+                    attr: 3
+                  - text: " is strictly only necessary to decrease the number of tabs.\r\rPre\rnofTabs >= 0\r\rPost\rtv.NofTabs() = nofTabs\r\rPROCEDURE (tv: View) "
+                    attr: 1
+                  - text: NofTabs
+                    attr: 4
+                  - text: " (): INTEGER, NEW;\rNEW\rRetruns the number of tabs in "
+                    attr: 1
+                  - text: tv
+                    attr: 3
+                  - text: ".\r\rPost\rReturned value >= 0\r\rPROCEDURE (tv: View) "
+                    attr: 1
+                  - text: SetIndex
+                    attr: 4
+                  - text: " (i: INTEGER)\rNEW\rSets the current tab in "
+                    attr: 1
+                  - text: "tv, "
+                    attr: 3
+                  - text: "updates the view. The notifier is not called when tabs are changed by a call to "
+                    attr: 1
+                  - text: SetIndex
+                    attr: 3
+                  - text: ".\r\rPre\ri >= 0\ri < tv.NofTabs()\r\rPost\rtv.Index() = i\r\rPROCEDURE (tv: View) "
+                    attr: 1
+                  - text: Index
+                    attr: 4
+                  - text: " (): INTEGER\rNEW\rReturns the index of the currently selected tab. The index is updated whenever a user clicks on a tab or whenever "
+                    attr: 1
+                  - text: SetIndex
+                    attr: 3
+                  - text: " is called.\r\rPost\rReturned value is >= 0 and < tv.NofTabs()\r\rPROCEDURE (tv: View) "
+                    attr: 1
+                  - text: SetNotifier
+                    attr: 4
+                  - text: " (IN notifier: ARRAY OF CHAR)\rNEW\rSets the notifier of "
+                    attr: 1
+                  - text: tv
+                    attr: 3
+                  - text: " to be "
+                    attr: 1
+                  - text: notifier
+                    attr: 3
+                  - text: ". "
+                    attr: 1
+                  - text: notifier
+                    attr: 3
+                  - text: " = \"\" is permitted and it is interpreted as meaning that "
+                    attr: 1
+                  - text: tv
+                    attr: 3
+                  - text: " has no notifer. For more information about notifiers, see the chapter "
+                    attr: 1
+                  - text: About Notifiers
+                    attr: 3
+                  - text: " above.\r\rPROCEDURE (tv: View) "
+                    attr: 1
+                  - text: GetNotifier
+                    attr: 4
+                  - text: " (OUT notifier: Dialog.String)\rNEW\rSets "
+                    attr: 1
+                  - text: notifier
+                    attr: 3
+                  - text: " to the value of the notifier of "
+                    attr: 1
+                  - text: tv
+                    attr: 3
+                  - text: ". "
+                    attr: 1
+                  - text: notifer
+                    attr: 3
+                  - text: " is the empty string if "
+                    attr: 1
+                  - text: tv
+                    attr: 3
+                  - text: " doesn't have a notifier.\r\rTYPE "
+                    attr: 1
+                  - text: Directory
+                    attr: 4
+                  - text: " \rABSTRACT\rDirectory type for "
+                    attr: 1
+                  - text: StdTabViews
+                    attr: 3
+                  - text: .
+                    attr: 1
+                  - text: View.
+                    attr: 3
+                  - text: "\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: New
+                    attr: 4
+                  - text: " (): View\rNEW, ABSTRACT\rAllocates and returns a new "
+                    attr: 1
+                  - text: "View.\r\r"
+                    attr: 3
+                  - text: "TYPE "
+                    attr: 1
+                  - text: NotifierProc
+                    attr: 4
+                  - text: " = PROCEDURE (tv: View; from, to: INTEGER)\rStdTabViews notification commands must have this signature. Through calls of notification procedures, an application can be notified when the selected tab of a "
+                    attr: 1
+                  - text: "StdTabViews.View "
+                    attr: 3
+                  - text: "is changed due to user interaction. The parameters have the following meaning:\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      lead: 11500
+                      asc: 121900
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 288000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "tv \t= the StdTabViews.View where the tab was changed.\rfrom\t= the selected tab before the change. Has the value "
+                    attr: 1
+                  - text: noTab
+                    attr: 3
+                  - text: " when the notifier is called from Internalize.\rto \t= the new selected tab.\r\rVAR "
+                    attr: 1
+                  - text: "dir-, stdDir-"
+                    attr: 4
+                  - text: ": Directory\tdir # NIL  &  stdDir # NIL\rDirectories for creating "
+                    attr: 1
+                  - text: StdTabViews
+                    attr: 3
+                  - text: .
+                    attr: 1
+                  - text: Views.
+                    attr: 3
+                  - text: "\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetDir
+                    attr: 4
+                  - text: " (d: Directory)\rSet directory.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Deposit
+                    attr: 4
+                  - text: "\rAllocate a new "
+                    attr: 1
+                  - text: View
+                    attr: 3
+                  - text: " using "
+                    attr: 1
+                  - text: dir.New
+                    attr: 3
+                  - text: ", adds two tabs to it and deposits it.\r\rPROCEDURE "
+                    attr: 1
+                  - text: "This "
+                    attr: 4
+                  - text: "(v: Views.View): View\rTraverserses view v and all its contained views (if any) and returns the first "
+                    attr: 1
+                  - text: StdTabViews.View
+                    attr: 3
+                  - text: " that is found. If no "
+                    attr: 1
+                  - text: "StdTabViews.View "
+                    attr: 3
+                  - text: "is found then NIL is returned.\r\rPre\rv # NIL\r\rPROCEDURE "
+                    attr: 1
+                  - text: "Focus "
+                    attr: 4
+                  - text: "(): View\rSearches for "
+                    attr: 1
+                  - text: "a StdTabViews.View "
+                    attr: 3
+                  - text: "along the focus path. If one is found it is returned, if not NIL is returned. If more than one "
+                    attr: 1
+                  - text: StdTabViews.View
+                    attr: 3
+                  - text: " exists in the focus path it is undefinied which one will be returned.\r\rPROCEDURE "
+                    attr: 1
+                  - text: "BeginChanges "
+                    attr: 4
+                  - text: "(tv: View)\rDisables update of "
+                    attr: 1
+                  - text: tv
+                    attr: 3
+                  - text: " until a subsequent call to "
+                    attr: 1
+                  - text: EndChanges
+                    attr: 3
+                  - text: ". Each call to "
+                    attr: 1
+                  - text: BeginChanges
+                    attr: 3
+                  - text: " must be balanced by a call to "
+                    attr: 1
+                  - text: "EndChanges, "
+                    attr: 3
+                  - text: "otherwise a trap will occur (in "
+                    attr: 1
+                  - text: StdTabViews.BalanceAction.Do
+                    attr: 3
+                  - text: "). The calls may be nested. "
+                    attr: 1
+                  - text: BeginChanges
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: EndChanges
+                    attr: 3
+                  - text: " are provided to make it possible to do several changes to a "
+                    attr: 1
+                  - text: StdTabViews.View
+                    attr: 3
+                  - text: " without intermediate updates.\r\rPre\rNumber of calls to "
+                    attr: 1
+                  - text: BeginChanges
+                    attr: 3
+                  - text: " >= Number of calls to "
+                    attr: 1
+                  - text: EndChanges
+                    attr: 3
+                  - text: ", 20\r\rPROCEDURE "
+                    attr: 1
+                  - text: "EndChanges "
+                    attr: 4
+                  - text: "(tv: View)\rEnables update for "
+                    attr: 1
+                  - text: tv
+                    attr: 3
+                  - text: " again after a call to "
+                    attr: 1
+                  - text: BeginChanges
+                    attr: 3
+                  - text: ".\r\rPre\rNumber of calls to "
+                    attr: 1
+                  - text: BeginChanges
+                    attr: 3
+                  - text: " > Number of calls to "
+                    attr: 1
+                  - text: EndChanges
+                    attr: 3
+                  - text: ", 20\r\r\rThe following types, variables and procedures are only used internally to handle frames of "
+                    attr: 1
+                  - text: StdTabViews
+                    attr: 3
+                  - text: ":\r\rTYPE "
+                    attr: 1
+                  - text: Frame
+                    attr: 4
+                  - text: " = POINTER TO ABSTRACT RECORD (StdCFrames.Frame)\rTYPE "
+                    attr: 1
+                  - text: FrameDirectory
+                    attr: 4
+                  - text: " = POINTER TO ABSTRACT RECORD \r\rVAR "
+                    attr: 1
+                  - text: frameDir
+                    attr: 4
+                  - text: "-, "
+                    attr: 1
+                  - text: frameStdDir
+                    attr: 4
+                  - text: "-: FrameDirectory \r\rPROCEDURE "
+                    attr: 1
+                  - text: SetFrameDir
+                    attr: 4
+                  - text: " (d: FrameDirectory)\rPROCEDURE (f: Frame) "
+                    attr: 1
+                  - text: GetDispSize
+                    attr: 4
+                  - text: " (OUT x, y, w, h: INTEGER), NEW, ABSTRACT\rPROCEDURE (f: Frame) "
+                    attr: 1
+                  - text: InDispArea
+                    attr: 4
+                  - text: " (x, y: INTEGER): BOOLEAN, NEW, ABSTRACT\rPROCEDURE (f: Frame) "
+                    attr: 1
+                  - text: SetIndex
+                    attr: 4
+                  - text: " (i: INTEGER), NEW\rPROCEDURE (d: FrameDirectory) "
+                    attr: 1
+                  - text: GetTabSize
+                    attr: 4
+                  - text: " (VAR w, h: INTEGER), NEW, ABSTRACT\rPROCEDURE (d: FrameDirectory) "
+                    attr: 1
+                  - text: New
+                    attr: 4
+                  - text: " (): Frame, NEW, ABSTRACT\r\r\rThe following types, variables and procedures are only used for the property inspector of the "
+                    attr: 1
+                  - text: StdTabViews.View
+                    attr: 3
+                  - text: ":\r\rVAR "
+                    attr: 1
+                  - text: dlg
+                    attr: 4
+                  - text: ": RECORD \r\t\t\tname, notifier: Dialog.String"
+                    attr: 1
+                  - text: ;
+                    attr: 2
+                  - text: "\r\t\t\topt: INTEGER\r\t\tEND;"
+                    attr: 1
+                  - text: "\r\r"
+                    attr: 4
+                  - text: "PROCEDURE "
+                    attr: 1
+                  - text: AddTab
+                    attr: 4
+                  - text: "\rPROCEDURE "
+                    attr: 1
+                  - text: Delete
+                    attr: 4
+                  - text: "\rPROCEDURE "
+                    attr: 1
+                  - text: DeleteGuard
+                    attr: 4
+                  - text: " (VAR par: Dialog.Par)\rPROCEDURE "
+                    attr: 1
+                  - text: InitDialog
+                    attr: 4
+                  - text: "\rPROCEDURE "
+                    attr: 1
+                  - text: LabelGuard
+                    attr: 4
+                  - text: " (VAR par: Dialog.Par)\rPROCEDURE "
+                    attr: 1
+                  - text: LayoutModeGuard
+                    attr: 4
+                  - text: " (VAR par: Dialog.Par);\rPROCEDURE "
+                    attr: 1
+                  - text: Left
+                    attr: 4
+                  - text: "\rPROCEDURE "
+                    attr: 1
+                  - text: MaskModeGuard
+                    attr: 4
+                  - text: " (VAR par: Dialog.Par);\rPROCEDURE "
+                    attr: 1
+                  - text: ModeNotifier
+                    attr: 4
+                  - text: " (op, from, to: INTEGER);\rPROCEDURE "
+                    attr: 1
+                  - text: NewGuard
+                    attr: 4
+                  - text: " (VAR par: Dialog.Par)\rPROCEDURE "
+                    attr: 1
+                  - text: NotifierGuard
+                    attr: 4
+                  - text: " (VAR par: Dialog.Par)\rPROCEDURE "
+                    attr: 1
+                  - text: Rename
+                    attr: 4
+                  - text: "\rPROCEDURE "
+                    attr: 1
+                  - text: RenameGuard
+                    attr: 4
+                  - text: " (VAR par: Dialog.Par)\rPROCEDURE "
+                    attr: 1
+                  - text: Right
+                    attr: 4
+                  - text: "\rPROCEDURE "
+                    attr: 1
+                  - text: SetGuard
+                    attr: 4
+                  - text: " (VAR par: Dialog.Par)\rPROCEDURE "
+                    attr: 1
+                  - text: SetNotifier
+                    attr: 4
+                  - text: "\r\rThe following variable is only used internally:\r\rVAR "
+                    attr: 1
+                  - text: setFocus
+                    attr: 4
+                  - text: ": BOOLEAN\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 207021
+          bodyLen: 8

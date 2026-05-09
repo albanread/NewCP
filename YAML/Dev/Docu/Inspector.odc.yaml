@@ -1,0 +1,243 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Dev\\Docu\\Inspector.odc"
+  size: 4338
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 4207
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 4021
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 3935
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 114300
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 9
+                bodyPos: 4056
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 3542
+                runListLen: 813
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 139700
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 139700
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [4]
+                    font: Arial
+                    size: 139700
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                flow:
+                  - ruler:
+                      left: 0
+                      right: 0
+                      lead: 11500
+                      asc: 121900
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000001
+                      attr: 0
+                      w: 360000000
+                      h: 444500
+                  - text: DevInspector
+                    attr: 1
+                  - text: "\r\r"
+                    attr: 2
+                  - text: "DEFINITION DevInspector;\r\r\tIMPORT Dialog;\r\r\tVAR\r\t\tinspect: RECORD\r\t\t\tcontrol-: Dialog.String;\r\t\t\tlabel: ARRAY 40 OF CHAR;\r\t\t\tlink, guard, notifier: Dialog.String;\r\t\t\tlevel: INTEGER;\r\t\t\topt0, opt1, opt2, opt3, opt4: BOOLEAN\r\t\tEND;\r\r\tPROCEDURE GetNext;\r\tPROCEDURE Set;\r\tPROCEDURE InitDialog;\r\tPROCEDURE ControlGuard (VAR par: Dialog.Par);\r\tPROCEDURE GuardGuard (VAR par: Dialog.Par);\r\tPROCEDURE LabelGuard (VAR par: Dialog.Par);\r\tPROCEDURE LevelGuard (VAR par: Dialog.Par);\r\tPROCEDURE LinkGuard (VAR par: Dialog.Par);\r\tPROCEDURE OptGuard (opt: INTEGER; VAR par: Dialog.Par);\r\tPROCEDURE NotifierGuard (VAR par: Dialog.Par);\r\tPROCEDURE Notifier (idx, op, from, to: INTEGER);\r\rEND DevInspector."
+                    attr: 3
+                  - text: "\r\r\rThe inspector makes it possible to inspect and modify properties of a control. Currently, various types of controls are supported: command buttons, check boxes, radio buttons, edit fields, date fields, time fields, color fields, up/down-fields list boxes, selection boxes, combo boxes, and groups.\r\rThe inspector is opened with the "
+                    attr: 2
+                  - text: "Edit->Object Properties..."
+                    attr: 4
+                  - text: " command (Windows) / "
+                    attr: 2
+                  - text: "Edit->Part Info"
+                    attr: 4
+                  - text: " command (Mac OS). It takes a singleton control as input (-> Controls). Starting the inspector is done indirectly by the framework, using the "
+                    attr: 2
+                  - text: StdCmds.ShowProp
+                    attr: 4
+                  - text: " command.\r\r\rVAR "
+                    attr: 2
+                  - text: inspect
+                    attr: 0
+                  - text: ": RECORD\rInteractor for a control view property dialog.\r\r"
+                    attr: 2
+                  - text: control
+                    attr: 0
+                  - text: "-: Dialog.String\rThe control's name. This is the (possibly mapped) name of the control type.\r\r"
+                    attr: 2
+                  - text: label
+                    attr: 0
+                  - text: ": ARRAY 40 OF CHAR\rLabel string of the control.\r\r"
+                    attr: 2
+                  - text: link
+                    attr: 0
+                  - text: ": Dialog.String\rLink to the interactor field, in the form "
+                    attr: 2
+                  - text: module.variable.field
+                    attr: 4
+                  - text: ".\r\r"
+                    attr: 2
+                  - text: guard
+                    attr: 0
+                  - text: ": Dialog.String\rName of the control's guard command.\r\r"
+                    attr: 2
+                  - text: notifier
+                    attr: 0
+                  - text: ": Dialog.String\rName of the control's notifier command.\r\r"
+                    attr: 2
+                  - text: level
+                    attr: 0
+                  - text: ": INTEGER\rIff the value of a radio button is equal to level, the radio button is \"on\".\r\r"
+                    attr: 2
+                  - text: "opt0, opt1, opt2, opt3, opt3"
+                    attr: 0
+                  - text: ": BOOLEAN\rVarious options which depend on the currently selected control. For example, a command button uses "
+                    attr: 2
+                  - text: opt0
+                    attr: 4
+                  - text: " and "
+                    attr: 2
+                  - text: opt1
+                    attr: 4
+                  - text: " to indicate the \"default\" or \"cancel\" properties.\r\rPROCEDURE "
+                    attr: 2
+                  - text: GetNext
+                    attr: 0
+                  - text: "\rShow the next control in this container. After the last control, "
+                    attr: 2
+                  - text: GetNext
+                    attr: 4
+                  - text: " wraps around to the first control.\r\rPROCEDURE "
+                    attr: 2
+                  - text: Set
+                    attr: 0
+                  - text: "\rSet the control's properties to the currently displayed values.\r\rPROCEDURE "
+                    attr: 2
+                  - text: InitDialog
+                    attr: 0
+                  - text: "\rSets up the interactor according to the currently selected control.\r\rPROCEDURE "
+                    attr: 2
+                  - text: ControlGuard
+                    attr: 0
+                  - text: " (VAR par: Dialog.Par)\rPROCEDURE "
+                    attr: 2
+                  - text: GuardGuard
+                    attr: 0
+                  - text: " (VAR par: Dialog.Par)\rPROCEDURE "
+                    attr: 2
+                  - text: LabelGuard
+                    attr: 0
+                  - text: " (VAR par: Dialog.Par)\rPROCEDURE "
+                    attr: 2
+                  - text: LevelGuard
+                    attr: 0
+                  - text: " (VAR par: Dialog.Par)\rPROCEDURE "
+                    attr: 2
+                  - text: LinkGuard
+                    attr: 0
+                  - text: " (VAR par: Dialog.Par)\rPROCEDURE "
+                    attr: 2
+                  - text: OptGuard
+                    attr: 0
+                  - text: " (opt: INTEGER; VAR par: Dialog.Par)\rPROCEDURE "
+                    attr: 2
+                  - text: NotifierGuard
+                    attr: 0
+                  - text: " (VAR par: Dialog.Par)\rPROCEDURE "
+                    attr: 2
+                  - text: Notifier
+                    attr: 0
+                  - text: " (idx, op, from, to: INTEGER)\rVarious guards and notifiers used in the inspector dialog.\r"
+                    attr: 2
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 13
+          bodyPos: 4303
+          bodyLen: 8

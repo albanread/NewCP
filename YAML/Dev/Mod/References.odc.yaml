@@ -1,0 +1,256 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Dev\\Mod\\References.odc"
+  size: 8027
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 7896
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 7710
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 7624
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 127000
+                dsc: 25400
+                grid: 152400
+                opts: 0x00000021
+              defaultAttr:
+                font: Geneva
+                size: 114300
+                color: 0x00000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 24
+                bodyPos: 7744
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 7230
+                runListLen: 1884
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE DevReferences;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- 20141027, center #19, full Unicode support for Component Pascal identifiers added\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\t\r\tIMPORT\r\t\tKernel, Strings, Files, Fonts, Models, Views, Dialog, Containers,\r\t\tStdDialog,\r\t\tTextModels, TextMappers, TextViews, TextControllers;\r\t\r\tCONST\r\t\t(* additional scanner types *)\r\t\timport = 100; module = 101; semicolon = 102; becomes  = 103; comEnd = 104;\r\r\r\tPROCEDURE SpecialFont (r: TextModels.Reader): BOOLEAN;\r\t\tCONST max = 14 * Fonts.point;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " (r.attr.font.weight > Fonts.normal) & (r.attr.font.size <= max)\r\tEND SpecialFont;\r\t\r\tPROCEDURE SearchIdent (\r\t\tt: TextModels.Model; ident: TextMappers.String; VAR beg, end: INTEGER; bold: BOOLEAN\r\t);\r\t\tVAR r: TextModels.Reader; found: BOOLEAN; ch: CHAR; len, i: INTEGER;\r\tBEGIN\r\t\tend := 0;\r\t\tIF ident # \"\" THEN\r\t\t\tlen := 0; WHILE ident[len] # 0X DO INC(len) END;\r\t\t\tr := t.NewReader(NIL); found := FALSE;\r\t\t\tbeg := 0; r.SetPos(0); r.ReadChar(ch);\r\t\t\tWHILE ~r.eot & ~found DO\r\t\t\t\t"
+                    attr: 0
+                  - text: "(* search legal start symbol *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tWHILE ~r.eot & ((ch < \"A\") OR (ch > \"Z\") & (ch # \"_\") & (ch < \"a\") OR (ch > \"z\")) DO\r\t\t\t\t\tINC(beg); r.ReadChar(ch)\r\t\t\t\tEND;\r\t\t\t\ti := 0;\r\t\t\t\tWHILE ~r.eot & (~bold OR SpecialFont(r)) & (i # len) & (ch = ident[i]) DO\r\t\t\t\t\tr.ReadChar(ch); INC(i)\r\t\t\t\tEND;\r\t\t\t\tfound := (i = len) & ~Strings.IsIdent(ch);\r\t\t\t\tIF ~r.eot & ~found THEN\t"
+                    attr: 0
+                  - text: "(* skip rest of identifier *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tbeg := r.Pos() - 1;\r\t\t\t\t\tWHILE ~r.eot & Strings.IsIdent(ch) DO\r\t\t\t\t\t\tINC(beg); r.ReadChar(ch)\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tIF found THEN end := r.Pos() - 1 END\r\t\tEND\r\tEND SearchIdent;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ShowText
+                    attr: 3
+                  - text: "* (module, ident: TextMappers.String; category: Files.Name);\r\t\tVAR title: Views.Title; loc: Files.Locator; name: Files.Name;\r\t\t\tv: Views.View; m: Models.Model; t: TextModels.Model; beg, end: INTEGER; c: Containers.Controller;\r\tBEGIN\r\t\tStdDialog.GetSubLoc(module, category, loc, name); title := name$;\r\t\tKernel.MakeFileName(name, \"\");\r\t\tIF category = \"Docu\" THEN\r\t\t\tloc.res := 77; v := Views.OldView(loc, name); loc.res := 0;\r\t\t\tIF v # NIL THEN\r\t\t\t\tWITH v: Containers.View DO\r\t\t\t\t\tc := v.ThisController();\r\t\t\t\t\tIF c # NIL THEN\r\t\t\t\t\t\tc.SetOpts(c.opts - {Containers.noFocus, Containers.noSelection} + {Containers.noCaret})\r\t\t\t\t\tEND\r\t\t\t\tELSE\r\t\t\t\tEND;\r\t\t\t\tViews.OpenAux(v, title)\r\t\t\tEND\r\t\tELSE\r\t\t\tv := Views.OldView(loc, name);\r\t\t\tIF v # NIL THEN Views.Open(v, loc, name, NIL) END\r\t\tEND;\r\t\tIF v # NIL THEN\r\t\t\tm := v.ThisModel();\r\t\t\tIF (m # NIL) & (m IS TextModels.Model) THEN\r\t\t\t\tt := m(TextModels.Model);\r\t\t\t\tSearchIdent(t, ident, beg, end, TRUE);\r\t\t\t\tIF end <= 0 THEN SearchIdent(t, ident, beg, end, FALSE) END;\r\t\t\t\tIF end > 0 THEN\r\t\t\t\t\tTextViews.ShowRange(t, beg, end, TextViews.any);\r\t\t\t\t\tTextControllers.SetSelection(t, beg, end)\r\t\t\t\tELSIF ident # \"\" THEN Dialog.Beep\r\t\t\t\tEND\r\t\t\tELSE Dialog.ShowMsg(\"#System:WrongSelection\")\r\t\t\tEND\r\t\tELSE Dialog.ShowParamMsg(\"#System:FileNotFound\", name, \"\", \"\")\r\t\tEND\r\tEND ShowText;\r\t\r\tPROCEDURE Scan (VAR s: TextMappers.Scanner);\r\tBEGIN\r\t\ts.Scan;\r\t\tIF s.type = TextMappers.string THEN\r\t\t\tIF s.string = \"IMPORT\" THEN s.type := import\r\t\t\tELSIF s.string = \"MODULE\" THEN s.type := module\r\t\t\tEND\r\t\tELSIF s.type = TextMappers.char THEN\r\t\t\tIF s.char = \";\" THEN s.type := semicolon\r\t\t\tELSIF s.char = \":\" THEN\r\t\t\t\tIF s.rider.char = \"=\" THEN s.rider.Read; s.type := becomes END\r\t\t\tELSIF s.char = \"(\" THEN\r\t\t\t\tIF s.rider.char = \"*\" THEN\r\t\t\t\t\ts.rider.Read;\r\t\t\t\t\tREPEAT Scan(s) UNTIL (s.type = TextMappers.eot) OR (s.type = comEnd);\r\t\t\t\t\tScan(s)\r\t\t\t\tEND\r\t\t\tELSIF s.char = \"*\" THEN\r\t\t\t\tIF s.rider.char = \")\" THEN s.rider.Read; s.type := comEnd END\r\t\t\tEND\r\t\tEND\t\r\tEND Scan;\r\t\r\tPROCEDURE CheckModName (VAR mod: TextMappers.String; t: TextModels.Model);\r\t\tVAR s: TextMappers.Scanner;\r\tBEGIN\r\t\ts.ConnectTo(t); s.SetPos(0); Scan(s);\r\t\tIF s.type = module THEN\r\t\t\tScan(s);\r\t\t\tWHILE (s.type # TextMappers.eot) & (s.type # import) DO Scan(s) END;\r\t\t\tWHILE (s.type # TextMappers.eot) & (s.type # semicolon)\r\t\t\t\t\t& ((s.type # TextMappers.string) OR (s.string # mod)) DO Scan(s) END;\r\t\t\tIF s.type = TextMappers.string THEN\r\t\t\t\tScan(s);\r\t\t\t\tIF s.type = becomes THEN\r\t\t\t\t\tScan(s);\r\t\t\t\t\tIF s.type = TextMappers.string THEN\r\t\t\t\t\t\tmod := s.string$\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND CheckModName;\r\r\tPROCEDURE Show (category: Files.Name);\r\t\tVAR c: TextControllers.Controller; s: TextMappers.Scanner; beg, end: INTEGER;\r\t\t\tmodule, ident: TextMappers.String;\r\tBEGIN\r\t\tc := TextControllers.Focus();\r\t\tIF c # NIL THEN\r\t\t\tIF c.HasSelection() THEN\r\t\t\t\tc.GetSelection(beg, end);\r\t\t\t\ts.ConnectTo(c.text); s.SetOpts({7});\t"
+                    attr: 0
+                  - text: "(* acceptUnderscores *)"
+                    attr: 1
+                  - text: "\r\t\t\t\ts.SetPos(beg); s.Scan;\r\t\t\t\tIF s.type = TextMappers.string THEN\r\t\t\t\t\tmodule := s.string; ident := \"\";\r\t\t\t\t\tCheckModName(module, c.text);\r\t\t\t\t\ts.Scan;\r\t\t\t\t\tIF (s.type = TextMappers.char) & (s.char = \".\") THEN\r\t\t\t\t\t\ts.Scan;\r\t\t\t\t\t\tIF s.type = TextMappers.string THEN ident := s.string END\r\t\t\t\t\tEND;\r\t\t\t\t\tShowText(module, ident, category)\r\t\t\t\tELSE Dialog.ShowMsg(\"#System:WrongSelection\")\r\t\t\t\tEND\r\t\t\tELSE Dialog.ShowMsg(\"#System:NoSelection\")\r\t\t\tEND\r\t\tELSE Dialog.ShowMsg(\"#System:NoFocus\")\r\t\tEND\r\tEND Show;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ShowSource
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tShow(\"Mod\")\r\tEND ShowSource;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ShowDocu
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tShow(\"Docu\")\r\tEND ShowDocu;\r\rEND DevReferences.\r\r"
+                    attr: 0
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 23
+                      bodyPos: 2258
+                      bodyLen: 6
+                    attr: 0
+                    w: 168275
+                    h: 142875
+                  - text: " DevReferences.Show\r\rFiles.Directory\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 28
+          bodyPos: 7992
+          bodyLen: 8

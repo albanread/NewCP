@@ -1,0 +1,231 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Std\\Docu\\Headers.odc"
+  size: 6591
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 6460
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 6274
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 6188
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                lead: 11500
+                asc: 134600
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 6
+                bodyPos: 6188
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 5674
+                runListLen: 526
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: StdHeaders
+                    attr: 0
+                  - text: "\r\rDEFINITION StdHeaders;\r\r\tIMPORT Dialog, Views, Fonts, Properties;\r\r\tCONST alternate = 0; number = 1; head = 2; foot = 3; showFoot = 4;\r\r\tTYPE\r\t\tProp = POINTER TO RECORD (Properties.Property)\r\t\t\talternate: BOOLEAN;\r\t\t\tshowFoot: BOOLEAN;\r\t\t\tnumber: NumberInfo;\r\t\t\thead, foot: Banner\r\t\tEND;\r\r\t\tBanner = RECORD \r\t\t\tleft, right: ARRAY 128 OF CHAR;\r\t\t\tgap: INTEGER\r\t\tEND;\r\r\t\tNumberInfo = RECORD \r\t\t\tnew: BOOLEAN;\r\t\t\tfirst: INTEGER\r\t\tEND;\r\r\tVAR\r\t\tdialog: RECORD \r\t\t\talternate, showFoot: BOOLEAN;\r\t\t\tnumber: NumberInfo;\r\t\t\thead, foot: Banner\r\t\tEND;\r\r\tPROCEDURE New (p: Prop; f: Fonts.Font): Views.View;\r\tPROCEDURE Deposit;\r\tPROCEDURE InitDialog;\r\tPROCEDURE NewNumberGuard (VAR par: Dialog.Par);\r\tPROCEDURE AlternateGuard (VAR par: Dialog.Par);\r\tPROCEDURE HeaderGuard (VAR par: Dialog.Par);\r\tPROCEDURE Set;\r\rEND StdHeaders.\r\r\rThis module implements views that can be embedded in BlackBox texts, to provide page headers and/or footers upon printing.\r\rTypical menu command:\r\t\"Insert Header\"\t\"\"\t\"StdHeaders.Deposit; StdCmds.PasteView\"\t\"TextCmds.FocusGuard\"\r\rA header in a text is invisible, except if "
+                    attr: 1
+                  - text: "Text -> Show Marks"
+                    attr: 2
+                  - text: " has been executed. Selecting a header view and then executing "
+                    attr: 1
+                  - text: "Edit -> Show Properties..."
+                    attr: 2
+                  - text: " (or double-clicking on the view) opens a property sheet that allows to set the following properties:\r\r- \"alternate\": if checked, this option causes left and right pages to be distinguished, so that they can have different headers and footers.\r- \"Show Foot\": if checked, this option makes the header view display the footer, otherwise it displays the header (when it is visible at all).\r- \"Start with new page number\": if checked, the user can enter the page number for the page in which the view is embedded. It allows to change page numbering within a single document.\r- \"Right Head\", \"Right Foot\", \"Left Head\", \"Left Foot\": these are the properties of the right / left headers / footers. They are (one-line) strings. Optionally, these strings may contain macros, as described below.\r- \"Head gap\", \"Foot gap\": determines the distance between header/footer and the text area, in points.\r- \"Font...\": allows to set the font that is used for the headers and footers.\r\rThe following macros can be used in the header/footer strings:\r\r\t&p - replaced by current page number as arabic numeral\r\t&r - replaced by current page number as roman numeral\r\t&R - replaced by current page number as capital roman numeral\r\t&a - replaced by current page number as alphanumeric character\r\t&A - replaced by current page number as capital alphanumeric character\r\t&d - replaced by printing date \r\t&t - replaced by printing time\r\t&& - replaced by & character\r\t&; - specifies split point\r\t&f - filename with path/title\r\rThese macros are evaluated upon printing (or upon display, when the header view is visible). The macro \"&;\" indicates a split point, which is a position in the string where the string can be broken apart to allow for a better layout. For example, the string \"Left margin&;Right margin\" allows the string part \"Left margin\" to be positioned at the left side of the page, and the string \"Right margin\" at the right side of the page. The split point becomes a kind of \"elastic spring\" that pushes the left and right string parts apart.\r\r\rCONST "
+                    attr: 1
+                  - text: "alternate, number, head, foot, showFoot"
+                    attr: 3
+                  - text: "\rProperty numbers for the properties that are supported by header views.\r\r\rTYPE "
+                    attr: 1
+                  - text: Prop (Properties.Property)
+                    attr: 3
+                  - text: "\rProperty descriptor for header views.\r\r"
+                    attr: 1
+                  - text: alternate
+                    attr: 3
+                  - text: ": BOOLEAN\rDetermines whether left and right pages have their own headers/footers.\r\r"
+                    attr: 1
+                  - text: showFoot
+                    attr: 3
+                  - text: ": BOOLEAN\rDetermines whether a visible header view shows the header or the footer.\r\r"
+                    attr: 1
+                  - text: number
+                    attr: 3
+                  - text: ": NumberInfo\rDetermines the way in which page numbers are shown.\r\r"
+                    attr: 1
+                  - text: "head, foot"
+                    attr: 3
+                  - text: ": Banner\rDetermines the way in which headers and footers are shown.\r\r\rTYPE "
+                    attr: 1
+                  - text: Banner
+                    attr: 3
+                  - text: "\rDetermines the header or footer of a page (or pair of pages if \"alternate\" is chosen).\r\r"
+                    attr: 1
+                  - text: "left, right"
+                    attr: 3
+                  - text: ": ARRAY 128 OF CHAR\rStrings for the left and right header/footer. Supports macros as described at the beginning of this text.\r\r"
+                    attr: 1
+                  - text: gap
+                    attr: 3
+                  - text: ": INTEGER\tgap >= 0\rDistance between header/footer and the body of the text.\r\r\rTYPE "
+                    attr: 1
+                  - text: NumberInfo
+                    attr: 3
+                  - text: "\rDetermines the way pages are numbered.\r\r"
+                    attr: 1
+                  - text: new
+                    attr: 3
+                  - text: ": BOOLEAN\rDetermines whether page numbering starts anew, using the page number "
+                    attr: 1
+                  - text: first
+                    attr: 2
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: first
+                    attr: 3
+                  - text: ": INTEGER\tfirst >= 0\rThe starting page number that is used for the page in which the header view is embedded.\r\r\rVAR "
+                    attr: 1
+                  - text: dialog
+                    attr: 3
+                  - text: "\rInteractor for the property sheet.\r\r"
+                    attr: 1
+                  - text: alternate
+                    attr: 3
+                  - text: ": BOOLEAN\rDetermines whether left and right pages have their own headers/footers.\r\r"
+                    attr: 1
+                  - text: showFoot
+                    attr: 3
+                  - text: ": BOOLEAN\rDetermines whether a visible header view shows the header or the footer.\r\r"
+                    attr: 1
+                  - text: number
+                    attr: 3
+                  - text: ": NumberInfo\rDetermines the way in which page numbers are shown.\r\r"
+                    attr: 1
+                  - text: "head, foot"
+                    attr: 3
+                  - text: ": Banner\rDetermines the way in which headers and footers are shown.\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: New
+                    attr: 3
+                  - text: " (p: Prop; f: Fonts.Font): Views.View\rCreate a new header view with the given properties.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Deposit
+                    attr: 3
+                  - text: "\rDeposit command for header views.\r\rThe following procedures are used for the property sheet ("
+                    attr: 1
+                  - text: Std/Rsrc/Headers
+                    attr: 2
+                  - text: ").\rPROCEDURE "
+                    attr: 1
+                  - text: InitDialog
+                    attr: 3
+                  - text: "\rPROCEDURE "
+                    attr: 1
+                  - text: NewNumberGuard
+                    attr: 3
+                  - text: " (VAR par: Dialog.Par)\rPROCEDURE "
+                    attr: 1
+                  - text: AlternateGuard
+                    attr: 3
+                  - text: " (VAR par: Dialog.Par)\rPROCEDURE "
+                    attr: 1
+                  - text: HeaderGuard
+                    attr: 3
+                  - text: " (VAR par: Dialog.Par)\rPROCEDURE "
+                    attr: 1
+                  - text: Set
+                    attr: 3
+                  - text: "\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 10
+          bodyPos: 6556
+          bodyLen: 8

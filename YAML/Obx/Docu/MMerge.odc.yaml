@@ -1,0 +1,253 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Docu\\MMerge.odc"
+  size: 6986
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 6855
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 6669
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 6583
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 152400
+                dsc: 25400
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 14
+                bodyPos: 6583
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 6069
+                runListLen: 2097
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "Overview by Example: ObxMailMerge"
+                    attr: 0
+                  - text: "\r\rWhen a business wants to communicate something to all its customers, e.g. the announcement of a new product, it can send out "
+                    attr: 1
+                  - text: form letters
+                    attr: 2
+                  - text: " to all its existing customers. Each such letter has the same contents, except for a few differences like the name and address of the respective customer. "
+                    attr: 1
+                  - text: Mail merge
+                    attr: 2
+                  - text: " is the process of creating these form letters out of a letter template and a customer database.\r\rThis example shows how the BlackBox Component Builder's built-in text component can be used to implement a simple mail merge extension.\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 5
+                      bodyPos: 660
+                      bodyLen: 1106
+                    attr: 1
+                    w: 3581390
+                    h: 3619490
+                  - text: "\rFigure 1. Mail Merge Process\r\rThe following menu command is installed in menu "
+                    attr: 1
+                  - text: Obx
+                    attr: 2
+                  - text: ", to simplify trying out this example:\r\t...\r\t\"Merge...\"\t\"\"\t\"ObxMMerge.Merge\"\t\"TextCmds.FocusGuard\"\r\t...\r\rBefore you execute "
+                    attr: 1
+                  - text: "Obx->Merge..."
+                    attr: 2
+                  - text: ", you need to open a mail merge template. For example, the following "
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenDoc('Obx/Samples/mmTmpl')"
+                      body:
+                        - text: template document
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r(Obx/Samples/MMTmpl) and then execute the "
+                    attr: 1
+                  - text: "Obx->Merge..."
+                    attr: 2
+                  - text: " command. A dialog box will ask you for the address database: open the mail merge "
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenDoc('Obx/Samples/mmData')"
+                      body:
+                        - text: data document
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: " (Obx/Samples/MMData).\r\rAs a result, a new text is created which contains a sequence of form letters. When you execute the "
+                    attr: 1
+                  - text: Show Marks
+                    attr: 2
+                  - text: " command in the "
+                    attr: 1
+                  - text: Text
+                    attr: 2
+                  - text: " menu, you'll note that the individual letters are separated by page-breaking rulers (the right-most icon in a ruler).\r\rNow let's take a closer look at how the program is implemented. There is one command called "
+                    attr: 1
+                  - text: Merge
+                    attr: 2
+                  - text: ", which fetches the template text (the focus), searches for place holders in this text (the fields of the template), then lets the user open the database text, determines for each template field which column of the database text corresponds to the field, creates a new output text, adds an instance of the letter template for every row of the database text, and finally opens the text in a window.\r\rMODULE ObxMailMerge;\r\r\tPROCEDURE TmplFields (t: TextModels.Model): Field;\r\tPROCEDURE ThisDatabase (): TextModels.Model;\r\tPROCEDURE MergeFields (f: Field; t: TextModels.Model);\r\tPROCEDURE ReadTuple (f: Field; r: TextModels.Reader);\r\tPROCEDURE AppendInstance (f: Field; data, tmpl, out: TextModels.Model);\r\tPROCEDURE "
+                    attr: 1
+                  - text: Merge
+                    attr: 4
+                  - text: "*;\r\rEND ObxMailMerge.\t\r\rListing 2. Outline of the ObxMMerge Program\r\rThere are five auxiliary procedures which are called by "
+                    attr: 1
+                  - text: Merge
+                    attr: 2
+                  - text: ":\r\r"
+                    attr: 1
+                  - text: TmplFields
+                    attr: 2
+                  - text: " analyzes the template text, and returns a list of fields for this text. Each field describes a place holder with its name and its position in the text. Place holders are specified as names between \"<\" and \">\" characters, e.g., <Name>.\r\r"
+                    attr: 1
+                  - text: ThisDatabase
+                    attr: 2
+                  - text: " asks the user for a database document, and returns the text contained in this document.\r\r"
+                    attr: 1
+                  - text: MergeFields
+                    attr: 2
+                  - text: " determines for every template field the corresponding database column. To make this possible, the first row of the database text must contain the so-called "
+                    attr: 1
+                  - text: meta data
+                    attr: 2
+                  - text: " of the database. For mail merge applications, this is simply the symbolic name of every column, e.g., "
+                    attr: 1
+                  - text: Name
+                    attr: 2
+                  - text: " or "
+                    attr: 1
+                  - text: City
+                    attr: 2
+                  - text: ". This name must be identical to the name used in the template.\rEach row is terminated by a carriage return (0DX), and the fields of a row (i.e., the columns) are separated by tabs (09X).\r\r"
+                    attr: 1
+                  - text: ReadTuple
+                    attr: 2
+                  - text: " reads one row of the database text, and assigns the string occupied by one database field to every corresponding template field.\r\r"
+                    attr: 1
+                  - text: AppendInstance
+                    attr: 2
+                  - text: " appends a copy of the template text to the end of the output text, and then replaces all the place holders by the contents of their respective database fields. These replacements are done from the end of the appended text towards the beginning, so that from/to indices are not invalidated by replacements. This explains why the field list is built up in reverse order, last field first.\r\rNote that each replacement gets the text attributes of the first replaced character, i.e., if the place holder \"<"
+                    attr: 1
+                  - text: Name
+                    attr: 4
+                  - text: ">\" in bold face is replaced by the string \"Joe\", the resulting replacement will be '"
+                    attr: 1
+                  - text: Joe
+                    attr: 4
+                  - text: "\".\r\r"
+                    attr: 1
+                  - text: ObxMMerge
+                    attr: 2
+                  - text: " doesn't need to insert page-breaking rulers; instead, the template text contains such a ruler.\r\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenDoc('Obx/Mod/MMerge')"
+                      body:
+                        - text: ObxMMerge  sources
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 18
+          bodyPos: 6951
+          bodyLen: 8

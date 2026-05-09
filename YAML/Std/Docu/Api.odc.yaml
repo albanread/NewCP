@@ -1,0 +1,311 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Std\\Docu\\Api.odc"
+  size: 6080
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 5949
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 5763
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 5677
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                lead: 11500
+                asc: 121900
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 6
+                bodyPos: 5677
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 5163
+                runListLen: 726
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: StdApi
+                    attr: 0
+                  - text: "\r\rDEFINITION StdApi;\r\r\tIMPORT Views;\r\r\tPROCEDURE CloseDialog (OUT closedView: Views.View);\r\tPROCEDURE OpenAux (file, title: ARRAY OF CHAR; OUT v: Views.View);\r\tPROCEDURE OpenAuxDialog (file, title: ARRAY OF CHAR; OUT v: Views.View);\r\tPROCEDURE OpenBrowser (file, title: ARRAY OF CHAR; OUT v: Views.View);\r\tPROCEDURE OpenCopyOf (file: ARRAY OF CHAR; OUT v: Views.View);\r\tPROCEDURE OpenDoc (file: ARRAY OF CHAR; OUT v: Views.View);\r\tPROCEDURE OpenToolDialog (file, title: ARRAY OF CHAR; OUT v: Views.View);\r\rEND StdApi.\r\r\r"
+                    attr: 1
+                  - text: "StdApi "
+                    attr: 2
+                  - text: "is programming interface to many of the services provided by "
+                    attr: 1
+                  - text: StdCmds
+                    attr: 2
+                  - text: ". Since "
+                    attr: 1
+                  - text: StdCmds
+                    attr: 2
+                  - text: " is intended to be used in menus, hyperlinks etc., it is not always suitable as a programming interface. "
+                    attr: 1
+                  - text: StdApi
+                    attr: 2
+                  - text: " provides the exact same functionality but with a more \"programmable\" interface.\r\rPROCEDURE "
+                    attr: 1
+                  - text: "CloseDialog "
+                    attr: 3
+                  - text: "(OUT closedView: Views.View)\rThis command closes the currently focused window. If the window is a document window and its contents dirty, an error message will be displayed. The root view of the closed window is returned in "
+                    attr: 1
+                  - text: closedView
+                    attr: 2
+                  - text: ". If "
+                    attr: 1
+                  - text: CloseDialog
+                    attr: 2
+                  - text: " failed "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: " is returned.\r\rPROCEDURE "
+                    attr: 1
+                  - text: OpenAux
+                    attr: 3
+                  - text: " (file, title: ARRAY OF CHAR; OUT v: Views.View)\rTakes a file specification of a BlackBox document and a window title as parameters, and opens an auxiliary window with the specified title. Parameter "
+                    attr: 1
+                  - text: file
+                    attr: 2
+                  - text: " must be the path name of a file. The root view of the opened window is returned in "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: ". If "
+                    attr: 1
+                  - text: OpenAux
+                    attr: 2
+                  - text: " fails "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: " is returned in "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: ".\rAuxiliary windows are used for displaying temporary editable data.\r\rPROCEDURE "
+                    attr: 1
+                  - text: OpenAuxDialog
+                    attr: 3
+                  - text: " (file, title: ARRAY OF CHAR; OUT v: Views.View)\rTakes a file specification of a BlackBox document and a window title as parameters, and opens a dialog with the specified document. The dialog is opened as an auxiliary window. Parameter "
+                    attr: 1
+                  - text: file
+                    attr: 2
+                  - text: " must be the path name of a file. The root view of the opened window is returned in "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: ". If "
+                    attr: 1
+                  - text: OpenAuxDialog
+                    attr: 2
+                  - text: " fails "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: " is returned in "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: ".\rAuxiliary dialogs are used for self-contained dialogs, i.e., data entry masks or parameter entry masks for commands.\rIn contrast to "
+                    attr: 1
+                  - text: OpenAux
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: OpenAuxDialog
+                    attr: 2
+                  - text: " turns the opened document into "
+                    attr: 1
+                  - text: mask
+                    attr: 2
+                  - text: " mode if it is a container (-> Containers), and opens it into a dialog window if the underlying platform distinguishes between document and dialog windows (e.g. as in Windows).\r\rPROCEDURE "
+                    attr: 1
+                  - text: OpenBrowser
+                    attr: 3
+                  - text: " (file, title: ARRAY OF CHAR; OUT v: Views.View)\rTakes a file specification of a BlackBox document and a window title as parameters, and opens the specified document in an auxiliary window. The window contents is not editable, but can be selected. Parameter "
+                    attr: 1
+                  - text: file
+                    attr: 2
+                  - text: " must be the path name of a file. If the same file is already open in an existing browser document window, this window is brought to the top, instead of opening a new window. The root view of the opened window is returned in "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: ". If "
+                    attr: 1
+                  - text: OpenBrowser
+                    attr: 2
+                  - text: " fails "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: " is returned in "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: ".\rBrowser windows are used for displaying documentation. It is possible to select and copy out browser window contents. It is possible to apply find & replace commands, the "
+                    attr: 1
+                  - text: "Info->Interface"
+                    attr: 2
+                  - text: " command, etc.\r\rPROCEDURE "
+                    attr: 1
+                  - text: OpenCopyOf
+                    attr: 3
+                  - text: " (file: ARRAY OF CHAR; OUT v: Views.View)\rOpens a new document and uses the document specified by "
+                    attr: 1
+                  - text: file
+                    attr: 2
+                  - text: " as a template to initialize the new document. If successful the root view of the new document is returned in "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: " otherwise "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: " is returned in "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: ".\r\rPROCEDURE "
+                    attr: 1
+                  - text: OpenDoc
+                    attr: 3
+                  - text: " (file: ARRAY OF CHAR; OUT v: Views.View)\rTakes a file specification of a BlackBox document as parameter, and opens the document in a document window. Parameter "
+                    attr: 1
+                  - text: file
+                    attr: 2
+                  - text: " must be the path name of a file. If the same file is already open in an existing document window, this window is brought to the top, instead of opening a new window. The root view of the opened window (or window brought to the top) is returned in "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: ". If "
+                    attr: 1
+                  - text: OpenDoc
+                    attr: 2
+                  - text: " fails "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: " is returned in "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: ".\rDocument windows are used for displaying persistent editable data.\r\rPROCEDURE "
+                    attr: 1
+                  - text: OpenToolDialog
+                    attr: 3
+                  - text: " (file, title: ARRAY OF CHAR; OUT v: Views.View)\rTakes a file specification of an BlackBox document and a window title as parameters, and opens a dialog with the specified document. The dialog is opened as tool window. Parameter "
+                    attr: 1
+                  - text: file
+                    attr: 2
+                  - text: " must be the path name of a file. The root view of the opened window is returned in "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: ". If "
+                    attr: 1
+                  - text: OpenAuxDialog
+                    attr: 2
+                  - text: " fails "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: " is returned in "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: ".\rTool dialogs are used for dialogs which operate on document windows beneath them, e.g., a Find & Replace dialog which operates on a text under it. Otherwise it is identical to "
+                    attr: 1
+                  - text: OpenAuxDialog
+                    attr: 2
+                  - text: ".\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 10
+          bodyPos: 6045
+          bodyLen: 8

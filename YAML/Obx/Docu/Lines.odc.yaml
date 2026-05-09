@@ -1,0 +1,212 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Docu\\Lines.odc"
+  size: 5031
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 4900
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 4714
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 4628
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 152400
+                dsc: 25400
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 9
+                bodyPos: 4628
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 4114
+                runListLen: 661
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                flow:
+                  - text: "Overview by Example: ObxLines"
+                    attr: 0
+                  - text: "\r\rThis example implements a view which allows to draw lines with the mouse. Beyond line drawing, the only interaction with such a view is through the keyboard: some characters are interpreted as colors, e.g. typing in an \"r\" sets a view's foreground color (in which the lines are drawn) to red. These two operations certainly don't constitute a graphics editor yet, but can serve as a sketch for a more useful implementation. Full undo/redo of the two operations is supported, however.\r\rThe implementation of "
+                    attr: 1
+                  - text: ObxLines
+                    attr: 2
+                  - text: " is simple: there is a view, a model, and a line data structure. The model represents a view's graph, which consists of a linear list of lines. A line is described by its two end points "
+                    attr: 1
+                  - text: "(x0, y0)"
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: "(x1, y1)"
+                    attr: 2
+                  - text: ". Each view has its own independent foreground color. There is an operation for the entry of a line (a model operation), and an operation for the change of a foreground color (a view operation).\r\rWhen a line is entered (or the entry is undone), its bounding box is restored. For this purpose, a suitable update message is defined.\r\rThere are two interesting aspects of the "
+                    attr: 1
+                  - text: ObxLines
+                    attr: 2
+                  - text: " implementation:\r\rThe contents of a graph, i.e., the linear list of lines, is "
+                    attr: 1
+                  - text: immutable
+                    attr: 2
+                  - text: ". This means that a line which has been inserted in a graph is never modified again. The list may become longer by adding another line with the  mouse, but the existing line list itself remains unchanged. For example, an undo operation merely changes the graph to show a shorter piece of its line list, redo shows a larger piece of it again.\r\rAn immutable data structure has the nice property that it can be freely shared: copying can be implemented merely by letting another pointer point to the same data structure. There is no danger that someone inadvertently changes data belonging to someone else (aliasing problem). This property is used in the example below when copying the model.\r\rThe second interesting feature of "
+                    attr: 1
+                  - text: ObxLines
+                    attr: 2
+                  - text: " is the way "
+                    attr: 1
+                  - text: rubberbanding
+                    attr: 2
+                  - text: " is implemented. Rubberbanding is the feedback given when drawing a new line, as long as the mouse button is being held down. Procedure "
+                    attr: 1
+                  - text: HandleCtrlMsg
+                    attr: 2
+                  - text: " shows a typical implementation of such a mechanism: it consists of a polling loop, which repeatedly polls the mouse button's state. When the mouse has moved, the old rubberband line must be erased, and a new one must be drawn.\r\rErasing the old rubberband line is done using a temporary buffer. Before entering the polling loop, the frame's visible area is saved in the frame's buffer (one buffer per frame is supported). In the polling loop, when the rubberband line must be erased, its bounding box is restored from the buffer. After the polling loop, the last rubberband line is erased the same way, except that the temporary buffer is disposed of simultaneously.\r\rWith the "
+                    attr: 1
+                  - text: HandlePropMsg
+                    attr: 2
+                  - text: " procedure, the view indicates that it may be focused, so it can be edited in-place.\r\rThis view has a separate model. Because of this, it implements the \"model protocol\" of a view, i.e., the methods "
+                    attr: 1
+                  - text: CopyFromModelView
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: ThisModel
+                    attr: 2
+                  - text: ", and "
+                    attr: 1
+                  - text: HandleModelMsg
+                    attr: 2
+                  - text: ". "
+                    attr: 1
+                  - text: CopyFromModelView
+                    attr: 2
+                  - text: " is a model-oriented refinement of "
+                    attr: 1
+                  - text: CopyFrom
+                    attr: 2
+                  - text: "; it must be implemented instead of "
+                    attr: 1
+                  - text: CopyFrom
+                    attr: 2
+                  - text: ". "
+                    attr: 1
+                  - text: ThisModel
+                    attr: 2
+                  - text: " simply returns the view's model. "
+                    attr: 1
+                  - text: HandleModelMsg
+                    attr: 2
+                  - text: " receives a model update message and translates it into an update of a view's region, which eventually leads to a restoration of this region on the screen.\r\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenDoc('Obx/Mod/Lines')"
+                      body:
+                        - text: ObxLines  sources
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r\r"
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 8
+                      bodyPos: 1035
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: " \"ObxLines.Deposit; StdCmds.Open\"\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 13
+          bodyPos: 4996
+          bodyLen: 8

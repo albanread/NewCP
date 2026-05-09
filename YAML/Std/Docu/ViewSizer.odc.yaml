@@ -1,0 +1,197 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Std\\Docu\\ViewSizer.odc"
+  size: 2969
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 2838
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 2652
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 2566
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                lead: 11500
+                asc: 121900
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 7
+                bodyPos: 2566
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 2052
+                runListLen: 478
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 88900
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: StdViewSizer
+                    attr: 0
+                  - text: "\r\rDEFINITION StdViewSizer;\r\r\tIMPORT Dialog;\r\r\tVAR\r\t\tsize: RECORD \r\t\t\ttypeName-: Dialog.String;\r\t\t\tw, h: REAL\r\t\tEND;\r\r\tPROCEDURE InitDialog;\r\tPROCEDURE SetViewSize;\r\tPROCEDURE SizeGuard (VAR par: Dialog.Par);\r\tPROCEDURE UnitGuard (VAR par: Dialog.Par);\r\rEND StdViewSizer.\r\r\r"
+                    attr: 1
+                  - text: StdViewSizer
+                    attr: 2
+                  - text: " is a command package allowing the user to resize views embedded in containers by specifying width and height as numbers. This is useful whenever dragging view borders with the mouse is not precise enough. The command package works on any singleton view.\r\rFor entry in a menu, the following line is recommended:\r\r"
+                    attr: 1
+                  - text: "\"View Size...\"\t\"\"\t\"StdViewSizer.InitDialog; StdCmds.OpenToolDialog('Std/Rsrc/ViewSizer', 'View Size')\"\t\"StdCmds.SingletonGuard\""
+                    attr: 3
+                  - text: "\r\r\rVAR "
+                    attr: 1
+                  - text: size
+                    attr: 4
+                  - text: ": RECORD\rInteractor for setting the view size.\r\r"
+                    attr: 1
+                  - text: typeName
+                    attr: 4
+                  - text: "-: Dialog.String\rType of the current singleton view.\r\r"
+                    attr: 1
+                  - text: w
+                    attr: 4
+                  - text: ": INTEGER\rView width in cm or inch, depending on the value of "
+                    attr: 1
+                  - text: Dialog.metricSystem
+                    attr: 2
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: h
+                    attr: 4
+                  - text: ": INTEGER\rView height in cm or inch, depending on the value of "
+                    attr: 1
+                  - text: Dialog.metricSystem
+                    attr: 2
+                  - text: ".\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: InitDialog
+                    attr: 4
+                  - text: "\rInitialization command for "
+                    attr: 1
+                  - text: size
+                    attr: 2
+                  - text: " interactor.\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetViewSize
+                    attr: 4
+                  - text: "\rApplies the interactor values in "
+                    attr: 1
+                  - text: size
+                    attr: 2
+                  - text: ". To set up "
+                    attr: 1
+                  - text: size
+                    attr: 2
+                  - text: " to the selected view, "
+                    attr: 1
+                  - text: InitDialog
+                    attr: 2
+                  - text: " needs to be called first.\r\rPROCEDURE "
+                    attr: 1
+                  - text: SizeGuard
+                    attr: 4
+                  - text: " (VAR par: Dialog.Par)\rGuard which ensures that the "
+                    attr: 1
+                  - text: size
+                    attr: 2
+                  - text: " interactor matches the current singleton selection. If there is no singleton selection, the guard disables.\r\rPROCEDURE "
+                    attr: 1
+                  - text: UnitGuard
+                    attr: 4
+                  - text: " (VAR par: Dialog.Par)\rGuard that sets "
+                    attr: 1
+                  - text: par.label
+                    attr: 2
+                  - text: " to \"cm\" or \"inch\" respectively, depending on the value of Dialog.metricSystem.\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 11
+          bodyPos: 2934
+          bodyLen: 8

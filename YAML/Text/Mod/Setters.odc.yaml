@@ -1,0 +1,1216 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Text\\Mod\\Setters.odc"
+  size: 47238
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 47107
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 46921
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 46835
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 114300
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Helvetica
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 46952
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 46438
+                runListLen: 4185
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE TextSetters;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- 20070820, bh, Reader.sString eliminated\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\t(* correct NextPage postcond in docu *)\r\t(* make s.r, s.rd reducible? *)\r\t(* paraShutoff needs to be controlled by an approx flag to certain ops (later ...?) *)\r\r\tIMPORT\r\t\tFonts, Ports, Printers, Stores, Models, Views, Properties,\r\t\tTextModels, TextRulers;\r\r\tCONST\r\t\t"
+                    attr: 0
+                  - text: "(** Pref.opts, options of setter-aware views; 0 overrides 1 **)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: lineBreak
+                    attr: 3
+                  - text: "* = 0; "
+                    attr: 0
+                  - text: wordJoin
+                    attr: 3
+                  - text: "* = 1; "
+                    attr: 0
+                  - text: wordPart
+                    attr: 3
+                  - text: "* = 2; "
+                    attr: 0
+                  - text: flexWidth
+                    attr: 3
+                  - text: "* = 3;\r\r\t\ttab = TextModels.tab; line = TextModels.line; para = TextModels.para;\r\t\tzwspace = TextModels.zwspace; nbspace = TextModels.nbspace;\r\t\thyphen = TextModels.hyphen; nbhyphen = TextModels.nbhyphen;\r\t\tdigitspace = TextModels.digitspace;\r\t\tsofthyphen = TextModels.softhyphen;\r\r\t\tmm = Ports.mm;\r\t\tminTabWidth = "
+                    attr: 0
+                  - text: 2
+                    attr: 3
+                  - text: " * Ports.point; stdTabWidth = 4 * mm;\r\t\tleftLineGap = 2 * Ports.point; rightLineGap = 3 * Ports.point;\r\t\tadjustMask = {TextRulers.leftAdjust, TextRulers.rightAdjust};\r\t\tcentered = {}; leftFlush = {TextRulers.leftAdjust}; rightFlush = {TextRulers.rightAdjust};\r\t\tblocked = adjustMask;\r\r\t\tboxCacheLen = 64;\r\t\tseqCacheLen = 16;\r\r\t\tparaShutoff = MAX(INTEGER);\t"
+                    attr: 0
+                  - text: "(* longest stretch read backwards to find start of paragraph *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t"
+                    attr: 0
+                  - text: "(* unsafe: disabled *)"
+                    attr: 1
+                  - text: "\r\t\tcachedRulers = FALSE;\t"
+                    attr: 0
+                  - text: "(* caching ruler objects trades speed against GC effectiveness *)"
+                    attr: 1
+                  - text: "\r\t\tperiodInWords = FALSE;\r\t\tcolonInWords = FALSE;\r\r\t\tminVersion = 0; maxVersion = 0; maxStdVersion = 0;\r\r\r\tTYPE\r\t\t"
+                    attr: 0
+                  - text: Pref
+                    attr: 3
+                  - text: "* = RECORD (Properties.Preference)\r\t\t\topts*: SET;\r\t\t\tendW*: INTEGER;\t"
+                    attr: 0
+                  - text: "(** preset (to width of view) **)"
+                    attr: 1
+                  - text: "\r\t\t\tdsc*: INTEGER\t"
+                    attr: 0
+                  - text: "(** preset (to dominating line descender) **)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\r\t\t"
+                    attr: 0
+                  - text: Reader
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD\r\t\t\tr-: TextModels.Reader;\t"
+                    attr: 0
+                  - text: "(** look-ahead state **)"
+                    attr: 1
+                  - text: "\r\t\t\t"
+                    attr: 0
+                  - text: "(** unit **)"
+                    attr: 1
+                  - text: "\r\t\t\tstring*: ARRAY 64 OF CHAR;\t"
+                    attr: 0
+                  - text: "(** single chars in string[0] **)"
+                    attr: 1
+                  - text: "\r\t\t\tview*: Views.View;\r\t\t\t"
+                    attr: 0
+                  - text: "(** unit props **)"
+                    attr: 1
+                  - text: "\r\t\t\ttextOpts*: SET;\r\t\t\tmask*: CHAR;\r\t\t\tsetterOpts*: SET;\r\t\t\tw*, endW*, h*, dsc*: INTEGER;\r\t\t\tattr*: TextModels.Attributes;\r\t\t\t"
+                    attr: 0
+                  - text: "(** reading state **)"
+                    attr: 1
+                  - text: "\r\t\t\teot*: BOOLEAN;\r\t\t\tpos*: INTEGER;\r\t\t\tx*: INTEGER;\t"
+                    attr: 0
+                  - text: "(** to be advanced by client! **)"
+                    attr: 1
+                  - text: "\r\t\t\tadjStart*: INTEGER;\r\t\t\tspaces*: INTEGER;\r\t\t\ttabIndex*: INTEGER;\t"
+                    attr: 0
+                  - text: "(** tabs being processed; initially -1 **)"
+                    attr: 1
+                  - text: "\r\t\t\ttabType*: SET;\t"
+                    attr: 0
+                  - text: "(** type of tab being processed; initially {} **)"
+                    attr: 1
+                  - text: "\r\t\t\t"
+                    attr: 0
+                  - text: "(** line props **)"
+                    attr: 1
+                  - text: "\r\t\t\tvw*: INTEGER;\r\t\t\thideMarks*: BOOLEAN;\r\t\t\truler*: TextRulers.Ruler;\r\t\t\trpos*: INTEGER\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: Setter
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Stores.Store)\r\t\t\ttext-: TextModels.Model;\t"
+                    attr: 0
+                  - text: "(** connected iff text # NIL **)"
+                    attr: 1
+                  - text: "\r\t\t\tdefRuler-: TextRulers.Ruler;\r\t\t\tvw-: INTEGER;\r\t\t\thideMarks-: BOOLEAN\r\t\tEND;\r\r\r\t\t"
+                    attr: 0
+                  - text: LineBox
+                    attr: 3
+                  - text: "* = RECORD\r\t\t\tlen*: INTEGER;\r\t\t\truler*: TextRulers.Ruler;\r\t\t\trpos*: INTEGER;\r\t\t\tleft*, right*, asc*, dsc*: INTEGER;\r\t\t\trbox*, bop*, adj*, eot*: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(** adj => adjW > 0; adj & blocked => spaces > 0 **)"
+                    attr: 1
+                  - text: "\r\t\t\tviews*: BOOLEAN;\r\t\t\tskipOff*: INTEGER;\t"
+                    attr: 0
+                  - text: "(** chars in [skipOff, len) take endW **)"
+                    attr: 1
+                  - text: "\r\t\t\tadjOff*: INTEGER;\t"
+                    attr: 0
+                  - text: "(** offset of last block in box - adjust only this block **)"
+                    attr: 1
+                  - text: "\r\t\t\tspaces*: INTEGER;\t"
+                    attr: 0
+                  - text: "(** valid, > 0 if adj & blocked **)"
+                    attr: 1
+                  - text: "\r\t\t\tadjW*: INTEGER;\t"
+                    attr: 0
+                  - text: "(** valid if adj - to be distributed over spaces **)"
+                    attr: 1
+                  - text: "\r\t\t\ttabW*: ARRAY TextRulers.maxTabs OF INTEGER\t"
+                    attr: 0
+                  - text: "(** delta width of tabs (<= 0) **)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\r\t\t"
+                    attr: 0
+                  - text: Directory
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD END;\r\r\r\t\tWorder = RECORD\r\t\t\tbox: LineBox; next: INTEGER;\r\t\t\ti: INTEGER\r\t\tEND;\r\r\t\tStdReader = POINTER TO RECORD (Reader) END;\r\r\t\tStdSetter = POINTER TO RECORD (Setter)\r\t\t\trd: Reader;\t"
+                    attr: 0
+                  - text: "(* subject to reduction? *)"
+                    attr: 1
+                  - text: "\r\t\t\tr: TextModels.Reader;\t"
+                    attr: 0
+                  - text: "(* subject to reduction? *)"
+                    attr: 1
+                  - text: "\r\t\t\truler: TextRulers.Ruler;\r\t\t\trpos: INTEGER;\r\t\t\tkey: INTEGER\r\t\tEND;\r\r\t\tStdDirectory = POINTER TO RECORD (Directory) END;\r\r\r\tVAR\r\t\t"
+                    attr: 0
+                  - text: dir
+                    attr: 3
+                  - text: "-, "
+                    attr: 0
+                  - text: stdDir
+                    attr: 3
+                  - text: "-: Directory;\r\r\t\tnextKey: INTEGER;\r\t\tboxIndex, seqIndex: INTEGER;\r\t\tboxCache: ARRAY boxCacheLen OF RECORD\r\t\t\tkey: INTEGER;\t"
+                    attr: 0
+                  - text: "(* valid iff key > 0 *)"
+                    attr: 1
+                  - text: "\r\t\t\tstart: INTEGER;\r\t\t\tline: LineBox\t"
+                    attr: 0
+                  - text: "(* inv ruler = NIL *)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\t\tseqCache: ARRAY seqCacheLen OF RECORD\r\t\t\tkey: INTEGER;\t"
+                    attr: 0
+                  - text: "(* valid iff key > 0 *)"
+                    attr: 1
+                  - text: "\r\t\t\tstart, pos: INTEGER\t"
+                    attr: 0
+                  - text: "(* sequence [start, end), end >= pos *)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\r\t"
+                    attr: 0
+                  - text: "(** Reader **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (rd: Reader) "
+                    attr: 0
+                  - text: Set
+                    attr: 3
+                  - text: "* (\r\t\told: TextModels.Reader;\r\t\ttext: TextModels.Model; x, pos: INTEGER;\r\t\truler: TextRulers.Ruler; rpos: INTEGER; vw: INTEGER; hideMarks: BOOLEAN\r\t), NEW, EXTENSIBLE;\r\tBEGIN\r\t\tASSERT(text # NIL, 20);\r\t\tASSERT(ruler # NIL, 22);\r\t\trd.r := text.NewReader(old); rd.r.SetPos(pos); rd.r.Read;\r\t\trd.string[0] := 0X; rd.view := NIL;\r\t\trd.textOpts := {};\r\t\trd.setterOpts := {}; rd.w := 0; rd.endW := 0; rd.h := 0; rd.dsc := 0;\r\t\trd.attr := NIL;\r\t\trd.eot := FALSE; rd.pos := pos; rd.x := x;\r\t\trd.tabIndex := -1; rd.tabType := {};\r\t\trd.adjStart := pos; rd.spaces := 0;\r\t\trd.ruler := ruler; rd.rpos := rpos; rd.vw := vw; rd.hideMarks := hideMarks\r\tEND Set;\r\r\tPROCEDURE (rd: Reader) "
+                    attr: 0
+                  - text: Read
+                    attr: 3
+                  - text: "*, NEW, EXTENSIBLE;\r\t"
+                    attr: 0
+                  - text: "(** pre: rd set **)"
+                    attr: 1
+                  - text: "\r\t"
+                    attr: 0
+                  - text: "(** post: rd.pos = rd.pos' + Length(rd.string) **)"
+                    attr: 1
+                  - text: "\r\tBEGIN\r\t\trd.string[0] := rd.r.char; rd.string[1] := 0X;\r\t\trd.view := rd.r.view;\r\t\trd.textOpts := {};\r\t\trd.setterOpts := {};\r\t\trd.w := rd.r.w; rd.endW := rd.w; rd.h := rd.r.h; rd.dsc := 0;\r\t\trd.attr := rd.r.attr;\r\t\trd.eot := rd.r.eot;\r\t\tINC(rd.pos);\r\t\trd.r.Read\r\tEND Read;\r\r\tPROCEDURE (rd: Reader) "
+                    attr: 0
+                  - text: AdjustWidth
+                    attr: 3
+                  - text: "* (start, pos: INTEGER; IN box: LineBox;\r\t\tVAR w: INTEGER\r\t), NEW, ABSTRACT;\r\r\tPROCEDURE (rd: Reader) "
+                    attr: 0
+                  - text: SplitWidth
+                    attr: 3
+                  - text: "* (w: INTEGER): INTEGER, NEW, ABSTRACT;\r\r\r\t"
+                    attr: 0
+                  - text: "(** Setter **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (s: Setter) "
+                    attr: 0
+                  - text: CopyFrom
+                    attr: 3
+                  - text: "- (source: Stores.Store), EXTENSIBLE;\r\tBEGIN\r\t\tWITH source: Setter DO\r\t\t\ts.text := source.text; s.defRuler := source.defRuler;\r\t\t\ts.vw := source.vw;  s.hideMarks := source.hideMarks\r\t\tEND\r\tEND CopyFrom;\r\r\tPROCEDURE (s: Setter) "
+                    attr: 0
+                  - text: Internalize
+                    attr: 3
+                  - text: "- (VAR rd: Stores.Reader), EXTENSIBLE;\r\t\tVAR thisVersion: INTEGER;\r\tBEGIN\r\t\ts.Internalize^(rd);\r\t\tIF rd.cancelled THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " END;\r\t\trd.ReadVersion(minVersion, maxVersion, thisVersion)\r\tEND Internalize;\r\r\tPROCEDURE (s: Setter) "
+                    attr: 0
+                  - text: Externalize
+                    attr: 3
+                  - text: "- (VAR wr: Stores.Writer), EXTENSIBLE;\r\tBEGIN\r\t\ts.Externalize^(wr);\r\t\twr.WriteVersion(maxVersion)\r\tEND Externalize;\r\r\tPROCEDURE (s: Setter) "
+                    attr: 0
+                  - text: ConnectTo
+                    attr: 3
+                  - text: "* (text: TextModels.Model;\r\t\tdefRuler: TextRulers.Ruler; vw: INTEGER; hideMarks: BOOLEAN\r\t), NEW, EXTENSIBLE;\r\tBEGIN\r\t\tIF text # NIL THEN\r\t\t\ts.text := text; s.defRuler := defRuler; s.vw := vw; s.hideMarks := hideMarks\r\t\tELSE\r\t\t\ts.text := NIL; s.defRuler := NIL\r\t\tEND\r\tEND ConnectTo;\r\r\r\tPROCEDURE (s: Setter) "
+                    attr: 0
+                  - text: ThisPage
+                    attr: 3
+                  - text: "* (pageH: INTEGER; pageNo: INTEGER): INTEGER, NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(** pre: connected, 0 <= pageNo **)"
+                    attr: 1
+                  - text: "\r\t"
+                    attr: 0
+                  - text: "(** post: (result = -1) & (pageNo >= maxPageNo) OR (result = pageStart(pageNo)) **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (s: Setter) "
+                    attr: 0
+                  - text: NextPage
+                    attr: 3
+                  - text: "* (pageH: INTEGER; start: INTEGER): INTEGER, NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(** pre: connected, ThisPage(pageH, pageNo) = start [with pageNo = NumberOfPageAt(start)] **)"
+                    attr: 1
+                  - text: "\r\t"
+                    attr: 0
+                  - text: "(** post: (result = start) & last-page(start) OR result = next-pageStart(start) **)"
+                    attr: 1
+                  - text: "\r\r\r\tPROCEDURE (s: Setter) "
+                    attr: 0
+                  - text: ThisSequence
+                    attr: 3
+                  - text: "* (pos: INTEGER): INTEGER, NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(** pre: connected, 0 <= pos <= s.text.Length() **)"
+                    attr: 1
+                  - text: "\r\t"
+                    attr: 0
+                  - text: "(** post: (result = 0) OR (char(result - 1) IN {line, para}) **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (s: Setter) "
+                    attr: 0
+                  - text: NextSequence
+                    attr: 3
+                  - text: "* (start: INTEGER): INTEGER, NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(** pre: connected, ThisSequence(start) = start **)"
+                    attr: 1
+                  - text: "\r\t"
+                    attr: 0
+                  - text: "(** post: (result = start) & last-line(start) OR (ThisSequence(t, result - 1) = start) **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (s: Setter) "
+                    attr: 0
+                  - text: PreviousSequence
+                    attr: 3
+                  - text: "* (start: INTEGER): INTEGER, NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(** pre: connected, ThisSequence(t, start) = start **)"
+                    attr: 1
+                  - text: "\r\t"
+                    attr: 0
+                  - text: "(** post: (result = 0) & (start = 0) OR (result = ThisSequence(t, start - 1)) **)"
+                    attr: 1
+                  - text: "\r\r\r\tPROCEDURE (s: Setter) "
+                    attr: 0
+                  - text: ThisLine
+                    attr: 3
+                  - text: "* (pos: INTEGER): INTEGER, NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(** pre: connected, 0 <= pos <= s.text.Length() **)"
+                    attr: 1
+                  - text: "\r\t"
+                    attr: 0
+                  - text: "(** post: result <= pos, (pos < NextLine(result)) OR last-line(result) **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (s: Setter) "
+                    attr: 0
+                  - text: NextLine
+                    attr: 3
+                  - text: "* (start: INTEGER): INTEGER, NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(** pre: connected, ThisLine(start) = start **)"
+                    attr: 1
+                  - text: "\r\t"
+                    attr: 0
+                  - text: "(** post: (result = 0) & (start = 0) OR\r\t\t\t\t(result = start) & last-line(start) OR\r\t\t\t\t(ThisLine(result - 1) = start) **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (s: Setter) "
+                    attr: 0
+                  - text: PreviousLine
+                    attr: 3
+                  - text: "* (start: INTEGER): INTEGER, NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(** pre: connected, ThisLine(start) = start **)"
+                    attr: 1
+                  - text: "\r\t"
+                    attr: 0
+                  - text: "(** post: (result = 0) & (start = 0) OR (result = ThisLine(start - 1)) **)"
+                    attr: 1
+                  - text: "\r\r\r\tPROCEDURE (s: Setter) "
+                    attr: 0
+                  - text: GetWord
+                    attr: 3
+                  - text: "* (pos: INTEGER; OUT beg, end: INTEGER), NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(** pre: connected, 0 <= pos <= s.text.Length() **)"
+                    attr: 1
+                  - text: "\r\t"
+                    attr: 0
+                  - text: "(** post: c set, beg <= pos <= end **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (s: Setter) "
+                    attr: 0
+                  - text: GetLine
+                    attr: 3
+                  - text: "* (start: INTEGER; OUT box: LineBox), NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(** pre: connected, ThisLine(start) = start, 0 <= start <= s.text.Length() **)"
+                    attr: 1
+                  - text: "\r\t"
+                    attr: 0
+                  - text: "(** post: (c, box) set (=> box.ruler # NIL), (box.len > 0) OR box.eot,\r\t\t 0 <= box.left <= box.right <= ruler.right **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (s: Setter) "
+                    attr: 0
+                  - text: GetBox
+                    attr: 3
+                  - text: "* (start, end, maxW, maxH: INTEGER;\r\t\tOUT w, h: INTEGER\r\t), NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(** pre: connected, ThisLine(start) = start, 0 <= start <= end <= s.text.Length() **)"
+                    attr: 1
+                  - text: "\r\t"
+                    attr: 0
+                  - text: "(** post: c set, maxW > undefined => w <= maxW, maxH > undefined => h <= maxH **)"
+                    attr: 1
+                  - text: "\r\r\r\tPROCEDURE (s: Setter) "
+                    attr: 0
+                  - text: NewReader
+                    attr: 3
+                  - text: "* (old: Reader): Reader, NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(** pre: connected **)"
+                    attr: 1
+                  - text: "\r\r\r\tPROCEDURE (s: Setter) "
+                    attr: 0
+                  - text: GridOffset
+                    attr: 3
+                  - text: "* (dsc: INTEGER; IN box: LineBox): INTEGER, NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(** pre: connected, dsc >= 0: dsc is descender of previous line; dsc = -1 for first line **)"
+                    attr: 1
+                  - text: "\r\t"
+                    attr: 0
+                  - text: "(** post: dsc + GridOffset(dsc, box) + box.asc = k*ruler.grid (k >= 0) >= ruler.asc + ruler.grid **)"
+                    attr: 1
+                  - text: "\r\r\r\t(** Directory **)\r\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: New
+                    attr: 3
+                  - text: "* (): Setter, NEW, ABSTRACT;\r\r\r\t"
+                    attr: 0
+                  - text: "(* line box cache *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE InitCache;\r\t\tVAR i: INTEGER;\r\tBEGIN\r\t\tnextKey := 1; boxIndex := 0; seqIndex := 0;\r\t\ti := 0; WHILE i < boxCacheLen DO boxCache[i].key := -1; INC(i) END;\r\t\ti := 0; WHILE i < seqCacheLen DO seqCache[i].key := -1; INC(i) END\r\tEND InitCache;\r\r\tPROCEDURE ClearCache (key: INTEGER);\r\t\tVAR i, j: INTEGER;\r\tBEGIN\r\t\ti := 0; j := boxIndex;\r\t\tWHILE i < boxCacheLen DO\r\t\t\tIF boxCache[i].key = key THEN boxCache[i].key := -1; j := i END;\r\t\t\tINC(i)\r\t\tEND;\r\t\tboxIndex := j;\r\t\ti := 0; j := seqIndex;\r\t\tWHILE i < seqCacheLen DO\r\t\t\tIF seqCache[i].key = key THEN seqCache[i].key := -1; j := i END;\r\t\t\tINC(i)\r\t\tEND;\r\t\tseqIndex := j\r\tEND ClearCache;\r\r\r\tPROCEDURE CacheIndex (key, start: INTEGER): INTEGER;\r\t\tVAR i: INTEGER;\r\tBEGIN\rRETURN -1;\r\t\ti := 0;\r\t\tWHILE (i < boxCacheLen) & ~((boxCache[i].key = key) & (boxCache[i].start = start)) DO\r\t\t\tINC(i)\r\t\tEND;\r\t\tIF i = boxCacheLen THEN i := -1 END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " i\r\tEND CacheIndex;\r\r\tPROCEDURE GetFromCache (s: StdSetter; i: INTEGER; VAR l: LineBox);\r\tBEGIN\r\t\tl := boxCache[i].line;\r\t\tIF ~cachedRulers THEN\r\t\t\tIF l.rpos >= 0 THEN\r\t\t\t\ts.r := s.text.NewReader(s.r); s.r.SetPos(l.rpos); s.r.Read;\r\t\t\t\tl.ruler := s.r.view(TextRulers.Ruler)\r\t\t\tELSE l.ruler := s.defRuler\r\t\t\tEND\r\t\tEND\r\tEND GetFromCache;\r\r\tPROCEDURE AddToCache (key, start: INTEGER; VAR l: LineBox);\r\t\tVAR i: INTEGER;\r\tBEGIN\r\t\ti := boxIndex; boxIndex := (i + 1) MOD boxCacheLen;\r\t\tboxCache[i].key := key; boxCache[i].start := start; boxCache[i].line := l;\r\t\tIF ~cachedRulers THEN\r\t\t\tboxCache[i].line.ruler := NIL\r\t\tEND\r\tEND AddToCache;\r\r\r\tPROCEDURE CachedSeqStart (key, pos: INTEGER): INTEGER;\r\t\tVAR start: INTEGER; i: INTEGER;\r\tBEGIN\r\t\ti := 0;\r\t\tWHILE (i < seqCacheLen)\r\t\t& ~((seqCache[i].key = key) & (seqCache[i].start <= pos) & (pos <= seqCache[i].pos)) DO\r\t\t\tINC(i)\r\t\tEND;\r\t\tIF i < seqCacheLen THEN start := seqCache[i].start ELSE start := -1 END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " start\r\tEND CachedSeqStart;\r\r\tPROCEDURE AddSeqStartToCache (key, pos, start: INTEGER);\r\t\tVAR i: INTEGER;\r\tBEGIN\r\t\ti := 0;\r\t\tWHILE (i < seqCacheLen) & ~((seqCache[i].key = key) & (seqCache[i].start = start)) DO\r\t\t\tINC(i)\r\t\tEND;\r\t\tIF i < seqCacheLen THEN\r\t\t\tIF seqCache[i].pos < pos THEN seqCache[i].pos := pos END\r\t\tELSE\r\t\t\ti := seqIndex; seqIndex := (i + 1) MOD seqCacheLen;\r\t\t\tseqCache[i].key := key; seqCache[i].pos := pos; seqCache[i].start := start\r\t\tEND\r\tEND AddSeqStartToCache;\r\r\r\t"
+                    attr: 0
+                  - text: "(* StdReader *)"
+                    attr: 1
+                  - text: "\r\r(*\r\tPROCEDURE WordPart (ch, ch1: CHAR): BOOLEAN;\r\t"
+                    attr: 0
+                  - text: "(* needs more work ... put elsewhere? *)"
+                    attr: 3
+                  - text: "\r\tBEGIN\r\t\tCASE ORD(ch) OF\r\t\t  ORD(\"0\") .. ORD(\"9\"), ORD(\"A\") .. ORD(\"Z\"), ORD(\"a\") .. ORD(\"z\"),\r\t\t  ORD(digitspace), ORD(nbspace), ORD(nbhyphen), ORD(\"_\"),\r\t\t  0C0H .. 0C6H, 0E0H .. 0E6H,\t"
+                    attr: 0
+                  - text: "(* ~ A *)"
+                    attr: 1
+                  - text: "\r\t\t  0C7H, 0E7H,\t"
+                    attr: 0
+                  - text: "(* ~ C *)"
+                    attr: 1
+                  - text: "\r\t\t  0C8H .. 0CBH, 0E8H .. 0EBH,\t"
+                    attr: 0
+                  - text: "(* ~ E *)"
+                    attr: 1
+                  - text: "\r\t\t  0CCH .. 0CFH, 0ECH .. 0EFH,\t"
+                    attr: 0
+                  - text: "(* ~ I *)"
+                    attr: 1
+                  - text: "\r\t\t  0D1H, 0F1H,\t"
+                    attr: 0
+                  - text: "(* ~ N *)"
+                    attr: 1
+                  - text: "\r\t\t  0D2H .. 0D6H, 0D8H, 0F2H .. 0F6H, 0F8H,\t"
+                    attr: 0
+                  - text: "(* ~ O *)"
+                    attr: 1
+                  - text: "\r\t\t  0D9H .. 0DCH, 0F9H .. 0FCH,\t"
+                    attr: 0
+                  - text: "(* ~ U *)"
+                    attr: 1
+                  - text: "\r\t\t  0DDH, 0FDH, 0FFH,\t"
+                    attr: 0
+                  - text: "(* ~ Y *)"
+                    attr: 1
+                  - text: "\r\t\t  0DFH:\t"
+                    attr: 0
+                  - text: "(* ~ ss *)"
+                    attr: 1
+                  - text: "\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t| ORD(\".\"), ORD(\":\"):\r\t\t\tIF (ch = \".\") & periodInWords OR (ch = \":\") & colonInWords THEN\r\t\t\t\tCASE ch1 OF\r\t\t\t\t  0X, TextModels.viewcode, tab, line, para, \" \":\r\t\t\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " FALSE\r\t\t\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\t\tEND\r\t\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " FALSE\r\t\t\tEND\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " FALSE\r\t\tEND\r\tEND WordPart;\r*)\r\r\tPROCEDURE WordPart (ch, ch1: CHAR): BOOLEAN;\r\t"
+                    attr: 0
+                  - text: "\t(* Same as .net function System.Char.IsLetterOrDigit(ch)\r\t\t\t\t+ digit space, nonbreaking space, nonbreaking hyphen, & underscore\r\t\t\tch1 unused *)\r"
+                    attr: 1
+                  - text: "\t\tVAR low: INTEGER;\r\tBEGIN\r\t\tlow := ORD(ch) MOD 256;\r\t\tCASE ORD(ch) DIV 256 OF\r\t\t| 001H, 015H, 034H..04CH, 04EH..09EH, 0A0H..0A3H, 0ACH..0D6H, 0F9H, 0FCH: "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t| 000H: CASE low OF\r\t\t\t| 030H..039H, 041H..05AH, 061H..07AH, 0AAH, 0B5H, 0BAH, 0C0H..0D6H, 0D8H..0F6H, 0F8H..0FFH,\r\t\t\t\tORD(digitspace), ORD(nbspace), ORD(nbhyphen), ORD(\"_\"): "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\tELSE\r\t\t\tEND\r\t\t| 002H: CASE low OF\r\t\t\t| 000H..041H, 050H..0C1H, 0C6H..0D1H, 0E0H..0E4H, 0EEH: "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\tELSE\r\t\t\tEND\r\t\t| 003H: CASE low OF\r\t\t\t| 07AH, 086H, 088H..08AH, 08CH, 08EH..0A1H, 0A3H..0CEH, 0D0H..0F5H, 0F7H..0FFH: "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\tELSE\r\t\t\tEND\r\t\t| 004H: CASE low OF\r\t\t\t| 000H..081H, 08AH..0CEH, 0D0H..0F9H: "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\tELSE\r\t\t\tEND\r\t\t| 005H: CASE low OF\r\t\t\t| 000H..00FH, 031H..056H, 059H, 061H..087H, 0D0H..0EAH, 0F0H..0F2H: "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\tELSE\r\t\t\tEND\r\t\t| 006H: CASE low OF\r\t\t\t| 021H..03AH, 040H..04AH, 060H..069H, 06EH..06FH, 071H..0D3H, 0D5H, 0E5H..0E6H, 0EEH..0FCH, 0FFH: "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\tELSE\r\t\t\tEND\r\t\t| 007H: CASE low OF\r\t\t\t| 010H, 012H..02FH, 04DH..06DH, 080H..0A5H, 0B1H: "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\tELSE\r\t\t\tEND\r\t\t| 009H: CASE low OF\r\t\t\t| 004H..039H, 03DH, 050H, 058H..061H, 066H..06FH, 07DH, 085H..08CH, 08FH..090H, 093H..0A8H, 0AAH..0B0H, 0B2H, 0B6H..0B9H, 0BDH, 0CEH, 0DCH..0DDH, 0DFH..0E1H, 0E6H..0F1H: "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\tELSE\r\t\t\tEND\r\t\t| 00AH: CASE low OF\r\t\t\t| 005H..00AH, 00FH..010H, 013H..028H, 02AH..030H, 032H..033H, 035H..036H, 038H..039H, 059H..05CH, 05EH, 066H..06FH, 072H..074H, 085H..08DH, 08FH..091H, 093H..0A8H, 0AAH..0B0H, 0B2H..0B3H, 0B5H..0B9H, 0BDH, 0D0H, 0E0H..0E1H, 0E6H..0EFH: "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\tELSE\r\t\t\tEND\r\t\t| 00BH: CASE low OF\r\t\t\t| 005H..00CH, 00FH..010H, 013H..028H, 02AH..030H, 032H..033H, 035H..039H, 03DH, 05CH..05DH, 05FH..061H, 066H..06FH, 071H, 083H, 085H..08AH, 08EH..090H, 092H..095H, 099H..09AH, 09CH, 09EH..09FH, 0A3H..0A4H, 0A8H..0AAH, 0AEH..0B9H, 0E6H..0EFH: "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\tELSE\r\t\t\tEND\r\t\t| 00CH: CASE low OF\r\t\t\t| 005H..00CH, 00EH..010H, 012H..028H, 02AH..033H, 035H..039H, 060H..061H, 066H..06FH, 085H..08CH, 08EH..090H, 092H..0A8H, 0AAH..0B3H, 0B5H..0B9H, 0BDH, 0DEH, 0E0H..0E1H, 0E6H..0EFH: "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\tELSE\r\t\t\tEND\r\t\t| 00DH: CASE low OF\r\t\t\t| 005H..00CH, 00EH..010H, 012H..028H, 02AH..039H, 060H..061H, 066H..06FH, 085H..096H, 09AH..0B1H, 0B3H..0BBH, 0BDH, 0C0H..0C6H: "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\tELSE\r\t\t\tEND\r\t\t| 00EH: CASE low OF\r\t\t\t| 001H..030H, 032H..033H, 040H..046H, 050H..059H, 081H..082H, 084H, 087H..088H, 08AH, 08DH, 094H..097H, 099H..09FH, 0A1H..0A3H, 0A5H, 0A7H, 0AAH..0ABH, 0ADH..0B0H, 0B2H..0B3H, 0BDH, 0C0H..0C4H, 0C6H, 0D0H..0D9H, 0DCH..0DDH: "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\tELSE\r\t\t\tEND\r\t\t| 00FH: CASE low OF\r\t\t\t| 000H, 020H..029H, 040H..047H, 049H..06AH, 088H..08BH: "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\tELSE\r\t\t\tEND\r\t\t| 010H: CASE low OF\r\t\t\t| 000H..021H, 023H..027H, 029H..02AH, 040H..049H, 050H..055H, 0A0H..0C5H, 0D0H..0FAH, 0FCH: "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\tELSE\r\t\t\tEND\r\t\t| 011H: CASE low OF\r\t\t\t| 000H..059H, 05FH..0A2H, 0A8H..0F9H: "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\tELSE\r\t\t\tEND\r\t\t| 012H: CASE low OF\r\t\t\t| 000H..048H, 04AH..04DH, 050H..056H, 058H, 05AH..05DH, 060H..088H, 08AH..08DH, 090H..0B0H, 0B2H..0B5H, 0B8H..0BEH, 0C0H, 0C2H..0C5H, 0C8H..0D6H, 0D8H..0FFH: "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\tELSE\r\t\t\tEND\r\t\t| 013H: CASE low OF\r\t\t\t| 000H..010H, 012H..015H, 018H..05AH, 080H..08FH, 0A0H..0F4H: "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\tELSE\r\t\t\tEND\r\t\t| 014H: IF low >= 001H THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE END\r\t\t| 016H: CASE low OF\r\t\t\t| 000H..06CH, 06FH..076H, 081H..09AH, 0A0H..0EAH: "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\tELSE\r\t\t\tEND\r\t\t| 017H: CASE low OF\r\t\t\t| 000H..00CH, 00EH..011H, 020H..031H, 040H..051H, 060H..06CH, 06EH..070H, 080H..0B3H, 0D7H, 0DCH, 0E0H..0E9H: "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\tELSE\r\t\t\tEND\r\t\t| 018H: CASE low OF\r\t\t\t| 010H..019H, 020H..077H, 080H..0A8H: "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\tELSE\r\t\t\tEND\r\t\t| 019H: CASE low OF\r\t\t\t| 000H..01CH, 046H..06DH, 070H..074H, 080H..0A9H, 0C1H..0C7H, 0D0H..0D9H: "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\tELSE\r\t\t\tEND\r\t\t| 01AH: IF low < 017H THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE END\r\t\t| 01DH: IF low < 0C0H THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE END\r\t\t| 01EH: CASE low OF\r\t\t\t| 000H..09BH, 0A0H..0F9H: "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\tELSE\r\t\t\tEND\r\t\t| 01FH: CASE low OF\r\t\t\t| 000H..015H, 018H..01DH, 020H..045H, 048H..04DH, 050H..057H, 059H, 05BH, 05DH, 05FH..07DH, 080H..0B4H, 0B6H..0BCH, 0BEH, 0C2H..0C4H, 0C6H..0CCH, 0D0H..0D3H, 0D6H..0DBH, 0E0H..0ECH, 0F2H..0F4H, 0F6H..0FCH: "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\tELSE\r\t\t\tEND\r\t\t| 020H: CASE low OF\r\t\t\t| 071H, 07FH, 090H..094H: "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\tELSE\r\t\t\tEND\r\t\t| 021H: CASE low OF\r\t\t\t| 002H, 007H, 00AH..013H, 015H, 019H..01DH, 024H, 026H, 028H, 02AH..02DH, 02FH..031H, 033H..039H, 03CH..03FH, 045H..049H: "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\tELSE\r\t\t\tEND\r\t\t| 02CH: CASE low OF\r\t\t\t| 000H..02EH, 030H..05EH, 080H..0E4H: "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\tELSE\r\t\t\tEND\r\t\t| 02DH: CASE low OF\r\t\t\t| 000H..025H, 030H..065H, 06FH, 080H..096H, 0A0H..0A6H, 0A8H..0AEH, 0B0H..0B6H, 0B8H..0BEH, 0C0H..0C6H, 0C8H..0CEH, 0D0H..0D6H, 0D8H..0DEH: "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\tELSE\r\t\t\tEND\r\t\t| 030H: CASE low OF\r\t\t\t| 005H..006H, 031H..035H, 03BH..03CH, 041H..096H, 09DH..09FH, 0A1H..0FAH, 0FCH..0FFH: "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\tELSE\r\t\t\tEND\r\t\t| 031H: CASE low OF\r\t\t\t| 005H..02CH, 031H..08EH, 0A0H..0B7H, 0F0H..0FFH: "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\tELSE\r\t\t\tEND\r\t\t| 04DH: IF low < 0B6H THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE END\r\t\t| 09FH: IF low < 0BCH THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE END\r\t\t| 0A4H: IF low < 08DH THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE END\r\t\t| 0A8H: CASE low OF\r\t\t\t| 000H..001H, 003H..005H, 007H..00AH, 00CH..022H: "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\tELSE\r\t\t\tEND\r\t\t| 0D7H: IF low < 0A4H THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE END\r\t\t| 0FAH: CASE low OF\r\t\t\t| 000H..02DH, 030H..06AH, 070H..0D9H: "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\tELSE\r\t\t\tEND\r\t\t| 0FBH: CASE low OF\r\t\t\t| 000H..006H, 013H..017H, 01DH, 01FH..028H, 02AH..036H, 038H..03CH, 03EH, 040H..041H, 043H..044H, 046H..0B1H, 0D3H..0FFH: "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\tELSE\r\t\t\tEND\r\t\t| 0FDH: CASE low OF\r\t\t\t| 000H..03DH, 050H..08FH, 092H..0C7H, 0F0H..0FBH: "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\tELSE\r\t\t\tEND\r\t\t| 0FEH: CASE low OF\r\t\t\t| 070H..074H, 076H..0FCH: "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\tELSE\r\t\t\tEND\r\t\t| 0FFH: CASE low OF\r\t\t\t| 010H..019H, 021H..03AH, 041H..05AH, 066H..0BEH, 0C2H..0C7H, 0CAH..0CFH, 0D2H..0D7H, 0DAH..0DCH: "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\tELSE\r\t\t\tEND\r\t\tELSE\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " FALSE\t\t\r\tEND WordPart;\r\r(*\r\tPROCEDURE ExtendToEOL (x, right: INTEGER): INTEGER;\r\tBEGIN\r\t\tIF right - x > 5 * mm THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " right - x ELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 5 * mm END\r\tEND ExtendToEOL;\r*)\r\r\tPROCEDURE Right (ra: TextRulers.Attributes; vw: INTEGER): INTEGER;\r\tBEGIN\r\t\tIF TextRulers.rightFixed IN ra.opts THEN\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " ra.right\r\t\tELSE\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " vw\r\t\tEND\r\tEND Right;\r\r\tPROCEDURE GetViewPref (rd: StdReader);\r\t\tCONST maxH = 1600 * Ports.point;\r\t\tVAR ra: TextRulers.Attributes; tp: TextModels.Pref; sp: Pref;\r\tBEGIN\r\t\tra := rd.ruler.style.attr;\r\t\ttp.opts := {}; Views.HandlePropMsg(rd.view, tp);\r\t\trd.textOpts := tp.opts; rd.mask := tp.mask;\r\t\tsp.opts := {}; sp.dsc := ra.dsc; sp.endW := rd.w; Views.HandlePropMsg(rd.view, sp);\r\t\trd.setterOpts := sp.opts; rd.dsc := sp.dsc; rd.endW := sp.endW;\r\t\tIF rd.w >= 10000 * mm THEN rd.w := 10000 * mm END;\r\t\tIF (TextModels.hideable IN tp.opts) & rd.hideMarks THEN\r\t\t\trd.h := 0; sp.dsc := 0;\r"
+                    attr: 0
+                  - text: "(*"
+                    attr: 3
+                  - text: "\rrd.w := 0;\r"
+                    attr: 0
+                  - text: "*)"
+                    attr: 3
+                  - text: "\r\t\t\tIF ~( (rd.view IS TextRulers.Ruler)\r\t\t\t\t\tOR (TextModels.maskChar IN rd.textOpts) & (rd.mask = para) ) THEN\r\t\t\t\trd.w := 0\r\t\t\tEND\r"
+                    attr: 0
+                  - text: "(**)"
+                    attr: 3
+                  - text: "\r\t\tELSIF rd.h > maxH THEN rd.h := maxH\r\t\tEND;\r\t\tIF TextModels.maskChar IN rd.textOpts THEN\r\t\t\trd.string[0] := rd.mask; rd.string[1] := 0X\r\t\tELSE rd.string[0] := TextModels.viewcode\r\t\tEND\r\tEND GetViewPref;\r\r\tPROCEDURE GatherString (rd: StdReader);\r\t\tVAR i, len: INTEGER; ch: CHAR;\r\tBEGIN\r\t\ti := 1; len := LEN(rd.string) - 1; ch := rd.r.char;\r\t\tWHILE (i < len)\r\t\t\t& (rd.r.view = NIL) & (rd.r.attr = rd.attr)\r\t\t\t& (\t (\" \" < ch) & (ch <= \"~\") & (ch # \"-\")\r\t\t\t\tOR  (ch = digitspace)\r\t\t\t\tOR  (ch >= nbspace) & (ch < 100X) & (ch # softhyphen)\r\t\t\t\t)\r\t\tDO\t"
+                    attr: 0
+                  - text: "(* rd.r.char > \" \" => ~rd.eot *)"
+                    attr: 1
+                  - text: "\r\t\t\trd.string[i] := ch; INC(i);\r\t\t\trd.eot := rd.r.eot;\r\t\t\trd.r.Read; ch := rd.r.char; INC(rd.pos)\r\t\tEND;\r\t\trd.string[i] := 0X; rd.setterOpts := {wordJoin};\r\t\tIF i = 1 THEN\r\t\t\tIF WordPart(rd.string[0], 0X) THEN INCL(rd.setterOpts, wordPart) END\r\t\tEND;\r\t\trd.w := rd.attr.font.StringWidth(rd.string); rd.endW := rd.w\r\tEND GatherString;\r\r\tPROCEDURE SpecialChar (rd: StdReader);\r\t\tVAR ra: TextRulers.Attributes; i, tabs, spaceW, dW: INTEGER; type: SET;\r\tBEGIN\r\t\tra := rd.ruler.style.attr;\r\t\tCASE ORD(rd.string[0]) OF\r\t\t  ORD(tab):\r\t\t\trd.textOpts := {TextModels.hideable};\r\t\t\trd.endW := minTabWidth;\r\t\t\trd.adjStart := rd.pos; rd.spaces := 0;\r\t\t\t"
+                    attr: 0
+                  - text: "(*"
+                    attr: 3
+                  - text: "\r\t\t\ti := 0; WHILE (i < ra.tabs.len) & (ra.tabs.tab[i].stop < rd.x + minTabWidth) DO INC(i) END;\r\t\t\t"
+                    attr: 0
+                  - text: "*)"
+                    attr: 3
+                  - text: "\r\t\t\ti := rd.tabIndex + 1;\r\t\t\tIF i < ra.tabs.len THEN\r\t\t\t\ttype := ra.tabs.tab[i].type;\r\t\t\t\trd.w := MAX(minTabWidth, ra.tabs.tab[i].stop - rd.x);\r\t\t\t\tIF TextRulers.barTab IN type THEN\r\t\t\t\t\tIF TextRulers.rightTab IN type THEN\r\t\t\t\t\t\trd.w := MAX(minTabWidth, rd.w - leftLineGap)\r\t\t\t\t\tELSIF ~(TextRulers.centerTab IN type) THEN\r\t\t\t\t\t\tINC(rd.w, rightLineGap)\r\t\t\t\t\tEND\r\t\t\t\tEND;\r\t\t\t\trd.tabIndex := i; rd.tabType := type\r\t\t\tELSE\t"
+                    attr: 0
+                  - text: "(* for \"reasonable\" fonts: round to closest multiple of spaces of this font *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tspaceW := rd.attr.font.SStringWidth(\" \");\r\t\t\t\tIF (1 <= spaceW) & (spaceW <= stdTabWidth) THEN\r\t\t\t\t\trd.w := (stdTabWidth + spaceW DIV 2) DIV spaceW * spaceW\r\t\t\t\tELSE\r\t\t\t\t\trd.w := stdTabWidth\r\t\t\t\tEND;\r\t\t\t\trd.tabIndex := TextRulers.maxTabs; rd.tabType := {}\r\t\t\tEND\r\t\t| ORD(line):\r\t\t\trd.setterOpts := {lineBreak}; rd.w := 0; rd.endW := 0\r\t\t| ORD(para):\r"
+                    attr: 0
+                  - text: "(*"
+                    attr: 3
+                  - text: "\r\t\t\tIF rd.hideMarks THEN\r\t\t\t\trd.w := 0; rd.h := 0; rd.dsc := 0\r\t\t\tELSE\r\t\t\t\trd.w := ExtendToEOL(rd.x, Right(ra, rd.vw)) + 1\r\t\t\tEND;\r\t\t\tINC(rd.h, ra.lead);\r\t\t\trd.textOpts := {TextModels.hideable};\r\t\t\trd.endW := rd.w\r"
+                    attr: 0
+                  - text: "*)"
+                    attr: 3
+                  - text: "\r(*\r\t\t\trd.setterOpts := {lineBreak};\r*)\r\t\t\tIF rd.hideMarks THEN rd.h := 0; rd.dsc := 0 END;\r\t\t\tINC(rd.h, ra.lead); rd.textOpts := {TextModels.hideable};\r\t\t\tIF (rd.view = NIL) OR ~(rd.view IS TextRulers.Ruler) THEN\r\t\t\t\trd.w := 10000 * Ports.mm (* ExtendToEOL(rd.x, Right(ra, rd.vw)) + 1 *)\r\t\t\tEND;\r\t\t\trd.endW := rd.w\r"
+                    attr: 0
+                  - text: "(**)"
+                    attr: 3
+                  - text: "\r\t\t| ORD(\" \"):\r\t\t\trd.setterOpts := {flexWidth};\r\t\t\trd.w := rd.attr.font.StringWidth(rd.string); rd.endW := 0; INC(rd.spaces)\r\t\t| ORD(zwspace):\r\t\t\trd.w := 0; rd.endW := 0\r\t\t| ORD(digitspace):\r\t\t\trd.setterOpts := {wordPart};\r\t\t\trd.w := rd.attr.font.StringWidth(\"0\"); rd.endW := rd.w\r\t\t| ORD(\"-\"):\r\t\t\trd.setterOpts := {};\r\t\t\trd.w := rd.attr.font.StringWidth(\"-\"); rd.endW := rd.w\r\t\t| ORD(hyphen):\r\t\t\trd.setterOpts := {};\r\t\t\trd.string[0] := \"-\" (*softhyphen*);\r\t\t\trd.w := rd.attr.font.StringWidth(\"-\" (*softhyphen*)); rd.endW := rd.w\r\t\t| ORD(nbhyphen):\r\t\t\trd.setterOpts := {wordJoin, wordPart};\r\t\t\trd.string[0] := \"-\" (*softhyphen*);\r\t\t\trd.w := rd.attr.font.StringWidth(\"-\" (*softhyphen*)); rd.endW := rd.w\r\t\t| ORD(softhyphen):\r\t\t\trd.setterOpts := {wordPart}; rd.textOpts := {TextModels.hideable};\r\t\t\trd.string[0] := \"-\";\r\t\t\trd.endW := rd.attr.font.StringWidth(\"-\" (*softhyphen*));\r\t\t\tIF rd.hideMarks THEN rd.w := 0 ELSE rd.w := rd.endW END\r\t\tELSE\r\t\t\trd.setterOpts := {wordJoin};\r\t\t\tIF WordPart(rd.string[0], rd.r.char) THEN INCL(rd.setterOpts, wordPart) END;\r\t\t\trd.w := rd.attr.font.StringWidth(rd.string); rd.endW := rd.w\r\t\tEND\r\tEND SpecialChar;\r(*\r\tPROCEDURE LongChar (rd: StdReader);\r\t\tVAR ra: TextRulers.Attributes;\r\tBEGIN\r\t\tra := rd.ruler.style.attr;\r\t\trd.setterOpts := {wordJoin, wordPart};\r\t\trd.w := rd.attr.font.StringWidth(rd.string); rd.endW := rd.w\r\tEND LongChar;\r*)\r\r\tPROCEDURE (rd: StdReader) Read;\r\t"
+                    attr: 0
+                  - text: "(* pre: connected *)"
+                    attr: 1
+                  - text: "\r\t\tVAR ra: TextRulers.Attributes; asc, dsc, w: INTEGER; ch: CHAR;\r\tBEGIN\r\t\trd.Read^;\r\t\tIF ~rd.eot THEN\r\t\t\tIF rd.view = NIL THEN\r\t\t\t\trd.attr.font.GetBounds(asc, dsc, w);\r\t\t\t\trd.h := asc + dsc; rd.dsc := dsc\r\t\t\tELSE\r\t\t\t\tGetViewPref(rd)\r\t\t\tEND;\r\t\t\tIF (rd.view = NIL) OR (TextModels.maskChar IN rd.textOpts) THEN\r\t\t\t\tch := rd.string[0];\r\t\t\t\tIF (rd.view = NIL)\r\t\t\t\t & (\t(\" \" < ch) & (ch < \"~\") & (ch # \"-\")\r\t\t\t\t \tOR (ch = digitspace)\r\t\t\t\t \tOR (ch >= nbspace) & (ch # softhyphen)\r\t\t\t\t  \t)\r\t\t\t\tTHEN\r\t\t\t\t\tGatherString(rd)\r\t\t\t\tELSE\r\t\t\t\t\tSpecialChar(rd)\r\t\t\t\tEND\r\t\t\tEND\r\t\tELSE\r\t\t\tra := rd.ruler.style.attr;\r\t\t\trd.w := 0; rd.endW := 0; rd.h := ra.asc + ra.dsc; rd.dsc := ra.dsc\r\t\tEND\r\tEND Read;\r\r\tPROCEDURE (rd: StdReader) AdjustWidth (start, pos: INTEGER; IN box: LineBox; VAR w: INTEGER);\r\t\tVAR i: INTEGER; form: SET;\r\tBEGIN\r\t\tIF box.adj & (pos >= start + box.adjOff) THEN\r\t\t\tform := box.ruler.style.attr.opts * adjustMask;\r\t\t\tIF (form = blocked) & (rd.string[0] = \" \") THEN\r\t\t\t\tINC(w, box.adjW DIV box.spaces)\r\t\t\tELSIF (form # blocked) & (rd.string[0] = tab) THEN\r\t\t\t\tINC(w, box.adjW)\t"
+                    attr: 0
+                  - text: "(* is this correct ??? *)"
+                    attr: 3
+                  - text: "\r\t\t\tEND\r\t\tEND;\r\t\ti := rd.tabIndex;\t"
+                    attr: 0
+                  - text: "(* rd.string[0] = tab  =>  i >= 0 *)"
+                    attr: 1
+                  - text: "\r\t\tIF (rd.string[0] = tab) & (i < box.ruler.style.attr.tabs.len) THEN\r\t\t\tw := box.tabW[i]\r\t\tEND\r\tEND AdjustWidth;\r\r\tPROCEDURE (rd: StdReader) SplitWidth (w: INTEGER): INTEGER;\r\tBEGIN\r\t\tIF (rd.string[1] = 0X) & (rd.view = NIL) THEN\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " (w + 1) DIV 2\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " w\r\t\tEND\r\tEND SplitWidth;\r\r\r\t"
+                    attr: 0
+                  - text: "(* Worder *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE SetWorder (VAR w: Worder; s: StdSetter; pos: INTEGER; OUT start: INTEGER);\r\t\tCONST wordCutoff = LEN(s.rd.string);\r\tBEGIN\r\t\tstart := s.ThisSequence(pos);\r\t\tIF pos - start >= wordCutoff THEN\r\t\t\tstart := pos; WHILE pos - start < wordCutoff DO start := s.PreviousLine(start) END\r\t\tEND;\r\t\ts.GetLine(start, w.box); w.next := start + w.box.len;\r\t\ts.rd.Set(s.r, s.text, w.box.left, start, w.box.ruler, w.box.rpos, s.vw, s.hideMarks);\r\t\tw.i := 0; s.rd.string[0] := 0X\r\tEND SetWorder;\r\r\tPROCEDURE StepWorder (VAR w: Worder; s: StdSetter; VAR part: BOOLEAN);\r\t\tVAR rd: Reader;\r\tBEGIN\r\t\trd := s.rd;\r\t\tIF rd.string[w.i] = 0X THEN\r\t\t\tIF rd.pos < w.next THEN\r\t\t\t\trd.Read; w.i := 0\r\t\t\tELSE\r\t\t\t\tIF ~w.box.eot THEN\r\t\t\t\t\ts.GetLine(w.next, w.box);\r\t\t\t\t\ts.rd.Set(s.r, s.text, w.box.left, w.next, w.box.ruler, w.box.rpos, s.vw, s.hideMarks);\r\t\t\t\t\trd.Read; w.i := 0;\r\t\t\t\t\tINC(w.next, w.box.len)\r\t\t\t\tELSE\r\t\t\t\t\trd.string[0] := 0X\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND;\r\t\tIF rd.string[0] = 0X THEN\t"
+                    attr: 0
+                  - text: "(* end of text *)"
+                    attr: 1
+                  - text: "\r\t\t\tpart := TRUE\r\t\tELSIF rd.string[1] = 0X THEN\t"
+                    attr: 0
+                  - text: "(* special character *)"
+                    attr: 1
+                  - text: "\r\t\t\tpart := wordPart IN rd.setterOpts; INC(w.i)\r\t\tELSE\t"
+                    attr: 0
+                  - text: "(* gathered sString *)"
+                    attr: 1
+                  - text: "\r\t\t\tpart := WordPart(rd.string[w.i], rd.string[w.i + 1]); INC(w.i)\r\t\tEND\r\tEND StepWorder;\r\r\r\t"
+                    attr: 0
+                  - text: "(* StdSetter *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (s: StdSetter) CopyFrom (source: Stores.Store);\r\tBEGIN\r\t\ts.CopyFrom^(source);\r\t\tWITH source: StdSetter DO\r\t\t\ts.ruler := source.ruler; s.rpos := source.rpos; s.key := source.key;\r\t\t\ts.rd := NIL; s.r := NIL\r\t\tEND\r\tEND CopyFrom;\r\r\tPROCEDURE (s: StdSetter) Externalize (VAR wr: Stores.Writer);\r\tBEGIN\r\t\ts.Externalize^(wr);\r\t\twr.WriteVersion(maxStdVersion)\r\tEND Externalize;\r\r\tPROCEDURE (s: StdSetter) Internalize (VAR rd: Stores.Reader);\r\t\tVAR thisVersion: INTEGER;\r\tBEGIN\r\t\ts.Internalize^(rd);\r\t\tIF rd.cancelled THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " END;\r\t\trd.ReadVersion(minVersion, maxStdVersion, thisVersion);\r\t\tIF rd.cancelled THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " END;\r\t\ts.text := NIL; s.defRuler := NIL; s.ruler := NIL; s.rd := NIL; s.r := NIL\r\tEND Internalize;\r\r\r\tPROCEDURE (s: StdSetter) ConnectTo (text: TextModels.Model;\r\t\tdefRuler: TextRulers.Ruler; vw: INTEGER; hideMarks: BOOLEAN\r\t);\r\tBEGIN\r\t\ts.ConnectTo^(text, defRuler, vw, hideMarks);\r\t\tClearCache(s.key);\r\t\tIF text # NIL THEN\r\t\t\ts.ruler := defRuler; s.rpos := -1; s.key := nextKey; INC(nextKey)\r\t\tELSE\r\t\t\ts.ruler := NIL\r\t\tEND\r\tEND ConnectTo;\r\r\r\tPROCEDURE (s: StdSetter) ThisPage (pageH: INTEGER; pageNo: INTEGER): INTEGER;\r\t"
+                    attr: 0
+                  - text: "(* pre: connected, 0 <= pageNo *)"
+                    attr: 1
+                  - text: "\r\t"
+                    attr: 0
+                  - text: "(* post: (result = -1) & (pageNo >= maxPageNo) OR (result = pageStart(pageNo)) *)"
+                    attr: 1
+                  - text: "\r\t\tVAR start, prev: INTEGER;\r\tBEGIN\r\t\tASSERT(s.text # NIL, 20); ASSERT(pageNo >= 0, 21);\r\t\tstart := 0;\r\t\tWHILE pageNo > 0 DO\r\t\t\tprev := start; DEC(pageNo); start := s.NextPage(pageH, start);\r\t\t\tIF start = prev THEN start := -1; pageNo := 0 END\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " start\r\tEND ThisPage;\r\r\tPROCEDURE (s: StdSetter) NextPage (pageH: INTEGER; start: INTEGER): INTEGER;\r\t"
+                    attr: 0
+                  - text: "(* pre: connected, ThisPage(pageH, x) = start *)"
+                    attr: 1
+                  - text: "\r\t"
+                    attr: 0
+                  - text: "(* post: (result = s.text.Length()) OR result = next-pageStart(start) *)"
+                    attr: 1
+                  - text: "\r\t\tCONST\r\t\t\tnoBreakInside = TextRulers.noBreakInside;\r\t\t\tpageBreak = TextRulers.pageBreak;\r\t\t\tparJoin = TextRulers.parJoin;\r\t\t\tregular = 0; protectInside = 1; joinFirst = 2; joinNext = 3; confirmSpace = 4;\t"
+                    attr: 0
+                  - text: "(* state *)"
+                    attr: 1
+                  - text: "\r\t\tVAR\r\t\t\tbox: LineBox; ra: TextRulers.Attributes;\r\t\t\th, asc, dsc, backup, pos, state: INTEGER; isRuler: BOOLEAN;\r\r\t\tPROCEDURE FetchNextLine;\r\t\tBEGIN\r\t\t\ts.GetLine(pos, box);\r\t\t\tIF box.len > 0 THEN\r\t\t\t\tra := box.ruler.style.attr; isRuler := box.rpos = pos;\r\t\t\t\tasc := box.asc + s.GridOffset(dsc, box); dsc := box.dsc; h := asc + dsc\r\t\t\tEND\r\t\tEND FetchNextLine;\r\r\t\tPROCEDURE HandleRuler;\r\t\t\tCONST norm = 0; nbi = 1; pj = 2;\r\t\t\tVAR strength: INTEGER;\r\t\tBEGIN\r\t\t\tIF isRuler & (pos > start) & ~(pageBreak IN ra.opts) THEN\r\t\t\t\tIF parJoin IN ra.opts THEN strength := pj\r\t\t\t\tELSIF noBreakInside IN ra.opts THEN strength := nbi\r\t\t\t\tELSE strength := norm\r\t\t\t\tEND;\r\t\t\t\tCASE state OF\r\t\t\t\t| regular:\r\t\t\t\t\tCASE strength OF\r\t\t\t\t\t| norm:\r\t\t\t\t\t| nbi: state := protectInside; backup := pos\r\t\t\t\t\t| pj: state := joinFirst; backup := pos\r\t\t\t\t\tEND\r\t\t\t\t| protectInside:\r\t\t\t\t\tCASE strength OF\r\t\t\t\t\t| norm: state := regular\r\t\t\t\t\t| nbi: "
+                    attr: 0
+                  - text: "backup := pos"
+                    attr: 3
+                  - text: "\r\t\t\t\t\t| pj: state := joinFirst; backup := pos\r\t\t\t\t\tEND\r\t\t\t\t| joinFirst:\r\t\t\t\t\tCASE strength OF\r\t\t\t\t\t| norm: state := confirmSpace\r\t\t\t\t\t| nbi: state := protectInside\r\t\t\t\t\t| pj: state := joinNext\r\t\t\t\t\tEND\r\t\t\t\t| joinNext:\r\t\t\t\t\tCASE strength OF\r\t\t\t\t\t| norm: state := confirmSpace\r\t\t\t\t\t| nbi: state := protectInside\r\t\t\t\t\t| pj:\r\t\t\t\t\tEND\r\t\t\t\t| confirmSpace:\r\t\t\t\t\tCASE strength OF\r\t\t\t\t\t| norm: state := regular\r\t\t\t\t\t| nbi: state := protectInside; backup := pos\r\t\t\t\t\t| pj: state := joinFirst; backup := pos\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND HandleRuler;\r\r\t\tPROCEDURE IsEmptyLine (): BOOLEAN;\r\t\tBEGIN\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " (box.right = box.left)  OR  s.hideMarks & isRuler & ~(pageBreak IN ra.opts)\r\t\tEND IsEmptyLine;\r\r\tBEGIN\r\t\tASSERT(s.text # NIL, 20);\r\t\tASSERT(0 <= start, 21); ASSERT(start <= s.text.Length(), 22);\r\t\tpos := start; dsc := -1;\r\t\tFetchNextLine;\r\t\tIF box.len > 0 THEN\r\t\t\tstate := regular;\r\t\t\tREPEAT\t"
+                    attr: 0
+                  - text: "(* at least one line per page *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tHandleRuler; DEC(pageH, h); INC(pos, box.len);\r\t\t\t\tIF (state = confirmSpace) & ~IsEmptyLine() THEN state := regular END;\r\t\t\t\tFetchNextLine\r\t\t\tUNTIL (box.len = 0)  OR  (pageH - h < 0)  OR  isRuler & (pageBreak IN ra.opts);\r\t\t\tIF ~isRuler OR ~(pageBreak IN ra.opts) THEN\r\t\t\t\tWHILE (box.len > 0) & IsEmptyLine() DO\t"
+                    attr: 0
+                  - text: "(* skip empty lines at top of page *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tHandleRuler; INC(pos, box.len); FetchNextLine\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tHandleRuler;\r\t\t\tIF (state # regular) & ~(isRuler & (pageBreak IN ra.opts) OR (box.len = 0)) THEN pos := backup END\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " pos\r\tEND NextPage;\r\r\r\tPROCEDURE (s: StdSetter) NextSequence (start: INTEGER): INTEGER;\r\t"
+                    attr: 0
+                  - text: "(* pre: connected, ThisSequence(start) = start *)"
+                    attr: 1
+                  - text: "\r\t"
+                    attr: 0
+                  - text: "(* post: (result = start) & last-line(start) OR (ThisSequence(t, result - 1) = start) *)"
+                    attr: 1
+                  - text: "\r\t\tVAR rd: TextModels.Reader; ch: CHAR;\r\tBEGIN\r\t\tASSERT(s.text # NIL, 20);\r\t\ts.r := s.text.NewReader(s.r); rd := s.r; rd.SetPos(start);\r\t\tREPEAT rd.ReadChar(ch) UNTIL rd.eot OR (ch = line) OR (ch = para);\r\t\tIF rd.eot THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " start ELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " rd.Pos() END\r\tEND NextSequence;\r\r\tPROCEDURE (s: StdSetter) ThisSequence (pos: INTEGER): INTEGER;\r\t"
+                    attr: 0
+                  - text: "(* pre: connected, 0 <= pos <= t.Length() *)"
+                    attr: 1
+                  - text: "\r\t"
+                    attr: 0
+                  - text: "(* post: (result = 0) OR (char(result - 1) IN {line, para}) *)"
+                    attr: 1
+                  - text: "\r\t\tVAR rd: TextModels.Reader; start, limit: INTEGER; ch: CHAR;\r\tBEGIN\r\t\tASSERT(s.text # NIL, 20); ASSERT(0 <= pos, 21); ASSERT(pos <= s.text.Length(), 22);\r\t\tIF pos = 0 THEN\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 0\r\t\tELSE\r\t\t\tstart := CachedSeqStart(s.key, pos);\r\t\t\tIF start < 0 THEN\r\t\t\t\ts.r := s.text.NewReader(s.r); rd := s.r; rd.SetPos(pos);\r\t\t\t\tlimit := paraShutoff;\r\t\t\t\tREPEAT rd.ReadPrevChar(ch); DEC(limit)\r\t\t\t\tUNTIL rd.eot OR (ch = line) OR (ch = para) OR (limit = 0);\r\t\t\t\tIF rd.eot THEN start := 0 ELSE start := rd.Pos() + 1 END;\r\t\t\t\tAddSeqStartToCache(s.key, pos, start)\r\t\t\tEND;\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " start\r\t\tEND\r\tEND ThisSequence;\r\r\tPROCEDURE (s: StdSetter) PreviousSequence (start: INTEGER): INTEGER;\r\t"
+                    attr: 0
+                  - text: "(* pre: connected, ThisSequence(t, start) = start *) "
+                    attr: 1
+                  - text: "\r\t"
+                    attr: 0
+                  - text: "(* post: (result = 0) & (start = 0) OR (result = ThisSequence(t, start - 1)) *)"
+                    attr: 1
+                  - text: "\r\tBEGIN\r\t\tIF start <= 1 THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 0 ELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " s.ThisSequence(start - 1) END\r\tEND PreviousSequence;\r\r\r\tPROCEDURE (s: StdSetter) ThisLine (pos: INTEGER): INTEGER;\r\t"
+                    attr: 0
+                  - text: "(* pre: connected *)"
+                    attr: 1
+                  - text: "\r\t\tVAR start, next: INTEGER;\r\tBEGIN\r\t\tnext := s.ThisSequence(pos);\r\t\tREPEAT start := next; next := s.NextLine(start) UNTIL (next > pos) OR (next = start);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " start\r\tEND ThisLine;\r\r\tPROCEDURE (s: StdSetter) NextLine (start: INTEGER): INTEGER;\r\t"
+                    attr: 0
+                  - text: "(* pre: connected, ThisLine(start) = start *)"
+                    attr: 1
+                  - text: "\r\t"
+                    attr: 0
+                  - text: "(* post: (result = 0) & (start = 0) OR\r\t\t\t\t(result = start) & last-line(start) OR\r\t\t\t\t(ThisLine(result - 1) = start) *)"
+                    attr: 1
+                  - text: "\r\t\tVAR box: LineBox; len: INTEGER; i: INTEGER; eot: BOOLEAN;\r\tBEGIN\r\t\ti := CacheIndex(s.key, start);\r\t\tIF i >= 0 THEN\r\t\t\tlen := boxCache[i].line.len; eot := boxCache[i].line.eot\r\t\tELSE\r\t\t\ts.GetLine(start, box); len := box.len; eot := box.eot\r\t\tEND;\r\t\tIF ~eot THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " start + len ELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " start END\r\tEND NextLine;\r\r\tPROCEDURE (s: StdSetter) PreviousLine (start: INTEGER): INTEGER;\r\t"
+                    attr: 0
+                  - text: "(* pre: connected, ThisLine(start) = start *)"
+                    attr: 1
+                  - text: "\r\t"
+                    attr: 0
+                  - text: "(* post: (result = 0) & (start = 0) OR (result = ThisLine(start - 1)) *)"
+                    attr: 1
+                  - text: "\r\tBEGIN\r\t\tIF start <= 1 THEN start := 0 ELSE start := s.ThisLine(start - 1) END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " start\r\tEND PreviousLine;\r\r\r\tPROCEDURE (s: StdSetter) GetWord (pos: INTEGER; OUT beg, end: INTEGER);\r\t"
+                    attr: 0
+                  - text: "(* pre: connected, 0 <= pos <= s.text.Length() *)"
+                    attr: 1
+                  - text: "\r\t"
+                    attr: 0
+                  - text: "(* post: beg <= pos <= end *)"
+                    attr: 1
+                  - text: "\r\t\tCONST wordCutoff = LEN(s.rd.string);\r\t\tVAR w: Worder; part: BOOLEAN;\r\tBEGIN\r\t\tASSERT(s.text # NIL, 20); ASSERT(0 <= pos, 21); ASSERT(pos <= s.text.Length(), 22);\r\t\tSetWorder(w, s, pos, beg); end := beg;\r\t\tREPEAT\r\t\t\tStepWorder(w, s, part); INC(end);\r\t\t\tIF ~part THEN beg := end END\r\t\tUNTIL end >= pos;\r\t\tDEC(end);\r\t\tREPEAT\r\t\t\tStepWorder(w, s, part); INC(end)\r\t\tUNTIL ~part OR (s.rd.string[0] = 0X) OR (end - beg > wordCutoff)\r\tEND GetWord;\r\r\tPROCEDURE (s: StdSetter) GetLine (start: INTEGER; OUT box: LineBox);\r\t\tVAR rd: Reader; ra: TextRulers.Attributes; brk: LineBox;\r\t\t\td, off, right, w: INTEGER; i, tabsN: INTEGER; form: SET; adj: BOOLEAN; ch: CHAR;\r\r"
+                    attr: 0
+                  - text: "\t\tPROCEDURE TrueW (VAR b: LineBox; w: INTEGER): INTEGER;\r\t\t\tVAR i: INTEGER; type: SET;\r\t\tBEGIN\r\t\t\ti := rd.tabIndex;\r\t\t\tIF (0 <= i ) & (i < TextRulers.maxTabs) & (rd.string[0] # tab) THEN\r\t\t\t\ttype := rd.tabType * {TextRulers.centerTab, TextRulers.rightTab};\r\t\t\t\tIF type = {TextRulers.centerTab} THEN\r\t\t\t\t\tDEC(w, b.tabW[i] - MAX(minTabWidth, b.tabW[i] - w DIV 2))\r\t\t\t\tELSIF type = {TextRulers.rightTab} THEN\r\t\t\t\t\tDEC(w, b.tabW[i] - MAX(minTabWidth, b.tabW[i] - w))\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tRETURN w\r\t\tEND TrueW;\r"
+                    attr: 3
+                  - text: "\r\t\tPROCEDURE Enclose (VAR b: LineBox; w: INTEGER);\r\t\t\tVAR off, i, d: INTEGER; type: SET;\r\t\tBEGIN\r\t\t\tb.len := rd.pos - start; INC(b.right, w);\r\t\t\toff := rd.attr.offset; i := rd.tabIndex;\r\t\t\tIF rd.h - rd.dsc + off > b.asc THEN b.asc := rd.h - rd.dsc + off END;\r\t\t\tIF rd.dsc - off > b.dsc THEN b.dsc := rd.dsc - off END;\r\t\t\tIF rd.view # NIL THEN b.views := TRUE END;\r\t\t\tIF (0 <= i ) & (i < TextRulers.maxTabs) THEN\r\t\t\t\tIF rd.string[0] = tab THEN\r\t\t\t\t\tb.tabW[i] := w\r\t\t\t\tELSE\r\t\t\t\t\ttype := rd.tabType * {TextRulers.centerTab, TextRulers.rightTab};\r\t\t\t\t\tIF type = {TextRulers.centerTab} THEN\r\t\t\t\t\t\td := b.tabW[i] - MAX(minTabWidth, b.tabW[i] - w DIV 2);\r\t\t\t\t\t\tDEC(b.tabW[i], d); DEC(b.right, d)\r\t\t\t\t\tELSIF type = {TextRulers.rightTab} THEN\r\t\t\t\t\t\td := b.tabW[i] - MAX(minTabWidth, b.tabW[i] - w);\r\t\t\t\t\t\tDEC(b.tabW[i], d); DEC(b.right, d)\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND Enclose;\r\r\tBEGIN\r\t\tASSERT(s.text # NIL, 20); ASSERT(0 <= start, 21); ASSERT(start <= s.text.Length(), 22);\r\t\ti := CacheIndex(s.key, start);\r\t\tIF i >= 0 THEN\r\t\t\tGetFromCache(s, i, box)\r\t\tELSE\r\t\t\tTextRulers.GetValidRuler(s.text, start, s.rpos, s.ruler, s.rpos);\r\t\t\tIF s.rpos > start THEN s.ruler := s.defRuler; s.rpos := -1 END;\r\t\t\tbox.ruler := s.ruler; box.rpos := s.rpos;\r\t\t\tra := s.ruler.style.attr; tabsN := ra.tabs.len; right := Right(ra, s.vw);\r\t\t\ts.r := s.text.NewReader(s.r);\r\t\t\tIF start = 0 THEN s.r.SetPos(start); ch := para\r\t\t\tELSE s.r.SetPos(start - 1); s.r.ReadChar(ch)\r\t\t\tEND;\r\t\t\ts.r.Read;\r\r"
+                    attr: 0
+                  - text: "(*"
+                    attr: 3
+                  - text: "\r\t\t\tIF s.r.char = para THEN box.rbox := ~s.hideMarks; box.bop := s.hideMarks; box.left := 0\r\t\t\tELSIF ch = para THEN box.rbox := FALSE; box.bop := TRUE; box.left := ra.first\r\t\t\tELSE box.rbox := FALSE; box.bop := FALSE; box.left := ra.left\r\t\t\tEND;\r"
+                    attr: 0
+                  - text: "*)"
+                    attr: 3
+                  - text: "\r\t\t\tIF s.r.char = para THEN box.rbox := TRUE; box.bop := FALSE; box.left := 0\r\t\t\tELSIF ch = para THEN box.rbox := FALSE; box.bop := TRUE; box.left := ra.first\r\t\t\tELSE box.rbox := FALSE; box.bop := FALSE; box.left := ra.left\r\t\t\tEND;\r"
+                    attr: 0
+                  - text: "(**)"
+                    attr: 3
+                  - text: "\r\t\t\tbox.views := FALSE;\r\t\t\tbox.asc := 0; box.dsc := 0; box.right := box.left;\r\t\t\tbox.len := 0; box.adjOff := 0; box.spaces := 0;\r\t\t\tbrk.right := 0;\r\t\r\t\t\ts.rd := s.NewReader(s.rd); rd := s.rd;\r\t\t\trd.Set(s.r, s.text, box.left, start, box.ruler, box.rpos, s.vw, s.hideMarks);\r\t\t\trd.Read;\r\t\t\tWHILE ~rd.eot & (box.right + "
+                    attr: 0
+                  - text: "(*"
+                    attr: 3
+                  - text: rd.w
+                    attr: 0
+                  - text: "*) TrueW(box, rd.w)"
+                    attr: 3
+                  - text: " <= right)\r\t\t\t& ~(lineBreak IN rd.setterOpts) DO\r\t\t\t\tIF ~(wordJoin IN rd.setterOpts) & (box.right + rd.endW <= right) THEN\r\t\t\t\t\t"
+                    attr: 0
+                  - text: "(*brk := box;*)"
+                    attr: 3
+                  - text: "\r\t\t\t\t\tbrk.len := box.len; brk.ruler := box.ruler; brk.rpos := box.rpos;\r\t\t\t\t\tbrk.left := box.left; brk.right := box.right; brk.asc := box.asc; brk.dsc := box.dsc;\r\t\t\t\t\tbrk.rbox := box.rbox; brk.bop := box.bop; brk.adj := box.adj; brk.eot := box.eot;\r\t\t\t\t\tbrk.views := box.views; brk.skipOff := box.skipOff; brk.adjOff := box.adjOff;\r\t\t\t\t\tbrk.spaces := box.spaces; brk.adjW := box.adjW;\r\t\t\t\t\ti := 0; WHILE i < tabsN DO brk.tabW[i] := box.tabW[i]; INC(i) END;\r\t\t\t\t\t"
+                    attr: 0
+                  - text: "(*---*)"
+                    attr: 3
+                  - text: "\r\t\t\t\t\tEnclose(brk, rd.endW);\r\t\t\t\t\tbrk.eot := rd.r.eot\t"
+                    attr: 0
+                  - text: "(* rd.r.eot one ahead of rd.eot *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tEND;\r\t\t\t\tbox.adjOff := rd.adjStart - start; box.spaces := rd.spaces;\r\t\t\t\tEnclose(box, rd.w);\r\t\t\t\trd.x := box.right; rd.Read\r\t\t\tEND;\r\t\t\tIF (lineBreak IN rd.setterOpts) "
+                    attr: 0
+                  - text: "(* & ~box.rbox *)"
+                    attr: 3
+                  - text: " THEN Enclose(box, 0) END;\r\t\t\tbox.eot := rd.eot; adj := FALSE; box.skipOff := box.len;\r\t\t\tIF box.right + rd.w > right THEN\t"
+                    attr: 0
+                  - text: "(* rd.w > 0 => ~rd.eot & ~(lineBreak IN setterOpts) *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tIF ~(wordJoin IN rd.setterOpts) & (box.right + rd.endW <= right) THEN\r\t\t\t\t\tIF rd.string[0] = \" \" THEN DEC(box.spaces) END;\r\t\t\t\t\tEnclose(box, rd.endW);\r\t\t\t\t\tadj := TRUE\r\t\t\t\tELSIF brk.right > 0 THEN\r\t\t\t\t\t"
+                    attr: 0
+                  - text: "(*box := brk;*)"
+                    attr: 3
+                  - text: "\r\t\t\t\t\tbox.len := brk.len; box.ruler := brk.ruler; box.rpos := brk.rpos;\r\t\t\t\t\tbox.left := brk.left; box.right := brk.right; box.asc := brk.asc; box.dsc := brk.dsc;\r\t\t\t\t\tbox.rbox := brk.rbox; box.bop := brk.bop; box.adj := brk.adj; box.eot := brk.eot;\r\t\t\t\t\tbox.views := brk.views; box.skipOff := brk.skipOff; box.adjOff := brk.adjOff;\r\t\t\t\t\tbox.spaces := brk.spaces; box.adjW := brk.adjW;\r\t\t\t\t\ti := 0; WHILE i < tabsN DO box.tabW[i] := brk.tabW[i]; INC(i) END;\r\t\t\t\t\t"
+                    attr: 0
+                  - text: "(*---*)"
+                    attr: 3
+                  - text: "\r\t\t\t\t\tbox.skipOff := box.len - 1; adj := TRUE\r\t\t\t\tELSIF box.right = box.left THEN\r\t\t\t\t\tEnclose(box, rd.w)\t"
+                    attr: 0
+                  - text: "(* force at least one per line *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tEND\r\t\t\tELSIF (box.right = box.left) & box.eot THEN\r\t\t\t\tbox.asc := ra.asc; box.dsc := ra.dsc\t"
+                    attr: 0
+                  - text: "(* force empty line to ruler's default height *)"
+                    attr: 1
+                  - text: "\r\t\t\tEND;\r\t\r\t\t\tbox.adj := FALSE;\r\t\t\td := right - box.right;\r\t\t\tIF d > 0 THEN\r\t\t\t\tform := ra.opts * adjustMask;\r\t\t\t\tIF form = blocked THEN\r\t\t\t\t\tIF adj & (box.spaces > 0) THEN\r\t\t\t\t\t\tbox.right := right; box.adj := TRUE; box.adjW := d\r\t\t\t\t\tEND\r\t\t\t\tELSIF form = rightFlush THEN\r\t\t\t\t\tIF box.adjOff > 0 THEN\r\t\t\t\t\t\tbox.adjW := d; box.adj := TRUE\r\t\t\t\t\tELSE\r\t\t\t\t\t\tINC(box.left, d)\r\t\t\t\t\tEND;\r\t\t\t\t\tbox.right := right\r\t\t\t\tELSIF form = centered THEN\r\t\t\t\t\tIF box.adjOff > 0 THEN\r\t\t\t\t\t\tbox.adjW := d DIV 2; box.adj := TRUE\r\t\t\t\t\tELSE\r\t\t\t\t\t\tINC(box.left, d DIV 2)\r\t\t\t\t\tEND;\r\t\t\t\t\tINC(box.right, d DIV 2)\r\t\t\t\tEND\r\t\t\tEND;\r\r\t\t\tAddToCache(s.key, start, box)\r\t\tEND;\r\r\t\tASSERT(box.eot OR (box.len > 0), 100)\r\tEND GetLine;\r\r\r\tPROCEDURE (s: StdSetter) GetBox (start, end, maxW, maxH: INTEGER; OUT w, h: INTEGER);\r\t\tVAR box: LineBox; asc, dsc: INTEGER;\r\tBEGIN\r\t\tASSERT(s.text # NIL, 20);\r\t\tASSERT(0 <= start, 21);\r\t\tASSERT(start <= end, 22);\r\t\tASSERT(end <= s.text.Length(), 23);\r\t\tw := 0; h := 0; dsc := -1;\r\t\tIF maxW <= Views.undefined THEN maxW := MAX(INTEGER) END;\r\t\tIF maxH <= Views.undefined THEN maxH := MAX(INTEGER) END;\r\t\tWHILE (start < end) & (h < maxH) DO\r\t\t\ts.GetLine(start, box);\r\t\t\tIF box.rbox THEN w := MAX(w, Right(box.ruler.style.attr, s.vw))\r\t\t\tELSE w := MAX(w, box.right)\r\t\t\tEND;\r\t\t\tasc := box.asc + s.GridOffset(dsc, box); dsc := box.dsc;\r\t\t\tINC(start, box.len); INC(h, asc + dsc)\r\t\tEND;\r\t\tw := MIN(w, maxW); h := MIN(h, maxH)\r\tEND GetBox;\r\r\r\tPROCEDURE (s: StdSetter) NewReader (old: Reader): Reader;\r\t"
+                    attr: 0
+                  - text: "(* pre: connected *)"
+                    attr: 1
+                  - text: "\r\t\tVAR rd: StdReader;\r\tBEGIN\r\t\tASSERT(s.text # NIL, 20);\r\t\tIF (old # NIL) & (old IS StdReader) THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " old\r\t\tELSE NEW(rd); "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " rd\r\t\tEND\r\tEND NewReader;\r\r\r\tPROCEDURE (s: StdSetter) GridOffset (dsc: INTEGER; IN box: LineBox): INTEGER;\r\t\tVAR ra: TextRulers.Attributes; h, h0: INTEGER;\r\t\t"
+                    attr: 0
+                  - text: "(* minimal possible line spacing h0, minimal legal line spacing h *)"
+                    attr: 1
+                  - text: "\r\tBEGIN\r\t\tIF ~box.rbox THEN\r\t\t\tra := box.ruler.style.attr;\r\t\t\tIF dsc < 0 THEN\r"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 0\t"
+                    attr: 0
+                  - text: "(* no longer try to correct first line's grid position -- should be done when printing... *)"
+                    attr: 1
+                  - text: "\r"
+                    attr: 0
+                  - text: "(*"
+                    attr: 3
+                  - text: "\r\t\t\t\th0 := box.asc; h := ra.asc;\r\t\t\t\tIF h < h0 THEN\t"
+                    attr: 0
+                  - text: "(* override legal spacing if to small *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\th := h - (h - h0) DIV ra.grid * ra.grid\t"
+                    attr: 0
+                  - text: "(* adjust to next larger grid line *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tEND;\r\t\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " h - h0\r"
+                    attr: 0
+                  - text: "*)"
+                    attr: 3
+                  - text: "\r\t\t\tELSE\r\t\t\t\th0 := box.asc + dsc; h := ra.asc + ra.dsc;\r\t\t\t\tIF h < h0 THEN h := h0 END;\t"
+                    attr: 0
+                  - text: "(* override legal spacing if to small *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " - (-h) DIV ra.grid * ra.grid - h0\t"
+                    attr: 0
+                  - text: "(* adjust to next larger grid line *)"
+                    attr: 1
+                  - text: "\r\t\t\tEND\r\t\tELSE\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 0\r\t\tEND\r\tEND GridOffset;\r\r\r\t"
+                    attr: 0
+                  - text: "(* StdDirectory *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (d: StdDirectory) New (): Setter;\r\t\tVAR s: StdSetter;\r\tBEGIN\r\t\tNEW(s); s.text := NIL; "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " s\r\tEND New;\r\r\r\t"
+                    attr: 0
+                  - text: "(** miscellaneous **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE Init;\r\t\tVAR d: StdDirectory;\r\tBEGIN\r\t\tInitCache;\r\t\tNEW(d); dir := d; stdDir := d\r\tEND Init;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetDir
+                    attr: 3
+                  - text: "* (d: Directory);\r\tBEGIN\r\t\tASSERT(d # NIL, 20); dir := d\r\tEND SetDir;\r\rBEGIN\r\tInit\rEND TextSetters.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 47203
+          bodyLen: 8

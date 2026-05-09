@@ -1,0 +1,238 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Comm\\Docu\\V24.odc"
+  size: 5066
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 4935
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 4749
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 4663
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 152400
+                dsc: 25400
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 6
+                bodyPos: 4663
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 4149
+                runListLen: 546
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                flow:
+                  - text: CommV24
+                    attr: 0
+                  - text: "\r\rMODULE CommV24;\r\r\tCONST\r\t\tbits4 = 0; bits5 = 1; bits6 = 2; bits7 = 3; stop15 = 4; stop2 = 5; even = 6; odd = 7;\r\t\tinXonXoff = 8; outXonXoff = 9; inRTS = 10; inDTR = 11; outCTS = 12; outDSR = 13;\r\r\tTYPE Connection = POINTER TO LIMITED RECORD END;\r\r\tPROCEDURE Open (device: ARRAY OF CHAR; baud: INTEGER; opts: SET; OUT conn: Connection);\r\tPROCEDURE Close (c: Connection);\r\tPROCEDURE SendByte (c: Connection; x: BYTE);\r\tPROCEDURE SendBytes (c: Connection; IN x: ARRAY OF BYTE; beg, len: INTEGER);\r\tPROCEDURE Available (c: Connection): INTEGER;\r\tPROCEDURE ReceiveByte (c: Connection; OUT x: BYTE);\r\tPROCEDURE ReceiveBytes (c: Connection; OUT x: ARRAY OF BYTE; beg, len: INTEGER);\r\tPROCEDURE SetBuffers (c: Connection; inpBufSize, outBufSize: INTEGER);\r\tPROCEDURE SetDTR (c: Connection; on: BOOLEAN);\r\tPROCEDURE SetRTS (c: Connection; on: BOOLEAN);\r\tPROCEDURE SetBreak (c: Connection; on: BOOLEAN);\r\tPROCEDURE CTSState (c: Connection): BOOLEAN;\r\tPROCEDURE DSRState (c: Connection): BOOLEAN;\r\tPROCEDURE CDState (c: Connection): BOOLEAN;\r\rEND CommV24.\r\r\rSimple procedural interface to V24 and similar serial devices.\r\r\rCONST "
+                    attr: 1
+                  - text: "bits4, bits5, bits6, bits7"
+                    attr: 2
+                  - text: "\rNumber of data bits. These flags may be included in the "
+                    attr: 1
+                  - text: opts
+                    attr: 3
+                  - text: " set of procedure "
+                    attr: 1
+                  - text: Open
+                    attr: 3
+                  - text: ". At most one of them may be included. If none is included, 8 bits are chosen.\r\rCONST "
+                    attr: 1
+                  - text: "stop15, stop2"
+                    attr: 2
+                  - text: "\rNumber of stop bits (1.5 or 2). These flags may be included in the "
+                    attr: 1
+                  - text: opts
+                    attr: 3
+                  - text: " set of procedure "
+                    attr: 1
+                  - text: Open
+                    attr: 3
+                  - text: ". At most one of them may be included. If none is included, one stop bit is chosen.\r\rCONST "
+                    attr: 1
+                  - text: "even, odd"
+                    attr: 2
+                  - text: "\rParity checking. These flags may be included in the "
+                    attr: 1
+                  - text: opts
+                    attr: 3
+                  - text: " set of procedure "
+                    attr: 1
+                  - text: Open
+                    attr: 3
+                  - text: ". At most one of them may be included. If none is included, no parity checking is chosen.\r\rCONST "
+                    attr: 1
+                  - text: "inXonXoff, outXonXoff"
+                    attr: 2
+                  - text: "\rXOn/XOff flow control for input and for output direction. These flags may be included in the "
+                    attr: 1
+                  - text: opts
+                    attr: 3
+                  - text: " set of procedure "
+                    attr: 1
+                  - text: Open
+                    attr: 3
+                  - text: ".\r\rCONST "
+                    attr: 1
+                  - text: "inRTS, inDTR, outCTS, outDSR"
+                    attr: 2
+                  - text: "\rThese flags may be included in the "
+                    attr: 1
+                  - text: opts
+                    attr: 3
+                  - text: " set of procedure "
+                    attr: 1
+                  - text: Open
+                    attr: 3
+                  - text: ".\r\rTYPE "
+                    attr: 1
+                  - text: Connection
+                    attr: 2
+                  - text: "\rLIMITED\rConnection handle. It represents a V24 connection through a particular device.\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: Open
+                    attr: 2
+                  - text: " (device: ARRAY OF CHAR; baud: INTEGER; opts: SET; OUT conn: Connection)\rOpens a given device (e.g., \"COM3:\") with the given baudrate and options. Note that a device to which a connection is already open cannot be open a second time before it is closed explicitly.\r\rPost\ropening succeeded\r\tconn # NIL\ropening failed\r\tconn = NIL\r\rPROCEDURE "
+                    attr: 1
+                  - text: Close
+                    attr: 2
+                  - text: " (c: Connection)\rCloses an open connection.\r\rPre\rc # NIL\t20\rc is open\t21\r\rPROCEDURE "
+                    attr: 1
+                  - text: SendByte
+                    attr: 2
+                  - text: " (c: Connection; x: BYTE)\r\rPre\rc # NIL\t20\rc is open\t21\r\rPROCEDURE "
+                    attr: 1
+                  - text: SendBytes
+                    attr: 2
+                  - text: " (c: Connection; IN x: ARRAY OF BYTE; beg, len: INTEGER)\r\rPre\rc # NIL\t20\rc is open\t21\rLEN(x) >= beg + len\t22\rlen > 0\t23\r\rPROCEDURE "
+                    attr: 1
+                  - text: Available
+                    attr: 2
+                  - text: " (c: Connection): INTEGER\r\rPre\rc # NIL\t20\rc is open\t21\r\rPROCEDURE "
+                    attr: 1
+                  - text: ReceiveByte
+                    attr: 2
+                  - text: " (c: Connection; OUT x: BYTE)\r\rPre\rc # NIL\t20\rc is open\t21\r\rPROCEDURE "
+                    attr: 1
+                  - text: ReceiveBytes
+                    attr: 2
+                  - text: " (c: Connection; OUT x: ARRAY OF BYTE; beg, len: INTEGER)\r\rPre\rc # NIL\t20\rc is open\t21\rLEN(x) >= beg + len\t22\rlen > 0\t23\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetBuffers
+                    attr: 2
+                  - text: " (c: Connection; inpBufSize, outBufSize: INTEGER)\r\rPre\rc # NIL\t20\rc is open\t21\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetDTR
+                    attr: 2
+                  - text: " (c: Connection; on: BOOLEAN)\r\rPre\rc # NIL\t20\rc is open\t21\r~(inDTR IN c.opts)\t22\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetRTS
+                    attr: 2
+                  - text: " (c: Connection; on: BOOLEAN)\r\rPre\rc # NIL\t20\rc is open\t21\r~(inRTS IN c.opts)\t22\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetBreak
+                    attr: 2
+                  - text: " (c: Connection; on: BOOLEAN)\r\rPre\rc # NIL\t20\rc is open\t21\r\rPROCEDURE "
+                    attr: 1
+                  - text: CTSState
+                    attr: 2
+                  - text: " (c: Connection): BOOLEAN\r\rPre\rc # NIL\t20\rc is open\t21\r\rPROCEDURE "
+                    attr: 1
+                  - text: DSRState
+                    attr: 2
+                  - text: " (c: Connection): BOOLEAN\r\rPre\rc # NIL\t20\rc is open\t21\r\rPROCEDURE "
+                    attr: 1
+                  - text: CDState
+                    attr: 2
+                  - text: " (c: Connection): BOOLEAN\r\rPre\rc # NIL\t20\rc is open\t21\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 10
+          bodyPos: 5031
+          bodyLen: 8

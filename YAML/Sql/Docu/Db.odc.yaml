@@ -1,0 +1,762 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Sql\\Docu\\Db.odc"
+  size: 16309
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 16178
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 15992
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 15906
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                asc: 134600
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000003
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 6
+                bodyPos: 15906
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 15392
+                runListLen: 1846
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: SqlDB
+                    attr: 0
+                  - text: "\r\rDEFINITION SqlDB;\r\r\tCONST\r\t\tnames = -1;\r\t\tconverted = 1; truncated = 2; overflow = 3; incompatible = 4; noData = 5;\r\t\tsync = FALSE; async = TRUE;\r\t\thideErrors = FALSE; showErrors = TRUE;\r\r\tTYPE\r\t\tString = POINTER TO ARRAY OF CHAR;\r\r\t\tRow = RECORD\r\t\t\tfields: POINTER TO ARRAY OF String\r\t\tEND;\r\r\t\tBlob = RECORD\r\t\t\tlen: INTEGER;\r\t\t\tdata: POINTER TO ARRAY OF BYTE\r\t\tEND;\r\r\t\tCommand = PROCEDURE (par: ANYPTR);\r\t\tTableCommand = PROCEDURE (t: Table; par: ANYPTR);\r\r\t\tDatabase = POINTER TO ABSTRACT RECORD \r\t\t\tres: INTEGER;\r\t\t\tasync: BOOLEAN;\r\t\t\tshowErrors: BOOLEAN;\r\t\t\t(d: Database) Exec (statement: ARRAY OF CHAR), NEW, ABSTRACT;\r\t\t\t(d: Database) NewTable (): Table, NEW, ABSTRACT;\r\t\t\t(d: Database) Call (command: Command; par: ANYPTR), NEW, ABSTRACT;\r\t\t\t(d: Database) Commit, NEW, ABSTRACT;\r\t\t\t(d: Database) Rollback, NEW, ABSTRACT\r\t\tEND;\r\r\t\tTable = POINTER TO ABSTRACT RECORD \r\t\t\tbase-: Database;\r\t\t\trows, columns: INTEGER;\r\t\t\tres: INTEGER;\r\t\t\tstrictNotify: BOOLEAN;\r\t\t\t(t: Table) InitBase (base: Database), NEW;\r\t\t\t(t: Table) Exec (statement: ARRAY OF CHAR), NEW, ABSTRACT;\r\t\t\t(t: Table) Available (): BOOLEAN, NEW, ABSTRACT;\r\t\t\t(t: Table) Read (row: INTEGER; VAR data: ANYREC), NEW, ABSTRACT;\r\t\t\t(t: Table) Clear, NEW, ABSTRACT;\r\t\t\t(t: Table) Call (command: TableCommand; par: ANYPTR), NEW, ABSTRACT\r\t\tEND;\r\r\tVAR debug: BOOLEAN;\r\r\tPROCEDURE  OpenDatabase (protocol, id, password, datasource: ARRAY OF CHAR;\r\t\t\t\t\t\t\t\t\t\t\t\t\tasync, showErr: BOOLEAN; OUT d: Database; OUT res: INTEGER);\r\rEND SqlDB.\r\r\rModule "
+                    attr: 1
+                  - text: SqlDB
+                    attr: 2
+                  - text: " is the application programming interface for applications using relational databases supporting the SQL language.\r\r\r"
+                    attr: 1
+                  - text: names
+                    attr: 3
+                  - text: "\rThe constant "
+                    attr: 1
+                  - text: names
+                    attr: 2
+                  - text: " can be used as the "
+                    attr: 1
+                  - text: row
+                    attr: 2
+                  - text: " parameter in a table's"
+                    attr: 1
+                  - text: " Read"
+                    attr: 2
+                  - text: " method. This is legal if the passed interactor is of type "
+                    attr: 1
+                  - text: "Row. "
+                    attr: 2
+                  - text: "The interactor is filled with the column names of the actual table.\r\r"
+                    attr: 1
+                  - text: converted
+                    attr: 3
+                  - text: "\rPossible value of a table's "
+                    attr: 1
+                  - text: res
+                    attr: 2
+                  - text: " field after a "
+                    attr: 1
+                  - text: Read
+                    attr: 2
+                  - text: " operation. Indicates that some database values had to be converted to match the type of the corresponding interactor field.\r\r"
+                    attr: 1
+                  - text: truncated
+                    attr: 3
+                  - text: "\rPossible value of a table's "
+                    attr: 1
+                  - text: res
+                    attr: 2
+                  - text: " field after a "
+                    attr: 1
+                  - text: Read
+                    attr: 2
+                  - text: " operation. Indicates that some string values had to be truncated to fit in the corresponding interactor field.\r\r"
+                    attr: 1
+                  - text: overflow
+                    attr: 3
+                  - text: "\rPossible value of a table's "
+                    attr: 1
+                  - text: res
+                    attr: 2
+                  - text: " field after a "
+                    attr: 1
+                  - text: Read
+                    attr: 2
+                  - text: " operation. Indicates that some numeric values could not be read because they where too large to fit in the corresponding interactor field.\r\r"
+                    attr: 1
+                  - text: incompatible
+                    attr: 3
+                  - text: "\rPossible value of a table's "
+                    attr: 1
+                  - text: res
+                    attr: 2
+                  - text: " field after a "
+                    attr: 1
+                  - text: Read
+                    attr: 2
+                  - text: " operation. Indicates that some database values could not be read because of a type incompatibility\r\r"
+                    attr: 1
+                  - text: noData
+                    attr: 3
+                  - text: "\rPossible value of a table's "
+                    attr: 1
+                  - text: res
+                    attr: 2
+                  - text: " field after a "
+                    attr: 1
+                  - text: Read
+                    attr: 2
+                  - text: " operation. Indicates that the "
+                    attr: 1
+                  - text: row
+                    attr: 2
+                  - text: " parameter pointed to a non-existing row.\r\r"
+                    attr: 1
+                  - text: sync
+                    attr: 3
+                  - text: "\rPossible value for the "
+                    attr: 1
+                  - text: async
+                    attr: 2
+                  - text: " parameter of "
+                    attr: 1
+                  - text: OpenDatabase
+                    attr: 2
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: async
+                    attr: 3
+                  - text: "\rPossible value for the "
+                    attr: 1
+                  - text: async
+                    attr: 2
+                  - text: " parameter of "
+                    attr: 1
+                  - text: OpenDatabase
+                    attr: 2
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: hideErrors
+                    attr: 3
+                  - text: "\rPossible value for the "
+                    attr: 1
+                  - text: showErr
+                    attr: 2
+                  - text: " parameter of "
+                    attr: 1
+                  - text: OpenDatabase
+                    attr: 2
+                  - text: ", and of the "
+                    attr: 1
+                  - text: showErrors
+                    attr: 2
+                  - text: " field of a database object.\r\r"
+                    attr: 1
+                  - text: showErrors
+                    attr: 3
+                  - text: "\rPossible value for the "
+                    attr: 1
+                  - text: showErr
+                    attr: 2
+                  - text: " parameter of "
+                    attr: 1
+                  - text: OpenDatabase
+                    attr: 2
+                  - text: ", and of the "
+                    attr: 1
+                  - text: showErrors
+                    attr: 2
+                  - text: " field of a database object.\r\r\rTYPE "
+                    attr: 1
+                  - text: Row
+                    attr: 3
+                  - text: "\rA "
+                    attr: 1
+                  - text: Row
+                    attr: 2
+                  - text: " variable contains a textual representation of a single row of a database. An interactor of this type can be used as parameter of the "
+                    attr: 1
+                  - text: Table.Read
+                    attr: 2
+                  - text: " operation when a textual representation of an unknown table is to be retrieved.\r\r"
+                    attr: 1
+                  - text: fields
+                    attr: 3
+                  - text: ": POINTER TO ARRAY OF String\rThe actual fields of the table row. The array is allocated by the "
+                    attr: 1
+                  - text: Table.Read
+                    attr: 2
+                  - text: " operation. "
+                    attr: 1
+                  - text: fields
+                    attr: 2
+                  - text: " is allocated by "
+                    attr: 1
+                  - text: SqlDB
+                    attr: 2
+                  - text: " if it is "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: " or the length is not correct, otherwise the existing array is reused. The same holds for the string pointers in "
+                    attr: 1
+                  - text: fields
+                    attr: 2
+                  - text: ", except that a string is not reallocated if the new value fits into the old string.\r\r\rTYPE "
+                    attr: 1
+                  - text: Blob
+                    attr: 3
+                  - text: "\rUsed for the representation of data of any kind and size (\"binary large object\").\r\r"
+                    attr: 1
+                  - text: len
+                    attr: 3
+                  - text: ": INTEGER\tlen >= 0\rThe length of the data in bytes.\r\r"
+                    attr: 1
+                  - text: data
+                    attr: 3
+                  - text: ": POINTER TO ARRAY OF BYTE\t len > 0 => data # NIL\rThe binary data stored as an array of character. There is no special termination symbol in the array.\r\r\rTYPE "
+                    attr: 1
+                  - text: Par
+                    attr: 3
+                  - text: "\rBasetype for extensible parameter lists.\r\r\rTYPE "
+                    attr: 1
+                  - text: Command
+                    attr: 3
+                  - text: "\rProcedure type with extensible parameter list, used in "
+                    attr: 1
+                  - text: "Database.Call.\r\r\r"
+                    attr: 2
+                  - text: "TYPE "
+                    attr: 1
+                  - text: TableCommand
+                    attr: 3
+                  - text: "\rProcedure type with table argument and extensible parameter list, used in "
+                    attr: 1
+                  - text: Table.Call
+                    attr: 2
+                  - text: ". \r\r\rTYPE "
+                    attr: 1
+                  - text: Database
+                    attr: 3
+                  - text: "\rABSTRACT\rA "
+                    attr: 1
+                  - text: Database
+                    attr: 2
+                  - text: " variable represents an SQL database.\r\r"
+                    attr: 1
+                  - text: res
+                    attr: 3
+                  - text: ": INTEGER\rResult value; valid after opening the database, and after each call to "
+                    attr: 1
+                  - text: Database.Exec
+                    attr: 2
+                  - text: " or "
+                    attr: 1
+                  - text: Database.NewTable
+                    attr: 2
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: async
+                    attr: 3
+                  - text: ": BOOLEAN\rSet from the "
+                    attr: 1
+                  - text: async
+                    attr: 2
+                  - text: " parameter of "
+                    attr: 1
+                  - text: OpenDatabase
+                    attr: 2
+                  - text: ". "
+                    attr: 1
+                  - text: async = TRUE
+                    attr: 2
+                  - text: " means asynchronous operation is allowed.\r\r"
+                    attr: 1
+                  - text: showErrors
+                    attr: 3
+                  - text: ": BOOLEAN\rCan be set to enforce the database driver to display verbose error messages if an SQL statement is incorrect. \r\rPROCEDURE (d: Database) "
+                    attr: 1
+                  - text: Exec
+                    attr: 3
+                  - text: " (statement: ARRAY OF CHAR)\rNEW, ABSTRACT\rExecute the SQL statement passed as parameter. It must not be a table-returning statement.\rIf "
+                    attr: 1
+                  - text: d
+                    attr: 2
+                  - text: " has been opened in "
+                    attr: 1
+                  - text: async
+                    attr: 2
+                  - text: " mode, the evaluation of "
+                    attr: 1
+                  - text: statement
+                    attr: 2
+                  - text: " is only started; it will be completed asynchronously.\rThe following portable error codes may be returned in "
+                    attr: 1
+                  - text: res
+                    attr: 2
+                  - text: ":\r\t5\toutOfTables\r\t6\tnotExecutable\r\t9\ttooManyBlobs\rWarning: don't use the SQL transaction statements (commit / abort), since they may interfere with "
+                    attr: 1
+                  - text: SqlDB
+                    attr: 2
+                  - text: ". Instead, call "
+                    attr: 1
+                  - text: db.Commit
+                    attr: 2
+                  - text: " or "
+                    attr: 1
+                  - text: db.Abort
+                    attr: 2
+                  - text: ".\r\rPre\rstatement # \"\"\t20\rstatement is not table-returning\t21\t(* may be delayed *)\r\rPost\rres denotes error value (0 if no error occurred)\r\rPROCEDURE (d: Database) "
+                    attr: 1
+                  - text: NewTable
+                    attr: 3
+                  - text: " (): Table\rNEW, ABSTRACT\rAllocate a new table object. A table represents the result table of the most recently executed SQL statement on it.\r\rPost\rresult # NIL\r\td.res = 0\r\tresult.base = d\r\tresult.rows = 0\r\tresult.columns = 0\r\tresult.res = 0\r\tresult.strictNotify = FALSE\rresult = NIL\r\td.res # 0\r\rPROCEDURE (d: Database) "
+                    attr: 1
+                  - text: Call
+                    attr: 3
+                  - text: " (command: Command; par: Par);\rNEW, ABSTRACT\rThe procedure "
+                    attr: 1
+                  - text: command(par)
+                    attr: 2
+                  - text: " is executed. "
+                    attr: 1
+                  - text: par
+                    attr: 2
+                  - text: " may be "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: ". Inside "
+                    attr: 1
+                  - text: command
+                    attr: 2
+                  - text: " no table based operations ("
+                    attr: 1
+                  - text: Table.Read
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Table.Exec
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Table.Clear
+                    attr: 2
+                  - text: ", or "
+                    attr: 1
+                  - text: Table.Call
+                    attr: 2
+                  - text: ") may be invoked on an existing table. Operations on tables allocated (with "
+                    attr: 1
+                  - text: Database.NewTable
+                    attr: 2
+                  - text: ") inside the command are legal.\rThis procedure is useful in asynchronously executing statements.\r\rPre\rcommand # NIL\t20\r\rPROCEDURE (d: Database) "
+                    attr: 1
+                  - text: Commit
+                    attr: 3
+                  - text: "\rNEW, ABSTRACT\rCommits the currently executing transaction. Note that a transaction need not be started explicitly.\rDo "
+                    attr: 1
+                  - text: not
+                    attr: 2
+                  - text: " use the database's SQL transaction commands directly.\r\rPROCEDURE (d: Database) "
+                    attr: 1
+                  - text: Rollback
+                    attr: 3
+                  - text: "\rNEW, ABSTRACT\rAborts the currently executing transaction. Note that a transaction need not be started explicitly.\rDo "
+                    attr: 1
+                  - text: not
+                    attr: 2
+                  - text: " use the database's SQL transaction commands directly.\r\r\rTYPE "
+                    attr: 1
+                  - text: Table
+                    attr: 3
+                  - text: "\rABSTRACT\rA table represents the result of an SQL query, typically of a SELECT statement. The result table is a snapshot, i.e., retains the state which was valid when the query has been performed.\r\r"
+                    attr: 1
+                  - text: base
+                    attr: 3
+                  - text: "-: Database\tbase # NIL\rThe database to which the table belongs.\r\r"
+                    attr: 1
+                  - text: rows
+                    attr: 3
+                  - text: ": INTEGER\trows >= 0\rThe number of rows that the most recent query returned. If the actual database driver cannot return the number of rows in a query, rows is set to "
+                    attr: 1
+                  - text: MAX(INTEGER)
+                    attr: 2
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: columns
+                    attr: 3
+                  - text: ": INTEGER\tcolumns >= 0\rThe number of columns that the most recent query returned.\r"
+                    attr: 1
+                  - text: columns = 0
+                    attr: 2
+                  - text: " means no table was returned.\r\r"
+                    attr: 1
+                  - text: res
+                    attr: 3
+                  - text: ": INTEGER\rThe result value of the most recent query ("
+                    attr: 1
+                  - text: 0
+                    attr: 2
+                  - text: " if no error).\r\r"
+                    attr: 1
+                  - text: strictNotify
+                    attr: 3
+                  - text: ": BOOLEAN\rAfter one or several SQL queries have been performed on the table and BlackBox is idle again, a "
+                    attr: 1
+                  - text: Dialog.Update
+                    attr: 2
+                  - text: " is performed automatically by an action (-> Services). This is normally the desired behavior. If the result state "
+                    attr: 1
+                  - text: after each query
+                    attr: 2
+                  - text: " should be reflected in controls bound to the table's interactor, "
+                    attr: 1
+                  - text: strictNotify
+                    attr: 2
+                  - text: " should be set. This may be desired for long-running commands, so that the user sees progress while the command is running.\r\rPROCEDURE (t: Table) "
+                    attr: 1
+                  - text: InitBase
+                    attr: 3
+                  - text: " (base: Database)\rNEW\rInitialize the table's "
+                    attr: 1
+                  - text: base
+                    attr: 2
+                  - text: " pointer.\r"
+                    attr: 1
+                  - text: InitBase
+                    attr: 2
+                  - text: " is called internally.\r\rPre\rbase # NIL\t20\rt.base = NIL  OR  t.base = base\t21\r\rPost\rt.base = base\r\rPROCEDURE (t: Table) "
+                    attr: 1
+                  - text: Exec
+                    attr: 3
+                  - text: " (statement: ARRAY OF CHAR)\rNEW, ABSTRACT\rExecute the SQL statement passed as parameter. It must be a row-returning statement. "
+                    attr: 1
+                  - text: Exec
+                    attr: 2
+                  - text: " first performs "
+                    attr: 1
+                  - text: t.Clear
+                    attr: 2
+                  - text: " in order to flush the old result table, then executes the query.\rIf "
+                    attr: 1
+                  - text: t.base
+                    attr: 2
+                  - text: " has been opened in "
+                    attr: 1
+                  - text: async
+                    attr: 2
+                  - text: " mode, the evaluation of "
+                    attr: 1
+                  - text: statement
+                    attr: 2
+                  - text: " is only started and will be completed asynchronously.\rThe following portable error codes may be returned in "
+                    attr: 1
+                  - text: res
+                    attr: 2
+                  - text: ":\r\t5\toutOfTables\r\t6\tnotExecutable\r\t9\ttooManyBlobs\r\rPre\rstatement # \"\"\t20\rt is legal table in enclosing command\t21\r\rPost\rres denotes error value (0 if no error occurred).\r\rPROCEDURE (t: Table) "
+                    attr: 1
+                  - text: Available
+                    attr: 3
+                  - text: " (): BOOLEAN;\rNEW, ABSTRACT\rTells whether "
+                    attr: 1
+                  - text: Read
+                    attr: 2
+                  - text: " can execute immediately. This procedure is rarely used. It should be used before a "
+                    attr: 1
+                  - text: Read
+                    attr: 2
+                  - text: " is performed, if it is not guaranteed that the previous "
+                    attr: 1
+                  - text: Exec
+                    attr: 2
+                  - text: " has already returned a result. This may only happen if "
+                    attr: 1
+                  - text: Exec
+                    attr: 2
+                  - text: " is performed asynchronously. Note that "
+                    attr: 1
+                  - text: Available()
+                    attr: 2
+                  - text: " only guarantees that a result table has become available, but this table may well be empty ("
+                    attr: 1
+                  - text: columns
+                    attr: 2
+                  - text: " = 0 and "
+                    attr: 1
+                  - text: rows
+                    attr: 2
+                  - text: " = 0).\r\rPROCEDURE (t: Table) "
+                    attr: 1
+                  - text: Read
+                    attr: 3
+                  - text: " (row: INTEGER; VAR data: ANYREC)\rNEW, ABSTRACT\rReads the "
+                    attr: 1
+                  - text: "row'th"
+                    attr: 2
+                  - text: " row of the result table into the interactor "
+                    attr: 1
+                  - text: data
+                    attr: 2
+                  - text: ".\rThe generic data type "
+                    attr: 1
+                  - text: Row
+                    attr: 2
+                  - text: " which consists of an open array of strings can be used to read a row of data from an arbitrary table. All table values are converted to a string representation in this case. Otherwise the fields of the data record must be of one of the following types:\rBYTE, SHORTINT, INTEGER, SHORTREAL, REAL, BOOLEAN, ARRAY n OF CHAR; POINTER TO ARRAY OF CHAR, Dialog.Currency, Dialog.List, Dialog.Combo, Dates.Date, Dates.Time, or SqlDB.Blob. Other array and record types are handled recursively. Pointers are dereferenced, and the bound structures are handled recursively. Pointers must not be NIL with the exception of POINTER TO ARRAY OF CHAR. If such a pointer is NIL or the bound array is too small to receive the corresponding string, a new array of suitable length is allocated automatically.\rFour levels of complications can arise during the read:\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 1
+                    wide: true
+                  - text: " A value has to be converted from one data type to another. Conversions from any type to strings (ARRAY n OF CHAR or POINTER TO ARRAY OF CHAR) are always supported. Other conversions are driver-dependent.\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 1
+                    wide: true
+                  - text: " A string need to be truncated because the destination array is too small.\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 1
+                    wide: true
+                  - text: " A numeric value is too large to be stored in the destination (overflow).\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 1
+                    wide: true
+                  - text: " A value cannot be assigned because its type is incompatible with the corresponding field. The field is cleared in such a situation.\rAfter the call, "
+                    attr: 1
+                  - text: t.res
+                    attr: 2
+                  - text: " contains the most serious event (in the order "
+                    attr: 1
+                  - text: converted
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: truncated
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: "overflow, incompatible"
+                    attr: 2
+                  - text: ") that happened during the reading of all columns.\rThe column names of the table can be read into a variable of type "
+                    attr: 1
+                  - text: Row
+                    attr: 2
+                  - text: ", using the special value "
+                    attr: 1
+                  - text: names
+                    attr: 2
+                  - text: " for the "
+                    attr: 1
+                  - text: row
+                    attr: 2
+                  - text: " parameter.\rIt is permissible to read past the end of the table ("
+                    attr: 1
+                  - text: row
+                    attr: 2
+                  - text: " >= "
+                    attr: 1
+                  - text: t.rows
+                    attr: 2
+                  - text: "). The whole interactor is cleared in this case and "
+                    attr: 1
+                  - text: t.res
+                    attr: 2
+                  - text: " is set to "
+                    attr: 1
+                  - text: noData
+                    attr: 2
+                  - text: ".\r\rPre\rt.columns > 0\t20;\t(* may be delayed *)\rrow >= 0  OR  row = names & data IS Row\t21\rdata contains legal data types\t22\t(* may be delayed *)\rdata contains no NIL pointers\t23\t(* may be delayed *)\rt.base.async => data is global variable\t24\rt is legal table in enclosing command\t25\r\rPost\rt.res IN {0, converted, truncated, overflow, incompatible, noData}\r\rPROCEDURE (t: Table) "
+                    attr: 1
+                  - text: Clear
+                    attr: 3
+                  - text: "\rNEW, ABSTRACT\rReleases the resources needed to represent the most recently created result table of "
+                    attr: 1
+                  - text: t
+                    attr: 2
+                  - text: ".\r\rPre\rt is legal table in enclosing command\t20\r\rPost\rt.rows = 0\rt.columns = 0\rt.res = 0\r\rPROCEDURE (t: Table) "
+                    attr: 1
+                  - text: Call
+                    attr: 3
+                  - text: " (command: TableCommand; par: Par)\rNEW, ABSTRACT\rThe procedure "
+                    attr: 1
+                  - text: "command(t, par)"
+                    attr: 2
+                  - text: " is executed. "
+                    attr: 1
+                  - text: par
+                    attr: 2
+                  - text: " may be "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: ". Inside "
+                    attr: 1
+                  - text: command
+                    attr: 2
+                  - text: " no table based operations ("
+                    attr: 1
+                  - text: Table.Read
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Table.Exec
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Table.Clear
+                    attr: 2
+                  - text: ", or "
+                    attr: 1
+                  - text: Table.Call
+                    attr: 2
+                  - text: ") may be invoked on a preexisting table different from "
+                    attr: 1
+                  - text: t
+                    attr: 2
+                  - text: ". Operations on tables allocated (with "
+                    attr: 1
+                  - text: Database.NewTable
+                    attr: 2
+                  - text: ") inside the command are legal.\rThis procedure is useful for asynchronously executing commands.\r\rPre\rcommand # NIL\t20\rt is legal table in enclosing command\t21\r\r\rVAR "
+                    attr: 1
+                  - text: debug
+                    attr: 3
+                  - text: ": BOOLEAN\rUsed internally. (Shows a protocol of what is happening during the execution of "
+                    attr: 1
+                  - text: SqlDB
+                    attr: 2
+                  - text: " commands.)\r\rPROCEDURE  "
+                    attr: 1
+                  - text: OpenDatabase
+                    attr: 3
+                  - text: " (protocol, id, password, datasource: ARRAY OF CHAR;\r\t\t\t\t\t\t\t\t\t\t\t\t\tasync, showErr: BOOLEAN; OUT d: Database; OUT res: INTEGER)\rOpen the database specified by the parameters. "
+                    attr: 1
+                  - text: protocol
+                    attr: 2
+                  - text: " is the name of the module which contains the database driver, e.g., \"SqlOdbc\" or \"SqlOdbc3\". Note that these names are case sensitive. "
+                    attr: 1
+                  - text: id
+                    attr: 2
+                  - text: " is a driver-specific string which denotes the connection information for the network in use, or similar protocol-specific information. "
+                    attr: 1
+                  - text: password
+                    attr: 2
+                  - text: " is the password used to log into the DBMS. It may be empty; in this case the user may be prompted for the password, depending on the driver. "
+                    attr: 1
+                  - text: datasource
+                    attr: 2
+                  - text: " specifies the database to be opened. It should be a unique name for the particular protocol.\rIf the database described by "
+                    attr: 1
+                  - text: protocol
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: datasource
+                    attr: 2
+                  - text: " is already open in the same BlackBox environment, the same database connection may be used, without considering the password again.\rConsult the driver documentation for further information on the parameters to be passed.\rIf "
+                    attr: 1
+                  - text: async
+                    attr: 2
+                  - text: " is true, the returned database object is allowed to behave asynchronously.\rIf "
+                    attr: 1
+                  - text: showErr
+                    attr: 2
+                  - text: " is true, the returned database displays verbose error messages when incorrect SQL statements are detected.\rThe following portable error codes may be returned in "
+                    attr: 1
+                  - text: res
+                    attr: 2
+                  - text: ":\r\t1\tnoDriverMod\r\t2\tnoDriverProc\r\t3\twrongDriverType\r\t4\tconnectionsExceeded\r\t7\tcannotOpenDB \r\t8\twrongIdentification\r\rPre\rprotocol # \"\"\t20\r\rPost\rres = 0\r\tdatabase was correctly opened\r\td # NIL\r\td.async = async\r\td.showErrors = showErr\rres # 0\r\tdatabase couldn't be opened\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 10
+          bodyPos: 16274
+          bodyLen: 8

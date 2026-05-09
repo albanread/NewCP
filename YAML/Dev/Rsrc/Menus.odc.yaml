@@ -1,0 +1,223 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Dev\\Rsrc\\Menus.odc"
+  size: 9642
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 9511
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 9325
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 9239
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: "*"
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 6
+                bodyPos: 9364
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 8850
+                runListLen: 658
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 101600
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 101600
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                flow:
+                  - ruler:
+                      left: 0
+                      right: 7128000
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000021
+                      tabs:
+                        - { stop: 180000 }
+                        - { stop: 1368000 }
+                        - { stop: 1728000 }
+                        - { stop: 4680000 }
+                      attr: 0
+                      w: 360000000
+                      h: 444500
+                  - text: "MENU "
+                    attr: 0
+                  - text: "\"Info\"\r\t\"&Open Log\"\t\"\"\t\"StdLog.Open\"\t\"\"\r\t\"&Clear Log\"\t\"\"\t\"StdLog.Clear\"\t\"\"\r\t"
+                    attr: 1
+                  - text: SEPARATOR
+                    attr: 0
+                  - text: "\r\t\"&Loaded Modules\"\t\"\"\t\"DevDebug.ShowLoadedModules\"\t\"\"\r\t\"&Global Variables\"\t\"\"\t\"DevDebug.ShowGlobalVariables\"\t\"TextCmds.SelectionGuard\"\r\t\"&View State\"\t\"\"\t\"DevDebug.ShowViewState\"\t\"StdCmds.SingletonGuard\"\r\t\"About &Alien\"\t\"\"\t\"DevAlienTool.Analyze\"\t\"StdCmds.SingletonGuard\"\r\t\"&Heap Spy...\"\t\"\"\t\"StdCmds.OpenToolDialog('Dev/Rsrc/HeapSpy', 'Heap Spy')\"\t\"\"\r\t\"Message Spy...\"\t\"\"\t\"DevMsgSpy.OpenDialog('Dev/Rsrc/MsgSpy', 'Message Spy')\"\t\"\"\r\t\"Control List\"\t\"\"\t\"DevCmds.ShowControlList\"\t\"StdCmds.ContainerGuard\"\r\t"
+                    attr: 1
+                  - text: SEPARATOR
+                    attr: 0
+                  - text: "\r\t\"&Source\"\t\"\"\t\"DevReferences.ShowSource\"\t\"TextCmds.SelectionGuard\"\r\t\"Client Interface\"\t\"D\"\t\"DevBrowser.ShowInterface('@c')\"\t\"TextCmds.SelectionGuard\"\r\t\"Extension Interface\"\t\"*D\"\t\"DevBrowser.ShowInterface('@e')\"\t\"TextCmds.SelectionGuard\"\r\t\"Interface...\"\t\"\"\t\"StdCmds.OpenToolDialog('Dev/Rsrc/Browser', 'Browser')\"\t\"\"\r\t\"&Documentation\"\t\"\"\t\"DevReferences.ShowDocu\"\t\"TextCmds.SelectionGuard\"\r\t\"De&pendencies\"\t\"\"\t\"DevDependencies.Deposit;StdCmds.Open\"\t\"TextCmds.SelectionGuard\"\r\t\"Create Tool\"\t\"\"\t\"DevDependencies.CreateTool\"\t\"TextCmds.SelectionGuard\"\r\t\"&Repository\"\t\"\"\t\"DevRBrowser.ShowRepository\"\t\"\"\r\t"
+                    attr: 1
+                  - text: "SEPARATOR\r\t"
+                    attr: 0
+                  - text: "\"Search In Sources\"\t\"\"\t\"TextCmds.InitFindDialog; DevSearch.SearchInSources\"\t\"TextCmds.SelectionGuard\"\r\t\"Search In Docu (Case Sensitive)\"\t\"\"\t\"TextCmds.InitFindDialog; DevSearch.SearchInDocu('s')\"\t\"TextCmds.SelectionGuard\"\r\t\"Search In Docu (Case Insensitive)\"\t\"\"\t\"TextCmds.InitFindDialog; DevSearch.SearchInDocu('i')\"\t\"TextCmds.SelectionGuard\"\r\t\"Compare Texts\"\t\"F9\"\t\"DevSearch.Compare\"\t\"TextCmds.FocusGuard\"\r\t\"Check Links...\"\t\"\"\t\"StdCmds.OpenToolDialog('Dev/Rsrc/LinkChk', 'Check Links')\"\t\"\"\r\t\"Analyzer Options...\"\t\"\"\t\"StdCmds.OpenToolDialog('Dev/Rsrc/Analyzer', 'Analyze')\"\t\"\"\r\t\"Analyze Module\"\t\"\"\t\"DevAnalyzer.Analyze\"\t\"TextCmds.FocusGuard\"\r\t"
+                    attr: 1
+                  - text: SEPARATOR
+                    attr: 0
+                  - text: "\r\t\"&Menus\"\t\"\"\t\"StdMenuTool.ListAllMenus\"\t\"\"\r\t\"&Update Menus\"\t\"\"\t\"StdMenuTool.UpdateAllMenus\"\t\"\"\r"
+                    attr: 1
+                  - text: END
+                    attr: 0
+                  - text: "\r\r"
+                    attr: 1
+                  - text: "MENU "
+                    attr: 0
+                  - text: "\"Dev\"\r\t\"&Edit Mode\"\t\"\"\t\"StdCmds.SetEditMode\"\t\"StdCmds.SetEditModeGuard\"\r\t\"&Layout Mode\"\t\"\"\t\"StdCmds.SetLayoutMode\"\t\"StdCmds.SetLayoutModeGuard\"\r\t\"&Browser Mode\"\t\"\"\t\"StdCmds.SetBrowserMode\"\t\"StdCmds.SetBrowserModeGuard\"\r\t\"&Mask Mode\"\t\"\"\t\"StdCmds.SetMaskMode\"\t\"StdCmds.SetMaskModeGuard\"\r\t"
+                    attr: 1
+                  - text: SEPARATOR
+                    attr: 0
+                  - text: "\r\t\"&Open Module List\"\t\"0\"\t\"DevCmds.OpenModuleList\"\t\"TextCmds.SelectionGuard\"\r\t\"Open &File List\"\t\"\"\t\"DevCmds.OpenFileList\"\t\"TextCmds.SelectionGuard\"\r\t"
+                    attr: 1
+                  - text: SEPARATOR
+                    attr: 0
+                  - text: "\r\t\"&Compile\"\t\"K\"\t\"DevCompiler.Compile\"\t\"TextCmds.FocusGuard\"\r\t\"Compile And Unload\"\t\"\"\t\"DevCompiler.CompileAndUnload\"\t\"TextCmds.FocusGuard\"\r\t\"Compile &Selection\"\t\"\"\t\"DevCompiler.CompileSelection\"\t\"TextCmds.SelectionGuard\"\r\t\"Com&pile Module List\"\t\"\"\t\"DevCompiler.CompileModuleList\"\t\"TextCmds.SelectionGuard\"\r\t"
+                    attr: 1
+                  - text: SEPARATOR
+                    attr: 0
+                  - text: "\r\t\"Unmar&k Errors\"\t\"\"\t\"DevMarkers.UnmarkErrors\"\t\"TextCmds.FocusGuard\"\r\t\"Next E&rror\"\t\"E\"\t\"DevMarkers.NextError\"\t\"TextCmds.FocusGuard\"\r\t\"To&ggle Error Mark\"\t\"T\"\t\"DevMarkers.ToggleCurrent\"\t\"TextCmds.FocusGuard\"\r\t"
+                    attr: 1
+                  - text: SEPARATOR
+                    attr: 0
+                  - text: "\r\t\"E&xecute\"\t\"\"\t\"DevDebug.Execute\"\t\"TextCmds.SelectionGuard\"\r\t\"&Unload\"\t\"\"\t\"DevDebug.Unload\"\t\"TextCmds.FocusGuard\"\r\t\"Unloa&d Module List\"\t\"\"\t\"DevDebug.UnloadModuleList\"\t\"TextCmds.SelectionGuard\"\r\t\"Flus&h Resources\"\t\"\"\t\"DevCmds.FlushResources\"\t\"\"\r\t\"Re&validate View\"\t\"\"\t\"DevCmds.RevalidateView\"\t\"DevCmds.RevalidateViewGuard\"\r\t"
+                    attr: 1
+                  - text: SEPARATOR
+                    attr: 0
+                  - text: "\r\t\"Set Profile List\"\t\"\"\t\"DevProfiler.SetProfileList\"\t\"DevProfiler.StartGuard\"\r\t\"Start Profiler\"\t\"\"\t\"DevProfiler.Start\"\t\"DevProfiler.StartGuard\"\r\t\"Stop Profiler\"\t\"\"\t\"DevProfiler.Stop; DevProfiler.ShowProfile\"\t\"DevProfiler.StopGuard\"\r\t\"Timed Execute\"\t\"\"\t\"DevProfiler.Execute\"\t\"TextCmds.SelectionGuard\"\r"
+                    attr: 1
+                  - text: END
+                    attr: 0
+                  - text: "\r\r"
+                    attr: 1
+                  - text: "MENU "
+                    attr: 0
+                  - text: "\"Tools\"\r\t\"Document Size...\"\t\"\"\t\"StdCmds.InitLayoutDialog; StdCmds.OpenToolDialog('Std/Rsrc/Cmds1', 'Document Size')\"\r\t\t\t\t\"StdCmds.WindowGuard\"\r\t\"View Size...\" \t\"\"\t\"StdViewSizer.InitDialog;StdCmds.OpenToolDialog('Std/Rsrc/ViewSizer', 'View Size')\"\t\r\t\t\t\t\"StdCmds.SingletonGuard\" \r\t"
+                    attr: 1
+                  - text: SEPARATOR
+                    attr: 0
+                  - text: "\r\t\"Insert OLE &Object...\"\t\"\"\t\"OleClient.InsertObject\"\t\"StdCmds.PasteViewGuard\"\r\t\"Insert Co&mmander\"\t\"Q\"\t\"DevCommanders.Deposit; StdCmds.PasteView\"\t\"StdCmds.PasteViewGuard\"\r\t\"Insert &Stamp\"\t\"\"\t\"StdStamps.Deposit; StdCmds.PasteView\"\t\"StdCmds.PasteViewGuard\"\r\t\"Insert Cloc&k\"\t\"\"\t\"StdClocks.Deposit; StdCmds.PasteView\"\t\"StdCmds.PasteViewGuard\"\r\t\"Insert &Header\"\t\"\"\t\"StdHeaders.Deposit; StdCmds.PasteView; TextCmds.ShowMarks\"\t\"TextCmds.FocusGuard\"\r\t"
+                    attr: 1
+                  - text: SEPARATOR
+                    attr: 0
+                  - text: "\r\t\"&Add Scroller\"\t\"\"\t\"StdScrollers.AddScroller\"\t\"StdCmds.SingletonGuard\"\r\t\"&Remove Scroller\"\t\"\"\t\"StdScrollers.RemoveScroller\"\t\"StdCmds.SingletonGuard\"\r\t"
+                    attr: 1
+                  - text: SEPARATOR
+                    attr: 0
+                  - text: "\r\t\"Create &Link\"\t\"L\"\t\"StdLinks.CreateLink\"\t\"StdLinks.CreateGuard\"\r\t\"Create &Target\"\t\"\"\t\"StdLinks.CreateTarget\"\t\"StdLinks.CreateGuard\"\r\t"
+                    attr: 1
+                  - text: SEPARATOR
+                    attr: 0
+                  - text: "\r\t\"Create Fold\"\t\"\"\t\"StdFolds.Create(1)\"\t\"StdFolds.CreateGuard\"\r\t\"Expand All\"\t\"\"\t\"StdFolds.Expand\"\t\"TextCmds.FocusGuard\"\r\t\"Collapse All\"\t\"\"\t\"StdFolds.Collapse\"\t\"TextCmds.FocusGuard\"\r\t\"Fold...\"\t\"\"\t\"StdCmds.OpenToolDialog('Std/Rsrc/Folds', 'Zoom')\"\t\"\"\r\t"
+                    attr: 1
+                  - text: SEPARATOR
+                    attr: 0
+                  - text: "\r\t\"Encode Document\"\t\"\"\t\"StdCoder.EncodeDocument\"\t\"StdCmds.WindowGuard\"\r\t\"Encode Selection\"\t\"\"\t\"StdCoder.EncodeSelection\"\t\"TextCmds.SelectionGuard\"\r\t\"Encode File...\"\t\"\"\t\"StdCoder.EncodeFile\"\t\"\"\r\t\"Encode File List\"\t\"\"\t\"StdCoder.EncodeFileList\"\t\"TextCmds.SelectionGuard\"\r\t\"Decode\"\t\"\"\t\"StdCoder.Decode\"\t\"TextCmds.FocusGuard\"\r\t\"About Encoded Material\"\t\"\"\t\"StdCoder.ListEncodedMaterial\"\t\"TextCmds.FocusGuard\"\r\t"
+                    attr: 1
+                  - text: SEPARATOR
+                    attr: 0
+                  - text: "\r\t\"Create Subsystem...\"\t\"\"\t\"StdCmds.OpenToolDialog('Dev/Rsrc/Create', 'Create Subsystem')\"\t\"\"\r"
+                    attr: 1
+                  - text: END
+                    attr: 0
+                  - text: "\r\r"
+                    attr: 1
+                  - text: "MENU "
+                    attr: 0
+                  - text: "\"Controls\"\r\t\"&New Form...\"\t\"\"\t\"StdCmds.OpenToolDialog('Form/Rsrc/Gen', 'New Form')\"\t\"\"\r\t\"Open As &Tool Dialog\"\t\"\"\t\"StdCmds.OpenAsToolDialog\"\t\"StdCmds.ContainerGuard\"\r\t\"Open As &Aux Dialog\"\t\"\"\t\"StdCmds.OpenAsAuxDialog\"\t\"StdCmds.ContainerGuard\"\r\t"
+                    attr: 1
+                  - text: "SEPARATOR\r"
+                    attr: 0
+                  - text: "\t\"Insert Tab &View\"\t\"\"\t\"StdTabViews.Deposit; StdCmds.PasteView\"\t\"StdCmds.PasteViewGuard\"\r\t"
+                    attr: 1
+                  - text: "SEPARATOR\r"
+                    attr: 0
+                  - text: "\t\"Insert Co&mmand Button\"\t\"\"\t\"Controls.DepositPushButton; StdCmds.PasteView\"\t\"StdCmds.PasteViewGuard\"\r\t\"Insert Chec&k Box\"\t\"\"\t\"Controls.DepositCheckBox; StdCmds.PasteView\"\t\"StdCmds.PasteViewGuard\"\r\t\"Insert &Radio Button\"\t\"\"\t\"Controls.DepositRadioButton; StdCmds.PasteView\"\t\"StdCmds.PasteViewGuard\"\r\t\"Insert &Edit Field\"\t\"\"\t\"Controls.DepositField; StdCmds.PasteView\"\t\"StdCmds.PasteViewGuard\"\r\t\"Insert &List Box\"\t\"\"\t\"Controls.DepositListBox; StdCmds.PasteView\"\t\"StdCmds.PasteViewGuard\"\r\t\"Insert &Selection Box\"\t\"\"\t\"Controls.DepositSelectionBox; StdCmds.PasteView\"\t\"StdCmds.PasteViewGuard\"\r\t\"Insert Com&bo Box\"\t\"\"\t\"Controls.DepositComboBox; StdCmds.PasteView\"\t\"StdCmds.PasteViewGuard\"\r\t\"Insert &Up/Down Field\"\t\"\"\t\"Controls.DepositUpDownField; StdCmds.PasteView\"\t\"StdCmds.PasteViewGuard\"\r\t\"Insert &Time Field\"\t\"\"\t\"Controls.DepositTimeField; StdCmds.PasteView\"\t\"StdCmds.PasteViewGuard\"\r\t\"Insert &Date Field\"\t\"\"\t\"Controls.DepositDateField; StdCmds.PasteView\"\t\"StdCmds.PasteViewGuard\"\r\t\"Insert C&olor Field\"\t\"\"\t\"Controls.DepositColorField; StdCmds.PasteView\"\t\"StdCmds.PasteViewGuard\"\r\t\"Insert Tree Control\"\t\"\"\t\"Controls.DepositTreeControl; StdCmds.PasteView\"\t\"StdCmds.PasteViewGuard\"\r\t\"Insert Table Control\"\t\"\"\t\"StdTables.DepositControl; StdCmds.PasteView\"\t\"StdCmds.PasteViewGuard\"\r\t"
+                    attr: 1
+                  - text: SEPARATOR
+                    attr: 0
+                  - text: "\r\t\"Insert &Cancel Button\"\t\"\"\t\"Controls.DepositCancelButton; StdCmds.PasteView\"\t\"StdCmds.PasteViewGuard\"\r\t\"Insert Captio&n\"\t\"\"\t\"Controls.DepositCaption; StdCmds.PasteView\"\t\"StdCmds.PasteViewGuard\"\r\t\"Insert &Group Box\"\t\"\"\t\"Controls.DepositGroup; FormCmds.InsertAround; FormCmds.SetAsFirst\"\t\"StdCmds.PasteViewGuard\"\r"
+                    attr: 1
+                  - text: "END\r\rMENU"
+                    attr: 0
+                  - text: " \"*\" (\"DevDependencies.View\")\r\t\"Expand\"\t\"\"\t\"DevDependencies.ExpandClick\"\t\"DevDependencies.SubsGuard\"\r\t\"Collapse\"\t\"\"\t\"DevDependencies.CollapseClick\"\t\"DevDependencies.ModsGuard\"\r\t\"New Analysis\"\t\"\"\t\"DevDependencies.NewAnalysisClick\"\t\"DevDependencies.ModsGuard\"\r\t\"Hide\"\t\"\"\t\"DevDependencies.HideClick\"\t\"DevDependencies.SelGuard\"\r\tSEPARATOR\r\t\"Show All Items\"\t\"\"\t\"DevDependencies.ShowAllClick\"\t\"\"\r\t\"Show Basic System\"\t\"\"\t\"DevDependencies.ToggleBasicSystemsClick\"\t\"DevDependencies.ShowBasicGuard\"\r\t\"Expand All\"\t\"\"\t\"DevDependencies.ExpandAllClick\"\t\"\"\r\t\"Collapse All\"\t\"\"\t\"DevDependencies.CollapseAllClick\"\t\"\"\r\t\"Arrange Items\"\t\"\"\t\"DevDependencies.ArrangeClick\"\t\"\"\r\tSEPARATOR\r\t\"Create tool...\"\t\"\"\t\"DevDependencies.CreateToolClick\"\t\"\"\r\tSEPARATOR\r\t\"P&roperties...\"\t\"\"\t\"StdCmds.ShowProp\"\t\"StdCmds.ShowPropGuard\"\r"
+                    attr: 1
+                  - text: END
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 10
+          bodyPos: 9607
+          bodyLen: 8

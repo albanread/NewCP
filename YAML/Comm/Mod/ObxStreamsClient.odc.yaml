@@ -1,0 +1,288 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Comm\\Mod\\ObxStreamsClient.odc"
+  size: 6289
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 6158
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 5972
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 5886
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5943600
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: "*"
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 24
+                bodyPos: 6011
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 5497
+                runListLen: 1900
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE CommObxStreamsClient;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT Services, CommStreams, TextModels, TextControllers, StdLog;\r\r\tCONST\r\t\tprotocol = \"CommTCP\";\t\t\t"
+                    attr: 0
+                  - text: "(* driver for TCP/IP communication, over Winsock *)"
+                    attr: 1
+                  - text: "\r\t\tremoteAdr = \"127.0.0.1:900\";\t"
+                    attr: 0
+                  - text: "(* loopback address, so you can test on your local machine;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\tchoose a port number that is not used yet (here: 900).\r\t\t\t\t\t\t\t\t\t\t\t\t\t\tYou could also specify an IP address in the form\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\"mymachine.mydomain.com:900\" *)"
+                    attr: 1
+                  - text: "\r\t\tlocalAdr = \"\";\t\t\t\t\t\t\t"
+                    attr: 0
+                  - text: "(* don't specify an address or port on the client side *)"
+                    attr: 1
+                  - text: "\r\r\tTYPE\r\t\tSender = POINTER TO RECORD (Services.Action)\r\t\t\tprev, succ: Sender;\t"
+                    attr: 0
+                  - text: "(* linked to allow stopping upon module unloading *)"
+                    attr: 1
+                  - text: "\r\t\t\tstream: CommStreams.Stream;\t"
+                    attr: 0
+                  - text: "(* during sending, the communicates through this object *)"
+                    attr: 1
+                  - text: "\r\t\t\tidx, len: INTEGER;\t\t\t\t\t"
+                    attr: 0
+                  - text: "(* index for start of data into the "
+                    attr: 1
+                  - text: buf
+                    attr: 0
+                  - text: " array, and length remaining to be sent *)"
+                    attr: 1
+                  - text: "\r\t\t\tbuf: ARRAY 256 OF BYTE\t\t"
+                    attr: 0
+                  - text: "(* data to be sent *)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\tVAR\r\t\tsenders: Sender;\r\r\tPROCEDURE (s: Sender) Do;\r\t\tVAR written: INTEGER;\r\tBEGIN\r\t\tIF s.stream.IsConnected() THEN\r\t\t\ts.stream.WriteBytes(s.buf, s.idx, s.len, written);\t"
+                    attr: 0
+                  - text: "(* poll for outgoing data *)"
+                    attr: 1
+                  - text: "\r\t\t\tINC(s.idx, written); DEC(s.len, written);\r\t\t\tIF s.len > 0 THEN\t"
+                    attr: 0
+                  - text: "(* keep action alive if there remains further data to send *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tServices.DoLater(s, Services.now)\r\t\t\tELSE\r\t\t\t\ts.stream.Close;\r\t\t\t\tIF s.prev # NIL THEN s.prev.succ := s.succ ELSE senders := s.succ END;\r\t\t\t\tIF s.succ # NIL THEN s.succ.prev := s.prev END\r\t\t\tEND\r\t\tELSE\t"
+                    attr: 0
+                  - text: "(* connection was closed by server *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF s.prev # NIL THEN s.prev.succ := s.succ ELSE senders := s.succ END;\r\t\t\tIF s.succ # NIL THEN s.succ.prev := s.prev END;\r\t\t\tIF s.idx = 0 THEN StdLog.String(\"client: connection was not accepted by server\")\r\t\t\tELSE StdLog.String(\"client: connection was closed by server\")\r\t\t\tEND;\r\t\t\tStdLog.Ln\r\t\tEND\r\tEND Do;\r\r\r\tPROCEDURE Start (s: Sender);\r\t\tVAR stream: CommStreams.Stream; res: INTEGER;\r\tBEGIN\r\t\tCommStreams.NewStream(protocol, localAdr, remoteAdr, stream, res);\r\t\tIF stream # NIL THEN\r\t\t\ts.prev := NIL; s.succ := senders; senders := s;\r\t\t\tIF s.succ # NIL THEN s.succ.prev := s END;\r\t\t\ts.stream := stream;\r\t\t\tServices.DoLater(s, Services.now);\r\t\t\tStdLog.String(\"client: connection opened\"); StdLog.Ln\r\t\tELSE\r\t\t\tStdLog.String(\"client: error opening the connection (\"); StdLog.Int(res); StdLog.Char(\")\"); StdLog.Ln\r\t\tEND\r\tEND Start;\r\r\tPROCEDURE Stop;\r\tBEGIN\r\t\tWHILE senders # NIL DO\r\t\t\tsenders.stream.Close; Services.RemoveAction(senders);\r\t\t\tsenders := senders.succ\r\t\tEND\r\tEND Stop;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SendTextSelection
+                    attr: 3
+                  - text: "*;\r\t\tVAR c: TextControllers.Controller; beg, end, i, len: INTEGER; rd: TextModels.Reader; ch: CHAR; s: Sender;\r\tBEGIN\r\t\tc := TextControllers.Focus();\r\t\tIF (c # NIL) & c.HasSelection() THEN\r\t\t\tNEW(s);\r\t\t\tc.GetSelection(beg, end);\r\t\t\trd := c.text.NewReader(NIL); rd.SetPos(beg);\r\t\t\ti := 0; len := end - beg;\r\t\t\tIF len >= LEN(s.buf) - 1 THEN len := LEN(s.buf) - 1 END;\t"
+                    attr: 0
+                  - text: "(* clip string if necessary *)"
+                    attr: 1
+                  - text: "\r\t\t\tWHILE len # 0 DO\r\t\t\t\trd.ReadChar(ch);\r\t\t\t\tIF ch < 100X THEN\t"
+                    attr: 0
+                  - text: "(* skip Unicode characters *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\ts.buf[i] := SHORT(SHORT(ORD(ch))); INC(i)\r\t\t\t\tEND;\r\t\t\t\tDEC(len)\r\t\t\tEND;\r\t\t\ts.idx := 0; s.len := i;\r\t\t\tStart(s)\r\t\tELSE\r\t\t\tStdLog.String(\"client: no text selection found\"); StdLog.Ln\r\t\tEND\r\tEND SendTextSelection;\r\rCLOSE\r\tStop\t"
+                    attr: 0
+                  - text: "(* prevent the client from trapping after module unloading *)"
+                    attr: 1
+                  - text: "\rEND CommObxStreamsClient.\r\r"
+                    attr: 0
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 23
+                      bodyPos: 2274
+                      bodyLen: 6
+                    attr: 0
+                    w: 168275
+                    h: 142875
+                  - text: " CommObxStreamsClient.SendTextSelection\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 28
+          bodyPos: 6254
+          bodyLen: 8

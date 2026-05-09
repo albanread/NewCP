@@ -1,0 +1,464 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Form\\Mod\\Views.odc"
+  size: 14396
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 14265
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 14079
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 13993
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 127000
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 114300
+                color: 0x00000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 14114
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 13600
+                runListLen: 2283
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE FormViews;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tpurpose\t= \"\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT Dialog, Ports, Stores, Models, Views, Controllers, Properties, Containers, FormModels;\r\r\tCONST\r\t\t"
+                    attr: 0
+                  - text: "(** minimal border between form view and any embedded view: **)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: minBorder
+                    attr: 3
+                  - text: "* = 4 * Ports.point; "
+                    attr: 0
+                  - text: maxBorder
+                    attr: 3
+                  - text: "* = 100 * Ports.mm;\r\t\tmaxSize = 600 * Ports.mm;\r\t\t"
+                    attr: 0
+                  - text: "(* range of currently supported versions *)"
+                    attr: 1
+                  - text: "\r\t\tminVersion = 0; maxBaseVersion = 2; maxStdVersion = 1;\r\r\tTYPE\r\t\t"
+                    attr: 0
+                  - text: View
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Containers.View) END;\r\r\t\t"
+                    attr: 0
+                  - text: Directory
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD END;\r\r\r\t\tStdView = POINTER TO RECORD (View)\r\t\t\tborder: INTEGER;\r\t\t\tgrid: INTEGER;\t"
+                    attr: 0
+                  - text: "(* grid > 0 *)"
+                    attr: 1
+                  - text: "\r\t\t\tgridFactor: INTEGER;\t"
+                    attr: 0
+                  - text: "(* gridFactor > 0 *)"
+                    attr: 1
+                  - text: "\r\t\t\tbackground: Ports.Color;\r\t\t\tcache: FormModels.Reader\t"
+                    attr: 0
+                  - text: "(* reuse form reader *)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\tStdDirectory = POINTER TO RECORD (Directory) END;\r\r\r\t\tViewOp = POINTER TO RECORD (Stores.Operation)\r\t\t\tview: StdView;\t"
+                    attr: 0
+                  - text: "(* view # NIL *)"
+                    attr: 1
+                  - text: "\r\t\t\tborder: INTEGER;\t"
+                    attr: 0
+                  - text: "(* border >= minBorder *)"
+                    attr: 1
+                  - text: "\r\t\t\tgrid: INTEGER;\t"
+                    attr: 0
+                  - text: "(* grid > 0 *)"
+                    attr: 1
+                  - text: "\r\t\t\tgridFactor: INTEGER;\t"
+                    attr: 0
+                  - text: "(* gridFactor > 0 *)"
+                    attr: 1
+                  - text: "\r\t\t\tbackground: Ports.Color\r\t\tEND;\r\r\r\tVAR\r\t\t"
+                    attr: 0
+                  - text: dir
+                    attr: 3
+                  - text: "-, "
+                    attr: 0
+                  - text: stdDir
+                    attr: 3
+                  - text: "-: Directory;\r\t\t"
+                    attr: 0
+                  - text: ctrldir
+                    attr: 3
+                  - text: "-: Containers.Directory;\r\r\r\t"
+                    attr: 0
+                  - text: "(** View **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: Internalize2
+                    attr: 3
+                  - text: "- (VAR rd: Stores.Reader), EXTENSIBLE;\r\t\tVAR thisVersion: INTEGER;\r\tBEGIN\r\t\tIF ~rd.cancelled THEN\r\t\t\trd.ReadVersion(minVersion, maxBaseVersion, thisVersion);\r\t\t\tIF~ rd.cancelled THEN\r\t\t\t\tIF thisVersion IN {0, 1} THEN\r\t\t\t\t\tWITH v: StdView DO\t"
+                    attr: 0
+                  - text: "(* backward compatibility with Rel. 1.3 *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\trd.ReadInt(v.border);\r\t\t\t\t\t\trd.ReadInt(v.grid);\r\t\t\t\t\t\trd.ReadXInt(v.gridFactor);\r\t\t\t\t\t\tIF thisVersion = 1 THEN\r\t\t\t\t\t\t\trd.ReadInt(v.background)\r\t\t\t\t\t\tELSE\r\t\t\t\t\t\t\tv.background := Ports.defaultColor\r\t\t\t\t\t\tEND\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND Internalize2;\r\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: Externalize2
+                    attr: 3
+                  - text: "- (VAR wr: Stores.Writer), EXTENSIBLE;\r\tBEGIN\r\t\twr.WriteVersion(maxBaseVersion)\r\tEND Externalize2;\r\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: ThisModel
+                    attr: 3
+                  - text: "* (): FormModels.Model, EXTENSIBLE;\r\t\tVAR m: Containers.Model;\r\tBEGIN\r\t\tm := v.ThisModel^();\r\t\tIF m = NIL THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " NIL ELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " m(FormModels.Model) END\r\tEND ThisModel;\r\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: SetBorder
+                    attr: 3
+                  - text: "* (border: INTEGER), NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(** border >= 0\t20 **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: Border
+                    attr: 3
+                  - text: "* (): INTEGER, NEW, ABSTRACT;\r\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: SetGrid
+                    attr: 3
+                  - text: "* (grid, gridFactor: INTEGER), NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(**\r\t\tgrid > 0\t20\r\t\tgridFactor > 0\t21\r\t**)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: Grid
+                    attr: 3
+                  - text: "* (): INTEGER, NEW, ABSTRACT;\r\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: GridFactor
+                    attr: 3
+                  - text: "* (): INTEGER, NEW, ABSTRACT;\r\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: SetBackground
+                    attr: 3
+                  - text: "* (background: Ports.Color), NEW, ABSTRACT;\r\r\r\t"
+                    attr: 0
+                  - text: "(** Directory **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: New
+                    attr: 3
+                  - text: "* (f: FormModels.Model): View, NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(**\r\t\tf # NIL\t20\r\t\tf.init\t21\r\t**)"
+                    attr: 1
+                  - text: "\r\r\r\t"
+                    attr: 0
+                  - text: "(* ViewOp *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (op: ViewOp) Do;\r\t\tVAR border, grid, gridFactor: INTEGER; background: Ports.Color;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: "(* save old state of view *)"
+                    attr: 1
+                  - text: "\r\t\tborder := op.view.border; grid := op.view.grid; gridFactor := op.view.gridFactor;\r\t\tbackground := op.view.background;\r\t\t"
+                    attr: 0
+                  - text: "(* set new state of view *)"
+                    attr: 1
+                  - text: "\r\t\top.view.border := op.border; op.view.grid := op.grid; op.view.gridFactor := op.gridFactor;\r\t\top.view.background := op.background;\r\t\tViews.Update(op.view, Views.keepFrames);\r\t\t"
+                    attr: 0
+                  - text: "(* old state is new undo state *)"
+                    attr: 1
+                  - text: "\r\t\top.border := border; op.grid := grid; op.gridFactor := gridFactor;\r\t\top.background := background\r\tEND Do;\r\r\r\t"
+                    attr: 0
+                  - text: "(* StdView *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (v: StdView) Internalize2 (VAR rd: Stores.Reader);\r\t\tVAR thisVersion: INTEGER;\r\tBEGIN\r\t\tv.Internalize2^(rd);\r\t\tIF ~rd.cancelled THEN\r\t\t\trd.ReadVersion(minVersion, maxStdVersion, thisVersion);\r\t\t\tIF thisVersion # 0 THEN\r\t\t\t\trd.ReadInt(v.border);\r\t\t\t\trd.ReadInt(v.grid);\r\t\t\t\trd.ReadInt(v.gridFactor);\r\t\t\t\trd.ReadInt(v.background)\r\t\t\tEND\r\t\tEND\r\tEND Internalize2;\r\r\tPROCEDURE (v: StdView) Externalize2 (VAR wr: Stores.Writer);\r\tBEGIN\r\t\tv.Externalize2^(wr);\r\t\twr.WriteVersion(maxStdVersion);\r\t\twr.WriteInt(v.border);\r\t\twr.WriteInt(v.grid);\r\t\twr.WriteInt(v.gridFactor);\r\t\twr.WriteInt(v.background)\r\tEND Externalize2;\r\r\tPROCEDURE (v: StdView) CopyFromModelView2 (source: Views.View; model: Models.Model);\r\tBEGIN\r\t\tWITH source: StdView DO\r\t\t\tv.border := source.border;\r\t\t\tv.grid := source.grid;\r\t\t\tv.gridFactor := source.gridFactor;\r\t\t\tv.background := source.background\r\t\tEND\r\tEND CopyFromModelView2;\r\r\tPROCEDURE (d: StdView) AcceptableModel (m: Containers.Model): BOOLEAN;\r\tBEGIN\r\t\tRETURN m IS FormModels.Model\r\tEND AcceptableModel;\r\t\r\tPROCEDURE (v: StdView) InitModel2 (m: Containers.Model);\r\tBEGIN\r\t\tASSERT(m IS FormModels.Model, 23)\r\tEND InitModel2;\r\r\tPROCEDURE (v: StdView) GetRect (f: Views.Frame; view: Views.View; OUT l, t, r, b: INTEGER);\r\tBEGIN\r\t\tview.context(FormModels.Context).GetRect(l, t, r, b)\r\tEND GetRect;\r\r\tPROCEDURE (v: StdView) SetBorder (border: INTEGER);\r\t\tVAR op: ViewOp;\r\tBEGIN\r\t\tASSERT(border >= 0, 20);\r\t\tIF border < minBorder THEN\r\t\t\tborder := minBorder\r\t\tELSIF border > maxBorder THEN\r\t\t\tborder := maxBorder\r\t\tEND;\r\t\tNEW(op); op.view := v; op.border := border;\r\t\top.grid := v.grid; op.gridFactor := v.gridFactor;\r\t\top.background := v.background;\r\t\tViews.Do(v, \"#Form:BorderChange\", op)\r\tEND SetBorder;\r\r\tPROCEDURE (v: StdView) Border (): INTEGER;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " v.border\r\tEND Border;\r\r\tPROCEDURE (v: StdView) SetGrid (grid, gridFactor: INTEGER);\r\t\tVAR op: ViewOp;\r\tBEGIN\r\t\tASSERT(grid > 0, 20); ASSERT(gridFactor > 0, 21);\r\t\tNEW(op); op.view := v; op.border := v.border;\r\t\top.grid := grid; op.gridFactor := gridFactor;\r\t\top.background := v.background;\r\t\tViews.Do(v, \"#Form:GridChange\", op)\r\tEND SetGrid;\r\r\tPROCEDURE (v: StdView) Grid (): INTEGER;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " v.grid\r\tEND Grid;\r\r\tPROCEDURE (v: StdView) GridFactor (): INTEGER;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " v.gridFactor\r\tEND GridFactor;\r\r\tPROCEDURE (v: StdView) SetBackground (background: Ports.Color);\r\t\tVAR op: ViewOp;\r\tBEGIN\r\t\tNEW(op); op.view := v; op.border := v.border;\r\t\top.grid := v.grid; op.gridFactor := v.gridFactor;\r\t\top.background := background;\r\t\tViews.Do(v, \"#Form:BackgroundChange\", op)\r\tEND SetBackground;\r\r\tPROCEDURE (v: StdView) GetBackground (VAR color: Ports.Color);\r\tBEGIN\r\t\tIF v.background = Ports.defaultColor THEN\r\t\t\tcolor := Ports.dialogBackground\r\t\tELSE\r\t\t\tcolor := v.background\r\t\tEND\r\tEND GetBackground;\r\r\tPROCEDURE (v: StdView) Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\t\tVAR form: FormModels.Model; ctrl: Containers.Controller;\r\t\t\tfocus, q: Views.View; k, w, h, x, y: INTEGER; s: FormModels.Reader;\r\tBEGIN\r\t\tform := v.ThisModel();\r\t\tIF form # NIL THEN\r\t\t\tctrl := v.ThisController();\r\t\t\tIF ctrl # NIL THEN focus := ctrl.ThisFocus() ELSE focus := NIL END;\r\t\t\ts := form.NewReader(v.cache); v.cache := s;\r\t\t\ts.Set(NIL); s.ReadView(q); k := 0;\r\t\t\tWHILE q # NIL DO\r\t\t\t\tIF (s.r >= l) & (s.b >= t) & (s.l < r) & (s.t < b) THEN\r\t\t\t\t\tViews.InstallFrame(f, q, s.l, s.t, k, q = focus)\r\t\t\t\tEND;\r\t\t\t\ts.ReadView(q); INC(k)\r\t\t\tEND\r\t\tELSE\r\t\t\tf.DrawRect(l, t, r, b, Ports.fill, Ports.grey12)\r\t\tEND;\r\t\tIF (ctrl # NIL) & ~(Containers.noCaret IN ctrl.opts) THEN\r\t\t\tk := v.grid * v.gridFactor; ASSERT(k > 0, 100);\r\t\t\tv.context.GetSize(w, h);\r\t\t\tIF w > maxSize THEN w := maxSize END;\r\t\t\tIF h > maxSize THEN h := maxSize END;\r\t\t\tx := l - l MOD k;\r\t\t\tWHILE x <= w DO\r\t\t\t\tf.MarkRect(x, 0, x + f.unit, h, Ports.fill, Ports.dim50, Ports.show);\r\t\t\t\tINC(x, k)\r\t\t\tEND;\r\t\t\ty := t - t MOD k;\r\t\t\tWHILE y <= h DO\r\t\t\t\tf.MarkRect(0, y, w, y + f.unit, Ports.fill, Ports.dim50, Ports.show);\r\t\t\t\tINC(y, k)\r\t\t\tEND\r\t\tEND\r\tEND Restore;\r\r\tPROCEDURE (v: StdView) HandleModelMsg2 (VAR msg: Models.Message);\r\tBEGIN\r\t\tWITH msg: Models.UpdateMsg DO\r\t\t\tWITH msg: FormModels.UpdateMsg DO\r\t\t\t\tViews.UpdateIn(v, msg.l, msg.t, msg.r, msg.b, Views.rebuildFrames)\r\t\t\tELSE\r\t\t\t\tViews.Update(v, Views.rebuildFrames)\t"
+                    attr: 0
+                  - text: "(* catch all update messages *)"
+                    attr: 1
+                  - text: "\r\t\t\tEND\r\t\tELSE\r\t\tEND\r\tEND HandleModelMsg2;\r\r\tPROCEDURE GetBounds (v: StdView; VAR w, h: INTEGER);\r\t\tVAR form: FormModels.Model; r, b: INTEGER; p: FormModels.Reader; q: Views.View;\r\tBEGIN\r\t\tform := v.ThisModel();\r\t\tIF form # NIL THEN\r\t\t\tp := form.NewReader(v.cache); v.cache := p;\r\t\t\tp.Set(NIL);\t"
+                    attr: 0
+                  - text: "(* set reader to bottom of view list *)"
+                    attr: 1
+                  - text: "\r\t\t\tp.ReadView(q);\t"
+                    attr: 0
+                  - text: "(* read bottom-most view *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF q # NIL THEN\r\t\t\t\tr := 0; b := 0;\r\t\t\t\tWHILE q # NIL DO\r\t\t\t\t\tIF p.r > r THEN r := p.r END;\r\t\t\t\t\tIF p.b > b THEN b := p.b END;\r\t\t\t\t\tp.ReadView(q)\r\t\t\t\tEND;\r\t\t\t\tw := r + v.border; h := b + v.border\r\t\t\tELSE\r\t\t\t\tw := 0; h := 0\r\t\t\tEND\r\t\tELSE\r\t\t\tw := 0; h := 0\r\t\tEND\r\tEND GetBounds;\r\r\tPROCEDURE AssertRange (border: INTEGER; VAR w, h: INTEGER);\r\t\tVAR min: INTEGER;\r\tBEGIN\t"
+                    attr: 0
+                  - text: "(* prevent illegal values *)"
+                    attr: 1
+                  - text: "\r\t\tmin := 2 * border + FormModels.minViewSize;\r\t\tIF w = Views.undefined THEN w := 100 * Ports.mm\r\t\tELSIF w < min THEN w := min\r\t\tELSIF w > maxSize THEN w := maxSize\r\t\tEND;\r\t\tIF h = Views.undefined THEN h := 70 * Ports.mm\r\t\tELSIF h < min THEN h := min\r\t\tELSIF h > maxSize THEN h := maxSize\r\t\tEND\r\tEND AssertRange;\r\r\tPROCEDURE (v: StdView) HandlePropMsg2 (VAR p: Properties.Message);\r\t\tVAR sp: Properties.StdProp; q: Properties.Property;\r\tBEGIN\r\t\tWITH p: Properties.BoundsPref DO\r\t\t\tGetBounds(v, p.w, p.h)\r\t\t| p: Properties.SizePref DO\r\t\t\tAssertRange(v.border, p.w, p.h)\r\t\t| p: Properties.PollMsg DO\r\t\t\tNEW(sp); sp.valid := {Properties.color}; sp.known := sp.valid;\r\t\t\tsp.color.val := v.background; p.prop := sp\r\t\t| p: Properties.SetMsg DO\r\t\t\tq := p.prop;\r\t\t\tWHILE q # NIL DO\r\t\t\t\tWITH q: Properties.StdProp DO\r\t\t\t\t\tIF (Properties.color IN q.valid) & (q.color.val # v.background) THEN\r\t\t\t\t\t\tv.SetBackground(q.color.val)\r\t\t\t\t\tEND;\r\t\t\t\tELSE\r\t\t\t\tEND;\r\t\t\t\tq :=q.next\r\t\t\tEND\r\t\t| p: Containers.DropPref DO\r\t\t\tp.okToDrop := TRUE\r\t\tELSE\r\t\tEND\r\tEND HandlePropMsg2;\r\r\r\t"
+                    attr: 0
+                  - text: "(* StdDirectory *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (d: StdDirectory) New (f: FormModels.Model): View;\r\t\tVAR v: StdView; grid, gridFactor: INTEGER;\r\tBEGIN\r\t\tASSERT(f # NIL, 20);\r\t\tNEW(v); v.InitModel(f);\r\t\tIF ctrldir # NIL THEN v.SetController(ctrldir.New()) END;\r\t\tv.SetBorder(minBorder);\r\t\tIF Dialog.metricSystem THEN\r\t\t\tgrid := 2 * Ports.mm; gridFactor := 5\t"
+                    attr: 0
+                  - text: "(* place at 2 mm resolution *)"
+                    attr: 1
+                  - text: "\r\t\tELSE\r\t\t\tgrid := Ports.inch DIV 16; gridFactor := 8\t"
+                    attr: 0
+                  - text: "(* place at 1/16 inch resolution *)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\t\tv.SetGrid(grid, gridFactor);\r\t\tv.background := Ports.defaultColor;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " v\r\tEND New;\r\r\r\t"
+                    attr: 0
+                  - text: "(** miscellaneous **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Focus
+                    attr: 3
+                  - text: "* (): View;\r\t\tVAR v: Views.View;\r\tBEGIN\r\t\tv := Controllers.FocusView();\r\t\tIF (v # NIL) & (v IS View) THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " v(View) ELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " NIL END\r\tEND Focus;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: FocusModel
+                    attr: 3
+                  - text: "* (): FormModels.Model;\r\t\tVAR v: View;\r\tBEGIN\r\t\tv := Focus();\r\t\tIF v # NIL THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " v.ThisModel() ELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " NIL END\r\tEND FocusModel;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: RoundToGrid
+                    attr: 3
+                  - text: "* (v: View; VAR x, y: INTEGER);\r\t\tVAR grid: INTEGER;\r\tBEGIN\r\t\tgrid := v.Grid();\r\t\tx := x + grid DIV 2;\r\t\ty := y + grid DIV 2;\r\t\tx := x - x MOD grid;\r\t\ty := y - y MOD grid\r\tEND RoundToGrid;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: New
+                    attr: 3
+                  - text: "* (): View;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " dir.New(FormModels.dir.New())\r\tEND New;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Deposit
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tViews.Deposit(New())\r\tEND Deposit;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetDir
+                    attr: 3
+                  - text: "* (d: Directory);\r\tBEGIN\r\t\tASSERT(d # NIL, 20); dir := d\r\tEND SetDir;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetCtrlDir
+                    attr: 3
+                  - text: "* (d: Containers.Directory);\r\tBEGIN\r\t\tASSERT(d # NIL, 20); ctrldir := d\r\tEND SetCtrlDir;\r\r\tPROCEDURE Init;\r\t\tVAR d: StdDirectory; res: INTEGER;\r\tBEGIN\r\t\tDialog.Call(\"FormControllers.Install\", \"#Form:CntrlInstallFailed\", res);\r\t\tNEW(d); dir := d; stdDir := d\r\tEND Init;\r\rBEGIN\r\tInit\rEND FormViews.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 14361
+          bodyLen: 8

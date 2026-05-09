@@ -1,0 +1,350 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\System\\Docu\\Converters.odc"
+  size: 7491
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 7360
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 7174
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 7088
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                asc: 134600
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000003
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 9
+                bodyPos: 7088
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 6574
+                runListLen: 1006
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: Converters
+                    attr: 0
+                  - text: "\r\rDEFINITION Converters;\r\r\tIMPORT Stores, Files, Dialog;\r\r\tCONST importAll = 0;\r\r\tTYPE\r\t\tImporter = PROCEDURE (f: Files.File; OUT s: Stores.Store);\r\t\tExporter = PROCEDURE (s: Stores.Store; f: Files.File);\r\r\t\tConverter = POINTER TO RECORD\r\t\t\tnext-: Converter;\r\t\t\timp-, exp-: Dialog.String;\r\t\t\tstoreType-: Stores.TypeName;\r\t\t\tfileType-: Files.Type;\r\t\t\topts-: SET\r\t\tEND;\r\r\tVAR list-: Converter;\r\r\tPROCEDURE Register (imp, exp: Dialog.String; storeType: Stores.TypeName; fileType: Files.Type;\r\t\t\t\t\t\t\t\t\t\topts: SET);\r\tPROCEDURE Import (loc: Files.Locator; name: Files.Name; VAR conv: Converter; OUT s: Stores.Store);\r\tPROCEDURE Export (loc: Files.Locator; name: Files.Name; conv: Converter; s: Stores.Store);\r\rEND Converters.\r\r\rModule "
+                    attr: 1
+                  - text: Converters
+                    attr: 2
+                  - text: " allows the definition and registration of file converters. A file converter is an "
+                    attr: 1
+                  - text: importer
+                    attr: 2
+                  - text: " which translates a file into a store (usually some view type), or an "
+                    attr: 1
+                  - text: exporter
+                    attr: 2
+                  - text: " which translates a store into a file, or it is both an importer and an exporter simultaneously. For a given pair "
+                    attr: 1
+                  - text: "(file type, store type)"
+                    attr: 2
+                  - text: " there may be several file converters registered, e.g. a text view may be translated into an ASCII file with or without carriage returns at the end of lines.\r\rExample: "
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Obx/Docu/Conv', 'ObxConv Docu')"
+                      body:
+                        - text: ObxConv  docu
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r\r\rCONST "
+                    attr: 1
+                  - text: importAll
+                    attr: 4
+                  - text: "\rSet element for the "
+                    attr: 1
+                  - text: opts
+                    attr: 2
+                  - text: " set of procedure "
+                    attr: 1
+                  - text: Register
+                    attr: 2
+                  - text: ". It indicates that the importer is able to import all file types (e.g., an importer that displays the file contents as a hex dump).\r\r\rTYPE "
+                    attr: 1
+                  - text: Importer
+                    attr: 4
+                  - text: "\rThis procedure type is the signature of an importer command. An importer translates a given file "
+                    attr: 1
+                  - text: f
+                    attr: 2
+                  - text: " into a store "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: ".\r\rPre\rf # NIL\t20\rf has correct type\t22\r\rPost\rs # NIL\r\r\rTYPE "
+                    attr: 1
+                  - text: Exporter
+                    attr: 4
+                  - text: "\rThis procedure type is the signature of an exporter command. An exporter translates a given store "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: " into the contents of a file "
+                    attr: 1
+                  - text: f
+                    attr: 2
+                  - text: ". File "
+                    attr: 1
+                  - text: f
+                    attr: 2
+                  - text: " is already set up as an empty new (i.e., writable) file.\r\rPre\rs # NIL\t20\rf # NIL\t21\rf.Length() = 0\t22\rs has correct type\t23\r\rPost\rf.Length() >= 0\r\r\rTYPE "
+                    attr: 1
+                  - text: Converter
+                    attr: 4
+                  - text: "\rA converter object represents a file converter. It consists of an import and an export command, one of which may be empty. A converter converts between a file and a store.\r\r"
+                    attr: 1
+                  - text: next
+                    attr: 4
+                  - text: "-: Converter\rNext converter in the list. Converters are sorted by their registration time: later registration means further back in the list.\r\r"
+                    attr: 1
+                  - text: imp
+                    attr: 4
+                  - text: "-, "
+                    attr: 1
+                  - text: exp
+                    attr: 4
+                  - text: "-: Dialog.String\timp # \"\" OR exp # \"\"\rStrings for the import/export commands, e.g.,\r\"HostTextConv.ImportText\" or\r\"HostTextConv.ExportText\".\r\r"
+                    attr: 1
+                  - text: storeType
+                    attr: 4
+                  - text: "-: Stores.TypeName\texp # \"\" -> storeType # \"\"\rStore type of the converter, e.g., \"TextViews.TextView\".\r\r"
+                    attr: 1
+                  - text: fileType
+                    attr: 4
+                  - text: "-: Files.Type\tfileType # \"\"\rFile type of the converter, e.g., \"TXT\".\r\r"
+                    attr: 1
+                  - text: opts
+                    attr: 4
+                  - text: "-: SET\rSet of options, e.g., {} or {importAll}.\r\r\rVAR "
+                    attr: 1
+                  - text: list
+                    attr: 4
+                  - text: "-: Converter\rList of registered converters. Converters are sorted by their registration time: later registration means further back in the list. The first element of the list, i.e., "
+                    attr: 1
+                  - text: list
+                    attr: 2
+                  - text: ", is always the document converter, i.e., the converter used for standard BlackBox document files.\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: Register
+                    attr: 4
+                  - text: " (imp, exp: Dialog.String; storeType: Stores.TypeName;\r\t\t\t\t\t\t\t\t\t\tfileType: Files.Type; opts: SET)\rRegister an importer which translates a file of type "
+                    attr: 1
+                  - text: fileType
+                    attr: 2
+                  - text: " into a store of type "
+                    attr: 1
+                  - text: storeType
+                    attr: 2
+                  - text: " (e.g., \"TextViews.View\"), an exporter which translates a store of type "
+                    attr: 1
+                  - text: storeType
+                    attr: 2
+                  - text: " into a file of type "
+                    attr: 1
+                  - text: fileType
+                    attr: 2
+                  - text: ", or both.\r"
+                    attr: 1
+                  - text: imp
+                    attr: 2
+                  - text: " is the name of an importer command, which must have the signature of "
+                    attr: 1
+                  - text: Importer
+                    attr: 2
+                  - text: ".\r"
+                    attr: 1
+                  - text: exp
+                    attr: 2
+                  - text: " is the name of an exporter command, which must have the signature of "
+                    attr: 1
+                  - text: Exporter
+                    attr: 2
+                  - text: ".\r"
+                    attr: 1
+                  - text: opts
+                    attr: 2
+                  - text: " allows to express a set of options; currently only the element "
+                    attr: 1
+                  - text: importAll
+                    attr: 2
+                  - text: " is defined. Normally, "
+                    attr: 1
+                  - text: opts
+                    attr: 2
+                  - text: " is empty.\r"
+                    attr: 1
+                  - text: Register
+                    attr: 2
+                  - text: " does not yet load the modules which contain the import/export commands. They are loaded only when needed.\rThe standard document converter is already installed by the BlackBox core. Other converters may be installed in the "
+                    attr: 1
+                  - text: Config
+                    attr: 2
+                  - text: " module, e.g., converters for ASCII files, Unicode files, or picture files. "
+                    attr: 1
+                  - text: Config
+                    attr: 2
+                  - text: " is executed upon startup of BlackBox to allow the establishment of custom configurations, such as the set of available converters.\rAs a result of "
+                    attr: 1
+                  - text: Register
+                    attr: 2
+                  - text: ", a new converter is appended to "
+                    attr: 1
+                  - text: list
+                    attr: 2
+                  - text: ", with fields corresponding to the parameters passed.\rFor each registered importer or exporter, there optionally may be a corresponding string mapping; to make the display of a list of importers/exporters more user-friendly. For example, the importer \"HostTextConv.ImportText\" could be mapped to the more telling name \"Ascii\" (in the standard file open dialog). The mapping is done in the "
+                    attr: 1
+                  - text: Strings
+                    attr: 2
+                  - text: " file in the "
+                    attr: 1
+                  - text: Rsrc
+                    attr: 2
+                  - text: " directory of the importer's subsystem, e.g., there may be the following lines in the "
+                    attr: 1
+                  - text: Host/Rsrc/Strings
+                    attr: 2
+                  - text: " text:\r\r\tHostTextConv.ImportText\tAscii\r\tHostTextConv.ExportText\tAscii\r\rPre\rimp # \"\" OR exp # \"\"\t20\rfileType # \"\"\t21\r\rPROCEDURE "
+                    attr: 1
+                  - text: Import
+                    attr: 4
+                  - text: " (loc: Files.Locator; name: Files.Name; VAR conv: Converter; OUT s: Stores.Store)\rConverts the contents of the file specified by "
+                    attr: 1
+                  - text: "(loc, name)"
+                    attr: 2
+                  - text: " into store "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: ", using converter "
+                    attr: 1
+                  - text: conv
+                    attr: 2
+                  - text: ". Internally it calls the converter's import command. If "
+                    attr: 1
+                  - text: conv = NIL
+                    attr: 2
+                  - text: ", the first suitable converter in "
+                    attr: 1
+                  - text: list
+                    attr: 2
+                  - text: " is used and returned in the VAR parameter.\r\rPre\rloc # NIL\t20\rname # \"\"\t21\rconv = NIL OR conv.imp # \"\"\t22\rFile type of (loc, name) = converter's file type\t23\r\rPROCEDURE "
+                    attr: 1
+                  - text: Export
+                    attr: 4
+                  - text: " (loc: Files.Locator; name: Files.Name; conv: Converter; s: Stores.Store)\rConvert store "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: " to a new file "
+                    attr: 1
+                  - text: "(loc, name)"
+                    attr: 2
+                  - text: " using converter "
+                    attr: 1
+                  - text: conv
+                    attr: 2
+                  - text: ". Internally it calls the converter's export command. Success or failure is reported in the locator's "
+                    attr: 1
+                  - text: res
+                    attr: 2
+                  - text: " field.\r\rPre\rs # NIL\t20\r~ s IS Stores.Alien\t21\rloc # NIL\t22\rname # \"\"\t23\rconv = NIL OR conv.exp # \"\"\t24\rTypeOf(s) = converter's store type\t25\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 13
+          bodyPos: 7456
+          bodyLen: 8

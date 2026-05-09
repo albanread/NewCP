@@ -1,0 +1,594 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Text\\Docu\\Controllers.odc"
+  size: 13437
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 13306
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 13120
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 13034
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                asc: 121900
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x00000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 9
+                bodyPos: 13034
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 12520
+                runListLen: 1547
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x00000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [5]
+                    font: Arial
+                    size: 127000
+                    color: 0x00000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [6]
+                    font: Arial
+                    size: 127000
+                    color: 0x00000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: TextControllers
+                    attr: 0
+                  - text: "\r\rDEFINITION TextControllers;\r\r\tIMPORT "
+                    attr: 1
+                  - text: "Models, Views, Controllers, Properties, Containers, TextModels, TextViews"
+                    attr: 2
+                  - text: ";\r\r\tCONST\r\t\tnoAutoScroll = 16; noAutoIndent = 17;\r\t\tnone = -1;\r\r\tTYPE\r\t\tController = "
+                    attr: 1
+                  - text: "POINTER TO ABSTRACT RECORD (Containers.Controller)\r\t\t\tview-: TextViews.View;\r\t\t\ttext-: TextModels.Model;\r\t\t\t(c: Controller) CaretPos (): INTEGER, ABSTRACT, NEW;\r\t\t\t(c: Controller) SetCaret (pos: INTEGER), ABSTRACT, NEW;\r\t\t\t(c: Controller) GetSelection (OUT beg, end: INTEGER), ABSTRACT, NEW;\r\t\t\t(c: Controller) SetSelection (beg, end: INTEGER), ABSTRACT, NEW\r\t\t\t(c: Controller) ThisView (): TextViews.View, EXTENSIBLE\r\t\tEND;"
+                    attr: 2
+                  - text: "\r\r\t\tDirectory = POINTER TO ABSTRACT RECORD (Containers.Directory)\r\t\t\t(d: Directory) NewController (opts: SET): Controller"
+                    attr: 1
+                  - text: ", ABSTRACT"
+                    attr: 2
+                  - text: ";\r\t\t\t(d: Directory) New (): Controller"
+                    attr: 1
+                  - text: ", EXTENSIBLE"
+                    attr: 2
+                  - text: "\r\t\tEND;\r"
+                    attr: 1
+                  - text: "\r\t\tFilterPref = RECORD (Properties.Preference)\r\t\t\tcontroller: Controller;\r\t\t\tframe: Views.Frame;\r\t\t\tx, y: INTEGER;\r\t\t\tfilter: BOOLEAN\r\t\tEND;\r\r\t\tFilterPollCursorMsg = RECORD (Controllers.Message)\r\t\t\tcontroller: Controller;\r\t\t\tx, y: INTEGER;\r\t\t\tcursor: INTEGER;\r\t\t\tdone: BOOLEAN\r\t\tEND;\r\r\t\tFilterTrackMsg = RECORD (Controllers.Message)\r\t\t\tcontroller: Controller;\r\t\t\tx, y: INTEGER;\r\t\t\tmodifiers: SET;\r\t\t\tdone: BOOLEAN\r\t\tEND;\r"
+                    attr: 2
+                  - text: "\r\t\tModelMessage = "
+                    attr: 1
+                  - text: "ABSTRACT "
+                    attr: 2
+                  - text: "RECORD (Models.Message) END;\r\r\t\tSetCaretMsg ="
+                    attr: 1
+                  - text: " EXTENSIBLE"
+                    attr: 2
+                  - text: " RECORD (ModelMessage)\r\t\t\tpos: INTEGER\r\t\tEND;\r\r\t\tSetSelectionMsg ="
+                    attr: 1
+                  - text: " EXTENSIBLE"
+                    attr: 2
+                  - text: " RECORD (ModelMessage)\r\t\t\tbeg, end: INTEGER\r\t\tEND;\r\r\tVAR dir-, stdDir-: Directory;\r\r\tPROCEDURE SetDir (d: Directory);\r\tPROCEDURE Install;\r\tPROCEDURE Focus (): Controller;\r\tPROCEDURE SetCaret (text: TextModels.Model; pos: INTEGER);\r\tPROCEDURE SetSelection (text: TextModels.Model; beg, end: INTEGER);\r\rEND TextControllers.\r\r\r"
+                    attr: 1
+                  - text: TextControllers
+                    attr: 3
+                  - text: " are the standard controllers for text views as defined in "
+                    attr: 1
+                  - text: TextViews
+                    attr: 3
+                  - text: ".\r\rThe "
+                    attr: 1
+                  - text: caret
+                    attr: 3
+                  - text: " denotes the position where the character is inserted that the user types next. If there is text after the caret position, this text is not overwritten. Instead, the new character is inserted between the text stretches before and after the caret.\r\rWhat are the attributes of a newly typed character? If the caret is at the beginning of a non-empty text, the attributes of the newly inserted character are the ones of the first character of the text. Otherwise, if no white space precedes, or if the caret is at the end of the text, the attributes of the previous character are used. Otherwise, the attributes of the next character are used. In an empty text, its default attributes are used. (There are default attributes, and an invisible default ruler, for an empty text. See the commands "
+                    attr: 1
+                  - text: "Text->Make Default Attributes"
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: "Text->Make Default Ruler"
+                    attr: 3
+                  - text: ".)\rIf the character is typed in when a selection exists, then the attributes of the first character of the selection are used.\r\rTo find out what attributes would be used if a character were typed in, the property mechanism can be used (see module "
+                    attr: 1
+                  - text: Properties
+                    attr: 3
+                  - text: "). Properties also allow to change these attributes, even for an empty text. (However, when the caret is set to another position, these settings are lost. This mechanism is used for the "
+                    attr: 1
+                  - text: Attributes
+                    attr: 3
+                  - text: " menu.)\r\r\rCONST "
+                    attr: 1
+                  - text: noAutoScroll
+                    attr: 4
+                  - text: "\rPossible element of controller option set. If included, automatic scrolling of views is disabled. Autoscrolling is used to show the caret position or to show the position of the modification performed most recently.\r\rCONST "
+                    attr: 1
+                  - text: noAutoIndent
+                    attr: 4
+                  - text: "\rPossible element of controller option set. If included, automatic indentation after entering a "
+                    attr: 1
+                  - text: line
+                    attr: 3
+                  - text: " character is disabled.\r\rCONST "
+                    attr: 1
+                  - text: none
+                    attr: 4
+                  - text: "\rPossible argument to "
+                    attr: 1
+                  - text: controller.SetCaret
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: controller.SetSelection
+                    attr: 3
+                  - text: " to indicate removal of the caret or the selection, respectively. Likewise, "
+                    attr: 1
+                  - text: controller.CarPos
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: controller.GetSelection
+                    attr: 3
+                  - text: " may return "
+                    attr: 1
+                  - text: none
+                    attr: 3
+                  - text: " to indicate the absence of a caret or selection, respectively. (Note that "
+                    attr: 1
+                  - text: controller.GetSelection
+                    attr: 3
+                  - text: " may return any pair of equal values to signal absence of a selection.)\r\r\rTYPE "
+                    attr: 1
+                  - text: Controller (Containers.Controller)
+                    attr: 4
+                  - text: "\rABSTRACT\rStandard controllers for text views.\r\r"
+                    attr: 1
+                  - text: view
+                    attr: 4
+                  - text: "-: TextViews.View\rThe view to which the controller is connected.\r\r"
+                    attr: 1
+                  - text: text
+                    attr: 4
+                  - text: "-: TextModels.Model\tview # NIL => text = view.ThisModel()\rThe text displayed by the controlled view; cached for easy access.\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: InitView
+                    attr: 4
+                  - text: " (v: Views.View)\rEXTENSIBLE\rStrengthened preconditions!\r\rPre\rv = NIL  #  c.view = NIL\t21\rc.view = NIL\r\tv IS TextViews.View\t22\r\rPost\rv # NIL\r\tc.view = v\r\tc.text = c.view.ThisModel()\rv = NIL\r\tc.view = NIL\r\tc.text = NIL\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: CaretPos
+                    attr: 4
+                  - text: " (): INTEGER\rNEW, ABSTRACT\rCurrent position of the caret, or "
+                    attr: 1
+                  - text: none
+                    attr: 3
+                  - text: " if not set.\r\rPost\rresult = none  OR  0 <= result <= c.text.Length()\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: SetCaret
+                    attr: 4
+                  - text: " (pos: INTEGER)\rNEW, ABSTRACT\rSet the caret at position "
+                    attr: 1
+                  - text: pos
+                    attr: 3
+                  - text: ", or remove the caret if "
+                    attr: 1
+                  - text: pos
+                    attr: 3
+                  - text: " = "
+                    attr: 1
+                  - text: none
+                    attr: 3
+                  - text: ".\r\rPre\rpos = none  OR  0 <= pos\t20\rpos <= c.text.Length()\t21\r\rPost\rc.CarPos() = pos\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: GetSelection
+                    attr: 4
+                  - text: " (VAR beg, end: INTEGER)\rNEW, ABSTRACT\rGet the current selection's range ["
+                    attr: 1
+                  - text: beg
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: end
+                    attr: 3
+                  - text: "), or "
+                    attr: 1
+                  - text: beg
+                    attr: 3
+                  - text: " = "
+                    attr: 1
+                  - text: end
+                    attr: 3
+                  - text: " if no selection exists.\r\rPost\rbeg = end  OR  0 <= beg <= end <= c.text.Length()\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: SetSelection
+                    attr: 4
+                  - text: " (beg, end: INTEGER)\rNEW, ABSTRACT\rSet the selection to the range ["
+                    attr: 1
+                  - text: beg
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: end
+                    attr: 3
+                  - text: "), or remove the current selection if "
+                    attr: 1
+                  - text: beg
+                    attr: 3
+                  - text: " = "
+                    attr: 1
+                  - text: end
+                    attr: 3
+                  - text: ".\r\rPre\rbeg = end  OR  0 <= beg < end <= c.text.Length()\t20\r\rPost\rc.GetSelection(b, e): b = beg, e = end\r\r"
+                    attr: 1
+                  - text: "PROCEDURE (c: Controller) ThisView (): TextViews.View\rEXTENSIBLE\rCovariant extension of "
+                    attr: 2
+                  - text: Controllers.Controller.ThisView
+                    attr: 5
+                  - text: ".\r\r"
+                    attr: 2
+                  - text: "\rTYPE "
+                    attr: 1
+                  - text: Directory
+                    attr: 4
+                  - text: " (Containers.Directory)"
+                    attr: 6
+                  - text: "\rABSTRACT\rDirectory for controllers.\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: NewController
+                    attr: 4
+                  - text: " (opts: SET): Controller\rABSTRACT\rReturn new controller with options "
+                    attr: 1
+                  - text: opts
+                    attr: 3
+                  - text: ".\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: New
+                    attr: 4
+                  - text: " (): Controller\rEXTENSIBLE\rCovariant narrowing of function result. Return controller with default (empty) option set.\r\rExcept for performance, equivalent to:\r\t"
+                    attr: 1
+                  - text: RETURN
+                    attr: 4
+                  - text: " d.NewController({})\r\r\rTYPE "
+                    attr: 1
+                  - text: FilterPref (Properties.Preference)
+                    attr: 4
+                  - text: "\rUsed by a text controller to check for filter preferences of the view embedded in a text that is closest to but preceding the text position corresponding to the coordinates "
+                    attr: 1
+                  - text: x
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: y
+                    attr: 3
+                  - text: " in the presented "
+                    attr: 1
+                  - text: frame
+                    attr: 3
+                  - text: ". If the view wishes to filter cursor polling and tracking messages for mouse tracking events at this coordinate, it can set "
+                    attr: 1
+                  - text: filter
+                    attr: 3
+                  - text: " to TRUE. If this is done, the controller will send "
+                    attr: 1
+                  - text: FilterPollCursorMsg
+                    attr: 3
+                  - text: " messages to the view to allow it to determine the cursor icon. Also, the controller will send "
+                    attr: 1
+                  - text: FilterTrackMsg
+                    attr: 3
+                  - text: " messages to the view to allow it to intercept mouse tracking operations of the controller. An example application for this filter mechanism are hyperlink views as provided, e.g., by module "
+                    attr: 1
+                  - text: StdLinks
+                    attr: 3
+                  - text: ". These link views add hyperlinking capabilities to any text, without requiring the text controller to understand anything about hyperlinks.\r\r"
+                    attr: 1
+                  - text: controller
+                    attr: 4
+                  - text: ": Controller\rThe controller asking for this preference.\r\r"
+                    attr: 1
+                  - text: frame
+                    attr: 4
+                  - text: ": Views.Frame\rThe frame the controller is currently operating on.\r\r"
+                    attr: 1
+                  - text: x
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: y
+                    attr: 4
+                  - text: ": INTEGER\rThe event coordinates within the current frame.\r\r"
+                    attr: 1
+                  - text: filter
+                    attr: 4
+                  - text: ": BOOLEAN\rPreset to FALSE by the controller; to be set to TRUE by views wishing to filter cursor polling and tracking operations.\r\r\rTYPE "
+                    attr: 1
+                  - text: FilterPollCursorMsg (Controllers.Message)
+                    attr: 4
+                  - text: "\rThis message is sent by the controller to views that in response to a "
+                    attr: 1
+                  - text: FilterPref
+                    attr: 3
+                  - text: " query indicated that they wish to filter cursor polling operations. "
+                    attr: 1
+                  - text: Note
+                    attr: 3
+                  - text: ": this message is passed to the view's "
+                    attr: 1
+                  - text: HandleCtrlMsg
+                    attr: 3
+                  - text: " method together with the surrounding text view's frame! The coordinates indicated in the message are within this surrounding frame's coordinate system, not within that of the view's own frame. (In fact, the coordinates will always be outside of that view's frame - otherwise the text controller would not have ended up asking the view for filtering preferences.)"
+                    attr: 1
+                  - text: "\r"
+                    attr: 4
+                  - text: "\r"
+                    attr: 1
+                  - text: controller
+                    attr: 4
+                  - text: ": Controller\rThe sending controller.\r\r"
+                    attr: 1
+                  - text: x
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: y
+                    attr: 4
+                  - text: ": INTEGER\rThe coordinates (in the controller's frame) the mouse pointer is at.\r\r"
+                    attr: 1
+                  - text: cursor
+                    attr: 4
+                  - text: ": INTEGER\rThe cursor icon to be displayed at this position, if any.\r\r"
+                    attr: 1
+                  - text: done
+                    attr: 4
+                  - text: ": BOOLEAN\rIf set, "
+                    attr: 1
+                  - text: cursor
+                    attr: 3
+                  - text: " will override the controller's choice of cursor icon.\r\r\rTYPE "
+                    attr: 1
+                  - text: FilterTrackMsg (Controllers.Message)
+                    attr: 4
+                  - text: "\rThis message is sent by the controller to views that in response to a "
+                    attr: 1
+                  - text: FilterPref
+                    attr: 3
+                  - text: " query indicated that they wish to filter cursor tracking operations. "
+                    attr: 1
+                  - text: Note
+                    attr: 3
+                  - text: ": this message is passed to the view's "
+                    attr: 1
+                  - text: HandleCtrlMsg
+                    attr: 3
+                  - text: " method together with the surrounding text view's frame! The coordinates indicated in the message are within this surrounding frame's coordinate system, not within that of the view's own frame. (In fact, the coordinates will always be outside of that view's frame - otherwise the text controller would not have ended up asking the view for filtering preferences.)"
+                    attr: 1
+                  - text: "\r\rcontroller"
+                    attr: 4
+                  - text: ": Controller\rThe sending controller.\r\r"
+                    attr: 1
+                  - text: x
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: y
+                    attr: 4
+                  - text: ": INTEGER\rThe coordinates (in the controller's frame) the mouse pointer is at.\r\r"
+                    attr: 1
+                  - text: modifiers
+                    attr: 4
+                  - text: ": SET\rThe modifier keys that were active when this event originated at position "
+                    attr: 1
+                  - text: x
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: y
+                    attr: 3
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: done
+                    attr: 4
+                  - text: ": BOOLEAN\rIf set, the controller assumes that the view has successfully tracked this mouse click. If not, the controller defaults to its normal tracking routine.\r\r\rTYPE "
+                    attr: 1
+                  - text: ModelMessage (Models.Message)
+                    attr: 4
+                  - text: "\rABSTRACT\rMessages to control virtual model extensions, such as marks (e.g., caret or selection). The text system uses such messages to synchronously update marks in all views of the same model.\r\r\rTYPE "
+                    attr: 1
+                  - text: SetCaretMsg (ModelMessage)
+                    attr: 4
+                  - text: "\rEXTENSIBLE\rSet the caret in a view displaying text model "
+                    attr: 1
+                  - text: msg.model
+                    attr: 3
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: pos
+                    attr: 4
+                  - text: ": INTEGER\rSet the caret at position "
+                    attr: 1
+                  - text: pos
+                    attr: 3
+                  - text: ".\r\r\rTYPE "
+                    attr: 1
+                  - text: SetSelectionMsg (ModelMessage)
+                    attr: 4
+                  - text: "\rEXTENSIBLE\rSet the selection in a view displaying text model "
+                    attr: 1
+                  - text: msg.model
+                    attr: 3
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: beg
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: end
+                    attr: 4
+                  - text: ": INTEGER\rSet the selection to cover the stretch ["
+                    attr: 1
+                  - text: beg
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: end
+                    attr: 3
+                  - text: ").\r\r\rVAR "
+                    attr: 1
+                  - text: dir
+                    attr: 4
+                  - text: "-, "
+                    attr: 1
+                  - text: stdDir
+                    attr: 4
+                  - text: "-: Directory\tdir # NIL, stdDir # NIL, stable stdDir = d\rDirectory and standard directory objects for controllers.\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetDir
+                    attr: 4
+                  - text: " (d: Directory)\rSet the directory object.\r\rPre\rd # NIL\t20\r\rPost\rdir = d\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: Install
+                    attr: 4
+                  - text: "\rInstall the current controller directory object in "
+                    attr: 1
+                  - text: TextViews
+                    attr: 3
+                  - text: ".\r\rExcept for performance, equivalent to:\r\tTextViews.SetCtrlDir(dir)\r\rPROCEDURE "
+                    attr: 1
+                  - text: Focus
+                    attr: 4
+                  - text: " (): Controller\rReturn the text controller that currently has the focus, if any.\r\rExcept for performance, equivalent to:\r\tVAR v: Views.View; c: Controllers.Controller;\r\tv := Controllers.FocusView();\r\tIF (v # NIL) & (v IS TextViews.View) THEN\r\t\tc := v(TextViews.View).ThisController();\r\t\tIF (c # NIL) & (c IS Controller) THEN "
+                    attr: 1
+                  - text: RETURN
+                    attr: 4
+                  - text: " c(Controller)\r\t\tELSE "
+                    attr: 1
+                  - text: RETURN
+                    attr: 4
+                  - text: " NIL\r\t\tEND\r\tELSE "
+                    attr: 1
+                  - text: RETURN
+                    attr: 4
+                  - text: " NIL\r\tEND\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetCaret
+                    attr: 4
+                  - text: " (text: TextModels.Model; pos: INTEGER)\rIn all views displaying "
+                    attr: 1
+                  - text: text
+                    attr: 3
+                  - text: ", set the caret to position "
+                    attr: 1
+                  - text: pos
+                    attr: 3
+                  - text: ".\r\rPre\rtext # NIL\t20\rpos = none  OR  0 <= pos\t21\rpos <= text.Length()\t22\r\rExcept for performance, equivalent to:\r\tVAR cm: SetCaretMsg;\r\tcm.pos := pos; Models.Broadcast(text, cm)\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetSelection
+                    attr: 4
+                  - text: " (text: TextModels.Model; beg, end: INTEGER)\rIn all views displaying "
+                    attr: 1
+                  - text: text
+                    attr: 3
+                  - text: ", set the selection to the stretch ["
+                    attr: 1
+                  - text: beg
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: end
+                    attr: 3
+                  - text: ").\r\rPre\rtext # NIL\t20\rbeg # end\r\t0 <= beg\t21\r\tbeg < end\t22\r\tend <= text.Length()\t23\r\rExcept for performance, equivalent to:\r\tVAR sm: SetSelectionMsg;\r\tsm.beg := beg; sm.end := end; Models.Broadcast(text, sm)\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 13
+          bodyPos: 13402
+          bodyLen: 8

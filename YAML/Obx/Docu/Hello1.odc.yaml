@@ -1,0 +1,260 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Docu\\Hello1.odc"
+  size: 4211
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 4080
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 3894
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 3808
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 152400
+                dsc: 25400
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 16
+                bodyPos: 3929
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 3531
+                runListLen: 1732
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                flow:
+                  - text: "Overview by Example: ObxHello1"
+                    attr: 0
+                  - text: "\r\rEverything in the BlackBox Component Framework revolves around views. A view is a rectangular part of a document; a document consists of a hierarchy of nested views. What you are now looking at is a text view; below is another text view embedded in it:\r\r\t"
+                    attr: 1
+                  - view:
+                      kind: TextViews.StdView
+                      storeKind: store
+                      typeChain:
+                        - TextViews.StdViewDesc
+                        - TextViews.ViewDesc
+                        - Containers.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 562
+                      bodyLen: 1371
+                      hideMarks: true
+                      defaultRuler:
+                        left: 0
+                        right: 5940000
+                        asc: 127000
+                        dsc: 25400
+                        grid: 1
+                        opts: 0x00000001
+                      defaultAttr:
+                        font: Arial
+                        size: 114300
+                        color: 0x00000000
+                        weight: 400
+                        style: 0x00000000
+                      controller:
+                        kind: TextControllers.StdCtrl
+                        storeKind: store
+                        typeChain:
+                          - TextControllers.StdCtrlDesc
+                          - TextControllers.ControllerDesc
+                          - Containers.ControllerDesc
+                          - Controllers.ControllerDesc
+                          - Stores.StoreDesc
+                        id: 10
+                        bodyPos: 1750
+                        bodyLen: 9
+                      content:
+                        kind: TextModels.StdModel
+                        storeKind: elem
+                        typeChain:
+                          - TextModels.StdModelDesc
+                          - TextModels.ModelDesc
+                          - Containers.ModelDesc
+                          - Models.ModelDesc
+                          - Stores.StoreDesc
+                        id: 2
+                        bodyPos: 587
+                        bodyLen: 1025
+                        runListLen: 495
+                        attrPool:
+                          - # [0]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 400
+                            style: 0x00000000
+                          - # [1]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 700
+                            style: 0x00000000
+                          - # [2]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 400
+                            style: 0x00000001
+                        flow:
+                          - ruler:
+                              left: 0
+                              right: 5616000
+                              asc: 127000
+                              dsc: 25400
+                              grid: 1
+                              opts: 0x00000001
+                              tabs:
+                                - { stop: 108000 }
+                                - { stop: 216000 }
+                                - { stop: 324000 }
+                                - { stop: 432000 }
+                                - { stop: 540000 }
+                                - { stop: 648000 }
+                                - { stop: 2880000 }
+                              attr: 0
+                              w: 360000000
+                              h: 444500
+                          - text: "MODULE ObxHello1;\r\r\tIMPORT Views, TextModels, TextMappers, TextViews;\r\r\tPROCEDURE "
+                            attr: 0
+                          - text: Do
+                            attr: 1
+                          - text: "*;\r\t\tVAR t: TextModels.Model; f: TextMappers.Formatter; v: TextViews.View;\r\tBEGIN\r\t\tt := TextModels.dir.New();\t"
+                            attr: 0
+                          - text: "(* create a new, empty text object *)"
+                            attr: 2
+                          - text: "\r\t\tf.ConnectTo(t);\t"
+                            attr: 0
+                          - text: "(* connect a formatter to the text *)"
+                            attr: 2
+                          - text: "\r\t\tf.WriteString(\"Hello World\"); f.WriteLn;\t"
+                            attr: 0
+                          - text: "(* write a string and a 0DX into new text *) "
+                            attr: 2
+                          - text: "\r\t\tv := TextViews.dir.New(t);\t"
+                            attr: 0
+                          - text: "(* create a new text view for t *)"
+                            attr: 2
+                          - text: "\r\t\tViews.OpenView(v)\t"
+                            attr: 0
+                          - text: "(* open the view in a window *)"
+                            attr: 2
+                          - text: "\r\tEND Do;\r\rEND ObxHello1.\r"
+                            attr: 0
+                    attr: 1
+                    w: 5850600
+                    h: 2463800
+                  - text: "\r\r "
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 14
+                      bodyPos: 2024
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: " ObxHello1.Do\r\rThe embedded text view above contains a slightly more advanced hello world program than "
+                    attr: 1
+                  - text: ObxHello0
+                    attr: 2
+                  - text: ". It doesn't use module "
+                    attr: 1
+                  - text: StdLog
+                    attr: 2
+                  - text: " to write into the log window. Instead, it creates a new empty text, to which it connects a text formatter. A text formatter is an object which provides procedures to write variables of all basic Component Pascal types into a text. In the above example, a string and a carriage return are written to the text, which means that they are appended to the existing text. Since a newly created text is empty, "
+                    attr: 1
+                  - text: t
+                    attr: 2
+                  - text: " now contains exactly what the formatter has written into it.\r\rA text is an object which carries text and text attributes; i.e., a sequence of characters and information about font, color, and vertical offset of each character. However, a text does not know how to draw itself; this is the purpose of a text view. (Yes, what you are currently looking at is the rendering of such a view.) When a text view is created, it receives the text to be displayed as a parameter. Several views can be open on the same text simultaneously. When you edit in one view, the changes are propagated to all other views on the same text.\r\rWhen you create a text, you perform the steps outlined below:\r\r1) create a text model\r2) connect a text formatter to it\r3) write the text's contents via the formatter\r4) create a text view for the model\r5) open the text view in a window\r\rIn this example, we have seen how to use the text subsystem in order to create a new text.\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 20
+          bodyPos: 4176
+          bodyLen: 8

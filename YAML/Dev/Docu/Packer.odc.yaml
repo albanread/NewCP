@@ -1,0 +1,374 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Dev\\Docu\\Packer.odc"
+  size: 7229
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 7098
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 6912
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 6826
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: "*"
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 18
+                bodyPos: 6830
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 6316
+                runListLen: 1238
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [4]
+                    font: "*"
+                    size: 101600
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [5]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                flow:
+                  - text: DevPacker
+                    attr: 0
+                  - text: "\r\rDEFINITION DevPacker;\r\r\tPROCEDURE ListFromSub (sdir: ARRAY OF CHAR);\r\tPROCEDURE ListLoadedModules;\r\tPROCEDURE PackThis;\r\rEND DevPacker.\r\r\rModule "
+                    attr: 1
+                  - text: DevPacker
+                    attr: 2
+                  - text: " is used to pack any kind of files into an existing exe-file. These files can be read with the help of "
+                    attr: 1
+                  - text: HostPackedFiles
+                    attr: 2
+                  - text: ". There is no explicit dependency between "
+                    attr: 1
+                  - text: DevPacker
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: HostPackedFiles
+                    attr: 2
+                  - text: ", but since one writes to the exe-file and the other reads from it, there is an implicit dependency, with the file format of the exe-file as interface.\r\r"
+                    attr: 1
+                  - text: DevDependencies.CreateTool
+                    attr: 2
+                  - text: " can be used to create a pack command for a set of modules.\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: PackThis
+                    attr: 3
+                  - text: ";\rUsed together with a "
+                    attr: 1
+                  - text: DevCommander.
+                    attr: 2
+                  - text: " It reads a list of file names and packs the given files into an exe-file. The exe-file appears first in the list followed by the symbol \":=\". It is also possible to pack a file under a different name than it appears in the current filesystem. To specify another name for a file the special symbol \"=>\" is used. \r\rThus, the syntax in EBNF is as follows:\r\r<exeFileName> := <filename> [=> <filename>] {<filename> [=> <filename>]}\r\rBoth the "
+                    attr: 1
+                  - text: exeFileName
+                    attr: 2
+                  - text: " and the "
+                    attr: 1
+                  - text: fileName
+                    attr: 2
+                  - text: " can be specified using absolute paths (including drive name) or using relative paths to the BlackBox directory. If any file contains special characters in their name, such as space or dash, then the file name should be embedded in quotation marks (\"filename\") to be parsed correctly. The parsing stops as soon as it encounters any unrecognized character such as a comma or a tilde.\r\rBefore the packing starts the list of files are validated. If some files are not found, then the package command is discontinued and the exe-file is left untouched. If a file name appears more than once in the list, a message that the file appears more than once is presented but the package command is continued and the file is packed just once into the exe-file.\r\rIt is important that the exe-file does not appear in the list of files to be packed. This would cause the exe-file to be packed into itself with undefined result. Therefore the packing is cacelled if the exe-file appears in the list.\r\rExample: \r"
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 6
+                      bodyPos: 807
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: " "
+                    attr: 4
+                  - text: "DevPacker.PackThis exefilename.exe :=\rTour.odc \"C:\\Program files\\BlackBox\\License.txt\" Test/Code/MyConfig.ocf => Code/Config.ocf"
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdEndView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdEndViewDesc
+                        - DevCommanders.EndViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 8
+                      bodyPos: 963
+                      bodyLen: 2
+                    attr: 1
+                    w: 88900
+                    h: 152400
+                  - text: "\r\rPROCEDURE "
+                    attr: 1
+                  - text: ListFromSub
+                    attr: 3
+                  - text: " (sdir: ARRAY OF CHAR);\rExamines the directory "
+                    attr: 1
+                  - text: sdir
+                    attr: 2
+                  - text: " and all its subdirectories. If it finds any files it opens a new document and writes a packing command for the files found. "
+                    attr: 1
+                  - text: sdir
+                    attr: 2
+                  - text: " can be an absolute path, including a drive name, or a relative path to the BlackBox directory. It can also be an empty string, in which case the entire BlackBox directory will be listed.\r\rExample: "
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 9
+                      bodyPos: 1035
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: " \"DevPacker.ListFromSub('Text')\""
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdEndView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdEndViewDesc
+                        - DevCommanders.EndViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 10
+                      bodyPos: 1081
+                      bodyLen: 2
+                    attr: 1
+                    w: 88900
+                    h: 152400
+                  - text: "\r\rPROCEDURE "
+                    attr: 1
+                  - text: ListLoadedModules
+                    attr: 3
+                  - text: ";\rExamines the currently loaded modules and creates a text with a packing command for them. This can be used to quickly find out which modules are needed for a running application. The problem is that too many modules may be packed and that files such as resources and documentaion are not included.\r\rExample: "
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 11
+                      bodyPos: 1133
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: " DevPacker.ListLoadedModules"
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdEndView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdEndViewDesc
+                        - DevCommanders.EndViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 12
+                      bodyPos: 1179
+                      bodyLen: 2
+                    attr: 1
+                    w: 88900
+                    h: 152400
+                  - text: "\r\r\r"
+                    attr: 1
+                  - text: Absolute vs. Relative paths in filenames
+                    attr: 3
+                  - text: "\rImagine that BlackBox is installed in directory "
+                    attr: 1
+                  - text: "D:\\BlackBox"
+                    attr: 2
+                  - text: ". Then the file name "
+                    attr: 1
+                  - text: "D:\\BlackBox\\Std\\Code\\Log.ocf"
+                    attr: 2
+                  - text: " (absolute path) denotes the same file as "
+                    attr: 1
+                  - text: Std\Code\Log.ocf
+                    attr: 2
+                  - text: " (relative path) as far as the packer is concerned. But the packer packs the file into the exe-file with the path given in the command. This makes a crucial difference for "
+                    attr: 1
+                  - text: HostPackedFiles
+                    attr: 2
+                  - text: " which reads the exe-file. If the exe-file for example is started in directory "
+                    attr: 1
+                  - text: "C:\\temp"
+                    attr: 2
+                  - text: ", and the program makes a call to "
+                    attr: 1
+                  - text: StdLog
+                    attr: 2
+                  - text: ", then this command will work if the file was packed using a relative path, but not if it was packed using an absolute path. On the other hand, if the file was packed using an absolute path, a call to open file "
+                    attr: 1
+                  - text: "D:\\BlackBox\\Std\\Code\\Log.ocf"
+                    attr: 2
+                  - text: " will work even if no physical drive called "
+                    attr: 1
+                  - text: "D:"
+                    attr: 2
+                  - text: " is present on the machine.\r\r"
+                    attr: 1
+                  - text: Regarding exe-files
+                    attr: 3
+                  - text: "\rThe packer cannot create an exe-file, it can only pack files into an existing exe-file. This means that the linker has to be used to create a minimum exefile for the packer to use. This minimum exefile must have "
+                    attr: 1
+                  - text: HostPackedFiles
+                    attr: 2
+                  - text: " linked in since this is the module that allows for extraction of the files. The minimum linker command is as follows:\r\r"
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 13
+                      bodyPos: 1331
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: " DevLinker.Link exefilename.exe := Kernel$+ Files HostFiles HostPackedFiles StdLoader"
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdEndView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdEndViewDesc
+                        - DevCommanders.EndViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 14
+                      bodyPos: 1377
+                      bodyLen: 2
+                    attr: 1
+                    w: 88900
+                    h: 152400
+                  - text: "\r\rFor "
+                    attr: 1
+                  - text: HostPackedFiles
+                    attr: 2
+                  - text: " to be able to find files in the exe-file, it must have the same format as when the packer packed the files into it. This means that it is not possible to add resource, like icons and cursors, after files have been packed to an exe-file. Any such operations should be done before the packing starts. (See the "
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Dev/Docu/Linker.odc','Linker')"
+                      body:
+                        - text: DevLinker documentation
+                          attr: 5
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: " for details about how to add icons already when linking.) It is however possible to change the name of the exe-file after the packing is done.\r\rAnother limitation is that the packer is not able to append files. It packs the whole list of files and writes a table of these files. If "
+                    attr: 1
+                  - text: PackThis
+                    attr: 2
+                  - text: " is called again it destroys the information about the former files in the exe-file.\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 22
+          bodyPos: 7194
+          bodyLen: 8

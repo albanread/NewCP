@@ -1,0 +1,820 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Ole\\Mod\\Server.odc"
+  size: 49956
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 49825
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 49639
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 49553
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 26
+                bodyPos: 49674
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 49160
+                runListLen: 3254
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE OleServer;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- 20070205, bh, Unicode support\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT\r\t\tSYSTEM, COM, WinOle, WinApi,\r\t\tOleStorage, OleData, StdDialog,\r\t\tKernel, Files, Services, Ports, Dialog, Stores, Sequencers, Views,\r\t\tControllers, Properties, Converters, Containers, Documents, Windows,\r\t\tTextViews, Log, HostPorts, HostDialog, HostWindows, HostMenus;\r\t\r\tCONST\r\t\tdebug = FALSE;\r\t\tObjectID = \"{00000001-1000-11cf-adf0-444553540000}\";\r\t\tstreamStr = \"CONTENTS\";\r\t\tcbFormat = 200H;\r\t\tobfTag = 6F4F4443H;\r\t\tmiscStatus = WinOle.OLEMISC_RECOMPOSEONRESIZE\r\t\t\t+ WinOle.OLEMISC_CANTLINKINSIDE\r\t\t\t+ WinOle.OLEMISC_RENDERINGISDEVICEINDEPENDENT;\r\t\toleUnit = Ports.mm DIV 100;\r\t\tborderW = 5 * Ports.point;\r\t\tfixed = 31;\t"
+                    attr: 0
+                  - text: "(* controller option *)"
+                    attr: 1
+                  - text: "\r\t\r\tTYPE\r\t\tIClassFactory = POINTER TO RECORD (WinOle.IClassFactory) END;\r\t\t\r\t\tObject = POINTER TO RECORD (COM.IUnknown)\r\t\t\tioo: IOleObject;\r\t\t\tido: IDataObject;\r\t\t\tips: IPersistStorage;\r\t\t\tiipo: IOleInPlaceObject;\r\t\t\tiipao: IOleInPlaceActiveObject;\r\t\t\tics: WinOle.IOleClientSite;\r\t\t\tiips: WinOle.IOleInPlaceSite;\t"
+                    attr: 0
+                  - text: "(* # NIL => in place open *)"
+                    attr: 1
+                  - text: "\r\t\t\tiipf: WinOle.IOleInPlaceFrame;\r\t\t\tiipw: WinOle.IOleInPlaceUIWindow;\r\t\t\tfInfo: WinOle.OLEINPLACEFRAMEINFO;\r\t\t\tidah: WinOle.IDataAdviseHolder;\r\t\t\tioah: WinOle.IOleAdviseHolder;\r\t\t\tisg: WinOle.IStorage;\r\t\t\tism: WinOle.IStream;\r\t\t\trsm: WinOle.IStream;\r\t\t\tmenu: WinApi.HMENU;\r\t\t\toleMenu: WinOle.HOLEMENU;\r\t\t\tmenuType: Stores.TypeName;\r\t\t\tw, h: INTEGER;\r\t\t\tview: Views.View;\r\t\t\tseq: Sequencers.Sequencer;\r\t\t\twin: HostWindows.Window;\t"
+                    attr: 0
+                  - text: "(* # NIL => open *)"
+                    attr: 1
+                  - text: "\r\t\t\tembedded: BOOLEAN;\r\t\t\tupdate: BOOLEAN;\r\t\t\tuiActive: BOOLEAN;\r\t\t\tuseMenu: BOOLEAN;\r\t\t\tunit: INTEGER\t"
+                    attr: 0
+                  - text: "(* scaling when in place open *)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\t\tIOleObject = POINTER TO RECORD (WinOle.IOleObject)\r\t\t\tobj: Object\r\t\tEND;\r\t\tIDataObject = POINTER TO RECORD (WinOle.IDataObject)\r\t\t\tobj: Object;\r\t\t\tdata: OleData.IDataObject\r\t\tEND;\r\t\tIPersistStorage = POINTER TO EXTENSIBLE RECORD (WinOle.IPersistStorage)\r\t\t\tobj: Object\r\t\tEND;\r\t\tIOleInPlaceObject = POINTER TO RECORD (WinOle.IOleInPlaceObject);\r\t\t\tobj: Object\r\t\tEND;\r\t\tIOleInPlaceActiveObject = POINTER TO RECORD (WinOle.IOleInPlaceActiveObject)\r\t\t\tobj: Object\r\t\tEND;\r\t\t\r\t\tWindow = POINTER TO RECORD (HostWindows.Window)\r\t\t\tobj: Object\r\t\tEND;\r\t\t\r\t\tWinDir = POINTER TO RECORD (HostWindows.Directory)\r\t\t\tobj: Object;\r\t\t\thost: WinApi.HWND;\r\t\t\tpos, clip: WinApi.RECT;\r\t\tEND;\r\t\t\r\t\tAction = POINTER TO RECORD (Services.Action)\r\t\t\tw: Window\r\t\tEND;\r\t\t\r\t\tVerb = POINTER TO RECORD\r\t\t\tverb: INTEGER;\r\t\t\tname: ARRAY 64 OF CHAR;\r\t\t\tdisabled, checked: BOOLEAN;\r\t\t\tnext: Verb\r\t\tEND;\r\t\t\r\t\tIEnumOLEVERB = POINTER TO RECORD (WinOle.IEnumOLEVERB)\r\t\t\tfirst, cur: Verb\r\t\tEND;\r\t\t\r\t\t\r\tVAR\r\t\tfactory: IClassFactory;\r\t\ttoken: INTEGER;\r\t\twinDir: WinDir;\r\t\t\r\t\t\r\t(* ---------- auxiliary ---------- *)\r\t\r\tPROCEDURE Max (x, y: INTEGER): INTEGER;\r\tBEGIN\r\t\tIF x > y THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " x ELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " y END\r\tEND Max;\r\t\r\tPROCEDURE Min (x, y: INTEGER): INTEGER;\r\tBEGIN\r\t\tIF x < y THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " x ELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " y END\r\tEND Min;\r\t\r\tPROCEDURE GenGlobalMedium (hg: WinApi.HGLOBAL; unk: COM.IUnknown; VAR sm: WinOle.STGMEDIUM);\r\tBEGIN\r\t\tsm.tymed := WinOle.TYMED_HGLOBAL;\r\t\tsm.u.hGlobal := hg;\r\t\tsm.pUnkForRelease := unk\r\tEND GenGlobalMedium;\r\t\r\tPROCEDURE MediumGlobal (VAR sm: WinOle.STGMEDIUM): WinApi.HGLOBAL;\r\tBEGIN\r\t\tASSERT(sm.tymed = WinOle.TYMED_HGLOBAL, 20);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " sm.u.hGlobal\r\tEND MediumGlobal;\r\t\r\tPROCEDURE GenStorageMedium (stg: WinOle.IStorage; unk: COM.IUnknown; VAR sm: WinOle.STGMEDIUM);\r\t\tTYPE PS = POINTER TO RECORD t: SET; s: WinOle.IStorage; u: COM.IUnknown END;\r\t\tVAR ps: PS;\r\tBEGIN\r\t\tsm.u.hGlobal := 0;\r\t\tsm.tymed := WinOle.TYMED_ISTORAGE;\r\t\tsm.u.pstg := stg;\r\t\tsm.pUnkForRelease := unk\r\tEND GenStorageMedium;\r\t\r\tPROCEDURE MediumStorage (VAR sm: WinOle.STGMEDIUM): WinOle.IStorage;\r\tBEGIN\r\t\tASSERT(sm.tymed = WinOle.TYMED_ISTORAGE, 20);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " sm.u.pstg\r\tEND MediumStorage;\r\t\r\tPROCEDURE NewString (VAR str: ARRAY OF CHAR): WinApi.PtrWSTR;\r\t\tVAR n: INTEGER; p: WinApi.PtrWSTR;\r\tBEGIN\r\t\tn := 0; WHILE str[n] # 0X DO INC(n) END;\r\t\tp := "
+                    attr: 0
+                  - text: SYSTEM
+                    attr: 3
+                  - text: .
+                    attr: 0
+                  - text: VAL
+                    attr: 3
+                  - text: "(WinApi.PtrWSTR, WinOle.CoTaskMemAlloc(SIZE(CHAR) * (n + 1)));\r\t\tp^ := str$;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " p\r\tEND NewString;\r\t\r\tPROCEDURE CheckVerb (v: Views.View; n: INTEGER; VAR pvm: Properties.PollVerbMsg);\r\tBEGIN\r\t\tpvm.verb := n;\r\t\tpvm.label := \"\";\r\t\tpvm.disabled := FALSE; pvm.checked := FALSE;\r\t\tIF v # NIL THEN Views.HandlePropMsg(v, pvm) END\r\tEND CheckVerb;\r\t\r\r\t(* ---------- IClassFactory ---------- *)\r\t\r\tPROCEDURE (this: IClassFactory) CreateInstance (outer: COM.IUnknown; IN [iid] iid: COM.GUID;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT [new] int: COM.IUnknown): COM.RESULT;\r\t\tVAR res: COM.RESULT; new: Object;\r\tBEGIN\r\t\tIF debug THEN Log.String(\"create instance\"); Log.Ln END;\r\t\tIF outer = NIL THEN\r\t\t\tNEW(new);\r\t\t\tIF new # NIL THEN\r\t\t\t\tNEW(new.ioo, new); NEW(new.ido, new); NEW(new.ips, new); NEW(new.iipo, new);\r\t\t\t\tNEW(new.iipao);\t"
+                    attr: 0
+                  - text: "(* separate component *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tIF (new.ioo # NIL) & (new.ido # NIL) & (new.ips # NIL) & (new.iipo # NIL) & (new.iipao # NIL) THEN\r\t\t\t\t\tnew.ioo.obj := new;\r\t\t\t\t\tnew.ido.obj := new;\r\t\t\t\t\tnew.ido.data := OleData.ViewData(NIL, 0, 0, TRUE);\r\t\t\t\t\tnew.ips.obj := new;\r\t\t\t\t\tnew.iipo.obj := new;\r\t\t\t\t\tnew.iipao.obj := new;\r\t\t\t\t\tnew.embedded := FALSE;\r\t\t\t\t\tres := new.QueryInterface(iid, int);\r\t\t\t\t\tIF res >= 0 THEN HostMenus.Lock END;\r\t\t\t\t\tIF debug THEN Log.String(\"c lock \"); Log.Int(HostMenus.locks); Log.Ln END;\r\t\t\t\tELSE res := WinApi.E_OUTOFMEMORY\r\t\t\t\tEND\r\t\t\tELSE res := WinApi.E_OUTOFMEMORY\r\t\t\tEND\r\t\tELSE res := WinApi.CLASS_E_NOAGGREGATION\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " res\r\tEND CreateInstance;\r\r\tPROCEDURE (this: IClassFactory) LockServer (lock: WinApi.BOOL): COM.RESULT;\r\tBEGIN\r\t\tIF lock # 0 THEN HostMenus.Lock ELSE HostMenus.Unlock END;\r\t\tIF debug THEN Log.String(\"lock server \"); Log.Int(lock); Log.Int(HostMenus.locks); Log.Ln END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND LockServer;\r\t\r\t\r\t"
+                    attr: 0
+                  - text: "(* IEnumOLEVERB  *)"
+                    attr: 1
+                  - text: "\r\t\r\tPROCEDURE (this: IEnumOLEVERB) Next (num: INTEGER; OUT elem: ARRAY [untagged] OF WinOle.OLEVERB;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT [nil] fetched: INTEGER): COM.RESULT;\r\t\tVAR n: INTEGER; flags: SET;\r\tBEGIN\r\t\tn := 0;\r\t\tIF VALID(fetched) THEN fetched := 0\r\t\tELSIF num # 1 THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_POINTER\r\t\tEND;\r\t\tIF this.cur # NIL THEN\r\t\t\tWHILE (this.cur # NIL) & (num > 0) DO\r\t\t\t\telem[n].lVerb := this.cur.verb;\r\t\t\t\telem[n].lpszVerbName := NewString(this.cur.name);\r\t\t\t\tflags := {};\r\t\t\t\tIF this.cur.disabled THEN INCL(flags, 0) END;\r\t\t\t\tIF this.cur.checked THEN INCL(flags, 3) END;\r\t\t\t\telem[n].fuFlags := flags;\r\t\t\t\tIF this.cur.verb >= 0 THEN\r\t\t\t\t\telem[n].grfAttribs := WinOle.OLEVERBATTRIB_ONCONTAINERMENU\r\t\t\t\tELSE\r\t\t\t\t\telem[n].grfAttribs := {}\r\t\t\t\tEND;\r\t\t\t\tthis.cur := this.cur.next; INC(n); DEC(num)\r\t\t\tEND;\r\t\t\tIF VALID(fetched) THEN fetched := n END;\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_FALSE\r\tEND Next;\r\t\r\tPROCEDURE (this: IEnumOLEVERB) Skip (num: INTEGER): COM.RESULT;\r\tBEGIN\r\t\tWHILE (num > 0) & (this.cur # NIL) DO this.cur := this.cur.next; DEC(num) END;\r\t\tIF this.cur # NIL THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_FALSE\r\t\tEND\r\tEND Skip;\r\t\r\tPROCEDURE (this: IEnumOLEVERB) Reset (): COM.RESULT;\r\tBEGIN\r\t\tthis.cur := this.first;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND Reset;\r\t\r\tPROCEDURE (this: IEnumOLEVERB) Clone (OUT enum: WinOle.IEnumOLEVERB): COM.RESULT;\r\t\tVAR new: IEnumOLEVERB;\r\tBEGIN\r\t\tNEW(new);\r\t\tIF new # NIL THEN\r\t\t\tnew.first := this.first;\r\t\t\tnew.cur := this.cur;\r\t\t\tenum := new;\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_OUTOFMEMORY\r\t\tEND\r\tEND Clone;\r\t\r"
+                    attr: 0
+                  - text: "(*"
+                    attr: 3
+                  - text: "\t\r\t(* ---------- Object Release Patch ---------- *)\t"
+                    attr: 0
+                  - text: "(* VERY BIG HACK !!!!!!!!! *)"
+                    attr: 3
+                  - text: "\r\t\r\tPROCEDURE^ (this: Object) InPlaceDeactivate ();\r\t\r\tPROCEDURE ObjectRelease (this: Object): LONGINT;\r\t\tVAR n: LONGINT; msg: Sequencers.RemoveMsg;\r\tBEGIN\r\t\tn := Kernel.Release(SYSTEM.VAL(LONGINT, this));\r\t\tIF debug THEN Log.String(\"release \"); Log.Int(n); Log.Ln END;\r\t\tIF n = 0 THEN\r\t\t\tIF this.iips # NIL THEN this.InPlaceDeactivate END;\r\t\t\tthis.ics := NIL; this.idah := NIL; this.ioah := NIL;\r\t\t\tIF this.seq # NIL THEN this.seq.Notify(msg) END;\r\t\t\tHostMenus.Unlock;\r\t\t\tIF debug THEN Log.String(\"r unlock \"); Log.Int(HostMenus.locks); Log.Ln END;\r\t\t\tKernel.Cleanup\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " n\r\tEND ObjectRelease;\r\t\r\tPROCEDURE PatchObjectRelease;\r\t\tCONST releaseMethOff = -4;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: "SYSTEM.PUT(SYSTEM.ADR(Object) + releaseMethOff, SYSTEM.ADR(ObjectRelease))"
+                    attr: 3
+                  - text: "\r\tEND PatchObjectRelease;\r"
+                    attr: 0
+                  - text: "*)"
+                    attr: 3
+                  - text: "\t\r\t\r\t(* ---------- Object ---------- *)\r\t\r\tPROCEDURE^ (this: Object) InPlaceDeactivate (), NEW;\r\t\r\tPROCEDURE (this: Object) RELEASE;\r\t\tVAR msg: Sequencers.RemoveMsg;\r\tBEGIN\r\t\tIF this.iips # NIL THEN this.InPlaceDeactivate END;\r\t\tthis.ics := NIL; this.idah := NIL; this.ioah := NIL;\r\t\tIF this.seq # NIL THEN this.seq.Notify(msg) END;\r\t\tHostMenus.Unlock;\r\t\tIF debug THEN Log.String(\"r unlock \"); Log.Int(HostMenus.locks); Log.Ln END;\r\t\tKernel.Cleanup\r\tEND RELEASE;\r\t\r\tPROCEDURE (this: Object) QueryInterface (IN iid: COM.GUID; OUT int: COM.IUnknown): COM.RESULT;\r\tBEGIN\r\t\tIF debug THEN Log.String(\"query interface\"); Log.Ln END;\r\t\tIF COM.QUERY(this, iid, int)\r\t\t\tOR COM.QUERY(this.ioo, iid, int)\r\t\t\tOR COM.QUERY(this.ido, iid, int)\r\t\t\tOR COM.QUERY(this.ips, iid, int)\r\t\t\tOR COM.QUERY(this.iipo, iid, int) THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\tELSE "
+                    attr: 0
+                  - text: "RETURN "
+                    attr: 3
+                  - text: "WinApi.E_NOINTERFACE\r\t\tEND\r\tEND QueryInterface;\r\t\r\tPROCEDURE (this: Object) GetMenuType (VAR changed: BOOLEAN), NEW;\r\t\tVAR ops: Controllers.PollOpsMsg;\r\tBEGIN\r\t\tops.type := \"\"; this.win.ForwardCtrlMsg(ops);\r\t\tIF ops.type # this.menuType THEN\r\t\t\tchanged := TRUE;\r\t\t\tthis.menuType := ops.type$\r\t\tELSE\r\t\t\tchanged := FALSE\r\t\tEND\r\tEND GetMenuType;\r\t\r\tPROCEDURE (this: Object) InPlaceMenuCreate (), NEW;\r\t\tVAR menu: WinApi.HMENU; res, i, p, n: INTEGER; widths: WinOle.OLEMENUGROUPWIDTHS;\r\t\t\tm: HostMenus.Menu;\r\tBEGIN\r\t\tIF debug THEN Log.String(\"create menu\"); Log.Ln END;\r\t\ti := 0; WHILE i < 6 DO widths.width[i] := 0; INC(i) END;\r\t\tmenu := WinApi.CreateMenu();\r\t\tres := this.iipf.InsertMenus(menu, widths);\r\t\tm := HostMenus.menus; p := 0; i := 0;\r\t\tWHILE p < 6 DO\r\t\t\tWHILE (m # NIL) & (m.class <= p) DO m := m.next END;\r\t\t\tINC(i, widths.width[p]); INC(p); n := 0;\r\t\t\tWHILE (m # NIL) & (m.class = p) DO\r\t\t\t\tIF (m.type = \"\") OR (m.type = this.menuType) THEN\r\t\t\t\t\tres := WinApi.InsertMenuW(menu, i, WinApi.MF_POPUP + WinApi.MF_BYPOSITION,\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tm.menuH, m.menu);\r\t\t\t\t\tINC(n); INC(i)\r\t\t\t\tEND;\r\t\t\t\tm := m.next;\r\t\t\tEND;\r\t\t\twidths.width[p] := n; INC(p)\r\t\tEND;\r\t\tthis.menu := menu;\r\t\tthis.oleMenu := WinOle.OleCreateMenuDescriptor(menu, widths);\r\t\tIF debug THEN Log.String(\"menu created\"); Log.Ln END;\r\tEND InPlaceMenuCreate;\r\t\r\tPROCEDURE (this: Object) InPlaceMenuDestroy (), NEW;\r\t\tVAR res: COM.RESULT; i: INTEGER; m: HostMenus.Menu; sm: WinApi.HMENU;\r\tBEGIN\r\t\tIF debug THEN Log.String(\"destroy menu\"); Log.Ln END;\r\t\tres := WinOle.OleDestroyMenuDescriptor(this.oleMenu);\r\t\tthis.oleMenu := 0;\r\t\ti := WinApi.GetMenuItemCount(this.menu);\r\t\tWHILE i > 0 DO\r\t\t\tDEC(i); sm := WinApi.GetSubMenu(this.menu, i);\r\t\t\tm := HostMenus.menus;\r\t\t\tWHILE (m # NIL) & (m.menuH # sm) DO m := m.next END;\r\t\t\tIF m # NIL THEN res := WinApi.RemoveMenu(this.menu, i, WinApi.MF_BYPOSITION) END\r\t\tEND;\r\t\tIF this.iipf # NIL THEN res := this.iipf.RemoveMenus(this.menu) END;\r\t\tres := WinApi.DestroyMenu(this.menu);\r\t\tthis.menu := 0;\r\t\tIF debug THEN Log.String(\"menu destroyed\"); Log.Ln END;\r\tEND InPlaceMenuDestroy;\r\t\r\tPROCEDURE (this: Object) UIActivate (): COM.RESULT, NEW;\r\t\tVAR res: COM.RESULT; dumy: BOOLEAN; rect: WinApi.RECT;\r\tBEGIN\r\t\tIF debug THEN Log.String(\"ui activate\"); Log.Ln END;\r\t\tIF this.iips # NIL THEN res := this.iips.OnUIActivate() END;\r\t\tres := WinApi.SetFocus(this.win.wnd);\r\t\tHostWindows.ActivateWindow(this.win, TRUE);\r\t\tIF this.iipf # NIL THEN res := this.iipf.SetActiveObject(this.iipao, \"\") END;\r\t\tIF this.iipw # NIL THEN res := this.iipw.SetActiveObject(this.iipao, \"\") END;\r\t\tthis.GetMenuType(dumy);\r\t\tthis.InPlaceMenuCreate;\r\t\tres := this.iipf.SetMenu(this.menu, this.oleMenu, HostWindows.main);\r\t\tthis.useMenu := TRUE;\r\t\tHostMenus.isObj := TRUE;\r\t\trect.left := 0; rect.top := 0; rect.right := 0; rect.bottom := 0;\r\t\tIF this.iipf # NIL THEN res := this.iipf.SetBorderSpace(rect) END;\r\t\tIF this.iipw # NIL THEN res := this.iipw.SetBorderSpace(rect) END;\r\t\tthis.uiActive := TRUE;\r\t\tIF debug THEN Log.String(\"ui active\"); Log.Ln END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND UIActivate;\r\t\r\tPROCEDURE (this: Object) UIDeactivate (), NEW;\r\t\tVAR res: COM.RESULT;\r\tBEGIN\r\t\tIF debug THEN Log.String(\"ui deactivate\"); Log.Ln END;\r\t\tIF this.iipf # NIL THEN res := this.iipf.SetMenu(0, 0, 0) END;\r\t\tthis.useMenu := FALSE;\r\t\tthis.InPlaceMenuDestroy;\r\t\tIF this.win # NIL THEN HostWindows.ActivateWindow(this.win, FALSE) END;\r\t\tIF this.iipf # NIL THEN res := this.iipf.SetActiveObject(NIL, NIL) END;\r\t\tIF this.iipw # NIL THEN res := this.iipw.SetActiveObject(NIL, NIL) END;\r\t\tIF this.iips # NIL THEN res := this.iips.OnUIDeactivate(0) END;\r\t\tHostMenus.isObj := FALSE;\r\t\tthis.uiActive := FALSE;\r\t\tIF debug THEN Log.String(\"ui deactive\"); Log.Ln END;\r\tEND UIDeactivate;\r\t\r\tPROCEDURE (this: Object) InPlaceActivate (site: WinOle.IOleClientSite; ui: BOOLEAN): COM.RESULT, NEW;\r\t\tVAR res: COM.RESULT; host: WinApi.HWND;\r\t\t\td: Documents.Document; c: Containers.Controller; w: Windows.Window;\r\tBEGIN\r\t\tIF site # NIL THEN\r\t\t\tIF this.iips = NIL THEN\r\t\t\t\tIF debug THEN Log.String(\"try in place\"); Log.Ln END;\r\t\t\t\tres := site.QueryInterface(COM.ID(this.iips), this.iips);\r\t\t\t\tIF res < 0 THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " res END;\r\t\t\t\tres := this.iips.CanInPlaceActivate();\r\t\t\t\tIF res = WinApi.S_OK THEN\r\t\t\t\t\tIF debug THEN Log.String(\"in place activate\"); Log.Ln END;\r\t\t\t\t\tres := this.iips.OnInPlaceActivate();\r\t\t\t\t\t(* undodeactivates := TRUE *)\r\t\t\t\t\tres := this.iips.GetWindow(host);\r\t\t\t\t\tthis.fInfo.cb := SIZE(WinOle.OLEINPLACEFRAMEINFO);\r\t\t\t\t\tres := this.iips.GetWindowContext(this.iipf, this.iipw, winDir.pos, winDir.clip, this.fInfo);\r\t\t\t\t\t"
+                    attr: 0
+                  - text: "(* open window *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tthis.view := Views.CopyOf(this.view, Views.shallow);\r\t\t\t\t\twinDir.obj := this; winDir.host := host;\r\t\t\t\t\tWindows.SetDir(winDir);\r\t\t\t\t\td := Documents.dir.New(this.view, this.w, this.h);\r\t\t\t\t\tc := d.ThisController();\r\t\t\t\t\tc.SetOpts(c.opts - {Documents.pageWidth..Documents.winHeight} + {31});\r\t\t\t\t\tStdDialog.Open(d, \"\", NIL, \"\", NIL, TRUE, FALSE, FALSE, FALSE, TRUE);\r\t\t\t\t\tw := Windows.dir.First();\r\t\t\t\t\tthis.seq := w.seq;\r\t\t\t\t\tthis.win := w(Window);\r\t\t\t\t\tOleData.SetView(this.ido.data, this.view, this.w, this.h);\r\t\t\t\t\tWindows.SetDir(Windows.stdDir);\r\t\t\t\t\tIF this.ics # NIL THEN res := this.ics.ShowObject() END;\r\t\t\t\t\tIF debug THEN Log.String(\"in place active\"); Log.Ln END;\r\t\t\t\tELSE\r\t\t\t\t\tthis.iips := NIL;\r\t\t\t\t"
+                    attr: 0
+                  - text: "\tRETURN"
+                    attr: 3
+                  - text: " WinApi.E_FAIL\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tIF ui THEN res := this.UIActivate() END;\r\t\t\tIF this.iips # NIL THEN\t"
+                    attr: 0
+                  - text: "(* minimal undo support *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tres := this.iips.DiscardUndoState()\r\t\t\tEND\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_INVALIDARG\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND InPlaceActivate;\r\t\r\tPROCEDURE (this: Object) CheckViewUpdate (), NEW;\r\t\tVAR res: COM.RESULT; w, h: INTEGER; v: Views.View; changed: BOOLEAN;\r\tBEGIN\r\t\tIF (this.win # NIL) & (this.win.doc # NIL) THEN\r\t\t\tv := this.win.doc.ThisView();\r\t\t\tv.context.GetSize(w, h);\r\t\t\tIF (v # this.view) OR (w # this.w) OR (h # this.h) THEN\r\t\t\t\tthis.view := v; this.w := w; this.h := h;\r\t\t\t\tOleData.SetView(this.ido.data, v, w, h);\r\t\t\t\tthis.update := TRUE\r\t\t\tEND\r\t\tEND;\r\t\tIF this.update & (this.idah # NIL) & (this.iips = NIL) THEN\r\t\t\tIF debug THEN Log.String(\"on data change\"); Log.Ln END;\r\t\t\tres := this.idah.SendOnDataChange(this.ido, 0, {});\r\t\t\tthis.update := FALSE\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: "(* check menus *)"
+                    attr: 1
+                  - text: "\r\t\tIF (this.win # NIL) & (this.iipf # NIL) & (this.menu # 0) & (Windows.dir.Focus(Controllers.targetPath) = this.win)\r\t\tTHEN\r\t\t\tthis.GetMenuType(changed);\r\t\t\tIF changed THEN\r\t\t\t\tthis.InPlaceMenuDestroy(); this.InPlaceMenuCreate;\r\t\t\t\tIF this.useMenu THEN\r\t\t\t\t\tres := this.iipf.SetMenu(this.menu, this.oleMenu, HostWindows.main)\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND CheckViewUpdate;\r\t\r\tPROCEDURE (this: Object) InPlaceDeactivate (), NEW;\r\t\tVAR res: COM.RESULT;\r\tBEGIN\r\t\tIF debug THEN Log.String(\"in place deactivate\"); Log.Ln END;\r\t\tthis.UIDeactivate;\r\t\tIF this.win # NIL THEN this.win.Close(); this.win := NIL END;\r\t\tIF this.iips # NIL THEN res := this.iips.OnInPlaceDeactivate() END;\r\t\tthis.iips := NIL; this.iipf := NIL; this.iipw := NIL;\r\t\tthis.CheckViewUpdate;\r\t\tKernel.Cleanup;\r\t\tIF debug THEN Log.String(\"in place deactive\"); Log.Ln END;\r\tEND InPlaceDeactivate;\r\t\r\tPROCEDURE (this: Object) Open (), NEW;\r\t\tVAR res: COM.RESULT; v: Views.View; d: Documents.Document; c: Containers.Controller; w: Windows.Window;\r\tBEGIN\r\t\tIF this.win = NIL THEN\r\t\t\tIF this.view = NIL THEN\r\t\t\t\tIF debug THEN Log.String(\"show new\"); Log.Ln END;\r\t\t\t\tv := TextViews.dir.New(NIL)\r\t\t\tELSE\r\t\t\t\tIF debug THEN Log.String(\"show old\"); Log.Ln END;\r\t\t\t\tv := Views.CopyOf(this.view, Views.shallow);\r\t\t\tEND;\r\t\t\twinDir.obj := this;\r\t\t\tWindows.SetDir(winDir);\r\t\t\td := Documents.dir.New(v, this.w, this.h);\r\t\t\tc := d.ThisController();\r\t\t\tc.SetOpts(c.opts - {Documents.pageWidth..Documents.winHeight});\r\t\t\tViews.OpenAux(d, \"BlackBox Object\");\r\t\t\tw := Windows.dir.First();\r\t\t\tthis.view := v;\r\t\t\tthis.seq := w.seq;\r\t\t\tthis.win := w(Window);\r\t\t\tOleData.SetView(this.ido.data, this.view, this.w, this.h);\r\t\t\tWindows.SetDir(Windows.stdDir)\r\t\tEND;\r\t\tWindows.dir.Select(this.win, Windows.lazy);\r\t\tIF this.ics # NIL THEN res := this.ics.ShowObject() END;\r\t\tIF this.ics # NIL THEN res := this.ics.OnShowWindow(1) END;\r\tEND Open;\r\t\r\tPROCEDURE (this: Object) CustomVerb (\r\t\tverb: INTEGER; IN msg: WinApi.MSG; activeSite: WinOle.IOleClientSite;\r\t\tindex: INTEGER; parent: WinApi.HWND; IN posRect: WinApi.RECT\r\t): COM.RESULT, NEW;\r\t\tVAR res: COM.RESULT; pvm: Properties.PollVerbMsg; dvm: Properties.DoVerbMsg;\r\tBEGIN\r\t\tCheckVerb(this.view, 0, pvm);\r\t\tIF pvm.label = \"\" THEN\r\t\t\tIF verb = 0 THEN\r\t\t\t"
+                    attr: 0
+                  - text: "\tRETURN "
+                    attr: 3
+                  - text: "this.ioo.DoVerb(WinOle.OLEIVERB_SHOW, msg, activeSite, index, parent, posRect)\r\t\t\tELSIF verb = 1 THEN\r\t\t\t"
+                    attr: 0
+                  - text: "\tRETURN "
+                    attr: 3
+                  - text: "this.ioo.DoVerb(WinOle.OLEIVERB_OPEN, msg, activeSite, index, parent, posRect)\r\t\t\tELSE\r\t\t\t\tDEC(verb)\r\t\t\tEND\r\t\tEND;\r\t\tCheckVerb(this.view, verb, pvm);\r\t\tIF pvm.label = \"\" THEN\r\t\t\tres := this.ioo.DoVerb(0, msg, activeSite, index, parent, posRect);\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.OLEOBJ_S_INVALIDVERB\r\t\tEND;\r\t\tdvm.frame := NIL;\r\t\tdvm.verb := verb;\r\t\tViews.HandlePropMsg(this.view, dvm);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND CustomVerb;\r\t\r\t\r\t(* ---------- IOleObject ---------- *)\r\t\r\tPROCEDURE (this: IOleObject) SetClientSite (site: WinOle.IOleClientSite): COM.RESULT;\r\tBEGIN\r\t\tthis.obj.ics := site;\r\t\tIF site = NIL THEN Kernel.Cleanup END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND SetClientSite;\r\t\r\tPROCEDURE (this: IOleObject) GetClientSite (OUT site: WinOle.IOleClientSite): COM.RESULT;\r\tBEGIN\r\t\tsite := this.obj.ics;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND GetClientSite;\r\t\r\tPROCEDURE (this: IOleObject) SetHostNames (app, obj: WinApi.PtrWSTR): COM.RESULT;\r\tBEGIN\r\t\tthis.obj.embedded := TRUE;"
+                    attr: 0
+                  - text: "\r\t\tRETURN"
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND SetHostNames;\r\t\r\tPROCEDURE (this: IOleObject) Close (saveOption: INTEGER): COM.RESULT;\r\t\tVAR res: COM.RESULT; dirty: BOOLEAN; r: INTEGER; q: BOOLEAN;\r\tBEGIN\r\t\tIF (this.obj.view = NIL) OR (this.obj.seq # NIL) & this.obj.seq.Dirty() THEN\r\t\t\tIF saveOption = WinOle.OLECLOSE_SAVEIFDIRTY THEN\r\t\t\t\tIF this.obj.ics # NIL THEN res := this.obj.ics.SaveObject() END;\r\t\t\t\tIF this.obj.ioah # NIL THEN res := this.obj.ioah.SendOnSave() END\r\t\t\tELSIF saveOption = WinOle.OLECLOSE_PROMPTSAVE THEN\r\t\t\t\tIF this.obj.win # NIL THEN HostDialog.CloseDialog(this.obj.win, q, r)\r\t\t\t\tELSE r := HostDialog.save\r\t\t\t\tEND;\r\t\t\t\tIF r = HostDialog.save THEN\r\t\t\t\t\tIF this.obj.ics # NIL THEN res := this.obj.ics.SaveObject() END;\r\t\t\t\t\tIF this.obj.ioah # NIL THEN res := this.obj.ioah.SendOnSave() END\r\t\t\t\tELSIF r = HostDialog.cancel THEN\r\t\t\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.OLE_E_PROMPTSAVECANCELLED\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND;\r\t\tIF this.obj.win # NIL THEN Windows.dir.Close(this.obj.win) END;\r\t\tKernel.Cleanup;\r"
+                    attr: 0
+                  - text: "\t\tRETURN"
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND Close;\r\t\r\tPROCEDURE (this: IOleObject) SetMoniker (which: INTEGER; mk: WinOle.IMoniker): COM.RESULT;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_NOTIMPL\r\tEND SetMoniker;\r\t\r\tPROCEDURE (this: IOleObject) GetMoniker (assign, which: INTEGER; OUT mk: WinOle.IMoniker): COM.RESULT;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_NOTIMPL\r\tEND GetMoniker;\r\t\r\tPROCEDURE (this: IOleObject) InitFromData (obj: WinOle.IDataObject; creation: WinApi.BOOL;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\treserved: INTEGER): COM.RESULT;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_NOTIMPL\r\tEND InitFromData;\r\t\r\tPROCEDURE (this: IOleObject) GetClipboardData (reserved: INTEGER; OUT  obj: WinOle.IDataObject\r\t): COM.RESULT;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_NOTIMPL\r\tEND GetClipboardData;\r\t\r\tPROCEDURE (this: IOleObject) DoVerb (\r\t\tverb: INTEGER; IN msg: WinApi.MSG; activeSite: WinOle.IOleClientSite;\r\t\tindex: INTEGER; parent: WinApi.HWND; IN posRect: WinApi.RECT\r\t): COM.RESULT;\r\t\tVAR res: COM.RESULT; v: Views.View; d: Documents.Document; pvm: Properties.PollVerbMsg;\r\t\t\tc: Containers.Controller; w: Windows.Window; vw, vh: INTEGER; dvm: Properties.DoVerbMsg;\r\tBEGIN\r\t\tCASE verb OF\r\t\t| WinOle.OLEIVERB_HIDE:\r\t\t\tIF this.obj.iips # NIL THEN\r\t\t\t\tthis.obj.InPlaceDeactivate()\r\t\t\tELSE\r\t\t\t\tIF this.obj.win # NIL THEN Windows.dir.Close(this.obj.win) END;\r\t\t\t\tIF this.obj.ics # NIL THEN res := this.obj.ics.OnShowWindow(0) END;\r\t\t\t\tKernel.Cleanup\r\t\t\tEND\r\t\t| WinOle.OLEIVERB_PRIMARY, WinOle.OLEIVERB_SHOW:\r\t\t\tIF this.obj.win = NIL THEN\r\t\t\t\tres := this.obj.InPlaceActivate(activeSite, TRUE);\r\t\t\t\tIF res # WinApi.S_OK THEN this.obj.Open END\r\t\t\tEND\r\t\t| WinOle.OLEIVERB_OPEN:\r\t\t\tIF this.obj.iips # NIL THEN this.obj.InPlaceDeactivate END;\r\t\t\tthis.obj.Open\r\t\t| WinOle.OLEIVERB_INPLACEACTIVATE:\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " this.obj.InPlaceActivate(activeSite, FALSE)\r\t\t| WinOle.OLEIVERB_UIACTIVATE:\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " this.obj.InPlaceActivate(activeSite, TRUE)\r\t\t| WinOle.OLEIVERB_DISCARDUNDOSTATE:\r\t\t\t(* discard undo *)\r\t\tELSE\r\t\t\tIF verb >= 0 THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " this.obj.CustomVerb(verb, msg, activeSite, index, parent, posRect)\r\t\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_NOTIMPL\r\t\t\tEND\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND DoVerb;\r\t\r\tPROCEDURE (this: IOleObject) EnumVerbs (OUT enum: WinOle.IEnumOLEVERB): COM.RESULT;\r\t\tVAR e: IEnumOLEVERB; v, last: Verb; pvm: Properties.PollVerbMsg; i, j: INTEGER;\r\tBEGIN\r\t\tNEW(e);\r\t\tIF e # NIL THEN\r\t\t\tNEW(v); v.verb := -3; v.name := \"Hide\"; e.first := v; last := v;\r\t\t\tNEW(v); v.verb := -2; v.name := \"Open\"; last.next := v; last := v;\r\t\t\tNEW(v); v.verb := -1; v.name := \"Show\"; last.next := v; last := v;\r\t\t\ti := 0; j := 0;\r\t\t\tCheckVerb(this.obj.view, 0, pvm);\r\t\t\tIF pvm.label = \"\" THEN\r\t\t\t\tNEW(v); v.verb := i; INC(i); last.next := v; last := v;\r\t\t\t\tDialog.MapString(\"#Host:Edit\", v.name);\r\t\t\t\tNEW(v); v.verb := i; INC(i); last.next := v; last := v;\r\t\t\t\tDialog.MapString(\"#Host:Open\", v.name);\r\t\t\t\tINC(j);\r\t\t\t\tCheckVerb(this.obj.view, j, pvm)\r\t\t\tEND;\r\t\t\tWHILE pvm.label # \"\" DO\r\t\t\t\tNEW(v); v.verb := i; INC(i); last.next := v; last := v;\r\t\t\t\tDialog.MapString(pvm.label, v.name);\r\t\t\t\tv.disabled := pvm.disabled;\r\t\t\t\tv.checked := pvm.checked;\r\t\t\t\tINC(j);\r\t\t\t\tCheckVerb(this.obj.view, j, pvm)\r\t\t\tEND;\r\t\t\te.cur := e.first; enum := e;\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_OUTOFMEMORY\r\t\tEND\r\tEND EnumVerbs;\r\t\r\tPROCEDURE (this: IOleObject) Update (): COM.RESULT;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND Update;\r\t\r\tPROCEDURE (this: IOleObject) IsUpToDate (): COM.RESULT;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND IsUpToDate;\r\t\r\tPROCEDURE (this: IOleObject) GetUserClassID (OUT id: COM.GUID): COM.RESULT;\r\tBEGIN\r\t\tid := ObjectID;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND GetUserClassID;\r\t\r\tPROCEDURE (this: IOleObject) GetUserType (form: INTEGER; OUT type: WinApi.PtrWSTR): COM.RESULT;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.OLE_S_USEREG\r\tEND GetUserType;\r\t\r\tPROCEDURE (this: IOleObject) SetExtent (aspect: SET; IN size: WinApi.SIZE): COM.RESULT;\r\t\tVAR res: COM.RESULT;\r\tBEGIN\r\t\tIF aspect * WinOle.DVASPECT_CONTENT # {} THEN\r\t\t\tIF debug THEN Log.String(\"set extent\"); Log.Int(size.cx); Log.Int(size.cy); Log.Ln END;\r\t\t\tthis.obj.w := size.cx * oleUnit; this.obj.h := size.cy * oleUnit;\r\t\t\tOleData.SetView(this.obj.ido.data, this.obj.view, this.obj.w, this.obj.h);\r\t\t\tIF this.obj.win # NIL THEN\r\t\t\t\tthis.obj.view.context.SetSize(this.obj.w, this.obj.h)\r\t\t\tEND;\r\t\t\tIF debug THEN Log.String(\"on data change (se)\"); Log.Ln END;\r\t\t\tIF this.obj.idah # NIL THEN res := this.obj.idah.SendOnDataChange(this.obj.ido, 0, {}) END;\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_FAIL\r\t\tEND\r\tEND SetExtent;\r\t\r\tPROCEDURE (this: IOleObject) GetExtent (aspect: SET; OUT size: WinApi.SIZE): COM.RESULT;\r\tBEGIN\r\t\tIF aspect * WinOle.DVASPECT_CONTENT # {} THEN\r\t\t\tthis.obj.CheckViewUpdate;\r\t\t\tIF (this.obj.w # 0) & (this.obj.h # 0) THEN\r\t\t\t\tsize.cx := this.obj.w DIV oleUnit; size.cy := this.obj.h DIV oleUnit;\r\t\t\t\tIF debug THEN Log.String(\"get extent\"); Log.Int(size.cx); Log.Int(size.cy); Log.Ln END;\r\t\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\t\tEND\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_FAIL\r\tEND GetExtent;\r\t\r\tPROCEDURE (this: IOleObject) Advise (sink: WinOle.IAdviseSink; OUT connection: INTEGER): COM.RESULT;\r\t\tVAR res: COM.RESULT;\r\tBEGIN\r\t\tIF this.obj.ioah = NIL THEN\r\t\t\tres := WinOle.CreateOleAdviseHolder(this.obj.ioah);\r\t\t\tIF res < 0 THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " res END\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " this.obj.ioah.Advise(sink, connection)\r\tEND Advise;\r\t\r\tPROCEDURE (this: IOleObject) Unadvise (connection: INTEGER): COM.RESULT;\r\tBEGIN\r\t\tIF this.obj.ioah # NIL THEN\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " this.obj.ioah.Unadvise(connection)\r\t\tELSE "
+                    attr: 0
+                  - text: "RETURN "
+                    attr: 3
+                  - text: "WinApi.E_FAIL\r\t\tEND\r\tEND Unadvise;\r\t\r\tPROCEDURE (this: IOleObject) EnumAdvise (OUT enum: WinOle.IEnumSTATDATA): COM.RESULT;\r\tBEGIN\r\t\tIF this.obj.ioah # NIL THEN\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " this.obj.ioah.EnumAdvise(enum)\r\t\tELSE "
+                    attr: 0
+                  - text: "RETURN "
+                    attr: 3
+                  - text: "WinApi.E_FAIL\r\t\tEND\r\tEND EnumAdvise;\r\t\r\tPROCEDURE (this: IOleObject) GetMiscStatus (aspect: SET; OUT status: SET): COM.RESULT;\r\tBEGIN\r\t\tstatus := miscStatus;\r\t\t"
+                    attr: 0
+                  - text: "RETURN "
+                    attr: 3
+                  - text: "WinApi.S_OK\r\tEND GetMiscStatus;\r\t\r\tPROCEDURE (this: IOleObject) SetColorScheme (IN pal: WinApi.LOGPALETTE): COM.RESULT;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: "RETURN "
+                    attr: 3
+                  - text: "WinApi.E_NOTIMPL\r\tEND SetColorScheme;\r\r\t\r\t(* ---------- IDataObject ---------- *)\r\t\r\tPROCEDURE (this: IDataObject) GetData (IN format: WinOle.FORMATETC;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT medium: WinOle.STGMEDIUM): COM.RESULT;\r\tBEGIN\r\t\tIF debug THEN Log.String(\"get data\"); Log.Ln END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " this.data.GetData(format, medium)\r\tEND GetData;\r\t\r\tPROCEDURE (this: IDataObject) GetDataHere (IN format: WinOle.FORMATETC;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR medium: WinOle.STGMEDIUM): COM.RESULT;\r\tBEGIN\r\t\tIF debug THEN Log.String(\"get data here\"); Log.Ln END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " this.data.GetDataHere(format, medium)\r\tEND GetDataHere;\r\t\r\tPROCEDURE (this: IDataObject) QueryGetData (IN format: WinOle.FORMATETC): COM.RESULT;\r\tBEGIN\r\t\tIF debug THEN Log.String(\"query get data\"); Log.Ln END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " this.data.QueryGetData(format)\r\tEND QueryGetData;\r\t\r\tPROCEDURE (this: IDataObject) GetCanonicalFormatEtc (IN formatIn: WinOle.FORMATETC;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT formatOut: WinOle.FORMATETC): COM.RESULT;\r\tBEGIN\r"
+                    attr: 0
+                  - text: "\t\tRETURN"
+                    attr: 3
+                  - text: " WinApi.DATA_S_SAMEFORMATETC\r\tEND GetCanonicalFormatEtc;\r\t\r\tPROCEDURE (this: IDataObject) SetData (IN format: WinOle.FORMATETC;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tIN medium: WinOle.STGMEDIUM; release: WinApi.BOOL): COM.RESULT;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.DV_E_FORMATETC\r\tEND SetData;\r\t\r\tPROCEDURE (this: IDataObject) EnumFormatEtc (\r\t\tdirection: SET; OUT enum: WinOle.IEnumFORMATETC\r\t): COM.RESULT;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " this.data.EnumFormatEtc(direction, enum)\r\tEND EnumFormatEtc;\r\t\r\tPROCEDURE (this: IDataObject) DAdvise (\r\t\tIN format: WinOle.FORMATETC; flags: SET; advSink: WinOle.IAdviseSink; OUT connection: INTEGER\r\t): COM.RESULT;\r\t\tVAR res: COM.RESULT;\r\tBEGIN\r\t\tIF this.obj.idah = NIL THEN\r\t\t\tres := WinOle.CreateDataAdviseHolder(this.obj.idah);\r\t\t\tIF res < 0 THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " res END\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " this.obj.idah.Advise(this, format, flags, advSink, connection)\r\tEND DAdvise;\r\t\r\tPROCEDURE (this: IDataObject) DUnadvise (connection: INTEGER): COM.RESULT;\r\tBEGIN\r\t\tIF this.obj.idah # NIL THEN\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " this.obj.idah.Unadvise(connection)\r\t\tELSE "
+                    attr: 0
+                  - text: "RETURN "
+                    attr: 3
+                  - text: "WinApi.E_FAIL\r\t\tEND\r\tEND DUnadvise;\r\t\r\tPROCEDURE (this: IDataObject) EnumDAdvise (OUT  enum: WinOle.IEnumSTATDATA): COM.RESULT;\r\tBEGIN\r\t\tIF this.obj.idah # NIL THEN\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " this.obj.idah.EnumAdvise(enum)\r\t\tELSE "
+                    attr: 0
+                  - text: "RETURN "
+                    attr: 3
+                  - text: "WinApi.E_FAIL\r\t\tEND\r\tEND EnumDAdvise;\r\t\r\t\r\t(* ---------- IPersistStorage ---------- *)\r\t\r\tPROCEDURE (this: IPersistStorage) GetClassID* (OUT id: COM.GUID): COM.RESULT, EXTENSIBLE;\r\tBEGIN\r\t\tid := ObjectID;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND GetClassID;\r\r\tPROCEDURE (this: IPersistStorage) IsDirty (): COM.RESULT;\r\tBEGIN\r\t\tIF (this.obj.view = NIL) OR (this.obj.seq # NIL) & this.obj.seq.Dirty() THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r"
+                    attr: 0
+                  - text: "\t\t"
+                    attr: 3
+                  - text: ELSE
+                    attr: 0
+                  - text: " RETURN"
+                    attr: 3
+                  - text: " WinApi.S_FALSE\r\t\tEND\r\tEND IsDirty;\r\t\r\tPROCEDURE (this: IPersistStorage) InitNew (stg: WinOle.IStorage): COM.RESULT;\r\t\tVAR res: COM.RESULT; ps: WinApi.PtrWSTR;\r\tBEGIN\r\t\tIF debug THEN Log.String(\"init new\"); Log.Ln END;\r\t\tIF stg # NIL THEN\r\t\t\tres := stg.CreateStream(streamStr,\r\t\t\t\t\t\t\t\t\t\t\tWinOle.STGM_DIRECT + WinOle.STGM_CREATE\r\t\t\t\t\t\t\t\t\t\t\t+ WinOle.STGM_READWRITE + WinOle.STGM_SHARE_EXCLUSIVE,\r\t\t\t\t\t\t\t\t\t\t\t0, 0, this.obj.ism);\r\t\t\tIF res >= 0 THEN\r\t\t\t\tres := WinOle.OleRegGetUserType(ObjectID, WinOle.USERCLASSTYPE_SHORT, ps);\r\t\t\t\tres := WinOle.WriteFmtUserTypeStg(stg, cbFormat, ps);\r\t\t\t\tWinOle.CoTaskMemFree("
+                    attr: 0
+                  - text: SYSTEM
+                    attr: 3
+                  - text: .
+                    attr: 0
+                  - text: VAL
+                    attr: 3
+                  - text: "(WinApi.PtrVoid, ps));\r\t\t\t\tthis.obj.isg := stg;\r\t\t\t\tthis.obj.w := 60 * Ports.mm;\r\t\t\t\tthis.obj.h := 60 * Ports.mm;\r\t\t\t\tthis.obj.rsm := NIL;\r\t\t\t\tthis.obj.view := TextViews.dir.New(NIL);\r\t\t\t\tthis.obj.seq := NIL;\r\t\t\t\tthis.obj.win := NIL;\r\t\t\t\tOleData.SetView(this.obj.ido.data, this.obj.view, this.obj.w, this.obj.h);\r\t\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " res\r\t\t\tEND\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_POINTER\r\t\tEND\r\tEND InitNew;\r\t\r\tPROCEDURE (this: IPersistStorage) Load (stg: WinOle.IStorage): COM.RESULT;\r\t\tVAR res: COM.RESULT; tag, version: INTEGER; is: BOOLEAN;\r\tBEGIN\r\t\tIF debug THEN Log.String(\"load\"); Log.Ln END;\r\t\tIF stg # NIL THEN\r\t\t\tres := stg.OpenStream(streamStr, 0,\r\t\t\t\tWinOle.STGM_DIRECT + WinOle.STGM_READWRITE + WinOle.STGM_SHARE_EXCLUSIVE,\r\t\t\t\t0, this.obj.ism);\r\t\t\tIF res >= 0 THEN\r\t\t\t\tres := WinOle.CreateStreamOnHGlobal(0, 1, this.obj.rsm);\r\t\t\t\tres := this.obj.ism.CopyTo(this.obj.rsm, MAX(LONGINT), NIL, NIL);\r\t\t\t\tOleStorage.ImportFromStream(this.obj.rsm, this.obj.view, this.obj.w, this.obj.h, is);\r\t\t\t\tIF this.obj.view # NIL THEN\r\t\t\t\t\tthis.obj.seq := NIL;\r\t\t\t\t\tthis.obj.win := NIL;\r\t\t\t\t\tthis.obj.isg := stg;\r\t\t\t\t\tOleData.SetView(this.obj.ido.data, this.obj.view, this.obj.w, this.obj.h);\r\t\t\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.STG_E_READFAULT\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_POINTER\r\t\tEND\r\tEND Load;\r\t\r\tPROCEDURE (this: IPersistStorage) Save (stg: WinOle.IStorage; sameAsLoad: WinApi.BOOL): COM.RESULT;\r\t\tVAR stm: WinOle.IStream; res: COM.RESULT; ps: WinApi.PtrWSTR;\r\tBEGIN\r\t\tIF sameAsLoad # 0 THEN\r\t\t\tIF debug THEN Log.String(\"save same\"); Log.Ln END;\r\t\t\tstm := this.obj.ism;\r\t\tELSIF stg # NIL THEN\r\t\t\tIF debug THEN Log.String(\"save\"); Log.Ln END;\r\t\t\tres := stg.CreateStream(streamStr,\r\t\t\t\t\t\t\t\t\t\t\tWinOle.STGM_DIRECT + WinOle.STGM_CREATE\r\t\t\t\t\t\t\t\t\t\t\t+ WinOle.STGM_READWRITE + WinOle.STGM_SHARE_EXCLUSIVE,\r\t\t\t\t\t\t\t\t\t\t\t0, 0, stm);\r\t\t\tIF res < 0 THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " res END;\r\t\t\tres := WinOle.OleRegGetUserType(ObjectID, WinOle.USERCLASSTYPE_SHORT, ps);\r\t\t\tres := WinOle.WriteFmtUserTypeStg(stg, cbFormat, ps);\r\t\t\tWinOle.CoTaskMemFree("
+                    attr: 0
+                  - text: SYSTEM
+                    attr: 3
+                  - text: .
+                    attr: 0
+                  - text: VAL
+                    attr: 3
+                  - text: "(WinApi.PtrVoid, ps));\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_POINTER\r\t\tEND;\r\t\tthis.obj.CheckViewUpdate;\r\t\tOleStorage.ExportToStream(stm, this.obj.view, this.obj.w, this.obj.h, TRUE);\r\t\tIF this.obj.seq # NIL THEN\r\t\t\tthis.obj.seq.BeginModification(Sequencers.notUndoable, NIL);\r\t\t\tthis.obj.seq.EndModification(Sequencers.notUndoable, NIL);\t"
+                    attr: 0
+                  - text: "(* clear sequencer *)"
+                    attr: 1
+                  - text: "\r\t\t\tthis.obj.seq.SetDirty(FALSE)\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND Save;\r\t\r\tPROCEDURE (this: IPersistStorage) SaveCompleted (new: WinOle.IStorage): COM.RESULT;\r\t\tVAR res: COM.RESULT;\r\tBEGIN\r\t\tIF debug THEN Log.String(\"save completed\"); Log.Ln END;\r\t\tIF new # NIL THEN\r\t\t\tres := new.OpenStream(streamStr, 0,\r\t\t\t\tWinOle.STGM_DIRECT + WinOle.STGM_READWRITE + WinOle.STGM_SHARE_EXCLUSIVE,\r\t\t\t\t0, this.obj.ism);\r\t\t\tIF res >= 0 THEN\r\t\t\t\tthis.obj.isg := new;\r\t\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " res\r\t\t\tEND\r\t\tEND;\r\t\tIF this.obj.ioah # NIL THEN res := this.obj.ioah.SendOnSave() END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND SaveCompleted;\r\t\r\tPROCEDURE (this: IPersistStorage) HandsOffStorage (): COM.RESULT;\r\t\tVAR n: INTEGER;\r\tBEGIN\r\t\tthis.obj.ism := NIL; this.obj.isg := NIL;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND HandsOffStorage;\r\t\r\r\t(* ---------- IOleInPlaceObject ---------- *)\r\t\r\tPROCEDURE (this: IOleInPlaceObject) GetWindow (OUT wnd: WinApi.HWND): COM.RESULT;\r\tBEGIN\r\t\tIF debug THEN Log.String(\"iipo: get window\"); Log.Ln END;\r\t\twnd := this.obj.win.wnd;\r\t\tASSERT(wnd # 0, 100);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND GetWindow;\r\t\r\tPROCEDURE (this: IOleInPlaceObject) ContextSensitiveHelp (enter: WinApi.BOOL): COM.RESULT;\r\tBEGIN\r\t\tIF debug THEN Log.String(\"iipo: context help\"); Log.Ln END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND ContextSensitiveHelp;\r\t\r\tPROCEDURE (this: IOleInPlaceObject) InPlaceDeactivate (): COM.RESULT;\r\tBEGIN\r\t\tIF debug THEN Log.String(\"iipo: ip deactivate\"); Log.Ln END;\r\t\tthis.obj.InPlaceDeactivate;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND InPlaceDeactivate;\r\t\r\tPROCEDURE (this: IOleInPlaceObject) UIDeactivate (): COM.RESULT;\r\tBEGIN\r\t\tIF debug THEN Log.String(\"iipo: ui deactivate\"); Log.Ln END;\r\t\tthis.obj.UIDeactivate;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND UIDeactivate;\r\t\r\tPROCEDURE (this: IOleInPlaceObject) SetObjectRects (IN pos, clip: WinApi.RECT): COM.RESULT;\r\t\tVAR l, t, r, b, bw, u, res: INTEGER;\r\tBEGIN\r\t\tIF debug THEN Log.String(\"iipo: set rect\"); Log.Ln END;\r\t\tu := this.obj.unit;\r\t\tbw := borderW DIV HostWindows.unit;\r\t\tl := Max(pos.left - bw, clip.left);\r\t\tt := Max(pos.top - bw, clip.top);\r\t\tr := Min(pos.right + bw, clip.right);\r\t\tb := Min(pos.bottom + bw, clip.bottom);\r\t\tres := WinApi.SetWindowPos(this.obj.win.wnd, 0, l, t, r - l, b - t, WinApi.SWP_NOZORDER);\r\t\tthis.obj.win.SetSize(r - l, b - t);\r\t\tl := Min(bw, pos.left - clip.left) * u;\r\t\tt := Min(bw, pos.top - clip.top) * u;\r(*\r\t\tr := l + (pos.right - pos.left) * u;\r\t\tb := t + (pos.bottom - pos.top) * u;\r*)\r\t\tr := l + this.obj.w;\r\t\tb := t + this.obj.h;\r\t\tthis.obj.win.doc.SetRect(l, t, r, b);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND SetObjectRects;\r\t\r\tPROCEDURE (this: IOleInPlaceObject) ReactivateAndUndo (): COM.RESULT;\r\tBEGIN\r\t\tIF debug THEN Log.String(\"iipo: reactivate & undo\"); Log.Ln END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND ReactivateAndUndo;\r\t\r\t\r\t(* ---------- IOleInPlaceActiveObject ---------- *)\r\t\r\tPROCEDURE (this: IOleInPlaceActiveObject) GetWindow (OUT wnd: WinApi.HWND): COM.RESULT;\r\tBEGIN\r\t\tIF debug THEN Log.String(\"iipao: get window\"); Log.Ln END;\r\t\twnd := this.obj.win.wnd;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND GetWindow;\r\t\r\tPROCEDURE (this: IOleInPlaceActiveObject) ContextSensitiveHelp (enter: WinApi.BOOL): COM.RESULT;\r\tBEGIN\r\t\tIF debug THEN Log.String(\"iipao: context help\"); Log.Ln END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND ContextSensitiveHelp;\r\t\r\tPROCEDURE (this: IOleInPlaceActiveObject) TranslateAccelerator (IN msg: WinApi.MSG): COM.RESULT;\r\tBEGIN\r\t\tIF debug THEN Log.String(\"iipao: translate acc\"); Log.Ln END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_FALSE\r\tEND TranslateAccelerator;\r\t\r\tPROCEDURE (this: IOleInPlaceActiveObject) OnFrameWindowActivate (activate: WinApi.BOOL): COM.RESULT;\r\t\tVAR res: COM.RESULT;\r\tBEGIN\r\t\tIF debug THEN Log.String(\"iipao: on frame active \"); Log.Int(activate); Log.Ln END;\r\t\tIF (this.obj.iipf # NIL) & (this.obj.iipw = NIL) THEN\r\t\t\tIF activate # 0 THEN\r\t\t\t\tHostWindows.ActivateWindow(this.obj.win, TRUE);\r\t\t\t\tHostMenus.isObj := TRUE\r\t\t\tELSE\r\t\t\t\tHostWindows.ActivateWindow(this.obj.win, FALSE);\r\t\t\t\tHostMenus.isObj := FALSE\r\t\t\tEND\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND OnFrameWindowActivate;\r\t\r\tPROCEDURE (this: IOleInPlaceActiveObject) OnDocWindowActivate (activate: WinApi.BOOL): COM.RESULT;\r\t\tVAR res: COM.RESULT;\r\tBEGIN\r\t\tIF debug THEN Log.String(\"iipao: on win active\"); Log.Int(activate); Log.Ln END;\r\t\tIF this.obj.iipf # NIL THEN\r\t\t\tIF activate # 0 THEN\r\t\t\t\tIF this.obj.uiActive THEN res := this.obj.iipf.SetActiveObject(this, \"\") END;\r\t\t\t\tHostWindows.ActivateWindow(this.obj.win, TRUE);\r\t\t\t\tHostMenus.isObj := TRUE;\r\t\t\t\tIF this.obj.menu # 0 THEN\r\t\t\t\t\tres := this.obj.iipf.SetMenu(this.obj.menu, this.obj.oleMenu, HostWindows.main);\r\t\t\t\t\tthis.obj.useMenu := TRUE\r\t\t\t\tEND\r\t\t\tELSE\r\t\t\t\tIF this.obj.menu # 0 THEN\r\t\t\t\t\tres := this.obj.iipf.SetMenu(0, 0, 0);\r\t\t\t\t\tthis.obj.useMenu := FALSE\r\t\t\t\tEND;\r\t\t\t\tHostWindows.ActivateWindow(this.obj.win, FALSE);\r\t\t\t\tHostMenus.isObj := FALSE;\r\t\t\t\tIF this.obj.uiActive THEN res := this.obj.iipf.SetActiveObject(NIL, NIL) END\r\t\t\tEND\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND OnDocWindowActivate;\r\t\r\tPROCEDURE (this: IOleInPlaceActiveObject) ResizeBorder (IN border: WinApi.RECT;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\twin: WinOle.IOleInPlaceUIWindow; frameWin: WinApi.BOOL): COM.RESULT;\r\tBEGIN\r\t\tIF debug THEN Log.String(\"iipao: resize border\"); Log.Ln END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND ResizeBorder;\r\t\r\tPROCEDURE (this: IOleInPlaceActiveObject) EnableModeless (enable: WinApi.BOOL): COM.RESULT;\r\tBEGIN\r\t\tIF debug THEN Log.String(\"iipao: enable modeless\"); Log.Ln END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND EnableModeless;\r\r\r\t(* ---------- Window ---------- *)\r\t\r\tPROCEDURE (w: Window) BroadcastViewMsg (VAR msg: Views.Message);\r\t\tVAR res: COM.RESULT;\r\tBEGIN\r\t\tw.BroadcastViewMsg^(msg);\r\t\tIF msg.view = w.obj.view THEN w.obj.update := TRUE END\r\tEND BroadcastViewMsg;\r\t\r\tPROCEDURE (w: Window) ForwardCtrlMsg (VAR msg: Views.CtrlMessage);\r\t\tVAR c, dc: Containers.Controller;\r\tBEGIN\r\t\tw.ForwardCtrlMsg^(msg);\r\t\tWITH msg: Controllers.EditMsg DO\r\t\t\tIF (msg.op = Controllers.pasteChar) & (msg.char = 1BX) & (31 IN msg.modifiers) & w.obj.uiActive THEN\r\t\t\t\tw.obj.InPlaceDeactivate()\r\t\t\tEND\r\t\tELSE\r\t\tEND\r\tEND ForwardCtrlMsg;\r\t\r\tPROCEDURE (w: Window) Close;\r\t\tVAR res: COM.RESULT;\r\tBEGIN\r\t\tIF w.obj.uiActive THEN\r\t\t\tIF debug THEN Log.String(\"close -> deactivate\"); Log.Ln END;\r\t\t\tw.obj.InPlaceDeactivate()\r\t\tELSE\r\t\t\tIF debug THEN Log.String(\"close window\"); Log.Ln END;\r\t\t\tw.obj.CheckViewUpdate;\r\t\t\t"
+                    attr: 0
+                  - text: SYSTEM
+                    attr: 3
+                  - text: .
+                    attr: 0
+                  - text: PUT
+                    attr: 3
+                  - text: (
+                    attr: 0
+                  - text: SYSTEM
+                    attr: 3
+                  - text: .
+                    attr: 0
+                  - text: ADR
+                    attr: 3
+                  - text: "(w.sub), TRUE);\t"
+                    attr: 0
+                  - text: "(* don't send remove msg *)"
+                    attr: 1
+                  - text: "\r\t\t\tw.Close^;\r\t\t\tIF (w.obj.ics # NIL) & (w.obj.iips = NIL) THEN res := w.obj.ics.OnShowWindow(0) END;\r\t\t\tIF debug THEN Log.String(\"close window c\"); Log.Ln END;\r\t\t\tw.obj.win := NIL\r\t\tEND\r\tEND Close;\r\t\r\r\t(* ---------- Action ---------- *)\r\t\r\tPROCEDURE (a: Action) Do;\r\t\tVAR res: COM.RESULT; w, h: INTEGER;\r\tBEGIN\r\t\tIF a.w.frame # NIL THEN\r\t\t\ta.w.obj.CheckViewUpdate;\r\t\t\tServices.DoLater(a, Services.Ticks() + Services.resolution)\r\t\tEND\r\tEND Do;\r\t\r\r\t(* ---------- WinDir ---------- *)\r\t\r\tPROCEDURE (d: WinDir) New (): HostWindows.Window;\r\t\tVAR w: Windows.Window; sw: Window; a: Action;\r\tBEGIN\r\t\tIF d.obj # NIL THEN\r\t\t\tNEW(sw); sw.obj := d.obj;\r\t\t\tNEW(a); a.w := sw; Services.DoLater(a, Services.now);\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " sw\r\t\tELSE\r\t\t\tw := Windows.stdDir.New(); "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " w(HostWindows.Window)\r\t\tEND\r\tEND New;\r\t\r\tPROCEDURE (d: WinDir) Open (w: Windows.Window; doc: Documents.Document; flags: SET; name: Views.Title;\r\t\t\t\t\t\t\t\t\t\t\tloc: Files.Locator; fname: Files.Name; conv: Converters.Converter);\r\t\tVAR l, t, r, b, bw, u, u1, res: INTEGER; style: SET; wnd: WinApi.HWND; c: Containers.Controller; dc: WinApi.HDC;\r\tBEGIN\r\t\tIF (d.obj # NIL) & (d.obj.iips # NIL) THEN\t"
+                    attr: 0
+                  - text: "(* open in place *)"
+                    attr: 1
+                  - text: "\r\t\t\tWITH w: Window DO\r\t\t\t\tIF debug THEN Log.String(\"open window in place\"); Log.Ln END;\r\t\t\t\tflags := flags + {Windows.noHScroll, Windows.noVScroll, Windows.noResize, HostWindows.inPlace};\r\t\t\t\tu := d.obj.w DIV (d.pos.right - d.pos.left);\r\t\t\t\tu1 := d.obj.h DIV (d.pos.bottom - d.pos.top);\r\t\t\t\tIF u1 > u THEN u := u1 END;\r\t\t\t\td.unit := u;\r\t\t\t\td.Open^(w, doc, flags, name, loc, fname, conv);\r(*\r\t\t\t\tu := HostWindows.unit;\r*)\r\t\t\t\tbw := borderW DIV HostWindows.unit;\r\t\t\t\tl := Max(d.pos.left - bw, d.clip.left);\r\t\t\t\tt := Max(d.pos.top - bw, d.clip.top);\r\t\t\t\tr := Min(d.pos.right + bw, d.clip.right);\r\t\t\t\tb := Min(d.pos.bottom + bw, d.clip.bottom);\r\t\t\t\tstyle := {30};\t"
+                    attr: 0
+                  - text: "(* child *)"
+                    attr: 1
+                  - text: "\r\t\t\t\twnd := WinApi.CreateWindowExW({}, \"Oberon Dlg\", \"\", style, l, t, r - l, b - t,\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\td.host, 0, WinApi.GetModuleHandleW(NIL), SYSTEM.VAL(INTEGER, w));\r\t\t\t\tASSERT(wnd # 0, 100);\r\t\t\t\tdc := WinApi.GetDC(wnd);\r\t\t\t\tw.port(HostPorts.Port).SetDC(dc, wnd);\r\t\t\t\tw.SetSize(r - l, b - t);\r\t\t\t\tl := Min(bw, d.pos.left - d.clip.left) * u;\r\t\t\t\tt := Min(bw, d.pos.top - d.clip.top) * u;\r(*\r\t\t\t\tr := l + (d.pos.right - d.pos.left) * u;\r\t\t\t\tb := t + (d.pos.bottom - d.pos.top) * u;\r*)\r\t\t\t\tIF debug THEN Log.Int(d.obj.w); Log.Int(d.obj.h); Log.Ln END;\r\t\t\t\tr := l + d.obj.w;\r\t\t\t\tb := t + d.obj.h;\r\t\t\t\tw.doc.SetRect(l, t, r, b);\r\t\t\t\tres := WinApi.ShowWindow(wnd, 1);\r\t\t\t\td.obj.unit := u;\r\t\t\t\tIF debug THEN\r\t\t\t\t\tstyle := SYSTEM.VAL(SET, WinApi.GetWindowLongW(wnd, -16));\r\t\t\t\t\tLog.Set(style);\r\t\t\t\t\tLog.Ln\r\t\t\t\tEND;\t\t\t\t\r\t\t\t\tc := w.doc.ThisController();\r\t\t\t\tc.SetFocus(w.doc.ThisView())\r\t\t\tEND\r\t\tELSE\r\t\t\td.Open^(w, doc, flags, name, loc, fname, conv)\r\t\tEND;\r\t\td.obj := NIL\r\tEND Open;\r\t\r\t\r\t(* ---------- import / export ---------- *)\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: Export
+                    attr: 3
+                  - text: "* (v: Views.View; w, h, x, y: INTEGER; isSingle: BOOLEAN; VAR med: WinOle.STGMEDIUM);\r\t\tVAR stg: WinOle.IStorage; stm: WinOle.IStream; res: COM.RESULT; ilb: WinOle.ILockBytes; ps: WinApi.PtrWSTR;\r\tBEGIN\r\t\tIF debug THEN Log.String(\"export\"); Log.Ln END;\r\t\tIF med.tymed = WinOle.TYMED_ISTORAGE THEN\r\t\t\tstg := MediumStorage(med)\r\t\tELSE\r\t\t\tres := WinOle.CreateILockBytesOnHGlobal(0, 1, ilb);\r\t\t\tASSERT(res >= 0, 110);\r\t\t\tres := WinOle.StgCreateDocfileOnILockBytes(ilb, WinOle.STGM_CREATE\r\t\t\t\t\t\t\t\t\t\t\t+ WinOle.STGM_READWRITE + WinOle.STGM_SHARE_EXCLUSIVE, 0, stg);\r\t\t\tASSERT(res >= 0, 111);\r\t\t\tGenStorageMedium(stg, NIL, med)\r\t\tEND;\r\t\tres := WinOle.WriteClassStg(stg, ObjectID);\r\t\tASSERT(res >= 0, 112);\r\t\tres := stg.CreateStream(streamStr, WinOle.STGM_CREATE\r\t\t\t\t\t\t\t\t\t\t+ WinOle.STGM_READWRITE + WinOle.STGM_SHARE_EXCLUSIVE, 0, 0, stm);\r\t\tASSERT(res >= 0, 113);\r\t\tres := WinOle.OleRegGetUserType(ObjectID, WinOle.USERCLASSTYPE_SHORT, ps);\r\t\tres := WinOle.WriteFmtUserTypeStg(stg, cbFormat, ps);\r\t\tWinOle.CoTaskMemFree("
+                    attr: 0
+                  - text: SYSTEM
+                    attr: 3
+                  - text: .
+                    attr: 0
+                  - text: VAL
+                    attr: 3
+                  - text: "(WinApi.PtrVoid, ps));\r\t\tASSERT(res >= 0, 114);\r\t\tOleStorage.ExportToStream(stm, v, w, h, isSingle);\r\t\tres := stg.Commit({});\r\t\tASSERT(res >= 0, 115)\r\tEND Export;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: Import
+                    attr: 3
+                  - text: "* (\r\t\tVAR med: WinOle.STGMEDIUM; VAR v: Views.View; VAR w, h: INTEGER; VAR isSingle: BOOLEAN\r\t);\r\t\tVAR stg: WinOle.IStorage; res: COM.RESULT; id: COM.GUID; stm, stm2: WinOle.IStream;\r\tBEGIN\r\t\tIF debug THEN Log.String(\"import\"); Log.Ln END;\r\t\tstg := MediumStorage(med);\r\t\tres := WinOle.ReadClassStg(stg, id);\r\t\tIF (res = WinApi.S_OK) & (id = ObjectID) THEN\r\t\t\tres := stg.OpenStream(streamStr, 0,\r\t\t\t\tWinOle.STGM_DIRECT + WinOle.STGM_READWRITE + WinOle.STGM_SHARE_EXCLUSIVE,\r\t\t\t\t0, stm);\r\t\t\tASSERT(res >= 0, 110);\r\t\t\tres := WinOle.CreateStreamOnHGlobal(0, 1, stm2);\r\t\t\tASSERT(res >= 0, 111);\r\t\t\tres := stm.CopyTo(stm2, MAX(LONGINT), NIL, NIL);\r\t\t\tASSERT(res >= 0, 112);\r\t\t\tOleStorage.ImportFromStream(stm2, v, w, h, isSingle);\r\t\tELSE\r\t\t\tv := NIL\r\t\tEND\r\tEND Import;\r\r\t(* ---------- commands ---------- *)\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: ContextOf
+                    attr: 3
+                  - text: "* (w: Windows.Window): WinOle.IOleInPlaceSite;\r\tBEGIN\r\t\tWITH w: Window DO\r\t\t\tIF w.obj # NIL THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " w.obj.iips END\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " NIL\r\t\tEND\r\tEND ContextOf;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: RemoveUI
+                    attr: 3
+                  - text: "* (w: Windows.Window);\r\t\tVAR res: COM.RESULT;\r\tBEGIN\r\t\tWITH w: Window DO\r\t\t\tIF (w.obj # NIL) & (w.obj.iips # NIL) & w.obj.uiActive THEN\r\t\t\t\tIF debug THEN Log.String(\"remove ui\"); Log.Ln END;\r\t\t\t\tIF w.obj.iipf # NIL THEN res := w.obj.iipf.SetActiveObject(NIL, NIL) END;\r\t\t\t\tIF w.obj.iipw # NIL THEN res := w.obj.iipw.SetActiveObject(NIL, NIL) END;\r\t\t\t\tIF (w.obj.iipf # NIL) & (w.obj.menu # 0) THEN\r\t\t\t\t\tres := w.obj.iipf.SetMenu(0, 0, 0);\r\t\t\t\t\tw.obj.useMenu := FALSE\r\t\t\t\tEND;\r(*\r\t\t\t\tHostWindows.ActivateWindow(w, FALSE);\r*)\r\t\t\tEND\r\t\tELSE\r\t\tEND\r\tEND RemoveUI;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: ResetUI
+                    attr: 3
+                  - text: "* (w: Windows.Window; VAR done: BOOLEAN);\r\t\tVAR res: COM.RESULT; rect: WinApi.RECT;\r\tBEGIN\r\t\tdone := FALSE;\r\t\tWITH w: Window DO\r\t\t\tIF (w.obj # NIL) & (w.obj.iips # NIL) & w.obj.uiActive THEN\r\t\t\t\tIF debug THEN Log.String(\"reset ui\"); Log.Ln END;\r\t\t\t\tIF w.obj.iipf # NIL THEN res := w.obj.iipf.SetActiveObject(w.obj.iipao, \"\") END;\r\t\t\t\tIF w.obj.iipw # NIL THEN res := w.obj.iipw.SetActiveObject(w.obj.iipao, \"\") END;\r\t\t\t\tIF (w.obj.iipf # NIL) & (w.obj.menu # 0) THEN\r\t\t\t\t\tres := w.obj.iipf.SetMenu(w.obj.menu, w.obj.oleMenu, HostWindows.main);\r\t\t\t\t\tw.obj.useMenu := TRUE\r\t\t\t\tEND;\r\t\t\t\trect.left := 0; rect.top := 0; rect.right := 0; rect.bottom := 0;\r\t\t\t\tIF w.obj.iipf # NIL THEN res := w.obj.iipf.SetBorderSpace(rect) END;\r\t\t\t\tIF w.obj.iipw # NIL THEN res := w.obj.iipw.SetBorderSpace(rect) END;\r(*\r\t\t\t\tHostWindows.ActivateWindow(w, TRUE);\r*)\r\t\t\t\tdone := TRUE\r\t\t\tEND\r\t\tELSE\r\t\tEND\r\tEND ResetUI;\r\t\r\tPROCEDURE ShowOleStatus (w: Windows.Window; s: ARRAY OF CHAR);\r\t\tVAR res: COM.RESULT;\r\tBEGIN\r\t\tWITH w: Window DO\r\t\t\tIF w.obj.iipf # NIL THEN\r\t\t\t\tres := w.obj.iipf.SetStatusText(s)\r\t\t\tEND\r\t\tELSE\r\t\tEND\r\tEND ShowOleStatus;\r\t\r\tPROCEDURE UpdateOleMenus ();\r\t\tVAR w: Windows.Window; res: COM.RESULT;\r\tBEGIN\r\t\tw := Windows.dir.First();\r\t\tWHILE w # NIL DO\r\t\t\tWITH w: Window DO\r\t\t\t\tIF (w.obj.iipf # NIL) & (w.obj.menu # 0) THEN\r\t\t\t\t\tw.obj.InPlaceMenuDestroy(); w.obj.InPlaceMenuCreate();\r\t\t\t\t\tIF w.obj.useMenu THEN\r\t\t\t\t\t\tres := w.obj.iipf.SetMenu(w.obj.menu, w.obj.oleMenu, HostWindows.main)\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\tELSE\r\t\t\tEND;\r\t\t\tw := Windows.dir.Next(w)\r\t\tEND\r\tEND UpdateOleMenus;\r\t\r\tPROCEDURE TranslateOleKeys (VAR msg: WinApi.MSG; VAR done: BOOLEAN);\r\t\tVAR w: Windows.Window; res: COM.RESULT;\r\tBEGIN\r\t\tw := Windows.dir.First(); done := FALSE;\r\t\tIF w # NIL THEN\r\t\t\tWITH w: Window DO\r\t\t\t\tIF w.obj.iipf # NIL THEN\r\t\t\t\t\tres := WinOle.OleTranslateAccelerator(w.obj.iipf, w.obj.fInfo, msg);\r\t\t\t\t\tIF res = WinApi.S_OK THEN done := TRUE END\r\t\t\t\tEND\r\t\t\tELSE\r\t\t\tEND\r\t\tEND\r\tEND TranslateOleKeys;\r\t\r\tPROCEDURE Register;\r\t\tVAR res: COM.RESULT;\r\tBEGIN\r\t\tNEW(factory);\r\t\tres := WinOle.CoRegisterClassObject(ObjectID, factory,\r\t\t\t\t\t\t\t\t\t\t\t\tWinOle.CLSCTX_LOCAL_SERVER, WinOle.REGCLS_MULTIPLEUSE, token);\r\tEND Register;\r\t\r\tPROCEDURE Unregister;\r\t\tVAR res: COM.RESULT; n: INTEGER; p: Object;\r\tBEGIN\r\t\tIF token # 0 THEN\r\t\t\tres := WinOle.CoRevokeClassObject(token)\r\t\tEND\r\tEND Unregister;\r\rBEGIN\r\tNEW(winDir);\r\tHostDialog.ShowOleStatus := ShowOleStatus;\r\tHostMenus.UpdateOleMenus := UpdateOleMenus;\r\tHostMenus.TranslateOleKeys2 := TranslateOleKeys;\r\tRegister\rCLOSE\r\tUnregister\rEND OleServer.\r\r"
+                    attr: 0
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 23
+                      bodyPos: 3536
+                      bodyLen: 6
+                    attr: 0
+                    w: 168275
+                    h: 142875
+                  - text: "OleServer.xy\t"
+                    attr: 0
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 24
+                      bodyPos: 3582
+                      bodyLen: 6
+                    attr: 0
+                    w: 168275
+                    h: 142875
+                  - text: "OleServer.Close\r\r"
+                    attr: 0
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 25
+                      bodyPos: 3628
+                      bodyLen: 6
+                    attr: 0
+                    w: 168275
+                    h: 142875
+                  - text: "DevDecoder.Decode OleServer\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 30
+          bodyPos: 49921
+          bodyLen: 8

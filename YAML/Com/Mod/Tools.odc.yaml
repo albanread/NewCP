@@ -1,0 +1,408 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Com\\Mod\\Tools.odc"
+  size: 8021
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 7890
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 7704
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 7618
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 7739
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 7225
+                runListLen: 2143
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE ComTools;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r\r\r"
+                    attr: 1
+                  - text: "\tIMPORT "
+                    attr: 0
+                  - text: SYSTEM
+                    attr: 3
+                  - text: ", COM, WinApi, WinOle;\r\t\r\t\r\t"
+                    attr: 0
+                  - text: "(* ole string handling *)\r"
+                    attr: 1
+                  - text: "\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: NewString
+                    attr: 3
+                  - text: "* (IN str: ARRAY [untagged] OF CHAR): WinApi.PtrWSTR;\r\t\tVAR p: WinApi.PtrWSTR; n: INTEGER;\r\tBEGIN\r\t\tn := 0; WHILE str[n] # 0X DO INC(n) END;\r\t\tp := "
+                    attr: 0
+                  - text: SYSTEM
+                    attr: 3
+                  - text: .
+                    attr: 0
+                  - text: VAL
+                    attr: 3
+                  - text: "(WinApi.PtrWSTR, WinOle.CoTaskMemAlloc(SIZE(CHAR) * (n + 1)));\r\t\tp^ := str$;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " p\r\tEND NewString;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: NewEmptyString
+                    attr: 3
+                  - text: "* (length: INTEGER): WinApi.PtrWSTR;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " "
+                    attr: 0
+                  - text: SYSTEM
+                    attr: 3
+                  - text: .
+                    attr: 0
+                  - text: VAL
+                    attr: 3
+                  - text: "(WinApi.PtrWSTR, WinOle.CoTaskMemAlloc(SIZE(CHAR) * length))\r\tEND NewEmptyString;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: FreeString
+                    attr: 3
+                  - text: "* (VAR p: WinApi.PtrWSTR);\r\tBEGIN\r\t\tWinOle.CoTaskMemFree("
+                    attr: 0
+                  - text: SYSTEM
+                    attr: 3
+                  - text: .
+                    attr: 0
+                  - text: VAL
+                    attr: 3
+                  - text: "(WinApi.PtrVoid, p));\r\t\tp := NIL\r\tEND FreeString;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: NewSString
+                    attr: 3
+                  - text: "* (IN str: ARRAY [untagged] OF SHORTCHAR): WinApi.PtrSTR;\r\t\tVAR p: WinApi.PtrSTR; n: INTEGER;\r\tBEGIN\r\t\tn := 0; WHILE str[n] # 0X DO INC(n) END;\r\t\tp := "
+                    attr: 0
+                  - text: SYSTEM
+                    attr: 3
+                  - text: .
+                    attr: 0
+                  - text: VAL
+                    attr: 3
+                  - text: "(WinApi.PtrSTR, WinOle.CoTaskMemAlloc(SIZE(SHORTCHAR) * (n + 1)));\r\t\tp^ := str$;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " p\r\tEND NewSString;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: NewEmptySString
+                    attr: 3
+                  - text: "* (length: INTEGER): WinApi.PtrSTR;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " "
+                    attr: 0
+                  - text: SYSTEM
+                    attr: 3
+                  - text: .
+                    attr: 0
+                  - text: VAL
+                    attr: 3
+                  - text: "(WinApi.PtrSTR, WinOle.CoTaskMemAlloc(SIZE(CHAR) * length))\r\tEND NewEmptySString;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: FreeSString
+                    attr: 3
+                  - text: "* (VAR p: WinApi.PtrSTR);\r\tBEGIN\r\t\tWinOle.CoTaskMemFree("
+                    attr: 0
+                  - text: SYSTEM
+                    attr: 3
+                  - text: .
+                    attr: 0
+                  - text: VAL
+                    attr: 3
+                  - text: "(WinApi.PtrVoid, p));\r\t\tp := NIL\r\tEND FreeSString;\r\r\t\r\t"
+                    attr: 0
+                  - text: "(* FORMATETC generation *)\r\t\r\t"
+                    attr: 1
+                  - text: "PROCEDURE "
+                    attr: 0
+                  - text: GenFormatEtc
+                    attr: 3
+                  - text: "* (format: SHORTINT; aspect: SET; tymed: SET; OUT f: WinOle.FORMATETC);\r\tBEGIN\r\t\tf.cfFormat := format;\r\t\tf.ptd := NIL;\r\t\tf.dwAspect := aspect;\r\t\tf.lindex := -1;\r\t\tf.tymed := tymed\r\tEND GenFormatEtc;\r\t\r\t\r\t"
+                    attr: 0
+                  - text: "(* STGMEDIUM generation *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: GenBitmapMedium
+                    attr: 3
+                  - text: "* (\r\t\tbitmap: WinApi.HBITMAP; unk: COM.IUnknown; VAR sm: WinOle.STGMEDIUM);\r\tBEGIN\r\t\tIF sm.tymed # WinOle.TYMED_NULL THEN WinOle.ReleaseStgMedium(sm) END;\r\t\tsm.tymed := WinOle.TYMED_GDI;\r\t\tsm.u.hBitmap := bitmap;\r\t\tsm.pUnkForRelease := unk\r\tEND GenBitmapMedium;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: GenMetafileMedium
+                    attr: 3
+                  - text: "* (\r\t\tmf: WinApi.HMETAFILEPICT; unk: COM.IUnknown; VAR sm: WinOle.STGMEDIUM);\r\tBEGIN\r\t\tIF sm.tymed # WinOle.TYMED_NULL THEN WinOle.ReleaseStgMedium(sm) END;\r\t\tsm.tymed := WinOle.TYMED_MFPICT;\r\t\tsm.u.hMetaFilePict := mf;\r\t\tsm.pUnkForRelease := unk\r\tEND GenMetafileMedium;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: GenEMetafileMedium
+                    attr: 3
+                  - text: "* (\r\t\temf: WinApi.HENHMETAFILE; unk: COM.IUnknown; VAR sm: WinOle.STGMEDIUM);\r\tBEGIN\r\t\tIF sm.tymed # WinOle.TYMED_NULL THEN WinOle.ReleaseStgMedium(sm) END;\r\t\tsm.tymed := WinOle.TYMED_ENHMF;\r\t\tsm.u.hEnhMetaFile := emf;\r\t\tsm.pUnkForRelease := unk\r\tEND GenEMetafileMedium;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: GenGlobalMedium
+                    attr: 3
+                  - text: "* (hg: WinApi.HGLOBAL; unk: COM.IUnknown; VAR sm: WinOle.STGMEDIUM);\r\tBEGIN\r\t\tIF sm.tymed # WinOle.TYMED_NULL THEN WinOle.ReleaseStgMedium(sm) END;\r\t\tsm.tymed := WinOle.TYMED_HGLOBAL;\r\t\tsm.u.hGlobal := hg;\r\t\tsm.pUnkForRelease := unk\r\tEND GenGlobalMedium;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: GenFileMedium
+                    attr: 3
+                  - text: "* (name: ARRAY OF CHAR; unk: COM.IUnknown; VAR sm: WinOle.STGMEDIUM);\r\tBEGIN\r\t\tIF sm.tymed # WinOle.TYMED_NULL THEN WinOle.ReleaseStgMedium(sm) END;\r\t\tsm.tymed := WinOle.TYMED_FILE;\r\t\tsm.u.lpszFileName := NewString(name);\r\t\tsm.pUnkForRelease := unk\r\tEND GenFileMedium;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: GenStreamMedium
+                    attr: 3
+                  - text: "* (stm: WinOle.IStream; unk: COM.IUnknown; VAR sm: WinOle.STGMEDIUM);\r\tBEGIN\r\t\tIF sm.tymed # WinOle.TYMED_NULL THEN WinOle.ReleaseStgMedium(sm) END;\r\t\tsm.tymed := WinOle.TYMED_ISTREAM;\r\t\tsm.u.pstm := stm;\r\t\tsm.pUnkForRelease := unk\r\tEND GenStreamMedium;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: GenStorageMedium
+                    attr: 3
+                  - text: "* (stg: WinOle.IStorage; unk: COM.IUnknown; VAR sm: WinOle.STGMEDIUM);\r\tBEGIN\r\t\tIF sm.tymed # WinOle.TYMED_NULL THEN WinOle.ReleaseStgMedium(sm) END;\r\t\tsm.tymed := WinOle.TYMED_ISTORAGE;\r\t\tsm.u.pstg := stg;\r\t\tsm.pUnkForRelease := unk\r\tEND GenStorageMedium;\r\t\r\t\r\t"
+                    attr: 0
+                  - text: "(* STGMEDIUM access *)"
+                    attr: 1
+                  - text: "\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: MediumBitmap
+                    attr: 3
+                  - text: "* (IN sm: WinOle.STGMEDIUM): WinApi.HBITMAP;\r\tBEGIN\r\t\tASSERT(sm.tymed = WinOle.TYMED_GDI, 20);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " sm.u.hBitmap\r\tEND MediumBitmap;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: MediumMetafile
+                    attr: 3
+                  - text: "* (IN sm: WinOle.STGMEDIUM): WinApi.HMETAFILEPICT;\r\tBEGIN\r\t\tASSERT(sm.tymed = WinOle.TYMED_MFPICT, 20);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " sm.u.hMetaFilePict\r\tEND MediumMetafile;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: MediumEnhMetafile
+                    attr: 3
+                  - text: "* (IN sm: WinOle.STGMEDIUM): WinApi.HENHMETAFILE;\r\tBEGIN\r\t\tASSERT(sm.tymed = WinOle.TYMED_ENHMF, 20);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " sm.u.hEnhMetaFile\r\tEND MediumEnhMetafile;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: MediumGlobal
+                    attr: 3
+                  - text: "* (IN sm: WinOle.STGMEDIUM): WinApi.HGLOBAL;\r\tBEGIN\r\t\tASSERT(sm.tymed = WinOle.TYMED_HGLOBAL, 20);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " sm.u.hGlobal\r\tEND MediumGlobal;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: MediumFile
+                    attr: 3
+                  - text: "* (IN sm: WinOle.STGMEDIUM): WinApi.PtrWSTR;\r\tBEGIN\r\t\tASSERT(sm.tymed = WinOle.TYMED_FILE, 20);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " sm.u.lpszFileName\r\tEND MediumFile;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: MediumStream
+                    attr: 3
+                  - text: "* (IN sm: WinOle.STGMEDIUM): WinOle.IStream;\r\tBEGIN\r\t\tASSERT(sm.tymed = WinOle.TYMED_ISTREAM, 20);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " sm.u.pstm\r\tEND MediumStream;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: MediumStorage
+                    attr: 3
+                  - text: "* (IN sm: WinOle.STGMEDIUM): WinOle.IStorage;\r\tBEGIN\r\t\tASSERT(sm.tymed = WinOle.TYMED_ISTORAGE, 20);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " sm.u.pstg\r\tEND MediumStorage;\r\t\rEND ComTools.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 7986
+          bodyLen: 8

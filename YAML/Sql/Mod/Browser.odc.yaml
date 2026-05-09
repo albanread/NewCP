@@ -1,0 +1,244 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Sql\\Mod\\Browser.odc"
+  size: 4833
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 4702
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 4516
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 4430
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 4551
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 4037
+                runListLen: 1733
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE SqlBrowser;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT Dialog, Views, TextModels, TextControllers, SqlDB, SqlControls;\r\t\r\t\r\tVAR\r\t\t"
+                    attr: 0
+                  - text: dlg
+                    attr: 3
+                  - text: "*: RECORD\r\t\t\tid*,\r\t\t\tpassword*,\r\t\t\tdatabase*,\r\t\t\tdriver*: ARRAY 32 OF CHAR;\r\t\t\tstatement*: ARRAY 1024 OF CHAR\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: table
+                    attr: 3
+                  - text: "*: SqlDB.Table;\t"
+                    attr: 0
+                  - text: "(* anchor for database *)"
+                    attr: 1
+                  - text: "\r\t\t\r\t\r\tPROCEDURE CheckResult (tab: SqlDB.Table; par: ANYPTR);\r\t\tVAR v: Views.View;\r\tBEGIN\r\t\tIF tab.res = 0 THEN\r\t\t\tIF tab.columns > 0 THEN\r\t\t\t\tv := SqlControls.dir.NewTableOn(tab);\r\t\t\t\tViews.OpenAux(v, \"#Sql:Result\")\r\t\t\tELSE Dialog.ShowMsg(\"#Sql:StatementExecuted\")\r\t\t\tEND\r\t\tELSE Dialog.ShowMsg(\"#Sql:ExecutionFailed\")\r\t\tEND\r\tEND CheckResult;\r\t\r\tPROCEDURE ExecuteThis (statement: ARRAY OF CHAR);\r\t\tVAR res: INTEGER; db: SqlDB.Database; tab: SqlDB.Table;\r\tBEGIN\r\t\tIF table = NIL THEN\r\t\t\tSqlDB.OpenDatabase(dlg.driver, dlg.id, dlg.password, dlg.database,\r\t\t\t\t\t\t\t\t\t\t\tSqlDB.async, SqlDB.showErrors, db, res);\r\t\t\tIF res = 0 THEN\r\t\t\t\ttable := db.NewTable()\r\t\t\tELSIF res <= 3 THEN\r\t\t\t\tDialog.ShowMsg(\"#Sql:CannotLoadDriver\")\r\t\t\tELSE\r\t\t\t\tDialog.ShowMsg(\"#Sql:ConnectionFailed\")\r\t\t\tEND\r\t\tEND;\r\t\tIF (statement # \"\") & (table # NIL) THEN\r\t\t\t"
+                    attr: 0
+                  - text: "(* allocate separate table to allow for multiple open tables *)"
+                    attr: 1
+                  - text: "\r\t\t\ttab := table.base.NewTable();\r\t\t\ttab.Exec(statement);\r\t\t\t"
+                    attr: 0
+                  - text: "(* separate result check from execution to allow for asynchronous operation *)"
+                    attr: 1
+                  - text: "\r\t\t\ttab.Call(CheckResult, NIL)\r\t\tEND\r\tEND ExecuteThis;\r\t\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: Execute
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tExecuteThis(dlg.statement)\r\tEND Execute;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: ExecuteSel
+                    attr: 3
+                  - text: "*;\r\t\tVAR c: TextControllers.Controller; r: TextModels.Reader; beg, end, i: INTEGER; stat: ARRAY 1024 OF CHAR;\r\tBEGIN\r\t\tc := TextControllers.Focus();\r\t\tIF (c # NIL) & c.HasSelection() THEN\r\t\t\tc.GetSelection(beg, end);\r\t\t\tr := c.text.NewReader(NIL);\r\t\t\tr.SetPos(beg); i := 0;\r\t\t\tWHILE r.Pos() < end DO r.ReadChar(stat[i]); INC(i) END;\r\t\t\tstat[i] := 0X;\r\t\t\tExecuteThis(stat)\r\t\tEND\r\tEND ExecuteSel;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: Commit
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tIF table # NIL THEN\r\t\t\ttable.base.Commit\r\t\tEND\r\tEND Commit;\r\t\r\t\rBEGIN\r\tdlg.id := \"\"; dlg.password := \"\"; dlg.database := \"Test Database\"; dlg.driver := \"SqlOdbc\"\rEND SqlBrowser.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 4798
+          bodyLen: 8

@@ -1,0 +1,492 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Form\\Mod\\Controllers.odc"
+  size: 26275
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 26144
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 25958
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 25872
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5400000
+                asc: 127000
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 114300
+                color: 0x00000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 25993
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 25479
+                runListLen: 2410
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE FormControllers;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tpurpose\t= \"\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- 20080904, mf, StdController.IsSelected: conformance with contract improved\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT\r\t\tServices, Ports, Stores, Models, Views, Controllers, Properties, Containers,\r\t\tFormModels, FormViews;\r\r\tCONST\r\t\t"
+                    attr: 0
+                  - text: noSelection
+                    attr: 3
+                  - text: "* = Containers.noSelection; "
+                    attr: 0
+                  - text: noFocus
+                    attr: 3
+                  - text: "* = Containers.noFocus;\r\t\trdel = 7X; ldel = 8X;\r\t\tarrowLeft = 1CX; arrowRight = 1DX; arrowUp = 1EX; arrowDown = 1FX;\r\t\t"
+                    attr: 0
+                  - text: "(* range of currently supported versions *)"
+                    attr: 1
+                  - text: "\r\t\tminVersion = 0; maxBaseVersion = 0; maxStdVersion = 0;\r\r\tTYPE\r\t\t"
+                    attr: 0
+                  - text: Controller
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Containers.Controller)\r\t\t\tform-: FormModels.Model;\r\t\t\tview-: FormViews.View\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: Directory
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Containers.Directory) END;\r\r\t\t"
+                    attr: 0
+                  - text: List
+                    attr: 3
+                  - text: "* = POINTER TO RECORD\r\t\t\tnext*: List;\r\t\t\tview*: Views.View\r\t\tEND;\r\r\r\t\tStdController = POINTER TO RECORD (Controller)\r\t\t\tsel: List;\t"
+                    attr: 0
+                  - text: "(* (sel = NIL) OR (c.ThisFocus() = NIL) *)"
+                    attr: 1
+                  - text: "\r\t\t\treader: FormModels.Reader;\r\t\t\tlastX, lastY: INTEGER\r\t\tEND;\r\r\t\tStdDirectory = POINTER TO RECORD (Directory) END;\r\r\t\tMarkMsg = RECORD (Views.Message)\r\t\t\tlist: List;\r\t\t\tshow: BOOLEAN\r\t\tEND;\r\r\t\tPollFocusMsg = RECORD (Controllers.PollFocusMsg)\r\t\t\tc: Controller\r\t\tEND;\r\r\r\tVAR "
+                    attr: 0
+                  - text: dir
+                    attr: 3
+                  - text: "-, "
+                    attr: 0
+                  - text: stdDir
+                    attr: 3
+                  - text: "-: Directory;\r\r\r\t"
+                    attr: 0
+                  - text: "(** Controller **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: Internalize2
+                    attr: 3
+                  - text: "- (VAR rd: Stores.Reader), EXTENSIBLE;\r\t\tVAR thisVersion: INTEGER;\r\tBEGIN\r\t\trd.ReadVersion(minVersion, maxBaseVersion, thisVersion)\r\tEND Internalize2;\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: Externalize2
+                    attr: 3
+                  - text: "- (VAR wr: Stores.Writer), EXTENSIBLE;\r\tBEGIN\r\t\twr.WriteVersion(maxBaseVersion)\r\tEND Externalize2;\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: InitView2
+                    attr: 3
+                  - text: "* (view: Views.View), EXTENSIBLE;\r\tBEGIN\r\t\tIF view # NIL THEN\r\t\t\tASSERT(view IS FormViews.View, 25);\r\t\t\tc.view := view(FormViews.View); c.form := c.view.ThisModel()\r\t\tELSE\r\t\t\tc.form := NIL; c.view := NIL\r\t\tEND\r\tEND InitView2;\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: ThisView
+                    attr: 3
+                  - text: "* (): FormViews.View, EXTENSIBLE;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " c.view\r\tEND ThisView;\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: Select
+                    attr: 3
+                  - text: "* (view: Views.View), NEW, ABSTRACT;\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: Deselect
+                    attr: 3
+                  - text: "* (view: Views.View), NEW, ABSTRACT;\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: IsSelected
+                    attr: 3
+                  - text: "* (view: Views.View): BOOLEAN, NEW, ABSTRACT;\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: GetSelection
+                    attr: 3
+                  - text: "* (): List, NEW, ABSTRACT;\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: SetSelection
+                    attr: 3
+                  - text: "* (l: List), NEW, ABSTRACT;\r\r\r\t"
+                    attr: 0
+                  - text: "(** Directory **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: NewController
+                    attr: 3
+                  - text: "* (opts: SET): Controller, ABSTRACT;\r\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: New
+                    attr: 3
+                  - text: "* (): Controller, EXTENSIBLE;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " d.NewController({})\r\tEND New;\r\r\r\t"
+                    attr: 0
+                  - text: "(* auxiliary procedures *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE MarkList (c: StdController; f: Views.Frame; h: List; show: BOOLEAN);\r\t\tVAR l, t, r, b, s: INTEGER;\r\tBEGIN\r\t\tIF ~(Containers.noSelection IN c.opts) THEN\r\t\t\ts := 2 * f.unit;\r\t\t\tWHILE h # NIL DO\r\t\t\t\tc.view.GetRect(f, h.view, l, t, r, b);\r\t\t\t\tf.MarkRect(l - s, t - s, r + s, b + s, s, Ports.hilite, show);\r\t\t\t\th := h.next\r\t\t\tEND\r\t\tEND\r\tEND MarkList;\r\r\tPROCEDURE Toggle (c: StdController; view: Views.View);\r\tBEGIN\r\t\tIF c.IsSelected(view) THEN c.Deselect(view) ELSE c.Select(view) END\r\tEND Toggle;\r\r\r\t"
+                    attr: 0
+                  - text: "(* StdController *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (c: StdController) Internalize2 (VAR rd: Stores.Reader);\r\t\tVAR thisVersion: INTEGER;\r\tBEGIN\r\t\tc.Internalize2^(rd);\r\t\tIF ~rd.cancelled THEN\r\t\t\trd.ReadVersion(minVersion, maxStdVersion, thisVersion);\r\t\t\tc.sel := NIL; c.lastX := -1\r\t\tEND\r\tEND Internalize2;\r\r\tPROCEDURE (c: StdController) Externalize2 (VAR wr: Stores.Writer);\r\tBEGIN\r\t\tc.Externalize2^(wr);\r\t\twr.WriteVersion(maxStdVersion)\r\tEND Externalize2;\r\r\tPROCEDURE (c: StdController) CopyFrom (source: Stores.Store);\r\tBEGIN\r\t\tc.CopyFrom^(source);\r\t\tc.sel := NIL; c.lastX := -1\r\tEND CopyFrom;\r\r\tPROCEDURE (c: StdController) RestoreMarks2 (f: Views.Frame; l, t, r, b: INTEGER);\r\tBEGIN\r\t\tIF (c.lastX <= f.l ) OR (c.lastX >= f.r) OR (c.lastY <= f.t) OR (c.lastY >= f.b) THEN\r\t\t\tc.lastX := (f.l + f.r) DIV 2; c.lastY := (f.t + f.b) DIV 2\r\t\tEND\r\tEND RestoreMarks2;\r\r\tPROCEDURE (c: StdController) HandleViewMsg (f: Views.Frame; VAR msg: Views.Message);\r\tBEGIN\r\t\tWITH msg: MarkMsg DO\r\t\t\tMarkList(c, f, msg.list, msg.show)\r\t\tELSE\r\t\t\tc.HandleViewMsg^(f, msg)\r\t\tEND\r\tEND HandleViewMsg;\r\r\tPROCEDURE (c: StdController) HandleCtrlMsg (f: Views.Frame; VAR msg: Views.CtrlMessage;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR focus: Views.View);\r\tBEGIN\r\t\tWITH msg: PollFocusMsg DO\r\t\t\tc.HandleCtrlMsg^(f, msg, focus);\r\t\t\tmsg.c := c\r\t\tELSE\r\t\t\tc.HandleCtrlMsg^(f, msg, focus)\r\t\tEND\r\tEND HandleCtrlMsg;\r\r\r\t"
+                    attr: 0
+                  - text: "(* subclass hooks *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (c: StdController) GetContextType (OUT type: Stores.TypeName);\r\tBEGIN\r\t\ttype := \"FormViews.View\"\r\tEND GetContextType;\r\r\tPROCEDURE (c: StdController) GetValidOps (OUT valid: SET);\r\tBEGIN\r\t\tvalid := {Controllers.pasteChar, Controllers.paste};\r\t\tIF c.sel # NIL THEN valid := valid + {Controllers.cut, Controllers.copy} END\r\tEND GetValidOps;\r\r\tPROCEDURE (c: StdController) NativeModel (model: Models.Model): BOOLEAN;\r\tBEGIN\r\t\tASSERT(model # NIL, 20);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " model IS FormModels.Model\r\tEND NativeModel;\r\r\tPROCEDURE (c: StdController) NativeView (view: Views.View): BOOLEAN;\r\tBEGIN\r\t\tASSERT(view # NIL, 20);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " view IS FormViews.View\r\tEND NativeView;\r\r\tPROCEDURE (c: StdController) NativeCursorAt (f: Views.Frame; x, y: INTEGER): INTEGER;\r\tBEGIN\r\t\tASSERT(f # NIL, 20);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " Ports.graphicsCursor\r\tEND NativeCursorAt;\r\r\tPROCEDURE (c: StdController) MakeViewVisible (v: Views.View);\r\t\tVAR l, t, r, b: INTEGER;\r\tBEGIN\r\t\tASSERT(v # NIL, 20);\r\t\tASSERT(v.context # NIL, 21);\r\t\tASSERT(v.context.ThisModel() = c.form, 22);\r\t\tv.context(FormModels.Context).GetRect(l, t, r, b);\r\t\tc.view.context.MakeVisible(l, t, r, b)\r\tEND MakeViewVisible;\r\r\tPROCEDURE (c: StdController) GetFirstView (selection: BOOLEAN; OUT v: Views.View);\r\t\tVAR rd: FormModels.Reader;\r\tBEGIN\r\t\tIF selection THEN\r\t\t\tIF c.sel # NIL THEN v := c.sel.view ELSE v := NIL END\r\t\tELSE\r\t\t\trd := c.form.NewReader(c.reader); c.reader := rd;\r\t\t\trd.ReadView(v)\r\t\tEND\r\tEND GetFirstView;\r\r\tPROCEDURE (c: StdController) GetNextView (selection: BOOLEAN; VAR v: Views.View);\r\t\tVAR h: List; rd: FormModels.Reader;\r\tBEGIN\t"
+                    attr: 0
+                  - text: "(* could be optimized *)"
+                    attr: 1
+                  - text: "\r\t\tASSERT(v # NIL, 20);\r\t\tIF selection THEN\r\t\t\th := c.sel; WHILE (h # NIL) & (h.view # v) DO h := h.next END; ASSERT(h # NIL, 21);\r\t\t\tIF h.next # NIL THEN v := h.next.view ELSE v := NIL END\r\t\tELSE\r\t\t\trd := c.form.NewReader(c.reader); c.reader := rd;\r\t\t\trd.Set(v); rd.ReadView(v)\r\t\tEND\r\tEND GetNextView;\r\r\tPROCEDURE (c: StdController) GetSelectionBounds (f: Views.Frame; OUT x, y, w, h: INTEGER);\r\t\tVAR g: Views.Frame; sel: List; l, t, r, b, gw, gh, border: INTEGER;\r\tBEGIN\r\t\tIF c.Singleton() # NIL THEN\r\t\t\tc.GetSelectionBounds^(f, x, y, w, h)\r\t\tELSE\r\t\t\tl := MAX(INTEGER); t := MAX(INTEGER); r := MIN(INTEGER); b := MIN(INTEGER);\r\t\t\tsel := c.sel;\r\t\t\tWHILE sel # NIL DO\r\t\t\t\tg := Views.ThisFrame(f, sel.view);\r\t\t\t\tIF g # NIL THEN\r\t\t\t\t\tsel.view.context.GetSize(gw, gh);\r\t\t\t\t\tIF g.gx < l THEN l := g.gx END;\r\t\t\t\t\tIF g.gy < t THEN t := g.gy END;\r\t\t\t\t\tIF g.gx + gw > r THEN r := g.gx + gw END;\r\t\t\t\t\tIF g.gy + gh > b THEN b := g.gy + gh END;\r\t\t\t\tEND;\r\t\t\t\tsel := sel.next\r\t\t\tEND;\r\t\t\tIF (l < r) & (t < b) THEN\r\t\t\t\tborder := c.view.Border();\r\t\t\t\tx := l - f.gx - border; y := t - f.gy - border;\r\t\t\t\tw := r - l + 2 * border; h := b - t + 2 * border\r\t\t\tELSE\r\t\t\t\tx := 0; y := 0; w := 0; h := 0\r\t\t\tEND\r\t\tEND\r\tEND GetSelectionBounds;\r\t\r\tPROCEDURE (c: StdController) MarkDropTarget (src, dst: Views.Frame;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tsx, sy, dx, dy, w, h, rx, ry: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\ttype: Stores.TypeName;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tisSingle, show: BOOLEAN);\r\t\tCONST dm = 4 * Ports.point; dp = 18 * Ports.point;\r\t\tVAR vx, vy, l, t, r, b: INTEGER; sc: Containers.Controller; s: Views.View;\r\tBEGIN\t"
+                    attr: 0
+                  - text: "(* cf. Drop *)"
+                    attr: 1
+                  - text: "\r\t\tIF ~isSingle & (src # NIL) & (src.view IS FormViews.View) THEN\t"
+                    attr: 0
+                  - text: "(* mark local form selection *)"
+                    attr: 1
+                  - text: "\r\t\t\tvx := dx - sx; vy := dy - sy;\r\t\t\tsc := src.view(FormViews.View).ThisController();\r\t\t\tIF sc # NIL THEN\r\t\t\t\tWITH sc: Controller DO\r\t\t\t\t\tsc.GetFirstView(Containers.selection, s);\r\t\t\t\t\tWHILE s # NIL DO\r\t\t\t\t\t\ts.context(FormModels.Context).GetRect(l, t, r, b); w := r - l; h := b - t;\r\t\t\t\t\t\tINC(l, vx); INC(t, vy); FormViews.RoundToGrid(c.view, l, t);\r\t\t\t\t\t\tdst.MarkRect(l, t, l + w, t + h, 0, Ports.invert, show);\r\t\t\t\t\t\tsc.GetNextView(Containers.selection, s)\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\tEND\r\t\tELSIF (w > 0) & (h > 0) THEN\t"
+                    attr: 0
+                  - text: "(* mark non-local form or singleton selection *)"
+                    attr: 1
+                  - text: "\r\t\t\tvx := dx - rx; vy := dy - ry;\r\t\t\tFormViews.RoundToGrid(c.view, vx, vy);\r\t\t\tIF ~isSingle & Services.Extends(type, \"FormViews.View\") THEN\t"
+                    attr: 0
+                  - text: "(* general form selection *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tdst.MarkRect(vx - dm, vy, vx + dp, vy + dst.unit, 0, Ports.invert, show);\r\t\t\t\tdst.MarkRect(vx, vy - dm, vx + dst.unit, vy + dp, 0, Ports.invert, show);\r\t\t\t\tINC(vx, w); INC(vy, h);\r\t\t\t\tdst.MarkRect(vx - dp, vy, vx + dm, vy + dst.unit, 0, Ports.invert, show);\r\t\t\t\tdst.MarkRect(vx, vy - dp, vx + dst.unit, vy + dm, 0, Ports.invert, show)\r\t\t\tELSE\t"
+                    attr: 0
+                  - text: "(* singleton selection *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tdst.MarkRect(vx, vy, vx + w, vy + h, 0, Ports.invert, show)\r\t\t\tEND\r\t\tELSE\t"
+                    attr: 0
+                  - text: "(* cross-hair mark for non-form, non-singleton selections *)"
+                    attr: 1
+                  - text: "\r\t\t\tFormViews.RoundToGrid(c.view, dx, dy);\r\t\t\tdst.MarkRect(dx - dm, dy, dx + dp, dy + dst.unit, 0, Ports.invert, show);\r\t\t\tdst.MarkRect(dx, dy - dm, dx + dst.unit, dy + dp, 0, Ports.invert, show)\r\t\tEND\r\tEND MarkDropTarget;\r\r\tPROCEDURE (c: StdController) TrackMarks (f: Views.Frame; x, y: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tunits, extend, add: BOOLEAN);\r\t\tVAR dx, dy, x0, y0, dx0, dy0: INTEGER; isDown: BOOLEAN; h: Views.View; m: SET;\r\r\t\tPROCEDURE InvertRect (f: Views.Frame; x, y, dx, dy: INTEGER);\r\t\t\tVAR l, t, r, b: INTEGER;\r\t\tBEGIN\r\t\t\tIF dx >= 0 THEN l := x; r := x + dx ELSE l := x + dx; r := x END;\r\t\t\tIF dy >= 0 THEN t := y; b := y + dy ELSE t := y + dy; b := y END;\r\t\t\tf.MarkRect(l, t, r, b, 0, Ports.dim50, TRUE)\r\t\tEND InvertRect;\r\r\t\tPROCEDURE SelectArea (c: StdController; l, t, r, b: INTEGER; toggle: BOOLEAN);\r\t\t\tVAR h: INTEGER; rd: FormModels.Reader; v: Views.View; p, q: List; empty: BOOLEAN;\r\t\tBEGIN\r\t\t\tIF l > r THEN h := l; l := r; r := h END;\r\t\t\tIF t > b THEN h := t; t := b; b := h END;\r\t\t\trd := c.form.NewReader(c.reader); c.reader := rd;\r\t\t\trd.ReadView(v); p := NIL; empty := c.sel = NIL;\r\t\t\tWHILE v # NIL DO\r\t\t\t\tIF (rd.l < r) & (rd.t < b) & (rd.r > l) & (rd.b > t) THEN\r\t\t\t\t\tIF toggle THEN Toggle(c, v)\r\t\t\t\t\tELSIF ~empty THEN c.Select(v)\r\t\t\t\t\tELSE NEW(q); q.next := p; p := q; q.view := v\r\t\t\t\t\tEND\r\t\t\t\tEND;\r\t\t\t\trd.ReadView(v)\r\t\t\tEND;\r\t\t\t"
+                    attr: 0
+                  - text: "(* this optimization prevents the appearance of a temporary singleton *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF ~toggle & empty THEN c.SetSelection(p) END\r\t\tEND SelectArea;\r\r\tBEGIN\r\t\tdx := 0; dy := 0;\t"
+                    attr: 0
+                  - text: "(* vector from (x, y) *)"
+                    attr: 1
+                  - text: "\r\t\tInvertRect(f, x, y, dx, dy);\r\t\tREPEAT\r\t\t\tf.Input(x0, y0, m, isDown);\r\t\t\tdx0 := x0 - x; dy0 := y0 - y;\r\t\t\tIF (dx0 # dx) OR (dy0 # dy) THEN\r\t\t\t\tInvertRect(f, x, y, dx, dy);\r\t\t\t\tdx := dx0; dy := dy0;\r\t\t\t\tInvertRect(f, x, y, dx, dy)\r\t\t\tEND\r\t\tUNTIL ~isDown;\r\t\tInvertRect(f, x, y, dx, dy);\r\t\tc.lastX := x0; c.lastY := y0;\r\t\tIF (dx # 0) OR (dy # 0) THEN\r\t\t\tSelectArea(c, x, y, x + dx, y + dy, extend OR add)\r\t\tELSE\r\t\t\th := c.form.ViewAt(x, y);\r\t\t\tIF h # NIL THEN\r\t\t\t\tIF extend OR add THEN Toggle(c, h) ELSE c.Select(h) END\r\t\t\tEND\r\t\tEND\r\tEND TrackMarks;\r\r\tPROCEDURE (c: StdController) Resize (view: Views.View; l, t, r, b: INTEGER);\r\tBEGIN\r\t\tc.form.Resize(view, l, t, r, b)\r\tEND Resize;\r\r\tPROCEDURE (c: StdController) DeleteSelection;\r\t\tVAR script: Stores.Operation; h: List;\r\tBEGIN\r\t\tModels.BeginScript(c.form, \"#System:Deletion\", script);\r\t\th := c.sel; WHILE h # NIL DO c.form.Delete(h.view); h := h.next END;\r\t\tModels.EndScript(c.form, script)\r\tEND DeleteSelection;\r\r\tPROCEDURE MoveRelativeLocalSel (c: StdController; src, dst: Views.Frame;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tdx, dy: INTEGER; grid: BOOLEAN);\r\t\tVAR script: Stores.Operation; sel, h: List; l, t, r, b, newl, newt: INTEGER;\r\tBEGIN\r\t\tIF (dx # 0) OR (dy # 0) THEN\r\t\t\tsel := c.GetSelection();\r\t\t\tModels.BeginScript(c.form, \"#System:Moving\", script);\r\t\t\th := sel;\r\t\t\tWHILE h # NIL DO\r\t\t\t\th.view.context(FormModels.Context).GetRect(l, t, r, b);\r\t\t\t\tnewl := l + dx; newt := t + dy;\r\t\t\t\tIF grid THEN FormViews.RoundToGrid(c.view, newl, newt) END;\r\t\t\t\tc.form.Move(h.view, newl - l, newt - t);\r\t\t\t\th := h.next\r\t\t\tEND;\r\t\t\tModels.EndScript(c.form, script);\r\t\t\tc.SetSelection(sel)\r\t\tEND\r\tEND MoveRelativeLocalSel;\r\r\tPROCEDURE (c: StdController) MoveLocalSelection (src, dst: Views.Frame; sx, sy,\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tdx, dy: INTEGER);\r\tBEGIN\r\t\tMoveRelativeLocalSel(c, src, dst,  dx - sx, dy - sy, TRUE)\r\tEND MoveLocalSelection;\r\r\tPROCEDURE (c: StdController) CopyLocalSelection (src, dst: Views.Frame; sx, sy,\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tdx, dy: INTEGER);\r\t\tVAR script: Stores.Operation; q: Views.View; h, s, t: List;\r\tBEGIN\r\t\tdx := dx - sx; dy := dy - sy;\r\t\tIF (dx # 0) OR (dy # 0) THEN\r\t\t\tFormViews.RoundToGrid(c.view, dx, dy);\r\t\t\tModels.BeginScript(c.form, \"#System:Copying\", script);\r\t\t\th := c.GetSelection(); s := NIL;\r\t\t\tWHILE h # NIL DO\r\t\t\t\tq := h.view; c.form.Copy(q, dx, dy);\r\t\t\t\tNEW(t); t.next := s; s := t; t.view := q;\r\t\t\t\th := h.next\r\t\t\tEND;\r\t\t\tModels.EndScript(c.form, script);\r\t\t\tc.SetSelection(s)\r\t\tEND\r\tEND CopyLocalSelection;\r\r\tPROCEDURE (c: StdController) SelectionCopy (): Containers.Model;\r\t\tVAR f: FormModels.Model; rd: FormModels.Reader; wr: FormModels.Writer;\r\t\t\tv: Views.View; dx, dy: INTEGER;\r\r\t\tPROCEDURE GetOffset (p: List; border: INTEGER; OUT dx, dy: INTEGER);\r\t\t\tVAR l, t, vl, vt, vr, vb: INTEGER;\r\t\tBEGIN\r\t\t\tIF p # NIL THEN\r\t\t\t\tl := MAX(INTEGER); t := MAX(INTEGER);\r\t\t\t\tWHILE p # NIL DO\r\t\t\t\t\tp.view.context(FormModels.Context).GetRect(vl, vt, vr, vb);\r\t\t\t\t\tIF vl < l THEN l := vl END;\r\t\t\t\t\tIF vt < t THEN t := vt END;\r\t\t\t\t\tp := p.next\r\t\t\t\tEND;\r\t\t\t\tdx := l - border; dy := t - border\r\t\t\tELSE\r\t\t\t\tdx := 0; dy := 0\r\t\t\tEND\r\t\tEND GetOffset;\r\r\tBEGIN\r\t\tf := FormModels.CloneOf(c.form);\r\t\tGetOffset(c.sel, c.view.Border(), dx, dy);\r\t\trd := c.form.NewReader(NIL); wr := f.NewWriter(NIL);\r\t\trd.ReadView(v);\r\t\tWHILE v # NIL DO\r\t\t\tIF c.IsSelected(v) THEN\r\t\t\t\twr.WriteView(Views.CopyOf(v, Views.deep), rd.l - dx, rd.t - dy, rd.r - dx, rd.b - dy)\r\t\t\tEND;\r\t\t\trd.ReadView(v)\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " f\r\tEND SelectionCopy;\r\r\tPROCEDURE (c: StdController) NativePaste (m: Models.Model; f: Views.Frame);\r\t\tVAR x, y, cw, ch: INTEGER; v: Views.View; rd: FormModels.Reader;\r\t\t\twr: FormModels.Writer; n, i: INTEGER; script: Stores.Operation;\r\tBEGIN\r\t\tx := c.lastX; y := c.lastY;\r\t\tc.view.context.GetSize(cw, ch);\r\t\tIF (x <= f.l) OR (x >= f.r) OR (y <= f.t) OR (y >= f.b) THEN\r\t\t\tx := (f.l + f.r) DIV 2; y := (f.r + f.b) DIV 2\r\t\tEND;\r\t\tc.lastX := x; c.lastY := y;\r\t\tFormViews.RoundToGrid(c.view, x, y);\r\t\tWITH m: FormModels.Model DO\r\t\t\tModels.BeginScript(c.form, \"#System:Insertion\", script);\r\t\t\trd := m.NewReader(NIL); wr := c.form.NewWriter(NIL); wr.Set(c.form.Top());\r\t\t\trd.ReadView(v); n := 0;\r\t\t\tWHILE v # NIL DO\r\t\t\t\twr.WriteView(Views.CopyOf(v, Views.shallow), x + rd.l, y + rd.t, x + rd.r, y + rd.b);\r\t\t\t\tINC(n);\r\t\t\t\trd.ReadView(v)\r\t\t\tEND;\r\t\t\tModels.EndScript(c.form, script);\r\t\t\t"
+                    attr: 0
+                  - text: "(* n views have been inserted at the top => select them *)"
+                    attr: 1
+                  - text: "\r\t\t\tc.SelectAll(Containers.deselect);\r\t\t\ti := c.form.NofViews() - n; ASSERT(i >= 0, 100);\r\t\t\trd := c.form.NewReader(rd);\r\t\t\tWHILE i # 0 DO rd.ReadView(v); DEC(i) END;\t"
+                    attr: 0
+                  - text: "(* skip old views *)"
+                    attr: 1
+                  - text: "\r\t\t\tWHILE n # 0 DO rd.ReadView(v); c.Select(v); DEC(n) END\r\t\tEND\r\tEND NativePaste;\r\r\tPROCEDURE (c: StdController) ArrowChar (f: Views.Frame; ch: CHAR; units,  select: BOOLEAN);\r\t\tVAR d: INTEGER;\r\tBEGIN\r\t\tIF units THEN d := c.view.Grid() ELSE d := f.unit END;\r\t\tIF ch = arrowLeft THEN\r\t\t\tMoveRelativeLocalSel(c, f, f, -d, 0, units)\r\t\tELSIF ch = arrowRight THEN\r\t\t\tMoveRelativeLocalSel(c, f, f, +d, 0, units)\r\t\tELSIF ch = arrowUp THEN\r\t\t\tMoveRelativeLocalSel(c, f, f, 0, -d, units)\r\t\tELSIF ch = arrowDown THEN\r\t\t\tMoveRelativeLocalSel(c, f, f, 0, +d, units)\r\t\tEND\r\tEND ArrowChar;\r\r\tPROCEDURE (c: StdController) ControlChar (f: Views.Frame; ch: CHAR);\r\tBEGIN\r\t\tIF (ch = ldel) OR (ch = rdel) THEN c.DeleteSelection END\r\tEND ControlChar;\r\r\tPROCEDURE (c: StdController) PasteChar (ch: CHAR);\r\tEND PasteChar;\r\r\tPROCEDURE (c: StdController) PasteView (f: Views.Frame; v: Views.View; w, h: INTEGER);\r\t\tVAR minW, maxW, minH, maxH, x, y: INTEGER;\r\tBEGIN\r\t\tx := c.lastX; y := c.lastY;\r\t\tIF (x <= f.l) OR (x >= f.r) OR (y <= f.t) OR (y >= f.b) THEN\r\t\t\tx := (f.l + f.r) DIV 2; y := (f.t + f.b) DIV 2\r\t\tEND;\r\t\tc.lastX := x; c.lastY := y;\r\t\tFormViews.RoundToGrid(c.view, x, y);\r\t\tc.form.GetEmbeddingLimits(minW, maxW, minH, maxH);\r\t\tProperties.PreferredSize(v, minW, maxW, minH, maxH, minW, minH, w, h);\r\t\tc.form.Insert(v, x, y, x + w, y + h); c.Select(v)\r\tEND PasteView;\r\r\tPROCEDURE (c: StdController) Drop (src, dst: Views.Frame; sx, sy, dx, dy,\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tw, h, rx, ry: INTEGER; v: Views.View; isSingle: BOOLEAN);\r\t\tVAR minW, maxW, minH, maxH, l, t, sw, sh: INTEGER;\r\t\t\ts: Views.View; p, q: List;\r\t\t\tm: FormModels.Model; rd: FormModels.Reader; wr: FormModels.Writer;\r\tBEGIN\t"
+                    attr: 0
+                  - text: "(* cf. MarkDropTarget *)"
+                    attr: 1
+                  - text: "\r"
+                    attr: 0
+                  - text: "\t\t"
+                    attr: 1
+                  - text: "DEC(dx, rx); DEC(dy, ry);"
+                    attr: 0
+                  - text: "\r\t"
+                    attr: 1
+                  - text: "\tIF ~isSingle & (v IS FormViews.View) THEN\r\t\t\tm := v(FormViews.View).ThisModel();\r\t\t\trd := m.NewReader(NIL); wr := c.form.NewWriter(NIL);\r\t\t\trd.ReadView(s); p := NIL;\r\t\t\tWHILE s # NIL DO\r\t\t\t\tl := rd.l + dx; t := rd.t + dy; sw := rd.r - rd.l; sh := rd.b - rd.t;\r\t\t\t\tFormViews.RoundToGrid(c.view, l, t);\r\t\t\t\ts := Views.CopyOf(s, Views.shallow);\r\t\t\t\twr.WriteView(s, l, t, l + sw, t + sh);\r\t\t\t\tNEW(q); q.next := p; p := q; q.view := s;\r\t\t\t\trd.ReadView(s)\r\t\t\tEND;\r\t\t\tc.SetSelection(p)\r\t\tELSE\r\t\t\tFormViews.RoundToGrid(c.view, dx, dy);\r\t\t\tc.form.GetEmbeddingLimits(minW, maxW, minH, maxH);\r\t\t\tProperties.PreferredSize(v, minW, maxW, minH, maxH, minW, minH, w, h);\r\t\t\tc.form.Insert(v, dx, dy, dx + w, dy + h); c.Select(v)\r\t\tEND\r\tEND Drop;\r\r\r\t"
+                    attr: 0
+                  - text: "(* selection *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (c: StdController) HasSelection (): BOOLEAN;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " c.sel # NIL\r\tEND HasSelection;\r\r\tPROCEDURE (c: StdController) Selectable (): BOOLEAN;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " c.form.NofViews() # 0\r\tEND Selectable;\r\r\tPROCEDURE (c: StdController) SetSingleton (s: Views.View);\r\t\tVAR l: List;\r\tBEGIN\r\t\tc.SetSingleton^(s);\r\t\tIF s # NIL THEN NEW(l); l.view := s; c.sel := l ELSE c.sel := NIL END\r\tEND SetSingleton;\r\r\tPROCEDURE (c: StdController) SelectAll (select: BOOLEAN);\r\t\tVAR s: FormModels.Reader; v: Views.View; l, h: List; msg: MarkMsg;\r\tBEGIN\r\t\tIF select THEN\r\t\t\tASSERT(~(Containers.noSelection IN c.opts), 20);\r\t\t\tc.SetFocus(NIL);\r\t\t\ts := c.form.NewReader(c.reader); c.reader := s;\r\t\t\ts.Set(NIL); s.ReadView(v);\r\t\t\tIF c.form.NofViews() = 1 THEN\r\t\t\t\tASSERT(v # NIL, 100);\r\t\t\t\tc.SetSingleton(v)\r\t\t\tELSE\r\t\t\t\tIF (c.sel # NIL) & (c.sel.next = NIL) THEN c.SetSingleton(NIL) END;\r\t\t\t\tl := NIL;\r\t\t\t\tWHILE v # NIL DO\r\t\t\t\t\tIF ~c.IsSelected(v) THEN NEW(h); h.next := l; l := h; h.view := v END;\r\t\t\t\t\ts.ReadView(v)\r\t\t\t\tEND;\r\t\t\t\tmsg.list := l;\r\t\t\t\th := c.sel; WHILE (h # NIL) & (h.next # NIL) DO h := h.next END;\r\t\t\t\tIF h = NIL THEN c.sel := l ELSE h.next := l END;\r\t\t\t\tIF msg.list # NIL THEN msg.show := TRUE; Views.Broadcast(c.view, msg) END\r\t\t\tEND\r\t\tELSIF c.sel # NIL THEN\r\t\t\tIF c.sel.next = NIL THEN\t"
+                    attr: 0
+                  - text: "(* singleton *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tc.SetSingleton(NIL)\r\t\t\tELSE\r\t\t\t\tmsg.list := c.sel; c.sel := NIL; \r\t\t\t\tmsg.show := FALSE; Views.Broadcast(c.view, msg)\r\t\t\tEND\r\t\tEND\r\tEND SelectAll;\r\r\tPROCEDURE (c: StdController) InSelection (f: Views.Frame; x, y: INTEGER): BOOLEAN;\r\t\tVAR g: Views.Frame;\r\tBEGIN\r\t\tg := Views.FrameAt(f, x, y);\r\t\tIF g # NIL THEN\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " c.IsSelected(g.view)\r\t\tELSE\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " FALSE\r\t\tEND\r\tEND InSelection;\r\r\tPROCEDURE (c: StdController) MarkSelection (f: Views.Frame; show: BOOLEAN);\r\tBEGIN\r\t\tIF c.sel = NIL THEN\t"
+                    attr: 0
+                  - text: "(* skip *)"
+                    attr: 1
+                  - text: "\r\t\tELSIF c.sel.next = NIL THEN\r\t\t\tContainers.MarkSingleton(c, f, show)\r\t\tELSE\r\t\t\tMarkList(c, f, c.sel, show)\r\t\tEND\r\tEND MarkSelection;\r\r\r\t"
+                    attr: 0
+                  - text: "(* caret *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (c: StdController) HasCaret (): BOOLEAN;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\tEND HasCaret;\r\r\tPROCEDURE (c: StdController) MarkCaret (f: Views.Frame; show: BOOLEAN);\r\tEND MarkCaret;\r\r\r\t"
+                    attr: 0
+                  - text: "(* FormController protocol *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (c: StdController) Select (view: Views.View);\r\t\tVAR l, h, sel: List; msg: MarkMsg;\r\tBEGIN\r\t\tASSERT(view # NIL, 20); ASSERT(view.context.ThisModel() = c.form, 21);\r\t\tASSERT(~(Containers.noSelection IN c.opts), 22);\r\t\tl := c.sel; WHILE (l # NIL) & (l.view # view) DO l := l.next END;\r\t\tIF l = NIL THEN\t"
+                    attr: 0
+                  - text: "(* view is not yet selected *)"
+                    attr: 1
+                  - text: "\r\t\t\tsel := c.sel;\r\t\t\tIF sel = NIL THEN\r\t\t\t\tc.SetSingleton(view)\r\t\t\tELSE\r\t\t\t\tNEW(l); l.view := view;\r\t\t\t\tIF sel.next = NIL THEN\r\t\t\t\t\tc.SetSingleton(NIL); ASSERT(c.sel = NIL, 100);\r\t\t\t\t\tl.next := sel; c.sel := l;\r\t\t\t\t\tmsg.list := l\r\t\t\t\tELSE\r\t\t\t\t\tl.next := sel; c.sel := l;\r\t\t\t\t\tNEW(h); h.view := view;\r\t\t\t\t\tmsg.list := h\r\t\t\t\tEND;\r\t\t\t\tmsg.show := TRUE; Views.Broadcast(c.view, msg)\r\t\t\tEND\r\t\tEND\r\tEND Select;\r\r\tPROCEDURE (c: StdController) Deselect (view: Views.View);\r\t\tVAR l, h: List; msg: MarkMsg;\r\tBEGIN\r\t\tASSERT(view # NIL, 20); ASSERT(view.context.ThisModel() = c.form, 21);\r\t\tl := c.sel; h := NIL; WHILE (l # NIL) & (l.view # view) DO h := l; l := l.next END;\r\t\tIF l # NIL THEN\t"
+                    attr: 0
+                  - text: "(* l is selection node of view, h its predecessor *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF (h = NIL) & (l.next = NIL) THEN\t"
+                    attr: 0
+                  - text: "(* singleton *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tc.SetSingleton(NIL)\r\t\t\tELSE\r\t\t\t\tIF h = NIL THEN c.sel := l.next ELSE h.next := l.next END;\r\t\t\t\tmsg.list:= l; l.next := NIL; msg.show := FALSE; Views.Broadcast(c.view, msg);\r\t\t\t\tIF (c.sel # NIL) & (c.sel.next = NIL) THEN\t"
+                    attr: 0
+                  - text: "(* singleton *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tview := c.sel.view;\r\t\t\t\t\tmsg.list := c.sel; c.sel := NIL; \r\t\t\t\t\tmsg.show := TRUE; Views.Broadcast(c.view, msg);\r\t\t\t\t\tc.SetSingleton(view)\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND Deselect;\r\r\tPROCEDURE (c: StdController) IsSelected (view: Views.View): BOOLEAN;\r\t\tVAR l: List;\r\tBEGIN\r\t\tIF view # NIL THEN\r\t\t\tASSERT(view.context.ThisModel() = c.form, 20);\r\t\t\tl := c.sel; WHILE (l # NIL) & (l.view # view) DO l := l.next END;\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " l # NIL\r\t\tELSE\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " FALSE\r\t\tEND\r\tEND IsSelected;\r\r\tPROCEDURE (c: StdController) GetSelection (): List;\r\t\tVAR l, h, s: List;\r\tBEGIN\r\t\tl := NIL; s := c.sel;\r\t\tWHILE s # NIL DO NEW(h); h.next := l; l := h; h.view := s.view; s := s.next END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " l\r\tEND GetSelection;\r\r\tPROCEDURE (c: StdController) SetSelection (l: List);\r\t\tVAR msg: MarkMsg;\r\tBEGIN\r\t\tc.SelectAll(FALSE); ASSERT(c.sel = NIL, 100);\r\t\tIF l = NIL THEN\t"
+                    attr: 0
+                  - text: "(* skip *)"
+                    attr: 1
+                  - text: "\r\t\tELSIF l.next = NIL THEN\r\t\t\tc.SetSingleton(l.view)\r\t\tELSE\r\t\t\tmsg.list := l; c.sel := l; \r\t\t\tmsg.show := TRUE; Views.Broadcast(c.view, msg)\r\t\tEND\r\tEND SetSelection;\r\r\r\t"
+                    attr: 0
+                  - text: "(* StdDirectory *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (d: StdDirectory) NewController (opts: SET): Controller;\r\t\tVAR c: StdController;\r\tBEGIN\r\t\tNEW(c); c.SetOpts(opts); "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " c\r\tEND NewController;\r\r\r\t"
+                    attr: 0
+                  - text: "(** miscellaneous **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Focus
+                    attr: 3
+                  - text: "* (): Controller;\r\t\tVAR msg: PollFocusMsg; \r\tBEGIN\r\t\tmsg.c := NIL;\r\t\tControllers.Forward(msg);\r\t\tRETURN msg.c\r\tEND Focus;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: Insert
+                    attr: 3
+                  - text: "* (c: Controller; view: Views.View; l, t, r, b: INTEGER);\r\t\tVAR w, h: INTEGER;\r\tBEGIN\r\t\tw := r - l; h := b - t;\r\t\tFormViews.RoundToGrid(c.view, l, t);\r\t\tc.form.Insert(view, l, t, l + w, t + h)\r\tEND Insert;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetDir
+                    attr: 3
+                  - text: "* (d: Directory);\r\tBEGIN\r\t\tASSERT(d # NIL, 20); dir := d\r\tEND SetDir;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Install
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tFormViews.SetCtrlDir(dir)\r\tEND Install;\r\r\tPROCEDURE Init;\r\t\tVAR d: StdDirectory;\r\tBEGIN\r\t\tNEW(d); SetDir(d); stdDir := d\r\tEND Init;\r\rBEGIN\r\tInit\rEND FormControllers.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 26240
+          bodyLen: 8

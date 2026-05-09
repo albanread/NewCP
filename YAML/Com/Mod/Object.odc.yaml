@@ -1,0 +1,536 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Com\\Mod\\Object.odc"
+  size: 18275
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 18144
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 17958
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 17872
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 25
+                bodyPos: 17993
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 17479
+                runListLen: 2538
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE ComObject;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- 20070205, bh, Unicode support\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT\r\t\tSYSTEM, COM, WinApi, WinOle, ComTools;\r\t\r\tCONST\r\t\tObjectID = \"{00010001-1000-11cf-adf0-444553540000}\";\r\t\tstreamStr = \"CONTENTS\";\r\t\tcbFormat = 200H;\r\t\r\tTYPE\r\t\tIClassFactory = POINTER TO RECORD (WinOle.IClassFactory) END;\r\t\t\r\t\tObject = POINTER TO RECORD (COM.IUnknown)\r\t\t\tioo: IOleObject;\r\t\t\tido: IDataObject;\r\t\t\tips: IPersistStorage;\r\t\t\tics: WinOle.IOleClientSite;\r\t\t\tidah: WinOle.IDataAdviseHolder;\r\t\t\tioah: WinOle.IOleAdviseHolder;\r\t\t\tisg: WinOle.IStorage;\r\t\t\tism: WinOle.IStream;\r\t\t\tw, h: INTEGER\r\t\tEND;\r\t\tIOleObject = POINTER TO RECORD (WinOle.IOleObject)\r\t\t\tobj: Object\r\t\tEND;\r\t\tIDataObject = POINTER TO RECORD (WinOle.IDataObject)\r\t\t\tobj: Object\r\t\tEND;\r\t\tIPersistStorage = POINTER TO RECORD (WinOle.IPersistStorage)\r\t\t\tobj: Object\r\t\tEND;\r\t\t\r\t\t\r\tVAR\r\t\tlocks: INTEGER;\r\t\ttoken: INTEGER;\r\t\t\r\t\t\r\tPROCEDURE PictureOf (obj: Object): WinApi.HMETAFILEPICT;\r\t\tVAR dc: WinApi.HDC; mf: WinApi.HMETAFILE; mp: WinApi.PtrMETAFILEPICT;\r\t\t\trc: WinApi.RECT; res: INTEGER; h: WinApi.HMETAFILEPICT; oldb, oldp: WinApi.HGDIOBJ;\r\tBEGIN\r\t\tdc := WinApi.CreateMetaFileW(NIL);\r\t\tIF dc # 0 THEN\r\t\t\tres := WinApi.SetMapMode(dc, WinApi.MM_ANISOTROPIC);\r\t\t\tres := WinApi.SetWindowOrgEx(dc, 0, 0, NIL);\r\t\t\tres := WinApi.SetWindowExtEx(dc, 20, 20, NIL);\r\t\t\toldb := WinApi.SelectObject(dc, WinApi.GetStockObject(WinApi.NULL_BRUSH));\r\t\t\toldp := WinApi.SelectObject(dc, WinApi.CreatePen(WinApi.PS_SOLID, 1, 0));\r\t\t\tres := WinApi.Ellipse(dc, 2, 2, 18, 18);\r\t\t\tres := WinApi.Ellipse(dc, 6, 6, 8, 8);\r\t\t\tres := WinApi.Ellipse(dc, 12, 6, 14, 8);\r\t\t\tres := WinApi.Ellipse(dc, 8, 8, 12, 12);\r\t\t\tres := WinApi.Ellipse(dc, 6, 14, 14, 16);\r\t\t\tres := WinApi.SelectObject(dc, oldb);\r\t\t\tres := WinApi.DeleteObject(WinApi.SelectObject(dc, oldp));\r\t\t\tmf := WinApi.CloseMetaFile(dc);\r\t\t\tIF mf # 0 THEN\r\t\t\t\th := WinApi.GlobalAlloc(WinApi.GMEM_DDESHARE + WinApi.GMEM_MOVEABLE,\r\t\t\t\t\t\t\t\t\t\t\t\t\tSIZE(WinApi.METAFILEPICT));\r\t\t\t\tIF h # 0 THEN\r\t\t\t\t\tmp := "
+                    attr: 0
+                  - text: SYSTEM.VAL
+                    attr: 3
+                  - text: "(WinApi.PtrMETAFILEPICT, WinApi.GlobalLock(h));\r\t\t\t\t\tmp.hMF := mf;\r\t\t\t\t\tmp.mm := WinApi.MM_ANISOTROPIC;\r\t\t\t\t\tmp.xExt := obj.w; mp.yExt := obj.h;\r\t\t\t\t\tres := WinApi.GlobalUnlock(h);\r\t\t\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " h\r\t\t\t\tELSE res := WinApi.DeleteMetaFile(mf)\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 0\r\tEND PictureOf;\r\t\r\t\r\t(* ---------- IClassFactory ---------- *)\r\t\r\tPROCEDURE (this: IClassFactory) CreateInstance (outer: COM.IUnknown; IN iid: COM.GUID;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT int: COM.IUnknown): COM.RESULT;\r\t\tVAR res: COM.RESULT; new: Object;\r\tBEGIN\r\t\tIF outer = NIL THEN\r\t\t\tNEW(new);\r\t\t\tIF new # NIL THEN\r\t\t\t\tNEW(new.ioo, new); NEW(new.ido, new); NEW(new.ips, new);\r\t\t\t\tIF (new.ioo # NIL) & (new.ido # NIL) & (new.ips # NIL) THEN\r\t\t\t\t\tnew.ioo.obj := new;\r\t\t\t\t\tnew.ido.obj := new;\r\t\t\t\t\tnew.ips.obj := new;\r\t\t\t\t\tres := new.QueryInterface(iid, int)\r\t\t\t\tELSE res := WinApi.E_OUTOFMEMORY\r\t\t\t\tEND\r\t\t\tELSE res := WinApi.E_OUTOFMEMORY\r\t\t\tEND\r\t\tELSE res := WinApi.CLASS_E_NOAGGREGATION\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " res\r\tEND CreateInstance;\r\r\tPROCEDURE (this: IClassFactory) LockServer (lock: WinApi.BOOL): COM.RESULT;\r\tBEGIN\r\t\tIF lock # 0 THEN INC(locks) ELSE DEC(locks) END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND LockServer;\r\t\r\t\r\t(* ---------- Object ---------- *)\r\t\r\tPROCEDURE (this: Object) QueryInterface (IN iid: COM.GUID; OUT int: COM.IUnknown): COM.RESULT;\r\tBEGIN\r\t\tIF COM.QUERY(this, iid, int)\r\t\t\tOR COM.QUERY(this.ioo, iid, int)\r\t\t\tOR COM.QUERY(this.ido, iid, int)\r\t\t\tOR COM.QUERY(this.ips, iid, int) THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\tELSE "
+                    attr: 0
+                  - text: "RETURN "
+                    attr: 3
+                  - text: "WinApi.E_NOINTERFACE\r\t\tEND\r\tEND QueryInterface;\r\t\r\t\r\t(* ---------- IOleObject ---------- *)\r\t\r\tPROCEDURE (this: IOleObject) SetClientSite (site: WinOle.IOleClientSite): COM.RESULT;\r\tBEGIN\r\t\tthis.obj.ics := site;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND SetClientSite;\r\t\r\tPROCEDURE (this: IOleObject) GetClientSite (OUT site: WinOle.IOleClientSite): COM.RESULT;\r\tBEGIN\r\t\tsite := this.obj.ics;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND GetClientSite;\r\t\r\tPROCEDURE (this: IOleObject) SetHostNames (app, obj: WinApi.PtrWSTR): COM.RESULT;\r\tBEGIN\r"
+                    attr: 0
+                  - text: "\t\tRETURN"
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND SetHostNames;\r\t\r\tPROCEDURE (this: IOleObject) Close (saveOption: INTEGER): COM.RESULT;\r\tBEGIN\r"
+                    attr: 0
+                  - text: "\t\tRETURN"
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND Close;\r\t\r\tPROCEDURE (this: IOleObject) SetMoniker (which: INTEGER; mk: WinOle.IMoniker): COM.RESULT;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_NOTIMPL\r\tEND SetMoniker;\r\t\r\tPROCEDURE (this: IOleObject) GetMoniker (assign, which: INTEGER; OUT mk: WinOle.IMoniker): COM.RESULT;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_NOTIMPL\r\tEND GetMoniker;\r\t\r\tPROCEDURE (this: IOleObject) InitFromData (obj: WinOle.IDataObject; creation: WinApi.BOOL;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\treserved: INTEGER): COM.RESULT;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_NOTIMPL\r\tEND InitFromData;\r\t\r\tPROCEDURE (this: IOleObject) GetClipboardData (reserved: INTEGER; OUT  obj: WinOle.IDataObject):\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tCOM.RESULT;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_NOTIMPL\r\tEND GetClipboardData;\r\t\r\tPROCEDURE (this: IOleObject) DoVerb (verb: INTEGER; IN msg: WinApi.MSG; activeSite: WinOle.IOleClientSite;\r\t\t\t\t\t\t\t\t\t\t\t\t\tindex: INTEGER; parent: WinApi.HWND; IN posRect: WinApi.RECT):\r\t\t\t\t\t\t\t\t\t\t\t\t\tCOM.RESULT;\r\tBEGIN\r\t\tIF verb < 0 THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\tELSE"
+                    attr: 0
+                  - text: " RETURN"
+                    attr: 3
+                  - text: " WinApi.OLEOBJ_E_NOVERBS\r\t\tEND\r\tEND DoVerb;\r\t\r\tPROCEDURE (this: IOleObject) EnumVerbs (OUT enum: WinOle.IEnumOLEVERB): COM.RESULT;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.OLEOBJ_E_NOVERBS\r\tEND EnumVerbs;\r\t\r\tPROCEDURE (this: IOleObject) Update (): COM.RESULT;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND Update;\r\t\r\tPROCEDURE (this: IOleObject) IsUpToDate (): COM.RESULT;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND IsUpToDate;\r\t\r\tPROCEDURE (this: IOleObject) GetUserClassID (OUT id: COM.GUID): COM.RESULT;\r\tBEGIN\r\t\tid := ObjectID;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND GetUserClassID;\r\t\r\tPROCEDURE (this: IOleObject) GetUserType (form: INTEGER; OUT type: WinApi.PtrWSTR): COM.RESULT;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.OLE_S_USEREG\r\tEND GetUserType;\r\t\r\tPROCEDURE (this: IOleObject) SetExtent (aspect: SET; IN size: WinApi.SIZE): COM.RESULT;\r\t\tVAR res: COM.RESULT;\r\tBEGIN\r\t\tIF aspect * WinOle.DVASPECT_CONTENT # {} THEN\r\t\t\tthis.obj.w := size.cx; this.obj.h := size.cy;\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_FAIL\r\t\tEND\r\tEND SetExtent;\r\t\r\tPROCEDURE (this: IOleObject) GetExtent (aspect: SET; OUT size: WinApi.SIZE): COM.RESULT;\r\tBEGIN\r\t\tIF aspect * WinOle.DVASPECT_CONTENT # {} THEN\r\t\t\tsize.cx := this.obj.w; size.cy := this.obj.h;\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_FAIL\r\t\tEND\r\tEND GetExtent;\r\t\r\tPROCEDURE (this: IOleObject) Advise (sink: WinOle.IAdviseSink; OUT connection: INTEGER): COM.RESULT;\r\t\tVAR res: COM.RESULT;\r\tBEGIN\r\t\tIF this.obj.ioah = NIL THEN\r\t\t\tres := WinOle.CreateOleAdviseHolder(this.obj.ioah);\r\t\t\tIF res < 0 THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " res END\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " this.obj.ioah.Advise(sink, connection)\r\tEND Advise;\r\t\r\tPROCEDURE (this: IOleObject) Unadvise (connection: INTEGER): COM.RESULT;\r\tBEGIN\r\t\tIF this.obj.ioah # NIL THEN\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " this.obj.ioah.Unadvise(connection)\r\t\tELSE "
+                    attr: 0
+                  - text: "RETURN "
+                    attr: 3
+                  - text: "WinApi.E_FAIL\r\t\tEND\r\tEND Unadvise;\r\t\r\tPROCEDURE (this: IOleObject) EnumAdvise (OUT enum: WinOle.IEnumSTATDATA): COM.RESULT;\r\tBEGIN\r\t\tIF this.obj.ioah # NIL THEN\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " this.obj.ioah.EnumAdvise(enum)\r\t\tELSE "
+                    attr: 0
+                  - text: "RETURN "
+                    attr: 3
+                  - text: "WinApi.E_FAIL\r\t\tEND\r\tEND EnumAdvise;\r\t\r\tPROCEDURE (this: IOleObject) GetMiscStatus (aspect: SET; OUT status: SET): COM.RESULT;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: "RETURN "
+                    attr: 3
+                  - text: "WinApi.OLE_S_USEREG\r\tEND GetMiscStatus;\r\t\r\tPROCEDURE (this: IOleObject) SetColorScheme (IN pal: WinApi.LOGPALETTE): COM.RESULT;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: "RETURN "
+                    attr: 3
+                  - text: "WinApi.E_NOTIMPL\r\tEND SetColorScheme;\r\r\t\r\t(* ---------- IDataObject ---------- *)\r\t\r\tPROCEDURE (this: IDataObject) GetData (IN format: WinOle.FORMATETC;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT medium: WinOle.STGMEDIUM): COM.RESULT;\r\t\tVAR res: COM.RESULT;\r\tBEGIN\r\t\tres := this.QueryGetData(format);\r\t\tIF res = WinApi.S_OK THEN\r\t\t\tComTools.GenMetafileMedium(PictureOf(this.obj), NIL, medium);\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " res\r\t\tEND\r\tEND GetData;\r\t\r\tPROCEDURE (this: IDataObject) GetDataHere (IN format: WinOle.FORMATETC;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR medium: WinOle.STGMEDIUM): COM.RESULT;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.DV_E_FORMATETC\r\tEND GetDataHere;\r\t\r\tPROCEDURE (this: IDataObject) QueryGetData (IN format: WinOle.FORMATETC): COM.RESULT;\r\tBEGIN\r\t\tIF format.dwAspect * WinOle.DVASPECT_CONTENT = {} THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.DV_E_DVASPECT\r\t\tELSIF format.cfFormat # WinApi.CF_METAFILEPICT THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.DV_E_FORMATETC\r\t\tELSIF format.tymed * WinOle.TYMED_MFPICT = {} THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.DV_E_TYMED\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\tEND\r\tEND QueryGetData;\r\t\r\tPROCEDURE (this: IDataObject) GetCanonicalFormatEtc (IN formatIn: WinOle.FORMATETC;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT formatOut: WinOle.FORMATETC): COM.RESULT;\r\tBEGIN\r"
+                    attr: 0
+                  - text: "\t\tRETURN"
+                    attr: 3
+                  - text: " WinApi.DATA_S_SAMEFORMATETC\r\tEND GetCanonicalFormatEtc;\r\t\r\tPROCEDURE (this: IDataObject) SetData (IN format: WinOle.FORMATETC;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tIN medium: WinOle.STGMEDIUM; release: WinApi.BOOL): COM.RESULT;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.DV_E_FORMATETC\r\tEND SetData;\r\t\r\tPROCEDURE (this: IDataObject) EnumFormatEtc (direction: SET; OUT enum: WinOle.IEnumFORMATETC):\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tCOM.RESULT;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.OLE_S_USEREG\r\tEND EnumFormatEtc;\r\t\r\tPROCEDURE (this: IDataObject) DAdvise (IN format: WinOle.FORMATETC; flags: SET;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tadvSink: WinOle.IAdviseSink; OUT connection: INTEGER): COM.RESULT;\r\t\tVAR res: COM.RESULT;\r\tBEGIN\r\t\tIF this.obj.idah = NIL THEN\r\t\t\tres := WinOle.CreateDataAdviseHolder(this.obj.idah);\r\t\t\tIF res < 0 THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " res END\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " this.obj.idah.Advise(this, format, flags, advSink, connection)\r\tEND DAdvise;\r\t\r\tPROCEDURE (this: IDataObject) DUnadvise (connection: INTEGER): COM.RESULT;\r\tBEGIN\r\t\tIF this.obj.idah # NIL THEN\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " this.obj.idah.Unadvise(connection)\r\t\tELSE "
+                    attr: 0
+                  - text: "RETURN "
+                    attr: 3
+                  - text: "WinApi.E_FAIL\r\t\tEND\r\tEND DUnadvise;\r\t\r\tPROCEDURE (this: IDataObject) EnumDAdvise (OUT  enum: WinOle.IEnumSTATDATA): COM.RESULT;\r\tBEGIN\r\t\tIF this.obj.idah # NIL THEN\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " this.obj.idah.EnumAdvise(enum)\r\t\tELSE "
+                    attr: 0
+                  - text: "RETURN "
+                    attr: 3
+                  - text: "WinApi.E_FAIL\r\t\tEND\r\tEND EnumDAdvise;\r\t\r\t\r\t(* ---------- IPersistStorage ---------- *)\r\t\r\tPROCEDURE (this: IPersistStorage) GetClassID (OUT id: COM.GUID): COM.RESULT;\r\tBEGIN\r\t\tid := ObjectID;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND GetClassID;\r\r\tPROCEDURE (this: IPersistStorage) IsDirty (): COM.RESULT;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_FALSE\r\tEND IsDirty;\r\t\r\tPROCEDURE (this: IPersistStorage) InitNew (stg: WinOle.IStorage): COM.RESULT;\r\t\tVAR res: COM.RESULT; ps: WinApi.PtrWSTR;\r\tBEGIN\r\t\tIF stg # NIL THEN\r\t\t\tres := stg.CreateStream(streamStr,\r\t\t\t\t\t\t\t\t\t\t\tWinOle.STGM_DIRECT + WinOle.STGM_CREATE\r\t\t\t\t\t\t\t\t\t\t\t+ WinOle.STGM_READWRITE + WinOle.STGM_SHARE_EXCLUSIVE,\r\t\t\t\t\t\t\t\t\t\t\t0, 0, this.obj.ism);\r\t\t\tIF res >= 0 THEN\r\t\t\t\tres := WinOle.OleRegGetUserType(ObjectID, WinOle.USERCLASSTYPE_SHORT, ps);\r\t\t\t\tres := WinOle.WriteFmtUserTypeStg(stg, cbFormat, ps);\r\t\t\t\tComTools.FreeString(ps);\r\t\t\t\tthis.obj.isg := stg;\r\t\t\t\tthis.obj.w := 5000;\r\t\t\t\tthis.obj.h := 5000;\r\t\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " res\r\t\t\tEND\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_POINTER\r\t\tEND\r\tEND InitNew;\r\t\r\tPROCEDURE (this: IPersistStorage) Load (stg: WinOle.IStorage): COM.RESULT;\r\t\tVAR res: COM.RESULT;\r\tBEGIN\r\t\tIF stg # NIL THEN\r\t\t\tres := stg.OpenStream(streamStr, 0,\r\t\t\t\t\t\t\t\t\t\tWinOle.STGM_DIRECT + WinOle.STGM_READWRITE\r\t\t\t\t\t\t\t\t\t\t+ WinOle.STGM_SHARE_EXCLUSIVE,\r\t\t\t\t\t\t\t\t\t\t0, this.obj.ism);\r\t\t\tIF res >= 0 THEN\r\t\t\t\tres := this.obj.ism.Read("
+                    attr: 0
+                  - text: SYSTEM
+                    attr: 3
+                  - text: .
+                    attr: 0
+                  - text: ADR
+                    attr: 3
+                  - text: "(this.obj.w), 4, NIL);\r\t\t\t\tres := this.obj.ism.Read("
+                    attr: 0
+                  - text: SYSTEM
+                    attr: 3
+                  - text: .
+                    attr: 0
+                  - text: ADR
+                    attr: 3
+                  - text: "(this.obj.h), 4, NIL);\r\t\t\t\tIF res >= 0 THEN\r\t\t\t\t\tthis.obj.isg := stg;\r\t\t\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.STG_E_READFAULT\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_POINTER\r\t\tEND\r\tEND Load;\r\t\r\tPROCEDURE (this: IPersistStorage) Save (stg: WinOle.IStorage; sameAsLoad: WinApi.BOOL): COM.RESULT;\r\t\tVAR stm: WinOle.IStream; res: COM.RESULT; ps: WinApi.PtrWSTR;\r\tBEGIN\r\t\tIF sameAsLoad # 0 THEN\r\t\t\tstm := this.obj.ism;\r\t\t\tres := stm.Seek(0, WinOle.STREAM_SEEK_SET, NIL)\r\t\tELSIF stg # NIL THEN\r\t\t\tres := stg.CreateStream(streamStr,\r\t\t\t\t\t\t\t\t\t\t\tWinOle.STGM_DIRECT + WinOle.STGM_CREATE\r\t\t\t\t\t\t\t\t\t\t\t+ WinOle.STGM_WRITE + WinOle.STGM_SHARE_EXCLUSIVE,\r\t\t\t\t\t\t\t\t\t\t\t0, 0, stm);\r\t\t\tIF res < 0 THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " res END;\r\t\t\tres := WinOle.OleRegGetUserType(ObjectID, WinOle.USERCLASSTYPE_SHORT, ps);\r\t\t\tres := WinOle.WriteFmtUserTypeStg(stg, cbFormat, ps);\r\t\t\tComTools.FreeString(ps);\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_POINTER\r\t\tEND;\r\t\tres := stm.Write("
+                    attr: 0
+                  - text: SYSTEM.ADR
+                    attr: 3
+                  - text: "(this.obj.w), 4, NIL);\r\t\tres := stm.Write("
+                    attr: 0
+                  - text: SYSTEM.ADR
+                    attr: 3
+                  - text: "(this.obj.h), 4, NIL);\r\t\tIF res < 0 THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.STG_E_WRITEFAULT\r\t\tELSE"
+                    attr: 0
+                  - text: " RETURN"
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\tEND\r\tEND Save;\r\t\r\tPROCEDURE (this: IPersistStorage) SaveCompleted (new: WinOle.IStorage): COM.RESULT;\r\t\tVAR res: COM.RESULT;\r\tBEGIN\r\t\tIF new # NIL THEN\r\t\t\tres := new.OpenStream(streamStr, 0,\r\t\t\t\t\t\t\t\t\t\tWinOle.STGM_DIRECT + WinOle.STGM_READWRITE\r\t\t\t\t\t\t\t\t\t\t+ WinOle.STGM_SHARE_EXCLUSIVE,\r\t\t\t\t\t\t\t\t\t\t0, this.obj.ism);\r\t\t\tIF res >= 0 THEN this.obj.isg := new;\r\t\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " res\r\t\t\tEND\r\t\tEND;\r\t\tIF this.obj.ioah # NIL THEN res := this.obj.ioah.SendOnSave() END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND SaveCompleted;\r\t\r\tPROCEDURE (this: IPersistStorage) HandsOffStorage (): COM.RESULT;\r\tBEGIN\r\t\tthis.obj.ism := NIL; this.obj.isg := NIL;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND HandsOffStorage;\r\t\r\r\t(* ---------- commands ---------- *)\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: Register
+                    attr: 3
+                  - text: "*;\r\t\tVAR res: COM.RESULT; factory: IClassFactory;\r\tBEGIN\r\t\tNEW(factory);\r\t\tres := WinOle.CoRegisterClassObject(ObjectID, factory,\r\t\t\t\t\t\t\t\t\t\t\t\tWinOle.CLSCTX_LOCAL_SERVER, WinOle.REGCLS_MULTIPLEUSE, token);\r\tEND Register;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: Unregister
+                    attr: 3
+                  - text: "*;\r\t\tVAR res: COM.RESULT;\r\tBEGIN\r\t\tIF (token # 0) & (locks = 0) THEN res := WinOle.CoRevokeClassObject(token) END\r\tEND Unregister;\r\t\rEND ComObject.\r\r"
+                    attr: 0
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 23
+                      bodyPos: 2866
+                      bodyLen: 6
+                    attr: 0
+                    w: 168275
+                    h: 142875
+                  - text: "ComObject.Register\r"
+                    attr: 0
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 24
+                      bodyPos: 2912
+                      bodyLen: 6
+                    attr: 0
+                    w: 168275
+                    h: 142875
+                  - text: "ComObject.Unregister\r\r\r-----------------------------------------------------------------------------------------------------------------\rREGEDIT\r\rHKEY_CLASSES_ROOT\\BlackBox.Object = BlackBox Object\rHKEY_CLASSES_ROOT\\BlackBox.Object\\CLSID = {00010001-1000-11cf-adf0-444553540000}\rHKEY_CLASSES_ROOT\\BlackBox.Object\\Insertable\r\rHKEY_CLASSES_ROOT\\CLSID\\{00010001-1000-11cf-adf0-444553540000} = BlackBox Object\rHKEY_CLASSES_ROOT\\CLSID\\{00010001-1000-11cf-adf0-444553540000}\\ProgID = BlackBox.Object\r\rHKEY_CLASSES_ROOT\\CLSID\\{00010001-1000-11cf-adf0-444553540000}\\LocalServer32 = C:\\BlackBox\\BlackBox.exe\rHKEY_CLASSES_ROOT\\CLSID\\{00010001-1000-11cf-adf0-444553540000}\\InProcHandler32 = ole32.dll\r\rHKEY_CLASSES_ROOT\\CLSID\\{00010001-1000-11cf-adf0-444553540000}\\Insertable\rHKEY_CLASSES_ROOT\\CLSID\\{00010001-1000-11cf-adf0-444553540000}\\DefaultIcon = C:\\BlackBox\\BlackBox.exe,0\r\rHKEY_CLASSES_ROOT\\CLSID\\{00010001-1000-11cf-adf0-444553540000}\\DataFormats\\GetSet\\0 = 3,1,32,1\rHKEY_CLASSES_ROOT\\CLSID\\{00010001-1000-11cf-adf0-444553540000}\\MiscStatus = 16\rHKEY_CLASSES_ROOT\\CLSID\\{00010001-1000-11cf-adf0-444553540000}\\AuxUserType\\2 = BlackBox Object\rHKEY_CLASSES_ROOT\\CLSID\\{00010001-1000-11cf-adf0-444553540000}\\AuxUserType\\3 = BlackBox\r-----------------------------------------------------------------------------------------------------------------\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 29
+          bodyPos: 18240
+          bodyLen: 8

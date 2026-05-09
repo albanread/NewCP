@@ -1,0 +1,1110 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\System\\Docu\\Controllers.odc"
+  size: 32555
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 32424
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 32238
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 32152
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                asc: 134600
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000003
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 10
+                bodyPos: 32152
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 31638
+                runListLen: 5695
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [4]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [5]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                flow:
+                  - text: Controllers
+                    attr: 0
+                  - text: "\r\rDEFINITION Controllers;\r\r\tIMPORT Fonts, Ports, Stores, Views;\r\r\tCONST\r\t\tfrontPath = FALSE; targetPath = TRUE;\r\t\tdecLine = 0; incLine = 1; decPage = 2; incPage = 3; gotoPos = 4;\r\t\tnextPageX = 0; nextPageY = 0; gotoPageX = 2; gotoPageY = 3;\r\t\tcut = 0; copy = 1; pasteChar = 2; paste = 4;\r\t\tdoubleClick = 0; extend = 1; modify = 2;\r\t\tnoMark = FALSE; mark = TRUE;\r\t\thide = FALSE; show = TRUE;\r\r\tTYPE\r\t\tController = POINTER TO ABSTRACT RECORD (Stores.Store) END;\r\r\t\tDirectory = POINTER TO ABSTRACT RECORD\r\t\t\t(d: Directory) New (): Controller, NEW, ABSTRACT\r\t\tEND;\r\r\t\tForwarder = POINTER TO ABSTRACT RECORD\r\t\t\t(n: Forwarder) Forward (target: BOOLEAN; VAR msg: Message), NEW, ABSTRACT;\r\t\t\t(n: Forwarder) Transfer (VAR msg: TransferMessage), NEW, ABSTRACT\r\t\tEND;\r\r\t\tMessage = Views.CtrlMessage;\r\r\t\tPollFocusMsg = EXTENSIBLE RECORD (Message)\r\t\t\tfocus: Views.Frame\r\t\tEND;\r\r\t\tPollSectionMsg = RECORD (Message)\r\t\t\tfocus, vertical: BOOLEAN\r\t\t\twholeSize, partSize, partPos: LONGINT;\r\t\t\tvalid, done: BOOLEAN\r\t\tEND;\r\r\t\tPollOpsMsg = RECORD (Message)\r\t\t\ttype: Stores.TypeName;\r\t\t\tpasteType: Stores.TypeName;\r\t\t\tsingleton: Views.View;\r\t\t\tselectable: BOOLEAN;\r\t\t\tvalid: SET\r\t\tEND;\r\r\t\tScrollMsg = RECORD (Message)\r\t\t\tfocus, vertical: BOOLEAN\r\t\t\top: INTEGER;\r\t\t\tpos: LONGINT;\r\t\t\tdone: BOOLEAN\r\t\tEND;\r\r\t\tPageMsg = RECORD (Message)\r\t\t\top: INTEGER;\r\t\t\tpageX, pageY: INTEGER;\r\t\t\tdone, eox, eoy: BOOLEAN\r\t\tEND;\r\r\t\tTickMsg = RECORD (Message)\r\t\t\ttick: INTEGER\r\t\tEND;\r\r\t\tMarkMsg = RECORD (Message)\r\t\t\tshow, focus: BOOLEAN\r\t\tEND;\r\r\t\tSelectMsg = RECORD (Message)\r\t\t\tset: BOOLEAN\r\t\tEND;\r\r\t\tRequestMessage = ABSTRACT RECORD (Message)\r\t\t\trequestFocus: BOOLEAN\r\t\tEND;\r\r\t\tEditMsg = RECORD (RequestMessage)\r\t\t\top: INTEGER;\r\t\t\tmodifiers: SET;\r\t\t\tchar: CHAR;\r\t\t\tview: Views.View;\r\t\t\tw, h: INTEGER;\r\t\t\tisSingle: BOOLEAN;\r\t\t\tclipboard: BOOLEAN\r\t\tEND;\r\r\t\tReplaceViewMsg = RECORD (RequestMessage)\r\t\t\told, new: Views.View\r\t\tEND;\r\r\t\tCursorMessage = ABSTRACT RECORD (RequestMessage)\r\t\t\tx, y: INTEGER\r\t\tEND;\r\r\t\tPollCursorMsg = RECORD (CursorMessage)\r\t\t\tcursor: INTEGER;\r\t\t\tmodifiers: SET\r\t\tEND;\r\r\t\tTrackMsg = RECORD (CursorMessage)\r\t\t\tmodifiers: SET\r\t\tEND;\r\r\t\tWheelMsg = RECORD (CursorMessage)\r\t\t\tdone: BOOLEAN;\r\t\t\top, nofLines: INTEGER\r\t\tEND;\r\r\t\tTransferMessage = ABSTRACT RECORD (CursorMessage)\r\t\t\tsource: Views.Frame;\r\t\t\tsourceX, sourceY: INTEGER\r\t\tEND;\r\r\t\tPollDropMsg = RECORD (TransferMessage)\r\t\t\tmark: BOOLEAN;\r\t\t\tshow: BOOLEAN;\r\t\t\ttype: Stores.TypeName;\r\t\t\tisSingle: BOOLEAN;\r\t\t\tw, h: INTEGER;\r\t\t\trx, ry: INTEGER;\r\t\t\tdest: Views.Frame\r \t\tEND;\r\r\t\tDropMsg = RECORD (CursorMessage)\r\t\t\tview: Views.View;\r\t\t\tisSingle: BOOLEAN;\r\t\t\tw, h: INTEGER;\r\t\t\trx, ry: INTEGER\r\t\tEND;\r\r\tVAR path-: BOOLEAN;\r\r\tPROCEDURE Forward (VAR msg: Message);\r\tPROCEDURE FocusFrame (): Views.Frame;\r\tPROCEDURE FocusView (): Views.View;\r\tPROCEDURE FocusModel (): Models.Model;\r\r\tPROCEDURE Register (f: Forwarder);\r\tPROCEDURE Delete (f: Forwarder);\r\tPROCEDURE ForwardVia (target: BOOLEAN; VAR msg: Message);\r\tPROCEDURE SetCurrentPath (target: BOOLEAN);\r\tPROCEDURE PollSection (VAR msg: PollSectionMsg);\r\tPROCEDURE PollOps (VAR msg: PollOpsMsg);\r\tPROCEDURE PollCursor (x, y: INTEGER; OUT cursor: INTEGER);\r\tPROCEDURE Transfer (x, y: INTEGER; source: Views.Frame; sourceX, sourceY: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\tVAR msg: TransferMessage);\r\tPROCEDURE PollDrop (x, y: INTEGER; source: Views.Frame; sourceX, sourceY: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\tmark, show: BOOLEAN; type: Stores.TypeName; isSingle: BOOLEAN;\r\t\t\t\t\t\t\t\t\t\t\tw, h, rx, ry: INTEGER; OUT dest: Views.Frame; OUT destX, destY: INTEGER);\r\tPROCEDURE Drop (x, y: INTEGER; source: Views.Frame; sourceX, sourceY: INTEGER;\r\t\t\t\t\t\t\t\t\tview: Views.View; isSingle: BOOLEAN; w, h, rx, ry: INTEGER);\r\tPROCEDURE PasteView (view: Views.View; w, h: INTEGER; clipboard: BOOLEAN);\r\tPROCEDURE ResetCurrentPath;\r\tPROCEDURE SetCurrentPath (target: BOOLEAN);\r\rEND Controllers.\r\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 588
+                      bodyLen: 1135
+                    attr: 1
+                    w: 2628844
+                    h: 1041377
+                  - text: "\r\rFigure 1. Model-View-Controller Separation\r\rA "
+                    attr: 1
+                  - text: controller
+                    attr: 2
+                  - text: " implements the interactive behavior for a view class. It is an object which transforms controller messages into model or view transformations.\r\rA "
+                    attr: 1
+                  - text: controller message
+                    attr: 2
+                  - text: " is a message which is sent along exactly one path in a view hierarchy, the focus path. Every view on such a path decides for itself whether it is the terminal of this path, i.e., whether it is the current focus, or whether the message should be forwarded to one of its embedded views. BlackBox supports two focus paths, namely a target and a front focus. Both paths may fall together into one. The target path defines which view is the target of commands in dialogs. The front path defines which view is being edited, via mouse, keyboard, or menus.\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 6
+                      bodyPos: 1835
+                      bodyLen: 1752
+                    attr: 1
+                    w: 4063936
+                    h: 1333479
+                  - text: "\r\rFigure 2.  Simplified Example of Focus Hierarchy\r\rIt is important to note that all controller messages which are not relevant for a particular view type can simply be ignored.\r\r\rCONST "
+                    attr: 1
+                  - text: frontPath
+                    attr: 3
+                  - text: "\rThis value may be passed as "
+                    attr: 1
+                  - text: target
+                    attr: 2
+                  - text: " parameter to several procedures of this module. It lets a focus message be sent along the front focus path.\r\rCONST "
+                    attr: 1
+                  - text: targetPath
+                    attr: 3
+                  - text: "\rThis value may be passed as "
+                    attr: 1
+                  - text: target
+                    attr: 2
+                  - text: " parameter to several procedures of this module. It lets a controller message be sent along the target focus path.\r\rCONST "
+                    attr: 1
+                  - text: "decLine, incLine, decPage, incPage"
+                    attr: 3
+                  - text: "\rThese values can be assigned to the "
+                    attr: 1
+                  - text: ScrollMsg.op
+                    attr: 2
+                  - text: " field. They will cause the receiver view to scroll by increments or decrements of one line or page. It is up to the receiver to define what constitutes a \"line\" in its model, except that it should be smaller than a page. A page should correspond to the width/height of the focus frame.\r\rCONST "
+                    attr: 1
+                  - text: gotoPos
+                    attr: 3
+                  - text: "\rThis value can be assigned to the "
+                    attr: 1
+                  - text: ScrollMsg.op
+                    attr: 2
+                  - text: " field. It causes the receiver view to scroll to the position given by "
+                    attr: 1
+                  - text: ScrollMsg.pos
+                    attr: 2
+                  - text: ".\r\rCONST "
+                    attr: 1
+                  - text: "nextPageX, nextPageY"
+                    attr: 3
+                  - text: "\rThis value can be assigned to the "
+                    attr: 1
+                  - text: PageMsg.op
+                    attr: 2
+                  - text: " field. It causes the receiver view to display the next page in x resp. in y direction.\r\rCONST "
+                    attr: 1
+                  - text: "gotoPageX, gotoPageY"
+                    attr: 3
+                  - text: "\rThis value can be assigned to the "
+                    attr: 1
+                  - text: PageMsg.op
+                    attr: 2
+                  - text: " field. It causes the receiver view to display a given page in x resp. in y direction.\r\rCONST "
+                    attr: 1
+                  - text: "cut, copy"
+                    attr: 3
+                  - text: "\rThese values can be assigned to the "
+                    attr: 1
+                  - text: EditMsg.op
+                    attr: 2
+                  - text: " field. They should be handled by the receiver view in the following way:\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 1
+                    wide: true
+                  - text: " cut\tdelete selection, and assign a new view containing the deleted data or a copy thereof to "
+                    attr: 1
+                  - text: EditMsg.view
+                    attr: 2
+                  - text: "\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 1
+                    wide: true
+                  - text: " copy\tcopy selection, and assign a new view containing the copied data to "
+                    attr: 1
+                  - text: EditMsg.view
+                    attr: 2
+                  - text: "\r\rCONST "
+                    attr: 1
+                  - text: pasteChar
+                    attr: 3
+                  - text: "\rThis value can be assigned to the "
+                    attr: 1
+                  - text: EditMsg.op
+                    attr: 2
+                  - text: " field. It denotes the input of some (Unicode or Latin-1) character.\r\rCONST "
+                    attr: 1
+                  - text: paste
+                    attr: 3
+                  - text: "\rThis value can be assigned to the "
+                    attr: 1
+                  - text: EditMsg.op
+                    attr: 2
+                  - text: " field. The receiver view should insert a copy of the data that "
+                    attr: 1
+                  - text: EditMsg.view
+                    attr: 2
+                  - text: " contains. If it cannot insert the data directly because it doesn't know its type, it should insert a copy of the whole "
+                    attr: 1
+                  - text: EditMsg.view
+                    attr: 2
+                  - text: " into its model if it has this capability, i.e., if it is a container.\r\rCONST "
+                    attr: 1
+                  - text: doubleClick
+                    attr: 3
+                  - text: "\rThis value means that a mouse button has been pressed in a way which is interpreted by the underlying user interface as a \"double click\". A double click is signaled to the application as a modifier; other modifiers are "
+                    attr: 1
+                  - text: extend
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: modify
+                    attr: 2
+                  - text: ".\r\rCONST "
+                    attr: 1
+                  - text: "extend, modify"
+                    attr: 3
+                  - text: "\rBlackBox operates with two virtual modifier keys. The "
+                    attr: 1
+                  - text: extend
+                    attr: 2
+                  - text: " key is used to extend or toggle selections (usually the "
+                    attr: 1
+                  - text: shift
+                    attr: 2
+                  - text: " key), the "
+                    attr: 1
+                  - text: modify
+                    attr: 2
+                  - text: " key to change the default behavior of a command (e.g., to change a drag-and-move into a drag-and-copy, using the control key (Windows) / option key (Mac OS)). The behavior of possible additional modifier keys is platform-specific (see the document on platform-specific issues for such modifiers). Modifier sets are used in "
+                    attr: 1
+                  - text: "Controllers.TrackMsg, Controllers.EditMsg, "
+                    attr: 2
+                  - text: and
+                    attr: 1
+                  - text: " Ports.Frame.Input."
+                    attr: 2
+                  - text: "\r\rCONST "
+                    attr: 1
+                  - text: "noMark, mark"
+                    attr: 3
+                  - text: "\rUsed internally.\r\rCONST "
+                    attr: 1
+                  - text: "hide, show"
+                    attr: 3
+                  - text: "\rThese constants may be used for the "
+                    attr: 1
+                  - text: PollDropMsg
+                    attr: 2
+                  - text: " message and the "
+                    attr: 1
+                  - text: PollDrop
+                    attr: 2
+                  - text: " procedure. They determine whether target feedback during drag & drop should be drawn ("
+                    attr: 1
+                  - text: show
+                    attr: 2
+                  - text: ) or removed (
+                    attr: 1
+                  - text: hide
+                    attr: 2
+                  - text: ").\r\r\rTYPE "
+                    attr: 1
+                  - text: Controller (Stores.Store)
+                    attr: 3
+                  - text: "\rABSTRACT\rA controller is the third component of the model-view-controller triple. Its main purpose is to translate controller messages into model or view transformations. Simple applications can implement the controller's functionality in the view itself, thus needing no separate controller object at all. Container views usually have a separate controller.\r\r\rTYPE "
+                    attr: 1
+                  - text: Directory
+                    attr: 3
+                  - text: "\rABSTRACT\rUsually there is a controller directory in the views module of a subsystem, since the view directory must be able to allocate an appropriate controller. Such a directory is installed by the corresponding controller module upon loading. To guarantee the loading of the corresponding controller module is loaded, the view module's body usually contains a statement of the form "
+                    attr: 1
+                  - text: "Dialog.Call(\"XYZControllers.Install, \"\", res)"
+                    attr: 2
+                  - text: ".\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: New
+                    attr: 3
+                  - text: " (): Controller\rNEW, ABSTRACT\rReturns a new controller.\r\rPost\rresult # NIL\rresult.ThisView() = NIL\r\r\rTYPE "
+                    attr: 1
+                  - text: Forwarder
+                    attr: 3
+                  - text: "\rABSTRACT\rUsed internally.\r\rPROCEDURE (n: Forwarder) "
+                    attr: 1
+                  - text: Forward
+                    attr: 3
+                  - text: " (target: BOOLEAN; VAR msg: Message)\rNEW, ABSTRACT\rUsed internally.\r\rPROCEDURE (n: Forwarder) "
+                    attr: 1
+                  - text: Transfer
+                    attr: 3
+                  - text: " (VAR msg: TransferMsg)\rNEW, ABSTRACT\rUsed internally\r\r\rTYPE "
+                    attr: 1
+                  - text: Message
+                    attr: 3
+                  - text: "\rABSTRACT\rBase type of all controller messages. In contrast to model and view messages, a controller message is never broadcast. Instead, it is passed along a focus path. The target and front focus paths are predefined.\r\r\rTYPE "
+                    attr: 1
+                  - text: PollFocusMsg (Message)
+                    attr: 3
+                  - text: "\rEXTENSIBLE\rThis message is sent to find out the leaf view of a focus path. The message is handled by the framework itself. If your view should not give away its identity when it is focus, set "
+                    attr: 1
+                  - text: focus
+                    attr: 2
+                  - text: " to "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: " when receiving the message. Otherwise ignore the message.\r\r"
+                    attr: 1
+                  - text: focus
+                    attr: 3
+                  - text: ": Views.Frame\rAfter the message returns from the traversal of a focus path, it should contain the frame of the leaf view of this path.\r\r\rTYPE "
+                    attr: 1
+                  - text: PollSectionMsg (Message)
+                    attr: 3
+                  - text: "\rThis message is sent to poll the focus view's current scroll state. BlackBox contains a generic scrolling mechanism which scrolls simply by changing the scrolled frame's origin. Explicit handling of scrolling is only necessary for views which can become extremely large, and whose efficient implementation crucially depends on keeping frames small.\r\r"
+                    attr: 1
+                  - text: focus
+                    attr: 3
+                  - text: ": BOOLEAN\rThis flag tells whether a container should forward the message to its focus or not. Non-containers obviously cannot forward to a focus.\r\r"
+                    attr: 1
+                  - text: vertical
+                    attr: 3
+                  - text: ": BOOLEAN\rTells whether the vertical or horizontal direction is polled.\r\r"
+                    attr: 1
+                  - text: wholeSize
+                    attr: 3
+                  - text: ": INTEGER\twholeSize >= 1\rThis value denotes the focus view's width or height, in coordinates which a view can freely choose, i.e., they need not necessarily be universal units.\r\r"
+                    attr: 1
+                  - text: partSize
+                    attr: 3
+                  - text: ": INTEGER\t0 <= partSize <= wholeSize\rThis value denotes the focus view frame's width or height, in the same coordinates as above. If "
+                    attr: 1
+                  - text: partSize
+                    attr: 2
+                  - text: " cannot be easily defined, it should be set to 0.\r\r"
+                    attr: 1
+                  - text: partPos
+                    attr: 3
+                  - text: ": INTEGER\t0 <= partPos <= wholeSize - partSize\rThis value denotes the focus view's origin, in the same coordinates as above.\r\r"
+                    attr: 1
+                  - text: valid
+                    attr: 3
+                  - text: ": BOOLEAN\rThe receiving view should set this flag if it supports scrolling in the given direction. "
+                    attr: 1
+                  - text: valid
+                    attr: 2
+                  - text: " indicates that "
+                    attr: 1
+                  - text: wholeSize
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: partSize
+                    attr: 2
+                  - text: ", and "
+                    attr: 1
+                  - text: partPos
+                    attr: 2
+                  - text: " are valid indicators of the view's scroll position.\r\r"
+                    attr: 1
+                  - text: done
+                    attr: 3
+                  - text: ": BOOLEAN\rThis flag should be set if the message has been interpreted, i.e., if the above output fields have been set. For some controllers this may depend on "
+                    attr: 1
+                  - text: vertical
+                    attr: 2
+                  - text: ", i.e., the controller only supports one scrolling direction.\r\r\rTYPE "
+                    attr: 1
+                  - text: PollOpsMsg (Message)
+                    attr: 3
+                  - text: "\rThis message is sent to inquire which editing operations the focus view supports, depending on its current selection.\r\r"
+                    attr: 1
+                  - text: type
+                    attr: 3
+                  - text: ": Stores.TypeName\rThis field denotes a context for the focus view. This context is used to determine which menus are relevant for the focus view. As a convention, a view assigns the type name of its abstract base pointer type to "
+                    attr: 1
+                  - text: type
+                    attr: 2
+                  - text: ", e.g., \"TextViews.View\". This convention guarantees globally unique context names, since module names are considered globally unique. If the view doesn't support any such context, ignore this field.\r\r"
+                    attr: 1
+                  - text: pasteType
+                    attr: 3
+                  - text: ": Stores.TypeName\tvalid iff type = paste\rThe type of the view of which a copy would be pasted, if a paste operation occurred.\r\r"
+                    attr: 1
+                  - text: singleton
+                    attr: 3
+                  - text: ": Views.View\rA container view which supports a selection should set this field to the selected view, if this view is the only contents currently selected.\r\r"
+                    attr: 1
+                  - text: selectable
+                    attr: 3
+                  - text: ": BOOLEAN\rThis field should be set to "
+                    attr: 1
+                  - text: "TRUE"
+                    attr: 2
+                  - text: " if the focus view contains selectable elements, independent of whether they are currently selected or not.\r\r"
+                    attr: 1
+                  - text: valid
+                    attr: 3
+                  - text: ": SET\tvalid IN {cut, copy, paste}\rThis set denotes which edit operations are currently possible, out of the set "
+                    attr: 1
+                  - text: "{cut, copy, paste}"
+                    attr: 2
+                  - text: ". It is used by the framework to enable or disable the appropriate menu items. However, there is no guarantee that the framework will not send an edit message for cut/copy/paste even if the view returns an empty set in "
+                    attr: 1
+                  - text: valid
+                    attr: 2
+                  - text: ". Such a message can simply be ignored.\r\r\rTYPE "
+                    attr: 1
+                  - text: ScrollMsg (Message)
+                    attr: 3
+                  - text: "\rThis message is sent in order to let the focus view scroll to another position. It is used only in conjunction with "
+                    attr: 1
+                  - text: PollSectionMsg
+                    attr: 2
+                  - text: " (cf. above).\r\r"
+                    attr: 1
+                  - text: focus
+                    attr: 3
+                  - text: ": BOOLEAN\rThis flag tells whether a container should forward the message to its focus or not. Non-containers obviously cannot forward to a focus.\r\r"
+                    attr: 1
+                  - text: vertical
+                    attr: 3
+                  - text: ": BOOLEAN\rDenotes whether scrolling should occur in the vertical or in the horizontal direction.\r\r"
+                    attr: 1
+                  - text: op
+                    attr: 3
+                  - text: ": INTEGER\top IN {decLine..gotoPos}\rScroll operation to be performed.\r\r"
+                    attr: 1
+                  - text: pos
+                    attr: 3
+                  - text: ": INTEGER\tvalid iff "
+                    attr: 1
+                  - text: op = gotoPos
+                    attr: 2
+                  - text: "\tpos >= 0\rThis denotes the position to be scrolled to, in the same coordinates that the "
+                    attr: 1
+                  - text: PollSectionMsg
+                    attr: 2
+                  - text: " uses.\r\r"
+                    attr: 1
+                  - text: done
+                    attr: 3
+                  - text: ": BOOLEAN\rThis flag should be set if the message has been interpreted; for some controllers, this may depend on "
+                    attr: 1
+                  - text: op
+                    attr: 2
+                  - text: ".\r\r\rTYPE "
+                    attr: 1
+                  - text: PageMsg (Message)
+                    attr: 3
+                  - text: "\rA page message is similar to a scroll message, but its measures are in pages. It can be interpreted if the view should behave differently depending whether it is being printed or not. This is done e.g. in "
+                    attr: 1
+                  - text: TextViews
+                    attr: 2
+                  - text: " to avoid the last line on a page to become clipped, which is acceptable on screen.\rIf this message is not interpreted for a view which cannot be printed on one page, a default printing strategy is used which decomposes the view into suitable pieces for printing.\r\r"
+                    attr: 1
+                  - text: op
+                    attr: 3
+                  - text: ": INTEGER\top IN {nextPageX, nextPageY, gotoPageX, gotoPageY}\rWhere to scroll to.\r\r"
+                    attr: 1
+                  - text: "pageX, pageY"
+                    attr: 3
+                  - text: ": INTEGER\rCurrent page in x and in y directions.\r\r"
+                    attr: 1
+                  - text: done
+                    attr: 3
+                  - text: ": BOOLEAN\rThis flag should be set if the message has been interpreted; for some controllers, this may depend on "
+                    attr: 1
+                  - text: op
+                    attr: 2
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: "eox, eoy"
+                    attr: 3
+                  - text: ": BOOLEAN\rThese flags should be set when it is attempted to go beyond the last page in the x resp. in y direction.\r\r\rTYPE "
+                    attr: 1
+                  - text: TickMsg (Message)
+                    attr: 3
+                  - text: "\rThis message is sent to the front focus view periodically. It can be used to realize effects like a blinking caret.\r\r"
+                    attr: 1
+                  - text: tick
+                    attr: 3
+                  - text: ": INTEGER\rTick count. The difference between two ticks is given by the global variable "
+                    attr: 1
+                  - text: resolution
+                    attr: 2
+                  - text: ".\r\r\rTYPE "
+                    attr: 1
+                  - text: MarkMsg (Message)
+                    attr: 3
+                  - text: "\rThis message is sent whenever the target or front focus paths change. Before the change, the message is sent along the focus path with "
+                    attr: 1
+                  - text: show = FALSE
+                    attr: 2
+                  - text: ", such that the focus view can switch off visible marks like the selection or the caret. After the change (e.g., another window coming to the top), a "
+                    attr: 1
+                  - text: MarkMsg
+                    attr: 2
+                  - text: " is sent along the focus path with "
+                    attr: 1
+                  - text: show = TRUE
+                    attr: 2
+                  - text: ", such that the focus view can switch on its marks again, if there are any.\rBehavior can be different if the focus path changes due to window reordering or due to user interaction (a user clicking in some other embedded view).\rIn the former case, a focused view may still keep its focus state (selection, caret), even while it is temporarily in a non-focus window. When the window becomes focus again, the old focus view becomes focus again. In this case, it should show the same selection/caret state again.\rIn the latter case, a view that becomes newly focused may behave in a special way. In particular, a control may focus its contents (e.g., a text field may select the entire text string that it contains). To detect such a situation, a field "
+                    attr: 1
+                  - text: focus
+                    attr: 2
+                  - text: " is provided in the "
+                    attr: 1
+                  - text: MarkMsg
+                    attr: 2
+                  - text: ".\rWrapper views and special container views (i.e., containers not derived from the types in module "
+                    attr: 1
+                  - text: Containers
+                    attr: 2
+                  - text: ") have to forward the "
+                    attr: 1
+                  - text: MarkMsg
+                    attr: 2
+                  - text: " to their embedded views.\r\r"
+                    attr: 1
+                  - text: show
+                    attr: 3
+                  - text: ": BOOLEAN\rTells whether the focus view's marks should be switched on or off.\r\r"
+                    attr: 1
+                  - text: focus
+                    attr: 3
+                  - text: ": BOOLEAN\rTells whether the view is being focused or defocused.\rA view may use this information e.g. to select itself upon becoming focus (this is done by text field controls). This is done in the following way:\r\r"
+                    attr: 1
+                  - text: "\tIF msg.focus THEN\r\t\tIF msg.show THEN\t"
+                    attr: 4
+                  - text: "(* set selection on focus *)"
+                    attr: 5
+                  - text: "\r\t\t\t"
+                    attr: 4
+                  - text: ... select contents of view ...
+                    attr: 5
+                  - text: "\r\t\tELSE\t"
+                    attr: 4
+                  - text: "(* remove selection on defocus *)"
+                    attr: 5
+                  - text: "\r\t\t\t"
+                    attr: 4
+                  - text: ... remove selection ...
+                    attr: 5
+                  - text: "\r\t\tEND\r\tEND\r"
+                    attr: 4
+                  - text: "\r\rTYPE "
+                    attr: 1
+                  - text: SelectMsg (Message)
+                    attr: 3
+                  - text: "\rThis message is sent when the focus view should select all selectable items, or when it should deselect all selected items. Selection occurs e.g. when the "
+                    attr: 1
+                  - text: "Edit->Select All"
+                    attr: 2
+                  - text: " command is executed.\r\r"
+                    attr: 1
+                  - text: set
+                    attr: 3
+                  - text: ": BOOLEAN\rDetermines whether everything should be selected "
+                    attr: 1
+                  - text: (set = TRUE)
+                    attr: 2
+                  - text: " or whether everything should be deselected "
+                    attr: 1
+                  - text: (set = FALSE)
+                    attr: 2
+                  - text: ".\r\r\rTYPE "
+                    attr: 1
+                  - text: RequestMessage (Message)
+                    attr: 3
+                  - text: "\rABSTRACT\rA view (or its controller) receiving a request message can indicate, by setting "
+                    attr: 1
+                  - text: requestFocus
+                    attr: 2
+                  - text: " to "
+                    attr: 1
+                  - text: "TRUE"
+                    attr: 2
+                  - text: ", that it wants to become focus afterwards, if it isn't already.\r\r"
+                    attr: 1
+                  - text: requestFocus
+                    attr: 3
+                  - text: ": BOOLEAN\rSet this flag to "
+                    attr: 1
+                  - text: "TRUE"
+                    attr: 2
+                  - text: " if receiver should become/remain focus after the message has been handled.\r\r\rTYPE "
+                    attr: 1
+                  - text: EditMsg (RequestMessage)
+                    attr: 3
+                  - text: "\rThis message is sent when a key was pressed, or when a cut/copy/paste operation was invoked. The following operations can be supported (for every supported operation except pasting of characters, the corresponding flag in "
+                    attr: 1
+                  - text: PollOpsMsg.valid
+                    attr: 2
+                  - text: " should be set when receiving a "
+                    attr: 1
+                  - text: PollOpsMsg
+                    attr: 2
+                  - text: "):\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 1
+                    wide: true
+                  - text: " cut\rCreate a clone of the focus view, with a copy of its selection as contents. Assign this clone to "
+                    attr: 1
+                  - text: EditMsg.view
+                    attr: 2
+                  - text: " and delete the focus' selection. There is one exception: if the selection consists of exactly one view (a singleton), "
+                    attr: 1
+                  - text: this
+                    attr: 2
+                  - text: " view's clone should be copied to "
+                    attr: 1
+                  - text: EditMsg.view
+                    attr: 2
+                  - text: ", not a clone of its container.\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 1
+                    wide: true
+                  - text: " copy\rCreate a clone of the focus view, with a copy of the focus' selection as contents. Assign this clone to "
+                    attr: 1
+                  - text: EditMsg.view
+                    attr: 2
+                  - text: ". If the selection consists of exactly one view (a singleton), this view's clone should be copied to "
+                    attr: 1
+                  - text: EditMsg.view
+                    attr: 2
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 1
+                    wide: true
+                  - text: " pasteChar\rInterpret "
+                    attr: 1
+                  - text: EditMsg.char
+                    attr: 2
+                  - text: ", e.g., insert it into a text model.\r"
+                    attr: 1
+                  - text: char
+                    attr: 2
+                  - text: " may be a control character. For control characters, check field "
+                    attr: 1
+                  - text: modifiers
+                    attr: 2
+                  - text: " also.\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 1
+                    wide: true
+                  - text: " paste\rInsert "
+                    attr: 1
+                  - text: EditMsg.view
+                    attr: 2
+                  - text: " view into the focus view's contents.\rIf the receiver is a container:\r\tIf "
+                    attr: 1
+                  - text: EditMsg.isSingle
+                    attr: 2
+                  - text: ":\r\t\tIt should insert the view as a complete view, independent of its type.\r\t\tThis means that merging of contents is not permitted, even if this were possible.\r\tIf "
+                    attr: 1
+                  - text: ~EditMsg.isSingle
+                    attr: 2
+                  - text: ":\r\t\tIf it knows the contents of "
+                    attr: 1
+                  - text: EditMsg.view
+                    attr: 2
+                  - text: ", it should insert it, otherwise the complete view.\rIf the receiver is not a container:\r\tIf it knows the contents of "
+                    attr: 1
+                  - text: EditMsg.view
+                    attr: 2
+                  - text: ", it should insert it, otherwise it should do nothing.\r\r"
+                    attr: 1
+                  - text: op
+                    attr: 3
+                  - text: ": INTEGER\top IN {cut .. paste}\rOperation to be performed.\r\r"
+                    attr: 1
+                  - text: modifiers
+                    attr: 3
+                  - text: ": SET\tvalid iff op= pasteChar\rModifier keys.\r\r"
+                    attr: 1
+                  - text: char
+                    attr: 3
+                  - text: ": CHAR\tvalid iff op = pasteChar\rCharacter to be pasted, or to be interpreted in the case of control characters.\r\r"
+                    attr: 1
+                  - text: view
+                    attr: 3
+                  - text: ": Views.View\tvalid iff op IN {paste, cut, copy}  &  view # NIL  &  view.context = NIL\rIf op = paste:\t(IN parameter)\rView which should be pasted.\rIf op IN {cut, copy}:\t(OUT parameter)\rView which should be assigned by the message handler.\r\r"
+                    attr: 1
+                  - text: "w, h"
+                    attr: 3
+                  - text: ": INTEGER\tvalid iff op IN {paste, cut, copy}\r\t\t\t\t\t\t\t\tw >= Views.undefined  &  h >= Views.undefined\t[units]\rIf op = paste:\t(IN parameter)\rThe desired width and height of the pasted view. These values can be treated as hints. If they are not suitable, others can be used. The value "
+                    attr: 1
+                  - text: Views.undefined
+                    attr: 2
+                  - text: " should be handled also.\rIf op IN {cut, copy}:\t(OUT parameter)\rCurrent width and height of the view.\r\r"
+                    attr: 1
+                  - text: isSingle
+                    attr: 3
+                  - text: ": BOOLEAN\tvalid iff op IN {paste, cut, copy}\rIf op = paste:\t(IN parameter)\rTells whether the pasted view should be inserted as singleton, i.e., not be merged even if this were possible.\rIf op IN {cut, copy}:\t(OUT parameter)\rThe message handler should set this flag if the cut/copied view is selected as a singleton.\r\r"
+                    attr: 1
+                  - text: clipboard
+                    attr: 3
+                  - text: ": BOOLEAN\tvalid iff op IN {cut, copy, paste}\rThis input parameter tells whether the cut/copied view will be transferred to the system clipboard, or whether the pasted view comes from the system clipboard.\r\r\rTYPE "
+                    attr: 1
+                  - text: ReplaceViewMsg (RequestMessage)
+                    attr: 3
+                  - text: "\rA container should check whether it contains "
+                    attr: 1
+                  - text: old
+                    attr: 2
+                  - text: ". If so, it should replace "
+                    attr: 1
+                  - text: old
+                    attr: 2
+                  - text: " by "
+                    attr: 1
+                  - text: new
+                    attr: 2
+                  - text: ", without modifying the view's context in any way.\r\r"
+                    attr: 1
+                  - text: "old, new"
+                    attr: 3
+                  - text: ": Views.View\told # NIL & new # NIL\r"
+                    attr: 1
+                  - text: old
+                    attr: 2
+                  - text: " should be replaced by "
+                    attr: 1
+                  - text: new
+                    attr: 2
+                  - text: ".\r\r\rTYPE "
+                    attr: 1
+                  - text: CursorMessage (RequestMessage)
+                    attr: 3
+                  - text: "\rABSTRACT\rThe base type of all messages which denote some interaction that depends on the current cursor position. The cursor position is always measured in units relative to the view's top-left corner.\r\r"
+                    attr: 1
+                  - text: "x, y"
+                    attr: 3
+                  - text: ": INTEGER\t[units]\rCurrent cursor position.\r\r\rTYPE "
+                    attr: 1
+                  - text: PollCursorMsg (CursorMessage)
+                    attr: 3
+                  - text: "\rThis message is sent regularly to inquire which cursor the focus view currently desires.\r\r"
+                    attr: 1
+                  - text: cursor
+                    attr: 3
+                  - text: ": INTEGER\tcursor IN {Ports.arrowCursor .. Ports.refCursor}\rThis field can be set to the cursor appropriate for the focus view.\r\r"
+                    attr: 1
+                  - text: modifiers
+                    attr: 3
+                  - text: ": SET\rThis is an input field that gives the current modifer state of the mouse.\r\r\rTYPE "
+                    attr: 1
+                  - text: TrackMsg (CursorMessage)
+                    attr: 3
+                  - text: "\rExtension\rThis message is sent when the mouse button is pressed down.\r\r"
+                    attr: 1
+                  - text: modifiers
+                    attr: 3
+                  - text: ": SET\rDetermines which modifier keys have been pressed together with the mouse button.\r\r\rTYPE "
+                    attr: 1
+                  - text: WheelMsg (CursorMessage)
+                    attr: 3
+                  - text: "\rExtension\rThis message is sent when the wheel on a wheel mouse is rolled.\r\r"
+                    attr: 1
+                  - text: done
+                    attr: 3
+                  - text: ": BOOLEAN\rIf a view handles this message it must set the "
+                    attr: 1
+                  - text: done
+                    attr: 2
+                  - text: " flag to "
+                    attr: 1
+                  - text: "TRUE"
+                    attr: 2
+                  - text: ". \r\r"
+                    attr: 1
+                  - text: op
+                    attr: 3
+                  - text: ": INTEGER\rIndicates which kind of event the mouse wheel caused. The same constants as for scrolling are used, but only the following values are valid: "
+                    attr: 1
+                  - text: incPage
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: decPage
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: incLine
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: decLine
+                    attr: 2
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: nofLines
+                    attr: 3
+                  - text: ": INTEGER\tnofLines >= 1\rIf "
+                    attr: 1
+                  - text: op
+                    attr: 2
+                  - text: " is either "
+                    attr: 1
+                  - text: incLine
+                    attr: 2
+                  - text: " or "
+                    attr: 1
+                  - text: decLine
+                    attr: 2
+                  - text: " then "
+                    attr: 1
+                  - text: nofLines
+                    attr: 2
+                  - text: " indicates how many lines should be scrolled. For "
+                    attr: 1
+                  - text: incPage
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: decPage
+                    attr: 2
+                  - text: " this value is undefined.\r\r\rTYPE "
+                    attr: 1
+                  - text: TransferMessage (CursorMessage)
+                    attr: 3
+                  - text: "\rABSTRACT\rThis is the base type of all messages which denote an interaction between several views, e.g., for drag and drop.\r\r"
+                    attr: 1
+                  - text: source
+                    attr: 3
+                  - text: ": Views.Frame\rThe frame from which the interaction started, e.g., where the mouse button has been clicked for dragging.\r\r"
+                    attr: 1
+                  - text: "sourceX, sourceY"
+                    attr: 3
+                  - text: ": INTEGER\rThe position in the source frame where the mouse button has been clicked, e.g., when starting to drag.\r\r\rTYPE "
+                    attr: 1
+                  - text: PollDropMsg (TransferMessage)
+                    attr: 3
+                  - text: "\rWhile an item is being dragged around, "
+                    attr: 1
+                  - text: PollDropMsgs
+                    attr: 2
+                  - text: " are sent to enable feedback about the drop target.\r\r"
+                    attr: 1
+                  - text: mark
+                    attr: 3
+                  - text: ": BOOLEAN\rA container which supports drop feedback should show (hide) its feedback mark when "
+                    attr: 1
+                  - text: mark
+                    attr: 2
+                  - text: " is set (cleared). You don't need to deal with the view's border mark (the rectangular outline of the view which is drawn while you are dragging over a view), this is handled completely by BlackBox itself.\r\r"
+                    attr: 1
+                  - text: show
+                    attr: 3
+                  - text: ": BOOLEAN\tvalid iff mark\rIndicates whether the mark should be drawn or removed.\r\r"
+                    attr: 1
+                  - text: type
+                    attr: 3
+                  - text: ": Stores.TypeName\rThe type of the view to be dropped. The same naming convention as for the "
+                    attr: 1
+                  - text: PollOpsMsg
+                    attr: 2
+                  - text: " is used. Based on "
+                    attr: 1
+                  - text: type
+                    attr: 2
+                  - text: ", the message handler can determine whether the view to be dropped can be accepted. Note that if drag & drop happens completely within BlackBox, the inherited message field "
+                    attr: 1
+                  - text: source
+                    attr: 2
+                  - text: " may also be used for this test. However, "
+                    attr: 1
+                  - text: source
+                    attr: 2
+                  - text: " may be "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: " if OLE drag & drop occurs.\r\r"
+                    attr: 1
+                  - text: isSingle
+                    attr: 3
+                  - text: ": BOOLEAN\rTells whether the view to be dropped is a singleton selection.\r\r"
+                    attr: 1
+                  - text: "w, h"
+                    attr: 3
+                  - text: ": INTEGER\rSize of the view to be dropped. May be equal to "
+                    attr: 1
+                  - text: Views.undefined
+                    attr: 2
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: "rx, ry"
+                    attr: 3
+                  - text: ": INTEGER\trx >= 0  &  ry >= 0\rThe reference point inside the selection where drag & drop started.\r\r"
+                    attr: 1
+                  - text: dest
+                    attr: 3
+                  - text: ": Views.Frame\t(OUT parameter)\rThe receiver should set "
+                    attr: 1
+                  - text: dest
+                    attr: 2
+                  - text: " to its own frame, if it would accept a drop.\r\r\rTYPE "
+                    attr: 1
+                  - text: DropMsg (CursorMessage)
+                    attr: 3
+                  - text: "\rThis message is used if a view should be dragged and dropped to the cursor location.\r\r"
+                    attr: 1
+                  - text: view
+                    attr: 3
+                  - text: ": Views.View\tview # NIL\rThe view which is dropped. It is a copy of the original, and ready to be inserted at the drop destination.\r\r"
+                    attr: 1
+                  - text: isSingle
+                    attr: 3
+                  - text: ": BOOLEAN\rTells whether the view to be dropped is a singleton selection.\r\r"
+                    attr: 1
+                  - text: "w, h"
+                    attr: 3
+                  - text: ": INTEGER\t[units]\rThe size of the dropped view. One or both sizes may have the value "
+                    attr: 1
+                  - text: Views.undefined
+                    attr: 2
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: "rx, ry"
+                    attr: 3
+                  - text: ": INTEGER\rThe reference point inside the selection where drag & drop started.\r\r\rVAR "
+                    attr: 1
+                  - text: path
+                    attr: 3
+                  - text: "-: BOOLEAN\rUsed internally.\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: Forward
+                    attr: 3
+                  - text: " (VAR msg: Message)\rSend "
+                    attr: 1
+                  - text: msg
+                    attr: 2
+                  - text: " to to current focus.\r\rPROCEDURE "
+                    attr: 1
+                  - text: FocusFrame
+                    attr: 3
+                  - text: " (): Views.Frame\rReturns the current focus frame, if there is any.\r\rPROCEDURE "
+                    attr: 1
+                  - text: FocusView
+                    attr: 3
+                  - text: " (): Views.View\rReturns the current focus view, if there is any.\r\rPROCEDURE "
+                    attr: 1
+                  - text: FocusModel
+                    attr: 3
+                  - text: " (): Models.Model\rReturns the current focus view's model, if there is any.\r\r\rThe following procedures are used internally:\r\rPROCEDURE "
+                    attr: 1
+                  - text: Register
+                    attr: 3
+                  - text: " (f: Forwarder)\rAdd forwarder "
+                    attr: 1
+                  - text: f
+                    attr: 2
+                  - text: " to the list of forwarders. If "
+                    attr: 1
+                  - text: f
+                    attr: 2
+                  - text: " is already registered, "
+                    attr: 1
+                  - text: Register(f)
+                    attr: 2
+                  - text: " does nothing.\r\rPre\rf # NIL\t20\r\rPROCEDURE "
+                    attr: 1
+                  - text: Delete
+                    attr: 3
+                  - text: " (f: Forwarder)\rRemove "
+                    attr: 1
+                  - text: f
+                    attr: 2
+                  - text: " from the list of forwarders. If "
+                    attr: 1
+                  - text: "f "
+                    attr: 2
+                  - text: "is not registered, nothing happens.\r \rPre\rf # NIL\t20\r\rPROCEDURE "
+                    attr: 1
+                  - text: ForwardVia
+                    attr: 3
+                  - text: " (target: BOOLEAN; VAR msg: Views.CtrlMessage)\rSend "
+                    attr: 1
+                  - text: msg
+                    attr: 2
+                  - text: " to either target or front focus.\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetCurrentPath
+                    attr: 3
+                  - text: " (target: BOOLEAN)\rSet "
+                    attr: 1
+                  - text: path
+                    attr: 2
+                  - text: " to "
+                    attr: 1
+                  - text: target
+                    attr: 2
+                  - text: ". Must be balanced by a call to "
+                    attr: 1
+                  - text: ResetCurrentPath
+                    attr: 2
+                  - text: ", otherwise a trap will occur (in "
+                    attr: 1
+                  - text: Controllers.BalanceCheckActions.Do
+                    attr: 2
+                  - text: ").\r\rPROCEDURE "
+                    attr: 1
+                  - text: PollSection
+                    attr: 3
+                  - text: " (VAR msg: PollSectionMsg)\rPoll the current focus view's scroll state.\r\rPROCEDURE "
+                    attr: 1
+                  - text: PollOps
+                    attr: 3
+                  - text: " (VAR msg: PollOpsMsg)\rPoll the current focus view's currently valid editing operations.\r\rPROCEDURE "
+                    attr: 1
+                  - text: PollCursor
+                    attr: 3
+                  - text: " (x, y: INTEGER; OUT cursor: INTEGER)\rPoll the current focus view's currently desired cursor.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Transfer
+                    attr: 3
+                  - text: " (x, y: INTEGER; source: Views.Frame; sourceX, sourceY: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\tVAR msg: TransferMessage)\r\rPROCEDURE "
+                    attr: 1
+                  - text: PollDrop
+                    attr: 3
+                  - text: " (x, y: INTEGER; source: Views.Frame; sourceX, sourceY: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\tmark, show: BOOLEAN; type: Stores.TypeName;\r\t\t\t\t\t\t\t\t\t\t\t\tisSingle: BOOLEAN; w, h, rx, ry: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\tOUT dest: Views.Frame; OUT destX, destY: INTEGER)\r\rPROCEDURE "
+                    attr: 1
+                  - text: Drop
+                    attr: 3
+                  - text: " (x, y: INTEGER; source: Views.Frame; sourceX, sourceY: INTEGER;\r\t\t\t\t\t\t\t\t\t\tview: Views.View; isSingle: BOOLEAN; w, h, rx, ry: INTEGER)\r\rPROCEDURE "
+                    attr: 1
+                  - text: PasteView
+                    attr: 3
+                  - text: " (view: Views.View; w, h: INTEGER; clipboard: BOOLEAN)\r\rPROCEDURE "
+                    attr: 1
+                  - text: ResetCurrentPath
+                    attr: 3
+                  - text: "\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetCurrentPath
+                    attr: 3
+                  - text: " (target: BOOLEAN)\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 14
+          bodyPos: 32520
+          bodyLen: 8

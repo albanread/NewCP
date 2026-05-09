@@ -1,0 +1,340 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Mod\\Orders.odc"
+  size: 11364
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 11233
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 11047
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 10961
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 127000
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Helvetica
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 11078
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 10564
+                runListLen: 1973
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE ObxOrders;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT\r\t\tFiles, Dialog, Fonts, Stores, Views,\r\t\tTextModels, TextViews, TextMappers, TextRulers, StdCmds, StdStamps;\r\r\tCONST\r\t\t"
+                    attr: 0
+                  - text: "(* values for card field of interactor *)"
+                    attr: 1
+                  - text: "\r\t\tamex = 0; master = 1; visa = 2;\r\t\t"
+                    attr: 0
+                  - text: "(* prices in 1/100 Swiss Francs *)"
+                    attr: 1
+                  - text: "\r\t\tofwinfullVal = 45000; ofmacfullVal = 45000; ofwineduVal = 15000; ofmaceduVal = 15000;\r\t\todfVal = 5000; vatVal = 65;\r\t\ttype = \""
+                    attr: 0
+                  - text: dat
+                    attr: 3
+                  - text: "\";\t"
+                    attr: 0
+                  - text: "(* file type *)"
+                    attr: 1
+                  - text: "\r\r\tTYPE\r\t\t"
+                    attr: 0
+                  - text: Interactor
+                    attr: 3
+                  - text: "* = RECORD\r\t\t\tname*, company*, adr1*, adr2*, adr3*, email*: ARRAY 128 OF CHAR;\r\t\t\tphone*, fax*: ARRAY 32 OF CHAR;\r\t\t\tofwinfull*, ofmacfull*, ofwinedu*, ofmacedu*, odf*: INTEGER;\r\t\t\tcard*: INTEGER;\r\t\t\tcardno*: ARRAY 24 OF CHAR;\r\t\t\tvat*: BOOLEAN\r\t\tEND;\r\r\t\tElement = POINTER TO RECORD\r\t\t\tprev, next: Element;\r\t\t\tdata: Interactor\r\t\tEND;\r\r\tVAR\r\t\t"
+                    attr: 0
+                  - text: par
+                    attr: 3
+                  - text: "*: Interactor;\r\t\troot, cur: Element;\t"
+                    attr: 0
+                  - text: "(* header and current element of doubly-linked ring *)"
+                    attr: 1
+                  - text: "\r\t\tname: Files.Name;\r\t\tloc: Files.Locator;\r\r\tPROCEDURE ReadElem (VAR rd: Stores.Reader; e: Element);\r\tBEGIN\r\t\trd.ReadString(e.data.name);rd.ReadString(e.data.company);\r\t\trd.ReadString(e.data.adr1); rd.ReadString(e.data.adr2); rd.ReadString(e.data.adr3);\r\t\trd.ReadString(e.data.email);\r\t\trd.ReadString(e.data.phone); rd.ReadString(e.data.fax);\r\t\trd.ReadString(e.data.cardno);\r\t\trd.ReadInt(e.data.ofwinfull); rd.ReadInt(e.data.ofmacfull);\r\t\trd.ReadInt(e.data.ofwinedu); rd.ReadInt(e.data.ofmacedu);\r\t\trd.ReadInt(e.data.odf);\r\t\trd.ReadInt(e.data.card);\r\t\trd.ReadBool(e.data.vat)\r\tEND ReadElem;\r\r\tPROCEDURE WriteElem (VAR wr: Stores.Writer; e: Element);\r\tBEGIN\r\t\twr.WriteString(e.data.name); wr.WriteString(e.data.company);\r\t\twr.WriteString(e.data.adr1); wr.WriteString(e.data.adr2); wr.WriteString(e.data.adr3);\r\t\twr.WriteString(e.data.email);\r\t\twr.WriteString(e.data.phone); wr.WriteString(e.data.fax);\r\t\twr.WriteString(e.data.cardno);\r\t\twr.WriteInt(e.data.ofwinfull); wr.WriteInt(e.data.ofmacfull);\r\t\twr.WriteInt(e.data.ofwinedu); wr.WriteInt(e.data.ofmacedu);\r\t\twr.WriteInt(e.data.odf);\r\t\twr.WriteInt(e.data.card);\r\t\twr.WriteBool(e.data.vat)\r\tEND WriteElem;\r\r\tPROCEDURE Init;\r\tBEGIN\r\t\tcur := root; root.next := root; root.prev := root\r\tEND Init;\r\r\tPROCEDURE Update;\r\tBEGIN\r\t\tpar := cur.data; Dialog.Update(par)\r\tEND Update;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Load
+                    attr: 3
+                  - text: "*;\r\t\tVAR e: Element; f: Files.File; rd: Stores.Reader; count: INTEGER;\r\tBEGIN\r\t\tDialog.GetIntSpec(type, loc, name);\r\t\tIF loc # NIL THEN\r\t\t\tf := Files.dir.Old(loc, name, Files.shared);\r\t\t\tIF (f # NIL) & (f.type = type) THEN\r\t\t\t\trd.ConnectTo(f);\r\t\t\t\trd.ReadInt(count);\r\t\t\t\tInit;\r\t\t\t\tWHILE count # 0 DO\r\t\t\t\t\tNEW(e);\r\t\t\t\t\tIF e # NIL THEN\r\t\t\t\t\t\te.prev := cur; e.next := cur.next; e.prev.next := e; e.next.prev := e;\r\t\t\t\t\t\tReadElem(rd, e);\r\t\t\t\t\t\tcur := e; DEC(count)\r\t\t\t\t\tELSE\r\t\t\t\t\t\tDialog.ShowMsg(\"out of memory\"); Dialog.Beep;\r\t\t\t\t\t\tcount := 0; root.next := root; root.prev := root; cur := root\r\t\t\t\t\tEND\r\t\t\t\tEND;\r\t\t\t\tUpdate\r\t\t\tELSE\r\t\t\t\tDialog.ShowMsg(\"cannot open file\"); Dialog.Beep\r\t\t\tEND\r\t\tEND\r\tEND Load;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Save
+                    attr: 3
+                  - text: "*;\r\t\tVAR e: Element; f: Files.File; wr: Stores.Writer; count, res: INTEGER;\r\tBEGIN\r\t\tIF (loc = NIL) OR (name = \"\") THEN Dialog.GetExtSpec(\"\", \"\", loc, name) END;\r\t\tIF (loc # NIL) & (name # \"\") THEN\r\t\t\tf := Files.dir.New(loc, Files.dontAsk); wr.ConnectTo(f);\r\t\t\te := root.next; count := 0; WHILE e # root DO INC(count); e := e.next END;\t"
+                    attr: 0
+                  - text: "(* count elements *)"
+                    attr: 1
+                  - text: "\r\t\t\twr.WriteInt(count);\r\t\t\te := root.next; WHILE e # root DO WriteElem(wr, e); e := e.next END;\t"
+                    attr: 0
+                  - text: "(* write elements *)"
+                    attr: 1
+                  - text: "\r\t\t\tf.Register(name, type, Files.dontAsk, res);\r\t\t\tInit; name := \"\"; loc := NIL;\t"
+                    attr: 0
+                  - text: "(* close database *)"
+                    attr: 1
+                  - text: "\r\t\t\tUpdate\r\t\tEND\r\tEND Save;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Insert
+                    attr: 3
+                  - text: "*;\r\t\tVAR e: Element;\r\tBEGIN\r\t\tNEW(e);\r\t\tIF e # NIL THEN\t"
+                    attr: 0
+                  - text: "(* insert new record at end of database *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF cur # root THEN cur.data := par END;\t"
+                    attr: 0
+                  - text: "(* save current record, in case it was changed *)"
+                    attr: 1
+                  - text: "\r\t\t\te.prev := root.prev; e.next := root; e.prev.next := e; e.next.prev := e;\r\t\t\tcur := e;\r\t\t\tUpdate\r\t\tELSE\r\t\t\tDialog.ShowMsg(\"out of memory\"); Dialog.Beep\r\t\tEND\r\tEND Insert;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Delete
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tIF cur # root THEN\r\t\t\tStdCmds.CloseDialog;\r\t\t\tcur.next.prev := cur.prev; cur.prev.next := cur.next;\r\t\t\tcur := cur.prev; IF cur = root THEN cur := root.next END;\r\t\t\tUpdate\r\t\tEND\r\tEND Delete;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Next
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tIF cur.next # root THEN\r\t\t\tcur.data := par; cur := cur.next; Update\r\t\tEND\r\tEND Next;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Prev
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tIF cur.prev # root THEN\r\t\t\tcur.data := par; cur := cur.prev; Update\r\t\tEND\r\tEND Prev;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: NonemptyGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\tBEGIN\r\t\tpar.disabled := cur = root\r\tEND NonemptyGuard;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: NextGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\tBEGIN\r\t\tpar.disabled := cur.next = root\r\tEND NextGuard;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: PrevGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\tBEGIN\r\t\tpar.disabled := cur.prev = root\r\tEND PrevGuard;\r\r\tPROCEDURE WriteLine (VAR f: TextMappers.Formatter; no, val: INTEGER; name: ARRAY OF CHAR;\r\t\t\t\t\t\t\t\t\t\tVAR total, vat: INTEGER);\r\tBEGIN\r\t\tIF no # 0 THEN\r\t\t\tval := no * val;\r\t\t\tf.WriteInt(no); f.WriteString(name);\r\t\t\tINC(total, val); INC(vat, val);\r\t\t\tf. WriteTab;\r\t\t\tf.WriteIntForm(val DIV 100, 10, 5, TextModels.digitspace, FALSE);\r\t\t\tf.WriteChar(\".\");\r\t\t\tf.WriteIntForm(val MOD 100, 10, 2, \"0\", FALSE);\r\t\t\tf.WriteLn\r\t\tEND\r\tEND WriteLine;\r\r\tPROCEDURE NewRuler (): TextRulers.Ruler;\r\t\tVAR r: TextRulers.Ruler;\r\tBEGIN\r\t\tr := TextRulers.dir.New(NIL);\r(*\t\r\t\tTextRulers.SetLeft(r, 30 * Ports.mm);\r\t\tTextRulers.SetRight(r, 165 * Ports.mm);\r\t\tTextRulers.AddTab(r, 130 * Ports.mm);\r*)\r"
+                    attr: 0
+                  - text: "\t\tRETURN"
+                    attr: 3
+                  - text: " r\r\tEND NewRuler;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Invoice
+                    attr: 3
+                  - text: "*;\r\t\tVAR v: TextViews.View; f: TextMappers.Formatter; a: TextModels.Attributes;\r\t\t\ttotal, vat: INTEGER;\r\tBEGIN\r\t\tIF cur # root THEN\r\t\t\tv := TextViews.dir.New(TextModels.dir.New());\r\t\t\tf.ConnectTo(v.ThisModel());\r\t\t\tf.WriteView(NewRuler());\r\t\t\t"
+                    attr: 0
+                  - text: "(* create header of invoice *)"
+                    attr: 1
+                  - text: "\r\t\t\tf.WriteLn; f.WriteLn; f.WriteLn; f.WriteLn; f.WriteLn; f.WriteLn; f.WriteLn;\r\t\t\tf.WriteTab;\r\t\t\tf.WriteString(\"Basel, \"); f.WriteView(StdStamps.New());\r\t\t\tf.WriteLn; f.WriteLn; f.WriteLn;\r\t\t\t"
+                    attr: 0
+                  - text: "(* write address *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF par.name # \"\" THEN f.WriteString(par.name); f.WriteLn END;\r\t\t\tIF par.company # \"\" THEN f.WriteString(par.company); f.WriteLn END;\r\t\t\tIF par.adr1 # \"\" THEN f.WriteString(par.adr1); f.WriteLn END;\r\t\t\tIF par.adr2 # \"\" THEN f.WriteString(par.adr2); f.WriteLn END;\r\t\t\tIF par.adr3 # \"\" THEN f.WriteString(par.adr3); f.WriteLn END;\r\t\t\tf.WriteLn; f.WriteLn; f.WriteLn;\r\t\t\t"
+                    attr: 0
+                  - text: "(* set bold font weight *)"
+                    attr: 1
+                  - text: "\r\t\t\ta := f.rider.attr;\r\t\t\tf.rider.SetAttr(TextModels.NewWeight(a, Fonts.bold));\r\t\t\tf.WriteString(\"Invoice\");\t"
+                    attr: 0
+                  - text: "(* this string will appear in bold face *)"
+                    attr: 1
+                  - text: "\r\t\t\tf.rider.SetAttr(a);\t"
+                    attr: 0
+                  - text: "(* restore default weight *)"
+                    attr: 1
+                  - text: "\r\t\t\tf.WriteLn; f.WriteLn;\r\t\t\tf.WriteString(\"Creditcard: \");\r\t\t\tCASE par.card OF\r\t\t\t| amex: f.WriteString(\"American Express\")\r\t\t\t| master: f.WriteString(\"Euro/MasterCard\")\r\t\t\t| visa: f.WriteString(\"Visa\")\r\t\t\tEND;\r\t\t\tf.WriteLn; f.WriteLn; f.WriteLn;\r\t\t\t"
+                    attr: 0
+                  - text: "(* write products with subtotals *)"
+                    attr: 1
+                  - text: "\r\t\t\ttotal := 0; vat := 0;\r\t\t\tWriteLine(f, par.ofwinfull, ofwinfullVal, \" ofwin full\", total, vat);\r\t\t\tWriteLine(f, par.ofmacfull, ofmacfullVal, \" ofmac full\", total, vat);\r\t\t\tWriteLine(f, par.ofwinedu, ofwineduVal, \" ofwin edu\", total, vat);\r\t\t\tWriteLine(f, par.ofmacedu, ofmaceduVal, \" ofmac edu\", total, vat);\r\t\t\tWriteLine(f, par.odf, odfVal, \" odf\", total, vat);\r\t\t\t"
+                    attr: 0
+                  - text: "(* write vat *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF par.vat THEN\r\t\t\t\tf.WriteLn;\r\t\t\t\tINC(total, (vat * vatVal) DIV 1000);\t"
+                    attr: 0
+                  - text: "(* vat is 6.5% *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tf.WriteString(\"value added tax (\");\r\t\t\t\tf.WriteInt(vatVal DIV 10); f.WriteChar(\".\"); f.WriteInt(vatVal MOD 10);\r\t\t\t\tf.WriteString(\"% on \");\r\t\t\t\tf.WriteInt(vat DIV 100); f.WriteChar(\".\"); f.WriteIntForm(vat MOD 100, 10, 2, \"0\", FALSE);\r\t\t\t\tf.WriteString(\")\");\r\t\t\t\tf.WriteTab;\r\t\t\t\tf.WriteIntForm((vat * vatVal) DIV 100000, 10, 5, TextModels.digitspace, FALSE);\r\t\t\t\tf.WriteChar(\".\"); f.WriteIntForm(((vat * vatVal) DIV 1000) MOD 100, 10, 2, \"0\", FALSE);\r\t\t\t\tf.WriteLn\r\t\t\tEND;\r\t\t\t"
+                    attr: 0
+                  - text: "(* write total *)"
+                    attr: 1
+                  - text: "\r\t\t\tf.WriteLn;\r\t\t\tf.WriteString(\"Total\"); f.WriteTab;\r\t\t\tf.WriteIntForm(total DIV 100, 10, 5, TextModels.digitspace, FALSE);\r\t\t\tf.WriteChar(\".\"); f.WriteIntForm(total MOD 100, 10, 2, \"0\", FALSE);\r\t\t\tf.WriteString(\" sFr.\");\r\t\t\tf.WriteLn; f.WriteLn; f.WriteLn; f.WriteLn; f.WriteLn;\r\t\t\tf.WriteLn; f.WriteLn; f.WriteLn; f.WriteLn;\r\t\t\tf.WriteString(\"The exporter of the products covered by this document declares that, except where otherwise clearly indicated, these products are of Swiss preferential origin.\");\r\t\t\tf.WriteLn;\r\t\t\tViews.OpenAux(v, \"Invoice\")\r\t\tEND\r\tEND Invoice;\r\rBEGIN\r\tNEW(root); Init\rEND ObxOrders.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 11329
+          bodyLen: 8

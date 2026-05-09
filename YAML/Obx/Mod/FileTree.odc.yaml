@@ -1,0 +1,252 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Mod\\FileTree.odc"
+  size: 5424
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 5293
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 5107
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 5021
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 114300
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Helvetica
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 5138
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 4624
+                runListLen: 1753
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE ObxFileTree;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT Files, Converters, Views, Dialog;\r\t\t\r\tTYPE\r\t\t"
+                    attr: 0
+                  - text: Dlg
+                    attr: 3
+                  - text: "* = RECORD\r\t\t\t"
+                    attr: 0
+                  - text: path
+                    attr: 3
+                  - text: "*, currentPath: Dialog.String;\r\t\t\t"
+                    attr: 0
+                  - text: tree
+                    attr: 3
+                  - text: "*: Dialog.Tree\r\t\tEND;\r\t\r\tVAR \r\t\t"
+                    attr: 0
+                  - text: dlg
+                    attr: 3
+                  - text: "*: Dlg;\r\r\tPROCEDURE BuildDirTree (loc: Files.Locator; parent: Dialog.TreeNode);\r\t\tVAR l: Files.LocInfo; f: Files.FileInfo; n: Dialog.TreeNode;\r\tBEGIN\r\t\tl := Files.dir.LocList(loc);\r\t\tWHILE l # NIL DO (* "
+                    attr: 0
+                  - text: Recursively add directories
+                    attr: 1
+                  - text: " *)\r\t\t\tn := dlg.tree.NewChild(parent, 0, l.name$); n.ViewAsFolder(TRUE);\r\t\t\tBuildDirTree(loc.This(l.name$), n);\r\t\t\tl := l.next\r\t\tEND;\r\t\tf := Files.dir.FileList(loc);\r\t\tWHILE f # NIL DO n := dlg.tree.NewChild(parent, 0, f.name$); f := f.next END\r\tEND BuildDirTree;\r\r\tPROCEDURE ThisLocator (IN path: ARRAY OF CHAR): Files.Locator;\r\t\tVAR i, j: INTEGER; ch: CHAR; loc: Files.Locator; dir: Dialog.String;\r\tBEGIN\r\t\tloc := Files.dir.This(\"\"); i := 0; ch := path[0];\r\t\tWHILE ch # 0X DO\r\t\t\tj := 0;\r\t\t\tWHILE (ch # 0X) & (ch # \"/\") DO dir[j] := ch; INC(j); INC(i); ch := path[i] END;\r\t\t\tdir[j] := 0X;\r\t\t\tloc := loc.This(dir);\r\t\t\tIF ch = \"/\" THEN INC(i); ch := path[i] END\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " loc\r\tEND ThisLocator;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Update
+                    attr: 3
+                  - text: "*;\r\t\tVAR loc: Files.Locator; \r\tBEGIN\r\t\tIF (dlg.path # \"\") & (dlg.path[LEN(dlg.path$) - 1] # \"/\") & (dlg.path[LEN(dlg.path$) - 1] # \"\\\") THEN\r\t\t\tdlg.path := dlg.path + \"/\"\r\t\tEND;\r\t\tdlg.currentPath := dlg.path$;\r\t\tdlg.tree.DeleteAll();\r\t\tloc := ThisLocator(dlg.path);\r\t\tIF loc # NIL THEN BuildDirTree(loc, NIL); Dialog.UpdateList(dlg.tree) END;\r\t\tDialog.Update(dlg)\r\tEND Update;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Open
+                    attr: 3
+                  - text: "*;\r\t\tVAR n: Dialog.TreeNode; name, path, p: Dialog.String;\r\t\t\tloc: Files.Locator; fname: Files.Name; conv: Converters.Converter; v: Views.View;\r\tBEGIN\r\t\tn := dlg.tree.Selected();\r\t\tIF n # NIL THEN\r\t\t\tIF ~n.IsFolder() THEN (* "
+                    attr: 0
+                  - text: a leaf node is selected
+                    attr: 1
+                  - text: " *)\r\t\t\t\tn.GetName(name);\r\t\t\t\tn := dlg.tree.Parent(n); path := \"\";\r\t\t\t\tWHILE n # NIL DO n.GetName(p); path := p + \"/\" + path; n := dlg.tree.Parent(n) END;\r\t\t\t\tloc := ThisLocator(dlg.currentPath + path);\r\t\t\t\tIF loc # NIL THEN\r\t\t\t\t\tconv := NIL; fname := name$;\r\t\t\t\t\tv := Views.Old(Views.dontAsk, loc, fname, conv);\r\t\t\t\t\tIF v # NIL THEN Views.Open(v, loc, fname, conv) END\r\t\t\t\tELSE Dialog.ShowStatus(\"file not found\")\r\t\t\t\tEND\r\t\t\tELSIF ~n.IsExpanded() THEN n.SetExpansion(TRUE); Dialog.UpdateList(dlg.tree)\r\t\t\tEND\r\t\tELSE Dialog.ShowStatus(\"no selection\")\r\t\tEND\r\tEND Open;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: OpenGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\t\tVAR n: Dialog.TreeNode;\r\tBEGIN\r\t\tn := dlg.tree.Selected();\r\t\tpar.disabled := (n = NIL) OR (n.IsFolder() & n.IsExpanded());\r\t\tIF (n # NIL) & ~n.IsFolder() THEN par.label := \"&Open File\" ELSE par.label := \"&Open Folder\" END\r\tEND OpenGuard;\r\rEND ObxFileTree.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 5389
+          bodyLen: 8

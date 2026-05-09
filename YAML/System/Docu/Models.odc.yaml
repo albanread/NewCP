@@ -1,0 +1,557 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\System\\Docu\\Models.odc"
+  size: 16350
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 16219
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 16033
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 15947
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                asc: 134600
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000003
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 14
+                bodyPos: 15947
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 15433
+                runListLen: 2941
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: Models
+                    attr: 0
+                  - text: "\r\rDEFINITION Models;\r\r\tIMPORT Stores;\r\r\tCONST clean = 0; notUndoable = 1; invisible = 2;\r\r\tTYPE\r\t\tModel = POINTER TO ABSTRACT RECORD (Stores.Store)\r\t\t\tPROCEDURE (m: Model) Domain (): Stores.Domain, NEW\r\t\tEND;\r\r\t\tContext = POINTER TO ABSTRACT RECORD\r\t\t\t(c: Context) ThisModel (): Model, NEW, ABSTRACT;\r\t\t\t(c: Context) GetSize (OUT w, h: INTEGER), NEW, ABSTRACT;\r\t\t\t(c: Context) SetSize (w, h: INTEGER), NEW, EMPTY;\r\t\t\t(c: Context) Normalize (): BOOLEAN, NEW, ABSTRACT;\r\t\t\t(c: Context) Consider (VAR p: Proposal), NEW, EMPTY;\r\t\t\t(c: Context) MakeVisible (l, t, r, b: INTEGER), NEW, EMPTY\r\t\tEND;\r\r\t\tProposal = ABSTRACT RECORD END;\r\r\t\tMessage = ABSTRACT RECORD\r\t\t\tmodel-: Model;\r\t\t\tera-: INTEGER\r\t\tEND;\r\r\t\tUpdateMsg = EXTENSIBLE RECORD (Message) END;\r\t\tNeutralizeMsg = RECORD (Message) END;\r\r\tPROCEDURE CopyOf (m: Model): Model;\r\tPROCEDURE Broadcast (model: Model; VAR msg: Message);\r\tPROCEDURE Domaincast (d: Stores.Domain; VAR msg: Message);\r\tPROCEDURE BeginModification (type: INTEGER; m: Model);\r\tPROCEDURE EndModification (type: INTEGER; m: Model);\r\tPROCEDURE BeginScript (m: Model; name: Stores.OpName; OUT script: Stores.Operation);\r\tPROCEDURE EndScript (m: Model; script: Stores.Operation);\r\tPROCEDURE Do (m: Model; name: Stores.OpName; op: Stores.Operation);\r\tPROCEDURE LastOp (m: Model): Stores.Operation;\r\tPROCEDURE Bunch (m: Model);\r\tPROCEDURE StopBunching (m: Model);\r\tPROCEDURE Era (m: Model): INTEGER;\r\rEND Models.\r\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 588
+                      bodyLen: 1135
+                    attr: 1
+                    w: 2628870
+                    h: 1041388
+                  - text: "\r\rFigure 1. Model-View-Controller Separation\r\r\rA "
+                    attr: 1
+                  - text: model
+                    attr: 2
+                  - text: " is one part of a Model-View-Controller triple. A model represents some data, without knowing how these data may be represented. Representation is performed by a view. There may be several views displaying the same model simultaneously, and possibly in different ways.\r\rAfter a model has been modified, a "
+                    attr: 1
+                  - text: model message
+                    attr: 2
+                  - text: " is broadcast in the domain to which this model belongs (e.g., the domain of the document of which the model is a part). Model messages are received by the appropriate views, such that these views can update the display according to the model modification which was performed.\r\rA modification of a model may be permanent, or reversible. To indicate a permanent modification, the procedures "
+                    attr: 1
+                  - text: BeginModification/EndModification
+                    attr: 2
+                  - text: " must be called before/after the modification(s). Reversible modifications (\"undoable\" operations) are implemented as "
+                    attr: 1
+                  - text: Stores.Operation
+                    attr: 2
+                  - text: " objects. Several operations on the same model can be combined into one (i.e., as a whole undoable/redoable) operation with the "
+                    attr: 1
+                  - text: BeginScript/EndScript
+                    attr: 2
+                  - text: " pair of procedures.\r\rA model may be a container, i.e., contain embedded views. An embedded view can communicate with the model in which it is embedded via a "
+                    attr: 1
+                  - text: Context
+                    attr: 2
+                  - text: ". A container model provides a context for each embedded view. Using its context, a view can inquire its current size, or it can try to change its size.\r\rAll models in a document share the same domain, i.e., their domain fields are either "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: " (when the document is not displayed in some window) or refer to the same domain. Different displayed documents have different domains.\r\rExamples:\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Obx/Docu/Lines', 'ObxLines Docu')"
+                      body:
+                        - text: ObxLines  docu
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Obx/Docu/Graphs', 'ObxGraphs Docu')"
+                      body:
+                        - text: ObxGraphs  docu
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Obx/Docu/Caps', 'ObxCaps Docu')"
+                      body:
+                        - text: ObxCaps  docu/sources
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\tcompound commands (undoable scripts)\r\r\rCONST "
+                    attr: 1
+                  - text: clean
+                    attr: 4
+                  - text: "\rPossible value for parameter "
+                    attr: 1
+                  - text: type
+                    attr: 2
+                  - text: " of "
+                    attr: 1
+                  - text: BeginModification/EndModification
+                    attr: 2
+                  - text: ". Indicates an operation that does not make its document \"dirty\". Example: modifying a text in a way that is considered as \"unimportant\", such as collapsing or expanding a text fold (-> StdFolds).\r\rCONST "
+                    attr: 1
+                  - text: invisible
+                    attr: 4
+                  - text: "\rPossible value for parameter "
+                    attr: 1
+                  - text: type
+                    attr: 2
+                  - text: " of "
+                    attr: 1
+                  - text: BeginModification/EndModification
+                    attr: 2
+                  - text: ". Indicates an operation that \"folds together\" with the previous operation, i.e., does not itself become visible in the Undo/Redo menu items. Invisible operations can be used for operations that by themselves may not be expected to appear in an Undo/Redo menu. Example: setting options in a controller. When executing a Redo operation, after a (visible) operation, all invisible operations executed. When executing an Undo operation, first all invisible operations are undone and afterwards the visible operations.\r\rCONST "
+                    attr: 1
+                  - text: notUndoable
+                    attr: 4
+                  - text: "\rPossible value for parameter "
+                    attr: 1
+                  - text: type
+                    attr: 2
+                  - text: " of "
+                    attr: 1
+                  - text: BeginModification/EndModification
+                    attr: 2
+                  - text: ". Indicates an operation that cannot be reversed (\"undone\"). This is important for operations where the undo feature would be too expensive.\r\r\rTYPE "
+                    attr: 1
+                  - text: Model (Stores.Store)
+                    attr: 4
+                  - text: "\rABSTRACT\rA model represents data, which may be presented by a view.\rModels are allocated by specific model directories, e.g., by "
+                    attr: 1
+                  - text: Texts.dir
+                    attr: 2
+                  - text: ".\rModels are used by commands which can operate on the data that is represented by the model.\rModels are extended whenever new kinds of displayable data need to be represented.\rA model's domain delineates the boundaries of the document in which it is embedded.\rA model's "
+                    attr: 1
+                  - text: Internalize
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Externalize
+                    attr: 2
+                  - text: ", and "
+                    attr: 1
+                  - text: CopyFrom
+                    attr: 2
+                  - text: " procedures must be implemented if the store contains persistent state.\r\rPROCEDURE (m: Model) "
+                    attr: 1
+                  - text: Domain
+                    attr: 4
+                  - text: " (): Stores.Domain\rNEW\rReturns the domain of the model, usually representing one document. If the domain is "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: ", the model is not displayed. The domain is set up by the procedure "
+                    attr: 1
+                  - text: Stores.InitDomain
+                    attr: 2
+                  - text: ".\r\r\rTYPE "
+                    attr: 1
+                  - text: Context
+                    attr: 4
+                  - text: "\rABSTRACT\rA context object is part of the model-view recursion scheme of BlackBox. A context is generated and maintained by a container model, and there is one context for every view embedded in the model. The context is carried by the view, so the view can communicate with its context (i.e., with the model in which it is embedded).\rA "
+                    attr: 1
+                  - text: Context
+                    attr: 2
+                  - text: " allows a contained view to communicate with its container.\rA "
+                    attr: 1
+                  - text: Context
+                    attr: 2
+                  - text: " is extended for every container model.\r\rPROCEDURE (c: Context) "
+                    attr: 1
+                  - text: ThisModel
+                    attr: 4
+                  - text: " (): Model\rNEW, ABSTRACT\rReturns the context's model. "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: " may be returned if the context doesn't want to disclose its identity.\r"
+                    attr: 1
+                  - text: ThisModel
+                    attr: 2
+                  - text: " may be narrowed in an extension.\r\rPROCEDURE (c: Context) "
+                    attr: 1
+                  - text: GetSize
+                    attr: 4
+                  - text: " (OUT w, h: INTEGER)\rNEW, ABSTRACT\rReturns the width and height of the contained view in its container, in universal units.\r\rPost\rw >= 0  &  h >= 0\r\rPROCEDURE (c: Context) "
+                    attr: 1
+                  - text: SetSize
+                    attr: 4
+                  - text: " (w, h: INTEGER)\rNEW, EMPTY\rRequests the container to adapt the size of "
+                    attr: 1
+                  - text: c
+                    attr: 2
+                  - text: "'s view to the given width and height. The container may or may not grant this request.\r\rPROCEDURE (c: Context) "
+                    attr: 1
+                  - text: Normalize
+                    attr: 4
+                  - text: " (): BOOLEAN\rNEW, ABSTRACT\rDetermines whether the contained view should normalize its persistent state upon externalization, and whether it should not make a modification of this state undoable.\rAs an example, consider the scroll position of a text view: if the view is in a root context, i.e., in the outermost view level, it should write out position 0 (i.e., \"normalized\") as its current scroll position upon externalization, and it shouldn't make scroll operations undoable. However, if embedded in a non-root context, it should write out its current scroll position, and should make a scroll operation undoable.\r"
+                    attr: 1
+                  - text: Normalize
+                    attr: 2
+                  - text: " is called in a view's Externalize procedure and when it must be determined whether an operation needs to be undoable or not.\r\rPROCEDURE (c: Context) "
+                    attr: 1
+                  - text: Consider
+                    attr: 4
+                  - text: " (VAR p: Proposal)\rNEW, EMPTY\rIf an embedded view wants its container to do something, it must ask for such a change by sending the container a "
+                    attr: 1
+                  - text: Proposal
+                    attr: 2
+                  - text: " via the "
+                    attr: 1
+                  - text: Consider
+                    attr: 2
+                  - text: " procedure. The container may, but need not, cooperate in an appropriate way. BlackBox currently doesn't predefine proposals of its own.\r\rPROCEDURE (c: Context) "
+                    attr: 1
+                  - text: MakeVisible
+                    attr: 4
+                  - text: " (l, t, r, b: INTEGER)\rNEW, EMPTY\rScroll the container of c's view such that the rectangle "
+                    attr: 1
+                  - text: "(l, t, r, b)"
+                    attr: 2
+                  - text: " becomes at least partially visible.\r\r\rTYPE "
+                    attr: 1
+                  - text: Proposal
+                    attr: 4
+                  - text: "\rABSTRACT\rBase type for all proposals. A proposal is a message which a view can send to the container (via its context object) in which it is embedded.\r\r\rTYPE "
+                    attr: 1
+                  - text: Message
+                    attr: 4
+                  - text: "\rABSTRACT\rBase type for all model messages.\rMessages are used to transmit information from a model to all views which display this model, typically about changes that have occurred in a model.\rMessages are extended to describe specific kinds of information to be transmitted.\r\r"
+                    attr: 1
+                  - text: model
+                    attr: 4
+                  - text: ": Model\tmodel # NIL\rThe model that has been changed.\r\r"
+                    attr: 1
+                  - text: era
+                    attr: 4
+                  - text: "-: INTEGER\rUsed internally.\r\r\rTYPE "
+                    attr: 1
+                  - text: UpdateMsg (Message)
+                    attr: 4
+                  - text: "\rEXTENSIBLE\rAll model messages which notify about a model modification must be extensions of "
+                    attr: 1
+                  - text: UpdateMsg
+                    attr: 2
+                  - text: ". A basic (unextended) "
+                    attr: 1
+                  - text: UpdateMsg
+                    attr: 2
+                  - text: " indicates that the message's model has changed in some unspecified way.\r"
+                    attr: 1
+                  - text: UpdateMsgs
+                    attr: 2
+                  - text: " are used to notify all views displaying a given model about a change of this model.\r"
+                    attr: 1
+                  - text: UpdateMsgs
+                    attr: 2
+                  - text: " are extended in order to update the display in more specific ways than to redraw the whole view (i.e., faster and with less screen flicker), i.e., to allow partial updates.\r\r\rTYPE "
+                    attr: 1
+                  - text: NeutralizeMsg (Message)
+                    attr: 4
+                  - text: "\rExtension\rThis message is sent by the framework to indicate that marks (selection marks and the like) should be removed.\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: CopyOf
+                    attr: 4
+                  - text: " (m: Model): Model\rReturns a (deep) copy of the model. Internally, it clones "
+                    attr: 1
+                  - text: m
+                    attr: 2
+                  - text: " and calls its "
+                    attr: 1
+                  - text: CopyFrom
+                    attr: 2
+                  - text: " method.\r\rPre\rm # NIL\t20\r\rPost\rresult # NIL\r\rPROCEDURE "
+                    attr: 1
+                  - text: Broadcast
+                    attr: 4
+                  - text: " (model: Model; VAR msg: Message)\rBroadcast "
+                    attr: 1
+                  - text: msg
+                    attr: 2
+                  - text: " for "
+                    attr: 1
+                  - text: model
+                    attr: 2
+                  - text: ". Before broadcasting, parameter "
+                    attr: 1
+                  - text: model
+                    attr: 2
+                  - text: " is assigned to the message's "
+                    attr: 1
+                  - text: model
+                    attr: 2
+                  - text: "-field. The broadcast is actually performed only if "
+                    attr: 1
+                  - text: "model.domain # NIL"
+                    attr: 2
+                  - text: ".\r"
+                    attr: 1
+                  - text: Broadcast
+                    attr: 2
+                  - text: " is called by models whenever models need to transmit information to the views by which they are displayed. In contrast to "
+                    attr: 1
+                  - text: Domaincast
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Broadcast
+                    attr: 2
+                  - text: " sends "
+                    attr: 1
+                  - text: msg
+                    attr: 2
+                  - text: " only to the views which have "
+                    attr: 1
+                  - text: model
+                    attr: 2
+                  - text: " as their model.\rThe handler of a model message may not recursively broadcast another model message.\r\rPre\rmodel # NIL\t20\rno recursion\t21\r\rPost\rmsg.model = model\r\rPROCEDURE "
+                    attr: 1
+                  - text: Domaincast
+                    attr: 4
+                  - text: " (d: Stores.Domain; VAR msg: Message)\rThis procedure sends a message to a particular domain, or does nothing if the domain is "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: ". Every view in the domain receives the message. Normally, you'll use "
+                    attr: 1
+                  - text: Broadcast
+                    attr: 2
+                  - text: " to notify only the views on a particular model. "
+                    attr: 1
+                  - text: Domaincast
+                    attr: 2
+                  - text: " is only necessary if the contents of one view (e.g., a text ruler) influences something outside of the view itself (e.g., the formatting of the text below the ruler). The domaincast is actually performed only if "
+                    attr: 1
+                  - text: "d # NIL"
+                    attr: 2
+                  - text: ".\r\rA domaincast may not be performed if another one is still in progress for this domain (no recursion).\r\rPre\rno recursion\t20\r\rPost\rmsg.model = NIL\r\rPROCEDURE "
+                    attr: 1
+                  - text: BeginModification
+                    attr: 4
+                  - text: " (type: INTEGER; m: Model)\rIf model "
+                    attr: 1
+                  - text: m
+                    attr: 2
+                  - text: " is modified in a way that cannot be undone, the modification(s) must be bracketed by calls to "
+                    attr: 1
+                  - text: BeginModification
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: EndModification
+                    attr: 2
+                  - text: " with parameter "
+                    attr: 1
+                  - text: type
+                    attr: 2
+                  - text: " set to "
+                    attr: 1
+                  - text: notUndoable
+                    attr: 2
+                  - text: ".\r\rPre\rm # NIL\t20\rtype IN {clean, notUndoable, invisible}\t21\r\rPROCEDURE "
+                    attr: 1
+                  - text: EndModification
+                    attr: 4
+                  - text: " (type: INTEGER; m: Model)\rIf model "
+                    attr: 1
+                  - text: m
+                    attr: 2
+                  - text: " is modified in a way that cannot be undone, the modification(s) must be bracketed by calls to "
+                    attr: 1
+                  - text: BeginModification
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: EndModification
+                    attr: 2
+                  - text: " with parameter "
+                    attr: 1
+                  - text: type
+                    attr: 2
+                  - text: " set to "
+                    attr: 1
+                  - text: notUndoable
+                    attr: 2
+                  - text: ".\r\rPre\rm # NIL\t20\rtype IN {clean, notUndoable, invisible}\t21\r\rPROCEDURE "
+                    attr: 1
+                  - text: BeginScript
+                    attr: 4
+                  - text: " (m: Model; name: Stores.OpName; OUT script: Stores.Operation)\rTo make a sequence of undoable operations undoable as a whole, the sequence should be bracketed by calls to "
+                    attr: 1
+                  - text: BeginScript
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: EndScript
+                    attr: 2
+                  - text: ".\r\rPre\rm # NIL\t20\r\rPost\rscript # NIL\r\rPROCEDURE "
+                    attr: 1
+                  - text: EndScript
+                    attr: 4
+                  - text: " (m: Model; script: Stores.Operation)\rTo make a sequence of undoable operations undoable as a whole, the sequence should be bracketed by calls to "
+                    attr: 1
+                  - text: BeginScript
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: EndScript
+                    attr: 2
+                  - text: ". The same script which has been returned in "
+                    attr: 1
+                  - text: BeginScript
+                    attr: 2
+                  - text: " must be passed to "
+                    attr: 1
+                  - text: EndScript
+                    attr: 2
+                  - text: ".\r\rPre\rm # NIL\t20\rscript # NIL\t21\r\rPROCEDURE "
+                    attr: 1
+                  - text: Do
+                    attr: 4
+                  - text: " (m: Model; name: Stores.OpName; op: Stores.Operation)\rThis procedure is called to execute an operation on a model. The operation's "
+                    attr: 1
+                  - text: Do
+                    attr: 2
+                  - text: " procedure is called, and the operation is recorded for a later undo.\r\rPre\rm # NIL\t20\rop # NIL\t21\r\rPost\rop.inUse\r\rPROCEDURE "
+                    attr: 1
+                  - text: LastOp
+                    attr: 4
+                  - text: " (m: Model): Stores.Operation\rThis procedure returns the most recently executed operation on the given model. It can be used to decide whether to bunch several successive operations into one single atomic operation, e.g., if a character is typed into a text, it may be bunched with the previously inserted character; such that an undo operates on the whole text typed in, and not on one character per undo.\r\rPre\rm # NIL\t20\r\rPROCEDURE "
+                    attr: 1
+                  - text: Bunch
+                    attr: 4
+                  - text: " (m: Model)\rNotify model that another action was bunched to the most recently executed operation. After it has been determined that the new operation can be merged into the most recent operation (using "
+                    attr: 1
+                  - text: LastOp
+                    attr: 2
+                  - text: " for the test), the previous operation can be modified (e.g., a character appended to its string of characters that were typed in) and this modification made known to the framework by calling "
+                    attr: 1
+                  - text: Bunch
+                    attr: 2
+                  - text: ".\r\rPre\rm # NIL\t20\r\rPROCEDURE "
+                    attr: 1
+                  - text: "StopBunching "
+                    attr: 4
+                  - text: "(m: Model)\rPrevents any further bunching on this model's current operation.\r\rPre\rm # NIL\t20\r\rPROCEDURE "
+                    attr: 1
+                  - text: Era
+                    attr: 4
+                  - text: " (m: Model): INTEGER\rCalled internally.\r\rPre\rm # NIL\t20\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 18
+          bodyPos: 16315
+          bodyLen: 8

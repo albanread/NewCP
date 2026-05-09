@@ -1,0 +1,244 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Sql\\Mod\\ObxInit.odc"
+  size: 6243
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 6112
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 5926
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 5840
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 5961
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 5447
+                runListLen: 1733
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE SqlObxInit;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT "
+                    attr: 0
+                  - text: Kernel
+                    attr: 3
+                  - text: ", SqlDB;\r\t\r\tCONST\r\t\tprotocol = \"SqlOdbc\";\r\t\tid = \"\"; password = \"\";\r\t\tdatasource = \"Test Database\";\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Setup
+                    attr: 3
+                  - text: "*;\r\t\tVAR db: SqlDB.Database; res: INTEGER;\r\tBEGIN\r\t\tSqlDB.OpenDatabase(protocol, id, password, datasource, SqlDB.async, SqlDB.hideErrors, db, res);\r\t\tIF db # NIL THEN\r\t\t\tdb.Exec(\"CREATE TABLE Companies (id INTEGER, name VARCHAR(255), ceo VARCHAR(255), employees INTEGER)\");\r\t\t\tdb.Exec(\"CREATE TABLE Ownership (owner INTEGER, owned INTEGER, percent INTEGER)\");\r\t\t\t"
+                    attr: 0
+                  - text: "(* single company *)"
+                    attr: 1
+                  - text: "\r\t\t\tdb.Exec(\"INSERT INTO Companies VALUES (11, 'Test', 'Bill', 234)\");\r\t\t\t"
+                    attr: 0
+                  - text: "(* two companies (tree) *)"
+                    attr: 1
+                  - text: "\r\t\t\tdb.Exec(\"INSERT INTO Companies VALUES (12, 'Test', 'Bill', 234)\");\r\t\t\tdb.Exec(\"INSERT INTO Companies VALUES (13, 'Test company AG', 'John', 45)\");\r\t\t\tdb.Exec(\"INSERT INTO Ownership VALUES (12, 13, 100)\");\r\t\t\t"
+                    attr: 0
+                  - text: "(* four companies (with ring) *)"
+                    attr: 1
+                  - text: "\r\t\t\tdb.Exec(\"INSERT INTO Companies VALUES (14, 'Test', 'Bill', 234)\");\r\t\t\tdb.Exec(\"INSERT INTO Companies VALUES (15, 'Test company AG', 'John', 45)\");\r\t\t\tdb.Exec(\"INSERT INTO Companies VALUES (16, 'Test Services GmbH', 'Jim', 23000)\");\r\t\t\tdb.Exec(\"INSERT INTO Companies VALUES (17, 'Test Commands & Co.', 'Mary', 523)\");\r\t\t\tdb.Exec(\"INSERT INTO Ownership VALUES (14, 15, 50)\");\r\t\t\tdb.Exec(\"INSERT INTO Ownership VALUES (15, 17, 100)\");\r\t\t\tdb.Exec(\"INSERT INTO Ownership VALUES (16, 15, 50)\");\r\t\t\tdb.Exec(\"INSERT INTO Ownership VALUES (15, 17, 100)\");\r\t\t\t"
+                    attr: 0
+                  - text: "(* four companies (tree) *)"
+                    attr: 1
+                  - text: "\r\t\t\tdb.Exec(\"INSERT INTO Companies VALUES (18, 'Test', 'Bill', 234)\");\r\t\t\tdb.Exec(\"INSERT INTO Companies VALUES (19, 'Test company AG', 'John', 45)\");\r\t\t\tdb.Exec(\"INSERT INTO Companies VALUES (20, 'Test Services GmbH', 'Jim', 23000)\");\r\t\t\tdb.Exec(\"INSERT INTO Companies VALUES (21, 'Test Commands & Co.', 'Mary', 523)\");\r\t\t\tdb.Exec(\"INSERT INTO Ownership VALUES (18, 19, 20)\");\r\t\t\tdb.Exec(\"INSERT INTO Ownership VALUES (18, 20, 30)\");\r\t\t\tdb.Exec(\"INSERT INTO Ownership VALUES (18, 21, 50)\");\r\t\t\t"
+                    attr: 0
+                  - text: "(* most complex example *)"
+                    attr: 1
+                  - text: "\r\t\t\tdb.Exec(\"INSERT INTO Companies VALUES (1, 'Test', 'Bill', 234)\");\r\t\t\tdb.Exec(\"INSERT INTO Companies VALUES (2, 'Test company AG', 'John', 45)\");\r\t\t\tdb.Exec(\"INSERT INTO Companies VALUES (3, 'Test Services GmbH', 'Jim', 23000)\");\r\t\t\tdb.Exec(\"INSERT INTO Companies VALUES (4, 'Test Commands & Co.', 'Mary', 523)\");\r\t\t\tdb.Exec(\"INSERT INTO Companies VALUES (5, 'Test Views KG', 'Frank', 17)\");\r\t\t\tdb.Exec(\"INSERT INTO Companies VALUES (6, 'Test Genossenschaft', 'Hans', 2109)\");\r\t\t\tdb.Exec(\"INSERT INTO Companies VALUES (7, 'Test Mentoring, Inc.', 'Marlis', 128)\");\r\t\t\tdb.Exec(\"INSERT INTO Companies VALUES (8, 'Test Training Plc.', 'Paul', 4)\");\r\t\t\tdb.Exec(\"INSERT INTO Companies VALUES (9, 'Test Trainers SA', 'Jean', 87)\");\r\t\t\tdb.Exec(\"INSERT INTO Companies VALUES (10, 'Test Wrappers AB', 'Gordon', 912)\");\r\t\t\tdb.Exec(\"INSERT INTO Ownership VALUES (1, 2, 100)\");\r\t\t\tdb.Exec(\"INSERT INTO Ownership VALUES (1, 3, 100)\");\r\t\t\tdb.Exec(\"INSERT INTO Ownership VALUES (2, 4, 100)\");\r\t\t\tdb.Exec(\"INSERT INTO Ownership VALUES (2, 5, 100)\");\r\t\t\tdb.Exec(\"INSERT INTO Ownership VALUES (3, 6, 100)\");\r\t\t\tdb.Exec(\"INSERT INTO Ownership VALUES (3, 7, 100)\");\r\t\t\tdb.Exec(\"INSERT INTO Ownership VALUES (7, 8, 100)\");\r\t\t\tdb.Exec(\"INSERT INTO Ownership VALUES (5, 9, 49)\");\r\t\t\tdb.Exec(\"INSERT INTO Ownership VALUES (8, 9, 51)\");\r\t\t\tdb.Exec(\"INSERT INTO Ownership VALUES (9, 10, 100)\");\r\t\t\tdb.Commit\r\t\tEND;\r\t\tdb := NIL;\r\t\tKernel.Cleanup\t"
+                    attr: 0
+                  - text: "(* garbage collector closes database *)"
+                    attr: 1
+                  - text: "\r\tEND Setup;\r\t\rEND SqlObxInit."
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 6208
+          bodyLen: 8

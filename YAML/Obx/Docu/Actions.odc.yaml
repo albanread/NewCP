@@ -1,0 +1,168 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Docu\\Actions.odc"
+  size: 3204
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 3073
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 2887
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 2801
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 152400
+                dsc: 25400
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 10
+                bodyPos: 2801
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 2287
+                runListLen: 590
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                flow:
+                  - text: "Overview by Example: ObxActions"
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\rThis example demonstrates how background tasks can be implemented using "
+                    attr: 2
+                  - text: actions
+                    attr: 3
+                  - text: ". An action is an object which performs some action later when the system is idle, i.e., between user interactions. An action can be scheduled to execute as soon as possible, or after some time has passed. Upon execution, an action may re-schedule itself for a later point in time. In this way, an action can operate as a background task, getting computation time whenever the system is idle. This strategy is called "
+                    attr: 2
+                  - text: cooperative multitasking
+                    attr: 3
+                  - text: ". For this to work, an action must not do massive computations, because this would reduce the responsiveness of the system. Longer calculations need to be broken down into less time consuming pieces. This is demonstrated by an algorithm which calculates prime numbers up to a given maximum, as a background task. An action is used to perform the stepwise calculation. Every newly found prime number is written into a text. This text is opened when the calculation is started and shows the progression of the background task. The action checks whether it has reached the "
+                    attr: 2
+                  - text: Upper Bound
+                    attr: 3
+                  - text: " set by the user. If this is not yet the case, it re-schedules itself for further execution.\r\tIn order to speed up the calculation the parameter "
+                    attr: 2
+                  - text: Step Size
+                    attr: 3
+                  - text: " can be set to a larger value. This increases the CPU workload and decreases the total response time on the one side but also decreases the responsiveness of the system on the other side. The particular values required for making this effect perceptible depend on the underlying platform's processing power.\r\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 6
+                      bodyPos: 762
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: " \"StdCmds.OpenAuxDialog('Obx/Rsrc/Actions', 'Prime Calculation')\"\r\r"
+                    attr: 2
+                  - link:
+                      target: "StdCmds.OpenDoc('Obx/Mod/Actions')"
+                      body:
+                        - text: ObxActions  sources
+                          attr: 4
+                      attr: 2
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 2
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 14
+          bodyPos: 3169
+          bodyLen: 8

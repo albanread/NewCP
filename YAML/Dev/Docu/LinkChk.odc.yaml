@@ -1,0 +1,238 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Dev\\Docu\\LinkChk.odc"
+  size: 4303
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 4172
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 3986
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 3900
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 114300
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 6
+                bodyPos: 3900
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 3386
+                runListLen: 546
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                flow:
+                  - text: DevLinkChk
+                    attr: 0
+                  - text: "\r\rDEFINITION DevLinkChk;\r\r\tIMPORT Dialog;\r\r\tCONST oneSubsystem = 0; globalSubsystem = 1; allSubsystems = 2;\r\r\tVAR\r\t\tpar: RECORD \r\t\t\tscope: INTEGER;\r\t\t\tsubsystem: ARRAY 9 OF CHAR\r\t\tEND;\r\r\tPROCEDURE Check (subsystem: ARRAY OF CHAR; scope: INTEGER; check: BOOLEAN);\r\tPROCEDURE CheckLinks;\r\tPROCEDURE ListLinks;\r\tPROCEDURE Open (path, file: ARRAY OF CHAR; pos: INTEGER);\r\tPROCEDURE SubsystemGuard (VAR p: Dialog.Par);\r\tPROCEDURE CommandGuard (VAR p: Dialog.Par);\r\tPROCEDURE SubsystemNotifier (op, from, to: INTEGER);\r\rEND DevLinkChk.\r\r\rThis tool module allows to check whether a hyperlink (-> StdLinks) points to an existing BlackBox document. this allows to find most \"stale\" links, i.e., links to non-existing files.\r\rMenu command:\r\t\"Check Links...\"\t\"\"\t\"StdCmds.OpenAuxDialog('Dev/Rsrc/LinkChk', 'Check Links')\"\t\"\"\r\r\rCONST "
+                    attr: 1
+                  - text: "oneSubsystem , globalSubsystem, allSubsystems"
+                    attr: 2
+                  - text: "\rChecking can occur in one specific subsystem (more exactly, in the files contained in the subsystem's "
+                    attr: 1
+                  - text: Docu
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: Mod
+                    attr: 3
+                  - text: " subdirectories); in the global "
+                    attr: 1
+                  - text: Docu
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: Mod
+                    attr: 3
+                  - text: " directories, or in these directories plus the "
+                    attr: 1
+                  - text: Docu
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: Mod
+                    attr: 3
+                  - text: " directories of all subsystems.\r\r\rVAR "
+                    attr: 1
+                  - text: par
+                    attr: 2
+                  - text: ": RECORD \rInteractor for "
+                    attr: 1
+                  - text: CheckLinks
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: ListLinks
+                    attr: 3
+                  - text: ". It defines what documents these commands operate on.\r\r"
+                    attr: 1
+                  - text: scope
+                    attr: 2
+                  - text: ": INTEGER\tscope IN {oneSubsystem, globalSubsyste, allSubsystems}\rThe scope in which checking will occur, i.e., the directory or directories whose "
+                    attr: 1
+                  - text: Docu
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: Mod
+                    attr: 3
+                  - text: " subdirectories will be searched for files with links.\r\r"
+                    attr: 1
+                  - text: subsystem
+                    attr: 2
+                  - text: ": ARRAY 9 OF CHAR\tvalid iff scope = oneSubsystem\rSubsystem name. Only legal if "
+                    attr: 1
+                  - text: scope = oneSubsystem
+                    attr: 3
+                  - text: ".\r\rPROCEDURE "
+                    attr: 1
+                  - text: Check
+                    attr: 2
+                  - text: " (subsystem: ARRAY OF CHAR; scope: INTEGER; check: BOOLEAN)\rUsed internally.\r\rPROCEDURE "
+                    attr: 1
+                  - text: CheckLinks
+                    attr: 2
+                  - text: "\rGuard: CommandGuard\rCheck all links in the scope defined by the "
+                    attr: 1
+                  - text: par
+                    attr: 3
+                  - text: " interactor. Checking means that it is tested whether the target file of the following link-commands exists:\r\tStdCmds.OpenMask\r\tStdCmds.OpenBrowser\r\tStdCmds.OpenDoc\r\tStdCmds.OpenAuxDialog\rLinks that are stale are listed in a report text. For every stale link, the report contains one link that directly opens the culpable text and scrolls to the offending link view (using the "
+                    attr: 1
+                  - text: Open
+                    attr: 3
+                  - text: " command below).\r\rPROCEDURE "
+                    attr: 1
+                  - text: ListLinks
+                    attr: 2
+                  - text: "\rGuard: CommandGuard\rLists all links in the scope defined by the par interactor. Links are listed in a report text. For every link, the report contains one link that directly opens the relevant text and scrolls to the link view (using the "
+                    attr: 1
+                  - text: Open
+                    attr: 3
+                  - text: " command below).\r\rPROCEDURE "
+                    attr: 1
+                  - text: Open
+                    attr: 2
+                  - text: " (path, file: ARRAY OF CHAR; pos: INTEGER)\rUsed internally. The procedure opens a file at location "
+                    attr: 1
+                  - text: path
+                    attr: 3
+                  - text: " and name "
+                    attr: 1
+                  - text: file
+                    attr: 3
+                  - text: "; scrolls to position "
+                    attr: 1
+                  - text: pos
+                    attr: 3
+                  - text: "; and selects the range "
+                    attr: 1
+                  - text: "[pos .. pos+1["
+                    attr: 3
+                  - text: ".\r\rPROCEDURE "
+                    attr: 1
+                  - text: SubsystemGuard
+                    attr: 2
+                  - text: " (VAR p: Dialog.Par)\rPROCEDURE "
+                    attr: 1
+                  - text: CommandGuard
+                    attr: 2
+                  - text: " (VAR p: Dialog.Par)\rPROCEDURE "
+                    attr: 1
+                  - text: SubsystemNotifier
+                    attr: 2
+                  - text: " (op, from, to: INTEGER)\rVarious guards and notifiers used for dialog "
+                    attr: 1
+                  - text: Dev/Rsrc/LinkChk
+                    attr: 3
+                  - text: ".\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 10
+          bodyPos: 4268
+          bodyLen: 8

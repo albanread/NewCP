@@ -1,0 +1,431 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\System\\Mod\\Files.odc"
+  size: 6812
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 6681
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 6495
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 6409
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                dsc: 25400
+                grid: 1
+                opts: 0x00000021
+              defaultAttr:
+                font: Geneva
+                size: 114300
+                color: 0x00000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 6529
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 6015
+                runListLen: 2255
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE Files;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 74100
+                      h: 95250
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 74100
+                      h: 95250
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 74100
+                      h: 95250
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- 20141226, center #22, HostFiles.NewWriter violating the specification\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 63500
+                      h: 95250
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 63500
+                      h: 95250
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT "
+                    attr: 0
+                  - text: Kernel
+                    attr: 3
+                  - text: ";\r\r\tCONST "
+                    attr: 0
+                  - text: "\r\t\tshared"
+                    attr: 3
+                  - text: "* = TRUE; "
+                    attr: 0
+                  - text: exclusive
+                    attr: 3
+                  - text: "* = FALSE;\r\t\t"
+                    attr: 0
+                  - text: dontAsk
+                    attr: 3
+                  - text: "* = FALSE; "
+                    attr: 0
+                  - text: ask
+                    attr: 3
+                  - text: "* = TRUE; (** File.Register, Directory.New and Directory.Rename  **)\r\r\tCONST\r\t\t"
+                    attr: 0
+                  - text: readOnly
+                    attr: 3
+                  - text: "* = 0;\r\t\t"
+                    attr: 0
+                  - text: hidden
+                    attr: 3
+                  - text: "* = 1;\r\t\t"
+                    attr: 0
+                  - text: system
+                    attr: 3
+                  - text: "* = 2;\r\t\t"
+                    attr: 0
+                  - text: archive
+                    attr: 3
+                  - text: "* = 3;\r\t\t"
+                    attr: 0
+                  - text: stationery
+                    attr: 3
+                  - text: "* = 4;\r\r\tTYPE\r\t\t"
+                    attr: 0
+                  - text: Name
+                    attr: 3
+                  - text: "* = ARRAY 256 OF CHAR;\r\t\t"
+                    attr: 0
+                  - text: Type
+                    attr: 3
+                  - text: "* = ARRAY 16 OF CHAR;\r\r\t\t"
+                    attr: 0
+                  - text: FileInfo
+                    attr: 3
+                  - text: "* = POINTER TO RECORD\r\t\t\tnext*: FileInfo;\r\t\t\tname*: Name;\r\t\t\tlength*: INTEGER;\r\t\t\ttype*: Type;\r\t\t\tmodified*: RECORD year*, month*, day*, hour*, minute*, second*: INTEGER END;\r\t\t\tattr*: SET\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: LocInfo
+                    attr: 3
+                  - text: "* = POINTER TO RECORD\r\t\t\tnext*: LocInfo;\r\t\t\tname*: Name;\r\t\t\tattr*: SET;\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: Locator
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD\r\t\t\tres*: INTEGER;\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: File
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD\r\t\t\ttype-: Type;\r\t\t\tinit: BOOLEAN;\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: Reader
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD\r\t\t\teof*: BOOLEAN;\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: Writer
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD END;\r\r\t\t"
+                    attr: 0
+                  - text: Directory
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD END;\r\r\tVAR "
+                    attr: 0
+                  - text: dir
+                    attr: 3
+                  - text: "-, "
+                    attr: 0
+                  - text: stdDir
+                    attr: 3
+                  - text: "-: Directory;\r\t\t"
+                    attr: 0
+                  - text: objType
+                    attr: 3
+                  - text: "-, "
+                    attr: 0
+                  - text: "symType-, docType-"
+                    attr: 3
+                  - text: " : Type;\t"
+                    attr: 0
+                  - text: "(* file types *)"
+                    attr: 1
+                  - text: "\r\r\r\tPROCEDURE (l: Locator) "
+                    attr: 0
+                  - text: This
+                    attr: 3
+                  - text: "* (IN path: ARRAY OF CHAR): Locator, NEW, ABSTRACT;\r\r\tPROCEDURE (f: File) "
+                    attr: 0
+                  - text: InitType
+                    attr: 3
+                  - text: "* (type: Type), NEW;\r\tBEGIN\r\t\tASSERT(~f.init, 20);\r\t\tf.type := type$; f.init := TRUE\r\tEND InitType;\r\r\tPROCEDURE (f: File) "
+                    attr: 0
+                  - text: Length
+                    attr: 3
+                  - text: "* (): INTEGER, NEW, ABSTRACT;\r\tPROCEDURE (f: File) "
+                    attr: 0
+                  - text: NewReader
+                    attr: 3
+                  - text: "* (old: Reader): Reader, NEW, ABSTRACT;\r\tPROCEDURE (f: File) "
+                    attr: 0
+                  - text: NewWriter
+                    attr: 3
+                  - text: "* (old: Writer): Writer, NEW, ABSTRACT;\r\tPROCEDURE (f: File) "
+                    attr: 0
+                  - text: Flush
+                    attr: 3
+                  - text: "* (), NEW, ABSTRACT;\r\tPROCEDURE (f: File) "
+                    attr: 0
+                  - text: Register
+                    attr: 3
+                  - text: "* (name: Name; type: Type; ask: BOOLEAN;\r\t\t\t\t\t\t\t\t\t\t\t\t\tOUT res: INTEGER), NEW, ABSTRACT;\r\tPROCEDURE (f: File) "
+                    attr: 0
+                  - text: Close
+                    attr: 3
+                  - text: "* (), NEW, ABSTRACT;\r\tPROCEDURE (f: File) "
+                    attr: 0
+                  - text: Closed
+                    attr: 3
+                  - text: "* (): BOOLEAN, NEW, ABSTRACT;\r\tPROCEDURE (f: File) "
+                    attr: 0
+                  - text: "Shared*"
+                    attr: 3
+                  - text: " (): BOOLEAN, NEW, ABSTRACT;\r\t\r\t\r\tPROCEDURE (r: Reader) "
+                    attr: 0
+                  - text: Base
+                    attr: 3
+                  - text: "* (): File, NEW, ABSTRACT;\r\tPROCEDURE (r: Reader) "
+                    attr: 0
+                  - text: Pos
+                    attr: 3
+                  - text: "* (): INTEGER, NEW, ABSTRACT;\r\tPROCEDURE (r: Reader) "
+                    attr: 0
+                  - text: SetPos
+                    attr: 3
+                  - text: "* (pos: INTEGER), NEW, ABSTRACT;\r\tPROCEDURE (r: Reader) "
+                    attr: 0
+                  - text: ReadByte
+                    attr: 3
+                  - text: "* (OUT x: BYTE), NEW, ABSTRACT;\r\tPROCEDURE (r: Reader) "
+                    attr: 0
+                  - text: ReadBytes
+                    attr: 3
+                  - text: "* (VAR x: ARRAY OF BYTE; beg, len: INTEGER), NEW, ABSTRACT;\r\t\r\tPROCEDURE (w: Writer) "
+                    attr: 0
+                  - text: Base
+                    attr: 3
+                  - text: "* (): File, NEW, ABSTRACT;\r\tPROCEDURE (w: Writer) "
+                    attr: 0
+                  - text: Pos
+                    attr: 3
+                  - text: "* (): INTEGER, NEW, ABSTRACT;\r\tPROCEDURE (w: Writer) "
+                    attr: 0
+                  - text: SetPos
+                    attr: 3
+                  - text: "* (pos: INTEGER), NEW, ABSTRACT;\r\tPROCEDURE (w: Writer) "
+                    attr: 0
+                  - text: WriteByte
+                    attr: 3
+                  - text: "* (x: BYTE), NEW, ABSTRACT;\r\tPROCEDURE (w: Writer) "
+                    attr: 0
+                  - text: WriteBytes
+                    attr: 3
+                  - text: "* (IN x: ARRAY OF BYTE; beg, len: INTEGER), NEW, ABSTRACT;\r\t\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: This
+                    attr: 3
+                  - text: "* (IN path: ARRAY OF CHAR): Locator, NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: New
+                    attr: 3
+                  - text: "* (loc: Locator; ask: BOOLEAN): File, NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: Old
+                    attr: 3
+                  - text: "* (loc: Locator; name: Name; shared: BOOLEAN): File, NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: Temp
+                    attr: 3
+                  - text: "* (): File, NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: Delete
+                    attr: 3
+                  - text: "* (loc: Locator; name: Name), NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: Rename
+                    attr: 3
+                  - text: "* (loc: Locator; old, new: Name; ask: BOOLEAN), NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: SameFile
+                    attr: 3
+                  - text: "* (loc0: Locator; name0: Name; loc1: Locator;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tname1: Name): BOOLEAN, NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: FileList
+                    attr: 3
+                  - text: "* (loc: Locator): FileInfo, NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: LocList
+                    attr: 3
+                  - text: "* (loc: Locator): LocInfo, NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: GetFileName
+                    attr: 3
+                  - text: "* (name: Name; type: Type; OUT filename: Name), NEW, ABSTRACT;\r\t\t\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetDir
+                    attr: 3
+                  - text: "* (d: Directory);\r\tBEGIN\r\t\tASSERT(d # NIL, 20);\r\t\tdir := d;\r\t\tIF stdDir = NIL THEN stdDir := d END\r\tEND SetDir;\r\rBEGIN\r\tobjType := Kernel.objType;\r\tsymType := Kernel.symType;\r\tdocType := Kernel.docType;\rEND Files.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 6777
+          bodyLen: 8

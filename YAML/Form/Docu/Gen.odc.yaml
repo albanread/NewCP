@@ -1,0 +1,213 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Form\\Docu\\Gen.odc"
+  size: 3359
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 3228
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 3042
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 2956
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                lead: 11500
+                asc: 121900
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000003
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 14
+                bodyPos: 3077
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 2563
+                runListLen: 988
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: FormGen
+                    attr: 0
+                  - text: "\r\rDEFINITION FormGen;\r\r\tIMPORT Dialog;\r\r\tVAR\r\t\tnew: RECORD \r\t\t\tlink: Dialog.String\r\t\tEND;\r\r\tPROCEDURE Create;\r\tPROCEDURE Empty;\r\tPROCEDURE CreateGuard (VAR par: Dialog.Par);\r\rEND FormGen.\r\r\r"
+                    attr: 1
+                  - text: FormGen
+                    attr: 2
+                  - text: " is a generator for a form layout. It takes the name of an interactor variable (any exported record) as input and creates a default layout for the fields of the interactor. The following list describes the mapping from field types to controls.\r\r"
+                    attr: 1
+                  - ruler:
+                      first: 216000
+                      left: 216000
+                      right: 216000
+                      lead: 11500
+                      asc: 121900
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 2520000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "BYTE, SHORTINT, INTEGER\tField\rSHORTREAL, REAL\tField\rARRAY OF CHAR\tField\rBOOLEAN\tCheckBox\rDates.Date\tDateField\rDates.Time\tTimeField\rDialog.Color\tColorField\rDialog.Currency\tField\rDialog.List\tListBox\rDialog.Selection\tSelectionBox\rDialog.Combo\tComboBox\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      lead: 11500
+                      asc: 121900
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rAlternatively, a dialog for all interactors of a module can be generated, by entering the module name into the dialog box field. In this case, a group box is generated for every exported record variable, and a command button for every exported parameterless procedure.\r\rA possible menu using the above commands:\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      lead: 11500
+                      asc: 121900
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1656000 }
+                        - { stop: 1872000 }
+                        - { stop: 4140000 }
+                      attr: 3
+                      w: 360000000
+                      h: 444500
+                  - text: MENU
+                    attr: 3
+                  - text: " \"Form\"\r\t\"&New Form...\"\t\"\"\t\"StdCmds.OpenAuxDialog('Form/Rsrc/Gen', 'New Form')\"\t\"\"\rEND\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      lead: 11500
+                      asc: 121900
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r\rVAR "
+                    attr: 1
+                  - text: new
+                    attr: 3
+                  - text: "\rInteractor for the form generator dialog.\r\r"
+                    attr: 1
+                  - text: link
+                    attr: 3
+                  - text: ": Dialog.String\rThe name of the interactor for which a default layout should be generated. The name must be an identifier qualified with the module name, e.g., \"FormGen.new\", or only a module name, e.g., \"FormGen\".\r\rPROCEDURE "
+                    attr: 1
+                  - text: Create
+                    attr: 3
+                  - text: "\rGuard: CreateGuard\rCreate a default layout for the interactor specified in "
+                    attr: 1
+                  - text: link
+                    attr: 2
+                  - text: ".\r\rPROCEDURE "
+                    attr: 1
+                  - text: Empty
+                    attr: 3
+                  - text: "\rCreate an empty form layout.\r\rPROCEDURE "
+                    attr: 1
+                  - text: CreateGuard
+                    attr: 3
+                  - text: "\rGuard for "
+                    attr: 1
+                  - text: Create
+                    attr: 2
+                  - text: ".\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 18
+          bodyPos: 3324
+          bodyLen: 8

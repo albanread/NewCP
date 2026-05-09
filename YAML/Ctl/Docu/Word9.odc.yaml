@@ -1,0 +1,327 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Ctl\\Docu\\Word9.odc"
+  size: 8557
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 8426
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 8240
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 8154
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                lead: 11500
+                asc: 121900
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 14
+                bodyPos: 8154
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 7640
+                runListLen: 1185
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                  - # [5]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [6]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [7]
+                    font: Geneva
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "CtlWord9\r"
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "CtlWord9 "
+                    attr: 2
+                  - text: contains the automation interface for Microsoft Word 9.0. The objects contained in this module are explained in the corresponding help file (
+                    attr: 1
+                  - text: VBAWRD9.CHM
+                    attr: 3
+                  - text: ") which is located on the MS Office CD but is not installed by default.\rFor more information about automation controllers in BlackBox see the "
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Ctl/Docu/Dev-Man', 'Ctl Developer Manual')"
+                      body:
+                        - text: Ctl Docu
+                          attr: 4
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: "Since all calls to the CtlWord9 interface go across the border of the process, they are not as efficient as ordenary calls in BlackBox. They can be as much as 50.000 times slower.\r"
+                    attr: 3
+                  - text: "\r"
+                    attr: 1
+                  - text: Getting Started
+                    attr: 5
+                  - text: "\r\r"
+                    attr: 1
+                  - text: "The interface of CtlWord9 is quite big, but generally not difficult to understand. To start with, there are only a few Objects Types that need to be known. Look at the "
+                    attr: 3
+                  - text: Interface of CtlWord9 for more.
+                    attr: 1
+                  - text: "\r\rCtlWord9.Application\rRepresents the Word application. A new application can be obtained by calling "
+                    attr: 3
+                  - text: NewApplication()
+                    attr: 5
+                  - text: " which starts a new Word application and returns a application object. Windows might reuse this application when the user starts Word himself. Therefore closing an application object might also close documents of the user, while not closing it leaves a unused Word application in the memory. It is recommended never to open or close applications by yourself. Use the following procedures instead to get an Application object:\r\r"
+                    attr: 3
+                  - text: "\tVAR\r\t\tapp: CtlWord9.Application;\r\t\tconnect_doc: CtlWord9.Document;\r\r\tPROCEDURE Connect;\r\tBEGIN\r\t\tconnect_doc := CtlWord9.NewDocument();\r\t\tconnect_doc.Windows().Item(CtlT.Int(1)).PUTVisible(FALSE);\r\t\tapp := connect_doc.Application()\r\tEND Connect;\r\r\tPROCEDURE Disconnect;\r\tBEGIN\r\t\tconnect_doc.Close(NIL, NIL, NIL); app := NIL\r\tEND Disconnect;"
+                    attr: 6
+                  - text: "\r\rCtlWord9.Document\rRepresents a Word document. Such a document can be obtained by calling the methods\r"
+                    attr: 3
+                  - text: app.ActiveDocument()
+                    attr: 5
+                  - text: ", "
+                    attr: 3
+                  - text: app.Documents().Item(CtlT.Int(1))
+                    attr: 5
+                  - text: ", "
+                    attr: 3
+                  - text: "app.Documents().Add(NIL, NIL, NIL, "
+                    attr: 5
+                  - text: NIL
+                    attr: 7
+                  - text: )
+                    attr: 5
+                  - text: " and "
+                    attr: 3
+                  - text: "app.Documents().Open(CtlT.Str(filename), NIL, NIL, NIL, NIL, NIL, NIL, NIL, NIL, NIL, NIL, NIL) "
+                    attr: 5
+                  - text: "where app is an application object, or simply by calling "
+                    attr: 3
+                  - text: CtlWord9.NewDocument()
+                    attr: 5
+                  - text: ".\r\rCtlWord9.Range\rRepresents a part of the content of a document. It can be obtained in various ways from a document. The easiest way is to use the method "
+                    attr: 3
+                  - text: "CtlWord9.Document.Range(CtlT.Int(beg),CtlT.Int(end))"
+                    attr: 5
+                  - text: " to access a part of the document, or "
+                    attr: 3
+                  - text: CtlWord9.Document.Content()
+                    attr: 5
+                  - text: " to get its whole content.\rTo edit the text of a Range, the methods "
+                    attr: 3
+                  - text: CtlWord9.Range.Text()
+                    attr: 5
+                  - text: " and "
+                    attr: 3
+                  - text: CtlWord9.Range.PUTText()
+                    attr: 5
+                  - text: " can be used. The location of the Range can be moved by various "
+                    attr: 3
+                  - text: CtlWord9.Range.MoveXXX
+                    attr: 5
+                  - text: " methods, the "
+                    attr: 3
+                  - text: CtlWord9.Range.Next
+                    attr: 5
+                  - text: " method or by setting the start and the end point to a different value with "
+                    attr: 3
+                  - text: CtlWord9.Range.PUTStart
+                    attr: 5
+                  - text: " and "
+                    attr: 3
+                  - text: CtlWord9.Range.PUTEnd
+                    attr: 5
+                  - text: ".\r\rCtlWord9.Font\rRepresents a font of a text. It can be obtained from a CtlWord9.Range object by calling the "
+                    attr: 3
+                  - text: CtlWord9.Range.Font()
+                    attr: 5
+                  - text: " method. Attention: Since the font of a Range might not be homogeneous, not all properties might be defined.\r\rA good starting point to use CtlWord9 is also the "
+                    attr: 3
+                  - link:
+                      target: "StdCmds.OpenBrowser('Obx/Docu/WordEdit', 'ObxWordEdit ')"
+                      body:
+                        - text: ObxWordEdit Example
+                          attr: 4
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: .
+                    attr: 1
+                  - text: "\r\r"
+                    attr: 3
+                  - text: Stumbling Blocks
+                    attr: 5
+                  - text: "\r\rHere are some things we found out using Word with this interface and which one might expect to be differently.\r- The "
+                    attr: 3
+                  - text: CtlWord9.NewApplication()
+                    attr: 5
+                  - text: " method always creates a new application. If the user also opens a new Word application and there is no Word running, the user gets the SAME application as BlackBox. Never expect that you are the only one using the application. If you documents are invisible, the user sees that there are other documents open in the Window menu, but he is not able to access them.\r- The "
+                    attr: 3
+                  - text: CtlWord9.NewDocument()
+                    attr: 5
+                  - text: " method creates a new document in the oldest running Word. It has the same effect as if the user chooses Word from the Start menu. If no Word is not running, one is started. If this Document is closed and there is no other open document in that application, the application might also terminated. However, if the application has been created with NewApplication, the application also remains running after the last document has been closed.\r- A Word document always "
+                    attr: 3
+                  - text: ends with a new-line
+                    attr: 5
+                  - text: " (0DX). If a character is inserted after this mark, Word will insert a new 0DX after that character. If the method "
+                    attr: 3
+                  - text: Collapse(CtlT.Int(CtlWord9.wdCollapseEnd))
+                    attr: 5
+                  - text: " is called for a Range which includes this ending character, the Range will be collapsed BEFORE this character. To avoid problems, this character should not be regarded part of the content.\r- All the "
+                    attr: 3
+                  - text: Collection objects
+                    attr: 5
+                  - text: " are indexed starting at 1. A collection object is a object that has a name ending in 's' and which has the procedures "
+                    attr: 3
+                  - text: Item
+                    attr: 5
+                  - text: " and "
+                    attr: 3
+                  - text: _NewEnum
+                    attr: 5
+                  - text: ". However the "
+                    attr: 3
+                  - text: CtlWord9.Range
+                    attr: 5
+                  - text: " objects start indexing at 0. Range(CtlT.Int(2), CtlT.Int(4)) for example returns a range of length 2, starting at the 3rd character.\r- "
+                    attr: 3
+                  - text: Languages objects
+                    attr: 5
+                  - text: " are also collections, but they cannot be indexed using numbers. The only way to access languages is by the language's name, if this is known, or by creating an enumeration object.\r- BlackBox has more font available in the "
+                    attr: 3
+                  - text: Fonts.dir.TypefaceList()
+                    attr: 5
+                  - text: " than Word in "
+                    attr: 3
+                  - text: CtlWord9.Application.FontNames()
+                    attr: 5
+                  - text: ".\r- The properties of a "
+                    attr: 3
+                  - text: CtlWord9.Font
+                    attr: 5
+                  - text: " are possibly undefined. Then, the constant CtlWord9.wdUndefined is used. When the property is set, it has the value -1, and when it is not set, 0. This is not documented in the MSDN. The underline property has different values, according to the CtlWord9.wdUnderlineXXX constants. The CtlWord9.Font.Name() returns an empty string, if there is no typeface defined.\r- A "
+                    attr: 3
+                  - text: CtlWord9.Language
+                    attr: 5
+                  - text: " can have a dictionary installed. Then the method ActiveSpellingDictionary() returns a dictionary. Otherwise Word might ask if it should install the dictionary for some languages.\r- The method "
+                    attr: 3
+                  - text: "CtlWord9.Range.Delete(NIL, NIL)"
+                    attr: 5
+                  - text: " deletes the content of the Range, if it is not empty. however if the content is empty (collapsed), it deletes the character to the right of the Range. Therefore Delete has a similar effect as pressing the delete key. If this is not desirable, use the method "
+                    attr: 3
+                  - text: "CtlWord9.Range.PUTText(''), "
+                    attr: 5
+                  - text: "which does nothing if the content of the Range is empty.\r- The unit "
+                    attr: 3
+                  - text: CtlWord9.wdCharacterFormatting
+                    attr: 5
+                  - text: " can be used to access the runs of a text. A run is a homogeneous part of the text. However, we have not found a method which would accept this unit. We have not found a way to get runs from Word.\r- In Word, every window and the application have a "
+                    attr: 3
+                  - text: visible property
+                    attr: 5
+                  - text: ". A window is only visible if both, the property of the document and the application are set to TRUE. Changing the property of the application also changes the properties of all the windows.\r"
+                    attr: 3
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 18
+          bodyPos: 8522
+          bodyLen: 8

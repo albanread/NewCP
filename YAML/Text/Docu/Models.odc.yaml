@@ -1,0 +1,1200 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Text\\Docu\\Models.odc"
+  size: 30213
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 30082
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 29896
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 29810
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                asc: 121900
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 10
+                bodyPos: 29810
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 29296
+                runListLen: 3174
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x00000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [5]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                flow:
+                  - text: TextModels
+                    attr: 0
+                  - text: "\r\rDEFINITION TextModels;\r\r\tIMPORT Fonts, Ports, Stores, Models, Views, Properties, Containers;\r\r\tCONST\r\t\tviewcode = 2X;\r\t\ttab = 9X; line = 0DX; para = 0EX;\r\t\tzwspace = 8BX; nbspace = 0A0X; digitspace = 8FX;\r\t\thyphen = 90X; nbhyphen = 91X; softhyphen = 0ADX;\r\t\tmaskChar = 0; hideable = 1;\r\t\toffset = 0; code = 1;\r\t\tstore = 0;\r\t\treplace = 0; insert = 1; delete = 2;\r\r\tTYPE\r\t\tModel = POINTER TO ABSTRACT RECORD (Containers.Model)\r"
+                    attr: 1
+                  - text: "\t\t\t(m: Model) Length (): INTEGER, NEW, ABSTRACT;\r\t\t\t(m: Model) NewReader (old: Reader): Reader, NEW, ABSTRACT;\r\t\t\t(m: Model) NewWriter (old: Writer): Writer, NEW, ABSTRACT;\r\t\t\t(m: Model) Insert (pos: INTEGER; m0: Model; beg0, end0: INTEGER), NEW, ABSTRACT;\r\t\t\t(m: Model) InsertCopy (pos: INTEGER; m0: Model; beg0, end0: INTEGER), NEW, ABSTRACT;\r\t\t\t(m: Model) Delete (beg, end: INTEGER), NEW, ABSTRACT;\r\t\t\t(m: Model) Append (m0: Model), NEW, ABSTRACT;\r\t\t\t(m: Model) Replace (beg, end: INTEGER; m0: Model; beg0, end0: INTEGER), NEW, ABSTRACT\r\t\t\t(m: Model) SetAttr (beg, end: INTEGER; attr: Attributes), NEW, EXTENSIBLE;\r\t\t\t(m: Model) Prop (beg, end: INTEGER): Properties.Property, NEW, ABSTRACT;\r\t\t\t(m: Model) Modify (beg, end: INTEGER; old, p: Properties.Property), NEW, ABSTRACT;\r\t\t\t(m: Model) ReplaceView (old, new: Views.View), ABSTRACT;\r"
+                    attr: 2
+                  - text: "\t\tEND;\r\r\t\tAttributes = POINTER TO EXTENSIBLE RECORD (Stores.Store)"
+                    attr: 1
+                  - text: "\r\t\t\tinit-: BOOLEAN;"
+                    attr: 2
+                  - text: "\r\t\t\tcolor-: Ports.Color;\r\t\t\tfont-: Fonts.Font;\r\t\t\toffset-: INTEGER;"
+                    attr: 1
+                  - text: "\r\t\t\t(a: Attributes) Equals (b: Attributes): BOOLEAN, NEW, EXTENSIBLE;\r\t\t\t(a: Attributes) Prop (): Properties.Property, NEW, EXTENSIBLE;\r\t\t\t(a: Attributes) InitFromProp (p: Properties.Property), NEW, EXTENSIBLE;\r\t\t\t(a: Attributes) ModifyFromProp- (p: Properties.Property), NEW, EXTENSIBLE"
+                    attr: 2
+                  - text: "\r\t\tEND;\r\r\t\tAlienAttributes = POINTER TO RECORD (Attributes)\r\t\t\tstore-: Stores.Alien\r\t\tEND;\r\r\t\tProp = POINTER TO RECORD (Properties.Property)\r\t\t\toffset: INTEGER;\r\t\t\tcode: CHAR\r\t\tEND;\r\r\t\tContext = POINTER TO ABSTRACT RECORD (Models.Context)\r"
+                    attr: 1
+                  - text: "\t\t\t(c: Context) ThisModel (): Model, ABSTRACT;\r\t\t\t(c: Context) Pos (): INTEGER, NEW, ABSTRACT;\r\t\t\t(c: Context) Attr (): Attributes, NEW, ABSTRACT\r"
+                    attr: 2
+                  - text: "\t\tEND;\r\r\t\tPref = RECORD (Properties.Preference)\r\t\t\topts: SET;\r\t\t\tmask: CHAR\r\t\tEND;\r\r\t\tReader = POINTER TO ABSTRACT RECORD\r\t\t\teot: BOOLEAN;\r\t\t\tattr: Attributes;\r\t\t\tchar: CHAR;\r\t\t\tview: Views.View;\r\t\t\tw, h: INTEGER;\r"
+                    attr: 1
+                  - text: "\t\t\t(rd: Reader) Base (): Model, NEW, ABSTRACT;\r\t\t\t(rd: Reader) SetPos (pos: INTEGER), NEW, ABSTRACT;\r\t\t\t(rd: Reader) Pos (): INTEGER, NEW, ABSTRACT;\r\t\t\t(rd: Reader) Read, NEW, ABSTRACT;\r\t\t\t(rd: Reader) ReadChar (OUT ch: CHAR), NEW, ABSTRACT;\r\t\t\t(rd: Reader) ReadView (OUT v: Views.View), NEW, ABSTRACT;\r\t\t\t(rd: Reader) ReadRun (OUT attr: Attributes), NEW, ABSTRACT;\r\t\t\t(rd: Reader) ReadPrev, NEW, ABSTRACT;\r\t\t\t(rd: Reader) ReadPrevChar (OUT ch: CHAR), NEW, ABSTRACT;\r\t\t\t(rd: Reader) ReadPrevView (OUT v: Views.View), NEW, ABSTRACT;\r\t\t\t(rd: Reader) ReadPrevRun (OUT attr: Attributes), NEW, ABSTRACT\r"
+                    attr: 2
+                  - text: "\t\tEND;\r\r\t\tWriter = POINTER TO ABSTRACT RECORD\r\t\t\tattr-: Attributes;\r"
+                    attr: 1
+                  - text: "\t\t\t(wr: Writer) Base (): Model, NEW, ABSTRACT;\r\t\t\t(wr: Writer) Pos (): INTEGER, NEW, ABSTRACT;\r\t\t\t(wr: Writer) SetPos (pos: INTEGER), NEW, ABSTRACT;\r\t\t\t(wr: Writer) SetAttr (attr: Attributes), NEW;\r\t\t\t(wr: Writer) WriteChar (ch: CHAR), NEW, ABSTRACT;\r\t\t\t(wr: Writer) WriteView (view: Views.View; w, h: INTEGER), NEW, ABSTRACT\r"
+                    attr: 2
+                  - text: "\t\tEND;\r\r\t\tInfoMsg = RECORD (Models.Message)\r\t\t\top: INTEGER\r\t\tEND;\r\r\t\tUpdateMsg = RECORD (Models.UpdateMsg)\r\t\t\top: INTEGER;\r\t\t\tbeg, end, delta: INTEGER\r\t\tEND;\r\r\t\tDirectory = POINTER TO ABSTRACT RECORD\r\t\t\tattr-: Attributes;\r"
+                    attr: 1
+                  - text: "\t\t\t(d: Directory) New (): Model, NEW, ABSTRACT;\r\t\t\t(d: Directory) NewFromString (s: ARRAY OF CHAR): Model, NEW, EXTENSIBLE;\r\t\t\t(d: Directory) SetAttr (attr: Attributes), NEW, EXTENSIBLE\r"
+                    attr: 2
+                  - text: "\t\tEND;\r\r\tVAR dir-, stdDir-: Directory;\r\r"
+                    attr: 1
+                  - text: "\tPROCEDURE NewColor (a: Attributes; color: Ports.Color): Attributes;\r\tPROCEDURE NewFont (a: Attributes; font: Fonts.Font): Attributes;\r\tPROCEDURE NewOffset (a: Attributes; offset: INTEGER): Attributes;\r\tPROCEDURE NewTypeface (a: Attributes; typeface: Fonts.Typeface): Attributes;\r\tPROCEDURE NewSize (a: Attributes; size: INTEGER): Attributes;\r\tPROCEDURE NewStyle (a: Attributes; style: SET): Attributes;\r\tPROCEDURE "
+                    attr: 2
+                  - text: NewWeight
+                    attr: 1
+                  - text: " (a: Attributes; weight: INTEGER): Attributes;\r"
+                    attr: 2
+                  - text: "\r"
+                    attr: 1
+                  - text: "\tPROCEDURE ReadAttr (VAR rd: Stores.Reader; VAR a: Attributes);\r\tPROCEDURE WriteAttr (VAR wr: Stores.Writer; a: Attributes);"
+                    attr: 2
+                  - text: "\r\r\tPROCEDURE ModifiedAttr (a: Attributes; p: Properties.Property): Attributes;\r\r\tPROCEDURE CloneOf (source: Model): Model;\r\r"
+                    attr: 1
+                  - text: "\tPROCEDURE WriteableChar (ch: CHAR): BOOLEAN;\r"
+                    attr: 2
+                  - text: "\r\tPROCEDURE SetDir (d: Directory);\r\rEND TextModels.\r\r\r"
+                    attr: 1
+                  - text: TextModels
+                    attr: 3
+                  - text: " are container models which contain sequences of attributed characters and embedded views. Characters may be drawn from the BlackBox character set, conforming to the Unicode specification. However, the current implementation supports the ASCII character set and its Latin-1 extension, only.\r\r\rCONST "
+                    attr: 1
+                  - text: viewcode
+                    attr: 4
+                  - text: "\rSignals that the read character is actually an embedded view. "
+                    attr: 1
+                  - text: viewcode
+                    attr: 3
+                  - text: " is used as a general projection value when reading an embedded view as a "
+                    attr: 1
+                  - text: CHAR
+                    attr: 3
+                  - text: ".\r\rCONST "
+                    attr: 1
+                  - text: tab
+                    attr: 4
+                  - text: "\rThe tabulation character. When encountered by a text formatter, formatting continues at the next tab stop as defined by some tabulation raster used by the formatter (usually some kind of ruler).\r\rCONST "
+                    attr: 1
+                  - text: line
+                    attr: 4
+                  - text: "\rThe line separation character. When encountered by a text setter, setting continues on the next line. However, "
+                    attr: 1
+                  - text: line
+                    attr: 3
+                  - text: " does not introduce a new paragraph (cf. "
+                    attr: 1
+                  - text: para
+                    attr: 3
+                  - text: " below).\r\rCONST "
+                    attr: 1
+                  - text: para
+                    attr: 4
+                  - text: "\rThe paragraph separation character. When encountered by a text setter, setting continues on the next line and a new paragraph is opened (cf. "
+                    attr: 1
+                  - text: line
+                    attr: 3
+                  - text: " above).\r\rCONST "
+                    attr: 1
+                  - text: zwspace
+                    attr: 4
+                  - text: "\rThe zerowidth space character. Separates words, but takes no space in its own right.\r\rCONST "
+                    attr: 1
+                  - text: nbspace
+                    attr: 4
+                  - text: "\rThe nonbreaking space character. Has the same width as a normal space character. When encountered by a text setter, "
+                    attr: 1
+                  - text: nbspace
+                    attr: 3
+                  - text: " does not separate words.\r\rCONST "
+                    attr: 1
+                  - text: digitspace
+                    attr: 4
+                  - text: "\rIn most fonts, a digit space has the width of digit zero (0) which is equivalent to the width of all digits in most fonts. When encountered by a text setter, "
+                    attr: 1
+                  - text: digitspace
+                    attr: 3
+                  - text: " does not separate words. ("
+                    attr: 1
+                  - text: "Note: "
+                    attr: 3
+                  - text: "The recommendation made in earlier versions of the text system, namely to use "
+                    attr: 1
+                  - text: digitspace
+                    attr: 3
+                  - text: " for number formatting, is outdated. Use right-aligning tab stops instead. See "
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Text/Docu/Rulers', 'TextRulers Docu')"
+                      body:
+                        - text: TextRulers
+                          attr: 5
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: ".)\r\rCONST "
+                    attr: 1
+                  - text: hyphen
+                    attr: 4
+                  - text: "\rThe hyphen character. To be used for explicit and visible hyphenation. A text setter may choose to break lines just after a "
+                    attr: 1
+                  - text: hyphen
+                    attr: 3
+                  - text: ".\r\rCONST "
+                    attr: 1
+                  - text: nbhyphen
+                    attr: 4
+                  - text: "\rThe nonbreaking hyphen. Just as "
+                    attr: 1
+                  - text: hyphen
+                    attr: 3
+                  - text: ", but a text setter will not break lines just after an "
+                    attr: 1
+                  - text: nbhyphen
+                    attr: 3
+                  - text: ".\r\rCONST "
+                    attr: 1
+                  - text: softhyphen
+                    attr: 4
+                  - text: "\rThe softhyphen. Just as "
+                    attr: 1
+                  - text: hyphen
+                    attr: 3
+                  - text: ", but rendered as a zerowidth character unless actually used to break a line. "
+                    attr: 1
+                  - text: softhyphen
+                    attr: 3
+                  - text: " can be used to give hints to a text setter on where to break longer words.\r\r\rCONST "
+                    attr: 1
+                  - text: maskChar
+                    attr: 4
+                  - text: "\rOption element\rCan be used as a set element of "
+                    attr: 1
+                  - text: Pref.opts
+                    attr: 3
+                  - text: ". Signals that the embedded view prefers to be masked to a normal character, making it behave like that character in most situations. The primary purpose of masking is to simplify the task for text scanning applications. (For example, a text ruler might be masked to behave like a "
+                    attr: 1
+                  - text: para
+                    attr: 3
+                  - text: " character. This would allow a text scanner to count the number of paragraphs in a text simply by counting the number of returned "
+                    attr: 1
+                  - text: para
+                    attr: 3
+                  - text: " characters while scanning the text.)\r\rCONST "
+                    attr: 1
+                  - text: hideable
+                    attr: 4
+                  - text: "\rOption element\rCan be used as a set element of "
+                    attr: 1
+                  - text: Pref.opts
+                    attr: 3
+                  - text: ". Signals that the embedded view accepts to be hidden or revealed depending on a mode of the text view. (For example, text rulers might be hideable enabling the the user to hide or reveal the rulers in a displayed text.)\r\rCONST "
+                    attr: 1
+                  - text: offset
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: code
+                    attr: 4
+                  - text: "\rProperty field selectors\rSignals that the indicated field of a "
+                    attr: 1
+                  - text: Prop
+                    attr: 3
+                  - text: " property is known, valid, or readOnly.\r\rCONST "
+                    attr: 1
+                  - text: store
+                    attr: 4
+                  - text: "\rPossible value of "
+                    attr: 1
+                  - text: InfoMsg.op
+                    attr: 3
+                  - text: ", signalling the completed storing of the broadcasting text. This is the only value currently defined for this field.\r\rCONST "
+                    attr: 1
+                  - text: replace
+                    attr: 4
+                  - text: "\rPossible value of "
+                    attr: 1
+                  - text: UpdateMsg.op
+                    attr: 3
+                  - text: ", signalling the successful replacement of a stretch in the broadcasting text.\r\rCONST "
+                    attr: 1
+                  - text: insert
+                    attr: 4
+                  - text: "\rPossible value of "
+                    attr: 1
+                  - text: UpdateMsg.op
+                    attr: 3
+                  - text: ", signalling the successful insertion of a stretch in the broadcasting text.\r\rCONST "
+                    attr: 1
+                  - text: delete
+                    attr: 4
+                  - text: "\rPossible value of "
+                    attr: 1
+                  - text: UpdateMsg.op
+                    attr: 3
+                  - text: ", signalling the successful deletion of a stretch in the broadcasting text.\r\r\rTYPE "
+                    attr: 1
+                  - text: Model (Containers.Model)
+                    attr: 4
+                  - text: "\rABSTRACT\rText models are container models, containing sequences of attributed characters and embedded views.\r\rPROCEDURE (m: Model) "
+                    attr: 1
+                  - text: Length
+                    attr: 4
+                  - text: " (): INTEGER\rNEW, ABSTRACT\rLength of the text "
+                    attr: 1
+                  - text: m
+                    attr: 3
+                  - text: ", where each character and each embedded view counts as one.\r\rPost\rresult >= 0\r\rPROCEDURE (m: Model) "
+                    attr: 1
+                  - text: NewReader
+                    attr: 4
+                  - text: " (old: Reader): Reader\rNEW, ABSTRACT\rReturns a reader connected to "
+                    attr: 1
+                  - text: m
+                    attr: 3
+                  - text: ". An old reader may be passed as input parameter, if it isn't in use anymore. Note that "
+                    attr: 1
+                  - text: NewReader
+                    attr: 3
+                  - text: " does not reposition "
+                    attr: 1
+                  - text: old
+                    attr: 3
+                  - text: " if "
+                    attr: 1
+                  - text: old
+                    attr: 3
+                  - text: " is reused and its position is in the valid range. ("
+                    attr: 1
+                  - text: NewReader
+                    attr: 3
+                  - text: " may or may not use the old reader, depending on internal compatibility criteria.)\r\rPost\rresult # NIL\rresult = old  &  old'.Base() = m  &  old'.Pos() <= m.Length()\r\tresult.Pos() = old'.Pos()\r~(result = old  &  old'.Base() = m  &  old'.Pos() <= m.Length())\r\tresult.Pos() = 0\r\rPROCEDURE (m: Model) "
+                    attr: 1
+                  - text: NewWriter
+                    attr: 4
+                  - text: " (old: Writer): Writer\rNEW, ABSTRACT\rReturns a writer connected to "
+                    attr: 1
+                  - text: m
+                    attr: 3
+                  - text: ". An old writer may be passed as input parameter, if it isn't in use anymore. Note that "
+                    attr: 1
+                  - text: NewWriter
+                    attr: 3
+                  - text: " does not reposition "
+                    attr: 1
+                  - text: old
+                    attr: 3
+                  - text: " if "
+                    attr: 1
+                  - text: old
+                    attr: 3
+                  - text: " is reused and its position is in the valid range. ("
+                    attr: 1
+                  - text: NewWriter
+                    attr: 3
+                  - text: " may or may not use the old writer, depending on internal compatibility criteria.)\r\rPost\rresult # NIL\rresult.attr = dir.attr\rresult = old  &  old'.Base() = m  &  old'.Pos() <= m.Length()\r\tresult.Pos() = old'.Pos()\r~(result = old  &  old'.Base() = m  &  old'.Pos() <= m.Length())\r\tresult.Pos() = m.Length()\r\rPROCEDURE (m: Model) "
+                    attr: 1
+                  - text: Insert
+                    attr: 4
+                  - text: " (pos: INTEGER; m0: Model; beg0, end0: INTEGER)\rNEW, ABSTRACT, Operation\rExtract the stretch ["
+                    attr: 1
+                  - text: beg0
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: end0
+                    attr: 3
+                  - text: ") from "
+                    attr: 1
+                  - text: m0
+                    attr: 3
+                  - text: " and insert it into "
+                    attr: 1
+                  - text: m
+                    attr: 3
+                  - text: " at position "
+                    attr: 1
+                  - text: pos
+                    attr: 3
+                  - text: ". In case that "
+                    attr: 1
+                  - text: m0
+                    attr: 3
+                  - text: " is of a different implementation than "
+                    attr: 1
+                  - text: m
+                    attr: 3
+                  - text: ", rider conversion is used to project the stretch from "
+                    attr: 1
+                  - text: m0
+                    attr: 3
+                  - text: " into "
+                    attr: 1
+                  - text: m
+                    attr: 3
+                  - text: "'s implementation. Model "
+                    attr: 1
+                  - text: m0
+                    attr: 3
+                  - text: " is made shorter, while model "
+                    attr: 1
+                  - text: m
+                    attr: 3
+                  - text: " is made longer by "
+                    attr: 1
+                  - text: (end0 - beg0)
+                    attr: 3
+                  - text: ".\r\rPre\r0 <= pos\t21\rpos <= Length(m)\t22\r0 <= beg0\t23\rbeg0 <= end0\t24\rend0 <= Length(m0)\t25\rm0 # NIL\t"
+                    attr: 1
+                  - text: not explicitly checked
+                    attr: 3
+                  - text: "\r\rPost\rm = m0\r\tLength(m) = Length(m0) = Length(m') = Length(m0')\rm # m0\r\tLength(m) = Length(m') + (end0 - beg0)\r\tLength(m0) = Length(m0') - (end0 - beg0)\r\rPROCEDURE (m: Model) "
+                    attr: 1
+                  - text: InsertCopy
+                    attr: 4
+                  - text: " (pos: INTEGER; m0: Model; beg0, end0: INTEGER)\rNEW, ABSTRACT, Operation\rCopy the stretch ["
+                    attr: 1
+                  - text: beg0
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: end0
+                    attr: 3
+                  - text: ") from text "
+                    attr: 1
+                  - text: m0
+                    attr: 3
+                  - text: " and insert it into text "
+                    attr: 1
+                  - text: m
+                    attr: 3
+                  - text: " at position "
+                    attr: 1
+                  - text: pos
+                    attr: 3
+                  - text: ". In case that "
+                    attr: 1
+                  - text: m0
+                    attr: 3
+                  - text: " is of a different implementation than "
+                    attr: 1
+                  - text: m
+                    attr: 3
+                  - text: ", rider conversion is used to project the stretch from "
+                    attr: 1
+                  - text: m0
+                    attr: 3
+                  - text: " into "
+                    attr: 1
+                  - text: m
+                    attr: 3
+                  - text: "'s implementation.\r\rPre\r0 <= pos\t21\rpos <= Length(m)\t22\r0 <= beg0\t23\rbeg0 <= end0\t24\rend0 <= Length(m0)\t25\rm0 # NIL\t"
+                    attr: 1
+                  - text: not explicitly checked
+                    attr: 3
+                  - text: "\r\rPost\rLength(m) = Length(m') + (end0 - beg0)\rm0 = m\r\tLength(m0) = Length(m)\rm0 # m\r\tLength(m0) = Length(m0')\r\rPROCEDURE (m: Model) "
+                    attr: 1
+                  - text: Delete
+                    attr: 4
+                  - text: " (beg, end: INTEGER);\rNEW, ABSTRACT, Operation\rDelete the stretch ["
+                    attr: 1
+                  - text: beg
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: end
+                    attr: 3
+                  - text: ") from "
+                    attr: 1
+                  - text: m
+                    attr: 3
+                  - text: ".\r\rPre\r0 <= beg\t20\rbeg <= end\t21\rend <= Length(m)\t22\r\rPost\rLength(m) = Length(m') - (end - beg)\r\rPROCEDURE (m: Model) "
+                    attr: 1
+                  - text: Append
+                    attr: 4
+                  - text: " (m0: Model)\rNEW, ABSTRACT, Operation\rAppend "
+                    attr: 1
+                  - text: m0
+                    attr: 3
+                  - text: " to "
+                    attr: 1
+                  - text: m
+                    attr: 3
+                  - text: ".\r\rExcept for performance, equivalent to:\r\tm.Insert(m.Length(), m0, 0, m0.Length())\r\rPROCEDURE (m: Model) "
+                    attr: 1
+                  - text: Replace
+                    attr: 4
+                  - text: " (beg, end: INTEGER; m0: Model; beg0, end0: INTEGER)\rNEW, ABSTRACT, Operation\rExtract the stretch ["
+                    attr: 1
+                  - text: beg0
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: end0
+                    attr: 3
+                  - text: ") from "
+                    attr: 1
+                  - text: m0
+                    attr: 3
+                  - text: " and replace stretch ["
+                    attr: 1
+                  - text: beg
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: end
+                    attr: 3
+                  - text: ") in "
+                    attr: 1
+                  - text: m
+                    attr: 3
+                  - text: " by the stretch extracted from "
+                    attr: 1
+                  - text: m0
+                    attr: 3
+                  - text: ".\r\rPre\r0 <= beg\t20\rbeg <= end\t21\rend <= Length(m)\t22\r0 <= beg0\t23\rbeg0 <= end0\t24\rend0 <= Length(m0)\t25\rm # m0\t26\rm0 # NIL\t"
+                    attr: 1
+                  - text: not explicitly checked
+                    attr: 3
+                  - text: "\r\rExcept for performance, equivalent to:\r\tVAR script: Stores.Operation;\r\tModels.BeginScript(m, \"#System:Replacing\", script);\r\tm.Delete(beg, end); m.Insert(beg, m0, beg0, end0);\r\tModels.EndScript(m, script)\r\rPROCEDURE (m: Model) "
+                    attr: 1
+                  - text: SetAttr
+                    attr: 4
+                  - text: " (beg, end: INTEGER; attr: Attributes)\rNEW, ABSTRACT, Operation\rSet the attributes of all items in the stretch ["
+                    attr: 1
+                  - text: beg
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: end
+                    attr: 3
+                  - text: ") of "
+                    attr: 1
+                  - text: m
+                    attr: 3
+                  - text: " to "
+                    attr: 1
+                  - text: attr
+                    attr: 3
+                  - text: ".\r\rPre\r0 <= beg\t20\rbeg <= end\t21\rend <= Length(m)\t22\rattr # NIL\t"
+                    attr: 1
+                  - text: not explicitly checked
+                    attr: 3
+                  - text: "\rattr.init\t23\r\rPROCEDURE (m: Model) "
+                    attr: 1
+                  - text: Prop
+                    attr: 4
+                  - text: " (beg, end: INTEGER): Properties.Property\rNEW, ABSTRACT\rReturn a property structure describing the properties of the items in the stretch ["
+                    attr: 1
+                  - text: beg
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: end
+                    attr: 3
+                  - text: ") of "
+                    attr: 1
+                  - text: m
+                    attr: 3
+                  - text: ". Only properties returned by encountered attributes and those captured by "
+                    attr: 1
+                  - text: Prop
+                    attr: 3
+                  - text: " are considered. There is no recursion into embedded views.\rThe result is the intersection of the attributedescribing properties of the homogeneous substretches of ["
+                    attr: 1
+                  - text: beg
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: end
+                    attr: 3
+                  - text: "). For example, if the first half of the stretch is \"bold & italic\", while the second half is \"italic\", then "
+                    attr: 1
+                  - text: Prop
+                    attr: 3
+                  - text: " returns a property \"italic\", i.e. the homogeneous subset.\r\rPre\r0 <= beg\t20\rbeg <= end\t21\rend <= Length(m)\t22\r\rPROCEDURE (m: Model) "
+                    attr: 1
+                  - text: Modify
+                    attr: 4
+                  - text: " (beg, end: INTEGER; old, p: Properties.Property)\rNEW, ABSTRACT, Operation\rModify the stretch ["
+                    attr: 1
+                  - text: beg
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: end
+                    attr: 3
+                  - text: ") of "
+                    attr: 1
+                  - text: m
+                    attr: 3
+                  - text: " according to the property structure "
+                    attr: 1
+                  - text: p
+                    attr: 3
+                  - text: ". If "
+                    attr: 1
+                  - text: old
+                    attr: 3
+                  - text: " is given, modification takes place only if the stretch is homogeneous in the properties specified in "
+                    attr: 1
+                  - text: old
+                    attr: 3
+                  - text: ", and if the stretch carries exactly the same property values as those specified in "
+                    attr: 1
+                  - text: old
+                    attr: 3
+                  - text: ".\r\rPre\r0 <= beg\t20\rbeg <= end\t21\rend <= Length(m)\t22\r\rPost\rold = NIL  OR  old = Intersect(m'.Prop(beg, end), old)\r\tm.Prop(beg, end) = p\r\rPROCEDURE (m: Model) "
+                    attr: 1
+                  - text: ReplaceView
+                    attr: 4
+                  - text: " (old, new: Views.View)\rNEW, ABSTRACT, Operation\rRetain the context of "
+                    attr: 1
+                  - text: old
+                    attr: 3
+                  - text: ", but replace "
+                    attr: 1
+                  - text: old
+                    attr: 3
+                  - text: " by "
+                    attr: 1
+                  - text: new
+                    attr: 3
+                  - text: ".\r\rPre\rold # NIL\t20\rnew # NIL\t21\rold.context # NIL\t22\rnew.context = NIL OR new.context = old.context\t23\r\rPost\rnew.context = old.context\r\r\rTYPE "
+                    attr: 1
+                  - text: Attributes (Stores.Store)
+                    attr: 4
+                  - text: "\rEXTENSIBLE\rEvery character or embedded view that forms part of a text carries a set of attributes. Such attributes are described by objects of type "
+                    attr: 1
+                  - text: Attributes
+                    attr: 3
+                  - text: ". The base type carries the standard attributes of every element of a text: A color, a font, and a vertical offset (in universal units).\rOnce created and initialized, attributes objects can no longer be modified, and hence can be freely shared among many attributed objects. Changing the attributes of an attributed object is done by replacing the whole attributes object attached to the attributed object, usually by a modified copy of the original attributes object.\r("
+                    attr: 1
+                  - text: "Note:"
+                    attr: 3
+                  - text: " attributes objects are "
+                    attr: 1
+                  - text: stores
+                    attr: 3
+                  - text: " and as such belong to a domain: where the attributes held by an attributes objects are to be applied to another attributed object in a different domain, the attributes object "
+                    attr: 1
+                  - text: must be copied
+                    attr: 3
+                  - text: ".)\r\r"
+                    attr: 1
+                  - text: init
+                    attr: 4
+                  - text: "-: BOOLEAN\rObject has been initialized and can no longer be modified.\r\r"
+                    attr: 1
+                  - text: color
+                    attr: 4
+                  - text: "-: Ports.Color\rPersistent\rThe color to be used to render the attributed object. For characters, this is the foreground color; for embedded views, this attribute is either ignored, or used in a viewspecific way by textaware views.\r\r"
+                    attr: 1
+                  - text: font
+                    attr: 4
+                  - text: "-: Fonts.Font\rPersistent\rThe font to be used to render the attributed object. For characters, this is the font carrying the glyph to be used; for embedded views, this attribute is either ignored, or used in a viewspecific way by textaware views.\r\r"
+                    attr: 1
+                  - text: offset
+                    attr: 4
+                  - text: "-: INTEGER\rPersistent\rThe vertical offset from the base line (value in universal units) to be used for the attributed object.\r\rPROCEDURE (a: Attributes) "
+                    attr: 1
+                  - text: Equals
+                    attr: 4
+                  - text: " (b: Attributes): BOOLEAN\r"
+                    attr: 1
+                  - text: "NEW, EXTENSIBLE\r"
+                    attr: 2
+                  - text: "Compare two attributes objects for attribute equality.\r\rPre\rb # NIL\tNIL dereference\ra.init\t20\r(b # NIL) & b.init\t20\r\rPost\rresult = (TypeOf(a) = TypeOf(b)) & (a.color = b.color) & (a.font = b.font) & (a.offset = b.offset)\r\rPROCEDURE (a: Attributes) "
+                    attr: 1
+                  - text: Prop
+                    attr: 4
+                  - text: " (): Properties.Property\r"
+                    attr: 1
+                  - text: "NEW, EXTENSIBLE\r"
+                    attr: 2
+                  - text: "Return property list reflecting attribute values.\r\rPost\rresult # NIL\r\rPROCEDURE (a: Attributes) "
+                    attr: 1
+                  - text: ModifyFromProp
+                    attr: 4
+                  - text: "- (p: Properties.Property)\r"
+                    attr: 1
+                  - text: "NEW, EXTENSIBLE\r"
+                    attr: 2
+                  - text: "Initialize new attributes object to attributes of a source object, but modified according to the property list. (Values valid in the property list are taken from it, others from the source attributes object.) This is called by procedure "
+                    attr: 1
+                  - text: ModifiedAttr.
+                    attr: 3
+                  - text: "\r\rPROCEDURE (a: Attributes) "
+                    attr: 1
+                  - text: InitFromProp
+                    attr: 4
+                  - text: " (p: Properties.Property)\r"
+                    attr: 1
+                  - text: "NEW, EXTENSIBLE\r"
+                    attr: 2
+                  - text: "Initialize according to property list.\r\rPre\r~a.init\t20\r\rPost\ra.init\r\r\rTYPE "
+                    attr: 1
+                  - text: AlienAttributes (Attributes)
+                    attr: 4
+                  - text: "\rType of alien attributes objects, as returned by "
+                    attr: 1
+                  - text: ReadAttr
+                    attr: 3
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: store
+                    attr: 4
+                  - text: "-: Stores.Alien\rThe alien store enclosed by an alien attributes objects.\r\r\rTYPE "
+                    attr: 1
+                  - text: Prop (Properties.Property)
+                    attr: 4
+                  - text: "\rText specific properties: Vertical offsets and character codes.\r\r"
+                    attr: 1
+                  - text: offset
+                    attr: 4
+                  - text: ": INTEGER\rVertical offset property.\r\r"
+                    attr: 1
+                  - text: code
+                    attr: 4
+                  - text: ": CHAR\rCharacter code.\r\r\rTYPE "
+                    attr: 1
+                  - text: Context (Models.Context)
+                    attr: 4
+                  - text: "\rABSTRACT\rContext for views embedded in texts.\r\rPROCEDURE (c: Context) "
+                    attr: 1
+                  - text: ThisModel
+                    attr: 4
+                  - text: " (): Model\rABSTRACT\rResult type is narrowed.\r\rPROCEDURE (c: Context) "
+                    attr: 1
+                  - text: Pos
+                    attr: 4
+                  - text: " (): INTEGER\rNEW, ABSTRACT\rPosition of the embedded view in the text.\r\rPROCEDURE (c: Context) "
+                    attr: 1
+                  - text: Attr
+                    attr: 4
+                  - text: " (): Attributes\rNEW, ABSTRACT\rAttributes valid for the embedded view.\r\r\rTYPE "
+                    attr: 1
+                  - text: Pref (Properties.Preference)
+                    attr: 4
+                  - text: "\rPreferences a view may have when embedded in a text.\r\r"
+                    attr: 1
+                  - text: opts
+                    attr: 4
+                  - text: ": SET\rOption set, preset to {}. Possible values are from {"
+                    attr: 1
+                  - text: maskChar
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: hideable
+                    attr: 3
+                  - text: "}.\r\r"
+                    attr: 1
+                  - text: mask
+                    attr: 4
+                  - text: ": CHAR\rIf "
+                    attr: 1
+                  - text: maskChar
+                    attr: 3
+                  - text: " IN "
+                    attr: 1
+                  - text: opts
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: mask
+                    attr: 3
+                  - text: " is the desired masking character code.\r\r\rTYPE "
+                    attr: 1
+                  - text: Reader
+                    attr: 4
+                  - text: "\rABSTRACT\rA rider to read characters and embedded views from a text.\r\r"
+                    attr: 1
+                  - text: eot
+                    attr: 4
+                  - text: ": BOOLEAN\rLast read was tried at the end of the text.\r\r"
+                    attr: 1
+                  - text: attr
+                    attr: 4
+                  - text: ": Attributes\t~eot => attr # NIL\rThe attributes of the most recently read element.\r\r"
+                    attr: 1
+                  - text: char
+                    attr: 4
+                  - text: ": CHAR\rCharacter read most recently; takes value "
+                    attr: 1
+                  - text: viewcode
+                    attr: 3
+                  - text: " if last element read was a view that does not mask itself with a different character code (see "
+                    attr: 1
+                  - text: Pref
+                    attr: 3
+                  - text: ").\r\r"
+                    attr: 1
+                  - text: view
+                    attr: 4
+                  - text: ": Views.View\rEmbedded view most recently read; takes value NIL if last element read was a character.\r\r"
+                    attr: 1
+                  - text: w
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: h
+                    attr: 4
+                  - text: ": INTEGER\tvalid if "
+                    attr: 1
+                  - text: view
+                    attr: 3
+                  - text: " # NIL\rWidth and height of view most recently read.\r\rPROCEDURE (rd: Reader) "
+                    attr: 1
+                  - text: Base
+                    attr: 4
+                  - text: " (): Model\rNEW, ABSTRACT\rThe rider base: The text the reader is attached to.\r\rPROCEDURE (rd: Reader) "
+                    attr: 1
+                  - text: Pos
+                    attr: 4
+                  - text: " (): INTEGER\rNEW, ABSTRACT\rPosition of the reader in the text.\r\rPost\r0 <= result\rresult <= rd.Base().Length()\r\rPROCEDURE (rd: Reader) "
+                    attr: 1
+                  - text: SetPos
+                    attr: 4
+                  - text: " (pos: INTEGER)\rNEW, ABSTRACT\rReposition the reader.\r\rPre\r0 <= pos\t20\rrd.Base() # NIL\t21\rpos <= rd.Base().Length()\t22\r\rPost\rrd.Pos() = pos\r\rPROCEDURE (rd: Reader) "
+                    attr: 1
+                  - text: Read
+                    attr: 4
+                  - text: "\rNEW, ABSTRACT\rRead the next element of the text.\r\rPost\r~rd.eot\r\trd.Pos() = rd'.Pos() + 1, rd.attr # NIL, rd.attr.init\r\trd.view # NIL\r\t\tmaskChar IN Prefs(view).opts, ch = Prefs(view).mask\r\t\t\trd.char = ch\r\t\t~(maskChar IN Prefs(view).opts)\r\t\t\trd.char = viewcode\rrd.eot\r\trd.Pos() = rd'.Pos(), rd.attr = NIL, rd.char = 0X, rd.view = NIL\r\rPROCEDURE (rd: Reader) "
+                    attr: 1
+                  - text: ReadPrev
+                    attr: 4
+                  - text: "\rNEW, ABSTRACT\rRead the previous element of the text: First, decrements "
+                    attr: 1
+                  - text: rd.Pos
+                    attr: 3
+                  - text: "(), then reads element at "
+                    attr: 1
+                  - text: rd.Pos
+                    attr: 3
+                  - text: "().\r\rPost\r~rd.eot\r\trd.Pos() = rd'.Pos() - 1, rd.attr # NIL, rd.attr.init\r\trd.view # NIL\r\t\tmaskChar IN Prefs(view).opts, ch = Prefs(view).mask\r\t\t\trd.char = ch\r\t\t~(maskChar IN Prefs(view).opts)\r\t\t\trd.char = viewcode\rrd.eot\r\trd.Pos() = rd'.Pos(), rd.attr = NIL, rd.char = 0X, rd.lchar = 0, rd.view = NIL\r\rPROCEDURE (rd: Reader) "
+                    attr: 1
+                  - text: ReadChar
+                    attr: 4
+                  - text: " (OUT ch: CHAR)\rNEW, ABSTRACT\rRead the next character or projection value of the next embedded view.\r\rExcept for performance, equivalent to:\r\trd.Read; ch := rd.char\r\rPROCEDURE (rd: Reader) "
+                    attr: 1
+                  - text: ReadPrevChar
+                    attr: 4
+                  - text: " (OUT ch: CHAR)\rNEW, ABSTRACT\rRead the previous character or projection value of the previous embedded view.\r\rExcept for performance, equivalent to:\r\trd.ReadPrev; ch := rd.char\r\rPROCEDURE (rd: Reader) "
+                    attr: 1
+                  - text: ReadView
+                    attr: 4
+                  - text: " (OUT v: Views.View)\rNEW, ABSTRACT\rRead next view.\r\rExcept for performance, equivalent to:\r\tREPEAT rd.Read UNTIL (rd.view # NIL) OR rd.eot;\r\tv := rd.view\r\rPROCEDURE (rd: Reader) "
+                    attr: 1
+                  - text: ReadPrevView
+                    attr: 4
+                  - text: " (OUT v: Views.View)\rNEW, ABSTRACT\rRead previous view.\r\rExcept for performance, equivalent to:\r\tREPEAT rd.ReadPrev UNTIL (rd.view # NIL) OR rd.eot;\r\tv := rd.view\r\rPROCEDURE (rd: Reader) "
+                    attr: 1
+                  - text: ReadRun
+                    attr: 4
+                  - text: " (OUT attr: Attributes)\rNEW, ABSTRACT\rRead next attribute run, stops at next view.\r\rExcept for performance, equivalent to:\r\tVAR a: Attributes;\r\ta := rd.attr;\r\tREPEAT rd.Read UNTIL (rd.attr # a) OR (rd.view # NIL) OR rd.eot;\r\tIF rd.eot THEN attr := NIL ELSE attr := rd.attr END\r\rPost\r~rd.eot\r\tattr # NIL, rd.attr.init\r\trd.view = ViewAt(rd.Pos() - 1)\r\rPROCEDURE (rd: Reader) "
+                    attr: 1
+                  - text: ReadPrevRun
+                    attr: 4
+                  - text: " (OUT attr: Attributes)\rNEW, ABSTRACT\rRead next attribute run, stops at next view.\r\rExcept for performance, equivalent to:\r\tVAR a: Attributes;\r\ta := rd.attr;\r\tREPEAT rd.ReadPrev UNTIL (rd.attr # a) OR (rd.view # NIL) OR rd.eot;\r\tIF rd.eot THEN attr := NIL ELSE attr := rd.attr END\r\rPost\r~rd.eot\r\tattr # NIL, rd.attr.init\r\trd.view = ViewAt(rd.Pos())\r\r\rTYPE "
+                    attr: 1
+                  - text: Writer
+                    attr: 4
+                  - text: "\rABSTRACT\rWrite characters, long characters, or embed views into a text.\r\r"
+                    attr: 1
+                  - text: attr
+                    attr: 4
+                  - text: "-: Attributes\tattr # NIL, attr.init\rThe attributes object to attach to the next written element. (Attributes are immutable, thus they can be shared and need not be copied if used somewhere else "
+                    attr: 1
+                  - text: in the same domain
+                    attr: 3
+                  - text: ".)\r\rPROCEDURE (wr: Writer) "
+                    attr: 1
+                  - text: Base
+                    attr: 4
+                  - text: " (): Model\rNEW, ABSTRACT\rReturn the rider base, i.e. the text the writer is currently attached to.\r\rPROCEDURE (wr: Writer) "
+                    attr: 1
+                  - text: Pos
+                    attr: 4
+                  - text: " (): INTEGER\rNEW, ABSTRACT\rPosition of the writer in the text.\r\rPost\r0 <= result\rresult <= wr.Base().Length()\r\rPROCEDURE (wr: Writer) "
+                    attr: 1
+                  - text: SetPos
+                    attr: 4
+                  - text: " (pos: INTEGER)\rNEW, ABSTRACT\rReposition the writer.\r\rPre\r0 <= pos\t20\rwr.Base() # NIL\t21\rpos <= wr.Base.Length()\t22\r\rPost\rwr.Pos() = pos\r\rPROCEDURE (wr: Writer) "
+                    attr: 1
+                  - text: SetAttr
+                    attr: 4
+                  - text: " (attr: Attributes)\rNEW\rSets the current attributes of the writer.\r\rPre\rattr # NIL\t"
+                    attr: 1
+                  - text: not explicitly checked
+                    attr: 3
+                  - text: "\rattr.init\t20\r\rPost\rwr.attr = a\t[ a.Equals(attr) ]\r\rPROCEDURE (wr: Writer) "
+                    attr: 1
+                  - text: WriteChar
+                    attr: 4
+                  - text: " (ch: CHAR)\rNEW, ABSTRACT, Operation\rWrite character with attributes "
+                    attr: 1
+                  - text: wr.attr
+                    attr: 3
+                  - text: ". Nothing happens if "
+                    attr: 1
+                  - text: ch
+                    attr: 3
+                  - text: " is not writeable (see procedure "
+                    attr: 1
+                  - text: WriteableChar
+                    attr: 3
+                  - text: ").\r\rPost\rWriteableChar(ch)\r\twr.Pos() = wr.Pos'() + 1\r~WriteableChar(ch)\r\twr.Pos() = wr.Pos'()\r\rPROCEDURE (wr: Writer) "
+                    attr: 1
+                  - text: WriteView
+                    attr: 4
+                  - text: " (view: Views.View; w, h: INTEGER)\rNEW, ABSTRACT, Operation\rWrite view with width "
+                    attr: 1
+                  - text: w
+                    attr: 3
+                  - text: ", height "
+                    attr: 1
+                  - text: h
+                    attr: 3
+                  - text: ", and attributes "
+                    attr: 1
+                  - text: wr.attr
+                    attr: 3
+                  - text: ". "
+                    attr: 1
+                  - text: w
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: h
+                    attr: 3
+                  - text: " may have the value "
+                    attr: 1
+                  - text: Views.undefined
+                    attr: 3
+                  - text: ".\r\rPre\rview # NIL\t20\rview.context = NIL\t21\r\rPost\rview.context # NIL\rview.context.Pos() = wr.Pos()'\rview.context.Attr() = w\t[ w.Equals(wr.attr) ]\r\r\rTYPE "
+                    attr: 1
+                  - text: InfoMsg (Models.Message)
+                    attr: 4
+                  - text: "\rMessage notifying about a nondestructive operation on a text.\r\r"
+                    attr: 1
+                  - text: op
+                    attr: 4
+                  - text: ": INTEGER\rFor standard texts, there is only one op code defined: "
+                    attr: 1
+                  - text: store
+                    attr: 3
+                  - text: ".\r\r\rTYPE "
+                    attr: 1
+                  - text: UpdateMsg (Models.UpdateMsg)
+                    attr: 4
+                  - text: "\rMessage notifying about a destructive operation on a text.\r\r"
+                    attr: 1
+                  - text: op
+                    attr: 4
+                  - text: ": INTEGER\rKind of operation performed. For standard texts, "
+                    attr: 1
+                  - text: op
+                    attr: 3
+                  - text: " IN {"
+                    attr: 1
+                  - text: replace
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: insert
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: delete
+                    attr: 3
+                  - text: "}.\r\r"
+                    attr: 1
+                  - text: beg
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: end
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: delta
+                    attr: 4
+                  - text: ": INTEGER\rThe operation was performed on the stretch ["
+                    attr: 1
+                  - text: beg
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: end
+                    attr: 3
+                  - text: ") measured in the text after the operation took place, and changed the length of the text by "
+                    attr: 1
+                  - text: delta
+                    attr: 3
+                  - text: ". For deletions of length "
+                    attr: 1
+                  - text: "l, end = beg + 1, delta = -l"
+                    attr: 3
+                  - text: "; for insertions of length "
+                    attr: 1
+                  - text: "l, end = beg + l, delta = l"
+                    attr: 3
+                  - text: "; for replacements of length "
+                    attr: 1
+                  - text: l
+                    attr: 3
+                  - text: " but not changing the text length, "
+                    attr: 1
+                  - text: "end = beg + l, delta = 0"
+                    attr: 3
+                  - text: ".\r\r\rTYPE "
+                    attr: 1
+                  - text: Directory
+                    attr: 4
+                  - text: "\rABSTRACT\rDirectory for text models.\r\r"
+                    attr: 1
+                  - text: attr
+                    attr: 4
+                  - text: "-: Attributes\rDefault attributes, used when opening a writer on a text.\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: New
+                    attr: 4
+                  - text: " (): Model;\rNEW, ABSTRACT\rReturn a new text model.\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: NewFromString
+                    attr: 4
+                  - text: " (s: ARRAY OF CHAR): Model\rNEW, EXTENSIBLE\rReturn a new text model with "
+                    attr: 1
+                  - text: s
+                    attr: 3
+                  - text: " written into it using initial default attributes.\r\rExcept for performance, equivalent to:\r\tVAR m: Model; w: Writer; i: INTEGER;\r\tm := d.New(); w := m.NewWriter(NIL);\r\ti := 0; WHILE s[i] # 0X DO w.WriteChar(s[i]); INC(i) END;\r\tRETURN m\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: SetAttr
+                    attr: 4
+                  - text: " (attr: Attributes)\rNEW, EXTENSIBLE\rSet the default attributes.\r\rPre\rattr # NIL\t"
+                    attr: 1
+                  - text: not explicitly checked
+                    attr: 3
+                  - text: "\rattr.init\t20\r\rPost\rd.attr = a\t[ a.Equals(attr) ]\r\r\rVAR "
+                    attr: 1
+                  - text: dir
+                    attr: 4
+                  - text: "-, "
+                    attr: 1
+                  - text: stdDir
+                    attr: 4
+                  - text: "-: Directory\tdir # NIL, stdDir # NIL, stable stdDir = d\rDirectory and standard directory for text models.\r\r\rPROCEDURE  "
+                    attr: 1
+                  - text: NewColor
+                    attr: 4
+                  - text: " (a: Attributes; color: Ports.Color): Attributes\rPROCEDURE  "
+                    attr: 1
+                  - text: NewTypeface
+                    attr: 4
+                  - text: " (a: Attributes; typeface: Fonts.Typeface): Attributes\rPROCEDURE  "
+                    attr: 1
+                  - text: NewSize
+                    attr: 4
+                  - text: " (a: Attributes; size: INTEGER): Attributes\rPROCEDURE  "
+                    attr: 1
+                  - text: NewStyle
+                    attr: 4
+                  - text: " (a: Attributes; style: SET): Attributes\rPROCEDURE  "
+                    attr: 1
+                  - text: NewWeight
+                    attr: 4
+                  - text: " (a: Attributes; weight: INTEGER): Attributes\rPROCEDURE  "
+                    attr: 1
+                  - text: NewOffset
+                    attr: 4
+                  - text: " (a: Attributes; offset: INTEGER): Attributes\rTake an existing attributes object and return a new one with equal attributes except for the specified one.\r\rPre\ra # NIL\t20\ra.init\t21\r\rPost\rresult # NIL\r\rPROCEDURE  "
+                    attr: 1
+                  - text: NewFont
+                    attr: 4
+                  - text: " (a: Attributes; font: Fonts.Font): Attributes\rChanges the entire font attribute, i.e., weight, style, size, and typeface.\r\rPre\ra # NIL\t20\ra.init\t21\r\rExcept for performance, equivalent to:\r\tNewTypeface(NewSize(NewStyle(NewWeight(\r\t\ta, font.weight), font.style), font.size), font.typeface)\r\rPROCEDURE  "
+                    attr: 1
+                  - text: ReadAttr
+                    attr: 4
+                  - text: " (VAR rd: Stores.Reader; VAR a: Attributes)\rReads an attributes object. In case the reader returns an alien store, the store is wrapped into an alien attributes object and the wrapper is returned.\r\rPre\r~rd.rider.eof\rNextStore(rd) IS Attributes\r\rPost\ra # NIL\r~MapsToAlien(NextStore(rd'))\r\ta = NextStore(rd')\rMapsToAlien(NextStore(rd'))\r\ta IS AlienAttributes\r\ta.store = NextStore(rd')\r\rPROCEDURE  "
+                    attr: 1
+                  - text: WriteAttr
+                    attr: 4
+                  - text: " (VAR wr: Stores.Writer; a: Attributes)\rWrites an attributes object. In case "
+                    attr: 1
+                  - text: a
+                    attr: 3
+                  - text: " is an alien attributes object, its contained alien stores is unwrapped and written.\r\rPre\ra # NIL\t20\r\rExcept for performance, equivalent to:\r\tWITH a: AlienAttributes DO wr.WriteStore(a.store) ELSE wr.WriteStore(a) END\r\rPROCEDURE  "
+                    attr: 1
+                  - text: ModifiedAttr
+                    attr: 4
+                  - text: " (a: Attributes; p: Properties.Property): Attributes\rReturn new attributes object that shares attribute settings of "
+                    attr: 1
+                  - text: a
+                    attr: 3
+                  - text: ", except where overridden by settings in "
+                    attr: 1
+                  - text: p
+                    attr: 3
+                  - text: ".\r\rPre\ra # NIL\t"
+                    attr: 1
+                  - text: not explicitly checked
+                    attr: 3
+                  - text: "\ra.init\t20\r\rPost\r"
+                    attr: 1
+                  - text: x
+                    attr: 3
+                  - text: " IN p.valid\r\t"
+                    attr: 1
+                  - text: x
+                    attr: 3
+                  - text: "-attr(result) = "
+                    attr: 1
+                  - text: x
+                    attr: 3
+                  - text: "-attr(p)\r~("
+                    attr: 1
+                  - text: x
+                    attr: 3
+                  - text: " IN p.valid)\r\t"
+                    attr: 1
+                  - text: x
+                    attr: 3
+                  - text: "-attr(result) = "
+                    attr: 1
+                  - text: x
+                    attr: 3
+                  - text: "-attr(a)\r\rExcept for performance, equivalend to:\r\tVAR h: Attributes;\r\th := Stores.CopyOf(a)(Attributes); h.ModifyFromProp(p);\r\tRETURN h\r\rPROCEDURE  "
+                    attr: 1
+                  - text: WriteableChar
+                    attr: 4
+                  - text: " (ch: CHAR): BOOLEAN\rDetermines whether "
+                    attr: 1
+                  - text: ch
+                    attr: 3
+                  - text: " may be written to a text.\r\rPost\rresult =\r\tch = tab  OR  ch = line  OR  ch = para  OR\r\tch >= \" \"  &  ch < 07FX  OR\r\tch = zwspace  OR  ch = digitspace  OR  ch = hyphen  OR  ch = nbhyphen  OR\r\tch >= 0A0X\t20\r\rPROCEDURE  "
+                    attr: 1
+                  - text: CloneOf
+                    attr: 4
+                  - text: " (source: Model): Model\rThis procedure should be used to obtain a new text from the same type as another existing text.\r\rPre\rsource # NIL\t20\r\rExcept for performance, equivalent to:\r\t\tRETURN Containers.CloneOf(source)(Model)\r\rPROCEDURE  "
+                    attr: 1
+                  - text: SetDir
+                    attr: 4
+                  - text: " (d: Directory)\rSet model directory.\r\rPre\rd # NIL\t20\rd.attr # NIL\t21\r\rPost\rdir = d\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 14
+          bodyPos: 30178
+          bodyLen: 8

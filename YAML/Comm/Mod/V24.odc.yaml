@@ -1,0 +1,380 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Comm\\Mod\\V24.odc"
+  size: 8948
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 8817
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 8631
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 8545
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: "*"
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 8670
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 8156
+                runListLen: 2206
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE CommV24;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- 20070205, bh, Unicode support\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- this module was not decomposed into two modules, like CommStreams/CommTCP;\r\tfor better consistency, this should be corrected\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT SYSTEM, WinApi;\r\r\tCONST\r\t\t"
+                    attr: 0
+                  - text: bits4
+                    attr: 3
+                  - text: "* = 0; "
+                    attr: 0
+                  - text: bits5
+                    attr: 3
+                  - text: "* = 1; "
+                    attr: 0
+                  - text: bits6
+                    attr: 3
+                  - text: "* = 2; "
+                    attr: 0
+                  - text: bits7
+                    attr: 3
+                  - text: "* = 3; "
+                    attr: 0
+                  - text: stop15
+                    attr: 3
+                  - text: "* = 4; "
+                    attr: 0
+                  - text: stop2
+                    attr: 3
+                  - text: "* = 5; "
+                    attr: 0
+                  - text: even
+                    attr: 3
+                  - text: "* = 6; "
+                    attr: 0
+                  - text: odd
+                    attr: 3
+                  - text: "* = 7;\r\t\t"
+                    attr: 0
+                  - text: inXonXoff
+                    attr: 3
+                  - text: "* = 8; "
+                    attr: 0
+                  - text: outXonXoff
+                    attr: 3
+                  - text: "* = 9; "
+                    attr: 0
+                  - text: inRTS
+                    attr: 3
+                  - text: "* = 10; "
+                    attr: 0
+                  - text: inDTR
+                    attr: 3
+                  - text: "* = 11; "
+                    attr: 0
+                  - text: outCTS
+                    attr: 3
+                  - text: "* = 12; "
+                    attr: 0
+                  - text: outDSR
+                    attr: 3
+                  - text: "* = 13;\r\r\tTYPE\r\t\t"
+                    attr: 0
+                  - text: Connection
+                    attr: 3
+                  - text: "* = POINTER TO LIMITED RECORD\r\t\t\thnd: WinApi.HANDLE;\t"
+                    attr: 0
+                  - text: "(* # 0: open *)"
+                    attr: 1
+                  - text: "\r\t\t\topts: SET\r\t\tEND;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Open
+                    attr: 3
+                  - text: "* (device: ARRAY OF CHAR; baud: INTEGER; opts: SET; OUT conn: Connection);\r\t\tVAR c: Connection; h: WinApi.HANDLE; res: INTEGER; dcb: WinApi.DCB; to: WinApi.COMMTIMEOUTS;\r\tBEGIN\r\t\th := WinApi.CreateFileW(\r\t\t\tdevice,  WinApi.GENERIC_READ +  WinApi.GENERIC_WRITE, {}, NIL,  WinApi.OPEN_EXISTING, {}, 0);\r\t\tIF h # -1 THEN\r\t\t\tdcb.DCBlength := SIZE(WinApi.DCB);\r\t\t\tres := WinApi.GetCommState(h, dcb);\r\t\t\tIF res # 0 THEN\r\t\t\t\tdcb.BaudRate := baud;\r\t\t\t\tdcb.fBits0 := {0};\t"
+                    attr: 0
+                  - text: "(* binary *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tIF opts * {even, odd} # {} THEN INCL(dcb.fBits0, 1) END;\t"
+                    attr: 0
+                  - text: "(* check parity *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tIF outCTS IN opts THEN INCL(dcb.fBits0, 2) END;\t"
+                    attr: 0
+                  - text: "(* CTS out flow control *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tIF outDSR IN opts THEN INCL(dcb.fBits0, 3) END;\t"
+                    attr: 0
+                  - text: "(* DSR out flow control *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tIF inDTR IN opts THEN INCL(dcb.fBits0, 5) END;\t"
+                    attr: 0
+                  - text: "(* DTR flow control handshake *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tIF outXonXoff IN opts THEN INCL(dcb.fBits0, 8) END;\t"
+                    attr: 0
+                  - text: "(* Xon/Xoff out flow control *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tIF inXonXoff IN opts THEN INCL(dcb.fBits0, 9) END;\t"
+                    attr: 0
+                  - text: "(* Xob/Xoff in flow control *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tIF inRTS IN opts THEN INCL(dcb.fBits0, 13) END;\t"
+                    attr: 0
+                  - text: "(* RTS flow control handshake *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tIF bits4 IN opts THEN dcb.ByteSize := 4X\r\t\t\t\tELSIF bits5 IN opts THEN dcb.ByteSize := 5X\r\t\t\t\tELSIF bits6 IN opts THEN dcb.ByteSize := 6X\r\t\t\t\tELSIF bits7 IN opts THEN dcb.ByteSize := 7X\r\t\t\t\tELSE dcb.ByteSize := 8X\r\t\t\t\tEND;\r\t\t\t\tIF stop15 IN opts THEN dcb.StopBits := 1X\r\t\t\t\tELSIF stop2 IN opts THEN dcb.StopBits := 2X\r\t\t\t\tELSE dcb.StopBits := 0X\r\t\t\t\tEND;\r\t\t\t\tIF even IN opts THEN dcb.Parity := 2X\r\t\t\t\tELSIF odd IN opts THEN dcb.Parity := 1X\r\t\t\t\tELSE dcb.Parity := 0X\r\t\t\t\tEND;\r\t\t\t\tres := WinApi.SetCommState(h, dcb);\r\t\t\t\tIF res # 0 THEN\r\t\t\t\t\tto.ReadIntervalTimeout := 0;\r\t\t\t\t\tto.ReadTotalTimeoutMultiplier := 0;\r\t\t\t\t\tto.ReadTotalTimeoutConstant := 0;\r\t\t\t\t\tto.WriteTotalTimeoutMultiplier := 0;\r\t\t\t\t\tto.WriteTotalTimeoutConstant := 0;\r\t\t\t\t\tres := WinApi.SetCommTimeouts(h, to);\r\t\t\t\t\tIF res # 0 THEN\r\t\t\t\t\t\tNEW(c); c.hnd := h; c.opts := opts; conn := c\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND Open;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Close
+                    attr: 3
+                  - text: "* (c: Connection);\r\t\tVAR res: INTEGER;\r\tBEGIN\r\t\tASSERT(c # NIL, 20); ASSERT(c.hnd # -1, 21);\r\t\tres := WinApi.CloseHandle(c.hnd);\r\t\tc.hnd := -1\r\tEND Close;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SendByte
+                    attr: 3
+                  - text: "* (c: Connection; x: BYTE);\r\t\tVAR res, written: INTEGER;\r\tBEGIN\r\t\tASSERT(c # NIL, 20); ASSERT(c.hnd # -1, 21);\r\t\tres := WinApi.WriteFile(c.hnd, SYSTEM.ADR(x), 1, written, NIL);\r\t\tASSERT(res # 0, 100)\r\tEND SendByte;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SendBytes
+                    attr: 3
+                  - text: "* (c: Connection; IN x: ARRAY OF BYTE; beg, len: INTEGER);\r\t\tVAR res, written: INTEGER;\r\tBEGIN\r\t\tASSERT(c # NIL, 20); ASSERT(c.hnd # -1, 21);\r\t\tASSERT(LEN(x) >= beg + len, 22);\r\t\tASSERT(len > 0, 23);\r\t\tres := WinApi.WriteFile(c.hnd, SYSTEM.ADR(x) + beg, len, written, NIL);\r\t\tASSERT(res # 0, 100)\r\tEND SendBytes;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Available
+                    attr: 3
+                  - text: "* (c: Connection): INTEGER;\r\t\tVAR res: INTEGER; errors: SET; status: WinApi.COMSTAT;\r\tBEGIN\r\t\tASSERT(c # NIL, 20); ASSERT(c.hnd # -1, 21);\r\t\tres := WinApi.ClearCommError(c.hnd, errors, status);\r\t\tASSERT(res # 0, 100);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " status.cbInQue\r\tEND Available;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ReceiveByte
+                    attr: 3
+                  - text: "* (c: Connection; OUT x: BYTE);\r\t\tVAR res, read: INTEGER;\r\tBEGIN\r\t\tASSERT(c # NIL, 20); ASSERT(c.hnd # -1, 21);\r\t\tres := WinApi.ReadFile(c.hnd, SYSTEM.ADR(x), 1, read, NIL);\r\t\tASSERT(res # 0, 100)\r\tEND ReceiveByte;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ReceiveBytes
+                    attr: 3
+                  - text: "* (c: Connection; OUT x: ARRAY OF BYTE; beg, len: INTEGER);\r\t\tVAR res, read: INTEGER;\r\tBEGIN\r\t\tASSERT(c # NIL, 20); ASSERT(c.hnd # -1, 21);\r\t\tASSERT(LEN(x) >= beg + len, 22);\r\t\tASSERT(len > 0, 23);\r\t\tres := WinApi.ReadFile(c.hnd, SYSTEM.ADR(x) + beg, len, read, NIL);\r\t\tASSERT(res # 0, 100)\r\tEND ReceiveBytes;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetBuffers
+                    attr: 3
+                  - text: "* (c: Connection; inpBufSize, outBufSize: INTEGER);\r\t\tVAR res: INTEGER;\r\tBEGIN\r\t\tASSERT(c # NIL, 20); ASSERT(c.hnd # -1, 21);\r\t\tres := WinApi.SetupComm(c.hnd, inpBufSize, outBufSize)\r\tEND SetBuffers;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetDTR
+                    attr: 3
+                  - text: "* (c: Connection; on: BOOLEAN);\r\t\tVAR res: INTEGER;\r\tBEGIN\r\t\tASSERT(c # NIL, 20); ASSERT(c.hnd # -1, 21);\r\t\tASSERT(~(inDTR IN c.opts), 22);\r\t\tIF on THEN res := WinApi.EscapeCommFunction(c.hnd, WinApi.SETDTR)\r\t\tELSE res := WinApi.EscapeCommFunction(c.hnd, WinApi.CLRDTR)\r\t\tEND\r\tEND SetDTR;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetRTS
+                    attr: 3
+                  - text: "* (c: Connection; on: BOOLEAN);\r\t\tVAR res: INTEGER;\r\tBEGIN\r\t\tASSERT(c # NIL, 20); ASSERT(c.hnd # -1, 21);\r\t\tASSERT(~(inRTS IN c.opts), 22);\r\t\tIF on THEN res := WinApi.EscapeCommFunction(c.hnd, WinApi.SETRTS)\r\t\tELSE res := WinApi.EscapeCommFunction(c.hnd, WinApi.CLRRTS)\r\t\tEND\r\tEND SetRTS;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetBreak
+                    attr: 3
+                  - text: "* (c: Connection; on: BOOLEAN);\r\t\tVAR res: INTEGER;\r\tBEGIN\r\t\tASSERT(c # NIL, 20); ASSERT(c.hnd # -1, 21);\r\t\tIF on THEN res := WinApi.EscapeCommFunction(c.hnd, WinApi.SETBREAK)\r\t\tELSE res := WinApi.EscapeCommFunction(c.hnd, WinApi.CLRBREAK)\r\t\tEND\r\tEND SetBreak;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: CTSState
+                    attr: 3
+                  - text: "* (c: Connection): BOOLEAN;\r\t\tVAR res: INTEGER; s: SET;\r\tBEGIN\r\t\tASSERT(c # NIL, 20); ASSERT(c.hnd # -1, 21);\r\t\tres := WinApi.GetCommModemStatus(c.hnd, s);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " s * WinApi.MS_CTS_ON # {}\r\tEND CTSState;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: DSRState
+                    attr: 3
+                  - text: "* (c: Connection): BOOLEAN;\r\t\tVAR res: INTEGER; s: SET;\r\tBEGIN\r\t\tASSERT(c # NIL, 20); ASSERT(c.hnd # -1, 21);\r\t\tres := WinApi.GetCommModemStatus(c.hnd, s);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " s * WinApi.MS_DSR_ON # {}\r\tEND DSRState;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: CDState
+                    attr: 3
+                  - text: "* (c: Connection): BOOLEAN;\r\t\tVAR res: INTEGER; s: SET;\r\tBEGIN\r\t\tASSERT(c # NIL, 20); ASSERT(c.hnd # -1, 21);\r\t\tres := WinApi.GetCommModemStatus(c.hnd, s);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " s * WinApi.MS_RLSD_ON # {}\r\tEND CDState;\r\rEND CommV24.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 8913
+          bodyLen: 8

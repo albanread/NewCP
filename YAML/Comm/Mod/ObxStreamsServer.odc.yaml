@@ -1,0 +1,292 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Comm\\Mod\\ObxStreamsServer.odc"
+  size: 5774
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 5643
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 5457
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 5371
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5943600
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: "*"
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 25
+                bodyPos: 5496
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 4982
+                runListLen: 1916
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE CommObxStreamsServer;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT Services, CommStreams, Views, TextModels, TextViews, StdLog;\r\r\tCONST\r\t\tprotocol = \"CommTCP\";\t\t\t"
+                    attr: 0
+                  - text: "(* driver for TCP/IP communication, over Winsock *)"
+                    attr: 1
+                  - text: "\r\t\tlocalAdr = \"900\";\t\t\t\t\t"
+                    attr: 0
+                  - text: "(* this is the port on which the server listens *)"
+                    attr: 1
+                  - text: "\r\r\tTYPE\r\t\tServer = POINTER TO RECORD (Services.Action)\r\t\t\tlistener: CommStreams.Listener\t"
+                    attr: 0
+                  - text: "(* the server listens using this object and accepts incoming connections*)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\tProcessor = POINTER TO RECORD (Services.Action)\r\t\t\tprev, succ: Processor;\t"
+                    attr: 0
+                  - text: "(* linked to allow stopping of all active processors with Stop command *)"
+                    attr: 1
+                  - text: "\r\t\t\tstream: CommStreams.Stream;\t"
+                    attr: 0
+                  - text: "(* for each connection, a receiver communicates through this object *)"
+                    attr: 1
+                  - text: "\r\t\t\twriter: TextModels.Writer\r\t\tEND;\r\r\tVAR\r\t\tserver: Server;\r\t\tprocessors: Processor;\r\r\tPROCEDURE (server: Server) Do;\r\t\tVAR s: CommStreams.Stream; p: Processor; t: TextModels.Model;\r\tBEGIN\r\t\tserver.listener.Accept(s);\t"
+                    attr: 0
+                  - text: "(* poll for a connection *)"
+                    attr: 1
+                  - text: "\r\t\tIF s # NIL THEN\t"
+                    attr: 0
+                  - text: "(* upon accept create and start processor for new connection *)"
+                    attr: 1
+                  - text: "\r\t\t\tNEW(p); p.prev := NIL; p.succ := processors; processors := p;\r\t\t\tIF p.succ # NIL THEN p.succ.prev := p END;\r\t\t\tp.stream := s;\r\t\t\tt := TextModels.dir.New(); p.writer := t.NewWriter(NIL);\r\t\t\tViews.OpenAux(TextViews.dir.New(t), \"Message\");\r\t\t\tServices.DoLater(p, Services.now)\r\t\tEND;\r\t\tServices.DoLater(server, Services.now)\r\tEND Do;\r\r\tPROCEDURE (p: Processor) Do;\r\t\tVAR buf: ARRAY 256 OF BYTE; read, i: INTEGER;\r\tBEGIN\r\t\tp.stream.ReadBytes(buf, 0, LEN(buf), read);\t"
+                    attr: 0
+                  - text: "(* poll for incoming data *)"
+                    attr: 1
+                  - text: "\r\t\tIF read > 0 THEN\t"
+                    attr: 0
+                  - text: "(* write received data into log *)\r"
+                    attr: 1
+                  - text: "\t\t\ti := 0; WHILE i # read DO p.writer.WriteChar(CHR(buf[i])); INC(i) END;\r\t\t\tServices.DoLater(p, Services.now)\r\t\tELSIF p.stream.IsConnected() THEN\r\t\t\tServices.DoLater(p, Services.now)\r\t\tELSE\r\t\t\tIF p.prev # NIL THEN p.prev.succ := p.succ ELSE processors := p.succ END;\r\t\t\tIF p.succ # NIL THEN p.succ.prev := p.prev END\r\t\tEND\r\tEND Do;\r\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Start
+                    attr: 3
+                  - text: "*;\r\t\tVAR l: CommStreams.Listener; res: INTEGER;\r\tBEGIN\r\t\tIF server = NIL THEN\r\t\t\tCommStreams.NewListener(protocol, localAdr, l, res);\r\t\t\tIF l # NIL THEN\r\t\t\t\tNEW(server); server.listener := l; Services.DoLater(server, Services.now);\r\t\t\t\tStdLog.String(\"server: server started\"); StdLog.Ln\r\t\t\tELSE\r\t\t\t\tStdLog.String(\"server: error starting the server (\"); StdLog.Int(res); StdLog.Char(\")\"); StdLog.Ln\r\t\t\tEND\r\t\tEND\r\tEND Start;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Stop
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tWHILE processors # NIL DO\r\t\t\tprocessors.stream.Close; Services.RemoveAction(processors);\r\t\t\tprocessors := processors.succ\r\t\tEND;\r\t\tIF server # NIL THEN\r\t\t\tServices.RemoveAction(server);\r\t\t\tserver.listener.Close;\r\t\t\tserver := NIL;\r\t\t\tStdLog.String(\"server: server stopped\"); StdLog.Ln\r\t\tEND\r\tEND Stop;\r\rCLOSE\r\tStop\t"
+                    attr: 0
+                  - text: "(* prevent the server from trapping after module unloading *)"
+                    attr: 1
+                  - text: "\rEND CommObxStreamsServer.\r\r"
+                    attr: 0
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 23
+                      bodyPos: 2244
+                      bodyLen: 6
+                    attr: 0
+                    w: 168275
+                    h: 142875
+                  - text: " CommObxStreamsServer.Start\r"
+                    attr: 0
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 24
+                      bodyPos: 2290
+                      bodyLen: 6
+                    attr: 0
+                    w: 168275
+                    h: 142875
+                  - text: " CommObxStreamsServer.Stop\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 29
+          bodyPos: 5739
+          bodyLen: 8

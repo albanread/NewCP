@@ -1,0 +1,239 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Docu\\Cubes.odc"
+  size: 3517
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 3386
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 3145
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 3059
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 152400
+                dsc: 25400
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 15
+                bodyPos: 3019
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 2560
+                runListLen: 1121
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x000000ff
+                    weight: 400
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                flow:
+                  - text: "Overview by Example: ObxCubes"
+                    attr: 0
+                  - text: "\r\rThis example implements a simple rotating cube view. The cube rotates around two axes. It performs 10 state transformations per second and after 25.6 seconds it is back in its starting position. The example below shows a large cube rotating in front of a smaller one. Both cubes are embedded in a form view, which is embedded in the text view that you are currently reading:\r\t\t\t"
+                    attr: 1
+                  - view:
+                      kind: FormViews.StdView
+                      storeKind: store
+                      typeChain:
+                        - FormViews.StdViewDesc
+                        - FormViews.ViewDesc
+                        - Containers.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 5
+                      bodyPos: 657
+                      bodyLen: 419
+                      children:
+                        - kind: FormModels.StdModel
+                          storeKind: elem
+                          typeChain:
+                            - FormModels.StdModelDesc
+                            - FormModels.ModelDesc
+                            - Containers.ModelDesc
+                            - Models.ModelDesc
+                            - Stores.StoreDesc
+                          id: 2
+                          bodyPos: 729
+                          bodyLen: 176
+                          children:
+                            - kind: ObxCubes.View
+                              storeKind: store
+                              typeChain:
+                                - ObxCubes.ViewDesc
+                                - Views.ViewDesc
+                                - Stores.StoreDesc
+                              id: 6
+                              bodyPos: 776
+                              bodyLen: 33
+                            - kind: ObxCubes.View
+                              storeKind: store
+                              typeChain:
+                                - ObxCubes.ViewDesc
+                                - Views.ViewDesc
+                                - Stores.StoreDesc
+                              id: 7
+                              bodyPos: 847
+                              bodyLen: 33
+                            - kind: "<nil>"
+                              storeKind: nil
+                        - kind: FormControllers.StdController
+                          storeKind: store
+                          typeChain:
+                            - FormControllers.StdControllerDesc
+                            - FormControllers.ControllerDesc
+                            - Containers.ControllerDesc
+                            - Controllers.ControllerDesc
+                            - Stores.StoreDesc
+                          id: 8
+                          bodyPos: 1049
+                          bodyLen: 9
+                    attr: 2
+                    w: 2168089
+                    h: 2168089
+                  - text: "\rWhat this example shows is the use of actions. "
+                    attr: 1
+                  - text: Services.Actions
+                    attr: 3
+                  - text: "  are objects whose"
+                    attr: 1
+                  - text: " Do"
+                    attr: 3
+                  - text: "  procedures are executed in a delayed fashion, when the system is idle. An action which re-installs itself whenever it is invoked as in this example operates as a non-preemptive background task.\r\rThis example also demonstrates a simple property editor through which the colors of the sides of a cube can be changed. To open the property editor click into the cube while holding down the modifier key (or execute the command below to open the dialog). The property editor always shows the colors of the selected cube. The synchronization between the color fields in the dialog and the selected cube is also performed through the installed action. The colors of the sides are actually changed by a notifier which is attached to each color control in the property dialog. The color "
+                    attr: 1
+                  - text: white
+                    attr: 3
+                  - text: " is interpreted as invisible.\r\r\r"
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 10
+                      bodyPos: 1249
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: " \"ObxCubes.Deposit; StdCmds.Open\"\r"
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 11
+                      bodyPos: 1295
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: " \"StdCmds.OpenToolDialog('Obx/Rsrc/Cubes', 'Cube Colors')\"\r\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenDoc('Obx/Mod/Cubes')"
+                      body:
+                        - text: ObxCubes  sources
+                          attr: 4
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 19
+          bodyPos: 3482
+          bodyLen: 8

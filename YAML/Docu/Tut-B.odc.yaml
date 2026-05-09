@@ -1,0 +1,462 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Docu\\Tut-B.odc"
+  size: 9108
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 8977
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 8791
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 8705
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                asc: 152400
+                dsc: 25400
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 10
+                bodyPos: 8826
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 8312
+                runListLen: 1315
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                flow:
+                  - text: "Appendix B: Differences between Pascal and Component Pascal"
+                    attr: 0
+                  - text: "\r\r"
+                    attr: 1
+                  - text: Eliminated Features
+                    attr: 2
+                  - text: "\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " Subrange types"
+                    attr: 2
+                  - text: "\rUse a standard integer type instead.\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " Enumeration types"
+                    attr: 2
+                  - text: " \rUse integer constants instead.\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " Arbitrary array ranges"
+                    attr: 2
+                  - text: "\rArrays are always defined over the integer range 0..max-1.\r\rExample\r\tA = ARRAY 16 OF INTEGER\t(* legal indices are in the range 0..15 *)\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " No general sets"
+                    attr: 2
+                  - text: "\rType SET denotes the integer set which may include the elements 0..31.\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " No explicit DISPOSE"
+                    attr: 2
+                  - text: "\rMemory is reclaimed automatically by the garbage collector. Instead of calling DISPOSE, simply set the variable to NIL.\r\t\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " No variant records"
+                    attr: 2
+                  - text: "\rUse record extension instead.\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " No packed structures"
+                    attr: 2
+                  - text: "\r Use SHORTCHAR or BYTE types for byte-sized values.\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " No GOTO"
+                    attr: 2
+                  - text: "\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " No PRED and SUCC standard functions"
+                    attr: 2
+                  - text: "\rUse DEC or INC on integer values instead.\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " No built-in input/output facilities"
+                    attr: 2
+                  - text: "\rNo file types. I/O is provided by library routines.\r\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000009
+                      attr: 2
+                      w: 360000000
+                      h: 444500
+                  - text: Changed Features
+                    attr: 2
+                  - text: "\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " Standard procedure ENTIER instead of ROUND"
+                    attr: 2
+                  - text: "\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " Syntax for REAL constants"
+                    attr: 2
+                  - text: "\r3.0E+4 but not 3.0e+4\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " Syntax for pointer type declarations"
+                    attr: 2
+                  - text: "\rP = POINTER TO R\rinstead of\rP = ^R\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " Syntax for case statement"
+                    attr: 2
+                  - text: "\r\"|\" instead of \";\" as case separator.\rELSE clause.\r\rExample\r\tCASE i * 3 - 1 OF\r\t  0: StdLog.String(\"zero\")\r\t| 1..9: StdLog.String(\"one to nine\")\r\t| 10, 20: StdLog.String(\"ten or twenty\")\r\tELSE StdLog.String(\"something else\")\r\tEND\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " Procedure name must be repeated"
+                    attr: 2
+                  - text: "\r\rExample\r\tPROCEDURE DrawDot (x, y: INTEGER);\r\tBEGIN\r\tEND DrawDot;\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " Case is significant"
+                    attr: 2
+                  - text: "\rSmall letters are distinguished from capital letters.\r\rExample\t\"proc\" is not the same as \"Proc\".\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " String syntax"
+                    attr: 2
+                  - text: "\rString literals are either enclosed between \" or between '. There cannot be both single and double quotes in one string. String literals of length one are assignment-compatible to character variables.\r\rExamples\r\t\"That's great\"\t'Write \"hello world\" to the screen'\r\tch := \"x\"\r\tch := 'x'\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " Comments"
+                    attr: 2
+                  - text: "\rComments are enclosed between (* and *) and may be nested.\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " Set brackets"
+                    attr: 2
+                  - text: "\rSet constants are given between { and } instead of [ and ].\r\rExample\t{0..2, 4, j..2 * k}\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " Function syntax"
+                    attr: 2
+                  - text: "\rUse keyword PROCEDURE for functions also, instead of FUNCTION.\rProcedures with a return value always have a (possibly empty) parameter list in their declarations and in calls to them.\rThe function result is returned explicitly by a RETURN statement, instead of an assignment to the function name.\r\rExample\r\r\tPROCEDURE Fun (): INTEGER;\r\tBEGIN\r\t\tRETURN 5\r\tEND Fun;\r\r\t instead of\r\r\tFUNCTION Fun: INTEGER;\r\tBEGIN\r\t\tFun := 5\r\tEND;\r\r\tn := Fun()   instead of   n := Fun\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " Declarations"
+                    attr: 2
+                  - text: "\rThe sequence of declarations is\r{ ConstDecl | TypeDecl | VarDecl} {ProcDecl | ForwardDecl}\rinstead of\r[ConstDecl] [TypeDecl] [VarDecl] {ProcDecl}.\r\rForward declarations are necessary if a procedure is used before it is defined.\r\rExample\r\tPROCEDURE ^ Proc;\r\tinstead of\r\tPROCEDURE Proc; FORWARD;\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " Procedure types"
+                    attr: 2
+                  - text: "\rProcedures may not only be passed to parameters, but also to procedure-typed variables.\r\rExample\r\tTYPE P = PROCEDURE (x, y: INTEGER);\r\tVAR v: P;\r\tv := DrawDot;\t(* assign *)\r\tv(3, 5);\t(* call DrawDot(3, 5) *)\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " Explicit END instead of compound statement"
+                    attr: 2
+                  - text: "\rBEGIN can only occur before a statement sequence, but not in it. IF, WHILE, and LOOP are always terminated by END.\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " WITH statement"
+                    attr: 2
+                  - text: "\rA WITH statement is a regional type guard, it does not imply a hidden variable and does not open a new scope.\rSee language reference for more details.\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " ELSIF"
+                    attr: 2
+                  - text: "\rIF statements can have several branches.\r\rExample\r\tIF name = \"top\" THEN\r\t\tStdLog.Int(0)\r\tELSIF name = \"bottom\" THEN\r\t\tStdLog.Int(1)\r\tELSIF name = \" charm\" THEN\r\t\tStdLog.Int(2)\r\tELSIF name = \"beauty\" THEN\r\t\tStdLog.Int(3)\r\tELSE\r\t\tStdLog.String(\"strange\")\r\tEND\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " BY instead of only DOWNTO in FOR"
+                    attr: 2
+                  - text: "\rFOR loops may use any constant value as increment or decrement.\r\rExample\r\tFOR i := 15 TO 0 BY -1 DO StdLog.Int(i, 0) END\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " Boolean expressions use short-circuit evaluation"
+                    attr: 2
+                  - text: "\rA Boolean expression terminates as soon as its result can be determined.\r\rExample\r\tThe following expression does not cause a run-time error when p = NIL:\r\tIF (p # NIL) & (p.name = \"quark\") THEN\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " Constant expressions"
+                    attr: 2
+                  - text: "\rIn constant declarations, not only literals, but also constant expressions are allowed.\r\r\tExample\r\t\tCONST\r\t\t\tzero = ORD(\"0\");\r\t\t\tone = zero + 1;\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " Different operators"
+                    attr: 2
+                  - text: "\r# is used instead of <> for inequality test.\r& is used instead of AND for logical conjunctions.\r~ is used instead of NOT for logical negation.\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " Explicit conversion to included type with SHORT"
+                    attr: 2
+                  - text: "\rType inclusion for numeric types allows to assign values of an included type to an including type. To assign in the other direction, the standard procedure SHORT must be used.\r\rExample\r\tint := shortint;\r\tshortint := SHORT(int)\r\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000009
+                      attr: 2
+                      w: 360000000
+                      h: 444500
+                  - text: New Features
+                    attr: 2
+                  - text: "\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " Hexadecimal numbers and characters"
+                    attr: 2
+                  - text: "\r\rExample\r\t100H\t(* decimal 256 *)\r\t0DX\t(* carriage return *)\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " Additional numeric types"
+                    attr: 2
+                  - text: "\rLONGINT, SHORTINT, BYTE, SHORTREAL have been added.\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " Symmetric set difference"
+                    attr: 2
+                  - text: "\rSets can be subtracted.\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " New standard procedures"
+                    attr: 2
+                  - text: "\rThe new standard procedures INC, DEC, INCL, EXCL, SIZE, ASH, HALT, ASSERT, LEN, LSH, MAX, MIN, BITS, CAP, ENTIER, LONG and SHORT have been added.\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " LOOP with EXIT"
+                    attr: 2
+                  - text: "\rThere is a new loop statement with an explicit exit statement. See language report for more details.\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " ARRAY OF CHAR can be compared"
+                    attr: 2
+                  - text: "\rCharacter arrays can be compared with the =, #, <, >, <=, and >= operators.\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " Open arrays, multidimensional arrays"
+                    attr: 2
+                  - text: "\rArrays without predefined sizes can be defined, possibly with several dimensions.\r\rExamples\r\tVAR a: POINTER TO ARRAY OF CHAR;\r\tNEW(a, 16)\r\r\tPROCEDURE ScalarProduct (a, b: ARRAY OF REAL; VAR c: ARRAY OF REAL);\r\r\tTYPE Matrix = ARRAY OF ARRAY OF REAL;\r\tPROCEDURE VectorProduct (a, b: ARRAY OF REAL; VAR c: Matrix);\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " Pointer dereferencing is optional"
+                    attr: 2
+                  - text: "\rThe dereferencing operator ^ can be omitted.\r\rExample\r\troot.next.value := 5\r\tinstead of\r\troot^.next^.value := 5\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " Modules"
+                    attr: 2
+                  - text: "\rModules are the units of compilation, of information hiding, and of loading. Information hiding is one of the main features of object-oriented programming. Various levels of information hiding are possible: complete hiding, read-only / implement-only export, full export.\rSee language report for more details.\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " Type extension"
+                    attr: 2
+                  - text: "\rRecord types (pointer types) can be extended, thus providing for polymorphism. Polymorphism is one of the main features of object-oriented programming.\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " Methods"
+                    attr: 2
+                  - text: "\rProcedures can be bound to record types (pointer types), thus providing late binding. Late binding is one of the main features of object-oriented programming. Such procedures are also called "
+                    attr: 1
+                  - text: methods
+                    attr: 3
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " String operator"
+                    attr: 2
+                  - text: "\rThe string (sequence of characters) that is contained in an array of character can be selected by using the $-selector.\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " Record attributes"
+                    attr: 2
+                  - text: "\rRecords are non-extensible by default, but may be marked as EXTENSIBLE, ABSTRACT, or LIMITED.\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " Method attributes"
+                    attr: 2
+                  - text: "\rMethods are non-extensible by default, but may be marked as EXTENSIBLE, ABSTRACT, or EMTPY. Newly introduced methods must be marked as NEW.\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 14
+          bodyPos: 9073
+          bodyLen: 8

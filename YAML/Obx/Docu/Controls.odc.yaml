@@ -1,0 +1,248 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Docu\\Controls.odc"
+  size: 6555
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 6424
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 6238
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 6152
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 152400
+                dsc: 25400
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 13
+                bodyPos: 6273
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 5759
+                runListLen: 1053
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [4]
+                    font: Arial
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [5]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                flow:
+                  - text: "Overview by Example: ObxControls"
+                    attr: 0
+                  - text: "\r\rA change of an interactor field (i.e., a field of a globally declared record variable) may affect not only controls which are linked to this field, but others as well. For example, a command button may be disabled as long as a text field is empty, and become enabled when something is typed into the text field.\r\r"
+                    attr: 1
+                  - text: Guard commands
+                    attr: 2
+                  - text: "\rSuch state changes of controls, which are the results of state changes in an interactor, are handled by "
+                    attr: 1
+                  - text: guard commands
+                    attr: 3
+                  - text: ". A guard is a command which may disable a control, may denote it as undefined, or may make it read-only. It does not have other side effects; in particular, it doesn't invoke an arbitrary action or change the state of an interactor. For that purpose, notifiers are used.\r\r"
+                    attr: 1
+                  - text: Notifier commands
+                    attr: 2
+                  - text: "\rA notifier is an optional command that can be bound to a control, using the control property editor (-> DevInspector). For example, a notifier command may write something into the status bar of a window when the mouse button is pressed, and clear the status bar when the mouse button is released again.\r\tIt is more typical, however, that a notifier changes the state of the interactor to which its control is linked; i.e., to change one or more of the interactor fields to which its control is "
+                    attr: 1
+                  - text: not
+                    attr: 3
+                  - text: " linked.\r\t In this way, the change of one interactor field's value may cause a change of another field's value, via the former's notifier.\r\r"
+                    attr: 1
+                  - text: Example
+                    attr: 2
+                  - text: "\rThe example illustrates guards and notifiers, as well as command button, radio button, and list box controls.\r\tImagine something whose size should be controlled via a dialog, with more skilled users getting more degrees of freedom. For example, this may be a dialog for a game, which allows the user to choose a skill level. A novice user only gets a default amount of money to invest in an economics simulation game, a more experienced user additionally may choose among three predefined choices, while a guru may enter any value he or she wants to use. In order to keep our example simple and to concentrate on the control behaviors, nothing as complex as a simulation game is implemented. Instead, the initial size of a square view can be controlled by the user, in a more or less flexible way that depends on the chosen skill level.\r\tIn our example, the skill level is implement as the "
+                    attr: 1
+                  - text: class
+                    attr: 3
+                  - text: " field of the "
+                    attr: 1
+                  - text: data
+                    attr: 3
+                  - text: " interactor in module "
+                    attr: 1
+                  - text: ObxControls
+                    attr: 3
+                  - text: ". It is an integer variable, to which a text entry field may be linked, or more appropriately, a number of radio buttons. The radio buttons are labeled "
+                    attr: 1
+                  - text: beginner
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: advanced
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: expert
+                    attr: 3
+                  - text: ", and "
+                    attr: 1
+                  - text: guru
+                    attr: 3
+                  - text: ". Depending on the currently selected class, the interactor's "
+                    attr: 1
+                  - text: list
+                    attr: 3
+                  - text: " field is adapted: for a beginner, the list box should be disabled, because there is no choice (the default is taken). For an advanced player, a choice between \"small\", \"medium\", and \"large\" are presented in addition to the \"default\" size. Obviously, the list box must be enabled if such a choice exists. \"expert\" players get even more choices, namely \"tiny\" and \"huge\". Note that if these choices appear, the list box becomes too small to show all choices simultaneously. As a consequence, the scroll bar of the list box becomes enabled.\r\t\"guru\" players have even more freedom, they can type in the desired size numerically, in a text entry field which is read-only for all other skill levels. The command button "
+                    attr: 1
+                  - text: Cancel
+                    attr: 3
+                  - text: " closes the dialog without doing anything, the "
+                    attr: 1
+                  - text: Open
+                    attr: 3
+                  - text: " button starts the game, and the "
+                    attr: 1
+                  - text: OK
+                    attr: 3
+                  - text: " button starts the game and immediately closes the dialog.\rSince we are mainly interested in how to implement the described behavior, we don't actually implement a game. Instead, the \"game\" merely consists in opening a new view, whose size is determined by the size chosen in the dialog (default, large, small, etc.)\rWith the "
+                    attr: 1
+                  - text: New Form...
+                    attr: 3
+                  - text: " menu command, a new dialog box for the "
+                    attr: 1
+                  - text: ObxControls.data
+                    attr: 3
+                  - text: " interactor can be created automatically. The layout of this dialog can be edited interactively, and the properties of the various controls can be set using the control property editor. They should be set up as in the table below:\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 149225
+                      dsc: 28575
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 936000 }
+                        - { stop: 2232000 }
+                        - { stop: 2880000 }
+                        - { stop: 4248000 }
+                        - { stop: 5616000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "Control\tLink\tLabel\tGuard\tNotifier\tLevel\rRadio Button\tObxControls.data.class\t&Beginner\t\tObxControls.ClassNotify\t0\rRadio Button\tObxControls.data.class\t&Advanced\t\tObxControls.ClassNotify\t1\rRadio Button\tObxControls.data.class\t&Expert\t\tObxControls.ClassNotify\t2\rRadio Button\tObxControls.data.class\t&Guru\t\tObxControls.ClassNotify\t3\rList Box\tObxControls.data.list\t\tObxControls.ListGuard\tObxControls.ListNotify\rText Field\tObxControls.data.width\t\tObxControls.WidthGuard\rCommand Button\tStdCmds.CloseDialog;\r\tObxControls.Open\tOK\rCommand Button\tObxControls.Open\t&Open\r"
+                    attr: 4
+                  - text: "\r"
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 9
+                      bodyPos: 1224
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: " \"StdCmds.OpenAuxDialog('Obx/Rsrc/Controls', 'ObxControls Demo')\"\r\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenDoc('Obx/Mod/Controls')"
+                      body:
+                        - text: ObxControls  sources
+                          attr: 5
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 17
+          bodyPos: 6520
+          bodyLen: 8

@@ -1,0 +1,291 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Docu\\BB-Docu.odc"
+  size: 10256
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 10125
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 9939
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 9853
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                asc: 152400
+                dsc: 25400
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 7
+                bodyPos: 9853
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 9339
+                runListLen: 800
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                flow:
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 3
+                      bodyPos: 521
+                      bodyLen: 108
+                    attr: 0
+                    w: 360000000
+                    h: 158750
+                  - text: Documentation Conventions
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\r\rDocumentation has two major purposes: to communicate how a program's service can be used interactively (user manual) and how the program's service can be used programmatically (developer manual). In BlackBox, services are arranged in subsystems. A subsystem typically consists of several possibly cooperating modules. In the general case, we need three kinds of documentation texts: a user manual, one module interface description per module, and an overview over how the modules may interact with each other, i.e., an introduction to the overall architecture of the subsystem (developer manual).\rA subsystem is represented on the disk as a directory, e.g., directory "
+                    attr: 2
+                  - text: Text
+                    attr: 3
+                  - text: ". In this directory, there is a nested directory called "
+                    attr: 2
+                  - text: Docu
+                    attr: 3
+                  - text: ", e.g. "
+                    attr: 2
+                  - text: Text/Docu
+                    attr: 3
+                  - text: ". This documentation directory may contain the following text documents:\r"
+                    attr: 2
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " a user manual called "
+                    attr: 2
+                  - text: User-Man
+                    attr: 3
+                  - text: "\r"
+                    attr: 2
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " a hypertext map to the documentation, called "
+                    attr: 2
+                  - text: Sys-Map
+                    attr: 3
+                  - text: "\r"
+                    attr: 2
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " a programmer's introduction called "
+                    attr: 2
+                  - text: Dev-Man
+                    attr: 3
+                  - text: "\r"
+                    attr: 2
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " and one module interface description per module, having the module  name without its subsystem prefix, e.g. "
+                    attr: 2
+                  - text: Views
+                    attr: 3
+                  - text: " for module "
+                    attr: 2
+                  - text: TextViews
+                    attr: 3
+                  - text: ".\rNote that all documentation texts which do not directly denote the programmer's reference for a particular module must have a dash (\"-\") in their names, so that the repository browser can distinguish between module documentations and other documentation files.\r\rThe remainder of this text describes the format of a module interface description.\r\rEach module description begins with a module definition. The Component Pascal notation for module definitions is used, which lists all exported items of a module, and only those. A module begins with the keyword "
+                    attr: 2
+                  - text: DEFINITION
+                    attr: 3
+                  - text: " instead of "
+                    attr: 2
+                  - text: MODULE
+                    attr: 3
+                  - text: ", export marks are omitted (except read-only marks), and procedure bodies and the module body are left out as well. A method appears in the corresponding record declaration itself, without the "
+                    attr: 2
+                  - text: PROCEDURE
+                    attr: 3
+                  - text: " keyword.\r\rThe hypothetical module \"Dictionaries\" serves as an example:\r\rDEFINITION Dictionaries;\r\r\tCONST maxElems = 32;\r\r\tTYPE\r\t\tDictionary = POINTER TO LIMITED RECORD\r\t\t\telems-: INTEGER;\r\t\t\t(d: Dictionary) Put (string: ARRAY OF CHAR; OUT key: INTEGER), NEW;\r\t\t\t(d: Dictionary) Get (key: INTEGER; OUT string: ARRAY OF CHAR), NEW\r\t\tEND;\r\r\tVAR someDict: Dictionary;\r\r\tPROCEDURE Init;\r\rEND Dictionaries.\r\r"
+                    attr: 2
+                  - text: "In an extended record, the inherited procedures are not listed, only the new procedures, or the procedures which have changed signatures or where the semantics are specialized so that they need to be clarified. \rA changed signature may be caused by a covariant function result, i.e., the procedure returns a pointer that is an extension of the one returned by the base procedure. Or it may be caused by changed method attributes (final, ABSTRACT, EMPTY, EXTENSIBLE), e.g., an abstract method may have been implemented and made final.\r\rA module definition is followed by a brief description of the abstraction(s) provided by the module."
+                    attr: 3
+                  - text: "\r\rThis module provides a concrete type Dictionary for the manipulation of string dictionaries.\r\r"
+                    attr: 2
+                  - text: "Then the constants of the module are listed, without their values:"
+                    attr: 3
+                  - text: "\r\rCONST "
+                    attr: 2
+                  - text: maxElems
+                    attr: 1
+                  - text: "\rMaximum number of elements in a dictionary.\r\r"
+                    attr: 2
+                  - text: "This is followed by the module's types:"
+                    attr: 3
+                  - text: "\r\rTYPE "
+                    attr: 2
+                  - text: Dictionary
+                    attr: 1
+                  - text: "\rLIMITED\rManages a dictionary of strings, with an integer number as key.\r"
+                    attr: 2
+                  - text: "\rRecord attributes are given in the  second line, as above. Record attributes are either none (final by default), EXTENSIBLE, ABSTRACT, or LIMITED.\r\rIf the type is an extension of another type, this is marked, e.g., as\rDictionary (OtherModule.Dictionary)\r\rThen the record fields are listed:\r"
+                    attr: 3
+                  - text: "\r"
+                    attr: 2
+                  - text: elems
+                    attr: 1
+                  - text: "-: INTEGER\t0 <= elems <= maxElems\rThe number of elements currently in the dictionary.\r\r"
+                    attr: 2
+                  - text: "As in the above example, an invariant over the record field's value may optionally be given.\r\rThen the procedures bound to this type are given:"
+                    attr: 3
+                  - text: "\r\rPROCEDURE (d: Dictionary) "
+                    attr: 2
+                  - text: Put
+                    attr: 1
+                  - text: " (string: ARRAY OF CHAR; OUT key: INTEGER)\rNEW\r\r"
+                    attr: 2
+                  - text: "For each method, it is specified whether this procedure is final (default), extensible, abstract, or empty.\rAn abstract procedure must not be called.\rAn empty procedure must not be called by an extending procedure (i.e., through a super-call of an implementing procedure).\rIn the second line, the method attributes are given, which are either none (final by default), EXTENSIBLE, ABSTRACT, or EMPTY. Before this attribute, NEW is written for newly introduced methods.\r\rAn implement-only method can only be called in its defining module. This module can thus establish the method's preconditions before every call to it that occurs in the module implementation. If the implementation is correct, these preconditions can never be violated, since no other module may perform a call. Thus an implementor can assume that the preconditions hold, and need not test them. Preconditions of implement-only methods are thus not attributed with a trap number; instead, they are marked as \"guaranteed\", meaning that the defining module guarantees them.\r\rAn explanation of the procedure's behavior follows:"
+                    attr: 3
+                  - text: "\r\rPut a string into dictionary "
+                    attr: 2
+                  - text: d
+                    attr: 3
+                  - text: ", and receive "
+                    attr: 2
+                  - text: key
+                    attr: 3
+                  - text: " in return. If the string is already in the dictionary, the same key is returned as when it was inserted first. If the string is not in the dictionary, it is inserted and a value which has not been used before is returned.\r\r"
+                    attr: 2
+                  - text: "After an explanation in plain English, some preconditions for this procedure may be specified. These preconditions are given in a semi-formal notation:"
+                    attr: 3
+                  - text: "\r\rPre\r20\tstring # \"\"\r\r"
+                    attr: 2
+                  - text: "This means that if the precondition is violated (i.e. if string = \"\"), the currently executing command is aborted with exception number 20. Instead of a number, the following exceptions may be specified as well:\r\r invalid index\r type guard check\r\rA second precondition may thus be the following:\r\r"
+                    attr: 3
+                  - text: "invalid index\tstring in d  OR  d.elems < maxElems\r\r"
+                    attr: 2
+                  - text: "In older parts of the documentation, the precondition numbers may also be given after the expression, instead of in front of it. Over time, all documentation should be adapted to the new and better readable style.\r\rAfter the preconditions, some postconditions may be specified:\r"
+                    attr: 3
+                  - text: "\rPost\rstring in d'\r\told key returned\r~(string in d')\r\tstring in d\r\td.elems = d.elems' + 1\r\tnew key returned\r\r"
+                    attr: 2
+                  - text: "This postcondition contains two cases, namely what happens if the string is already contained in d, and what happens if the string is not yet contained in d. The conditions are textually aligned to the left, while the respective conclusions are indented. Occasionally, conditions are nested by further indentations.\r\rTo refer to values before the operation, an expression is followed by an apostrophe if this is necessary for clarity (i.e. if the value may be changed at all). Thus the expression\r\r\td.elems = d.elems' + 1\r\rmeans that the value of d.elems has been incremented by one.\r\rComponent Pascal is generally used as syntax for such expressions, although some liberties are taken, e.g., simple auxiliary procedures that are not described further may be used.\r\rFunction results are generically called \"result\".\r\rThe amount of formalism is kept small. It is attempted to limit formal specifications to few and simple conditions, or to the explanation of particularly subtle situations. It is not intended to specify complete formal semantics of the library, thus the formalism does not replace plain text explanations, examples, or graphical illustrations completely.\r\rHowever, it is felt that checked preconditions in particular are often helpful even in this incomplete and semi-formal way, both for documentation and for debugging purposes."
+                    attr: 3
+                  - text: "\r\rPROCEDURE (d: Dictionary) "
+                    attr: 2
+                  - text: Get
+                    attr: 1
+                  - text: " (key: INTEGER; OUT string: ARRAY OF CHAR)\rNEW\rRetrieve a string from the dictionary, by using "
+                    attr: 2
+                  - text: key
+                    attr: 3
+                  - text: ". If the value is not found, "
+                    attr: 2
+                  - text: string
+                    attr: 3
+                  - text: " is set to the empty string.\r\rPost\rkey in d\r\treturn corresponding string\r~(key in d)\r\treturn \"\"\r\r"
+                    attr: 2
+                  - text: "Procedures which are inherited through type extension are usually not listed here. Exceptions are procedures which have extended their semantics. Semantic extensions are restricted to having weaker preconditions or stronger postconditions.\r\rAfter all types, the global variables are listed:"
+                    attr: 3
+                  - text: "\r\rVAR "
+                    attr: 2
+                  - text: someDict
+                    attr: 1
+                  - text: ": Dictionary\tsomeDict # NIL\rThis variable contains a dictionary.\r\r"
+                    attr: 2
+                  - text: "The optional invariant is established by the module body.\r\rFinally, the procedures exported by the module are listed:"
+                    attr: 3
+                  - text: "\r\rPROCEDURE "
+                    attr: 2
+                  - text: Init
+                    attr: 1
+                  - text: " (d: Dictionary)\rInitializes a dictionary. Any dictionary may be allocated once only.\r\rPre\r20\td not yet initialized\r\r"
+                    attr: 2
+                  - text: "In BlackBox, all procedures whose names start with \"Init\" may be called only once per object, i.e., they are \"snappy\".\r"
+                    attr: 3
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 11
+          bodyPos: 10221
+          bodyLen: 8

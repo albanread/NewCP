@@ -1,0 +1,313 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Dev\\Docu\\Dependencies.odc"
+  size: 8802
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 8671
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 8485
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 8399
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: "*"
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 10
+                bodyPos: 8524
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 8010
+                runListLen: 1031
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [4]
+                    font: Arial
+                    size: 101600
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [5]
+                    font: Arial
+                    size: 101600
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: DevDependencies
+                    attr: 0
+                  - text: "\r\rDEFINITION DevDependencies;\r\r\tIMPORT Dialog;\r\r\tPROCEDURE ArrangeClick;\r\tPROCEDURE CollapseAllClick;\r\tPROCEDURE CollapseClick;\r\tPROCEDURE CreateTool;\r\tPROCEDURE CreateToolClick;\r\tPROCEDURE Deposit;\r\tPROCEDURE ExpandAllClick;\r\tPROCEDURE ExpandClick;\r\tPROCEDURE HideClick;\r\tPROCEDURE ModsGuard (VAR par: Dialog.Par);\r\tPROCEDURE NewAnalysisClick;\r\tPROCEDURE SelGuard (VAR par: Dialog.Par);\r\tPROCEDURE ShowAllClick;\r\tPROCEDURE ShowBasicGuard (VAR par: Dialog.Par);\r\tPROCEDURE SubsGuard (VAR par: Dialog.Par);\r\tPROCEDURE ToggleBasicSystemsClick;\r\rEND DevDependencies.\r\r\rThis tool analyzes the code files of a given list of modules. The dependencies from the given modules to other modules are displayed in a graph. By default all selected modules are displayed, but all other modules are only displayed as subsystems. Clicking with the right mouse button displays a context menu. This menu contains several commands to manipulate the view of the graph.\r\rA subsystem can be expanded by double-clicking on it. In the same way, all modules belonging to a particular subsystem can be collapsed into a subsystem by double-clicking on any of the modules in the subsystem.\r\rBy clicking on a node in the graph this node gets selected. It is possible to select more than one node by "
+                    attr: 1
+                  - text: Ctrlclicking
+                    attr: 2
+                  - text: " on other nodes or by \"drawing\" a selection square around some nodes. After nodes have been selected they can be rearranged using drag and drop with the mouse or using the arrow keys on the keyboard. "
+                    attr: 1
+                  - text: Ctrl-A
+                    attr: 2
+                  - text: " can be used to select all nodes.\r\rTo avoid cluttering of the graph, the basic BlackBox subsystems are hidden by default. It is however possible to toggle an option to show these modules.\r\rThere are several implicit dependencies in the system (e.g., via "
+                    attr: 1
+                  - text: Dialog.Call
+                    attr: 2
+                  - text: "). These dependencies cannot be found using the code files. To be able to incorporate these dependencies, at least in a static way, they can be specified in the string resources for the "
+                    attr: 1
+                  - text: Dev
+                    attr: 2
+                  - text: " subsystem. The syntax for specifying implicit dependencies is:\r\rImplicit.<modName>\t<modname>{, <modname>}\r\r"
+                    attr: 1
+                  - text: DevDependencies
+                    attr: 2
+                  - text: " reads this resource and adds these dependencies to the graph. Such dependencies are displayed as gray arrows in the graph.\r\rIt is also possible to create a tool document using the command "
+                    attr: 1
+                  - text: CreateTool
+                    attr: 2
+                  - text: ". This creates a tool document which contains compiling, unloading, linking and packing commands for the given modules. The compiling and unloading commands are only created for the currently expanded subsystems. The linking command includes the standard BlackBox icons, and the packing command always includes all modules independent of which modules are currently expanded or hidden.\r\rIn the created tool document all the modules, which are only included due to implicit dependencies are written with gray color.\r\rAt the end of the tool document there is a list of all the root modules. These are the modules, which are not imported from any other modules, i.e. the top level modules.\r\rTypical menu:\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1152000 }
+                        - { stop: 1404000 }
+                        - { stop: 3600000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r"
+                    attr: 1
+                  - text: MENU
+                    attr: 3
+                  - text: "\r"
+                    attr: 1
+                  - text: "\t\"&Dependencies\"\t\"\"\t\"DevDependencies.Deposit;StdCmds.Open\"\t\"TextCmds.SelectionGuard\"\r\t\"&Create Tool\"\t\"\"\t\"DevDependencies.CreateTool\"\t\"TextCmds.SelectionGuard\"\r"
+                    attr: 4
+                  - text: END
+                    attr: 3
+                  - text: "\r\rBy clicking on the right mouse button a context menu is displayed. Typically it has the following entries:"
+                    attr: 1
+                  - text: "\r"
+                    attr: 3
+                  - text: "\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 5
+                  - text: MENU
+                    attr: 3
+                  - text: " \"*\" (\"DevDependencies.View\")"
+                    attr: 1
+                  - text: "\r\t\"Expand\"\t\"\"\t\"DevDependencies.ExpandClick\"\t\"DevDependencies.SubsGuard\"\r\t\"Collapse\"\t\"\"\t\"DevDependencies.CollapseClick\"\t\"DevDependencies.ModsGuard\"\r\t\"New Analysis\"\t\"\"\t\"DevDependencies.NewAnalysisClick\"\t\"DevDependencies.ModsGuard\"\r\t\"Hide\"\t\"\"\t\"DevDependencies.HideClick\"\t\"DevDependencies.SelGuard\"\r\tSEPARATOR\r\t\"Show All Items\"\t\"\"\t\"DevDependencies.ShowAllClick\"\t\"\"\r\t\"Show Basic System\"\t\"\"\t\"DevDependencies.ToggleBasicSystemsClick\"\t\"DevDependencies.ShowBasicGuard\"\r\t\"Expand All\"\t\"\"\t\"DevDependencies.ExpandAllClick\"\t\"\"\r\t\"Collapse All\"\t\"\"\t\"DevDependencies.CollapseAllClick\"\t\"\"\r\t\"Arrange Items\"\t\"\"\t\"DevDependencies.ArrangeClick\"\t\"\"\r\tSEPARATOR\r\t\"Create tool...\"\t\"\"\t\"DevDependencies.CreateToolClick\"\t\"\"\r\tSEPARATOR\r\t\"P&roperties...\"\t\"\"\t\"StdCmds.ShowProp\"\t\"StdCmds.ShowPropGuard\"\r"
+                    attr: 4
+                  - text: END
+                    attr: 3
+                  - text: "\r\rThe item called "
+                    attr: 1
+                  - text: Properties
+                    attr: 2
+                  - text: " in this menu opens the standard font dialog and lets the user select a font for the view. The typeface and style of the chosen font effects the text displaying the names of the modules.The size of the font effects the text and the width of the lines and the arrows.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Deposit
+                    attr: 3
+                  - text: "\rAnalyzes the dependencies for each module in the selected list of modules. Then a view, displaying a graph of the dependencies, is created and deposited.\r\rPROCEDURE "
+                    attr: 1
+                  - text: CreateTool
+                    attr: 3
+                  - text: "\rAnalyzes the dependencies for each module in the selected list of modules. Then a tool document is created for the given modules. The tool document contains compiling, unloading, linking and packing commands. The compiling and unloading commands are only created for the currently expanded modules. The linking command includes the standard BlackBox icons and the packing command always includes all modules independent of which modules are currently expanded or hidden.\r\r\rThe following commands are only used for manipulating the view (ordered the way they appear in the menu above):\r\rPROCEDURE "
+                    attr: 1
+                  - text: CollapseClick
+                    attr: 3
+                  - text: "\rCalled when "
+                    attr: 1
+                  - text: Collapse
+                    attr: 2
+                  - text: " is chosen from the menu. This procedure collapses the the selected modules in the graph.\r\rPROCEDURE "
+                    attr: 1
+                  - text: ExpandClick
+                    attr: 3
+                  - text: "\rCalled when "
+                    attr: 1
+                  - text: Expand
+                    attr: 2
+                  - text: " is chosen from the menu. This procedure expands the the selected subsystems in the graph.\r\rPROCEDURE "
+                    attr: 1
+                  - text: "NewAnalysisClick\r"
+                    attr: 3
+                  - text: "Called when "
+                    attr: 1
+                  - text: New Analysis
+                    attr: 2
+                  - text: " is chosen from the menu. Starts a new analysis with the selected node as root, i.e. it creates a subgraph of the original graph.\r\rPROCEDURE "
+                    attr: 1
+                  - text: HideClick
+                    attr: 3
+                  - text: "\rCalled when "
+                    attr: 1
+                  - text: Hide
+                    attr: 2
+                  - text: " is chosen from the menu. This procedure hides the selected nodes in the graph.\r\rPROCEDURE "
+                    attr: 1
+                  - text: ShowAllClick
+                    attr: 3
+                  - text: "\rCalled when "
+                    attr: 1
+                  - text: Show All Items
+                    attr: 2
+                  - text: " is chosen from the menu. This procedure makes sure that all nodes in the graph are visible.\r\rPROCEDURE "
+                    attr: 1
+                  - text: ToggleBasicSystemsClick
+                    attr: 3
+                  - text: "\rCalled when "
+                    attr: 1
+                  - text: Show Basic System
+                    attr: 2
+                  - text: " is chosen from the menu. This procedure shows or hides modules belonging to the basic BlackBox system.\r\rPROCEDURE "
+                    attr: 1
+                  - text: ExpandAllClick
+                    attr: 3
+                  - text: "\rCalled when "
+                    attr: 1
+                  - text: Expand All
+                    attr: 2
+                  - text: " is chosen from the menu. This procedure expands all subsystems to modules.\r\rPROCEDURE "
+                    attr: 1
+                  - text: CollapseAllClick
+                    attr: 3
+                  - text: "\rCalled when "
+                    attr: 1
+                  - text: Collapse All
+                    attr: 2
+                  - text: " is chosen from the menu. This procedure collapses all modules into subsystems.\r\rPROCEDURE "
+                    attr: 1
+                  - text: ArrangeClick
+                    attr: 3
+                  - text: "\rCalled when "
+                    attr: 1
+                  - text: Arrange Items
+                    attr: 2
+                  - text: " is chosen from the menu. This procedure arranges the nodes in the graph in a structured way, with the modules from the original module list at the top.\r\rPROCEDURE "
+                    attr: 1
+                  - text: CreateToolClick
+                    attr: 3
+                  - text: "\rCalled when "
+                    attr: 1
+                  - text: Create tool
+                    attr: 2
+                  - text: " is chosen from the menu. Calls "
+                    attr: 1
+                  - text: CreateTool
+                    attr: 2
+                  - text: ".\r\rPROCEDURE "
+                    attr: 1
+                  - text: SelGuard
+                    attr: 3
+                  - text: " (VAR par: Dialog.Par)\rGuard that checks if any nodes in the graph are selected.\r\rPROCEDURE "
+                    attr: 1
+                  - text: ModsGuard
+                    attr: 3
+                  - text: " (VAR par: Dialog.Par)\rGuard that checks if any modules in the graph are selected.\r\rPROCEDURE "
+                    attr: 1
+                  - text: SubsGuard
+                    attr: 3
+                  - text: " (VAR par: Dialog.Par)\rGuard that checks if any subsystems in the graph are selected.\r\rPROCEDURE "
+                    attr: 1
+                  - text: ShowBasicGuard
+                    attr: 3
+                  - text: " (VAR par: Dialog.Par)\rGuard for the "
+                    attr: 1
+                  - text: Show Basic System
+                    attr: 2
+                  - text: " menu item."
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 14
+          bodyPos: 8767
+          bodyLen: 8

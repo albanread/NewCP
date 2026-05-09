@@ -1,0 +1,432 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Sql\\Mod\\Odbc3.odc"
+  size: 30315
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 30184
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 29998
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 29912
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 24
+                bodyPos: 30033
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 29519
+                runListLen: 3152
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE SqlOdbc3;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- 20050714, mf, Check, case WinSql.SQL_ERROR:\r\t\t\tIF (d # NIL) & d.showErr THEN\r\t\tinstead of\r\t\t\tIF ((d # NIL) & d.showErr) & (state # \"01004\") THEN\r\t- 20150519, center #49, Unicode fixes and deadlock removal\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r"
+                          attr: 0
+                        - text: "\t- Should rowcount and/or SetMode be lifted into the SqlDB interface?\r\t- If ODBC returns a string with undefined length, how should this be handled?\r\t- Can the import of HostWindows be eliminated?\r\t- What should be done if SQLExtendedFetch doesn't support the necessary options?\r\t- t.ReadName/ReadBlob/ReadType/ReadVarString have OUT parameters that prevent string recycling.\r\t  What's better: leave it as it is, and thus give the garbage collector more work to do; or use VAR\r\t  parameters for optimization, with the danger that a variable taken out of an interactor may change unexpectedly? *)\r\t- For async queries running in parallel, do we need a separate connection for every table,\r\t  to avoid reentrance problems?\r"
+                          attr: 1
+                        - text: "\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT "
+                    attr: 0
+                  - text: SYSTEM
+                    attr: 3
+                  - text: ", WinApi, WinSql, Services, Dates, Dialog, Log, SqlDrivers, HostWindows;\r\r\t"
+                    attr: 0
+                  - text: "(* ODBC functions used:\r\t\tcore:\r\t\t\tSQLConnect\r\t\t\tSQLDescribeCol\r\t\t\tSQLDisconnect\r\t\t\tSQLExecute\r\t\t\tSQLNumResultCols\r\t\t\tSQLPrepare\r\t\t\tSQLRowCount\r\t\tlevel 1:\r\t\t\tSQLBindParameter\t(* for blobs *)\r\t\t\tSQLGetData\r\t\t\tSQLGetInfo\r\t\tlevel 2:\r\t\t\t-\r\t\tlevel 3:\r\t\t\tSQLAllocHandle\r\t\t\tSQLEndTran\r\t\t\tSQLFetchScroll\r\t\t\tSQLFreeHandle\r\t\t\tSQLGetDiagRec\r\t\t\tSQLGetStmtAttr\r\t\t\tSQLSetConnectAttr\r\t\t\tSQLSetEnvAttr\r\t\t\tSQLSetStmtAttr\r\t*)"
+                    attr: 1
+                  - text: "\r\r\t"
+                    attr: 0
+                  - text: "(* The major problem with ODBC is that many of its functions, or many uses of them, are optional.\r\t\tThis means that one can never rely on a function to be really implemented by the current ODBC driver.\r\t\tAs a result, one often has to try the best approach first, then back off if necessary to the next best, etc.\r\t\tThis is cumbersome and difficult to test exhaustively. *)"
+                    attr: 1
+                  - text: "\r\r\tCONST\r"
+                    attr: 0
+                  - text: "\t\t(* results for driver open and methods *)\r"
+                    attr: 1
+                  - text: "\t\toutOfTables = 5;\r\t\tnotExecutable = 6;\r\t\tcannotOpenDB = 7;\r\t\twrongIdentification = 8;\r\t\ttooManyBlobs = 9;\r\r"
+                    attr: 0
+                  - text: "\t\t(* results  as in SqlDB, 0 = ok *)"
+                    attr: 1
+                  - text: "\r\t\tconverted = 1;\r\t\ttruncated = 2;\r\t\toverflow = 3;\r\t\tincompatible = 4;\r\t\tnoData = 5;\r\t\t\r\t\t"
+                    attr: 0
+                  - text: "(* internal result codes *)"
+                    attr: 1
+                  - text: "\r\t\tinvalidTransaction = 10;\r\t\tmoreData = 11;"
+                    attr: 0
+                  - text: "\t(* like truncated but remaining data needs to be read in order to avoid a deadlock *)"
+                    attr: 1
+                  - text: "\r\r"
+                    attr: 0
+                  - text: "\t\t(* driver states *)\r"
+                    attr: 1
+                  - text: "\t\tconnecting = 1;\r\t\tconnected = 2;\r\t\tpreparing = 3;\r\t\texecuting = 4;\r\t\texecuted = 5;\r\t\tclosed = 6;\r\r\tTYPE\r\t\tDriver = POINTER TO RECORD (SqlDrivers.Driver)\r\t\t\tstate: INTEGER;"
+                    attr: 0
+                  - text: "\t(* IN {connecting, connected, executing, closed} *)"
+                    attr: 1
+                  - text: "\r\t\t\tshowErr: BOOLEAN;\r\t\t\tactStmt: WinSql.HSTMT;\r\t\t\tactRes: INTEGER;\t"
+                    attr: 0
+                  - text: "(* result of async operation *)"
+                    attr: 1
+                  - text: "\r\t\t\tdbc: WinSql.HDBC;\r\t\t\tdirections: SET\t"
+                    attr: 0
+                  - text: "(* supported Fetch directions *)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\tTable = POINTER TO RECORD (SqlDrivers.Table)\r\t\t\trows, columns: INTEGER;\r\t\t\tactRow, actCol: INTEGER;\r\t\t\tstmt: WinSql.HSTMT;\r\t\t\tdriver: Driver\r\t\tEND;\r\r\r\tVAR\r\t\t"
+                    attr: 0
+                  - text: debug
+                    attr: 3
+                  - text: "*: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(* if TRUE, show more information about what's happening *)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: autoCommit
+                    attr: 3
+                  - text: "*: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(* by default, automatic commit is disabled *)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: rowcount
+                    attr: 3
+                  - text: "*: INTEGER;\t"
+                    attr: 0
+                  - text: "(* number of rows affected in last update, insert, delete *)"
+                    attr: 1
+                  - text: "\r\t\tenvironment: WinSql.HENV;\t"
+                    attr: 0
+                  - text: "(* ODBC environment, in which everything happens *)"
+                    attr: 1
+                  - text: "\r\t\tnumConnections: INTEGER;\t"
+                    attr: 0
+                  - text: "(* free the environment, if the number of connections goes to zero *)"
+                    attr: 1
+                  - text: "\r\r\r\t"
+                    attr: 0
+                  - text: "(* miscellaneous *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE Check (ret: INTEGER; d: Driver; stmt: WinSql.HSTMT; OUT res: INTEGER);\r\t\tVAR err: INTEGER; len: SHORTINT; state, msg: ARRAY 256 OF CHAR;\r\tBEGIN\r\t\tCASE ret OF\r\t\t| WinSql.SQL_SUCCESS:\r\t\t\tres := 0\r\t\t| WinSql.SQL_SUCCESS_WITH_INFO:\r\t\t\tres := WinSql.SQLGetDiagRecW(WinSql.SQL_HANDLE_STMT, stmt, 1, state, err, msg, LEN(msg), len);\r\t\t\tIF (res = WinSql.SQL_NO_DATA) OR (res = WinSql.SQL_INVALID_HANDLE) OR (msg = \"\") THEN\r\t\t\t\tIF d # NIL THEN \r\t\t\t\t\tres := WinSql.SQLGetDiagRecW(WinSql.SQL_HANDLE_DBC, d.dbc, 1, state, err, msg, LEN(msg), len);\r\t\t\t\t\tIF (res = WinSql.SQL_NO_DATA) OR (msg = \"\") THEN\r\t\t\t\t\t\tres := WinSql.SQLGetDiagRecW(WinSql.SQL_HANDLE_ENV, environment,\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t1, state, err, msg, LEN(msg), len)\r\t\t\t\t\tEND\r\t\t\t\tELSE\r\t\t\t\t\tres := WinSql.SQLGetDiagRecW(WinSql.SQL_HANDLE_ENV, environment,\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t1, state, err, msg, LEN(msg), len)\r\t\t\t\tEND;\r\t\t\tEND;\r\t\t\tIF debug THEN Log.String(msg$); Log.Ln END;\r\t\t\tIF state = \"01004\" THEN res := moreData ELSE res := 0 END\r\t\t| WinSql.SQL_ERROR:\r\t\t\tres := WinSql.SQLGetDiagRecW(WinSql.SQL_HANDLE_STMT, stmt, 1, state, err, msg, LEN(msg), len);\r\t\t\tIF (res = WinSql.SQL_NO_DATA) OR (res = WinSql.SQL_INVALID_HANDLE) OR (msg = \"\") THEN\r\t\t\t\tIF d # NIL THEN \r\t\t\t\t\tres := WinSql.SQLGetDiagRecW(WinSql.SQL_HANDLE_DBC, d.dbc, 1, state, err, msg, LEN(msg), len);\r\t\t\t\t\tIF (res = WinSql.SQL_NO_DATA) OR (msg = \"\") THEN\r\t\t\t\t\t\tres := WinSql.SQLGetDiagRecW(WinSql.SQL_HANDLE_ENV, environment,\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t1, state, err, msg, LEN(msg), len)\r\t\t\t\t\tEND\r\t\t\t\tELSE\r\t\t\t\t\tres := WinSql.SQLGetDiagRecW(WinSql.SQL_HANDLE_ENV, environment,\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t1, state, err, msg, LEN(msg), len)\r\t\t\t\tEND;\r\t\t\tEND;\r\t\t\tIF (d # NIL) & d.showErr THEN\r\t\t\t\tres := WinApi.MessageBoxW(0, msg, \"ODBC Error\", {})\r\t\t\tELSIF debug THEN Log.String(msg$); Log.Ln\r\t\t\tEND;\t\t\t\r\t\t\tIF state = \"01004\" THEN res := truncated\r\t\t\tELSIF state = \"28000\" THEN res := wrongIdentification\r\t\t\tELSIF state = \"07006\" THEN res := incompatible\r\t\t\tELSIF state = \"22003\" THEN res := overflow\r\t\t\tELSIF state = \"22005\" THEN res := overflow\r\t\t\tELSIF state = \"22008\" THEN res := overflow\r\t\t\tELSIF state = \"25000\" THEN res := invalidTransaction\r\t\t\tELSE res := noData\t"
+                    attr: 0
+                  - text: "(* default error *)"
+                    attr: 1
+                  - text: "\r\t\t\tEND\r\t\t| WinSql.SQL_NO_DATA:\r\t\t\tres := noData\r\t\t| WinSql.SQL_INVALID_HANDLE:\r\t\t\t"
+                    attr: 0
+                  - text: HALT
+                    attr: 3
+                  - text: "(100)\r\t\t| WinSql.SQL_STILL_EXECUTING:\r\t\t\t "
+                    attr: 0
+                  - text: HALT
+                    attr: 3
+                  - text: "(101)\r\t\t| WinSql.SQL_NEED_DATA:\r\t\t\t"
+                    attr: 0
+                  - text: HALT
+                    attr: 3
+                  - text: "(102)\r\t\tEND\r\tEND Check;\r\r\r\tPROCEDURE GetTableSize (t: Table; VAR n: INTEGER);\r\t\tVAR res: INTEGER;\r\tBEGIN\r\t\tres := -1;\r\t\tIF t.driver.directions * (WinSql.SQL_FD_FETCH_LAST + WinSql.SQL_FD_FETCH_ABSOLUTE) # {} THEN\r\t\t\tIF t.driver.directions * WinSql.SQL_FD_FETCH_LAST # {} THEN\r\t\t\t\tCheck(WinSql.SQLFetchScroll(t.stmt, WinSql.SQL_FETCH_LAST, 0), NIL, t.stmt, res);\r\t\t\tELSE\r\t\t\t\tCheck(WinSql.SQLFetchScroll(t.stmt, WinSql.SQL_FETCH_ABSOLUTE, -1), NIL, t.stmt, res);\r\t\t\tEND;\r\t\t\tIF res = noData THEN \r\t\t\t\tn := 0; res := 0;\r\t\t\tELSIF res = 0 THEN\r\t\t\t\tCheck(WinSql.SQLGetStmtAttr(t.stmt, WinSql.SQL_ROW_NUMBER, SYSTEM.ADR(n),  \r\t\t\t\t\t\t\t\t\t\t\t\t\t\tWinSql.SQL_IS_INTEGER, NIL), NIL, t.stmt, res) ;\r\t\t\t\t(* Double check the rowcount if it is said to be zero or one.  *)\t\t\t\t\t\t\t\t\t\t\t\t\t\t\r\t\t\t\tIF (n = 0) OR (n = 1) THEN\r\t\t\t\t\tn := 0;\r\t\t\t\t\tCheck(WinSql.SQLFetchScroll(t.stmt, WinSql.SQL_FETCH_FIRST, 0), NIL, t.stmt, res);\r\t\t\t\t\tWHILE res = 0 DO\r\t\t\t\t\t\tINC(n);\r\t\t\t\t\t\tCheck(WinSql.SQLFetchScroll(t.stmt, WinSql.SQL_FETCH_NEXT, 0), NIL, t.stmt, res);\r\t\t\t\t\tEND\r\t\t\t\tEND;\r\t\t\t\tres := 0;\r\t\t\tEND;\r\t\t\tt.actRow := -2"
+                    attr: 0
+                  - text: "\t(* undefined *)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\t\tIF (res # 0) & (t.driver.directions * WinSql.SQL_FD_FETCH_FIRST # {}) THEN\r\t\t\tCheck(WinSql.SQLFetchScroll(t.stmt, WinSql.SQL_FETCH_FIRST, 0), NIL, t.stmt, res);\r\t\t\tn := 0;\r\t\t\tWHILE res = 0 DO\r\t\t\t\tINC(n);\r\t\t\t\tCheck(WinSql.SQLFetchScroll(t.stmt, WinSql.SQL_FETCH_NEXT, 0), NIL, t.stmt, res)\r\t\t\tEND;\r\t\t\tIF res = noData THEN res := 0 END;\r\t\t\tt.actRow := -2"
+                    attr: 0
+                  - text: "\t(* undefined *)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\t\tIF res # 0 THEN\r\t\t\tCheck(WinSql.SQLRowCount(t.stmt, n), NIL, t.stmt, res);\r\t\t\tIF (res # 0) OR (n < 0) THEN n := MAX(INTEGER) END\t"
+                    attr: 0
+                  - text: "(* row count is not known *)"
+                    attr: 1
+                  - text: "\r\t\tEND\r\tEND GetTableSize;\r\r\tPROCEDURE SetPos (t: Table; row, col: INTEGER; OUT res: INTEGER);\r\tBEGIN\r\t\tres := 0;\r\t\tIF (row # t.actRow) OR (col <= t.actCol) THEN\r\t\t\tIF row = t.actRow + 1 THEN\r\t\t\t\tCheck(WinSql.SQLFetchScroll(t.stmt, WinSql.SQL_FETCH_NEXT, 0), NIL, t.stmt, res);\r\t\t\t\tIF res = 0 THEN INC(t.actRow) END\r\t\t\tELSIF (row = 0) & (t.driver.directions * WinSql.SQL_FD_FETCH_FIRST # {}) THEN\r\t\t\t\tCheck(WinSql.SQLFetchScroll(t.stmt, WinSql.SQL_FETCH_FIRST, 0), NIL, t.stmt, res);\r\t\t\t\tIF res = 0 THEN t.actRow := 0 END\r\t\t\tELSIF t.driver.directions * WinSql.SQL_FD_FETCH_ABSOLUTE # {} THEN\r\t\t\t\tCheck(WinSql.SQLFetchScroll(t.stmt, WinSql.SQL_FETCH_ABSOLUTE, row + 1), NIL, t.stmt, res);\r\t\t\t\tIF res = 0 THEN t.actRow := row END\r\t\t\tELSIF t.driver.directions * WinSql.SQL_FD_FETCH_RELATIVE # {} THEN\r\t\t\t\tCheck(WinSql.SQLFetchScroll(t.stmt, WinSql.SQL_FETCH_RELATIVE, row - t.actRow),\r\t\t\t\t\t\tNIL, t.stmt, res);\r\t\t\t\tIF res = 0 THEN t.actRow := row END\r\t\t\tELSIF row <= t.actRow THEN\r\t\t\t\tIF (row > t.actRow DIV 2) & (t.driver.directions * WinSql.SQL_FD_FETCH_PRIOR # {}) THEN\r\t\t\t\t\tREPEAT\r\t\t\t\t\t\tCheck(WinSql.SQLFetchScroll(t.stmt, WinSql.SQL_FETCH_PRIOR, 0), NIL, t.stmt, res);\r\t\t\t\t\t\tIF res = 0 THEN DEC(t.actRow) END\r\t\t\t\t\tUNTIL (t.actRow <= row) OR (res # 0)\r\t\t\t\tELSE\r\t\t\t\t\tCheck(WinSql.SQLFetchScroll(t.stmt, WinSql.SQL_FETCH_FIRST, 0), NIL, t.stmt, res);\r\t\t\t\t\tIF res = 0 THEN t.actRow := 0 END\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tWHILE (t.actRow < row) & (res = 0) DO\r\t\t\t\tCheck(WinSql.SQLFetchScroll(t.stmt, WinSql.SQL_FETCH_NEXT, 0), NIL, t.stmt, res);\r\t\t\t\tIF res = 0 THEN INC(t.actRow) END\r\t\t\tEND\r\t\tEND;"
+                    attr: 0
+                  - text: "\r"
+                    attr: 3
+                  - text: "\t\tIF res = 0 THEN t.actCol := col ELSE res := noData END\r\tEND SetPos;\r\r\t"
+                    attr: 0
+                  - text: "(* Driver *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (d: Driver) Ready (): BOOLEAN;\r\t\tVAR res: INTEGER;\r\tBEGIN\r\t\tIF d.state = preparing THEN\r\t\t\td.actRes := WinSql.SQLPrepareW(d.actStmt, \"\", WinSql.SQL_NTS);\r\t\t\tIF d.actRes = WinSql.SQL_SUCCESS THEN\r\t\t\t\td.actRes := WinSql.SQLExecute(d.actStmt); d.state := executing\r\t\t\tELSIF d.actRes = WinSql.SQL_SUCCESS_WITH_INFO THEN\r\t\t\t\tCheck(d.actRes, d, d.actStmt, res);\r\t\t\t\td.actRes := WinSql.SQLExecute(d.actStmt); d.state := executing\r\t\t\tEND;\r\t\t\tIF d.actRes # WinSql.SQL_STILL_EXECUTING THEN d.state := executed END\r\t\tELSIF d.state = executing THEN\r\t\t\td.actRes := WinSql.SQLExecute(d.actStmt);\r\t\t\tIF d.actRes # WinSql.SQL_STILL_EXECUTING THEN d.state := executed END\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " d.state IN {connecting, connected, executed}\r\tEND Ready;\r\r\tPROCEDURE (d: Driver) EndOpen (OUT res: INTEGER);\r\tBEGIN\r\t\td.state := connected; res := 0\r\tEND EndOpen;\r\r\tPROCEDURE (d: Driver) BeginExec (IN statement: ARRAY OF CHAR; data: SqlDrivers.Blob;\r\t\t\t\t\t\t\t\t\t\t\t\t\tasync, showErr: BOOLEAN; OUT res: INTEGER);\r\t"
+                    attr: 0
+                  - text: "(* Pre: statement # \"\"\t20 *)"
+                    attr: 1
+                  - text: "\r\t"
+                    attr: 0
+                  - text: "(* Post: res = 0 <=> execution has started and should be completed later with EndExec *)"
+                    attr: 1
+                  - text: "\r\t\tVAR stmt: WinSql.HSTMT; r: INTEGER; p: SHORTINT;\r\tBEGIN\r\t\tIF debug THEN Log.String(statement); Log.Ln END;\r\t\tASSERT(statement # \"\", 20); ASSERT(d.state = connected, 21);\r\t\td.showErr := showErr;\r\t\tres := WinSql.SQLAllocHandle(WinSql.SQL_HANDLE_STMT, d.dbc, stmt);\r\t\tIF res # WinSql.SQL_SUCCESS THEN\r\t\t\tServices.Collect; res := WinSql.SQLAllocHandle(WinSql.SQL_HANDLE_STMT, d.dbc, stmt)\r\t\tEND;\r\t\tCheck(res, d, 0, res);\r\t\tIF res = 0 THEN\r\t\t\tCheck(WinSql.SQLSetStmtAttr(stmt, WinSql.SQL_CURSOR_TYPE, WinSql.SQL_CURSOR_STATIC, 0),\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tNIL, stmt, res);\r\t\t\tp :=1;\r\t\t\tWHILE data # NIL DO\t"
+                    attr: 0
+                  - text: "(* handle blobs *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tCheck(WinSql.SQLBindParameter(stmt, SHORT(p), WinSql.SQL_PARAM_INPUT, WinSql.SQL_C_BINARY,\r\t\t\t\t\t\t\tWinSql.SQL_LONGVARBINARY, 0, 0, SYSTEM.ADR(data.data^), data.len, data.len), d, stmt, res);\r\t\t\t\tIF res # 0 THEN\r\t\t\t\t\tCheck(WinSql.SQLFreeHandle(WinSql.SQL_HANDLE_STMT, stmt), NIL, stmt, r);\r\t\t\t\t\tres := tooManyBlobs; "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: "\r\t\t\t\tEND;\r\t\t\t\tdata := data.next; INC(p)\r\t\t\tEND;\r\t\t\t"
+                    attr: 0
+                  - text: "(*  Asynchronous mode does not work well. It has been disabled in this version: *)"
+                    attr: 3
+                  - text: "\r(*\t\t\tIF async THEN\r\t\t\t\tCheck(WinSql.SQLSetStmtAttr(stmt, WinSql.SQL_ASYNC_ENABLE, WinSql.SQL_ASYNC_ENABLE_ON,\r\t\t\t\t\t\t\t\t\t\t\t\t\t\tWinSql.SQL_IS_INTEGER), NIL, stmt, r)\r\t\t\tEND;*)\r\t\t\td.actStmt := stmt;\r\t\t\td.actRes := WinSql.SQLPrepareW(stmt, statement, WinSql.SQL_NTS);\r\t\t\tIF d.actRes = WinSql.SQL_STILL_EXECUTING THEN\r\t\t\t\td.state := preparing; res := 0\r\t\t\tELSE\r\t\t\t\tCheck(d.actRes, d, stmt, res);\r\t\t\t\tIF res = 0 THEN\r\t\t\t\t\td.actRes := WinSql.SQLExecute(stmt);\r\t\t\t\t\tIF d.actRes = WinSql.SQL_STILL_EXECUTING THEN\r\t\t\t\t\t\td.state := executing; res := 0\r\t\t\t\t\tELSE\r\t\t\t\t\t\tCheck(d.actRes, d, stmt, res);\r\t\t\t\t\t\tIF res = 0 THEN d.state := executed END\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tIF res # 0 THEN\t"
+                    attr: 0
+                  - text: "(* execution failed *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tCheck(WinSql.SQLFreeHandle(WinSql.SQL_HANDLE_STMT, stmt), NIL, stmt, r);\r\t\t\t\tres := notExecutable\r\t\t\tEND\r\t\tELSE\t"
+                    attr: 0
+                  - text: "(* no workspace available *)"
+                    attr: 1
+                  - text: "\r\t\t\tres := outOfTables\r\t\tEND\r\tEND BeginExec;\r\r\tPROCEDURE (d: Driver) EndExec (VAR t: SqlDrivers.Table; OUT rows, columns, res: INTEGER);\r\t"
+                    attr: 0
+                  - text: "(* Pre: execution must have been started successfully with BeginExec\t20 *)"
+                    attr: 1
+                  - text: "\r\t"
+                    attr: 0
+                  - text: "(* Post: res = 0  <=>  t # NIL & res = 0 *)"
+                    attr: 1
+                  - text: "\r\t\tVAR h: Table; cols: SHORTINT;\r\tBEGIN\r\t\tASSERT(d.state # connected, 20); ASSERT(d.state = executed, 21);\r\t\td.state := connected;\r\t\tCheck(d.actRes, d, d.actStmt, res);\r\t\tIF res = 0 THEN\r\t\t\tCheck(WinSql.SQLNumResultCols(d.actStmt, cols), d, d.actStmt, res);\r\t\t\tIF (res = 0) & (cols > 0) THEN\t"
+                    attr: 0
+                  - text: "(* legal statement returning a result set *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tNEW(h); h.Init(d); h.driver := d;\r\t\t\t\th.columns := cols; h.actRow := -1;\r\t\t\t\t"
+                    attr: 0
+                  - text: "(* Asynchronous mode does not work well. It has been disabled in this version: *)"
+                    attr: 3
+                  - text: "\r(*\t\t\t\tCheck(WinSql.SQLSetStmtAttr(d.actStmt, WinSql.SQL_ASYNC_ENABLE, WinSql.SQL_ASYNC_ENABLE_OFF, 0),\r\t\t\t\t\t\tNIL, d.actStmt, res);*)\r\t\t\t\th.stmt := d.actStmt; \r\t\t\t\tGetTableSize(h, h.rows);\r\t\t\t\tt := h; columns := h.columns; rows := h.rows; res := 0\r\t\t\tELSE\r\t\t\t\tCheck(WinSql.SQLRowCount(d.actStmt, rowcount), NIL, d.actStmt, res);\r\t\t\t\tCheck(WinSql.SQLFreeHandle(WinSql.SQL_HANDLE_STMT, d.actStmt), NIL, d.actStmt, res);\r\t\t\t\tt := NIL; columns := 0; rows := 0; res := 0\r\t\t\tEND\r\t\tELSE\r\t\t\tCheck(WinSql.SQLFreeHandle(WinSql.SQL_HANDLE_STMT, d.actStmt), NIL, d.actStmt, res);\r\t\t\tt := NIL; columns := 0; rows := 0; res := notExecutable\r\t\tEND\r\tEND EndExec;\r\r\tPROCEDURE (d: Driver) Commit (accept: BOOLEAN; OUT res: INTEGER);\r\t\tVAR op: SHORTINT;\r\tBEGIN\r\t\tIF accept THEN op := WinSql.SQL_COMMIT ELSE op := WinSql.SQL_ROLLBACK END;\r\t\tCheck(WinSql.SQLEndTran(WinSql.SQL_HANDLE_DBC,  d.dbc, op), d, 0, res);\r\t\tIF res # 0 THEN res := notExecutable END\r\tEND Commit;\r\r\tPROCEDURE (d: Driver) Cleanup;\r\t\tVAR res: INTEGER;\r\tBEGIN\r\t\td.showErr := FALSE;\r\t\tres := WinSql.SQLDisconnect(d.dbc);\r\t\tIF res # WinSql.SQL_SUCCESS THEN\r\t\t\tCheck(WinSql.SQLEndTran(WinSql.SQL_HANDLE_DBC, d.dbc, WinSql.SQL_ROLLBACK), d, 0, res);\r\t\t\tCheck(WinSql.SQLDisconnect(d.dbc), d, 0, res);\r\t\tEND;\r\t\tCheck(WinSql.SQLFreeHandle(WinSql.SQL_HANDLE_DBC, d.dbc), d, 0, res);\r\t\td.dbc := 0; DEC(numConnections);\r\t\tIF numConnections = 0 THEN\r\t\t\tCheck(WinSql.SQLFreeHandle(WinSql.SQL_HANDLE_ENV, environment), NIL, 0, res);\r\t\tEND;\r\t\td.state := closed\r\tEND Cleanup;\r\r\r"
+                    attr: 0
+                  - text: "\t(* Table *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (t: Table) ReadInteger (row, column: INTEGER; OUT val: INTEGER);\r\t\tVAR res, len: INTEGER;\r\tBEGIN\r\t\tASSERT(row >= 0, 20); ASSERT(row < t.rows, 21);\r\t\tASSERT(column >= 0, 22); ASSERT(column < t.columns, 23);\r\t\tASSERT(t.stmt # 0, 24);\r\t\tSetPos(t, row, column, res);\r\t\tIF res = 0 THEN\r\t\t\tCheck(WinSql.SQLGetData(t.stmt, SHORT(column + 1), WinSql.SQL_C_LONG,\r\t\t\t\t\t\t\t\t\t\t\t\t\t\tSYSTEM.ADR(val), 0, len), NIL, t.stmt, res);\r\t\t\tIF len = WinSql.SQL_NULL_DATA THEN val := 0 END\r\t\tEND;\r\t\tt.res := res\r\tEND ReadInteger;\r\r\tPROCEDURE (t: Table) ReadReal (row, column: INTEGER; OUT val: REAL);\r\t\tVAR res, len: INTEGER;\r\tBEGIN\r\t\tASSERT(row >= 0, 20); ASSERT(row < t.rows, 21);\r\t\tASSERT(column >= 0, 22); ASSERT(column < t.columns, 23);\r\t\tASSERT(t.stmt # 0, 24);\r\t\tSetPos(t, row, column, res);\r\t\tIF res = 0 THEN\r\t\t\tCheck(WinSql.SQLGetData(t.stmt, SHORT(column + 1), WinSql.SQL_C_DOUBLE,\r\t\t\t\t\t\t\t\t\t\t\t\t\t\tSYSTEM.ADR(val), 0, len), NIL, t.stmt, res);\r\t\t\tIF len = WinSql.SQL_NULL_DATA THEN val := 0 END\r\t\tEND;\r\t\tt.res := res\r\tEND ReadReal;\r\r\tPROCEDURE (t: Table) ReadDate (row, column: INTEGER; OUT val: Dates.Date);\r\t\tVAR res, len: INTEGER; date: RECORD y, m, d: SHORTINT END;\r\tBEGIN\r\t\tASSERT(row >= 0, 20); ASSERT(row < t.rows, 21);\r\t\tASSERT(column >= 0, 22); ASSERT(column < t.columns, 23);\r\t\tASSERT(t.stmt # 0, 24);\r\t\tSetPos(t, row, column, res);\r\t\tIF res = 0 THEN\r\t\t\tCheck(WinSql.SQLGetData(t.stmt, SHORT(column + 1), WinSql.SQL_C_DATE,\r\t\t\t\t\t\t\t\t\t\t\t\t\t\tSYSTEM.ADR(date), 0, len), NIL, t.stmt, res);\r\t\t\tIF len = WinSql.SQL_NULL_DATA THEN val.day := 0; val.month := 0; val.year := 0\r\t\t\tELSE val.day := date.d; val.month := date.m; val.year := date.y\r\t\t\tEND\r\t\tEND;\r\t\tt.res := res\r\tEND ReadDate;\r\r\tPROCEDURE (t: Table) ReadTime (row, column: INTEGER; OUT val: Dates.Time);\r\t\tVAR res, len: INTEGER; time: RECORD h, m, s: SHORTINT END;\r\tBEGIN\r\t\tASSERT(row >= 0, 20); ASSERT(row < t.rows, 21);\r\t\tASSERT(column >= 0, 22); ASSERT(column < t.columns, 23);\r\t\tASSERT(t.stmt # 0, 24);\r\t\tSetPos(t, row, column, res);\r\t\tIF res = 0 THEN\r\t\t\tCheck(WinSql.SQLGetData(t.stmt, SHORT(column + 1), WinSql.SQL_C_TIME,\r\t\t\t\t\t\t\t\t\t\t\t\t\t\tSYSTEM.ADR(time), 0, len), NIL, t.stmt, res);\r\t\t\tIF len = WinSql.SQL_NULL_DATA THEN val.second := 0; val.minute := 0; val.hour := 0\r\t\t\tELSE val.second := time.s; val.minute := time.m; val.hour := time.h\r\t\t\tEND\r\t\tEND;\r\t\tt.res := res\r\tEND ReadTime;\r\r\tPROCEDURE (t: Table) ReadCurrency (row, column: INTEGER; OUT val: Dialog.Currency);\r\t\tVAR res, len, i, j: INTEGER; str: ARRAY 32 OF CHAR; a, b, c, scale: SHORTINT; x: LONGINT;\r\tBEGIN\r\t\tASSERT(row >= 0, 20); ASSERT(row < t.rows, 21);\r\t\tASSERT(column >= 0, 22); ASSERT(column < t.columns, 23);\r\t\tASSERT(t.stmt # 0, 24);\r\t\tSetPos(t, row, column, res);\r\t\tIF res = 0 THEN\r\t\t\tCheck(WinSql.SQLDescribeColW(t.stmt, SHORT(column + 1), str, LEN(str), a, b, i, scale, c), NIL, t.stmt, res);\r\t\t\tIF scale < 0 THEN scale := 0 END;\r\t\t\tCheck(WinSql.SQLGetData(t.stmt, SHORT(column + 1), WinSql.SQL_C_WCHAR,\r\t\t\t\t\t\t\t\t\t\t\t\t\t\tSYSTEM.ADR(str), LEN(str) * SIZE(CHAR), len), NIL, t.stmt, res);\r\t\t\tIF len # WinSql.SQL_NULL_DATA THEN"
+                    attr: 0
+                  - text: "\r\t\t\t\t"
+                    attr: 3
+                  - text: "x := 0; i := 0;\r\t\t\t\tIF str[0] < \".\" THEN INC(i) END;\r\t\t\t\tWHILE (i < len) & (str[i] # \".\") DO\r\t\t\t\t\tx := x * 10 + ORD(str[i]) - ORD(\"0\"); INC(i)\r\t\t\t\tEND;\r\t\t\t\tINC(i); j := 0;\r\t\t\t\tWHILE j < scale DO\r\t\t\t\t\tx := x * 10;\r\t\t\t\t\tIF i < len THEN x := x + ORD(str[i]) - ORD(\"0\"); INC(i) END;\r\t\t\t\t\tINC(j)\r\t\t\t\tEND;\r\t\t\t\tIF str[0] = \"-\" THEN x := -x END;\r\t\t\t\tval.val := x; val.scale := scale\r\t\t\tELSE\r\t\t\t\tval.val := 0; val.scale := 0\r\t\t\tEND\r\t\tEND;\r\t\tt.res := res\r\tEND ReadCurrency;\r\r\tPROCEDURE (t: Table) ReadString (row, column: INTEGER; OUT str: ARRAY OF CHAR);\r\t\tVAR res, len: INTEGER;\r\t\t\tdummy: ARRAY 256 OF CHAR;\r\tBEGIN\r\t\tASSERT(row >= 0, 20); ASSERT(row < t.rows, 21);\r\t\tASSERT(column >= 0, 22); ASSERT(column < t.columns, 23);\r\t\tASSERT(t.stmt # 0, 24);\r\t\tSetPos(t, row, column, res);\r\t\tIF res = 0 THEN\r\t\t\tCheck(WinSql.SQLGetData(t.stmt, SHORT(column + 1), WinSql.SQL_C_WCHAR,\r\t\t\t\t\t\t\t\t\t\t\t\t\t\tSYSTEM.ADR(str), LEN(str) * SIZE(CHAR), len),\r\t\t\t\t\tNIL, t.stmt, res);\r\t\t\tIF (len = 0) OR (len = WinSql.SQL_NULL_DATA) THEN str := \"\" END;\r\t\t\tIF res = moreData THEN t.res := truncated ELSE t.res := res END;\r\t\t\tWHILE res = moreData DO\t"
+                    attr: 0
+                  - text: "(* skip rest of string but don't change t.res *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tCheck(WinSql.SQLGetData(t.stmt, SHORT(column + 1), WinSql.SQL_C_WCHAR, \r\t\t\t\t\t\t\t\t\t\t\t\t\t\tSYSTEM.ADR(dummy), LEN(dummy) * SIZE(CHAR), len),\r\t\t\t\t\t\tNIL, t.stmt, res);\r\t\t\tEND;\r\t\tELSE t.res := res\r\t\tEND\r\tEND ReadString;\r\r\tPROCEDURE (t: Table) ReadVarString (row, column: INTEGER; OUT str: SqlDrivers.String);\r\t\tVAR res, len: INTEGER; s: ARRAY 257 OF CHAR;\t"
+                    attr: 0
+                  - text: "(* odd for correct conversion of binary data *)"
+                    attr: 1
+                  - text: "\r\tBEGIN\r\t\tASSERT(row >= 0, 20); ASSERT(row < t.rows, 21);\r\t\tASSERT(column >= 0, 22); ASSERT(column < t.columns, 23);\r\t\tASSERT(t.stmt # 0, 24);\r\t\tSetPos(t, row, column, res);\r\t\tIF res = 0 THEN\r\t\t\tCheck(WinSql.SQLGetData(t.stmt, SHORT(column + 1), WinSql.SQL_C_WCHAR,\r\t\t\t\t\t\t\t\t\t\t\t\t\t\tSYSTEM.ADR(s), LEN(s) * SIZE(CHAR), len),\r\t\t\t\t\tNIL, t.stmt, res);\r\t\t\tIF res # noData THEN\r\t\t\t\tIF (len = 0) OR (len = WinSql.SQL_NULL_DATA) THEN\r\t\t\t\t\tIF str = NIL THEN NEW(str, 1) END;\t(* allow recycling of string by making parameter a VAR again? *)\r\t\t\t\t\tstr^ := \"\"\r\t\t\t\tELSIF len = WinSql.SQL_NO_TOTAL THEN\r\t\t\t\t\t(* how to improve handling of strings with undefined length? *)\r\t\t\t\t\tIF (str = NIL) OR (LEN(str^) < LEN(s)) THEN NEW(str, LEN(s)) END;\r\t\t\t\t\tstr^ := s$\r\t\t\t\tELSE\r\t\t\t\t\tASSERT(len MOD SIZE(CHAR) = 0, 100); len := len DIV SIZE(CHAR);\r\t\t\t\t\tIF (str = NIL) OR (LEN(str^) < len + 1) THEN NEW(str, len + 1) END;\r\t\t\t\t\tIF len >= LEN(s) THEN\r\t\t\t\t\t\tstr^ := s$;\r\t\t\t\t\t\tCheck(WinSql.SQLGetData(t.stmt, SHORT(column + 1), WinSql.SQL_C_WCHAR,\r\t\t\t\t\t\t\t\t\t\t\t\tSYSTEM.ADR(str^) + (LEN(s) - 1) * SIZE(CHAR),\r\t\t\t\t\t\t\t\t\t\t\t\t(LEN(str^) - (LEN(s) - 1)) * SIZE(CHAR), len),\r\t\t\t\t\t\t\t\tNIL, t.stmt, res);\r\t\t\t\t\tELSE\r\t\t\t\t\t\tstr^ := s$\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND;\r\t\tt.res := res\r\tEND ReadVarString;\r\r\tPROCEDURE (t: Table) ReadBlob (row, column: INTEGER; OUT len: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT data: POINTER TO ARRAY OF BYTE);\r\t\tVAR res, x: INTEGER; s: ARRAY 128000 OF BYTE;\r\t"
+                    attr: 0
+                  - text: "(* This version fails for some large blobs for an unknown reason. Buffer is so large that error happens rarely *)"
+                    attr: 3
+                  - text: "\r\tBEGIN\r\t\tASSERT(row >= 0, 20); ASSERT(row < t.rows, 21);\r\t\tASSERT(column >= 0, 22); ASSERT(column < t.columns, 23);\r\t\tASSERT(t.stmt # 0, 24);\r\t\tSetPos(t, row, column, res);\r\t\tIF res = 0 THEN\r\t\t\tCheck(WinSql.SQLGetData(t.stmt, SHORT(column + 1), WinSql.SQL_C_BINARY,\r\t\t\t\t\t\t\t\t\t\t\t\t\t\tSYSTEM.ADR(s), LEN(s), len),\r\t\t\t\t\tNIL, t.stmt, res);\r\t\t\tIF res # noData THEN\r\t\t\t\tIF len = WinSql.SQL_NULL_DATA THEN len := 0\r\t\t\t\tELSIF len = WinSql.SQL_NO_TOTAL THEN len := 256\r\t\t\t\tEND;\r\t\t\t\tIF len > 0 THEN\r\t\t\t\t\tIF len > LEN(s) THEN\r\t\t\t\t\t\tIF (data = NIL) OR (LEN(data^) < len) THEN\r\t\t\t\t\t\t"
+                    attr: 0
+                  - text: "(* brute force unblock the connection for the following NEW, which may invoke finalizers that access\r\t\t\t\t\t\t\tthe connection: *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\t\tIF row = 0 THEN SetPos(t, row+1, column, res) ELSE SetPos(t, row-1, column, res) END ;\r\t\t\t\t\t\t\t(* TODO: what happens if the table has only one row?*)\r\t\t\t\t\t\t\tSetPos(t, row, column, res);\r\t\t\t\t\t\t\tNEW(data, len);\r\t\t\t\t\t\t\t"
+                    attr: 0
+                  - text: "(* read all data at once *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\t\tCheck(WinSql.SQLGetData(t.stmt, SHORT(column + 1), WinSql.SQL_C_BINARY,\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tSYSTEM.ADR(data^), len, x), NIL, t.stmt, res)\r\t\t\t\t\t\tELSE\r\t\t\t\t\t\t\tSYSTEM.MOVE(SYSTEM.ADR(s), SYSTEM.ADR(data^), LEN(s));\r\t\t\t\t\t\t\tCheck(WinSql.SQLGetData(t.stmt, SHORT(column + 1), WinSql.SQL_C_BINARY,\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tSYSTEM.ADR(data^) + LEN(s), len - LEN(s), x), NIL, t.stmt, res)\r\t\t\t\t\t\tEND\r\t\t\t\t\tELSE\r\t\t\t\t\t\tIF (data = NIL) OR (LEN(data^) < len) THEN NEW(data, len) END;\r\t\t\t\t\t\tSYSTEM.MOVE(SYSTEM.ADR(s), SYSTEM.ADR(data^), len);\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND;\r\t\tt.res := res\r\tEND ReadBlob;\r\r\tPROCEDURE (t: Table) ReadName (column: INTEGER; OUT str: SqlDrivers.String);\r\t\tVAR res, len: INTEGER; nlen, sqlType, scale, null: SHORTINT; name: ARRAY 64 OF CHAR;\r\tBEGIN\r\t\tASSERT(column >= 0, 20); ASSERT(column < t.columns, 21);\r\t\tASSERT(t.stmt # 0, 22);\r\t\tCheck(WinSql.SQLDescribeColW(t.stmt, SHORT(column + 1), name, LEN(name), nlen,\r\t\t\t\t\t\t\t\t\t\t\t\t\t\tsqlType, len, scale, null), NIL, t.stmt, res);\r\t\tIF (nlen = 0) OR (res = noData) THEN nlen := 0; name := \"\" END;\r\t\tIF (str = NIL) OR (LEN(str^) < nlen + 1) THEN NEW(str, nlen + 1) END;\r\t\tIF nlen >= LEN(name) THEN\r\t\t\tCheck(WinSql.SQLDescribeColW(t.stmt, SHORT(column + 1), str^, SHORT(LEN(str^)),\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tnlen, sqlType, len, scale, null),\r\t\t\t\t\tNIL, t.stmt, res);\r\t\tELSE str^ := name$\r\t\tEND;\r\t\tt.res := res\r\tEND ReadName;\r\r\tPROCEDURE (t: Table) ReadType (column: INTEGER; OUT str: SqlDrivers.String);\r\t\tVAR res, len: INTEGER; nlen, sqlType, scale, null: SHORTINT;\r\tBEGIN\r\t\tASSERT(column >= 0, 20); ASSERT(column < t.columns, 21);\r\t\tASSERT(t.stmt # 0, 22);\r\t\tIF (str = NIL) OR (LEN(str^) < 10) THEN NEW(str, 10) END;\r\t\tCheck(WinSql.SQLDescribeColW(t.stmt, SHORT(column + 1), NIL, 0, nlen, sqlType, len, scale, null),\r\t\t\t\t\t\t\t\t\t\t\t\t\t\tNIL, t.stmt, res);\r\t\tIF res # noData THEN"
+                    attr: 0
+                  - text: "\r\t\t\t"
+                    attr: 3
+                  - text: "CASE sqlType OF\r\t\t\t| WinSql.SQL_BIT: str^ := \"BOOLEAN\"\r\t\t\t| WinSql.SQL_TINYINT: str^ := \"BYTE\"\r\t\t\t| WinSql.SQL_SMALLINT: str^ := \"SHORTINT\"\r\t\t\t| WinSql.SQL_INTEGER: str^ := \"INTEGER\"\r\t\t\t| WinSql.SQL_BIGINT: str^ := \"String\"\r\t\t\t| WinSql.SQL_DATE: str^ := \"Date\"\r\t\t\t| WinSql.SQL_TIME: str^ := \"Time\"\r\t\t\t| WinSql.SQL_TIMESTAMP: str^ := \"Time&Date\"\r\t\t\t| WinSql.SQL_REAL: str^ := \"SHORTREAL\"\r\t\t\t| WinSql.SQL_DOUBLE, WinSql.SQL_FLOAT: str^ := \"REAL\"\r\t\t\t| WinSql.SQL_DECIMAL, WinSql.SQL_NUMERIC: str^ := \"Currency\"\r\t\t\t| WinSql.SQL_CHAR, WinSql.SQL_VARCHAR, WinSql.SQL_LONGVARCHAR,\r\t\t\t\tWinSql.SQL_WCHAR, WinSql.SQL_WVARCHAR, WinSql.SQL_WLONGVARCHAR: str^ := \"String\"\r\t\t\t| WinSql.SQL_BINARY, WinSql.SQL_VARBINARY, WinSql.SQL_LONGVARBINARY: str^ := \"Binary\"\r\t\t\tELSE str^ := \"unknown\"\r\t\t\tEND\r\t\tELSE str^ := \"unknown\"\r\t\tEND\r\tEND ReadType;\r\r\tPROCEDURE (t: Table) Cleanup;\r\t\tVAR res: INTEGER;\r\tBEGIN\r\t\tCheck(WinSql.SQLFreeHandle(WinSql.SQL_HANDLE_STMT, t.stmt), NIL, t.stmt, res)\r\tEND Cleanup;\r\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Open
+                    attr: 3
+                  - text: "* (id, password, datasource: ARRAY OF CHAR; async, showErr: BOOLEAN;\r\t\t\t\t\t\t\t\t\t\t\tOUT d: SqlDrivers.Driver; OUT res: INTEGER);\r\t\tVAR h: Driver; r: INTEGER; len: SHORTINT; str: ARRAY 26 OF CHAR;\r\tBEGIN\r\t\tNEW(h); d := NIL; h.showErr := showErr;\r\t\tres := WinSql.SQL_SUCCESS;\r\t\tIF numConnections = 0 THEN\r\t\t\tres := WinSql.SQLAllocHandle(WinSql.SQL_HANDLE_ENV, WinSql.SQL_NULL_HANDLE, environment); \r\t\t\t(* Set ODBC version to ODBC3 *)\r\t\t\tIF res = WinSql.SQL_SUCCESS THEN\r\t\t\t\tCheck(WinSql.SQLSetEnvAttr(environment, WinSql.SQL_ATTR_ODBC_VERSION,\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tWinSql.SQL_OV_ODBC3, 0), \r\t\t\t\t\t\th, 0, res)\r\t\t\tEND;\r\t\tEND;\r\t\tIF res = WinSql.SQL_SUCCESS THEN\r\t\t\tCheck(WinSql.SQLAllocHandle(WinSql.SQL_HANDLE_DBC, environment, h.dbc), h, 0, res);\r\t\t\tIF res = 0 THEN\r\t\t\t\tCheck(WinSql.SQLConnectW(h.dbc, datasource, WinSql.SQL_NTS,\r\t\t\t\t\t\t\t\t\t\t\t\t\tid, WinSql.SQL_NTS,\r\t\t\t\t\t\t\t\t\t\t\t\t\tpassword, WinSql.SQL_NTS), h, 0, res);\r\t\t\t\tIF res = 0 THEN\r\t\t\t\t\tIF showErr THEN\r\t\t\t\t\t\tCheck(WinSql.SQLSetConnectAttr(h.dbc, WinSql.SQL_QUIET_MODE, HostWindows.main, 0), h, 0, r)\r\t\t\t\t\tELSE\r\t\t\t\t\t\tr := WinSql.SQLSetConnectAttr(h.dbc, WinSql.SQL_QUIET_MODE, WinApi.NULL, 0)\r\t\t\t\t\tEND;\r\t\t\t\t\th.Init(\"?\");\r\t\t\t\t\tCheck(WinSql.SQLGetInfoW(h.dbc,\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tWinSql.SQL_FETCH_DIRECTION, SYSTEM.ADR(h.directions), 4, len),\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\th, 0, r);\r\t\t\t\t\t"
+                    attr: 0
+                  - text: "(* ODBC default is SQL_AUTOCOMMIT_ON *) "
+                    attr: 1
+                  - text: "\r\t\t\t\t\tIF ~autoCommit THEN\r\t\t\t\t\t\tCheck(WinSql.SQLSetConnectAttr(h.dbc, WinSql.SQL_AUTOCOMMIT,\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tWinSql.SQL_AUTOCOMMIT_OFF, 0), h, 0, r)\r\t\t\t\t\tEND;\r\t\t\t\t\tCheck(WinSql.SQLGetInfoW(h.dbc, WinSql.SQL_DBMS_NAME, SYSTEM.ADR(str), 255, len), h, 0, r);\r\t\t\t\t\tIF str = \"Microsoft SQL Server\" THEN"
+                    attr: 0
+                  - text: "\r\t\t\t\t\t\t(* If SQLServer is used Preserve Cursors must be set to ON.\r\t\t\t\t\t\tOther drivers probably don't support this. *)\r\t\t\t\t\t\t"
+                    attr: 1
+                  - text: "Check(WinSql.SQLSetConnectAttr(h.dbc, WinSql.SQL_PRESERVE_CURSORS,\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tWinSql.SQL_PC_ON,0), h, 0,r);\r\t\t\t\t\tEND;\r\t\t\t\t\th.showErr := showErr; h.state := connecting; d := h; INC(numConnections)\r\t\t\t\tELSE\r\t\t\t\t\tCheck(WinSql.SQLFreeHandle(WinSql.SQL_HANDLE_DBC, h.dbc), h, 0, r);\r\t\t\t\t\tIF numConnections = 0 THEN\r\t\t\t\t\t\tCheck(WinSql.SQLFreeHandle(WinSql.SQL_HANDLE_ENV, environment), NIL, 0, r)\r\t\t\t\t\tEND;\r\t\t\t\t\tIF res # wrongIdentification THEN res := cannotOpenDB END\r\t\t\t\tEND\r\t\t\tELSE\r\t\t\t\tIF numConnections = 0 THEN\r\t\t\t\t\tCheck(WinSql.SQLFreeHandle(WinSql.SQL_HANDLE_ENV, environment), NIL, 0, r);\r\t\t\t\tEND;\r\t\t\t\tres := cannotOpenDB\r\t\t\tEND\r\t\tELSE res := cannotOpenDB\r\t\tEND;\r\tEND Open;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetMode
+                    attr: 3
+                  - text: "* (d: SqlDrivers.Driver; autocommit: BOOLEAN; OUT res: INTEGER);\r\t"
+                    attr: 0
+                  - text: "(* implicit COMMIT *)"
+                    attr: 1
+                  - text: "\r\t\tVAR h: Driver;\r\tBEGIN\r\t\th := d(Driver);\r\t\tIF autocommit THEN\r\t\t\tCheck(WinSql.SQLSetConnectAttr(h.dbc, WinSql.SQL_AUTOCOMMIT, WinSql.SQL_AUTOCOMMIT_ON, 0),\r\t\t\t\t\t\th, 0, res)\r\t\tELSE\r\t\t\tCheck(WinSql.SQLSetConnectAttr(h.dbc, WinSql.SQL_AUTOCOMMIT, WinSql.SQL_AUTOCOMMIT_OFF, 0),\r\t\t\t\t\t\th, 0, res)\r\t\tEND\r\tEND SetMode;\r\rEND SqlOdbc3.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 28
+          bodyPos: 30280
+          bodyLen: 8

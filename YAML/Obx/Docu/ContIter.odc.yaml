@@ -1,0 +1,144 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Docu\\ContIter.odc"
+  size: 3313
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 3182
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 2996
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 2910
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 152400
+                dsc: 25400
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 8
+                bodyPos: 2910
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 2396
+                runListLen: 437
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                flow:
+                  - text: "Overview by Example: ObxContIter"
+                    attr: 0
+                  - text: "\r\rThis example shows how to iterate over the views embedded in a container, whether it be a text container, a form container, etc. The command searches for the first embedded view whose label is \"magic name\". At first, the command gets the focus container on which to operate:\r\r\tc := Containers.Focus();\r\rThis statement obtains the innermost general container's controller in the focus path, even if the container is in mask or browser mode and some control in the container is currently the innermost (non-container) view.\rEvery general container defines some order for the embedded views. For texts, this is the order of the views in the text, for forms it is the z-ordering, etc. The controller methods "
+                    attr: 1
+                  - text: GetFirstView
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: GetNextView
+                    attr: 2
+                  - text: " allow to iterate over the embedded views in the defined order:\r\r\tc.GetFirstView(Containers.any, v);\r\tc.GetNextView(Containers.any, v);\r\rThe first parameters denote whether all embedded views should be traversed ("
+                    attr: 1
+                  - text: Containers.any
+                    attr: 2
+                  - text: ) or only the selected views (
+                    attr: 1
+                  - text: Containers.selection
+                    attr: 2
+                  - text: ").\rThe loop that searches for the specific control has the typical form of a search loop:\r\r\tget first element;\r\tWHILE (element # NIL) & ~(element is the right one) DO\r\t\tget next element\r\tEND;\r\rIn our example, the condition in the WHILE loop is the following:\r\r\t(v # NIL) & ~((v IS Controls.Control) & (v(Controls.Control).label = \"magic name\"))\r\rThe right-side term contains an expression that denotes \"element is the right one\", in this case:\r\r\t(v IS Controls.Control) & (v(Controls.Control).label = \"magic name\")\r\rThis means that the element is a control, and its label is \"magic name\". The not-operator \"~\" inverts this condition, so that the loop continues as long as the right element has not yet been found.\r\rNote that you shouldn't modify the selection during iteration over the selection. Also, you shouldn't insert into or delete from the container model during iteration.\r\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenDoc('Obx/Mod/ContIter')"
+                      body:
+                        - text: ObxContIter  sources
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 12
+          bodyPos: 3278
+          bodyLen: 8

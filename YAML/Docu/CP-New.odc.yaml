@@ -1,0 +1,669 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Docu\\CP-New.odc"
+  size: 30988
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 30857
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 30671
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 30585
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 152400
+                dsc: 25400
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 13
+                bodyPos: 30706
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 30192
+                runListLen: 2106
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                flow:
+                  - text: "What's New in Component Pascal?"
+                    attr: 0
+                  - text: "\r\rExcept for some minor points, Component Pascal is a superset of Oberon-2. Compared to Oberon-2, it provides several clarifications and improvements. This text summarizes the differences. Some of the changes had already been realized in earlier releases of the BlackBox Component Builder, all of them are implemented for Release 1.3 and higher.\rThe language revision was driven by the experience with the BlackBox Component Framework, and the desire to further improve support for the specification, documentation, development, maintenance, and refactoring of component frameworks. The goal was to give a framework architect the means to better control the overall integrity of large component-based software systems. Control over a system's integrity is key to increased reliability, reduced maintenance costs, and to higher confidence in the system's correctness when it evolves over time.\rCare was taken that the language remains small, easy to use, and easy to learn. The new features are most visible to framework designers, less visible to framework extenders, and least visible to mere framework clients. This ensures that these different categories of developers are burdened with the minimal amounts of complexity that their respective tasks require.\r\r\r"
+                    attr: 1
+                  - text: More expressive type system
+                    attr: 0
+                  - text: "\r\r"
+                    attr: 1
+                  - text: Covariant pointer function results
+                    attr: 2
+                  - text: "\rA type-bound function which returns a pointer may be redefined, such that it returns an extended type. For example, the function\r\r\tPROCEDURE (v: View) ThisModel (): Model\r\rcould be extended in a subtype "
+                    attr: 1
+                  - text: MyView
+                    attr: 2
+                  - text: ", which is assumed to be a subtype of "
+                    attr: 1
+                  - text: View
+                    attr: 2
+                  - text: ", to the following function signature\r\r\tPROCEDURE (v: MyView) ThisModel (): MyModel\r\rwhere "
+                    attr: 1
+                  - text: MyModel
+                    attr: 2
+                  - text: " is assumed to be a subtype of "
+                    attr: 1
+                  - text: Model
+                    attr: 2
+                  - text: ". Note that covariant function results are type safe; they simply strengthen the postcondition of a function, which is always legal. They allow to make interface declarations more precise.\r\r"
+                    attr: 1
+                  - text: Pointer compatibility
+                    attr: 2
+                  - text: "\rThe compatibility rules for pointers have been relaxed and simplified. Pointers are now compatible by structure; i.e., two pointer types that have the same base type are compatible. This can be useful mostly in procedure signatures, where it previously wasn't possible to use a function like the following:\r\r\tPROCEDURE P (p: POINTER TO ARRAY OF INTEGER)\r\r"
+                    attr: 1
+                  - text: Pointer function results
+                    attr: 2
+                  - text: "\rA function's return type is now "
+                    attr: 1
+                  - text: Type
+                    attr: 2
+                  - text: " not "
+                    attr: 1
+                  - text: Ident
+                    attr: 2
+                  - text: "; e.g.,\r\r\tPROCEDURE Bla (): POINTER TO Rec\r\ris now legal, and due to simplified compatibility rules (see previous point) their use can actually make sense.\r\r"
+                    attr: 1
+                  - text: IN and OUT
+                    attr: 2
+                  - text: "\rThese parameter modes are like the "
+                    attr: 1
+                  - text: VAR
+                    attr: 2
+                  - text: " mode, except that some restrictions apply. "
+                    attr: 1
+                  - text: IN
+                    attr: 2
+                  - text: " parameters cannot directly be modified inside a procedure, "
+                    attr: 1
+                  - text: OUT
+                    attr: 2
+                  - text: " parameters are considered undefined upon procedure entry (except for pointers and procedure variables, which are set to "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: " upon procedure entry). "
+                    attr: 1
+                  - text: OUT
+                    attr: 2
+                  - text: " record parameters must have identical actual and formal parameter types.\rThese parameter modes are important for procedure signatures of distributed objects, and they can increase convenience and efficiency. Most importantly, they allow to make interface declarations more precise and more self-documenting. In particular, where formerly "
+                    attr: 1
+                  - text: VAR
+                    attr: 2
+                  - text: " parameters have been used for efficiency reasons only, it is now possible to use "
+                    attr: 1
+                  - text: IN
+                    attr: 2
+                  - text: " parameters. "
+                    attr: 1
+                  - text: IN
+                    attr: 2
+                  - text: " parameters are only allowed for record and array types.\r Example:\r\r\tPROCEDURE ShowModes (value: INTEGER; VAR inout: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t(* value and VAR parameters *)\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tIN in: ARRAY OF SET;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t(* IN for efficiency *)\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT res: INTEGER): INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t(* OUT parameter and function result *)\r\rSince "
+                    attr: 1
+                  - text: IN
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: OUT
+                    attr: 2
+                  - text: " are specializations of "
+                    attr: 1
+                  - text: VAR
+                    attr: 2
+                  - text: ", it is not possible to pass constants to "
+                    attr: 1
+                  - text: IN
+                    attr: 2
+                  - text: " parameters. There is one convenient exception: string constants may be passed to open-array "
+                    attr: 1
+                  - text: IN
+                    attr: 2
+                  - text: " parameters, since they are implemented by the compiler as a kind of \"read-only variable\" anyway.\r\r"
+                    attr: 1
+                  - text: NEW methods
+                    attr: 2
+                  - text: "\rComponent Pascal requires that the introduction of a new method is indicated explicitly. This is done by appending the identifier "
+                    attr: 1
+                  - text: NEW
+                    attr: 2
+                  - text: " to the method's signature. "
+                    attr: 1
+                  - text: NEW
+                    attr: 2
+                  - text: " may not be used for extending methods.\rIn the following example, method "
+                    attr: 1
+                  - text: SomeMethod
+                    attr: 2
+                  - text: " is newly introduced in "
+                    attr: 1
+                  - text: T
+                    attr: 2
+                  - text: " and inherited in "
+                    attr: 1
+                  - text: T1
+                    attr: 2
+                  - text: ", which is assumed to be an extension of "
+                    attr: 1
+                  - text: T
+                    attr: 2
+                  - text: ":\r\r\tPROCEDURE (t: T) SomeMethod (x, y: INTEGER), NEW;\r\tBEGIN\r\t\t...\r\tEND SomeMethod;\r\r\tPROCEDURE (t: T1) SomeMethod (x, y: INTEGER);\r\tBEGIN\r\t\t...\r\tEND SomeMethod;\r\r"
+                    attr: 1
+                  - text: NEW
+                    attr: 2
+                  - text: " indicates that a method is new, not extending. The need to declare this fact explicitly is useful whenever changes to a framework are made, which often happens during the initial design iterations, and later when the software architecture undergoes refactoring. "
+                    attr: 1
+                  - text: NEW
+                    attr: 2
+                  - text: " makes it possible for the compiler to detect for example if a base method's name has been changed, but extending methods have not been renamed accordingly. Also, the compiler detects if a method is newly introduced, although it already exists in a base type or in a subtype. These checks make it easier to achieve consistency again after a change to a framework's interfaces.\r\r"
+                    attr: 1
+                  - text: "Default, EXTENSIBLE, ABSTRACT, and LIMITED record types"
+                    attr: 2
+                  - text: "\rComponent Pascal uses a single construct to denote both interfaces of objects and their implementations: record types. This unification allows to freeze some implementation aspects of an interface while leaving others open. This flexibility is often desirable in complex frameworks. But it is important to communicate such architectural decisions as precisely as possible, since they may affect a large number of clients.\rFor this reason, a Component Pascal record type can be attributed to allow an interface designer to formulate several fundamental architectural decisions explicitly. This has the advantage that the compiler can help to verify compliance with these decisions. The carefully chosen attributes are "
+                    attr: 1
+                  - text: EXTENSIBLE
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: ABSTRACT
+                    attr: 2
+                  - text: ", and "
+                    attr: 1
+                  - text: LIMITED
+                    attr: 2
+                  - text: ". They allow to distinguish four different combinations of extension and allocation possibilities:\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 1440000 }
+                        - { stop: 2520000 }
+                        - { stop: 4104000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "modifier\textension\tallocation\trecord assignment"
+                    attr: 0
+                  - text: "\rnone (\"final\")\tno\tyes\tyes\rEXTENSIBLE\tyes\tyes\tno\rABSTRACT\tyes\tno\tno\rLIMITED\tno*\tno*\tno\r\r*except in the defining module\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rRecord types may either be extensible or non-extensible (\"final\"). By default, a record type is final. Final types allow to \"close\" a type, such that an implementor can perform a complete analysis of the type's implementation, e.g., to find out how it could be improved without breaking clients.\rRecord types may either be allocatable (as static or dynamic variables), or allocation may be prevented ("
+                    attr: 1
+                  - text: ABSTRACT
+                    attr: 2
+                  - text: ) or limited to the defining module (
+                    attr: 1
+                  - text: LIMITED
+                    attr: 2
+                  - text: "). With limited types, allocation and extension is possible in the defining module only, never by an importing module.\r\rFinal types typically are simple auxiliary data types, e.g.:\r\r\tPoint = RECORD\r\t\tx, y: INTEGER\r\tEND\r\rVariables of such types can be copied using the assignment operator, e.g. "
+                    attr: 1
+                  - text: "pt := pt2"
+                    attr: 2
+                  - text: ". The compiler never needs to generate the hidden type guard that is sometimes necessary for such an assignment in Oberon.\rOn the other hand, extensible records can neither be copied, nor passed as value parameters (since value parameters imply a record assignment).\rFinal types, like extensible types, may be extensions of other record types and they may have methods.\rExtensible types are declared in the following way:\r\r\tFrame = EXTENSIBLE RECORD\r\t\tl-, t-, r-, b-: INTEGER\r\tEND\r\rPlain "
+                    attr: 1
+                  - text: EXTENSIBLE
+                    attr: 2
+                  - text: " types are rare, it is more typical to use "
+                    attr: 1
+                  - text: ABSTRACT
+                    attr: 2
+                  - text: " types instead, which are a special case of extensible types that cannot be instantiated. The following paragraph gives a more precise description of what this restriction means:\r\rTypes of "
+                    attr: 1
+                  - text: values
+                    attr: 2
+                  - text: " can never be abstract, but types of "
+                    attr: 1
+                  - text: variables
+                    attr: 2
+                  - text: " may be abstract. The type of a value can be different from the type of its holding variable only if the variable is referential; i.e., a pointer; or a VAR, IN, or OUT parameter. Thus, only those variables may be declared to be of an abstract type. In all other cases; i.e., static variables, record fields, array base types, and value parameters, non-abstract types or pointers (possibly to abstract types) must be used. Since the allocation operation "
+                    attr: 1
+                  - text: NEW
+                    attr: 2
+                  - text: " produces a value of the argument's type, "
+                    attr: 1
+                  - text: NEW
+                    attr: 2
+                  - text: " can only be used with variables of non-abstract type.\rExample of an abstract type:\r\r\tTextView = POINTER TO ABSTRACT RECORD (Views.View) END\r\rAbstract types are design tools, they denote interfaces of objects. They are the primary means of Component Pascal to model component interfaces. Denoting records as abstract allows to indicate more precisely the use of a record: as an interfacing construct rather than an implementation construct.\r\rNevertheless, an abstract type may have all types of methods (see below), i.e., it is not forced to be fully abstract.\r\r"
+                    attr: 1
+                  - text: LIMITED
+                    attr: 2
+                  - text: " types are a special case of final types. They are special in that they can be instantiated only within the defining module, and they cannot be copied. For example, a client may not perform a "
+                    attr: 1
+                  - text: NEW
+                    attr: 2
+                  - text: " on variables of limited types. Since allocation is under complete control of the defining module, the programmer of this module can guarantee that all newly allocated variables are correctly initialized before they are made accessible to client modules. This means that clients can only see variables that respect the type's invariants (which are established during initialization). An implementor is free to change the type's internal representation with less risk of breaking client code; there is no need for lazy initialization schemes; there cannot be delayed run-time errors due to missing initializations; and invariants (e.g., invariants over hidden record fields) cannot be violated through copying.\rTypically, factory functions or factory objects are provided to create new instances of dynamic "
+                    attr: 1
+                  - text: LIMITED
+                    attr: 2
+                  - text: " types.\rExample:\r\r\tSemaphore = POINTER TO LIMITED RECORD END;\r\r\tPROCEDURE New (level: INTEGER): Semaphore;\r\rIn the BlackBox Component Framework, most abstractions are represented as abstract types, which are implemented by (non-exported) final types. This is another approach that allows to guarantee correct initialization, but it is too inconvenient for simple non-extensible abstractions. Moreover, "
+                    attr: 1
+                  - text: LIMITED
+                    attr: 2
+                  - text: " types cannot be substituted by client-side extensions. This is important, because it allows to protect non-extensible services, such as a real-time kernel, from being used with illegal types.\r\r"
+                    attr: 1
+                  - text: Record syntax
+                    attr: 2
+                  - text: "\rThe record syntax looks as follows:\r\r\tRecordType = [EXTENSIBLE | ABSTRACT | LIMITED] RECORD [\"(\" QualIdent \")\"] FieldList {\";\" FieldList} END.\r\rNote that a pure client programmer never needs to write any of the above attributes. The same is true for an implementor of a framework extension. Even the framework designer may save some time using these attributes, because they are an important part of the documentation that can be extracted automatically from the source code.\r\rThe goal for the introduction of these attributes was to increase the static expressiveness of interfaces, such that important architectural decisions can be written down explicitly, in a way that a compiler can check conformance of an implementation or a client with the interface contract. A pure implementation language wouldn't need the new attributes, only a component-oriented implementation "
+                    attr: 1
+                  - text: and design
+                    attr: 2
+                  - text: " language needs to be able to express such design constraints. Control over such constraints enables a framework designer to establish important invariants over a whole software system (= system architecture), thus improving safety, maintainability, and evolvability.\rSome of the new attributes also add convenience; e.g., abstract methods need no procedure body anymore. Such additional convenience is a welcome benefit, but it was by no means the reason for the introduction of the attributes. \r\r"
+                    attr: 1
+                  - text: Default and EXTENSIBLE methods
+                    attr: 2
+                  - text: "\rLike record types, methods of a record type can also be attributed. The attributes available are the default (no attribute), "
+                    attr: 1
+                  - text: EXTENSIBLE
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: ABSTRACT
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: EMPTY
+                    attr: 2
+                  - text: ".\r\rLike record types, methods are final by default:\r\r\tPROCEDURE (t: T) StaticProcedure (x, y: INTEGER), NEW;\r\tBEGIN\r\t\t...\r\tEND StaticProcedure;\r\rMethods that are both new and final can be treated by a compiler like normal procedures, since they don't require late binding. Nevertheless, their use can be appropriate if they clearly belong to a particular type.\r\rExtensible methods on the other hand are marked as such, e.g.:\r\r\tPROCEDURE (t: T) Method (x, y: INTEGER), NEW, EXTENSIBLE;\r\tBEGIN\r\t\t...\r\tEND Method;\r\rIt is much more common to use abstract or empty methods, which are special cases of extensible methods (see below).\rDeclaring a method as final is achieved by simply leaving away the "
+                    attr: 1
+                  - text: EXTENSIBLE
+                    attr: 2
+                  - text: " attribute:\r\r\tPROCEDURE (t: T) FinalInheritedMethod (x, y: INTEGER);\r\tBEGIN\r\t\t...\r\tEND FinalInheritedMethod;\r\rIf a black-box design style is used, most methods that need to be implemented for a framework "
+                    attr: 1
+                  - text: extension
+                    attr: 2
+                  - text: " are of the above kind, which requires no special attributes in the method signature. This is reasonable, because there are more framework extension programmers than there are framework designers, thus extensions should be as convenient as possible to write down.\rFinal methods may be bound to any record types. Extensible methods may only be bound to extensible types (i.e., "
+                    attr: 1
+                  - text: EXTENSIBLE
+                    attr: 2
+                  - text: " or "
+                    attr: 1
+                  - text: ABSTRACT
+                    attr: 2
+                  - text: ").\r\rSince final methods cannot be \"overridden\", the invariants that they guarantee and the postconditions that they establish cannot be violated. Note that correct \"extension\" of a method means that the extending method implements a refinement of the extended method. Semantically, this means that the extending method accepts a weaker precondition or establishes a stronger postcondition compared to the extended method.\r\r"
+                    attr: 1
+                  - text: ABSTRACT methods
+                    attr: 2
+                  - text: "\rAn abstract method is declared in the following way:\r\r\tPROCEDURE (t: T) SomeMethod (s: SET), NEW, ABSTRACT;\r\r\tPROCEDURE (t: T) CovariantMethod2 (): NarrowedType, ABSTRACT;\r\rAbstract methods are extensible. The compiler checks that a concrete type implements all abstract methods that it inherits. A concrete extension of an abstract method (or type) can be regarded as its "
+                    attr: 1
+                  - text: implementation
+                    attr: 2
+                  - text: ". Abstract methods may only be bound to abstract types, and they may not be called via super calls.\rAn abstract method has no corresponding procedure body, it only exists as a signature. There is no need anymore to write a procedure body with a "
+                    attr: 1
+                  - text: HALT
+                    attr: 2
+                  - text: " statement.\r\r"
+                    attr: 1
+                  - text: EMPTY methods
+                    attr: 2
+                  - text: "\rA method can be declared as "
+                    attr: 1
+                  - text: empty
+                    attr: 2
+                  - text: ". Empty methods are extensible. An empty method is very similar to an abstract method, in that it is a hook for functionality that can be provided in later extensions. However, empty methods are concrete and can be called. If they have not been extended (i.e., implemented), calling them has no effect.\rEmpty methods represent optional interfaces. For example, a BlackBox Component Framework "
+                    attr: 1
+                  - text: View
+                    attr: 2
+                  - text: " provides an empty method for handling user events ("
+                    attr: 1
+                  - text: HandleCtrlMsg
+                    attr: 2
+                  - text: "). This method is implemented in interactive views, passive views ignore it.\rIt is not possible to introduce code in an empty procedure. For this reason, an empty method has no corresponding procedure body, and may not be called via super calls.\rEmpty procedures may not return function results and may not have "
+                    attr: 1
+                  - text: OUT
+                    attr: 2
+                  - text: " parameters.\rExample:\r\r\tPROCEDURE (t: T) Broadcast (msg: Message), NEW, EMPTY;\r\r"
+                    attr: 1
+                  - text: Method syntax
+                    attr: 2
+                  - text: "\rThe method syntax looks as follows:\r\r\tTBProc = PROCEDURE Receiver IdentDef [FormalPars] [Attribution].\r\r\tAttribution = [\",\" NEW] [\",\" (EXTENSIBLE | ABSTRACT | EMPTY)].\r\rNote that a pure client programmer never needs to write any of these attributes. The same is true for an implementor of a framework extension. Even the framework designer may save some time using these attributes, because they are an important part of the documentation that can be extracted automatically from the source code.\r\r"
+                    attr: 1
+                  - text: Implement-only export of methods
+                    attr: 2
+                  - text: "\rA method may now also be exported as "
+                    attr: 1
+                  - text: implement-only
+                    attr: 2
+                  - text: ", using the \"-\" export mark instead of the \"*\". Implement-only export means that the method may be implemented outside the defining module, but may not be called from there.\rWhether a method is exported normally or implement-only is decided when the method is first introduced ("
+                    attr: 1
+                  - text: NEW
+                    attr: 2
+                  - text: " method). Later extensions must use the same export mode if exported.\rImplement-only exported methods are called from within the module where a method is newly introduced; they go \"upwards\" in the module hierarchy (upcalls). For frameworks, the existence of such upcalls is typical. Implement-only export allows to prevent framework clients from violating the framework's invariants, while still making it possible to provide new implementations of the framework's types.\rEvery framework has two \"faces\": an interface for clients, and an interface for implementors, the so-called specialization interface. These two interfaces may overlap. Implement-only export allows to clearly label those parts of an interface that belong to the specialization interface only.\r\r"
+                    attr: 1
+                  - text: Super calls
+                    attr: 2
+                  - text: "\rBecause of the so-called semantic fragile base class problem, it is recommended to avoid super calls whenever possible. It is possible to design new software such that they are not needed, by relying on composition rather than on implementation inheritance. Super calls are considered to be an obsolete feature. For the time being, they are retained for backward compatibility. In the long run, support for super calls may be reduced.\r\r"
+                    attr: 1
+                  - text: Procedure types
+                    attr: 2
+                  - text: "\rProcedure types are less flexible than objects with methods. Even standard examples for procedure types in numerical software can benefit from modeling them as objects. Objects are extensible, procedure types are not. Procedure types can pose considerable implementation difficulties concerning the safe unloading of code. For these reasons, procedure types are considered as obsolete. For the time being, they are retained for backward compatibility and for implementation low-level interfacing code (callbacks). In the long run, support for super calls may be reduced.\r\r"
+                    attr: 1
+                  - text: ANYREC
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: ANYPTR
+                    attr: 2
+                  - text: "\rEach base record is implicitly regarded as an extension of the new abstract standard type "
+                    attr: 1
+                  - text: ANYREC
+                    attr: 2
+                  - text: ", even if it is declared without explicit base type. "
+                    attr: 1
+                  - text: ANYREC
+                    attr: 2
+                  - text: " is an empty record that forms the root of all record type hierarchies. "
+                    attr: 1
+                  - text: ANYPTR
+                    attr: 2
+                  - text: " is a new standard type that corresponds to a "
+                    attr: 1
+                  - text: POINTER TO ANYREC
+                    attr: 2
+                  - text: ".\rThese new types make it easier to achieve interoperability between independently developed frameworks, by allowing completely generic parameters.\rThe following pseudo definitions can be assumed:\r\r\tANYREC = ABSTRACT RECORD END;\r\r\tANYPTR = POINTER TO ANYREC;\r\r\tPROCEDURE (a: ANYPTR) FINALIZE-, NEW, EMPTY;\r\rThe "
+                    attr: 1
+                  - text: FINALIZE
+                    attr: 2
+                  - text: " procedure is empty. It can be implemented for a pointer type extension. The procedure is called at some unspecified time after the object has become unreachable via other pointers (not globally anchored anymore) and before the object is deallocated. Finalizers are needed to release resources that are not directly Component Pascal objects; e.g., file sectors, font handles, window pointers of the operating system, and so on.\rThe finalization order is not defined. An object is only finalized once.\r\r\r"
+                    attr: 1
+                  - text: String support
+                    attr: 0
+                  - text: "\r\r"
+                    attr: 1
+                  - text: Explicit string types
+                    attr: 2
+                  - text: "\rWe can distinguish a string value (the actual character values) from the variable in which it is contained (an array of character). Some operations in Component Pascal operate on the string value (e.g., comparison for equality), others operate on the container variable (e.g., assignment). A compiler can automatically derive which interpretation is needed in a given situation. Unfortunately, there are situations where both interpretations make sense. For example, passing an array of character to a value parameter (which is also an array of character) should be interpreted as an assignment. But often it is more efficient only to copy the string value in the actual parameter, rather than the whole array. Consider passing a Unix path name, declared as an array of character with 2048 elements, when it usually contains only a few dozen characters.\rIn Component Pascal, it can be made explicit that the programmer wants to work with the string value, rather than the character array variable. Selecting the string value in a variable is denoted with the $ operator; for example\r\r\tOpenFile(pathname$)\r\rwhere "
+                    attr: 1
+                  - text: OpenFile
+                    attr: 2
+                  - text: " is declared as\r\r\tPROCEDURE OpenFile (name: ARRAY 2048 CHAR)\r\rNote an additional benefit: it is now more attractive to declare character array parameters with a fixed number of elements, like in the above example. In Oberon, this is inconvenient since often the type of the actual parameter is not compatible with the formal parameter. Since string values are always compatible with character arrays, this problem vanishes in Component Pascal. This is important because it is more precise to specify a fixed size array when the array is known to be limited. Note that declaring an open array would be a contract to accept arrays of "
+                    attr: 1
+                  - text: any
+                    attr: 2
+                  - text: " length whatsoever (without ever leading to an out-of-range error at run-time!).\r\r"
+                    attr: 1
+                  - text: String concatenation
+                    attr: 2
+                  - text: "\rThe + operator now allows to concatenate strings. The target variable must be of sufficient length to hold the resulting string.\r\r"
+                    attr: 1
+                  - text: Elimination of COPY
+                    attr: 2
+                  - text: "\rThe auxiliary procedure "
+                    attr: 1
+                  - text: COPY
+                    attr: 2
+                  - text: " is not necessary anymore, since the $ operator makes it superfluous. For example,\r\r\tCOPY(a, varpar)\tis replaced by\tvarpar := a$\r\r\r"
+                    attr: 1
+                  - text: Specified domains of types
+                    attr: 0
+                  - text: "\r\rTo achieve fully portable code, it is necessary to fully specify the domains of all base types. The Component Pascal base types are a superset of the Java base types.\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 1368000 }
+                        - { stop: 2160000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "Type\tSize\tDomain\rSHORTCHAR\t1 byte\tLatin-1 character set\r\t\t(first Unicode page and a superset of ASCII)\rCHAR\t2 byte\tUnicode character set\rBYTE\t1 byte\tsigned integer\rSHORTINT\t2 byte\tsigned integer\rINTEGER\t4 byte\tsigned integer\rLONGINT\t8 byte\tsigned integer\rSHORTREAL\t32 bit\tIEEE\rREAL\t64 bit\tIEEE\rSET\t4 byte\tbitset\rBOOLEAN\t1 byte\tFALSE or TRUE\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "Type "
+                    attr: 1
+                  - text: LONGREAL
+                    attr: 2
+                  - text: " has been eliminated. Longreal literals have been eliminated; i.e., use 1.0E2 instead of 1.0D2. The identifier "
+                    attr: 1
+                  - text: LONGREAL
+                    attr: 2
+                  - text: " is reserved for possible future use. Real constants are always "
+                    attr: 1
+                  - text: REAL
+                    attr: 2
+                  - text: " (64 bit) values.\r\rHexadecimal integer constants now can be specified either as 4 byte (e.g., 0FFFFFFFFH) or 8 byte constants (e.g., 0FFFFFFFFFFFFFFFFL). This allows to distinguish negative "
+                    attr: 1
+                  - text: INTEGER
+                    attr: 2
+                  - text: " hex constants from positive "
+                    attr: 1
+                  - text: LONGINT
+                    attr: 2
+                  - text: " hex constants. For example, 0FFFFFFFF denotes -1 when interpreted as "
+                    attr: 1
+                  - text: INTEGER
+                    attr: 2
+                  - text: ", but 4294967295 when interpreted as a "
+                    attr: 1
+                  - text: LONGINT
+                    attr: 2
+                  - text: ".\rInteger constants are always "
+                    attr: 1
+                  - text: INTEGER
+                    attr: 2
+                  - text: " (4 byte) values. Assignment of an integer constant to a smaller type (e.g., "
+                    attr: 1
+                  - text: BYTE
+                    attr: 2
+                  - text: ") is legal if the constant lies within the range of the target type. Integer constants of other types can only be constructed using "
+                    attr: 1
+                  - text: SHORT
+                    attr: 2
+                  - text: " or "
+                    attr: 1
+                  - text: LONG
+                    attr: 2
+                  - text: ", except that sufficiently large constants automatically have type "
+                    attr: 1
+                  - text: LONGINT
+                    attr: 2
+                  - text: ".\r\rInteger arithmetic is now always performed with 32-bit precision, except for expressions that contain "
+                    attr: 1
+                  - text: LONGINT
+                    attr: 2
+                  - text: " values. In the latter case, 64-bit precision is used. This rule makes it less likely to produce hard-to-find overflows of intermediate results that are calculated at insufficient precision.\rFloating-point arithmetic is always perfomed at 64-bit precision.\r\r\r"
+                    attr: 1
+                  - text: Miscellaneous
+                    attr: 0
+                  - text: "\r\rThe semantics of DIV is strengthened, by specifying the result of divisions by negative numbers.\r\rThe new real value "
+                    attr: 1
+                  - text: INF
+                    attr: 2
+                  - text: " for infinity has been introduced. This value may be generated e.g. through floating-point division by zero. The meaning of infinity for floating-point numbers is defined by the IEEE standard for floating-point numbers.\r\rIt has been specified more comprehensively where pointer dereferencing is implicit. For example, it is now also available when passing a pointer variable to a record type formal parameter.\r\rRecord types can be declared as extensions of other record types by mentioning a pointer type as base type (instead of a record type). This makes the explicit naming of a record type superfluous, if the record variables are used via pointers only.\r\rWithin a scope, type names can be considered as forward-declared. This means that any type name can be used before it is declared. Old-style pointer forward declarations like "
+                    attr: 1
+                  - text: T = POINTER TO TDesc
+                    attr: 2
+                  - text: " are still allowed, since they are simply a special case of the new rule, but they are not necessary anymore.\r\r"
+                    attr: 1
+                  - text: BITS
+                    attr: 2
+                  - text: " is a new standard function that converts an "
+                    attr: 1
+                  - text: INTEGER
+                    attr: 2
+                  - text: " value to a "
+                    attr: 1
+                  - text: SET
+                    attr: 2
+                  - text: " value, such that BITS(1) yields {0}. For example, this allows to write more portable device drivers, since it doesn't depend on the processor's bit ordering (which differs for 68k and PowerPC, for example).\r\r"
+                    attr: 1
+                  - text: ORD
+                    attr: 2
+                  - text: " can now also be applied to "
+                    attr: 1
+                  - text: SET
+                    attr: 2
+                  - text: " values (inverse operation of "
+                    attr: 1
+                  - text: BITS
+                    attr: 2
+                  - text: ").\r\r"
+                    attr: 1
+                  - text: MIN
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: MAX
+                    attr: 2
+                  - text: " now also accept two parameters; e.g. "
+                    attr: 1
+                  - text: "real0 := MAX(someInt, real1)"
+                    attr: 2
+                  - text: ". They select the minimal/maximal values of the two inputs, which must be number types.\r\r"
+                    attr: 1
+                  - text: LEN
+                    attr: 2
+                  - text: " can also be used on string values. "
+                    attr: 1
+                  - text: LEN(chararray)
+                    attr: 2
+                  - text: " returns the length of the "
+                    attr: 1
+                  - text: chararray
+                    attr: 2
+                  - text: " variable, while "
+                    attr: 1
+                  - text: LEN(chararray$)
+                    attr: 2
+                  - text: " returns the length of the string value. Note that a character array must have at least one more element than the string value contains characters, to hold the terminating 0X character.\r\rDesignators are generalized to allow dereferencing etc. on a function result. For example, the following is now legal:\r\r\tlength := view.ThisModel()(TextModels.Model).Length() or\r\tview.Context().GetSize(w, h)\r\rThe relaxation of the designator syntax makes it easier to use methods instead of record fields. Methods are more flexible and make it simpler to implement wrappers (forwarding of method calls) than record fields do.\r\rGlobal variables, including heap variables allocated with "
+                    attr: 1
+                  - text: NEW
+                    attr: 2
+                  - text: ", now have a defined initial value (FALSE, 0X, 0, 0.0, {}, NIL, \"\"). Local (i.e., stack) variables are not initialized, except for pointers and procedure variables which are set to "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: " for safety reasons.\r\rAn appendix of the language report specifies the minimal environment requirements that any Component Pascal implementation must fulfill. In particular, commands, dynamic loading, and garbage collection are fundamental requirements for component-oriented systems. Like for all dynamic languages, this appendix acknowledges that the language cannot be regarded completely independently from its environment. The object model, whether assumed in the language definition or accessed as an external service, is always part of the environment.\r\rTo simplify interfacing of existing C libraries, underscores in identifiers are allowed.\r\rThe rules for export marks have been simplified compared to Oberon: An extending method must have exactly the same export mark as the method that it extends. The only exception occurs if the method is part of a non-exported record; in this case it may not be exported.\r\rA module now has an optional "
+                    attr: 1
+                  - text: CLOSE
+                    attr: 2
+                  - text: " section, after the "
+                    attr: 1
+                  - text: BEGIN
+                    attr: 2
+                  - text: " section. The close section is called before a module is unloaded. A module's "
+                    attr: 1
+                  - text: BEGIN
+                    attr: 2
+                  - text: " section is called after all the imported modules' "
+                    attr: 1
+                  - text: BEGIN
+                    attr: 2
+                  - text: " sections have been called. A module's CLOSE section may only be called after all the importing modules' CLOSE sections have been called.\r\rIn summary, you'll note that this revised language definition contains one major extension: a more expressive interface definition language (IDL) subset (NEW; EXTENSIBLE; ABSTRACT; LIMITED; EMPTY; implement-only export of methods) that makes it easier to specify architectural properties of a component framework.\rThe other points are mostly detail improvements based on a decade of experience in using the language. Particularly noteworthy are the more general and systematic treatment of strings and the new specification of the base type sizes.\r\r\r"
+                    attr: 1
+                  - text: Acknowledgements
+                    attr: 0
+                  - text: "\r\rI would like to thank Beat Heeb, Dominik Gruntz, Matthias Hausner, and Daniel Diez of Oberon microsystems for their valuable input. In particular, without Beat's work this endeavour would have been impossible. The most important external contributions came from Clemens Szyperski (Queensland University of Technology, Australia) and Wolfgang Weck (Åbo Akademi, Finland). Last but not least, I would like to thank Prof. Niklaus Wirth for commenting an early revision of the Component Pascal language report, and for having created such a great foundation.\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 17
+          bodyPos: 30953
+          bodyLen: 8

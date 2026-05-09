@@ -1,0 +1,190 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Com\\Docu\\EnumRect.odc"
+  size: 2824
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 2693
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 2507
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 2421
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 114300
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 17
+                bodyPos: 2542
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 2028
+                runListLen: 1086
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: "*"
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                  - # [4]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000002
+                flow:
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 0
+                      w: 360000000
+                      h: 444500
+                  - target:
+                      name: 7.6
+                      body:
+                        - text: ComEnumRect Example
+                          attr: 0
+                      attr: 0
+                      w: 150300
+                      h: 142875
+                  - text: "\r\r"
+                    attr: 0
+                  - text: "This is a simple example adapted form the same example in the book \"Inside OLE\". \r\rThe interface "
+                    attr: 1
+                  - text: IEnumRECT
+                    attr: 2
+                  - text: " (an enumerator for rectangles) is defined and implemented in this module.\rThe interface consists of the following four methods:\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      dsc: 25400
+                      grid: 1
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tIEnumRECT = POINTER TO ABSTRACT RECORD\r\t\t\t\t\t\t\t\t\t\t\t [\"{00021140-0000-0000-C000-000000000046}\"] (COM.IUnknown)\r\t\t(this: IEnumRECT) Next (num: INTEGER; OUT elem: ARRAY [untagged] OF WinApi.RECT; \r\t\t\t\t\t\t\t\t\t\t\t\t\tOUT [nil] fetched: INTEGER): COM.RESULT, NEW, ABSTRACT;\r\t\t(this: IEnumRECT) Skip (num: INTEGER): COM.RESULT, NEW, ABSTRACT\r\t\t(this: IEnumRECT) Reset (): COM.RESULT, NEW, ABSTRACT;\r\t\t(this: IEnumRECT) Clone (OUT enum: IEnumRECT): COM.RESULT, NEW, ABSTRACT;\r\tEND;\r\rFor the implementation, an array of length 15 is used.\rAs the interface is implemented in one record ("
+                    attr: 1
+                  - text: EnumRECT
+                    attr: 2
+                  - text: "), the default implementation for "
+                    attr: 1
+                  - text: QueryInterface
+                    attr: 2
+                  - text: " can be used.\r\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 2160000
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 2160000 }
+                        - { stop: 2196000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - link:
+                      target: "StdCmds.OpenDoc('Com/Mod/EnumRect')"
+                      body:
+                        - text: ComEnumRect  sources
+                          attr: 3
+                      attr: 3
+                      w: 131250
+                      h: 142875
+                  - text: "\r\x0e"
+                    attr: 4
+                  - text: "\t\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 21
+          bodyPos: 2789
+          bodyLen: 8

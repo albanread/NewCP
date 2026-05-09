@@ -1,0 +1,336 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Docu\\Buttons.odc"
+  size: 9078
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 8947
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 8761
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 8675
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 152400
+                dsc: 25400
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 10
+                bodyPos: 8675
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 8161
+                runListLen: 1010
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                flow:
+                  - text: "Overview by Example: ObxButtons"
+                    attr: 0
+                  - text: "\r\r"
+                    attr: 1
+                  - text: "This example demonstrates how new controls can be implemented. A control is a visual object that allows to control some behavior of another part of the program. Examples of controls are buttons, sliders, check boxes, etc. In contrast to full-fledged editors, a control only makes sense in concert with its container and other controls contained therein. With the BlackBox Component Builder, a control is a specialized view. A standard selection of important controls is provided by the BlackBox Component Builder, others can be implemented by third parties. This article shows an example of a simple button control implementation.\r\rOur example control has four properties: its current font, color, link, and label. The link is used by most BlackBox controls to bind them to some program elements. In our case, this program element is a Component Pascal command, i.e. an exported procedure. The label is the string displayed in the button.\r\rControl properties can be inspected and modified with the control property inspector (module "
+                    attr: 2
+                  - text: DevInspector
+                    attr: 3
+                  - text: "). To try this, select the control, and then use the "
+                    attr: 2
+                  - text: Properties...
+                    attr: 3
+                  - text: " command in submenu "
+                    attr: 2
+                  - text: Object
+                    attr: 3
+                  - text: " of menu "
+                    attr: 2
+                  - text: Edit
+                    attr: 3
+                  - text: " (Windows) / "
+                    attr: 2
+                  - text: Part Info
+                    attr: 3
+                  - text: " in menu "
+                    attr: 2
+                  - text: Edit
+                    attr: 3
+                  - text: " (Mac OS).\r\rWhat do we have to implement to make this control work? In the remainder of this text, we will go through various aspects of the control implementation as it is given in the corresponding listing. We will look at all the procedures which must be implemented for the control to work. As is typical for object- and component-oriented programming, these procedures are meant to be called by the environment, not by yourself. This is called the "
+                    attr: 2
+                  - text: Hollywood Principle of Object-Oriented Programming
+                    attr: 3
+                  - text: ": Don't call us, we call you.\r\rTypically, a control is embedded in a form. When the form is saved in a file, it gives all embedded controls the opportunity to externalize themselves. When the form is read from a file, the form allocates the controls and lets them internalize themselves. A control programmer needs to implement two procedures for this purpose: "
+                    attr: 2
+                  - text: Externalize
+                    attr: 3
+                  - text: " and "
+                    attr: 2
+                  - text: Internalize
+                    attr: 3
+                  - text: ". In the listing you can see that the auxiliary procedures "
+                    attr: 2
+                  - text: Views.WriteFont
+                    attr: 3
+                  - text: " and "
+                    attr: 2
+                  - text: Views.ReadFont
+                    attr: 3
+                  - text: " are used. They relieve you from the cumbersome task of writing or reading a font's typeface, size, style, and weight separately.\r\rTo support copying operations (e.g., cut and paste), a view must be able to copy its contents to an empty clone of itself. For this purpose, the "
+                    attr: 2
+                  - text: CopyFrom
+                    attr: 3
+                  - text: " procedure copies the state of an existing control ("
+                    attr: 2
+                  - text: source
+                    attr: 3
+                  - text: ") to a newly allocated but not yet initialized control.\r\rOur control must be able to redraw its outline and label, which is the purpose of the "
+                    attr: 2
+                  - text: Restore
+                    attr: 3
+                  - text: " procedure. It draws the label in the control's color and font. The label is horizontally centered. Note that the control doesn't need to draw the background, this is handled by the container. Only the foreground, i.e., the outline and the label are drawn.\r\rOf course, the control should also be able to perform some action when the user clicks in it. Mouse clicks and other interaction events are handled by a view's "
+                    attr: 2
+                  - text: HandleCtrlMsg
+                    attr: 3
+                  - text: " procedure. In our example, this procedure only reacts upon mouse-down messages (events). Other interactions such as key presses are not handled, in order to make the example as simple as possible.\rBasically, the procedure's implementation consist of a mouse tracking loop, which terminates when the user releases the (primary) mouse button. The loop is programmed such that the control's rectangle is inverted as long as the mouse is located over the control, and not inverted otherwise.\rIf the mouse is released over the control, the inversion is removed and the string in "
+                    attr: 2
+                  - text: v.link
+                    attr: 3
+                  - text: " passed to the "
+                    attr: 2
+                  - text: Dialog.Call
+                    attr: 3
+                  - text: " procedure. This procedure basically implements an interpreter for Component Pascal commands, i.e., strings such as \"Dialog.Beep\" can be executed at run-time.\r\rBlackBox predefines some standard system and control properties. The system properties are the ones that can be changed via the "
+                    attr: 2
+                  - text: Characters
+                    attr: 3
+                  - text: " menus ("
+                    attr: 2
+                  - text: Font
+                    attr: 3
+                  - text: ", "
+                    attr: 2
+                  - text: Attributes
+                    attr: 3
+                  - text: " menus on Mac OS), i.e., font and color. The control properties are the ones defined in module "
+                    attr: 2
+                  - text: Controls
+                    attr: 3
+                  - text: ", and changeable via the control property inspector. There is a message that BlackBox uses to poll a view's properties ("
+                    attr: 2
+                  - text: Properties.PollMsg
+                    attr: 3
+                  - text: "), and a message to modify a view's properties ("
+                    attr: 2
+                  - text: Properties.SetMsg
+                    attr: 3
+                  - text: "). Returning a control's properties is easy: allocate the suitable property descriptors ("
+                    attr: 2
+                  - text: Properties.StdProp
+                    attr: 3
+                  - text: " and "
+                    attr: 2
+                  - text: Controls.Prop
+                    attr: 3
+                  - text: "), assign their appropriate fields, i.e., "
+                    attr: 2
+                  - text: typeface
+                    attr: 3
+                  - text: ", "
+                    attr: 2
+                  - text: size
+                    attr: 3
+                  - text: ", "
+                    attr: 2
+                  - text: style
+                    attr: 3
+                  - text: " "
+                    attr: 2
+                  - text: weight
+                    attr: 3
+                  - text: ", "
+                    attr: 2
+                  - text: link
+                    attr: 3
+                  - text: ", and "
+                    attr: 2
+                  - text: label
+                    attr: 3
+                  - text: ", and signal that those are the valid properties that the control knows about. For the standard system properties, this is done in the auxiliary procedure "
+                    attr: 2
+                  - text: GetStdProp
+                    attr: 3
+                  - text: ". The other corresponding procedure "
+                    attr: 2
+                  - text: SetStdProp
+                    attr: 3
+                  - text: " is slightly more complicated, because for each property it must be tested whether it needs to be changed or retained. After all, the user may just have changed the control's color without changing the font.\rThe whole property handling is held together by the view's "
+                    attr: 2
+                  - text: HandlePropMsg
+                    attr: 3
+                  - text: " procedure, where the "
+                    attr: 2
+                  - text: PollMsg
+                    attr: 3
+                  - text: " and "
+                    attr: 2
+                  - text: SetMsg
+                    attr: 3
+                  - text: " messages are recognized. For "
+                    attr: 2
+                  - text: SetMsg
+                    attr: 3
+                  - text: ", all elements of its property list are traversed and existing system and control properties are picked out. This is done since obviously a control cannot set properties that it doesn't know.\rChanges of the control's properties are bracketed by calls to "
+                    attr: 2
+                  - text: Views.BeginModification
+                    attr: 3
+                  - text: " and "
+                    attr: 2
+                  - text: Views.EndModification
+                    attr: 3
+                  - text: ". These procedures tell the BlackBox Framework that some operation was performed that cannot be undone. Undo support would not be much more complicated, but still a bit overkill for this example here.\rThe calls to "
+                    attr: 2
+                  - text: Views.Update
+                    attr: 3
+                  - text: " signal that the control's visible area should be restored as soon as the current command has terminated.\rIn "
+                    attr: 2
+                  - text: HandlePropMsg
+                    attr: 3
+                  - text: ", the control also answers some preferences. Preferences are messages that a container view (e.g., a form) sends to its contained views (e.g., the controls). Their purpose is to customize the container's behavior according to its contents. A container is not obliged to ask embedded views for their preferences, but \"socially responsible\" containers (e.g., texts and forms) do so. For example, a control which doesn't yet have a defined width or height is asked for its preferred size ("
+                    attr: 2
+                  - text: Properties.SizeMsg
+                    attr: 3
+                  - text: "). With the "
+                    attr: 2
+                  - text: Properties.FocusPref
+                    attr: 3
+                  - text: " preference, a view can influence how it is treated when the mouse is clicked in it. Our control indicates that it is a "
+                    attr: 2
+                  - text: hot focus
+                    attr: 3
+                  - text: ", i.e. it releases its focus immediately after the mouse is released.\r\rFinally, the "
+                    attr: 2
+                  - text: New
+                    attr: 3
+                  - text: " procedure creates a new control, and the "
+                    attr: 2
+                  - text: Deposit
+                    attr: 3
+                  - text: " procedure deposits such a new control in a system queue of the BlackBox Framework. For example, the following command sequence can be used to put a new control into this queue:\r\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 6
+                      bodyPos: 1182
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: " \"ObxButtons.Deposit; StdCmds.PasteView\"\r\rAnd already we are through with the discussion of the whole control implementation! Even though we haven't addressed some more advanced issues such as keyboard shortcuts for controls, and how a control can be linked to program variables instead of commands, it still is a complete control implementation.\r\r"
+                    attr: 2
+                  - link:
+                      target: "StdCmds.OpenDoc('Obx/Mod/Buttons')"
+                      body:
+                        - text: ObxButtons  sources
+                          attr: 4
+                      attr: 2
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 2
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 14
+          bodyPos: 9043
+          bodyLen: 8

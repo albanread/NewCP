@@ -1,0 +1,188 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Comm\\Docu\\ObxStreamsServer.odc"
+  size: 2425
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 2294
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 2108
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 2022
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                asc: 152400
+                dsc: 25400
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 13
+                bodyPos: 2022
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 1508
+                runListLen: 797
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: CommObxStreamsServer
+                    attr: 0
+                  - text: "\r\rDEFINITION CommObxStreamsServer;\r\r\tPROCEDURE Start;\r\tPROCEDURE Stop;\r\rEND CommObxStreamsServer.\r\r\rThis module provides an example of how to program a server using "
+                    attr: 1
+                  - text: CommStreams
+                    attr: 2
+                  - text: ". A sample client is provided by the module "
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Comm/Docu/ObxStreamsClient', 'ObxStreamsClient')"
+                      body:
+                        - text: CommObxStreamsClient
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: ".\r\rThe server waits for a connect. Whenever a client requests a new connection a separate TextView is opened by the server and everything received through this connection is displayed in the TextView.\r\rPer machine only one server is permitted to run at a time.\r\rTry - to start / stop the server:\r"
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 8
+                      bodyPos: 912
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: " CommObxStreamsServer.Start\r"
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 9
+                      bodyPos: 958
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: " CommObxStreamsServer.Stop\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: Start
+                    attr: 4
+                  - text: "\rStarts the server.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Stop
+                    attr: 4
+                  - text: "\rStops the server.\r\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenDoc('Comm/Mod/ObxStreamsServer')"
+                      body:
+                        - text: open source
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 17
+          bodyPos: 2390
+          bodyLen: 8

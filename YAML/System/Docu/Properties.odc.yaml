@@ -1,0 +1,1270 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\System\\Docu\\Properties.odc"
+  size: 29947
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 29816
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 29630
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 29544
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                asc: 121900
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000003
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 6
+                bodyPos: 29544
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 29030
+                runListLen: 3126
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: Properties
+                    attr: 0
+                  - text: "\r\rDEFINITION Properties;\r\r\tIMPORT Fonts, Ports, Views, Controllers, Dialog;\r\r\tCONST\r\t\tcolor = 0; typeface = 1; size = 2; style = 3; weight = 4;\r\t\twidth = 0; height = 1;\r\t\tmaxVerbs = 16;\r\t\tnoMark = FALSE; mark = TRUE;\r\t\thide = FALSE; show = TRUE;\r\r\tTYPE\r\t\tProperty = POINTER TO ABSTRACT RECORD\r\t\t\tnext-: Property;\r\t\t\tknown: SET;\r\t\t\treadOnly: SET;\r\t\t\tvalid: SET;\r\t\t\t(p: Property) IntersectWith (q: Property; OUT equal: BOOLEAN)\r\t\tEND;\r\r\t\tStdProp = POINTER TO RECORD (Property)\r\t\t\tcolor: Dialog.Color;\r\t\t\ttypeface: Fonts.Typeface;\r\t\t\tsize: INTEGER;\r\t\t\tstyle: RECORD\r\t\t\t\t\t\tval, mask: SET\r\t\t\t\t\tEND;\r\t\t\tweight: INTEGER\r\t\tEND;\r\r\t\tSizeProp = POINTER TO RECORD (Property)\r\t\t\twidth, height: INTEGER\r\t\tEND;\r\r\r\t\tMessage = Views.PropMessage;\r\r\t\tPollMsg = RECORD (Message)\r\t\t\tprop: Property\r\t\tEND;\r\r\t\tSetMsg = RECORD (Message)\r\t\t\told, prop: Property\r\t\tEND;\r\r\r\t\tPreference = ABSTRACT RECORD (Message) END;\r\r\t\tResizePref = RECORD (Preference)\r\t\t\tfixed: BOOLEAN;\r\t\t\thorFitToPage: BOOLEAN;\r\t\t\tverFitToPage: BOOLEAN;\r\t\t\thorFitToWin: BOOLEAN;\r\t\t\tverFitToWin: BOOLEAN;\r\t\tEND;\r\r\t\tSizePref = RECORD (Preference)\r\t\t\tw, h: INTEGER;\r\t\t\tfixedH, fixedW: BOOLEAN\r\t\tEND;\r\r\t\tBoundsPref = RECORD (Preference)\r\t\t\tw, h: INTEGER\r\t\tEND;\r\r\t\tFocusPref = RECORD (Preference)\r\t\t\tatLocation: BOOLEAN;\r\t\t\tx, y: INTEGER;\r\t\t\thotFocus: BOOLEAN;\r\t\t\tsetFocus: BOOLEAN\r\t\tEND;\r\r\t\tControlPref = RECORD (Preference)\r\t\t\tchar: CHAR;\r\t\t\tfocus: Views.View;\r\t\t\tgetFocus: BOOLEAN;\r\t\t\taccepts: BOOLEAN\r\t\tEND;\r\r\t\tPollVerbMsg = RECORD (Message)\r\t\t\tverb: INTEGER;\r\t\t\tlabel: ARRAY 64 OF CHAR;\r\t\t\tdisabled, checked: BOOLEAN\r\t\tEND;\r\r\t\tDoVerbMsg = RECORD (Message)\r\t\t\tverb: INTEGER;\r\t\t\tframe: Views.Frame\r\t\tEND;\r\r\t\tCollectMsg = RECORD (Controllers.Message)\r\t\t\tpoll: PollMsg\r\t\tEND;\r\r\t\tEmitMsg = RECORD (Controllers.RequestMessage)\r\t\t\tset: SetMsg\r\t\tEND;\r\r\t\tPollPickMsg = RECORD (Controllers.TransferMessage)\r\t\t\tmark: BOOLEAN;\r\t\t\tshow: BOOLEAN;\r\t\t\tdest: Views.Frame\r\t\tEND;\r\r\t\tPickMsg = RECORD (Controllers.TransferMessage)\r\t\t\tprop: Property\r\t\tEND;\r\r\tVAR era-: INTEGER;\r\r\tPROCEDURE IncEra;\r\tPROCEDURE CollectProp (OUT prop: Property);\r\tPROCEDURE CollectStdProp (OUT prop: StdProp);\r\tPROCEDURE EmitProp (old, prop: Property);\r\tPROCEDURE PollPick (x, y: INTEGER; source: Views.Frame;\r\t\t\t\t\t\t\t\t\t\tsourceX, sourceY: INTEGER; mark, show: BOOLEAN;\r\t\t\t\t\t\t\t\t\t\tOUT dest: Views.Frame; OUT destX, destY: INTEGER);\r\tPROCEDURE Pick (x, y: INTEGER; source: Views.Frame; sourceX, sourceY: INTEGER;\r\t\t\t\t\t\t\t\t\tOUT prop: Property);\r\tPROCEDURE Insert (VAR list: Property; x: Property);\r\tPROCEDURE CopyOf (p: Property): Property;\r\tPROCEDURE CopyOfList (p: Property): Property;\r\tPROCEDURE Merge (VAR base, override: Property);\r\tPROCEDURE Intersect (VAR list: Property; x: Property; OUT equal: BOOLEAN);\r\tPROCEDURE IntersectSelections (a, aMask, b, bMask: SET; OUT c, cMask: SET;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT equal: BOOLEAN);\r\tPROCEDURE PreferredSize (v: Views.View; minW, maxW, minH, maxH,\r\t\t\t\t\t\t\t\t\t\t\t\tdefW, defH: INTEGER; VAR w, h: INTEGER);\r\tPROCEDURE ProportionalConstraint (scaleW, scaleH: INTEGER; \r\t\t\t\t\t\t\t\t\t\t\t\tfixedW, fixedH: BOOLEAN; VAR w, h: INTEGER);\r\tPROCEDURE GridConstraint (gridX, gridY: INTEGER; VAR x, y: INTEGER);\r\tPROCEDURE ThisType (view: Views.View; type: Stores.TypeName): Views.View;\r\rEND Properties.\r\r\rPractically every view has some state, and for much of that state it is desirable that the user can change it interactively. However, in an extensible system this means that for every new view at least one, or more likely several, new dialog boxes would have to be created, and would have to be learned by the user.\r\rIt is more economical for both programmer and user to have a generic and extensible way to deal with such state. Properties are provided for exactly this purpose, to communicate internal state to the user, and to communicate back any desired changes. They are the hooks for a general property editor.\r\rOf course, some interactions are optimized for convenience, thus the most important editing operations are also accessible in a more direct way: via typing or direct manipulation with the mouse. Furthermore, combinations of often-used properties can still be handled by a custom-tailored dialog, instead of a less specific general property editor. However, except where there are standard messages already defined by lower levels of the BlackBox framework, properties are the preferred way to implement such interactions.\r\rProperties are communicated via property messages. A particularly light-weight version of a property message is called a "
+                    attr: 1
+                  - text: Preference
+                    attr: 2
+                  - text: ": preferences inquire about a view's current preference, e.g., what its preferred size is. Preferences are normally used for the internal communication of an embedded view with its container, rather than with the user. Preferences are static message records, and a receiver should never change its state upon reception of such a message. These restrictions make preferences efficient and side-effect free, and thus easy to use.\r\rAs with all message records in BlackBox, property messages may, but need not, be handled.\r\r\rCONST "
+                    attr: 1
+                  - text: "color, typeface, size, style, weight"
+                    attr: 3
+                  - text: "\rWhen the focus view returns a "
+                    attr: 1
+                  - text: StdProp
+                    attr: 2
+                  - text: " property in the "
+                    attr: 1
+                  - text: CollectMsg
+                    attr: 2
+                  - text: ", the "
+                    attr: 1
+                  - text: StdProp.known
+                    attr: 2
+                  - text: ", the "
+                    attr: 1
+                  - text: StdProp.readOnly
+                    attr: 2
+                  - text: ", and the "
+                    attr: 1
+                  - text: StdProp.valid
+                    attr: 2
+                  - text: " sets may contain one or more of the above elements. If one of these elements is set in "
+                    attr: 1
+                  - text: StdProp.known
+                    attr: 2
+                  - text: ", the focus view knows about the corresponding property. If one of these elements is set in both "
+                    attr: 1
+                  - text: StdProp.valid
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: StdProp.known
+                    attr: 2
+                  - text: ", the focus view currently has an opinion about what the current value of this property is. These current values are returned in the other fields of "
+                    attr: 1
+                  - text: StdProp
+                    attr: 2
+                  - text: ". If one of these elements is set in both "
+                    attr: 1
+                  - text: StdProp.valid
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: StdProp.readOnly
+                    attr: 2
+                  - text: ", the focus view currently doesn't allow this property to be changed.\r\rCONST "
+                    attr: 1
+                  - text: "width, height"
+                    attr: 3
+                  - text: "\rWhen the focus view returns a "
+                    attr: 1
+                  - text: SizeProp
+                    attr: 2
+                  - text: " property in the "
+                    attr: 1
+                  - text: CollectMsg
+                    attr: 2
+                  - text: ", the "
+                    attr: 1
+                  - text: SizeProp.known
+                    attr: 2
+                  - text: " and the "
+                    attr: 1
+                  - text: SizeProp.valid
+                    attr: 2
+                  - text: " sets may contain one or more of these elements. If one of these elements is set in both "
+                    attr: 1
+                  - text: SizeProp.valid
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: SizeProp.known
+                    attr: 2
+                  - text: ", the "
+                    attr: 1
+                  - text: SizeProp
+                    attr: 2
+                  - text: " property contains the focus view's current width and height in the "
+                    attr: 1
+                  - text: width
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: height
+                    attr: 2
+                  - text: " fields.\r\rCONST "
+                    attr: 1
+                  - text: "noMark, mark"
+                    attr: 3
+                  - text: "\rThese values may be passed to the "
+                    attr: 1
+                  - text: mark
+                    attr: 2
+                  - text: " parameter of procedure "
+                    attr: 1
+                  - text: PollPick
+                    attr: 2
+                  - text: ". They denote whether the target feedback during drag & pick should be drawn or not.\r\rCONST "
+                    attr: 1
+                  - text: maxVerbs
+                    attr: 3
+                  - text: "\rMaximum number of verbs in a context menu.\r\rCONST "
+                    attr: 1
+                  - text: "hide, show"
+                    attr: 3
+                  - text: "\rThese values may be passed to the "
+                    attr: 1
+                  - text: show
+                    attr: 2
+                  - text: " parameter of procedure "
+                    attr: 1
+                  - text: PollPick
+                    attr: 2
+                  - text: ". They denote whether the target feedback during drag & pick should be shown or hidden. This parameter is only relevant if "
+                    attr: 1
+                  - text: mark
+                    attr: 2
+                  - text: " holds.\r\r\rTYPE "
+                    attr: 1
+                  - text: Property
+                    attr: 3
+                  - text: "\rABSTRACT\rProperties are a general mechanism to get and set attributes of a view from its environment. A view may know about attributes such as font, color, size, and arbitrary other attributes. Properties may be extended only "
+                    attr: 1
+                  - text: once
+                    attr: 2
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: next
+                    attr: 3
+                  - text: "-: Property\rProperties are connected in a list, implemented by the "
+                    attr: 1
+                  - text: next
+                    attr: 2
+                  - text: " field.\r\r"
+                    attr: 1
+                  - text: known
+                    attr: 3
+                  - text: ": SET\rEach property record may describe up to 32 different attributes. These attributes are numbered from 0..31. The "
+                    attr: 1
+                  - text: know
+                    attr: 2
+                  - text: "n field tells which of these attributes are known to the view which responds to the "
+                    attr: 1
+                  - text: CollectMsg
+                    attr: 2
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: readOnly
+                    attr: 3
+                  - text: ": SET\treadOnly - known = {}\rEach known attribute may currently be read-only, i.e., not modifiable. The "
+                    attr: 1
+                  - text: readOnly
+                    attr: 2
+                  - text: " field tells which of the attributes are currently read-only.\rThe "
+                    attr: 1
+                  - text: readOnly
+                    attr: 2
+                  - text: " set must be a subset of the "
+                    attr: 1
+                  - text: known
+                    attr: 2
+                  - text: " set, i.e., no attribute can be read-only and unknown simultaneously.\r\r"
+                    attr: 1
+                  - text: valid
+                    attr: 3
+                  - text: ": SET\tvalid - known = {}\rEach known attribute may currently be undefined. This happens particularly when properties of multiple objects are collected together and some attributes differ from object to object (property with mixed values).\rThe "
+                    attr: 1
+                  - text: valid
+                    attr: 2
+                  - text: " field tells which of the attributes are currently defined. Their current values should be represented by further fields of the specific property record, e.g., field "
+                    attr: 1
+                  - text: color
+                    attr: 2
+                  - text: " in "
+                    attr: 1
+                  - text: StdProp
+                    attr: 2
+                  - text: " corresponds to element 0 in the "
+                    attr: 1
+                  - text: valid
+                    attr: 2
+                  - text: " set, field "
+                    attr: 1
+                  - text: typeface
+                    attr: 2
+                  - text: " to the element 1, etc.\rThe "
+                    attr: 1
+                  - text: valid
+                    attr: 2
+                  - text: " set must be a subset of the "
+                    attr: 1
+                  - text: known
+                    attr: 2
+                  - text: " set; i.e., no attribute can be valid and unknown simultaneously.\rAdditionally "
+                    attr: 1
+                  - text: valid
+                    attr: 2
+                  - text: " is used to specify which attributes should change if a property record is sent to an object.\r\rPROCEDURE (p: Property) "
+                    attr: 1
+                  - text: IntersectWith
+                    attr: 3
+                  - text: " (q: Property; OUT equal: BOOLEAN)\rA property record "
+                    attr: 1
+                  - text: p
+                    attr: 2
+                  - text: " must be able to compare itself with another property record "
+                    attr: 1
+                  - text: q
+                    attr: 2
+                  - text: ". If all attributes in "
+                    attr: 1
+                  - text: p
+                    attr: 2
+                  - text: " have the same values as in "
+                    attr: 1
+                  - text: q
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: equal
+                    attr: 2
+                  - text: " should be set to "
+                    attr: 1
+                  - text: "TRUE"
+                    attr: 2
+                  - text: ". Otherwise "
+                    attr: 1
+                  - text: p
+                    attr: 2
+                  - text: " should be set to the intersection of "
+                    attr: 1
+                  - text: p
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: q
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: equal
+                    attr: 2
+                  - text: " should be set to "
+                    attr: 1
+                  - text: "FALSE"
+                    attr: 2
+                  - text: ". The intersection is built by excluding all differing attributes from the valid set. It can be assumed that the type of "
+                    attr: 1
+                  - text: p
+                    attr: 2
+                  - text: " is exactly the same as the type of "
+                    attr: 1
+                  - text: q
+                    attr: 2
+                  - text: ".\r"
+                    attr: 1
+                  - text: IntersectWith
+                    attr: 2
+                  - text: " must maintain the "
+                    attr: 1
+                  - text: Property
+                    attr: 2
+                  - text: " invariant that "
+                    attr: 1
+                  - text: valid
+                    attr: 2
+                  - text: " is a subset of "
+                    attr: 1
+                  - text: known
+                    attr: 2
+                  - text: "; otherwise it is not interested in "
+                    attr: 1
+                  - text: known
+                    attr: 2
+                  - text: ".\rAs an example, see the implementation of "
+                    attr: 1
+                  - text: StdProp.IntersectWith
+                    attr: 2
+                  - text: " below.\r\r\rTYPE "
+                    attr: 1
+                  - text: StdProp (Property)
+                    attr: 3
+                  - text: "\rThese are the standard attributes known to any BlackBox implementation. They encompass font attributes as well as color.\r\r"
+                    attr: 1
+                  - text: color
+                    attr: 3
+                  - text: ": Dialog.Color\tvalid iff constant "
+                    attr: 1
+                  - text: color IN StdProp.valid
+                    attr: 2
+                  - text: "\rCurrent color.\r\r"
+                    attr: 1
+                  - text: typeface
+                    attr: 3
+                  - text: ": Fonts.Typeface\tvalid iff constant "
+                    attr: 1
+                  - text: typeface IN StdProp.valid
+                    attr: 2
+                  - text: "\rCurrent typeface.\r\r"
+                    attr: 1
+                  - text: size
+                    attr: 3
+                  - text: ": INTEGER\tvalid iff constant "
+                    attr: 1
+                  - text: size IN StdProp.valid
+                    attr: 2
+                  - text: "\rCurrent size. It usually, but not necessarily, refers to a font's size.\r\r"
+                    attr: 1
+                  - text: style
+                    attr: 3
+                  - text: ": RECORD\tvalid iff constant "
+                    attr: 1
+                  - text: style IN StdProp.valid
+                    attr: 2
+                  - text: "\r\t\t\t\t\t\t\t\tstyle IN StdProp.valid => StdProp.style.mask # {}\r\t\t\t\t\t\t\t\tStdProp.style.val - StdProp.style.mask = {}\t(* val is subset of mask *)\rCurrent style. Field "
+                    attr: 1
+                  - text: style.mask
+                    attr: 2
+                  - text: " denotes which style flags are valid, "
+                    attr: 1
+                  - text: style.val
+                    attr: 2
+                  - text: " denotes which of the valid flags are currently set.\r\r"
+                    attr: 1
+                  - text: weight
+                    attr: 3
+                  - text: ": INTEGER\tvalid iff constant "
+                    attr: 1
+                  - text: weight IN StdProp.valid
+                    attr: 2
+                  - text: "\rCurrent font weight.\r\r\tPROCEDURE (p: StdProp) IntersectWith* (q: Property; OUT equal: BOOLEAN);\r\t\tVAR valid: SET; c, m: SET; eq: BOOLEAN;\r\tBEGIN\r\t\tWITH q: StdProp DO\r\t\t\tequal := TRUE;\r\t\t\tvalid := p.valid * q.valid;\r\t\t\t IF p.color.val # q.color.val THEN EXCL(valid, color) END;\r\t\t\t IF p.typeface # q.typeface THEN EXCL(valid, typeface) END;\r\t\t\t IF p.size # q.size THEN EXCL(valid, size) END;\r\t\t\t IntersectSelections(p.style.val, p.style.mask, q.style.val, q.style.mask, c, m, eq);\r\t\t\t IF m = {} THEN\r\t\t\t\tEXCL(valid, style)\r\t\t\tELSIF (style IN valid) & ~eq THEN\r\t\t\t\tp.style.mask := m; equal := FALSE\r\t\t\tEND;\r\t\t\t IF p.weight # q.weight THEN EXCL(valid, weight) END;\r\t\t\t IF p.valid # valid THEN p.valid := valid; equal := FALSE END\r\t\tEND\r\tEND IntersectWith;\r\r\rTYPE "
+                    attr: 1
+                  - text: SizeProp (Property)
+                    attr: 3
+                  - text: "\rThis property record represents the size of a rectangular area, e.g., of a view.\r\r"
+                    attr: 1
+                  - text: width
+                    attr: 3
+                  - text: ": INTEGER\tvalid iff constant "
+                    attr: 1
+                  - text: width IN SizeProp.valid
+                    attr: 2
+                  - text: "\rThe current width in universal units.\r\r"
+                    attr: 1
+                  - text: height
+                    attr: 3
+                  - text: ": INTEGER\tvalid iff constant "
+                    attr: 1
+                  - text: height IN SizeProp.valid
+                    attr: 2
+                  - text: "\rThe current height in universal units.\r\r\rTYPE "
+                    attr: 1
+                  - text: Message
+                    attr: 3
+                  - text: "\rABSTRACT\rBase type of all property messages.\r\r\rTYPE "
+                    attr: 1
+                  - text: PollMsg (Message)
+                    attr: 3
+                  - text: "\rThis message is sent to get the receiving view's properties. The receiver should return the properties of "
+                    attr: 1
+                  - text: all
+                    attr: 2
+                  - text: " its contents, not only the selection.\r\r"
+                    attr: 1
+                  - text: prop
+                    attr: 3
+                  - text: ": Property\rThe list of returned properties which may be modified. No property exists twice in such a list.\r\r\rTYPE "
+                    attr: 1
+                  - text: SetMsg (Message)
+                    attr: 3
+                  - text: "\rThis message is sent to set the receiving view's properties. The properties' "
+                    attr: 1
+                  - text: known
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: readOnly
+                    attr: 2
+                  - text: " fields are not used and thus not defined in this case. The receiver should set the properties of "
+                    attr: 1
+                  - text: all
+                    attr: 2
+                  - text: " its contents, not only the selection.\r\r"
+                    attr: 1
+                  - text: old
+                    attr: 3
+                  - text: ": Property\rThis list is provided for modifications of the kind \"replace old by new\", e.g., \"replace typeface Helvetica by Times\". Can be "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: prop
+                    attr: 3
+                  - text: ": Property\rThe list of properties to be changed. No property may exist twice in the list.\r\r\rTYPE "
+                    attr: 1
+                  - text: Preference (Message)
+                    attr: 3
+                  - text: "\rABSTRACT\rPreferences are special property messages. They are normally used for the communication between an embedded view and its container. They should operate as functions, i.e. the receiver should return values, but never change its state.\r\r\rTYPE "
+                    attr: 1
+                  - text: ResizePref (Preference)
+                    attr: 3
+                  - text: "\rThe receiver of this message can indicate that it doesn't wish to be resized, by setting "
+                    attr: 1
+                  - text: fixed
+                    attr: 2
+                  - text: " to "
+                    attr: 1
+                  - text: "TRUE"
+                    attr: 2
+                  - text: ". A fixed size view doesn't show resize handled when it is selected as a singleton.\rFor the root view in a document or window the fields "
+                    attr: 1
+                  - text: horFitToPage
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: verFitToPage
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: horFitToWin
+                    attr: 2
+                  - text: ", and "
+                    attr: 1
+                  - text: verFitToWin
+                    attr: 2
+                  - text: " can be used to enforce automatic adaptation of the view size to the actual window or page size. For embedded views, these four flags have "
+                    attr: 1
+                  - text: "no"
+                    attr: 2
+                  - text: " effect, in contrast to "
+                    attr: 1
+                  - text: fixed
+                    attr: 2
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: fixed
+                    attr: 3
+                  - text: ": BOOLEAN\tfixed => ~horFitToPage & ~verFitToPage & ~horFitToWin & ~verFitToWin\r(view => caller, preset to FALSE)\rCan be set to indicate that the receiver's size should remain the same.\r\r"
+                    attr: 1
+                  - text: horFitToPage
+                    attr: 3
+                  - text: ": BOOLEAN\thorFitToPage => ~horFitToWin\r(view => caller, preset to FALSE)\rCan be set to indicate that the receiver's width should be adapted to the actual page width.\r\r"
+                    attr: 1
+                  - text: verFitToPage
+                    attr: 3
+                  - text: ": BOOLEAN\tverFitToPage => ~verFitToWin\r(view => caller, preset to FALSE)\rCan be set to indicate that the receiver's height should be adapted to the actual page height.\r\r"
+                    attr: 1
+                  - text: horFitToWin
+                    attr: 3
+                  - text: ": BOOLEAN\thorFitToWin => ~horFitToPage\r(view => caller, preset to FALSE)\rCan be set to indicate that the receiver's width should be adapted to the actual window width.\r\r"
+                    attr: 1
+                  - text: verFitToWin
+                    attr: 3
+                  - text: ": BOOLEAN\tverFitToWin => ~verFitToPage\r(view => caller, preset to FALSE)\rCan be set to indicate that the receiver's height should be adapted to the actual window height.\r\r\rTYPE "
+                    attr: 1
+                  - text: SizePref (Preference)
+                    attr: 3
+                  - text: "\rThe sender of this message proposes a size for the receiving view; the size may be "
+                    attr: 1
+                  - text: Views.undefined
+                    attr: 2
+                  - text: ". The receiving view may override the proposal, e.g., in order to establish constraints between its width and height. The procedures "
+                    attr: 1
+                  - text: ProportionalConstraint
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: GridConstraint
+                    attr: 2
+                  - text: " are useful standard implementations of constraints.\rProcedure "
+                    attr: 1
+                  - text: PreferredSize
+                    attr: 2
+                  - text: " implements the caller's side of the protocol, i.e., fills out, sends, and interprets a "
+                    attr: 1
+                  - text: SizeMsg
+                    attr: 2
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: "w, h"
+                    attr: 3
+                  - text: ": INTEGER\t(w = Views.undefined) = (h = Views.undefined)\r(view => caller, preset to "
+                    attr: 1
+                  - text: Views.undefined
+                    attr: 2
+                  - text: " if view is new or to caller's preference otherwise)\rDesired width and height. Either both values are preset to "
+                    attr: 1
+                  - text: Views.undefined
+                    attr: 2
+                  - text: ", or none of them.\r\r"
+                    attr: 1
+                  - text: "fixedH, fixedW"
+                    attr: 3
+                  - text: ": BOOLEAN\r(caller => view)\rThese values are set up when the message is sent, to indicate whether height or width of the view should remain fixed. This can be used e.g. to keep a view's proportions, by adapting the width if the height is fixed, and vice versa. (See procedure "
+                    attr: 1
+                  - text: ProportionalConstraint
+                    attr: 2
+                  - text: ")\r\r\rTYPE "
+                    attr: 1
+                  - text: BoundsPref (Preference)
+                    attr: 3
+                  - text: "\rThe receiving view should compute its bounding box, or, if this is too expensive to do, it should return an approximation of or a suggested substitute for the true bounding box.\rViews that can display part of their contents, e.g., by supporting scrolling in one or both directions, will handle "
+                    attr: 1
+                  - text: BoundsPref
+                    attr: 2
+                  - text: " very differently from "
+                    attr: 1
+                  - text: SizePref
+                    attr: 2
+                  - text: ". While "
+                    attr: 1
+                  - text: SizePref
+                    attr: 2
+                  - text: " relates to constraints and preferences of the size of the current view onto the model, "
+                    attr: 1
+                  - text: BoundsPref
+                    attr: 2
+                  - text: " should compute the size the view would need to take to just fully display all of the model. For very large or complex models (such as uncast text running over many pages) this can be a very costly operation and therefore it is anticipated that views may return an approximation of a bounding size, or an alternate suggestion, such as a size that is \"quite big\" but no bigger than the model.\r\r"
+                    attr: 1
+                  - text: "w, h"
+                    attr: 3
+                  - text: ": INTEGER\r(view => caller, preset to "
+                    attr: 1
+                  - text: Views.undefined
+                    attr: 2
+                  - text: ")\rPreferred width and height.\r\r\rTYPE "
+                    attr: 1
+                  - text: FocusPref (Preference)
+                    attr: 3
+                  - text: "\rA view can indicate if it doesn't want to become focus permanently, e.g., a button. It may even decide so depending on where the mouse has been clicked.\r\r"
+                    attr: 1
+                  - text: atLocation
+                    attr: 3
+                  - text: ": BOOLEAN\r(caller => view)\rThis flag is set if the receiver would become focus through a mouse click.\r\r"
+                    attr: 1
+                  - text: "x, y"
+                    attr: 3
+                  - text: ": INTEGER\t[units]\r(caller => view, valid iff atLocation)\rPosition of mouse click relative to the receiving view's top-left corner.\r\r"
+                    attr: 1
+                  - text: hotFocus
+                    attr: 3
+                  - text: ": BOOLEAN\r(view => caller, preset to FALSE)\rThe receiver can set this flag to indicate that the view should release its focus immediately after the mouse is released. Command buttons are typical hot foci.\r\r"
+                    attr: 1
+                  - text: setFocus
+                    attr: 3
+                  - text: ": BOOLEAN\r(view => caller, preset to FALSE)\rThe receiver can set this flag to indicate that the view should become focus when the mouse is clicked inside (otherwise the view may become selected immediately, e.g., to be dragged & dropped). "
+                    attr: 1
+                  - text: setFocus
+                    attr: 2
+                  - text: " should be set for all true editors, such that context-sensitive menu commands can be attached to the view.\r\r\rTYPE "
+                    attr: 1
+                  - text: ControlPref (Preference)
+                    attr: 3
+                  - text: "\rA view can indicate its preferred behavior if it is embedded in a dialog (i.e., a container in mask mode, -> Containers) and a key is pressed.\rThe "
+                    attr: 1
+                  - text: ControlPref
+                    attr: 2
+                  - text: " message is sent first to the actual focus view and then to all other views in the container until one of the views sets either the "
+                    attr: 1
+                  - text: getFocus
+                    attr: 2
+                  - text: " or the "
+                    attr: 1
+                  - text: accepts
+                    attr: 2
+                  - text: " bit or both. If none of the views respond to the message, the character is forwarded to the focus view.\r\r"
+                    attr: 1
+                  - text: char
+                    attr: 3
+                  - text: ": CHAR\r(caller => view)\rThe key which was pressed.\r\r"
+                    attr: 1
+                  - text: focus
+                    attr: 3
+                  - text: ": Views.View\r(caller => view)\rThe actual focus view.\r\r"
+                    attr: 1
+                  - text: getFocus
+                    attr: 3
+                  - text: ": BOOLEAN\r(view => caller, valid if (view # focus), preset to (char = tab) )\rIndicates that the view wants to become the focus view.\r\r"
+                    attr: 1
+                  - text: accepts
+                    attr: 3
+                  - text: ": BOOLEAN\r(view => caller, preset to ((view = focus) & (char # tab)) )\rThis flag should be set if the receiver would accept and interpret "
+                    attr: 1
+                  - text: char
+                    attr: 2
+                  - text: " to invoke some action.\rThe character is sent to the view in a separate "
+                    attr: 1
+                  - text: Edit
+                    attr: 2
+                  - text: " message.\r\r\rTYPE "
+                    attr: 1
+                  - text: PollVerbMsg (Message)
+                    attr: 3
+                  - text: "\rMessage used to ask a view whether it supports custom verbs. A verb is some kind of action that the user can apply to a view and that is shown in a popup-menu.\r\r"
+                    attr: 1
+                  - text: verb
+                    attr: 3
+                  - text: ": INTEGER\tverb >= 0\t(IN)\r(caller => view)\rThe index of the verb to be polled.\r\r"
+                    attr: 1
+                  - text: label
+                    attr: 3
+                  - text: ": ARRAY 64 OF CHAR\r(view => caller, preset to \"\")\rDisplayed label of the verb.\r\r"
+                    attr: 1
+                  - text: disabled
+                    attr: 3
+                  - text: ": BOOLEAN\r(view => caller, preset to FALSE)\rIndicates whether verb is enabled or disabled.\r\r"
+                    attr: 1
+                  - text: checked
+                    attr: 3
+                  - text: ": BOOLEAN\r(view => caller, preset to FALSE)\rIndicates whether verb is unchecked or checked.\r\r\rTYPE "
+                    attr: 1
+                  - text: DoVerbMsg (Message)
+                    attr: 3
+                  - text: "\rExecute a particular custom verb.\r\r"
+                    attr: 1
+                  - text: verb
+                    attr: 3
+                  - text: ": INTEGER\r(caller => view)\rThe verb to be executed.\r\r"
+                    attr: 1
+                  - text: frame
+                    attr: 3
+                  - text: ": Views.Frame\r(caller => verb)\rThe frame of the view where the verb was invoked by the user.\r\r\rTYPE "
+                    attr: 1
+                  - text: CollectMsg (Controllers.Message)
+                    attr: 3
+                  - text: "\rThis controller message is sent along the focus path, to poll the properties of the innermost focus view's selection or caret, i.e., unlike "
+                    attr: 1
+                  - text: PollMsg
+                    attr: 2
+                  - text: " it does not return the properties of the whole contents.\r\r"
+                    attr: 1
+                  - text: poll
+                    attr: 3
+                  - text: ": PollMsg\r\r\rTYPE "
+                    attr: 1
+                  - text: EmitMsg (Controllers.RequestMessage)
+                    attr: 3
+                  - text: "\rThis controller message is sent along the focus path, to set the properties of the innermost focus view's selection or caret, i.e., unlike "
+                    attr: 1
+                  - text: SetMsg
+                    attr: 2
+                  - text: " it does not set the properties of the whole contents.\r\r"
+                    attr: 1
+                  - text: set
+                    attr: 3
+                  - text: ": SetMsg\r\r\rTYPE "
+                    attr: 1
+                  - text: PollPickMsg (Controllers.TransferMessage)
+                    attr: 3
+                  - text: "\rWhile an item is being dragged around for the purpose of picking properties (BlackBox's Drag & Pick mechanism), "
+                    attr: 1
+                  - text: PollPickMsgs
+                    attr: 2
+                  - text: " are sent to enable feedback about the pick target. Note that this is similar to the role of "
+                    attr: 1
+                  - text: Controllers.PollDropMsg
+                    attr: 2
+                  - text: " for Drag & Drop.\r\r"
+                    attr: 1
+                  - text: mark
+                    attr: 3
+                  - text: ": BOOLEAN\rA container which supports pick feedback should show (hide) its feedback mark when mark is set (cleared). You don't need to deal with the view's border mark (the rectangular outline of the view which is drawn while you are dragging over a view), this is handled completely by BlackBox itself through its container abstraction.\r\r"
+                    attr: 1
+                  - text: show
+                    attr: 3
+                  - text: ": BOOLEAN\rIndicates whether the mark should be drawn or removed.\r\r"
+                    attr: 1
+                  - text: dest
+                    attr: 3
+                  - text: ": Views.Frame\rThe receiver should set dest to its own frame, if it would accept a pick.\r\r\rTYPE "
+                    attr: 1
+                  - text: PickMsg (Controllers.TransferMessage)
+                    attr: 3
+                  - text: "\rExtension\rThis message is used if properties are to be picked from the cursor's location. Note that this is similar to the "
+                    attr: 1
+                  - text: Controllers.DropMsg
+                    attr: 2
+                  - text: " for Drag & Drop.\r\r"
+                    attr: 1
+                  - text: prop
+                    attr: 3
+                  - text: ": Property\rThe receiver should set prop to the properties at the cursor's location.\r\r\rVAR "
+                    attr: 1
+                  - text: era
+                    attr: 3
+                  - text: "-: INTEGER\tpropEra >= 0\rThis variable is used by BlackBox to determine whether the focus view's properties may have changed.\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: IncEra
+                    attr: 3
+                  - text: "\rIncrements "
+                    attr: 1
+                  - text: era
+                    attr: 2
+                  - text: ". This procedure should be called whenever one or several properties of a view have changed. As a response, the system will eventually send a "
+                    attr: 1
+                  - text: PollMsg
+                    attr: 2
+                  - text: " to get the new properties, e.g., to reflect them in the menus or in a property editor.\r\rPost\rera = era' + 1\r\rPROCEDURE "
+                    attr: 1
+                  - text: CollectProp
+                    attr: 3
+                  - text: " (OUT prop: Property)\rPoll focus view's properties.\r\rPROCEDURE "
+                    attr: 1
+                  - text: CollectStdProp
+                    attr: 3
+                  - text: " (OUT prop: StdProp)\rPoll focus view's standard properties.\r\rPROCEDURE "
+                    attr: 1
+                  - text: EmitProp
+                    attr: 3
+                  - text: " (old, prop: Property)\rSet focus view's properties to "
+                    attr: 1
+                  - text: prop
+                    attr: 2
+                  - text: ". If "
+                    attr: 1
+                  - text: old
+                    attr: 2
+                  - text: " is not "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: ", only the properties corresponding to "
+                    attr: 1
+                  - text: old
+                    attr: 2
+                  - text: " are replaced by their "
+                    attr: 1
+                  - text: prop
+                    attr: 2
+                  - text: " counterparts.\r\rPROCEDURE "
+                    attr: 1
+                  - text: PollPick
+                    attr: 3
+                  - text: " (x, y: INTEGER; source: Views.Frame;\r\t\t\t\t\t\t\t\t\t\tsourceX, sourceY: INTEGER; mark, show: BOOLEAN;\r\t\t\t\t\t\t\t\t\t\tOUT dest: Views.Frame; OUT destX, destY: INTEGER)\rControl pick feedback at location "
+                    attr: 1
+                  - text: "(x, y)"
+                    attr: 2
+                  - text: " relative to the coordinates of source, by sending a "
+                    attr: 1
+                  - text: PollPickMsg
+                    attr: 2
+                  - text: " "
+                    attr: 1
+                  - text: msg
+                    attr: 2
+                  - text: ". Presets "
+                    attr: 1
+                  - text: msg.dest
+                    attr: 2
+                  - text: " to "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: msg.mark
+                    attr: 2
+                  - text: " to "
+                    attr: 1
+                  - text: mark
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: msg.show
+                    attr: 2
+                  - text: " to "
+                    attr: 1
+                  - text: show
+                    attr: 2
+                  - text: ", and calls "
+                    attr: 1
+                  - text: "Controllers.Transfer(x, y, source, sourceX, sourceY, msg)"
+                    attr: 2
+                  - text: ". Returns "
+                    attr: 1
+                  - text: msg.dest
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: msg.destX
+                    attr: 2
+                  - text: ", and "
+                    attr: 1
+                  - text: msg.destY
+                    attr: 2
+                  - text: " in "
+                    attr: 1
+                  - text: dest
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: destX
+                    attr: 2
+                  - text: ", and "
+                    attr: 1
+                  - text: destY
+                    attr: 2
+                  - text: ", respectively.\r \rPre\rsource # NIL   20\r\rPROCEDURE "
+                    attr: 1
+                  - text: Pick
+                    attr: 3
+                  - text: " (x, y: INTEGER; source: Views.Frame;\r\t\t\t\t\t\t\t\tsourceX, sourceY: INTEGER; OUT prop: Property)\rPick properties at location "
+                    attr: 1
+                  - text: "(x, y)"
+                    attr: 2
+                  - text: " relative to the coordinates of source, by sending a "
+                    attr: 1
+                  - text: PickMsg
+                    attr: 2
+                  - text: " "
+                    attr: 1
+                  - text: msg
+                    attr: 2
+                  - text: ". Presets "
+                    attr: 1
+                  - text: msg.prop
+                    attr: 2
+                  - text: " to "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: " and calls "
+                    attr: 1
+                  - text: "Controllers.Transfer(x, y, source, sourceX, sourceY, msg)"
+                    attr: 2
+                  - text: ". Returns "
+                    attr: 1
+                  - text: msg.prop
+                    attr: 2
+                  - text: " in "
+                    attr: 1
+                  - text: prop
+                    attr: 2
+                  - text: ".\r\rPROCEDURE "
+                    attr: 1
+                  - text: Insert
+                    attr: 3
+                  - text: " (VAR list: Property; x: Property)\rInsert new property record "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: " in list "
+                    attr: 1
+                  - text: list
+                    attr: 2
+                  - text: ". A property whose type is already in the list replaces the property in the list. The dynamic type of "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: " must be a direct extension of type "
+                    attr: 1
+                  - text: Property
+                    attr: 2
+                  - text: ".\r\rPre\rx # NIL   20\rx.next = NIL   21\rx # list   22\rx.valid - x.known = {}   23\rlist # NIL\r   list.valid - list.known = {}   24\r   extension-level(list) = 1   25\rextension-level(x) = 1   26\r\rPROCEDURE "
+                    attr: 1
+                  - text: CopyOf
+                    attr: 3
+                  - text: " (p: Property): Property\rReturns a copy of the property "
+                    attr: 1
+                  - text: "p "
+                    attr: 2
+                  - text: "(not of the entire list!). The dynamic types of every property in"
+                    attr: 1
+                  - text: p
+                    attr: 2
+                  - text: " must be a direct extension of type "
+                    attr: 1
+                  - text: Property
+                    attr: 2
+                  - text: ".\r\rPre\rextension-level(p) = 1   20\r\rPROCEDURE "
+                    attr: 1
+                  - text: CopyOfList
+                    attr: 3
+                  - text: " (p: Property): Property\rReturns a copy of the property list "
+                    attr: 1
+                  - text: p
+                    attr: 2
+                  - text: . The dynamic types of every property in
+                    attr: 1
+                  - text: p
+                    attr: 2
+                  - text: " must be a direct extension of type "
+                    attr: 1
+                  - text: Property
+                    attr: 2
+                  - text: ".\r\rPre\rall x in {p, p.next, p.next.next, ...}: extension-level(x) = 1   20\r\rPROCEDURE "
+                    attr: 1
+                  - text: Merge
+                    attr: 3
+                  - text: " (VAR base, override: Property)\rMerge two property lists "
+                    attr: 1
+                  - text: base
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: override
+                    attr: 2
+                  - text: ". If the type of a property is in both lists, the attributes of the property in "
+                    attr: 1
+                  - text: override
+                    attr: 2
+                  - text: " will be selected for the merged list. The merged list is returned in "
+                    attr: 1
+                  - text: base
+                    attr: 2
+                  - text: ".\r\rPROCEDURE "
+                    attr: 1
+                  - text: Intersect
+                    attr: 3
+                  - text: " (VAR list: Property; x: Property; OUT same: BOOLEAN)\rIt reduces the properties in "
+                    attr: 1
+                  - text: list
+                    attr: 2
+                  - text: " by all these properties which are not in "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ", or which have different values in "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ". Furthermore, it determines whether both lists are the same.\r\rPROCEDURE "
+                    attr: 1
+                  - text: IntersectSelections
+                    attr: 3
+                  - text: " (a, aMask, b, bMask: SET; OUT c, cMask: SET;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT equal: BOOLEAN)\rSupport procedure to implement the "
+                    attr: 1
+                  - text: IntersectWith
+                    attr: 2
+                  - text: " procedure of properties containing a set. This procedure is equivalent to the following code:\r\tcMask := aMask * bMask - (a / b);\r\tc := a * cMask;\r\tequal  := (aMask = bMask) & (bMask = cMask)\r\rPROCEDURE "
+                    attr: 1
+                  - text: PreferredSize
+                    attr: 3
+                  - text: " (v: Views.View; minW, maxW, minH, maxH,\r\t\t\t\t\t\t\t\t\t\t\t\t\tdefW, defH: INTEGER; VAR w, h: INTEGER)\rSets up a "
+                    attr: 1
+                  - text: SizePref
+                    attr: 2
+                  - text: " and uses it to ask view "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: " for its sizing preferences.\r"
+                    attr: 1
+                  - text: "[minW, maxW]"
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: "[minH, maxH]"
+                    attr: 2
+                  - text: " are the legal ranges of width and height, respectively, that are acceptable to the caller. "
+                    attr: 1
+                  - text: "(defW, defH)"
+                    attr: 2
+                  - text: " is the caller-specified default size, i.e., the size that the caller prefers in the absence of any preferences of "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: "; specifying "
+                    attr: 1
+                  - text: "(Views.undefined, Views.undefined)"
+                    attr: 2
+                  - text: " means \"no default\". "
+                    attr: 1
+                  - text: "(w, h)"
+                    attr: 2
+                  - text: " can be preset by the caller and will be used to preset the "
+                    attr: 1
+                  - text: SizePref
+                    attr: 2
+                  - text: "; normally the caller uses this to pass the current size of a view that is to be resized.\rHowever, if "
+                    attr: 1
+                  - text: (w < Views.undefined)
+                    attr: 2
+                  - text: " or "
+                    attr: 1
+                  - text: "(w > maxW)"
+                    attr: 2
+                  - text: ", then "
+                    attr: 1
+                  - text: defW
+                    attr: 2
+                  - text: " will be used instead of "
+                    attr: 1
+                  - text: w
+                    attr: 2
+                  - text: ". Likewise, if "
+                    attr: 1
+                  - text: (h < Views.undefined)
+                    attr: 2
+                  - text: " or "
+                    attr: 1
+                  - text: "(h > maxH)"
+                    attr: 2
+                  - text: ", then "
+                    attr: 1
+                  - text: defH
+                    attr: 2
+                  - text: " will be used instead of "
+                    attr: 1
+                  - text: h
+                    attr: 2
+                  - text: ".\rIf "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: " does not interpret a "
+                    attr: 1
+                  - text: SizePref
+                    attr: 2
+                  - text: " or returns "
+                    attr: 1
+                  - text: w = Views.undefined
+                    attr: 2
+                  - text: ", then "
+                    attr: 1
+                  - text: defW
+                    attr: 2
+                  - text: " overrides the preference of "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: ". Likewise, if the "
+                    attr: 1
+                  - text: SizePref
+                    attr: 2
+                  - text: " returns "
+                    attr: 1
+                  - text: h = Views.undefined
+                    attr: 2
+                  - text: ", then "
+                    attr: 1
+                  - text: defH
+                    attr: 2
+                  - text: " overrides the preference of "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: ".\rFinally, "
+                    attr: 1
+                  - text: "(w, h)"
+                    attr: 2
+                  - text: " will be clipped to "
+                    attr: 1
+                  - text: "([minW, maxW], [minH, maxH])"
+                    attr: 2
+                  - text: " before returning to the caller. Therefore, if "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: " has no (or no valid) preferences and the caller-specified default (or preset) value is "
+                    attr: 1
+                  - text: Views.undefined
+                    attr: 2
+                  - text: ", then the minimum values will be returned.\r \rPre\rViews.undefined < minW   20\rminW < maxW   21\rViews.undefined < minH   23\rminH < maxH   24\rViews.undefined <= defW   26\rViews.undefiend <= defH   28\r\rPROCEDURE "
+                    attr: 1
+                  - text: ProportionalConstraint
+                    attr: 3
+                  - text: " (scaleW, scaleH: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\t\tfixedW, fixedH: BOOLEAN; VAR w, h: INTEGER)\rSupports proportional resizing of rectangular shapes such as views. "
+                    attr: 1
+                  - text: "(scaleW, scaleH)"
+                    attr: 2
+                  - text: " is the size of a rectangle of the required proportions, e.g., "
+                    attr: 1
+                  - text: "(2,3)"
+                    attr: 2
+                  - text: " represents all rectangles having a ratio width to height of 2:3. "
+                    attr: 1
+                  - text: "(w, h)"
+                    attr: 2
+                  - text: " is the proposed size and "
+                    attr: 1
+                  - text: ProportionalConstraint
+                    attr: 2
+                  - text: " modifies this pair to satisfy the proportionality constraint. Normally, "
+                    attr: 1
+                  - text: ProportionalConstraint
+                    attr: 2
+                  - text: " performs its function by changing both, "
+                    attr: 1
+                  - text: w
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: h
+                    attr: 2
+                  - text: ", such that the resulting rectangle satisfies the constraint and that the new rectangle's area is as close to the old rectangle's area as possible.  By setting "
+                    attr: 1
+                  - text: fixedW
+                    attr: 2
+                  - text: ", the constraint is satisfied by only changing "
+                    attr: 1
+                  - text: h
+                    attr: 2
+                  - text: ".  Likewise, setting "
+                    attr: 1
+                  - text: fixedH
+                    attr: 2
+                  - text: " asks for at most changing "
+                    attr: 1
+                  - text: w
+                    attr: 2
+                  - text: ". When both, "
+                    attr: 1
+                  - text: fixedW
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: fixedH
+                    attr: 2
+                  - text: ", are set, then this is ignored and again the area-preserving heuristics is used.\r \rPre\rw > Views.undefined   20\rh > Views.undefined   21\rscaleW > Views.undefined   22\rscaleH > Views.undefined   23\r~fixedW OR ~fixedH\t24\r\rPROCEDURE "
+                    attr: 1
+                  - text: GridConstraint
+                    attr: 3
+                  - text: " (gridX, gridY: INTEGER; VAR x, y: INTEGER)\rSupports forcing the coordinates of a point, such as one of the corners of a view, to the nearest point of a grid. "
+                    attr: 1
+                  - text: "(gridX, gridY)"
+                    attr: 2
+                  - text: " specifies the resolution of the grid in "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: y
+                    attr: 2
+                  - text: " direction, e.g., "
+                    attr: 1
+                  - text: "(5,3)"
+                    attr: 2
+                  - text: " specifies a grid with valid coordinates being multiples of "
+                    attr: 1
+                  - text: 5
+                    attr: 2
+                  - text: " in the "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: " and multiples of "
+                    attr: 1
+                  - text: 3
+                    attr: 2
+                  - text: " in the "
+                    attr: 1
+                  - text: y
+                    attr: 2
+                  - text: " direction.\r \rPre\rgridX > Views.undefined   20\rgridY > Views.undefined   21\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 10
+          bodyPos: 29912
+          bodyLen: 8

@@ -1,0 +1,1034 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Docu\\WordEdit.odc"
+  size: 9568
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 9437
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 9251
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 9165
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 152400
+                dsc: 25400
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 63
+                bodyPos: 9165
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 8651
+                runListLen: 3330
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                  - # [4]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [5]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                flow:
+                  - text: ObxWordEdit
+                    attr: 0
+                  - text: "\r\rThis example "
+                    attr: 1
+                  - text: "shows some possible usage of the Automation interface of Microsoft Word 9.0. See also under:\rmk:@MSITStore:I:\\MSDN\\off2000.chm::/html/Off2000LangRef.htm\rin the MSDN Library.\r"
+                    attr: 2
+                  - text: "For more information about automation controllers in BlackBox see the "
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Ctl/Docu/Dev-Man', 'Ctl Developer Manual')"
+                      body:
+                        - text: Ctl Docu
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: " and the"
+                    attr: 1
+                  - text: " "
+                    attr: 3
+                  - link:
+                      target: "StdCmds.OpenBrowser('Ctl/Docu/Word9', 'CtlWord9 Docu')"
+                      body:
+                        - text: CtlWord9 Docu
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: ".\r\rThe module consists of a set of commands. Most of them require that the module is connected to a Word application. Before using them, "
+                    attr: 1
+                  - text: ObxWordEdit.Connect or ObxWordEdit.Start must be called. The commands which act on a document also require that a document is open. Always the active document is used.
+                    attr: 2
+                  - text: "\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - link:
+                      target: "StdCmds.OpenDoc('Obx/Mod/WordEdit')"
+                      body:
+                        - text: ObxWordEdit  sources
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r\r"
+                    attr: 1
+                  - text: Connecting / Disconnecting
+                    attr: 4
+                  - text: "\r\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 13
+                      bodyPos: 1263
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.Connect\rConnects to a Word application. If Word is not running, it is started.\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 14
+                      bodyPos: 1309
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.Disconnect\rDisconnects from Word. If nobody else is using the application, it is terminated.\r\r"
+                    attr: 2
+                  - text: Starting / Quitting
+                    attr: 4
+                  - text: "\r\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 15
+                      bodyPos: 1365
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.Start\rStarts a new Word application.\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 16
+                      bodyPos: 1411
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.Quit\rQuits the Word.\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 17
+                      bodyPos: 1457
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.Restart\rRestarts Word.\r\r"
+                    attr: 2
+                  - text: "File\r"
+                    attr: 4
+                  - text: "\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 18
+                      bodyPos: 1513
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.NewDoc\rCreates a new document using CtlWord.NewDocument() and makes it visible.\rThe document is created in the oldest running Word. If there is no Word running, it is started.\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 19
+                      bodyPos: 1559
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.CreateDoc\rCreates a new, visible document using CtlWord.Application.Documents().Add.\rIt is only visible, if the application is visible.\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 20
+                      bodyPos: 1605
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.CreateInvisibleDoc\rCreates a new, invisible document. It is also invisible, if the application is visible.\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 21
+                      bodyPos: 1651
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.OpenDocTest\rOpens a test file.\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 22
+                      bodyPos: 1697
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.CloseDoc\rCloses the active document without saving.\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 23
+                      bodyPos: 1743
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.SaveAndCloseDoc\rSaves the active document and closes it.\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 24
+                      bodyPos: 1789
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.SaveDoc\rSaves the active document.\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 25
+                      bodyPos: 1835
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.Print\rPrints the active document.\r\r"
+                    attr: 2
+                  - text: Application
+                    attr: 4
+                  - text: "\r\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 26
+                      bodyPos: 1891
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.DispDocs\rDisplays the full names of all the open documents.\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 27
+                      bodyPos: 1937
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.DispFontNames\rDisplays the names of the available fonts in Word.\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 28
+                      bodyPos: 1983
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.DispBBFontNames\rDisplays the names of the available fonts in BlackBox. There are more than in Word.\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 29
+                      bodyPos: 2029
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.DispLanguages\rDisplays the languages available in Word.\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 30
+                      bodyPos: 2075
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.DispLanguagesAndDictionaries\rDisplays the languages available in Word and whether they have a dictionary.\rAttention: ActiveSpellingDictionary traps if there is no dictionary available...\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 31
+                      bodyPos: 2121
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.UseSmartCutPaste\rSets the option SmartCutPaste.\r\r"
+                    attr: 2
+                  - text: Visibility
+                    attr: 4
+                  - text: "\r\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 32
+                      bodyPos: 2177
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.MakeWordVisible\rMakes "
+                    attr: 2
+                  - text: all
+                    attr: 5
+                  - text: " documents visible, also the ones that were created invisible.\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 34
+                      bodyPos: 2281
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.MakeWordInvisible\rMakes "
+                    attr: 2
+                  - text: all
+                    attr: 5
+                  - text: " documents invisible.\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 35
+                      bodyPos: 2337
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.MakeWinVisible\rMakes the first window of the active document visible.\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 36
+                      bodyPos: 2383
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.MakeWinInvisible\rMakes the first window of the active document invisible.\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 37
+                      bodyPos: 2429
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.IsVisible\rDisplays whether the first window of the active document is visible.\r\r"
+                    attr: 2
+                  - text: Document
+                    attr: 4
+                  - text: "\r\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 38
+                      bodyPos: 2485
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.Undo\rUndoes the last action. Actions, such a typing characters, can be merged to one action by Word.\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 39
+                      bodyPos: 2531
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.Redo\rRedoes the last undone action.\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 40
+                      bodyPos: 2577
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.Protect\rProtects the active document.\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 41
+                      bodyPos: 2623
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.Unprotect\rUnprotects the active document.\r\r"
+                    attr: 2
+                  - text: Accessing the Content of a Document
+                    attr: 4
+                  - text: "\r\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 42
+                      bodyPos: 2679
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.DispContent\rDisplays the content of the active document.\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 43
+                      bodyPos: 2725
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.DispParagraphs\rDisplays the paragraphs of the active document.\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 44
+                      bodyPos: 2771
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.DispListParagraphs\rDisplays the ListParagraphs of the active document.\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 45
+                      bodyPos: 2817
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.DispLists\rDisplays the Lists of the active document.\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 46
+                      bodyPos: 2863
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.DispWords\rDisplays the Words of the active document, using the "
+                    attr: 2
+                  - text: CtlWord.Document.
+                    attr: 5
+                  - text: "Words method.\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 47
+                      bodyPos: 2919
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.DispWords2\rDisplays the Words of the active document, using the "
+                    attr: 2
+                  - text: CtlWord.Range.
+                    attr: 5
+                  - text: "Next method.\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 48
+                      bodyPos: 2975
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.DispWords3\rDisplays the Words of the active document, using the "
+                    attr: 2
+                  - text: CtlWord.Range.
+                    attr: 5
+                  - text: "MoveEnd method.\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 49
+                      bodyPos: 3031
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.DispCharacters\rDisplays the Characters of the active document.\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 50
+                      bodyPos: 3077
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.DispSentences\rDisplays the Sentences of the active document.\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 51
+                      bodyPos: 3123
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.DispStoryRanges\rDisplays the StoryRanges of the active document.\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 52
+                      bodyPos: 3169
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.DispRuns\rShould write the runs of the active document, but it does not work! How can we get the runs?\r\r"
+                    attr: 2
+                  - text: Editing Text
+                    attr: 4
+                  - text: "\r\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 53
+                      bodyPos: 3225
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.AppendThisText\rAppends \"This Text\" to the end of the active document. This means that it is insert in front of the last 0DX.\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 54
+                      bodyPos: 3271
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.OverwriteLastCharWithA\rOverwrites the last character, which is always a 0DX, with \"A\". Word inserts a new 0DX at the end.\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 55
+                      bodyPos: 3317
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.CopyText\rCopies and inserts the first 10 chars at the beginning of the active document.\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 56
+                      bodyPos: 3363
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.CopyFormattedText\rCopies and inserts the first 10 chars at the beginning of the active document, formatted.\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 57
+                      bodyPos: 3409
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.DeleteText\r Deletes the first 10 character of the active document. \r\r"
+                    attr: 2
+                  - text: Font
+                    attr: 4
+                  - text: "\r\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 58
+                      bodyPos: 3465
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.Disp2ndParagraphFontName\rDisplays the name of the font of the second paragraph of the active document, if it is defined.\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 59
+                      bodyPos: 3511
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.Is1stParagraphBold\r"
+                    attr: 2
+                  - text: "Displays whether the "
+                    attr: 5
+                  - text: first
+                    attr: 2
+                  - text: " paragraph of the active document is bold or not, if it is defined."
+                    attr: 5
+                  - text: "\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 60
+                      bodyPos: 3577
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.Get1stParagraphFontSize\r"
+                    attr: 2
+                  - text: "Displays the size of the font of the "
+                    attr: 5
+                  - text: first
+                    attr: 2
+                  - text: " paragraph of the active document, if it is defined."
+                    attr: 5
+                  - text: "\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 61
+                      bodyPos: 3643
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.Disp1stParagraphFontSize\rDisplays the size of the font of the first paragraph of the active document, if it is defined. \r\r"
+                    attr: 2
+                  - text: Performance
+                    attr: 4
+                  - text: "\r\r"
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 62
+                      bodyPos: 3699
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: "ObxWordEdit.Performance\rShows how much slower it is to call a procedure in "
+                    attr: 2
+                  - text: "Word via the automation interface.\r"
+                    attr: 5
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 67
+          bodyPos: 9533
+          bodyLen: 8

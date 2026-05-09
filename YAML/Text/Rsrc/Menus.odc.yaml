@@ -1,0 +1,200 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Text\\Rsrc\\Menus.odc"
+  size: 3871
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 3740
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 3554
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 3468
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 114300
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: "*"
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 11
+                bodyPos: 3593
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 3079
+                runListLen: 840
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 101600
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 101600
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [2]
+                    font: "*"
+                    size: 101600
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                flow:
+                  - ruler:
+                      left: 0
+                      right: 9144000
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000021
+                      tabs:
+                        - { stop: 180000 }
+                        - { stop: 2340000 }
+                        - { stop: 2700000 }
+                        - { stop: 4680000 }
+                      attr: 0
+                      w: 360000000
+                      h: 444500
+                  - text: "MENU "
+                    attr: 1
+                  - text: "\"Text\" (\"TextViews.View\")\r\t\"&Find / Replace...\"\t\"F\"\t\"TextCmds.InitFindDialog; StdCmds.OpenToolDialog('Text/Rsrc/Cmds', 'Find / Replace')\"\t\"\"\r\t\"Find &Again\"\t\"F3\"\t\"TextCmds.InitFindDialog; TextCmds.FindAgain('~I~B~E~R')\"\t\t\"TextCmds.FindAgainGuard\"\r\t\"Find &Previous\"\t\"*F3\"\t\"TextCmds.InitFindDialog; TextCmds.FindAgain('~I~B~ER')\"\t\t\"TextCmds.FindAgainGuard\"\r\t\"Find First\"\t\"F4\"\t\"TextCmds.InitFindDialog; TextCmds.FindFirst('~I~B~E~R')\"\t\t\"TextCmds.FindAgainGuard\"\r\t\"Find Last\"\t\"*F4\"\t\"TextCmds.InitFindDialog; TextCmds.FindFirst('~I~B~ER')\"\t\t\"TextCmds.FindAgainGuard\"\r\t"
+                    attr: 0
+                  - text: SEPARATOR
+                    attr: 1
+                  - text: "\r\t\"Shift &Left\"\t\"F11\"\t\"TextCmds.ShiftLeft\"\t\"TextCmds.EditGuard\"\r\t\"Shift &Right\"\t\"F12\"\t\"TextCmds.ShiftRight\"\t\"TextCmds.EditGuard\"\r\t\"Su&perscript\"\t\"\"\t\"TextCmds.Superscript\"\t\"TextCmds.SelectionGuard\"\r\t\"Su&bscript\"\t\"\"\t\"TextCmds.Subscript\"\t\"TextCmds.SelectionGuard\"\r\t"
+                    attr: 0
+                  - text: SEPARATOR
+                    attr: 1
+                  - text: "\r\t\"&Insert Paragraph\"\t\"M\"\t\"TextCmds.InsertParagraph\"\t\"StdCmds.PasteCharGuard\"\r\t\"Insert R&uler\"\t\"J\"\t\"TextCmds.InsertRuler\"\t\"StdCmds.PasteViewGuard\"\r"
+                    attr: 0
+                  - ruler:
+                      left: 0
+                      right: 7128000
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000021
+                      tabs:
+                        - { stop: 180000 }
+                        - { stop: 1368000 }
+                        - { stop: 2340000 }
+                        - { stop: 2700000 }
+                        - { stop: 4680000 }
+                      attr: 0
+                      w: 360000000
+                      h: 444500
+                  - text: "\t\"Insert &Soft-Hyphen\tShift+Ctrl+Minus\"\t\"\"\t\"TextCmds.InsertSoftHyphen\"\t\"StdCmds.PasteCharGuard\"\r\t\"Insert &Non-Brk Hyphen\tShift+Alt+Minus\"\t\"\"\t\"TextCmds.InsertNBHyphen\"\t\"StdCmds.PasteCharGuard\"\r\t\"Insert N&on-Brk Space\tShift+Alt+Space\"\t\"\"\t\"TextCmds.InsertNBSpace\"\t\"StdCmds.PasteCharGuard\"\r\t\"Insert &Digit Space\tShift+Ctrl+Space\"\t\"\"\t\"TextCmds.InsertDigitSpace\"\t\"StdCmds.PasteCharGuard\"\r"
+                    attr: 0
+                  - ruler:
+                      left: 0
+                      right: 7128000
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000021
+                      tabs:
+                        - { stop: 180000 }
+                        - { stop: 2340000 }
+                        - { stop: 2700000 }
+                        - { stop: 4680000 }
+                      attr: 0
+                      w: 360000000
+                      h: 444500
+                  - text: "\t\"Toggle &Marks\"\t\"H\"\t\"TextCmds.ToggleMarks\"\t\"TextCmds.ToggleMarksGuard\"\r\t"
+                    attr: 0
+                  - text: SEPARATOR
+                    attr: 1
+                  - text: "\r\t\"Make Default Attributes\"\t\"\"\t\"TextCmds.MakeDefaultAttributes\"\t\"TextCmds.SelectionGuard\"\r\t\"Make Default Ruler\"\t\"\"\t\"TextCmds.MakeDefaultRuler\"\t\"StdCmds.SingletonGuard\"\r"
+                    attr: 0
+                  - text: END
+                    attr: 1
+                  - text: "\r"
+                    attr: 0
+                  - text: "\r\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 0
+                  - text: "MENU "
+                    attr: 1
+                  - text: "\"*\" (\"TextViews.View\")\r\t\"Cu&t\"\t\"\"\t\"HostCmds.Cut\"\t\"HostCmds.CutGuard\"\r\t\"&Copy\"\t\"\"\t\"HostCmds.Copy\"\t\"HostCmds.CopyGuard\"\r\t\"&Paste\"\t\"\"\t\"HostCmds.Paste\"\t\"HostCmds.PasteGuard\"\r\t\"&Delete\"\t\"\"\t\"StdCmds.Clear\"\t\"HostCmds.CutGuard\"\r\t"
+                    attr: 0
+                  - text: SEPARATOR
+                    attr: 1
+                  - text: "\r\t\"&Source\"\t\"\"\t\""
+                    attr: 0
+                  - text: DevReferences.ShowSource
+                    attr: 2
+                  - text: "\"\t\"TextCmds.SelectionGuard\"\r\t\"&Interface\"\t\"\"\t\"DevBrowser.ShowInterface('')\"\t\"TextCmds.SelectionGuard\"\r\t\"&Documentation\"\t\"\"\t\"DevReferences.ShowDocu\"\t\"TextCmds.SelectionGuard\"\r\t"
+                    attr: 0
+                  - text: SEPARATOR
+                    attr: 1
+                  - text: "\r\t\"P&roperties...\"\t\"\"\t\"StdCmds.ShowProp\"\t\"StdCmds.ShowPropGuard\"\r\t\"&Object\"\t\"\"\t\"HostMenus.ObjectMenu\"\t\"HostMenus.ObjectMenuGuard\"\r"
+                    attr: 0
+                  - text: "END\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 15
+          bodyPos: 3836
+          bodyLen: 8

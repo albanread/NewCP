@@ -1,0 +1,3342 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Docu\\CP-Lang.odc"
+  size: 82032
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 81901
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 81715
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 81629
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 127000
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 269
+                bodyPos: 81750
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 81236
+                runListLen: 20491
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000000
+                  - # [5]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                  - # [6]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [7]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                flow:
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 3
+                      bodyPos: 521
+                      bodyLen: 88
+                    attr: 0
+                    w: 360000000
+                    h: 158750
+                  - text: "Component Pascal Language Report\r"
+                    attr: 0
+                  - text: "\r\r"
+                    attr: 1
+                  - ruler:
+                      first: 360000
+                      left: 360000
+                      right: 360000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      attr: 2
+                      w: 360000000
+                      h: 444500
+                  - text: "Copyright © 1994-2013 by Oberon microsystems, Inc., Switzerland.\r\rAll rights reserved. No part of this publication may be reproduced in any form or by any means, without prior written permission by Oberon microsystems except for the free electronic distribution of the unmodified document.\r\rOberon microsystems, Inc.\rTechnoparkstrasse 1\rCH-8005 Zürich\rSwitzerland\r\rOberon is a trademark of Prof. Niklaus Wirth.\rComponent Pascal is a trademark of Oberon microsystems, Inc.\rAll other trademarks and registered trademarks belong to their respective owners.\r"
+                    attr: 2
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r\rAuthors\r\tOberon microsystems, Inc.\r\tMarch 2001, last update October 2006\r\rAuthors of Oberon-2 report\r\tH. Mössenböck, N. Wirth\r\tInstitut für Computersysteme, ETH Zürich\r\tOctober 1993\r\rAuthor of Oberon report\r\tN. Wirth\r\tInstitut für Computersysteme, ETH Zürich\r\t1987\r\r\r"
+                    attr: 1
+                  - text: Contents
+                    attr: 3
+                  - text: "\r"
+                    attr: 1
+                  - link:
+                      target: "StdLinks.ShowTarget('1')"
+                      body:
+                        - text: 1. Introduction
+                          attr: 5
+                      attr: 4
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 4
+                  - link:
+                      target: "StdLinks.ShowTarget('2')"
+                      body:
+                        - text: 2. Syntax
+                          attr: 5
+                      attr: 4
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 4
+                  - link:
+                      target: "StdLinks.ShowTarget('3')"
+                      body:
+                        - text: 3. Vocabulary and Representation
+                          attr: 5
+                      attr: 4
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 4
+                  - link:
+                      target: "StdLinks.ShowTarget('4')"
+                      body:
+                        - text: 4. Declarations and Scope Rules
+                          attr: 5
+                      attr: 4
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 4
+                  - link:
+                      target: "StdLinks.ShowTarget('5')"
+                      body:
+                        - text: 5. Constant Declarations
+                          attr: 5
+                      attr: 4
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 4
+                  - link:
+                      target: "StdLinks.ShowTarget('6')"
+                      body:
+                        - text: 6. Type Declarations
+                          attr: 5
+                      attr: 4
+                      w: 131250
+                      h: 142875
+                  - text: "\r\t"
+                    attr: 4
+                  - link:
+                      target: "StdLinks.ShowTarget('6.1')"
+                      body:
+                        - text: 6.1 Basic Types
+                          attr: 5
+                      attr: 4
+                      w: 131250
+                      h: 142875
+                  - text: "\r\t"
+                    attr: 4
+                  - link:
+                      target: "StdLinks.ShowTarget('6.2')"
+                      body:
+                        - text: 6.2 Array Types
+                          attr: 5
+                      attr: 4
+                      w: 131250
+                      h: 142875
+                  - text: "\r\t"
+                    attr: 4
+                  - link:
+                      target: "StdLinks.ShowTarget('6.3')"
+                      body:
+                        - text: 6.3 Record Types
+                          attr: 5
+                      attr: 4
+                      w: 131250
+                      h: 142875
+                  - text: "\r\t"
+                    attr: 4
+                  - link:
+                      target: "StdLinks.ShowTarget('6.4')"
+                      body:
+                        - text: 6.4 Pointer Types
+                          attr: 5
+                      attr: 4
+                      w: 131250
+                      h: 142875
+                  - text: "\r\t"
+                    attr: 4
+                  - link:
+                      target: "StdLinks.ShowTarget('6.5')"
+                      body:
+                        - text: 6.5 Procedure Types
+                          attr: 5
+                      attr: 4
+                      w: 131250
+                      h: 142875
+                  - text: "\r\t"
+                    attr: 4
+                  - link:
+                      target: "StdLinks.ShowTarget('6.6')"
+                      body:
+                        - text: 6.6 String Types
+                          attr: 5
+                      attr: 4
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 4
+                  - link:
+                      target: "StdLinks.ShowTarget('7')"
+                      body:
+                        - text: 7. Variable Declarations
+                          attr: 5
+                      attr: 4
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 4
+                  - link:
+                      target: "StdLinks.ShowTarget('8')"
+                      body:
+                        - text: 8. Expressions
+                          attr: 5
+                      attr: 4
+                      w: 131250
+                      h: 142875
+                  - text: "\r\t"
+                    attr: 4
+                  - link:
+                      target: "StdLinks.ShowTarget('8.1')"
+                      body:
+                        - text: 8.1 Operands
+                          attr: 5
+                      attr: 4
+                      w: 131250
+                      h: 142875
+                  - text: "\r\t"
+                    attr: 4
+                  - link:
+                      target: "StdLinks.ShowTarget('8.2')"
+                      body:
+                        - text: 8.2 Operators
+                          attr: 5
+                      attr: 4
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 4
+                  - link:
+                      target: "StdLinks.ShowTarget('9')"
+                      body:
+                        - text: 9. Statements
+                          attr: 5
+                      attr: 4
+                      w: 131250
+                      h: 142875
+                  - text: "\r\t"
+                    attr: 4
+                  - link:
+                      target: "StdLinks.ShowTarget('9.1')"
+                      body:
+                        - text: 9.1 Assignments
+                          attr: 5
+                      attr: 4
+                      w: 131250
+                      h: 142875
+                  - text: "\r\t"
+                    attr: 4
+                  - link:
+                      target: "StdLinks.ShowTarget('9.2')"
+                      body:
+                        - text: 9.2 Procedure Calls
+                          attr: 5
+                      attr: 4
+                      w: 131250
+                      h: 142875
+                  - text: "\r\t"
+                    attr: 4
+                  - link:
+                      target: "StdLinks.ShowTarget('9.3')"
+                      body:
+                        - text: 9.3 Statement Sequences
+                          attr: 5
+                      attr: 4
+                      w: 131250
+                      h: 142875
+                  - text: "\r\t"
+                    attr: 4
+                  - link:
+                      target: "StdLinks.ShowTarget('9.4')"
+                      body:
+                        - text: 9.4 If Statements
+                          attr: 5
+                      attr: 4
+                      w: 131250
+                      h: 142875
+                  - text: "\r\t"
+                    attr: 4
+                  - link:
+                      target: "StdLinks.ShowTarget('9.5')"
+                      body:
+                        - text: 9.5 Case Statements
+                          attr: 5
+                      attr: 4
+                      w: 131250
+                      h: 142875
+                  - text: "\r\t"
+                    attr: 4
+                  - link:
+                      target: "StdLinks.ShowTarget('9.6')"
+                      body:
+                        - text: 9.6 While Statements
+                          attr: 5
+                      attr: 4
+                      w: 131250
+                      h: 142875
+                  - text: "\r\t"
+                    attr: 4
+                  - link:
+                      target: "StdLinks.ShowTarget('9.7')"
+                      body:
+                        - text: 9.7 Repeat Statements
+                          attr: 5
+                      attr: 4
+                      w: 131250
+                      h: 142875
+                  - text: "\r\t"
+                    attr: 4
+                  - link:
+                      target: "StdLinks.ShowTarget('9.8')"
+                      body:
+                        - text: 9.8 For Statements
+                          attr: 5
+                      attr: 4
+                      w: 131250
+                      h: 142875
+                  - text: "\r\t"
+                    attr: 4
+                  - link:
+                      target: "StdLinks.ShowTarget('9.9')"
+                      body:
+                        - text: 9.9 Loop Statements
+                          attr: 5
+                      attr: 4
+                      w: 131250
+                      h: 142875
+                  - text: "\r\t"
+                    attr: 4
+                  - link:
+                      target: "StdLinks.ShowTarget('9.10')"
+                      body:
+                        - text: 9.10 Return and Exit Statements
+                          attr: 5
+                      attr: 4
+                      w: 131250
+                      h: 142875
+                  - text: "\r\t"
+                    attr: 4
+                  - link:
+                      target: "StdLinks.ShowTarget('9.11')"
+                      body:
+                        - text: 9.11 With Statements
+                          attr: 5
+                      attr: 4
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 4
+                  - link:
+                      target: "StdLinks.ShowTarget('10')"
+                      body:
+                        - text: 10. Procedure Declarations
+                          attr: 5
+                      attr: 4
+                      w: 131250
+                      h: 142875
+                  - text: "\r\t"
+                    attr: 4
+                  - link:
+                      target: "StdLinks.ShowTarget('10.1')"
+                      body:
+                        - text: 10.1 Formal Parameters
+                          attr: 5
+                      attr: 4
+                      w: 131250
+                      h: 142875
+                  - text: "\r\t"
+                    attr: 4
+                  - link:
+                      target: "StdLinks.ShowTarget('10.2')"
+                      body:
+                        - text: 10.2 Methods
+                          attr: 5
+                      attr: 4
+                      w: 131250
+                      h: 142875
+                  - text: "\r\t"
+                    attr: 4
+                  - link:
+                      target: "StdLinks.ShowTarget('10.3')"
+                      body:
+                        - text: 10.3 Predeclared Procedures
+                          attr: 5
+                      attr: 4
+                      w: 131250
+                      h: 142875
+                  - text: "\r\t"
+                    attr: 4
+                  - link:
+                      target: "StdLinks.ShowTarget('10.4')"
+                      body:
+                        - text: 10.4 Finalization
+                          attr: 5
+                      attr: 4
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 4
+                  - link:
+                      target: "StdLinks.ShowTarget('11')"
+                      body:
+                        - text: 11. Modules
+                          attr: 5
+                      attr: 4
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 4
+                  - link:
+                      target: "StdLinks.ShowTarget('A')"
+                      body:
+                        - text: "Appendix A: Definition of Terms"
+                          attr: 5
+                      attr: 4
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 4
+                  - link:
+                      target: "StdLinks.ShowTarget('B')"
+                      body:
+                        - text: "Appendix B: Syntax of Component Pascal"
+                          attr: 5
+                      attr: 4
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 4
+                  - link:
+                      target: "StdLinks.ShowTarget('C')"
+                      body:
+                        - text: "Appendix C: Domains of Basic Types"
+                          attr: 5
+                      attr: 4
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 4
+                  - link:
+                      target: "StdLinks.ShowTarget('D')"
+                      body:
+                        - text: "Appendix D: Mandatory Requirements for Environment"
+                          attr: 5
+                      attr: 4
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 4
+                  - text: "\r\r"
+                    attr: 1
+                  - target:
+                      name: 1
+                      body:
+                        - text: 1. Introduction
+                          attr: 3
+                      attr: 3
+                      w: 150300
+                      h: 142875
+                  - text: "\r\rComponent Pascal is Oberon microsystems' refinement of the Oberon-2 language. Oberon microsystems thanks H. Mössenböck and N. Wirth for the friendly permission to use their Oberon2 report as basis for this document.\r\rComponent Pascal is a general-purpose language in the tradition of Pascal, Modula-2, and Oberon. Its most important features are block structure, modularity, separate compilation, static typing with strong type checking (also across module boundaries), type extension with methods, dynamic loading of modules, and garbage collection.\r\tType extension makes Component Pascal an object-oriented language. An object is a variable of an abstract data type consisting of private data (its state) and procedures that operate on this data. Abstract data types are declared as extensible records. Component Pascal covers most terms of object-oriented languages by the established vocabulary of imperative languages in order to minimize the number of notions for similar concepts.\r\tComplete type safety and the requirement of a dynamic object model make Component Pascal a component-oriented language.\r\tThis report is not intended as a programmer's tutorial. It is intentionally kept concise. Its function is to serve as a reference for programmers. What remains unsaid is mostly left so intentionally, either because it can be derived from stated rules of the language, or because it would require to commit the definition when a general commitment appears as unwise.\r\tAppendix A defines some terms that are used to express the type checking rules of Component Pascal. Where they appear in the text, they are written in italics to indicate their special meaning (e.g. the "
+                    attr: 1
+                  - text: same
+                    attr: 6
+                  - text: " type).\r\tIt is recommended to minimize the use of procedure types and super calls, since they are considered obsolete. They are retained for the time being, in order to simplify the use of existing Oberon-2 code. Support for these features may be reduced in later product releases.\r\r\r"
+                    attr: 1
+                  - target:
+                      name: 2
+                      body:
+                        - text: 2. Syntax
+                          attr: 3
+                      attr: 3
+                      w: 150300
+                      h: 142875
+                  - text: "\r\rAn extended Backus-Naur formalism (EBNF) is used to describe the syntax of Component Pascal: Alternatives are separated by |. Brackets [ and ] denote optionality of the enclosed expression, and braces { and } denote its repetition (possibly 0 times). Ordinary parentheses ( and ) are used to group symbols if necessary. Non-terminal symbols start with an upper-case letter (e.g., Statement). Terminal symbols either start with a lower-case letter (e.g., ident), or are written all in upper-case letters (e.g., BEGIN), or are denoted by strings (e.g., \":=\").\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - target:
+                      name: 3
+                      body:
+                        - text: 3. Vocabulary and Representation
+                          attr: 3
+                      attr: 3
+                      w: 150300
+                      h: 142875
+                  - text: "\r\rThe representation of (terminal) sym"
+                    attr: 1
+                  - text: "bols in terms of characters is defined using the 16-bit Unicode character set, which includes ISO 8859-1 (the Latin1 extension of the ASCII character set) as the first 256 characters. Symbols are identifiers, numbers, strings, operators, and delimiters. The following lexical rules must be observed: Blanks and line breaks must not occur withi"
+                    attr: 7
+                  - text: "n symbols (except in comments, and blanks in strings). They are ignored unless they are essential to separate two consecutive symbols. Capital and lower-case letters are considered as distinct.\r\r1. "
+                    attr: 1
+                  - text: Identifiers
+                    attr: 6
+                  - text: " are sequences of letters, digits, and underscores. The first character must not be a digit.\r\rident = (letter | \"_\") {letter | \"_\" | digit}.\rletter = \"A\" .. \"Z\" | \"a\" .. \"z\" | UnicodeLetter.\rdigit \t= \"0\" | \"1\" | \"2\" | \"3\" | \"4\" | \"5\" | \"6\" | \"7\" | \"8\" | \"9\".\r\rExamples:     x     Scan     Oberon2     GetSymbol     firstLetter\t"
+                    attr: 1
+                  - text: 菀
+                    attr: 1
+                    wide: true
+                  - text: "\r\r2. "
+                    attr: 1
+                  - text: Numbers
+                    attr: 6
+                  - text: " are (unsigned) integer or real constants. The type of an integer constant is INTEGER if the constant value belongs to INTEGER, or LONGINT otherwise (see 6.1). If the constant is specified with the suffix 'H' or 'L', the representation is hexadecimal, otherwise the representation is decimal. The suffix 'H' is used to specify 32-bit constants in the range -2147483648 .. 2147483647. At most 8 significant hex digits are allowed. The suffix 'L' is used to specify 64-bit constants.\r\tA real number always contains a decimal point. Optionally it may also contain a decimal scale factor. The letter E means \"times ten to the power of\". A real number is always of type REAL.\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 1224000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rnumber \t= integer | real.\rinteger \t= digit {digit} | digit {hexDigit} ( \"H\" | \"L\" ).\rreal \t= digit {digit} \".\" {digit} [ScaleFactor].\rScaleFactor \t= \"E\" [\"+\" | \"-\"] digit {digit}.\rhexDigit \t= digit | \"A\" | \"B\" | \"C\" | \"D\" | \"E\" | \"F\".\r\rExamples:\r1234567\tINTEGER\t1234567\r0DH \tINTEGER\t13\r12.3\tREAL\t12.3\r4.567E8 \tREAL\t456700000\r0FFFF0000H\tINTEGER\t-65536\r0FFFF0000L\tLONGINT\t4294901760\r\r3. "
+                    attr: 1
+                  - text: Character
+                    attr: 6
+                  - text: " constants are denoted by the ordinal number of the character in hexadecimal notation followed by the letter X.\r\rcharacter  = digit {hexDigit} \"X\".\r\r4. "
+                    attr: 1
+                  - text: Strings
+                    attr: 6
+                  - text: " are sequences of characters enclosed in single (') or double (\") quote marks. The opening quote must be the same as the closing quote and must not occur within the string. The number of characters in a string is called its "
+                    attr: 1
+                  - text: length
+                    attr: 6
+                  - text: ". A string of length 1 can be used wherever a character constant is allowed and vice versa. Characters in string constants are allowed to be Unicode (16 bit) characters.\r\rstring  = ' \" ' {char} ' \" ' | \" ' \" {char} \" ' \".\r\rExamples:     \"Component Pascal\"     \"Don't worry!\"     \"x\"     \""
+                    attr: 1
+                  - text: 莱莲
+                    attr: 1
+                    wide: true
+                  - text: "\"\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 1224000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "5. "
+                    attr: 1
+                  - text: Operators
+                    attr: 6
+                  - text: " and "
+                    attr: 1
+                  - text: delimiters
+                    attr: 6
+                  - text: " are the special characters, character pairs, or reserved words listed below. The reserved words consist exclusively of capital letters and cannot be used as identifiers.\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 360000 }
+                        - { stop: 1080000 }
+                        - { stop: 1800000 }
+                        - { stop: 3096000 }
+                        - { stop: 4320000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\t+\t:=\tABSTRACT\tEXTENSIBLE\tPOINTER\r\t-\t^\tARRAY\tFOR\tPROCEDURE\r\t*\t=\tBEGIN\tIF\tRECORD\r\t/\t#\tBY\tIMPORT\tREPEAT\r\t~\t<\tCASE\tIN\tRETURN\r\t&\t>\tCLOSE\tIS\tTHEN\r\t.\t<=\tCONST\tLIMITED\tTO\r\t,\t>=\tDIV\tLOOP\tTYPE\r\t;\t..\tDO\tMOD\tUNTIL\r\t|\t:\tELSE\tMODULE\tVAR\r\t$\t\tELSIF\tNIL\tWHILE\r\t(\t)\tEMPTY\tOF\tWITH\r\t[\t]\tEND\tOR\t\r\t{\t}\tEXIT\tOUT\t\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r6. "
+                    attr: 1
+                  - text: Comments
+                    attr: 6
+                  - text: " may be inserted between any two symbols in a program. They are arbitrary character sequences opened by the bracket (* and closed by *). Comments may be nested. They do not affect the meaning of a program.\r\r\r"
+                    attr: 1
+                  - target:
+                      name: 4
+                      body:
+                        - text: 4. Declarations and Scope Rules
+                          attr: 3
+                      attr: 3
+                      w: 150300
+                      h: 142875
+                  - text: "\r\rEvery identifier occurring in a program must be introduced by a declaration, unless it is a predeclared identifier. Declarations also specify certain permanent properties of an object, such as whether it is a constant, a type, a variable, or a procedure. The identifier is then used to refer to the associated object. \r\tThe "
+                    attr: 1
+                  - text: scope
+                    attr: 6
+                  - text: " of an object "
+                    attr: 1
+                  - text: x
+                    attr: 6
+                  - text: " extends textually from the point of its declaration to the end of the block (module, procedure, or record) to which the declaration belongs and hence to which the object is "
+                    attr: 1
+                  - text: local
+                    attr: 6
+                  - text: ". It excludes the scopes of equally named objects which are declared in nested blocks. The scope rules are:\r"
+                    attr: 1
+                  - ruler:
+                      first: 36000
+                      left: 288000
+                      right: 288000
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 288000 }
+                        - { stop: 648000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "1. \tNo identifier may denote more than one object within a given scope (i.e., no identifier may be declared twice in a block);\r\x0e2. \tAn object may only be referenced within its scope;\r\x0e3.\tA declaration of a type "
+                    attr: 1
+                  - text: T
+                    attr: 6
+                  - text: " containing references to another type "
+                    attr: 1
+                  - text: T1
+                    attr: 6
+                  - text: " may occur at a point where "
+                    attr: 1
+                  - text: T1
+                    attr: 6
+                  - text: " is still unknown. The  declaration of "
+                    attr: 1
+                  - text: T1
+                    attr: 6
+                  - text: " must follow in the same block to which "
+                    attr: 1
+                  - text: T
+                    attr: 6
+                  - text: " is local;\r\x0e4.\tIdentifiers denoting record fields (see 6.3) or methods (see 10.2) are valid in record designators only.\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 936000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rAn identifier declared in a module block may be followed by an export mark (\" * \" or \" - \") in its declaration to indicate that it is exported. An identifier "
+                    attr: 1
+                  - text: x
+                    attr: 6
+                  - text: " exported by a module "
+                    attr: 1
+                  - text: M
+                    attr: 6
+                  - text: " may be used in other modules, if they import "
+                    attr: 1
+                  - text: M
+                    attr: 6
+                  - text: " (see Ch.11). The identifier is then denoted as "
+                    attr: 1
+                  - text: M.x
+                    attr: 6
+                  - text: " in these modules and is called a "
+                    attr: 1
+                  - text: qualified identifier
+                    attr: 6
+                  - text: ". Variables and record fields marked with \" - \" in their declaration are "
+                    attr: 1
+                  - text: read-only
+                    attr: 6
+                  - text: " (variables and fields) or "
+                    attr: 1
+                  - text: implement-only
+                    attr: 6
+                  - text: " (methods) in importing modules.\r\rQualident\t= [ident \".\"] ident.\rIdentDef\t= ident [\" * \" | \" - \"].\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 360000 }
+                        - { stop: 648000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "The following identifiers are predeclared; their meaning is defined in the indicated sections:\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 216000 }
+                        - { stop: 1512000 }
+                        - { stop: 3240000 }
+                        - { stop: 4536000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tABS\t(10.3)\tINF\t(6.1)\r\tANYPTR\t(6.1)\tINTEGER\t(6.1)\r\tANYREC\t(6.1)\tLEN\t(10.3)\r\tASH\t(10.3)\tLONG\t(10.3)\r\tASSERT\t(10.3)\tLONGINT\t(6.1)\r\tBITS\t(10.3)\tMAX\t(10.3)\r\tBOOLEAN\t(6.1)\tMIN\t(10.3)\r\tBYTE\t(6.1)\tNEW\t(10.3)\r\tCAP\t(10.3)\tODD\t(10.3)\r\tCHAR\t(6.1)\tORD\t(10.3)\r\tCHR\t(10.3)\tREAL\t(6.1)\r\tDEC\t(10.3)\tSET\t(6.1)\r\tENTIER\t(10.3)\tSHORT\t(10.3)\r\tEXCL\t(10.3)\tSHORTCHAR\t(6.1)\r\tFALSE\t(6.1)\tSHORTINT\t(6.1)\r\tHALT\t(10.3)\tSHORTREAL\t(6.1)\r\tINC\t(10.3)\tSIZE\t(10.3)\r\tINCL\t(10.3)\tTRUE\t(6.1)\r\r\r"
+                    attr: 1
+                  - target:
+                      name: 5
+                      body:
+                        - text: 5. Constant Declarations
+                          attr: 3
+                      attr: 3
+                      w: 150300
+                      h: 142875
+                  - text: "\r\rA constant declaration associates an identifier with a constant value.\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 1800000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "ConstantDeclaration \t= IdentDef \"=\" ConstExpression.\rConstExpression \t= Expression.\r\rA constant expression is an expression that can be evaluated by a mere textual scan without actually executing the program. Its operands are constants (Ch.8) or predeclared functions (Ch.10.3) that can be evaluated at compile time. Examples of constant declarations are:\r\rN = 100\rlimit = 2*N - 1\rfullSet = {MIN(SET) .. MAX(SET)}\r\r\r"
+                    attr: 1
+                  - target:
+                      name: 6
+                      body:
+                        - text: 6. Type Declarations
+                          attr: 3
+                      attr: 3
+                      w: 150300
+                      h: 142875
+                  - text: "\r\rA data type determines the set of values which variables of that type may assume, and the operators that are applicable. A type declaration associates an identifier with a type. In the case of structured types (arrays and records) it also defines the structure of variables of this type. A structured type cannot contain itself.\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1152000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "TypeDeclaration \t= IdentDef \"=\" Type.\rType \t= Qualident | ArrayType | RecordType | PointerType | ProcedureType.\r\rExamples:\r\rTable = ARRAY N OF REAL\rTree = POINTER TO Node\rNode =  EXTENSIBLE RECORD\r\tkey : INTEGER;\r\tleft, right: Tree\rEND\rCenterTree = POINTER TO CenterNode\rCenterNode = RECORD (Node)\r\twidth: INTEGER;\r\tsubnode: Tree\rEND\rObject = POINTER TO ABSTRACT RECORD END;\rFunction = PROCEDURE (x: INTEGER): INTEGER\r\r\r"
+                    attr: 1
+                  - target:
+                      name: 6.1
+                      body:
+                        - text: 6.1 Basic Types
+                          attr: 3
+                      attr: 3
+                      w: 150300
+                      h: 142875
+                  - text: "\r\rThe basic types are denoted by predeclared identifiers. The associated operators are defined in 8.2 and the predeclared function procedures in 10.3. The values of the given basic types are the following:\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 1584000
+                      right: 1584000
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 216000 }
+                        - { stop: 1584000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "1.\tBOOLEAN\tthe truth values TRUE and FALSE\r\x0e2.\tSHORTCHAR\tthe characters of the Latin1 character set (0X .. 0FFX)\r\x0e3.\tCHAR\tthe characters of the Unicode character set (0X .. 0FFFFX)\r\x0e4.\tBYTE\tthe integers between MIN(BYTE) and MAX(BYTE)\r\x0e5.\tSHORTINT\tthe integers between MIN(SHORTINT) and MAX(SHORTINT)\r\x0e6.\tINTEGER\tthe integers between MIN(INTEGER) and MAX(INTEGER)\r\x0e7.\tLONGINT\tthe integers between MIN(LONGINT) and MAX(LONGINT)\r\x0e8.\tSHORTREAL\tthe real numbers between MIN(SHORTREAL) and MAX(SHORTREAL), the value INF\r\x0e9.\tREAL\tthe real numbers between MIN(REAL) and MAX(REAL), the value INF\r\x0e10.\tSET\tthe sets of integers between 0 and MAX(SET)\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rTypes 4 to 7 are "
+                    attr: 1
+                  - text: integer types
+                    attr: 6
+                  - text: ", types 8 and 9 are "
+                    attr: 1
+                  - text: real types
+                    attr: 6
+                  - text: ", and together they are called "
+                    attr: 1
+                  - text: numeric types
+                    attr: 6
+                  - text: ". They form a hierarchy; the larger type "
+                    attr: 1
+                  - text: includes
+                    attr: 6
+                  - text: " (the values of) the smaller type:\r\r\tREAL  >=  SHORTREAL  >=  LONGINT  >=  INTEGER\r\t\t>=  SHORTINT >= BYTE\r\rTypes 2 and 3 are character types with the type hierarchy:\r\r\tCHAR >= SHORTCHAR\r\t\r\r"
+                    attr: 1
+                  - target:
+                      name: 6.2
+                      body:
+                        - text: 6.2 Array Types
+                          attr: 3
+                      attr: 3
+                      w: 150300
+                      h: 142875
+                  - text: "\r\rAn array is a structure consisting of a number of elements which are all of the same type, called the "
+                    attr: 1
+                  - text: element type
+                    attr: 6
+                  - text: ". The number of elements of an array is called its "
+                    attr: 1
+                  - text: length
+                    attr: 6
+                  - text: ". The elements of the array are designated by indices, which are integers between 0 and the length minus 1.\r\rArrayType \t= ARRAY [Length {\",\" Length}] OF Type.\rLength \t\t= ConstExpression.\r\rA type of the form\r\r\tARRAY L0, L1, ..., Ln OF T\r\ris understood as an abbreviation of\r\r\tARRAY L0 OF\r\t\tARRAY L1 OF\r\t\t...\r\t\t\tARRAY Ln OF T\r\rArrays declared without length are called "
+                    attr: 1
+                  - text: open arrays
+                    attr: 6
+                  - text: ". They are restricted to pointer base types (see 6.4), element types of open array types, and formal parameter types (see 10.1). Examples:\r\r\tARRAY 10, N OF INTEGER\r\tARRAY OF CHAR\r\r\r"
+                    attr: 1
+                  - target:
+                      name: 6.3
+                      body:
+                        - text: 6.3 Record Types
+                          attr: 3
+                      attr: 3
+                      w: 150300
+                      h: 142875
+                  - text: "\r\rA record type is a structure consisting of a fixed number of elements, called "
+                    attr: 1
+                  - text: fields
+                    attr: 6
+                  - text: ", with possibly different types. The record type declaration specifies the name and type of each field. The scope of the field identifiers extends from the point of their declaration to the end of the record type, but they are also visible within designators referring to elements of record variables (see 8.1). If a record type is exported, field identifiers that are to be visible outside the declaring module must be marked. They are called "
+                    attr: 1
+                  - text: public fields
+                    attr: 6
+                  - text: "; unmarked elements are called "
+                    attr: 1
+                  - text: private fields
+                    attr: 6
+                  - text: ".\r\rRecordType\t= RecAttributes RECORD [\"(\"BaseType\")\"]\r\t\tFieldList {\";\" FieldList} END.\rRecAttributes\t= [ABSTRACT | EXTENSIBLE | LIMITED].\rBaseType \t= Qualident.\rFieldList \t= [IdentList \":\" Type].\rIdentList\t= IdentDef {\",\" IdentDef}.\r\rThe usage of a record type is restricted by the presence or absence of one of the following attributes:\rABSTRACT, EXTENSIBLE, and LIMITED.\r\rA record type marked as ABSTRACT cannot be instantiated. No variables or fields of such a type can ever exist. Abstract types are only used as base types for other record types (see below).\r\tVariables of a LIMITED record type can only be allocated inside the module where the record type is defined. The restriction applies to static allocation by a variable declaration (Ch. 7) as well as to dynamic allocation by the standard procedure NEW (Ch. 10.3).\r\rRecord types marked as ABSTRACT or EXTENSIBLE are extensible, i.e., a record type can be declared as an extension of such a record type. In the example\r\rT0 = EXTENSIBLE RECORD x: INTEGER END\rT1 = RECORD (T0) y: REAL END\r\r"
+                    attr: 1
+                  - text: T1
+                    attr: 6
+                  - text: " is a (direct) "
+                    attr: 1
+                  - text: extension
+                    attr: 6
+                  - text: " of "
+                    attr: 1
+                  - text: T0
+                    attr: 6
+                  - text: " and "
+                    attr: 1
+                  - text: T0
+                    attr: 6
+                  - text: " is the (direct) "
+                    attr: 1
+                  - text: base type
+                    attr: 6
+                  - text: " of "
+                    attr: 1
+                  - text: T1
+                    attr: 6
+                  - text: " (see App. A). An extended type "
+                    attr: 1
+                  - text: T1
+                    attr: 6
+                  - text: " consists of the fields of its base type and of the fields which are declared in "
+                    attr: 1
+                  - text: T1
+                    attr: 6
+                  - text: ". All identifiers declared in the extended record must be different from the identifiers declared in its base type record(s). The base type of an abstract record must be abstract.\r\tAlternatively, a pointer type can be specified as the base type. The record base type of the pointer is used as the base type of the declared record in this case.\r\tA record which is an extension of a hidden (i.e., non-exported) record type may not be exported.\rEach record is implicitly an extension of the predeclared type ANYREC. ANYREC does not contain any fields and can only be used in pointer and variable parameter declarations.\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 1440000 }
+                        - { stop: 2520000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rSummary of attributes:\r\r"
+                    attr: 1
+                  - text: "attribute\textension\tallocate"
+                    attr: 6
+                  - text: "\rnone\tno\tyes\rEXTENSIBLE\tyes\tyes\rABSTRACT\tyes\tno\rLIMITED\tin defining module only\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rExamples of record type declarations:\r\rRECORD\r\tday, month, year: INTEGER\rEND\r\rLIMITED RECORD\r\tname, firstname: ARRAY 32 OF CHAR;\r\tage: INTEGER;\r\tsalary: REAL\rEND\r\r\r"
+                    attr: 1
+                  - target:
+                      name: 6.4
+                      body:
+                        - text: 6.4 Pointer Types
+                          attr: 3
+                      attr: 3
+                      w: 150300
+                      h: 142875
+                  - text: "\r\rVariables of a pointer type "
+                    attr: 1
+                  - text: P
+                    attr: 6
+                  - text: " assume as values pointers to variables of some type "
+                    attr: 1
+                  - text: T
+                    attr: 6
+                  - text: ". "
+                    attr: 1
+                  - text: T
+                    attr: 6
+                  - text: " is called the pointer base type of "
+                    attr: 1
+                  - text: P
+                    attr: 6
+                  - text: " and must be a record or array type. Pointer types adopt the extension relation of their pointer base types: if a type "
+                    attr: 1
+                  - text: T1
+                    attr: 6
+                  - text: " is an extension of "
+                    attr: 1
+                  - text: T
+                    attr: 6
+                  - text: ", and "
+                    attr: 1
+                  - text: P1
+                    attr: 6
+                  - text: " is of type POINTER TO "
+                    attr: 1
+                  - text: T1
+                    attr: 6
+                  - text: ", then "
+                    attr: 1
+                  - text: P1
+                    attr: 6
+                  - text: " is also an extension of "
+                    attr: 1
+                  - text: P
+                    attr: 6
+                  - text: ".\r\r\tPointerType = POINTER TO Type.\r\rIf "
+                    attr: 1
+                  - text: p
+                    attr: 6
+                  - text: " is a variable of type "
+                    attr: 1
+                  - text: P
+                    attr: 6
+                  - text: " = POINTER TO "
+                    attr: 1
+                  - text: T
+                    attr: 6
+                  - text: ", a call of the predeclared procedure "
+                    attr: 1
+                  - text: NEW(p)
+                    attr: 6
+                  - text: " (see 10.3) allocates a variable of type "
+                    attr: 1
+                  - text: T
+                    attr: 6
+                  - text: " in free storage. If "
+                    attr: 1
+                  - text: T
+                    attr: 6
+                  - text: " is a record type or an array type with fixed length, the allocation has to be done with "
+                    attr: 1
+                  - text: NEW(p)
+                    attr: 6
+                  - text: "; if T is an n-dimensional open array type the allocation has to be done with "
+                    attr: 1
+                  - text: "NEW(p, e0, ..., en-1)"
+                    attr: 6
+                  - text: " where "
+                    attr: 1
+                  - text: T
+                    attr: 6
+                  - text: " is allocated with lengths given by the expressions "
+                    attr: 1
+                  - text: "e0, ..., en-1"
+                    attr: 6
+                  - text: ". In either case a pointer to the allocated variable is assigned to "
+                    attr: 1
+                  - text: p
+                    attr: 6
+                  - text: ". "
+                    attr: 1
+                  - text: p
+                    attr: 6
+                  - text: " is of type "
+                    attr: 1
+                  - text: P
+                    attr: 6
+                  - text: ". The "
+                    attr: 1
+                  - text: referenced
+                    attr: 6
+                  - text: "  variable "
+                    attr: 1
+                  - text: p^
+                    attr: 6
+                  - text: " (pronounced as "
+                    attr: 1
+                  - text: p-referenced
+                    attr: 6
+                  - text: ") is of type "
+                    attr: 1
+                  - text: T
+                    attr: 6
+                  - text: ". Any pointer variable may assume the value NIL, which points to no variable at all.\rAll fields or elements of a newly allocated record or array are cleared, which implies that all embedded pointers and procedure variables are initialized to NIL.\r\tThe predeclared type ANYPTR is defined as POINTER TO ANYREC. Any pointer to a record type is therefore an extension of ANYPTR. The procedure NEW cannot be used for variables of type ANYPTR.\r\r\r"
+                    attr: 1
+                  - target:
+                      name: 6.5
+                      body:
+                        - text: 6.5 Procedure Types
+                          attr: 3
+                      attr: 3
+                      w: 150300
+                      h: 142875
+                  - text: "\r\rVariables of a procedure type "
+                    attr: 1
+                  - text: T
+                    attr: 6
+                  - text: " have a procedure (or NIL) as value. If a procedure "
+                    attr: 1
+                  - text: P
+                    attr: 6
+                  - text: " is assigned to a variable of type "
+                    attr: 1
+                  - text: T
+                    attr: 6
+                  - text: ", the formal parameter lists (see Ch. 10.1) of "
+                    attr: 1
+                  - text: P
+                    attr: 6
+                  - text: " and "
+                    attr: 1
+                  - text: T
+                    attr: 6
+                  - text: " must "
+                    attr: 1
+                  - text: match
+                    attr: 6
+                  - text: " (see App. A). "
+                    attr: 1
+                  - text: P
+                    attr: 6
+                  - text: " must not be a predeclared procedure or a method nor may it be local to another procedure.\r\r\tProcedureType = PROCEDURE [FormalParameters].\r\r\r"
+                    attr: 1
+                  - target:
+                      name: 6.6
+                      body:
+                        - text: 6.6 String Types
+                          attr: 3
+                      attr: 3
+                      w: 150300
+                      h: 142875
+                  - text: "\r\rValues of a string type are sequences of characters terminated by a null character (0X). The "
+                    attr: 1
+                  - text: length
+                    attr: 6
+                  - text: " of a string is the number of characters it contains excluding the null character.\r\tStrings are either constants or stored in an array of character type. There are no predeclared identifiers for string types because there is no need to use them in a declaration.\r\tConstant strings which consist solely of characters in the range 0X..0FFX and strings stored in an array of SHORTCHAR are of type Shortstring, all others are of type String.\r\r\r"
+                    attr: 1
+                  - target:
+                      name: 7
+                      body:
+                        - text: 7. Variable Declarations
+                          attr: 3
+                      attr: 3
+                      w: 150300
+                      h: 142875
+                  - text: "\r\rVariable declarations introduce variables by defining an identifier and a data type for them.\r\r\tVariableDeclaration = IdentList \":\" Type.\r\rRecord and pointer variables have both a "
+                    attr: 1
+                  - text: static type
+                    attr: 6
+                  - text: " (the type with which they are declared "
+                    attr: 1
+                  - text: ꀔ
+                    attr: 1
+                    wide: true
+                  - text: " simply called their type) and a "
+                    attr: 1
+                  - text: dynamic type
+                    attr: 6
+                  - text: " (the type of their value at run-time). For pointers and variable parameters of record type the dynamic type may be an extension of their static type. The static type determines which fields of a record are accessible. The dynamic type is used to call methods (see 10.2).\r\rExamples of variable declarations (refer to examples in Ch. 6):\r\ri, j, k: INTEGER\rx, y: REAL\rp, q: BOOLEAN\rs: SET\rF: Function\ra: ARRAY 100 OF REAL\rw: ARRAY 16 OF\r\tRECORD\r\t\tname: ARRAY 32 OF CHAR;\r\t\tcount: INTEGER\r\tEND\rt, c: Tree\r\r\r"
+                    attr: 1
+                  - target:
+                      name: 8
+                      body:
+                        - text: 8. Expressions
+                          attr: 3
+                      attr: 3
+                      w: 150300
+                      h: 142875
+                  - text: "\r\rExpressions are constructs denoting rules of computation whereby constants and current values of variables are combined to compute other values by the application of operators and function procedures. Expressions consist of operands and operators. Parentheses may be used to express specific associations of operators and operands.\r\r\r"
+                    attr: 1
+                  - target:
+                      name: 8.1
+                      body:
+                        - text: 8.1 Operands
+                          attr: 3
+                      attr: 3
+                      w: 150300
+                      h: 142875
+                  - text: "\r\rWith the exception of set constructors and literal constants (numbers, character constants, or strings), operands are denoted by "
+                    attr: 1
+                  - text: designators
+                    attr: 6
+                  - text: ". A designator consists of an identifier referring to a constant, variable, or procedure. This identifier may possibly be qualified by a module identifier (see Ch. 4 and 11) and may be followed by "
+                    attr: 1
+                  - text: selectors
+                    attr: 6
+                  - text: " if the designated object is an element of a structure.\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 1656000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rDesignator \t= Qualident {\".\" ident | \"[\" ExpressionList \"]\" | \"^\" |\r\t\t\"(\" Qualident \")\" | ActualParameters} [ \"$\" ].\rExpressionList \t= Expression {\",\" Expression}.\rActualParameters \t= \"(\" [ExpressionList] \")\".\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rIf "
+                    attr: 1
+                  - text: a
+                    attr: 6
+                  - text: " designates an array, then "
+                    attr: 1
+                  - text: "a[e]"
+                    attr: 6
+                  - text: " denotes that element of "
+                    attr: 1
+                  - text: a
+                    attr: 6
+                  - text: " whose index is the current value of the expression "
+                    attr: 1
+                  - text: e
+                    attr: 6
+                  - text: ". The type of "
+                    attr: 1
+                  - text: e
+                    attr: 6
+                  - text: " must be an integer type. A designator of the form "
+                    attr: 1
+                  - text: "a[e0, e1, ..., en]"
+                    attr: 6
+                  - text: " stands for "
+                    attr: 1
+                  - text: "a[e0][e1]...[en]"
+                    attr: 6
+                  - text: ". If "
+                    attr: 1
+                  - text: r
+                    attr: 6
+                  - text: " designates a record, then "
+                    attr: 1
+                  - text: r.f
+                    attr: 6
+                  - text: " denotes the field "
+                    attr: 1
+                  - text: f
+                    attr: 6
+                  - text: " of "
+                    attr: 1
+                  - text: r
+                    attr: 6
+                  - text: " or the method "
+                    attr: 1
+                  - text: f
+                    attr: 6
+                  - text: " of the dynamic type of "
+                    attr: 1
+                  - text: r
+                    attr: 6
+                  - text: " (Ch. 10.2). If "
+                    attr: 1
+                  - text: a
+                    attr: 6
+                  - text: " or "
+                    attr: 1
+                  - text: r
+                    attr: 6
+                  - text: " are read-only, then also "
+                    attr: 1
+                  - text: "a[e]"
+                    attr: 6
+                  - text: " and "
+                    attr: 1
+                  - text: r.f
+                    attr: 6
+                  - text: " are read-only.\r\tIf "
+                    attr: 1
+                  - text: p
+                    attr: 6
+                  - text: " designates a pointer, "
+                    attr: 1
+                  - text: p^
+                    attr: 6
+                  - text: " denotes the variable which is referenced by "
+                    attr: 1
+                  - text: p
+                    attr: 6
+                  - text: ". The designators "
+                    attr: 1
+                  - text: p^.f
+                    attr: 6
+                  - text: ", "
+                    attr: 1
+                  - text: "p^[e], "
+                    attr: 6
+                  - text: and
+                    attr: 1
+                  - text: " p^$"
+                    attr: 6
+                  - text: " may be abbreviated as "
+                    attr: 1
+                  - text: p.f
+                    attr: 6
+                  - text: ", "
+                    attr: 1
+                  - text: "p[e], "
+                    attr: 6
+                  - text: "and "
+                    attr: 1
+                  - text: p$
+                    attr: 6
+                  - text: ", i.e., record, array, and string selectors imply dereferencing. Dereferencing is also implied if a pointer is assigned to a variable of a record or array type (Ch. 9.1), if a pointer is used as actual parameter for a formal parameter of a record or array type (Ch. 10.1), or if a pointer is used as argument of the standard procedure LEN (Ch. 10.3).\r\tA "
+                    attr: 1
+                  - text: type guard
+                    attr: 6
+                  - text: " "
+                    attr: 1
+                  - text: v(T)
+                    attr: 6
+                  - text: " asserts that the dynamic type of "
+                    attr: 1
+                  - text: v
+                    attr: 6
+                  - text: " is "
+                    attr: 1
+                  - text: T
+                    attr: 6
+                  - text: " (or an extension of "
+                    attr: 1
+                  - text: T
+                    attr: 6
+                  - text: "), i.e., program execution is aborted, if the dynamic type of "
+                    attr: 1
+                  - text: v
+                    attr: 6
+                  - text: " is not "
+                    attr: 1
+                  - text: T
+                    attr: 6
+                  - text: " (or an extension of "
+                    attr: 1
+                  - text: T
+                    attr: 6
+                  - text: "). Within the designator, "
+                    attr: 1
+                  - text: v
+                    attr: 6
+                  - text: " is then regarded as having the static type "
+                    attr: 1
+                  - text: T
+                    attr: 6
+                  - text: ". The guard is applicable, if\r\r\t1.  "
+                    attr: 1
+                  - text: v
+                    attr: 6
+                  - text: " is an IN or VAR parameter of record type or "
+                    attr: 1
+                  - text: v
+                    attr: 6
+                  - text: " is a pointer to a record type, and if\r\t2.  "
+                    attr: 1
+                  - text: T
+                    attr: 6
+                  - text: " is an extension of the static type of "
+                    attr: 1
+                  - text: v
+                    attr: 6
+                  - text: "\r\rIf the designated object is a constant or a variable, then the designator refers to its current value. If it is a procedure, the designator refers to that procedure unless it is followed by a (possibly empty) parameter list in which case it implies an activation of that procedure and stands for the value resulting from its execution. The actual parameters must correspond to the formal parameters as in proper procedure calls (see 10.1).\r\tIf "
+                    attr: 1
+                  - text: a
+                    attr: 6
+                  - text: " designates an array of character type, then "
+                    attr: 1
+                  - text: a$
+                    attr: 6
+                  - text: " denotes the null terminated string contained in "
+                    attr: 1
+                  - text: a
+                    attr: 6
+                  - text: ". It leads to a run-time error if "
+                    attr: 1
+                  - text: a
+                    attr: 6
+                  - text: " does not contain a 0X character. The $ selector is applied implicitly if a is used as an operand of the concatenation operator (Ch. 8.2.4), a relational operator (Ch. 8.2.5), or one of the predeclared procedures LONG and SHORT (Ch. 10.3).\r\rExamples of designators (refer to examples in Ch.7):\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 2160000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "i\t(INTEGER)\ra[i]\t(REAL)\rw[3].name[i]\t(CHAR)\rt.left.right\t(Tree)\rt(CenterTree).subnode\t(Tree)\rw[i].name$\t(String)\r\r\r"
+                    attr: 1
+                  - target:
+                      name: 8.2
+                      body:
+                        - text: 8.2 Operators
+                          attr: 3
+                      attr: 3
+                      w: 150300
+                      h: 142875
+                  - text: "\r\rFour classes of operators with different precedences (binding strengths) are syntactically distinguished in expressions. The operator ~ has the highest precedence, followed by multiplication operators, addition operators, and relations. Operators of the same precedence associate from left to right. For example, x-y-z stands for (x-y)-z.\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 1800000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "Expression \t= SimpleExpression [Relation SimpleExpression].\rSimpleExpression\t= [\"+\" | \"-\"] Term {AddOperator Term}.\rTerm \t= Factor {MulOperator Factor}.\rFactor \t= Designator | number | character | string | NIL | Set |\r\t\t\"(\" Expression \")\" | \"~\" Factor.\rSet \t= \"{\" [Element {\",\" Element}] \"}\".\rElement \t= Expression [\"..\" Expression].\rRelation \t= \"=\" | \"#\" | \"<\" | \"<=\" | \">\" | \">=\" | IN | IS.\rAddOperator \t= \"+\" | \"-\" | OR.\rMulOperator \t= \"*\" | \"/\" | DIV | MOD | \"&\".\r\rThe available operators are listed in the following tables. Some operators are applicable to operands of various types, denoting different operations. In these cases, the actual operation is identified by the type of the operands. The operands must be "
+                    attr: 1
+                  - text: expression compatible
+                    attr: 6
+                  - text: " with respect to the operator (see App. A).\r\r"
+                    attr: 1
+                  - text: 8.2.1 Logical operators
+                    attr: 6
+                  - text: "\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 360000 }
+                        - { stop: 2160000 }
+                        - { stop: 2880000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "OR\tlogical disjunction \tp OR q\t  \"if p then TRUE, else q\"\r&\tlogical conjunction \tp & q\t  \"if p then q, else FALSE\"\r~\tnegation \t~ p\t  \"not p\"\r\rThese operators apply to BOOLEAN operands and yield a BOOLEAN result. The second operand of a disjunction is only evaluated if the result of the first is FALSE.  The second oprand of a conjunction is only evaluated if the result of the first is TRUE.\r\r"
+                    attr: 1
+                  - text: 8.2.2 Arithmetic operators
+                    attr: 6
+                  - text: "\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 720000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "+\tsum\r-\tdifference\r*\tproduct\r/\treal quotient\rDIV\tinteger quotient\rMOD\tmodulus\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rThe operators +, -, *, and / apply to operands of numeric types. The type of the result is REAL if the operation is a division (/) or one of the operand types is a REAL. Otherwise the result type is SHORTREAL if one of the operand types is SHORTREAL, LONGINT if one of the operand types is LONGINT, or INTEGER in any other case. If the result of a real operation is too large to be represented as a real number, it is changed to the predeclared value INF with the same sign as the original result. Note that this also applies to 1.0/0.0, but not to 0.0/0.0 which has no defined result at all and leads to a run-time error. When used as monadic operators, the operator - denotes sign inversion and + denotes the identity operation. The operators DIV and MOD apply to integer operands only. They are related by the following formulas:\r\rx = (x DIV y) * y + (x MOD y)\r0 <= (x MOD y) < y  or  0 >= (x MOD y) > y\r\rNote: x DIV y = ENTIER(x / y) \r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 720000 }
+                        - { stop: 1440000 }
+                        - { stop: 2160000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rExamples:\r x\t y\tx DIV y\tx MOD y\r 5\t 3\t   1\t\t  2\r-5\t 3\t  -2\t  \t1\r 5\t-3\t  -2\t\t -1\r-5\t-3\t   1\t\t -2\r\rNote:\r(-5) DIV 3 = -2\rbut\r-5 DIV 3 = -(5 DIV 3) = -1\r\r"
+                    attr: 1
+                  - text: 8.2.3 Set operators
+                    attr: 6
+                  - text: "\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 360000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "+\tunion\r-\tdifference (x - y = x * (-y))\r*\tintersection\r/\tsymmetric set difference (x / y = (x-y) + (y-x))\r\rSet operators apply to operands of type SET and yield a result of type SET. The monadic minus sign denotes the complement of "
+                    attr: 1
+                  - text: x
+                    attr: 6
+                  - text: ", i.e., "
+                    attr: 1
+                  - text: -x
+                    attr: 6
+                  - text: " denotes the set of integers between 0 and MAX(SET) which are not elements of "
+                    attr: 1
+                  - text: x
+                    attr: 6
+                  - text: ". Set operators are not associative "
+                    attr: 1
+                  - text: "((a+b)-c # a+(b-c))"
+                    attr: 6
+                  - text: ".\rA set constructor defines the value of a set by listing its elements between curly brackets. The elements must be integers in the range 0..MAX(SET). A range "
+                    attr: 1
+                  - text: a..b
+                    attr: 6
+                  - text: " denotes all integers"
+                    attr: 1
+                  - text: " i"
+                    attr: 6
+                  - text:  with
+                    attr: 1
+                  - text: " i"
+                    attr: 6
+                  - text: " >= "
+                    attr: 1
+                  - text: a
+                    attr: 6
+                  - text:  and 
+                    attr: 1
+                  - text: i
+                    attr: 6
+                  - text:  <= 
+                    attr: 1
+                  - text: b
+                    attr: 6
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: 8.2.4 String operators
+                    attr: 6
+                  - text: "\r\r+\tstring concatenation\r\rThe concatenation operator applies to operands of string types. The resulting string consists of the characters of the first operand followed by the characters of the second operand. If both operands are of type Shortstring the result is of type Shortstring, otherwise the result is of type String.\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 540000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: 8.2.5 Relations
+                    attr: 6
+                  - text: "\r\r=\tequal\r#\tunequal\r<\tless\r<=\tless or equal\r>\tgreater\r>=\tgreater or equal\rIN\tset membership\rIS\ttype test\r\rRelations yield a BOOLEAN result. The relations =, #, <, <=, >, and >= apply to the numeric types, character types, and string types. The relations = and # also apply to BOOLEAN and SET, as well as to pointer and procedure types (including the value NIL). "
+                    attr: 1
+                  - text: x IN s
+                    attr: 6
+                  - text: " stands for \""
+                    attr: 1
+                  - text: x
+                    attr: 6
+                  - text: " is an element of "
+                    attr: 1
+                  - text: s
+                    attr: 6
+                  - text: "\". "
+                    attr: 1
+                  - text: x
+                    attr: 6
+                  - text: " must be an integer in the range 0..MAX(SET), and "
+                    attr: 1
+                  - text: s
+                    attr: 6
+                  - text: " of type SET. "
+                    attr: 1
+                  - text: v IS T
+                    attr: 6
+                  - text: " stands for \"the dynamic type of "
+                    attr: 1
+                  - text: v
+                    attr: 6
+                  - text: " is "
+                    attr: 1
+                  - text: T
+                    attr: 6
+                  - text: " (or an extension of "
+                    attr: 1
+                  - text: T
+                    attr: 6
+                  - text: ")\" and is called a "
+                    attr: 1
+                  - text: type test
+                    attr: 6
+                  - text: ". It is applicable if\r\r1.  "
+                    attr: 1
+                  - text: v
+                    attr: 6
+                  - text: " is an IN or VAR parameter of record type or "
+                    attr: 1
+                  - text: v
+                    attr: 6
+                  - text: " is a pointer to a record type, and if\r2.  "
+                    attr: 1
+                  - text: T
+                    attr: 6
+                  - text: " is an extension of the static type of "
+                    attr: 1
+                  - text: v
+                    attr: 6
+                  - text: "\r\rExamples of expressions (refer to examples in Ch.7):\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 1980000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "1991\tINTEGER\ri DIV 3\tINTEGER\r~p OR q\tBOOLEAN\r(i+j) * (i-j)\tINTEGER\rs - {8, 9, 13}\tSET\ri + x\tREAL\ra[i+j] * a[i-j]\tREAL\r(0<=i) & (i<100)\tBOOLEAN\rt.key = 0\tBOOLEAN\rk IN {i..j-1}\tBOOLEAN\rw[i].name$ <= \"John\"\tBOOLEAN\rt IS CenterTree\tBOOLEAN\r\r\r"
+                    attr: 1
+                  - target:
+                      name: 9
+                      body:
+                        - text: 9. Statements
+                          attr: 3
+                      attr: 3
+                      w: 150300
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 180000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rStatements denote actions. There are elementary and structured statements. Elementary statements are not composed of any parts that are themselves statements. They are the assignment, the procedure call, the return, and the exit statement. Structured statements are composed of parts that are themselves statements. They are used to express sequencing and conditional, selective, and repetitive execution. A statement may also be empty, in which case it denotes no action. The empty statement is included in order to relax punctuation rules in statement sequences.\r\r\tStatement =\t[ Assignment | ProcedureCall | IfStatement | CaseStatement |\r\t\t\tWhileStatement | RepeatStatement |\r\t\t\tForStatement | LoopStatement | WithStatement |\r\t\t\tEXIT | RETURN [Expression] ].\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 432000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r"
+                    attr: 1
+                  - target:
+                      name: 9.1
+                      body:
+                        - text: 9.1 Assignments
+                          attr: 3
+                      attr: 3
+                      w: 150300
+                      h: 142875
+                  - text: "\r\rAssignments replace the current value of a variable by a new value specified by an expression. The expression must be "
+                    attr: 1
+                  - text: assignment compatible
+                    attr: 6
+                  - text: " with the variable (see App. A). The assignment operator is written as \":=\" and pronounced as "
+                    attr: 1
+                  - text: becomes
+                    attr: 6
+                  - text: ".\r\r\tAssignment = Designator \":=\" Expression.\r\rIf an expression "
+                    attr: 1
+                  - text: e
+                    attr: 6
+                  - text: " of type "
+                    attr: 1
+                  - text: Te
+                    attr: 6
+                  - text: " is assigned to a variable "
+                    attr: 1
+                  - text: v
+                    attr: 6
+                  - text: " of type "
+                    attr: 1
+                  - text: Tv
+                    attr: 6
+                  - text: ", the following happens:\r\r\t1. \tif "
+                    attr: 1
+                  - text: Tv
+                    attr: 6
+                  - text: " and "
+                    attr: 1
+                  - text: Te
+                    attr: 6
+                  - text: " are record types, all fields of that type are assigned. \r\t2.\tif "
+                    attr: 1
+                  - text: Tv
+                    attr: 6
+                  - text: " and "
+                    attr: 1
+                  - text: Te
+                    attr: 6
+                  - text: " are pointer types, the dynamic type of "
+                    attr: 1
+                  - text: v
+                    attr: 6
+                  - text: " becomes the dynamic type of "
+                    attr: 1
+                  - text: e
+                    attr: 6
+                  - text: ";\r\t3.\tif "
+                    attr: 1
+                  - text: Tv
+                    attr: 6
+                  - text: " is an array of "
+                    attr: 1
+                  - text: character type
+                    attr: 6
+                  - text: " and "
+                    attr: 1
+                  - text: e
+                    attr: 6
+                  - text: " is a string of length "
+                    attr: 1
+                  - text: "m "
+                    attr: 6
+                  - text: "< "
+                    attr: 1
+                  - text: LEN(v)
+                    attr: 6
+                  - text: ", "
+                    attr: 1
+                  - text: "v[i]"
+                    attr: 6
+                  - text: " becomes "
+                    attr: 1
+                  - text: ei
+                    attr: 6
+                  - text: " for "
+                    attr: 1
+                  - text: i
+                    attr: 6
+                  - text: " = 0.."
+                    attr: 1
+                  - text: m
+                    attr: 6
+                  - text: "-1 and "
+                    attr: 1
+                  - text: "v[m] "
+                    attr: 6
+                  - text: "becomes 0X. It leads to a run-time error if "
+                    attr: 1
+                  - text: m
+                    attr: 6
+                  - text: " >= "
+                    attr: 1
+                  - text: LEN(v)
+                    attr: 6
+                  - text: ".\r\rExamples of assignments (refer to examples in Ch.7):\r\ri := 0\rp := i = j\rx := i + 1\rk := Log2(i+j)\rF := Log2\t\t(* see 10.1 *)\rs := {2, 3, 5, 7, 11, 13}\ra[i] := (x+y) * (x-y)\rt.key := i\rw[i+1].name := \"John\"\rt := c\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r"
+                    attr: 1
+                  - target:
+                      name: 9.2
+                      body:
+                        - text: 9.2 Procedure Calls
+                          attr: 3
+                      attr: 3
+                      w: 150300
+                      h: 142875
+                  - text: "\r\rA procedure call activates a procedure. It may contain a list of actual parameters which replace the corresponding formal parameters defined in the procedure declaration (see Ch. 10). The correspondence is established by the positions of the parameters in the actual and formal parameter lists. There are two kinds of parameters: "
+                    attr: 1
+                  - text: variable
+                    attr: 6
+                  - text: " and "
+                    attr: 1
+                  - text: value parameters
+                    attr: 6
+                  - text: ".\r\tIf a formal parameter is a variable parameter, the corresponding actual parameter must be a designator denoting a variable. If it denotes an element of a structured variable, the component selectors are evaluated when the formal/actual parameter substitution takes place, i.e., before the execution of the procedure. If a formal parameter is a value parameter, the corresponding actual parameter must be an expression. This expression is evaluated before the procedure activation, and the resulting value is assigned to the formal parameter (see also 10.1).\r\r\tProcedureCall = Designator [ActualParameters].\r\rExamples:\r\rWriteInt(i*2+1)\t(* see 10.1 *)\rINC(w[k].count)\rt.Insert(\"John\")\t(* see 11 *)\r\r\r"
+                    attr: 1
+                  - target:
+                      name: 9.3
+                      body:
+                        - text: 9.3 Statement Sequences
+                          attr: 3
+                      attr: 3
+                      w: 150300
+                      h: 142875
+                  - text: "\r\rStatement sequences denote the sequence of actions specified by the component statements which are separated by semicolons.\r\r\tStatementSequence = Statement {\";\" Statement}.\r\r\r"
+                    attr: 1
+                  - target:
+                      name: 9.4
+                      body:
+                        - text: 9.4 If Statements
+                          attr: 3
+                      attr: 3
+                      w: 150300
+                      h: 142875
+                  - text: "\r\r\tIfStatement = \r\t\tIF Expression THEN StatementSequence\r\t\t{ELSIF Expression THEN StatementSequence}\r\t\t[ELSE StatementSequence]\r\t\tEND.\r\rIf statements specify the conditional execution of guarded statement sequences. The Boolean expression preceding a statement sequence is called its "
+                    attr: 1
+                  - text: guard
+                    attr: 6
+                  - text: ". The guards are evaluated in sequence of occurrence, until one evaluates to TRUE, whereafter its associated statement sequence is executed. If no guard is satisfied, the statement sequence following the symbol ELSE is executed, if there is one.\r\rExample:\r\rIF (ch >= \"A\") & (ch <= \"Z\") THEN ReadIdentifier\rELSIF (ch >= \"0\") & (ch <= \"9\") THEN ReadNumber\rELSIF (ch = \"'\") OR (ch = '\"') THEN ReadString\rELSE SpecialCharacter\rEND\r\r\r"
+                    attr: 1
+                  - target:
+                      name: 9.5
+                      body:
+                        - text: 9.5 Case Statements
+                          attr: 3
+                      attr: 3
+                      w: 150300
+                      h: 142875
+                  - text: "\r\rCase statements specify the selection and execution of a statement sequence according to the value of an expression. First the case expression is evaluated, then that statement sequence is executed whose case label list contains the obtained value. The case expression must be of an "
+                    attr: 1
+                  - text: "integer "
+                    attr: 6
+                  - text: or
+                    attr: 1
+                  - text: " character type"
+                    attr: 6
+                  - text: " that includes the values of all case labels. Case labels are constants, and no value must occur more than once. If the value of the expression does not occur as a label of any case, the statement sequence following the symbol ELSE is selected, if there is one, otherwise the program is aborted.\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 1800000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "CaseStatement \t= CASE Expression OF Case {\"|\" Case}\r\t\t[ELSE StatementSequence] END.\rCase \t= [CaseLabelList \":\" StatementSequence].\rCaseLabelList \t= CaseLabels {\",\" CaseLabels}.\rCaseLabels \t= ConstExpression [\"..\" ConstExpression].\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rExample:\r\rCASE ch OF\r\t\"A\" .. \"Z\": ReadIdentifier \r|\t\"0\" .. \"9\": ReadNumber \r|\t\"'\", '\"': ReadString\rELSE SpecialCharacter\rEND\r\r\r"
+                    attr: 1
+                  - target:
+                      name: 9.6
+                      body:
+                        - text: 9.6 While Statements
+                          attr: 3
+                      attr: 3
+                      w: 150300
+                      h: 142875
+                  - text: "\r\rWhile statements specify the repeated execution of a statement sequence while the Boolean expression (its "
+                    attr: 1
+                  - text: guard
+                    attr: 6
+                  - text: ") yields TRUE. The guard is checked before every execution of the statement sequence.\r\r\tWhileStatement = WHILE Expression DO StatementSequence END.\r\rExamples:\rWHILE i > 0 DO i := i DIV 2; k := k + 1 END\rWHILE (t # NIL) & (t.key # i) DO t := t.left END\r\r\r"
+                    attr: 1
+                  - target:
+                      name: 9.7
+                      body:
+                        - text: 9.7 Repeat Statements
+                          attr: 3
+                      attr: 3
+                      w: 150300
+                      h: 142875
+                  - text: "\r\rA repeat statement specifies the repeated execution of a statement sequence until a condition specified by a Boolean expression is satisfied. The statement sequence is executed at least once.\r\r\tRepeatStatement = REPEAT StatementSequence UNTIL Expression.\r\r\r"
+                    attr: 1
+                  - target:
+                      name: 9.8
+                      body:
+                        - text: 9.8 For Statements
+                          attr: 3
+                      attr: 3
+                      w: 150300
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rA for statement specifies the repeated execution of a statement sequence while a progression of values is assigned to an integer variable called the "
+                    attr: 1
+                  - text: control variable
+                    attr: 6
+                  - text: " of the for statement.\r\r\tForStatement =\r\t\tFOR ident \":=\" Expression TO Expression [BY ConstExpression]\r\t\tDO StatementSequence END.\r\rThe statement\r\r\tFOR v := beg TO end BY step DO statements END\r\ris equivalent to\r\rtemp := end; v := beg;\rIF step > 0 THEN\r\tWHILE v <= temp DO statements; INC(v, step) END\rELSE\r\tWHILE v >= temp DO statements; INC(v, step) END\rEND\r\r"
+                    attr: 1
+                  - text: temp
+                    attr: 6
+                  - text: " has the "
+                    attr: 1
+                  - text: same
+                    attr: 6
+                  - text: " type as "
+                    attr: 1
+                  - text: v
+                    attr: 6
+                  - text: ". "
+                    attr: 1
+                  - text: step
+                    attr: 6
+                  - text: " must be a nonzero constant expression. If "
+                    attr: 1
+                  - text: step
+                    attr: 6
+                  - text: " is not specified, it is assumed to be 1.\r\rExamples:\rFOR i := 0 TO 79 DO k := k + a[i] END\rFOR i := 79 TO 1 BY -1 DO a[i] := a[i-1] END\r\r\r"
+                    attr: 1
+                  - target:
+                      name: 9.9
+                      body:
+                        - text: 9.9 Loop Statements
+                          attr: 3
+                      attr: 3
+                      w: 150300
+                      h: 142875
+                  - text: "\r\rA loop statement specifies the repeated execution of a statement sequence. It is terminated upon execution of an exit statement within that sequence (see 9.10).\r\r\tLoopStatement = LOOP StatementSequence END.\r\rExample:\rLOOP\r\tReadInt(i);\r\tIF i < 0 THEN EXIT END;\r\tWriteInt(i)\rEND\r\rLoop statements are useful to express repetitions with several exit points or cases where the exit condition is in the middle of the repeated statement sequence.\r\r\r"
+                    attr: 1
+                  - target:
+                      name: 9.10
+                      body:
+                        - text: 9.10 Return and Exit Statements
+                          attr: 3
+                      attr: 3
+                      w: 150300
+                      h: 142875
+                  - text: "\r\rA return statement indicates the termination of a procedure. It is denoted by the symbol RETURN, followed by an expression if the procedure is a function procedure. The type of the expression must be "
+                    attr: 1
+                  - text: assignment compatible
+                    attr: 6
+                  - text: " (see App. A) with the result type specified in the procedure heading (see Ch.10).\r\tFunction procedures require the presence of a return statement indicating the result value. In proper procedures, a return statement is implied by the end of the procedure body. Any explicit return statement therefore appears as an additional (probably exceptional) termination point.\r\tAn exit statement is denoted by the symbol EXIT. It specifies termination of the enclosing loop statement and continuation with the statement following that loop statement. Exit statements are contextually, although not syntactically associated with the loop statement which contains them.\r\r\r"
+                    attr: 1
+                  - target:
+                      name: 9.11
+                      body:
+                        - text: 9.11 With Statements
+                          attr: 3
+                      attr: 3
+                      w: 150300
+                      h: 142875
+                  - text: "\r\rWith statements execute a statement sequence depending on the result of a type test and apply a type guard to every occurrence of the tested variable within this statement sequence.\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 1440000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "WithStatement \t= WITH [ Guard DO StatementSequence ]\r\t\t{\"|\" [ Guard DO StatementSequence ] }\r\t\t[ELSE StatementSequence] END.\rGuard\t= Qualident \":\" Qualident.\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rIf "
+                    attr: 1
+                  - text: v
+                    attr: 6
+                  - text: " is a variable parameter of record type or a pointer variable, and if it is of a static type "
+                    attr: 1
+                  - text: T0
+                    attr: 6
+                  - text: ", the statement\r\r\tWITH v: T1 DO S1 | v: T2 DO S2 ELSE S3 END\r\rhas the following meaning: if the dynamic type of "
+                    attr: 1
+                  - text: v
+                    attr: 6
+                  - text: " is "
+                    attr: 1
+                  - text: T1
+                    attr: 6
+                  - text: ", then the statement sequence "
+                    attr: 1
+                  - text: S1
+                    attr: 6
+                  - text: " is executed where "
+                    attr: 1
+                  - text: v
+                    attr: 6
+                  - text: " is regarded as if it had the static type "
+                    attr: 1
+                  - text: T1
+                    attr: 6
+                  - text: "; else if the dynamic type of "
+                    attr: 1
+                  - text: v
+                    attr: 6
+                  - text: " is "
+                    attr: 1
+                  - text: T2
+                    attr: 6
+                  - text: ", then "
+                    attr: 1
+                  - text: S2
+                    attr: 6
+                  - text: " is executed where "
+                    attr: 1
+                  - text: v
+                    attr: 6
+                  - text: " is regarded as if it had the static type "
+                    attr: 1
+                  - text: T2
+                    attr: 6
+                  - text: "; else "
+                    attr: 1
+                  - text: S3
+                    attr: 6
+                  - text: " is executed. "
+                    attr: 1
+                  - text: T1
+                    attr: 6
+                  - text: " and "
+                    attr: 1
+                  - text: T2
+                    attr: 6
+                  - text: " must be extensions of "
+                    attr: 1
+                  - text: T0
+                    attr: 6
+                  - text: ". If no type test is satisfied and if an else clause is missing the program is aborted.\r\rExample:\rWITH t: CenterTree DO i := t.width; c := t.subnode END\r\r\r"
+                    attr: 1
+                  - target:
+                      name: 10
+                      body:
+                        - text: 10. Procedure Declarations
+                          attr: 3
+                      attr: 3
+                      w: 150300
+                      h: 142875
+                  - text: "\r\rA procedure declaration consists of a "
+                    attr: 1
+                  - text: procedure heading
+                    attr: 6
+                  - text: " and a "
+                    attr: 1
+                  - text: procedure body
+                    attr: 6
+                  - text: ". The heading specifies the procedure identifier and the "
+                    attr: 1
+                  - text: formal parameters
+                    attr: 6
+                  - text: ". For methods it also specifies the receiver parameter and the attributes (see 10.2). The body contains declarations and statements. The procedure identifier is repeated at the end of the procedure declaration.\r\tThere are two kinds of procedures: "
+                    attr: 1
+                  - text: proper procedures
+                    attr: 6
+                  - text: " and "
+                    attr: 1
+                  - text: function procedures
+                    attr: 6
+                  - text: ". The latter are activated by a function designator as a constituent of an expression and yield a result that is an operand of the expression. Proper procedures are activated by a procedure call. A procedure is a function procedure if its formal parameters specify a result type. The body of a function procedure must contain a return statement which defines its result.\r\tAll constants, variables, types, and procedures declared within a procedure body are "
+                    attr: 1
+                  - text: local
+                    attr: 6
+                  - text: " to the procedure. Since procedures may be declared as local objects too, procedure declarations may be nested. The call of a procedure within its declaration implies recursive activation.\r\tLocal variables whose types are pointer types or procedure types are initialized to NIL before the body of the procedure is executed.\r\tObjects declared in the environment of the procedure are also visible in those parts of the procedure in which they are not concealed by a locally declared object with the same name.\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 1944000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "ProcedureDeclaration\t= ProcedureHeading [\";\" ProcedureBody ident ].\rProcedureHeading \t= PROCEDURE [Receiver] IdentDef\r\t\t[FormalParameters] MethAttributes.\rProcedureBody \t= DeclarationSequence\r\t\t[BEGIN StatementSequence] END.\rDeclarationSequence \t= {CONST {ConstantDeclaration \";\"} | \r\t\tTYPE {TypeDeclaration \";\"} |\r\t    VAR {VariableDeclaration \";\"} }\r\t   {ProcedureDeclaration \";\" | ForwardDeclaration \";\"}.\rForwardDeclaration \t= PROCEDURE \" ^ \" [Receiver] IdentDef\r\t\t[FormalParameters] MethAttributes.\r\rIf a procedure declaration specifies a "
+                    attr: 1
+                  - text: receiver
+                    attr: 6
+                  - text: " parameter, the procedure is considered to be a method of the type of the receiver (see 10.2). A "
+                    attr: 1
+                  - text: forward declaration
+                    attr: 6
+                  - text: " serves to allow forward references to a procedure whose actual declaration appears later in the text. The formal parameter lists of the forward declaration and the actual declaration must "
+                    attr: 1
+                  - text: match
+                    attr: 6
+                  - text: " (see App. A) and the names of corresponding parameters must be equal.\r\r\r"
+                    attr: 1
+                  - target:
+                      name: 10.1
+                      body:
+                        - text: 10.1 Formal Parameters
+                          attr: 3
+                      attr: 3
+                      w: 150300
+                      h: 142875
+                  - text: "\r\rFormal parameters are identifiers declared in the formal parameter list of a procedure. They correspond to actual parameters specified in the procedure call. The correspondence between formal and actual parameters is established when the procedure is called. There are two kinds of parameters, "
+                    attr: 1
+                  - text: value
+                    attr: 6
+                  - text: " and "
+                    attr: 1
+                  - text: variable parameters
+                    attr: 6
+                  - text: ", the latter indicated in the formal parameter list by the presence of one of the keywords VAR, IN, or OUT. Value parameters are local variables to which the value of the corresponding actual parameter is assigned as an initial value. Variable parameters correspond to actual parameters that are variables, and they stand for these variables. Variable parameters can be used for input only (keyword IN), output only (keyword OUT), or input and output (keyword VAR). IN can only be used for array and record parameters. Inside the procedure, input parameters are read-only. Like local variables, output parameters of pointer types and procedure types are initialized to NIL. Other output parameters must be considered as undefined prior to the first assignment in the procedure. The scope of a formal parameter extends from its declaration to the end of the procedure block in which it is declared. A function procedure without parameters must have an empty parameter list. It must be called by a function designator whose actual parameter list is empty too. The result type of a procedure can be neither a record nor an array.\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 1800000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "FormalParameters\t= \"(\" [FPSection {\";\" FPSection}] \")\" [\":\" Type].\rFPSection \t= [VAR | IN | OUT] ident {\",\" ident} \":\" Type.\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rLet "
+                    attr: 1
+                  - text: f
+                    attr: 6
+                  - text: " be the formal parameter and "
+                    attr: 1
+                  - text: a
+                    attr: 6
+                  - text: " the corresponding actual parameter. If "
+                    attr: 1
+                  - text: f
+                    attr: 6
+                  - text: " is an open array, then "
+                    attr: 1
+                  - text: a
+                    attr: 6
+                  - text: " must be "
+                    attr: 1
+                  - text: array compatible
+                    attr: 6
+                  - text: " to "
+                    attr: 1
+                  - text: f
+                    attr: 6
+                  - text: " and the lengths of "
+                    attr: 1
+                  - text: f
+                    attr: 6
+                  - text: " are taken from "
+                    attr: 1
+                  - text: a
+                    attr: 6
+                  - text: ". Otherwise "
+                    attr: 1
+                  - text: a
+                    attr: 6
+                  - text: " must be "
+                    attr: 1
+                  - text: parameter compatible
+                    attr: 6
+                  - text: " to "
+                    attr: 1
+                  - text: f
+                    attr: 6
+                  - text: " (see App. A)\r\rExamples of procedure declarations:\r\rPROCEDURE ReadInt (OUT x: INTEGER);\r\tVAR i: INTEGER; ch: CHAR;\rBEGIN\r\ti := 0; Read(ch);\r\tWHILE (\"0\" <= ch) & (ch <= \"9\") DO\r\t\ti := 10 * i + (ORD(ch) - ORD(\"0\")); Read(ch)\r\tEND;\r\tx := i\rEND ReadInt\r\rPROCEDURE WriteInt (x: INTEGER);\t(* 0 <= x < 100000 *)\r\tVAR i: INTEGER; buf: ARRAY 5 OF INTEGER;\rBEGIN\r\ti := 0;\r\tREPEAT buf[i] := x MOD 10; x := x DIV 10; INC(i) UNTIL x = 0;\r\tREPEAT DEC(i); Write(CHR(buf[i] + ORD(\"0\"))) UNTIL i = 0\rEND WriteInt\r\rPROCEDURE WriteString (IN s: ARRAY OF CHAR);\r\tVAR i: INTEGER;\rBEGIN\r\ti := 0; WHILE (i < LEN(s)) & (s[i] # 0X) DO Write(s[i]); INC(i) END\rEND WriteString\r\rPROCEDURE Log2 (x: INTEGER): INTEGER;\r\tVAR y: INTEGER;\t(* assume x > 0 *)\rBEGIN\r\ty := 0; WHILE x > 1 DO x := x DIV 2; INC(y) END;\r\tRETURN y\rEND Log2\r\rPROCEDURE Modify (VAR n: Node);\rBEGIN\r\tINC(n.key)\rEND Modify\r\r\r"
+                    attr: 1
+                  - target:
+                      name: 10.2
+                      body:
+                        - text: 10.2 Methods
+                          attr: 3
+                      attr: 3
+                      w: 150300
+                      h: 142875
+                  - text: "\r\rGlobally declared procedures may be associated with a record type declared in the same module. The procedures are said to be "
+                    attr: 1
+                  - text: "methods "
+                    attr: 6
+                  - text: "bound to the record type. The binding is expressed by the type of the "
+                    attr: 1
+                  - text: receiver
+                    attr: 6
+                  - text: " in the heading of a procedure declaration.  The receiver may be either a VAR or IN parameter of record type "
+                    attr: 1
+                  - text: T
+                    attr: 6
+                  - text: " or a value parameter of type POINTER TO "
+                    attr: 1
+                  - text: T
+                    attr: 6
+                  - text: " (where "
+                    attr: 1
+                  - text: T
+                    attr: 6
+                  - text: " is a record type). The method is bound to the type "
+                    attr: 1
+                  - text: T
+                    attr: 6
+                  - text: " and is considered local to it.\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 1656000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "ProcedureHeading\t= PROCEDURE [Receiver] IdentDef\r\t\t[FormalParameters] MethAttributes.\rReceiver \t= \"(\" [VAR | IN] ident \":\" ident \")\".\rMethAttributes\t= [\",\" NEW] [\",\" (ABSTRACT | EMPTY | EXTENSIBLE)].\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rIf a method M is bound to a type T0, it is implicitly also bound to any type T1 which is an extension of T0. However, if a method M' (with the same name as M) is declared to be bound to T1, this overrides the binding of M to T1. M' is considered a redefinition of M for T1. The formal parameters of M and M' must match, except if M is a function returning a pointer type. In the latter case, the function result type of M' must be an extension of the function result type of M (covariance) (see App. A). If M and T1 are exported (see Chapter 4) M' must be exported too.\rIf M is not exported, M' must not be exported either. If M and M' are exported, they must use the same export marks.\r\rThe following attributes are used to restrict and document the desired usage of a method:\rNEW, ABSTRACT, EMPTY, and EXTENSIBLE.\r\rNEW must be used on all newly introduced methods and must not be used on redefining methods. The attribute helps to detect inconsistencies between a record and its extension when one of the two is changed without updating the other.\r\tAbstract and empty method declarations consist of a procedure header only. Abstract methods are never called. A record containing abstract methods must be abstract. A method redefined by an abstract method must be abstract. An abstract method of an exported record must be exported. Calling an empty method has no effect. Empty methods may not return function results and may not have OUT parameters. A record containing new empty methods must be extensible or abstract. A method redefined by an empty method must be empty or abstract. Abstract or empty methods are usually redefined (implemented) in a record extension. They may not be called via super calls. A concrete (nonabstract) record extending an abstract record must implement all abstract methods bound to the base record.\r\tConcrete methods (which contain a procedure body) are either extensible or final (no attribute). A final method cannot be redefined in a record extension. A record containing extensible methods must be extensible or abstract.\r\rIf "
+                    attr: 1
+                  - text: v
+                    attr: 6
+                  - text: " is a designator and "
+                    attr: 1
+                  - text: M
+                    attr: 6
+                  - text: " is a method, then "
+                    attr: 1
+                  - text: v.M
+                    attr: 6
+                  - text: " denotes that method "
+                    attr: 1
+                  - text: M
+                    attr: 6
+                  - text: " which is bound to the dynamic type of "
+                    attr: 1
+                  - text: v
+                    attr: 6
+                  - text: ". Note, that this may be a different method than the one bound to the static type of "
+                    attr: 1
+                  - text: v
+                    attr: 6
+                  - text: ". "
+                    attr: 1
+                  - text: v
+                    attr: 6
+                  - text: " is passed to "
+                    attr: 1
+                  - text: M
+                    attr: 6
+                  - text: "'s receiver according to the parameter passing rules specified in Chapter 10.1.\r\tIf "
+                    attr: 1
+                  - text: r
+                    attr: 6
+                  - text: " is a receiver parameter declared with type "
+                    attr: 1
+                  - text: T
+                    attr: 6
+                  - text: ", "
+                    attr: 1
+                  - text: r.M^
+                    attr: 6
+                  - text: " denotes the method "
+                    attr: 1
+                  - text: M
+                    attr: 6
+                  - text: " bound to the base type of "
+                    attr: 1
+                  - text: "T "
+                    attr: 6
+                  - text: "(super call). In a forward declaration of a method the receiver parameter must be of the "
+                    attr: 1
+                  - text: same
+                    attr: 6
+                  - text: " type as in the actual method declaration. The formal parameter lists of both declarations must "
+                    attr: 1
+                  - text: match
+                    attr: 6
+                  - text: " (App. A) and the names of corresponding parameters must be equal.\r\tMethods marked with \" - \" are \"implement-only\" exported. Such a method can be redefined in any importing module but can only be called within the module containing the method declaration. (Currently, the compiler also allows super calls to implement-only methods outside of their defining module. This is a temporary feature to make migration easier.)\r\rExamples:\r\rPROCEDURE (t: Tree) Insert (node: Tree), NEW, EXTENSIBLE;\r\tVAR p, father: Tree;\rBEGIN p := t;\r\tREPEAT father := p;\r\t\tIF node.key = p.key THEN RETURN END;\r\t\tIF node.key < p.key THEN p := p.left ELSE p := p.right END\r\tUNTIL p = NIL;\r\tIF node.key < father.key THEN\r\t\tfather.left := node\r\tELSE\r\t\tfather.right := node\r\tEND;\r\tnode.left := NIL; node.right := NIL\rEND Insert\r\rPROCEDURE (t: CenterTree) Insert (node: Tree);  (* redefinition *)\rBEGIN\r\tWriteInt(node(CenterTree).width);\r\tt.Insert^ (node)  (* calls the Insert method of Tree *)\rEND Insert\r\rPROCEDURE (obj: Object) Draw (w: Window), NEW, ABSTRACT\r\rPROCEDURE (obj: Object) Notify (e: Event), NEW, EMPTY\r\r\r"
+                    attr: 1
+                  - target:
+                      name: 10.3
+                      body:
+                        - text: 10.3 Predeclared Procedures
+                          attr: 3
+                      attr: 3
+                      w: 150300
+                      h: 142875
+                  - text: "\r\rThe following table lists the predeclared procedures. Some are generic procedures, i.e., they apply to several types of operands. "
+                    attr: 1
+                  - text: v
+                    attr: 6
+                  - text: " stands for a variable, "
+                    attr: 1
+                  - text: x
+                    attr: 6
+                  - text: " and "
+                    attr: 1
+                  - text: y
+                    attr: 6
+                  - text: " for expressions, and "
+                    attr: 1
+                  - text: T
+                    attr: 6
+                  - text: " for a type. The first matching line gives the correct result type.\r\r"
+                    attr: 1
+                  - text: Function procedures
+                    attr: 6
+                  - text: "\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 1008000 }
+                        - { stop: 2520000 }
+                        - { stop: 3600000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "Name\tArgument type\tResult type\tFunction\r\rABS(x)\t<= INTEGER\tINTEGER\tabsolute value\r\treal type, LONGINT\ttype of x\rASH(x, y)\tx: <= INTEGER\tINTEGER\tarithmetic shift (x * 2^y)\r\tx: LONGINT\tLONGINT\r\ty: integer type\rBITS(x)\tINTEGER\tSET\t{i | ODD(x DIV 2^i)}\rCAP(x)\tcharacter type\ttype of x\tx is a Latin-1 letter:\r\t\t\tcorresponding capital letter\rCHR(x)\tinteger type\tCHAR\tcharacter with ordinal number\r\t\t\tx\rENTIER(x)\treal type\tLONGINT\tlargest integer not greater\r\t\t\tthan x\rLEN(v, x)\tv: array; x: integer\tINTEGER\tlength of v in dimension x\r\tconstant\t\t(first dimension = 0)\rLEN(v)\tarray type\tINTEGER\tequivalent to LEN(v, 0)\r\tString\tINTEGER\tlength of string\r\t\t\t(not counting 0X)\rLONG(x)\tBYTE\tSHORTINT\tidentity\r\tSHORTINT\tINTEGER\r\tINTEGER\tLONGINT\r\tSHORTREAL\tREAL\r\tSHORTCHAR\tCHAR\r\tShortstring\tString\rMAX(T)\tT = basic type\tT\tmaximum value of type T\r\tT = SET\tINTEGER\tmaximum element of a set\rMAX(x, y)\t<= INTEGER\tINTEGER\tthe larger value of x and y\r\tinteger type\tLONGINT\r\t<= SHORTREAL\tSHORTREAL\r\tnumeric type\tREAL\r\tSHORTCHAR\tSHORTCHAR\r\tcharacter type\tCHAR\rMIN(T)\tT = basic type\tT\tminimum value of type T\r\tT = SET\tINTEGER\t0\rMIN(x, y)\t<= INTEGER\tINTEGER\tthe smaller of x and y\r\tinteger type\tLONGINT\r\t<= SHORTREAL\tSHORTREAL\r\tnumeric type\tREAL\r\tSHORTCHAR\tSHORTCHAR\r\tcharacter type\tCHAR\rODD(x)\tinteger type\tBOOLEAN\tx MOD 2 = 1\rORD(x)\tCHAR\tINTEGER\tordinal number of x\r\tSHORTCHAR\tSHORTINT\tordinal number of x\r\tSET\tINTEGER\t(SUM i: i IN x: 2^i)\rSHORT(x)\tLONGINT\tINTEGER\tidentity\r\tINTEGER\tSHORTINT\tidentity\r\tSHORTINT\tBYTE\tidentity\r\tREAL\tSHORTREAL\tidentity (truncation possible)\r\tCHAR\tSHORTCHAR\tprojection\r\tString\tShortstring\tprojection\rSIZE(T)\tany type\tINTEGER\tnumber of bytes required by T\r\rSIZE cannot be used in constant expressions because its value depends on the actual compiler implementation.\r\r"
+                    attr: 1
+                  - text: Proper procedures
+                    attr: 6
+                  - text: "\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 1584000 }
+                        - { stop: 3672000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "Name\tArgument types\tFunction\r\rASSERT(x)\tx: Boolean expression\tterminate program execution if not x\rASSERT(x, n)\tx: Boolean expression;\tterminate program execution\r\tn: integer constant\tif not x\rDEC(v)\tinteger type\tv := v - 1\rDEC(v, n)\tv, n: integer type\tv := v - n\rEXCL(v, x)\tv: SET; x: integer type,\tv := v - {x}\r\t0 <= x <= MAX(SET)\rHALT(n)\tinteger constant\tterminate program execution\rINC(v)\tinteger type\tv := v + 1\rINC(v, n)\tv, n: integer type\tv := v + n\rINCL(v, x)\tv: SET; x: integer type,\tv := v + {x}\r\t0 <= x <= MAX(SET)\rNEW(v)\tpointer to record or\tallocate v ^\r\tfixed array\rNEW(v, x0, ..., xn)\tv: pointer to open array;\tallocate v ^ with\r\txi: integer type\tlengths x0.. xn\r\rIn ASSERT(x, n) and HALT(n), the interpretation of "
+                    attr: 1
+                  - text: n
+                    attr: 6
+                  - text: " is left to the underlying system implementation.\r\r\r"
+                    attr: 1
+                  - target:
+                      name: 10.4
+                      body:
+                        - text: 10.4 Finalization
+                          attr: 3
+                      attr: 3
+                      w: 150300
+                      h: 142875
+                  - text: "\r\rA predeclared method named FINALIZE is associated with each record type as if it were declared to be bound to the type ANYREC:\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 216000 }
+                        - { stop: 3672000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r\tPROCEDURE (a: ANYPTR) FINALIZE-, NEW, EMPTY;\r\rThe FINALIZE procedure can be implemented for any pointer type. The method is called at some unspecified time after an object of that type (or a base type of it) has become unreachable via other pointers (not globally anchored anymore) and before the object is deallocated.\r\tIt is not recommended to re-anchor an object in its finalizer and the finalizer is not called again when the object repeatedly becomes unreachable. Multiple unreachable objects are finalized in an unspecified order.\r\r\r"
+                    attr: 1
+                  - target:
+                      name: 11
+                      body:
+                        - text: 11. Modules
+                          attr: 3
+                      attr: 3
+                      w: 150300
+                      h: 142875
+                  - text: "\r\rA module is a collection of declarations of constants, types, variables, and procedures, together with a sequence of statements for the purpose of assigning initial values to the variables. A module constitutes a text that is compilable as a unit.\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 1008000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rModule\t= MODULE ident \";\" [ImportList] DeclarationSequence\r\t\t[BEGIN StatementSequence]\r\t\t[CLOSE StatementSequence] END ident \".\".\rImportList\t= IMPORT Import {\",\" Import} \";\".\rImport \t= [ident \":=\"] ident.\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rThe import list specifies the names of the imported modules. If a module "
+                    attr: 1
+                  - text: A
+                    attr: 6
+                  - text: " is imported by a module "
+                    attr: 1
+                  - text: M
+                    attr: 6
+                  - text: " and "
+                    attr: 1
+                  - text: A
+                    attr: 6
+                  - text: " exports an identifier "
+                    attr: 1
+                  - text: x
+                    attr: 6
+                  - text: ", then "
+                    attr: 1
+                  - text: x
+                    attr: 6
+                  - text: " is referred to as "
+                    attr: 1
+                  - text: A.x
+                    attr: 6
+                  - text: " within "
+                    attr: 1
+                  - text: M
+                    attr: 6
+                  - text: ". If "
+                    attr: 1
+                  - text: A
+                    attr: 6
+                  - text: " is imported as "
+                    attr: 1
+                  - text: "B := A"
+                    attr: 6
+                  - text: ", the object "
+                    attr: 1
+                  - text: x
+                    attr: 6
+                  - text: " must be referenced as "
+                    attr: 1
+                  - text: B.x
+                    attr: 6
+                  - text: ". This allows short alias names in qualified identifiers. A module must not import itself. Identifiers that are to be exported (i.e., that are to be visible in client modules) must be marked by an export mark in their declaration (see Chapter 4).\r\tThe statement sequence following the symbol BEGIN is executed when the module is added to a system (loaded), which is done after the imported modules have been loaded. It follows that cyclic import of modules is illegal. Individual exported procedures can be activated from the system, and these procedures serve as "
+                    attr: 1
+                  - text: commands
+                    attr: 6
+                  - text: " .\r\tVariables declared in a module are cleared prior to the execution of the module body. This implies that all pointer or procedure typed variables are initialized to NIL.\r\tThe statement sequence following the symbol CLOSE is executed when the module is removed from the system.\r\rExample:\r\rMODULE Trees; \t(* exports: Tree, Node, Insert, Search, Write, Init *)\r\r\tIMPORT StdLog;\r\r\tTYPE\r\t\tTree* = POINTER TO Node;\r\t\tNode* = RECORD\t(* exports read-only: Node.name *)\r\t\t\tname-: POINTER TO ARRAY OF CHAR;\r\t\t\tleft, right: Tree\r\t\tEND;\r\r\tPROCEDURE (t: Tree) Insert* (name: ARRAY OF CHAR), NEW;\r\t\tVAR p, father: Tree;\r\tBEGIN\r\t\tp := t;\r\t\tREPEAT father := p;\r\t\t\tIF name = p.name^ THEN RETURN END;\r\t\t\tIF name < p.name^ THEN p := p.left ELSE p := p.right END\r\t\tUNTIL p = NIL;\r\t\tNEW(p); p.left := NIL; p.right := NIL;\r\t\tNEW(p.name, LEN(name$) + 1); p.name^ := name$;\r\t\tIF name < father.name^ THEN father.left := p ELSE father.right := p END\r\tEND Insert;\r\r\tPROCEDURE (t: Tree) Search* (name: ARRAY OF CHAR): Tree, NEW;\r\t\tVAR p: Tree;\r\tBEGIN\r\t\tp := t;\r\t\tWHILE (p # NIL) & (name # p.name^) DO\r\t\t\tIF name < p.name^ THEN p := p.left ELSE p := p.right END\r\t\tEND;\r\t\tRETURN p\r\tEND Search;\r\r\tPROCEDURE (t: Tree) Write*, NEW;\r\tBEGIN\r\t\tIF t.left # NIL THEN t.left.Write END;\r\t\tStdLog.String(t.name); StdLog.Ln;\r\t\tIF t.right # NIL THEN t.right.Write END\r\tEND Write;\r\r\tPROCEDURE Init* (t: Tree);\r\tBEGIN\r\t\tNEW(t.name, 1); t.name[0] := 0X; t.left := NIL; t.right := NIL\r\tEND Init;\r\rBEGIN\r\tStdLog.String(\"Trees loaded\"); StdLog.Ln\rCLOSE\r\tStdLog.String(\"Trees removed\"); StdLog.Ln\rEND Trees.\r\r\r"
+                    attr: 1
+                  - target:
+                      name: A
+                      body:
+                        - text: "Appendix A: Definition of Terms"
+                          attr: 3
+                      attr: 3
+                      w: 150300
+                      h: 142875
+                  - text: "\r\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 1800000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: Character types
+                    attr: 3
+                  - text: "\tSHORTCHAR, CHAR\r"
+                    attr: 1
+                  - text: Integer types
+                    attr: 3
+                  - text: "\tBYTE, SHORTINT, INTEGER, LONGINT\r"
+                    attr: 1
+                  - text: Real types
+                    attr: 3
+                  - text: "\tSHORTREAL, REAL\r"
+                    attr: 1
+                  - text: Numeric types
+                    attr: 3
+                  - text: "\tinteger types, real types\r"
+                    attr: 1
+                  - text: String types
+                    attr: 3
+                  - text: "\tShortstring, String\r"
+                    attr: 1
+                  - text: Basic types
+                    attr: 3
+                  - text: "\tBOOLEAN, SET, character types, numeric types\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 216000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r"
+                    attr: 1
+                  - text: Same types
+                    attr: 3
+                  - text: "\rTwo variables "
+                    attr: 1
+                  - text: a
+                    attr: 6
+                  - text: " and "
+                    attr: 1
+                  - text: b
+                    attr: 6
+                  - text: " with types "
+                    attr: 1
+                  - text: Ta
+                    attr: 6
+                  - text: " and "
+                    attr: 1
+                  - text: Tb
+                    attr: 6
+                  - text: " are of the "
+                    attr: 1
+                  - text: same
+                    attr: 6
+                  - text: " type if\r1.  "
+                    attr: 1
+                  - text: Ta
+                    attr: 6
+                  - text: " and "
+                    attr: 1
+                  - text: Tb
+                    attr: 6
+                  - text: " are both denoted by the same type identifier, or\r2.  "
+                    attr: 1
+                  - text: Ta
+                    attr: 6
+                  - text: " is declared in a type declaration of the form "
+                    attr: 1
+                  - text: Ta = Tb
+                    attr: 6
+                  - text: ", or\r3.  "
+                    attr: 1
+                  - text: a
+                    attr: 6
+                  - text: " and "
+                    attr: 1
+                  - text: b
+                    attr: 6
+                  - text: " appear in the same identifier list in a variable, record field,\r\tor formal parameter declaration.\r\r"
+                    attr: 1
+                  - text: Equal types
+                    attr: 3
+                  - text: "\rTwo types "
+                    attr: 1
+                  - text: Ta
+                    attr: 6
+                  - text: " and "
+                    attr: 1
+                  - text: Tb
+                    attr: 6
+                  - text: " are "
+                    attr: 1
+                  - text: equal
+                    attr: 6
+                  - text: " if\r1.  "
+                    attr: 1
+                  - text: Ta
+                    attr: 6
+                  - text: " and "
+                    attr: 1
+                  - text: Tb
+                    attr: 6
+                  - text: " are the "
+                    attr: 1
+                  - text: same
+                    attr: 6
+                  - text: " type,  or\r2.  "
+                    attr: 1
+                  - text: Ta
+                    attr: 6
+                  - text: " and "
+                    attr: 1
+                  - text: Tb
+                    attr: 6
+                  - text: " are open array types with "
+                    attr: 1
+                  - text: equal
+                    attr: 6
+                  - text: " element types, or\r3.  "
+                    attr: 1
+                  - text: Ta
+                    attr: 6
+                  - text: " and "
+                    attr: 1
+                  - text: Tb
+                    attr: 6
+                  - text: " are procedure types whose formal parameter lists "
+                    attr: 1
+                  - text: match
+                    attr: 6
+                  - text: ", or\r4.  "
+                    attr: 1
+                  - text: Ta
+                    attr: 6
+                  - text: " and "
+                    attr: 1
+                  - text: Tb
+                    attr: 6
+                  - text: " are pointer types with "
+                    attr: 1
+                  - text: equal
+                    attr: 6
+                  - text: " base types.\r\r"
+                    attr: 1
+                  - text: "Matching formal parameter lists\r"
+                    attr: 3
+                  - text: "Two formal parameter lists "
+                    attr: 1
+                  - text: match
+                    attr: 6
+                  - text: " if\r1.  they have the same number of parameters, and\r2.  they have either "
+                    attr: 1
+                  - text: equal
+                    attr: 6
+                  - text: " function result types or none, and\r3.  parameters at corresponding positions have "
+                    attr: 1
+                  - text: equal
+                    attr: 6
+                  - text: " types, and\r4.  parameters at corresponding positions are both either value, IN, OUT, or VAR parameters.\r\r"
+                    attr: 1
+                  - text: Type inclusion
+                    attr: 3
+                  - text: "\rNumeric and character types "
+                    attr: 1
+                  - text: include
+                    attr: 6
+                  - text: " (the values of) smaller types of the same class according to the following hierarchies:\r\tREAL >= SHORTREAL >= LONGINT >= INTEGER >= SHORTINT >= BYTE\r\tCHAR >= SHORTCHAR\r\r"
+                    attr: 1
+                  - text: Type extension
+                    attr: 3
+                  - text: " (base type)\rGiven a type declaration "
+                    attr: 1
+                  - text: Tb = RECORD (Ta) ... END
+                    attr: 6
+                  - text: ", "
+                    attr: 1
+                  - text: Tb
+                    attr: 6
+                  - text: " is a "
+                    attr: 1
+                  - text: direct extension
+                    attr: 6
+                  - text: " of "
+                    attr: 1
+                  - text: Ta
+                    attr: 6
+                  - text: ", and "
+                    attr: 1
+                  - text: Ta
+                    attr: 6
+                  - text: " is a "
+                    attr: 1
+                  - text: direct base type
+                    attr: 6
+                  - text: " of "
+                    attr: 1
+                  - text: Tb
+                    attr: 6
+                  - text: ". A type "
+                    attr: 1
+                  - text: Tb
+                    attr: 6
+                  - text: " is an "
+                    attr: 1
+                  - text: extension
+                    attr: 6
+                  - text: " of a type "
+                    attr: 1
+                  - text: Ta
+                    attr: 6
+                  - text: " ("
+                    attr: 1
+                  - text: Ta
+                    attr: 6
+                  - text: " is a "
+                    attr: 1
+                  - text: base type
+                    attr: 6
+                  - text: " of "
+                    attr: 1
+                  - text: Tb
+                    attr: 6
+                  - text: ") if\r1.  "
+                    attr: 1
+                  - text: Ta
+                    attr: 6
+                  - text: " and "
+                    attr: 1
+                  - text: Tb
+                    attr: 6
+                  - text: " are the "
+                    attr: 1
+                  - text: same
+                    attr: 6
+                  - text: " types, or\r2.  "
+                    attr: 1
+                  - text: Tb
+                    attr: 6
+                  - text: " is a "
+                    attr: 1
+                  - text: direct extension
+                    attr: 6
+                  - text: " of an "
+                    attr: 1
+                  - text: extension
+                    attr: 6
+                  - text: " of Ta, or\r3.  "
+                    attr: 1
+                  - text: Ta
+                    attr: 6
+                  - text: " is of type ANYREC.\rIf "
+                    attr: 1
+                  - text: Pa = POINTER TO Ta
+                    attr: 6
+                  - text: " and "
+                    attr: 1
+                  - text: Pb = POINTER TO Tb
+                    attr: 6
+                  - text: ", "
+                    attr: 1
+                  - text: Pb
+                    attr: 6
+                  - text: " is an "
+                    attr: 1
+                  - text: extension
+                    attr: 6
+                  - text: " of "
+                    attr: 1
+                  - text: "Pa "
+                    attr: 6
+                  - text: (
+                    attr: 1
+                  - text: Pa
+                    attr: 6
+                  - text: " is a "
+                    attr: 1
+                  - text: base type
+                    attr: 6
+                  - text: " of "
+                    attr: 1
+                  - text: Pb
+                    attr: 6
+                  - text: ") if "
+                    attr: 1
+                  - text: Tb
+                    attr: 6
+                  - text: " is an "
+                    attr: 1
+                  - text: extension
+                    attr: 6
+                  - text: " of "
+                    attr: 1
+                  - text: Ta
+                    attr: 6
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: Assignment compatible
+                    attr: 3
+                  - text: "\rAn expression "
+                    attr: 1
+                  - text: e
+                    attr: 6
+                  - text: " of type "
+                    attr: 1
+                  - text: Te
+                    attr: 6
+                  - text: " is "
+                    attr: 1
+                  - text: assignment compatible
+                    attr: 6
+                  - text: " with a variable "
+                    attr: 1
+                  - text: v
+                    attr: 6
+                  - text: " of type "
+                    attr: 1
+                  - text: Tv
+                    attr: 6
+                  - text: " if one of the following conditions hold:\r1.  "
+                    attr: 1
+                  - text: Te
+                    attr: 6
+                  - text: " and "
+                    attr: 1
+                  - text: Tv
+                    attr: 6
+                  - text: " are "
+                    attr: 1
+                  - text: equal
+                    attr: 6
+                  - text: " and neither abstract, extensible, or limited record nor open array types;\r2.  "
+                    attr: 1
+                  - text: Te
+                    attr: 6
+                  - text: " and "
+                    attr: 1
+                  - text: Tv
+                    attr: 6
+                  - text: " are numeric or character types and "
+                    attr: 1
+                  - text: Tv
+                    attr: 6
+                  - text: " "
+                    attr: 1
+                  - text: includes
+                    attr: 6
+                  - text: " "
+                    attr: 1
+                  - text: Te
+                    attr: 6
+                  - text: ";\r3.  "
+                    attr: 1
+                  - text: Te
+                    attr: 6
+                  - text: " and "
+                    attr: 1
+                  - text: Tv
+                    attr: 6
+                  - text: " are pointer types and "
+                    attr: 1
+                  - text: Te
+                    attr: 6
+                  - text: " is an "
+                    attr: 1
+                  - text: extension
+                    attr: 6
+                  - text: " of "
+                    attr: 1
+                  - text: Tv
+                    attr: 6
+                  - text: ";\r4.  "
+                    attr: 1
+                  - text: Tv
+                    attr: 6
+                  - text: " is a pointer or a procedure type and "
+                    attr: 1
+                  - text: e
+                    attr: 6
+                  - text: " is NIL;\r5.  "
+                    attr: 1
+                  - text: Tv
+                    attr: 6
+                  - text: " is a numeric type and "
+                    attr: 1
+                  - text: e
+                    attr: 6
+                  - text: " is a constant expression whose value is contained in "
+                    attr: 1
+                  - text: Tv
+                    attr: 6
+                  - text: ";\r6.  "
+                    attr: 1
+                  - text: Tv
+                    attr: 6
+                  - text: " is an array of CHAR, "
+                    attr: 1
+                  - text: Te
+                    attr: 6
+                  - text: " is String or Shortstring, and "
+                    attr: 1
+                  - text: LEN(e)
+                    attr: 6
+                  - text: " < "
+                    attr: 1
+                  - text: LEN(v)
+                    attr: 6
+                  - text: ";\r7.  "
+                    attr: 1
+                  - text: Tv
+                    attr: 6
+                  - text: " is an array of SHORTCHAR, "
+                    attr: 1
+                  - text: Te
+                    attr: 6
+                  - text: " is Shortstring, and "
+                    attr: 1
+                  - text: LEN(e)
+                    attr: 6
+                  - text: " < "
+                    attr: 1
+                  - text: LEN(v)
+                    attr: 6
+                  - text: ";\r8. "
+                    attr: 1
+                  - text: " Tv"
+                    attr: 6
+                  - text: " is a procedure type and "
+                    attr: 1
+                  - text: e
+                    attr: 6
+                  - text: " is the name of a procedure whose formal parameters "
+                    attr: 1
+                  - text: "match "
+                    attr: 6
+                  - text: "those of "
+                    attr: 1
+                  - text: Tv
+                    attr: 6
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: Array compatible
+                    attr: 3
+                  - text: "\rAn actual parameter "
+                    attr: 1
+                  - text: a
+                    attr: 6
+                  - text: " of type "
+                    attr: 1
+                  - text: Ta
+                    attr: 6
+                  - text: " is "
+                    attr: 1
+                  - text: array compatible
+                    attr: 6
+                  - text: " with a formal parameter "
+                    attr: 1
+                  - text: f
+                    attr: 6
+                  - text: " of type "
+                    attr: 1
+                  - text: Tf
+                    attr: 6
+                  - text: " if\r1.  "
+                    attr: 1
+                  - text: Tf
+                    attr: 6
+                  - text: " and "
+                    attr: 1
+                  - text: Ta
+                    attr: 6
+                  - text: " are "
+                    attr: 1
+                  - text: equal
+                    attr: 6
+                  - text: " types, or\r2.  "
+                    attr: 1
+                  - text: Tf
+                    attr: 6
+                  - text: " is an open array, "
+                    attr: 1
+                  - text: Ta
+                    attr: 6
+                  - text: " is any array, and their element types are "
+                    attr: 1
+                  - text: array compatible
+                    attr: 6
+                  - text: ", or\r3.  "
+                    attr: 1
+                  - text: Tf
+                    attr: 6
+                  - text: " is an open array of CHAR and "
+                    attr: 1
+                  - text: Ta
+                    attr: 6
+                  - text: " is String, or\r4.  "
+                    attr: 1
+                  - text: Tf
+                    attr: 6
+                  - text: " is an open array of SHORTCHAR and "
+                    attr: 1
+                  - text: Ta
+                    attr: 6
+                  - text: " is Shortstring.\r\r"
+                    attr: 1
+                  - text: Parameter compatible
+                    attr: 3
+                  - text: "\rAn actual parameter "
+                    attr: 1
+                  - text: a
+                    attr: 6
+                  - text: " of type "
+                    attr: 1
+                  - text: Ta
+                    attr: 6
+                  - text: " is "
+                    attr: 1
+                  - text: parameter compatible
+                    attr: 6
+                  - text: " with a formal parameter "
+                    attr: 1
+                  - text: f
+                    attr: 6
+                  - text: " of type "
+                    attr: 1
+                  - text: Tf
+                    attr: 6
+                  - text: " if\r1.  "
+                    attr: 1
+                  - text: Tf
+                    attr: 6
+                  - text: " and "
+                    attr: 1
+                  - text: Ta
+                    attr: 6
+                  - text: " are "
+                    attr: 1
+                  - text: equal
+                    attr: 6
+                  - text: " types, or\r2.  "
+                    attr: 1
+                  - text: f
+                    attr: 6
+                  - text: " is a value parameter and "
+                    attr: 1
+                  - text: Ta
+                    attr: 6
+                  - text: " is "
+                    attr: 1
+                  - text: assignment compatible
+                    attr: 6
+                  - text: " with "
+                    attr: 1
+                  - text: Tf
+                    attr: 6
+                  - text: ", or\r3.  "
+                    attr: 1
+                  - text: "f "
+                    attr: 6
+                  - text: is an IN or VAR parameter and
+                    attr: 1
+                  - text: " Tf"
+                    attr: 6
+                  - text: " and "
+                    attr: 1
+                  - text: Ta
+                    attr: 6
+                  - text: " are record types and "
+                    attr: 1
+                  - text: Ta
+                    attr: 6
+                  - text: " is an "
+                    attr: 1
+                  - text: extension
+                    attr: 6
+                  - text: " of "
+                    attr: 1
+                  - text: Tf.
+                    attr: 6
+                  - text: "\r\r"
+                    attr: 1
+                  - text: Expression compatible
+                    attr: 3
+                  - text: "\rFor a given operator, the types of its operands are "
+                    attr: 1
+                  - text: expression compatible
+                    attr: 6
+                  - text: " if they conform to the following table. The first matching line gives the correct result type. Type T1 must be an extension of type T0:\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 1008000 }
+                        - { stop: 2664000 }
+                        - { stop: 4320000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "operator \tfirst operand\tsecond operand \tresult type\r"
+                    attr: 6
+                  - text: "+ - * DIV MOD\t<= INTEGER\t<= INTEGER\tINTEGER\r\tinteger type\tinteger type\tLONGINT\r/\tinteger type\tinteger type\tREAL\r+ - * /\t<= SHORTREAL\t<= SHORTREAL\tSHORTREAL\r\tnumeric type\tnumeric type\tREAL\r\tSET\tSET\tSET\r+\tShortstring\tShortstring\tShortstring\r\tstring type\tstring type\tString\rOR & ~\tBOOLEAN\tBOOLEAN\tBOOLEAN\r= # < <= > >=\tnumeric type\tnumeric type\tBOOLEAN\r\tcharacter type\tcharacter type\tBOOLEAN\r\tstring type\tstring type\tBOOLEAN\r= #\tBOOLEAN\tBOOLEAN\tBOOLEAN\r\tSET\tSET\tBOOLEAN\r\tNIL, pointer type T0 or T1\tNIL, pointer type T0 or T1\tBOOLEAN\r\tprocedure type T, NIL\tprocedure type T, NIL\tBOOLEAN\rIN\tinteger type, 0..MAX(SET)\tSET\tBOOLEAN\rIS\tT0\ttype T1\tBOOLEAN\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rConstant expressions are calculated at compile time with maximum precision (LONGINT for integer types, REAL for real types) and the result is handled like a numeric literal of the same value.\r\tIf a real constant x with |x| <= MAX(SHORTREAL) or x = INF is combined with a nonconstant operand of type SHORTREAL, the constant is considered a SHORTREAL and the result type is SHORTREAL.\r\r\r"
+                    attr: 1
+                  - target:
+                      name: B
+                      body:
+                        - text: "Appendix B: Syntax of Component Pascal"
+                          attr: 3
+                      attr: 3
+                      w: 150300
+                      h: 142875
+                  - text: "\r\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 1368000 }
+                        - { stop: 1548000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "Module \t=\tMODULE ident \";\" [ImportList] DeclSeq\r\t\t[BEGIN StatementSeq]\r\t\t[CLOSE StatementSeq] END ident \".\".\rImportList \t=\tIMPORT [ident \":=\"] ident {\",\" [ident \":=\"] ident} \";\".\rDeclSeq \t=\t{ CONST {ConstDecl \";\" } | TYPE {TypeDecl \";\"} |\r\t\tVAR {VarDecl \";\"}} {ProcDecl \";\" | ForwardDecl \";\"}.\rConstDecl\t=\tIdentDef \"=\" ConstExpr.\rTypeDecl\t=\tIdentDef \"=\" Type.\rVarDecl\t=\tIdentList \":\" Type.\rProcDecl \t=\tPROCEDURE [Receiver] IdentDef [FormalPars] MethAttributes\r\t\t[\";\" DeclSeq [BEGIN StatementSeq] END ident].\rMethAttributes\t=\t[\",\" NEW] [\",\" (ABSTRACT | EMPTY | EXTENSIBLE)].\rForwardDecl \t=\tPROCEDURE \" ^ \" [Receiver] IdentDef [FormalPars] MethAttributes.\rFormalPars \t=\t\"(\" [FPSection {\";\" FPSection}] \")\" [\":\" Type].\rFPSection \t=\t[VAR | IN | OUT] ident {\",\" ident} \":\" Type.\rReceiver\t=\t\"(\" [VAR | IN] ident \":\" ident \")\".\rType \t=\tQualident\r\t\t|  ARRAY [ConstExpr {\",\" ConstExpr}] OF Type \r\t\t| [ABSTRACT | EXTENSIBLE | LIMITED]\r\t\t\tRECORD [\"(\"Qualident\")\"] FieldList {\";\" FieldList} END\r\t\t| POINTER TO Type\r\t\t| PROCEDURE [FormalPars].\rFieldList \t=\t[IdentList \":\" Type].\rStatementSeq\t=\tStatement {\";\" Statement}.\rStatement \t=\t[ Designator \":=\" Expr \r\t\t| Designator [\"(\" [ExprList] \")\"] \r\t\t| IF Expr THEN StatementSeq\r\t\t\t{ELSIF Expr THEN StatementSeq}\r\t\t\t[ELSE StatementSeq] END \r\t\t| CASE Expr OF Case {\"|\" Case}\r\t\t\t[ELSE StatementSeq] END \r\t\t| WHILE Expr DO StatementSeq END \r\t\t| REPEAT StatementSeq UNTIL Expr \r\t\t| FOR ident \":=\" Expr TO Expr [BY ConstExpr]\r\t\t\tDO StatementSeq END \r\t\t| LOOP StatementSeq END\r\t\t| WITH [ Guard DO StatementSeq ]\r\t\t\t{\"|\" [ Guard DO StatementSeq ] }\r\t\t\t[ELSE StatementSeq] END\r\t\t| EXIT \r\t\t| RETURN [Expr]\r\t\t].\rCase \t=\t[CaseLabels {\",\" CaseLabels} \":\" StatementSeq].\rCaseLabels \t=\tConstExpr [\"..\" ConstExpr].\rGuard\t=\tQualident \":\" Qualident.\rConstExpr\t=\tExpr.\rExpr \t=\tSimpleExpr [Relation SimpleExpr].\rSimpleExpr\t=\t[\"+\" | \"-\"] Term {AddOp Term}.\rTerm \t=\tFactor {MulOp Factor}.\rFactor \t=\tDesignator | number | character | string | NIL | Set |\r\t\t\"(\" Expr \")\" | \" ~ \" Factor.\rSet\t=\t\"{\" [Element {\",\" Element}] \"}\".\rElement \t=\tExpr [\"..\" Expr].\rRelation \t=\t\"=\" | \"#\" | \"<\" | \"<=\" | \">\" | \">=\" | IN | IS.\rAddOp \t=\t\"+\" | \"-\" | OR.\rMulOp \t=\t\" * \" | \"/\" | DIV | MOD | \"&\".\rDesignator \t=\tQualident {\".\" ident | \"[\" ExprList \"]\" | \" ^ \" | \"(\" Qualident \")\"\r\t\t| \"(\" [ExprList] \")\"} [ \"$\" ].\rExprList \t=\tExpr {\",\" Expr}.\rIdentList \t=\tIdentDef {\",\" IdentDef}.\rQualident \t=\t[ident \".\"] ident.\rIdentDef \t=\tident [\" * \" | \"-\"].\r\r\r"
+                    attr: 1
+                  - target:
+                      name: C
+                      body:
+                        - text: "Appendix C: Domains of Basic Types"
+                          attr: 3
+                      attr: 3
+                      w: 150300
+                      h: 142875
+                  - text: "\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 1440000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "Type\tDomain\r\rBOOLEAN\tFALSE, TRUE\rSHORTCHAR\t0X .. 0FFX\rCHAR\t0X .. 0FFFFX\rBYTE\t-128 .. 127\rSHORTINT\t-32768 .. 32767\rINTEGER\t-2147483648 .. 2147483647\rLONGINT\t-9223372036854775808 .. 9223372036854775807\rSHORTREAL\t-3.4E38 .. 3.4E38, INF (32-bit IEEE format)\rREAL\t-1.8E308 .. 1.8E308, INF (64-bit IEEE format)\rSET\tset of 0 .. 31\r\r\r"
+                    attr: 1
+                  - target:
+                      name: D
+                      body:
+                        - text: "Appendix D: Mandatory Requirements for Environment"
+                          attr: 3
+                      attr: 3
+                      w: 150300
+                      h: 142875
+                  - text: "\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 1080000 }
+                        - { stop: 2160000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "The Component Pascal definition implicitly relies on four fundamental assumptions.\r\r1) There exists some run-time type information that allows to check the dynamic type of an object. This is necessary to implement type tests and type guards.\r\r2) There is no DISPOSE procedure. Memory cannot be deallocated manually, since this would introduce the safety problem of memory leaks and of dangling pointers, i.e., premature deallocation. Except for those embedded systems where no dynamic memory is used, or where it can be allocated once and never needs to be released, an automatic garbage collector is required.\r\r3) Modules and at least their exported procedures (commands) and exported types must be retrievable dynamically. If necessary, this may cause modules to be loaded. The programming interface used to load modules or to access the mentioned meta information is not defined by the language, but the language compiler needs to preserve this information when generating code.\rExcept for fully linked applications where no modules will ever be added at run-time, a linking loader for modules is required. Embedded systems are important examples of applications that can be fully linked.\r\r4) The environment must provide the ability to display Unicode characters, except for \"headless\" embedded applications that need no display.\r\rAn implementation that doesn't fulfill these compiler and environment requirements is not compliant with Component Pascal.\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 273
+          bodyPos: 81997
+          bodyLen: 8

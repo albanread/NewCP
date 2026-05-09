@@ -1,0 +1,304 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Comm\\Mod\\Streams.odc"
+  size: 5079
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 4948
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 4762
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 4676
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5943600
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 4797
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 4283
+                runListLen: 1883
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE CommStreams; \r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT Meta;\r\r\tCONST\r\t\t(* "
+                    attr: 0
+                  - text: "portable error codes:"
+                    attr: 1
+                  - text: " *)\r\t\t"
+                    attr: 0
+                  - text: done
+                    attr: 3
+                  - text: "* = 0; "
+                    attr: 0
+                  - text: noSuchProtocol
+                    attr: 3
+                  - text: "* = 1; "
+                    attr: 0
+                  - text: invalidLocalAdr
+                    attr: 3
+                  - text: "* = 2; "
+                    attr: 0
+                  - text: invalidRemoteAdr
+                    attr: 3
+                  - text: "* = 3; "
+                    attr: 0
+                  - text: networkDown
+                    attr: 3
+                  - text: "* = 4;\r\t\t"
+                    attr: 0
+                  - text: localAdrInUse
+                    attr: 3
+                  - text: "* = 5; "
+                    attr: 0
+                  - text: remoteAdrInUse
+                    attr: 3
+                  - text: "* = 6;\r\r\tTYPE\r\t\t"
+                    attr: 0
+                  - text: Adr
+                    attr: 3
+                  - text: "* = POINTER TO ARRAY OF CHAR;\r\t\t\r\t\t"
+                    attr: 0
+                  - text: Stream
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD END;\r\t\t\r\t\t"
+                    attr: 0
+                  - text: StreamAllocator
+                    attr: 3
+                  - text: "* = PROCEDURE\r\t\t\t(localAdr, remoteAdr: ARRAY OF CHAR; OUT s: Stream; OUT res: INTEGER);\r\r\t\t"
+                    attr: 0
+                  - text: Listener
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD END;\r\t\t\r\t\t"
+                    attr: 0
+                  - text: ListenerAllocator
+                    attr: 3
+                  - text: "* = PROCEDURE\r\t\t\t(localAdr: ARRAY OF CHAR; OUT l: Listener; OUT res: INTEGER);\r\r\r\tPROCEDURE (s: Stream) "
+                    attr: 0
+                  - text: RemoteAdr
+                    attr: 3
+                  - text: "* (): Adr, NEW, ABSTRACT;\r\tPROCEDURE (s: Stream) "
+                    attr: 0
+                  - text: IsConnected
+                    attr: 3
+                  - text: "* (): BOOLEAN, NEW, ABSTRACT;\r\tPROCEDURE (s: Stream) "
+                    attr: 0
+                  - text: WriteBytes
+                    attr: 3
+                  - text: "* (\r\t\tIN x: ARRAY OF BYTE; beg, len: INTEGER; OUT written: INTEGER), NEW, ABSTRACT;\r\tPROCEDURE (s: Stream) "
+                    attr: 0
+                  - text: ReadBytes
+                    attr: 3
+                  - text: "* (\r\t\tVAR x: ARRAY OF BYTE; beg, len: INTEGER; OUT read: INTEGER), NEW, ABSTRACT;\r\tPROCEDURE (s: Stream) "
+                    attr: 0
+                  - text: Close
+                    attr: 3
+                  - text: "*, NEW, ABSTRACT;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: NewStream
+                    attr: 3
+                  - text: "* (protocol, localAdr, remoteAdr: ARRAY OF CHAR; OUT s: Stream; OUT res: INTEGER);\r\t\tVAR ok: BOOLEAN; m, p: Meta.Item; mod: Meta.Name;\r\t\t\tv: RECORD (Meta.Value)\r\t\t\t\tp: StreamAllocator\r\t\t\tEND;\r\tBEGIN\r\t\tASSERT(protocol # \"\", 20);\r\t\tres := noSuchProtocol;\r\t\tmod := protocol$; Meta.Lookup(mod, m);\r\t\tIF m.obj = Meta.modObj THEN\r\t\t\tm.Lookup(\"NewStream\", p);\r\t\t\tIF p.obj = Meta.procObj THEN\r\t\t\t\tp.GetVal(v, ok);\r\t\t\t\tIF ok THEN v.p(localAdr, remoteAdr, s, res) END\r\t\t\tEND\r\t\tEND\r\tEND NewStream;\r\r\tPROCEDURE (l: Listener) "
+                    attr: 0
+                  - text: LocalAdr
+                    attr: 3
+                  - text: "* (): Adr, NEW, ABSTRACT;\r\tPROCEDURE (l: Listener) "
+                    attr: 0
+                  - text: Accept
+                    attr: 3
+                  - text: "* (OUT s: Stream), NEW, ABSTRACT;\r\tPROCEDURE (l: Listener) "
+                    attr: 0
+                  - text: Close
+                    attr: 3
+                  - text: "*, NEW, ABSTRACT;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: NewListener
+                    attr: 3
+                  - text: "* (protocol, localAdr: ARRAY OF CHAR; OUT l: Listener; OUT res: INTEGER);\r\t\tVAR ok: BOOLEAN; m, p: Meta.Item; mod: Meta.Name;\r\t\t\tv: RECORD(Meta.Value)\r\t\t\t\tp: ListenerAllocator\r\t\t\tEND;\r\tBEGIN\r\t\tASSERT(protocol # \"\", 20);\r\t\tres := noSuchProtocol;\r\t\tmod := protocol$; Meta.Lookup(mod, m);\r\t\tIF m.obj = Meta.modObj THEN\r\t\t\tm.Lookup(\"NewListener\", p);\r\t\t\tIF p.obj = Meta.procObj THEN\r\t\t\t\tp.GetVal(v, ok);\r\t\t\t\tIF ok THEN v.p(localAdr, l, res) END\r\t\t\tEND\r\t\tEND\r\tEND NewListener;\r\rEND CommStreams.\r\r\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 5044
+          bodyLen: 8

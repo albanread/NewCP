@@ -1,0 +1,357 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Docu\\DTC-HowTo.odc"
+  size: 9683
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 9552
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 9366
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 9280
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 127000
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 16
+                bodyPos: 9401
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 8887
+                runListLen: 1425
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 304800
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [2]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [3]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                flow:
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000002
+                      attr: 0
+                      w: 360000000
+                      h: 444500
+                  - view:
+                      kind: StdLogos.View
+                      storeKind: store
+                      typeChain:
+                        - StdLogos.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 5
+                      bodyPos: 760
+                      bodyLen: 7
+                    attr: 0
+                    w: 1219196
+                    h: 304799
+                  - text: " Direct-To-COM Compiler\r"
+                    attr: 0
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      attr: 0
+                      w: 360000000
+                      h: 444500
+                  - text: "\r"
+                    attr: 1
+                  - target:
+                      name: 4
+                      body:
+                        - text: How to Develop new COM Objects
+                          attr: 1
+                      attr: 1
+                      w: 216975
+                      h: 219075
+                  - text: "\r\r\r"
+                    attr: 2
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 2
+                      w: 360000000
+                      h: 444500
+                  - text: "\rThis text gives an overview of the typical way in which new OLE objects are developed. It summarizes the most important aspects of what is detailed in the BlackBox user's guide. BlackBox is the integrated development environment (IDE) for the Direct-To-COM Component Pascal compiler with Safer OLE technology.\r\rIn a first step, a subsystem name for the project is chosen, and a suitable directory created (with its "
+                    attr: 2
+                  - text: Code
+                    attr: 3
+                  - text: ", "
+                    attr: 2
+                  - text: Mod
+                    attr: 3
+                  - text: ", and "
+                    attr: 2
+                  - text: Sym
+                    attr: 3
+                  - text: " directories). This directory must be in the "
+                    attr: 2
+                  - text: BlackBox
+                    attr: 3
+                  - text: " directory itself, i.e. at the same location where the "
+                    attr: 2
+                  - text: System
+                    attr: 3
+                  - text: ", "
+                    attr: 2
+                  - text: Host
+                    attr: 3
+                  - text: ", etc. directories are. Note that there are no environment variables or path name lists in BlackBox. File lookup is static and determined by module names, not by configurable search paths or similar constructs. It can be convenient to provide a subsystem for private software, like test modules or personal tool commands, e.g. a subsystem "
+                    attr: 2
+                  - text: Priv
+                    attr: 3
+                  - text: ".\r\rIt is helpful to set up a text document which contains the names of all the subsystem's modules, starting with the one lowest in the module hierarchy. Such a tool text can be used as input to the "
+                    attr: 2
+                  - text: "Dev->Open Module List"
+                    attr: 3
+                  - text: " command. This command opens the source file of the module whose name is selected. This is convenient since it can almost eliminate the need to navigate through the directory hierarchy. As a mnemonic aid, the keyboard equivalent for "
+                    attr: 2
+                  - text: "Dev->Open Module List"
+                    attr: 3
+                  - text: " is the digit \"0\", while the keyboard equivalent of the "
+                    attr: 2
+                  - text: "File->Open..."
+                    attr: 3
+                  - text: " command is the letter \"O\". "
+                    attr: 2
+                  - text: "Dev->Open Module List"
+                    attr: 3
+                  - text: " even allows to open several files at the same time, if the selection includes several module names.\r\rNow you are ready to create the module sources, which should be placed in your subsystem's "
+                    attr: 2
+                  - text: Mod
+                    attr: 3
+                  - text: " directory. In order to take advantage of autoindentation, you should use "
+                    attr: 2
+                  - text: tab
+                    attr: 3
+                  - text: " characters for indentation. You can directly compile the module on which you are working with the "
+                    attr: 2
+                  - text: "Dev->Compile"
+                    attr: 3
+                  - text: " command. This command compiles, but does not yet load, the module. The command "
+                    attr: 2
+                  - text: "Dev->Compile Module List"
+                    attr: 3
+                  - text: " takes a list of module names and compiles them all.\r\rIn order to load the module, you can execute one of its exported parameterless procedures, either by executing the "
+                    attr: 2
+                  - text: "Dev->Execute"
+                    attr: 3
+                  - text: " menu command on the command's name (e.g. on "
+                    attr: 2
+                  - text: Dialog.Beep
+                    attr: 3
+                  - text: "), or you can augment your tool text with commanders, e.g. "
+                    attr: 2
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 15
+                      bodyPos: 1549
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: " Dialog.Beep (execute "
+                    attr: 2
+                  - text: "Tools->Insert Commander"
+                    attr: 3
+                  - text: "). Once loaded, a module remains loaded, unless you explicitly unload it. Unloading can be done by executing "
+                    attr: 2
+                  - text: Unload
+                    attr: 3
+                  - text: " when the source code is focused, or by selecting a module name and calling "
+                    attr: 2
+                  - text: "Dev->Unload Module List"
+                    attr: 3
+                  - text: ". This command also works on a sequence of module names, similar to "
+                    attr: 2
+                  - text: "Dev->Compile Module List"
+                    attr: 3
+                  - text: ". Note that modules must be unloaded from top to bottom, since only modules which are not imported anymore may be unloaded. The loaded modules are displayed in the correct order by the command "
+                    attr: 2
+                  - text: "Info->Loaded Moules. "
+                    attr: 3
+                  - text: "This command opens a text which lists all loaded modules. The command "
+                    attr: 2
+                  - text: "Dev->Unload Module List "
+                    attr: 3
+                  - text: "may directly be called on a selection in this text. In this text, top-level modules, i.e. modules which are not imported by other modules, have a "
+                    attr: 2
+                  - text: "clients "
+                    attr: 3
+                  - text: "count of 0. For the unloading of top-level modules, there is a shortcut if you use a commander: "
+                    attr: 2
+                  - text: modifier
+                    attr: 3
+                  - text: "-click on the commander first unloads the old version of the module, then loads the new version, and then calls the procedure.\r\rIn order to get quick access to a module's definition or documentation, you can use the commands "
+                    attr: 2
+                  - text: "Info->Interface"
+                    attr: 3
+                  - text: ", or "
+                    attr: 2
+                  - text: "Info->Documentation, "
+                    attr: 3
+                  - text: "respectively. "
+                    attr: 2
+                  - text: "Info->Interface"
+                    attr: 3
+                  - text: " calls the browser to construct a definition text out of a module's symbol file. Note that in this text you can select further module names (or names of imported constants, variables, types, or procedures) and get the interface of those by calling the same command again. If there is a documentation file available for a module, you can execute "
+                    attr: 2
+                  - text: "Info->Documentation"
+                    attr: 3
+                  - text: " after selecting the module's name. This command opens the documentation text. If you have selected not only the module name (e.g. "
+                    attr: 2
+                  - text: Math
+                    attr: 3
+                  - text: ") but an object of this module (e.g. "
+                    attr: 2
+                  - text: Math.Sin
+                    attr: 3
+                  - text: "), the command tries to find the first occurence of the object's name which is written in boldface. The name is selected, and the window scrolls to the selection's position. In the rare cases where this first occurence is not the one you need, you may call "
+                    attr: 2
+                  - text: "Text->Find Again"
+                    attr: 3
+                  - text: " to search for the next occurence.\r\rIn order to test a module, you can use module "
+                    attr: 2
+                  - text: Out
+                    attr: 3
+                  - text: " to write debugging output into the "
+                    attr: 2
+                  - text: Log
+                    attr: 3
+                  - text: " window. In order to set breakpoints, you can introduce "
+                    attr: 2
+                  - text: HALT
+                    attr: 3
+                  - text: " statements and recompile the module. The trap text which is opened when the "
+                    attr: 2
+                  - text: HALT
+                    attr: 3
+                  - text: " is reached gives you information about the call chain (stack) as it has been at the moment the command was interrupted. Note that at no point in time the normal BlackBox environment is left; debugging takes place completely inside BlackBox.\r\rIt is recommended to check preconditions and important invariants systematically in all programs, using the "
+                    attr: 2
+                  - text: ASSERT
+                    attr: 3
+                  - text: " statement. This debugging strategy is called "
+                    attr: 2
+                  - text: static debugging
+                    attr: 3
+                  - text: ", since error conditions are specified statically (even though they can be checked only at run-time). In an object-oriented environment, where the control flow tends to become too convoluted to follow step-by-step, the systematic application of assertions proves to keep debugging times shorter than any interactive debugging ever could.\r\rThere is a global menu configuration text. It can be opened with command "
+                    attr: 2
+                  - text: "Info->Menus"
+                    attr: 3
+                  - text: ", edited, and then made the current configuration by calling "
+                    attr: 2
+                  - text: "Info->Update Menus"
+                    attr: 3
+                  - text: ".\rA menu item may not only have an action command, but also a guard command. Guards mainly determine whether a menu item is currently enabled or disabled.\r\rDistribution of a COM object basically consists of distributing a linked EXE file (application) or a linked DLL (e.g. a control).\r\rHow does the dynamic loading facility of BlackBox, as described above, relate to COM binaries? Basically, dynamic loading of individual modules is convenient during development, so you don't need a separate linking step every time before trying out a new version of your code. Only before distributing the code you need to link it into an EXE or DLL.\r\rFor example, if you develop an OLE object as one Component Pascal module, you typically load the module by executing its command that registers the object with OLE. Then you switch to some other application which is an OLE client (i.e. a container), such as MS Word. There you can insert the new object and try it out. If you detect some erroneous behavior, close the document and return to BlackBox, i.e. to the OLE server. Unload the module, correct the error in the Component Pascal module(s), recompile, and then continue again with loading the new version of the module.\rWhen working in this way, in principle you can use all BlackBox features for debugging, e.g. the "
+                    attr: 2
+                  - text: Out
+                    attr: 3
+                  - text: " module which writes into the "
+                    attr: 2
+                  - text: Log
+                    attr: 3
+                  - text: " text, or the symbolic debugger of BlackBox. Only when you're completely satisfied with the object's behavior, you link it together into a DLL.\r\rUnfortunately, for historical reasons ActiveX controls are treated somewhat differently than ordinary OLE objects. For example, controls require the existence of a DLL. For you, this means that you need to link the program into a DLL after each modification and compilation of the sources. Furthermore, for testing you need a program which is a control container; normal OLE containers are not sufficient.\r"
+                    attr: 2
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 20
+          bodyPos: 9648
+          bodyLen: 8

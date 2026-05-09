@@ -1,0 +1,377 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Com\\Docu\\Koala.odc"
+  size: 6857
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 6726
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 6540
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 6454
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 114300
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 26
+                bodyPos: 6575
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 6061
+                runListLen: 1750
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [4]
+                    font: "*"
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                flow:
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 0
+                      w: 360000000
+                      h: 444500
+                  - target:
+                      name: 7.1
+                      body:
+                        - text: ComKoala Example
+                          attr: 0
+                      attr: 0
+                      w: 150300
+                      h: 142875
+                  - text: "\r\r"
+                    attr: 0
+                  - text: "This example is one of the simplest COM examples. It provides a component which implements the "
+                    attr: 1
+                  - text: IUnknown
+                    attr: 2
+                  - text: " interface. In DTC Component Pascal, a concrete extension of the base interface must be defined. The two methods AddRef and Release are implemented by the compiler, and for QueryInterface, the default implementation can be taken. Thus, only the following two lines are necessary to implement this simple interface.\r\r\tTYPE\r\t\tKoala = POINTER TO RECORD (COM.IUnknown) END;\r\rA set of interfaces is implemented in a COM class. A COM class may be identified by a unique class identifier (CLSID) which is also a GUID. A run-time instantiation of a COM class is called a COM object. Each COM class is implemented in a COM server. The server is a piece of code compiled into an executable (EXE file) or into a dynamic link library (DLL file). For every COM class, the server must provide a factory object through which a new instance can be constructed. This factory object can be registered in the Windows registry.\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      dsc: 25400
+                      grid: 1
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tCONST\r\t\tKoalaId = \"{00021146-0000-0000-C000-000000000046}\"; (* the CLSID *)\r\t\r\tTYPE\r\t\tKoalaFactory = POINTER TO RECORD (WinOle.IClassFactory) END;\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "The interface of the factory supports two methods: "
+                    attr: 1
+                  - text: CreateInstance
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: LockServer
+                    attr: 2
+                  - text: ". The methods of the "
+                    attr: 1
+                  - text: IUnknown
+                    attr: 2
+                  - text: " interface are again implemented by the compiler. \r\rThrough CreateInstance new Koala objects are requested. The required interface of the new object is passed as parameter iid. The implementation simply creates a new Koala object (using NEW) and asks QueryInterface of the newly generated object to return the requested interface.\r\r\tPROCEDURE (this: KoalaFactory) CreateInstance (outer: COM.IUnknown;\r\t\t\t\tIN [iid] iid: COM.GUID;\r\t\t\t\tOUT [new] int: COM.IUnknown): COM.RESULT;\r\t\tVAR res: COM.RESULT; new: Koala;\r\tBEGIN\r\t\tIF outer # NIL THEN RETURN WinApi.CLASS_E_NOAGGREGATION END;\r\t\tNEW(new);\r\t\tIF new # NIL THEN RETURN new.QueryInterface(iid, int)\r\t\tELSE RETURN WinApi.E_OUTOFMEMORY\r\t\tEND\r\tEND CreateInstance;\r\t\r\rIn module "
+                    attr: 1
+                  - text: ComKoalaTst
+                    attr: 2
+                  - text: " some test routines are implemented which demonstrate the use of "
+                    attr: 1
+                  - text: ComKoala
+                    attr: 2
+                  - text: " and which in particular illustrate the usual szenario when creating COM objects.\r\rFirst, the "
+                    attr: 1
+                  - text: ComKoala
+                    attr: 2
+                  - text: " server must instantiate a class factory and register it with the command "
+                    attr: 1
+                  - text: WinOle.CoRegisterClassObject
+                    attr: 2
+                  - text: " under its CLSID. This is implemented in the command\r\t"
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 13
+                      bodyPos: 1352
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: " ComKoala.Register\rIf you now look at the interface inspector you see that interface "
+                    attr: 1
+                  - text: ComKoala.KoalaFactory
+                    attr: 2
+                  - text: " is allocated and has a reference count of one (the reference in the registry).\r\r\rNow the client can request a pointer to the class factory by calling"
+                    attr: 1
+                  - text: " WinOle.CoGetClassObject."
+                    attr: 2
+                  - text: " As second argument we specify that the local server (i.e. BlackBox) has to be used. Now the reference count of the factory has been incremented to two (the reference in the registry and the reference we just created).\r\t"
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 14
+                      bodyPos: 1418
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: " ComKoalaTst.CreateClass\r\rThrough the factory object a Koala object can now be generated. The factory creates an instance of "
+                    attr: 1
+                  - text: ComKoala.Koala
+                    attr: 2
+                  - text: " and returns a pointer to the "
+                    attr: 1
+                  - text: IUnknown
+                    attr: 2
+                  - text: " interface. The interface browser now shows a new allocated interface.\r\t"
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 15
+                      bodyPos: 1484
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: " ComKoalaTst.CreateInstance\r\t\rWith the commands "
+                    attr: 1
+                  - text: "ComKoalaTst.AddRef "
+                    attr: 2
+                  - text: "and "
+                    attr: 1
+                  - text: ComKoalaTst.Release
+                    attr: 2
+                  - text: " the number of references can be incremented or decremented. Look at the updated interface browser from time to time. Whenever the command "
+                    attr: 1
+                  - text: CreateInstance
+                    attr: 2
+                  - text: " is called again, a new instance is created.\r\t"
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 16
+                      bodyPos: 1560
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: " ComKoalaTst.AddRef\r\t"
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 17
+                      bodyPos: 1606
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: " ComKoalaTst.Release\r\t\rThe factory reference which is held by module "
+                    attr: 1
+                  - text: ComKoalaTst
+                    attr: 2
+                  - text: " can be released with the command\r\t"
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 18
+                      bodyPos: 1662
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: " ComKoalaTst.ReleaseClass\rand the reference in the Windows registry is removed by calling "
+                    attr: 1
+                  - text: "WinOle.CoRevokeClassObject. "
+                    attr: 2
+                  - text: "The latter operation is implemented in the command\r\t"
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 19
+                      bodyPos: 1718
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: " ComKoala.Release\rNote that the two references to the factory can be released in any order. As soon as the registry reference is released, no new classes can be generated through "
+                    attr: 1
+                  - text: "WinOle.CoGetClassObject,"
+                    attr: 2
+                  - text: " and as soon as the factory reference in module "
+                    attr: 1
+                  - text: ComKoalaTst
+                    attr: 2
+                  - text: " is released, no new instances can be created.\r\rThe implementation can also be tested with the ObjUser.exe program which is provided in the Inside OLE book. Before you can use it, you must register the factory (ComKoala.Register) and you must set the ObjUser.exe program in "
+                    attr: 1
+                  - text: "EXE "
+                    attr: 3
+                  - text: "mode.\r\r\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenDoc('Com/Mod/Koala')"
+                      body:
+                        - text: ComKoala  sources
+                          attr: 4
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenDoc('Com/Mod/KoalaTst')"
+                      body:
+                        - text: ComKoalaTst  sources
+                          attr: 4
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 30
+          bodyPos: 6822
+          bodyLen: 8

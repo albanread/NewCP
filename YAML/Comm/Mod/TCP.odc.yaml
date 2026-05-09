@@ -1,0 +1,400 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Comm\\Mod\\TCP.odc"
+  size: 16982
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 16851
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 16665
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 16579
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5943600
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 16700
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 16186
+                runListLen: 2146
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE CommTCP;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\treferences\t= \"see the CommStreams documentation for details on the semantics of this driver module\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- 20070130, bh, Winsock replaced by WinNet\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r\r"
+                    attr: 1
+                  - text: "\tIMPORT SYSTEM, WinApi, WinNet, Strings, Dialog, CommStreams;\r\r\tCONST\r\t\thostSpecificError = -1;\t(* "
+                    attr: 0
+                  - text: host-specific error codes
+                    attr: 1
+                  - text: " *)\r\t\tINVALID_SOCKET = WinNet.INVALID_SOCKET;\r\t\tSOCKET_ERROR = WinNet.SOCKET_ERROR;\r\t\t\r\t\tFIONREAD = WinNet.IOC_OUT + 00040000H + ASH(ORD(\"f\"), 8) + 127;\t(* get # bytes to read *)\r\t\tFIONBIO = WinNet.IOC_IN + 00040000H + ASH(ORD(\"f\"), 8) + 126;\t\t\t(* set/clear non-blocking i/o *)\r\t\tFIOASYNC = WinNet.IOC_IN + 00040000H + ASH(ORD(\"f\"), 8) + 125;\t\t(* set/clear async i/o *)\r\r\tTYPE\r\t\tStream = POINTER TO RECORD (CommStreams.Stream)\r\t\t\tsock: WinNet.SOCKET;\t"
+                    attr: 0
+                  - text: "(* socket must be in non-blocking mode, otherwise recv() or send() could block *)"
+                    attr: 1
+                  - text: "\r\t\t\tremoteAdr: CommStreams.Adr\t"
+                    attr: 0
+                  - text: "(* remoteAdr # NIL *)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\tListener = POINTER TO RECORD (CommStreams.Listener)\r\t\t\tsock: WinNet.SOCKET;\r\t\t\tlocalAdr: CommStreams.Adr\t"
+                    attr: 0
+                  - text: "(* localAdr # NIL *)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\tVAR\r\t\twinSockInstalled: BOOLEAN;\t(* "
+                    attr: 0
+                  - text: WinSockets API successfully initialized?
+                    attr: 1
+                  - text: " *)\r\t\t"
+                    attr: 0
+                  - text: debug
+                    attr: 3
+                  - text: "*: BOOLEAN;\r\r\r\t"
+                    attr: 0
+                  - text: "(* auxiliary procedures *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE CopyOfAdrString (a: CommStreams.Adr): CommStreams.Adr;\r\t\tVAR b: CommStreams.Adr;\r\tBEGIN\r\t\tNEW(b, LEN(a)); b := a;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " b\r\tEND CopyOfAdrString;\r\r\tPROCEDURE Error (msg: ARRAY OF CHAR; errno: INTEGER);\r\t\tVAR s: ARRAY 128 OF CHAR; errnostr: ARRAY 8 OF CHAR;\r\tBEGIN\r\t\tIF debug THEN\r\t\t\tCASE errno OF\r\t\t\t  WinNet.WSASYSNOTREADY: s := \"WSASYSNOTREADY, network subsystem is unavailable\"\r\t\t\t| WinNet.WSAVERNOTSUPPORTED: s := \"WSAVERNOTSUPPORTED, WINSOCK.DLL version out of range\"\r\t\t\t| WinNet.WSAEINVAL: s := \"WSAEINVAL, invalid argument\"\r\t\t\t| WinNet.WSAETIMEDOUT: s := \"WSAETIMEDOUT, connection timed out\"\r\t\t\t| WinNet.WSAECONNREFUSED: s := \"WSAECONNREFUSED, connection refused\"\r\t\t\t| WinNet.WSAEADDRNOTAVAIL: s := \"WSAEADDRNOTAVAIL, cannot assign requested address\"\r\t\t\tELSE s := \"(please look up the error number in the WinNet symbol file and in the Microsoft documentation)\"\r\t\t\tEND;\r\t\t\tStrings.IntToString(errno, errnostr);\r\t\t\tDialog.ShowParamMsg(\"^0: error ^1 (^2)\", msg, errnostr, s)\r\t\tEND\r\tEND Error;\r\r\tPROCEDURE IsIPAddress (name: ARRAY OF CHAR): BOOLEAN;\r\t\t(* "
+                    attr: 0
+                  - text: returns
+                    attr: 1
+                  - text: " TRUE "
+                    attr: 0
+                  - text: iff
+                    attr: 1
+                  - text: " name "
+                    attr: 0
+                  - text: "only contains decimal digits and \".\" characters"
+                    attr: 1
+                  - text: " *)\r\t\tVAR i: INTEGER;\r\tBEGIN\r\t\ti := 0; WHILE (\"0\" <= name[i]) & (name[i] <= \"9\") OR (name[i] = \".\") DO INC(i) END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " name[i] = 0X\r\tEND IsIPAddress;\r\r\tPROCEDURE ParseAdr (adr: ARRAY OF CHAR; OUT addr: ARRAY OF CHAR; OUT port: INTEGER; OUT ok: BOOLEAN);\r\t\t(* "
+                    attr: 0
+                  - text: parse address specification with syntax
+                    attr: 1
+                  - text: " addr [ \":\" portnumber ] *)\r\t\tVAR i, j, res: INTEGER; portstr: ARRAY 16 OF CHAR;\r\tBEGIN\r\t\ti := 0; j := 0; port := 0; ok := TRUE;\r\t\tWHILE (adr[i] # 0X) & (adr[i] # \":\") DO\r\t\t\tIF j < LEN(addr) - 1 THEN addr[j] := adr[i]; INC(j) END;\r\t\t\tINC(i)\r\t\tEND;\r\t\tok := i = j;\r\t\taddr[j] := 0X;\r\t\tIF ok & (adr[i] = \":\") THEN\r\t\t\tINC(i); j := 0;\r\t\t\tWHILE adr[i] # 0X DO\r\t\t\t\tportstr[j] := adr[i]; INC(i);\r\t\t\t\tIF j < LEN(portstr) - 1 THEN INC(j) END\r\t\t\tEND;\r\t\t\tportstr[j] := 0X;\r\t\t\tStrings.StringToInt(portstr, port, res);\r\t\t\tok := res = 0\r\t\tEND\r\tEND ParseAdr;\r\r\tPROCEDURE ParseLocalAdr (IN adr: ARRAY OF CHAR;\r\t\tOUT peername: ARRAY OF CHAR; OUT port: INTEGER; OUT ok: BOOLEAN\r\t);\r\t\tVAR i, res: INTEGER;\r\tBEGIN\r\t\tIF adr = \"\" THEN\r\t\t\tport := 0; peername := \"\"; ok := TRUE\t(* default port number 0 means 'don't care which port is used' *)\r\t\tELSE\r\t\t\ti := 0;\r\t\t\tWHILE (adr[i] # 0X) & ((adr[i] >= \"0\") & (adr[i] <= \"9\")) OR (adr[i] = \" \") DO INC(i) END;\r\t\t\tIF adr[i] # 0X THEN ParseAdr(adr, peername, port, ok)\r\t\t\tELSE Strings.StringToInt(adr, port, res); peername := \"\"; ok := res = 0\r\t\t\tEND\r\t\tEND\r\tEND ParseLocalAdr;\r\r\tPROCEDURE NameToAdr (IN peername: ARRAY OF CHAR; VAR inaddr: WinNet.in_addr; OUT ok: BOOLEAN);\r\t\tVAR hostentry: WinNet.Ptrhostent; shortPName: ARRAY 64 OF SHORTCHAR;\r\tBEGIN\r\t\tshortPName := SHORT(peername$);\r\t\tIF IsIPAddress(peername) THEN\r\t\t\tinaddr.S_un.S_addr := WinNet.inet_addr(shortPName);\r\t\t\tok := inaddr.S_un.S_addr # WinNet.INADDR_NONE\r\t\tELSE\r\t\t\thostentry := WinNet.gethostbyname(shortPName);\r\t\t\tok := hostentry # NIL;\r\t\t\tIF ok THEN\r\t\t\t\tinaddr := hostentry.h_addr_list^[0]^[0]\r\t\t\tELSE\r\t\t\t\tError(\"gethostbyname()\", WinNet.WSAGetLastError())\r\t\t\tEND\r\t\tEND\r\tEND NameToAdr;\r\r\tPROCEDURE MakeAdr (adr: WinNet.sockaddr_in; OUT s: CommStreams.Adr);\r\t\tVAR ipadr, n: INTEGER; temp, buf: ARRAY 64 OF CHAR;\r\tBEGIN\r\t\tipadr := adr.sin_addr.S_un.S_addr; temp := \"\";\r\t\tIF ipadr # 0 THEN\r\t\t\tn := ipadr MOD 256;\r\t\t\tStrings.IntToString(n, temp);\r\t\t\tn := SYSTEM.LSH(ipadr, -8); n := n MOD 256;\r\t\t\tStrings.IntToString(n, buf); temp := temp + \".\"+ buf;\r\t\t\tn := SYSTEM.LSH(ipadr, -16); n := n MOD 256;\r\t\t\tStrings.IntToString(n, buf); temp := temp + \".\"+ buf;\r\t\t\tn := SYSTEM.LSH(ipadr, -24); n := n MOD 256;\r\t\t\tStrings.IntToString(n, buf); temp := temp + \".\" + buf + \":\"\r\t\tEND;\r\t\tn := (adr.sin_port MOD 256) * 256 + (adr.sin_port DIV 256) MOD 256;\r\t\tStrings.IntToString(n, buf); temp := temp + buf;\r\t\tNEW(s, LEN(temp$) + 1); s^ := temp$\r\tEND MakeAdr;\r\r\tPROCEDURE MakeFdSet (socket: WinNet.SOCKET; OUT set: WinNet.fd_set);\r\tBEGIN\r\t\tset.fd_count := 1; set.fd_array[0] := socket\r\tEND MakeFdSet;\r\r\t"
+                    attr: 0
+                  - text: "(* Listener *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (l: Listener) LocalAdr (): CommStreams.Adr;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " CopyOfAdrString(l.localAdr)\r\tEND LocalAdr;\r\r\tPROCEDURE (l: Listener) Accept (OUT s: CommStreams.Stream);\r\t\tVAR timeout: WinNet.timeval; set: WinNet.fd_set; res, namelen: INTEGER;\r\t\t\tsock: WinNet.SOCKET; tcpstream: Stream;\r\t\t\tinadr: WinNet.sockaddr_in;\r\tBEGIN\r\t\ttimeout.tv_sec := 0; timeout.tv_usec := 0;\r\t\tMakeFdSet(l.sock, set);\r\t\tres := WinNet.select(0, set, NIL, NIL, timeout);\r\t\tASSERT(res # SOCKET_ERROR, 100);\r\t\tIF res > 0 THEN\r\t\t\tnamelen := SIZE(WinNet.sockaddr_in);\r\t\t\tsock := WinNet.accept(l.sock, SYSTEM.VAL(WinNet.sockaddr, inadr), namelen);\r\t\t\tASSERT(sock # INVALID_SOCKET, 101);\r\t\t\tnamelen := 1;\t"
+                    attr: 0
+                  - text: "(* = 'true' *)"
+                    attr: 1
+                  - text: "\r\t\t\tres := WinNet.ioctlsocket(sock, FIONBIO, namelen);\t(* "
+                    attr: 0
+                  - text: set to non-blocking mode
+                    attr: 1
+                  - text: " *)\r\t\t\tASSERT(res = 0, 102);\r\t\t\tNEW(tcpstream); tcpstream.sock := sock;\r\t\t\tMakeAdr(inadr, tcpstream.remoteAdr);\r\t\t\ts := tcpstream\r\t\tEND\r\tEND Accept;\r\r\tPROCEDURE (l: Listener) Close;\r\t\tVAR res: INTEGER;\r\tBEGIN\r\t\tIF l.sock # INVALID_SOCKET THEN\r\t\t\tres := WinNet.closesocket(l.sock);\r\t\t\tl.sock := INVALID_SOCKET\r\t\tEND\r\tEND Close;\r\r\tPROCEDURE (l: Listener) FINALIZE-;\r\tBEGIN\r\t\tWITH l: Listener DO\r\t\t\tIF l.sock # INVALID_SOCKET THEN\r\t\t\t\tl.Close\r\t\t\tEND\r\t\tEND\r\tEND FINALIZE;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: NewListener
+                    attr: 3
+                  - text: "* (localAdr: ARRAY OF CHAR; OUT l: CommStreams.Listener; OUT res: INTEGER);\r\t\t(* localAdr "
+                    attr: 0
+                  - text: must contain a port number
+                    attr: 1
+                  - text: " *)\r\t\tCONST SOMAXCONN = 5;\t"
+                    attr: 0
+                  - text: "(* use default length of listener backlog queue *)"
+                    attr: 1
+                  - text: "\r\t\tVAR portnr, namelen: INTEGER; ok: BOOLEAN; tcplistener: Listener;\r\t\t\tadr: WinNet.sockaddr_in; sock: WinNet.SOCKET;\r\t\t\tpeername: ARRAY 64 OF CHAR;\r\tBEGIN\r\t\tl := NIL;\r\t\tIF winSockInstalled THEN\r\t\t\tParseLocalAdr(localAdr, peername, portnr, ok);\r\t\t\tIF ok & (portnr >= 0) THEN\t"
+                    attr: 0
+                  - text: "(* only non-negative port numbers are legal *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tsock := WinNet.socket(WinNet.PF_INET, WinNet.SOCK_STREAM, WinNet.IPPROTO_TCP);\r\t\t\t\tASSERT(sock # INVALID_SOCKET, 100);\r\t\t\t\tadr.sin_family := WinNet.PF_INET;\r\t\t\t\tadr.sin_port := WinNet.htons(SHORT(portnr));\r\t\t\t\tNameToAdr(peername, adr.sin_addr, ok);\r\t\t\t\tIF ok THEN\r\t\t\t\t\tres := WinNet.bind(sock, SYSTEM.VAL(WinNet.sockaddr, adr), SIZE(WinNet.sockaddr_in));\r\t\t\t\t\tIF res = 0 THEN\r\t\t\t\t\t\tres := WinNet.listen(sock, SOMAXCONN);\r\t\t\t\t\t\tASSERT(res = 0, 102);\r\t\t\t\t\t\tNEW(tcplistener); tcplistener.sock := sock;\r\t\t\t\t\t\tnamelen := SIZE(WinNet.sockaddr_in);\r\t\t\t\t\t\tres := WinNet.getsockname(sock, SYSTEM.VAL(WinNet.sockaddr, adr), namelen);\r\t\t\t\t\t\tASSERT(res = 0, 103);\r\t\t\t\t\t\tMakeAdr(adr, tcplistener.localAdr);\r\t\t\t\t\t\tl := tcplistener;\r\t\t\t\t\t\tres := CommStreams.done\r\t\t\t\t\tELSE \r\t\t\t\t\t\tres := CommStreams.localAdrInUse\r\t\t\t\t\tEND\r\t\t\t\tELSE\r\t\t\t\t\tres := WinNet.closesocket(sock);\r\t\t\t\t\tres := CommStreams.invalidLocalAdr\r\t\t\t\tEND\r\t\t\tELSE \r\t\t\t\tres := CommStreams.invalidLocalAdr\r\t\t\tEND\r\t\tELSE\r\t\t\tres := CommStreams.networkDown\r\t\tEND\r\tEND NewListener;\r\r\r\t"
+                    attr: 0
+                  - text: "(* Stream *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (s: Stream) RemoteAdr (): CommStreams.Adr;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " CopyOfAdrString(s.remoteAdr)\r\tEND RemoteAdr;\r\r\tPROCEDURE (s: Stream) IsConnected (): BOOLEAN;\r\t\t(* "
+                    attr: 0
+                  - text: Give an educated guess on whether the peer has closed the connection.
+                    attr: 1
+                  - text: " *)\r\t\t(* "
+                    attr: 0
+                  - text: "This is not a guarantee that data sent on "
+                    attr: 1
+                  - text: s
+                    attr: 0
+                  - text: " will arrive at the peer."
+                    attr: 1
+                  - text: " *)\r\t\tVAR timeout: WinNet.timeval; set: WinNet.fd_set; n, res, avail: INTEGER;\r\tBEGIN\r\t\tIF s.sock = INVALID_SOCKET THEN\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " FALSE\r\t\tELSE\r\t\t\ttimeout.tv_sec := 0; timeout.tv_usec := 0;\r\t\t\tMakeFdSet(s.sock, set);\r\t\t\tn := WinNet.select(0, set, NIL, NIL, timeout);\r\t\t\tASSERT(n # SOCKET_ERROR, 100);\r\t\t\tIF n = 1 THEN\t(* "
+                    attr: 0
+                  - text: "a "
+                    attr: 1
+                  - text: recv
+                    attr: 0
+                  - text: " on"
+                    attr: 1
+                  - text: " s.sock "
+                    attr: 0
+                  - text: would not block; find out whether there is data queued
+                    attr: 1
+                  - text: " *)\r\t\t\t\tres := WinNet.ioctlsocket(s.sock, FIONREAD, avail);\r\t\t\t\tASSERT(res = 0, 101);\r\t\t\t\t(* "
+                    attr: 0
+                  - text: "if there is data queued, we assume the socket is still open.\r"
+                    attr: 1
+                  - text: "\t"
+                    attr: 0
+                  - text: "\t\t\t\tif no data is queued, then we know that a "
+                    attr: 1
+                  - text: recv
+                    attr: 0
+                  - text: " can only return with zero bytes\r"
+                    attr: 1
+                  - text: "\t"
+                    attr: 0
+                  - text: "\t\t\t\tread, telling us that the socket has been closed."
+                    attr: 1
+                  - text: " *)\r\t\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " avail > 0\r\t\t\tELSE (* "
+                    attr: 0
+                  - text: "a "
+                    attr: 1
+                  - text: recv
+                    attr: 0
+                  - text: " on"
+                    attr: 1
+                  - text: " s.sock "
+                    attr: 0
+                  - text: "would block, so the peer has not closed the socket yet or the connect failed entirely"
+                    attr: 1
+                  - text: " *)\r\t\t\t\ttimeout.tv_sec := 0; timeout.tv_usec := 0;\r\t\t\t\tMakeFdSet(s.sock, set);\r\t\t\t\tn := WinNet.select(0, NIL, NIL, set, timeout);\r\t\t\t\tASSERT(n # SOCKET_ERROR, 102);\r\t\t\t\tIF n = 1 THEN s.Close END;\r\t\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " n = 0\r\t\t\tEND\r\t\tEND\r\tEND IsConnected;\r\r\tPROCEDURE (s: Stream) WriteBytes (IN x: ARRAY OF BYTE; beg, len: INTEGER; OUT written: INTEGER);\r\t\tVAR res: INTEGER;\r\tBEGIN\r\t\tASSERT(beg >= 0, 20);\r\t\tASSERT(len > 0, 21);\r\t\tASSERT(LEN(x) >= beg + len, 22);\r\t\twritten := WinNet.send(s.sock, SYSTEM.VAL(WinApi.PtrSTR, SYSTEM.ADR(x) + beg), len, {});\r\t\tIF written = SOCKET_ERROR THEN\r\t\t\tres := WinNet.WSAGetLastError();\r\t\t\tIF (res # WinNet.WSAEWOULDBLOCK) & (res # WinNet.WSAENOTCONN) THEN Error(\"send()\", res) END;\r\t\t\twritten := 0\r\t\tEND\r\tEND WriteBytes;\r\r\tPROCEDURE (s: Stream) ReadBytes (VAR x: ARRAY OF BYTE; beg, len: INTEGER; OUT read: INTEGER);\r\t\tVAR res: INTEGER;\r\tBEGIN\r\t\tASSERT(beg >= 0, 20);\r\t\tASSERT(len > 0, 21);\r\t\tASSERT(LEN(x) >= beg + len, 22);\r\t\tread := WinNet.recv(s.sock, SYSTEM.VAL(WinApi.PtrSTR, SYSTEM.ADR(x) + beg), len, {});\r\t\tIF read = SOCKET_ERROR THEN\r\t\t\tres := WinNet.WSAGetLastError();\r\t\t\tIF (res = WinNet.WSAEWOULDBLOCK) OR (res = WinNet.WSAENOTCONN) THEN\r\t\t\t\tread := 0\t (* "
+                    attr: 0
+                  - text: there is nothing to be read
+                    attr: 1
+                  - text: " *)\r\t\t\tELSIF res = WinNet.WSAECONNRESET THEN\r\t\t\t\tread := 0;\r\t\t\t\ts.Close\t"
+                    attr: 0
+                  - text: "(* prevent trap *)"
+                    attr: 1
+                  - text: "\r\t\t\tELSE\r\t\t\t\tError(\"recv()\", res);\r\t\t\t\tread := 0; s.Close\r\t\t\tEND\r\t\tEND\r\tEND ReadBytes;\r\r\tPROCEDURE (s: Stream) Close;\r\t\tVAR res: INTEGER;\r\tBEGIN\r\t\tres := WinNet.closesocket(s.sock);\r\t\ts.sock := INVALID_SOCKET\r\tEND Close;\r\r\tPROCEDURE (s: Stream) FINALIZE-;\r\tBEGIN\r\t\tIF s.sock # INVALID_SOCKET THEN\r\t\t\ts.Close\r\t\tEND\r\tEND FINALIZE;\r\r\tPROCEDURE CreateStream (\r\t\tOUT s: CommStreams.Stream; sock: WinNet.SOCKET; IN remoteAdr: ARRAY OF CHAR\r\t);\r\t\tVAR stream: Stream;\r\tBEGIN\r\t\tNEW(stream); stream.sock := sock;\r\t\tNEW(stream.remoteAdr, LEN(remoteAdr$)+1); stream.remoteAdr^ := remoteAdr$;\r\t\ts := stream\r\tEND CreateStream;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: NewStream
+                    attr: 3
+                  - text: "* (\r\t\tlocalAdr, remoteAdr: ARRAY OF CHAR; OUT s: CommStreams.Stream; OUT res: INTEGER\r\t);\r\t\t(* localAdr "
+                    attr: 0
+                  - text: may contain a port number
+                    attr: 1
+                  - text: " *)\r\t\t(* remoteAdr "
+                    attr: 0
+                  - text: must contain an address in the format
+                    attr: 1
+                  - text: "  ( ip-address | hostname ) [ \":\" portnumber ] *)\r\t\tVAR adr: WinNet.sockaddr_in;\r\t\t\trpeername, lpeername: ARRAY 64 OF CHAR;\r\t\t\tinaddr: WinNet.in_addr; lport, rport: INTEGER; ok: BOOLEAN;\r\t\t\tsock: WinNet.SOCKET;\r\tBEGIN\r\t\ts := NIL;\r\t\tIF winSockInstalled THEN\r\t\t\tParseAdr(remoteAdr, rpeername, rport, ok);\r\t\t\tIF ok THEN\r\t\t\t\tsock := WinNet.socket(WinNet.PF_INET, WinNet.SOCK_STREAM, WinNet.IPPROTO_TCP);\r\t\t\t\tIF sock # INVALID_SOCKET THEN\r\t\t\t\t\tParseLocalAdr(localAdr, lpeername, lport, ok);\r\t\t\t\t\tIF ok & (lport >= 0) THEN\t(* "
+                    attr: 0
+                  - text: only non-negative port numbers are legal
+                    attr: 1
+                  - text: " *)\r\t\t\t\t\t\tadr.sin_family := WinNet.PF_INET;\r\t\t\t\t\t\tadr.sin_port := WinNet.htons(SHORT(lport));\r\t\t\t\t\t\tNameToAdr(lpeername, adr.sin_addr, ok);\r\t\t\t\t\t\tres := WinNet.bind(sock, SYSTEM.VAL(WinNet.sockaddr, adr), SIZE(WinNet.sockaddr_in));\r\t\t\t\t\t\tIF res = 0 THEN\r\t\t\t\t\t\t\tNameToAdr(rpeername, inaddr, ok);\r\t\t\t\t\t\t\tIF ok THEN\r\t\t\t\t\t\t\t\tadr.sin_family := WinNet.PF_INET;\r\t\t\t\t\t\t\t\tadr.sin_port := WinNet.htons(SHORT(rport));\r\t\t\t\t\t\t\t\tadr.sin_addr := inaddr;\r\t\t\t\t\t\t\t\tres := 1;\t"
+                    attr: 0
+                  - text: "(* = 'true' *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\t\t\tres := WinNet.ioctlsocket(sock, FIONBIO, res);\t(* "
+                    attr: 0
+                  - text: set to non-blocking mode
+                    attr: 1
+                  - text: " *)\r\t\t\t\t\t\t\t\tASSERT(res = 0, 101);\r\t\t\t\t\t\t\t\tres := WinNet.connect(sock, SYSTEM.VAL(WinNet.sockaddr, adr), SIZE(WinNet.sockaddr_in));\r\t\t\t\t\t\t\t\tIF res = 0 THEN\r\t\t\t\t\t\t\t\t\tCreateStream(s, sock, remoteAdr); res := CommStreams.done\r\t\t\t\t\t\t\t\tELSE\r\t\t\t\t\t\t\t\t\tres := WinNet.WSAGetLastError();\r\t\t\t\t\t\t\t\t\tIF res = WinNet.WSAEWOULDBLOCK THEN\r\t\t\t\t\t\t\t\t\t\tCreateStream(s, sock, remoteAdr); res := CommStreams.done\r\t\t\t\t\t\t\t\t\tELSE\r\t\t\t\t\t\t\t\t\t\tError(\"connect()\", res);\r\t\t\t\t\t\t\t\t\t\tres := WinNet.closesocket(sock);\r\t\t\t\t\t\t\t\t\t\tres := hostSpecificError\r\t\t\t\t\t\t\t\t\tEND\r\t\t\t\t\t\t\t\tEND\r\t\t\t\t\t\t\tELSE\r\t\t\t\t\t\t\t\tres := WinNet.closesocket(sock);\r\t\t\t\t\t\t\t\tres := CommStreams.invalidRemoteAdr\r\t\t\t\t\t\t\tEND\r\t\t\t\t\t\tELSE\r\t\t\t\t\t\t\tres := WinNet.closesocket(sock);\r\t\t\t\t\t\t\tres := CommStreams.invalidLocalAdr\r\t\t\t\t\t\tEND\r\t\t\t\t\tELSE\r\t\t\t\t\t\tres := CommStreams.invalidLocalAdr\r\t\t\t\t\tEND\r\t\t\t\tELSE\r\t\t\t\t\tError(\"socket()\", WinNet.WSAGetLastError());\r\t\t\t\t\tres := hostSpecificError\r\t\t\t\tEND\r\t\t\tELSE\r\t\t\t\tres := CommStreams.invalidRemoteAdr\r\t\t\tEND\r\t\tELSE\r\t\t\tres := CommStreams.networkDown\r\t\tEND\r\tEND NewStream;\r\r\tPROCEDURE Init;\r\t\tCONST version = 00000101H;\r\t\tVAR data: WinNet.WSADATA; ret: INTEGER;\r\tBEGIN\r\t\tdebug := TRUE;\r\t\twinSockInstalled := FALSE;\r\t\tret := WinNet.WSAStartup(version, data);\r\t\tIF ret = 0 THEN\r\t\t\twinSockInstalled := TRUE\r\t\tELSE\r\t\t\tError(\"WSAStartup()\", ret)\r\t\tEND;\r\t\tdebug := FALSE\r\tEND Init;\r\r\tPROCEDURE Close;\r\t\tVAR ret: INTEGER;\r\tBEGIN\r\t\tret := WinNet.WSACleanup()\r\tEND Close;\r\rBEGIN\r\tInit\rCLOSE\r\tClose\rEND CommTCP.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 16947
+          bodyLen: 8

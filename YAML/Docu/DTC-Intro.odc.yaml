@@ -1,0 +1,413 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Docu\\DTC-Intro.odc"
+  size: 11739
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 11608
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 11422
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 11336
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 114300
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 48
+                bodyPos: 11457
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 10943
+                runListLen: 3161
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 304800
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [2]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [3]
+                    font: "*"
+                    size: 152400
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [4]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [5]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [6]
+                    font: "*"
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                  - # [7]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [8]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                flow:
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000002
+                      attr: 0
+                      w: 360000000
+                      h: 444500
+                  - view:
+                      kind: StdLogos.View
+                      storeKind: store
+                      typeChain:
+                        - StdLogos.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 5
+                      bodyPos: 760
+                      bodyLen: 7
+                    attr: 0
+                    w: 1219196
+                    h: 304799
+                  - text: " Direct-To-COM Compiler\r"
+                    attr: 0
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      attr: 0
+                      w: 360000000
+                      h: 444500
+                  - text: "\r"
+                    attr: 1
+                  - target:
+                      name: 1
+                      body:
+                        - text: Introduction
+                          attr: 1
+                      attr: 1
+                      w: 216975
+                      h: 219075
+                  - text: "\r\r\r"
+                    attr: 2
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 3
+                      w: 360000000
+                      h: 444500
+                  - text: "\r"
+                    attr: 3
+                  - target:
+                      name: 1.1
+                      body:
+                        - text: COM
+                          attr: 4
+                      attr: 4
+                      w: 150300
+                      h: 142875
+                  - text: "\r\r"
+                    attr: 4
+                  - text: "Microsoft's Component Object Model (COM) is a language and compiler independent interface standard for object interoperability on the binary level. COM specifies how objects implemented in one component can access services provided by objects implemented in another component. The services provided by objects are grouped in "
+                    attr: 2
+                  - text: interfaces
+                    attr: 5
+                  - text: ", which are sets of semantically related functions. For example, an ActiveX control is a COM object that extends OLE, by implementing concrete implementations of the necessary OLE interfaces. COM makes it possible that an extended software component can be updated without invalidating extending components, e.g., a new release of OLE can be introduced without breaking existing ActiveX controls.\r\rIn such an evolving, decentrally constructed system it is difficult to decide whether an object is still used or whether it can be removed from the system. The client of an object does not know whether other clients still have access to the same object, and a server does not know whether a client passed its reference to other clients. This lack of global knowledge can make it hard to determine whether an object is no longer referenced, and thus could be released. If an object is released prematurely, then unpredictable errors will occur. The problem is critical in component software environments, because an erroneous component of one vendor may destroy objects implemented by other vendors' components. It may even take some time until the destroyed objects begin to visibly malfunction. For the end user, it is next to impossible to determine which vendor is to blame.\r\rAs a consequence, some form of automatic garbage collection mechanism must be provided. In contrast to closed systems, this is a necessity with component software, and not merely an option or a convenience feature. COM uses reference counting as a rather simple form of garbage collection. Whenever a client gets access to a COM object, it must inform the object that a new reference exists. As soon as the client releases the COM object, it must inform the object that a reference will disappear. A COM object counts its references and thus can control its own lifetime.\r\r\r"
+                    attr: 2
+                  - target:
+                      name: 1.2
+                      body:
+                        - text: Direct-To-COM Compiler
+                          attr: 4
+                      attr: 4
+                      w: 150300
+                      h: 142875
+                  - text: "\r"
+                    attr: 4
+                  - text: "\rThe problem with reference counting is that it depends on the discipline of the programmer. The situation is aggravated by additional subtle rules about who is responsible for the management of the reference counts if COM objects are passed as function arguments. Reliable software construction requires the management of reference counts to be automated. \r\rThe Direct-To-COM compiler for Component Pascal completely automates memory management. The compiler and its small run-time system (module "
+                    attr: 2
+                  - text: Kernel
+                    attr: 5
+                  - text: ") hides the reference counting mechanism, i.e., a program need not call nor implement the "
+                    attr: 2
+                  - text: AddRef
+                    attr: 5
+                  - text: " and "
+                    attr: 2
+                  - text: Release
+                    attr: 5
+                  - text: " methods.\r\rFor programmers, the integration of COM into a strongly typed, garbage-collected language has two major advantages. Firstly, it brings all the amenities of automatic garbage collection to COM. Secondly, it makes the handling of COM interfaces typesafe.\r\r\r"
+                    attr: 2
+                  - target:
+                      name: 1.3
+                      body:
+                        - text: BlackBox Component Builder
+                          attr: 4
+                      attr: 4
+                      w: 150300
+                      h: 142875
+                  - text: "\r\rBlackBox Component Builder is the name of the integrated development environment (IDE) of the Direct-To-COM compiler. It provides a program editor, the compiler, and a symbolic debugger. It also contains a "
+                    attr: 2
+                  - text: multiplatform component framework
+                    attr: 5
+                  - text: ", which simplifies the implementation of platform-independent software components. However, it is assumed that you won't need access to the BlackBox APIs, since they isolate software from non-portable COM interfaces, while you want to do COM programming.\r\rNote\rIt is possible to do COM programming while also using the component framework, e.g. to access some functionality for which there is no framework counterpart. In such a case, you can always access the full framework documentation via the help screen.\r\r\r"
+                    attr: 2
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 4
+                      w: 360000000
+                      h: 444500
+                  - target:
+                      name: 1.4
+                      body:
+                        - text: Getting Started
+                          attr: 4
+                      attr: 4
+                      w: 150300
+                      h: 142875
+                  - text: "\r"
+                    attr: 4
+                  - text: "\rHow should you start to get acquainted with this product? Note that all documentation is available on-line, and can be reached from the help screen. After the"
+                    attr: 2
+                  - text: " "
+                    attr: 6
+                  - link:
+                      target: "StdCmds.OpenBrowser('System/Docu/User-Man', 'System User Manual'); StdLinks.ShowTarget('Installation Windows')"
+                      body:
+                        - text: Installation
+                          attr: 6
+                      attr: 6
+                      w: 131250
+                      h: 142875
+                  - text: " "
+                    attr: 6
+                  - text: "of the BlackBox Component Builder, we suggest that you start with the introduction text"
+                    attr: 2
+                  - text: " "
+                    attr: 6
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/Tut-A', 'A Brief History of Pascal')"
+                      body:
+                        - text: A Brief History of Pascal
+                          attr: 6
+                      attr: 6
+                      w: 131250
+                      h: 142875
+                  - text: ".\r"
+                    attr: 2
+                  - text: "\r"
+                    attr: 7
+                  - text: Then move on to the chapters of the user guide which deal with text editing and with the development tools (
+                    attr: 2
+                  - link:
+                      target: "StdCmds.OpenBrowser('Text/Docu/User-Man', 'Text User Manual')"
+                      body:
+                        - text: Text Subsystem
+                          attr: 8
+                      attr: 7
+                      w: 121725
+                      h: 133350
+                  - text: " and "
+                    attr: 2
+                  - link:
+                      target: "StdCmds.OpenBrowser('Dev/Docu/User-Man', 'Dev User Manual')"
+                      body:
+                        - text: Dev Subsystem
+                          attr: 8
+                      attr: 7
+                      w: 121725
+                      h: 133350
+                  - text: "). After you thus have gained a working knowledge of BlackBox, it is time to delve into the COM-specific parts of the IDE and the Component Pascal compiler extensions for COM.\r\rThe section "
+                    attr: 2
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/DTC-HowTo', 'How to Develop new Components')"
+                      body:
+                        - text: How to Develop new COM objects
+                          attr: 6
+                      attr: 2
+                      w: 131250
+                      h: 142875
+                  - text: " (p. 20) summarizes the main points of the user guide as far as it pertains to COM development. Then proceed with the various example implementations of COM objects, which demonstrate all basic aspects of COM programming. Knowledge of the Windows APIs (e.g. OLE) is assumed.\r\r\r"
+                    attr: 2
+                  - target:
+                      name: 1.5
+                      body:
+                        - text: Further Reading
+                          attr: 4
+                      attr: 4
+                      w: 150300
+                      h: 142875
+                  - text: "\r"
+                    attr: 4
+                  - text: "\rWe recommend the following books on COM, OLE and ActiveX:\r\r\tKraig Brockschmidt,\r\t"
+                    attr: 2
+                  - text: "Inside OLE,\r\t"
+                    attr: 5
+                  - text: "2nd Edition, Microsoft Press, 1995.\r\t\t\r\tDavid Chappell,\r\t"
+                    attr: 2
+                  - text: "Understanding ActiveX and OLE,\r\t"
+                    attr: 5
+                  - text: "Microsoft Press, 1996, ISBN 1-57231-216-5.\r\r\tAdam Denning,\r\t"
+                    attr: 2
+                  - text: "OLE Controls Inside Out,\r\t"
+                    attr: 5
+                  - text: "Microsoft Press, 1995.\r\t\r\tDale Rogerson,\r"
+                    attr: 2
+                  - text: "\tInside COM,\r"
+                    attr: 5
+                  - text: "\tMicrosoft Press, 1997, ISBN 1-57231-349-8,\r\t\r\tDon Box,\r"
+                    attr: 2
+                  - text: "\tCreating Components with DCOM and C++,\r"
+                    attr: 5
+                  - text: "\tAddison Wesley, 1997.\r\t\r\tMicrosoft\r\t"
+                    attr: 2
+                  - text: "COM Home Page, "
+                    attr: 5
+                  - text: "\r\thttp://www.microsoft.com/com\r\r"
+                    attr: 2
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x0000000b
+                      attr: 4
+                      w: 360000000
+                      h: 444500
+                  - target:
+                      name: 1.6
+                      body:
+                        - text: Changes since Release 1.2
+                          attr: 4
+                      attr: 4
+                      w: 150300
+                      h: 142875
+                  - text: "\r"
+                    attr: 4
+                  - text: "\rThe upgrade of BlackBox 1.2 to BlackBox 1.3 also made the upgrade of the Direct-To-COM compiler necessary. However, the new language Component Pascal now supports many extensions which have been introduced in the language DTC Oberon which was used with DTC Release 1.2. In particular, the following features now belong to Component Pascal and are no longer special to DTC:\r\r"
+                    attr: 2
+                  - ruler:
+                      left: 360000
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 2
+                      w: 360000000
+                      h: 444500
+                  - text: "[in] sysflag for VAR parameters\rinstead of the [in] sysflag, which specified read-only VAR parameters, the IN parameter mode can now be used. IN parameters can neither be written nor passed as actual parameter to a formal VAR parameter. An IN parameter can only be read, or passed as actual parameter to another IN parameter. As with the [in] parameters in DTC Release 1.2, constants strings can be passed as actual parameters of a Component Pascal IN parameters.\r \r\x0e[out] sysflag for VAR parameters\rinstead of the [out] sysflag, the Component Pascal OUT parameter mode can be used to mark "
+                    attr: 2
+                  - text: out
+                    attr: 5
+                  - text: " parameters. Actual pointer parameters to formal OUT parameters are initialized to NIL upon function call. If a COM interface method is called remotely, the actual parameters of OUT parameters are not passed upon procedure entry and their values on the server side are not defined. \r\r\x0eLONGCHAR\rComponent Pascal now supports 16 bit characters (CHAR), which replaces type LONGCHAR of DTC Release 1.2. The predefined procedure LCHR is now called CHR.\r\r\x0eLARGEINT\rComponent Pascal now supports 64 bit integers (LONGINT) which is equivalent to the type LARGEINT of DTC Release 1.2. The predefined procedure LENTIER is now called ENTIER.\r\r\x0eFINALIZE Method\rThe FINALIZE method for (tagged) records is now part of Component Pascal. This method is called before the object is collected by the garbage collector. The RELEASE method is still unique to COM objects.\r\r\x0eTERMINATE\rSupport for module finalization is now provided by Component Pascal. Whenever a module is unloaded, the CLOSE section of the module body is executed.\r\r\x0eCompiler Implementation Restrictions\rsome of the compiler restrictions have been removed in the new release. In particular, it is now possible to specify a function call as actual value for a formal parameter of type \"pointer to interface\", and function calls with interface pointer results may now be used as arguments for pointer comparison operations.\r\r"
+                    attr: 2
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 52
+          bodyPos: 11704
+          bodyLen: 8

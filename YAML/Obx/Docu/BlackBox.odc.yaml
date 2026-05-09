@@ -1,0 +1,319 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Docu\\BlackBox.odc"
+  size: 4316
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 4185
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 3999
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 3913
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 152400
+                dsc: 25400
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 25
+                bodyPos: 4034
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 3636
+                runListLen: 2179
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                flow:
+                  - text: "Overview by Example: ObxBlackBox"
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\rThis example implements the deductive game "
+                    attr: 2
+                  - text: BlackBox
+                    attr: 3
+                  - text: ", using the "
+                    attr: 2
+                  - text: BlackBox
+                    attr: 3
+                  - text: " Component Framework. The aim of the game is to guess the positions of atoms within an "
+                    attr: 2
+                  - text: n
+                    attr: 3
+                  - text: " by "
+                    attr: 2
+                  - text: n
+                    attr: 3
+                  - text: " grid by firing rays into a black box. The rays may be deflected or even absorbed. From the position where the ray leaves the grid one must try to deduce the position of the atoms. For more information about "
+                    attr: 2
+                  - text: BlackBox
+                    attr: 3
+                  - text: " and on how to play the game read the "
+                    attr: 2
+                  - link:
+                      target: "StdCmds.OpenBrowser('Obx/Docu/BB-Rules', 'BlackBox rules')"
+                      body:
+                        - text: rules
+                          attr: 4
+                      attr: 2
+                      w: 131250
+                      h: 142875
+                  - text: ".\r\rA main point of this example is to demonstrate one advantage of compound documents: The "
+                    attr: 2
+                  - text: ObxBlackBox
+                    attr: 3
+                  - text: " views which are implemented can directly be used in the documentation for illustration purposes. Neither additional code nor the use of a drawing program is required. Moreover, these views in the documentation are living elements and can be inspected and modified as desired.\r\rThis example also shows how a view-specific menu can be used. If a "
+                    attr: 2
+                  - text: BlackBox
+                    attr: 3
+                  - text: " view is the focus view, a special menu appears which offers "
+                    attr: 2
+                  - text: BlackBox
+                    attr: 3
+                  - text: "-specific commands that operate on the focus view. For this purpose, the following menu is installed in your Obx menu file (-> "
+                    attr: 2
+                  - link:
+                      target: "StdCmds.OpenDoc('Obx/Rsrc/Menus')"
+                      body:
+                        - text: Menus
+                          attr: 4
+                      attr: 2
+                      w: 131250
+                      h: 142875
+                  - text: "):\r"
+                    attr: 2
+                  - view:
+                      kind: TextViews.StdView
+                      storeKind: store
+                      typeChain:
+                        - TextViews.StdViewDesc
+                        - TextViews.ViewDesc
+                        - Containers.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 11
+                      bodyPos: 1107
+                      bodyLen: 1053
+                      hideMarks: true
+                      defaultRuler:
+                        left: 0
+                        right: 5940000
+                        asc: 127000
+                        dsc: 25400
+                        grid: 1
+                        opts: 0x00000001
+                      defaultAttr:
+                        font: Arial
+                        size: 114300
+                        color: 0x01000000
+                        weight: 400
+                        style: 0x00000000
+                      controller:
+                        kind: TextControllers.StdCtrl
+                        storeKind: store
+                        typeChain:
+                          - TextControllers.StdCtrlDesc
+                          - TextControllers.ControllerDesc
+                          - Containers.ControllerDesc
+                          - Controllers.ControllerDesc
+                          - Stores.StoreDesc
+                        id: 16
+                        bodyPos: 1977
+                        bodyLen: 9
+                      content:
+                        kind: TextModels.StdModel
+                        storeKind: elem
+                        typeChain:
+                          - TextModels.StdModelDesc
+                          - TextModels.ModelDesc
+                          - Containers.ModelDesc
+                          - Models.ModelDesc
+                          - Stores.StoreDesc
+                        id: 2
+                        bodyPos: 1132
+                        bodyLen: 707
+                        runListLen: 401
+                        attrPool:
+                          - # [0]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 700
+                            style: 0x00000000
+                          - # [1]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 400
+                            style: 0x00000000
+                        flow:
+                          - ruler:
+                              left: 0
+                              right: 5940000
+                              asc: 127000
+                              dsc: 25400
+                              grid: 1
+                              opts: 0x00000001
+                              tabs:
+                                - { stop: 108000 }
+                                - { stop: 1080000 }
+                                - { stop: 1296000 }
+                                - { stop: 3600000 }
+                              attr: 0
+                              w: 360000000
+                              h: 444500
+                          - text: MENU
+                            attr: 0
+                          - text: " \"BlackBox\" (\"ObxBlackBox.View\")\r\"Show Solution\"\t\t\"\"\t\"ObxBlackBox.ShowSolution\"\t\"ObxBlackBox.ShowSolutionGuard\"\r\t"
+                            attr: 1
+                          - text: SEPARATOR
+                            attr: 0
+                          - text: "\r\t\"New Atoms\"\t\"\"\t\"ObxBlackBox.New\"\t\"\"\r\t\"Set New Atoms\"\t\"\"\t\"ObxBlackBox.Set\"\t\"\"\r\t"
+                            attr: 1
+                          - text: SEPARATOR
+                            attr: 0
+                          - text: "\r\t\"Rules\"\t\"\"\t\"StdCmds.OpenBrowser('Obx/Docu/BB-Rules', 'BlackBox Rules')\"\t\"\"\r"
+                            attr: 1
+                          - text: END
+                            attr: 0
+                    attr: 1
+                    w: 5592500
+                    h: 1460500
+                  - text: "\rThe first menu entry is enabled or disabled depending on the state of the focus view. A user-defined guard is added for this purpose. For more information about the commands themselves see the section on how to play "
+                    attr: 2
+                  - text: BlackBox
+                    attr: 3
+                  - text: " in the "
+                    attr: 2
+                  - link:
+                      target: "StdCmds.OpenBrowser('Obx/Docu/BB-Rules', 'BlackBox rules')"
+                      body:
+                        - text: rules
+                          attr: 4
+                      attr: 2
+                      w: 131250
+                      h: 142875
+                  - text: .
+                    attr: 2
+                  - text: "\r\r"
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 22
+                      bodyPos: 2421
+                      bodyLen: 6
+                    attr: 2
+                    w: 177800
+                    h: 152400
+                  - text: " \"StdCmds.OpenAuxDialog('Obx/Rsrc/BlackBox', 'BlackBox')\"\r\r"
+                    attr: 2
+                  - link:
+                      target: "StdCmds.OpenDoc('Obx/Mod/BlackBox')"
+                      body:
+                        - text: ObxBlackBox  sources
+                          attr: 4
+                      attr: 2
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 2
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 29
+          bodyPos: 4281
+          bodyLen: 8

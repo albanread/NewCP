@@ -1,0 +1,262 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Docu\\Caps.odc"
+  size: 4357
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 4226
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 4040
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 3954
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 152400
+                dsc: 25400
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 14
+                bodyPos: 4075
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 3677
+                runListLen: 1976
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                flow:
+                  - text: "Overview by Example: ObxCaps"
+                    attr: 0
+                  - text: "\r\rThis example shows how the built-in text subsystem of the BlackBox Component Builder can be extended by new commands. To demonstrate this possibility, a command is shown which fetches the selection in the focus view (assuming the focus view is a text view), creates a new empty text, copies the selection into this new text (but with all small letters turned into capital letters), and then replaces the selection by the newly created text. In short, this command turns the selected text stretch into all capital letters.\r\r\t"
+                    attr: 1
+                  - view:
+                      kind: TextViews.StdView
+                      storeKind: store
+                      typeChain:
+                        - TextViews.StdViewDesc
+                        - TextViews.ViewDesc
+                        - Containers.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 562
+                      bodyLen: 1525
+                      hideMarks: true
+                      defaultRuler:
+                        left: 0
+                        right: 5940000
+                        asc: 127000
+                        dsc: 25400
+                        grid: 1
+                        opts: 0x00000001
+                      defaultAttr:
+                        font: Arial
+                        size: 114300
+                        color: 0x01000000
+                        weight: 400
+                        style: 0x00000000
+                      controller:
+                        kind: TextControllers.StdCtrl
+                        storeKind: store
+                        typeChain:
+                          - TextControllers.StdCtrlDesc
+                          - TextControllers.ControllerDesc
+                          - Containers.ControllerDesc
+                          - Controllers.ControllerDesc
+                          - Stores.StoreDesc
+                        id: 8
+                        bodyPos: 1783
+                        bodyLen: 9
+                      content:
+                        kind: TextModels.StdModel
+                        storeKind: elem
+                        typeChain:
+                          - TextModels.StdModelDesc
+                          - TextModels.ModelDesc
+                          - Containers.ModelDesc
+                          - Models.ModelDesc
+                          - Stores.StoreDesc
+                        id: 2
+                        bodyPos: 587
+                        bodyLen: 1058
+                        runListLen: 182
+                        attrPool:
+                          - # [0]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 400
+                            style: 0x00000000
+                          - # [1]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 700
+                            style: 0x00000000
+                          - # [2]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 400
+                            style: 0x00000001
+                        flow:
+                          - text: "MODULE ObxCaps;\r\r\tIMPORT Stores, Models, TextModels, TextControllers;\r\r\tPROCEDURE "
+                            attr: 0
+                          - text: Do
+                            attr: 1
+                          - text: "*;\r\t\tVAR c: TextControllers.Controller; beg, end: INTEGER;\r\t\t\tr: TextModels.Reader; ch: CHAR;\r\t\t\tbuf: TextModels.Model; w: TextModels.Writer; script: Stores.Operation;\r\tBEGIN\r\t\tc := TextControllers.Focus();\r\t\tIF (c # NIL) & c.HasSelection() THEN\r\t\t\tc.GetSelection(beg, end);\r\t\t\t"
+                            attr: 0
+                          - text: "(* upper case text will be copied into this buffer *)"
+                            attr: 2
+                          - text: "\r\t\t\tbuf := TextModels.CloneOf(c.text); w := buf.NewWriter(NIL);\r\t\t\tr := c.text.NewReader(NIL); r.SetPos(beg);\r\t\t\tr.ReadChar(ch);\r\t\t\tWHILE (r.Pos() <= end) & ~r.eot DO\r\t\t\t\tIF (ch >= \"a\") & (ch <= \"z\") THEN ch := CAP(ch) END;\r\t\t\t\tw.WriteChar(ch);\r\t\t\t\tr.ReadChar(ch)\r\t\t\tEND;\r\t\t\tModels.BeginScript(c.text, \"Caps\", script);\r\t\t\tc.text.Delete(beg, end); c.text.Insert(beg, buf, 0, end - beg);\r\t\t\tModels.EndScript(c.text, script)\r\t\tEND\r\tEND Do;\r\rEND ObxCaps.\r"
+                            attr: 0
+                    attr: 1
+                    w: 5804100
+                    h: 4394200
+                  - text: "\r\rAs an example, select the test string several lines below, and then click on the following commander:\r\r"
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 12
+                      bodyPos: 2178
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: " ObxCaps.Do\r\rteSTstring834 .-st\r\rYou'll note that the selection has turned into all caps.\r\rBut now comes the surprise: execute "
+                    attr: 1
+                  - text: Undo Caps
+                    attr: 2
+                  - text: " in the "
+                    attr: 1
+                  - text: Edit
+                    attr: 2
+                  - text: " menu. As a result, the effect of the uppercase operation is undone! In the BlackBox Component Builder, most operations are undoable; this also holds for the "
+                    attr: 1
+                  - text: Delete
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: Insert
+                    attr: 2
+                  - text: " text procedures in the above example. Thus, you need to do nothing special in order to render such a command undoable!\r\rHowever, you may have noticed that there "
+                    attr: 1
+                  - text: is
+                    attr: 2
+                  - text: " something special in the sample program: there is a "
+                    attr: 1
+                  - text: BeginScript
+                    attr: 2
+                  - text: " / "
+                    attr: 1
+                  - text: EndScript
+                    attr: 2
+                  - text: " pair of procedure calls before resp. after the calls to "
+                    attr: 1
+                  - text: Delete
+                    attr: 2
+                  - text: " / "
+                    attr: 1
+                  - text: Insert
+                    attr: 2
+                  - text: ". They bundle the sequence of a "
+                    attr: 1
+                  - text: Delete
+                    attr: 2
+                  - text: " followed by a "
+                    attr: 1
+                  - text: Insert
+                    attr: 2
+                  - text: " into one single "
+                    attr: 1
+                  - text: compound command
+                    attr: 2
+                  - text: ", meaning that the user need not undo both of these operations individually, but rather in one single step.\r\rIn this example we have seen how an existing displayed text and its selection are accessed, how a buffer text is created, and how the selected text stretch is replaced by the buffer's contents.\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 18
+          bodyPos: 4322
+          bodyLen: 8

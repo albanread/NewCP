@@ -1,0 +1,220 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Sql\\Mod\\ObxTab.odc"
+  size: 4925
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 4794
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 4608
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 4522
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 4643
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 4129
+                runListLen: 1705
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE SqlObxTab;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- 20070414, mf, references to dtF driver eliminated\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT Dialog, Ports, Views, TextModels, TextViews, TextRulers, TextMappers, SqlDB;\r\t\t\r\t\r\tCONST\r\t\tprotocol = \"SqlOdbc3\";\r\t\tid = \"\"; password = \"\";\r\t\tdatasource = \"Test Database\";\r\t\t\r\t\tcolWidth = 30 * Ports.mm;\r\t\tminCol = 4;\r\t\t\r\t\t\r\tVAR\r\t\tname*: ARRAY 64 OF CHAR;\r\t\t\r\r\tPROCEDURE NewRuler (tabs: INTEGER): TextRulers.Ruler;\r\t\tVAR p: TextRulers.Prop; i, w: INTEGER;\r\tBEGIN\r\t\tNEW(p);\r\t\tIF tabs > LEN(p.tabs.tab) THEN tabs := LEN(p.tabs.tab)\r\t\tELSIF tabs < minCol THEN tabs := minCol\r\t\tEND;\r\t\tp.valid := {TextRulers.right, TextRulers.tabs, TextRulers.opts};\r\t\tp.opts.val := {TextRulers.rightFixed}; p.opts.mask := p.opts.val;\r\t\tp.tabs.len := tabs - 1; i := 0; w := 0;\r\t\tWHILE i < tabs - 1 DO\r\t\t\tINC(w, colWidth); p.tabs.tab[i].stop := w; INC(i)\r\t\tEND;\r\t\tINC(w, colWidth); p.right := w;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TextRulers.dir.NewFromProp(p)\r\tEND NewRuler;\r\r\tPROCEDURE OpenViewer (t: TextModels.Model; title: Views.Title; ruler:TextRulers.Ruler);\r\t\tVAR v: TextViews.View;\r\tBEGIN\r\t\tDialog.MapString(title, title);\r\t\tv := TextViews.dir.New(t);\r\t\tIF ruler # NIL THEN v.SetDefaults(ruler, TextViews.dir.defAttr) END;\r\t\tViews.OpenAux(v, title)\r\tEND OpenViewer;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: ShowTables
+                    attr: 3
+                  - text: "*;\r\t\tVAR db: SqlDB.Database; t, tabs: SqlDB.Table; res, row, col, n, max: INTEGER;\r\t\t\ttext: TextModels.Model; out: TextMappers.Formatter; data: SqlDB.Row;\r\tBEGIN\r\t\ttext := TextModels.dir.New(); out.ConnectTo(text);\r\t\tSqlDB.OpenDatabase(protocol, id, password, datasource, SqlDB.async, SqlDB.showErrors, db, res);\r\t\ttabs := db.NewTable();\r\t\ttabs.Exec(\"Show Tables\");\r\t\tn := 0; max := 0;\r\t\tWHILE n < tabs.rows DO\r\t\t\ttabs.Read(n, data);\r\t\t\tname := data.fields[1]^$;\r\t\t\tout.WriteLn;\r\t\t\tout.WriteString(\"Table \"); out.WriteString(name); out.WriteLn;\r\t\t\tout.WriteLn;\r\t\t\tt := db.NewTable();\r\t\t\tt.Exec(\"select * from :!SqlObxTab.name\");\r\t\t\trow := SqlDB.names;\r\t\t\tWHILE row < t.rows DO\r\t\t\t\tt.Read(row, data); col := 0;\r\t\t\t\tWHILE col < t.columns DO\r\t\t\t\t\tout.WriteString(data.fields[col]^); out.WriteTab;\r\t\t\t\t\tINC(col)\r\t\t\t\tEND;\r\t\t\t\tout.WriteLn; INC(row)\r\t\t\tEND;\r\t\t\tIF t.columns > max THEN max := t.columns END;\r\t\t\tt.Clear; INC(n)\r\t\tEND;\r\t\tOpenViewer(text, \"Tables\", NewRuler(max))\r\tEND ShowTables;\r\t\rEND SqlObxTab.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 4890
+          bodyLen: 8

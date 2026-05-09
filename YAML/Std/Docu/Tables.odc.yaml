@@ -1,0 +1,453 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Std\\Docu\\Tables.odc"
+  size: 10155
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 10024
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 9838
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 9752
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 114300
+                dsc: 28575
+                grid: 177800
+                opts: 0x00000003
+              defaultAttr:
+                font: "*"
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 12
+                bodyPos: 9877
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 9363
+                runListLen: 1514
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 139700
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [5]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                flow:
+                  - text: StdTables
+                    attr: 0
+                  - text: "\r\r"
+                    attr: 1
+                  - text: "DEFINITION StdTables;\r\r\tIMPORT\r\t\tPorts, Dialog, Views, Properties, Controls;\r\r\tCONST\r\t\tline = 0DX;\r\t\tdeselect = -1; select = -2; changed = -3;\r\t\tlayoutEditable = 0; dataEditable = 1; selectionStyle = 2;\r\t\tnoSelect = 0; cellSelect = 1; rowSelect = 2; colSelect = 3; crossSelect = 4;\r\r\tTYPE\r\t\tTable = RECORD\r\t\t\trows-, cols-: INTEGER;\r\t\t\t(VAR tab: Table) SetSize (rows, cols: INTEGER), NEW;\r\t\t\t(VAR tab: Table) SetItem (row, col: INTEGER; item: Dialog.String), NEW;\r\t\t\t(VAR tab: Table) GetItem (row, col: INTEGER; OUT item: Dialog.String), NEW;\r\t\t\t(VAR tab: Table) SetLabel (col: INTEGER; label: Dialog.String), NEW;\r\t\t\t(VAR tab: Table) GetLabel (col: INTEGER; OUT label: Dialog.String), NEW;\r\t\t\t(VAR tab: Table) HasSelection (): BOOLEAN, NEW;\r\t\t\t(VAR tab: Table) GetSelection (OUT row, col: INTEGER), NEW;\r\t\t\t(VAR tab: Table) Select (row, col: INTEGER), NEW;\r\t\t\t(VAR tab: Table) Deselect, NEW;\r\t\t\t(VAR tab: Table) SetAttr (l, t, r, b: INTEGER; style: SET; weight: INTEGER; color: Ports.Color), NEW;\r\t\t\t(VAR tab: Table) GetAttr (row, col: INTEGER; \r\t\t\t\t\t\t\t\t\t\tOUT style: SET; OUT weight: INTEGER; OUT color: Ports.Color), NEW\r\t\tEND;\r\r\t\tProp = POINTER TO RECORD (Properties.Property)\r\t\t\tlayoutEditable, dataEditable: BOOLEAN;\r\t\t\tselectionStyle: INTEGER;\r\t\t\t(p: Prop) IntersectWith (q: Properties.Property; OUT equal: BOOLEAN)\r\t\tEND;\r\r\t\tDirectory = POINTER TO ABSTRACT RECORD\r\t\t\t(d: Directory) NewControl (p: Controls.Prop): Views.View, ABSTRACT, NEW\r\t\tEND;\r\r\r\tVAR\r\t\tdir-, stdDir-: Directory;\r\t\ttext: Dialog.String;\r\t\tdlg: RECORD\r\t\t\tlayoutEditable, dataEditable: BOOLEAN;\r\t\t\tselectionStyle: Dialog.List\r\t\tEND;\r\r\tPROCEDURE InitDialog;\r\tPROCEDURE Set;\r\tPROCEDURE Guard (idx: INTEGER; VAR par: Dialog.Par);\r\tPROCEDURE Notifier (idx, op, from, to: INTEGER);\r\tPROCEDURE SetDir (d: Directory);\r\tPROCEDURE DepositControl;\r\rEND StdTables.\r\rModule "
+                    attr: 2
+                  - text: StdTables
+                    attr: 3
+                  - text: " implements a simple tabular control (\"grid view\"). To allow clients to create new table controls, a directory object is exported ("
+                    attr: 2
+                  - text: StdTables.dir
+                    attr: 3
+                  - text: "). As interactor, type "
+                    attr: 2
+                  - text: StdTables.Table
+                    attr: 3
+                  - text: " is provided.\r\rTypical menu command:\r\t\"Insert Table\"\t\"\"\t\"StdTables.DepositControl; StdCmds.PasteView\"\t\"StdCmds.PasteViewGuard\"\r\t\rThe property editor for the StdTables is the same as for normal controls. The fields, Link, Label, Guard and Notifier works in the same way as for other controls. In addition to the property editor, a special dialog for tables is offered, where one can choose the visual feedback of the selection in a table. Furthermore one can specify, whether the layout should be editable (column width), and whether the data in the cells should be editable.\r"
+                    attr: 2
+                  - ruler:
+                      left: 0
+                      right: 0
+                      lead: 11500
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 864000 }
+                      attr: 2
+                      w: 360000000
+                      h: 444500
+                  - text: "\rCONST "
+                    attr: 2
+                  - text: line
+                    attr: 4
+                  - text: "\rNew line character for multiple line labels.\r\rCONST "
+                    attr: 2
+                  - text: deselect
+                    attr: 4
+                  - text: "\rNotifier op-code. Indicates that the cell at position row = "
+                    attr: 2
+                  - text: from
+                    attr: 3
+                  - text: " and column = "
+                    attr: 2
+                  - text: to
+                    attr: 3
+                  - text: " has been deselected.\r\rCONST "
+                    attr: 2
+                  - text: select
+                    attr: 4
+                  - text: "\rNotifier op-code. Indicates that the user has selected a cell at position row = "
+                    attr: 2
+                  - text: from
+                    attr: 3
+                  - text: " and column = "
+                    attr: 2
+                  - text: to.
+                    attr: 3
+                  - text: "\r\rCONST "
+                    attr: 2
+                  - text: changed
+                    attr: 4
+                  - text: "\rNotifier op-code. Indicates that the user has changed the contents of a cell in the table at position row = "
+                    attr: 2
+                  - text: from
+                    attr: 3
+                  - text: " and column = "
+                    attr: 2
+                  - text: "to.\r"
+                    attr: 3
+                  - text: "\rCONST "
+                    attr: 2
+                  - text: layoutEditable
+                    attr: 4
+                  - text: "\rElement of a control property's valid set. Determines, whether the layout editable property is valid.\r\rCONST "
+                    attr: 2
+                  - text: dataEditable
+                    attr: 4
+                  - text: "\rElement of a control property's valid set. Determines, whether the data editable property is valid.\r\rCONST "
+                    attr: 2
+                  - text: selectionStyle
+                    attr: 4
+                  - text: "\rElement of a control property's valid set. Determines, whether the selection style property is valid.\r\r\rCONST "
+                    attr: 2
+                  - text: "noSelect, cellSelect, rowSelect, colSelect, crossSelect"
+                    attr: 4
+                  - text: "\rSelection style property constants.\r\r\rTYPE "
+                    attr: 2
+                  - text: Table
+                    attr: 4
+                  - text: "\rInteractor for table controls.\r\r"
+                    attr: 2
+                  - text: rows
+                    attr: 4
+                  - text: "-, "
+                    attr: 2
+                  - text: cols
+                    attr: 4
+                  - text: "-: INTEGER\t\t(rows >= 0) & (cols >= 0)\rNumber of rows and columns of the table.\r\rPROCEDURE (VAR tab: Table) "
+                    attr: 2
+                  - text: SetSize
+                    attr: 4
+                  - text: " (rows, cols: INTEGER), NEW\rSet size of the table.\r\rPre\r20\t(rows >= 0) & (cols >= 0)\r21\t((cols > 0) OR ((cols = 0) & (rows = 0))\r\rPROCEDURE (VAR tab: Table) "
+                    attr: 2
+                  - text: SetItem
+                    attr: 4
+                  - text: " (row, col: INTEGER; item: Dialog.String), NEW\rSet contents of cell in row "
+                    attr: 2
+                  - text: row
+                    attr: 3
+                  - text: " and column "
+                    attr: 2
+                  - text: col
+                    attr: 3
+                  - text: " to "
+                    attr: 2
+                  - text: item
+                    attr: 3
+                  - text: ".\r\rPre\r20\tSetSize must have been called before\r\rPROCEDURE (VAR tab: Table) "
+                    attr: 2
+                  - text: GetItem
+                    attr: 4
+                  - text: " (row, col: INTEGER; OUT item: Dialog.String), NEW\rGet contents of cell in row "
+                    attr: 2
+                  - text: row
+                    attr: 3
+                  - text: " and column "
+                    attr: 2
+                  - text: col
+                    attr: 3
+                  - text: ".\r\rPre\r20\tSetSize must have been called before\r\rPROCEDURE (VAR tab: Table) "
+                    attr: 2
+                  - text: SetLabel
+                    attr: 4
+                  - text: " (col: INTEGER; label: Dialog.String), NEW\rSet contents of label of column "
+                    attr: 2
+                  - text: col
+                    attr: 3
+                  - text: ". For each occurence of the character "
+                    attr: 2
+                  - text: StdTables.line
+                    attr: 3
+                  - text: " in "
+                    attr: 2
+                  - text: label
+                    attr: 3
+                  - text: " a new line is created.\r\rPre\r20\tSetSize must have been called before\r\rPROCEDURE (VAR tab: Table) "
+                    attr: 2
+                  - text: GetLabel
+                    attr: 4
+                  - text: " (col: INTEGER; OUT label: Dialog.String), NEW\rGet contents of label of column "
+                    attr: 2
+                  - text: col
+                    attr: 3
+                  - text: ".\r\rPre\r20\tSetSize must have been called before\r\rPROCEDURE (VAR tab: Table) "
+                    attr: 2
+                  - text: HasSelection
+                    attr: 4
+                  - text: " (): BOOLEAN, NEW\rReturns, whether a cell in the table is currently selected.\r\rPROCEDURE (VAR tab: Table) "
+                    attr: 2
+                  - text: GetSelection
+                    attr: 4
+                  - text: " (OUT row, col: INTEGER), NEW\rGet coordinates (row and column) of the selected table cell. \r\rPre\r20\tSetSize must have been called before\r21\ttab.HasSelection()\r\rPROCEDURE (VAR tab: Table) "
+                    attr: 2
+                  - text: Select
+                    attr: 4
+                  - text: " (row, col: INTEGER), NEW\rSet selection in table to row "
+                    attr: 2
+                  - text: row
+                    attr: 3
+                  - text: " and column "
+                    attr: 2
+                  - text: col
+                    attr: 3
+                  - text: ".\r\rPre\r20\tSetSize must have been called before\r\rPost\rtab.HasSelection() = TRUE\r\rPROCEDURE (VAR tab: Table) "
+                    attr: 2
+                  - text: Deselect
+                    attr: 4
+                  - text: ", NEW\rRemove current selection in table, if any. \r\rPre\r20\tSetSize must have been called before\r\rPost\rtab.HasSelection() = FALSE\r\rPROCEDURE (VAR tab: Table) "
+                    attr: 2
+                  - text: SetAttr
+                    attr: 4
+                  - text: " (l, t, r, b: INTEGER; style: SET; weight: INTEGER; color: Ports.Color), NEW\rSets the the attributes for a range of cells. "
+                    attr: 2
+                  - text: style
+                    attr: 3
+                  - text: " and "
+                    attr: 2
+                  - text: weight
+                    attr: 3
+                  - text: " affects the font for the cell and "
+                    attr: 2
+                  - text: color
+                    attr: 3
+                  - text: " is the color of the text in the cell. (For explanations of the parameters "
+                    attr: 2
+                  - text: style
+                    attr: 3
+                  - text: " and "
+                    attr: 2
+                  - text: weight
+                    attr: 3
+                  - text: ", see "
+                    attr: 2
+                  - link:
+                      target: "StdCmds.OpenBrowser('System/Docu/Fonts', 'Fonts')"
+                      body:
+                        - text: Fonts.Font
+                          attr: 5
+                      attr: 2
+                      w: 131250
+                      h: 142875
+                  - text: ".) The range is indicated by "
+                    attr: 2
+                  - text: l
+                    attr: 3
+                  - text: " and "
+                    attr: 2
+                  - text: t
+                    attr: 3
+                  - text: " being the column and row for the top left cell in the range, and "
+                    attr: 2
+                  - text: r
+                    attr: 3
+                  - text: " and "
+                    attr: 2
+                  - text: b
+                    attr: 3
+                  - text: " being the column and row of the bottom right cell in the range.\r\r\rPROCEDURE (VAR tab: Table) "
+                    attr: 2
+                  - text: GetAttr
+                    attr: 4
+                  - text: " (row, col: INTEGER; OUT style: SET; OUT weight: INTEGER; OUT color: Ports.Color), NEW\rRetrieves the current attribute values for the cell at position "
+                    attr: 2
+                  - text: "row, col"
+                    attr: 3
+                  - text: " in the table.\r\rPre\r20\tSetSize must have been called before\r\r\rTYPE "
+                    attr: 2
+                  - text: Prop
+                    attr: 4
+                  - text: "\rTable specific properties.\r\r"
+                    attr: 2
+                  - text: layoutEditable
+                    attr: 4
+                  - text: ", "
+                    attr: 2
+                  - text: dataEditable
+                    attr: 4
+                  - text: ": BOOLEAN\rColumn width is editable by the user; data in table cells is editable by the user.\r\r"
+                    attr: 2
+                  - text: selectionStyle
+                    attr: 4
+                  - text: ": INTEGER\rVisual feedback of selections:\rnoSelect: \tno visual feedback\rcellSelect: \tselected cell is high-lighted\rrowSelect: \tall cells in selected row are high-lighted\rcolSelect: \tall cells in selected column are high-lighted\rcrossSelect:\tall cells in selected row and column are high-lighted\r\rPROCEDURE (p: Prop) "
+                    attr: 2
+                  - text: IntersectWith
+                    attr: 4
+                  - text: " (q: Properties.Property; OUT equal: BOOLEAN)\rIntersect table properties "
+                    attr: 2
+                  - text: p
+                    attr: 3
+                  - text: " with another property record "
+                    attr: 2
+                  - text: q
+                    attr: 3
+                  - text: ". Iff both are equal, "
+                    attr: 2
+                  - text: equal
+                    attr: 3
+                  - text: " is set to TRUE.\r\r\rTYPE "
+                    attr: 2
+                  - text: Directory
+                    attr: 4
+                  - text: "\rNew controls can be created using the directory object "
+                    attr: 2
+                  - text: StdTables.dir
+                    attr: 3
+                  - text: ".\r\rPROCEDURE (d: Directory) "
+                    attr: 2
+                  - text: NewControl
+                    attr: 4
+                  - text: " (p: Controls.Prop): Views.View, ABSTRACT, NEW\rCreate a new table control using properties "
+                    attr: 2
+                  - text: p
+                    attr: 3
+                  - text: ".\r\r\rVAR "
+                    attr: 2
+                  - text: dir
+                    attr: 4
+                  - text: "-, "
+                    attr: 2
+                  - text: stdDir
+                    attr: 4
+                  - text: "-: Directory\t\tdir # NIL, stdDir # NIL, stable stdDir = d\rDirectory and standard directory objects for table controls.\r\rVAR "
+                    attr: 2
+                  - text: text
+                    attr: 4
+                  - text: ": Dialog.String\t\tvalid only during the editing of a cell\rContents of the cell currently being edited.\r\rVAR "
+                    attr: 2
+                  - text: dlg
+                    attr: 4
+                  - text: ": RECORD\rInteractor for table property dialog.\r\rPROCEDURE "
+                    attr: 2
+                  - text: InitDialog
+                    attr: 4
+                  - text: "\rInit table property dialog.\r\rPROCEDURE "
+                    attr: 2
+                  - text: Set
+                    attr: 4
+                  - text: "\rSet properties as selected in table property dialog.\r\rPROCEDURE "
+                    attr: 2
+                  - text: Guard
+                    attr: 4
+                  - text: " (idx: INTEGER; VAR par: Dialog.Par)\rGuard for table property dialog. \r\rCASE idx OF \r0: Layout Editable checkbox\r1: Data Editable checkbox\r2: Selection Style listbox\rEND\r\rPROCEDURE "
+                    attr: 2
+                  - text: Notifier
+                    attr: 4
+                  - text: " (idx, op, from, to: INTEGER)\rNotifier for table property dialog. \r\rCASE idx OF \r0: Layout Editable checkbox\r1: Data Editable checkbox\r2: Selection Style listbox\rEND\r\rPROCEDURE "
+                    attr: 2
+                  - text: SetDir
+                    attr: 4
+                  - text: " (d: Directory)\rSet directory object.\r\rPre\rd # NIL\t20\r\rPost\rstdDir' = NIL\r\tstdDir = d\rdir = d\r\rPROCEDURE "
+                    attr: 2
+                  - text: DepositControl
+                    attr: 4
+                  - text: "\rDeposit command for table controls.\r"
+                    attr: 2
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 16
+          bodyPos: 10120
+          bodyLen: 8

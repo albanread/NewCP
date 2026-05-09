@@ -1,0 +1,265 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Docu\\Open0.odc"
+  size: 4081
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 3950
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 3764
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 3678
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 152400
+                dsc: 25400
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 16
+                bodyPos: 3799
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 3401
+                runListLen: 2022
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                flow:
+                  - text: "Overview by Example: ObxOpen0"
+                    attr: 0
+                  - text: "\r\rThis example asks the user for a file, opens the document contained in the file, and appends a string to the text contained in the document. Finally, the text (in its text view) is opened in a window.\r\r\t"
+                    attr: 1
+                  - view:
+                      kind: TextViews.StdView
+                      storeKind: store
+                      typeChain:
+                        - TextViews.StdViewDesc
+                        - TextViews.ViewDesc
+                        - Containers.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 562
+                      bodyLen: 1671
+                      hideMarks: true
+                      defaultRuler:
+                        left: 0
+                        right: 5940000
+                        asc: 127000
+                        dsc: 25400
+                        grid: 1
+                        opts: 0x00000001
+                      defaultAttr:
+                        font: Arial
+                        size: 114300
+                        color: 0x00000000
+                        weight: 400
+                        style: 0x00000000
+                      controller:
+                        kind: TextControllers.StdCtrl
+                        storeKind: store
+                        typeChain:
+                          - TextControllers.StdCtrlDesc
+                          - TextControllers.ControllerDesc
+                          - Containers.ControllerDesc
+                          - Controllers.ControllerDesc
+                          - Stores.StoreDesc
+                        id: 10
+                        bodyPos: 2050
+                        bodyLen: 9
+                      content:
+                        kind: TextModels.StdModel
+                        storeKind: elem
+                        typeChain:
+                          - TextModels.StdModelDesc
+                          - TextModels.ModelDesc
+                          - Containers.ModelDesc
+                          - Models.ModelDesc
+                          - Stores.StoreDesc
+                        id: 2
+                        bodyPos: 587
+                        bodyLen: 1325
+                        runListLen: 519
+                        attrPool:
+                          - # [0]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 400
+                            style: 0x00000000
+                          - # [1]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 700
+                            style: 0x00000000
+                          - # [2]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 400
+                            style: 0x00000001
+                        flow:
+                          - ruler:
+                              left: 0
+                              right: 5040000
+                              asc: 127000
+                              dsc: 25400
+                              grid: 1
+                              opts: 0x00000001
+                              tabs:
+                                - { stop: 108000 }
+                                - { stop: 216000 }
+                                - { stop: 324000 }
+                                - { stop: 432000 }
+                                - { stop: 540000 }
+                                - { stop: 648000 }
+                                - { stop: 1008000 }
+                                - { stop: 2376000 }
+                              attr: 0
+                              w: 360000000
+                              h: 444500
+                          - text: "MODULE ObxOpen0;\r\r\tIMPORT Files, Converters, Views, TextModels, TextMappers, TextViews;\r\r\tPROCEDURE "
+                            attr: 0
+                          - text: Do
+                            attr: 1
+                          - text: "*;\r\t\tVAR loc: Files.Locator; name: Files.Name; conv: Converters.Converter;\r\t\t\tv: Views.View; t: TextModels.Model; f: TextMappers.Formatter;\r\tBEGIN\r\t\tloc := NIL; name := \"\"; conv := NIL;\t"
+                            attr: 0
+                          - text: "(* no defaults for Views.Old *)"
+                            attr: 2
+                          - text: "\r\t\tv := Views.Old(Views.ask, loc, name, conv);\t"
+                            attr: 0
+                          - text: "(* ask user for a file and open it as a view *)"
+                            attr: 2
+                          - text: "\r\t\tIF (v # NIL) & (v IS TextViews.View) THEN\t"
+                            attr: 0
+                          - text: "\t(* make sure it is a text view *)"
+                            attr: 2
+                          - text: "\r\t\t\tt := v(TextViews.View).ThisModel();\t"
+                            attr: 0
+                          - text: "(* get the text view's model  *)"
+                            attr: 2
+                          - text: "\r\t\t\tf.ConnectTo(t);\r\t\t\tf.SetPos(t.Length());\t"
+                            attr: 0
+                          - text: "(* set the formatter to the end of the text *)"
+                            attr: 2
+                          - text: "\r\t\t\tf.WriteString(\"appendix\");\t"
+                            attr: 0
+                          - text: "(* append a string *)"
+                            attr: 2
+                          - text: "\r\t\t\tViews.OpenView(v)\t"
+                            attr: 0
+                          - text: "(* open the text view in a window *)"
+                            attr: 2
+                          - text: "\r\t\tEND\r\tEND Do;\r\rEND ObxOpen0."
+                            attr: 0
+                    attr: 1
+                    w: 5850600
+                    h: 3213100
+                  - text: "\r\rAfter compilation, you can try out the above example:\r\r "
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 14
+                      bodyPos: 2324
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: " ObxOpen0.Do\r\rWith this example, we have seen how the contents of a document's root view can be accessed, and how this view can be opened in a window after its contents have been modified. In contrast to "
+                    attr: 1
+                  - text: ObxHello1
+                    attr: 2
+                  - text: ", an existing text has been modified; by first setting the formatter to its end, and then appending some new text.\r\rNote that similar to the previous examples, views play a central role.\r\rIn contrast to traditional development systems and frameworks, files, windows, and applications play only a minor role in the BlackBox Component Framework, or have completely disappeared as abstractions of their own. On the other hand, the "
+                    attr: 1
+                  - text: view
+                    attr: 2
+                  - text: " has become a pivotal abstraction. It is an essential property of views that they may be nested, to form hierarchical documents.\r\rThese aspects of the BlackBox Component Framework constitute a fundamental shift\r  from monolithic applications to software components\r  from interoperable programs to integrated components\r  from automation islands to open environments\r  from application-centered design to document-centered design\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 20
+          bodyPos: 4046
+          bodyLen: 8

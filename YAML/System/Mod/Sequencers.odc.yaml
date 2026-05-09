@@ -1,0 +1,351 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\System\\Mod\\Sequencers.odc"
+  size: 5449
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 5318
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 5132
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 5046
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                dsc: 25400
+                grid: 1
+                opts: 0x00000021
+              defaultAttr:
+                font: Geneva
+                size: 114300
+                color: 0x00000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 5166
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 4652
+                runListLen: 2003
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE Sequencers;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT Stores;\r\r\tCONST\r\t\t"
+                    attr: 0
+                  - text: clean
+                    attr: 3
+                  - text: "* = 0; "
+                    attr: 0
+                  - text: "\r\t\tnotUndoable"
+                    attr: 3
+                  - text: "* = 1; "
+                    attr: 0
+                  - text: "\r\t\tinvisible"
+                    attr: 3
+                  - text: "* = 2;\r\r\tTYPE\r\t\t"
+                    attr: 0
+                  - text: Message
+                    attr: 3
+                  - text: "* = ABSTRACT RECORD END;\r\t\t\r\t\t"
+                    attr: 0
+                  - text: Notifier
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD\r\t\t\tnext: Notifier\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: Sequencer
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD\r\t\t\tnotifiers: Notifier\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: CloseMsg
+                    attr: 3
+                  - text: "* = RECORD (Message)\r\t\t\tsticky*: BOOLEAN\t"
+                    attr: 0
+                  - text: "(** OUT, preset to FALSE **)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: RemoveMsg
+                    attr: 3
+                  - text: "* = RECORD (Message) END;\r\r\t\tDirectory* = POINTER TO ABSTRACT RECORD END;\r\r\tVAR "
+                    attr: 0
+                  - text: dir
+                    attr: 3
+                  - text: "*: Directory;\r\r"
+                    attr: 0
+                  - text: "\t(** Directory **)\r"
+                    attr: 1
+                  - text: "\tPROCEDURE (dir: Directory) "
+                    attr: 0
+                  - text: New
+                    attr: 3
+                  - text: "* (): Sequencer, NEW, ABSTRACT;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetDir
+                    attr: 3
+                  - text: "* (d: Directory);\r\tBEGIN\r\t\tASSERT(d # NIL, 20); dir := d\r\tEND SetDir;\r\r\r\t"
+                    attr: 0
+                  - text: "(** Notifier **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (f: Notifier) "
+                    attr: 0
+                  - text: Notify
+                    attr: 3
+                  - text: "* (VAR msg: Message), NEW, EMPTY;\r\r\r\t"
+                    attr: 0
+                  - text: "(** Sequencer **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (s: Sequencer) "
+                    attr: 0
+                  - text: Dirty
+                    attr: 3
+                  - text: "* (): BOOLEAN, NEW, ABSTRACT;\r\tPROCEDURE (s: Sequencer) "
+                    attr: 0
+                  - text: SetDirty
+                    attr: 3
+                  - text: "* (dirty: BOOLEAN), NEW, ABSTRACT;\r\tPROCEDURE (s: Sequencer) "
+                    attr: 0
+                  - text: BeginScript
+                    attr: 3
+                  - text: "* (IN name: Stores.OpName;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR script: Stores.Operation), NEW, ABSTRACT;\r\tPROCEDURE (s: Sequencer) "
+                    attr: 0
+                  - text: Do
+                    attr: 3
+                  - text: "* (st: Stores.Store; IN name: Stores.OpName;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\top: Stores.Operation), NEW, ABSTRACT;\r\tPROCEDURE (s: Sequencer) "
+                    attr: 0
+                  - text: LastOp
+                    attr: 3
+                  - text: "* (st: Stores.Store): Stores.Operation, NEW, ABSTRACT;\r\tPROCEDURE (s: Sequencer) "
+                    attr: 0
+                  - text: Bunch
+                    attr: 3
+                  - text: "* (st: Stores.Store), NEW, ABSTRACT;\r\tPROCEDURE (s: Sequencer) "
+                    attr: 0
+                  - text: EndScript
+                    attr: 3
+                  - text: "* (script: Stores.Operation), NEW, ABSTRACT;\r\tPROCEDURE (s: Sequencer) "
+                    attr: 0
+                  - text: StopBunching
+                    attr: 3
+                  - text: "* (), NEW, ABSTRACT;\r\tPROCEDURE (s: Sequencer) "
+                    attr: 0
+                  - text: BeginModification
+                    attr: 3
+                  - text: "* (type: INTEGER; st: Stores.Store), NEW, ABSTRACT;\r\tPROCEDURE (s: Sequencer) "
+                    attr: 0
+                  - text: EndModification
+                    attr: 3
+                  - text: "* (type: INTEGER; st: Stores.Store), NEW, ABSTRACT;\r\tPROCEDURE (s: Sequencer) "
+                    attr: 0
+                  - text: CanUndo
+                    attr: 3
+                  - text: "* (): BOOLEAN, NEW, ABSTRACT;\r\tPROCEDURE (s: Sequencer) "
+                    attr: 0
+                  - text: CanRedo
+                    attr: 3
+                  - text: "* (): BOOLEAN, NEW, ABSTRACT;\r\tPROCEDURE (s: Sequencer) "
+                    attr: 0
+                  - text: GetUndoName
+                    attr: 3
+                  - text: "* (VAR name: Stores.OpName), NEW, ABSTRACT;\r\tPROCEDURE (s: Sequencer) "
+                    attr: 0
+                  - text: GetRedoName
+                    attr: 3
+                  - text: "* (VAR name: Stores.OpName), NEW, ABSTRACT;\r\tPROCEDURE (s: Sequencer) "
+                    attr: 0
+                  - text: Undo
+                    attr: 3
+                  - text: "* (), NEW, ABSTRACT;\r\tPROCEDURE (s: Sequencer) "
+                    attr: 0
+                  - text: Redo
+                    attr: 3
+                  - text: "* (), NEW, ABSTRACT;\r\r\tPROCEDURE (s: Sequencer) "
+                    attr: 0
+                  - text: Handle
+                    attr: 3
+                  - text: "* (VAR msg: ANYREC), NEW, EMPTY;\r\r\tPROCEDURE (s: Sequencer) "
+                    attr: 0
+                  - text: "Notify*"
+                    attr: 3
+                  - text: " (VAR msg: Message), NEW;\r\t\tVAR n: Notifier;\r\tBEGIN\r\t\tn := s.notifiers;\r\t\tWHILE n # NIL DO\r\t\t\tn.Notify(msg);\r\t\t\tn := n.next\r\t\tEND\r\tEND Notify;\r\r\tPROCEDURE (s: Sequencer) "
+                    attr: 0
+                  - text: "InstallNotifier*"
+                    attr: 3
+                  - text: " (n: Notifier), NEW;\r\tBEGIN\r\t\tn.next := s.notifiers; s.notifiers := n\r\tEND InstallNotifier;\r\rEND Sequencers.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 5414
+          bodyLen: 8

@@ -1,0 +1,659 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\System\\Docu\\Math.odc"
+  size: 10947
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 10816
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 10630
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 10544
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 6012000
+                asc: 121900
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000003
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 7
+                bodyPos: 10544
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 10030
+                runListLen: 1633
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                    offset: 63500
+                flow:
+                  - text: Math
+                    attr: 0
+                  - text: "\r\rDEFINITION Math;\r\r\tPROCEDURE Pi (): REAL;\r\tPROCEDURE Eps (): REAL;\r\r\tPROCEDURE Sqrt (x: REAL): REAL;\r\tPROCEDURE Exp (x: REAL): REAL;\r\tPROCEDURE Ln (x: REAL): REAL;\r\tPROCEDURE Log (x: REAL): REAL;\r\tPROCEDURE Power (x, y: REAL): REAL;\r\tPROCEDURE IntPower (x: REAL; n: INTEGER): REAL;\r\r\tPROCEDURE Sin (x: REAL): REAL;\r\tPROCEDURE Cos (x: REAL): REAL;\r\tPROCEDURE Tan (x: REAL): REAL;\r\tPROCEDURE ArcSin (x: REAL): REAL;\r\tPROCEDURE ArcCos (x: REAL): REAL;\r\tPROCEDURE ArcTan (x: REAL): REAL;\r\tPROCEDURE ArcTan2 (y, x: REAL): REAL;\r\r\tPROCEDURE Sinh (x: REAL): REAL;\r\tPROCEDURE Cosh (x: REAL): REAL;\r\tPROCEDURE Tanh (x: REAL): REAL;\r\tPROCEDURE ArcSinh (x: REAL): REAL;\r\tPROCEDURE ArcCosh (x: REAL): REAL;\r\tPROCEDURE ArcTanh (x: REAL): REAL;\r\r\tPROCEDURE Sign (x: REAL): REAL;\r\tPROCEDURE Floor (x: REAL): REAL;\r\tPROCEDURE Ceiling (x: REAL): REAL;\r\tPROCEDURE Trunc (x: REAL): REAL;\r\tPROCEDURE Frac (x: REAL): REAL;\r\tPROCEDURE Round (x: REAL): REAL;\r\r\tPROCEDURE Mantissa (x: REAL): REAL;\r\tPROCEDURE Exponent (x: REAL): INTEGER;\r\tPROCEDURE Real (m: REAL; e: INTEGER): REAL;\r\t\t\rEND Math.\r\r\rModule "
+                    attr: 1
+                  - text: Math
+                    attr: 2
+                  - text: " is a basic library for numerical computations. It offers the most frequently used functions and constants. For some additional functions, a transformation in terms of functions available in module "
+                    attr: 1
+                  - text: Math
+                    attr: 2
+                  - text: " is given below.\r\r\r"
+                    attr: 1
+                  - text: "Constants\r"
+                    attr: 3
+                  - text: "\rPROCEDURE "
+                    attr: 1
+                  - text: Pi
+                    attr: 3
+                  - text: " (): REAL\rReturns an approximation of the value of "
+                    attr: 1
+                  - text: pi
+                    attr: 2
+                  - text: ".\r\rPost\rresult = 3.141592...\r\rPROCEDURE "
+                    attr: 1
+                  - text: Eps
+                    attr: 3
+                  - text: " (): REAL\rReturns the "
+                    attr: 1
+                  - text: machine epsilon
+                    attr: 2
+                  - text: " for "
+                    attr: 1
+                  - text: REAL
+                    attr: 2
+                  - text: ". The machine epsilon "
+                    attr: 1
+                  - text: eps
+                    attr: 2
+                  - text: " is the smallest floating point number such that the sum 1.0 + "
+                    attr: 1
+                  - text: "eps "
+                    attr: 2
+                  - text: "can be represented "
+                    attr: 1
+                  - text: exactly
+                    attr: 2
+                  - text: " in a "
+                    attr: 1
+                  - text: REAL
+                    attr: 2
+                  - text: " variable. Usually, the machine epsilon is "
+                    attr: 1
+                  - text: 2
+                    attr: 2
+                  - text: -m
+                    attr: 4
+                  - text: " where "
+                    attr: 1
+                  - text: m
+                    attr: 2
+                  - text: " is the number of digits used to represent the mantissa of a floating point number. Note, that "
+                    attr: 1
+                  - text: Eps()
+                    attr: 2
+                  - text: " is not necessarily the smallest floating point number with the property that its sum with 1.0 is greater than 1.0, and note also, that most floating point processors offer a higher internal precision than what can be represented within "
+                    attr: 1
+                  - text: REAL
+                    attr: 2
+                  - text: " variables.\r\r\r"
+                    attr: 1
+                  - text: "Powers and logarithms\r\r"
+                    attr: 3
+                  - text: "PROCEDURE "
+                    attr: 1
+                  - text: Sqrt
+                    attr: 3
+                  - text: " (x: REAL): REAL\rReturns the square root of "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ".\r\rPre\rx >= 0.0\t20\r\rPost\rresult >= 0.0\rx = INF\r\tresult = INF\r\rPROCEDURE "
+                    attr: 1
+                  - text: Exp
+                    attr: 3
+                  - text: " (x: REAL): REAL\rReturns "
+                    attr: 1
+                  - text: e
+                    attr: 2
+                  - text: x
+                    attr: 4
+                  - text: ".\r\rPost\rresult > 0.0\rx = INF\r\tresult = INF\rx = -INF\r\tresult = 0.0\r\rPROCEDURE "
+                    attr: 1
+                  - text: Ln
+                    attr: 3
+                  - text: " (x: REAL): REAL\rReturns the natural logarithm of "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ".\r\rPre\rx >= 0.0\t20\r\rPost\rx = 0.0\r\tresult = -INF\rx = INF\r\tresult = INF\r\rPROCEDURE "
+                    attr: 1
+                  - text: Log
+                    attr: 3
+                  - text: " (x: REAL): REAL\rReturns the logarithm to the basis 10 of "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ".\r\rPre\rx >= 0.0\r\rPost\rx = 0.0\r\tresult = -INF\rx = INF\r\tresult = INF\r\rPROCEDURE "
+                    attr: 1
+                  - text: Power
+                    attr: 3
+                  - text: " (x, y: REAL): REAL\rReturns "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: y
+                    attr: 4
+                  - text: ". \r\rPre\rx >= 0.0\t20\rx # 0.0  OR  y # 0.0\t21\rx # INF  OR  y # 0.0\t22\rx # 1.0  OR  ABS(y) # INF\t23\r\rPost\rx = 0.0  &  y < 0.0\r\tresult = INF\rx = 0.0  &  y > 0.0\r\tresult = 0.0\rx = INF  &  y > 0.0\r\tresult = INF\rx = INF  &  y < 0.0\r\tresult = 0.0\rx > 1.0  &  y = INF\r\tresult = INF\rx > 1.0  &  y = -INF\r\tresult = 0.0\rx < 1.0  &  y = INF\r\tresult = 0.0\rx < 1.0  &  y = -INF\r\tresult = INF\r\rPROCEDURE "
+                    attr: 1
+                  - text: IntPower
+                    attr: 3
+                  - text: " (x: REAL; n: INTEGER): REAL\rReturns "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: n
+                    attr: 4
+                  - text: ". The procedure is optimized for integer values of "
+                    attr: 1
+                  - text: n
+                    attr: 2
+                  - text: ". "
+                    attr: 1
+                  - text: "IntPower(0, 0)"
+                    attr: 2
+                  - text: " yields "
+                    attr: 1
+                  - text: 1
+                    attr: 2
+                  - text: ". If the result is too large, "
+                    attr: 1
+                  - text: INF
+                    attr: 2
+                  - text: " is returned.\r\r"
+                    attr: 1
+                  - text: "\rTrigonometric and hyperbolic functions\r\r"
+                    attr: 3
+                  - text: "The arguments for all trigonometric and hyperbolic functions must be given in radians, and the inverse trigonometric and hyperbolic functions are calculated in radians (1 radian = 180/pi degrees). At the end of this section, a transformation table for additional trigonometric and hyperbolic functions is given which do not belong to the interface of the "
+                    attr: 1
+                  - text: Math
+                    attr: 2
+                  - text: " module, but which can easily be written in terms of the exported functions.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Sin
+                    attr: 3
+                  - text: " (x: REAL): REAL\rReturns the sine of "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ".\r\rPre\rABS(x) # INF\t20\r\rPost\r-1.0 <= result <= 1.0\r\rPROCEDURE "
+                    attr: 1
+                  - text: Cos
+                    attr: 3
+                  - text: " (x: REAL): REAL\rReturns the cosine of "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ".\r\rPre\rABS(x) # INF\t20\r\rPost\r-1.0 <= result <= 1.0\r\rPROCEDURE "
+                    attr: 1
+                  - text: Tan
+                    attr: 3
+                  - text: " (x: REAL): REAL\rReturns the tangent of "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ". The "
+                    attr: 1
+                  - text: Tan
+                    attr: 2
+                  - text: " can be computed for all possible "
+                    attr: 1
+                  - text: REAL
+                    attr: 2
+                  - text: " arguments except "
+                    attr: 1
+                  - text: ±INF
+                    attr: 2
+                  - text: ".\r\rPre\rABS(x) # INF\t20\r\rPROCEDURE "
+                    attr: 1
+                  - text: ArcSin
+                    attr: 3
+                  - text: " (x: REAL): REAL\rReturns the arcus sine of "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ".\r\rPre\r-1.0 <= x <= 1.0\t20\r\rPost\r-pi/2.0 <= result <= pi/2.0\r\rPROCEDURE "
+                    attr: 1
+                  - text: ArcCos
+                    attr: 3
+                  - text: " (x: REAL): REAL\rReturns the arcus cosine of "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ".\r\rPre\r-1.0 <= x <= 1.0\t20\r\rPost\r0.0 <= result <= pi\r\rPROCEDURE "
+                    attr: 1
+                  - text: ArcTan
+                    attr: 3
+                  - text: " (x: REAL): REAL\rReturns the arcus tangent of "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ".\r\rPost\r-pi/2.0 <= result <= pi/2.0\rx = INF\r\tresult = pi/2.0\rx = -INF\r\tresult = -pi/2.0\r\rPROCEDURE "
+                    attr: 1
+                  - text: ArcTan2
+                    attr: 3
+                  - text: " (y, x: REAL): REAL\rReturns the quadrant-correct principal value of the argument of the complex number "
+                    attr: 1
+                  - text: x + iy
+                    attr: 2
+                  - text: " in the range "
+                    attr: 1
+                  - text: "(-pi, pi]"
+                    attr: 2
+                  - text: ".\r\rPre\ry # 0  OR  x # 0\t20\rABS(y) # INF  OR  ABS(x)  # INF\t21\r\rPost\r-pi < result <= pi\rABS(y) # INF  &  x = INF\r\tresult = 0\ry = INF  &  ABS(x) # INF\r\tresult = pi/2.0\rABS(y) # INF  &  x = -INF\r\tresult = pi\ry = -INF  &  ABS(x) # INF\r\tresult = -pi/2.0\r\rPROCEDURE "
+                    attr: 1
+                  - text: Sinh
+                    attr: 3
+                  - text: " (x: REAL): REAL\rReturns the hyperbolic sine of "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ".\r\rPost\rx = INF\r\tresult = INF\rx = -INF\r\tresult = -INF\r\rPROCEDURE "
+                    attr: 1
+                  - text: Cosh
+                    attr: 3
+                  - text: " (x: REAL): REAL\rReturns the hyperbolic cosine of "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ".\r\rPost\r1.0 <= result\rx = INF\r\tresult = INF\rx = -INF\r\tresult = INF\r\rPROCEDURE "
+                    attr: 1
+                  - text: Tanh
+                    attr: 3
+                  - text: " (x: REAL): REAL\rReturns the hyperbolic tangent of "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ".\r\rPost\r-1.0 <= result <= 1.0\rx = INF\r\tresult = 1.0\rx = -INF\r\tresult = -1.0\r\rPROCEDURE "
+                    attr: 1
+                  - text: ArcSinh
+                    attr: 3
+                  - text: " (x: REAL): REAL;\rReturns the inverse hyperbolic sine of "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ".\r\rPost\rx = INF\r\tresult = INF\rx = -INF\r\tresult = -INF\r\rPROCEDURE "
+                    attr: 1
+                  - text: ArcCosh
+                    attr: 3
+                  - text: " (x: REAL): REAL;\rReturns the inverse hyperbolic cosine of "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ".\r\rPre\r1.0 <= x\t20\r\rPost\r0.0 <= result\rx = INF\r\tresult = INF\r\rPROCEDURE "
+                    attr: 1
+                  - text: ArcTanh
+                    attr: 3
+                  - text: " (x: REAL): REAL;\rReturns the inverse hyperbolic tangent of "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ".\r\rPre\r-1.0 <= x <= 1.0\t20\r\rPost\rx = 1.0\r\tresult = INF\rx = -1.0\r\tresult = -INF\r\rBelow you find the definition of additional trigonometric and hyperbolic functions in terms of the exported functions. Their pre and post conditions can be induced from the pre and post conditions of the involved functions.\r\r\t"
+                    attr: 1
+                  - text: "\tCot "
+                    attr: 3
+                  - text: "(x) = 1.0 / Math.Tan(x)\r\t\t"
+                    attr: 1
+                  - text: Csc
+                    attr: 3
+                  - text: " (x) = 1.0 / Math.Sin(x)\r\t\t"
+                    attr: 1
+                  - text: Sec
+                    attr: 3
+                  - text: " (x) = 1.0 / Math.Cos(x)\r\t\t"
+                    attr: 1
+                  - text: ArcCot
+                    attr: 3
+                  - text: " (x) = Math.Pi() / 2.0 - Math.ArcTan(x)\r\t\t"
+                    attr: 1
+                  - text: ArcCsc
+                    attr: 3
+                  - text: " (x) = Math.ArcSin(1.0 / x)\r\t\t"
+                    attr: 1
+                  - text: ArcSec
+                    attr: 3
+                  - text: " (x) = Math.ArcCos(1.0 / x)\r\r\t\t"
+                    attr: 1
+                  - text: "Coth "
+                    attr: 3
+                  - text: "(x) = 1.0 / Math.Tanh(x)\r\t\t"
+                    attr: 1
+                  - text: Csch
+                    attr: 3
+                  - text: " (x) = 1.0 / Math.Sinh(x)\r\t\t"
+                    attr: 1
+                  - text: Sech
+                    attr: 3
+                  - text: " (x) = 1.0 / Math.Cosh(x)\r\t\t"
+                    attr: 1
+                  - text: ArcCoth
+                    attr: 3
+                  - text: " (x) = Math.ArcTanh(1.0 / x)\r\t\t"
+                    attr: 1
+                  - text: ArcCsch
+                    attr: 3
+                  - text: " (x) = Math.ArcSinh(1.0 / x)\r\t\t"
+                    attr: 1
+                  - text: ArcSech
+                    attr: 3
+                  - text: " (x) = Math.ArcCosh(1.0 / x)\r\r\r"
+                    attr: 1
+                  - text: Miscellaneous functions
+                    attr: 3
+                  - text: "\r\rYou could easily implement the functions "
+                    attr: 1
+                  - text: Sign
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Floor
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Ceiling
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Trunc
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Frac
+                    attr: 2
+                  - text: ", and "
+                    attr: 1
+                  - text: Round
+                    attr: 2
+                  - text: " yourself, using the "
+                    attr: 1
+                  - text: ENTIER
+                    attr: 2
+                  - text: " standard function. They are provided here for convenience, and in versions which return "
+                    attr: 1
+                  - text: REAL
+                    attr: 2
+                  - text: " typed results, so that no conversions between reals and integers become necessary if they are used in real expressions.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Sign
+                    attr: 3
+                  - text: " (x: REAL): REAL\rReturns the sign of "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ", that is "
+                    attr: 1
+                  - text: 1.0
+                    attr: 2
+                  - text: " if "
+                    attr: 1
+                  - text: "x > 0.0"
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: -1.0
+                    attr: 2
+                  - text: " if "
+                    attr: 1
+                  - text: x < 0.0
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: 0.0
+                    attr: 2
+                  - text: " if "
+                    attr: 1
+                  - text: x = 0.0
+                    attr: 2
+                  - text: ".\r\rPost\rresult IN {-1.0, 0.0, 1.0}\r\rPROCEDURE "
+                    attr: 1
+                  - text: Floor
+                    attr: 3
+                  - text: " (x: REAL): REAL\rReturns the greatest integer less than or equal to "
+                    attr: 1
+                  - text: "x. "
+                    attr: 2
+                  - text: "This function is identical to "
+                    attr: 1
+                  - text: ENTIER
+                    attr: 2
+                  - text: ", except that it returns a "
+                    attr: 1
+                  - text: REAL
+                    attr: 2
+                  - text: " type value.\r\rPost\rx = INF\r\tresult = INF\rx = -INF\r\tresult = -INF\r\rPROCEDURE "
+                    attr: 1
+                  - text: Ceiling
+                    attr: 3
+                  - text: " (x: REAL): REAL\rReturns the smallest integer greater than or equal to "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ".\r\rPost\rx = INF\r\tresult = INF\rx = -INF\r\tresult = -INF\r\rPROCEDURE "
+                    attr: 1
+                  - text: Trunc
+                    attr: 3
+                  - text: " (x: REAL): REAL\r"
+                    attr: 1
+                  - text: Trunc
+                    attr: 2
+                  - text: " truncates its argument to the next nearest integer towards zero.\r\rPost\rx = INF\r\tresult = INF\rx = -INF\r\tresult = -INF\r\rPROCEDURE "
+                    attr: 1
+                  - text: Frac
+                    attr: 3
+                  - text: " (x: REAL): REAL\r"
+                    attr: 1
+                  - text: Frac
+                    attr: 2
+                  - text: " is the fractional part of the argument. The following equation holds: "
+                    attr: 1
+                  - text: x = Trunc(x) + Frac(x)
+                    attr: 2
+                  - text: ".\r\rPre\rx # INF  &  x # -INF\t20\r\rPROCEDURE "
+                    attr: 1
+                  - text: Round
+                    attr: 3
+                  - text: " (x: REAL): REAL\rSame as "
+                    attr: 1
+                  - text: Floor(x + 0.5)
+                    attr: 2
+                  - text: ".\r\rPROCEDURE "
+                    attr: 1
+                  - text: Mantissa
+                    attr: 3
+                  - text: " (x: REAL): REAL\rReturns the mantissa of "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ".\r\rPost\r1.0 <= ABS(result) < 2.0  OR  result = 0.0\rx = INF\r\tresult = 1.0\rx = -INF\r\tresult = -1.0\rx = not-a-number\r\tABS(result) > 1.0\r\rPROCEDURE "
+                    attr: 1
+                  - text: Exponent
+                    attr: 3
+                  - text: " (x: REAL): INTEGER\rReturns the exponent of "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: " such that "
+                    attr: 1
+                  - text: "x = Mantissa(x) *"
+                    attr: 2
+                  - text: " 2"
+                    attr: 1
+                  - text: Exponent(x)
+                    attr: 4
+                  - text: ". If "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: " represents "
+                    attr: 1
+                  - text: ±INF
+                    attr: 2
+                  - text: " or if "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: " is "
+                    attr: 1
+                  - text: not-a-number
+                    attr: 2
+                  - text: ", then "
+                    attr: 1
+                  - text: MAX(INTEGER)
+                    attr: 2
+                  - text: " is returned.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Real
+                    attr: 3
+                  - text: " (m: REAL; e: INTEGER): REAL\rReturns "
+                    attr: 1
+                  - text: "m * 2"
+                    attr: 2
+                  - text: e
+                    attr: 4
+                  - text: ". If the argument "
+                    attr: 1
+                  - text: e
+                    attr: 2
+                  - text: " is "
+                    attr: 1
+                  - text: MAX(INTEGER)
+                    attr: 2
+                  - text: ", then "
+                    attr: 1
+                  - text: INF
+                    attr: 2
+                  - text: " or "
+                    attr: 1
+                  - text: not-a-number
+                    attr: 2
+                  - text: " is returned where "
+                    attr: 1
+                  - text: ±INF
+                    attr: 2
+                  - text: " is returned if "
+                    attr: 1
+                  - text: "m = ± 1.0 "
+                    attr: 2
+                  - text: "and "
+                    attr: 1
+                  - text: not-a-number
+                    attr: 2
+                  - text: " otherwise. Thus for any real "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: " the equation\r"
+                    attr: 1
+                  - text: "\tx = Real(Mantissa(x), Exponent(x))\r"
+                    attr: 2
+                  - text: "holds.\rNote: the normal arithmetic operations of the language Component Pascal, and the other operations implemented in this module, never produce the IEEE "
+                    attr: 1
+                  - text: not-a-number
+                    attr: 2
+                  - text: " value.\rNote: "
+                    attr: 1
+                  - text: "Real(0, 0) = 0"
+                    attr: 2
+                  - text: ".\r\rPre\r(1.0 <= ABS(m) < 2.0)  OR  (m = 0.0)\t20\r\rPost\rm = 0.0\r    result = 0.0\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 11
+          bodyPos: 10912
+          bodyLen: 8

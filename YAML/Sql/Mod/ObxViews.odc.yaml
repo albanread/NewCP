@@ -1,0 +1,272 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Sql\\Mod\\ObxViews.odc"
+  size: 8060
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 7929
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 7743
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 7657
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 114300
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Helvetica
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 7774
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 7260
+                runListLen: 1803
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE SqlObxViews;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT\r\t\tMechanisms, Fonts, Ports, Views, Controllers, Properties,\r\t\tTextModels, TextMappers, TextViews, SqlObxNets;\r\r\tCONST d = 3 * Ports.mm; w = 40 * Ports.mm; h = 6 * Ports.mm;\r\r\tTYPE\r\t\tView = POINTER TO RECORD (Views.View)\r\t\t\tg: SqlObxNets.Net;\r\t\t\tc: SqlObxNets.Company;\r\t\t\tw, h: INTEGER\r\t\tEND;\r\r\r\t"
+                    attr: 0
+                  - text: "(* drawing *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE DrawCompany (f: Views.Frame; c: SqlObxNets.Company; first: BOOLEAN);\r\t\tVAR s, sw, x, y, asc, dsc, fw: INTEGER; col: Ports.Color; fnt: Fonts.Font;\r\tBEGIN\r\t\tIF first THEN s := 2 * f.unit; col := Ports.red ELSE s := f.unit; col := Ports.black END;\r\t\tx := c.x; y := c.y;\r\t\tf.DrawRect(x, y, x + w, y + h, s, col);\r\t\tfnt := Fonts.dir.Default();\r\t\tsw := fnt.StringWidth(c.name);\r\t\tfnt.GetBounds(asc, dsc,fw);\r\t\tx := x + (w - sw) DIV 2; y := y + h DIV 2 + (asc + dsc) DIV 3;\r\t\tf.DrawString(x, y, col, c.name, fnt)\r\tEND DrawCompany;\r\r\tPROCEDURE Draw (c: SqlObxNets.Company; time: INTEGER; f: Views.Frame);\r\t\tVAR p: SqlObxNets.Node; c0: SqlObxNets.Company;\r\tBEGIN\t"
+                    attr: 0
+                  - text: "(* c.x and c.y must be set up *)"
+                    attr: 1
+                  - text: "\r\t\tc.time := time;\r\t\tp := c.owns;\r\t\tWHILE p # NIL DO\r\t\t\tc0 := p.company;\r\t\t\tIF c0.time < time THEN\r\t\t\t\tDrawCompany(f, c0, FALSE);\r\t\t\t\tDraw(c0, time, f)\r\t\t\tEND;\r\t\t\tf.DrawLine(c.x + w DIV 2, c.y + h, c0.x + w DIV 2, c0.y, f.unit, Ports.black);\r\t\t\tp := p.next\r\t\tEND\r\tEND Draw;\r\r\r\t"
+                    attr: 0
+                  - text: "(* mouse handling *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE TestHit (v: View; x, y: INTEGER; VAR l, t, r, b: INTEGER; VAR inside: BOOLEAN;\r\t\t\t\t\t\t\t\t\tVAR p: SqlObxNets.Company);\r\t\tVAR c: SqlObxNets.Company;\r\tBEGIN\r\t\tc := SqlObxNets.CompanyAt(v.g, x, y, w, h);\r\t\tIF c # NIL THEN\r\t\t\tIF p = NIL THEN p := c; l := c.x; t := c.y; r := l + w; b := t + h END;\r\t\t\tinside := p = c\r\t\tELSE\r\t\t\tinside := FALSE\r\t\tEND\r\tEND TestHit;\r\r\tPROCEDURE Text (s: ARRAY OF CHAR): TextViews.View;\r\t\tVAR t: TextModels.Model; f: TextMappers.Formatter;\r\tBEGIN\r\t\tt := TextModels.dir.New();\r\t\tf.ConnectTo(t); f.WriteString(s);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TextViews.dir.New(t)\r\tEND Text;\r\r\r\t"
+                    attr: 0
+                  - text: "(* placement *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE ShiftDown (c: SqlObxNets.Company; time: INTEGER; dy: INTEGER; VAR b: INTEGER);\r\t\tVAR p: SqlObxNets.Node; c0: SqlObxNets.Company;\r\tBEGIN\r\t\tc.time := time; INC(c.y, dy);\r\t\tIF c.y + h + d > b THEN b := c.y + h + d END;\r\t\tp := c.owns;\r\t\tWHILE p # NIL DO\r\t\t\tc0 := p.company;\r\t\t\tIF c0.time < time THEN ShiftDown(c0, time, dy, b) END;\r\t\t\tp := p.next\r\t\tEND\r\tEND ShiftDown;\r\r\tPROCEDURE Place (c: SqlObxNets.Company; x, y, t0: INTEGER; VAR time, r, b: INTEGER);\r\t\tVAR p: SqlObxNets.Node; c0: SqlObxNets.Company;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: "(* place company c *)"
+                    attr: 1
+                  - text: "\r\t\tc.time := time; c.x := x; c.y := y;\r\t\tr := x + w + d;\r\t\ty := y + h + d; IF y > b THEN b := y END;\r\t\t"
+                    attr: 0
+                  - text: "(* handle companies owned by c *)"
+                    attr: 1
+                  - text: "\r\t\tp := c.owns;\r\t\tWHILE p # NIL DO\r\t\t\tc0 := p.company;\r\t\t\tIF c0.time < t0 THEN\t"
+                    attr: 0
+                  - text: "(* placement is not up-to-date *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tPlace(c0, x, y, t0, time, r, b);\r\t\t\t\tx := r\t"
+                    attr: 0
+                  - text: "(* placement above may have produced a block several companies wide *)"
+                    attr: 1
+                  - text: "\r\t\t\tELSIF c0.y < y THEN\r\t\t\t\tINC(time); ShiftDown(c0, time, y - c0.y, b)\r\t\t\tEND;\r\t\t\tp := p.next\r\t\tEND\r\tEND Place;\r\r\r\t"
+                    attr: 0
+                  - text: "(* View *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (v: View) CopyFromSimpleView (source: Views.View);\r\tBEGIN\r\t\tWITH source: View DO\r\t\t\tv.g := source.g;\r\t\t\tv.c := source.c;\r\t\t\tv.w := source.w;\r\t\t\tv.h := source.h\r\t\tEND\r\tEND CopyFromSimpleView;\r\r\tPROCEDURE (v: View) Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\t\tVAR time: INTEGER;\r\tBEGIN\r\t\tIF v.g # NIL THEN\r\t\t\tDrawCompany(f, v.c, TRUE);\r\t\t\ttime := v.c.time + 1; Draw(v.c, time, f)\r\t\tEND\r\tEND Restore;\r\r\tPROCEDURE (v: View) HandleCtrlMsg (f: Views.Frame; VAR msg: Controllers.Message; VAR focus: Views.View);\r\t\tVAR x, y, l, t, r, b, dx, dy: INTEGER; inside: BOOLEAN;\r\t\t\tc: SqlObxNets.Company; destX, destY: INTEGER; dest: Views.Frame; op: INTEGER; buttons: SET;\r\t\t\ttv: TextViews.View;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: "(* When the mouse is dragged from within one company to be dropped somewhere else,\r\t\t\tthe name of the company is  dropped there as a text. This demonstrates how a drop\r\t\t\tsource of a drag & drop operation is implemented. *)"
+                    attr: 1
+                  - text: "\r\t\tWITH msg: Controllers.PollOpsMsg DO\r\t\t\tmsg.type := \"TextViews.StdView\"\r\t\t| msg: Controllers.TrackMsg DO\r\t\t\tc := NIL; x := msg.x; y := msg.y;\r\t\t\tTestHit(v, x, y, l, t, r, b, inside, c);\r\t\t\tIF inside THEN\r\t\t\t\tdx := x - c.x; dy := y - c.y ;\r\t\t\t\top := Mechanisms.copy;\r\t\t\t\ttv := Text(c.name);\r\t\t\t\tMechanisms.TrackToDrop(f, tv, FALSE, w, h, dx, dy, dest, destX, destY, op, x, y, buttons);\r\t\t\t\tIF op # Mechanisms.cancelDrop THEN\r\t\t\t\t\tControllers.Drop(x, y, f, msg.x, msg.y, tv, FALSE, w, h, dx, dy)\r\t\t\t\tEND\r\t\t\tEND\r\t\t| msg: Controllers.PollDropMsg DO\r\t\t\tIF msg.mark THEN\r\t\t\t\tf.MarkRect(msg.x - msg.rx, msg.y - msg.ry, msg.x + msg.w - msg.rx,\r\t\t\t\t\t\t\t\tmsg.y + msg.h - msg.ry, f.dot, Ports.invert, msg.show)\r\t\t\tEND\r\t\tELSE\t"
+                    attr: 0
+                  - text: "(* ignore other messages *)"
+                    attr: 1
+                  - text: "\r\t\tEND\r\tEND HandleCtrlMsg;\r\r\tPROCEDURE (v: View) HandlePropMsg (VAR msg: Properties.Message);\r\tBEGIN\r\t\tWITH msg: Properties.SizePref DO\r\t\t\tIF msg.w = Views.undefined THEN msg.w := v.w END;\r\t\t\tIF msg.h = Views.undefined THEN msg.h := v.h END\r\t\tELSE\r\t\tEND\r\tEND HandlePropMsg;\r\r\r\t"
+                    attr: 0
+                  - text: "(* miscellaneous *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: New
+                    attr: 3
+                  - text: "* (g: SqlObxNets.Net; c: SqlObxNets.Company): Views.View;\r\t\tVAR v: View;\r\tBEGIN\r\t\tASSERT(g # NIL, 20); ASSERT(c # NIL, 21);\r\t\tNEW(v); v.g := g; v.c := c;\r\t\tc.time := 1;\r\t\tPlace(c, d, d, c.time, c.time, v.w, v.h);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " v\r\tEND New;\r\rEND SqlObxViews.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 8025
+          bodyLen: 8

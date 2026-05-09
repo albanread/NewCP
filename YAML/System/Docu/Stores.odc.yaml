@@ -1,0 +1,1397 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\System\\Docu\\Stores.odc"
+  size: 43796
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 43665
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 43479
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 43393
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                asc: 134600
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000003
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 19
+                bodyPos: 43514
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 43000
+                runListLen: 11703
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [4]
+                    font: Arial
+                    size: 101600
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [5]
+                    font: Arial
+                    size: 101600
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: Stores
+                    attr: 0
+                  - text: "\r\rDEFINITION Stores;\r\r\tIMPORT Files;\r\r\tCONST\r\t\talienVersion = 1; alienComponent = 2;\r\t\tinconsistentVersion = -1; inconsistentType = -2; moduleFileNotFound = -3;\r\t\tinvalidModuleFile = -4; inconsModuleVersion = -5; typeNotFound = -6;\r\r\tTYPE\r\t\tTypeName = ARRAY 64 OF CHAR;\r\t\tTypePath = ARRAY 16 OF TypeName;\r\r\t\tOpName = ARRAY 32 OF CHAR;\r\r\t\tDomain = POINTER TO LIMITED RECORD\r\t\t\tPROCEDURE (d: Domain) GetSequencer (): ANYPTR, NEW;\r\t\t\tPROCEDURE (d: Domain) SetSequencer (sequencer: ANYPTR), NEW\r\t\tEND;\r\r\t\tOperation = POINTER TO ABSTRACT RECORD\r\t\t\tPROCEDURE (op: Operation) Do, NEW, ABSTRACT\r\t\tEND;\r\r\t\tStore = POINTER TO ABSTRACT RECORD\r\t\t\tPROCEDURE (s: Store) Domain (): Domain, NEW;\r\t\t\tPROCEDURE (s: Store) CopyFrom- (source: Store), NEW, EMPTY;\r\t\t\tPROCEDURE (s: Store) Internalize- (VAR rd: Reader), NEW, EMPTY;\r\t\t\tPROCEDURE (s: Store) Externalize- (VAR wr: Writer), NEW, EMPTY;\r\t\t\tPROCEDURE (s: Store) ExternalizeAs- (VAR s1: Store), NEW, EMPTY\r\t\tEND;\r\r\t\tReader = RECORD\r\t\t\trider-: Files.Reader;\r\t\t\tcancelled-: BOOLEAN;\r\t\t\treadAlien-: BOOLEAN;\r\t\t\t(VAR rd: Reader) ConnectTo (f: Files.File), NEW;\r\t\t\t(VAR rd: Reader) Pos (): INTEGER, NEW;\r\t\t\t(VAR rd: Reader) SetPos (pos: INTEGER), NEW;\r\t\t\t(VAR rd: Reader) ReadBool (OUT x: BOOLEAN), NEW;\r\t\t\t(VAR rd: Reader) ReadSChar (OUT x: SHORTCHAR), NEW;\r\t\t\t(VAR rd: Reader) ReadXChar (OUT x: CHAR), NEW;\r\t\t\t(VAR rd: Reader) ReadChar (OUT x: CHAR), NEW;\r\t\t\t(VAR rd: Reader) ReadByte (OUT x: BYTE), NEW;\r\t\t\t(VAR rd: Reader) ReadSInt (OUT x: SHORTINT), NEW;\r\t\t\t(VAR rd: Reader) ReadXInt (OUT x: INTEGER), NEW;\r\t\t\t(VAR rd: Reader) ReadInt (OUT x: INTEGER), NEW;\r\t\t\t(VAR rd: Reader) ReadLong (OUT x: LONGINT), NEW;\r\t\t\t(VAR rd: Reader) ReadSReal (OUT x: SHORTREAL), NEW;\r\t\t\t(VAR rd: Reader) ReadXReal (OUT x: REAL), NEW;\r\t\t\t(VAR rd: Reader) ReadReal (OUT x: REAL), NEW;\r\t\t\t(VAR rd: Reader) ReadSet (OUT x: SET), NEW;\r\t\t\t(VAR rd: Reader) ReadSString (OUT x: ARRAY OF SHORTCHAR), NEW;\r\t\t\t(VAR rd: Reader) ReadXString (OUT x: ARRAY OF CHAR), NEW;\r\t\t\t(VAR rd: Reader) ReadString (OUT x: ARRAY OF CHAR), NEW;\r\t\t\t(VAR rd: Reader) ReadStore (OUT x: Store), NEW;\r\t\t\t(VAR rd: Reader) ReadVersion (min, max: INTEGER; OUT version: INTEGER), NEW;\r\t\t\t(VAR rd: Reader) TurnIntoAlien (cause: INTEGER), NEW\r\t\tEND;\r\r\t\tWriter = RECORD\r\t\t\trider-: Files.Writer;\r\t\t\twrittenStore-: Store;\r\t\t\t(VAR wr: Writer) ConnectTo (f: Files.File), NEW;\r\t\t\t(VAR wr: Writer) Pos (): INTEGER, NEW;\r\t\t\t(VAR wr: Writer) SetPos (pos: INTEGER), NEW;\r\t\t\t(VAR wr: Writer) WriteBool (x: BOOLEAN), NEW;\r\t\t\t(VAR wr: Writer) WriteSChar (x: SHORTCHAR), NEW;\r\t\t\t(VAR wr: Writer) WriteXChar (x: CHAR), NEW;\r\t\t\t(VAR wr: Writer) WriteChar (x: CHAR), NEW;\r\t\t\t(VAR wr: Writer) WriteByte (x: BYTE), NEW;\r\t\t\t(VAR wr: Writer) WriteSInt (x: SHORTINT), NEW;\r\t\t\t(VAR wr: Writer) WriteXInt (x: INTEGER), NEW;\r\t\t\t(VAR wr: Writer) WriteInt (x: INTEGER), NEW;\r\t\t\t(VAR wr: Writer) WriteLong (x: LONGINT), NEW;\r\t\t\t(VAR wr: Writer) WriteSReal (x: SHORTREAL), NEW;\r\t\t\t(VAR wr: Writer) WriteXReal (x: REAL), NEW;\r\t\t\t(VAR wr: Writer) WriteReal (x: REAL), NEW;\r\t\t\t(VAR wr: Writer) WriteSet (x: SET), NEW;\r\t\t\t(VAR wr: Writer) WriteSString (IN x: ARRAY OF SHORTCHAR), NEW;\r\t\t\t(VAR wr: Writer) WriteXString (IN x: ARRAY OF CHAR), NEW;\r\t\t\t(VAR wr: Writer) WriteString (IN x: ARRAY OF CHAR), NEW;\r\t\t\t(VAR wr: Writer) WriteStore (x: Store), NEW;\r\t\t\t(VAR wr: Writer) WriteVersion (version: INTEGER), NEW\r\t\tEND;\r\r\t\tAlienComp = POINTER TO LIMITED RECORD\r\t\t\tnext-: AlienComp\r\t\tEND;\r\r\t\tAlienPiece = POINTER TO LIMITED RECORD (AlienComp)\r\t\t\tnext-: AlienComp;\r\t\t\tpos-, len-: INTEGER\r\t\tEND;\r\r\t\tAlienPart = POINTER TO LIMITED RECORD (AlienComp)\r\t\t\tnext-: AlienComp;\r\t\t\tstore-: Store\r\t\tEND;\r\r\t\tAlien = POINTER TO LIMITED RECORD (Store)\r\t\t\tpath-: TypePath;\r\t\t\tcause-: INTEGER;\r\t\t\tfile-: Files.File;\r\t\t\tcomps-: AlienComp\r\t\tEND;\r\r\tPROCEDURE InitDomain (s: Store);\r\tPROCEDURE CopyOf (s: Store): Store;\r\tPROCEDURE Join (s0, s1: Store);\r\tPROCEDURE Joined (s0, s1: Store): BOOLEAN;\r\tPROCEDURE Unattached (s: Store): BOOLEAN;\r\tPROCEDURE ExternalizeProxy (s: Store): Store;\r\tPROCEDURE Report (IN msg, p0, p1, p2: ARRAY OF CHAR);\r\rEND Stores.\r\r\r"
+                    attr: 1
+                  - text: Introduction
+                    attr: 2
+                  - text: "\r\rModule "
+                    attr: 1
+                  - text: Stores
+                    attr: 3
+                  - text: " defines a data type "
+                    attr: 1
+                  - text: Store
+                    attr: 3
+                  - text: ", which should be used as base type of all storable extensible objects. When storing an object of an extensible type, it is necessary to store not only its contents but also its particular type. The type is needed to create an object of the correct type when reading the data in again.\rA variable of (an extension of) type "
+                    attr: 1
+                  - text: Store
+                    attr: 3
+                  - text: " is stored in a file. A store must implement the "
+                    attr: 1
+                  - text: Internalize
+                    attr: 3
+                  - text: " procedure which takes a "
+                    attr: 1
+                  - text: Reader
+                    attr: 3
+                  - text: " as parameter, and the "
+                    attr: 1
+                  - text: Externalize
+                    attr: 3
+                  - text: " procedure which takes a "
+                    attr: 1
+                  - text: Writer
+                    attr: 3
+                  - text: " as parameter. These procedures read/write the store's persistent state. (A store may also have temporary state which is not internalized/externalized.) Readers and writers are mappers on files. The types "
+                    attr: 1
+                  - text: Views.View
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: TextModels.Model
+                    attr: 3
+                  - text: " are examples of "
+                    attr: 1
+                  - text: Store
+                    attr: 3
+                  - text: " extensions.\r\rStores may form arbitrary graphs. The \"boundary\" of a graph is determined by its "
+                    attr: 1
+                  - text: domain
+                    attr: 3
+                  - text: ". This is an object that represents the whole collection of stores that can be externalized to a file, or be internalized from a file. The stores of a domain are externalized and internalized such that pointers among them are reconstructed correctly upon internalization. In particular, "
+                    attr: 1
+                  - text: alias pointers
+                    attr: 3
+                  - text: " are handled correctly: if several stores point to another element of the same domain, this element is read in only once, and all the pointers to it are rebuilt. Arbitrary graphs can be handled this way, e.g., cyclic data structures. Links to stores of other domains are prohibited.\r\rA document consists of a hierarchy of views and models, both of which are stores. Possibly there may occur further stores in a document, such as text attribute objects or controller objects. All stores of a document share the same domain.\rThe stores of a domain may be manipulated indirectly via "
+                    attr: 1
+                  - text: operation
+                    attr: 3
+                  - text: " objects. An operation implements a method "
+                    attr: 1
+                  - text: Do
+                    attr: 3
+                  - text: ", which must be auto-inverse (i.e., executing it twice undoes its effect). This is the key to the undo/redo mechanism of the compound document architecture of BlackBox. However, in principle it could also be used by a transaction mechanism to implement transactions on persistent non-document data represented as stores.\r\rThe contents of a store is stored in a file. When reading the same file by another BlackBox configuration, it may occur that not all necessary modules are available in this configuration, i.e., the module which defines the store's type cannot be loaded. Yet reading such an \"alien\" store does not fail completely. Instead of the correct store type, an \"alien\" object is generated. Obviously such an alien cannot interpret the data it represents, and therefore cannot provide any special behavior. However, it may be copied and stored into another file, such that its contents on the new file are intact and consistent.\r\rTo define the set of stores that belong to a domain and to set up an actual domain, two procedures have to be provided by the framework. A first procedure is needed to collect stores in sets and to join store sets, and a second procedure is used to assign an actual domain object to a set of stores. In BlackBox these procedures are "
+                    attr: 1
+                  - text: Join
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: InitDomain
+                    attr: 3
+                  - text: ". They are discussed in more detail below.\r\r"
+                    attr: 1
+                  - text: "Join\r"
+                    attr: 2
+                  - text: "\r"
+                    attr: 3
+                  - text: "Procedure "
+                    attr: 1
+                  - text: Join
+                    attr: 3
+                  - text: " is used to join two store sets. This procedure has to be called whenever a link from a store in one set is established to a store in the other set. As arguments, representatives of the two store sets have to be passed. "
+                    attr: 1
+                  - text: Join
+                    attr: 3
+                  - text: " is symmetric. If the two stores which are passed as arguments already belong to the same set, "
+                    attr: 1
+                  - text: Join
+                    attr: 3
+                  - text: " has no effect. Figure 1 demonstrates the effect of a "
+                    attr: 1
+                  - text: Join
+                    attr: 3
+                  - text: " operation on two store sets X and Y.\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 136525
+                      dsc: 28575
+                      grid: 165100
+                      tabs:
+                        - { stop: 360000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 8
+                      bodyPos: 1166
+                      bodyLen: 7537
+                    attr: 1
+                    w: 6009120
+                    h: 1301040
+                  - text: "Figure 1: Effect of a Join operation on two disjoint store sets X and Y."
+                    attr: 3
+                  - text: "\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 136525
+                      dsc: 28575
+                      grid: 165100
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 360000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r"
+                    attr: 1
+                  - text: Join
+                    attr: 3
+                  - text: " calls have to be added at those places where newly created stores are connected, usually in a factory procedure. All those stores have to be joined with a store "
+                    attr: 1
+                  - text: s
+                    attr: 3
+                  - text: " which are written to disk in the "
+                    attr: 1
+                  - text: Externalize
+                    attr: 3
+                  - text: " method of store "
+                    attr: 1
+                  - text: s
+                    attr: 3
+                  - text: ". "
+                    attr: 1
+                  - text: "\r\rJoin"
+                    attr: 3
+                  - text: " calls are not necessary in the "
+                    attr: 1
+                  - text: Internalize
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: CopyOf
+                    attr: 3
+                  - text: " methods where usually also links between stores are established. Module "
+                    attr: 1
+                  - text: Stores
+                    attr: 3
+                  - text: " has sufficient information to join these stores itself.\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - text: "The function "
+                    attr: 1
+                  - text: "Joined "
+                    attr: 3
+                  - text: "allows to test whether two given stores belong to the same store set, i.e., whether they have been joined or not. "
+                    attr: 1
+                  - text: "Joined "
+                    attr: 3
+                  - text: "is symmetric, reflexive and transitive.\r\r"
+                    attr: 1
+                  - text: InitDomain
+                    attr: 2
+                  - text: "\r\rIn order to assign an actual domain object to a free store or a store set, the procedure "
+                    attr: 1
+                  - text: InitDomain
+                    attr: 3
+                  - text: " is called. As parameter a member of the set (or a single store) is passed. The actual domain object is created inside module "
+                    attr: 1
+                  - text: "Stores "
+                    attr: 3
+                  - text: (
+                    attr: 1
+                  - text: Domain
+                    attr: 3
+                  - text: " is limited) and then assigned to all stores in the set"
+                    attr: 1
+                  - text: .
+                    attr: 3
+                  - text: " After a domain has been assigned to a store graph this domain can be accessed with the "
+                    attr: 1
+                  - text: "Domain() "
+                    attr: 3
+                  - text: "method defined in the "
+                    attr: 1
+                  - text: Store
+                    attr: 3
+                  - text: " type. If "
+                    attr: 1
+                  - text: InitDomain
+                    attr: 3
+                  - text: " is called on a store which is already assigned to a domain object, then the procedure has no effect. The framework calls "
+                    attr: 1
+                  - text: InitDomain
+                    attr: 3
+                  - text: " in module "
+                    attr: 1
+                  - text: Documents
+                    attr: 3
+                  - text: " only whenever a new document is created. Usually, there is no need for BlackBox programmers to call "
+                    attr: 1
+                  - text: InitDomain
+                    attr: 3
+                  - text: " themselves, except when a deep copy of a document is created.\r\rThe arguments of "
+                    attr: 1
+                  - text: Join
+                    attr: 3
+                  - text: " may or may not be bound to a domain. If only one argument store is bound to a domain, then the effect of "
+                    attr: 1
+                  - text: Join
+                    attr: 3
+                  - text: " is that all stores in the other set are bound to the same domain object. If both arguments are bound to a domain then they have to be bound to the same one and "
+                    attr: 1
+                  - text: Join
+                    attr: 3
+                  - text: " has no effect, otherwise a precondition trap is raised.\r\rThe function "
+                    attr: 1
+                  - text: "Joined "
+                    attr: 3
+                  - text: "can be applied on stores independent of whether they are bound to a domain or not. If store "
+                    attr: 1
+                  - text: s0
+                    attr: 3
+                  - text: " or "
+                    attr: 1
+                  - text: s1
+                    attr: 3
+                  - text: " is bound to a domain, then "
+                    attr: 1
+                  - text: "Joined(s0, s1)"
+                    attr: 3
+                  - text: " is equivalent to "
+                    attr: 1
+                  - text: s0.Domain() = s1.Domain()
+                    attr: 3
+                  - text: ".\r\rThe procedures "
+                    attr: 1
+                  - text: Join
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: InitDomain
+                    attr: 3
+                  - text: " specify the following pre and post conditions.\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 136525
+                      dsc: 28575
+                      grid: 165100
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 360000 }
+                        - { stop: 504000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tPROCEDURE "
+                    attr: 1
+                  - text: "Join "
+                    attr: 2
+                  - text: "(s0, s1: Store)\r\t\tPRE 20\ts0 # NIL\r\t\tPRE 21\ts1 # NIL\r\t\tPRE 22\ts0.Domain() = NIL OR s1.Domain() = NIL OR s0.Domain() = s1.Domain()\r\t\tPOST\tJoined(s0, s1)\r\t\r\tPROCEDURE"
+                    attr: 1
+                  - text: " InitDomain "
+                    attr: 2
+                  - text: "(s: Store)\r\t\tPRE 20\ts # NIL\r\t\tPOST\ts.Domain() # NIL\r\t\rIf two stores have to be joined and precondition 22 is not met, then a deep copy of one of the two stores has to be generated using "
+                    attr: 1
+                  - text: CopyOf.
+                    attr: 3
+                  - text: "\r\r"
+                    attr: 1
+                  - text: "Alias pointers and copying\r\r"
+                    attr: 2
+                  - text: "The stores of a domain are externalized and internalized such that pointers among them are reconstructed correctly upon internalization. In particular, "
+                    attr: 1
+                  - text: alias pointers
+                    attr: 3
+                  - text: " are handled correctly: if several stores point to a particular element of the same domain, this element is read in only once, and all the pointers to it are rebuilt. Arbitrary graphs can be handled this way, including cyclic data structures.\r\rCloning of stores is provided by procedure "
+                    attr: 1
+                  - text: CopyOf
+                    attr: 3
+                  - text: ". This procedure creates a new object and then calls the "
+                    attr: 1
+                  - text: CopyFrom
+                    attr: 3
+                  - text: " method with the original object as parameter. This mechanism can conceptually be regarded as writing the store to a file and then reading it back as a clone.\r\rAlias pointers are handled correctly. Whenever "
+                    attr: 1
+                  - text: CopyOf
+                    attr: 3
+                  - text: " is called, all copied stores are stored in a table which is associated with the store's set of joined stores. All recursive calls of "
+                    attr: 1
+                  - text: CopyOf
+                    attr: 3
+                  - text: " can access this information. After the top-level call of "
+                    attr: 1
+                  - text: "CopyOf "
+                    attr: 3
+                  - text: "terminates, the table with the copies is discarded. \r\rHowever, there would be a problem with restoring alias pointers if during a call of "
+                    attr: 1
+                  - text: CopyOf
+                    attr: 3
+                  - text: " additional stores are added to the store set which contains the alias information. Therefore, "
+                    attr: 1
+                  - text: "Join(s0, s1) "
+                    attr: 3
+                  - text: "must not be called while a "
+                    attr: 1
+                  - text: CopyOf
+                    attr: 3
+                  - text: " operation is active either on "
+                    attr: 1
+                  - text: s0
+                    attr: 3
+                  - text: " or on "
+                    attr: 1
+                  - text: s1
+                    attr: 3
+                  - text: ". If such a situation appears, then an implementation trap is raised. This can be avoided by joining the involved stores before copying the store graph.\r\r"
+                    attr: 1
+                  - text: "Additional Remarks\r\r"
+                    attr: 2
+                  - text: "Aliens\r"
+                    attr: 3
+                  - text: "\r"
+                    attr: 2
+                  - text: "Aliens are handled in a special way regarding domains. Since aliens are immutable, they are never copied and can be inserted into any store graph. As a store can only reference one domain, this would violate the rule that a store in a document may not refer to stores that belong to another domain. Therefore, all aliens are assigned a special domain for aliens. Module "
+                    attr: 1
+                  - text: Stores
+                    attr: 3
+                  - text: " knows this rule and does not trap if an alien is externalized.\r\r"
+                    attr: 1
+                  - text: "Operations and undo\r\r"
+                    attr: 3
+                  - text: "Calls of "
+                    attr: 1
+                  - text: Join
+                    attr: 3
+                  - text: " or "
+                    attr: 1
+                  - text: InitDomain
+                    attr: 3
+                  - text: " on stores are not operations, thus these calls cannot be undone! If stores are joined or assigned to a domain as a side effect of an operation and if the operation is undone, then the asignments which were performed on involved stores are not undone. This may require that a deep copy is generated before an operation is applied to a store graph.\r\r"
+                    attr: 1
+                  - text: Shallow copies
+                    attr: 3
+                  - text: "\r\rModule "
+                    attr: 1
+                  - text: Views
+                    attr: 3
+                  - text: " offers a procedure "
+                    attr: 1
+                  - text: "CopyOf "
+                    attr: 3
+                  - text: " which allows to make shallow copies of views. A shallow copy of a view means that the copy refers to the same model like the original. As models and views are always joined, this implies that a view and its shallow copy are also joined.\r\r"
+                    attr: 1
+                  - text: Inspecting a store set
+                    attr: 3
+                  - text: "\r\rA store set cannot be inspected programmatically beyond what is offered by procedure "
+                    attr: 1
+                  - text: Joined
+                    attr: 3
+                  - text: ". However, the debugger allows to iterate over all stores in a store set. The stores which belong to the same store set are linked in a circular list. As soon as a domain object is associated to the set, the links are set to "
+                    attr: 1
+                  - text: NIL
+                    attr: 3
+                  - text: " and each store in the set refers to the new domain object. To iterate over a store set the debugger has to be called before the store set is bound. Then, the stores can be iterated with the store's next field. Listing 2 shows a simple procedure which generates an empty text view and then opens the debugger. Following the "
+                    attr: 1
+                  - text: next
+                    attr: 3
+                  - text: " fields of the view "
+                    attr: 1
+                  - text: v
+                    attr: 3
+                  - text: ", you see that the following seven stores are joined in one set: "
+                    attr: 1
+                  - text: TextModels.Model
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: TextModels.Attributes
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: TextRulers.Ruler
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: TextRulers.Style
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: TextRulers.Attributes
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: TextViews.View
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: TextControllers.Controller
+                    attr: 3
+                  - text: ".\r\r"
+                    attr: 1
+                  - ruler:
+                      first: 360000
+                      left: 360000
+                      right: 5940000
+                      lead: 50800
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 504000 }
+                        - { stop: 648000 }
+                        - { stop: 792000 }
+                        - { stop: 936000 }
+                        - { stop: 2520000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "MODULE Test;\r\r\tIMPORT TextViews, TextModels;\r\t\r\tPROCEDURE "
+                    attr: 4
+                  - text: Do
+                    attr: 5
+                  - text: "*;\r\t\tVAR v: TextViews.View;\r\tBEGIN\r\t\tv := TextViews.dir.New(TextModels.dir.New());\r\t\tHALT(0);\r\tEND Do;\r\t\rEND Test.\r\r"
+                    attr: 4
+                  - text: "Listing 2: Inspecting the stores in a store set\r"
+                    attr: 3
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 136525
+                      dsc: 28575
+                      grid: 165100
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 360000 }
+                      attr: 3
+                      w: 360000000
+                      h: 444500
+                  - text: "\rUnattached\r"
+                    attr: 3
+                  - text: "\rFunction "
+                    attr: 1
+                  - text: Unattached(s)
+                    attr: 3
+                  - text: " tests whether a store"
+                    attr: 1
+                  - text: " s "
+                    attr: 3
+                  - text: "has been joined to other stores or was bound to a domain. If neither is the case "
+                    attr: 1
+                  - text: "Unattached "
+                    attr: 3
+                  - text: "returns "
+                    attr: 1
+                  - text: "TRUE"
+                    attr: 3
+                  - text: ". This function is only provided by the framework to decide whether a single store can be simply joined to another store graph or whether a deep copy must be generated; e.g., for a store that is kept in a cache and which may be joined to different store graphs.\r\rFor this special purpose the following code pattern is used. In this example, store "
+                    attr: 1
+                  - text: s1
+                    attr: 3
+                  - text: " is copied if it is attached. This way an unnecessary copy call in the case that the store is unattached is prevented.\r\r"
+                    attr: 1
+                  - text: "\tIF ~Stores.Joined(s0, s1) THEN\r\t\tIF ~Stores.Unattached(s1) THEN s1 := Stores.CopyOf(s1) END;\r\t\tStores.Join(s0, s1)\r\tEND;\r\r"
+                    attr: 4
+                  - text: "The pattern is not symmetric because it is often known statically that either s0 or s1 should never be copied. It is used for small stores which are generated once and which may be joined to different store sets.\r\r"
+                    attr: 1
+                  - text: Data types
+                    attr: 2
+                  - text: "\r\r"
+                    attr: 1
+                  - text: Stores
+                    attr: 3
+                  - text: " provides a pair of mapper types, which are used as parameters in a store's "
+                    attr: 1
+                  - text: Internalize
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: Externalize
+                    attr: 3
+                  - text: " procedures. These readers/writers use the following external (little endian) format:\r\rBOOLEAN\r\t1 byte (0 = FALSE, 1 = TRUE)\r\rSHORTCHAR\r\t1 byte in the Latin-1 character set (i.e., Unicode page 0; 00X..0FFX)\r\rCHAR\r\t2 byte in the Unicode character set (0000X..0FFFFX)\r\rBYTE\r\t1 byte (-128..127)\r\rSHORTINT\r\t2 bytes (-32768..32767)\r\rINTEGER\r\t4 bytes (-2147483648..2147483647)\r\rLONGINT\r\t8 bytes (-9223372036854775808..9223372036854775807)\r\rSHORTREAL\r\t4 bytes IEEE format\r\rREAL\r\t8 bytes IEEE format\r\rSET\r\t4 bytes (least significant bit = element 0)\r\rShort String\r\tstring in the Latin-1 character set, followed by a 00X\r\rString\r\tstring in the Unicode character set, followed by a 0000X\r\r\rCONST "
+                    attr: 1
+                  - text: alienVersion
+                    attr: 2
+                  - text: "\rThis value is assigned to a "
+                    attr: 1
+                  - text: Reader
+                    attr: 3
+                  - text: "'s "
+                    attr: 1
+                  - text: cause
+                    attr: 3
+                  - text: " field if "
+                    attr: 1
+                  - text: Reader.ReadVersion
+                    attr: 3
+                  - text: " read a version outside of the specified range.\r\rCONST "
+                    attr: 1
+                  - text: alienComponent
+                    attr: 2
+                  - text: "\rThis value can be used as "
+                    attr: 1
+                  - text: cause
+                    attr: 3
+                  - text: " parameter to "
+                    attr: 1
+                  - text: Reader.TurnIntoAlien
+                    attr: 3
+                  - text: " to indicate that the store itself could be read, but that some store contained in it is an alien. As an example, a view may turn itself into an alien if its model is an alien.\r\rCONST "
+                    attr: 1
+                  - text: inconsistentVersion
+                    attr: 2
+                  - text: "\rThis value is assigned to a "
+                    attr: 1
+                  - text: Reader
+                    attr: 3
+                  - text: "'s "
+                    attr: 1
+                  - text: cause
+                    attr: 3
+                  - text: " field if "
+                    attr: 1
+                  - text: Reader.ReadVersion
+                    attr: 3
+                  - text: " read a data block which has an inconsistent length, i.e., not all of its data have been read, or it has been attempted to read beyond the end of the data.\r\rCONST "
+                    attr: 1
+                  - text: inconsistentType
+                    attr: 2
+                  - text: "\rThis value is assigned to a "
+                    attr: 1
+                  - text: Reader
+                    attr: 3
+                  - text: "'s "
+                    attr: 1
+                  - text: cause
+                    attr: 3
+                  - text: " field if "
+                    attr: 1
+                  - text: Reader.ReadVersion
+                    attr: 3
+                  - text: " detected a change in the type extension hierarchy of the internalized type.\r\rCONST "
+                    attr: 1
+                  - text: moduleFileNotFound
+                    attr: 2
+                  - text: "\rThis value is assigned to a "
+                    attr: 1
+                  - text: Reader
+                    attr: 3
+                  - text: "'s "
+                    attr: 1
+                  - text: cause
+                    attr: 3
+                  - text: " field if "
+                    attr: 1
+                  - text: Reader.ReadVersion
+                    attr: 3
+                  - text: " tried to load a module defining an internalized type, and the codefile for this module couldn't be found.\r\rCONST "
+                    attr: 1
+                  - text: invalidModuleFile
+                    attr: 2
+                  - text: "\rThis value is assigned to a "
+                    attr: 1
+                  - text: Reader
+                    attr: 3
+                  - text: "'s "
+                    attr: 1
+                  - text: cause
+                    attr: 3
+                  - text: " field if "
+                    attr: 1
+                  - text: Reader.ReadVersion
+                    attr: 3
+                  - text: " tried to load a module defining an internalized type, and the module couldn't be loaded because it imports another module which cannot be loaded for some reason.\r\rCONST "
+                    attr: 1
+                  - text: inconsModuleVersion
+                    attr: 2
+                  - text: "\rThis value is assigned to a "
+                    attr: 1
+                  - text: Reader
+                    attr: 3
+                  - text: "'s "
+                    attr: 1
+                  - text: cause
+                    attr: 3
+                  - text: " field if "
+                    attr: 1
+                  - text: Reader.ReadVersion
+                    attr: 3
+                  - text: " tried to load a module defining an internalized type, and the module couldn't be loaded because its version is inconsistent with some already loaded module.\r\rCONST "
+                    attr: 1
+                  - text: typeNotFound
+                    attr: 2
+                  - text: "\rThis value is assigned to a "
+                    attr: 1
+                  - text: Reader
+                    attr: 3
+                  - text: "'s "
+                    attr: 1
+                  - text: cause
+                    attr: 3
+                  - text: " field if "
+                    attr: 1
+                  - text: Reader.ReadVersion
+                    attr: 3
+                  - text: " tried to internalize a non-existing type (the module was found, however).\r\r\rTYPE "
+                    attr: 1
+                  - text: TypeName
+                    attr: 2
+                  - text: "\rString type for the type name of an object.\r\r\rTYPE "
+                    attr: 1
+                  - text: TypePath
+                    attr: 2
+                  - text: "\rArray of type names.\r\r\rTYPE "
+                    attr: 1
+                  - text: OpName
+                    attr: 2
+                  - text: "\rString type for the name of an operation.\r\r\rTYPE "
+                    attr: 1
+                  - text: Domain
+                    attr: 2
+                  - text: "\rLIMITED\rA domain represents a graph of stores which may be saved in a file as a whole. All stores of a domain refer to an object of type "
+                    attr: 1
+                  - text: Domain
+                    attr: 3
+                  - text: ".\r\rPROCEDURE (d: Domain) GetSequencer (): ANYPTR\rNEW\rUsed internally.\r\rPROCEDURE (d: Domain) SetSequencer (sequencer: ANYPTR)\rNEW\rUsed internally.\r\r\rTYPE "
+                    attr: 1
+                  - text: Operation
+                    attr: 2
+                  - text: "\rABSTRACT\rAn operation is an object that represents a command performed on some store(s) of a domain. An operation can be undone (i.e., aborted) and redone.\r\rPROCEDURE (op: Operation) "
+                    attr: 1
+                  - text: Do
+                    attr: 2
+                  - text: "\rNEW, ABSTRACT\rThis method implements the actual behavior of the operation. It must be auto-inverse, i.e., if executed an even number of times, it must have no effect. If executed an odd number of times, it should have the same effect.\r\r\rTYPE "
+                    attr: 1
+                  - text: Store
+                    attr: 2
+                  - text: "\r"
+                    attr: 3
+                  - text: "ABSTRACT\rStorable extensible data types like "
+                    attr: 1
+                  - text: Views.View
+                    attr: 3
+                  - text: " or "
+                    attr: 1
+                  - text: TextModels.Text
+                    attr: 3
+                  - text: " are derived from "
+                    attr: 1
+                  - text: Store
+                    attr: 3
+                  - text: ".\rStores are typically allocated by suitable directories, e.g., "
+                    attr: 1
+                  - text: Views.Directory
+                    attr: 3
+                  - text: " or "
+                    attr: 1
+                  - text: TextModels.Directory
+                    attr: 3
+                  - text: ".\rStores are used as base types for all objects that must be both extensible and persistent.\r\rPROCEDURE (s: Store) "
+                    attr: 1
+                  - text: Domain
+                    attr: 2
+                  - text: " (): Domain\rNEW\rA store may be associated with a domain. This is done by the procedure "
+                    attr: 1
+                  - text: InitDomain
+                    attr: 3
+                  - text: ", which assigns a domain to the store.\r"
+                    attr: 1
+                  - text: Domain
+                    attr: 3
+                  - text: " may be called by arbitrary clients.\r\rPROCEDURE (s: Store) "
+                    attr: 1
+                  - text: CopyFrom
+                    attr: 2
+                  - text: "- (source: Store)\rNEW, EMPTY\rCopy the contents of "
+                    attr: 1
+                  - text: source
+                    attr: 3
+                  - text: " to "
+                    attr: 1
+                  - text: s
+                    attr: 3
+                  - text: ". Copying is a deep copy.\r\rPre\rsource # NIL\tguaranteed\rTYP(source) = TYP(s)\tguaranteed\rs.Domain() = NIL\tguaranteed\rs is not yet initialized\tguaranteed\r\rPROCEDURE (s: Store) "
+                    attr: 1
+                  - text: Internalize
+                    attr: 2
+                  - text: "- (VAR rd: Reader)\rNEW, EMPTY\r(For backward compatibility, this method is actually still EXTENSIBLE. This may change in the future.)\rReads the contents of "
+                    attr: 1
+                  - text: s
+                    attr: 3
+                  - text: " from reader "
+                    attr: 1
+                  - text: rd
+                    attr: 3
+                  - text: ". "
+                    attr: 1
+                  - text: Internalize
+                    attr: 3
+                  - text: " must read the same (amount of) data as is written by the corresponding "
+                    attr: 1
+                  - text: Externalize
+                    attr: 3
+                  - text: " procedure.\r"
+                    attr: 1
+                  - text: Internalize
+                    attr: 3
+                  - text: " is called locally.\r"
+                    attr: 1
+                  - text: Internalize
+                    attr: 3
+                  - text: " is extended by various persistent object types, e.g., models, views, and controllers.\r\rPre\rsource.Domain() = NIL\tguaranteed\rsource is not yet initialized\tguaranteed\r\rPROCEDURE (s: Store) "
+                    attr: 1
+                  - text: Externalize
+                    attr: 2
+                  - text: "- (VAR wr: Writer)\rNEW, EMPTY\r(For backward compatibility, this method is actually still EXTENSIBLE. This may change in the future.)\rWrite the contents of "
+                    attr: 1
+                  - text: s
+                    attr: 3
+                  - text: " to writer "
+                    attr: 1
+                  - text: wr
+                    attr: 3
+                  - text: ". "
+                    attr: 1
+                  - text: Externalize
+                    attr: 3
+                  - text: " must write the same (amount of) data as is read by the corresponding "
+                    attr: 1
+                  - text: Internalize
+                    attr: 3
+                  - text: " procedure.\r"
+                    attr: 1
+                  - text: Externalize
+                    attr: 3
+                  - text: " ist called locally.\r"
+                    attr: 1
+                  - text: Externalize
+                    attr: 3
+                  - text: " is extended by various persistent object types, e.g., models, views, and controllers.\r\rPROCEDURE (s: Store) "
+                    attr: 1
+                  - text: ExternalizeAs
+                    attr: 2
+                  - text: "- (VAR s1: Store)\rNEW, EMPTY\rBefore a store's "
+                    attr: 1
+                  - text: Externalize
+                    attr: 3
+                  - text: " procedure is called, its "
+                    attr: 1
+                  - text: ExternalizeAs
+                    attr: 3
+                  - text: " procedure is called, which gives the store the opportunity to denote another store that should be externalized in its place (a \"proxy\"). It is also possible to set "
+                    attr: 1
+                  - text: s1
+                    attr: 3
+                  - text: " to "
+                    attr: 1
+                  - text: NIL
+                    attr: 3
+                  - text: ", which means that the store should not be externalized at all. This is used e.g. for compiler error markers, which are never stored.\r"
+                    attr: 1
+                  - text: ExternalizeAs
+                    attr: 3
+                  - text: " ist called locally.\r\rPre\rs1 = s\tguaranteed\r\r\rTYPE "
+                    attr: 1
+                  - text: Reader
+                    attr: 2
+                  - text: "\rReader for Component Pascal values like integers, reals, or sets. A reader contains a "
+                    attr: 1
+                  - text: Files.Reader
+                    attr: 3
+                  - text: ", to which it forwards most operations.\rReaders are used in the "
+                    attr: 1
+                  - text: Store.Internalize
+                    attr: 3
+                  - text: " procedure.\rReaders are not extensible.\r\r"
+                    attr: 1
+                  - text: rider
+                    attr: 2
+                  - text: "-: Files.Reader\rThe file rider which links a "
+                    attr: 1
+                  - text: Reader
+                    attr: 3
+                  - text: " to a file.\r\r"
+                    attr: 1
+                  - text: cancelled
+                    attr: 2
+                  - text: "-: BOOLEAN\tvalid during a "
+                    attr: 1
+                  - text: Store.Internalize
+                    attr: 3
+                  - text: " call\rTells whether the currently executing "
+                    attr: 1
+                  - text: Internalize
+                    attr: 3
+                  - text: " has been called by "
+                    attr: 1
+                  - text: ReadVersion
+                    attr: 3
+                  - text: " or "
+                    attr: 1
+                  - text: TurnIntoAlien
+                    attr: 3
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: readAlien
+                    attr: 2
+                  - text: "-: BOOLEAN\rTells whether any alien has been read since the last "
+                    attr: 1
+                  - text: ConnectTo
+                    attr: 3
+                  - text: ".\r\rPROCEDURE (VAR rd: Reader) "
+                    attr: 1
+                  - text: ConnectTo
+                    attr: 2
+                  - text: " (f: Files.File)\rNEW\rConnect the reader to a file. All the following operations require connected readers, i.e., "
+                    attr: 1
+                  - text: "rd.rider # NIL"
+                    attr: 3
+                  - text: ". This precondition is not checked explicitly, however. After connecting, the reader's position is at the beginning of the file. If the same reader should be reused on another file, it must first be closed, by connecting it to "
+                    attr: 1
+                  - text: NIL
+                    attr: 3
+                  - text: ".\r"
+                    attr: 1
+                  - text: ConnectTo
+                    attr: 3
+                  - text: " is used internally.\r\rPre\r20\t(f = NIL) OR (rd.rider = NIL)\r\rPost\rf = NIL\r\trd.rider = NIL\rf # NIL\r\t(rd.rider # NIL) & (rd.rider.Base() = f)\r\trd.Pos() = 0\r\rPROCEDURE (VAR rd: Reader) "
+                    attr: 1
+                  - text: Pos
+                    attr: 2
+                  - text: " (): INTEGER\rNEW\rReturns the reader's current position.\r\rPost\r0 <= result <= rd.rider.Base().Length()\r\rPROCEDURE (VAR rd: Reader) "
+                    attr: 1
+                  - text: SetPos
+                    attr: 2
+                  - text: " (pos: INTEGER)\rNEW\rSets the reader's current position to "
+                    attr: 1
+                  - text: pos
+                    attr: 3
+                  - text: ".\r\rPre\r20\tpos >= 0\r21\tpos <= rd.rider.Base().Length()\r\rPost\rrd.Pos() = pos\r~rd.rider.eof\r\rPROCEDURE (VAR rd: Reader) "
+                    attr: 1
+                  - text: ReadBool
+                    attr: 2
+                  - text: " (OUT x: BOOLEAN)\rNEW\rReads a Boolean value.\r\rPROCEDURE (VAR rd: Reader) "
+                    attr: 1
+                  - text: ReadSChar
+                    attr: 2
+                  - text: " (OUT x: SHORTCHAR)\rNEW\rReads a short character (00X..0FFX).\r\rPROCEDURE (VAR rd: Reader) "
+                    attr: 1
+                  - text: ReadXChar
+                    attr: 2
+                  - text: " (OUT x: CHAR)\rNEW\rSame as "
+                    attr: 1
+                  - text: ReadSChar
+                    attr: 3
+                  - text: ", but has a "
+                    attr: 1
+                  - text: CHAR
+                    attr: 3
+                  - text: "-type parameter.\rThis procedure is provided to simplify migration from Release 1.2 to 1.3.\r\rPROCEDURE (VAR rd: Reader) "
+                    attr: 1
+                  - text: ReadChar
+                    attr: 2
+                  - text: " (OUT x: CHAR)\rNEW\rReads a character (0000X..0FFFFX).\r\rPROCEDURE (VAR rd: Reader) "
+                    attr: 1
+                  - text: ReadByte
+                    attr: 2
+                  - text: " (OUT x: BYTE)\rNEW\rReads a very short integer (-128..127).\r\rPROCEDURE (VAR rd: Reader) "
+                    attr: 1
+                  - text: ReadSInt
+                    attr: 2
+                  - text: " (OUT x: SHORTINT)\rNEW\rReads a short integer (-32768..32767).\r\rPROCEDURE (VAR rd: Reader) "
+                    attr: 1
+                  - text: ReadXInt
+                    attr: 2
+                  - text: " (OUT x: INTEGER)\rNEW\rSame as "
+                    attr: 1
+                  - text: ReadSInt
+                    attr: 3
+                  - text: ", but has an "
+                    attr: 1
+                  - text: INTEGER
+                    attr: 3
+                  - text: "-type parameter.\rThis procedure is provided to simplify migration from Release 1.2 to 1.3.\r\rPROCEDURE (VAR rd: Reader) "
+                    attr: 1
+                  - text: ReadInt
+                    attr: 2
+                  - text: " (OUT x: INTEGER)\rNEW\rReads an integer (-2147483648..2147483647).\r\rPROCEDURE (VAR rd: Reader) "
+                    attr: 1
+                  - text: ReadLong
+                    attr: 2
+                  - text: " (OUT x: LONGINT)\rNEW\rReads a long integer (-9223372036854775808..9223372036854775807).\r\rPROCEDURE (VAR rd: Reader) "
+                    attr: 1
+                  - text: ReadSReal
+                    attr: 2
+                  - text: " (OUT x: SHORTREAL)\rNEW\rReads a short real (32-bit IEEE number).\r\rPROCEDURE (VAR rd: Reader) "
+                    attr: 1
+                  - text: ReadXReal
+                    attr: 2
+                  - text: " (OUT x: REAL)\rNEW\rSame as "
+                    attr: 1
+                  - text: ReadSReal
+                    attr: 3
+                  - text: ", but has a "
+                    attr: 1
+                  - text: REAL
+                    attr: 3
+                  - text: "-type parameter.\rThis procedure is provided to simplify migration from Release 1.2 to 1.3.\r\rPROCEDURE (VAR rd: Reader) "
+                    attr: 1
+                  - text: ReadReal
+                    attr: 2
+                  - text: " (OUT x: REAL)\rNEW\rReads a real (64-bit IEEE number).\r\rPROCEDURE (VAR rd: Reader) "
+                    attr: 1
+                  - text: ReadSet
+                    attr: 2
+                  - text: " (OUT x: SET)\rNEW\rReads a set (32 elements).\r\rPROCEDURE (VAR rd: Reader) "
+                    attr: 1
+                  - text: ReadSString
+                    attr: 2
+                  - text: " (OUT x: ARRAY OF SHORTCHAR)\rNEW\rReads a 0X-terminated short string.\r\rPre\rinvalid index\t LEN(x) > Length(string)\r\rPROCEDURE (VAR rd: Reader) "
+                    attr: 1
+                  - text: ReadXString
+                    attr: 2
+                  - text: " (OUT x: ARRAY OF CHAR)\rNEW\rSame as "
+                    attr: 1
+                  - text: ReadSString
+                    attr: 3
+                  - text: ", but has a string-type parameter.\rThis procedure is provided to simplify migration from Release 1.2 to 1.3.\r\rPROCEDURE (VAR rd: Reader) "
+                    attr: 1
+                  - text: ReadString
+                    attr: 2
+                  - text: " (OUT x: ARRAY OF CHAR)\rNEW\rReads a 0X-terminated string.\r\rPre\rinvalid index\t LEN(x) > Length(string)\r\rPROCEDURE (VAR rd: Reader) "
+                    attr: 1
+                  - text: ReadStore
+                    attr: 2
+                  - text: " (OUT x: Store)\rNEW\rReads a store's type, allocates it, and then reads its contents, by calling the store's "
+                    attr: 1
+                  - text: Internalize
+                    attr: 3
+                  - text: " procedure. "
+                    attr: 1
+                  - text: x
+                    attr: 3
+                  - text: " may also be "
+                    attr: 1
+                  - text: NIL
+                    attr: 3
+                  - text: ", or an alien if the store's module cannot be loaded, or if internalization has been cancelled by the "
+                    attr: 1
+                  - text: Internalize
+                    attr: 3
+                  - text: " procedure.\rIf the store has already been read in, a pointer to the same store is returned instead of allocating a new one. This means that arbitrary graphs that have been written with "
+                    attr: 1
+                  - text: WriteStore
+                    attr: 3
+                  - text: " are reconstructed correctly, including alias pointers to the same store, cycles, etc.\rIf the file on which the reader operates does not contain correct input, then an assertion trap will be caused (traps 101 to trap 106).\r\rPre\r20\tthe reader is at the start position of a new store\r\rPost\rempty store on file\r\tx = NIL\rnon-empty store on file\r\tx # NIL\r\t\tx IS Alien\r\t\t\tx.cause # 0\r\t\t\tx.type # \"\"\r\t\t\tx.file # NIL\r\t\t\tx.pos >= 0\tbeginning of store's data\r\t\t\tx.len >= 0\tlength of store's data\r\t\t\talien store contents are on x.file in the range [x.pos .. x.pos + x.len[.\r\t\t\tThese data include only the store's contents, not its prefix\r\t\t~(x IS Alien)\r\t\t\tx was read successfully\r\rPROCEDURE (VAR rd: Reader) "
+                    attr: 1
+                  - text: ReadVersion
+                    attr: 2
+                  - text: " (min, max: INTEGER; OUT version: INTEGER)\rNEW\rRead a version byte and return it in "
+                    attr: 1
+                  - text: version
+                    attr: 3
+                  - text: ". If "
+                    attr: 1
+                  - text: version
+                    attr: 3
+                  - text: " is not in the specified range "
+                    attr: 1
+                  - text: "[min .. max]"
+                    attr: 3
+                  - text: ", the store currently being read is turned into an alien, with "
+                    attr: 1
+                  - text: cause = alienVersion
+                    attr: 3
+                  - text: ".\r\rPre\r20\t0 <= min <= max\r\rPost\rmin <= version <= max\r\tlegal version\r(version < min) OR (version > max)\r\tillegal version\r\trd.cause = alienVersion\r\trd.cancelled\r\trd.readAlien\r\rPROCEDURE (VAR rd: Reader) "
+                    attr: 1
+                  - text: TurnIntoAlien
+                    attr: 2
+                  - text: " (cause: INTEGER)\rNEW\rA store which is currently being internalized can turn itself into an alien, e.g., if it has read a component store which is an alien.\r\rPre\r20\tcause > 0\r\r\rTYPE "
+                    attr: 1
+                  - text: Writer
+                    attr: 2
+                  - text: "\rWriter for Component Pascal values like integers, reals, or sets. A writer contains a "
+                    attr: 1
+                  - text: Files.Writer
+                    attr: 3
+                  - text: ", to which it forwards most operations.\rWriters are used in the "
+                    attr: 1
+                  - text: Externalize
+                    attr: 3
+                  - text: " procedure.\rWriters are not extensible.\r\r"
+                    attr: 1
+                  - text: rider
+                    attr: 2
+                  - text: "-: Files.Writer\rA file rider which links a "
+                    attr: 1
+                  - text: Writer
+                    attr: 3
+                  - text: " to a file.\r\r"
+                    attr: 1
+                  - text: writtenStore
+                    attr: 2
+                  - text: "-: Store\rStore which was most recently written as an effect of a call to "
+                    attr: 1
+                  - text: WriteStore
+                    attr: 3
+                  - text: ".\r\rPROCEDURE (VAR wr: Writer) "
+                    attr: 1
+                  - text: ConnectTo
+                    attr: 2
+                  - text: " (f: Files.File)\rNEW\rConnect the writer to a file. All the following operations require connected writers, i.e., "
+                    attr: 1
+                  - text: "wr.rider # NIL"
+                    attr: 3
+                  - text: ". This precondition is not checked explicitly, however. After connecting, the writer's position is at the end of the file. If the same writer should be reused on another file, it must first be closed, by connecting it to "
+                    attr: 1
+                  - text: NIL
+                    attr: 3
+                  - text: ".\r"
+                    attr: 1
+                  - text: ConnectTo
+                    attr: 3
+                  - text: " is used internally.\r\rPre\r20\t(f = NIL) OR (wr.rider = NIL)\r\rPost\rf = NIL\r\twr.rider = NIL\rf # NIL\r\twr.rider # NIL  &  wr.rider.Base() = f\r\twr.Pos() = wr.rider.Base().Length()\r\rPROCEDURE (VAR wr: Writer) "
+                    attr: 1
+                  - text: Pos
+                    attr: 2
+                  - text: " (): INTEGER\rNEW\rReturns the writer's current position.\r\rPost\r0 <= result <= wr.rider.Base().Length()\r\rPROCEDURE (VAR wr: Writer) "
+                    attr: 1
+                  - text: SetPos
+                    attr: 2
+                  - text: " (pos: INTEGER)\rNEW\rSets the writer's current position to "
+                    attr: 1
+                  - text: pos
+                    attr: 3
+                  - text: ".\r\rPre\r20\tpos >= 0\r21\tpos <= wr.rider.Base().Length()\r\rPost\rwr.Pos() = pos\r\rPROCEDURE (VAR wr: Writer) "
+                    attr: 1
+                  - text: WriteBool
+                    attr: 2
+                  - text: " (x: BOOLEAN)\rNEW\rWrites a Boolean value.\r\rPROCEDURE (VAR wr: Writer) "
+                    attr: 1
+                  - text: WriteSChar
+                    attr: 2
+                  - text: " (x: SHORTCHAR)\rNEW\rWrites a character (00X..0FFX).\r\rPROCEDURE (VAR wr: Writer) "
+                    attr: 1
+                  - text: WriteXChar
+                    attr: 2
+                  - text: " (x: CHAR)\rNEW\rSame as "
+                    attr: 1
+                  - text: WriteSChar
+                    attr: 3
+                  - text: ", but has a "
+                    attr: 1
+                  - text: CHAR
+                    attr: 3
+                  - text: "-type parameter.\rThis procedure is provided to simplify migration from Release 1.2 to 1.3.\r\rPROCEDURE (VAR wr: Writer) "
+                    attr: 1
+                  - text: WriteChar
+                    attr: 2
+                  - text: " (x: CHAR)\rNEW\rWrites a character (0000X..0FFFFX).\r\rPROCEDURE (VAR wr: Writer) "
+                    attr: 1
+                  - text: WriteByte
+                    attr: 2
+                  - text: " (x: BYTE)\rNEW\rWrites a very short integer (-128..127).\r\rPROCEDURE (VAR wr: Writer) "
+                    attr: 1
+                  - text: WriteSInt
+                    attr: 2
+                  - text: " (x: SHORTINT)\rNEW\rWrites a short integer (-32768..32767).\r\rPROCEDURE (VAR wr: Writer) "
+                    attr: 1
+                  - text: WriteXInt
+                    attr: 2
+                  - text: " (x: INTEGER)\rNEW\rSame as "
+                    attr: 1
+                  - text: WriteSInt
+                    attr: 3
+                  - text: ", but has an "
+                    attr: 1
+                  - text: INTEGER
+                    attr: 3
+                  - text: "-type parameter.\rThis procedure is provided to simplify migration from Release 1.2 to 1.3.\r\rPROCEDURE (VAR wr: Writer) "
+                    attr: 1
+                  - text: WriteInt
+                    attr: 2
+                  - text: " (x: INTEGER)\rNEW\rWrites an integer (-2147483648..2147483647).\r\rPROCEDURE (VAR wr: Writer) "
+                    attr: 1
+                  - text: WriteLong
+                    attr: 2
+                  - text: " (x: LONGINT)\rNEW\rWrites a long integer (-9223372036854775808..9223372036854775807).\r\rPROCEDURE (VAR wr: Writer) "
+                    attr: 1
+                  - text: WriteSReal
+                    attr: 2
+                  - text: " (x: SHORTREAL)\rNEW\rWrites a real (32-bit IEEE number).\r\rPROCEDURE (VAR wr: Writer) "
+                    attr: 1
+                  - text: WriteXReal
+                    attr: 2
+                  - text: " (x: REAL)\rNEW\rSame as "
+                    attr: 1
+                  - text: WriteSReal
+                    attr: 3
+                  - text: ", but has a "
+                    attr: 1
+                  - text: REAL
+                    attr: 3
+                  - text: "-type parameter.\rThis procedure is provided to simplify migration from Release 1.2 to 1.3.\r\rPROCEDURE (VAR wr: Writer) "
+                    attr: 1
+                  - text: WriteReal
+                    attr: 2
+                  - text: " (x: REAL)\rNEW\rWrites a long real (64-bit IEEE number).\r\rPROCEDURE (VAR wr: Writer) "
+                    attr: 1
+                  - text: WriteSet
+                    attr: 2
+                  - text: " (x: SET)\rNEW\rWrites a set (32 elements).\r\rPROCEDURE (VAR wr: Writer) "
+                    attr: 1
+                  - text: WriteSString
+                    attr: 2
+                  - text: " (IN x: ARRAY OF SHORTCHAR)\rNEW\rWrites a 0X-terminated short string.\r\rPROCEDURE (VAR wr: Writer) "
+                    attr: 1
+                  - text: WriteXString
+                    attr: 2
+                  - text: " (IN x: ARRAY OF CHAR)\rNEW\rSame as "
+                    attr: 1
+                  - text: WriteSString
+                    attr: 3
+                  - text: ", but has a string-type parameter.\rThis procedure is provided to simplify migration from Release 1.2 to 1.3.\r\rPROCEDURE (VAR wr: Writer) "
+                    attr: 1
+                  - text: WriteString
+                    attr: 2
+                  - text: " (IN x: ARRAY OF CHAR)\rNEW\rWrites a 0X-terminated string.\r\rPROCEDURE (VAR wr: Writer) "
+                    attr: 1
+                  - text: WriteStore
+                    attr: 2
+                  - text: " (x: Store)\rNEW\rWrites the store's type and then its contents, by calling the store's "
+                    attr: 1
+                  - text: Externalize
+                    attr: 3
+                  - text: " procedure. "
+                    attr: 1
+                  - text: x
+                    attr: 3
+                  - text: " may also be "
+                    attr: 1
+                  - text: NIL
+                    attr: 3
+                  - text: ", or an alien. Before "
+                    attr: 1
+                  - text: Externalize
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: ExternalizeAs
+                    attr: 3
+                  - text: " is called in order to give the store the opportunity to denote a proxy which should be stored in its stead. "
+                    attr: 1
+                  - text: WriteStore
+                    attr: 3
+                  - text: " writes "
+                    attr: 1
+                  - text: x
+                    attr: 3
+                  - text: " and (via "
+                    attr: 1
+                  - text: Externalize
+                    attr: 3
+                  - text: ") all the stores that it contains. Cycles are handled correctly, i.e., a store is only written once, even if referenced several times in a complex graph.\rAll stores that are written using the same writer must have the identical domain.\r\rPre\r20\twr.rider # NIL\r21\tx # NIL  =>  writer must have no domain, or the same one as x (and as all previously written stores)\r\rPROCEDURE (VAR wr: Writer) "
+                    attr: 1
+                  - text: WriteVersion
+                    attr: 2
+                  - text: " (version: INTEGER)\rNEW\rWrites a version byte.\r\rPre\r20\t0 <= version <= 127\r\r\rTYPE "
+                    attr: 1
+                  - text: "AlienComp, AlienPiece, AlienPart, Alien"
+                    attr: 2
+                  - text: "\rLIMITED\rThese auxiliary types are used internally, to handle alien stores.\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: Join
+                    attr: 2
+                  - text: " (s0, s1: Store)\rJoin two stores in the same store set. See the explanation at the beginning of this text.\r\rPre\r20\ts0 # NIL\r21\ts1 # NIL\r22\ts0.Domain() = NIL  OR  s1.Domain() = NIL  OR  s0.Domain() = s1.Domain()\r\rPost\rJoined(s0, s1)\r\rPROCEDURE "
+                    attr: 1
+                  - text: Joined
+                    attr: 2
+                  - text: " (s0, s1: Store): BOOLEAN\rTest whether two stores are joined. "
+                    attr: 1
+                  - text: "Joined(x, x)"
+                    attr: 3
+                  - text: " always returns "
+                    attr: 1
+                  - text: "TRUE"
+                    attr: 3
+                  - text: ", i.e., it is reflexive.\r\rPre\r20\ts0 # NIL\r21\ts1 # NIL\r\rPROCEDURE "
+                    attr: 1
+                  - text: Unattached
+                    attr: 2
+                  - text: " (s: Store): BOOLEAN\rTests whether "
+                    attr: 1
+                  - text: s
+                    attr: 3
+                  - text: " is not attached to a domain "
+                    attr: 1
+                  - text: and
+                    attr: 3
+                  - text: " whether it has not been joined with another store.\rRarely used.\r\rPre\r20\ts # NIL\r\rPROCEDURE "
+                    attr: 1
+                  - text: CopyOf
+                    attr: 2
+                  - text: " (s: Store): Store\rReturns the clone of a store, with its contents copied. \r"
+                    attr: 1
+                  - text: CopyOf
+                    attr: 3
+                  - text: " allocates a new record with the same "
+                    attr: 1
+                  - text: dynamic
+                    attr: 3
+                  - text: " type as "
+                    attr: 1
+                  - text: s
+                    attr: 3
+                  - text: ", and initializes it by calling its "
+                    attr: 1
+                  - text: CopyFrom
+                    attr: 3
+                  - text: " procedure. The copy is a deep copy.\r\rPre\r20\ts # NIL\r\rPost\r(result # NIL) & (result # s)\rTYP(result) = TYP(s)\r\rPROCEDURE "
+                    attr: 1
+                  - text: InitDomain
+                    attr: 2
+                  - text: " (s: Store)\rInitializes the domain of store "
+                    attr: 1
+                  - text: s
+                    attr: 3
+                  - text: ". See the explanation at the beginning of this text.\r\rPre\r20\ts # NIL\r\rPost\rs.Domain() # NIL\r\rPROCEDURE "
+                    attr: 1
+                  - text: ExternalizeProxy
+                    attr: 2
+                  - text: " (s: Store): Store\rCauses "
+                    attr: 1
+                  - text: s
+                    attr: 3
+                  - text: " to call its "
+                    attr: 1
+                  - text: ExternalizeAs
+                    attr: 3
+                  - text: " method, basically doing the following:\r\r\tIF s # NIL THEN s.ExternalizeAs(s) END;\r\tRETURN s\r\rPROCEDURE "
+                    attr: 1
+                  - text: Report
+                    attr: 2
+                  - text: " (IN msg, p0, p1, p2: ARRAY OF CHAR)\rWhen a store encounters a problem during internalization, it can report the problem by calling this procedure. The parameters are similar to "
+                    attr: 1
+                  - text: Dialog.ShowParamMsg
+                    attr: 3
+                  - text: ".\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 23
+          bodyPos: 43761
+          bodyLen: 8

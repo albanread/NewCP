@@ -1,0 +1,395 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Form\\Mod\\Cmds.odc"
+  size: 14962
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 14831
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 14645
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 14559
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 114300
+                color: 0x00000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 14680
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 14166
+                runListLen: 2113
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE FormCmds;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tpurpose\t= \"\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT\r\t\tStrings, Dialog, Ports, Stores, Models, Views, Properties, Controls, Containers,\r\t\tFormModels, FormViews, FormControllers, StdCmds; \r\r\tCONST\r\t\tmm = Ports.mm; inch16th = Ports.inch DIV 16;\r\t\tleft = 0; top = 1; right = 2; bottom = 3; row = 4; column = 5;\r\r\tVAR\r\t\t"
+                    attr: 0
+                  - text: grid
+                    attr: 3
+                  - text: "*: RECORD\r\t\t\tresolution*: INTEGER;\t"
+                    attr: 0
+                  - text: "(* resolution > 0 *)"
+                    attr: 1
+                  - text: "\r\t\t\tmetricSystem*: BOOLEAN\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: find
+                    attr: 3
+                  - text: "*: RECORD\r\t\t\tfrom*, to*: ARRAY 256 OF CHAR;\r\t\t\tlink*, label*, guard*, notifier*: BOOLEAN;\r\t\tEND;\r\r\r\tPROCEDURE FindExtrema (c: FormControllers.Controller; OUT l, t, r, b, h, v: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\tOUT s: FormControllers.List);\r\t\tVAR n: INTEGER; p: FormControllers. List; q: FormModels.Reader; w: Views.View;\r\tBEGIN\t"
+                    attr: 0
+                  - text: "(* there is at least one view selected *)"
+                    attr: 1
+                  - text: "\r\t\tl := MAX(INTEGER); t := MAX(INTEGER); r := MIN(INTEGER); b := MIN(INTEGER);\r\t\th := 0; v := 0; n := 0; s := NIL;\r\t\tq := c.form.NewReader(NIL); q.Set(NIL); q.ReadView(w);\r\t\tWHILE w # NIL DO\r\t\t\tIF c.IsSelected(w) THEN\r\t\t\t\tINC(h, q.l); INC(h, q.r); INC(v, q.t); INC(v, q.b); INC(n, 2);\r\t\t\t\tNEW(p); p.next := s; s := p; p.view := w;\r\t\t\t\tIF q.l < l THEN l := q.l END;\r\t\t\t\tIF q.t < t THEN t := q.t END;\r\t\t\t\tIF q.r > r THEN r := q.r END;\r\t\t\t\tIF q.b > b THEN b := q.b END\r\t\t\tEND;\r\t\t\tq.ReadView(w)\r\t\tEND;\r\t\th := h DIV n; v := v DIV n\r\tEND FindExtrema;\r\r\tPROCEDURE Move (c: FormControllers.Controller; s: FormControllers. List; p, side: INTEGER;\r\t\t\t\t\t\t\t\t\tname: Stores.OpName);\r\t\tVAR script: Stores.Operation; w, h: INTEGER; l, t, r, b: INTEGER; s0: FormControllers.List;\r\tBEGIN\r\t\ts0 := s;\r\t\tModels.BeginScript(c.form, name, script);\r\t\tWHILE s # NIL DO\r\t\t\ts.view.context(FormModels.Context).GetRect(l, t, r, b); w := r - l; h := b - t;\r\t\t\tIF side = left THEN\r\t\t\t\tl := p; r := l + w\r\t\t\tELSIF side = top THEN\r\t\t\t\tt := p; b := t + h\r\t\t\tELSIF side = right THEN\r\t\t\t\tr := p; l := r - w\r\t\t\tELSIF side = bottom THEN\r\t\t\t\tb := p; t := b - h\r\t\t\tELSIF side = row THEN\r\t\t\t\tt := p - h DIV 2; b := t + h\r\t\t\tELSIF side = column THEN\r\t\t\t\tl := p - w DIV 2; r := l + w\r\t\t\tEND;\r\t\t\tc.form.Resize(s.view, l, t, r, b);\r\t\t\ts := s.next\r\t\tEND;\r\t\tModels.EndScript(c.form, script);\r\t\tWHILE s0 # NIL DO c.Select(s0.view); s0 := s0.next END\r\tEND Move;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: AlignLeft
+                    attr: 3
+                  - text: "*;\r\t"
+                    attr: 0
+                  - text: "(** Guard: SelectionGuard **)"
+                    attr: 1
+                  - text: "\r\t\tVAR c: FormControllers.Controller; l, t, r, b, h, v: INTEGER; s: FormControllers.List;\r\tBEGIN\r\t\tc := FormControllers.Focus();\r\t\tIF (c # NIL) & c.HasSelection() THEN\r\t\t\tFindExtrema(c, l, t, r, b, h, v, s); Move(c, s, l, left, \"#Form:AlignLeft\")\r\t\tEND\r\tEND AlignLeft;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: AlignRight
+                    attr: 3
+                  - text: "*;\r\t"
+                    attr: 0
+                  - text: "(** Guard: SelectionGuard **)"
+                    attr: 1
+                  - text: "\r\t\tVAR c: FormControllers.Controller; l, t, r, b, h, v: INTEGER; s: FormControllers.List;\r\tBEGIN\r\t\tc := FormControllers.Focus();\r\t\tIF (c # NIL) & c.HasSelection() THEN\r\t\t\tFindExtrema(c, l, t, r, b, h, v, s); Move(c, s, r, right, \"#Form:AlignRight\")\r\t\tEND\r\tEND AlignRight;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: AlignTop
+                    attr: 3
+                  - text: "*;\r\t"
+                    attr: 0
+                  - text: "(** Guard: SelectionGuard **)"
+                    attr: 1
+                  - text: "\r\t\tVAR c: FormControllers.Controller; l, t, r, b, h, v: INTEGER; s: FormControllers.List;\r\tBEGIN\r\t\tc := FormControllers.Focus();\r\t\tIF (c # NIL) & c.HasSelection() THEN\r\t\t\tFindExtrema(c, l, t, r, b, h, v, s); Move(c, s, t, top, \"#Form:AlignTop\")\r\t\tEND\r\tEND AlignTop;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: AlignBottom
+                    attr: 3
+                  - text: "*;\r\t"
+                    attr: 0
+                  - text: "(** Guard: SelectionGuard **)"
+                    attr: 1
+                  - text: "\r\t\tVAR c: FormControllers.Controller; l, t, r, b, h, v: INTEGER; s: FormControllers.List;\r\tBEGIN\r\t\tc := FormControllers.Focus();\r\t\tIF (c # NIL) & c.HasSelection() THEN\r\t\t\tFindExtrema(c, l, t, r, b, h, v, s); Move(c, s, b, bottom, \"#Form:AlignBottom\")\r\t\tEND\r\tEND AlignBottom;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: AlignToRow
+                    attr: 3
+                  - text: "*;\r\t"
+                    attr: 0
+                  - text: "(** Guard: SelectionGuard **)"
+                    attr: 1
+                  - text: "\r\t\tVAR c: FormControllers.Controller; l, t, r, b, h, v: INTEGER; s: FormControllers.List;\r\tBEGIN\r\t\tc := FormControllers.Focus();\r\t\tIF (c # NIL) & c.HasSelection() THEN\r\t\t\tFindExtrema(c, l, t, r, b, h, v, s); Move(c, s, v, row, \"#Form:AlignHorizontal\")\r\t\tEND\r\tEND AlignToRow;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: AlignToColumn
+                    attr: 3
+                  - text: "*;\r\t"
+                    attr: 0
+                  - text: "(** Guard: SelectionGuard **)"
+                    attr: 1
+                  - text: "\r\t\tVAR c: FormControllers.Controller; l, t, r, b, h, v: INTEGER; s: FormControllers.List;\r\tBEGIN\r\t\tc := FormControllers.Focus();\r\t\tIF (c # NIL) & c.HasSelection() THEN\r\t\t\tFindExtrema(c, l, t, r, b, h, v, s); Move(c, s, h, column, \"#Form:AlignVertical\")\r\t\tEND\r\tEND AlignToColumn;\r\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SelectOffGridViews
+                    attr: 3
+                  - text: "*;\r\t\tVAR c: FormControllers.Controller; v: Views.View; h: FormModels.Reader;\r\t\t\tl, t, r, b, l0, t0, r0, b0: INTEGER;\r\tBEGIN\r\t\tc := FormControllers.Focus();\r\t\tIF c # NIL THEN\r\t\t\tc.SelectAll(FALSE);\r\t\t\th := c.form.NewReader(NIL);\r\t\t\th.ReadView(v);\r\t\t\tWHILE v # NIL DO\r\t\t\t\tv.context(FormModels.Context).GetRect(l, t, r, b);\r\t\t\t\tl0 := l; t0 := t; r0 := r; b0 := b;\r\t\t\t\tFormViews.RoundToGrid(c.view, l0, t0);\r\t\t\t\tFormViews.RoundToGrid(c.view, r0, b0);\r\t\t\t\tIF (l0 # l) OR (t0 # t) OR (r0 # r) OR (b0 # b) THEN c.Select(v) END;\r\t\t\t\th.ReadView(v)\r\t\t\tEND\r\t\tEND\r\tEND SelectOffGridViews;\r\r\r\tPROCEDURE Selection (c: FormControllers.Controller): FormControllers.List;\r\t\tVAR p, q: FormControllers. List; h: FormModels.Reader; v: Views.View;\r\tBEGIN\r\t\tp := NIL;\r\t\th := c.form.NewReader(NIL); h.Set(NIL); h.ReadView(v);\r\t\tWHILE v # NIL DO\r\t\t\tIF c.IsSelected(v) THEN NEW(q); q.next := p; p := q; q.view := v END;\r\t\t\th.ReadView(v)\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " p\r\tEND Selection;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ForceToGrid
+                    attr: 3
+                  - text: "*;\r\t"
+                    attr: 0
+                  - text: "(** Guard: SelectionGuard **)"
+                    attr: 1
+                  - text: "\r\t\tVAR c: FormControllers.Controller;\r\t\t\tl, t, r, b: INTEGER; sel, sel0: FormControllers.List; s: Stores.Operation;\r\tBEGIN\r\t\tc := FormControllers.Focus();\r\t\tIF (c # NIL) & c.HasSelection() THEN\r\t\t\tModels.BeginScript(c.form, \"#Form:ForceToGrid\", s);\r\t\t\tsel := Selection(c); sel0 := sel;\r\t\t\tWHILE sel # NIL DO\r\t\t\t\tsel.view.context(FormModels.Context).GetRect(l, t, r, b);\r\t\t\t\tFormViews.RoundToGrid(c.view, l, t);\r\t\t\t\tFormViews.RoundToGrid(c.view, r, b);\r\t\t\t\tc.form.Resize(sel.view, l, t, r, b);\r\t\t\t\tsel := sel.next\r\t\t\tEND;\r\t\t\tModels.EndScript(c.form, s);\r\t\t\tWHILE sel0 # NIL DO c.Select(sel0.view); sel0 := sel0.next END\r\t\tEND\r\tEND ForceToGrid;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SortViews
+                    attr: 3
+                  - text: "*;\r\t"
+                    attr: 0
+                  - text: "(** Guard: FocusGuard **)"
+                    attr: 1
+                  - text: "\r\t\tVAR c: FormControllers.Controller; script: Stores.Operation;\r\t\t\tr: FormModels.Reader; p, q: Views.View;\r\r\t\tPROCEDURE IsAbove (p, q: Views.View): BOOLEAN;\r\t\t\tVAR l0, l1, t0, t1, r, b: INTEGER;\r\t\tBEGIN\r\t\t\tp.context(FormModels.Context).GetRect(l0, t0, r, b);\r\t\t\tq.context(FormModels.Context).GetRect(l1, t1, r, b);\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " (t0 < t1) OR (t0 = t1) & (l0 <= l1)\r\t\tEND IsAbove;\r\r\tBEGIN\r\t\tc := FormControllers.Focus();\r\t\tIF (c # NIL) & (c.form.NofViews() > 1) THEN\r\t\t\tc.SelectAll(FALSE);\r\t\t\tModels.BeginScript(c.form, \"#Form:ChangeZOrder\", script);\r\t\t\tr := c.form.NewReader(NIL);\r\t\t\tREPEAT\t"
+                    attr: 0
+                  - text: "(* bubble sort *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tr.Set(NIL); r.ReadView(p); r.ReadView(q);\r\t\t\t\tWHILE (q # NIL) & IsAbove(p, q) DO p := q; r.ReadView(q) END;\r\t\t\t\tIF q # NIL THEN c.form.PutAbove(p, q) END\r\t\t\tUNTIL q = NIL;\r\t\t\tModels.EndScript(c.form, script);\r\t\t\tc.SelectAll(TRUE)\r\t\tEND\r\tEND SortViews;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetAsFirst
+                    attr: 3
+                  - text: "*;\r\t"
+                    attr: 0
+                  - text: "(** Guard: SingletonGuard **)"
+                    attr: 1
+                  - text: "\r\t"
+                    attr: 0
+                  - text: "(** send to back **)"
+                    attr: 1
+                  - text: "\r\t\tVAR c: FormControllers.Controller; v: Views.View;\r\tBEGIN\r\t\tc := FormControllers.Focus();\r\t\tIF c # NIL THEN\r\t\t\tv := c.Singleton();\r\t\t\tIF v # NIL THEN\r\t\t\t\tc.form.PutAbove(v, NIL);\r\t\t\t\tc.SetSingleton(v)\r\t\t\tEND\r\t\tEND\r\tEND SetAsFirst;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetAsLast
+                    attr: 3
+                  - text: "*;\r\t"
+                    attr: 0
+                  - text: "(** Guard: SingletonGuard **)"
+                    attr: 1
+                  - text: "\r\t"
+                    attr: 0
+                  - text: "(** bring to front **)"
+                    attr: 1
+                  - text: "\r\t\tVAR c: FormControllers.Controller; v, p, q: Views.View; r: FormModels.Reader;\r\tBEGIN\r\t\tc := FormControllers.Focus();\r\t\tIF c # NIL THEN\r\t\t\tv := c.Singleton();\r\t\t\tIF v # NIL THEN\r\t\t\t\tr := c.form.NewReader(NIL); r.Set(v); p := v;\r\t\t\t\tREPEAT q := p; r.ReadView(p) UNTIL p = NIL;\r\t\t\t\tc.form.PutAbove(v, q);\r\t\t\t\tc.SetSingleton(v)\r\t\t\tEND\r\t\tEND\r\tEND SetAsLast;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: InsertAround
+                    attr: 3
+                  - text: "*;\r\t"
+                    attr: 0
+                  - text: "(** Guard: SelectionGuard **)"
+                    attr: 1
+                  - text: "\r\t\tCONST d = 3 * Ports.mm;\r\t\tVAR c: FormControllers.Controller; v: Views.View; rd: FormModels.Reader; l, t, r, b: INTEGER;\r\t\t\ts: Stores.Operation;\r\tBEGIN\r\t\tASSERT(Views.Available() = 1, 20);\r\t\tc := FormControllers.Focus();\r\t\tIF (c # NIL) & c.HasSelection() THEN\r\t\t\tl := MAX(INTEGER); t := MAX(INTEGER); r := MIN(INTEGER); b := MIN(INTEGER);\r\t\t\trd := c.form.NewReader(NIL); rd.ReadView(v);\r\t\t\tWHILE v # NIL DO\r\t\t\t\tIF c.IsSelected(v) THEN\r\t\t\t\t\tIF rd.l < l THEN l := rd.l END;\r\t\t\t\t\tIF rd.t < t THEN t := rd.t END;\r\t\t\t\t\tIF rd.r > r THEN r := rd.r END;\r\t\t\t\t\tIF rd.b > b THEN b := rd.b END\r\t\t\t\tEND;\r\t\t\t\trd.ReadView(v)\r\t\t\tEND;\r\t\t\tASSERT(l < r, 100);\r\t\t\tDEC(l, d); DEC(t, 3 * d); INC(r, d); INC(b, d);\r\t\t\tFormViews.RoundToGrid(c.view, l, t);\r\t\t\tFormViews.RoundToGrid(c.view, r, b);\r\t\t\tViews.Fetch(v);\r\t\t\tModels.BeginScript(c.form, \"#Form:InsertAround\", s);\r\t\t\tc.form.Insert(v, l, t, r, b);\r\t\t\tc.form.PutAbove(v, NIL);\r\t\t\tModels.EndScript(c.form, s);\r\t\t\tc.SetSingleton(v)\r\t\tELSE\r\t\t\tStdCmds.PasteView\r\t\tEND\r\tEND InsertAround;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: InitGridDialog
+                    attr: 3
+                  - text: "*;\r\t"
+                    attr: 0
+                  - text: "(** Guard: FocusGuard **)"
+                    attr: 1
+                  - text: "\r\t\tVAR c: FormControllers.Controller; g: INTEGER;\r\tBEGIN\r\t\tc := FormControllers.Focus();\r\t\tIF c # NIL THEN\r\t\t\tg := c.view.Grid();\r\t\t\tIF g MOD mm = 0 THEN\r\t\t\t\tgrid.resolution := g DIV mm;\r\t\t\t\tgrid.metricSystem := TRUE\r\t\t\tELSIF g MOD inch16th = 0 THEN\r\t\t\t\tgrid.resolution := g DIV inch16th;\r\t\t\t\tgrid.metricSystem := FALSE\r\t\t\tELSIF Dialog.metricSystem THEN\r\t\t\t\tgrid.resolution := g DIV mm;\r\t\t\t\tgrid.metricSystem := TRUE\r\t\t\tELSE\r\t\t\t\tgrid.resolution := g  DIV inch16th;\r\t\t\t\tgrid.metricSystem := FALSE\r\t\t\tEND;\r\t\t\tDialog.Update(grid)\r\t\tEND\r\tEND InitGridDialog;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetGrid
+                    attr: 3
+                  - text: "*;\r\t"
+                    attr: 0
+                  - text: "(** Guard: FocusGuard **)"
+                    attr: 1
+                  - text: "\r\t\tVAR c: FormControllers.Controller; n: INTEGER;\r\tBEGIN\r\t\tc := FormControllers.Focus();\r\t\tIF (c # NIL) & (grid.resolution > 0) THEN\r\t\t\tIF grid.metricSystem THEN\r\t\t\t\tn := 10 DIV grid.resolution;\r\t\t\t\tIF n < 1 THEN n := 1 END;\r\t\t\t\tc.view.SetGrid(grid.resolution * mm, n)\r\t\t\tELSE\r\t\t\t\tn := 8 DIV grid.resolution;\r\t\t\t\tIF n < 1 THEN n := 1 END;\r\t\t\t\tc.view.SetGrid(grid.resolution * inch16th, n)\r\t\t\tEND\r\t\tEND\r\tEND SetGrid;\r\r"
+                    attr: 0
+                  - text: "\t(** renaming of controls **)\r"
+                    attr: 1
+                  - text: "\r\tPROCEDURE "
+                    attr: 0
+                  - text: Rename
+                    attr: 3
+                  - text: "*;\r"
+                    attr: 0
+                  - text: "\t(** Guard: StdCmds.ContainerGuard **)\r"
+                    attr: 1
+                  - text: "\t\tVAR c: Containers.Controller; v: Views.View;\r\t\t\tmsg: Properties.PollMsg; p, q: Properties.Property;\r\t\t\tsetMsg: Properties.SetMsg;\r\r\t\tPROCEDURE Replace(VAR s: ARRAY OF CHAR; IN from, to: ARRAY OF CHAR);\r\t\t\tVAR pos: INTEGER;\r\t\tBEGIN\r\t\t\tStrings.Find(s, from, 0, pos);\r\t\t\tWHILE pos >= 0 DO\r\t\t\t\tStrings.Replace(s, pos, LEN(from$), to);\r\t\t\t\tStrings.Find(s, from, pos + LEN(to$), pos);\r\t\t\tEND\r\t\tEND Replace;\r\r\tBEGIN\r\t\tc := Containers.Focus();\r\t\tIF c # NIL THEN\r\t\t\tc.GetFirstView(Containers.any, v);\r\t\t\tWHILE v # NIL DO\r\t\t\t\tmsg.prop := NIL; Views.HandlePropMsg(v, msg);\r\t\t\t\tp := msg.prop; WHILE (p # NIL) & ~(p IS Controls.Prop) DO p := p.next END;\r\t\t\t\tIF p # NIL THEN\r\t\t\t\t\tq := Properties.CopyOf(p);\r\t\t\t\t\tWITH q: Controls.Prop DO\r\t\t\t\t\t\tIF find.label & (Controls.label IN q.valid) THEN Replace(q.label, find.from, find.to) END;\r\t\t\t\t\t\tIF find.link & (Controls.link IN q.valid) THEN Replace(q.link, find.from, find.to) END;\r\t\t\t\t\t\tIF find.guard & (Controls.guard IN q.valid) THEN Replace(q.guard, find.from, find.to) END;\r\t\t\t\t\t\tIF find.notifier & (Controls.notifier IN q.valid) THEN Replace(q.notifier, find.from, find.to) END\r\t\t\t\t\tEND;\r\t\t\t\t\tsetMsg.prop := q;\r\t\t\t\t\tViews.HandlePropMsg(v, setMsg);\r\t\t\t\tEND;\r\t\t\t\tc.GetNextView(Containers.any, v)\r\t\t\tEND\r\t\tEND\r\tEND Rename;\r\r\r\t"
+                    attr: 0
+                  - text: "(** standard form-related guards **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: FocusGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\t"
+                    attr: 0
+                  - text: "(** in non-FormView menus; otherwise implied by menu type **)"
+                    attr: 1
+                  - text: "\r\tBEGIN\r\t\tpar.disabled := FormViews.Focus() = NIL\r\tEND FocusGuard;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SelectionGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\t"
+                    attr: 0
+                  - text: "(** in non-FormView menus; otherwise use \"SelectionGuard\" **)"
+                    attr: 1
+                  - text: "\r\t\tVAR c: FormControllers.Controller;\r\tBEGIN\r\t\tc := FormControllers.Focus();\r\t\tpar.disabled := (c = NIL) OR ~c.HasSelection()\r\tEND SelectionGuard;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SingletonGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\t"
+                    attr: 0
+                  - text: "(** in non-FormView menus; otherwise use \"SingletonGuard\" **)"
+                    attr: 1
+                  - text: "\r\t\tVAR c: FormControllers.Controller;\r\tBEGIN\r\t\tc := FormControllers.Focus();\r\t\tpar.disabled := (c = NIL) OR (c.Singleton() = NIL)\r\tEND SingletonGuard;\r\rBEGIN\r\tfind.link := TRUE; find.label := TRUE; find.guard := TRUE; find.notifier := TRUE\rEND FormCmds.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 14927
+          bodyLen: 8

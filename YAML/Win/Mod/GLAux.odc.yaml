@@ -1,0 +1,206 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Win\\Mod\\GLAux.odc"
+  size: 8986
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 8855
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 8669
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 8583
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: "*"
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 22
+                bodyPos: 8708
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 8194
+                runListLen: 1605
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                flow:
+                  - text: "MODULE WinGLAux [\"Glaux.dll\"];\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT WinGL;\r\r\tCONST (* macros *)\r\t\tAUX_RGB* = 0;\r\t\tAUX_RGBA* = 0;\r\t\tAUX_INDEX* = 1;\r\t\tAUX_SINGLE* = 0;\r\t\tAUX_DOUBLE* = 2;\r\t\tAUX_DIRECT* = 0;\r\t\tAUX_INDIRECT* = 4;\r\t\tAUX_ACCUM* = 8;\r\t\tAUX_ALPHA* = 16;\r\t\tAUX_DEPTH24* = 32;\r\t\tAUX_STENCIL* = 64;\r\t\tAUX_AUX* = 128;\r\t\tAUX_DEPTH16* = 256;\r\t\tAUX_FIXED_332_PAL* = 512;\r\t\tAUX_DEPTH* = 256;\r\t\tAUX_EXPOSE* = 1;\r\t\tAUX_CONFIG* = 2;\r\t\tAUX_DRAW* = 4;\r\t\tAUX_KEYEVENT* = 8;\r\t\tAUX_MOUSEDOWN* = 16;\r\t\tAUX_MOUSEUP* = 32;\r\t\tAUX_MOUSELOC* = 64;\r\t\tAUX_WINDOWX* = 0;\r\t\tAUX_WINDOWY* = 1;\r\t\tAUX_MOUSEX* = 0;\r\t\tAUX_MOUSEY* = 1;\r\t\tAUX_MOUSESTATUS* = 3;\r\t\tAUX_KEY* = 0;\r\t\tAUX_KEYSTATUS* = 1;\r\t\tAUX_LEFTBUTTON* = 1;\r\t\tAUX_RIGHTBUTTON* = 2;\r\t\tAUX_MIDDLEBUTTON* = 4;\r\t\tAUX_SHIFT* = 1;\r\t\tAUX_CONTROL* = 2;\r\t\tAUX_RETURN* = 13;\r\t\tAUX_ESCAPE* = 27;\r\t\tAUX_SPACE* = 32;\r\t\tAUX_LEFT* = 37;\r\t\tAUX_UP* = 38;\r\t\tAUX_RIGHT* = 39;\r\t\tAUX_DOWN* = 40;\r\t\tAUX_A* = 65;\r\t\tAUX_B* = 66;\r\t\tAUX_C* = 67;\r\t\tAUX_D* = 68;\r\t\tAUX_E* = 69;\r\t\tAUX_F* = 70;\r\t\tAUX_G* = 71;\r\t\tAUX_H* = 72;\r\t\tAUX_I* = 73;\r\t\tAUX_J* = 74;\r\t\tAUX_K* = 75;\r\t\tAUX_L* = 76;\r\t\tAUX_M* = 77;\r\t\tAUX_N* = 78;\r\t\tAUX_O* = 79;\r\t\tAUX_P* = 80;\r\t\tAUX_Q* = 81;\r\t\tAUX_R* = 82;\r\t\tAUX_S* = 83;\r\t\tAUX_T* = 84;\r\t\tAUX_U* = 85;\r\t\tAUX_V* = 86;\r\t\tAUX_W* = 87;\r\t\tAUX_X* = 88;\r\t\tAUX_Y* = 89;\r\t\tAUX_Z* = 90;\r\t\tAUX_a* = 97;\r\t\tAUX_b* = 98;\r\t\tAUX_c* = 99;\r\t\tAUX_d* = 100;\r\t\tAUX_e* = 101;\r\t\tAUX_f* = 102;\r\t\tAUX_g* = 103;\r\t\tAUX_h* = 104;\r\t\tAUX_i* = 105;\r\t\tAUX_j* = 106;\r\t\tAUX_k* = 107;\r\t\tAUX_l* = 108;\r\t\tAUX_m* = 109;\r\t\tAUX_n* = 110;\r\t\tAUX_o* = 111;\r\t\tAUX_p* = 112;\r\t\tAUX_q* = 113;\r\t\tAUX_r* = 114;\r\t\tAUX_s* = 115;\r\t\tAUX_t* = 116;\r\t\tAUX_u* = 117;\r\t\tAUX_v* = 118;\r\t\tAUX_w* = 119;\r\t\tAUX_x* = 120;\r\t\tAUX_y* = 121;\r\t\tAUX_z* = 122;\r\t\tAUX_0* = 48;\r\t\tAUX_1* = 49;\r\t\tAUX_2* = 50;\r\t\tAUX_3* = 51;\r\t\tAUX_4* = 52;\r\t\tAUX_5* = 53;\r\t\tAUX_6* = 54;\r\t\tAUX_7* = 55;\r\t\tAUX_8* = 56;\r\t\tAUX_9* = 57;\r\t\tAUX_FD* = 1;\r\t\tAUX_COLORMAP* = 3;\r\t\tAUX_GREYSCALEMAP* = 4;\r\t\tAUX_FOGMAP* = 5;\r\t\tAUX_ONECOLOR* = 6;\r\t\tAUX_BLACK* = 0;\r\t\tAUX_RED* = 13;\r\t\tAUX_GREEN* = 14;\r\t\tAUX_YELLOW* = 15;\r\t\tAUX_BLUE* = 16;\r\t\tAUX_MAGENTA* = 17;\r\t\tAUX_CYAN* = 18;\r\t\tAUX_WHITE* = 19;\r\r\tCONST (* enumerations *)\r\t\tAUX_USE_ID* = 1;\r\t\tAUX_EXACT_MATCH* = 2;\r\t\tAUX_MINIMUM_CRITERIA* = 3;\r\r\tTYPE\r\t\tPtrSTR* = POINTER TO ARRAY [untagged] OF SHORTCHAR;\r\t\tPtrWSTR* = POINTER TO ARRAY [untagged] OF CHAR;\r\t\tHWND* = INTEGER;\r\t\tHDC* = INTEGER;\r\t\tHGLRC* = INTEGER;\r\t\tAUX_EVENTREC* = RECORD [untagged]\r\t\t\tevent*: WinGL.GLint;\r\t\t\tdata*: ARRAY [untagged] 4 OF WinGL.GLint;\r\t\tEND;\r\t\tPtrAUX_EVENTREC* = POINTER TO AUX_EVENTREC;\r\t\tAUX_RGBImageRec* = RECORD [untagged]\r\t\t\tsizeX*: WinGL.GLint;\r\t\t\tsizeY*: WinGL.GLint;\r\t\t\tdata*: PtrSTR;\r\t\tEND;\r\t\tPtrAUX_RGBImageRec* = POINTER TO AUX_RGBImageRec;\r\t\tAUXMAINPROC* = PROCEDURE ();\r\t\tAUXEXPOSEPROC* = PROCEDURE (p0: INTEGER; p1: INTEGER);\r\t\tAUXRESHAPEPROC* = PROCEDURE (p0: WinGL.GLsizei; p1: WinGL.GLsizei);\r\t\tAUXIDLEPROC* = PROCEDURE ();\r\t\tAUXKEYPROC* = PROCEDURE ();\r\t\tAUXMOUSEPROC* = PROCEDURE (VAR [nil] p0: AUX_EVENTREC);\r\r\tPROCEDURE auxInitDisplayMode* (p0: WinGL.GLenum);\r\r\tPROCEDURE auxInitPosition* (p0: INTEGER; p1: INTEGER; p2: INTEGER; p3: INTEGER);\r\r\tPROCEDURE auxInitWindow* [\"auxInitWindowA\"] (p0: PtrSTR): WinGL.GLenum;\r\r\tPROCEDURE auxInitWindowA* (p0: PtrSTR): WinGL.GLenum;\r\r\tPROCEDURE auxInitWindowW* (p0: PtrWSTR): WinGL.GLenum;\r\r\tPROCEDURE auxCloseWindow* ();\r\r\tPROCEDURE auxQuit* ();\r\r\tPROCEDURE auxSwapBuffers* ();\r\r\tPROCEDURE auxMainLoop* (p0: AUXMAINPROC);\r\r\tPROCEDURE auxExposeFunc* (p0: AUXEXPOSEPROC);\r\r\tPROCEDURE auxReshapeFunc* (p0: AUXRESHAPEPROC);\r\r\tPROCEDURE auxIdleFunc* (p0: AUXIDLEPROC);\r\r\tPROCEDURE auxKeyFunc* (p0: INTEGER; p1: AUXKEYPROC);\r\r\tPROCEDURE auxMouseFunc* (p0: INTEGER; p1: INTEGER; p2: AUXMOUSEPROC);\r\r\tPROCEDURE auxGetColorMapSize* (): INTEGER;\r\r\tPROCEDURE auxGetMouseLoc* (VAR [nil] p0: INTEGER; VAR [nil] p1: INTEGER);\r\r\tPROCEDURE auxSetOneColor* (p0: INTEGER; p1: SHORTREAL; p2: SHORTREAL; p3: SHORTREAL);\r\r\tPROCEDURE auxSetFogRamp* (p0: INTEGER; p1: INTEGER);\r\r\tPROCEDURE auxSetGreyRamp* ();\r\r\tPROCEDURE auxSetRGBMap* (p0: INTEGER; VAR [nil] p1: SHORTREAL);\r\r\tPROCEDURE auxRGBImageLoad* [\"auxRGBImageLoadA\"] (p0: PtrSTR): PtrAUX_RGBImageRec;\r\r\tPROCEDURE auxRGBImageLoadA* (p0: PtrSTR): PtrAUX_RGBImageRec;\r\r\tPROCEDURE auxRGBImageLoadW* (p0: PtrWSTR): PtrAUX_RGBImageRec;\r\r\tPROCEDURE auxDIBImageLoad* [\"auxDIBImageLoadA\"] (p0: PtrSTR): PtrAUX_RGBImageRec;\r\r\tPROCEDURE auxDIBImageLoadA* (p0: PtrSTR): PtrAUX_RGBImageRec;\r\r\tPROCEDURE auxDIBImageLoadW* (p0: PtrWSTR): PtrAUX_RGBImageRec;\r\r\tPROCEDURE auxCreateFont* ();\r\r\tPROCEDURE auxDrawStr* [\"auxDrawStrA\"] (p0: PtrSTR);\r\r\tPROCEDURE auxDrawStrA* (p0: PtrSTR);\r\r\tPROCEDURE auxDrawStrW* (p0: PtrWSTR);\r\r\tPROCEDURE auxWireSphere* (p0: WinGL.GLdouble);\r\r\tPROCEDURE auxSolidSphere* (p0: WinGL.GLdouble);\r\r\tPROCEDURE auxWireCube* (p0: WinGL.GLdouble);\r\r\tPROCEDURE auxSolidCube* (p0: WinGL.GLdouble);\r\r\tPROCEDURE auxWireBox* (p0: WinGL.GLdouble; p1: WinGL.GLdouble; p2: WinGL.GLdouble);\r\r\tPROCEDURE auxSolidBox* (p0: WinGL.GLdouble; p1: WinGL.GLdouble; p2: WinGL.GLdouble);\r\r\tPROCEDURE auxWireTorus* (p0: WinGL.GLdouble; p1: WinGL.GLdouble);\r\r\tPROCEDURE auxSolidTorus* (p0: WinGL.GLdouble; p1: WinGL.GLdouble);\r\r\tPROCEDURE auxWireCylinder* (p0: WinGL.GLdouble; p1: WinGL.GLdouble);\r\r\tPROCEDURE auxSolidCylinder* (p0: WinGL.GLdouble; p1: WinGL.GLdouble);\r\r\tPROCEDURE auxWireIcosahedron* (p0: WinGL.GLdouble);\r\r\tPROCEDURE auxSolidIcosahedron* (p0: WinGL.GLdouble);\r\r\tPROCEDURE auxWireOctahedron* (p0: WinGL.GLdouble);\r\r\tPROCEDURE auxSolidOctahedron* (p0: WinGL.GLdouble);\r\r\tPROCEDURE auxWireTetrahedron* (p0: WinGL.GLdouble);\r\r\tPROCEDURE auxSolidTetrahedron* (p0: WinGL.GLdouble);\r\r\tPROCEDURE auxWireDodecahedron* (p0: WinGL.GLdouble);\r\r\tPROCEDURE auxSolidDodecahedron* (p0: WinGL.GLdouble);\r\r\tPROCEDURE auxWireCone* (p0: WinGL.GLdouble; p1: WinGL.GLdouble);\r\r\tPROCEDURE auxSolidCone* (p0: WinGL.GLdouble; p1: WinGL.GLdouble);\r\r\tPROCEDURE auxWireTeapot* (p0: WinGL.GLdouble);\r\r\tPROCEDURE auxSolidTeapot* (p0: WinGL.GLdouble);\r\r\tPROCEDURE auxGetHWND* (): HWND;\r\r\tPROCEDURE auxGetHDC* (): HDC;\r\r\tPROCEDURE auxGetHGLRC* (): HGLRC;\r\r\tPROCEDURE auxInitDisplayModePolicy* (p0: WinGL.GLenum);\r\r\tPROCEDURE auxInitDisplayModeID* (p0: WinGL.GLint): WinGL.GLenum;\r\r\tPROCEDURE auxGetDisplayModePolicy* (): WinGL.GLenum;\r\r\tPROCEDURE auxGetDisplayModeID* (): WinGL.GLint;\r\r\tPROCEDURE auxGetDisplayMode* (): WinGL.GLenum;\r\rEND WinGLAux.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 26
+          bodyPos: 8951
+          bodyLen: 8

@@ -1,0 +1,643 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Std\\Docu\\Folds.odc"
+  size: 213272
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 213141
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 212955
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 212869
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                lead: 11500
+                asc: 121900
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 33
+                bodyPos: 212990
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 212476
+                runListLen: 201359
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x000000ff
+                    weight: 400
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: StdFolds
+                    attr: 0
+                  - text: "\r\rDEFINITION StdFolds;\r\r\tIMPORT TextModels, Views, Dialog;\r\r\tCONST expanded = FALSE; collapsed = TRUE;\r\r\tTYPE\r\t\tLabel = ARRAY 32 OF CHAR;\r\r\t\tFold = POINTER TO RECORD (Views.View)\r\t\t\tleftSide-, collapsed-: BOOLEAN;\r\t\t\tlabel-: Label;\r\t\t\t(fold: Fold) Flip, NEW;\r\t\t\t(fold: Fold) FlipNested, NEW;\r\t\t\t(fold: Fold) HiddenText (): TextModels.Model, NEW;\r\t\t\t(fold: Fold) MatchingFold (): Fold, NEW\r\t\tEND;\r\r\t\tDirectory = POINTER TO ABSTRACT RECORD \r\t\t\t(d: Directory) New (collapsed: BOOLEAN; label: Label;\r\t\t\t\t\t\t\t\t\t\thiddenText: TextModels.Model): Fold, NEW, ABSTRACT\r\t\tEND;\r\r\tVAR\r\t\tfoldData: RECORD \r\t\t\tnested, all: BOOLEAN;\r\t\t\tfindLabel, newLabel: Label\r\t\tEND;\r\t\tdir-, stdDir-: Directory;\r\r\tPROCEDURE CollapseFolds (text: TextModels.Model; nested: BOOLEAN; IN label: ARRAY OF CHAR);\r\tPROCEDURE ExpandFolds (text: TextModels.Model; nested: BOOLEAN; IN label: ARRAY OF CHAR);\r\tPROCEDURE Collapse;\r\tPROCEDURE Expand;\r\tPROCEDURE ZoomOut;\r\tPROCEDURE ZoomIn;\r\tPROCEDURE Overlaps (text: TextModels.Model; beg, end: INTEGER): BOOLEAN;\r\tPROCEDURE Insert (text: TextModels.Model; label: Label; beg, end: INTEGER; collapsed: BOOLEAN);\r\tPROCEDURE CreateGuard (VAR par: Dialog.Par);\r\tPROCEDURE Create (state: INTEGER);\r\tPROCEDURE SetDir (d: Directory);\r\tPROCEDURE FindFirstFold;\r\tPROCEDURE FindNextFold;\r\tPROCEDURE CollapseLabel;\r\tPROCEDURE ExpandLabel;\r\tPROCEDURE SetLabel;\r\tPROCEDURE SetLabelGuard (VAR p: Dialog.Par);\r\tPROCEDURE FindLabelGuard (VAR par: Dialog.Par);"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - text: "\rEND StdFolds.\r\r\rFold views, also called folds, are views that always appear in pairs. They are only meaningful when embedded in texts. A pair, called the left and right fold, brackets a stretch of text and represent a second piece of text that is hidden. By clicking at a fold with the mouse, the stretch of text between the left and right fold is replaced with the hidden text, and the text that originally appeared between the folds becomes the hidden text. Clicking a second time at the same fold restores the original state. Because the primary use of folds is to hide longer stretches of text and replace them with a usually much shorter placeholder, a fold is said to be either in expanded or collapsed state. Try it!\r\r\t"
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: This is a piece of text enclosed by folds in expanded mode
+                          attr: 0
+                      body:
+                        - text: text between collapsed folds
+                          attr: 1
+                      attr: 1
+                      w: 133350
+                      h: 142875
+                  - text: "\r\rFolds can be nested, but the stretch between one pair of folds must not partially overlap another. Hierarchically nested folds are often used in program texts. By hiding a sequence of statements and writing a short comment between the collapsed folds, the resulting program text can be explored interactively in a top-down manner. Try it with this example!\r\r\tPROCEDURE Enter (id: INTEGER; name: TextMappers.String; value: REAL);\r\t"
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "VAR n, h, p: Node;\r\tBEGIN\r\t\t"
+                          attr: 0
+                        - fold:
+                            collapsed: true
+                            hidden:
+                              - text: "NEW(n); n.id := id; n.name := name; n.value := value;"
+                                attr: 0
+                            body:
+                              - text: create new node n
+                                attr: 0
+                            attr: 0
+                            w: 133350
+                            h: 142875
+                        - text: "\r\t\t"
+                          attr: 0
+                        - fold:
+                            collapsed: true
+                            hidden:
+                              - text: "h := list; p := NIL;\r\t\tWHILE (h # NIL) & (h.id <= id) DO p := h; h := h.next END;"
+                                attr: 0
+                            body:
+                              - text: search position in list
+                                attr: 0
+                            attr: 0
+                            w: 133350
+                            h: 142875
+                        - text: "\r\t\t"
+                          attr: 0
+                        - fold:
+                            collapsed: true
+                            hidden:
+                              - text: "IF p # NIL THEN\r\t\t\t"
+                                attr: 0
+                              - fold:
+                                  collapsed: true
+                                  hidden:
+                                    - text: "p.next := n"
+                                      attr: 0
+                                  body:
+                                    - text: insert between p and h
+                                      attr: 0
+                                  attr: 0
+                                  w: 101600
+                                  h: 165100
+                              - text: "\r\t\tELSE\r\t\t\t"
+                                attr: 0
+                              - fold:
+                                  collapsed: true
+                                  hidden:
+                                    - text: "list := n"
+                                      attr: 0
+                                  body:
+                                    - text: insert at beginning
+                                      attr: 0
+                                  attr: 0
+                                  w: 101600
+                                  h: 165100
+                              - text: "\r\t\tEND;\r\t\tn.next := h"
+                                attr: 0
+                            body:
+                              - text: insert in list
+                                attr: 0
+                            attr: 0
+                            w: 133350
+                            h: 142875
+                        - text: "\r\tEND Enter;"
+                          attr: 0
+                      body:
+                        - text: enter a new value into the list
+                          attr: 1
+                      attr: 1
+                      w: 133350
+                      h: 142875
+                  - text: "\r\rInstead of clicking manually through a deep hierarchy of folds, you can hold down the modifier key while clicking at the fold. This expands or collapses a fold and all nested folds.\r\rThe following menu entries operate on folds. "
+                    attr: 1
+                  - text: Create Fold
+                    attr: 3
+                  - text: " in menu "
+                    attr: 1
+                  - text: Tools
+                    attr: 3
+                  - text: " inserts a new pair of folds in the focus text. The current text selection in the focus text will be bracketed by the newly inserted folds. "
+                    attr: 1
+                  - text: Expand All
+                    attr: 3
+                  - text: " in menu "
+                    attr: 1
+                  - text: Tools
+                    attr: 3
+                  - text: " expands all folds in the focus text. Similarly, "
+                    attr: 1
+                  - text: Collapse All
+                    attr: 3
+                  - text: " collapses all folds in the focus text.\r\r"
+                    attr: 1
+                  - text: Fold...
+                    attr: 3
+                  - text: " in menu "
+                    attr: 1
+                  - text: Tools
+                    attr: 3
+                  - text: " opens a property inspector that lets you manipulate the folds in the focus text. The inspector looks like this:\r"
+                    attr: 1
+                  - view:
+                      kind: HostBitmaps.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostBitmaps.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 27
+                      bodyPos: 2549
+                      bodyLen: 197875
+                    attr: 1
+                    w: 2733675
+                    h: 2181225
+                  - text: "\r\r"
+                    attr: 1
+                  - text: Find First
+                    attr: 3
+                  - text: " searches in the focus text for the first occurence of a fold. If "
+                    attr: 1
+                  - text: All
+                    attr: 3
+                  - text: " is checked then the the very first fold in the text is selected. If "
+                    attr: 1
+                  - text: All
+                    attr: 3
+                  - text: " is not checked then "
+                    attr: 1
+                  - text: Find First
+                    attr: 3
+                  - text: " searches for a fold which has a label equal to the search criteria specified in the "
+                    attr: 1
+                  - text: Find
+                    attr: 3
+                  - text: " field. "
+                    attr: 1
+                  - text: Find Next
+                    attr: 3
+                  - text: " finds the next fold using the same criteria as "
+                    attr: 1
+                  - text: Find First
+                    attr: 3
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: Collapse
+                    attr: 3
+                  - text: " collapses all folds in the focus text which comply to the search critera specified by "
+                    attr: 1
+                  - text: All
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: Find
+                    attr: 3
+                  - text: ". If "
+                    attr: 1
+                  - text: Nested
+                    attr: 3
+                  - text: " is checked the folds are searched for contained folds and these are also collapsed.\r\r"
+                    attr: 1
+                  - text: Expand
+                    attr: 3
+                  - text: " expands folds using "
+                    attr: 1
+                  - text: All
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: Find
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: Nested
+                    attr: 3
+                  - text: " in the same way as "
+                    attr: 1
+                  - text: Collapse
+                    attr: 3
+                  - text: ".\r\rWhen a fold is found or when a fold in the focus text is selected by the user its label is displayd in the field next to the "
+                    attr: 1
+                  - text: Set Label
+                    attr: 3
+                  - text: " button. The label can be changed by typing a new label into the field and clicking on "
+                    attr: 1
+                  - text: Set Label
+                    attr: 3
+                  - text: .
+                    attr: 1
+                  - text: "\r"
+                    attr: 3
+                  - text: "\rTo describe the pre- and postconditions of procedures exported from "
+                    attr: 1
+                  - text: StdFolds
+                    attr: 3
+                  - text: ", we use the following pseudo-procedures.\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 1044000
+                      right: 1044000
+                      lead: 11500
+                      asc: 121900
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 1044000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "Pos(f)\tdesignates the position of the fold view f in its hosting text.\r0 <= Pos(f) < text.Length().\r\r\x0eStretch(p1, p2) \tstands for the text stretch [p1, p2) if p1 < p2 holds, or if p2 <= p1, then it denotes the text stretch [p2, p1).\r\r\x0eFlipped(f) \tdenotes the fold f in its dual, \"flipped\" state.\rf.state = collapsed <=> Flipped(f).state = expanded.\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      lead: 11500
+                      asc: 121900
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rTypical menu commands (typically in the "
+                    attr: 1
+                  - text: Tools
+                    attr: 3
+                  - text: " menu, some commands may be omitted in the standard distribution):\r\r"
+                    attr: 1
+                  - text: MENU
+                    attr: 4
+                  - text: "\r\t\"Create Fold\"\t\"\"\t\"StdFolds.Create(1)\"\t\"StdFolds.CreateGuard\"\r\t\"Expand All\"\t\"\"\t\"StdFolds.Expand\"\t\"\"\r\t\"Collapse All\"\t\"\"\t\"StdFolds.Collapse\"\t\"\"\r\t\"Fold...\"\t\"\"\t\"StdCmds.OpenToolDialog('Std/Rsrc/Folds', 'Zoom')\"\t\"\"\r"
+                    attr: 1
+                  - text: END
+                    attr: 4
+                  - text: "\r\r\rCONST "
+                    attr: 1
+                  - text: "collapsed, expanded"
+                    attr: 4
+                  - text: "\rPossible values of field "
+                    attr: 1
+                  - text: Fold.collapsed
+                    attr: 3
+                  - text: ".\r\r\rTYPE "
+                    attr: 1
+                  - text: Label
+                    attr: 4
+                  - text: "\rString type for label property values.\r\r\rTYPE "
+                    attr: 1
+                  - text: Fold (Views.View)
+                    attr: 4
+                  - text: "\rView type of a fold.\r\r"
+                    attr: 1
+                  - text: leftSide
+                    attr: 4
+                  - text: "-: BOOLEAN\rDetermines whether the view is the left or right element of a pair.\r\r"
+                    attr: 1
+                  - text: collapsed
+                    attr: 4
+                  - text: "-: BOOLEAN\rDetermines whether the fold view currently is in expanded or collapsed state.\r\r"
+                    attr: 1
+                  - text: label
+                    attr: 4
+                  - text: "-: Label\rA string indicating the label property of the fold. If the fold has no label associated with it, "
+                    attr: 1
+                  - text: "label = \"\""
+                    attr: 3
+                  - text: " holds.\r\rPROCEDURE (fold: Fold) "
+                    attr: 1
+                  - text: Flip
+                    attr: 4
+                  - text: "\rNEW\rChanges the state of fold. The text stretch S between "
+                    attr: 1
+                  - text: fold
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: fold.MatchingFold()
+                    attr: 3
+                  - text: " is replaced by the text "
+                    attr: 1
+                  - text: fold.HiddenText()
+                    attr: 3
+                  - text: ". The stretch S will be the new hidden text.\r\rPre\rfold # NIL\t20\r\rPost\r(fold.MatchingFold() # NIL) & fold.collapsed'\r\t~fold.collapsed\r(fold.MatchingFold() # NIL) & ~fold.collapsed'\r\tfold.collapsed\rfold.MatchingFold() = NIL\r\tno effect\r\rPROCEDURE (fold: Fold) "
+                    attr: 1
+                  - text: FlipNested
+                    attr: 4
+                  - text: "\rNEW\rChanges the state of fold, and all fold views f between "
+                    attr: 1
+                  - text: fold
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: fold.MatchingFold()
+                    attr: 3
+                  - text: " for which "
+                    attr: 1
+                  - text: f.state = fold.state
+                    attr: 3
+                  - text: ".\r\rPre\rfold # NIL\t20\r\rPost\r(fold.MatchingFold() # NIL) & fold.collapsed'\r\t~fold.collapsed\r\tFor all folds f between fold and fold.MatchingFold(): ~f.collapsed\r(fold.MatchingFold() # NIL) & ~fold.collapsed'\r\tfold.collapsed\r\tFor all folds f between fold and fold.MatchingFold(): f.collapsed\rfold.MatchingFold() = NIL\r\tno effect\r\rPROCEDURE (fold: Fold) "
+                    attr: 1
+                  - text: HiddenText
+                    attr: 4
+                  - text: " (): TextModels.Model\rNEW\rReturns the text stretch that is currently hidden by the pair "
+                    attr: 1
+                  - text: "(fold, fold.MatchingFold())"
+                    attr: 3
+                  - text: ". The text should not be modified. If the hidden text stretch is of length zero, "
+                    attr: 1
+                  - text: NIL
+                    attr: 3
+                  - text: " is returned.\r\rPre\rfold # NIL\t20\r\rPost\rfold.MatchingFold() # NIL\r\t[ let p1 := Pos(Flipped(fold)), p2 := Pos(Flipped(fold).MatchingFold() ]\r\tABS(p2 - p1) = 1  =>  result = NIL\r\tABS(p2 - p1) > 1  =>  result is Stretch(p1, p2)\rfold.MatchingFold() = NIL\r\tresult = NIL\r\rPROCEDURE (fold: Fold) "
+                    attr: 1
+                  - text: MatchingFold
+                    attr: 4
+                  - text: " (): Fold\rNEW\rReturns the matching fold view to "
+                    attr: 1
+                  - text: fold
+                    attr: 3
+                  - text: ", or "
+                    attr: 1
+                  - text: NIL
+                    attr: 3
+                  - text: " if none can be found.\r\rPre\rfold # NIL\t20\r\rPost\r~(fold.context IS TextModels.Context)\r\tresult = NIL\rfold.context IS TextModels.Context\r\t(fold.kind = left) & (result.kind = right) & Pos(fold) < Pos(result)\r\t\t\t& (For all folds f with Pos(fold) < Pos(f) < Pos(result):\r\t\t\t\t\t(f.MatchingFold() # NIL) & (Pos(fold) < Pos(f.MatchingFold() < Pos(result))\r\tOR (fold.kind = right) & (result.kind = left) & (Pos(fold) > Pos(result)\r\t\t\t& (For all folds f with Pos(result) < Pos(f) < Pos(fold): \r\t\t\t\t\t(f.Matching # NIL) & (Pos(result) < Pos(f.MatchingFold() < Pos(fold))\r\tOR result = NIL\r\r\rTYPE "
+                    attr: 1
+                  - text: Directory
+                    attr: 4
+                  - text: "\rABSTRACT\rDirectory for fold views.\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: New
+                    attr: 4
+                  - text: " (collapsed: BOOLEAN; IN label: Label;\r\t\t\t\t\t\t\t\t\t\t\t\t\thiddenText: TextModels.Model): Fold\rNEW, ABSTRACT\rCreate a new fold view in state "
+                    attr: 1
+                  - text: collapsed
+                    attr: 3
+                  - text: ", with "
+                    attr: 1
+                  - text: label
+                    attr: 3
+                  - text: ", and with the text "
+                    attr: 1
+                  - text: hiddenText
+                    attr: 3
+                  - text: ". If "
+                    attr: 1
+                  - text: hiddenText
+                    attr: 3
+                  - text: " is "
+                    attr: 1
+                  - text: NIL
+                    attr: 3
+                  - text: ", it is a right fold, otherwise it is a left fold.\r\rPost\rresult.leftSide = (hiddenText # NIL)\rresult.collapsed = collapsed\rresult.label = label\rresult.HiddenText() = hiddenText\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: CollapseFolds
+                    attr: 4
+                  - text: " (text: TextModels.Model; nested: BOOLEAN;\r\t\t\t\t\t\t\t\t\t\t\t\t\tIN label: ARRAY OF CHAR)\rIf nested holds and "
+                    attr: 1
+                  - text: "label = \"\""
+                    attr: 3
+                  - text: ", all folds f in text with "
+                    attr: 1
+                  - text: ~f.collapsed
+                    attr: 3
+                  - text: " are flipped. If "
+                    attr: 1
+                  - text: ~nested
+                    attr: 3
+                  - text: ", only the outermost folds in the nesting hierarchy are flipped. If "
+                    attr: 1
+                  - text: "label # \""
+                    attr: 3
+                  - text: "\", only folds with "
+                    attr: 1
+                  - text: f.label = label
+                    attr: 3
+                  - text: " are flipped.\r\rPre\rtext # NIL\t20\r\rPROCEDURE "
+                    attr: 1
+                  - text: ExpandFolds
+                    attr: 4
+                  - text: " (text: TextModels.Model; nested: BOOLEAN;\r\t\t\t\t\t\t\t\t\t\t\t\tIN label: ARRAY OF CHAR)\rIf nested holds and "
+                    attr: 1
+                  - text: "label = \"\""
+                    attr: 3
+                  - text: ", all folds f in text with "
+                    attr: 1
+                  - text: f.collapsed
+                    attr: 3
+                  - text: " are flipped. If "
+                    attr: 1
+                  - text: ~nested
+                    attr: 3
+                  - text: ", only the outermost folds in the nesting hierarchy are flipped. If "
+                    attr: 1
+                  - text: "label # \"\""
+                    attr: 3
+                  - text: ", only folds with "
+                    attr: 1
+                  - text: f.label = label
+                    attr: 3
+                  - text: " are flipped.\r\rPre\r20\t\ttext # NIL\r\rPROCEDURE "
+                    attr: 1
+                  - text: Collapse
+                    attr: 4
+                  - text: "\rGuard: TextCmds.FocusGuard\rCollapse all fold views in the focus text.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Expand
+                    attr: 4
+                  - text: "\rGuard: TextCmds.FocusGuard\rExpand all fold views in the focus text.\r\rPROCEDURE "
+                    attr: 1
+                  - text: ZoomOut
+                    attr: 4
+                  - text: "\rGuard: TextCmds.FocusGuard\rCollapse all outermost expanded fold views in the focus text.\r\rPROCEDURE "
+                    attr: 1
+                  - text: ZoomIn
+                    attr: 4
+                  - text: "\rGuard: TextCmds.FocusGuard\rExpand all outermost collapsed views in the focus text.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Overlaps
+                    attr: 4
+                  - text: " (text: TextModels.Model; beg, end: INTEGER): BOOLEAN\rReturns "
+                    attr: 1
+                  - text: "TRUE"
+                    attr: 3
+                  - text: " if the text stretch "
+                    attr: 1
+                  - text: "[beg, end)"
+                    attr: 3
+                  - text: " in text partially overlaps a pair "
+                    attr: 1
+                  - text: "(f, f.MatchingFold())"
+                    attr: 3
+                  - text: " of fold views.\r\rPre\rtext # NIL\t20\r(beg >= 0) & (end <= text.Length()) & (beg <= end)\t21\r\rPROCEDURE "
+                    attr: 1
+                  - text: Insert
+                    attr: 4
+                  - text: " (text: TextModels.Model; IN label: Label; beg, end: INTEGER; collapsed: BOOLEAN)\rInserts a new pair (f1, f2) of fold views into text. The new pair will bracket the text stretch "
+                    attr: 1
+                  - text: "[beg, end)"
+                    attr: 3
+                  - text: ". Flag "
+                    attr: 1
+                  - text: collapsed
+                    attr: 3
+                  - text: " determines whether the fold is inserted in collapsed or in expanded state.\r\rPre\rtext # NIL\t20\r(beg >= 0) & (end <= text.Length()) & (beg <= end)\t21\r\rPost\rthe text stretch [beg, end) does not partially overlap a pair of folds\r\tPos(f1) = beg\r\tPos(f2) = end+1\r\tf1.MatchingFold() = f2\r\tf1.collapsed = f2.collapsed\r\tf1.HiddenText() = NIL\rthe text stretch [beg, end) partially overlaps a pair of folds\r\tnothing is done\r\rPROCEDURE "
+                    attr: 1
+                  - text: CreateGuard
+                    attr: 4
+                  - text: " (VAR par: Dialog.Par)\rSets "
+                    attr: 1
+                  - text: par.disabled
+                    attr: 3
+                  - text: " to "
+                    attr: 1
+                  - text: "TRUE"
+                    attr: 3
+                  - text: " when the text selection in the current focus text partially overlaps a pair "
+                    attr: 1
+                  - text: "(f, Matching(f))"
+                    attr: 3
+                  - text: " of fold views. "
+                    attr: 1
+                  - text: par.disabled
+                    attr: 3
+                  - text: "  is also set to "
+                    attr: 1
+                  - text: "TRUE"
+                    attr: 3
+                  - text: " if the focus text is shown in browser mode or mask mode, that is if the text cannot be modified.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Create
+                    attr: 4
+                  - text: " (state: INTEGER)\rIf "
+                    attr: 1
+                  - text: CreateGuard
+                    attr: 3
+                  - text: " holds, creates a a new pair of fold views and inserts them into the focus text, bracketing the current text selection or the caret position. Calls "
+                    attr: 1
+                  - text: "Insert(FocusText, selBeg, selEnd, state)"
+                    attr: 3
+                  - text: ".\r"
+                    attr: 1
+                  - text: state = 0
+                    attr: 3
+                  - text: " generates a collapsed fold, "
+                    attr: 1
+                  - text: state = 1
+                    attr: 3
+                  - text: " generates an expanded fold.\r\rPre\rstate IN {0, 1)\r\rPost\rstate = 0\r\tresult.collapsed\rstate = 1\r\t~result.collapsed\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetDir
+                    attr: 4
+                  - text: " (d: Directory)\rSet directory.\r\rThe following variables and procedures are only used for the property inspector of the "
+                    attr: 1
+                  - text: StdFolds.View
+                    attr: 3
+                  - text: ":\r\rVAR \r\tfoldData: RECORD \r\t\tnested, all: BOOLEAN;\r\t\tfindLabel, newLabel: Label\r\tEND;\r\rPROCEDURE FindFirstFold;\rPROCEDURE FindNextFold;\rPROCEDURE CollapseLabel;\rPROCEDURE ExpandLabel;\rPROCEDURE SetLabel;\rPROCEDURE SetLabelGuard (VAR p: Dialog.Par);\rPROCEDURE FindLabelGuard (VAR par: Dialog.Par);\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 37
+          bodyPos: 213237
+          bodyLen: 8

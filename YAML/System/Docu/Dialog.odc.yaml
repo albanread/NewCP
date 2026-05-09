@@ -1,0 +1,2055 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\System\\Docu\\Dialog.odc"
+  size: 44917
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 44786
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 44600
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 44514
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                asc: 134600
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000003
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 11
+                bodyPos: 44514
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 44000
+                runListLen: 5358
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                  - # [5]
+                    font: Arial
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                    offset: 25400
+                  - # [6]
+                    font: Geneva
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                flow:
+                  - text: Dialog
+                    attr: 0
+                  - text: "\r\rDEFINITION Dialog;\r\r\tIMPORT Files;\r\r\tCONST\r\t\tpressed = 1; released = 2; changed = 3; included = 5; excluded = 6; set = 7;\r\t\tok = 1; yes = 2; no = 3; cancel = 4;\r\t\twindows32s = 11; windows95 = 12; windowsNT3 = 13; windowsNT4 = 14; windows2000 = 15;\r\t\twindows98 = 16; windowsXP = 17; windowsVista = 18; windows7 = 19; windows8 = 10;\r\t\tmacOS = 21; macOSX = 22; linux = 30; tru64 = 40;\r\t\tfirstPos = 0; lastPos = -1;\r\t\tpersistent = TRUE; nonPersistent = FALSE;\r\r\tTYPE\r\t\tString = ARRAY 256 OF CHAR;\r\r\t\tList = RECORD\r\t\t\tindex, len-: INTEGER;\r\t\t\t(VAR l: List) GetItem (index: INTEGER; OUT item: String), NEW;\r\t\t\t(VAR l: List) SetItem (index: INTEGER; IN item: ARRAY OF CHAR), NEW;\r\t\t\t(VAR l: List) SetLen (len: INTEGER), NEW;\r\t\t\t(VAR l: List) SetResources (IN key: ARRAY OF CHAR), NEW\r\t\tEND;\r\r\t\tSelection = RECORD\r\t\t\tlen-: INTEGER;\r\t\t\t(VAR s: Selection) Excl (from, to: INTEGER), NEW;\r\t\t\t(VAR s: Selection) GetItem (index: INTEGER; OUT item: String), NEW;\r\t\t\t(VAR s: Selection) In (index: INTEGER): BOOLEAN, NEW;\r\t\t\t(VAR s: Selection) Incl (from, to: INTEGER), NEW;\r\t\t\t(VAR s: Selection) SetItem (index: INTEGER; IN item: ARRAY OF CHAR), NEW;\r\t\t\t(VAR s: Selection) SetLen (len: INTEGER), NEW;\r\t\t\t(VAR s: Selection) SetResources (IN key: ARRAY OF CHAR), NEW\r\t\tEND;\r\r\t\tCombo = RECORD\r\t\t\titem: String;\r\t\t\tlen-: INTEGER;\r\t\t\t(VAR c: Combo) GetItem (index: INTEGER; OUT item: String), NEW;\r\t\t\t(VAR c: Combo) SetItem (index: INTEGER; IN item: ARRAY OF CHAR), NEW;\r\t\t\t(VAR c: Combo) SetLen (len: INTEGER), NEW;\r\t\t\t(VAR c: Combo) SetResources (IN key: ARRAY OF CHAR), NEW\r\t\tEND;\r \r\t\tTreeNode = POINTER TO LIMITED RECORD \r\t\t\t(tn: TreeNode) Data (): ANYPTR, NEW;\r\t\t\t(tn: TreeNode) GetName (OUT name: String), NEW;\r\t\t\t(tn: TreeNode) IsExpanded (): BOOLEAN, NEW;\r\t\t\t(tn: TreeNode) IsFolder (): BOOLEAN, NEW;\r\t\t\t(tn: TreeNode) NofChildren (): INTEGER, NEW;\r\t\t\t(tn: TreeNode) SetData (data: ANYPTR), NEW;\r\t\t\t(tn: TreeNode) SetExpansion (expanded: BOOLEAN), NEW;\r\t\t\t(tn: TreeNode) SetName (name: String), NEW;\r\t\t\t(tn: TreeNode) ViewAsFolder (isFolder: BOOLEAN), NEW\r\t\tEND;\r\r\t\tTree = RECORD \r\t\t\t(VAR t: Tree) Child (node: TreeNode; pos: INTEGER): TreeNode, NEW;\r\t\t\t(VAR t: Tree) Delete (node: TreeNode): INTEGER, NEW;\r\t\t\t(VAR t: Tree) DeleteAll, NEW;\r\t\t\t(VAR t: Tree) Move (node, parent: TreeNode; pos: INTEGER), NEW;\r\t\t\t(VAR t: Tree) NewChild (parent: TreeNode; pos: INTEGER; name: String): TreeNode, NEW;\r\t\t\t(VAR t: Tree) Next (node: TreeNode): TreeNode, NEW;\r\t\t\t(VAR t: Tree) NofNodes (): INTEGER, NEW;\r\t\t\t(VAR t: Tree) NofRoots (): INTEGER, NEW;\r\t\t\t(VAR t: Tree) Parent (node: TreeNode): TreeNode, NEW;\r\t\t\t(VAR t: Tree) Prev (node: TreeNode): TreeNode, NEW;\r\t\t\t(VAR t: Tree) Select (node: TreeNode), NEW;\r\t\t\t(VAR t: Tree) Selected (): TreeNode, NEW\r\t\tEND;\r\r\t\tColor = RECORD\r\t\t\tval: INTEGER\r\t\tEND;\r\r\t\tCurrency = RECORD \r\t\t\tval: LONGINT;\r\t\t\tscale: INTEGER\r\t\tEND;\r\r\t\tPar = RECORD\r\t\t\tdisabled: BOOLEAN;\r\t\t\tchecked: BOOLEAN;\r\t\t\tundef: BOOLEAN;\r\t\t\treadOnly: BOOLEAN;\r\t\t\tlabel: String\r\t\tEND;\r\r\t\tGuardProc = PROCEDURE (VAR par: Par);\r\r\t\tNotifierProc = PROCEDURE (op, from, to: INTEGER);\r\r\t\tLanguage = ARRAY 3 OF CHAR;\r\r\t\tLangNotifier = POINTER TO ABSTRACT RECORD \r\t\t\t(n: LangNotifier) Notify-, NEW, ABSTRACT\r\t\tEND;\r\r\tVAR\r\t\tmetricSystem: BOOLEAN;\r\t\tshowsStatus: BOOLEAN;\r\t\tversion: INTEGER;\r\t\tplatform: INTEGER;\r\t\tappName: ARRAY 32 OF CHAR;\r\t\tappVersion: ARRAY 32 OF CHAR;\r\t\tlanguage-: Language;\r\t\tuser: ARRAY 32 OF CHAR;\r\t\tthickCaret: BOOLEAN;\r\t\tcaretPeriod: INTEGER;\r\t\tcommandLinePars: String;\r\r\tPROCEDURE IsLinux (): BOOLEAN;\r\tPROCEDURE IsMac (): BOOLEAN;\r\tPROCEDURE IsWindows (): BOOLEAN;\r\tPROCEDURE IsWine (): BOOLEAN;\r\tPROCEDURE Update (IN x: ANYREC);\r\tPROCEDURE UpdateBool (VAR x: BOOLEAN);\r\tPROCEDURE UpdateByte (VAR x: BYTE);\r\tPROCEDURE UpdateChar (VAR x: CHAR);\r\tPROCEDURE UpdateInt (VAR x: INTEGER);\r\tPROCEDURE UpdateLInt (VAR x: LONGINT);\r\tPROCEDURE UpdateList (IN x: ANYREC);\r\tPROCEDURE UpdateReal (VAR x: REAL);\r\tPROCEDURE UpdateSChar (VAR x: SHORTCHAR);\r\tPROCEDURE UpdateSInt (VAR x: SHORTINT);\r\tPROCEDURE UpdateSReal (VAR x: SHORTREAL);\r\tPROCEDURE UpdateSString (IN x: ARRAY OF SHORTCHAR);\r\tPROCEDURE UpdateSet (VAR x: SET);\r\tPROCEDURE UpdateString (IN x: ARRAY OF CHAR);\r\tPROCEDURE MapParamString (in, p0, p1, p2: ARRAY OF CHAR; OUT out: ARRAY OF CHAR);\r\tPROCEDURE MapString (in: ARRAY OF CHAR; OUT out: ARRAY OF CHAR);\r\tPROCEDURE RegisterLangNotifier (notifier: LangNotifier);\r\tPROCEDURE RemoveLangNotifier (notifier: LangNotifier);\r\tPROCEDURE SetLanguage (lang: Language; persistent: BOOLEAN);\r\tPROCEDURE ResetLanguage;\r\tPROCEDURE ShowParamMsg (IN str, p0, p1, p2: ARRAY OF CHAR);\r\tPROCEDURE ShowMsg (IN str: ARRAY OF CHAR);\r\tPROCEDURE ShowParamStatus (IN str, p0, p1, p2: ARRAY OF CHAR);\r\tPROCEDURE ShowStatus (IN str: ARRAY OF CHAR);\r\tPROCEDURE FlushMappings;\r\tPROCEDURE GetOK (IN str, p0, p1, p2: ARRAY OF CHAR; form: SET; OUT res: INTEGER);\r\tPROCEDURE GetIntSpec (defType: Files.Type; VAR loc: Files.Locator; OUT name: Files.Name);\r\tPROCEDURE GetExtSpec (defName: Files.Name; defType: Files.Type; VAR loc: Files.Locator;\r\t\t\t\t\t\t\t\t\t\t\t\tOUT name: Files.Name);\r\tPROCEDURE GetColor (in: INTEGER; OUT out: INTEGER; OUT set: BOOLEAN);\r\tPROCEDURE Call (IN cmd, errorMsg: ARRAY OF CHAR; OUT res: INTEGER);\r\tPROCEDURE Beep;\r\tPROCEDURE Notify (id0, id1: INTEGER; opts: SET);\r\rEND Dialog.\r\r\rModule "
+                    attr: 1
+                  - text: Dialog
+                    attr: 2
+                  - text: " provides a variety of auxiliary services to simplify user interaction of a program. In particular, the output of messages, e.g. error messages, is supported. Furthermore, various base types are provided: "
+                    attr: 1
+                  - text: "List, Selection, Combo"
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: "Currency, Tree"
+                    attr: 2
+                  - text: ", etc. These types are known to the framework (more exactly: they are known to module "
+                    attr: 1
+                  - text: Controls
+                    attr: 2
+                  - text: ") and can be displayed by suitable controls, i.e. views which display not a normal model, but instead a variable of one of the mentioned types.\r\r\rCONST "
+                    attr: 1
+                  - text: pressed
+                    attr: 3
+                  - text: "\rThis value may be passed to the "
+                    attr: 1
+                  - text: op
+                    attr: 2
+                  - text: " field of a notifier procedure. It notifies about a mouse-down event, i.e. the primary mouse key has just been pressed.\r\rCONST "
+                    attr: 1
+                  - text: released
+                    attr: 3
+                  - text: "\rThis value may be passed to the "
+                    attr: 1
+                  - text: op
+                    attr: 2
+                  - text: " field of a notifier procedure. It notifies about a mouse-up event, i.e. the primary mouse key has just been released.\r\rCONST "
+                    attr: 1
+                  - text: changed
+                    attr: 3
+                  - text: "\rThis value may be passed to the "
+                    attr: 1
+                  - text: op
+                    attr: 2
+                  - text: " field of a notifier procedure. It notifies about some change of an interactor field's value. For a "
+                    attr: 1
+                  - text: Selection
+                    attr: 2
+                  - text: ", the more specific constants "
+                    attr: 1
+                  - text: included
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: excluded
+                    attr: 2
+                  - text: ", or "
+                    attr: 1
+                  - text: set
+                    attr: 2
+                  - text: " are used.\r\rCONST "
+                    attr: 1
+                  - text: included
+                    attr: 3
+                  - text: "\rThis value may be passed to the "
+                    attr: 1
+                  - text: op
+                    attr: 2
+                  - text: " field of a notifier procedure. It notifies about an inclusion of the range "
+                    attr: 1
+                  - text: "[from..to]"
+                    attr: 2
+                  - text: " in a "
+                    attr: 1
+                  - text: Selection
+                    attr: 2
+                  - text: ". Before the operation, this range was not included in the set.\r\rCONST "
+                    attr: 1
+                  - text: excluded
+                    attr: 3
+                  - text: "\rThis value may be passed to the "
+                    attr: 1
+                  - text: op
+                    attr: 2
+                  - text: " field of a notifier procedure. It notifies about an exclusion of the range "
+                    attr: 1
+                  - text: "[from..to]"
+                    attr: 2
+                  - text: " in a "
+                    attr: 1
+                  - text: Selection
+                    attr: 2
+                  - text: ". Before the operation, this range was included in the set.\r\rCONST "
+                    attr: 1
+                  - text: set
+                    attr: 3
+                  - text: "\rThis value may be passed to the "
+                    attr: 1
+                  - text: op
+                    attr: 2
+                  - text: " field of a notifier procedure. It notifies about a change in a "
+                    attr: 1
+                  - text: Selection
+                    attr: 2
+                  - text: " or "
+                    attr: 1
+                  - text: SET
+                    attr: 2
+                  - text: ", resulting in a set {from..to}. Any previous selection was cleared.\r\rCONST "
+                    attr: 1
+                  - text: ok
+                    attr: 3
+                  - text: "\rThis value may be used as an element of the "
+                    attr: 1
+                  - text: form
+                    attr: 2
+                  - text: " set parameter of procedure "
+                    attr: 1
+                  - text: GetOK
+                    attr: 2
+                  - text: ". It indicates that the user has pressed the "
+                    attr: 1
+                  - text: OK
+                    attr: 2
+                  - text: " button.\r\rCONST "
+                    attr: 1
+                  - text: "yes"
+                    attr: 3
+                  - text: "\rThis value may be used as an element of the "
+                    attr: 1
+                  - text: form
+                    attr: 2
+                  - text: " set parameter of procedure "
+                    attr: 1
+                  - text: GetOK
+                    attr: 2
+                  - text: ". It indicates that the user has pressed the "
+                    attr: 1
+                  - text: "Yes"
+                    attr: 2
+                  - text: " button.\r\rCONST "
+                    attr: 1
+                  - text: "no"
+                    attr: 3
+                  - text: "\rThis value may be used as an element of the "
+                    attr: 1
+                  - text: form
+                    attr: 2
+                  - text: " set parameter of procedure "
+                    attr: 1
+                  - text: GetOK
+                    attr: 2
+                  - text: ". It indicates that the user has pressed the "
+                    attr: 1
+                  - text: "No"
+                    attr: 2
+                  - text: " button.\r\rCONST "
+                    attr: 1
+                  - text: cancel
+                    attr: 3
+                  - text: "\rThis value may be used as an element of the "
+                    attr: 1
+                  - text: form
+                    attr: 2
+                  - text: " set parameter of procedure "
+                    attr: 1
+                  - text: GetOK
+                    attr: 2
+                  - text: ". It indicates that the user has pressed the "
+                    attr: 1
+                  - text: Cancel
+                    attr: 2
+                  - text: " button.\r\rCONST "
+                    attr: 1
+                  - text: windows32s
+                    attr: 3
+                  - text: "\rThis is a possible value of variable "
+                    attr: 1
+                  - text: platform
+                    attr: 2
+                  - text: ". It indicates that BlackBox is running on Windows 3.1 (Win32s). This platform is not supported anymore.\r\rCONST "
+                    attr: 1
+                  - text: windows95
+                    attr: 3
+                  - text: "\rThis is a possible value of variable "
+                    attr: 1
+                  - text: platform
+                    attr: 2
+                  - text: ". It indicates that BlackBox is running on Windows 95, Windows 98, Windows 98SE, or Windows 98 ME.\r\rCONST "
+                    attr: 1
+                  - text: windowsNT3
+                    attr: 3
+                  - text: "\rThis is a possible value of variable "
+                    attr: 1
+                  - text: platform
+                    attr: 2
+                  - text: ". It indicates that BlackBox is running on Windows NT 3.x.\r\rCONST "
+                    attr: 1
+                  - text: windowsNT4
+                    attr: 3
+                  - text: "\rThis is a possible value of variable "
+                    attr: 1
+                  - text: platform
+                    attr: 2
+                  - text: ". It indicates that BlackBox is running on Windows NT 4.x.\r\rCONST "
+                    attr: 1
+                  - text: windows2000
+                    attr: 3
+                  - text: "\rThis is a possible value of variable "
+                    attr: 1
+                  - text: platform
+                    attr: 2
+                  - text: ". It indicates that BlackBox is running on Windows 2000 (formerly called Windows NT 5.0).\r\rCONST "
+                    attr: 1
+                  - text: windows98
+                    attr: 3
+                  - text: "\rThis is a possible value of variable "
+                    attr: 1
+                  - text: platform
+                    attr: 2
+                  - text: ". It indicates that BlackBox is running on one of the Windows 98 flavors (original Windows 98, Windows 98 SE, or Windows 98 ME).\r\rCONST "
+                    attr: 1
+                  - text: windowsXP
+                    attr: 3
+                  - text: "\rThis is a possible value of variable "
+                    attr: 1
+                  - text: platform
+                    attr: 2
+                  - text: ". It indicates that BlackBox is running on Windows XP.\r\rCONST "
+                    attr: 1
+                  - text: windowsVista
+                    attr: 3
+                  - text: "\rThis is a possible value of variable "
+                    attr: 1
+                  - text: platform
+                    attr: 2
+                  - text: ". It indicates that BlackBox is running on Windows Vista.\r\rCONST "
+                    attr: 1
+                  - text: windows7
+                    attr: 3
+                  - text: "\rThis is a possible value of variable "
+                    attr: 1
+                  - text: platform
+                    attr: 2
+                  - text: ". It indicates that BlackBox is running on Windows 7.\r\rCONST "
+                    attr: 1
+                  - text: windows8
+                    attr: 3
+                  - text: "\rThis is a possible value of variable "
+                    attr: 1
+                  - text: platform
+                    attr: 2
+                  - text: ". It indicates that BlackBox is running on Windows 8.\r\rCONST "
+                    attr: 1
+                  - text: macOS
+                    attr: 3
+                  - text: "\rThis is a possible value of variable "
+                    attr: 1
+                  - text: platform
+                    attr: 2
+                  - text: ". It indicates that BlackBox is running on Mac OS 7.x, 8.x, or 9.x. This platform is not supported anymore.\r\rCONST "
+                    attr: 1
+                  - text: macOSX
+                    attr: 3
+                  - text: "\rThis is a possible value of variable "
+                    attr: 1
+                  - text: platform
+                    attr: 2
+                  - text: ". It indicates that BlackBox is running on Mac OS X. This platform is currently not supported. \r\rCONST "
+                    attr: 1
+                  - text: linux
+                    attr: 3
+                  - text: "\rThis is a possible value of variable "
+                    attr: 1
+                  - text: platform
+                    attr: 2
+                  - text: ". It indicates that BlackBox is running on Linux. This platform is currently not supported. \r\rCONST "
+                    attr: 1
+                  - text: tru64
+                    attr: 3
+                  - text: "\rThis is a possible value of variable "
+                    attr: 1
+                  - text: platform
+                    attr: 2
+                  - text: ". It indicates that BlackBox is running on Compaq Tru64 Unix.  This platform is currently not supported.\r\rCONST "
+                    attr: 1
+                  - text: firstPos
+                    attr: 3
+                  - text: "\rThis value may be used in calls to "
+                    attr: 1
+                  - text: Tree
+                    attr: 2
+                  - text: " variables. It indicates that the first child of a node is requested.\r\rCONST "
+                    attr: 1
+                  - text: lastPos
+                    attr: 3
+                  - text: "\rThis value may be used in calls to "
+                    attr: 1
+                  - text: Tree
+                    attr: 2
+                  - text: " variables. It indicates that the last child of a node is requested.\r\rCONST "
+                    attr: 1
+                  - text: persistent
+                    attr: 3
+                  - text: "\rThis value may be used in calls to "
+                    attr: 1
+                  - text: SetLanguage
+                    attr: 2
+                  - text: " variables. It indicates that the setting is to be stored in a persistent registry and used again when BlackBox is started the next time.\r\rCONST "
+                    attr: 1
+                  - text: nonPersistent
+                    attr: 3
+                  - text: "\rThis value may be used in calls to "
+                    attr: 1
+                  - text: SetLanguage
+                    attr: 2
+                  - text: " variables. It indicates that the setting is not to be stored in a persistent registry and thus will not affect BlackBox the next time it is started.\r\r\rTYPE "
+                    attr: 1
+                  - text: String
+                    attr: 3
+                  - text: "\rString type for various names to be displayed for the user, or to be entered by the user.\r\r\rTYPE "
+                    attr: 1
+                  - text: List
+                    attr: 3
+                  - text: "\rA list type defines a sub range of the "
+                    attr: 1
+                  - text: INTEGER
+                    attr: 2
+                  - text: " type, and an item name (a string) for each element of this range. All valid names can be enumerated by indexing from "
+                    attr: 1
+                  - text: 0
+                    attr: 2
+                  - text: " upwards until "
+                    attr: 1
+                  - text: len - 1
+                    attr: 2
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: index
+                    attr: 3
+                  - text: ": INTEGER\tindex >= -1  &  index < len\rCurrently selected item of the list. If "
+                    attr: 1
+                  - text: index = -1
+                    attr: 2
+                  - text: " then no element of the list is selected, which may happen e.g. if "
+                    attr: 1
+                  - text: len = 0
+                    attr: 2
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: len
+                    attr: 3
+                  - text: "-: INTEGER\tlen >= 0\rNumber of elements in the list.\r\rPROCEDURE (VAR l: List) "
+                    attr: 1
+                  - text: SetLen
+                    attr: 3
+                  - text: " (len: INTEGER)\rNEW\rMakes sure that the list has at least "
+                    attr: 1
+                  - text: len
+                    attr: 2
+                  - text: " elements available. If "
+                    attr: 1
+                  - text: "len > l.len"
+                    attr: 2
+                  - text: ", then the size of the existing list is increased as much as necessary. Note that "
+                    attr: 1
+                  - text: SetItem
+                    attr: 2
+                  - text: " also increases the list size if necessary, so "
+                    attr: 1
+                  - text: SetLen
+                    attr: 2
+                  - text: " is strictly necessary only to shorten the list. "
+                    attr: 1
+                  - text: SetLen
+                    attr: 2
+                  - text: " should be called when the size of the list to be constructed is known in advance, to avoid unnecessary allocations and copying in "
+                    attr: 1
+                  - text: SetItem
+                    attr: 2
+                  - text: ".\rIf "
+                    attr: 1
+                  - text: "len > l.len"
+                    attr: 2
+                  - text: ", the existing "
+                    attr: 1
+                  - text: l.len
+                    attr: 2
+                  - text: " elements are not affected by "
+                    attr: 1
+                  - text: SetLen
+                    attr: 2
+                  - text: ".\r\rPre\rlen >= 0\t20\r\rPost\rl.len = len\r\rPROCEDURE (VAR l: List) "
+                    attr: 1
+                  - text: SetItem
+                    attr: 3
+                  - text: " (index: INTEGER; IN item: String)\rNEW\rGiven an index "
+                    attr: 1
+                  - text: index
+                    attr: 2
+                  - text: ", the corresponding item name is set, or overwritten if it had been set earlier. If "
+                    attr: 1
+                  - text: "index >= l.len"
+                    attr: 2
+                  - text: " then the length is increased as much as necessary\r\rPre\rindex >= 0\t20\ritem # \"\"\t21\r\rPost\rindex <l.len'\r\tl.len = l.len'\rindex >= l.len'\r\tl.len = index + 1\r\rPROCEDURE (VAR l: List) "
+                    attr: 1
+                  - text: GetItem
+                    attr: 3
+                  - text: " (index: INTEGER; OUT item: String)\rNEW\rGiven an index "
+                    attr: 1
+                  - text: index
+                    attr: 2
+                  - text: ", the corresponding item name is returned. If "
+                    attr: 1
+                  - text: index
+                    attr: 2
+                  - text: " is outside of the valid index range, the empty string \"\" is returned.\r\rPost\rname # \"\" iff index is in 0 .. l.len - 1\r\rPROCEDURE (VAR l: List) "
+                    attr: 1
+                  - text: SetResources
+                    attr: 3
+                  - text: " (IN key: ARRAY OF CHAR)\rNEW\rSet up the item list according to entries in a string resource file. For example, "
+                    attr: 1
+                  - text: "key = \"#System:colors\""
+                    attr: 2
+                  - text: " would build up an item list (red, green, blue), assuming that resource file "
+                    attr: 1
+                  - text: System/Rsrc/Strings
+                    attr: 2
+                  - text: " contains the entries\r\tkey[0]\tred\r\tkey[1]\tgreen\r\tkey[2]\tblue\r\rPre\rkey # \"\"\t20\r\r\rTYPE "
+                    attr: 1
+                  - text: Selection
+                    attr: 3
+                  - text: "\rA selection is similar to a "
+                    attr: 1
+                  - text: List
+                    attr: 2
+                  - text: ", except that not only one value can be represented, but between 0 and an arbitrary number of values instead, i.e., a selection is a potentially large set of integers. In this context, the term \"list\" denotes all selectable elements, not only the selected ones.\r\r"
+                    attr: 1
+                  - text: len
+                    attr: 3
+                  - text: "-: INTEGER\tlen >= 0\rNumber of elements in the list.\r\rPROCEDURE (VAR s: Selection) "
+                    attr: 1
+                  - text: SetLen
+                    attr: 3
+                  - text: " (len: INTEGER)\rNEW\rMakes sure that the list has at least "
+                    attr: 1
+                  - text: len
+                    attr: 2
+                  - text: " elements available. If "
+                    attr: 1
+                  - text: "len > l.len"
+                    attr: 2
+                  - text: ", then the size of the existing list is increased as much as necessary. Note that "
+                    attr: 1
+                  - text: SetItem
+                    attr: 2
+                  - text: " also increases the list size if necessary, so "
+                    attr: 1
+                  - text: SetLen
+                    attr: 2
+                  - text: " is strictly necessary only to shorten the list. "
+                    attr: 1
+                  - text: SetLen
+                    attr: 2
+                  - text: " should be called when the size of the list to be constructed is known in advance, to avoid unnecessary allocations and copying in "
+                    attr: 1
+                  - text: SetItem
+                    attr: 2
+                  - text: ".\rIf "
+                    attr: 1
+                  - text: "len > l.len"
+                    attr: 2
+                  - text: ", the existing "
+                    attr: 1
+                  - text: l.len
+                    attr: 2
+                  - text: " elements are not affected by "
+                    attr: 1
+                  - text: SetLen
+                    attr: 2
+                  - text: ".\r\rPre\rlen >= 0\t20\r\rPost\rs.len = len\r\rPROCEDURE (VAR s: Selection) "
+                    attr: 1
+                  - text: SetItem
+                    attr: 3
+                  - text: " (index: INTEGER; IN item: String)\rNEW\rGiven an index "
+                    attr: 1
+                  - text: index
+                    attr: 2
+                  - text: ", the corresponding item name is set, or overwritten if it had been set earlier. If "
+                    attr: 1
+                  - text: "index >= s.len"
+                    attr: 2
+                  - text: " then the length is increased as much as necessary\r\rPre\rindex >= 0\t20\ritem # \"\"\t21\r\rPost\rindex <s.len'\r\ts.len = s.len'\rindex >= s.len'\r\ts.len = index + 1\r\rPROCEDURE (VAR s: Selection) "
+                    attr: 1
+                  - text: GetItem
+                    attr: 3
+                  - text: " (index: INTEGER; OUT item: String)\rNEW\rGiven an index "
+                    attr: 1
+                  - text: index
+                    attr: 2
+                  - text: ", the corresponding item name is returned. If "
+                    attr: 1
+                  - text: index
+                    attr: 2
+                  - text: " is outside of the valid index range, the empty string \"\" is returned.\r\rPost\rname # \"\" iff index is in 0 .. s.len - 1\r\rPROCEDURE (VAR s: Selection) "
+                    attr: 1
+                  - text: SetResources
+                    attr: 3
+                  - text: " (IN key: ARRAY OF CHAR)\rNEW\rSet up the item list according to entries in a string resource file. For example, "
+                    attr: 1
+                  - text: "key = \"#System:colors\""
+                    attr: 2
+                  - text: " would build up an item list (red, green, blue), assuming that resource file "
+                    attr: 1
+                  - text: System/Rsrc/Strings
+                    attr: 2
+                  - text: " contains the entries\r\tkey[0]\tred\r\tkey[1]\tgreen\r\tkey[2]\tblue\r\rPre\rkey # \"\"\t20\r\rPROCEDURE (VAR s: Selection) "
+                    attr: 1
+                  - text: Incl
+                    attr: 3
+                  - text: " (from, to: INTEGER)\rNEW\rInclude the range "
+                    attr: 1
+                  - text: "[from..to]"
+                    attr: 2
+                  - text: " intersected with "
+                    attr: 1
+                  - text: "[0..s.len - 1]"
+                    attr: 2
+                  - text: " into the selection. If "
+                    attr: 1
+                  - text: "from > to"
+                    attr: 2
+                  - text: ", this is regarded as an empty range.\r\rPROCEDURE (VAR s: Selection) "
+                    attr: 1
+                  - text: Excl
+                    attr: 3
+                  - text: " (from, to: INTEGER)\rNEW\rExclude the range "
+                    attr: 1
+                  - text: "[from..to]"
+                    attr: 2
+                  - text: " intersected with "
+                    attr: 1
+                  - text: "[0..s.len - 1]"
+                    attr: 2
+                  - text: " into the selection. If "
+                    attr: 1
+                  - text: "from > to"
+                    attr: 2
+                  - text: ", this is regarded as an empty range.\r\rPROCEDURE (VAR s: Selection) "
+                    attr: 1
+                  - text: In
+                    attr: 3
+                  - text: " (index: INTEGER): BOOLEAN\rNEW\rDetermine whether element "
+                    attr: 1
+                  - text: index
+                    attr: 2
+                  - text: " is in the selection. If "
+                    attr: 1
+                  - text: index
+                    attr: 2
+                  - text: " is outside of the range "
+                    attr: 1
+                  - text: "[0..s.len-1]"
+                    attr: 2
+                  - text: ", then "
+                    attr: 1
+                  - text: "FALSE"
+                    attr: 2
+                  - text: " is returned.\r\r\rTYPE "
+                    attr: 1
+                  - text: Combo
+                    attr: 3
+                  - text: "\rA combo is similar to a "
+                    attr: 1
+                  - text: List
+                    attr: 2
+                  - text: ", except that it also accepts other values than the predefined ones of a list. Typically, a combo is represented on the screen as a combo box control. Such a control is a mixture of a list box or popup box (where one of the listed values can be chosen) and a text field (in which non-standard values can be typed in).\r\r"
+                    attr: 1
+                  - text: item
+                    attr: 3
+                  - text: ": String\rCurrent value of the combo.\r\r"
+                    attr: 1
+                  - text: len
+                    attr: 3
+                  - text: "-: INTEGER\tlen >= 0\rNumber of elements in the list.\r\rPROCEDURE (VAR c: Combo) "
+                    attr: 1
+                  - text: SetLen
+                    attr: 3
+                  - text: " (len: INTEGER)\rNEW\rMakes sure that the list has at least "
+                    attr: 1
+                  - text: len
+                    attr: 2
+                  - text: " elements available. If "
+                    attr: 1
+                  - text: "len > l.len"
+                    attr: 2
+                  - text: ", then the size of the existing list is increased as much as necessary. Note that "
+                    attr: 1
+                  - text: SetItem
+                    attr: 2
+                  - text: " also increases the list size if necessary, so "
+                    attr: 1
+                  - text: SetLen
+                    attr: 2
+                  - text: " is strictly necessary only to shorten the list. "
+                    attr: 1
+                  - text: SetLen
+                    attr: 2
+                  - text: " should be called when the size of the list to be constructed is known in advance, to avoid unnecessary allocations and copying in "
+                    attr: 1
+                  - text: SetItem
+                    attr: 2
+                  - text: ".\rIf "
+                    attr: 1
+                  - text: "len > l.len"
+                    attr: 2
+                  - text: ", the existing "
+                    attr: 1
+                  - text: l.len
+                    attr: 2
+                  - text: " elements are not affected by "
+                    attr: 1
+                  - text: SetLen
+                    attr: 2
+                  - text: ".\r\rPre\rlen >= 0\t20\r\rPost\rc.len = len\r\rPROCEDURE (VAR c: Combo) "
+                    attr: 1
+                  - text: SetItem
+                    attr: 3
+                  - text: " (index: INTEGER; IN item: String)\rNEW\rGiven an index "
+                    attr: 1
+                  - text: index
+                    attr: 2
+                  - text: ", the corresponding item name is set, or overwritten if it had been set earlier. If "
+                    attr: 1
+                  - text: "index >= c.len"
+                    attr: 2
+                  - text: " then the length is increased as much as necessary\r\rPre\rindex >= 0\t20\ritem # \"\"\t21\r\rPost\rindex <c.len'\r\tc.len = c.len'\rindex >= c.len'\r\tc.len = index + 1\r\rPROCEDURE (VAR c: Combo) "
+                    attr: 1
+                  - text: GetItem
+                    attr: 3
+                  - text: " (index: INTEGER; OUT item: String)\rNEW\rGiven an index "
+                    attr: 1
+                  - text: index
+                    attr: 2
+                  - text: ", the corresponding item name is returned. If "
+                    attr: 1
+                  - text: index
+                    attr: 2
+                  - text: " is outside of the valid index range, the empty string \"\" is returned.\r\rPost\rname # \"\" iff index is in 0 .. c.len - 1\r\rPROCEDURE (VAR c: Combo) "
+                    attr: 1
+                  - text: SetResources
+                    attr: 3
+                  - text: " (IN key: ARRAY OF CHAR)\rNEW\rSet up the item list according to entries in a string resource file. For example, "
+                    attr: 1
+                  - text: "key = \"#System:colors\""
+                    attr: 2
+                  - text: " would build up an item list (red, green, blue), assuming that resource file "
+                    attr: 1
+                  - text: System/Rsrc/Strings
+                    attr: 2
+                  - text: " contains the entries\r\tkey[0]\tred\r\tkey[1]\tgreen\r\tkey[2]\tblue\r\rPre\rkey # \"\"\t20\r\r\rTYPE "
+                    attr: 1
+                  - text: TreeNode
+                    attr: 3
+                  - text: "\rHolds information about a node in a "
+                    attr: 1
+                  - text: Tree
+                    attr: 2
+                  - text: ". A "
+                    attr: 1
+                  - text: TreeNode
+                    attr: 2
+                  - text: " is part of one and only one "
+                    attr: 1
+                  - text: Tree
+                    attr: 2
+                  - text: ".\r\rPROCEDURE (tn: TreeNode) "
+                    attr: 1
+                  - text: SetName
+                    attr: 3
+                  - text: " (name: String)\rNEW\rSets the name of "
+                    attr: 1
+                  - text: tn
+                    attr: 2
+                  - text: ". This is the text that is displayed when a "
+                    attr: 1
+                  - text: Tree
+                    attr: 2
+                  - text: " is bound to a tree control.\r\rPROCEDURE (tn: TreeNode) "
+                    attr: 1
+                  - text: GetName
+                    attr: 3
+                  - text: " (OUT name: String)\rNEW\rRetrieves the name of "
+                    attr: 1
+                  - text: tn
+                    attr: 2
+                  - text: ".\r\rPROCEDURE (tn: TreeNode) "
+                    attr: 1
+                  - text: SetData
+                    attr: 3
+                  - text: " (data: ANYPTR), NEW;\rAssociates some data with node "
+                    attr: 1
+                  - text: tn
+                    attr: 2
+                  - text: ". This can be used to associate some application defined data with each node in a "
+                    attr: 1
+                  - text: Tree
+                    attr: 2
+                  - text: ". \r\rPROCEDURE (tn: TreeNode) "
+                    attr: 1
+                  - text: Data
+                    attr: 3
+                  - text: " (): ANYPTR\rNEW\rReturns the data associated with the "
+                    attr: 1
+                  - text: tn
+                    attr: 2
+                  - text: " by an earlier call to "
+                    attr: 1
+                  - text: SetData
+                    attr: 2
+                  - text: ". Returns "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: " if no call to "
+                    attr: 1
+                  - text: SetData
+                    attr: 2
+                  - text: " has been made.\r\rPROCEDURE (tn: TreeNode) "
+                    attr: 1
+                  - text: NofChildren
+                    attr: 3
+                  - text: " (): INTEGER\rNEW\rReturns the number of immediate children to "
+                    attr: 1
+                  - text: tn
+                    attr: 2
+                  - text: ", i.e. all nodes, "
+                    attr: 1
+                  - text: n
+                    attr: 2
+                  - text: ", in tree, "
+                    attr: 1
+                  - text: t
+                    attr: 2
+                  - text: ", such that "
+                    attr: 1
+                  - text: t.Parent(n) = tn
+                    attr: 2
+                  - text: ".\r\rPROCEDURE (tn: TreeNode) "
+                    attr: 1
+                  - text: SetExpansion
+                    attr: 3
+                  - text: " (expanded: BOOLEAN)\rNEW\rMarks "
+                    attr: 1
+                  - text: tn
+                    attr: 2
+                  - text: " as expanded or collapsed. When the tree is displayed in a Tree Control the node corresponding to tn will be expanded or collapsed according to the value of "
+                    attr: 1
+                  - text: expanded
+                    attr: 2
+                  - text: ".\r\rPROCEDURE (tn: TreeNode) "
+                    attr: 1
+                  - text: IsExpanded
+                    attr: 3
+                  - text: " (): BOOLEAN\rNEW\rReturns "
+                    attr: 1
+                  - text: "TRUE"
+                    attr: 2
+                  - text: " if "
+                    attr: 1
+                  - text: tn
+                    attr: 2
+                  - text: " has been expanded by a Tree Control or by an explicit call to "
+                    attr: 1
+                  - text: SetExpansion
+                    attr: 2
+                  - text: ". Otherwise "
+                    attr: 1
+                  - text: "FALSE"
+                    attr: 2
+                  - text: " is returned.\r\rPROCEDURE (tn: TreeNode) "
+                    attr: 1
+                  - text: ViewAsFolder
+                    attr: 3
+                  - text: " (isFolder: BOOLEAN)\rNEW\rWhen a Tree Control has the option \"Folder Icons\" set, it automatically displays nodes that have children as folders. If node "
+                    attr: 1
+                  - text: tn
+                    attr: 2
+                  - text: " should be viewed as a folder even if it has no children, "
+                    attr: 1
+                  - text: tn.ViewAsFolder(TRUE)
+                    attr: 2
+                  - text: " should be called. If node "
+                    attr: 1
+                  - text: tn
+                    attr: 2
+                  - text: " has children it will be viewed as a folder even if "
+                    attr: 1
+                  - text: tn.ViewAsFolder(FALSE)
+                    attr: 2
+                  - text: " is called. "
+                    attr: 1
+                  - text: ViewAsFolder
+                    attr: 2
+                  - text: " only provides a way to make leafs look like folders, not the other way around.\r\rPROCEDURE (tn: TreeNode) "
+                    attr: 1
+                  - text: IsFolder
+                    attr: 3
+                  - text: " (): BOOLEAN\rNEW\rReturns "
+                    attr: 1
+                  - text: "TRUE"
+                    attr: 2
+                  - text: " if "
+                    attr: 1
+                  - text: tn
+                    attr: 2
+                  - text: " has children or if "
+                    attr: 1
+                  - text: tn.ViewAsFolder(TRUE)
+                    attr: 2
+                  - text: " has been called, otherwise it returns "
+                    attr: 1
+                  - text: "FALSE"
+                    attr: 2
+                  - text: ".\r\t\t\r\rTYPE "
+                    attr: 1
+                  - text: Tree
+                    attr: 3
+                  - text: "\rDefines a tree structure for storing "
+                    attr: 1
+                  - text: TreeNodes
+                    attr: 2
+                  - text: ". Normally a "
+                    attr: 1
+                  - text: Tree
+                    attr: 2
+                  - text: " is bound to a Tree Control in the user interface. Each tree can have several roots. It is possible to navigate up and down in the tree as well as between siblings. All operations on a tree "
+                    attr: 1
+                  - text: t
+                    attr: 2
+                  - text: " that require a TreeNode "
+                    attr: 1
+                  - text: tn
+                    attr: 2
+                  - text: " have the precondition that "
+                    attr: 1
+                  - text: tn
+                    attr: 2
+                  - text: " was created using "
+                    attr: 1
+                  - text: t.NewChild
+                    attr: 2
+                  - text: " and that "
+                    attr: 1
+                  - text: tn
+                    attr: 2
+                  - text: " is still part of "
+                    attr: 1
+                  - text: "t,"
+                    attr: 2
+                  - text: " i.e., "
+                    attr: 1
+                  - text: tn
+                    attr: 2
+                  - text: " is a node in "
+                    attr: 1
+                  - text: t
+                    attr: 2
+                  - text: " and not in any other tree and "
+                    attr: 1
+                  - text: tn
+                    attr: 2
+                  - text: " has not been deleted from "
+                    attr: 1
+                  - text: t
+                    attr: 2
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: Note
+                    attr: 2
+                  - text: ":Tree controls look different under Windows NT and other Windows versions. The background of a tree control is not set to gray when the control is disabled or read only under Windows NT. \r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Dev/Docu/P-S-I.odc', 'Platform Specific Issues')"
+                      body:
+                        - text: "See "
+                          attr: 1
+                        - text: Platform Specific Issues
+                          attr: 4
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: " for more information.\r\rPROCEDURE (VAR t: Tree) "
+                    attr: 1
+                  - text: NofNodes
+                    attr: 3
+                  - text: " (): INTEGER\rNEW\rReturns the total number of nodes in the tree.\r\rPost\rReturned value is greater than or equal to 0.\r\rPROCEDURE (VAR t: Tree) "
+                    attr: 1
+                  - text: NofRoots
+                    attr: 3
+                  - text: " (): INTEGER\rNEW\rThe total number of roots in the tree. A node, "
+                    attr: 1
+                  - text: tn
+                    attr: 2
+                  - text: ", is a root if "
+                    attr: 1
+                  - text: tn.Parent() = NIL
+                    attr: 2
+                  - text: ".\r\rPost\rReturned value is greater than or equal to 0.\r\rPROCEDURE (VAR t: Tree) "
+                    attr: 1
+                  - text: NewChild
+                    attr: 3
+                  - text: " (parent: TreeNode; pos: INTEGER; name: String): TreeNode\rNEW\rCreates a new node in a tree. The new node is inserted at positions "
+                    attr: 1
+                  - text: pos
+                    attr: 2
+                  - text: " among the children of "
+                    attr: 1
+                  - text: parent
+                    attr: 2
+                  - text: ". If parent has no children or "
+                    attr: 1
+                  - text: pos = firstPos
+                    attr: 2
+                  - text: " then the new node is inserted as the first child of "
+                    attr: 1
+                  - text: parent
+                    attr: 2
+                  - text: ". If "
+                    attr: 1
+                  - text: parent
+                    attr: 2
+                  - text: " has fewer children than the value of "
+                    attr: 1
+                  - text: "pos "
+                    attr: 2
+                  - text: "or "
+                    attr: 1
+                  - text: pos = lastPos
+                    attr: 2
+                  - text: ", then the new node is inserted as the last child of "
+                    attr: 1
+                  - text: parent
+                    attr: 2
+                  - text: ". If "
+                    attr: 1
+                  - text: parent
+                    attr: 2
+                  - text: " is NIL then the new node is added as a new root in the tree at position "
+                    attr: 1
+                  - text: pos
+                    attr: 2
+                  - text: ".\r\rPre\r(pos >= 0) OR (pos = firstPos) OR (pos = lastPos)\r\rPost\rt.NofNodes() = t.NofNodes()' + 1\r\rPROCEDURE (VAR t: Tree) "
+                    attr: 1
+                  - text: Delete
+                    attr: 3
+                  - text: " (node: TreeNode): INTEGER\rNEW\rRemoves "
+                    attr: 1
+                  - text: node
+                    attr: 2
+                  - text: " and all its children from the tree.\r\rPre\rnode # NIL\r\rPost\rt.NofNodes < t.NofNodes()'\r\rPROCEDURE (VAR t: Tree) "
+                    attr: 1
+                  - text: "DeleteAll\r"
+                    attr: 3
+                  - text: "NEW\rRemoves all nodes from the tree.\r\rPost\rt.NofNodes() = 0\rt.NofRoots() = 0\r\rPROCEDURE (VAR t: Tree) "
+                    attr: 1
+                  - text: Move
+                    attr: 3
+                  - text: " (node, parent: TreeNode; pos: INTEGER)\rNEW\rMoves a node in a tree from its current place to the place specified by "
+                    attr: 1
+                  - text: "parent "
+                    attr: 2
+                  - text: "and "
+                    attr: 1
+                  - text: pos
+                    attr: 2
+                  - text: ". The interpretation of "
+                    attr: 1
+                  - text: parent
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: pos
+                    attr: 2
+                  - text: " is the same as in "
+                    attr: 1
+                  - text: NewChild
+                    attr: 2
+                  - text: ".\r\rPre\rnode # NIL\r(pos >= 0) OR (pos = firstPos) OR (pos = lastPos)\r\rPost\rt.NofNodes() = t.NofNodes()'\r\rPROCEDURE (VAR t: Tree) "
+                    attr: 1
+                  - text: Parent
+                    attr: 3
+                  - text: " (node: TreeNode): TreeNode\rNEW\rReturns the parent node of "
+                    attr: 1
+                  - text: node
+                    attr: 2
+                  - text: ". If "
+                    attr: 1
+                  - text: node
+                    attr: 2
+                  - text: " is a root then "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: " is returned.\r\rPre\rnode # NIL\r\t\t\t\rPROCEDURE (VAR t: Tree) "
+                    attr: 1
+                  - text: Child
+                    attr: 3
+                  - text: " (node: TreeNode; pos: INTEGER): TreeNode\rNEW\rReturns the child at position "
+                    attr: 1
+                  - text: pos
+                    attr: 2
+                  - text: " of "
+                    attr: 1
+                  - text: node
+                    attr: 2
+                  - text: ". If "
+                    attr: 1
+                  - text: node
+                    attr: 2
+                  - text: " is "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: " the root at position "
+                    attr: 1
+                  - text: pos
+                    attr: 2
+                  - text: " is returned. The constants "
+                    attr: 1
+                  - text: firstPos
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: lastPos
+                    attr: 2
+                  - text: " can be used to retrieve the first and last child of a node. If "
+                    attr: 1
+                  - text: node
+                    attr: 2
+                  - text: " has no children or if it has fewer children than the value of "
+                    attr: 1
+                  - text: pos
+                    attr: 2
+                  - text: ", then "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: " is returned.\r\rPre\r(pos >= 0) OR (pos = firstPos) OR (pos = lastPos)\r\rPROCEDURE (VAR t: Tree) "
+                    attr: 1
+                  - text: Next
+                    attr: 3
+                  - text: " (node: TreeNode): TreeNode\rNEW\rReturns the next node at the same level and with the same parent as "
+                    attr: 1
+                  - text: node
+                    attr: 2
+                  - text: " i.e. If "
+                    attr: 1
+                  - text: node
+                    attr: 2
+                  - text: " is at position "
+                    attr: 1
+                  - text: pos
+                    attr: 2
+                  - text: " then the returned node is at position "
+                    attr: 1
+                  - text: pos + 1
+                    attr: 2
+                  - text: ". If "
+                    attr: 1
+                  - text: node
+                    attr: 2
+                  - text: " is the last child of its parent then "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: " is returned.\r\rPre\rnode # NIL\r\rPROCEDURE (VAR t: Tree) "
+                    attr: 1
+                  - text: Prev
+                    attr: 3
+                  - text: " (node: TreeNode): TreeNode\rNEW\rReturns the previous node at the same level and with the same parent as "
+                    attr: 1
+                  - text: node
+                    attr: 2
+                  - text: ". If "
+                    attr: 1
+                  - text: node
+                    attr: 2
+                  - text: " is at position "
+                    attr: 1
+                  - text: pos
+                    attr: 2
+                  - text: " then the returned node is at position "
+                    attr: 1
+                  - text: pos - 1
+                    attr: 2
+                  - text: ". If "
+                    attr: 1
+                  - text: node
+                    attr: 2
+                  - text: " is the first child of its parent then "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: " is returned.\r\rPre\rnode # NIL\r\rPROCEDURE (VAR t: Tree) "
+                    attr: 1
+                  - text: Select
+                    attr: 3
+                  - text: " (node: TreeNode)\rNEW\rMakes "
+                    attr: 1
+                  - text: node
+                    attr: 2
+                  - text: " become the selected node in the tree. If "
+                    attr: 1
+                  - text: node
+                    attr: 2
+                  - text: " is NIL then there is no selection in the tree.\r\rPROCEDURE (VAR t: Tree) "
+                    attr: 1
+                  - text: Selected
+                    attr: 3
+                  - text: " (): TreeNode\rNEW\rReturns the selected node in a tree. If no node is currently selected then "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: " is returned.\r\r\rTYPE "
+                    attr: 1
+                  - text: Color
+                    attr: 3
+                  - text: "\rType for colors.\r\r"
+                    attr: 1
+                  - text: val
+                    attr: 3
+                  - text: ": INTEGER\rCurrent color value (in the same format as "
+                    attr: 1
+                  - text: Ports.Color
+                    attr: 2
+                  - text: ").\r\r\rTYPE "
+                    attr: 1
+                  - text: Currency
+                    attr: 3
+                  - text: "\rType for money values.\r\r"
+                    attr: 1
+                  - text: "val: "
+                    attr: 3
+                  - text: "LONGINT\rThe fixed-point value of the currency. The true value is "
+                    attr: 1
+                  - text: val / 10^
+                    attr: 2
+                  - text: scale
+                    attr: 5
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: "scale: "
+                    attr: 3
+                  - text: "INTEGER\tscale > 0\rScale factor for "
+                    attr: 1
+                  - text: val
+                    attr: 2
+                  - text: ". For example, "
+                    attr: 1
+                  - text: val = 12475
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: scale = 2
+                    attr: 2
+                  - text: " is the representation for "
+                    attr: 1
+                  - text: 124.75
+                    attr: 2
+                  - text: ". If the currency denotes US dollars, then "
+                    attr: 1
+                  - text: scale = 2
+                    attr: 2
+                  - text: " means that values can be displayed and entered with cent precision. A value of "
+                    attr: 1
+                  - text: 3
+                    attr: 2
+                  - text: " would increase precision to 1/10 of a cent.\r\r\rTYPE "
+                    attr: 1
+                  - text: Par
+                    attr: 3
+                  - text: "\rValues of this parameter type are used to set up the names of menu items, and to disable or check menu items. A procedure of type "
+                    attr: 1
+                  - text: GuardProc
+                    attr: 2
+                  - text: " has a variable parameter of type "
+                    attr: 1
+                  - text: Par
+                    attr: 2
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: disabled
+                    attr: 3
+                  - text: ": BOOLEAN\rInitially set to "
+                    attr: 1
+                  - text: "FALSE"
+                    attr: 2
+                  - text: ", this field can be set to "
+                    attr: 1
+                  - text: "TRUE"
+                    attr: 2
+                  - text: " by guard commands, to disable a menu item or a control.\r\r"
+                    attr: 1
+                  - text: checked
+                    attr: 3
+                  - text: ": BOOLEAN\rInitially set to "
+                    attr: 1
+                  - text: "FALSE"
+                    attr: 2
+                  - text: ", this field can be set to "
+                    attr: 1
+                  - text: "TRUE"
+                    attr: 2
+                  - text: " to show a check mark for a menu item.\r\r"
+                    attr: 1
+                  - text: undef
+                    attr: 3
+                  - text: ": BOOLEAN\rInitially set to "
+                    attr: 1
+                  - text: "FALSE"
+                    attr: 2
+                  - text: ", this field can be set to "
+                    attr: 1
+                  - text: "TRUE"
+                    attr: 2
+                  - text: " to set the "
+                    attr: 1
+                  - text: undef
+                    attr: 2
+                  - text: " state of a control.\r\r"
+                    attr: 1
+                  - text: readOnly
+                    attr: 3
+                  - text: ": BOOLEAN\rInitially set to "
+                    attr: 1
+                  - text: "FALSE"
+                    attr: 2
+                  - text: ", this field can be set to "
+                    attr: 1
+                  - text: "TRUE"
+                    attr: 2
+                  - text: " to set the "
+                    attr: 1
+                  - text: readOnly
+                    attr: 2
+                  - text: " state of a control.\r\r"
+                    attr: 1
+                  - text: label
+                    attr: 3
+                  - text: ": String\rFor menu items or controls which show different labels depending on the current context, the current string can be deposited here.\r\r\rTYPE "
+                    attr: 1
+                  - text: GuardProc
+                    attr: 3
+                  - text: " = PROCEDURE (VAR par: Par)\rMenu guard or control guard commands must have this signature (or the extended version described below). They can set the fields of the "
+                    attr: 1
+                  - text: par
+                    attr: 2
+                  - text: " parameter to suitable values. Guard commands are called to determine the current state (in particular to find out whether the item is currently enabled) of a menu item or a control.\rFor menu items, the guard commands are specified in the respective subsystem's "
+                    attr: 1
+                  - text: /Rsrc/Menus
+                    attr: 2
+                  - text: " text, or in "
+                    attr: 1
+                  - text: System/Rsrc/Menus
+                    attr: 2
+                  - text: ". Menu guard commands are called after the user clicks in the menu bar, and before the menu appears.\rFor controls, the guard commands are specified in the inspector dialog which allows to set the various control properties. Control guard commands are called after the user interactively changed the state of a control, or after a program calls the procedure "
+                    attr: 1
+                  - text: Update
+                    attr: 2
+                  - text: " or "
+                    attr: 1
+                  - text: "UpdateList "
+                    attr: 2
+                  - text: "(or one of the other update procedures).\r\rNote that when the user clicks in a menu bar, possibly all menu guard commands may be executed. After the contents of an interactor has been changed and "
+                    attr: 1
+                  - text: Update
+                    attr: 2
+                  - text: " or "
+                    attr: 1
+                  - text: "UpdateList "
+                    attr: 2
+                  - text: "(or one of the other update procedures) has been called, all control guards are executed. This means two things. First, a guard command must be efficient. And second, the module which contains the guard is loaded as soon as the guard is evaluated for the first time. In this respect, menu commands are a certain pitfall during development: when a module has been unloaded, it is reloaded as soon as the user tries to execute a menu command.\r\rGuard commands may only modify fields of their "
+                    attr: 1
+                  - text: par
+                    attr: 2
+                  - text: " parameters, they must not modify any other state of the system, e.g., global variables. This means that the evaluation of a guard is similar to a function call without side-effects. Avoiding side-effects is particularly important since guards may be called by the framework at relatively unpredictable times.\r\rAn extended version of "
+                    attr: 1
+                  - text: GuardProc
+                    attr: 2
+                  - text: " can be used as an alternative, with the following signature:\r\r\tPROCEDURE (n: INTEGER; VAR par: Par)\r\rAn actual parameter for "
+                    attr: 1
+                  - text: n
+                    attr: 2
+                  - text: " must be a constant.\r\r\rTYPE "
+                    attr: 1
+                  - text: NotifierProc
+                    attr: 3
+                  - text: " = PROCEDURE (op, from, to: INTEGER)\rA notifier procedure must have one of the following signatures:\r\r\tPROCEDURE (op, from, to: INTEGER)\r\tPROCEDURE (n, op, from, to: INTEGER)\r\rThrough calls of notification procedures, an application can be notified of manipulations of a control. "
+                    attr: 1
+                  - text: op
+                    attr: 2
+                  - text: " determines the kind of manipulation:\r"
+                    attr: 1
+                  - text: op = pressed
+                    attr: 2
+                  - text: ": A mouse-down event has occurred.\r"
+                    attr: 1
+                  - text: op = released
+                    attr: 2
+                  - text: ": A mouse-up event has occurred.\r"
+                    attr: 1
+                  - text: op = changed
+                    attr: 2
+                  - text: ": The value of a control (not bound to a "
+                    attr: 1
+                  - text: SET
+                    attr: 2
+                  - text: " or a "
+                    attr: 1
+                  - text: Selection
+                    attr: 2
+                  - text: ") has been changed.\r"
+                    attr: 1
+                  - text: op = included
+                    attr: 2
+                  - text: ": Range "
+                    attr: 1
+                  - text: "[from..to]"
+                    attr: 2
+                  - text: " has been included in a "
+                    attr: 1
+                  - text: SET
+                    attr: 2
+                  - text: " or a "
+                    attr: 1
+                  - text: Selection
+                    attr: 2
+                  - text: ". It wasn't included before.\r"
+                    attr: 1
+                  - text: op = excluded
+                    attr: 2
+                  - text: ": Range "
+                    attr: 1
+                  - text: "[from..to]"
+                    attr: 2
+                  - text: " has been excluded from a "
+                    attr: 1
+                  - text: SET
+                    attr: 2
+                  - text: " or a "
+                    attr: 1
+                  - text: Selection
+                    attr: 2
+                  - text: ". It was included before.\r"
+                    attr: 1
+                  - text: op = set
+                    attr: 2
+                  - text: ": Range "
+                    attr: 1
+                  - text: "[from..to]"
+                    attr: 2
+                  - text: " has been set in a "
+                    attr: 1
+                  - text: SET
+                    attr: 2
+                  - text: " or a "
+                    attr: 1
+                  - text: Selection
+                    attr: 2
+                  - text: " after clearing the previous selection.\r\rAn actual parameter for "
+                    attr: 1
+                  - text: n
+                    attr: 2
+                  - text: " must be a constant.\r\r\rTYPE "
+                    attr: 1
+                  - text: LangNotifier
+                    attr: 3
+                  - text: " = POINTER TO ABSTRACT RECORD  END;\rObjects of this type can be registered and unregistered using "
+                    attr: 1
+                  - text: RegisterLangNotifier
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: RemoveLangNotifier
+                    attr: 2
+                  - text: ".\r\rPROCEDURE (n: LangNotifier) "
+                    attr: 1
+                  - text: Notify
+                    attr: 3
+                  - text: "-\rNEW, ABSTRACT\rThis method is called for all registered "
+                    attr: 1
+                  - text: LangNotifiers
+                    attr: 2
+                  - text: " whenever the language is changed. The order in which the language notifiers are called is undefined.\r\r\rVAR "
+                    attr: 1
+                  - text: metricSystem
+                    attr: 3
+                  - text: ": BOOLEAN\rThis variable indicates whether sizes should be measured in metric units or in inches.\r\rVAR "
+                    attr: 1
+                  - text: showsStatus
+                    attr: 3
+                  - text: ": BOOLEAN\rIndicates whether status messages are currently displayed. If "
+                    attr: 1
+                  - text: showsStatus = FALSE
+                    attr: 2
+                  - text: ", the procedures "
+                    attr: 1
+                  - text: ShowParamStatus
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: ShowStatus
+                    attr: 2
+                  - text: " will have no visible effect.\r\rVAR "
+                    attr: 1
+                  - text: version
+                    attr: 3
+                  - text: ": INTEGER\rIndicates the current major version of BlackBox.\r\t10 = version 1.0\r\t11 = version 1.1\r\t12 = version 1.2\r\t13 = version 1.3\r\t14 = version 1.4\r\t15 = version 1.5\r\t16 = version 1.6\r\t17 = version 1.7\r\rVAR "
+                    attr: 1
+                  - text: platform
+                    attr: 3
+                  - text: ": INTEGER\rIndicates on which host operating system the application is running.\r\rVAR "
+                    attr: 1
+                  - text: appName
+                    attr: 3
+                  - text: ": ARRAY 32 OF CHAR\rGives the name of the application program which is currently running; the default is \"BlackBox\".\r\rVAR "
+                    attr: 1
+                  - text: appVersion
+                    attr: 3
+                  - text: ": ARRAY 32 OF CHAR\rGives the version of the application program which is currently running; the default is taken from the System property 'appVersion'.\r\rVAR "
+                    attr: 1
+                  - text: language-
+                    attr: 3
+                  - text: ": Language\rCurrent language in ISO 639 codes. See "
+                    attr: 1
+                  - text: SetLanguage
+                    attr: 2
+                  - text: " for more information about language support.\r\rVAR "
+                    attr: 1
+                  - text: user
+                    attr: 3
+                  - text: ": ARRAY 32 OF CHAR\rLogin name of current user. Currently not used.\r\rVAR "
+                    attr: 1
+                  - text: thickCaret
+                    attr: 3
+                  - text: ": BOOLEAN\rDetermines whether the text subsystem uses a Word-like thick caret or a normal thin caret.\r\rVAR "
+                    attr: 1
+                  - text: caretPeriod
+                    attr: 3
+                  - text: ": INTEGER\rDetermines the blinking period that the text subsystem uses for caret blinking. The period is given in ticks (1/1000 second). The default is 500, i.e., half a second.\r\rVAR "
+                    attr: 1
+                  - text: commandLinePars
+                    attr: 3
+                  - text: ": String\rCommand line parameters that have been passed when starting BlackBox. Variable "
+                    attr: 1
+                  - text: commandLinePars
+                    attr: 2
+                  - text: " contains the string entered on the command line following the /PAR option. The string can be specified enclosed in either single or double quotes. Quotes may be omitted if no white space is contained in the string. If no /PAR option is present on the command line, "
+                    attr: 1
+                  - text: commandLinePars
+                    attr: 2
+                  - text: " contains the empty string.\r\rExamples:\r/PAR test\r/PAR \"parameter string\"\r/PAR 'A string containing a \" can be entered like this'\r\rPROCEDURE "
+                    attr: 1
+                  - text: IsLinux
+                    attr: 3
+                  - text: " (): BOOLEAN;\rReturns TRUE if and only if the application is runing under any Linux version. Note that in case of using the Windows emulator Wine IsLinux returns FALSE.\r\rPROCEDURE "
+                    attr: 1
+                  - text: IsMac
+                    attr: 3
+                  - text: " (): BOOLEAN;\rReturns TRUE if and only if the application is runing under any MacOS version.\r\rPROCEDURE "
+                    attr: 1
+                  - text: IsWindows
+                    attr: 3
+                  - text: " (): BOOLEAN;\rReturns TRUE if and only if the application is runing under any Windows verson. Note that also in case of using the Windows emulator Wine IsWindows returns TRUE.\r\rPROCEDURE "
+                    attr: 1
+                  - text: IsWine
+                    attr: 3
+                  - text: " (): BOOLEAN;\rReturns TRUE if and only if the application is runing under the Windows emulator Wine. Note that IsWine() implies IsWindows().\r\rPROCEDURE "
+                    attr: 1
+                  - text: Update
+                    attr: 3
+                  - text: " (IN x: ANYREC)\rThis procedure should be called after one or several fields of the interactor "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: " have been modified by a program (it is called automatically when a field has been modified interactively via a control). It causes all controls which are bound to fields of this interactor to be updated, and then guards are evaluated.\r\rPROCEDURE "
+                    attr: 1
+                  - text: UpdateList
+                    attr: 3
+                  - text: " (IN x: ANYREC)\rFor list-structured controls (list boxes, selection boxes, combo boxes, tree controls), the lists are re-created. For efficiency reasons, this is not done after a call to "
+                    attr: 1
+                  - text: Update
+                    attr: 2
+                  - text: ".\rNote that "
+                    attr: 1
+                  - text: UpdateList
+                    attr: 2
+                  - text: " also includes the functionality of "
+                    attr: 1
+                  - text: Update
+                    attr: 2
+                  - text: ", thus for efficiency reasons you shouldn't call "
+                    attr: 1
+                  - text: UpdateList(rec); Update(rec)
+                    attr: 2
+                  - text: ".\r\rPROCEDURE "
+                    attr: 1
+                  - text: UpdateBool
+                    attr: 3
+                  - text: " (VAR x: BOOLEAN)\rSimilar to "
+                    attr: 1
+                  - text: Update
+                    attr: 2
+                  - text: ", except that it accepts a BOOLEAN parameter.\r\rPROCEDURE "
+                    attr: 1
+                  - text: UpdateByte
+                    attr: 3
+                  - text: " (VAR x: BYTE)\rSimilar to "
+                    attr: 1
+                  - text: Update
+                    attr: 2
+                  - text: ", except that it accepts a BYTE parameter.\r\rPROCEDURE "
+                    attr: 1
+                  - text: UpdateChar
+                    attr: 3
+                  - text: " (VAR x: CHAR)\rSimilar to "
+                    attr: 1
+                  - text: Update
+                    attr: 2
+                  - text: ", except that it accepts a CHAR parameter.\r\rPROCEDURE "
+                    attr: 1
+                  - text: UpdateInt
+                    attr: 3
+                  - text: " (VAR x: INTEGER)\rSimilar to "
+                    attr: 1
+                  - text: Update
+                    attr: 2
+                  - text: ", except that it accepts an INTEGER parameter.\r\rPROCEDURE "
+                    attr: 1
+                  - text: UpdateLInt
+                    attr: 3
+                  - text: " (VAR x: LONGINT)\rSimilar to "
+                    attr: 1
+                  - text: Update
+                    attr: 2
+                  - text: ", except that it accepts a LONGINT parameter.\r\rPROCEDURE "
+                    attr: 1
+                  - text: UpdateReal
+                    attr: 3
+                  - text: " (VAR x: REAL)\rSimilar to "
+                    attr: 1
+                  - text: Update
+                    attr: 2
+                  - text: ", except that it accepts a REAL parameter.\r\rPROCEDURE "
+                    attr: 1
+                  - text: UpdateSChar
+                    attr: 3
+                  - text: " (VAR x: SHORTCHAR)\rSimilar to "
+                    attr: 1
+                  - text: Update
+                    attr: 2
+                  - text: ", except that it accepts a SHORTCHAR parameter.\r\rPROCEDURE "
+                    attr: 1
+                  - text: UpdateSInt
+                    attr: 3
+                  - text: " (VAR x: SHORTINT)\rSimilar to "
+                    attr: 1
+                  - text: Update
+                    attr: 2
+                  - text: ", except that it accepts a SHORTINT parameter.\r\rPROCEDURE "
+                    attr: 1
+                  - text: UpdateSReal
+                    attr: 3
+                  - text: " (VAR x: SHORTREAL)\rSimilar to "
+                    attr: 1
+                  - text: Update
+                    attr: 2
+                  - text: ", except that it accepts a SHORTREAL parameter.\r\rPROCEDURE "
+                    attr: 1
+                  - text: UpdateSString
+                    attr: 3
+                  - text: " (IN x: ARRAY OF SHORTCHAR)\rSimilar to "
+                    attr: 1
+                  - text: Update
+                    attr: 2
+                  - text: ", except that it accepts an ARRAY OF SHORTCHAR parameter.\r\rPROCEDURE "
+                    attr: 1
+                  - text: UpdateSet
+                    attr: 3
+                  - text: " (VAR x: SET)\rSimilar to "
+                    attr: 1
+                  - text: Update
+                    attr: 2
+                  - text: ", except that it accepts a SET parameter.\r\rPROCEDURE "
+                    attr: 1
+                  - text: UpdateString
+                    attr: 3
+                  - text: " (IN x: ARRAY OF CHAR)\rSimilar to "
+                    attr: 1
+                  - text: Update
+                    attr: 2
+                  - text: ", except that it accepts an ARRAY OF CHAR parameter.\r\rPROCEDURE "
+                    attr: 1
+                  - text: "MapParamString "
+                    attr: 3
+                  - text: "(in, p0, p1, p2: ARRAY OF CHAR; OUT out: ARRAY OF CHAR)\rTranslates string "
+                    attr: 1
+                  - text: in
+                    attr: 2
+                  - text: " into string "
+                    attr: 1
+                  - text: out
+                    attr: 2
+                  - text: ". Strings of the form \"#Subsystem:message\" are translated if there is a corresponding \"Strings\" resource file for this subsystem (in the subsystem's \"Rsrc\" directory). Otherwise, the \"#Subsystem:\" prefix is stripped away, if there is no resource file.\rAs an example, \"#System:Cancel\" may be translated to \"Cancel\" in the USA, and to \"Abbrechen\" in Germany; or to \"Cancel\" if the resource file or the appropriate entry is missing.\rThree additional input parameters can be spliced into the "
+                    attr: 1
+                  - text: in
+                    attr: 2
+                  - text: " parameter. These parameters are inserted where \"^0\", \"^1\", or \"^2\" occur in "
+                    attr: 1
+                  - text: in
+                    attr: 2
+                  - text: ". The parameters are not mapped, but merely substituted.\r"
+                    attr: 1
+                  - text: MapParamString
+                    attr: 2
+                  - text: " allows to remove country- and language-specific strings from a program source text, while at the same time providing a default string in the program source text such that the program always works, even if string resources are missing.\r\rPROCEDURE "
+                    attr: 1
+                  - text: MapString
+                    attr: 3
+                  - text: " (in: ARRAY OF CHAR; OUT out: ARRAY OF CHAR)\rThis is a simplified version of "
+                    attr: 1
+                  - text: MapParamString
+                    attr: 2
+                  - text: " which has no additional input parameters.\r\rExcept for performance, equivalent to:\r\tMapParamString(in, \"\", \"\", \"\", out)\r\rPROCEDURE "
+                    attr: 1
+                  - text: RegisterLangNotifier
+                    attr: 3
+                  - text: " (notifier: LangNotifier)\rAdds "
+                    attr: 1
+                  - text: notifier
+                    attr: 2
+                  - text: " to the list of "
+                    attr: 1
+                  - text: LangNotifiers
+                    attr: 2
+                  - text: " to be called every time the language is changed.\r\rPre\r"
+                    attr: 1
+                  - text: "notifier # NIL\t20\r"
+                    attr: 6
+                  - text: "\rPROCEDURE "
+                    attr: 1
+                  - text: RemoveLangNotifier
+                    attr: 3
+                  - text: " (notifier: LangNotifier)\rRemoves "
+                    attr: 1
+                  - text: notifier
+                    attr: 2
+                  - text: " from the list of "
+                    attr: 1
+                  - text: LangNotifiers
+                    attr: 2
+                  - text: " called every time the language is changed.\r\rPre\r"
+                    attr: 1
+                  - text: "notifier # NIL, 20\r"
+                    attr: 6
+                  - text: "\rPROCEDURE "
+                    attr: 1
+                  - text: SetLanguage
+                    attr: 3
+                  - text: " (lang: ARRAY OF CHAR; persistent: BOOLEAN)\rSets the current language to "
+                    attr: 1
+                  - text: lang
+                    attr: 2
+                  - text: ", specified in ISO 639 code. This indicates that String resources are not read from the Rsrc-directory directly but from a subdirectory within the Rsrc-directory with the same name as the language code. It also sets the value of the global variable "
+                    attr: 1
+                  - text: language
+                    attr: 2
+                  - text: ".\r\rFor example, if "
+                    attr: 1
+                  - text: lang
+                    attr: 2
+                  - text: " = \"de\" the String resources are read from the directory \"Rsrc/de\". If no such directory exists or the requested resource does not exist then the resources are read from the normal Rsrc-directory. An empty string implies that no particular language has been selected and resources are read from the Rsrc-directory.\r\rThe "
+                    attr: 1
+                  - text: persistent
+                    attr: 2
+                  - text: " parameter indicates whether the setting is being used again when BlackBox is started the next time. "
+                    attr: 1
+                  - text: persistent
+                    attr: 2
+                  - text: " = "
+                    attr: 1
+                  - text: nonPersistent
+                    attr: 2
+                  - text: " causes a non-permanent change, i.e. the change is effective for this particular instance of BlackBox only. With "
+                    attr: 1
+                  - text: persistent
+                    attr: 2
+                  - text: " = "
+                    attr: 1
+                  - text: persistent
+                    attr: 2
+                  - text: " the change is registered in a registry and the language will be set immediately when BlackBox starts up next time.\r\rFor information on how to do software that needs to be notified whenever the value of the global variable "
+                    attr: 1
+                  - text: language
+                    attr: 2
+                  - text: " is changing, see "
+                    attr: 1
+                  - text: RegisterLangNotifier
+                    attr: 2
+                  - text: ".\r\rPre "
+                    attr: 1
+                  - text: "\r(lang = \"\") OR (LEN(lang$) = 2)\t20"
+                    attr: 6
+                  - text: "\r\rPROCEDURE "
+                    attr: 1
+                  - text: ResetLanguage
+                    attr: 3
+                  - text: "\rResets the current language to the value of the last persistent setting. See also "
+                    attr: 1
+                  - text: SetLanguage
+                    attr: 2
+                  - text: ".\r\rPROCEDURE "
+                    attr: 1
+                  - text: ShowParamMsg
+                    attr: 3
+                  - text: " (IN str, p0, p1, p2: ARRAY OF CHAR)\rPresents "
+                    attr: 1
+                  - text: str
+                    attr: 2
+                  - text: " as a message to the user. The string "
+                    attr: 1
+                  - text: str
+                    attr: 2
+                  - text: " is mapped. The additional input parameters "
+                    attr: 1
+                  - text: p0
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: p1
+                    attr: 2
+                  - text: ", and "
+                    attr: 1
+                  - text: p2
+                    attr: 2
+                  - text: " are not mapped. This procedure is used to present urgent messages to the user, typically alerting the user that some action has failed. It shouldn't be used for casual success messages. If a log window is present it is assumed that the user prefers these kind of messages in the log. Therefore the message is printed in the log if one exists, otherwise the message is displayed in a separately opened dialog box.\r\rPre\rstr # NIL\t20\r\rPROCEDURE "
+                    attr: 1
+                  - text: ShowMsg
+                    attr: 3
+                  - text: " PROCEDURE (IN str: ARRAY OF CHAR)\rThis is a simplified version of "
+                    attr: 1
+                  - text: ShowParamMsg
+                    attr: 2
+                  - text: " which has no additional input parameters.\r\rExcept for performance, equivalent to:\r\tShowParamMsg(str, \"\", \"\", \"\")\r\rPre\rstr # NIL\t20\r\rPROCEDURE "
+                    attr: 1
+                  - text: ShowParamStatus
+                    attr: 3
+                  - text: " (IN str, p0, p1, p2: ARRAY OF CHAR)\rPresents "
+                    attr: 1
+                  - text: str
+                    attr: 2
+                  - text: " as a message to the user. The string "
+                    attr: 1
+                  - text: str
+                    attr: 2
+                  - text: " is mapped. The additional input parameters "
+                    attr: 1
+                  - text: p0
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: p1
+                    attr: 2
+                  - text: ", and "
+                    attr: 1
+                  - text: p2
+                    attr: 2
+                  - text: " are not mapped. In contrast to "
+                    attr: 1
+                  - text: ShowParamMsg
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: ShowParamStatus
+                    attr: 2
+                  - text: " is used for shorter-lived and less urgent messages; e.g., messages produced and updated during a lengthy process. This procedure should not be used for vital messages, because on some platforms there may be no status area to display status messages, or the message mechanism may be switched off. These conditions are indicated by the global variable "
+                    attr: 1
+                  - text: showsStatus
+                    attr: 2
+                  - text: ".\r\rPROCEDURE "
+                    attr: 1
+                  - text: ShowStatus
+                    attr: 3
+                  - text: " PROCEDURE (IN str: ARRAY OF CHAR)\rThis is a simplified version of "
+                    attr: 1
+                  - text: ShowParamStatus
+                    attr: 2
+                  - text: " which has no additional input parameters.\r\rExcept for performance, equivalent to:\r\tShowParamStatus(str, \"\", \"\", \"\")\r\rPROCEDURE "
+                    attr: 1
+                  - text: FlushMappings
+                    attr: 3
+                  - text: "\rString mappings are cached in internal tables for efficiency reasons. This procedure flushes all string mapping tables. This forces a reload of these tables from the string resource files as soon as the mappings are performed again.\r\rPROCEDURE "
+                    attr: 1
+                  - text: GetOK
+                    attr: 3
+                  - text: " (IN str, p0, p1, p2: ARRAY OF CHAR; form: SET; OUT res: INTEGER)\rModal dialog\rPresents a mapped string, with the optional parameters "
+                    attr: 1
+                  - text: p0
+                    attr: 2
+                  - text: " to "
+                    attr: 1
+                  - text: p2
+                    attr: 2
+                  - text: ", in a modal dialog box. "
+                    attr: 1
+                  - text: form
+                    attr: 2
+                  - text: " indicates the set of buttons of the dialog box. Only meaningful combinations are allowed:\r\t{ok}\r\t{ok, cancel}\r\t{yes, no}\r\t{yes, no, cancel}\r"
+                    attr: 1
+                  - text: res
+                    attr: 2
+                  - text: " indicates which button has been pressed by the user.\r\rPre\r((yes IN form) = (no IN form))  &  ((yes IN form) # (ok IN form))\t20\r\rPost\rres IN form\r\rPROCEDURE "
+                    attr: 1
+                  - text: GetIntSpec
+                    attr: 3
+                  - text: " (defType: Files.Type; VAR loc: Files.Locator; OUT name: Files.Name)\rModal dialog\rAsk the user for a file specification "
+                    attr: 1
+                  - text: "(loc, name)"
+                    attr: 2
+                  - text: ". "
+                    attr: 1
+                  - text: defType
+                    attr: 2
+                  - text: " indicates which file type is desired (\"\" stands for any file type; other types are platform-specific, e.g., \"txt\" for Windows Ascii files or \"TEXT\" for Mac OS Ascii files). "
+                    attr: 1
+                  - text: "loc # NIL"
+                    attr: 2
+                  - text: " indicates a valid file specification.\rMac OS: "
+                    attr: 1
+                  - text: loc
+                    attr: 2
+                  - text: " is ignored.\r\rPre\rdefType = \"\"  OR  defType is legal type name on this platform\t20\r\rPROCEDURE "
+                    attr: 1
+                  - text: GetExtSpec
+                    attr: 3
+                  - text: " (defName: Files.Name; defType: Files.Type; VAR loc: Files.Locator;\r\t\t\t\t\t\t\t\t\t\t\t\tOUT name: Files.Name)\rModal dialog\rAsk the user for a file specification for externalizing a file. "
+                    attr: 1
+                  - text: defName
+                    attr: 2
+                  - text: " is the default name presented to the user. "
+                    attr: 1
+                  - text: defType
+                    attr: 2
+                  - text: " is the file type which should be used as default type. "
+                    attr: 1
+                  - text: "loc # NIL"
+                    attr: 2
+                  - text: " indicates a valid file specification.\rMac OS: "
+                    attr: 1
+                  - text: loc
+                    attr: 2
+                  - text: " is ignored.\r\rPre\rdefType = \"\"  OR  defType is legal type name on this platform\t20\r\rPROCEDURE "
+                    attr: 1
+                  - text: GetColor
+                    attr: 3
+                  - text: " (in: INTEGER; OUT out: LONGINT; OUT set: BOOLEAN)\rModal dialog\rAsk the user for a color. "
+                    attr: 1
+                  - text: in
+                    attr: 2
+                  - text: " is the default color presented to the user.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Call
+                    attr: 3
+                  - text: " (IN cmd, errorMsg: ARRAY OF CHAR; OUT res: INTEGER)\r"
+                    attr: 1
+                  - text: Call
+                    attr: 2
+                  - text: " executes a sequence of BlackBox commands denoted by "
+                    attr: 1
+                  - text: cmd
+                    attr: 2
+                  - text: ". If the corresponding modules are not yet loaded, "
+                    attr: 1
+                  - text: Call
+                    attr: 2
+                  - text: " tries to load them. If some error occurs, command execution terminates and "
+                    attr: 1
+                  - text: res
+                    attr: 2
+                  - text: " is returned with a value # 0. If "
+                    attr: 1
+                  - text: "errorMsg = \"\""
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Call
+                    attr: 2
+                  - text: " does not display error messages. If "
+                    attr: 1
+                  - text: "errorMsg # \"\""
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Call
+                    attr: 2
+                  - text: " displays "
+                    attr: 1
+                  - text: errorMsg
+                    attr: 2
+                  - text: " in case of an error, appended with a short description of the particular error having occurred.\rThe syntax for commands with parameters is explained in the documentation of module "
+                    attr: 1
+                  - text: StdInterpreter
+                    attr: 2
+                  - text: ".\r\rPROCEDURE "
+                    attr: 1
+                  - text: Beep
+                    attr: 3
+                  - text: "\rEmit a short beep sound.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Notify
+                    attr: 3
+                  - text: "\rUsed internally.\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 15
+          bodyPos: 44882
+          bodyLen: 8

@@ -1,0 +1,521 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Com\\Docu\\Object.odc"
+  size: 50328
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 50197
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 50011
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 49925
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 114300
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 47
+                bodyPos: 50046
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 49532
+                runListLen: 42724
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: "*"
+                    size: 101600
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [4]
+                    font: "*"
+                    size: 101600
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [5]
+                    font: "*"
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                  - # [6]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                flow:
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 1404000 }
+                      attr: 0
+                      w: 360000000
+                      h: 444500
+                  - target:
+                      name: 7.9
+                      body:
+                        - text: ComObject Example
+                          attr: 0
+                      attr: 0
+                      w: 150300
+                      h: 142875
+                  - text: "\r\r"
+                    attr: 0
+                  - text: "This example implements a simple OLE server which provides the following OLE object:\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 10
+                      bodyPos: 1069
+                      bodyLen: 38789
+                    attr: 1
+                    w: 1876320
+                    h: 1876320
+                  - text: "\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rThis object implements the four interfaces "
+                    attr: 1
+                  - text: "IUnknown, IOleObject, IDataObject "
+                    attr: 2
+                  - text: and
+                    attr: 1
+                  - text: " IPersistStorage "
+                    attr: 2
+                  - text: "and uses several other interfaces. Beside of this, the module also implements a factory object which can be registered and which provides the creation of new objects of the above type.\r\rIn order to implement the four interfaces, four Component Pascal records are defined as subtypes of the particular interface records. These objects refer to each other in the following way:\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 16
+                      bodyPos: 40219
+                      bodyLen: 616
+                    attr: 1
+                    w: 3924238
+                    h: 1409678
+                  - text: "\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: The
+                    attr: 1
+                  - text: " "
+                    attr: 2
+                  - text: "record which implements the "
+                    attr: 1
+                  - text: IUnknown
+                    attr: 2
+                  - text: " interface contains the object data. The references to the other interface records are necessary in order to implement the "
+                    attr: 1
+                  - text: QueryInterface
+                    attr: 2
+                  - text: " method. The other interfaces need a reference to the "
+                    attr: 1
+                  - text: IUnknown
+                    attr: 2
+                  - text: " object to access the object data as well as to implement their "
+                    attr: 1
+                  - text: QueryInterface
+                    attr: 2
+                  - text: ".\r\rNote that other definitions would be possible also. Instead of such a symmetric approach, the interface "
+                    attr: 1
+                  - text: IOleObject
+                    attr: 2
+                  - text: " could play the role of the main interface and administrate the object's instance variables. \r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      dsc: 25400
+                      grid: 1
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\t\tObject = POINTER TO RECORD (COM.IUnknown)\r\t\t\tioo: IOleObject;\r\t\t\tido: IDataObject;\r\t\t\tips: IPersistStorage;\r\t\t\t"
+                    attr: 1
+                  - text: "(* and other fields *)"
+                    attr: 2
+                  - text: "\r\t\tEND;\r\t\tIOleObject = POINTER TO RECORD (WinOle.IOleObject)\r\t\t\tobj: Object\r\t\tEND;\r\t\tIDataObject = POINTER TO RECORD (WinOle.IDataObject)\r\t\t\tobj: Object\r\t\tEND;\r\t\tIPersistStorage = POINTER TO RECORD (WinOle.IPersistStorage)\r\t\t\tobj: Object\r\t\tEND;\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r"
+                    attr: 1
+                  - text: "Object creation\r\r"
+                    attr: 2
+                  - text: "New objects are created through the method "
+                    attr: 1
+                  - text: CreateInstance
+                    attr: 2
+                  - text: " of the class factory. This method allocates the objects, defines the relation between the involved interfaces and returns a pointer to the requested interface.\r\rThe implementation of the "
+                    attr: 1
+                  - text: QueryInterface
+                    attr: 2
+                  - text: " method of the three interfaces "
+                    attr: 1
+                  - text: IOleObject
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: IDataObject
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: IPersistStorage
+                    attr: 2
+                  - text: " is simplified by using hidden references to the main record. These hidden references are generated with the two-argument NEW.\r\r\tVAR new: Object;\r\tNEW(new); NEW(new.ioo, new); NEW(new.ido, new); NEW(new.ips, new);\r\tnew.ioo.obj := new; new.ido.obj := new; new.ips.obj := new;\r\rAll "
+                    attr: 1
+                  - text: QueryInterface
+                    attr: 2
+                  - text: " calls are thus forwarded to the "
+                    attr: 1
+                  - text: QueryInterface
+                    attr: 2
+                  - text: " method of "
+                    attr: 1
+                  - text: Object.
+                    attr: 2
+                  - text: " The explicit references to "
+                    attr: 1
+                  - text: Object
+                    attr: 2
+                  - text: " are only used to access the instance variables of the object. Instance variables which would be used by the implementation of one interface only could also be stored in the corresponding record directly.\r\rIf one of the interfaces "
+                    attr: 1
+                  - text: IOleObject
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: IDataObject
+                    attr: 2
+                  - text: " or "
+                    attr: 1
+                  - text: IPersistStorage
+                    attr: 2
+                  - text: " is requested through "
+                    attr: 1
+                  - text: QueryInterface
+                    attr: 2
+                  - text: ", then the reference count of the particular record as well as the reference count of the main object is incremented. The latter one is incremented since the requested interface contains a (hidden) reference to the main object.\r\rAs an alternative, the four records could also be allocated with the one-argument NEW, but then "
+                    attr: 1
+                  - text: "QueryInterface "
+                    attr: 2
+                  - text: "calls would have to be forwarded to the main object by hand for the implementations of the interfaces "
+                    attr: 1
+                  - text: "IOleObject, IDataObject "
+                    attr: 2
+                  - text: and
+                    attr: 1
+                  - text: " IPersistStorage. "
+                    attr: 2
+                  - text: The following procedure shows how that would be done.
+                    attr: 1
+                  - text: "\r\r"
+                    attr: 2
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      dsc: 25400
+                      grid: 1
+                      opts: 0x00000003
+                      attr: 2
+                      w: 360000000
+                      h: 444500
+                  - text: "\tPROCEDURE (this: IOleObject) QueryInterface (VAR iid: COM.GUID; \r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR int: COM.IUnknown): COM.RESULT;\r\tBEGIN RETURN this.obj.QueryInterface(iid, int)\r\tEND QueryInterface;\r\t\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r"
+                    attr: 1
+                  - text: "QueryInterface\r\r"
+                    attr: 2
+                  - text: "The second interesting aspect is the implementation of "
+                    attr: 1
+                  - text: "QueryInterface "
+                    attr: 2
+                  - text: "of "
+                    attr: 1
+                  - text: "Object. "
+                    attr: 2
+                  - text: "For all the interfaces that the object supports, the COM.QUERY function is called one by one. If the "
+                    attr: 1
+                  - text: "IUnknown "
+                    attr: 2
+                  - text: "interface is requested, then always the same interface pointer is returned, although all involved interfaces support the "
+                    attr: 1
+                  - text: IUnknown
+                    attr: 2
+                  - text: " methods. This is a requirement of the COM specification.\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      dsc: 25400
+                      grid: 1
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tPROCEDURE (this: Object) QueryInterface (IN iid: COM.GUID; OUT int: COM.IUnknown): COM.RESULT;\r\tBEGIN\r\t\tIF COM.QUERY(this, iid, int)\r\t\t\tOR COM.QUERY(this.ioo, iid, int)\r\t\t\tOR COM.QUERY(this.ido, iid, int)\r\t\t\tOR COM.QUERY(this.ips, iid, int) THEN RETURN WinApi.S_OK\r\t\tELSE RETURN WinApi.E_NOINTERFACE\r\t\tEND"
+                    attr: 1
+                  - text: "\r\r"
+                    attr: 3
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 3
+                      w: 360000000
+                      h: 444500
+                  - text: "\rRegistry\r"
+                    attr: 2
+                  - text: "\r"
+                    attr: 4
+                  - text: "With the command "
+                    attr: 1
+                  - text: ComObject.Register
+                    attr: 2
+                  - text: " the factory can be registered. As soon as it is registered it can be requested with a call to the procedure "
+                    attr: 1
+                  - text: CoGetClassObject
+                    attr: 2
+                  - text: " (it has to be requested from a local server, namely the running BlackBox).\r\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      dsc: 25400
+                      grid: 1
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tVAR factory: WinOle.IClassFactory; res: COM.RESULT;\r\t\tres := WinOle.CoGetClassObject(\"{00010001-1000-11cf-adf0-444553540000}\",\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tWinOle.CLSCTX_LOCAL_SERVER, 0, \r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tCOM.ID(factory), factory)\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "If the object is also registered in the Windows registry, then the object can be inserted in any OLE container using the Insert Object menu entry, provided that the factory has been registered using the command "
+                    attr: 1
+                  - text: ComObject.Register.
+                    attr: 2
+                  - text: " The necessary registry file "
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenDoc('Com/Reg/Object.reg')"
+                      body:
+                        - text: Com/Reg/Object.reg
+                          attr: 5
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: " is given below. Use the REGEDIT tool to update the registry. Adjust path names if necessary! Note that you cannot insert it into a BlackBox document of the BlackBox which is the server for this object, because then the object would be inserted in-process, and thus the in-process handler would not be used. However, you can insert this object in a document of another running BlackBox. \r\rOnce the smiley object has successfully been inserted into an OLE container, you can inspect with the interface inspector how many interfaces the client has requested.\r\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      dsc: 25400
+                      grid: 1
+                      opts: 0x00000003
+                      attr: 6
+                      w: 360000000
+                      h: 444500
+                  - text: "REGEDIT\r\rHKEY_CLASSES_ROOT\\BlackBox.Object = BlackBox Object\rHKEY_CLASSES_ROOT\\BlackBox.Object\\CLSID = {00010001-1000-11cf-adf0-444553540000}\rHKEY_CLASSES_ROOT\\BlackBox.Object\\Insertable\r\rHKEY_CLASSES_ROOT\\CLSID\\{00010001-1000-11cf-adf0-444553540000} = BlackBox Object\rHKEY_CLASSES_ROOT\\CLSID\\{00010001-1000-11cf-adf0-444553540000}\\ProgID = BlackBox.Object\r\rHKEY_CLASSES_ROOT\\CLSID\\{00010001-1000-11cf-adf0-444553540000}\\LocalServer32 = C:\\BlackBox\\BlackBox.exe\rHKEY_CLASSES_ROOT\\CLSID\\{00010001-1000-11cf-adf0-444553540000}\\InProcHandler32 = ole32.dll\r\rHKEY_CLASSES_ROOT\\CLSID\\{00010001-1000-11cf-adf0-444553540000}\\Insertable\rHKEY_CLASSES_ROOT\\CLSID\\{00010001-1000-11cf-adf0-444553540000}\\DefaultIcon = C:\\BlackBox\\BlackBox.exe,0\r\rHKEY_CLASSES_ROOT\\CLSID\\{00010001-1000-11cf-adf0-444553540000}\\DataFormats\\GetSet\\0 = 3,1,32,1\rHKEY_CLASSES_ROOT\\CLSID\\{00010001-1000-11cf-adf0-444553540000}\\MiscStatus = 16\rHKEY_CLASSES_ROOT\\CLSID\\{00010001-1000-11cf-adf0-444553540000}\\AuxUserType\\2 = BlackBox Object\rHKEY_CLASSES_ROOT\\CLSID\\{00010001-1000-11cf-adf0-444553540000}\\AuxUserType\\3 = BlackBox\r"
+                    attr: 3
+                  - text: "\r\r"
+                    attr: 6
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "It would also be possible to generate a new executable which acts as server for this BlackBox object. You find a similar example in ComKoalaExe. In particular, the main event loop has to be implemented.\r\rIf you intend to link this object implementation into a DLL, then the additional interfaces "
+                    attr: 1
+                  - text: IViewObject2
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: IOleCache2
+                    attr: 2
+                  - text: ", and "
+                    attr: 1
+                  - text: IRunnableObject
+                    attr: 2
+                  - text: " would have to be implemented.\r\r\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenDoc('Com/Mod/Object')"
+                      body:
+                        - text: ComObject  sources
+                          attr: 5
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 51
+          bodyPos: 50293
+          bodyLen: 8

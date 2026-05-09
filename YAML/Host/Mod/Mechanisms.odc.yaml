@@ -1,0 +1,432 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Host\\Mod\\Mechanisms.odc"
+  size: 29054
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 28923
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 28737
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 28651
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000021
+              defaultAttr:
+                font: Arial
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 28772
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 28258
+                runListLen: 2215
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE HostMechanisms;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- 20070131, bh, Unicode support\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r\r"
+                    attr: 1
+                  - text: "\tIMPORT COM,\r\t\tWinApi, WinOle, OleData, \r\t\tServices, Ports, Stores, Views, Controllers, Properties,\r\t\tDialog, Mechanisms, Containers, Documents, Windows,\r\t\tHostPorts;\r\r\r\tCONST\r\t\thandleSize = Ports.point * 11 DIV 2;\r\t\tclipMiddleHandle = handleSize DIV 2 + 2 * Ports.point;\r\r\t\tescape = -2;\r\t\t\r\t\tfixed = 31;"
+                    attr: 0
+                  - text: "\t(* controller option *)\r\r"
+                    attr: 1
+                  - text: "\r\tTYPE\r\t\tIDropSource = POINTER TO RECORD (WinOle.IDropSource)\r\t\t\tkey: SET\r\t\tEND;\r\t\t\r\t\tIDropTarget = POINTER TO RECORD (WinOle.IDropTarget)\r\t\t\twin: Windows.Window;\r\t\t\twnd: WinApi.HWND;\r\t\t\tx, y: INTEGER;\r\t\t\tkey, effect: SET;\r\t\t\tsource: Views.Frame;\r\t\t\tsrcX, srcY: INTEGER;\r\t\t\ttype: Stores.TypeName;\r\t\t\tisSingle: BOOLEAN;\r\t\t\tw, h, rx, ry: INTEGER\r\t\tEND;\r\t\t\r\t\tHook = POINTER TO RECORD (Mechanisms.Hook) END;\r\t\t\r\t\r\tVAR\r\t\tsourceFrame: Views.Frame;\t"
+                    attr: 0
+                  - text: "(* source of drag & drop *)"
+                    attr: 1
+                  - text: "\r\t\tsourceX, sourceY: INTEGER;\r\t\ttargetFrame: Views.Frame;\t"
+                    attr: 0
+                  - text: "(* target of drag & drop *)"
+                    attr: 1
+                  - text: "\r\t\ttargetX, targetY: INTEGER;\r\t\tdropView: Views.View;\t"
+                    attr: 0
+                  - text: "(* view to drop *)"
+                    attr: 1
+                  - text: "\r\t\tisSingleton: BOOLEAN;\r\t\tdropW, dropH: INTEGER;\r\t\trelX, relY: INTEGER;\r\t\t\r\t\r\t"
+                    attr: 0
+                  - text: "(** focus borders **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE Fixed (host: Views.Frame; v: Views.View): BOOLEAN;\r\t\tVAR sp: Properties.ResizePref; c: Containers.Controller;\r\tBEGIN\r\t\tc := host.view(Containers.View).ThisController();\r\t\tIF c.opts * {Containers.noCaret, Documents.pageWidth..Documents.winHeight, fixed} # {} THEN\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\tEND;\r\t\tsp.fixed := FALSE; Views.HandlePropMsg(v, sp); "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " sp.fixed\r\tEND Fixed;\r\r\tPROCEDURE PaintFocusBorder (f: Views.Frame; focus: Views.View; l, t, r, b: INTEGER);\r\t\tVAR u, s,  w, h,  mx, my,  l0, t0, r0, b0: INTEGER;\r\t\t\r\t\tPROCEDURE PaintHandle (x, y: INTEGER; l, t, r, b: BOOLEAN);\r\t\tBEGIN\r\t\t\tIF l THEN f.DrawRect(x - u, y, x, y + s, Ports.fill, Ports.background) END;\r\t\t\tIF t THEN f.DrawRect(x, y - u, x + s, y, Ports.fill, Ports.background) END;\r\t\t\tIF r THEN f.DrawRect(x + s, y, x + s + u, y + s, Ports.fill, Ports.background) END;\r\t\t\tIF b THEN f.DrawRect(x, y + s, x + s, y + s + u, Ports.fill, Ports.background) END;\r\t\t\tf.DrawRect(x, y, x + s, y + s, Ports.fill, Ports.defaultColor)\r\t\tEND PaintHandle;\r\t\t\r\tBEGIN\r\t\tf.rider.GetRect(l0, t0, r0, b0);\r\t\ts := (handleSize - f.dot) DIV f.unit;\r\t\tf.rider.SetRect(l0 - s, t0 - s, r0 + s, b0 + s);\r\t\tu := f.dot; s := s * f.unit;\r\t\tw := r - l; h := b - t;\r\t\tf.DrawRect(l, t - s, r, t, Ports.fill, Ports.background);\r\t\tf.DrawRect(l, b, r, b + s, Ports.fill, Ports.background);\r\t\tf.DrawRect(l - s, t - s, l, b + s, Ports.fill, Ports.background);\r\t\tf.DrawRect(r, t - s, r + s, b + s, Ports.fill, Ports.background);\r\t\tDEC(s, u);\r\t\tf.MarkRect(l, t - s, r, t, Ports.fill, HostPorts.focusPat, Ports.show);\r\t\tf.MarkRect(l, b, r, b + s, Ports.fill, HostPorts.focusPat, Ports.show);\r\t\tf.MarkRect(l - s, t - s, l, b + s, Ports.fill, HostPorts.focusPat, Ports.show);\r\t\tf.MarkRect(r, t - s, r + s, b + s, Ports.fill, HostPorts.focusPat, Ports.show);\r\t\tIF ~Fixed(f, focus) THEN\r\t\t\tPaintHandle(l - s, t - s, FALSE, FALSE, TRUE, TRUE);\r\t\t\tPaintHandle(r, t - s, TRUE, FALSE, FALSE, TRUE);\r\t\t\tPaintHandle(l - s, b, FALSE, TRUE, TRUE, FALSE);\r\t\t\tPaintHandle(r, b, TRUE, TRUE, FALSE, FALSE);\r\t\t\tIF w > 2 * clipMiddleHandle THEN\r\t\t\t\tmx := (l + r - s) DIV 2;\r\t\t\t\tPaintHandle(mx, t - s, TRUE, FALSE, TRUE, FALSE);\r\t\t\t\tPaintHandle(mx, b, TRUE, FALSE, TRUE, FALSE)\r\t\t\tEND;\r\t\t\tIF h > 2 * clipMiddleHandle THEN\r\t\t\t\tmy := (t + b - s) DIV 2;\r\t\t\t\tPaintHandle(l - s, my, FALSE, TRUE, FALSE, TRUE);\r\t\t\t\tPaintHandle(r, my, FALSE, TRUE, FALSE, TRUE)\r\t\t\tEND\r\t\tEND;\r\t\tf.DrawRect(l - u, t - u, r + u, b + u, u, Ports.defaultColor);\r\t\tf.rider.SetRect(l0, t0, r0, b0)\r\tEND PaintFocusBorder;\r\r\tPROCEDURE (hook: Hook) "
+                    attr: 0
+                  - text: FocusBorderCursor
+                    attr: 3
+                  - text: "* (f: Views.Frame; view: Views.View; l, t, r, b: INTEGER;\r\t\t\t\t\t\t\t\t\tx, y: INTEGER): INTEGER;\r\t\tVAR s, u, w, h, mx, my, cursor: INTEGER;\r\t\t\r\t\tPROCEDURE CheckHandle (x0, y0: INTEGER; c: INTEGER);\r\t\tBEGIN\r\t\t\tIF (x >= x0 - u) & (x <= x0 + s) & (y >= y0 - u) & (y <= y0 + s) THEN\r\t\t\t\tcursor := c\r\t\t\tEND\r\t\tEND CheckHandle;\r\t\t\r\tBEGIN\r\t\tu := f.dot; s := handleSize - 2 * u;\r\t\tIF (x < l - s) OR (x > r + s) OR (y < t - s) OR (y > b + s) THEN\r\t\t\tcursor := Mechanisms.outside\r\t\tELSE\r\t\t\tcursor := Mechanisms.inside\r\t\tEND;\r\t\tw := r - l; h := b - t;\r\t\tIF ~Fixed(f, view) THEN\r\t\t\tCheckHandle(l - s, t - s, HostPorts.resizeLCursor);\r\t\t\tCheckHandle(r, t - s, HostPorts.resizeRCursor);\r\t\t\tCheckHandle(l - s, b, HostPorts.resizeRCursor);\r\t\t\tCheckHandle(r, b, HostPorts.resizeLCursor);\r\t\t\tIF w > 2 * clipMiddleHandle THEN\r\t\t\t\tmx := (l + r - s) DIV 2;\r\t\t\t\tCheckHandle(mx, t - s, HostPorts.resizeVCursor);\r\t\t\t\tCheckHandle(mx, b, HostPorts.resizeVCursor)\r\t\t\tEND;\r\t\t\tIF h > 2 * clipMiddleHandle THEN\r\t\t\t\tmy := (t + b - s) DIV 2;\r\t\t\t\tCheckHandle(l - s, my, HostPorts.resizeHCursor);\r\t\t\t\tCheckHandle(r, my, HostPorts.resizeHCursor)\r\t\t\tEND\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " cursor\r\tEND FocusBorderCursor;\r\r\tPROCEDURE RestoreBorderArea (f: Views.Frame; l, t, r, b: INTEGER);\r\t"
+                    attr: 0
+                  - text: "(* restore area under destructive border mark *)"
+                    attr: 1
+                  - text: "\r\t\tVAR g: Views.RootFrame; s, dx, dy: INTEGER;\r\tBEGIN\r\t\tg := Views.RootOf(f);\r\t\tdx := f.gx - g.gx; dy := f.gy - g.gy;\r\t\ts := (handleSize - f.dot) DIV f.unit * f.unit;\r\t\tINC(l, dx); INC(t, dy); INC(r, dx); INC(b, dy);\r(*\r\t\tViews.UpdateRoot(g, l - s, t - s, r + s, b + s, FALSE);\r*)\r\t\tViews.ValidateRoot(g);\r\t\tViews.RestoreRoot(g, l - s, t - s, r + s, b + s);\r(*\r\t\tViews.RestoreRoot(g, l - s, t - s, r + s, t);\r\t\tViews.RestoreRoot(g, l - s, t, l, b);\r\t\tViews.RestoreRoot(g, r, t, r + s, b);\r\t\tViews.RestoreRoot(g, l - s, b, r + s, b + s)\r*)\r\tEND RestoreBorderArea;\r\t\r\tPROCEDURE (hook: Hook) "
+                    attr: 0
+                  - text: MarkFocusBorder
+                    attr: 3
+                  - text: "* (\r\t\thost: Views.Frame; focus: Views.View; l, t, r, b: INTEGER; show: BOOLEAN\r\t);\r\tBEGIN\r\t\tIF focus # NIL THEN\r\t\t\tIF show THEN\r\t\t\t\tPaintFocusBorder(host, focus, l, t, r, b)\r\t\t\tELSE\r\t\t\t\tRestoreBorderArea(host, l, t, r, b)\r\t\t\tEND\r\t\tEND\r\tEND MarkFocusBorder;\r\t\r\r\t"
+                    attr: 0
+                  - text: "(** selection borders **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE PaintSelBorder (f: Views.Frame; view: Views.View; l, t, r, b: INTEGER);\r\t\tVAR u, d, w, h,  mx, my, l0, t0, r0, b0: INTEGER; sizeable: BOOLEAN;\r\t\t\r\t\tPROCEDURE PaintHandle (x, y: INTEGER);\r\t\t\tVAR s: INTEGER; ci, co: Ports.Color;\r\t\tBEGIN\r\t\t\tDEC(x, d); DEC(y, d); s := d * 2 + u;\r\t\t\tIF sizeable THEN ci := HostPorts.selBackground; co := HostPorts.selTextCol\r\t\t\tELSE ci := HostPorts.selTextCol; co := HostPorts.selBackground\r\t\t\tEND;\r\t\t\tf.DrawRect(x, y, x + s, y + s, Ports.fill, co);\r\t\t\tINC(x, u); INC(y, u); DEC(s, 2 * u);\r\t\t\tf.DrawRect(x, y, x + s, y + s, Ports.fill, ci);\r(*\t\t\t\r\t\t\tf.DrawRect(x, y, x + s, y + s, Ports.fill, ci);\r\t\t\tf.DrawRect(x, y, x + s, y + s, 0, co)\r*)\r\t\tEND PaintHandle;\r\t\t\r\tBEGIN\r\t\td := (handleSize - f.dot) DIV f.unit DIV 2;\r\t\tf.rider.GetRect(l0, t0, r0, b0);\r\t\tf.rider.SetRect(l0 - d - 1, t0 - d - 1, r0 + d + 1, b0 + d + 1);\r\t\td := d * f.unit; u := f.dot;\r\t\tw := r - l; h := b - t; sizeable := ~Fixed(f, view);\r\t\tDEC(l, u); DEC(t, u);\r"
+                    attr: 0
+                  - text: "(*\r\t\tf.SaveRect(l - d, t - d, r + u + d, b + u + d, res);\r*)\r"
+                    attr: 3
+                  - text: "\t\tf.DrawRect(l, t, r + u, b + u, u, HostPorts.selBackground);\r\t\tIF f.front THEN\r\t\t\tIF (w > clipMiddleHandle) & (h > clipMiddleHandle) THEN\r\t\t\t\tPaintHandle(l, t);\r\t\t\t\tPaintHandle(r, t);\r\t\t\t\tPaintHandle(l, b);\r\t\t\t\tPaintHandle(r, b);\r\t\t\t\tIF w > 2 * clipMiddleHandle THEN\r\t\t\t\t\tmx := (l + r) DIV 2;\r\t\t\t\t\tPaintHandle(mx, t);\r\t\t\t\t\tPaintHandle(mx, b)\r\t\t\t\tEND;\r\t\t\t\tIF h > 2 * clipMiddleHandle THEN\r\t\t\t\t\tmy := (t + b) DIV 2;\r\t\t\t\t\tPaintHandle(l, my);\r\t\t\t\t\tPaintHandle(r, my)\r\t\t\t\tEND\r\t\t\tELSIF sizeable THEN\r\t\t\t\tPaintHandle(r, b)\r\t\t\tEND\r\t\tEND;\r\t\tf.rider.SetRect(l0, t0, r0, b0)\r\tEND PaintSelBorder;\r\r\tPROCEDURE (hook: Hook) "
+                    attr: 0
+                  - text: SelBorderCursor
+                    attr: 3
+                  - text: "* (f: Views.Frame; view: Views.View; l, t, r, b: INTEGER;\r\t\t\t\t\t\t\t\t\tx, y: INTEGER): INTEGER;\r\t\tVAR d, u, w, h, mx, my, cursor: INTEGER;\r\t\t\r\t\tPROCEDURE CheckHandle (x0, y0: INTEGER; c: INTEGER);\r\t\tBEGIN\r\t\t\tIF (x >= x0 - d) & (x <= x0 + d) & (y >= y0 - d) & (y <= y0 + d) THEN\r\t\t\t\tcursor := c\r\t\t\tEND\r\t\tEND CheckHandle;\r\t\t\r\tBEGIN\r\t\tIF (x < l) OR (x > r) OR (y < t) OR (y > b) THEN cursor := Mechanisms.outside\r\t\tELSE cursor := Mechanisms.inside\r\t\tEND;\r\t\tIF (view # NIL) & ~Fixed(f, view) THEN\r\t\t\td := (handleSize - f.dot) DIV f.unit DIV 2 * f.unit;\r\t\t\tw := r - l; h := b - t; u := f.dot;\r\t\t\tDEC(l, u); DEC(t, u);\r\t\t\tIF (w > clipMiddleHandle) & (h > clipMiddleHandle) THEN\r\t\t\t\tCheckHandle(l, t, HostPorts.resizeLCursor);\r\t\t\t\tCheckHandle(r, t, HostPorts.resizeRCursor);\r\t\t\t\tCheckHandle(l, b, HostPorts.resizeRCursor);\r\t\t\t\tCheckHandle(r, b, HostPorts.resizeLCursor);\r\t\t\t\tIF w > 2 * clipMiddleHandle THEN\r\t\t\t\t\tmx := (l + r) DIV 2;\r\t\t\t\t\tCheckHandle(mx, t, HostPorts.resizeVCursor);\r\t\t\t\t\tCheckHandle(mx, b, HostPorts.resizeVCursor)\r\t\t\t\tEND;\r\t\t\t\tIF h > 2 * clipMiddleHandle THEN\r\t\t\t\t\tmy := (t + b) DIV 2;\r\t\t\t\t\tCheckHandle(l, my, HostPorts.resizeHCursor);\r\t\t\t\t\tCheckHandle(r, my, HostPorts.resizeHCursor)\r\t\t\t\tEND\r\t\t\tELSE\r\t\t\t\tCheckHandle(r, b, HostPorts.resizeLCursor)\r\t\t\tEND\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " cursor\r\tEND SelBorderCursor;\r\r\tPROCEDURE RestoreViewArea (f: Views.Frame; l, t, r, b: INTEGER);\r\t"
+                    attr: 0
+                  - text: "(* restore area under destructive selection mark *)"
+                    attr: 1
+                  - text: "\r\t\tVAR g: Views.RootFrame; d, dx, dy: INTEGER;\r\tBEGIN\r(*\r\t\t"
+                    attr: 0
+                  - text: "d := (handleSize - f.dot) DIV f.unit DIV 2 * f.unit + f.dot;"
+                    attr: 3
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: "f.RestoreRect(l - d, t - d, r + d, b + d, TRUE)\r"
+                    attr: 3
+                  - text: "*)\r\t\tg := Views.RootOf(f);\r\t\tdx := f.gx - g.gx; dy := f.gy - g.gy;\r\t\td := (handleSize - f.dot) DIV f.unit DIV 2 * f.unit + f.dot;\r\t\tINC(l, dx); INC(t, dy); INC(r, dx); INC(b, dy);\r\t\tViews.ValidateRoot(g);\r\t\tViews.RestoreRoot(g, l - d, t - d, r + d, b + d)\r\tEND RestoreViewArea;\r\r\tPROCEDURE (hook: Hook) "
+                    attr: 0
+                  - text: MarkSingletonBorder
+                    attr: 3
+                  - text: "* (\r\t\thost: Views.Frame; view: Views.View; l, t, r, b: INTEGER; show: BOOLEAN\r\t);\r\tBEGIN\r\t\tIF view # NIL THEN\r\t\t\tIF show THEN\r\t\t\t\tPaintSelBorder(host, view, l, t, r, b)\r\t\t\tELSE\r\t\t\t\tRestoreViewArea(host, l, t, r, b)\r\t\t\tEND\r\t\tEND\r(*\t\t\r\t\tIF view # NIL THEN InvertSelBorder(host, view, l, t, r, b, show) END\r*)\r\tEND MarkSingletonBorder;\r\r\r(*\r\tPROCEDURE "
+                    attr: 0
+                  - text: MarkBorder
+                    attr: 3
+                  - text: "* (host: Ports.Frame; view: Stores.Store; l, t, r, b: INTEGER);\r\t\tVAR s: INTEGER;\r\tBEGIN\r\t\tIF view # NIL THEN \r\t\t\ts := markBorderSize * host.dot;\r\t\t\thost.MarkRect(l - s, t - s, r + s, b + s, s, Ports.dim50, Ports.show)\r\t\tEND\r\tEND MarkBorder;\r*)\r\r\tPROCEDURE (hook: Hook) "
+                    attr: 0
+                  - text: TrackToResize
+                    attr: 3
+                  - text: "* (host: Views.Frame; view: Views.View;\r\t\t\t\t\t\t\t\t\t\tminW, maxW, minH, maxH: INTEGER;\r\t\t\t\t\t\t\t\t\t\tVAR l, t, r, b: INTEGER; VAR op: INTEGER;\r\t\t\t\t\t\t\t\t\t\tVAR x, y: INTEGER; VAR buttons: SET);\r\t\tVAR isDown: BOOLEAN; m: SET; p: Properties.SizePref;\r\t\t\tx1, y1,  dx, dy,  dl, dt, dr, db,  l0, t0, r0, b0,  l1, t1, r1, b1,  w, h,  dw, dh: INTEGER;\r\tBEGIN\r\t\tl0 := l; t0 := t; r0 := r; b0 := b;  dl := 0; dt := 0; dr := 0; db := 0;\r\t\tx1 := (l + r) DIV 2; y1 := (t + b) DIV 2;\r\t\tIF (r - l <= 2 * clipMiddleHandle) OR (ABS(x - x1) > handleSize DIV 2) THEN\r\t\t\tIF x < x1 THEN dl := 1 ELSE dr := 1 END\r\t\tEND;\r\t\tIF (b - t <= 2 * clipMiddleHandle) OR (ABS(y - y1) > handleSize DIV 2) THEN\r\t\t\tIF y < y1 THEN dt := 1 ELSE db := 1 END\r\t\tEND;\r\t\tIF (Controllers.extend IN buttons) & (dl # dr) THEN dl := 1; dr := 1 END;\r\t\tIF (Controllers.extend IN buttons) & (dt # db) THEN dt := 1; db := 1 END;\r\t\thost.MarkRect(l, t, r, b, 0, Ports.dim50, Ports.show);\r\t\tREPEAT\r\t\t\thost.Input(x1, y1, m, isDown);\r\t\t\tIF x1 < host.l THEN x1 := host.l ELSIF x1 > host.r THEN x1 := host.r END;\r\t\t\tIF y1 < host.t THEN y1 := host.t ELSIF y1 > host.b THEN y1 := host.b END;\r\t\t\tdx := x1 - x; dy := y1 - y;\r\t\t\tl1 := l0 + dl * dx; t1 := t0 + dt * dy; r1 := r0 + dr * dx; b1 := b0 + db * dy;\r\t\t\tw := r1 - l1; h := b1 - t1;\r\t\t\tIF (w > 0) & (h > 0) THEN\r\t\t\t\tp.fixedH := (dl = 0) & (dr = 0); p.fixedW := (dt = 0) & (db = 0);\r\t\t\t\tp.w := w; p.h := h; Views.HandlePropMsg(view, p); w := p.w; h := p.h;\r\t\t\t\tIF w < minW THEN w := minW ELSIF w > maxW THEN w := maxW END;\r\t\t\t\tIF h < minH THEN h := minH ELSIF h > maxH THEN h := maxH END;\r\t\t\t\tdw := w - (r1 - l1); dh := h - (b1 - t1);\r\t\t\t\tDEC(l1, dl * dw); DEC(t1, dt * dh);\r\t\t\t\tIF (dl + dr = 0) & (dw # 0) THEN INC(r1, dw) ELSE INC(r1, dr * dw) END;\r\t\t\t\tIF (dt + db = 0) & (dh # 0) THEN INC(b1, dh) ELSE INC(b1, db * dh) END;\r\t\t\t\tIF (l1 # l) OR (t1 # t) OR (r1 # r) OR (b1 # b) THEN\r\t\t\t\t\thost.MarkRect(l, t, r, b, 0, Ports.dim50, Ports.hide);\r\t\t\t\t\tl := l1; t := t1; r := r1; b := b1;\r\t\t\t\t\thost.MarkRect(l, t, r, b, 0, Ports.dim50, Ports.show)\r\t\t\t\tEND\r\t\t\tEND\r\t\tUNTIL ~isDown;\r\t\thost.MarkRect(l, t, r, b, 0, Ports.dim50, Ports.hide);\r\t\tx := x1; y := y1; buttons := {};\r\t\tIF (l # l0) OR (t # t0) OR (r # r0) OR (b # b0) THEN op := Mechanisms.resize\r\t\tELSE op := Mechanisms.cancelResize\r\t\tEND\r\tEND TrackToResize;\r\r\t\r\t"
+                    attr: 0
+                  - text: "(* IDropSource *)\r\t\r"
+                    attr: 1
+                  - text: "\tPROCEDURE (this: IDropSource) QueryContinueDrag (\r\t\tescapePressed: WinApi.BOOL; keyState: SET\r\t): COM.RESULT;\r\tBEGIN\r\t\tIF this.key = {} THEN\r\t\t\tthis.key := keyState * (WinApi.MK_LBUTTON + WinApi.MK_MBUTTON + WinApi.MK_RBUTTON)\r\t\tEND;\r\t\tIF escapePressed # 0 THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.DRAGDROP_S_CANCEL\r\t\tELSIF keyState * this.key = {} THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.DRAGDROP_S_DROP\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\tEND\r\tEND QueryContinueDrag;\r\t\r\tPROCEDURE (this: IDropSource) GiveFeedback (effect: SET): COM.RESULT;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.DRAGDROP_S_USEDEFAULTCURSORS\r\tEND GiveFeedback;\r\t\r\r\t"
+                    attr: 0
+                  - text: "(* IDropTarget *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: InstallDropTarget
+                    attr: 3
+                  - text: "* (wnd: WinApi.HWND; win: Windows.Window);\r\t\tVAR drop: IDropTarget; res: COM.RESULT;\r\tBEGIN\r\t\tNEW(drop); drop.win := win; drop.wnd := wnd;\r\t\tres := WinOle.RegisterDragDrop(wnd, drop)\r\tEND InstallDropTarget;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: RemoveDropTarget
+                    attr: 3
+                  - text: "* (wnd: WinApi.HWND);\r\t\tVAR res: COM.RESULT;\r\tBEGIN\r\t\tres := WinOle.RevokeDragDrop(wnd)\r\tEND RemoveDropTarget;\r\t\r\tPROCEDURE PollDrop (d: IDropTarget; show: BOOLEAN);\r\t\tVAR msg: Controllers.PollDropMsg; w, h: INTEGER;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: "(* x, y in port coordinates of w *)"
+                    attr: 1
+                  - text: "\r\t\td.win.port.GetSize(w, h);\r\t\tmsg.x := d.x * d.win.port.unit;\r\t\tmsg.y := d.y * d.win.port.unit;\r\t\t"
+                    attr: 0
+                  - text: "(* msg.x, msg.y in coordinates of target root frame *)"
+                    attr: 1
+                  - text: "\r\t\tmsg.source := d.source; msg.sourceX := d.srcX; msg.sourceY := d.srcY;\r\t\tmsg.mark := Controllers.mark; msg.show := show;\r\t\tmsg.type := d.type; msg.isSingle := d.isSingle;\r\t\tmsg.w := d.w; msg.h := d.h; msg.rx := d.rx; msg.ry := d.ry;\r\t\tmsg.dest := NIL;\r\t\td.win.ForwardCtrlMsg(msg);\r\t\t"
+                    attr: 0
+                  - text: "(* msg.x, msg.y in coordinates of target frame *)"
+                    attr: 1
+                  - text: "\r\t\ttargetFrame := msg.dest; targetX := msg.x; targetY := msg.y\r\tEND PollDrop;\r\r\tPROCEDURE Drop (d: IDropTarget; v: Views.View; w, h: INTEGER; isSingle: BOOLEAN);\r\t\tVAR msg: Controllers.DropMsg; pw, ph: INTEGER;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: "(* x, y in port coordinates of w *)"
+                    attr: 1
+                  - text: "\r\t\td.win.port.GetSize(pw, ph);\r\t\tmsg.x := d.x * d.win.port.unit;\r\t\tmsg.y := d.y * d.win.port.unit;\r\t\t"
+                    attr: 0
+                  - text: "(* msg.x, msg.y in coordinates of target root frame *)"
+                    attr: 1
+                  - text: "\r\t\tmsg.source := d.source; msg.sourceX := d.srcX; msg.sourceY := d.srcY;\r\t\tmsg.view := v; msg.isSingle := isSingle;\r\t\tmsg.w := w; msg.h := h; msg.rx := d.rx; msg.ry := d.ry;\r\t\td.win.ForwardCtrlMsg(msg)\r\tEND Drop;\r\r"
+                    attr: 0
+                  - text: "\t"
+                    attr: 1
+                  - text: "PROCEDURE AppendMenu (menu: WinApi.HANDLE; id: INTEGER; name: Dialog.String);\r\t\tVAR res: INTEGER;\r\tBEGIN\r\t\tDialog.MapString(name, name);\r\t\tres := WinApi.AppendMenuW(menu, {}, id, name)\r\tEND AppendMenu;"
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\r\tPROCEDURE ShowPopup (f: Views.Frame; x, y: INTEGER; VAR effect: SET);\r\t\tVAR res: INTEGER; menu, wnd: WinApi.HANDLE; msg: WinApi.MSG; pt: WinApi.POINT;\r\tBEGIN\r\t\tmenu := WinApi.CreatePopupMenu();\r\t\tAppendMenu(menu, 32000, \"#Host:MoveHere\");\r\t\tAppendMenu(menu, 32001, \"#Host:CopyHere\");\r\t\tAppendMenu(menu, 32002, \"#Host:LinkHere\");\r\t\tIF effect * WinOle.DROPEFFECT_MOVE = {} THEN\r\t\t\tres := WinApi.EnableMenuItem(menu, 32000, WinApi.MF_GRAYED)\r\t\tEND;\r\t\tIF effect * WinOle.DROPEFFECT_COPY = {} THEN\r\t\t\tres := WinApi.EnableMenuItem(menu, 32001, WinApi.MF_GRAYED)\r\t\tEND;\r\t\tIF effect * WinOle.DROPEFFECT_LINK = {} THEN\r\t\t\tres := WinApi.EnableMenuItem(menu, 32002, WinApi.MF_GRAYED)\r\t\tEND;\r\t\tres := WinApi.AppendMenuW(menu, WinApi.MF_SEPARATOR, 0, NIL);\r\t\tAppendMenu(menu, 32003, \"#System:Cancel\");\r\t\twnd := f.rider(HostPorts.Rider).port.wnd;\r\t\tpt.x := (x + f.gx) DIV f.unit; pt.y := (y + f.gy) DIV f.unit;\r\t\tres := WinApi.ClientToScreen(wnd, pt);\r\t\tres := WinApi.TrackPopupMenu(menu, {1}, pt.x, pt.y, 0, wnd, NIL);\r\t\tres := WinApi.DestroyMenu(menu);\r\t\teffect := WinOle.DROPEFFECT_NONE;\r\t\tIF WinApi.PeekMessageW(msg, wnd, WinApi.WM_COMMAND, WinApi.WM_COMMAND, 1) # 0 THEN\r\t\t\tIF msg.wParam = 32000 THEN effect := WinOle.DROPEFFECT_MOVE\r\t\t\tELSIF msg.wParam = 32001 THEN effect := WinOle.DROPEFFECT_COPY\r\t\t\tELSIF msg.wParam = 32002 THEN effect := WinOle.DROPEFFECT_LINK\r\t\t\tEND\r\t\tEND\r\tEND ShowPopup;\r\t\r\tPROCEDURE Effect (mask, keyState: SET): SET;\r\t\tVAR effect: SET;\r\tBEGIN\r\t\tIF (mask * WinOle.DROPEFFECT_LINK # {})\r\t\t\t& (((WinApi.MK_SHIFT + WinApi.MK_CONTROL) - keyState = {})\r\t\t\t\tOR (mask * (WinOle.DROPEFFECT_MOVE + WinOle.DROPEFFECT_COPY) = {})) THEN\r\t\t\t\t\teffect := WinOle.DROPEFFECT_LINK\r\t\tELSIF (mask * WinOle.DROPEFFECT_COPY # {})\r\t\t\t& ((keyState * WinApi.MK_CONTROL # {})\r\t\t\t\tOR ((WinApi.MK_LBUTTON + WinApi.MK_RBUTTON) - keyState = {})\r\t\t\t\tOR (mask * WinOle.DROPEFFECT_MOVE = {})) THEN effect := WinOle.DROPEFFECT_COPY\r\t\tELSIF mask * WinOle.DROPEFFECT_MOVE # {} THEN effect := WinOle.DROPEFFECT_MOVE\r\t\tELSE effect := WinOle.DROPEFFECT_NONE\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " effect\r\tEND Effect;\r\t\r\tPROCEDURE (this: IDropTarget) DragEnter (dataObj: WinOle.IDataObject; keyState: SET; pt: WinApi.POINT;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR effect: SET): COM.RESULT;\r\t\tVAR res: INTEGER; s: BOOLEAN;\r\tBEGIN\r\t\tIF sourceFrame # NIL THEN\r\t\t\tthis.source := sourceFrame;\r\t\t\tthis.srcX := sourceX; this.srcY := sourceY;\r\t\t\tServices.GetTypeName(dropView, this.type);\r\t\t\tthis.isSingle := isSingleton;\r\t\t\tthis.w := dropW; this.h := dropH;\r\t\t\tthis.rx := relX; this.ry := relY\r\t\tELSE\r\t\t\tOleData.GetDataType(dataObj, this.type, this.w, this.h, this.rx, this.ry, this.isSingle);\r\t\t\tthis.source := NIL\r\t\tEND;\r\t\tIF (this.type # \"\") & (this.win # NIL) THEN\r\t\t\tres := WinApi.ScreenToClient(this.wnd, pt);\r\t\t\tthis.x := pt.x; this.y := pt.y; this.key := keyState;\r\t\t\tPollDrop(this, Controllers.show)\r\t\tEND;\r\t\tIF (this.type # \"\") & (this.win = NIL) OR (targetFrame # NIL) THEN\r\t\t\teffect := Effect(effect, keyState)\r\t\tELSE effect := WinOle.DROPEFFECT_NONE\r\t\tEND;\r\t\t this.effect := effect;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND DragEnter;\r\t\r\tPROCEDURE (this: IDropTarget) DragOver (keyState: SET; pt: WinApi.POINT; VAR effect: SET): COM.RESULT;\r\t\tVAR res: INTEGER;\r\tBEGIN\r\t\tIF (this.type # \"\") & (this.win # NIL) THEN\r\t\t\tres := WinApi.ScreenToClient(this.wnd, pt);\r\t\t\tIF (pt.x # this.x) OR (pt.y # this.y) THEN\r\t\t\t\tPollDrop(this, Controllers.hide);\r\t\t\t\tthis.x := pt.x; this.y := pt.y;\r\t\t\t\tPollDrop(this, Controllers.show)\r\t\t\tEND\r\t\tEND;\r\t\tIF (this.type # \"\") & (this.win = NIL) OR (targetFrame # NIL) THEN\r\t\t\teffect := Effect(effect, keyState)\r\t\tELSE effect := WinOle.DROPEFFECT_NONE\r\t\tEND;\r\t\tthis.effect := effect;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND DragOver;\r\t\r\tPROCEDURE (this: IDropTarget) DragLeave (): COM.RESULT;\r\tBEGIN\r\t\tIF (this.type # \"\") & (this.win # NIL) THEN\r\t\t\tPollDrop(this, Controllers.hide)\r\t\tEND;\r\t\ttargetFrame := NIL; this.source := NIL;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND DragLeave;\r\t\r\tPROCEDURE (this: IDropTarget) Drop (dataObj: WinOle.IDataObject; keyState: SET; pt: WinApi.POINT;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR effect: SET): COM.RESULT;\r\t\tVAR res, w, h: INTEGER; v: Views.View; s: BOOLEAN;\r\t\t\tc: Containers.Controller; m: Containers.Model; p: Properties.BoundsPref;\r\tBEGIN\r\t\tIF this.effect # WinOle.DROPEFFECT_NONE THEN\r\t\t\tIF this.win # NIL THEN\r\t\t\t\tres := WinApi.ScreenToClient(this.wnd, pt);\r\t\t\t\tPollDrop(this, Controllers.hide);\r\t\t\t\tIF targetFrame # NIL THEN\r\t\t\t\t\tWindows.dir.Select(this.win, Windows.eager);\r\t\t\t\t\tIF WinApi.MK_LBUTTON * this.key = {} THEN\t"
+                    attr: 0
+                  - text: "(* nonstandard drag *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\tShowPopup(targetFrame, targetX, targetY, effect)\r\t\t\t\t\tELSE effect := this.effect\r\t\t\t\t\tEND;\r\t\t\t\t\tIF (effect # WinOle.DROPEFFECT_NONE) & (sourceFrame = NIL) THEN\r\t\t\t\t\t\t"
+                    attr: 0
+                  - text: "IF Services.Is(targetFrame.view, \"TextViews.View\") THEN"
+                    attr: 3
+                  - text: "\r"
+                    attr: 0
+                  - text: "\t\t\t\t\t\t\tOleData.GetTextDataView(dataObj, v, w, h, s)\r\t\t\t\t\t\tELSE\r\t\t\t\t\t\t"
+                    attr: 3
+                  - text: "\tOleData.GetDataView(dataObj, \"\", v, w, h, s)\r\t\t\t\t\t\t"
+                    attr: 0
+                  - text: END
+                    attr: 3
+                  - text: ";\r\t\t\t\t\t\tIF v # NIL THEN Drop(this, v, w, h, s)\r\t\t\t\t\t\tELSE effect := WinOle.DROPEFFECT_NONE\r\t\t\t\t\t\tEND\r\t\t\t\t\tEND\r\t\t\t\tELSE effect := WinOle.DROPEFFECT_NONE\r\t\t\t\tEND\r\t\t\tELSE\t"
+                    attr: 0
+                  - text: "(* drop to new window *)"
+                    attr: 1
+                  - text: "\r\t\t\t\teffect := this.effect;\r\t\t\t\tIF sourceFrame # NIL THEN\r\t\t\t\t\tw := dropW; h := dropH;\r\t\t\t\t\tIF isSingleton THEN\r\t\t\t\t\t\tv := Views.CopyOf(dropView, Views.deep)\r\t\t\t\t\tELSE\r\t\t\t\t\t\tc := dropView(Containers.View).ThisController();\r\t\t\t\t\t\tm := c.SelectionCopy();\r\t\t\t\t\t\tv := Views.CopyWithNewModel(dropView, m);\r\t\t\t\t\t\t"
+                    attr: 0
+                  - text: "p.w := w; p.h := h; Views.HandlePropMsg(v, p); w := p.w; h := p.h"
+                    attr: 3
+                  - text: "\r\t\t\t\t\tEND\r\t\t\t\tELSE OleData.GetDataView(dataObj, \"\", v, w, h, s)\r\t\t\t\tEND;\r\t\t\t\tIF v # NIL THEN Views.OpenView(Documents.dir.New(v, w, h));\r\t\t\t\tViews.BeginModification(Views.notUndoable, v);\r\t\t\t\tViews.EndModification(Views.notUndoable, v)\r\t\t\t\tELSE effect := WinOle.DROPEFFECT_NONE\r\t\t\t\tEND\r\t\t\tEND\r\t\tELSE effect := WinOle.DROPEFFECT_NONE\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND Drop;\r\t\r\t\r"
+                    attr: 0
+                  - text: "\t(* drag & drop *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (hook: Hook) "
+                    attr: 0
+                  - text: TrackToDrop
+                    attr: 3
+                  - text: "* (f: Views.Frame; view: Views.View;\r\t\t\t\t\t\t\t\t\tisSingle: BOOLEAN; w, h, rx, ry: INTEGER;\r\t\t\t\t\t\t\t\t\tVAR dest: Views.Frame; VAR destX, destY: INTEGER; VAR op: INTEGER;\r\t\t\t\t\t\t\t\t\tVAR x, y: INTEGER; VAR buttons: SET);\r\t\tVAR res: COM.RESULT; mask, mode: SET; p: HostPorts.Port; pt: WinApi.POINT;\r\t\t\tdsrc: IDropSource; data: WinOle.IDataObject;\r\tBEGIN\r\t\tsourceFrame := f; sourceX := x; sourceY := y;\r\t\tdropView := view; isSingleton := isSingle;\r\t\tdropW := w; dropH := h; relX := rx; relY := ry;\r\t\tdata := OleData.ViewDropData(view, w, h, rx, ry, isSingle, ~isSingle);\r\t\tNEW(dsrc); dsrc.key := {};\r\t\tmask := WinOle.DROPEFFECT_COPY;\r\t\tIF op # Mechanisms.copy THEN mask := mask + WinOle.DROPEFFECT_MOVE END;\r\t\tres := WinOle.DoDragDrop(data, dsrc, mask, mode);\r\t\top := Mechanisms.cancelDrop;\r\t\tIF res = WinApi.DRAGDROP_S_DROP THEN\r\t\t\tIF mode * WinOle.DROPEFFECT_MOVE # {} THEN op := Mechanisms.move\r\t\t\tELSIF mode * WinOle.DROPEFFECT_COPY # {} THEN op := Mechanisms.copy\r\t\t\tEND\r\t\tEND;\r\t\tIF targetFrame # NIL THEN\t"
+                    attr: 0
+                  - text: "(* reconstruct final mouse coordinates in f *)"
+                    attr: 1
+                  - text: "\r\t\t\tp := targetFrame.rider(HostPorts.Rider).port;\r\t\t\tpt.x := (targetX + targetFrame.gx) DIV p.unit;\r\t\t\tpt.y := (targetY + targetFrame.gy) DIV p.unit;\r\t\t\tres := WinApi.ClientToScreen(p.wnd, pt);\r\t\t\tp := f.rider(HostPorts.Rider).port;\r\t\t\tres := WinApi.ScreenToClient(p.wnd, pt);\r\t\t\tx := pt.x * p.unit - f.gx;\r\t\t\ty := pt.y * p.unit - f.gy\r\t\tEND;\r\t\tdest := targetFrame; destX := targetX; destY := targetY;\r\t\tsourceFrame := NIL; targetFrame := NIL; dropView := NIL\r\tEND TrackToDrop;\r\r\tPROCEDURE PickMode (f, dest: Views.Frame; x, y: INTEGER): INTEGER;\r\t\tVAR mode, cursor: INTEGER;\r\tBEGIN\r\t\tIF WinApi.GetAsyncKeyState(1BH) < 0 THEN mode := escape; cursor := Ports.arrowCursor\r(*\r\t\tELSIF Home(f, x, y) THEN mode := Mechanisms.cancelPick; cursor := Ports.arrowCursor\r*)\r\t\tELSIF dest = NIL THEN mode := Mechanisms.cancelPick; cursor := HostPorts.stopCursor\r\t\tELSE\r\t\t\tcursor := HostPorts.pickCursor;\r\t\t\tIF Services.SameType(dest.view, f.view) THEN\r\t\t\t\tmode := Mechanisms.pick\r\t\t\tELSE mode := Mechanisms.pickForeign\r\t\t\tEND\r\t\tEND;\r\t\tf.SetCursor(cursor);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " mode\r\tEND PickMode;\r\r\tPROCEDURE (hook: Hook) "
+                    attr: 0
+                  - text: TrackToPick
+                    attr: 3
+                  - text: "* (f: Views.Frame;\r\t\t\t\t\t\t\t\t\tVAR dest: Views.Frame; VAR destX, destY: INTEGER; VAR op: INTEGER;\r\t\t\t\t\t\t\t\t\tVAR x, y: INTEGER; VAR buttons: SET);\r\t\tVAR d, d0: Views.Frame;\r\t\t\tdx, dy,  x0, y0,  x1, y1: INTEGER; isDown: BOOLEAN; m: SET;\r\tBEGIN\r\t\tx0 := x; y0 := y;\r\t\tProperties.PollPick(x, y, f, x0, y0, Properties.mark, Properties.show, dest, destX, destY);\r\t\t(* MarkTarget(dest, dest # f); *)\r\t\top := PickMode(f, dest, x, y);\r\t\tREPEAT\r\t\t\t(* CheckWindow(TRUE); *)\r\t\t\tf.Input(x1, y1, m, isDown);\r\t\t\tIF (x1 # x) OR (y1 # y) THEN\r\t\t\t\tProperties.PollPick(x1, y1, f, x0, y0, Properties.noMark, Properties.show, d, dx, dy);\r\t\t\t\tIF (d # dest) OR (dx # destX) OR (dy # destY) THEN\r\t\t\t\t\td0 := dest;\r\t\t\t\t\t(* MarkTarget(dest, (dest # f) & (d # d0)); *)\r\t\t\t\t\tProperties.PollPick(x, y, f, x0, y0, Properties.mark, Properties.hide, dest, destX, destY);\r\t\t\t\t\tx := x1; y := y1;\r\t\t\t\t\tProperties.PollPick(x, y, f, x0, y0, Properties.mark, Properties.show, d, dx, dy);\r\t\t\t\t\tdest := d; destX := dx; destY := dy;\r\t\t\t\t\t(* MarkTarget(dest, (dest # f) (* ~home *) & (d # d0)); *)\r\t\t\t\tELSE\r\t\t\t\t\tProperties.PollPick(x, y, f, x0, y0, Properties.mark, Properties.hide, d, dx, dy);\r\t\t\t\t\tx := x1; y := y1;\r\t\t\t\t\tProperties.PollPick(x, y, f, x0, y0, Properties.mark, Properties.show, d, dx, dy)\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\top := PickMode(f, dest, x, y)\r\t\tUNTIL ~isDown OR (op = escape);\r\t\tProperties.PollPick(x, y, f, x0, y0, Properties.mark, Properties.hide, d, dx, dy);\r\t\tIF op = escape THEN\r\t\t\tREPEAT f.Input(x, y, m, isDown) UNTIL ~isDown;\r\t\t\top := Mechanisms.cancelPick\r\t\tEND;\r\t\t(* MarkTarget(dest, dest # f); *)\r\t\t(* CheckWindow(FALSE) *)\r\t\tbuttons := {}\r\tEND TrackToPick;\r\r\r\tPROCEDURE (hook: Hook) "
+                    attr: 0
+                  - text: PopUpAndSelect
+                    attr: 3
+                  - text: "* (f: Views.Frame;\r\t\t\t\t\t\t\t\t\t\tn, this: INTEGER;\r\t\t\t\t\t\t\t\t\t\tstring: ARRAY OF ARRAY OF CHAR;\r\t\t\t\t\t\t\t\t\t\tenabled, checked: ARRAY OF BOOLEAN;\r\t\t\t\t\t\t\t\t\t\tVAR i: INTEGER;\r\t\t\t\t\t\t\t\t\t\tVAR x, y: INTEGER; VAR buttons: SET);\r\t\tVAR res, j: INTEGER; menu, wnd: WinApi.HANDLE; pt: WinApi.POINT;\r\t\t\tt: ARRAY 256 OF CHAR; s: SET;\r\tBEGIN\r\t\tASSERT(0 < n, 20); ASSERT(n <= LEN(string), 21);\r\t\tASSERT(LEN(enabled) = LEN(string), 22);\r\t\tASSERT(LEN(checked) = LEN(string), 23);\r\t\twnd := f.rider(HostPorts.Rider).port.wnd;\r\t\tASSERT(wnd # 0, 100);\r\t\tmenu := WinApi.CreatePopupMenu(); j := 0;\r\t\tWHILE j < n DO\r\t\t\tIF string[j] = \"-\" THEN\r\t\t\t\tres := WinApi.AppendMenuW(menu, WinApi.MF_SEPARATOR, 0, NIL)\r\t\t\tELSE\r\t\t\t\tDialog.MapString(string[j], t);\r\t\t\t\tres := WinApi.AppendMenuW(menu, {}, 32000 + j, t);\r\t\t\t\tIF ~enabled[j] THEN\r\t\t\t\t\tres := WinApi.EnableMenuItem(menu, 32000 + j, WinApi.MF_GRAYED)\r\t\t\t\tELSIF checked[j] THEN\r\t\t\t\t\tres := WinApi.CheckMenuItem(menu, 32000 + j, WinApi.MF_GRAYED)\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tINC(j)\r\t\tEND;\r\t\tpt.x := (x + f.gx) DIV f.unit; pt.y := (y + f.gy) DIV f.unit;\r\t\tres := WinApi.ClientToScreen(wnd, pt);\r\t\ts := {1, 2};\t"
+                    attr: 0
+                  - text: "(* track right, center align *)"
+                    attr: 1
+                  - text: "\r\t\tres := WinApi.TrackPopupMenu(menu, s, pt.x, pt.y + 2, 0, wnd, NIL);\r\t\tres := WinApi.DestroyMenu(menu)\r\tEND PopUpAndSelect;\r\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Init
+                    attr: 3
+                  - text: "*;\r\t\tVAR h: Hook;\r\tBEGIN\r\t\tNEW(h); Mechanisms.SetHook(h)\r\tEND Init;\r\rBEGIN\r\tInit\rEND HostMechanisms.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 29019
+          bodyLen: 8

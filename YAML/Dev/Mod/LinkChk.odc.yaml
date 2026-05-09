@@ -1,0 +1,344 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Dev\\Mod\\LinkChk.odc"
+  size: 11952
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 11821
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 11635
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 11549
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 114300
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Helvetica
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 11666
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 11152
+                runListLen: 2034
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE DevLinkChk;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- 20150226, center #29, finconsistent checks for valid subsystem names\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT\r\t\tKernel, Strings, Dialog, Files, Fonts, Ports, Converters, Views, Containers,\r\t\tTextModels, TextMappers, TextViews, TextControllers, StdLinks, StdCmds;\r\r\tCONST\r\t\t"
+                    attr: 0
+                  - text: oneSubsystem
+                    attr: 3
+                  - text: "* = 0; "
+                    attr: 0
+                  - text: globalSubsystem
+                    attr: 3
+                  - text: "* = 1; "
+                    attr: 0
+                  - text: allSubsystems
+                    attr: 3
+                  - text: "* = 2;\r\t\tlinkCommand = \"DevLinkChk.Open('\";\r\r\tVAR\r\t\t"
+                    attr: 0
+                  - text: par
+                    attr: 3
+                  - text: "*: RECORD\r\t\t\tscope*: INTEGER;\t"
+                    attr: 0
+                  - text: "(* IN {oneSubsystem, globalSubsystem, allSubsystems} *)"
+                    attr: 1
+                  - text: "\r\t\t\tsubsystem*: ARRAY 16 OF CHAR;\r\t\t\tlegal: BOOLEAN\t"
+                    attr: 0
+                  - text: "(* legal => correct syntax for a subsystem name # \"\" *)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\r\tTYPE\r\t\tIterator = POINTER TO IteratorDesc;\r\t\tIteratorDesc = RECORD\r\t\t\troot: Files.Locator;\r\t\t\tlocs: Files.LocInfo;\r\t\t\tfiles: Files.FileInfo\r\t\tEND;\r\r\tVAR default, link: TextModels.Attributes;\r\r\tPROCEDURE MakeDocName (VAR name: Files.Name);\r\tBEGIN\r\t\tKernel.MakeFileName(name, \"\")\r\tEND MakeDocName;\r\r\tPROCEDURE New (root: Files.Locator): Iterator;\r\t\tVAR i: Iterator;\r\tBEGIN\r\t\tNEW(i); i.root := root; i.locs := Files.dir.LocList(root); i.files := Files.dir.FileList(root);\r\t\t"
+                    attr: 0
+                  - text: "(* could sort by name *)"
+                    attr: 3
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " i\r\tEND New;\r\r\tPROCEDURE ReadLoc (i: Iterator; VAR loc: Files.Locator; VAR name: Files.Name);\r\tBEGIN\r\t\tIF i.locs # NIL THEN\r\t\t\tloc := i.root.This(i.locs.name); ASSERT(loc # NIL, 60);\r\t\t\tname := i.locs.name$;\r\t\t\ti.locs := i.locs.next\r\t\tELSE\r\t\t\tloc := NIL; name := \"\"\r\t\tEND\r\tEND ReadLoc;\r\r\tPROCEDURE ReadFile (i: Iterator; OUT name: Files.Name);\r\tBEGIN\r\t\tIF i.files # NIL THEN\r\t\t\tname := i.files.name$;\r\t\t\ti.files := i.files.next\r\t\tELSE\r\t\t\tname := \"\"\r\t\tEND\r\tEND ReadFile;\r\r\tPROCEDURE Delimiter (ch: CHAR): BOOLEAN;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " (ch = \"'\") OR (ch = '\"') OR (ch = \"/\")\r\tEND Delimiter;\r\r\tPROCEDURE Stale (IN s: ARRAY OF CHAR): BOOLEAN;\r\t\tVAR i, j: INTEGER; ch: CHAR; loc: Files.Locator; name: Files.Name; t: ARRAY 1024 OF CHAR;\r\tBEGIN\r\t\ti := 0; ch := s[0]; WHILE (ch # 0X) & (ch # \"(\") DO INC(i); ch := s[i] END;\r\t\tIF ch = \"(\" THEN\r\t\t\tt := s$; t[i] := 0X;\r\t\t\t(* StdCmds.OpenMask doesn't exist anymore *)\r\t\t\tIF (t = \"StdCmds.OpenMask\") OR (t = \"StdCmds.OpenBrowser\") OR (t = \"StdCmds.OpenDoc\") OR\r\t\t\t\t(t = \"StdCmds.OpenAuxDialog\") THEN\r\t\t\t\tINC(i); ch := s[i]; WHILE (ch # 0X) & (ch # \"'\") & (ch # '\"') DO INC(i); ch := s[i] END;\r\t\t\t\tIF ch # 0X THEN\r\t\t\t\t\tloc := Files.dir.This(\"\");\r\t\t\t\t\tREPEAT\r\t\t\t\t\t\tj := 0;\r\t\t\t\t\t\tINC(i); ch := s[i]; WHILE ~Delimiter(ch) DO t[j] := ch; INC(j); INC(i); ch := s[i] END;\r\t\t\t\t\t\tt[j] := 0X;\r\t\t\t\t\t\tIF ch = \"/\" THEN loc := loc.This(t) END\r\t\t\t\t\tUNTIL ch # \"/\";\r\t\t\t\t\tname := t$; MakeDocName(name);\r\t\t\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " Files.dir.Old(loc, name, Files.shared) = NIL\t"
+                    attr: 0
+                  - text: "(* file not found *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\t"
+                    attr: 0
+                  - text: "(* wrong syntax *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tEND\r\t\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " FALSE\t"
+                    attr: 0
+                  - text: "(* unknown kind of command *)"
+                    attr: 1
+                  - text: "\r\t\t\tEND\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " FALSE\t"
+                    attr: 0
+                  - text: "(* unknown kind of command *)"
+                    attr: 1
+                  - text: "\r\t\tEND\r\tEND Stale;\r\r\tPROCEDURE GetCmd (IN path, file: Files.Name; pos: INTEGER; OUT cmd: ARRAY OF CHAR);\r\t\tVAR p, bug0, bug1, bug2: ARRAY 128 OF CHAR;\r\tBEGIN\r\t\tStrings.IntToString(pos, p);\r\t\tbug0 :=  linkCommand + path + \"', '\";\r\t\tbug1 :=  bug0 + file + \"', \";\r\t\tbug2 := bug1 + p + \")\";\r\t\tcmd := bug2$\r\tEND GetCmd;\r\r\tPROCEDURE CheckDoc (IN path, file: Files.Name; t: TextModels.Model; VAR f: TextMappers.Formatter;\r\t\t\t\t\t\t\t\t\t\ttabs: INTEGER; check: BOOLEAN; VAR hit: BOOLEAN);\r\t\tVAR r: TextModels.Reader; v: Views.View; leftSide, done: BOOLEAN; cmd, cmd0: ARRAY 1024 OF CHAR;\r\t\t\ti: INTEGER;\r\tBEGIN\r\t\tr := t.NewReader(NIL);\r\t\tr.ReadView(v);\r\t\tWHILE v # NIL DO\r\t\t\tWITH v: StdLinks.Link DO\r\t\t\t\tIF v.leftSide THEN\r\t\t\t\t\tv.GetCmd(cmd);\r\t\t\t\t\tIF (cmd # \"\") & (~check OR Stale(cmd)) THEN\r\t\t\t\t\t\thit := TRUE;\r\t\t\t\t\t\ti := 0; WHILE i # tabs DO f.WriteTab; INC(i) END;\r\t\t\t\t\t\tGetCmd(path, file, r.Pos() - 1, cmd0);\r\t\t\t\t\t\tf.WriteView(StdLinks.dir.NewLink(cmd0));\r\t\t\t\t\t\tf.rider.SetAttr(link);\r\t\t\t\t\t\tf.WriteString(cmd);\r\t\t\t\t\t\tf.rider.SetAttr(default);\r\t\t\t\t\t\tf.WriteView(StdLinks.dir.NewLink(\"\"));\r\t\t\t\t\t\tf.WriteLn\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\tELSE\r\t\t\tEND;\r\t\t\tr.ReadView(v)\r\t\tEND\r\tEND CheckDoc;\r\r\tPROCEDURE CheckLoc (\r\t\tIN path: Files.Name; loc: Files.Locator; name: Files.Name; VAR f: TextMappers.Formatter;\r\t\tcheck: BOOLEAN; OUT hit: BOOLEAN\r\t);\r\t\tVAR i: Iterator; fname: Files.Name; v: Views.View; conv: Converters.Converter;\r\t\t\tlabel, label0: INTEGER; hit0: BOOLEAN;\r\tBEGIN\r\t\tlabel := f.Pos(); hit := FALSE;\r\t\tloc := loc.This(name);\r\t\ti := New(loc);\r\t\tReadFile(i, fname);\r\t\tIF fname # \"\" THEN f.WriteTab; f.WriteString(name); f.WriteLn END;\r\t\thit := FALSE;\r\t\tWHILE fname # \"\" DO\r\t\t\tlabel0 := f.Pos(); hit0 := FALSE;\r\t\t\tMakeDocName(fname);\r\t\t\tv := Views.Old(Views.dontAsk, loc, fname, conv);\r\t\t\tIF (v # NIL) & (v IS TextViews.View) THEN\r\t\t\t\tf.WriteTab; f.WriteTab; f.WriteString(fname); f.WriteLn;\r\t\t\t\tCheckDoc(path, fname, v(TextViews.View).ThisModel(), f, 3, check, hit0);\r\t\t\t\tIF ~hit0 THEN f.SetPos(label0) END;\r\t\t\t\thit := hit OR hit0\r\t\t\tEND;\r\t\t\tReadFile(i, fname)\r\t\tEND;\r\t\tIF ~hit THEN f.SetPos(label) END\r\tEND CheckLoc;\r\r\tPROCEDURE Equal (IN a, b: ARRAY OF CHAR): BOOLEAN;\r\t\tVAR al, bl: Files.Name;\r\tBEGIN\r\t\tIF a = b THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\tELSE Strings.ToLower(a, al); Strings.ToLower(b, bl); "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " al = bl\r\t\tEND\r\tEND Equal;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Check
+                    attr: 3
+                  - text: "* (subsystem: ARRAY OF CHAR; scope: INTEGER; check: BOOLEAN);\r\t\tVAR i: Iterator; root, loc: Files.Locator; name: Files.Name; hit0, hit1: BOOLEAN;\r\t\t\tout: TextModels.Model; f: TextMappers.Formatter; label: INTEGER; title: Views.Title;\r\t\t\tv: TextViews.View; c: Containers.Controller; path: Files.Name;\r\tBEGIN\r\t\tout := TextModels.dir.New(); f.ConnectTo(out);\r\t\tIF check THEN\r\t\t\tDialog.MapString(\"#Dev:InconsistentLinks\", title)\r\t\tELSE\r\t\t\tDialog.MapString(\"#Dev:Links\", title)\r\t\tEND;\r\t\tv := TextViews.dir.New(out);\r\t\t"
+                    attr: 0
+                  - text: "(* set Browser mode: *)"
+                    attr: 1
+                  - text: "\r\t\tc := v.ThisController();\r\t\tc.SetOpts(c.opts + {Containers.noCaret} - {Containers.noSelection, Containers.noFocus});\r\t\tViews.OpenAux(v, title);\r\t\tdefault := TextModels.dir.attr;\r\t\tlink := TextModels.NewColor(default, Ports.blue); link := TextModels.NewStyle(link, {Fonts.underline});\r\t\troot := Files.dir.This(\"\");\r\t\tIF scope IN {globalSubsystem, allSubsystems} THEN\r\t\t\tlabel := f.Pos();\r\t\t\tDialog.ShowStatus(\".\");\r\t\t\tf.WriteString(\".\"); f.WriteLn;\r\t\t\tpath := \"Docu\";\r\t\t\tCheckLoc(path, root, \"Docu\", f, check, hit0);\r\t\t\tpath := \"Mod\";\r\t\t\tCheckLoc(path, root, \"Mod\", f, check, hit1);\r\t\t\tIF ~hit0 & ~hit1 THEN f.SetPos(label) END\r\t\tEND;\r\t\ti := New(root);\r\t\tReadLoc(i, loc, name);\r\t\tWHILE loc # NIL DO\r\t\t\tIF (scope = allSubsystems) OR (scope = oneSubsystem) & Equal(name, subsystem) THEN\r\t\t\t\tlabel := f.Pos();\r\t\t\t\tDialog.ShowStatus(name);\r\t\t\t\tf.WriteString(name); f.WriteLn;\r\t\t\t\tpath := name + \"/\" + \"Docu\";\r\t\t\t\tCheckLoc(path, loc, \"Docu\", f, check, hit0);\r\t\t\t\tpath := name + \"/\" + \"Mod\";\r\t\t\t\tCheckLoc(path, loc, \"Mod\", f, check, hit1);\r\t\t\t\tIF ~hit0 & ~hit1 THEN f.SetPos(label) END\r\t\t\tEND;\r\t\t\tReadLoc(i, loc, name)\r\t\tEND;\r\t\tout.Delete(f.Pos(), out.Length());\r\t\tDialog.ShowStatus(\"\"); default := NIL; link := NIL\r\tEND Check;\r\r\tPROCEDURE PathToLoc (IN path: ARRAY OF CHAR; OUT loc: Files.Locator);\r\t\tVAR i, j: INTEGER; ch: CHAR; name: ARRAY 256 OF CHAR;\r\tBEGIN\r\t\tloc := Files.dir.This(\"\");\r\t\tIF path # \"\" THEN\r\t\t\ti := 0; j := 0;\r\t\t\tREPEAT\r\t\t\t\tch := path[i]; INC(i);\r\t\t\t\tIF (ch = \"/\") OR (ch = 0X) THEN name[j] := 0X; j := 0; loc := loc.This(name)\r\t\t\t\tELSE name[j] := ch; INC(j)\r\t\t\t\tEND\r\t\t\tUNTIL (ch = 0X) OR (loc.res # 0)\r\t\tEND\r\tEND PathToLoc;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Open
+                    attr: 3
+                  - text: "* (path, file: ARRAY OF CHAR; pos: INTEGER);\r\t\tVAR loc: Files.Locator; v: Views.View; bug: Files.Name; c: TextControllers.Controller;\r\tBEGIN\r\t\tASSERT(file # \"\", 20); ASSERT(pos >= 0, 21);\r\t\tPathToLoc(path, loc); ASSERT(loc # NIL, 22);\r\t\tbug := file$;\r\t\tv := Views.OldView(loc, bug);\r\t\tIF v # NIL THEN\r\t\t\tWITH v: TextViews.View DO\r(*\r\t\t\t\tv.DisplayMarks(TextViews.show);\r*)\r\t\t\t\tViews.Open(v, loc, bug, NIL);\r\t\t\t\tc := v.ThisController()(TextControllers.Controller);\r\t\t\t\tc.SetCaret(pos);\r\t\t\t\tv.ShowRange(pos, pos + 1, TextViews.focusOnly)\r\t\t\tELSE\r\t\t\t\t"
+                    attr: 0
+                  - text: HALT
+                    attr: 3
+                  - text: "(23)\r\t\t\tEND\r\t\tEND\r\tEND Open;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ListLinks
+                    attr: 3
+                  - text: "*;\r\t"
+                    attr: 0
+                  - text: "(** Guard: CommandGuard **)"
+                    attr: 1
+                  - text: "\r\tBEGIN\r\t\tStdCmds.CloseDialog; Check(par.subsystem, par.scope, FALSE)\r\tEND ListLinks;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: CheckLinks
+                    attr: 3
+                  - text: "*;\r\t"
+                    attr: 0
+                  - text: "(** Guard: CommandGuard **)"
+                    attr: 1
+                  - text: "\r\tBEGIN\r\t\tStdCmds.CloseDialog; Check(par.subsystem, par.scope, TRUE)\r\tEND CheckLinks;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SubsystemGuard
+                    attr: 3
+                  - text: "* (VAR p: Dialog.Par);\r\tBEGIN\r\t\tp.readOnly := par.scope # oneSubsystem\r\tEND SubsystemGuard;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: CommandGuard
+                    attr: 3
+                  - text: "* (VAR p: Dialog.Par);\r\tBEGIN\r\t\tp.disabled := (par.scope = oneSubsystem) & ~par.legal\r\tEND CommandGuard;\r\r\tPROCEDURE SyntaxOK(IN s: ARRAY OF CHAR): BOOLEAN;\r\t\tVAR i: INTEGER; ch: CHAR;\r\tBEGIN\r\t\ti := 0; ch := s[0];\r\t\tIF ~Strings.IsIdentStart(ch) THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " FALSE END ;\r\t\tWHILE Strings.IsUpper(ch) DO INC(i); ch := s[i] END ;\r\t\tIF ch = 0X THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " FALSE END ;\r\t\tWHILE Strings.IsIdent(ch) & ~Strings.IsUpper(ch) DO INC(i); ch := s[i] END ;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " ch = 0X\r\tEND SyntaxOK;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SubsystemNotifier
+                    attr: 3
+                  - text: "* (op, from, to: INTEGER);\r\tBEGIN\r\t\tIF par.scope = oneSubsystem THEN\r\t\t\tpar.legal := SyntaxOK(par.subsystem)\r\t\tELSE\r\t\t\tpar.subsystem := \"\"; par.legal := FALSE\r\t\tEND\r\tEND SubsystemNotifier;\r\rEND DevLinkChk.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 11917
+          bodyLen: 8

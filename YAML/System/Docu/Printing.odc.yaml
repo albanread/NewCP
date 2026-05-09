@@ -1,0 +1,242 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\System\\Docu\\Printing.odc"
+  size: 7056
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 6925
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 6739
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 6653
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                asc: 134600
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000003
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 6
+                bodyPos: 6653
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 6139
+                runListLen: 556
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                flow:
+                  - text: Printing
+                    attr: 0
+                  - text: "\r\rDEFINITION Printing;\r\r\tIMPORT Fonts, Views, Dates;\r\r\tTYPE\r\t\tPar = POINTER TO LIMITED RECORD \r\t\t\tpage: PageInfo;\r\t\t\theader, footer: Banner;\r\t\t\tcopies-: INTEGER\r\t\tEND;\r\r\t\tBanner = RECORD \r\t\t\tfont: Fonts.Font;\r\t\t\tgap: INTEGER;\r\t\t\tleft, right: ARRAY 128 OF CHAR\r\t\tEND;\r\r\t\tPageInfo = RECORD \r\t\t\tfirst, from, to: INTEGER;\r\t\t\talternate: BOOLEAN;\r\t\t\ttitle: Views.Title\r\t\tEND;\r\r\tVAR par: Par;\r\r\tPROCEDURE NewPar (IN page: PageInfo; IN header, footer: Banner; copies: INTEGER): Par;\r\tPROCEDURE NewDefaultPar (title: Views.Title): Par;\r\tPROCEDURE PrintView (view: Views.View; p: Par);\r\tPROCEDURE Current (): INTEGER;\r\tPROCEDURE PrintBanner (f: Views.Frame; IN p: PageInfo; IN b: Banner; IN date: Dates.Date;\r\t\t\t\t\t\t\t\t\t\t\tIN time: Dates.Time; x0, x1, y: INTEGER);\r\rEND Printing.\r\r\rThis module allows to print a document, including headers and footers.\r\r\rTYPE "
+                    attr: 1
+                  - text: "Par\r"
+                    attr: 2
+                  - text: "Specification of the print job. Is passed as parameter to the function "
+                    attr: 1
+                  - text: PrintView
+                    attr: 3
+                  - text: ". During printing, it can be accessed via the global variable "
+                    attr: 1
+                  - text: par
+                    attr: 3
+                  - text: ". During printing, its state can be changed.\r\r"
+                    attr: 1
+                  - text: page
+                    attr: 2
+                  - text: ": PageInfo\rInformation about the area of the pages to be printed; about page numbers; and whether printing of left and right pages is treated differently.\r\r"
+                    attr: 1
+                  - text: "header, footer"
+                    attr: 2
+                  - text: ": Banner\rHeader/footer line to be printed on every page.\r\r"
+                    attr: 1
+                  - text: copies-
+                    attr: 2
+                  - text: ": INTEGER\tcopies >= 1\rNumber of copies to be printed.\r\r\rTYPE "
+                    attr: 1
+                  - text: Banner
+                    attr: 2
+                  - text: "\rDescribes a header or a footer line.\r\r"
+                    attr: 1
+                  - text: font
+                    attr: 2
+                  - text: ": Fonts.Font\rFont of the header/footer line. Only one font is possible.\r\r"
+                    attr: 1
+                  - text: gap
+                    attr: 2
+                  - text: ": INTEGER\rDistance to next base line. Currently ignored for footers.\r\r"
+                    attr: 1
+                  - text: "left, right"
+                    attr: 2
+                  - text: ": ARRAY 128 OF CHAR\rText of the header/footer line. In this string the following abbreviations may occur:\r\t&p - replaced by current page number as arabic numeral\r\t&r - replaced by current page number as roman numeral\r\t&R - replaced by current page number as capital roman numeral\r\t&a - replaced by current page number as alphanumeric character\r\t&A - replaced by current page number as capital alphanumeric character\r\t&d - replaced by printing date \r\t&t - replaced by printing time\r\t&&- replaced by & character\r\t&; - specifies split point\r\t&f - title\rThe text is centered, except if a split point occurs. A split point acts like a spring: it \"presses\" the items to the left and right apart. For example, \"&;&p\" presses an arabic page number to the right page border.\r\r\rTYPE "
+                    attr: 1
+                  - text: PageInfo
+                    attr: 2
+                  - text: "\rInformation about the pages to be printed.\r\r"
+                    attr: 1
+                  - text: first
+                    attr: 2
+                  - text: ": INTEGER\rPage number of the first page to be printed. Page number of the currently printed page is "
+                    attr: 1
+                  - text: Current() + first
+                    attr: 3
+                  - text: ". May be changed during printing.\r\r"
+                    attr: 1
+                  - text: "from, to"
+                    attr: 2
+                  - text: ": INTEGER\t(from >= 0) & (to >= from)\rRange of pages to be printed. Specification is not in page numbers, but in absolute number. The first page of the document is number "
+                    attr: 1
+                  - text: 0
+                    attr: 3
+                  - text: ". There will be "
+                    attr: 1
+                  - text: to - from + 1
+                    attr: 3
+                  - text: " pages printed.\r\r"
+                    attr: 1
+                  - text: alternate
+                    attr: 2
+                  - text: ": BOOLEAN\rDetermines whether left and right pages are treated differntly. If "
+                    attr: 1
+                  - text: ~alternate
+                    attr: 3
+                  - text: ", then every page will be printed with the banners specified for right pages. Otherwise, pages with odd page number use the right banners, while pages with even page numbers use the left banners. The page number of the current page is "
+                    attr: 1
+                  - text: first + Current()
+                    attr: 3
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: title
+                    attr: 2
+                  - text: ": Views.Title\rTitle of the document.\r\r\rVAR "
+                    attr: 1
+                  - text: par
+                    attr: 2
+                  - text: ": Par\rThis variable is set during printing of the document and may be changed by a printed view. However, this variable should not be used to determine whether the document is printed or displayed (-> "
+                    attr: 1
+                  - text: Views.IsPrinterFrame
+                    attr: 3
+                  - text: ").\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: NewPar
+                    attr: 2
+                  - text: " (IN page: PageInfo; IN header, footer: Banner; copies: INTEGER): Par\rAllocates and initializes a new printing parameters object.\r\rPost\rresult.page = page\rresult.header = header\rresult.footer = footer\rresult.copies = copies\rheader.font # NIL => result.header.font = header.font\rheader.font = NIL => result.header.font = Fonts.dir.Default()\rfooter.font # NIL => result.footer.font = footer.font\rfooter.font = NIL => result.footer.font = Fonts.dir.Default()\r\rPROCEDURE "
+                    attr: 1
+                  - text: NewDefaultPar
+                    attr: 2
+                  - text: " (title: Views.Title): Par\rAllocates and initializes a new printing parameters object.\r\rPost\rresult.page.first = 1\rresult.page.from = 0\rresult.page.to = 9999\rresult.page.alternate = FALSE\rresult.copies = 1\rresult.header.gap = 0\rresult.header.left = \"\"\rresult.header.right = \"\"\rresult.header.font = Fonts.dir.Default()\rresult.footer.gap = 0\rresult.footer.left = \"\"\rresult.footer.right = \"\"\rresult.footer.font = Fonts.dir.Default()\r\rPROCEDURE "
+                    attr: 1
+                  - text: Current
+                    attr: 2
+                  - text: " (): INTEGER\rReturns the page number of the page currently being printed.\r\rPost\rresult >= 0\r\rPROCEDURE "
+                    attr: 1
+                  - text: PrintView
+                    attr: 2
+                  - text: " (view: Views.View; par: Par)\rPrints view on the (current) printer, provided that a printer is available.\rFor the parameter "
+                    attr: 1
+                  - text: par
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: NIL
+                    attr: 3
+                  - text: " can be passed. In this case, a default par parameter is generated. It is initialized\rwith \r\tcopies := 1;\r\tpage.first := 1, page.from := 0, page.to := 9999, page.alternate := FALSE; page.title := title;\r\theader.gap := 0; header.left := \"\"; header.right := \"\";\r\theader.font := Fonts.dir.Default();\r\tfooter.gap := 0; footer.left := \"\"; footer.right := \"\";\r\tfooter.font := Fonts.dir.Default();\rotherwise\r\tpar.title is overwritten by title.\rActually, not the view "
+                    attr: 1
+                  - text: view
+                    attr: 3
+                  - text: " is printed, but a copy of it. "
+                    attr: 1
+                  - text: PrintView
+                    attr: 3
+                  - text: " makes a shallow copy of the view that is being printed, in order to avoid the original view to be changed by pagination, scrolling, or similar modifications that may be performed during printing.\r\rPre\rview # NIL\t20\rpar # NIL =>\r\tpar.page.first >= 0\t23\r\tpar.page.from >= 0\t24\r\tpar.page.to >= par.page.from\t25\r\tpar.copies > 0\t25\r\rPROCEDURE "
+                    attr: 1
+                  - text: PrintBanner
+                    attr: 2
+                  - text: " (f: Views.Frame; IN p: PageInfo; IN b: Banner;\r\t\t\t\t\t\t\t\t\t\t\t\tIN date: Dates.Date; IN time: Dates.Time; x0, x1, y: INTEGER)\rUsed internally.\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 10
+          bodyPos: 7021
+          bodyLen: 8

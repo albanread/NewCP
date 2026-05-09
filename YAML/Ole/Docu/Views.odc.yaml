@@ -1,0 +1,259 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Ole\\Docu\\Views.odc"
+  size: 4492
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 4361
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 4175
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 4089
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                lead: 11500
+                asc: 121900
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 13
+                bodyPos: 4089
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 3575
+                runListLen: 1057
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                flow:
+                  - text: OleViews
+                    attr: 0
+                  - text: "\r\rDEFINITION OleViews;\r\r\tIMPORT CtlT, Views;\r\r\tPROCEDURE NewObjectView (name: ARRAY OF CHAR): Views.View;\r\tPROCEDURE NewObjectViewFromClipboard (): Views.View;\r\tPROCEDURE Deposit (name: ARRAY OF CHAR);\r\tPROCEDURE IsObjectView (v: Views.View): BOOLEAN;\r\tPROCEDURE IsAutoView (v: Views.View): BOOLEAN;\r\tPROCEDURE OleObject (v: Views.View): CtlT.Interface;\r\tPROCEDURE AutoObject (v: Views.View): CtlT.Object;\r\tPROCEDURE Connect (sink: CtlT.OutObject; source: Views.View);\r\rEND OleViews.\r\r\r"
+                    attr: 1
+                  - text: OleViews
+                    attr: 2
+                  - text: " provides a programming interface for OLE objects used as views in BlackBox.\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: NewObjectView
+                    attr: 3
+                  - text: " (name: ARRAY OF CHAR): Views.View\rInstantiates an OLE object of a given type. "
+                    attr: 1
+                  - text: name
+                    attr: 2
+                  - text: " can either be a valid OLE class name (e.g., \"Excel.Sheet\") or a GUID (global unique identifier) in string form, provided it is a valid class identifier (e.g., \"{00020820-0000-0000-C000-000000000046}\"). If instatiantion failed, the return value is "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: ".\r\rPROCEDURE "
+                    attr: 1
+                  - text: NewObjectViewFromClipboard
+                    attr: 3
+                  - text: " (): Views.View\rInstantiates the OLE object currently contained in the clipboard. Returns NIL if there is no OLE object on the clipboard.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Deposit
+                    attr: 3
+                  - text: " (name: ARRAY OF CHAR)\rDeposit command for new OLE objects of a given type. "
+                    attr: 1
+                  - text: name
+                    attr: 2
+                  - text: " can either be a valid OLE class name (e.g., \"Excel.Sheet\") or a GUID (global unique identifier) in string form, provided it is a valid class identifier (e.g., \"{00020820-0000-0000-C000-000000000046}\").\r\rPROCEDURE "
+                    attr: 1
+                  - text: IsObjectView
+                    attr: 3
+                  - text: " (v: Views.View): BOOLEAN\rReturn "
+                    attr: 1
+                  - text: "TRUE"
+                    attr: 2
+                  - text: " if the given View is an OLE object, "
+                    attr: 1
+                  - text: "FALSE"
+                    attr: 2
+                  - text: " otherwise.\r\rPROCEDURE "
+                    attr: 1
+                  - text: IsAutoView
+                    attr: 3
+                  - text: " (v: Views.View): BOOLEAN\rReturn "
+                    attr: 1
+                  - text: "TRUE"
+                    attr: 2
+                  - text: " if the given View is an OLE Automation object (an object which supports the "
+                    attr: 1
+                  - text: IDispatch
+                    attr: 2
+                  - text: " interface), "
+                    attr: 1
+                  - text: "FALSE"
+                    attr: 2
+                  - text: " otherwise.\r\rPROCEDURE "
+                    attr: 1
+                  - text: OleObject
+                    attr: 3
+                  - text: " (v: Views.View): CtlT.Interface\rReturns the "
+                    attr: 1
+                  - text: IUnknown
+                    attr: 2
+                  - text: " interface of the object contained in "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: " as an automation controller object. Only useful in conjunction with the Direct-To-COM compiler (DTC). For information about automation controller objects see the "
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Ctl/Docu/Dev-Man', 'Ctl Developer Manual')"
+                      body:
+                        - text: Ctl Docu
+                          attr: 4
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: ". "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: " is returned if "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: " is not an OLE object.\r\rPROCEDURE "
+                    attr: 1
+                  - text: AutoObject
+                    attr: 3
+                  - text: " (v: Views.View): CtlT.Object\rReturns the automation controller object associated with "
+                    attr: 1
+                  - text: v.
+                    attr: 2
+                  - text: " For information about automation controller objects see the "
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Ctl/Docu/Dev-Man', 'Ctl Developer Manual')"
+                      body:
+                        - text: Ctl Docu
+                          attr: 4
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: ". "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: " is returned if "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: " is not an OLE Automation object.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Connect
+                    attr: 3
+                  - text: " (sink: CtlT.OutObject; source: Views.View)\rConnects the automation controller callback object "
+                    attr: 1
+                  - text: sink
+                    attr: 2
+                  - text: " to an OLE object contained in the view "
+                    attr: 1
+                  - text: source
+                    attr: 2
+                  - text: ". For information about automation controller objects see the "
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Ctl/Docu/Dev-Man', 'Ctl Developer Manual')"
+                      body:
+                        - text: Ctl Docu
+                          attr: 4
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: ".\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 17
+          bodyPos: 4457
+          bodyLen: 8

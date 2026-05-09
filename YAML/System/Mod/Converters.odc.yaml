@@ -1,0 +1,255 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\System\\Mod\\Converters.odc"
+  size: 5771
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 5640
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 5454
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 5368
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                dsc: 25400
+                grid: 1
+                opts: 0x00000021
+              defaultAttr:
+                font: Geneva
+                size: 114300
+                color: 0x00000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 5488
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 4974
+                runListLen: 1796
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE Converters;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- 20071109, bh, Converter search in Import corrected\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT Meta, Files, Stores, Dialog;\r\r\tCONST\r\t\t"
+                    attr: 0
+                  - text: "(* hints *)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: importAll
+                    attr: 3
+                  - text: "* = 0;\t"
+                    attr: 0
+                  - text: "(* can import all file types *)"
+                    attr: 1
+                  - text: "\r"
+                    attr: 0
+                  - text: "\t\t"
+                    attr: 1
+                  - text: "canceled = 8;\r\r\tTYPE\r\t\t"
+                    attr: 0
+                  - text: Importer
+                    attr: 3
+                  - text: "* = PROCEDURE (f: Files.File; OUT s: Stores.Store);\r\t\t"
+                    attr: 0
+                  - text: Exporter
+                    attr: 3
+                  - text: "* = PROCEDURE (s: Stores.Store; f: Files.File);\r\t\t"
+                    attr: 0
+                  - text: Converter
+                    attr: 3
+                  - text: "* = POINTER TO RECORD\r\t\t\tnext-: Converter;\r\t\t\timp-, exp-: Dialog.String;\r\t\t\tstoreType-: Stores.TypeName;\r\t\t\tfileType-: Files.Type;\r\t\t\topts-: SET\r\t\tEND;\r\r\t\tImpVal = RECORD (Meta.Value) p: Importer END;\r\t\tExpVal = RECORD (Meta.Value) p: Exporter END;\r\r\tVAR\r\t\t"
+                    attr: 0
+                  - text: list
+                    attr: 3
+                  - text: "-: Converter;\r\t\tdoc: Converter;\r\r\tPROCEDURE GetCommand (name: Dialog.String; VAR val: Meta.Value; VAR ok: BOOLEAN);\r\t\tVAR i: Meta.Item;\r\tBEGIN\r\t\tMeta.LookupPath(name, i);\r\t\tIF (i.obj = Meta.procObj) OR (i.obj = Meta.varObj) & (i.typ = Meta.procTyp) THEN\r\t\t\ti.GetVal(val, ok)\r\t\tELSE ok := FALSE\r\t\tEND\r\tEND GetCommand;\r\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Register
+                    attr: 3
+                  - text: "* (imp, exp: Dialog.String; storeType: Stores.TypeName; fileType: Files.Type; opts: SET);\r\t\tVAR e, f: Converter;\r\tBEGIN\r\t\tASSERT((imp # \"\") OR (exp # \"\"), 20); ASSERT(fileType # \"\", 21);\r\t\tNEW(e); e.next := NIL;\r\t\te.imp := imp; e.exp := exp; e.fileType := fileType; e.storeType := storeType; e.opts := opts;\r\t\tIF (storeType = \"\") & (doc = NIL) THEN doc := e END;\r\t\tIF list = NIL THEN list := e\r\t\tELSE f := list;\r\t\t\tWHILE f.next # NIL DO f := f.next END;\r\t\t\tf.next := e\r\t\tEND\r\tEND Register;\r\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Import
+                    attr: 3
+                  - text: "* (loc: Files.Locator; name: Files.Name; VAR conv: Converter; OUT s: Stores.Store);\r\t\tVAR file: Files.File; val: ImpVal; ok: BOOLEAN;\r\tBEGIN\r\t\tASSERT(loc # NIL, 20); ASSERT(name # \"\", 21);\r\t\tfile := Files.dir.Old(loc, name, Files.shared); s := NIL;\r\t\tIF file # NIL THEN\r\t\t\tIF conv = NIL THEN\r\t\t\t\tconv := list;\r\t\t\t\tWHILE (conv # NIL) & ((conv.fileType # file.type) OR (conv.imp = \"\")) DO conv := conv.next END;\r\t\t\t\tIF conv = NIL THEN\r\t\t\t\t\tconv := list; WHILE (conv # NIL) & ~(importAll IN conv.opts) DO conv := conv.next END\r\t\t\t\tEND\r\t\t\tELSE ASSERT(conv.imp # \"\", 22)\r\t\t\tEND;\r\t\t\tIF conv # NIL THEN\r\t\t\t\tGetCommand(conv.imp, val, ok);\r\t\t\t\tIF ok THEN val.p(file, s)\r\t\t\t\tELSE Dialog.ShowMsg(\"#System:ConverterFailed\")\r\t\t\t\tEND\r\t\t\tELSE Dialog.ShowMsg(\"#System:NoConverterFound\")\r\t\t\tEND\r\t\tEND\r\tEND Import;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Export
+                    attr: 3
+                  - text: "* (loc: Files.Locator; name: Files.Name; conv: Converter; s: Stores.Store);\r\t\tVAR res: INTEGER; file: Files.File; val: ExpVal; ok: BOOLEAN;\r\tBEGIN\r\t\tASSERT(s # NIL, 20); ASSERT(~(s IS Stores.Alien), 21);\r\t\tASSERT(loc # NIL, 22); ASSERT(name # \"\", 23);\r\t\tfile := Files.dir.New(loc, Files.ask); (* fileLoc := loc; *)\r\t\tIF file # NIL THEN\r\t\t\tIF conv = NIL THEN\r\t\t\t\tconv := doc\r\t\t\tELSE ASSERT(conv.exp # \"\", 24)\r\t\t\tEND;\r\t\t\tGetCommand(conv.exp, val, ok);\r\t\t\tIF ok THEN\r\t\t\t\tval.p(s, file);\r\t\t\t\tIF loc.res # canceled THEN\r\t\t\t\t\tfile.Register(name, conv.fileType, Files.ask, res); loc.res := res\r\t\t\t\tEND\r\t\t\tELSE Dialog.ShowMsg(\"#System:ConverterFailed\"); loc.res := canceled\r\t\t\tEND\r\t\tEND\r\tEND Export;\r\rBEGIN\r\tlist := NIL\rEND Converters.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 5736
+          bodyLen: 8

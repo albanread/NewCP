@@ -1,0 +1,452 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\System\\Docu\\Integers.odc"
+  size: 8586
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 8455
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 8269
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 8183
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                asc: 152400
+                dsc: 25400
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 11
+                bodyPos: 8183
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 7669
+                runListLen: 1391
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: Integers
+                    attr: 0
+                  - text: "\r\rDEFINITION Integers;\r\r\tIMPORT Files;\r\r\tTYPE Integer = POINTER;\r\r\tPROCEDURE Abs (x: Integer): Integer;\r\tPROCEDURE Compare (x, y: Integer): INTEGER;\r\tPROCEDURE ConvertFromString (IN s: ARRAY OF CHAR; OUT x: Integer);\r\tPROCEDURE ConvertToString (x: Integer; OUT s: ARRAY OF CHAR);\r\tPROCEDURE Difference (x, y: Integer): Integer;\r\tPROCEDURE Digits10Of (x: Integer): INTEGER;\r\tPROCEDURE Entier (x: REAL): Integer;\r\tPROCEDURE Externalize (w: Files.Writer; x: Integer);\r\tPROCEDURE Float (x: Integer): REAL;\r\tPROCEDURE GCD (x, y: Integer): Integer;\r\tPROCEDURE Internalize (r: Files.Reader; OUT x: Integer);\r\tPROCEDURE Long (x: LONGINT): Integer;\r\tPROCEDURE Power (x: Integer; exp: INTEGER): Integer;\r\tPROCEDURE Product (x, y: Integer): Integer;\r\tPROCEDURE QuoRem (x, y: Integer; OUT quo, rem: Integer);\r\tPROCEDURE Quotient (x, y: Integer): Integer;\r\tPROCEDURE Remainder (x, y: Integer): Integer;\r\tPROCEDURE Short (x: Integer): LONGINT;\r\tPROCEDURE Sign (x: Integer): INTEGER;\r\tPROCEDURE Sum (x, y: Integer): Integer;\r\tPROCEDURE ThisDigit10 (x: Integer; exp10: INTEGER): CHAR;\r\rEND Integers.\r\r\rModule "
+                    attr: 1
+                  - text: Integer
+                    attr: 2
+                  - text: " implements an abstract data type "
+                    attr: 1
+                  - text: Integer
+                    attr: 2
+                  - text: " to represent arbitrary precision integer numbers. It also offers the most important arithmetical operations on such numbers and a variety of conversion operations. The arithmetical operations include summation, multiplication, powering, computations of quotients, remainders, and greatest common divisors.\r\rWith respect to assignment and procedure parameters, variables of type "
+                    attr: 1
+                  - text: Integers.Integer
+                    attr: 2
+                  - text: " can be used in the same way as variables of the numerical types built into the language. Of course, to perform operations with such variables, special procedures have to be called. The \"operators\" +, -, *, DIV, MOD, etc. cannot be used . The same holds for comparisons.\r\rNote: Though the language syntax allows two variables of type "
+                    attr: 1
+                  - text: Integers.Integer
+                    attr: 2
+                  - text: " to be compared using the \"=\"-operator, the result is not what you would expect. Instead of values, pointers to objects representing the values are compared. Thus, the comparison may yield the result "
+                    attr: 1
+                  - text: "FALSE"
+                    attr: 2
+                  - text: ", although the values of the variables are equal. Hence, use the "
+                    attr: 1
+                  - text: Integers.Compare
+                    attr: 2
+                  - text: "-function instead of the \"=\"-operator.\r\rThe individual values are represented by objects on the heap rather than the stack. Clients of module "
+                    attr: 1
+                  - text: Integers
+                    attr: 2
+                  - text: " will use references to these objects only. Values of existing objects cannot be changed (they are immutable). Thus, copying such values is completely safe; it is not possible to inadvertantly change a value via an alias pointer.\r\rThe space needed to represent a small integer is that of the minimum object size of your Component Pascal implementation. To represent a large value, the required memory is proportional to the number of decimal digits in the value. Each of the operations offered by module "
+                    attr: 1
+                  - text: Integers
+                    attr: 2
+                  - text: " allocates memory necessary to represent its result, but no extra memory will be allocated beyond that (space for intermediate results is allocated on the stack).\r\rExamples of client modules:\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Obx/Docu/Fact', 'ObxFact docu')"
+                      body:
+                        - text: ObxFact docu
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\tcalculate factorials\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Obx/Docu/RatCalc', 'ObxRatCalc docu')"
+                      body:
+                        - text: ObxFract docu
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\tcalculatior/simplifier for rational numbers\r\r\rTYPE "
+                    attr: 1
+                  - text: Integer
+                    attr: 4
+                  - text: "\rOpaque\rOpaque type to represent integers of arbitrary size. Values of this type are allocated on the heap.  The required memory size depends on the number of decimals to be represented. The objects are immutable.\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: Long
+                    attr: 4
+                  - text: " (x: LONGINT): Integer\r"
+                    attr: 1
+                  - text: Long
+                    attr: 2
+                  - text: " generates a new "
+                    attr: 1
+                  - text: Integer
+                    attr: 2
+                  - text: " from a "
+                    attr: 1
+                  - text: LONGINT
+                    attr: 2
+                  - text: " variable.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Entier
+                    attr: 4
+                  - text: " (x: REAL): Integer\r"
+                    attr: 1
+                  - text: Entier
+                    attr: 2
+                  - text: " generates a new "
+                    attr: 1
+                  - text: Integer
+                    attr: 2
+                  - text: " from a "
+                    attr: 1
+                  - text: REAL
+                    attr: 2
+                  - text: " variable. "
+                    attr: 1
+                  - text: Entier
+                    attr: 2
+                  - text: " rounds similar to the "
+                    attr: 1
+                  - text: ENTIER
+                    attr: 2
+                  - text: "-function of the Component Pascal programming language; both implement the floor-function.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Short
+                    attr: 4
+                  - text: " (x: Integer): LONGINT\r"
+                    attr: 1
+                  - text: Short
+                    attr: 2
+                  - text: " converts a value of type "
+                    attr: 1
+                  - text: Integer
+                    attr: 2
+                  - text: " into a "
+                    attr: 1
+                  - text: LONGINT
+                    attr: 2
+                  - text: ".\r\rPre\rMIN(LONGINT) <= x <= MAX(LONGINT)\r\rPROCEDURE "
+                    attr: 1
+                  - text: Float
+                    attr: 4
+                  - text: " (x: Integer): REAL\r"
+                    attr: 1
+                  - text: Float
+                    attr: 2
+                  - text: " converts a value of type "
+                    attr: 1
+                  - text: Integer
+                    attr: 2
+                  - text: " into a "
+                    attr: 1
+                  - text: REAL
+                    attr: 2
+                  - text: ".\r\rPre\rMIN(REAL) <= x <= MAX(REAL)\r\rPROCEDURE "
+                    attr: 1
+                  - text: Sum
+                    attr: 4
+                  - text: " (x, y: Integer): Integer\rPROCEDURE "
+                    attr: 1
+                  - text: Difference
+                    attr: 4
+                  - text: " (x, y: Integer): Integer\rPROCEDURE "
+                    attr: 1
+                  - text: Product
+                    attr: 4
+                  - text: " (x, y: Integer): Integer\rPROCEDURE "
+                    attr: 1
+                  - text: Quotient
+                    attr: 4
+                  - text: " (x, y: Integer): Integer\rPROCEDURE "
+                    attr: 1
+                  - text: Remainder
+                    attr: 4
+                  - text: " (x, y: Integer): Integer\rPROCEDURE "
+                    attr: 1
+                  - text: QuoRem
+                    attr: 4
+                  - text: " (x, y: Integer; VAR quo, rem: Integer)\rPROCEDURE "
+                    attr: 1
+                  - text: Power
+                    attr: 4
+                  - text: " (x: Integer; exp: INTEGER): Integer\rPROCEDURE "
+                    attr: 1
+                  - text: GCD
+                    attr: 4
+                  - text: " (x, y: Integer): Integer\rPROCEDURE "
+                    attr: 1
+                  - text: Abs
+                    attr: 4
+                  - text: " (x: Integer): Integer\rThe arithmetic operations "
+                    attr: 1
+                  - text: Sum
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Difference
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Product
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Quotient
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Remainder
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Power
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: GCD
+                    attr: 2
+                  - text: " (= greatest common divisor), and "
+                    attr: 1
+                  - text: Abs
+                    attr: 2
+                  - text: " (= absolute value) are defined as to be expected. In particular, "
+                    attr: 1
+                  - text: Quotient
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: Remainder
+                    attr: 2
+                  - text: " are defined according the Component Pascal rules for "
+                    attr: 1
+                  - text: DIV
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: MOD
+                    attr: 2
+                  - text: ". If both quotient and remainder need to be computed, for performance reasons the procedure "
+                    attr: 1
+                  - text: QuoRem
+                    attr: 2
+                  - text: " should be called instead of the individual functions "
+                    attr: 1
+                  - text: Quotient
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: Remainder
+                    attr: 2
+                  - text: ". "
+                    attr: 1
+                  - text: Power
+                    attr: 2
+                  - text: " requires the exponent to be non-negative.\r\rPre (Quotient, Remainder, QuoRem)\ry # 0\r\rPre (Power)\rexp >= 0\r\rPROCEDURE "
+                    attr: 1
+                  - text: Compare
+                    attr: 4
+                  - text: " (x, y: Integer): INTEGER\rCompares the values of "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: y
+                    attr: 2
+                  - text: ". With this function, all comparison relations can be built: to compute the value of ("
+                    attr: 1
+                  - text: x op y
+                    attr: 2
+                  - text: ) write (
+                    attr: 1
+                  - text: "Compare(x, y) op 0"
+                    attr: 2
+                  - text: "), where "
+                    attr: 1
+                  - text: op
+                    attr: 2
+                  - text: " is one of =, #, <, <=, >, >=.\r\rPost\rx < y\r\tresult < 0\rx = y\r\tresult = 0\rx > y\r\tresult > 0\r\rPROCEDURE "
+                    attr: 1
+                  - text: Sign
+                    attr: 4
+                  - text: " (x: Integer): INTEGER\rThe sign of "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ".\r\rPost\rx > 0\r\tresult = 1\rx = 0\r\tresult = 0\rx < 0\r\tresult = -1\r\rPROCEDURE "
+                    attr: 1
+                  - text: Digits10Of
+                    attr: 4
+                  - text: " (x: Integer): INTEGER\rThe number of decimal digits needed to represent "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ".\rException: for "
+                    attr: 1
+                  - text: x = 0
+                    attr: 2
+                  - text: " the result is the value 0.\r\rPROCEDURE "
+                    attr: 1
+                  - text: ThisDigit10
+                    attr: 4
+                  - text: " (x: Integer; exp10: INTEGER): CHAR\rThis "
+                    attr: 1
+                  - text: Digit10
+                    attr: 2
+                  - text: " returns a single decimal digit as a character.\r\rPre\rexp10 >= 0\t20\r\rPost\r\"0\" <= result <= \"9\"\rexp10 >= Digits10Of(x)\r\tresult = \"0\"\r\rPROCEDURE "
+                    attr: 1
+                  - text: ConvertFromString
+                    attr: 4
+                  - text: " (IN s: ARRAY OF CHAR; OUT x: Integer)\rPROCEDURE "
+                    attr: 1
+                  - text: ConvertToString
+                    attr: 4
+                  - text: " (x: Integer; OUT s: ARRAY OF CHAR)\r"
+                    attr: 1
+                  - text: ConvertFromString
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: ConvertToString
+                    attr: 2
+                  - text: " are used to read an "
+                    attr: 1
+                  - text: Integer
+                    attr: 2
+                  - text: " from a string resp. to write an "
+                    attr: 1
+                  - text: Integer
+                    attr: 2
+                  - text: " to a string. "
+                    attr: 1
+                  - text: ConvertToString
+                    attr: 2
+                  - text: " requires that the string is long enough to represent the "
+                    attr: 1
+                  - text: Integer
+                    attr: 2
+                  - text: ".\r\rPre (ConvertToString)\r(Sign(x) >= 0) & (LEN(s) >= Digits10Of(x) + 1)\rOR\r(Sign(x) < 0) & (LEN(s) >= Digits10Of(x) + 2)\r\rPROCEDURE "
+                    attr: 1
+                  - text: Internalize
+                    attr: 4
+                  - text: " (r: Files.Reader; OUT x: Integer)\rPROCEDURE "
+                    attr: 1
+                  - text: Externalize
+                    attr: 4
+                  - text: " (w: Files.Writer; x: Integer)\r"
+                    attr: 1
+                  - text: Internalize
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: Externalize
+                    attr: 2
+                  - text: " are used to read from resp. to write to files.\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 15
+          bodyPos: 8551
+          bodyLen: 8

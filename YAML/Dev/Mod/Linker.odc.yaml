@@ -1,0 +1,926 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Dev\\Mod\\Linker.odc"
+  size: 57927
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 57796
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 57610
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 57524
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 7315200
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000021
+              defaultAttr:
+                font: Arial
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 35
+                bodyPos: 57645
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 57131
+                runListLen: 4703
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [4]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000001
+                  - # [5]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE DevLinker;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- 20070123, bh, support for more general resource files\r\t- 20120531, BdT, changes for correction of Microsoft AppLocker problem\r\t- 20141027, center #19, full Unicode support for Component Pascal identifiers added\r\t- 20141027, center #24, fixing the name table handling in DevLinker\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\t\r\tIMPORT\r\t\tKernel, Files, Dates, Dialog, Strings,\r\t\tTextModels, TextViews, TextMappers,\r\t\tLog := StdLog, DevCommanders;\r\t\r\tCONST\r\t\tNewRecFP = 4E27A847H;\r\t\tNewArrFP = 76068C78H;\r\r\t\tImageBase = 00400000H;\r\t\tObjAlign = 1000H;\r\t\tFileAlign = 200H;\r\t\tHeaderSize = 400H;\r\r\t\tFixLen = 30000;\r\t\t\r\t\tOFdir = \"Code\";\r\t\tSYSdir = \"System\";\r\t\tRsrcDir = \"Rsrc\";\r\t\tWinDir = \"Win\";\r\r\t\t(* meta interface consts *)\r\t\tmConst = 1; mTyp = 2; mVar = 3; mProc = 4; mField = 5;\r\t\tmInternal = 1; mReadonly = 2; mExported = 4;\r\r\t\t(* fixup types *)\r\t\tabsolute = 100; relative = 101; copy = 102; table = 103; tableend = 104;\r\t\t\r\t\t(* mod desc fields *)\r\t\tmodOpts = 4; modRefcnt = 8; modTerm = 40; modNames = 84; modImports = 92; modExports = 96;\r\t\t\r\tTYPE\r\t\tName = Kernel.Utf8Name;\r\t\tExport = POINTER TO RECORD\r\t\t\tnext: Export;\r\t\t\tname: Name;\r\t\t\tadr: INTEGER\r\t\tEND;\r\t\tResource = POINTER TO RECORD\r\t\t\tnext, local: Resource;\r\t\t\ttyp, id, lid, size, pos, x, y: INTEGER;\r\t\t\topts: SET;\r\t\t\tfile: Files.File;\r\t\t\tname: Files.Name\r\t\tEND;\r\t\tModule = POINTER TO RECORD\r\t\t\tnext: Module;\r\t\t\tname: Files.Name;\r\t\t\tfile: Files.File;\r\t\t\ths, ms, ds, cs, vs, ni, ma, ca, va: INTEGER;\r\t\t\tdll, intf: BOOLEAN;\r\t\t\texp: Export;\r\t\t\timp: POINTER TO ARRAY OF Module;\r\t\t\tdata: POINTER TO ARRAY OF BYTE;\r\t\tEND;\r\t\t\r\tVAR\r\t\tW: TextMappers.Formatter;\r\t\tOut: Files.File;\r\t\tR: Files.Reader;\r\t\tRo: Files.Writer;\r\t\terror, isDll, isStatic, comLine: BOOLEAN;\r\t\tmodList, kernel, main, last, impg, impd: Module;\r\t\tnumMod, lastTerm: INTEGER;\r\t\tresList: Resource;\r\t\tnumType, resHSize: INTEGER;\r\t\tnumId: ARRAY 32 OF INTEGER;\r\t\trsrcName: ARRAY 16 OF CHAR;\t"
+                    attr: 0
+                  - text: "(* name of resource file *)"
+                    attr: 1
+                  - text: "\r\t\tfirstExp, lastExp: Export;\r\t\tentryPos, isPos, fixPos, himpPos, hexpPos, hrsrcPos, termPos: INTEGER;\r\t\tcodePos, dataPos, conPos, rsrcPos, impPos, expPos, relPos: INTEGER;\r\t\tCodeSize, DataSize, ConSize, RsrcSize, ImpSize, ImpHSize, ExpSize, RelocSize, DllSize: INTEGER;\r\t\tCodeRva, DataRva, ConRva, RsrcRva, ImpRva, ExpRva, RelocRva, ImagesSize: INTEGER;\r\t\tCodeBase, DataBase, ConBase, maxCode, numImp, numExp, noffixup, timeStamp: INTEGER;\r\t\tnewRec, newArr: Name;\r\t\tfixups: POINTER TO ARRAY OF INTEGER;\r\t\tcode: POINTER TO ARRAY OF BYTE;\r\t\tatab: POINTER TO ARRAY OF INTEGER;\r\t\tntab: POINTER TO ARRAY OF SHORTCHAR;\r\t\r\tPROCEDURE TimeStamp (): INTEGER;\t"
+                    attr: 0
+                  - text: "(* seconds since 1.1.1970 00:00:00 *)"
+                    attr: 1
+                  - text: "\r\t\tVAR a: INTEGER; t: Dates.Time; d, epoch: Dates.Date;\r\tBEGIN\r\t\tDates.GetUTCTime(t); Dates.GetUTCDate(d);\r\t\tepoch.year := 1970; epoch.month := 1; epoch.day := 1;\r\t\ta := Dates.Day(d) - Dates.Day(epoch);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " ((a * 24 + t.hour) * 60 + t.minute) * 60 + t.second;\r\tEND TimeStamp;\r\r\tPROCEDURE ThisFile (modname: ARRAY OF CHAR): Files.File;\r\t\tVAR dir, name: Files.Name; loc: Files.Locator; f: Files.File;\r\tBEGIN\r\t\tKernel.SplitName(modname, dir, name);\r\t\tKernel.MakeFileName(name, Kernel.objType);\r\t\tloc := Files.dir.This(dir); loc := loc.This(OFdir);\r\t\tf := Files.dir.Old(loc, name, TRUE);\r\t\tIF (f = NIL) & (dir = \"\") THEN\r\t\t\tloc := Files.dir.This(SYSdir); loc := loc.This(OFdir);\r\t\t\tf := Files.dir.Old(loc, name, TRUE)\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " f\r\tEND ThisFile;\r\t\r\tPROCEDURE ThisResFile (VAR name: Files.Name): Files.File;\r\t\tVAR loc: Files.Locator; f: Files.File;\r\tBEGIN\r\t\tf := Files.dir.Old(Files.dir.This(RsrcDir), name, TRUE);\r\t\tIF f = NIL THEN\r\t\t\tloc := Files.dir.This(WinDir); loc := loc.This(RsrcDir);\r\t\t\tf := Files.dir.Old(loc, name, TRUE);\r\t\t\tIF f = NIL THEN\r\t\t\t\tf := Files.dir.Old(Files.dir.This(\"\"), name, TRUE)\r\t\t\tEND\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " f\r\tEND ThisResFile;\r\t\r\tPROCEDURE Read2 (VAR x: INTEGER);\r\t\tVAR b: BYTE;\r\tBEGIN\r\t\tR.ReadByte(b); x := b MOD 256;\r\t\tR.ReadByte(b); x := x + 100H * (b MOD 256)\r\tEND Read2;\r\t\r\tPROCEDURE Read4 (VAR x: INTEGER);\r\t\tVAR b: BYTE;\r\tBEGIN\r\t\tR.ReadByte(b); x := b MOD 256;\r\t\tR.ReadByte(b); x := x + 100H * (b MOD 256);\r\t\tR.ReadByte(b); x := x + 10000H * (b MOD 256);\r\t\tR.ReadByte(b); x := x + 1000000H * b\r\tEND Read4;\r\t\r\tPROCEDURE ReadName (VAR name: ARRAY OF SHORTCHAR);\r\t\tVAR i: INTEGER; b: BYTE;\r\tBEGIN i := 0;\r\t\tREPEAT\r\t\t\tR.ReadByte(b); name[i] := SHORT(CHR(b)); INC(i)\r\t\tUNTIL b = 0\r\tEND ReadName;\r\t\t\r\tPROCEDURE RNum (VAR i: INTEGER);\r\t\tVAR b: BYTE; s, y: INTEGER;\r\tBEGIN\r\t\ts := 0; y := 0; R.ReadByte(b);\r\t\tWHILE b < 0 DO INC(y, ASH(b + 128, s)); INC(s, 7); R.ReadByte(b) END;\r\t\ti := ASH((b + 64) MOD 128 - 64, s) + y\r\tEND RNum;\r\t\r\tPROCEDURE WriteCh (ch: SHORTCHAR);\r\tBEGIN\r\t\tRo.WriteByte(SHORT(ORD(ch)))\r\tEND WriteCh;\r\t\r\tPROCEDURE Write2 (x: INTEGER);\r\tBEGIN\r\t\tRo.WriteByte(SHORT(SHORT(x MOD 256))); x := x DIV 256;\r\t\tRo.WriteByte(SHORT(SHORT(x MOD 256)))\r\tEND Write2;\r\t\r\tPROCEDURE Write4 (x: INTEGER);\r\tBEGIN\r\t\tRo.WriteByte(SHORT(SHORT(x MOD 256))); x := x DIV 256;\r\t\tRo.WriteByte(SHORT(SHORT(x MOD 256))); x := x DIV 256;\r\t\tRo.WriteByte(SHORT(SHORT(x MOD 256))); x := x DIV 256;\r\t\tRo.WriteByte(SHORT(SHORT(x MOD 256)))\r\tEND Write4;\r\t\r\tPROCEDURE WriteName (s: ARRAY OF SHORTCHAR; len: SHORTINT);\r\t\tVAR i: SHORTINT;\r\tBEGIN i := 0;\r\t\tWHILE s[i] # 0X DO Ro.WriteByte(SHORT(ORD(s[i]))); INC(i) END;\r\t\tWHILE i < len DO Ro.WriteByte(0); INC(i) END\r\tEND WriteName;\r\t\r\tPROCEDURE WriteUtf8 (name: ARRAY OF SHORTCHAR);\r\t\tVAR res: INTEGER; s: ARRAY 256 OF CHAR;\r\tBEGIN\r\t\tStrings.Utf8ToString(name, s, res); ASSERT(res = 0); W.WriteString(s)\r\tEND WriteUtf8;\r\t\r\tPROCEDURE Reloc (a: INTEGER);\r\t\tVAR p: POINTER TO ARRAY OF INTEGER; i: INTEGER;\r\tBEGIN\r\t\tIF noffixup >= LEN(fixups) THEN\r\t\t\tNEW(p, 2 * LEN(fixups));\r\t\t\ti := 0; WHILE i < LEN(fixups) DO p[i] := fixups[i]; INC(i) END;\r\t\t\tfixups := p\r\t\tEND;\r\t\tfixups[noffixup] := a; INC(noffixup)\r(*\r\t\tELSE\r\t\t\tIF ~error THEN W.WriteString(\"  too many fixups\") END;\r\t\t\terror := TRUE\r\t\tEND\r*)\r\tEND Reloc;\r\t\r\tPROCEDURE Put (mod: Module; a, x: INTEGER);\r\tBEGIN\r\t\tmod.data[a] := SHORT(SHORT(x)); INC(a); x := x DIV 256;\r\t\tmod.data[a] := SHORT(SHORT(x)); INC(a); x := x DIV 256;\r\t\tmod.data[a] := SHORT(SHORT(x)); INC(a); x := x DIV 256;\r\t\tmod.data[a] := SHORT(SHORT(x))\r\tEND Put;\r\t\r\tPROCEDURE Get (mod: Module; a: INTEGER; VAR x: INTEGER);\r\tBEGIN\r\t\tx := ((mod.data[a + 3] * 256 +\r\t\t\t(mod.data[a + 2] MOD 256)) * 256 +\r\t\t\t(mod.data[a + 1] MOD 256)) * 256 +\r\t\t\t(mod.data[a] MOD 256)\r\tEND Get;\r\t\r\tPROCEDURE GenName (VAR from, to: ARRAY OF SHORTCHAR; ext: ARRAY OF SHORTCHAR);\r\t\tVAR i, j: INTEGER;\r\tBEGIN\r\t\ti := 0;\r\t\tWHILE from[i] # 0X DO to[i] := from[i]; INC(i) END;\r\t\tIF ext # \"\" THEN\r\t\t\tto[i] := \".\"; INC(i); j := 0;\r\t\t\tWHILE ext[j] # 0X DO to[i] := ext[j]; INC(i); INC(j) END\r\t\tEND;\r\t\tto[i] := 0X\r\tEND GenName;\r\t\r\tPROCEDURE Fixup0 (link, adr: INTEGER);\r\t\tVAR offset, linkadr, t, n, x: INTEGER;\r\tBEGIN\r\t\tWHILE link # 0 DO\r\t\t\tRNum(offset);\r\t\t\tWHILE link # 0 DO\r\t\t\t\tIF link > 0 THEN\r\t\t\t\t\tn := (code[link] MOD 256) + (code[link+1] MOD 256) * 256 + code[link+2] * 65536;\r\t\t\t\t\tt := code[link+3]; linkadr := CodeBase + impg.ca + link\r\t\t\t\tELSE\r\t\t\t\t\tn := (impg.data[-link] MOD 256) + (impg.data[-link+1] MOD 256) * 256 + impg.data[-link+2] * 65536;\r\t\t\t\t\tt := impg.data[-link+3]; linkadr := ConBase + impg.ma - link\r\t\t\t\tEND;\r\t\t\t\tIF t = absolute THEN x := adr + offset\r\t\t\t\tELSIF t = relative THEN x := adr + offset - linkadr - 4\r\t\t\t\tELSIF t = copy THEN Get(impd, adr + offset - ConBase - impd.ma, x)\r\t\t\t\tELSIF t = table THEN x := adr + n; n := link + 4\r\t\t\t\tELSIF t = tableend THEN x := adr + n; n := 0\r\t\t\t\tELSE HALT(99)\r\t\t\t\tEND;\r\t\t\t\tIF link > 0 THEN\r\t\t\t\t\tcode[link] := SHORT(SHORT(x));\r\t\t\t\t\tcode[link+1] := SHORT(SHORT(x DIV 100H));\r\t\t\t\t\tcode[link+2] := SHORT(SHORT(x DIV 10000H));\r\t\t\t\t\tcode[link+3] := SHORT(SHORT(x DIV 1000000H))\r\t\t\t\tELSE\r\t\t\t\t\tlink := -link;\r\t\t\t\t\timpg.data[link] := SHORT(SHORT(x));\r\t\t\t\t\timpg.data[link+1] := SHORT(SHORT(x DIV 100H));\r\t\t\t\t\timpg.data[link+2] := SHORT(SHORT(x DIV 10000H));\r\t\t\t\t\timpg.data[link+3] := SHORT(SHORT(x DIV 1000000H))\r\t\t\t\tEND;\r\t\t\t\tIF (t # relative) & ((t # copy) OR (x DIV 65536 # 0)) THEN Reloc(linkadr) END;\r\t\t\t\tlink := n\r\t\t\tEND;\r\t\t\tRNum(link)\r\t\tEND\r\tEND Fixup0;\r\t\r\tPROCEDURE Fixup (adr: INTEGER);\r\t\tVAR link: INTEGER;\r\tBEGIN\r\t\tRNum(link); Fixup0(link, adr)\r\tEND Fixup;\r\t\r\tPROCEDURE CheckDllImports (mod: Module);\r\t\tVAR i, x, y: INTEGER; name: Name; imp: Module; exp: Export;\r\t\t\r\t\tPROCEDURE SkipLink;\r\t\t\tVAR a: INTEGER;\r\t\tBEGIN\r\t\t\tRNum(a);\r\t\t\tWHILE a # 0 DO RNum(a); RNum(a) END\r\t\tEND SkipLink;\r\r\tBEGIN\r\t\tR := mod.file.NewReader(R);\r\t\tR.SetPos(mod.hs + mod.ms + mod.ds + mod.cs);\r\t\tSkipLink; SkipLink; SkipLink; SkipLink; SkipLink; SkipLink; i := 0;\r\t\tWHILE i < mod.ni DO\r\t\t\timp := mod.imp[i];\r\t\t\tIF imp # NIL THEN\r\t\t\t\tRNum(x);\r\t\t\t\tWHILE x # 0 DO\r\t\t\t\t\tReadName(name); RNum(y);\r\t\t\t\t\tIF x = mVar THEN SkipLink;\r\t\t\t\t\t\tIF imp.dll THEN\r\t\t\t\t\t\t\tW.WriteString(\"variable (\");\r\t\t\t\t\t\t\tW.WriteString(imp.name); W.WriteChar(\".\");\r\t\t\t\t\t\t\tWriteUtf8(name);\r\t\t\t\t\t\t\tW.WriteString(\") imported from DLL in \");\r\t\t\t\t\t\t\tW.WriteString(mod.name);\r\t\t\t\t\t\t\tW.WriteLn; Log.text.Append(Log.buf); error := TRUE;\r\t\t\t\t\t\t\tRETURN\r\t\t\t\t\t\tEND\r\t\t\t\t\tELSIF x = mTyp THEN RNum(y);\r\t\t\t\t\t\tIF imp.dll THEN\r\t\t\t\t\t\t\tRNum(y);\r\t\t\t\t\t\t\tIF y # 0 THEN\r\t\t\t\t\t\t\t\tW.WriteString(\"type descriptor (\");\r\t\t\t\t\t\t\t\tW.WriteString(imp.name); W.WriteChar(\".\");\r\t\t\t\t\t\t\t\tWriteUtf8(name);\r\t\t\t\t\t\t\t\tW.WriteString(\") imported from DLL in \");\r\t\t\t\t\t\t\t\tW.WriteString(mod.name);\r\t\t\t\t\t\t\t\tW.WriteLn; Log.text.Append(Log.buf); error := TRUE;\r\t\t\t\t\t\t\t\tRETURN\r\t\t\t\t\t\t\tEND\r\t\t\t\t\t\tELSE SkipLink\r\t\t\t\t\t\tEND\r\t\t\t\t\tELSIF x = mProc THEN\r\t\t\t\t\t\tIF imp.dll THEN\r\t\t\t\t\t\t\tSkipLink; exp := imp.exp;\r\t\t\t\t\t\t\tWHILE (exp # NIL) & (exp.name # name) DO exp := exp.next END;\r\t\t\t\t\t\t\tIF exp = NIL THEN\r\t\t\t\t\t\t\t\tNEW(exp); exp.name := name$;\r\t\t\t\t\t\t\t\texp.next := imp.exp; imp.exp := exp; INC(DllSize, 6)\r\t\t\t\t\t\t\t END\r\t\t\t\t\t\tEND\r\t\t\t\t\tEND;\r\t\t\t\t\tRNum(x)\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tINC(i)\r\t\tEND\r\tEND CheckDllImports;\r\t\r\tPROCEDURE ReadHeaders;\r\t\tVAR mod, im, t: Module; x, i: INTEGER; impdll: BOOLEAN; exp: Export; name: Name;\r\tBEGIN\r\t\tmod := modList; modList := NIL; numMod := 0;\r\t\tWHILE mod # NIL DO\t"
+                    attr: 0
+                  - text: "(* reverse mod list & count modules *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF ~mod.dll THEN INC(numMod) END;\r\t\t\tt := mod; mod := t.next; t.next := modList; modList := t\r\t\tEND;\r\t\tIF isStatic THEN\r\t\t\tIF isDll THEN\r\t\t\t\t"
+                    attr: 0
+                  - text: "(* push ebx; cmp [12, esp], 1; jne L1; mov ebx, modlist; { call body; } jp L2 *)\r\t\t\t\t(* L1: cmp [12, esp], 0; jne L2; { call term; } *)\r\t\t\t\t(* L2: pop ebx; mov aex,1; ret 12 *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tCodeSize := "
+                    attr: 0
+                  - text: 42
+                    attr: 3
+                  - text: " + 10 * numMod\r\t\t\tELSE\r\t\t\t\t"
+                    attr: 0
+                  - text: "(* push ebx; "
+                    attr: 1
+                  - text: push ebx; push ebx;
+                    attr: 4
+                  - text: " mov ebx, modlist; { call body; } { call term; } *)\r\t\t\t\t(* "
+                    attr: 1
+                  - text: pop ebx; pop ebx;
+                    attr: 4
+                  - text: " pop ebx; ret *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tCodeSize := "
+                    attr: 0
+                  - text: 12
+                    attr: 3
+                  - text: " + 10 * numMod\r\t\t\tEND\r\t\tELSE\r\t\t\tIF isDll THEN\r\t\t\t\t"
+                    attr: 0
+                  - text: "(* push ebx; cmp [12, esp], 1; jne L1; mov ebx, modlist; call main; jp L2 *)\r\t\t\t\t(* L1: cmp [12, esp], 0; jne L2; call mainTerm; *)\r\t\t\t\t(* L2: pop ebx; mov aex,1; ret 12 *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tCodeSize := "
+                    attr: 0
+                  - text: 41
+                    attr: 3
+                  - text: "\r\t\t\tELSE\r\t\t\t\t"
+                    attr: 0
+                  - text: "(* mov ebx, modlist; jmp main *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tCodeSize := 10\r\t\t\tEND\r\t\tEND;\r(*\r\t\tIF isDll THEN\r\t\t\tCodeSize := "
+                    attr: 0
+                  - text: 24
+                    attr: 3
+                  - text: "\t"
+                    attr: 0
+                  - text: "(* push ebx, esi, edi; mov bx, modlist; call main; pop edi, esi, ebx; mov aex,1; ret 12 *)"
+                    attr: 1
+                  - text: "\r\t\tELSE\r\t\t\tCodeSize := 10\t"
+                    attr: 0
+                  - text: "(* mov bx, modlist; jmp main *)"
+                    attr: 1
+                  - text: "\r\t\tEND\r*)\r\t\tDataSize := 0; ConSize := 0;\r\t\tImpSize := 0; ImpHSize := 0; ExpSize := 0;\r\t\tRelocSize := 0; DllSize := 0; noffixup := 0; maxCode := 0; numImp := 0; numExp := 0;\r\t\tmod := modList;\r\t\tWHILE mod # NIL DO\r\t\t\tIF ~mod.dll THEN\r\t\t\t\tmod.file := ThisFile(mod.name);\r\t\t\t\tIF mod.file # NIL THEN\r\t\t\t\t\tR := mod.file.NewReader(R); R.SetPos(0); Read4(x);\r\t\t\t\t\tIF x = 6F4F4346H THEN\r\t\t\t\t\t\tRead4(x);\r\t\t\t\t\t\tRead4(mod.hs); Read4(mod.ms); Read4(mod.ds); Read4(mod.cs);\r\t\t\t\t\t\tRead4(mod.vs); RNum(mod.ni); ReadName(name); impdll := FALSE;\r\t\t\t\t\t\tIF mod.ni > 0 THEN\r\t\t\t\t\t\t\tNEW(mod.imp, mod.ni); x := 0;\r\t\t\t\t\t\t\tWHILE x < mod.ni DO\r\t\t\t\t\t\t\t\tReadName(name);\r\t\t\t\t\t\t\t\tIF name = \"$$\" THEN\r\t\t\t\t\t\t\t\t\tIF (mod # kernel) & (kernel # NIL) THEN\r\t\t\t\t\t\t\t\t\t\tmod.imp[x] := kernel\r\t\t\t\t\t\t\t\t\tELSE\r\t\t\t\t\t\t\t\t\t\tW.WriteString(\"no kernel\"); W.WriteLn;\r\t\t\t\t\t\t\t\t\t\tLog.text.Append(Log.buf); error := TRUE\r\t\t\t\t\t\t\t\t\tEND\r\t\t\t\t\t\t\t\tELSIF name[0] = \"$\" THEN\r\t\t\t\t\t\t\t\t\ti := 1;\r\t\t\t\t\t\t\t\t\tWHILE name[i] # 0X DO name[i-1] := name[i]; INC(i) END;\r\t\t\t\t\t\t\t\t\tname[i-1] := 0X; impdll := TRUE; im := modList;\r\t\t\t\t\t\t\t\t\tWHILE (im # mod) & (im.name # name) DO im := im.next END;\r\t\t\t\t\t\t\t\t\tIF (im = NIL) OR ~im.dll THEN\r\t\t\t\t\t\t\t\t\t\tNEW(im); im.next := modList; modList := im;\r\t\t\t\t\t\t\t\t\t\tim.name := name$;\r\t\t\t\t\t\t\t\t\t\tim.dll := TRUE\r\t\t\t\t\t\t\t\t\tEND;\r\t\t\t\t\t\t\t\t\tmod.imp[x] := im;\r\t\t\t\t\t\t\t\tELSE\r\t\t\t\t\t\t\t\t\tim := modList;\r\t\t\t\t\t\t\t\t\tWHILE (im # mod) & (im.name # name) DO im := im.next END;\r\t\t\t\t\t\t\t\t\tIF im # mod THEN\r\t\t\t\t\t\t\t\t\t\tmod.imp[x] := im;\r\t\t\t\t\t\t\t\t\tELSE\r\t\t\t\t\t\t\t\t\t\tWriteUtf8(name);\r\t\t\t\t\t\t\t\t\t\tW.WriteString(\" not present (imported in \");\r\t\t\t\t\t\t\t\t\t\tW.WriteString(mod.name); W.WriteChar(\")\");\r\t\t\t\t\t\t\t\t\t\tW.WriteLn; Log.text.Append(Log.buf); error := TRUE\r\t\t\t\t\t\t\t\t\tEND\r\t\t\t\t\t\t\t\tEND;\r\t\t\t\t\t\t\t\tINC(x)\r\t\t\t\t\t\t\tEND\r\t\t\t\t\t\tEND;\r\t\t\t\t\t\tIF impdll & ~error THEN CheckDllImports(mod) END;\r\t\t\t\t\t\tmod.ma := ConSize; INC(ConSize, mod.ms + mod.ds);\r\t\t\t\t\t\tmod.va := DataSize; INC(DataSize, mod.vs);\r\t\t\t\t\t\tmod.ca := CodeSize; INC(CodeSize, mod.cs);\r\t\t\t\t\t\tIF mod.cs > maxCode THEN maxCode := mod.cs END\r\t\t\t\t\tELSE\r\t\t\t\t\t\tW.WriteString(mod.name); W.WriteString(\": wrong file type\"); \r\t\t\t\t\t\tW.WriteLn; Log.text.Append(Log.buf); error := TRUE\r\t\t\t\t\tEND;\r\t\t\t\t\tmod.file.Close; mod.file := NIL\r\t\t\t\tELSE\r\t\t\t\t\tW.WriteString(mod.name); W.WriteString(\" not found\"); \r\t\t\t\t\tW.WriteLn; Log.text.Append(Log.buf); error := TRUE\r\t\t\t\tEND;\r\t\t\t\tlast := mod\r\t\t\tEND;\r\t\t\tmod := mod.next\r\t\tEND;\r\t\tIF ~isStatic & (main = NIL) THEN\r\t\t\tW.WriteString(\"no main module specified\"); W.WriteLn;\r\t\t\tLog.text.Append(Log.buf); error := TRUE\r\t\tEND;\r"
+                    attr: 0
+                  - text: "\t\t(* calculate rva's *)\r"
+                    attr: 1
+                  - text: "\t\tIF DataSize = 0 THEN DataSize := 1 END;\r\t\tCodeRva := ObjAlign;\r\t\tDataRva := CodeRva + (CodeSize + DllSize + (ObjAlign - 1)) DIV ObjAlign * ObjAlign;\r\t\tConRva := DataRva + (DataSize + (ObjAlign - 1)) DIV ObjAlign * ObjAlign;\r\t\tRsrcRva := ConRva + (ConSize + (ObjAlign - 1)) DIV ObjAlign * ObjAlign;\r\t\tCodeBase := ImageBase + CodeRva;\r\t\tDataBase := ImageBase + DataRva;\r\t\tConBase := ImageBase + ConRva;\r"
+                    attr: 0
+                  - text: "\t\t(* write dll export adresses *)\r"
+                    attr: 1
+                  - text: "\t\tmod := modList; x := 0;\r\t\tWHILE mod # NIL DO\r\t\t\tIF mod.dll THEN\r\t\t\t\texp := mod.exp; INC(ImpSize, 20);\r\t\t\t\tWHILE exp # NIL DO exp.adr := x; INC(x, 6); exp := exp.next END\r\t\t\tEND;\r\t\t\tmod := mod.next\r\t\tEND;\r\t\tASSERT(x = DllSize); INC(ImpSize, 20); (* sentinel *)\r\tEND ReadHeaders;\r\t\r\tPROCEDURE MenuSize (r: Resource): INTEGER;\r\t\tVAR s, i: INTEGER;\r\tBEGIN\r\t\ts := 0;\r\t\tWHILE r # NIL DO\r\t\t\tINC(s, 2);\r\t\t\tIF r.local = NIL THEN INC(s, 2) END;\r\t\t\ti := 0; WHILE r.name[i] # 0X DO INC(s, 2); INC(i) END;\r\t\t\tINC(s, 2);\r\t\t\ts := s + MenuSize(r.local);\r\t\t\tr := r.next\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " s\r\tEND MenuSize;\r\t\r\tPROCEDURE PrepResources;\r\t\tVAR res, r, s: Resource; n, i, j, t, x: INTEGER; loc: Files.Locator;\r\tBEGIN\r\t\tr := resList;\r\t\tWHILE r # NIL DO\r\t\t\tIF r.lid = 0 THEN r.lid := 1033 END;\r\t\t\tIF r.name = \"MENU\" THEN\r\t\t\t\tr.typ := 4; r.size := 4 + MenuSize(r.local);\r\t\t\tELSIF r.name = \"ACCELERATOR\" THEN\r\t\t\t\tr.typ := 9; r.size := 0; s := r.local;\r\t\t\t\tWHILE s # NIL DO INC(r.size, 8); s := s.next END;\r\t\t\tELSE\r\t\t\t\tr.file := ThisResFile(r.name);\r\t\t\t\tIF r.file # NIL THEN\r\t\t\t\t\tIF r.typ = -1 THEN\t"
+                    attr: 0
+                  - text: "(* typelib *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\tr.typ := 0; r.size := r.file.Length(); r.pos := 0; rsrcName := \"TYPELIB\"\r\t\t\t\t\tELSE\r\t\t\t\t\t\tR := r.file.NewReader(R); R.SetPos(0); Read2(n);\r\t\t\t\t\t\tIF n = 4D42H THEN\t"
+                    attr: 0
+                  - text: "(* bitmap *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\t\tRead4(n); r.typ := 2; r.size := n - 14; r.pos := 14;\r\t\t\t\t\t\tELSE\r\t\t\t\t\t\t\tRead2(x);\r\t\t\t\t\t\t\tIF x = 1 THEN\t"
+                    attr: 0
+                  - text: "(* icon *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\t\t\tRead2(n); r.typ := 14; r.size := 6 + 14 * n; r.pos := 0; i := 0;\r\t\t\t\t\t\t\t\tWHILE i < n DO\r\t\t\t\t\t\t\t\t\tNEW(s); s.typ := 3; s.id := 10 * r.id + i; s.lid := r.lid; s.name := r.name$; \r\t\t\t\t\t\t\t\t\tRead4(x); Read4(x); Read4(s.size); Read2(s.pos); Read2(x);\r\t\t\t\t\t\t\t\t\ts.next := resList; resList := s;\r\t\t\t\t\t\t\t\t\tINC(i)\r\t\t\t\t\t\t\t\tEND\r\t\t\t\t\t\t\tELSIF x = 2 THEN\t"
+                    attr: 0
+                  - text: "(* cursor *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\t\t\tRead2(n); r.typ := 12; r.size := 6 + 14 * n; r.pos := 0; i := 0;\r\t\t\t\t\t\t\t\tWHILE i < n DO\r\t\t\t\t\t\t\t\t\tNEW(s); s.typ := 1; s.id := 10 * r.id + i; s.lid := r.lid; s.name := r.name$; \r\t\t\t\t\t\t\t\t\tRead4(x); Read2(s.x); Read2(s.y); Read4(s.size); INC(s.size, 4); Read2(s.pos); Read2(x);\r\t\t\t\t\t\t\t\t\ts.next := resList; resList := s;\r\t\t\t\t\t\t\t\t\tINC(i)\r\t\t\t\t\t\t\t\tEND\r\t\t\t\t\t\t\tELSE\r\t\t\t\t\t\t\t\tRead4(n);\r\t\t\t\t\t\t\t\tIF (x = 0) & (n = 20H) THEN\t"
+                    attr: 0
+                  - text: "(* resource file *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\t\t\t\tRead4(n); Read4(n); Read4(n); Read4(n); Read4(n); Read4(n);\t"
+                    attr: 0
+                  - text: "(* 32 bit marker *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\t\t\t\tRead4(r.size); Read4(n); Read2(i); \r\t\t\t\t\t\t\t\t\tIF i = 0FFFFH THEN\r\t\t\t\t\t\t\t\t\t\tRead2(j);\r\t\t\t\t\t\t\t\t\t\tIF (j >= 4) & ((j <= 11) OR (j = 16)) THEN\r\t\t\t\t\t\t\t\t\t\t\tr.typ := j; r.pos := n + 32;\r\t\t\t\t\t\t\t\t\t\tELSE\r\t\t\t\t\t\t\t\t\t\t\tW.WriteString(r.name); W.WriteString(\": invalid type\"); W.WriteLn;\r\t\t\t\t\t\t\t\t\t\t\tLog.text.Append(Log.buf); error := TRUE\r\t\t\t\t\t\t\t\t\t\tEND\r\t\t\t\t\t\t\t\t\tELSE\r\t\t\t\t\t\t\t\t\t\tj := 0;\r\t\t\t\t\t\t\t\t\t\tWHILE i # 0 DO rsrcName[j] := CHR(i); INC(j); Read2(i) END;\r\t\t\t\t\t\t\t\t\t\trsrcName[j] := 0X;\r\t\t\t\t\t\t\t\t\t\tr.typ := 0; r.pos := n + 32\r\t\t\t\t\t\t\t\t\tEND\r\t\t\t\t\t\t\t\tELSE\r\t\t\t\t\t\t\t\t\tW.WriteString(r.name); W.WriteString(\": unknown type\"); W.WriteLn;\r\t\t\t\t\t\t\t\t\tLog.text.Append(Log.buf); error := TRUE\r\t\t\t\t\t\t\t\tEND\r\t\t\t\t\t\t\tEND\r\t\t\t\t\t\tEND\r\t\t\t\t\tEND;\r\t\t\t\t\tr.file.Close; r.file := NIL\r\t\t\t\tELSE\r\t\t\t\t\tW.WriteString(r.name); W.WriteString(\" not found\"); W.WriteLn;\r\t\t\t\t\tLog.text.Append(Log.buf); error := TRUE\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tr := r.next\r\t\tEND;\r\t\tres := resList; resList := NIL;\t"
+                    attr: 0
+                  - text: "(* sort resources *)"
+                    attr: 1
+                  - text: "\r\t\tWHILE res # NIL DO\r\t\t\tr := res; res := res.next;\r\t\t\tIF (resList = NIL) OR (r.typ < resList.typ) OR (r.typ = resList.typ) & ((r.id < resList.id) OR (r.id = resList.id) & (r.lid < resList.lid))\r\t\t\tTHEN\r\t\t\t\tr.next := resList; resList := r\r\t\t\tELSE\r\t\t\t\ts := resList;\r\t\t\t\tWHILE (s.next # NIL) & (r.typ >= s.next.typ)\r\t\t\t\t\t& ((r.typ # s.next.typ) OR (r.id >= s.next.id) & ((r.id # s.next.id) OR (r.lid >= s.next.lid))) DO s := s.next END;\r\t\t\t\tr.next := s.next; s.next := r\r\t\t\tEND\r\t\tEND;\r\t\tr := resList; numType := 0; resHSize := 16; t := 0; n := 0;\t"
+                    attr: 0
+                  - text: "(* get resource size *)"
+                    attr: 1
+                  - text: "\r\t\tWHILE t < LEN(numId) DO numId[t] := 0; INC(t) END;\r\t\tWHILE r # NIL DO\r\t\t\tINC(numType); INC(resHSize, 24); t := r.typ;\r\t\t\tWHILE (r # NIL) & (r.typ = t) DO\r\t\t\t\tINC(numId[t]); INC(resHSize, 24); i := r.id;\r\t\t\t\tWHILE (r # NIL) & (r.typ = t) & (r.id = i) DO\r\t\t\t\t\tINC(resHSize, 24); INC(n, (r.size + 3) DIV 4 * 4); r := r.next\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND;\r\t\tIF numId[0] > 0 THEN INC(n, (LEN(rsrcName$) + 1) * 2) END;\r\t\tRsrcSize := resHSize + n;\r\t\tImpRva := RsrcRva + (RsrcSize + (ObjAlign - 1)) DIV ObjAlign * ObjAlign\r\tEND PrepResources;\r\t\r\tPROCEDURE WriteHeader(VAR name: Files.Name);\r\tBEGIN\r\t\tOut := Files.dir.New(Files.dir.This(\"\"), Files.ask); Ro := Out.NewWriter(Ro); Ro.SetPos(0);\r\r"
+                    attr: 0
+                  - text: "\t\t(* DOS header *)\r"
+                    attr: 1
+                  - text: "\t\tWrite4(905A4DH); Write4(3); Write4(4); Write4(0FFFFH);\r\t\tWrite4(0B8H); Write4(0); Write4(40H); Write4(0);\r\t\tWrite4(0); Write4(0); Write4(0); Write4(0);\r\t\tWrite4(0); Write4(0); Write4(0); Write4(80H);\r\t\tWrite4(0EBA1F0EH); Write4(0CD09B400H); Write4(4C01B821H); Write2(21CDH);\r\t\tWriteName(\"This program cannot be run in DOS mode.\", 39);\r\t\tWriteCh(0DX); WriteCh(0DX); WriteCh(0AX);\r\t\tWrite4(24H); Write4(0);\r\r"
+                    attr: 0
+                  - text: "\t\t(* Win32 header *)\r"
+                    attr: 1
+                  - text: "\t\tWriteName(\"PE\", 4); (* signature bytes *)\r\t\tWrite2(014CH); (* cpu type (386) *)\r\t\tIF isDll THEN\r\t\t\tWrite2(7); (* 7 objects *)\r\t\tELSE\r\t\t\tWrite2(6); (* 6 objects *)\r\t\tEND;\r\t\tWrite4(timeStamp); (* time/date *)\r\t\tWrite4(0); Write4(0);\r\t\tWrite2(0E0H); (* NT header size *)\r\t\tIF isDll THEN\r\t\t\tWrite2(0A38EH); (* library image flags *)\r\t\tELSE\r\t\t\tWrite2(838EH); (* program image flags *)\r\t\tEND;\r\t\tWrite2(10BH); (* magic (normal ececutable file) *)\r\t\tWrite2(0502H); (* linker version !!! *) "
+                    attr: 0
+                  - text: "(* BdT: if value < 2.5, Microsoft AppLocker may report \"not a valid Win32 application\" *)"
+                    attr: 1
+                  - text: "\r\t\tWrite4(CodeSize); (* code size *)\r\t\tWrite4(ConSize); (* initialized data size *)\r\t\tWrite4(DataSize); (* uninitialized data size *)\r\t\tentryPos := Ro.Pos();\r\t\tWrite4(0); (* entry point *)\t(* !!! *)\r\t\tWrite4(CodeRva); (* base of code *)\r\t\tWrite4(ConRva); (* base of data *)\r\t\tWrite4(400000H); (* image base *)\r\t\tWrite4(ObjAlign); (* object align *)\r\t\tWrite4(FileAlign); (* file align *)\r\t\tWrite4(3); (* OS version *)\r\t\tWrite4(4); (* user version *)\r\t\tWrite4(4); (* subsys version *) "
+                    attr: 0
+                  - text: "(* mf 14.3.04: value changed from 0A0003H to 4. Corrects menubar pixel bug on Windows XP *)"
+                    attr: 1
+                  - text: "\r\t\tWrite4(0);\r\t\tisPos := Ro.Pos();\r\t\tWrite4(0); (* image size *)\t(* !!! *)\r\t\tWrite4(HeaderSize); (* header size !!! *)\r\t\tWrite4(0); (* checksum *)\r\t\tIF comLine THEN\r\t\t\tWrite2(3) (* dos subsystem *)\r\t\tELSE\r\t\t\tWrite2(2) (* gui subsystem *)\r\t\tEND;\r\t\tWrite2(0); (* dll flags *)\r\t\tWrite4(200000H); (* stack reserve size *)\r\t\tWrite4(10000H); (* stack commit size *)\r\t\t"
+                    attr: 0
+                  - text: IF isDll THEN
+                    attr: 3
+                  - text: "\r\t\t\t"
+                    attr: 0
+                  - text: "Write4(00100000H); (* heap reserve size *)"
+                    attr: 3
+                  - text: "\r\t\tELSE\r\t\t\tWrite4("
+                    attr: 0
+                  - text: 00400000H
+                    attr: 3
+                  - text: "); (* heap reserve size *)\r\t\tEND;\r\t\tWrite4(10000H); (* heap commit size *)\r\t\tWrite4(0);\r\t\tWrite4(16); (* num of rva/sizes *)\r\t\thexpPos := Ro.Pos();\r\t\tWrite4(0); Write4(0); (* export table *)\r\t\thimpPos := Ro.Pos();\r\t\tWrite4(0); Write4(0); (* import table *)\t(* !!! *)\r\t\thrsrcPos := Ro.Pos();\r\t\tWrite4(0); Write4(0); (* resource table *)\t(* !!! *)\r\t\tWrite4(0); Write4(0); (* exception table *)\r\t\tWrite4(0); Write4(0); (* security table *)\r\t\tfixPos := Ro.Pos();\r\t\tWrite4(0); Write4(0); (* fixup table *)\t(* !!! *)\r\t\tWrite4(0); Write4(0); (* debug table *)\r\t\tWrite4(0); Write4(0); (* image description *)\r\t\tWrite4(0); Write4(0); (* machine specific *)\r\t\tWrite4(0); Write4(0); (* thread local storage *)\r\t\tWrite4(0); Write4(0); (* ??? *)\r\t\tWrite4(0); Write4(0); (* ??? *)\r\t\tWrite4(0); Write4(0); (* ??? *)\r\t\tWrite4(0); Write4(0); (* ??? *)\r\t\tWrite4(0); Write4(0); (* ??? *)\r\t\tWrite4(0); Write4(0); (* ??? *)\r\r"
+                    attr: 0
+                  - text: "\t\t(* object directory *)\r"
+                    attr: 1
+                  - text: "\t\tWriteName(\".text\", 8); (* code object *)\r\t\tWrite4(0); (* object size (always 0) *)\r\t\tcodePos := Ro.Pos();\r\t\tWrite4(0); (* object rva *)\r\t\tWrite4(0); (* physical size *)\r\t\tWrite4(0); (* physical offset *)\r\t\tWrite4(0); Write4(0); Write4(0);\r\t\tWrite4(60000020H); (* flags: code, exec, read *)\r\r\t\tWriteName(\".var\", 8); (* variable object *)\r\t\tWrite4(0); (* object size (always 0) *)\r\t\tdataPos := Ro.Pos();\r\t\tWrite4(0); (* object rva *)\r\t\tWrite4(0); (* physical size *)\r\t\tWrite4(0); (* physical offset *)\t(* zero! (noinit) *)\r\t\tWrite4(0); Write4(0); Write4(0);\r\t\tWrite4(0C0000080H); (* flags: noinit, read, write *)\r\r\t\tWriteName(\".data\", 8); (* constant object *)\r\t\tWrite4(0); (* object size (always 0) *)\r\t\tconPos := Ro.Pos();\r\t\tWrite4(0); (* object rva *)\r\t\tWrite4(0); (* physical size *)\r\t\tWrite4(0); (* physical offset *)\r\t\tWrite4(0); Write4(0); Write4(0);\r\t\tWrite4(0C0000040H); (* flags: data, read, write *)\r\r\t\tWriteName(\".rsrc\", 8); (* resource object *)\r\t\tWrite4(0); (* object size (always 0) *)\r\t\trsrcPos := Ro.Pos();\r\t\tWrite4(0); (* object rva *)\r\t\tWrite4(0); (* physical size *)\r\t\tWrite4(0); (* physical offset *)\r\t\tWrite4(0); Write4(0); Write4(0);\r\t\tWrite4(0C0000040H); (* flags: data, read, write *)\r\r\t\tWriteName(\".idata\", 8); (* import object *)\r\t\tWrite4(0); (* object size (always 0) *)\r\t\timpPos := Ro.Pos();\r\t\tWrite4(0); (* object rva *)\r\t\tWrite4(0); (* physical size *)\r\t\tWrite4(0); (* physical offset *)\r\t\tWrite4(0); Write4(0); Write4(0);\r\t\tWrite4(0C0000040H); (* flags: data, read, write *)\r\r\t\tIF isDll THEN\r\t\t\tWriteName(\".edata\", 8); (* export object *)\r\t\t\tWrite4(0); (* object size (always 0) *)\r\t\t\texpPos := Ro.Pos();\r\t\t\tWrite4(0); (* object rva *)\r\t\t\tWrite4(0); (* physical size *)\r\t\t\tWrite4(0); (* physical offset *)\r\t\t\tWrite4(0); Write4(0); Write4(0);\r\t\t\tWrite4(0C0000040H); (* flags: data, read, write *)\r\t\tEND;\r\r\t\tWriteName(\".reloc\", 8); (* relocation object *)\r\t\tWrite4(0); (* object size (always 0) *)\r\t\trelPos := Ro.Pos();\r\t\tWrite4(0); (* object rva *)\r\t\tWrite4(0); (* physical size *)\r\t\tWrite4(0); (* physical offset *)\r\t\tWrite4(0); Write4(0); Write4(0);\r\t\tWrite4(42000040H); (* flags: data, read, ? *)\r\tEND WriteHeader;\r\t\r\tPROCEDURE SearchObj (mod: Module; VAR name: ARRAY OF SHORTCHAR; m, fp, opt: INTEGER; VAR adr: INTEGER);\r\t\tVAR dir, len, ntab, f, id, l, r, p, n, i, j: INTEGER; nch, och: SHORTCHAR;\r\tBEGIN\r\t\tGet(mod, mod.ms + modExports, dir); DEC(dir, ConBase + mod.ma); Get(mod, dir, len); INC(dir, 4);\r\t\tGet(mod, mod.ms + modNames, ntab); DEC(ntab, ConBase + mod.ma);\r\t\tIF name # \"\" THEN\r\t\t\tl := 0; r := len;\r\t\t\tWHILE l < r DO\t"
+                    attr: 0
+                  - text: "(* binary search *)\r\t\t\t"
+                    attr: 1
+                  - text: "\tn := (l + r) DIV 2; p := dir + n * 16;\r\t\t\t\tGet(mod, p + 8, id);\r\t\t\t\ti := 0; j := ntab + id DIV 256; nch := name[0]; och := SHORT(CHR(mod.data[j]));\r\t\t\t\tWHILE (nch = och) & (nch # 0X) DO INC(i); INC(j); nch := name[i]; och := SHORT(CHR(mod.data[j])) END;\r\t\t\t\tIF och = nch THEN\r\t\t\t\t\tIF id MOD 16 = m THEN Get(mod, p, f);\r\t\t\t\t\t\tIF m = mTyp THEN\r\t\t\t\t\t\t\tIF ODD(opt) THEN Get(mod, p + 4, f) END;\r\t\t\t\t\t\t\tIF (opt > 1) & (id DIV 16 MOD 16 # mExported) THEN\r\t\t\t\t\t\t\t\tW.WriteString(mod.name); W.WriteChar(\".\");\r\t\t\t\t\t\t\t\tWriteUtf8(name);\r\t\t\t\t\t\t\t\tW.WriteString(\" imported from \"); W.WriteString(impg.name);\r\t\t\t\t\t\t\t\tW.WriteString(\" has wrong visibility\"); W.WriteLn; error := TRUE\r\t\t\t\t\t\t\tEND;\r\t\t\t\t\t\t\tGet(mod, p + 12, adr)\r\t\t\t\t\t\tELSIF m = mVar THEN\r\t\t\t\t\t\t\tGet(mod, p + 4, adr); INC(adr, DataBase + mod.va)\r\t\t\t\t\t\tELSIF m = mProc THEN\r\t\t\t\t\t\t\tGet(mod, p + 4, adr); INC(adr, CodeBase + mod.ca)\r\t\t\t\t\t\tEND;\r\t\t\t\t\t\tIF f # fp THEN\r\t\t\t\t\t\t\tW.WriteString(mod.name); W.WriteChar(\".\");"
+                    attr: 0
+                  - text: "\r\t\t\t\t\t\t\t"
+                    attr: 5
+                  - text: "WriteUtf8(name);\r\t\t\t\t\t\t\tW.WriteString(\" imported from \"); W.WriteString(impg.name);\r\t\t\t\t\t\t\tW.WriteString(\" has wrong fprint\"); W.WriteLn; error := TRUE\r\t\t\t\t\t\tEND\r\t\t\t\t\tELSE\r\t\t\t\t\t\tW.WriteString(mod.name); W.WriteChar(\".\"); WriteUtf8(name);\r\t\t\t\t\t\tW.WriteString(\" imported from \"); W.WriteString(impg.name);\r\t\t\t\t\t\tW.WriteString(\" has wrong class\"); W.WriteLn; error := TRUE\r\t\t\t\t\tEND;\r\t\t\t\t\t"
+                    attr: 0
+                  - text: "RETURN\r"
+                    attr: 3
+                  - text: "\t\t\t\tEND;\r\t\t\t\tIF och < nch THEN l := n + 1 ELSE r := n END\r\t\t\tEND;\r\t\t\tW.WriteString(mod.name); W.WriteChar(\".\"); WriteUtf8(name);\r\t\t\tW.WriteString(\" not found (imported from \"); W.WriteString(impg.name);\r\t\t\tW.WriteChar(\")\"); W.WriteLn; error := TRUE\r\t\tELSE "
+                    attr: 0
+                  - text: "(* anonymous type *)"
+                    attr: 1
+                  - text: "\r\t\t\tWHILE len > 0 DO\r\t\t\t\tGet(mod, dir + 4, f); Get(mod, dir + 8, id);\r\t\t\t\tIF (f = fp) & (id MOD 16 = mTyp) & (id DIV 256 = 0) THEN\r\t\t\t\t\tGet(mod, dir + 12, adr); RETURN\r\t\t\t\tEND;\r\t\t\t\tDEC(len); INC(dir, 16)\r\t\t\tEND;\r\t\t\tW.WriteString(\"anonymous type in \"); W.WriteString(mod.name);\r\t\t\tW.WriteString(\" not found\"); W.WriteLn; error := TRUE\r\t\tEND\r\tEND SearchObj;\r\t\r\tPROCEDURE CollectExports (mod: Module);\r\t\tVAR dir, len, ntab, id, i, j, n: INTEGER; e, exp: Export;\r\tBEGIN\r\t\tGet(mod, mod.ms + modExports, dir); DEC(dir, ConBase + mod.ma); Get(mod, dir, len); INC(dir, 4);\r\t\tGet(mod, mod.ms + modNames, ntab); DEC(ntab, ConBase + mod.ma); n := 0;\r\t\tWHILE n < len DO\r\t\t\tGet(mod, dir + 8, id);\r\t\t\tIF (id DIV 16 MOD 16 # mInternal) & ((id MOD 16 = mProc) OR (id MOD 16 = mVar))THEN\t(* exported procedure & var *)\r\t\t\t\tNEW(exp);\r\t\t\t\ti := 0; j := ntab + id DIV 256;\r\t\t\t\tWHILE mod.data[j] # 0 DO exp.name[i] := SHORT(CHR(mod.data[j])); INC(i); INC(j) END;\r\t\t\t\texp.name[i] := 0X;\r\t\t\t\tGet(mod, dir + 4, exp.adr);\r\t\t\t\tIF id MOD 16 = mProc THEN INC(exp.adr, CodeRva + mod.ca)\r\t\t\t\tELSE ASSERT(id MOD 16 = mVar); INC(exp.adr, DataRva + mod.va)\r\t\t\t\tEND;\r\t\t\t\tIF (firstExp = NIL) OR (exp.name < firstExp.name) THEN\r\t\t\t\t\texp.next := firstExp; firstExp := exp;\r\t\t\t\t\tIF lastExp = NIL THEN lastExp := exp END\r\t\t\t\tELSE\r\t\t\t\t\te := firstExp;\r\t\t\t\t\tWHILE (e.next # NIL) & (exp.name > e.next.name) DO e := e.next END;\r\t\t\t\t\texp.next := e.next; e.next := exp;\r\t\t\t\t\tIF lastExp = e THEN lastExp := exp END\r\t\t\t\tEND;\r\t\t\t\tINC(numExp);\r\t\t\tEND;\r\t\t\tINC(n); INC(dir, 16)\r\t\tEND\r\tEND CollectExports;\r\r\tPROCEDURE WriteTermCode (m: Module; i: INTEGER);\r\t\tVAR x: INTEGER;\r\tBEGIN\r\t\tIF m # NIL THEN\r\t\t\tIF m.dll THEN WriteTermCode(m.next, i)\r\t\t\tELSE\r\t\t\t\tIF isStatic THEN WriteTermCode(m.next, i + 1) END;\r\t\t\t\tGet(m, m.ms + modTerm, x);\t"
+                    attr: 0
+                  - text: "(* terminator address in mod desc*)"
+                    attr: 1
+                  - text: "\r\t\t\t\tIF x = 0 THEN\r\t\t\t\t\tWriteCh(005X); Write4(0)\t"
+                    attr: 0
+                  - text: "(* add EAX, 0 (nop) *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tELSE\r\t\t\t\t\tWriteCh(0E8X); Write4(x - lastTerm + 5 * i - CodeBase)\t"
+                    attr: 0
+                  - text: "(* call term *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND WriteTermCode;\r\t\r\tPROCEDURE WriteCode;\r\t\tVAR mod, m: Module; i, x, a, fp, opt: INTEGER; exp: Export; name: Name;\r\tBEGIN\r\t\tIF isStatic THEN\r\t\t\tWriteCh(053X);"
+                    attr: 0
+                  - text: "\t"
+                    attr: 3
+                  - text: "(* push ebx *)\r\t\t\t"
+                    attr: 1
+                  - text: "a := 1;\r\t\t\tIF isDll THEN\r\t\t\t\tWriteCh(083X); WriteCh(07CX); WriteCh(024X); WriteCh(00CX); WriteCh(001X);\t"
+                    attr: 0
+                  - text: "(* cmp [12, esp], 1 *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tWriteCh(00FX); WriteCh(085X); Write4("
+                    attr: 0
+                  - text: 10
+                    attr: 3
+                  - text: " + 5 * numMod);\t"
+                    attr: 0
+                  - text: "(* jne L1 *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tINC(a, 11)\r\t\t\tELSE\r\t\t\t\t"
+                    attr: 0
+                  - text: "WriteCh(053X); WriteCh(053X);\t"
+                    attr: 3
+                  - text: "(* push ebx; push ebx *)"
+                    attr: 4
+                  - text: "\r\t\t\t\tINC(a, 2)\r\t\t\tEND;\r\t\t\tWriteCh(0BBX); Write4(ConBase + last.ma + last.ms); Reloc(CodeBase + "
+                    attr: 0
+                  - text: a + 1
+                    attr: 3
+                  - text: ");\t"
+                    attr: 0
+                  - text: "(* mov bx, modlist *)\r\t\t\t"
+                    attr: 1
+                  - text: "INC(a, 5); m := modList;\r\t\t\tWHILE m # NIL DO\r\t\t\t\tIF ~m.dll THEN\r\t\t\t\t\tWriteCh(0E8X); INC(a, 5); Write4(m.ca - a)\t"
+                    attr: 0
+                  - text: "(* call body *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tEND;\r\t\t\t\tm := m.next\r\t\t\tEND;\r\t\t\tIF isDll THEN\r\t\t\t\tWriteCh(0E9X); Write4("
+                    attr: 0
+                  - text: 11
+                    attr: 3
+                  - text: " + 5 * numMod);\t"
+                    attr: 0
+                  - text: "(* jp L2 *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tWriteCh(083X); WriteCh(07CX); WriteCh(024X); WriteCh(00CX); WriteCh(000X);\t"
+                    attr: 0
+                  - text: "(* L1: cmp [12, esp], 0 *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tWriteCh(00FX); WriteCh(085X); Write4(5 * numMod);\t"
+                    attr: 0
+                  - text: "(* jne L2 *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tINC(a, 16)\r\t\t\tEND;\r\t\t\ttermPos := Ro.Pos(); i := 0;\r\t\t\tWHILE i < numMod DO\t"
+                    attr: 0
+                  - text: "(* nop for call terminator *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tWriteCh(0"
+                    attr: 0
+                  - text: 2D
+                    attr: 3
+                  - text: "X); Write4(0);\t"
+                    attr: 0
+                  - text: "(* sub EAX, 0 *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tINC(i); INC(a, 5)\r\t\t\tEND;\r\t\t\tlastTerm := a;\r\t\t\tWriteCh(05BX); "
+                    attr: 0
+                  - text: "\t(* L2: pop ebx *)\r\t\t"
+                    attr: 1
+                  - text: "\tIF isDll THEN\r\t\t\t\tWriteCh(0B8X); Write4(1);\t"
+                    attr: 0
+                  - text: "(* mov eax,1 *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tWriteCh(0C2X); Write2(12)\t"
+                    attr: 0
+                  - text: "(* ret 12 *)"
+                    attr: 1
+                  - text: "\r\t\t\tELSE\r\t\t\t\t"
+                    attr: 0
+                  - text: WriteCh(05BX); WriteCh(05BX);
+                    attr: 3
+                  - text: "\t(* pop ebx; pop ebx *)"
+                    attr: 4
+                  - text: "\r\t\t\t\tWriteCh(0C3X)\t"
+                    attr: 0
+                  - text: "(* ret *)"
+                    attr: 1
+                  - text: "\r\t\t\tEND\r\t\tELSIF isDll THEN\r\t\t\tWriteCh(053X);"
+                    attr: 0
+                  - text: "\t"
+                    attr: 3
+                  - text: "(* push ebx *)\r\t\t\t"
+                    attr: 1
+                  - text: "WriteCh(083X); WriteCh(07CX); WriteCh(024X); WriteCh(00CX); WriteCh(001X);\t"
+                    attr: 0
+                  - text: "(* cmp [12, esp], 1 *)\r\t\t\t"
+                    attr: 1
+                  - text: WriteCh(075X); WriteCh(SHORT(CHR(
+                    attr: 0
+                  - text: 12
+                    attr: 3
+                  - text: ")));\t"
+                    attr: 0
+                  - text: "(* jne L1 *)\r"
+                    attr: 1
+                  - text: "\t\t\tWriteCh(0BBX); Write4(ConBase + last.ma + last.ms); Reloc(CodeBase + "
+                    attr: 0
+                  - text: 9
+                    attr: 3
+                  - text: ");\t"
+                    attr: 0
+                  - text: "(* mov bx, modlist *)\r"
+                    attr: 1
+                  - text: "\t\t\tWriteCh(0E8X); Write4(main.ca - "
+                    attr: 0
+                  - text: 18
+                    attr: 3
+                  - text: ");\t"
+                    attr: 0
+                  - text: "(* call main *)"
+                    attr: 1
+                  - text: "\r"
+                    attr: 0
+                  - text: "\t\t\t"
+                    attr: 1
+                  - text: WriteCh(0EBX); WriteCh(SHORT(CHR(
+                    attr: 0
+                  - text: 12
+                    attr: 3
+                  - text: ")));\t"
+                    attr: 0
+                  - text: "(* jp L2 *)\r\t\t\t"
+                    attr: 1
+                  - text: "WriteCh(083X); WriteCh(07CX); WriteCh(024X); WriteCh(00CX); WriteCh(000X);\t"
+                    attr: 0
+                  - text: "(* L1: cmp [12, esp], 0 *)\r\t\t\t"
+                    attr: 1
+                  - text: WriteCh(075X); WriteCh(SHORT(CHR(
+                    attr: 0
+                  - text: 5
+                    attr: 3
+                  - text: ")));\t"
+                    attr: 0
+                  - text: "(* jne L2 *)\r\t\t\t"
+                    attr: 1
+                  - text: "termPos := Ro.Pos();\r\t\t\tWriteCh(0"
+                    attr: 0
+                  - text: 2D
+                    attr: 3
+                  - text: "X); Write4(0);\t"
+                    attr: 0
+                  - text: "(* sub EAX, 0 *)"
+                    attr: 1
+                  - text: "\t"
+                    attr: 0
+                  - text: "(* nop for call terminator *)"
+                    attr: 1
+                  - text: "\r\t\t\tlastTerm := "
+                    attr: 0
+                  - text: 32
+                    attr: 3
+                  - text: ";\r"
+                    attr: 0
+                  - text: "\t\t\t"
+                    attr: 1
+                  - text: "WriteCh(05BX); "
+                    attr: 0
+                  - text: "\t(* L2: pop ebx *)\r\t\t\t"
+                    attr: 1
+                  - text: "WriteCh(0B8X); Write4(1);\t"
+                    attr: 0
+                  - text: "(* mov eax,1 *)"
+                    attr: 1
+                  - text: "\r\t\t\tWriteCh(0C2X); Write2(12)\t"
+                    attr: 0
+                  - text: "(* ret 12 *)"
+                    attr: 1
+                  - text: "\r\t\tELSE\r\t\t\tWriteCh(0BBX); Write4(ConBase + last.ma + last.ms); Reloc(CodeBase + 1);\t"
+                    attr: 0
+                  - text: "(* mov bx, modlist *)\r"
+                    attr: 1
+                  - text: "\t\t\tWriteCh(0E9X); Write4(main.ca - 10);\t"
+                    attr: 0
+                  - text: "(* jmp main *)\r"
+                    attr: 1
+                  - text: "\t\tEND;\r\t\tNEW(code, maxCode);\r\t\tmod := modList;\r\t\tWHILE mod # NIL DO impg := mod; impd := mod;\r\t\t\tIF ~mod.dll THEN\r\t\t\t\tmod.file := ThisFile(mod.name);\r\t\t\t\tR := mod.file.NewReader(R); R.SetPos(mod.hs);\r\t\t\t\tNEW(mod.data, mod.ms + mod.ds);\r\t\t\t\tR.ReadBytes(mod.data^, 0, mod.ms + mod.ds);\r\t\t\t\tR.ReadBytes(code^, 0, mod.cs);\r\t\t\t\tRNum(x);\r\t\t\t\tIF x # 0 THEN\r\t\t\t\t\tIF (mod # kernel) & (kernel # NIL) THEN\r\t\t\t\t\t\tSearchObj(kernel, newRec, mProc, NewRecFP, -1, a); Fixup0(x, a)\r\t\t\t\t\tELSE\r\t\t\t\t\t\tW.WriteString(\"no kernel\"); W.WriteLn;\r\t\t\t\t\t\tLog.text.Append(Log.buf); error := TRUE; "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: "\r\t\t\t\t\tEND\r\t\t\t\tEND;\r\t\t\t\tRNum(x);\r\t\t\t\tIF x # 0 THEN\r\t\t\t\t\tIF (mod # kernel) & (kernel # NIL) THEN\r\t\t\t\t\t\tSearchObj(kernel, newArr, mProc, NewArrFP, -1, a); Fixup0(x, a)\r\t\t\t\t\tELSE\r\t\t\t\t\t\tW.WriteString(\"no kernel\"); W.WriteLn;\r\t\t\t\t\t\tLog.text.Append(Log.buf); error := TRUE; "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: "\r\t\t\t\t\tEND\r\t\t\t\tEND;\r\t\t\t\tFixup(ConBase + mod.ma);\r\t\t\t\tFixup(ConBase + mod.ma + mod.ms);\r\t\t\t\tFixup(CodeBase + mod.ca);\r\t\t\t\tFixup(DataBase + mod.va); i := 0;\r\t\t\t\tWHILE i < mod.ni DO\r\t\t\t\t\tm := mod.imp[i]; impd := m; RNum(x);\r\t\t\t\t\tWHILE x # 0 DO\r\t\t\t\t\t\tReadName(name); RNum(fp); opt := 0;\r\t\t\t\t\t\tIF x = mTyp THEN RNum(opt) END;\r\t\t\t\t\t\tIF m.dll THEN\r\t\t\t\t\t\t\tIF x = mProc THEN exp := m.exp;\r\t\t\t\t\t\t\t\tWHILE exp.name # name DO exp := exp.next END;\r\t\t\t\t\t\t\t\ta := exp.adr + CodeBase + CodeSize\r\t\t\t\t\t\t\tEND\r\t\t\t\t\t\tELSE\r\t\t\t\t\t\t\tSearchObj(m, name, x, fp, opt, a)\r\t\t\t\t\t\tEND;\r\t\t\t\t\t\tIF x # mConst THEN Fixup(a) END;\r\t\t\t\t\t\tRNum(x)\r\t\t\t\t\tEND;\r\t\t\t\t\tIF ~m.dll THEN\r\t\t\t\t\t\tGet(mod, mod.ms + modImports, x); DEC(x, ConBase + mod.ma); INC(x, 4 * i);\r\t\t\t\t\t\tPut(mod, x, ConBase + m.ma + m.ms);\t"
+                    attr: 0
+                  - text: "(* imp ref *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\tReloc(ConBase + mod.ma + x);\r\t\t\t\t\t\tGet(m, m.ms + modRefcnt, x); Put(m, m.ms + modRefcnt, x + 1)\t"
+                    attr: 0
+                  - text: "(* inc ref count *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tEND;\r\t\t\t\t\tINC(i)\r\t\t\t\tEND;\r\t\t\t\tRo.WriteBytes(code^, 0, mod.cs);\r\t\t\t\tIF mod.intf THEN CollectExports(mod) END;\r\t\t\t\tmod.file.Close; mod.file := NIL\r\t\t\tEND;\r\t\t\tmod := mod.next\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: "(* dll links *)"
+                    attr: 1
+                  - text: "\r\t\tmod := modList; ImpHSize := ImpSize;\r\t\tWHILE mod # NIL DO\r\t\t\tIF mod.dll THEN\r\t\t\t\texp := mod.exp; \r\t\t\t\tWHILE exp # NIL DO\r\t\t\t\t\tWriteCh(0FFX); WriteCh(25X); Write4(ImageBase + ImpRva + ImpSize);\t"
+                    attr: 0
+                  - text: "(* JMP indirect *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tReloc(CodeBase + CodeSize + exp.adr + 2);\r\t\t\t\t\tINC(ImpSize, 4); INC(numImp); exp := exp.next\r\t\t\t\tEND;\r\t\t\t\tINC(ImpSize, 4); INC(numImp) "
+                    attr: 0
+                  - text: "(* sentinel *)"
+                    attr: 1
+                  - text: "\r\t\t\tEND;\r\t\t\tmod := mod.next\r\t\tEND\r\tEND WriteCode;\r\t\r\tPROCEDURE WriteConst;\r\t\tVAR mod, last: Module; x: INTEGER;\r\tBEGIN\r\t\tmod := modList; last := NIL;\r\t\tWHILE mod # NIL DO\r\t\t\tIF ~mod.dll THEN\r\t\t\t\tIF last # NIL THEN\r\t\t\t\t\tPut(mod, mod.ms, ConBase + last.ma + last.ms);\t"
+                    attr: 0
+                  - text: "(* mod list *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tReloc(ConBase + mod.ma + mod.ms);\r\t\t\t\tEND;\r\t\t\t\tGet(mod, mod.ms + modOpts, x);\r\t\t\t\tIF isStatic THEN INC(x, 10000H) END;\t"
+                    attr: 0
+                  - text: "(* set init bit (16) *)\r\t\t\t\t"
+                    attr: 1
+                  - text: "IF isDll THEN INC(x, 1000000H) END;\t"
+                    attr: 0
+                  - text: "(* set dll bit (24) *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tPut(mod, mod.ms + modOpts, x);\r\t\t\t\tRo.WriteBytes(mod.data^, 0, mod.ms + mod.ds);\r\t\t\t\tlast := mod\r\t\t\tEND;\r\t\t\tmod := mod.next\r\t\tEND\r\tEND WriteConst;\r\t\r\tPROCEDURE WriteResDir (n, i: INTEGER);\r\tBEGIN\r\t\tWrite4(0);\t(* flags *)\r\t\tWrite4(timeStamp);\r\t\tWrite4(0);\t(* version *)\r\t\tWrite2(n);\t(* name entries *)\r\t\tWrite2(i);\t(* id entries *)\r\tEND WriteResDir;\r\t\r\tPROCEDURE WriteResDirEntry (id, adr: INTEGER; dir: BOOLEAN);\r\tBEGIN\r\t\tIF id = 0 THEN id := resHSize + 80000000H END;\t"
+                    attr: 0
+                  - text: "(* name Rva *)"
+                    attr: 1
+                  - text: "\r\t\tWrite4(id);\r\t\tIF dir THEN Write4(adr + 80000000H) ELSE Write4(adr) END\r\tEND WriteResDirEntry;\r\t\r\tPROCEDURE WriteMenu (res: Resource);\r\t\tVAR f, i: INTEGER;\r\tBEGIN\r\t\tWHILE res # NIL DO\r\t\t\tIF res.next = NIL THEN f := 80H ELSE f := 0 END;\r\t\t\tIF 29 IN res.opts THEN INC(f, 1) END;\t"
+                    attr: 0
+                  - text: "(* = grayed *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF 13 IN res.opts THEN INC(f, 2) END;\t"
+                    attr: 0
+                  - text: "(* - inctive *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF 3 IN res.opts THEN INC(f, 4) END;\t"
+                    attr: 0
+                  - text: "(* # bitmap *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF 10 IN res.opts THEN INC(f, 8) END;\t"
+                    attr: 0
+                  - text: "(* * checked *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF 1 IN res.opts THEN INC(f, 20H) END;\t"
+                    attr: 0
+                  - text: "(* ! menubarbreak *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF 15 IN res.opts THEN INC(f, 40H) END;\t"
+                    attr: 0
+                  - text: "(* / menubreak *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF 31 IN res.opts THEN INC(f, 100H) END;\t"
+                    attr: 0
+                  - text: "(* ? ownerdraw *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF res.local # NIL THEN Write2(f + 10H) ELSE Write2(f); Write2(res.id) END;\r\t\t\ti := 0; WHILE res.name[i] # 0X DO Write2(ORD(res.name[i])); INC(i) END;\r\t\t\tWrite2(0);\r\t\t\tWriteMenu(res.local);\r\t\t\tres := res.next\r\t\tEND\r\tEND WriteMenu;\r\t\r\tPROCEDURE WriteResource;\r\t\tVAR r, s: Resource; i, t, a, x, n, nlen, nsize: INTEGER;\r\tBEGIN\r\t\tIF numId[0] > 0 THEN WriteResDir(1, numType - 1); nlen := LEN(rsrcName$); nsize := (nlen + 1) * 2;\r\t\tELSE WriteResDir(0, numType)\r\t\tEND;\r\t\ta := 16 + 8 * numType; t := 0;\r\t\tWHILE t < LEN(numId) DO\r\t\t\tIF numId[t] > 0 THEN WriteResDirEntry(t, a, TRUE); INC(a, 16 + 8 * numId[t]) END;\r\t\t\tINC(t)\r\t\tEND;\r\t\tr := resList; t := -1;\r\t\tWHILE r # NIL DO\r\t\t\tIF t # r.typ THEN t := r.typ; WriteResDir(0, numId[t]) END;\r\t\t\tWriteResDirEntry(r.id, a, TRUE); INC(a, 16); i := r.id;\r\t\t\tWHILE (r # NIL) & (r.typ = t) & (r.id = i) DO INC(a, 8); r := r.next END\r\t\tEND;\r\t\tr := resList;\r\t\tWHILE r # NIL DO\r\t\t\tn := 0; s := r;\r\t\t\tWHILE (s # NIL) & (s.typ = r.typ) & (s.id = r.id) DO INC(n); s := s.next END;\r\t\t\tWriteResDir(0, n);\r\t\t\tWHILE r # s DO WriteResDirEntry(r.lid, a, FALSE); INC(a, 16); r := r.next END\r\t\tEND;\r\t\tASSERT(a = resHSize);\r\t\tIF numId[0] > 0 THEN INC(a, nsize) END;\t"
+                    attr: 0
+                  - text: "(* TYPELIB string *)"
+                    attr: 1
+                  - text: "\r\t\tr := resList;\r\t\tWHILE r # NIL DO\r\t\t\tWrite4(a + RsrcRva); INC(a, (r.size + 3) DIV 4 * 4);\r\t\t\tWrite4(r.size);\r\t\t\tWrite4(0); Write4(0);\r\t\t\tr := r.next\r\t\tEND;\r\t\tASSERT(a = RsrcSize);\r\t\tIF numId[0] > 0 THEN\r\t\t\tWrite2(nlen); i := 0;\r\t\t\tWHILE rsrcName[i] # 0X DO Write2(ORD(rsrcName[i])); INC(i) END\r\t\tEND;\r\t\tr := resList;\r\t\tWHILE r # NIL DO\r\t\t\tIF r.typ = 4 THEN\t"
+                    attr: 0
+                  - text: "(* menu *)\r\t\t\t\t"
+                    attr: 1
+                  - text: "Write2(0); Write2(0);\r\t\t\t\tWriteMenu(r.local);\r\t\t\t\tWHILE Ro.Pos() MOD 4 # 0 DO WriteCh(0X) END\r\t\t\tELSIF r.typ = 9 THEN\t"
+                    attr: 0
+                  - text: "(* accelerator *)"
+                    attr: 1
+                  - text: "\r"
+                    attr: 0
+                  - text: "\t\t\t"
+                    attr: 1
+                  - text: "\ts := r.local;"
+                    attr: 0
+                  - text: "\r\t\t\t\t"
+                    attr: 1
+                  - text: "WHILE s # NIL DO\r\t\t\t\t\ti := 0; a := 0;\r\t\t\t\t\tIF 10 IN s.opts THEN INC(a, 4) END;\t"
+                    attr: 0
+                  - text: "(* * shift *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tIF 16 IN s.opts THEN INC(a, 8) END;\t"
+                    attr: 0
+                  - text: "(* ^ ctrl *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tIF 0 IN s.opts THEN INC(a, 16) END;\t"
+                    attr: 0
+                  - text: "(* @ alt *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tIF 13 IN s.opts THEN INC(a, 2) END;\t"
+                    attr: 0
+                  - text: "(* - noinv *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tIF s.next = NIL THEN INC(a, 80H) END;\r\t\t\t\t\tIF (s.name[0] = \"v\") & (s.name[1] # 0X) THEN\r\t\t\t\t\t\ts.name[0] := \" \"; Strings.StringToInt(s.name, x, n); INC(a, 1)\r\t\t\t\t\tELSE x := ORD(s.name[0])\r\t\t\t\t\tEND;\r\t\t\t\t\tWrite2(a); Write2(x); Write2(s.id); Write2(0); s := s.next\r\t\t\t\tEND\r\t\t\tELSE\r\t\t\t\tr.file := ThisResFile(r.name);\r\t\t\t\tIF r.file # NIL THEN\r\t\t\t\t\tR := r.file.NewReader(R); R.SetPos(r.pos); i := 0;\r\t\t\t\t\tIF r.typ = 12 THEN\t"
+                    attr: 0
+                  - text: "(* cursor group *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\tRead4(x); Write4(x); Read2(n); Write2(n);\r\t\t\t\t\t\tWHILE i < n DO\r\t\t\t\t\t\t\tRead4(x); Write2(x MOD 256); Write2(x DIV 256 MOD 256 * 2);\r\t\t\t\t\t\t\tWrite2(1); Write2(1); Read4(x);\t(* ??? *)\r\t\t\t\t\t\t\tRead4(x); Write4(x + 4); Read4(x); Write2(r.id * 10 + i); INC(i)\r\t\t\t\t\t\tEND;\r\t\t\t\t\t\tIF ~ODD(n) THEN Write2(0) END\r\t\t\t\t\tELSIF r.typ = 14 THEN\t"
+                    attr: 0
+                  - text: "(* icon group *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\tRead4(x); Write4(x); Read2(n); Write2(n);\r\t\t\t\t\t\tWHILE i < n DO\r\t\t\t\t\t\t\tRead2(x); Write2(x); Read2(x);\r\t\t\t\t\t\t\tIF (13 IN r.opts) & (x = 16) THEN x := 4 END;\r\t\t\t\t\t\t\tWrite2(x);\r\t\t\t\t\t\t\ta := x MOD 256; Read4(x); Write2(1);\r\t\t\t\t\t\t\tIF a <= 2 THEN Write2(1)\r\t\t\t\t\t\t\tELSIF a <= 4 THEN Write2(2)\r\t\t\t\t\t\t\tELSIF a <= 16 THEN Write2(4)\r\t\t\t\t\t\t\tELSE Write2(8)\r\t\t\t\t\t\t\tEND;\r\t\t\t\t\t\t\tRead4(x);\r\t\t\t\t\t\t\tIF (13 IN r.opts) & (x = 744) THEN x := 440 END;\r\t\t\t\t\t\t\tIF (13 IN r.opts) & (x = 296) THEN x := 184 END;\r\t\t\t\t\t\t\tWrite4(x); Read4(x); Write2(r.id * 10 + i); INC(i)\r\t\t\t\t\t\tEND;\r\t\t\t\t\t\tIF ~ODD(n) THEN Write2(0) END\r\t\t\t\t\tELSE\r\t\t\t\t\t\tIF r.typ = 1 THEN Write2(r.x); Write2(r.y); i := 4 END;\t"
+                    attr: 0
+                  - text: "(* cursor hot spot *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\tWHILE i < r.size DO Read4(x); Write4(x); INC(i, 4) END\r\t\t\t\t\tEND;\r\t\t\t\t\tr.file.Close; r.file := NIL\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tr := r.next\r\t\tEND\r\tEND WriteResource;\r\r\tPROCEDURE Insert(VAR name: ARRAY OF SHORTCHAR; VAR idx: INTEGER; hint: INTEGER);\r\t\tVAR i: INTEGER; ntabx: POINTER TO ARRAY OF SHORTCHAR;\r\tBEGIN\r\t\tIF idx + LEN(name) + (2 + 4) >= LEN(ntab) THEN (* expand ntab *)\r\t\t\tNEW(ntabx, (idx + LEN(name) + (2 + 4)) * 2);\r\t\t\tFOR i := 0 TO LEN(ntab) - 1 DO ntabx[i] := ntab[i] END ;\r\t\t\tntab := ntabx;\r\t\tEND ;\r\t\tIF hint >= 0 THEN\r\t\t\tntab[idx] := SHORT(CHR(hint)); INC(idx);\r\t\t\tntab[idx] := SHORT(CHR(hint DIV 256)); INC(idx);\r\t\tEND;\r\t\ti := 0;\r\t\tWHILE name[i] # 0X DO ntab[idx] := name[i]; INC(idx); INC(i) END;\r\t\tIF (hint = -1) \r\t\t& ((idx < 4) OR ((ntab[idx-4] # \".\") OR (CAP(ntab[idx-3]) # \"D\") OR (CAP(ntab[idx-2]) # \"L\") OR (CAP(ntab[idx-1]) # \"L\"))) THEN\r\t\t\tntab[idx] := \".\"; INC(idx);\r\t\t\tntab[idx] := \"d\"; INC(idx);\r\t\t\tntab[idx] := \"l\"; INC(idx);\r\t\t\tntab[idx] := \"l\"; INC(idx);\r\t\tEND;\r\t\tntab[idx] := 0X; INC(idx);\r\t\tIF ODD(idx) THEN ntab[idx] := 0X; INC(idx) END\r\tEND Insert;\r\r\tPROCEDURE WriteImport;\r\t\tVAR i, lt, at, nt, ai, ni: INTEGER; mod: Module; exp: Export; ss: ARRAY 256 OF SHORTCHAR;\r\tBEGIN\r\t\tIF numImp > 0 THEN NEW(atab, numImp) END;\r\t\tIF numExp > numImp THEN i := numExp ELSE i := numImp END;\r\t\tIF i > 0 THEN NEW(ntab, 40 * i) END;\r\t\tat := ImpRva + ImpHSize; ai := 0; ni := 0;\r\t\tlt := ImpRva + ImpSize; nt := lt + ImpSize - ImpHSize;\r\t\tmod := modList;\r\t\tWHILE mod # NIL DO\r\t\t\tIF mod.dll THEN\r\t\t\t\tWrite4(lt); (* lookup table rva *)\r\t\t\t\tWrite4(0); (* time/data (always 0) *)\r\t\t\t\tWrite4(0); (* version (always 0) *)\r\t\t\t\tWrite4(nt + ni); (* name rva *)\r\t\t\t\tss := SHORT(mod.name$); Insert(ss, ni, -1);\r\t\t\t\tWrite4(at); (* addr table rva *)\r\t\t\t\texp := mod.exp;\r\t\t\t\tWHILE exp # NIL DO\r\t\t\t\t\tatab[ai] := nt + ni; (* hint/name rva *)\r\t\t\t\t\tInsert(exp.name, ni, 0);\r\t\t\t\t\tINC(lt, 4); INC(at, 4); INC(ai); exp := exp.next\r\t\t\t\tEND;\r\t\t\t\tatab[ai] := 0; INC(lt, 4); INC(at, 4); INC(ai)\r\t\t\tEND;\r\t\t\tmod := mod.next\r\t\tEND;\r\t\tWrite4(0); Write4(0); Write4(0); Write4(0); Write4(0);\r\t\ti := 0;\r\t\tWHILE i < ai DO Write4(atab[i]); INC(i) END; (* address table *)\r\t\ti := 0;\r\t\tWHILE i < ai DO Write4(atab[i]); INC(i) END; (* lookup table *)\r\t\ti := 0;\r\t\tWHILE i < ni DO WriteCh(ntab[i]); INC(i) END;\r\t\tASSERT(ai * 4 = ImpSize - ImpHSize);\r\t\tINC(ImpSize, ai * 4 + ni);\r\t\tExpRva := ImpRva + (ImpSize + (ObjAlign - 1)) DIV ObjAlign * ObjAlign;\r\t\tRelocRva := ExpRva;\r\tEND WriteImport;\r\t\r\tPROCEDURE WriteExport (VAR name: ARRAY OF CHAR);\r\t\tVAR i, ni: INTEGER; e: Export; ss: ARRAY 256 OF SHORTCHAR;\r\tBEGIN\r\t\tWrite4(0);\t(* flags *)\r\t\tWrite4(timeStamp);\t(* time stamp *)\r\t\tWrite4(0);\t(* version *)\r\t\tWrite4(ExpRva + 40 + 10 * numExp);\t(* name rva *)\r\t\tWrite4(1);\t(* ordinal base *)\r\t\tWrite4(numExp);\t(* # entries *)\r\t\tWrite4(numExp);\t(* # name ptrs *)\r\t\tWrite4(ExpRva + 40);\t(* address table rva *)\r\t\tWrite4(ExpRva + 40 + 4 * numExp);\t(* name ptr table rva *)\r\t\tWrite4(ExpRva + 40 + 8 * numExp);\t(* ordinal table rva *)\r\t\tExpSize := 40 + 10 * numExp;\r\t\t(* adress table *)\r\t\te := firstExp;\r\t\tWHILE e # NIL DO Write4(e.adr); e := e.next END;\r\t\t(* name ptr table *)\r\t\tni := 0; e := firstExp;\r\t\tss := SHORT(name$); Insert(ss, ni, -2);\r\t\tWHILE e # NIL DO\r\t\t\tWrite4(ExpRva + ExpSize + ni); Insert(e.name, ni, -2); e := e.next\r\t\tEND;\r\t\t(* ordinal table *)\r\t\ti := 0;\r\t\tWHILE i < numExp DO Write2(i); INC(i) END;\r\t\t(* name table *)\r\t\ti := 0;\r\t\tWHILE i < ni DO WriteCh(ntab[i]); INC(i) END;\r\t\tExpSize := (ExpSize + ni + 15) DIV 16 * 16;\r\t\tRelocRva := ExpRva + (ExpSize + (ObjAlign - 1)) DIV ObjAlign * ObjAlign;\r\tEND WriteExport;\r\r\tPROCEDURE Sort (l, r: INTEGER);\r\t\tVAR i, j, x, t: INTEGER;\r\tBEGIN\r\t\ti := l; j := r; x := fixups[(l + r) DIV 2];\r\t\tREPEAT\r\t\t\tWHILE fixups[i] < x DO INC(i) END;\r\t\t\tWHILE fixups[j] > x DO DEC(j) END;\r\t\t\tIF i <= j THEN t := fixups[i]; fixups[i] := fixups[j]; fixups[j] := t; INC(i); DEC(j) END\r\t\tUNTIL i > j;\r\t\tIF l < j THEN Sort(l, j) END;\r\t\tIF i < r THEN Sort(i, r) END\r\tEND Sort;\r\r\tPROCEDURE WriteReloc;\r\t\tVAR i, j, h, a, p: INTEGER;\r\tBEGIN\r\t\tSort(0, noffixup - 1); i := 0;\r\t\tWHILE i < noffixup DO\r\t\t\tp := fixups[i] DIV 4096 * 4096; j := i; a := p + 4096;\r\t\t\tWHILE (j < noffixup) & (fixups[j] < a) DO INC(j) END;\r\t\t\tWrite4(p - ImageBase); (* page rva *)\r\t\t\th := 8 + 2 * (j - i);\r\t\t\tWrite4(h + h MOD 4); (* block size *)\r\t\t\tINC(RelocSize, h);\r\t\t\tWHILE i < j DO Write2(fixups[i] - p + 3 * 4096); INC(i) END; (* long fix *)\r\t\t\tIF h MOD 4 # 0 THEN Write2(0); INC(RelocSize, 2) END\r\t\tEND;\r\t\tWrite4(0); Write4(0); INC(RelocSize, 8);\r\t\tImagesSize := RelocRva + (RelocSize + (ObjAlign - 1)) DIV ObjAlign * ObjAlign;\r\tEND WriteReloc;\r\t\r\tPROCEDURE Align(VAR pos: INTEGER);\r\tBEGIN\r\t\tWHILE Ro.Pos() MOD FileAlign # 0 DO WriteCh(0X) END;\r\t\tpos := Ro.Pos()\r\tEND Align;\r\t\r\tPROCEDURE WriteOut (VAR name: Files.Name);\r\t\tVAR res, codepos, conpos, rsrcpos, imppos, exppos, relpos, relend, end: INTEGER;\r\tBEGIN\r\t\tIF ~error THEN Align(codepos); WriteCode END;\r\t\tIF ~error THEN Align(conpos); WriteConst END;\r\t\tIF ~error THEN Align(rsrcpos); WriteResource END;\r\t\tIF ~error THEN Align(imppos); WriteImport END;\r\t\tIF ~error & isDll THEN Align(exppos); WriteExport(name) END;\r\t\tIF ~error THEN Align(relpos); WriteReloc END;\r\t\trelend := Ro.Pos() - 8; Align(end);\r\t\t\r\t\tIF ~error THEN\r\t\t\tRo.SetPos(entryPos); Write4(CodeRva);\r\t\t\tRo.SetPos(isPos); Write4(ImagesSize);\r\t\t\tIF isDll THEN\r\t\t\t\tRo.SetPos(hexpPos); Write4(ExpRva); Write4(ExpSize);\r\t\t\tEND;\r\t\t\tRo.SetPos(himpPos); Write4(ImpRva); Write4(ImpHSize);\r\t\t\tRo.SetPos(hrsrcPos); Write4(RsrcRva); Write4(RsrcSize);\r\t\t\tRo.SetPos(fixPos); Write4(RelocRva); Write4(relend - relpos);\r\t\r\t\t\tRo.SetPos(codePos); Write4(CodeRva); Write4(conpos - HeaderSize); Write4(HeaderSize);\r\t\t\tRo.SetPos(dataPos); Write4(DataRva); Write4((DataSize + (FileAlign-1)) DIV FileAlign * FileAlign);\r\t\t\tRo.SetPos(conPos); Write4(ConRva); Write4(rsrcpos - conpos); Write4(conpos);\r\t\t\tRo.SetPos(rsrcPos); Write4(RsrcRva); Write4(imppos - rsrcpos); Write4(rsrcpos);\r\t\t\tIF isDll THEN\r\t\t\t\tRo.SetPos(impPos); Write4(ImpRva); Write4(exppos - imppos); Write4(imppos);\r\t\t\t\tRo.SetPos(expPos); Write4(ExpRva); Write4(relpos - exppos); Write4(exppos)\r\t\t\tELSE\r\t\t\t\tRo.SetPos(impPos); Write4(ImpRva); Write4(relpos - imppos); Write4(imppos);\r\t\t\tEND;\r\t\t\tRo.SetPos(relPos); Write4(RelocRva); Write4(end - relpos); Write4(relpos);\r\t\t\tIF isStatic THEN\r\t\t\t\tRo.SetPos(termPos); WriteTermCode(modList, 0)\r\t\t\tELSIF isDll THEN\r\t\t\t\tRo.SetPos(termPos); WriteTermCode(main, 0)\r\t\t\tEND\r\t\tEND;\r\t\t\r\t\tIF ~error THEN\r\t\t\tOut.Register(name, \"exe\", Files.ask, res);\r\t\t\tIF res # 0 THEN error := TRUE END\r\t\tEND\r\tEND WriteOut;\r\t\r\tPROCEDURE ScanRes (VAR S: TextMappers.Scanner; end: INTEGER; VAR list: Resource);\r\t\tVAR res, tail: Resource; n: INTEGER;\r\tBEGIN\r\t\ttail := NIL;\r\t\tWHILE (S.start < end) & (S.type = TextMappers.int) DO\r\t\t\tNEW(res); res.id := S.int; S.Scan;\r\t\t\tIF (S.type = TextMappers.char) & (S.char = \"[\") THEN\r\t\t\t\tS.Scan;\r\t\t\t\tIF S.type = TextMappers.int THEN res.lid := S.int; S.Scan END;\r\t\t\t\tIF (S.type = TextMappers.char) & (S.char = \"]\") THEN S.Scan\r\t\t\t\tELSE W.WriteString(\"missing ']'\"); error := TRUE\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tWHILE S.type = TextMappers.char DO\r\t\t\t\tIF S.char = \"@\" THEN n := 0\r\t\t\t\tELSIF S.char = \"^\" THEN n := 16\r\t\t\t\tELSIF S.char = \"~\" THEN n := 17\r\t\t\t\tELSIF S.char <= \"?\" THEN n := ORD(S.char) - ORD(\" \")\r\t\t\t\tEND;\r\t\t\t\tINCL(res.opts, n); S.Scan\r\t\t\tEND;\r\t\t\tIF S.type = TextMappers.string THEN\r\t\t\t\tres.name := S.string$; S.Scan;\r\t\t\t\tIF (S.type = TextMappers.char) & (S.char = \".\") THEN S.Scan;\r\t\t\t\t\tIF S.type = TextMappers.string THEN\r\t\t\t\t\t\tIF (S.string = \"tlb\") OR (S.string = \"TLB\") THEN res.typ := -1 END;\r\t\t\t\t\t\tKernel.MakeFileName(res.name, S.string); S.Scan\r\t\t\t\t\tEND\r\t\t\t\tEND;\r\t\t\t\tIF (S.type = TextMappers.char) & (S.char = \"(\") THEN S.Scan;\r\t\t\t\t\tScanRes(S, end, res.local);\r\t\t\t\t\tIF (S.type = TextMappers.char) & (S.char = \")\") THEN S.Scan\r\t\t\t\t\tELSE W.WriteString(\"missing ')'\"); error := TRUE\r\t\t\t\t\tEND\r\t\t\t\tEND;\r\t\t\t\tIF tail = NIL THEN list := res ELSE tail.next := res END;\r\t\t\t\ttail := res\r\t\t\tELSE\r\t\t\t\tW.WriteString(\"wrong resource name\"); error := TRUE\r\t\t\tEND\r\t\tEND;\r\tEND ScanRes;\r\r\tPROCEDURE LinkIt;\r\t\tVAR S: TextMappers.Scanner; name: Files.Name; mod: Module; end: INTEGER;\r\tBEGIN\r\t\tcomLine := FALSE;\r\t\tmodList := NIL; kernel := NIL; main := NIL;\r\t\tlast := NIL; impg := NIL; impd := NIL; resList := NIL;\r\t\tfirstExp := NIL; lastExp := NIL;\r\t\tNEW(fixups, FixLen);\r\t\tDialog.ShowStatus(\"linking\");\r\t\ttimeStamp := TimeStamp();\r\t\terror := FALSE; modList := NIL; resList := NIL;\r\t\tIF DevCommanders.par = NIL THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " END;\r\t\tS.ConnectTo(DevCommanders.par.text);\r\t\tS.SetPos(DevCommanders.par.beg);\r\t\tend := DevCommanders.par.end;\r\t\tDevCommanders.par := NIL;\r\t\tW.ConnectTo(Log.buf); S.Scan;\r\t\tIF S.type = TextMappers.string THEN\r\t\t\tIF S.string = \"dos\" THEN comLine := TRUE; S.Scan END;\r\t\t\tname := S.string$; S.Scan;\r\t\t\tIF (S.type = TextMappers.char) & (S.char = \".\") THEN S.Scan;\r\t\t\t\tIF S.type = TextMappers.string THEN\r\t\t\t\t\tKernel.MakeFileName(name, S.string); S.Scan\r\t\t\t\tEND\r\t\t\tELSE Kernel.MakeFileName(name, \"EXE\");\r\t\t\tEND;\r\t\t\tIF (S.type = TextMappers.char) & (S.char = \":\") THEN S.Scan;\r\t\t\t\tIF (S.type = TextMappers.char) & (S.char = \"=\") THEN S.Scan;\r\t\t\t\t\tWHILE (S.start < end) & (S.type = TextMappers.string) DO\r\t\t\t\t\t\tNEW(mod); mod.name := S.string$;\r\t\t\t\t\t\tmod.next := modList; modList := mod;\r\t\t\t\t\t\tS.Scan;\r\t\t\t\t\t\tWHILE (S.start < end) & (S.type = TextMappers.char) &\r\t\t\t\t\t\t\t((S.char = \"*\") OR (S.char = \"+\") OR (S.char = \"$\") OR (S.char = \"#\")) DO\r\t\t\t\t\t\t\tIF S.char = \"*\" THEN mod.dll := TRUE\r\t\t\t\t\t\t\tELSIF S.char = \"+\" THEN kernel := mod\r\t\t\t\t\t\t\tELSIF S.char = \"$\" THEN main := mod\r\t\t\t\t\t\t\tELSE mod.intf := TRUE;\r\t\t\t\t\t\t\t\tIF ~isDll THEN\r\t\t\t\t\t\t\t\t\tW.WriteString(\"Exports from Exe not possible. Use LinkDll or LinkDynDll.\");\r\t\t\t\t\t\t\t\t\tW.WriteLn; Log.text.Append(Log.buf); error := TRUE\r\t\t\t\t\t\t\t\tEND\r\t\t\t\t\t\t\tEND;\r\t\t\t\t\t\t\tS.Scan\r\t\t\t\t\t\tEND\r\t\t\t\t\tEND;\r\t\t\t\t\tScanRes(S, end, resList);\r\t\t\t\t\tReadHeaders;\r\t\t\t\t\tPrepResources;\r\t\t\t\t\tIF ~error THEN WriteHeader(name) END;\r\t\t\t\t\tIF ~error THEN WriteOut(name) END;\r\t\t\t\t\tIF ~error THEN\t\r\t\t\t\t\t\tW.WriteString(name); W.WriteString(\" written  \");\r\t\t\t\t\t\tW.WriteInt(Out.Length()); W.WriteString(\"  \"); W.WriteInt(CodeSize)\r\t\t\t\t\tEND\r\t\t\t\tELSE W.WriteString(\" := missing\")\r\t\t\t\tEND\r\t\t\tELSE W.WriteString(\" := missing\")\r\t\t\tEND;\r\t\t\tW.WriteLn; Log.text.Append(Log.buf)\r\t\tEND;\r\t\tIF error THEN Dialog.ShowStatus(\"failed\") ELSE Dialog.ShowStatus(\"ok\") END;\r\t\tW.ConnectTo(NIL); S.ConnectTo(NIL);\r\t\tmodList := NIL; kernel := NIL; main := NIL; firstExp := NIL; lastExp := NIL;\r\t\tlast := NIL; impg := NIL; impd := NIL; resList := NIL; code := NIL; atab := NIL; ntab := NIL;\r\t\tfixups := NIL\r\tEND LinkIt;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: Link
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tisDll := FALSE; isStatic := FALSE;\r\t\tLinkIt\r\tEND Link;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: LinkExe
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tisDll := FALSE; isStatic := TRUE;\r\t\tLinkIt\r\tEND LinkExe;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: LinkDll
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tisDll := TRUE; isStatic := TRUE;\r\t\tLinkIt\r\tEND LinkDll;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: LinkDynDll
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tisDll := TRUE; isStatic := FALSE;\r\t\tLinkIt\r\tEND LinkDynDll;\r\t\r(*\r\tPROCEDURE "
+                    attr: 0
+                  - text: Show
+                    attr: 3
+                  - text: "*;\r\t\tVAR S: TextMappers.Scanner; name: Name; mod: Module; t: TextModels.Model;\r\tBEGIN\r\t\tt := TextViews.FocusText(); IF t = NIL THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " END;\r\t\tW.ConnectTo(Log.buf); S.ConnectTo(t); S.Scan;\r\t\tIF S.type = TextMappers.string THEN\r\t\t\tmod := modList;\r\t\t\tWHILE (mod # NIL) & (mod.name # S.string) DO mod := mod.next END;\r\t\t\tIF mod # NIL THEN\r\t\t\t\tW.WriteString(S.string);\r\t\t\t\tW.WriteString(\" ca = \");\r\t\t\t\tW.WriteIntForm(CodeBase + mod.ca, TextMappers.hexadecimal, 8, \"0\", TRUE);\r\t\t\t\tW.WriteLn; Log.text.Append(Log.buf)\r\t\t\tEND\r\t\tEND;\r\t\tW.ConnectTo(NIL); S.ConnectTo(NIL)\r\tEND Show;\r*)\r\t\t\rBEGIN\r\tnewRec := \"NewRec\"; newArr := \"NewArr\"\rEND DevLinker.\r\r\r"
+                    attr: 0
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 25
+                      bodyPos: 3752
+                      bodyLen: 6
+                    attr: 0
+                    w: 168275
+                    h: 142875
+                  - text: "DevLinker.Link Usekrnl.exe := TestKernel$+ Usekrnl ~\t"
+                    attr: 0
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 26
+                      bodyPos: 3798
+                      bodyLen: 6
+                    attr: 0
+                    w: 168275
+                    h: 142875
+                  - text: "\"DevDecExe.Decode('', 'Usekrnl.exe')\"\r\r"
+                    attr: 0
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 27
+                      bodyPos: 3844
+                      bodyLen: 6
+                    attr: 0
+                    w: 168275
+                    h: 142875
+                  - text: "DevLinker.LinkDynDll MYDLL.dll := TestKernel+ MYDLL$# ~\t"
+                    attr: 0
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 28
+                      bodyPos: 3890
+                      bodyLen: 6
+                    attr: 0
+                    w: 168275
+                    h: 142875
+                  - text: "\"DevDecExe.Decode('', 'MYDLL.dll')\"\r\r"
+                    attr: 0
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 29
+                      bodyPos: 3936
+                      bodyLen: 6
+                    attr: 0
+                    w: 168275
+                    h: 142875
+                  - text: "DevLinker.LinkExe Usekrnl.exe := TestKernel+ Usekrnl ~\t"
+                    attr: 0
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 30
+                      bodyPos: 3982
+                      bodyLen: 6
+                    attr: 0
+                    w: 168275
+                    h: 142875
+                  - text: "\"DevDecExe.Decode('', 'Usekrnl.exe')\"\r\r"
+                    attr: 0
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 31
+                      bodyPos: 4028
+                      bodyLen: 6
+                    attr: 0
+                    w: 168275
+                    h: 142875
+                  - text: "DevLinker.LinkDll MYDLL.dll := TestKernel+ MYDLL# ~\t"
+                    attr: 0
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 32
+                      bodyPos: 4074
+                      bodyLen: 6
+                    attr: 0
+                    w: 168275
+                    h: 142875
+                  - text: "\"DevDecExe.Decode('', 'MYDLL.dll')\"\r\r\rMODULE TestKernel;\r\tIMPORT KERNEL32;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Beep
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tKERNEL32.Beep(500, 200)\r\tEND Beep;\r\t\rBEGIN\rCLOSE\r\tKERNEL32.ExitProcess(0)\rEND TestKernel.\r\rMODULE Usekrnl;\r"
+                    attr: 0
+                  - text: "(* empty windows application using BlackBox Kernel *)\r(* Ominc "
+                    attr: 1
+                  - view:
+                      kind: StdStamps.StdView
+                      storeKind: store
+                      typeChain:
+                        - StdStamps.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 33
+                      bodyPos: 4158
+                      bodyLen: 405
+                    attr: 1
+                    w: 1076325
+                    h: 142875
+                  - text: " *)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT KERNEL32, USER32, GDI32, S := SYSTEM, Kernel := TestKernel;\r\t\r\tVAR Instance, MainWnd: USER32.Handle;\r\t\t\r\tPROCEDURE WndHandler (wnd, message, wParam, lParam: INTEGER): INTEGER;\r\t\tVAR res: INTEGER; ps: USER32.PaintStruct; dc: GDI32.Handle;\r\tBEGIN\r\t\tIF message = USER32.WMDestroy THEN\r\t\t\tUSER32.PostQuitMessage(0)\r\t\tELSIF message = USER32.WMPaint THEN\r\t\t\tdc := USER32.BeginPaint(wnd, ps);\r\t\t\tres := GDI32.TextOutA(dc, 50, 50, \"Hello World\", 11);\r\t\t\tres := USER32.EndPaint(wnd, ps)\r\t\tELSIF message = USER32.WMChar THEN\r\t\t\tKernel.Beep\r\t\tELSE\r\t\t\tRETURN USER32.DefWindowProcA(wnd, message, wParam, lParam)\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 0\r\tEND WndHandler;\r\t\r\tPROCEDURE OpenWindow;\r\t\tVAR class: USER32.WndClass; res: INTEGER;\r\tBEGIN\r\t\tclass.cursor := USER32.LoadCursorA(0, USER32.MakeIntRsrc(USER32.IDCArrow));\r\t\tclass.icon := USER32.LoadIconA(Instance, USER32.MakeIntRsrc(1));\r\t\tclass.menuName := NIL;\r\t\tclass.className := \"Simple\";\r\t\tclass.backgnd := GDI32.GetStockObject(GDI32.WhiteBrush);\r\t\tclass.style := {0, 1, 5, 7};\r\t\tclass.instance := Instance;\r\t\tclass.wndProc := WndHandler;\r\t\tclass.clsExtra := 0;\r\t\tclass.wndExtra := 0;\r\t\tUSER32.RegisterClassA(class);\r\t\tMainWnd := USER32.CreateWindowExA({}, \"Simple\", \"Empty Windows Application\",\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t{16..19, 22, 23, 25},\r\t\t\t\t\t\t\t\t\t\t\t\t\t\tUSER32.CWUseDefault, USER32.CWUseDefault,\r\t\t\t\t\t\t\t\t\t\t\t\t\t\tUSER32.CWUseDefault, USER32.CWUseDefault,\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t0, 0, Instance, 0);\r\t\tres := USER32.ShowWindow(MainWnd, 10);\r\t\tres := USER32.UpdateWindow(MainWnd);\r\tEND OpenWindow;\r\t\r\tPROCEDURE MainLoop;\r\t\tVAR msg: USER32.Message; res: INTEGER;\r\tBEGIN\r\t\tWHILE USER32.GetMessageA(msg, 0, 0, 0) # 0 DO\r\t\t\tres := USER32.TranslateMessage(msg);\r\t\t\tres := USER32.DispatchMessageA(msg);\r\t\tEND;\r(*\r\t\tKERNEL32.ExitProcess(msg.wParam)\r*)\r\tEND MainLoop;\r\t\rBEGIN\r\tInstance := KERNEL32.GetModuleHandleA(NIL);\r\tOpenWindow;\r\tMainLoop\rCLOSE\r\tKernel.Beep\rEND Usekrnl.\r\r\rMODULE MYDLL;\r"
+                    attr: 0
+                  - text: "(* sample module to be linked into a dll *)"
+                    attr: 1
+                  - text: "\r"
+                    attr: 0
+                  - text: "(* Ominc "
+                    attr: 1
+                  - view:
+                      kind: StdStamps.StdView
+                      storeKind: store
+                      typeChain:
+                        - StdStamps.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 34
+                      bodyPos: 4633
+                      bodyLen: 405
+                    attr: 1
+                    w: 1076325
+                    h: 142875
+                  - text: " *)\r\r\t"
+                    attr: 1
+                  - text: "IMPORT SYSTEM, KERNEL32;\r\t\r\tVAR "
+                    attr: 0
+                  - text: expVar
+                    attr: 3
+                  - text: "*: INTEGER;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: GCD
+                    attr: 3
+                  - text: "* (a, b: INTEGER): INTEGER;\r\tBEGIN\r\t\tWHILE a # b DO\r\t\t\tIF a < b THEN b := b - a ELSE a := a - b END\r\t\tEND;\r\t\texpVar := a;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " a\r\tEND GCD;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Beep
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tKERNEL32.Beep(500, 200)\r\tEND Beep;\r\t\rCLOSE\r\tBeep\rEND MYDLL.\r\r\r\rResource = Id [ \"[\" Language \"]\" ] Options name [ \".\" ext ] [ \"(\" { Resource } \")\" ]\rId = number\rLanguage = number\rOptions = { \"@\" | \"!\" .. \"?\" | \"^\" | \"~\" }\r\rnames\r\rMENU\r\t1 MENU (0 File (11 New 12 Open 13 Save 0 \"\" 14 Exit) 0 Edit (21 Cut 22 Copy 23 Paste))\r\t\t= grayed\r\t\t- inctive\r\t\t# bitmap\r\t\t* checked\r\t\t! menuBarBreak\r\t\t/ menuBreak\r\t\t? ownerDraw\r\rACCELERATOR\r\t1 ACCELERATOR (11 ^N 12 ^O 13 ^S 21 ^X 22 ^C 23 ^V)\r\t\t* shift\r\t\t^ ctrl\r\t\t@ alt\r\t\t- noInvert\r\rfilename.ico\r\rfilename.cur\r\rfilname.bmp\r\rfilename.res\r\rfilename.tlb\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 39
+          bodyPos: 57892
+          bodyLen: 8

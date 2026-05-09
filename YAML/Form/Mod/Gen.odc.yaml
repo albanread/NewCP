@@ -1,0 +1,264 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Form\\Mod\\Gen.odc"
+  size: 10406
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 10275
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 10089
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 10003
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 127000
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 114300
+                color: 0x00000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 10124
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 9610
+                runListLen: 1783
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE FormGen;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tpurpose\t= \"\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\t\r\tIMPORT\r\t\tStrings, Meta, Dates, Files, Ports, Views, Properties, Dialog, Containers, Documents,\r\t\tControls, StdDialog, StdCmds, FormModels, FormViews, FormControllers;\r\r\tCONST\r\t\tdefaultDelta = 4 * Ports.point;\r\t\tminW = 10 * Ports.mm; minH = 4 * Ports.mm;\r\t\tmaxW = 200 * Ports.mm; maxH = 50 * Ports.mm;\r\t\t\r\tTYPE\r\t\tProcVal = RECORD (Meta.Value)\r\t\t\tp: PROCEDURE\r\t\tEND;\r\r\tVAR\r\t\t"
+                    attr: 0
+                  - text: new
+                    attr: 3
+                  - text: "*: RECORD\r\t\t\tlink*: Dialog.String\r\t\tEND;\r\r\t\tlist: RECORD (Meta.Value) p*: POINTER TO Dialog.List END;\r\t\tselect: RECORD (Meta.Value) p*: POINTER TO Dialog.Selection END;\r\t\tcombo: RECORD (Meta.Value) p*: POINTER TO Dialog.Combo END;\r\t\tdate: RECORD (Meta.Value) p*: POINTER TO Dates.Date END;\r\t\ttime: RECORD (Meta.Value) p*: POINTER TO Dates.Time END;\r\t\tcolor: RECORD (Meta.Value) p*: POINTER TO Dialog.Color END;\r\t\tcurrency: RECORD (Meta.Value) p*: POINTER TO Dialog.Currency END;\r\t\ttree: RECORD (Meta.Value) p*: POINTER TO Dialog.Tree END;\r\r\r\tPROCEDURE GetSize (v: Views.View; VAR w, h: INTEGER);\r\tBEGIN\r\t\tw := Views.undefined; h := Views.undefined;\r\t\tProperties.PreferredSize(v, minW, maxW, minH, maxH, minW, minH, w, h)\r\tEND GetSize;\r\r\tPROCEDURE Gen (f: FormModels.Model; fv: FormViews.View; VAR path, name: ARRAY OF CHAR;\r\t\t\t\t\twr: FormModels.Writer; var: Meta.Item; VAR x, y, max: INTEGER; VAR first: BOOLEAN);\r\t\tVAR v, str: Views.View; dummy, delta, x0, y0, m, w, h, i: INTEGER; n: Meta.Name;\r\t\t\tp: Controls.Prop; s: Meta.Scanner; elem: Meta.Item; ok, back: BOOLEAN; pv: ProcVal;\r\tBEGIN\r\t\tdummy := 0; delta := defaultDelta; FormViews.RoundToGrid(fv, dummy, delta);\r\t\tNEW(p); p.guard := \"\"; p.notifier := \"\"; p.label := \"\"; p.level := 0;\r\t\tp.opt[0] := FALSE; p.opt[1] := FALSE; p.opt[2] := FALSE; p.opt[3] := FALSE; p.opt[4] := FALSE;\r\t\tback := FALSE;\r\t\tFormViews.RoundToGrid(fv, x, y);\r\t\tv := NIL; w := Views.undefined; x0 := x; y0 := y;\r\t\tIF (name[0] >= \"0\") & (name[0] <= \"9\") THEN p.link := path + \"[\" + name + \"]\"\r\t\tELSIF name # \"\" THEN p.link := path + \".\" + name\r\t\tELSE p.link := path$\r\t\tEND;\r\t\tIF var.obj = Meta.modObj THEN\t"
+                    attr: 0
+                  - text: "(* traverse module *)"
+                    attr: 1
+                  - text: "\r\t\t\ts.ConnectTo(var); s.Scan; m := 0;\r\t\t\tWHILE ~ s.eos DO\r\t\t\t\ts.GetObjName(n);\r\t\t\t\tGen(f, fv, p.link, n, wr, s.this, x, y, m, first);\r\t\t\t\ts.Scan\r\t\t\tEND;\r\t\t\tIF m > max THEN max := m END;\r\t\tELSIF var.obj = Meta.procObj THEN\r\t\t\tvar.GetVal(pv, ok);\r\t\t\tIF ok THEN"
+                    attr: 0
+                  - text: "\t(* command *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tIF first THEN p.opt[Controls.default] := TRUE END;\r\t\t\t\tp.label := name$; v := Controls.dir.NewPushButton(p);\r\t\t\t\tp.opt[Controls.default] := FALSE; first := FALSE\r\t\t\tEND\r\t\tELSIF var.obj = Meta.varObj THEN\r\t\t\tIF (var.typ IN {Meta.byteTyp, Meta.sIntTyp, Meta.longTyp, Meta.intTyp, Meta.sRealTyp, Meta.realTyp})\r\t\t\t\tOR (var.typ = Meta.arrTyp) & (var.BaseTyp() = Meta.charTyp) THEN\r\t\t\tp.opt[Controls.left] := TRUE; v := Controls.dir.NewField(p)\r\t\t\tELSIF var.typ = Meta.boolTyp THEN\r\t\t\t\tp.label := name$; v := Controls.dir.NewCheckBox(p)\r\t\t\tELSIF var.typ = Meta.procTyp THEN\r\t\t\t\tvar.GetVal(pv, ok);\r\t\t\t\tIF ok THEN"
+                    attr: 0
+                  - text: "\t(* command *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tIF first THEN p.opt[Controls.default] := TRUE END;\r\t\t\t\t\tp.label := name$; v := Controls.dir.NewPushButton(p);\r\t\t\t\t\tp.opt[Controls.default] := FALSE; first := FALSE\r\t\t\t\tEND\r\t\t\tELSIF var.typ = Meta.recTyp THEN\r\t\t\t\tIF var.Is(list) THEN v := Controls.dir.NewListBox(p)\r\t\t\t\tELSIF var.Is(select) THEN v := Controls.dir.NewSelectionBox(p)\r\t\t\t\tELSIF var.Is(combo) THEN v := Controls.dir.NewComboBox(p)\r\t\t\t\tELSIF var.Is(date) THEN v := Controls.dir.NewDateField(p)\r\t\t\t\tELSIF var.Is(time) THEN v := Controls.dir.NewTimeField(p)\r\t\t\t\tELSIF var.Is(color) THEN v := Controls.dir.NewColorField(p)\r\t\t\t\tELSIF var.Is(currency) THEN p.opt[Controls.left] := TRUE; v := Controls.dir.NewField(p)\r\t\t\t\tELSIF var.Is(tree) THEN \r\t\t\t\t\tp.opt[Controls.haslines] := TRUE; p.opt[Controls.hasbuttons] := TRUE; \r\t\t\t\t\tp.opt[Controls.atroot] := TRUE; p.opt[Controls.foldericons] := TRUE;\r\t\t\t\t\tv := Controls.dir.NewTreeControl(p)\r\t\t\t\tELSE\t"
+                    attr: 0
+                  - text: "(* traverse record *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\ts.ConnectTo(var); s.Scan; m := 0;\r\t\t\t\t\tIF name # \"\" THEN INC(x, delta); INC(y, 4 * delta) END;\r\t\t\t\t\tWHILE ~ s.eos DO\r\t\t\t\t\t\ts.GetObjName(n);\r\t\t\t\t\t\tGen(f, fv, p.link, n, wr, s.this, x, y, m, first);\r\t\t\t\t\t\ts.Scan\r\t\t\t\t\tEND;\r\t\t\t\t\tIF m > max THEN max := m END;\r\t\t\t\t\tIF (name # \"\") & (m > 0) THEN\t"
+                    attr: 0
+                  - text: "(* insert group *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\tp.label := name$; v := Controls.dir.NewGroup(p);\r\t\t\t\t\t\tw := m; x := x0; h := y + delta - y0; y := y0; back := TRUE\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\tELSIF var.typ = Meta.arrTyp THEN\t"
+                    attr: 0
+                  - text: "(* traverse array *)"
+                    attr: 1
+                  - text: "\r\t\t\t\ti := 0; m := 0;\r\t\t\t\tIF name # \"\" THEN INC(x, delta); INC(y, 4 * delta) END;\r\t\t\t\tWHILE i < var.Len() DO\r\t\t\t\t\tvar.Index(i, elem);\r\t\t\t\t\tStrings.IntToString(i, n); \r\t\t\t\t\tGen(f, fv, p.link, n, wr, elem, x, y, m, first);\r\t\t\t\t\tINC(i)\r\t\t\t\tEND;\r\t\t\t\tIF m > max THEN max := m END;\r\t\t\t\tIF (name # \"\") & (m > 0) THEN\t"
+                    attr: 0
+                  - text: "(* insert group *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tp.label := name$; v := Controls.dir.NewGroup(p);\r\t\t\t\t\tw := m; x := x0; h := y + delta - y0; y := y0; back := TRUE\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND;\r\t\tIF v # NIL THEN\r\t\t\tIF (name # \"\") & (p.label = \"\") THEN\r\t\t\t\tp.label := name$;\r\t\t\t\tstr := Controls.dir.NewCaption(p); GetSize(str, w, h);\r\t\t\t\twr.WriteView(str, x, y, x + w, y + h); INC(x, w + delta);\r\t\t\t\tFormViews.RoundToGrid(fv, x, y)\r\t\t\tEND;\r\t\t\tIF ~back THEN GetSize(v, w, h) END;\r\t\t\twr.WriteView(v, x, y, x + w, y + h); INC(x, w + delta);\r\t\t\tIF back THEN f.PutAbove(v, NIL) END;\r\t\t\ty := y + h + delta\r\t\tEND;\r\t\tIF x > max THEN max := x END;\r\t\tx := x0\r\tEND Gen;\r\r\tPROCEDURE NewDialog (name: ARRAY OF CHAR): Views.View;\r\t\tVAR var: Meta.Item;  x, y, max: INTEGER; wr: FormModels.Writer; d: Documents.Document;\r\t\t\tf: FormModels.Model; v: FormViews.View; first: BOOLEAN; n: ARRAY 4 OF CHAR;\r\t\t\tc: Containers.Controller;\r\tBEGIN\r\t\tf := NIL; v := NIL;\r\t\tMeta.LookupPath(name, var);\r\t\tIF (var.obj = Meta.varObj) OR (var.obj = Meta.modObj) THEN\r\t\t\tx := defaultDelta; y := defaultDelta; max := 50 * Ports.point; first := TRUE;\r\t\t\tf := FormModels.dir.New();\r\t\t\tv := FormViews.dir.New(f); c := v.ThisController();\r\t\t\tIF c # NIL THEN\r\t\t\t\tc.SetOpts(Containers.layout) \r\t\t\tELSE\r\t\t\t\tv.SetController(FormControllers.dir.NewController(Containers.layout)) \r\t\t\tEND;\r\t\t\twr := f.NewWriter(NIL); wr.Set(NIL); n := \"\";\r\t\t\tGen(f, v, name, n, wr, var, x, y, max, first);\r\t\t\td := Documents.dir.New(v, max, y)\r\t\tELSE Dialog.ShowParamMsg(\"#Form:VariableNotFound\", name, \"\", \"\")\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " v\r\tEND NewDialog;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Create
+                    attr: 3
+                  - text: "*;\r\t\tVAR v: Views.View; i, j: INTEGER; mod, name: Files.Name; loc: Files.Locator; \r\t\t\tw: FormViews.View; c: Containers.Controller;\r\tBEGIN\r\t\tv := NIL;\r\t\tIF new.link = \"\" THEN\r\t\t\tw := FormViews.dir.New(FormModels.dir.New()); c := w.ThisController();\r\t\t\tIF c # NIL THEN\r\t\t\t\tc.SetOpts({FormControllers.noFocus}) \r\t\t\tELSE\r\t\t\t\tw.SetController(FormControllers.dir.NewController({FormControllers.noFocus})) \r\t\t\tEND;\r\t\t\tv := w\r\t\tELSE\r\t\t\tv := NewDialog(new.link)\r\t\tEND;\r\t\tIF v # NIL THEN\r\t\t\tmod := new.link$; new.link := \"\"; name := \"\";\r\t\t\tStdCmds.CloseDialog;\r\t\t\tIF mod # \"\" THEN\r\t\t\t\ti := 0; WHILE (mod[i] # 0X) & (mod[i] # \".\") DO INC(i) END;\r\t\t\t\tIF mod[i] # 0X THEN\t"
+                    attr: 0
+                  - text: "(* module.variable *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tmod[i] := 0X; INC(i); j := 0;\r\t\t\t\t\tWHILE mod[i] # 0X DO name[j] := mod[i]; INC(i); INC(j) END;\r\t\t\t\t\tname[j] := 0X\r\t\t\t\tEND;\r\t\t\t\tStdDialog.GetSubLoc(mod, \"Rsrc\", loc, mod);\r\t\t\t\tIF name = \"\" THEN name := mod$ END;\r\t\t\t\tloc.res := 77\r\t\t\tELSE\r\t\t\t\tloc := NIL; name := \"\"\r\t\t\tEND;\r\t\t\tViews.Open(v, loc, name, NIL);\r\t\t\tViews.BeginModification(Views.notUndoable, v);\r\t\t\tViews.EndModification(Views.notUndoable, v)\r\t\tEND\r\tEND Create;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: Empty
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tnew.link := \"\"; Create\r\tEND Empty;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: CreateGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\tBEGIN\r\t\tIF new.link = \"\" THEN par.disabled := TRUE END\r\tEND CreateGuard;\r\rEND FormGen.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 10371
+          bodyLen: 8

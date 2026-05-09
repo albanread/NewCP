@@ -1,0 +1,376 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Mod\\Controls.odc"
+  size: 6722
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 6591
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 6405
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 6319
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 114300
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 6440
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 5926
+                runListLen: 2063
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE ObxControls;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT Dialog, Ports, Properties, Views;\r\r\tCONST beginner = 0; advanced = 1; expert = 2; guru = 3;\t"
+                    attr: 0
+                  - text: "(* user classes *)"
+                    attr: 1
+                  - text: "\r\r\tTYPE\r\t\tView = POINTER TO RECORD (Views.View)\r\t\t\tsize: INTEGER\t"
+                    attr: 0
+                  - text: "(* border size in mm *)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\tVAR\r\t\t"
+                    attr: 0
+                  - text: data
+                    attr: 3
+                  - text: "*: RECORD\r\t\t\tclass*: INTEGER;\t"
+                    attr: 0
+                  - text: "(* current user class *)"
+                    attr: 1
+                  - text: "\r\t\t\tlist*: Dialog.List;\t"
+                    attr: 0
+                  - text: "(* list of currently available sizes, derived from "
+                    attr: 1
+                  - text: class
+                    attr: 0
+                  - text: " *)"
+                    attr: 1
+                  - text: "\r\t\t\twidth*: INTEGER\t"
+                    attr: 0
+                  - text: "(* width of next view to be opened. Derived from\r\t\t\t\t\t\t\t\t\t\t"
+                    attr: 1
+                  - text: class
+                    attr: 0
+                  - text: ", or entered through a text entry field *)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\tpredef: ARRAY 6 OF INTEGER;\t"
+                    attr: 0
+                  - text: "(* table of predefined sizes *)"
+                    attr: 1
+                  - text: "\r\r\r\tPROCEDURE SetList;\r\tBEGIN\r\t\tIF data.class = beginner THEN\r\t\t\tdata.list.SetLen(1);\r\t\t\tdata.list.SetItem(0, \"default\")\r\t\tELSIF data.class = advanced THEN\r\t\t\tdata.list.SetLen(4);\r\t\t\tdata.list.SetItem(0, \"default\");\r\t\t\tdata.list.SetItem(1, \"small\");\r\t\t\tdata.list.SetItem(2, \"medium\");\r\t\t\tdata.list.SetItem(3, \"large\");\r\t\tELSE\r\t\t\tdata.list.SetLen(6);\r\t\t\tdata.list.SetItem(0, \"default\");\r\t\t\tdata.list.SetItem(1, \"small\");\r\t\t\tdata.list.SetItem(2, \"medium\");\r\t\t\tdata.list.SetItem(3, \"large\");\r\t\t\tdata.list.SetItem(4, \"tiny\");\r\t\t\tdata.list.SetItem(5, \"huge\");\r\t\tEND\r\tEND SetList;\r\r\t"
+                    attr: 0
+                  - text: "(* View *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (v: View) CopyFromSimpleView (source: Views.View);\r\tBEGIN\r\t\tv.size := source(View).size\r\tEND CopyFromSimpleView;\r\r\tPROCEDURE (v: View) Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\tBEGIN\t"
+                    attr: 0
+                  - text: "(* fill view with a red square of size "
+                    attr: 1
+                  - text: v.size
+                    attr: 0
+                  - text: " *)"
+                    attr: 1
+                  - text: "\r\t\tIF v.size = 0 THEN v.size := predef[0] END;\t"
+                    attr: 0
+                  - text: "(* lazy initialization of size *)"
+                    attr: 1
+                  - text: "\r\t\tf.DrawRect(0, 0, v.size, v.size, Ports.fill, Ports.red)\r\tEND Restore;\r\r\tPROCEDURE (v: View) HandlePropMsg (VAR msg: Views.PropMessage);\r\tBEGIN\r\t\tWITH msg: Properties.SizePref DO\r\t\t\tIF v.size = 0 THEN v.size := predef[0] END;\t"
+                    attr: 0
+                  - text: "(* lazy initialization of size *)"
+                    attr: 1
+                  - text: "\r\t\t\tmsg.w := v.size; msg.h := v.size\t"
+                    attr: 0
+                  - text: "(* tell environment about desired width and height *)"
+                    attr: 1
+                  - text: "\r\t\tELSE\t"
+                    attr: 0
+                  - text: "(* ignore other messages *)"
+                    attr: 1
+                  - text: "\r\t\tEND\r\tEND HandlePropMsg;\r\r\t"
+                    attr: 0
+                  - text: "(* notifiers *)"
+                    attr: 1
+                  - text: "\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: ClassNotify
+                    attr: 3
+                  - text: "* (op, from, to: INTEGER);\r\tBEGIN\t"
+                    attr: 0
+                  - text: "(* react to change in data.class *)"
+                    attr: 1
+                  - text: "\r\t\tIF op = Dialog.changed THEN\r\t\t\tIF (to = beginner) OR (to = advanced) & (data.list.index > 3) THEN\r\t\t\t\t(* if class is reduced, make sure that selection contains legal elements *)\r\t\t\t\tdata.list.index := 0; data.width := predef[0];\t"
+                    attr: 0
+                  - text: "(* modify interactor *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tDialog.Update(data)\t"
+                    attr: 0
+                  - text: "(* redraw controls where necessary *)"
+                    attr: 1
+                  - text: "\r\t\t\tEND;\r\t\t\tSetList;\r\t\t\tDialog.UpdateList(data.list)\t"
+                    attr: 0
+                  - text: "(* reconstruct list box contents *)"
+                    attr: 1
+                  - text: "\r\t\tEND\r\tEND ClassNotify;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ListNotify
+                    attr: 3
+                  - text: "* (op, from, to: INTEGER);\r\tBEGIN\t"
+                    attr: 0
+                  - text: "(* reacto to change in data.list (index "
+                    attr: 1
+                  - text: to
+                    attr: 0
+                  - text: " was selected) *)"
+                    attr: 1
+                  - text: "\r\t\tIF op = Dialog.changed THEN\r\t\t\tdata.width := predef[to];\t"
+                    attr: 0
+                  - text: "(* modify interactor *)"
+                    attr: 1
+                  - text: "\r\t\t\tDialog.Update(data)\t"
+                    attr: 0
+                  - text: "(* redraw controls where necessary *)\r"
+                    attr: 1
+                  - text: "\t\tEND\r\tEND ListNotify;\r\r\t"
+                    attr: 0
+                  - text: "(* guards *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ListGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\tBEGIN\t"
+                    attr: 0
+                  - text: "(* disable list box for a beginner *)"
+                    attr: 1
+                  - text: "\r\t\tpar.disabled := data.class = beginner\r\tEND ListGuard;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: WidthGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\tBEGIN\t"
+                    attr: 0
+                  - text: "(* make text entry field read-only if user is not guru *)"
+                    attr: 1
+                  - text: "\r\t\tpar.readOnly := data.class # guru\r\tEND WidthGuard;\r\r\t"
+                    attr: 0
+                  - text: "(* commands *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Open
+                    attr: 3
+                  - text: "*;\r\t\tVAR v: View;\r\tBEGIN\r\t\tNEW(v);\t"
+                    attr: 0
+                  - text: "(* create and initialize a new view *)"
+                    attr: 1
+                  - text: "\r\t\tv.size := data.width * Ports.mm;\t"
+                    attr: 0
+                  - text: "(* define view's size in function of "
+                    attr: 1
+                  - text: class
+                    attr: 0
+                  - text: " *)"
+                    attr: 1
+                  - text: "\r\t\tViews.OpenAux(v, \"Example\")\t"
+                    attr: 0
+                  - text: "(* open the view in a window *)"
+                    attr: 1
+                  - text: "\r\tEND Open;\r\rBEGIN\t"
+                    attr: 0
+                  - text: "(* initialization of global variables *)"
+                    attr: 1
+                  - text: "\r\tpredef[0] := 40; predef[1] := 30; predef[2] := 50;\t"
+                    attr: 0
+                  - text: "(* predefined sizes *)"
+                    attr: 1
+                  - text: "\r\tpredef[3] := 70; predef[4] := 20; predef[5] := 100;\r\tdata.class := beginner;\t"
+                    attr: 0
+                  - text: "(* default values *)"
+                    attr: 1
+                  - text: "\r\tdata.list.index := 0;\r\tdata.width := predef[0];\r\tSetList\rEND ObxControls.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 6687
+          bodyLen: 8

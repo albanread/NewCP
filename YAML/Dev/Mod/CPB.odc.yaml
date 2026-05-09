@@ -1,0 +1,552 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Dev\\Mod\\CPB.odc"
+  size: 85998
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 85867
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 85681
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 85595
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 127000
+                dsc: 25400
+                grid: 1
+                opts: 0x00000021
+              defaultAttr:
+                font: Arial
+                size: 114300
+                color: 0x00000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 25
+                bodyPos: 85716
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 85202
+                runListLen: 3005
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [4]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 550
+                    style: 0x00000000
+                  - # [5]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000001
+                flow:
+                  - text: "MODULE DevCPB;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems, Robert Campbell\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\treferences\t= \"ftp://ftp.inf.ethz.ch/pub/software/Oberon/OberonV4/Docu/OP2.Paper.ps\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- 20070123, bh, NewString changed (Unicode support)\r\t- 20070123, bh, CheckAssign changed to check procedure type sysflags\r\t- 20070307, bh, added char to string conversion in LEN handling\r\t- 20070300, bh, x.obj := NIL in ConstOp\r\t- 20080202, bh, Real constant operations corrected (proposed by Robert Campbell)\r\t- 20150422, center #39, checking illegal use of SYSTEM.ADR function\r\t- 20150422, center #40, fixing concatenation of Unicode character constants\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT DevCPT, DevCPM;\r\r\tCONST\r\t\t(* symbol values or ops *)\r\t\ttimes = 1; slash = 2; div = 3; mod = 4;\r\t\tand = 5; plus = 6; minus = 7; or = 8; eql = 9;\r\t\tneq = 10; lss = 11; leq = 12; gtr = 13; geq = 14;\r\t\tin = 15; is = 16; ash = 17; msk = 18; len = 19;\r\t\tconv = 20; abs = 21; cap = 22; odd = 23; not = 33;\r\t\t(*SYSTEM*)\r\t\tadr = 24; cc = 25; bit = 26; lsh = 27; rot = 28; val = 29;\r\t\tmin = 34; max = 35; typfn = 36; size = 37;\r\t\t\r\t\t(* object modes *)\r\t\tVar = 1; VarPar = 2; Con = 3; Fld = 4; Typ = 5; LProc = 6; XProc = 7;\r\t\tSProc = 8; CProc = 9; IProc = 10; Mod = 11; Head = 12; TProc = 13;\r\r\t\t(* Structure forms *)\r\t\tUndef = 0; Byte = 1; Bool = 2; Char8 = 3; Int8 = 4; Int16 = 5; Int32 = 6;\r\t\tReal32 = 7; Real64 = 8; Set = 9; String8 = 10; NilTyp = 11; NoTyp = 12;\r\t\tPointer = 13; ProcTyp = 14; Comp = 15;\r\t\tChar16 = 16; String16 = 17; Int64 = 18;\r\t\tintSet = {Int8..Int32, Int64}; realSet = {Real32, Real64}; charSet = {Char8, Char16};\r\r\t\t(* composite structure forms *)\r\t\tBasic = 1; Array = 2; DynArr = 3; Record = 4;\r\r\t\t(* nodes classes *)\r\t\tNvar = 0; Nvarpar = 1; Nfield = 2; Nderef = 3; Nindex = 4; Nguard = 5; Neguard = 6;\r\t\tNconst = 7; Ntype = 8; Nproc = 9; Nupto = 10; Nmop = 11; Ndop = 12; Ncall = 13;\r\t\tNinittd = 14; Nif = 15; Ncaselse = 16; Ncasedo = 17; Nenter = 18; Nassign = 19;\r\t\tNifelse = 20; Ncase = 21; Nwhile = 22; Nrepeat = 23; Nloop = 24; Nexit = 25;\r\t\tNreturn = 26; Nwith = 27; Ntrap = 28;\r\r\t\t(*function number*)\r\t\tassign = 0;\r\t\thaltfn = 0; newfn = 1; absfn = 2; capfn = 3; ordfn = 4;\r\t\tentierfn = 5; oddfn = 6; minfn = 7; maxfn = 8; chrfn = 9;\r\t\tshortfn = 10; longfn = 11; sizefn = 12; incfn = 13; decfn = 14;\r\t\tinclfn = 15; exclfn = 16; lenfn = 17; copyfn = 18; ashfn = 19; assertfn = 32;\r\t\tlchrfn = 33; lentierfcn = 34; bitsfn = 37; bytesfn = 38;\r\t\t\r\t\t(*SYSTEM function number*)\r\t\tadrfn = 20; ccfn = 21; lshfn = 22; rotfn = 23;\r\t\tgetfn = 24; putfn = 25; getrfn = 26; putrfn = 27;\r\t\tbitfn = 28; valfn = 29; sysnewfn = 30; movefn = 31;\r\t\tthisrecfn = 45; thisarrfn = 46;\r\r\t\t(* COM function number *)\r\t\tvalidfn = 40; iidfn = 41; queryfn = 42;\r\t\t\r\t\t(* module visibility of objects *)\r\t\tinternal = 0; external = 1; externalR = 2; inPar = 3; outPar = 4;\r\r\t\t(* procedure flags (conval.setval) *)\r\t\thasBody = 1; isRedef = 2; slNeeded = 3; imVar = 4;\r\t\t\r\t\t(* attribute flags (attr.adr, struct.attribute, proc.conval.setval)*)\r\t\tnewAttr = 16; absAttr = 17; limAttr = 18; empAttr = 19; extAttr = 20;\r\t\t\r\t\t(* case statement flags (conval.setval) *)\r\t\tuseTable = 1; useTree = 2;\r\t\t\r\t\t(* sysflags *)\r\t\tnilBit = 1; inBit = 2; outBit = 4; newBit = 8; iidBit = 16; interface = 10; jint = -11; jstr = -13;\r\r\t\tAssertTrap = 0;\t(* default trap number *)\r\r\t\tcovarOut = FALSE;\r\t\t\r\t\t\r\tVAR\r\t\ttypSize*: PROCEDURE(typ: DevCPT.Struct);\r\t\tzero, one, two, dummy, quot: DevCPT.Const;\r\r\tPROCEDURE err(n: SHORTINT);\r\tBEGIN DevCPM.err(n)\r\tEND err;\r\t\r\tPROCEDURE NewLeaf*(obj: DevCPT.Object): DevCPT.Node;\r\t\tVAR node: DevCPT.Node; typ: DevCPT.Struct;\r\tBEGIN\r\t\ttyp := obj.typ;\r\t\tCASE obj.mode OF\r\t\t  Var:\r\t\t\t\tnode := DevCPT.NewNode(Nvar); node.readonly := (obj.vis = externalR) & (obj.mnolev < 0)\r\t\t| VarPar:\r\t\t\t\tnode := DevCPT.NewNode(Nvarpar); node.readonly := obj.vis = inPar;\r\t\t| Con:\r\t\t\t\tnode := DevCPT.NewNode(Nconst); node.conval := DevCPT.NewConst();\r\t\t\t\tnode.conval^ := obj.conval^\t(* string is not copied, only its ref *)\r\t\t| Typ:\r\t\t\t\tnode := DevCPT.NewNode(Ntype)\r\t\t| LProc..IProc, TProc:\r\t\t\t\tnode := DevCPT.NewNode(Nproc)\r\t\tELSE err(127); node := DevCPT.NewNode(Nvar); typ := DevCPT.notyp\r\t\tEND ;\r\t\tnode.obj := obj; node.typ := typ;\r\t\tRETURN node\r\tEND NewLeaf;\r\t\r\tPROCEDURE Construct*(class: BYTE; VAR x: DevCPT.Node;  y: DevCPT.Node);\r\t\tVAR node: DevCPT.Node;\r\tBEGIN\r\t\tnode := DevCPT.NewNode(class); node.typ := DevCPT.notyp;\r\t\tnode.left := x; node.right := y; x := node\r\tEND Construct;\r\t\r\tPROCEDURE Link*(VAR x, last: DevCPT.Node; y: DevCPT.Node);\r\tBEGIN\r\t\tIF x = NIL THEN x := y ELSE last.link := y END ;\r\t\tWHILE y.link # NIL DO y := y.link END ;\r\t\tlast := y\r\tEND Link;\r\t\r\tPROCEDURE BoolToInt(b: BOOLEAN): INTEGER;\r\tBEGIN\r\t\tIF b THEN RETURN 1 ELSE RETURN 0 END\r\tEND BoolToInt;\r\t\r\tPROCEDURE IntToBool(i: INTEGER): BOOLEAN;\r\tBEGIN\r\t\tIF i = 0 THEN RETURN FALSE ELSE RETURN TRUE END\r\tEND IntToBool;\r\t\r\tPROCEDURE NewBoolConst*(boolval: BOOLEAN): DevCPT.Node;\r\t\tVAR x: DevCPT.Node;\r\tBEGIN\r\t\tx := DevCPT.NewNode(Nconst); x.typ := DevCPT.booltyp;\r\t\tx.conval := DevCPT.NewConst(); x.conval.intval := BoolToInt(boolval); RETURN x\r\tEND NewBoolConst;\r\t\r\tPROCEDURE OptIf*(VAR x: DevCPT.Node);\t(* x.link = NIL *)\r\t\tVAR if, pred: DevCPT.Node;\r\tBEGIN\r\t\tif := x.left;\r\t\tWHILE if.left.class = Nconst DO\r\t\t\tIF IntToBool(if.left.conval.intval) THEN x := if.right; RETURN\r\t\t\tELSIF if.link = NIL THEN x := x.right; RETURN\r\t\t\tELSE if := if.link; x.left := if\r\t\t\tEND\r\t\tEND ;\r\t\tpred := if; if := if.link;\r\t\tWHILE if # NIL DO\r\t\t\tIF if.left.class = Nconst THEN\r\t\t\t\tIF IntToBool(if.left.conval.intval) THEN\r\t\t\t\t\tpred.link := NIL; x.right := if.right; RETURN\r\t\t\t\tELSE if := if.link; pred.link := if\r\t\t\t\tEND\r\t\t\tELSE pred := if; if := if.link\r\t\t\tEND\r\t\tEND\r\tEND OptIf;\r\r\tPROCEDURE Nil*(): DevCPT.Node;\r\t\tVAR x: DevCPT.Node;\r\tBEGIN\r\t\tx := DevCPT.NewNode(Nconst); x.typ := DevCPT.niltyp;\r\t\tx.conval := DevCPT.NewConst(); x.conval.intval := 0; RETURN x\r\tEND Nil;\r\r\tPROCEDURE EmptySet*(): DevCPT.Node;\r\t\tVAR x: DevCPT.Node;\r\tBEGIN\r\t\tx := DevCPT.NewNode(Nconst); x.typ := DevCPT.settyp;\r\t\tx.conval := DevCPT.NewConst(); x.conval.setval := {}; RETURN x\r\tEND EmptySet;\r\t\r\tPROCEDURE MarkAsUsed (node: DevCPT.Node);\r\t\tVAR c: BYTE;\r\tBEGIN\r\t\tc := node.class;\r\t\tWHILE (c = Nfield) OR (c = Nindex) OR (c = Nguard) OR (c = Neguard) DO node := node.left; c := node.class END;\r\t\tIF (c = Nvar) & (node.obj.mnolev > 0) THEN node.obj.used := TRUE END\r\tEND MarkAsUsed;\r\t\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: GetTempVar
+                    attr: 3
+                  - text: "* (name: ARRAY OF SHORTCHAR; typ: DevCPT.Struct; VAR obj: DevCPT.Object);\r\t\tVAR n: DevCPT.Name; o: DevCPT.Object;\r\tBEGIN\r\t\tn := \"@@  \"; DevCPT.Insert(n, obj); obj.name^ := name$;\t(* avoid err 1 *)\r\t\tobj.mode := Var; obj.typ := typ;\r\t\to := DevCPT.topScope.scope;\r\t\tIF o = NIL THEN DevCPT.topScope.scope := obj\r\t\tELSE\r\t\t\tWHILE o.link # NIL DO o := o.link END;\r\t\t\to.link := obj\r\t\tEND\r\tEND GetTempVar;\r\r\r"
+                    attr: 0
+                  - text: "\t(* ---------- constant operations ---------- *)\r\t\r"
+                    attr: 1
+                  - text: "\tPROCEDURE Log (x: DevCPT.Node): INTEGER;\r\t\tVAR val, exp: INTEGER;\r\tBEGIN\r\t\texp := 0;\r\t\tIF x.typ.form = Int64 THEN\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " -1\r\t\tELSE\r\t\t\tval := x.conval.intval;\r\t\t\tIF val > 0 THEN\r\t\t\t\tWHILE ~ODD(val) DO val := val DIV 2; INC(exp) END\r\t\t\tEND;\r\t\t\tIF val # 1 THEN exp := -1 END\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " exp\r\tEND Log;\r\r\tPROCEDURE Floor (x: REAL): REAL;\r\t\tVAR y: REAL;\r\tBEGIN\r\t\tIF ABS(x) > 9007199254740992.0 (* 2^53 *) THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " x\r\t\tELSIF (x >= MAX(INTEGER) + 1.0) OR (x < MIN(INTEGER)) THEN\r\t\t\ty := Floor(x / (MAX(INTEGER) + 1.0)) * (MAX(INTEGER) + 1.0);\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " SHORT(ENTIER(x - y)) + y\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " SHORT(ENTIER(x))\r\t\tEND\r\tEND Floor;\r\r\tPROCEDURE SetToInt (s: SET): INTEGER;\r\t\tVAR x, i: INTEGER;\r\tBEGIN\r\t\ti := 31; x := 0;\r\t\tIF 31 IN s THEN x := -1 END;\r\t\tWHILE i > 0 DO\r\t\t\tx := x * 2; DEC(i);\r\t\t\tIF i IN s THEN INC(x) END\r\t\tEND;\r\t\tRETURN x\r\tEND SetToInt;\r\r\tPROCEDURE IntToSet (x: INTEGER): SET;\r\t\tVAR i: INTEGER; s: SET;\r\tBEGIN\r\t\ti := 0; s := {};\r\t\tWHILE i < 32 DO\r\t\t\tIF ODD(x) THEN INCL(s, i) END;\r\t\t\tx := x DIV 2; INC(i)\r\t\tEND;\r\t\tRETURN s\r\tEND IntToSet;\r\r"
+                    attr: 0
+                  - text: "\t"
+                    attr: 1
+                  - text: "PROCEDURE GetConstType (x: DevCPT.Const; form: INTEGER; errno: SHORTINT; VAR typ: DevCPT.Struct);\r\t\tCONST MAXL = 9223372036854775808.0; "
+                    attr: 0
+                  - text: "(* 2^63 *)"
+                    attr: 1
+                  - text: "\r\tBEGIN\r\t\tIF (form IN intSet + charSet) & (x.realval + x.intval >= MIN(INTEGER))\r\t\t\t\t& (x.realval + x.intval <= MAX(INTEGER)) THEN\r\t\t\tx.intval := SHORT(ENTIER(x.realval + x.intval)); x.realval := 0\r\t\tEND;\r\t\tIF form IN intSet THEN\r\t\t\tIF x.realval = 0 THEN typ := DevCPT.int32typ\r\t\t\tELSIF (x.intval >= -MAXL - x.realval) & (x.intval < MAXL - x.realval) THEN typ := DevCPT.int64typ\r\t\t\tELSE err(errno); x.intval := 1; x.realval := 0; typ := DevCPT.int32typ\r\t\t\tEND\r\t\tELSIF form IN realSet THEN\t(* SR *)\r\t\t\ttyp := DevCPT.real64typ\r\t\tELSIF form IN charSet THEN\r\t\t\tIF x.intval <= 255 THEN typ := DevCPT.char8typ\r\t\t\tELSE typ := DevCPT.char16typ\r\t\t\tEND\r\t\tELSE typ := DevCPT.undftyp\r\t\tEND\r\tEND GetConstType;\r\t"
+                    attr: 0
+                  - text: "\r\t"
+                    attr: 1
+                  - text: "PROCEDURE CheckConstType (x: DevCPT.Const; form: INTEGER; errno: SHORTINT);\r\t\tVAR type: DevCPT.Struct;\r\tBEGIN\r\t\tGetConstType(x, form, errno, type);\r\t\tIF  ~DevCPT.Includes(form, type.form)\r\t\t& ((form # Int8) OR (x.realval # 0) OR (x.intval < -128) OR (x.intval > 127))\r\t\t& ((form # Int16) OR (x.realval # 0) OR (x.intval < -32768) OR (x.intval > 32767)) \r\t\t& ((form # Real32) OR (ABS(x.realval) > DevCPM.MaxReal32) & (ABS(x.realval) # DevCPM.InfReal)) THEN\r\t\t\terr(errno); x.intval := 1; x.realval := 0\r\t\tEND\r(*\r\t\tIF (form IN intSet + charSet) & (x.realval + x.intval >= MIN(INTEGER))\r\t\t\t\t& (x.realval + x.intval <= MAX(INTEGER)) THEN\r\t\t\tx.intval := SHORT(ENTIER(x.realval + x.intval)); x.realval := 0\r\t\tEND;\r\t\tIF (form = Int64) & ((x.intval < -MAXL - x.realval) OR (x.intval >= MAXL - x.realval))\r\t\tOR (form = Int32) & (x.realval # 0)\r\t\tOR (form = Int16) & ((x.realval # 0) OR (x.intval < -32768) OR (x.intval > 32767))\r\t\tOR (form = Int8) & ((x.realval # 0) OR (x.intval < -128) OR (x.intval > 127))\r\t\tOR (form = Char16) & ((x.realval # 0) OR (x.intval < 0) OR (x.intval > 65535))\r\t\tOR (form = Char8) & ((x.realval # 0) OR (x.intval < 0) OR (x.intval > 255))\r\t\tOR (form = Real32) & (ABS(x.realval) > DevCPM.MaxReal32) & (ABS(x.realval) # DevCPM.InfReal) THEN\r\t\t\terr(errno); x.intval := 1; x.realval := 0\r\t\tEND\r*)\r\tEND CheckConstType;\r\t"
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\tPROCEDURE ConvConst (x: DevCPT.Const; from, to: INTEGER);\r\t\tVAR sr: SHORTREAL;\r\tBEGIN\r\t\tIF from = Set THEN\r\t\t\tx.intval := SetToInt(x.setval); x.realval := 0; x.setval := {};\r\t\tELSIF from IN intSet + charSet THEN\r\t\t\tIF to = Set THEN CheckConstType(x, Int32, 203); x.setval := IntToSet(x.intval)\r\t\t\tELSIF to IN intSet THEN CheckConstType(x, to, 203)\r\t\t\tELSIF to IN realSet THEN x.realval := x.realval + x.intval; x.intval := DevCPM.ConstNotAlloc\r\t\t\tELSE (*to IN charSet*) CheckConstType(x, to, 220)\r\t\t\tEND\r\t\tELSIF from IN realSet THEN\r\t\t\tIF to IN realSet THEN CheckConstType(x, to, 203);\r\t\t\t\tIF to = Real32 THEN sr := SHORT(x.realval); x.realval := sr END\t"
+                    attr: 0
+                  - text: "(* reduce precision *)"
+                    attr: 1
+                  - text: "\r\t\t\tELSE x.realval := Floor(x.realval); x.intval := 0; CheckConstType(x, to, 203)\r\t\t\tEND\r\t\tEND\r\tEND ConvConst;\r\t\r\tPROCEDURE Prepare (x: DevCPT.Const);\r\t\tVAR r: REAL;\r\tBEGIN\r\t\tx.realval := x.realval + x.intval DIV 32768 * 32768;\r\t\tx.intval := x.intval MOD 32768;\r\t\tr := Floor(x.realval / 4096) * 4096;\r\t\tx.intval := x.intval + SHORT(ENTIER(x.realval - r));\r\t\tx.realval := r\r\t\t"
+                    attr: 0
+                  - text: "(* ABS(x.intval) < 2^15  &  ABS(x.realval) MOD 2^12 = 0 *)"
+                    attr: 1
+                  - text: "\r\tEND Prepare;\r\t\r\tPROCEDURE AddConst (x, y, z: DevCPT.Const; VAR type: DevCPT.Struct);\t"
+                    attr: 0
+                  - text: "(* z := x + y *)"
+                    attr: 1
+                  - text: "\r\tBEGIN\r\t\tIF type.form IN intSet THEN\r\t\t\tPrepare(x); Prepare(y);\r\t\t\tz.intval := x.intval + y.intval; z.realval := x.realval + y.realval\r\t\tELSIF type.form IN realSet THEN\r\t\t\tIF (ABS(x.realval) = DevCPM.InfReal) & (x.realval = - y.realval) THEN err(212)\r\t\t\tELSE z.realval := x.realval + y.realval\r\t\t\tEND\r\t\tELSE HALT(100)\r\t\tEND;\r\t\tGetConstType(z, type.form, 206, type)\r\tEND AddConst;"
+                    attr: 0
+                  - text: "\r\t"
+                    attr: 1
+                  - text: "\r\tPROCEDURE NegateConst (y, z: DevCPT.Const; VAR type: DevCPT.Struct);\t(* z := - y *)\r\tBEGIN\r\t\tIF type.form IN intSet THEN Prepare(y); z.intval :=  -y.intval; z.realval := -y.realval\r\t\tELSIF type.form IN realSet THEN z.realval := -y.realval\r\t\tELSE HALT(100)\r\t\tEND;\r\t\tGetConstType(z, type.form, 207, type)\r\tEND NegateConst;\r\t\r\tPROCEDURE SubConst (x, y, z: DevCPT.Const; VAR type: DevCPT.Struct);\t"
+                    attr: 0
+                  - text: "(* z := x - y *)"
+                    attr: 1
+                  - text: "\r\tBEGIN\r\t\tIF type.form IN intSet THEN\r\t\t\tPrepare(x); Prepare(y);\r\t\t\tz.intval := x.intval - y.intval; z.realval := x.realval - y.realval\r\t\tELSIF type.form IN realSet THEN\r\t\t\tIF (ABS(x.realval) = DevCPM.InfReal) & (x.realval =  y.realval) THEN err(212)\r\t\t\tELSE z.realval := x.realval - y.realval\r\t\t\tEND\r\t\tELSE HALT(100)\r\t\tEND;\r\t\tGetConstType(z, type.form, 207, type)\r\tEND SubConst;\r\t\r\tPROCEDURE MulConst (x, y, z: DevCPT.Const; VAR type: DevCPT.Struct);\t"
+                    attr: 0
+                  - text: "(* z := x * y *)"
+                    attr: 1
+                  - text: "\r\tBEGIN\r\t\tIF type.form IN intSet THEN\r\t\t\tPrepare(x); Prepare(y);\r\t\t\tz.realval := x.realval * y.realval + x.intval * y.realval + x.realval * y.intval;\r\t\t\tz.intval := x.intval * y.intval\r\t\tELSIF type.form IN realSet THEN\r\t\t\tIF (ABS(x.realval) = DevCPM.InfReal) & ( y.realval = 0.0) THEN err(212)\r\t\t\tELSIF (ABS(y.realval) = DevCPM.InfReal) & (x.realval = 0.0) THEN err(212)\r\t\t\tELSE z.realval := x.realval * y.realval\r\t\t\tEND\r\t\tELSE HALT(100)\r\t\tEND;\r\t\tGetConstType(z, type.form, 204, type)\r\tEND MulConst;"
+                    attr: 0
+                  - text: "\r\t"
+                    attr: 1
+                  - text: "\r\tPROCEDURE DivConst (x, y, z: DevCPT.Const; VAR type: DevCPT.Struct);\t"
+                    attr: 0
+                  - text: "(* z := x / y *)"
+                    attr: 1
+                  - text: "\r\tBEGIN\r\t\tIF type.form IN realSet THEN\r\t\t\tIF (x.realval = 0.0) & (y.realval = 0.0) THEN err(212)\r\t\t\tELSIF (ABS(x.realval) =  DevCPM.InfReal) & (ABS(y.realval) =  DevCPM.InfReal) THEN err(212)\r\t\t\tELSE z.realval := x.realval / y.realval\r\t\t\tEND\r\t\tELSE HALT(100)\r\t\tEND;\r\t\tGetConstType(z, type.form, 204, type)\r\tEND DivConst;"
+                    attr: 0
+                  - text: "\r\t"
+                    attr: 1
+                  - text: "\r\tPROCEDURE DivModConst (x, y: DevCPT.Const; div: BOOLEAN; VAR type: DevCPT.Struct);\r\t"
+                    attr: 0
+                  - text: "(* x := x DIV y | x MOD y *)"
+                    attr: 1
+                  - text: "\r\tBEGIN\r\t\tIF type.form IN intSet THEN\r\t\t\tIF y.realval + y.intval # 0 THEN\r\t\t\t\tPrepare(x); Prepare(y);\r\t\t\t\tquot.realval := Floor((x.realval + x.intval) / (y.realval + y.intval));\r\t\t\t\tquot.intval := 0; Prepare(quot);\r\t\t\t\tx.realval := x.realval - quot.realval * y.realval - quot.realval * y.intval - quot.intval * y.realval;\r\t\t\t\tx.intval := x.intval - quot.intval * y.intval;\r\t\t\t\tIF y.realval + y.intval > 0 THEN\r\t\t\t\t\tWHILE x.realval + x.intval > 0 DO SubConst(x, y, x, type); INC(quot.intval) END;\r\t\t\t\t\tWHILE x.realval + x.intval < 0 DO AddConst(x, y, x, type); DEC(quot.intval) END\r\t\t\t\tELSE\r\t\t\t\t\tWHILE x.realval + x.intval < 0 DO SubConst(x, y, x, type); INC(quot.intval) END;\r\t\t\t\t\tWHILE x.realval + x.intval > 0 DO AddConst(x, y, x, type); DEC(quot.intval) END\r\t\t\t\tEND;\r\t\t\t\tIF div THEN x.realval := quot.realval; x.intval := quot.intval END;\r\t\t\t\tGetConstType(x, type.form, 204, type)\r\t\t\tELSE err(205)\r\t\t\tEND\r\t\tELSE HALT(100)\r\t\tEND\r\tEND DivModConst;"
+                    attr: 0
+                  - text: "\r\t"
+                    attr: 1
+                  - text: "\r\tPROCEDURE EqualConst (x, y: DevCPT.Const; form: INTEGER): BOOLEAN;\t"
+                    attr: 0
+                  - text: "(* x = y *)"
+                    attr: 1
+                  - text: "\r\t\tVAR res: BOOLEAN;\r\tBEGIN\r\t\tCASE form OF\r\t\t| Undef: res := TRUE\r\t\t| Bool, Byte, Char8..Int32, Char16: res := x.intval = y.intval\r\t\t| Int64: Prepare(x); Prepare(y); res := (x.realval - y.realval) + (x.intval - y.intval) = 0\r\t\t| Real32, Real64: res := x.realval = y.realval\r\t\t| Set: res := x.setval = y.setval\r\t\t| String8, String16, Comp (* guid *): res := x.ext^ = y.ext^\r\t\t| NilTyp, Pointer, ProcTyp: res := x.intval = y.intval\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " res\r\tEND EqualConst;"
+                    attr: 0
+                  - text: "\r\t"
+                    attr: 1
+                  - text: "\r\tPROCEDURE LessConst (x, y: DevCPT.Const; form: INTEGER): BOOLEAN;\t"
+                    attr: 0
+                  - text: "(* x < y *)"
+                    attr: 1
+                  - text: "\r\t\tVAR res: BOOLEAN;\r\tBEGIN\r\t\tCASE form OF\r\t\t| Undef: res := TRUE\r\t\t| Byte, Char8..Int32, Char16: res := x.intval < y.intval\r\t\t| Int64: Prepare(x); Prepare(y); res := (x.realval - y.realval) + (x.intval - y.intval) < 0\r\t\t| Real32, Real64: res := x.realval < y.realval\r\t\t| String8, String16: res := x.ext^ < y.ext^\r\t\t| Bool, Set, NilTyp, Pointer, ProcTyp, Comp: err(108)\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " res\r\tEND LessConst;"
+                    attr: 0
+                  - text: "\r\t"
+                    attr: 1
+                  - text: "\r\tPROCEDURE IsNegConst (x: DevCPT.Const; form: INTEGER): BOOLEAN;\t"
+                    attr: 0
+                  - text: "(* x < 0  OR x = (-0.0) *)"
+                    attr: 1
+                  - text: "\r\t\tVAR res: BOOLEAN;\r\tBEGIN\r\t\tCASE form OF\r\t\t| Int8..Int32: res := x.intval < 0\r\t\t| Int64: Prepare(x); res := x.realval + x.intval < 0\r\t\t| Real32, Real64: res := (x.realval <= 0.) & (1. / x.realval <= 0.)\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " res\r\tEND IsNegConst;"
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE NewIntConst*(intval: INTEGER): DevCPT.Node;\r\t\tVAR x: DevCPT.Node;\r\tBEGIN\r\t\tx := DevCPT.NewNode(Nconst); x.conval := DevCPT.NewConst();\r\t\tx.conval.intval := intval; x.conval.realval := 0; x.typ := DevCPT.int32typ; RETURN x\r\tEND NewIntConst;\r\t\r\tPROCEDURE NewLargeIntConst* (intval: INTEGER; realval: REAL): DevCPT.Node;\r\t\tVAR x: DevCPT.Node;\r\tBEGIN\r\t\tx := DevCPT.NewNode(Nconst); x.conval := DevCPT.NewConst();\r\t\tx.conval.intval := intval; x.conval.realval := realval; x.typ := DevCPT.int64typ; RETURN x\r\tEND NewLargeIntConst;\r\t\r\tPROCEDURE NewRealConst*(realval: REAL; typ: DevCPT.Struct): DevCPT.Node;\r\t\tVAR x: DevCPT.Node;\r\tBEGIN\r\t\tx := DevCPT.NewNode(Nconst); x.conval := DevCPT.NewConst();\r\t\tx.conval.realval := realval; x.conval.intval := DevCPM.ConstNotAlloc;\r\t\tIF typ = NIL THEN typ := DevCPT.real64typ END;\r\t\tx.typ := typ;\r\t\tRETURN x\r\tEND NewRealConst;\r\t\r\tPROCEDURE NewString*(str: DevCPT.String; lstr: POINTER TO ARRAY OF CHAR; len: INTEGER): DevCPT.Node;\r\t\tVAR i, j, c: INTEGER; x: DevCPT.Node; ext: DevCPT.ConstExt;\r\tBEGIN\r\t\tx := DevCPT.NewNode(Nconst); x.conval := DevCPT.NewConst();\r\t\tIF lstr # NIL THEN\r\t\t\tx.typ := DevCPT.string16typ;\r\t\t\tNEW(ext, 3 * len); i := 0; j := 0;\r\t\t\tREPEAT c := ORD(lstr[i]); INC(i); DevCPM.PutUtf8(ext^, c, j) UNTIL c = 0;\r\t\t\tx.conval.ext := ext\r\t\tELSE\r\t\t\tx.typ := DevCPT.string8typ; x.conval.ext := str\r\t\tEND;\r\t\tx.conval.intval := DevCPM.ConstNotAlloc; x.conval.intval2 := len;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " x\r\tEND NewString;\r\t\r\tPROCEDURE CharToString8(n: DevCPT.Node);\r\t\tVAR ch: SHORTCHAR;\r\tBEGIN\r\t\tn.typ := DevCPT.string8typ; ch := SHORT(CHR(n.conval.intval)); NEW(n.conval.ext, 2);\r\t\tIF ch = 0X THEN n.conval.intval2 := 1 ELSE n.conval.intval2 := 2; n.conval.ext[1] := 0X END ;\r\t\tn.conval.ext[0] := ch; n.conval.intval := DevCPM.ConstNotAlloc; n.obj := NIL\r\tEND CharToString8;\r\t\r\tPROCEDURE CharToString16 (n: DevCPT.Node);\r\t\tVAR ch, ch1: SHORTCHAR; i: INTEGER;\r\tBEGIN\r\t\tn.typ := DevCPT.string16typ; NEW(n.conval.ext, 4);\r\t\tIF n.conval.intval = 0 THEN\r\t\t\tn.conval.ext[0] := 0X; n.conval.intval2 := 1\r\t\tELSE\r\t\t\ti := 0; DevCPM.PutUtf8(n.conval.ext^, n.conval.intval, i);\r\t\t\tn.conval.ext[i] := 0X; n.conval.intval2 := 2\r\t\tEND;\r\t\tn.conval.intval := DevCPM.ConstNotAlloc; n.obj := NIL\r\tEND CharToString16;\r\t\r\tPROCEDURE String8ToString16 (n: DevCPT.Node);\r\t\tVAR i, j, x: INTEGER; ext, new: DevCPT.ConstExt;\r\tBEGIN\r\t\tn.typ := DevCPT.string16typ; ext := n.conval.ext;\r\t\tNEW(new, 2 * n.conval.intval2); i := 0; j := 0; \r\t\tREPEAT x := ORD(ext[i]); INC(i); DevCPM.PutUtf8(new^, x, j) UNTIL x = 0;\r\t\tn.conval.ext := new; n.obj := NIL\r\tEND String8ToString16;\r\t\r\tPROCEDURE String16ToString8 (n: DevCPT.Node);\r\t\tVAR i, j, x: INTEGER; ext, new: DevCPT.ConstExt;\r\tBEGIN\r\t\tn.typ := DevCPT.string8typ; ext := n.conval.ext;\r\t\tNEW(new, n.conval.intval2); i := 0; j := 0;\r\t\tREPEAT DevCPM.GetUtf8(ext^, x, i); new[j] := SHORT(CHR(x MOD 256)); INC(j) UNTIL x = 0;\r\t\tn.conval.ext := new; n.obj := NIL\r\tEND String16ToString8;\r\t\r\tPROCEDURE StringToGuid (VAR n: DevCPT.Node);\r\tBEGIN\r\t\tASSERT((n.class = Nconst) & (n.typ.form = String8));\r\t\tIF ~DevCPM.ValidGuid(n.conval.ext^) THEN err(165) END;\r\t\tn.typ := DevCPT.guidtyp\r\tEND StringToGuid;\r\t\r\tPROCEDURE CheckString (n: DevCPT.Node; typ: DevCPT.Struct; e: SHORTINT);\r\t\tVAR ntyp: DevCPT.Struct;\r\tBEGIN\r\t\tntyp := n.typ;\r\t\tIF (typ = DevCPT.guidtyp) & (n.class = Nconst) & (ntyp.form = String8) THEN StringToGuid(n)\r\t\tELSIF (typ.comp IN {Array, DynArr}) & (typ.BaseTyp.form = Char8) OR (typ.form = String8) THEN\r\t\t\tIF (n.class = Nconst) & (ntyp.form = Char8) THEN CharToString8(n)\r\t\t\tELSIF (ntyp.comp IN {Array, DynArr}) & (ntyp.BaseTyp.form = Char8) OR (ntyp.form = String8) THEN (* ok *)\r\t\t\tELSE err(e)\r\t\t\tEND\r\t\tELSIF (typ.comp IN {Array, DynArr}) & (typ.BaseTyp.form = Char16) OR (typ.form = String16) THEN\r\t\t\tIF (n.class = Nconst) & (ntyp.form IN charSet) THEN CharToString16(n)\r\t\t\tELSIF (n.class = Nconst) & (ntyp.form = String8) THEN String8ToString16(n)\r\t\t\tELSIF (ntyp.comp IN {Array, DynArr}) & (ntyp.BaseTyp.form = Char16) OR (ntyp.form = String16) THEN\r\t\t\t\t(* ok *)\r\t\t\tELSE err(e)\r\t\t\tEND\r\t\tELSE err(e)\r\t\tEND\r\tEND CheckString;\r\t\r\t\r\tPROCEDURE BindNodes(class: BYTE; typ: DevCPT.Struct; VAR x: DevCPT.Node; y: DevCPT.Node);\r\t\tVAR node: DevCPT.Node;\r\tBEGIN\r\t\tnode := DevCPT.NewNode(class); node.typ := typ;\r\t\tnode.left := x; node.right := y; x := node\r\tEND BindNodes;\r\r\tPROCEDURE NotVar(x: DevCPT.Node): BOOLEAN;\r\tBEGIN\r\t\tRETURN (x.class >= Nconst) & ((x.class # Nmop) OR (x.subcl # val) OR (x.left.class >= Nconst))\r\t\t\tOR (x.typ.form IN {String8, String16})\r\tEND NotVar;\r\r\r\tPROCEDURE Convert(VAR x: DevCPT.Node; typ: DevCPT.Struct);\r\t\tVAR node: DevCPT.Node; f, g: SHORTINT; k: INTEGER; r: REAL;\r\tBEGIN f := x.typ.form; g := typ.form;\r\t\tIF x.class = Nconst THEN\r\t\t\tIF g = String8 THEN\r\t\t\t\tIF f = String16 THEN String16ToString8(x)\r\t\t\t\tELSIF f IN charSet THEN CharToString8(x)\r\t\t\t\tELSE typ := DevCPT.undftyp\r\t\t\t\tEND\r\t\t\tELSIF g = String16 THEN\r\t\t\t\tIF f = String8 THEN String8ToString16(x)\r\t\t\t\tELSIF f IN charSet THEN CharToString16(x)\r\t\t\t\tELSE typ := DevCPT.undftyp\r\t\t\t\tEND\r\t\t\tELSE ConvConst(x.conval, f, g)\r\t\t\tEND;\r\t\t\tx.obj := NIL\r\t\tELSIF (x.class = Nmop) & (x.subcl = conv) & (DevCPT.Includes(f, x.left.typ.form) OR DevCPT.Includes(f, g))\r\t\tTHEN\r\t\t\t(* don't create new node *)\r\t\t\tIF x.left.typ.form = typ.form THEN (* and suppress existing node *) x := x.left END\r\t\tELSE\r\t\t\tIF (x.class = Ndop) & (x.typ.form IN {String8, String16}) THEN\t"
+                    attr: 0
+                  - text: "(* propagate to leaf nodes *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tConvert(x.left, typ); Convert(x.right, typ)\r\t\t\tELSE\r\t\t\t\tnode := DevCPT.NewNode(Nmop); node.subcl := conv; node.left := x; x := node;\r\t\t\tEND\r\t\tEND;\r\t\tx.typ := typ\r\tEND Convert;\r\r\tPROCEDURE Promote (VAR left, right: DevCPT.Node; op: INTEGER);\t"
+                    attr: 0
+                  - text: "(* check expression compatibility *)"
+                    attr: 1
+                  - text: "\r\t\tVAR f, g: INTEGER; new: DevCPT.Struct;\r\tBEGIN\r\t\tf := left.typ.form; g := right.typ.form; new := left.typ;\r\t\tIF f IN intSet + realSet THEN\r\t\t\tIF g IN intSet + realSet THEN\r\t\t\t\tIF (f = Real32) & (right.class = Nconst) & (g IN realSet) & (left.class # Nconst)\r\t\t\t\t\t(* & ((ABS(right.conval.realval) <= DevCPM.MaxReal32)\r\t\t\t\t\t\t\tOR (ABS(right.conval.realval) = DevCPM.InfReal)) *)\r\t\t\t\tOR (g = Real32) & (left.class = Nconst) & (f IN realSet) & (right.class # Nconst)\r\t\t\t\t\t(* & ((ABS(left.conval.realval) <= DevCPM.MaxReal32)\r\t\t\t\t\t\t\tOR (ABS(left.conval.realval) = DevCPM.InfReal)) *) THEN\r\t\t\t\t\t\tnew := DevCPT.real32typ\t(* SR *)\r\t\t\t\tELSIF (f = Real64) OR (g = Real64) THEN new := DevCPT.real64typ\r\t\t\t\tELSIF (f = Real32) OR (g = Real32) THEN new := DevCPT.real32typ\t(* SR *)\r\t\t\t\tELSIF op = slash THEN new := DevCPT.real64typ\r\t\t\t\tELSIF (f = Int64) OR (g = Int64) THEN new := DevCPT.int64typ\r\t\t\t\tELSE new := DevCPT.int32typ\r\t\t\t\tEND\r\t\t\tELSE err(100)\r\t\t\tEND\r\t\tELSIF (left.typ = DevCPT.guidtyp) OR (right.typ = DevCPT.guidtyp) THEN\r\t\t\tIF f = String8 THEN StringToGuid(left) END;\r\t\t\tIF g = String8 THEN StringToGuid(right) END;\r\t\t\tIF left.typ # right.typ THEN err(100) END;\r\t\t\tf := Comp\r\t\tELSIF f IN charSet + {String8, String16} THEN\r\t\t\tIF g IN charSet + {String8, String16} THEN\r\t\t\t\tIF (f = String16) OR (g = String16) OR (f = Char16) & (g = String8) OR (f = String8) & (g = Char16) THEN\r\t\t\t\t\tnew := DevCPT.string16typ\r\t\t\t\tELSIF ((f = Char16) OR (g = Char16)) & (op # plus) THEN new := DevCPT.char16typ\r\t\t\t\tELSIF (f = String8) OR (g = String8) THEN new := DevCPT.string8typ\r\t\t\t\tELSIF op = plus THEN\r\t\t\t\t\tIF (f = Char16) OR (g = Char16) THEN new := DevCPT.string16typ\r\t\t\t\t\tELSE new := DevCPT.string8typ\r\t\t\t\t\tEND\r\t\t\t\tEND;\r\t\t\t\tIF (new.form IN {String8, String16})\r\t\t\t\t\t& ((f IN charSet) & (left.class # Nconst) OR (g IN charSet) & (right.class # Nconst))\r\t\t\t\tTHEN\r\t\t\t\t\terr(100)\r\t\t\t\tEND\r\t\t\tELSE err(100)\r\t\t\tEND\r\t\tELSIF (f IN {NilTyp, Pointer, ProcTyp}) & (g IN {NilTyp, Pointer, ProcTyp}) THEN\r\t\t\tIF ~DevCPT.SameType(left.typ, right.typ) & (f # NilTyp) & (g # NilTyp)\r\t\t\t\t& ~((f = Pointer) & (g = Pointer)\r\t\t\t\t\t& (DevCPT.Extends(left.typ, right.typ) OR DevCPT.Extends(right.typ, left.typ))) THEN err(100) END\r\t\tELSIF f # g THEN err(100)\r\t\tEND;\r\t\tIF ~(f IN {NilTyp, Pointer, ProcTyp, Comp}) THEN\r\t\t\tIF g # new.form THEN Convert(right, new) END;\r\t\t\tIF f # new.form THEN Convert(left, new) END\r\t\tEND\r\tEND Promote;\r\r\tPROCEDURE CheckParameters* (fp, ap: DevCPT.Object; checkNames: BOOLEAN); "
+                    attr: 0
+                  - text: "(* checks par list match *)"
+                    attr: 1
+                  - text: "\r\t\tVAR ft, at: DevCPT.Struct;\r\tBEGIN\r\t\tWHILE fp # NIL DO\r\t\t\tIF ap # NIL THEN\r\t\t\t\tft := fp.typ; at := ap.typ;\r\t\t\t\tIF fp.ptyp # NIL THEN ft := fp.ptyp END;\t(* get original formal type *)\r\t\t\t\tIF ap.ptyp # NIL THEN at := ap.ptyp END;\t(* get original formal type *)\r\t\t\t\tIF ~DevCPT.EqualType(ft, at)\r\t\t\t\t\tOR (fp.mode # ap.mode) OR (fp.sysflag # ap.sysflag) OR (fp.vis # ap.vis)\r\t\t\t\t\tOR checkNames & (fp.name^ # ap.name^) THEN err(115) END ;\r\t\t\t\tap := ap.link\r\t\t\tELSE err(116)\r\t\t\tEND;\r\t\t\tfp := fp.link\r\t\tEND;\r\t\tIF ap # NIL THEN err(116) END\r\tEND CheckParameters;\r\r\tPROCEDURE CheckNewParamPair* (newPar, iidPar: DevCPT.Node);\r\t\tVAR ityp, ntyp: DevCPT.Struct;\r\tBEGIN\r\t\tntyp := newPar.typ.BaseTyp;\r\t\tIF (newPar.class = Nvarpar) & ODD(newPar.obj.sysflag DIV newBit) THEN\r\t\t\tIF (iidPar.class = Nvarpar) & ODD(iidPar.obj.sysflag DIV iidBit) & (iidPar.obj.mnolev = newPar.obj.mnolev)\r\t\t\tTHEN (* ok *)\r\t\t\tELSE err(168)\r\t\t\tEND\r\t\tELSIF ntyp.extlev = 0 THEN\t(* ok *)\r\t\tELSIF (iidPar.class = Nconst) & (iidPar.obj # NIL) & (iidPar.obj.mode = Typ) THEN\r\t\t\tIF ~DevCPT.Extends(iidPar.obj.typ, ntyp) THEN err(168) END\r\t\tELSE err(168)\r\t\tEND\r\tEND CheckNewParamPair;\r\r\t\r\tPROCEDURE DeRef*(VAR x: DevCPT.Node);\r\t\tVAR strobj, bstrobj: DevCPT.Object; typ, btyp: DevCPT.Struct;\r\tBEGIN\r\t\ttyp := x.typ;\r\t\tIF (x.class = Nconst) OR (x.class = Ntype) OR (x.class = Nproc) THEN err(78)\r\t\tELSIF typ.form = Pointer THEN\r\t\t\tbtyp := typ.BaseTyp; strobj := typ.strobj; bstrobj := btyp.strobj;\r\t\t\tIF (strobj # NIL) & (strobj.name # DevCPT.null) & (bstrobj # NIL) & (bstrobj.name # DevCPT.null) THEN\r\t\t\t\tbtyp.pbused := TRUE\r\t\t\tEND ;\r\t\t\tBindNodes(Nderef, btyp, x, NIL); x.subcl := 0\r\t\tELSE err(84)\r\t\tEND\r\tEND DeRef;\r\r\tPROCEDURE StrDeref*(VAR x: DevCPT.Node);\r\t\tVAR typ, btyp: DevCPT.Struct;\r\tBEGIN\r\t\ttyp := x.typ;\r\t\tIF (x.class = Nconst) OR (x.class = Ntype) OR (x.class = Nproc) THEN err(78)\r\t\tELSIF ((typ.comp IN {Array, DynArr}) & (typ.BaseTyp.form IN charSet)) OR (typ.sysflag = jstr) THEN\r\t\t\tIF (typ.BaseTyp # NIL) & (typ.BaseTyp.form = Char8) THEN btyp := DevCPT.string8typ\r\t\t\tELSE btyp := DevCPT.string16typ\r\t\t\tEND;\r\t\t\tBindNodes(Nderef, btyp, x, NIL); x.subcl := 1\r\t\tELSE err(90)\r\t\tEND\r\tEND StrDeref;\r\r\tPROCEDURE Index*(VAR x: DevCPT.Node; y: DevCPT.Node);\r\t\tVAR f: SHORTINT; typ: DevCPT.Struct;\r\tBEGIN\r\t\tf := y.typ.form;\r\t\tIF (x.class = Nconst) OR (x.class = Ntype) OR (x.class = Nproc) THEN err(79)\r\t\tELSIF ~(f IN intSet) OR (y.class IN {Nproc, Ntype}) THEN err(80); y.typ := DevCPT.int32typ END ;\r\t\tIF f = Int64 THEN Convert(y, DevCPT.int32typ) END;\r\t\tIF x.typ.comp = Array THEN typ := x.typ.BaseTyp;\r\t\t\tIF (y.class = Nconst) & ((y.conval.intval < 0) OR (y.conval.intval >= x.typ.n)) THEN err(81) END\r\t\tELSIF x.typ.comp = DynArr THEN typ := x.typ.BaseTyp;\r\t\t\tIF (y.class = Nconst) & (y.conval.intval < 0) THEN err(81) END\r\t\tELSE err(82); typ := DevCPT.undftyp\r\t\tEND ;\r\t\tBindNodes(Nindex, typ, x, y); x.readonly := x.left.readonly\r\tEND Index;\r\t\r\tPROCEDURE Field*(VAR x: DevCPT.Node; y: DevCPT.Object);\r\tBEGIN (*x.typ.comp = Record*)\r\t\tIF (x.class = Nconst) OR (x.class = Ntype) OR (x.class = Nproc) THEN err(77) END ;\r\t\tIF (y # NIL) & (y.mode IN {Fld, TProc}) THEN\r\t\t\tBindNodes(Nfield, y.typ, x, NIL); x.obj := y;\r\t\t\tx.readonly := x.left.readonly OR ((y.vis = externalR) & (y.mnolev < 0))\r\t\tELSE err(83); x.typ := DevCPT.undftyp\r\t\tEND\r\tEND Field;\r\t\r\tPROCEDURE TypTest*(VAR x: DevCPT.Node; obj: DevCPT.Object; guard: BOOLEAN);\r\r\t\tPROCEDURE GTT(t0, t1: DevCPT.Struct);\r\t\t\tVAR node: DevCPT.Node;\r\t\tBEGIN\r\t\t\tIF (t0 # NIL) & DevCPT.SameType(t0, t1) & (guard OR (x.class # Nguard)) THEN\r\t\t\t\tIF ~guard THEN x := NewBoolConst(TRUE) END\r\t\t\tELSIF (t0 = NIL) OR DevCPT.Extends(t1, t0) OR (t0.sysflag = jint) OR (t1.sysflag = jint)\r\t\t\t\t\tOR (t1.comp = DynArr) & (DevCPM.java IN DevCPM.options) THEN\r\t\t\t\tIF guard THEN BindNodes(Nguard, NIL, x, NIL); x.readonly := x.left.readonly\r\t\t\t\tELSE node := DevCPT.NewNode(Nmop); node.subcl := is; node.left := x; node.obj := obj; x := node\r\t\t\t\tEND\r\t\t\tELSE err(85)\r\t\t\tEND\r\t\tEND GTT;\r\r\tBEGIN\r\t\tIF (x.class = Nconst) OR (x.class = Ntype) OR (x.class = Nproc) THEN err(112)\r\t\tELSIF x.typ.form = Pointer THEN\r"
+                    attr: 0
+                  - text: "\t\t\tIF x.typ = DevCPT.sysptrtyp THEN\r\t\t\t\tIF obj.typ.form = Pointer THEN GTT(NIL, obj.typ.BaseTyp)\r\t\t\t\tELSE err(86)\r\t\t\t\tEND\r"
+                    attr: 4
+                  - text: "\t\t\tELSIF x.typ.BaseTyp.comp # Record THEN err(85)\r\t\t\tELSIF obj.typ.form = Pointer THEN GTT(x.typ.BaseTyp, obj.typ.BaseTyp)\r\t\t\tELSE err(86)\r\t\t\tEND\r\t\tELSIF (x.typ.comp = Record) & (x.class = Nvarpar) & (x.obj.vis # outPar) & (obj.typ.comp = Record) THEN\r\t\t\tGTT(x.typ, obj.typ)\r\t\tELSE err(87)\r\t\tEND ;\r\t\tIF guard THEN x.typ := obj.typ ELSE x.typ := DevCPT.booltyp END\r\tEND TypTest;\r\t\r\tPROCEDURE In*(VAR x: DevCPT.Node; y: DevCPT.Node);\r\t\tVAR f: SHORTINT; k: INTEGER;\r\tBEGIN f := x.typ.form;\r\t\tIF (x.class = Ntype) OR (x.class = Nproc) OR (y.class = Ntype) OR (y.class = Nproc) THEN err(126)\r\t\tELSIF (f IN intSet) & (y.typ.form = Set) THEN\r\t\t\tIF f = Int64 THEN Convert(x, DevCPT.int32typ) END;\r\t\t\tIF x.class = Nconst THEN\r\t\t\t\tk := x.conval.intval;\r\t\t\t\tIF (k < 0) OR (k > DevCPM.MaxSet) THEN err(202)\r\t\t\t\tELSIF y.class = Nconst THEN x.conval.intval := BoolToInt(k IN y.conval.setval); x.obj := NIL\r\t\t\t\tELSE BindNodes(Ndop, DevCPT.booltyp, x, y); x.subcl := in\r\t\t\t\tEND\r\t\t\tELSE BindNodes(Ndop, DevCPT.booltyp, x, y); x.subcl := in\r\t\t\tEND\r\t\tELSE err(92)\r\t\tEND ;\r\t\tx.typ := DevCPT.booltyp\r\tEND In;\r\r\tPROCEDURE MOp*(op: BYTE; VAR x: DevCPT.Node);\r\t\tVAR f: SHORTINT; typ: DevCPT.Struct; z: DevCPT.Node;\r\t\t\r\t\tPROCEDURE NewOp(op: BYTE; typ: DevCPT.Struct; z: DevCPT.Node): DevCPT.Node;\r\t\t\tVAR node: DevCPT.Node;\r\t\tBEGIN\r\t\t\tnode := DevCPT.NewNode(Nmop); node.subcl := op; node.typ := typ;\r\t\t\tnode.left := z; RETURN node\r\t\tEND NewOp;\r\r\tBEGIN z := x;\r\t\tIF ((z.class = Ntype) OR (z.class = Nproc)) & (op # adr) & (op # typfn) & (op # size) THEN err(126)\t(* !!! *)\r\t\tELSE\r\t\t\ttyp := z.typ; f := typ.form;\r\t\t\tCASE op OF\r\t\t\t| not:\r\t\t\t\tIF f = Bool THEN\r\t\t\t\t\tIF z.class = Nconst THEN\r\t\t\t\t\t\tz.conval.intval := BoolToInt(~IntToBool(z.conval.intval)); z.obj := NIL\r\t\t\t\t\tELSE z := NewOp(op, typ, z)\r\t\t\t\t\tEND\r\t\t\t\tELSE err(98)\r\t\t\t\tEND\r\t\t\t| plus:\r\t\t\t\tIF ~(f IN intSet + realSet) THEN err(96) END\r\t\t\t| minus:\r\t\t\t\tIF f IN intSet + realSet + {Set} THEN\r\t\t\t\t\tIF z.class = Nconst THEN\r\t\t\t\t\t\tIF f = Set THEN z.conval.setval := -z.conval.setval\r\t\t\t\t\t\tELSE NegateConst(z.conval, z.conval, z.typ)\r\t\t\t\t\t\tEND;\r\t\t\t\t\t\tz.obj := NIL\r\t\t\t\t\tELSE\r\t\t\t\t\t\tIF f < Int32 THEN Convert(z, DevCPT.int32typ) END;\r\t\t\t\t\t\tz := NewOp(op, z.typ, z)\r\t\t\t\t\tEND\r\t\t\t\tELSE err(97)\r\t\t\t\tEND\r\t\t\t| abs:\r\t\t\t\tIF f IN intSet + realSet THEN\r\t\t\t\t\tIF z.class = Nconst THEN\r\t\t\t\t\t\tIF IsNegConst(z.conval, f) THEN NegateConst(z.conval, z.conval, z.typ) END;\r\t\t\t\t\t\tz.obj := NIL\r\t\t\t\t\tELSE\r\t\t\t\t\t\tIF f < Int32 THEN Convert(z, DevCPT.int32typ) END;\r\t\t\t\t\t\tz := NewOp(op, z.typ, z)\r\t\t\t\t\tEND\r\t\t\t\tELSE err(111)\r\t\t\t\tEND\r\t\t\t| cap:\r\t\t\t\tIF f IN charSet THEN\r\t\t\t\t\tIF z.class = Nconst THEN\r\t\t\t\t\t\tIF ODD(z.conval.intval DIV 32) THEN DEC(z.conval.intval, 32) END;\r\t\t\t\t\t\tz.obj := NIL\r\t\t\t\t\tELSE z := NewOp(op, typ, z)\r\t\t\t\t\tEND\r\t\t\t\tELSE err(111); z.typ := DevCPT.char8typ\r\t\t\t\tEND\r\t\t\t| odd:\r\t\t\t\tIF f IN intSet THEN\r\t\t\t\t\tIF z.class = Nconst THEN\r\t\t\t\t\t\tDivModConst(z.conval, two, FALSE, z.typ);\t"
+                    attr: 0
+                  - text: "(* z MOD 2 *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\tz.obj := NIL\r\t\t\t\t\tELSE z := NewOp(op, typ, z)\r\t\t\t\t\tEND\r\t\t\t\tELSE err(111)\r\t\t\t\tEND ;\r\t\t\t\tz.typ := DevCPT.booltyp\r\t\t\t| adr: (*ADR*)\r\t\t\t\tIF (z.class = Nproc) & (z.obj.mode # CProc) THEN\r\t\t\t\t\tIF z.obj.mnolev > 0 THEN err(73)\r\t\t\t\t\tELSIF z.obj.mode = LProc THEN z.obj.mode := XProc\r\t\t\t\t\tEND;\r\t\t\t\t\tz := NewOp(op, typ, z)\r\t\t\t\tELSIF z.class = Ntype THEN\r\t\t\t\t\tIF z.obj.typ.untagged THEN err(111) END;\r\t\t\t\t\tz := NewOp(op, typ, z)\r\t\t\t\tELSIF (z.class < Nconst) OR (z.class = Nconst) & (f IN {String8, String16}) THEN\r\t\t\t\t\tz := NewOp(op, typ, z)\r\t\t\t\tELSE err(127)\r\t\t\t\tEND ;\r\t\t\t\tz.typ := DevCPT.int32typ\r\t\t\t| typfn, size: (*TYP, SIZE*)\r\t\t\t\tz := NewOp(op, typ, z);\r\t\t\t\tz.typ := DevCPT.int32typ\r\t\t\t| cc: (*SYSTEM.CC*)\r\t\t\t\tIF (f IN intSet) & (z.class = Nconst) THEN\r\t\t\t\t\tIF (0 <= z.conval.intval) & (z.conval.intval <= DevCPM.MaxCC) & (z.conval.realval = 0) THEN\r\t\t\t\t\t\tz := NewOp(op, typ, z)\r\t\t\t\t\tELSE err(219)\r\t\t\t\t\tEND\r\t\t\t\tELSE err(69)\r\t\t\t\tEND;\r\t\t\t\tz.typ := DevCPT.booltyp\r\t\t\tEND\r\t\tEND;\r\t\tx := z\r\tEND MOp;\r\t\r\tPROCEDURE ConstOp(op: SHORTINT; x, y: DevCPT.Node);\r\t\tVAR f: SHORTINT; i, j: INTEGER; xval, yval: DevCPT.Const; ext: DevCPT.ConstExt; t: DevCPT.Struct;\r\tBEGIN\r\t\tf := x.typ.form;\r\t\tIF f = y.typ.form THEN\r\t\t\txval := x.conval; yval := y.conval;\r\t\t\tCASE op OF\r\t\t\t| times:\r\t\t\t\tIF f IN intSet + realSet THEN MulConst(xval, yval, xval, x.typ)\r\t\t\t\tELSIF f = Set THEN xval.setval := xval.setval * yval.setval\r\t\t\t\tELSIF f # Undef THEN err(101)\r\t\t\t\tEND\r\t\t\t| slash:\r\t\t\t\tIF f IN realSet THEN DivConst(xval, yval, xval, x.typ)\r\t\t\t\tELSIF f = Set THEN xval.setval := xval.setval / yval.setval\r\t\t\t\tELSIF f # Undef THEN err(102)\r\t\t\t\tEND\r\t\t\t| div:\r\t\t\t\tIF f IN intSet THEN DivModConst(xval, yval, TRUE, x.typ)\r\t\t\t\tELSIF f # Undef THEN err(103)\r\t\t\t\tEND\r\t\t\t| mod:\r\t\t\t\tIF f IN intSet THEN DivModConst(xval, yval, FALSE, x.typ)\r\t\t\t\tELSIF f # Undef THEN err(104)\r\t\t\t\tEND\r\t\t\t| and:\r\t\t\t\tIF f = Bool THEN xval.intval := BoolToInt(IntToBool(xval.intval) & IntToBool(yval.intval))\r\t\t\t\tELSE err(94)\r\t\t\t\tEND\r\t\t\t| plus:\r\t\t\t\tIF f IN intSet + realSet THEN AddConst(xval, yval, xval, x.typ)\r\t\t\t\tELSIF f = Set THEN xval.setval := xval.setval + yval.setval\r\t\t\t\tELSIF (f IN {String8, String16}) & (xval.ext # NIL) & (yval.ext # NIL) THEN\r\t\t\t\t\tNEW(ext, LEN(xval.ext^) + LEN(yval.ext^));\r\t\t\t\t\ti := 0; WHILE xval.ext[i] # 0X DO ext[i] := xval.ext[i]; INC(i) END;\r\t\t\t\t\tj := 0; WHILE yval.ext[j] # 0X DO ext[i] := yval.ext[j]; INC(i); INC(j) END;\r\t\t\t\t\text[i] := 0X; xval.ext := ext; INC(xval.intval2, yval.intval2 - 1)\r\t\t\t\tELSIF f # Undef THEN err(105)\r\t\t\t\tEND\r\t\t\t| minus:\r\t\t\t\tIF f IN intSet + realSet THEN SubConst(xval, yval, xval, x.typ)\r\t\t\t\tELSIF f = Set THEN xval.setval := xval.setval - yval.setval\r\t\t\t\tELSIF f # Undef THEN err(106)\r\t\t\t\tEND\r\t\t\t| min:\r\t\t\t\tIF f IN intSet + realSet THEN\r\t\t\t\t\tIF LessConst(yval, xval, f) THEN xval^ := yval^ END\r\t\t\t\tELSIF f # Undef THEN err(111)\r\t\t\t\tEND\r\t\t\t| max:\r\t\t\t\tIF f IN intSet + realSet THEN\r\t\t\t\t\tIF LessConst(xval, yval, f) THEN xval^ := yval^ END\r\t\t\t\tELSIF f # Undef THEN err(111)\r\t\t\t\tEND\r\t\t\t| or:\r\t\t\t\tIF f = Bool THEN xval.intval := BoolToInt(IntToBool(xval.intval) OR IntToBool(yval.intval))\r\t\t\t\tELSE err(95)\r\t\t\t\tEND\r\t\t\t| eql: xval.intval := BoolToInt(EqualConst(xval, yval, f)); x.typ := DevCPT.booltyp\r\t\t\t| neq: xval.intval := BoolToInt(~EqualConst(xval, yval, f)); x.typ := DevCPT.booltyp\r\t\t\t| lss: xval.intval := BoolToInt(LessConst(xval, yval, f)); x.typ := DevCPT.booltyp\r\t\t\t| leq: xval.intval := BoolToInt(~LessConst(yval, xval, f)); x.typ := DevCPT.booltyp\r\t\t\t| gtr: xval.intval := BoolToInt(LessConst(yval, xval, f)); x.typ := DevCPT.booltyp\r\t\t\t| geq: xval.intval := BoolToInt(~LessConst(xval, yval, f)); x.typ := DevCPT.booltyp\r\t\t\tEND\r\t\tELSE err(100)\r\t\tEND;\r\t\tx.obj := NIL\r\tEND ConstOp;\r\t\r\tPROCEDURE Op*(op: BYTE; VAR x: DevCPT.Node; y: DevCPT.Node);\r\t\tVAR f, g: SHORTINT; t, z: DevCPT.Node; typ: DevCPT.Struct; do: BOOLEAN; val: INTEGER;\r\r\t\tPROCEDURE NewOp(op: BYTE; typ: DevCPT.Struct; VAR x: DevCPT.Node; y: DevCPT.Node);\r\t\t\tVAR node: DevCPT.Node;\r\t\tBEGIN\r\t\t\tnode := DevCPT.NewNode(Ndop); node.subcl := op; node.typ := typ;\r\t\t\tnode.left := x; node.right := y; x := node\r\t\tEND NewOp;\r\r\tBEGIN z := x;\r\t\tIF (z.class = Ntype) OR (z.class = Nproc) OR (y.class = Ntype) OR (y.class = Nproc) THEN err(126)\r\t\tELSE\r\t\t\tPromote(z, y, op);\r\t\t\tIF (z.class = Nconst) & (y.class = Nconst) THEN ConstOp(op, z, y)\r\t\t\tELSE\r\t\t\t\ttyp := z.typ; f := typ.form; g := y.typ.form;\r\t\t\t\tCASE op OF\r\t\t\t\t| times:\r\t\t\t\t\tdo := TRUE;\r\t\t\t\t\tIF f IN intSet THEN\r\t\t\t\t\t\tIF z.class = Nconst THEN\r\t\t\t\t\t\t\tIF EqualConst(z.conval, one, f) THEN do := FALSE; z := y\r\t\t\t\t\t\t\tELSIF EqualConst(z.conval, zero, f) THEN do := FALSE\r\t\t\t\t\t\t\tELSE val := Log(z);\r\t\t\t\t\t\t\t\tIF val >= 0 THEN\r\t\t\t\t\t\t\t\t\tt := y; y := z; z := t;\r\t\t\t\t\t\t\t\t\top := ash; y.typ := DevCPT.int32typ; y.conval.intval := val; y.obj := NIL\r\t\t\t\t\t\t\t\tEND\r\t\t\t\t\t\t\tEND\r\t\t\t\t\t\tELSIF y.class = Nconst THEN\r\t\t\t\t\t\t\tIF EqualConst(y.conval, one, f) THEN do := FALSE\r\t\t\t\t\t\t\tELSIF EqualConst(y.conval, zero, f) THEN do := FALSE; z := y\r\t\t\t\t\t\t\tELSE val := Log(y);\r\t\t\t\t\t\t\t\tIF val >= 0 THEN\r\t\t\t\t\t\t\t\t\top := ash; y.typ := DevCPT.int32typ; y.conval.intval := val; y.obj := NIL\r\t\t\t\t\t\t\t\tEND\r\t\t\t\t\t\t\tEND\r\t\t\t\t\t\tEND\r\t\t\t\t\tELSIF ~(f IN {Undef, Real32..Set}) THEN err(105); typ := DevCPT.undftyp\r\t\t\t\t\tEND ;\r\t\t\t\t\tIF do THEN NewOp(op, typ, z, y) END;\r\t\t\t\t| slash:\r\t\t\t\t\tIF f IN realSet THEN (* OK *)\r\t\t\t\t\tELSIF (f # Set) & (f # Undef) THEN err(102); typ := DevCPT.undftyp\r\t\t\t\t\tEND ;\r\t\t\t\t\tNewOp(op, typ, z, y)\r\t\t\t\t| div:\r\t\t\t\t\tdo := TRUE;\r\t\t\t\t\tIF f IN intSet THEN\r\t\t\t\t\t\tIF y.class = Nconst THEN\r\t\t\t\t\t\t\tIF EqualConst(y.conval, zero, f) THEN err(205)\r\t\t\t\t\t\t\tELSIF EqualConst(y.conval, one, f) THEN do := FALSE\r\t\t\t\t\t\t\tELSE val := Log(y);\r\t\t\t\t\t\t\t\tIF val >= 0 THEN\r\t\t\t\t\t\t\t\t\top := ash; y.typ := DevCPT.int32typ; y.conval.intval := -val; y.obj := NIL\r\t\t\t\t\t\t\t\tEND\r\t\t\t\t\t\t\tEND\r\t\t\t\t\t\tEND\r\t\t\t\t\tELSIF f # Undef THEN err(103); typ := DevCPT.undftyp\r\t\t\t\t\tEND ;\r\t\t\t\t\tIF do THEN NewOp(op, typ, z, y) END;\r\t\t\t\t| mod:\r\t\t\t\t\tIF f IN intSet THEN\r\t\t\t\t\t\tIF y.class = Nconst THEN\r\t\t\t\t\t\t\tIF EqualConst(y.conval, zero, f) THEN err(205)\r\t\t\t\t\t\t\tELSE val := Log(y);\r\t\t\t\t\t\t\t\tIF val >= 0 THEN\r\t\t\t\t\t\t\t\t\top := msk; y.conval.intval := ASH(-1, val); y.obj := NIL\r\t\t\t\t\t\t\t\tEND\r\t\t\t\t\t\t\tEND\r\t\t\t\t\t\tEND\r\t\t\t\t\tELSIF f # Undef THEN err(104); typ := DevCPT.undftyp\r\t\t\t\t\tEND ;\r\t\t\t\t\tNewOp(op, typ, z, y);\r\t\t\t\t| and:\r\t\t\t\t\tIF f = Bool THEN\r\t\t\t\t\t\tIF z.class = Nconst THEN\r\t\t\t\t\t\t\tIF IntToBool(z.conval.intval) THEN z := y END\r\t\t\t\t\t\tELSIF (y.class = Nconst) & IntToBool(y.conval.intval) THEN (* optimize z & TRUE -> z *)\r\t\t\t\t\t\tELSE NewOp(op, typ, z, y)\r\t\t\t\t\t\tEND\r\t\t\t\t\tELSIF f # Undef THEN err(94); z.typ := DevCPT.undftyp\r\t\t\t\t\tEND\r\t\t\t\t| plus:\r\t\t\t\t\tIF ~(f IN {Undef, Int8..Set, Int64, String8, String16}) THEN err(105); typ := DevCPT.undftyp END;\r\t\t\t\t\tdo := TRUE;\r\t\t\t\t\tIF f IN intSet THEN\r\t\t\t\t\t\tIF (z.class = Nconst) & EqualConst(z.conval, zero, f) THEN do := FALSE; z := y END ;\r\t\t\t\t\t\tIF (y.class = Nconst) & EqualConst(y.conval, zero, f) THEN do := FALSE END\r\t\t\t\t\tELSIF f IN {String8, String16} THEN\r\t\t\t\t\t\tIF (z.class = Nconst) & (z.conval.intval2 = 1) THEN do := FALSE; z := y END ;\r\t\t\t\t\t\tIF (y.class = Nconst) & (y.conval.intval2 = 1) THEN do := FALSE END;\r\t\t\t\t\t\tIF do THEN\r\t\t\t\t\t\t\tIF z.class = Ndop THEN\r\t\t\t\t\t\t\t\tt := z; WHILE t.right.class = Ndop DO t := t.right END;\r\t\t\t\t\t\t\t\tIF (t.right.class = Nconst) & (y.class = Nconst) THEN\r\t\t\t\t\t\t\t\t\tConstOp(op, t.right, y); do := FALSE\r\t\t\t\t\t\t\t\tELSIF (t.right.class = Nconst) & (y.class = Ndop) & (y.left.class = Nconst) THEN\r\t\t\t\t\t\t\t\t\tConstOp(op, t.right, y.left); y.left := t.right; t.right := y; do := FALSE\r\t\t\t\t\t\t\t\tELSE\r\t\t\t\t\t\t\t\t\tNewOp(op, typ, t.right, y); do := FALSE\r\t\t\t\t\t\t\t\tEND\r\t\t\t\t\t\t\tELSE\r\t\t\t\t\t\t\t\tIF (z.class = Nconst) & (y.class = Ndop) & (y.left.class = Nconst) THEN\r\t\t\t\t\t\t\t\t\tConstOp(op, z, y.left); y.left := z; z := y; do := FALSE\r\t\t\t\t\t\t\t\tEND\r\t\t\t\t\t\t\tEND\r\t\t\t\t\t\tEND\r\t\t\t\t\tEND ;\r\t\t\t\t\tIF do THEN NewOp(op, typ, z, y) END;\r\t\t\t\t| minus:\r\t\t\t\t\tIF ~(f IN {Undef, Int8..Set, Int64}) THEN err(106); typ := DevCPT.undftyp END;\r\t\t\t\t\tIF ~(f IN intSet) OR (y.class # Nconst) OR ~EqualConst(y.conval, zero, f) THEN NewOp(op, typ, z, y)\r\t\t\t\t\tEND;\r\t\t\t\t| min, max:\r\t\t\t\t\tIF ~(f IN {Undef} + intSet + realSet + charSet) THEN err(111); typ := DevCPT.undftyp END;\r\t\t\t\t\tNewOp(op, typ, z, y);\r\t\t\t\t| or:\r\t\t\t\t\tIF f = Bool THEN\r\t\t\t\t\t\tIF z.class = Nconst THEN\r\t\t\t\t\t\t\tIF ~IntToBool(z.conval.intval) THEN z := y END\r\t\t\t\t\t\tELSIF (y.class = Nconst) & ~IntToBool(y.conval.intval) THEN (* optimize z OR FALSE -> z *)\r\t\t\t\t\t\tELSE NewOp(op, typ, z, y)\r\t\t\t\t\t\tEND\r\t\t\t\t\tELSIF f # Undef THEN err(95); z.typ := DevCPT.undftyp\r\t\t\t\t\tEND\r\t\t\t\t| eql, neq, lss, leq, gtr, geq:\r\t\t\t\t\tIF f IN {String8, String16} THEN\r\t\t\t\t\t\tIF (f = String16) & (z.class = Nmop) & (z.subcl = conv) & (y.class = Nmop) & (y.subcl = conv) THEN\r\t\t\t\t\t\t\tz := z.left; y := y.left\t"
+                    attr: 0
+                  - text: "(* remove LONG on both sides *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\tELSIF (z.class = Nconst) & (z.conval.intval2 = 1) & (y.class = Nderef) THEN "
+                    attr: 0
+                  - text: "(* y$ = \"\" -> y[0] = 0X *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\t\ty := y.left; Index(y, NewIntConst(0)); z.typ := y.typ; z.conval.intval := 0\r\t\t\t\t\t\tELSIF (y.class = Nconst) & (y.conval.intval2 = 1) & (z.class = Nderef) THEN "
+                    attr: 0
+                  - text: "(* z$ = \"\" -> z[0] = 0X *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\t\tz := z.left; Index(z, NewIntConst(0)); y.typ := z.typ; y.conval.intval := 0\r\t\t\t\t\t\tEND;\r\t\t\t\t\t\ttyp := DevCPT.booltyp\r\t\t\t\t\tELSIF (f IN {Undef, Char8..Real64, Char16, Int64})\r\t\t\t\t\t\t\tOR (op <= neq) & ((f IN {Bool, Set, NilTyp, Pointer, ProcTyp}) OR (typ = DevCPT.guidtyp)) THEN\r\t\t\t\t\t\ttyp := DevCPT.booltyp\r\t\t\t\t\tELSE err(107); typ := DevCPT.undftyp\r\t\t\t\t\tEND;\r\t\t\t\t\tNewOp(op, typ, z, y)\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND;\r\t\tx := z\r\tEND Op;\r\r\tPROCEDURE SetRange*(VAR x: DevCPT.Node; y: DevCPT.Node);\r\t\tVAR k, l: INTEGER;\r\tBEGIN\r\t\tIF (x.class = Ntype) OR (x.class = Nproc) OR (y.class = Ntype) OR (y.class = Nproc) THEN err(126)\t\r\t\tELSIF (x.typ.form IN intSet) & (y.typ.form IN intSet) THEN\r\t\t\tIF x.typ.form = Int64 THEN Convert(x, DevCPT.int32typ) END;\r\t\t\tIF y.typ.form = Int64 THEN Convert(y, DevCPT.int32typ) END;\r\t\t\tIF x.class = Nconst THEN\r\t\t\t\tk := x.conval.intval;\r\t\t\t\tIF (0 > k) OR (k > DevCPM.MaxSet) OR (x.conval.realval # 0) THEN err(202) END\r\t\t\tEND ;\r\t\t\tIF y.class = Nconst THEN\r\t\t\t\tl := y.conval.intval;\r\t\t\t\tIF (0 > l) OR (l > DevCPM.MaxSet) OR (y.conval.realval # 0) THEN err(202) END\r\t\t\tEND ;\r\t\t\tIF (x.class = Nconst) & (y.class = Nconst) THEN\r\t\t\t\tIF k <= l THEN\r\t\t\t\t\tx.conval.setval := {k..l}\r\t\t\t\tELSE err(201); x.conval.setval := {l..k}\r\t\t\t\tEND ;\r\t\t\t\tx.obj := NIL\r\t\t\tELSE BindNodes(Nupto, DevCPT.settyp, x, y)\r\t\t\tEND\r\t\tELSE err(93)\r\t\tEND ;\r\t\tx.typ := DevCPT.settyp\r\tEND SetRange;\r\r\tPROCEDURE SetElem*(VAR x: DevCPT.Node);\r\t\tVAR k: INTEGER;\r\tBEGIN\r\t\tIF (x.class = Ntype) OR (x.class = Nproc) THEN err(126) END;\r\t\tIF x.typ.form IN intSet THEN\r\t\t\tIF x.typ.form = Int64 THEN Convert(x, DevCPT.int32typ) END;\r\t\t\tIF x.class = Nconst THEN\r\t\t\t\tk := x.conval.intval;\r\t\t\t\tIF (0 <= k) & (k <= DevCPM.MaxSet) & (x.conval.realval = 0) THEN x.conval.setval := {k}\r\t\t\t\tELSE err(202)\r\t\t\t\tEND ;\r\t\t\t\tx.obj := NIL\r\t\t\tELSE BindNodes(Nmop, DevCPT.settyp, x, NIL); x.subcl := bit\r\t\t\tEND ;\r\t\tELSE err(93)\r\t\tEND;\r\t\tx.typ := DevCPT.settyp\r\tEND SetElem;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: CheckAssign
+                    attr: 3
+                  - text: "* (x: DevCPT.Struct; VAR ynode: DevCPT.Node);\r\t"
+                    attr: 0
+                  - text: "(* x := y, checks assignment compatibility *)"
+                    attr: 1
+                  - text: "\r\t\tVAR f, g: SHORTINT; y, b: DevCPT.Struct;\r\tBEGIN\r\t\ty := ynode.typ; f := x.form; g := y.form;\r\t\tIF (ynode.class = Ntype) OR (ynode.class = Nproc) & (f # ProcTyp) THEN err(126) END ;\r\t\tCASE f OF\r\t\t| Undef, String8, String16, Byte:\r\t\t| Bool, Set:\r\t\t\tIF g # f THEN err(113) END\r\t\t| Int8, Int16, Int32, Int64, Real32, Real64:\t(* SR *)\r\t\t\tIF (g IN intSet) OR (g IN realSet) & (f IN realSet) THEN\r\t\t\t\tIF ynode.class = Nconst THEN Convert(ynode, x)\r\t\t\t\tELSIF ~DevCPT.Includes(f, g) THEN err(113)\r\t\t\t\tEND\r\t\t\tELSE err(113)\r\t\t\tEND\r(*\t\t\t\r\t\t\tIF ~(g IN intSet + realSet) OR ~DevCPT.Includes(f, g) & (~(g IN intSet) OR (ynode.class # Nconst)) THEN\r\t\t\t\terr(113)\r\t\t\tELSIF ynode.class = Nconst THEN Convert(ynode, x)\r\t\t\tEND\r*)\r\t\t| Char8, Char16:\r\t\t\tIF ~(g IN charSet) OR ~DevCPT.Includes(f, g) THEN err(113)\r\t\t\tELSIF ynode.class = Nconst THEN Convert(ynode, x)\r\t\t\tEND\r\t\t| Pointer:\r\t\t\tb := x.BaseTyp;\r\t\t\tIF DevCPT.Extends(y, x)\r\t\t\t\tOR (g = NilTyp)\r\t\t\t\tOR (g = Pointer)\r\t\t\t\t\t& ((x = DevCPT.sysptrtyp) OR (DevCPM.java IN DevCPM.options) & (x = DevCPT.anyptrtyp))\r\t\t\tTHEN (* ok *)\r\t\t\tELSIF (b.comp = DynArr) & b.untagged THEN\t"
+                    attr: 0
+                  - text: "(* pointer to untagged open array *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tIF ynode.class = Nconst THEN CheckString(ynode, b, 113)\r\t\t\t\tELSIF ~(y.comp IN {Array, DynArr}) OR ~DevCPT.EqualType(b.BaseTyp, y.BaseTyp) THEN err(113)\r\t\t\t\tEND\r\t\t\tELSIF b.untagged & (ynode.class = Nmop) & (ynode.subcl = adr) THEN\t"
+                    attr: 0
+                  - text: "(* p := ADR(r) *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tIF (b.comp = DynArr) & (ynode.left.class = Nconst) THEN CheckString(ynode.left, b, 113)\r\t\t\t\tELSIF ~DevCPT.Extends(ynode.left.typ, b) THEN err(113)\r\t\t\t\tEND\r\t\t\tELSIF (b.sysflag = jstr) & ((g = String16) OR (ynode.class = Nconst) & (g IN {Char8, Char16, String8}))\r\t\t\tTHEN\r\t\t\t\tIF g # String16 THEN Convert(ynode, DevCPT.string16typ) END\r\t\t\tELSE err(113)\r\t\t\tEND\r\t\t| ProcTyp:\r\t\t\tIF DevCPT.EqualType(x, y) OR (g = NilTyp) THEN (* ok *)\r\t\t\tELSIF (ynode.class = Nproc) & (ynode.obj.mode IN {XProc, IProc, LProc}) THEN\r\t\t\t\tIF ynode.obj.mode = LProc THEN\r\t\t\t\t\tIF ynode.obj.mnolev = 0 THEN ynode.obj.mode := XProc ELSE err(73) END\r\t\t\t\tEND;\r\t\t\t\tIF (x.sysflag = 0) & (ynode.obj.sysflag >= 0) OR (x.sysflag = ynode.obj.sysflag) THEN\r\t\t\t\t\tIF DevCPT.EqualType(x.BaseTyp, ynode.obj.typ) THEN CheckParameters(x.link, ynode.obj.link, FALSE)\r\t\t\t\t\tELSE err(117)\r\t\t\t\t\tEND\r\t\t\t\tELSE err(113)\r\t\t\t\tEND\r\t\t\tELSE err(113)\r\t\t\tEND\r\t\t| NoTyp, NilTyp: err(113)\r\t\t| Comp:\r\t\t\tx.pvused := TRUE;\t"
+                    attr: 0
+                  - text: "(* idfp of y guarantees assignment compatibility with x *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF x.comp = Record THEN\r\t\t\t\tIF ~DevCPT.EqualType(x, y) OR (x.attribute # 0) THEN err(113) END\r\t\t\tELSIF g IN {Char8, Char16, String8, String16} THEN\r\t\t\t\tIF (x.BaseTyp.form = Char16) & (g = String8) THEN Convert(ynode, DevCPT.string16typ)\r\t\t\t\tELSE CheckString(ynode, x, 113);\r\t\t\t\tEND;\r\t\t\t\tIF (x # DevCPT.guidtyp) & (x.comp = Array) & (ynode.class = Nconst) & (ynode.conval.intval2 > x.n) THEN\r\t\t\t\t\terr(114)\r\t\t\t\tEND\r\t\t\tELSIF (x.comp = Array) & DevCPT.EqualType(x, y) THEN (* ok *)\r\t\t\tELSE err(113)\r\t\t\tEND\r\t\tEND\r\tEND CheckAssign;\r\t\r\tPROCEDURE AssignString (VAR x: DevCPT.Node; str: DevCPT.Node);\t(* x := str or x[0] := 0X *)\r\tBEGIN\r\t\tASSERT((str.class = Nconst) & (str.typ.form IN {String8, String16}));\r\t\tIF (x.typ.comp IN {Array, DynArr}) & (str.conval.intval2 = 1) THEN\t(* x := \"\" -> x[0] := 0X *)\r\t\t\tIndex(x, NewIntConst(0));\r\t\t\tstr.typ := x.typ; str.conval.intval := 0;\r\t\tEND;\r\t\tBindNodes(Nassign, DevCPT.notyp, x, str); x.subcl := assign\r\tEND AssignString;\r\t\r\tPROCEDURE CheckLeaf(x: DevCPT.Node; dynArrToo: BOOLEAN);\r\tBEGIN\r\t\tIF (x.class = Nmop) & (x.subcl = val) THEN x := x.left END ;\r\t\tIF x.class = Nguard THEN x := x.left END ;\t(* skip last (and unique) guard *)\r\t\tIF (x.class = Nvar) & (dynArrToo OR (x.typ.comp # DynArr)) THEN x.obj.leaf := FALSE END\r\tEND CheckLeaf;\r\t\r\tPROCEDURE CheckOldType (x: DevCPT.Node);\r\tBEGIN\r\t\tIF ~(DevCPM.oberon IN DevCPM.options)\r\t\t\t& ((x.typ = DevCPT.lreal64typ) OR (x.typ = DevCPT.lint64typ) OR (x.typ = DevCPT.lchar16typ)) THEN\r\t\t\terr(198)\r\t\tEND\r\tEND CheckOldType;\r\t\r\tPROCEDURE StPar0*(VAR par0: DevCPT.Node; fctno: SHORTINT);\t(* par0: first param of standard proc *)\r\t\tVAR f: SHORTINT; typ: DevCPT.Struct; x, t: DevCPT.Node;\r\tBEGIN x := par0; f := x.typ.form;\r\t\tCASE fctno OF\r\t\t  haltfn: (*HALT*)\r\t\t\t\tIF (f IN intSet - {Int64}) & (x.class = Nconst) THEN\r\t\t\t\t\tIF (DevCPM.MinHaltNr <= x.conval.intval) & (x.conval.intval <= DevCPM.MaxHaltNr) THEN\r\t\t\t\t\t\tBindNodes(Ntrap, DevCPT.notyp, x, x)\r\t\t\t\t\tELSE err(218)\r\t\t\t\t\tEND\r\t\t\t\tELSIF (DevCPM.java IN DevCPM.options)\r\t\t\t\t\t& ((x.class = Ntype) OR (x.class = Nvar))\r\t\t\t\t\t& (x.typ.form = Pointer)\r\t\t\t\tTHEN\r\t\t\t\t\tBindNodes(Ntrap, DevCPT.notyp, x, x)\r\t\t\t\tELSE err(69)\r\t\t\t\tEND ;\r\t\t\t\tx.typ := DevCPT.notyp\r\t\t| newfn: (*NEW*)\r\t\t\t\ttyp := DevCPT.notyp;\r\t\t\t\tIF NotVar(x) THEN err(112)\r\t\t\t\tELSIF f = Pointer THEN\r\t\t\t\t\tIF DevCPM.NEWusingAdr THEN CheckLeaf(x, TRUE) END ;\r\t\t\t\t\tIF x.readonly THEN err(76)\r\t\t\t\t\tELSIF (x.typ.BaseTyp.attribute = absAttr)\r\t\t\t\t\t\tOR (x.typ.BaseTyp.attribute = limAttr) & (x.typ.BaseTyp.mno # 0) THEN err(193)\r\t\t\t\t\tELSIF (x.obj # NIL) & ODD(x.obj.sysflag DIV newBit) THEN err(167)\r\t\t\t\t\tEND ;\r\t\t\t\t\tMarkAsUsed(x);\r\t\t\t\t\tf := x.typ.BaseTyp.comp;\r\t\t\t\t\tIF f IN {Record, DynArr, Array} THEN\r\t\t\t\t\t\tIF f = DynArr THEN typ := x.typ.BaseTyp END ;\r\t\t\t\t\t\tBindNodes(Nassign, DevCPT.notyp, x, NIL); x.subcl := newfn\r\t\t\t\t\tELSE err(111)\r\t\t\t\t\tEND\r\t\t\t\tELSE err(111)\r\t\t\t\tEND ;\r\t\t\t\tx.typ := typ\r\t\t| absfn: (*ABS*)\r\t\t\t\tMOp(abs, x)\r\t\t| capfn: (*CAP*)\r\t\t\t\tMOp(cap, x)\r\t\t| ordfn: (*ORD*) \r\t\t\t\tIF (x.class = Ntype) OR (x.class = Nproc) THEN err(126)\r\t\t\t\tELSIF f = Char8 THEN Convert(x, DevCPT.int16typ)\r\t\t\t\tELSIF f = Char16 THEN Convert(x, DevCPT.int32typ)\r\t\t\t\tELSIF f = Set THEN Convert(x, DevCPT.int32typ)\r\t\t\t\tELSE err(111)\r\t\t\t\tEND\r\t\t| bitsfn: (*BITS*)\r\t\t\t\tIF (x.class = Ntype) OR (x.class = Nproc) THEN err(126)\r\t\t\t\tELSIF f IN {Int8, Int16, Int32} THEN Convert(x, DevCPT.settyp)\r\t\t\t\tELSE err(111)\r\t\t\t\tEND\r\t\t| entierfn: (*ENTIER*)\r\t\t\t\tIF (x.class = Ntype) OR (x.class = Nproc) THEN err(126)\r\t\t\t\tELSIF f IN realSet THEN Convert(x, DevCPT.int64typ)\r\t\t\t\tELSE err(111)\r\t\t\t\tEND ;\r\t\t\t\tx.typ := DevCPT.int64typ\r\t\t| lentierfcn: (* LENTIER *)\r\t\t\t\tIF ~(DevCPM.oberon IN DevCPM.options) THEN err(199) END;\r\t\t\t\tIF (x.class = Ntype) OR (x.class = Nproc) THEN err(126)\r\t\t\t\tELSIF f IN realSet THEN Convert(x, DevCPT.int64typ)\r\t\t\t\tELSE err(111)\r\t\t\t\tEND ;\r\t\t\t\tx.typ := DevCPT.int64typ\r\t\t| oddfn: (*ODD*)\r\t\t\t\tMOp(odd, x)\r\t\t| minfn: (*MIN*)\r\t\t\t\tIF x.class = Ntype THEN\r\t\t\t\t\tCheckOldType(x);\r\t\t\t\t\tCASE f OF\r\t\t\t\t\t  Bool:  x := NewBoolConst(FALSE)\r\t\t\t\t\t| Char8:  x := NewIntConst(0); x.typ := DevCPT.char8typ\r\t\t\t\t\t| Char16:  x := NewIntConst(0); x.typ := DevCPT.char8typ\r\t\t\t\t\t| Int8:  x := NewIntConst(-128)\r\t\t\t\t\t| Int16:   x := NewIntConst(-32768)\r\t\t\t\t\t| Int32:  x := NewIntConst(-2147483648)\r\t\t\t\t\t| Int64:  x := NewLargeIntConst(0, -9223372036854775808.0E0)\t(* -2^63 *)\r\t\t\t\t\t| Set:   x := NewIntConst(0) (*; x.typ := DevCPT.int16typ *)\r\t\t\t\t\t| Real32:  x := NewRealConst(DevCPM.MinReal32, DevCPT.real64typ)\r\t\t\t\t\t| Real64: x := NewRealConst(DevCPM.MinReal64, DevCPT.real64typ)\r\t\t\t\t\tELSE err(111)\r\t\t\t\t\tEND;\r\t\t\t\t\tx.hint := 1\r\t\t\t\tELSIF ~(f IN intSet + realSet + charSet) THEN err(111)\r\t\t\t\tEND\r\t\t| maxfn: (*MAX*)\r\t\t\t\tIF x.class = Ntype THEN\r\t\t\t\t\tCheckOldType(x);\r\t\t\t\t\tCASE f OF\r\t\t\t\t\t  Bool:  x := NewBoolConst(TRUE)\r\t\t\t\t\t| Char8:  x := NewIntConst(0FFH); x.typ := DevCPT.char8typ\r\t\t\t\t\t| Char16:  x := NewIntConst(0FFFFH); x.typ := DevCPT.char16typ\r\t\t\t\t\t| Int8:  x := NewIntConst(127)\r\t\t\t\t\t| Int16:   x := NewIntConst(32767)\r\t\t\t\t\t| Int32:  x := NewIntConst(2147483647)\r\t\t\t\t\t| Int64:  x := NewLargeIntConst(-1, 9223372036854775808.0E0)\t(* 2^63 - 1 *)\r\t\t\t\t\t| Set:   x := NewIntConst(31) (*; x.typ := DevCPT.int16typ *)\r\t\t\t\t\t| Real32:  x := NewRealConst(DevCPM.MaxReal32, DevCPT.real64typ)\r\t\t\t\t\t| Real64: x := NewRealConst(DevCPM.MaxReal64, DevCPT.real64typ)\r\t\t\t\t\tELSE err(111)\r\t\t\t\t\tEND;\r\t\t\t\t\tx.hint := 1\r\t\t\t\tELSIF ~(f IN intSet + realSet + charSet) THEN err(111)\r\t\t\t\tEND\r\t\t| chrfn: (*CHR*) \r\t\t\t\tIF (x.class = Ntype) OR (x.class = Nproc) THEN err(126)\r\t\t\t\tELSIF f IN {Undef, Int8..Int32, Int64} THEN Convert(x, DevCPT.char16typ)\r\t\t\t\tELSE err(111); x.typ := DevCPT.char16typ\r\t\t\t\tEND\r\t\t| lchrfn: (* LCHR *)\r\t\t\t\tIF ~(DevCPM.oberon IN DevCPM.options) THEN err(199) END;\r\t\t\t\tIF (x.class = Ntype) OR (x.class = Nproc) THEN err(126)\r\t\t\t\tELSIF f IN {Undef, Int8..Int32, Int64} THEN Convert(x, DevCPT.char16typ)\r\t\t\t\tELSE err(111); x.typ := DevCPT.char16typ\r\t\t\t\tEND\r\t\t| shortfn: (*SHORT*)\r\t\t\t\tIF (x.class = Ntype) OR (x.class = Nproc) THEN err(126)\r\t\t\t\tELSE\r\t\t\t\t\tIF (x.typ.comp IN {Array, DynArr}) & (x.typ.BaseTyp.form IN charSet) THEN StrDeref(x); f := x.typ.form\r\t\t\t\t\tEND;\r\t\t\t\t\tIF f = Int16 THEN Convert(x, DevCPT.int8typ)\r\t\t\t\t\tELSIF f = Int32 THEN Convert(x, DevCPT.int16typ)\r\t\t\t\t\tELSIF f = Int64 THEN Convert(x, DevCPT.int32typ)\r\t\t\t\t\tELSIF f = Real64 THEN Convert(x, DevCPT.real32typ)\r\t\t\t\t\tELSIF f = Char16 THEN Convert(x, DevCPT.char8typ)\r\t\t\t\t\tELSIF f = String16 THEN Convert(x, DevCPT.string8typ)\r\t\t\t\t\tELSE err(111)\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t| longfn: (*LONG*)\r\t\t\t\tIF (x.class = Ntype) OR (x.class = Nproc) THEN err(126)\r\t\t\t\tELSE\r\t\t\t\t\tIF (x.typ.comp IN {Array, DynArr}) & (x.typ.BaseTyp.form IN charSet) THEN StrDeref(x); f := x.typ.form\r\t\t\t\t\tEND;\r\t\t\t\t\tIF f = Int8 THEN Convert(x, DevCPT.int16typ)\r\t\t\t\t\tELSIF f = Int16 THEN Convert(x, DevCPT.int32typ)\r\t\t\t\t\tELSIF f = Int32 THEN Convert(x, DevCPT.int64typ)\r\t\t\t\t\tELSIF f = Real32 THEN Convert(x, DevCPT.real64typ)\r\t\t\t\t\tELSIF f = Char8 THEN Convert(x, DevCPT.char16typ)\r\t\t\t\t\tELSIF f = String8 THEN Convert(x, DevCPT.string16typ)\r\t\t\t\t\tELSE err(111)\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t| incfn, decfn: (*INC, DEC*) \r\t\t\t\tIF NotVar(x) THEN err(112)\r\t\t\t\tELSIF ~(f IN intSet) THEN err(111)\r\t\t\t\tELSIF x.readonly THEN err(76)\r\t\t\t\tEND;\r\t\t\t\tMarkAsUsed(x)\r\t\t| inclfn, exclfn: (*INCL, EXCL*)\r\t\t\t\tIF NotVar(x) THEN err(112)\r\t\t\t\tELSIF f # Set THEN err(111); x.typ := DevCPT.settyp\r\t\t\t\tELSIF x.readonly THEN err(76)\r\t\t\t\tEND;\r\t\t\t\tMarkAsUsed(x)\r\t\t| lenfn: (*LEN*)\r\t\t\t\tIF "
+                    attr: 0
+                  - text: "(* (x.class = Ntype) OR *)"
+                    attr: 3
+                  - text: " (x.class = Nproc) THEN err(126)\t(* !!! *)\r\t\t\t\t(* ELSIF x.typ.sysflag = jstr THEN StrDeref(x) *)\r\t\t\t\tELSE\r\t\t\t\t\tIF x.typ.form = Pointer THEN DeRef(x) END;\r\t\t\t\t\tIF x.class = Nconst THEN\r\t\t\t\t\t\tIF x.typ.form = Char8 THEN CharToString8(x)\r\t\t\t\t\t\tELSIF x.typ.form = Char16 THEN CharToString16(x)\r\t\t\t\t\t\tEND\r\t\t\t\t\tEND;\r\t\t\t\t\tIF ~(x.typ.comp IN {DynArr, Array}) & ~(x.typ.form IN {String8, String16}) THEN err(131) END\r\t\t\t\tEND\r\t\t| copyfn: (*COPY*)\r\t\t\t\tIF ~(DevCPM.oberon IN DevCPM.options) THEN err(199) END;\r\t\t\t\tIF (x.class = Ntype) OR (x.class = Nproc) THEN err(126) END\r\t\t| ashfn: (*ASH*)\r\t\t\t\tIF (x.class = Ntype) OR (x.class = Nproc) THEN err(126)\r\t\t\t\tELSIF f IN intSet THEN\r\t\t\t\t\tIF f < Int32 THEN Convert(x, DevCPT.int32typ) END\r\t\t\t\tELSE err(111); x.typ := DevCPT.int32typ\r\t\t\t\tEND\r\t\t| adrfn: (*ADR*)\r\t\t\t\tIF x.class = Ntype THEN CheckOldType(x) END;\r\t\t\t\tCheckLeaf(x, FALSE); MOp(adr, x)\r\t\t| typfn: (*TYP*)\r\t\t\t\tCheckLeaf(x, FALSE);\r\t\t\t\tIF x.class = Ntype THEN\r\t\t\t\t\tCheckOldType(x);\r\t\t\t\t\tIF x.typ.form = Pointer THEN x := NewLeaf(x.typ.BaseTyp.strobj) END;\r\t\t\t\t\tIF x.typ.comp # Record THEN err(111) END;\r\t\t\t\t\tMOp(adr, x)\r\t\t\t\tELSE\r\t\t\t\t\tIF x.typ.form = Pointer THEN DeRef(x) END;\r\t\t\t\t\tIF x.typ.comp # Record THEN err(111) END;\r\t\t\t\t\tMOp(typfn, x)\r\t\t\t\tEND\r\t\t| sizefn: (*SIZE*)\r\t\t\t\tIF x.class # Ntype THEN err(110); x := NewIntConst(1)\r\t\t\t\tELSIF (f IN {Byte..Set, Pointer, ProcTyp, Char16, Int64}) OR (x.typ.comp IN {Array, Record}) THEN\r\t\t\t\t\tCheckOldType(x); x.typ.pvused := TRUE;\r\t\t\t\t\tIF typSize # NIL THEN\r\t\t\t\t\t\ttypSize(x.typ); x := NewIntConst(x.typ.size)\r\t\t\t\t\tELSE\r\t\t\t\t\t\tMOp(size, x)\r\t\t\t\t\tEND\r\t\t\t\tELSE err(111); x := NewIntConst(1)\r\t\t\t\tEND\r\t\t| thisrecfn, (*THISRECORD*)\r\t\t  thisarrfn: (*THISARRAY*)\r\t\t\t\tIF (x.class = Ntype) OR (x.class = Nproc) THEN err(126)\r\t\t\t\tELSIF f IN {Int8, Int16} THEN Convert(x, DevCPT.int32typ)\r\t\t\t\tELSIF f # Int32 THEN err(111)\r\t\t\t\tEND\r\t\t| ccfn: (*SYSTEM.CC*)\r\t\t\t\tMOp(cc, x)\r\t\t| lshfn, rotfn: (*SYSTEM.LSH, SYSTEM.ROT*)\r\t\t\t\tIF (x.class = Ntype) OR (x.class = Nproc) THEN err(126)\r\t\t\t\tELSIF ~(f IN intSet + charSet + {Byte, Set}) THEN err(111)\r\t\t\t\tEND\r\t\t| getfn, putfn, bitfn, movefn: (*SYSTEM.GET, SYSTEM.PUT, SYSTEM.BIT, SYSTEM.MOVE*)\r\t\t\t\tIF (x.class = Ntype) OR (x.class = Nproc) THEN err(126)\r\t\t\t\tELSIF (x.class = Nconst) & (f IN {Int8, Int16}) THEN Convert(x, DevCPT.int32typ)\r\t\t\t\tELSIF ~(f IN {Int32, Pointer}) THEN err(111); x.typ := DevCPT.int32typ\r\t\t\t\tEND\r\t\t| getrfn, putrfn: (*SYSTEM.GETREG, SYSTEM.PUTREG*)\r\t\t\t\tIF (f IN intSet) & (x.class = Nconst) THEN\r\t\t\t\t\tIF (x.conval.intval < DevCPM.MinRegNr) OR (x.conval.intval > DevCPM.MaxRegNr) THEN err(220)\r\t\t\t\t\tEND\r\t\t\t\tELSE err(69)\r\t\t\t\tEND\r\t\t| valfn: (*SYSTEM.VAL*)\r\t\t\t\tIF x.class # Ntype THEN err(110)\r\t\t\t\tELSIF (f IN {Undef, String8, String16, NoTyp, NilTyp}) (* OR (x.typ.comp = DynArr) *) THEN err(111)\r\t\t\t\tELSE CheckOldType(x)\r\t\t\t\tEND\r\t\t| assertfn: (*ASSERT*)\r\t\t\t\tIF (x.class = Ntype) OR (x.class = Nproc) THEN err(126); x := NewBoolConst(FALSE)\r\t\t\t\tELSIF f # Bool THEN err(120); x := NewBoolConst(FALSE)\r\t\t\t\tELSE MOp(not, x)\r\t\t\t\tEND\r\t\t| validfn: (* VALID *)\r\t\t\t\tIF (x.class = Nvarpar) & ODD(x.obj.sysflag DIV nilBit) THEN\r\t\t\t\t\tMOp(adr, x); x.typ := DevCPT.sysptrtyp; Op(neq, x, Nil())\r\t\t\t\tELSE err(111)\r\t\t\t\tEND;\r\t\t\t\tx.typ := DevCPT.booltyp\r\t\t| iidfn: (* COM.IID *)\r\t\t\t\tIF (x.class = Nconst) & (f = String8) THEN StringToGuid(x)\r\t\t\t\tELSE\r\t\t\t\t\ttyp := x.typ;\r\t\t\t\t\tIF typ.form = Pointer THEN typ := typ.BaseTyp END;\r\t\t\t\t\tIF (typ.sysflag = interface) & (typ.ext # NIL) & (typ.strobj # NIL) THEN\r\t\t\t\t\t\tIF x.obj # typ.strobj THEN x := NewLeaf(typ.strobj) END\r\t\t\t\t\tELSE err(111)\r\t\t\t\t\tEND;\r\t\t\t\t\t"
+                    attr: 0
+                  - text: "x.class := Nconst; x.typ := DevCPT.guidtyp"
+                    attr: 3
+                  - text: "\r\t\t\t\tEND\r\t\t| queryfn: (* COM.QUERY *)\r\t\t\t\tIF (x.class = Ntype) OR (x.class = Nproc) THEN err(126)\r\t\t\t\tELSIF f # Pointer THEN err(111)\r\t\t\t\tEND\r\t\tEND ;\r\t\tpar0 := x\r\tEND StPar0;\r\r\tPROCEDURE StPar1*(VAR par0: DevCPT.Node; x: DevCPT.Node; fctno: BYTE);\r\t(* x: second parameter of standard proc *)\r\t\tVAR f, n, L, i: INTEGER; typ, tp1: DevCPT.Struct; p, t: DevCPT.Node;\r\t\t\r\t\tPROCEDURE NewOp(class, subcl: BYTE; left, right: DevCPT.Node): DevCPT.Node;\r\t\t\tVAR node: DevCPT.Node;\r\t\tBEGIN\r\t\t\tnode := DevCPT.NewNode(class); node.subcl := subcl;\r\t\t\tnode.left := left; node.right := right; RETURN node\r\t\tEND NewOp;\r\t\t\r\tBEGIN p := par0; f := x.typ.form;\r\t\tCASE fctno OF\r\t\t  incfn, decfn: (*INC DEC*)\r\t\t\t\tIF (x.class = Ntype) OR (x.class = Nproc) THEN err(126); p.typ := DevCPT.notyp\r\t\t\t\tELSE\r\t\t\t\t\tIF f # p.typ.form THEN\r\t\t\t\t\t\tIF f IN intSet THEN Convert(x, p.typ)\r\t\t\t\t\t\tELSE err(111)\r\t\t\t\t\t\tEND\r\t\t\t\t\tEND ;\r\t\t\t\t\tp := NewOp(Nassign, fctno, p, x);\r\t\t\t\t\tp.typ := DevCPT.notyp\r\t\t\t\tEND\r\t\t| inclfn, exclfn: (*INCL, EXCL*)\r\t\t\t\tIF (x.class = Ntype) OR (x.class = Nproc) THEN err(126)\r\t\t\t\tELSIF f IN intSet THEN\r\t\t\t\t\tIF f = Int64 THEN Convert(x, DevCPT.int32typ) END;\r\t\t\t\t\tIF (x.class = Nconst) & ((0 > x.conval.intval) OR (x.conval.intval > DevCPM.MaxSet)) THEN err(202)\r\t\t\t\t\tEND ;\r\t\t\t\t\tp := NewOp(Nassign, fctno, p, x)\r\t\t\t\tELSE err(111)\r\t\t\t\tEND ;\r\t\t\t\tp.typ := DevCPT.notyp\r\t\t| lenfn: (*LEN*)\r\t\t\t\tIF ~(f IN intSet) OR (x.class # Nconst) THEN err(69)\r\t\t\t\tELSE\r\t\t\t\t\tIF f = Int64 THEN Convert(x, DevCPT.int32typ) END;\r\t\t\t\t\tL := SHORT(x.conval.intval); typ := p.typ;\r\t\t\t\t\tWHILE (L > 0) & (typ.comp IN {DynArr, Array}) DO typ := typ.BaseTyp; DEC(L) END ;\r\t\t\t\t\tIF (L # 0) OR ~(typ.comp IN {DynArr, Array}) THEN err(132)\r\t\t\t\t\tELSE x.obj := NIL;\r\t\t\t\t\t\tIF typ.comp = DynArr THEN\r\t\t\t\t\t\t\tWHILE p.class = Nindex DO\r\t\t\t\t\t\t\t\tp := p.left; INC(x.conval.intval) (* possible side effect ignored *)\r\t\t\t\t\t\t\tEND;\r\t\t\t\t\t\t\tp := NewOp(Ndop, len, p, x); p.typ := DevCPT.int32typ\r\t\t\t\t\t\tELSE p := x; p.conval.intval := typ.n; p.typ := DevCPT.int32typ\r\t\t\t\t\t\tEND\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t| copyfn: (*COPY*)\r\t\t\t\tIF NotVar(x) THEN err(112)\r\t\t\t\tELSIF x.readonly THEN err(76)\r\t\t\t\tELSE\r\t\t\t\t\tCheckString(p, x.typ, 111); t := x; x := p; p := t;\r\t\t\t\t\tIF (x.class = Nconst) & (x.typ.form IN {String8, String16}) THEN AssignString(p, x)\r\t\t\t\t\tELSE p := NewOp(Nassign, copyfn, p, x)\r\t\t\t\t\tEND\r\t\t\t\tEND ;\r\t\t\t\tp.typ := DevCPT.notyp; MarkAsUsed(x)\r\t\t| ashfn: (*ASH*)\r\t\t\t\tIF (x.class = Ntype) OR (x.class = Nproc) THEN err(126)\r\t\t\t\tELSIF f IN intSet THEN\r\t\t\t\t\tIF (x.class = Nconst) & ((x.conval.intval > 64) OR (x.conval.intval < -64)) THEN err(208)\r\t\t\t\t\tELSIF (p.class = Nconst) & (x.class = Nconst) THEN\r\t\t\t\t\t\tn := x.conval.intval;\r\t\t\t\t\t\tIF n > 0 THEN\r\t\t\t\t\t\t\tWHILE n > 0 DO MulConst(p.conval, two, p.conval, p.typ); DEC(n) END\r\t\t\t\t\t\tELSE\r\t\t\t\t\t\t\tWHILE n < 0 DO DivModConst(p.conval, two, TRUE, p.typ); INC(n) END\r\t\t\t\t\t\tEND;\r\t\t\t\t\t\tp.obj := NIL\r\t\t\t\t\tELSE\r\t\t\t\t\t\tIF f = Int64 THEN Convert(x, DevCPT.int32typ) END;\r\t\t\t\t\t\ttyp := p.typ; p := NewOp(Ndop, ash, p, x); p.typ := typ\r\t\t\t\t\tEND\r\t\t\t\tELSE err(111)\r\t\t\t\tEND\r\t\t| minfn: (*MIN*)\r\t\t\t\tIF p.class # Ntype THEN Op(min, p, x) ELSE err(64) END\r\t\t| maxfn: (*MAX*)\r\t\t\t\tIF p.class # Ntype THEN Op(max, p, x) ELSE err(64) END\r\t\t| newfn: (*NEW(p, x...)*)\r\t\t\t\tIF (x.class = Ntype) OR (x.class = Nproc) THEN err(126)\r\t\t\t\tELSIF p.typ.comp = DynArr THEN\r\t\t\t\t\tIF f IN intSet THEN\r\t\t\t\t\t\tIF f = Int64 THEN Convert(x, DevCPT.int32typ) END;\r\t\t\t\t\t\tIF (x.class = Nconst) & (x.conval.intval <= 0)\r\t\t\t\t\t\t\t& (~(DevCPM.java IN DevCPM.options) OR (x.conval.intval < 0))THEN err(63) END\r\t\t\t\t\tELSE err(111)\r\t\t\t\t\tEND ;\r\t\t\t\t\tp.right := x; p.typ := p.typ.BaseTyp\r\t\t\t\tELSIF (p.left # NIL) & (p.left.typ.form = Pointer) THEN\r\t\t\t\t\ttyp := p.left.typ;\r\t\t\t\t\tWHILE (typ # DevCPT.undftyp) & (typ.BaseTyp # NIL) DO typ := typ.BaseTyp END;\r\t\t\t\t\tIF typ.sysflag = interface THEN\r\t\t\t\t\t\ttyp := x.typ;\r\t\t\t\t\t\tWHILE (typ # DevCPT.undftyp) & (typ.BaseTyp # NIL) DO typ := typ.BaseTyp END;\r\t\t\t\t\t\tIF (f = Pointer) & (typ.sysflag = interface) THEN\r\t\t\t\t\t\t\tp.right := x\r\t\t\t\t\t\tELSE err(169)\r\t\t\t\t\t\tEND\r\t\t\t\t\tELSE err(64)\r\t\t\t\t\tEND\r\t\t\t\tELSE err(111)\r\t\t\t\tEND\r\t\t| thisrecfn, (*THISRECORD*)\r\t\t  thisarrfn: (*THISARRAY*)\r\t\t\t\tIF (x.class = Ntype) OR (x.class = Nproc) THEN err(126)\r\t\t\t\tELSIF f IN {Int8, Int16, Int32} THEN\r\t\t\t\t\tIF f < Int32 THEN Convert(x, DevCPT.int32typ) END;\r\t\t\t\t\tp := NewOp(Ndop, fctno, p, x); "
+                    attr: 0
+                  - text: "p.typ := DevCPT.undftyp"
+                    attr: 3
+                  - text: "\r\t\t\t\tELSE err(111)\r\t\t\t\tEND\r\t\t| lshfn, rotfn: (*SYSTEM.LSH, SYSTEM.ROT*)\r\t\t\t\tIF (x.class = Ntype) OR (x.class = Nproc) THEN err(126)\r\t\t\t\tELSIF ~(f IN intSet) THEN err(111)\r\t\t\t\tELSE\r\t\t\t\t\tIF fctno = lshfn THEN p := NewOp(Ndop, lsh, p, x) ELSE p := NewOp(Ndop, rot, p, x) END ;\r\t\t\t\t\tp.typ := p.left.typ\r\t\t\t\tEND\r\t\t| getfn, putfn, getrfn, putrfn: (*SYSTEM.GET, SYSTEM.PUT, SYSTEM.GETREG, SYSTEM.PUTREG*)\r\t\t\t\tIF (x.class = Ntype) OR (x.class = Nproc) THEN err(126)\r\t\t\t\tELSIF f IN {Undef..Set, NilTyp, Pointer, ProcTyp, Char16, Int64} THEN\r\t\t\t\t\tIF (fctno = getfn) OR (fctno = getrfn) THEN\r\t\t\t\t\t\tIF NotVar(x) THEN err(112) END ;\r\t\t\t\t\t\tt := x; x := p; p := t\r\t\t\t\t\tEND ;\r\t\t\t\t\tp := NewOp(Nassign, fctno, p, x)\r\t\t\t\tELSE err(111)\r\t\t\t\tEND ;\r\t\t\t\tp.typ := DevCPT.notyp\r\t\t| bitfn: (*SYSTEM.BIT*)\r\t\t\t\tIF (x.class = Ntype) OR (x.class = Nproc) THEN err(126)\r\t\t\t\tELSIF f IN intSet THEN\r\t\t\t\t\tp := NewOp(Ndop, bit, p, x)\r\t\t\t\tELSE err(111)\r\t\t\t\tEND ;\r\t\t\t\tp.typ := DevCPT.booltyp\r\t\t| valfn: (*SYSTEM.VAL*)\t(* type is changed without considering the byte ordering on the target machine *)\r\t\t\t\tIF (x.class = Ntype) OR (x.class = Nproc) THEN err(126)\r\t\t\t\tELSIF x.typ.comp = DynArr THEN\r\t\t\t\t\tIF x.typ.untagged & ((p.typ.comp # DynArr) OR p.typ.untagged) THEN\t(* ok *)\r\t\t\t\t\tELSIF (p.typ.comp = DynArr) & (x.typ.n = p.typ.n) THEN\r\t\t\t\t\t\ttyp := x.typ;\r\t\t\t\t\t\tWHILE typ.comp = DynArr DO typ := typ.BaseTyp END;\r\t\t\t\t\t\ttp1 := p.typ;\r\t\t\t\t\t\tWHILE tp1.comp = DynArr DO tp1 := tp1.BaseTyp END;\r\t\t\t\t\t\tIF typ.size # tp1.size THEN err(115) END\r\t\t\t\t\tELSE err(115)\r\t\t\t\t\tEND\r\t\t\t\tELSIF p.typ.comp = DynArr THEN err(115)\r\t\t\t\tELSIF (x.class = Nconst) & (f = String8) & (p.typ.form = Int32) & (x.conval.intval2 <= 5) THEN\r\t\t\t\t\ti := 0; n := 0;\r\t\t\t\t\tWHILE i < x.conval.intval2 - 1 DO n := 256 * n + ORD(x.conval.ext[i]); INC(i) END;\r\t\t\t\t\tx := NewIntConst(n)\r\t\t\t\tELSIF (f IN {Undef, NoTyp, NilTyp}) OR (f IN {String8, String16}) & ~(DevCPM.java IN DevCPM.options) THEN err(111)\r\t\t\t\tEND ;\r\t\t\t\tIF (x.class = Nconst) & (x.typ = p.typ) THEN\t(* ok *)\r\t\t\t\tELSIF (x.class >= Nconst) OR ((f IN realSet) # (p.typ.form IN realSet))\r\t\t\t\t\t\tOR (DevCPM.options * {DevCPM.java, DevCPM.allSysVal} # {}) THEN\r\t\t\t\t\tt := DevCPT.NewNode(Nmop); t.subcl := val; t.left := x; x := t\r\t\t\t\tELSE x.readonly := FALSE\r\t\t\t\tEND ;\r\t\t\t\tx.typ := p.typ; p := x\r\t\t| movefn: (*SYSTEM.MOVE*)\r\t\t\t\tIF (x.class = Ntype) OR (x.class = Nproc) THEN err(126)\r\t\t\t\tELSIF (x.class = Nconst) & (f IN {Int8, Int16}) THEN Convert(x, DevCPT.int32typ)\r\t\t\t\tELSIF ~(f IN {Int32, Pointer}) THEN err(111); x.typ := DevCPT.int32typ\r\t\t\t\tEND ;\r\t\t\t\tp.link := x\r\t\t| assertfn: (*ASSERT*)\r\t\t\t\tIF (f IN intSet - {Int64}) & (x.class = Nconst) THEN\r\t\t\t\t\tIF (DevCPM.MinHaltNr <= x.conval.intval) & (x.conval.intval <= DevCPM.MaxHaltNr) THEN\r\t\t\t\t\t\tBindNodes(Ntrap, DevCPT.notyp, x, x);\r\t\t\t\t\t\tConstruct(Nif, p, x); Construct(Nifelse, p, NIL); OptIf(p);\r\t\t\t\t\tELSE err(218)\r\t\t\t\t\tEND\r\t\t\t\tELSIF\r\t\t\t\t\t(DevCPM.java IN DevCPM.options) & ((x.class = Ntype) OR (x.class = Nvar)) & (x.typ.form = Pointer)\r\t\t\t\tTHEN\r\t\t\t\t\tBindNodes(Ntrap, DevCPT.notyp, x, x);\r\t\t\t\t\tConstruct(Nif, p, x); Construct(Nifelse, p, NIL); OptIf(p);\r\t\t\t\tELSE err(69)\r\t\t\t\tEND;\r\t\t\t\tIF p = NIL THEN\t(* ASSERT(TRUE) *)\r\t\t\t\tELSIF p.class = Ntrap THEN err(99)\r\t\t\t\tELSE p.subcl := assertfn\r\t\t\t\tEND\r\t\t| queryfn: (* COM.QUERY *)\r\t\t\t\tIF (x.class = Ntype) OR (x.class = Nproc) THEN err(126)\r\t\t\t\tELSIF x.typ # DevCPT.guidtyp THEN err(111); x.typ := DevCPT.guidtyp\r\t\t\t\tEND;\r\t\t\t\tp.link := x\r\t\tELSE err(64)\r\t\tEND ;\r\t\tpar0 := p\r\tEND StPar1;\r\r\tPROCEDURE StParN*(VAR par0: DevCPT.Node; x: DevCPT.Node; fctno, n: SHORTINT);\r\t(* x: n+1-th param of standard proc *)\r\t\tVAR node: DevCPT.Node; f: SHORTINT; p: DevCPT.Node; typ: DevCPT.Struct;\r\tBEGIN p := par0; f := x.typ.form;\r\t\tIF fctno = newfn THEN (*NEW(p, ..., x...*)\r\t\t\tIF (x.class = Ntype) OR (x.class = Nproc) THEN err(126)\r\t\t\tELSIF p.typ.comp # DynArr THEN err(64)\r\t\t\tELSIF f IN intSet THEN\r\t\t\t\tIF f = Int64 THEN Convert(x, DevCPT.int32typ) END;\r\t\t\t\tIF (x.class = Nconst) & (x.conval.intval <= 0) THEN err(63) END;\r\t\t\t\tnode := p.right; WHILE node.link # NIL DO node := node.link END;\r\t\t\t\tnode.link := x; p.typ := p.typ.BaseTyp\r\t\t\tELSE err(111)\r\t\t\tEND\r\t\tELSIF (fctno = movefn) & (n = 2) THEN (*SYSTEM.MOVE*)\r\t\t\tIF (x.class = Ntype) OR (x.class = Nproc) THEN err(126)\r\t\t\tELSIF f IN intSet THEN\r\t\t\t\tnode := DevCPT.NewNode(Nassign); node.subcl := movefn; node.right := p;\r\t\t\t\tnode.left := p.link; p.link := x; p := node\r\t\t\tELSE err(111)\r\t\t\tEND ;\r\t\t\tp.typ := DevCPT.notyp\r\t\tELSIF (fctno = queryfn) & (n = 2) THEN (* COM.QUERY *)\r\t\t\tIF (x.class = Ntype) OR (x.class = Nproc) THEN err(126)\r\t\t\tELSIF (x.class < Nconst) & (f = Pointer) & (x.typ.sysflag = interface) THEN\r\t\t\t\tIF ~DevCPT.Extends(p.typ, x.typ) THEN err(164) END;\r\t\t\t\tIF x.readonly THEN err(76) END;\r\t\t\t\tCheckNewParamPair(x, p.link);\r\t\t\t\tMarkAsUsed(x);\r\t\t\t\tnode := DevCPT.NewNode(Ndop); node.subcl := queryfn;\r\t\t\t\tnode.left := p; node.right := p.link; p.link := NIL; node.right.link := x; p := node\r\t\t\tELSE err(111)\r\t\t\tEND;\r\t\t\tp.typ := DevCPT.booltyp\r\t\tELSE err(64)\r\t\tEND ;\r\t\tpar0 := p\r\tEND StParN;\r\r\tPROCEDURE StFct*(VAR par0: DevCPT.Node; fctno: BYTE; parno: SHORTINT);\r\t\tVAR dim: SHORTINT; x, p: DevCPT.Node;\r\tBEGIN p := par0;\r\t\tIF fctno <= ashfn THEN\r\t\t\tIF (fctno = newfn) & (p.typ # DevCPT.notyp) THEN\r\t\t\t\tIF p.typ.comp = DynArr THEN err(65) END ;\r\t\t\t\tp.typ := DevCPT.notyp\r\t\t\tELSIF (fctno = minfn) OR (fctno = maxfn) THEN\r\t\t\t\tIF (parno < 1) OR (parno = 1) & (p.hint # 1) THEN err(65) END;\r\t\t\t\tp.hint := 0\r\t\t\tELSIF fctno <= sizefn THEN (* 1 param *)\r\t\t\t\tIF parno < 1 THEN err(65) END\r\t\t\tELSE (* more than 1 param *)\r\t\t\t\tIF ((fctno = incfn) OR (fctno = decfn)) & (parno = 1) THEN (*INC, DEC*)\r\t\t\t\t\tBindNodes(Nassign, DevCPT.notyp, p, NewIntConst(1)); p.subcl := fctno; p.right.typ := p.left.typ\r\t\t\t\tELSIF (fctno = lenfn) & (parno = 1) THEN (*LEN*)\r\t\t\t\t\tIF p.typ.form IN {String8, String16} THEN\r\t\t\t\t\t\tIF p.class = Nconst THEN p := NewIntConst(p.conval.intval2 - 1)\r\t\t\t\t\t\tELSIF (p.class = Ndop) & (p.subcl = plus) THEN\t"
+                    attr: 0
+                  - text: "(* propagate to leaf nodes *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\t\tStFct(p.left, lenfn, 1); StFct(p.right, lenfn, 1); p.typ := DevCPT.int32typ\r\t\t\t\t\t\tELSE\r\t\t\t\t\t\t\tWHILE (p.class = Nmop) & (p.subcl = conv) DO p := p.left END;\r\t\t\t\t\t\t\tIF DevCPM.errors = 0 THEN ASSERT(p.class = Nderef) END;\r\t\t\t\t\t\t\tBindNodes(Ndop, DevCPT.int32typ, p, NewIntConst(0)); p.subcl := len\r\t\t\t\t\t\tEND\r\t\t\t\t\tELSIF p.typ.comp = DynArr THEN dim := 0;\r\t\t\t\t\t\tWHILE p.class = Nindex DO p := p.left; INC(dim) END ;\t(* possible side effect ignored *)\r\t\t\t\t\t\tBindNodes(Ndop, DevCPT.int32typ, p, NewIntConst(dim)); p.subcl := len\r\t\t\t\t\tELSE\r\t\t\t\t\t\tp := NewIntConst(p.typ.n)\r\t\t\t\t\tEND\r\t\t\t\tELSIF parno < 2 THEN err(65)\r\t\t\t\tEND\r\t\t\tEND\r\t\tELSIF fctno = assertfn THEN\r\t\t\tIF parno = 1 THEN x := NIL;\r\t\t\t\tBindNodes(Ntrap, DevCPT.notyp, x, NewIntConst(AssertTrap));\r\t\t\t\tConstruct(Nif, p, x); Construct(Nifelse, p, NIL); OptIf(p);\r\t\t\t\tIF p = NIL THEN\t(* ASSERT(TRUE) *)\r\t\t\t\tELSIF p.class = Ntrap THEN err(99)\r\t\t\t\tELSE p.subcl := assertfn\r\t\t\t\tEND\r\t\t\tELSIF parno < 1 THEN err(65)\r\t\t\tEND\r\t\tELSIF (fctno >= lchrfn) & (fctno <= bytesfn) THEN\r\t\t\tIF parno < 1 THEN err(65) END\r\t\tELSIF fctno < validfn THEN (*SYSTEM*)\r\t\t\tIF (parno < 1) OR\r\t\t\t\t(fctno > ccfn) & (parno < 2) OR\r\t\t\t\t(fctno = movefn) & (parno < 3) THEN err(65)\r\t\t\tEND\r\t\tELSIF (fctno = thisrecfn) OR (fctno = thisarrfn) THEN\r\t\t\tIF parno < 2 THEN err(65) END\r\t\tELSE (* COM *)\r\t\t\tIF fctno = queryfn THEN\r\t\t\t\tIF parno < 3 THEN err(65) END\r\t\t\tELSE\r\t\t\t\tIF parno < 1 THEN err(65) END\r\t\t\tEND\r\t\tEND ;\r\t\tpar0 := p\r\tEND StFct;\r\t\r\tPROCEDURE DynArrParCheck (ftyp: DevCPT.Struct; VAR ap: DevCPT.Node; fvarpar: BOOLEAN);\r\t"
+                    attr: 0
+                  - text: "(* check array compatibility *)"
+                    attr: 1
+                  - text: "\r\t\tVAR atyp: DevCPT.Struct;\r\tBEGIN (* ftyp.comp = DynArr *)\r\t\tatyp := ap.typ;\r\t\tIF atyp.form IN {Char8, Char16, String8, String16} THEN\r\t\t\tIF ~fvarpar & (ftyp.BaseTyp.form = Char16) & (atyp.form = String8) THEN Convert(ap, DevCPT.string16typ)\r\t\t\tELSE CheckString(ap, ftyp, 67)\r\t\t\tEND\r\t\tELSE\t\t\r\t\t\tWHILE (ftyp.comp = DynArr) & ((atyp.comp IN {Array, DynArr}) OR (atyp.form IN {String8, String16})) DO\r\t\t\t\tftyp := ftyp.BaseTyp; atyp := atyp.BaseTyp\r\t\t\tEND;\r\t\t\tIF ftyp.comp = DynArr THEN err(67)\r\t\t\tELSIF ~fvarpar & (ftyp.form = Pointer) & DevCPT.Extends(atyp, ftyp) THEN (* ok *)\r\t\t\tELSIF ~DevCPT.EqualType(ftyp, atyp) THEN err(66)\r\t\t\tEND\r\t\tEND\r\tEND DynArrParCheck;\r\r\tPROCEDURE PrepCall*(VAR x: DevCPT.Node; VAR fpar: DevCPT.Object);\r\tBEGIN\r\t\tIF (x.obj # NIL) & (x.obj.mode IN {LProc, XProc, TProc, CProc}) THEN\r\t\t\tfpar := x.obj.link;\r\t\t\tIF x.obj.mode = TProc THEN\r\t\t\t\tIF fpar.typ.form = Pointer THEN\r\t\t\t\t\tIF x.left.class = Nderef THEN x.left := x.left.left (*undo DeRef*) ELSE err(71) END\r\t\t\t\tEND;\r\t\t\t\tfpar := fpar.link\r\t\t\tEND\r\t\tELSIF (x.class # Ntype) & (x.typ # NIL) & (x.typ.form = ProcTyp) THEN\r\t\t\tfpar := x.typ.link\r\t\tELSE err(121); fpar := NIL; x.typ := DevCPT.undftyp\r\t\tEND\r\tEND PrepCall;\r\r\tPROCEDURE Param* (VAR ap: DevCPT.Node; fp: DevCPT.Object);\t"
+                    attr: 0
+                  - text: "(* checks parameter compatibilty *)"
+                    attr: 1
+                  - text: "\r\t\tVAR at, ft: DevCPT.Struct;\r\tBEGIN\r\t\tat := ap.typ; ft := fp.typ;\r\t\tIF fp.ptyp # NIL THEN ft := fp.ptyp END;\t"
+                    attr: 0
+                  - text: "(* get original formal type *)"
+                    attr: 1
+                  - text: "\r\t\tIF ft.form # Undef THEN\r\t\t\tIF (ap.class = Ntype) OR (ap.class = Nproc) & (ft.form # ProcTyp) THEN err(126) END;\r\t\t\tIF fp.mode = VarPar THEN\r"
+                    attr: 0
+                  - text: "\t\t\t\t"
+                    attr: 3
+                  - text: "IF ODD(fp.sysflag DIV nilBit) & (at = DevCPT.niltyp) THEN (* ok *)"
+                    attr: 0
+                  - text: "\r"
+                    attr: 3
+                  - text: "\t\t\t\tELSIF (ft.comp = Record) & ~ft.untagged & (ap.class = Ndop) & (ap.subcl = thisrecfn) THEN (* ok *)\r\t\t\t\tELSIF (ft.comp = DynArr) & ~ft.untagged & (ft.n = 0) & (ap.class = Ndop) & (ap.subcl = thisarrfn) THEN\r\t\t\t\t\t(* ok *)\r"
+                    attr: 0
+                  - text: "\t\t\t\t"
+                    attr: 3
+                  - text: "ELSE\r\t\t\t\t\tIF fp.vis = inPar THEN\r\t\t\t\t\t\tIF (ft = DevCPT.guidtyp) & (ap.class = Nconst) & (at.form = String8) THEN\r\t\t\t\t\t\t\tStringToGuid(ap); at := ap.typ\r(*\r\t\t\t\t\t\tELSIF ((at.form IN charSet + {String8, String16}) OR (at = DevCPT.guidtyp))\r\t\t\t\t\t\t\t\t& ((ap.class = Nderef) OR (ap.class = Nconst)) THEN (* ok *)\r\t\t\t\t\t\tELSIF NotVar(ap) THEN err(122)\r*)\r\t\t\t\t\t\tEND;\r\t\t\t\t\t\tIF ~NotVar(ap) THEN CheckLeaf(ap, FALSE) END\r\t\t\t\t\tELSE\r\t\t\t\t\t\tIF NotVar(ap) THEN err(122)\r\t\t\t\t\t\tELSIF ap.readonly THEN err(76)\r\t\t\t\t\t\tELSIF (ap.obj # NIL) & ODD(ap.obj.sysflag DIV newBit) & ~ODD(fp.sysflag DIV newBit) THEN\t\t\r\t\t\t\t\t\t\terr(167)\r\t\t\t\t\t\tELSE MarkAsUsed(ap); CheckLeaf(ap, FALSE)\r\t\t\t\t\t\tEND\r\t\t\t\t\tEND;\r\t\t\t\t\tIF ft.comp = DynArr THEN DynArrParCheck(ft, ap, fp.vis # inPar)\r\t\t\t\t\tELSIF ODD(fp.sysflag DIV newBit) THEN\r\t\t\t\t\t\tIF ~DevCPT.Extends(at, ft) THEN err(123) END\r\t\t\t\t\tELSIF (ft = DevCPT.sysptrtyp) & (at.form = Pointer) THEN (* ok *)\r\t\t\t\t\tELSIF (fp.vis # outPar) & (ft.comp = Record) & DevCPT.Extends(at, ft) THEN (* ok *)\r\t\t\t\t\tELSIF covarOut & (fp.vis = outPar) & (ft.form = Pointer) & DevCPT.Extends(ft, at) THEN (* ok *)\r\t\t\t\t\tELSIF fp.vis = inPar THEN CheckAssign(ft, ap)\r\t\t\t\t\tELSIF ~DevCPT.EqualType(ft, at) THEN err(123)\r\t\t\t\t\tEND\r"
+                    attr: 0
+                  - text: "\t\t\t\t"
+                    attr: 3
+                  - text: END
+                    attr: 0
+                  - text: "\r"
+                    attr: 3
+                  - text: "\t\t\tELSIF ft.comp = DynArr THEN DynArrParCheck(ft, ap, FALSE)\r\t\t\tELSE CheckAssign(ft, ap)\r\t\t\tEND\r\t\tEND\r\tEND Param;\r\t\r\tPROCEDURE StaticLink*(dlev: BYTE; var: BOOLEAN);\r\t\tVAR scope: DevCPT.Object;\r\tBEGIN\r\t\tscope := DevCPT.topScope;\r\t\tWHILE dlev > 0 DO DEC(dlev);\r\t\t\tINCL(scope.link.conval.setval, slNeeded);\r\t\t\tscope := scope.left\r\t\tEND;\r"
+                    attr: 0
+                  - text: "\t\tIF var THEN INCL(scope.link.conval.setval, imVar) END"
+                    attr: 3
+                  - text: "\t(* !!! *)"
+                    attr: 0
+                  - text: "\r"
+                    attr: 3
+                  - text: "\tEND StaticLink;\r\r\tPROCEDURE Call*(VAR x: DevCPT.Node; apar: DevCPT.Node; fp: DevCPT.Object);\r\t\tVAR typ: DevCPT.Struct; p: DevCPT.Node; lev: BYTE;\r\tBEGIN\r\t\tIF x.class = Nproc THEN typ := x.typ;\r\t\t\tlev := x.obj.mnolev;\r\t\t\tIF lev > 0 THEN StaticLink(SHORT(SHORT(DevCPT.topScope.mnolev-lev))"
+                    attr: 0
+                  - text: ", FALSE"
+                    attr: 3
+                  - text: ") END ;\t(* !!! *)\r\t\t\tIF x.obj.mode = IProc THEN err(121) END\r\t\tELSIF (x.class = Nfield) & (x.obj.mode = TProc) THEN typ := x.typ;\r\t\t\tx.class := Nproc; p := x.left; x.left := NIL; p.link := apar; apar := p; fp := x.obj.link\r\t\tELSE typ := x.typ.BaseTyp\r\t\tEND ;\r\t\tBindNodes(Ncall, typ, x, apar); x.obj := fp\r\tEND Call;\r\r\tPROCEDURE Enter*(VAR procdec: DevCPT.Node; stat: DevCPT.Node; proc: DevCPT.Object);\r\t\tVAR x: DevCPT.Node;\r\tBEGIN\r\t\tx := DevCPT.NewNode(Nenter); x.typ := DevCPT.notyp; x.obj := proc;\r\t\tx.left := procdec; x.right := stat; procdec := x\r\tEND Enter;\r\t\r\tPROCEDURE Return*(VAR x: DevCPT.Node; proc: DevCPT.Object);\r\t\tVAR node: DevCPT.Node;\r\tBEGIN\r\t\tIF proc = NIL THEN (* return from module *)\r\t\t\tIF x # NIL THEN err(124) END\r\t\tELSE\r\t\t\tIF x # NIL THEN CheckAssign(proc.typ, x)\r\t\t\tELSIF proc.typ # DevCPT.notyp THEN err(124)\r\t\t\tEND\r\t\tEND ;\r\t\tnode := DevCPT.NewNode(Nreturn); node.typ := DevCPT.notyp; node.obj := proc; node.left := x; x := node\r\tEND Return;\r\r\tPROCEDURE Assign*(VAR x: DevCPT.Node; y: DevCPT.Node);\r\t\tVAR z: DevCPT.Node;\r\tBEGIN\r\t\tIF (x.class >= Nconst) OR (x.typ.form IN {String8, String16}) THEN err(56) END ;\r\t\tCheckAssign(x.typ, y);\r\t\tIF x.readonly THEN err(76)\r\t\tELSIF (x.obj # NIL) & ODD(x.obj.sysflag DIV newBit) THEN err(167)\r\t\tEND ;\r\t\tMarkAsUsed(x);\r\t\tIF (y.class = Nconst) & (y.typ.form IN {String8, String16}) & (x.typ.form # Pointer) THEN AssignString(x, y)\r\t\tELSE BindNodes(Nassign, DevCPT.notyp, x, y); x.subcl := assign\r\t\tEND\r\tEND Assign;\r\t\r\tPROCEDURE Inittd*(VAR inittd, last: DevCPT.Node; typ: DevCPT.Struct);\r\t\tVAR node: DevCPT.Node;\r\tBEGIN\r\t\tnode := DevCPT.NewNode(Ninittd); node.typ := typ;\r\t\tnode.conval := DevCPT.NewConst(); node.conval.intval := typ.txtpos;\r\t\tIF inittd = NIL THEN inittd := node ELSE last.link := node END ;\r\t\tlast := node\r\tEND Inittd;\r\t\r\t"
+                    attr: 0
+                  - text: "(* handling of temporary variables for string operations *)"
+                    attr: 1
+                  - text: "\r\t\r\tPROCEDURE Overlap (left, right: DevCPT.Node): BOOLEAN;\r\tBEGIN\r\t\tIF right.class = Nconst THEN\r\t\t"
+                    attr: 0
+                  - text: "\tRETURN"
+                    attr: 3
+                  - text: " FALSE\r\t\tELSIF (right.class = Ndop) & (right.subcl = plus) THEN\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " Overlap(left, right.left) OR Overlap(left, right.right)\r\t\tELSE\r\t\t\tWHILE right.class = Nmop DO right := right.left END;\r\t\t\tIF right.class = Nderef THEN right := right.left END;\r\t\t\tIF left.typ.BaseTyp # right.typ.BaseTyp THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " FALSE END;\r\t\t\tLOOP\r\t\t\t\tIF left.class = Nvarpar THEN\r\t\t\t\t\tWHILE (right.class = Nindex) OR (right.class = Nfield) OR (right.class = Nguard) DO\r\t\t\t\t\t\tright := right.left\r\t\t\t\t\tEND;\r\t\t\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " (right.class # Nvar) OR (right.obj.mnolev < left.obj.mnolev)\r\t\t\t\tELSIF right.class = Nvarpar THEN\r\t\t\t\t\tWHILE (left.class = Nindex) OR (left.class = Nfield) OR (left.class = Nguard) DO left := left.left END;\r\t\t\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " (left.class # Nvar) OR (left.obj.mnolev < right.obj.mnolev)\r\t\t\t\tELSIF (left.class = Nvar) & (right.class = Nvar) THEN\r\t\t\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " left.obj = right.obj\r\t\t\t\tELSIF (left.class = Nderef) & (right.class = Nderef) THEN\r\t\t\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\t\tELSIF (left.class = Nindex) & (right.class = Nindex) THEN\r\t\t\t\t\tIF (left.right.class = Nconst) & (right.right.class = Nconst)\r\t\t\t\t\t\t& (left.right.conval.intval # right.right.conval.intval) THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " FALSE END;\r\t\t\t\t\tleft := left.left; right := right.left\r\t\t\t\tELSIF (left.class = Nfield) & (right.class = Nfield) THEN\r\t\t\t\t\tIF left.obj # right.obj THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " FALSE END;\r\t\t\t\t\tleft := left.left; right := right.left;\r\t\t\t\t\tWHILE left.class = Nguard DO left := left.left END;\r\t\t\t\t\tWHILE right.class = Nguard DO right := right.left END\r\t\t\t\tELSE\r\t\t\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " FALSE\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND Overlap;\r\r\tPROCEDURE GetStaticLength (n: DevCPT.Node; OUT length: INTEGER);\r\t\tVAR x: INTEGER;\r\tBEGIN\r\t\tIF n.class = Nconst THEN\r\t\t\tlength := n.conval.intval2 - 1\r\t\tELSIF (n.class = Ndop) & (n.subcl = plus) THEN\r\t\t\tGetStaticLength(n.left, length); GetStaticLength(n.right, x);\r\t\t\tIF (length >= 0) & (x >= 0) THEN length := length + x ELSE length := -1 END\r\t\tELSE\r\t\t\tWHILE (n.class = Nmop) & (n.subcl = conv) DO n := n.left END;\r\t\t\tIF (n.class = Nderef) & (n.subcl = 1) THEN n := n.left END;\r\t\t\tIF n.typ.comp = Array THEN\r\t\t\t\tlength := n.typ.n - 1\r\t\t\tELSIF n.typ.comp = DynArr THEN\r\t\t\t\tlength := -1\r\t\t\tELSE\t"
+                    attr: 0
+                  - text: "(* error case *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tlength := 4\r\t\t\tEND\r\t\tEND\r\tEND GetStaticLength;\r\r\tPROCEDURE GetMaxLength (n: DevCPT.Node; VAR stat, last: DevCPT.Node; OUT length: DevCPT.Node);\r\t\tVAR x: DevCPT.Node; d: INTEGER; obj: DevCPT.Object;\r\tBEGIN\r\t\tIF n.class = Nconst THEN\r\t\t\tlength := NewIntConst(n.conval.intval2 - 1)\r\t\tELSIF (n.class = Ndop) & (n.subcl = plus) THEN\r\t\t\tGetMaxLength(n.left, stat, last, length); GetMaxLength(n.right, stat, last, x);\r\t\t\tIF (length.class = Nconst) & (x.class = Nconst) THEN ConstOp(plus, length, x)\r\t\t\tELSE BindNodes(Ndop, length.typ, length, x); length.subcl := plus\r\t\t\tEND\r\t\tELSE\r\t\t\tWHILE (n.class = Nmop) & (n.subcl = conv) DO n := n.left END;\r\t\t\tIF (n.class = Nderef) & (n.subcl = 1) THEN n := n.left END;\r\t\t\tIF n.typ.comp = Array THEN\r\t\t\t\tlength := NewIntConst(n.typ.n - 1)\r\t\t\tELSIF n.typ.comp = DynArr THEN\r\t\t\t\td := 0;\r\t\t\t\tWHILE n.class = Nindex DO n := n.left; INC(d) END;\r\t\t\t\tASSERT((n.class = Nderef) OR (n.class = Nvar) OR (n.class = Nvarpar));\r\t\t\t\tIF (n.class = Nderef) & (n.left.class # Nvar) & (n.left.class # Nvarpar) THEN\r\t\t\t\t\tGetTempVar(\"@tmp\", n.left.typ, obj);\r\t\t\t\t\tx := NewLeaf(obj); Assign(x, n.left); Link(stat, last, x);\r\t\t\t\t\tn.left := NewLeaf(obj);\t"
+                    attr: 0
+                  - text: "(* tree is manipulated here *)"
+                    attr: 5
+                  - text: "\r\t\t\t\t\tn := NewLeaf(obj); DeRef(n)\r\t\t\t\tEND;\r\t\t\t\tIF n.typ.untagged & (n.typ.comp = DynArr) & (n.typ.BaseTyp.form IN {Char8, Char16}) THEN\r\t\t\t\t\tStrDeref(n);\r\t\t\t\t\tBindNodes(Ndop, DevCPT.int32typ, n, NewIntConst(d)); n.subcl := len;\r\t\t\t\t\tBindNodes(Ndop, DevCPT.int32typ, n, NewIntConst(1)); n.subcl := plus\r\t\t\t\tELSE\r\t\t\t\t\tBindNodes(Ndop, DevCPT.int32typ, n, NewIntConst(d)); n.subcl := len;\r\t\t\t\tEND;\r\t\t\t\tlength := n\r\t\t\tELSE\t"
+                    attr: 0
+                  - text: "(* error case *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tlength := NewIntConst(4)\r\t\t\tEND\r\t\tEND\r\tEND GetMaxLength;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: CheckBuffering
+                    attr: 3
+                  - text: "* (\r\t\tVAR n: DevCPT.Node; left: DevCPT.Node; par: DevCPT.Object; VAR stat, last: DevCPT.Node\r\t);\r\t\tVAR length, x: DevCPT.Node; obj: DevCPT.Object; typ: DevCPT.Struct; len, xlen: INTEGER;\r\tBEGIN\r\t\tIF (n.typ.form IN {String8, String16}) & ~(DevCPM.java IN DevCPM.options)\r\t\t\t& ((n.class = Ndop) & (n.subcl = plus) & ((left = NIL) OR Overlap(left, n.right))\r\t\t\t\tOR (n.class = Nmop) & (n.subcl = conv) & (left = NIL)\r\t\t\t\tOR (par # NIL) & (par.vis = inPar) & (par.typ.comp = Array)) THEN\r\t\t\tIF (par # NIL) & (par.typ.comp = Array) THEN\r\t\t\t\tlen := par.typ.n - 1\r\t\t\tELSE\r\t\t\t\tIF left # NIL THEN GetStaticLength(left, len) ELSE len := -1 END;\r\t\t\t\tGetStaticLength(n, xlen);\r\t\t\t\tIF (len = -1) OR (xlen # -1) & (xlen < len) THEN len := xlen END\r\t\t\tEND;\r\t\t\tIF len # -1 THEN\r\t\t\t\ttyp := DevCPT.NewStr(Comp, Array); typ.n := len + 1; typ.BaseTyp := n.typ.BaseTyp;\r\t\t\t\tGetTempVar(\"@str\", typ, obj);\r\t\t\t\tx := NewLeaf(obj); Assign(x, n); Link(stat, last, x);\r\t\t\t\tn := NewLeaf(obj)\r\t\t\tELSE\r\t\t\t\tIF left # NIL THEN GetMaxLength(left, stat, last, length)\r\t\t\t\tELSE GetMaxLength(n, stat, last, length)\r\t\t\t\tEND;\r\t\t\t\ttyp := DevCPT.NewStr(Pointer, Basic);\r\t\t\t\ttyp.BaseTyp := DevCPT.NewStr(Comp, DynArr); typ.BaseTyp.BaseTyp := n.typ.BaseTyp;\r\t\t\t\tGetTempVar(\"@ptr\", typ, obj);\r\t\t\t\tx := NewLeaf(obj); Construct(Nassign, x, length); x.subcl := newfn; Link(stat, last, x);\r\t\t\t\tx := NewLeaf(obj); DeRef(x); Assign(x, n); Link(stat, last, x);\r\t\t\t\tn := NewLeaf(obj); DeRef(n)\r\t\t\tEND;\r\t\t\tStrDeref(n)\r\t\tELSIF (n.typ.form = Pointer) & (n.typ.sysflag = interface) & (left = NIL)\r\t\t\t\t& ((par # NIL) OR (n.class = Ncall))\r\t\t\t\t& ((n.class # Nvar) OR (n.obj.mnolev <= 0)) THEN\r\t\t\tGetTempVar(\"@cip\", DevCPT.punktyp, obj);\r\t\t\tx := NewLeaf(obj); Assign(x, n); Link(stat, last, x);\r\t\t\tn := NewLeaf(obj)\r\t\tEND\r\tEND CheckBuffering;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: CheckVarParBuffering
+                    attr: 3
+                  - text: "* (VAR n: DevCPT.Node; VAR stat, last: DevCPT.Node);\r\t\tVAR x: DevCPT.Node; obj: DevCPT.Object;\r\tBEGIN\r\t\tIF (n.class # Nvar) OR (n.obj.mnolev <= 0) THEN\r\t\t\tGetTempVar(\"@ptr\", n.typ, obj);\r\t\t\tx := NewLeaf(obj); Assign(x, n); Link(stat, last, x);\r\t\t\tn := NewLeaf(obj)\r\t\tEND\r\tEND CheckVarParBuffering;\r\r\t\r\t"
+                    attr: 0
+                  - text: "(* case optimization *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE Evaluate (n: DevCPT.Node; VAR min, max, num, dist: INTEGER; VAR head: DevCPT.Node);\r\t\tVAR a: INTEGER;\r\tBEGIN\r\t\tIF n.left # NIL THEN\r\t\t\ta := MIN(INTEGER); Evaluate(n.left, min, a, num, dist, head);\r\t\t\tIF n.conval.intval - a > dist THEN dist := n.conval.intval - a; head := n END\r\t\tELSIF n.conval.intval < min THEN\r\t\t\tmin := n.conval.intval\r\t\tEND;\r\t\tIF n.right # NIL THEN\r\t\t\ta := MAX(INTEGER); Evaluate(n.right, a, max, num, dist, head);\r\t\t\tIF a - n.conval.intval2 > dist THEN dist := a - n.conval.intval2; head := n END\r\t\tELSIF n.conval.intval2 > max THEN\r\t\t\tmax := n.conval.intval2\r\t\tEND;\r\t\tINC(num);\r\t\tIF n.conval.intval < n.conval.intval2 THEN\r\t\t\tINC(num);\r\t\t\tIF n.conval.intval2 - n.conval.intval > dist THEN dist := n.conval.intval2 - n.conval.intval; head := n END\r\t\tEND\r\tEND Evaluate;\r\t\r\tPROCEDURE Rebuild (VAR root: DevCPT.Node; head: DevCPT.Node);\r\t\tVAR n: DevCPT.Node;\r\tBEGIN\r\t\tIF root # head THEN\r\t\t\tIF head.conval.intval2 < root.conval.intval THEN\r\t\t\t\tRebuild(root.left, head);\r\t\t\t\troot.left := head.right; head.right := root; root := head\r\t\t\tELSE\r\t\t\t\tRebuild(root.right, head);\r\t\t\t\troot.right := head.left; head.left := root; root := head\r\t\t\tEND\r\t\tEND\r\tEND Rebuild;\r\t\r\tPROCEDURE OptimizeCase* (VAR n: DevCPT.Node);\r\t\tVAR min, max, num, dist, limit: INTEGER; head: DevCPT.Node;\r\tBEGIN\r\t\tIF n # NIL THEN\r\t\t\tmin := MAX(INTEGER); max := MIN(INTEGER); num := 0; dist := 0; head := n;\r\t\t\tEvaluate(n, min, max, num, dist, head);\r\t\t\tlimit := "
+                    attr: 0
+                  - text: "6 "
+                    attr: 3
+                  - text: "* num;\r\t\t\tIF limit < "
+                    attr: 0
+                  - text: 100
+                    attr: 3
+                  - text: " THEN limit := "
+                    attr: 0
+                  - text: 100
+                    attr: 3
+                  - text: " END;\r\t\t\tIF (num > "
+                    attr: 0
+                  - text: 4
+                    attr: 3
+                  - text: ") & ((min > MAX(INTEGER) - limit) OR (max < min + limit)) THEN\r\t\t\t\tINCL(n.conval.setval, useTable)\r\t\t\tELSE\r\t\t\t\tIF num > "
+                    attr: 0
+                  - text: 4
+                    attr: 3
+                  - text: " THEN Rebuild(n, head) END;\r\t\t\t\tINCL(n.conval.setval, useTree);\r\t\t\t\tOptimizeCase(n.left);\r\t\t\t\tOptimizeCase(n.right)\r\t\t\tEND\r\t\tEND\r\tEND OptimizeCase;\r(*\t\r\tPROCEDURE ShowTree (n: DevCPT.Node; opts: SET);\r\tBEGIN\r\t\tIF n # NIL THEN\r\t\t\tIF opts = {} THEN opts := n.conval.setval END;\r\t\t\tIF useTable IN opts THEN\r\t\t\t\tIF n.left # NIL THEN ShowTree(n.left, opts); DevCPM.LogW(\",\") END;\r\t\t\t\tDevCPM.LogWNum(n.conval.intval, 1);\r\t\t\t\tIF n.conval.intval2 > n.conval.intval THEN DevCPM.LogW(\"-\"); DevCPM.LogWNum(n.conval.intval2, 1)\r\t\t\t\tEND;\r\t\t\t\tIF n.right # NIL THEN DevCPM.LogW(\",\"); ShowTree(n.right, opts) END\r\t\t\tELSIF useTree IN opts THEN\r\t\t\t\tDevCPM.LogW(\"(\"); ShowTree(n.left, {}); DevCPM.LogW(\"|\"); DevCPM.LogWNum(n.conval.intval, 1);\r\t\t\t\tIF n.conval.intval2 > n.conval.intval THEN DevCPM.LogW(\"-\"); DevCPM.LogWNum(n.conval.intval2, 1)\r\t\t\t\tEND;\r\t\t\t\tDevCPM.LogW(\"|\"); ShowTree(n.right, {}); DevCPM.LogW(\")\")\r\t\t\tELSE\r\t\t\t\tShowTree(n.left, opts); DevCPM.LogW(\" \"); DevCPM.LogWNum(n.conval.intval, 1);\r\t\t\t\tIF n.conval.intval2 > n.conval.intval THEN DevCPM.LogW(\"-\"); DevCPM.LogWNum(n.conval.intval2, 1)\r\t\t\t\tEND;\r\t\t\t\tDevCPM.LogW(\" \"); ShowTree(n.right, opts)\r\t\t\tEND\r\t\tEND\r\tEND ShowTree;\r*)\rBEGIN\r\tzero := DevCPT.NewConst(); zero.intval := 0; zero.realval := 0;\r\tone := DevCPT.NewConst(); one.intval := 1; one.realval := 0;\r\ttwo := DevCPT.NewConst(); two.intval := 2; two.realval := 0;\r\tdummy := DevCPT.NewConst();\r\tquot := DevCPT.NewConst()\rEND DevCPB.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 29
+          bodyPos: 85963
+          bodyLen: 8

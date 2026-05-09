@@ -1,0 +1,675 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Std\\Docu\\Cmds.odc"
+  size: 17213
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 17082
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 16896
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 16810
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                lead: 11500
+                asc: 121900
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 9
+                bodyPos: 16810
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 16296
+                runListLen: 1800
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: StdCmds
+                    attr: 0
+                  - text: "\r\rDEFINITION StdCmds;\r\r\tIMPORT Dialog, Ports, Fonts;\r\r\tVAR\r\t\tallocator: Dialog.String;\r\r\t\tlayout: RECORD\r\t\t\twType, hType: INTEGER;\r\t\t\twidth, height: REAL\r\t\tEND;\r\r\t\tsize: RECORD \r\t\t\tsize: INTEGER\r\t\tEND;\r\r\tPROCEDURE Bold;\r\tPROCEDURE BoldGuard (VAR par: Dialog.Par);\r\tPROCEDURE CaretGuard (VAR par: Dialog.Par);\r\tPROCEDURE Clear;\r\tPROCEDURE CloseDialog;\r\tPROCEDURE Color (color: Ports.Color);\r\tPROCEDURE ColorGuard (color: INTEGER; VAR par: Dialog.Par);\r\tPROCEDURE ContainerGuard (VAR par: Dialog.Par);\r\tPROCEDURE CopyProp;\r\tPROCEDURE DefaultFont;\r\tPROCEDURE DefaultFontGuard (VAR par: Dialog.Par);\r\tPROCEDURE DefaultOnDoubleClick (op, from, to: INTEGER);\r\tPROCEDURE DeselectAll;\r\tPROCEDURE Font (typeface: Fonts.Typeface);\r\tPROCEDURE HeightGuard (VAR par: Dialog.Par);\r\tPROCEDURE InitLayoutDialog;\r\tPROCEDURE InitSizeDialog;\r\tPROCEDURE Italic;\r\tPROCEDURE ItalicGuard (VAR par: Dialog.Par);\r\tPROCEDURE ModelViewGuard (VAR par: Dialog.Par);\r\tPROCEDURE New;\r\tPROCEDURE NewWindow;\r\tPROCEDURE Open;\r\tPROCEDURE OpenAsAuxDialog;\r\tPROCEDURE OpenAsToolDialog;\r\tPROCEDURE OpenAux (file, title: ARRAY OF CHAR);\r\tPROCEDURE OpenAuxDialog (file, title: ARRAY OF CHAR);\r\tPROCEDURE OpenBrowser (file, title: ARRAY OF CHAR);\r\tPROCEDURE OpenDoc (file: ARRAY OF CHAR);\r\tPROCEDURE OpenToolDialog (file, title: ARRAY OF CHAR);\r\tPROCEDURE PasteCharGuard (VAR par: Dialog.Par);\r\tPROCEDURE PasteLCharGuard (VAR par: Dialog.Par);\r\tPROCEDURE PasteProp;\r\tPROCEDURE PasteView;\r\tPROCEDURE PasteViewGuard (VAR par: Dialog.Par);\r\tPROCEDURE Plain;\r\tPROCEDURE PlainGuard (VAR par: Dialog.Par);\r\tPROCEDURE ReadOnlyGuard (VAR par: Dialog.Par);\r\tPROCEDURE RecalcAllSizes;\r\tPROCEDURE RecalcFocusSize;\r\tPROCEDURE Redo;\r\tPROCEDURE RedoGuard (VAR par: Dialog.Par);\r\tPROCEDURE RestoreAll;\r\tPROCEDURE SelectAll;\r\tPROCEDURE SelectAllGuard (VAR par: Dialog.Par);\r\tPROCEDURE SelectDocument;\r\tPROCEDURE SelectNextView;\r\tPROCEDURE SelectionGuard (VAR par: Dialog.Par);\r\tPROCEDURE SetBrowserMode;\r\tPROCEDURE SetBrowserModeGuard (VAR par: Dialog.Par);\r\tPROCEDURE SetEditMode;\r\tPROCEDURE SetEditModeGuard (VAR par: Dialog.Par);\r\tPROCEDURE SetLayout;\r\tPROCEDURE SetLayoutMode;\r\tPROCEDURE SetLayoutModeGuard (VAR par: Dialog.Par);\r\tPROCEDURE SetMaskMode;\r\tPROCEDURE SetMaskModeGuard (VAR par: Dialog.Par);\r\tPROCEDURE SetSize;\r\tPROCEDURE ShowProp;\r\tPROCEDURE ShowPropGuard (VAR par: Dialog.Par);\r\tPROCEDURE SingletonGuard (VAR par: Dialog.Par);\r\tPROCEDURE Size (size: INTEGER);\r\tPROCEDURE SizeGuard (size: INTEGER; VAR par: Dialog.Par);\r\tPROCEDURE Strikeout;\r\tPROCEDURE StrikeoutGuard (VAR par: Dialog.Par);\r\tPROCEDURE ToggleNoFocus;\r\tPROCEDURE ToggleNoFocusGuard (VAR par: Dialog.Par);\r\tPROCEDURE TypeNotifier (op, from, to: INTEGER);\r\tPROCEDURE TypefaceGuard (VAR par: Dialog.Par);\r\tPROCEDURE Underline;\r\tPROCEDURE UnderlineGuard (VAR par: Dialog.Par);\r\tPROCEDURE Undo;\r\tPROCEDURE UndoGuard (VAR par: Dialog.Par);\r\tPROCEDURE UpdateAll;\r\tPROCEDURE WidthGuard (VAR par: Dialog.Par);\r\tPROCEDURE WindowGuard (VAR par: Dialog.Par);\r\rEND StdCmds.\r\r\r"
+                    attr: 1
+                  - text: StdCmds
+                    attr: 2
+                  - text: " is a command package which contains many commands and guards which are typically used in menu items (->StdMenuTool) or in hyperlinks (->StdLinks).\rThe module exports more commands which are not described here; these are the commands and guards for menu items of the "
+                    attr: 1
+                  - text: Windows
+                    attr: 2
+                  - text: " standard menus. See the "
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenDoc('System/Rsrc/Menus')"
+                      body:
+                        - text: Menus
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: " text for how these commands are used (only on Windows; under Mac OS, the standard commands do not appear explicitly in the menu specifications).\r\r\rVAR "
+                    attr: 1
+                  - text: allocator
+                    attr: 4
+                  - text: ": Dialog.String\rThis string contains the command sequence that is executed when the user invokes the "
+                    attr: 1
+                  - text: "Files->New"
+                    attr: 2
+                  - text: " command. By default, it is set to \"TextViews.Deposit; StdCmds.Open\". This string may be changed in the "
+                    attr: 1
+                  - text: Config
+                    attr: 2
+                  - text: " module.\r\r\rVAR "
+                    attr: 1
+                  - text: layout
+                    attr: 4
+                  - text: ": RECORD\rInteractor for root view layout ("
+                    attr: 1
+                  - text: "Tools->Document Size..."
+                    attr: 2
+                  - text: "). The size of the outermost view of a document (root view) may be determined in several different ways. Either it is equal to the window size, to the paper size minus the margins defined in the "
+                    attr: 1
+                  - text: Page Setup
+                    attr: 2
+                  - text: " dialog, or to a particular fixed size. The vertical and horizontal directions can be defined independently.\r\r"
+                    attr: 1
+                  - text: "wType, hType"
+                    attr: 4
+                  - text: ": INTEGER\twType IN {0..2}  &  hType IN {0..2}\rDetermines whether the root view size (horizontical/vertical) has a fixed size (0), the size defined by the "
+                    attr: 1
+                  - text: Page Setup
+                    attr: 2
+                  - text: " dialog (1), or by the window (2).\r\r"
+                    attr: 1
+                  - text: "width, height"
+                    attr: 4
+                  - text: ": REAL\tvalid iff wType/hType = 1\rThe root view width/height in centimeters.\r\r\rVAR "
+                    attr: 1
+                  - text: size
+                    attr: 4
+                  - text: ": RECORD\rInteractor for setting the font size.\r\r"
+                    attr: 1
+                  - text: size
+                    attr: 4
+                  - text: ": INTEGER\tsize >= 6\rFont size in points (-> Fonts).\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: Bold
+                    attr: 4
+                  - text: "\r\rPROCEDURE "
+                    attr: 1
+                  - text: BoldGuard
+                    attr: 4
+                  - text: " (VAR par: Dialog.Par)\r\rPROCEDURE "
+                    attr: 1
+                  - text: CaretGuard
+                    attr: 4
+                  - text: " (VAR par: Dialog.Par)\rDisables menu item if there is no current caret, i.e., no selection of length 0.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Clear
+                    attr: 4
+                  - text: "\r\rPROCEDURE "
+                    attr: 1
+                  - text: CloseDialog
+                    attr: 4
+                  - text: "\rThis command can be used from within a control to close the window in which the control is embedded. It can only be used as reaction to interactive manipulation of the control, i.e., when the  mouse is clicked in the control or when it receives keyboard input. If the window is a document window and its contents dirty, an error message will be displayed.\r\rPre\rmust be called in interaction with control\t20\r\rPROCEDURE "
+                    attr: 1
+                  - text: Color
+                    attr: 4
+                  - text: " (color: Ports.Color)\rSet selection to the given color value (-> Ports.Color).\r\rPROCEDURE "
+                    attr: 1
+                  - text: ColorGuard
+                    attr: 4
+                  - text: " (color: INTEGER; VAR par: Dialog.Par)\rGuard for the "
+                    attr: 1
+                  - text: Color
+                    attr: 2
+                  - text: " command.\r\rPROCEDURE "
+                    attr: 1
+                  - text: CopyProp
+                    attr: 4
+                  - text: "\rCollect properties of current selection, so that they can be used later on for pasting them again.\r\rPROCEDURE "
+                    attr: 1
+                  - text: ContainerGuard
+                    attr: 4
+                  - text: " (VAR par: Dialog.Par)\rGuard for making sure that the focus is a container view (-> Containers.View).\r\rPROCEDURE "
+                    attr: 1
+                  - text: DefaultFont
+                    attr: 4
+                  - text: "\rSet selection to the default typeface.\r\rPROCEDURE "
+                    attr: 1
+                  - text: DefaultFontGuard
+                    attr: 4
+                  - text: " (VAR par: Dialog.Par)\rGuard for the "
+                    attr: 1
+                  - text: DefaultFont
+                    attr: 2
+                  - text: " command.\r\rPROCEDURE "
+                    attr: 1
+                  - text: DefaultOnDoubleClick
+                    attr: 4
+                  - text: " (op, from, to: INTEGER)\rA standard notifier which \"clicks\" the default button when its control is double-clicked. Typically, this is used in selection boxes or combo boxes.\r\rPROCEDURE "
+                    attr: 1
+                  - text: DeselectAll
+                    attr: 4
+                  - text: "\rRemove the selection in the focus view.\r\rPROCEDURE Font (typeface: Fonts.Typeface)\r\rPROCEDURE "
+                    attr: 1
+                  - text: HeightGuard
+                    attr: 4
+                  - text: " (VAR par: Dialog.Par)\rGuard command which sets "
+                    attr: 1
+                  - text: par.readOnly
+                    attr: 2
+                  - text: " if "
+                    attr: 1
+                  - text: "layout.hType # 0"
+                    attr: 2
+                  - text: ", i.e., if mode is not \"fixed\".\r\rPROCEDURE "
+                    attr: 1
+                  - text: InitLayoutDialog
+                    attr: 4
+                  - text: "\rInitialization command for "
+                    attr: 1
+                  - text: layout
+                    attr: 2
+                  - text: " interactor.\r\rPROCEDURE "
+                    attr: 1
+                  - text: InitSizeDialog
+                    attr: 4
+                  - text: "\rInitialization command for "
+                    attr: 1
+                  - text: size
+                    attr: 2
+                  - text: " interactor.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Italic
+                    attr: 4
+                  - text: "\rSet selection to italicized text.\r\rPROCEDURE "
+                    attr: 1
+                  - text: ItalicGuard
+                    attr: 4
+                  - text: " (VAR par: Dialog.Par)\rGuard for "
+                    attr: 1
+                  - text: Italic
+                    attr: 2
+                  - text: " command.\r\rPROCEDURE "
+                    attr: 1
+                  - text: ModelViewGuard
+                    attr: 4
+                  - text: " (VAR par: Dialog.Par)\rGuard for "
+                    attr: 1
+                  - text: NewWindow
+                    attr: 2
+                  - text: " command (checks that the focus view's "
+                    attr: 1
+                  - text: ThisModel
+                    attr: 2
+                  - text: " method does not return "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: ").\r\rPROCEDURE "
+                    attr: 1
+                  - text: New
+                    attr: 4
+                  - text: "\rOpen a new untitled document, using the command sequence in variable "
+                    attr: 1
+                  - text: allocator
+                    attr: 2
+                  - text: ".\r\rPROCEDURE "
+                    attr: 1
+                  - text: NewWindow
+                    attr: 4
+                  - text: "\rGuard: ModelViewGuard\rOpens another window onto the same document as the front window's.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Open
+                    attr: 4
+                  - text: "\rGuard: a view was deposited\rTakes a deposited view from the global view queue and opens it in a new window.\r\rPROCEDURE "
+                    attr: 1
+                  - text: OpenAsAuxDialog
+                    attr: 4
+                  - text: "\rOpens another window onto the same document as the front window's; this window works as an auxiliary dialog box.\r\rPROCEDURE "
+                    attr: 1
+                  - text: OpenAsToolDialog
+                    attr: 4
+                  - text: "\rOpens another window onto the same document as the front window's; this window works as a tool dialog box.\r\rPROCEDURE "
+                    attr: 1
+                  - text: OpenAux
+                    attr: 4
+                  - text: " (file, title: ARRAY OF CHAR)\rTakes a file specification of an BlackBox document and a window title as parameters, and opens an auxiliary window with the specified title. Parameter "
+                    attr: 1
+                  - text: file
+                    attr: 2
+                  - text: " must be the path name of a file.\rAuxiliary windows are used for displaying temporary editable data.\rExample:\r\"StdCmds.OpenAux('Form/Rsrc/Menus', 'Form Menus')\"\r\rPROCEDURE "
+                    attr: 1
+                  - text: OpenAuxDialog
+                    attr: 4
+                  - text: " (file, title: ARRAY OF CHAR)\rTakes a file specification of an BlackBox document and a window title as parameters, and opens a dialog with the specified document. The dialog is opened as an auxiliary window. Parameter "
+                    attr: 1
+                  - text: file
+                    attr: 2
+                  - text: " must be the path name of a file.\rAuxiliary dialogs are used for self-contained dialogs, i.e., data entry masks or parameter entry masks for commands.\rIn contrast to "
+                    attr: 1
+                  - text: OpenAux
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: OpenAuxDialog
+                    attr: 2
+                  - text: " turns the opened document into "
+                    attr: 1
+                  - text: mask
+                    attr: 2
+                  - text: " mode if it is a container (-> Containers), and opens it into a dialog window if the underlying platform distinguishes between document and dialog windows (e.g. as in Windows).\rExample:\r\"StdCmds.OpenAuxDialog('Form/Rsrc/Cmds', 'New Form')\"\r\rPROCEDURE "
+                    attr: 1
+                  - text: OpenBrowser
+                    attr: 4
+                  - text: " (file, title: ARRAY OF CHAR)\rTakes a file specification of an BlackBox document and a window title as parameters, and opens the specified document in an auxiliary window. The window contents is not editable, but can be selected. Parameter "
+                    attr: 1
+                  - text: file
+                    attr: 2
+                  - text: " must be the path name of a file.\rBrowser windows are used for displaying documentation. It is possible to select and copy out browser window contents. It is possible to apply find & replace commands, the "
+                    attr: 1
+                  - text: "Info->Interface"
+                    attr: 2
+                  - text: " command, etc.\rExample:\r\"StdCmds.OpenBrowser('Form/Docu/Models', 'FormModels Docu')\"\r\rPROCEDURE "
+                    attr: 1
+                  - text: OpenDoc
+                    attr: 4
+                  - text: " (file: ARRAY OF CHAR)\rTakes a file specification of an BlackBox document as parameter, and opens the document in a document window. Parameter "
+                    attr: 1
+                  - text: file
+                    attr: 2
+                  - text: " must be the path name of a file. If the same file is already open in an existing document window, this window is brought to the top, instead of opening a new window.\rDocument windows are used for displaying persistent editable data.\rExample:\r\"StdCmds.OpenDoc('System/Rsrc/Menus')\"\r\rPROCEDURE "
+                    attr: 1
+                  - text: OpenToolDialog
+                    attr: 4
+                  - text: " (file, title: ARRAY OF CHAR)\rTakes a file specification of an BlackBox document and a window title as parameters, and opens a dialog with the specified document. The dialog is opened as tool window. Parameter "
+                    attr: 1
+                  - text: file
+                    attr: 2
+                  - text: " must be the path name of a file.\rTool dialogs are used for dialogs which operate on document windows beneath them, e.g., a Find & Replace dialog which operates on a text under it. Otherwise it is identical to "
+                    attr: 1
+                  - text: OpenAuxDialog
+                    attr: 2
+                  - text: ".\rExample:\r\"DevInspector.InitDialog; StdCmds.OpenToolDialog('Dev/Rsrc/Inspect', 'Inspect')\"\r\rPROCEDURE "
+                    attr: 1
+                  - text: PasteCharGuard
+                    attr: 4
+                  - text: " (VAR par: Dialog.Par)\rDisables menu item if entering a character is currently not possible.\r\rPROCEDURE "
+                    attr: 1
+                  - text: PasteLCharGuard
+                    attr: 4
+                  - text: " (VAR par: Dialog.Par)\rObsolete.\r\rPROCEDURE "
+                    attr: 1
+                  - text: PasteProp
+                    attr: 4
+                  - text: "\rGuard: a property was collected (-> "
+                    attr: 1
+                  - text: CopyProp
+                    attr: 2
+                  - text: ")\rTakes the previously copied properties and applies them to the current selection.\r\rPROCEDURE "
+                    attr: 1
+                  - text: PasteView
+                    attr: 4
+                  - text: "\rGuard: a view was deposited\rTakes a deposited view from the global view queue and pastes it to the focus.\r\rPROCEDURE "
+                    attr: 1
+                  - text: PasteViewGuard
+                    attr: 4
+                  - text: " (VAR par: Dialog.Par)\rDisables menu item if pasting a view is currently not possible.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Plain
+                    attr: 4
+                  - text: "\rSets the selection to plain text (not italicized, not bold, not underlined).\r\rPROCEDURE "
+                    attr: 1
+                  - text: PlainGuard
+                    attr: 4
+                  - text: "\rGuard for the "
+                    attr: 1
+                  - text: Plain
+                    attr: 2
+                  - text: " command.\r\rPROCEDURE "
+                    attr: 1
+                  - text: ReadOnlyGuard
+                    attr: 4
+                  - text: " (VAR par: Dialog.Par)\rMakes a control read-only, by setting "
+                    attr: 1
+                  - text: par.readOnly
+                    attr: 2
+                  - text: " to "
+                    attr: 1
+                  - text: "TRUE"
+                    attr: 2
+                  - text: ".\r\rPROCEDURE "
+                    attr: 1
+                  - text: RecalcAllSizes
+                    attr: 4
+                  - text: "\rRecalculates the sizes of all visible views. Must be called after font metrics are changed.\r\rPROCEDURE "
+                    attr: 1
+                  - text: RecalcFocusSize
+                    attr: 4
+                  - text: "\rRecalculates the size of the focus view.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Redo
+                    attr: 4
+                  - text: "\rRedo the most recently undone command.\r\rPROCEDURE "
+                    attr: 1
+                  - text: RedoGuard
+                    attr: 4
+                  - text: "\rGuard for the "
+                    attr: 1
+                  - text: Redo
+                    attr: 2
+                  - text: " command.\r\rPROCEDURE "
+                    attr: 1
+                  - text: RestoreAll
+                    attr: 4
+                  - text: "\rForces a restoration of all visible views.\r\rPROCEDURE "
+                    attr: 1
+                  - text: SelectAll
+                    attr: 4
+                  - text: "\rSelects the whole contents of the focus view.\r\rPROCEDURE "
+                    attr: 1
+                  - text: SelectAllGuard
+                    attr: 4
+                  - text: "\rGuard for the "
+                    attr: 1
+                  - text: SelectAll
+                    attr: 2
+                  - text: " command.\r\rPROCEDURE "
+                    attr: 1
+                  - text: SelectDocument
+                    attr: 4
+                  - text: "\rSelects the root view (the outermost container) of the front window.\r\rPROCEDURE "
+                    attr: 1
+                  - text: SelectNextView
+                    attr: 4
+                  - text: "\rIf a singleton view is selected in a container, this command selects the next view in the container in a round-robin fashion.\r\rPROCEDURE "
+                    attr: 1
+                  - text: SelectionGuard
+                    attr: 4
+                  - text: " (VAR par: Dialog.Par)\rDisables menu item if there is no current selection.\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetBrowserMode
+                    attr: 4
+                  - text: "\rGuard: SetBrowserModeGuard\rSets the selected container in browser mode. If no container is selected the outer most container is set in browser mode. This mode is common for texts used for documentation purposes.\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetBrowserModeGuard
+                    attr: 4
+                  - text: " (VAR par: Dialog.Par)\rGuard for procedure "
+                    attr: 1
+                  - text: SetBrowserMode
+                    attr: 2
+                  - text: ". Sets "
+                    attr: 1
+                  - text: par.checked
+                    attr: 2
+                  - text: " if appropriate.\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetEditMode
+                    attr: 4
+                  - text: "\rGuard: SetEditModeGuard\rSets the selected container in edit mode. If no container is selected the outer most container is set in edit mode. This mode is common for editable texts.\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetEditModeGuard
+                    attr: 4
+                  - text: " (VAR par: Dialog.Par)\rGuard for procedure "
+                    attr: 1
+                  - text: SetEditMode
+                    attr: 2
+                  - text: ". Sets "
+                    attr: 1
+                  - text: par.checked
+                    attr: 2
+                  - text: " if appropriate.\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetLayout
+                    attr: 4
+                  - text: "\rApplies the interactor values in "
+                    attr: 1
+                  - text: layout
+                    attr: 2
+                  - text: ". To set up layout to the selected view, "
+                    attr: 1
+                  - text: InitLayoutDialog
+                    attr: 2
+                  - text: " needs to be called first.\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetLayoutMode
+                    attr: 4
+                  - text: "\rGuard: SetLayoutModeGuard\rSets the selected container in layout mode. If no container is selected the outer most container is set in layout mode. This mode is common for editable forms.\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetLayoutModeGuard
+                    attr: 4
+                  - text: " (VAR par: Dialog.Par)\rGuard for procedure "
+                    attr: 1
+                  - text: SetLayoutMode
+                    attr: 2
+                  - text: ". Sets "
+                    attr: 1
+                  - text: par.checked
+                    attr: 2
+                  - text: " if appropriate.\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetMaskMode
+                    attr: 4
+                  - text: "\rGuard: SetMaskModeGuard\rSets the selected container in mask mode. If no container is selected the outer most container is set in mask mode. This mode is common for forms used as dialogs.\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetMaskModeGuard
+                    attr: 4
+                  - text: " (VAR par: Dialog.Par)\rGuard for procedure "
+                    attr: 1
+                  - text: SetMaskMode
+                    attr: 2
+                  - text: ". Sets "
+                    attr: 1
+                  - text: par.checked
+                    attr: 2
+                  - text: " if appropriate.\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetSize
+                    attr: 4
+                  - text: "\rCommand for setting the selection to the size given in the "
+                    attr: 1
+                  - text: size
+                    attr: 2
+                  - text: " interactor.\r\rPROCEDURE "
+                    attr: 1
+                  - text: ShowProp
+                    attr: 4
+                  - text: "\rShows the properties of the selection in the focus view.\r\rPROCEDURE "
+                    attr: 1
+                  - text: ShowPropGuard
+                    attr: 4
+                  - text: "\rGuard for the "
+                    attr: 1
+                  - text: ShowProp
+                    attr: 2
+                  - text: " command.\r\rPROCEDURE "
+                    attr: 1
+                  - text: SingletonGuard
+                    attr: 4
+                  - text: " (VAR par: Dialog.Par)\rDisables menu item if there is no current selection, or if the selection doesn't encompass exactly one embedded view.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Size
+                    attr: 4
+                  - text: " (size: INTEGER)\rSets the selection to the given size, in points (-> Fonts).\r\rPROCEDURE "
+                    attr: 1
+                  - text: SizeGuard
+                    attr: 4
+                  - text: " (size: INTEGER; VAR par: Dialog.Par)\rGuard for the "
+                    attr: 1
+                  - text: Size
+                    attr: 2
+                  - text: " command.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Strikeout
+                    attr: 4
+                  - text: "\rSets the selection to the strikeout style.\r\rPROCEDURE "
+                    attr: 1
+                  - text: StrikeoutGuard
+                    attr: 4
+                  - text: " (VAR par: Dialog.Par)\rGuard for the "
+                    attr: 1
+                  - text: Strikeout
+                    attr: 2
+                  - text: " command.\r\rPROCEDURE "
+                    attr: 1
+                  - text: ToggleNoFocus
+                    attr: 4
+                  - text: "\rMakes a focusable container non-focusable, or vice versa, by changing its mode in an appropriate way (-> Containers).\r\rPROCEDURE "
+                    attr: 1
+                  - text: ToggleNoFocusGuard
+                    attr: 4
+                  - text: " (VAR par: Dialog.Par)\rGuard for the "
+                    attr: 1
+                  - text: ToggleNoFocus
+                    attr: 2
+                  - text: " command.\r\rPROCEDURE "
+                    attr: 1
+                  - text: TypeNotifier
+                    attr: 4
+                  - text: " (op, from, to: INTEGER)\r\rPROCEDURE "
+                    attr: 1
+                  - text: TypefaceGuard
+                    attr: 4
+                  - text: " (VAR par: Dialog.Par)\rGuard for the "
+                    attr: 1
+                  - text: Font
+                    attr: 2
+                  - text: " command.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Underline
+                    attr: 4
+                  - text: "\rSets the selection to the underline style.\r\rPROCEDURE "
+                    attr: 1
+                  - text: UnderlineGuard
+                    attr: 4
+                  - text: " (VAR par: Dialog.Par)\rGuard for the "
+                    attr: 1
+                  - text: Underline
+                    attr: 2
+                  - text: " command.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Undo
+                    attr: 4
+                  - text: "\rUndoes the most recent command.\r\rPROCEDURE "
+                    attr: 1
+                  - text: UndoGuard
+                    attr: 4
+                  - text: " (VAR par: Dialog.Par)\rGuard for the "
+                    attr: 1
+                  - text: Undo
+                    attr: 2
+                  - text: " command.\r\rPROCEDURE "
+                    attr: 1
+                  - text: UpdateAll
+                    attr: 4
+                  - text: "\r\rPROCEDURE "
+                    attr: 1
+                  - text: WidthGuard
+                    attr: 4
+                  - text: " (VAR par: Dialog.Par)\rGuard command which sets "
+                    attr: 1
+                  - text: par.readOnly
+                    attr: 2
+                  - text: " if "
+                    attr: 1
+                  - text: "layout.wType # 0"
+                    attr: 2
+                  - text: ", i.e., if mode is not \"fixed\".\r\rPROCEDURE "
+                    attr: 1
+                  - text: WindowGuard
+                    attr: 4
+                  - text: " (VAR par: Dialog.Par)\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 13
+          bodyPos: 17178
+          bodyLen: 8

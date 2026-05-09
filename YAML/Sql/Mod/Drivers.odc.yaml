@@ -1,0 +1,424 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Sql\\Mod\\Drivers.odc"
+  size: 8892
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 8761
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 8575
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 8489
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 114300
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 8610
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 8096
+                runListLen: 2183
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE SqlDrivers;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT Meta, Dates, Dialog;\r\r\tCONST\r\t\tnoDriverMod = 1;\r\t\tnoDriverProc = 2;\r\t\twrongDriverType = 3;\r\t\tconnectionsExceeded = 4;\r\t\toutOfTables = 5;\r\t\tnotExecutable = 6;\r\t\tcannotOpenDB = 7;\r\t\twrongIdentification = 8;\r\t\ttooManyBlobs = 9;\r\t\t\r\t\tconverted = 1;\r\t\ttruncated = 2;\r\t\toverflow = 3;\r\t\tincompatible = 4;\r\t\tnoData = 5;\r\r\tTYPE\r\t\t"
+                    attr: 0
+                  - text: Driver
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD\r\t\t\tblobStr-: ARRAY 8 OF CHAR;\r\t\t\topen: BOOLEAN;\r\t\t\ttables: INTEGER;\t"
+                    attr: 0
+                  - text: "(* number of currently open tables for this driver *)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\t\t\r\t\t"
+                    attr: 0
+                  - text: Table
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD\r\t\t"
+                    attr: 0
+                  - text: "\t(** an open table must anchor its driver; a closed table must not anchor it **)"
+                    attr: 1
+                  - text: "\r\t\t\tres*: INTEGER;\t"
+                    attr: 0
+                  - text: "(** sticky result, replaced by higher values only **)"
+                    attr: 1
+                  - text: "\r\t\t\topen: BOOLEAN;\r\t\t\tdriver: Driver"
+                    attr: 0
+                  - text: "\t(* only used to prevent too early garbage collection of driver *)\r\t\t"
+                    attr: 1
+                  - text: "END;\r\r\t\t"
+                    attr: 0
+                  - text: String
+                    attr: 3
+                  - text: "* = POINTER TO ARRAY OF CHAR;\r\t\t\r\t\t"
+                    attr: 0
+                  - text: Blob
+                    attr: 3
+                  - text: "* = POINTER TO RECORD\r\t\t\tlen*: INTEGER;\r\t\t\tdata*: POINTER TO ARRAY OF BYTE;\t"
+                    attr: 0
+                  - text: "(** not 0X terminated **)"
+                    attr: 1
+                  - text: "\r\t\t\tnext*: Blob\r\t\tEND;\r\r\t\tDriverAllocator = PROCEDURE (id, password, datasource: ARRAY OF CHAR;\r\t\t\t\t\t\t\t\t\t\t\t\t\tasync, showErr: BOOLEAN; OUT d: Driver; OUT res: INTEGER);\r\t\t"
+                    attr: 0
+                  - text: "(* Post: res = 0 <=> connection has started and should be completed later with EndOpen\r\t\t\t\t\tres = 0 <=> d # NIL\r"
+                    attr: 1
+                  - text: "\t\t"
+                    attr: 0
+                  - text: "\t\t\t~async & (res = 0) => d.Ready() *)"
+                    attr: 1
+                  - text: "\r\r\r\tPROCEDURE (d: Driver) "
+                    attr: 0
+                  - text: Ready
+                    attr: 3
+                  - text: "* (): BOOLEAN, NEW, ABSTRACT;\r\tPROCEDURE (d: Driver) "
+                    attr: 0
+                  - text: EndOpen
+                    attr: 3
+                  - text: "* (OUT res: INTEGER), NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(** Pre: d.Ready()\t20 **)\r"
+                    attr: 1
+                  - text: "\r\tPROCEDURE (d: Driver) "
+                    attr: 0
+                  - text: BeginExec
+                    attr: 3
+                  - text: "* (IN statement: ARRAY OF CHAR; data: Blob;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tasync, showErrors: BOOLEAN; OUT res: INTEGER), NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(** asynchronous execution is optional, a driver may legally execute synchronously if async is TRUE **)\r"
+                    attr: 1
+                  - text: "\t"
+                    attr: 0
+                  - text: "(** Pre: statement # \"\"\t20"
+                    attr: 1
+                  - text: "\r"
+                    attr: 0
+                  - text: "\t\t\t\tno other execution started\t21 **)"
+                    attr: 1
+                  - text: "\r\t"
+                    attr: 0
+                  - text: "(** Post: res = 0 <=> execution has started and should be completed later with EndExec\r\t\t\t\t~async => d.Ready() **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (d: Driver) "
+                    attr: 0
+                  - text: EndExec
+                    attr: 3
+                  - text: "* (VAR t: Table; OUT rows, columns, res: INTEGER), NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(** Pre: execution must have been started successfully with BeginExec\t20\r\t\t\t\td.Ready()\t21 **)"
+                    attr: 1
+                  - text: "\r\t"
+                    attr: 0
+                  - text: "(** Post: res = 0  <=>  (t # NIL) OR (rows = 0) & (columns = 0) **)"
+                    attr: 1
+                  - text: "\r\t\r\tPROCEDURE (d: Driver) "
+                    attr: 0
+                  - text: Commit
+                    attr: 3
+                  - text: "* (accept: BOOLEAN; OUT res: INTEGER), NEW, ABSTRACT;\r\t\r\tPROCEDURE (d: Driver) "
+                    attr: 0
+                  - text: Cleanup
+                    attr: 3
+                  - text: "-, NEW, EMPTY;\r\t\r\tPROCEDURE (d: Driver) "
+                    attr: 0
+                  - text: Close
+                    attr: 3
+                  - text: "*, NEW;\r\tBEGIN\r\t\tIF d.open THEN\r\t\t\tIF d.tables = 0 THEN\r\t\t\t\td.Cleanup\t"
+                    attr: 0
+                  - text: "(* release driver info *)"
+                    attr: 1
+                  - text: "\r\t\t\tEND;\r\t\t\td.open := FALSE;\r\t\tEND\r\tEND Close;\r\r\tPROCEDURE (d: Driver) "
+                    attr: 0
+                  - text: Init
+                    attr: 3
+                  - text: "* (blobStr: ARRAY OF CHAR), NEW;\r\tBEGIN\r\t\td.blobStr := blobStr$;\r\t\td.open := TRUE\r\tEND Init;\r\t\r\tPROCEDURE (d: Driver) FINALIZE-;\r\tBEGIN\r\t\td.Close\r\tEND FINALIZE;\r\r\t\r\tPROCEDURE (t: Table) "
+                    attr: 0
+                  - text: ReadInteger
+                    attr: 3
+                  - text: "* (row, column: INTEGER; OUT val: INTEGER), NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(** Pre: row >= 0\t20\r\t\t\t\trow < rows\t21\r\t\t\t\tcolumn >= 0\t22\r\t\t\t\tcolumn < columns\t23 **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (t: Table) "
+                    attr: 0
+                  - text: ReadReal
+                    attr: 3
+                  - text: "* (row, column: INTEGER; OUT val: REAL), NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(** Pre: row >= 0\t20\r\t\t\t\trow < rows\t21\r\t\t\t\tcolumn >= 0\t22\r\t\t\t\tcolumn < columns\t23 **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (t: Table) "
+                    attr: 0
+                  - text: ReadDate
+                    attr: 3
+                  - text: "* (row, column: INTEGER; OUT val: Dates.Date), NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(** Pre: row >= 0\t20\r\t\t\t\trow < rows\t21\r\t\t\t\tcolumn >= 0\t22\r\t\t\t\tcolumn < columns\t23 **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (t: Table) "
+                    attr: 0
+                  - text: ReadTime
+                    attr: 3
+                  - text: "* (row, column: INTEGER; OUT val: Dates.Time), NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(** Pre: row >= 0\t20\r\t\t\t\trow < rows\t21\r\t\t\t\tcolumn >= 0\t22\r\t\t\t\tcolumn < columns\t23 **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (t: Table) "
+                    attr: 0
+                  - text: ReadCurrency
+                    attr: 3
+                  - text: "* (row, column: INTEGER; OUT val: Dialog.Currency), NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(** Pre: row >= 0\t20\r\t\t\t\trow < rows\t21\r\t\t\t\tcolumn >= 0\t22\r\t\t\t\tcolumn < columns\t23 **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (t: Table) "
+                    attr: 0
+                  - text: ReadString
+                    attr: 3
+                  - text: "* (row, column: INTEGER; OUT str: ARRAY OF CHAR), NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(** Pre: row >= 0\t20\r\t\t\t\trow < rows\t21\r\t\t\t\tcolumn >= 0\t22\r\t\t\t\tcolumn < columns\t23 **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (t: Table) "
+                    attr: 0
+                  - text: ReadVarString
+                    attr: 3
+                  - text: "* (row, column: INTEGER; OUT str: String), NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(** Pre: row >= 0\t20\r\t\t\t\trow < rows\t21\r\t\t\t\tcolumn >= 0\t22\r\t\t\t\tcolumn < columns\t23 **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (t: Table) "
+                    attr: 0
+                  - text: ReadBlob
+                    attr: 3
+                  - text: "* (row, column: INTEGER; OUT len: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT data: POINTER TO ARRAY OF BYTE), NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(** Pre: row >= 0\t20\r\t\t\t\trow < rows\t21\r\t\t\t\tcolumn >= 0\t22\r\t\t\t\tcolumn < columns\t23 **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (t: Table) "
+                    attr: 0
+                  - text: ReadName
+                    attr: 3
+                  - text: "* (column: INTEGER; OUT str: String), NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(** Pre: column >= 0\t20\r\t\t\t\tcolumn < columns\t21 **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (t: Table) "
+                    attr: 0
+                  - text: ReadType
+                    attr: 3
+                  - text: "* (column: INTEGER; OUT str: String), NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(** Pre: column >= 0\t20\r\t\t\t\tcolumn < columns\t21 *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (t: Table) "
+                    attr: 0
+                  - text: Cleanup
+                    attr: 3
+                  - text: "-, NEW, EMPTY;\r\t\r\tPROCEDURE (t: Table) "
+                    attr: 0
+                  - text: Close
+                    attr: 3
+                  - text: "*, NEW;\r\tBEGIN\r\t\tIF t.open THEN\r\t\t\tt.Cleanup;\t"
+                    attr: 0
+                  - text: "(* release table info *)"
+                    attr: 1
+                  - text: "\r\t\t\tDEC(t.driver.tables);\r\t\t\tIF (t.driver.tables = 0) & ~t.driver.open THEN\r\t\t\t\tt.driver.Cleanup\t"
+                    attr: 0
+                  - text: "(* release driver info *)"
+                    attr: 1
+                  - text: "\r\t\t\tEND;\r\t\t\tt.driver := NIL;\t(* allow for garbage collection of driver *)\r\t\t\tt.open := FALSE\r\t\tEND\r\tEND Close;\r\t\r\tPROCEDURE (t: Table) "
+                    attr: 0
+                  - text: Init
+                    attr: 3
+                  - text: "* (d: Driver), NEW;\r\tBEGIN\r\t\tASSERT(d.open, 20);\r\t\tt.driver := d; INC(d.tables);\r\t\tt.open := TRUE\r\tEND Init;\r\t\r\tPROCEDURE (t: Table) FINALIZE-;\r\tBEGIN\r\t\tt.Close\r\tEND FINALIZE;\r\t\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Open
+                    attr: 3
+                  - text: "* (protocol, id, password, datasource: ARRAY OF CHAR;\r\t\t\t\t\t\t\t\t\t\t\tasync, showErrors: BOOLEAN; OUT d: Driver; OUT res: INTEGER);\r\t\tVAR ok: BOOLEAN; m, p: Meta.Item; mod: Meta.Name;\r\t\t\tv: RECORD (Meta.Value)\r\t\t\t\tOpen: DriverAllocator\r\t\t\tEND;\r\tBEGIN\r\t\tASSERT(protocol # \"\", 20);\r\t\tmod := protocol$; Meta.Lookup(mod, m); d := NIL; res := 0;\r\t\tIF m.obj = Meta.modObj THEN\r\t\t\tm.Lookup(\"Open\", p);\r\t\t\tIF p.obj = Meta.procObj THEN\r\t\t\t\tp.GetVal(v, ok);\r\t\t\t\tIF ok THEN\r\t\t\t\t\tv.Open(id, password, datasource, async, showErrors, d, res);\r\t\t\t\tELSE res := wrongDriverType\r\t\t\t\tEND\r\t\t\tELSE res := noDriverProc\r\t\t\tEND\r\t\tELSE res := noDriverMod\r\t\tEND\r\tEND Open;\r\rEND SqlDrivers.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 8857
+          bodyLen: 8

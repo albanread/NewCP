@@ -1,0 +1,405 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Com\\Docu\\PhoneBookActiveX.odc"
+  size: 521481
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 521350
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 521164
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 521078
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 114300
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 47
+                bodyPos: 521199
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 520685
+                runListLen: 513380
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: "*"
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                  - # [3]
+                    font: "*"
+                    size: 104775
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [4]
+                    font: "*"
+                    size: 104775
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [5]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                flow:
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 0
+                      w: 360000000
+                      h: 444500
+                  - target:
+                      name: 7.5
+                      body:
+                        - text: ComPhoneBookActiveX Example
+                          attr: 0
+                      attr: 0
+                      w: 150300
+                      h: 142875
+                  - text: "\r"
+                    attr: 0
+                  - text: "\rIn this example a simple ActiveX control is implemented. The control offers the same functionality as the phone book in the ComPhoneBook example, but in this example, clients communicate through a dispatch interface. The control will be linked into a DLL and can be used as an ActiveX control from any client which properly supports the ActiveX standard.\r\rThe dispatch interface also has to be described in a MIDL definition. This definition is stored in file "
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenDoc('Com/Interfaces/DPhoneBook/phone.idl')"
+                      body:
+                        - text: Phone.idl
+                          attr: 2
+                      attr: 2
+                      w: 131250
+                      h: 142875
+                  - text: " and shown below:\r\r"
+                    attr: 1
+                  - ruler:
+                      first: 216000
+                      left: 216000
+                      right: 5940000
+                      dsc: 25400
+                      grid: 1
+                      opts: 0x00000003
+                      attr: 3
+                      w: 360000000
+                      h: 444500
+                  - text: "[\r  uuid(C4910D73-BA7D-11CD-94E8-08001701A8A3),\r  version(1.0),\r  helpstring(\"PhoneBook ActiveX Control\")\r]\rlibrary PhoneBookLib {\r\timportlib(\"stdole32.tlb\");\r    [\r      uuid(C4910D72-BA7D-11CD-94E8-08001701A8A3),\r      helpstring(\"Dispatch interface for PhoneBook ActiveX Control\")\r    ]\r    dispinterface DPhoneBook {\r\t\tproperties:\r        methods:\r            [id(1)]\r            BSTR LookupByName(BSTR name);\r            [id(2)]\r            BSTR LookupByNumber(BSTR number);\r\t};\r\r    [\r      uuid(E67D346B-2A5B-11D0-ADBA-00C01500554E),\r      helpstring(\"PhoneBook ActiveX  Control\")\r    ]\r    coclass PhoneBook {\r        [default] dispinterface DPhoneBook;\r    };\r}\r\r"
+                    attr: 3
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 3
+                      w: 360000000
+                      h: 444500
+                  - text: "With the MIDL compiler, a type library is generated. Once this library has been registered in the Windows registry it can be inspected with the OLE ITypeLib Viewer.\r\rIn DTC Component Pascal, this interface is defined as an abstract extension of WinOleAut.IDispatch, the base type of all dispatch interface. This interface contains the following four methods which must be implemented:\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      dsc: 25400
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tTYPE\r\t\tIDispatch = POINTER TO ABSTRACT RECORD [\"{00020400-0000-0000-C000-000000000046}\"] (COM.IUnknown)\r\t\t\t(this: IDispatch) "
+                    attr: 3
+                  - text: GetIDsOfNames
+                    attr: 4
+                  - text: " (IN [nil] riid: COM.GUID; IN [nil] rgszNames: WinApi.PtrWSTR; cNames: INTEGER;\r\t\t\t\t\t\t\t\tlcid: WinOle.LCID; OUT [nil] rgDispId: WinOleAut.DISPID): COM.RESULT, NEW, ABSTRACT;\r\t\t\t(this: IDispatch) "
+                    attr: 3
+                  - text: GetTypeInfo
+                    attr: 4
+                  - text: " (iTInfo: INTEGER; lcid: WinOle.LCID; \r\t\t\t\t\t\t\t\tOUT [nil] ppTInfo: WinOleAut.ITypeInfo): COM.RESULT, NEW, ABSTRACT;\r\t\t\t(this: IDispatch) "
+                    attr: 3
+                  - text: GetTypeInfoCount
+                    attr: 4
+                  - text: " (OUT [nil] pctinfo: INTEGER): COM.RESULT, NEW, ABSTRACT;\r\t\t\t(this: IDispatch) "
+                    attr: 3
+                  - text: Invoke
+                    attr: 4
+                  - text: " (dispIdMember: WinOleAut.DISPID; IN riid: COM.GUID; lcid: WinOle.LCID; wFlags: SHORTINT; \r\t\t\t\t\t\t\t\tVAR [nil] pDispParams: WinOleAut.DISPPARAMS; OUT [nil] pVarResult: WinOleAut.VARIANT;\r\t\t\t\t\t\t\t\tOUT [nil] pExcepInfo: WinOleAut.EXCEPINFO; OUT [nil] puArgErr: INTEGER): COM.RESULT, NEW, ABSTRACT\r\t\tEND;\r\r"
+                    attr: 3
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "The implementation of this interface is a concrete extension of the abstract dispatch interface. The main method is the Invoke method. Through this method the functions of the interface are called. The number of the function to be invoced is passed in parameter dispIdMember, and the parameters are passed in the array pDispParams as variant records. The result is returned through parameter "
+                    attr: 1
+                  - text: "pVarResult, a variant record as well. The other three methods of this interface provide information about the interface itself. They can easily be implemented if a type library is available.\r"
+                    attr: 5
+                  - text: "\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      dsc: 25400
+                      grid: 1
+                      attr: 3
+                      w: 360000000
+                      h: 444500
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 24
+                      bodyPos: 1993
+                      bodyLen: 251621
+                    attr: 3
+                    w: 6054175
+                    h: 3733845
+                  - text: "\r\r"
+                    attr: 3
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 3
+                      w: 360000000
+                      h: 444500
+                  - text: "\r"
+                    attr: 1
+                  - text: "Besides the implementation of the dispatch interface, a factory object must be provided. Furthermore, the two global functions DllGetClassObject and DllCanUnloadNow have to be implemented. These two routines are called by the COM library. If the DLL is loaded it is asked to return a reference to the factory object, and with the function DllCanUnloadNow the COM library tests whether the DLL can be unloaded.\r\rIf module ComPhoneBookActiveX has been compiled, a DLL can be linked with the command \r\t"
+                    attr: 5
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 27
+                      bodyPos: 253839
+                      bodyLen: 6
+                    attr: 5
+                    w: 168275
+                    h: 142875
+                  - text: " DevLinker.LinkDll \"Com/phone.dll\" := Kernel+ ComTools ComPhoneBookActiveX# ~\rThis command generates a DLL with a size of 40KBytes only.\r\rIn order to load this DLL it must be registered in the Windows registry. Note, that the CLSID for this implementation is different than the CLSID of example ComPhoneBook. Besides the CLSID, the information about the type library must be stored in the registry, and in particular the CLSID entry must contain a reference to the GUID under which the type library is referenced. "
+                    attr: 5
+                  - text: "The necessary registry file "
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenDoc('Com/Interfaces/DPhoneBook/phone.reg')"
+                      body:
+                        - text: Com/Interfaces/DPhoneBook/phone.reg
+                          attr: 2
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: " is given below. Use the REGEDIT tool to update the registry. Adjust path names if necessary!\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      dsc: 25400
+                      grid: 1
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "REGEDIT\rHKEY_CLASSES_ROOT\\PhoneBook = PhoneBook ActiveX Control\rHKEY_CLASSES_ROOT\\PhoneBook\\CLSID = {E67D346B-2A5B-11D0-ADBA-00C01500554E}\rHKEY_CLASSES_ROOT\\PhoneBook\\TypeLib = {C4910D73-BA7D-11CD-94E8-08001701A8A3}\r\rHKEY_CLASSES_ROOT\\CLSID\\{E67D346B-2A5B-11D0-ADBA-00C01500554E} = PhoneBook ActiveX Control\rHKEY_CLASSES_ROOT\\CLSID\\{E67D346B-2A5B-11D0-ADBA-00C01500554E}\\ProgID = PhoneBook1.0\rHKEY_CLASSES_ROOT\\CLSID\\{E67D346B-2A5B-11D0-ADBA-00C01500554E}\\Control\rHKEY_CLASSES_ROOT\\CLSID\\{E67D346B-2A5B-11D0-ADBA-00C01500554E}\\Version = 1.0\rHKEY_CLASSES_ROOT\\CLSID\\{E67D346B-2A5B-11D0-ADBA-00C01500554E}\\VersionIndependentProgID = PhoneBook\rHKEY_CLASSES_ROOT\\CLSID\\{E67D346B-2A5B-11D0-ADBA-00C01500554E}\\TypeLib =\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t {C4910D73-BA7D-11CD-94E8-08001701A8A3}\rHKEY_CLASSES_ROOT\\CLSID\\{E67D346B-2A5B-11D0-ADBA-00C01500554E}\\InprocServer32 = C:\\BlackBox\\Com\\phone.dll\rHKEY_CLASSES_ROOT\\CLSID\\{E67D346B-2A5B-11D0-ADBA-00C01500554E}\\NotInsertable\r\rHKEY_CLASSES_ROOT\\TypeLib\\{C4910D73-BA7D-11CD-94E8-08001701A8A3}\\1.0 = PhoneBook ActiveX Control\rHKEY_CLASSES_ROOT\\TypeLib\\{C4910D73-BA7D-11CD-94E8-08001701A8A3}\\1.0\\0\\win32 =\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t C:\\BlackBox\\Com\\Interfaces\\DPhoneBook\\phone.tlb\rHKEY_CLASSES_ROOT\\TypeLib\\{C4910D73-BA7D-11CD-94E8-08001701A8A3}\\1.0\\FLAGS = 0\rHKEY_CLASSES_ROOT\\TypeLib\\{C4910D73-BA7D-11CD-94E8-08001701A8A3}\\1.0\\HELPDIR =\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t C:\\BlackBox\\Com\\Interfaces\\DPhoneBook\r\r"
+                    attr: 3
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 3
+                      w: 360000000
+                      h: 444500
+                  - text: "Once this information has been stored, the phonebook ActiveX control is ready to be used. As an example we demonstrate how it can be used through the Internet Explorer. With the <OBJECT> tag an ActiveX control can be embedded in any HTML page. As an example the html page "
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenDoc('Com/Rsrc/phone.html')"
+                      body:
+                        - text: Com/Rsrc/phone.html
+                          attr: 2
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: " is provided. Note, that the only reference to the ActiveX control is its CLSID. The phone book is accessed in the two VBScript commands PhoneBook.LookupByName(NameField.value) and PhoneBook.LookupByNumber(NameField.value).\r\r"
+                    attr: 1
+                  - ruler:
+                      first: 144000
+                      left: 144000
+                      right: 5940000
+                      dsc: 25400
+                      grid: 1
+                      opts: 0x00000003
+                      attr: 3
+                      w: 360000000
+                      h: 444500
+                  - text: "<HTML>\r<HEAD>\r<TITLE>ActiveX Demo - Phonebook</TITLE>\r</HEAD>\r\r<BODY>\r<H1>BlackBox Phone Book Example</H1>\r<OBJECT\r  "
+                    attr: 3
+                  - text: "CLASSID=\"CLSID:E67D346B-2A5B-11D0-ADBA-00C01500554E\""
+                    attr: 4
+                  - text: "\r  ID=PhoneBook\r>\r</OBJECT>\rThis page uses a small (40K) non-visual control which provides access to a phone book which also might run on a remote computer. \rThis ActiveX control has been implemented with the DTC Component Pascal compiler.\r<P>\rEnter a name or a phone number and press the corresponding button:\r<P>\r<INPUT   TYPE=\"text\"   NAME = \"NameField\"   SIZE=20>\r<INPUT   TYPE=BUTTON VALUE=\"Lookup by Name\"   NAME=\"NameBtn\" >\r<INPUT   TYPE=BUTTON VALUE=\"Lookup by Number\"   NAME=\"NumberBtn\">\r\r<SCRIPT LANGUAGE=VBScript>\rSub NameBtn_Onclick\r  alert \"Phone number of \" & NameField.value & \":    \" & "
+                    attr: 3
+                  - text: "PhoneBook.LookupByName(NameField.value) "
+                    attr: 4
+                  - text: "\rEnd Sub\rSub NumberBtn_Onclick\r  alert \"Name of line \" & NameField.value & \":    \" & "
+                    attr: 3
+                  - text: "PhoneBook.LookupByNumber(NameField.value) "
+                    attr: 4
+                  - text: "\rEnd Sub\r</SCRIPT>\r</BODY>\r</HTML>\r"
+                    attr: 3
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 3
+                      w: 360000000
+                      h: 444500
+                  - text: "\rThe following figure shows a screen dump of Internet Explorer if this html page is inspected.\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 42
+                      bodyPos: 254846
+                      bodyLen: 258645
+                    attr: 1
+                    w: 5629245
+                    h: 4124445
+                  - text: "\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenDoc('Com/Mod/PhoneBookActiveX')"
+                      body:
+                        - text: ComPhoneBookActiveX  sources
+                          attr: 2
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 51
+          bodyPos: 521446
+          bodyLen: 8

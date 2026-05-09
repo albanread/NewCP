@@ -1,0 +1,427 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\System\\Mod\\Models.odc"
+  size: 9377
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 9246
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 9060
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 8974
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 114300
+                color: 0x00000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 9095
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 8581
+                runListLen: 2193
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE Models;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\t\r\tIMPORT Kernel, Stores, Sequencers;\r\r\tCONST\r\t\tminVersion = 0; maxVersion = 0;\r\r\t\t"
+                    attr: 0
+                  - text: clean
+                    attr: 3
+                  - text: "* = Sequencers.clean; "
+                    attr: 0
+                  - text: "\r\t\tnotUndoable"
+                    attr: 3
+                  - text: "* = Sequencers.notUndoable;\r"
+                    attr: 0
+                  - text: "\t\tinvisible"
+                    attr: 3
+                  - text: "* = Sequencers.invisible; "
+                    attr: 0
+                  - text: "\r"
+                    attr: 3
+                  - text: "\r\tTYPE\r\t\t"
+                    attr: 0
+                  - text: Model
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Stores.Store)\r\t\t\tera: INTEGER;\t"
+                    attr: 0
+                  - text: "(* stable era >= x *)"
+                    attr: 1
+                  - text: "\r\t\t\tguard: INTEGER\t"
+                    attr: 0
+                  - text: "(* = TrapCount()+1 if model is addressee of ongoing broadcast *)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: Context
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD END;\r\r\t\t"
+                    attr: 0
+                  - text: Proposal
+                    attr: 3
+                  - text: "* = ABSTRACT RECORD END;\r\r\r\t\t"
+                    attr: 0
+                  - text: Message
+                    attr: 3
+                  - text: "* = ABSTRACT RECORD\r\t\t\tmodel-: Model;\r\t\t\tera-: INTEGER\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: NeutralizeMsg
+                    attr: 3
+                  - text: "* = RECORD (Message) END;\r\r\t\t"
+                    attr: 0
+                  - text: UpdateMsg
+                    attr: 3
+                  - text: "* = EXTENSIBLE RECORD (Message) END;\r\r\t\t\r\tVAR domainGuard: INTEGER;\t"
+                    attr: 0
+                  - text: "(* = TrapCount()+1 if domain is addressee of ongoing domaincast *)"
+                    attr: 1
+                  - text: "\r\r\r\t"
+                    attr: 0
+                  - text: "(** Model **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (m: Model) "
+                    attr: 0
+                  - text: Internalize-
+                    attr: 3
+                  - text: " (VAR rd: Stores.Reader), EXTENSIBLE;\r\t\tVAR thisVersion: INTEGER;\r\tBEGIN\r\t\tm.Internalize^(rd);\r\t\tIF rd.cancelled THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " END;\r\t\trd.ReadVersion(minVersion, maxVersion, thisVersion)\r\tEND Internalize;\r\r\tPROCEDURE (m: Model) "
+                    attr: 0
+                  - text: Externalize-
+                    attr: 3
+                  - text: " (VAR wr: Stores.Writer), EXTENSIBLE;\r\tBEGIN\r\t\tm.Externalize^(wr);\r\t\twr.WriteVersion(maxVersion)\r\tEND Externalize;\r\t\r\r\t"
+                    attr: 0
+                  - text: "(** Context **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (c: Context) "
+                    attr: 0
+                  - text: ThisModel
+                    attr: 3
+                  - text: "* (): Model, NEW, ABSTRACT;\r\tPROCEDURE (c: Context) "
+                    attr: 0
+                  - text: Normalize
+                    attr: 3
+                  - text: "* (): BOOLEAN, NEW, ABSTRACT;\r\tPROCEDURE (c: Context) "
+                    attr: 0
+                  - text: GetSize
+                    attr: 3
+                  - text: "* (OUT w, h: INTEGER), NEW, ABSTRACT;\r\tPROCEDURE (c: Context) "
+                    attr: 0
+                  - text: SetSize
+                    attr: 3
+                  - text: "* (w, h: INTEGER), NEW, EMPTY;\r\tPROCEDURE (c: Context) "
+                    attr: 0
+                  - text: MakeVisible
+                    attr: 3
+                  - text: "* (l, t, r, b: INTEGER), NEW, EMPTY;\r\tPROCEDURE (c: Context) "
+                    attr: 0
+                  - text: Consider
+                    attr: 3
+                  - text: "* (VAR p: Proposal), NEW, EMPTY;\r\r\r\t"
+                    attr: 0
+                  - text: "(** miscellaneous **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Era
+                    attr: 3
+                  - text: "* (m: Model): INTEGER;\r\tBEGIN\r\t\tASSERT(m # NIL, 20);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " m.era\r\tEND Era;\r\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: CopyOf
+                    attr: 3
+                  - text: "* (m: Model): Model;\r\tBEGIN\r\t\tASSERT(m # NIL, 20);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " Stores.CopyOf(m)(Model)\r\tEND CopyOf;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: BeginScript
+                    attr: 3
+                  - text: "* (m: Model; name: Stores.OpName; OUT script: Stores.Operation);\r\t"
+                    attr: 0
+                  - text: "(** post: (script # NIL) iff (m.domain # NIL) **)"
+                    attr: 1
+                  - text: "\r\t\tVAR seq: ANYPTR;\r\tBEGIN\r\t\tASSERT(m # NIL, 20);\r\t\tIF m.Domain() # NIL THEN seq := m.Domain().GetSequencer() ELSE seq := NIL END;\r\t\tIF seq # NIL THEN\r\t\t\tWITH seq: Sequencers.Sequencer DO\r\t\t\t\tseq.BeginScript(name, script)\r\t\t\tELSE\r\t\t\tEND\r\t\tELSE script := NIL\r\t\tEND\r\tEND BeginScript;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Do
+                    attr: 3
+                  - text: "* (m: Model; name: Stores.OpName; op: Stores.Operation);\r\t"
+                    attr: 0
+                  - text: "(** pre: m # NIL, op # NIL, ~op.inUse **)"
+                    attr: 1
+                  - text: "\r\t\tVAR seq: ANYPTR;\r\tBEGIN\r\t\tASSERT(m # NIL, 20); ASSERT(op # NIL, 21); (* ASSERT(~op.inUse, 22); *)\r\t\tIF m.Domain() # NIL THEN seq := m.Domain().GetSequencer() ELSE seq := NIL END;\r\t\tIF seq # NIL THEN\r\t\t\tWITH seq: Sequencers.Sequencer DO\r\t\t\t\tseq.Do(m, name, op)\r\t\t\tELSE\r\t\t\t\top.Do\r\t\t\tEND\r\t\tELSE\r\t\t\top.Do\r\t\tEND\r\tEND Do;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: LastOp
+                    attr: 3
+                  - text: "* (m: Model): Stores.Operation;\r\t"
+                    attr: 0
+                  - text: "(** pre: m # NIL **)"
+                    attr: 1
+                  - text: "\r\t\tVAR seq: ANYPTR;\r\tBEGIN\r\t\tASSERT(m # NIL, 20);\r\t\tIF m.Domain() # NIL THEN seq := m.Domain().GetSequencer() ELSE seq := NIL END;\r\t\tIF seq # NIL THEN\r\t\t\tWITH seq: Sequencers.Sequencer DO\r\t\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " seq.LastOp(m)\r\t\t\tELSE\r\t\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " NIL\r\t\t\tEND\r\t\tELSE\r\t\t"
+                    attr: 0
+                  - text: "\tRETURN"
+                    attr: 3
+                  - text: " NIL\r\t\tEND\r\tEND LastOp;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Bunch
+                    attr: 3
+                  - text: "* (m: Model);\r\t"
+                    attr: 0
+                  - text: "(** pre: m # NIL, m.Domain() # NIL **)"
+                    attr: 1
+                  - text: "\r\t\tVAR seq: ANYPTR;\r\tBEGIN\r\t\tASSERT(m # NIL, 20); ASSERT(m.Domain() # NIL, 21);\r\t\tseq := m.Domain().GetSequencer();\r\t\tASSERT(seq # NIL, 22);\r\t\tWITH seq: Sequencers.Sequencer DO\r\t\t\tseq.Bunch(m)\r\t\tELSE\r\t\tEND\r\tEND Bunch;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: StopBunching
+                    attr: 3
+                  - text: "* (m: Model);\r\t"
+                    attr: 0
+                  - text: "(** pre: m # NIL **)"
+                    attr: 1
+                  - text: "\r\t\tVAR seq: ANYPTR;\r\tBEGIN\r\t\tASSERT(m # NIL, 20);\r\t\tIF m.Domain() # NIL THEN seq := m.Domain().GetSequencer() ELSE seq := NIL END;\r\t\tIF seq # NIL THEN\r\t\t\tWITH seq: Sequencers.Sequencer DO\r\t\t\t\tseq.StopBunching\r\t\t\tELSE\r\t\t\tEND\r\t\tEND\r\tEND StopBunching;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: EndScript
+                    attr: 3
+                  - text: "* (m: Model; script: Stores.Operation);\r\t"
+                    attr: 0
+                  - text: "(** pre: (script # NIL) iff (m.seq # NIL) **)"
+                    attr: 1
+                  - text: "\r\t\tVAR seq: ANYPTR;\r\tBEGIN\r\t\tASSERT(m # NIL, 20);\r\t\tIF m.Domain() # NIL THEN seq := m.Domain().GetSequencer() ELSE seq := NIL END;\r\t\tIF seq # NIL THEN\r\t\t\tASSERT(script # NIL, 21);\r\t\t\tWITH seq: Sequencers.Sequencer DO\r\t\t\t\tseq.EndScript(script)\r\t\t\tELSE\r\t\t\t\tASSERT(script = NIL, 21)\r\t\t\tEND\r\t\tELSE\r\t\t\tASSERT(script = NIL, 21)\r\t\tEND\r\tEND EndScript;\r\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: BeginModification
+                    attr: 3
+                  - text: "* (type: INTEGER; m: Model);\r\t"
+                    attr: 0
+                  - text: "(** pre: m # NIL **)"
+                    attr: 1
+                  - text: "\r\t\tVAR seq: ANYPTR;\r\tBEGIN\r\t\tASSERT(m # NIL, 20);\r\t\tIF m.Domain() # NIL THEN seq := m.Domain().GetSequencer() ELSE seq := NIL END;\r\t\tIF seq # NIL THEN\r\t\t\tWITH seq: Sequencers.Sequencer DO\r\t\t\t\tseq.BeginModification(type, m)\r\t\t\tELSE\r\t\t\tEND\r\t\tEND\r\tEND BeginModification;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: EndModification
+                    attr: 3
+                  - text: "* (type: INTEGER; m: Model);\r\t"
+                    attr: 0
+                  - text: "(** pre: m # NIL **)"
+                    attr: 1
+                  - text: "\r\t\tVAR seq: ANYPTR;\r\tBEGIN\r\t\tASSERT(m # NIL, 20);\r\t\tIF m.Domain() # NIL THEN seq := m.Domain().GetSequencer() ELSE seq := NIL END;\r\t\tIF seq # NIL THEN\r\t\t\tWITH seq: Sequencers.Sequencer DO\r\t\t\t\tseq.EndModification(type, m)\r\t\t\tELSE\r\t\t\tEND\r\t\tEND\r\tEND EndModification;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetDirty
+                    attr: 3
+                  - text: "* (m: Model);\r\t"
+                    attr: 0
+                  - text: "(** pre: m # NIL **)"
+                    attr: 1
+                  - text: "\r\t\tVAR seq: ANYPTR;\r\tBEGIN\r\t\tASSERT(m # NIL, 20);\r\t\tIF m.Domain() # NIL THEN seq := m.Domain().GetSequencer() ELSE seq := NIL END;\r\t\tIF seq # NIL THEN\r\t\t\tWITH seq: Sequencers.Sequencer DO\r\t\t\t\tseq.SetDirty(TRUE)\r\t\t\tELSE\r\t\t\tEND\r\t\tEND\r\tEND SetDirty;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Domaincast
+                    attr: 3
+                  - text: "* (d: Stores.Domain; VAR msg: Message);\r\t\tVAR g: INTEGER; seq: ANYPTR;\r\tBEGIN\r\t\tIF d # NIL THEN\r\t\t\tseq := d.GetSequencer();\r\t\t\tIF (seq # NIL) & (seq IS Sequencers.Sequencer) THEN\r\t\t\t\tmsg.model := NIL; msg.era := -1;\r\t\t\t\tg := Kernel.trapCount + 1;\r\t\t\t\tIF domainGuard > 0 THEN ASSERT(domainGuard # g, 20) END;\r\t\t\t\tdomainGuard := g;\r\t\t\t\tseq(Sequencers.Sequencer).Handle(msg);\r\t\t\t\tdomainGuard := 0\r\t\t\tEND\r\t\tEND\r\tEND Domaincast;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Broadcast
+                    attr: 3
+                  - text: "* (m: Model; VAR msg: Message);\r\t"
+                    attr: 0
+                  - text: "(** pre: model # NIL **)"
+                    attr: 1
+                  - text: "\r\t"
+                    attr: 0
+                  - text: "(** post: model.era > model.era', msg.model = model, msg.era = model.era' + 1,\r\t\tmodel.seq # NIL => msg sent to seq **)"
+                    attr: 1
+                  - text: "\r\t\tVAR seq: ANYPTR; g: INTEGER;\r\tBEGIN\r\t\tASSERT(m # NIL, 20);\r\t\tmsg.model := m;\r\t\tIF m.Domain() # NIL THEN seq := m.Domain().GetSequencer() ELSE seq := NIL END;\r\t\tIF seq # NIL THEN\r\t\t\tWITH seq: Sequencers.Sequencer DO\r\t\t\t\tINC(m.era); msg.era := m.era;\r\t\t\t\tg := Kernel.trapCount + 1;\r\t\t\t\tIF m.guard > 0 THEN ASSERT(m.guard # g, 21) END;\r\t\t\t\tm.guard := g;\r\t\t\t\tseq.Handle(msg);\r\t\t\t\tm.guard := 0\r\t\t\tELSE\r\t\t\tEND\r\t\tEND\r\tEND Broadcast;\r\rBEGIN\r\tdomainGuard := 0\rEND Models.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 9342
+          bodyLen: 8

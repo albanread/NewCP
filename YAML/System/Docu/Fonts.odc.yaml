@@ -1,0 +1,363 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\System\\Docu\\Fonts.odc"
+  size: 14892
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 14761
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 14575
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 14489
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                asc: 134600
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000003
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 11
+                bodyPos: 14610
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 14096
+                runListLen: 3136
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: Fonts
+                    attr: 0
+                  - text: "\r\rDEFINITION Fonts;\r\r\tCONST\r\t\tmm = 36000;\r\t\tpoint = 12700;\r\t\titalic = 0; underline = 1; strikeout = 2;\r\t\tnormal = 400; bold = 700;\r\t\tdefault = \"*\";\r\r\tTYPE\r\t\tTypeface = ARRAY 64 OF CHAR;\r\r\t\tTypefaceInfo = POINTER TO RECORD\r\t\t\tnext: TypefaceInfo;\r\t\t\ttypeface: Typeface\r\t\tEND;\r\r\t\tFont = POINTER TO ABSTRACT RECORD\r\t\t\ttypeface-: Typeface;\r\t\t\tsize-: INTEGER;\r\t\t\tstyle-: SET;\r\t\t\tweight-: INTEGER;\r\t\t\t(f: Font) Init (typeface: Typeface; size: INTEGER; style: SET; weight: INTEGER, NEW;\r\t\t\t(f: Font) GetBounds (OUT asc, dsc, w: INTEGER), NEW, ABSTRACT;\r\t\t\t(f: Font) StringWidth (IN s: ARRAY OF CHAR): INTEGER, NEW, ABSTRACT;;\r\t\t\t(f: Font) SStringWidth (IN s: ARRAY OF SHORTCHAR): INTEGER, NEW, ABSTRACT;;\r\t\t\t(f: Font) IsAlien (): BOOLEAN, NEW, ABSTRACT;\r\t\tEND;\r\r\t\tDirectory = POINTER TO ABSTRACT RECORD\r\t\t\t(d: Directory) This (typeface: Typeface; size: INTEGER; style: SET;\r\t\t\t\t\t\t\t\t\t\tweight: INTEGER): Font, NEW, ABSTRACT;\r\t\t\t(d: Directory) Default (): Font, NEW, ABSTRACT;\r\t\t\t(d: Directory) TypefaceList (): TypefaceInfo, NEW, ABSTRACT\r\t\tEND;\r\r\tVAR dir-, stdDir-: Directory;\r\r\tPROCEDURE SetDir (d: Directory);\r\rEND Fonts.\r\r\rA "
+                    attr: 1
+                  - text: font
+                    attr: 2
+                  - text: " is a collection of character glyphs, i.e., a collection of distinct visual representations of characters. Visual representations of the same character may differ in size (e.g., 12 point vs. 16 point), style (e.g., plain vs. italic), typeface (e.g., Times vs. Helvetica), and weight (e.g., bold vs. normal).\r\rIn BlackBox, most distances are measured in universal units. Several important distance values in these units are defined below:\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 504000 }
+                        - { stop: 1512000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: " um\t= 36\tmicrometer\r mm\t= 36000\tmillimeter\r cm\t= 10 * mm\tcentimeter\r m\t= 1000 * mm\tmeter\r inch\t= 914400\tinch\r\rFont sizes are measured in these universal units as well. The following values are used in connection with font sizes:\r\r point\t= 12700\t1/72 inch\t(desktop publishing point)\r pica\t= 12636\t0.351 mm\r didot\t= 13500\t0.375 mm\r cicero\t= 163800\t4.55 mm\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rHowever, it should be mentioned that in modern typography the millimeter is the dominating measure, followed by the point as established in desktop publishing software.\r\rModule "
+                    attr: 1
+                  - text: Fonts
+                    attr: 2
+                  - text: " provides an abstract type "
+                    attr: 1
+                  - text: Font
+                    attr: 2
+                  - text: ", which mainly allows to measure the widths of characters and strings in universal units. These measures are completely device-independent. There is no device-specific information (e.g., character bitmap) in a font object. Font objects are only used for measurements and for the identification of a font. In the latter capacity, they can be passed as parameters to output routines. These output routines generate or access (device-dependent) character bitmaps in a way not specified by BlackBox.\r\rAn application need not be aware whether font bitmaps are stored permanently (\"bitmapped fonts\") or whether they are generated on demand (using \"outline fonts\").\r\rThe meanings of two important font metrics, namely ascent and descent, are illustrated in the following diagram:\r\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 9
+                      bodyPos: 1057
+                      bodyLen: 1937
+                    attr: 1
+                    w: 2133590
+                    h: 2197090
+                  - text: "\r\rFigure 1.  Base Line, Ascent, Descent\r\r\rCharacters of a word are placed side by side on a so-called "
+                    attr: 1
+                  - text: base line
+                    attr: 2
+                  - text: ". The "
+                    attr: 1
+                  - text: ascent
+                    attr: 2
+                  - text: " measures how far any character of a font may extend above the base line. The "
+                    attr: 1
+                  - text: descent
+                    attr: 2
+                  - text: " measures how far any character of a font may extend below the base line. The line spacing is the sum of ascent and descent.\r\rIn BlackBox, the ascent must be large enough to accomodate oversized characters plus the minimal required distance between lines. Thus the ascent includes \"line gap\", \"internal leading\", and \"external leading\" as defined in other font models.\r\rNot all character codes need to be represented in a font. A character which is not represented in a font is displayed by a special \"missing\" symbol, e.g., an empty rectangle. Alternatively, BlackBox may use another font to display the character.\r\rIt is often desirable to display text on the screen in a way which is similar to the way it is printed on paper. This is known as WYSIWYG display (What You See Is What You Get). However, there are several factors which make true WYSIWYG display a problematic proposition.\r\rThe most fundamental problem is the large difference between today's screen and printer resolutions. Screens have typical spatial resolutions of about 70 to 100 dpi (dot per inch), while laser printers have resolutions of at least 300 dpi. This large difference forces the programmer to decide whether\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 1
+                    wide: true
+                  - text: " to tune text drawing for maximal legibility on screen, and thereby giving up device-independence and reducing the quality of hard copy, or\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 1
+                    wide: true
+                  - text: " to tune text drawing for maximal precision, which results in reduced legibility on screen due to rounding effects, or\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 1
+                    wide: true
+                  - text: " to give up the strict WYSIWYG requirements to some degree.\r\rAll three solutions have their merits and problems, and all three solutions can be found in commercial word processors.\r\rAnother problem for pure WYSIWYG display is that not all fonts are available on every machine. This means that a document containing a particular font cannot be shown correctly on a computer where this font is not installed. In order to make it possible to open a document containing such a missing font (without converting this font permanently) a mechanism is provided in BlackBox to temporarily substitute a place holder for a missing font, a so-called \"alien\" font.\r\rA font can be looked up in a font directory. Module "
+                    attr: 1
+                  - text: Fonts
+                    attr: 2
+                  - text: " provides an abstract type "
+                    attr: 1
+                  - text: Directory
+                    attr: 2
+                  - text: " for this purpose. If the directory cannot find a font, it creates an alien font object. An alien font internally uses an existing font for measurements and display, such that it can be used like any other font.\r\rAn application which needs a font but has no preferences should use the "
+                    attr: 1
+                  - text: default font
+                    attr: 2
+                  - text: ". The default font is a system- or user-made choice out of one of the available fonts. The identity of the default font may vary over time.\r\rFonts don't know about persistence. If you need to store a font description, you can use the procedures "
+                    attr: 1
+                  - text: Views.ReadFont
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: Views.WriteFont
+                    attr: 2
+                  - text: ".\r\r\rCONST "
+                    attr: 1
+                  - text: mm
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: point
+                    attr: 3
+                  - text: "\rThese are the most important font size measures in universal units.\r\rCONST "
+                    attr: 1
+                  - text: italic
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: "underline, strikeout"
+                    attr: 3
+                  - text: "\rThree standard font attributes.\r\rCONST "
+                    attr: 1
+                  - text: "normal, bold"
+                    attr: 3
+                  - text: "\rTwo major font weights.\r\rCONST "
+                    attr: 1
+                  - text: default
+                    attr: 3
+                  - text: "\rThis \"pseudo typeface\" is a placeholder name for the current default typeface. In BlackBox, the user can configure the default typeface to his or her needs, and may change it at run-time.\r\r\rTYPE "
+                    attr: 1
+                  - text: Typeface
+                    attr: 3
+                  - text: "\rString type for the typeface name of a font.\r\r\rTYPE "
+                    attr: 1
+                  - text: TypefaceInfo
+                    attr: 3
+                  - text: "\rThis type gives the name of an available typeface. Typeface info records are connected in a linear list. No ordering is defined.\r\r"
+                    attr: 1
+                  - text: next
+                    attr: 3
+                  - text: ": TypefacInfo\rNext element of the list.\r\r"
+                    attr: 1
+                  - text: typeface
+                    attr: 3
+                  - text: ": Typeface\ttypeface # \"\"\rName of this element's typeface.\r\r\rTYPE "
+                    attr: 1
+                  - text: Font
+                    attr: 3
+                  - text: "\rABSTRACT\rThis is the base type for fonts, which allows to identify fonts and to measure font information in universal units.\rFonts are allocated by font directories.\rFonts are used by models which contain formatted text, by views which draw text, and by commands which operate on text.\rFonts are extended by BlackBox, internally.\r\r"
+                    attr: 1
+                  - text: typeface
+                    attr: 3
+                  - text: "-: Typeface\ttypeface # \"\"\rThe font's typeface name.\r\r"
+                    attr: 1
+                  - text: size
+                    attr: 3
+                  - text: "-: INTEGER\tsize > 0\rThe font's size in universal units.\r\r"
+                    attr: 1
+                  - text: style
+                    attr: 3
+                  - text: "-: SET\tsubset of {italic, underline, strikeout}\rThe set of the font's style attributes.\r\r"
+                    attr: 1
+                  - text: weight
+                    attr: 3
+                  - text: "-: INTEGER\t0 <= weigth <= 1000\rA font's weight, i.e., the thickness of the strokes.\r\rPROCEDURE (f: Font) "
+                    attr: 1
+                  - text: Init
+                    attr: 3
+                  - text: " (typeface: Typeface; size: INTEGER; style: SET; weight: INTEGER)\rNEW\rInitialize font fields.\r"
+                    attr: 1
+                  - text: Init
+                    attr: 2
+                  - text: " is called by BlackBox, internally.\r\rPre\rf.size = 0\t20\tfont must not be initialized yet\rsize > 0\t21\rstyle is subset of {italic, underline, strikeout}\t22\r0 <= weight <= 1000\t23\r\rPost\rf.fingerprint = fingerprint\rf.typeface = typeface  &  f.size = size  &  f.style = style  &  f.weight = weight\r\rPROCEDURE (f: Font) "
+                    attr: 1
+                  - text: GetBounds
+                    attr: 3
+                  - text: " (OUT asc, dsc, w: INTEGER)\rNEW, ABSTRACT\rGet font ascent, descent, and the width of the widest character in the font.\r\rPost\rasc >= 0  &  dsc >= 0  &  w >= 0\r\rPROCEDURE (f: Font) "
+                    attr: 1
+                  - text: StringWidth
+                    attr: 3
+                  - text: " (IN s: ARRAY OF CHAR): INTEGER\rNEW, ABSTRACT\rMeasures the width of a string in universal units. The string may contain arbitrary Unicode characters.\r"
+                    attr: 1
+                  - text: StringWidth
+                    attr: 2
+                  - text: " is used by models or views which need to format text.\r\rPre\rs is terminated by 0X\tindex trap\r\rPost\rresult >= 0\twidth of string\r\rPROCEDURE (f: Font) "
+                    attr: 1
+                  - text: SStringWidth
+                    attr: 3
+                  - text: " (IN s: ARRAY OF SHORTCHAR): INTEGER\rNEW, ABSTRACT\rMeasures the width of a short string in universal units. The string can only contain Latin-1 characters.\r"
+                    attr: 1
+                  - text: SStringWidth
+                    attr: 2
+                  - text: " is used by models or views which need to format text.\r\rPre\rs is terminated by 0X\tindex trap\r\rPost\rresult >= 0\twidth of string\r\rPROCEDURE (f: Font) "
+                    attr: 1
+                  - text: IsAlien
+                    attr: 3
+                  - text: " (): BOOLEAN\rNEW, ABSTRACT\rTells whether "
+                    attr: 1
+                  - text: f
+                    attr: 2
+                  - text: " is an alien font.  An alien font is returned upon lookup of a font which cannot be found or generated. It is used as a place holder for the missing font. Alien fonts can be displayed, but their metrics are usually not the same as the correct font's metrics and their glyphs usually differ significantly from the correct font's glyphs.\r"
+                    attr: 1
+                  - text: IsAlien
+                    attr: 2
+                  - text: " is used in commands which inform users about the existence of alien fonts in a document.\r\r\rTYPE "
+                    attr: 1
+                  - text: Directory
+                    attr: 3
+                  - text: "\rABSTRACT\rDirectory for the lookup of fonts.\rFont directories are allocated by BlackBox.\rFont directories are used in models, views, and commands which need to specify a font for later use.\rFont directories are extended by BlackBox, internally.\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: This
+                    attr: 3
+                  - text: " (typeface: Typeface; size: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tstyle: SET; weight: INTEGER): Font\rNEW, ABSTRACT\rReturns the font with the attributes "
+                    attr: 1
+                  - text: "(typeface, size, style, weight)"
+                    attr: 2
+                  - text: ". If the font information cannot be found or generated, an alien font is returned instead. An alien font has the requested attributes, even though a different font is actually used.\rIf a font is requested which has the same attributes as another, previously requested font, the directory attempts to return the same font object (i.e., the same pointer value) as it did before. However, if a large number of fonts is used, it may happen that another font object is returned instead. Such an object has the same attributes and provides the same metrics and identical glyphs as the older font object.\r"
+                    attr: 1
+                  - text: This
+                    attr: 2
+                  - text: " is used to look up a font when specific font attributes are given.\r\rPre\rsize > 0\t20\r\rPost\rresult # NIL\rresult.typeface = typeface\rresult.size = size\rresult.style = style\rresult.weight = weight\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: Default
+                    attr: 3
+                  - text: " (): Font\rNEW, ABSTRACT\rReturns the current default font.\r"
+                    attr: 1
+                  - text: Default
+                    attr: 2
+                  - text: " is used when a font is needed and no specific font attributes are desired.\r\rPost\rresult # NIL\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: TypefaceList
+                    attr: 3
+                  - text: " (): TypefaceInfo\rNEW, ABSTRACT\rReturns information about the available typefaces. The result is a linear list of typeface names, in no particular order.\r\r\rVAR "
+                    attr: 1
+                  - text: dir
+                    attr: 3
+                  - text: "-, "
+                    attr: 1
+                  - text: stdDir
+                    attr: 3
+                  - text: "-: Directory\tdir # NIL  &  stdDir # NIL\rDirectories for the lookup of fonts.\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetDir
+                    attr: 3
+                  - text: " (d: Directory)\rAssigns directory.\r"
+                    attr: 1
+                  - text: SetDir
+                    attr: 2
+                  - text: " is used in configuration routines.\r\rPre\rd # NIL\t20\r\rPost\rstdDir' = NIL\r\tstdDir = d\rstdDir' # NIL\r\tstdDir = stdDir'\rdir = d\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 15
+          bodyPos: 14857
+          bodyLen: 8

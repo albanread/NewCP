@@ -1,0 +1,268 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Sql\\Mod\\ObxGen.odc"
+  size: 6572
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 6441
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 6255
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 6169
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 114300
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Helvetica
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 6286
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 5772
+                runListLen: 1793
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE SqlObxGen;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT Views, SqlDB, SqlObxDB, SqlObxNets, SqlObxViews;\r\r\tCONST\r\t\tprotocol = \"SqlOdbc\";\r\t\tid = \"\"; password = \"\";\r\t\tdatasource = \"Test Database\";\r\r\tTYPE\r\t\tNode = POINTER TO RECORD\r\t\t\tnext: Node;\r\t\t\tid: INTEGER\r\t\tEND;\r\r\tVAR\r\t\t"
+                    attr: 0
+                  - text: company
+                    attr: 3
+                  - text: "*: RECORD\r\t\t\tid*: INTEGER;\r\t\t\tname*: ARRAY 32 OF CHAR\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: ownership
+                    attr: 3
+                  - text: "*: RECORD\r\t\t\towner*, owned*: INTEGER;\r\t\t\tpercent*: INTEGER\r\t\tEND;\r\r\tVAR\r\t\tset, queue: Node;\r\t\tg: SqlObxNets.Net;\r\r\tPROCEDURE Marked (id: INTEGER): BOOLEAN;\r\t\tVAR h: Node;\r\tBEGIN\t"
+                    attr: 0
+                  - text: "(* test whether id is in set *)"
+                    attr: 1
+                  - text: "\r\t\th := set; WHILE (h # NIL) & (h.id # id) DO h := h.next END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " h # NIL\r\tEND Marked;\r\r\tPROCEDURE Mark (id: INTEGER);\r\t\tVAR h: Node;\r\tBEGIN\t"
+                    attr: 0
+                  - text: "(* include id in set (not idempotent) *)"
+                    attr: 1
+                  - text: "\r\t\tNEW(h); h.id := id; h.next := set; set := h\r\tEND Mark;\r\r\tPROCEDURE Enqueue (id: INTEGER);\r\t\tVAR h: Node;\r\tBEGIN\t"
+                    attr: 0
+                  - text: "(* insert id at end of queue (idempotent) *)"
+                    attr: 1
+                  - text: "\r\t\tIF queue = NIL THEN\r\t\t\tNEW(queue); h := queue\r\t\tELSE\r\t\t\th := queue; WHILE (h.next # NIL) & (h.id # id) DO h := h.next END;\r\t\t\tIF h.id # id THEN NEW(h.next); h := h.next END\r\t\tEND;\r\t\th.id := id\r\tEND Enqueue;\r\r\tPROCEDURE Dequeue (VAR id: INTEGER);\r\tBEGIN\t"
+                    attr: 0
+                  - text: "(* remove first queue element *)"
+                    attr: 1
+                  - text: "\r\t\tIF queue # NIL THEN\r\t\t\tid := queue.id; queue := queue.next\r\t\tELSE\r\t\t\tid := 0\r\t\tEND\r\tEND Dequeue;\r\r\tPROCEDURE ProcessCompany (t: SqlDB.Table; p: ANYPTR);\r\t\tVAR h: SqlObxNets.Net; cp: SqlObxNets.Company;\r\tBEGIN\t"
+                    attr: 0
+                  - text: "(* process all companies in set with id > 0 *)"
+                    attr: 1
+                  - text: "\r\t\tASSERT(t.rows = 1, 20);\r\t\tt.Read(0, company);\r\t\tSqlObxNets.AddCompany(g, company.id, company.name, \"\", 0);\r\t\tWHILE (set # NIL) & (set.id < 0) DO set := set.next END;\r\t\tIF set # NIL THEN\r\t\t\tSqlObxDB.searchId := set.id; ASSERT(set.id > 0, 100); set := set.next;\r\t\t\tt.Exec(\"SELECT id, name FROM Companies WHERE id = :SqlObxDB.searchId\");\r\t\t\tt.Call(ProcessCompany, NIL)\r\t\tELSE\r\t\t\tcp := SqlObxNets.ThisCompany(g, company.id); h := g; g := NIL; Views.OpenView(SqlObxViews.New(h, cp))\r\t\tEND\r\tEND ProcessCompany;\r\r\tPROCEDURE ^ConsumeCompany(t: SqlDB.Table; p: ANYPTR);\r\r\tPROCEDURE ProduceCompanies (t: SqlDB.Table; p: ANYPTR);\r\t\tVAR i: INTEGER;\r\tBEGIN\r\t\ti := 0;\r\t\tWHILE i < t.rows DO\r\t\t\tt.Read(i, ownership);\r\t\t\tSqlObxNets.AddOwnership(g, ownership.owner, ownership.owned, ownership.percent);\r\t\t\tEnqueue(ownership.owner); Enqueue(-ownership.owner);\r\t\t\tEnqueue(ownership.owned); Enqueue(-ownership.owned);\r\t\t\tINC(i)\r\t\tEND;\r\t\tt.Call(ConsumeCompany, NIL)\r\tEND ProduceCompanies;\r\r\tPROCEDURE ConsumeCompany (t: SqlDB.Table; p: ANYPTR);\r\t\tVAR id: INTEGER;\r\tBEGIN\r\t\tDequeue(id); WHILE (id # 0) & Marked(id) DO Dequeue(id) END;\r\t\tIF id # 0 THEN\t"
+                    attr: 0
+                  - text: "(* ~Marked(id) *)"
+                    attr: 1
+                  - text: "\r\t\t\tMark(id);\r\t\t\tIF id > 0 THEN\t"
+                    attr: 0
+                  - text: "(* select owner *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tSqlObxDB.searchId := id;\r\t\t\t\tt.Exec(\"SELECT * FROM Ownership WHERE owned = :SqlObxDB.searchId\");\r\t\t\tELSE\t"
+                    attr: 0
+                  - text: "(* select owned *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tSqlObxDB.searchId := -id;\r\t\t\t\tt.Exec(\"SELECT * FROM Ownership WHERE owner = :SqlObxDB.searchId\")\r\t\t\tEND;\r\t\t\tt.Call(ProduceCompanies, NIL)\r\t\tELSE\t"
+                    attr: 0
+                  - text: "(* queue is empty *)"
+                    attr: 1
+                  - text: "\r\t\t\tASSERT(queue = NIL, 100);\r\t\t\tWHILE (set # NIL) & (set.id < 0) DO set := set.next END; ASSERT(set # NIL, 101); ASSERT(set.id > 0, 102);\r\t\t\tSqlObxDB.searchId := set.id; set := set.next;\r\t\t\tt.Exec(\"SELECT id, name FROM Companies WHERE id = :SqlObxDB.searchId\");\r\t\t\tt.Call(ProcessCompany, NIL)\r\t\tEND\r\tEND ConsumeCompany;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: GenNet
+                    attr: 3
+                  - text: "*;\r\t\tVAR d: SqlDB.Database; res: INTEGER; t: SqlDB.Table;\r\tBEGIN\r\t\tASSERT(SqlObxDB.searchId > 0, 20);\r\t\tSqlDB.OpenDatabase(protocol, id, password, datasource, SqlDB.async, SqlDB.hideErrors, d, res);\r\t\tASSERT(d # NIL, 100);\r\t\tt := d.NewTable();\r\t\tset := NIL; queue := NIL; g := SqlObxNets.New();\r\t\tcompany.id := SqlObxDB.searchId;\r\t\tEnqueue(company.id); Enqueue(-company.id);\t"
+                    attr: 0
+                  - text: "(* produce first company *)"
+                    attr: 1
+                  - text: "\r\t\tt.Call(ConsumeCompany, NIL);\r\t\tt.Clear\r\tEND GenNet;\r\rEND SqlObxGen.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 6537
+          bodyLen: 8

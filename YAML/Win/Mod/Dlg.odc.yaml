@@ -1,0 +1,206 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Win\\Mod\\Dlg.odc"
+  size: 18877
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 18746
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 18560
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 18474
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 22
+                bodyPos: 18595
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 18081
+                runListLen: 1605
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                flow:
+                  - text: "MODULE WinDlg [\"COMDLG32.dll\"];\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT WinApi;\r\r\tCONST (* macros *)\r\t\tOFN_READONLY* = {0};\r\t\tOFN_OVERWRITEPROMPT* = {1};\r\t\tOFN_HIDEREADONLY* = {2};\r\t\tOFN_NOCHANGEDIR* = {3};\r\t\tOFN_SHOWHELP* = {4};\r\t\tOFN_ENABLEHOOK* = {5};\r\t\tOFN_ENABLETEMPLATE* = {6};\r\t\tOFN_ENABLETEMPLATEHANDLE* = {7};\r\t\tOFN_NOVALIDATE* = {8};\r\t\tOFN_ALLOWMULTISELECT* = {9};\r\t\tOFN_EXTENSIONDIFFERENT* = {10};\r\t\tOFN_PATHMUSTEXIST* = {11};\r\t\tOFN_FILEMUSTEXIST* = {12};\r\t\tOFN_CREATEPROMPT* = {13};\r\t\tOFN_SHAREAWARE* = {14};\r\t\tOFN_NOREADONLYRETURN* = {15};\r\t\tOFN_NOTESTFILECREATE* = {16};\r\t\tOFN_NONETWORKBUTTON* = {17};\r\t\tOFN_NOLONGNAMES* = {18};\r\t\tOFN_EXPLORER* = {19};\r\t\tOFN_NODEREFERENCELINKS* = {20};\r\t\tOFN_LONGNAMES* = {21};\r\t\tOFN_SHAREFALLTHROUGH* = 2;\r\t\tOFN_SHARENOWARN* = 1;\r\t\tOFN_SHAREWARN* = 0;\r\t\tCDN_INITDONE* = -601;\r\t\tCDN_SELCHANGE* = -602;\r\t\tCDN_FOLDERCHANGE* = -603;\r\t\tCDN_SHAREVIOLATION* = -604;\r\t\tCDN_HELP* = -605;\r\t\tCDN_FILEOK* = -606;\r\t\tCDN_TYPECHANGE* = -607;\r\t\tCDM_FIRST* = 1124;\r\t\tCDM_LAST* = 1224;\r\t\tCDM_GETSPEC* = 1124;\r\t\tCDM_GETFILEPATH* = 1125;\r\t\tCDM_GETFOLDERPATH* = 1126;\r\t\tCDM_GETFOLDERIDLIST* = 1127;\r\t\tCDM_SETCONTROLTEXT* = 1128;\r\t\tCDM_HIDECONTROL* = 1129;\r\t\tCDM_SETDEFEXT* = 1130;\r\t\tCC_RGBINIT* = {0};\r\t\tCC_FULLOPEN* = {1};\r\t\tCC_PREVENTFULLOPEN* = {2};\r\t\tCC_SHOWHELP* = {3};\r\t\tCC_ENABLEHOOK* = {4};\r\t\tCC_ENABLETEMPLATE* = {5};\r\t\tCC_ENABLETEMPLATEHANDLE* = {6};\r\t\tCC_SOLIDCOLOR* = {7};\r\t\tCC_ANYCOLOR* = {8};\r\t\tFR_DOWN* = {0};\r\t\tFR_WHOLEWORD* = {1};\r\t\tFR_MATCHCASE* = {2};\r\t\tFR_FINDNEXT* = {3};\r\t\tFR_REPLACE* = {4};\r\t\tFR_REPLACEALL* = {5};\r\t\tFR_DIALOGTERM* = {6};\r\t\tFR_SHOWHELP* = {7};\r\t\tFR_ENABLEHOOK* = {8};\r\t\tFR_ENABLETEMPLATE* = {9};\r\t\tFR_NOUPDOWN* = {10};\r\t\tFR_NOMATCHCASE* = {11};\r\t\tFR_NOWHOLEWORD* = {12};\r\t\tFR_ENABLETEMPLATEHANDLE* = {13};\r\t\tFR_HIDEUPDOWN* = {14};\r\t\tFR_HIDEMATCHCASE* = {15};\r\t\tFR_HIDEWHOLEWORD* = {16};\r\t\tCF_SCREENFONTS* = {0};\r\t\tCF_PRINTERFONTS* = {1};\r\t\tCF_BOTH* = {0, 1};\r\t\tCF_SHOWHELP* = {2};\r\t\tCF_ENABLEHOOK* = {3};\r\t\tCF_ENABLETEMPLATE* = {4};\r\t\tCF_ENABLETEMPLATEHANDLE* = {5};\r\t\tCF_INITTOLOGFONTSTRUCT* = {6};\r\t\tCF_USESTYLE* = {7};\r\t\tCF_EFFECTS* = {8};\r\t\tCF_APPLY* = {9};\r\t\tCF_ANSIONLY* = {10};\r\t\tCF_SCRIPTSONLY* = {10};\r\t\tCF_NOVECTORFONTS* = {11};\r\t\tCF_NOOEMFONTS* = {11};\r\t\tCF_NOSIMULATIONS* = {12};\r\t\tCF_LIMITSIZE* = {13};\r\t\tCF_FIXEDPITCHONLY* = {14};\r\t\tCF_WYSIWYG* = {15};\r\t\tCF_FORCEFONTEXIST* = {16};\r\t\tCF_SCALABLEONLY* = {17};\r\t\tCF_TTONLY* = {18};\r\t\tCF_NOFACESEL* = {19};\r\t\tCF_NOSTYLESEL* = {20};\r\t\tCF_NOSIZESEL* = {21};\r\t\tCF_SELECTSCRIPT* = {22};\r\t\tCF_NOSCRIPTSEL* = {23};\r\t\tCF_NOVERTFONTS* = {24};\r\t\tSIMULATED_FONTTYPE* = 32768;\r\t\tPRINTER_FONTTYPE* = 16384;\r\t\tSCREEN_FONTTYPE* = 8192;\r\t\tBOLD_FONTTYPE* = 256;\r\t\tITALIC_FONTTYPE* = 512;\r\t\tREGULAR_FONTTYPE* = 1024;\r\t\tWM_CHOOSEFONT_GETLOGFONT* = 1025;\r\t\tLBSELCHSTRINGA* = \"commdlg_LBSelChangedNotify\";\r\t\tSHAREVISTRINGA* = \"commdlg_ShareViolation\";\r\t\tFILEOKSTRINGA* = \"commdlg_FileNameOK\";\r\t\tCOLOROKSTRINGA* = \"commdlg_ColorOK\";\r\t\tSETRGBSTRINGA* = \"commdlg_SetRGBColor\";\r\t\tHELPMSGSTRINGA* = \"commdlg_help\";\r\t\tFINDMSGSTRINGA* = \"commdlg_FindReplace\";\r\t\tLBSELCHSTRINGW* = \"commdlg_LBSelChangedNotify\";\r\t\tSHAREVISTRINGW* = \"commdlg_ShareViolation\";\r\t\tFILEOKSTRINGW* = \"commdlg_FileNameOK\";\r\t\tCOLOROKSTRINGW* = \"commdlg_ColorOK\";\r\t\tSETRGBSTRINGW* = \"commdlg_SetRGBColor\";\r\t\tHELPMSGSTRINGW* = \"commdlg_help\";\r\t\tFINDMSGSTRINGW* = \"commdlg_FindReplace\";\r\t\tLBSELCHSTRING* = \"commdlg_LBSelChangedNotify\";\r\t\tSHAREVISTRING* = \"commdlg_ShareViolation\";\r\t\tFILEOKSTRING* = \"commdlg_FileNameOK\";\r\t\tCOLOROKSTRING* = \"commdlg_ColorOK\";\r\t\tSETRGBSTRING* = \"commdlg_SetRGBColor\";\r\t\tHELPMSGSTRING* = \"commdlg_help\";\r\t\tFINDMSGSTRING* = \"commdlg_FindReplace\";\r\t\tCD_LBSELNOITEMS* = -1;\r\t\tCD_LBSELCHANGE* = 0;\r\t\tCD_LBSELSUB* = 1;\r\t\tCD_LBSELADD* = 2;\r\t\tPD_ALLPAGES* = {};\r\t\tPD_SELECTION* = {0};\r\t\tPD_PAGENUMS* = {1};\r\t\tPD_NOSELECTION* = {2};\r\t\tPD_NOPAGENUMS* = {3};\r\t\tPD_COLLATE* = {4};\r\t\tPD_PRINTTOFILE* = {5};\r\t\tPD_PRINTSETUP* = {6};\r\t\tPD_NOWARNING* = {7};\r\t\tPD_RETURNDC* = {8};\r\t\tPD_RETURNIC* = {9};\r\t\tPD_RETURNDEFAULT* = {10};\r\t\tPD_SHOWHELP* = {11};\r\t\tPD_ENABLEPRINTHOOK* = {12};\r\t\tPD_ENABLESETUPHOOK* = {13};\r\t\tPD_ENABLEPRINTTEMPLATE* = {14};\r\t\tPD_ENABLESETUPTEMPLATE* = {15};\r\t\tPD_ENABLEPRINTTEMPLATEHANDLE* = {16};\r\t\tPD_ENABLESETUPTEMPLATEHANDLE* = {17};\r\t\tPD_USEDEVMODECOPIES* = {18};\r\t\tPD_USEDEVMODECOPIESANDCOLLATE* = {18};\r\t\tPD_DISABLEPRINTTOFILE* = {19};\r\t\tPD_HIDEPRINTTOFILE* = {20};\r\t\tPD_NONETWORKBUTTON* = {21};\r\t\tDN_DEFAULTPRN* = 1;\r\t\tWM_PSD_PAGESETUPDLG* = 1024;\r\t\tWM_PSD_FULLPAGERECT* = 1025;\r\t\tWM_PSD_MINMARGINRECT* = 1026;\r\t\tWM_PSD_MARGINRECT* = 1027;\r\t\tWM_PSD_GREEKTEXTRECT* = 1028;\r\t\tWM_PSD_ENVSTAMPRECT* = 1029;\r\t\tWM_PSD_YAFULLPAGERECT* = 1030;\r\t\tPSD_DEFAULTMINMARGINS* = {};\r\t\tPSD_INWININIINTLMEASURE* = {};\r\t\tPSD_MINMARGINS* = {0};\r\t\tPSD_MARGINS* = {1};\r\t\tPSD_INTHOUSANDTHSOFINCHES* = {2};\r\t\tPSD_INHUNDREDTHSOFMILLIMETERS* = {3};\r\t\tPSD_DISABLEMARGINS* = {4};\r\t\tPSD_DISABLEPRINTER* = {5};\r\t\tPSD_NOWARNING* = {7};\r\t\tPSD_DISABLEORIENTATION* = {8};\r\t\tPSD_RETURNDEFAULT* = {10};\r\t\tPSD_DISABLEPAPER* = {9};\r\t\tPSD_SHOWHELP* = {11};\r\t\tPSD_ENABLEPAGESETUPHOOK* = {13};\r\t\tPSD_ENABLEPAGESETUPTEMPLATE* = {15};\r\t\tPSD_ENABLEPAGESETUPTEMPLATEHANDLE* = {17};\r\t\tPSD_ENABLEPAGEPAINTHOOK* = {18};\r\t\tPSD_DISABLEPAGEPAINTING* = {19};\r\t\tPSD_NONETWORKBUTTON* = {21};\r\r\tCONST (* enumerations *)\r\r\tTYPE\r\t\tOFNHOOKPROC* = PROCEDURE (p0: WinApi.HWND; p1: INTEGER; p2: WinApi.WPARAM; p3: WinApi.LPARAM): INTEGER;\r\t\tOPENFILENAMEA* = RECORD [noalign]\r\t\t\tlStructSize*: INTEGER;\r\t\t\thwndOwner*: WinApi.HWND;\r\t\t\thInstance*: WinApi.HINSTANCE;\r\t\t\tlpstrFilter*: WinApi.PtrSTR;\r\t\t\tlpstrCustomFilter*: WinApi.PtrSTR;\r\t\t\tnMaxCustFilter*: INTEGER;\r\t\t\tnFilterIndex*: INTEGER;\r\t\t\tlpstrFile*: WinApi.PtrSTR;\r\t\t\tnMaxFile*: INTEGER;\r\t\t\tlpstrFileTitle*: WinApi.PtrSTR;\r\t\t\tnMaxFileTitle*: INTEGER;\r\t\t\tlpstrInitialDir*: WinApi.PtrSTR;\r\t\t\tlpstrTitle*: WinApi.PtrSTR;\r\t\t\tFlags*: SET;\r\t\t\tnFileOffset*: SHORTINT;\r\t\t\tnFileExtension*: SHORTINT;\r\t\t\tlpstrDefExt*: WinApi.PtrSTR;\r\t\t\tlCustData*: WinApi.LPARAM;\r\t\t\tlpfnHook*: OFNHOOKPROC;\r\t\t\tlpTemplateName*: WinApi.PtrSTR;\r\t\tEND;\r\t\tPtrOPENFILENAMEA* = POINTER TO OPENFILENAMEA;\r\t\tOPENFILENAMEW* = RECORD [noalign]\r\t\t\tlStructSize*: INTEGER;\r\t\t\thwndOwner*: WinApi.HWND;\r\t\t\thInstance*: WinApi.HINSTANCE;\r\t\t\tlpstrFilter*: WinApi.PtrWSTR;\r\t\t\tlpstrCustomFilter*: WinApi.PtrWSTR;\r\t\t\tnMaxCustFilter*: INTEGER;\r\t\t\tnFilterIndex*: INTEGER;\r\t\t\tlpstrFile*: WinApi.PtrWSTR;\r\t\t\tnMaxFile*: INTEGER;\r\t\t\tlpstrFileTitle*: WinApi.PtrWSTR;\r\t\t\tnMaxFileTitle*: INTEGER;\r\t\t\tlpstrInitialDir*: WinApi.PtrWSTR;\r\t\t\tlpstrTitle*: WinApi.PtrWSTR;\r\t\t\tFlags*: SET;\r\t\t\tnFileOffset*: SHORTINT;\r\t\t\tnFileExtension*: SHORTINT;\r\t\t\tlpstrDefExt*: WinApi.PtrWSTR;\r\t\t\tlCustData*: WinApi.LPARAM;\r\t\t\tlpfnHook*: OFNHOOKPROC;\r\t\t\tlpTemplateName*: WinApi.PtrWSTR;\r\t\tEND;\r\t\tPtrOPENFILENAMEW* = POINTER TO OPENFILENAMEW;\r\t\tOPENFILENAME* = OPENFILENAMEA;\r\t\tPtrOPENFILENAME* = PtrOPENFILENAMEA;\r\t\tCCHOOKPROC* = PROCEDURE (p0: WinApi.HWND; p1: INTEGER; p2: WinApi.WPARAM; p3: WinApi.LPARAM): INTEGER;\r\t\tOFNOTIFYA* = RECORD [noalign]\r\t\t\thdr*: WinApi.NMHDR;\r\t\t\tlpOFN*: PtrOPENFILENAMEA;\r\t\t\tpszFile*: WinApi.PtrSTR;\r\t\tEND;\r\t\tPtrOFNOTIFYA* = POINTER TO OFNOTIFYA;\r\t\tOFNOTIFYW* = RECORD [noalign]\r\t\t\thdr*: WinApi.NMHDR;\r\t\t\tlpOFN*: PtrOPENFILENAMEW;\r\t\t\tpszFile*: WinApi.PtrWSTR;\r\t\tEND;\r\t\tPtrOFNOTIFYW* = POINTER TO OFNOTIFYW;\r\t\tOFNOTIFY* = OFNOTIFYA;\r\t\tPtrOFNOTIFY* = PtrOFNOTIFYA;\r\t\tCHOOSECOLORA* = RECORD [noalign]\r\t\t\tlStructSize*: INTEGER;\r\t\t\thwndOwner*: WinApi.HWND;\r\t\t\thInstance*: WinApi.HWND;\r\t\t\trgbResult*: WinApi.COLORREF;\r\t\t\tlpCustColors*: POINTER TO (*?*) ARRAY [untagged] OF WinApi.COLORREF;\r\t\t\tFlags*: SET;\r\t\t\tlCustData*: WinApi.LPARAM;\r\t\t\tlpfnHook*: CCHOOKPROC;\r\t\t\tlpTemplateName*: WinApi.PtrSTR;\r\t\tEND;\r\t\tPtrCHOOSECOLORA* = POINTER TO CHOOSECOLORA;\r\t\tCHOOSECOLORW* = RECORD [noalign]\r\t\t\tlStructSize*: INTEGER;\r\t\t\thwndOwner*: WinApi.HWND;\r\t\t\thInstance*: WinApi.HWND;\r\t\t\trgbResult*: WinApi.COLORREF;\r\t\t\tlpCustColors*: POINTER TO (*?*) ARRAY [untagged] OF WinApi.COLORREF;\r\t\t\tFlags*: SET;\r\t\t\tlCustData*: WinApi.LPARAM;\r\t\t\tlpfnHook*: CCHOOKPROC;\r\t\t\tlpTemplateName*: WinApi.PtrWSTR;\r\t\tEND;\r\t\tPtrCHOOSECOLORW* = POINTER TO CHOOSECOLORW;\r\t\tCHOOSECOLOR* = CHOOSECOLORA;\r\t\tPtrCHOOSECOLOR* = PtrCHOOSECOLORA;\r\t\tFRHOOKPROC* = PROCEDURE (p0: WinApi.HWND; p1: INTEGER; p2: WinApi.WPARAM; p3: WinApi.LPARAM): INTEGER;\r\t\tFINDREPLACEA* = RECORD [noalign]\r\t\t\tlStructSize*: INTEGER;\r\t\t\thwndOwner*: WinApi.HWND;\r\t\t\thInstance*: WinApi.HINSTANCE;\r\t\t\tFlags*: SET;\r\t\t\tlpstrFindWhat*: WinApi.PtrSTR;\r\t\t\tlpstrReplaceWith*: WinApi.PtrSTR;\r\t\t\twFindWhatLen*: SHORTINT;\r\t\t\twReplaceWithLen*: SHORTINT;\r\t\t\tlCustData*: WinApi.LPARAM;\r\t\t\tlpfnHook*: FRHOOKPROC;\r\t\t\tlpTemplateName*: WinApi.PtrSTR;\r\t\tEND;\r\t\tPtrFINDREPLACEA* = POINTER TO FINDREPLACEA;\r\t\tFINDREPLACEW* = RECORD [noalign]\r\t\t\tlStructSize*: INTEGER;\r\t\t\thwndOwner*: WinApi.HWND;\r\t\t\thInstance*: WinApi.HINSTANCE;\r\t\t\tFlags*: SET;\r\t\t\tlpstrFindWhat*: WinApi.PtrWSTR;\r\t\t\tlpstrReplaceWith*: WinApi.PtrWSTR;\r\t\t\twFindWhatLen*: SHORTINT;\r\t\t\twReplaceWithLen*: SHORTINT;\r\t\t\tlCustData*: WinApi.LPARAM;\r\t\t\tlpfnHook*: FRHOOKPROC;\r\t\t\tlpTemplateName*: WinApi.PtrWSTR;\r\t\tEND;\r\t\tPtrFINDREPLACEW* = POINTER TO FINDREPLACEW;\r\t\tFINDREPLACE* = FINDREPLACEA;\r\t\tPtrFINDREPLACE* = PtrFINDREPLACEA;\r\t\tCFHOOKPROC* = PROCEDURE (p0: WinApi.HWND; p1: INTEGER; p2: WinApi.WPARAM; p3: WinApi.LPARAM): INTEGER;\r\t\tCHOOSEFONTA* = RECORD [noalign]\r\t\t\tlStructSize*: INTEGER;\r\t\t\thwndOwner*: WinApi.HWND;\r\t\t\thDC*: WinApi.HDC;\r\t\t\tlpLogFont*: WinApi.PtrLOGFONTA;\r\t\t\tiPointSize*: INTEGER;\r\t\t\tFlags*: SET;\r\t\t\trgbColors*: WinApi.COLORREF;\r\t\t\tlCustData*: WinApi.LPARAM;\r\t\t\tlpfnHook*: CFHOOKPROC;\r\t\t\tlpTemplateName*: WinApi.PtrSTR;\r\t\t\thInstance*: WinApi.HINSTANCE;\r\t\t\tlpszStyle*: WinApi.PtrSTR;\r\t\t\tnFontType*: SHORTINT;\r\t\t\t___MISSING_ALIGNMENT__*: SHORTINT;\r\t\t\tnSizeMin*: INTEGER;\r\t\t\tnSizeMax*: INTEGER;\r\t\tEND;\r\t\tPtrCHOOSEFONTA* = POINTER TO CHOOSEFONTA;\r\t\tCHOOSEFONTW* = RECORD [noalign]\r\t\t\tlStructSize*: INTEGER;\r\t\t\thwndOwner*: WinApi.HWND;\r\t\t\thDC*: WinApi.HDC;\r\t\t\tlpLogFont*: WinApi.PtrLOGFONTW;\r\t\t\tiPointSize*: INTEGER;\r\t\t\tFlags*: SET;\r\t\t\trgbColors*: WinApi.COLORREF;\r\t\t\tlCustData*: WinApi.LPARAM;\r\t\t\tlpfnHook*: CFHOOKPROC;\r\t\t\tlpTemplateName*: WinApi.PtrWSTR;\r\t\t\thInstance*: WinApi.HINSTANCE;\r\t\t\tlpszStyle*: WinApi.PtrWSTR;\r\t\t\tnFontType*: SHORTINT;\r\t\t\t___MISSING_ALIGNMENT__*: SHORTINT;\r\t\t\tnSizeMin*: INTEGER;\r\t\t\tnSizeMax*: INTEGER;\r\t\tEND;\r\t\tPtrCHOOSEFONTW* = POINTER TO CHOOSEFONTW;\r\t\tCHOOSEFONT* = CHOOSEFONTA;\r\t\tPtrCHOOSEFONT* = PtrCHOOSEFONTA;\r\t\tPRINTHOOKPROC* = PROCEDURE (p0: WinApi.HWND; p1: INTEGER; p2: WinApi.WPARAM; p3: WinApi.LPARAM): INTEGER;\r\t\tSETUPHOOKPROC* = PROCEDURE (p0: WinApi.HWND; p1: INTEGER; p2: WinApi.WPARAM; p3: WinApi.LPARAM): INTEGER;\r\t\tPRINTDLGA* = RECORD [noalign]\r\t\t\tlStructSize*: INTEGER;\r\t\t\thwndOwner*: WinApi.HWND;\r\t\t\thDevMode*: WinApi.HGLOBAL;\r\t\t\thDevNames*: WinApi.HGLOBAL;\r\t\t\thDC*: WinApi.HDC;\r\t\t\tFlags*: SET;\r\t\t\tnFromPage*: SHORTINT;\r\t\t\tnToPage*: SHORTINT;\r\t\t\tnMinPage*: SHORTINT;\r\t\t\tnMaxPage*: SHORTINT;\r\t\t\tnCopies*: SHORTINT;\r\t\t\thInstance*: WinApi.HINSTANCE;\r\t\t\tlCustData*: WinApi.LPARAM;\r\t\t\tlpfnPrintHook*: PRINTHOOKPROC;\r\t\t\tlpfnSetupHook*: SETUPHOOKPROC;\r\t\t\tlpPrintTemplateName*: WinApi.PtrSTR;\r\t\t\tlpSetupTemplateName*: WinApi.PtrSTR;\r\t\t\thPrintTemplate*: WinApi.HGLOBAL;\r\t\t\thSetupTemplate*: WinApi.HGLOBAL;\r\t\tEND;\r\t\tPtrPRINTDLGA* = POINTER TO PRINTDLGA;\r\t\tPRINTDLGW* = RECORD [noalign]\r\t\t\tlStructSize*: INTEGER;\r\t\t\thwndOwner*: WinApi.HWND;\r\t\t\thDevMode*: WinApi.HGLOBAL;\r\t\t\thDevNames*: WinApi.HGLOBAL;\r\t\t\thDC*: WinApi.HDC;\r\t\t\tFlags*: SET;\r\t\t\tnFromPage*: SHORTINT;\r\t\t\tnToPage*: SHORTINT;\r\t\t\tnMinPage*: SHORTINT;\r\t\t\tnMaxPage*: SHORTINT;\r\t\t\tnCopies*: SHORTINT;\r\t\t\thInstance*: WinApi.HINSTANCE;\r\t\t\tlCustData*: WinApi.LPARAM;\r\t\t\tlpfnPrintHook*: PRINTHOOKPROC;\r\t\t\tlpfnSetupHook*: SETUPHOOKPROC;\r\t\t\tlpPrintTemplateName*: WinApi.PtrWSTR;\r\t\t\tlpSetupTemplateName*: WinApi.PtrWSTR;\r\t\t\thPrintTemplate*: WinApi.HGLOBAL;\r\t\t\thSetupTemplate*: WinApi.HGLOBAL;\r\t\tEND;\r\t\tPtrPRINTDLGW* = POINTER TO PRINTDLGW;\r\t\tPRINTDLG* = PRINTDLGA;\r\t\tPtrPRINTDLG* = PtrPRINTDLGA;\r\t\tDEVNAMES* = RECORD [noalign]\r\t\t\twDriverOffset*: SHORTINT;\r\t\t\twDeviceOffset*: SHORTINT;\r\t\t\twOutputOffset*: SHORTINT;\r\t\t\twDefault*: SHORTINT;\r\t\tEND;\r\t\tPtrDEVNAMES* = POINTER TO DEVNAMES;\r\t\tPAGEPAINTHOOK* = PROCEDURE (p0: WinApi.HWND; p1: INTEGER; p2: WinApi.WPARAM; p3: WinApi.LPARAM): INTEGER;\r\t\tPAGESETUPHOOK* = PROCEDURE (p0: WinApi.HWND; p1: INTEGER; p2: WinApi.WPARAM; p3: WinApi.LPARAM): INTEGER;\r\t\tPAGESETUPDLGA* = RECORD [noalign]\r\t\t\tlStructSize*: INTEGER;\r\t\t\thwndOwner*: WinApi.HWND;\r\t\t\thDevMode*: WinApi.HGLOBAL;\r\t\t\thDevNames*: WinApi.HGLOBAL;\r\t\t\tFlags*: SET;\r\t\t\tptPaperSize*: WinApi.POINT;\r\t\t\trtMinMargin*: WinApi.RECT;\r\t\t\trtMargin*: WinApi.RECT;\r\t\t\thInstance*: WinApi.HINSTANCE;\r\t\t\tlCustData*: WinApi.LPARAM;\r\t\t\tlpfnPageSetupHook*: PAGESETUPHOOK;\r\t\t\tlpfnPagePaintHook*: PAGEPAINTHOOK;\r\t\t\tlpPageSetupTemplateName*: WinApi.PtrSTR;\r\t\t\thPageSetupTemplate*: WinApi.HGLOBAL;\r\t\tEND;\r\t\tPtrPAGESETUPDLGA* = POINTER TO PAGESETUPDLGA;\r\t\tPAGESETUPDLGW* = RECORD [noalign]\r\t\t\tlStructSize*: INTEGER;\r\t\t\thwndOwner*: WinApi.HWND;\r\t\t\thDevMode*: WinApi.HGLOBAL;\r\t\t\thDevNames*: WinApi.HGLOBAL;\r\t\t\tFlags*: SET;\r\t\t\tptPaperSize*: WinApi.POINT;\r\t\t\trtMinMargin*: WinApi.RECT;\r\t\t\trtMargin*: WinApi.RECT;\r\t\t\thInstance*: WinApi.HINSTANCE;\r\t\t\tlCustData*: WinApi.LPARAM;\r\t\t\tlpfnPageSetupHook*: PAGESETUPHOOK;\r\t\t\tlpfnPagePaintHook*: PAGEPAINTHOOK;\r\t\t\tlpPageSetupTemplateName*: WinApi.PtrWSTR;\r\t\t\thPageSetupTemplate*: WinApi.HGLOBAL;\r\t\tEND;\r\t\tPtrPAGESETUPDLGW* = POINTER TO PAGESETUPDLGW;\r\t\tPAGESETUPDLG* = PAGESETUPDLGA;\r\t\tPtrPAGESETUPDLG* = PtrPAGESETUPDLGA;\r\r\tPROCEDURE GetOpenFileNameA* (VAR [nil] p0: OPENFILENAMEA): WinApi.BOOL;\r\t(*END GetOpenFileNameA;*)\r\r\tPROCEDURE GetOpenFileNameW* (VAR [nil] p0: OPENFILENAMEW): WinApi.BOOL;\r\t(*END GetOpenFileNameW;*)\r\r\tPROCEDURE GetOpenFileName* [\"GetOpenFileNameA\"] (VAR [nil] p0: OPENFILENAMEA): WinApi.BOOL;\r\t(*END GetOpenFileName;*)\r\r\tPROCEDURE GetSaveFileNameA* (VAR [nil] p0: OPENFILENAMEA): WinApi.BOOL;\r\t(*END GetSaveFileNameA;*)\r\r\tPROCEDURE GetSaveFileNameW* (VAR [nil] p0: OPENFILENAMEW): WinApi.BOOL;\r\t(*END GetSaveFileNameW;*)\r\r\tPROCEDURE GetSaveFileName* [\"GetSaveFileNameA\"] (VAR [nil] p0: OPENFILENAMEA): WinApi.BOOL;\r\t(*END GetSaveFileName;*)\r\r\tPROCEDURE GetFileTitleA* (p0: WinApi.PtrSTR; p1: WinApi.PtrSTR; p2: SHORTINT): SHORTINT;\r\t(*END GetFileTitleA;*)\r\r\tPROCEDURE GetFileTitleW* (p0: WinApi.PtrWSTR; p1: WinApi.PtrWSTR; p2: SHORTINT): SHORTINT;\r\t(*END GetFileTitleW;*)\r\r\tPROCEDURE GetFileTitle* [\"GetFileTitleA\"] (p0: WinApi.PtrSTR; p1: WinApi.PtrSTR; p2: SHORTINT): SHORTINT;\r\t(*END GetFileTitle;*)\r\r\tPROCEDURE ChooseColorA* (VAR [nil] p0: CHOOSECOLORA): WinApi.BOOL;\r\t(*END ChooseColorA;*)\r\r\tPROCEDURE ChooseColorW* (VAR [nil] p0: CHOOSECOLORW): WinApi.BOOL;\r\t(*END ChooseColorW;*)\r\r\tPROCEDURE ChooseColor* [\"ChooseColorA\"] (VAR [nil] p0: CHOOSECOLORA): WinApi.BOOL;\r\t(*END ChooseColor;*)\r\r\tPROCEDURE FindTextA* (VAR [nil] p0: FINDREPLACEA): WinApi.HWND;\r\t(*END FindTextA;*)\r\r\tPROCEDURE FindTextW* (VAR [nil] p0: FINDREPLACEW): WinApi.HWND;\r\t(*END FindTextW;*)\r\r\tPROCEDURE FindText* [\"FindTextA\"] (VAR [nil] p0: FINDREPLACEA): WinApi.HWND;\r\t(*END FindText;*)\r\r\tPROCEDURE ReplaceTextA* (VAR [nil] p0: FINDREPLACEA): WinApi.HWND;\r\t(*END ReplaceTextA;*)\r\r\tPROCEDURE ReplaceTextW* (VAR [nil] p0: FINDREPLACEW): WinApi.HWND;\r\t(*END ReplaceTextW;*)\r\r\tPROCEDURE ReplaceText* [\"ReplaceTextA\"] (VAR [nil] p0: FINDREPLACEA): WinApi.HWND;\r\t(*END ReplaceText;*)\r\r\tPROCEDURE ChooseFontA* (VAR [nil] p0: CHOOSEFONTA): WinApi.BOOL;\r\t(*END ChooseFontA;*)\r\r\tPROCEDURE ChooseFontW* (VAR [nil] p0: CHOOSEFONTW): WinApi.BOOL;\r\t(*END ChooseFontW;*)\r\r\tPROCEDURE ChooseFont* [\"ChooseFontA\"] (VAR [nil] p0: CHOOSEFONTA): WinApi.BOOL;\r\t(*END ChooseFont;*)\r\r\tPROCEDURE PrintDlgA* (VAR [nil] p0: PRINTDLGA): WinApi.BOOL;\r\t(*END PrintDlgA;*)\r\r\tPROCEDURE PrintDlgW* (VAR [nil] p0: PRINTDLGW): WinApi.BOOL;\r\t(*END PrintDlgW;*)\r\r\tPROCEDURE PrintDlg* [\"PrintDlgA\"] (VAR [nil] p0: PRINTDLGA): WinApi.BOOL;\r\t(*END PrintDlg;*)\r\r\tPROCEDURE CommDlgExtendedError* (): INTEGER;\r\t(*END CommDlgExtendedError;*)\r\r\tPROCEDURE PageSetupDlgA* (VAR [nil] p0: PAGESETUPDLGA): WinApi.BOOL;\r\t(*END PageSetupDlgA;*)\r\r\tPROCEDURE PageSetupDlgW* (VAR [nil] p0: PAGESETUPDLGW): WinApi.BOOL;\r\t(*END PageSetupDlgW;*)\r\r\tPROCEDURE PageSetupDlg* [\"PageSetupDlgA\"] (VAR [nil] p0: PAGESETUPDLGA): WinApi.BOOL;\r\t(*END PageSetupDlg;*)\r\rEND WinDlg.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 26
+          bodyPos: 18842
+          bodyLen: 8

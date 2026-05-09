@@ -1,0 +1,256 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Docu\\Ascii.odc"
+  size: 6206
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 6075
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 5889
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 5803
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 152400
+                dsc: 25400
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 9
+                bodyPos: 5803
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 5289
+                runListLen: 751
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                flow:
+                  - text: "Overview by Example: ObxAscii"
+                    attr: 0
+                  - text: "\r\r"
+                    attr: 1
+                  - text: "Many times the input data to a program is given as an ASCII text file, or a given program specification dictates that the output format be plain ASCII text. This example shows how to process ASCII text files with the BlackBox Component Builder and presents a sketch of a module that provides a simple interface to handle ASCII text files.\r\rThe BlackBox Component Builder departs from the traditional I/O model found in other libraries. Module "
+                    attr: 2
+                  - text: Files
+                    attr: 3
+                  - text: " provides classes that abstract files, file directories, and access paths to open files, rather than cramming everything into one abstraction. So-called readers and writers represent positions in an open file. Several readers and writers may be operating on the same file simultaneously. The file itself represents the data carrier proper and may contain arbitrary data.\r\rTextual information is handled by the text subsystem. Similar to the file abstraction, module "
+                    attr: 2
+                  - text: TextModels
+                    attr: 3
+                  - text: " provides a data carrier class  the text proper  and classes for reading characters from, and inserting characters into a text. Module "
+                    attr: 2
+                  - text: TextMappers
+                    attr: 3
+                  - text: " provides formatting routines to write values of the basic types of the Component Pascal language to texts. It also provides a scanner class that reads texts and converts the characters into integers, reals, strings, etc.\r\rTexts may be stored in different formats on files. An ASCII text is just a special case of a text that contains no style information. So-called converters are used to handle different file formats. A converter translates the byte stream in a file into a text object in memory, and vice-versa.\r\rThe file and text abstractions are simpler, yet more flexible and powerful than the traditional I/O model. As with everything, this flexibility has its price. The simple, linear processing of a (text-)file requires some more programming to initialize the converter, text and formatter objects before a text file can be read.\r\rThis example demonstrates how to process ASCII text files with BlackBox. Module "
+                    attr: 2
+                  - text: ObxAscii
+                    attr: 3
+                  - text: " implements a simple, traditional interface for formatted textual input and output. It is by no means complete. "
+                    attr: 2
+                  - text: ObxAscii
+                    attr: 3
+                  - text: " may however serve as a model for implementing a more complete interface.\r\rThe implementation of data type "
+                    attr: 2
+                  - text: Text
+                    attr: 3
+                  - text: " is hidden. This renders possible a different implementation than the one presented below, e.g. using a traditional I/O library.\r\rThe field "
+                    attr: 2
+                  - text: done
+                    attr: 3
+                  - text: " of type "
+                    attr: 2
+                  - text: Text
+                    attr: 3
+                  - text: " indicates the success of the last operation. Procedure "
+                    attr: 2
+                  - text: Open
+                    attr: 3
+                  - text: " opens an existing file for reading. Procedure "
+                    attr: 2
+                  - text: NewText
+                    attr: 3
+                  - text: " creates a new, empty text for writing. Mixed reading and writing on the same text is not very common and is therefore not supported in this simple model. For new texts to become permanent, procedure "
+                    attr: 2
+                  - text: Register
+                    attr: 3
+                  - text: " must be used to enter the file in the directory. Finally, a set of "
+                    attr: 2
+                  - text: Write
+                    attr: 3
+                  - text: " procedures produce formatted output and the corresponding "
+                    attr: 2
+                  - text: Read
+                    attr: 3
+                  - text: " procedures read formatted data from texts.\r\rA scanner and a formatter are associated with each text. In order to read ASCII text files and convert them to text objects, the converter for importing text files is needed. The initialization code in the module body finds the appropriate converter in the list of registered file converters and keeps a reference to it in the global variable "
+                    attr: 2
+                  - text: conv
+                    attr: 3
+                  - text: ".\r\rA locator and a string is used to specify a directory and a file name when calling "
+                    attr: 2
+                  - text: Open
+                    attr: 3
+                  - text: " or "
+                    attr: 2
+                  - text: Register
+                    attr: 3
+                  - text: ". If the locator is "
+                    attr: 2
+                  - text: NIL
+                    attr: 3
+                  - text: ", the string given in parameter "
+                    attr: 2
+                  - text: name
+                    attr: 3
+                  - text: " is interpreted as a path name. (We use the well-established cross-platform URL-syntax for path names, i.e., directory names are separated by / characters.) The procedure "
+                    attr: 2
+                  - text: PathToFileSpec
+                    attr: 3
+                  - text: " produces a locator and file name from a path name.\r\rProcedure "
+                    attr: 2
+                  - text: Open
+                    attr: 3
+                  - text: " uses "
+                    attr: 2
+                  - text: Converters.Import
+                    attr: 3
+                  - text: " with the ASCII text file converter stored in the global variable "
+                    attr: 2
+                  - text: conv
+                    attr: 3
+                  - text: " to initialize a text object with the contents of the file. The scanner is initialized and set to the beginning of the text. Procedure "
+                    attr: 2
+                  - text: NewText
+                    attr: 3
+                  - text: " just creates a new, empty text and initializes the formatter. Procedure "
+                    attr: 2
+                  - text: Register
+                    attr: 3
+                  - text: " uses "
+                    attr: 2
+                  - text: Converters.Export
+                    attr: 3
+                  - text: " with the ASCII text file converter to externalize a text to a file.\r\rThe "
+                    attr: 2
+                  - text: Read
+                    attr: 3
+                  - text: " procedures first check whether the text has been opened for reading and then use the scanner to read the next token from the text. If the token read by the scanner matches the desired type, the field "
+                    attr: 2
+                  - text: done
+                    attr: 3
+                  - text: " is set to "
+                    attr: 2
+                  - text: "TRUE"
+                    attr: 3
+                  - text: " to indicate success. The "
+                    attr: 2
+                  - text: Write
+                    attr: 3
+                  - text: " procedures first check whether the text has been opened for writing, i.e., created with "
+                    attr: 2
+                  - text: NewText
+                    attr: 3
+                  - text: ", and then use the formatter to write values to the text.\r\r"
+                    attr: 2
+                  - link:
+                      target: "StdCmds.OpenDoc('Obx/Mod/Ascii')"
+                      body:
+                        - text: ObxAscii  sources
+                          attr: 4
+                      attr: 2
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 2
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 13
+          bodyPos: 6171
+          bodyLen: 8

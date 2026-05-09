@@ -1,0 +1,1009 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\System\\Docu\\Files.odc"
+  size: 31313
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 31182
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 30996
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 30910
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                asc: 134600
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000003
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 18
+                bodyPos: 31031
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 30517
+                runListLen: 4498
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: Files
+                    attr: 0
+                  - text: "\r\rDEFINITION Files;\r\r\tCONST\r\t\texclusive = FALSE; shared = TRUE;\r\t\tdontAsk = FALSE; ask = TRUE;\r\t\treadOnly = 0; hidden = 1; system = 2; archive = 3; stationery = 4;\r\r\tTYPE\r\t\tName = ARRAY 256 OF CHAR;\r\t\tType = ARRAY 16 OF CHAR;\r\r\t\tFileInfo = POINTER TO RECORD\r\t\t\tnext: FileInfo;\r\t\t\tname: Name;\r\t\t\tlength: INTEGER;\r\t\t\ttype: Type\r\t\t\tmodified: RECORD\r\t\t\t\tyear, month, day, hour, minute, second: INTEGER\r\t\t\tEND;\r\t\t\tattr: SET\r\t\tEND;\r\r\t\tLocInfo = POINTER TO RECORD\r\t\t\tnext: LocInfo;\r\t\t\tname: Name;\r\t\t\tattr: SET\r\t\tEND;\r\r\t\tLocator = POINTER TO ABSTRACT RECORD\r\t\t\tres: INTEGER;\r\t\t\t(l: Locator) This (IN path: ARRAY OF CHAR): Locator, NEW, ABSTRACT\r\t\tEND;\r\r\t\tFile = POINTER TO ABSTRACT RECORD\r\t\t\ttype-: Type;\r\t\t\t(f: File) Length (): INTEGER, NEW, ABSTRACT;\r\t\t\t(f: File) NewReader (old: Reader): Reader, NEW, ABSTRACT;\r\t\t\t(f: File) NewWriter (old: Writer): Writer, NEW, ABSTRACT;\r\t\t\t(f: File) Flush, NEW, ABSTRACT;\r\t\t\t(f: File) Register (name: Name; type: Type; ask: BOOLEAN; OUT res: INTEGER), NEW, ABSTRACT;\r\t\t\t(f: File) Close, NEW, ABSTRACT;\r\t\t\t(f: File) Closed(): BOOLEAN, NEW, ABSTRACT;\r\t\t\t(f: File) Shared(): BOOLEAN, NEW, ABSTRACT;\r\t\t\t(f: File) InitType (type: Type), NEW\r\t\tEND;\r\r\t\tReader = POINTER TO ABSTRACT RECORD\r\t\t\teof: BOOLEAN;\r\t\t\t(r: Reader) Base (): File, NEW, ABSTRACT;\r\t\t\t(r: Reader) Pos (): INTEGER, NEW, ABSTRACT;\r\t\t\t(r: Reader) SetPos (pos: INTEGER), NEW, ABSTRACT;\r\t\t\t(r: Reader) ReadByte (OUT x: BYTE), NEW, ABSTRACT;\r\t\t\t(r: Reader) ReadBytes (VAR x: ARRAY OF BYTE; beg, len: INTEGER), NEW, ABSTRACT\r\t\tEND;\r\r\t\tWriter = POINTER TO ABSTRACT RECORD\r\t\t\t(w: Writer) Base (): File, NEW, ABSTRACT;\r\t\t\t(w: Writer) Pos (): INTEGER, NEW, ABSTRACT;\r\t\t\t(w: Writer) SetPos (pos: INTEGER), NEW, ABSTRACT;\r\t\t\t(w: Writer) WriteByte (x: BYTE), NEW, ABSTRACT;\r\t\t\t(w: Writer) WriteBytes (IN x: ARRAY OF BYTE; beg, len: INTEGER), NEW, ABSTRACT\r\t\tEND;\r\r\t\tDirectory = POINTER TO ABSTRACT RECORD\r\t\t\t(d: Directory) This (IN path: ARRAY OF CHAR): Locator, NEW, ABSTRACT;\r\t\t\t(d: Directory) Temp (): File, NEW, ABSTRACT;\r\t\t\t(d: Directory) New (loc: Locator; ask: BOOLEAN): File, NEW, ABSTRACT;\r\t\t\t(d: Directory) Old (loc: Locator; name: Name; shared: BOOLEAN): File, NEW, ABSTRACT;\r\t\t\t(d: Directory) Delete (loc: Locator; name: Name), NEW, ABSTRACT;\r\t\t\t(d: Directory) Rename (loc: Locator; old, new: Name; ask: BOOLEAN), NEW, ABSTRACT;\r\t\t\t(d: Directory) SameFile (loc0: Locator; name0: Name;\r\t\t\t\t\t\t\t\t\t\t\t\tloc1: Locator; name1: Name): BOOLEAN, NEW, ABSTRACT;\r\t\t\t(d: Directory) FileList (loc: Locator): FileInfo, NEW, ABSTRACT;\r\t\t\t(d: Directory) LocList (loc: Locator): LocInfo, NEW, ABSTRACT;\r\t\t\t(d: Directory) GetFileName (name: Name; type: Type; OUT filename: Name), NEW, ABSTRACT\r\t\tEND;\r\r\tVAR\r\t\tdir-, stdDir-: Directory;\r\t\tdocType-, objType-, symType-: Type;\r\r\tPROCEDURE SetDir (d: Directory);\r\rEND Files.\r\r\r"
+                    attr: 1
+                  - text: "Most programmers never need to deal with files directly, instead they can use readers and writers (of module -> Stores) which are set up already by BlackBox!"
+                    attr: 2
+                  - text: "\r\rModule "
+                    attr: 1
+                  - text: Files
+                    attr: 2
+                  - text: " provides the abstractions necessary to handle most aspects of a hierarchical file system. A "
+                    attr: 1
+                  - text: file
+                    attr: 2
+                  - text: " is a sequence of bytes. Several access paths can be open simultaneously on the same file, possibly at different positions.\r\rA file and its access paths are modeled as separate data structures, namely as "
+                    attr: 1
+                  - text: File
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: Reader/Writer
+                    attr: 2
+                  - text: ". Where a statement applies both to readers and writers, the term \"rider\" will be used. An open rider is never closed explicitly, and an application can create as many riders as it needs.\r\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 5
+                      bodyPos: 690
+                      bodyLen: 1299
+                    attr: 1
+                    w: 3162300
+                    h: 723900
+                  - text: "\r\r"
+                    attr: 1
+                  - text: "Figure 1: File with three riders"
+                    attr: 2
+                  - text: "\r\r\rEach file resides at some location in the file hierarchy (i.e., in a subdirectory). In BlackBox, a location is described by a "
+                    attr: 1
+                  - text: locator
+                    attr: 2
+                  - text: " object. A "
+                    attr: 1
+                  - text: directory
+                    attr: 2
+                  - text: " object provides a procedure which creates a locator, given a path name in the host platform's file name syntax. Most other directory operations take a locator as parameter, to find the specific subdirectory where the operation should be performed.\r\rFor "
+                    attr: 1
+                  - text: temporary files
+                    attr: 2
+                  - text: ", a system-specific (implicit) location is used. Temporary files are used as scratch files, and cannot be registered in the file directory. Module "
+                    attr: 1
+                  - text: Dialog
+                    attr: 2
+                  - text: " provides further sources for file locators, via standard file dialogs.\r\rA file itself is specified by a location and a name. The name is the file's local name at the given location, i.e., it cannot be a path name.\r\rA directory object provides three procedures to access a file: "
+                    attr: 1
+                  - text: New
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Temp
+                    attr: 2
+                  - text: ", and "
+                    attr: 1
+                  - text: Old
+                    attr: 2
+                  - text: ". "
+                    attr: 1
+                  - text: New
+                    attr: 2
+                  - text: " creates a new file. This file already has a particular location, but is anonymous, i.e., it has no name (yet). When the file's contents are written, the file can be registered under a given name, possibly replacing an already existing file which in turn becomes anonymous itself. File registration is an atomic action, which reduces the danger that a file is replaced by a new, but incomplete or corrupted, file.\r\rAnonymous files for which no more riders exist are automatically deleted by the garbage collector, at an appropriate time.\r\r"
+                    attr: 1
+                  - text: Temp
+                    attr: 2
+                  - text: " creates a temporary file. Such a file is never registered, and thus remains anonymous.\r\r"
+                    attr: 1
+                  - text: Old
+                    attr: 2
+                  - text: " looks up and opens an existing file, given its name and location. The file may either be opened in "
+                    attr: 1
+                  - text: shared
+                    attr: 2
+                  - text: " or in "
+                    attr: 1
+                  - text: exclusive
+                    attr: 2
+                  - text: " mode. \"shared\" means that it may be looked up and opened by several programs simultaneously, but that none may alter it (immutable file). Even if a file has been opened, its entry in the file directory is replaced when a new file is registered at the same location and under the same name. In this case, the old file remains accessible through the existing file readers. However, looking up this file with procedure "
+                    attr: 1
+                  - text: Old
+                    attr: 2
+                  - text: " yields the most recently registered file version. When no more riders on an older file version exist, the disk space occupied by the file is reclaimed by the garbage collector eventually.\r\rOpening a file in shared mode is the rule in BlackBox; opening a file in exclusive mode is an infrequent exception. \"exclusive\" means that at most one program may open a file. As long as the file is not closed again, other programs remain locked out, i.e., "
+                    attr: 1
+                  - text: Old
+                    attr: 2
+                  - text: " on the same file fails. An exclusively opened file may be modified (mutable file), which is useful for simple data base applications. Registering a new file under the same name as an exclusively opened file has the same effect as for shared files, i.e., the existing file becomes anonymous, and is garbage collected eventually.\r\rA file can be opened in exclusive mode, closed, and then be opened again in shared mode, for example. However, it can never be open in exclusive and in shared mode simultaneously.\rOpen files for which no more riders exist are automatically closed by the garbage collector at an appropriate time. For files opened in exclusive mode, it is recommended that they be closed explicitly, in order to make them accessible again to other programs as early as possible.\r\rA directory object represents "
+                    attr: 1
+                  - text: all
+                    attr: 2
+                  - text: " accessible files (not just one subdirectory), independent of their location in the file hierarchy. There is exactly one file hierarchy. However, every BlackBox service may implement its own file directory object. Such an object represents exactly the same file hierarchy, but may provide different ways to look up files, e.g., by applying default search paths, or it may define a current directory relative to which path names are evaluated, etc.\r\rFiles are typed. This means that each file has a "
+                    attr: 1
+                  - text: type
+                    attr: 2
+                  - text: " attribute which is a string, typically of length 3 (Windows) or 4 (Mac OS). On some platforms, the host file system knows about file types (Mac OS), while on others file types are simulated by using file suffixes as extensions (Windows). File types are useful to tell the system which operations are permissible on files and which aren't. For example, it is possible to install file converters (-> Converters) in BlackBox which translate between file and memory data structures.\r\rExample: "
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Obx/Docu/Ascii', 'ObxAscii Docu')"
+                      body:
+                        - text: ObxAscii  docu
+                          attr: 3
+                      attr: 1
+                      w: 83625
+                      h: 104775
+                  - text: "\r\r\rCONST "
+                    attr: 1
+                  - text: "exclusive, shared"
+                    attr: 4
+                  - text: "\rValues which can be passed to the "
+                    attr: 1
+                  - text: Directory.Old.shared
+                    attr: 2
+                  - text: " parameter, to determine whether a file should be opened in shared or in exclusive mode.\r\rCONST "
+                    attr: 1
+                  - text: "ask, dontAsk"
+                    attr: 4
+                  - text: "\rValues which can be passed to the "
+                    attr: 1
+                  - text: Directory.New
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Directory.Rename
+                    attr: 2
+                  - text: ", and "
+                    attr: 1
+                  - text: File.Register
+                    attr: 2
+                  - text: " methods.\r\rCONST "
+                    attr: 1
+                  - text: readOnly
+                    attr: 4
+                  - text: "\rPossible value for "
+                    attr: 1
+                  - text: FileInfo.attr
+                    attr: 2
+                  - text: ". Indicates that the file can be accessed only for reading.\r\rCONST "
+                    attr: 1
+                  - text: hidden
+                    attr: 4
+                  - text: "\rPossible value for "
+                    attr: 1
+                  - text: FileInfo.attr
+                    attr: 2
+                  - text: ". Indicates that the file is not displayed when the user lists the available file.\r\rCONST "
+                    attr: 1
+                  - text: system
+                    attr: 4
+                  - text: "\rPossible value for "
+                    attr: 1
+                  - text: FileInfo.attr
+                    attr: 2
+                  - text: ". Indicates that the file belongs to the operating system.\r\rCONST "
+                    attr: 1
+                  - text: archive
+                    attr: 4
+                  - text: "\rPossible value for "
+                    attr: 1
+                  - text: FileInfo.attr
+                    attr: 2
+                  - text: ". Indicates that the file is an archive.\r\rCONST "
+                    attr: 1
+                  - text: stationery
+                    attr: 4
+                  - text: "\rPossible value for "
+                    attr: 1
+                  - text: FileInfo.attr
+                    attr: 2
+                  - text: ". Indicates that the file is a stationery (i.e., a template).\r\r\rTYPE "
+                    attr: 1
+                  - text: Name
+                    attr: 4
+                  - text: "\rString type for file names.\r\r\rTYPE "
+                    attr: 1
+                  - text: Type
+                    attr: 4
+                  - text: "\rString type for file type names. Under Windows, file type names correspond to the three-character file name extensions, e.g., file "
+                    attr: 1
+                  - text: XYZ.txt
+                    attr: 2
+                  - text: " has type "
+                    attr: 1
+                  - text: txt
+                    attr: 2
+                  - text: ". On Mac OS, the appropriate four-character file type name is used, e.g. an ASCII file "
+                    attr: 1
+                  - text: xyz
+                    attr: 2
+                  - text: " has file type "
+                    attr: 1
+                  - text: TEXT
+                    attr: 2
+                  - text: ".\r\r\rTYPE "
+                    attr: 1
+                  - text: Locator
+                    attr: 4
+                  - text: "\rABSTRACT\rA file locator identifies a location in the file system.\rFile locators are used internally, and sometimes in commands which operate on non-BlackBox files.\rFile locators are extended internally.\r\r"
+                    attr: 1
+                  - text: res
+                    attr: 4
+                  - text: ": INTEGER\rDirectory operations return their results in the locator's "
+                    attr: 1
+                  - text: res
+                    attr: 2
+                  - text: " field.\rThe following result codes are predefined:\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 576000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "res = 0\tno error\rres = 1\tinvalid parameter (name or locator)\rres = 2\tlocation or file not found\rres = 3\tfile already exists\rres = 4\twrite-protection\rres = 5\tio error\rres = 6\taccess denied\rres = 7\tillegal file type\rres = 8\tcancelled\rres = 80\tnot enough memory\rres = 81\tnot enough system resources (disk space, file handles, etc.)\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "A particular BlackBox implementation may return additional, platform-specific, error codes. These error codes always have negative values.\r\rPROCEDURE (l: Locator) "
+                    attr: 1
+                  - text: This
+                    attr: 4
+                  - text: " (IN path: ARRAY OF CHAR): Locator\rNEW, ABSTRACT\r"
+                    attr: 1
+                  - text: This
+                    attr: 2
+                  - text: " evaluates a relative path, starting from the location specified by "
+                    attr: 1
+                  - text: l
+                    attr: 2
+                  - text: ".\r\rPost\rresult # NIL\r\tl.res = 0\tno error\rresult = NIL\r\tl.res = 1\tinvalid name\r\tl.res = 5\tio error\r\r\rTYPE "
+                    attr: 1
+                  - text: FileInfo
+                    attr: 4
+                  - text: "\rThis record represents information about a file.\r\r"
+                    attr: 1
+                  - text: next
+                    attr: 4
+                  - text: ": FileInfo\rNext entry in the list of file descriptors. No particular ordering is defined.\r\r"
+                    attr: 1
+                  - text: name
+                    attr: 4
+                  - text: ": Name\tname # \"\"\rThe file's name.\r\r"
+                    attr: 1
+                  - text: length
+                    attr: 4
+                  - text: ": INTEGER\tlength >= 0\rThe file's length in bytes.\r\r"
+                    attr: 1
+                  - text: type
+                    attr: 4
+                  - text: ": Type\ttype # \"\"\rThe file's type.\r\r"
+                    attr: 1
+                  - text: modified
+                    attr: 4
+                  - text: ": RECORD year, month, day, hour, minute, second: INTEGER END\rDate and time of most recent modification of the file.\r\r"
+                    attr: 1
+                  - text: attr
+                    attr: 4
+                  - text: ": SET\rIndicates various optional attributes of a file ("
+                    attr: 1
+                  - text: "readOnly, hidden, system, archive, stationery"
+                    attr: 2
+                  - text: ").\r\r\rTYPE "
+                    attr: 1
+                  - text: LocInfo
+                    attr: 4
+                  - text: "\rThis record represents information about a location.\r\r"
+                    attr: 1
+                  - text: next
+                    attr: 4
+                  - text: ": LocInfo\rNext entry in the list of location descriptors. No particular ordering is defined.\r\r"
+                    attr: 1
+                  - text: name
+                    attr: 4
+                  - text: ": Name\tname # \"\"\rThe file's name.\r\r"
+                    attr: 1
+                  - text: attr
+                    attr: 4
+                  - text: ": SET\rIndicates various optional attributes of a location ("
+                    attr: 1
+                  - text: "readOnly, hidden, system, archive"
+                    attr: 2
+                  - text: ").\r\r\rTYPE "
+                    attr: 1
+                  - text: File
+                    attr: 4
+                  - text: "\rABSTRACT\rA file is a carrier for a linear sequence of bytes, which typically resides on a hard disk or similar device.\rFiles are allocated by file directories.\rFiles are used by commands which operate on non-BlackBox files.\rFiles are extended internally.\r\r"
+                    attr: 1
+                  - text: type
+                    attr: 4
+                  - text: "-: Type\ttype # \"\"\rThis file's file type.\r\rPROCEDURE (f: File) "
+                    attr: 1
+                  - text: Length
+                    attr: 4
+                  - text: " (): INTEGER\rNEW, ABSTRACT\rReturns the current length of the file in bytes.\r\rPost\rresult >= 0\r\rPROCEDURE (f: File) "
+                    attr: 1
+                  - text: NewReader
+                    attr: 4
+                  - text: " (old: Reader): Reader\rNEW, ABSTRACT\rReturns a reader which has the appropriate type (for this file type). If "
+                    attr: 1
+                  - text: old = NIL
+                    attr: 2
+                  - text: ", then a new reader is allocated. If "
+                    attr: 1
+                  - text: "old # NIL"
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: old
+                    attr: 2
+                  - text: " has the appropriate type, "
+                    attr: 1
+                  - text: old
+                    attr: 2
+                  - text: " is returned. Otherwise, a new reader is allocated. The returned reader is connected to "
+                    attr: 1
+                  - text: f
+                    attr: 2
+                  - text: ", its "
+                    attr: 1
+                  - text: eof
+                    attr: 2
+                  - text: " field is set to "
+                    attr: 1
+                  - text: "FALSE"
+                    attr: 2
+                  - text: ", and its position is somewhere on the file. If an old reader is passed as parameter, the old position will be retained if possible.\rIf an old reader is passed as parameter, it is the application's responsibility to guarantee that it is not in use anymore. Passing an unused old reader is recommended because it avoids unnecessary allocations.\r\rPost\rresult # NIL\r~result.eof\rold # NIL & old.Base() = f\r\tresult.Pos() = old.Pos()\rold = NIL OR old.Base() # f\r\tresult.Pos() = 0\r\rPROCEDURE (f: File) "
+                    attr: 1
+                  - text: NewWriter
+                    attr: 4
+                  - text: " (old: Writer): Writer\rNEW, ABSTRACT\rReturns a writer which has the appropriate type (for this file type). If "
+                    attr: 1
+                  - text: old = NIL
+                    attr: 2
+                  - text: ", then a new writer is allocated. If "
+                    attr: 1
+                  - text: "old # NIL"
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: old
+                    attr: 2
+                  - text: " has the appropriate type, "
+                    attr: 1
+                  - text: old
+                    attr: 2
+                  - text: " is returned. Otherwise, a new writer is allocated. The returned writer is connected to "
+                    attr: 1
+                  - text: f
+                    attr: 2
+                  - text: ", and its position is somewhere on the file. If an old writer is passed as parameter, the old position will be retained if possible.\rIf an old writer is passed as parameter, it is the application's responsibility to guarantee that it is not in use anymore. Passing an unused old writer is recommended because it avoids unnecessary allocations.\rRead-only files allow no writers at all.\r\rPre\r~ f.Closed()\t20\r~ f.Shared()\t21\r\rPost\rresult # NIL\r\told # NIL & old.Base() = f\r\t\tresult.Pos() = old.Pos()\r\told = NIL OR old.Base() # f\r\t\tresult.Pos() = f.Length()\r\rPROCEDURE (f: File) "
+                    attr: 1
+                  - text: Flush
+                    attr: 4
+                  - text: "\rNEW, ABSTRACT\rTo guarantee consistency of the file, "
+                    attr: 1
+                  - text: Flush
+                    attr: 2
+                  - text: " should be called after the last writer operation. Superfluous calls of "
+                    attr: 1
+                  - text: Flush
+                    attr: 2
+                  - text: " have no effect.\r"
+                    attr: 1
+                  - text: Close
+                    attr: 2
+                  - text: " may call "
+                    attr: 1
+                  - text: Flush
+                    attr: 2
+                  - text: " internally.\r\rPROCEDURE (f: File) "
+                    attr: 1
+                  - text: Register
+                    attr: 4
+                  - text: " (name: Name; type: Type; ask: BOOLEAN; OUT res: INTEGER)\rNEW, ABSTRACT\r"
+                    attr: 1
+                  - text: Register
+                    attr: 2
+                  - text: " makes an anonymous file permanently available. If a file with the same name at the same location already exists, it is deleted first. If the deletion does not work, i.e. when the file is write protected, the parameter "
+                    attr: 1
+                  - text: ask
+                    attr: 2
+                  - text: " determines whether a platform specific error message is displayed or not. Pass either the constant "
+                    attr: 1
+                  - text: ask
+                    attr: 2
+                  - text: " or "
+                    attr: 1
+                  - text: dontAsk
+                    attr: 2
+                  - text: ".\r"
+                    attr: 1
+                  - text: Register
+                    attr: 2
+                  - text: " can be considered as an atomic action.\rOnly files opened with procedure "
+                    attr: 1
+                  - text: New
+                    attr: 2
+                  - text: " may be registered. Trying to register a file opened with "
+                    attr: 1
+                  - text: Old
+                    attr: 2
+                  - text: " results in a precondition violation error.\rIf an already existing file is deleted during "
+                    attr: 1
+                  - text: Register
+                    attr: 2
+                  - text: ", only its entry in the file directory is removed. The file's contents are still available to existing file riders. The space occupied by a file is reclaimed at an unspecified time after no more riders on it exist anymore.\rThe file "
+                    attr: 1
+                  - text: f
+                    attr: 2
+                  - text: " and the riders operating on file "
+                    attr: 1
+                  - text: f
+                    attr: 2
+                  - text: " are not valid anymore after registering "
+                    attr: 1
+                  - text: f
+                    attr: 2
+                  - text: ", i.e., no more file or rider operations may be performed on it. This also implies that "
+                    attr: 1
+                  - text: Register
+                    attr: 2
+                  - text: " may only be executed once. However, the registered file can be retrieved by procedure "
+                    attr: 1
+                  - text: Old
+                    attr: 2
+                  - text: " again.\r"
+                    attr: 1
+                  - text: Register
+                    attr: 2
+                  - text: " may call "
+                    attr: 1
+                  - text: Flush
+                    attr: 2
+                  - text: " internally, and closes the file.\rEach registered file has a file type, which is passed to "
+                    attr: 1
+                  - text: Register
+                    attr: 2
+                  - text: " in the "
+                    attr: 1
+                  - text: type
+                    attr: 2
+                  - text: " parameter.\r\rPre\rf is anonymous and not temporary\t20\rname # \"\"\t21\rname is a file name\t22\r\rPost\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 576000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "res = 0\tno error\rres = 1\tinvalid parameter (name or locator)\rres = 2\tlocation or file not found\rres = 3\tfile already exists\rres = 4\twrite-protection\rres = 5\tio error\rres = 6\taccess denied\rres = 7\tillegal file type\rres = 8\tcancelled\rres = 80\tnot enough memory\rres = 81\tnot enough system resources (disk space, file handles, etc.)\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "A particular BlackBox implementation may return additional, platform-specific, error codes. These error codes always have negative values.\r\rPROCEDURE (f: File) "
+                    attr: 1
+                  - text: Close
+                    attr: 4
+                  - text: "\rNEW, ABSTRACT\rCloses an open file. Close does nothing if the file is not open. If a call to "
+                    attr: 1
+                  - text: New
+                    attr: 2
+                  - text: " or "
+                    attr: 1
+                  - text: Old
+                    attr: 2
+                  - text: " is not balanced by a call to "
+                    attr: 1
+                  - text: Close
+                    attr: 2
+                  - text: ", the "
+                    attr: 1
+                  - text: Close
+                    attr: 2
+                  - text: " is later performed automatically, at an unspecified time. If it is known that a file won't be used again, it is recommended to call its "
+                    attr: 1
+                  - text: Close
+                    attr: 2
+                  - text: " procedure.\rThe file "
+                    attr: 1
+                  - text: f
+                    attr: 2
+                  - text: " and the riders operating on file "
+                    attr: 1
+                  - text: f
+                    attr: 2
+                  - text: " are not valid anymore after closing "
+                    attr: 1
+                  - text: f
+                    attr: 2
+                  - text: ", i.e., no more file or rider operations may be performed on it. However, the closed file can be retrieved and opened again by procedure "
+                    attr: 1
+                  - text: Old
+                    attr: 2
+                  - text: ".\r"
+                    attr: 1
+                  - text: Close
+                    attr: 2
+                  - text: " may call "
+                    attr: 1
+                  - text: Flush
+                    attr: 2
+                  - text: " internally.\r"
+                    attr: 1
+                  - text: Close
+                    attr: 2
+                  - text: " should (but need not necessarily) be called explicitly after a file is not needed anymore.\r\rPROCEDURE (f: File) "
+                    attr: 1
+                  - text: Closed
+                    attr: 4
+                  - text: " (): BOOLEAN,\rNEW, ABSTRACT;\rReturns the information about file state.\r\rPROCEDURE (f: File) "
+                    attr: 1
+                  - text: Shared
+                    attr: 4
+                  - text: " (): BOOLEAN,\rNEW, ABSTRACT;\rReturns the information about file state.\r\rPROCEDURE (f: File) "
+                    attr: 1
+                  - text: InitType
+                    attr: 4
+                  - text: " (type: Type)\rInitializes the file's "
+                    attr: 1
+                  - text: type
+                    attr: 2
+                  - text: " field.\r\rPre\rtype # \"\"\t20\rf.type = \"\" OR f.type = type\t21\r\r\rTYPE "
+                    attr: 1
+                  - text: Reader
+                    attr: 4
+                  - text: "\rABSTRACT\rReading access path to a file carrier.\rReaders are allocated by their base files.\rReaders are used by commands which read non-BlackBox files and operate at the byte level.\rReaders are extended internally.\r\r"
+                    attr: 1
+                  - text: eof
+                    attr: 4
+                  - text: ": BOOLEAN\rSet when it has been attempted to read the byte after the end of the file (by "
+                    attr: 1
+                  - text: ReadByte
+                    attr: 2
+                  - text: " or "
+                    attr: 1
+                  - text: ReadBytes
+                    attr: 2
+                  - text: "). Reset when the reader is generated or positioned.\r\rPROCEDURE (r: Reader) "
+                    attr: 1
+                  - text: Base
+                    attr: 4
+                  - text: " (): File\rNEW, ABSTRACT\rReturns the file to which the reader is currently connected.\r\rPost\rresult # NIL\r\rPROCEDURE (r: Reader) "
+                    attr: 1
+                  - text: Pos
+                    attr: 4
+                  - text: " (): INTEGER\rNEW, ABSTRACT\rReturns the reader's current position.\r\rPost\r0 <= result <= r.Base().Length()\r\rPROCEDURE (r: Reader) "
+                    attr: 1
+                  - text: SetPos
+                    attr: 4
+                  - text: " (pos: INTEGER)\rNEW, ABSTRACT\rSets the reader's current position to "
+                    attr: 1
+                  - text: pos
+                    attr: 2
+                  - text: " and clears the "
+                    attr: 1
+                  - text: eof
+                    attr: 2
+                  - text: " flag.\r\rPre\rpos >= 0\t20\rpos <= r.Base().Length()\t21\r\rPost\rr.Pos() = pos\r~r.eof\r\rPROCEDURE (r: Reader) "
+                    attr: 1
+                  - text: ReadByte
+                    attr: 4
+                  - text: " (OUT x: BYTE)\rNEW, ABSTRACT\rAttempts to read the byte after the current position. If successful, it increments the position by one. If the current position (before reading) is at the end of the available data, i.e., "
+                    attr: 1
+                  - text: Pos
+                    attr: 2
+                  - text: " equals the carrier data's length, then "
+                    attr: 1
+                  - text: r.eof
+                    attr: 2
+                  - text: " is set.\r"
+                    attr: 1
+                  - text: ReadByte
+                    attr: 2
+                  - text: " internally may call "
+                    attr: 1
+                  - text: SetPos
+                    attr: 2
+                  - text: ".\r\rPost\rr.Pos()' < r.Base().Length()\r\tr.Pos() = r.Pos()' + 1\r\t~r.eof\r\tx = byte after r.Pos()'\rr.Pos()' = r.Base().Length()\r\tr.Pos() = r.Base().Length()\r\tr.eof\r\tx = 0H\r\rPROCEDURE (r: Reader) "
+                    attr: 1
+                  - text: ReadBytes
+                    attr: 4
+                  - text: " (VAR x: ARRAY OF BYTE; beg, len: INTEGER)\rNEW, ABSTRACT\rAttempts to read "
+                    attr: 1
+                  - text: len
+                    attr: 2
+                  - text: " bytes after the current position. It increments the position by the number of bytes which have been read successfully. If reading is continued beyond the file's length, then "
+                    attr: 1
+                  - text: r.eof
+                    attr: 2
+                  - text: " is set. The data are transferred to the array "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: " starting at element "
+                    attr: 1
+                  - text: beg
+                    attr: 2
+                  - text: ".\r"
+                    attr: 1
+                  - text: ReadBytes
+                    attr: 2
+                  - text: " internally may call "
+                    attr: 1
+                  - text: SetPos
+                    attr: 2
+                  - text: ".\r\rPre\rbeg >= 0\t20\rlen >= 0\t21\rbeg + len <= LEN(x)\t22\r\rPost\rr.Pos()' <= r.Base().Length() - len\r\tr.Pos() = r.Pos()' + len\r\t~r.eof\r\tlen bytes read after r.Pos()' and transferred into x\rr.Pos()' > r.Base().Length() - len\r\tr.Pos() = r.Base().Length()\r\tr.eof\r\tr.Base().Length() - r.Pos()' bytes read after r.Pos()' and transferred into x\r\r\rTYPE "
+                    attr: 1
+                  - text: Writer
+                    attr: 4
+                  - text: "\rABSTRACT\rWriting access path to a file carrier.\rWriters are allocated by their base files.\rWriters are used by commands which write non-BlackBox files and operate at the byte level.\rWriters are extended internally.\r\rPROCEDURE (w: Writer) "
+                    attr: 1
+                  - text: Base
+                    attr: 4
+                  - text: " (): File\rNEW, ABSTRACT\rReturns the file to which the writer is currently connected.\r\rPost\rresult # NIL\r\rPROCEDURE (w: Writer) "
+                    attr: 1
+                  - text: Pos
+                    attr: 4
+                  - text: " (): INTEGER\rNEW, ABSTRACT\rReturns the writer's current position.\r\rPost\r0 <= result <= w.Base().Length()\r\rPROCEDURE (w: Writer) "
+                    attr: 1
+                  - text: SetPos
+                    attr: 4
+                  - text: " (pos: INTEGER)\rNEW, ABSTRACT\rSets the writer's current position to "
+                    attr: 1
+                  - text: pos
+                    attr: 2
+                  - text: ".\r\rPre\rpos >= 0\t20\rpos <= w.Base().Length()\t21\r\rPost\rw.Pos() = pos\r\rPROCEDURE (w: Writer) "
+                    attr: 1
+                  - text: WriteByte
+                    attr: 4
+                  - text: " (x: BYTE)\rNEW, ABSTRACT\rWrites a byte after the current position, then increments the current position. If the current position is at the end of the carrier data, the writer's length is incremented also.\r"
+                    attr: 1
+                  - text: WriteByte
+                    attr: 2
+                  - text: " internally may call "
+                    attr: 1
+                  - text: SetPos
+                    attr: 2
+                  - text: ".\r\rPost\rx written at w.Pos()'\rw.Pos() = w.Pos()' + 1\rw.Pos()' < w.Base().Length()'\r\tw.Base().Length() = w.Base().Length()'\r\tx has overwritten old value after w.Pos()'\rw.Pos()' = w.Base().Length()'\r\tw.Base().Length() = w.Base().Length()' + 1\r\tx was appended\r\rPROCEDURE (w: Writer) "
+                    attr: 1
+                  - text: WriteBytes
+                    attr: 4
+                  - text: " (IN x: ARRAY OF BYTE; beg, len: INTEGER)\rNEW, ABSTRACT\rWrites "
+                    attr: 1
+                  - text: len
+                    attr: 2
+                  - text: " bytes after the current position and increments the position accordingly. If necessary the stream's length is increased. The data are transferred from array "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: " starting with element "
+                    attr: 1
+                  - text: beg
+                    attr: 2
+                  - text: ".\r"
+                    attr: 1
+                  - text: WriteBytes
+                    attr: 2
+                  - text: " internally may call "
+                    attr: 1
+                  - text: SetPos
+                    attr: 2
+                  - text: ".\r\rPre\rbeg >= 0\t20\rlen >= 0\t21\rbeg + len <= LEN(x)\t22\r\rPost\rlen bytes transferred from variable x to carrier\rw.Pos() = w.Pos()' + len\rw.Pos()' + len <= w.Base().Length()'\r\tw.Base().Length() = w.Base().Length()'\rw.Pos()' + len > w.Base().Length()'\r\tw.Base().Length() = w.Pos()' + len\r\r\rTYPE "
+                    attr: 1
+                  - text: Directory
+                    attr: 4
+                  - text: "\rABSTRACT\rDirectory for the lookup in and manipulation of file directories.\rFile directories are allocated by BlackBox.\rFile directories are used by commands which operate on non-BlackBox files.\rFile directories are extended internally.\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: This
+                    attr: 4
+                  - text: " (IN path: ARRAY OF CHAR): Locator\rNEW, ABSTRACT\rReturns a locator, given a path name in the host platform's syntax.\r"
+                    attr: 1
+                  - text: This
+                    attr: 2
+                  - text: " may perform some validity checks, e.g., whether the syntax of the name is correct. Passing the empty string yields a default location (typically the BlackBox directory itself).\r\rPost\rresult # NIL\rresult.res = 0\r\tlegal locator\rresult.res # 0\r\tillegal locator\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: Temp
+                    attr: 4
+                  - text: " (): File\rNEW, ABSTRACT\rReturns a temporary file. This file is anonymous, i.e., not registered in a directory. (In host file systems where anonymous files are not directly supported, they may appear under temporary names in a suitable subdirectory.) Registration is not possible on a temporary file.\rA temporary file always has both read and write capabilities (mutable file).\r\rPost\rresult # NIL\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: New
+                    attr: 4
+                  - text: " (loc: Locator; ask: BOOLEAN): File\rNEW, ABSTRACT\rReturns a new file object (or "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: " if this is not possible). This file is anonymous, i.e., not yet registered in the directory. (In host file systems where anonymous files are not directly supported, they may appear under temporary names in subdirectory "
+                    attr: 1
+                  - text: loc.
+                    attr: 2
+                  - text: ") If the file is registered later, it will appear in the subdirectory specified by "
+                    attr: 1
+                  - text: loc
+                    attr: 2
+                  - text: ".\rIf "
+                    attr: 1
+                  - text: loc
+                    attr: 2
+                  - text: " indicates a location that does not yet exist, the necessary location(s) (i.e., directories) must be created first. Parameter "
+                    attr: 1
+                  - text: ask
+                    attr: 2
+                  - text: " determines whether the user is asked for the permission to do so. Pass either the constant "
+                    attr: 1
+                  - text: ask
+                    attr: 2
+                  - text: " or "
+                    attr: 1
+                  - text: dontAsk
+                    attr: 2
+                  - text: ".\rA new file always has both read and write capabilities (mutable file).\rIf location "
+                    attr: 1
+                  - text: loc
+                    attr: 2
+                  - text: " does not exist, the user may be asked whether the location should be created ("
+                    attr: 1
+                  - text: loc.res = 0
+                    attr: 2
+                  - text: ) or not (
+                    attr: 1
+                  - text: loc.res = 8
+                    attr: 2
+                  - text: ").\r\rPre\rloc # NIL\t20\r\rPost\rresult # NIL\r\tloc.res = 0\tno error\rresult = NIL\r\tloc.res = 1\tinvalid name\r\tloc.res = 2\tlocation not found\r\tloc.res = 4\twrite-protection\r\tloc.res = 5\tio error\r\tloc.res = 8\tcancelled\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: Old
+                    attr: 4
+                  - text: " (loc: Locator; name: Name; shared: BOOLEAN): File\rNEW, ABSTRACT\rLooks up and opens a file with name "
+                    attr: 1
+                  - text: name
+                    attr: 2
+                  - text: " at location "
+                    attr: 1
+                  - text: loc
+                    attr: 2
+                  - text: ". It returns this file (or "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: " if this is not possible). Parameter "
+                    attr: 1
+                  - text: shared
+                    attr: 2
+                  - text: " determines whether the returned file is in shared or in exclusive mode. A shared file provides read-only access. This means that several applications may read the file simultaneously, but it may not be modified. An exclusively opened file provides exclusive read and write access. This means that both read and write access are denied to any other application. Note however, that the application may pass on the file pointer to wherever it likes. The point is, another application cannot gain access to the file solely via the file directory, without cooperation of the application which currently has access. Moreover, \"exclusive\" access does not imply that only one rider may be active on the file.\rA file is usually opened in shared mode. To change its contents, a new file is generated and then registered under the old name. If only a small part of the data is actually changed, it may be more appropriate to use the exclusive mode instead, e.g. when implementing simple data bases. In this case, the file should be closed explicitly as soon as it isn't needed anymore.\r\rPre\rloc # NIL\t20\rname # \"\"\t21\r\rPost\rresult # NIL\r\tloc.res = 0\tno error\rresult = NIL\r\tloc.res = 1\tinvalid name\r\tloc.res = 2\tlocation or file not found\r\tloc.res = 6\taccess denied\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: Delete
+                    attr: 4
+                  - text: " (loc: Locator; name: Name)\rNEW, ABSTRACT\rDeletes the file specified by "
+                    attr: 1
+                  - text: loc
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: name
+                    attr: 2
+                  - text: ".\r\rPre\rloc # NIL\t20\r\rPost\rloc.res = 0\tno error\rloc.res = 1\tinvalid parameter (name or locator)\rloc.res = 2\tlocation or file not found\rloc.res = 4\twrite-protection\rloc.res = 5\tio error\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: Rename
+                    attr: 4
+                  - text: " (loc: Locator; old, new: Name; ask: BOOLEAN)\rNEW, ABSTRACT\rRename the file specified by "
+                    attr: 1
+                  - text: loc
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: new
+                    attr: 2
+                  - text: " to the local name "
+                    attr: 1
+                  - text: new
+                    attr: 2
+                  - text: ". If a file with name "
+                    attr: 1
+                  - text: new
+                    attr: 2
+                  - text: " already exists, it must be deleted first. Parameter "
+                    attr: 1
+                  - text: ask
+                    attr: 2
+                  - text: " determines whether the user is asked for the permission to do so. Pass either the constant "
+                    attr: 1
+                  - text: ask
+                    attr: 2
+                  - text: " or "
+                    attr: 1
+                  - text: dontAsk
+                    attr: 2
+                  - text: ".\r\rPre\rloc # NIL\t20\r\rPost\rloc.res = 0\tno error\rloc.res = 1\tinvalid parameter (locator or name)\rloc.res = 2\tlocation or file not found\rloc.res = 3\tfile already exists\rloc.res = 4\twrite-protection\rloc.res = 5\tio error\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: SameFile
+                    attr: 4
+                  - text: " (loc0: Locator; name0: Name;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tloc1: Locator; name1: Name): BOOLEAN;\rNEW, ABSTRACT\rDetermines whether two "
+                    attr: 1
+                  - text: "(locator, name)"
+                    attr: 2
+                  - text: " pairs denote the same file.\r\rPre\rloc0 # NIL\t20\rname0 # \"\"\t21\rloc1 # NIL\t22\rname1 # \"\"\t23\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: FileList
+                    attr: 4
+                  - text: " (loc: Locator): FileInfo\rNEW, ABSTRACT\rReturns information about the files at a given location. The result is a linear list of file descriptions, in no particular order. The procedure may alter "
+                    attr: 1
+                  - text: loc.res
+                    attr: 2
+                  - text: ".\r\rPre\rloc # NIL\t20\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: LocList
+                    attr: 4
+                  - text: " (loc: Locator): LocInfo\rNEW, ABSTRACT\rReturns information about subdirectories at a given location. The result is a linear list of location (subdirectory) descriptions, in no particular order. The procedure may alter "
+                    attr: 1
+                  - text: loc.res
+                    attr: 2
+                  - text: ".\r\rPre\rloc # NIL\t20\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: GetFileName
+                    attr: 4
+                  - text: " (name: Name; type: Type; OUT filename: Name)\rNEW, ABSTRACT\rMake a file name out of a file and its type.\rWindows: filename = name + \".\" + type\rMac OS: filename = name\r\r\rVAR "
+                    attr: 1
+                  - text: "dir-, stdDir-"
+                    attr: 4
+                  - text: ": Directory\t(dir # NIL) & (stdDir # NIL)\rDirectories for the lookup of files.\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetDir
+                    attr: 4
+                  - text: " (d: Directory)\rAssigns directory.\r"
+                    attr: 1
+                  - text: SetDir
+                    attr: 2
+                  - text: " is used in configuration routines.\r\rPre\rd # NIL\t20\r\rPost\rstdDir' = NIL\r\tstdDir = d\rstdDir' # NIL\r\tstdDir = stdDir'\rdir = d\r\rVAR "
+                    attr: 1
+                  - text: docType
+                    attr: 4
+                  - text: "-, "
+                    attr: 1
+                  - text: objType
+                    attr: 4
+                  - text: "-, "
+                    attr: 1
+                  - text: symType
+                    attr: 4
+                  - text: "-: Type\t(docType # NIL) & (objType # NIL) & (symType # NIL)\rFile types of BlackBox documents ("
+                    attr: 1
+                  - text: docType
+                    attr: 2
+                  - text: "), of BlackBox code files ("
+                    attr: 1
+                  - text: objType
+                    attr: 2
+                  - text: "), and of BlackBox symbol files ("
+                    attr: 1
+                  - text: symType
+                    attr: 2
+                  - text: ").\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 22
+          bodyPos: 31278
+          bodyLen: 8

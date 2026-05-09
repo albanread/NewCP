@@ -1,0 +1,444 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Ole\\Mod\\Storage.odc"
+  size: 15590
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 15459
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 15273
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 15187
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 24
+                bodyPos: 15308
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 14794
+                runListLen: 2342
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE OleStorage;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 74100
+                      h: 95250
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 74100
+                      h: 95250
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 74100
+                      h: 95250
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- 20141226, center #22, HostFiles.NewWriter violating the specification\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 63500
+                      h: 95250
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 63500
+                      h: 95250
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT Log,\r\t\tSYSTEM, COM, WinApi, WinOle, Files, Stores, Views;\r\t\r\tCONST\r\t\tdebug = FALSE;\r\t\tobfTag = 6F4F4443H;\r\t\t\r\tTYPE\r\t\tILockBytes = POINTER TO RECORD (WinOle.ILockBytes)\r\t\t\torg: INTEGER;\r\t\t\tlen: INTEGER;\t"
+                    attr: 0
+                  - text: "(* org + len <= file.Length() *)"
+                    attr: 1
+                  - text: "\r\t\t\tfile: Files.File;\t"
+                    attr: 0
+                  - text: "(* file # NIL *)"
+                    attr: 1
+                  - text: "\r\t\t\trd: Files.Reader;\t"
+                    attr: 0
+                  - text: "(* (rd # NIL) & (rd.Base() = file) *)"
+                    attr: 1
+                  - text: "\r\t\t\twr: Files.Writer\t"
+                    attr: 0
+                  - text: "(* (wr = NIL) OR (wr.Base() = file) *)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\t\r\t\tStreamFile = POINTER TO RECORD (Files.File)\r\t\t\tstream: WinOle.IStream;\r\t\t\torg: LONGINT;\r\t\t\tlen: INTEGER;\r\t\t\tpos: INTEGER\t"
+                    attr: 0
+                  - text: "(* actual seek pos of stream *)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\t\t\r\t\tStreamReader = POINTER TO RECORD (Files.Reader)\r\t\t\tbase: StreamFile;\r\t\t\tpos: INTEGER\r\t\tEND;\r\t\t\r\t\tStreamWriter = POINTER TO RECORD (Files.Writer)\r\t\t\tbase: StreamFile;\r\t\t\tpos: INTEGER;\r\t\tEND;\r\t\r\t\r\t(* ---------- ILockBytes ---------- *)\r\t\r\tPROCEDURE (this: ILockBytes) ReadAt (offset: LONGINT; buf: WinApi.PtrVoid;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tlen: INTEGER; OUT [nil] read: INTEGER): COM.RESULT;\r\t\tTYPE P = POINTER TO ARRAY [untagged] 2000000000 OF BYTE;\r\t\tVAR p: P;\r\tBEGIN\r\t\tIF debug THEN\r\t\t\tLog.String(\"read@\"); Log.Int(SHORT(offset)); Log.Int(len);\r\t\tEND;\r\t\tIF (len > 0) & (offset < this.len) THEN\r\t\t\tthis.rd.SetPos(SHORT(this.org + offset));\r\t\t\tIF offset + len > this.len THEN len := SHORT(this.len - offset) END;\r\t\t\tp := "
+                    attr: 0
+                  - text: SYSTEM.VAL
+                    attr: 3
+                  - text: "(P, buf);\r\t\t\tthis.rd.ReadBytes(p^, 0, len)\r\t\tELSE len := 0\r\t\tEND;\r\t\tIF VALID(read) THEN read := len END;\r\t\tIF debug THEN\r\t\t\tLog.Int(len);\r\t\t\tLog.Int(p[0]); Log.Int(p[1]); Log.Int(p[2]); Log.Int(p[3]); \r\t\t\tLog.Ln\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND ReadAt;\r\t\r\tPROCEDURE (this: ILockBytes) WriteAt (offset: LONGINT; buf: WinApi.PtrVoid;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tlen: INTEGER; OUT [nil] written: INTEGER): COM.RESULT;\r\t\tTYPE P = POINTER TO ARRAY [untagged] 2000000000 OF BYTE;\r\t\tVAR res: COM.RESULT; p: P;\r\tBEGIN\r\t\tp := "
+                    attr: 0
+                  - text: SYSTEM.VAL
+                    attr: 3
+                  - text: "(P, buf);\r\t\tIF debug THEN\r\t\t\tLog.String(\"write@\"); Log.Int(SHORT(offset)); Log.Int(len);\r\t\t\tLog.Int(p[0]); Log.Int(p[1]); Log.Int(p[2]); Log.Int(p[3]); \r\t\t\tLog.Ln\r\t\tEND;\r\t\tIF this.wr # NIL THEN\r\t\t\tIF len > 0 THEN\r\t\t\t\tIF offset > this.len THEN res := this.SetSize(offset) END;\r\t\t\t\tthis.wr.SetPos(SHORT(this.org + offset));\r\t\t\t\tthis.wr.WriteBytes(p^, 0, len);\r\t\t\t\tIF offset + len > this.len THEN this.len := SHORT(offset + len) END\r\t\t\tELSE len := 0\r\t\t\tEND;\r\t\t\tIF VALID(written) THEN written := len END;\r\t\t\tIF debug THEN Log.String(\"written\"); Log.Ln END;\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\tELSE\r\t\t\tIF VALID(written) THEN written := 0 END;\r\t\t"
+                    attr: 0
+                  - text: "\tRETURN"
+                    attr: 3
+                  - text: " WinApi.STG_E_ACCESSDENIED\r\t\tEND\r\tEND WriteAt;\r\t\r\tPROCEDURE (this: ILockBytes) Flush (): COM.RESULT;\r\t\tTYPE A4 = ARRAY 4 OF BYTE;\r\tBEGIN\r\t\tIF debug THEN Log.String(\"flush\"); Log.Ln END;\r\t\tIF this.wr # NIL THEN\r\t\t\tthis.wr.SetPos(this.org - 4);\r\t\t\tthis.wr.WriteBytes("
+                    attr: 0
+                  - text: SYSTEM
+                    attr: 3
+                  - text: .
+                    attr: 0
+                  - text: VAL
+                    attr: 3
+                  - text: "(A4, this.len), 0, 4);\r\t\t\tthis.file.Flush();\r\t\t\tthis.wr.SetPos(this.org + this.len)\r\t\tELSE\r\t\t\tthis.rd.SetPos(this.org + this.len)\r\t\tEND;\r\t\tIF debug THEN Log.String(\"flushed\"); Log.Ln END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND Flush;\r\t\r\tPROCEDURE (this: ILockBytes) SetSize (size: LONGINT): COM.RESULT;\r\t\tVAR len: INTEGER; buf: ARRAY 256 OF BYTE;\r\tBEGIN\r\t\tIF debug THEN Log.String(\"set size\"); Log.Int(SHORT(size)); Log.Ln END;\r\t\tIF this.wr # NIL THEN\r\t\t\tIF size > this.len THEN\t"
+                    attr: 0
+                  - text: "(* enlarge file *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tthis.wr.SetPos(this.org + this.len);\r\t\t\t\tlen := SHORT(size - this.len);\r\t\t\t\tWHILE len > 256 DO this.wr.WriteBytes(buf, 0, 256); DEC(len, 256) END;\r\t\t\t\tthis.wr.WriteBytes(buf, 0, len);\r\t\t\tEND;\r\t\t\tthis.len := SHORT(size);\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\tELSE"
+                    attr: 0
+                  - text: " RETURN"
+                    attr: 3
+                  - text: " WinApi.STG_E_ACCESSDENIED\r\t\tEND\r\tEND SetSize;\r\t\r\tPROCEDURE (this: ILockBytes) LockRegion (offset, len: LONGINT; lockType: SET): COM.RESULT;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.STG_E_INVALIDFUNCTION\r\tEND LockRegion;\r\t\r\tPROCEDURE (this: ILockBytes) UnlockRegion (offset, len: LONGINT; lockType: SET): COM.RESULT;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.STG_E_INVALIDFUNCTION\r\tEND UnlockRegion;\r\t\r\tPROCEDURE (this: ILockBytes) Stat (OUT statStg: WinOle.STATSTG; statflag: INTEGER): COM.RESULT;\r\tBEGIN\r\t\tIF debug THEN Log.String(\"stat\"); Log.Ln END;\r\t\tstatStg.pwcsName := NIL;\r\t\tstatStg.type := WinOle.STGTY_LOCKBYTES;\r\t\tstatStg.cbSize := this.len;\r\t\tstatStg.mtime.dwLowDateTime := 0;\r\t\tstatStg.mtime.dwHighDateTime := 0;\r\t\tstatStg.ctime.dwLowDateTime := 0;\r\t\tstatStg.ctime.dwHighDateTime := 0;\r\t\tstatStg.atime.dwLowDateTime := 0;\r\t\tstatStg.atime.dwHighDateTime := 0;\r\t\tstatStg.grfMode := WinOle.STGM_DIRECT + WinOle.STGM_CREATE + WinOle.STGM_SHARE_EXCLUSIVE;\r\t\tIF this.wr # NIL THEN statStg.grfMode := statStg.grfMode + WinOle.STGM_READWRITE\r\t\tELSE statStg.grfMode := statStg.grfMode + WinOle.STGM_READ\r\t\tEND;\r\t\tstatStg.grfLocksSupported := {};\r\t\tstatStg.clsid := WinOle.GUID_NULL;\r\t\tstatStg.grfStateBits := {};\r\t\tstatStg.dwStgFmt := WinOle.STGFMT_FILE;\r\t\tIF debug THEN Log.String(\"stat end\"); Log.Ln END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND Stat;\r\t\r\t\r\t(* ---------- StreamReader ---------- *)\r\t\r\tPROCEDURE (r: StreamReader) Base (): Files.File;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " r.base\r\tEND Base;\r\t\r\tPROCEDURE (r: StreamReader) Pos (): INTEGER;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " r.pos\r\tEND Pos;\r\t\r\tPROCEDURE (r: StreamReader) SetPos (pos: INTEGER);\r\t\tVAR res: COM.RESULT;\r\tBEGIN\r\t\tASSERT(pos >= 0, 22); ASSERT(pos <= r.base.len, 21);\r\t\tr.pos := pos; r.eof := FALSE\r\tEND SetPos;\r\t\r\tPROCEDURE (r: StreamReader) ReadByte (OUT x: BYTE);\r\t\tVAR res: COM.RESULT;\r\tBEGIN\r\t\tIF r.pos < r.base.len THEN\r\t\t\tIF r.pos # r.base.pos THEN\r\t\t\t\tres := r.base.stream.Seek(r.base.org + r.pos, WinOle.STREAM_SEEK_SET, NIL);\r\t\t\t\tr.base.pos := r.pos\r\t\t\tEND;\r\t\t\tres := r.base.stream.Read("
+                    attr: 0
+                  - text: SYSTEM.ADR
+                    attr: 3
+                  - text: "(x), 1, NIL);\r\t\t\tINC(r.pos); INC(r.base.pos);\r\t\tELSE\r\t\t\tx := 0; r.eof := TRUE\r\t\tEND\r\tEND ReadByte;\r\t\r\tPROCEDURE (r: StreamReader) ReadBytes (VAR x: ARRAY OF BYTE; beg, len: INTEGER);\r\t\tVAR res: COM.RESULT;\r\tBEGIN\r\t\tASSERT(beg >= 0, 21);\r\t\tIF len > 0 THEN\r\t\t\tASSERT(beg + len <= LEN(x), 23);\r\t\t\tIF r.pos + len <= r.base.len THEN\r\t\t\t\tIF r.pos # r.base.pos THEN\r\t\t\t\t\tres := r.base.stream.Seek(r.base.org + r.pos, WinOle.STREAM_SEEK_SET, NIL);\r\t\t\t\t\tr.base.pos := r.pos\r\t\t\t\tEND;\r\t\t\t\tres := r.base.stream.Read("
+                    attr: 0
+                  - text: SYSTEM.ADR
+                    attr: 3
+                  - text: "(x[beg]), len, NIL);\r\t\t\t\tINC(r.pos, len); INC(r.base.pos, len)\r\t\t\tELSE\r\t\t\t\tr.eof := TRUE\r\t\t\tEND\r\t\tELSE ASSERT(len = 0, 22)\r\t\tEND\r\tEND ReadBytes;\r\t\r\t\r\t(* ---------- StreamWriter ---------- *)\r\t\r\tPROCEDURE (w: StreamWriter) Base (): Files.File;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " w.base\r\tEND Base;\r\t\r\tPROCEDURE (w: StreamWriter) Pos (): INTEGER;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " w.pos\r\tEND Pos;\r\t\r\tPROCEDURE (w: StreamWriter) SetPos (pos: INTEGER);\r\t\tVAR res: COM.RESULT;\r\tBEGIN\r\t\tASSERT(pos >= 0, 22); ASSERT(pos <= w.base.len, 21);\r\t\tw.pos := pos\r\tEND SetPos;\r\t\r\tPROCEDURE (w: StreamWriter) WriteByte (x: BYTE);\r\t\tVAR res: COM.RESULT;\r\tBEGIN\r\t\tIF w.pos # w.base.pos THEN\r\t\t\tres := w.base.stream.Seek(w.base.org + w.pos, WinOle.STREAM_SEEK_SET, NIL);\r\t\t\tw.base.pos := w.pos\r\t\tEND;\r\t\tres := w.base.stream.Write("
+                    attr: 0
+                  - text: SYSTEM.ADR
+                    attr: 3
+                  - text: "(x), 1, NIL);\r\t\tINC(w.pos); INC(w.base.pos);\r\t\tIF w.pos > w.base.len THEN w.base.len := w.pos END\r\tEND WriteByte;\r\t\r\tPROCEDURE (w: StreamWriter) WriteBytes (IN x: ARRAY OF BYTE; beg, len: INTEGER);\r\t\tVAR res: COM.RESULT;\r\tBEGIN\r\t\tASSERT(beg >= 0, 21);\r\t\tIF len > 0 THEN\r\t\t\tASSERT(beg + len <= LEN(x), 23);\r\t\t\tIF w.pos # w.base.pos THEN\r\t\t\t\tres := w.base.stream.Seek(w.base.org + w.pos, WinOle.STREAM_SEEK_SET, NIL);\r\t\t\t\tw.base.pos := w.pos\r\t\t\tEND;\r\t\t\tres := w.base.stream.Write("
+                    attr: 0
+                  - text: SYSTEM.ADR
+                    attr: 3
+                  - text: "(x[beg]), len, NIL);\r\t\t\tINC(w.pos, len); INC(w.base.pos, len); \r\t\t\tIF w.pos > w.base.len THEN w.base.len := w.pos END\r\t\tELSE ASSERT(len = 0, 22)\r\t\tEND\r\tEND WriteBytes;\r\t\r\t\r\t(* ---------- StreamFile ---------- *)\r\t\r\tPROCEDURE (f: StreamFile) Length (): INTEGER;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " f.len\r\tEND Length;\r\t\r\tPROCEDURE (f: StreamFile) NewReader (old: Files.Reader): Files.Reader;\r\t\tVAR r: StreamReader;\r\tBEGIN\r\t\tASSERT(f.stream # NIL, 20);\r\t\tNEW(r); r.base := f;\r\t\tr.pos := 0; r.eof := FALSE;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " r\r\tEND NewReader;\r\t\r\tPROCEDURE (f: StreamFile) NewWriter (old: Files.Writer): Files.Writer;\r\t\tVAR w: StreamWriter;\r\tBEGIN\r\t\tASSERT(f.stream # NIL, 20);\r\t\tNEW(w); w.base := f;\r\t\tw.pos := f.len;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " w\r\tEND NewWriter;\r\t\r\tPROCEDURE (f: StreamFile) Flush;\r\t\tVAR res: COM.RESULT;\r\tBEGIN\r\t\tASSERT(f.stream # NIL, 20);\r\t\tres := f.stream.Commit(WinOle.STGC_DEFAULT)\r\tEND Flush;\r\t\r\tPROCEDURE (f: StreamFile) Close;\r\tBEGIN\r\t\tIF f.stream # NIL THEN\r\t\t\tf.Flush;\r\t\t\tf.stream := NIL;\r\t\tEND\r\tEND Close;\r\t\r\tPROCEDURE (f: StreamFile) Closed(): BOOLEAN;\r\tBEGIN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " f.stream = NIL\r\tEND Closed;\r\t\r\tPROCEDURE (f: StreamFile) Shared(): BOOLEAN;\r\tBEGIN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE "
+                    attr: 0
+                  - text: "(* Stream is always shared *)"
+                    attr: 1
+                  - text: "\r\tEND Shared;\r\t\r\tPROCEDURE (f: StreamFile) Register (name: Files.Name; type: Files.Type; ask: BOOLEAN; OUT res: INTEGER);\r\tBEGIN\r\t\tres := 10\r\tEND Register;\r\t\r\t\r\t(* ---------- file creation ---------- *)\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: NewStreamFile
+                    attr: 3
+                  - text: "* (stream: WinOle.IStream): Files.File;\r\t\tVAR f: StreamFile; res: COM.RESULT; y: LONGINT;\r\tBEGIN\r\t\tNEW(f);\r\t\tf.stream := stream;\r\t\tres := stream.Seek(0, WinOle.STREAM_SEEK_CUR, f.org);\r\t\tres := stream.Seek(0, WinOle.STREAM_SEEK_END, y);\r\t\tDEC(y, f.org);\r\t\tIF y > MAX(INTEGER) THEN y := MAX(INTEGER) END;\r\t\tf.len := SHORT(y);\r\t\tres := stream.Seek(f.org, WinOle.STREAM_SEEK_SET, NIL);\r\t\tf.pos := 0;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " f\r\tEND NewStreamFile;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: NewWriteILockBytes
+                    attr: 3
+                  - text: "* (wr: Files.Writer): WinOle.ILockBytes;\r\t\tVAR new: ILockBytes;\r\tBEGIN\r\t\tIF debug THEN Log.String(\"new write\"); Log.Ln END;\r\t\tNEW(new);\r\t\tIF new = NIL THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " NIL END;\r\t\twr.WriteByte(0); wr.WriteByte(0); wr.WriteByte(0); wr.WriteByte(0); \t"
+                    attr: 0
+                  - text: "(* length *)"
+                    attr: 1
+                  - text: "\r\t\tnew.len := 0;\r\t\tnew.org := wr.Pos();\r\t\tnew.file := wr.Base();\r\t\tnew.rd := new.file.NewReader(NIL);\r\t\tnew.wr := wr;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " new\r\tEND NewWriteILockBytes;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: NewReadILockBytes
+                    attr: 3
+                  - text: "* (rd: Files.Reader): WinOle.ILockBytes;\r\t\tTYPE A4 = ARRAY 4 OF BYTE;\r\t\tVAR new: ILockBytes;\r\tBEGIN\r\t\tIF debug THEN Log.String(\"new read\"); Log.Ln END;\r\t\tNEW(new);\r\t\tIF new = NIL THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " NIL END;\r\t\trd.ReadBytes("
+                    attr: 0
+                  - text: SYSTEM
+                    attr: 3
+                  - text: .
+                    attr: 0
+                  - text: VAL
+                    attr: 3
+                  - text: "(A4, new.len), 0, 4);\r\t\tnew.org := rd.Pos();\r\t\tnew.file := rd.Base();\r\t\tnew.rd := rd;\r\t\tnew.wr := NIL;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " new\r\tEND NewReadILockBytes;\r\t\r\t\r\t"
+                    attr: 0
+                  - text: "(* stream import/export *)"
+                    attr: 1
+                  - text: "\r\t\r\tPROCEDURE GenStreamMedium (stm: WinOle.IStream; unk: COM.IUnknown; VAR sm: WinOle.STGMEDIUM);\r\tBEGIN\r\t\tsm.tymed := WinOle.TYMED_ISTREAM;\r\t\tsm.u.pstm := stm;\r\t\tsm.pUnkForRelease := unk\r\tEND GenStreamMedium;\r\t\r\tPROCEDURE MediumStream (VAR sm: WinOle.STGMEDIUM): WinOle.IStream;\r\tBEGIN\r\t\tASSERT(sm.tymed = WinOle.TYMED_ISTREAM, 20);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " "
+                    attr: 0
+                  - text: SYSTEM
+                    attr: 3
+                  - text: .
+                    attr: 0
+                  - text: VAL
+                    attr: 3
+                  - text: "(WinOle.IStream, sm.u.pstm)\r\tEND MediumStream;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: ExportToStream
+                    attr: 3
+                  - text: "* (stream: WinOle.IStream; v: Views.View; w, h: INTEGER; isSingle: BOOLEAN);\r\t\tVAR f: Files.File; wr: Stores.Writer; res: COM.RESULT;\r\tBEGIN\r\t\tres := stream.Seek(0, WinOle.STREAM_SEEK_SET, NIL);\r\t\tf := NewStreamFile(stream);\r\t\twr.ConnectTo(f);\r\t\twr.SetPos(0);\r\t\twr.WriteInt(obfTag);\r\t\twr.WriteInt(0);\r\t\twr.WriteInt(w);\r\t\twr.WriteInt(h);\r\t\tIF isSingle THEN wr.WriteSChar(1X) ELSE wr.WriteSChar(0X) END;\r\t\twr.WriteStore(v);\r\t\tf.Close\r\tEND ExportToStream;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: ExportOberon
+                    attr: 3
+                  - text: "* (\r\t\tv: Views.View; w, h, x, y: INTEGER; isSingle: BOOLEAN; VAR med: WinOle.STGMEDIUM\r\t);\r\t\tVAR stream: WinOle.IStream; res: COM.RESULT;\r\tBEGIN\r\t\tIF med.tymed = WinOle.TYMED_ISTREAM THEN\t"
+                    attr: 0
+                  - text: "(* use old stream *)"
+                    attr: 1
+                  - text: "\r\t\t\tstream := MediumStream(med)\r\t\tELSE\t"
+                    attr: 0
+                  - text: "(* create new temporary stream *)"
+                    attr: 1
+                  - text: "\r\t\t\tres := WinOle.CreateStreamOnHGlobal(0, 1, stream);\r\t\t\tGenStreamMedium(stream, NIL, med)\r\t\tEND;\r\t\tExportToStream(stream, v, w, h, isSingle)\r\tEND ExportOberon;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: ImportFromStream
+                    attr: 3
+                  - text: "* (stream: WinOle.IStream;  VAR v: Views.View;\r\t\t\t\t\t\t\t\t\t\t\tVAR w, h: INTEGER; VAR isSingle: BOOLEAN);\r\t\tVAR f: Files.File; r: Stores.Reader; s: Stores.Store; tag, version, res: COM.RESULT; ch: SHORTCHAR;\r\tBEGIN\r\t\tv := NIL;\r\t\tres := stream.Seek(0, WinOle.STREAM_SEEK_SET, NIL);\r\t\tf := NewStreamFile(stream);\r\t\tr.ConnectTo(f); r.SetPos(0);\r\t\tr.ReadInt(tag);\r\t\tIF tag = obfTag THEN\r\t\t\tr.ReadInt(version);\r\t\t\tr.ReadInt(w);\r\t\t\tr.ReadInt(h);\r\t\t\tr.ReadSChar(ch); isSingle := ch # 0X;\r\t\t\tr.ReadStore(s);\r\t\t\tv := s(Views.View)\r\t\tEND\r\tEND ImportFromStream;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: ImportOberon
+                    attr: 3
+                  - text: "* (VAR med: WinOle.STGMEDIUM; VAR v: Views.View;\r\t\t\t\t\t\t\t\t\t\t\tVAR w, h: INTEGER; VAR isSingle: BOOLEAN);\r\t\tVAR stream: WinOle.IStream;\r\tBEGIN\r\t\tstream := MediumStream(med);\r\t\tImportFromStream(stream, v, w, h, isSingle)\r\tEND ImportOberon;\r\rEND OleStorage.\r\r\r\tOleStorage?\r\t\r\t"
+                    attr: 0
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 23
+                      bodyPos: 2716
+                      bodyLen: 6
+                    attr: 0
+                    w: 158750
+                    h: 133350
+                  - text: "DevDecoder.Decode OleStorage\r\t"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 28
+          bodyPos: 15555
+          bodyLen: 8

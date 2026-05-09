@@ -1,0 +1,189 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Dev\\Docu\\HeapSpy.odc"
+  size: 3662
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 3531
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 3345
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 3259
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                lead: 11500
+                asc: 121900
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 6
+                bodyPos: 3259
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 2745
+                runListLen: 421
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                flow:
+                  - text: DevHeapSpy
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\rDEFINITION DevHeapSpy;\r\r\tVAR\r\t\tpar-: RECORD \r\t\t\tallocated-, clusters-, heapsize-: INTEGER\r\t\tEND;\r\r\tPROCEDURE GetAnchor (adr: INTEGER; OUT anchor: ARRAY OF CHAR);\r\tPROCEDURE ShowAnchor (adr: INTEGER);\r\tPROCEDURE ShowHeap;\r\rEND DevHeapSpy.\r\r\r"
+                    attr: 2
+                  - text: DevHeapSpy
+                    attr: 3
+                  - text: " is a tool that visualizes the contents of heap memory. The dynamically allocated memory blocks are shown in an \"interactive memory map\" that is updated periodically. "
+                    attr: 2
+                  - text: DevHeapSpy
+                    attr: 3
+                  - text: " displays symbolic information about every memory block you point to with the mouse. This allows you to inspect the values of record fields in objects and browse through complex data structures.\rThe BlackBox heap is partitioned into "
+                    attr: 2
+                  - text: clusters
+                    attr: 3
+                  - text: ". Clusters are contiguous blocks of memory. Each cluster contains a number of heap objects. "
+                    attr: 2
+                  - text: DevHeapSpy
+                    attr: 3
+                  - text: " visualizes clusters with large grey blocks. The heap objects within a cluster are visualized by red and blue areas. The red areas represent portions of memory allocated to variables of some record type. The blue areas represent portions of memory allocated to dynamic arrays.\r\rTo display heap information, choose "
+                    attr: 2
+                  - text: Heap Spy...
+                    attr: 3
+                  - text: " from menu "
+                    attr: 2
+                  - text: Info
+                    attr: 3
+                  - text: ". This openes a small dialog box showing summary information about the heap.\rTo open a "
+                    attr: 2
+                  - text: DevHeapSpy
+                    attr: 3
+                  - text: " window, click on button "
+                    attr: 2
+                  - text: Show Heap
+                    attr: 3
+                  - text: " in the dialog box opened with "
+                    attr: 2
+                  - text: Heap Spy...
+                    attr: 3
+                  - text: ". This opens a window similar to the one shown in Figure 1. When you press the left mouse button within the area of a cluster, "
+                    attr: 2
+                  - text: DevHeapSpy
+                    attr: 3
+                  - text: " gives information about the object the mouse points to. If the mouse points to a heap object, i.e., to a red or blue area, the object is highlighted. If you release the mouse button while a heap object is highlighted, a debugger window will be opened that shows detailed symbolic information about the object.\r\rThe following command can be used:\r\t\"Heap Spy...\"\t\"\"\t\"StdCmds.OpenAuxDialog('Dev/Rsrc/HeapSpy', 'Heap Spy')\"\t\"\"\r\rVAR "
+                    attr: 2
+                  - text: par-
+                    attr: 1
+                  - text: ": RECORD\rInteractor for the heap spy dialog.\r\r"
+                    attr: 2
+                  - text: allocated-
+                    attr: 1
+                  - text: ": INTEGER\rThe number of currently allocated bytes.\r\r"
+                    attr: 2
+                  - text: clusters-
+                    attr: 1
+                  - text: ": INTEGER\rThe number of currently allocated clusters.\r\r"
+                    attr: 2
+                  - text: heapsize-
+                    attr: 1
+                  - text: ": INTEGER\rThe number of currently used bytes (the number of clusters times the size of one cluster).\r\r\rPROCEDURE "
+                    attr: 2
+                  - text: GetAnchor
+                    attr: 1
+                  - text: " (adr: INTEGER; OUT anchor: ARRAY OF CHAR)\rPROCEDURE "
+                    attr: 2
+                  - text: ShowAnchor
+                    attr: 1
+                  - text: " (adr: INTEGER)\rPROCEDURE "
+                    attr: 2
+                  - text: ShowHeap
+                    attr: 1
+                  - text: "\rVarious procedures used in the heap spy dialog.\r"
+                    attr: 2
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 10
+          bodyPos: 3627
+          bodyLen: 8

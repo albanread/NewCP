@@ -1,0 +1,202 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\System\\Docu\\Config.odc"
+  size: 3336
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 3205
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 3019
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 2933
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                asc: 134600
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000003
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 9
+                bodyPos: 2933
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 2419
+                runListLen: 620
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                flow:
+                  - text: Config
+                    attr: 0
+                  - text: "\r\rDEFINITION Config;\r\r\tPROCEDURE Setup;\r\rEND Config.\r\r\rBlackBox attempts to call the command "
+                    attr: 1
+                  - text: Config.Setup
+                    attr: 2
+                  - text: " during start-up. The call allows to customize the configuration of BlackBox. Module "
+                    attr: 1
+                  - text: Config
+                    attr: 2
+                  - text: " is provided in source form and can be changed by the programmer arbitrarily. The default implementation looks like this:\r\r\tMODULE Config;\r\r\t\tIMPORT Dialog;\r\r\t\tPROCEDURE "
+                    attr: 1
+                  - text: Setup
+                    attr: 3
+                  - text: "*;\r\t\t\tVAR res: INTEGER;\r\t\tBEGIN\r\r\t\t\t(* ... various file and clipboard converters are installed here ... *)\r\r\t\t\tDialog.Call(\"StdLog.Open\", \"\", res)\r\t\tEND Setup;\r\r\tEND Config.\r\rThis configuration causes the "
+                    attr: 1
+                  - text: log
+                    attr: 2
+                  - text: " window to be opened upon startup. The command is called after the complete BlackBox library, framework, and standard subsystems are loaded. "
+                    attr: 1
+                  - text: Config
+                    attr: 2
+                  - text: " may import any BlackBox module. If it isn't needed, module "
+                    attr: 1
+                  - text: Config
+                    attr: 2
+                  - text: " can be deleted.\r\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenDoc('System/Mod/Config')"
+                      body:
+                        - text: Current Configuration
+                          attr: 4
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: Setup
+                    attr: 3
+                  - text: "\rThis procedure can be implemented in order to customize the initial BlackBox configuration after start-up. It is called after all standard services and menus have been installed.\rImplementing "
+                    attr: 1
+                  - text: Setup
+                    attr: 2
+                  - text: " is optional.\rExample for the implementation of "
+                    attr: 1
+                  - text: Config.Setup
+                    attr: 2
+                  - text: ":\r\r\tPROCEDURE Setup*;\r\t\tVAR res: INTEGER;\r\tBEGIN\r\t\tDialog.Call(\"StdCmds.OpenAuxDialog('System/Rsrc/About', 'Splash Screen')\", \"\", res)\r\tEND Setup;\r\rIf "
+                    attr: 1
+                  - text: Config.Setup
+                    attr: 2
+                  - text: " need not be implemented, the module (in particular its code file) may be deleted entirely.\r\r\rNote that similar to "
+                    attr: 1
+                  - text: Config
+                    attr: 2
+                  - text: ", there may (but need not) be a module "
+                    attr: 1
+                  - text: Startup
+                    attr: 2
+                  - text: " with a command "
+                    attr: 1
+                  - text: Setup
+                    attr: 2
+                  - text: ". It has a similar purpose as "
+                    attr: 1
+                  - text: Config
+                    attr: 2
+                  - text: ", but is called before the higher levels (text subsystem, form subsystem, etc.) are loaded. Consequently, "
+                    attr: 1
+                  - text: Startup
+                    attr: 2
+                  - text: " may not import the higher levels of BlackBox. Normally, "
+                    attr: 1
+                  - text: Startup
+                    attr: 2
+                  - text: " does not exist. It is only used under special circumstances, e.g., to overwrite the variable "
+                    attr: 1
+                  - text: Dialog.appName
+                    attr: 2
+                  - text: ".\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 13
+          bodyPos: 3301
+          bodyLen: 8

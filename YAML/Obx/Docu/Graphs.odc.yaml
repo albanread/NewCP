@@ -1,0 +1,258 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Docu\\Graphs.odc"
+  size: 5074
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 4943
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 4757
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 4671
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 152400
+                dsc: 25400
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 15
+                bodyPos: 4792
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 4394
+                runListLen: 1215
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                flow:
+                  - text: "Overview by Example: ObxGraphs"
+                    attr: 0
+                  - text: "\r\rThis example is a view which implements simple bar charts. The implementation consists of a view and a model. The view contains the model, and the model contains a linear list of values. For each of these values, a bar is drawn when the view is restored in a frame. The current list of values can be inspected by clicking with the mouse into the view: as a result, an auxiliary window is opened containing a textual representation of the values. This list of numbers can be edited, selected, and then dropped into the graph view again, to change its current list of values. A model's data (the value list) is always replaced as a whole and never modified incrementally. For this reason, not only shallow but also deep copying of a model can be implemented by copying the model reference (the pointer value), rather than by cloning the model and its contents. The same immutability property has been used in example "
+                    attr: 1
+                  - text: ObxLines
+                    attr: 2
+                  - text: " already.\r\rThe most interesting part of this view implementation is the handling of drag & drop messages. In order to let the BlackBox Component Builder provide drop feedback (i.e., the temporary outline denoting a graph view as a possible target for dropping a piece of text) the "
+                    attr: 1
+                  - text: Controllers.PollDropMsg
+                    attr: 2
+                  - text: " must be handled. In order to actually execute a drop operation (i.e., to let the graph view consume the dropped piece of text), the "
+                    attr: 1
+                  - text: Controllers.DropMsg
+                    attr: 2
+                  - text: " must be handled. In our example, the dropped view isn't "
+                    attr: 1
+                  - text: inserted
+                    attr: 2
+                  - text: " into the drop target, but rather "
+                    attr: 1
+                  - text: interpreted
+                    attr: 2
+                  - text: " as a specification for its new contents.\r\rThe handling of the "
+                    attr: 1
+                  - text: Properties.FocusPref
+                    attr: 2
+                  - text: " preference is also noteworthy. By setting up this preference, a view can inform its container how it would like to be treated concerning focusing. If this message is not handled, a view is never permanently focused, except if it is the root view. This means that upon clicking into the view, the view gets selection handles, but not a focus border. The focus preference allows to modify this behavior.\r\rGraph views are not meant to be targets of menu commands, i.e., it is not necessary to denote them as focusable. Since they should react on mouse clicks into their interior, they shouldn't be selected either. A view which normally is neither focused nor selected, but still should receive mouse clicks in it, is called a "
+                    attr: 1
+                  - text: hot focus
+                    attr: 2
+                  - text: ". A command button is a more typical example of a hot focus. A view can denote itself as a hot focus by setting the "
+                    attr: 1
+                  - text: hotFocus
+                    attr: 2
+                  - text: " field of the "
+                    attr: 1
+                  - text: Properties.FocusPref
+                    attr: 2
+                  - text: " preference to "
+                    attr: 1
+                  - text: "TRUE"
+                    attr: 2
+                  - text: ".\rTruly editable views should set the "
+                    attr: 1
+                  - text: setFocus
+                    attr: 2
+                  - text: " field instead of the "
+                    attr: 1
+                  - text: hotFocus
+                    attr: 2
+                  - text: " field, so the focus is not lost when the user releases the mouse button.\r\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenDoc('Obx/Mod/Graphs')"
+                      body:
+                        - text: ObxGraphs  sources
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r\r"
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 8
+                      bodyPos: 986
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: " \"ObxGraphs.Deposit; StdCmds.Open\"\r\rAfter having opened a graph view with the command above, select the list of numbers below\r"
+                    attr: 1
+                  - view:
+                      kind: TextViews.StdView
+                      storeKind: store
+                      typeChain:
+                        - TextViews.StdViewDesc
+                        - TextViews.ViewDesc
+                        - Containers.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 9
+                      bodyPos: 1032
+                      bodyLen: 563
+                      hideMarks: true
+                      defaultRuler:
+                        left: 0
+                        right: 5940000
+                        asc: 127000
+                        dsc: 25400
+                        grid: 1
+                        opts: 0x00000001
+                      defaultAttr:
+                        font: Arial
+                        size: 114300
+                        color: 0x01000000
+                        weight: 400
+                        style: 0x00000000
+                      controller:
+                        kind: TextControllers.StdCtrl
+                        storeKind: store
+                        typeChain:
+                          - TextControllers.StdCtrlDesc
+                          - TextControllers.ControllerDesc
+                          - Containers.ControllerDesc
+                          - Controllers.ControllerDesc
+                          - Stores.StoreDesc
+                        id: 11
+                        bodyPos: 1291
+                        bodyLen: 9
+                      content:
+                        kind: TextModels.StdModel
+                        storeKind: elem
+                        typeChain:
+                          - TextModels.StdModelDesc
+                          - TextModels.ModelDesc
+                          - Containers.ModelDesc
+                          - Models.ModelDesc
+                          - Stores.StoreDesc
+                        id: 2
+                        bodyPos: 1057
+                        bodyLen: 96
+                        runListLen: 58
+                        attrPool:
+                          - # [0]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 400
+                            style: 0x00000000
+                        flow:
+                          - text: "\r\t10 53 4 14 24 34 60 52 8\r\r"
+                            attr: 0
+                    attr: 1
+                    w: 2413000
+                    h: 444500
+                  - text: "\t\rdrag the selection over the graph view, and then drop it into the graph view. As a result, the graph view shows a number of grey bars, whose heights correspond to the above values (in millimeters). The bar's widths adapt such that all of them together occupy the whole view's width.\r\rNow click into the graph view to get a list of its current values.\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 19
+          bodyPos: 5039
+          bodyLen: 8

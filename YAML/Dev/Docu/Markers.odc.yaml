@@ -1,0 +1,141 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Dev\\Docu\\Markers.odc"
+  size: 2055
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 1924
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 1738
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 1652
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                lead: 11500
+                asc: 121900
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 5
+                bodyPos: 1652
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 1138
+                runListLen: 264
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: DevMarkers
+                    attr: 0
+                  - text: "\r\rDEFINITION DevMarkers;\r\r\tPROCEDURE NextError;\r\tPROCEDURE ToggleCurrent;\r\tPROCEDURE UnmarkErrors;\r\t... plus some private items ...\r\rEND DevMarkers.\r\r\rError markers indicate compiler errors in-place in the compiled text.\rThis module contains several other items which are used internally.\r\rPossible menu:\r\r"
+                    attr: 1
+                  - text: MENU
+                    attr: 2
+                  - text: "\r\t\"Unmar&k Errors\"\t\"\"\t\"DevMarkers.UnmarkErrors\"\t\"TextCmds.FocusGuard\"\r\t\"Next E&rror\"\t\"\"\t\"DevMarkers.NextError\"\t\"TextCmds.FocusGuard\"\r\t\"To&ggle Error Mark\"\t\"\"\t\"DevMarkers.ToggleCurrent\"\t\"TextCmds.FocusGuard\"\r"
+                    attr: 1
+                  - text: END
+                    attr: 2
+                  - text: "\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: NextError
+                    attr: 2
+                  - text: "\rGuard: TextCmds.FocusGuard\rMove caret forward after the next error marker. If there is none, the text is scrolled to the beginning.\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - text: "PROCEDURE "
+                    attr: 1
+                  - text: ToggleCurrent
+                    attr: 2
+                  - text: "\rGuard: TextCmds.FocusGuard\rToggle the state of the marker before the caret.\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - text: "PROCEDURE "
+                    attr: 1
+                  - text: UnmarkErrors
+                    attr: 2
+                  - text: "\rGuard: TextCmds.FocusGuard\rRemoves all error markers.\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 9
+          bodyPos: 2020
+          bodyLen: 8

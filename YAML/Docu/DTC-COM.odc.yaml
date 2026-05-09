@@ -1,0 +1,435 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Docu\\DTC-COM.odc"
+  size: 17771
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 17640
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 17454
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 17368
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 41
+                bodyPos: 17489
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 16975
+                runListLen: 10629
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 304800
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [2]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [3]
+                    font: "*"
+                    size: 152400
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [4]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [5]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                flow:
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000002
+                      attr: 0
+                      w: 360000000
+                      h: 444500
+                  - view:
+                      kind: StdLogos.View
+                      storeKind: store
+                      typeChain:
+                        - StdLogos.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 5
+                      bodyPos: 760
+                      bodyLen: 7
+                    attr: 0
+                    w: 1219196
+                    h: 304799
+                  - text: " Direct-To-COM Compiler\r"
+                    attr: 0
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      attr: 0
+                      w: 360000000
+                      h: 444500
+                  - text: "\r"
+                    attr: 1
+                  - target:
+                      name: 2
+                      body:
+                        - text: The Component Object Model
+                          attr: 1
+                      attr: 1
+                      w: 216975
+                      h: 219075
+                  - text: "\r\r\r"
+                    attr: 2
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 1116000 }
+                      attr: 3
+                      w: 360000000
+                      h: 444500
+                  - text: "\r"
+                    attr: 3
+                  - text: "The Component Object Model (COM) is an object model which allows independently developed binary software components to connect to and communicate with each other in a well-defined manner. COM defines a binary standard for object interoperability which is programming-language and compiler independent.\r\rThe primary architectural feature of COM is that an object exposes a set of interfaces to a client. An interface is a set of semantically related functions. Every object can provide multiple interfaces. COM objects can only be accessed through pointers to interfaces (interface pointers). Direct access to an object's internal variables is not possible. This allows for encapsulation of data and processing, a fundamental requirement of a true component software standard.\r\rAnother fundamental concept of the COM model is reference counting. Reference counting allows objects to track their own lifetime and delete themselves when appropriate.\r\rThe following figure visualizes a COM object as large black box, which is accessible from the outside only via pointers to its exported interfaces. Internally, a COM object typically contains a large number of simpler objects, which constitute its hidden implementation. Note that there are pointers from each interface record of the COM object to each other interface record, directly or indirectly. Also, every implementation object is connected to the interfaces through one or several pointer chains. Pointer chains may contain cycles.\r\r"
+                    attr: 2
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      attr: 2
+                      w: 360000000
+                      h: 444500
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 17
+                      bodyPos: 1487
+                      bodyLen: 5854
+                    attr: 2
+                    w: 4724343
+                    h: 3098763
+                  - text: "\r\r"
+                    attr: 2
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 2
+                      w: 360000000
+                      h: 444500
+                  - target:
+                      name: 2.1
+                      body:
+                        - text: Binary Standard
+                          attr: 4
+                      attr: 4
+                      w: 150300
+                      h: 142875
+                  - text: "\r"
+                    attr: 4
+                  - text: "\rCOM defines a standardized way to layout the concrete implementation of interfaces. Every COM object provides the implementation of each method specified in the interface. The pointers to the method implementations are stored in an array, a so called virtual function table (vtable). The interface record is a structure whose first entry is a pointer to a vtable; it may contain additional private object data. COM clients only interact with a COM object through pointers to interfaces, i.e. with pointers to pointers to vtables. It is through such a pointer that the client accesses the object's implementation of the interface. Therefore, any language that can call functions via pointers (using the "
+                    attr: 2
+                  - text: StdCall
+                    attr: 5
+                  - text: " calling conventions) can be used to write and use COM components.\r\r"
+                    attr: 2
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      tabs:
+                        - { stop: 324000 }
+                        - { stop: 1584000 }
+                        - { stop: 3024000 }
+                      attr: 2
+                      w: 360000000
+                      h: 444500
+                  - text: "\tinterface pointer\tinterface\tvtable\t\r"
+                    attr: 2
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 26
+                      bodyPos: 7857
+                      bodyLen: 2060
+                    attr: 2
+                    w: 4621929
+                    h: 1231877
+                  - text: "\r\r"
+                    attr: 2
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 2
+                      w: 360000000
+                      h: 444500
+                  - target:
+                      name: 2.2
+                      body:
+                        - text: Reference Counting in COM
+                          attr: 4
+                      attr: 4
+                      w: 150300
+                      h: 142875
+                  - text: "\r\r"
+                    attr: 4
+                  - text: "COM uses reference counting as a simple form of (manual) garbage collection. Reference counting is performed through two standard methods called "
+                    attr: 2
+                  - text: AddRef
+                    attr: 5
+                  - text: " and "
+                    attr: 2
+                  - text: Release
+                    attr: 5
+                  - text: ". Whenever a new reference to an interface is established, "
+                    attr: 2
+                  - text: AddRef
+                    attr: 5
+                  - text: " must be called. When the interface is no longer needed, "
+                    attr: 2
+                  - text: Release
+                    attr: 5
+                  - text: " must be called. Reference counting is done at the interface level, i.e., every interface must support the two methods "
+                    attr: 2
+                  - text: AddRef
+                    attr: 5
+                  - text: " and "
+                    attr: 2
+                  - text: Release
+                    attr: 5
+                  - text: ". They are defined in the interface "
+                    attr: 2
+                  - text: IUnknown
+                    attr: 5
+                  - text: " which is the base interface of every COM interface. Internally, the interface implementation counts the number of "
+                    attr: 2
+                  - text: AddRef
+                    attr: 5
+                  - text: " and "
+                    attr: 2
+                  - text: Release
+                    attr: 5
+                  - text: " calls, and thereby knows when it is safe to free the memory that it occupies.\r\rConceptually, reference counting is performed at the interface level. However, as a COM object can support several interfaces, it is free to implement one central reference count per object, instead of one reference count per interface. However, a client should never assume that an object uses the same counter for several interfaces; i.e., it should increment the reference count always through the interface which is about to be used.\r\rThe following two simple rules define how reference counts have to be managed. Interface pointer variables are variables which hold interface pointers. Such variables may be located in memory or in processor registers.\r\r"
+                    attr: 2
+                  - ruler:
+                      left: 180000
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 180000 }
+                      attr: 2
+                      w: 360000000
+                      h: 444500
+                  - text: "1)\tWhenever an interface pointer is stored in an interface pointer variable, "
+                    attr: 2
+                  - text: AddRef
+                    attr: 5
+                  - text: " must be called through this interface pointer.\r\x0e2)\tImmediately before an interface pointer variable is cleared, overwritten, or destroyed, "
+                    attr: 2
+                  - text: Release
+                    attr: 5
+                  - text: " must be called on the interface pointer presently in the variable.\r\r"
+                    attr: 2
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 2
+                      w: 360000000
+                      h: 444500
+                  - text: "Rule 1 implies that a function that returns an interface pointer must call "
+                    attr: 2
+                  - text: AddRef
+                    attr: 5
+                  - text: " on this interface, as it stores a new interface pointer in a register or in memory (i.e., at a place where access is still possible). Examples of such functions are "
+                    attr: 2
+                  - text: IUnknown.Query­Interface
+                    attr: 5
+                  - text: " and "
+                    attr: 2
+                  - text: IFactory.CreateInstance
+                    attr: 5
+                  - text: ".\rRule 2 implies that "
+                    attr: 2
+                  - text: Release
+                    attr: 5
+                  - text: " must be called on old values of an interface pointer variable before assigning a new value, and on local interface pointers before leaving the scope. \r\r"
+                    attr: 2
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 2
+                      w: 360000000
+                      h: 444500
+                  - text: "The example below demonstrates the use of these two rules:\r\r"
+                    attr: 2
+                  - ruler:
+                      left: 0
+                      right: 0
+                      dsc: 25400
+                      grid: 1
+                      opts: 0x0000000b
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 288000 }
+                        - { stop: 432000 }
+                        - { stop: 576000 }
+                        - { stop: 1980000 }
+                        - { stop: 5040000 }
+                      attr: 2
+                      w: 360000000
+                      h: 444500
+                  - text: "\tIFactory* pFactory;\r\tHRESULT hr = GetFactory(IID_IFactory, (void**)&pFactory);\r\tif (SUCCEEDED(hr))\t// Reference count of factory has been incremented by GetFactory\r\t{\r\t\tIAnimal* pAnimal1;\r\t\thr = pFactory->CreateInstance(0, IID_IAnimal, (void**)&pAnimal1);  // \t(2)\r\t\tif (SUCCEEDED(hr))\t// Reference count of pAnimal1 incremented by CreateInstance\r\t\t{\r\t\t\tIAnimal* pAnimal2 = pAnimal1; \r\t\t\tpAnimal2->AddRef(); \t// Increment Reference Count\t(1)\r\t\t\tpAnimal2->Sleep(); \t// Do something through pAnimal2\r\t\t\r\t\t\tpAnimal1->Release(); \t// Release Interface before assigning a new animal\t(1)   (3)\r\t\t\thr = factory->CreateInstance(0, IID_IAnimal, (void**)&pAnimal1);\r\t\t\tif (SUCCEEDED(hr))\t// Reference count of pAnimal1 incremented by CreateInstance\r\t\t\t{\r\t\t\t\tpAnimal1->Eat();\t// Do something with second animal\r\t\t\t\tpAnimal1->Release();\t// scope in which pAnimal1 is declared will be closed soon\r\t\t\t}\r\t\t\tpAnimal2->Release();\t// scope in which pAnimal2 is declared will be closed\r\t\t}\r\t\tpFactory->Release();\t// scope in which pFactory is declared wil be closed soon\r\t}\r\r"
+                    attr: 2
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 2
+                      w: 360000000
+                      h: 444500
+                  - text: "In principle, every assignment to an interface pointer must be accompanied by a "
+                    attr: 2
+                  - text: Release
+                    attr: 5
+                  - text: " call (except for NULL or uninitialized interface pointers) and an "
+                    attr: 2
+                  - text: AddRef
+                    attr: 5
+                  - text: " call. However, in some special situations, "
+                    attr: 2
+                  - text: AddRef
+                    attr: 5
+                  - text: " and "
+                    attr: 2
+                  - text: Release
+                    attr: 5
+                  - text: " pairs can be omitted safely.\r\rUnfortunately, the COM specification defines some special rules for interface parameters of methods. An interface may specify that some arguments of its methods are passed only in one direction; i.e., only from the client to the server or vice versa. This minimizes communication overhead for calls across process or machine boundaries (remote procedure calls), but it complicates the rules for the COM programmer.\r"
+                    attr: 2
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 45
+          bodyPos: 17736
+          bodyLen: 8

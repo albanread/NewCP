@@ -1,0 +1,1796 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\System\\Docu\\Containers.odc"
+  size: 38716
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 38585
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 38399
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 38313
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                asc: 134600
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000003
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 27
+                bodyPos: 38434
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 38036
+                runListLen: 5897
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: Containers
+                    attr: 0
+                  - text: "\r\rDEFINITION Containers;\r\r\tIMPORT Controllers, Stores, Views, Models, Properties;\r\r\tCONST\r\t\tnoSelection = 0; noFocus = 1; noCaret = 2;\r\t\tmask = {noSelection, noCaret}; layout = {noFocus};\r\t\tdeselect = FALSE; select = TRUE;\r\t\tany = FALSE; selection = TRUE;\r\t\thide = FALSE; show = TRUE;\r\r\tTYPE\r\t\tModel = POINTER TO ABSTRACT RECORD (Models.Model)\r\t\t\t(m: Model) GetEmbeddingLimits (OUT minW, maxW, minH, maxH: INTEGER), NEW, ABSTRACT;\r\t\t\t(m: Model) ReplaceView (old, new: Views.View), NEW, ABSTRACT;\r\t\t\t(m: Model) InitFrom- (source: Model), NEW, EMPTY\r\t\tEND;\r\r\t\tView = POINTER TO ABSTRACT RECORD (Views.View)\r\t\t\t(v: View) CopyFromModelView2- (source: Views.View; model: Models.Model), NEW, EMPTY;\r\t\t\t(v: View) Externalize2- (VAR rd: Stores.Writer), NEW, EMPTY;\r\t\t\t(v: View) HandleCtrlMsg2- (f: Views.Frame; VAR msg: Views.CtrlMessage;\r\t\t\t\t\t\t\t\t\t\t\t\t\tVAR focus: Views.View), NEW, EMPTY;\r\t\t\t(v: View) HandleModelMsg2- (VAR msg: Models.Message), NEW, EMPTY;\r\t\t\t(v: View) HandlePropMsg2- (VAR p: Views.PropMessage), NEW, EMPTY;\r\t\t\t(v: View) HandleViewMsg2- (f: Views.Frame; VAR msg: Views.Message), NEW, EMPTY;\r\t\t\t(v: View) Internalize2- (VAR rd: Stores.Reader), NEW, EMPTY;\r\t\t\t(v: View) InitModel (m: Model), NEW;\r\t\t\t(v: View) InitModel2- (m: Model), NEW, EMPTY;\r\t\t\t(v: View) AcceptableModel- (m: Model): BOOLEAN, NEW, ABSTRACT;\r\t\t\t(v: View) ThisModel (): Model, EXTENSIBLE;\r\t\t\t(v: View) SetController (c: Controller), NEW;\r\t\t\t(v: View) ThisController (): Controller, NEW, EXTENSIBLE;\r\t\t\t(v: View) GetRect (f: Views.Frame; view: Views.View; OUT l, t, r, b: INTEGER), NEW, ABSTRACT;\r\t\t\t(v: View) CatchModelMsg (VAR msg: Models.Message), NEW, EMPTY;\r\t\t\t(v: View) CatchViewMsg (f: Views.Frame; VAR msg: Views.Message), NEW, EMPTY;\r\t\t\t(v: View) CatchCtrlMsg (f: Views.Frame; VAR msg: Views.CtrlMessage;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR focus: Views.View), NEW, EMPTY;\r\t\t\t(v: View) CatchPropMsg (VAR msg: Views.PropMessage), NEW, EMPTY\r\t\tEND;\r\r\t\tController = POINTER TO ABSTRACT RECORD (Controllers.Controller)\r\t\t\topts-: SET;\r\t\t\t(c: Controller) ThisView (): View, EXTENSIBLE;\r\t\t\t(c: Controller) SetOpts (opts: SET), NEW, EXTENSIBLE;\r\t\t\t(c: Controller) GetContextType (OUT type: Stores.TypeName), NEW, ABSTRACT;\r\t\t\t(c: Controller) GetValidOps (OUT valid: SET), NEW, ABSTRACT;\r\t\t\t(c: Controller) NativeModel (m: Models.Model): BOOLEAN, NEW, ABSTRACT;\r\t\t\t(c: Controller) NativeView (v: Views.View): BOOLEAN, NEW, ABSTRACT;\r\t\t\t(c: Controller) NativeCursorAt (f: Views.Frame; x, y: INTEGER): INTEGER, NEW, ABSTRACT;\r\t\t\t(c: Controller) PickNativeProp (f: Views.Frame; x, y: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR p: Properties.Property), NEW, EMPTY;\r\t\t\t(c: Controller) PollNativeProp (selection: BOOLEAN; VAR p: Properties.Property;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR truncated: BOOLEAN), NEW, EMPTY;\r\t\t\t(c: Controller) SetNativeProp (selection: BOOLEAN; old, p: Properties.Property), NEW, EMPTY;\r\t\t\t(c: Controller) MakeViewVisible (v: Views.View), NEW, EMPTY;\r\t\t\t(c: Controller) GetFirstView (selection: BOOLEAN; OUT v: Views.View), NEW, ABSTRACT;\r\t\t\t(c: Controller) GetNextView (selection: BOOLEAN; VAR v: Views.View), NEW, ABSTRACT;\r\t\t\t(c: Controller) GetPrevView (selection: BOOLEAN; VAR v: Views.View), NEW, EXTENSIBLE;\r\t\t\t(c: Controller) CanDrop (f: Views.Frame; x, y: INTEGER): BOOLEAN, NEW, EXTENSIBLE;\r\t\t\t(c: Controller) MarkDropTarget (src, dst: Views.Frame; sx, sy, dx, dy, w, h, rx, ry: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\ttype: Stores.TypeName; isSingle, show: BOOLEAN), NEW, EMPTY;\r\t\t\t(c: Controller) Drop (src, dst: Views.Frame; sx, sy, dx, dy, w, h, rx, ry: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tview: Views.View; isSingle: BOOLEAN), NEW, ABSTRACT;\r\t\t\t(c: Controller) MarkPickTarget (src, dst: Views.Frame;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tsx, sy, dx, dy: INTEGER; show: BOOLEAN), NEW, EMPTY;\r\t\t\t(c: Controller) TrackMarks (f: Views.Frame; x, y: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t units, extend, add: BOOLEAN), NEW, ABSTRACT;\r\t\t\t(c: Controller) Resize (view: Views.View; l, t, r, b: INTEGER), NEW, ABSTRACT;\r\t\t\t(c: Controller) GetSelectionBounds (f: Views.Frame;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT x, y, w, h: INTEGER), NEW, EXTENSIBLE;\r\t\t\t(c: Controller) DeleteSelection, NEW, ABSTRACT;\r\t\t\t(c: Controller) MoveLocalSelection (src, dst: Views.Frame;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tsx, sy, dx, dy: INTEGER), NEW, ABSTRACT;\r\t\t\t(c: Controller) CopyLocalSelection (src, dst: Views.Frame;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tsx, sy, dx, dy: INTEGER), NEW, ABSTRACT;\r\t\t\t(c: Controller) SelectionCopy (): Model, NEW, ABSTRACT;\r\t\t\t(c: Controller) NativePaste (m: Models.Model; f: Views.Frame), NEW, ABSTRACT;\r\t\t\t(c: Controller) ArrowChar (f: Views.Frame; ch: CHAR; units, select: BOOLEAN), NEW, ABSTRACT;\r\t\t\t(c: Controller) ControlChar (f: Views.Frame; ch: CHAR), NEW, ABSTRACT;\r\t\t\t(c: Controller) PasteChar (ch: CHAR), NEW, ABSTRACT;\r\t\t\t(c: Controller) PasteView (f: Views.Frame; v: Views.View; w, h: INTEGER), NEW, ABSTRACT;\r\t\t\t(c: Controller) HasSelection (): BOOLEAN, NEW, EXTENSIBLE;\r\t\t\t(c: Controller) Selectable (): BOOLEAN, NEW, ABSTRACT;\r\t\t\t(c: Controller) Singleton (): Views.View, NEW;\r\t\t\t(c: Controller) SetSingleton (s: Views.View), NEW, EXTENSIBLE;\r\t\t\t(c: Controller) SelectAll (select: BOOLEAN), NEW, ABSTRACT;\r\t\t\t(c: Controller) InSelection (f: Views.Frame; x, y: INTEGER): BOOLEAN, NEW, ABSTRACT;\r\t\t\t(c: Controller) MarkSelection (f: Views.Frame; show: BOOLEAN), NEW, EXTENSIBLE;\r\t\t\t(c: Controller) SetFocus (focus: Views.View), NEW;\r\t\t\t(c: Controller) HasCaret (): BOOLEAN, NEW, ABSTRACT;\r\t\t\t(c: Controller) MarkCaret (f: Views.Frame; show: BOOLEAN), NEW, ABSTRACT;\r\t\t\t(c: Controller) Mark (f: Views.Frame; l, t, r, b: INTEGER; show: BOOLEAN), NEW, EXTENSIBLE\r\t\tEND;\r\r\t\tDirectory = POINTER TO ABSTRACT RECORD \r\t\t\t(d: Directory) New (): Controller, NEW, EXTENSIBLE;\r\t\t\t(d: Directory) NewController (opts: SET): Controller, NEW, ABSTRACT\r\t\tEND;\r\r\t\tDropPref = RECORD (Properties.Preference)\r\t\t\tmode-: SET;\r\t\t\tokToDrop: BOOLEAN\r\t\tEND;\r\r\t\tGetOpts = RECORD (Views.PropMessage)\r\t\t\tvalid, opts: SET\r\t\tEND;\r\r\t\tSetOpts = RECORD (Views.PropMessage)\r\t\t\tvalid, opts: SET\r\t\tEND;\r\r\tPROCEDURE Focus (): Controller;\r\tPROCEDURE FocusSingleton (): Views.View;\r\tPROCEDURE MarkSingleton (c: Controller; f: Views.Frame; show: BOOLEAN);\r\tPROCEDURE FadeMarks (c: Controller; show: BOOLEAN);\r\rEND Containers.\r\r\rContainers are views which may contain other (embedded) views. Typically, containers belong to one of two categories. The first category contains containers with a fixed structure and fixed types of the embedded views. For example, an e-mail container view may consist of exactly two views: a toolbar view at the top, and a text view below. The layout of these views typically cannot be edited. Such views are called "
+                    attr: 1
+                  - text: static containers
+                    attr: 2
+                  - text: ".\rThe second category of containers can embed arbitrary numbers of views, which can be of arbitrary types. Text views and form views are typical examples of such dynamic container views. Only this second category of container views, called "
+                    attr: 1
+                  - text: dynamic containers
+                    attr: 2
+                  - text: ", is supported by module "
+                    attr: 1
+                  - text: Containers
+                    attr: 2
+                  - text: ", and it is the topic of this text.\rDynamic containers consist of a variable number of embedded views, plus some "
+                    attr: 1
+                  - text: intrinsic contents
+                    attr: 2
+                  - text: ". Text views for example have text as their intrinsic contents, but also allow to let arbitrary views (i.e., non-intrinsic contents) flow along in the text. Form views are degenerated in the sense that they provide no intrinsic contents of their own.\rDifferent compound document standards (OLE, OpenDoc) differ in the way they treat selections and the focus. The focus is the currently edited view, the view which receives keyboard events, the view which determines the currently available menus, the view which contains the currently relevant selection, caret, or other mark.\r"
+                    attr: 1
+                  - text: Containers
+                    attr: 2
+                  - text: " provides the building blocks for container views, including special container models and container controllers. Other than most BlackBox modules, "
+                    attr: 1
+                  - text: Containers
+                    attr: 2
+                  - text: " exports several partially implemented types, rather than pure interface types. What is implemented is provided in a form suitable for the used platform, i.e. user interface differences are hidden by the implementation of "
+                    attr: 1
+                  - text: Containers
+                    attr: 2
+                  - text: ".\rIn particular, "
+                    attr: 1
+                  - text: Containers
+                    attr: 2
+                  - text: " fully implements "
+                    attr: 1
+                  - text: singleton selections
+                    attr: 2
+                  - text: ", i.e., selections which cover exactly one view and no intrinsic contents. Such selections are subject to special operations and require platform-dependent treatment. Also, "
+                    attr: 1
+                  - text: Containers
+                    attr: 2
+                  - text: " implements the focus concept: a single embedded view within a controller's model that is picked by the user as current focus.\r\rExample: "
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Form/Docu/Sys-Map', 'Map to Form Subsystem')"
+                      body:
+                        - text: Form subsystem  map
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r\r\rCONST "
+                    attr: 1
+                  - text: noSelection
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: noFocus
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: noCaret
+                    attr: 4
+                  - text: "\rPossible elements of "
+                    attr: 1
+                  - text: Controller.opt
+                    attr: 2
+                  - text: ". "
+                    attr: 1
+                  - text: noSelection
+                    attr: 2
+                  - text: " denotes that selections should be switched off, "
+                    attr: 1
+                  - text: noFocus
+                    attr: 2
+                  - text: " denotes that no embedded view should be allowed to become focus, and "
+                    attr: 1
+                  - text: noCaret
+                    attr: 2
+                  - text: " denotes that the caret (insertion mark) and thus the possibility to type or paste should be switched off.\r\rCONST "
+                    attr: 1
+                  - text: mask
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: layout
+                    attr: 4
+                  - text: "\rTwo particularly useful subsets of "
+                    attr: 1
+                  - text: Controller.opt
+                    attr: 2
+                  - text: ". A "
+                    attr: 1
+                  - text: mask
+                    attr: 2
+                  - text: " prevents editing of the container's intrinsic contents, but enables focusing and thereby editing of the contained objects; for example, this allows to use a form without changing the form itself. A "
+                    attr: 1
+                  - text: layout
+                    attr: 2
+                  - text: " does just the opposite: focusing and therefore editing of contained objects is inhibited, but the container's intrinsic contents may be freely edited; for example, this is useful when editing a form without wanting to actually activate, say, a button, while editing its position in the form.\r\rCONST "
+                    attr: 1
+                  - text: deselect
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: select
+                    attr: 4
+                  - text: "\rPossible values of the "
+                    attr: 1
+                  - text: select
+                    attr: 2
+                  - text: " parameter of "
+                    attr: 1
+                  - text: Controller.SelectAll
+                    attr: 2
+                  - text: ".\r\rCONST "
+                    attr: 1
+                  - text: any
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: selection
+                    attr: 4
+                  - text: "\rPossible values of the "
+                    attr: 1
+                  - text: selection
+                    attr: 2
+                  - text: " parameters of "
+                    attr: 1
+                  - text: Controller.GetFirstView
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Controller.GetNextView
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Controller.GetPrevView
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Controller.PollNativeProp
+                    attr: 2
+                  - text: ", and "
+                    attr: 1
+                  - text: Controller.SetNativeProp
+                    attr: 2
+                  - text: ". Controls whether the range of the operation is the current selection or the whole container contents.\r\rCONST "
+                    attr: 1
+                  - text: hide
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: show
+                    attr: 4
+                  - text: "\rPossible values of the "
+                    attr: 1
+                  - text: show
+                    attr: 2
+                  - text: " parameter of "
+                    attr: 1
+                  - text: FadeMarks
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: MarkSingleton
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Controller.Mark
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Controller.MarkCaret
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Controller.MarkDropTarget
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Controller.MarkPickTarget
+                    attr: 2
+                  - text: ", and "
+                    attr: 1
+                  - text: Controller.MarkSelections
+                    attr: 2
+                  - text: ". Controls whether the respective mark is to be hidden or shown.\r\r\rTYPE "
+                    attr: 1
+                  - text: Model (Models.Model)
+                    attr: 4
+                  - text: "\rABSTRACT\rModels for containers.\r\rPROCEDURE (m: Model) "
+                    attr: 1
+                  - text: GetEmbeddingLimits
+                    attr: 4
+                  - text: " (OUT minW, maxW, minH, maxH: INTEGER)\rNEW, ABSTRACT\rReturn minimum ("
+                    attr: 1
+                  - text: minW
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: minH
+                    attr: 2
+                  - text: ) and maximum (
+                    attr: 1
+                  - text: maxW
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: maxH
+                    attr: 2
+                  - text: ") bounds on view sizes to be embedded in model "
+                    attr: 1
+                  - text: m
+                    attr: 2
+                  - text: ". If it is tried to embed a view into "
+                    attr: 1
+                  - text: m
+                    attr: 2
+                  - text: " with width < "
+                    attr: 1
+                  - text: minW
+                    attr: 2
+                  - text: ", width >= "
+                    attr: 1
+                  - text: maxW
+                    attr: 2
+                  - text: ", height < "
+                    attr: 1
+                  - text: minH
+                    attr: 2
+                  - text: ", or height >= "
+                    attr: 1
+                  - text: maxH
+                    attr: 2
+                  - text: ", then "
+                    attr: 1
+                  - text: m
+                    attr: 2
+                  - text: " should (but is not absolutely required to) modify the size of the embedded view in order to make it fit.\r\rPost\r0 <= minW <= maxW\r0 <= minH <= maxH\r\rPROCEDURE (m: Model) "
+                    attr: 1
+                  - text: ReplaceView
+                    attr: 4
+                  - text: " (old, new: Views.View)\rNEW, ABSTRACT\rIn-place substitution of view "
+                    attr: 1
+                  - text: old
+                    attr: 2
+                  - text: " which must be embedded in "
+                    attr: 1
+                  - text: m
+                    attr: 2
+                  - text: " by view "
+                    attr: 1
+                  - text: new
+                    attr: 2
+                  - text: " which must not yet be embedded anywhere. As a result, "
+                    attr: 1
+                  - text: new
+                    attr: 2
+                  - text: " gets embedded in "
+                    attr: 1
+                  - text: m
+                    attr: 2
+                  - text: ", but "
+                    attr: 1
+                  - text: old
+                    attr: 2
+                  - text: " retains its context which it then shares with "
+                    attr: 1
+                  - text: new
+                    attr: 2
+                  - text: ". Replacing a view inplace allows "
+                    attr: 1
+                  - text: wrapping
+                    attr: 2
+                  - text: " of views: A new view takes place of an existing one, adds some new properties, but still can hold a reference to the old view and delegate requests to the old view. Since the old view has maintained its context, it will continue to function as if it where directly embedded in "
+                    attr: 1
+                  - text: m
+                    attr: 2
+                  - text: ".\r\rPre\rold # NIL\rold.context.ThisModel() = m\rEmbeddedIn(old, m)\rnew # NIL\rnew.context = NIL\r\rPost\rNotEmbedded(old)\rnew.context.ThisModel() = m\rnew.context = old.context\r\rPROCEDURE (m: Model) "
+                    attr: 1
+                  - text: InitFrom
+                    attr: 4
+                  - text: "- (source: Model)\rNEW, EMPTY\rInitialize model "
+                    attr: 1
+                  - text: m
+                    attr: 2
+                  - text: ", which has been newly allocated as an object of the same type as "
+                    attr: 1
+                  - text: source
+                    attr: 2
+                  - text: ". In some (rare) cases, it may be useful to share some internal data structures between "
+                    attr: 1
+                  - text: m
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: source
+                    attr: 2
+                  - text: ".\r\rPre\rsource # NIL\rType(m) = Type(source)\r\r\rTYPE "
+                    attr: 1
+                  - text: View (Views.View)
+                    attr: 4
+                  - text: "\rABSTRACT\rViews for containers.\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: Internalize
+                    attr: 4
+                  - text: " (VAR rd: Stores.Reader)\rClarification of inherited procedure\rFully implements internalization for views without intrinsic persistent state by handling internalization of the container view's model and controller. If the model internalization fails, the view is turned into an alien and internalization of "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: " is cancelled; otherwise the model is attached to "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: ". If the controller internalization fails, the controller is kept for later externalization to prevent loss of information, but is otherwise not connected to the view ("
+                    attr: 1
+                  - text: v.ThisController() = NIL
+                    attr: 2
+                  - text: "), and the view is internalized normally (i.e., not turned into an alien).\rSuper call at the beginning is mandatory\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: Externalize
+                    attr: 4
+                  - text: " (VAR wr: Stores.Writer)\rClarification of inherited procedure\rFully implements externalization for views without intrinsic persistent state by handling externalization of the container view's model and controller. If "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: " has been internalized before with an alien controller, and no other controller has been installed thereafter, then the alien controller will be externalized, although "
+                    attr: 1
+                  - text: v.ThisController() = NIL
+                    attr: 2
+                  - text: ".\rSuper call at the beginning is mandatory\r\rPre\rv.ThisModel() # NIL\t20\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: CopyFrom
+                    attr: 4
+                  - text: " (source: Stores.Store)\rClarification of inherited procedure\rAssuming that the model of "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: " has already been established, copy the controller and possibly other view state from "
+                    attr: 1
+                  - text: source
+                    attr: 2
+                  - text: ". If "
+                    attr: 1
+                  - text: source
+                    attr: 2
+                  - text: " holds a hidden alien controller (cf. "
+                    attr: 1
+                  - text: Internalize
+                    attr: 2
+                  - text: " above), a reference to it is also copied.\rSuper call at the beginning is mandatory\r\rPre\rv.ThisModel() # NIL\t20\r\rPost\rsource.ThisController() = NIL\r\tv.ThisController() = NIL\rsource.ThisController() # NIL\r\tv.ThisController() = source.ThisController().Clone().CopyFrom(source.ThisController())\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: ThisModel
+                    attr: 4
+                  - text: " (): Model\rEXTENSIBLE\rReturn the model of "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: ".\rCovariant narrowing of function result.\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: InitModel
+                    attr: 4
+                  - text: " (m: Containers.Model)\rNEW\rAssign a model to this view.\r\rPre\r(v.ThisModel() = NIL) OR (v.ThisModel() = m)\t20\rm # NIL\t21\rv.AcceptableModel(m)\t22\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: InitModel2-
+                    attr: 4
+                  - text: " (m: Containers.Model)\rNEW, EMPTY\rExtension hook called by "
+                    attr: 1
+                  - text: InitModel
+                    attr: 2
+                  - text: ".\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: SetController
+                    attr: 4
+                  - text: " (c: Controller)\rNEW, EXTENSIBLE, Operation\rSet the controller of "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: ". If "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: " holds a hidden alien controller, it is removed.\r\rPre\rv.ThisModel() # NIL\t20\r\rPost\rv.ThisController() = c\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: ThisController
+                    attr: 4
+                  - text: " (): Controller\rNEW, EXTENSIBLE\rReturn the controller of "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: ".\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: GetRect
+                    attr: 4
+                  - text: " (f: Views.Frame; view: Views.View; OUT l, t, r, b: INTEGER)\rNEW, ABSTRACT\rFor display in frame "
+                    attr: 1
+                  - text: f
+                    attr: 2
+                  - text: ", determine the bounding box of "
+                    attr: 1
+                  - text: view
+                    attr: 2
+                  - text: " which must be a view contained in "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: ". Should the computation of the bounding box be too expensive, returning an approximation is acceptable.\r\rPost\rl <= r\rt<= b\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: CatchModelMsg
+                    attr: 4
+                  - text: " (VAR msg: Models.Message)\rNEW, EMPTY\rExtension hook for "
+                    attr: 1
+                  - text: HandleModelMsg
+                    attr: 2
+                  - text: " which has become final.\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: CatchViewMsg
+                    attr: 4
+                  - text: " (f: Views.Frame; VAR msg: Views.Message)\rNEW, EMPTY\rExtension hook for "
+                    attr: 1
+                  - text: HandleViewMsg
+                    attr: 2
+                  - text: " which has become final.\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: CatchCtrlMsg
+                    attr: 4
+                  - text: "\r\t\t\t\t\t\t\t\t\t (f: Views.Frame; VAR msg: Controllers.Message; VAR focus: Views.View)\rNEW, EMPTY\rExtension hook for "
+                    attr: 1
+                  - text: HandleCtrlMsg
+                    attr: 2
+                  - text: " which has become final.\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: CatchPropMsg
+                    attr: 4
+                  - text: " (VAR p: Properties.Message)\rNEW, EMPTY\rExtension hook for "
+                    attr: 1
+                  - text: HandlePropMsg
+                    attr: 2
+                  - text: " which has become final.\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: HandleCtrlMsg
+                    attr: 4
+                  - text: " (f: Views.Frame;\r\tVAR msg: Controllers.Message; VAR focus: Views.View)\rClarification of inherited procedure\rIf "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: " has a controller installed, calls "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: .
+                    attr: 1
+                  - text: ThisController
+                    attr: 2
+                  - text: ().
+                    attr: 1
+                  - text: HandleCtrlMsg
+                    attr: 2
+                  - text: (
+                    attr: 1
+                  - text: f
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: msg
+                    attr: 2
+                  - text: ","
+                    attr: 1
+                  - text: " focus"
+                    attr: 2
+                  - text: "), then calls "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: .
+                    attr: 1
+                  - text: CatchCtrlMsg
+                    attr: 2
+                  - text: (
+                    attr: 1
+                  - text: f
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: msg
+                    attr: 2
+                  - text: ","
+                    attr: 1
+                  - text: " focus"
+                    attr: 2
+                  - text: "). That is, the controller sees the controller message "
+                    attr: 1
+                  - text: m
+                    attr: 2
+                  - text: "sg before the view does.\r\tAdditionally, a strict filter is applied to throw away unwanted messages: messages are only delegated to the controller or view if they fulfill "
+                    attr: 1
+                  - text: one
+                    attr: 2
+                  - text: " of the following three criteria:\rFirst, the frame "
+                    attr: 1
+                  - text: f
+                    attr: 2
+                  - text: " is a target or front frame. Second, the message is derived from "
+                    attr: 1
+                  - text: Controllers.PollOpsMsg
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Controllers.PollCursorMsg
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Controllers.TransferMessage
+                    attr: 2
+                  - text: ", or "
+                    attr: 1
+                  - text: Controllers.PageMsg
+                    attr: 2
+                  - text: ". Third, the context of "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: " is normalizing, i.e., "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: .
+                    attr: 1
+                  - text: context
+                    attr: 2
+                  - text: .
+                    attr: 1
+                  - text: Normalize()
+                    attr: 2
+                  - text: " holds, and the message is derived from "
+                    attr: 1
+                  - text: Controllers.PollSectionMsg
+                    attr: 2
+                  - text: " or "
+                    attr: 1
+                  - text: Controllers.ScrollMsg
+                    attr: 2
+                  - text: ". This is a standard message filtering condition making components more robust against spurious message sends.\r\tFinally, scrolling messages (derived from "
+                    attr: 1
+                  - text: Controllers.PollSectionMsg
+                    attr: 2
+                  - text: " or "
+                    attr: 1
+                  - text: Controllers.ScrollMsg
+                    attr: 2
+                  - text: ) may ask for shallow handling (~
+                    attr: 1
+                  - text: msg
+                    attr: 2
+                  - text: .
+                    attr: 1
+                  - text: focus
+                    attr: 2
+                  - text: "), i.e., supression of forwarding to a possibly existing subfocus. This is generically handled by clearing "
+                    attr: 1
+                  - text: focus
+                    attr: 2
+                  - text: " on return in these cases.\r\rPost\r(msg IS Controllers.PollSectionMsg) OR (msg IS Controllers.ScrollMsg)\r\t~msg.focus\r\t\tfocus = NIL\r\r\rTYPE "
+                    attr: 1
+                  - text: Controller (Controllers.Controller)
+                    attr: 4
+                  - text: "\rABSTRACT\rControllers for containers.\r\r"
+                    attr: 1
+                  - text: opts
+                    attr: 4
+                  - text: "-: SET\rOption set of controller; used to restrict controller functionality to defined subsets.\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: ThisView
+                    attr: 4
+                  - text: " (): View\rEXTENSIBLE\rReturn type is narrowed.\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: SetOpts
+                    attr: 4
+                  - text: " (opts: SET)\rNEW, EXTENSIBLE, Operation\rSet the options of "
+                    attr: 1
+                  - text: c
+                    attr: 2
+                  - text: ". This is only an operation after a view has been installed, i.e., "
+                    attr: 1
+                  - text: c
+                    attr: 2
+                  - text: .
+                    attr: 1
+                  - text: "ThisView() # NIL,"
+                    attr: 2
+                  - text: " otherwise it is a simple assignment of "
+                    attr: 1
+                  - text: "opts "
+                    attr: 2
+                  - text: "to "
+                    attr: 1
+                  - text: c.opts
+                    attr: 2
+                  - text: ". Options 0..7 are used or reserved by BlackBox, the rest may be used by extensions.\r\rPost\rc.opts = opts\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: GetContextType
+                    attr: 4
+                  - text: " (OUT type: Stores.TypeName)\rNEW, ABSTRACT\rCalled by "
+                    attr: 1
+                  - text: c.HandleCtrlMsg
+                    attr: 2
+                  - text: " to fill in "
+                    attr: 1
+                  - text: Controllers.PollOpsMsg.type
+                    attr: 2
+                  - text: ".\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: GetValidOps
+                    attr: 4
+                  - text: " (OUT valid: SET)\rNEW, ABSTRACT\rCalled by "
+                    attr: 1
+                  - text: c.HandleCtrlMsg
+                    attr: 2
+                  - text: " to fill in "
+                    attr: 1
+                  - text: Controllers.PollOpsMsg.ops
+                    attr: 2
+                  - text: ".\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: NativeModel
+                    attr: 4
+                  - text: " (m: Models.Model): BOOLEAN\rNEW, ABSTRACT\rCheck whether "
+                    attr: 1
+                  - text: m
+                    attr: 2
+                  - text: " is a native model of "
+                    attr: 1
+                  - text: c
+                    attr: 2
+                  - text: ", i.e., a model that could be attached to a view attachable to "
+                    attr: 1
+                  - text: c
+                    attr: 2
+                  - text: ".\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: NativeView
+                    attr: 4
+                  - text: " (v: Views.View): BOOLEAN\rNEW, ABSTRACT\rCheck whether "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: " is a native view of "
+                    attr: 1
+                  - text: c
+                    attr: 2
+                  - text: ", i.e., a view that could be attached to "
+                    attr: 1
+                  - text: c
+                    attr: 2
+                  - text: ".\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: NativeCursorAt
+                    attr: 4
+                  - text: " (f: Views.Frame; x, y: INTEGER): INTEGER\rNEW, ABSTRACT\rThe cursor that "
+                    attr: 1
+                  - text: c
+                    attr: 2
+                  - text: " would display in "
+                    attr: 1
+                  - text: f
+                    attr: 2
+                  - text: " at point ("
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: y
+                    attr: 2
+                  - text: "), irrespective of possible embedded views at that position.\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: PickNativeProp
+                    attr: 4
+                  - text: " (f: Views.Frame; x, y: INTEGER;\r\tVAR p: Properties.Property)\rNEW, EMPTY\rThe properties of "
+                    attr: 1
+                  - text: "c'"
+                    attr: 2
+                  - text: "s native contents in "
+                    attr: 1
+                  - text: f
+                    attr: 2
+                  - text: " at point ("
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: y
+                    attr: 2
+                  - text: "), irrespective of possible embedded views at that position.\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: PollNativeProp
+                    attr: 4
+                  - text: " (selection: BOOLEAN;\r\tVAR p: Properties.Property; VAR truncated: BOOLEAN);\rNEW, EMPTY\rThe properties of "
+                    attr: 1
+                  - text: "c'"
+                    attr: 2
+                  - text: "s native selected or whole contents, irrespective of possible embedded views in that range.\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: SetNativeProp
+                    attr: 4
+                  - text: " (selection: BOOLEAN; old, p: Properties.Property)\rNEW, EMPTY\rSet the properties of "
+                    attr: 1
+                  - text: "c'"
+                    attr: 2
+                  - text: "s native selected or whole contents to "
+                    attr: 1
+                  - text: p
+                    attr: 2
+                  - text: ", irrespective of possible embedded views in that range. For properties also in "
+                    attr: 1
+                  - text: old
+                    attr: 2
+                  - text: " change only those property values of "
+                    attr: 1
+                  - text: c
+                    attr: 2
+                  - text: " that match the ones given in "
+                    attr: 1
+                  - text: old
+                    attr: 2
+                  - text: ". This allows for masked modification of properties. For example, in a colored model, all red objects could be changed to become green.\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: MakeViewVisible
+                    attr: 4
+                  - text: " (v: Views.View)\rNEW, EMPTY\rMake the embedded view "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: " visible in the controller's view.\r\rPre\rv is embedded in c's view\t20\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: GetFirstView
+                    attr: 4
+                  - text: " (selection: BOOLEAN; OUT v: Views.View)\rNEW, ABSTRACT\rGet the first view embedded in "
+                    attr: 1
+                  - text: c
+                    attr: 2
+                  - text: "'s model, relative to the model's start or that of a possible selection.\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: GetNextView
+                    attr: 4
+                  - text: " (selection: BOOLEAN; VAR v: Views.View)\rNEW, ABSTRACT\rGet the next view in the specified range, which is either the selected or the whole contents of c's model. The next view of the last view in the range is "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: ".\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: GetPrevView
+                    attr: 4
+                  - text: " (selection: BOOLEAN; VAR v: Views.View)\rNEW, EXTENSIBLE\rGet the previous view in the specified range, which is either the selected or the whole contents of c's model. The default uses "
+                    attr: 1
+                  - text: GetFirstView
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: GetNextView
+                    attr: 2
+                  - text: " to seek the previous view of "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: ". The previous view of the first view in the range is "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: ".\r\rPre\rv # NIL\t20\rEmbeddedIn(v, c.ThisModel())\t21\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: CanDrop
+                    attr: 4
+                  - text: " (f: Views.Frame; x, y: INTEGER): BOOLEAN\rNEW, EXTENSIBLE\rReturn whether the material being dragged could be dropped into frame "
+                    attr: 1
+                  - text: f
+                    attr: 2
+                  - text: " at its local coordinate "
+                    attr: 1
+                  - text: "(x, y)"
+                    attr: 2
+                  - text: ". The default is to accept any drop request, i.e., to return "
+                    attr: 1
+                  - text: "TRUE"
+                    attr: 2
+                  - text: ".\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: MarkDropTarget
+                    attr: 4
+                  - text: " (src, dst: Views.Frame;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tsx, sy, dx, dy, w, h, rx, ry: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\ttype: Stores.TypeName;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tisSingle, show: BOOLEAN)\rNEW, EMPTY\rMark the drop target in destination frame "
+                    attr: 1
+                  - text: dst
+                    attr: 2
+                  - text: " at point ("
+                    attr: 1
+                  - text: dx
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: dy
+                    attr: 2
+                  - text: ") for a potential dropping of material from source frame "
+                    attr: 1
+                  - text: src
+                    attr: 2
+                  - text: ", origin ("
+                    attr: 1
+                  - text: sx
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: sy
+                    attr: 2
+                  - text: "). "
+                    attr: 1
+                  - text: show
+                    attr: 2
+                  - text: " determines whether the mark should be drawn or removed. "
+                    attr: 1
+                  - text: isSingle
+                    attr: 2
+                  - text: " determines whether the selection to be dropped is a singleton. "
+                    attr: 1
+                  - text: show
+                    attr: 2
+                  - text: " indicates whether the mark should be shown or removed. "
+                    attr: 1
+                  - text: "(rx, ry)"
+                    attr: 2
+                  - text: " is the reference point inside the selection, where the drag & drop operation has started. See also "
+                    attr: 1
+                  - text: Controllers.PollDropMsg
+                    attr: 2
+                  - text: ".\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: Drop
+                    attr: 4
+                  - text: " (src, dst: Views.Frame; sx, sy, dx, dy, w, h, rx, ry: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tview: Views.View; isSingle: BOOLEAN)\rNEW, ABSTRACT\rDrop the material being dragged from source frame "
+                    attr: 1
+                  - text: src
+                    attr: 2
+                  - text: ", origin ("
+                    attr: 1
+                  - text: sx
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: sy
+                    attr: 2
+                  - text: ") and encapsulated in "
+                    attr: 1
+                  - text: view
+                    attr: 2
+                  - text: " under control of "
+                    attr: 1
+                  - text: c
+                    attr: 2
+                  - text: " in destination frame "
+                    attr: 1
+                  - text: dst
+                    attr: 2
+                  - text: " at point ("
+                    attr: 1
+                  - text: dx
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: dy
+                    attr: 2
+                  - text: "). The default is to ignore the drop. "
+                    attr: 1
+                  - text: isSingle
+                    attr: 2
+                  - text: " determines whether the selection to be dropped is a singleton. "
+                    attr: 1
+                  - text: "(rx, ry)"
+                    attr: 2
+                  - text: " is the reference point inside the selection, where the drag & drop operation has started.  See also "
+                    attr: 1
+                  - text: Controllers.DropMsg
+                    attr: 2
+                  - text: ".\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: MarkPickTarget
+                    attr: 4
+                  - text: " (src, dst: Views.Frame; sx, sy, dx, dy: INTEGER; show: BOOLEAN)\rNEW, EMPTY\rMark the drop target in destination frame "
+                    attr: 1
+                  - text: dst
+                    attr: 2
+                  - text: " at point ("
+                    attr: 1
+                  - text: dx
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: dy
+                    attr: 2
+                  - text: ") for a potential dropping of material from source frame "
+                    attr: 1
+                  - text: src
+                    attr: 2
+                  - text: ", origin ("
+                    attr: 1
+                  - text: sx
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: sy
+                    attr: 2
+                  - text: "). "
+                    attr: 1
+                  - text: show
+                    attr: 2
+                  - text: " determines whether the mark should be drawn or removed. The default is not to mark at all.\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: TrackMarks
+                    attr: 4
+                  - text: " (f: Views.Frame; x, y: INTEGER; units, extend, add: BOOLEAN)\rNEW, ABSTRACT\rTrack marks in frame "
+                    attr: 1
+                  - text: f
+                    attr: 2
+                  - text: " starting at point ("
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: y
+                    attr: 2
+                  - text: ") as specified by "
+                    attr: 1
+                  - text: units
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: extend
+                    attr: 2
+                  - text: ", and "
+                    attr: 1
+                  - text: add
+                    attr: 2
+                  - text: ". Marks are general selections and insertion points (carets). Tracking of larger logical units (e.g., words instead of characters) is requested by "
+                    attr: 1
+                  - text: units
+                    attr: 2
+                  - text: ". Continuous extension of an existing selection is requested by "
+                    attr: 1
+                  - text: extend
+                    attr: 2
+                  - text: ". Discontinuous addition to an existing selection is requested by "
+                    attr: 1
+                  - text: add
+                    attr: 2
+                  - text: ".\r\tSome controllers may ignore one or the other request, e.g., may not distinguish units of varying granularity, may not support multiple selected objects, or may not support discontinuous selections.\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: Resize
+                    attr: 4
+                  - text: " (view: Views.View; l, t, r, b: INTEGER)\rNEW, ABSTRACT\rRequest to resize "
+                    attr: 1
+                  - text: view
+                    attr: 2
+                  - text: ", which must be embedded in "
+                    attr: 1
+                  - text: c
+                    attr: 2
+                  - text: "'s model, to the size given by rectangle ("
+                    attr: 1
+                  - text: l
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: t
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: r
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: b
+                    attr: 2
+                  - text: ").\r(Typically, a controller delegates this request to its model which implements the request by using "
+                    attr: 1
+                  - text: Properties.PreferredSize
+                    attr: 2
+                  - text: " to negotiate the new size with "
+                    attr: 1
+                  - text: view
+                    attr: 2
+                  - text: ".)\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: GetSelectionBounds
+                    attr: 4
+                  - text: " (f: Views.Frame; OUT x, y, w, h: INTEGER)\rNEW, ABSTRACT\rReturn the bounding box of the selection, by giving its top-left reference point and its width and height. The bounding box is used for giving drag & drop feedback.\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: DeleteSelection
+                    attr: 4
+                  - text: "\rNEW, ABSTRACT\rDelete all objects in the current selection.\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: MoveLocalSelection
+                    attr: 4
+                  - text: " (src, dst: Views.Frame; sx, sy, dx, dy: INTEGER)\rNEW, ABSTRACT\rMove selected objects within the model of "
+                    attr: 1
+                  - text: c
+                    attr: 2
+                  - text: " from the origin given by source frame "
+                    attr: 1
+                  - text: src
+                    attr: 2
+                  - text: " and point ("
+                    attr: 1
+                  - text: sx
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: sy
+                    attr: 2
+                  - text: ") to the target given by destination frame "
+                    attr: 1
+                  - text: dst
+                    attr: 2
+                  - text: " and point ("
+                    attr: 1
+                  - text: dx
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: dy
+                    attr: 2
+                  - text: "). Since this is a move of material within a single model, there is no need for conversions, and the most \"natural\" moving semantics can be provided.\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: CopyLocalSelection
+                    attr: 4
+                  - text: " (src, dst: Views.Frame; sx, sy, dx, dy: INTEGER)\rNEW, ABSTRACT\rCopy selected objects within the model of "
+                    attr: 1
+                  - text: c
+                    attr: 2
+                  - text: " from the origin given by source frame "
+                    attr: 1
+                  - text: src
+                    attr: 2
+                  - text: " and point ("
+                    attr: 1
+                  - text: sx
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: sy
+                    attr: 2
+                  - text: ") to the target given by destination frame "
+                    attr: 1
+                  - text: dst
+                    attr: 2
+                  - text: " and point ("
+                    attr: 1
+                  - text: dx
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: dy
+                    attr: 2
+                  - text: "). Since this is a copy of material within a single model, there is no need for conversions, and the most \"natural\" copying semantics can be provided.\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: SelectionCopy
+                    attr: 4
+                  - text: " (): Model\rNEW, ABSTRACT\rReturn a copy of the selected objects, encapsulated in the returned model.\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: NativePaste
+                    attr: 4
+                  - text: " (m: Models.Model; f: Views.Frame)\rNEW, ABSTRACT\rPaste a native model into the model of "
+                    attr: 1
+                  - text: c
+                    attr: 2
+                  - text: " as displayed in frame "
+                    attr: 1
+                  - text: f
+                    attr: 2
+                  - text: ". Since the model is native, it is to be merged into the model of "
+                    attr: 1
+                  - text: c
+                    attr: 2
+                  - text: " rather than wrapped into a view and embedded.\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: ArrowChar
+                    attr: 4
+                  - text: " (f: Views.Frame; ch: CHAR; units, select: BOOLEAN)\rNEW, ABSTRACT\rInterpret the arrow character "
+                    attr: 1
+                  - text: ch
+                    attr: 2
+                  - text: ", i.e., one out of the following list. The interpretation is to be modified as requested by "
+                    attr: 1
+                  - text: units
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: select
+                    attr: 2
+                  - text: ". The standard interpretation of arrow characters is the modification of the current selection or the moving of the insertion point. Modifying or moving in larger units (e.g., words instead of characters) is requested by "
+                    attr: 1
+                  - text: units
+                    attr: 2
+                  - text: ". Establishment of a selection if requested by "
+                    attr: 1
+                  - text: select
+                    attr: 2
+                  - text: ".\r\tSome controllers may ignore one or the other request, e.g., may not distinguish units of varying granularity or may not support selections.\r\rTable of arrow characters:\r\t"
+                    attr: 1
+                  - view:
+                      kind: TextViews.StdView
+                      storeKind: store
+                      typeChain:
+                        - TextViews.StdViewDesc
+                        - TextViews.ViewDesc
+                        - Containers.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 9
+                      bodyPos: 3639
+                      bodyLen: 984
+                      hideMarks: true
+                      defaultRuler:
+                        left: 0
+                        right: 5940000
+                        asc: 127000
+                        dsc: 25400
+                        grid: 1
+                        opts: 0x00000001
+                      defaultAttr:
+                        font: Arial
+                        size: 114300
+                        color: 0x01000000
+                        weight: 400
+                        style: 0x00000000
+                      controller:
+                        kind: TextControllers.StdCtrl
+                        storeKind: store
+                        typeChain:
+                          - TextControllers.StdCtrlDesc
+                          - TextControllers.ControllerDesc
+                          - Containers.ControllerDesc
+                          - Controllers.ControllerDesc
+                          - Stores.StoreDesc
+                        id: 14
+                        bodyPos: 4440
+                        bodyLen: 9
+                      content:
+                        kind: TextModels.StdModel
+                        storeKind: elem
+                        typeChain:
+                          - TextModels.StdModelDesc
+                          - TextModels.ModelDesc
+                          - Containers.ModelDesc
+                          - Models.ModelDesc
+                          - Stores.StoreDesc
+                        id: 2
+                        bodyPos: 3664
+                        bodyLen: 638
+                        runListLen: 388
+                        attrPool:
+                          - # [0]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 400
+                            style: 0x00000000
+                          - # [1]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 400
+                            style: 0x00000001
+                        flow:
+                          - ruler:
+                              left: 0
+                              right: 5940000
+                              asc: 127000
+                              dsc: 25400
+                              grid: 1
+                              opts: 0x00000001
+                              tabs:
+                                - { stop: 360000 }
+                                - { stop: 792000 }
+                              attr: 0
+                              w: 360000000
+                              h: 444500
+                          - text: name
+                            attr: 1
+                          - text: "\t"
+                            attr: 0
+                          - text: code
+                            attr: 1
+                          - text: "\t"
+                            attr: 0
+                          - text: meaning
+                            attr: 1
+                          - text: "\raL\t1CX\tarrow left\raR\t1DX\tarrow right\raU\t1EX\tarrow up\raD\t1FX\tarrow down\rpL\t10X\tpage left\rpR\t11X\tpage right\rpU\t12X\tpage up\rpD\t13X\tpage down\rdL\t14X\tdocument left\rdR\t15X\tdocument right\rdU\t16X\tdocument up\rdD\t17X\tdocument down\r"
+                            attr: 0
+                    attr: 1
+                    w: 2459700
+                    h: 2238375
+                  - text: "\rThe intention is a modification or move in the indicated direction on the smallest supported granularity (\"arrow\"), on the basis of \"pages\" as defined by the size of frame "
+                    attr: 1
+                  - text: f
+                    attr: 2
+                  - text: ", or on the basis of the whole \"document\", i.e., the far extremes of the model of "
+                    attr: 1
+                  - text: c
+                    attr: 2
+                  - text: ". The precise interpretation of the directions and units is left to the specific controller.\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: ControlChar
+                    attr: 4
+                  - text: " (f: Views.Frame; ch: CHAR)\rNEW, ABSTRACT\rHandle entry of control character "
+                    attr: 1
+                  - text: ch
+                    attr: 2
+                  - text: " related to the model and view of "
+                    attr: 1
+                  - text: c
+                    attr: 2
+                  - text: " as displayed in frame "
+                    attr: 1
+                  - text: f
+                    attr: 2
+                  - text: ".\r\rTable of control characters:\r\t"
+                    attr: 1
+                  - view:
+                      kind: TextViews.StdView
+                      storeKind: store
+                      typeChain:
+                        - TextViews.StdViewDesc
+                        - TextViews.ViewDesc
+                        - Containers.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 18
+                      bodyPos: 4723
+                      bodyLen: 674
+                      hideMarks: true
+                      defaultRuler:
+                        left: 0
+                        right: 5940000
+                        asc: 127000
+                        dsc: 25400
+                        grid: 1
+                        opts: 0x00000001
+                      defaultAttr:
+                        font: Arial
+                        size: 114300
+                        color: 0x01000000
+                        weight: 400
+                        style: 0x00000000
+                      controller:
+                        kind: TextControllers.StdCtrl
+                        storeKind: store
+                        typeChain:
+                          - TextControllers.StdCtrlDesc
+                          - TextControllers.ControllerDesc
+                          - Containers.ControllerDesc
+                          - Controllers.ControllerDesc
+                          - Stores.StoreDesc
+                        id: 23
+                        bodyPos: 5214
+                        bodyLen: 9
+                      content:
+                        kind: TextModels.StdModel
+                        storeKind: elem
+                        typeChain:
+                          - TextModels.StdModelDesc
+                          - TextModels.ModelDesc
+                          - Containers.ModelDesc
+                          - Models.ModelDesc
+                          - Stores.StoreDesc
+                        id: 5
+                        bodyPos: 4748
+                        bodyLen: 444
+                        runListLen: 267
+                        attrPool:
+                          - # [0]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 400
+                            style: 0x00000000
+                          - # [1]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 400
+                            style: 0x00000001
+                        flow:
+                          - ruler:
+                              left: 0
+                              right: 5940000
+                              asc: 127000
+                              dsc: 25400
+                              grid: 1
+                              opts: 0x00000001
+                              tabs:
+                                - { stop: 360000 }
+                                - { stop: 792000 }
+                              attr: 0
+                              w: 360000000
+                              h: 444500
+                          - text: name
+                            attr: 1
+                          - text: "\t"
+                            attr: 0
+                          - text: code
+                            attr: 1
+                          - text: "\t"
+                            attr: 0
+                          - text: meaning
+                            attr: 1
+                          - text: "\renter\t3X\tenter\rrdel\t7X\tright delete\rdel\t8X\tleft delete\rtab\t09X\ttabulator\rltab\t0AX\treverse tabulator\rline\t0DX\tline\rpara\t0EX\tparagraph\resc\t1BX\tescape\r"
+                            attr: 0
+                    attr: 1
+                    w: 2459700
+                    h: 1571625
+                  - text: "\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: PasteChar
+                    attr: 4
+                  - text: " (ch: CHAR)\rNEW, ABSTRACT\rPaste character "
+                    attr: 1
+                  - text: ch
+                    attr: 2
+                  - text: " into the model of "
+                    attr: 1
+                  - text: c
+                    attr: 2
+                  - text: ".\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: PasteView
+                    attr: 4
+                  - text: " (f: Views.Frame; v: Views.View; w, h: INTEGER)\rNEW, ABSTRACT\rPaste view "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: " with desired size ("
+                    attr: 1
+                  - text: w
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: h
+                    attr: 2
+                  - text: ") into the model of "
+                    attr: 1
+                  - text: c
+                    attr: 2
+                  - text: ".\r(Typically, a controller delegates this request to its model which implements the request by using "
+                    attr: 1
+                  - text: Properties.PreferredSize
+                    attr: 2
+                  - text: " to negotiate the new size with "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: ".)\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: HasSelection
+                    attr: 4
+                  - text: " (): BOOLEAN\rNEW, EXTENSIBLE\rReturn whether the controller currently has a selection. By default, only singleton selections are supported. To be extended to include intrinsic selections.\r\rPre\rc.ThisModel() # NIL\t20\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: Selectable
+                    attr: 4
+                  - text: " (): BOOLEAN\rNEW, ABSTRACT\rReturn whether the controller could establish a nonempty selection. If something (or everything) is already selected, this is considered selectable.\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: Singleton
+                    attr: 4
+                  - text: " (): Views.View\rNEW\rIf the controller currently has a singleton selection, then the selected view is returned, else "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: ".\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: SetSingleton
+                    attr: 4
+                  - text: " (s: Views.View)\rNEW, EXTENSIBLE\rSet the controller's selection to a singleton selection covering view "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: ". IF "
+                    attr: 1
+                  - text: s = NIL
+                    attr: 2
+                  - text: ", the current singleton selection is cleared. Needs to be extended to adjust intrinsic selection state accordingly.\r\rPre\rc.ThisModel() # NIL\t20\r~(noSelection IN c.opts)\t21\rs # NIL\r\ts.context # NIL\t22\r\ts.context.ThisModel() = c.ThisModel()\t23\r\rPost\rc.Singleton() = s\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: SelectAll
+                    attr: 4
+                  - text: " (select: BOOLEAN)\rNEW, ABSTRACT\rSet the selection to its maximum extent, i.e., select all intrinsic content of the controller's model plus all embedded views. For an empty model there is no visible result; for a model with only one embedded view and no intrinsic contents a singleton selection results.\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: InSelection
+                    attr: 4
+                  - text: " (f: Views.Frame; x, y: INTEGER): BOOLEAN\rNEW, ABSTRACT\rTest whether in frame "
+                    attr: 1
+                  - text: f
+                    attr: 2
+                  - text: " the point ("
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: y
+                    attr: 2
+                  - text: ") lies within the current selection.\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: MarkSelection
+                    attr: 4
+                  - text: " (f: Views.Frame; show: BOOLEAN)\rNEW, EXTENSIBLE\rDepending on "
+                    attr: 1
+                  - text: show
+                    attr: 2
+                  - text: ", show or hide the selection's visual marking. The default handles singleton selections only. To be "
+                    attr: 1
+                  - text: replaced
+                    attr: 2
+                  - text: " to include intrinsic selections.\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: SetFocus
+                    attr: 4
+                  - text: " (focus: Views.View)\rNEW\rSets the current subfocus to "
+                    attr: 1
+                  - text: focus
+                    attr: 2
+                  - text: "; if "
+                    attr: 1
+                  - text: focus = NIL
+                    attr: 2
+                  - text: ", the current subfocus is removed.\r\rPre\rc.ThisModel() # NIL\t20\rfocus # NIL\r\tfocus.context # NIL\t21\r\tfocus.context.ThisModel() = c.ThisModel()\t22\r\rPost\rc.ThisFocus() = focus\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: HasCaret
+                    attr: 4
+                  - text: " (): BOOLEAN\rNEW, ABSTRACT\rReturn whether the controller has a valid caret (insertion point).\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: MarkCaret
+                    attr: 4
+                  - text: " (f: Views.Frame; show: BOOLEAN)\rNEW, ABSTRACT\rDepending on "
+                    attr: 1
+                  - text: show
+                    attr: 2
+                  - text: ", show or hide the current caret's visual marking.\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: Mark
+                    attr: 4
+                  - text: " (f: Views.Frame; l, t, r, b: INTEGER; show: BOOLEAN)\rNEW, EXTENSIBLE\rExcept for performance, equivalent to:\r\tMarkFocus(c, f, show); c.MarkSelection(f, show); c.MarkCaret(f, show)\rTo be extended to cover additional intrinsic marking.\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: RestoreMarks
+                    attr: 4
+                  - text: " (f: Views.Frame; l, t, r, b: INTEGER)\rClarification of inherited procedure\rCalls "
+                    attr: 1
+                  - text: Mark
+                    attr: 2
+                  - text: " to show all marks in ("
+                    attr: 1
+                  - text: l
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: t
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: r
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: b
+                    attr: 2
+                  - text: "), then, if no subfocus exists and "
+                    attr: 1
+                  - text: c.opts
+                    attr: 2
+                  - text: " indicates "
+                    attr: 1
+                  - text: mask
+                    attr: 2
+                  - text: " mode, tries to establish a subfocus: the first embedded view that wants to claim the focus ("
+                    attr: 1
+                  - text: Properties.FocusPref.setFocus
+                    attr: 2
+                  - text: ) gets it. If the new subfocus wants to start off with an initially selected contents (
+                    attr: 1
+                  - text: Properties.FocusPref.selectOnFocus
+                    attr: 2
+                  - text: "), it is also fully selected.\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: Neutralize
+                    attr: 4
+                  - text: "\rClarification of inherited procedure\rRemove all modal marks, including focus, selection, and caret. The default handles focus and selection. To be extended to handle caret and possibly further marks.\rExcept for performance, the default is equivalent to:"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - text: "\tc.SetFocus(NIL); c.SelectAll(deselect)\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: HandleCtrlMsg
+                    attr: 4
+                  - text: " (f: Views.Frame; VAR msg: Controllers.Message;\r\t\t\t\t\t\t\tVAR focus: Views.View)\rClarification of inherited procedure\rHandles "
+                    attr: 1
+                  - text: Controllers.PollCursorMsg
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Controllers.PollOpsMsg
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Controllers.TrackMsg
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Controllers.EditMsg
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Controllers.TransferMessage
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Controllers.SelectMsg
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Controllers.MarkMsg
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Controllers.ReplaceViewMsg
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Properties.CollectMsg
+                    attr: 2
+                  - text: ", and "
+                    attr: 1
+                  - text: Properties.EmitMsg
+                    attr: 2
+                  - text: ".\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: HandlePropMsg
+                    attr: 4
+                  - text: " (VAR p: Properties.Message)\rClarification of inherited procedure\rThe default is to handle "
+                    attr: 1
+                  - text: Properties.SetMsg
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: Properties.PollMsg
+                    attr: 2
+                  - text: " by splitting the handling of native and embedded properties and set or return the combined property list. Also, unless "
+                    attr: 1
+                  - text: noSelection
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: noFocus
+                    attr: 2
+                  - text: ", and "
+                    attr: 1
+                  - text: noCaret
+                    attr: 2
+                  - text: " are set in "
+                    attr: 1
+                  - text: c.opts
+                    attr: 2
+                  - text: ", field "
+                    attr: 1
+                  - text: Properties.FocusPref.setFocus
+                    attr: 2
+                  - text: " is set.\r\rPre\rc.ThisModel() # NIL\t20\r\r\rTYPE "
+                    attr: 1
+                  - text: Directory
+                    attr: 4
+                  - text: "\rABSTRACT\rDirectory for controllers.\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: New
+                    attr: 4
+                  - text: " (): Controller\rNEW, EXTENSIBLE\rExcept for performance, equivalent to:\r\t"
+                    attr: 1
+                  - text: RETURN
+                    attr: 4
+                  - text: " d.NewController({})\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: NewController
+                    attr: 4
+                  - text: " (opts: SET): Controller\rNEW, ABSTRACT\rReturn new controller with options "
+                    attr: 1
+                  - text: opts
+                    attr: 2
+                  - text: ".\r\r\rTYPE "
+                    attr: 1
+                  - text: DropPref
+                    attr: 4
+                  - text: " = RECORD (Properties.Preference)\rThis message is sent to a contained view in a container when the container needs to decide if something should be dropped into the view or into the container. This message can be intercepted to allow drag and drop also when the container itself normally would catch the drop messages, i.e. when the container is in layout mode.\r\r"
+                    attr: 1
+                  - text: mode
+                    attr: 4
+                  - text: "-: SET\rThe current mode of the container.\r\r"
+                    attr: 1
+                  - text: okToDrop
+                    attr: 4
+                  - text: ": BOOLEAN\rSet to TRUE if the view should recieve drop messages also in the mode given by "
+                    attr: 1
+                  - text: "mode.\r"
+                    attr: 2
+                  - text: "\r\rTYPE "
+                    attr: 1
+                  - text: GetOpts
+                    attr: 4
+                  - text: " = RECORD (Views.PropMessage)\rThis message is sent to a selected view to ask about the container mode of this view. If a view answers this message it should set "
+                    attr: 1
+                  - text: valid
+                    attr: 2
+                  - text: " to the options that apply to the view and "
+                    attr: 1
+                  - text: opts
+                    attr: 2
+                  - text: " to the current values of these options. Whenever GetOpts is answered the SetOpts-message must also be answered.\r\r"
+                    attr: 1
+                  - text: valid
+                    attr: 4
+                  - text: ": SET\rShould be set to the options that apply to the view.\r\r"
+                    attr: 1
+                  - text: opts
+                    attr: 4
+                  - text: ": SET\rCurrent values of the options pointed out in "
+                    attr: 1
+                  - text: valid
+                    attr: 2
+                  - text: ".\r\r\rTYPE "
+                    attr: 1
+                  - text: SetOpts
+                    attr: 4
+                  - text: " = RECORD (Views.PropMessage)\rSent to a view to indicate that its options should be changed to the values indicated by "
+                    attr: 1
+                  - text: valid
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: opts
+                    attr: 2
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: valid
+                    attr: 4
+                  - text: ": SET\rMask to indicate which values should be set.\r\r"
+                    attr: 1
+                  - text: opts
+                    attr: 4
+                  - text: ": SET\rValues of the options indicated by "
+                    attr: 1
+                  - text: valid
+                    attr: 2
+                  - text: ".\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: Focus
+                    attr: 4
+                  - text: " (): Controller\rReturns the current focus view's container controller, if possible.\r\rPROCEDURE "
+                    attr: 1
+                  - text: FocusSingleton
+                    attr: 4
+                  - text: " (): Views.View\rReturns the current focus view's singleton selection, if possible.\r\rPROCEDURE "
+                    attr: 1
+                  - text: MarkSingleton
+                    attr: 4
+                  - text: " (c: Controller; f: Views.Frame; show: BOOLEAN)\rUsed internally.\r\rPROCEDURE "
+                    attr: 1
+                  - text: FadeMarks
+                    attr: 4
+                  - text: " (c: Controller; show: BOOLEAN)\rUsed internally.\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 31
+          bodyPos: 38681
+          bodyLen: 8

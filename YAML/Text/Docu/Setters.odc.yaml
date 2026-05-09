@@ -1,0 +1,766 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Text\\Docu\\Setters.odc"
+  size: 20616
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 20485
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 20299
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 20213
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                asc: 121900
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 6
+                bodyPos: 20213
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 19699
+                runListLen: 1866
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                flow:
+                  - text: TextSetters
+                    attr: 0
+                  - text: "\r\rDEFINITION TextSetters;\r\r\tIMPORT Stores, Views, Properties, TextModels, TextRulers;\r\r\tCONST lineBreak = 0; wordJoin = 1; wordPart = 2; flexWidth = 3;\r\r\tTYPE\r\t\tPref = RECORD (Properties.Preference)\r\t\t\topts: SET;\r\t\t\tendW: INTEGER;\r\t\t\tdsc: INTEGER\r\t\tEND;\r\r\t\tReader = POINTER TO ABSTRACT RECORD\r\t\t\tr-: TextModels.Reader;\r\t\t\tsString: ARRAY 64 OF SHORTCHAR;\r\t\t\tstring: ARRAY 64 OF CHAR;\r\t\t\tview: Views.View;\r\t\t\ttextOpts: SET;\r\t\t\tmask: CHAR;\r\t\t\tsetterOpts: SET;\r\t\t\tw, endW, h, dsc: INTEGER;\r\t\t\tattr: TextModels.Attributes;\r\t\t\teot: BOOLEAN;\r\t\t\tpos: INTEGER;\r\t\t\tx: INTEGER;\r\t\t\tadjStart: INTEGER;\r\t\t\tspaces: INTEGER;\r\t\t\ttabIndex: INTEGER;\r\t\t\ttabType: SET;\r\t\t\tvw: INTEGER;\r\t\t\thideMarks: BOOLEAN;\r\t\t\truler: TextRulers.Ruler;\r\t\t\trpos: INTEGER;\r\t\t\t(rd: Reader) Set (old: TextModels.Reader; text: TextModels.Model; x, pos: INTEGER;\r\t\t\t\t\t\t\t\t\t\truler: TextRulers.Ruler; rpos, vw: INTEGER; hideMarks: BOOLEAN),\r\t\t\t\t\t\t\t\t\t\tNEW, EXTENSIBLE;\r\t\t\t(rd: Reader) Read, NEW, EXTENSIBLE;\r\t\t\t(rd: Reader) AdjustWidth (start, pos: INTEGER; IN box: LineBox; VAR w: INTEGER),\r\t\t\t\t\t\t\t\t\t\tNEW, ABSTRACT;\r\t\t\t(rd: Reader) SplitWidth (w: INTEGER): INTEGER, NEW, ABSTRACT\r\t\tEND;\r\r\t\tSetter = POINTER TO ABSTRACT RECORD (Stores.Store)\r\t\t\ttext-: TextModels.Model;\r\t\t\tdefRuler-: TextRulers.Ruler;\r\t\t\tvw-: INTEGER;\r\t\t\thideMarks-: BOOLEAN;\r\t\t\t(s: Setter) ConnectTo (text: TextModels.Model; defRuler: TextRulers.Ruler;\r\t\t\t\t\t\t\t\t\t\tvw: INTEGER; hideMarks: BOOLEAN), NEW, EXTENSIBLE;\r\t\t\t(s: Setter) ThisPage (pageH: INTEGER; pageNo: INTEGER): INTEGER, NEW, ABSTRACT;\r\t\t\t(s: Setter) NextPage (pageH: INTEGER; start: INTEGER): INTEGER, NEW, ABSTRACT;\r\t\t\t(s: Setter) ThisSequence (pos: INTEGER): INTEGER, NEW, ABSTRACT;\r\t\t\t(s: Setter) NextSequence (start: INTEGER): INTEGER, NEW, ABSTRACT;\r\t\t\t(s: Setter) PreviousSequence (start: INTEGER): INTEGER, NEW, ABSTRACT;\r\t\t\t(s: Setter) GetWord (pos: INTEGER; OUT beg, end: INTEGER), NEW, ABSTRACT;\r\t\t\t(s: Setter) GetLine (start: INTEGER; OUT box: LineBox), NEW, ABSTRACT;\r\t\t\t(s: Setter) GetBox (start, end, maxW, maxH: INTEGER; OUT w, h: INTEGER), NEW, ABSTRACT;\r\t\t\t(s: Setter) NewReader (old: Reader): Reader, NEW, ABSTRACT;\r\t\t\t(s: Setter) GridOffset (dsc: INTEGER; IN box: LineBox): INTEGER, NEW, ABSTRACT\r\t\tEND;\r\r\t\tLineBox = RECORD\r\t\t\tlen: INTEGER;\r\t\t\truler: TextRulers.Ruler;\r\t\t\trpos: INTEGER;\r\t\t\tleft, right, asc, dsc: INTEGER;\r\t\t\trbox, bop, adj, eot, views: BOOLEAN;\r\t\t\tskipOff: INTEGER;\r\t\t\tadjOff: INTEGER;\r\t\t\tspaces: INTEGER;\r\t\t\tadjW: INTEGER;\r\t\t\ttabW: ARRAY TextRulers.maxTabs OF INTEGER\r\t\tEND;\r\r\t\tDirectory = POINTER TO RECORD\r\t\t\t(d: Directory) New (): Setter, NEW, ABSTRACT\r\t\tEND;\r\r\tVAR dir-, stdDir-: Directory;\r\r\tPROCEDURE SetDir (d: Directory);\r\rEND TextSetters.\r\r\rTextSetters set texts (one-dimensional streams of characters and embedded views) into twodimensional columns or pages. Special textaware views embedded in the set text, so-called rulers, are interpreted as requests for special setting formats.\r\r\rCONST "
+                    attr: 1
+                  - text: lineBreak
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: wordJoin
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: wordPart
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: flexWidth
+                    attr: 2
+                  - text: "\rPossible values of "
+                    attr: 1
+                  - text: Pref.opts
+                    attr: 3
+                  - text: " indicating preferences of setteraware views embedded in a text. The inclusion of "
+                    attr: 1
+                  - text: lineBreak
+                    attr: 3
+                  - text: " overrides any possible inclusion of "
+                    attr: 1
+                  - text: wordJoin
+                    attr: 3
+                  - text: ".\rIf "
+                    attr: 1
+                  - text: lineBreak
+                    attr: 3
+                  - text: " is included, the setter is requested to break the line just after the view.\rIf "
+                    attr: 1
+                  - text: wordJoin
+                    attr: 3
+                  - text: " is included, the view requests that it should not be used as a position to break the words to the left and to the right of the view at the end of a line.\rIf "
+                    attr: 1
+                  - text: wordPart
+                    attr: 3
+                  - text: " is included, the view is treated as part of the word that it is embedded into (which effects the range selected by a \"select word\" operation).\rIf "
+                    attr: 1
+                  - text: flexWidth
+                    attr: 3
+                  - text: " is included, the view is treated the same way as ordinary blanks, i.e. its width is adjusted when setting a line in fully adjusted mode.\r\r\rTYPE "
+                    attr: 1
+                  - text: Pref (Properties.Preference)
+                    attr: 2
+                  - text: "\rPossible preferences of setteraware views embedded into a text.\r\r"
+                    attr: 1
+                  - text: opts
+                    attr: 2
+                  - text: ": SET\rSetting options drawn from {"
+                    attr: 1
+                  - text: lineBreak
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: wordJoin
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: wordPart
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: flexWidth
+                    attr: 3
+                  - text: "}, as defined above.\r\r"
+                    attr: 1
+                  - text: endW
+                    attr: 2
+                  - text: ": INTEGER\t[units]\t"
+                    attr: 1
+                  - text: preset to width of view
+                    attr: 3
+                  - text: "\rIf view happens to be placed at the end of a line, i.e., a line break is immediately following, the view may request a width different from its usual width. (For example, a softhyphen has a positive end width, while it has a zero width; a blank has a positive width, but a zero end width.)\r\r"
+                    attr: 1
+                  - text: dsc
+                    attr: 2
+                  - text: ": INTEGER\t[units]\t"
+                    attr: 1
+                  - text: preset to dominating line descender
+                    attr: 3
+                  - text: "\rA view may request a special descender value, thereby adjusting its placement relative to the baseline.\r\r\rTYPE "
+                    attr: 1
+                  - text: Reader
+                    attr: 2
+                  - text: "\rABSTRACT\rA reader to read through lines returned by a setter. The reader is a conceptual extension of a "
+                    attr: 1
+                  - text: TextModels.Reader
+                    attr: 3
+                  - text: ", but instead of just returning the elements of a stream, it also sets the elements on a line and returns placement coordinates relative to the lines baseline origin.\r\r"
+                    attr: 1
+                  - text: r
+                    attr: 2
+                  - text: "-: TextModels.Reader\rThe text reader used to connect the reader to a text. The text reader state is used as a one element lookahead state for the reader.\r\r"
+                    attr: 1
+                  - text: sString
+                    attr: 2
+                  - text: ": ARRAY 64 OF SHORTCHAR\rIf sString # \"\", then the element read most recently was a short character or a string of short characters. Single short characters are returned in "
+                    attr: 1
+                  - text: sString
+                    attr: 3
+                  - text: "[0]. If "
+                    attr: 1
+                  - text: view
+                    attr: 3
+                  - text: " # NIL, then the element read most recently was a view masked as a short character.\r\r"
+                    attr: 1
+                  - text: string
+                    attr: 2
+                  - text: ": ARRAY 64 OF CHAR\rIf string # \"\", then the element read most recently was a character or a string of characters. Single characters are returned in "
+                    attr: 1
+                  - text: string
+                    attr: 3
+                  - text: "[0]. If "
+                    attr: 1
+                  - text: view
+                    attr: 3
+                  - text: " # NIL, then the element read most recently was a view masked as a character.\r\r"
+                    attr: 1
+                  - text: view
+                    attr: 2
+                  - text: ": Views.View\rThe element read most recently read was an embedded view.\r\r"
+                    attr: 1
+                  - text: textOpts
+                    attr: 2
+                  - text: ": SET\r"
+                    attr: 1
+                  - text: mask
+                    attr: 2
+                  - text: ": CHAR\r"
+                    attr: 1
+                  - text: setterOpts
+                    attr: 2
+                  - text: ": SET\r"
+                    attr: 1
+                  - text: w
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: endW
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: h
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: dsc
+                    attr: 2
+                  - text: ": INTEGER\t[units]\r"
+                    attr: 1
+                  - text: attr
+                    attr: 2
+                  - text: ": TextModels.Attributes\rProperties of the element read most recently: Its text options (if textaware, else preset default); its mask character (if "
+                    attr: 1
+                  - text: TextModels.maskChar
+                    attr: 3
+                  - text: " IN "
+                    attr: 1
+                  - text: textOpts
+                    attr: 3
+                  - text: "); its setter options (if setteraware, else preset default); its width, end width (if setteraware, else preset default), height, and descender (if setteraware, else preset default); its text attributes.\r\r"
+                    attr: 1
+                  - text: eot
+                    attr: 2
+                  - text: ": BOOLEAN\rSet if the last trial to read hit the end of text.\r\r"
+                    attr: 1
+                  - text: pos
+                    attr: 2
+                  - text: ": INTEGER\rPosition of the reader in the text (one past the element read most recently).\r\r"
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ": INTEGER\t[units]\rHorizontal position of the reader in the line. "
+                    attr: 1
+                  - text: To be advanced by client of reader
+                    attr: 3
+                  - text: ". For nonadjusted setting, increment by "
+                    attr: 1
+                  - text: w
+                    attr: 3
+                  - text: ", else utilize "
+                    attr: 1
+                  - text: AdjustWidth
+                    attr: 3
+                  - text: " below.\r\r"
+                    attr: 1
+                  - text: adjStart
+                    attr: 2
+                  - text: ": INTEGER\t[units]\rThe first position (inclusive) to begin space adjustment at. This is used to suppress space adjustment in all but the last section of several "
+                    attr: 1
+                  - text: tab
+                    attr: 3
+                  - text: "-separated sections of a line.\r\r"
+                    attr: 1
+                  - text: spaces
+                    attr: 2
+                  - text: ": INTEGER\t[units]\rNumber of spaces encountered by reader so far. (Reset to 0 when "
+                    attr: 1
+                  - text: adjStart
+                    attr: 3
+                  - text: " gets reset on reading a "
+                    attr: 1
+                  - text: tab
+                    attr: 3
+                  - text: ".)\r\r"
+                    attr: 1
+                  - text: tabIndex
+                    attr: 2
+                  - text: ": INTEGER\rIndex of the most recently processed tab stop (initially -1).\r\r"
+                    attr: 1
+                  - text: tabType
+                    attr: 2
+                  - text: ": SET\rType of the most recently processed tab stop (initially {}).\r\r"
+                    attr: 1
+                  - text: vw
+                    attr: 2
+                  - text: ": INTEGER\t[units]\rWidth to set text against.\r\r"
+                    attr: 1
+                  - text: hideMarks
+                    attr: 2
+                  - text: ": BOOLEAN\rHideable marks are requested to be hidden in the correct line. If the reader encounters an embedded view that by its text preferences is "
+                    attr: 1
+                  - text: hideable
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: hideMarks
+                    attr: 3
+                  - text: " is set, then the view is reduced to zero width and height.\r\r"
+                    attr: 1
+                  - text: ruler
+                    attr: 2
+                  - text: ": TextRulers.Ruler\rRuler dominating the setting of the current line.\r\r"
+                    attr: 1
+                  - text: rpos
+                    attr: 2
+                  - text: ": INTEGER\rPosition of the dominating ruler in the text. ("
+                    attr: 1
+                  - text: rpos
+                    attr: 3
+                  - text: " = -1 if the ruler is not part of the text and there is no ruler in the text that dominates the current line. Typically, this is used to apply a default ruler to the beginning of a text that has no ruler at position 0.)\r\rPROCEDURE (rd: Reader) "
+                    attr: 1
+                  - text: Set
+                    attr: 2
+                  - text: " (old: TextModels.Reader;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\ttext: TextModels.Model; x, pos: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\truler: TextRulers.Ruler; rpos, vw: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\thideMarks: BOOLEAN)\rNEW, EXTENSIBLE\rConnect the reader to a text line, possibly reusing an old text reader that is no longer in use. The reader is given the "
+                    attr: 1
+                  - text: text
+                    attr: 3
+                  - text: ", the line's horizontal left margin "
+                    attr: 1
+                  - text: x
+                    attr: 3
+                  - text: ", the line's starting position "
+                    attr: 1
+                  - text: pos
+                    attr: 3
+                  - text: " , the "
+                    attr: 1
+                  - text: ruler
+                    attr: 3
+                  - text: " and its position "
+                    attr: 1
+                  - text: rpos
+                    attr: 3
+                  - text: " dominating the line, and whether hideable marks are to be hidden. "
+                    attr: 1
+                  - text: vw
+                    attr: 3
+                  - text: " is the width against which text should be set.\r\rPre\rtext # NIL\t20\r0 <= pos\t21\rpos <= text.Length()\t22\rruler # NIL\t23\r-1 <= rpos\t24\rrpos <= pos\t25\r\rPost\rrd.r # NIL\rrd.r.Base() = text\rrd.r.eot OR rd.r.Pos() = pos + 1\rrd.sString = \"\"\rrd.string = \"\"\rrd.view = NIL\rrd.textOpts = {}\rrd.setterOpts = {}\rrd.w = 0, rd.endW = 0, rd.h = 0, rd.dsc = 0\rrd.attr = NIL\rrd.eot = FALSE\rrd.pos = pos\rrd.x = x\rrd.adjStart = pos, rd.spaces = 0\rrd.tabIndex = -1, rd.tabType = {}\rrd.ruler = ruler, rd.rpos = rpos\rrd.hideMarks = hideMarks\r\rPROCEDURE (rd: Reader) "
+                    attr: 1
+                  - text: Read
+                    attr: 2
+                  - text: "\rNEW, EXTENSIBLE (to be called by extensions first)\rRead next element in line.\r\rPost\r~rd.r.eot\r\trd.r.Pos() = rd.r'.Pos() + 1\r~rd.eot\r\tview # NIL\r\t\trd.pos = rd'.pos + 1\r\tstring # \"\"\r\t\trd.pos = rd'.pos + Length(rd.string)\r\tlstring # \"\"\r\t\trd.pos = rd'.pos + Length(rd.string)\rrd.eot\r\trd.w = rd.endW = 0\r\trd.h = ruler.style.attr.asc + ruler.style.attr.dsc\r\trd.dsc = ruler.style.attr.dsc\r\rPROCEDURE (rd: Reader) "
+                    attr: 1
+                  - text: AdjustWidth
+                    attr: 2
+                  - text: " (start, pos: INTEGER; IN box: LineBox;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR w: INTEGER)\rNEW, ABSTRACT\rGiven a line "
+                    attr: 1
+                  - text: box
+                    attr: 3
+                  - text: ", its starting position "
+                    attr: 1
+                  - text: start
+                    attr: 3
+                  - text: ", and the position "
+                    attr: 1
+                  - text: pos
+                    attr: 3
+                  - text: " of the element last read by the reader (normally "
+                    attr: 1
+                  - text: pos
+                    attr: 3
+                  - text: " = "
+                    attr: 1
+                  - text: rd.pos
+                    attr: 3
+                  - text: "), "
+                    attr: 1
+                  - text: AdjustWidth
+                    attr: 3
+                  - text: " takes that element's width "
+                    attr: 1
+                  - text: w
+                    attr: 3
+                  - text: " (normally "
+                    attr: 1
+                  - text: w
+                    attr: 3
+                  - text: " = "
+                    attr: 1
+                  - text: rd.w
+                    attr: 3
+                  - text: ") and adjusts it according to the formatting requirements of the line.\r\rPROCEDURE (rd: Reader) "
+                    attr: 1
+                  - text: SplitWidth
+                    attr: 2
+                  - text: " (w: INTEGER): INTEGER\rNEW, ABSTRACT\rFor the element read last by the reader, compute a split width. This is used for interactive purposes, where the split width splits coordinates into two half intervals: all coordinates to the left of the split point belong to the left edge of the element, all coordinates to the right of the split point belong to the right edge.\r\rPost\r0 <= result <= w\r\r\rTYPE "
+                    attr: 1
+                  - text: Setter (Stores.Store)
+                    attr: 2
+                  - text: "\rABSTRACT\rA setter can be used to set a text into lines, paragraphs, columns, and pages.\r\r"
+                    attr: 1
+                  - text: text
+                    attr: 2
+                  - text: "-: TextModels.Model\tsetter connected iff text # NIL\rText to be set.\r\r"
+                    attr: 1
+                  - text: defRuler
+                    attr: 2
+                  - text: "-: TextRulers.Ruler\rDefault ruler to be used to set the beginning of the text, in case the text has no ruler at position 0.\r\r"
+                    attr: 1
+                  - text: vw
+                    attr: 2
+                  - text: "-: INTEGER\t[units]\rTotal line width the setter should set against.\r\r"
+                    attr: 1
+                  - text: hideMarks
+                    attr: 2
+                  - text: "-: BOOLEAN\rIf set, all embedded views that are by their preference hideable, will be reduced to zero width and zero height.\r\rPROCEDURE (s: Setter) "
+                    attr: 1
+                  - text: ConnectTo
+                    attr: 2
+                  - text: " (text: TextModels.Model; defRuler: TextRulers.Ruler;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tvw: INTEGER; hideMarks: BOOLEAN)\rNEW, EXTENSIBLE\rDisconnect setter from the text it was previously connected to (if any), and connect setter to given text (if any) using default ruler "
+                    attr: 1
+                  - text: defRuler
+                    attr: 3
+                  - text: " and hiding marks if requested by "
+                    attr: 1
+                  - text: hideMarks
+                    attr: 3
+                  - text: ". "
+                    attr: 1
+                  - text: vw
+                    attr: 3
+                  - text: " is the width against which text should be set.\r\rPost\rtext = NIL\r\ts.text = NIL\r\ts.defRuler = NIL\rtext # NIL\r\ts.text = text\r\ts.defRuler = defRuler\r\ts.vw = vw\r\ts.hideMarks = hideMarks\r\rPROCEDURE (s: Setter) "
+                    attr: 1
+                  - text: ThisPage
+                    attr: 2
+                  - text: " (pageH: INTEGER; pageNo: INTEGER): INTEGER\rNEW, ABSTRACT\rFor a page of height "
+                    attr: 1
+                  - text: pageH
+                    attr: 3
+                  - text: ", determine the starting position for page number "
+                    attr: 1
+                  - text: pageNo
+                    attr: 3
+                  - text: " (with page numbering starting from 0).\r\rPre\rConnected(s)\t20\r0 <= pageNo\t21\r\rPost\rpageNo > LastPageNo(s.text, pageH)\r\tresult = -1\rpageNo <= LastPageNo(s.text, pageH)\r\tresult = PageStart(pageNo)\r\rPROCEDURE (s: Setter) "
+                    attr: 1
+                  - text: NextPage
+                    attr: 2
+                  - text: " (pageH: INTEGER; start: INTEGER): INTEGER\rNEW, ABSTRACT\rFor a page of height "
+                    attr: 1
+                  - text: pageH
+                    attr: 3
+                  - text: " and a current page's starting position "
+                    attr: 1
+                  - text: start
+                    attr: 3
+                  - text: ", determine the starting position of the next page.\r\rPre\rConnected(s)\t20\r0 <= start\t21\rstart <= s.text.Length()\t22\rExists pNo: s.ThisPage(pageH, pNo) = start\t"
+                    attr: 1
+                  - text: not explicitly checked
+                    attr: 3
+                  - text: "\r\rPost\rstart = LastPage(s.text, pageH)\r\tresult = s.text.Length()\rstart < LastPage(s.text, pageH)\r\tresult = PageStart(PageNo(s.text, start) + 1)\r\rPROCEDURE (s: Setter) "
+                    attr: 1
+                  - text: ThisSequence
+                    attr: 2
+                  - text: " (pos: INTEGER): INTEGER\rNEW, ABSTRACT\rLocate the starting position of the ("
+                    attr: 1
+                  - text: line
+                    attr: 3
+                  - text: " or "
+                    attr: 1
+                  - text: para
+                    attr: 3
+                  - text: " separated) sequence containing position "
+                    attr: 1
+                  - text: pos
+                    attr: 3
+                  - text: ".\r\rPre\rConnected(s)\t20\r0 <= pos\t21\rpos <= s.text.Length()\t22\r\rPost\rresult = 0  OR  char[result - 1] IN {line, para}\r\rPROCEDURE (s: Setter) "
+                    attr: 1
+                  - text: NextSequence
+                    attr: 2
+                  - text: " (start: INTEGER): INTEGER\rNEW, ABSTRACT\rLocate the starting position of the next ("
+                    attr: 1
+                  - text: line
+                    attr: 3
+                  - text: " or "
+                    attr: 1
+                  - text: para
+                    attr: 3
+                  - text: " separated) sequence, given a starting position "
+                    attr: 1
+                  - text: start
+                    attr: 3
+                  - text: " of a current sequence.\r\rPre\rConnected(s)\t20\r0 <= start\t21\rstart <= s.text.Length()\t22\rs.ThisSequence(start) = start\t23\r\rPost\rAll pos: start < pos < s.text.Length(): s.ThisSequence(pos) = start\r\tresult = start\rs.ThisSequence(result - 1) = start\r\tresult > start\r\ts.ThisSequence(result) = result\r\rPROCEDURE (s: Setter) "
+                    attr: 1
+                  - text: PreviousSequence
+                    attr: 2
+                  - text: " (start: INTEGER): INTEGER\rLocate the starting position of the previous ("
+                    attr: 1
+                  - text: line
+                    attr: 3
+                  - text: " or "
+                    attr: 1
+                  - text: para
+                    attr: 3
+                  - text: " separated) sequence, given a starting position "
+                    attr: 1
+                  - text: start
+                    attr: 3
+                  - text: " of a current sequence.\r\rPre\rConnected(s)\t20\r0 <= start\t21\rstart <= s.text.Length()\t22\rs.ThisSequence(start) = start\t23\r\rPost\rstart = 0\r\tresult = 0\rstart > 0\r\tresult = s.ThisSequence(start - 1)\r\rPROCEDURE (s: Setter) "
+                    attr: 1
+                  - text: ThisLine
+                    attr: 2
+                  - text: " (pos: INTEGER): INTEGER\rLocate the starting position of the line containing pos.\r\rPre\rConnected(s)\t20\r0 <= pos\t21\rpos <= s.text.Length()\t22\r\rPost\rresult <= pos\rpos < s.NextLine(result)  OR  LastLine(result)\r\rPROCEDURE (s: Setter) "
+                    attr: 1
+                  - text: NextLine
+                    attr: 2
+                  - text: " (start: INTEGER): INTEGER\rNEW, ABSTRACT\rLocate the starting position of the next line, given the starting position "
+                    attr: 1
+                  - text: start
+                    attr: 3
+                  - text: " of the current line.\r\rPre\rConnected(s)\t20\r0 <= start\t21\rstart <= s.text.Length()\t22\rs.ThisLine(start) = start\t23\r\rPost\rLastLine(start)\r\tresult = start\r~LastLine(start)\r\tresult > start\r\ts.ThisLine(result - 1) = start\r\rPROCEDURE (s: Setter) "
+                    attr: 1
+                  - text: PreviousLine
+                    attr: 2
+                  - text: " (start: INTEGER): INTEGER\rNEW, ABSTRACT\rLocate the starting position of the previous line, given the starting position "
+                    attr: 1
+                  - text: start
+                    attr: 3
+                  - text: " of the current line.\r\rPre\rConnected(s)\t20\r0 <= start\t21\rstart <= s.text.Length()\t22\rs.ThisLine(start) = start\t23\r\rPost\rstart = 0\r\tresult = 0\rstart > 0\r\tresult < start\r\tresult = s.ThisLine(start - 1)\r\rPROCEDURE (s: Setter) "
+                    attr: 1
+                  - text: GetWord
+                    attr: 2
+                  - text: " (pos: INTEGER; OUT beg, end: INTEGER)\rLocate the beginning and ending positions of the word containing position "
+                    attr: 1
+                  - text: pos
+                    attr: 3
+                  - text: ". A word is a sequence of characters with code > \" \", or views with mask > \" \", or views with preference "
+                    attr: 1
+                  - text: wordPart
+                    attr: 3
+                  - text: ".\r\rPre\rConnected(s)\t20\r0 <= pos\t21\rpos <= s.text.Length()\t22\r\rPost\rbeg <= pos <= end\r\rPROCEDURE (s: Setter) "
+                    attr: 1
+                  - text: GetLine
+                    attr: 2
+                  - text: " (start: INTEGER; OUT box: LineBox)\rNEW, ABSTRACT\rCompute the characteristic box of the line with starting position start. (Cf. type "
+                    attr: 1
+                  - text: LineBox
+                    attr: 3
+                  - text: " below.)\r\rPre\rConnected(s)\t20\r0 <= start\t21\rstart <= s.text.Length()\t22\rs.ThisLine(start) = start\t23\r\rPost\rmin{box.left, box.first} <= box.left <= box.right <= ruler.right\r~box.eot\r\tbox.ruler # NIL\r\tbox.len > 0\r\rPROCEDURE (s: Setter) "
+                    attr: 1
+                  - text: GetBox
+                    attr: 2
+                  - text: " (start, end, maxW, maxH: INTEGER; OUT w, h: INTEGER)\rNEW, ABSTRACT\rGet the bounding box of a text stretch beginning at a line starting position "
+                    attr: 1
+                  - text: start
+                    attr: 3
+                  - text: " and ending at position "
+                    attr: 1
+                  - text: end
+                    attr: 3
+                  - text: ". The box computation will terminate if either the text stretch has been fully set, or if the box reached either of the limits, "
+                    attr: 1
+                  - text: maxW
+                    attr: 3
+                  - text: " bounding the box width, or "
+                    attr: 1
+                  - text: maxH
+                    attr: 3
+                  - text: " bounding the box height.\r\rPre\rConnected(s)\t20\r0 <= start\t21\rstart <= end\t22\rend <= s.text.Length()\t23\r\rPost\rmaxW > Views.undefined\r\tw <= maxW\rmaxH > Views.undefined\r\th <= maxH\r\rPROCEDURE (s: Setter) "
+                    attr: 1
+                  - text: NewReader
+                    attr: 2
+                  - text: " (old: Reader): Reader\rReturn a new reader, possibly reusing a given old reader that is no longer in use. (Whether the old reader is actually reused depends on internal compatibility conditions.)\r\rPre\rConnected(s)\t20\r\rPost\rresult # NIL\r\rPROCEDURE (s: Setter) "
+                    attr: 1
+                  - text: GridOffset
+                    attr: 2
+                  - text: " (dsc: INTEGER; VAR box: LineBox): INTEGER\rGiven the descender "
+                    attr: 1
+                  - text: dsc
+                    attr: 3
+                  - text: " of the preceding line and the current line characteristics "
+                    attr: 1
+                  - text: box
+                    attr: 3
+                  - text: ", return the grid correction to force the current line to the line grid. If the current line is the first line (of the text or on the current page), "
+                    attr: 1
+                  - text: dsc
+                    attr: 3
+                  - text: " = -1 should be passed.\r\rPre\rConnected(s)\rdsc >= -1\r\rPost\r~box.rbox\r\tExists k: k >= 0: dsc + GridOffset(dsc, box) + box.asc =\r\t\t\t\t\t\t\t\t\tk * ruler.grid >= ruler.asc + ruler.grid\rbox.rbox\r\tresult = 0\r\r\rTYPE "
+                    attr: 1
+                  - text: LineBox
+                    attr: 2
+                  - text: "\rThe characteristics of a line set by a setter.\r\r"
+                    attr: 1
+                  - text: len
+                    attr: 2
+                  - text: ": INTEGER\rLength of the line.\r\r"
+                    attr: 1
+                  - text: ruler
+                    attr: 2
+                  - text: ": TextRulers.Ruler\r"
+                    attr: 1
+                  - text: rpos
+                    attr: 2
+                  - text: ": INTEGER\rRuler dominating the line, and its position in the text. ("
+                    attr: 1
+                  - text: rpos = -1
+                    attr: 3
+                  - text: " indicates that the line is dominated by the default ruler.)\r\r"
+                    attr: 1
+                  - text: left
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: right
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: asc
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: dsc
+                    attr: 2
+                  - text: ": INTEGER\t[units]\rLeft and right margins, and ascender and descender of the line's bounding box.\r\r"
+                    attr: 1
+                  - text: rbox
+                    attr: 2
+                  - text: ": BOOLEAN\rThe line solely contains a ruler or a paragraph separator ("
+                    attr: 1
+                  - text: para
+                    attr: 3
+                  - text: " character or mask).\r\r"
+                    attr: 1
+                  - text: bop
+                    attr: 2
+                  - text: ": BOOLEAN\rThe line is the first of a paragraph: Its left margin is "
+                    attr: 1
+                  - text: ruler.first
+                    attr: 3
+                  - text: ".; otherwise the left margin is "
+                    attr: 1
+                  - text: ruler.left
+                    attr: 3
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: adj
+                    attr: 2
+                  - text: ": BOOLEAN\rThe line needs adjustment when finally rendered: At least one element of the line needs to be artificially changed in width to achieve the requested formatting effect.\r\r"
+                    attr: 1
+                  - text: eot
+                    attr: 2
+                  - text: ": BOOLEAN\rThe line is either empty, or it contains the last element of the text which is neither a "
+                    attr: 1
+                  - text: line
+                    attr: 3
+                  - text: " nor a "
+                    attr: 1
+                  - text: para
+                    attr: 3
+                  - text: " character or mask.\r\r"
+                    attr: 1
+                  - text: views
+                    attr: 2
+                  - text: ": BOOLEAN\rThe line contains at least one embedded view.\r\r"
+                    attr: 1
+                  - text: skipOff
+                    attr: 2
+                  - text: ": INTEGER\t0 <= skipOff <= len\rThe characters in ["
+                    attr: 1
+                  - text: skipOff
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: len
+                    attr: 3
+                  - text: ") take on width "
+                    attr: 1
+                  - text: endW
+                    attr: 3
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: adjOff
+                    attr: 2
+                  - text: ": INTEGER\t0 <= adjOff <= len\rOffset of last block (sequence with no "
+                    attr: 1
+                  - text: tab
+                    attr: 3
+                  - text: " enclosed) in box. If the line is adjusted (centered, right flush, or fully adjusted), then this is the offset into the line where adjustment begins.\r\r"
+                    attr: 1
+                  - text: spaces
+                    attr: 2
+                  - text: ": INTEGER\tvalid and > 0 if adj\rNumber of spaces subject to adjustment.\r\r"
+                    attr: 1
+                  - text: adjW
+                    attr: 2
+                  - text: ": INTEGER\t[units]\tvalid and > 0 if adj\rThe adjustment delta to be added either to the front of the last block for centered or right flushed formats, or to each space element (blank or view mapped to blank or view with preference "
+                    attr: 1
+                  - text: flexWidth
+                    attr: 3
+                  - text: ") for fully adjusted formats.\r\r"
+                    attr: 1
+                  - text: tabW
+                    attr: 2
+                  - text: ": ARRAY TextRulers.maxTabs OF INTEGER\t[units]\trange [0 .. ruler.style.attr.tabs.len)\rWidths of the gaps before tab stops.\r\r\rTYPE "
+                    attr: 1
+                  - text: Directory
+                    attr: 2
+                  - text: "\rABSTRACT\rDirectory for setters.\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: New
+                    attr: 2
+                  - text: " (): Setter\rNEW, ABSTRACT\rReturn a new setter.\r\r\rVAR "
+                    attr: 1
+                  - text: dir
+                    attr: 2
+                  - text: "-, "
+                    attr: 1
+                  - text: stdDir
+                    attr: 2
+                  - text: "-: Directory\tdir # NIL, stdDir # NIL, stable stdDir = d\rDirectory and standard directory objects.\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetDir
+                    attr: 2
+                  - text: " (d: Directory)\rSet the directory object.\r\rPre\rd # NIL\t20\r\rPost\rdir = d\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 10
+          bodyPos: 20581
+          bodyLen: 8

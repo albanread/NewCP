@@ -1,0 +1,2399 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Docu\\Tut-5.odc"
+  size: 249684
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 249553
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 249367
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 249281
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 152400
+                dsc: 25400
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 39
+                bodyPos: 249402
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 248888
+                runListLen: 175545
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x00757575
+                    weight: 700
+                    style: 0x00000000
+                  - # [5]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                    offset: 25400
+                  - # [6]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                    offset: -25400
+                  - # [7]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000002
+                  - # [8]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000004
+                  - # [9]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000007
+                  - # [10]
+                    font: Arial
+                    size: 152400
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [11]
+                    font: Arial
+                    size: 127000
+                    color: 0x000000ff
+                    weight: 400
+                    style: 0x00000000
+                  - # [12]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000002
+                flow:
+                  - text: 5 Texts
+                    attr: 0
+                  - text: "\r\rGraphical user interfaces have introduced graphical elements into everyday computing. While this was a very positive step towards overcoming the old-style modal textual user interfaces, texts have by no means become obsolete. Even in reports containing many illustrations, texts serve as indispensible glue.\rIn typical database applications, no graphical contents is manipulated. The data entered and retrieved are mostly textual, and reports to be printed usually are texts arranged in a tabular fashion.\rBecause of the importance of texts, this chapter demonstrates how the BlackBox Component Builder's text abstraction can be used in various ways. In several examples, we will reuse the simple database module introduced in the previous chapter.\rWe will work \"bottom-up\" by providing examples first for writing new texts, then for reading existing text, and finally for modifying existing texts. When discussing these examples, we will meet text models/carriers and riders, mappers, and auxiliary abstractions such as fonts, attributes, rulers, and others.\r\r\r"
+                    attr: 1
+                  - text: 5.1 Writing text
+                    attr: 2
+                  - text: "\r\rIn the BlackBox Component Builder, texts use the Carrier-Rider-Mapper design pattern (see Chapter 3). They provide text models as carriers for texts, and text writers and text readers as riders on text models. Both types are defined in the Text subsystem's core module "
+                    attr: 1
+                  - text: TextModels
+                    attr: 3
+                  - text: ". A text writer maintains a current position and current attributes, which will be used when writing the next element into the text. The full definition of a writer looks as follows:\r\r\tWriter = POINTER TO ABSTRACT RECORD\r\t\tattr-: TextModels.Attributes;\r\t\t(wr: Writer) Base (): TextModels.Model, NEW, ABSTRACT;\r\t\t(wr: Writer) Pos (): INTEGER, NEW, ABSTRACT;\r\t\t(wr: Writer) SetPos (pos: INTEGER), NEW, ABSTRACT;\r\t\t(wr: Writer) SetAttr (attr: TextModels.Attributes), NEW;\r\t\t(wr: Writer) WriteChar (ch: CHAR), NEW, ABSTRACT;\r\t\t(wr: Writer) WriteView (view: Views.View; w, h: INTEGER), NEW, ABSTRACT\r\tEND;\r\rListing 5-1. Definition of TextModels.Writer\r\rThe most important procedure of a writer is "
+                    attr: 1
+                  - text: WriteChar
+                    attr: 3
+                  - text: ", it allows to write a new character at the current position. If the character position lies within an existing text (i.e., in 0 .. text.Length() - 1), the character at this text position is inserted. (This is a difference to the BlackBox files abstraction, where old data would be overwritten by the writer in this case. With texts, writers "
+                    attr: 1
+                  - text: always
+                    attr: 3
+                  - text: " insert and never overwrite.) If the writer's position is at the end of the text (i.e., at text.Length()), the character is appended to the text and thus makes the text one element longer. After "
+                    attr: 1
+                  - text: WriteChar
+                    attr: 3
+                  - text: ", the writer's text position is increased by one. The current position can be inquired by calling the writer's "
+                    attr: 1
+                  - text: Pos
+                    attr: 3
+                  - text: " function, and it can be modified by calling the "
+                    attr: 1
+                  - text: SetPos
+                    attr: 3
+                  - text: " procedure.\r\rSince text models are capable of containing views as well as normal characters, there exists a procedure "
+                    attr: 1
+                  - text: WriteView
+                    attr: 3
+                  - text: " which allows to write a view, given an appropriate size ("
+                    attr: 1
+                  - text: w
+                    attr: 3
+                  - text: " for the width, "
+                    attr: 1
+                  - text: h
+                    attr: 3
+                  - text: " for the height).\rLike most geometrical distances in BlackBox, a view's width and height are specified in so-called "
+                    attr: 1
+                  - text: universal units
+                    attr: 3
+                  - text: " of 1/36000 millimeters. This value was chosen to eliminate rounding errors for many common screen and printer resolutions. For example, an inch, a 1/300-th of an inch, a millimeter, and a desktop publishing point can be represented in units without rounding errors. Where not specified otherwise, distances can be assumed to be represented in universal units.\rIf no specific size for the view is desired, passing the value "
+                    attr: 1
+                  - text: Views.undefined
+                    attr: 3
+                  - text: " for the width and/or height allows the text to choose a suitable default size for the written view.\r\rHow is a writer created? Like all riders, a writer is created by a factory function of its carrier. For this purpose, a text model provides the procedure "
+                    attr: 1
+                  - text: NewWriter
+                    attr: 3
+                  - text: ", which creates a writer and connects it to the text. A writer can return its text through the "
+                    attr: 1
+                  - text: Base
+                    attr: 3
+                  - text: " function. A newly created writer is positioned at the end of the text.\r\rText elements don't have character codes only, they also have attributes. A writer's "
+                    attr: 1
+                  - text: attr
+                    attr: 3
+                  - text: " field contains the attributes to be used when the next character or view is written. The current attributes can be changed by calling the writer's "
+                    attr: 1
+                  - text: SetAttr
+                    attr: 3
+                  - text: " procedure.\r\rIn terms of attributes, the text subsystem of the BlackBox Component Builder supports "
+                    attr: 1
+                  - text: colors
+                    attr: 4
+                  - text: " and "
+                    attr: 1
+                  - text: vertical
+                    attr: 5
+                  - text: " "
+                    attr: 1
+                  - text: offsets
+                    attr: 6
+                  - text: . Colors are encoded as integers (
+                    attr: 1
+                  - text: Ports.Color
+                    attr: 3
+                  - text: "). Module "
+                    attr: 1
+                  - text: Ports
+                    attr: 3
+                  - text: " predefines the constants "
+                    attr: 1
+                  - text: black
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: grey6
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: grey12
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: grey25
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: grey50
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: grey75
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: white
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: red
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: green
+                    attr: 3
+                  - text: ", and "
+                    attr: 1
+                  - text: blue
+                    attr: 3
+                  - text: ". \"grey6\" means a mixture of 6% white and 94% black, which is almost black. The other grey values are increasingly lighter. Vertical offsets are measured in universal units.\r\rBesides colors and vertical offset, a text element also has a font attribute. A font is a collection of glyphs. A glyph is a visual rendering of a character code. Different fonts may contain different glyphs for the same characters. For example, Helvetica looks different from Times and Frutiger. A font may not provide glyphs for all character codes that can be represented in Component Pascal. This is not surprising, since the "
+                    attr: 1
+                  - text: CHAR
+                    attr: 3
+                  - text: " datatype of Component Pascal conforms to the Unicode standard. Unicode is a 16-bit standard, and thus can represent over 65000 different characters. The first 256 characters are the Latin-1 characters. The first 128 characters of Latin-1 are the venerable ASCII characers.\rIf a font doesn't contain a particular glyph, BlackBox's font framework either returns a glyph from some other font for the same character, or it yields a generic \"missing glyph\" symbol; e.g., a small empty rectangle.\rFont objects are defined in module "
+                    attr: 1
+                  - text: Fonts.Font
+                    attr: 3
+                  - text: ". It won't be necessary to take a closer look at this module here; it is sufficient to interpret a pointer of type "
+                    attr: 1
+                  - text: Fonts.Font
+                    attr: 3
+                  - text: " as the identification of a font with its particular typeface, style, weight, and size:\r\r"
+                    attr: 1
+                  - text: Typeface
+                    attr: 2
+                  - text: "\rThis is the font family to which a font belongs; it defines a common \"look and feel\" for the whole family. Examples of typefaces are Helvetica, Times, or Courier. Typeface names are represented as character arrays of type "
+                    attr: 1
+                  - text: Fonts.Typeface
+                    attr: 3
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: Style
+                    attr: 2
+                  - text: "\rA font may optionally be "
+                    attr: 1
+                  - text: italicized
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: underlined
+                    attr: 7
+                  - text: ", "
+                    attr: 1
+                  - text: struck out
+                    attr: 8
+                  - text: " or "
+                    attr: 1
+                  - text: a combination thereof
+                    attr: 9
+                  - text: ". Styles are represented as sets. Currently, the set elements "
+                    attr: 1
+                  - text: Fonts.italic
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: Fonts.underline
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: Fonts.strikeout
+                    attr: 3
+                  - text: " are defined.\r\r"
+                    attr: 1
+                  - text: Weight
+                    attr: 2
+                  - text: "\rA font might exist in several weights, e.g., ranging from light to normal to "
+                    attr: 1
+                  - text: bold
+                    attr: 2
+                  - text: " to black to "
+                    attr: 1
+                  - text: ultra black
+                    attr: 2
+                  - text: ". Usually, a font is either normal or bold. Weights are represented as integers. The values "
+                    attr: 1
+                  - text: Fonts.normal
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: Fonts.bold
+                    attr: 3
+                  - text: " are predefined.\r\r"
+                    attr: 1
+                  - text: Size
+                    attr: 2
+                  - text: "\rA font may be rendered in different sizes, taking into account the resolution of the used output device. Often, sizes are given in points. A point is 1/72-th of an inch. In BlackBox, font sizes are measured in universal units, which are chosen such that points ("
+                    attr: 1
+                  - text: Ports.point
+                    attr: 3
+                  - text: ") and other typographical units can be represented without round-off errors. Typical font sizes are "
+                    attr: 1
+                  - text: "10 * Ports.point"
+                    attr: 3
+                  - text: " or "
+                    attr: 1
+                  - text: "12 * Ports.point"
+                    attr: 10
+                  - text: ".\r\rIn principle, typeface, style, weight and size are independent of each other. This means that a given typeface can be combined with arbitrary styles, weights and sizes. However, from a typographical point of view, some combinations are more desirable than others, and may be optimized by the font designer and the underlying operating system's font machinery.\r\rThe text attributes font, color and vertical offset are packaged into objects of type "
+                    attr: 1
+                  - text: TextModels.Attributes
+                    attr: 3
+                  - text: ". Slightly simplified, this type looks as follows:\r\r\tAttributes = POINTER TO RECORD (Stores.Store)\r\t\tcolor-: Ports.Color;\r\t\tfont-: Fonts.Font;\r\t\toffset-: INTEGER\r\tEND;\r\rListing 5-2. Simplified definition of TextModels.Attributes\r\rThis is the type of the writer's "
+                    attr: 1
+                  - text: attr
+                    attr: 3
+                  - text: " field. It is an extension of "
+                    attr: 1
+                  - text: Stores.Store
+                    attr: 3
+                  - text: ". This means that such an object can be stored persistently in a file. Other examples of stores are "
+                    attr: 1
+                  - text: TextModels.Model
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: TextViews.View
+                    attr: 3
+                  - text: ", but not "
+                    attr: 1
+                  - text: TextModels.Writer
+                    attr: 3
+                  - text: ". A more detailed description of stores is given in Part III.\r\rWe have now seen the capabilities of a text writer, including the text attributes that it supports. The typical use of text writers is shown in the code pattern below. A code pattern is an excerpt of a procedure which shows one or a few important aspects of the objects currently discussed. Such a code fragment constitutes a recipe that should be known by a programmer \"fluent\" in this topic.\r\r\t\tVAR t: TextModels.Model; wr: TextModels.Writer; ch: CHAR;\r\tBEGIN\r\t\tt := TextModels.dir.New();\t"
+                    attr: 1
+                  - text: "(* allocate new empty text model *)"
+                    attr: 3
+                  - text: "\r\t\twr := t.NewWriter(NIL);\r\t\t"
+                    attr: 1
+                  - text: ... produce ch ...
+                    attr: 3
+                  - text: "\r\t\tWHILE "
+                    attr: 1
+                  - text: condition
+                    attr: 3
+                  - text: " DO\r\t\t\twr.WriteChar(ch);\r\t\t\t"
+                    attr: 1
+                  - text: ... produce ch ...
+                    attr: 3
+                  - text: "\r\t\tEND;\r\rListing 5-3. Code pattern for TextModels.Writer\r\rThe code pattern is not very interesting since it doesn't show how the generated text can be displayed. A text object only represents a text with its attributes. It doesn't know about how to draw this text, not even how to do text setting; i.e., how to break lines and pages such that they fit a given rectangle (view, paper size, etc.). When it is desired to make a text visible, it is necessary to provide a text view for the text object. Data objects that may be displayed in several views are generally called models. The separation of model and view is an important design pattern that was discussed in Chapter 2.\r\rModule "
+                    attr: 1
+                  - text: TextModels
+                    attr: 3
+                  - text: " only exports an abstract record type for text models, no concrete implementation. Instead, it exports a directory object ("
+                    attr: 1
+                  - text: TextModels.dir
+                    attr: 3
+                  - text: ) which provides the necessary factory function (
+                    attr: 1
+                  - text: TextModels.dir.New
+                    attr: 3
+                  - text: "). This indirection pattern for object creation was motivated in Chapter 2.\r\rWorking directly with text writers is inconvenient, they don't even support the writing of strings. For this reason, the following examples will use "
+                    attr: 1
+                  - text: formatters
+                    attr: 3
+                  - text: " when writing text. A formatter is a mapper (see Chapter 3) that contains a text writer and performs the mapping of higher-level symbols, such as the Component Pascal symbols, to a stream of characters that can be fed to the writer. In the next example, we we will use a formatter to write a text; a very simple \"report\". The text consists of the phone database contents, one line per entry. This first version of a phone database report is implemented in module "
+                    attr: 1
+                  - text: ObxPDBRep0
+                    attr: 3
+                  - text: ":\r\rMODULE ObxPDBRep0;\r\r\tIMPORT Views, TextModels, TextMappers, TextViews, ObxPhoneDB;\r\r\tPROCEDURE "
+                    attr: 1
+                  - text: GenReport
+                    attr: 2
+                  - text: "*;\r\t\tVAR t: TextModels.Model; f: TextMappers.Formatter; v: TextViews.View;\r\t\t\ti: INTEGER; name, number: ObxPhoneDB.String;\r\tBEGIN\r\t\tt := TextModels.dir.New();\t"
+                    attr: 1
+                  - text: "(* create empty text carrier *)"
+                    attr: 3
+                  - text: "\r\t\tf.ConnectTo(t);\t\t\t\t\t"
+                    attr: 1
+                  - text: "(* connect a formatter to the text *)"
+                    attr: 3
+                  - text: "\r\t\ti := 0;\r\t\tObxPhoneDB.LookupByIndex(i, name, number);\r\t\tWHILE name # \"\" DO\r\t\t\tf.WriteString(name);\t\t"
+                    attr: 1
+                  - text: "(* first string *)"
+                    attr: 3
+                  - text: "\r\t\t\tf.WriteTab;\t"
+                    attr: 1
+                  - text: "\t\t\t\t(* tab character *)"
+                    attr: 3
+                  - text: "\r\t\t\tf.WriteString(number);\t"
+                    attr: 1
+                  - text: "(* second string *)"
+                    attr: 3
+                  - text: "\r\t\t\tf.WriteLn;\t\t\t\t\t\t"
+                    attr: 1
+                  - text: "(* carriage return *)"
+                    attr: 3
+                  - text: "\r\t\t\tINC(i);\r\t\t\tObxPhoneDB.LookupByIndex(i, name, number)\r\t\tEND;\r\t\tv := TextViews.dir.New(t);\t"
+                    attr: 1
+                  - text: "(* create a text view for the text generated above *)"
+                    attr: 3
+                  - text: "\r\t\tViews.OpenView(v)\t\t\t"
+                    attr: 1
+                  - text: "(* open the text view in its own window *)"
+                    attr: 3
+                  - text: "\r\tEND GenReport;\r\rEND ObxPDBRep0.\r\rListing 5-4. Writing the phone database using a formatter\r\rNote that name and number are separated by a tab character (09X). Since no tab stops are defined for this text, a tab will be treated as a wide fixed-width space (whose width is a multiple of the normal space character glyph). We will later see how tab stops can be defined.\r\rExecution of the "
+                    attr: 1
+                  - text: ObxPDBRep0.GenReport
+                    attr: 3
+                  - text: " command results in the following window:\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 13
+                      bodyPos: 1836
+                      bodyLen: 56269
+                    attr: 1
+                    w: 2695680
+                    h: 1809720
+                  - text: "\r\rFigure  5-5. Text editor window containing the phone database\r\rThe text in the newly opened window is a fully editable text view. It can be edited; stored as a BlackBox document; printed; and so on. If you look at the source code, you can recognize the following code pattern:\r\r\t\tVAR t: TextModels.Model; f: TextMappers.Formatter; v: Views.View;\r\tBEGIN\r\t\tt := TextModels.dir.New();\r\t\tf.ConnectTo(t);\r\t\t"
+                    attr: 1
+                  - text: ... use formatter procedures to construct the text ...
+                    attr: 3
+                  - text: "\r\t\tv := TextViews.dir.New(t);\r\t\tViews.OpenView(v)\r\rListing 5-6. Code pattern for TextMappers.Formatter and for open a text view\r\rThis code pattern occurs in many BlackBox commands, e.g., in "
+                    attr: 1
+                  - text: DevDebug.ShowLoadedModules
+                    attr: 3
+                  - text: ". It is useful whenever you need to write tabular reports of varying length, possibly spanning several printed pages.\rIt also clearly shows that texts embody several design patterns simultaneously: a text object is a model which can be observed by a view (Observer pattern), it is a carrier (Carrier-Rider-Mapper pattern), and it is a container (Composite pattern).\r\rAn interesting aspect of the above code pattern is that the text carrier "
+                    attr: 1
+                  - text: t
+                    attr: 3
+                  - text: " is created first, then its contents is constructed using a formatter, and only then is a view "
+                    attr: 1
+                  - text: v
+                    attr: 3
+                  - text: " on the text carrier created. Finally, the view is opened in its own document window.\rIn BlackBox it is important that a model can be manipulated before there exists any view for it. In fact, it is far more efficient to create a text before a view on it is opened, because screen updates and some internal housekeeping of the undo mechanism are avoided this way, which can cause a dramatic speed difference.\r\rBlackBox text models represent sequences of text elements. A text element is either a Latin-1 character ("
+                    attr: 1
+                  - text: SHORTCHAR
+                    attr: 3
+                  - text: "), a Unicode character (a "
+                    attr: 1
+                  - text: CHAR
+                    attr: 3
+                  - text: " "
+                    attr: 1
+                  - text: "> 0FFX"
+                    attr: 3
+                  - text: ") or a view (an extension of type "
+                    attr: 1
+                  - text: Views.View
+                    attr: 3
+                  - text: "). Text stretches may be attributed with font information, color and vertical offset. Since a text model may contain views, it is a "
+                    attr: 1
+                  - text: container
+                    attr: 3
+                  - text: ". In the following examples, we will see how these text facilities can be used when creating new texts. Our phone book database is used as source of the material that we want to put into texts, applying different textual representations in the various examples.\r\rThe following example demonstrates how a text can be generated out of our example database. In this text, names are written in green color. The differences to module "
+                    attr: 1
+                  - text: ObxPDBRep0
+                    attr: 3
+                  - text: " are marked with "
+                    attr: 1
+                  - text: underlined
+                    attr: 7
+                  - text: " text.\r\rMODULE ObxPDBRep1;\r\r\tIMPORT "
+                    attr: 1
+                  - text: "Ports,"
+                    attr: 7
+                  - text: " Views, TextModels, TextMappers, TextViews, ObxPhoneDB;\r\r\tPROCEDURE "
+                    attr: 1
+                  - text: GenReport
+                    attr: 2
+                  - text: "*;\r\t\tVAR t: TextModels.Model; f: TextMappers.Formatter; v: TextViews.View;\r\t\t\ti: INTEGER; name, number: ObxPhoneDB.String;\r\t\t\t"
+                    attr: 1
+                  - text: "default, green: TextModels.Attributes;"
+                    attr: 7
+                  - text: "\r\tBEGIN\r\t\tt := TextModels.dir.New();\t"
+                    attr: 1
+                  - text: "(* create empty text carrier *)"
+                    attr: 3
+                  - text: "\r\t\tf.ConnectTo(t);\t\t\t\t\t"
+                    attr: 1
+                  - text: "(* connect a formatter to the text *)"
+                    attr: 3
+                  - text: "\r\t\t"
+                    attr: 1
+                  - text: "default := f.rider.attr;"
+                    attr: 7
+                  - text: "\t"
+                    attr: 1
+                  - text: "(* save old text attributes for later use *)"
+                    attr: 3
+                  - text: "\r\t\t"
+                    attr: 1
+                  - text: "green := TextModels.NewColor(default, Ports.green);"
+                    attr: 7
+                  - text: "\t"
+                    attr: 1
+                  - text: "(* use green color *)"
+                    attr: 3
+                  - text: "\r\t\ti := 0;\r\t\tObxPhoneDB.LookupByIndex(i, name, number);\r\t\tWHILE name # \"\" DO\r\t\t\t"
+                    attr: 1
+                  - text: f.rider.SetAttr(green);
+                    attr: 7
+                  - text: "\t"
+                    attr: 1
+                  - text: "(* change current attributes of formatter's rider *)"
+                    attr: 3
+                  - text: "\r\t\t\tf.WriteString(name);\t\t"
+                    attr: 1
+                  - text: "(* first string *)"
+                    attr: 3
+                  - text: "\r\t\t\t"
+                    attr: 1
+                  - text: f.rider.SetAttr(default);
+                    attr: 7
+                  - text: "\t"
+                    attr: 1
+                  - text: "(* change current attributes of formatter's rider *)"
+                    attr: 3
+                  - text: "\r\t\t\tf.WriteTab;\t"
+                    attr: 1
+                  - text: "\t\t\t\t(* tab character *)"
+                    attr: 3
+                  - text: "\r\t\t\tf.WriteString(number);\t"
+                    attr: 1
+                  - text: "(* second string *)"
+                    attr: 3
+                  - text: "\r\t\t\tf.WriteLn;\t\t\t\t\t\t"
+                    attr: 1
+                  - text: "(* carriage return *)"
+                    attr: 3
+                  - text: "\r\t\t\tINC(i);\r\t\t\tObxPhoneDB.LookupByIndex(i, name, number)\r\t\tEND;\r\t\tv := TextViews.dir.New(t);\t"
+                    attr: 1
+                  - text: "(* create a text view for the text generated above *)"
+                    attr: 3
+                  - text: "\r\t\tViews.OpenView(v)\t\t\t"
+                    attr: 1
+                  - text: "(* open the text view in its own window *)"
+                    attr: 3
+                  - text: "\r\tEND GenReport;\r\rEND ObxPDBRep1.\r\rListing 5-7. Writing the phone database using green color\r\rNote that a formatter's rider contains a set of current attributes ("
+                    attr: 1
+                  - text: TextModels.Writer.attr
+                    attr: 3
+                  - text: "). This value includes the current color and is read-only; it can be set with the writer's "
+                    attr: 1
+                  - text: SetAttr
+                    attr: 3
+                  - text: " procedure.\r\rOur first text examples, "
+                    attr: 1
+                  - text: ObxPDBRep0
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: ObxPDBRep1
+                    attr: 3
+                  - text: ", don't produce nice-looking output, because the phone numbers are not aligned below each other in a tabular fashion.\r"
+                    attr: 1
+                  - text: ObxPDBRep1
+                    attr: 3
+                  - text: " remedies this defect by inserting a ruler at the beginning of the text. This ruler defines a tab stop, which causes all phone numbers  separated from their phone names by tabs  to line up nicely. The differences to module "
+                    attr: 1
+                  - text: ObxPDBRep0
+                    attr: 3
+                  - text: " are marked with "
+                    attr: 1
+                  - text: underlined
+                    attr: 7
+                  - text: " text.\r\rMODULE ObxPDBRep2;\r\r\tIMPORT Ports, Views, TextModels, TextMappers, TextViews, "
+                    attr: 1
+                  - text: TextRulers
+                    attr: 7
+                  - text: ", ObxPhoneDB;\r\r\t"
+                    attr: 1
+                  - text: "PROCEDURE WriteRuler (VAR f: TextMappers.Formatter);"
+                    attr: 7
+                  - text: "\r\t\tCONST cm = 10 * Ports.mm;\t"
+                    attr: 1
+                  - text: "(* universal units *)"
+                    attr: 3
+                  - text: "\r\t\tVAR ruler: TextRulers.Ruler;\r\tBEGIN\r\t\truler := TextRulers.dir.New(NIL);\r\t\tTextRulers.AddTab(ruler, 4 * cm);\t"
+                    attr: 1
+                  - text: "(* define a tab stop, 4 cm from the left margin *)"
+                    attr: 3
+                  - text: "\r\t\tTextRulers.SetRight(ruler, 12 * cm);"
+                    attr: 1
+                  - text: "\t"
+                    attr: 11
+                  - text: "(* set right margin *)"
+                    attr: 3
+                  - text: "\r\t\tf.WriteView(ruler)\t\t\t\t\t\t\t"
+                    attr: 1
+                  - text: "(* a ruler is a view, thus can be written to the text *)"
+                    attr: 3
+                  - text: "\r\tEND WriteRuler;\r\r\tPROCEDURE "
+                    attr: 1
+                  - text: GenReport
+                    attr: 2
+                  - text: "*;\r\t\tVAR t: TextModels.Model; f: TextMappers.Formatter; v: TextViews.View;\r\t\t\ti: INTEGER; name, number: ObxPhoneDB.String;\r\tBEGIN\r\t\tt := TextModels.dir.New();\t"
+                    attr: 1
+                  - text: "(* create empty text carrier *)"
+                    attr: 3
+                  - text: "\r\t\tf.ConnectTo(t);\t\t\t\t\t"
+                    attr: 1
+                  - text: "(* connect a formatter to the text *)"
+                    attr: 3
+                  - text: "\r\t\t"
+                    attr: 1
+                  - text: WriteRuler(f);
+                    attr: 7
+                  - text: "\r\t\ti := 0;\r\t\tObxPhoneDB.LookupByIndex(i, name, number);\r\t\tWHILE name # \"\" DO\r\t\t\tf.WriteString(name);\t\t"
+                    attr: 1
+                  - text: "(* first string *)"
+                    attr: 3
+                  - text: "\r\t\t\tf.WriteTab;\t"
+                    attr: 1
+                  - text: "\t\t\t\t(* tab character *)"
+                    attr: 3
+                  - text: "\r\t\t\tf.WriteString(number);\t"
+                    attr: 1
+                  - text: "(* second string *)"
+                    attr: 3
+                  - text: "\r\t\t\tf.WriteLn;\t\t\t\t\t\t"
+                    attr: 1
+                  - text: "(* carriage return *)"
+                    attr: 3
+                  - text: "\r\t\t\tINC(i);\r\t\t\tObxPhoneDB.LookupByIndex(i, name, number)\r\t\tEND;\r\t\tv := TextViews.dir.New(t);\t"
+                    attr: 1
+                  - text: "(* create a text view for the text generated above *)"
+                    attr: 3
+                  - text: "\r\t\tViews.OpenView(v)\t\t\t"
+                    attr: 1
+                  - text: "(* open the text view in its own window *)"
+                    attr: 3
+                  - text: "\r\tEND GenReport;\r\rEND ObxPDBRep2.\r\rListing 5-8. Writing the phone database using a formatter and a ruler\r\rExecution of the "
+                    attr: 1
+                  - text: ObxPDBRep2.GenReport
+                    attr: 3
+                  - text: " command results in a window with the improved presentation of the phone database. Executing Text->Show Marks causes the ruler to be displayed:\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 15
+                      bodyPos: 58742
+                      bodyLen: 64409
+                    attr: 1
+                    w: 2838600
+                    h: 1971720
+                  - text: "\r\rFigure  5-9. Text editor window containing the tabular phone database\r\rA ruler is a view. A ruler on its own doesn't make sense. Like all controls, a ruler makes only sense in a container. Unlike many other controls, a ruler is an example of a control that can only function properly in a particular container; in this case the container must be a text model. You may copy a ruler into a form or other container, but it will just be passive and have no useful effect there. If it is embedded in a text model that is displayed in a text view, a ruler can influence the way in which the subsequent text is set. For example, a ruler can define tab stops, margins, and adjustment modes.\r\rThe attributes of a ruler are valid in the ruler's "
+                    attr: 1
+                  - text: scope
+                    attr: 3
+                  - text: ". The scope starts with the ruler itself and ends right before the next ruler, or at the end of the text if there follows no ruler anymore. A ruler introduces a new paragraph, possibly with its own distinct set of paragraph attributes. Inserting a paragraph character (0EX) instead of a ruler also starts a new paragraph, which inherits all paragraph attributes from the preceding ruler. Paragraph characters are the normal way to start a new paragraph; rulers are only used if particular paragraph attributes should be enforced. Note that a carriage return (0DX) doesn't start a new paragraph.\r\rA text view contains an invisible default ruler that defines the text setting of the text before the first ruler in the text, or of all text if no ruler has been written to the text at all. Interactively, this default ruler, and default attributes, can be set with the menu commands "
+                    attr: 1
+                  - text: "Text->Make Default Ruler"
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: "Text->Make Default Attributes"
+                    attr: 3
+                  - text: ".\r\rA ruler has many attributes that can be set. Unlike character attributes, which can be applied to arbitrary text stretches, these attributes apply to the ruler or the whole paragraph(s) in its scope.\rWe will discuss these attributes so that you know about ruler functionality when you need it. We won't discuss rulers in more detail though, since you can learn about the necessary details on demand if and when you need the more advanced ruler capabilities (see on-line documentation of module "
+                    attr: 1
+                  - text: TextRulers
+                    attr: 3
+                  - text: ").\r\r"
+                    attr: 1
+                  - text: Styles
+                    attr: 2
+                  - text: "\rA ruler's attributes are not directly stored in the ruler view itself. Instead, they are bundled into a separate object of type "
+                    attr: 1
+                  - text: TextRulers.Attributes
+                    attr: 3
+                  - text: ", which in turn is contained in an object of type "
+                    attr: 1
+                  - text: TextRulers.Style
+                    attr: 3
+                  - text: ".\rA style is the model of one or several ruler views. If several views share the same model, the user can change the attributes of all the rulers simultaneously. For example, changing the left margin will affect all rulers bound to the same style. However, models cannot be shared across documents, which means that all rulers bound to the same style must be embedded in the same document.\r"
+                    attr: 1
+                  - text: TextRulers.Attributes
+                    attr: 3
+                  - text: " are persistent collections of ruler attributes, much in the same way as "
+                    attr: 1
+                  - text: TextModels.Attributes
+                    attr: 3
+                  - text: " are persistent collections of character attributes.\r\r\tAttributes = POINTER TO EXTENSIBLE RECORD (Stores.Store)\r\t\tfirst-, left-, right-, lead-, asc-, dsc-, grid-: INTEGER;\r\t\topts-: SET;\r\t\ttabs-: TextRulers.TabArray\r\tEND;\r\rListing 5-10. Simplified definition of TextRulers.Attributes\r\rIn the following paragraphs, we discuss the individual attributes. For these attributes, there exist auxiliary procedures in module "
+                    attr: 1
+                  - text: TextRulers
+                    attr: 3
+                  - text: " which make it simple to set up a text ruler in the desired way: just create a new ruler with "
+                    attr: 1
+                  - text: TextRulers.dir.New(NIL)
+                    attr: 3
+                  - text: ", and then apply the auxiliary procedures that you need to obtain the correct attribute settings. An example was given above in the procedure "
+                    attr: 1
+                  - text: WriteRuler
+                    attr: 3
+                  - text: " of module "
+                    attr: 1
+                  - text: ObxPDBRep2
+                    attr: 3
+                  - text: ".\rThese auxiliary procedures greatly simplify setting up text rulers. For example, they hide that the attributes are actually not contained in the ruler itself, but rather in attributes objects which are used by style objects which are used by the rulers. Providing such simplified access to a complex feature is called a "
+                    attr: 1
+                  - text: facade
+                    attr: 3
+                  - text: " in the design patterns terminology [GHJV94]. Here the mechanism is particularly simple because the facade merely consists of simple procedures, there is not even a facade object that would have to be created and managed.\r\r"
+                    attr: 1
+                  - text: Tab stops
+                    attr: 2
+                  - text: "\rThe "
+                    attr: 1
+                  - text: tabs
+                    attr: 3
+                  - text: " field of type "
+                    attr: 1
+                  - text: TextRulers.TabArray
+                    attr: 3
+                  - text: " contains information about tab stops. The number of tab stops is given in "
+                    attr: 1
+                  - text: tabs.len
+                    attr: 3
+                  - text: ", and must not be larger than "
+                    attr: 1
+                  - text: TextRulers.maxTabs
+                    attr: 3
+                  - text: " (which is currently 32). If the user enters more than "
+                    attr: 1
+                  - text: maxTabs
+                    attr: 3
+                  - text: " tabs, or more tabs than given in "
+                    attr: 1
+                  - text: len
+                    attr: 3
+                  - text: ", then the superfluous tabs will be treated as fixed size space characters. The fixed size used is an integer multiple of the width of a space in the used font, approximately 4 mm in total.\r\r\tTab = RECORD \r\t\tstop: INTEGER;\t"
+                    attr: 1
+                  - text: "(* stop >= 0 *)"
+                    attr: 3
+                  - text: "\r\t\ttype: SET\t"
+                    attr: 1
+                  - text: "(* type IN {TextRulers.centerTab, TextRulers.rightTab, TextRulers.barTab} *)"
+                    attr: 3
+                  - text: "\r\tEND;\r\r\tTabArray = RECORD \r\t\tlen: INTEGER;\t"
+                    attr: 1
+                  - text: "(* 0 <= len <= TextRulers.maxTabs *)"
+                    attr: 3
+                  - text: "\r\t\ttab: ARRAY TextRulers.maxTabs OF TextRulers.Tab\r\t\t"
+                    attr: 1
+                  - text: "\t(* tab[0 .. len-1] sorted in ascending order without duplicates *)"
+                    attr: 3
+                  - text: "\r\tEND\r\rListing 5-11. Definition of TextRulers.Tab and TabArray\r\rIn "
+                    attr: 1
+                  - text: tabs.tab.stop
+                    attr: 3
+                  - text: ", the tab's distance from the left border of the text view is specified (in universal units of course). The tab stops in the "
+                    attr: 1
+                  - text: tabs.tab
+                    attr: 3
+                  - text: " array must be sorted in ascending order, and there must be no duplicate values.\rIn addition to the stop position kept in field "
+                    attr: 1
+                  - text: stop
+                    attr: 3
+                  - text: ", a tab stop can be modified using a set of possible options kept in field type. In particular, these options allow to center text under a tab stop or to right-align text under a tab stop (the default is left alignment):\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 1440000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "tab type\ttabs.tab[i].type"
+                    attr: 2
+                  - text: "\rleft adjusted\t{}\rright adjusted\t{TextRulers.rightTab}\rcentered\t{TextRulers.centerTab}\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rFor all of the above tab types, it can optionally be specified whether the tab itself is drawn as a vertical bar. Bar tabs are specified by including the value "
+                    attr: 1
+                  - text: TextRulers.barTab
+                    attr: 3
+                  - text: " in the tab type set. Since the bars occupy the whole line height, they are useful to to format simple tables.\r\rWhen created with "
+                    attr: 1
+                  - text: TextRulers.dir.New(NIL)
+                    attr: 3
+                  - text: ", a ruler has no tabs.\rThe following auxiliary procedures are provided to modify a ruler:\r\r\tPROCEDURE AddTab (r: Ruler; x: INTEGER)\r\tPROCEDURE MakeRightTab (r: Ruler)\r\tPROCEDURE MakeCenterTab (r: Ruler)\r\tPROCEDURE MakeLineTab (r: Ruler)\r\r"
+                    attr: 1
+                  - text: AddTab
+                    attr: 3
+                  - text: " adds a new left-adjusted normal tab. It can be changed into a right-adjusted or centered tab by calling "
+                    attr: 1
+                  - text: MakeRightTab
+                    attr: 3
+                  - text: " or "
+                    attr: 1
+                  - text: MakeCenterTab
+                    attr: 3
+                  - text: ". Independently of the adjustment mode, the tab can be turned into a bar tab by calling "
+                    attr: 1
+                  - text: MakeLineTab
+                    attr: 3
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: Margins
+                    attr: 2
+                  - text: "\rText is set within a left and a right margin. These margins can be specified as distances from the left border of the text view. The left margin must be smaller than the right margin.\r\r\tleft-, right-: INTEGER\t"
+                    attr: 1
+                  - text: "(* (left >= 0)  &  (right >= left) *)"
+                    attr: 3
+                  - text: "\r\rIt is possible to signal to the text setter that it should ignore the right margin and use the text view for line breaking instead. In fact, this is the default behavior. It means that when the view size is changed, the text's line breaking will probably change also. Even if the right margins is ignored for text setting, it is still useful: a text view uses it as a hint for how wide the view should be when it is opened.\rLine breaking at a fixed right margin is only needed in rare circumstances, for example when this particular paragraph should be narrower than the others. If you want line breaking to be controlled by the right margin, then you have to include "
+                    attr: 1
+                  - text: TextRulers.rightFixed
+                    attr: 3
+                  - text: " in the "
+                    attr: 1
+                  - text: opts
+                    attr: 3
+                  - text: " set (see further below).\r\rNote that the "
+                    attr: 1
+                  - text: "Tools->Document Size..."
+                    attr: 3
+                  - text: " command allows to flexibly specify the width (and height) of a document's outermost view, the so-called "
+                    attr: 1
+                  - text: root view
+                    attr: 3
+                  - text: ". The width can be set to a fixed size, which is useful for page layout types of application.\rUsually however, the width is defined by the page setup, which derives the view's width from the currently selected paper size, reduced by the user-specified print margins. This is adequate for letters, program sources, and similar kinds of documents.\rAs a third possibility, the root view's width can be bound to the window size (this is the case mentioned above, when the view uses the first ruler's right margin as a hint, whether the right margin is fixed or not). Whenever the user resizes the window, the root view is resized accordingly, such that it is kept always as large as the window allows. This is desirable in particular for on-line documentation, where the documentation should use as much screen space as granted by the user, adapting the text flow to the available width whenever the window is resized. An example for this style is the default formatting of Web pages.\rNote that these features are independent of the root view's type. They work the same way for all resizable views, such as text views, form views, and most other kinds of editor view.\r\rWhen created with "
+                    attr: 1
+                  - text: TextRulers.dir.New(NIL)
+                    attr: 3
+                  - text: ", a ruler has a left margin of 0 and an implementation-specific non-fixed right margin > 0.\rThe following auxiliary procedures are provided to modify a ruler:\r\r\tPROCEDURE SetLeft (r: Ruler; x: INTEGER)\r\tPROCEDURE SetRight (r: Ruler; x: INTEGER)\r\tPROCEDURE SetFixedRight (r: Ruler; x: INTEGER)\r\r"
+                    attr: 1
+                  - text: SetLeft
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: SetRight
+                    attr: 3
+                  - text: " set the left or right margin. "
+                    attr: 1
+                  - text: SetFixedRight
+                    attr: 3
+                  - text: " sets the right margin and marks it as fixed.\r\r"
+                    attr: 1
+                  - text: First line indentation
+                    attr: 2
+                  - text: "\rA ruler defines the "
+                    attr: 1
+                  - text: first line indentation
+                    attr: 3
+                  - text: ", i.e., how much the first line after the ruler is indented from the left border of the text view. Note that it is possible to define a first line indentation that is smaller than the left margin (first < left). This is the only case where a text view draws text to the left of the specified left margin.\r\r\tfirst-: INTEGER;\t"
+                    attr: 1
+                  - text: "(* first >= 0 *)"
+                    attr: 3
+                  - text: "\r\rFirst line indentation is applied to the first line of each paragraph in the ruler's scope.\r\rWhen created with "
+                    attr: 1
+                  - text: TextRulers.dir.New(NIL)
+                    attr: 3
+                  - text: ", a ruler has no first line indentation (first = 0).\rThe following auxiliary procedure is provided to modify a ruler:\r\r\tPROCEDURE SetFirst (r: Ruler; x: INTEGER)\r\r"
+                    attr: 1
+                  - text: Ascender and descender
+                    attr: 2
+                  - text: "\rWhen a character is drawn, its rendering depends on its font attributes, such as typeface (Helvetica or Times?), style (straight or slanted?), weight (normal or bold?) and size. When a whole string is drawn, all characters are placed on a common base line. The ascender is the largest extent to which any character of a line extends above the base line. Some characters extend below the base line, such as \"g\" and \"y\". The descender is the largest extent to which any character of a line extends below the base line (see Figure 5-12).\rA text setter should calculate base line distances in a way that one line's descender doesn't overlap the next line's ascender, in order to avoid overlapping characters. In order to avoid degenerate cases, such as empty lines or lines that only contain tiny font sizes, a ruler can specify minimal values for ascender (asc) and descender (dsc).\r\r\tasc-, dsc-: INTEGER;\t"
+                    attr: 1
+                  - text: "(* (asc >= 0)  &  (dsc >= 0) *)"
+                    attr: 3
+                  - text: "\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 20
+                      bodyPos: 124079
+                      bodyLen: 1383
+                    attr: 1
+                    w: 1866900
+                    h: 1422400
+                  - text: "\r\rFigure 5-12. Ascender, descender, and base line\r\rWhen created with "
+                    attr: 1
+                  - text: TextRulers.dir.New(NIL)
+                    attr: 3
+                  - text: ", a ruler uses the current default font's ("
+                    attr: 1
+                  - text: Fonts.dir.Default()
+                    attr: 3
+                  - text: ") ascender and descender as initial values.\rThe following auxiliary procedures are provided to modify a ruler:\r\r\tPROCEDURE SetAsc (r: Ruler; h: INTEGER)\r\tPROCEDURE SetDsc (r: Ruler; h: INTEGER)\r\r"
+                    attr: 1
+                  - text: Paragraph lead
+                    attr: 2
+                  - text: "\r\rThe paragraph lead defines the additional vertical space to be inserted between the first line of a paragraph and the previous paragraph's last line. Where the ruler's grid attribute (see below) is used to define a line grid, it is normally considered good style to choose a lead that is a multiple of the grid spacing, or sometimes half of the grid spacing. It allows to visually distinguish new paragraphs from mere carriage returns.\r\r\tlead-: INTEGER;\t"
+                    attr: 1
+                  - text: "(* lead >= 0 *)"
+                    attr: 3
+                  - text: "\r\rWhen created with "
+                    attr: 1
+                  - text: TextRulers.dir.New(NIL)
+                    attr: 3
+                  - text: ", a ruler has a lead of 0.\rThe following auxiliary procedure is provided to modify a ruler:\r\r\tPROCEDURE SetLead (r: Ruler; h: INTEGER)\r\r"
+                    attr: 1
+                  - text: Line grid
+                    attr: 2
+                  - text: "\rIf "
+                    attr: 1
+                  - text: grid
+                    attr: 3
+                  - text: " is zero, then lines are packed as closely as possible, so that there remains no free room between one line's descender and the next line's ascender. Different lines may have different ascenders and descenders, depending on the text and fonts that they contain. For this reason, distances between base lines need not be regular. For typographical reasons, irregular line spacing is often undesirable.\rTo ensure a more regular spacing of grid lines, it is possible to switch on a line grid, by setting "
+                    attr: 1
+                  - text: grid
+                    attr: 3
+                  - text: " to a value larger than zero. This value defines a vertical grid, onto which all base lines are forced. If a line is too high to fit on the next grid line, it is placed one or more grid distances further below (see Figure 5-14).\r\r\tgrid-: INTEGER;\t"
+                    attr: 1
+                  - text: "(* grid >= 0 *)"
+                    attr: 3
+                  - text: "\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 21
+                      bodyPos: 125592
+                      bodyLen: 1333
+                    attr: 11
+                    w: 1790700
+                    h: 1778000
+                  - text: "\r\rFigure 5-13. Line grid\r\rWhen created with "
+                    attr: 1
+                  - text: TextRulers.dir.New(NIL)
+                    attr: 3
+                  - text: ", a ruler has a line grid of 1.\rThe following auxiliary procedure is provided to modify a ruler:\r\r\tPROCEDURE SetGrid (r: Ruler; h: INTEGER)\r\r"
+                    attr: 1
+                  - text: Adjustment modes
+                    attr: 2
+                  - text: "\rFor longer text stretches, it becomes necessary to break lines that don't fit between the text view's margins. This text setting may occur in several different ways. Text may be left adjusted (left flush), right adjusted (right flush), centered, or aligned to both left and right margins (full justification). These four adjustment modes can be controlled by two option flags: "
+                    attr: 1
+                  - text: TextRulers.leftAdjust
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: TextRulers.rightAdjust
+                    attr: 3
+                  - text: ".\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 792000 }
+                        - { stop: 1800000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\t"
+                    attr: 1
+                  - text: "leftAdjust\trightAdjust\tadjustment mode"
+                    attr: 2
+                  - text: "\r\tFALSE\tFALSE\tcentered\r\tFALSE\tTRUE\tright adjusted\r\tTRUE\tFALSE\tleft adjusted (default)\r\tTRUE\tTRUE\tfully adjusted\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "Table 5-14. Adjustment modes\r\rThese adjustment modes can be included in or excluded from a more comprehensive option set, which is represented as a "
+                    attr: 1
+                  - text: SET
+                    attr: 3
+                  - text: ":\r\r\topts-: SET\t"
+                    attr: 1
+                  - text: "(* opts is subset of {leftAdjust, rightAdjust, pageBreak, rightFixed, noBreakInside, parJoin; the other set elements are reserved *)"
+                    attr: 3
+                  - text: "\r\rWhen created with "
+                    attr: 1
+                  - text: TextRulers.dir.New(NIL)
+                    attr: 3
+                  - text: ", a ruler's option set is "
+                    attr: 1
+                  - text: "{leftAdjust}"
+                    attr: 3
+                  - text: ".\rThe following auxiliary procedures are provided to modify a ruler:\r\r\tPROCEDURE SetLeftFlush (r: Ruler)\r\tPROCEDURE SetCentered (r: Ruler)\r\tPROCEDURE SetRightFlush (r: Ruler)\r\tPROCEDURE SetJustified (r: Ruler)\r\r"
+                    attr: 1
+                  - text: Page breaks
+                    attr: 2
+                  - text: "\rA ruler can force a page break, by including the "
+                    attr: 1
+                  - text: TextRulers.pageBreak
+                    attr: 3
+                  - text: " option element in the "
+                    attr: 1
+                  - text: opts
+                    attr: 3
+                  - text: " set.\rThe element "
+                    attr: 1
+                  - text: TextRulers.noBreakInside
+                    attr: 3
+                  - text: " is valid for the entire scope of a paragraph. As the name indicates, it forces the beginning of the paragraph to start on a new page, if this isn't the case anyway and if the page would be broken before the next paragraph.\rThe element "
+                    attr: 1
+                  - text: TextRulers.parJoin
+                    attr: 3
+                  - text: " is similar to "
+                    attr: 1
+                  - text: noBreakInside
+                    attr: 3
+                  - text: ", except that it additionally forces at least the first line of the next paragraph onto the same page.\r\rWhen created with "
+                    attr: 1
+                  - text: TextRulers.dir.New(NIL)
+                    attr: 3
+                  - text: ", a ruler has none of the above special attributes.\rThe following auxiliary proceduresare provided to modify a ruler:\r\r\tPROCEDURE SetPageBreak (r: Ruler)\r\tPROCEDURE SetNoBreakInside (r: Ruler)\r\tPROCEDURE SetParJoin (r: Ruler)\r\rThis concludes our discussion of ruler attributes. Ruler attributes apply to the ruler, or to all the paragraphs in the ruler's scope. In contrast, "
+                    attr: 1
+                  - text: character attributes
+                    attr: 3
+                  - text: " apply to arbitrary stretches of characters. The BlackBox text model supports all font attributes plus color and vertical offsets.\r\rRulers are views that can be inserted into a text, since texts are containers. Rulers are special in that they are known to the text system, since a text view needs to know about a ruler's paragraph attributes when setting the text. However, arbitrary other views, which are not known to the text system, may be inserted into a text. Particularly interesting effects can be achieved when these views know about texts. Fold views and link views are examples of such text-aware views.\r\rThe following example shows how fold views can be generated. Fold views are standard objects of the BlackBox Component Builder; they are implemented in the "
+                    attr: 1
+                  - text: StdFolds
+                    attr: 3
+                  - text: " module, only using BlackBox and its Text subsystem. Fold views come in pairs: a left fold and a right fold. The left fold contains a hidden text. When the user clicks on one of the fold views, the text between the two views is swapped with the hidden text. Typically, fold views are used to hide a large text behind a short one; e.g., a book chapter may be hidden, while the chapter's name is visible. This is a way to achieve abstraction of document parts, by hiding details. For this reason, one state of a fold view is called its "
+                    attr: 1
+                  - text: collapsed
+                    attr: 3
+                  - text: " state, and the other is called its expanded "
+                    attr: 1
+                  - text: state
+                    attr: 3
+                  - text: ". Technically there is no reason why the hidden text should be longer than the visible one; the naming is more a reflection of the typical use of folds.\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 26
+                      bodyPos: 127435
+                      bodyLen: 41777
+                    attr: 1
+                    w: 2600280
+                    h: 1362240
+                  - text: "\r\rFigure 5-15. Fold views in collapsed and expanded states\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 27
+                      bodyPos: 169252
+                      bodyLen: 883
+                    attr: 1
+                    w: 4762388
+                    h: 1257270
+                  - text: "\r\rFigure 5-16. Structure of text folds\r\rMODULE ObxPDBRep3;\r\r\tIMPORT Views, TextModels, TextMappers, TextViews, "
+                    attr: 1
+                  - text: StdFolds
+                    attr: 7
+                  - text: ", ObxPhoneDB;\t"
+                    attr: 1
+                  - text: "\t\t\t\t\r\tPROCEDURE WriteOpenFold (VAR f: TextMappers.Formatter;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tIN shortForm: ARRAY OF CHAR);"
+                    attr: 7
+                  - text: "\r\t\tVAR fold: StdFolds.Fold; t: TextModels.Model;\r\tBEGIN\r\t\tt := TextModels.dir.NewFromString(shortForm);\t"
+                    attr: 1
+                  - text: "(* convert a string into a text model *)"
+                    attr: 3
+                  - text: "\r\t\tfold := StdFolds.dir.New(StdFolds.expanded, \"\", t);\r\t\tf.WriteView(fold)\r\tEND WriteOpenFold;\r\r\t"
+                    attr: 1
+                  - text: "PROCEDURE WriteCloseFold (VAR f: TextMappers.Formatter);"
+                    attr: 7
+                  - text: "\r\t\tVAR fold: StdFolds.Fold; len: INTEGER;\r\tBEGIN\r\t\tfold := StdFolds.dir.New(StdFolds.expanded, \"\", NIL);\r\t\tf.WriteView(fold);\r\t\tfold.Flip;\t"
+                    attr: 1
+                  - text: "(* swap long-form text, now between the two fold views, with hidden short-form text *)"
+                    attr: 3
+                  - text: "\r\t\tlen := f.rider.Base().Length();\t"
+                    attr: 1
+                  - text: "(* determine the text carrier's new length *)"
+                    attr: 3
+                  - text: "\r\t\tf.SetPos(len)\t"
+                    attr: 1
+                  - text: "(* position the formatter to the end of the text *)"
+                    attr: 3
+                  - text: "\r\tEND WriteCloseFold;\r\r\tPROCEDURE "
+                    attr: 1
+                  - text: GenReport
+                    attr: 2
+                  - text: "*;\r\t\tVAR t: TextModels.Model; f: TextMappers.Formatter; v: TextViews.View;\r\t\t\ti: INTEGER; name, number: ObxPhoneDB.String;\r\tBEGIN\r\t\tt := TextModels.dir.New();\t"
+                    attr: 1
+                  - text: "(* create empty text carrier *)"
+                    attr: 3
+                  - text: "\r\t\tf.ConnectTo(t);\t\t\t\t\t"
+                    attr: 1
+                  - text: "(* connect a formatter to the text *)"
+                    attr: 3
+                  - text: "\r\t\ti := 0;\r\t\tObxPhoneDB.LookupByIndex(i, name, number);\r\t\tWHILE name # \"\" DO\r\t\t\t"
+                    attr: 1
+                  - text: "WriteOpenFold(f, name$);"
+                    attr: 7
+                  - text: "\t"
+                    attr: 1
+                  - text: "(* write left fold view into text, with "
+                    attr: 3
+                  - text: name
+                    attr: 1
+                  - text: " as its short-form text *)"
+                    attr: 3
+                  - text: "\r\t\t\t"
+                    attr: 1
+                  - text: "(* now write the long-form text *)"
+                    attr: 3
+                  - text: "\r\t\t\tf.WriteString(name);\t\t"
+                    attr: 1
+                  - text: "(* first string *)"
+                    attr: 3
+                  - text: "\r\t\t\tf.WriteTab;\t"
+                    attr: 1
+                  - text: "\t\t\t\t(* tab character *)"
+                    attr: 3
+                  - text: "\r\t\t\tf.WriteString(number);\t"
+                    attr: 1
+                  - text: "(* second string *)"
+                    attr: 3
+                  - text: "\r\t\t\t"
+                    attr: 1
+                  - text: WriteCloseFold(f);
+                    attr: 7
+                  - text: "\t\t\t"
+                    attr: 1
+                  - text: "(* write closing fold, and swap short- and long-form texts *)"
+                    attr: 3
+                  - text: "\r\t\t\tf.WriteLn;\t\t\t\t\t\t"
+                    attr: 1
+                  - text: "(* carriage return *)"
+                    attr: 3
+                  - text: "\r\t\t\tINC(i);\r\t\t\tObxPhoneDB.LookupByIndex(i, name, number)\r\t\tEND;\r\t\tv := TextViews.dir.New(t);\t"
+                    attr: 1
+                  - text: "(* create a text view for the text generated above *)"
+                    attr: 3
+                  - text: "\r\t\tViews.OpenView(v)\t\t\t"
+                    attr: 1
+                  - text: "(* open the text view in its own window *)"
+                    attr: 3
+                  - text: "\r\tEND GenReport;\r\rEND ObxPDBRep3.\r\rListing 5-17. Writing the phone database using folds\r\rProcedure "
+                    attr: 1
+                  - text: WriteCloseFold
+                    attr: 3
+                  - text: " has two interesting properties. First, the fold is written in its expanded form. This is reasonable, since the expanded form is often more complex than the collapsed form, which thus can be used conveniently in "
+                    attr: 1
+                  - text: WriteOpenFold
+                    attr: 3
+                  - text: " (note the useful text directory procedure "
+                    attr: 1
+                  - text: TextModels.dir.NewFromString
+                    attr: 3
+                  - text: "). The collapsed version is more complex, and thus it is convenient to use the already existing text formatter. After the left fold view, the expanded text, and the right fold view have been written, the text is collapsed using the "
+                    attr: 1
+                  - text: StdFolds.Flip
+                    attr: 3
+                  - text: " procedure.\rThis leads us to the second interesting point. Collapsing the text modifies the text model. This invalidates all riders, and consequently all formatters, that operate on the text. For example, formatter "
+                    attr: 1
+                  - text: f
+                    attr: 3
+                  - text: " has always been at the end of the created text, but now that the text is collapsed, its position is beyond the end of the text and thus illegal. For this reason, the correct position is set up again.\r\rThis is a general observation when working with mutable carriers: whenever you modify a carrier's state (or whenever someone else may do so!) you possibly have to update some state of your riders. In this example, the text's length was modified, which made it necessary to update the formatter's position.\r\rThe last example in our series of demonstrations on how to generate texts uses link views. Link views are standard objects of the BlackBox Component Builder; they are implemented in the "
+                    attr: 1
+                  - text: StdLinks
+                    attr: 3
+                  - text: " module, only using BlackBox and its Text subsystem. Like fold views, link views are used in pairs. Their implementation uses a special interface of the text subsystem ("
+                    attr: 1
+                  - text: TextControllers.FilterPollCursorMsg
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: TextControllers.FilterTrackMsg
+                    attr: 3
+                  - text: ") to cause the cursor to turn into a hand cursor when it lies above the text stretch between the pair of link views. This behavior is known from typical hypertext systems, such as Web browsers, when the mouse is moved over a text stretch that symbolizes a hyperlink. This use of link views is what gave them their name. However, they are much more general than simple hyperlink delimiters. A hyperlink contains a passive reference to another document or to another location in the same document. For example, a document reference may be stored as a string, such as \"http://www.oberon.ch\" or \"BlackBox/System/Rsrc/About\".\rLink views in contrast store a Component Pascal command, optionally with one or two string literals as parameters. The command is executed when the user clicks the mouse button when the mouse is between the two link views.\rThe command is stored in the left link view of a pair. Typical commands are:\r\r\tDevDebug.ShowLoadedModules\r\r\tStdCmds.OpenDoc('System/Rsrc/Menus')\r\r\tStdCmds.OpenAux('System/Rsrc/About', 'About BlackBox')\r\rIn our example, we will create link views with commands similar to the following one:\r\r\tObxPDBRep4.Log('Daffy Duck    310-555-1212')\r\rNote: consult the documentation of module "
+                    attr: 1
+                  - text: StdInterpreter
+                    attr: 3
+                  - text: ", since there may be some restrictions on the possible parameter lists supported for such commands.\r\rThe "
+                    attr: 1
+                  - text: Log
+                    attr: 3
+                  - text: " procedure of our example module simply writes the parameter string to the log. In a more realistic example, the parameter string could be used to dial the respective number.\r\rMODULE ObxPDBRep4;\r\r\tIMPORT Views, TextModels, TextMappers, TextViews, "
+                    attr: 1
+                  - text: StdLinks
+                    attr: 7
+                  - text: ", "
+                    attr: 1
+                  - text: "StdLog,"
+                    attr: 7
+                  - text: " ObxPhoneDB;\r\r\tCONST cmdStart = \"ObxPDBRep4.Log('\"; cmdEnd = \"')\";\r\r\tPROCEDURE "
+                    attr: 1
+                  - text: GenReport
+                    attr: 2
+                  - text: "*;\r\t\tVAR t: TextModels.Model; f: TextMappers.Formatter; v: TextViews.View;\r\t\t\ti: INTEGER; name, number: ObxPhoneDB.String; "
+                    attr: 1
+                  - text: "link: StdLinks.Link;"
+                    attr: 7
+                  - text: "\r\tBEGIN\r\t\tt := TextModels.dir.New();\t"
+                    attr: 1
+                  - text: "(* create empty text carrier *)"
+                    attr: 3
+                  - text: "\r\t\tf.ConnectTo(t);\t\t\t\t\t"
+                    attr: 1
+                  - text: "(* connect a formatter to the text *)"
+                    attr: 3
+                  - text: "\r\t\ti := 0;\r\t\tObxPhoneDB.LookupByIndex(i, name, number);\r\t\tWHILE name # \"\" DO\r\t\t\t"
+                    attr: 1
+                  - text: "link := StdLinks.dir.NewLink(cmdStart + name + \"    \" + number + cmdEnd);"
+                    attr: 7
+                  - text: "\r\t\t\t"
+                    attr: 1
+                  - text: f.WriteView(link);
+                    attr: 7
+                  - text: "\r\t\t\tf.WriteString(name);\t\t"
+                    attr: 1
+                  - text: "(* the string shown between the pair of link views *)"
+                    attr: 3
+                  - text: "\r\t\t\t"
+                    attr: 1
+                  - text: "link := StdLinks.dir.NewLink(\"\");\r\t\t\tf.WriteView(link);"
+                    attr: 7
+                  - text: "\r\t\t\tf.WriteLn;\t\t\t\t\t\t"
+                    attr: 1
+                  - text: "(* carriage return *)"
+                    attr: 3
+                  - text: "\r\t\t\tINC(i);\r\t\t\tObxPhoneDB.LookupByIndex(i, name, number)\r\t\tEND;\r\t\tv := TextViews.dir.New(t);\t"
+                    attr: 1
+                  - text: "(* create a text view for the text generated above *)"
+                    attr: 3
+                  - text: "\r\t\tViews.OpenView(v)\t\t\t"
+                    attr: 1
+                  - text: "(* open the text view in its own window *)"
+                    attr: 3
+                  - text: "\r\tEND GenReport;\r\r\t"
+                    attr: 1
+                  - text: PROCEDURE 
+                    attr: 7
+                  - text: Log
+                    attr: 12
+                  - text: "* (param: ARRAY OF CHAR);"
+                    attr: 7
+                  - text: "\r\tBEGIN\r\t\tStdLog.String(param); StdLog.Ln\r\tEND Log;\r\rEND ObxPDBRep4.\r\rListing 5-18. Writing the phone database using links\r\rNote that commands are normal procedure calls; like all procedure calls from outside of a module, they can only call those procedures of the module that are exported. Thus procedure "
+                    attr: 1
+                  - text: Log
+                    attr: 3
+                  - text: " of the above module must be exported, otherwise the program wouldn't work.\r\rAnother interesting property of link views is that they display themselves in different ways depending on whether the text view via which the user interacts with them displays or hides marks. If there are several text views on the same model, the user can independently switch marks on or off, such as inactive soft hyphens, ruler views or link views. The text subsystem provides an interface which allows views to distinguish between the two states ("
+                    attr: 1
+                  - text: TextSetters.Pref
+                    attr: 3
+                  - text: "). In particular, a view may decide to hide itself when no marks are shown, by setting its width to zero in this case. This is what link views do: when text marks are switched off, they are invisible, so that only the text between them is visible. Typically, this text is blue and underlined, to indicate that it represents a link. A ruler in contrast always occupies the whole width between its paragraph's left and right margin, but it sets its height to zero when the text marks are turned off. We will learn more about how containers and embedded views can cooperate to achieve such effects in Part III of this tutorial.\r\rThe above example demonstrates that link views can cause arbitrary behavior when the user clicks between them. This generality is powerful, but it should be used with caution. A command in a document is a kind of \"implicit import\" relation between the document and the command's module, and thus constitutes a dependency. This is not fundamentally different from the dependencies that are caused by views embedded in the document, they also function correctly only when their implementing component(s) are available. Like all dependencies, those caused by links, buttons embedded in a control, editors embedded in documents, and so on also need to be tracked and updated when necessary.\r\r\r"
+                    attr: 1
+                  - text: 5.2 The Model-View-Controller pattern applied to texts
+                    attr: 2
+                  - text: "\r\rThe next major examples demonstrate how existing text can be read. It is assumed that the text to be processed is visible, in the topmost window. On how to access texts that are stored in files, please refer to the on-line Obx examples "
+                    attr: 1
+                  - text: ObxOpen0
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: ObxOpen1
+                    attr: 3
+                  - text: ", and "
+                    attr: 1
+                  - text: ObxAscii
+                    attr: 3
+                  - text: ". Before starting with the specifics of text reading, we need to discuss how the topmost window's contents can be accessed from within a Component Pascal command.\rBasically, this is done by calling "
+                    attr: 1
+                  - text: Controllers.FocusView()
+                    attr: 3
+                  - text: ". This function returns "
+                    attr: 1
+                  - text: NIL
+                    attr: 3
+                  - text: " if no document is open. Otherwise it returns the topmost window's contents, which is a view.\rWe have learned earlier that views, whose common base type is "
+                    attr: 1
+                  - text: Views.View
+                    attr: 3
+                  - text: ", are "
+                    attr: 1
+                  - text: the
+                    attr: 3
+                  - text: " pivotal BlackBox abstractions for interactive components, such as editors and controls. Everything revolves around views. In simple cases, such as controls, a view implementation only implements an extension to "
+                    attr: 1
+                  - text: Views.View
+                    attr: 3
+                  - text: ", and that's all. In more complex cases, the data that are visualized by a view are split off into a separate model. This was discussed in detail in Chapter 2.\r\rSince container implementations are among the most complex programming tasks for which the BlackBox Component Builder was designed, the framework provides some help in how a container should be constructed. The abstract design of a container is given in module "
+                    attr: 1
+                  - text: Containers
+                    attr: 3
+                  - text: ". This module declares extensions of the types "
+                    attr: 1
+                  - text: Views.View
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: Models.Model
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: Controllers.Controller
+                    attr: 3
+                  - text: "; these types constitute a mini-framework for container construction.\rTypical containers are implemented in at least four modules: one for the model, one for the view, one for the controller, and one for standard commands. For example, the text subsystem contains the modules "
+                    attr: 1
+                  - text: TextModels
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: TextViews
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: TextControllers
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: TextCmds
+                    attr: 3
+                  - text: "; plus the auxiliary modules "
+                    attr: 1
+                  - text: TextMappers
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: TextRulers
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: TextSetters
+                    attr: 3
+                  - text: ". The form subsystem consists of "
+                    attr: 1
+                  - text: FormModels
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: FormViews
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: FormControllers
+                    attr: 3
+                  - text: ", and "
+                    attr: 1
+                  - text: FormCmds
+                    attr: 3
+                  - text: ".\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 29
+                      bodyPos: 170957
+                      bodyLen: 864
+                    attr: 11
+                    w: 4368800
+                    h: 2933700
+                  - text: "\r\rFigure 5-19. Variations of the generic container module decomposition\r\rWe won't look at all the details of these types; but it is important to know that a container object is not only split into a model and one or several views, but that a view is further split into a view and a so-called controller. For the time being, we can regard the management of selections and carets as the main functionality that a controller encapsulates. This is why we now look at controllers, because some of the following examples will operate on the current selection.\rOnce you have a controller, you can obtain its view by calling its "
+                    attr: 1
+                  - text: ThisView
+                    attr: 3
+                  - text: " procedure. Other procedures allow to get or set the current selection.\rThere may be several views displaying the same model (many-to-one relationship), but there is exactly one controller per view (one-to-one relationship). (This holds for views derived from "
+                    attr: 1
+                  - text: Containers.View
+                    attr: 3
+                  - text: "; other views may or may not have a separate controller.)You can get a controller's view by calling its "
+                    attr: 1
+                  - text: ThisView
+                    attr: 3
+                  - text: " procedure, and you can get a container view's controller by calling its "
+                    attr: 1
+                  - text: ThisController
+                    attr: 3
+                  - text: " procedure.\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 30
+                      bodyPos: 171901
+                      bodyLen: 1391
+                    attr: 11
+                    w: 5283200
+                    h: 3619500
+                  - text: "\r\rFigure 5-20. Model-View-Controller separation\r\rMore specific container abstractions typically provide a suitable "
+                    attr: 1
+                  - text: Focus
+                    attr: 3
+                  - text: " function which yields the controller of the currently focused view, if there is one and if it has the desired type.\r\rWe now know enough about the container scenario that we can tell how to access focus view, model, or controller:\r\r\tThe following declarations are assumed:\r\t\tVAR v: Views.View; m: Models.Model; c: Controllers.Controller;\r\r\tSimple view:\r\t\tv := Controllers.FocusView();\r\r\tView with a model:\r\t\tv := Controllers.FocusView();\r\t\tIF v # NIL THEN m := v.ThisModel() ELSE m := NIL END;\r\r\tExtension of a "
+                    attr: 1
+                  - text: Containers.View
+                    attr: 3
+                  - text: ":\r\t\tv := Controllers.FocusView();\r\t\tIF v # NIL THEN m := v.ThisModel() ELSE m := NIL END;\r\t\tIF (v # NIL) & (v IS Containers.View) THEN\r\t\t\tc := v(Containers.View).ThisController()\r\t\tELSE\r\t\t\tc := NIL\r\t\tEND\r\rListing 5-21. Accessing focus view, model, and controller\r\rTypical container abstractions, such as the Text and Form subsystems, use the above mechanisms to provide more convenient access functions tailored to the specific container type. For example, module "
+                    attr: 1
+                  - text: TextControllers
+                    attr: 3
+                  - text: " exports the function "
+                    attr: 1
+                  - text: Focus
+                    attr: 3
+                  - text: ", which returns the focus view's controller "
+                    attr: 1
+                  - text: if and only if
+                    attr: 3
+                  - text: " the focus view is a text view. Otherwise it returns "
+                    attr: 1
+                  - text: NIL
+                    attr: 3
+                  - text: ". This approach is appropriate, since once you have a container controller, you can easily access its view, its model, information about its selection or caret, and so on. The typical code pattern that arises is some subset of the following one, depending on the controller's parts that you need:\r\r\tPROCEDURE "
+                    attr: 1
+                  - text: SomeCommand
+                    attr: 2
+                  - text: "*;\r\t\tVAR c: TextControllers.Controller;\r\t\t\tv: TextViews.View; t: TextModels.Model; from, to, pos: INTEGER;\r\t\t\t...\r\tBEGIN\r\t\tc := TextControllers.Focus();\r\t\tIF c # NIL THEN\r\t\t\t...\r\t\t\tv := c.ThisView();\t"
+                    attr: 1
+                  - text: "(* if you need the text view... *)"
+                    attr: 3
+                  - text: "\r\t\t\t...\r\t\t\tt := v.ThisModel();\t"
+                    attr: 1
+                  - text: "(* or if you need the text model... *)"
+                    attr: 3
+                  - text: "\r\t\t\t...\r\t\t\tIF c.HasSelection() THEN\t"
+                    attr: 1
+                  - text: "(* or if you need the selection range... *)"
+                    attr: 3
+                  - text: "\r\t\t\t\tc.GetSelection(from, to);\r\t\t\t\t...\r\t\t\tEND;\r\t\t\t...\r\t\t\tIF c.HasCaret() THEN\t"
+                    attr: 1
+                  - text: "(* or if you need the caret position... *)"
+                    attr: 3
+                  - text: "\r\t\t\t\tpos := c.CaretPos();\r\t\t\t\t...\r\t\t\tEND;\r\t\t\t...\r\t\tELSE\t"
+                    attr: 1
+                  - text: "(* no open document window, or focus has wrong type *)\r\t\t\t(* no error handling is necessary if this command is guarded by appropriate guard command *)"
+                    attr: 3
+                  - text: "\r\t\tEND\r\tEND SomeCommand;\r\rListing 5-22. Code pattern for TextControllers.Controller\r\rA menu command can use the guard "
+                    attr: 1
+                  - text: TextCmds.FocusGuard
+                    attr: 3
+                  - text: " to make sure that the command is only executed when a text view is focus. "
+                    attr: 1
+                  - text: TextCmds.SelectionGuard
+                    attr: 3
+                  - text: " additionally checks whether there exists some (non-empty) text selection.\r\r\r"
+                    attr: 1
+                  - text: 5.3 Reading text
+                    attr: 2
+                  - text: "\rNow that we have seen how to access the focus views' controller, we can write our first command that reads the focus view's text. The command counts the number of Latin-1 characters (1 byte), Unicode characters above Latin-1 (2 byte), and embedded views.\r\rMODULE ObxCount0;\r\r\tIMPORT TextModels, TextControllers, StdLog;\r\r\tPROCEDURE "
+                    attr: 1
+                  - text: Do
+                    attr: 2
+                  - text: "*;\r\t"
+                    attr: 1
+                  - text: "(** use TextCmds.SelectionGuard as guard for this command **)"
+                    attr: 3
+                  - text: "\r\t\tVAR c: TextControllers.Controller; from, to, schars, chars, views: INTEGER;\r\t\t\trd: TextModels.Reader;\r\tBEGIN\r\t\tc := TextControllers.Focus();\r\t\tIF (c # NIL) & c.HasSelection() THEN\r\t\t\tc.GetSelection(from, to);\t"
+                    attr: 1
+                  - text: "(* get selection range; from < to *)"
+                    attr: 3
+                  - text: "\r\t\t\trd := c.text.NewReader(NIL);\t"
+                    attr: 1
+                  - text: "(* create a new reader for this text model *)"
+                    attr: 3
+                  - text: "\r\t\t\trd.SetPos(from);\t"
+                    attr: 1
+                  - text: "(* set the reader to beginning of selection *)"
+                    attr: 3
+                  - text: "\r\t\t\trd.Read;\t\t\t\t"
+                    attr: 1
+                  - text: "(* read the first element of the text selection *)"
+                    attr: 3
+                  - text: "\r\t\t\tschars := 0; chars := 0; views := 0;\t"
+                    attr: 1
+                  - text: "(* counter variables *)"
+                    attr: 3
+                  - text: "\r\t\t\tWHILE rd.Pos() # to DO\t"
+                    attr: 1
+                  - text: "(* read all elements of the text selection *)"
+                    attr: 3
+                  - text: "\r\t\t\t\tIF rd.view # NIL THEN\t"
+                    attr: 1
+                  - text: "(* element is a view *)"
+                    attr: 3
+                  - text: "\r\t\t\t\t\tINC(views)\r\t\t\t\tELSIF rd.char < 100X THEN\t"
+                    attr: 1
+                  - text: "(* element is a Latin-1 character *)"
+                    attr: 3
+                  - text: "\r\t\t\t\t\tINC(schars)\r\t\t\t\tELSE\t"
+                    attr: 1
+                  - text: "(* element is Unicode character *)"
+                    attr: 3
+                  - text: "\r\t\t\t\t\tINC(chars)\r\t\t\t\tEND;\r\t\t\t\trd.Read\t\t"
+                    attr: 1
+                  - text: "(* read next element of the text selection *)"
+                    attr: 3
+                  - text: "\r\t\t\tEND;\r\t\t\tStdLog.String(\"Latin-1 characters: \"); StdLog.Int(schars); StdLog.Ln;\r\t\t\tStdLog.String(\"Unicode characters: \"); StdLog.Int(chars); StdLog.Ln;\r\t\t\tStdLog.String(\"Views: \"); StdLog.Int(views); StdLog.Ln;\r\t\t\tStdLog.Ln\r\t\tEND\r\tEND Do;\r\rEND ObxCount0.\r\rListing 5-23. Counting Latin-1 characters, Unicode characters, and views in a text\r\rThe above example uses a "
+                    attr: 1
+                  - text: TextModels.Reader
+                    attr: 3
+                  - text: ", which is the text rider type for reading. Each reader maintains a current position on its base text; there can be several independent readers on the same text simultaneously. A text reader has the following definition:\r\rTYPE\r\tReader = POINTER TO ABSTRACT RECORD \r\t\teot: BOOLEAN;\r\t\tattr: TextModels.Attributes;\r\t\tchar: CHAR;\r\t\tview: Views.View;\r\t\tw, h: INTEGER;\r\t\t(rd: Reader) Base (): TextModels.Model, NEW, ABSTRACT;\r\t\t(rd: Reader) Pos (): INTEGER, NEW, ABSTRACT;\r\t\t(rd: Reader) SetPos (pos: INTEGER), NEW, ABSTRACT;\r\t\t(rd: Reader) Read, NEW, ABSTRACT;\r\t\t(rd: Reader) ReadChar (OUT ch: CHAR), NEW, ABSTRACT;\r\t\t(rd: Reader) ReadView (OUT v: Views.View), NEW, ABSTRACT;\r\t\t(rd: Reader) ReadRun (OUT attr: TextModels.Attributes), NEW, ABSTRACT;\r\t\t(rd: Reader) ReadPrev, NEW, ABSTRACT;\r\t\t(rd: Reader) ReadPrevChar (OUT ch: CHAR), NEW, ABSTRACT;\r\t\t(rd: Reader) ReadPrevView (OUT v: Views.View), NEW, ABSTRACT;\r\t\t(rd: Reader) ReadPrevRun (OUT attr: TextModels.Attributes), NEW, ABSTRACT\r\tEND;\r\rListing 5-24. Definition of TextModels.Reader\r\rGiven a text model "
+                    attr: 1
+                  - text: text
+                    attr: 3
+                  - text: ", a reader can be created by calling "
+                    attr: 1
+                  - text: "rd := text.NewReader(NIL)"
+                    attr: 3
+                  - text: ". Such a newly allocated reader will be positioned at the beginning of the text; i.e., at "
+                    attr: 1
+                  - text: rd.Pos() = 0
+                    attr: 3
+                  - text: ". The position can be changed whenever necessary by calling "
+                    attr: 1
+                  - text: rd.SetPos(pos)
+                    attr: 3
+                  - text: ", with "
+                    attr: 1
+                  - text: pos
+                    attr: 3
+                  - text: " in the range of "
+                    attr: 1
+                  - text: 0..text.Length()
+                    attr: 3
+                  - text: ". The reader's text model can be obtained by calling its "
+                    attr: 1
+                  - text: Base
+                    attr: 3
+                  - text: " procedure.\r\rReading of the next text element is done by calling the reader's "
+                    attr: 1
+                  - text: Read
+                    attr: 3
+                  - text: " procedure, which increases the reader's current position unless the end of text has been reached, in which case the reader's "
+                    attr: 1
+                  - text: eot
+                    attr: 3
+                  - text: " field is set. After "
+                    attr: 1
+                  - text: Read
+                    attr: 3
+                  - text: " is called, the character code of the read element can be found in the reader's "
+                    attr: 1
+                  - text: char
+                    attr: 3
+                  - text: " field. If the character value is less than "
+                    attr: 1
+                  - text: 100X
+                    attr: 3
+                  - text: ", the character fits in the Latin-1 range (1-byte character), otherwise it's a 2-byte Unicode character. For convenience, the auxiliary reader procedure "
+                    attr: 1
+                  - text: ReadChar
+                    attr: 3
+                  - text: " is provided, which performs a "
+                    attr: 1
+                  - text: Read
+                    attr: 3
+                  - text: " and returns the contents of "
+                    attr: 1
+                  - text: char.
+                    attr: 3
+                  - text: "\r\rWhat happens if a view is read? In most cases, "
+                    attr: 1
+                  - text: char
+                    attr: 3
+                  - text: " is set to the reserved value "
+                    attr: 1
+                  - text: TextModels.viewcode
+                    attr: 3
+                  - text: " (2X). However, this is not necessarily the case. A text-aware view may choose to represent an arbitrary character code by using a special preference message ("
+                    attr: 1
+                  - text: TextModels.Pref
+                    attr: 3
+                  - text: "). In order to find out whether a view has been read, the field "
+                    attr: 1
+                  - text: view
+                    attr: 3
+                  - text: " should be tested. It returns the view just read, or "
+                    attr: 1
+                  - text: NIL
+                    attr: 3
+                  - text: " if it wasn't a view.\rWhen a view has been read, the fields "
+                    attr: 1
+                  - text: w
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: h
+                    attr: 3
+                  - text: " indicate the size of the view in universal units. Otherwise, these fields are undefined.\rIt is expected that the implementation of a text model optimizes access to views. For this purpose, the auxiliary reader procedure "
+                    attr: 1
+                  - text: ReadView
+                    attr: 3
+                  - text: " is provided, which reads the next view after the current position, skipping as many non-view elements as necessary.\r\rAfter an element (character or view) has been read, its text attributes are returned in the reader's "
+                    attr: 1
+                  - text: attr
+                    attr: 3
+                  - text: " field. The text attributes consist of font attributes, color and vertical offset; as described earlier. For efficiency and convenience reasons, the auxiliary reader procedure "
+                    attr: 1
+                  - text: ReadRun
+                    attr: 3
+                  - text: " is provided, which advances the reader position until the attributes change from their current setting. Text runs that have the same attributes can be drawn on the screen with one port procedure ("
+                    attr: 1
+                  - text: Ports.Frame.DrawString
+                    attr: 3
+                  - text: "), which is considerably faster than drawing them character by character.\r\rNormally, text is read forward; from lower positions to higher positions. The reader procedures "
+                    attr: 1
+                  - text: ReadPrev
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: ReadPrevView
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: ReadPrevRun
+                    attr: 3
+                  - text: " are symmetrical to their "
+                    attr: 1
+                  - text: Read
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: ReadView
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: ReadRun
+                    attr: 3
+                  - text: " counterparts, but they read backwards. In particular, "
+                    attr: 1
+                  - text: ReadPrevView
+                    attr: 3
+                  - text: " is used by a text view's so-called text setter to find the most recent ruler view, which defines how the text must be set (The auxiliary procedure "
+                    attr: 1
+                  - text: TextRulers.GetValidRuler
+                    attr: 3
+                  - text: " implements this search.)\rWhen one of the reading procedures has been called (whether one of the forward or one of the backward reading procedures), the reader's "
+                    attr: 1
+                  - text: eot
+                    attr: 3
+                  - text: " field is set. If an element could be read, "
+                    attr: 1
+                  - text: eot
+                    attr: 3
+                  - text: " is set to "
+                    attr: 1
+                  - text: "FALSE"
+                    attr: 3
+                  - text: ". If no element could be read (reading forward at the end of the text, or reading backward at the beginning of the text), "
+                    attr: 1
+                  - text: eot
+                    attr: 3
+                  - text: " is set to "
+                    attr: 1
+                  - text: "TRUE"
+                    attr: 3
+                  - text: ".\r\rTypically, the following code pattern arises when working with a text reader. "
+                    attr: 1
+                  - text: condition
+                    attr: 3
+                  - text: " may be something like "
+                    attr: 1
+                  - text: "rd.Pos() # end"
+                    attr: 3
+                  - text: " or "
+                    attr: 1
+                  - text: ~rd.eot
+                    attr: 3
+                  - text: ".\r\r\t\tVAR rd: TextModels.Reader; start: INTEGER;\r\tBEGIN\r\t\t"
+                    attr: 1
+                  - text: "... define "
+                    attr: 3
+                  - text: start
+                    attr: 1
+                  - text: " ..."
+                    attr: 3
+                  - text: "\r\t\trd := text.NewReader(NIL);\r\t\trd.SetPos(start);\t"
+                    attr: 1
+                  - text: "(* only necessary if "
+                    attr: 3
+                  - text: "start # 0"
+                    attr: 1
+                  - text: " *)"
+                    attr: 3
+                  - text: "\r\t\trd.Read;\r\t\tWHILE "
+                    attr: 1
+                  - text: condition
+                    attr: 3
+                  - text: " DO\r\t\t\t"
+                    attr: 1
+                  - text: ... consume text element denoted by rd ...
+                    attr: 3
+                  - text: "\r\t\t\trd.Read\r\t\tEND;\r\rListing 5-25. Code pattern for TextModels.Reader\r\rThe next example uses a text scanner. Scanners are reading text mappers; like formatters, they are defined in module "
+                    attr: 1
+                  - text: TextMappers
+                    attr: 3
+                  - text: ". Text scanners are similar to text readers, except that they operate on whole symbols rather than characters. Strings and numbers are examples of Component Pascal symbols that are supported by text scanners.\rWhen you compare the definition of a "
+                    attr: 1
+                  - text: TextMappers.Scanner
+                    attr: 3
+                  - text: " with the one of "
+                    attr: 1
+                  - text: TextModels.Reader
+                    attr: 3
+                  - text: ", you'll note that a scanner can also return characters (field "
+                    attr: 1
+                  - text: char
+                    attr: 3
+                  - text: ") and views with their sizes (fields "
+                    attr: 1
+                  - text: view
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: w
+                    attr: 3
+                  - text: ", and "
+                    attr: 1
+                  - text: h
+                    attr: 3
+                  - text: ); that a scanner has a position (
+                    attr: 1
+                  - text: Pos
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: SetPos
+                    attr: 3
+                  - text: "), but that a scanner cannot read backwards. "
+                    attr: 1
+                  - text: Scan
+                    attr: 3
+                  - text: " corresponds to a reader's "
+                    attr: 1
+                  - text: Read
+                    attr: 3
+                  - text: " procedure. It skips white space (blanks, carriage returns) until it either reaches the end of the text, which is signaled by setting "
+                    attr: 1
+                  - text: type
+                    attr: 3
+                  - text: " to "
+                    attr: 1
+                  - text: TextMappers.eot
+                    attr: 3
+                  - text: ", or until it has read a symbol. The type of symbol that was read is returned in "
+                    attr: 1
+                  - text: type
+                    attr: 3
+                  - text: ". It may be one of the "
+                    attr: 1
+                  - text: TextMappers
+                    attr: 3
+                  - text: " constants\r\r\t"
+                    attr: 1
+                  - text: "char, string, int, real, bool, set, view, tab, line, para, eot, invalid. "
+                    attr: 3
+                  - text: "\r\rBy default, views and control characters are treated as white space and thus ignored. Using an option set ("
+                    attr: 1
+                  - text: opts
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: SetOpts
+                    attr: 3
+                  - text: ") it is possible to treat them as valid symbols, too. The set element "
+                    attr: 1
+                  - text: TextMappers.returnViews
+                    attr: 3
+                  - text: " indicates that views should be recognized, while "
+                    attr: 1
+                  - text: TextMappers.returnCtrlChars
+                    attr: 3
+                  - text: " indicates that the three control characters for tabulators ("
+                    attr: 1
+                  - text: tab
+                    attr: 3
+                  - text: "), carriage returns ("
+                    attr: 1
+                  - text: line
+                    attr: 3
+                  - text: ) and paragraphs (
+                    attr: 1
+                  - text: para
+                    attr: 3
+                  - text: ") should be recognized.\rWhen a symbol starts like a Component Pascal string or identifier, the scanner attempts to read a string. When successful, "
+                    attr: 1
+                  - text: type
+                    attr: 3
+                  - text: " is set to "
+                    attr: 1
+                  - text: string
+                    attr: 3
+                  - text: "; which may also be a short string, i.e., only containing Latin-1 characters. The option "
+                    attr: 1
+                  - text: TextMappers.returnQualIdents
+                    attr: 3
+                  - text: " lets the scanner recognize complete qualified identifiers as single symbols; e.g., the string  "
+                    attr: 1
+                  - text: ThisMod.ThatObj
+                    attr: 3
+                  - text: "  . The length of the string is returned in "
+                    attr: 1
+                  - text: len
+                    attr: 3
+                  - text: ".\rIf it is possible to interpret the symbol as an integer or real number, "
+                    attr: 1
+                  - text: type
+                    attr: 3
+                  - text: " is set accordingly, as are the fields "
+                    attr: 1
+                  - text: int
+                    attr: 3
+                  - text: " or "
+                    attr: 1
+                  - text: real
+                    attr: 3
+                  - text: ". Integer numbers are recognized in different number bases, the base that was recognized is returned in "
+                    attr: 1
+                  - text: base
+                    attr: 3
+                  - text: " (10 for decimal numbers).\rSpecial characters such as  "
+                    attr: 1
+                  - text: "!@#$"
+                    attr: 3
+                  - text: "  are interpreted as "
+                    attr: 1
+                  - text: type = TextMappers.char
+                    attr: 3
+                  - text: ", which may also be a short character, i.e., a Latin-1 character.\rBy default, Boolean values and sets are not interpreted, except if the option elements "
+                    attr: 1
+                  - text: TextMappers.interpretBool
+                    attr: 3
+                  - text: " or "
+                    attr: 1
+                  - text: TextMappers.interpretSets
+                    attr: 3
+                  - text: " are set. Sets use the normal Component Pascal syntax, while Booleans are represented as "
+                    attr: 1
+                  - text: $TRUE
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: $FALSE
+                    attr: 3
+                  - text: ".\rThe scanner field "
+                    attr: 1
+                  - text: start
+                    attr: 3
+                  - text: " is the position of the first character of the most recently read symbol. The fields "
+                    attr: 1
+                  - text: lines
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: paras
+                    attr: 3
+                  - text: " count the number of carriage return and paragraph characters since the last "
+                    attr: 1
+                  - text: SetPos
+                    attr: 3
+                  - text: " (see below).\rThe scanner's "
+                    attr: 1
+                  - text: Skip
+                    attr: 3
+                  - text: " procedure is an auxiliary procedure that advances the scanner position until all white space characters  as specified in the "
+                    attr: 1
+                  - text: opts
+                    attr: 3
+                  - text: " set  are skipped and the first character of the symbol has been read. This character is returned in "
+                    attr: 1
+                  - text: Skip
+                    attr: 3
+                  - text: "'s "
+                    attr: 1
+                  - text: ch
+                    attr: 3
+                  - text: " parameter.\rSince there may be an arbitrary number of specialized text mappers, in addition to the ones provided by "
+                    attr: 1
+                  - text: TextMappers
+                    attr: 3
+                  - text: ", the text model cannot create text mapper objects, like it creates text readers and writers. Instead, scanners (and formatters likewise) are connected to their texts explicitly, by calling their "
+                    attr: 1
+                  - text: ConnectTo
+                    attr: 3
+                  - text: " procedures. They may be called repeatedly to connect the same scanner to different models.\r\r\tScanner = RECORD\r\t\trider-: TextModels.Reader;\r\t\topts-: SET;\r\t\ttype: INTEGER;\r\t\tstart, lines, paras: INTEGER;\r\t\tchar: CHAR;\r\t\tint, base: INTEGER;\r\t\treal: REAL;\r\t\tbool: BOOLEAN;\r\t\tset: SET;\r\t\tlen: INTEGER;\r\t\tstring: TextMappers.String;\r\t\tview: Views.View;\r\t\tw, h: INTEGER;\r\t\t(VAR s: Scanner) ConnectTo (text: TextModels.Model), NEW;\r\t\t(VAR s: Scanner) Pos (): INTEGER, NEW;\r\t\t(VAR s: Scanner) SetPos (pos: INTEGER), NEW;\r\t\t(VAR s: Scanner) SetOpts (opts: SET), NEW;\r\t\t(VAR s: Scanner) Scan, NEW;\r\t\t(VAR s: Scanner) Skip (OUT ch: CHAR), NEW\r\tEND;\r\rListing 5-26. Definition of TextModels.Scanner\r\rThe following example uses a text scanner to count the number of integer numbers, real numbers, and strings found in a text.\r\rMODULE ObxCount1;\r\r\tIMPORT TextMappers, TextControllers, StdLog;\r\r\tPROCEDURE "
+                    attr: 1
+                  - text: Do
+                    attr: 2
+                  - text: "*;\r\t"
+                    attr: 1
+                  - text: "(** use TextCmds.SelectionGuard as guard for this command **)"
+                    attr: 3
+                  - text: "\r\t\tVAR c: TextControllers.Controller; from, to, ints, reals, strings: INTEGER;\r\t\t\ts: TextMappers.Scanner;\r\tBEGIN\r\t\tc := TextControllers.Focus();\r\t\tIF (c # NIL) & c.HasSelection() THEN\r\t\t\tc.GetSelection(from, to);\t"
+                    attr: 1
+                  - text: "(* get selection range; from < to *)"
+                    attr: 3
+                  - text: "\r\t\t\ts.ConnectTo(c.text);\t"
+                    attr: 1
+                  - text: "(* connect scanner to this text model *)"
+                    attr: 3
+                  - text: "\r\t\t\ts.SetPos(from);\t"
+                    attr: 1
+                  - text: "(* set the reader to beginning of selection *)"
+                    attr: 3
+                  - text: "\r\t\t\ts.Scan;\t\t\t\t"
+                    attr: 1
+                  - text: "(* read the first symbol of the text selection *)"
+                    attr: 3
+                  - text: "\r\t\t\tints := 0; reals := 0; strings := 0;\t"
+                    attr: 1
+                  - text: "(* counter variables *)"
+                    attr: 3
+                  - text: "\r\t\t\tWHILE s.start < to DO\t"
+                    attr: 1
+                  - text: "(* read all symbols starting in the text selection *)"
+                    attr: 3
+                  - text: "\r\t\t\t\tIF s.type = TextMappers.int THEN\t"
+                    attr: 1
+                  - text: "(* symbol is an integer number *)"
+                    attr: 3
+                  - text: "\r\t\t\t\t\tINC(ints)\r\t\t\t\tELSIF s.type = TextMappers.real THEN\t"
+                    attr: 1
+                  - text: "(* symbol is a real number *)"
+                    attr: 3
+                  - text: "\r\t\t\t\t\tINC(reals)\r\t\t\t\tELSIF s.type = TextMappers.string THEN\t"
+                    attr: 1
+                  - text: "(* symbol is a string/identifier *)"
+                    attr: 3
+                  - text: "\r\t\t\t\t\tINC(strings)\r\t\t\t\tEND;\r\t\t\t\ts.Scan\t\t"
+                    attr: 1
+                  - text: "(* read next symbol of the text selection *)"
+                    attr: 3
+                  - text: "\r\t\t\tEND;\r\t\t\tStdLog.String(\"Integers: \"); StdLog.Int(ints); StdLog.Ln;\r\t\t\tStdLog.String(\"Reals: \"); StdLog.Int(reals); StdLog.Ln;\r\t\t\tStdLog.String(\"Strings: \"); StdLog.Int(strings); StdLog.Ln;\r\t\t\tStdLog.Ln\r\t\tEND\r\tEND Do;\r\rEND ObxCount1.\r\rListing 5-27. Counting integers, reals, and strings in a text\r\rThe most typical code pattern for a scanner looks similar to the code pattern for a reader. "
+                    attr: 1
+                  - text: condition
+                    attr: 3
+                  - text: " may be something like "
+                    attr: 1
+                  - text: s.start < end
+                    attr: 3
+                  - text: " or "
+                    attr: 1
+                  - text: "s.type # TextMappers.eot"
+                    attr: 3
+                  - text: ".\r\r\t\tVAR s: TextMappers.Scanner; start: INTEGER;\r\tBEGIN\r\t\t"
+                    attr: 1
+                  - text: "... define "
+                    attr: 3
+                  - text: start
+                    attr: 1
+                  - text: " ..."
+                    attr: 3
+                  - text: "\r\t\ts.ConnectTo(text);\r\t\ts.SetPos(start);\t"
+                    attr: 1
+                  - text: "(* only necessary if "
+                    attr: 3
+                  - text: "start # 0"
+                    attr: 1
+                  - text: " *)"
+                    attr: 3
+                  - text: "\r\t\ts.Scan;\r\t\tWHILE "
+                    attr: 1
+                  - text: condition
+                    attr: 3
+                  - text: " DO\r\t\t\tIF s.type = TextMappers.int THEN\r\t\t\t\t"
+                    attr: 1
+                  - text: ... consume s.int ...
+                    attr: 3
+                  - text: "\r\t\t\tELSIF s.type = TextMappers.real THEN\r\t\t\t\t"
+                    attr: 1
+                  - text: ... consume s.real ...
+                    attr: 3
+                  - text: "\r\t\t\tELSIF ...\r\t\t\t\t...\r\t\t\tEND;\r\t\t\ts.Scan\r\t\tEND;\r\rListing 5-28. Code pattern for TextMappers.Scanner\r\r\r"
+                    attr: 1
+                  - text: 5.4 Modifying text
+                    attr: 2
+                  - text: "\r\rIn the previous sections, we have seen how new texts can be created using writers or formatters, and how existing texts can be read using readers or scanners. Many text commands first read a text stretch, perform some computation on it, and then replace it by the result of the computation. Examples are commands that set the font of a selection, set the color of a selection, or turn all small letters into capital letters.\rThe following example command reads the text selection and checks whether it is a string. If so, it interprets the string as a name and looks the name up in our example phone database. Then it replaces the name by the phone number.\r\rMODULE ObxLookup0;\r\r\tIMPORT TextModels, TextMappers, TextControllers, ObxPhoneDB;\r\r\tPROCEDURE "
+                    attr: 1
+                  - text: Do
+                    attr: 2
+                  - text: "*;\r\t"
+                    attr: 1
+                  - text: "(** use TextCmds.SelectionGuard as guard command **)"
+                    attr: 3
+                  - text: "\r\t\tVAR c: TextControllers.Controller; buf: TextModels.Model; from, to: INTEGER;\r\t\t\ts: TextMappers.Scanner; f: TextMappers.Formatter; number: ObxPhoneDB.String;\r\tBEGIN\r\t\tc := TextControllers.Focus();\r\t\tIF (c # NIL) & c.HasSelection() THEN\r\t\t\tc.GetSelection(from, to);\r\t\t\ts.ConnectTo(c.text);\r\t\t\ts.SetPos(from);\r\t\t\ts.Scan;\r\t\t\tIF s.type = TextMappers.string THEN\r\t\t\t\tbuf := TextModels.CloneOf(c.text);\r\t\t\t\tf.ConnectTo(buf);\r\t\t\t\tObxPhoneDB.LookupByName(s.string$, number);\r\t\t\t\tf.WriteString(number);\r\t\t\t\tfrom := s.start; to := s.Pos() - 1;\t"
+                    attr: 1
+                  - text: "(* scanner has already read on character beyond string! *)"
+                    attr: 3
+                  - text: "\r\t\t\t\tc.text.Delete(from, to);\t\t\t\t\t\t\t"
+                    attr: 1
+                  - text: "(* delete name *)"
+                    attr: 3
+                  - text: "\r\t\t\t\tc.text.Insert(from, buf, 0, buf.Length());\t"
+                    attr: 1
+                  - text: "(* move phone number from buffer into text *)"
+                    attr: 3
+                  - text: "\r\t\t\t\tc.SetSelection(from, from + LEN(number$))\t"
+                    attr: 1
+                  - text: "(* select the phone number *)"
+                    attr: 3
+                  - text: "\r\t\t\tEND\r\t\tEND\r\tEND Do;\r\rEND ObxLookup0.\r\rListing 5-29. Replacing a phone name by a phone number\r\rThe basic idea of the above command is that an auxiliary text object is used which acts as a buffer. The text selection is scanned, the scanned string is used as key to make a lookup in the phone database, the returned phone number is written into the buffer text, the original name is deleted from the text, and then the buffer contents is moved to where the name was. As a final step, the newly inserted text stretch is selected.\rNote that the text model's "
+                    attr: 1
+                  - text: Delete
+                    attr: 3
+                  - text: " procedure shortens the text, while the "
+                    attr: 1
+                  - text: Insert
+                    attr: 3
+                  - text: " procedure makes the text longer. In particular, "
+                    attr: 1
+                  - text: Insert
+                    attr: 3
+                  - text: " doesn't overwrite existing text. "
+                    attr: 1
+                  - text: Insert
+                    attr: 3
+                  - text: " moves text, i.e., it removes them at the source and inserts them at the destination.\r\rOne way to make the above command more useful would be to accept a caret as input, instead of a selection. Then you could write a name and hit a keyboard shortcut for the command. The command then reads backwards from the caret position, until it finds the beginning of the name, and then substitutes the appropriate phone number for the name. This would be a simple way to implement keyboard macros.\r\rBuffer texts, as used above, are particularly useful in helping to avoid screen flicker: since a buffer text is not displayed, it can be built up piecemeal, without causing any screen updates. When the buffer has been completed, its contents can be moved over to the visible destination text. This only causes one single screen update, which is fast and creates minimal flicker.\r\rMoving text stretches from one text model to another one may be optimized if both text models have the same implementation. This is not necessarily the case, since different implementations of type "
+                    attr: 1
+                  - text: TextModels.Model
+                    attr: 3
+                  - text: " may coexist with each other. Two calls to "
+                    attr: 1
+                  - text: TextModels.dir.New()
+                    attr: 3
+                  - text: " may well return two text models that have different implementations.\rFor this reason, module "
+                    attr: 1
+                  - text: TextModels
+                    attr: 3
+                  - text: " exports the procedure "
+                    attr: 1
+                  - text: Clone
+                    attr: 3
+                  - text: ", which returns an empty text model of exactly the same type as its parameter. In fact, the standard text implementation even performs some further optimizations when a text model is cloned from another one, rather than allocated via "
+                    attr: 1
+                  - text: TextModels.dir.New()
+                    attr: 3
+                  - text: ".\r\rWe can now give a (slightly simplified) definition of "
+                    attr: 1
+                  - text: TextModels.Model
+                    attr: 3
+                  - text: ":\r\rTYPE\r\tModel = POINTER TO ABSTRACT RECORD (Containers.Model)\r\t\t(m: Model) NewWriter (old: TextModels.Writer): TextModels.Writer, NEW, ABSTRACT;\r\t\t(m: Model) NewReader (old: TextModels.Reader): TextModels.Reader, NEW, ABSTRACT;\r\t\t(m: Model) Length (): INTEGER, NEW, ABSTRACT;\r\t\t(m: Model) Insert (pos: INTEGER; m0: TextModels.Model;\r\t\t\t\t\t\t\t\t\t\t\t\t\tbeg0, end0: INTEGER), NEW, ABSTRACT;\r\t\t(m: Model) InsertCopy (pos: INTEGER; m0: TextModels.Model;\r\t\t\t\t\t\t\t\t\t\t\t\t\tbeg0, end0: INTEGER), NEW, ABSTRACT;\r\t\t(m: Model) Delete (beg, end: INTEGER), NEW, ABSTRACT;\r\t\t(m: Model) Append (m0: TextModels.Model), NEW, ABSTRACT;\r\t\t(m: Model) Replace (beg, end: INTEGER; m0: TextModels.Model;\r\t\t\t\t\t\t\t\t\t\t\t\t\tbeg0, end0: INTEGER), NEW, ABSTRACT;\r\t\t(m: Model) SetAttr (beg, end: INTEGER; attr: TextModels.Attributes), NEW, ABSTRACT;\r\tEND;\r\rListing 5-30. Definition of TextModels.Model\r\rWe have already met most of its procedures. "
+                    attr: 1
+                  - text: InsertCopy
+                    attr: 3
+                  - text: " is similar to "
+                    attr: 1
+                  - text: Insert
+                    attr: 3
+                  - text: ", but instead of moving, it copies a text stretch, without modifying the source. "
+                    attr: 1
+                  - text: Delete
+                    attr: 3
+                  - text: " removes a text stretch.\r"
+                    attr: 1
+                  - text: Insert
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: InsertCopy
+                    attr: 3
+                  - text: ", and "
+                    attr: 1
+                  - text: Delete
+                    attr: 3
+                  - text: " are the elementary text operations. "
+                    attr: 1
+                  - text: Append
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: Replace
+                    attr: 3
+                  - text: " are provided for convenience and efficiency; they can be expressed in terms of the elementary operations:\r\r\tdst.Append(src)  "
+                    attr: 1
+                  - text: ꉈ
+                    attr: 1
+                    wide: true
+                  - text: "  dst.Insert(dst.Length(), src, 0, src.Length())\r\ri.e., it moves the whole contents of the source text to the end of the destination text, thereby leaving an empty source text.\r\r\tt.Replace(b, e, t1, b1, e1)  "
+                    attr: 1
+                  - text: ꉈ
+                    attr: 1
+                    wide: true
+                  - text: "  t.Delete(b, e); t.Insert(b, t1, b1, e1)\r\ri.e., it overwrites some part of the destination text by some part of the source text (which is thereby removed). Note that source and destination texts must be different.\r\r"
+                    attr: 1
+                  - text: SetAttr
+                    attr: 3
+                  - text: " allows to set the text attributes of a whole text stretch.\r\r\r"
+                    attr: 1
+                  - text: 5.5 Text scripts
+                    attr: 2
+                  - text: "\r\rWhen you have successfully applied the command "
+                    attr: 1
+                  - text: ObxLookup0.Do
+                    attr: 3
+                  - text: " to a text stretch, you can try out something that may surprise you: you can reverse (\"undo\") the operation by executing the "
+                    attr: 1
+                  - text: "Edit->Undo"
+                    attr: 3
+                  - text: " command! With "
+                    attr: 1
+                  - text: "Edit->Redo"
+                    attr: 3
+                  - text: " you can reverse the operation's reversal.\rThis capability is surprising because we have only implemented the plain "
+                    attr: 1
+                  - text: Do
+                    attr: 3
+                  - text: " procedure, but no code for undoing or redoing it. How come that the framework is able to undo/redo the operation anyway?\r\rIt is possible because the text model procedures which modify their model's state, such as "
+                    attr: 1
+                  - text: Model.Delete
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: Model.Insert
+                    attr: 3
+                  - text: ", are implemented in a particular way. They don't execute the modification directly. Instead, they create special operation objects and register them in the framework. The framework then can call the operation's appropriate procedure for performing the actual do/undo/redo functionality. This mechanism has been described in Chapter 3.\r\rThe following example shows how a sequence of text-modifying procedures is bracketed by "
+                    attr: 1
+                  - text: BeginScript
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: EndScript
+                    attr: 3
+                  - text: " to make the whole sequence undoable. "
+                    attr: 1
+                  - text: BeginScript
+                    attr: 3
+                  - text: " returns a script object, it gets the name of the compound operation as input.\r\rMODULE ObxLookup1;\r\r\tIMPORT "
+                    attr: 1
+                  - text: "Stores,"
+                    attr: 7
+                  - text: " Models, TextModels, TextMappers, TextControllers, ObxPhoneDB;\r\r\tPROCEDURE "
+                    attr: 1
+                  - text: Do
+                    attr: 2
+                  - text: "*;\r\t"
+                    attr: 1
+                  - text: "(** use TextCmds.SelectionGuard as guard command **)"
+                    attr: 3
+                  - text: "\r\t\tVAR c: TextControllers.Controller; buf: TextModels.Model; from, to: INTEGER;\r\t\t\ts: TextMappers.Scanner; f: TextMappers.Formatter; number: ObxPhoneDB.String;\r\t\t\t"
+                    attr: 1
+                  - text: "script: Stores.Operation;"
+                    attr: 7
+                  - text: "\r\tBEGIN\r\t\tc := TextControllers.Focus();\r\t\tIF (c # NIL) & c.HasSelection() THEN\r\t\t\tc.GetSelection(from, to);\r\t\t\ts.ConnectTo(c.text);\r\t\t\ts.SetPos(from);\r\t\t\ts.Scan;\r\t\t\tIF s.type = TextMappers.string THEN\r\t\t\t\tbuf := TextModels.CloneOf(c.text);\r\t\t\t\tf.ConnectTo(buf);\r\t\t\t\tObxPhoneDB.LookupByName(s.string$, number);\r\t\t\t\tf.WriteString(number);\r\t\t\t\tfrom := s.start; to := s.Pos() - 1;\t"
+                    attr: 1
+                  - text: "(* scanner has already read on character beyond string! *)"
+                    attr: 3
+                  - text: "\r\t\t\t\t"
+                    attr: 1
+                  - text: "Models.BeginScript(c.text, \"#Obx:Lookup\", script);"
+                    attr: 7
+                  - text: "\r\t\t\t\tc.text.Delete(from, to);\t\t\t\t\t\t\t"
+                    attr: 1
+                  - text: "(* delete name *)"
+                    attr: 3
+                  - text: "\r\t\t\t\tc.text.Insert(from, buf, 0, buf.Length());\t"
+                    attr: 1
+                  - text: "(* move phone number from buffer into text *)"
+                    attr: 3
+                  - text: "\r\t\t\t\t"
+                    attr: 1
+                  - text: "Models.EndScript(c.text, script);"
+                    attr: 7
+                  - text: "\r\t\t\t\tc.SetSelection(from, from + LEN(number$))\t"
+                    attr: 1
+                  - text: "(* select the phone number *)"
+                    attr: 3
+                  - text: "\r\t\t\tEND\r\t\tEND\r\tEND Do;\r\rEND ObxLookup1.\r\rListing 5-31. Example of a script (compound operation)\r\rIn "
+                    attr: 1
+                  - text: Models.BeginScript
+                    attr: 3
+                  - text: ", the name of the compound operation is given. It is mapped by the string mapping facility of BlackBox, because this name may be displayed to the user (in the undo/redo menu item).\r\rIn modules "
+                    attr: 1
+                  - text: ObxLookup0
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: ObxLookup1
+                    attr: 3
+                  - text: " use the following statement sequence to replace the name with the number:\r\r\tc.text.Delete(from, to);\r\tc.text.Insert(from, buf, 0, buf.Length());\r\rTo combine these two operations into a single compound operation (as experienced by the user), it was necessary to bracket the two calls with the "
+                    attr: 1
+                  - text: BeginScript / EndScript
+                    attr: 3
+                  - text: " pair. In this special case here, there actually would be a better solution:\r\r\tc.text.Replace(from, to, buf, 0, buf.Length());\r\r"
+                    attr: 1
+                  - text: TextModels.Model.Replace
+                    attr: 3
+                  - text: " is a powerful procedure of which "
+                    attr: 1
+                  - text: Insert
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: Delete
+                    attr: 3
+                  - text: ",  and "
+                    attr: 1
+                  - text: Append
+                    attr: 3
+                  - text: " are special cases (provided for convenience):\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 180000 }
+                        - { stop: 2376000 }
+                        - { stop: 2664000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tt.Delete(beg, end)\t=\tt.Replace(beg, end, t, 0, 0)\r\tt.Insert(pos, t0, beg, end)\t=\tt.Replace(pos, pos, t0, beg, end)\r\tt.Append(t0)\t=\tt.Replace(t.Length(), t.Length(), t0, 0, t0.Length())\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rNote that "
+                    attr: 1
+                  - text: InsertCopy
+                    attr: 3
+                  - text: " cannot be expressed in terms of "
+                    attr: 1
+                  - text: Replace
+                    attr: 3
+                  - text: ":\r\r\tt.InsertCopy(pos, t0, beg, end)\t#\tt.Replace(pos, pos, t0, beg, end)\r\rThe reason is that "
+                    attr: 1
+                  - text: Replace
+                    attr: 3
+                  - text: ", like "
+                    attr: 1
+                  - text: Insert
+                    attr: 3
+                  - text: ", deletes the source text. "
+                    attr: 1
+                  - text: InsertCopy
+                    attr: 3
+                  - text: " on the other hand is a pure copying operation which doesn't modify the source text (unless source and destination texts are identical and the destination position lies within the source text range).\r\r\r"
+                    attr: 1
+                  - text: 5.6 Summary
+                    attr: 2
+                  - text: "\r\rWe now conclude the discussion of the BlackBox Component Builder's Text subsystem. The goal of this tutorial was to give an overview over a relatively complex extension subsystem; to show the use of the previous part's design patterns; and to show the typical Text code patterns.\rThe treatment of the text subsystem cannot be complete, there are still many details for which the reference documentation of the various modules must be consulted. However, the general scope and typical applications should have become clearer. While we started with as little theory as possible and used simple examples only, the basic structure of a complex container subsystem will have become clearer by now.\r\rBefore we give a list of further on-line examples that you may want to study, here is a list of all standard modules of the Text subsystem (lowest module in the hierarchy first), with the most important types that they export:\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 432000 }
+                        - { stop: 1440000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tmodule / type\tdescription\r"
+                    attr: 2
+                  - text: "\r\tTextModels\tabstraction and default implementation of text models\r\t\tAttributes\t\tattributes of a text elem (font, color, vertical offset)\r\t\tContext\t\tlink between a text model and a view embedded in it\r\t\tDirectory\t\tfactory for text models\r\t\tModel\t\ttext carrier, factory for readers and writers\r\t\tReader\t\trider for element-wise text reading\r\t\tWriter\t\trider for element-wise text writing\r\r\tTextMappers\tabstraction and implementation of text mappers for Component Pascal symbols\r\t\tFormatter\t\tmapper for symbol-wise text writing\r\t\tScanner\t\tmapper for symbol-wise text reading\r\r\tTextRulers\tabstraction and default implementation for ruler views, which embody paragraph attributes\r\t\tAttributes\t\tattributes of text ruler (tabs, margins, grid, etc.)\r\t\tDirectory\t\tfactory for text rulers\r\t\tRuler\t\tview for rulers\r\t\tStyle\t\tmodel for rulers\r\r\tTextSetters\tabstraction and default implementation for text setters, which perform line / page breaking\r\t\tDirectory\t\tfactory for text setters\r\t\tReader\t\ttext mapper which collects text into units of text setting\r\t\t\t\t(non-breakable sequences) and determines their size\r\t\tSetter\t\tobject which implements a text setting algorithm\r\r\tTextViews\tabstraction and default implementation of text views\r\t\tDirectory\t\tfactory for text views\r\t\tView\t\tview for text models\r\r\tTextControllers\tabstraction and default implementation of text controllers\r\t\tController\t\tcontroller for text views\r\t\tDirectory\t\tfactory for text controllers\r\r\tTextCmds\tcommand package with most important text commands\r\rTable 5-32. Table of Text system modules and most important types\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tObxHello0\twrite \"Hello World\" to log\r\tObxHello1\twrite \"Hello World\" to new text\r\tObxOpen0\topen text document from a file, using standard file open dialog\r\tObxOpen1\tmodify a text document on a file, using standard file open and save dialogs\r\tObxCaps\tchange string to uppercase, using compound operation\r\tObxDb\tmanage sorted list of records\r\tObxTabs\ttransform some tabs into blanks\r\tObxMMerge\tmail merge of template and database\r\tObxParCmd\tinterpret text which follows a command button\r\tObxLinks\tcreate a directory text with hyperlinks\r\tObxAscii\ttraditional text file I/O\r\rTable 5-33. Additional Obx on-line examples of Text subsystem\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 43
+          bodyPos: 249649
+          bodyLen: 8

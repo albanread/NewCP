@@ -1,0 +1,353 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Com\\Docu\\Enum.odc"
+  size: 4717
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 4586
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 4400
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 4314
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 104775
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 29
+                bodyPos: 4435
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 3921
+                runListLen: 2092
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000002
+                  - # [4]
+                    font: "*"
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                flow:
+                  - target:
+                      name: 7.11
+                      body:
+                        - text: ComEnum
+                          attr: 0
+                      attr: 0
+                      w: 150300
+                      h: 142875
+                  - text: "\r\r"
+                    attr: 0
+                  - text: "ComEnum is a library containing implementations for the following standard enumerators:"
+                    attr: 1
+                  - text: "\r"
+                    attr: 0
+                  - text: "\t- IEnumUnknown\r\t- IEnumString\r\t- IEnumFormatEtc\r\t- IEnumOleVerb\r\rTo use one of the enumerators, import the corresponding creation procedure and call it with your actual data.\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tPROCEDURE "
+                    attr: 1
+                  - text: CreateIEnumFORMATETC
+                    attr: 0
+                  - text: " (num: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tIN format: ARRAY OF INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tIN aspect, tymed: ARRAY OF SET;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT enum: WinOle.IEnumFORMATETC);\r\t\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 149225
+                      dsc: 28575
+                      grid: 177800
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "Creates an "
+                    attr: 1
+                  - text: IEnumFormatEtc
+                    attr: 2
+                  - text: " enumerator with "
+                    attr: 1
+                  - text: num
+                    attr: 2
+                  - text: " entries. The enumerated entries (of type "
+                    attr: 1
+                  - text: FORMATETC
+                    attr: 2
+                  - text: ") are initialized from the values in "
+                    attr: 1
+                  - text: "format[i]"
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: "aspect[i]"
+                    attr: 2
+                  - text: ", and "
+                    attr: 1
+                  - text: "tymed[i]"
+                    attr: 2
+                  - text: ".\r\t\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tPROCEDURE "
+                    attr: 1
+                  - text: CreateIEnumOLEVERB
+                    attr: 0
+                  - text: " (num: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tIN verb: ARRAY OF INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tIN name: ARRAY OF ARRAY OF CHAR;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tIN flags, attribs: ARRAY OF SET;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT enum: WinOle.IEnumOLEVERB);\r\t\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 149225
+                      dsc: 28575
+                      grid: 177800
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "Creates an "
+                    attr: 1
+                  - text: IEnumOleVerb
+                    attr: 2
+                  - text: " enumerator with "
+                    attr: 1
+                  - text: num
+                    attr: 2
+                  - text: " entries. The enumerated entries (of type "
+                    attr: 1
+                  - text: OLEVERB
+                    attr: 2
+                  - text: ") are initialized from the values in "
+                    attr: 1
+                  - text: "verb[i]"
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: "name[i]"
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: "flags[i]"
+                    attr: 2
+                  - text: ", and "
+                    attr: 1
+                  - text: "attribs[i]"
+                    attr: 2
+                  - text: ".\r\t\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tPROCEDURE "
+                    attr: 1
+                  - text: CreateIEnumString
+                    attr: 0
+                  - text: " (num: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tIN data: ARRAY OF ARRAY OF CHAR;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT enum: WinOle.IEnumString);\r\t\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 149225
+                      dsc: 28575
+                      grid: 177800
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "Creates an "
+                    attr: 1
+                  - text: IEnumFormatEtc
+                    attr: 2
+                  - text: " enumerator with "
+                    attr: 1
+                  - text: num
+                    attr: 2
+                  - text: " entries. The enumerated entries (of type "
+                    attr: 1
+                  - text: WinApi.PtrWSTR
+                    attr: 2
+                  - text: ") are initialized from the strings in "
+                    attr: 1
+                  - text: "data[i]"
+                    attr: 2
+                  - text: ".\r\t\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tPROCEDURE "
+                    attr: 1
+                  - text: CreateIEnumUnknown
+                    attr: 0
+                  - text: " (num: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tIN data: ARRAY OF COM.IUnknown;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT enum: WinOle.IEnumUnknown);\r\t\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 149225
+                      dsc: 28575
+                      grid: 177800
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "Creates an "
+                    attr: 1
+                  - text: IEnumFormatEtc
+                    attr: 2
+                  - text: " enumerator with "
+                    attr: 1
+                  - text: num
+                    attr: 2
+                  - text: " entries. The enumerated entries (of type "
+                    attr: 1
+                  - text: IUnknown
+                    attr: 2
+                  - text: ") are initialized from the values in "
+                    attr: 1
+                  - text: "data[i]"
+                    attr: 2
+                  - text: ".\r\r\rAlternatively, the source code of the module can be used as a starting point for customized implementations or implementations of other enumerators.\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 2160000
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 2160000 }
+                        - { stop: 2196000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: 
+                    attr: 3
+                  - link:
+                      target: "StdCmds.OpenDoc('Com/Mod/Enum')"
+                      body:
+                        - text: ComEnum  sources
+                          attr: 4
+                      attr: 4
+                      w: 131250
+                      h: 142875
+                  - text: "\r\t"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 33
+          bodyPos: 4682
+          bodyLen: 8

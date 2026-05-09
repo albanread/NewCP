@@ -1,0 +1,212 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Dev\\Docu\\ComInterfaceGen.odc"
+  size: 4652
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 4521
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 4335
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 4249
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 114300
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: "*"
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 8
+                bodyPos: 4253
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 3739
+                runListLen: 535
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [4]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [5]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: DevComInterfaceGen
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\rDEFINITION DevComInterfaceGen;\r\r\tIMPORT Dialog;\r\r\tVAR\r\t\tdialog: RECORD \r\t\t\tlibrary: Dialog.List;\r\t\t\tfileName: ARRAY 256 OF CHAR;\r\t\t\tmodName: ARRAY 64 OF CHAR\r\t\tEND;\r\r\tPROCEDURE Browse;\r\tPROCEDURE GenAutomationInterface;\r\tPROCEDURE InitDialog;\r\tPROCEDURE ListBoxNotifier (op, from, to: INTEGER);\r\tPROCEDURE TextFieldNotifier (op, from, to: INTEGER);\r"
+                    attr: 2
+                  - text: "\t... plus some private items ..."
+                    attr: 3
+                  - text: "\t\r\rEND DevComInterfaceGen.\r\r\rModule "
+                    attr: 2
+                  - text: DevComInterfaceGen
+                    attr: 4
+                  - text: " provides services to automatically generate COM interface modules. Interface modules are used by BlackBox to access COM components in several different ways.\r\rOne of them is Automation. Any application (server) supporting Automation can be controlled from within another application (controller). The interface of a server application, i.e., the objects provided by the application and the operations on these objects, are described in a COM type library. In order to write a controller in BlackBox, an interface module is used which contains a Component Pascal object for each COM object in the type library. These objects can be accessed like other Component Pascal objects in a convenient and typesafe way. They hide the details of the Automation standard. The "
+                    attr: 2
+                  - text: Ctl
+                    attr: 4
+                  - text: " subsystem includes several such Automation interface modules. (Basically for MS Office Automation servers.)\r\rModule "
+                    attr: 2
+                  - text: DevComInterfaceGen
+                    attr: 4
+                  - text: " provides services to automatically generate Automation interfaces from the corresponding type libraries. In certain situations, however, the automatically generated interface module does not compile without errors. Here some minimal manual work is required. So far we have encountered three kinds of difficulties that may occur:\r\r1. Formal parameter name is equal to parameter type name. Solution: Change the formal parameter name in the parameter list and procedure body.\r\r2. Formal parameter name is equal to return type name. Solution: Change the formal parameter name in the parameter list and procedure body.\r\r3. Constant name is equal to some type name. Solution: Change constant name.\r\r\rA possible menu using commands from this module:\r\r"
+                    attr: 2
+                  - text: MENU
+                    attr: 5
+                  - text: " \"Automation\"\r\t\"Generate Automation Interface\"\t\"\"\t\"DevComInterfaceGen.InitDialog; StdCmds.OpenToolDialog('Dev/Rsrc/ComInterfaceGen', 'Generate Automation Interface')\"\t\"\"\r"
+                    attr: 2
+                  - text: "END\r\r\r"
+                    attr: 5
+                  - text: "VAR "
+                    attr: 2
+                  - text: dialog
+                    attr: 5
+                  - text: ": RECORD\rThe interactor for the "
+                    attr: 2
+                  - text: Generate Automation Interface
+                    attr: 4
+                  - text: " dialog.\r\r"
+                    attr: 2
+                  - text: library
+                    attr: 5
+                  - text: ": Dialog.List\rA list representing all type library entries that are registered in the system's registration database.\r\r"
+                    attr: 2
+                  - text: fileName
+                    attr: 5
+                  - text: ": ARRAY 256 OF CHAR\rComplete path name of the type library.\r\r"
+                    attr: 2
+                  - text: modName
+                    attr: 5
+                  - text: ": ARRAY 64 OF CHAR\rModule name of the Automation interface module to be generated from the corresponding type library.\r\r\rPROCEDURE "
+                    attr: 2
+                  - text: Browse
+                    attr: 5
+                  - text: "\rOpen a standard open file dialog box, to let the user choose a type library or DLL file.\r\rPROCEDURE "
+                    attr: 2
+                  - text: GenAutomationInterface
+                    attr: 5
+                  - text: "\rGenerate the interface module according to the parameters in "
+                    attr: 2
+                  - text: dialog
+                    attr: 4
+                  - text: ".\r\rPROCEDURE "
+                    attr: 2
+                  - text: InitDialog
+                    attr: 5
+                  - text: "\rCall this command before opening the "
+                    attr: 2
+                  - text: Generate Automation Interface
+                    attr: 4
+                  - text: " dialog. It initializes the "
+                    attr: 2
+                  - text: dialog
+                    attr: 4
+                  - text: " interactor.\r\rPROCEDURE "
+                    attr: 2
+                  - text: ListBoxNotifier
+                    attr: 5
+                  - text: " (op, from, to: INTEGER)\rPROCEDURE "
+                    attr: 2
+                  - text: TextFieldNotifier
+                    attr: 5
+                  - text: " (op, from, to: INTEGER)\rNotifiers used by the "
+                    attr: 2
+                  - text: Generate Automation Interface
+                    attr: 4
+                  - text: " dialog.\r"
+                    attr: 2
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 12
+          bodyPos: 4617
+          bodyLen: 8

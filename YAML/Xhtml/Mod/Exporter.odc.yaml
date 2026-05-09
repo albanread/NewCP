@@ -1,0 +1,412 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Xhtml\\Mod\\Exporter.odc"
+  size: 17279
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 17148
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 16962
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 16876
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 127000
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Helvetica
+                size: 114300
+                color: 0x00000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 16993
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 16479
+                runListLen: 2651
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE XhtmlExporter;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- bug: rd.ReadChar sometimes returns attr = NIL for a character!?\r\t- may em occur outside of p (as now in table fields)?\r\t- may br only/not occur inside of p?\r\t- where does the document name come from?\r\t- how should unknown view types be handled (extensible translator framework)?\r\t- how can the BlackBox converter mechanism be extended to handle complex documents, which must be converted\r\t   to entire subdirectories?\r\t- should symbolic font sizes (-1..-8) be introduced, for a direct match with HTML?\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r\r(*\r add the following statement to Config.Setup:\r\t\tConverters.Register(\"\", \"XhtmlExporter.ExportText\", \"TextViews.View\", \"html\", {});\r\r supported elements & attributes: html, head, title, body, p, a(href,id), font(face,size, color), strong, em, u\r\r assumptions:\r\t- there is only one \"special\" non-RGB color: Ports.defaultColor\r\t- one specific font size (defaultSize) is used as default size\r\t- no embedded views are in the text, except link and target views\r\t- link views only contain local references within the text (i.e., StdLinks.ShowTarget('anchorname') commands)\r\r*)"
+                    attr: 1
+                  - text: "\r\r\tIMPORT\r\t\tStrings, Files, Dialog, Stores, Fonts, Ports, Views, Properties,\r\t\tTextModels, TextViews, TextRulers, StdLinks,\r\t\tXhtmlWriters, XhtmlStdFileWriters,\r\t\tXhtmlEntitySets, XhtmlTextTableMarkers;\r\r\tCONST\r\t\tuntitled = \"#Xhtml:New Page\";\r\t\tdefaultSize = 10 * Fonts.point;\t"
+                    attr: 0
+                  - text: "(* currently, BlackBox has no notion of default font size *)"
+                    attr: 1
+                  - text: "\r\t\tleft = 0; center = 1; right = 2;\r\r\tTYPE\r\t\t"
+                    attr: 0
+                  - text: Msg
+                    attr: 3
+                  - text: "* = RECORD (Properties.Message)\r\t\t\tstring*: ARRAY 2048 OF CHAR\r\t\tEND;\r\r\t\tExporter = POINTER TO RECORD\r\t\t\tinLink: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(* this variable is used for a state machine used for translating hyperlinks *)"
+                    attr: 1
+                  - text: "\r\t\t\tinTable: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(* this variable is used for a state machine used for translating tables *)"
+                    attr: 1
+                  - text: "\r\t\t\tinRow: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(* this variable is used for a state machine used for translating tables *)"
+                    attr: 1
+                  - text: "\r\t\t\tinField: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(* this variable is used for a state machine used for translating tables *)"
+                    attr: 1
+                  - text: "\r\t\t\tinPara: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(* Generating paragraph elements is delayed so that empty elements are never created.\r\t\t\t\t\t\t\t\t\t\t\t\tThis variable is used for a state machine that implements the necessary delaying.\r\t\t\t\t\t\t\t\t\t\t\t*)"
+                    attr: 1
+                  - text: "\r\t\t\tafterSpace: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(* this variable is used for a state machine that avoids successive spaces in an element *)"
+                    attr: 1
+                  - text: "\r\t\t\tattr: TextModels.Attributes;\t"
+                    attr: 0
+                  - text: "(* current attributes; needed to decide whether an attribute change becomes necessary *)"
+                    attr: 1
+                  - text: "\r\t\t\tlevel: INTEGER;\t"
+                    attr: 0
+                  - text: "(* indentation level *)"
+                    attr: 1
+                  - text: "\r\t\t\tcurrentRuler: TextRulers.Ruler;\t"
+                    attr: 0
+                  - text: "(* most recently read ruler *)"
+                    attr: 1
+                  - text: "\r\t\t\ttabIndex: INTEGER;\t"
+                    attr: 0
+                  - text: "(* tab index in current line *)"
+                    attr: 1
+                  - text: "\r\t\t\twr: XhtmlWriters.Writer\r\t\tEND;\r\r\r\tPROCEDURE Invariant (e: Exporter);\r\tBEGIN\r\t\tASSERT(e # NIL, 100);\r\t\tASSERT(e.inPara OR (e.attr = NIL), 101);\t"
+                    attr: 0
+                  - text: "(* ~e.inPara => (e.attr = NIL) *)"
+                    attr: 1
+                  - text: "\r\t\tASSERT(~e.inField OR e.inRow, 102);\t"
+                    attr: 0
+                  - text: "(* e.inField => e.inRow *)"
+                    attr: 1
+                  - text: "\r\t\tASSERT(~e.inRow OR e.inTable, 103);\t"
+                    attr: 0
+                  - text: "(* e.inRow => e.inTable *)"
+                    attr: 1
+                  - text: "\r\t\tASSERT(~e.afterSpace OR e.inPara, 104);\t"
+                    attr: 0
+                  - text: "(* e.afterSpace => e.inPara *)"
+                    attr: 1
+                  - text: "\r\t\tASSERT(e.level >= 0, 105);\r\t\tASSERT(e.tabIndex >= -1, 106);\r\t\tASSERT(~e.inField OR (e.tabIndex >= 0), 107);\t"
+                    attr: 0
+                  - text: "(* e.inField => e.tabIndex >= 0 *)"
+                    attr: 1
+                  - text: "\r\t\tASSERT(~e.inTable OR (e.currentRuler # NIL), 108);\t"
+                    attr: 0
+                  - text: "(* e.inTable => (e.currentRuler # NIL) *)"
+                    attr: 1
+                  - text: "\r\t\tASSERT(e.wr # NIL, 109)\r\tEND Invariant;\r\r\tPROCEDURE ColorToString (c: INTEGER; OUT str: ARRAY OF CHAR);\r\t\tVAR red, green, blue: INTEGER; h: ARRAY 16 OF CHAR;\r\tBEGIN\r\t\tred := c MOD 256; c := c DIV 256;\r\t\tgreen := c MOD 256; c := c DIV 256;\r\t\tblue := c;\r\t\tc := red;\r\t\tc := c * 256 + green;\r\t\tc := c * 256 + blue;\r\t\tStrings.IntToStringForm(c, Strings.hexadecimal, 6, \"0\", FALSE, h);\r\t\tstr := \"#\" + h\r\tEND ColorToString;\r\r\tPROCEDURE SizeToString (s: INTEGER; OUT str: ARRAY OF CHAR);\r\tBEGIN\t"
+                    attr: 0
+                  - text: "(* note: defaultSize is already handled *)"
+                    attr: 1
+                  - text: "\r\t\ts := s DIV Fonts.point;\r\t\tIF s < 8 THEN s := 1\r\t\tELSIF s <= 10 THEN s := 2\r\t\tELSIF s <= 12 THEN s := 3\r\t\tELSIF s <= 14 THEN s := 4\r\t\tELSIF s <= 18 THEN s := 5\r\t\tELSIF s <= 24 THEN s := 6\r\t\tELSE s := 7\r\t\tEND;\r\t\tStrings.IntToString(s, str)\r\tEND SizeToString;\r\r\r\t"
+                    attr: 0
+                  - text: "(*\r\t\ttext = p | parsed text\r\t\tbody = text | (table tr td text)\r\t*)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE SetAttr (e: Exporter; a: TextModels.Attributes);\r\t"
+                    attr: 0
+                  - text: "(* nesting: <p> <font> <strong> <em> <u>   text   </u> </em> </strong> </font> </p> *)"
+                    attr: 1
+                  - text: "\r\t"
+                    attr: 0
+                  - text: "(* font has face, color, size attributes. size ranges from 1..7 *)"
+                    attr: 1
+                  - text: "\r\t\tCONST bold = (Fonts.normal + Fonts.bold) DIV 2;\r\t\tVAR s: ARRAY 256 OF CHAR;\r\tBEGIN\r\t\tASSERT(e # NIL, 100);\r\t\tIF e.inPara THEN\r\t\t\tIF (e.attr # NIL) & (e.attr # a) THEN\t"
+                    attr: 0
+                  - text: "(* close all special attributes *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tIF Fonts.underline IN e.attr.font.style THEN e.wr.EndTag END;\r\t\t\t\tIF Fonts.italic IN e.attr.font.style THEN e.wr.EndTag END;\r\t\t\t\tIF e.attr.font.weight >= bold THEN e.wr.EndTag END;\r\t\t\t\tIF (e.attr.font.typeface # Fonts.default) OR (e.attr.color # Ports.defaultColor) OR (e.attr.font.size # defaultSize) THEN\r\t\t\t\t\te.wr.EndTag\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tIF (a # NIL) & (e.attr # a) THEN\t"
+                    attr: 0
+                  - text: "(* open new special attributes *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tIF (a.font.typeface # Fonts.default) OR (a.color # Ports.defaultColor) OR (a.font.size # defaultSize) THEN\r\t\t\t\t\te.wr.StartTag(\"font\", XhtmlWriters.preserve);\r\t\t\t\t\tIF a.font.typeface # Fonts.default THEN\r\t\t\t\t\t\tIF a.font.typeface = \"Arial\" THEN s := a.font.typeface$ ELSE s := a.font.typeface + \", Arial\" END;\r\t\t\t\t\t\te.wr.Attr(\"face\", s$)\r\t\t\t\t\tEND;\r\t\t\t\t\tIF a.color # Ports.defaultColor THEN\r\t\t\t\t\t\tColorToString(a.color, s); e.wr.Attr(\"color\", s$)\r\t\t\t\t\tEND;\r\t\t\t\t\tSizeToString(a.font.size, s);\r\t\t\t\t\tIF a.font.size # defaultSize THEN e.wr.Attr(\"size\", s$) END\r\t\t\t\tEND;\r\t\t\t\tIF a.font.weight >= bold THEN e.wr.StartTag(\"strong\", XhtmlWriters.preserve) END;\r\t\t\t\tIF Fonts.italic IN a.font.style THEN e.wr.StartTag(\"em\", XhtmlWriters.preserve) END;\r\t\t\t\tIF Fonts.underline IN a.font.style THEN e.wr.StartTag(\"u\", XhtmlWriters.preserve) END\r\t\t\tEND;\r\t\t\te.attr := a\r\t\tEND\r\tEND SetAttr;\r\r\tPROCEDURE BeginPara (e: Exporter);\r\tBEGIN\r\t\tASSERT(e # NIL, 100);\r\t\tASSERT(~e.inPara, 20);\r\t\tIF ~e.inLink & ~ e.inTable THEN\r\t\t\te.wr.StartTag(\"p\", XhtmlWriters.preserve)\r\t\tEND;\r\t\te.inPara := TRUE\r\tEND BeginPara;\r\r\tPROCEDURE EndPara (e: Exporter);\r\tBEGIN\r\t\tASSERT(e # NIL, 100);\r\t\tASSERT(e.inPara, 20);\r\t\tSetAttr(e, NIL);\r\t\tIF ~e.inLink & ~e.inTable THEN\r\t\t\te.wr.EndTag\r\t\tEND;\r\t\te.wr.Ln;\r\t\te.afterSpace := FALSE;\r\t\te.inPara := FALSE\r\tEND EndPara;\r\r\r\tPROCEDURE Alignment (r: TextRulers.Ruler; tabIndex: INTEGER): INTEGER;\r\t\tVAR a: INTEGER; type: SET;\r\tBEGIN\r\t\tASSERT(r # NIL, 100); ASSERT(tabIndex >= 0, 101);\r\t\tIF tabIndex < r.style.attr.tabs.len THEN\r\t\t\ttype := r.style.attr.tabs.tab[tabIndex].type;\r\t\t\tIF TextRulers.centerTab IN type THEN\r\t\t\t\ta := center\r\t\t\tELSIF TextRulers.rightTab IN type THEN\r\t\t\t\ta := right\r\t\t\tELSE\r\t\t\t\ta := left\r\t\t\tEND\r\t\tELSE a := left\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " a\r\tEND Alignment;\r\r\tPROCEDURE BeginField (e: Exporter);\r\t\tVAR a: INTEGER;\r\tBEGIN\r\t\tASSERT(e # NIL, 100);\r\t\tASSERT(~e.inField, 20); ASSERT(~e.inPara, 21);\r\t\ta := Alignment(e.currentRuler, e.tabIndex);\r\t\te.wr.StartTag(\"td\", XhtmlWriters.preserve);\r\t\tIF a = center THEN\r\t\t\te.wr.Attr(\"align\", \"center\")\r\t\tELSIF a = right THEN\r\t\t\te.wr.Attr(\"align\", \"right\")\r\t\tEND;\r\t\te.inField := TRUE\r\tEND BeginField;\r\r\tPROCEDURE EndField (e: Exporter);\r\tBEGIN\r\t\tASSERT(e # NIL, 100);\r\t\tASSERT(e.inField, 20); ASSERT(~e.inPara, 21);\r\t\te.wr.EndTag;\r\t\te.inField := FALSE\r\tEND EndField;\r\r\r\tPROCEDURE BeginRow (e: Exporter);\r\tBEGIN\r\t\tASSERT(e # NIL, 100);\r\t\tASSERT(~e.inRow, 20); ASSERT(~e.inField, 21); ASSERT(~e.inPara, 22);\r\t\te.wr.StartTag(\"tr\", XhtmlWriters.prettyPrint);\r\t\te.inRow := TRUE\r\tEND BeginRow;\r\r\tPROCEDURE EndRow (e: Exporter);\r\tBEGIN\r\t\tASSERT(e # NIL, 100);\r\t\tASSERT(e.inRow, 20); ASSERT(~e.inField, 21);\r\t\te.wr.EndTag;\r\t\te.inRow := FALSE\r\tEND EndRow;\r\r\r\tPROCEDURE BeginTable (e: Exporter);\r\tBEGIN\r\t\tASSERT(e # NIL, 100);\r\t\tASSERT(~e.inTable, 20); ASSERT(~e.inRow, 21); ASSERT(~e.inField, 22); ASSERT(~e.inPara, 23);\r\t\te.wr.StartTag(\"table\", XhtmlWriters.prettyPrint); e.wr.Attr(\"border\", \"1\"); e.wr.Attr(\"width\", \"100%\");\r\t\te.inTable := TRUE\r\tEND BeginTable;\r\r\tPROCEDURE EndTable (e: Exporter);\r\tBEGIN\r\t\tASSERT(e # NIL, 100);\r\t\tASSERT(e.inTable, 20); ASSERT(~e.inRow, 21); ASSERT(~e.inField, 22); ASSERT(~e.inPara, 23);\r\t\te.wr.EndTag;\r\t\te.inTable := FALSE\r\tEND EndTable;\r\r\tPROCEDURE CompleteRow (e: Exporter);\r\t\tVAR n, i: INTEGER;\r\tBEGIN\r\t\tASSERT(e # NIL, 100); ASSERT(e.inTable, 101); ASSERT(e.currentRuler # NIL, 102);\r\t\tIF ~e.inRow THEN BeginRow(e) END;\r\t\tIF e.tabIndex >= 0 THEN\r\t\t\tIF e.inPara THEN EndPara(e) END;\r\t\t\tIF ~e.inField THEN BeginField(e); e.wr.Data(\"&nbsp;\") END;\r\t\t\tEndField(e)\r\t\tEND;\r\t\tn := e.currentRuler.style.attr.tabs.len - e.tabIndex - 1;\r\t\tIF n >= 1 THEN\t"
+                    attr: 0
+                  - text: "(* fill row with empty fields *)"
+                    attr: 1
+                  - text: "\r\t\t\ti := 0;\r\t\t\tWHILE i # n DO\r\t\t\t\tINC(e.tabIndex);\r\t\t\t\tBeginField(e); e.wr.Data(\"&nbsp;\"); EndField(e);\r\t\t\t\tINC(i)\r\t\t\tEND\r\t\tEND;\r\t\tEndRow(e)\r\tEND CompleteRow;\r\r\tPROCEDURE BegOfTable (e: Exporter; v: Views.View): BOOLEAN;\r\t\tVAR b: BOOLEAN;\r\tBEGIN\r\t\tASSERT(e # NIL, 100);\r\t\tb := FALSE;\r\t\tIF v # NIL THEN\r\t\t\tb := XhtmlTextTableMarkers.IsOpenMark(v)\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " b\r\tEND BegOfTable;\r\r\tPROCEDURE EndOfTable (e: Exporter; v: Views.View): BOOLEAN;\r\t\tVAR b: BOOLEAN;\r\tBEGIN\r\t\tASSERT(e # NIL, 100);\r\t\tb := FALSE;\r\t\tIF v # NIL THEN\r\t\t\tb := XhtmlTextTableMarkers.IsCloseMark(v)\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " b\r\tEND EndOfTable;\r\r\r\tPROCEDURE BeginHref (e: Exporter; v: StdLinks.Link);\r\t\tVAR s, s0: ARRAY 256 OF CHAR;\r\tBEGIN\r\t\tASSERT(e # NIL, 100);\r\t\tASSERT(~e.inLink, 20); ASSERT(~e.inTable, 21); ASSERT(~e.inPara, 22);\r\t\tv.GetCmd(s);\r\t\ts0 := s$; s0[19] := 0X;\t"
+                    attr: 0
+                  - text: "(* clip the command to the (supposed) ShowTarget name *)"
+                    attr: 1
+                  - text: "\r\t\te.wr.StartTag(\"a\", XhtmlWriters.preserve);\r\t\tIF s0 = \"StdLinks.ShowTarget\" THEN\r\t\t\tStrings.Extract(s, 21, LEN(s$) - 23, s);\t"
+                    attr: 0
+                  - text: "(* extract the name of the target anchor *)"
+                    attr: 1
+                  - text: "\r\t\t\te.wr.Attr(\"href\", \"#\" + s)\r\t\tELSE\r\t\t\te.wr.Attr(\"href\", s$)\r\t\tEND;\r\t\te.inLink := TRUE\r\tEND BeginHref;\r\r\tPROCEDURE EndHref (e: Exporter);\r\tBEGIN\r\t\tASSERT(e # NIL, 100);\r\t\tASSERT(e.inLink, 20); ASSERT(~e.inTable, 21); ASSERT(~e.inPara, 22);\r\t\te.wr.EndTag;\r\t\te.inLink := FALSE\r\tEND EndHref;\r\r\tPROCEDURE Id (e: Exporter; v: StdLinks.Target);\r\t\tVAR s: ARRAY 256 OF CHAR;\r\tBEGIN\r\t\tASSERT(e # NIL, 100);\r\t\tASSERT(~e.inLink, 20); ASSERT(~e.inTable, 21); ASSERT(~e.inPara, 22);\r\t\tv.GetIdent(s);\r\t\te.wr.StartTag(\"a\", XhtmlWriters.preserve); e.wr.Attr(\"id\", s$)\r\tEND Id;\r\r\tPROCEDURE View (e: Exporter; v: Views.View);\r\tBEGIN\r\t\tASSERT(e # NIL, 100); ASSERT(v # NIL, 101);\r\t\tWITH v: StdLinks.Link DO\r\t\t\tASSERT(v.leftSide # e.inLink, 101);\t"
+                    attr: 0
+                  - text: "(* links must not be nested *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF v.leftSide THEN\t"
+                    attr: 0
+                  - text: "(* open link *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tBeginHref(e, v)\r\t\t\tELSE\t"
+                    attr: 0
+                  - text: "(* close link *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tEndHref(e)\r\t\t\tEND\r\t\t| v: StdLinks.Target DO\r\t\t\tIF v.leftSide THEN Id(e, v) END\t"
+                    attr: 0
+                  - text: "(* open anchor *)"
+                    attr: 1
+                  - text: "\r\t\tELSE\t"
+                    attr: 0
+                  - text: "(* unknown view: here, an extension mechanism would be needed to handle such views *)"
+                    attr: 1
+                  - text: "\r\t\t\t"
+                    attr: 0
+                  - text: "(* skip *)"
+                    attr: 1
+                  - text: "\r\t\tEND\r\tEND View;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ExportText
+                    attr: 3
+                  - text: "* (s: Stores.Store; f: Files.File);\r\t\tVAR\r\t\t\te: Exporter;\r\t\t\tt: TextModels.Model; rd: TextModels.Reader;\r\t\t\tlen: INTEGER;\t"
+                    attr: 0
+                  - text: "(* number of characters that remain to be translated *)"
+                    attr: 1
+                  - text: "\r\t\t\tch: CHAR; str: ARRAY 256 OF CHAR;\r\tBEGIN\r\t\tASSERT(s # NIL, 20); ASSERT(f # NIL, 21); ASSERT(f.Length() = 0, 22);\r\t\tASSERT(s IS TextViews.View, 23);\r\t\tNEW(e); e.inLink := FALSE; e.inTable := FALSE; e.inPara := FALSE; e.attr := NIL; e.afterSpace := FALSE; e.level := 0;\r\t\te.wr := XhtmlStdFileWriters.New(f);\r\t\tt := s(TextViews.View).ThisModel();\r\t\tlen := t.Length();\r\t\te.wr.DocType(\"html\", \"-//W3C//DTD XHTML 1.0 Strict//EN\", \"http://www.w3.org/TR/xhtml1/DTD/strict.dtd\");\r\t\te.wr.Ln;\r\t\te.wr.StartTag(\"html\", XhtmlWriters.prettyPrint);\r\t\te.wr.StartTag(\"head\", XhtmlWriters.prettyPrint);\r\t\te.wr.StartTag(\"title\", XhtmlWriters.preserve); Dialog.MapString(untitled, str); e.wr.Data(str$); e.wr.EndTag;\r\t\te.wr.EndTag;\t"
+                    attr: 0
+                  - text: "(* head *)"
+                    attr: 1
+                  - text: "\r\t\te.wr.Ln;\r\t\te.wr.StartTag(\"body\", XhtmlWriters.prettyPrint);\r\t\trd := t.NewReader(NIL);\r\t\te.tabIndex := -1;\t"
+                    attr: 0
+                  - text: "(* no tab read in this line yet *)"
+                    attr: 1
+                  - text: "\r\t\tWHILE len # 0 DO\r\t\t\tInvariant(e);\r\t\t\trd.ReadChar(ch);\r\t\t\tIF (rd.view # NIL) & (rd.view IS TextRulers.Ruler) THEN e.currentRuler := rd.view(TextRulers.Ruler) END;\r\t\t\tIF BegOfTable(e, rd.view) THEN\r\t\t\t\tASSERT(~e.inTable, 101);\r\t\t\t\tIF e.inPara THEN EndPara(e) END;\r\t\t\t\tBeginTable(e);\r\t\t\t\te.tabIndex := -1\t"
+                    attr: 0
+                  - text: "(* no tab read in this line yet *)"
+                    attr: 1
+                  - text: "\r\t\t\tELSIF EndOfTable(e, rd.view) THEN\r\t\t\t\tIF e.inRow THEN CompleteRow(e) END;\r\t\t\t\tEndTable(e);\r\t\t\t\te.tabIndex := -1\t"
+                    attr: 0
+                  - text: "(* no tab read in this line yet *)"
+                    attr: 1
+                  - text: "\r\t\t\tELSIF (ch = TextModels.para) OR (ch = TextModels.line) OR (ch = 0X) THEN\r\t\t\t\tIF e.inTable THEN CompleteRow(e) END;\r\r\t\t\t\tIF ~e.inPara THEN BeginPara(e) END;\r\t\t\t\tEndPara(e);\r\t\t\t\te.tabIndex := -1\t"
+                    attr: 0
+                  - text: "(* no tab read in this line yet *)"
+                    attr: 1
+                  - text: "\r\t\t\tELSIF ch = TextModels.tab THEN\r\t\t\t\tINC(e.tabIndex);\r\t\t\t\tIF e.inTable THEN\r\t\t\t\t\tIF ~e.inRow THEN BeginRow(e) END;\r\t\t\t\t\tIF e.tabIndex >= 1 THEN\t"
+                    attr: 0
+                  - text: "(* space until first tab is not part of a table column *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\tIF e.inField THEN\r\t\t\t\t\t\t\tIF e.inPara THEN EndPara(e) END\r\t\t\t\t\t\tELSE\t"
+                    attr: 0
+                  - text: "(* last table field is empty *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\t\tBeginField(e); e.wr.Data(\"&nbsp;\")\r\t\t\t\t\t\tEND;\r\t\t\t\t\t\tEndField(e)\r\t\t\t\t\tEND\r\t\t\t\tELSE\r\t\t\t\t\tIF ~e.inPara THEN BeginPara(e) END;\r\t\t\t\t\te.wr.Data(\"&nbsp;&nbsp;&nbsp;\"); e.afterSpace := TRUE\t"
+                    attr: 0
+                  - text: "(* emulate tab with three spaces *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tEND\r\t\t\tELSIF ch = TextModels.viewcode THEN\t"
+                    attr: 0
+                  - text: "(* translate rd.view into HTML *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tIF e.inPara THEN EndPara(e) END;\r\t\t\t\tView(e, rd.view)\r\t\t\tELSE\r\t\t\t\tIF e.inTable THEN\r\t\t\t\t\tIF ~e.inRow THEN BeginRow(e) END;\r\t\t\t\t\tIF ~e.inField THEN BeginField(e) END\r\t\t\t\tEND;\r\t\t\t\tIF ~e.inPara THEN BeginPara(e) END;\r\t\t\t\tSetAttr(e, rd.attr);\r\t\t\t\tIF (ch = \" \") OR (ch = TextModels.nbspace) OR (ch = TextModels.digitspace) THEN\r\t\t\t\t\tIF e.afterSpace THEN e.wr.Data(\"&nbsp;\") ELSE e.wr.Data(\" \"); e.afterSpace := TRUE END\r\t\t\t\tELSIF ch = TextModels.zwspace THEN\r\t\t\t\t\te.wr.Data(\"&zwnj;\"); e.afterSpace := TRUE\r\t\t\t\tELSIF (ch = TextModels.hyphen) OR (ch = TextModels.nbhyphen) THEN\r\t\t\t\t\te.wr.Data(\"-\"); e.afterSpace := FALSE\r\t\t\t\tELSE\r\t\t\t\t\tXhtmlEntitySets.MapCharToEntity(ch, str);\t"
+                    attr: 0
+                  - text: "(* this is the normal case of writing a character *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\te.wr.Data(str$); e.afterSpace := FALSE\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tDEC(len)\r\t\tEND;\r\t\tASSERT(~e.inLink, 101); ASSERT(~e.inTable, 102);\r\t\tIF e.inPara THEN EndPara(e) END;\r\t\te.wr.EndTag;\t"
+                    attr: 0
+                  - text: "(* body *)"
+                    attr: 1
+                  - text: "\r\t\te.wr.EndTag;\t"
+                    attr: 0
+                  - text: "(* html *)"
+                    attr: 1
+                  - text: "\r\t\te.wr.Ln\r\tEND ExportText;\r\rEND XhtmlExporter.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 17244
+          bodyLen: 8

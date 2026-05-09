@@ -1,0 +1,272 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Dev\\Docu\\SubTool.odc"
+  size: 5900
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 5769
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 5583
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 5497
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                asc: 121900
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000003
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 7
+                bodyPos: 5497
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 4983
+                runListLen: 668
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000004
+                flow:
+                  - text: DevSubTool
+                    attr: 0
+                  - text: "\r\rDEFINITION DevSubTool;\r\r\tCONST\r\t\ttextCmds = 0; formCmds = 1; otherCmds = 2;\r\t\tsimpleView = 3; standardView = 4; complexView = 5;\r\t\twrapper = 6; specialContainer = 7; generalContainer = 8;\r\r\tVAR\r\t\tcreate: RECORD \r\t\t\tsubsystem: ARRAY 9 OF CHAR;\r\t\t\tkind: INTEGER;\r\t\t\tCreate: PROCEDURE\r\t\tEND;\r\rEND DevSubTool.\r\r\rModule "
+                    attr: 1
+                  - text: DevSubTool
+                    attr: 2
+                  - text: " provides a code generator (sometimes such a tool is called a \"wizard\" or \"expert\") which creates source code skeletons for typical view implementations. Theses skeletons are extended with your own code pieces and then compiled.\r"
+                    attr: 1
+                  - text: DevSubTool
+                    attr: 2
+                  - text: " supports several kinds of projects, from simple text commands to general containers. The source document(s) are always created in the form of a new subsystem, i.e., as a subdirectory with the generic subsystem structure ("
+                    attr: 1
+                  - text: Sym
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Code
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Docu
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Mod
+                    attr: 2
+                  - text: " subdirectories).\rNote that the tool uses template texts which are stored in the "
+                    attr: 1
+                  - text: Dev/Rsrc/New
+                    attr: 2
+                  - text: " directory. Studying these texts, in particular the more complex model/view/commands templates, can be worthwile to learn more about typical BlackBox design and code patterns.\r\rTypical command:\r\t\"Create Subsystem...\"\t\"\"\t\"StdCmds.OpenToolDialog('Dev/Rsrc/SubTool', 'Create Subsystem')\"\t\"\"\r\r\rCONST "
+                    attr: 1
+                  - text: textCmds
+                    attr: 3
+                  - text: "\rThis value can be assigned to "
+                    attr: 1
+                  - text: create.kind
+                    attr: 2
+                  - text: ", to create a command package for text commands, i.e., a module which imports the standard "
+                    attr: 1
+                  - text: Text
+                    attr: 2
+                  - text: " subsystem and enhances it with its own exported commands or interactors.\r\rCONST "
+                    attr: 1
+                  - text: formCmds
+                    attr: 3
+                  - text: "\rThis value can be assigned to "
+                    attr: 1
+                  - text: create.kind
+                    attr: 2
+                  - text: ", to create a command package for form commands, i.e., a module which imports the standard "
+                    attr: 1
+                  - text: Form
+                    attr: 2
+                  - text: " subsystem and enhances it with its own exported commands or interactors.\r\rCONST "
+                    attr: 1
+                  - text: otherCmds
+                    attr: 3
+                  - text: "\rThis value can be assigned to "
+                    attr: 1
+                  - text: create.kind
+                    attr: 2
+                  - text: ", to create a command package for arbitrary commands, i.e., a module which enhances BlackBox with its own exported commands or interactors.\r\rCONST "
+                    attr: 1
+                  - text: simpleView
+                    attr: 3
+                  - text: "\rThis value can be assigned to "
+                    attr: 1
+                  - text: create.kind
+                    attr: 2
+                  - text: ", to create a view implementation for a simple view which has no model. The view and its commands are packaged into one module. The view is not exported.\r\rCONST "
+                    attr: 1
+                  - text: standardView
+                    attr: 3
+                  - text: "\rThis value can be assigned to "
+                    attr: 1
+                  - text: create.kind
+                    attr: 2
+                  - text: ", to create a view implementation for a view with a model. The model, view, and its commands are packaged into one module. Model and view are not exported.\r\rCONST "
+                    attr: 1
+                  - text: complexView
+                    attr: 3
+                  - text: "\rThis value can be assigned to "
+                    attr: 1
+                  - text: trans.kind
+                    attr: 2
+                  - text: ", to create a view implementation for a view with a model. The model, view, and its commands are packaged into one module each. Model and view are exported as definition types, concrete implementations are created via directory objects.\r"
+                    attr: 1
+                  - text: This category is currently not supported.
+                    attr: 2
+                  - text: "\r\rCONST "
+                    attr: 1
+                  - text: wrapper
+                    attr: 3
+                  - text: "\rThis value can be assigned to "
+                    attr: 1
+                  - text: trans.kind
+                    attr: 2
+                  - text: ", to create a wrapper implementation for wrapping an arbitrary view. The wrapper view and its commands are packaged into one module. The wrapper view is not exported.\r"
+                    attr: 1
+                  - text: This category is currently not supported.
+                    attr: 2
+                  - text: "\r\rCONST "
+                    attr: 1
+                  - text: specialContainer
+                    attr: 3
+                  - text: "\rCreates a container with a static layout and no intrinsic contents, possibly for containing only views of a particular type. The container view and its commands are packaged into one module. The container view is not exported.\r\rCONST "
+                    attr: 1
+                  - text: generalContainer
+                    attr: 3
+                  - text: "\rCreates a container view with dynamic layout, possibly some intrinsic contents, and able to contain any view type. The model, view, controller, and its commands are packaged into one module each. Model and view are exported as definition types, concrete implementations are created via directory objects. Model, view, and controller are extensions of their base types in module "
+                    attr: 1
+                  - text: Containers
+                    attr: 2
+                  - text: ".\r"
+                    attr: 1
+                  - text: This category is currently not supported.
+                    attr: 2
+                  - text: "\r\r\rVAR "
+                    attr: 1
+                  - text: trans
+                    attr: 3
+                  - text: "\rInteractor for the translation dialog.\r\r"
+                    attr: 1
+                  - text: subsystem
+                    attr: 3
+                  - text: ": ARRAY 9 OF CHAR\rName of the subsystem to be translated. The name must be a legal subsystem name, between 3 to 8 characters in length, and start with a capital letter.\r\r"
+                    attr: 1
+                  - text: kind
+                    attr: 3
+                  - text: ": INTEGER\tkind IN {textCmds..generalContainer}\rKind of program to generate.\r\r"
+                    attr: 1
+                  - text: Create
+                    attr: 3
+                  - text: ": PROCEDURE\rCreation command. As input, a legal subsystem name must be entered. As a result, a new subsystem directory is created.\rThe "
+                    attr: 1
+                  - text: Dev/Rsrc/New
+                    attr: 2
+                  - text: " directory contains a number of template documents. "
+                    attr: 1
+                  - text: Create
+                    attr: 2
+                  - text: " translates some of these documents (depending on "
+                    attr: 1
+                  - text: kind
+                    attr: 2
+                  - text: ") by replacing all strings with the strikeout attribute (like here: "
+                    attr: 1
+                  - text: strikeout
+                    attr: 4
+                  - text: ") by the subsystem name. The template files are then deleted.\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 11
+          bodyPos: 5865
+          bodyLen: 8

@@ -1,0 +1,882 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Text\\Docu\\Mappers.odc"
+  size: 20206
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 20075
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 19889
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 19803
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                asc: 121900
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000003
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 6
+                bodyPos: 19803
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 19289
+                runListLen: 2156
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: TextMappers
+                    attr: 0
+                  - text: "\r\rDEFINITION TextMappers;\r\r\tIMPORT Views, TextModels;\r\r\tCONST\r\t\treturnCtrlChars = 1; returnQualIdents = 2; returnViews = 3;\r\t\tinterpretBools = 4; interpretSets = 5;\r\t\tmaskViews = 6;\r\t\tchar = 1; string = 3; int = 4; real = 5;\r\t\tbool = 6; set = 7; view = 8; tab = 9; line = 10; para = 11;\r\t\tlint = 16;\r\t\teot = 30; invalid = 31;\r\t\tcharCode = -1; decimal = 10; hexadecimal = -2;\r\t\thideBase = FALSE; showBase = TRUE;\r\r\tTYPE\r\t\tString = ARRAY 256 OF CHAR;\r\r\t\tScanner = RECORD\r\t\t\topts-: SET;\r\t\t\trider-: TextModels.Reader;\r\t\t\ttype: INTEGER;\r\t\t\tstart, lines, paras: INTEGER;\r\t\t\tchar: CHAR;\r\t\t\tint, base: INTEGER;\r\t\t\tlint: LONGINT;\r\t\t\treal: REAL;\r\t\t\tbool: BOOLEAN;\r\t\t\tset: SET;\r\t\t\tlen: INTEGER;\r\t\t\tstring: String;\r\t\t\tview: Views.View; w, h: INTEGER;\r\t\t\t(VAR s: Scanner) ConnectTo (text: TextModels.Model), NEW;\r\t\t\t(VAR s: Scanner) SetPos (pos: INTEGER), NEW;\r\t\t\t(VAR s: Scanner) SetOpts (opts: SET), NEW;\r\t\t\t(VAR s: Scanner) Pos (): INTEGER, NEW;\r\t\t\t(VAR s: Scanner) Skip (OUT ch: CHAR), NEW;\r\t\t\t(VAR s: Scanner) Scan, NEW\r\t\tEND;\r\r\t\tFormatter = RECORD\r\t\t\trider-: TextModels.Writer;\r\t\t\t(VAR f: Formatter) ConnectTo (text: TextModels.Model), NEW;\r\t\t\t(VAR f: Formatter) SetPos (pos: INTEGER), NEW;\r\t\t\t(VAR f: Formatter) Pos (): INTEGER, NEW;\r\t\t\t(VAR f: Formatter) WriteChar (x: CHAR), NEW;\r\t\t\t(VAR f: Formatter) WriteInt (x: LONGINT), NEW;\r\t\t\t(VAR f: Formatter) WriteSString (x: ARRAY OF SHORTCHAR), NEW;\r\t\t\t(VAR f: Formatter) WriteString (x: ARRAY OF CHAR), NEW;\r\t\t\t(VAR f: Formatter) WriteReal (x: REAL), NEW;\r\t\t\t(VAR f: Formatter) WriteBool (x: BOOLEAN), NEW;\r\t\t\t(VAR f: Formatter) WriteSet (x: SET), NEW;\r\t\t\t(VAR f: Formatter) WriteTab, NEW;\r\t\t\t(VAR f: Formatter) WriteLn, NEW;\r\t\t\t(VAR f: Formatter) WritePara, NEW;\r\t\t\t(VAR f: Formatter) WriteView (v: Views.View), NEW;\r\t\t\t(VAR f: Formatter) WriteIntForm (x: LONGINT;\r\t\t\t\tbase, minWidth: INTEGER; fillCh: CHAR; showBase: BOOLEAN), NEW;\r\t\t\t(VAR f: Formatter) WriteRealForm (x: REAL;\r\t\t\t\tprecision, minW, expW: INTEGER; fillCh: CHAR), NEW;\r\t\t\t(VAR f: Formatter) WriteViewForm (v: Views.View; w, h: INTEGER), NEW;\r\t\t\t(VAR f: Formatter) WriteParamMsg (msg, p0, p1, p2: ARRAY OF CHAR), NEW;\r\t\t\t(VAR f: Formatter) WriteMsg (msg: ARRAY OF CHAR), NEW\r\t\tEND;\r\r\tPROCEDURE IsQualIdent (IN s: ARRAY OF CHAR): BOOLEAN;\r\tPROCEDURE ScanQualIdent (VAR s: Scanner; OUT x: ARRAY OF CHAR; OUT done: BOOLEAN);\r\rEND TextMappers.\r\r\r"
+                    attr: 1
+                  - text: TextMappers
+                    attr: 2
+                  - text: " are mappers that use text riders to scan and format structured text.\r\r\rCONST "
+                    attr: 1
+                  - text: returnCtrlChars
+                    attr: 3
+                  - text: "\rOption element\rPossible element of "
+                    attr: 1
+                  - text: Scanner.opts
+                    attr: 2
+                  - text: ". If present, the scanner will return "
+                    attr: 1
+                  - text: tab
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: line
+                    attr: 2
+                  - text: ", and "
+                    attr: 1
+                  - text: para
+                    attr: 2
+                  - text: " characters; otherwise these control characters are treated as white space and read over.\r\rCONST "
+                    attr: 1
+                  - text: returnQualIdents
+                    attr: 3
+                  - text: "\rOption element\rPossible element of "
+                    attr: 1
+                  - text: Scanner.opts
+                    attr: 2
+                  - text: ". If present, the scanner will return \"qualified identifiers\" as a single string; otherwise, the name and period parts of the qualified identifier will be returned individually. (A qualified string, as defined by the language Component Pascal follows the syntax "
+                    attr: 1
+                  - text: "name [\".\" name]"
+                    attr: 2
+                  - text: ".)\r\rCONST "
+                    attr: 1
+                  - text: returnViews
+                    attr: 3
+                  - text: "\rOption element\rPossible element of "
+                    attr: 1
+                  - text: Scanner.opts
+                    attr: 2
+                  - text: ". If present, the scanner will return embedded views; otherwise these are treated as white space and read over.\r\rCONST "
+                    attr: 1
+                  - text: interpretBools
+                    attr: 3
+                  - text: "\rOption element\rPossible element of "
+                    attr: 1
+                  - text: Scanner.opts
+                    attr: 2
+                  - text: ". If present, the scanner will recognize Boolean truth values \"$TRUE\" and \"$FALSE\", as output by the formatter when writing Boolean values; otherwise \"$\", \"TRUE\", and \"FALSE\" are returned individually, without interpretation.\r\rCONST "
+                    attr: 1
+                  - text: interpretSets
+                    attr: 3
+                  - text: "\rOption element\rPossible element of "
+                    attr: 1
+                  - text: Scanner.opts
+                    attr: 2
+                  - text: ". If present, the scanner will recognize set values: sets of integers in the range MIN(SET) .. MAX(SET) as defined by the language Component Pascal; otherwise \"{\", \".\", and enclosed integers will be returned individually. (The syntax of set values is "
+                    attr: 1
+                  - text: "{\" integer [\"..\" integer \"]\" { \",\" integer [\"..\" integer] \"}"
+                    attr: 2
+                  - text: ".)\r\rCONST "
+                    attr: 1
+                  - text: maskViews
+                    attr: 3
+                  - text: "\rOption element\rPossible element of "
+                    attr: 1
+                  - text: scanner.opts
+                    attr: 2
+                  - text: ". If present, the scanner will try to interpret a view as a character code, if the view has a preferred character code. Otherwise, the view is returned.\r\rCONST "
+                    attr: 1
+                  - text: char
+                    attr: 3
+                  - text: "\rPossible value of "
+                    attr: 1
+                  - text: scanner.type
+                    attr: 2
+                  - text: ", signalling that a plain character has been scanned. A character is returned in this class if it does not form a valid first character of any of the structured scan types below.\r\rCONST "
+                    attr: 1
+                  - text: string
+                    attr: 3
+                  - text: "\rPossible value of "
+                    attr: 1
+                  - text: scanner.type
+                    attr: 2
+                  - text: ", signalling that a string has been scanned.\r\rCONST "
+                    attr: 1
+                  - text: int
+                    attr: 3
+                  - text: "\rPossible value of "
+                    attr: 1
+                  - text: scanner.type
+                    attr: 2
+                  - text: ", signalling that an integer has been scanned.\r\rCONST "
+                    attr: 1
+                  - text: real
+                    attr: 3
+                  - text: "\rPossible value of "
+                    attr: 1
+                  - text: scanner.type
+                    attr: 2
+                  - text: ", signalling that a real has been scanned.\r\rCONST "
+                    attr: 1
+                  - text: bool
+                    attr: 3
+                  - text: "\rPossible value of "
+                    attr: 1
+                  - text: scanner.type
+                    attr: 2
+                  - text: ", signalling that a Boolean has been scanned.\r\rCONST "
+                    attr: 1
+                  - text: set
+                    attr: 3
+                  - text: "\rPossible value of "
+                    attr: 1
+                  - text: scanner.type
+                    attr: 2
+                  - text: ", signalling that a set has been scanned.\r\rCONST "
+                    attr: 1
+                  - text: view
+                    attr: 3
+                  - text: "\rPossible value of "
+                    attr: 1
+                  - text: scanner.type
+                    attr: 2
+                  - text: ", signalling that an embedded view has been scanned.\r\rCONST "
+                    attr: 1
+                  - text: tab
+                    attr: 3
+                  - text: "\rPossible value of "
+                    attr: 1
+                  - text: scanner.type
+                    attr: 2
+                  - text: ", signalling that a "
+                    attr: 1
+                  - text: tab
+                    attr: 2
+                  - text: " character has been scanned.\r\rCONST "
+                    attr: 1
+                  - text: line
+                    attr: 3
+                  - text: "\rPossible value of "
+                    attr: 1
+                  - text: scanner.type
+                    attr: 2
+                  - text: ", signalling that a "
+                    attr: 1
+                  - text: line
+                    attr: 2
+                  - text: " character has been scanned.\r\rCONST "
+                    attr: 1
+                  - text: para
+                    attr: 3
+                  - text: "\rPossible value of "
+                    attr: 1
+                  - text: scanner.type
+                    attr: 2
+                  - text: ", signalling that a "
+                    attr: 1
+                  - text: para
+                    attr: 2
+                  - text: " character has been scanned.\r\rCONST "
+                    attr: 1
+                  - text: lint
+                    attr: 3
+                  - text: "\rPossible value of "
+                    attr: 1
+                  - text: scanner.type
+                    attr: 2
+                  - text: ", signalling that a longint has been scanned.\r\rCONST "
+                    attr: 1
+                  - text: eot
+                    attr: 3
+                  - text: "\rPossible value of "
+                    attr: 1
+                  - text: scanner.type
+                    attr: 2
+                  - text: ", signalling that the most recent call to "
+                    attr: 1
+                  - text: Scan
+                    attr: 2
+                  - text: " hit the end of the text.\r\rCONST "
+                    attr: 1
+                  - text: invalid
+                    attr: 3
+                  - text: "\rPossible value of "
+                    attr: 1
+                  - text: scanner.type
+                    attr: 2
+                  - text: ", signalling that the most recent call to "
+                    attr: 1
+                  - text: Scan
+                    attr: 2
+                  - text: " encountered a syntactically ill formed sequence.\r\rCONST "
+                    attr: 1
+                  - text: charCode
+                    attr: 3
+                  - text: "\rPossible value for parameter "
+                    attr: 1
+                  - text: base
+                    attr: 2
+                  - text: " of "
+                    attr: 1
+                  - text: formatter.WriteIntForm
+                    attr: 2
+                  - text: ", asking for formatting integers following the syntax of Component Pascal numerical character literals. (For example, 0DX is the code for "
+                    attr: 1
+                  - text: line
+                    attr: 2
+                  - text: ", and 37X the code for \"7\".)\r\rCONST "
+                    attr: 1
+                  - text: decimal
+                    attr: 3
+                  - text: "\rPossible value for parameter "
+                    attr: 1
+                  - text: base
+                    attr: 2
+                  - text: " of "
+                    attr: 1
+                  - text: formatter.WriteIntForm
+                    attr: 2
+                  - text: ", asking for formatting integers as decimal literals.\r\rCONST "
+                    attr: 1
+                  - text: hexadecimal
+                    attr: 3
+                  - text: "\rPossible value for parameter "
+                    attr: 1
+                  - text: base
+                    attr: 2
+                  - text: " of "
+                    attr: 1
+                  - text: formatter.WriteIntForm
+                    attr: 2
+                  - text: ", asking for formatting integers as hexadecimal literals.\r\rCONST "
+                    attr: 1
+                  - text: hideBase
+                    attr: 3
+                  - text: "\rPossible value for parameter "
+                    attr: 1
+                  - text: showBase
+                    attr: 2
+                  - text: " of "
+                    attr: 1
+                  - text: formatter.WriteIntForm
+                    attr: 2
+                  - text: ", asking for suppression of the base indicator.\r\rCONST "
+                    attr: 1
+                  - text: showBase
+                    attr: 3
+                  - text: "\rPossible value for parameter "
+                    attr: 1
+                  - text: showBase
+                    attr: 2
+                  - text: " of "
+                    attr: 1
+                  - text: formatter.WriteIntForm
+                    attr: 2
+                  - text: ", asking for output of the base indicator.\r\r\rTYPE "
+                    attr: 1
+                  - text: String
+                    attr: 3
+                  - text: "\rStrings of characters as detectable by scanners.\r\r\rTYPE "
+                    attr: 1
+                  - text: Scanner
+                    attr: 3
+                  - text: "\rScanners are connectable to texts. They allow to scan the sequence of characters and embedded views which form a text for recognized structured subsequences (symbols). The various symbols that a scanner can recognize are defined in terms of scan types (cf. the constants above).\r\r"
+                    attr: 1
+                  - text: opts
+                    attr: 3
+                  - text: "-: SET\rThe scanning options, drawn from the set {"
+                    attr: 1
+                  - text: returnCtrlChars
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: returnQualIdents
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: returnViews
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: interpretBools
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: interpretSets
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: maskViews
+                    attr: 2
+                  - text: "}.\r\r"
+                    attr: 1
+                  - text: rider
+                    attr: 3
+                  - text: "-: TextModels.Reader\rThe rider connecting the scanner to the text. The rider state is used by the scanner as a single element lookahead buffer. A sequence of "
+                    attr: 1
+                  - text: rider.Read
+                    attr: 2
+                  - text: " or "
+                    attr: 1
+                  - text: rider.ReadPrev
+                    attr: 2
+                  - text: ", or positioning the rider followed by "
+                    attr: 1
+                  - text: rider.Read
+                    attr: 2
+                  - text: " are all legal manipulations of that lookahead state.\r\r"
+                    attr: 1
+                  - text: type
+                    attr: 3
+                  - text: ": INTEGER\rType of symbol scanned most recently. One of "
+                    attr: 1
+                  - text: char
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: string
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: int
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: real
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: bool
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: set
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: view
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: tab
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: line
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: para
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: "lint, eot"
+                    attr: 2
+                  - text: ", or "
+                    attr: 1
+                  - text: invalid
+                    attr: 2
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: start
+                    attr: 3
+                  - text: ": INTEGER\rStarting position of the symbol scanned most recently. Set by "
+                    attr: 1
+                  - text: scanner.Scan
+                    attr: 2
+                  - text: " after skipping initial white space.\r\r"
+                    attr: 1
+                  - text: lines
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: paras
+                    attr: 3
+                  - text: ": INTEGER\rNumber of lines ("
+                    attr: 1
+                  - text: line
+                    attr: 2
+                  - text: " characters) and paragraphs ("
+                    attr: 1
+                  - text: para
+                    attr: 2
+                  - text: " characters) passed by the scanner since being connected. Updated by "
+                    attr: 1
+                  - text: scanner.Skip
+                    attr: 2
+                  - text: " (called initially in "
+                    attr: 1
+                  - text: scanner.Scan
+                    attr: 2
+                  - text: ") when skipping white space.\r\r"
+                    attr: 1
+                  - text: char
+                    attr: 3
+                  - text: ": CHAR\tvalid if type = char\rCharacter scanned most recently. The string representation of the scanned character is available in "
+                    attr: 1
+                  - text: "string "
+                    attr: 2
+                  - text: "after scanning.\r\r"
+                    attr: 1
+                  - text: int
+                    attr: 3
+                  - text: ": INTEGER\tvalid iff type = int\rInteger scanned most recently. The string representation of the scanned integer is available in "
+                    attr: 1
+                  - text: (len
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: string)
+                    attr: 2
+                  - text: " after scanning.\r\r"
+                    attr: 1
+                  - text: base
+                    attr: 3
+                  - text: ": INTEGER\tvalid iff type IN {int, lint} \rThe base that was used to format the most recently scanned integer or longint.\r"
+                    attr: 1
+                  - text: "\rlint"
+                    attr: 3
+                  - text: ": LONGINT\tvalid iff type IN {int, lint} \rLongint scanned most recently. The string representation of the scanned longint is available in "
+                    attr: 1
+                  - text: (len
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: string)
+                    attr: 2
+                  - text: " after scanning.\r"
+                    attr: 1
+                  - text: "\rreal"
+                    attr: 3
+                  - text: ": REAL\tvalid iff type = real\rReal scanned most recently.\r\r"
+                    attr: 1
+                  - text: bool
+                    attr: 3
+                  - text: ": BOOLEAN\tvalid iff type = bool\rBoolean scanned most recently. The string representation of the scanned Boolean is available in "
+                    attr: 1
+                  - text: string
+                    attr: 2
+                  - text: " after scanning.\r\r"
+                    attr: 1
+                  - text: set
+                    attr: 3
+                  - text: ": SET\tvalid iff type = set\rSet scanned most recently.\r\r"
+                    attr: 1
+                  - text: len
+                    attr: 3
+                  - text: ": INTEGER\tvalid iff type IN {string, int, lint} \rLength of "
+                    attr: 1
+                  - text: string
+                    attr: 2
+                  - text: " field.\r\r"
+                    attr: 1
+                  - text: string
+                    attr: 3
+                  - text: ": String\tvalid iff type IN {string, int, lint, bool, char}\rString of characters scanned most recently. To force a number to be scanned as a string, it must be enclosed in a pair of (double or single) quotes (e.g., if it starts with digits and thus would otherwise be interpreted as a number).\r\r"
+                    attr: 1
+                  - text: view
+                    attr: 3
+                  - text: ": Views.View; w, h: INTEGER\tvalid iff type = view\rView scanned most recently, and its width and height.\r\rPROCEDURE (VAR s: Scanner) "
+                    attr: 1
+                  - text: ConnectTo
+                    attr: 3
+                  - text: " (text: TextModels.Model)\rDisconnect the scanner from the text it was connected to previously (if any), and connect the scanner to the given text (if any).\r\rPost\rtext = NIL\r\ts.rider = NIL\rtext # NIL\r\ts.rider.Base() = text\r\ts.Pos() = 0\r\ts.opts = {}\r\rPROCEDURE (VAR s: Scanner) "
+                    attr: 1
+                  - text: Pos
+                    attr: 3
+                  - text: " (): INTEGER\rCurrent position of the scanner's lookahead rider.\r\rPre\rs.rider # NIL\t(not explicitly checked)\r\rPost\rresult = s.rider.Pos()\r\rPROCEDURE (VAR s: Scanner) "
+                    attr: 1
+                  - text: SetPos
+                    attr: 3
+                  - text: " (pos: INTEGER)\rReposition the scanner.\r\rPre\rs.rider # NIL\t(not explicitly checked)\rpreconditions of s.rider.SetPos\r\rPost\rs.Pos() = pos\rs.start = pos\rs.lines = 0\rs.paras = 0\rs.type = invalid\r\rPROCEDURE (VAR s: Scanner) "
+                    attr: 1
+                  - text: SetOpts
+                    attr: 3
+                  - text: " (opts: SET)\rSet scanning options.\r\rPost\rs.opts = opts\r\rPROCEDURE (VAR s: Scanner) "
+                    attr: 1
+                  - text: Skip
+                    attr: 3
+                  - text: " (VAR ch: CHAR)\rSkip white space, as specified by the scanning options picked from {"
+                    attr: 1
+                  - text: returnCtrlChars
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: returnViews
+                    attr: 2
+                  - text: "}.\r\rPre\rs.rider # NIL\t(not explicitly checked)\r\rPost\r~s.rider.eot\r\ts.start = s.rider.Pos() - 1\rs.rider.eot\r\ts.start = s.rider.Base().Length()\r\ts.type = eot\r\rPROCEDURE (VAR s: Scanner) "
+                    attr: 1
+                  - text: Scan
+                    attr: 3
+                  - text: "\rScan the text for the next symbol as specified by the scanning options.\r\rPre\rs.rider # NIL\t(not explicitly checked)\r\rPost\rs.rider.eot  OR  s.Pos() = s.start + Length(symbol) + 1\r\r\rTYPE "
+                    attr: 1
+                  - text: Formatter
+                    attr: 3
+                  - text: "\rFormatters connectable to texts in order to write formatted entities to the text.\r\r"
+                    attr: 1
+                  - text: rider
+                    attr: 3
+                  - text: "-: TextModels.Writer\rThe rider connecting the formatter to the text.\r\rPROCEDURE (VAR f: Formatter) "
+                    attr: 1
+                  - text: ConnectTo
+                    attr: 3
+                  - text: " (text: TextModels.Model)\rDisconnect the formatter from the text it was previously connected to (if any), and connect it to the given text (if any).\r\rPost\rtext = NIL\r\tf.rider = NIL\rtext # NIL\r\tf.rider # NIL\r\tf.rider.Base() = text\r\tf.Pos() = text.Length()\r\rPROCEDURE (VAR f: Formatter) "
+                    attr: 1
+                  - text: Pos
+                    attr: 3
+                  - text: " (): INTEGER\rPosition of the formatter.\r\rPre\rf.rider # NIL\t(not explicitly checked)\r\rPROCEDURE (VAR f: Formatter) "
+                    attr: 1
+                  - text: SetPos
+                    attr: 3
+                  - text: " (pos: INTEGER)\rReposition the formatter.\r\rPre\rf.rider # NIL\t(not explicitly checked)\r\rPost\rf.Pos() = pos\r\rPROCEDURE (VAR f: Formatter) "
+                    attr: 1
+                  - text: WriteChar
+                    attr: 3
+                  - text: " (x: CHAR)\rWrite character "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ". For control characters the numerical literal form enclosed in spaces is written.\r\rPre\rf.rider # NIL\t(not explicitly checked)\r\rPost\rx >= \" \"  &  x # 7FX\r\tcharacter written as is\rx < \" \"  OR  x = 7FX\r\t\" \" code(x) \" \" written\r\rPROCEDURE (VAR f: Formatter) "
+                    attr: 1
+                  - text: WriteInt
+                    attr: 3
+                  - text: " (x: LONGINT)\rWrite integer in default format.\r\rExcept for performance, equivalent to:\r\tf.WriteIntForm(x, decimal, 0, TextModels.digitspace, showBase)\r\rPROCEDURE (VAR f: Formatter) "
+                    attr: 1
+                  - text: WriteReal
+                    attr: 3
+                  - text: " (x: REAL)\rWrite real in default format.\r\rExcept for performance, equivalent to:\r\tf.WriteRealForm(x, 7, 0, 0, TextModels.digitspace)\r\rPROCEDURE (VAR f: Formatter) "
+                    attr: 1
+                  - text: WriteString
+                    attr: 3
+                  - text: " (x: ARRAY OF CHAR)\rWrite string of characters.\r\rExcept for performance, equivalent to:\r\tVAR i: INTEGER;\r\ti := 0; WHILE x[i] # 0X DO f.WriteChar(x[i]); INC(i) END\r\rPROCEDURE (VAR f: Formatter) "
+                    attr: 1
+                  - text: WriteSString
+                    attr: 3
+                  - text: " (x: ARRAY OF SHORTCHAR)\rWrite string of short characters.\r\rExcept for performance, equivalent to:\r\tVAR i: INTEGER;\r\ti := 0; WHILE x[i] # 0 DO f.WriteChar(x[i]); INC(i) END\r\rPROCEDURE (VAR f: Formatter) "
+                    attr: 1
+                  - text: WriteBool
+                    attr: 3
+                  - text: " (x: BOOLEAN)\rWrite Boolean.\r\rExcept for performance, equivalent to:\r\tIF x THEN f.WriteString(\"$TRUE\") ELSE f.WriteString(\"$FALSE\") END\r\rPROCEDURE (VAR f: Formatter) "
+                    attr: 1
+                  - text: WriteSet
+                    attr: 3
+                  - text: " (x: SET)\rWrite set.\r\rExcept for performance, equivalent to:\r\tVAR i: INTEGER;\r\tf.WriteChar(\"{\"); i := MIN(SET);\r\tWHILE x # {} DO\r\t\tIF i IN x THEN\r\t\t\tf.WriteInt(i); EXCL(x, i);\r\t\t\tIF (i + 2 <= MAX(SET)) & (i + 1 IN x) & (i + 2 IN x) THEN\r\t\t\t\tf.WriteString(\"..\");\r\t\t\t\tx := x - {i + 1, i + 2}; INC(i, 3);\r\t\t\t\tWHILE (i <= MAX(SET)) & (i IN x) DO EXCL(x, i); INC(i) END;\r\t\t\t\tf.WriteInt(i - 1)\r\t\t\tEND;\r\t\t\tIF x # {} THEN f.WriteString(\", \") END\r\t\tEND;\r\t\tINC(i)\r\tEND;\r\tf.WriteChar(\"}\")\r\rPROCEDURE (VAR f: Formatter) "
+                    attr: 1
+                  - text: WriteTab
+                    attr: 3
+                  - text: "\rWrite "
+                    attr: 1
+                  - text: tab
+                    attr: 2
+                  - text: " character.\r\rExcept for performance, equivalent to:\r\tf.rider.WriteChar(TextModels.tab)\r\rPROCEDURE (VAR f: Formatter) "
+                    attr: 1
+                  - text: WriteLn
+                    attr: 3
+                  - text: "\rWrite "
+                    attr: 1
+                  - text: line
+                    attr: 2
+                  - text: " character.\r\rExcept for performance, equivalent to:\r\tf.rider.WriteChar(TextModels.line)\r\rPROCEDURE (VAR f: Formatter) "
+                    attr: 1
+                  - text: WritePara
+                    attr: 3
+                  - text: "\rWrite "
+                    attr: 1
+                  - text: para
+                    attr: 2
+                  - text: " character.\r\rExcept for performance, equivalent to:\r\tf.rider.WriteChar(TextModels.para)\r\rPROCEDURE (VAR f: Formatter) "
+                    attr: 1
+                  - text: WriteView
+                    attr: 3
+                  - text: " (v: Views.View)\rEmbed view.\r\rExcept for performance, equivalent to:\r\tf.WriteViewForm(v, Views.undefined, Views.undefined)\r\rPre\rv # NIL\t20\rv.context = NIL\t21\r\rPROCEDURE (VAR f: Formatter) "
+                    attr: 1
+                  - text: WriteIntForm
+                    attr: 3
+                  - text: " (x: LONGINT; base, minWidth: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tfillCh: CHAR; showBase: BOOLEAN)\rWrite integer "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ". The numeral string used to represent the number is relative to base "
+                    attr: 1
+                  - text: base
+                    attr: 2
+                  - text: ". The total representation form will at least have a width of "
+                    attr: 1
+                  - text: minWidth
+                    attr: 2
+                  - text: " characters, where padding (if required) takes place to the left using characters as specified by "
+                    attr: 1
+                  - text: fillCh
+                    attr: 2
+                  - text: ". If nondecimal, the base can be requested to form part of the representation using "
+                    attr: 1
+                  - text: showBase
+                    attr: 2
+                  - text: ". The special value "
+                    attr: 1
+                  - text: base
+                    attr: 2
+                  - text: " = "
+                    attr: 1
+                  - text: charCode
+                    attr: 2
+                  - text: " renders the base suffix \"X\", while "
+                    attr: 1
+                  - text: base
+                    attr: 2
+                  - text: " = "
+                    attr: 1
+                  - text: hexadecimal
+                    attr: 2
+                  - text: " renders the suffix \"H\". All other nondecimal bases are represented by a trailing \"%\" followed by the decimal numerical literal representing the base value itself. Nondecimal representations of negative integers are formed using a basecomplement form of width "
+                    attr: 1
+                  - text: minWidth
+                    attr: 2
+                  - text: ". E.g., "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: " = -3 renders for "
+                    attr: 1
+                  - text: base
+                    attr: 2
+                  - text: " = 16 and "
+                    attr: 1
+                  - text: minWidth
+                    attr: 2
+                  - text: " = 2 as \"FD\". For negative hexadecimal numbers, "
+                    attr: 1
+                  - text: fillCh
+                    attr: 2
+                  - text: " is ignored and \"F\" is used instead.\rFor more details, see also the description of "
+                    attr: 1
+                  - text: Strings.IntToStringForm
+                    attr: 2
+                  - text: ".\r\rPre\rf.rider # NIL\t(not explicitly checked)\r(base = charCode) OR (base = hexadecimal) OR ((base >= 2) & (base <= 16))\t20\rminWidth >= 0\t22\r\rPROCEDURE (VAR f: Formatter) "
+                    attr: 1
+                  - text: WriteRealForm
+                    attr: 3
+                  - text: " (x: REAL; precision, minW,\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\texpW: INTEGER; fillCh: CHAR)\rWrite real "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ". The numeral string used to represent the number is either in fixed point or in scientific format, according to "
+                    attr: 1
+                  - text: expW
+                    attr: 2
+                  - text: ". "
+                    attr: 1
+                  - text: precision
+                    attr: 2
+                  - text: " denotes the number of valid decimal places (usually 7 for short reals and 16 for reals). "
+                    attr: 1
+                  - text: minW
+                    attr: 2
+                  - text: " denotes the minimal length in characters. If necessary, preceding "
+                    attr: 1
+                  - text: fillCh
+                    attr: 2
+                  - text: " will be inserted. Numbers are always rounded to the last valid and visible digit.\r"
+                    attr: 1
+                  - text: expW
+                    attr: 2
+                  - text: " > 0: exponential format (scientific) with at least "
+                    attr: 1
+                  - text: expW
+                    attr: 2
+                  - text: " digits in the exponent.\r"
+                    attr: 1
+                  - text: expW
+                    attr: 2
+                  - text: " = 0: fixpoint or floatingpoint format, depending on "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ".\r"
+                    attr: 1
+                  - text: expW
+                    attr: 2
+                  - text: " < 0: fixpoint format with "
+                    attr: 1
+                  - text: -expW
+                    attr: 2
+                  - text: " digits after the decimal point.\rFor more details, see also the description of "
+                    attr: 1
+                  - text: Strings.RealToStringForm
+                    attr: 2
+                  - text: ".\r\rPre\rf.rider # NIL\t(not explicitly checked)\rprecision > 0\t20\r0 <= minW\t21\rexpW <= 3\t22\r\rPROCEDURE (VAR f: Formatter) "
+                    attr: 1
+                  - text: WriteViewForm
+                    attr: 3
+                  - text: " (v: Views.View; w, h: INTEGER)\rEmbed a view with width "
+                    attr: 1
+                  - text: w
+                    attr: 2
+                  - text: " and height "
+                    attr: 1
+                  - text: h
+                    attr: 2
+                  - text: ". "
+                    attr: 1
+                  - text: w
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: h
+                    attr: 2
+                  - text: " may have the value "
+                    attr: 1
+                  - text: Views.undefined
+                    attr: 2
+                  - text: ".\r\rPre\rf.rider # NIL\t(not explicitly checked)\rv # NIL\t20\rv.context = NIL\t21\r\rPROCEDURE (VAR f: Formatter) "
+                    attr: 1
+                  - text: WriteParamMsg
+                    attr: 3
+                  - text: " (msg, p0, p1, p2: ARRAY OF CHAR)\rWrite a parameterized message string mapped by the "
+                    attr: 1
+                  - text: Dialog.MapParamString
+                    attr: 2
+                  - text: " facility. The resulting string is allowed to contain "
+                    attr: 1
+                  - text: line
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: para
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: tab
+                    attr: 2
+                  - text: " characters, all of which will be written as such.\r\rPre\rf.rider # NIL\t(not explicitly checked)\r\rPROCEDURE (VAR f: Formatter) "
+                    attr: 1
+                  - text: WriteMsg
+                    attr: 3
+                  - text: " (msg: ARRAY OF CHAR)\rWrite a message string mapped by the "
+                    attr: 1
+                  - text: Dialog.MapParamString
+                    attr: 2
+                  - text: " facility.\r\rExcept for performance, equivalent to:\r\tf.WriteParamMsg(msg, \"\", \"\", \"\")\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: IsQualIdent
+                    attr: 3
+                  - text: " (VAR s: ARRAY OF CHAR): BOOLEAN\rTest whether the string "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: " fulfills the syntax of a Component Pascal qualident, i.e. "
+                    attr: 1
+                  - text: "ident [\".\" ident]"
+                    attr: 2
+                  - text: ".\r\rPROCEDURE "
+                    attr: 1
+                  - text: ScanQualIdent
+                    attr: 3
+                  - text: " (VAR s: Scanner; VAR x: ARRAY OF CHAR;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR done: BOOLEAN)\rAssuming that the scanner returned a string, check if the succeeding symbols can be consumed to scan a qualident. If the scanned string is not a qualident, the scanner is reset the position it had before the call to "
+                    attr: 1
+                  - text: ScanQualIdent
+                    attr: 2
+                  - text: ".\r\rPost\rs'.type = string\r\tIsQualIdent(s'.string)\r\t\tdone = TRUE\r\t\tx = s'.string\r\t\ts = s'\r\t~IsQualIdent(s'.string)\r\t\ts'.Scan.type = char  &  s'.Scan.char = \".\"\r\t\t\ts'.Scan.Scan.type = string  &  (s'.len + 1 + s'.Scan.Scan.len < LEN(x))\r\t\t\t\tdone = TRUE\r\t\t\t\tx = s'.string + \".\" + s'.Scan.Scan.string\r\t\t\t\ts = s'.Scan.Scan\r\t\t\ts'.Scan.Scan.type # string  OR  (s'.len + 1 + s'.Scan.Scan.len >= LEN(x))\r\t\t\t\tdone = FALSE\r\t\ts'.Scan.type # char  OR  s'.Scan.char # \".\"\r\t\t\tdone = FALSE\rs'.type # string\r\t\tdone = FALSE\r~done\r\ts = s'.SetPos(s'.start).Scan()\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 10
+          bodyPos: 20171
+          bodyLen: 8

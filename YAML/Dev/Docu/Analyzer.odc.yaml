@@ -1,0 +1,2175 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Dev\\Docu\\Analyzer.odc"
+  size: 30009
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 29878
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 29692
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 29606
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                asc: 152400
+                dsc: 25400
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 190
+                bodyPos: 29727
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 29329
+                runListLen: 17946
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [5]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000001
+                flow:
+                  - text: DevAnalyzer
+                    attr: 0
+                  - text: "\r\rStefan H.-M. Ludwig\r\r\r"
+                    attr: 1
+                  - text: "Overview\r"
+                    attr: 2
+                  - text: "\rClick on any of the blue warnings to jump directly to the corresponding tutorial section. For technical support go to the section on "
+                    attr: 1
+                  - link:
+                      target: "StdLinks.ShowTarget('Contact Information')"
+                      body:
+                        - text: contact information
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: ". \r\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 2171700 }
+                        - { stop: 2743200 }
+                        - { stop: 5029200 }
+                      attr: 2
+                      w: 360000000
+                      h: 444500
+                  - text: "Warning message \tNumber\tExplanation: item is ...\tOption\r\r"
+                    attr: 2
+                  - link:
+                      target: "StdLinks.ShowTarget('never used')"
+                      body:
+                        - text: never used
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\t900\tnever referenced in program\tdefault\r"
+                    attr: 1
+                  - link:
+                      target: "StdLinks.ShowTarget('never set')"
+                      body:
+                        - text: never set
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\t901\tnever assigned to\tdefault\r"
+                    attr: 1
+                  - link:
+                      target: "StdLinks.ShowTarget('used before set')"
+                      body:
+                        - text: used before set
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\t902\taccessed before assigned to\tdefault\r"
+                    attr: 1
+                  - link:
+                      target: "StdLinks.ShowTarget('set but never used')"
+                      body:
+                        - text: set but never used
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\t903\tassigned to but never accessed\tdefault\r"
+                    attr: 1
+                  - link:
+                      target: "StdLinks.ShowTarget('used as varpar')"
+                      body:
+                        - text: "used as varpar, possibly not set"
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\t904\tpassed as a varpar before assigned to\tVAR Par\r"
+                    attr: 1
+                  - link:
+                      target: "StdLinks.ShowTarget('outer scope')"
+                      body:
+                        - text: also declared in outer scope
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\t905\talso declared in outer scope\tLevels\r"
+                    attr: 1
+                  - link:
+                      target: "StdLinks.ShowTarget('outer scope')"
+                      body:
+                        - text: access/assignment to intermediate
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\t906\treferenced in different scope\tIntermed.\r"
+                    attr: 1
+                  - link:
+                      target: "StdLinks.ShowTarget('RETURN/EXIT')"
+                      body:
+                        - text: statement after RETURN/EXIT
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\t909\tsuperfluous statement\tdefault\r"
+                    attr: 1
+                  - link:
+                      target: "StdLinks.ShowTarget('loop variable')"
+                      body:
+                        - text: for loop variable set
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\t910\tchanged, although being a loop variable\tdefault\r"
+                    attr: 1
+                  - link:
+                      target: "StdLinks.ShowTarget('evaluation sequence')"
+                      body:
+                        - text: evaluation sequence of params
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\t913\tfunction call inside procedure call\tSide Effects\r"
+                    attr: 1
+                  - link:
+                      target: "StdLinks.ShowTarget('semicolon')"
+                      body:
+                        - text: superfluous semicolon
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\t930\tsemicolon before END, etc.\tSemicolons"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - text: "\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 2160000 }
+                        - { stop: 2880000 }
+                        - { stop: 5184000 }
+                      attr: 2
+                      w: 360000000
+                      h: 444500
+                  - text: Introduction
+                    attr: 2
+                  - text: "\r\rDuring the development of a program, many design iterations are made. The source text is changed repeatedly and enhanced, errors are corrected, output statements are inserted and removed again later. The programmer changes procedure bodies and thereby inserts variables that are later not needed anymore. Modules are imported  for temporary purposes  but later never used.\r\rTo clean up such modules, which have evolved over time, "
+                    attr: 1
+                  - text: DevAnalyzer
+                    attr: 4
+                  - text: " has been developed. It is a \"normal\" "
+                    attr: 1
+                  - text: Component Pascal
+                    attr: 4
+                  - text: " compiler, which does a full syntactic and semantic analysis with error checking of the program at hand, but does not generate a symbol file or object code. Instead, it examines the program and "
+                    attr: 1
+                  - text: reports problems in the code
+                    attr: 4
+                  - text: ". The analysis takes place "
+                    attr: 1
+                  - text: "per module. "
+                    attr: 4
+                  - text: "Inter-module dependencies are not taken into account.\r\tDevAnalyzer can be applied just like the normal Component Pascal compiler for checking a program's syntactic and semantic correctness (it even uses the base modules of the Component Pascal compiler). In the examples below you can, for instance, remove a semicolon somewhere and DevAnalyzer will report the resulting syntax error.\r\r\r"
+                    attr: 1
+                  - text: Tutorial
+                    attr: 2
+                  - text: "\r\rIn the following sections, the different warnings generated by DevAnalyzer are explained in detail. A short source code example is given for illustration. To try out an example, simply click inside the embedded text view containing the example and select "
+                    attr: 1
+                  - text: Analyze
+                    attr: 4
+                  - text: " "
+                    attr: 1
+                  - text: Module
+                    attr: 4
+                  - text: " from the "
+                    attr: 1
+                  - text: Info
+                    attr: 4
+                  - text: " menu. You may also use the "
+                    attr: 1
+                  - text: Analyzer Options... dialog
+                    attr: 4
+                  - text: ". The "
+                    attr: 1
+                  - text: Analyze
+                    attr: 4
+                  - text: " button in the dialog has the same effect as "
+                    attr: 1
+                  - text: "Info->Analyze Module"
+                    attr: 4
+                  - text: ", i.e., both operate on the focus view.\r\r"
+                    attr: 1
+                  - text: "\rDefinitions"
+                    attr: 2
+                  - text: "\r\rA "
+                    attr: 1
+                  - text: program item
+                    attr: 4
+                  - text: " (or "
+                    attr: 1
+                  - text: item
+                    attr: 4
+                  - text: " for short) denotes a construct of Component Pascal occurring in a declaration sequence. These are in particular: "
+                    attr: 1
+                  - text: "constants, types, variables, receivers, parameters, procedures, "
+                    attr: 4
+                  - text: and
+                    attr: 1
+                  - text: " modules. "
+                    attr: 4
+                  - text: "The terms "
+                    attr: 1
+                  - text: variable
+                    attr: 4
+                  - text: ","
+                    attr: 1
+                  - text: " field"
+                    attr: 4
+                  - text: ", and"
+                    attr: 1
+                  - text: " parameter"
+                    attr: 4
+                  - text: " are used with their normal meaning.\r\t\r"
+                    attr: 1
+                  - text: "\rDefault Warnings, Always Enabled\r\r"
+                    attr: 2
+                  - target:
+                      name: never used
+                      body:
+                        - text: Never Used
+                          attr: 2
+                      attr: 2
+                      w: 150300
+                      h: 142875
+                  - text: "\r\rAn item declared in the source code but never referenced again is flagged as "
+                    attr: 1
+                  - text: never used
+                    attr: 4
+                  - text: ". Frequent examples of such items are variables in declarations that were copied over from other declarations, or modules. Except for modules, the occurrence of such an item can be deleted.\r"
+                    attr: 1
+                  - text: "Caution:"
+                    attr: 4
+                  - text: " Some modules in BlackBox Component Builder are imported because of a side effect in the module body, but are never used in the code. Be careful when removing module names from an import list. Typical examples are modules installing a new directory object in some base module.\r\rWhen analyzing the next example, you will see that the following items are marked as "
+                    attr: 1
+                  - text: never used
+                    attr: 4
+                  - text: ": "
+                    attr: 1
+                  - text: "StdLog, Size, "
+                    attr: 4
+                  - text: "the "
+                    attr: 1
+                  - text: y
+                    attr: 4
+                  - text: " field of record "
+                    attr: 1
+                  - text: "Rec,"
+                    attr: 4
+                  - text: " "
+                    attr: 1
+                  - text: "SameRec, Dont, "
+                    attr: 4
+                  - text: "and "
+                    attr: 1
+                  - text: "j "
+                    attr: 4
+                  - text: "in procedure Dont.\r\r"
+                    attr: 1
+                  - ruler:
+                      first: 360000
+                      left: 360000
+                      right: 720000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - view:
+                      kind: TextViews.StdView
+                      storeKind: store
+                      typeChain:
+                        - TextViews.StdViewDesc
+                        - TextViews.ViewDesc
+                        - Containers.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 39
+                      bodyPos: 3296
+                      bodyLen: 740
+                      hideMarks: true
+                      defaultRuler:
+                        left: 0
+                        right: 5940000
+                        asc: 127000
+                        dsc: 25400
+                        grid: 1
+                        opts: 0x00000001
+                      defaultAttr:
+                        font: Arial
+                        size: 114300
+                        color: 0x01000000
+                        weight: 400
+                        style: 0x00000000
+                      controller:
+                        kind: TextControllers.StdCtrl
+                        storeKind: store
+                        typeChain:
+                          - TextControllers.StdCtrlDesc
+                          - TextControllers.ControllerDesc
+                          - Containers.ControllerDesc
+                          - Controllers.ControllerDesc
+                          - Stores.StoreDesc
+                        id: 41
+                        bodyPos: 3853
+                        bodyLen: 9
+                      content:
+                        kind: TextModels.StdModel
+                        storeKind: elem
+                        typeChain:
+                          - TextModels.StdModelDesc
+                          - TextModels.ModelDesc
+                          - Containers.ModelDesc
+                          - Models.ModelDesc
+                          - Stores.StoreDesc
+                        id: 5
+                        bodyPos: 3321
+                        bodyLen: 394
+                        runListLen: 58
+                        attrPool:
+                          - # [0]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 400
+                            style: 0x00000000
+                        flow:
+                          - text: "MODULE NeverUsed;\r\r\tIMPORT StdLog;\r\t\r\tCONST N = 16; Size = 2*N;\r\t\r\tTYPE\r\t\tRec = RECORD x, y: INTEGER END;\r\t\tSameRec = Rec;\r\t\r\tPROCEDURE Do;\r\t\tVAR r: Rec;\r\tBEGIN\r\t\tr.x := N; r.x := 2*r.x\r\tEND Do;\r\t\r\tPROCEDURE Dont;\r\t\tVAR i, j, k: INTEGER;\r\tBEGIN\r\t\tk := 0;\r\t\tFOR i := 0 TO N-1 DO k := k+i END\r\tEND Dont;\r\rBEGIN Do\rEND NeverUsed."
+                            attr: 0
+                    attr: 1
+                    w: 5191000
+                    h: 3848100
+                  - text: "\r"
+                    attr: 2
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r\r"
+                    attr: 1
+                  - target:
+                      name: set but never used
+                      body:
+                        - text: Set But Never Used
+                          attr: 2
+                      attr: 2
+                      w: 150300
+                      h: 142875
+                  - text: "\r"
+                    attr: 2
+                  - text: "\rAn item that is initialized but never used again is marked as "
+                    attr: 1
+                  - text: set but never used
+                    attr: 4
+                  - text: ". Examples of such items are parameters of a procedure, which are set by definition but may never be used in the body of the procedure, because the programmer changed its implementation. Other examples are variables that were meant to be used in a loop or dummy variables to which a return value is assigned. Sometimes, these items are superfluous and can be deleted.\r\rIn the following example, the "
+                    attr: 1
+                  - text: y
+                    attr: 4
+                  - text: " field of"
+                    attr: 1
+                  - text: " Rec"
+                    attr: 4
+                  - text: ", the "
+                    attr: 1
+                  - text: k
+                    attr: 4
+                  - text: " parameter, and the "
+                    attr: 1
+                  - text: val
+                    attr: 4
+                  - text: " variable of "
+                    attr: 1
+                  - text: Proc
+                    attr: 4
+                  - text: " are "
+                    attr: 1
+                  - text: set but never used
+                    attr: 4
+                  - text: ".\r\r"
+                    attr: 1
+                  - ruler:
+                      first: 360000
+                      left: 360000
+                      right: 720000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - view:
+                      kind: TextViews.StdView
+                      storeKind: store
+                      typeChain:
+                        - TextViews.StdViewDesc
+                        - TextViews.ViewDesc
+                        - Containers.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 51
+                      bodyPos: 4519
+                      bodyLen: 758
+                      hideMarks: true
+                      defaultRuler:
+                        left: 0
+                        right: 5940000
+                        asc: 127000
+                        dsc: 25400
+                        grid: 1
+                        opts: 0x00000001
+                      defaultAttr:
+                        font: Arial
+                        size: 114300
+                        color: 0x01000000
+                        weight: 400
+                        style: 0x00000000
+                      controller:
+                        kind: TextControllers.StdCtrl
+                        storeKind: store
+                        typeChain:
+                          - TextControllers.StdCtrlDesc
+                          - TextControllers.ControllerDesc
+                          - Containers.ControllerDesc
+                          - Controllers.ControllerDesc
+                          - Stores.StoreDesc
+                        id: 54
+                        bodyPos: 5094
+                        bodyLen: 9
+                      content:
+                        kind: TextModels.StdModel
+                        storeKind: elem
+                        typeChain:
+                          - TextModels.StdModelDesc
+                          - TextModels.ModelDesc
+                          - Containers.ModelDesc
+                          - Models.ModelDesc
+                          - Stores.StoreDesc
+                        id: 9
+                        bodyPos: 4544
+                        bodyLen: 528
+                        runListLen: 130
+                        attrPool:
+                          - # [0]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 400
+                            style: 0x00000000
+                          - # [1]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 700
+                            style: 0x00000000
+                        flow:
+                          - text: "MODULE SetButNeverUsed;\r\r\tTYPE Rec = RECORD x, y: INTEGER END;\r\r\tPROCEDURE Log2(u: INTEGER): INTEGER;\r\t\tVAR i: INTEGER;\r\tBEGIN\r\t"
+                            attr: 0
+                          - text: "\tASSERT"
+                            attr: 1
+                          - text: "(u > 0, 20);\r\t\ti := 0;\r\t\tWHILE u > 0 DO u := u DIV 2; INC(i) END;\r\t\t"
+                            attr: 0
+                          - text: RETURN
+                            attr: 1
+                          - text: " i\r\tEND Log2;\r\r\tPROCEDURE Proc(i, j, k: INTEGER);\r\t\tVAR r: Rec; val: INTEGER;\r\tBEGIN\r\t\tr.x := i; r.y := j;\r\t\tval := Log2(r.x)\r\tEND Proc;\r\t\rBEGIN Proc(5, 5, 5)\rEND SetButNeverUsed."
+                            attr: 0
+                    attr: 1
+                    w: 5191000
+                    h: 3390900
+                  - text: "\r"
+                    attr: 2
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - target:
+                      name: used before set
+                      body:
+                        - text: Used Before Set
+                          attr: 2
+                      attr: 2
+                      w: 150300
+                      h: 142875
+                  - text: "\r"
+                    attr: 2
+                  - text: "\rVariables and record fields, which are used before they are set denote possible errors in the program and are marked as "
+                    attr: 1
+                  - text: used before set
+                    attr: 4
+                  - text: ". Furthermore, the first usage of such a variable is marked (except for records and arrays). Not all warnings are errors, though: A variable, which is set in one branch of an IF statement inside a loop and used before this assignment is marked by DevAnalyzer, although the code might be correct.\r\rIn the following example, variables "
+                    attr: 1
+                  - text: r
+                    attr: 4
+                  - text: ","
+                    attr: 1
+                  - text: " i"
+                    attr: 4
+                  - text: ", and "
+                    attr: 1
+                  - text: k
+                    attr: 4
+                  - text: " and the first use of "
+                    attr: 1
+                  - text: i
+                    attr: 4
+                  - text: " and "
+                    attr: 1
+                  - text: k
+                    attr: 4
+                  - text: " are marked "
+                    attr: 1
+                  - text: used before set
+                    attr: 4
+                  - text: ". The usage and initialization of "
+                    attr: 1
+                  - text: k
+                    attr: 4
+                  - text: " might be correct, depending on the initial value of "
+                    attr: 1
+                  - text: j
+                    attr: 4
+                  - text: ". DevAnalyzer is not capable of tracking these dependencies, but flags dubious program parts so that the programmer takes a closer look at it.\r\r"
+                    attr: 1
+                  - ruler:
+                      first: 360000
+                      left: 360000
+                      right: 720000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - view:
+                      kind: TextViews.StdView
+                      storeKind: store
+                      typeChain:
+                        - TextViews.StdViewDesc
+                        - TextViews.ViewDesc
+                        - Containers.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 64
+                      bodyPos: 5782
+                      bodyLen: 690
+                      hideMarks: true
+                      defaultRuler:
+                        left: 0
+                        right: 5940000
+                        asc: 127000
+                        dsc: 25400
+                        grid: 1
+                        opts: 0x00000001
+                      defaultAttr:
+                        font: Arial
+                        size: 114300
+                        color: 0x01000000
+                        weight: 400
+                        style: 0x00000000
+                      controller:
+                        kind: TextControllers.StdCtrl
+                        storeKind: store
+                        typeChain:
+                          - TextControllers.StdCtrlDesc
+                          - TextControllers.ControllerDesc
+                          - Containers.ControllerDesc
+                          - Controllers.ControllerDesc
+                          - Stores.StoreDesc
+                        id: 67
+                        bodyPos: 6289
+                        bodyLen: 9
+                      content:
+                        kind: TextModels.StdModel
+                        storeKind: elem
+                        typeChain:
+                          - TextModels.StdModelDesc
+                          - TextModels.ModelDesc
+                          - Containers.ModelDesc
+                          - Models.ModelDesc
+                          - Stores.StoreDesc
+                        id: 13
+                        bodyPos: 5807
+                        bodyLen: 460
+                        runListLen: 120
+                        attrPool:
+                          - # [0]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 400
+                            style: 0x00000000
+                          - # [1]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 700
+                            style: 0x00000000
+                        flow:
+                          - text: "MODULE UsedBeforeSet;\r\r\tTYPE Rec = RECORD x, y: INTEGER END;\r\r\tPROCEDURE Proc;\r\t\tVAR r: Rec; i, j, k: INTEGER;\r\tBEGIN\r\t\tr.x := r.y; j := i+1; r.y := i*r.x;\r\t\tLOOP\r\t\t\tIF j > 10 THEN i := 2*k; DEC(j)\r\t\t\tELSIF j > 5 THEN i := 3*k; DEC(j)\r\t\t\tELSIF j = 0 THEN k := 1\r\t\t\tELSE "
+                            attr: 0
+                          - text: EXIT
+                            attr: 1
+                          - text: "\r\t\t\tEND\r\t\tEND\r\tEND Proc;\r\t\rBEGIN Proc\rEND UsedBeforeSet."
+                            attr: 0
+                    attr: 1
+                    w: 5191000
+                    h: 2921000
+                  - text: "\r"
+                    attr: 2
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - target:
+                      name: never set
+                      body:
+                        - text: Never Set
+                          attr: 2
+                      attr: 2
+                      w: 150300
+                      h: 142875
+                  - text: "\r"
+                    attr: 2
+                  - text: "\rA variable or a field of a record that never occurs on the left side of an assignment operator is marked as "
+                    attr: 1
+                  - text: never set
+                    attr: 4
+                  - text: ". This warning signals a real error in the program. It means that the variable or field is read but never gets a value assigned to.\r\rIn the following example, the "
+                    attr: 1
+                  - text: y
+                    attr: 4
+                  - text: " field of"
+                    attr: 1
+                  - text: " Rec "
+                    attr: 4
+                  - text: "and the variable "
+                    attr: 1
+                  - text: i
+                    attr: 4
+                  - text: " of "
+                    attr: 1
+                  - text: Proc
+                    attr: 4
+                  - text: " are"
+                    attr: 1
+                  - text: " never set"
+                    attr: 4
+                  - text: ". Furthermore, the first use of "
+                    attr: 1
+                  - text: i
+                    attr: 4
+                  - text: " is flagged as "
+                    attr: 1
+                  - text: used before set
+                    attr: 4
+                  - text: ".\r\r"
+                    attr: 1
+                  - ruler:
+                      first: 360000
+                      left: 360000
+                      right: 720000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - view:
+                      kind: TextViews.StdView
+                      storeKind: store
+                      typeChain:
+                        - TextViews.StdViewDesc
+                        - TextViews.ViewDesc
+                        - Containers.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 77
+                      bodyPos: 6961
+                      bodyLen: 480
+                      hideMarks: true
+                      defaultRuler:
+                        left: 0
+                        right: 5940000
+                        asc: 127000
+                        dsc: 25400
+                        grid: 1
+                        opts: 0x00000001
+                      defaultAttr:
+                        font: Arial
+                        size: 114300
+                        color: 0x01000000
+                        weight: 400
+                        style: 0x00000000
+                      controller:
+                        kind: TextControllers.StdCtrl
+                        storeKind: store
+                        typeChain:
+                          - TextControllers.StdCtrlDesc
+                          - TextControllers.ControllerDesc
+                          - Containers.ControllerDesc
+                          - Controllers.ControllerDesc
+                          - Stores.StoreDesc
+                        id: 79
+                        bodyPos: 7258
+                        bodyLen: 9
+                      content:
+                        kind: TextModels.StdModel
+                        storeKind: elem
+                        typeChain:
+                          - TextModels.StdModelDesc
+                          - TextModels.ModelDesc
+                          - Containers.ModelDesc
+                          - Models.ModelDesc
+                          - Stores.StoreDesc
+                        id: 17
+                        bodyPos: 6986
+                        bodyLen: 250
+                        runListLen: 58
+                        attrPool:
+                          - # [0]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 400
+                            style: 0x00000000
+                        flow:
+                          - text: "MODULE NeverSet;\r\r\tTYPE Rec = RECORD x, y: INTEGER END;\r\r\tPROCEDURE Proc;\r\t\tVAR r: Rec; i, j: INTEGER;\r\tBEGIN\r\t\tr.x := i; j := r.x+r.y; j := 2*j\r\tEND Proc;\r\t\rBEGIN Proc\rEND NeverSet."
+                            attr: 0
+                    attr: 1
+                    w: 5191000
+                    h: 1828800
+                  - text: "\r"
+                    attr: 2
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - target:
+                      name: loop variable
+                      body:
+                        - text: For Loop Variable Set
+                          attr: 2
+                      attr: 2
+                      w: 150300
+                      h: 142875
+                  - text: "\r"
+                    attr: 2
+                  - text: "\rIn a FOR loop, the loop variable should be read only, but never set. When a loop variable is set or passed to a procedure treating it as a VAR parameter (which might change the value of the parameter), the warning "
+                    attr: 1
+                  - text: for loop variable set
+                    attr: 4
+                  - text: " is issued"
+                    attr: 1
+                  - text: .
+                    attr: 4
+                  - text: " The first case usually is a programming error, whereas the second case needs to be looked at more closely.\r\rIn the following example, the local variable "
+                    attr: 1
+                  - text: "i "
+                    attr: 4
+                  - text: "is changed by the INC statement, while the local variable "
+                    attr: 1
+                  - text: j
+                    attr: 4
+                  - text: " is passed to a procedure treating it as a VAR parameter.\r\r"
+                    attr: 1
+                  - ruler:
+                      first: 360000
+                      left: 360000
+                      right: 720000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - view:
+                      kind: TextViews.StdView
+                      storeKind: store
+                      typeChain:
+                        - TextViews.StdViewDesc
+                        - TextViews.ViewDesc
+                        - Containers.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 89
+                      bodyPos: 7894
+                      bodyLen: 571
+                      hideMarks: true
+                      defaultRuler:
+                        left: 0
+                        right: 5940000
+                        asc: 127000
+                        dsc: 25400
+                        grid: 1
+                        opts: 0x00000001
+                      defaultAttr:
+                        font: Arial
+                        size: 114300
+                        color: 0x01000000
+                        weight: 400
+                        style: 0x00000000
+                      controller:
+                        kind: TextControllers.StdCtrl
+                        storeKind: store
+                        typeChain:
+                          - TextControllers.StdCtrlDesc
+                          - TextControllers.ControllerDesc
+                          - Containers.ControllerDesc
+                          - Controllers.ControllerDesc
+                          - Stores.StoreDesc
+                        id: 91
+                        bodyPos: 8282
+                        bodyLen: 9
+                      content:
+                        kind: TextModels.StdModel
+                        storeKind: elem
+                        typeChain:
+                          - TextModels.StdModelDesc
+                          - TextModels.ModelDesc
+                          - Containers.ModelDesc
+                          - Models.ModelDesc
+                          - Stores.StoreDesc
+                        id: 21
+                        bodyPos: 7919
+                        bodyLen: 341
+                        runListLen: 58
+                        attrPool:
+                          - # [0]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 400
+                            style: 0x00000000
+                        flow:
+                          - text: "MODULE LoopVariables;\r\r\tIMPORT StdLog;\r\r\tPROCEDURE Init(VAR k: INTEGER);\r\tBEGIN k := 0\r\tEND Init;\r\r\tPROCEDURE Do;\r\t\tVAR i, j: INTEGER;\r\tBEGIN\r\t\tFOR i := 0 TO 9 DO StdLog.Int(i); INC(i) END;\r\t\tStdLog.Ln;\r\t\tFOR j := 0 TO 9 DO Init(j) END\r\tEND Do;\r\rBEGIN Do\rEND LoopVariables."
+                            attr: 0
+                    attr: 1
+                    w: 5191000
+                    h: 2781300
+                  - text: "\r"
+                    attr: 2
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - target:
+                      name: RETURN/EXIT
+                      body:
+                        - text: Statement After RETURN/EXIT
+                          attr: 2
+                      attr: 2
+                      w: 150300
+                      h: 142875
+                  - text: "\r"
+                    attr: 2
+                  - text: "\rStatements following an EXIT or a RETURN statement are never executed and may therefore be removed. This is an obvious error, but sometimes such code can be the result of various design iterations, where many changes were made. The superfluous statements are marked as "
+                    attr: 1
+                  - text: "statement after RETURN/EXIT.\r"
+                    attr: 4
+                  - text: "\rIn the following example, "
+                    attr: 1
+                  - text: "x := 0"
+                    attr: 4
+                  - text: " in "
+                    attr: 1
+                  - text: Sgn
+                    attr: 4
+                  - text: " and "
+                    attr: 1
+                  - text: "i := i DIV 2"
+                    attr: 4
+                  - text: " in "
+                    attr: 1
+                  - text: Do
+                    attr: 4
+                  - text: " are superfluous.\r\r"
+                    attr: 1
+                  - ruler:
+                      first: 360000
+                      left: 360000
+                      right: 720000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - view:
+                      kind: TextViews.StdView
+                      storeKind: store
+                      typeChain:
+                        - TextViews.StdViewDesc
+                        - TextViews.ViewDesc
+                        - Containers.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 101
+                      bodyPos: 8926
+                      bodyLen: 755
+                      hideMarks: true
+                      defaultRuler:
+                        left: 0
+                        right: 5940000
+                        asc: 127000
+                        dsc: 25400
+                        grid: 1
+                        opts: 0x00000001
+                      defaultAttr:
+                        font: Arial
+                        size: 114300
+                        color: 0x01000000
+                        weight: 400
+                        style: 0x00000000
+                      controller:
+                        kind: TextControllers.StdCtrl
+                        storeKind: store
+                        typeChain:
+                          - TextControllers.StdCtrlDesc
+                          - TextControllers.ControllerDesc
+                          - Containers.ControllerDesc
+                          - Controllers.ControllerDesc
+                          - Stores.StoreDesc
+                        id: 104
+                        bodyPos: 9498
+                        bodyLen: 9
+                      content:
+                        kind: TextModels.StdModel
+                        storeKind: elem
+                        typeChain:
+                          - TextModels.StdModelDesc
+                          - TextModels.ModelDesc
+                          - Containers.ModelDesc
+                          - Models.ModelDesc
+                          - Stores.StoreDesc
+                        id: 25
+                        bodyPos: 8951
+                        bodyLen: 525
+                        runListLen: 160
+                        attrPool:
+                          - # [0]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 400
+                            style: 0x00000000
+                          - # [1]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 700
+                            style: 0x00000000
+                        flow:
+                          - text: "MODULE ReturnExit;\r\r\tPROCEDURE Sgn(x: INTEGER): INTEGER;\r\tBEGIN\r\t\tIF x < 0 THEN "
+                            attr: 0
+                          - text: RETURN
+                            attr: 1
+                          - text: " -1; x := 0 ELSIF x = 0 THEN "
+                            attr: 0
+                          - text: RETURN
+                            attr: 1
+                          - text: " 0 ELSE "
+                            attr: 0
+                          - text: RETURN
+                            attr: 1
+                          - text: " 1 END\r\tEND Sgn;\r\r\tPROCEDURE Do;\r\t\tVAR i: INTEGER;\r\tBEGIN\r\t\ti := 15;\r\t\tLOOP\r\t\t\tIF Sgn(i) = -1 THEN "
+                            attr: 0
+                          - text: EXIT
+                            attr: 1
+                          - text: "; i := i DIV 2\r\t\t\tELSIF ODD(i) THEN i := 3*i+1\r\t\t\tELSE i := 2*i; "
+                            attr: 0
+                          - text: EXIT
+                            attr: 1
+                          - text: "\r\t\t\tEND\r\t\tEND\r\tEND Do;\r\rBEGIN Do\rEND ReturnExit."
+                            attr: 0
+                    attr: 1
+                    w: 5191000
+                    h: 3200400
+                  - text: "\r"
+                    attr: 2
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 4
+                  - text: "Warnings Enabled Using The Analyze... Dialog\r"
+                    attr: 2
+                  - text: "\rThe following warnings are only generated, if the corresponding "
+                    attr: 1
+                  - text: option
+                    attr: 4
+                  - text: " in the "
+                    attr: 1
+                  - text: Analyze... dialog
+                    attr: 4
+                  - text: " is enabled. These options may be saved, reset to the default, or loaded with the various buttons in the dialog. When starting up, DevAnalyzer initializes itself with the last saved options.\r\rAdditionally, DevAnalyzer counts the "
+                    attr: 1
+                  - text: number of statements
+                    attr: 4
+                  - text: " in a module and displays it in the dialog. This gives a very good measure for the complexity of a module, as it is independent of the formatting style. One statement is counted for one of the possible alternatives in the "
+                    attr: 1
+                  - text: Statement production
+                    attr: 4
+                  - text: " of the Component Pascal report.\r\r"
+                    attr: 1
+                  - view:
+                      kind: FormViews.StdView
+                      storeKind: store
+                      typeChain:
+                        - FormViews.StdViewDesc
+                        - FormViews.ViewDesc
+                        - Containers.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 110
+                      bodyPos: 9948
+                      bodyLen: 2442
+                      children:
+                        - kind: FormModels.StdModel
+                          storeKind: elem
+                          typeChain:
+                            - FormModels.StdModelDesc
+                            - FormModels.ModelDesc
+                            - Containers.ModelDesc
+                            - Models.ModelDesc
+                            - Stores.StoreDesc
+                          id: 28
+                          bodyPos: 10020
+                          bodyLen: 2199
+                          children:
+                            - kind: Controls.CheckBox
+                              storeKind: store
+                              typeChain:
+                                - Controls.CheckBoxDesc
+                                - Controls.ControlDesc
+                                - Views.ViewDesc
+                                - Stores.StoreDesc
+                              id: 111
+                              bodyPos: 10093
+                              bodyLen: 108
+                              link: DevAnalyzer.options.tbProcs
+                              label: Type Bound Procs
+                              controlVersion: 4
+                              trailingBytes: 1
+                            - kind: Controls.PushButton
+                              storeKind: store
+                              typeChain:
+                                - Controls.PushButtonDesc
+                                - Controls.ControlDesc
+                                - Views.ViewDesc
+                                - Stores.StoreDesc
+                              id: 112
+                              bodyPos: 10264
+                              bodyLen: 74
+                              link: DevAnalyzer.Analyze
+                              label: Analyze
+                              opts: [true, false, false, false, false]
+                              controlVersion: 4
+                              trailingBytes: 1
+                            - kind: Controls.CheckBox
+                              storeKind: store
+                              typeChain:
+                                - Controls.CheckBoxDesc
+                                - Controls.ControlDesc
+                                - Views.ViewDesc
+                                - Stores.StoreDesc
+                              id: 113
+                              bodyPos: 10376
+                              bodyLen: 100
+                              link: DevAnalyzer.options.varpar
+                              label: VAR Parameter
+                              controlVersion: 4
+                              trailingBytes: 1
+                            - kind: Controls.PushButton
+                              storeKind: store
+                              typeChain:
+                                - Controls.PushButtonDesc
+                                - Controls.ControlDesc
+                                - Views.ViewDesc
+                                - Stores.StoreDesc
+                              id: 114
+                              bodyPos: 10514
+                              bodyLen: 96
+                              link: DevAnalyzer.ResetOptions
+                              label: Reset Options
+                              controlVersion: 4
+                              trailingBytes: 1
+                            - kind: Controls.CheckBox
+                              storeKind: store
+                              typeChain:
+                                - Controls.CheckBoxDesc
+                                - Controls.ControlDesc
+                                - Views.ViewDesc
+                                - Stores.StoreDesc
+                              id: 115
+                              bodyPos: 10648
+                              bodyLen: 106
+                              link: DevAnalyzer.options.exported
+                              label: Exported Items
+                              controlVersion: 4
+                              trailingBytes: 1
+                            - kind: Controls.CheckBox
+                              storeKind: store
+                              typeChain:
+                                - Controls.CheckBoxDesc
+                                - Controls.ControlDesc
+                                - Views.ViewDesc
+                                - Stores.StoreDesc
+                              id: 116
+                              bodyPos: 10792
+                              bodyLen: 86
+                              link: DevAnalyzer.options.levels
+                              label: Levels
+                              controlVersion: 4
+                              trailingBytes: 1
+                            - kind: Controls.PushButton
+                              storeKind: store
+                              typeChain:
+                                - Controls.PushButtonDesc
+                                - Controls.ControlDesc
+                                - Views.ViewDesc
+                                - Stores.StoreDesc
+                              id: 117
+                              bodyPos: 10916
+                              bodyLen: 92
+                              link: DevAnalyzer.SaveOptions
+                              label: Save Options
+                              controlVersion: 4
+                              trailingBytes: 1
+                            - kind: Controls.CheckBox
+                              storeKind: store
+                              typeChain:
+                                - Controls.CheckBoxDesc
+                                - Controls.ControlDesc
+                                - Views.ViewDesc
+                                - Stores.StoreDesc
+                              id: 118
+                              bodyPos: 11046
+                              bodyLen: 122
+                              link: DevAnalyzer.options.intermediate
+                              label: Intermediate Items
+                              controlVersion: 4
+                              trailingBytes: 1
+                            - kind: Controls.PushButton
+                              storeKind: store
+                              typeChain:
+                                - Controls.PushButtonDesc
+                                - Controls.ControlDesc
+                                - Views.ViewDesc
+                                - Stores.StoreDesc
+                              id: 119
+                              bodyPos: 11206
+                              bodyLen: 92
+                              link: DevAnalyzer.LoadOptions
+                              label: Load Options
+                              controlVersion: 4
+                              trailingBytes: 1
+                            - kind: Controls.CheckBox
+                              storeKind: store
+                              typeChain:
+                                - Controls.CheckBoxDesc
+                                - Controls.ControlDesc
+                                - Views.ViewDesc
+                                - Stores.StoreDesc
+                              id: 120
+                              bodyPos: 11336
+                              bodyLen: 108
+                              link: DevAnalyzer.options.sideEffects
+                              label: Side Effects
+                              controlVersion: 4
+                              trailingBytes: 1
+                            - kind: Controls.CheckBox
+                              storeKind: store
+                              typeChain:
+                                - Controls.CheckBoxDesc
+                                - Controls.ControlDesc
+                                - Views.ViewDesc
+                                - Stores.StoreDesc
+                              id: 121
+                              bodyPos: 11482
+                              bodyLen: 102
+                              link: DevAnalyzer.options.semicolons
+                              label: Semicolons
+                              controlVersion: 4
+                              trailingBytes: 1
+                            - kind: Controls.Field
+                              storeKind: store
+                              typeChain:
+                                - Controls.FieldDesc
+                                - Controls.ControlDesc
+                                - Views.ViewDesc
+                                - Stores.StoreDesc
+                              id: 122
+                              bodyPos: 11642
+                              bodyLen: 82
+                              link: DevAnalyzer.options.statements
+                              opts: [true, false, false, false, false]
+                              controlVersion: 4
+                              trailingBytes: 1
+                            - kind: Controls.Caption
+                              storeKind: store
+                              typeChain:
+                                - Controls.CaptionDesc
+                                - Controls.ControlDesc
+                                - Views.ViewDesc
+                                - Stores.StoreDesc
+                              id: 123
+                              bodyPos: 11835
+                              bodyLen: 108
+                              link: DevAnalyzer.options.statements
+                              label: Statements in
+                              controlVersion: 4
+                              trailingBytes: 1
+                            - kind: Controls.Field
+                              storeKind: store
+                              typeChain:
+                                - Controls.FieldDesc
+                                - Controls.ControlDesc
+                                - Views.ViewDesc
+                                - Stores.StoreDesc
+                              id: 124
+                              bodyPos: 11981
+                              bodyLen: 78
+                              link: DevAnalyzer.options.fileName
+                              opts: [true, false, false, false, false]
+                              controlVersion: 4
+                              trailingBytes: 1
+                            - kind: Controls.PushButton
+                              storeKind: store
+                              typeChain:
+                                - Controls.PushButtonDesc
+                                - Controls.ControlDesc
+                                - Views.ViewDesc
+                                - Stores.StoreDesc
+                              id: 125
+                              bodyPos: 12122
+                              bodyLen: 72
+                              link: StdCmds.CloseDialog
+                              label: Cancel
+                              opts: [false, true, false, false, false]
+                              controlVersion: 4
+                              trailingBytes: 1
+                            - kind: "<nil>"
+                              storeKind: nil
+                        - kind: FormControllers.StdController
+                          storeKind: store
+                          typeChain:
+                            - FormControllers.StdControllerDesc
+                            - FormControllers.ControllerDesc
+                            - Containers.ControllerDesc
+                            - Controllers.ControllerDesc
+                            - Stores.StoreDesc
+                          id: 126
+                          bodyPos: 12363
+                          bodyLen: 9
+                    attr: 1
+                    w: 2875275
+                    h: 2246750
+                  - text: "\r\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - target:
+                      name: used as varpar
+                      body:
+                        - text: "Used as Varpar, Possibly Not Set ("
+                          attr: 2
+                        - text: VAR Parameter
+                          attr: 5
+                        - text: " Option)"
+                          attr: 2
+                      attr: 2
+                      w: 150300
+                      h: 142875
+                  - text: "\r"
+                    attr: 2
+                  - text: "\rAn item that before being initialized is passed as an actual variable parameter to a procedure, might never be initialized. I.e., it cannot be guaranteed from outside the procedure that the item is set before used inside the procedure. Since this is not always an error but merely a fact of insufficient analysis, this warning is only issued when enabled through the VA"
+                    attr: 1
+                  - text: R parameter
+                    attr: 4
+                  - text: " option in the Analyze... dialog. The generated warning is "
+                    attr: 1
+                  - text: "used as varpar, possibly not set"
+                    attr: 4
+                  - text: ".\r\rIn the following example, "
+                    attr: 1
+                  - text: j
+                    attr: 4
+                  - text: " is marked as "
+                    attr: 1
+                  - text: "used as varpar, possibly not set, "
+                    attr: 4
+                  - text: "while "
+                    attr: 1
+                  - text: i
+                    attr: 4
+                  - text: " is not marked since it is initialized in "
+                    attr: 1
+                  - text: Do
+                    attr: 4
+                  - text: ".\r\r"
+                    attr: 1
+                  - ruler:
+                      first: 360000
+                      left: 360000
+                      right: 720000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - view:
+                      kind: TextViews.StdView
+                      storeKind: store
+                      typeChain:
+                        - TextViews.StdViewDesc
+                        - TextViews.ViewDesc
+                        - Containers.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 132
+                      bodyPos: 13065
+                      bodyLen: 671
+                      hideMarks: true
+                      defaultRuler:
+                        left: 0
+                        right: 5940000
+                        asc: 127000
+                        dsc: 25400
+                        grid: 1
+                        opts: 0x00000001
+                      defaultAttr:
+                        font: Arial
+                        size: 114300
+                        color: 0x01000000
+                        weight: 400
+                        style: 0x00000000
+                      controller:
+                        kind: TextControllers.StdCtrl
+                        storeKind: store
+                        typeChain:
+                          - TextControllers.StdCtrlDesc
+                          - TextControllers.ControllerDesc
+                          - Containers.ControllerDesc
+                          - Controllers.ControllerDesc
+                          - Stores.StoreDesc
+                        id: 134
+                        bodyPos: 13553
+                        bodyLen: 9
+                      content:
+                        kind: TextModels.StdModel
+                        storeKind: elem
+                        typeChain:
+                          - TextModels.StdModelDesc
+                          - TextModels.ModelDesc
+                          - Containers.ModelDesc
+                          - Models.ModelDesc
+                          - Stores.StoreDesc
+                        id: 30
+                        bodyPos: 13159
+                        bodyLen: 311
+                        runListLen: 58
+                        attrPool:
+                          - # [0]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 400
+                            style: 0x00000000
+                        flow:
+                          - text: "MODULE VarPar;\r\r\tPROCEDURE Varpars(VAR i: INTEGER; VAR j: INTEGER; k: INTEGER);\r\tBEGIN\r\t\ti := 5; j := 6; k := 7*k\r\tEND Varpars;\r\t\r\tPROCEDURE Do;\r\t\tVAR i, j, k: INTEGER;\r\tBEGIN\r\t\ti := 1; k := 2;\r\t\tVarpars(i, j, k)\r\tEND Do;\r\rBEGIN Do\rEND VarPar."
+                            attr: 0
+                    attr: 1
+                    w: 5191000
+                    h: 2463800
+                  - text: "\r"
+                    attr: 2
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 4
+                  - text: Analysis of Exported and Intermediate Items (
+                    attr: 2
+                  - text: Exported Items
+                    attr: 5
+                  - text: " and "
+                    attr: 2
+                  - text: Levels
+                    attr: 5
+                  - text: " Option)\r"
+                    attr: 2
+                  - text: "\rItems, which are exported are not subjected to analysis (used before set, never used etc.). If these items should be included in the analysis, enable the "
+                    attr: 1
+                  - text: Exported items
+                    attr: 4
+                  - text: " option.\r\tLocal items, which are declared in a different scope are excluded from the analysis as well. It cannot be determined efficiently, if an item is initialized in a local procedure, for instance. Enable the "
+                    attr: 1
+                  - text: Levels
+                    attr: 4
+                  - text: " option in the Analyze... dialog to include such items in the analysis.\r\rIn the following example, analyzing without these options enabled will give no warnings. When you enable the options, however, the exported procedure "
+                    attr: 1
+                  - text: "Do "
+                    attr: 4
+                  - text: "is marked as "
+                    attr: 1
+                  - text: "never used, "
+                    attr: 4
+                  - text: "the local variable "
+                    attr: 1
+                  - text: "k "
+                    attr: 4
+                  - text: "is marked as "
+                    attr: 1
+                  - text: never set
+                    attr: 4
+                  - text: ", and its use in "
+                    attr: 1
+                  - text: Local
+                    attr: 4
+                  - text: " is marked as"
+                    attr: 1
+                  - text: " used before set"
+                    attr: 4
+                  - text: ".\r\r"
+                    attr: 1
+                  - ruler:
+                      first: 360000
+                      left: 360000
+                      right: 720000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - view:
+                      kind: TextViews.StdView
+                      storeKind: store
+                      typeChain:
+                        - TextViews.StdViewDesc
+                        - TextViews.ViewDesc
+                        - Containers.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 142
+                      bodyPos: 14144
+                      bodyLen: 635
+                      hideMarks: true
+                      defaultRuler:
+                        left: 0
+                        right: 5940000
+                        asc: 127000
+                        dsc: 25400
+                        grid: 1
+                        opts: 0x00000001
+                      defaultAttr:
+                        font: Arial
+                        size: 114300
+                        color: 0x01000000
+                        weight: 400
+                        style: 0x00000000
+                      controller:
+                        kind: TextControllers.StdCtrl
+                        storeKind: store
+                        typeChain:
+                          - TextControllers.StdCtrlDesc
+                          - TextControllers.ControllerDesc
+                          - Containers.ControllerDesc
+                          - Controllers.ControllerDesc
+                          - Stores.StoreDesc
+                        id: 145
+                        bodyPos: 14596
+                        bodyLen: 9
+                      content:
+                        kind: TextModels.StdModel
+                        storeKind: elem
+                        typeChain:
+                          - TextModels.StdModelDesc
+                          - TextModels.ModelDesc
+                          - Containers.ModelDesc
+                          - Models.ModelDesc
+                          - Stores.StoreDesc
+                        id: 34
+                        bodyPos: 14169
+                        bodyLen: 405
+                        runListLen: 120
+                        attrPool:
+                          - # [0]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 400
+                            style: 0x00000000
+                          - # [1]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 700
+                            style: 0x00000000
+                        flow:
+                          - text: "MODULE ExportLevel;\r\r\tCONST Local = 5;\r\tVAR i: LONGINT;\r\t\r\tPROCEDURE "
+                            attr: 0
+                          - text: Do
+                            attr: 1
+                          - text: "*;\r\t\tVAR i, j, k: INTEGER;\r\t\tPROCEDURE Local(i: INTEGER);\r\t\tBEGIN j := i+k\r\t\tEND Local;\r\tBEGIN\r\t\tj := 0;\r\t\tFOR i := 0 TO 7 DO j := j+i END;\r\t\tLocal(j)\r\tEND Do;\r\rBEGIN i := 0; i := i+Local\rEND ExportLevel."
+                            attr: 0
+                    attr: 1
+                    w: 5191000
+                    h: 2781300
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r\r"
+                    attr: 2
+                  - target:
+                      name: outer scope
+                      body:
+                        - text: "Also Declared in Outer Scope, Access/Assignment to Intermediate ("
+                          attr: 2
+                        - text: Intermediate Items
+                          attr: 5
+                        - text: " Option)"
+                          attr: 2
+                      attr: 2
+                      w: 150300
+                      h: 142875
+                  - text: "\r"
+                    attr: 2
+                  - text: "\rReusing names of items declared outside the current scope can lead to confusion, especially when looking at the code after some time. To mark these items, the warning "
+                    attr: 1
+                  - text: also declared in outer scope
+                    attr: 4
+                  - text: " "
+                    attr: 2
+                  - text: "is issued when encountering such an item.\r\tAlso, assigning to or using an item from a different scope can be erroneous, as one might think that a global item is changed or accessed. Therefore, such assignments or uses are marked as "
+                    attr: 1
+                  - text: "access/assignment to intermediate.\r"
+                    attr: 4
+                  - text: "\tThe "
+                    attr: 1
+                  - text: Intermediate items
+                    attr: 4
+                  - text: " option in the Analyze... dialog controls this feature.\r\rIn the following example, the local variable "
+                    attr: 1
+                  - text: i
+                    attr: 4
+                  - text: ", the local procedure "
+                    attr: 1
+                  - text: Local
+                    attr: 4
+                  - text: ", and the parameter "
+                    attr: 1
+                  - text: i
+                    attr: 4
+                  - text: " of "
+                    attr: 1
+                  - text: Local
+                    attr: 4
+                  - text: " are marked as "
+                    attr: 1
+                  - text: "also declared in outer scope. "
+                    attr: 4
+                  - text: "The assignment to "
+                    attr: 1
+                  - text: j
+                    attr: 4
+                  - text: " and the use of "
+                    attr: 1
+                  - text: k
+                    attr: 4
+                  - text: " in "
+                    attr: 1
+                  - text: Local
+                    attr: 4
+                  - text: " are marked as "
+                    attr: 1
+                  - text: access/assignment to intermediate
+                    attr: 4
+                  - text: ".\r\r"
+                    attr: 1
+                  - ruler:
+                      first: 360000
+                      left: 360000
+                      right: 720000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - view:
+                      kind: TextViews.StdView
+                      storeKind: store
+                      typeChain:
+                        - TextViews.StdViewDesc
+                        - TextViews.ViewDesc
+                        - Containers.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 155
+                      bodyPos: 15315
+                      bodyLen: 580
+                      hideMarks: true
+                      defaultRuler:
+                        left: 0
+                        right: 5940000
+                        asc: 127000
+                        dsc: 25400
+                        grid: 1
+                        opts: 0x00000001
+                      defaultAttr:
+                        font: Arial
+                        size: 114300
+                        color: 0x01000000
+                        weight: 400
+                        style: 0x00000000
+                      controller:
+                        kind: TextControllers.StdCtrl
+                        storeKind: store
+                        typeChain:
+                          - TextControllers.StdCtrlDesc
+                          - TextControllers.ControllerDesc
+                          - Containers.ControllerDesc
+                          - Controllers.ControllerDesc
+                          - Stores.StoreDesc
+                        id: 157
+                        bodyPos: 15712
+                        bodyLen: 9
+                      content:
+                        kind: TextModels.StdModel
+                        storeKind: elem
+                        typeChain:
+                          - TextModels.StdModelDesc
+                          - TextModels.ModelDesc
+                          - Containers.ModelDesc
+                          - Models.ModelDesc
+                          - Stores.StoreDesc
+                        id: 38
+                        bodyPos: 15340
+                        bodyLen: 350
+                        runListLen: 58
+                        attrPool:
+                          - # [0]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 400
+                            style: 0x00000000
+                        flow:
+                          - text: "MODULE Intermediates;\r\r\tCONST Local = 5;\r\tVAR i: LONGINT;\r\t\r\tPROCEDURE Do;\r\t\tVAR i, j, k: INTEGER;\r\t\tPROCEDURE Local(i: INTEGER);\r\t\tBEGIN j := i+k\r\t\tEND Local;\r\tBEGIN\r\t\tj := 0;\r\t\tFOR i := 0 TO 7 DO j := j+i END;\r\t\tLocal(j)\r\tEND Do;\r\rBEGIN i := 0; i := i+Local; Do\rEND Intermediates."
+                            attr: 0
+                    attr: 1
+                    w: 5191000
+                    h: 2781300
+                  - text: "\r"
+                    attr: 2
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - target:
+                      name: evaluation sequence
+                      body:
+                        - text: Evaluation Sequence of Params. (
+                          attr: 2
+                        - text: Side Effects
+                          attr: 5
+                        - text: " Option)"
+                          attr: 2
+                      attr: 2
+                      w: 150300
+                      h: 142875
+                  - text: "\r"
+                    attr: 2
+                  - text: "\rAs the evaluation sequence of parameters in a procedure call is not defined in Component Pascal, function calls in parameter lists are problematic, if the functions have side effects on the global state. Therefore (and for other reasons), functions with side effects should be avoided (at least calling them in parameter lists).\r\tE.g., a function call returning a value, which in turn is passed as a parameter to a procedure, and which might change the global state of which some variable is used again in the parameter list, depends heavily on the evaluation sequence. DevAnalyzer marks this problematic code with "
+                    attr: 1
+                  - text: "evaluation sequence of params..\r"
+                    attr: 4
+                  - text: "\tEnable the "
+                    attr: 1
+                  - text: Side Effects
+                    attr: 4
+                  - text: " option in the Analyze Options... dialog for this analysis.\r\rIn the example, function "
+                    attr: 1
+                  - text: F
+                    attr: 4
+                  - text: " changes the global variable "
+                    attr: 1
+                  - text: x
+                    attr: 4
+                  - text: ". The result of "
+                    attr: 1
+                  - text: F
+                    attr: 4
+                  - text: " and "
+                    attr: 1
+                  - text: x
+                    attr: 4
+                  - text: " are used in the procedure call writing out the values. Try this code on two different machine architectures or using two different Component Pascal compilers, and compare the results.\r\r"
+                    attr: 1
+                  - ruler:
+                      first: 360000
+                      left: 360000
+                      right: 720000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - view:
+                      kind: TextViews.StdView
+                      storeKind: store
+                      typeChain:
+                        - TextViews.StdViewDesc
+                        - TextViews.ViewDesc
+                        - Containers.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 167
+                      bodyPos: 16384
+                      bodyLen: 612
+                      hideMarks: true
+                      defaultRuler:
+                        left: 0
+                        right: 5940000
+                        asc: 127000
+                        dsc: 25400
+                        grid: 1
+                        opts: 0x00000001
+                      defaultAttr:
+                        font: Arial
+                        size: 114300
+                        color: 0x01000000
+                        weight: 400
+                        style: 0x00000000
+                      controller:
+                        kind: TextControllers.StdCtrl
+                        storeKind: store
+                        typeChain:
+                          - TextControllers.StdCtrlDesc
+                          - TextControllers.ControllerDesc
+                          - Containers.ControllerDesc
+                          - Controllers.ControllerDesc
+                          - Stores.StoreDesc
+                        id: 170
+                        bodyPos: 16813
+                        bodyLen: 9
+                      content:
+                        kind: TextModels.StdModel
+                        storeKind: elem
+                        typeChain:
+                          - TextModels.StdModelDesc
+                          - TextModels.ModelDesc
+                          - Containers.ModelDesc
+                          - Models.ModelDesc
+                          - Stores.StoreDesc
+                        id: 42
+                        bodyPos: 16409
+                        bodyLen: 382
+                        runListLen: 120
+                        attrPool:
+                          - # [0]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 400
+                            style: 0x00000000
+                          - # [1]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 700
+                            style: 0x00000000
+                        flow:
+                          - text: "MODULE Evaluation;\r\tIMPORT StdLog;\r\tVAR x: INTEGER;\r\r\tPROCEDURE F(): INTEGER;\r\tBEGIN\r\t\tINC(x); "
+                            attr: 0
+                          - text: RETURN
+                            attr: 1
+                          - text: " x\r\tEND F;\r\t\r\tPROCEDURE Write(a, b: INTEGER);\r\tBEGIN\r\t\tStdLog.Int(a); StdLog.Int(b); StdLog.Ln\r\tEND Write;\r\rBEGIN x := 5; Write(x, F())\rEND Evaluation."
+                            attr: 0
+                    attr: 1
+                    w: 5191000
+                    h: 2489200
+                  - text: "\r"
+                    attr: 2
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - target:
+                      name: semicolon
+                      body:
+                        - text: Superfluous Semicolon (
+                          attr: 2
+                        - text: Semicolons
+                          attr: 5
+                        - text: " Option)"
+                          attr: 2
+                      attr: 2
+                      w: 150300
+                      h: 142875
+                  - text: "\r"
+                    attr: 2
+                  - text: "\rThis warning is for the programmer with aesthetic ambitions (or simply for picky people). It marks superfluous semicolons in the code, i.e. semicolons before END or other statement-ending symbols. These semicolons are marked with "
+                    attr: 1
+                  - text: superfluous semicolon
+                    attr: 4
+                  - text: ".\r\tEnable it with the "
+                    attr: 1
+                  - text: Semicolons
+                    attr: 4
+                  - text: " option in the Analyze Options... dialog.\r\rTry it out and see for yourself.\r\r"
+                    attr: 1
+                  - ruler:
+                      first: 360000
+                      left: 360000
+                      right: 720000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - view:
+                      kind: TextViews.StdView
+                      storeKind: store
+                      typeChain:
+                        - TextViews.StdViewDesc
+                        - TextViews.ViewDesc
+                        - Containers.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 180
+                      bodyPos: 17435
+                      bodyLen: 633
+                      hideMarks: true
+                      defaultRuler:
+                        left: 0
+                        right: 5940000
+                        asc: 127000
+                        dsc: 25400
+                        grid: 1
+                        opts: 0x00000001
+                      defaultAttr:
+                        font: Arial
+                        size: 114300
+                        color: 0x01000000
+                        weight: 400
+                        style: 0x00000000
+                      controller:
+                        kind: TextControllers.StdCtrl
+                        storeKind: store
+                        typeChain:
+                          - TextControllers.StdCtrlDesc
+                          - TextControllers.ControllerDesc
+                          - Containers.ControllerDesc
+                          - Controllers.ControllerDesc
+                          - Stores.StoreDesc
+                        id: 182
+                        bodyPos: 17885
+                        bodyLen: 9
+                      content:
+                        kind: TextModels.StdModel
+                        storeKind: elem
+                        typeChain:
+                          - TextModels.StdModelDesc
+                          - TextModels.ModelDesc
+                          - Containers.ModelDesc
+                          - Models.ModelDesc
+                          - Stores.StoreDesc
+                        id: 46
+                        bodyPos: 17460
+                        bodyLen: 403
+                        runListLen: 58
+                        attrPool:
+                          - # [0]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 400
+                            style: 0x00000000
+                        flow:
+                          - text: "MODULE Semicolons;\r\r\tTYPE R = RECORD x: INTEGER; END;\r\t\r\tPROCEDURE Do(i: INTEGER);\r\t\tVAR j: INTEGER; r: R;\r\tBEGIN\r\t\tIF i < 0 THEN j := -1; ELSIF i = 0 THEN j := 0; ELSE j := 1; END;\r\t\tREPEAT DEC(i); UNTIL i = 0;\r\t\tCASE j OF\r\t\t| -1: r.x := 17;\r\t\t| 0: r.x := 3; r.x := 2*r.x;\r\t\tELSE i := 0\r\t\tEND; \r\tEND Do;\r\rBEGIN Do(28);\rEND Semicolons."
+                            attr: 0
+                    attr: 1
+                    w: 5191000
+                    h: 2781300
+                  - text: "\r"
+                    attr: 2
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 720000 }
+                        - { stop: 1800000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r"
+                    attr: 2
+                  - target:
+                      name: Contact Information
+                      body:
+                        - text: Contacting the Author
+                          attr: 2
+                      attr: 2
+                      w: 150300
+                      h: 142875
+                  - text: "\r\r"
+                    attr: 2
+                  - text: "You can contact me directly or through Oberon microsystems. If you find errors or wish new features in a next version of DevAnalyzer, please let me know. Also, if you would like to report on your (positive or negative) experience with this product, please do so (support@oberon.ch).\r\r\t\tStefan H.-M. Ludwig\t24 March 1998\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 194
+          bodyPos: 29974
+          bodyLen: 8

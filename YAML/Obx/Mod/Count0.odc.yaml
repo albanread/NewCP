@@ -1,0 +1,260 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Mod\\Count0.odc"
+  size: 4082
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 3951
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 3765
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 3679
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 114300
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: "*"
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 3804
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 3290
+                runListLen: 1773
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE ObxCount0;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT TextModels, TextControllers, StdLog;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Do
+                    attr: 3
+                  - text: "*;\r\t"
+                    attr: 0
+                  - text: "(** use TextCmds.SelectionGuard as guard for this command **)"
+                    attr: 1
+                  - text: "\r\t\tVAR c: TextControllers.Controller; from, to, schars, chars, views: INTEGER;\r\t\t\trd: TextModels.Reader;\r\tBEGIN\r\t\tc := TextControllers.Focus();\r\t\tIF (c # NIL) & c.HasSelection() THEN\r\t\t\tc.GetSelection(from, to);\t"
+                    attr: 0
+                  - text: "(* get selection range; from < to *)"
+                    attr: 1
+                  - text: "\r\t\t\trd := c.text.NewReader(NIL);\t"
+                    attr: 0
+                  - text: "(* create a new reader for this text model *)"
+                    attr: 1
+                  - text: "\r\t\t\trd.SetPos(from);\t"
+                    attr: 0
+                  - text: "(* set the reader to beginning of selection *)"
+                    attr: 1
+                  - text: "\r\t\t\trd.Read;\t\t\t\t"
+                    attr: 0
+                  - text: "(* read the first element of the text selection *)"
+                    attr: 1
+                  - text: "\r\t\t\tschars := 0; chars := 0; views := 0;\t"
+                    attr: 0
+                  - text: "(* counter variables *)"
+                    attr: 1
+                  - text: "\r\t\t\tWHILE rd.Pos() # to DO\t"
+                    attr: 0
+                  - text: "(* read all elements of the text selection *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tIF rd.view # NIL THEN\t"
+                    attr: 0
+                  - text: "(* element is a view *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tINC(views)\r\t\t\t\tELSIF rd.char < 100X THEN\t"
+                    attr: 0
+                  - text: "(* element is a Latin-1 character *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tINC(schars)\r\t\t\t\tELSE\t"
+                    attr: 0
+                  - text: "(* element is Unicode character *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tINC(chars)\r\t\t\t\tEND;\r\t\t\t\trd.Read\t\t"
+                    attr: 0
+                  - text: "(* read next element of the text selection *)"
+                    attr: 1
+                  - text: "\r\t\t\tEND;\r\t\t\tStdLog.String(\"Latin-1 characters: \"); StdLog.Int(schars); StdLog.Ln;\r\t\t\tStdLog.String(\"Unicode characters: \"); StdLog.Int(chars); StdLog.Ln;\r\t\t\tStdLog.String(\"Views: \"); StdLog.Int(views); StdLog.Ln;\r\t\t\tStdLog.Ln\r\t\tEND\r\tEND Do;\r\rEND ObxCount0.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 4047
+          bodyLen: 8

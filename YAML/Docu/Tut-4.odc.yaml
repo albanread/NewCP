@@ -1,0 +1,2185 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Docu\\Tut-4.odc"
+  size: 757977
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 757846
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 757660
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 757574
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 152400
+                dsc: 25400
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 63
+                bodyPos: 757695
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 757181
+                runListLen: 679344
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 254000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [5]
+                    font: Arial
+                    size: 127000
+                    color: 0x000000ff
+                    weight: 400
+                    style: 0x00000000
+                  - # [6]
+                    font: Arial
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                    offset: 38100
+                flow:
+                  - text: "Part II: Library"
+                    attr: 0
+                  - text: "\r\rPart I of the BlackBox tutorial gives an introduction to the design patterns that are used throughout BlackBox. To know these patterns makes it easier to understand and remember the more detailed design decisions in the various BlackBox modules.\r\rPart II of the BlackBox tutorial demonstrates how the most important library components can be used: control, form, and text components.\r\rPart III of the BlackBox tutorial demonstrates how new views can be developed, by giving a series of examples that gradually become more sophisticated.\r\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - text: 4 Forms
+                    attr: 3
+                  - text: "\r\rIn the first chapter of this part, we concentrate on the forms-based composition of controls. \"Forms-based\" means that there exists a graphical layout editor, sometimes called a visual designer or screen painter, that allows to insert, move, resize, and delete controls. Controls can be made active by linking them to code pieces. For example, it can be defined what action should happen when a command button is clicked.\r\rControls can have different visible states, e.g., they can be enabled or disabled. This is a way to inform a user about which actions currently make sense. Setting up control states in a sensible way can make a large difference in the user-friendliness of an application. Unfortunately, these user interface features often require more programming effort than the actual application logic itself does. However, there are only a few concepts necessary to understand in order to build such user interfaces. These concepts will be explained by means of simple examples.\r\r\r"
+                    attr: 1
+                  - text: 4.1 Preliminaries
+                    attr: 2
+                  - text: "\r\rWe want to start as quickly as possible with a concrete example, but a few preliminary remarks are still in order. The reader is expected to have some basic knowledge of programming, preferably in some dialect of Pascal. Furthermore, he of she is expected to know how to use the platform (Windows or Macintosh), and the general user interface guidelines for the platform.\rThe BlackBox Component Builder is used as the tool to expose the various characteristics of component software in an exemplary way. The contents of the book applies both to the Windows and the Macintosh version of the BlackBox Component Builder; except for screendumps, which mostly use Windows. In order to minimize platform-specific remarks in the text, a few notational conventions are followed:\r\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 1
+                    wide: true
+                  - text: " Mac OS folders are called directories\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 1
+                    wide: true
+                  - text: " Path names contain \"/\" as directory separators, as in Unix and the World-Wide Web\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 1
+                    wide: true
+                  - text: " File and directory names may contain both capital and small letters\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 1
+                    wide: true
+                  - text: " Document file names are given without the \".odc\" suffix used in Windows. Thus the file name Text/Rsrc/Find under Windows corresponds to Text\\Rsrc\\Find.odc on Windows, and to Text:Rsrc:Find under Mac OS.\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 1
+                    wide: true
+                  - text: " Modifier key: on Windows this is the Ctrl key, on Mac OS it is the Option key\r"
+                    attr: 1
+                  - text: ꀢ
+                    attr: 1
+                    wide: true
+                  - text: " Menu commands: "
+                    attr: 1
+                  - text: "M->I"
+                    attr: 4
+                  - text: " is a shorthand notation for menu item I in menu M, e.g., "
+                    attr: 1
+                  - text: "File->New"
+                    attr: 4
+                  - text: "\r\rWhen working in the BlackBox environment for the first time, the following may be helpful to remember: almost all modifications to BlackBox documents are undoable, making it quite safe to try out a feature. In general, multi-level undo is available; i.e., not only one, but several commands can be undone; as many as memory permits.\rThis book is not a replacement for the BlackBox user manual. It minimizes the use of specific BlackBox Component Builder tool features, and therefore the need for tool-specific descriptions. The text is intended to concentrate on programming, rather than on the tool. Where unavoidable, tool-specific explanations are given where they are first needed.\rMost examples are also available on-line in the Obx/Mod directory of BlackBox. They can be opened and compiled immediately. At the end of every section, references to further Obx on-line examples for the same topic are given.\rFor readers who are not yet fluent in Component Pascal, Appendix B describes the differences beween Pascal and Component Pascal.\rThe Help screen of the BlackBox Component Builder gives direct or indirect access to the complete and extensive on-line documentation, e.g., to the user manual, to all the Obx (\""
+                    attr: 1
+                  - text: O
+                    attr: 2
+                  - text: "verview "
+                    attr: 1
+                  - text: b
+                    attr: 2
+                  - text: y e
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: "ample\") examples, and so on. On the Web, additional resources may be found at http://www.oberon.ch.\r\r\r"
+                    attr: 1
+                  - text: 4.2 Phone book example
+                    attr: 2
+                  - text: "\r\rThroughout this part of the book, we will meet variations of and additions to a specific example. The example is an exceedingly simple address database. The idea is not to present a full-fledged application with all possible bells and whistles, but rather a minimal example which doesn't hide the concepts to be explained behind large amounts of code. Nevertheless, the idea of how bells and whistles can be added, component by component, should become obvious over time.\rOur phone book database contains the following fixed entries:\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 180000 }
+                        - { stop: 1800000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tDaffy Duck\t310-555-1212\r\tWile E. Coyote\t408-555-1212\r\tScrooge McDuck\t206-555-1212\r\tHuey Lewis\t415-555-1212\r\tThomas Dewey\t617-555-1212\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rTable 4-1. Entries in phone book database\r\rThe database can be searched for a phone number, given a name. Alternatively, the database can be searched for a name, given a phone number; or its contents can be accessed by index. We have met a possible implementation of this database in section 3.2.\rOur goal is to create a user interface for the database. The user interface is a dialog box that contains two edit fields; one for the name, and the other for the phone number. For each text field, there is a caption that indicates its purpose. Furthermore, the dialog box contains a check box which allows to specify whether the name or the phone number should be looked up, and finally there is a command button which invokes the lookup command. The following screendump shows how the dialog box will look like eventually:\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 11
+                      bodyPos: 1276
+                      bodyLen: 33445
+                    attr: 1
+                    w: 2104920
+                    h: 1324080
+                  - text: "\r\rFigure 4-2. Phone book database mask\r\rTo construct this mask, we start by creating a new empty form for the dialog box, using command "
+                    attr: 1
+                  - text: "Controls->New Form"
+                    attr: 4
+                  - text: ". This results in the following dialog box:\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 12
+                      bodyPos: 34771
+                      bodyLen: 32549
+                    attr: 1
+                    w: 2676375
+                    h: 1028880
+                  - text: "\r\rFigure 4-3. New Form dialog box\r\rClicking on the "
+                    attr: 1
+                  - text: Empty
+                    attr: 4
+                  - text: " command button opens an empty form:\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 13
+                      bodyPos: 67370
+                      bodyLen: 130013
+                    attr: 1
+                    w: 3876645
+                    h: 2981160
+                  - text: "\r\rFigure 4-4. Empty form\r\rUsing the commands of menu "
+                    attr: 1
+                  - text: Controls
+                    attr: 4
+                  - text: " , we insert the various controls we need, i.e., two captions, two edit fields, a check box, and a command button. The controls we've inserted still have generic labels such as \"untitled\" or \"Caption\". To change these visual properties, a control property inspector is used. It is opened by selecting a control and then issuing "
+                    attr: 1
+                  - text: "Edit->Object Properties..."
+                    attr: 4
+                  - text: " (Windows) or "
+                    attr: 1
+                  - text: "Edit->Part Info"
+                    attr: 4
+                  - text: " (Mac OS), respectively. Edit the \"label\" field in order to change the selected control's label, and click on the default button to make the change permanent.\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 14
+                      bodyPos: 197453
+                      bodyLen: 197309
+                    attr: 1
+                    w: 4924440
+                    h: 3571920
+                  - text: "\r\rFigure 4-5. Control property editor\r\rChange the \"label\" field of each control so that you end up with a layout similar to the one of Figure 4-2. Listed in a tabular way, the labels are the following ones (from left to right, top to bottom):\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 180000 }
+                        - { stop: 1620000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tControl type\tLabel\r"
+                    attr: 4
+                  - text: "\tCaption\tName\r\tText Field\r\tCaption\tNumber\r\tText Field\r\tCheck Box\tLookup by Name\r\tCommand Button\tLookup\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rTable 4-6. List of controls in phone book dialog box\r\rThe controls can be rearranged by using the mouse or by using the layout commands in menu "
+                    attr: 1
+                  - text: Layout
+                    attr: 4
+                  - text: ". After having edited the layout, make sure to call "
+                    attr: 1
+                  - text: "Layout->Sort Views"
+                    attr: 4
+                  - text: "; this command sorts the controls in such a way that when being pressed, the tabulator key moves the cursor between them in the order you would expect, i.e., from left to right and from top to bottom.\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 19
+                      bodyPos: 395093
+                      bodyLen: 53229
+                    attr: 1
+                    w: 2552760
+                    h: 1809720
+                  - text: "\r\rFigure 4-7. Completed layout of phone book dialog box\r\rWhen you are happy with the layout, you can save the dialog box just like any other document, by using "
+                    attr: 1
+                  - text: "File->Save"
+                    attr: 4
+                  - text: ". As a convention, the dialog box layouts of all examples are saved in directory Obx/Rsrc. In this case, we save the new dialog box as Obx/Rsrc/PhoneUI.\r\rThe directory name "
+                    attr: 1
+                  - text: Rsrc
+                    attr: 4
+                  - text: " stands for \"Resources\". Resources are documents that are necessary for a program to work. In particular, they are dialog box layouts and string resources. String resources allow to move strings out of a program's source code into a separately editable document.\rResources can be edited without recompiling anything. For example, you could change all labels in the above dialog box from English to German, without having access to any source code or development tool.\r\r\r"
+                    attr: 1
+                  - text: 4.3 Interactors
+                    attr: 2
+                  - text: "\r\rCreating a dialog box layout is fine, but there also must be a way to add behavior to the dialog box. In our example, user interactions with the dialog box should lead to lookup operations in the phone book database. To achieve this, we need an actual implementation of the database. We mentioned earlier that a suitable implementation already exists. This is not surprising, since in this part of the book we talk about component object assembly, which means taking existing components and suitably integrating persistent objects that they implement.\rIn our example, the phone book database is a Component Pascal module called "
+                    attr: 1
+                  - text: ObxPhoneDB.
+                    attr: 4
+                  - text: " We have already met this module in Chapter 3. Now we want to write our first new module, whose purpose is to build a bridge between the database module "
+                    attr: 1
+                  - text: ObxPhoneDB
+                    attr: 4
+                  - text: " and the dialog box we've built earlier. The new module is called "
+                    attr: 1
+                  - text: ObxPhoneUI
+                    attr: 4
+                  - text: ", where \"UI\" stands for \"user interface\". It is a typical script module whose only purpose is to add behavior to a compound document, such that it can be used as a front-end for the application logic, which in our case is simply the phone book database.\rThe new module uses, i.e., imports, two existing modules. On the one hand, it is the "
+                    attr: 1
+                  - text: ObxPhoneDB
+                    attr: 4
+                  - text: " module. On the other hand, module "
+                    attr: 1
+                  - text: Dialog
+                    attr: 4
+                  - text: ":\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 20
+                      bodyPos: 448442
+                      bodyLen: 711
+                    attr: 1
+                    w: 2235200
+                    h: 3543300
+                  - text: "\r\rFigure 4-8. Import relation between ObxPhoneUI and ObxPhoneDB\r\r"
+                    attr: 1
+                  - text: Dialog
+                    attr: 4
+                  - text: " is part of a fundamental framework coming with the BlackBox Component Builder. The module provides various services that support user interaction. We'll meet the most important ones in this chapter.\r\rMODULE ObxPhoneUI;\r\r\tIMPORT Dialog, ObxPhoneDB;\r\r\tVAR\r\t\t"
+                    attr: 1
+                  - text: phone
+                    attr: 2
+                  - text: "*: RECORD\r\t\t\tname*, number*: ObxPhoneDB.String;\r\t\t\tlookupByName*: BOOLEAN\r\t\tEND;\r\r\tPROCEDURE "
+                    attr: 1
+                  - text: Lookup
+                    attr: 2
+                  - text: "*;\r\tBEGIN\r\t\tIF phone.lookupByName THEN\r\t\t\tObxPhoneDB.LookupByName(phone.name, phone.number);\r\t\t\tIF phone.number = \"\" THEN phone.number := \"not found\" END\r\t\tELSE\r\t\t\tObxPhoneDB.LookupByNumber(phone.number, phone.name);\r\t\t\tIF phone.name = \"\" THEN phone.name := \"not found\" END\r\t\tEND;\r\t\tDialog.Update(phone)\r\tEND Lookup;\r\rEND ObxPhoneUI.\r\rListing 4-9. First version of ObxPhoneUI\r\r"
+                    attr: 1
+                  - text: ObxPhoneUI
+                    attr: 4
+                  - text: " exports a global record variable "
+                    attr: 1
+                  - text: phone
+                    attr: 4
+                  - text: ", which contains two string fields and a Boolean field. Depending on the current value of the Boolean field, the "
+                    attr: 1
+                  - text: Lookup
+                    attr: 4
+                  - text: " procedure either takes "
+                    attr: 1
+                  - text: phone.name
+                    attr: 4
+                  - text: " to look up the corresponding number, or "
+                    attr: 1
+                  - text: phone.number
+                    attr: 4
+                  - text: " to look up the corresponding name. If the lookup fails, i.e., returns the empty string, the result is turned into \"not found\". Either result is put into "
+                    attr: 1
+                  - text: phone
+                    attr: 4
+                  - text: ", i.e., "
+                    attr: 1
+                  - text: phone
+                    attr: 4
+                  - text: " carries both input and output parameters for the database lookup.\r\rSince the user could change the contents of "
+                    attr: 1
+                  - text: phone
+                    attr: 4
+                  - text: " by interactively manipulating a control, e.g., by typing into a text entry field, a global variable like "
+                    attr: 1
+                  - text: phone
+                    attr: 4
+                  - text: " is called an "
+                    attr: 1
+                  - text: interactor
+                    attr: 4
+                  - text: ". Controls display the contents of their interactor fields and possibly let them be modified interactively. To do this, every control must first be linked to its corresponding interactor field. This is done with the control property editor that we have seen earlier. Its \"Link\" field should contain the field name, e.g., "
+                    attr: 1
+                  - text: ObxPhoneDB.phone.name
+                    attr: 4
+                  - text: " or a procedure name such as "
+                    attr: 1
+                  - text: ObxPhoneDB.Lookup
+                    attr: 4
+                  - text: ". Use the control property inspector to set up the link fields according to Table 4-10:\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 180000 }
+                        - { stop: 1620000 }
+                        - { stop: 3060000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tControl type\tLabel\tLink\r"
+                    attr: 4
+                  - text: "\tCaption\tName\r\tText Field\t\tObxPhoneUI.phone.name\r\tCaption\tNumber\r\tText Field\t\tObxPhoneUI.phone.number\r\tCheck Box\tLookup by Name\tObxPhoneUI.phone.lookupByName\r\tCommand Button\tLookup\tObxPhoneUI.Lookup\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rTable 4-10. Links of phone book dialog box\r\rNote that the previously disabled controls now have become enabled. What does this mean? When a control is linked, which normally happens when it is being read from a file, or in our case when the link is changed by the inspector, then the module to which the control should be linked must be loaded. If it is already loaded, nothing needs to be done. If it isn't loaded yet (remember that you can check with "
+                    attr: 1
+                  - text: "Info->Loaded Modules"
+                    attr: 4
+                  - text: "), loading is done now. If loading fails, e.g., because the module's code file doesn't yet exist, then control linking fails and the control remains disabled. Linking also fails if the control and field types don't match, e.g., if a check box is linked to a string field.\r\rTo achieve this level of functionality (and safety against incorrect use), BlackBox provides several advanced \"metaprogramming\" services, in particular dynamic module loading on demand and typesafe lookup of variables. The latter requires extensive run-time type information (RTTI) that is relatively uncommon in fully compiled languages.\rThe links of all controls are reevaluated whenever a module has been unloaded. This ensures that controls are never linked to unloaded modules.\r\rIt was one of the design goals for BlackBox to separate user interface details from program logic. For this reason, module "
+                    attr: 1
+                  - text: ObxPhoneUI
+                    attr: 4
+                  - text: " doesn't know about controls and forms and the like. Instead, the controls of our form have links, which tell them the interactor fields with which they should interact. For example, the command button's \"ObxPhoneUI.Lookup\" link tells it to activate the "
+                    attr: 1
+                  - text: ObxPhoneUI.Lookup
+                    attr: 4
+                  - text: " procedure when the button is pressed. This procedure in turn doesn't know about the command button (there even may be several of them), the only thing it does to acknowledge the possible existence of controls is to call\r\r\tDialog.Update(phone)\r\rat the end of the command procedure. "
+                    attr: 1
+                  - text: Dialog.Update
+                    attr: 4
+                  - text: " causes an update of all controls that need updating. For example, if "
+                    attr: 1
+                  - text: Lookup
+                    attr: 4
+                  - text: " has assigned \"not found\" to "
+                    attr: 1
+                  - text: phone.number
+                    attr: 4
+                  - text: ", the corresponding text field(s) or similar controls need to be redrawn accordingly.\rAs parameter of "
+                    attr: 1
+                  - text: Dialog.Update
+                    attr: 4
+                  - text: ", an interactor must be passed. Calling "
+                    attr: 1
+                  - text: Dialog.Update
+                    attr: 4
+                  - text: " is necessary after one or several fields of this interactor have been modified by a program. If several fields have been modified, "
+                    attr: 1
+                  - text: Dialog.Update
+                    attr: 4
+                  - text: " should only be called once, for efficiency reasons. Note that a control calls "
+                    attr: 1
+                  - text: Dialog.Update
+                    attr: 4
+                  - text: " itself when the user has modified an interactor field; you only need to call it after your own code has modified the interactor.\r\rThis strong separation of user interface from program logic is uncommon. Its advantage is simplicity: as soon as you know how to define procedures and how to declare record types and global variables, you can already construct graphical user interfaces for modules. This is possible even for someone who is just beginning to learn programming. Another advantage is that you have to write no code for simple user interfaces. User interface construction happens in the forms editor (e.g., setting the position and size of a control) and with the inspector (e.g., setting the alignment of text in a text field). This makes it easier to adapt an application to different user interface requirements, without touching the application logic itself. Only if you want to exercise more control over the user interface, e.g., disabling controls or reacting on special events such as the user's typing, then you need to write small amounts of code, which can be very cleanly separated from the application logic itself. The necessary concepts, so-called guards and notifiers, will be discussed in the next two sections. If you need still more control, then you can access controls individually, as described in section 4.9.\r\rCurrently, a disavantage of the BlackBox Component Builder's approach is that all controls have to be linked to global interactor variables. If there are several controls for the same interactor field, all of them display the same value. The controls cannot have independent state of their own.\r\rNote an interesting feature of BlackBox: if you have written a module like "
+                    attr: 1
+                  - text: ObxPhoneUI
+                    attr: 4
+                  - text: " in Listing 4-9, you can automatically generate a form with suitable controls in a default layout. This is done by clicking \"Create\" in the \"New Form\" dialog box instead of \"Empty\". This feature is useful to create temporary testing and debugging user interfaces during development, where it isn't useful to spend time with manual form construction.\r\rWe now have a dialog box layout with controls linked to module "
+                    attr: 1
+                  - text: ObxPhoneUI
+                    attr: 4
+                  - text: ", and this module imports the database engine "
+                    attr: 1
+                  - text: ObxPhoneDB
+                    attr: 4
+                  - text: ". What is still missing is a way to "
+                    attr: 1
+                  - text: use
+                    attr: 4
+                  - text: " the dialog box, rather than to merely edit its layout. During editing, it can be useful to immediately try out the dialog box, even before its layout is perfect. To try this out, make sure that the layout window is on top and then execute "
+                    attr: 1
+                  - text: "Controls->Open As Aux Dialog"
+                    attr: 4
+                  - text: ". A new window is opened which contains the same dialog box, but in a way that its "
+                    attr: 1
+                  - text: controls
+                    attr: 4
+                  - text: " can be edited, rather than its "
+                    attr: 1
+                  - text: layout
+                    attr: 4
+                  - text: ". The window acts as a data entry mask. Now you can type, for example, \"Huey Lewis\" into the name string, click on the \"Lookup by Name\" check box, and then click on the \"Lookup\" button. You'll see that the appropriate phone number appears in the \"Number\" field.\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 25
+                      bodyPos: 449788
+                      bodyLen: 80069
+                    attr: 1
+                    w: 4572000
+                    h: 1542960
+                  - text: "\r\rFigure 4-11. Layout view (left) and mask view (right) displaying the same form model\r\rNote that the same name and number also appeared in the layout window. Even better, if you change the layout in the layout window, e.g., by moving the check box somewhat, you'll note that the layout change is immediately reflected in the other window. This is a result of the so-called Model-View-Controller implementation of BlackBox. In Part II of the book, we have discussed this design pattern in more detail. Here it is sufficient to note that several views can share the same data, e.g., a layout view and a mask view can display the same form; and that both layout and mask views are basically the same kind of view albeit in different modes. You can switch between these modes by applying the "
+                    attr: 1
+                  - text: "Dev->Layout Mode"
+                    attr: 4
+                  - text: " or "
+                    attr: 1
+                  - text: "Dev->Mask Mode"
+                    attr: 4
+                  - text: " commands.\r\rThe two modes differ in the ways they treat selection and focus. In layout mode, you can select the embedded views and edit the selection, but you cannot focus the embedded views. In mask mode, you can focus the embedded views, but you cannot select them (only their contents) and thus cannot edit their layout, i.e., their sizes, positions, etc. In other words: layout mode prevents focusing, while mask mode prevents selection.\r\rOpening a second view in mask mode for our form layout is convenient during layout editing, but you wouldn't want any layout view open when your program should actually be "
+                    attr: 1
+                  - text: used
+                    attr: 4
+                  - text: ". In this case, you want to open the dialog box in mask mode by invoking a suitable menu command.\r\rA new menu command can be introduced by editing a menu configuration text. You can open this text (which resides in System/Rsrc/Menus) by calling "
+                    attr: 1
+                  - text: "Info->Menus"
+                    attr: 4
+                  - text: ". Append the following text to its end:\r\r\tMENU \"Priv\"\r\t\t\"Open...\"\t\"\"\t\"StdCmds.OpenAuxDialog('Obx/Rsrc/PhoneUI', 'Phonebook')\"\t\"\"\r\tEND\r\rHaving done this, execute "
+                    attr: 1
+                  - text: "Info->Update Menus"
+                    attr: 4
+                  - text: ". You'll notice that the new menu \"Priv\" has appeared. Execute its menu item \"Open...\". As a result, the command\r\r\tStdCmds.OpenAuxDialog('Obx/Rsrc/PhoneUI', 'Phonebook')\r\rwill be executed. It opens the Obx/Rsrc/PhoneUI layout document, turns it into mask mode, and opens it in a window with title \"Phonebook\". If you want the modification of your menu text to become permanent, save the \"Menus\" text before closing it.\r\rNote that the form has not been saved in mask mode (this would be inconvenient for later editing), it is only temporarily turned into mask mode by the "
+                    attr: 1
+                  - text: StdCmds.OpenAuxDialog
+                    attr: 4
+                  - text: " command.\r\r\r"
+                    attr: 1
+                  - text: 4.4 Guards
+                    attr: 2
+                  - text: "\r\rIn terms of genuine functionality, we have seen everything that is important about the standard set of controls. We will look at the palette of standard controls in more detail later. However, we first need to discuss important aspects of standard controls which, strictly speaking, do not increase the functionality of an application, but rather its useability, i.e., its user-friendliness.\r\rIn section 1.2 we have already discussed what user-friendliness means. For example, it means avoiding modes wherever possible. For this reason, BlackBox doesn't support modal dialog boxes.\rModes are unavoidable if a user action sometimes makes sense, and sometimes doesn't. For example, if the clipboard is empty, its contents cannot be pasted into a text. If it is not empty and contains text, pasting is possible. This cannot be helped, and is harmless if the current state is clearly visible or can easily be inquired by the user. For example, if the clipboard is empty, the "
+                    attr: 1
+                  - text: Paste
+                    attr: 4
+                  - text: " menu command can be visibly marked as disabled. The visual distinction gives the user early feedback that this command is currently not meaningful. This is usually much better than to let the user try out a command and then give an error message afterwards.\rThe following example shows a dialog box with two buttons. The "
+                    attr: 1
+                  - text: Empty
+                    attr: 4
+                  - text: " button is enabled, while the "
+                    attr: 1
+                  - text: OK
+                    attr: 4
+                  - text: " button is disabled. The "
+                    attr: 1
+                  - text: OK
+                    attr: 4
+                  - text: " button only becomes enabled if something has been typed into the dialog box's text field:\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 26
+                      bodyPos: 530007
+                      bodyLen: 32549
+                    attr: 1
+                    w: 2666850
+                    h: 1028880
+                  - text: "\r\rFigure 4-12. Enabled and disabled buttons\r\rIn summary, a good user interface always lets the user perform every meaningful action, and gives visual cues about actions that are not meaningful.\r\rFor the BlackBox, we thus need a way to provide feedback about the current state of the system, especially about which commands are currently possible and which aren't.\rFor this purpose, it must be possible to enable and disable controls and menu items. For example, looking up a phone number is only possible if some name has been entered, i.e., if the name field is not empty. To determine whether a command procedure, in our case the "
+                    attr: 1
+                  - text: Lookup
+                    attr: 4
+                  - text: " procedure, may be called, i.e., whether a corresponding control or menu item may be enabled, a suitable "
+                    attr: 1
+                  - text: guard
+                    attr: 4
+                  - text: " must be provided. A guard is a procedure called by the framework, whenever it might be necessary to change the state of a control or menu item. The guard inspects some global state of the system, uses this state to determine whether the guarded command currently makes sense, and then sets up an output parameter accordingly. A guard has the following form:\r\r\tPROCEDURE XyzGuard* (VAR par: Dialog.Par);\r\tBEGIN\r\t\tpar.disabled := "
+                    attr: 1
+                  - text: ...some Boolean expression...
+                    attr: 4
+                  - text: "\r\tEND XyzGuard;\r\rA guard has the following type:\r\r\tGuardProc = PROCEDURE (VAR par: Dialog.Par);\r\rTo guard procedure "
+                    attr: 1
+                  - text: Lookup
+                    attr: 4
+                  - text: " in our example, we extend module "
+                    attr: 1
+                  - text: ObxPhoneUI
+                    attr: 4
+                  - text: " in the following way:\r\rMODULE ObxPhoneUI;\r\r\tIMPORT Dialog, ObxPhoneDB;\r\r\tVAR\r\t\t"
+                    attr: 1
+                  - text: phone
+                    attr: 2
+                  - text: "*: RECORD\r\t\t\tname*, number*: ObxPhoneDB.String;\r\t\t\tlookupByName*: BOOLEAN\r\t\tEND;\r\r\tPROCEDURE "
+                    attr: 1
+                  - text: Lookup
+                    attr: 2
+                  - text: "*;\r\tBEGIN\r\t\tIF phone.lookupByName THEN\r\t\t\tObxPhoneDB.LookupByName(phone.name, phone.number);\r\t\t\tIF phone.number = \"\" THEN phone.number := \"not found\" END\r\t\tELSE\r\t\t\tObxPhoneDB.LookupByNumber(phone.number, phone.name);\r\t\t\tIF phone.name = \"\" THEN phone.name := \"not found\" END\r\t\tEND;\r\t\tDialog.Update(phone)\r\tEND Lookup;\r\r\tPROCEDURE "
+                    attr: 1
+                  - text: LookupGuard
+                    attr: 2
+                  - text: "* (VAR par: Dialog.Par);\r\tBEGIN\t"
+                    attr: 1
+                  - text: "(* disable if input string is empty *)"
+                    attr: 4
+                  - text: "\r\t\tpar.disabled := phone.lookupByName & (phone.name = \"\") OR\r\t\t\t\t\t\t\t\t\t~phone.lookupByName & (phone.number = \"\")\r\tEND LookupGuard;\r\rEND ObxPhoneUI.\r\rListing 4-13. ObxPhoneUI with LookupGuard\r\rWhat happens if we compile the above module? Its symbol file on disk is replaced by a new version, because the module interface has been changed from the previous version. Because the change is merely an addition of a global procedure (i.e., the new version is compatible with the old version) possible client modules importing "
+                    attr: 1
+                  - text: ObxPhoneUI
+                    attr: 4
+                  - text: " are not invalidated and need not be recompiled.\r\rCompilation also produced a new code file on disk. However, the old version of "
+                    attr: 1
+                  - text: ObxPhoneUI
+                    attr: 4
+                  - text: " is still loaded in memory! In other words: once loaded, a module remains loaded (\"terminate-and-stay-resident\"). This is not a problem, since modules are extremely light-weight and consume little memory. However, a programmer of course must be able to unload modules without leaving the BlackBox Component Builder entirely, in order to try out a new version of a module. For this purpose, the command "
+                    attr: 1
+                  - text: "Dev->Unload"
+                    attr: 4
+                  - text: " is provided which unloads the module whose source code is currently focused.\rNote that compilation does not automatically unload a module, since this is often undesirable. In particular, as soon as you work on several related modules concurrently, unloading one of them before the others are correctly updated would render this whole set of modules inconsistent.\rFor those cases where immediate unloading after compilation "
+                    attr: 1
+                  - text: does
+                    attr: 4
+                  - text: " make sense, like in the simple examples that we are currently discussing, the command "
+                    attr: 1
+                  - text: "Dev->Compile And Unload"
+                    attr: 4
+                  - text: " is provided.\rYou may use this command to try out our new version of "
+                    attr: 1
+                  - text: ObxPhoneUI
+                    attr: 4
+                  - text: ". Notice how the "
+                    attr: 1
+                  - text: Lookup
+                    attr: 4
+                  - text: " button is disabled when the "
+                    attr: 1
+                  - text: Name
+                    attr: 4
+                  - text: " field is empty (if "
+                    attr: 1
+                  - text: Lookup by Name
+                    attr: 4
+                  - text: " is chosen) or when the "
+                    attr: 1
+                  - text: Number
+                    attr: 4
+                  - text: " field is empty (if "
+                    attr: 1
+                  - text: Lookup by Number
+                    attr: 4
+                  - text: " is chosen). Typing something into the field makes "
+                    attr: 1
+                  - text: Lookup
+                    attr: 4
+                  - text: " enabled again; deleting all characters in the field disables it again. At the end of this section we will explain more precisely when guards are evaluated; for now it is sufficient to know that they are evaluated after every character typed into a text field control.\r\rGuards are mostly used to enable and disable user interface elements such as controls or menu items. However, they sometimes play a more general role as well. For example, controls may not only be disabled, but they also may be made read-only or undefined.\r\r"
+                    attr: 1
+                  - text: Read-only
+                    attr: 4
+                  - text: " means that a control currently cannot be modified interactively. For example, the following guards set up the output parameter's "
+                    attr: 1
+                  - text: readOnly
+                    attr: 4
+                  - text: " field. The first guard sets read-only if lookup is not by name, i.e., by number. Obviously, in this case a number is input and a name is output. Pure outputs should be read-only. Thus the first guard can be used as guard for the "
+                    attr: 1
+                  - text: Name
+                    attr: 4
+                  - text: " field. The second guard can be used for the "
+                    attr: 1
+                  - text: Number
+                    attr: 4
+                  - text: " field, since it sets read-only if lookup returns a number.\r\r\tPROCEDURE "
+                    attr: 1
+                  - text: NameGuard
+                    attr: 2
+                  - text: "* (VAR par: Dialog.Par);\r\tBEGIN\t"
+                    attr: 1
+                  - text: "(* make read-only if lookup is by number *)"
+                    attr: 4
+                  - text: "\r\t\tpar.readOnly := ~phone.lookupByName\r\tEND NameGuard;\r\r\tPROCEDURE "
+                    attr: 1
+                  - text: NumberGuard
+                    attr: 2
+                  - text: "* (VAR par: Dialog.Par);\r\tBEGIN\t"
+                    attr: 1
+                  - text: "(* make read-only if lookup is by name *)"
+                    attr: 4
+                  - text: "\r\t\tpar.readOnly := phone.lookupByName\r\tEND NumberGuard;\r\rListing 4-14. Read-only guards for ObxPhoneUI\r\rInteractor fields which are exported read-only, i.e., with the \"-\" export mark instead of the \"*\" export mark, are always in read-only state regardless of what a guard specifies (otherwise this would violate module safety, i.e., the invariant that a read-only exported item can only be modified within its defining module).\r\rThe "
+                    attr: 1
+                  - text: undefined
+                    attr: 4
+                  - text: " state of a control means that the control currently has no meaning at all. This happens if a control displays the state of a heterogeneous selection. For example, a check box may indicate whether the text selection is all caps or all small letters. If part of the selection is capital letters and the rest small letters, then the control has no defined value. However, by clicking on the check box, the selection is made all caps and then has a defined state again. The undefined state can be set by a guard with the statement\r\r\tpar.undef := TRUE\r\rThe undefined state can be regarded as \"write-only\", i.e., the control's state cannot be read by the user because it currently has no defined value, but it can be modified and thus set to a defined value.\r\rOf the fields "
+                    attr: 1
+                  - text: disabled
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: readOnly
+                    attr: 4
+                  - text: " and "
+                    attr: 1
+                  - text: undef
+                    attr: 4
+                  - text: ", at most one may be set to "
+                    attr: 1
+                  - text: "TRUE"
+                    attr: 4
+                  - text: " by a guard. This leads to four possible temporary states of the control: it is in none or in exactly one of the three special states. When a guard is called by the framework, all three Boolean fields are preset to "
+                    attr: 1
+                  - text: "FALSE"
+                    attr: 4
+                  - text: ". This is a general rule in BlackBox: Boolean values default to "
+                    attr: 1
+                  - text: "FALSE"
+                    attr: 4
+                  - text: ".\r\rIn Table 4-15, suitable guards for the layout of Figure 4-2 are listed:\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 5
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 180000 }
+                        - { stop: 1512000 }
+                        - { stop: 4140000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tControl type\tLink\tGuard\r"
+                    attr: 4
+                  - text: "\tCaption\r\tText Field\tObxPhoneUI.phone.name\tObxPhoneUI.NameGuard\r\tCaption\r\tText Field\tObxPhoneUI.phone.number\tObxPhoneUI.NumberGuard\r\tCheck Box\tObxPhoneUI.phone.lookupByName\r\tCommand Button\tObxPhoneUI.Lookup\tObxPhoneUI.LookupGuard\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rTable 4-15. Guards in phone book dialog box\r\rA guard applies to a procedure, to an interactor field, or to several procedures or interactor fields. If it applies to mainly one procedure or field, the guard's name is constructed by appending \"Guard\" to the (capitalized) name of the procedure/field. For example, the guard for procedure "
+                    attr: 1
+                  - text: Lookup
+                    attr: 4
+                  - text: " is called "
+                    attr: 1
+                  - text: LookupGuard
+                    attr: 4
+                  - text: ", the guard for field "
+                    attr: 1
+                  - text: phone.name
+                    attr: 4
+                  - text: " is called "
+                    attr: 1
+                  - text: NameGuard
+                    attr: 4
+                  - text: ", etc. This is a simple naming convention which makes it easier to recognize the relation between guard and guarded item. The naming convention is \"soft\", i.e., it is not enforced by the framework; in fact the framework doesn't know about it at all.\r\rIt is not a convention, but a necessity, to export guards. Guards are accessed by the so-called metaprogramming mechanism of BlackBox which, for safety reasons, only operates on exported items. This is consistent with the treatment of a module as a black-box, of which only the set of exported items, i.e., its interface, is accessible from the outside. If a guard isn't exported, a control cannot call it. This is similar to the fields of an interactor, which also must be exported if an interactor should be able to link to it.\r\rIf we look at the declaration of type "
+                    attr: 1
+                  - text: Dialog.Par
+                    attr: 4
+                  - text: " (use "
+                    attr: 1
+                  - text: "Info->Interface"
+                    attr: 4
+                  - text: "!), we see that two fields have not yet been discussed: "
+                    attr: 1
+                  - text: label
+                    attr: 4
+                  - text: " and "
+                    attr: 1
+                  - text: checked
+                    attr: 4
+                  - text: ":\r\r\tPar = RECORD \r\t\tdisabled, checked, undef, readOnly: BOOLEAN;\r\t\tlabel: Dialog.String\r\tEND\r\rField "
+                    attr: 1
+                  - text: label
+                    attr: 4
+                  - text: " allows to change the label of a control. For example, instead of using the label \"Toggle\" for a button it may be more telling to use the labels \"Switch On\" and \"Switch Off\" depending on the current state of the system. This can be done by a procedure like this:\r\r\tPROCEDURE "
+                    attr: 1
+                  - text: ToggleGuard
+                    attr: 2
+                  - text: "* (VAR par: Dialog.Par);\r\tBEGIN\r\t\tIF someInteractor.isOn THEN\r\t\t\tpar.label := \"Switch Off\"\r\t\tELSE\r\t\t\tpar.label := \"Switch On\"\r\t\tEND\r\tEND ToggleGuard;\r\rListing 4-16. Label guard example\r\rNote that the guard overrides whatever label was set up in the control property inspector. This is true for all controls (and for menu items as well, see below).\r\rIt is strongly recommended not to place string literals in the source code like in the above example, because this would force a recompilation of the code if the language were changed, e.g., from English to German (see also section 1.4). In BlackBox, user interface strings such as labels or messages are generally packed into separate parameter files, so-called string resources. For each subsystem there can be one string resource file, e.g., Text/Rsrc/Strings or Form/Rsrc/Strings. A string resource file is a BlackBox text document starting with the keyword "
+                    attr: 1
+                  - text: STRINGS
+                    attr: 4
+                  - text: " and followed by an arbitrary number of "
+                    attr: 1
+                  - text: "<key, string>"
+                    attr: 4
+                  - text: " pairs. The key is a string, separated by a tab character from the actual string into which it will be mapped. Every "
+                    attr: 1
+                  - text: "<key, string>"
+                    attr: 4
+                  - text: " pair must be terminated by a carriage return. The pairs need not be arranged in any particular order, although it is helpful to sort them alphabetically by key, because this makes it easier to find a particular key when editing the string resources.\rFor example, System/Rsrc/Strings starts the following way:\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 2160000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "STRINGS\rAbout\tAbout BlackBox\rAlienAttributes\talien attributes\rAlienCause\talien cause\rAlienComponent\talien component\rAlienControllerWarning\talien controller (warning)\r...\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rTable 4-17. String resources of System/Rsrc/Strings\r\rTo use string resources in our guard example, a special syntax must be used to indicate that the string is actually a key that first must be mapped using the appropriate subsystem's string resources. Assuming that in the "
+                    attr: 1
+                  - text: Obx
+                    attr: 4
+                  - text: " subsystem's string resources there exist \"On\" and \"Off\" keys, the following code emerges:\r\r\tPROCEDURE "
+                    attr: 1
+                  - text: ToggleGuard
+                    attr: 2
+                  - text: "* (VAR par: Dialog.Par);\r\tBEGIN\r\t\tIF someInteractor.isOn THEN\r\t\t\tpar.label := \"#Obx:Off\"\r\t\tELSE\r\t\t\tpar.label := \"#Obx:On\"\r\t\tEND\r\tEND ToggleGuard;\r\rListing 4-18. Label guard example with string mapping\r\rThe leading \"#\" indicates that a string mapping is desired. It is followed by the subsystem name, in this case \"Obx\". Then comes a colon, followed by the key to be mapped. A command button with this guard would either display the label \"Switch Off\" or \"Switch On\" in an English version of BlackBox, \"Ausschalten\" or \"Einschalten\" in a German version, and so on.\rIf there is no suitable string resource, the key is mapped to itself. For example, if there is no \"Off\" key in Obx/Rsrc/Strings, then \"#Obx:Off\" will be mapped to \"Off\".\r\rThe remaining field of "
+                    attr: 1
+                  - text: Dialog.Par
+                    attr: 4
+                  - text: " that we have not yet discussed is called "
+                    attr: 1
+                  - text: checked
+                    attr: 4
+                  - text: ". Actually, so far it has never been used for controls in BlackBox. It is used for menu items. Menu items are similar to controls: they can invoke actions, they may be enabled or disabled, and they have labels. For this reason it makes sense to use the same guard mechanism for them also. A menu guard is specified in the "
+                    attr: 1
+                  - text: Menus
+                    attr: 4
+                  - text: " text as a string after the menu label and the keyboard equivalent of the menu item. For example, the following entry for the "
+                    attr: 1
+                  - text: Dev
+                    attr: 4
+                  - text: " menu specifies the guard "
+                    attr: 1
+                  - text: StdCmds.SetEditModeGuard
+                    attr: 4
+                  - text: ":\r\r\t\"Edit Mode\"\t\"\"\t\"StdCmds.SetEditMode\"\t\"StdCmds.SetEditModeGuard\"\r\rA unique feature of menu items is that they may be checked. For example, in the following menu, menu item "
+                    attr: 1
+                  - text: Edit Mode
+                    attr: 4
+                  - text: " is checked:\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 36
+                      bodyPos: 563760
+                      bodyLen: 20525
+                    attr: 1
+                    w: 1724040
+                    h: 961890
+                  - text: "\r\rFigure 4-19. Menu item with check mark\r\rThe check mark indicates which of the items has been selected most recently, and the state that has been established by the selection. The state can be changed by invoking one of the other menu items, e.g., "
+                    attr: 1
+                  - text: Mask Mode
+                    attr: 4
+                  - text: " as in the figure above. Basically, the four menu items form a group of possibilities from which one can be selected.\rGuard procedures for menu items may set up the "
+                    attr: 1
+                  - text: disabled
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: checked
+                    attr: 4
+                  - text: " and "
+                    attr: 1
+                  - text: label
+                    attr: 4
+                  - text: " fields of "
+                    attr: 1
+                  - text: Dialog.Par
+                    attr: 4
+                  - text: ". The other fields are ignored for menus.\r\rA guard procedure may set up several fields of its "
+                    attr: 1
+                  - text: par
+                    attr: 4
+                  - text: " output parameter simultaneously, e.g., it may assign the "
+                    attr: 1
+                  - text: disabled
+                    attr: 4
+                  - text: " and "
+                    attr: 1
+                  - text: label
+                    attr: 4
+                  - text: " fields for a command button. However, a guard may set at most one of the Boolean fields of "
+                    attr: 1
+                  - text: par
+                    attr: 4
+                  - text: " and must "
+                    attr: 1
+                  - text: never
+                    attr: 4
+                  - text: " modify any state outside of "
+                    attr: 1
+                  - text: par
+                    attr: 4
+                  - text: ", e.g., a field of an interactor or something else; i.e., it must have no side effects. It may not call any procedures which may have side effects either. The reason is that a program cannot assume much about when (and especially when not) a guard is being called by the framework.\rA guard may use any interactor or set of interactors as its input, or the state of the current focus or selection. The latter is often used for menu guards. The current focus or selection is only used in control guards if the controls are in so-called tool dialog boxes, i.e., dialog boxes that operate on some document underneath. A "
+                    attr: 1
+                  - text: "Find & Replace"
+                    attr: 4
+                  - text: " dialog box operating on a focused text is a typical example of a tool dialog box. The other dialog boxes are self-contained and called auxiliary dialog boxes. Data entry masks are typical examples of auxiliary dialog boxes.\r\rWhen is a guard evaluated? There are four reasons why a guard may be called: when the control's link is established, when the contents of an interactor is being edited, when the window hierarchy has changed, or when the user has clicked into the menu bar.\rA control's link is established after it is newly inserted into a container, after it has been loaded from a file, after a module was unloaded, or after its link has been modified through the control property inspector or other tool.\rWhen some piece of code modifies the contents of an interactor, it is required to call "
+                    attr: 1
+                  - text: Dialog.Update
+                    attr: 4
+                  - text: " for this interactor. As a result, every currently visible control is notified (see section 2.9). In turn, the control compares its actual state with the interactor field to which it is linked. If the interactor field has changed, the control redraws itself accordingly. After all controls have updated themselves, the guards of "
+                    attr: 1
+                  - text: all
+                    attr: 4
+                  - text: " visible controls are evaluated. For this reason, guards should be efficient and not perform too much processing.\rGuards are also evaluated when the window hierarchy is changed, e.g., when a bottom window is brought to the top. This is necessary because many commands depend on the current focus or selection, which vanishes if another window comes to the top.\rMenus are another reason why a guard may be called. When the user clicks in a menu bar, all guards of this menu, or even the guards of the whole menu bar, are evaluated.\r\rUsually, a guard has the form\r\r\tPROCEDURE SomeGuard* (VAR par: Dialog.Par)\r\rAlternatively, the form\r\r\tPROCEDURE SomeGuard* (n: INTEGER; VAR par: Dialog.Par)\r\rmay be used, which allows to parameterize a single guard procedure for several related commands. For example, the commands to set a selection to the colors red, green or blue are the following:\r\r\tStdCmds.Color(00000FFH)\r\tStdCmds.Color(000FF00H)\r\tStdCmds.Color(0FF0000H)\r\rFor these commands, the following guards can be used:\r\r\tStdCmds.ColorGuard(00000FFH)\r\tStdCmds.ColorGuard(000FF00H)\r\tStdCmds.ColorGuard(0FF0000H)\r\rThe actual signature of "
+                    attr: 1
+                  - text: StdCmds.ColorGuard
+                    attr: 4
+                  - text: " is\r\r\tPROCEDURE ColorGuard (color: INTEGER; VAR par: Dialog.Par)\r\r\r"
+                    attr: 1
+                  - text: 4.5 Notifiers
+                    attr: 2
+                  - text: "\r\rA control guard sets up the temporary state of a control, such as whether it is disabled or not. It has no other effect. It doesn't modify any interactor state. It doesn't add any functionality. It only lets the control give feedback about the currently available functionality, or its lack thereof. A guard is evaluated ,e.g., when the user changes the state of a control interactively. It can be regarded as a merely \"cosmetic\" feature whose sole purpose is to increase user-friendliness.\rHowever, sometimes a user interaction should trigger more than the evaluation of guards only. In particular, it may sometimes be necessary to change some interactor state as a response to user interaction. For example, changing the selection in a selection box may cause the update of a corresponding counter, which counts the number of currently selected items in the selection box. Or some postprocessing of user input may be implemented, as we will see in the following example. It is an alternate implementation of our "
+                    attr: 1
+                  - text: ObxPhoneUI
+                    attr: 4
+                  - text: " example. Instead of having a "
+                    attr: 1
+                  - text: Lookup
+                    attr: 4
+                  - text: " button, this version just has two edit fields. After any character typed in, a database lookup is executed to test whether now a correct key is entered. Note that unsuccessful lookup in "
+                    attr: 1
+                  - text: ObxPhoneDB
+                    attr: 4
+                  - text: " results in returning an empty string.\r\rMODULE ObxPhoneUI1;\r\r\tIMPORT Dialog, ObxPhoneDB;\r\r\tVAR\r\t\t"
+                    attr: 1
+                  - text: phone
+                    attr: 2
+                  - text: "*: RECORD\r\t\t\tname*, number*: ObxPhoneDB.String\r\t\tEND;\r\r\tPROCEDURE "
+                    attr: 1
+                  - text: NameNotifier
+                    attr: 2
+                  - text: "* (op, from, to: INTEGER);\r\tBEGIN\r\t\tObxPhoneDB.LookupByName(phone.name, phone.number);\r\t\tDialog.Update(phone)\r\tEND NameNotifier;\r\r\tPROCEDURE "
+                    attr: 1
+                  - text: NumberNotifier
+                    attr: 2
+                  - text: "* (op, from, to: INTEGER);\r\tBEGIN\r\t\tObxPhoneDB.LookupByNumber(phone.number, phone.name);\r\t\tDialog.Update(phone)\r\tEND NumberNotifier;\r\rEND ObxPhoneUI1.\r\rListing 4-20. ObxPhoneUI1 with notifiers\r\rThese "
+                    attr: 1
+                  - text: notifiers
+                    attr: 4
+                  - text: " create dependencies between two fields of an interactor: a modification of one text field may lead to a modification of the other text field, i.e., a dependency between interactor fields is defined.\r\rNotifiers are called right after an interaction happens, but before the guards are evaluated. A notifier has the following form:\r\r\tPROCEDURE XyzNotifier* (op, from, to: INTEGER);\r\tBEGIN\r\t\t...\r\tEND XyzNotifier;\r\rA notifier's type is\r\r\tNotifierProc = PROCEDURE (op, from, to: INTEGER);\r\rFor simple notifiers, the parameters can be ignored. They give a more precise indication of what kind of modification actually took place. Which of the parameters are valid and what their meaning exactly is is defined separately for every kind of control. See the  next section for details.\r\r\r"
+                    attr: 1
+                  - text: 4.6 Standard controls
+                    attr: 2
+                  - text: "\r\rIn this section, the various controls that come standard with the BlackBox Component Builder are presented. For each control, a list of data types to which it may be linked is given, and the meaning of the notifier parameters is indicated.\rA control may have various properties, e.g., its label, or whether the label should be displayed in the normal system font or in a lighter, less flashy font. However, such cosmetic properties may not be implemented the same way on every platform, sometimes they may even be ignored.\r\rA label may specify a keyboard shortcut, which on some platforms is used to navigate between controls without using the mouse. The shortcut character is indicated by preceding it with a \"&\" sign. Two successive \"&\" signs indicate a normal \"&\", without interpreting the following character as shortcut. Only one shortcut per label is allowed. For example, \"Clear Text &Field\" defines \"F\" as a keyboard shortcut, while \"Find && &Replace\" defines \"R\" as keyboard shortcut. The same syntax for keyboard shortcuts is used in menu commands.\r\rThe label property of every control can be modified at run-time, by using a guard procedure as demonstrated in Listing 4-16. For controls without visible label, this has no visible effect.\r\rTwo of the most important control properties, the guard and notifier names, are optional. If there is no guard for the control, it will use its default states (enabled, read-write, defined). If there is no notifier for the control, none will be called.\rBlackBox attempts to minimize the number of different properties, in order to make it easier to use. This is consistent with the general trend, both under Windows and the Mac OS, towards globally controlled appearances. This means that a control should not define its colors, font, and so on individually. Instead, the user should be able to define a system-wide and consistent configuration of these properties.\r\rHowever, if for some special reason this is still deemed important, specific fonts can be assigned to controls, simply by selecting the control(s) and applying the commands of the "
+                    attr: 1
+                  - text: Font
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: Attributes
+                    attr: 4
+                  - text: " or "
+                    attr: 1
+                  - text: Characters
+                    attr: 4
+                  - text: " menus. If the default font is set, then the system preferences will be used. This is the normal case. Note that other font attributes, such as styles, weight, or size, may be restricted on certain platforms. For example, on Mac OS the font size is always 12 points.\r\rIn the following text, all standard controls of BlackBox are described in turn: command buttons, edit fields, check boxes, radio buttons, date fields, time fields, color fields, captions, groups, list boxes, selection boxes and combo boxes. For each control, its valid properties are given, the variable types to which it may be linked, and the meaning of the "
+                    attr: 1
+                  - text: op
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: from
+                    attr: 4
+                  - text: " and "
+                    attr: 1
+                  - text: to
+                    attr: 4
+                  - text: " parameters of the notifier.\r\rNote that there is no special control for currency values, you can use edit fields bound to variables of type "
+                    attr: 1
+                  - text: Dialog.Currency
+                    attr: 4
+                  - text: " instead.\r\rIn the following descriptions, some abbreviations are used:\r"
+                    attr: 1
+                  - text: pressed
+                    attr: 4
+                  - text: " stands for "
+                    attr: 1
+                  - text: Dialog.pressed
+                    attr: 4
+                  - text: "\r"
+                    attr: 1
+                  - text: released
+                    attr: 4
+                  - text: " stands for "
+                    attr: 1
+                  - text: Dialog.released
+                    attr: 4
+                  - text: "\r"
+                    attr: 1
+                  - text: changed
+                    attr: 4
+                  - text: " stands for "
+                    attr: 1
+                  - text: Dialog.changed
+                    attr: 4
+                  - text: "\r"
+                    attr: 1
+                  - text: included
+                    attr: 4
+                  - text: " stands for "
+                    attr: 1
+                  - text: Dialog.included
+                    attr: 4
+                  - text: "\r"
+                    attr: 1
+                  - text: excluded
+                    attr: 4
+                  - text: " stands for "
+                    attr: 1
+                  - text: Dialog.excluded
+                    attr: 4
+                  - text: "\r"
+                    attr: 1
+                  - text: undefined
+                    attr: 4
+                  - text: " means that the "
+                    attr: 1
+                  - text: from
+                    attr: 4
+                  - text: " or "
+                    attr: 1
+                  - text: to
+                    attr: 4
+                  - text: " parameter of a notifier has no defined value that can be relied upon\r"
+                    attr: 1
+                  - text: modifier
+                    attr: 4
+                  - text: " means a 0 for single-clicks and a 1 for double-clicks\r"
+                    attr: 1
+                  - text: link
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: label
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: guard
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: notifier
+                    attr: 4
+                  - text: ", and"
+                    attr: 1
+                  - text: " level"
+                    attr: 4
+                  - text: " stand for their respective control properties as defined in module "
+                    attr: 1
+                  - text: Controls
+                    attr: 4
+                  - text: ". There are up to five optional Boolean properties. Depending on the control, they are called differently, e.g. "
+                    attr: 1
+                  - text: default font
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: default
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: cancel
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: sorted
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: left
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: right
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: multiLine
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: password
+                    attr: 4
+                  - text: ".\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: Command Button
+                    attr: 2
+                  - text: "\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 39
+                      bodyPos: 585053
+                      bodyLen: 4829
+                    attr: 1
+                    w: 781005
+                    h: 285840
+                  - text: "\r\rFigure 4-21. Command button\r\rA command button is used to execute a parameterless Component Pascal command, or a whole command sequence. A button with the default property looks different than normal buttons; input of a carriage return corresponds to a mouse click in the default button. For a button with the cancel property, input of an escape character corresponds to a mouse click in it. A button should not be default and cancel button simultaneously. Note that the default and cancel properties are set and cleared individually per control, i.e., making one button a default button doesn't automatically make an existing default button a normal button again. There should be at most one default and at most one cancel button per dialog box.\rA cancel button or another button that should close the dialog box in which it is contained can use the command "
+                    attr: 1
+                  - text: StdCmds.CloseDialog
+                    attr: 4
+                  - text: ".\r\rproperties:\tlink, label, guard, notifier, font, default, cancel\rlinkable to:\tparameterless procedure, command sequence\rop:\tpressed, released\rfrom:\tundefined, modifier\rto:\tundefined\r\r"
+                    attr: 1
+                  - text: Text Field
+                    attr: 2
+                  - text: "\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 40
+                      bodyPos: 589942
+                      bodyLen: 6773
+                    attr: 1
+                    w: 1352520
+                    h: 304725
+                  - text: "\r\rFigure 4-22. Text field\r\rA text field displays the value of a global variable which may be a string, an integer, a floating-point number, or a variable of type "
+                    attr: 1
+                  - text: Dialog.Currency
+                    attr: 4
+                  - text: " or "
+                    attr: 1
+                  - text: Dialog.Combo
+                    attr: 4
+                  - text: ".  The value of the variable can be changed by editing the field.\rWhenever the contents of the linked interactor field is changed, the notifier is called. Key presses that do not change the interactor state, such as pressing arrow keys or entering leading zeroes in number fields, cause no notifier call. Changing the selection contained in the field causes no notification either.\rIf a modification occurs in a field that is linked to a string, real, currency, or combo variable, the notifier with "
+                    attr: 1
+                  - text: "(change, undefined, undefined)"
+                    attr: 4
+                  - text: " is called. If the field is linked to an integer value, the notifier with "
+                    attr: 1
+                  - text: "(change, oldvalue, newvalue)"
+                    attr: 4
+                  - text: " is called.\rIllegal characters, e.g., characters in a field linked to an integer, are not accepted.\rA text field may have a label, even though it doesn't display it. The reason for this is that keyboard shortcuts may be defined in labels, which is useful even for edit fields.\rIf the "
+                    attr: 1
+                  - text: level
+                    attr: 4
+                  - text: " property is 0 (the default), or the control is not linked to a number type, or it is linked to "
+                    attr: 1
+                  - text: Dialog.Currency
+                    attr: 4
+                  - text: ", then "
+                    attr: 1
+                  - text: level
+                    attr: 4
+                  - text: " has no effect. When linked to an integer variable the "
+                    attr: 1
+                  - text: level
+                    attr: 4
+                  - text: " defines the scale factor used for displaying the number, i.e., the displayed number is the linked value divided by 10"
+                    attr: 1
+                  - text: level
+                    attr: 6
+                  - text: ". For example, if the current value is 42 and level is 2, then 0.42 is displayed. For variable of real type, "
+                    attr: 1
+                  - text: level
+                    attr: 4
+                  - text: " indicates the format in the following way:\r\r"
+                    attr: 1
+                  - text: level
+                    attr: 4
+                  - text: " > 0: exponential format (scientific) with at least "
+                    attr: 1
+                  - text: level
+                    attr: 4
+                  - text: " digits in the exponent.\r"
+                    attr: 1
+                  - text: level
+                    attr: 4
+                  - text: " = 0: fixpoint or floatingpoint format, depending on "
+                    attr: 1
+                  - text: x
+                    attr: 4
+                  - text: ".\r"
+                    attr: 1
+                  - text: level
+                    attr: 4
+                  - text: " < 0: fixpoint format with "
+                    attr: 1
+                  - text: -level
+                    attr: 4
+                  - text: " digits after the decimal point.\r\rThe "
+                    attr: 1
+                  - text: left
+                    attr: 4
+                  - text: " and "
+                    attr: 1
+                  - text: right
+                    attr: 4
+                  - text: " properties define the adjustment mode of the field. The following combinations are possible:\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 1440000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r    left & ~right\tleft adjust\r    left &   right\tfully adjusted (may have no effect on some platforms)\r  ~left & ~right\tcentered\r  ~left &   right\tright adjust\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rThe default is "
+                    attr: 1
+                  - text: "left & ~right"
+                    attr: 4
+                  - text: " (left adjust).\rProperty "
+                    attr: 1
+                  - text: multiLine
+                    attr: 4
+                  - text: " defines whether a carriage return, with its resulting line break, may be accepted by the field, which then must be linked to a string variable.\rProperty "
+                    attr: 1
+                  - text: password
+                    attr: 4
+                  - text: " causes the text field to display only asterisks instead of the characters typed in. This makes it possible to use such a field for password entry.\r\rproperties:\tlink, label, guard, notifier, level, font, left, right, multiLine,\r\tpassword\rlinkable to:\tARRAY const OF CHAR,\r\tBYTE, SHORTINT, INTEGER, LONGINT, SHORTREAL, REAL,\r\tDialog.Currency, Dialog.Combo\rop:\tpressed, released, changed\rfrom:\tundefined, old value, modifier\rto:\tundefined, new value\r\r"
+                    attr: 1
+                  - text: Check Box
+                    attr: 2
+                  - text: "\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 46
+                      bodyPos: 597293
+                      bodyLen: 3909
+                    attr: 1
+                    w: 590565
+                    h: 257010
+                  - text: "\r\rFigure 4-23. Check box\r\rA check box displays the value of a global variable which may be a Boolean or an element of a set. Clicking on the control toggles its state.\rWhen the control's state is changed, the notifier with "
+                    attr: 1
+                  - text: "(changed, undefined, undefined)"
+                    attr: 4
+                  - text: " is called if the control is linked to a Boolean variable. If it is linked to an element of a set variable, "
+                    attr: 1
+                  - text: "(included, level, undefined)"
+                    attr: 4
+                  - text: " or "
+                    attr: 1
+                  - text: "(excluded, level, undefined)"
+                    attr: 4
+                  - text: " is called, depending on whether the bit is set or cleared. The value "
+                    attr: 1
+                  - text: level
+                    attr: 4
+                  - text: " corresponds to the element of the set to which the control is linked. It can be defined using the control property inspector. It may lie in the range 0..31.\rOnly the last and final state change of the control leads to a notifier call, possible intermediate state changes (by dragging the mouse outside of the control's bounding box or back inside) have no effect.\r\rproperties:\tlink, label, guard, notifier, font, level\rlinkable to:\tBOOLEAN, SET\rop:\tpressed, released, changed, included, excluded\rfrom:\tundefined, level value, modifier\rto:\tundefined\r\r"
+                    attr: 1
+                  - text: Radio Button
+                    attr: 2
+                  - text: "\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 47
+                      bodyPos: 601292
+                      bodyLen: 3557
+                    attr: 1
+                    w: 485640
+                    h: 228600
+                  - text: "\r\rFigure 4-24. Radio button\r\rA radio button is active at a particular value of a global integer or Boolean variable. Typically, several radio buttons are linked to the same variable. Each radio button is \"on\" at another value, which is defined by the level property; i.e., the button is \"on\" if its level value is equal to the value of the variable it is linked to. For Boolean types, \"on\" corresponds to "
+                    attr: 1
+                  - text: "TRUE"
+                    attr: 4
+                  - text: " and \"off\" corresponds to "
+                    attr: 1
+                  - text: "FALSE"
+                    attr: 4
+                  - text: ".\rOnly the last and final state change of the control leads to  a notifier call, possible intermediate state changes (by dragging the mouse outside of the control's bounding box or back inside) have no effect.\r\rproperties:\tlink, label, guard, notifier, font, level\rlinkable to:\tBYTE, SHORTINT, INTEGER, LONGINT, BOOLEAN\rop:\tpressed, released, changed\rfrom:\tundefined, old value, modifier\rto:\tundefined, new value = level value\r\r"
+                    attr: 1
+                  - text: Date Field
+                    attr: 2
+                  - text: "\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 48
+                      bodyPos: 604919
+                      bodyLen: 5873
+                    attr: 1
+                    w: 1028880
+                    h: 323805
+                  - text: "\r\rFigure 4-25. Date field\r\rA date field displays the date specified in a global variable of type "
+                    attr: 1
+                  - text: Dates.Date
+                    attr: 4
+                  - text: ".\rWhenever the contents of the linked interactor field is changed, the notifier is called with "
+                    attr: 1
+                  - text: "(change, undefined, undefined)"
+                    attr: 4
+                  - text: ". Key presses that do not change the interactor state, such as pressing left/right arrow keys, cause no notifier call. The up/down arrow keys change the date. Changing the selection in the field has no effect.\rIllegal date values cannot be entered.\r\rproperties:\tlink, label, guard, notifier, font\rlinkable to:\tDates.Date\rop:\tpressed, released, changed\rfrom:\tundefined, modifier\rto:\tundefined\r\r"
+                    attr: 1
+                  - text: Time Field
+                    attr: 2
+                  - text: "\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 49
+                      bodyPos: 610862
+                      bodyLen: 6149
+                    attr: 1
+                    w: 1114560
+                    h: 304920
+                  - text: "\r\rFigure 4-26. Time field\r\rA time field displays the time specified in a global variable of type "
+                    attr: 1
+                  - text: Dates.Time
+                    attr: 4
+                  - text: ".\rWhenever the contents of the linked interactor field is changed, the notifier is called with "
+                    attr: 1
+                  - text: "(change, undefined, undefined)"
+                    attr: 4
+                  - text: ". Key presses that do not change the interactor state, such as pressing left/right arrow keys, cause no notifier call. The up/down arrow keys change the time. Changing the selection in the field has no effect.\rIllegal time values cannot be entered.\r\rproperties:\tlink, label, guard, notifier, font\rlinkable to:\tDates.Time\rop:\tpressed, released, changed\rfrom:\tundefined, modifier\rto:\tundefined\r\r"
+                    attr: 1
+                  - text: Color Field
+                    attr: 2
+                  - text: "\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 50
+                      bodyPos: 617081
+                      bodyLen: 4621
+                    attr: 1
+                    w: 628560
+                    h: 324000
+                  - text: "\r\rFigure 4-27. Color field\r\rA color field displays a color. It can be linked to variables of type "
+                    attr: 1
+                  - text: INTEGER
+                    attr: 4
+                  - text: " or "
+                    attr: 1
+                  - text: Dialog.Color
+                    attr: 4
+                  - text: ". "
+                    attr: 1
+                  - text: Ports.Color
+                    attr: 4
+                  - text: " is an alias of "
+                    attr: 1
+                  - text: INTEGER
+                    attr: 4
+                  - text: " and thus can be used also.\rWhenever another color is selected, the notifier is called with "
+                    attr: 1
+                  - text: "(change, oldval, newval)"
+                    attr: 4
+                  - text: ". The old and new values are integer values; for "
+                    attr: 1
+                  - text: Dialog.Color
+                    attr: 4
+                  - text: " type variables the "
+                    attr: 1
+                  - text: val
+                    attr: 4
+                  - text: " field's value is taken.\r\rproperties:\tlink, label, guard, notifier, font\rlinkable to:\tDialog.Color, Ports.Color = INTEGER\rop:\tpressed, released, changed\rfrom:\tundefined, old value, modifier\rto:\tundefined, new value\r\r"
+                    attr: 1
+                  - text: Up/Down Field
+                    attr: 2
+                  - text: "\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 51
+                      bodyPos: 621822
+                      bodyLen: 5125
+                    attr: 1
+                    w: 828720
+                    h: 304920
+                  - text: "\r\rFigure 4-28. Up/down field\r\rThis is a field linked to an integer variable. The value can also be changed through arrow keys.\rWhenever the contents of the linked interactor field is changed, the notifier is called with "
+                    attr: 1
+                  - text: "(change, oldvalue, newvalue)"
+                    attr: 4
+                  - text: ".\r\rproperties:\tlink, label, guard, notifier, font\rlinkable to:\tBYTE, SHORTINT, INTEGER, LONGINT\rop:\tpressed, released\rfrom:\tundefined, old value, modifier\rto:\tundefined, new value\r\r"
+                    attr: 1
+                  - text: Caption
+                    attr: 2
+                  - text: "\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 52
+                      bodyPos: 627007
+                      bodyLen: 3933
+                    attr: 1
+                    w: 533520
+                    h: 285645
+                  - text: "\r\rFigure 4-29. Caption\r\rA caption is typically used in conjunction with a text field, to indicate the nature of its contents. A caption is passive, i.e., it cannot be edited and thus cannot have a notifier.\rA caption is linkable to the same types as a text field is, and it may have a guard. This is useful since  depending on the platform  a caption may have a distinct visual appearance if it (or rather its corresponding text field) is disabled, read-only, etc. This means that a caption may be disabled along with its corresponding text field, by linking both to the same interactor field. A caption's guard may modify the control's label, as is true for all controls with a visible label.\r\rproperties:\tlink, label, guard, font, right, left\rlinkable to:\tARRAY const OF CHAR,\r\tBYTE, SHORTINT, INTEGER, LONGINT, SHORTREAL, REAL,\r\tDialog.Currency, Dialog.Combo\r\rThe "
+                    attr: 1
+                  - text: left
+                    attr: 4
+                  - text: " and "
+                    attr: 1
+                  - text: right
+                    attr: 4
+                  - text: " properties define the adjustment mode of the caption. The following combinations are possible:\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 1440000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r    left & ~right\tleft adjust\r    left &   right\tfully adjusted (may have no effect on some platforms)\r  ~left & ~right\tcentered\r  ~left &   right\tright adjust\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rThe default is "
+                    attr: 1
+                  - text: "left & ~right"
+                    attr: 4
+                  - text: " (left adjust).\r\r"
+                    attr: 1
+                  - text: Group
+                    attr: 2
+                  - text: "\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 57
+                      bodyPos: 631286
+                      bodyLen: 8693
+                    attr: 1
+                    w: 1066680
+                    h: 542880
+                  - text: "\r\rFigure 4-30. Group\r\rA group is used to visually group related controls, e.g., radio buttons that belong together. A group is passive, i.e., it cannot be edited and thus cannot have a notifier.\rA group may not be linked, but it may have a guard which allows to disable or enable it. A group's guard may modify the control's label, as is true for all controls with a visible label.\r\rproperties:\tlabel, guard, font\r\r"
+                    attr: 1
+                  - text: List Box
+                    attr: 2
+                  - text: "\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 58
+                      bodyPos: 640029
+                      bodyLen: 13229
+                    attr: 1
+                    w: 1143000
+                    h: 866880
+                  - text: "\r\rFigure 4-31. List box (expanded and collapsed shapes)\r\rA list box allows to select one value out of a list of choices. It is linked to a variable of type "
+                    attr: 1
+                  - text: Dialog.List
+                    attr: 4
+                  - text: " (see next section). If the height of the list box is large enough, a scrollable list is displayed. If it is not large enough, the box collapses into a pop-up menu.\rInteractively, the selection can be changed. It is either empty or it consists of one selected item. When the user modifies the selection, the notifier is called with "
+                    attr: 1
+                  - text: "(changed, oldvalue, newvalue)"
+                    attr: 4
+                  - text: ". The old/new value corresponds to the selected item's index. The top-most item corresponds to value 0, the next one below to value 1, etc. The empty selection corresponds to value -1.\rThe "
+                    attr: 1
+                  - text: sorted
+                    attr: 4
+                  - text: " property determines whether the string items will be sorted lexically (no effect on Mac OS).\r\r\rproperties:\tlink, label, guard, notifier, font, sorted\rlinkable to:\tDialog.List\rop:\tpressed, released, changed\rfrom:\tundefined, old value, modifier\rto:\tundefined, new value\r\r"
+                    attr: 1
+                  - text: Selection Box
+                    attr: 2
+                  - text: "\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 59
+                      bodyPos: 653338
+                      bodyLen: 13189
+                    attr: 1
+                    w: 1209600
+                    h: 809640
+                  - text: "\r\rFigure 4-32. Selection box\r\rA selection box allows to select a subset out of a set of choices. It is linked to a variable of type "
+                    attr: 1
+                  - text: Dialog.Selection
+                    attr: 4
+                  - text: " (see next section).\rInteractively, the selection can be changed. Each item may be selected individually. When the user modifies the selection, the notifier is called in one of three ways:\r"
+                    attr: 1
+                  - text: "(included, from, to)"
+                    attr: 4
+                  - text: ": range "
+                    attr: 1
+                  - text: from..to
+                    attr: 4
+                  - text: " is now selected; it wasn't selected before\r"
+                    attr: 1
+                  - text: "(excluded, from, to)"
+                    attr: 4
+                  - text: ": range "
+                    attr: 1
+                  - text: from..to
+                    attr: 4
+                  - text: " is not selected now; it was selected before\r"
+                    attr: 1
+                  - text: "(set, from, to)"
+                    attr: 4
+                  - text: ": range "
+                    attr: 1
+                  - text: from..to
+                    attr: 4
+                  - text: " is now selected; any previous selection was cleared before\rThe three codes "
+                    attr: 1
+                  - text: included
+                    attr: 4
+                  - text: " and "
+                    attr: 1
+                  - text: excluded
+                    attr: 4
+                  - text: " and "
+                    attr: 1
+                  - text: set
+                    attr: 4
+                  - text: " take the place of "
+                    attr: 1
+                  - text: changed
+                    attr: 4
+                  - text: " used for most other controls. The notifier is called as often as necessary to include and/or exclude all necessary ranges of items.\rThe from/to value corresponds to the selected item's index. The topmost item corresponds to value 0, the next one below to value 1, and so on.\rThe "
+                    attr: 1
+                  - text: sorted
+                    attr: 4
+                  - text: " property determines whether the string items will be sorted lexically (no effect on Mac OS).\r\rproperties:\tlink, label, guard, notifier, font, sorted\rlinkable to:\tDialog.Selection\rop:\tpressed, released, included, excluded, set\rfrom:\tundefined, lowest element of range, modifier\rto:\tundefined, highest element of range\r\r"
+                    attr: 1
+                  - text: Combo Box
+                    attr: 2
+                  - text: "\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 60
+                      bodyPos: 666697
+                      bodyLen: 11773
+                    attr: 1
+                    w: 990720
+                    h: 866880
+                  - text: "\r\rFigure 4-33. Combo box\r\rA combo box is a text field whose contents can also be set via a pop-up menu. Unlike pure pop-up menus/selection boxes, a value may be entered which does not occur in the pop-up menu. The control is linked to a variable of type "
+                    attr: 1
+                  - text: Dialog.Combo
+                    attr: 4
+                  - text: " (see next section).\rWhen the contents of the combo is changed, the notifier is called with "
+                    attr: 1
+                  - text: "(changed, undefined, undefined)"
+                    attr: 4
+                  - text: ".\rThe "
+                    attr: 1
+                  - text: sorted
+                    attr: 4
+                  - text: " property determines whether the string items will be sorted lexically (no effect on Mac OS).\r\rproperties:\tlink, label, guard, notifier, font, sorted\rlinkable to:\tDialog.Combo\rop:\tpressed, released, changed\rfrom:\tundefined, modifier\rto:\tundefined\r\rEach interactive control (i.e., not a caption or a group) calls its notifier  if there is one  when the user first clicks in the control with parameter "
+                    attr: 1
+                  - text: op = Dialog.pressed
+                    attr: 4
+                  - text: ", and later with "
+                    attr: 1
+                  - text: op = Dialog.released
+                    attr: 4
+                  - text: " when the mouse button is released again. This feature is used mostly to display some string in the dialog box window's status area. This is done with the calls "
+                    attr: 1
+                  - text: Dialog.ShowStatus
+                    attr: 4
+                  - text: " or "
+                    attr: 1
+                  - text: Dialog.ShowParamStatus
+                    attr: 4
+                  - text: ". For example, the following notifier indicates a command button's function to the user:\r\r  PROCEDURE ButtonNotifier* (op, from, to: LONGINT);\r  BEGIN\r    IF op = Dialog.pressed THEN\r      Dialog.ShowStatus(\"This button causes the disk to spin down\")\r    ELSIF op = Dialog.released THEN\r      Dialog.ShowStatus(\"\")\t"
+                    attr: 1
+                  - text: "(* clear the status message again *)"
+                    attr: 4
+                  - text: "\r    END\r  END ButtonNotifier;\r\rListing 4-34. Notifier displaying status messages\r\rOn some platforms, e.g., on Mac OS, there is no status area and the above code has no effect.\rSometimes it is useful to detect double-clicks, e.g., a double-click in a list box may select the item and invoke the default button. A double-click can be detected in a notifier with the test\r\r  IF (op = Dialog.pressed) & (from = 1) THEN ...\t"
+                    attr: 1
+                  - text: "(* double-click *)"
+                    attr: 4
+                  - text: "\r\rFor the above-mentioned case, where the reaction on a double-click should merely be the invocation of the default button, a suitable standard notifier is available:\r\r  StdCmds.DefaultOnDoubleClick\r\rWe have seen earlier that the BlackBox Component Builder provides a string mapping facility which maps keys to actual strings, by using resource files. This feature is also supported by "
+                    attr: 1
+                  - text: Dialog.ShowStatus
+                    attr: 4
+                  - text: ". In fact, string mapping even allows to use place holders. For example, calling\r\r  Dialog.ShowParamStatus(\"This ^0 causes the ^1 to ^2\", control, object, verb)\r\rallows to supply different strings for the place holders ^0, ^1 and ^2. The strings actually used are the three additional parameters "
+                    attr: 1
+                  - text: "control, object"
+                    attr: 4
+                  - text: " and "
+                    attr: 1
+                  - text: verb
+                    attr: 4
+                  - text: ". Note that these strings are mapped themselves before being spliced into the first string. String mapping is a feature that you can use explicitly by calling the procedure "
+                    attr: 1
+                  - text: Dialog.MapParamString
+                    attr: 4
+                  - text: ".\r\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: 4.7 Complex controls and interactors
+                    attr: 2
+                  - text: "\r\rA list box has two kinds of contents: the string items which make up the list, and the current selection. Typically, the item list is more persistent than the selection, but it too may be changed while the control is being used. For list and selection boxes, the application is not so much interested in the item list, since this list is only a hint for the user. The application is interested in the selection that the user creates. For a list box, the selection is defined by the index of the selected item. For a selection box, the selection is defined by the set of indices of selected items. For combo boxes, the relevant state is not a selection, but the string that was entered.\rFor all three box controls, the item list must be built up somehow. For this purpose, module "
+                    attr: 1
+                  - text: Dialog
+                    attr: 4
+                  - text: " defines suitable interactor types: "
+                    attr: 1
+                  - text: Dialog.List
+                    attr: 4
+                  - text: " for list boxes, "
+                    attr: 1
+                  - text: Dialog.Selection
+                    attr: 4
+                  - text: " for selection boxes, and "
+                    attr: 1
+                  - text: Dialog.Combo
+                    attr: 4
+                  - text: " for combo boxes. These types are defined the following way:\r\r\tList = RECORD\r\t\tindex: INTEGER;\t"
+                    attr: 1
+                  - text: "(* index of currently selected item *)"
+                    attr: 4
+                  - text: "\r\t\tlen-: INTEGER;\t"
+                    attr: 1
+                  - text: "(* number of list elements *)"
+                    attr: 4
+                  - text: "\r\t\tPROCEDURE (VAR l: List) SetLen (len: INTEGER), NEW;\r\t\tPROCEDURE (VAR l: List) SetItem (index: INTEGER; IN item: ARRAY OF CHAR), NEW;\r\t\tPROCEDURE (VAR l: List) GetItem (index: INTEGER; OUT item: String), NEW;\r\t\tPROCEDURE (VAR l: List) SetResources (IN key: ARRAY OF CHAR), NEW\r\tEND;\r\r\tSelection = RECORD\r\t\tlen-: INTEGER;\t"
+                    attr: 1
+                  - text: "(* number of selection elements *)"
+                    attr: 4
+                  - text: "\r\t\tPROCEDURE (VAR s: Selection) SetLen (len: INTEGER), NEW;\r\t\tPROCEDURE (VAR s: Selection) SetItem (index: INTEGER; IN item: ARRAY OF CHAR), NEW;\r\t\tPROCEDURE (VAR s: Selection) GetItem (index: INTEGER; OUT item: String), NEW;\r\t\tPROCEDURE (VAR s: Selection) SetResources (IN key: ARRAY OF CHAR), NEW;\r\t\tPROCEDURE (VAR s: Selection) Incl (from, to: INTEGER), NEW;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t"
+                    attr: 1
+                  - text: "(* select range [from..to] *)"
+                    attr: 4
+                  - text: "\r\t\tPROCEDURE (VAR s: Selection) Excl (from, to: INTEGER), NEW;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t"
+                    attr: 1
+                  - text: "(* deselect range [from..to] *)"
+                    attr: 4
+                  - text: "\r\t\tPROCEDURE (VAR s: Selection) In (index: INTEGER): BOOLEAN, NEW\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t"
+                    attr: 1
+                  - text: "(* test whether index-th item is selected *)"
+                    attr: 4
+                  - text: "\r\tEND;\r\r\tCombo = RECORD\r\t\titem: String;\t"
+                    attr: 1
+                  - text: "(* currently entered or selected string *)"
+                    attr: 4
+                  - text: "\r\t\tlen-: INTEGER;\t"
+                    attr: 1
+                  - text: "(* number of combo elements *)"
+                    attr: 4
+                  - text: "\r\t\tPROCEDURE (VAR c: Combo) SetLen (len: INTEGER), NEW;\r\t\tPROCEDURE (VAR c: Combo) SetItem (index: INTEGER; IN item: ARRAY OF CHAR), NEW;\r\t\tPROCEDURE (VAR c: Combo) GetItem (index: INTEGER; OUT item: String), NEW;\r\t\tPROCEDURE (VAR c: Combo) SetResources (IN key: ARRAY OF CHAR), NEW\r\tEND;\r\rListing 4-35. Definitions of List, Selection and Combo\r\rBefore a variable of one of these types can be used, it must be initialized by first defining the individual items. During use, items can be changed. For example, the following code fragment builds up a list:\r\r\tlist.SetLen(5);\t"
+                    attr: 1
+                  - text: "(* define length of list *)"
+                    attr: 4
+                  - text: "\r\tlist.SetItem(0, \"Daffy Duck\");\r\tlist.SetItem(1, \"Wile E. Coyote\");\r\tlist.SetItem(2, \"Scrooge Mc Duck\");\r\tlist.SetItem(3, \"Huey Lewis\");\r\tlist.SetItem(4, \"Thomas Dewey\");\r\tDialog.UpdateList(list);\t"
+                    attr: 1
+                  - text: "(* must be called after any change(s) to the item list *)"
+                    attr: 4
+                  - text: "\r\rListing 4-36. Setting up a list explicitly\r\rWhen used with list-structured controls (list, selection, or combo boxes), "
+                    attr: 1
+                  - text: Dialog.Update
+                    attr: 4
+                  - text: " only updates the selection or text entry state of these controls, but not the list structure. If the list structure, i.e., the elements of the control's list, is changed, then the procedure "
+                    attr: 1
+                  - text: Dialog.UpdateList
+                    attr: 4
+                  - text: " must be called instead of "
+                    attr: 1
+                  - text: Dialog.Update
+                    attr: 4
+                  - text: ".\r\rFor fixed item lists, the individual strings should be stored in resources. This is simplified by the "
+                    attr: 1
+                  - text: SetResources
+                    attr: 4
+                  - text: " procedures. They look up the strings in a resource file. For example, the above statements can be replaced completely by the statement\r\r\tlist.SetResources(\"#Obx:list\")\r\rwhich will read the Obx/Rsrc/Strings file and look for strings with keys of the kind \"list[index]\", e.g., for\r\r\tlist[0]\tDaffy Duck\r\tlist[1]\tWile E. Coyote\r\tlist[2]\tScrooge Mc Duck\r\tlist[3]\tHuey Lewis\r\tlist[4]\tThomas Dewey\r\rTable 4-37. Resources for a list\r\rThe indices must start from 0 and be consecutive (no holes allowed).\rProcedure "
+                    attr: 1
+                  - text: SetLen
+                    attr: 4
+                  - text: " is optional. Its use is recommended wherever the number of list items is known in advance. If this is not the case, it may be omitted. The list will become as large as the largest index requires.\r"
+                    attr: 1
+                  - text: SetLen
+                    attr: 4
+                  - text: " is necessary if an existing item list should be shortened, or if it should be cleared completely.\r\r\r"
+                    attr: 1
+                  - text: 4.8 Input validation
+                    attr: 2
+                  - text: "\r\rValidity checks are an important, and for the uninitiated sometimes a surprising, aspect of non-modal user interfaces. Among other things, non-modality also means that the user must not be forced into a mode depending on where the caret currently is and whether or not the entered data is currently valid. In particular, a user must not be forced to correctly enter some data into a field before permitting him or her to do something else.\rThis basically leaves two strategies for checking the validity of entered data: early or late. Early checks are performed whenever the user has manipulated a control. Late checks are performed when the user has completed input and wants to perform some action, e.g., entering the new data into a database.\rLate checks are most suitable for checking global invariants, e.g., whether all necessary fields in the input mask contain some input. Early checks are most suitable for local, control-specific invariants, e.g., the correct syntax of an entered string.\r\rWe give examples of both early and late checks for our module "
+                    attr: 1
+                  - text: ObxPhoneUI
+                    attr: 4
+                  - text: ". Let us assume that a phone number always has the following form: 310-555-1212. For a late check, we extend the "
+                    attr: 1
+                  - text: Lookup
+                    attr: 4
+                  - text: " procedure (boldface text) and add a few auxiliary procedures. Note the use of the \"$\" operator, which makes sure the "
+                    attr: 1
+                  - text: LEN
+                    attr: 4
+                  - text: " function returns the length of the string, not of the array containing the string.\r\r\tPROCEDURE Valid (IN s: ARRAY OF CHAR): BOOLEAN;\r\r\t\tPROCEDURE Digits (IN s: ARRAY OF CHAR; from, to: INTEGER): BOOLEAN;\r\t\tBEGIN\t"
+                    attr: 1
+                  - text: "(* check whether range [from..to] in s consists of digits only *)"
+                    attr: 4
+                  - text: "\r\t\t\tWHILE (from <= to) & (s[from] >= \"0\") & (s[from] <= \"9\") DO INC(from) END;\r\t\t\tRETURN from > to\t"
+                    attr: 1
+                  - text: "(* no non-digit found in checked range *)"
+                    attr: 4
+                  - text: "\r\t\tEND Digits;\r\r\tBEGIN\t"
+                    attr: 1
+                  - text: "(* check syntax of phone number *)"
+                    attr: 4
+                  - text: "\r\t\tRETURN (LEN(s$) = 12) & Digits(s, 0, 2) & (s[3] = \"-\") & Digits(s, 4, 6) &\r\t\t\t\t\t\t\t(s[7] = \"-\") & Digits(s, 8, 11)\r\tEND Valid;\r\r\tPROCEDURE ShowErrorMessage;\r\tBEGIN\r\t\tphone.name := \"illegal syntax of number\"\r\tEND ShowErrorMessage;\r\r\tPROCEDURE Lookup*;\r\tBEGIN\r\t\tIF phone.lookupByName THEN\r\t\t\tObxPhoneDB.LookupByName(phone.name, phone.number);\r\t\t\tIF phone.number = \"\" THEN phone.number := \"not found\" END\r\t\tELSE\r\t\t\t"
+                    attr: 1
+                  - text: "IF Valid(phone.number) THEN\r"
+                    attr: 2
+                  - text: "\t\t\t\tObxPhoneDB.LookupByNumber(phone.number, phone.name);\r\t\t\t\tIF phone.name = \"\" THEN phone.name := \"not found\" END\r"
+                    attr: 1
+                  - text: "\t\t\tELSE"
+                    attr: 2
+                  - text: "\r"
+                    attr: 1
+                  - text: "\t\t\t\tShowErrorMessage\r"
+                    attr: 2
+                  - text: "\t\t\t"
+                    attr: 1
+                  - text: END
+                    attr: 2
+                  - text: "\r\t\tEND;\r\t\tDialog.Update(phone)\r\tEND Lookup;\r\rListing 4-38. Late check for input validation\r\rA more rude reminder would be to display an error message. If the BlackBox Component Builder's log window is open, the message is written to the log and the window is brought to the top if necessary. If no log is used, a dialog box is displayed. This behavior can be achieved by replacing the statement in procedure "
+                    attr: 1
+                  - text: ShowErrorMessage
+                    attr: 4
+                  - text: " by the following statement:\r\r\tDialog.ShowMsg(\"Please correct the phone number\")\r\rNow we look at an early checked alternative to the above solution to input checking. It uses a notifier to check after each character typed into the phone number field whether the number is legal so far. In contrast to the late check, it must be able to deal with partially entered phone numbers. Whenever an illegal suffix is detected, the string is simply clipped to the legal prefix.\r\r\tPROCEDURE Correct (VAR s: ObxPhoneDB.String);\r\r\t\tPROCEDURE CheckMinus (VAR s: ObxPhoneDB.String; at: INTEGER);\r\t\tBEGIN\r\t\t\tIF s[at] # \"-\" THEN s[at] := 0X END\t"
+                    attr: 1
+                  - text: "(* clip string *)"
+                    attr: 4
+                  - text: "\r\t\tEND CheckMinus;\r\r\t\tPROCEDURE CheckDigits (VAR s: ARRAY OF CHAR; from, to: INTEGER);\r\t\tBEGIN\r\t\t\tWHILE from <= to DO\r\t\t\t\tIF (s[from] < \"0\") OR (s[from] > \"9\") THEN\r\t\t\t\t\ts[from] := 0X; from := to\t"
+                    attr: 1
+                  - text: "(* clip string and terminate loop *)"
+                    attr: 4
+                  - text: "\r\t\t\t\tEND;\r\t\t\t\tINC(from)\r\t\t\tEND\r\t\tEND CheckDigits;\r\r\tBEGIN\t"
+                    attr: 1
+                  - text: "(* clip string to a legal prefix if necessary *)"
+                    attr: 4
+                  - text: "\r\t\tCheckDigits(s, 0, 2);\r\t\tCheckMinus(s, 3);\r\t\tCheckDigits(s, 4, 6);\r\t\tCheckMinus(s, 7);\r\t\tCheckDigits(s, 8, 11)\r\tEND Correct;\r\r\tPROCEDURE NumberNotifier (op, from, to: INTEGER);\r\tBEGIN\r\t\tCorrect(phone.number)\r\t\t"
+                    attr: 1
+                  - text: "(* "
+                    attr: 4
+                  - text: Dialog.Update
+                    attr: 1
+                  - text: " is not called, because it will be called afterwards by the notifying control *)"
+                    attr: 4
+                  - text: "\r\tEND NumberNotifier;\r\rListing 4-39. Early check for input validation\r\rNote that a focused view, e.g. a control, has no means to prevent the user from focusing another view. A view may merely change the way that it displays itself, its contents, or its marks (selection, caret). For this purpose, a view receives a "
+                    attr: 1
+                  - text: Controllers.MarkMsg
+                    attr: 4
+                  - text: " when the focus changes.\r\r\r"
+                    attr: 1
+                  - text: 4.9 Accessing controls explicitly
+                    attr: 2
+                  - text: "\r\rIn most circumstances, guards and notifiers allow sufficient control over a control's specific look & feel. However, sometimes you may want to exercise direct control over a control in a form. How to do this is described in this section. For example, assume that you want to write your own special alignment command, and add it to the commands of the "
+                    attr: 1
+                  - text: Layout
+                    attr: 4
+                  - text: " menu. To do this, you need to get access to the form view in the window that is currently being edited. The form view is a container that contains the controls that you want to manipulate. The function "
+                    attr: 1
+                  - text: FormControllers.Focus
+                    attr: 4
+                  - text: " delivers a handle on the currently focused form editor. This leads to the typical code pattern for accessing a form (Listing 4-40):\r\r\t\tVAR c: FormControllers.Controller;\r\tBEGIN\r\t\tc := FormControllers.Focus();\r\t\tIF c # NIL THEN\r\t\t\t...\r\rListing 4-40. Accessing a form's controller\r\rA form contains controls and possibly some other types of views. The views can be edited if the enclosing form view is in layout mode. Typically, some views are selected first, and then a command is executed that operates on the selected views. The following example shifts every selected view to the right by one centimeter (Listing 4-41):\r\rMODULE ObxControlShifter;\r\r\tIMPORT Ports, Views, FormModels, FormControllers;\r\r\tPROCEDURE "
+                    attr: 1
+                  - text: Shift
+                    attr: 2
+                  - text: "*;\r\t\tVAR c: FormControllers.Controller; sel: FormControllers.List;\r\tBEGIN\r\t\tc := FormControllers.Focus();\r\t\tIF (c # NIL) & c.HasSelection() THEN\r\t\t\tsel := c.GetSelection();\t"
+                    attr: 1
+                  - text: "(* generates a list with references to the selected views *)"
+                    attr: 4
+                  - text: "\r\t\t\tWHILE sel # NIL DO\r\t\t\t\tc.form.Move(sel.view, 10 * Ports.mm, 0);\t"
+                    attr: 1
+                  - text: "(* move to the right *)"
+                    attr: 4
+                  - text: "\r\t\t\t\tsel := sel.next\r\t\t\tEND\r\t\tEND\r\tEND Shift;\r\rEND ObxControlShifter.\r\rListing 4-41. Shift all selected views to the right\r\rThis code works on selected views (whether they are controls or not). Sometimes you may want to manipulate views that are not selected. In this case, you need a form reader ("
+                    attr: 1
+                  - text: FormModels.Reader
+                    attr: 4
+                  - text: ") to iterate over the views in the currently focused form. The following code pattern shows how a command can iterate over the views of a form (Listing 4-42):\r\r\t\tVAR c: FormControllers.Controller; rd: FormModels.Reader;\r\tBEGIN\r\t\tc := FormControllers.Focus();\r\t\tIF c # NIL THEN\r\t\t\trd := c.form.NewReader(NIL);\r\t\t\trd.ReadView(v);\t"
+                    attr: 1
+                  - text: "(* read first view *)"
+                    attr: 4
+                  - text: "\r\t\t\tWHILE v # NIL DO\r\t\t\t\t...\r\t\t\t\trd.ReadView(v)\t"
+                    attr: 1
+                  - text: "(* read next view *)"
+                    attr: 4
+                  - text: "\r\t\t\tEND;\r\t\t\t...\r\rListing 4-42. Iterating over the selected views in a form\r\rControls are special views (of type "
+                    attr: 1
+                  - text: Controls.Control
+                    attr: 4
+                  - text: "). Controls can be linked to global variables. The following example shows how the labels of all controls in a form can be listed (Listing 4-43):\r\rMODULE ObxLabelLister;\r\r\tIMPORT Views, Controls, FormModels, FormControllers, StdLog;\r\r\tPROCEDURE "
+                    attr: 1
+                  - text: List
+                    attr: 2
+                  - text: "*;\r\t\tVAR c: FormControllers.Controller; rd: FormModels.Reader; v: Views.View;\r\tBEGIN\r\t\tc := FormControllers.Focus();\r\t\tIF c # NIL THEN\r\t\t\trd := c.form.NewReader(NIL);\r\t\t\trd.ReadView(v);\t"
+                    attr: 1
+                  - text: "(* read first view *)"
+                    attr: 4
+                  - text: "\r\t\t\tWHILE v # NIL DO\r\t\t\t\tIF v IS Controls.Control THEN\r\t\t\t\t\tStdLog.String(v(Controls.Control).label); StdLog.Ln\r\t\t\t\tEND;\r\t\t\t\trd.ReadView(v)\t"
+                    attr: 1
+                  - text: "(* read next view *)"
+                    attr: 4
+                  - text: "\r\t\t\tEND\r\t\tEND\r\tEND List;\r\rEND ObxLabelLister.\r\rListing 4-43. Listing the labels of all controls in a form\r\rWith the same kind of iteration, any other type of view could be found in forms as well, not only controls. For example, consider that you have a form with a \"Clear\" command button that causes a plotter view in the same form to be cleared. The command button is a standard control, the plotter view is your special view type. The command associated with the command button first needs to search for its plotter view, in the same form where the button is placed. The code pattern shown below demonstrates how such a command can be implemented (Listing 4-44):\r\r\t\tVAR c: FormControllers.Controller; rd: FormModels.Reader; v: Views.View;\r\tBEGIN\r\t\tc := FormControllers.Focus();\r\t\tIF c # NIL THEN\r\t\t\trd := c.form.NewReader(NIL);\r\t\t\trd.ReadView(v);\t"
+                    attr: 1
+                  - text: "(* read first view *)"
+                    attr: 4
+                  - text: "\r\t\t\tWHILE v # NIL DO\r\t\t\t\tIF v IS MyPlotterView THEN\r\t\t\t\t\t"
+                    attr: 1
+                  - text: "(* clear v(MyPlotterView) *)"
+                    attr: 4
+                  - text: "\r\t\t\t\tEND;\r\t\t\t\trd.ReadView(v)\t"
+                    attr: 1
+                  - text: "(* read next view *)"
+                    attr: 4
+                  - text: "\r\t\t\tEND\r\t\tEND\r\rListing 4-44. Finding a particular view in a form\r\rThere is one potential problem with the above code pattern. Let us assume that we have a dialog box containing a command button with "
+                    attr: 1
+                  - text: ObxLabelLister.List
+                    attr: 4
+                  - text: " as associated command. Beneath the dialog box, we have a window with a focused form layout. Now, if you click on the dialog box' command button, which labels are listed? The ones in the form of the dialog box itself, or the ones in the focused form layout underneath? In other words: does "
+                    attr: 1
+                  - text: FormControllers.Focus
+                    attr: 4
+                  - text: " yield the form that contains the button you clicked on, or the form focused for editing? Depending on what the button's command does, both versions could make sense. For a form editing command like "
+                    attr: 1
+                  - text: ObxControlShifter.Shift
+                    attr: 4
+                  - text: ", the focused layout editor should be returned. This is the top-most document window, but it is overlaid by the dialog box window. In contrast, if you want to find your plotter view, the form of the dialog box should be returned instead. In this case, you want to search the direct \"neighborhood\" of the button.\r\rOne solution for the plotter view search would be to start searching in the context of the button that is currently being pressed. This can be done using the following code pattern (Listing 4-45):\r\r\t\tVAR button: Controls.Control; m: Models.Model; rd: FormModels.Reader; v: Views.View;\r\tBEGIN\r\t\tbutton := Controls.par;\t"
+                    attr: 1
+                  - text: "(* during the button click, this variable contains a reference to the button *)"
+                    attr: 4
+                  - text: "\r\t\tm := button.context.ThisModel();\t"
+                    attr: 1
+                  - text: "(* get the model of the container view that contains the button *)"
+                    attr: 4
+                  - text: "\r\t\tIF m IS FormModels.Model THEN\t"
+                    attr: 1
+                  - text: "(* the container is a form *)"
+                    attr: 4
+                  - text: "\r\t\t\trd := m(FormModels.Model).NewReader(NIL);\r\t\t\trd.ReadView(v);\t"
+                    attr: 1
+                  - text: "(* read first view *)"
+                    attr: 4
+                  - text: "\r\t\t\tWHILE v # NIL DO\r\t\t\t\tIF v IS MyPlotterView THEN\r\t\t\t\t\t"
+                    attr: 1
+                  - text: "(* clear v(MyPlotterView) *)"
+                    attr: 4
+                  - text: "\r\t\t\t\tEND;\r\t\t\t\trd.ReadView(v)\t"
+                    attr: 1
+                  - text: "(* read next view *)"
+                    attr: 4
+                  - text: "\r\t\t\tEND\r\t\tEND\r\rListing 4-45. Finding a particular view in the same form as a button\r\rThis code assumes that the command is executed from a command button. It doesn't work if placed in a menu. In order to better decouple the user interface and the application logic, this assumption should be eliminated. BlackBox solves the problem by giving the programmer explicit control over the behavior of "
+                    attr: 1
+                  - text: FormControllers.Focus
+                    attr: 4
+                  - text: ". The trick is that BlackBox supports two kind of windows for dialog boxes: "
+                    attr: 1
+                  - text: tool windows
+                    attr: 4
+                  - text: " and "
+                    attr: 1
+                  - text: "auxiliary windows, "
+                    attr: 4
+                  - text: "in addition to the normal document windows. If the command button is in a tool window dialog box, then "
+                    attr: 1
+                  - text: FormControllers.Focus
+                    attr: 4
+                  - text: " yields the form in the top-most "
+                    attr: 1
+                  - text: document
+                    attr: 4
+                  - text: " window, or "
+                    attr: 1
+                  - text: NIL
+                    attr: 4
+                  - text: " if there is no such document window or if the focus of the top-most document window is not a form view. If the command button is in an auxiliary window, then "
+                    attr: 1
+                  - text: FormControllers.Focus
+                    attr: 4
+                  - text: " yields the dialog box' form whose command button you have clicked. The following paragraphs further explain the differences between these two kinds of windows.\r\rDialog boxes in tool windows are not self-contained, they provide the parameters and the control panel for an operation on a document underneath. A typical example is the \"Find / Replace\" dialog box that operates on a text document underneath. The command buttons in a tool dialog box invoke a command, and this command fetches the view on which it operates. In the \"Find / Replace\" example, this is the focused text view. Under Windows, tool windows always lie above the topmost document window; i.e., they can never be overlapped by document windows or auxiliary windows, only by other tool windows. Unlike other windows, tool windows cannot be resized or iconized, but can me moved outside of the application window. On Mac OS, tool windows look and behave like document windows, except that they have no scroll bars and cannot be resized or zoomed.\r\rAn auxiliary window on the other hand is self-contained. It contains, and operates on, its own data. At least, it knows where to find the data on which to operate (e.g., in a database). The \"Phone Database\" dialog box is a typical auxiliary window, like most data-entry forms. Auxiliary windows can be manipulated like normal document windows; in particular, the may be overlapped by other document or auxiliary windows.\r\rBoth kinds of dialog boxes are stored as documents in their appropriate "
+                    attr: 1
+                  - text: RSRC
+                    attr: 4
+                  - text: " directories. But to open them, module "
+                    attr: 1
+                  - text: StdCmds
+                    attr: 4
+                  - text: " provides two separate commands: "
+                    attr: 1
+                  - text: OpenToolDialog
+                    attr: 4
+                  - text: " and "
+                    attr: 1
+                  - text: OpenAuxDialog
+                    attr: 4
+                  - text: ". Both of them take a portable path name of the resource document as first parameter, and the title of the dialog box window as a second parameter. For example, the following menu commands may be used:\r\r\t\"Find / Replace...\"\t\"\"\t\"StdCmds.OpenToolDialog('Text/Rsrc/Cmds', 'Find / Replace')\"\t\"\"\r\r\t\"Phone Database...\"\t\"\"\t\"StdCmds.OpenAuxDialog('Obx/Rsrc/PhoneUI', 'Phone Database')\"\t\"\"\r\rThe function "
+                    attr: 1
+                  - text: FormControllers.Focus
+                    attr: 4
+                  - text: " returns different results, depending on whether the form is in a tool or in an auxiliary window.\r\rFor more examples on how forms can be manipulated, see also module "
+                    attr: 1
+                  - text: FormCmds
+                    attr: 4
+                  - text: ". It is available in source form, like the rest of the "
+                    attr: 1
+                  - text: Form
+                    attr: 4
+                  - text: " subsystem.\r\r\r"
+                    attr: 1
+                  - text: 4.10 Summary
+                    attr: 2
+                  - text: "\r\rIn this chapter, we have discussed the important aspects of how a graphical user interface and its supporting code is implemented in the BlackBox Component Builder. There are three parts of an application: application logic, user interface logic, and user interface resources, i.e., documents. A clean separation of these parts makes a program easier to understand, maintain, and extend.\r\rFor more examples of how the form system and controls can be used, see the on-line examples "
+                    attr: 1
+                  - text: ObxAddress0
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: ObxAddress1
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: ObxAddress2
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: ObxOrders
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: ObxControls
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: "ObxDialog, "
+                    attr: 4
+                  - text: "and "
+                    attr: 1
+                  - text: ObxUnitConv
+                    attr: 4
+                  - text: ". For advanced programmers, the sources of the complete "
+                    attr: 1
+                  - text: Form
+                    attr: 4
+                  - text: " subsystem may be interesting.\r\rFor more information on how to use the BlackBox development environment, consult the documentation of the following modules:\r\r\tDevCompiler, DevDebug, DevBrowser, DevInspector, DevReferences,\r\tDevMarkers, DevCmds, StdCmds, StdMenuTool, StdLog, FormCmds, TextCmds\r\rTo obtain more information on a module, select a module name and then invoke "
+                    attr: 1
+                  - text: "Info->Documentation"
+                    attr: 4
+                  - text: ".\rIn order to provide a straight-forward description, we only used the most important commands in this book. However, there are other useful commands in the menus "
+                    attr: 1
+                  - text: Info
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: Dev
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: Controls
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: Tools
+                    attr: 4
+                  - text: ", and "
+                    attr: 1
+                  - text: Layout
+                    attr: 4
+                  - text: ". For example, there are several \"wizards\" for the creation of new source code skeletons. Consult the files "
+                    attr: 1
+                  - text: System/Docu/User-Man
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: Text/Docu/User-Man
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: Form/Docu/User-Man
+                    attr: 4
+                  - text: ", and "
+                    attr: 1
+                  - text: Dev/Docu/User-Man
+                    attr: 4
+                  - text: " for a comprehensive user manual on how to use the framework, the editor ("
+                    attr: 1
+                  - text: Text
+                    attr: 4
+                  - text: " subsystem), the visual designer ("
+                    attr: 1
+                  - text: Form
+                    attr: 4
+                  - text: " subsystem), and the development tools ("
+                    attr: 1
+                  - text: Dev
+                    attr: 4
+                  - text: " subsystem).\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 67
+          bodyPos: 757942
+          bodyLen: 8

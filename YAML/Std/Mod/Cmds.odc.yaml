@@ -1,0 +1,764 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Std\\Mod\\Cmds.odc"
+  size: 32739
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 32608
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 32422
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 32336
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000021
+              defaultAttr:
+                font: Arial
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 32457
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 31943
+                runListLen: 3097
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE StdCmds;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- 20141027, center #19, full Unicode support for Component Pascal identifiers added\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT\r\t\tFonts, Ports, Services, Stores, Sequencers, Models, Views,\r\t\tControllers, Containers, Properties, Dialog, Documents, Windows, Strings,\r\t\tStdDialog, StdApi;\r\r\tCONST\r\t\tillegalSizeKey = \"#System:IllegalFontSize\";\r\t\tdefaultAllocator = \"TextViews.Deposit; StdCmds.Open\";\r\r\t\t"
+                    attr: 0
+                  - text: "(* wType, hType *)"
+                    attr: 1
+                  - text: "\r\t\tfix = 0; page = 1; window = 2;\r\r\tVAR\r\t\t"
+                    attr: 0
+                  - text: size
+                    attr: 3
+                  - text: "*: RECORD \r\t\t\tsize*: INTEGER\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: layout
+                    attr: 3
+                  - text: "*: RECORD\r\t\t\twType*, hType*: INTEGER;\r\t\t\twidth*, height*: REAL;\r\t\t\tdoc: Documents.Document;\r\t\t\tu: INTEGER\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: allocator
+                    attr: 3
+                  - text: "*: Dialog.String;\r\t\t\r\t\tpropEra: INTEGER;\t"
+                    attr: 0
+                  - text: "(* (propEra, props) form cache for StdProps() *)"
+                    attr: 1
+                  - text: "\r\t\tprops: Properties.StdProp;\t"
+                    attr: 0
+                  - text: "(* valid iff propEra = Props.era *)\r"
+                    attr: 1
+                  - text: "\t\t\r\t\tprop: Properties.Property;\t"
+                    attr: 0
+                  - text: "(* usef for copy/paste properties *)"
+                    attr: 1
+                  - text: "\r\r\t"
+                    attr: 0
+                  - text: "(* auxiliary procedures *)"
+                    attr: 1
+                  - text: "\r\t\r\tPROCEDURE StdProp (): Properties.StdProp;\r\tBEGIN\r\t\tIF propEra # Properties.era THEN\r\t\t\tProperties.CollectStdProp(props);\r\t\t\tpropEra := Properties.era\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " props\r\tEND StdProp;\r\r\tPROCEDURE Append (VAR s: ARRAY OF CHAR; t: ARRAY OF CHAR);\r\t\tVAR len, i, j: INTEGER; ch: CHAR;\r\tBEGIN\r\t\tlen := LEN(s);\r\t\ti := 0; WHILE s[i] # 0X DO INC(i) END;\r\t\tj := 0; REPEAT ch := t[j]; s[i] := ch; INC(j); INC(i) UNTIL (ch = 0X) OR (i = len);\r\t\ts[len - 1] := 0X\r\tEND Append;\t\r\r\t"
+                    attr: 0
+                  - text: "(* standard commands *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: OpenAuxDialog
+                    attr: 3
+                  - text: "* (file, title: ARRAY OF CHAR);\r\t\tVAR v: Views.View;\r\tBEGIN\r\t\tStdApi.OpenAuxDialog(file, title, v)\r\tEND OpenAuxDialog;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: OpenToolDialog
+                    attr: 3
+                  - text: "* (file, title: ARRAY OF CHAR);\r\t\tVAR v: Views.View;\r\tBEGIN\r\t\tStdApi.OpenToolDialog(file, title, v)\r\tEND OpenToolDialog;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: OpenDoc
+                    attr: 3
+                  - text: "* (file: ARRAY OF CHAR);\r\t\tVAR v: Views.View;\r\tBEGIN\r\t\tStdApi.OpenDoc(file, v)\r\tEND OpenDoc;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: OpenCopyOf
+                    attr: 3
+                  - text: "* (file: ARRAY OF CHAR);\r\t\tVAR v: Views.View;\r\tBEGIN\r\t\tStdApi.OpenCopyOf(file, v)\r\tEND OpenCopyOf;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: OpenAux
+                    attr: 3
+                  - text: "* (file, title: ARRAY OF CHAR);\r\t\tVAR v: Views.View; \r\tBEGIN\r\t\tStdApi.OpenAux(file, title, v)\r\tEND OpenAux;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: OpenBrowser
+                    attr: 3
+                  - text: "* (file, title: ARRAY OF CHAR);\r\t\tVAR v: Views.View;\r\tBEGIN\r\t\tStdApi.OpenBrowser(file, title, v)\r\tEND OpenBrowser;\r\r"
+                    attr: 0
+                  - text: "\t"
+                    attr: 1
+                  - text: "PROCEDURE "
+                    attr: 0
+                  - text: CloseDialog
+                    attr: 3
+                  - text: "*;\r\t\tVAR v: Views.View;\r\tBEGIN\r\t\tStdApi.CloseDialog(v)\r\tEND CloseDialog;\r\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Open
+                    attr: 3
+                  - text: "*;\r\t\tVAR i: INTEGER; v: Views.View;\r\tBEGIN\r\t\ti := Views.Available();\r\t\tIF i > 0 THEN Views.Fetch(v); Views.OpenView(v)\r\t\tELSE Dialog.ShowMsg(\"#System:"
+                    attr: 0
+                  - text: DepositExpected
+                    attr: 3
+                  - text: "\")\r\t\tEND\r\tEND Open;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: PasteView
+                    attr: 3
+                  - text: "*;\r\t\tVAR i: INTEGER; v: Views.View;\r\tBEGIN\r\t\ti := Views.Available();\r\t\tIF i > 0 THEN\r\t\t\tViews.Fetch(v);\r\t\t\tControllers.PasteView(v, Views.undefined, Views.undefined, FALSE)\r\t\tELSE Dialog.ShowMsg(\"#System:"
+                    attr: 0
+                  - text: DepositExpected
+                    attr: 3
+                  - text: "\")\r\t\tEND\r\tEND PasteView;\r\t"
+                    attr: 0
+                  - text: "\r\t(* file menu commands *)\r\t\r"
+                    attr: 1
+                  - text: "\tPROCEDURE "
+                    attr: 0
+                  - text: New
+                    attr: 3
+                  - text: "*;\r\t\tVAR res: INTEGER;\r\tBEGIN\r\t\tDialog.Call(allocator, \" \", res)\r\tEND New;\r\t\r\t\r"
+                    attr: 0
+                  - text: "\t(* edit menu commands *)\r\t\r"
+                    attr: 1
+                  - text: "\tPROCEDURE "
+                    attr: 0
+                  - text: Undo
+                    attr: 3
+                  - text: "*;\r\t\tVAR w: Windows.Window;\r\tBEGIN\r\t\tw := Windows.dir.Focus(Controllers.frontPath);\r\t\tIF w # NIL THEN w.seq.Undo END\r\tEND Undo;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Redo
+                    attr: 3
+                  - text: "*;\r\t\tVAR w: Windows.Window;\r\tBEGIN\r\t\tw := Windows.dir.Focus(Controllers.frontPath);\r\t\tIF w # NIL THEN w.seq.Redo END\r\tEND Redo;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: CopyProp
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tProperties.CollectProp(prop)\r\tEND CopyProp;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: PasteProp
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tProperties.EmitProp(NIL, prop)\r\tEND PasteProp;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: Clear
+                    attr: 3
+                  - text: "*;\r\t"
+                    attr: 0
+                  - text: "(** remove the selection of the current focus **)"
+                    attr: 1
+                  - text: "\r\t\tVAR msg: Controllers.EditMsg;\r\tBEGIN\r\t\tmsg.op := Controllers.cut; msg.view := NIL;\r\t\tmsg.clipboard := FALSE;\r\t\tControllers.Forward(msg)\r\tEND Clear;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SelectAll
+                    attr: 3
+                  - text: "*;\r\t"
+                    attr: 0
+                  - text: "(** select whole content of current focus **)"
+                    attr: 1
+                  - text: "\r\t\tVAR msg: Controllers.SelectMsg;\r\tBEGIN\r\t\tmsg.set := TRUE; Controllers.Forward(msg)\r\tEND SelectAll;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: DeselectAll
+                    attr: 3
+                  - text: "*;\r\t"
+                    attr: 0
+                  - text: "(** select whole content of current focus **)"
+                    attr: 1
+                  - text: "\r\t\tVAR msg: Controllers.SelectMsg;\r\tBEGIN\r\t\tmsg.set := FALSE; Controllers.Forward(msg)\r\tEND DeselectAll;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SelectDocument
+                    attr: 3
+                  - text: "*;\r\t"
+                    attr: 0
+                  - text: "(** select whole document **)"
+                    attr: 1
+                  - text: "\r\t\tVAR w: Windows.Window; c: Containers.Controller;\r\tBEGIN\r\t\tw := Windows.dir.Focus(Controllers.path);\r\t\tIF w # NIL THEN\r\t\t\tc := w.doc.ThisController();\r\t\t\tIF (c # NIL) & ~(Containers.noSelection IN c.opts) & (c.Singleton() = NIL) THEN\r\t\t\t\tc.SetSingleton(w.doc.ThisView())\r\t\t\tEND\r\t\tEND\r\tEND SelectDocument;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SelectNextView
+                    attr: 3
+                  - text: "*;\r\t\tVAR c: Containers.Controller; v: Views.View;\r\tBEGIN\r\t\tc := Containers.Focus();\r\t\tIF (c # NIL) & ~(Containers.noSelection IN c.opts) THEN\r\t\t\tIF c.HasSelection() THEN v := c.Singleton() ELSE v := NIL END;\r\t\t\tIF v = NIL THEN\r\t\t\t\tc.GetFirstView(Containers.any, v)\r\t\t\tELSE\r\t\t\t\tc.GetNextView(Containers.any, v);\r\t\t\t\tIF v = NIL THEN c.GetFirstView(Containers.any, v) END\r\t\t\tEND;\r\t\t\tc.SelectAll(FALSE);\r\t\t\tIF v # NIL THEN c.SetSingleton(v) END\r\t\tELSE Dialog.ShowMsg(\"#Dev:NoTargetFocusFound\")\r\t\tEND\r\tEND SelectNextView;\r\r\t"
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\t"
+                    attr: 0
+                  - text: "(** font menu commands **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Font
+                    attr: 3
+                  - text: "* (typeface: Fonts.Typeface);\r\t"
+                    attr: 0
+                  - text: "(** set the selection to the given font family **)"
+                    attr: 1
+                  - text: "\r\t\tVAR p: Properties.StdProp;\r\tBEGIN\r\t\tNEW(p); p.valid := {Properties.typeface}; p.typeface := typeface;\r\t\tProperties.EmitProp(NIL, p)\r\tEND Font;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: DefaultFont
+                    attr: 3
+                  - text: "*;\r\t"
+                    attr: 0
+                  - text: "(** set the selection to the default font family **)"
+                    attr: 1
+                  - text: "\r\t\tVAR p: Properties.StdProp;\r\tBEGIN\r\t\tNEW(p); p.valid := {Properties.typeface}; p.typeface := Fonts.default;\r\t\tProperties.EmitProp(NIL, p)\r\tEND DefaultFont;\r\r\r\t"
+                    attr: 0
+                  - text: "(** attributes menu commands **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Plain
+                    attr: 3
+                  - text: "*;\r\t"
+                    attr: 0
+                  - text: "(** reset the font attribute \"weight\" and all font style attributes of the selection **)"
+                    attr: 1
+                  - text: "\r\t\tVAR p: Properties.StdProp;\r\tBEGIN\r\t\tNEW(p); p.valid := {Properties.style, Properties.weight};\r\t\tp.style.val := {}; p.style.mask := {Fonts.italic, Fonts.underline, Fonts.strikeout};\r\t\tp.weight := Fonts.normal;\r\t\tProperties.EmitProp(NIL, p)\r\tEND Plain;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Bold
+                    attr: 3
+                  - text: "*;\r\t"
+                    attr: 0
+                  - text: "(** change the font attribute \"weight\" in the selection;\r\tif the selection has a homogeneously bold weight: toggle to normal, else force to bold **)"
+                    attr: 1
+                  - text: "\r\t\tVAR p, p0: Properties.StdProp;\r\tBEGIN\r\t\tProperties.CollectStdProp(p0);\r\t\tNEW(p); p.valid := {Properties.weight};\r\t\tIF (Properties.weight IN p0.valid) & (p0.weight # Fonts.normal) THEN\r\t\t\tp.weight := Fonts.normal\r\t\tELSE p.weight := Fonts.bold\r\t\tEND;\r\t\tProperties.EmitProp(NIL, p)\r\tEND Bold;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Italic
+                    attr: 3
+                  - text: "*;\r\t"
+                    attr: 0
+                  - text: "(** change the font style attribute \"italic\" in the selection;\r\tif the selection is homogeneous wrt this attribute: toggle, else force to italic **)"
+                    attr: 1
+                  - text: "\r\t\tVAR p, p0: Properties.StdProp;\r\tBEGIN\r\t\tProperties.CollectStdProp(p0);\r\t\tNEW(p); p.valid := {Properties.style}; p.style.mask := {Fonts.italic};\r\t\tIF (Properties.style IN p0.valid) & (Fonts.italic IN p0.style.val) THEN\r\t\t\tp.style.val := {}\r\t\tELSE p.style.val := {Fonts.italic}\r\t\tEND;\r\t\tProperties.EmitProp(NIL, p)\r\tEND Italic;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Underline
+                    attr: 3
+                  - text: "*;\r\t"
+                    attr: 0
+                  - text: "(** change the font style attribute \"underline\" in the selection;\r\tif the selection is homogeneous wrt this attribute: toggle, else force to underline **)"
+                    attr: 1
+                  - text: "\r\t\tVAR p, p0: Properties.StdProp;\r\tBEGIN\r\t\tProperties.CollectStdProp(p0);\r\t\tNEW(p); p.valid := {Properties.style}; p.style.mask := {Fonts.underline};\r\t\tIF (Properties.style IN p0.valid) & (Fonts.underline IN p0.style.val) THEN\r\t\t\tp.style.val := {}\r\t\tELSE p.style.val := {Fonts.underline}\r\t\tEND;\r\t\tProperties.EmitProp(NIL, p)\r\tEND Underline;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Strikeout
+                    attr: 3
+                  - text: "*;\r\t"
+                    attr: 0
+                  - text: "(** change the font style attribute \"strikeout\" in the selection,\r\twithout changing other attributes;\r\tif the selection is homogeneous wrt this attribute: toggle,\r\telse force to strikeout **)"
+                    attr: 1
+                  - text: "\r\t\tVAR p, p0: Properties.StdProp;\r\tBEGIN\r\t\tProperties.CollectStdProp(p0);\r\t\tNEW(p); p.valid := {Properties.style}; p.style.mask := {Fonts.strikeout};\r\t\tIF (Properties.style IN p0.valid) & (Fonts.strikeout IN p0.style.val) THEN\r\t\t\tp.style.val := {}\r\t\tELSE p.style.val := {Fonts.strikeout}\r\t\tEND;\r\t\tProperties.EmitProp(NIL, p)\r\tEND Strikeout;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Size
+                    attr: 3
+                  - text: "* (size: INTEGER);\r\t"
+                    attr: 0
+                  - text: "(** set the selection to the given font size **)"
+                    attr: 1
+                  - text: "\r\t\tVAR p: Properties.StdProp;\r\tBEGIN\r\t\tNEW(p); p.valid := {Properties.size};\r\t\tp.size := size * Ports.point;\r\t\tProperties.EmitProp(NIL, p)\r\tEND Size;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetSize
+                    attr: 3
+                  - text: "*;\r\t\tVAR p: Properties.StdProp;\r\tBEGIN\r\t\tIF (0 <= size.size) & (size.size < 32768) THEN\r\t\t\tNEW(p); p.valid := {Properties.size};\r\t\t\tp.size := size.size * Fonts.point;\r\t\t\tProperties.EmitProp(NIL, p)\r\t\tELSE\r\t\t\tDialog.ShowMsg(illegalSizeKey)\r\t\tEND\r\tEND SetSize;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: InitSizeDialog
+                    attr: 3
+                  - text: "*;\r\t\tVAR p: Properties.StdProp;\r\tBEGIN\r\t\tProperties.CollectStdProp(p);\r\t\tIF Properties.size IN p.valid THEN size.size := p.size DIV Fonts.point END\r\tEND InitSizeDialog;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Color
+                    attr: 3
+                  - text: "* (color: Ports.Color);\r\t"
+                    attr: 0
+                  - text: "(** set the color attributes of the selection **)"
+                    attr: 1
+                  - text: "\r\t\tVAR p: Properties.StdProp;\r\tBEGIN\r\t\tNEW(p); p.valid := {Properties.color};\r\t\tp.color.val := color;\r\t\tProperties.EmitProp(NIL, p)\r\tEND Color;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: UpdateAll
+                    attr: 3
+                  - text: "*;\t"
+                    attr: 0
+                  - text: "(* for HostCmds.Toggle *)"
+                    attr: 1
+                  - text: "\r\t\tVAR w: Windows.Window; pw, ph: INTEGER; dirty: BOOLEAN; msg: Models.UpdateMsg;\r\tBEGIN\r\t\tw := Windows.dir.First();\r\t\tWHILE w # NIL DO\r\t\t\tIF ~w.sub THEN\r\t\t\t\tdirty := w.seq.Dirty();\r\t\t\t\tModels.Domaincast(w.doc.Domain(), msg);\r\t\t\t\tIF ~dirty THEN w.seq.SetDirty(FALSE) END\t"
+                    attr: 0
+                  - text: "(* not perfect: \"undoable dirt\" ... *)"
+                    attr: 1
+                  - text: "\r\t\t\tEND;\r\t\t\tw.port.GetSize(pw, ph);\r\t\t\tw.Restore(0, 0, pw, ph);\r\t\t\tw := Windows.dir.Next(w)\r\t\tEND\r\tEND UpdateAll;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: RestoreAll
+                    attr: 3
+                  - text: "*;\r\t\tVAR w: Windows.Window; pw, ph: INTEGER;\r\tBEGIN\r\t\tw := Windows.dir.First();\r\t\tWHILE w # NIL DO\r\t\t\tw.port.GetSize(pw, ph);\r\t\t\tw.Restore(0, 0, pw, ph);\r\t\t\tw := Windows.dir.Next(w)\r\t\tEND\r\tEND RestoreAll;\r\t\r\t\r"
+                    attr: 0
+                  - text: "\t(** document layout dialog **)\r"
+                    attr: 1
+                  - text: "\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetLayout
+                    attr: 3
+                  - text: "*;\r\t\tVAR opts: SET; l, t, r, b, r0, b0: INTEGER; c: Containers.Controller; script: Stores.Operation;\r\tBEGIN\r\t\tc := layout.doc.ThisController();\r\t\topts := c.opts - {Documents.pageWidth..Documents.winHeight};\r\t\tIF layout.wType = page THEN INCL(opts, Documents.pageWidth)\r\t\tELSIF layout.wType = window THEN INCL(opts, Documents.winWidth)\r\t\tEND;\r\t\tIF layout.hType = page THEN INCL(opts, Documents.pageHeight)\r\t\tELSIF layout.hType = window THEN INCL(opts, Documents.winHeight)\r\t\tEND;\r\t\tlayout.doc.PollRect(l, t, r, b); r0 := r; b0 := b;\r\t\tIF layout.wType = fix THEN r := l + SHORT(ENTIER(layout.width * layout.u)) END;\r\t\tIF layout.hType = fix THEN b := t + SHORT(ENTIER(layout.height * layout.u)) END;\r\t\tIF (opts # c.opts) OR (r # r0) OR (b # b0) THEN\r\t\t\tViews.BeginScript(layout.doc, \"#System:ChangeLayout\", script);\r\t\t\tc.SetOpts(opts);\r\t\t\tlayout.doc.SetRect(l, t, r, b);\r\t\t\tViews.EndScript(layout.doc, script)\r\t\tEND\r\tEND SetLayout;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: InitLayoutDialog
+                    attr: 3
+                  - text: "*;\r\t"
+                    attr: 0
+                  - text: "(* guard: WindowGuard *)"
+                    attr: 1
+                  - text: "\r\t\tVAR w: Windows.Window; c: Containers.Controller; l, t, r, b: INTEGER;\r\tBEGIN\r\t\tw := Windows.dir.First();\r\t\tIF w # NIL THEN\r\t\t\tlayout.doc := w.doc;\r\t\t\tc := w.doc.ThisController();\r\t\t\tIF Documents.pageWidth IN c.opts THEN layout.wType := page\r\t\t\tELSIF Documents.winWidth IN c.opts THEN layout.wType := window\r\t\t\tELSE layout.wType := fix\r\t\t\tEND;\r\t\t\tIF Documents.pageHeight IN c.opts THEN layout.hType := page\r\t\t\tELSIF Documents.winHeight IN c.opts THEN layout.hType := window\r\t\t\tELSE layout.hType := fix\r\t\t\tEND;\r\t\t\tIF Dialog.metricSystem THEN layout.u := Ports.mm * 10 ELSE layout.u := Ports.inch END;\r\t\t\tw.doc.PollRect(l, t, r, b);\r\t\t\tlayout.width := (r - l) DIV (layout.u DIV 100) / 100;\r\t\t\tlayout.height := (b - t) DIV (layout.u DIV 100) / 100\r\t\tEND\r\tEND InitLayoutDialog;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: WidthGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\tBEGIN\r\t\tIF layout.wType # fix THEN par.readOnly := TRUE END\r\tEND WidthGuard;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: HeightGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\tBEGIN\r\t\tIF layout.hType # fix THEN par.readOnly := TRUE END\r\tEND HeightGuard;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: TypeNotifier
+                    attr: 3
+                  - text: "* (op, from, to: INTEGER);\r\t\tVAR w, h, l, t, r, b: INTEGER; d: BOOLEAN;\r\tBEGIN\r\t\tlayout.doc.PollRect(l, t, r, b);\r\t\tIF layout.wType = page THEN\r\t\t\tlayout.doc.PollPage(w, h, l, t, r, b, d)\r\t\tELSIF layout.wType = window THEN\r\t\t\tlayout.doc.context.GetSize(w, h); r := w - l\r\t\tEND;\r\t\tlayout.width := (r - l) DIV (layout.u DIV 100) / 100;\r\t\tlayout.doc.PollRect(l, t, r, b);\r\t\tIF layout.hType = page THEN\r\t\t\tlayout.doc.PollPage(w, h, l, t, r, b, d)\r\t\tELSIF layout.hType = window THEN\r\t\t\tlayout.doc.context.GetSize(w, h); b := h - t\r\t\tEND;\r\t\tlayout.height := (b - t) DIV (layout.u DIV 100) / 100;\r\t\tDialog.Update(layout)\r\tEND TypeNotifier;\r\t\r\r\t"
+                    attr: 0
+                  - text: "(** window menu command **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: NewWindow
+                    attr: 3
+                  - text: "*;\r\t"
+                    attr: 0
+                  - text: "(** guard ModelViewGuard **)"
+                    attr: 1
+                  - text: "\r\t\tVAR win: Windows.Window; doc: Documents.Document; v: Views.View; title: Views.Title;\r\t\t\tseq: ANYPTR; clean: BOOLEAN;\r\tBEGIN\r\t\twin := Windows.dir.Focus(Controllers.frontPath);\r\t\tIF win # NIL THEN\r\t\t\tv := win.doc.ThisView();\r\t\t\tIF v.Domain() # NIL THEN seq := v.Domain().GetSequencer() ELSE seq := NIL END;\r\t\t\tclean := (seq # NIL) & ~seq(Sequencers.Sequencer).Dirty();\r\t\t\tdoc := win.doc.DocCopyOf(v);\r\t\t\t(* Stores.InitDomain(doc, v.Domain()); *)\r\t\t\tASSERT(doc.Domain() = v.Domain(), 100);\r\t\t\twin.GetTitle(title);\r\t\t\tWindows.dir.OpenSubWindow(Windows.dir.New(), doc, win.flags, title);\r\t\t\tIF clean THEN seq(Sequencers.Sequencer).SetDirty(FALSE) END\r\t\tEND\r\tEND NewWindow;\r\t\r\t"
+                    attr: 0
+                  - text: "(* properties *)"
+                    attr: 1
+                  - text: "\r\t\r\tPROCEDURE GetCmd (name: ARRAY OF CHAR; OUT cmd: ARRAY OF CHAR);"
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\t\tVAR i, j: INTEGER; ch, lch: CHAR; key: ARRAY 256 OF CHAR;\r\tBEGIN\r\t\ti := 0; ch := name[0]; key[0] := \"#\"; j := 1;\r\t\tREPEAT\r\t\t\tkey[j] := ch; INC(j); lch := ch; INC(i); ch := name[i]\r\t\tUNTIL (ch = 0X) OR (ch = \".\") OR Strings.IsUpper(ch) & ~Strings.IsUpper(lch);\r\t\tIF ch = \".\" THEN\r\t\t\tkey := \"#System:\" + name\r\t\tELSE\r\t\t\tkey[j] := \":\"; INC(j); key[j] := 0X; j := 0;\r\t\t\tWHILE ch # 0X DO name[j] := ch; INC(i); INC(j); ch := name[i] END;\r\t\t\tname[j] := 0X; key := key + name\r\t\tEND;\r\t\tDialog.MapString(key, cmd);\r\t\tIF cmd = name THEN cmd := \"\" END\r\tEND GetCmd;\r\t\r\tPROCEDURE SearchCmd (call: BOOLEAN; OUT found: BOOLEAN);\r\t\tVAR p: Properties.Property; std: BOOLEAN; v: Views.View;  cmd: ARRAY 256 OF CHAR; pos, res: INTEGER;\r\tBEGIN\r\t\tControllers.SetCurrentPath(Controllers.targetPath);\r\t\tv := Containers.FocusSingleton(); found := FALSE;\r\t\tIF v # NIL THEN\r\t\t\tServices.GetTypeName(v, cmd);\r\t\t\tGetCmd(cmd, cmd);\r\t\t\tIF cmd # \"\" THEN found := TRUE;\r\t\t\t\tIF call THEN Dialog.Call(cmd, \"\", res) END\r\t\t\tEND\r\t\tEND;\r\t\tstd := FALSE;\r\t\tProperties.CollectProp(p);\r\t\tWHILE p # NIL DO\r\t\t\tIF p IS Properties.StdProp THEN std := TRUE\r\t\t\tELSE\r\t\t\t\tServices.GetTypeName(p, cmd);\r\t\t\t\tGetCmd(cmd, cmd);\r\t\t\t\tIF cmd # \"\" THEN found := TRUE;\r\t\t\t\t\tIF call THEN Dialog.Call(cmd, \"\", res) END\r\t\t\t\tELSE\r\t\t\t\t\tServices.GetTypeName(p, cmd);\r\t\t\t\t\tStrings.Find(cmd, \"Desc\", LEN(cmd$)-4, pos);\r\t\t\t\t\tIF LEN(cmd$)-4 = pos THEN\r\t\t\t\t\t\tcmd[pos] := 0X; GetCmd(cmd, cmd);\r\t\t\t\t\t\tIF cmd # \"\" THEN found := TRUE;\r\t\t\t\t\t\t\tIF call THEN Dialog.Call(cmd, \"\", res) END\r\t\t\t\t\t\tEND\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tp := p.next\r\t\tEND;\r\t\tIF std & ~found THEN\r\t\t\tDialog.MapString(\"#Host:Properties.StdProp\", cmd);\r\t\t\tIF cmd # \"Properties.StdProp\" THEN found := TRUE;\r\t\t\t\tIF call THEN Dialog.Call(cmd, \"\", res) END\r\t\t\tEND\r\t\tEND;\r\t\tIF ~found THEN\r\t\t\tDialog.MapString(\"#System:ShowProp\", cmd);\r\t\t\tIF cmd # \"ShowProp\" THEN found := TRUE;\r\t\t\t\tIF call THEN Dialog.Call(cmd, \"\", res) END\r\t\t\tEND\r\t\tEND;\r\t\tControllers.ResetCurrentPath\r\tEND SearchCmd;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: ShowProp
+                    attr: 3
+                  - text: "*;\r\t\tVAR found: BOOLEAN;\r\tBEGIN\r\t\tSearchCmd(TRUE, found)\r\tEND ShowProp;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: ShowPropGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\t\tVAR found: BOOLEAN;\r\tBEGIN\r\t\tSearchCmd(FALSE, found);\r\t\tIF ~found THEN par.disabled := TRUE END\r\tEND ShowPropGuard;\r\t\r"
+                    attr: 0
+                  - text: "\t\r\t(* container commands *)\r\t\r"
+                    attr: 1
+                  - text: "\tPROCEDURE ActFocus (): Containers.Controller;\r\t\tVAR c: Containers.Controller; v: Views.View;\r\tBEGIN\r\t\tc := Containers.Focus();\r\t\tIF c # NIL THEN\r\t\t\tv := c.ThisView();\r\t\t\tIF v IS Documents.Document THEN\r\t\t\t\tv := v(Documents.Document).ThisView();\r\t\t\t\tIF v IS Containers.View THEN\r\t\t\t\t\tc := v(Containers.View).ThisController()\r\t\t\t\tELSE c := NIL\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " c\r\tEND ActFocus;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ToggleNoFocus
+                    attr: 3
+                  - text: "*;\r\t\tVAR c: Containers.Controller; v: Views.View;\r\tBEGIN\r\t\tc := ActFocus();\r\t\tIF c # NIL THEN\r\t\t\tv := c.ThisView();\r\t\t\tIF ~((v IS Documents.Document) OR (Containers.noSelection IN c.opts)) THEN\r\t\t\t\tIF Containers.noFocus IN c.opts THEN\r\t\t\t\t\tc.SetOpts(c.opts - {Containers.noFocus})\r\t\t\t\tELSE\r\t\t\t\t\tc.SetOpts(c.opts + {Containers.noFocus})\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND ToggleNoFocus;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: OpenAsAuxDialog
+                    attr: 3
+                  - text: "*;\r\t"
+                    attr: 0
+                  - text: "(** create a new sub-window onto the focus view shown in the top window, mask mode **)"
+                    attr: 1
+                  - text: "\r\t\tVAR win: Windows.Window; doc: Documents.Document; v, u: Views.View; title: Views.Title;\r\t\t\tc: Containers.Controller;\r\tBEGIN\r\t\tv := Controllers.FocusView();\r\t\tIF (v # NIL) & (v IS Containers.View) & ~(v IS Documents.Document) THEN\r\t\t\twin := Windows.dir.Focus(Controllers.frontPath); ASSERT(win # NIL, 100);\r\t\t\tdoc := win.doc.DocCopyOf(v);\r\t\t\tu := doc.ThisView();\r\t\t\tc := u(Containers.View).ThisController();\r\t\t\tc.SetOpts(c.opts - {Containers.noFocus} + {Containers.noCaret, Containers.noSelection});\r\t\t\tIF v # win.doc.ThisView() THEN\r\t\t\t\tc := doc.ThisController();\r\t\t\t\tc.SetOpts(c.opts - {Documents.pageWidth, Documents.pageHeight}\r\t\t\t\t\t\t\t\t\t\t+ {Documents.winWidth, Documents.winHeight})\r\t\t\tEND;\r\t\t\t(* Stores.InitDomain(doc, v.Domain()); already done in DocCopyOf *)\r\t\t\twin.GetTitle(title);\r\t\t\tWindows.dir.OpenSubWindow(Windows.dir.New(), doc,\r\t{Windows.isAux, Windows.neverDirty, Windows.noResize, Windows.noHScroll, Windows.noVScroll},\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\ttitle)\r\t\tELSE Dialog.Beep\r\t\tEND\r\tEND OpenAsAuxDialog;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: OpenAsToolDialog
+                    attr: 3
+                  - text: "*;\r\t"
+                    attr: 0
+                  - text: "(** create a new sub-window onto the focus view shown in the top window, mask mode **)"
+                    attr: 1
+                  - text: "\r\t\tVAR win: Windows.Window; doc: Documents.Document; v, u: Views.View; title: Views.Title;\r\t\t\tc: Containers.Controller;\r\tBEGIN\r\t\tv := Controllers.FocusView();\r\t\tIF (v # NIL) & (v IS Containers.View) & ~(v IS Documents.Document) THEN\r\t\t\twin := Windows.dir.Focus(Controllers.frontPath); ASSERT(win # NIL, 100);\r\t\t\tdoc := win.doc.DocCopyOf(v);\r\t\t\tu := doc.ThisView();\r\t\t\tc := u(Containers.View).ThisController();\r\t\t\tc.SetOpts(c.opts - {Containers.noFocus} + {Containers.noCaret, Containers.noSelection});\r\t\t\tIF v # win.doc.ThisView() THEN\r\t\t\t\tc := doc.ThisController();\r\t\t\t\tc.SetOpts(c.opts - {Documents.pageWidth, Documents.pageHeight}\r\t\t\t\t\t\t\t\t\t\t+ {Documents.winWidth, Documents.winHeight})\r\t\t\tEND;\r\t\t\t(* Stores.InitDomain(doc, v.Domain()); already done in DocCopyOf *)\r\t\t\twin.GetTitle(title);\r\t\t\tWindows.dir.OpenSubWindow(Windows.dir.New(), doc,\r\t{Windows.isTool, Windows.neverDirty, Windows.noResize, Windows.noHScroll, Windows.noVScroll},\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\ttitle)\r\t\tELSE Dialog.Beep\r\t\tEND\r\tEND OpenAsToolDialog;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: RecalcFocusSize
+                    attr: 3
+                  - text: "*;\r\t\tVAR c: Containers.Controller; v: Views.View; bounds: Properties.BoundsPref;\r\tBEGIN\r\t\tc := Containers.Focus();\r\t\tIF c # NIL THEN\r\t\t\tv := c.ThisView();\r\t\t\tbounds.w := Views.undefined; bounds.h := Views.undefined;\r\t\t\tViews.HandlePropMsg(v, bounds);\r\t\t\tv.context.SetSize(bounds.w, bounds.h)\r\t\tEND\r\tEND RecalcFocusSize;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: RecalcAllSizes
+                    attr: 3
+                  - text: "*;\r\t\tVAR w: Windows.Window;\r\tBEGIN\r\t\tw := Windows.dir.First();\r\t\tWHILE w # NIL DO\r\t\t\tStdDialog.RecalcView(w.doc.ThisView());\r\t\t\tw := Windows.dir.Next(w)\r\t\tEND\r\tEND RecalcAllSizes;\r\t\r\tPROCEDURE SetMode(opts: SET);\r\t\tVAR \r\t\t\tc: Containers.Controller; v: Views.View; \r\t\t\tgm: Containers.GetOpts; sm: Containers.SetOpts;\r\t\t\tw: Windows.Window;\r\tBEGIN\r\t\tc := Containers.Focus();\r\t\tgm.valid := {};\r\t\tIF (c # NIL) & (c.Singleton() # NIL) THEN\r\t\t\tv := c.Singleton();\r\t\t\tViews.HandlePropMsg(v, gm);\r\t\tEND;\r\t\tIF gm.valid = {} THEN\r\t\t\tw := Windows.dir.Focus(Controllers.path);\r\t\t\tIF (w # NIL) & (w.doc.ThisView() IS Containers.View) THEN v := w.doc.ThisView() ELSE v := NIL END\r\t\tEND;\r\t\tIF v # NIL THEN\r\t\t\tsm.valid := {Containers.noSelection, Containers.noFocus, Containers.noCaret};\r\t\t\tsm.opts := opts;\r\t\t\tViews.HandlePropMsg(v, sm);\r\t\tEND;\r\tEND SetMode;\r\t\r\tPROCEDURE GetMode(OUT found: BOOLEAN; OUT opts: SET);\r\t\tVAR c: Containers.Controller; gm: Containers.GetOpts; w: Windows.Window;\r\tBEGIN\r\t\tc := Containers.Focus();\r\t\tgm.valid := {};\r\t\tIF (c # NIL) & (c.Singleton() # NIL) THEN\r\t\t\tViews.HandlePropMsg(c.Singleton(), gm);\r\t\tEND;\r\t\tIF gm.valid = {}  THEN\r\t\t\tw := Windows.dir.Focus(Controllers.path);\r\t\t\tIF (w # NIL) & (w.doc.ThisView() IS Containers.View) THEN\r\t\t\t\tViews.HandlePropMsg(w.doc.ThisView(), gm);\r\t\t\tEND\r\t\tEND;\r\t\tfound := gm.valid # {};\r\t\topts := gm.opts\r\tEND GetMode;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetMaskMode
+                    attr: 3
+                  - text: "*;\r\t"
+                    attr: 0
+                  - text: "(* Guard: SetMaskGuard *)"
+                    attr: 1
+                  - text: "\r\tBEGIN\r\t\tSetMode({Containers.noSelection, Containers.noCaret})\r\tEND SetMaskMode;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetEditMode
+                    attr: 3
+                  - text: "*;\r\t"
+                    attr: 0
+                  - text: "(* Guard: SetEditGuard *)"
+                    attr: 1
+                  - text: "\r\tBEGIN\r\t\tSetMode({})\r\tEND SetEditMode;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetLayoutMode
+                    attr: 3
+                  - text: "*;\r\t"
+                    attr: 0
+                  - text: "(* Guard: SetLayoutGuard *)"
+                    attr: 1
+                  - text: "\r\tBEGIN\r\t\tSetMode({Containers.noFocus})\r\tEND SetLayoutMode;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetBrowserMode
+                    attr: 3
+                  - text: "*;\r\t"
+                    attr: 0
+                  - text: "(* Guard: SetBrowserGuard *)"
+                    attr: 1
+                  - text: "\r\tBEGIN\r\t\tSetMode({Containers.noCaret})\r\tEND SetBrowserMode;\r\r"
+                    attr: 0
+                  - text: "\r\t(* standard guards *)"
+                    attr: 1
+                  - text: "\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: ToggleNoFocusGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\t\tVAR c: Containers.Controller; v: Views.View;\r\tBEGIN\r\t\tc := ActFocus();\r\t\tIF c # NIL THEN\r\t\t\tv := c.ThisView();\r\t\t\tIF ~((v IS Documents.Document) OR (Containers.noSelection IN c.opts)) THEN\r\t\t\t\tIF Containers.noFocus IN c.opts THEN par.label := \"#System:AllowFocus\"\r\t\t\t\tELSE par.label := \"#System:PreventFocus\"\r\t\t\t\tEND\r\t\t\tELSE par.disabled := TRUE\r\t\t\tEND\r\t\tELSE par.disabled := TRUE\r\t\tEND\r\tEND ToggleNoFocusGuard;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ReadOnlyGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\tBEGIN\r\t\tpar.readOnly := TRUE\r\tEND ReadOnlyGuard;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: WindowGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\t\tVAR w: Windows.Window;\r\tBEGIN\r\t\tw := Windows.dir.First();\r\t\tIF w = NIL THEN par.disabled := TRUE END\r\tEND WindowGuard;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ModelViewGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\t\tVAR w: Windows.Window;\r\tBEGIN\r\t\tw := Windows.dir.Focus(Controllers.frontPath);\r\t\tpar.disabled := (w = NIL) OR (w.doc.ThisView().ThisModel() = NIL)\r\tEND ModelViewGuard;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetMaskModeGuard
+                    attr: 3
+                  - text: "*"
+                    attr: 0
+                  - text: " "
+                    attr: 3
+                  - text: "(VAR par: Dialog.Par);\r\t\tCONST mode = {Containers.noSelection, Containers.noFocus, Containers.noCaret};\r\t\tVAR opts: SET; found: BOOLEAN;\r\tBEGIN\r\t\tGetMode(found, opts);\r\t\tIF found THEN\r\t\t\tpar.checked := opts * mode = {Containers.noSelection, Containers.noCaret}\r\t\tELSE\r\t\t\tpar.disabled := TRUE\r\t\tEND\r\tEND SetMaskModeGuard;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetEditModeGuard
+                    attr: 3
+                  - text: "*"
+                    attr: 0
+                  - text: " "
+                    attr: 3
+                  - text: "(VAR par: Dialog.Par);\r\t\tCONST mode = {Containers.noSelection, Containers.noFocus, Containers.noCaret};\r\t\tVAR opts: SET; found: BOOLEAN;\r\tBEGIN\r\t\tGetMode(found, opts);\r\t\tIF found THEN\r\t\t\tpar.checked := opts * mode = {}\r\t\tELSE\r\t\t\tpar.disabled := TRUE\r\t\tEND\r\tEND SetEditModeGuard;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetLayoutModeGuard
+                    attr: 3
+                  - text: "*"
+                    attr: 0
+                  - text: " "
+                    attr: 3
+                  - text: "(VAR par: Dialog.Par);\r\t\tCONST mode = {Containers.noSelection, Containers.noFocus, Containers.noCaret};\r\t\tVAR opts: SET; found: BOOLEAN;\r\tBEGIN\r\t\tGetMode(found, opts);\r\t\tIF found THEN\r\t\t\tpar.checked := opts * mode = {Containers.noFocus}\r\t\tELSE\r\t\t\tpar.disabled := TRUE\r\t\tEND\r\tEND SetLayoutModeGuard;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetBrowserModeGuard
+                    attr: 3
+                  - text: "*"
+                    attr: 0
+                  - text: " "
+                    attr: 3
+                  - text: "(VAR par: Dialog.Par);\r\t\tCONST mode = {Containers.noSelection, Containers.noFocus, Containers.noCaret};\r\t\tVAR opts: SET; found: BOOLEAN;\r\tBEGIN\r\t\tGetMode(found, opts);\r\t\tIF found THEN\r\t\t\tpar.checked := opts * mode = {Containers.noCaret}\r\t\tELSE\r\t\t\tpar.disabled := TRUE\r\t\tEND\r\tEND SetBrowserModeGuard;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SelectionGuard
+                    attr: 3
+                  - text: "*"
+                    attr: 0
+                  - text: " "
+                    attr: 3
+                  - text: "(VAR par: Dialog.Par);\r\t\tVAR ops: Controllers.PollOpsMsg;\r\tBEGIN\r\t\tControllers.PollOps(ops);\r\t\tIF ops.valid * {Controllers.cut, Controllers.copy} = {} THEN par.disabled := TRUE END\r\tEND SelectionGuard;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SingletonGuard
+                    attr: 3
+                  - text: "*"
+                    attr: 0
+                  - text: " "
+                    attr: 3
+                  - text: "(VAR par: Dialog.Par);\r\t\tVAR ops: Controllers.PollOpsMsg;\r\tBEGIN\r\t\tControllers.PollOps(ops);\r\t\tIF ops.singleton = NIL THEN par.disabled := TRUE END\r\tEND SingletonGuard;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: SelectAllGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\t\tVAR ops: Controllers.PollOpsMsg;\r\tBEGIN\r\t\tControllers.PollOps(ops);\r\t\tIF ~ops.selectable THEN par.disabled := TRUE END\r\tEND SelectAllGuard;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: CaretGuard
+                    attr: 3
+                  - text: "*"
+                    attr: 0
+                  - text: " "
+                    attr: 3
+                  - text: "(VAR par: Dialog.Par);\r\t\tVAR ops: Controllers.PollOpsMsg;\r\tBEGIN\r\t\tControllers.PollOps(ops);\r\t\tIF ops.valid * {Controllers.pasteChar .. Controllers.paste} = {} THEN par.disabled := TRUE END\r\tEND CaretGuard;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: PasteCharGuard
+                    attr: 3
+                  - text: "*"
+                    attr: 0
+                  - text: " "
+                    attr: 3
+                  - text: "(VAR par: Dialog.Par);\r\t\tVAR ops: Controllers.PollOpsMsg;\r\tBEGIN\r\t\tControllers.PollOps(ops);\r\t\tIF ~(Controllers.pasteChar IN ops.valid) THEN par.disabled := TRUE END\r\tEND PasteCharGuard;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: PasteLCharGuard
+                    attr: 3
+                  - text: "*"
+                    attr: 0
+                  - text: " "
+                    attr: 3
+                  - text: "(VAR par: Dialog.Par);\r\t\tVAR ops: Controllers.PollOpsMsg;\r\tBEGIN\r\t\tControllers.PollOps(ops);\r\t\tIF ~(Controllers.pasteChar IN ops.valid) THEN par.disabled := TRUE END\r\tEND PasteLCharGuard;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: PasteViewGuard
+                    attr: 3
+                  - text: "*"
+                    attr: 0
+                  - text: " "
+                    attr: 3
+                  - text: "(VAR par: Dialog.Par);\r\t\tVAR ops: Controllers.PollOpsMsg;\r\tBEGIN\r\t\tControllers.PollOps(ops);\r\t\tIF ~(Controllers.paste IN ops.valid) THEN par.disabled := TRUE END\r\tEND PasteViewGuard;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: ContainerGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\tBEGIN\r\t\tIF Containers.Focus() = NIL THEN par.disabled := TRUE END\r\tEND ContainerGuard;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: UndoGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\t\tVAR f: Windows.Window; opName: Stores.OpName;\r\tBEGIN\r\t\tDialog.MapString(\"#System:Undo\", par.label);\r\t\tf := Windows.dir.Focus(Controllers.frontPath);\r\t\tIF"
+                    attr: 0
+                  - text: " "
+                    attr: 1
+                  - text: "(f # NIL) & f.seq.CanUndo() THEN\r\t\t\tf.seq.GetUndoName(opName);\r\t\t\tDialog.MapString(opName, opName);\r\t\t\tAppend(par.label, \" \");\r\t\t\tAppend(par.label, opName)\r\t\tELSE\r\t\t\tpar.disabled := TRUE\r\t\tEND\r\tEND UndoGuard;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: RedoGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\t\tVAR f: Windows.Window; opName: Stores.OpName;\r\tBEGIN\r\t\tDialog.MapString(\"#System:Redo\", par.label);\r\t\tf := Windows.dir.Focus(Controllers.frontPath);\r\t\tIF"
+                    attr: 0
+                  - text: " "
+                    attr: 1
+                  - text: "(f # NIL) & f.seq.CanRedo() THEN\r\t\t\tf.seq.GetRedoName(opName);\r\t\t\tDialog.MapString(opName, opName);\r\t\t\tAppend(par.label, \" \");\r\t\t\tAppend(par.label, opName)\r\t\tELSE\r\t\t\tpar.disabled := TRUE\r\t\tEND\r\tEND RedoGuard;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: PlainGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\t\tVAR props: Properties.StdProp;\r\tBEGIN\r\t\tprops := StdProp();\r\t\tIF props.known * {Properties.style, Properties.weight} # {} THEN\r\t\t\tpar.checked := (Properties.style IN props.valid)\r\t\t\t\t& (props.style.val = {}) & ({Fonts.italic, Fonts.underline, Fonts.strikeout} - props.style.mask = {})\r\t\t\t\t& (Properties.weight IN props.valid) & (props.weight = Fonts.normal)\r\t\tELSE\r\t\t\tpar.disabled := TRUE\r\t\tEND\r\tEND PlainGuard;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: BoldGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\t\tVAR props: Properties.StdProp;\r\tBEGIN\r\t\tprops := StdProp();\r\t\tIF Properties.weight IN props.known THEN\r\t\t\tpar.checked := (Properties.weight IN props.valid) & (props.weight = Fonts.bold)\r\t\tELSE\r\t\t\tpar.disabled := TRUE\r\t\tEND\r\tEND BoldGuard;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ItalicGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\t\tVAR props: Properties.StdProp;\r\tBEGIN\r\t\tprops := StdProp();\r\t\tIF Properties.style IN props.known THEN\r\t\t\tpar.checked := (Properties.style IN props.valid) & (Fonts.italic IN props.style.val)\r\t\tELSE\r\t\t\tpar.disabled := TRUE\r\t\tEND\r\tEND ItalicGuard;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: UnderlineGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\t\tVAR props: Properties.StdProp;\r\tBEGIN\r\t\tprops := StdProp();\r\t\tIF Properties.style IN props.known THEN\r\t\t\tpar.checked := (Properties.style IN props.valid) & (Fonts.underline IN props.style.val)\r\t\tELSE\r\t\t\tpar.disabled := TRUE\r\t\tEND\r\tEND UnderlineGuard;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: StrikeoutGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\t\tVAR props: Properties.StdProp;\r\tBEGIN\r\t\tprops := StdProp();\r\t\tIF Properties.style IN props.known THEN\r\t\t\tpar.checked := (Properties.style IN props.valid) & (Fonts.strikeout IN props.style.val)\r\t\tELSE\r\t\t\tpar.disabled := TRUE\r\t\tEND\r\tEND StrikeoutGuard;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SizeGuard
+                    attr: 3
+                  - text: "* (size: INTEGER; VAR par: Dialog.Par);\r\t\tVAR props: Properties.StdProp;\r\tBEGIN\r\t\tprops := StdProp();\r\t\tIF Properties.size IN props.known THEN\r\t\t\tpar.checked := (Properties.size IN props.valid) & (size = props.size DIV Ports.point)\r\t\tELSE\r\t\t\tpar.disabled := TRUE\r\t\tEND\r\tEND SizeGuard;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ColorGuard
+                    attr: 3
+                  - text: "* (color: INTEGER; VAR par: Dialog.Par);\r\t\tVAR props: Properties.StdProp;\r\tBEGIN\r\t\tprops := StdProp();\r\t\tIF Properties.color IN props.known THEN\r\t\t\tpar.checked := (Properties.color IN props.valid) & (color = props.color.val)\r\t\tELSE\r\t\t\tpar.disabled := TRUE\r\t\tEND\r\tEND ColorGuard;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: DefaultFontGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\t\tVAR props: Properties.StdProp;\r\tBEGIN\r\t\tprops := StdProp();\r\t\tIF Properties.typeface IN props.known THEN\r\t\t\tpar.checked := (Properties.typeface IN props.valid) & (props.typeface = Fonts.default)\r\t\tELSE\r\t\t\tpar.disabled := TRUE\r\t\tEND\r\tEND DefaultFontGuard;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: TypefaceGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\t\tVAR props: Properties.StdProp;\r\tBEGIN\r\t\tprops := StdProp();\r\t\tIF ~(Properties.typeface IN props.known) THEN par.disabled := TRUE END\r\tEND TypefaceGuard;\r\r\t\r\t"
+                    attr: 0
+                  - text: "(* standard notifiers *)\r\t\r"
+                    attr: 1
+                  - text: "\tPROCEDURE "
+                    attr: 0
+                  - text: DefaultOnDoubleClick
+                    attr: 3
+                  - text: "* (op, from, to: INTEGER);\r\t\tVAR  msg: Controllers.EditMsg; c: Containers.Controller;\r\tBEGIN\r\t\tIF (op = Dialog.pressed) & (from = 1) THEN\r\t\t\tControllers.SetCurrentPath(Controllers.frontPath);\r\t\t\tc := Containers.Focus();\r\t\t\tControllers.ResetCurrentPath;\r\t\t\tIF {Containers.noSelection, Containers.noCaret} - c.opts = {} THEN\r\t\t\t\tmsg.op := Controllers.pasteChar;\r\t\t\t\tmsg.char := 0DX; msg.modifiers := {};\r\t\t\t\tControllers.ForwardVia(Controllers.frontPath, msg)\r\t\t\tEND\r\t\tEND\r\tEND DefaultOnDoubleClick;\r\r\r\tPROCEDURE Init;\r\tBEGIN\r\t\tallocator := defaultAllocator;\r\t\tpropEra := -1\r\tEND Init;\r\rBEGIN\r\tInit\rEND StdCmds.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 32704
+          bodyLen: 8

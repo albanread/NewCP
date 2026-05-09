@@ -1,0 +1,206 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Win\\Mod\\Cmc.odc"
+  size: 9756
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 9625
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 9439
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 9353
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 22
+                bodyPos: 9474
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 8960
+                runListLen: 1605
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                flow:
+                  - text: "MODULE WinCmc [\"MAPI32\"];\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tCONST\r\t\tNO_TIMEZONE* = MIN(SHORTINT);\r\t\t\r\t\tEXT_REQUIRED* = {16};\r\t\tEXT_OUTPUT* =  {17};\r\t\tEXT_LAST_ELEMENT* = {31};\r\t\tEXT_RSV_FLAG_MASK* = {16..31};\r\t\tEXT_ITEM_FLAG_MASK* = {0..15};\r\t\t\r\t\tATT_APP_OWNS_FILE* = {0};\r\t\tATT_LAST_ELEMENT* = {31};\r\r\t\tATT_OID_BINARY* = \"? ? ? ? ? ?\";\r\t\tATT_OID_TEXT* = \"? ? ? ? ? ?\";\r\t\t\r\t\tTYPE_UNKNOWN* = 0;\r\t\tTYPE_INDIVIDUAL* = 1;\r\t\tTYPE_GROUP* = 2;\r\r\t\tROLE_TO* = 0;\r\t\tROLE_CC* = 1;\r\t\tROLE_BCC* = 2;\r\t\tROLE_ORIGINATOR* = 3;\r\t\tROLE_AUTHORIZING_USER* = 4;\r\r\t\tRECIP_IGNORE* = {0};\r\t\tRECIP_LIST_TRUNCATED* = {1};\r\t\tRECIP_LAST_ELEMENT* = {31};\r\r\t\tMSG_READ* = {0};\r\t\tMSG_TEXT_NOTE_AS_FILE* = {1};\r\t\tMSG_UNSENT* = {2};\r\t\tMSG_LAST_ELEMENT* = {31};\r\r\t\tSUM_READ* = {0};\r\t\tSUM_UNSENT* = {1};\r\t\tSUM_LAST_ELEMENT* = {31};\r\r\t\tERROR_UI_ALLOWED* = {24};\r\t\tLOGON_UI_ALLOWED* = {25};\r\t\tCOUNTED_STRING_TYPE* = {26};\r\r\t\tSEND_UI_REQUESTED* = {0};\r\t\tFIRST_ATTACH_AS_TEXT_NOTE* = {1};\r\r\t\tACT_ON_EXTENDED* = 0;\r\t\tACT_ON_DELETE* = 1;\r\r\t\tLIST_UNREAD_ONLY* = {0};\r\t\tLIST_MSG_REFS_ONLY* = {1};\r\t\tLIST_COUNT_ONLY* = {2};\r\r\t\tLENGTH_UNKNOWN* = 0FFFFFFFFH;\r\r\t\tDO_NOT_MARK_AS_READ* = {0};\r\t\tMSG_AND_ATT_HDRS_ONLY* = {1};\r\t\tREAD_FIRST_UNREAD_MESSAGE* = {2};\r\r\t\tLOOKUP_RESOLVE_PREFIX_SEARCH* = {0};\r\t\tLOOKUP_RESOLVE_IDENTITY* = {1};\r\t\tLOOKUP_RESOLVE_UI* = {2};\r\t\tLOOKUP_DETAILS_UI* = {3};\r\t\tLOOKUP_ADDRESSING_UI* = {4};\r\r\t\tLOGOFF_UI_ALLOWED* = {0};\r\r\t\tVERSION* = 100;\r\r\t\tCONFIG_CHARACTER_SET* = 1;\r\t\tCONFIG_LINE_TERM* = 2;\r\t\tCONFIG_DEFAULT_SERVICE* = 3;\r\t\tCONFIG_DEFAULT_USER* = 4;\r\t\tCONFIG_REQ_PASSWORD* = 5;\r\t\tCONFIG_REQ_SERVICE* = 6;\r\t\tCONFIG_REQ_USER* = 7;\r\t\tCONFIG_UI_AVAIL* = 8;\r\t\tCONFIG_SUP_NOMKMSGREAD* = 9;\r\t\tCONFIG_SUP_COUNTED_STR* = 10;\r\t\tCONFIG_VER_IMPLEM* = 11;\r\t\tCONFIG_VER_SPEC* = 12;\r\r\t\tLINE_TERM_CRLF* = 0;\r\t\tLINE_TERM_CR* = 1;\r\t\tLINE_TERM_LF* = 2;\r\r\t\tREQUIRED_NO* = 0;\r\t\tREQUIRED_YES* = 1;\r\t\tREQUIRED_OPT* = 2;\r\r\t\tCHAR_CP437* = \"1 2 840 113556 3 2 437\";\r\t\tCHAR_CP850* = \"1 2 840 113556 3 2 850\";\r\t\tCHAR_CP1252* = \"1 2 840 113556 3 2 1252\";\r\t\tCHAR_ISTRING* = \"1 2 840 113556 3 2 0\";\r\t\tCHAR_UNICODE* = \"1 2 840 113556 3 2 1\";\r\r\t\tERROR_DISPLAYED* = 00008000H;\r\t\tERROR_RSV_MASK* = 0000FFFFH;\r\t\tERROR_IMPL_MASK* = 0FFFF0000H;\r\r\t\tSUCCESS* = 0;\r\r\t\tE_AMBIGUOUS_RECIPIENT* = 1;\r\t\tE_ATTACHMENT_NOT_FOUND* = 2;\r\t\tE_ATTACHMENT_OPEN_FAILURE* = 3;\r\t\tE_ATTACHMENT_READ_FAILURE* = 4;\r\t\tE_ATTACHMENT_WRITE_FAILURE* = 5;\r\t\tE_COUNTED_STRING_UNSUPPORTED* = 6;\r\t\tE_DISK_FULL* = 7;\r\t\tE_FAILURE* = 8;\r\t\tE_INSUFFICIENT_MEMORY* = 9;\r\t\tE_INVALID_CONFIGURATION* = 10;\r\t\tE_INVALID_ENUM* = 11;\r\t\tE_INVALID_FLAG* = 12;\r\t\tE_INVALID_MEMORY* = 13;\r\t\tE_INVALID_MESSAGE_PARAMETER* = 14;\r\t\tE_INVALID_MESSAGE_REFERENCE* = 15;\r\t\tE_INVALID_PARAMETER* = 16;\r\t\tE_INVALID_SESSION_ID* = 17;\r\t\tE_INVALID_UI_ID* = 18;\r\t\tE_LOGON_FAILURE* = 19;\r\t\tE_MESSAGE_IN_USE* = 20;\r\t\tE_NOT_SUPPORTED* = 21;\r\t\tE_PASSWORD_REQUIRED* = 22;\r\t\tE_RECIPIENT_NOT_FOUND* = 23;\r\t\tE_SERVICE_UNAVAILABLE* = 24;\r\t\tE_TEXT_TOO_LARGE* = 25;\r\t\tE_TOO_MANY_FILES* = 26;\r\t\tE_TOO_MANY_RECIPIENTS* = 27;\r\t\tE_UNABLE_TO_NOT_MARK_AS_READ* = 28;\r\t\tE_UNRECOGNIZED_MESSAGE_TYPE* = 29;\r\t\tE_UNSUPPORTED_ACTION* = 30;\r\t\tE_UNSUPPORTED_CHARACTER_SET* = 31;\r\t\tE_UNSUPPORTED_DATA_EXT* = 32;\r\t\tE_UNSUPPORTED_FLAG* = 33;\r\t\tE_UNSUPPORTED_FUNCTION_EXT* = 34;\r\t\tE_UNSUPPORTED_VERSION* = 35;\r\t\tE_USER_CANCEL* = 36;\r\t\tE_USER_NOT_LOGGED_ON* = 37;\r\t\r\tTYPE\r\t\tsint8* = BYTE;\r\t\tsint16* = SHORTINT;\r\t\tsint32* = INTEGER;\r\t\tuint16* = SHORTINT;\r\t\tuint32* = INTEGER;\r\t\tbuffer* = INTEGER;\t(* POINTER TO RECORD [untagged] END *)\r\t\tstring* = POINTER TO ARRAY [untagged] OF SHORTCHAR;\r\t\tboolean* = uint16;\r\t\tenum* = sint32;\r\t\treturn_code* = uint32;\r\t\tflags* = SET;\r\t\tobject_identifier* = string;\r\t\tsession_id* = uint32;\r\t\tui_id* = uint32;\r\t\t\r\t\tcounted_string* = RECORD [untagged]\r\t\t\tlength*: uint32;\r\t\t\tstring*: ARRAY 32000 OF SHORTCHAR;\r\t\tEND;\r\t\t\r\t\tmessage_reference* = counted_string;\r\t\t\r\t\ttime* = RECORD [untagged]\r\t\t\tsecond*, minute*, hour*: sint8;\r\t\t\tday*, month*, year*: sint8;\r\t\t\tisdst*: sint8;\r\t\t\ttmzone*: sint16\r\t\tEND;\r\t\t\r\t\textension* = RECORD [untagged]\r\t\t\titem_code*: uint32;\r\t\t\titem_data*: uint32;\r\t\t\titem_reference*: buffer;\r\t\t\textension_flags*: flags\r\t\tEND;\r\t\t\r\t\tattachment* = RECORD [untagged]\r\t\t\tattach_title*: string;\r\t\t\tattach_type*: object_identifier;\r\t\t\tattach_filename*: string;\r\t\t\tattach_flags*: flags;\r\t\t\tattach_extensions*: POINTER TO extension\r\t\tEND;\r\t\t\r\t\trecipient* = RECORD [untagged]\r\t\t\tname*: string;\r\t\t\tname_type*: enum;\r\t\t\taddress*: string;\r\t\t\trole*: enum;\r\t\t\trecip_flags*: flags;\r\t\t\trecip_extensions*: POINTER TO extension\r\t\tEND;\r\t\r\t\tmessage* = RECORD [untagged]\r\t\t\tmessage_ref*: POINTER TO message_reference;\r\t\t\tmessage_type*: string;\r\t\t\tsubject*: string;\r\t\t\ttime_sent*: time;\r\t\t\ttext_note*: string;\r\t\t\trecipients*: POINTER TO recipient;\r\t\t\tattachments*: POINTER TO attachment;\r\t\t\tmessage_flags*: flags;\r\t\t\tmessage_extensions*: POINTER TO extension\r\t\tEND;\r\t\t\r\t\tmessage_summary* = RECORD [untagged]\r\t\t\tmessage_ref*: POINTER TO message_reference;\r\t\t\tmessage_type*: string;\r\t\t\tsubject*: string;\r\t\t\ttime_sent*: time;\r\t\t\tbyte_length*: uint32;\r\t\t\toriginator*: POINTER TO recipient;\r\t\t\tsummary_flags*: flags;\r\t\t\tmessage_summary_extensions*: POINTER TO extension\r\t\tEND;\r\r\t\r\tPROCEDURE send* [\"cmc_send\"] (session: session_id; VAR msg: message; flgs: flags; id: ui_id; VAR [nil] ext: ARRAY [untagged] OF extension): return_code;\r\t(*END send;*)\r\t\r\tPROCEDURE send_documents* [\"cmc_send_documents\"] (adr, subject, note: string; flgs: flags; paths, names, delimiter: string; id: ui_id): return_code;\r\t(*END send_documents;*)\r\r\tPROCEDURE act_on* [\"cmc_act_on\"] (session: session_id; VAR ref: message_reference; operation: enum; flgs: flags; id: ui_id; VAR [nil] ext: ARRAY [untagged] OF extension): return_code;\r\t(*END act_on;*)\r\t\r\tPROCEDURE list* [\"cmc_list\"] (session: session_id; type: string; flgs: flags; VAR [nil] seed: message_reference; VAR count: uint32; id: ui_id; VAR result: POINTER TO ARRAY [untagged] OF message_summary; VAR [nil] ext: ARRAY [untagged] OF extension): return_code;\r\t(*END list;*)\r\r\tPROCEDURE read* [\"cmc_read\"] (session: session_id; VAR ref: message_reference; flgs: flags; VAR msg: POINTER TO message; id: ui_id; VAR [nil] ext: ARRAY [untagged] OF extension): return_code;\r\t(*END read;*)\r\r\tPROCEDURE look_up* [\"cmc_look_up\"] (session: session_id; VAR rin: ARRAY [untagged] OF recipient; flgs: flags; id: ui_id; VAR count: uint32; VAR rout: POINTER TO ARRAY [untagged] OF recipient; VAR [nil] ext: ARRAY [untagged] OF extension): return_code;\r\t(*END look_up;*)\r\r\tPROCEDURE logoff* [\"cmc_logoff\"] (session: session_id; id: ui_id; flgs: flags; VAR [nil] ext: ARRAY [untagged] OF extension): return_code;\r\t(*END logoff;*)\r\r\tPROCEDURE logon* [\"cmc_logon\"] (service, user, password: string; chset: object_identifier; id: ui_id; version: uint16; flgs: flags; VAR session: session_id; VAR [nil] ext: ARRAY [untagged] OF extension): return_code;\r\t(*END logon;*)\r\r\tPROCEDURE query_configuration* [\"cmc_query_configuration\"] (session: session_id; item: enum; ref: buffer; VAR [nil] ext: ARRAY [untagged] OF extension): return_code;\r\t(*END query_configuration;*)\r\t\r\tPROCEDURE free* [\"cmc_free\"] (mem: buffer): return_code;\r\t(*END free;*)\r\rEND WinCmc.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 26
+          bodyPos: 9721
+          bodyLen: 8

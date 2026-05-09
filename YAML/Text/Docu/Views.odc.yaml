@@ -1,0 +1,514 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Text\\Docu\\Views.odc"
+  size: 12768
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 12637
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 12451
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 12365
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                asc: 121900
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 9
+                bodyPos: 12365
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 11851
+                runListLen: 1422
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: TextViews
+                    attr: 0
+                  - text: "\r\rDEFINITION TextViews;\r\r\tIMPORT Models, Views, Containers, TextModels, TextRulers, TextSetters;\r\r\tCONST\r\t\tshow = FALSE; hide = TRUE;\r\t\tany = FALSE; focusOnly = TRUE;\r\r\tTYPE\r\t\tView = POINTER TO ABSTRACT RECORD (Containers.View)\r\t\t\t(v: View) ThisModel (): TextModels.Model, EXTENSIBLE;\r\t\t\t(v: View) DisplayMarks (hide: BOOLEAN), NEW, ABSTRACT;\r\t\t\t(v: View) HidesMarks (): BOOLEAN, NEW, ABSTRACT;\r\t\t\t(v: View) SetSetter (setter: TextSetters.Setter), NEW, ABSTRACT;\r\t\t\t(v: View) ThisSetter (): TextSetters.Setter, NEW, ABSTRACT;\r\t\t\t(v: View) SetOrigin (org, dy: INTEGER), NEW, ABSTRACT;\r\t\t\t(v: View) PollOrigin (OUT org, dy: INTEGER), NEW, ABSTRACT;\r\t\t\t(v: View) SetDefaults (r: TextRulers.Ruler; a: TextModels.Attributes),\r\t\t\t\t\t\t\t\tNEW, ABSTRACT;\r\t\t\t(v: View) PollDefaults (OUT r: TextRulers.Ruler; OUT a: TextModels.Attributes),\r\t\t\t\t\t\t\t\tNEW, ABSTRACT;\r\t\t\t(v: View) GetThisLocation (f: Views.Frame; pos: INTEGER; OUT loc: Location),\r\t\t\t\t\t\t\t\tNEW, ABSTRACT;\r\t\t\t(v: View) GetRange (f: Views.Frame; OUT beg, end: INTEGER), NEW, ABSTRACT;\r\t\t\t(v: View) GetRect (f: Views.Frame; view: Views.View; OUT l, t, r, b: INTEGER);\r\t\t\t(v: View) ThisPos (f: Views.Frame; x, y: INTEGER): INTEGER, NEW, ABSTRACT;\r\t\t\t(v: View) ShowRangeIn (f: Views.Frame; beg, end: INTEGER), NEW, ABSTRACT;\r\t\t\t(v: View) ShowRange (beg, end: INTEGER; focusOnly: BOOLEAN), NEW, ABSTRACT\r\t\tEND;\r\r\t\tDirectory = POINTER TO RECORD\r\t\t\tdefAttr-: TextModels.Attributes;\r\t\t\t(d: Directory) Set (defAttr: TextModels.Attributes), NEW, ABSTRACT;\r\t\t\t(d: Directory) New (text: TextModels.Model): View, NEW, ABSTRACT\r\t\tEND;\r\r\t\tLocation = RECORD\r\t\t\tstart, pos: INTEGER;\r\t\t\tx, y: INTEGER;\r\t\t\tasc, dsc: INTEGER;\r\t\t\tview: Views.View;\r\t\t\tl, t, r, b: INTEGER\r\t\tEND;\r\r\t\tPageMsg = RECORD (Views.PropMessage)\r\t\t\tcurrent: INTEGER\r\t\tEND;\r\r\t\tPositionMsg = RECORD (Models.Message)\r\t\t\tfocusOnly: BOOLEAN;\r\t\t\tbeg, end: INTEGER\r\t\tEND;\r\r\tVAR\r\t\tctrlDir-: Containers.Directory;\r\t\tdir-, stdDir-: Directory;\r\r\tPROCEDURE SetCtrlDir (d: Containers.Directory);\r\tPROCEDURE SetDir (d: Directory);\r\tPROCEDURE Focus (): View;\r\tPROCEDURE FocusText (): TextModels.Model;\r\tPROCEDURE Deposit;\r\tPROCEDURE ShowRange (text: TextModels.Model; beg, end: INTEGER; focusOnly: BOOLEAN);\r\tPROCEDURE ThisRuler (v: View; pos: INTEGER): TextRulers.Ruler;\r\rEND TextViews.\r\r\r"
+                    attr: 1
+                  - text: TextViews
+                    attr: 2
+                  - text: " are the standard views for text models ("
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Text/Docu/Models', 'TextModels Docu')"
+                      body:
+                        - text: TextModels
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: ").\r\r\rCONST "
+                    attr: 1
+                  - text: show
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: hide
+                    attr: 4
+                  - text: "\rPossible arguments to the "
+                    attr: 1
+                  - text: hide
+                    attr: 2
+                  - text: " parameter of "
+                    attr: 1
+                  - text: view.DisplayMarks
+                    attr: 2
+                  - text: ".\r\rCONST "
+                    attr: 1
+                  - text: any
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: focusOnly
+                    attr: 4
+                  - text: "\rPossible arguments to the "
+                    attr: 1
+                  - text: focusOnly
+                    attr: 2
+                  - text: " parameter of "
+                    attr: 1
+                  - text: ShowRange
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: view.ShowRange
+                    attr: 2
+                  - text: ".\r\r\rTYPE "
+                    attr: 1
+                  - text: View (Containers.View)
+                    attr: 4
+                  - text: "\rABSTRACT\rStandard view for text models.\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: ThisModel
+                    attr: 4
+                  - text: " (): TextModels.Model\rEXTENSBIBLE\rResult type is narrowed.\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: DisplayMarks
+                    attr: 4
+                  - text: " (hide: BOOLEAN)\rNEW, ABSTRACT, [Operation]\rControl hiding of hideable views embedded in the displayed text. If hiding is requested, all views that have a preference "
+                    attr: 1
+                  - text: hideable
+                    attr: 2
+                  - text: " will be suppressed, i.e. reduced to zero width and zero height. For example, this is used to selectively hide or show rulers in a text.\rIf "
+                    attr: 1
+                  - text: "v.context # NIL"
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: ~v.context.Normalize()
+                    attr: 2
+                  - text: ", this is an operation.\r\rPost\rv.HidesMarks() = hide\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: HidesMarks
+                    attr: 4
+                  - text: " (): BOOLEAN\rNEW, ABSTRACT\rCurrent status: whether view hides hideable views, or not.\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: SetSetter
+                    attr: 4
+                  - text: " (setter: TextSetters.Setter)\rNEW, ABSTRACT, Operation\rAttach a setter to the view.\r\rPre\rsetter # NIL\t20\r\rPost\rv.ThisSetter() = setter\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: ThisSetter
+                    attr: 4
+                  - text: " (): TextSetters.Setter\rNEW, ABSTRACT\rReturns setter currently attached to view.\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: SetOrigin
+                    attr: 4
+                  - text: " (org, dy: INTEGER)\rNEW, ABSTRACT, [Operation]\rSet the origin and vertical displacement of the view.\rIf v.context # NIL and ~v.context.Normalize(), this is an operation.\r\rPre\rv.ThisModel() # NIL\t20\r0 <= org\t21\rorg <= v.ThisModel().Length()\t22\rdy <= 0\t23\r\rPost\rorg = v.ThisSetter().ThisLine(org)\r\tv.PollOrigin(o, d): o = org, d = dy\rorg # v.ThisSetter().ThisLine(org)\r\tv.PollOrigin(o, d): o = v.ThisSetter().ThisLine(org), d = 0\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: PollOrigin
+                    attr: 4
+                  - text: " (OUT org, dy: INTEGER)\rNEW, ABSTRACT\rReturn origin and vertical displacement of view. The vertical displacement determines the offset (in units) of the top of the first displayed line, relative to the top of the view area. This is used to support partial display of the first line during scrolling.\r\rPost\r0 <= org <= v.ThisModel().Length()\rdy <= 0\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: SetDefaults
+                    attr: 4
+                  - text: " (r: TextRulers.Ruler; a: TextModels.Attributes)\rNEW, ABSTRACT, Operation\rSet the default ruler and attributes.\r\rPre\rr # NIL\t20\ra # NIL\t22\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: PollDefaults
+                    attr: 4
+                  - text: " (OUT r: TextRulers.Ruler; OUT a: TextModels.Attributes)\rNEW, ABSTRACT\rReturn default ruler and attributes.\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: GetThisLocation
+                    attr: 4
+                  - text: " (f: Views.Frame; pos: INTEGER; OUT loc: Location)\rNEW, ABSTRACT\rGet the location characteristics of the position "
+                    attr: 1
+                  - text: pos
+                    attr: 2
+                  - text: " displayed in frame "
+                    attr: 1
+                  - text: f
+                    attr: 2
+                  - text: ". (The frame is required to take decivedependent character positioning inside words into account.) If "
+                    attr: 1
+                  - text: pos
+                    attr: 2
+                  - text: " lies outside view, the next best position inside will be taken.\r\rPre\rf # NIL\t20\rDisplayed(f)\t21\r0 <= pos\t22\rpos <= v.ThisModel().Length()\t23\r\rPost\rloc.view # NIL\r\tloc.l <= loc.r, loc.t <= loc.b\tbounding box of view\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: GetRect
+                    attr: 4
+                  - text: " (f: Views.Frame; view: Views.View; OUT l, t, r, b: INTEGER)\rPre\rf # NIL\t20\rDisplayed(f)\t21\rview.context # NIL\t22\rview.context.ThisModel() = v.ThisModel()\t23\r\rExcept for performace, equivalent to:\r\tVAR loc: Location;\r\tv.GetThisLocation(f, view.context(TextModels.Context).Pos(), loc);\r\tIF loc.view = view THEN\r\t\tl := loc.l; t := loc.t; r := loc.r; b := loc.b\r\tELSE\r\t\tl := MAX(INTEGER(; t := MAX(INTEGER); r := l; b := t\r\tEND\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: GetRange
+                    attr: 4
+                  - text: " (f: Views.Frame; OUT beg, end: INTEGER)\rNEW, ABSTRACT\rGet the stretch ["
+                    attr: 1
+                  - text: beg
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: end
+                    attr: 2
+                  - text: ") visible in "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: ".\r\rPre\rf # NIL\t20\rDisplayed(f)\t21\r\rPost\rbeg = BeginOf(FirstLineVisible(v))\rend = EndOf(LastLineVisible(v))\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: ThisPos
+                    attr: 4
+                  - text: " (f: Views.Frame; x, y: INTEGER): INTEGER;\rNEW, ABSTRACT\rText position corresponding to the point ("
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: y
+                    attr: 2
+                  - text: ") relative to frame "
+                    attr: 1
+                  - text: f
+                    attr: 2
+                  - text: ".\r\rPre\rf # NIL\t20\rDisplayed(f)\t21\r\rPost\rv.GetOrigin(o, d): o <= result <= v.ThisModel().Length()\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: ShowRangeIn
+                    attr: 4
+                  - text: " (f: Views.Frame; beg, end: INTEGER);\rNEW, ABSTRACT\rIf possible, make specified stretch ["
+                    attr: 1
+                  - text: beg
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: end
+                    attr: 2
+                  - text: ") visible in f.\r\rPre\rf # NIL\t20\rDisplayed(f)\t21\r\rPost\rIf possible, BeginOf(FirstLineVisible(v)) <= k <= EndOf(LastLineVisible(v)):\r\tbeg = end\r\t\tk = beg\r\tbeg < end\r\t\tbeg <= k < end\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: ShowRange
+                    attr: 4
+                  - text: " (beg, end: INTEGER; focusOnly: BOOLEAN);\rNEW, ABSTRACT\rLocates a reference frame displaying "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: " and performs "
+                    attr: 1
+                  - text: v.ShowRangeIn
+                    attr: 2
+                  - text: " on it. If "
+                    attr: 1
+                  - text: ~focusOnly
+                    attr: 2
+                  - text: ", an arbitrary frame will be taken, where a target frame takes precedence over all but a front frame, which takes precedence over all other frames. If "
+                    attr: 1
+                  - text: focusOnly
+                    attr: 2
+                  - text: ", only a front (or if none exists, a target) frame is taken as a reference, and no repositioning takes place if neither a target nor a front frame is found.\r\r\rTYPE "
+                    attr: 1
+                  - text: Directory
+                    attr: 4
+                  - text: "\rABSTRACT\rDirectory for views.\r\r"
+                    attr: 1
+                  - text: defAttr
+                    attr: 4
+                  - text: "-: TextModels.Attributes\rDefault attributes, used for initial formatting when typing to an empty text.\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: Set
+                    attr: 4
+                  - text: " (defAttr: TextModels.Attributes)\rNEW, EXTENSIBLE\rSet the default attributes.\r\rPre\rdefAttr # NIL\t"
+                    attr: 1
+                  - text: not explicitly checked
+                    attr: 2
+                  - text: "\rdefAttr.init\t20\r\rPost\rd.defAttr = defAttr\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: New
+                    attr: 4
+                  - text: " (text: TextModels.Model): View\rNEW, ABSTRACT\rReturn a new view displaying "
+                    attr: 1
+                  - text: text
+                    attr: 2
+                  - text: ". If "
+                    attr: 1
+                  - text: text
+                    attr: 2
+                  - text: " = NIL, a new text is created using "
+                    attr: 1
+                  - text: TextModels.dir.New
+                    attr: 2
+                  - text: ".\r\rPost\rtext = NIL\r\tresult.ThisModel() = new-text\rtext # NIL\r\tresult.ThisModel() = text\r\r\rTYPE "
+                    attr: 1
+                  - text: Location
+                    attr: 4
+                  - text: "\rCharacteristics of an element's (i.e., a character's or embedded view's) location in a text view.\r\r"
+                    attr: 1
+                  - text: start
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: pos
+                    attr: 4
+                  - text: ": INTEGER\rStart of line and position of location.\r\r"
+                    attr: 1
+                  - text: x
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: y
+                    attr: 4
+                  - text: ": INTEGER\rCoordinates of location.\r\r"
+                    attr: 1
+                  - text: asc
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: dsc
+                    attr: 4
+                  - text: ": INTEGER\rLine's ascender and descender at location.\r\r"
+                    attr: 1
+                  - text: view
+                    attr: 4
+                  - text: ": Views.View\r"
+                    attr: 1
+                  - text: l
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: t
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: r
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: b
+                    attr: 4
+                  - text: ": INTEGER\rIf embedded view at location: The view and its bounding box.\r\r\rTYPE  "
+                    attr: 1
+                  - text: PageMsg (Views.PropMessage)
+                    attr: 4
+                  - text: "\rMessage send by a text view to all embedded views on a page before rendering that page (for printing). This message can be used by views to display page number dependent behavior during printing.\r\r"
+                    attr: 1
+                  - text: current
+                    attr: 4
+                  - text: ": INTEGER\rPage number of the page to be rendered.\r\r\rTYPE "
+                    attr: 1
+                  - text: PositionMsg (Models.Message)
+                    attr: 4
+                  - text: "\rMessage broadcast by "
+                    attr: 1
+                  - text: ShowRange
+                    attr: 2
+                  - text: " to request repositioning.\r\r"
+                    attr: 1
+                  - text: focusOnly
+                    attr: 4
+                  - text: ": BOOLEAN\rReposition front (or, if none, target) view only.\r\r"
+                    attr: 1
+                  - text: beg
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: end
+                    attr: 4
+                  - text: ": INTEGER\rThe range requested to become visible.\r\r\rVAR "
+                    attr: 1
+                  - text: ctrlDir
+                    attr: 4
+                  - text: "-: Containers.Directory\tstable ctrlDir # NIL\rController directory object. If installed, this directory object is used by the view directory object to install a controller in a newly created view. Upon initialization, module "
+                    attr: 1
+                  - text: TextViews
+                    attr: 2
+                  - text: " tries to load module "
+                    attr: 1
+                  - text: TextControllers
+                    attr: 2
+                  - text: " which, if available, in turn installs the standard controller directory object in "
+                    attr: 1
+                  - text: ctrlDir
+                    attr: 2
+                  - text: ".\r\r\rVAR "
+                    attr: 1
+                  - text: dir
+                    attr: 4
+                  - text: "-, "
+                    attr: 1
+                  - text: stdDir
+                    attr: 4
+                  - text: "-: Directory\tdir # NIL, stdDir # NIL, stable stdDir = d\rDirectory and standard directory objects for views.\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetCtrlDir
+                    attr: 4
+                  - text: " (d: Containers.Directory)\rSet controller directory object.\r\rPre\rd # NIL\t20\r\rPost\rctrlDir = d\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetDir
+                    attr: 4
+                  - text: " (d: Directory)\rSet directory object.\r\rPre\rd # NIL\t20\r\rPost\rdir = d\r\rPROCEDURE "
+                    attr: 1
+                  - text: Focus
+                    attr: 4
+                  - text: " (): View\rReturn focus text view, if one exists.\r\rExcept for performace, equivalent to:\r\tVAR v: Views.View;\r\tv := Controllers.FocusView();\r\tIF (v # NIL) & (v IS View) THEN "
+                    attr: 1
+                  - text: RETURN
+                    attr: 4
+                  - text: " v(View) ELSE "
+                    attr: 1
+                  - text: RETURN
+                    attr: 4
+                  - text: " NIL END\r\rPROCEDURE "
+                    attr: 1
+                  - text: FocusText
+                    attr: 4
+                  - text: " (): TextModels.Model\rReturn focus text, if one exists.\r\rExcept for performace, equivalent to:\r\tVAR v: View;\r\tv := Focus();\r\tIF v # NIL THEN "
+                    attr: 1
+                  - text: RETURN
+                    attr: 4
+                  - text: " v.ThisModel() ELSE "
+                    attr: 1
+                  - text: RETURN
+                    attr: 4
+                  - text: " NIL END\r\rPROCEDURE "
+                    attr: 1
+                  - text: Deposit
+                    attr: 4
+                  - text: "\rDeposit a default text view in the "
+                    attr: 1
+                  - text: Views
+                    attr: 2
+                  - text: " queue.\r\rExcept for performace, equivalent to:\r\tViews.Deposit(dir.New(NIL))\r\rPROCEDURE "
+                    attr: 1
+                  - text: ShowRange
+                    attr: 4
+                  - text: " (text: TextModels.Model; beg, end: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\tfocusOnly: BOOLEAN)\rFor all views "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: " displaying "
+                    attr: 1
+                  - text: text
+                    attr: 2
+                  - text: ", issue "
+                    attr: 1
+                  - text: "v.ShowRange(beg, end, focusOnly)"
+                    attr: 2
+                  - text: ".\r\rPre\rtext # NIL\t20\r\rExcept for performace, equivalent to:\r\tVAR pm: PositionMsg;\r\tpm.beg := beg; pm.end := end; pm.focusOnly := focusOnly;\r\tModels.Broadcast(text, pm)\r\rPROCEDURE "
+                    attr: 1
+                  - text: ThisRuler
+                    attr: 4
+                  - text: " (v: View; pos: INTEGER): TextRulers.Ruler\rLocate the ruler dominating position "
+                    attr: 1
+                  - text: pos
+                    attr: 2
+                  - text: " in the text displayed by "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: ".\r\rPre\rv # NIL\t20\rv.ThisModel() # NIL\t21\r0 <= pos\t22\rpos <= v.ThisModel().Length()\t23\r\rExcept for performace, equivalent to:\r\tVAR r: TextRulers.Ruler; a: TextModels.Attributes; rpos: INTEGER;\r\tv.PollDefaults(r, a); rpos := -1; TextRulers.GetValidRuler(v.ThisModel(), pos, -1, r, rpos);\r\t"
+                    attr: 1
+                  - text: RETURN
+                    attr: 4
+                  - text: " r\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 13
+          bodyPos: 12733
+          bodyLen: 8

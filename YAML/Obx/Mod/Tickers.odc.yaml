@@ -1,0 +1,244 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Mod\\Tickers.odc"
+  size: 6671
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 6540
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 6354
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 6268
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 114300
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Helvetica
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 6385
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 5871
+                runListLen: 1733
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE ObxTickers;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT Views, Ports, Properties, Services, Stores, Models;\r\r\tCONST minVersion = 0; maxVersion = 0;\r\r\tTYPE\r\t\tTicks = POINTER TO ARRAY OF INTEGER;\r\r\t\tView = POINTER TO RECORD (Views.View)\r\t\t\tticks: Ticks;\r\t\t\tlast: INTEGER;\r\t\t\toffset: INTEGER\r\t\tEND;\r\r\t\tAction = POINTER TO RECORD (Services.Action) END;\r\r\t\tMsg = RECORD (Models.Message)\r\t\t\tconsumed: BOOLEAN\r\t\tEND;\r\r\tVAR\r\t\taction: Action;\r\t\tactionIsActive: BOOLEAN;\r\t\tseed: INTEGER;\r\r\tPROCEDURE UniRand (): REAL;\r\t\tCONST a = 16807; m = 2147483647; q = m DIV a; r = m MOD a;\r\tBEGIN\r\t\tseed := a * (seed MOD q) - r * (seed DIV q);\r\t\tIF seed <= 0 THEN seed := seed + m END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " seed * (1.0 / m)\r\tEND UniRand;\r\r\tPROCEDURE (a: Action) Do;\r\t\tVAR msg: Msg;\r\tBEGIN\r\t\tmsg.consumed := FALSE;\r\t\tViews.Omnicast(msg);\r\t\tIF msg.consumed THEN\r\t\t\tServices.DoLater(action, Services.Ticks() + Services.resolution DIV 5)\r"
+                    attr: 0
+                  - text: "\t\t"
+                    attr: 1
+                  - text: "ELSE\r\t\t\tactionIsActive := FALSE\r\t\tEND\r\tEND Do;\r\r\t"
+                    attr: 0
+                  - text: "(* view *)\r"
+                    attr: 1
+                  - text: "\r\tPROCEDURE (v: View) Externalize (VAR wr: Stores.Writer);\r\t\tVAR i, len: INTEGER;\r\tBEGIN\r\t\twr.WriteVersion(maxVersion);\r\t\twr.WriteInt(v.offset);\r\t\twr.WriteInt(v.last);\r\t\tlen := LEN(v.ticks); wr.WriteInt(len);\r\t\tFOR i := 0 TO len - 1 DO wr.WriteInt(v.ticks[i]) END\r\tEND Externalize;\r\r\tPROCEDURE (v: View) Internalize (VAR rd: Stores.Reader);\r\t\tVAR version, i, len: INTEGER;\r\tBEGIN\r\t\trd.ReadVersion(minVersion, maxVersion, version);\r\t\tIF ~rd.cancelled THEN\r\t\t\trd.ReadInt(v.offset);\r\t\t\trd.ReadInt(v.last);\r\t\t\trd.ReadInt(len); NEW(v.ticks, len);\r\t\t\tFOR i := 0 TO len - 1 DO rd.ReadInt(v.ticks[i]) END\r\t\tEND\r\tEND Internalize;\r\r\tPROCEDURE (v: View) CopyFromSimpleView (source: Views.View);\r\t\tVAR i, len: INTEGER;\r\tBEGIN\r\t\tWITH source: View DO\r\t\t\tv.offset := source.offset;\r\t\t\tv.last := source.last;\r\t\t\tlen := LEN(source.ticks);\r\t\t\tNEW(v.ticks, len);\r\t\t\tFOR i := 0 TO len - 1 DO v.ticks[i] := source.ticks[i] END\r\t\tEND\r\tEND CopyFromSimpleView;\r\r\tPROCEDURE (v: View) HandlePropMsg (VAR msg: Properties.Message);\r\tBEGIN\r\t\tWITH msg: Properties.SizePref DO\r\t\t\tIF (msg.w = Views.undefined) OR (msg.h = Views.undefined) THEN\r\t\t\t\tmsg.w := 50 * Ports.mm; msg.h := 10 * Ports.mm\r\t\t\tEND\r\t\tELSE\r\t\tEND\r\tEND HandlePropMsg;\r\r\tPROCEDURE (v: View) HandleModelMsg (VAR msg: Models.Message);\r\t\tVAR len, m: INTEGER;\r\tBEGIN\r\t\tWITH msg: Msg DO\r\t\t\tlen := LEN(v.ticks);\r\t\t\tm := v.ticks[v.last];\r\t\t\tIF UniRand() > 0.5 THEN INC(m) ELSE DEC(m) END;\r\t\t\tv.last := (v.last + 1) MOD len;\r\t\t\tv.ticks[v.last] := m;\r\t\t\tmsg.consumed := TRUE;\r\t\t\tViews.Update(v, Views.keepFrames)\r\t\tELSE\r\t\tEND\r\tEND HandleModelMsg;\r\r\tPROCEDURE (v: View) Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\t\tVAR w, h, x, y0, ylast, p, p1, len, len2, i, j: INTEGER; ticks: Ticks;\r\tBEGIN\r\t\tIF ~actionIsActive THEN\r\t\t\tServices.DoLater(action, Services.now);\r\t\t\tactionIsActive := TRUE\r\t\tEND;\r\t\tv.context.GetSize(w, h);\r\t\tlen := LEN(v.ticks); len2 := 1 + w DIV f.dot;\r\t\tIF len2 > len THEN\t"
+                    attr: 0
+                  - text: "(* allocate new array and copy data *)"
+                    attr: 1
+                  - text: "\r\t\t\tNEW(ticks, len2);\r\t\t\ti := 0; WHILE i <= v.last DO ticks[i] := v.ticks[i]; INC(i) END;\r\t\t\tj := i + len2 - len; WHILE i < len DO ticks[j] := v.ticks[i]; INC(i); INC(j) END;\r\t\t\tv.ticks := ticks; len := len2\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: "(* adjust offset so that the last point is visible *)\r\t\t"
+                    attr: 1
+                  - text: "ylast := (v.ticks[v.last] + v.offset) * f.dot;\r\t\tIF ylast > h DIV 2 THEN DEC(v.offset)\r\t\tELSIF ylast < -h DIV 2 THEN INC(v.offset)\r\t\tEND;\r\r\t\tp := (v.last - (len2 - 1)) MOD len;\t"
+                    attr: 0
+                  - text: "(* index of first entry *)"
+                    attr: 1
+                  - text: "\r\t\tx := 0; y0 := h DIV 2 + v.offset * f.dot;\r\t\tWHILE p # v.last DO\r\t\t\tp1 := (p + 1) MOD len;\r\t\t\tf.DrawLine(x, y0 + v.ticks[p] * f.dot, x + f.dot, y0 + v.ticks[p1] * f.dot, 0, Ports.red);\r\t\t\tx := x + f.dot; p := p1\r\t\tEND;\r\t\tf.DrawLine(l, y0, r, y0, 0, Ports.black)\r\tEND Restore;\r\r\t"
+                    attr: 0
+                  - text: "(* commands *)\r"
+                    attr: 1
+                  - text: "\r\tPROCEDURE "
+                    attr: 0
+                  - text: Deposit
+                    attr: 3
+                  - text: "*;\r\t\tVAR v: View;\r\tBEGIN\r\t\tNEW(v); NEW(v.ticks, 142);\r\t\tv.last := 0; v.offset := 0;\r\t\tViews.Deposit(v)\r\tEND Deposit;\r\rBEGIN\r\tNEW(action); actionIsActive := FALSE; seed := SHORT(Services.Ticks())\rEND ObxTickers.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 6636
+          bodyLen: 8

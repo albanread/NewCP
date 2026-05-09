@@ -1,0 +1,1163 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\System\\Mod\\Views.odc"
+  size: 44177
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 44046
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 43860
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 43774
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                dsc: 25400
+                grid: 1
+                opts: 0x00000021
+              defaultAttr:
+                font: Arial
+                size: 114300
+                color: 0x00000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 25
+                bodyPos: 43895
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 43381
+                runListLen: 4203
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [4]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000001
+                  - # [5]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 550
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE Views;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- fundamentally, using purely host-specific area-invalidation would be better, but that would be major change\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT "
+                    attr: 0
+                  - text: SYSTEM
+                    attr: 3
+                  - text: ",\r\t\tKernel, Log, Dialog, Files, Services, Fonts, Stores, Converters, Ports, Sequencers, Models;\r\r\tCONST\r\t\t"
+                    attr: 0
+                  - text: "(** View.Background color **)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: transparent
+                    attr: 3
+                  - text: "* = 0FF000000H;\r\r\t\t"
+                    attr: 0
+                  - text: "(** Views.CopyModel / Views.CopyOf shallow **)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: deep
+                    attr: 3
+                  - text: "* = FALSE; "
+                    attr: 0
+                  - text: shallow
+                    attr: 3
+                  - text: "* = TRUE;\r\r\t\t"
+                    attr: 0
+                  - text: "(** Update, UpdateIn rebuild **)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: keepFrames
+                    attr: 3
+                  - text: "* = FALSE; "
+                    attr: 0
+                  - text: rebuildFrames
+                    attr: 3
+                  - text: "* = TRUE;\r\r\t\t"
+                    attr: 0
+                  - text: "(** Deposit, QualifiedDeposit, Fetch w, h **)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: undefined
+                    attr: 3
+                  - text: "* = 0;\r\t\t\r\t\t(** OldView, RegisterView ask **)\r\t\t"
+                    attr: 0
+                  - text: dontAsk
+                    attr: 3
+                  - text: "* = FALSE; "
+                    attr: 0
+                  - text: ask
+                    attr: 3
+                  - text: "* = TRUE;\r\r\t\t"
+                    attr: 0
+                  - text: "(* method numbers "
+                    attr: 1
+                  - text: "(UNSAFE!)"
+                    attr: 4
+                  - text: " *)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: "(* copyFrom = 1; *)"
+                    attr: 1
+                  - text: "\r\t\tcopyFromModelView = 7; copyFromSimpleView = 8;\r\r\t\t"
+                    attr: 0
+                  - text: "(* Frame.state *)"
+                    attr: 1
+                  - text: "\r\t\tnew = 0; open = 1; closed = 2;\r\t\t\r\t\tmaxN = 30;\t"
+                    attr: 0
+                  - text: "(* max number of rects used to approximate a region *)"
+                    attr: 1
+                  - text: "\r\r\t\tminVersion = 0; maxVersion = 0;\r\t\t\r\t\t"
+                    attr: 0
+                  - text: "(* actOp *)\r\t\t"
+                    attr: 1
+                  - text: "handler = 1; restore = 2; externalize = 3;\r\r\t\tmarkBorderSize = 2;\r\r\t\t"
+                    attr: 0
+                  - text: clean
+                    attr: 3
+                  - text: "* = Sequencers.clean; "
+                    attr: 0
+                  - text: "\r\t\tnotUndoable"
+                    attr: 3
+                  - text: "* = Sequencers.notUndoable;\r"
+                    attr: 0
+                  - text: "\t\tinvisible"
+                    attr: 3
+                  - text: "* = Sequencers.invisible; "
+                    attr: 0
+                  - text: "\r"
+                    attr: 3
+                  - text: "\r\r\tTYPE\r\r\t\t"
+                    attr: 0
+                  - text: "(** views **)"
+                    attr: 1
+                  - text: "\r\r\t\t"
+                    attr: 0
+                  - text: View
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Stores.Store)\r\t\t\tcontext-: Models.Context;\t"
+                    attr: 0
+                  - text: "(** stable context # NIL **)"
+                    attr: 1
+                  - text: "\r\t\t\tera: INTEGER;\r\t\t\tguard: INTEGER;\t"
+                    attr: 0
+                  - text: "(* = TrapCount()+1 if view is addressee of ongoing broadcast *)"
+                    attr: 1
+                  - text: "\r\t\t\tbad: SET\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: Alien
+                    attr: 3
+                  - text: "* = POINTER TO LIMITED RECORD (View)\r\t\t\tstore-: Stores.Alien\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: Title
+                    attr: 3
+                  - text: "* = ARRAY 64 OF CHAR;\r\r\t\tTrapAlien = POINTER TO RECORD (Stores.Store) END;\r\r\r\t\t"
+                    attr: 0
+                  - text: "(** frames **)"
+                    attr: 1
+                  - text: "\r\r\t\t"
+                    attr: 0
+                  - text: Frame
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Ports.Frame)\r\t\t\tl-, t-, r-, b-: INTEGER;\t"
+                    attr: 0
+                  - text: "(** l < r, t < b **)"
+                    attr: 1
+                  - text: "\r\t\t\tview-: View;\t"
+                    attr: 0
+                  - text: "(** opened => view # NIL, view.context # NIL, view.seq # NIL **)"
+                    attr: 1
+                  - text: "\r\t\t\tfront-, mark-: BOOLEAN;\r\t\t\tstate: BYTE;\r\t\t\tx, y: INTEGER;\t"
+                    attr: 0
+                  - text: "(* origin in coordinates of environment *)"
+                    attr: 1
+                  - text: "\r\t\t\tgx0, gy0: INTEGER;\t"
+                    attr: 0
+                  - text: "(* global origin w/o local scrolling compensation *)"
+                    attr: 1
+                  - text: "\r\t\t\tsx, sy: INTEGER;\t(* "
+                    attr: 0
+                  - text: "cumulated local sub-pixel scrolling compensation *)"
+                    attr: 1
+                  - text: "\r\t\t\tnext, down, up, focus: Frame;\r\t\t\tlevel: INTEGER\t"
+                    attr: 0
+                  - text: "(* used for partial z-ordering *)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\t\t\r\r\t\t"
+                    attr: 0
+                  - text: Message
+                    attr: 3
+                  - text: "* = ABSTRACT RECORD\r\t\t\tview-: View\t"
+                    attr: 0
+                  - text: "(** view # NIL **)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: NotifyMsg
+                    attr: 3
+                  - text: "* = EXTENSIBLE RECORD (Message)\r\t\t\tid0*, id1*: INTEGER;\r\t\t\topts*: SET\r\t\tEND;\r\t\t\r\t\tNotifyHook = POINTER TO RECORD (Dialog.NotifyHook) END;\r\t\t\r\t\t"
+                    attr: 0
+                  - text: UpdateCachesMsg
+                    attr: 3
+                  - text: "* = EXTENSIBLE RECORD (Message) END;\r\t\t\r\t\t"
+                    attr: 0
+                  - text: ScrollClassMsg
+                    attr: 3
+                  - text: "* = RECORD (Message)\r\t\t\tallowBitmapScrolling*: BOOLEAN "
+                    attr: 0
+                  - text: "(** OUT, preset to FALSE **)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\r\t\t"
+                    attr: 0
+                  - text: "(** property messages **)"
+                    attr: 1
+                  - text: "\r\r\t\t"
+                    attr: 0
+                  - text: PropMessage
+                    attr: 3
+                  - text: "* = ABSTRACT RECORD END;\r\r\r\t\t"
+                    attr: 0
+                  - text: "(** controller messages **)"
+                    attr: 1
+                  - text: "\r\r\t\t"
+                    attr: 0
+                  - text: CtrlMessage
+                    attr: 3
+                  - text: "* = ABSTRACT RECORD END;\r\r\t\t"
+                    attr: 0
+                  - text: CtrlMsgHandler
+                    attr: 3
+                  - text: "* = PROCEDURE (op: INTEGER; f, g: Frame; VAR msg: CtrlMessage; VAR mark, front, req: BOOLEAN);\r\r\t\tUpdateMsg = RECORD (Message)\r\t\t\tscroll, rebuild, all: BOOLEAN;\r\t\t\tl, t, r, b, dx, dy: INTEGER\r\t\tEND;\r\r\r\t\tRect = RECORD\r\t\t\tv: View;\r\t\t\trebuild: BOOLEAN;\r\t\t\tl, t, r, b: INTEGER\r\t\tEND;\r\r\t\tRegion = POINTER TO RECORD\r\t\t\tn: INTEGER;\r\t\t\tr: ARRAY maxN OF Rect\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: RootFrame
+                    attr: 3
+                  - text: "* = POINTER TO RECORD (Frame)\r\t\t\tflags-: SET;\r\t\t\tupdate: Region\t"
+                    attr: 0
+                  - text: "(* allocated lazily by SetRoot *)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\t\t\r\t\tStdFrame = POINTER TO RECORD (Frame) END;\r\r\r\t\t"
+                    attr: 0
+                  - text: "(* view producer/consumer decoupling *)"
+                    attr: 1
+                  - text: "\r\r\t\tQueueElem = POINTER TO RECORD\r\t\t\tnext: QueueElem;\r\t\t\tview: View\r\t\tEND;\r\t\t\r\t\t"
+                    attr: 0
+                  - text: GetSpecHook
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Kernel.Hook) END;\r\t\t"
+                    attr: 0
+                  - text: ViewHook
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Kernel.Hook) END;\r\t\t"
+                    attr: 0
+                  - text: MsgHook
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Kernel.Hook) END;\r\t\t\r\r\r\tVAR\r\t\t"
+                    attr: 0
+                  - text: HandleCtrlMsg
+                    attr: 3
+                  - text: "-: CtrlMsgHandler;\r\r\t\tdomainGuard: INTEGER;\t"
+                    attr: 0
+                  - text: "(* = TrapCount()+1 if domain is addressee of ongoing domaincast *)"
+                    attr: 1
+                  - text: "\r\t\t\r\t\tactView: View;\r\t\tactFrame: RootFrame;\r\t\tactOp: INTEGER;\r\r\t\tcopyModel: Models.Model;\t"
+                    attr: 0
+                  - text: "(* context for (View)CopyFrom; reset by TrapCleanup *)"
+                    attr: 1
+                  - text: "\r\r\t\tqueue: RECORD\r\t\t\tlen: INTEGER;\r\t\t\thead, tail: QueueElem\r\t\tEND;\r\t\t\r\t\tgetSpecHook: GetSpecHook;\r\t\tviewHook: ViewHook;\r\t\tmsgHook: MsgHook;\r\t\r\t\r\tPROCEDURE Overwritten (v: View; mno: INTEGER): BOOLEAN;\r\t\tVAR base, actual: PROCEDURE;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: SYSTEM.GET
+                    attr: 3
+                  - text: (
+                    attr: 0
+                  - text: SYSTEM.TYP
+                    attr: 3
+                  - text: "(View) - 4 * (mno + 1), base);\r\t\t"
+                    attr: 0
+                  - text: SYSTEM.GET
+                    attr: 3
+                  - text: (
+                    attr: 0
+                  - text: SYSTEM.TYP
+                    attr: 3
+                  - text: "(v) - 4 * (mno + 1), actual);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " actual # base\r\tEND Overwritten;\r\r\t"
+                    attr: 0
+                  - text: "(** Hooks **)\r\t"
+                    attr: 1
+                  - text: "\r\tPROCEDURE (h: GetSpecHook) "
+                    attr: 0
+                  - text: GetExtSpec
+                    attr: 3
+                  - text: "* (s: Stores.Store; VAR loc: Files.Locator; \r\t\t\t\t\t\t\t\t\t\t\tVAR name: Files.Name; VAR conv: Converters.Converter), NEW, ABSTRACT;\r\tPROCEDURE (h: GetSpecHook) "
+                    attr: 0
+                  - text: GetIntSpec
+                    attr: 3
+                  - text: "* (VAR loc: Files.Locator; VAR name: Files.Name; \r\t\t\t\t\t\t\t\t\t\t\tVAR conv: Converters.Converter), NEW, ABSTRACT;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetGetSpecHook
+                    attr: 3
+                  - text: "*(h: GetSpecHook);\r\tBEGIN\r\t\tgetSpecHook := h\r\tEND SetGetSpecHook;\r\t\r\tPROCEDURE (h: ViewHook) "
+                    attr: 0
+                  - text: OldView
+                    attr: 3
+                  - text: "* (loc: Files.Locator; name: Files.Name; \r\t\t\t\tVAR conv: Converters.Converter): View, NEW, ABSTRACT;\r\tPROCEDURE (h: ViewHook) "
+                    attr: 0
+                  - text: Open
+                    attr: 3
+                  - text: "* (s: View; title: ARRAY OF CHAR;\r\t\t\t\tloc: Files.Locator; name: Files.Name; conv: Converters.Converter; \r\t\t\t\tasTool, asAux, noResize, allowDuplicates, neverDirty: BOOLEAN), NEW, ABSTRACT;\r\tPROCEDURE (h: ViewHook) "
+                    attr: 0
+                  - text: RegisterView
+                    attr: 3
+                  - text: "* (s: View; loc: Files.Locator; \r\t\t\t\tname: Files.Name; conv: Converters.Converter), NEW, ABSTRACT;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetViewHook
+                    attr: 3
+                  - text: "*(h: ViewHook);\r\tBEGIN\r\t\tviewHook := h\r\tEND SetViewHook;\r\t\r\tPROCEDURE (h: MsgHook) "
+                    attr: 0
+                  - text: Omnicast
+                    attr: 3
+                  - text: "* (VAR msg: ANYREC), NEW, ABSTRACT;\r\tPROCEDURE (h: MsgHook) "
+                    attr: 0
+                  - text: RestoreDomain
+                    attr: 3
+                  - text: "* (domain: Stores.Domain), NEW, ABSTRACT;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetMsgHook
+                    attr: 3
+                  - text: "*(h: MsgHook);\r\tBEGIN\r\t\tmsgHook := h\r\tEND SetMsgHook;\r\r\t\r\t"
+                    attr: 0
+                  - text: "(** Model protocol **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: CopyFromSimpleView
+                    attr: 3
+                  - text: "- (source: View), NEW, EMPTY;\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: CopyFromModelView
+                    attr: 3
+                  - text: "- (source: View; model: Models.Model), NEW, EMPTY;\r\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: "ThisModel*"
+                    attr: 3
+                  - text: " (): Models.Model, NEW, EXTENSIBLE;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 5
+                  - text: " NIL\r\tEND ThisModel;\r\r\r\t"
+                    attr: 0
+                  - text: "(** Store protocol **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: CopyFrom
+                    attr: 3
+                  - text: "- (source: Stores.Store);\r\t\tVAR tm, fm: Models.Model; c: Models.Context;\r\tBEGIN\r\t\ttm := copyModel; copyModel := NIL;"
+                    attr: 0
+                  - text: "\r"
+                    attr: 3
+                  - text: "\t\tWITH source: View DO\r\t\t\tv.era := source.era;\r\t\t\t"
+                    attr: 0
+                  - text: "actView := NIL;\r"
+                    attr: 3
+                  - text: "\t\t\tIF tm = NIL THEN\t"
+                    attr: 0
+                  - text: "(* if copyModel wasn't preset then use deep copy as default *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tfm := source.ThisModel();\r\t\t\t\tIF fm # NIL THEN tm := Stores.CopyOf(fm)(Models.Model) END\r\t\t\tEND;"
+                    attr: 0
+                  - text: "\r\t\t\tactView := v;\r"
+                    attr: 3
+                  - text: "\t\t\tIF Overwritten(v, copyFromModelView) THEN\t"
+                    attr: 0
+                  - text: "(* new View *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tASSERT(~Overwritten(v, copyFromSimpleView), 20);\r\t\t\t\tc := v.context;\r\t\t\t\tv.CopyFromModelView(source, tm);\r\t\t\t\tASSERT(v.context = c, 60)\r\t\t\tELSE\t"
+                    attr: 0
+                  - text: "(* old or simple View *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t(* IF tm # NIL THEN v.InitModel(tm) END *)\r\t\t\t\tc := v.context;\r\t\t\t\tv.CopyFromSimpleView(source);\r\t\t\t\tASSERT(v.context = c, 60)\r\t\t\tEND"
+                    attr: 0
+                  - text: "\r"
+                    attr: 3
+                  - text: "\t\tEND\r\tEND CopyFrom;\r\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: Internalize-
+                    attr: 3
+                  - text: " (VAR rd: Stores.Reader), EXTENSIBLE;\r\t\tVAR thisVersion: INTEGER;\r\tBEGIN\r\t\tv.Internalize^(rd);\r\t\tIF rd.cancelled THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " END;\r\t\trd.ReadVersion(minVersion, maxVersion, thisVersion)\r\tEND Internalize;\r\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: Externalize-
+                    attr: 3
+                  - text: " (VAR wr: Stores.Writer), EXTENSIBLE;\r\tBEGIN\r\t\tv.Externalize^(wr);\r\t\twr.WriteVersion(maxVersion)\r\tEND Externalize;\r\r\r\t"
+                    attr: 0
+                  - text: "(** embedding protocol **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: "InitContext*"
+                    attr: 3
+                  - text: " (context: Models.Context), NEW, EXTENSIBLE;\r\tBEGIN\r\t\tASSERT(context # NIL, 21);\r\t\tASSERT((v.context = NIL) OR (v.context = context), 22);\r\t\tv.context := context\r\tEND InitContext;\r\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: "GetBackground*"
+                    attr: 3
+                  - text: " (VAR color: Ports.Color), NEW, EMPTY;\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: ConsiderFocusRequestBy-
+                    attr: 3
+                  - text: " (view: View), NEW, EMPTY;\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: "Neutralize*"
+                    attr: 3
+                  - text: ", NEW, EMPTY;\r\r\r\t"
+                    attr: 0
+                  - text: "(** Frame protocol **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: "GetNewFrame*"
+                    attr: 3
+                  - text: " (VAR frame: Frame), NEW, EMPTY;\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: "Restore*"
+                    attr: 3
+                  - text: " (f: Frame; l, t, r, b: INTEGER), NEW, ABSTRACT;\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: "RestoreMarks*"
+                    attr: 3
+                  - text: " (f: Frame; l, t, r, b: INTEGER), NEW, EMPTY;\r\r\r\t"
+                    attr: 0
+                  - text: "(** handlers **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: HandleModelMsg
+                    attr: 3
+                  - text: "- (VAR msg: Models.Message), NEW, EMPTY;\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: HandleViewMsg
+                    attr: 3
+                  - text: "- (f: Frame; VAR msg: Message), NEW, EMPTY;\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: "HandleCtrlMsg*"
+                    attr: 3
+                  - text: " (f: Frame; VAR msg: CtrlMessage; VAR focus: View), NEW, EMPTY;\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: HandlePropMsg
+                    attr: 3
+                  - text: "- (VAR msg: PropMessage), NEW, EMPTY;\r\r\r\t"
+                    attr: 0
+                  - text: "(** Alien **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (a: Alien) "
+                    attr: 0
+                  - text: Externalize-
+                    attr: 3
+                  - text: " (VAR wr: Stores.Writer);\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: HALT
+                    attr: 3
+                  - text: "(100)\r\tEND Externalize;\r\r\tPROCEDURE (a: Alien) "
+                    attr: 0
+                  - text: Internalize-
+                    attr: 3
+                  - text: " (VAR rd: Stores.Reader);\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: HALT
+                    attr: 3
+                  - text: "(100)\r\tEND Internalize;\r\r\tPROCEDURE (a: Alien) "
+                    attr: 0
+                  - text: CopyFromSimpleView-
+                    attr: 3
+                  - text: " (source: View);\r\tBEGIN\r\t\ta.store := Stores.CopyOf(source(Alien).store)(Stores.Alien); Stores.Join(a, a.store)\r\tEND CopyFromSimpleView;\r\r\tPROCEDURE (a: Alien) "
+                    attr: 0
+                  - text: "Restore*"
+                    attr: 3
+                  - text: " (f: Frame; l, t, r, b: INTEGER);\r\t\tVAR u, w, h: INTEGER;\r\tBEGIN\r\t\tu := f.dot; a.context.GetSize(w, h);\r\t\tf.DrawRect(0, 0, w, h, Ports.fill, Ports.grey25);\r\t\tf.DrawRect(0, 0, w, h, 2 * u, Ports.grey75);\r\t\tf.DrawLine(0, 0, w - u, h - u, u, Ports.grey75);\r\t\tf.DrawLine(w - u, 0, 0, h - u, u, Ports.grey75)\r\tEND Restore;\r\t\r\r\t"
+                    attr: 0
+                  - text: "(** TrapAlien **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (v: TrapAlien) Internalize (VAR rd: Stores.Reader);\r\tBEGIN\r\t\tv.Internalize^(rd);\r\t\trd.TurnIntoAlien(3)\r\tEND Internalize;\r\t\r\tPROCEDURE (v: TrapAlien) Externalize (VAR rd: Stores.Writer);\r\tEND Externalize;\r\t\r\tPROCEDURE (v: TrapAlien) CopyFrom (source: Stores.Store), EMPTY;\r\r\r\t"
+                    attr: 0
+                  - text: "(** Frame **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (f: Frame) "
+                    attr: 0
+                  - text: "Close*"
+                    attr: 3
+                  - text: " (), NEW, EMPTY;\r\r\r\t"
+                    attr: 0
+                  - text: "(* Rect, Region *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE Union (VAR u: Rect; r: Rect);\r\tBEGIN\r\t\tIF r.v # u.v THEN u.v := NIL END;\r\t\tIF r.rebuild THEN u.rebuild := TRUE END;\r\t\tIF r.l < u.l THEN u.l := r.l END;\r\t\tIF r.t < u.t THEN u.t := r.t END;\r\t\tIF r.r > u.r THEN u.r := r.r END;\r\t\tIF r.b > u.b THEN u.b := r.b END\r\tEND Union;\r\r\tPROCEDURE Add (rgn: Region; v: View; rebuild: BOOLEAN; gl, gt, gr, gb: INTEGER);\r"
+                    attr: 0
+                  - text: "\t\t"
+                    attr: 5
+                  - text: "(* does not perfectly maintain invariant of non-overlapping approx rects ... *)"
+                    attr: 1
+                  - text: "\r\t\tVAR q: Rect; i, j, n: INTEGER; x: ARRAY maxN OF BOOLEAN;\r\tBEGIN\r\t\tq.v := v; q.rebuild := rebuild; q.l := gl; q.t := gt; q.r := gr; q.b := gb;\r\t\tn := rgn.n + 1;\r\t\ti := 0;\r\t\tWHILE i < rgn.n DO\r\t\t\tx[i] := (gl < rgn.r[i].r) & (rgn.r[i].l < gr) & (gt < rgn.r[i].b) & (rgn.r[i].t < gb);\r\t\t\tIF x[i] THEN Union(q, rgn.r[i]); DEC(n) END;\r\t\t\tINC(i)\r\t\tEND;\r\t\tIF n > maxN THEN\r\t\t\t"
+                    attr: 0
+                  - text: "(* n = maxN + 1 -> merge q with arbitrarily picked rect and Add *)"
+                    attr: 1
+                  - text: "\r\t\t\tUnion(q, rgn.r[maxN - 1]); Add(rgn, v, q.rebuild, q.l, q.t, q.r, q.b)\r\t\tELSE\r\t\t\ti := 0; WHILE (i < rgn.n) & ~x[i] DO INC(i) END;\r\t\t\trgn.r[i] := q; INC(i); WHILE (i < rgn.n) & ~x[i] DO INC(i) END;\r\t\t\tj := i; WHILE (i < rgn.n) & x[i] DO INC(i) END;\r\t\t\tWHILE i < rgn.n DO\t"
+                    attr: 0
+                  - text: "(* ~x[i] *)"
+                    attr: 1
+                  - text: "\r\t\t\t\trgn.r[j] := rgn.r[i]; INC(j); INC(i);\r\t\t\t\tWHILE (i < rgn.n) & x[i] DO INC(i) END\r\t\t\tEND;\r\t\t\trgn.n := n\r\t\tEND\r\tEND Add;\r\r\tPROCEDURE AddRect (root: RootFrame; f: Frame; l, t, r, b: INTEGER; rebuild: BOOLEAN);\r\t\tVAR rl, rt, rr, rb: INTEGER; i: INTEGER;\r\tBEGIN\r\t\tINC(l, f.gx); INC(t, f.gy); INC(r, f.gx); INC(b, f.gy);\r\t\trl := root.l + root.gx; rt := root.t + root.gy; rr := root.r + root.gx; rb := root.b + root.gy;\r\t\tIF l < rl THEN l := rl END;\r\t\tIF t < rt THEN t := rt END;\r\t\tIF r > rr THEN r := rr END;\r\t\tIF b > rb THEN b := rb END;\r\t\tIF (l < r) & (t < b) THEN\r\t\t\tAdd(root.update, f.view, rebuild, l, t, r, b);\r\t\t\ti := 0;\r\t\t\tWHILE (i < root.update.n)\r\t\t\t\t& (~root.update.r[i].rebuild OR (root.update.r[i].v # NIL)) DO INC(i) END;\r\t\t\tIF i < root.update.n THEN Add(root.update, root.view, TRUE, rl, rt, rr, rb) END\r\t\tEND\r\tEND AddRect;\r\r\r\t"
+                    attr: 0
+                  - text: "(** miscellaneous **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: RestoreDomain
+                    attr: 3
+                  - text: "* (domain: Stores.Domain);\r\tBEGIN\r\t\tASSERT(msgHook # NIL, 100);\r\t\tmsgHook.RestoreDomain(domain)\r\tEND RestoreDomain;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: MarkBorder
+                    attr: 3
+                  - text: "* (host: Ports.Frame; view: View; l, t, r, b: INTEGER);\r\t\tVAR s: INTEGER;\r\tBEGIN\r\t\tIF view # NIL THEN \r\t\t\ts := markBorderSize * host.dot;\r\t\t\thost.MarkRect(l - s, t - s, r + s, b + s, s, Ports.dim50, Ports.show)\r\t\tEND\r\tEND MarkBorder;\r\t\r\r\r\t"
+                    attr: 0
+                  - text: "(** views **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE SeqOf (v: View): Sequencers.Sequencer;\r\t\tVAR (*c: Models.Context;*) d: Stores.Domain; seq: Sequencers.Sequencer; any: ANYPTR;\r\tBEGIN\r\t\td := v.Domain(); seq := NIL;\r\t\tIF d # NIL THEN\r\t\t\tany := d.GetSequencer();\r\t\t\tIF (any # NIL) & (any IS Sequencers.Sequencer) THEN\r\t\t\t\tseq := any(Sequencers.Sequencer)\r\t\t\tEND\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " seq\r\tEND SeqOf;\r\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Era
+                    attr: 3
+                  - text: "* (v: View): INTEGER;\r\t"
+                    attr: 0
+                  - text: "(** pre: v # NIL *)\r\t(** post:\r\t\tv.ThisModel() # NIL\r\t\t\tin-synch(v) iff Era(v) = Models.Era(v.ThisModel())\r\t**)"
+                    attr: 1
+                  - text: "\r\tBEGIN\r\t\tASSERT(v # NIL, 20);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " v.era\r\tEND Era;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: BeginScript
+                    attr: 3
+                  - text: "* (v: View; name: Stores.OpName; OUT script: Stores.Operation);\r\t"
+                    attr: 0
+                  - text: "(** pre: v # NIL *)\r"
+                    attr: 1
+                  - text: "\t"
+                    attr: 0
+                  - text: "(** post: (script # NIL) iff (v.seq # NIL) **)"
+                    attr: 1
+                  - text: "\r\t\tVAR seq: Sequencers.Sequencer;\r\tBEGIN\r\t\tASSERT(v # NIL, 20);\r\t\tseq := SeqOf(v);\r\t\tIF seq # NIL THEN seq.BeginScript(name, script)\r\t\tELSE script := NIL\r\t\tEND\r\tEND BeginScript;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Do
+                    attr: 3
+                  - text: "* (v: View; name: Stores.OpName; op: Stores.Operation);\r\t"
+                    attr: 0
+                  - text: "(** pre: v # NIL, op # NIL, ~op.inUse **)"
+                    attr: 1
+                  - text: "\r\t\tVAR seq: Sequencers.Sequencer;\r\tBEGIN\r\t\tASSERT(v # NIL, 20); ASSERT(op # NIL, 21); (* ASSERT(~op.inUse, 22); *)\r\t\tseq := SeqOf(v);\r\t\tIF seq # NIL THEN seq.Do(v, name, op) ELSE op.Do END\r\tEND Do;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: LastOp
+                    attr: 3
+                  - text: "* (v: View): Stores.Operation;\r\t"
+                    attr: 0
+                  - text: "(** pre: v # NIL **)"
+                    attr: 1
+                  - text: "\r\t\tVAR seq: Sequencers.Sequencer;\r\tBEGIN\r\t\tASSERT(v # NIL, 20);\r\t\tseq := SeqOf(v);\r\t\tIF seq # NIL THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 5
+                  - text: " seq.LastOp(v) ELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 5
+                  - text: " NIL END\r\tEND LastOp;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Bunch
+                    attr: 3
+                  - text: "* (v: View);\r\t"
+                    attr: 0
+                  - text: "(** pre: v # NIL **)"
+                    attr: 1
+                  - text: "\r\t\tVAR seq: Sequencers.Sequencer;\r\tBEGIN\r\t\tASSERT(v # NIL, 20);\r\t\tseq := SeqOf(v); ASSERT(seq # NIL, 21);\r\t\tseq.Bunch(v)\r\tEND Bunch;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: StopBunching
+                    attr: 3
+                  - text: "* (v: View);\r\t"
+                    attr: 0
+                  - text: "(** pre: v # NIL **)"
+                    attr: 1
+                  - text: "\r\t\tVAR seq: Sequencers.Sequencer;\r\tBEGIN\r\t\tASSERT(v # NIL, 20);\r\t\tseq := SeqOf(v);\r\t\tIF seq # NIL THEN seq.StopBunching END\r\tEND StopBunching;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: EndScript
+                    attr: 3
+                  - text: "* (v: View; script: Stores.Operation);\r\t"
+                    attr: 0
+                  - text: "(** pre: (script # NIL) iff (v.seq # NIL) **)"
+                    attr: 1
+                  - text: "\r\t\tVAR seq: Sequencers.Sequencer;\r\tBEGIN\r\t\tASSERT(v # NIL, 20);\r\t\tseq := SeqOf(v);\r\t\tIF seq # NIL THEN ASSERT(script # NIL, 21); seq.EndScript(script)\r\t\tELSE ASSERT(script = NIL, 22)\r\t\tEND\r\tEND EndScript;\r\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: BeginModification
+                    attr: 3
+                  - text: "* (type: INTEGER; v: View);\r\t\tVAR seq: Sequencers.Sequencer;\r\tBEGIN\r\t\tASSERT(v # NIL, 20);\r\t\tseq := SeqOf(v);\r\t\tIF seq # NIL THEN seq.BeginModification(type, v) END\r\tEND BeginModification;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: EndModification
+                    attr: 3
+                  - text: "* (type: INTEGER; v: View);\r\t\tVAR seq: Sequencers.Sequencer;\r\tBEGIN\r\t\tASSERT(v # NIL, 20);\r\t\tseq := SeqOf(v);\r\t\tIF seq # NIL THEN seq.EndModification(type, v) END\r\tEND EndModification;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetDirty
+                    attr: 3
+                  - text: "* (v: View);\r\t\tVAR seq: Sequencers.Sequencer;\r\tBEGIN\r\t\tASSERT(v # NIL, 20);\r\t\tseq := SeqOf(v);\r\t\tIF seq # NIL THEN seq.SetDirty(TRUE) END\r\tEND SetDirty;\r\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Domaincast
+                    attr: 3
+                  - text: "* (domain: Stores.Domain; VAR msg: Message);\r\t\tVAR g: INTEGER; seq: ANYPTR;\r\tBEGIN\r\t\tIF domain # NIL THEN\r\t\t\tseq := domain.GetSequencer();\r\t\t\tIF seq # NIL THEN\r\t\t\t\tmsg.view := NIL;\r\t\t\t\tg := Kernel.trapCount + 1;\r\t\t\t\tIF domainGuard > 0 THEN ASSERT(domainGuard # g, 20) END;\r\t\t\t\tdomainGuard := g;\r\t\t\t\tseq(Sequencers.Sequencer).Handle(msg);\r\t\t\t\tdomainGuard := 0\r\t\t\tEND\r\t\tEND\r\tEND Domaincast;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Broadcast
+                    attr: 3
+                  - text: "* (v: View; VAR msg: Message);\r\t\tVAR seq: Sequencers.Sequencer; g: INTEGER;\r\tBEGIN\r\t\tASSERT(v # NIL, 20);\r\t\tmsg.view := v;\r\t\tseq := SeqOf(v);\r\t\tIF seq # NIL THEN\r\t\t\tg := Kernel.trapCount + 1;\r\t\t\tIF v.guard > 0 THEN ASSERT(v.guard # g, 21) END;\r\t\t\tv.guard := g;\r\t\t\tseq.Handle(msg);\r\t\t\tv.guard := 0\r\t\tEND\r\tEND Broadcast;\r\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Update
+                    attr: 3
+                  - text: "* (v: View; rebuild: BOOLEAN);\r\t\tVAR upd: UpdateMsg;\r\tBEGIN\r\t\tASSERT(v # NIL, 20);\r\t\tupd.scroll := FALSE; upd.rebuild := rebuild; upd.all := TRUE;\r\t\tBroadcast(v, upd)\r\tEND Update;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: UpdateIn
+                    attr: 3
+                  - text: "* (v: View; l, t, r, b: INTEGER; rebuild: BOOLEAN);\r\t\tVAR upd: UpdateMsg;\r\tBEGIN\r\t\tASSERT(v # NIL, 20);\r\t\tupd.scroll := FALSE; upd.rebuild := rebuild; upd.all := FALSE;\r\t\tupd.l := l; upd.t := t; upd.r := r; upd.b := b;\r\t\tBroadcast(v, upd)\r\tEND UpdateIn;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Scroll
+                    attr: 3
+                  - text: "* (v: View; dx, dy: INTEGER);\r\t\tVAR scroll: UpdateMsg;\r\tBEGIN\r\t\tASSERT(v # NIL, 20); ASSERT(v.Domain() # NIL, 21);\r\t\tRestoreDomain(v.Domain());\r\t\tscroll.scroll := TRUE; scroll.dx := dx; scroll.dy := dy;\r\t\tBroadcast(v, scroll)\r\tEND Scroll;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: CopyOf
+                    attr: 3
+                  - text: "* (v: View; shallow: BOOLEAN): View;\r\t\tVAR w, a: View; op: INTEGER; b: Alien;\r\tBEGIN\r\t\tASSERT(v # NIL, 20);\r\t\tIF ~(handler IN v.bad) THEN\r\t\t\ta := actView; op := actOp; actView := NIL; actOp := handler;\r\t\t\tIF shallow THEN copyModel := v.ThisModel() END;\r\t\t\tactView := v;\r\t\t\tw := Stores.CopyOf(v)(View);\r\t\t\tactView := a; actOp := op\r\t\tELSE\r\t\t\tNEW(b); w := b; w.bad := {handler..externalize}\r\t\tEND;\r\t\tIF shallow THEN Stores.Join(w, v) END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " w\r\tEND CopyOf;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: CopyWithNewModel
+                    attr: 3
+                  - text: "* (v: View; m: Models.Model): View;\r\t\tVAR w, a: View; op: INTEGER; b: Alien; fm: Models.Model;\r\tBEGIN\r\t\tASSERT(v # NIL, 20);\r\t\tfm := v.ThisModel(); ASSERT(fm # NIL, 21);\r\t\tASSERT(m # NIL, 22);\r\t\tASSERT(Services.SameType(m, fm), 23);\r\t\tIF ~(handler IN v.bad) THEN\r\t\t\ta := actView; op := actOp; actView := v; actOp := handler;\r\t\t\tcopyModel := m;\r\t\t\tw := Stores.CopyOf(v)(View);\r\t\t\tactView := a; actOp := op\r\t\tELSE\r\t\t\tNEW(b); w := b; w.bad := {handler..externalize}\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 5
+                  - text: " w\r\tEND CopyWithNewModel;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ReadView
+                    attr: 3
+                  - text: "* (VAR rd: Stores.Reader; OUT v: View);\r\t\tVAR st: Stores.Store; a: Alien;\r\tBEGIN\r\t\trd.ReadStore(st);\r\t\tIF st = NIL THEN\r\t\t\tv := NIL\r\t\tELSIF st IS Stores.Alien THEN\r\t\t\tNEW(a);\r\t\t\ta.store := st(Stores.Alien); Stores.Join(a, a.store);\r\t\t\tv := a\r\t\tELSE\r\t\t\tv := st(View)\r\t\tEND\r\tEND ReadView;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: WriteView
+                    attr: 3
+                  - text: "* (VAR wr: Stores.Writer; v: View);\r\t\tVAR a: TrapAlien; av: View; op: INTEGER;\r\tBEGIN\r\t\tIF v = NIL THEN wr.WriteStore(v)\r\t\tELSIF externalize IN v.bad THEN NEW(a); wr.WriteStore(a)\r\t\tELSIF v IS Alien THEN wr.WriteStore(v(Alien).store)\r\t\tELSE\r\t\t\tav := actView; op := actOp; actView := v; actOp := externalize;\r\t\t\twr.WriteStore(v);\r\t\t\tactView := av; actOp := op\r\t\tEND\r\tEND WriteView;\r\r\r\t"
+                    attr: 0
+                  - text: "(* frames *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE SetClip (f: Frame; l, t, r, b: INTEGER);\r\t\tVAR u: INTEGER;\r\tBEGIN\r\t\tASSERT(f.rider # NIL, 20); ASSERT(l <= r, 21); ASSERT(t <= b, 22);\r\t\tu := f.unit;\r\t\tf.rider.SetRect((l + f.gx) DIV u, (t + f.gy) DIV u, (r + f.gx) DIV u, (b + f.gy) DIV u);\r\t\tf.l := l; f.t := t; f.r := r; f.b := b\r\tEND SetClip;\r\r\tPROCEDURE Close (f: Frame);\r\tBEGIN\r\t\tf.Close;\r\t\tf.state := closed;\r\t\tf.up := NIL; f.down := NIL; f.next := NIL; f.view := NIL;\r\t\tf.ConnectTo(NIL)\r\tEND Close;\r\r\tPROCEDURE AdaptFrameTo (f: Frame; orgX, orgY: INTEGER);\r\t\tVAR g, p, q: Frame; port: Ports.Port;\r\t\t\tw, h,  pl, pt, pr, pb,  gl, gt, gr, gb,  gx, gy: INTEGER;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: "(* pre: environment (i.e. parent frame / port) has already been set up *)"
+                    attr: 1
+                  - text: "\r\t\tASSERT(f.view # NIL, 20); ASSERT(f.view.context # NIL, 21);\r\t\tf.x := orgX; f.y := orgY;\t"
+                    attr: 0
+                  - text: "(* set new origin *)"
+                    attr: 1
+                  - text: "\r\t\tg := f.up;\r\t\tIF g # NIL THEN\t"
+                    attr: 0
+                  - text: "(* parent frame is environment *)\r"
+                    attr: 1
+                  - text: "\t\t\tf.gx0 := g.gx + orgX; f.gy0 := g.gy + orgY;\r\t\t\tf.SetOffset(f.gx0 - f.sx, f.gy0 - f.sy);\r\t\t\tpl := g.gx + g.l; pt := g.gy + g.t; pr := g.gx + g.r; pb := g.gy + g.b\r\t\tELSE\t"
+                    attr: 0
+                  - text: "(* port is environment *)"
+                    attr: 1
+                  - text: "\r\t\t\tf.gx0 := orgX; f.gy0 := orgY;\r\t\t\tf.SetOffset(f.gx0 - f.sx, f.gy0 - f.sy);\r\t\t\tport := f.rider.Base();\r\t\t\tport.GetSize(w, h);\r\t\t\tpl := 0; pt := 0; pr := w * f.unit; pb := h * f.unit\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: "(* (pl, pt, pr, pb) is parent clipping rectangle, in global coordinates, and in units *)"
+                    attr: 1
+                  - text: "\r\t\tgx := f.gx; gy := f.gy; f.view.context.GetSize(w, h);\r\t\tgl := gx; gt := gy; gr := gx + w; gb := gy + h;\r\t\t"
+                    attr: 0
+                  - text: "(* (gl, gt, gr, gb) is desired clipping rectangle, in global coordinates, and in units *)\r"
+                    attr: 1
+                  - text: "\t\tIF gl < pl THEN gl := pl END;\r\t\tIF gt < pt THEN gt := pt END;\r\t\tIF gr > pr THEN gr := pr END;\r\t\tIF gb > pb THEN gb := pb END;\r\t\tIF (gl >= gr) OR (gt >= gb) THEN gr := gl; gb := gt END;\r\t\tSetClip(f, gl - gx + f.sx, gt - gy + f.sy, gr - gx + f.sx, gb - gy + f.sy);\r\t\t"
+                    attr: 0
+                  - text: "(* (f.l, f.t, f.r, f.b) is final clipping rectangle, in local coordinates, and in units *)"
+                    attr: 1
+                  - text: "\r\t\tg := f.down; f.down := NIL; p := NIL;\r\t\tWHILE g # NIL DO\t"
+                    attr: 0
+                  - text: "(* adapt child frames *)"
+                    attr: 1
+                  - text: "\r\t\t\tq := g.next; g.next := NIL;\r\t\t\tAdaptFrameTo(g, g.x, g.y);\r\t\t\tIF g.l = g.r THEN\t"
+                    attr: 0
+                  - text: "(* empty child frame: remove *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tClose(g)\r\t\t\tELSE\t"
+                    attr: 0
+                  - text: "(* insert in new frame list *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tIF p = NIL THEN f.down := g ELSE p.next := g END;\r\t\t\t\tp := g\r\t\t\tEND;\r\t\t\tg := q\r\t\tEND\r\t\t"
+                    attr: 0
+                  - text: "(* post: frame is set; child frames are set, nonempty, and clipped to frame *)"
+                    attr: 1
+                  - text: "\r\tEND AdaptFrameTo;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetRoot
+                    attr: 3
+                  - text: "* (root: RootFrame; view: View; front: BOOLEAN; flags: SET);\r\tBEGIN\r\t\tASSERT(root # NIL, 20); ASSERT(root.rider # NIL, 21);\r\t\tASSERT(view # NIL, 22); ASSERT(view.context # NIL, 23);\r\t\tASSERT(view.Domain() # NIL, 24);\r\t\tASSERT(root.state IN {new, open}, 25);\r\t\troot.view := view;\r\t\troot.front := front; root.mark := TRUE; root.flags := flags;\r\t\troot.state := open;\r\t\tIF root.update = NIL THEN NEW(root.update); root.update.n := 0 END\r\tEND SetRoot;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: AdaptRoot
+                    attr: 3
+                  - text: "* (root: RootFrame);\r\tBEGIN\r\t\tASSERT(root # NIL, 20); ASSERT(root.state = open, 21);\r\t\tAdaptFrameTo(root, root.x, root.y)\r\tEND AdaptRoot;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: UpdateRoot
+                    attr: 3
+                  - text: "* (root: RootFrame; l, t, r, b: INTEGER; rebuild: BOOLEAN);\r\tBEGIN\r\t\tASSERT(root # NIL, 20); ASSERT(root.state = open, 21);\r\t\tAddRect(root, root, l, t, r, b, rebuild)\r\tEND UpdateRoot;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: RootOf
+                    attr: 3
+                  - text: "* (f: Frame): RootFrame;\r\tBEGIN\r\t\tASSERT(f # NIL, 20); ASSERT(f.state = open, 21);\r\t\tWHILE f.up # NIL DO f := f.up END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " f(RootFrame)\r\tEND RootOf;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: HostOf
+                    attr: 3
+                  - text: "* (f: Frame): Frame;\r\tBEGIN\r\t\tASSERT(f # NIL, 20);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " f.up\r\tEND HostOf;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: IsPrinterFrame
+                    attr: 3
+                  - text: "* (f: Frame): BOOLEAN;\r\t\tVAR p: Ports.Port;\r\tBEGIN\r\t\tASSERT(f # NIL, 20); ASSERT(f.state = open, 21);\r\t\tp := f.rider.Base();\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " Ports.IsPrinterPort(p)\r\tEND IsPrinterFrame;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: InstallFrame
+                    attr: 3
+                  - text: "* (host: Frame; view: View; x, y, level: INTEGER; focus: BOOLEAN);\r\t\tVAR e, f, g: Frame; w, h,  l, t, r, b: INTEGER; m: Models.Model; std: StdFrame;\r\t\t\tmsg: UpdateCachesMsg; a: View; op: INTEGER;\r\tBEGIN\r\t\tASSERT(host # NIL, 20); ASSERT(host.state = open, 21);\r\t\tASSERT(view # NIL, 22); ASSERT(view.context # NIL, 23);\r\t\tASSERT(view.Domain() # NIL, 24);\r\t\te := NIL; g := host.down; WHILE (g # NIL) & (g.view # view) DO e := g; g := g.next END;\r\t\tIF g = NIL THEN\t"
+                    attr: 0
+                  - text: "(* frame for "
+                    attr: 1
+                  - text: view
+                    attr: 0
+                  - text: " not yet in child frame list *)"
+                    attr: 1
+                  - text: "\r\t\t\tview.context.GetSize(w, h);\r\t\t\tIF w > MAX(INTEGER) DIV 2 THEN w := MAX(INTEGER) DIV 2 END;\r\t\t\tIF h > MAX(INTEGER) DIV 2 THEN h := MAX(INTEGER) DIV 2 END;\r\t\t\tl := x; t := y; r := x + w; b := y + h;\r\t\t\t"
+                    attr: 0
+                  - text: "(* (l, t, r, b) is child frame rectangle, in local coordinates, and in units *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF (l < host.r) & (t < host.b) & (r > host.l) & (b > host.t) THEN\t"
+                    attr: 0
+                  - text: "(* visible *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tg := NIL; view.GetNewFrame(g);\r\t\t\t\tIF g = NIL THEN NEW(std); g := std END;\r\t\t\t\tASSERT(~(g IS RootFrame), 100);\r\t\t\t\te := NIL; f := host.down; WHILE (f # NIL) & (f.level <= level) DO e := f; f := f.next END;\r\t\t\t\tIF e = NIL THEN g.next := host.down; host.down := g ELSE g.next := e.next; e.next := g END;\r\t\t\t\tg.down := NIL; g.up := host; g.level := level;\r\t\t\t\tg.view := view;\r\t\t\t\tg.ConnectTo(host.rider.Base());\r\t\t\t\tg.state := open;\r\t\t\t\tAdaptFrameTo(g, x, y);\r\t\t\t\tIF ~(handler IN view.bad) THEN\r\t\t\t\t\ta := actView; op := actOp; actView := view; actOp := handler;\r\t\t\t\t\tview.HandleViewMsg(g, msg);\r\t\t\t\t\tactView := a; actOp := op\r\t\t\t\tEND;\r\t\t\t\tm := view.ThisModel();\r\t\t\t\tIF m # NIL THEN view.era := Models.Era(m) END;\r\t\t\tEND\r\t\tELSE\r\t\t\tIF g.level # level THEN\t"
+                    attr: 0
+                  - text: "(* adapt to modified z-order *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tIF e = NIL THEN host.down := g.next ELSE e.next := g.next END;\r\t\t\t\te := NIL; f := host.down; WHILE (f # NIL) & (f.level <= level) DO e := f; f := f.next END;\r\t\t\t\tIF e = NIL THEN g.next := host.down; host.down := g ELSE g.next := e.next; e.next := g END;\r\t\t\t\tg.level := level\r\t\t\tEND;\r\t\t\tAdaptFrameTo(g, x, y)\t"
+                    attr: 0
+                  - text: "(* may close g, leaving g.state = closed *)"
+                    attr: 1
+                  - text: "\r"
+                    attr: 0
+                  - text: "\t\t\t"
+                    attr: 5
+                  - text: "(* possibly optimize: don't call Adapt if x=g.x, y=g.y, \"host.era=g.era\" *)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\t\tIF (g # NIL) & (g.state = open) THEN\r\t\t\tIF focus THEN\r\t\t\t\tg.front := host.front; g.mark := host.mark\r\t\t\tELSE\r\t\t\t\tg.front := FALSE; g.mark := FALSE\r\t\t\tEND\r\t\tEND\r\tEND InstallFrame;\r\r\tPROCEDURE RemoveAll (f: Frame);\r\t\tVAR g, p: Frame;\r\tBEGIN\r\t\tg := f.down; WHILE g # NIL DO p := g.next; RemoveAll(g); Close(g); g := p END;\r\t\tf.down := NIL\r\tEND RemoveAll;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: RemoveFrame
+                    attr: 3
+                  - text: "* (host, f: Frame);\r\t\tVAR g, h: Frame;\r\tBEGIN\r\t\tASSERT(host # NIL, 20); ASSERT(host.state = open, 21);\r\t\tASSERT(f # NIL, 22); ASSERT(f.up = host, 23);\r\t\tg := host.down; h := NIL;\r\t\tWHILE (g # NIL) & (g # f) DO h := g; g := g.next END;\r\t\tASSERT(g = f, 24);\r\t\tIF h = NIL THEN host.down := f.next ELSE h.next := f.next END;\r\t\tRemoveAll(f); Close(f)\r\tEND RemoveFrame;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: RemoveFrames
+                    attr: 3
+                  - text: "* (host: Frame; l, t, r, b: INTEGER);\r\t\tVAR f, g: Frame; gl, gt, gr, gb: INTEGER;\r\tBEGIN\r\t\tASSERT(host # NIL, 20); ASSERT(host.state = open, 21);\r\t\tIF l < host.l THEN l := host.l END;\r\t\tIF t < host.t THEN t := host.t END;\r\t\tIF r > host.r THEN r := host.r END;\r\t\tIF b > host.b THEN b := host.b END;\r\t\tIF (l < r) & (t < b) THEN\r\t\t\tgl := l + host.gx; gt := t + host.gy; gr := r + host.gx; gb := b + host.gy;\r\t\t\tf := host.down;\r\t\t\tWHILE f # NIL DO\r\t\t\t\tg := f; f := f.next;\r\t\t\t\tIF (gl < g.r + g.gx) & (g.l + g.gx < gr) & (gt < g.b + g.gy) & (g.t + g.gy < gb) THEN\r\t\t\t\t\tRemoveFrame(host, g)\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND RemoveFrames;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ThisFrame
+                    attr: 3
+                  - text: "* (host: Frame; view: View): Frame;\r\t\tVAR g: Frame;\r\tBEGIN\r\t\tASSERT(host # NIL, 20); ASSERT(host.state = open, 21);\r\t\tg := host.down; WHILE (g # NIL) & (g.view # view) DO g := g.next END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 5
+                  - text: " g\r\tEND ThisFrame;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: FrameAt
+                    attr: 3
+                  - text: "* (host: Frame; x, y: INTEGER): Frame;\r\t"
+                    attr: 0
+                  - text: "(** return frontmost sub-frame of host that contains (x, y) **)"
+                    attr: 5
+                  - text: "\r\t\tVAR g, h: Frame;\r\tBEGIN\r\t\tASSERT(host # NIL, 20); ASSERT(host.state = open, 21);\r\t\tg := host.down; h := NIL; INC(x, host.gx); INC(y, host.gy);\r\t\tWHILE g # NIL DO\r\t\t\tIF (g.gx + g.l <= x) & (x < g.gx + g.r) & (g.gy + g.t <= y) & (y < g.gy + g.b) THEN\r\t\t\t\th := g\r\t\t\tEND;\r\t\t\tg := g.next\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 5
+                  - text: " h\r\tEND FrameAt;\r\r\tPROCEDURE ShiftFrames (f: Frame; dx, dy: INTEGER);\r\t\tVAR g, h: Frame;\r\tBEGIN\r\t\tg := f.down;\r\t\tWHILE g # NIL DO\r\t\t\th := g; g := g.next;\r\t\t\tAdaptFrameTo(h, h.x + dx, h.y + dy);\r\t\t\tIF h.l = h.r THEN RemoveFrame(f, h) END\r\t\tEND\r\tEND ShiftFrames;\r\r\tPROCEDURE UpdateExposedArea (f: Frame; dx, dy: INTEGER);\r\t\tVAR root: RootFrame;\r\tBEGIN\r\t\troot := RootOf(f);\r\t\tIF dy > 0 THEN\r\t\t\tAddRect(root, f, f.l, f.t, f.r, f.t + dy, keepFrames);\r\t\t\tIF dx > 0 THEN\r\t\t\t\tAddRect(root, f, f.l, f.t + dy, f.l + dx, f.b, keepFrames)\r\t\t\tELSE\r\t\t\t\tAddRect(root, f, f.r + dx, f.t + dy, f.r, f.b, keepFrames)\r\t\t\tEND\r\t\tELSE\r\t\t\tAddRect(root, f, f.l, f.b + dy, f.r, f.b, keepFrames);\r\t\t\tIF dx > 0 THEN\r\t\t\t\tAddRect(root, f, f.l, f.t, f.l + dx, f.b + dy, keepFrames)\r\t\t\tELSE\r\t\t\t\tAddRect(root, f, f.r + dx, f.t, f.r, f.b + dy, keepFrames)\r\t\t\tEND\r\t\tEND\r\tEND UpdateExposedArea;\r\r\tPROCEDURE ScrollFrame (f: Frame; dx, dy: INTEGER);\r\t\tVAR g: Frame; u, dx0, dy0: INTEGER; bitmapScrolling: BOOLEAN; msg: ScrollClassMsg;\r\tBEGIN\r\t\tg := f.up;\r\t\tbitmapScrolling := TRUE;\r\t\tIF (g # NIL) THEN\r\t\t\tWHILE bitmapScrolling & (g.up # NIL) DO\r\t\t\t\tmsg.allowBitmapScrolling := FALSE; g.view.HandleViewMsg(g, msg);\r\t\t\t\tbitmapScrolling := bitmapScrolling & msg.allowBitmapScrolling;\r\t\t\t\tg  := g.up\r\t\t\tEND\r\t\tEND;\r\t\tIF bitmapScrolling THEN\r\t\t\tu := f.unit; dx0 := dx; dy0 := dy;\r\t\t\tINC(dx, f.sx); INC(dy, f.sy); DEC(f.l, f.sx); DEC(f.t, f.sy); DEC(f.r, f.sx); DEC(f.b, f.sy);\r\t\t\tf.sx := dx MOD u; f.sy := dy MOD u;\r\t\t\tDEC(dx, f.sx); DEC(dy, f.sy); INC(f.l, f.sx); INC(f.t, f.sy); INC(f.r, f.sx); INC(f.b, f.sy);\r\t\t\tf.SetOffset(f.gx0 - f.sx, f.gy0 - f.sy);\r\t\t\tShiftFrames(f, dx0, dy0);\r\t\t\tf.Scroll(dx, dy);\r\t\t\tUpdateExposedArea(f, dx, dy)\r\t\tELSE AddRect(RootOf(f), f, f.l, f.t, f.r, f.b, rebuildFrames)\r\t\tEND\r\tEND ScrollFrame;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: BroadcastModelMsg
+                    attr: 3
+                  - text: "* (f: Frame; VAR msg: Models.Message);\r\t\tVAR v, a: View; send: BOOLEAN; op: INTEGER;\r\tBEGIN\r\t\tASSERT(f # NIL, 20); ASSERT(f.state = open, 21);\r\t\tv := f.view;\r\t\tIF ~(handler IN v.bad) THEN\r\t\t\ta := actView; op := actOp; actView := v; actOp := handler;\r\t\t\tIF msg.model # NIL THEN\r\t\t\t\tIF (msg.model = v.ThisModel()) & (msg.era > v.era) THEN\r\t\t\t\t\tsend := (msg.era - v.era = 1);\r\t\t\t\t\tv.era := msg.era;\r\t\t\t\t\tIF ~send THEN\r\t\t\t\t\t\tLog.synch := FALSE;\r\t\t\t\t\t\tHALT(100)\r\t\t\t\t\tEND\r\t\t\t\tELSE send := FALSE\r\t\t\t\tEND\r\t\t\tELSE send := TRUE\r\t\t\tEND;\r\t\t\tIF send THEN\r\t\t\t\tWITH msg: Models.NeutralizeMsg DO\r\t\t\t\t\tv.Neutralize\r\t\t\t\tELSE\r\t\t\t\t\t v.HandleModelMsg(msg)\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tactView := a; actOp := op\r\t\tEND;\r\t\tf := f.down; WHILE f # NIL DO BroadcastModelMsg(f, msg); f := f.next END\r\tEND BroadcastModelMsg;\r\r\tPROCEDURE HandleUpdateMsg (f: Frame; VAR msg: UpdateMsg);\r\t\tVAR root: RootFrame; g: Frame; l, t, r, b,  dx, dy: INTEGER;\r\tBEGIN\r\t\troot := RootOf(f);\r\t\tIF msg.scroll THEN\r\t\t\tIF root.update.n = 0 THEN\r\t\t\t\tScrollFrame(f, msg.dx, msg.dy)\r\t\t\tELSE\r\t\t\t\tAddRect(root, f, f.l, f.t, f.r, f.b, msg.rebuild)\r\t\t\tEND\r\t\tELSE\r\t\t\tIF msg.all THEN\r\t\t\t\tIF f # root THEN g := f.up ELSE g := root END;\r\t\t\t\tdx := f.gx - g.gx; dy := f.gy - g.gy;\r\t\t\t\tAddRect(root, g, f.l + dx, f.t + dy, f.r + dx, f.b + dy, msg.rebuild)\r\t\t\tELSE\r\t\t\t\tl := msg.l; t := msg.t; r := msg.r; b := msg.b;\r\t\t\t\tIF l < f.l THEN l := f.l END;\r\t\t\t\tIF t < f.t THEN t := f.t END;\r\t\t\t\tIF r > f.r THEN r := f.r END;\r\t\t\t\tIF b > f.b THEN b := f.b END;\r\t\t\t\tAddRect(root, f, l, t, r, b, msg.rebuild)\r\t\t\tEND\r\t\tEND\r\tEND HandleUpdateMsg;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: BroadcastViewMsg
+                    attr: 3
+                  - text: "* (f: Frame; VAR msg: Message);\r\t\tVAR v, a: View; op: INTEGER;\r\tBEGIN\r\t\tASSERT(f # NIL, 20); ASSERT(f.state = open, 21);\r\t\tv := f.view;\r\t\tIF (msg.view = v) OR (msg.view = NIL) THEN\r\t\t\tWITH msg: UpdateMsg DO\r\t\t\t\tHandleUpdateMsg(f, msg)\r\t\t\tELSE\r\t\t\t\tIF ~(handler IN v.bad) THEN\r\t\t\t\t\ta := actView; op := actOp; actView := v; actOp := handler;\r\t\t\t\t\tv.HandleViewMsg(f, msg);\r\t\t\t\t\tactView := a; actOp := op\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND;\r\t\tIF msg.view # v THEN\r\t\t\tf := f.down; WHILE f # NIL DO BroadcastViewMsg(f, msg); f := f.next END\r\t\tEND\r\tEND BroadcastViewMsg;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ForwardCtrlMsg
+                    attr: 3
+                  - text: "* (f: Frame; VAR msg: CtrlMessage);\r\t\tCONST pre = 0; translate = 1; backoff = 2; final = 3;\r\t\tVAR v, focus, a: View; g, h: Frame; op: INTEGER; req: BOOLEAN;\r\tBEGIN\r\t\tASSERT(f # NIL, 20); ASSERT(f.state = open, 21);\r\t\tv := f.view;\r\t\tfocus := NIL; g := f.up; req := FALSE;\r\t\tHandleCtrlMsg(pre, f, g, msg, f.mark, f.front, req);\r\t\tIF ~(handler IN v.bad) THEN\r\t\t\ta := actView; op := actOp; actView := v; actOp := handler;\r\t\t\tv.HandleCtrlMsg(f, msg, focus);\r\t\t\tactView := a; actOp := op\r\t\tEND;\r\t\tIF focus # NIL THEN\t"
+                    attr: 0
+                  - text: "(* propagate msg to another view *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF (f.focus # NIL) & (f.focus.view = focus) THEN\t"
+                    attr: 0
+                  - text: "(* cache hit *)"
+                    attr: 1
+                  - text: "\r\t\t\t\th := f.focus\r\t\t\tELSE\t"
+                    attr: 0
+                  - text: "(* cache miss *)"
+                    attr: 1
+                  - text: "\r\t\t\t\th := f.down; WHILE (h # NIL) & (h.view # focus) DO h := h.next END\r\t\t\tEND;\r\t\t\tIF h # NIL THEN\r\t\t\t\tHandleCtrlMsg(translate, f, h, msg, f.mark, f.front, req);\r\t\t\t\tf.focus := h; ForwardCtrlMsg(h, msg);\r\t\t\t\tHandleCtrlMsg(backoff, f, g, msg, f.mark, f.front, req)\r\t\t\tEND\r\t\tELSE\r\t\t\tHandleCtrlMsg(final, f, g, msg, f.mark, f.front, req)\r\t\tEND;\r\t\tIF req & (g # NIL) THEN g.view.ConsiderFocusRequestBy(f.view) END\r\tEND ForwardCtrlMsg;\r\r\r\tPROCEDURE RestoreFrame (f: Frame; l, t, r, b: INTEGER);\r\t\tVAR rd: Ports.Rider; g: Frame; v, a: View; op: INTEGER;\r\t\t\tu, w, h,  cl, ct, cr, cb,  dx, dy: INTEGER; col: Ports.Color;\r\tBEGIN\r\t\tIF l < f.l THEN l := f.l END;\r\t\tIF t < f.t THEN t := f.t END;\r\t\tIF r > f.r THEN r := f.r END;\r\t\tIF b > f.b THEN b := f.b END;\r\t\tIF (l < r) & (t < b) THEN\t"
+                    attr: 0
+                  - text: "(* non-empty rectangle to be restored *)"
+                    attr: 1
+                  - text: "\r\t\t\tv := f.view; rd := f.rider; u := f.unit;\r\t\t\trd.GetRect(cl, ct, cr, cb);\t"
+                    attr: 0
+                  - text: "(* save clip rectangle *)"
+                    attr: 1
+                  - text: "\r\t\t\trd.SetRect((f.gx + l) DIV u, (f.gy + t) DIV u, (f.gx + r) DIV u, (f.gy + b) DIV u);\r\t\t\tIF ~(restore IN v.bad) THEN\r\t\t\t\ta := actView; op := actOp; actView := v; actOp := restore;\r\t\t\t\tcol := transparent; v.GetBackground(col);\r\t\t\t\tIF col # transparent THEN f.DrawRect(l, t, r, b, Ports.fill, col) END;\r\t\t\t\tv.Restore(f, l, t, r, b);\r\t\t\t\tg := f.down;\r\t\t\t\tWHILE g # NIL DO\t"
+                    attr: 0
+                  - text: "(* loop over all subframes to handle overlaps *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tdx := f.gx - g.gx; dy := f.gy - g.gy;\r\t\t\t\t\tRestoreFrame(g, l + dx, t + dy, r + dx, b + dy);\r\t\t\t\t\tg := g.next\r\t\t\t\tEND;\r\t\t\t\tv.RestoreMarks(f, l, t, r, b);\r\t\t\t\tactView := a; actOp := op\r\t\t\tEND;\r\t\t\tIF v.bad # {} THEN\r\t\t\t\tIF externalize IN v.bad THEN\r\t\t\t\t\tu := f.dot; v.context.GetSize(w, h);\r\t\t\t\t\tf.DrawLine(0, 0, w - u, h - u, u, Ports.grey75);\r\t\t\t\t\tf.DrawLine(w - u, 0, 0, h - u, u, Ports.grey75)\r\t\t\t\tEND;\r\t\t\t\tf.MarkRect(l, t, r, b, Ports.fill, Ports.dim25, Ports.show)\r\t\t\tEND;\r\t\t\trd.SetRect(cl, ct, cr, cb)\t"
+                    attr: 0
+                  - text: "(* restore current clip rectangle *)"
+                    attr: 1
+                  - text: "\r\t\tEND\r\tEND RestoreFrame;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: RestoreRoot
+                    attr: 3
+                  - text: "* (root: RootFrame; l, t, r, b: INTEGER);\r\t\tVAR port: Ports.Port; rd: Ports.Rider;\r\t\t\tu,  gl, gt, gr, gb: INTEGER; col: Ports.Color;\r\tBEGIN\r\t\tASSERT(root # NIL, 20); ASSERT(root.state = open, 21);\r\t\tASSERT(root.update.n = 0, 22);\r\t\tIF l < root.l THEN l := root.l END;\r\t\tIF t < root.t THEN t := root.t END;\r\t\tIF r > root.r THEN r := root.r END;\r\t\tIF b > root.b THEN b := root.b END;\r\t\tIF (l < r) & (t < b) THEN\r\t\t\tu := root.unit;\r\t\t\tgl := l + root.gx; gt := t + root.gy; gr := r + root.gx; gb := b + root.gy;\r\t\t\trd := root.rider; port := rd.Base();\r\t\t\tactFrame := root;\r\t\t\tIF ~IsPrinterFrame(root) THEN port.OpenBuffer(gl DIV u, gt DIV u, gr DIV u, gb DIV u) END;\r\t\t\tcol := transparent; root.view.GetBackground(col);\r\t\t\tASSERT(col # transparent, 100);\r\t\t\tRestoreFrame(root, l, t, r, b);\r\t\t\tIF ~IsPrinterFrame(root) THEN port.CloseBuffer END;\r\t\t\tactFrame := NIL\r\t\tEND\r\tEND RestoreRoot;\r\r\tPROCEDURE ThisCand (f: Frame; v: View): Frame;\r\t"
+                    attr: 0
+                  - text: "(* find frame g with g.view = v *)"
+                    attr: 1
+                  - text: "\r\t\tVAR g: Frame;\r\tBEGIN\r\t\tWHILE (f # NIL) & (f.view # v) DO\r\t\t\tg := ThisCand(f.down, v);\r\t\t\tIF g # NIL THEN f := g ELSE f := f.next END\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 5
+                  - text: " f\r\tEND ThisCand;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ValidateRoot
+                    attr: 3
+                  - text: "* (root: RootFrame);\r\t\tVAR rgn: Region; f: Frame; v: View; i, n: INTEGER;\r\tBEGIN\r\t\tASSERT(root # NIL, 20); ASSERT(root.state = open, 21);\r\t\trgn := root.update; n := rgn.n; rgn.n := 0; i := 0;\r\t\tWHILE i < n DO\r\t\t\tIF rgn.r[i].rebuild THEN\r\t\t\t\tv := rgn.r[i].v;\r\t\t\t\tIF v # NIL THEN f := ThisCand(root, v) ELSE f := NIL END;\r\t\t\t\tIF f = NIL THEN f := root END;\r\t\t\t\tRemoveFrames(f, rgn.r[i].l - f.gx, rgn.r[i].t - f.gy, rgn.r[i].r - f.gx, rgn.r[i].b - f.gy)\r\t\t\tEND;\r\t\t\tINC(i)\r\t\tEND;\r\t\ti := 0;\r\t\tWHILE i < n DO\r\t\t\tRestoreRoot(root, rgn.r[i].l - root.gx, rgn.r[i].t - root.gy, rgn.r[i].r - root.gx, rgn.r[i].b - root.gy);\r\t\t\tINC(i)\r\t\tEND\r\tEND ValidateRoot;\r\r\tPROCEDURE MarkBordersIn (f: Frame);\r\t\tVAR g: Frame; w, h: INTEGER;\r\tBEGIN\r\t\tg := f.down;\r\t\tWHILE g # NIL DO\r\t\t\tg.view.context.GetSize(w, h);\r\t\t\tMarkBorder(f, g.view, g.x, g.y, g.x + w, g.y + h);\r\t\t\tMarkBordersIn(g);\r\t\t\tg := g.next\r\t\tEND\r\tEND MarkBordersIn;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: MarkBorders
+                    attr: 3
+                  - text: "* (root: RootFrame);\r\tBEGIN\r\t\tMarkBordersIn(root)\r\tEND MarkBorders;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ReadFont
+                    attr: 3
+                  - text: "* (VAR rd: Stores.Reader; OUT f: Fonts.Font);\r\t\tVAR version: INTEGER;\r\t\t\tfingerprint, size: INTEGER; typeface: Fonts.Typeface; style: SET; weight: INTEGER;\r\tBEGIN\r\t\trd.ReadVersion(0, 0, version);\r\t\trd.ReadInt(fingerprint);\r\t\trd.ReadXString(typeface); rd.ReadInt(size); rd.ReadSet(style); rd.ReadXInt(weight);\r\t\tf := Fonts.dir.This(typeface, size, style, weight); ASSERT(f # NIL, 60);\r\t\tIF f.IsAlien() THEN\r\t\t\tStores.Report(\"#System:AlienFont\", typeface, \"\", \"\")\r\t\tEND\r\tEND ReadFont;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: WriteFont
+                    attr: 3
+                  - text: "* (VAR wr: Stores.Writer; f: Fonts.Font);\r\tBEGIN\r\t\tASSERT(f # NIL, 20);\r\t\twr.WriteVersion(0);\r\t\twr.WriteInt(0);\r\t\twr.WriteXString(f.typeface); wr.WriteInt(f.size); wr.WriteSet(f.style); wr.WriteXInt(f.weight)\r\tEND WriteFont;\r\r\r\t"
+                    attr: 0
+                  - text: "(** view/file interaction **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Old
+                    attr: 3
+                  - text: "* (ask: BOOLEAN;\r\t\t\t\t\t\tVAR loc: Files.Locator; VAR name: Files.Name; VAR conv: Converters.Converter): View;\r\t\tVAR v: View;\r\tBEGIN\r\t\tASSERT(ask OR (loc # NIL), 20);\r\t\tASSERT(ask OR (name # \"\"), 21);\r\t\tIF ask THEN\r\t\t\tASSERT(getSpecHook # NIL, 101);\r\t\t\tgetSpecHook.GetIntSpec(loc, name, conv)\r\t\tEND;\r\t\tIF (loc # NIL) & (name # \"\") THEN\r\t\t\tASSERT(viewHook # NIL, 100);\r\t\t\tv := viewHook.OldView(loc, name, conv)\r\t\tELSE v := NIL\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " v\r\tEND Old;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: OldView
+                    attr: 3
+                  - text: "* (loc: Files.Locator; name: Files.Name): View;\r\t\tVAR conv: Converters.Converter;\r\tBEGIN\r\t\tconv := NIL;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " Old(dontAsk, loc, name, conv)\r\tEND OldView;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Register
+                    attr: 3
+                  - text: "* (view: View; ask: BOOLEAN;\r\t\t\t\tVAR loc: Files.Locator; VAR name: Files.Name; VAR conv: Converters.Converter; OUT res: INTEGER);\r\tBEGIN\r\t\tASSERT(viewHook # NIL, 100);\r\t\tASSERT(getSpecHook # NIL, 101);\r\t\tASSERT(view # NIL, 20);\r\t\tASSERT(ask OR (loc # NIL), 22); ASSERT(ask OR (name # \"\"), 23);\r\t\tIF ask OR (loc = NIL) OR (name = \"\") OR (loc.res = 77) THEN\r\t\t\tgetSpecHook.GetExtSpec(view, loc, name, conv)\r\t\tEND;\r\t\tIF (loc # NIL) & (name # \"\") THEN\r\t\t\tviewHook.RegisterView(view, loc, name, conv); res := loc.res\r\t\tELSE res := 7\r\t\tEND\r\tEND Register;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: RegisterView
+                    attr: 3
+                  - text: "* (view: View; loc: Files.Locator; name: Files.Name);\r\t\tVAR res: INTEGER; conv: Converters.Converter;\r\tBEGIN\r\t\tconv := NIL;\r\t\tRegister(view, dontAsk, loc, name, conv, res)\r\tEND RegisterView;\r\r\t"
+                    attr: 0
+                  - text: "(** direct view opening **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Open
+                    attr: 3
+                  - text: "* (view: View; loc: Files.Locator; name: Files.Name; conv: Converters.Converter);\r\tBEGIN\r\t\tASSERT(view # NIL, 20); ASSERT((loc = NIL) = (name = \"\"), 21);\r\t\tASSERT(viewHook # NIL, 100);\r\t\tviewHook.Open(view, name, loc, name, conv, FALSE, FALSE, FALSE, FALSE, FALSE)\r\tEND Open;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: OpenView
+                    attr: 3
+                  - text: "* (view: View);\r\tBEGIN\r\t\tASSERT(view # NIL, 20);\r\t\tOpen(view, NIL, \"\", NIL)\r\tEND OpenView;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: OpenAux
+                    attr: 3
+                  - text: "* (view: View; title: Title);\r\tBEGIN\r\t\tASSERT(view # NIL, 20); ASSERT(viewHook # NIL, 100);\r\t\tIF title = \"\" THEN title := \"#System:untitled\" END;\r\t\tviewHook.Open(view, title, NIL, \"\", NIL, FALSE, TRUE, FALSE, TRUE, TRUE)\r\tEND OpenAux;\r\r\r\t"
+                    attr: 0
+                  - text: "(** view producer/consumer decoupling **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Deposit
+                    attr: 3
+                  - text: "* (view: View);\r\t\tVAR q: QueueElem;\r\tBEGIN\r\t\tASSERT(view # NIL, 20);\r\t\tNEW(q); q.view := view;\r\t\tIF queue.head = NIL THEN queue.head := q ELSE queue.tail.next := q END;\r\t\tqueue.tail := q; INC(queue.len)\r\tEND Deposit;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Fetch
+                    attr: 3
+                  - text: "* (OUT view: View);\r\t\tVAR q: QueueElem;\r\tBEGIN\r\t\tq := queue.head; ASSERT(q # NIL, 20);\r\t\tDEC(queue.len); queue.head := q.next;\r\t\tIF queue.head = NIL THEN queue.tail := NIL END;\r\t\tview := q.view\r\tEND Fetch;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Available
+                    attr: 3
+                  - text: "* (): INTEGER;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 5
+                  - text: " queue.len\r\tEND Available;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ClearQueue
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tqueue.len := 0; queue.head := NIL; queue.tail := NIL;\r\t\tactView := NIL\t"
+                    attr: 0
+                  - text: "(* HACK! prevents invalidation of view due to trap in Dialog.Call *)"
+                    attr: 1
+                  - text: "\r\tEND ClearQueue;\r\r\r\t"
+                    attr: 0
+                  - text: "(** attach controller framework **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: InitCtrl
+                    attr: 3
+                  - text: "* (p: CtrlMsgHandler);\r\tBEGIN\r\t\tASSERT(HandleCtrlMsg = NIL, 20); HandleCtrlMsg := p\r\tEND InitCtrl;\r\r\tPROCEDURE (h: NotifyHook) Notify (id0, id1: INTEGER; opts: SET);\r\t\tVAR msg: NotifyMsg;\r\tBEGIN\r\t\tASSERT(msgHook # NIL, 100);\r\t\tmsg.id0 := id0; msg.id1 := id1; msg.opts := opts;\r\t\tmsgHook.Omnicast(msg)\r\tEND Notify;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: Omnicast
+                    attr: 3
+                  - text: "* (VAR msg: ANYREC);\r\tBEGIN\r\t\tmsgHook.Omnicast(msg)\r\tEND Omnicast;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: HandlePropMsg
+                    attr: 3
+                  - text: "* (v: View; VAR msg: PropMessage);\r\t\tVAR a: View; op: INTEGER;\r\tBEGIN\r\t\tIF ~(handler IN v.bad) THEN\r\t\t\ta := actView; op := actOp; actView := v; actOp := handler;\r\t\t\tv.HandlePropMsg(msg);\r\t\t\tactView := a; actOp := op\r\t\tEND\r\tEND HandlePropMsg;\r\t\r\t\r\t"
+                    attr: 0
+                  - text: "(* view invalidation *)"
+                    attr: 1
+                  - text: "\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: IsInvalid
+                    attr: 3
+                  - text: "* (v: View): BOOLEAN;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " v.bad # {}\r\tEND IsInvalid;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: RevalidateView
+                    attr: 3
+                  - text: "* (v: View);\r\tBEGIN\r\t\tv.bad := {};\r\t\tUpdate(v, keepFrames)\r\tEND RevalidateView;\r\t\r\tPROCEDURE TrapCleanup;\r\tBEGIN\r\t\tcopyModel := NIL;\r\t\tIF actView # NIL THEN\r\t\t\tINCL(actView.bad, actOp);\r\t\t\tIF actFrame # NIL THEN\r\t\t\t\tUpdateRoot(actFrame, actFrame.l, actFrame.t, actFrame.r, actFrame.b, keepFrames);\r\t\t\t\tactFrame := NIL\r\t\t\tEND;\r\t\t\tUpdate(actView, keepFrames);\r\t\t\tactView := NIL\r\t\tEND\r\tEND TrapCleanup;\r\t\r\tPROCEDURE Init;\r\t\tVAR h: NotifyHook;\r\tBEGIN\r\t\tNEW(h); Dialog.SetNotifyHook(h);\r\t\tdomainGuard := 0; ClearQueue;\r\t\tKernel.InstallTrapChecker(TrapCleanup)\r\tEND Init;\r\rBEGIN\r\tInit\rEND Views.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 29
+          bodyPos: 44142
+          bodyLen: 8

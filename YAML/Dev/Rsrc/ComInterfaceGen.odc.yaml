@@ -1,0 +1,204 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Dev\\Rsrc\\ComInterfaceGen.odc"
+  size: 2114
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 1983
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 1797
+          children:
+            - kind: FormViews.StdView
+              storeKind: store
+              typeChain:
+                - FormViews.StdViewDesc
+                - FormViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 1711
+              children:
+                - kind: FormModels.StdModel
+                  storeKind: elem
+                  typeChain:
+                    - FormModels.StdModelDesc
+                    - FormModels.ModelDesc
+                    - Containers.ModelDesc
+                    - Models.ModelDesc
+                    - Stores.StoreDesc
+                  id: 1
+                  bodyPos: 376
+                  bodyLen: 1468
+                  children:
+                    - kind: Controls.ListBox
+                      storeKind: store
+                      typeChain:
+                        - Controls.ListBoxDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 2
+                      bodyPos: 448
+                      bodyLen: 156
+                      link: DevComInterfaceGen.dialog.library
+                      notifier: DevComInterfaceGen.ListBoxNotifier
+                      opts: [true, false, false, false, false]
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.Caption
+                      storeKind: store
+                      typeChain:
+                        - Controls.CaptionDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 3
+                      bodyPos: 664
+                      bodyLen: 48
+                      label: "Type Library:"
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.PushButton
+                      storeKind: store
+                      typeChain:
+                        - Controls.PushButtonDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 775
+                      bodyLen: 90
+                      link: DevComInterfaceGen.Browse
+                      label: Browse...
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.Field
+                      storeKind: store
+                      typeChain:
+                        - Controls.FieldDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 5
+                      bodyPos: 923
+                      bodyLen: 162
+                      link: DevComInterfaceGen.dialog.fileName
+                      notifier: DevComInterfaceGen.TextFieldNotifier
+                      opts: [true, false, false, false, false]
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.Caption
+                      storeKind: store
+                      typeChain:
+                        - Controls.CaptionDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 6
+                      bodyPos: 1123
+                      bodyLen: 110
+                      link: DevComInterfaceGen.dialog.fileName
+                      label: "File Name:"
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.Field
+                      storeKind: store
+                      typeChain:
+                        - Controls.FieldDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 7
+                      bodyPos: 1271
+                      bodyLen: 88
+                      link: DevComInterfaceGen.dialog.modName
+                      opts: [true, false, false, false, false]
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.Caption
+                      storeKind: store
+                      typeChain:
+                        - Controls.CaptionDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 8
+                      bodyPos: 1397
+                      bodyLen: 112
+                      link: DevComInterfaceGen.dialog.modName
+                      label: "Module Name:"
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.PushButton
+                      storeKind: store
+                      typeChain:
+                        - Controls.PushButtonDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 9
+                      bodyPos: 1547
+                      bodyLen: 162
+                      link: StdCmds.CloseDialog; DevComInterfaceGen.GenAutomationInterface
+                      label: Generate
+                      opts: [true, false, false, false, false]
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.PushButton
+                      storeKind: store
+                      typeChain:
+                        - Controls.PushButtonDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 10
+                      bodyPos: 1747
+                      bodyLen: 72
+                      link: StdCmds.CloseDialog
+                      label: Cancel
+                      opts: [false, true, false, false, false]
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: "<nil>"
+                      storeKind: nil
+                - kind: FormControllers.StdController
+                  storeKind: store
+                  typeChain:
+                    - FormControllers.StdControllerDesc
+                    - FormControllers.ControllerDesc
+                    - Containers.ControllerDesc
+                    - Controllers.ControllerDesc
+                    - Stores.StoreDesc
+                  id: 11
+                  bodyPos: 1988
+                  bodyLen: 9
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 12
+          bodyPos: 2079
+          bodyLen: 8

@@ -1,0 +1,242 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Form\\Docu\\Controllers.odc"
+  size: 5079
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 4948
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 4762
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 4676
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 6012000
+                asc: 121900
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000003
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 6
+                bodyPos: 4676
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 4162
+                runListLen: 556
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: FormControllers
+                    attr: 0
+                  - text: "\r\rDEFINITION FormControllers;\r\r\tIMPORT Views, Controllers, Containers, FormModels, FormViews;\r\r\tCONST noSelection = Containers.noSelection; noFocus = Containers.noFocus;\r\r\tTYPE\r\t\tController = POINTER TO ABSTRACT RECORD (Containers.Controller)\r\t\t\tform-: FormModels.Model;\r\t\t\tview-: FormViews.View;\r\t\t\t(c: Controller) ThisView (): FormViews.View, EXTENSIBLE;\r\t\t\t(c: Controller) Select (view: Views.View), NEW, ABSTRACT;\r\t\t\t(c: Controller) Deselect (view: Views.View), NEW, ABSTRACT;\r\t\t\t(c: Controller) IsSelected (view: Views.View): BOOLEAN, NEW, ABSTRACT;\r\t\t\t(c: Controller) GetSelection (): List, NEW, ABSTRACT;\r\t\t\t(c: Controller) SetSelection (l: List), NEW, ABSTRACT\r\t\tEND;\r\r\t\tDirectory = POINTER TO ABSTRACT RECORD (Controllers.Directory)\r\t\t\t(d: Directory) New (): Controller, EXTENSIBLE;\r\t\t\t(d: Directory) NewController (opts: SET): Controller, ABSTRACT\r\t\tEND;\r\r\t\tList = POINTER TO RECORD\r\t\t\tnext: List;\r\t\t\tview: Views.View\r\t\tEND;\r\r\tVAR dir-, stdDir-: Directory;\r\r\tPROCEDURE Focus (): Controller;\r\tPROCEDURE Insert (c: Controller; view: Views.View; l, t, r, b: INTEGER);\r\tPROCEDURE SetDir (d: Directory);\r\tPROCEDURE Install;\r\rEND FormControllers.\r\r\r"
+                    attr: 1
+                  - text: FormControllers
+                    attr: 2
+                  - text: " are standard controllers for "
+                    attr: 1
+                  - text: FormViews
+                    attr: 2
+                  - text: ". Note that forms can only be used in a non-modal way, i.e., a program doesn't wait until the user is finished with the form. In other words: the user is in control, not the computer.\r\r\rTYPE "
+                    attr: 1
+                  - text: Controller (Containers.Controller)
+                    attr: 3
+                  - text: "\rABSTRACT\rStandard controllers for form views.\r\r"
+                    attr: 1
+                  - text: form
+                    attr: 3
+                  - text: "-: FormModels.Model\tform # NIL\rThe controller's model.\r\r"
+                    attr: 1
+                  - text: view
+                    attr: 3
+                  - text: "-: FormViews.View\tview # NIL & view.ThisModel() = form\rThe controller's view.\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: ThisView
+                    attr: 3
+                  - text: " (): FormViews.View\rEXTENSIBLE\rCovariant narrowing of function result.\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: Select
+                    attr: 3
+                  - text: " (view: Views.View)\rNEW, ABSTRACT\rAdds a view to the current selection, if it isn't selected already.\r\rPre\rview in c.form\t20\r~(noSel IN c.opts)\t21\r\rPost\rc.IsSelected(view)\rc.ThisFocus() = NIL\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: Deselect
+                    attr: 3
+                  - text: " (view: Views.View)\rNEW, ABSTRACT\rRemoves a view from the current selection, if it is selected.\r\rPre\rview in c.form\t20\r\rPost\r~c.IsSelected(view)\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: IsSelected
+                    attr: 3
+                  - text: " (view: Views.View): BOOLEAN\rNEW, ABSTRACT\rDetermines whether the given view is currently selected or not. "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: " is not considered selected.\r\rPre\rview = NIL  OR  view in c.form\t20\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: GetSelection
+                    attr: 3
+                  - text: " (): List\rNEW, ABSTRACT\rReturns the list of selected subviews.\r\rPost\rall views of the result list are in c.form\r\rPROCEDURE (c: Controller) "
+                    attr: 1
+                  - text: SetSelection
+                    attr: 3
+                  - text: " (l: List)\rNEW, ABSTRACT\rRemoves the existing selection, and selects the subviews of "
+                    attr: 1
+                  - text: l
+                    attr: 2
+                  - text: ".\r\rPre\rall views of l are in c.form\t20\r\r\rTYPE "
+                    attr: 1
+                  - text: Directory
+                    attr: 3
+                  - text: "\rABSTRACT\rDirectory for form view controllers.\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: New
+                    attr: 3
+                  - text: " (): Controller\rEXTENSIBLE\rCovariant extension of "
+                    attr: 1
+                  - text: Controllers.Directory.New
+                    attr: 2
+                  - text: ".\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: NewController
+                    attr: 3
+                  - text: " (opts: SET): Controller\rABSTRACT\rCovariant extension of "
+                    attr: 1
+                  - text: Controllers.Directory.NewController
+                    attr: 2
+                  - text: ".\r\r\rVAR "
+                    attr: 1
+                  - text: dir
+                    attr: 3
+                  - text: "-, "
+                    attr: 1
+                  - text: stdDir
+                    attr: 3
+                  - text: "-: Directory\tdir # NIL  &  stdDir # NIL\rController directories.\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: Focus
+                    attr: 3
+                  - text: " (): Controller\rReturns the focus controller, if the focus currently is a form view, otherwise it returns "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: ".\r\rPROCEDURE "
+                    attr: 1
+                  - text: Insert
+                    attr: 3
+                  - text: " (c: Controller; view: Views.View; l, t, r, b: INTEGER)\rInserts "
+                    attr: 1
+                  - text: view
+                    attr: 2
+                  - text: " into "
+                    attr: 1
+                  - text: c
+                    attr: 2
+                  - text: "'s view at the position "
+                    attr: 1
+                  - text: "(l, t, r, b)"
+                    attr: 2
+                  - text: ". If necessary, the position is slightly corrected (rounded) such that "
+                    attr: 1
+                  - text: view
+                    attr: 2
+                  - text: "'s top-left corner comes to lie on the grid. The size of "
+                    attr: 1
+                  - text: view
+                    attr: 2
+                  - text: " is not changed, however.\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetDir
+                    attr: 3
+                  - text: " (d: Directory)\rSet directory "
+                    attr: 1
+                  - text: d
+                    attr: 2
+                  - text: ".\r\rPre\rd # NIL\t20\r\rPost\rdir = d\r\rPROCEDURE "
+                    attr: 1
+                  - text: Install
+                    attr: 3
+                  - text: "\rUsed internally.\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 10
+          bodyPos: 5044
+          bodyLen: 8

@@ -1,0 +1,520 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Dev\\Mod\\CPP.odc"
+  size: 63386
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 63255
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 63069
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 62983
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000021
+              defaultAttr:
+                font: Arial
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 25
+                bodyPos: 63104
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 62590
+                runListLen: 2908
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [4]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000000
+                  - # [5]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff00ff
+                    weight: 400
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE DevCPP;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\treferences\t= \"ftp://ftp.inf.ethz.ch/pub/software/Oberon/OberonV4/Docu/OP2.Paper.ps\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- 20070123, bh, NewString call changed (Unicode support)\r\t- 20070123, bh, support for procedure type sysflags\r\t- 20070308, bh, longint excluded as case labels\r\t- 20141027, center #19, full Unicode support for Component Pascal identifiers added\r\t- 20150415, center #38, report passing receiver parameter IN to VAR\r\t- 20150513, center #43, extending the size of code procedures\r\t- 20150514, center #47, avoid a compiler TRAP with SYSTEM.PTR\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT\r\t\tStrings, DevCPM, DevCPT, DevCPB, DevCPS;\r\t\t\r\tCONST\r\t\tanchorVarPar = TRUE;\r\t\r\t\t(* numtyp values *)\r\t\tchar = 1; integer = 2; real = 4; int64 = 5; real32 = 6; real64 = 7;\r\r\t\t(*symbol values*)\r\t\tnull = 0; times = 1; slash = 2; div = 3; mod = 4;\r\t\tand = 5; plus = 6; minus = 7; or = 8; eql = 9;\r\t\tneq = 10; lss = 11; leq = 12; gtr = 13; geq = 14;\r\t\tin = 15; is = 16; arrow = 17; dollar = 18; period = 19;\r\t\tcomma = 20; colon = 21; upto = 22; rparen = 23; rbrak = 24;\r\t\trbrace = 25; of = 26; then = 27; do = 28; to = 29;\r\t\tby = 30; not = 33;\r\t\tlparen = 40; lbrak = 41; lbrace = 42; becomes = 44;\r\t\tnumber = 45; nil = 46; string = 47; ident = 48; semicolon = 49;\r\t\tbar = 50; end = 51; else = 52; elsif = 53; until = 54;\r\t\tif = 55; case = 56; while = 57; repeat = 58; for = 59;\r\t\tloop = 60; with = 61; exit = 62; return = 63; array = 64;\r\t\trecord = 65; pointer = 66; begin = 67; const = 68; type = 69;\r\t\tvar = 70; out = 71; procedure = 72; close = 73; import = 74;\r\t\tmodule = 75; eof = 76;\r\r\t\t(* object modes *)\r\t\tVar = 1; VarPar = 2; Con = 3; Fld = 4; Typ = 5; LProc = 6; XProc = 7;\r\t\tSProc = 8; CProc = 9; IProc = 10; Mod = 11; Head = 12; TProc = 13; Attr = 20;\r\r\t\t(* Structure forms *)\r\t\tUndef = 0; Byte = 1; Bool = 2; Char8 = 3; Int8 = 4; Int16 = 5; Int32 = 6;\r\t\tReal32 = 7; Real64 = 8; Set = 9; String8 = 10; NilTyp = 11; NoTyp = 12;\r\t\tPointer = 13; ProcTyp = 14; Comp = 15;\r\t\tChar16 = 16; String16 = 17; Int64 = 18;\r\t\tintSet = {Int8..Int32, Int64}; charSet = {Char8, Char16};\r\t\t\r\t\t(* composite structure forms *)\r\t\tBasic = 1; Array = 2; DynArr = 3; Record = 4;\r\r\t\t(*function number*)\r\t\thaltfn = 0; newfn = 1; incfn = 13; sysnewfn = 30;\r\r\t\t(* nodes classes *)\r\t\tNvar = 0; Nvarpar = 1; Nfield = 2; Nderef = 3; Nindex = 4; Nguard = 5; Neguard = 6;\r\t\tNconst = 7; Ntype = 8; Nproc = 9; Nupto = 10; Nmop = 11; Ndop = 12; Ncall = 13;\r\t\tNinittd = 14; Nif = 15; Ncaselse = 16; Ncasedo = 17; Nenter = 18; Nassign = 19;\r\t\tNifelse = 20; Ncase = 21; Nwhile = 22; Nrepeat = 23; Nloop = 24; Nexit = 25;\r\t\tNreturn = 26; Nwith = 27; Ntrap = 28; Ncomp = 30;\r\r\t\t(* node subclasses *)\r\t\tsuper = 1;\r\t\t\r\t\t(* module visibility of objects *)\r\t\tinternal = 0; external = 1; externalR = 2; inPar = 3; outPar = 4;\r\r\t\t(* procedure flags (conval.setval) *)\r\t\thasBody = 1; isRedef = 2; slNeeded = 3; imVar = 4;\r\t\t\r\t\t(* attribute flags (attr.adr, struct.attribute, proc.conval.setval)*)\r\t\tnewAttr = 16; absAttr = 17; limAttr = 18; empAttr = 19; extAttr = 20;\r\t\t\r\t\t(* case statement flags (conval.setval) *)\r\t\tuseTable = 1; useTree = 2;\r\t\t\r\t\t(* sysflags *)\r\t\tnilBit = 1; inBit = 2; outBit = 4; newBit = 8; iidBit = 16; interface = 10; som = 20; jstr = -13;\r\t\t\r\t\t\r\tTYPE\r\t\tElem = POINTER TO RECORD\r\t\t\tnext: Elem;\r\t\t\tstruct: DevCPT.Struct;\r\t\t\tobj, base: DevCPT.Object;\r\t\t\tpos: INTEGER;\r\t\t\tname: DevCPT.String\r\t\tEND;\r\t\t\r\t\t\r\tVAR\r\t\tsym, level: BYTE;\r\t\tLoopLevel: SHORTINT;\r\t\tTDinit, lastTDinit: DevCPT.Node;\r\t\tuserList: Elem;\r\t\trecList: Elem;\r\t\thasReturn: BOOLEAN;\r\t\t\r\r\tPROCEDURE^ Type(VAR typ: DevCPT.Struct; VAR name: DevCPT.String);\r\tPROCEDURE^ Expression(VAR x: DevCPT.Node);\r\tPROCEDURE^ Block(VAR procdec, statseq: DevCPT.Node);\r\t\r\t(* forward type handling *)\r\t\r\tPROCEDURE IncompleteType (typ: DevCPT.Struct): BOOLEAN;\r\tBEGIN\r\t\tIF typ.form = Pointer THEN\r\t\t\tIF typ = DevCPT.sysptrtyp THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " FALSE END;\r"
+                    attr: 0
+                  - text: "\t\t\t"
+                    attr: 4
+                  - text: "typ := typ.BaseTyp\r\t\tEND;"
+                    attr: 0
+                  - text: "\r"
+                    attr: 4
+                  - text: "\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " (typ = DevCPT.undftyp) OR (typ.comp = Record) & (typ.BaseTyp = DevCPT.undftyp)\r\tEND IncompleteType;\r\t\r\tPROCEDURE SetType (struct: DevCPT.Struct; obj: DevCPT.Object; typ: DevCPT.Struct; name: DevCPT.String);\r\t\tVAR u: Elem;\r\tBEGIN\r\t\tIF obj # NIL THEN obj.typ := typ ELSE struct.BaseTyp := typ END;\r\t\tIF name # NIL THEN\r\t\t\tNEW(u); u.struct := struct; u.obj := obj; u.pos := DevCPM.errpos; u.name := name;\r\t\t\tu.next := userList; userList := u\r\t\tEND\r\tEND SetType;\r\r\tPROCEDURE CheckAlloc (VAR typ: DevCPT.Struct; dynAllowed: BOOLEAN; pos: INTEGER);\r\tBEGIN\r\t\ttyp.pvused := TRUE;\r\t\tIF typ.comp = DynArr THEN\r\t\t\tIF ~dynAllowed THEN DevCPM.Mark(88, pos); typ := DevCPT.undftyp END\r\t\tELSIF typ.comp = Record THEN\r\t\t\tIF (typ.attribute = absAttr) OR (typ.attribute = limAttr) & (typ.mno # 0) THEN\r\t\t\t\tDevCPM.Mark(193, pos); typ := DevCPT.undftyp\r\t\t\tEND\r\t\tEND\r\tEND CheckAlloc;\r\r\tPROCEDURE CheckRecursiveType (outer, inner: DevCPT.Struct; pos: INTEGER);\r\t\tVAR fld: DevCPT.Object;\r\tBEGIN\r\t\tIF outer = inner THEN DevCPM.Mark(58, pos)\r\t\tELSIF inner.comp IN {Array, DynArr} THEN CheckRecursiveType(outer, inner.BaseTyp, pos)\r\t\tELSIF inner.comp = Record THEN\r\t\t\tfld := inner.link;\r\t\t\tWHILE (fld # NIL) & (fld.mode = Fld) DO\r\t\t\t\tCheckRecursiveType(outer, fld.typ, pos);\r\t\t\t\tfld := fld.link\r\t\t\tEND;\r\t\t\tIF inner.BaseTyp # NIL THEN CheckRecursiveType(outer, inner.BaseTyp, pos) END\r\t\tEND\r\tEND CheckRecursiveType;\r\t\r\tPROCEDURE FixType (struct: DevCPT.Struct; obj: DevCPT.Object; typ: DevCPT.Struct; pos: INTEGER);\r\t"
+                    attr: 0
+                  - text: "(* fix forward reference *)"
+                    attr: 1
+                  - text: "\r\t\tVAR t: DevCPT.Struct; f, bf: DevCPT.Object; i: SHORTINT;\r\tBEGIN\r\t\tIF obj # NIL THEN\r\t\t\tIF obj.mode = Var THEN\t"
+                    attr: 0
+                  - text: "(* variable type *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tIF struct # NIL THEN\t"
+                    attr: 0
+                  - text: "(* receiver type *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tIF (typ.form # Pointer) OR (typ.BaseTyp # struct) THEN DevCPM.Mark(180, pos) END;\r\t\t\t\tELSE CheckAlloc(typ, obj.mnolev > level, pos)\t"
+                    attr: 0
+                  - text: "(* TRUE for parameters *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tEND\r\t\t\tELSIF obj.mode = VarPar THEN\t"
+                    attr: 0
+                  - text: "(* varpar type *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tIF struct # NIL THEN\t"
+                    attr: 0
+                  - text: "(* varpar receiver type *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tIF typ # struct THEN DevCPM.Mark(180, pos) END\r\t\t\t\tEND\r\t\t\tELSIF obj.mode = Fld THEN\t"
+                    attr: 0
+                  - text: "(* field type *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tCheckAlloc(typ, FALSE, pos);\r\t\t\t\tCheckRecursiveType(struct, typ, pos)\r\t\t\tELSIF obj.mode = TProc THEN\t"
+                    attr: 0
+                  - text: "(* proc return type *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tIF typ.form = Comp THEN typ := DevCPT.undftyp; DevCPM.Mark(54, pos) END\r\t\t\tELSIF obj.mode = Typ THEN\t"
+                    attr: 0
+                  - text: "(* alias type *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tIF typ.form IN {Byte..Set, Char16, Int64} THEN\t"
+                    attr: 0
+                  - text: "(* make alias structure *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tt := DevCPT.NewStr(typ.form, Basic); i := t.ref;\r\t\t\t\t\tt^ := typ^; t.ref := i; t.strobj := obj; t.mno := 0;\r\t\t\t\t\tt.BaseTyp := typ; typ := t\r\t\t\t\tEND;\r\t\t\t\tIF obj.vis # internal THEN\r\t\t\t\t\tIF typ.comp = Record THEN typ.exp := TRUE\r\t\t\t\t\tELSIF typ.form = Pointer THEN typ.BaseTyp.exp := TRUE\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\tELSE HALT(100)\r\t\t\tEND;\r\t\t\tobj.typ := typ\r\t\tELSE\r\t\t\tIF struct.form = Pointer THEN\t"
+                    attr: 0
+                  - text: "(* pointer base type *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tIF typ.comp = Record THEN DevCPM.PropagateRecPtrSysFlag(typ.sysflag, struct.sysflag)\r\t\t\t\tELSIF typ.comp IN {Array, DynArr} THEN DevCPM.PropagateArrPtrSysFlag(typ.sysflag, struct.sysflag)\r\t\t\t\tELSE typ := DevCPT.undftyp; DevCPM.Mark(57, pos)\r\t\t\t\tEND;\r\t\t\t\tstruct.untagged := struct.sysflag "
+                    attr: 0
+                  - text: ">"
+                    attr: 3
+                  - text: " 0;\r\t\t\t\tIF (struct.strobj # NIL) & (struct.strobj.vis # internal) THEN typ.exp := TRUE END;\r\t\t\tELSIF struct.comp = Array THEN\t"
+                    attr: 0
+                  - text: "(* array base type *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tCheckAlloc(typ, FALSE, pos);\r\t\t\t\tCheckRecursiveType(struct, typ, pos)\r\t\t\tELSIF struct.comp = DynArr THEN\t"
+                    attr: 0
+                  - text: "(* array base type *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tCheckAlloc(typ, TRUE, pos);\r\t\t\t\tCheckRecursiveType(struct, typ, pos)\r\t\t\tELSIF struct.comp = Record THEN\t"
+                    attr: 0
+                  - text: "(* record base type *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tIF typ.form = Pointer THEN typ := typ.BaseTyp END;\r\t\t\t\ttyp.pvused := TRUE; struct.extlev := SHORT(SHORT(typ.extlev + 1));\r\t\t\t\tDevCPM.PropagateRecordSysFlag(typ.sysflag, struct.sysflag);\r\t\t\t\tIF (typ.attribute = 0) OR (typ.attribute = limAttr) & (typ.mno # 0) THEN DevCPM.Mark(181, pos)\r\t\t\t\tELSIF (struct.attribute = absAttr) & (typ.attribute # absAttr) THEN DevCPM.Mark(191, pos)\r\t\t\t\tELSIF (typ.attribute = limAttr) & (struct.attribute # limAttr) THEN DevCPM.Mark(197, pos)\r\t\t\t\tEND;\r\t\t\t\tf := struct.link;\r\t\t\t\tWHILE f # NIL DO\t"
+                    attr: 0
+                  - text: "(* check for field name conflicts *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tDevCPT.FindField(f.name, typ, bf);\r\t\t\t\t\tIF bf # NIL THEN DevCPM.Mark(1, pos) END;\r\t\t\t\t\tf := f.link\r\t\t\t\tEND;\r\t\t\t\tCheckRecursiveType(struct, typ, pos);\r\t\t\t\tstruct.untagged := struct.sysflag "
+                    attr: 0
+                  - text: ">"
+                    attr: 3
+                  - text: " 0;\r\t\t\tELSIF struct.form = ProcTyp THEN\t"
+                    attr: 0
+                  - text: "(* proc type return type *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tIF typ.form = Comp THEN typ := DevCPT.undftyp; DevCPM.Mark(54, pos) END;\r\t\t\tELSE HALT(100)\r\t\t\tEND;\r\t\t\tstruct.BaseTyp := typ\r\t\tEND\r\tEND FixType;\r\r\tPROCEDURE CheckForwardTypes;\r\t\tVAR u, next: Elem; progress: BOOLEAN;\r\tBEGIN\r\t\tu := userList; userList := NIL;\r\t\tWHILE u # NIL DO\r\t\t\tnext := u.next; DevCPS.name := u.name^$; DevCPT.Find(DevCPS.name, u.base);\r\t\t\tIF u.base = NIL THEN DevCPM.Mark(0, u.pos)\r\t\t\tELSIF u.base.mode # Typ THEN DevCPM.Mark(72, u.pos)\r\t\t\tELSE u.next := userList; userList := u\t"
+                    attr: 0
+                  - text: "(* reinsert *)"
+                    attr: 1
+                  - text: "\r\t\t\tEND;\r\t\t\tu := next\r\t\tEND;\r\t\tREPEAT\t"
+                    attr: 0
+                  - text: "(* iteration for multy level alias *)"
+                    attr: 1
+                  - text: "\r\t\t\tu := userList; userList := NIL; progress := FALSE;\r\t\t\tWHILE u # NIL DO\r\t\t\t\tnext := u.next;\r\t\t\t\tIF IncompleteType(u.base.typ) THEN\r\t\t\t\t\tu.next := userList; userList := u\t"
+                    attr: 0
+                  - text: "(* reinsert *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tELSE\r\t\t\t\t\tprogress := TRUE;\r\t\t\t\t\tFixType(u.struct, u.obj, u.base.typ, u.pos)\r\t\t\t\tEND;\r\t\t\t\tu := next\r\t\t\tEND\r\t\tUNTIL (userList = NIL) OR ~progress;\r\t\tu := userList;\t"
+                    attr: 0
+                  - text: "(* remaining type relations are cyclic *)"
+                    attr: 1
+                  - text: "\r\t\tWHILE u # NIL DO\r\t\t\tIF (u.obj = NIL) OR (u.obj.mode = Typ) THEN DevCPM.Mark(58, u.pos) END;\r\t\t\tu := u.next\r\t\tEND;\r\tEND CheckForwardTypes;\r\t\r\tPROCEDURE CheckUnimpl (m: DevCPT.Object; typ: DevCPT.Struct; pos: INTEGER);\r\t\tVAR obj: DevCPT.Object; res: INTEGER; n: ARRAY LEN(DevCPT.Name) OF CHAR;\r\tBEGIN\r\t\tIF m # NIL THEN\r\t\t\tIF (m.mode = TProc) & (absAttr IN m.conval.setval) THEN\r\t\t\t\tDevCPT.FindField(m.name^, typ, obj);\r\t\t\t\tIF (obj = NIL) OR (obj.mode # TProc) OR (absAttr IN obj.conval.setval) THEN\r\t\t\t\t\tDevCPM.Mark(192, pos);\r\t\t\t\t\tDevCPM.LogWLn; DevCPM.LogWStr(\"  \"); Strings.Utf8ToString(m.name^, n, res); DevCPM.LogWStr(n);\r\t\t\t\t\tDevCPM.LogWStr(\" not implemented\");\r\t\t\t\t\tIF typ.strobj # NIL THEN\r\t\t\t\t\t\tDevCPM.LogWStr(\" in \"); Strings.Utf8ToString(typ.strobj.name^, n, res); DevCPM.LogWStr(n)\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tCheckUnimpl(m.left, typ, pos);\r\t\t\tCheckUnimpl(m.right, typ, pos)\r\t\tEND\r\tEND CheckUnimpl;\r\t\r\tPROCEDURE CheckRecords (rec: Elem);\r\t\tVAR b: DevCPT.Struct;\r\tBEGIN\r\t\tWHILE rec # NIL DO\t"
+                    attr: 0
+                  - text: "(* check for unimplemented methods in base type *)"
+                    attr: 1
+                  - text: "\r\t\t\tb := rec.struct.BaseTyp;\r\t\t\tWHILE (b # NIL) & (b # DevCPT.undftyp) DO\r\t\t\t\tCheckUnimpl(b.link, rec.struct, rec.pos);\r\t\t\t\tb := b.BaseTyp\r\t\t\tEND;\r\t\t\trec := rec.next\r\t\tEND\r\tEND CheckRecords;\r\r\r\tPROCEDURE err(n: SHORTINT);\r\tBEGIN DevCPM.err(n)\r\tEND err;\r\r\tPROCEDURE CheckSym(s: SHORTINT);\r\tBEGIN\r\t\tIF sym = s THEN DevCPS.Get(sym) ELSE DevCPM.err(s) END\r\tEND CheckSym;\r\r\tPROCEDURE qualident(VAR id: DevCPT.Object);\r\t\tVAR obj: DevCPT.Object; lev: BYTE;\r\tBEGIN (*sym = ident*)\r\t\tDevCPT.Find(DevCPS.name, obj); DevCPS.Get(sym);\r\t\tIF (sym = period) & (obj # NIL) & (obj.mode = Mod) THEN\r\t\t\tDevCPS.Get(sym);\r\t\t\tIF sym = ident THEN\r\t\t\t\tDevCPT.FindImport(DevCPS.name, obj, obj); DevCPS.Get(sym)\r\t\t\tELSE err(ident); obj := NIL\r\t\t\tEND\r\t\tEND ;\r\t\tIF obj = NIL THEN err(0);\r\t\t\tobj := DevCPT.NewObj(); obj.mode := Var; obj.typ := DevCPT.undftyp; obj.adr := 0\r\t\tELSE lev := obj.mnolev;\r\t\t\tIF (obj.mode IN {Var, VarPar}) & (lev # level) THEN\r\t\t\t\tobj.leaf := FALSE;\r\t\t\t\tIF lev > 0 THEN DevCPB.StaticLink(SHORT(SHORT(level-lev))"
+                    attr: 0
+                  - text: ", TRUE"
+                    attr: 3
+                  - text: ") END\t(* !!! *)\r\t\t\tEND\r\t\tEND ;\r\t\tid := obj\r\tEND qualident;\r\r\tPROCEDURE ConstExpression(VAR x: DevCPT.Node);\r\tBEGIN Expression(x);\r\t\tIF x.class # Nconst THEN\r\t\t\terr(50); x := DevCPB.NewIntConst(1) \r\t\tEND\r\tEND ConstExpression;\r\r\tPROCEDURE CheckMark(obj: DevCPT.Object);\t(* !!! *)\r\t\tVAR n: INTEGER; mod: ARRAY 256 OF DevCPT.String;\r\tBEGIN DevCPS.Get(sym);\r\t\tIF (sym = times) OR (sym = minus) THEN\r\t\t\tIF (level > 0) OR ~(obj.mode IN {Var, Fld, TProc}) & (sym = minus) THEN err(41) END ;\r\t\t\tIF sym = times THEN obj.vis := external ELSE obj.vis := externalR END ;\r\t\t\tDevCPS.Get(sym)\r\t\tELSE obj.vis := internal\r\t\tEND;\r\t\tIF (obj.mode IN {TProc, LProc, XProc, CProc, Var, Typ, Con, Fld}) & (sym = lbrak) THEN\r\t\t\tDevCPS.Get(sym);\r\t\t\tIF (sym = number) & (DevCPS.numtyp = char) THEN\r\t\t\t\tNEW(DevCPS.str, 2); DevCPS.str[0] := SHORT(CHR(DevCPS.intval)); DevCPS.str[1] := 0X; sym := string\r\t\t\tEND;\r\t\t\tIF sym = string THEN\r\t\t\t\tIF DevCPS.str^ # \"\" THEN obj.entry := DevCPS.str END;\r\t\t\t\tDevCPS.Get(sym); n := 0;\r\t\t\t\tIF (sym = comma) & (obj.mode IN {LProc, XProc, CProc, Var, Con}) THEN\r\t\t\t\t\tDevCPS.Get(sym);\r\t\t\t\t\tIF (sym = number) & (DevCPS.numtyp = char) THEN\r\t\t\t\t\t\tNEW(DevCPS.str, 2); DevCPS.str[0] := SHORT(CHR(DevCPS.intval)); DevCPS.str[1] := 0X; sym := string\r\t\t\t\t\tEND;\r\t\t\t\t\tIF sym = string THEN\r\t\t\t\t\t\tobj.library := obj.entry; obj.entry := NIL;\r\t\t\t\t\t\tIF DevCPS.str^ # \"\" THEN obj.entry := DevCPS.str END;\r\t\t\t\t\t\tDevCPS.Get(sym);\r\t\t\t\t\tELSE err(string)\r\t\t\t\t\tEND\r\t\t\t\tEND;\r\t\t\t\tWHILE sym = comma DO\r\t\t\t\t\tDevCPS.Get(sym);\r\t\t\t\t\tIF (sym = number) & (DevCPS.numtyp = char) THEN\r\t\t\t\t\t\tNEW(DevCPS.str, 2); DevCPS.str[0] := SHORT(CHR(DevCPS.intval)); DevCPS.str[1] := 0X; sym := string\r\t\t\t\t\tEND;\r\t\t\t\t\tIF sym = string THEN\r\t\t\t\t\t\tIF n < LEN(mod) THEN mod[n] := DevCPS.str; INC(n)\r\t\t\t\t\t\tELSE err(235)\r\t\t\t\t\t\tEND;\r\t\t\t\t\t\tDevCPS.Get(sym)\r\t\t\t\t\tELSE err(string)\r\t\t\t\t\tEND\r\t\t\t\tEND;\r\t\t\t\tIF n > 0 THEN\r\t\t\t\t\tNEW(obj.modifiers, n);\r\t\t\t\t\tWHILE n > 0 DO DEC(n); obj.modifiers[n] := mod[n] END\r\t\t\t\tEND\r\t\t\tELSE err(string)\r\t\t\tEND;\r\t\t\tCheckSym(rbrak);\r\t\t\tIF DevCPM.options * {DevCPM.interface, DevCPM.java} = {} THEN err(225) END\r\t\tEND\r\tEND CheckMark;\r\r\tPROCEDURE CheckSysFlag (VAR sysflag: SHORTINT;\r\t\t\t\t\t\t\t\t\t\tGetSF: PROCEDURE(IN id: ARRAY OF SHORTCHAR; num: SHORTINT; VAR flag: SHORTINT));\r\t\tVAR x: DevCPT.Object; i: SHORTINT;\r\tBEGIN\r\t\tsysflag := 0;\r\t\tIF sym = lbrak THEN\r\t\t\tDevCPS.Get(sym);\r\t\t\tWHILE (sym = number) OR (sym = ident) OR (sym = string) DO\r\t\t\t\tIF sym = number THEN\r\t\t\t\t\tIF DevCPS.numtyp = integer THEN\r\t\t\t\t\t\ti := SHORT(DevCPS.intval); GetSF(\"\", i, sysflag)\r\t\t\t\t\tELSE err(225)\r\t\t\t\t\tEND\r\t\t\t\tELSIF sym = ident THEN\r\t\t\t\t\tDevCPT.Find(DevCPS.name, x);\r\t\t\t\t\tIF (x # NIL) & (x.mode = Con) & (x.typ.form IN {Int8, Int16, Int32}) THEN \r\t\t\t\t\t\ti := SHORT(x.conval.intval); GetSF(\"\", i, sysflag)\r\t\t\t\t\tELSE\r\t\t\t\t\t\tGetSF(DevCPS.name, 0, sysflag)\r\t\t\t\t\tEND\r\t\t\t\tELSE\r\t\t\t\t\tGetSF(DevCPS.str^, 0, sysflag)\r\t\t\t\tEND;\r\t\t\t\tDevCPS.Get(sym);\r\t\t\t\tIF (sym = comma) OR (sym = plus) THEN DevCPS.Get(sym) END\r\t\t\tEND;\r\t\t\tCheckSym(rbrak)\r\t\tEND\r\tEND CheckSysFlag;\r\t\r\tPROCEDURE Receiver(VAR mode, vis: BYTE; VAR name: DevCPT.Name; VAR typ, rec: DevCPT.Struct);\r\t\tVAR tname: DevCPT.String;\r\tBEGIN typ := DevCPT.undftyp; rec := NIL; vis := 0;\r\t\tIF sym = var THEN DevCPS.Get(sym); mode := VarPar;\r\t\tELSIF sym = in THEN DevCPS.Get(sym); mode := VarPar; vis := inPar\t(* ??? *)\r\t\tELSE mode := Var\r\t\tEND ;\r\t\tname := DevCPS.name; CheckSym(ident); CheckSym(colon);\r\t\tIF sym # ident THEN err(ident) END;\r\t\tType(typ, tname);\r\t\tIF tname = NIL THEN\r\t\t\tIF typ.form = Pointer THEN  rec := typ.BaseTyp ELSE rec := typ END;\r\t\t\tIF ~((mode = Var) & (typ.form = Pointer) & (rec.comp = Record) OR\r\t\t\t\t(mode = VarPar) & (typ.comp = Record)) THEN err(70); rec := NIL END;\r\t\t\tIF (rec # NIL) & (rec.mno # level) THEN err(72); rec := NIL END\r\t\tELSE err(0)\r\t\tEND;\r\t\tCheckSym(rparen);\r\t\tIF rec = NIL THEN rec := DevCPT.NewStr(Comp, Record); rec.BaseTyp := NIL END\r\tEND Receiver;\r\t\r\tPROCEDURE FormalParameters(\r\t\tVAR firstPar: DevCPT.Object; VAR resTyp: DevCPT.Struct; VAR name: DevCPT.String\r\t);\r\t\tVAR mode, vis: BYTE; sys: SHORTINT;\r\t\t\t\tpar, first, last, newPar, iidPar: DevCPT.Object; typ: DevCPT.Struct;\r\tBEGIN\r\t\tfirst := NIL; last := firstPar;\r\t\tnewPar := NIL; iidPar := NIL;\r\t\tIF (sym = ident) OR (sym = var) OR (sym = in) OR (sym = out) THEN\r\t\t\tLOOP\r\t\t\t\tsys := 0; vis := 0;\r\t\t\t\tIF sym = var THEN DevCPS.Get(sym); mode := VarPar"
+                    attr: 0
+                  - text: "\r"
+                    attr: 3
+                  - text: "\t\t\t\tELSIF sym = in THEN DevCPS.Get(sym); mode := VarPar; vis := inPar\r\t\t\t\tELSIF sym = out THEN DevCPS.Get(sym); mode := VarPar; vis := outPar\r\t\t\t\tELSE mode := Var\r\t\t\t\tEND ;\r\t\t\t\tIF mode = VarPar THEN "
+                    attr: 0
+                  - text: "CheckSysFlag(sys, "
+                    attr: 3
+                  - text: "DevCPM.GetVarParSysFlag) END;\r"
+                    attr: 0
+                  - text: "\t\t\t\t"
+                    attr: 3
+                  - text: "IF ODD(sys DIV inBit) THEN vis := inPar\r\t\t\t\tELSIF ODD(sys DIV outBit) THEN vis := outPar\r\t\t\t\tEND;\r\t\t\t\tIF ODD(sys DIV newBit) & (vis # outPar) THEN err(225)\r\t\t\t\tELSIF ODD(sys DIV iidBit) & (vis # inPar) THEN err(225)\r\t\t\t\tEND;\r\t\t\t\tLOOP\r\t\t\t\t\tIF sym = ident THEN\r\t\t\t\t\t\tDevCPT.Insert(DevCPS.name, par); DevCPS.Get(sym);\r\t\t\t\t\t\tpar.mode := mode; par.link := NIL;"
+                    attr: 0
+                  - text: " "
+                    attr: 3
+                  - text: "par.vis := vis; "
+                    attr: 0
+                  - text: "par.sysflag := SHORT(sys);\r"
+                    attr: 3
+                  - text: "\t\t\t\t\t\tIF first = NIL THEN first := par END ;\r\t\t\t\t\t\tIF firstPar = NIL THEN firstPar := par ELSE last.link := par END ;\r\t\t\t\t\t\tlast := par\r\t\t\t\t\tELSE err(ident)\r\t\t\t\t\tEND;\r\t\t\t\t\tIF sym = comma THEN DevCPS.Get(sym)\r\t\t\t\t\tELSIF sym = ident THEN err(comma)\r\t\t\t\t\tELSIF sym = var THEN err(comma); DevCPS.Get(sym)\r\t\t\t\t\tELSE EXIT\r\t\t\t\t\tEND\r\t\t\t\tEND ;\r\t\t\t\tCheckSym(colon); Type(typ, name);\r\t\t\t\tIF mode # VarPar THEN CheckAlloc(typ, TRUE, DevCPM.errpos) END;\r"
+                    attr: 0
+                  - text: "\t\t\t\t"
+                    attr: 5
+                  - text: "(* IN only allowed for records and arrays *)"
+                    attr: 1
+                  - text: "\r"
+                    attr: 5
+                  - text: "\t\t\t\tIF (mode = VarPar) & (vis = inPar) & (typ.form # Undef) & (typ.form # Comp) & (typ.sysflag = 0) THEN err(177)\r\t\t\t\tEND;\r\t\t\t\t(* typ.pbused is set when parameter type name is parsed *)\r\t\t\t\tWHILE first # NIL DO\r\t\t\t\t\tSetType (NIL, first, typ, name);\r\t\t\t\t\tIF DevCPM.com IN DevCPM.options THEN\r\t\t\t\t\t\tIF ODD(sys DIV newBit) THEN\r\t\t\t\t\t\t\tIF (newPar # NIL) OR (typ.form # Pointer) OR (typ.sysflag # interface) THEN err(168) END;\r\t\t\t\t\t\t\tnewPar := first\r\t\t\t\t\t\tELSIF ODD(sys DIV iidBit) THEN\r\t\t\t\t\t\t\tIF (iidPar # NIL) OR (typ # DevCPT.guidtyp) THEN err(168) END;\r\t\t\t\t\t\t\tiidPar := first\r\t\t\t\t\t\tEND\r\t\t\t\t\tEND;\r\t\t\t\t\tfirst := first.link\r\t\t\t\tEND;\r\t\t\t\tIF sym = semicolon THEN DevCPS.Get(sym)\r\t\t\t\tELSIF sym = ident THEN err(semicolon)\r\t\t\t\tELSE EXIT\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND;\r\t\tCheckSym(rparen);\r\t\tIF (newPar = NIL) # (iidPar = NIL) THEN err(168) END;\r\t\tname := NIL;\r\t\tIF sym = colon THEN\r\t\t\tDevCPS.Get(sym);\r\t\t\tType(resTyp, name);\r\t\t\tIF resTyp.form = Comp THEN resTyp := DevCPT.undftyp; err(54) END\r\t\tELSE resTyp := DevCPT.notyp\r\t\tEND\r\tEND FormalParameters;\r\t\r\tPROCEDURE CheckOverwrite (proc, base: DevCPT.Object; rec: DevCPT.Struct);\r\t\tVAR o, bo: DevCPT.Object;\r\tBEGIN\r\t\tIF base # NIL THEN\r\t\t\tIF base.conval.setval * {absAttr, empAttr, extAttr} = {} THEN err(182) END;\r\t\t\tIF (proc.link.mode # base.link.mode) OR (proc.link.vis # base.link.vis)\r\t\t\t\tOR ~DevCPT.Extends(proc.link.typ, base.link.typ) THEN err(115) END;\r\t\t\to := proc.link; bo := base.link;\r\t\t\tWHILE (o # NIL) & (bo # NIL) DO\r\t\t\t\tIF (bo.sysflag # 0) & (o.sysflag = 0) THEN\t(* propagate sysflags *)\r\t\t\t\t\to.sysflag := bo.sysflag\r\t\t\t\tEND;\r\t\t\t\to := o.link; bo := bo.link\r\t\t\tEND;\r\t\t\tDevCPB.CheckParameters(proc.link.link, base.link.link, FALSE);\r\t\t\tIF ~DevCPT.Extends(proc.typ, base.typ) THEN err(117) END;\r\t\t\tIF (base.vis # proc.vis) & ((proc.vis # internal) OR rec.exp) THEN err(183) END;\r\t\t\tINCL(proc.conval.setval, isRedef)\r\t\tEND;\r\tEND CheckOverwrite;\r\r\tPROCEDURE GetAttributes (proc, base: DevCPT.Object; owner: DevCPT.Struct);\t"
+                    attr: 0
+                  - text: "(* read method attributes *)"
+                    attr: 1
+                  - text: "\r\t\tVAR attr, battr: SET; o: DevCPT.Object;\r\tBEGIN\r\t\tattr := {};\r\t\tIF sym = comma THEN\t"
+                    attr: 0
+                  - text: "(* read attributes *)"
+                    attr: 1
+                  - text: "\r\t\t\tDevCPS.Get(sym);\r\t\t\tIF sym = ident THEN\r\t\t\t\tDevCPT.Find(DevCPS.name, o);\r\t\t\t\tIF (o # NIL) & (o.mode = SProc) & (o.adr = newfn) THEN\r\t\t\t\t\tIF ~(DevCPM.oberon IN DevCPM.options) THEN INCL(attr, newAttr) ELSE err(178) END;\r\t\t\t\t\tDevCPS.Get(sym);\r\t\t\t\t\tIF sym = comma THEN\r\t\t\t\t\t\tDevCPS.Get(sym);\r\t\t\t\t\t\tIF sym = ident THEN DevCPT.Find(DevCPS.name, o) ELSE o := NIL; err(ident) END\r\t\t\t\t\tELSE o := NIL\r\t\t\t\t\tEND\r\t\t\t\tEND;\r\t\t\t\tIF o # NIL THEN\r\t\t\t\t\tIF (o.mode # Attr) OR (o.adr = limAttr) OR (DevCPM.oberon IN DevCPM.options) THEN err(178)\r\t\t\t\t\tELSE INCL(attr, o.adr)\r\t\t\t\t\tEND;\r\t\t\t\t\tDevCPS.Get(sym)\r\t\t\t\tEND\r\t\t\tELSE err(ident)\r\t\t\tEND\r\t\tEND;\r\t\tIF (base = NIL) & ~(newAttr IN attr) THEN err(185); INCL(attr, newAttr)\r\t\tELSIF (base # NIL) & (newAttr IN attr) THEN err(186)\r\t\tEND;\r\t\tIF absAttr IN attr THEN\r\t\t\tIF owner.attribute # absAttr THEN err(190) END;\r\t\t\tIF (proc.vis = internal) & owner.exp THEN err(179) END\r\t\tEND;\r\t\tIF (owner.attribute = 0) OR (owner.attribute = limAttr) THEN\r\t\t\tIF (empAttr IN attr) & (newAttr IN attr) THEN err(187)\r(*\r\t\t\tELSIF extAttr IN attr THEN err(188)\r*)\r\t\t\tEND\r\t\tEND;\r\t\tIF base # NIL THEN\r\t\t\tbattr := base.conval.setval;\r\t\t\tIF empAttr IN battr THEN\r\t\t\t\tIF absAttr IN attr THEN err(189) END\r\t\t\tELSIF ~(absAttr IN battr) THEN\r\t\t\t\tIF (absAttr IN attr) OR (empAttr IN attr) THEN err(189) END\r\t\t\tEND\r\t\tEND;\r\t\tIF empAttr IN attr THEN\r\t\t\tIF proc.typ # DevCPT.notyp THEN err(195)\r\t\t\tELSE\r\t\t\t\to := proc.link; WHILE (o # NIL) & (o.vis # outPar) DO o := o.link END;\r\t\t\t\tIF o # NIL THEN err(195) END\r\t\t\tEND\r\t\tEND;\r\t\tIF (owner.sysflag = interface) & ~(absAttr IN attr) THEN err(162) END;\r\t\tproc.conval.setval := attr\r\tEND GetAttributes;\r\t\r\tPROCEDURE RecordType(VAR typ: DevCPT.Struct; attr: DevCPT.Object);\r\t\tVAR fld, first, last: DevCPT.Object; r: Elem; ftyp: DevCPT.Struct; name: DevCPT.String;\r\tBEGIN typ := DevCPT.NewStr(Comp, Record); typ.BaseTyp := NIL;\r\t\tCheckSysFlag(typ.sysflag, DevCPM.GetRecordSysFlag);\r\t\tIF attr # NIL THEN\r\t\t\tIF ~(DevCPM.oberon IN DevCPM.options) & (attr.adr # empAttr) THEN typ.attribute := SHORT(SHORT(attr.adr))\r\t\t\tELSE err(178)\r\t\t\tEND\r\t\tEND;\r\t\tIF typ.sysflag = interface THEN\r\t\t\tIF (DevCPS.str # NIL) & (DevCPS.str[0] = \"{\") THEN typ.ext := DevCPS.str END;\r\t\t\tIF typ.attribute # absAttr THEN err(163) END;\r\t\t\tIF sym # lparen THEN err(160) END\r\t\tEND;\r\t\tIF sym = lparen THEN\r\t\t\tDevCPS.Get(sym); (*record extension*)\r\t\t\tIF sym = ident THEN\r\t\t\t\tType(ftyp, name);\r\t\t\t\tIF ftyp.form = Pointer THEN ftyp := ftyp.BaseTyp END;\r\t\t\t\tSetType(typ, NIL, ftyp, name);\r\t\t\t\tIF (ftyp.comp = Record) & (ftyp # DevCPT.anytyp) THEN\r\t\t\t\t\tftyp.pvused := TRUE; typ.extlev := SHORT(SHORT(ftyp.extlev + 1));\r\t\t\t\t\tDevCPM.PropagateRecordSysFlag(ftyp.sysflag, typ.sysflag);\r\t\t\t\t\tIF (ftyp.attribute = 0) OR (ftyp.attribute = limAttr) & (ftyp.mno # 0) THEN err(181)\r\t\t\t\t\tELSIF (typ.attribute = absAttr) & (ftyp.attribute # absAttr) & ~(DevCPM.java IN DevCPM.options) THEN err(191)\r\t\t\t\t\tELSIF (ftyp.attribute = limAttr) & (typ.attribute # limAttr) THEN err(197)\r\t\t\t\t\tEND\r\t\t\t\tELSIF ftyp # DevCPT.undftyp THEN err(53)\r\t\t\t\tEND\r\t\t\tELSE err(ident)\r\t\t\tEND ;\r\t\t\tIF typ.attribute # absAttr THEN\t"
+                    attr: 0
+                  - text: "(* save typ for unimplemented method check *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tNEW(r); r.struct := typ; r.pos := DevCPM.errpos; r.next := recList; recList := r\r\t\t\tEND;\r\t\t\tCheckSym(rparen)\r\t\tEND;\r(*\r\t\tDevCPT.OpenScope(0, NIL);\r*)\r\t\tfirst := NIL; last := NIL;\r\t\tLOOP\r\t\t\tIF sym = ident THEN\r\t\t\t\tLOOP\r\t\t\t\t\tIF sym = ident THEN\r\t\t\t\t\t\tIF (typ.BaseTyp # NIL) & (typ.BaseTyp # DevCPT.undftyp) THEN\r\t\t\t\t\t\t\tDevCPT.FindBaseField(DevCPS.name, typ, fld);\r\t\t\t\t\t\t\tIF fld # NIL THEN err(1) END\r\t\t\t\t\t\tEND ;\r\t\t\t\t\t\tDevCPT.InsertField(DevCPS.name, typ, fld);\r\t\t\t\t\t\tfld.mode := Fld; fld.link := NIL; fld.typ := DevCPT.undftyp;\r\t\t\t\t\t\tCheckMark(fld);\r\t\t\t\t\t\tIF first = NIL THEN first := fld END ;\r\t\t\t\t\t\tIF last = NIL THEN typ.link := fld ELSE last.link := fld END ;\r\t\t\t\t\t\tlast := fld\r\t\t\t\t\tELSE err(ident)\r\t\t\t\t\tEND ;\r\t\t\t\t\tIF sym = comma THEN DevCPS.Get(sym)\r\t\t\t\t\tELSIF sym = ident THEN err(comma)\r\t\t\t\t\tELSE EXIT\r\t\t\t\t\tEND\r\t\t\t\tEND ;\r\t\t\t\tCheckSym(colon); Type(ftyp, name);\r\t\t\t\tCheckAlloc(ftyp, FALSE, DevCPM.errpos);\r\t\t\t\tWHILE first # NIL DO\r\t\t\t\t\tSetType(typ, first, ftyp, name); first := first.link\r\t\t\t\tEND;\r\t\t\t\tIF typ.sysflag = interface THEN err(161) END\r\t\t\tEND;\r\t\t\tIF sym = semicolon THEN DevCPS.Get(sym)\r\t\t\tELSIF sym = ident THEN err(semicolon)\r\t\t\tELSE EXIT\r\t\t\tEND\r\t\tEND;\r(*\r\t"
+                    attr: 0
+                  - text: "\tIF typ.link # NIL THEN ASSERT(typ.link = DevCPT.topScope.right) END;"
+                    attr: 3
+                  - text: "\r\t\ttyp.link := DevCPT.topScope.right; DevCPT.CloseScope;\r*)\r\t\ttyp.untagged := typ.sysflag "
+                    attr: 0
+                  - text: ">"
+                    attr: 3
+                  - text: " 0;\r\t\tDevCPB.Inittd(TDinit, lastTDinit, typ); CheckSym(end)\r\tEND RecordType;\r\r\tPROCEDURE ArrayType(VAR typ: DevCPT.Struct);\r\t\tVAR x: DevCPT.Node; n: INTEGER; sysflag: SHORTINT; name: DevCPT.String;\r\tBEGIN CheckSysFlag(sysflag, DevCPM.GetArraySysFlag);\r\t\tIF sym = of THEN\t(*dynamic array*)\r\t\t\ttyp := DevCPT.NewStr(Comp, DynArr); typ.mno := 0; typ.sysflag := sysflag;\r\t\t\tDevCPS.Get(sym); Type(typ.BaseTyp, name); SetType(typ, NIL, typ.BaseTyp, name);\r\t\t\tCheckAlloc(typ.BaseTyp, TRUE, DevCPM.errpos);\r\t\t\tIF typ.BaseTyp.comp = DynArr THEN typ.n := typ.BaseTyp.n + 1 ELSE typ.n := 0 END\r\t\tELSE\r\t\t\ttyp := DevCPT.NewStr(Comp, Array); typ.sysflag := sysflag; ConstExpression(x);\r\t\t\tIF x.typ.form IN {Int8, Int16, Int32} THEN n := x.conval.intval;\r\t\t\t\tIF (n <= 0) OR (n > DevCPM.MaxIndex) THEN err(63); n := 1 END\r\t\t\tELSE err(42); n := 1\r\t\t\tEND ;\r\t\t\ttyp.n := n;\r\t\t\tIF sym = of THEN\r\t\t\t\tDevCPS.Get(sym); Type(typ.BaseTyp, name); SetType(typ, NIL, typ.BaseTyp, name);\r\t\t\t\tCheckAlloc(typ.BaseTyp, FALSE, DevCPM.errpos)\r\t\t\tELSIF sym = comma THEN\r\t\t\t\tDevCPS.Get(sym);\r\t\t\t\tIF sym # of THEN ArrayType(typ.BaseTyp) END\r\t\t\tELSE err(35)\r\t\t\tEND\r\t\tEND;\r\t\ttyp.untagged := typ.sysflag "
+                    attr: 0
+                  - text: ">"
+                    attr: 3
+                  - text: " 0\r\tEND ArrayType;\r\r\tPROCEDURE PointerType(VAR typ: DevCPT.Struct);\r\t\tVAR name: DevCPT.String;\r\tBEGIN typ := DevCPT.NewStr(Pointer, Basic); CheckSysFlag(typ.sysflag, DevCPM.GetPointerSysFlag);\r\t\tCheckSym(to);\r\t\tType(typ.BaseTyp, name);\r\t\tSetType(typ, NIL, typ.BaseTyp, name);\r\t\tIF (typ.BaseTyp # DevCPT.undftyp) & (typ.BaseTyp.comp = Basic) THEN\r\t\t\ttyp.BaseTyp := DevCPT.undftyp; err(57)\r\t\tEND;\r\t\tIF typ.BaseTyp.comp = Record THEN DevCPM.PropagateRecPtrSysFlag(typ.BaseTyp.sysflag, typ.sysflag)\r\t\tELSIF typ.BaseTyp.comp IN {Array, DynArr} THEN DevCPM.PropagateArrPtrSysFlag(typ.BaseTyp.sysflag, typ.sysflag)\r\t\tEND;\r\t\ttyp.untagged := typ.sysflag "
+                    attr: 0
+                  - text: ">"
+                    attr: 3
+                  - text: " 0\r\tEND PointerType;\r\t\r\tPROCEDURE Type (VAR typ: DevCPT.Struct; VAR name: DevCPT.String);\t"
+                    attr: 0
+                  - text: "(* name # NIL => forward reference *)"
+                    attr: 1
+                  - text: "\r\t\tVAR id: DevCPT.Object; tname: DevCPT.String;\r\tBEGIN\r\t\ttyp := DevCPT.undftyp; name := NIL;\r\t\tIF sym < lparen THEN err(12);\r\t\t\tREPEAT DevCPS.Get(sym) UNTIL sym >= lparen\r\t\tEND ;\r\t\tIF sym = ident THEN\r\t\t\tDevCPT.Find(DevCPS.name, id);\r\t\t\tIF (id = NIL) OR (id.mode = -1) OR (id.mode = Typ) & IncompleteType(id.typ) THEN\t"
+                    attr: 0
+                  - text: "(* forward type definition *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tname := DevCPT.NewName(DevCPS.name); DevCPS.Get(sym);\r\t\t\t\tIF (id = NIL) & (sym = period) THEN\t"
+                    attr: 0
+                  - text: "(* missing module *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\terr(0); DevCPS.Get(sym); name := NIL;\r\t\t\t\t\tIF sym = ident THEN DevCPS.Get(sym) END\r\t\t\t\tELSIF sym = record THEN\t"
+                    attr: 0
+                  - text: "(* wrong attribute *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\terr(178); DevCPS.Get(sym); name := NIL; RecordType(typ, NIL)\r\t\t\t\tEND\r\t\t\tELSE\r\t\t\t\tqualident(id);\r\t\t\t\tIF id.mode = Typ THEN\r\t\t\t\t\tIF ~(DevCPM.oberon IN DevCPM.options)\r\t\t\t\t\t\t& ((id.typ = DevCPT.lreal64typ) OR (id.typ = DevCPT.lint64typ) OR (id.typ = DevCPT.lchar16typ)) THEN\r\t\t\t\t\t\terr(198)\r\t\t\t\t\tEND;\r\t\t\t\t\ttyp := id.typ\r\t\t\t\tELSIF id.mode = Attr THEN\r\t\t\t\t\tIF sym = record THEN\r\t\t\t\t\t\tDevCPS.Get(sym); RecordType(typ, id)\r\t\t\t\t\tELSE err(12)\r\t\t\t\t\tEND\r\t\t\t\tELSE err(52)\r\t\t\t\tEND\r\t\t\tEND\r\t\tELSIF sym = array THEN\r\t\t\tDevCPS.Get(sym); ArrayType(typ)\r\t\tELSIF sym = record THEN\r\t\t\tDevCPS.Get(sym); RecordType(typ, NIL)\r\t\tELSIF sym = pointer THEN\r\t\t\tDevCPS.Get(sym); PointerType(typ)\r\t\tELSIF sym = procedure THEN\r\t\t\tDevCPS.Get(sym); typ := DevCPT.NewStr(ProcTyp, Basic);\r\t\t\tCheckSysFlag(typ.sysflag, DevCPM.GetProcTypSysFlag);\r\t\t\ttyp.untagged := typ.sysflag > 0;\r\t\t\tIF sym = lparen THEN\r\t\t\t\tDevCPS.Get(sym); DevCPT.OpenScope(level, NIL);\r\t\t\t\tFormalParameters(typ.link, typ.BaseTyp, tname); SetType(typ, NIL, typ.BaseTyp, tname); DevCPT.CloseScope\r\t\t\tELSE typ.BaseTyp := DevCPT.notyp; typ.link := NIL\r\t\t\tEND\r\t\tELSE err(12)\r\t\tEND ;\r\t\tLOOP\r\t\t\tIF (sym >= semicolon) & (sym <= else) OR (sym = rparen) OR (sym = eof)\r\t\t\t\tOR (sym = number) OR (sym = comma) OR (sym = string) THEN EXIT END;\r\t\t\terr(15); IF sym = ident THEN EXIT END;\r\t\t\tDevCPS.Get(sym)\r\t\tEND\r\tEND Type;\r\t\r\tPROCEDURE ActualParameters(VAR aparlist: DevCPT.Node; fpar: DevCPT.Object; VAR pre, lastp: DevCPT.Node);\r\t\tVAR apar, last, newPar, iidPar, n: DevCPT.Node;\r\tBEGIN\r\t\taparlist := NIL; last := NIL;\r\t\tIF sym # rparen THEN\r\t\t\tnewPar := NIL; iidPar := NIL;\r\t\t\tLOOP Expression(apar);\r\t\t\t\tIF fpar # NIL THEN\r\t\t\t\t\tIF (apar.typ.form = Pointer) & (fpar.typ.form = Comp) THEN DevCPB.DeRef(apar) END;\r\t\t\t\t\tDevCPB.Param(apar, fpar);\r\t\t\t\t\tIF (fpar.mode = Var) OR (fpar.vis = inPar) THEN DevCPB.CheckBuffering(apar, NIL, fpar, pre, lastp) END;\r\t\t\t\t\tDevCPB.Link(aparlist, last, apar);\r\t\t\t\t\tIF ODD(fpar.sysflag DIV newBit) THEN newPar := apar\r\t\t\t\t\tELSIF ODD(fpar.sysflag DIV iidBit) THEN iidPar := apar\r\t\t\t\t\tEND;\r\t\t\t\t\tIF (newPar # NIL) & (iidPar # NIL) THEN DevCPB.CheckNewParamPair(newPar, iidPar) END;\r\t\t\t\t\tIF anchorVarPar & (fpar.mode = VarPar) & ~(DevCPM.java IN DevCPM.options)\r\t\t\t\t\t\tOR (DevCPM.allSysVal IN DevCPM.options)\t"
+                    attr: 0
+                  - text: "(* source output: avoid double evaluation *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\t\t & ((fpar.mode = VarPar) & (fpar.typ.comp = Record) & ~fpar.typ.untagged\r\t\t\t\t\t\t\t\tOR (fpar.typ.comp = DynArr) & ~fpar.typ.untagged) THEN\r\t\t\t\t\t\tn := apar;\r\t\t\t\t\t\tWHILE n.class IN {Nfield, Nindex, Nguard} DO n := n.left END;\r\t\t\t\t\t\tIF (n.class = Nderef) & (n.subcl = 0) THEN\r\t\t\t\t\t\t\tIF n.left.class = Nguard THEN n := n.left END;\r\t\t\t\t\t\t\tDevCPB.CheckVarParBuffering(n.left, pre, lastp)\r\t\t\t\t\t\tEND\r\t\t\t\t\tEND;\r\t\t\t\t\tfpar := fpar.link\r\t\t\t\tELSE err(64)\r\t\t\t\tEND;\r\t\t\t\tIF sym = comma THEN DevCPS.Get(sym)\r\t\t\t\tELSIF (lparen <= sym) & (sym <= ident) THEN err(comma)\r\t\t\t\tELSE EXIT\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND;\r\t\tIF fpar # NIL THEN err(65) END\r\tEND ActualParameters;\r\r\tPROCEDURE selector(VAR x: DevCPT.Node);\r\t\tVAR obj, proc, p, fpar: DevCPT.Object; y, apar, pre, lastp: DevCPT.Node; typ: DevCPT.Struct; name: DevCPT.Name;\r\tBEGIN\r\t\tLOOP\r\t\t\tIF sym = lbrak THEN DevCPS.Get(sym);\r\t\t\t\tLOOP\r\t\t\t\t\tIF (x.typ # NIL) & (x.typ.form = Pointer) THEN DevCPB.DeRef(x) END ;\r\t\t\t\t\tExpression(y); DevCPB.Index(x, y);\r\t\t\t\t\tIF sym = comma THEN DevCPS.Get(sym) ELSE EXIT END\r\t\t\t\tEND ;\r\t\t\t\tCheckSym(rbrak)\r\t\t\tELSIF sym = period THEN DevCPS.Get(sym);\r\t\t\t\tIF sym = ident THEN name := DevCPS.name; DevCPS.Get(sym);\r\t\t\t\t\tIF x.typ # NIL THEN\r\t\t\t\t\t\tIF x.typ.form = Pointer THEN DevCPB.DeRef(x) END ;\r\t\t\t\t\t\tIF x.typ.comp = Record THEN\r\t\t\t\t\t\t\ttyp := x.typ; DevCPT.FindField(name, typ, obj); DevCPB.Field(x, obj);\r\t\t\t\t\t\t\tIF (obj # NIL) & (obj.mode = TProc) THEN\r\t\t\t\t\t\t\t\tIF sym = arrow THEN  (* super call *) DevCPS.Get(sym);\r\t\t\t\t\t\t\t\t\ty := x.left;\r\t\t\t\t\t\t\t\t\tIF y.class = Nderef THEN y := y.left END ;\t(* y = record variable *)\r\t\t\t\t\t\t\t\t\tIF y.obj # NIL THEN\r\t\t\t\t\t\t\t\t\t\tproc := DevCPT.topScope;\t(* find innermost scope which owner is a TProc *)\r\t\t\t\t\t\t\t\t\t\tWHILE (proc.link # NIL) & (proc.link.mode # TProc) DO proc := proc.left END ;\r\t\t\t\t\t\t\t\t\t\tIF (proc.link = NIL) OR (proc.link.link # y.obj) (* OR (proc.link.name^ # name) *) THEN err(75)\r\t\t\t\t\t\t\t\t\t\tEND ;\r\t\t\t\t\t\t\t\t\t\ttyp := y.obj.typ;\r\t\t\t\t\t\t\t\t\t\tIF typ.form = Pointer THEN typ := typ.BaseTyp END ;\r\t\t\t\t\t\t\t\t\t\tDevCPT.FindBaseField(x.obj.name^, typ, p);\r\t\t\t\t\t\t\t\t\t\tIF p # NIL THEN\r\t\t\t\t\t\t\t\t\t\t\tx.subcl := super; "
+                    attr: 0
+                  - text: "x.typ := p.typ;\t(* correct result type *)"
+                    attr: 3
+                  - text: "\r\t\t\t\t\t\t\t\t\t\t\tIF p.conval.setval * {absAttr, empAttr} # {} THEN err(194) END;\r\t\t\t\t\t\t\t\t\t\t\tIF (p.vis = externalR) & (p.mnolev < 0) & (proc.link.name^ # name) THEN err(196) END;\r\t\t\t\t\t\t\t\t\t\tELSE err(74)\r\t\t\t\t\t\t\t\t\t\tEND\r\t\t\t\t\t\t\t\t\tELSE err(75)\r\t\t\t\t\t\t\t\t\tEND\r\t\t\t\t\t\t\t\tELSE\r\t\t\t\t\t\t\t\t\tproc := obj;\r\t\t\t\t\t\t\t\t\tIF (x.left.readonly) & (proc.link.mode = VarPar) & (proc.link.vis = 0)  THEN err(76) END;\r"
+                    attr: 0
+                  - text: "\t\t\t\t\t\t\t\t\t"
+                    attr: 5
+                  - text: "WHILE (proc.mnolev >= 0) & ~(newAttr IN proc.conval.setval) "
+                    attr: 0
+                  - text: "& (typ.BaseTyp # NIL)"
+                    attr: 3
+                  - text: " DO\r\t\t\t\t\t\t\t\t\t\t(* find base method *)\r\t\t\t\t\t\t\t\t\t\ttyp := typ.BaseTyp; DevCPT.FindField(name, typ, proc);\r\t\t\t\t\t\t\t\t\tEND;\r\t\t\t\t\t\t\t\t\tIF (proc.vis = externalR) & (proc.mnolev < 0) THEN err(196) END;\r\t\t\t\t\t\t\t\tEND ;\r\t\t\t\t\t\t\t\tIF (obj.typ # DevCPT.notyp) & (sym # lparen) THEN err(lparen) END\r\t\t\t\t\t\t\tEND\r\t\t\t\t\t\tELSE err(53)\r\t\t\t\t\t\tEND\r\t\t\t\t\tELSE err(52)\r\t\t\t\t\tEND\r\t\t\t\tELSE err(ident)\r\t\t\t\tEND\r\t\t\tELSIF sym = arrow THEN DevCPS.Get(sym); DevCPB.DeRef(x)\r\t\t\tELSIF sym = dollar THEN\r\t\t\t\tIF x.typ.form = Pointer THEN DevCPB.DeRef(x) END;\r\t\t\t\tDevCPS.Get(sym); DevCPB.StrDeref(x)\r\t\t\tELSIF sym = lparen THEN\r\t\t\t\tIF (x.obj # NIL) & (x.obj.mode IN {XProc, LProc, CProc, TProc}) THEN typ := x.obj.typ\r\t\t\t\tELSIF x.typ.form = ProcTyp THEN typ := x.typ.BaseTyp\r\t\t\t\tELSIF x.class = Nproc THEN "
+                    attr: 0
+                  - text: EXIT
+                    attr: 3
+                  - text: "\t(* standard procedure *)\r\t\t\t\tELSE typ := NIL\r\t\t\t\tEND;\r\t\t\t\tIF typ # DevCPT.notyp THEN\r\t\t\t\t\tDevCPS.Get(sym);\r\t\t\t\t\tIF typ = NIL THEN\t(* type guard *)\r\t\t\t\t\t\tIF sym = ident THEN\r\t\t\t\t\t\t\tqualident(obj);\r\t\t\t\t\t\t\tIF obj.mode = Typ THEN DevCPB.TypTest(x, obj, TRUE)\r\t\t\t\t\t\t\tELSE err(52)\r\t\t\t\t\t\t\tEND\r\t\t\t\t\t\tELSE err(ident)\r\t\t\t\t\t\tEND\r\t\t\t\t\tELSE\t(* function call *)\r\t\t\t\t\t\tpre := NIL; lastp := NIL;\r\t\t\t\t\t\tDevCPB.PrepCall(x, fpar);\r\t\t\t\t\t\tIF (x.obj # NIL) & (x.obj.mode = TProc) THEN DevCPB.CheckBuffering(x.left, NIL, x.obj.link, pre, lastp)\r\t\t\t\t\t\tEND;\r\t\t\t\t\t\tActualParameters(apar, fpar, pre, lastp);\r\t\t\t\t\t\tDevCPB.Call(x, apar, fpar);\r\t\t\t\t\t\tIF pre # NIL THEN DevCPB.Construct(Ncomp, pre, x); pre.typ := x.typ; x := pre END;\r\t\t\t\t\t\tIF level > 0 THEN DevCPT.topScope.link.leaf := FALSE END\r\t\t\t\t\tEND;\r\t\t\t\t\tCheckSym(rparen)\r\t\t\t\tELSE "
+                    attr: 0
+                  - text: EXIT
+                    attr: 3
+                  - text: "\r\t\t\t\tEND\r(*\r\t\t\tELSIF (sym = lparen) & (x.class # Nproc) & (x.typ.form # ProcTyp) &\r\t\t\t\t\t((x.obj = NIL) OR (x.obj.mode # TProc)) THEN\r\t\t\t\tDevCPS.Get(sym);\r\t\t\t\tIF sym = ident THEN\r\t\t\t\t\tqualident(obj);\r\t\t\t\t\tIF obj.mode = Typ THEN DevCPB.TypTest(x, obj, TRUE)\r\t\t\t\t\tELSE err(52)\r\t\t\t\t\tEND\r\t\t\t\tELSE err(ident)\r\t\t\t\tEND ;\r\t\t\t\tCheckSym(rparen)\r*)\r\t\t\tELSE "
+                    attr: 0
+                  - text: EXIT
+                    attr: 3
+                  - text: "\r\t\t\tEND\r\t\tEND\r\tEND selector;\r\r\tPROCEDURE StandProcCall(VAR x: DevCPT.Node);\r\t\tVAR y: DevCPT.Node; m: BYTE; n: SHORTINT;\r\tBEGIN m := SHORT(SHORT(x.obj.adr)); n := 0;\r\t\tIF sym = lparen THEN DevCPS.Get(sym);\r\t\t\tIF sym # rparen THEN\r\t\t\t\tLOOP\r\t\t\t\t\tIF n = 0 THEN Expression(x); DevCPB.StPar0(x, m); n := 1\r\t\t\t\t\tELSIF n = 1 THEN Expression(y); DevCPB.StPar1(x, y, m); n := 2\r\t\t\t\t\tELSE Expression(y); DevCPB.StParN(x, y, m, n); INC(n)\r\t\t\t\t\tEND ;\r\t\t\t\t\tIF sym = comma THEN DevCPS.Get(sym)\r\t\t\t\t\tELSIF (lparen <= sym) & (sym <= ident) THEN err(comma)\r\t\t\t\t\tELSE EXIT\r\t\t\t\t\tEND\r\t\t\t\tEND ;\r\t\t\t\tCheckSym(rparen)\r\t\t\tELSE DevCPS.Get(sym)\r\t\t\tEND ;\r\t\t\tDevCPB.StFct(x, m, n)\r\t\tELSE err(lparen)\r\t\tEND ;\r\t\tIF (level > 0) & ((m = newfn) OR (m = sysnewfn)) THEN DevCPT.topScope.link.leaf := FALSE END\r\tEND StandProcCall;\r\t\r\tPROCEDURE Element(VAR x: DevCPT.Node);\r\t\tVAR y: DevCPT.Node;\r\tBEGIN Expression(x);\r\t\tIF sym = upto THEN\r\t\t\tDevCPS.Get(sym); Expression(y); DevCPB.SetRange(x, y)\r\t\tELSE DevCPB.SetElem(x)\r\t\tEND\r\tEND Element;\r\r\tPROCEDURE Sets(VAR x: DevCPT.Node);\r\t\tVAR y: DevCPT.Node;\r\tBEGIN\r\t\tIF sym # rbrace THEN\r\t\t\tElement(x);\r\t\t\tLOOP\r\t\t\t\tIF sym = comma THEN DevCPS.Get(sym)\r\t\t\t\tELSIF (lparen <= sym) & (sym <= ident) THEN err(comma)\r\t\t\t\tELSE EXIT\r\t\t\t\tEND ;\r\t\t\t\tElement(y); DevCPB.Op(plus, x, y)\r\t\t\tEND\r\t\tELSE x := DevCPB.EmptySet()\r\t\tEND ;\r\t\tCheckSym(rbrace)\r\tEND Sets;\r\t\r\tPROCEDURE Factor(VAR x: DevCPT.Node);\r\t\tVAR fpar, id: DevCPT.Object; apar: DevCPT.Node;\r\tBEGIN\r\t\tIF sym < not THEN err(13);\r\t\t\tREPEAT DevCPS.Get(sym) UNTIL sym >= lparen\r\t\tEND ;\r\t\tIF sym = ident THEN\r\t\t\tqualident(id); x := DevCPB.NewLeaf(id); selector(x);\r\t\t\tIF (x.class = Nproc) & (x.obj.mode = SProc) THEN StandProcCall(x)\t(* x may be NIL *)\r(*\r\t\t\tELSIF sym = lparen THEN\r\t\t\t\tDevCPS.Get(sym); DevCPB.PrepCall(x, fpar);\r\t\t\t\tActualParameters(apar, fpar);\r\t\t\t\tDevCPB.Call(x, apar, fpar);\r\t\t\t\tCheckSym(rparen);\r\t\t\t\tIF level > 0 THEN DevCPT.topScope.link.leaf := FALSE END\r*)\r\t\t\tEND\r\t\tELSIF sym = number THEN\r\t\t\tCASE DevCPS.numtyp OF\r\t\t\t   char:\r\t\t\t\tx := DevCPB.NewIntConst(DevCPS.intval); x.typ := DevCPT.char8typ;\r\t\t\t\tIF DevCPS.intval > 255 THEN x.typ := DevCPT.char16typ END\r\t\t\t| integer: x := DevCPB.NewIntConst(DevCPS.intval)\r\t\t\t| int64: x := DevCPB.NewLargeIntConst(DevCPS.intval, DevCPS.realval)\r\t\t\t| real: x := DevCPB.NewRealConst(DevCPS.realval, NIL)\r\t\t\t| real32: x := DevCPB.NewRealConst(DevCPS.realval, DevCPT.real32typ)\r\t\t\t| real64: x := DevCPB.NewRealConst(DevCPS.realval, DevCPT.real64typ)\r\t\t\tEND ;\r\t\t\tDevCPS.Get(sym)\r\t\tELSIF sym = string THEN\r\t\t\tx := DevCPB.NewString(DevCPS.str, DevCPS.lstr, DevCPS.intval);\r\t\t\tDevCPS.Get(sym)\r\t\tELSIF sym = nil THEN\r\t\t\tx := DevCPB.Nil(); DevCPS.Get(sym)\r\t\tELSIF sym = lparen THEN\r\t\t\tDevCPS.Get(sym); Expression(x); CheckSym(rparen)\r\t\tELSIF sym = lbrak THEN\r\t\t\tDevCPS.Get(sym); err(lparen); Expression(x); CheckSym(rparen)\r\t\tELSIF sym = lbrace THEN DevCPS.Get(sym); Sets(x)\r\t\tELSIF sym = not THEN\r\t\t\tDevCPS.Get(sym); Factor(x); DevCPB.MOp(not, x)\r\t\tELSE err(13); DevCPS.Get(sym); x := NIL\r\t\tEND ;\r\t\tIF x = NIL THEN x := DevCPB.NewIntConst(1); x.typ := DevCPT.undftyp END\r\tEND Factor;\r\r\tPROCEDURE Term(VAR x: DevCPT.Node);\r\t\tVAR y: DevCPT.Node; mulop: BYTE;\r\tBEGIN Factor(x);\r\t\tWHILE (times <= sym) & (sym <= and) DO\r\t\t\tmulop := sym; DevCPS.Get(sym);\r\t\t\tFactor(y); DevCPB.Op(mulop, x, y)\r\t\tEND\r\tEND Term;\r\r\tPROCEDURE SimpleExpression(VAR x: DevCPT.Node);\r\t\tVAR y: DevCPT.Node; addop: BYTE;\r\tBEGIN\r\t\tIF sym = minus THEN DevCPS.Get(sym); Term(x); DevCPB.MOp(minus, x)\r\t\tELSIF sym = plus THEN DevCPS.Get(sym); Term(x); DevCPB.MOp(plus, x)\r\t\tELSE Term(x)\r\t\tEND ;\r\t\tWHILE (plus <= sym) & (sym <= or) DO\r\t\t\taddop := sym; DevCPS.Get(sym); Term(y); \r\t\t\tIF x.typ.form = Pointer THEN DevCPB.DeRef(x) END;\r\t\t\tIF (x.typ.comp IN {Array, DynArr}) & (x.typ.BaseTyp.form IN charSet) (* OR (x.typ.sysflag = jstr) *) THEN\r\t\t\t\tDevCPB.StrDeref(x)\r\t\t\tEND;\r\t\t\tIF y.typ.form = Pointer THEN DevCPB.DeRef(y) END;\r\t\t\tIF (y.typ.comp IN {Array, DynArr}) & (y.typ.BaseTyp.form IN charSet) (* OR (y.typ.sysflag = jstr) *) THEN\r\t\t\t\tDevCPB.StrDeref(y)\r\t\t\tEND;\r\t\t\tDevCPB.Op(addop, x, y)\r\t\tEND\r\tEND SimpleExpression;\r\r\tPROCEDURE Expression(VAR x: DevCPT.Node);\r\t\tVAR y, pre, last: DevCPT.Node; obj: DevCPT.Object; relation: BYTE;\r\tBEGIN SimpleExpression(x);\r\t\tIF (eql <= sym) & (sym <= geq) THEN\r\t\t\trelation := sym; DevCPS.Get(sym); SimpleExpression(y);\r\t\t\tpre := NIL; last := NIL;\r\t\t\tIF (x.typ.comp IN {Array, DynArr}) & (x.typ.BaseTyp.form IN charSet) THEN\r\t\t\t\tDevCPB.StrDeref(x)\r\t\t\tEND;\r\t\t\tIF (y.typ.comp IN {Array, DynArr}) & (y.typ.BaseTyp.form IN charSet) THEN\r\t\t\t\tDevCPB.StrDeref(y)\r\t\t\tEND;\r\t\t\tDevCPB.CheckBuffering(x, NIL, NIL, pre, last);\r\t\t\tDevCPB.CheckBuffering(y, NIL, NIL, pre, last);\r\t\t\tDevCPB.Op(relation, x, y);\r\t\t\tIF pre # NIL THEN DevCPB.Construct(Ncomp, pre, x); pre.typ := x.typ; x := pre END\r\t\tELSIF sym = in THEN\r\t\t\tDevCPS.Get(sym); SimpleExpression(y); DevCPB.In(x, y)\r\t\tELSIF sym = is THEN\r\t\t\tDevCPS.Get(sym);\r\t\t\tIF sym = ident THEN\r\t\t\t\tqualident(obj);\r\t\t\t\tIF obj.mode = Typ THEN DevCPB.TypTest(x, obj, FALSE)\r\t\t\t\tELSE err(52)\r\t\t\t\tEND\r\t\t\tELSE err(ident)\r\t\t\tEND\r\t\tEND\r\tEND Expression;\r\r\tPROCEDURE ProcedureDeclaration(VAR x: DevCPT.Node);\r\t\tVAR proc, fwd: DevCPT.Object;\r\t\t\tname: DevCPT.Name;\r\t\t\tmode: BYTE;\r\t\t\tforward: BOOLEAN;\r"
+                    attr: 0
+                  - text: "\t\t\tsys: SHORTINT;\r"
+                    attr: 3
+                  - text: "\r\t\tPROCEDURE GetCode;\r\t\t\tVAR ext: DevCPT.ConstExt; i, n, c: INTEGER; s, s2: POINTER TO ARRAY OF SHORTCHAR;\r\t\tBEGIN\r\t\t\tn := 0;\r\t\t\tIF sym = string THEN\r\t\t\t\tNEW(ext, DevCPS.intval);\r\t\t\t\tWHILE DevCPS.str[n] # 0X DO ext[n+1] := DevCPS.str[n]; INC(n) END ;\r\t\t\t\text^[0] := SHORT(CHR(n)); DevCPS.Get(sym);\r\t\t\tELSE\r\t\t\t\tNEW(s, 256);\r\t\t\t\tLOOP\r\t\t\t\t\tIF sym = number THEN c := DevCPS.intval; INC(n); i := LEN(s^);\r\t\t\t\t\t\tIF n > i THEN\t(* if overflow then increase size of array s *)\r\t\t\t\t\t\t\tNEW(s2, i * 2); WHILE i > 0 DO DEC(i); s2^[i] := s^[i] END; s := s2; s2 := NIL;\r\t\t\t\t\t\tEND;\r\t\t\t\t\t\tIF (c < 0) OR (c > 255) OR (n = MAX(INTEGER)) THEN\r\t\t\t\t\t\t\terr(63); c := 1; n := 1\r\t\t\t\t\t\tEND ;\r\t\t\t\t\t\tDevCPS.Get(sym); s[n - 1] := SHORT(CHR(c))\r\t\t\t\t\tEND ;\r\t\t\t\t\tIF sym = comma THEN DevCPS.Get(sym)\r\t\t\t\t\tELSIF sym = number THEN err(comma)\r\t\t\t\t\tELSE EXIT\r\t\t\t\t\tEND\r\t\t\t\tEND;\r\t\t\t\tIF n # 0 THEN NEW(ext, n); i := 0;\r\t\t\t\t\tWHILE i < n DO ext[i] := s[i]; INC(i) END;\r\t\t\t\tELSE ext := NIL\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tproc.conval.ext := ext;\r\t\t\tINCL(proc.conval.setval, hasBody)\r\t\tEND GetCode;\r\r\t\tPROCEDURE GetParams;\r\t\t\tVAR name: DevCPT.String;\r\t\tBEGIN\r\t\t\tproc.mode := mode; proc.typ := DevCPT.notyp;\r\t\t\t"
+                    attr: 0
+                  - text: "proc.sysflag := SHORT(sys);"
+                    attr: 3
+                  - text: "\r\t\t\tproc.conval.setval := {};\r\t\t\tIF sym = lparen THEN\r\t\t\t\tDevCPS.Get(sym); FormalParameters(proc.link, proc.typ, name);\r\t\t\t\tIF name # NIL THEN err(0) END\r\t\t\tEND;\r\t\t\tCheckForwardTypes; userList := NIL;\r\t\t\tIF fwd # NIL THEN\r\t\t\t\tDevCPB.CheckParameters(proc.link, fwd.link, TRUE);\r\t\t\t\tIF ~DevCPT.EqualType(proc.typ, fwd.typ) THEN err(117) END ;\r\t\t\t\tproc := fwd; DevCPT.topScope := proc.scope;\r\t\t\t\tIF mode = IProc THEN proc.mode := IProc END\r\t\t\tEND\r\t\tEND GetParams;\r\r\t\tPROCEDURE Body;\r\t\t\tVAR procdec, statseq: DevCPT.Node; c: INTEGER;\r\t\tBEGIN\r\t\t\tc := DevCPM.errpos;\r\t\t\tINCL(proc.conval.setval, hasBody);\r\t\t\tCheckSym(semicolon); Block(procdec, statseq);\r\t\t\tDevCPB.Enter(procdec, statseq, proc); x := procdec;\r\t\t\tx.conval := DevCPT.NewConst(); x.conval.intval := c; x.conval.intval2 := DevCPM.startpos;\r\t\t\tCheckSym(end);\r\t\t\tIF sym = ident THEN\r\t\t\t\tIF DevCPS.name # proc.name^ THEN err(4) END ;\r\t\t\t\tDevCPS.Get(sym)\r\t\t\tELSE err(ident)\r\t\t\tEND\r\t\tEND Body;\r\r\t\tPROCEDURE TProcDecl;\r\t\t\tVAR baseProc, o: DevCPT.Object;\r\t\t\t\tobjTyp, recTyp: DevCPT.Struct;\r\t\t\t\tobjMode, objVis: BYTE;\r\t\t\t\tobjName: DevCPT.Name;\r\t\t\t\tpnode: DevCPT.Node;\r\t\t\t\tfwdAttr: SET;\r\t\tBEGIN\r\t\t\tDevCPS.Get(sym); mode := TProc;\r\t\t\tIF level > 0 THEN err(73) END;\r\t\t\tReceiver(objMode, objVis, objName, objTyp, recTyp);\r\t\t\tIF sym = ident THEN\r\t\t\t\tname := DevCPS.name;\r\t\t\t\tDevCPT.FindField(name, recTyp, fwd);\r\t\t\t\tDevCPT.FindBaseField(name, recTyp, baseProc);\r\t\t\t\tIF (baseProc # NIL) & (baseProc.mode # TProc) THEN baseProc := NIL; err(1) END ;\r\t\t\t\tIF fwd = baseProc THEN fwd := NIL END ;\r\t\t\t\tIF (fwd # NIL) & (fwd.mnolev # level) THEN fwd := NIL END ;\r\t\t\t\tIF (fwd # NIL) & (fwd.mode = TProc) & (fwd.conval.setval * {hasBody, absAttr, empAttr} = {}) THEN\r\t\t\t\t\t(* there exists a corresponding forward declaration *)\r\t\t\t\t\tproc := DevCPT.NewObj(); proc.leaf := TRUE;\r\t\t\t\t\tproc.mode := TProc; proc.conval := DevCPT.NewConst();\r\t\t\t\t\tCheckMark(proc);\r\t\t\t\t\tIF fwd.vis # proc.vis THEN err(118) END;\r\t\t\t\t\tfwdAttr := fwd.conval.setval\r\t\t\t\tELSE\r\t\t\t\t\tIF fwd # NIL THEN err(1); fwd := NIL END ;\r\t\t\t\t\tDevCPT.InsertField(name, recTyp, proc);\r\t\t\t\t\tproc.mode := TProc; proc.conval := DevCPT.NewConst();\r\t\t\t\t\tCheckMark(proc);\r\t\t\t\t\tIF recTyp.strobj # NIL THEN\t(* preserve declaration order *)\r\t\t\t\t\t\to := recTyp.strobj.link;\r\t\t\t\t\t\tIF o = NIL THEN recTyp.strobj.link := proc\r\t\t\t\t\t\tELSE\r\t\t\t\t\t\t\tWHILE o.nlink # NIL DO o := o.nlink END;\r\t\t\t\t\t\t\to.nlink := proc\r\t\t\t\t\t\tEND\r\t\t\t\t\tEND\r\t\t\t\tEND;\r\t\t\t\tINC(level); DevCPT.OpenScope(level, proc);\r\t\t\t\tDevCPT.Insert(objName, proc.link); proc.link.mode := objMode; proc.link.vis := objVis; proc.link.typ := objTyp;\r\t\t\t\tASSERT(DevCPT.topScope # NIL);\r\t\t\t\tGetParams;\t"
+                    attr: 0
+                  - text: "(* may change proc := fwd !!! *)"
+                    attr: 3
+                  - text: "\r\t\t\t\tASSERT(DevCPT.topScope # NIL);\r\t\t\t\tGetAttributes(proc, baseProc, recTyp);\r\t\t\t\tIF (fwd # NIL) & (fwdAttr / proc.conval.setval * {absAttr, empAttr, extAttr} # {}) THEN err(184) END;\r\t\t\t\tCheckOverwrite(proc, baseProc, recTyp);\r\t\t\t\tIF ~forward THEN\r\t\t\t\t\tIF empAttr IN proc.conval.setval THEN\t"
+                    attr: 0
+                  - text: "(* insert empty procedure *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\tpnode := NIL; DevCPB.Enter(pnode, NIL, proc);\r\t\t\t\t\t\tpnode.conval := DevCPT.NewConst();\r\t\t\t\t\t\tpnode.conval.intval := DevCPM.errpos;\r\t\t\t\t\t\tpnode.conval.intval2 := DevCPM.errpos;\r\t\t\t\t\t\tx := pnode;\r\t\t\t\t\tELSIF DevCPM.noCode IN DevCPM.options THEN INCL(proc.conval.setval, hasBody)\r\t\t\t\t\tELSIF ~(absAttr IN proc.conval.setval) THEN Body\r\t\t\t\t\tEND;\r\t\t\t\t\tproc.adr := 0\r\t\t\t\tELSE\r\t\t\t\t\tproc.adr := DevCPM.errpos;\r\t\t\t\t\tIF proc.conval.setval * {empAttr, absAttr} # {} THEN err(184) END\r\t\t\t\tEND;\r\t\t\t\tDEC(level); DevCPT.CloseScope;\r\t\t\tELSE err(ident)\r\t\t\tEND;\r\t\tEND TProcDecl;\r\t\r\tBEGIN proc := NIL; forward := FALSE; x := NIL; mode := LProc;"
+                    attr: 0
+                  - text: " sys := 0;"
+                    attr: 3
+                  - text: "\r\t\tIF (sym # ident) & (sym # lparen) THEN\r"
+                    attr: 0
+                  - text: "\t\t\t"
+                    attr: 3
+                  - text: "CheckSysFlag(sys, DevCPM.GetProcSysFlag);\r\t\t\tIF sys # 0 THEN\r\t\t\t\tIF ODD(sys DIV DevCPM.CProcFlag) THEN mode := CProc END\r\t\t\tELSE\r\t\t\t\tIF sym = times THEN\t(* mode set later in DevCPB.CheckAssign *)\r\t\t\t\tELSIF sym = arrow THEN forward := TRUE\r\t\t\t\tELSE err(ident)\r\t\t\t\tEND;\r\t\t\t\tDevCPS.Get(sym)\r\t\t\tEND\r\t\tEND ;\r\t\tIF sym = lparen THEN TProcDecl\r\t\tELSIF sym = ident THEN DevCPT.Find(DevCPS.name, fwd);\r\t\t\tname := DevCPS.name;\r\t\t\tIF (fwd # NIL) & ((fwd.mnolev # level) OR (fwd.mode = SProc)) THEN fwd := NIL END ;\r\t\t\tIF (fwd # NIL) & (fwd.mode IN {LProc, XProc}) & ~(hasBody IN fwd.conval.setval) THEN\r\t\t\t\t(* there exists a corresponding forward declaration *)\r\t\t\t\tproc := DevCPT.NewObj(); proc.leaf := TRUE;\r\t\t\t\tproc.mode := mode; proc.conval := DevCPT.NewConst();\r\t\t\t\tCheckMark(proc);\r\t\t\t\tIF fwd.vis # proc.vis THEN err(118) END\r\t\t\tELSE\r\t\t\t\tIF fwd # NIL THEN err(1); fwd := NIL END ;\r\t\t\t\tDevCPT.Insert(name, proc);\r\t\t\t\tproc.mode := mode; proc.conval := DevCPT.NewConst();\r\t\t\t\tCheckMark(proc);\r\t\t\tEND ;\r\t\t\tIF (proc.vis # internal) & (mode = LProc) THEN mode := XProc END ;\r\t\t\tIF (mode # LProc) & (level > 0) THEN err(73) END ;\r\t\t\tINC(level); DevCPT.OpenScope(level, proc);\r\t\t\tproc.link := NIL; GetParams;\t"
+                    attr: 0
+                  - text: "(* may change proc := fwd !!! *)"
+                    attr: 3
+                  - text: "\r\t\t\tIF mode = CProc THEN GetCode\r\t\t\tELSIF DevCPM.noCode IN DevCPM.options THEN INCL(proc.conval.setval, hasBody)\r\t\t\tELSIF ~forward THEN Body; proc.adr := 0\r\t\t\tELSE proc.adr := DevCPM.errpos\r\t\t\tEND ;\r\t\t\tDEC(level); DevCPT.CloseScope\r\t\tELSE err(ident)\r\t\tEND\r\tEND ProcedureDeclaration;\r\r\tPROCEDURE CaseLabelList(VAR lab, "
+                    attr: 0
+                  - text: root
+                    attr: 3
+                  - text: ": DevCPT.Node; LabelForm: SHORTINT; VAR "
+                    attr: 0
+                  - text: "min, max"
+                    attr: 3
+                  - text: ": INTEGER);\r\t\tVAR x, y: DevCPT.Node; f: SHORTINT; xval, yval: INTEGER;\r\t\t\r\t\t"
+                    attr: 0
+                  - text: "PROCEDURE Insert(VAR n: DevCPT.Node);"
+                    attr: 3
+                  - text: "\t(* build binary tree of label ranges *)\t(* !!! *)\r"
+                    attr: 0
+                  - text: "\t\tBEGIN\r\t\t\tIF n = NIL THEN\r\t\t\t\tIF x.hint # 1 THEN n := x END\r\t\t\tELSIF yval < n.conval.intval THEN Insert(n.left)\r\t\t\tELSIF xval > n.conval.intval2 THEN Insert(n.right)\r\t\t\tELSE err(63)\r\t\t\tEND\r\t\tEND Insert;\r"
+                    attr: 3
+                  - text: "\t\t\r\tBEGIN lab := NIL;\r\t\tLOOP ConstExpression(x); f := x.typ.form;\r\t\t\tIF f IN {Int8..Int32} + charSet THEN  xval := x.conval.intval\r\t\t\tELSE err(61); xval := 1\r\t\t\tEND ;\r\t\t\tIF (f IN {Int8..Int32}) # (LabelForm IN {Int8..Int32}) THEN err(60) END;\r\t\t\tIF sym = upto THEN\r\t\t\t\tDevCPS.Get(sym); ConstExpression(y); yval := y.conval.intval;\r\t\t\t\tIF (y.typ.form IN {Int8..Int32}) # (LabelForm IN {Int8..Int32}) THEN err(60) END;\r\t\t\t\tIF yval < xval THEN err(63); yval := xval END\r\t\t\tELSE yval := xval\r\t\t\tEND ;\r\t\t\tx.conval.intval2 := yval;\r"
+                    attr: 0
+                  - text: "\t\t\tIF xval < min THEN min := xval END;\r\t\t\tIF yval > max THEN max := yval END;\r"
+                    attr: 3
+                  - text: "\t\t\tIF lab = NIL THEN lab := x; Insert(root)\r\t\t\tELSIF yval < lab.conval.intval - 1 THEN x.link := lab; lab := x; Insert(root)\r\t\t\tELSIF yval = lab.conval.intval - 1 THEN x.hint := 1; Insert(root); lab.conval.intval := xval\r\t\t\tELSIF xval = lab.conval.intval2 + 1 THEN x.hint := 1; Insert(root); lab.conval.intval2 := yval\r\t\t\tELSE\r\t\t\t\ty := lab;\r\t\t\t\tWHILE (y.link # NIL) & (xval > y.link.conval.intval2 + 1) DO y := y.link END;\r\t\t\t\tIF y.link = NIL THEN y.link := x; Insert(root)\r\t\t\t\tELSIF yval < y.link.conval.intval - 1 THEN x.link := y.link; y.link := x; Insert(root)\r\t\t\t\tELSIF yval = y.link.conval.intval - 1 THEN x.hint := 1; Insert(root); y.link.conval.intval := xval\r\t\t\t\tELSIF xval = y.link.conval.intval2 + 1 THEN x.hint := 1; Insert(root); y.link.conval.intval2 := yval\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tIF sym = comma THEN DevCPS.Get(sym)\r\t\t\tELSIF (sym = number) OR (sym = ident) THEN err(comma)\r\t\t\tELSE EXIT\r\t\t\tEND\r\t\tEND\r\tEND CaseLabelList;\r\t\r\tPROCEDURE StatSeq(VAR stat: DevCPT.Node);\r\t\tVAR fpar, id, t: DevCPT.Object; idtyp: DevCPT.Struct; e: BOOLEAN;\r\t\t\t\ts, x, y, z, apar, last, lastif, pre, lastp: DevCPT.Node; pos, p: INTEGER;\r\r\t\tPROCEDURE CasePart(VAR x: DevCPT.Node);\r\t\t\tVAR low, high: INTEGER; e: BOOLEAN; cases, lab, y, lastcase, "
+                    attr: 0
+                  - text: root
+                    attr: 3
+                  - text: ": DevCPT.Node; \r\t\tBEGIN\r\t\t\tExpression(x);\r\t\t\tIF (x.class = Ntype) OR (x.class = Nproc) THEN err(126)\r\t\t\tELSIF x.typ.form = Int64 THEN err(260)\r\t\t\tELSIF ~(x.typ.form IN {Int8..Int32} + charSet) THEN err(125)\r\t\t\tEND ;\r\t\t\tCheckSym(of); cases := NIL; lastcase := NIL; "
+                    attr: 0
+                  - text: "root := NIL"
+                    attr: 3
+                  - text: ";\r"
+                    attr: 0
+                  - text: "\t\t\tlow := MAX(INTEGER); high := MIN(INTEGER);\r"
+                    attr: 3
+                  - text: "\t\t\tLOOP\r\t\t\t\tIF sym < bar THEN\r\t\t\t\t\tCaseLabelList(lab, "
+                    attr: 0
+                  - text: root
+                    attr: 3
+                  - text: ", x.typ.form, "
+                    attr: 0
+                  - text: "low, high"
+                    attr: 3
+                  - text: ");\r\t\t\t\t\tCheckSym(colon); StatSeq(y);\r\t\t\t\t\tDevCPB.Construct(Ncasedo, lab, y); DevCPB.Link(cases, lastcase, lab)\r\t\t\t\tEND ;\r\t\t\t\tIF sym = bar THEN DevCPS.Get(sym) ELSE EXIT END\r\t\t\tEND;\r\t\t\te := sym = else;\r\t\t\tIF e THEN DevCPS.Get(sym); StatSeq(y) ELSE y := NIL END ;\r\t\t\tDevCPB.Construct(Ncaselse, cases, y); DevCPB.Construct(Ncase, x, cases);\r\t\t\tcases.conval := DevCPT.NewConst();\r\t\t\tcases.conval.intval := low; cases.conval.intval2 := high;\r\t\t\tIF e THEN cases.conval.setval := {1} ELSE cases.conval.setval := {} END;\r\t\t\tDevCPB.OptimizeCase(root); cases.link := root\t(* !!! *)\r\t\tEND CasePart;\r\t\t\r\t\tPROCEDURE SetPos(x: DevCPT.Node);\r\t\tBEGIN\r\t\t\tx.conval := DevCPT.NewConst(); x.conval.intval := pos\r\t\tEND SetPos;\r\r\t\tPROCEDURE CheckBool(VAR x: DevCPT.Node);\r\t\tBEGIN\r\t\t\tIF (x.class = Ntype) OR (x.class = Nproc) THEN err(126); x := DevCPB.NewBoolConst(FALSE)\r\t\t\tELSIF x.typ.form # Bool THEN err(120); x := DevCPB.NewBoolConst(FALSE)\r\t\t\tEND\r\t\tEND CheckBool;\r\r\tBEGIN stat := NIL; last := NIL;\r\t\tLOOP x := NIL;\r\t\t\tIF sym < ident THEN err(14);\r\t\t\t\tREPEAT DevCPS.Get(sym) UNTIL sym >= ident\r\t\t\tEND ;\r\t\t\tpos := DevCPM.startpos;\r\t\t\tIF sym = ident THEN\r\t\t\t\tqualident(id); x := DevCPB.NewLeaf(id); selector(x);\r\t\t\t\tIF sym = becomes THEN\r\t\t\t\t\tDevCPS.Get(sym); Expression(y);\r\t\t\t\t\tIF (y.typ.form = Pointer) & (x.typ.form = Comp) THEN DevCPB.DeRef(y) END;\r\t\t\t\t\tpre := NIL; lastp := NIL;\r\t\t\t\t\tDevCPB.CheckBuffering(y, x, NIL, pre, lastp);\r\t\t\t\t\tDevCPB.Assign(x, y);\r\t\t\t\t\tIF pre # NIL THEN SetPos(x); DevCPB.Construct(Ncomp, pre, x); x := pre END;\r\t\t\t\tELSIF sym = eql THEN\r\t\t\t\t\terr(becomes); DevCPS.Get(sym); Expression(y); DevCPB.Assign(x, y)\r\t\t\t\tELSIF (x.class = Nproc) & (x.obj.mode = SProc) THEN\r\t\t\t\t\tStandProcCall(x);\r\t\t\t\t\tIF (x # NIL) & (x.typ # DevCPT.notyp) THEN err(55) END;\r\t\t\t\t\tIF (x # NIL) & (x.class = Nifelse) THEN\t(* error pos for ASSERT *)\r\t\t\t\t\t\tSetPos(x.left); SetPos(x.left.right)\r\t\t\t\t\tEND\r\t\t\t\tELSIF x.class = Ncall THEN err(55)\r\t\t\t\tELSE\r\t\t\t\t\tpre := NIL; lastp := NIL;\r\t\t\t\t\tDevCPB.PrepCall(x, fpar);\r\t\t\t\t\tIF (x.obj # NIL) & (x.obj.mode = TProc) THEN DevCPB.CheckBuffering(x.left, NIL, x.obj.link, pre, lastp) END;\r\t\t\t\t\tIF sym = lparen THEN\r\t\t\t\t\t\tDevCPS.Get(sym); ActualParameters(apar, fpar, pre, lastp); CheckSym(rparen)\r\t\t\t\t\tELSE apar := NIL;\r\t\t\t\t\t\tIF fpar # NIL THEN err(65) END\r\t\t\t\t\tEND ;\r\t\t\t\t\tDevCPB.Call(x, apar, fpar);\r\t\t\t\t\tIF x.typ # DevCPT.notyp THEN err(55) END;\r\t\t\t\t\tIF pre # NIL THEN SetPos(x); DevCPB.Construct(Ncomp, pre, x); x := pre END;\r\t\t\t\t\tIF level > 0 THEN DevCPT.topScope.link.leaf := FALSE END\r\t\t\t\tEND\r\t\t\tELSIF sym = if THEN\r\t\t\t\tDevCPS.Get(sym); pos := DevCPM.startpos; Expression(x); CheckBool(x); CheckSym(then); StatSeq(y);\r\t\t\t\tDevCPB.Construct(Nif, x, y); SetPos(x); lastif := x;\r\t\t\t\tWHILE sym = elsif DO\r\t\t\t\t\tDevCPS.Get(sym); pos := DevCPM.startpos; Expression(y); CheckBool(y); CheckSym(then); StatSeq(z);\r\t\t\t\t\tDevCPB.Construct(Nif, y, z); SetPos(y); DevCPB.Link(x, lastif, y)\r\t\t\t\tEND ;\r\t\t\t\tpos := DevCPM.startpos;\r\t\t\t\tIF sym = else THEN DevCPS.Get(sym); StatSeq(y) ELSE y := NIL END ;\r\t\t\t\tDevCPB.Construct(Nifelse, x, y); CheckSym(end); DevCPB.OptIf(x);\r\t\t\tELSIF sym = case THEN\r\t\t\t\tDevCPS.Get(sym); pos := DevCPM.startpos; CasePart(x); CheckSym(end)\r\t\t\tELSIF sym = while THEN\r\t\t\t\tDevCPS.Get(sym); pos := DevCPM.startpos; Expression(x); CheckBool(x); CheckSym(do); StatSeq(y);\r\t\t\t\tDevCPB.Construct(Nwhile, x, y); CheckSym(end)\r\t\t\tELSIF sym = repeat THEN\r\t\t\t\tDevCPS.Get(sym); StatSeq(x);\r\t\t\t\tIF sym = until THEN DevCPS.Get(sym); pos := DevCPM.startpos; Expression(y); CheckBool(y)\r\t\t\t\tELSE err(43)\r\t\t\t\tEND ;\r\t\t\t\tDevCPB.Construct(Nrepeat, x, y)\r\t\t\tELSIF sym = for THEN\r\t\t\t\tDevCPS.Get(sym); pos := DevCPM.startpos;\r\t\t\t\tIF sym = ident THEN qualident(id);\r\t\t\t\t\tIF ~(id.typ.form IN intSet) THEN err(68) END ;\r\t\t\t\t\tCheckSym(becomes); Expression(y);\r\t\t\t\t\tx := DevCPB.NewLeaf(id); DevCPB.Assign(x, y); SetPos(x);\r\t\t\t\t\tCheckSym(to); pos := DevCPM.startpos; Expression(y);\r\t\t\t\t\tIF y.class # Nconst THEN\r\t\t\t\t\t\tDevCPB.GetTempVar(\"@for\", x.left.typ, t);\r\t\t\t\t\t\tz := DevCPB.NewLeaf(t); DevCPB.Assign(z, y); SetPos(z); DevCPB.Link(stat, last, z);\r\t\t\t\t\t\ty := DevCPB.NewLeaf(t)\r\t\t\t\t\tELSE\r\t\t\t\t\t\tDevCPB.CheckAssign(x.left.typ, y)\r\t\t\t\t\tEND ;\r\t\t\t\t\tDevCPB.Link(stat, last, x);\r\t\t\t\t\tp := DevCPM.startpos;\r\t\t\t\t\tIF sym = by THEN DevCPS.Get(sym); ConstExpression(z) ELSE z := DevCPB.NewIntConst(1) END ;\r\t\t\t\t\tx := DevCPB.NewLeaf(id);\r\t\t\t\t\tIF z.conval.intval > 0 THEN DevCPB.Op(leq, x, y)\r\t\t\t\t\tELSIF z.conval.intval < 0 THEN DevCPB.Op(geq, x, y)\r\t\t\t\t\tELSE err(63); DevCPB.Op(geq, x, y)\r\t\t\t\t\tEND ;\r\t\t\t\t\tCheckSym(do); StatSeq(s);\r\t\t\t\t\ty := DevCPB.NewLeaf(id); DevCPB.StPar1(y, z, incfn); pos := DevCPM.startpos; SetPos(y);\r\t\t\t\t\tIF s = NIL THEN s := y\r\t\t\t\t\tELSE z := s;\r\t\t\t\t\t\tWHILE z.link # NIL DO z := z.link END ;\r\t\t\t\t\t\tz.link := y\r\t\t\t\t\tEND ;\r\t\t\t\t\tCheckSym(end); DevCPB.Construct(Nwhile, x, s); pos := p\r\t\t\t\tELSE err(ident)\r\t\t\t\tEND\r\t\t\tELSIF sym = loop THEN\r\t\t\t\tDevCPS.Get(sym); INC(LoopLevel); StatSeq(x); DEC(LoopLevel);\r\t\t\t\tDevCPB.Construct(Nloop, x, NIL); CheckSym(end)\r\t\t\tELSIF sym = with THEN\r\t\t\t\tDevCPS.Get(sym); idtyp := NIL; x := NIL;\r\t\t\t\tLOOP\r\t\t\t\t\tIF sym < bar THEN\r\t\t\t\t\t\tpos := DevCPM.startpos;\r\t\t\t\t\t\tIF sym = ident THEN\r\t\t\t\t\t\t\tqualident(id); y := DevCPB.NewLeaf(id);\r\t\t\t\t\t\t\tIF (id # NIL) & (id.typ.form = Pointer) & ((id.mode = VarPar) OR ~id.leaf) THEN\r\t\t\t\t\t\t\t\terr(-302)\t(* warning 302 *)\r\t\t\t\t\t\t\tEND ;\r\t\t\t\t\t\t\tCheckSym(colon);\r\t\t\t\t\t\t\tIF sym = ident THEN qualident(t);\r\t\t\t\t\t\t\t\tIF t.mode = Typ THEN\r\t\t\t\t\t\t\t\t\tIF id # NIL THEN\r\t\t\t\t\t\t\t\t\t\tidtyp := id.typ; DevCPB.TypTest(y, t, FALSE); id.typ := t.typ;\r\t\t\t\t\t\t\t\t\t\tIF id.ptyp = NIL THEN id.ptyp := idtyp END\r\t\t\t\t\t\t\t\t\tELSE err(130)\r\t\t\t\t\t\t\t\t\tEND\r\t\t\t\t\t\t\t\tELSE err(52)\r\t\t\t\t\t\t\t\tEND\r\t\t\t\t\t\t\tELSE err(ident)\r\t\t\t\t\t\t\tEND\r\t\t\t\t\t\tELSE err(ident)\r\t\t\t\t\t\tEND ;\r\t\t\t\t\t\tCheckSym(do); StatSeq(s); DevCPB.Construct(Nif, y, s); SetPos(y);\r\t\t\t\t\t\tIF idtyp # NIL THEN\r\t\t\t\t\t\t\tIF id.ptyp = idtyp THEN id.ptyp := NIL END;\r\t\t\t\t\t\t\tid.typ := idtyp; idtyp := NIL\r\t\t\t\t\t\tEND ;\r\t\t\t\t\t\tIF x = NIL THEN x := y; lastif := x ELSE DevCPB.Link(x, lastif, y) END\r\t\t\t\t\tEND;\r\t\t\t\t\tIF sym = bar THEN DevCPS.Get(sym) ELSE EXIT END\r\t\t\t\tEND;\r\t\t\t\te := sym = else; pos := DevCPM.startpos;\r\t\t\t\tIF e THEN DevCPS.Get(sym); StatSeq(s) ELSE s := NIL END ;\r\t\t\t\tDevCPB.Construct(Nwith, x, s); CheckSym(end);\r\t\t\t\tIF e THEN x.subcl := 1 END\r\t\t\tELSIF sym = exit THEN\r\t\t\t\tDevCPS.Get(sym);\r\t\t\t\tIF LoopLevel = 0 THEN err(46) END ;\r\t\t\t\tDevCPB.Construct(Nexit, x, NIL)\r\t\t\tELSIF sym = return THEN DevCPS.Get(sym);\r\t\t\t\tIF sym < semicolon THEN Expression(x) END ;\r\t\t\t\tIF level > 0 THEN DevCPB.Return(x, DevCPT.topScope.link)\r\t\t\t\tELSE (* not standard Oberon *) DevCPB.Return(x, NIL)\r\t\t\t\tEND;\r\t\t\t\thasReturn := TRUE\r\t\t\tEND ;\r\t\t\tIF x # NIL THEN SetPos(x); DevCPB.Link(stat, last, x) END ;\r\t\t\tIF sym = semicolon THEN DevCPS.Get(sym)\r\t\t\tELSIF (sym <= ident) OR (if <= sym) & (sym <= return) THEN err(semicolon)\r\t\t\tELSE EXIT\r\t\t\tEND\r\t\tEND\r\tEND StatSeq;\r\r\tPROCEDURE Block(VAR procdec, statseq: DevCPT.Node);\r\t\tVAR typ: DevCPT.Struct;\r\t\t\tobj, first, last, o: DevCPT.Object;\r\t\t\tx, lastdec: DevCPT.Node;\r\t\t\ti: SHORTINT;\r\t\t\trname: DevCPT.Name;\r\t\t\tname: DevCPT.String;\r\t\t\trec: Elem;\r\r\tBEGIN\r\t\tIF ((sym < begin) OR (sym > var)) & (sym # procedure) & (sym # end) & (sym # close) THEN err(36) END;\r\t\tfirst := NIL; last := NIL; userList := NIL; recList := NIL;\r\t\tLOOP\r\t\t\tIF sym = const THEN\r\t\t\t\tDevCPS.Get(sym);\r\t\t\t\tWHILE sym = ident DO\r\t\t\t\t\tDevCPT.Insert(DevCPS.name, obj);\r\t\t\t\t\tobj.mode := Con; CheckMark(obj);\r\t\t\t\t\tobj.typ := DevCPT.int8typ; obj.mode := Var;\t(* Var to avoid recursive definition *)\r\t\t\t\t\tIF sym = eql THEN\r\t\t\t\t\t\tDevCPS.Get(sym); ConstExpression(x)\r\t\t\t\t\tELSIF sym = becomes THEN\r\t\t\t\t\t\terr(eql); DevCPS.Get(sym); ConstExpression(x)\r\t\t\t\t\tELSE err(eql); x := DevCPB.NewIntConst(1)\r\t\t\t\t\tEND ;\r\t\t\t\t\tobj.mode := Con; obj.typ := x.typ; obj.conval := x.conval; (* ConstDesc is not copied *)\r\t\t\t\t\tCheckSym(semicolon)\r\t\t\t\tEND\r\t\t\tEND ;\r\t\t\tIF sym = type THEN\r\t\t\t\tDevCPS.Get(sym);\r\t\t\t\tWHILE sym = ident DO\r\t\t\t\t\tDevCPT.Insert(DevCPS.name, obj); obj.mode := Typ; obj.typ := DevCPT.undftyp;\r\t\t\t\t\tCheckMark(obj); obj.mode := -1;\r\t\t\t\t\tIF sym # eql THEN err(eql) END;\r\t\t\t\t\tIF (sym = eql) OR (sym = becomes) OR (sym = colon) THEN\r\t\t\t\t\t\tDevCPS.Get(sym); Type(obj.typ, name); SetType(NIL, obj, obj.typ, name);\r\t\t\t\t\tEND;\r\t\t\t\t\tobj.mode := Typ;\r\t\t\t\t\tIF obj.typ.form IN {Byte..Set, Char16, Int64} THEN\t(* make alias structure *)\r\t\t\t\t\t\ttyp := DevCPT.NewStr(obj.typ.form, Basic); i := typ.ref;\r\t\t\t\t\t\ttyp^ := obj.typ^; typ.ref := i; typ.strobj := NIL; "
+                    attr: 0
+                  - text: "typ.mno := 0; typ.txtpos := DevCPM.errpos;"
+                    attr: 3
+                  - text: "\r\t\t\t\t\t\ttyp.BaseTyp := obj.typ; obj.typ := typ;\r\t\t\t\t\tEND;\r\t\t\t\t\tIF obj.typ.strobj = NIL THEN obj.typ.strobj := obj END ;\r\t\t\t\t\tIF obj.typ.form = Pointer THEN"
+                    attr: 0
+                  - text: "\t(* !!! *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\ttyp := obj.typ.BaseTyp;\r\t\t\t\t\t\tIF (typ # NIL) & (typ.comp = Record) & (typ.strobj = NIL) THEN\r\t\t\t\t\t\t\t"
+                    attr: 0
+                  - text: "(* pointer to unnamed record: name record as \"pointerName^\" *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\t\trname := obj.name^$; i := 0;\r\t\t\t\t\t\t\tWHILE rname[i] # 0X DO INC(i) END;\r\t\t\t\t\t\t\trname[i] := \"^\"; rname[i+1] := 0X;\r\t\t\t\t\t\t\tDevCPT.Insert(rname, o); o.mode := Typ; o.typ := typ; typ.strobj := o\r\t\t\t\t\t\tEND\r\t\t\t\t\tEND;\r\t\t\t\t\tIF obj.vis # internal THEN\r\t\t\t\t\t\ttyp := obj.typ;\r\t\t\t\t\t\tIF typ.form = Pointer THEN typ := typ.BaseTyp END;\r\t\t\t\t\t\tIF typ.comp = Record THEN typ.exp := TRUE END\r\t\t\t\t\tEND;\r\t\t\t\t\tCheckSym(semicolon)\r\t\t\t\tEND\r\t\t\tEND ;\r\t\t\tIF sym = var THEN\r\t\t\t\tDevCPS.Get(sym);\r\t\t\t\tWHILE sym = ident DO\r\t\t\t\t\tLOOP\r\t\t\t\t\t\tIF sym = ident THEN\r\t\t\t\t\t\t\tDevCPT.Insert(DevCPS.name, obj);\r\t\t\t\t\t\t\tobj.mode := Var; obj.link := NIL; obj.leaf := obj.vis = internal; obj.typ := DevCPT.undftyp;\r\t\t\t\t\t\t\tCheckMark(obj);\r\t\t\t\t\t\t\tIF first = NIL THEN first := obj END ;\r\t\t\t\t\t\t\tIF last = NIL THEN DevCPT.topScope.scope := obj ELSE last.link := obj END ;\r\t\t\t\t\t\t\tlast := obj\r\t\t\t\t\t\tELSE err(ident)\r\t\t\t\t\t\tEND ;\r\t\t\t\t\t\tIF sym = comma THEN DevCPS.Get(sym)\r\t\t\t\t\t\tELSIF sym = ident THEN err(comma)\r\t\t\t\t\t\tELSE EXIT\r\t\t\t\t\t\tEND\r\t\t\t\t\tEND ;\r\t\t\t\t\tCheckSym(colon); Type(typ, name);\r\t\t\t\t\tCheckAlloc(typ, FALSE, DevCPM.errpos);\r\t\t\t\t\tWHILE first # NIL DO SetType(NIL, first, typ, name); first := first.link END ;\r\t\t\t\t\tCheckSym(semicolon)\r\t\t\t\tEND\r\t\t\tEND ;\r\t\t\tIF (sym < const) OR (sym > var) THEN EXIT END ;\r\t\tEND ;\r\t\tCheckForwardTypes;\r\t\tuserList := NIL; rec := recList; recList := NIL;\r\t\tDevCPT.topScope.adr := DevCPM.errpos;\r\t\tprocdec := NIL; lastdec := NIL;\r\t\tIF (sym # procedure) & (sym # begin) & (sym # end) & (sym # close) THEN err(37) END;\r\t\tWHILE sym = procedure DO\r\t\t\tDevCPS.Get(sym); ProcedureDeclaration(x);\r\t\t\tIF x # NIL THEN\r\t\t\t\tIF lastdec = NIL THEN procdec := x ELSE lastdec.link := x END ;\r\t\t\t\tlastdec := x\r\t\t\tEND ;\r\t\t\tCheckSym(semicolon)\r\t\tEND ;\r\t\tIF DevCPM.noerr & ~(DevCPM.oberon IN DevCPM.options) THEN CheckRecords(rec) END;\r\t\thasReturn := FALSE;\r\t\tIF (sym # begin) & (sym # end) & (sym # close) THEN err(38) END;\r\t\tIF sym = begin THEN DevCPS.Get(sym); StatSeq(statseq)\r\t\tELSE statseq := NIL\r\t\tEND ;\r\t\tIF (DevCPT.topScope.link # NIL) & (DevCPT.topScope.link.typ # DevCPT.notyp)\r\t\t\t& ~hasReturn & (DevCPT.topScope.link.sysflag = 0) THEN err(133) END;\r\t\tIF (level = 0) & (TDinit # NIL) THEN\r\t\t\tlastTDinit.link := statseq; statseq := TDinit\r\t\tEND\r\tEND Block;\r\r\tPROCEDURE Module*(VAR prog: DevCPT.Node);\r\t\tVAR impName, aliasName: DevCPT.Name;\r\t\t\t\tprocdec, statseq: DevCPT.Node;\r\t\t\t\tc, sf: INTEGER; done: BOOLEAN;\r\tBEGIN\r\t\tDevCPS.Init; LoopLevel := 0; level := 0; DevCPS.Get(sym);\r\t\tIF sym = module THEN DevCPS.Get(sym) ELSE err(16) END ;\r\t\tIF sym = ident THEN\r\t\t\t"
+                    attr: 0
+                  - text: DevCPT.Open(DevCPS.name)
+                    attr: 3
+                  - text: "; DevCPS.Get(sym);\r\t\t\tDevCPT.libName := \"\";\r\t\t\tIF sym = lbrak THEN\r\t\t\t\tINCL(DevCPM.options, DevCPM.interface); DevCPS.Get(sym);\r\t\t\t\tIF sym = eql THEN DevCPS.Get(sym)\r\t\t\t\tELSE INCL(DevCPM.options, DevCPM.noCode)\r\t\t\t\tEND;\r\t\t\t\tIF sym = string THEN DevCPT.libName := DevCPS.str^$; DevCPS.Get(sym)\r\t\t\t\tELSE err(string)\r\t\t\t\tEND;\r\t\t\t\tCheckSym(rbrak)\r\t\t\tEND;\r\t\t\tCheckSym(semicolon);\r\t\t\tIF sym = import THEN DevCPS.Get(sym);\r\t\t\t\tLOOP\r\t\t\t\t\tIF sym = ident THEN\r\t\t\t\t\t\taliasName := DevCPS.name$; impName := aliasName$; DevCPS.Get(sym);\r\t\t\t\t\t\tIF sym = becomes THEN DevCPS.Get(sym);\r\t\t\t\t\t\t\tIF sym = ident THEN impName := DevCPS.name$; DevCPS.Get(sym) ELSE err(ident) END\r\t\t\t\t\t\tEND ;\r\t\t\t\t\t\tDevCPT.Import(aliasName, impName, done)\r\t\t\t\t\tELSE err(ident)\r\t\t\t\t\tEND ;\r\t\t\t\t\tIF sym = comma THEN DevCPS.Get(sym)\r\t\t\t\t\tELSIF sym = ident THEN err(comma)\r\t\t\t\t\tELSE EXIT\r\t\t\t\t\tEND\r\t\t\t\tEND ;\r\t\t\t\tCheckSym(semicolon)\r\t\t\tEND ;\r\t\t\tIF DevCPM.noerr THEN TDinit := NIL; lastTDinit := NIL; c := DevCPM.errpos;\r\t\t\t\tBlock(procdec, statseq); DevCPB.Enter(procdec, statseq, NIL); prog := procdec;\r\t\t\t\tprog.conval := DevCPT.NewConst(); prog.conval.intval := c; prog.conval.intval2 := DevCPM.startpos;\r\t\t\t\tIF sym = close THEN DevCPS.Get(sym); StatSeq(prog.link) END;\r\t\t\t\tprog.conval.realval := DevCPM.startpos;\r\t\t\t\tCheckSym(end);\r\t\t\t\tIF sym = ident THEN\r\t\t\t\t\tIF DevCPS.name # DevCPT.SelfName THEN err(4) END ;\r\t\t\t\t\tDevCPS.Get(sym)\r\t\t\t\tELSE err(ident)\r\t\t\t\tEND;\r\t\t\t\tIF sym # period THEN err(period) END\r\t\t\tEND\r\t\tELSE err(ident)\r\t\tEND ;\r\t\tTDinit := NIL; lastTDinit := NIL;\r\t\tDevCPS.str := NIL\r\tEND Module;\r\rEND DevCPP.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 29
+          bodyPos: 63351
+          bodyLen: 8

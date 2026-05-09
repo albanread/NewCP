@@ -1,0 +1,170 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Dev\\Docu\\RBrowser.odc"
+  size: 2904
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 2773
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 2587
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 2501
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 114300
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 6
+                bodyPos: 2501
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 1987
+                runListLen: 376
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: DevRBrowser
+                    attr: 0
+                  - text: "\r\rDEFINITION DevRBrowser;\r\r\tPROCEDURE ShowRepository;\r\tPROCEDURE Update;\r\tPROCEDURE OpenFile (path, name: ARRAY OF CHAR);\r\tPROCEDURE ShowFiles (path: ARRAY OF CHAR);\r\rEND DevRBrowser.\r\r\rThis tool module allows to list all subsystems as folds (-> StdFolds). A fold contains links to its subsystem's symbol, code, source, and documentation files. It makes it easier to get an overview over the elements of a large BlackBox application, or over BlackBox itself.\rFor the resources of a subsystem, a "
+                    attr: 1
+                  - text: Rsrc
+                    attr: 2
+                  - text: " link is generated. Clicking this link creates a list of all documents in the "
+                    attr: 1
+                  - text: Rsrc
+                    attr: 2
+                  - text: " subdirectory.\rFor the documentation files, those which contain one or several dashes (\"-\") in their names are not treated as module documentations, but rather as auxiliary documentation files which are listed at the beginning. In particular, files with name "
+                    attr: 1
+                  - text: Sys-Map
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: User-Man
+                    attr: 2
+                  - text: ", and "
+                    attr: 1
+                  - text: Dev-Man
+                    attr: 2
+                  - text: " are extracted this way. They are the standard names for a map document which contains hyperlinks to the relevant files of the subsystems; the user manual for the subsystem (user in this context means a programmer); and the programmer's reference.\r\rMenu command:\r\t\"Repository\"\t\"\"\t\"DevRBrowser.ShowRepository\"\t\"\"\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: ShowRepository
+                    attr: 3
+                  - text: "\rCreate a report which lists all subsystems.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Update
+                    attr: 3
+                  - text: "\rUpdate the report (used as command in the "
+                    attr: 1
+                  - text: update
+                    attr: 2
+                  - text: " link that is on top of the generated report).\r\rPROCEDURE "
+                    attr: 1
+                  - text: OpenFile
+                    attr: 3
+                  - text: " (path, name: ARRAY OF CHAR)\rUsed internally. Opens the file at location "
+                    attr: 1
+                  - text: path
+                    attr: 2
+                  - text: " and with name "
+                    attr: 1
+                  - text: name
+                    attr: 2
+                  - text: ".\r\rPROCEDURE "
+                    attr: 1
+                  - text: ShowFiles
+                    attr: 3
+                  - text: " (path: ARRAY OF CHAR)\rUsed internally. Lists all resource documents at location "
+                    attr: 1
+                  - text: path
+                    attr: 2
+                  - text: ".\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 10
+          bodyPos: 2869
+          bodyLen: 8

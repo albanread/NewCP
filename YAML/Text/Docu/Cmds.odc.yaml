@@ -1,0 +1,680 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Text\\Docu\\Cmds.odc"
+  size: 17299
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 17168
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 16982
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 16896
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                asc: 121900
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 10
+                bodyPos: 17017
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 16503
+                runListLen: 1970
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                flow:
+                  - text: TextCmds
+                    attr: 0
+                  - text: "\r\rDEFINITION TextCmds;\r\r\tIMPORT Dialog;\r\r\tVAR\r\t\tfind: RECORD\r\t\t\tfind: ARRAY 256 OF CHAR;\r\t\t\treplace: ARRAY 256 OF CHAR;\r\t\t\tignoreCase, wordBeginsWith, wordEndsWith, reverseOrientation: BOOLEAN\r\t\tEND;\r\t\truler: RECORD\r\t\t\tpageBreaks: RECORD\r\t\t\t\tnotInside, joinPara: BOOLEAN\r\t\t\tEND\r\t\tEND;\r\r\tPROCEDURE InitFindDialog;\r\tPROCEDURE SetNormalOrientation;\r\tPROCEDURE SetReverseOrientation;\r\tPROCEDURE FindFirst (option: ARRAY OF CHAR);\r\tPROCEDURE FindAgain (option: ARRAY OF CHAR);\r\tPROCEDURE Replace (option: ARRAY OF CHAR);\r\tPROCEDURE ReplaceAll (option: ARRAY OF CHAR);\r\tPROCEDURE ReplaceAndFindNext (option: ARRAY OF CHAR);\r\tPROCEDURE InitRulerDialog;\r\tPROCEDURE SetRuler;\r\tPROCEDURE InsertDigitSpace;\r\tPROCEDURE InsertNBHyphen;\r\tPROCEDURE InsertNBSpace;\r\tPROCEDURE InsertParagraph;\r\tPROCEDURE InsertRuler;\r\tPROCEDURE InsertSoftHyphen;\r\tPROCEDURE ShiftLeft;\r\tPROCEDURE ShiftRight;\r\tPROCEDURE Subscript;\r\tPROCEDURE Superscript;\r\tPROCEDURE MakeDefaultAttributes;\r\tPROCEDURE MakeDefaultRuler;\r\tPROCEDURE ListAlienViews;\r\tPROCEDURE ToggleMarks;\r\tPROCEDURE HideMarks;\r\tPROCEDURE ShowMarks;\r\tPROCEDURE EditGuard (VAR par: Dialog.Par);\r\tPROCEDURE FocusGuard (VAR par: Dialog.Par);\r\tPROCEDURE SelectionGuard (VAR par: Dialog.Par);\r\tPROCEDURE EditSelectionGuard (VAR par: Dialog.Par);\r\tPROCEDURE SingletonGuard (VAR par: Dialog.Par);\r\tPROCEDURE FindGuard (VAR par: Dialog.Par);\r\tPROCEDURE FindAgainGuard (VAR par: Dialog.Par);\r\tPROCEDURE ReplaceGuard (VAR par: Dialog.Par);\r\tPROCEDURE ReplaceAllGuard (VAR par: Dialog.Par);\r\tPROCEDURE MakeDefaultRulerGuard (VAR par: Dialog.Par);\r\tPROCEDURE ToggleMarksGuard (VAR par: Dialog.Par);\r\rEND TextCmds.\r\rCommand package for text views. A possible menu using commands from this package:\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      lead: 11500
+                      asc: 121900
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 108000 }
+                        - { stop: 756000 }
+                        - { stop: 1656000 }
+                        - { stop: 1800000 }
+                        - { stop: 3852000 }
+                      attr: 2
+                      w: 360000000
+                      h: 444500
+                  - text: "MENU "
+                    attr: 2
+                  - text: "\"Text\" (\"TextViews.View\")\r\t\"&Find / Replace...\"\t\"F\"\t\"TextCmds.InitFindDialog; StdCmds.OpenToolDialog('Text/Rsrc/Cmds', 'Find / Replace')\"\t\"\"\r\t\"Find &Again\"\t\"F3\"\t\"TextCmds.InitFindDialog; TextCmds.FindAgain('~I~B~E~R')\"\t\t\"TextCmds.FindAgainGuard\"\r\t\"Find &Previous\"\t\"*F3\"\t\"TextCmds.InitFindDialog; TextCmds.FindAgain('~I~B~ER')\"\t\t\"TextCmds.FindAgainGuard\"\r\t\"Find &Previous\"\t\"F2\"\t\"TextCmds.InitFindDialog; TextCmds.FindAgain('~I~B~ER')\"\t\t\"TextCmds.FindAgainGuard\"\r\t\"Find First\"\t\"F4\"\t\"TextCmds.InitFindDialog; TextCmds.FindFirst('~I~B~E~R')\"\t\t\"TextCmds.FindAgainGuard\"\r\t\"Find Last\"\t\"*F4\"\t\"TextCmds.InitFindDialog; TextCmds.FindFirst('~I~B~ER')\"\t\t\"TextCmds.FindAgainGuard\"\r\t"
+                    attr: 1
+                  - text: SEPARATOR
+                    attr: 2
+                  - text: "\r\t\"Shift &Left\"\t\t\"\"\t\"TextCmds.ShiftLeft\"\t\"TextCmds.EditGuard\"\r\t\"Shift &Right\"\t\t\"\"\t\"TextCmds.ShiftRight\"\t\"TextCmds.EditGuard\"\r\t\"Su&perscript\"\t\t\"\"\t\"TextCmds.Superscript\"\t\"TextCmds.SelectionGuard\"\r\t\"Su&bscript\"\t\t\"\"\t\"TextCmds.Subscript\"\t\"TextCmds.SelectionGuard\"\r\t"
+                    attr: 1
+                  - text: SEPARATOR
+                    attr: 2
+                  - text: "\r\t\"&Insert Paragraph\"\t\t\"\"\t\"TextCmds.InsertParagraph\"\t\"StdCmds.PasteCharGuard\"\r\t\"Insert R&uler\"\t\t\"\"\t\"TextCmds.InsertRuler\"\t\"StdCmds.PasteViewGuard\"\r\t\"Insert &Soft-Hyphen\"\t\t\"\"\t\"TextCmds.InsertSoftHyphen\"\t\"StdCmds.PasteCharGuard\"\r\t\"Insert &Non-Brk Hyphen\"\t\t\"\"\t\"TextCmds.InsertNBHyphen\"\t\"StdCmds.PasteCharGuard\"\r\t\"Insert N&on-Brk Space\"\t\t\"\"\t\"TextCmds.InsertNBSpace\"\t\"StdCmds.PasteCharGuard\"\r\t\"Insert &Digit Space\"\t\t\"\"\t\"TextCmds.InsertDigitSpace\"\t\"StdCmds.PasteCharGuard\"\r\t\"Toggle &Marks\"\t\t\"\"\t\"TextCmds.ToggleMarks\"\t\"TextCmds.ToggleMarksGuard\"\r\t"
+                    attr: 1
+                  - text: SEPARATOR
+                    attr: 2
+                  - text: "\r\t\"Make Default Attributes\"\t\t\"\"\t\"TextCmds.MakeDefaultAttributes\"\t\"TextCmds.SelectionGuard\"\r\t\"Make Default Ruler\"\t\t\"\"\t\"TextCmds.MakeDefaultRuler\"\t\"TextCmds.MakeDefaultRulerGuard\"\r"
+                    attr: 1
+                  - text: END
+                    attr: 2
+                  - text: "\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      lead: 11500
+                      asc: 121900
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r\rVAR "
+                    attr: 1
+                  - text: find
+                    attr: 2
+                  - text: ": RECORD\rThis is the interactor for the "
+                    attr: 1
+                  - text: "Find & Replace"
+                    attr: 3
+                  - text: " dialog. It allows to specify several options: "
+                    attr: 1
+                  - text: ignoreCase
+                    attr: 3
+                  - text: " makes searching insensitive to case, "
+                    attr: 1
+                  - text: wordBeginsWith
+                    attr: 3
+                  - text: " restricts searching to the beginning of words, and "
+                    attr: 1
+                  - text: wordEndsWith
+                    attr: 3
+                  - text: " restricts searching to the end of words. "
+                    attr: 1
+                  - text: wordBeginsWith
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: wordEndsWith
+                    attr: 3
+                  - text: " together restrict searching to whole words. "
+                    attr: 1
+                  - text: reverseOrientation
+                    attr: 3
+                  - text: " reverses the search direction: instead of searching towards the end of the text, a search progresses towards the beginning of the text.\r\r"
+                    attr: 1
+                  - text: find
+                    attr: 2
+                  - text: ": ARRAY 256 OF CHAR\rThe search string.\r\r"
+                    attr: 1
+                  - text: replace
+                    attr: 2
+                  - text: ": ARRAY 256 OF CHAR\rThe replacement string.\r\r"
+                    attr: 1
+                  - text: ignoreCase
+                    attr: 2
+                  - text: ": BOOLEAN\rDetermines whether searching should consider or ignore the case of a letter (small/caps).\r\r"
+                    attr: 1
+                  - text: "wordBeginsWith, wordEndsWith"
+                    attr: 2
+                  - text: ": BOOLEAN\rDetermine whether searching should be restricted to word beginnings, word endings, or both. The latter case means that a word must match exactly.\r\r"
+                    attr: 1
+                  - text: reverseOrientation
+                    attr: 2
+                  - text: ": BOOLEAN\rDetermines the search orientation, normal (forward) or reverse (backward).\rThis flag is considered by all search operations.\r\r\rVAR "
+                    attr: 1
+                  - text: ruler
+                    attr: 2
+                  - text: ": RECORD\rThis is the interactor for the dialog popped up by rulers to set properties that are not normally controlled interactively.\r\r"
+                    attr: 1
+                  - text: pageBreaks
+                    attr: 2
+                  - text: ": RECORD\rThe two options presently supported by the ruler interactor both affect the page breaking strategy used by text setters. These two options are grouped into the "
+                    attr: 1
+                  - text: pageBreaks
+                    attr: 3
+                  - text: " subrecord.\r\r"
+                    attr: 1
+                  - text: notInside
+                    attr: 2
+                  - text: ": BOOLEAN\rIf set, this option excludes page breaks anywhere in the text following this ruler and before the next following ruler or the end of the text. However, the text will be broken across pages anyway if it doesn't fit on a single page.\r\r"
+                    attr: 1
+                  - text: joinPara
+                    attr: 2
+                  - text: ": BOOLEAN\rIf set, this option prevents a page break between the text controlled by this ruler and the text controlled by the next ruler. (If there is no next ruler, this option has no effect.) As with the "
+                    attr: 1
+                  - text: notInside
+                    attr: 3
+                  - text: " option, if the text controlled by this option does not fit onto a single page, it will be broken across pages anyway.\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: InitFindDialog
+                    attr: 2
+                  - text: "\rThis initialization command sets up the "
+                    attr: 1
+                  - text: find.find
+                    attr: 3
+                  - text: " interactor field with the current text selection; if there is no current selection, "
+                    attr: 1
+                  - text: find.find
+                    attr: 3
+                  - text: " is left unmodified. Whenever "
+                    attr: 1
+                  - text: InitFindDialog
+                    attr: 3
+                  - text: " actually modifies "
+                    attr: 1
+                  - text: find.find
+                    attr: 3
+                  - text: ", it also resets the search options "
+                    attr: 1
+                  - text: find.ignoreCase
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: find.wordBeginsWith
+                    attr: 3
+                  - text: ", and "
+                    attr: 1
+                  - text: find.wordEndsWith
+                    attr: 3
+                  - text: " to FALSE. It is useful to call this command before calling one of the searching commands ("
+                    attr: 1
+                  - text: "FindFirst, FindAgain"
+                    attr: 3
+                  - text: ") or opening the "
+                    attr: 1
+                  - text: "Find & Replace"
+                    attr: 3
+                  - text: " dialog.\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetNormalOrientation
+                    attr: 2
+                  - text: "\rResets "
+                    attr: 1
+                  - text: reverseOrientation
+                    attr: 3
+                  - text: " to FALSE.\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetReverseOrientation
+                    attr: 2
+                  - text: "\rSets "
+                    attr: 1
+                  - text: reverseOrientation
+                    attr: 3
+                  - text: " to TRUE.\r\rPROCEDURE "
+                    attr: 1
+                  - text: FindFirst
+                    attr: 2
+                  - text: " (option: ARRAY OF CHAR)\rGuard: FindGuard\rSearches for the first occurrence of the string "
+                    attr: 1
+                  - text: find.find
+                    attr: 3
+                  - text: " in the focused text. If the string is not found, a beep is emitted. The "
+                    attr: 1
+                  - text: ignoreCase
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: wordBeginsWith
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: wordEndsWith
+                    attr: 3
+                  - text: ", and "
+                    attr: 1
+                  - text: reverseOrientation
+                    attr: 3
+                  - text: " mode flags are taken from the "
+                    attr: 1
+                  - text: find
+                    attr: 3
+                  - text: " interactor. These interactor-determined modes can be overridden by using the "
+                    attr: 1
+                  - text: option
+                    attr: 3
+                  - text: " parameter. ("
+                    attr: 1
+                  - text: option
+                    attr: 3
+                  - text: " can be left empty if no overriding of the interactor modes is required.) The "
+                    attr: 1
+                  - text: option
+                    attr: 3
+                  - text: " string is interpreted according to the following simple syntax:\r\t"
+                    attr: 1
+                  - text: option
+                    attr: 3
+                  - text: " = { [~] (i | b | e | r) }\rwhere the letters "
+                    attr: 1
+                  - text: "i, b, e, "
+                    attr: 3
+                  - text: and
+                    attr: 1
+                  - text: " r"
+                    attr: 3
+                  - text: " set the mode flags "
+                    attr: 1
+                  - text: ignoreCase
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: wordBeginsWith
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: wordEndsWith
+                    attr: 3
+                  - text: ", and "
+                    attr: 1
+                  - text: "reverseOrientation,"
+                    attr: 3
+                  - text: " respectively. (The case of these letters is ignored.) If a letter is preceded by a tilde (~), then the corresponding mode flag is reset. For example, the following option string requests case-insensitive search of a pattern that begins a word but doesn't have to end a word, where the search is to be performed from the current position backwards, that is, towards the beginning of the document:\r\t\"ib~er\"\r\rPROCEDURE "
+                    attr: 1
+                  - text: FindAgain
+                    attr: 2
+                  - text: " (option: ARRAY OF CHAR)\rGuard: FindAgainGuard\rThis command searches for the string "
+                    attr: 1
+                  - text: find.find
+                    attr: 3
+                  - text: ", starting from the end of the selection. If there is no selection, it searches for the string starting from the caret position. If there is no caret either, it starts from the beginning of the focused text. The "
+                    attr: 1
+                  - text: ignoreCase
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: wordBeginsWith
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: wordEndsWith
+                    attr: 3
+                  - text: ", and "
+                    attr: 1
+                  - text: reverseOrientation
+                    attr: 3
+                  - text: " mode flags are used as explained for the "
+                    attr: 1
+                  - text: FindFirst
+                    attr: 3
+                  - text: " command.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Replace
+                    attr: 2
+                  - text: " (option: ARRAY OF CHAR)\rGuard: ReplaceGuard\rReplace the previously found occurrence of the search string ("
+                    attr: 1
+                  - text: find.find
+                    attr: 3
+                  - text: ) by a replacement string (
+                    attr: 1
+                  - text: find.replace
+                    attr: 3
+                  - text: "). The "
+                    attr: 1
+                  - text: ignoreCase
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: wordBeginsWith
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: wordEndsWith
+                    attr: 3
+                  - text: ", and "
+                    attr: 1
+                  - text: reverseOrientation
+                    attr: 3
+                  - text: " mode flags are used as explained for the "
+                    attr: 1
+                  - text: FindFirst
+                    attr: 3
+                  - text: " command.\r\rPROCEDURE "
+                    attr: 1
+                  - text: ReplaceAll
+                    attr: 2
+                  - text: " (option: ARRAY OF CHAR)\rGuard: ReplaceGuard\rReplace all search strings ("
+                    attr: 1
+                  - text: find.find
+                    attr: 3
+                  - text: ) by a replacement string (
+                    attr: 1
+                  - text: find.replace
+                    attr: 3
+                  - text: "), either in the entire focus text, or, if the focus text contains a selection, just in the selected range. The "
+                    attr: 1
+                  - text: ignoreCase
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: "wordBeginsWith "
+                    attr: 3
+                  - text: "and "
+                    attr: 1
+                  - text: wordEndsWith
+                    attr: 3
+                  - text: " mode flags are used as explained for the "
+                    attr: 1
+                  - text: FindFirst
+                    attr: 3
+                  - text: " command.\r\rPROCEDURE "
+                    attr: 1
+                  - text: ReplaceAndFindNext
+                    attr: 2
+                  - text: " (option: ARRAY OF CHAR)\rGuard: ReplaceGuard\rReplace the previously found occurrence of the search string ("
+                    attr: 1
+                  - text: find.find
+                    attr: 3
+                  - text: ) by a replacement string (
+                    attr: 1
+                  - text: find.replace
+                    attr: 3
+                  - text: "). Afterwards, try to find the next occurrence of the search string. The "
+                    attr: 1
+                  - text: ignoreCase
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: wordBeginsWith
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: wordEndsWith
+                    attr: 3
+                  - text: ", and "
+                    attr: 1
+                  - text: reverseOrientation
+                    attr: 3
+                  - text: " mode flags are used as explained for the "
+                    attr: 1
+                  - text: FindFirst
+                    attr: 3
+                  - text: " command.\r\rPROCEDURE "
+                    attr: 1
+                  - text: InitRulerDialog
+                    attr: 2
+                  - text: "\rThis initialization command sets the "
+                    attr: 1
+                  - text: ruler
+                    attr: 3
+                  - text: " interactor fields "
+                    attr: 1
+                  - text: pageBreak.notInside
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: pageBreak.joinPara
+                    attr: 3
+                  - text: " to match the settings of the currently selected or focused ruler. The fields remain unchanged if there is no ruler selected or focused. It is useful to call this command before opening the auxiliary ruler dialog.\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetRuler
+                    attr: 2
+                  - text: "\rGuard:\rIf there is a ruler selected or focused, change its "
+                    attr: 1
+                  - text: notInside
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: joinPara
+                    attr: 3
+                  - text: " options to the values set in the "
+                    attr: 1
+                  - text: ruler
+                    attr: 3
+                  - text: " interactor; otherwise do nothing.\r\rPROCEDURE "
+                    attr: 1
+                  - text: InsertDigitSpace
+                    attr: 2
+                  - text: "\rGuard: PasteCharGuard\rPastes a digit space, i.e., a space which in most fonts has the same width as a digit. Whether a digit space has this defined width depends on the font used; some fonts have digits of varying widths. Also, some font designers chose to set the digit space to half the space of a digit. ("
+                    attr: 1
+                  - text: "Compatibility note:"
+                    attr: 3
+                  - text: " in some older versions of the text system it was recommended practice to use digit spaces to simulate right alignment of numbers. Use right-aligning tab stops instead.)\r\rPROCEDURE "
+                    attr: 1
+                  - text: InsertNBHyphen
+                    attr: 2
+                  - text: "\rGuard: PasteCharGuard\rPastes a non-breaking hyphen, i.e., a hyphen which will not be used to break a word.\r\rPROCEDURE "
+                    attr: 1
+                  - text: InsertNBSpace
+                    attr: 2
+                  - text: "\rGuard: PasteCharGuard\rPastes a non-breaking space, i.e., a space which will not be used to break a word.\r\rPROCEDURE "
+                    attr: 1
+                  - text: InsertParagraph
+                    attr: 2
+                  - text: "\rGuard: PasteCharGuard\rPastes a paragraph character, i.e., a character indicating the beginning of a new paragraph. Regular line breaks do not start new paragraphs; for example, the first line indentation setting of a ruler only affects the first line of a paragraph introduced by a paragraph character.\r\rPROCEDURE "
+                    attr: 1
+                  - text: InsertRuler
+                    attr: 2
+                  - text: "\rGuard: PasteViewGuard\rPastes a new ruler, which is set up the same way as the ruler in the same text closest above. If there is no ruler above, the values of the default ruler are taken. (See command "
+                    attr: 1
+                  - text: MakeDefaultRuler
+                    attr: 3
+                  - text: " below.)\r\rPROCEDURE "
+                    attr: 1
+                  - text: InsertSoftHyphen
+                    attr: 2
+                  - text: "\rGuard: PasteCharGuard\rPastes a soft hyphen, i.e., a hyphen which only becomes visible if it is used to break a word.\r\rPROCEDURE "
+                    attr: 1
+                  - text: ShiftLeft
+                    attr: 2
+                  - text: "\rGuard: SelectionGuard\rThis command removes one "
+                    attr: 1
+                  - text: tab
+                    attr: 3
+                  - text: " character from the white space at the beginning of each line spanned by the current selection.\r\rPROCEDURE "
+                    attr: 1
+                  - text: ShiftRight
+                    attr: 2
+                  - text: "\rGuard: SelectionGuard\rThis command inserts one "
+                    attr: 1
+                  - text: tab
+                    attr: 3
+                  - text: " character from the white space at the beginning of each line spanned by the current selection.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Subscript
+                    attr: 2
+                  - text: "\rGuard: SelectionGuard\rThis command moves the selected text down vertically, into a subscript position.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Superscript
+                    attr: 2
+                  - text: "\rGuard: SelectionGuard\rThis command moves the selected text up vertically, into a superscript position.\r\rPROCEDURE "
+                    attr: 1
+                  - text: MakeDefaultAttributes
+                    attr: 2
+                  - text: "\rGuard: SelectionGuard\rSets the focus text's default attributes to the ones of the current selection in this text.\r\rPROCEDURE "
+                    attr: 1
+                  - text: MakeDefaultRuler
+                    attr: 2
+                  - text: "\rGuard: SingletonGuard\rSets the focus text's default ruler values to the ones of the currently selected ruler in this text.\r\rPROCEDURE "
+                    attr: 1
+                  - text: ListAlienViews
+                    attr: 2
+                  - text: "\rGuard: FocusGuard\rOpens a text containing the list of alien views contained in this text.\r\rPROCEDURE "
+                    attr: 1
+                  - text: ToggleMarks
+                    attr: 2
+                  - text: "\rGuard: ToggleMarksGuard\rThis command makes text rulers and paragraph characters visible if they aren't, and hides them if they are.\r\rPROCEDURE "
+                    attr: 1
+                  - text: HideMarks
+                    attr: 2
+                  - text: "\rGuard: FocusGuard\rThis command hides text rulers and paragraph characters if they are visible.\r\rPROCEDURE "
+                    attr: 1
+                  - text: ShowMarks
+                    attr: 2
+                  - text: "\rGuard: FocusGuard\rThis command makes text rulers and paragraph characters visible if they aren't.\r\rPROCEDURE "
+                    attr: 1
+                  - text: EditGuard
+                    attr: 2
+                  - text: " (VAR par: Dialog.Par)\rThis guard disables the current menu item if the current focus is not a text view or doesn't allow editing, i.e., doesn't allow for setting a caret.\r\rPROCEDURE "
+                    attr: 1
+                  - text: FocusGuard
+                    attr: 2
+                  - text: " (VAR par: Dialog.Par)\rThis guard disables the current menu item if the current focus is not a text view.\r\rPROCEDURE "
+                    attr: 1
+                  - text: SelectionGuard
+                    attr: 2
+                  - text: " (VAR par: Dialog.Par)\rThis guard disables the current menu item if the current focus is not a text view or doesn't contain a selection.\r\rPROCEDURE "
+                    attr: 1
+                  - text: EditSelectionGuard
+                    attr: 2
+                  - text: " (VAR par: Dialog.Par)\rSame as "
+                    attr: 1
+                  - text: SelectionGuard
+                    attr: 3
+                  - text: ", except that the text view that contains the selection must be in an editable mode (modes of "
+                    attr: 1
+                  - text: "->Containers"
+                    attr: 3
+                  - text: ").\r\rPROCEDURE "
+                    attr: 1
+                  - text: SingletonGuard
+                    attr: 2
+                  - text: " (VAR par: Dialog.Par)\rThis guard disables the current menu item if the current focus is not a text view or doesn't contain a singleton selection, i.e., a selection of a single embedded view.\r\rPROCEDURE "
+                    attr: 1
+                  - text: FindGuard
+                    attr: 2
+                  - text: " (VAR par: Dialog.Par)\rThis guard disables the current menu item if the current focus is not a text view or if the "
+                    attr: 1
+                  - text: find.find
+                    attr: 3
+                  - text: " interactor holds an empty string, i.e., no search target is set.\r\rPROCEDURE "
+                    attr: 1
+                  - text: FindAgainGuard
+                    attr: 2
+                  - text: " (VAR par: Dialog.Par)\rThis guard disables the current menu item if the current focus is not a text view or if the "
+                    attr: 1
+                  - text: find.find
+                    attr: 3
+                  - text: " interactor holds an empty string "
+                    attr: 1
+                  - text: and
+                    attr: 3
+                  - text: " the focused text doesn't contain a selection.\r\rPROCEDURE "
+                    attr: 1
+                  - text: ReplaceGuard
+                    attr: 2
+                  - text: " (VAR par: Dialog.Par)\rThis guard disables the current menu item if the current focus is not a text view or if the "
+                    attr: 1
+                  - text: find.find
+                    attr: 3
+                  - text: " interactor holds an empty string (replacement target cannot possibly match) or if the focused text doesn't allow editing or if the focused text doesn't contain a selection (nothing to replace).\r\rPROCEDURE "
+                    attr: 1
+                  - text: ReplaceAllGuard
+                    attr: 2
+                  - text: " (VAR par: Dialog.Par)\rThis guard disables the current menu item if the current focus is not a text view or if the "
+                    attr: 1
+                  - text: find.find
+                    attr: 3
+                  - text: " interactor holds an empty string (replacement target cannot possibly match) or if the focused text doesn't allow editing. Otherwise, this guard sets the label depending on whether the focused text contains a selection (\"Replace all in selection\") or not (\"Replace all in text\").\r\rPROCEDURE "
+                    attr: 1
+                  - text: MakeDefaultRulerGuard
+                    attr: 2
+                  - text: " (VAR par: Dialog.Par)\rThis guard disables the current menu item if the current focus is not a text view or doesn't contain a selected ruler.\r\rPROCEDURE "
+                    attr: 1
+                  - text: ToggleMarksGuard
+                    attr: 2
+                  - text: " (VAR par: Dialog.Par)\rThis guard disables the current menu item if the current focus isn't a text view. Furthermore it sets up the correct string of the item ("
+                    attr: 1
+                  - text: Show Marks
+                    attr: 3
+                  - text: " / "
+                    attr: 1
+                  - text: Hide Marks
+                    attr: 3
+                  - text: ").\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 14
+          bodyPos: 17264
+          bodyLen: 8

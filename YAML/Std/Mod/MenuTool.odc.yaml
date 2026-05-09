@@ -1,0 +1,283 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Std\\Mod\\MenuTool.odc"
+  size: 12949
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 12818
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 12632
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 12546
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                dsc: 25400
+                grid: 1
+                opts: 0x00000021
+              defaultAttr:
+                font: Geneva
+                size: 114300
+                color: 0x00000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 12666
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 12152
+                runListLen: 1833
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE StdMenuTool;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT\r\t\t"
+                    attr: 0
+                  - text: Kernel
+                    attr: 3
+                  - text: ", Files, Fonts, Ports, Models, Views, Dialog, Properties, Containers, Documents,\r\t\tHostMenus, StdLinks, StdCmds,\r\t\tTextModels, TextMappers, TextViews, TextControllers;\r\r\tCONST\r\t\tchar = TextMappers.char; string = TextMappers.string; keyword = 100;\r\t\tmenuFile = \"Menus\"; rsrcDir = \"Rsrc\"; sysDir = \"System\";\r\t\t\r\tTYPE\t\t\r\t\tLangNotifier = POINTER TO RECORD (Dialog.LangNotifier) END;\r\r\tVAR\r\t\tnoerr, showerr, gen: BOOLEAN;\r\t\tincludes: Files.LocInfo;\r\t\tlangNotifier: LangNotifier;\r\t\t\r\tPROCEDURE Scan (VAR s: TextMappers.Scanner);\r\t\tVAR ch: CHAR; p: INTEGER;\r\tBEGIN\r\t\ts.Scan;\r\t\tIF s.type = string THEN\r\t\t\tp := s.rider.Pos() - 1;\r\t\t\tIF ~s.rider.eot THEN DEC(p) END;\r\t\t\ts.rider.SetPos(p); s.rider.ReadChar(ch); s.rider.Read;\r\t\t\tIF ch # '\"' THEN s.type := keyword END\r\t\tEND\r\tEND Scan;\r\t\r\tPROCEDURE Comp (IN s1, s2: ARRAY OF CHAR): INTEGER;\r\t\tVAR i: INTEGER; a, b: CHAR;\r\tBEGIN\r\t\ti := 0; a := s1[0]; b := s2[0];\r\t\tWHILE (a # 0X) & ((a = b) OR (a >= \"A\") & (a <= \"Z\") & (a = CAP(b)) OR (b >= \"A\") & (b <= \"Z\") & (b = CAP(a))) DO\r\t\t\tINC(i); a := s1[i]; b := s2[i]\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " ORD(a) - ORD(b)\r\tEND Comp;\r\t\r\tPROCEDURE Sort (VAR list: Files.LocInfo);\r\t\tVAR inc, last, i1, i2: Files.LocInfo;\r\tBEGIN\r\t\tinc := list; list := NIL;\r\t\tWHILE inc # NIL DO\r\t\t\ti1 := inc; inc := inc.next;\r\t\t\ti2 := list; last := NIL;\r\t\t\tWHILE (i2 # NIL) & (Comp(i1.name, i2.name) > 0) DO last := i2; i2 := i2.next END;\r\t\t\tIF last = NIL THEN i1.next := list; list := i1 ELSE i1.next := last.next; last.next := i1 END\r\t\tEND\r\tEND Sort;\r\r\r\tPROCEDURE ParseMenus (VAR s: TextMappers.Scanner; view: Views.View; loc: Files.Locator; name: Files.Name);\r\t\tVAR menu, category: Dialog.String; n: INTEGER;\r\r\t\tPROCEDURE Error (VAR s: TextMappers.Scanner; err: ARRAY OF CHAR);\r\t\t\tVAR end: INTEGER;\r\t\tBEGIN\r\t\t\tIF noerr & showerr THEN\r\t\t\t\tIF loc # NIL THEN Views.Open(view, loc, name, NIL) END;\r\t\t\t\tend := MAX(s.rider.Pos() - 1, s.start + 1);\r\t\t\t\tend := MIN(end, s.rider.Base().Length());\r\t\t\t\tTextControllers.SetSelection(s.rider.Base(), s.start, end);\r\t\t\t\tTextViews.ShowRange(s.rider.Base(), s.start, end, TextViews.focusOnly);\r\t\t\t\tDialog.ShowMsg(err)\r\t\t\tEND; \r\t\t\tnoerr := FALSE\r\t\tEND Error;\r\r\t\tPROCEDURE Category (VAR s: TextMappers.Scanner; VAR c: ARRAY OF CHAR);\r\t\tBEGIN\r\t\t\tIF (s.type = char) & (s.char = \"(\") THEN\r\t\t\t\tScan(s); IF s.type # string THEN Error(s, \"string expected\") END;\r\t\t\t\tc := s.string$;\r\t\t\t\tScan(s);\r\t\t\t\tIF (s.type # char) OR (s.char # \")\") THEN Error(s, \") expected\") END;\r\t\t\t\tScan(s)\r\t\t\tELSE c := \"\"\r\t\t\tEND\r\t\tEND Category;\r\r\t\tPROCEDURE Item (VAR s: TextMappers.Scanner);\r\t\t\tVAR item, str, shortcut, filter: Dialog.String;\r\t\tBEGIN\r\t\t\tIF s.type = keyword THEN\r\t\t\t\tIF gen THEN HostMenus.AddSeparator END;\r\t\t\t\tScan(s)\r\t\t\tELSE\r\t\t\t\tIF s.len < LEN(item) THEN item := s.string$\r\t\t\t\tELSE item := \"\"; Error(s, \"string too long\")\r\t\t\t\tEND;\r\t\t\t\tIF item = \"\" THEN Error(s, \"nonempty string expected\") END;\r\t\t\t\tScan(s);\r\t\t\t\tshortcut := \"\";\r\t\t\t\tIF s.type = string THEN\r\t\t\t\t\tIF s.len < "
+                    attr: 0
+                  - text: "8 "
+                    attr: 3
+                  - text: "THEN shortcut := s.string$\r\t\t\t\t\tELSE Error(s, \"string too long\")\r\t\t\t\t\tEND\r\t\t\t\tELSE Error(s, \"string expected\")\r\t\t\t\tEND;\r\t\t\t\tScan(s); IF s.type # string THEN Error(s, \"string expected\") END;\r\t\t\t\tIF s.len < LEN(str) THEN str := s.string$\r\t\t\t\tELSE str := \"\"; Error(s, \"string too long\")\r\t\t\t\tEND;\r\t\t\t\tIF str = \"\" THEN Error(s, \"nonempty string expected\") END;\r\t\t\t\tScan(s); IF s.type # string THEN Error(s, \"string expected\") END;\r\t\t\t\tIF s.len < LEN(str) THEN filter := s.string$\r\t\t\t\tELSE filter := \"\"; Error(s, \"string too long\")\r\t\t\t\tEND;\r\t\t\t\tIF gen THEN HostMenus.AddItem(item, str, shortcut, filter) END;\r\t\t\t\tScan(s)\r\t\t\tEND\r\t\tEND Item;\r\t\t\r\t\tPROCEDURE IncludeSub (sub: ARRAY OF CHAR);\r\t\t\tVAR loc: Files.Locator; view: Views.View; t: TextModels.Model; s: TextMappers.Scanner;\r\t\tBEGIN\r\t\t\tloc := Files.dir.This(sub); IF loc = NIL THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " END;\r\t\t\tloc := loc.This(rsrcDir); IF loc = NIL THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " END;\r\t\t\tview := Views.OldView(loc, menuFile);\r\t\t\tIF (view # NIL) & (view IS TextViews.View) THEN\r\t\t\t\tt := view(TextViews.View).ThisModel();\r\t\t\t\tIF t # NIL THEN s.ConnectTo(t); Scan(s); ParseMenus(s, view, loc, menuFile) END\r\t\t\tEND\r\t\tEND IncludeSub;\r\t\t\r\t\tPROCEDURE Include (sub: ARRAY OF CHAR);\r\t\t\tVAR inc, last: Files.LocInfo;\r\t\tBEGIN\r\t\t\tIF sub = \"*\" THEN\t"
+                    attr: 0
+                  - text: "(* wildcard include *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tIF ~gen THEN\t"
+                    attr: 0
+                  - text: "(* first pass: generate complete list *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tIF includes # NIL THEN Error(s, \"only one wildcard include allowed\") END;\r\t\t\t\t\tincludes := Files.dir.LocList(Files.dir.This(\"\"))\t\t\t\t\t\r\t\t\t\tELSE\t"
+                    attr: 0
+                  - text: "(* second pass: sort reduced list *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tSort(includes)\r\t\t\t\tEND;\r\t\t\t\tinc := includes;\r\t\t\t\tWHILE (inc # NIL) & noerr DO\r\t\t\t\t\tIF Comp(inc.name, sysDir) # 0 THEN IncludeSub(inc.name) END;\r\t\t\t\t\tinc := inc.next\r\t\t\t\tEND\r\t\t\tELSE\t"
+                    attr: 0
+                  - text: "(* spedific includes *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tIncludeSub(sub);\r\t\t\t\tinc := includes; last := NIL;\r\t\t\t\tWHILE (inc # NIL) & (Comp(inc.name, sub) # 0) DO last := inc; inc := inc.next END;\r\t\t\t\tIF inc # NIL THEN\t"
+                    attr: 0
+                  - text: "(* remove from wilcard list *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tIF last = NIL THEN includes := inc.next ELSE last.next := inc.next END\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND Include;\r\t\t\r\tBEGIN\r\t\tn := 0;\r\t\tWHILE noerr & (s.type = keyword) & ((s.string = \"MENU\") OR (s.string = \"INCLUDE\")) DO\r\t\t\tIF s.string = \"INCLUDE\" THEN\r\t\t\t\tScan(s);\r\t\t\t\tIF s.type # string THEN Error(s, \"string expected\") END;\r\t\t\t\tInclude(s.string);\r\t\t\t\tScan(s);\r\t\t\t\tINC(n)\r\t\t\tELSE\r\t\t\t\tINC(n); Scan(s);\r\t\t\t\tIF s.type # string THEN Error(s, \"string expected\") END;\r\t\t\t\tmenu := s.string$;\r\t\t\t\tIF menu = \"\" THEN Error(s, \"nonempty string expected\") END;\r\t\t\t\tScan(s);\r\t\t\t\tCategory(s, category);\r\t\t\t\tIF gen THEN HostMenus.Open(menu, category) END;\r\t\t\t\tWHILE noerr & ((s.type = string) OR (s.type = keyword) & (s.string = \"SEPARATOR\")) DO\r\t\t\t\t\tItem(s)\r\t\t\t\tEND;\r\t\t\t\tIF (s.type # keyword) OR (s.string # \"END\") THEN Error(s, \"END expected\") END;\r\t\t\t\tIF gen THEN HostMenus.Close END;\r\t\t\t\tScan(s)\r\t\t\tEND\r\t\tEND;\r\t\tIF (s.type # TextMappers.eot) OR (n = 0) THEN Error(s, \"MENU expected\") END;\r\tEND ParseMenus;\r\t\r\t\r\tPROCEDURE InitNotifier;\r\tBEGIN\r\t\tIF langNotifier = NIL THEN\r\t\t\tNEW(langNotifier); Dialog.RegisterLangNotifier(langNotifier)\r\t\tEND\r\tEND InitNotifier;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: UpdateFromText
+                    attr: 3
+                  - text: "* (text: TextModels.Model);\r\t\tVAR s: TextMappers.Scanner;\r\tBEGIN\r\t\tInitNotifier;\r\t\tASSERT(text # NIL, 20);\r\t\ts.ConnectTo(text); s.SetPos(0);\r\t\tScan(s); \r\t\tnoerr := TRUE; showerr := FALSE; gen := FALSE; ParseMenus(s, NIL, NIL, \"\");\r\t\tIF noerr THEN\r\t\t\ts.SetPos(0); Scan(s); gen := TRUE;\r\t\t\tHostMenus.DeleteAll; ParseMenus(s, NIL, NIL, \"\"); HostMenus.InitMenus\r\t\tEND;\r\t\tincludes := NIL\r\tEND UpdateFromText;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: UpdateMenus
+                    attr: 3
+                  - text: "*;\r\t\tVAR t: TextModels.Model; s: TextMappers.Scanner;\r\tBEGIN\r\t\tInitNotifier;\r\t\tt := TextViews.FocusText();\r\t\tIF t # NIL THEN\r\t\t\ts.ConnectTo(t); s.SetPos(0); Scan(s); \r\t\t\tnoerr := TRUE; showerr := TRUE; gen := FALSE; ParseMenus(s, NIL, NIL, \"\");\r\t\t\tIF noerr THEN\r\t\t\t\ts.SetPos(0); Scan(s); gen := TRUE;\r\t\t\t\tHostMenus.DeleteAll; ParseMenus(s, NIL, NIL, \"\"); HostMenus.InitMenus\r\t\t\tEND\r\t\tEND;\r\t\tincludes := NIL\r\tEND UpdateMenus;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: UpdateAllMenus
+                    attr: 3
+                  - text: "*;\r\t\tVAR view: Views.View; t: TextModels.Model; s: TextMappers.Scanner;\r\t\t\tloc: Files.Locator;\r\tBEGIN\r\t\tInitNotifier;\r\t\tloc := Files.dir.This(sysDir); IF loc = NIL THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " END;\r\t\tloc := loc.This(rsrcDir); IF loc = NIL THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " END;\r\t\tview := Views.OldView(loc, menuFile);\r\t\tIF (view # NIL) & (view IS TextViews.View) THEN\r\t\t\tt := view(TextViews.View).ThisModel();\r\t\t\tIF t # NIL THEN\r\t\t\t\ts.ConnectTo(t); Scan(s);\r\t\t\t\tnoerr := TRUE; showerr := TRUE; gen := FALSE; ParseMenus(s, view, loc, menuFile);\r\t\t\t\tIF noerr THEN\r\t\t\t\t\ts.SetPos(0); Scan(s); gen := TRUE;\r\t\t\t\t\tHostMenus.DeleteAll; ParseMenus(s, NIL, NIL, \"\"); HostMenus.InitMenus\r\t\t\t\tELSE\r\t\t\t\t\tDialog.ShowMsg(\"errors detected in menu file\");\r\t\t\t\tEND\r\t\t\tEND\r\t\tELSE Dialog.ShowMsg(\"cannot open menu file\")\r\t\tEND;\r\t\tincludes := NIL\r\tEND UpdateAllMenus;\r\r\r\tPROCEDURE InsertLink (VAR w: TextMappers.Formatter; path: ARRAY OF CHAR);\r\t\tVAR a0: TextModels.Attributes; cmd: ARRAY 256 OF CHAR;\r\tBEGIN\r\t\ta0 := w.rider.attr;\r\t\tw.rider.SetAttr(TextModels.NewStyle(w.rider.attr, {Fonts.underline}));\r\t\tw.rider.SetAttr(TextModels.NewColor(w.rider.attr, Ports.blue));\r\t\tcmd := \"StdCmds.OpenDoc('\" + path + \"')\";\r\t\tw.WriteView(StdLinks.dir.NewLink(cmd));\r\t\tw.WriteString(path);\r\t\tw.WriteView(StdLinks.dir.NewLink(\"\"));\r\t\tw.rider.SetAttr(a0);\r\tEND InsertLink;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: ListAllMenus
+                    attr: 3
+                  - text: "*;\r\t\tVAR sub: Files.LocInfo; loc: Files.Locator; f: Files.File; t: TextModels.Model; w: TextMappers.Formatter;\r\t\t\tpath: Files.Name; v: Views.View; c: Containers.Controller; p: Properties.BoundsPref;\r\tBEGIN\r\t\tt := TextModels.dir.New(); w.ConnectTo(t);\r\t\tw.WriteString(\"Menu Files:\"); w.WriteLn; w.WriteLn;\r\t\tpath := sysDir + \"/\" + rsrcDir + \"/\" + menuFile;\r\t\tInsertLink(w, path); w.WriteLn; w.WriteLn;\r\t\tsub := Files.dir.LocList(Files.dir.This(\"\"));\r\t\tSort(sub);\r\t\tWHILE sub # NIL DO\r\t\t\tIF Comp(sub.name, sysDir) # 0 THEN\r\t\t\t\tloc := Files.dir.This(sub.name);\r\t\t\t\tloc := loc.This(rsrcDir);\r\t\t\t\tIF loc # NIL THEN\r\t\t\t\t\tpath := menuFile;\r\t\t\t\t\tKernel.MakeFileName(path, \"\");\r\t\t\t\t\tf := Files.dir.Old(loc, path, Files.shared);\r\t\t\t\t\tIF f # NIL THEN\r\t\t\t\t\t\tpath := sub.name + \"/\" + rsrcDir + \"/\" + menuFile;\r\t\t\t\t\t\tInsertLink(w, path); w.WriteLn;\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tsub := sub.next\r\t\tEND;\r\t\tv := TextViews.dir.New(t);\r\t\tc := v(Containers.View).ThisController();\r\t\tc.SetOpts(c.opts + {Containers.noCaret});\r\t\tp.w := Views.undefined; p.h := Views.undefined; Views.HandlePropMsg(v, p);\r\t\tv := Documents.dir.New(v, p.w, p.h);\r\t\tViews.OpenAux(v, \"All Menus\")\r\tEND ListAllMenus;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: ThisMenu
+                    attr: 3
+                  - text: "*;\r\t\tVAR s: TextMappers.Scanner; c: Models.Context; v: Views.View; name: ARRAY 256 OF CHAR;\r\tBEGIN\r\t\tIF StdLinks.par # NIL THEN\r\t\t\tc := StdLinks.par.context;\r\t\t\tWITH c: TextModels.Context DO\r\t\t\t\ts.ConnectTo(c.ThisModel()); s.SetPos(c.Pos() + 1);\r\t\t\t\ts.rider.ReadView(v);\t"
+                    attr: 0
+                  - text: "(* right link view *)"
+                    attr: 1
+                  - text: "\r\t\t\t\ts.Scan;\r\t\t\t\tIF s.type = string THEN\r\t\t\t\t\tIF s.string = \"*\" THEN ListAllMenus\r\t\t\t\t\tELSE\r\t\t\t\t\t\tname := s.string + \"/\" + rsrcDir + \"/\" + menuFile;\r\t\t\t\t\t\tStdCmds.OpenDoc(name)\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\tELSE\r\t\t\tEND\r\t\tEND\r\tEND ThisMenu;\t\r\r\tPROCEDURE (n: LangNotifier) Notify;\r\tBEGIN\r\t\tUpdateAllMenus\r\tEND Notify;\r\rEND StdMenuTool.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 12914
+          bodyLen: 8

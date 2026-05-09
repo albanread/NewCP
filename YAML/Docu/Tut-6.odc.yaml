@@ -1,0 +1,2918 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Docu\\Tut-6.odc"
+  size: 84336
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 84205
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 84019
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 83933
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 152400
+                dsc: 25400
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 112
+                bodyPos: 84054
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 83656
+                runListLen: 15071
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 254000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [5]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                flow:
+                  - text: "Part III: View Construction"
+                    attr: 0
+                  - text: "\r\rPart I of the BlackBox tutorial gives an introduction to the design patterns that are used throughout BlackBox. To know these patterns makes it easier to understand and remember the more detailed design decisions in the various BlackBox modules.\r\rPart II of the BlackBox tutorial demonstrates how the most important library components can be used: control, form, and text components.\r\rPart III of the BlackBox tutorial demonstrates how new views can be developed, by giving a series of examples that gradually become more sophisticated.\r\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - text: 6 View Construction
+                    attr: 3
+                  - text: "\r\rViews are the central abstraction in the BlackBox Component Builder. Everything revolves around views: most commands operate on views, windows display views, views can be internalized and externalized, views perform interaction with the user, and views may be embedded into other views. \r\r\r"
+                    attr: 1
+                  - text: "6. 1 Introduction\r"
+                    attr: 2
+                  - text: "\rThis view programming tutorial consists of four sections, each of which introduces a special aspect of view programming. The section \"message handling\" (chapters 6.2 to 6.5) explains how the behavior of a view is defined through the view's message handlers, i.e., how the answering of preferences, controller messages and properties influences the view's relation to its environment and the view's reaction on user input. The second section explains the aspect of the model-view separation which allows multi view editing (6.6). The next section shows how the undo/redo facility of the BlackBox Component Framework can be used if the content of a view is changed with the help of operation objects (6.7). In the last section the special structure of all extensible BlackBox Component Framework modules is explained, namely the separation of the interface and the implementation of a view (6.8). Directory objects are the key to this design pattern.\r\r\r"
+                    attr: 1
+                  - text: 6.2 Message handling
+                    attr: 2
+                  - text: "\r\rIn this section, we present a sequence of increasingly more versatile implementations of a view object which displays a rectangular colored area. In particular, this view will handle "
+                    attr: 1
+                  - text: Preferences
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: Controller messages
+                    attr: 4
+                  - text: " and "
+                    attr: 1
+                  - text: Properties
+                    attr: 4
+                  - text: ".\r\rEvery view is a subtype of the abstract type "
+                    attr: 1
+                  - text: Views.View
+                    attr: 4
+                  - text: ". The concrete extension must at least implement the abstract procedure "
+                    attr: 1
+                  - text: Views.Restore
+                    attr: 4
+                  - text: " that draws the view's contents. The first example of our view simply draws a red rectangle. This version is about the simplest possible view implementation. Its major components are the declaration of a "
+                    attr: 1
+                  - text: Views.View
+                    attr: 4
+                  - text: " extension, the implementation of a "
+                    attr: 1
+                  - text: Views.Restore
+                    attr: 4
+                  - text: " procedure which draws the contents of the view, and a command procedure which allocates and initializes the view:\r\r"
+                    attr: 1
+                  - ruler:
+                      first: 180000
+                      left: 180000
+                      right: 180000
+                      lead: 8100
+                      asc: 145400
+                      dsc: 32400
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 360000 }
+                        - { stop: 540000 }
+                        - { stop: 720000 }
+                        - { stop: 900000 }
+                        - { stop: 1080000 }
+                        - { stop: 1260000 }
+                        - { stop: 1440000 }
+                        - { stop: 1620000 }
+                        - { stop: 1800000 }
+                        - { stop: 3780000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "MODULE ObxViews0;\r\r\tIMPORT Views, Ports;\r\r\tTYPE View = POINTER TO RECORD (Views.View) END;\r\r\tPROCEDURE (v: View)  Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\tBEGIN\r\t\tf.DrawRect(l, t, r, b, Ports.fill, Ports.red)\r\tEND Restore;\r\r\tPROCEDURE Deposit*;\r\t\tVAR v: View;\r\tBEGIN\r\t\tNEW(v); Views.Deposit(v)\r\tEND Deposit;\r\rEND ObxViews0.\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      lead: 11500
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rTo execute this program, invoke the following command:\r\r\t"
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 11
+                      bodyPos: 1293
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: " \"ObxViews0.Deposit; StdCmds.Open\"\r\rThe result of this command is shown in Figure 6-1.\r\r"
+                    attr: 1
+                  - view:
+                      kind: ObxViews0.View
+                      storeKind: store
+                      typeChain:
+                        - ObxViews0.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 12
+                      bodyPos: 1359
+                      bodyLen: 2
+                    attr: 1
+                    w: 2302944
+                    h: 1429184
+                  - text: "\r\rFigure 6-1: Result of \"ObxViews0.Deposit; StdCmds.Open\"\r\rThis simple program is completely functional already. The procedure "
+                    attr: 1
+                  - text: ObxViews0.Deposit
+                    attr: 4
+                  - text: " puts a newly allocated view into a system queue. The command "
+                    attr: 1
+                  - text: StdCmds.Open
+                    attr: 4
+                  - text: " in the command string above removes a view from this queue, and opens it in a new window. Note that whole sequences of commands must be enclosed between quotes, while for single commands the quotes may be omitted.\r\rInstead of opening the view in a window, it could be pasted into the focus container (e.g., a text or a form):\r"
+                    attr: 1
+                  - view:
+                      kind: TextViews.StdView
+                      storeKind: store
+                      typeChain:
+                        - TextViews.StdViewDesc
+                        - TextViews.ViewDesc
+                        - Containers.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 13
+                      bodyPos: 1421
+                      bodyLen: 723
+                      hideMarks: true
+                      defaultRuler:
+                        left: 0
+                        right: 0
+                        asc: 134600
+                        dsc: 43200
+                        grid: 177800
+                        opts: 0x00000003
+                      defaultAttr:
+                        font: Arial
+                        size: 114300
+                        color: 0x01000000
+                        weight: 400
+                        style: 0x00000000
+                      controller:
+                        kind: TextControllers.StdCtrl
+                        storeKind: store
+                        typeChain:
+                          - TextControllers.StdCtrlDesc
+                          - TextControllers.ControllerDesc
+                          - Containers.ControllerDesc
+                          - Controllers.ControllerDesc
+                          - Stores.StoreDesc
+                        id: 19
+                        bodyPos: 1961
+                        bodyLen: 9
+                      content:
+                        kind: TextModels.StdModel
+                        storeKind: elem
+                        typeChain:
+                          - TextModels.StdModelDesc
+                          - TextModels.ModelDesc
+                          - Containers.ModelDesc
+                          - Models.ModelDesc
+                          - Stores.StoreDesc
+                        id: 4
+                        bodyPos: 1446
+                        bodyLen: 377
+                        runListLen: 275
+                        attrPool:
+                          - # [0]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 400
+                            style: 0x00000000
+                            offset: 266700
+                          - # [1]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 400
+                            style: 0x00000000
+                          - # [2]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 700
+                            style: 0x00000000
+                          - # [3]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 400
+                            style: 0x00000001
+                        flow:
+                          - text: "\t"
+                            attr: 0
+                          - view:
+                              kind: DevCommanders.StdView
+                              storeKind: store
+                              typeChain:
+                                - DevCommanders.StdViewDesc
+                                - DevCommanders.ViewDesc
+                                - Views.ViewDesc
+                                - Stores.StoreDesc
+                              id: 16
+                              bodyPos: 1600
+                              bodyLen: 6
+                            attr: 1
+                            w: 177800
+                            h: 152400
+                          - text: " \"ObxViews0.Deposit; StdCmds.PasteView\"\t"
+                            attr: 1
+                          - text: "><"
+                            attr: 2
+                          - text: " "
+                            attr: 1
+                          - text: set the caret here before executing the command
+                            attr: 3
+                    attr: 1
+                    w: 7119800
+                    h: 459400
+                  - text: "\rLike "
+                    attr: 1
+                  - text: "StdCmds.Open, "
+                    attr: 4
+                  - text: "the command "
+                    attr: 1
+                  - text: StdCmds.PasteView
+                    attr: 4
+                  - text: " removes a view from the queue, but pastes it to the focus view. The above command sequence could also be used in a menu, for example.\r\rEvery document which contains an "
+                    attr: 1
+                  - text: ObxViews0
+                    attr: 4
+                  - text: " view can be saved in a file, and this file can be opened again through the standard "
+                    attr: 1
+                  - text: Open...
+                    attr: 4
+                  - text: " menu entry. Our simple red rectangle will be displayed correctly in the newly opened document, provided the code file of the module "
+                    attr: 1
+                  - text: ObxViews0
+                    attr: 4
+                  - text: " is available.\rA view which has been opened in its own window can also be saved in a file. When opened again, the document then consists of this single view only.\r\rEvery view performs its output operations and mouse/keyboard polling via a "
+                    attr: 1
+                  - text: Views.Frame
+                    attr: 4
+                  - text: " object. In the above example, "
+                    attr: 1
+                  - text: ObxViews0.View.Restore
+                    attr: 4
+                  - text: " uses its frame parameter "
+                    attr: 1
+                  - text: f
+                    attr: 4
+                  - text: " to draw a rectangle. A frame can be regarded as a mapper object, in this case for both input and output simultaneously (here we need not be interested in the rider and carrier for this mapper, which are both defined in module "
+                    attr: 1
+                  - text: Ports
+                    attr: 4
+                  - text: "). A frame embodies coordinate transformations and clipping facilities.\rIf the view is displayed on the screen, the frame is a mapper on a screen port. If the view is printed, the frame is a mapper on a printer port. From the view's perspective, this difference is not relevant. Thus no special code is necessary to support printing.\r\rThe view may be copied and pasted into "
+                    attr: 1
+                  - text: containers
+                    attr: 4
+                  - text: " such as text views or form views. Additionally, the size of the view can be changed by selecting it and then manipulating the resize handles. All this functionality is offered by the BlackBox Component Framework and requires no further coding.  If this default behavior is not convenient, it can be modified. In the following we will show how this is done.\r\r\r"
+                    attr: 1
+                  - text: "6.3 Preference messages\r"
+                    attr: 2
+                  - text: "\rYou might have noticed that the size of a newly opened view is rather arbitrary. However, before opening the view, the framework sends the view a message with a proposed size. The view may adapt this proposal to its own needs. To do that, the message of type "
+                    attr: 1
+                  - text: Properties.SizePref
+                    attr: 4
+                  - text: " must be answered in the view's "
+                    attr: 1
+                  - text: "HandlePropMsg "
+                    attr: 4
+                  - text: procedure
+                    attr: 1
+                  - text: ". "
+                    attr: 4
+                  - text: "Before a view is displayed for the first time, the proposed size for the width and the height of the view is "
+                    attr: 1
+                  - text: "Views.undefined. "
+                    attr: 4
+                  - text: The following version of our sample view draws a rectangle with a width of 2 cm and a height of 1 cm. Changes compared to the previous version are written in bold face.
+                    attr: 1
+                  - text: "\r\r"
+                    attr: 4
+                  - ruler:
+                      first: 180000
+                      left: 180000
+                      right: 180000
+                      lead: 8100
+                      asc: 145400
+                      dsc: 32400
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 360000 }
+                        - { stop: 540000 }
+                        - { stop: 720000 }
+                        - { stop: 900000 }
+                        - { stop: 1080000 }
+                        - { stop: 1260000 }
+                        - { stop: 1440000 }
+                        - { stop: 1620000 }
+                        - { stop: 1800000 }
+                        - { stop: 3780000 }
+                      attr: 4
+                      w: 360000000
+                      h: 444500
+                  - text: "MODULE ObxViews1;\r\r\tIMPORT Views, Ports, "
+                    attr: 1
+                  - text: Properties
+                    attr: 2
+                  - text: ";\r\r\tTYPE View = POINTER TO RECORD (Views.View) END;\r\r\tPROCEDURE (v: View)  Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\tBEGIN\r\t\tf.DrawRect(l, t, r, b, Ports.fill, Ports.red)\r\tEND Restore;\r\r"
+                    attr: 1
+                  - text: "\tPROCEDURE (v: View) HandlePropMsg (VAR msg: Properties.Message);\r\tBEGIN\r\t\tWITH msg: Properties.SizePref DO\r\t\t\tIF (msg.w = Views.undefined) OR (msg.h = Views.undefined) THEN\r\t\t\t\t msg.w := 20 * Ports.mm; msg.h := 10 * Ports.mm\r\t\t\tEND\r\t\tELSE\t(* ignore other messages *)\r\t\tEND\r\tEND HandlePropMsg;\r\r"
+                    attr: 2
+                  - text: "\tPROCEDURE Deposit*;\r\t\tVAR v: View;\r\tBEGIN\r\t\tNEW(v); Views.Deposit(v)\r\tEND Deposit;\r\rEND ObxViews1.\r\r"
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 25
+                      bodyPos: 2528
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: " \"ObxViews1.Deposit; StdCmds.Open\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rEvery newly generated view now assumes the desired predefined size. This is only possible because the view and its container cooperate, in this case via the "
+                    attr: 1
+                  - text: Properties.SizePref
+                    attr: 4
+                  - text: " message. A container is expected to send this message whenever it wants to change a view's size, and then adhere to the returned data. However, for the understanding of the BlackBox Component Framework it is essential to know that while a well-behaved container "
+                    attr: 1
+                  - text: should
+                    attr: 4
+                  - text: " follow this protocol, it is not "
+                    attr: 1
+                  - text: required
+                    attr: 4
+                  - text: " to do so. That's why such a message is called a "
+                    attr: 1
+                  - text: preference
+                    attr: 4
+                  - text: ". It describes merely a view's preference, so that the surrounding container can make allowances for the special needs of the view. But it is always the container which has the last word in such negotiations. For example, the container will not let embedded views become larger than itself. The standard document, text, and form containers are well-behaved in that they support all preferences defined in module "
+                    attr: 1
+                  - text: Properties
+                    attr: 4
+                  - text: ". Special containers, e.g. texts, may define additional preferences specific to their type of contents. It is important to note that a view can ignore all preferences it doesn't know or doesn't care about.\rThe "
+                    attr: 1
+                  - text: Properties.SizePref
+                    attr: 4
+                  - text: " allows us to restrict the possible values for the width and the height of a view. For example, we can enforce a minimal and a maximal size, or fix the height or width of the view, or specify a constraint between its width and height. The procedures "
+                    attr: 1
+                  - text: Properties.ProportionalConstraint
+                    attr: 4
+                  - text: " and "
+                    attr: 1
+                  - text: Properties.GridConstraint
+                    attr: 4
+                  - text: " are useful standard implementations to specify constraints. The next version of our view implementation specifies that the rectangle is always twice as wide as it is high. In addition, minimal and maximal values for the height (and thus also for the width) are specified. If the view is resized using the resize handles, the constraints are not violated. Try it out!\r\r"
+                    attr: 1
+                  - ruler:
+                      first: 180000
+                      left: 180000
+                      right: 180000
+                      lead: 8100
+                      asc: 145400
+                      dsc: 32400
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 360000 }
+                        - { stop: 540000 }
+                        - { stop: 720000 }
+                        - { stop: 900000 }
+                        - { stop: 1080000 }
+                        - { stop: 1260000 }
+                        - { stop: 1440000 }
+                        - { stop: 1620000 }
+                        - { stop: 1800000 }
+                        - { stop: 3780000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "MODULE ObxViews2;\r\r\tIMPORT Views, Ports, Properties;\r\r\tTYPE View = POINTER TO RECORD (Views.View) END;\r\r\tPROCEDURE (v: View)  Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\tBEGIN\r\t\tf.DrawRect(l, t, r, b, Ports.fill, Ports.red)\r\tEND Restore;\r\r\tPROCEDURE (v: View) HandlePropMsg (VAR msg: Properties.Message);\r"
+                    attr: 1
+                  - text: "\t\tCONST min = 5 * Ports.mm; max = 50 * Ports.mm;\r"
+                    attr: 2
+                  - text: "\tBEGIN\r\t\tWITH msg: Properties.SizePref DO\r\t\t\tIF (msg.w = Views.undefined) OR (msg.h = Views.undefined) THEN\r\t\t\t\t msg.w := 20 * Ports.mm; msg.h := 10 * Ports.mm\r"
+                    attr: 1
+                  - text: "\t\t\tELSE\r\t\t\t\tProperties.ProportionalConstraint(2, 1, msg.fixedW, msg.fixedH,\r\t\t\t\t\t\t\t\t\t\tmsg.w, msg.h);\r\t\t\t\tIF msg.h < min THEN\r\t\t\t\t\tmsg.h := min; msg.w := 2 * min\r\t\t\t\tELSIF msg.h > max THEN\r\t\t\t\t\tmsg.h := max; msg.w := 2 * max\r\t\t\t\tEND\r"
+                    attr: 2
+                  - text: "\t\t\tEND\r\t\tELSE\t(* ignore other messages *)\r\t\tEND\r\tEND HandlePropMsg;\r\r\tPROCEDURE Deposit*;\r\t\tVAR v: View;\r\tBEGIN\r\t\tNEW(v); Views.Deposit(v)\r\tEND Deposit;\r\rEND ObxViews2.\r\t\r"
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 30
+                      bodyPos: 2972
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: " \"ObxViews2.Deposit; StdCmds.Open\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rWe will look at two other preferences in this tutorial. The first one is "
+                    attr: 1
+                  - text: "Properties.ResizePref.\r\r"
+                    attr: 4
+                  - text: "\tTYPE\r\t\tResizePref = RECORD (Properties.Preference)\r\t\t\tfixed,\r\t\t\thorFitToPage, verFitToPage,\r\t\t\thorFitToWin, verFitToWin: BOOLEAN   (* OUT *)\r\t\tEND;\r\rThe receiver of this message may indicate that it doesn't wish to be resized, by setting "
+                    attr: 1
+                  - text: fixed
+                    attr: 4
+                  - text: " to "
+                    attr: 1
+                  - text: "TRUE"
+                    attr: 4
+                  - text: .
+                    attr: 1
+                  - text: " "
+                    attr: 4
+                  - text: "As a consequence, the view will not display resize handles when it is selected, i.e., it cannot be resized interactively. However, the "
+                    attr: 1
+                  - text: "Properties.SizePref "
+                    attr: 4
+                  - text: "message is still sent to the view, as the initial size still needs to be determined.\rIf a view is a "
+                    attr: 1
+                  - text: root view
+                    attr: 4
+                  - text: ", i.e., the outermost view in a document or window (e.g., if opened with "
+                    attr: 1
+                  - text: StdCmds.Open
+                    attr: 4
+                  - text: "), then the size of the window, the size of the view, or both might be changed.\r\rHowever, sometimes it is convenient if the view size is automatically adapted whenever the window is resized, e.g., for help texts which should use as much screen estate as possible. For other views, it may be preferable that their size is not determined by the window, but rather by their contents, or by the page setup of the document in which they are embedded. A view can indicate such preferences by setting the "
+                    attr: 1
+                  - text: horFitToWin
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: verFitToWin
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: horFitToPage
+                    attr: 4
+                  - text: ", and "
+                    attr: 1
+                  - text: verFitToPage
+                    attr: 4
+                  - text: " flags in the "
+                    attr: 1
+                  - text: Properties.SizePref
+                    attr: 4
+                  - text: " message. These flags have no effect if the view is not a root view, i.e., if it is embedded deeper inside a document.\rAn automatic adaptation of the view size to the actual window size can be achieved by setting the fields "
+                    attr: 1
+                  - text: horFitToWin
+                    attr: 4
+                  - text: " and "
+                    attr: 1
+                  - text: verFitToWin
+                    attr: 4
+                  - text: ". The size of the view is then bound to the window, i.e., the user can change it directly by resizing the window.\rNote that if the size of the view is bound to the size of the window (either by setting "
+                    attr: 1
+                  - text: horFitToWin
+                    attr: 4
+                  - text: " or "
+                    attr: 1
+                  - text: verFitToWin
+                    attr: 4
+                  - text: "), then no "
+                    attr: 1
+                  - text: Properties.SizePref
+                    attr: 4
+                  - text: " messages are sent to the view, i.e., the constraints specified through "
+                    attr: 1
+                  - text: "Properties.SizePref "
+                    attr: 4
+                  - text: "are no longer enforced. Additionally, the view does not display resize handles, regardless of the "
+                    attr: 1
+                  - text: fixed
+                    attr: 4
+                  - text: " flag.\r\rBy setting the fields "
+                    attr: 1
+                  - text: horFitToPage
+                    attr: 4
+                  - text: " or "
+                    attr: 1
+                  - text: verFitToPage
+                    attr: 4
+                  - text: ", the width or the height of the view can be bound to the actual printer page size. The width of a text view is usually bound to the width of the page size, and can be changed via the page setup mechanism of the underlying operating system. The following example enforces that the size of a root view is bound to the size of the window:\r\r"
+                    attr: 1
+                  - ruler:
+                      first: 180000
+                      left: 180000
+                      right: 180000
+                      lead: 8100
+                      asc: 145400
+                      dsc: 32400
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 360000 }
+                        - { stop: 540000 }
+                        - { stop: 720000 }
+                        - { stop: 900000 }
+                        - { stop: 1080000 }
+                        - { stop: 1260000 }
+                        - { stop: 1440000 }
+                        - { stop: 1620000 }
+                        - { stop: 1800000 }
+                        - { stop: 3780000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "MODULE ObxViews3;\r\r\tIMPORT Views, Ports, Properties;\r\r\tTYPE View = POINTER TO RECORD (Views.View) END;\r\r\tPROCEDURE (v: View)  Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\tBEGIN\r\t\tf.DrawRect(l, t, r, b, Ports.fill, Ports.red)\r\tEND Restore;\r\r\tPROCEDURE (v: View) HandlePropMsg (VAR msg: Properties.Message);\r\t\tCONST min = 5 * Ports.mm; max = 50 * Ports.mm;\r\tBEGIN\r\t\tWITH msg: Properties.SizePref DO\r\t\t\tIF (msg.w = Views.undefined) OR (msg.h = Views.undefined) THEN\r\t\t\t\t msg.w := 20 * Ports.mm; msg.h := 10 * Ports.mm\r\t\t\tELSE\r\t\t\t\tProperties.ProportionalConstraint(2, 1, msg.fixedW, msg.fixedH,\r\t\t\t\t\t\t\t\t\t\tmsg.w, msg.h);\r\t\t\t\tIF msg.h < min THEN\r\t\t\t\t\tmsg.h := min; msg.w := 2 * min\r\t\t\t\tELSIF msg.h > max THEN\r\t\t\t\t\tmsg.h := max; msg.w := 2 * max\r\t\t\t\tEND\r\t\t\tEND\r"
+                    attr: 1
+                  - text: "\t\t| msg: Properties.ResizePref DO\r\t\t\tmsg.horFitToWin := TRUE; msg.verFitToWin := TRUE\r"
+                    attr: 2
+                  - text: "\t\tELSE\t(* ignore other messages *)\r\t\tEND\r\tEND HandlePropMsg;\r\r\tPROCEDURE Deposit*;\r\t\tVAR v: View;\r\tBEGIN\r\t\tNEW(v); Views.Deposit(v)\r\tEND Deposit;\r\rEND ObxViews3.\t \r\r"
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 35
+                      bodyPos: 3536
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: " \"ObxViews3.Deposit; StdCmds.Open\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rThe next preference we look at is "
+                    attr: 1
+                  - text: Properties.FocusPref
+                    attr: 4
+                  - text: .
+                    attr: 1
+                  - text: "\r\r"
+                    attr: 2
+                  - text: "\tTYPE\r\t\tFocusPref = RECORD (Properties.Preference)\r\t\t\tatLocation: BOOLEAN;   (* IN *)\r\t\t\tx, y: INTEGER;   (* IN *)\r\t\t\thotFocus, setFocus, selectOnFocus: BOOLEAN   (* OUT *)\r\t\tEND;\r\rWhen an attempt is made to activate an embedded view, by clicking in it, then the "
+                    attr: 1
+                  - text: Properties.FocusPref
+                    attr: 4
+                  - text: " message is sent to the view. If this message is not answered the view is selected as a whole (a so-called "
+                    attr: 1
+                  - text: singleton
+                    attr: 4
+                  - text: "). This is the behavior of the views implemented in the examples above. To see this, place the caret on the next line and click on the commander below, then on the pasted view:\r"
+                    attr: 1
+                  - view:
+                      kind: TextViews.StdView
+                      storeKind: store
+                      typeChain:
+                        - TextViews.StdViewDesc
+                        - TextViews.ViewDesc
+                        - Containers.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 38
+                      bodyPos: 3751
+                      bodyLen: 607
+                      hideMarks: true
+                      defaultRuler:
+                        left: 0
+                        right: 0
+                        asc: 134600
+                        dsc: 43200
+                        grid: 177800
+                        opts: 0x00000003
+                      defaultAttr:
+                        font: Arial
+                        size: 114300
+                        color: 0x01000000
+                        weight: 400
+                        style: 0x00000000
+                      controller:
+                        kind: TextControllers.StdCtrl
+                        storeKind: store
+                        typeChain:
+                          - TextControllers.StdCtrlDesc
+                          - TextControllers.ControllerDesc
+                          - Containers.ControllerDesc
+                          - Controllers.ControllerDesc
+                          - Stores.StoreDesc
+                        id: 44
+                        bodyPos: 4175
+                        bodyLen: 9
+                      content:
+                        kind: TextModels.StdModel
+                        storeKind: elem
+                        typeChain:
+                          - TextModels.StdModelDesc
+                          - TextModels.ModelDesc
+                          - Containers.ModelDesc
+                          - Models.ModelDesc
+                          - Stores.StoreDesc
+                        id: 12
+                        bodyPos: 3776
+                        bodyLen: 377
+                        runListLen: 275
+                        attrPool:
+                          - # [0]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 400
+                            style: 0x00000000
+                            offset: 266700
+                          - # [1]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 400
+                            style: 0x00000000
+                          - # [2]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 700
+                            style: 0x00000000
+                          - # [3]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 400
+                            style: 0x00000001
+                        flow:
+                          - text: "\t"
+                            attr: 0
+                          - view:
+                              kind: DevCommanders.StdView
+                              storeKind: store
+                              typeChain:
+                                - DevCommanders.StdViewDesc
+                                - DevCommanders.ViewDesc
+                                - Views.ViewDesc
+                                - Stores.StoreDesc
+                              id: 41
+                              bodyPos: 3930
+                              bodyLen: 6
+                            attr: 1
+                            w: 177800
+                            h: 152400
+                          - text: " \"ObxViews3.Deposit; StdCmds.PasteView\"\t"
+                            attr: 1
+                          - text: "><"
+                            attr: 2
+                          - text: " "
+                            attr: 1
+                          - text: set the caret here before executing the command
+                            attr: 3
+                    attr: 1
+                    w: 7119800
+                    h: 459400
+                  - text: "\rThis behavior is adequate if a view is passive. However, if the view contains editable contents, or if there are menu commands that operate on the view, the user should be able to "
+                    attr: 1
+                  - text: focus
+                    attr: 4
+                  - text: " the view. The focus is where keyboard input is sent to, where the current selection or caret are displayed (if there are any such marks), and where upon some menu commands operate. In fact, menus can be made to appear whenever a view is focused, and disappear as soon as the view loses focus (more on this below). A root view is always focused when its document window is focus (i.e., is the top window).\rIf an embedded view wants to become focus, it must answer the "
+                    attr: 1
+                  - text: "Properties.FocusPref "
+                    attr: 4
+                  - text: "message. The view can choose whether it wants to become focus permanently or if it wants only be focus as long as the mouse button is pressed. The latter is called a "
+                    attr: 1
+                  - text: hot focus
+                    attr: 4
+                  - text: ". A typical example of a hot focus is a command button. If a view wants to be a hot focus, it must set the flag "
+                    attr: 1
+                  - text: hotFocus
+                    attr: 4
+                  - text: ". The focus is then released immediately after the mouse is released. If a view wants to become focus permanently, then the flag "
+                    attr: 1
+                  - text: "setFocus "
+                    attr: 4
+                  - text: "must be set instead. "
+                    attr: 1
+                  - text: setFocus
+                    attr: 4
+                  - text: " should be set for all genuine editors, such that context-sensitive menu commands can be attached to the view. In addition to the "
+                    attr: 1
+                  - text: "setFocus "
+                    attr: 4
+                  - text: "flag, a view may set the "
+                    attr: 1
+                  - text: selectOnFocus
+                    attr: 4
+                  - text: " flag to indicate that upon focusing by keyboard, the view's contents should be selected. Text entry fields are prime examples for this behavior: the contents of a newly focused text entry field is selected, if the user focused it not by clicking in it, but by using the tabulator key.\rIf the user clicks in an unfocused view, then the "
+                    attr: 1
+                  - text: atLocation
+                    attr: 4
+                  - text: " flag is set by the framework before sending the message. The receiving view may decide whether to become focused depending on where the user clicked. The mouse position is passed to the view in the focus preference's "
+                    attr: 1
+                  - text: x
+                    attr: 4
+                  - text: " and "
+                    attr: 1
+                  - text: y
+                    attr: 4
+                  - text: " fields."
+                    attr: 1
+                  - text: " "
+                    attr: 2
+                  - text: "Text rulers are examples of views which become focused depending on the mouse location. If you click in the icons or in the area below the scale of a ruler, the ruler is not focused. Otherwise it is focused. Try this out with the ruler below. If you don't see a ruler, execute the "
+                    attr: 1
+                  - text: Show Marks
+                    attr: 4
+                  - text: " command in the "
+                    attr: 1
+                  - text: Text
+                    attr: 4
+                  - text: " menu.\rA view is not necessarily focused through a mouse click. In forms for example, the views can be selected using the tabulator key. There, the views do not become focused through a mouse click, and the "
+                    attr: 1
+                  - text: atLocation
+                    attr: 4
+                  - text: " field is accordingly set to "
+                    attr: 1
+                  - text: "FALSE"
+                    attr: 4
+                  - text: " by the framework.\r\rThe next version of our example will answer the "
+                    attr: 1
+                  - text: "FocusPref "
+                    attr: 4
+                  - text: "message and set the "
+                    attr: 1
+                  - text: setFocus
+                    attr: 4
+                  - text: " flag"
+                    attr: 1
+                  - text: .
+                    attr: 4
+                  - text: " This is done by adding the following statements to the previous example's "
+                    attr: 1
+                  - text: HandlePropMsg
+                    attr: 4
+                  - text: " procedure:\r\r\t\t| msg: Properties.FocusPref DO\r\t\t\tmsg.setFocus := TRUE\r\rIf an embedded view is focused, the frame of the view is marked with a suitable focus border mark, and view-specific menus may appear while others disappear.\r\r\r"
+                    attr: 1
+                  - text: 6.4 Controller messages
+                    attr: 2
+                  - text: "\r\rOther messages that may be interpreted by "
+                    attr: 1
+                  - text: HandlePropMsg
+                    attr: 4
+                  - text: " will be discussed later. Next we will see how a view can react on user input, e.g., on mouse clicks in the view or on commands called through a menu. For simple views this behavior is implemented in the procedure "
+                    attr: 1
+                  - text: Views.HandleCtrlMsg
+                    attr: 4
+                  - text: ". It is also possible to define a separate object, a so-called controller, that implements the interactive behavior of a view. Programming of controller objects is not described in this document, since controllers are only recommended for the most complex views.\r\rThe"
+                    attr: 1
+                  - text: Views.HandleCtrlMsg
+                    attr: 4
+                  - text: " handler answers the "
+                    attr: 1
+                  - text: "controller messages "
+                    attr: 4
+                  - text: "sent to the view. A controller message is a message that is sent along exactly one path in a view hierarchy, the "
+                    attr: 1
+                  - text: focus path
+                    attr: 4
+                  - text: ". Every view on the focus path decides for itself whether it is the terminal of this path, i.e., whether it is the current focus, or whether the message should be forwarded to one of its embedded views. It is important to note that all controller messages which are not relevant for a particular view type can simply be ignored.\r\rIn order to be able to perform edit operations on the focus view, the framework must allow to somehow perform these operations. Mouse clicks and key strokes can always be issued. However, how the menus should look like may be decided by the view itself. For that purpose, the message "
+                    attr: 1
+                  - text: Controllers.PollOpsMsg
+                    attr: 4
+                  - text: " is sent to the view. Depending on its current state (e.g., its current selection) and depending on the contents of the clipboard, the focus view can inform the framework of which editing operations it currently supports. The valid operations are elements of the {Controllers.cut, Controllers.copy, Controllers.paste, Controllers.pasteView} set.\r\r\tTYPE\r\t\tPollOpsMsg = RECORD (Controllers.Message)\r\t\t\ttype: Stores.TypeName;   (* OUT *)\r\t\t\tpasteType: Stores.TypeName;   (* IN *)\r\t\t\tsingleton: Views.View;   (* OUT *)\r\t\t\tselectable: BOOLEAN;   (* OUT *)\r\t\t\tvalid: SET   (* OUT *)\r\t\tEND;\r\rThe set of valid edit operations is returned in the "
+                    attr: 1
+                  - text: valid
+                    attr: 4
+                  - text: " field, where "
+                    attr: 1
+                  - text: "valid IN {Controllers.cut, Controllers.copy, Controllers.paste"
+                    attr: 4
+                  - text: "}. According to the set of valid operations, the corresponding menu entries in the "
+                    attr: 1
+                  - text: "Edit "
+                    attr: 4
+                  - text: "menu are enabled or disabled, e.g., "
+                    attr: 1
+                  - text: "Cut, Copy, Paste "
+                    attr: 4
+                  - text: "and "
+                    attr: 1
+                  - text: Paste Object...
+                    attr: 4
+                  - text: " (Windows) / "
+                    attr: 1
+                  - text: Paste as Part
+                    attr: 4
+                  - text: " (Mac OS). The field "
+                    attr: 1
+                  - text: pasteType
+                    attr: 4
+                  - text: " contains the concrete type of the view from which a copy would be pasted, if a paste operation occurred. Depending on this field, the view could decide whether it wants to support the paste operation or not. "
+                    attr: 1
+                  - text: PollOpsMsg
+                    attr: 4
+                  - text: " is sent when the user clicks in the menu bar. Its sole purpose is to enable or disable menu items, i.e., to provide user feedback.\rIf a view supports a selection of its contents, then "
+                    attr: 1
+                  - text: selectable
+                    attr: 4
+                  - text: " must be set to "
+                    attr: 1
+                  - text: "TRUE"
+                    attr: 4
+                  - text: ". As a consequence, the menu entry "
+                    attr: 1
+                  - text: Select All
+                    attr: 4
+                  - text: " will be enabled. The flag should be set regardless of whether a selection currently exists or not.\rIn the "
+                    attr: 1
+                  - text: type
+                    attr: 4
+                  - text: " field a type name may be passed. This name denotes a context for the focus view. This context is used to determine which menus are relevant for the focus view. As a convention, a view assigns the type name of its interface base type to "
+                    attr: 1
+                  - text: type
+                    attr: 4
+                  - text: ", e.g. \"ObxViews4.View\". A menu which indicates to be active on \"ObxViews4.View\" will be displayed if such a view is focus. The type name is used because it is easy to make unique, so that name collisions are avoided. The framework doesn't interpret the name.\rThe "
+                    attr: 1
+                  - text: "singleton "
+                    attr: 4
+                  - text: "field is only meaningful for container views. It denotes a container's currently selected view, if the selection consists of exactly one embedded view.\r\rThe following example view can become focus, supports the paste operation, and informs the framework that its contents is selectable. As a consequence, the menu entries "
+                    attr: 1
+                  - text: "Paste "
+                    attr: 4
+                  - text: " and "
+                    attr: 1
+                  - text: Select All
+                    attr: 4
+                  - text: "  in the "
+                    attr: 1
+                  - text: Edit
+                    attr: 4
+                  - text: " menu are enabled. Additionally, it defines the context \"Obx.Tutorial\". Therefore the following menu appears whenever the view is focused; provided that the menu has been installed.\rNote that the name of the context, in this case \"Obx.Tutorial\", by convention starts with the subsystem or a module name followed by a dot, in this case \"Obx.\". This is highly recommended, in order to make context names globally unique. Often, the name is simply the name of a view type, e.g., \"TextViews.View\".\rA menu can either be defined in the global menu text System/Rsrc/Menus, or more appropriately in its own subsystem's menu text, in this case in Obx/Rsrc/Menus . The global menu text then only needs an "
+                    attr: 1
+                  - text: "INCLUDE \"Obx\""
+                    attr: 4
+                  - text: " statement to make the Obx menus known.\r\r\t\t"
+                    attr: 1
+                  - text: MENU
+                    attr: 2
+                  - text: " \"New\" (\"Obx.Tutorial\")\r\t\t\t\"Beep\"\t\"\"\t\"Dialog.Beep\"\t\"\"\r\t\t"
+                    attr: 1
+                  - text: "END\r\t\t"
+                    attr: 2
+                  - text: "\r"
+                    attr: 1
+                  - ruler:
+                      first: 180000
+                      left: 180000
+                      right: 180000
+                      lead: 8100
+                      asc: 145400
+                      dsc: 32400
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 360000 }
+                        - { stop: 540000 }
+                        - { stop: 720000 }
+                        - { stop: 900000 }
+                        - { stop: 1080000 }
+                        - { stop: 1260000 }
+                        - { stop: 1440000 }
+                        - { stop: 1620000 }
+                        - { stop: 1800000 }
+                        - { stop: 3780000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "MODULE ObxViews4;\r\r\tIMPORT Views, Ports, Properties"
+                    attr: 1
+                  - text: ", Controllers"
+                    attr: 2
+                  - text: ";\r\r\tTYPE View = POINTER TO RECORD (Views.View) END;\r\r\tPROCEDURE (v: View)  Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\tBEGIN\r\t\tf.DrawRect(l, t, r, b, Ports.fill, Ports.red)\r\tEND Restore;\r\r\tPROCEDURE (v: View) HandlePropMsg (VAR msg: Properties.Message);\r\t\tCONST min = 5 * Ports.mm; max = 50 * Ports.mm;\r\tBEGIN\r\t\tWITH msg: Properties.SizePref DO\r\t\t\tIF (msg.w = Views.undefined) OR (msg.h = Views.undefined) THEN\r\t\t\t\t msg.w := 20 * Ports.mm; msg.h := 10 * Ports.mm\r\t\t\tELSE\r\t\t\t\tProperties.ProportionalConstraint(2, 1, msg.fixedW, msg.fixedH,\r\t\t\t\t\t\t\t\t\t\tmsg.w, msg.h);\r\t\t\t\tIF msg.h < min THEN\r\t\t\t\t\tmsg.h := min; msg.w := 2 * min\r\t\t\t\tELSIF msg.h > max THEN\r\t\t\t\t\tmsg.h := max; msg.w := 2 * max\r\t\t\t\tEND\r\t\t\tEND\r\t\t| msg: Properties.ResizePref DO\r\t\t\tmsg.horFitToWin := TRUE; msg.verFitToWin := TRUE\r"
+                    attr: 1
+                  - text: "\t\t| msg: Properties.FocusPref DO\r\t\t\tmsg.setFocus := TRUE\r"
+                    attr: 2
+                  - text: "\t\tELSE\t(* ignore other messages *)\r\t\tEND\r\tEND HandlePropMsg;\r\r"
+                    attr: 1
+                  - text: "\tPROCEDURE (v: View) HandleCtrlMsg (f: Views.Frame;\r\t\t\t\t\t\t\t\t\tVAR msg: Controllers.Message; VAR focus: Views.View);\r\tBEGIN\r\t\tWITH msg: Controllers.PollOpsMsg DO\r\t\t\tmsg.valid := {Controllers.paste}; msg.selectable := TRUE;\r\t\t\tmsg.type := \"Obx.Tutorial\"\r\t\tELSE\t(* ignore other messages *)\r\t\tEND\r\tEND HandleCtrlMsg;\r\r"
+                    attr: 2
+                  - text: "\tPROCEDURE Deposit*;\r\t\tVAR v: View;\r\tBEGIN\r\t\tNEW(v); Views.Deposit(v)\r\tEND Deposit;\r\rEND ObxViews4.\r"
+                    attr: 1
+                  - view:
+                      kind: TextViews.StdView
+                      storeKind: store
+                      typeChain:
+                        - TextViews.StdViewDesc
+                        - TextViews.ViewDesc
+                        - Containers.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 50
+                      bodyPos: 5067
+                      bodyLen: 606
+                      hideMarks: true
+                      defaultRuler:
+                        left: 0
+                        right: 0
+                        asc: 134600
+                        dsc: 43200
+                        grid: 177800
+                        opts: 0x00000003
+                      defaultAttr:
+                        font: Arial
+                        size: 114300
+                        color: 0x01000000
+                        weight: 400
+                        style: 0x00000000
+                      controller:
+                        kind: TextControllers.StdCtrl
+                        storeKind: store
+                        typeChain:
+                          - TextControllers.StdCtrlDesc
+                          - TextControllers.ControllerDesc
+                          - Containers.ControllerDesc
+                          - Controllers.ControllerDesc
+                          - Stores.StoreDesc
+                        id: 56
+                        bodyPos: 5490
+                        bodyLen: 9
+                      content:
+                        kind: TextModels.StdModel
+                        storeKind: elem
+                        typeChain:
+                          - TextModels.StdModelDesc
+                          - TextModels.ModelDesc
+                          - Containers.ModelDesc
+                          - Models.ModelDesc
+                          - Stores.StoreDesc
+                        id: 15
+                        bodyPos: 5092
+                        bodyLen: 376
+                        runListLen: 275
+                        attrPool:
+                          - # [0]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 400
+                            style: 0x00000000
+                          - # [1]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 400
+                            style: 0x00000000
+                            offset: 266700
+                          - # [2]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 700
+                            style: 0x00000000
+                          - # [3]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 400
+                            style: 0x00000001
+                        flow:
+                          - view:
+                              kind: DevCommanders.StdView
+                              storeKind: store
+                              typeChain:
+                                - DevCommanders.StdViewDesc
+                                - DevCommanders.ViewDesc
+                                - Views.ViewDesc
+                                - Stores.StoreDesc
+                              id: 52
+                              bodyPos: 5189
+                              bodyLen: 6
+                            attr: 0
+                            w: 177800
+                            h: 152400
+                          - text: " \"ObxViews4.Deposit; StdCmds.PasteView\""
+                            attr: 0
+                          - text: "\t"
+                            attr: 1
+                          - text: "><"
+                            attr: 2
+                          - text: " "
+                            attr: 0
+                          - text: set the caret here before executing the command
+                            attr: 3
+                    attr: 1
+                    w: 7094400
+                    h: 459400
+                  - text: "\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rNext we discuss how a view can react on actual edit messages. In particular, these are the "
+                    attr: 1
+                  - text: Controllers.EditMsg
+                    attr: 4
+                  - text: " for edit operations such as cut, copy, or paste, and the "
+                    attr: 1
+                  - text: Controllers.TrackMsg
+                    attr: 4
+                  - text: " for mouse clicks.\r\rWhenever a key is pressed in a view or when a cut, copy or paste operation is invoked, a "
+                    attr: 1
+                  - text: Controllers.EditMsg
+                    attr: 4
+                  - text: " is sent to the focus view. The cut, copy and paste operations can only be generated through the environment (menu) if they have been announced with the "
+                    attr: 1
+                  - text: Controllers.PollOpsMsg
+                    attr: 4
+                  - text: ".\r\r\tTYPE\r\t\tEditMsg = RECORD (Controllers.RequestMessage)\r\t\t\top: INTEGER;   (* IN *)\r\t\t\tmodifiers: SET;   (* IN *)\r\t\t\tchar: CHAR;   (* IN *)\r\t\t\tview: Views.View;   (* IN for paste, OUT for cut and copy *)\r\t\t\tw, h: INTEGER;   (* IN for paste, OUT for cut and copy *)\r\t\t\tisSingle: BOOLEAN;   (* IN for paste, OUT for cut and copy *)\r\t\t\tclipboard: BOOLEAN   (* IN *)\r\t\tEND;\r\rThe "
+                    attr: 1
+                  - text: op
+                    attr: 4
+                  - text: " field specifies which kind of operation has to be performed. If "
+                    attr: 1
+                  - text: "op = Controllers.cut "
+                    attr: 4
+                  - text: "then a copy of the focus view has to be generated. The contents of the new view is a copy of the focus view's selection. The new view is assigned to the "
+                    attr: 1
+                  - text: view
+                    attr: 4
+                  - text: " field. In addition, the selection is deleted in the focus view.\rThere is one special case: if the selection consists of exactly one view (a singleton), then a copy of the singleton should be copied to the "
+                    attr: 1
+                  - text: view
+                    attr: 4
+                  - text: " field, not a copy of the singleton's container. In this case, "
+                    attr: 1
+                  - text: isSingle
+                    attr: 4
+                  - text: " must be set to "
+                    attr: 1
+                  - text: "TRUE"
+                    attr: 4
+                  - text: ".\r\rExcept for the deletion of the selection, the same operations have to be performed if "
+                    attr: 1
+                  - text: "op = Controllers.copy.\r"
+                    attr: 4
+                  - text: "\rIf a key is pressed, then the "
+                    attr: 1
+                  - text: op
+                    attr: 4
+                  - text: " field has the value "
+                    attr: 1
+                  - text: "Controllers.pasteChar. "
+                    attr: 4
+                  - text: "The character to be pasted is stored in the "
+                    attr: 1
+                  - text: char
+                    attr: 4
+                  - text: " field. The "
+                    attr: 1
+                  - text: "modifiers "
+                    attr: 4
+                  - text: "set indicates whether a modifier or control key has been pressed. In the latter case, the "
+                    attr: 1
+                  - text: "char "
+                    attr: 4
+                  - text: "field has to be interpreted as a control character.\r\rThe paste operation is the inverse of the copy operation: a copy of the contents of the view stored in the "
+                    attr: 1
+                  - text: view
+                    attr: 4
+                  - text: " field has to be copied into the focus view's contents. This operation is indicated by "
+                    attr: 1
+                  - text: op
+                    attr: 4
+                  - text: " = "
+                    attr: 1
+                  - text: Controllers.paste
+                    attr: 4
+                  - text: ". The view must know the type of the view whose contents is to be pasted and must decide how to insert the pasted view's contents into its own view. For example, a text field view should support copying from a text view only.\rIf "
+                    attr: 1
+                  - text: isSingle
+                    attr: 4
+                  - text: " is "
+                    attr: 1
+                  - text: "TRUE"
+                    attr: 4
+                  - text: ", or if the contents of "
+                    attr: 1
+                  - text: view
+                    attr: 4
+                  - text: " cannot be pasted because it has an unknown or incompatible type, a copy of "
+                    attr: 1
+                  - text: view
+                    attr: 4
+                  - text: " must be pasted. Of course, this is only possible in general containers, which allow the embedding of other views.\rWhen pasting a complete view, the desired width and height of the pasted view are given in the fields "
+                    attr: 1
+                  - text: w
+                    attr: 4
+                  - text: " and "
+                    attr: 1
+                  - text: h
+                    attr: 4
+                  - text: ". These values can be treated as hints by the receiving view. If they are not suitable, others can be used.\r\rWhenever the mouse button is pressed in the focus view, a "
+                    attr: 1
+                  - text: "Controllers.TrackMsg "
+                    attr: 4
+                  - text: "is sent to the view. The coordinates are specified in the "
+                    attr: 1
+                  - text: x
+                    attr: 4
+                  - text: " and "
+                    attr: 1
+                  - text: y
+                    attr: 4
+                  - text: " fields (of the base type "
+                    attr: 1
+                  - text: Controllers.CursorMessage).
+                    attr: 4
+                  - text: " The "
+                    attr: 1
+                  - text: modifiers
+                    attr: 4
+                  - text: " set indicates whether modifier keys have been pressed, or whether a double click has been performed. "
+                    attr: 1
+                  - text: "modifiers IN  {Controllers.doubleClick, Controllers.extend, Controllers.modify"
+                    attr: 4
+                  - text: "}. If the view wants to show a feedback while tracking the mouse, it needs to poll the mouse position in a loop, by calling the "
+                    attr: 1
+                  - text: Input
+                    attr: 4
+                  - text: " procedure of the passed frame. "
+                    attr: 1
+                  - text: Input
+                    attr: 4
+                  - text: " also returns information on whether the mouse has been released. Any feedback should directly be drawn into the frame in which the mouse button was pressed.\r\rAfter the feedback loop, a possible modification of the view's contents need to be broadcast to all the frames that display the same view. Remember that the same document, and consequently all its embedded views, may be displayed in several windows (see Chapter 2). If an embedded view is visible in three windows, there exist three frames displaying the same view. Procedure "
+                    attr: 1
+                  - text: Views.Update
+                    attr: 4
+                  - text: " causes a restore of the view once in each of its visible frames.\r\rAs an example, we extend our view with a cross-hair marker that can be moved around. The coordinates of this marker are stored as additional fields in the view object. Note that if a view contains instance variables, it should implement the "
+                    attr: 1
+                  - text: "CopyFromSimpleView,"
+                    attr: 4
+                  - text: " "
+                    attr: 1
+                  - text: "Internalize "
+                    attr: 4
+                  - text: "and "
+                    attr: 1
+                  - text: "Externalize "
+                    attr: 4
+                  - text: "procedures in order to work properly. We refer to the next section of this view tutorial, which describes the purpose of these messages. In our example view, the marker can be moved around with the mouse, or through the cursor keys. When a cursor key is pressed, the focus view is informed by sending it an "
+                    attr: 1
+                  - text: EditMsg
+                    attr: 4
+                  - text: " with "
+                    attr: 1
+                  - text: op = pasteChar
+                    attr: 4
+                  - text: ".\r\rFrom time to time a "
+                    attr: 1
+                  - text: Controllers.PollCursorMsg
+                    attr: 4
+                  - text: " is sent to the focus view. The view may set the form of the cursor depending on the coordinates of the mouse. The "
+                    attr: 1
+                  - text: cursor
+                    attr: 4
+                  - text: " field can be assigned a cursor out of {"
+                    attr: 1
+                  - text: "Ports.arrowCursor, Ports.textCursor, Ports.graphicsCursor, Ports.tableCursor, Ports.bitmapCursor"
+                    attr: 4
+                  - text: "}. The particular form of the cursor depends on the underlying operating system. In our example view, we set the cursor to a graphics cursor.\r\r"
+                    attr: 1
+                  - ruler:
+                      first: 180000
+                      left: 180000
+                      right: 180000
+                      lead: 8100
+                      asc: 145400
+                      dsc: 32400
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 360000 }
+                        - { stop: 540000 }
+                        - { stop: 720000 }
+                        - { stop: 900000 }
+                        - { stop: 1080000 }
+                        - { stop: 1260000 }
+                        - { stop: 1440000 }
+                        - { stop: 1620000 }
+                        - { stop: 1800000 }
+                        - { stop: 3780000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "MODULE ObxViews5;\r\r\tIMPORT Views, Ports, Properties, Controllers;\r\r\tTYPE\r\t\tView = POINTER TO RECORD (Views.View)\r\t"
+                    attr: 1
+                  - text: "\t\tx, y: INTEGER"
+                    attr: 2
+                  - text: "\r\t\tEND;\r\r\tPROCEDURE (v: View)  Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\tBEGIN\r\t\tf.DrawRect(l, t, r, b, Ports.fill, Ports.red);\r\t\t"
+                    attr: 1
+                  - text: "f.DrawLine(v.x, t, v.x, b, 0, Ports.white); f.DrawLine(l, v.y, r, v.y,\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t0, Ports.white)"
+                    attr: 2
+                  - text: "\r\tEND Restore;\r\r\tPROCEDURE (v: View) HandlePropMsg (VAR msg: Properties.Message);\r\t\tCONST min = 5 * Ports.mm; max = 50 * Ports.mm;\r\tBEGIN\r\t\tWITH msg: Properties.SizePref DO\r\t\t\tIF (msg.w = Views.undefined) OR (msg.h = Views.undefined) THEN\r\t\t\t\t msg.w := 20 * Ports.mm; msg.h := 10 * Ports.mm\r\t\t\tELSE\r\t\t\t\tProperties.ProportionalConstraint(2, 1, msg.fixedW, msg.fixedH,\r\t\t\t\t\t\t\t\t\t\tmsg.w, msg.h);\r\t\t\t\tIF msg.h < min THEN msg.h := min; msg.w := 2 * min\r\t\t\t\tELSIF msg.h > max THEN msg.h := max; msg.w := 2 * max\r\t\t\t\tEND\r\t\t\tEND\r\t\t| msg: Properties.ResizePref DO\r\t\t\tmsg.horFitToWin := TRUE; msg.verFitToWin := TRUE\r\t\t| msg: Properties.FocusPref DO\r\t\t\tmsg.setFocus := TRUE\r\t\tELSE\t(* ignore other messages *)\r\t\tEND\r\tEND HandlePropMsg;\r\r\tPROCEDURE (v: View) HandleCtrlMsg (f: Views.Frame;\r\t\t\t\t\t\t\t\t\t\tVAR msg: Controllers.Message; \r\t\t\t\t\t\t\t\t\t\tVAR focus: Views.View);\r\t\tVAR x, y, w, h: INTEGER; m: SET; isDown: BOOLEAN;\r\tBEGIN\r\t\tWITH msg: Controllers.PollOpsMsg DO\r\t\t\tmsg.valid := {Controllers.paste}; msg.selectable := TRUE;\r\t\t\tmsg.type := \"Obx.Tutorial\"\r\t"
+                    attr: 1
+                  - text: "\t| msg: Controllers.EditMsg DO\r\t\t\tIF msg.op = Controllers.pasteChar THEN\t(* cursor keys *)\r\t\t\t\tIF msg.char = 1DX THEN INC(v.x, Ports.mm)\r\t\t\t\tELSIF msg.char = 1CX THEN DEC(v.x, Ports.mm)\r\t\t\t\tELSIF msg.char  = 1EX THEN DEC(v.y, Ports.mm)\r\t\t\t\tELSIF msg.char  = 1FX THEN INC(v.y, Ports.mm)\r\t\t\t\tEND;\r\t\t\t\tViews.Update(v, Views.keepFrames)\r\t\t\tEND\r\t\t| msg: Controllers.TrackMsg DO\r\t\t\tv.x := msg.x; v.y := msg.y;\r\t\t\tv.context.GetSize(w, h); v.Restore(f, 0, 0, w, h);\r\t\t\tREPEAT\r\t\t\t\tf.Input(x, y, m, isDown);\r\t\t\t\tIF (x # v.x) OR (y # v.y) THEN\r\t\t\t\t\tv.x := x; v.y := y; v.Restore(f, 0, 0, w, h)\r\t\t\t\tEND\r\t\t\tUNTIL ~isDown;\r\t\t\tViews.Update(v, Views.keepFrames)\r\t\t| msg: Controllers.PollCursorMsg DO\r\t\t\tmsg.cursor := Ports.graphicsCursor\r\t\tELSE\t(* ignore other messages *)\r\t\tEND\r"
+                    attr: 2
+                  - text: "\tEND HandleCtrlMsg;\r\r\tPROCEDURE Deposit*;\r\t\tVAR v: View;\r\tBEGIN\r\t\tNEW(v); "
+                    attr: 1
+                  - text: "v.x := 0; v.y := 0; "
+                    attr: 2
+                  - text: "Views.Deposit(v)\r\tEND Deposit;\r\rEND ObxViews5.\r\r"
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 64
+                      bodyPos: 6471
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: " \"ObxViews5.Deposit; StdCmds.Open\"  \r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rThere exist many other controller messages which may be sent to a view, but which are beyond the scope of this tutorial. There are messages for the generic scrolling mechanism of the BlackBox Component Framework ("
+                    attr: 1
+                  - text: "Controllers.PollSectionMsg, Controllers.ScrollMsg, Controllers.PageMsg"
+                    attr: 4
+                  - text: "),  messages which implement drag & drop ("
+                    attr: 1
+                  - text: "Controllers.PollDropMsg, Controllers.DropMsg, Controllers.TransferMessage"
+                    attr: 4
+                  - text: ) and messages which control the selection (
+                    attr: 1
+                  - text: Controllers.SelectMsg
+                    attr: 4
+                  - text: "). For these and other controller messages we refer to the documentation of the "
+                    attr: 1
+                  - text: Controllers
+                    attr: 4
+                  - text: " module.\r\r\r"
+                    attr: 1
+                  - text: "6.5 Properties\r"
+                    attr: 2
+                  - text: "\rWe want to close this section with a final extension of our view: the color of the view should be changeable through the "
+                    attr: 1
+                  - text: Attributes
+                    attr: 4
+                  - text: " menu. The general mechanism to get and set attributes of a view from its environment are "
+                    attr: 1
+                  - text: properties
+                    attr: 4
+                  - text: ". A view may know about attributes such as font, color, size, but it may also know about arbitrary other attributes. Properties are set with the "
+                    attr: 1
+                  - text: Properties.SetMsg
+                    attr: 4
+                  - text: " and inspected with the "
+                    attr: 1
+                  - text: Properties.PollMsg
+                    attr: 4
+                  - text: ". Properties in one of these messages are stored in a linked list. If a view gets a "
+                    attr: 1
+                  - text: Properties.SetMsg
+                    attr: 4
+                  - text: " it should traverse its property list and adjust those properties it knows about. A "
+                    attr: 1
+                  - text: "Properties.PollMsg "
+                    attr: 4
+                  - text: "is sent to the view to get its properties. The view should return all properties it knows about. Properties can be inserted into a message's property list with the "
+                    attr: 1
+                  - text: "Properties.Insert "
+                    attr: 4
+                  - text: "procedure.\rEvery property describes up to 32 attributes. The "
+                    attr: 1
+                  - text: known
+                    attr: 4
+                  - text: " set defines which attributes are known to the view. The view may also specify which attributes are read-only in the "
+                    attr: 1
+                  - text: readOnly
+                    attr: 4
+                  - text: " set. The "
+                    attr: 1
+                  - text: valid
+                    attr: 4
+                  - text: " set finally defines which attributes currently have a defined value. For example, if in a text several characters with different sizes are selected, then the attribute size is known to the view, but currently does not have a valid value. The selection is not homogeneous, and thus there is no single valid value.\r\r\tTYPE\r\t\tProperty = POINTER TO ABSTRACT RECORD \r\t\t\tnext-: Properties.Property;\r\t\t\tknown, readOnly, valid: SET;\t(* valid and readOnly are subsets of known *)\r\t\t\t(p: Property) IntersectWith (q: Properties.Property; OUT equal: BOOLEAN), NEW, ABSTRACT\r\t\tEND;\r\rA special property is "
+                    attr: 1
+                  - text: "Properties.StdProp. "
+                    attr: 4
+                  - text: "This property encompasses font attributes as well as color, and it is known to the BlackBox environment. The supported attributes are "
+                    attr: 1
+                  - text: "Properties.color, Properties.typeface, Properties.size, Properties.style, Properites.weight."
+                    attr: 4
+                  - text: " The fields in the property record hold the corresponding values.\r\r\tTYPE\r\t\tStdProp = POINTER TO RECORD (Properties.Property)\r\t\t\tcolor: Dialog.Color;\r\t\t\ttypeface: Fonts.Typeface;\r\t\t\tsize: INTEGER;\r\t\t\tstyle: RECORD\r\t\t\t\tval, mask: SET\r\t\t\tEND;\r\t\t\tweight: INTEGER\r\t\tEND;\r\rThe last version of our view only support the color attribute of the standard property. If it receives a "
+                    attr: 1
+                  - text: Properties.PollMsg
+                    attr: 4
+                  - text: " message, it returns a "
+                    attr: 1
+                  - text: "Properties.StdProp "
+                    attr: 4
+                  - text: "object where only the color field is set, and where only the color attribute is defined as known and valid. On a "
+                    attr: 1
+                  - text: Properties.SetMsg
+                    attr: 4
+                  - text: ", the property list must be searched for a standard property whose color field is valid. When the color has been changed, the view must be updated in all its frames.\r\t"
+                    attr: 1
+                  - ruler:
+                      first: 180000
+                      left: 180000
+                      right: 180000
+                      lead: 8100
+                      asc: 145400
+                      dsc: 32400
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 360000 }
+                        - { stop: 540000 }
+                        - { stop: 720000 }
+                        - { stop: 900000 }
+                        - { stop: 1080000 }
+                        - { stop: 1260000 }
+                        - { stop: 1440000 }
+                        - { stop: 1620000 }
+                        - { stop: 1800000 }
+                        - { stop: 3780000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "MODULE ObxViews6;\r\r\tIMPORT Views, Ports, Properties, Controllers;\r\r\tTYPE\r\t\tView = POINTER TO RECORD (Views.View)\r\t\t\tx, y: INTEGER"
+                    attr: 1
+                  - text: ";\r\t\t\tc: Ports.Color"
+                    attr: 2
+                  - text: "\r\t\tEND;\r\r\tPROCEDURE (v: View)  Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\tBEGIN\r\t\tf.DrawRect(l, t, r, b, Ports.fill, "
+                    attr: 1
+                  - text: v.c
+                    attr: 2
+                  - text: ");\r\t\tf.DrawLine(v.x, t, v.x, b, 0, Ports.white); f.DrawLine(l, v.y, r, v.y, 0, Ports.white)\r\tEND Restore;\r\t\r\tPROCEDURE (v: View) HandlePropMsg (VAR msg: Properties.Message);\r\t\tCONST min = 5 * Ports.mm; max = 50 * Ports.mm;\r\t\t"
+                    attr: 1
+                  - text: "VAR stdProp: Properties.StdProp; prop: Properties.Property;"
+                    attr: 2
+                  - text: "\r\tBEGIN\r\t\tWITH msg: Properties.SizePref DO\r\t\t\tIF (msg.w = Views.undefined) OR (msg.h = Views.undefined) THEN\r\t\t\t\t msg.w := 20 * Ports.mm; msg.h := 10 * Ports.mm\r\t\t\tELSE\r\t\t\t\tProperties.ProportionalConstraint(2, 1, msg.fixedW, msg.fixedH,\r\t\t\t\t\t\t\t\t\t\tmsg.w, msg.h);\r\t\t\t\tIF msg.h < min THEN msg.h := min; msg.w := 2 * min\r\t\t\t\tELSIF msg.h > max THEN msg.h := max; msg.w := 2 * max\r\t\t\t\tEND\r\t\t\tEND\r\t\t| msg: Properties.ResizePref DO\r\t\t\tmsg.horFitToWin := TRUE; msg.verFitToWin := TRUE\r\t\t| msg: Properties.FocusPref DO\r\t\t\tmsg.setFocus := TRUE\r"
+                    attr: 1
+                  - text: "\t\t| msg: Properties.PollMsg DO\r\t\t\tNEW(stdProp);\r\t\t\tstdProp.color.val := v.c;\r\t\t\tstdProp.valid := {Properties.color};\r\t\t\tstdProp.known := {Properties.color};\r\t\t\tProperties.Insert(msg.prop, stdProp)\r\t\t| msg: Properties.SetMsg DO\r\t\t\tprop := msg.prop;\r\t\t\tWHILE prop # NIL DO\r\t\t\t\tWITH prop: Properties.StdProp DO\r\t\t\t\t\tIF Properties.color IN prop.valid THEN v.c := prop.color.val END\r\t\t\t\tELSE\r\t\t\t\tEND;\r\t\t\t\tprop := prop.next\r\t\t\tEND;\r\t\t\tViews.Update(v, Views.keepFrames)\r"
+                    attr: 2
+                  - text: "\t\tELSE\t(* ignore other messages *)\r\t\tEND\r\tEND HandlePropMsg;\r\r\tPROCEDURE (v: View) HandleCtrlMsg (f: Views.Frame; VAR msg: Controllers.Message;\r\t\t\t\t\t\t\t\t\t\tVAR focus: Views.View);\r\t\tVAR x, y, w, h: INTEGER; m: SET; isDown: BOOLEAN;\r\tBEGIN\r\t\tWITH msg: Controllers.PollOpsMsg DO\r\t\t\tmsg.valid := {Controllers.paste}; msg.selectable := TRUE;\r\t\t\tmsg.type := \"Obx.Tutorial\"\r\t\t| msg: Controllers.EditMsg DO\r\t\t\tIF msg.op = Controllers.pasteChar THEN\r\t\t\t\tIF msg.char = 1DX THEN INC(v.x, Ports.mm)\r\t\t\t\tELSIF msg.char = 1CX THEN DEC(v.x, Ports.mm)\r\t\t\t\tELSIF msg.char  = 1EX THEN DEC(v.y, Ports.mm)\r\t\t\t\tELSIF msg.char  = 1FX THEN INC(v.y, Ports.mm)\r\t\t\t\tEND;\r\t\t\t\tViews.Update(v, Views.keepFrames)\r\t\t\tEND\r\t\t| msg: Controllers.TrackMsg DO\r\t\t\tv.x := msg.x; v.y := msg.y; v.context.GetSize(w, h); v.Restore(f, 0, 0, w, h);\r\t\t\tREPEAT\r\t\t\t\tf.Input(x, y, m, isDown);\r\t\t\t\tIF (x # v.x) OR (y # v.y) THEN\r\t\t\t\t\tv.x := x; v.y := y; v.Restore(f, 0, 0, w, h)\r\t\t\t\tEND\r\t\t\tUNTIL ~isDown;\r\t\t\tViews.Update(v, Views.keepFrames)\r\t\t| msg: Controllers.PollCursorMsg DO\r\t\t\tmsg.cursor := Ports.graphicsCursor\r\t\tELSE\t(* ignore other messages *)\r\t\tEND\r\tEND HandleCtrlMsg;\r\r\tPROCEDURE Deposit*;\r\t\tVAR v: View;\r\tBEGIN\r\t\tNEW(v); v.x := 0; v.y := 0; "
+                    attr: 1
+                  - text: "v.c := Ports.black; "
+                    attr: 2
+                  - text: "Views.Deposit(v)\r\tEND Deposit;\r\rEND ObxViews6.\r"
+                    attr: 1
+                  - view:
+                      kind: TextViews.StdView
+                      storeKind: store
+                      typeChain:
+                        - TextViews.StdViewDesc
+                        - TextViews.ViewDesc
+                        - Containers.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 69
+                      bodyPos: 7065
+                      bodyLen: 606
+                      hideMarks: true
+                      defaultRuler:
+                        left: 0
+                        right: 0
+                        asc: 134600
+                        dsc: 43200
+                        grid: 177800
+                        opts: 0x00000003
+                      defaultAttr:
+                        font: Arial
+                        size: 114300
+                        color: 0x01000000
+                        weight: 400
+                        style: 0x00000000
+                      controller:
+                        kind: TextControllers.StdCtrl
+                        storeKind: store
+                        typeChain:
+                          - TextControllers.StdCtrlDesc
+                          - TextControllers.ControllerDesc
+                          - Containers.ControllerDesc
+                          - Controllers.ControllerDesc
+                          - Stores.StoreDesc
+                        id: 75
+                        bodyPos: 7488
+                        bodyLen: 9
+                      content:
+                        kind: TextModels.StdModel
+                        storeKind: elem
+                        typeChain:
+                          - TextModels.StdModelDesc
+                          - TextModels.ModelDesc
+                          - Containers.ModelDesc
+                          - Models.ModelDesc
+                          - Stores.StoreDesc
+                        id: 21
+                        bodyPos: 7090
+                        bodyLen: 376
+                        runListLen: 275
+                        attrPool:
+                          - # [0]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 400
+                            style: 0x00000000
+                          - # [1]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 400
+                            style: 0x00000000
+                            offset: 266700
+                          - # [2]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 700
+                            style: 0x00000000
+                          - # [3]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 400
+                            style: 0x00000001
+                        flow:
+                          - view:
+                              kind: DevCommanders.StdView
+                              storeKind: store
+                              typeChain:
+                                - DevCommanders.StdViewDesc
+                                - DevCommanders.ViewDesc
+                                - Views.ViewDesc
+                                - Stores.StoreDesc
+                              id: 71
+                              bodyPos: 7187
+                              bodyLen: 6
+                            attr: 0
+                            w: 177800
+                            h: 152400
+                          - text: " \"ObxViews6.Deposit; StdCmds.PasteView\""
+                            attr: 0
+                          - text: "\t"
+                            attr: 1
+                          - text: "><"
+                            attr: 2
+                          - text: " "
+                            attr: 0
+                          - text: set the caret here before executing the command
+                            attr: 3
+                    attr: 1
+                    w: 6853100
+                    h: 459400
+                  - text: "\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      lead: 11500
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r6.6 Model-View separation\r"
+                    attr: 2
+                  - text: "\rIn this section, we present a sequence of five increasingly more versatile versions of a view object which displays a string that may be typed in by the user. This string represents the view-specific data which it displays. We will see that multi-view editing is possible if this string is represented by a separate model object.\r\rLet us start with a first version of this view, where the string is stored in the view itself. Every view displays its own string. A string's length is limited to 255 characters, but no error handling is performed in the following demonstration programs.\r\t"
+                    attr: 1
+                  - ruler:
+                      first: 180000
+                      left: 180000
+                      right: 180000
+                      lead: 8100
+                      asc: 145400
+                      dsc: 32400
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 360000 }
+                        - { stop: 540000 }
+                        - { stop: 720000 }
+                        - { stop: 900000 }
+                        - { stop: 1080000 }
+                        - { stop: 1260000 }
+                        - { stop: 1440000 }
+                        - { stop: 1620000 }
+                        - { stop: 1800000 }
+                        - { stop: 3780000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "MODULE ObxViews10;\r\r\tIMPORT Fonts, Ports, Views, Controllers, Properties;\r\r\tCONST d = 20 * Ports.point;\r\r\tTYPE\r\t\tView = POINTER TO RECORD (Views.View)\r\t\t\ti: INTEGER;\t\t\t\t"
+                    attr: 1
+                  - text: "(* position of next free slot in string *)"
+                    attr: 4
+                  - text: "\r\t\t\ts: ARRAY 256 OF CHAR\t"
+                    attr: 1
+                  - text: "(* string *)"
+                    attr: 4
+                  - text: "\r\t\tEND;\r\r\tPROCEDURE (v: View) Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\tBEGIN\r\t\tf.DrawString(d, d, Ports.black, v.s, Fonts.dir.Default())\r\tEND Restore;\r\r\tPROCEDURE (v: View) HandleCtrlMsg (f: Views.Frame;\r\t\t\t\t\t\t\t\t\t\tVAR msg: Controllers.Message; \r\t\t\t\t\t\t\t\t\t\tVAR focus: Views.View);\r\tBEGIN\r\t\tWITH msg: Controllers.EditMsg DO\r\t\t\tIF msg.op = Controllers.pasteChar THEN\t"
+                    attr: 1
+                  - text: "(* accept typing *)"
+                    attr: 4
+                  - text: "\r\t\t\t\tv.s[v.i] := msg.char; INC(v.i); v.s[v.i] := 0X;\t"
+                    attr: 1
+                  - text: "(* append character to string *)"
+                    attr: 4
+                  - text: "\r\t\t\t\tViews.Update(v, Views.keepFrames)\t"
+                    attr: 1
+                  - text: "(* restore v in any frame that displays it *)"
+                    attr: 4
+                  - text: "\r\t\t\tEND\r\t\tELSE\t\t\t\t\t\t"
+                    attr: 1
+                  - text: "(* ignore other messages *)"
+                    attr: 4
+                  - text: "\r\t\tEND\r\tEND HandleCtrlMsg;\r\t\r\tPROCEDURE (v:View) HandlePropMsg (VAR msg: Properties.Message);\r\tBEGIN\r\t\tWITH msg: Properties.SizePref DO\r\t\t\tIF (msg.w = Views.undefined) OR (msg.h = Views.undefined) THEN \r\t\t\t\tmsg.w := 10 * d; msg.h := 2 * d\r\t\t\tEND\r\t\t| msg: Properties.FocusPref DO\r\t\t\tmsg.setFocus := TRUE\r\t\tELSE\r\t\tEND\r\tEND HandlePropMsg;\r\r\tPROCEDURE Deposit*;\r\t\tVAR v: View;\r\tBEGIN\r\t\tNEW(v); v.s := \"\"; v.i := 0;\r\t\tViews.Deposit(v)\r\tEND Deposit;\r\rEND ObxViews10.\r\r"
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 83
+                      bodyPos: 8074
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: " \"ObxViews10.Deposit; StdCmds.Open\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      lead: 11500
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rAs described in the last section, a character typed in is sent to the view in the form of a controller message record ("
+                    attr: 1
+                  - text: Controllers.Message
+                    attr: 4
+                  - text: "), to be handled by the view's "
+                    attr: 1
+                  - text: HandleCtrlMsg
+                    attr: 4
+                  - text: " procedure. This procedure is called with a "
+                    attr: 1
+                  - text: Controllers.EditMsg
+                    attr: 4
+                  - text: " as actual parameter when a character was typed in, and it reacts by inserting the character contained in the message into its field "
+                    attr: 1
+                  - text: s
+                    attr: 4
+                  - text: ". Afterwards, it causes the view to be restored; i.e., wherever the view is visible on the display it is redrawn in its new state, displaying the string that has become one character longer.\r\rIn the above example, a view contains a variable state (the view's string field "
+                    attr: 1
+                  - text: s
+                    attr: 4
+                  - text: "). This state should be saved when the window's contents are saved to disk. For this purpose, a view provides two procedures, called "
+                    attr: 1
+                  - text: Internalize
+                    attr: 4
+                  - text: " and "
+                    attr: 1
+                  - text: Externalize
+                    attr: 4
+                  - text: ", whose uses are shown in the next iteration of our example program:\r\r"
+                    attr: 1
+                  - ruler:
+                      first: 180000
+                      left: 180000
+                      right: 180000
+                      lead: 8100
+                      asc: 145400
+                      dsc: 32400
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 360000 }
+                        - { stop: 540000 }
+                        - { stop: 720000 }
+                        - { stop: 900000 }
+                        - { stop: 1080000 }
+                        - { stop: 1260000 }
+                        - { stop: 1440000 }
+                        - { stop: 1620000 }
+                        - { stop: 1800000 }
+                        - { stop: 2700000 }
+                        - { stop: 3780000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "MODULE ObxViews11;\r"
+                    attr: 1
+                  - text: "(* Same as ObxViews10, but the view's string can be stored and copied *)"
+                    attr: 4
+                  - text: "\r\r\tIMPORT Fonts, Ports, "
+                    attr: 1
+                  - text: "Stores,"
+                    attr: 2
+                  - text: " Views, Controllers, Properties;\r\r\tCONST d = 20 * Ports.point;\r\r\tTYPE\r\t\tView = POINTER TO RECORD (Views.View)\r\t\t\ti: INTEGER;\t\t\t\t"
+                    attr: 1
+                  - text: "\t(* position of next free slot in string *)"
+                    attr: 4
+                  - text: "\r\t\t\ts: ARRAY 256 OF CHAR\t\t"
+                    attr: 1
+                  - text: "(* string *)"
+                    attr: 4
+                  - text: "\r\t\tEND;\r\r\t"
+                    attr: 1
+                  - text: "PROCEDURE (v: View) Internalize (VAR rd: Stores.Reader);\r\t\tVAR version: INTEGER;\r\tBEGIN\r\t\trd.ReadVersion(0, 0, version);\r\t\tIF ~rd.cancelled THEN\r\t\t\trd.ReadInt(v.i); rd.ReadString(v.s)\r\t\tEND\r\tEND Internalize;\r\r\tPROCEDURE (v: View) Externalize (VAR wr: Stores.Writer);\r\tBEGIN\r\t\twr.WriteVersion(0);\r\t\twr.WriteInt(v.i); wr.WriteString(v.s)\r\tEND Externalize;"
+                    attr: 2
+                  - text: "\r\r\t"
+                    attr: 1
+                  - text: "PROCEDURE (v: View) CopyFromSimpleView (source: Views.View);\r\tBEGIN\r\t\tWITH source: View DO\r\t\t\tv.i := source.i; v.s := source.s\r\t\tEND\r\tEND CopyFromSimpleView;"
+                    attr: 2
+                  - text: "\r\r\tPROCEDURE (v: View) Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\tBEGIN\r\t\tf.DrawString(d, d, Ports.black, v.s, Fonts.dir.Default())\r\tEND Restore;\r\r\tPROCEDURE (v: View) HandleCtrlMsg (f: Views.Frame;\r\t\t\t\t\t\t\t\t\t\t\tVAR msg: Controllers.Message;\r\t\t\t\t\t\t\t\t\t\t\tVAR focus: Views.View);\r\tBEGIN\r\t\tWITH msg: Controllers.EditMsg DO\r\t\t\tIF msg.op = Controllers.pasteChar THEN\t"
+                    attr: 1
+                  - text: "(* accept typing *)"
+                    attr: 4
+                  - text: "\r\t\t\t\tv.s[v.i] := msg.char; INC(v.i); v.s[v.i] := 0X;\t"
+                    attr: 1
+                  - text: "(* append character to string *)"
+                    attr: 4
+                  - text: "\r\t\t\t\t"
+                    attr: 1
+                  - text: Views.SetDirty(v);
+                    attr: 2
+                  - text: "\t(* mark view's document as dirty *)"
+                    attr: 4
+                  - text: "\r\t\t\t\tViews.Update(v, Views.keepFrames)\t"
+                    attr: 1
+                  - text: "(* restore "
+                    attr: 4
+                  - text: v
+                    attr: 1
+                  - text: " in any frame that displays it *)"
+                    attr: 4
+                  - text: "\r\t\t\tEND\r\t\tELSE\t\t\t\t\t\t"
+                    attr: 1
+                  - text: "\t(* ignore other messages *)"
+                    attr: 4
+                  - text: "\r\t\tEND\r\tEND HandleCtrlMsg;\r\r\tPROCEDURE (v:View) HandlePropMsg (VAR msg: Properties.Message);\r\tBEGIN\r\t\tWITH msg: Properties.SizePref DO\r\t\t\tIF (msg.w = Views.undefined) OR (msg.h = Views.undefined) THEN\r\t\t\t\tmsg.w := 10 * d; msg.h := 2 * d\r\t\t\tEND\r\t\t| msg: Properties.FocusPref DO\r\t\t\tmsg.setFocus := TRUE\r\t\tELSE\r\t\tEND\r\tEND HandlePropMsg;\r\r\tPROCEDURE Deposit*;\r\t\tVAR v: View;\r\tBEGIN\r\t\tNEW(v); v.s := \"\"; v.i := 0;\r\t\tViews.Deposit(v)\r\tEND Deposit;\r\rEND ObxViews11.\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      lead: 11500
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rA few comments about "
+                    attr: 1
+                  - text: View.Internalize
+                    attr: 4
+                  - text: " and "
+                    attr: 1
+                  - text: View.Externalize
+                    attr: 4
+                  - text: " are in order here: First, the two procedures have a reader, respectively a writer, as variable parameters. These file mappers are set up by BlackBox itself; a view simply uses them.\r\rSecond, "
+                    attr: 1
+                  - text: View.Internalize
+                    attr: 4
+                  - text: " must read exactly the same (amount of) data that "
+                    attr: 1
+                  - text: View.Externalize
+                    attr: 4
+                  - text: " has written.\r\rThird, a user interface typically defines some visual distinction for documents that contain modified views, i.e., for \"dirty\" documents. Or it may require that when the user closes a dirty document, he or she should be asked whether to save it or not. In order to make this possible, a view must tell when its contents has been modified. This is done by the "
+                    attr: 1
+                  - text: Views.BeginModification
+                    attr: 4
+                  - text: " /"
+                    attr: 1
+                  - text: Views.EndModification
+                    attr: 4
+                  - text: " calls.\r\rIn addition to "
+                    attr: 1
+                  - text: View.Internalize
+                    attr: 4
+                  - text: " and "
+                    attr: 1
+                  - text: View.Externalize
+                    attr: 4
+                  - text: ", the above view implementation also implements a "
+                    attr: 1
+                  - text: CopyFromSimpleView
+                    attr: 4
+                  - text: " procedure. Such a procedure should copy the view's contents, given a source view of the same type. "
+                    attr: 1
+                  - text: CopyFromSimpleView
+                    attr: 4
+                  - text: " should usually have the same effect as if the source's contents were externalized on a temporary file, and then internalized again by the destination view. There can be exceptions, though. For example, a text copies even temporary embedded views such as error markers, but it doesn't externalize them.\r\rA view that contains (mutable) state should implement "
+                    attr: 1
+                  - text: CopyFromSimpleView
+                    attr: 4
+                  - text: ", so that it can be printed. The reason that this is necessary is that the framework makes a shallow copy of a view that is being printed, in order to avoid the original view to be changed by pagination, scrolling, or similar modifications that may be performed during printing.\r\rBasically, "
+                    attr: 1
+                  - text: ObxViews11
+                    attr: 4
+                  - text: " has shown most of what is involved in implementing a simple view class. Such simple views are often sufficient; thus it is important that they are easy to implement. However, there are cases where a more advanced view design is in order. In particular, if a window normally can only display a small part of a view's contents, "
+                    attr: 1
+                  - text: multi-view editing
+                    attr: 4
+                  - text: " should be supported.\r\rMulti-view editing means that there may be several views showing the same data. The typical application of this feature is to have two or more windows displaying the same document, each of these windows showing a different part of it in its own view. Thus, if a view's data has been changed, it and all the other affected views must be notified of the change, such that they can update the display accordingly.\r\rThe following sample program, which is the same as the previous one except that it supports multi-view editing, is roughly twice as long. This indicates that the design and implementation of such views is quite a bit more involved than that of simple views. It is a major design decision whether this additional complexity is warranted by its increased convenience.\r\r"
+                    attr: 1
+                  - ruler:
+                      first: 180000
+                      left: 180000
+                      right: 180000
+                      lead: 8100
+                      asc: 145400
+                      dsc: 32400
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 360000 }
+                        - { stop: 540000 }
+                        - { stop: 720000 }
+                        - { stop: 900000 }
+                        - { stop: 1080000 }
+                        - { stop: 1260000 }
+                        - { stop: 1440000 }
+                        - { stop: 1620000 }
+                        - { stop: 1800000 }
+                        - { stop: 3780000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "MODULE ObxViews12;\r"
+                    attr: 1
+                  - text: "(* Same as ObxViews11, but uses a separate model for the string *)"
+                    attr: 4
+                  - text: "\r\r\tIMPORT Fonts, Ports, Stores, "
+                    attr: 1
+                  - text: "Models,"
+                    attr: 2
+                  - text: " Views, Controllers, Properties;\r\r\tCONST d = 20 * Ports.point;\r\r\tTYPE\r\t\t"
+                    attr: 1
+                  - text: "Model = POINTER TO RECORD (Models.Model)\r\t\t\ti: INTEGER;\t\t\t"
+                    attr: 2
+                  - text: "(* position of next free slot in string *)"
+                    attr: 4
+                  - text: "\r\t\t\t"
+                    attr: 1
+                  - text: "s: ARRAY 256 OF CHAR\t"
+                    attr: 2
+                  - text: "(* string *)"
+                    attr: 4
+                  - text: "\r\t\tEND;\r\r\t\tView = POINTER TO RECORD (Views.View)\r\t\t\t"
+                    attr: 1
+                  - text: "model: Model"
+                    attr: 2
+                  - text: "\r\t\tEND;\r\r\r\t"
+                    attr: 1
+                  - text: "(* Model *)"
+                    attr: 4
+                  - text: "\r\r\t"
+                    attr: 1
+                  - text: "PROCEDURE (m: Model) Internalize (VAR rd: Stores.Reader);\r\t\tVAR version: INTEGER;\r\tBEGIN\r\t\trd.ReadVersion(0, 0, version);\r\t\tIF ~rd.cancelled THEN\r\t\t\trd.ReadInt(m.i); rd.ReadString(m.s)\r\t\tEND\r\tEND Internalize;\r\r\tPROCEDURE (m: Model) Externalize (VAR wr: Stores.Writer);\r\tBEGIN\r\t\twr.WriteVersion(0);\r\t\twr.WriteInt(m.i); wr.WriteString(m.s)\r\tEND Externalize;\r\r\tPROCEDURE (m: Model) CopyFrom (source: Stores.Store);\r\tBEGIN\r\t\tWITH source: Model DO\r\t\t\tm.i := source.i; m.s := source.s\r\t\tEND\r\tEND CopyFrom;\r"
+                    attr: 2
+                  - text: "\r\r\t"
+                    attr: 1
+                  - text: "(* View *)"
+                    attr: 4
+                  - text: "\r\r\tPROCEDURE (v: View) Internalize (VAR rd: Stores.Reader);\r\t\tVAR version: INTEGER; st: Stores.Store;\r\tBEGIN\r\t\trd.ReadVersion(0, 0, version);\r\t\tIF ~rd.cancelled THEN\r\t\t\t"
+                    attr: 1
+                  - text: "rd.ReadStore(st);\r\t\t\tv.model := st(Model)\r\t\tEND"
+                    attr: 2
+                  - text: "\r\tEND Internalize;\r\r\tPROCEDURE (v: View) Externalize (VAR wr: Stores.Writer);\r\tBEGIN\r\t\twr.WriteVersion(0);\r\t\t"
+                    attr: 1
+                  - text: wr.WriteStore(v.model)
+                    attr: 2
+                  - text: "\r\tEND Externalize;\r\r"
+                    attr: 1
+                  - text: "\tPROCEDURE (v: View) CopyFromModelView (source: Views.View;\r\t\t\t\t\t\t\t\t\t\tmodel: Models.Model);\r\tBEGIN\r\t\tv.model := model(Model)\r\tEND CopyFromModelView;\r"
+                    attr: 2
+                  - text: "\r\tPROCEDURE (v: View) Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\tBEGIN\r\t\tf.DrawString(d, d, Ports.black, "
+                    attr: 1
+                  - text: v.model.s
+                    attr: 2
+                  - text: ", Fonts.dir.Default())\r\tEND Restore;\r\r\t"
+                    attr: 1
+                  - text: "PROCEDURE (v: View) ThisModel (): Models.Model;\r\tBEGIN\r\t\tRETURN v.model\r\tEND ThisModel;"
+                    attr: 2
+                  - text: "\r\r\t"
+                    attr: 1
+                  - text: "PROCEDURE (v: View) HandleModelMsg (VAR msg: Models.Message);\r\tBEGIN\r\t\tViews.Update(v, Views.keepFrames)"
+                    attr: 2
+                  - text: "\t"
+                    attr: 1
+                  - text: "(* restore "
+                    attr: 4
+                  - text: v
+                    attr: 1
+                  - text: " in any frame that displays it *)"
+                    attr: 4
+                  - text: "\r"
+                    attr: 1
+                  - text: "\tEND HandleModelMsg;"
+                    attr: 2
+                  - text: "\r\r\tPROCEDURE (v: View) HandleCtrlMsg (f: Views.Frame;\r\t\t\t\t\t\t\t\t\t\tVAR msg: Controllers.Message;\r\t\t\t\t\t\t\t\t\t\tVAR focus: Views.View);\r\t\t"
+                    attr: 1
+                  - text: "VAR m: Model; umsg: Models.UpdateMsg;"
+                    attr: 2
+                  - text: "\r\tBEGIN\r\t\tWITH msg: Controllers.EditMsg DO\r\t\t\tIF msg.op = Controllers.pasteChar THEN\r\t\t\t\t"
+                    attr: 1
+                  - text: "m := v.model;"
+                    attr: 2
+                  - text: "\r\t\t\t\t"
+                    attr: 1
+                  - text: "m.s[m.i] := msg.char; INC(m.i);\r\t\t\t\tm.s[m.i] := 0X;"
+                    attr: 2
+                  - text: "\t"
+                    attr: 1
+                  - text: "(* append character to string *)"
+                    attr: 4
+                  - text: "\r\t\t\t\t"
+                    attr: 1
+                  - text: Views.SetDirty(v);
+                    attr: 2
+                  - text: "\t"
+                    attr: 1
+                  - text: "(* mark view's document as dirty *)"
+                    attr: 4
+                  - text: "\r\t\t\t\t"
+                    attr: 1
+                  - text: "Models.Broadcast(m, umsg)"
+                    attr: 2
+                  - text: "\t"
+                    attr: 1
+                  - text: "(* update all views on this model *)"
+                    attr: 4
+                  - text: "\r\t\t\tEND\r\t\tELSE\t\t\t\t\t\t"
+                    attr: 1
+                  - text: "(* ignore other messages *)"
+                    attr: 4
+                  - text: "\r\t\tEND\r\tEND HandleCtrlMsg;\r\r\tPROCEDURE (v:View) HandlePropMsg (VAR msg: Properties.Message);\r\tBEGIN\r\t\tWITH msg: Properties.SizePref DO\r\t\t\tIF (msg.w = Views.undefined) OR (msg.h = Views.undefined) THEN\r\t\t\t\tmsg.w := 10 * d; msg.h := 2 * d\r\t\t\tEND\r\t\t| msg: Properties.FocusPref DO\r\t\t\tmsg.setFocus := TRUE\r\t\tELSE\r\t\tEND\r\tEND HandlePropMsg;\r\r\tPROCEDURE Deposit*;\r\t\tVAR v: View;"
+                    attr: 1
+                  - text: " m: Model;"
+                    attr: 2
+                  - text: "\r\tBEGIN\r\t\t"
+                    attr: 1
+                  - text: "NEW(m); m.i := 0; m.s := \"\";\r\t\t"
+                    attr: 2
+                  - text: NEW(v);
+                    attr: 1
+                  - text: " v.model := m; Stores.Join(v, m);"
+                    attr: 2
+                  - text: "\r\t\tViews.Deposit(v)\r\tEND Deposit;\r\rEND ObxViews12.\r\t\r"
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 92
+                      bodyPos: 9345
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: " \"ObxViews12.Deposit; StdCmds.Open\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      lead: 11500
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rMulti-view editing is realized by factoring out the view's data into a separate data structure, called a "
+                    attr: 1
+                  - text: model
+                    attr: 4
+                  - text: ". This model is shared between all its views, i.e., each such view contains a pointer to the model:\r\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 95
+                      bodyPos: 9556
+                      bodyLen: 1179
+                    attr: 1
+                    w: 5003688
+                    h: 1777960
+                  - text: "\r\rFigure 6.2:  Two Views on one Model\r\rA model is, like a view, an extension of a "
+                    attr: 1
+                  - text: Stores.Store
+                    attr: 4
+                  - text: ", which is the base type for all persistent objects. Stores define the "
+                    attr: 1
+                  - text: Internalize
+                    attr: 4
+                  - text: " and "
+                    attr: 1
+                  - text: Externalize
+                    attr: 4
+                  - text: " procedures we've already met for a view. In "
+                    attr: 1
+                  - text: ObxViews12
+                    attr: 4
+                  - text: ", the model stores the string and its length, while the view stores the whole model! For this purpose, a "
+                    attr: 1
+                  - text: Stores.Writer
+                    attr: 4
+                  - text: " provides a "
+                    attr: 1
+                  - text: WriteStore
+                    attr: 4
+                  - text: " and a "
+                    attr: 1
+                  - text: Stores.Reader
+                    attr: 4
+                  - text: " provides a "
+                    attr: 1
+                  - text: ReadStore
+                    attr: 4
+                  - text: " procedure.\r\rStores may form arbitrary graphs. For example, one or several views may refer to the same model, both models and views are store extensions. A graph of stores that may be saved in a file is called a "
+                    attr: 1
+                  - text: document
+                    attr: 4
+                  - text: ". In order to recognize the boundary of a document upon externalization, stores are bound to a "
+                    attr: 1
+                  - text: domain
+                    attr: 4
+                  - text: . All stores of a document refer to the same domain object (
+                    attr: 1
+                  - text: Stores.Domain
+                    attr: 4
+                  - text: ").\r\rDomains are also used as containers for operations, i.e., commands performed on some store which can be undone and redone (see next chapter). The operation history is associated with a domain. Furthermore, domains define the set of objects which get notified in a broadcast (either "
+                    attr: 1
+                  - text: Views.Broadcast
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: Views.Domaincast
+                    attr: 4
+                  - text: " or "
+                    attr: 1
+                  - text: Models.Broadcast
+                    attr: 4
+                  - text: ").\r\rFor more information on stores and domains, see the on-line documentation of module "
+                    attr: 1
+                  - text: Stores
+                    attr: 4
+                  - text: ".\r\rNow that the model is separated from the view, copying is done by the model, not by the view anymore.\r\r"
+                    attr: 1
+                  - text: View.ThisModel
+                    attr: 4
+                  - text: " returns the model of the view. Its default implementation returns "
+                    attr: 1
+                  - text: NIL
+                    attr: 4
+                  - text: ", which should be overridden in views that contain models. This procedure is used by the framework to find all views that display a given model, in order to implement model broadcasts, as described in the next paragraph.\r\rViews with a model implement the procedure "
+                    attr: 1
+                  - text: View.CopyFromModelView
+                    attr: 4
+                  - text: " instead of "
+                    attr: 1
+                  - text: View.CopyFromSimpleView
+                    attr: 4
+                  - text: ". Like "
+                    attr: 1
+                  - text: Internalize
+                    attr: 4
+                  - text: " and "
+                    attr: 1
+                  - text: Externalize
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: CopyFromSimpleView
+                    attr: 4
+                  - text: " and "
+                    attr: 1
+                  - text: CopyFromModelView
+                    attr: 4
+                  - text: " are exported as implement-only procedures, i.e., they can only be implemented, but not called. They are called internally in module "
+                    attr: 1
+                  - text: Views
+                    attr: 4
+                  - text: ", in its "
+                    attr: 1
+                  - text: CopyOf
+                    attr: 4
+                  - text: " and "
+                    attr: 1
+                  - text: CopyWithNewModel
+                    attr: 4
+                  - text: " functions.\r\rWhen a model changes, all views displaying it must be updated. For this purpose, a "
+                    attr: 1
+                  - text: model broadcast
+                    attr: 4
+                  - text: " is generated: A model broadcast notifies all views which display a particular model about a model modification that has happened. This gives each view the opportunity to restore its contents on the screen. A model broadcast is generated in the "
+                    attr: 1
+                  - text: View.HandleCtrlMsg
+                    attr: 4
+                  - text: " procedure by calling "
+                    attr: 1
+                  - text: Models.Broadcast
+                    attr: 4
+                  - text: ". The message is received by every view which contains the correct model, via its "
+                    attr: 1
+                  - text: View.HandleModelMsg
+                    attr: 4
+                  - text: " procedure.\r\rThis indirection becomes important if different types of views display the same model, e.g., a tabular view and a graphical view on a spreadsheet model; and if instead of restoring the whole view  as has been done in our examples  only the necessary parts of the views are restored. These necessary parts may be completely different for different types of views.\r\rA very sophisticated model may be able to contain (\"embed\") arbitrary views as part of its contents. For example, a text view may display a text model which contains not only characters (its "
+                    attr: 1
+                  - text: intrinsic contents
+                    attr: 4
+                  - text: "), but also graphical or other views flowing along in the text stream.\r\rThe combination of multi-view editing and hierarchical view embedding can lead to the following situation, where two text views show the same text model, which in turn contains a graphics view. Each text view lives in its own window and thus has its own frame. The graphics view is unique however, since it is embedded in the text model, which is shared by both views. Nevertheless the graphics can be visible in both text views simultaneously, and thus there can be two frames for this one view:\r\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 96
+                      bodyPos: 11085
+                      bodyLen: 1974
+                    attr: 1
+                    w: 5003695
+                    h: 2819340
+                  - text: "\r\rFigure 6-3:  Two Frames on one View\r\rAs a consequence, one and the same view may be visible in several places on the screen simultaneously. In this case, this means that when the view has changed, several places must be updated: the view must restore the necessary area once for every frame on this view. As a consequence, a notification mechanism must exist which lets the view update each of its frames. This is done in a similar way as the notification mechanism for model changes: with a "
+                    attr: 1
+                  - text: view broadcast
+                    attr: 4
+                  - text: ". Fortunately, there is a standard update mechanism in the framework which automatically handles this second broadcast level (see below).\r\rWe now can summarize the typical events that occur when a user interacts with a view:\r\rController message handling:\r\r1) Some controller message is sent to the focus view.\r2) The focus view interprets the message and changes its model accordingly.\r3) The model broadcasts a model message, describing the change that has been performed.\r\rModel message handling:\r\r4) Every view on this model receives the model message.\r5) It determines how its display should change because of this model modification.\r6) It broadcasts a view message, describing how its display should change.\r\rView message handling:\r\r7) The view receives the view notification message once for every frame on this view.\r8) Every time, the view redraws the frame contents according to the view message.\r\rThis mechanism is fundamental to the BlackBox Component Framework. If you have understood it, you have mastered the most complicated part of a view implementation. Interpreting the various controller messages, which are defined in module "
+                    attr: 1
+                  - text: Controllers
+                    attr: 4
+                  - text: ", is more a matter of diligence than of understanding difficult new concepts. Moreover, you only need to interpret the controller messages in which you are interested, because messages that are not relevant can simply be ignored.\r\rUsually, steps 6, 7, and 8 are handled automatically by the framework: the view merely calls "
+                    attr: 1
+                  - text: Views.Update
+                    attr: 4
+                  - text: " if a whole view should be updated, or "
+                    attr: 1
+                  - text: Views.UpdateIn
+                    attr: 4
+                  - text: " if some rectangular part of the view should be updated. Calls of these update procedures cause a "
+                    attr: 1
+                  - text: lazy update
+                    attr: 4
+                  - text: ", i.e., the framework adds up the region to be updated, but does "
+                    attr: 1
+                  - text: not
+                    attr: 4
+                  - text: " immediately cause any redrawing. Instead, the command first runs to completion, so that all data structures of the modified views are consistent again. Only the display of the views is still the same as before the command. But then the framework restores all views that have been marked for update. This means that for every frame that displays a view, the view's "
+                    attr: 1
+                  - text: Restore
+                    attr: 4
+                  - text: " method is called with this frame as argument. If the view is displayed in two (or more) frames in different windows, it is restored two (or more) times; once for every frame. When the framework starts restoring frames of a window, it temporarily redirects the drawing operations of a port into a background pixelmap buffer. When all frames of this window that need updating have been restored, the framework copies the pixelmap buffer to the screen pixelmap, and turns off the redirection of drawing operations.\r\rThe effect of this buffering mechanism and of the lazy update mechanism is that minimal flickering occurs. The lazy update mechanism (also used by Apple for the Mac OS, and by Microsoft for Windows) means that even for complex editing operations, a given screen region is only restored once. This can reduce flickering, since flickering can occur when the same area is drawn several times in rapid succession. The buffering mechanism reduces flickering if drawing occurs in layers, from \"bottom\" to \"top\" (because this also means drawing several time in rapid succession). For example, you may first draw the background in one color, and then the a filled rectangle on top of it in another color. Thanks to the buffering mechanism, the user never sees the situation after the background is drawn, but before the rectangle is drawn.\r\rThe lazy update mechanism also has another advantage: it completely decouples the modification of a model from its drawing. Without this mechanism, it can become rather difficult to correctly perform screen updates for complex editing operations. For example, consider moving a selection of graphics objects in a graphics editor. The selected objects first must be deleted at their old position, this may mean that other objects that have been obscured by the selection now need to be drawn (but not the selected objects themselves!). Then the objects' positions are changed, and then they are redrawn at their new positions (if the source and target positions overlap, drawing has now happened twice). Drawing may have to be done several times, if there are several windows displaying the same data. But of course the change of object positions must only occur once. It is much less tricky to simply call "
+                    attr: 1
+                  - text: Views.UpdateIn
+                    attr: 4
+                  - text: " for all rectangles that (may) need updating, and to let the framework call the necessary "
+                    attr: 1
+                  - text: Restore
+                    attr: 4
+                  - text: " methods later!\r\rNormally, the lazy update mechanism is sufficient. Thus a view programmer needs to use explicit view messages only if no complete restore in all frames of a view is desired. This is the case only for marks like selection, focus, or carets, or for rubberbanding or similar feedback effects during mouse tracking. Such marks can sometimes be handled more efficiently because they are involutory: applied twice, they have no effect. Thus marks are often switched on and off through custom view messages "
+                    attr: 1
+                  - text: during
+                    attr: 4
+                  - text: " a command, not through the delaying lazy update mechanism. But except for such light-weight marks, you should always use the lazy update mechanism described above. Note that there exists a method "
+                    attr: 1
+                  - text: Ports.Frame.MarkRect
+                    attr: 4
+                  - text: " explicitly for drawing such marks.\r\r\r"
+                    attr: 1
+                  - text: 6.7 Operations
+                    attr: 2
+                  - text: "\r\rNow that we have seen the crucial ingredients of a view implementation, a less central feature can be presented. The next program is a variation of the above one, in which a controller message is not interpreted directly. Instead, an "
+                    attr: 1
+                  - text: operation
+                    attr: 4
+                  - text: " object is created and then executed. An operation provides a "
+                    attr: 1
+                  - text: do / undo / redo
+                    attr: 4
+                  - text: " capability, as shown in the program below.\r\rThe operation we define in this example is the "
+                    attr: 1
+                  - text: PasteCharOp
+                    attr: 4
+                  - text: ". The operation's "
+                    attr: 1
+                  - text: Do
+                    attr: 4
+                  - text: " procedure performs the desired modification, and must be involutory, i.e. when called twice, its effect must have been neutralized again. We use the flag "
+                    attr: 1
+                  - text: PasteCharOp.do
+                    attr: 4
+                  - text: " to specify whether the character"
+                    attr: 1
+                  - text: " PasteCharOp.char"
+                    attr: 4
+                  - text: " has to be inserted into or removed from the model "
+                    attr: 1
+                  - text: PasteCharOp.m
+                    attr: 4
+                  - text: ". In any case, the "
+                    attr: 1
+                  - text: Do
+                    attr: 4
+                  - text: " procedure has to update all views on the model "
+                    attr: 1
+                  - text: "PasteCharOp.m "
+                    attr: 4
+                  - text: "with a model broadcast.\r\rThe procedure "
+                    attr: 1
+                  - text: NewPasteCharOp
+                    attr: 4
+                  - text: " generates a new operation and the procedure "
+                    attr: 1
+                  - text: Models.Do
+                    attr: 4
+                  - text: " executes this operation, i.e., the operation's "
+                    attr: 1
+                  - text: Do
+                    attr: 4
+                  - text: " procedure is called and the operation is recorded for a later undo. The name of the operation as specified in the "
+                    attr: 1
+                  - text: Models.Do
+                    attr: 4
+                  - text: " command will appear in the "
+                    attr: 1
+                  - text: Edit
+                    attr: 4
+                  - text: " menu after the "
+                    attr: 1
+                  - text: Undo
+                    attr: 4
+                  - text: " or "
+                    attr: 1
+                  - text: Redo
+                    attr: 4
+                  - text: " entry respectively.\r\r"
+                    attr: 1
+                  - ruler:
+                      first: 180000
+                      left: 180000
+                      right: 180000
+                      asc: 145400
+                      dsc: 32400
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 360000 }
+                        - { stop: 540000 }
+                        - { stop: 720000 }
+                        - { stop: 900000 }
+                        - { stop: 1080000 }
+                        - { stop: 1260000 }
+                        - { stop: 1440000 }
+                        - { stop: 1620000 }
+                        - { stop: 1800000 }
+                        - { stop: 3780000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "MODULE ObxViews13;\r"
+                    attr: 1
+                  - text: "(* Same as ObxViews12, but generate undoable operations for character insertion *)"
+                    attr: 4
+                  - text: "\r\r\tIMPORT Fonts, Ports, Stores, Models, Views, Controllers, Properties;\r\r\tCONST d = 20 * Ports.point;\r\r\tTYPE\r\t\tModel = POINTER TO RECORD (Models.Model)\r\t\t\ti: INTEGER;\t\t\t"
+                    attr: 1
+                  - text: "(* position of next free slot in string *)"
+                    attr: 4
+                  - text: "\r\t\t\ts: ARRAY 256 OF CHAR\t"
+                    attr: 1
+                  - text: "(* string *)"
+                    attr: 4
+                  - text: "\r\t\tEND;\r\r\t\tView = POINTER TO RECORD (Views.View)\r\t\t\tmodel: Model\r\t\tEND;\r\r\t\t"
+                    attr: 1
+                  - text: "PasteCharOp = POINTER TO RECORD (Stores.Operation)\r\t\t\tmodel: Model;\r\t\t\tchar: CHAR;\r\t\t\tdo: BOOLEAN\r\t\tEND;"
+                    attr: 2
+                  - text: "\r\r\r\t"
+                    attr: 1
+                  - text: "(* PasteCharOp *)"
+                    attr: 4
+                  - text: "\r\r\t"
+                    attr: 1
+                  - text: "PROCEDURE (op: PasteCharOp) Do;\r\t\tVAR m: Model; msg: Models.UpdateMsg;\r\tBEGIN\r\t\tm := op.model;\r\t\tIF op.do THEN\t\t\t"
+                    attr: 2
+                  - text: "(* do operation's transformation *)"
+                    attr: 4
+                  - text: "\r\t\t\tm.s[m.i] := op.char; INC(m.i)\t"
+                    attr: 2
+                  - text: "(* insert character into string *)"
+                    attr: 4
+                  - text: "\r\t\tELSE\t"
+                    attr: 2
+                  - text: "\t\t\t\t\t"
+                    attr: 1
+                  - text: "(* undo operation's transformation *)"
+                    attr: 4
+                  - text: "\r"
+                    attr: 2
+                  - text: "\t"
+                    attr: 1
+                  - text: "\t\tDEC(m.i)\t\t\t\t"
+                    attr: 2
+                  - text: "(* remove character from string *)"
+                    attr: 4
+                  - text: "\r\t\tEND;\r\t\tm.s[m.i] := 0X;"
+                    attr: 2
+                  - text: "\r"
+                    attr: 1
+                  - text: "\t\top.do := ~op.do;"
+                    attr: 2
+                  - text: "\t\t(* toggle between \"do\" and \"undo\" *)"
+                    attr: 4
+                  - text: "\r\t\tModels.Broadcast(m, msg)\t"
+                    attr: 2
+                  - text: "(* update all views on this model *)"
+                    attr: 4
+                  - text: "\r"
+                    attr: 1
+                  - text: "\tEND Do;\r\r\tPROCEDURE NewPasteCharOp (m: Model; char: CHAR): PasteCharOp;\r\t\tVAR op: PasteCharOp;\r\tBEGIN\r\t\tNEW(op); op.model := m; op.char := char; op.do := TRUE;\r\t\tRETURN op\r\tEND NewPasteCharOp;"
+                    attr: 2
+                  - text: "\r\r\r\t"
+                    attr: 1
+                  - text: "(* Model *)"
+                    attr: 4
+                  - text: "\r\r\tPROCEDURE (m: Model) Internalize (VAR rd: Stores.Reader);\r\t\tVAR version: INTEGER;\r\tBEGIN\r\t\trd.ReadVersion(0, 0, version);\r\t\tIF ~rd.cancelled THEN\r\t\t\trd.ReadInt(m.i); rd.ReadString(m.s)\r\t\tEND\r\tEND Internalize;\r\r\tPROCEDURE (m: Model) Externalize (VAR wr: Stores.Writer);\r\tBEGIN\r\t\twr.WriteVersion(0);\r\t\twr.WriteInt(m.i); wr.WriteString(m.s)\r\tEND Externalize;\r\r\tPROCEDURE (m: Model) CopyFrom (source: Stores.Store);\r\tBEGIN\r\t\tWITH source: Model DO\r\t\t\tm.i := source.i; m.s := source.s\r\t\tEND\r\tEND CopyFrom;\r\r\r\t"
+                    attr: 1
+                  - text: "(* View *)"
+                    attr: 4
+                  - text: "\r\r\tPROCEDURE (v: View) Internalize (VAR rd: Stores.Reader);\r\t\tVAR version: INTEGER; st: Stores.Store;\r\tBEGIN\r\t\trd.ReadVersion(0, 0, version);\r\t\tIF ~rd.cancelled THEN\r\t\t\trd.ReadStore(st);\r\t\t\tv.model := st(Model)\r\t\tEND\r\tEND Internalize;\r\r\tPROCEDURE (v: View) Externalize (VAR wr: Stores.Writer);\r\tBEGIN\r\t\twr.WriteVersion(0);\r\t\twr.WriteStore(v.model)\r\tEND Externalize;\r\r\tPROCEDURE (v: View) CopyFromModelView (source: Views.View; model: Models.Model);\r\tBEGIN\r\t\tv.model := model(Model)\r\tEND CopyFromModelView;\r\r\tPROCEDURE (v: View) Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\tBEGIN\r\t\tf.DrawString(d, d, Ports.black, v.model.s, Fonts.dir.Default())\r\tEND Restore;\r\r\tPROCEDURE (v: View) ThisModel (): Models.Model;\r\tBEGIN\r\t\tRETURN v.model\r\tEND ThisModel;\r\r\tPROCEDURE (v: View) HandleModelMsg (VAR msg: Models.Message);\r\tBEGIN\r\t\tViews.Update(v, Views.keepFrames) "
+                    attr: 1
+                  - text: " (* restore "
+                    attr: 4
+                  - text: v
+                    attr: 1
+                  - text: " in any frame that displays it *)"
+                    attr: 4
+                  - text: "\r"
+                    attr: 2
+                  - text: "\tEND HandleModelMsg;\r\r\tPROCEDURE (v: View) HandleCtrlMsg (f: Views.Frame; VAR msg: Controllers.Message;\r\t\t\t\t\t\t\t\t\t\tVAR focus: Views.View);\r\t\tVAR op: Stores.Operation;\r\tBEGIN\r\t\tWITH msg: Controllers.EditMsg DO\r\t\t\tIF msg.op = Controllers.pasteChar THEN\r\t\t\t\t"
+                    attr: 1
+                  - text: "op := NewPasteCharOp(v.model, msg.char);\t"
+                    attr: 2
+                  - text: "(* generate operation *)"
+                    attr: 4
+                  - text: "\r\t\t\t\t"
+                    attr: 1
+                  - text: "Models.Do(v.model, \"Typing\", op)"
+                    attr: 2
+                  - text: "\t(* execute operation *)"
+                    attr: 4
+                  - text: "\r\t\t\tEND\r\t\tELSE\t\t\t\t\t\t"
+                    attr: 1
+                  - text: "(* ignore other messages *)"
+                    attr: 4
+                  - text: "\r\t\tEND\r\tEND HandleCtrlMsg;\r\r\tPROCEDURE (v:View) HandlePropMsg (VAR msg: Properties.Message);\r\tBEGIN\r\t\tWITH msg: Properties.SizePref DO\r\t\t\tIF (msg.w = Views.undefined) OR (msg.h = Views.undefined) THEN\r\t\t\t\tmsg.w := 10 * d; msg.h := 2 * d\r\t\t\tEND\r\t\t| msg: Properties.FocusPref DO\r\t\t\tmsg.setFocus := TRUE\r\t\tELSE\r\t\tEND\r\tEND HandlePropMsg;\r\r\tPROCEDURE Deposit*;\r\t\tVAR v: View; m: Model;\r\tBEGIN\r\t\tNEW(m); m.i := 0; m.s := \"\";\r\t\tNEW(v); v.model := m; Stores.Join(v, m);\r\t\tViews.Deposit(v)\r\tEND Deposit;\r\rEND ObxViews13.\r\r"
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 99
+                      bodyPos: 13783
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: " \"ObxViews13.Deposit; StdCmds.Open\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rFurther examples which use the undo/redo mechanism through operations can be found e.g. in "
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenDoc('Obx/Mod/Omosi')"
+                      body:
+                        - text: ObxOmosi
+                          attr: 5
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: " or "
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenDoc('Obx/Mod/Lines')"
+                      body:
+                        - text: ObxLines
+                          attr: 5
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: ".\r\r\r"
+                    attr: 1
+                  - text: "6.8 Separation of interface and implementation\r"
+                    attr: 2
+                  - text: "\rAs a last version of our sample view, we modify the previous variant by exporting the "
+                    attr: 1
+                  - text: Model
+                    attr: 4
+                  - text: " and "
+                    attr: 1
+                  - text: View
+                    attr: 4
+                  - text: " types, and by separating interface and implementation of these two types. In order to do the latter, so-called "
+                    attr: 1
+                  - text: directory
+                    attr: 4
+                  - text: " objects are introduced, which generate (hidden) default implementations of abstract data types. A user now might implement its own version of the abstract type and offer it through its own directory object, however he can not inherit from the default implementation and thus avoids the "
+                    attr: 1
+                  - text: fragile base class problem
+                    attr: 4
+                  - text: ".\r\rReal BlackBox subsystems would additionally split the module into two modules, one for the model and one for the view. A third module with commands might be introduced, if the number and complexity of commands warrant it (e.g., "
+                    attr: 1
+                  - text: TextModels
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: TextViews
+                    attr: 4
+                  - text: ", and "
+                    attr: 1
+                  - text: TextCmds
+                    attr: 4
+                  - text: "). Even more complicated views would further split views into views and controllers, each in its own module.\r\r"
+                    attr: 1
+                  - ruler:
+                      first: 180000
+                      left: 180000
+                      right: 180000
+                      lead: 8100
+                      asc: 145400
+                      dsc: 32400
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 360000 }
+                        - { stop: 540000 }
+                        - { stop: 720000 }
+                        - { stop: 900000 }
+                        - { stop: 1080000 }
+                        - { stop: 1260000 }
+                        - { stop: 1440000 }
+                        - { stop: 1620000 }
+                        - { stop: 1800000 }
+                        - { stop: 3780000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "MODULE ObxViews14;\r"
+                    attr: 1
+                  - text: "(* Same as ObxViews13, but interfaces and implementations separated, and operation directly in Insert procedure *)"
+                    attr: 4
+                  - text: "\r\r\tIMPORT Fonts, Ports, Stores, Models, Views, Controllers, Properties;\r\r\tCONST d = 20 * Ports.point;\r\r\tTYPE\r\t\t"
+                    attr: 1
+                  - text: "Model* = POINTER TO ABSTRACT RECORD (Models.Model) END;\r\r\t\tModelDirectory* = POINTER TO ABSTRACT RECORD END;\r"
+                    attr: 2
+                  - text: "\r\t\t"
+                    attr: 1
+                  - text: "View* = POINTER TO ABSTRACT RECORD (Views.View) END;\r"
+                    attr: 2
+                  - text: "\r\t\t"
+                    attr: 1
+                  - text: "Directory* = POINTER TO ABSTRACT RECORD END;"
+                    attr: 2
+                  - text: "\r\r\r\t\t"
+                    attr: 1
+                  - text: "StdModel = POINTER TO RECORD (Model)\r"
+                    attr: 2
+                  - text: "\t\t"
+                    attr: 1
+                  - text: "\ti: INTEGER;\t\t\t"
+                    attr: 2
+                  - text: "(* position of next free slot in string *)"
+                    attr: 4
+                  - text: "\r"
+                    attr: 1
+                  - text: "\t\t\ts: ARRAY 256 OF CHAR\t"
+                    attr: 2
+                  - text: "(* string *)"
+                    attr: 4
+                  - text: "\r\t\t"
+                    attr: 1
+                  - text: END;
+                    attr: 2
+                  - text: "\r\r\t\t"
+                    attr: 1
+                  - text: StdModelDirectory = POINTER TO RECORD (ModelDirectory) END;
+                    attr: 2
+                  - text: "\r\r\t\t"
+                    attr: 1
+                  - text: StdView = POINTER TO RECORD (View)
+                    attr: 2
+                  - text: "\r"
+                    attr: 1
+                  - text: "\t\t\tmodel: Model\r"
+                    attr: 2
+                  - text: "\t\t"
+                    attr: 1
+                  - text: END;
+                    attr: 2
+                  - text: "\r\r\t\t"
+                    attr: 1
+                  - text: StdDirectory = POINTER TO RECORD (Directory) END;
+                    attr: 2
+                  - text: "\r\r\t\tPasteCharOp = POINTER TO RECORD (Stores.Operation)\r\t\t\tmodel: StdModel;\r\t\t\tchar: CHAR;\r\t\t\tdo: BOOLEAN\r\t\tEND;\r\r\r\t"
+                    attr: 1
+                  - text: "VAR\r\t\tmdir-: ModelDirectory;\r\t\tdir-: Directory;"
+                    attr: 2
+                  - text: "\r\r\r\t"
+                    attr: 1
+                  - text: "(* Model *)"
+                    attr: 4
+                  - text: "\r\r\t"
+                    attr: 1
+                  - text: "PROCEDURE (m: Model) Insert* (char: CHAR), NEW, ABSTRACT;\r"
+                    attr: 2
+                  - text: "\t"
+                    attr: 1
+                  - text: "PROCEDURE (m: Model) Remove*, NEW, ABSTRACT;\r"
+                    attr: 2
+                  - text: "\t"
+                    attr: 1
+                  - text: "PROCEDURE (m: Model) GetString* (OUT s: ARRAY OF CHAR), NEW, ABSTRACT;\r"
+                    attr: 2
+                  - text: "\r\t"
+                    attr: 1
+                  - text: "(* ModelDirectory *)"
+                    attr: 4
+                  - text: "\r\r\t"
+                    attr: 1
+                  - text: "PROCEDURE (d: ModelDirectory) New* (): Model, NEW, ABSTRACT;\r"
+                    attr: 2
+                  - text: "\r\t"
+                    attr: 1
+                  - text: "(* PasteCharOp *)"
+                    attr: 4
+                  - text: "\r\r\tPROCEDURE (op: PasteCharOp) Do;\r\t\tVAR m: StdModel; msg: Models.UpdateMsg;\r\tBEGIN\r\t\tm := op.model;\r\t\tIF op.do THEN\t\t\t\t"
+                    attr: 1
+                  - text: "(* do operation's transformation *)"
+                    attr: 4
+                  - text: "\r"
+                    attr: 2
+                  - text: "\t\t\tm.s[m.i] := op.char; INC(m.i);\r\t\tELSE\t\t\t\t\t\t"
+                    attr: 1
+                  - text: "(* undo operation's transformation *)"
+                    attr: 4
+                  - text: "\r"
+                    attr: 2
+                  - text: "\t\t\tDEC(m.i)\t\t\t\t"
+                    attr: 1
+                  - text: "(* remove character from string *)"
+                    attr: 4
+                  - text: "\r\t\tEND;\r\t\tm.s[m.i] := 0X;\r\t\top.do := ~op.do;\t"
+                    attr: 1
+                  - text: "\t\t(* toggle between \"do\" and \"undo\" *)"
+                    attr: 4
+                  - text: "\r"
+                    attr: 2
+                  - text: "\t\tModels.Broadcast(m, msg)"
+                    attr: 1
+                  - text: "\t"
+                    attr: 2
+                  - text: "(* update all views on this model *)"
+                    attr: 4
+                  - text: "\r\tEND Do;"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - text: "\r\r\t"
+                    attr: 1
+                  - text: "(* StdModel *)"
+                    attr: 4
+                  - text: "\r\r\tPROCEDURE (m: "
+                    attr: 1
+                  - text: Std
+                    attr: 2
+                  - text: "Model) Internalize (VAR rd: Stores.Reader);\r\t\tVAR version: INTEGER;\r\tBEGIN\r\t\trd.ReadVersion(0, 0, version);\r\t\tIF ~rd.cancelled THEN\r\t\t\trd.ReadInt(m.i); rd.ReadString(m.s)\r\t\tEND\r\tEND Internalize;\r\r\tPROCEDURE (m: "
+                    attr: 1
+                  - text: Std
+                    attr: 2
+                  - text: "Model) Externalize (VAR wr: Stores.Writer);\r\tBEGIN\r\t\twr.WriteVersion(0);\r\t\twr.WriteInt(m.i); wr.WriteString(m.s)\r\tEND Externalize;\r\r\tPROCEDURE (m: "
+                    attr: 1
+                  - text: Std
+                    attr: 2
+                  - text: "Model) CopyFrom (source: Stores.Store);\r\tBEGIN\r\t\tWITH source: "
+                    attr: 1
+                  - text: Std
+                    attr: 2
+                  - text: "Model DO\r\t\t\tm.i := source.i; m.s := source.s\r\t\tEND\r\tEND CopyFrom;\r\r\r\t"
+                    attr: 1
+                  - text: "PROCEDURE (m: StdModel) Insert (char: CHAR);\r\t\tVAR op: PasteCharOp;\r\tBEGIN\r\t\tNEW(op); op.model := m; op.char := char; op.do := TRUE;\r\t\tModels.Do(m, \"insertion\", op)\r\tEND Insert;"
+                    attr: 2
+                  - text: "\r\r\t"
+                    attr: 1
+                  - text: "PROCEDURE (m: StdModel) Remove;\r\t\tVAR msg: Models.UpdateMsg;\r\tBEGIN\r\t\tDEC(m.i); m.s[m.i] := 0X;"
+                    attr: 2
+                  - text: "\r"
+                    attr: 1
+                  - text: "\t\tModels.Broadcast(m, msg)\t"
+                    attr: 2
+                  - text: "(* update all views on this model *)"
+                    attr: 4
+                  - text: "\r"
+                    attr: 1
+                  - text: "\tEND Remove;"
+                    attr: 2
+                  - text: "\r\r\t"
+                    attr: 1
+                  - text: "PROCEDURE (m: StdModel) GetString (OUT s: ARRAY OF CHAR);\r\tBEGIN\r\t\ts := m.s$\r\tEND GetString;"
+                    attr: 2
+                  - text: "\r\r\r\t"
+                    attr: 1
+                  - text: "(* StdModelDirectory *)"
+                    attr: 4
+                  - text: "\r\r\t"
+                    attr: 1
+                  - text: "PROCEDURE (d: StdModelDirectory) New (): Model;\r\t\tVAR m: StdModel;\r\tBEGIN\r\t\tNEW(m); m.s := \"\";  m.i := 0; RETURN m\r\tEND New;"
+                    attr: 2
+                  - text: "\r\r\r\r\t"
+                    attr: 1
+                  - text: "(* Directory *)"
+                    attr: 4
+                  - text: "\r\r\t"
+                    attr: 1
+                  - text: "PROCEDURE (d: Directory) New* (m: Model): View, NEW, ABSTRACT;\r\r"
+                    attr: 2
+                  - text: "\r\t"
+                    attr: 1
+                  - text: "(* StdView *)"
+                    attr: 4
+                  - text: "\r\r\tPROCEDURE (v: "
+                    attr: 1
+                  - text: Std
+                    attr: 2
+                  - text: "View) Internalize (VAR rd: Stores.Reader);\r\t\tVAR version: INTEGER; st: Stores.Store;\r\tBEGIN\r\t\trd.ReadVersion(0, 0, version);\r\t\tIF ~rd.cancelled THEN\r"
+                    attr: 1
+                  - text: "\t\t\trd.ReadStore(st);\r\t\t\tIF st IS Model THEN\r\t\t\t\tv.model := st(Model)\r\t\t\tELSE\r\t\t\t\t(* concrete model implementation couldn't be loaded->\r\t\t\t\t\tan alien store was created *)\r\t\t\t\trd.TurnIntoAlien(Stores.alienComponent)\r\t\t\t\t(* internalization of v is cancelled *)\r\t\t\tEND\r"
+                    attr: 2
+                  - text: "\t\tEND\r\tEND Internalize;\r\r\tPROCEDURE (v: "
+                    attr: 1
+                  - text: Std
+                    attr: 2
+                  - text: "View) Externalize (VAR wr: Stores.Writer);\r\tBEGIN\r\t\twr.WriteVersion(0);\r\t\twr.WriteStore(v.model)\r\tEND Externalize;\r\r\tPROCEDURE (v: "
+                    attr: 1
+                  - text: Std
+                    attr: 2
+                  - text: "View) CopyFromModelView (source: Views.View; model: Models.Model);\r\tBEGIN\r\t\tWITH source: "
+                    attr: 1
+                  - text: Std
+                    attr: 2
+                  - text: "View DO\r\t\t\tv.model := model(Model)\r\t\tEND\r\tEND CopyFromModelView;\r\r\tPROCEDURE (v: "
+                    attr: 1
+                  - text: Std
+                    attr: 2
+                  - text: "View) Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\t\t"
+                    attr: 1
+                  - text: "VAR s: ARRAY 256 OF CHAR;"
+                    attr: 2
+                  - text: "\r\tBEGIN\r\t\t"
+                    attr: 1
+                  - text: v.model.GetString(s);
+                    attr: 2
+                  - text: "\r\t\tf.DrawString(d, d, Ports.black, "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: ", Fonts.dir.Default())\r\tEND Restore;\r\r\tPROCEDURE (v: "
+                    attr: 1
+                  - text: Std
+                    attr: 2
+                  - text: "View) ThisModel (): Models.Model;\r\tBEGIN\r\t\tRETURN v.model\r\tEND ThisModel;\r\r\tPROCEDURE (v: "
+                    attr: 1
+                  - text: Std
+                    attr: 2
+                  - text: "View) HandleModelMsg (VAR msg: Models.Message);\r\tBEGIN\r\t\tViews.Update(v, Views.keepFrames)\t"
+                    attr: 1
+                  - text: "(* restore "
+                    attr: 4
+                  - text: v
+                    attr: 1
+                  - text: " in any frame that displays it *)"
+                    attr: 4
+                  - text: "\r"
+                    attr: 2
+                  - text: "\tEND HandleModelMsg;\r\r\tPROCEDURE (v: "
+                    attr: 1
+                  - text: Std
+                    attr: 2
+                  - text: "View) HandleCtrlMsg (f: Views.Frame;\r\t\t\t\t\t\t\t\t\t\tVAR msg: Controllers.Message;\r\t\t\t\t\t\t\t\t\t\tVAR focus: Views.View);\r\tBEGIN\r\t\tWITH msg: Controllers.EditMsg DO\r\t\t\tIF msg.op = Controllers.pasteChar THEN\r\t\t\t\t"
+                    attr: 1
+                  - text: v.model.Insert(msg.char)
+                    attr: 2
+                  - text: "\t"
+                    attr: 1
+                  - text: "(*  undoable insertion *)"
+                    attr: 4
+                  - text: "\r\t\t\tEND\r\t\tELSE\t\t\t\t\t\t"
+                    attr: 1
+                  - text: "(* ignore other messages *)"
+                    attr: 4
+                  - text: "\r\t\tEND\r\tEND HandleCtrlMsg;\r\r\tPROCEDURE (v:"
+                    attr: 1
+                  - text: Std
+                    attr: 2
+                  - text: "View) HandlePropMsg (VAR msg: Properties.Message);\r\tBEGIN\r\t\tWITH msg: Properties.SizePref DO\r\t\t\tIF (msg.w = Views.undefined) OR (msg.h = Views.undefined) THEN\r\t\t\t\tmsg.w := 10 * d; msg.h := 2 *d \r\t\t\tEND\r\t\t| msg: Properties.FocusPref DO\r\t\t\tmsg.setFocus := TRUE\r\t\tELSE\r\t\tEND\r\tEND HandlePropMsg;\r\r\r\t"
+                    attr: 1
+                  - text: "(* StdDirectory *)"
+                    attr: 4
+                  - text: "\r\r\t"
+                    attr: 1
+                  - text: "PROCEDURE (d: StdDirectory) New* (m: Model): View;\r\t\tVAR v: StdView;\r\tBEGIN\r\t\tASSERT(m # NIL, 20);\r\t\tNEW(v); v.model := m; Stores.Join(v, m);\r\t\tRETURN v"
+                    attr: 2
+                  - text: "\r"
+                    attr: 1
+                  - text: "\tEND New;"
+                    attr: 2
+                  - text: "\r\r\r\tPROCEDURE Deposit*;\r\t\tVAR v: View;\r\tBEGIN\r"
+                    attr: 1
+                  - text: "\t\tv := dir.New(mdir.New());"
+                    attr: 2
+                  - text: "\r\t\tViews.Deposit(v)\r\tEND Deposit;\r\r"
+                    attr: 1
+                  - text: "\tPROCEDURE SetModelDir* (d: ModelDirectory);\r\tBEGIN\r\t\tASSERT(d # NIL, 20);\r\t\tmdir := d\r\tEND SetModelDir;\r\r"
+                    attr: 2
+                  - text: "\t"
+                    attr: 1
+                  - text: "PROCEDURE SetDir* (d: Directory);\r\tBEGIN\r\t\tASSERT(d # NIL, 20);\r\t\tdir := d\r\tEND SetDir;"
+                    attr: 2
+                  - text: "\r\r\t"
+                    attr: 1
+                  - text: "PROCEDURE Init;\r\t\tVAR md: StdModelDirectory; d: StdDirectory;\r\tBEGIN\r\t\tNEW(md); mdir := md;\r\t\tNEW(d); dir := d\r\tEND Init;"
+                    attr: 2
+                  - text: "\r\r"
+                    attr: 1
+                  - text: "BEGIN\r\tInit"
+                    attr: 2
+                  - text: "\rEND ObxViews14.\r\r"
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 109
+                      bodyPos: 15256
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: " \"ObxViews14.Deposit; StdCmds.Open\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rA simple example of a BlackBox module which follows this design is "
+                    attr: 1
+                  - text: DevMarkers
+                    attr: 4
+                  - text: ". The marker views are simple views without a model, therefore only a directory object to generate new views is offered. The second directory object "
+                    attr: 1
+                  - text: DevMarkers.stdDir
+                    attr: 4
+                  - text: " keeps the standard implementation provided by this module. It might be used to install back the default implementation or to reuse the default implementation (as an instance) in another component.\r\rThe separation of a type's definition from its implementation is recommended in the design of new BlackBox subsystems. However, simple view types which won't become publicly available or which are not meant to be extended can certainly dispense with this additional effort.\r\rNote that the subsystem wizard (menu item Tools->Create Subsystem...) helps to generate templates for the different kinds of view. In particular, it is possible to generate separate model and view modules. The tool uses the template texts stored in "
+                    attr: 1
+                  - text: Dev/Rsrc/New
+                    attr: 4
+                  - text: ". You may want to study the files "
+                    attr: 1
+                  - text: Models5
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: Views5
+                    attr: 4
+                  - text: ", and "
+                    attr: 1
+                  - text: Cmds5
+                    attr: 4
+                  - text: " in this directory.\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 116
+          bodyPos: 84301
+          bodyLen: 8

@@ -1,0 +1,206 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Win\\Mod\\OleCtl.odc"
+  size: 27662
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 27531
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 27345
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 27259
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 22
+                bodyPos: 27380
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 26866
+                runListLen: 1605
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                flow:
+                  - text: "MODULE WinOleCtl [\"OC30.dll\"];\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT WinOleAut, COM, WinOle, WinApi;\r\r\tCONST (* macros *)\r\t\tCTL_E_ILLEGALFUNCTIONCALL* = -2146828283;\r\t\tCTL_E_OVERFLOW* = -2146828282;\r\t\tCTL_E_OUTOFMEMORY* = -2146828281;\r\t\tCTL_E_DIVISIONBYZERO* = -2146828277;\r\t\tCTL_E_OUTOFSTRINGSPACE* = -2146828274;\r\t\tCTL_E_OUTOFSTACKSPACE* = -2146828260;\r\t\tCTL_E_BADFILENAMEORNUMBER* = -2146828236;\r\t\tCTL_E_FILENOTFOUND* = -2146828235;\r\t\tCTL_E_BADFILEMODE* = -2146828234;\r\t\tCTL_E_FILEALREADYOPEN* = -2146828233;\r\t\tCTL_E_DEVICEIOERROR* = -2146828231;\r\t\tCTL_E_FILEALREADYEXISTS* = -2146828230;\r\t\tCTL_E_BADRECORDLENGTH* = -2146828229;\r\t\tCTL_E_DISKFULL* = -2146828227;\r\t\tCTL_E_BADRECORDNUMBER* = -2146828225;\r\t\tCTL_E_BADFILENAME* = -2146828224;\r\t\tCTL_E_TOOMANYFILES* = -2146828221;\r\t\tCTL_E_DEVICEUNAVAILABLE* = -2146828220;\r\t\tCTL_E_PERMISSIONDENIED* = -2146828218;\r\t\tCTL_E_DISKNOTREADY* = -2146828217;\r\t\tCTL_E_PATHFILEACCESSERROR* = -2146828213;\r\t\tCTL_E_PATHNOTFOUND* = -2146828212;\r\t\tCTL_E_INVALIDPATTERNSTRING* = -2146828195;\r\t\tCTL_E_INVALIDUSEOFNULL* = -2146828194;\r\t\tCTL_E_INVALIDFILEFORMAT* = -2146827967;\r\t\tCTL_E_INVALIDPROPERTYVALUE* = -2146827908;\r\t\tCTL_E_INVALIDPROPERTYARRAYINDEX* = -2146827907;\r\t\tCTL_E_SETNOTSUPPORTEDATRUNTIME* = -2146827906;\r\t\tCTL_E_SETNOTSUPPORTED* = -2146827905;\r\t\tCTL_E_NEEDPROPERTYARRAYINDEX* = -2146827903;\r\t\tCTL_E_SETNOTPERMITTED* = -2146827901;\r\t\tCTL_E_GETNOTSUPPORTEDATRUNTIME* = -2146827895;\r\t\tCTL_E_GETNOTSUPPORTED* = -2146827894;\r\t\tCTL_E_PROPERTYNOTFOUND* = -2146827866;\r\t\tCTL_E_INVALIDCLIPBOARDFORMAT* = -2146827828;\r\t\tCTL_E_INVALIDPICTURE* = -2146827807;\r\t\tCTL_E_PRINTERERROR* = -2146827806;\r\t\tCTL_E_CANTSAVEFILETOTEMP* = -2146827553;\r\t\tCTL_E_SEARCHTEXTNOTFOUND* = -2146827544;\r\t\tCTL_E_REPLACEMENTSTOOLONG* = -2146827542;\r\t\tCTL_E_CUSTOM_FIRST* = -2146827688;\r\t\tCLASS_E_NOTLICENSED* = -2147221230;\r\t\tCONNECT_E_FIRST* = -2147220992;\r\t\tCONNECT_E_LAST* = -2147220977;\r\t\tCONNECT_S_FIRST* = 262656;\r\t\tCONNECT_S_LAST* = 262671;\r\t\tCONNECT_E_NOCONNECTION* = -2147220992;\r\t\tCONNECT_E_ADVISELIMIT* = -2147220991;\r\t\tCONNECT_E_CANNOTCONNECT* = -2147220990;\r\t\tCONNECT_E_OVERRIDDEN* = -2147220989;\r\t\tSELFREG_E_FIRST* = -2147220992;\r\t\tSELFREG_E_LAST* = -2147220977;\r\t\tSELFREG_S_FIRST* = 262656;\r\t\tSELFREG_S_LAST* = 262671;\r\t\tSELFREG_E_TYPELIB* = -2147220992;\r\t\tSELFREG_E_CLASS* = -2147220991;\r\t\tPERPROP_E_FIRST* = -2147220992;\r\t\tPERPROP_E_LAST* = -2147220977;\r\t\tPERPROP_S_FIRST* = 262656;\r\t\tPERPROP_S_LAST* = 262671;\r\t\tPERPROP_E_NOPAGEAVAILABLE* = -2147220992;\r\t\tOLEMISC_INVISIBLEATRUNTIME* = {10};\r\t\tOLEMISC_ALWAYSRUN* = {11};\r\t\tOLEMISC_ACTSLIKEBUTTON* = {12};\r\t\tOLEMISC_ACTSLIKELABEL* = {13};\r\t\tOLEMISC_NOUIACTIVATE* = {14};\r\t\tOLEMISC_ALIGNABLE* = {15};\r\t\tOLEMISC_SIMPLEFRAME* = {16};\r\t\tOLEMISC_SETCLIENTSITEFIRST* = {17};\r\t\tOLEMISC_IMEMODE* = {18};\r\t\tOLEMISC_WANTSTOMENUMERGE* = {19};\r\t\tOLEIVERB_PROPERTIES* = -7;\r\t\tVT_STREAMED_PROPSET* = 73;\r\t\tVT_STORED_PROPSET* = 74;\r\t\tVT_BLOB_PROPSET* = 75;\r\t\tVT_VERBOSE_ENUM* = 76;\r\t\tVT_COLOR* = 3;\r\t\tVT_XPOS_PIXELS* = 3;\r\t\tVT_YPOS_PIXELS* = 3;\r\t\tVT_XSIZE_PIXELS* = 3;\r\t\tVT_YSIZE_PIXELS* = 3;\r\t\tVT_XPOS_HIMETRIC* = 3;\r\t\tVT_YPOS_HIMETRIC* = 3;\r\t\tVT_XSIZE_HIMETRIC* = 3;\r\t\tVT_YSIZE_HIMETRIC* = 3;\r\t\tVT_TRISTATE* = 2;\r\t\tVT_OPTEXCLUSIVE* = 11;\r\t\tVT_FONT* = 9;\r\t\tVT_PICTURE* = 9;\r\t\tVT_HANDLE* = 3;\r\t\tOCM__BASE* = 8192;\r\t\tOCM_COMMAND* = 8465;\r\t\tOCM_CTLCOLORBTN* = 8501;\r\t\tOCM_CTLCOLOREDIT* = 8499;\r\t\tOCM_CTLCOLORDLG* = 8502;\r\t\tOCM_CTLCOLORLISTBOX* = 8500;\r\t\tOCM_CTLCOLORMSGBOX* = 8498;\r\t\tOCM_CTLCOLORSCROLLBAR* = 8503;\r\t\tOCM_CTLCOLORSTATIC* = 8504;\r\t\tOCM_DRAWITEM* = 8235;\r\t\tOCM_MEASUREITEM* = 8236;\r\t\tOCM_DELETEITEM* = 8237;\r\t\tOCM_VKEYTOITEM* = 8238;\r\t\tOCM_CHARTOITEM* = 8239;\r\t\tOCM_COMPAREITEM* = 8249;\r\t\tOCM_HSCROLL* = 8468;\r\t\tOCM_VSCROLL* = 8469;\r\t\tOCM_PARENTNOTIFY* = 8720;\r\t\tOCM_NOTIFY* = 8270;\r\t\tCTRLINFO_EATS_RETURN* = 1;\r\t\tCTRLINFO_EATS_ESCAPE* = 2;\r\t\tXFORMCOORDS_POSITION* = 1;\r\t\tXFORMCOORDS_SIZE* = 2;\r\t\tXFORMCOORDS_HIMETRICTOCONTAINER* = 4;\r\t\tXFORMCOORDS_CONTAINERTOHIMETRIC* = 8;\r\t\tGUIDKIND_DEFAULT_SOURCE_DISP_IID* = 1;\r\t\tPROPPAGESTATUS_DIRTY* = 1;\r\t\tPROPPAGESTATUS_VALIDATE* = 2;\r\t\tPICTURE_SCALABLE* = 1;\r\t\tPICTURE_TRANSPARENT* = 2;\r\t\tPICTYPE_UNINITIALIZED* = -1;\r\t\tPICTYPE_NONE* = 0;\r\t\tPICTYPE_BITMAP* = 1;\r\t\tPICTYPE_METAFILE* = 2;\r\t\tPICTYPE_ICON* = 3;\r\t\tPICTYPE_ENHMETAFILE* = 4;\r\t\tDISPID_AUTOSIZE* = -500;\r\t\tDISPID_BACKCOLOR* = -501;\r\t\tDISPID_BACKSTYLE* = -502;\r\t\tDISPID_BORDERCOLOR* = -503;\r\t\tDISPID_BORDERSTYLE* = -504;\r\t\tDISPID_BORDERWIDTH* = -505;\r\t\tDISPID_DRAWMODE* = -507;\r\t\tDISPID_DRAWSTYLE* = -508;\r\t\tDISPID_DRAWWIDTH* = -509;\r\t\tDISPID_FILLCOLOR* = -510;\r\t\tDISPID_FILLSTYLE* = -511;\r\t\tDISPID_FONT* = -512;\r\t\tDISPID_FORECOLOR* = -513;\r\t\tDISPID_ENABLED* = -514;\r\t\tDISPID_HWND* = -515;\r\t\tDISPID_TABSTOP* = -516;\r\t\tDISPID_TEXT* = -517;\r\t\tDISPID_CAPTION* = -518;\r\t\tDISPID_BORDERVISIBLE* = -519;\r\t\tDISPID_APPEARANCE* = -520;\r\t\tDISPID_REFRESH* = -550;\r\t\tDISPID_DOCLICK* = -551;\r\t\tDISPID_ABOUTBOX* = -552;\r\t\tDISPID_CLICK* = -600;\r\t\tDISPID_DBLCLICK* = -601;\r\t\tDISPID_KEYDOWN* = -602;\r\t\tDISPID_KEYPRESS* = -603;\r\t\tDISPID_KEYUP* = -604;\r\t\tDISPID_MOUSEDOWN* = -605;\r\t\tDISPID_MOUSEMOVE* = -606;\r\t\tDISPID_MOUSEUP* = -607;\r\t\tDISPID_ERROREVENT* = -608;\r\t\tDISPID_AMBIENT_BACKCOLOR* = -701;\r\t\tDISPID_AMBIENT_DISPLAYNAME* = -702;\r\t\tDISPID_AMBIENT_FONT* = -703;\r\t\tDISPID_AMBIENT_FORECOLOR* = -704;\r\t\tDISPID_AMBIENT_LOCALEID* = -705;\r\t\tDISPID_AMBIENT_MESSAGEREFLECT* = -706;\r\t\tDISPID_AMBIENT_SCALEUNITS* = -707;\r\t\tDISPID_AMBIENT_TEXTALIGN* = -708;\r\t\tDISPID_AMBIENT_USERMODE* = -709;\r\t\tDISPID_AMBIENT_UIDEAD* = -710;\r\t\tDISPID_AMBIENT_SHOWGRABHANDLES* = -711;\r\t\tDISPID_AMBIENT_SHOWHATCHING* = -712;\r\t\tDISPID_AMBIENT_DISPLAYASDEFAULT* = -713;\r\t\tDISPID_AMBIENT_SUPPORTSMNEMONICS* = -714;\r\t\tDISPID_AMBIENT_AUTOCLIP* = -715;\r\t\tDISPID_AMBIENT_APPEARANCE* = -716;\r\t\tDISPID_FONT_NAME* = 0;\r\t\tDISPID_FONT_SIZE* = 2;\r\t\tDISPID_FONT_BOLD* = 3;\r\t\tDISPID_FONT_ITALIC* = 4;\r\t\tDISPID_FONT_UNDER* = 5;\r\t\tDISPID_FONT_STRIKE* = 6;\r\t\tDISPID_FONT_WEIGHT* = 7;\r\t\tDISPID_FONT_CHARSET* = 8;\r\t\tDISPID_PICT_HANDLE* = 0;\r\t\tDISPID_PICT_HPAL* = 2;\r\t\tDISPID_PICT_TYPE* = 3;\r\t\tDISPID_PICT_WIDTH* = 4;\r\t\tDISPID_PICT_HEIGHT* = 5;\r\t\tDISPID_PICT_RENDER* = 6;\r\r\tCONST (* enumerations *)\r\t\tCLSID_CFontPropPage* = \"{2542F180-3532-1069-A2CD-00AA0034B50B}\";\r\t\tCLSID_CColorPropPage* = \"{DDF5A600-B9C0-101A-AF1A-00AA0034B50B}\";\r\t\tCLSID_CPicturePropPage* = \"{FC7AF71D-FC74-101A-84ED-08002B2EC713}\";\r\t\tCLSID_PersistPropset* = \"{FB8F0821-0164-101B-84ED-08002B2EC713}\";\r\t\tCLSID_ConvertVBX* = \"{FB8F0822-0164-101B-84ED-08002B2EC713}\";\r\t\tCLSID_StdFont* = \"{FB8F0823-0164-101B-84ED-08002B2EC713}\";\r\t\tCLSID_StdPicture* = \"{FB8F0824-0164-101B-84ED-08002B2EC713}\";\r\t\tGUID_HIMETRIC* = \"{66504300-BE0F-101A-8BBB-00AA00300CAB}\";\r\t\tGUID_COLOR* = \"{66504301-BE0F-101A-8BBB-00AA00300CAB}\";\r\t\tGUID_XPOSPIXEL* = \"{66504302-BE0F-101A-8BBB-00AA00300CAB}\";\r\t\tGUID_YPOSPIXEL* = \"{66504303-BE0F-101A-8BBB-00AA00300CAB}\";\r\t\tGUID_XSIZEPIXEL* = \"{66504304-BE0F-101A-8BBB-00AA00300CAB}\";\r\t\tGUID_YSIZEPIXEL* = \"{66504305-BE0F-101A-8BBB-00AA00300CAB}\";\r\t\tGUID_XPOS* = \"{66504306-BE0F-101A-8BBB-00AA00300CAB}\";\r\t\tGUID_YPOS* = \"{66504307-BE0F-101A-8BBB-00AA00300CAB}\";\r\t\tGUID_XSIZE* = \"{66504308-BE0F-101A-8BBB-00AA00300CAB}\";\r\t\tGUID_YSIZE* = \"{66504309-BE0F-101A-8BBB-00AA00300CAB}\";\r\t\tGUID_TRISTATE* = \"{6650430A-BE0F-101A-8BBB-00AA00300CAB}\";\r\t\tGUID_OPTIONVALUEEXCLUSIVE* = \"{6650430B-BE0F-101A-8BBB-00AA00300CAB}\";\r\t\tGUID_CHECKVALUEEXCLUSIVE* = \"{6650430C-BE0F-101A-8BBB-00AA00300CAB}\";\r\t\tGUID_FONTNAME* = \"{6650430D-BE0F-101A-8BBB-00AA00300CAB}\";\r\t\tGUID_FONTSIZE* = \"{6650430E-BE0F-101A-8BBB-00AA00300CAB}\";\r\t\tGUID_FONTBOLD* = \"{6650430F-BE0F-101A-8BBB-00AA00300CAB}\";\r\t\tGUID_FONTITALIC* = \"{66504310-BE0F-101A-8BBB-00AA00300CAB}\";\r\t\tGUID_FONTUNDERSCORE* = \"{66504311-BE0F-101A-8BBB-00AA00300CAB}\";\r\t\tGUID_FONTSTRIKETHROUGH* = \"{66504312-BE0F-101A-8BBB-00AA00300CAB}\";\r\t\tGUID_HANDLE* = \"{66504313-BE0F-101A-8BBB-00AA00300CAB}\";\r\t\ttriUnchecked* = 0;\r\t\ttriChecked* = 1;\r\t\ttriGray* = 2;\r\r\tTYPE\r\t\tTEXTMETRICOLE* = WinApi.TEXTMETRICW;\r\t\tPtrTEXTMETRICOLE* = WinApi.PtrTEXTMETRICW;\r\t\tOLE_COLOR* = INTEGER;\r\t\tOLE_XPOS_PIXELS* = INTEGER;\r\t\tOLE_YPOS_PIXELS* = INTEGER;\r\t\tOLE_XSIZE_PIXELS* = INTEGER;\r\t\tOLE_YSIZE_PIXELS* = INTEGER;\r\t\tOLE_XPOS_HIMETRIC* = INTEGER;\r\t\tOLE_YPOS_HIMETRIC* = INTEGER;\r\t\tOLE_XSIZE_HIMETRIC* = INTEGER;\r\t\tOLE_YSIZE_HIMETRIC* = INTEGER;\r\t\tOLE_XPOS_CONTAINER* = SHORTREAL;\r\t\tOLE_YPOS_CONTAINER* = SHORTREAL;\r\t\tOLE_XSIZE_CONTAINER* = SHORTREAL;\r\t\tOLE_YSIZE_CONTAINER* = SHORTREAL;\r\t\tOLE_TRISTATE* = INTEGER;\r\t\tOLE_OPTEXCLUSIVE* = WinOle.VARIANT_BOOL;\r\t\tOLE_CANCELBOOL* = WinOle.VARIANT_BOOL;\r\t\tOLE_ENABLEDEFAULTBOOL* = WinOle.VARIANT_BOOL;\r\t\tOLE_HANDLE* = INTEGER;\r\t\tPOINTF* = RECORD [untagged]\r\t\t\tx*: SHORTREAL;\r\t\t\ty*: SHORTREAL;\r\t\tEND;\r\t\tPtrPOINTF* = POINTER TO POINTF;\r\t\tCONTROLINFO* = RECORD [untagged]\r\t\t\tcb*: INTEGER;\r\t\t\thAccel*: WinApi.HACCEL;\r\t\t\tcAccel*: SHORTINT;\r\t\t\tdwFlags*: SET;\r\t\tEND;\r\t\tPtrCONTROLINFO* = POINTER TO CONTROLINFO;\r\t\tIOleControl* = POINTER TO ABSTRACT RECORD [\"{B196B288-BAB4-101A-B69C-00AA00341D07}\"] (COM.IUnknown)\r\t\tEND;\r\t\tIOleControlSite* = POINTER TO ABSTRACT RECORD [\"{B196B289-BAB4-101A-B69C-00AA00341D07}\"] (COM.IUnknown)\r\t\tEND;\r\t\tISimpleFrameSite* = POINTER TO ABSTRACT RECORD [\"{742B0E01-14E6-101B-914E-00AA00300CAB}\"] (COM.IUnknown)\r\t\tEND;\r\t\tIErrorLog* = POINTER TO ABSTRACT RECORD [interface] (COM.IUnknown)\r\t\tEND;\r\t\tIPropertyBag* = POINTER TO ABSTRACT RECORD [interface] (COM.IUnknown)\r\t\tEND;\r\t\tIPersistPropertyBag* = POINTER TO ABSTRACT RECORD [interface] (WinOle.IPersist)\r\t\tEND;\r\t\tIPersistStreamInit* = POINTER TO ABSTRACT RECORD [\"{7FD52380-4E07-101B-AE2D-08002B2EC713}\"] (WinOle.IPersist)\r\t\tEND;\r\t\tIPersistMemory* = POINTER TO ABSTRACT RECORD [interface] (WinOle.IPersist)\r\t\tEND;\r\t\tIPropertyNotifySink* = POINTER TO ABSTRACT RECORD [\"{9BFBBC02-EFF1-101A-84ED-00AA00341D07}\"] (COM.IUnknown)\r\t\tEND;\r\t\tIProvideClassInfo* = POINTER TO ABSTRACT RECORD [\"{B196B283-BAB4-101A-B69C-00AA00341D07}\"] (COM.IUnknown)\r\t\tEND;\r\t\tIProvideClassInfo2* = POINTER TO ABSTRACT RECORD [\"{A6BC3AC0-DBAA-11CE-9DE3-00AA004BB851}\"] (IProvideClassInfo)\r\t\tEND;\r\t\tLICINFO* = RECORD [untagged]\r\t\t\tcbLicInfo*: INTEGER;\r\t\t\tfRuntimeKeyAvail*: WinApi.BOOL;\r\t\t\tfLicVerified*: WinApi.BOOL;\r\t\tEND;\r\t\tPtrLICINFO* = POINTER TO LICINFO;\r\t\tIClassFactory2* = POINTER TO ABSTRACT RECORD [\"{B196B28F-BAB4-101A-B69C-00AA00341D07}\"] (WinOle.IClassFactory)\r\t\tEND;\r\t\tCAUUID* = RECORD [untagged]\r\t\t\tcElems*: INTEGER;\r\t\t\tpElems*: POINTER TO (*?*) ARRAY [untagged] OF COM.GUID;\r\t\tEND;\r\t\tPtrCAUUID* = POINTER TO CAUUID;\r\t\tCALPOLESTR* = RECORD [untagged]\r\t\t\tcElems*: INTEGER;\r\t\t\tpElems*: POINTER TO (*?*) ARRAY [untagged] OF WinApi.PtrWSTR;\r\t\tEND;\r\t\tPtrCALPOLESTR* = POINTER TO CALPOLESTR;\r\t\tCADWORD* = RECORD [untagged]\r\t\t\tcElems*: INTEGER;\r\t\t\tpElems*: POINTER TO (*?*) ARRAY [untagged] OF INTEGER;\r\t\tEND;\r\t\tPtrCADWORD* = POINTER TO CADWORD;\r\t\tOCPFIPARAMS* = RECORD [untagged]\r\t\t\tcbStructSize*: INTEGER;\r\t\t\thWndOwner*: WinApi.HWND;\r\t\t\tx*: INTEGER;\r\t\t\ty*: INTEGER;\r\t\t\tlpszCaption*: WinApi.PtrWSTR;\r\t\t\tcObjects*: INTEGER;\r\t\t\tlplpUnk*: POINTER TO (*?*) ARRAY [untagged] OF COM.IUnknown;\r\t\t\tcPages*: INTEGER;\r\t\t\tlpPages*: POINTER TO (*?*) ARRAY [untagged] OF COM.GUID;\r\t\t\tlcid*: WinOle.LCID;\r\t\t\tdispidInitialProperty*: WinOleAut.DISPID;\r\t\tEND;\r\t\tPtrOCPFIPARAMS* = POINTER TO OCPFIPARAMS;\r\t\tPROPPAGEINFO* = RECORD [untagged]\r\t\t\tcb*: INTEGER;\r\t\t\tpszTitle*: WinApi.PtrWSTR;\r\t\t\tsize*: WinApi.SIZE;\r\t\t\tpszDocString*: WinApi.PtrWSTR;\r\t\t\tpszHelpFile*: WinApi.PtrWSTR;\r\t\t\tdwHelpContext*: INTEGER;\r\t\tEND;\r\t\tPtrPROPPAGEINFO* = POINTER TO PROPPAGEINFO;\r\t\tISpecifyPropertyPages* = POINTER TO ABSTRACT RECORD [\"{B196B28B-BAB4-101A-B69C-00AA00341D07}\"] (COM.IUnknown)\r\t\tEND;\r\t\tIPerPropertyBrowsing* = POINTER TO ABSTRACT RECORD [\"{376BD3AA-3845-101B-84ED-08002B2EC713}\"] (COM.IUnknown)\r\t\tEND;\r\t\tIPropertyPageSite* = POINTER TO ABSTRACT RECORD [\"{B196B28C-BAB4-101A-B69C-00AA00341D07}\"] (COM.IUnknown)\r\t\tEND;\r\t\tIPropertyPage* = POINTER TO ABSTRACT RECORD [\"{B196B28D-BAB4-101A-B69C-00AA00341D07}\"] (COM.IUnknown)\r\t\tEND;\r\t\tIPropertyPage2* = POINTER TO ABSTRACT RECORD [\"{01E44665-24AC-101B-84ED-08002B2EC713}\"] (IPropertyPage)\r\t\tEND;\r\t\tIFont* = POINTER TO ABSTRACT RECORD [\"{BEF6E002-A874-101A-8BBA-00AA00300CAB}\"] (COM.IUnknown)\r\t\tEND;\r\t\tIFontDisp* = POINTER TO ABSTRACT RECORD [\"{BEF6E003-A874-101A-8BBA-00AA00300CAB}\"] (WinOleAut.IDispatch)\r\t\tEND;\r\t\tFONTDESC* = RECORD [align8]\r\t\t\tcbSizeofstruct*: INTEGER;\r\t\t\tlpstrName*: WinApi.PtrWSTR;\r\t\t\tcySize*: WinApi.CY;\r\t\t\tsWeight*: SHORTINT;\r\t\t\tsCharset*: SHORTINT;\r\t\t\tfItalic*: WinApi.BOOL;\r\t\t\tfUnderline*: WinApi.BOOL;\r\t\t\tfStrikethrough*: WinApi.BOOL;\r\t\tEND;\r\t\tPtrFONTDESC* = POINTER TO FONTDESC;\r\t\tIPicture* = POINTER TO ABSTRACT RECORD [\"{7BF80980-BF32-101A-8BBB-00AA00300CAB}\"] (COM.IUnknown)\r\t\tEND;\r\t\tIPictureDisp* = POINTER TO ABSTRACT RECORD [\"{7BF80981-BF32-101A-8BBB-00AA00300CAB}\"] (WinOleAut.IDispatch)\r\t\tEND;\r\t\tINTERFACE* = IPictureDisp;\r\t\tPICTDESC* = RECORD [untagged]\r\t\t\tcbSizeofstruct*: INTEGER;\r\t\t\tpicType*: INTEGER;\r\t\t\tu*: RECORD [union]\r\t\t\t\tbmp*: RECORD [untagged]\r\t\t\t\t\thbitmap*: WinApi.HBITMAP;\r\t\t\t\t\thpal*: WinApi.HPALETTE;\r\t\t\t\tEND;\r\t\t\t\twmf*: RECORD [untagged]\r\t\t\t\t\thmeta*: WinApi.HMETAFILE;\r\t\t\t\t\txExt*: INTEGER;\r\t\t\t\t\tyExt*: INTEGER;\r\t\t\t\tEND;\r\t\t\t\ticon*: RECORD [untagged]\r\t\t\t\t\thicon*: WinApi.HICON;\r\t\t\t\tEND;\r\t\t\t\temf*: RECORD [untagged]\r\t\t\t\t\themf*: WinApi.HENHMETAFILE;\r\t\t\t\tEND;\r\t\t\tEND;\r\t\tEND;\r\t\tPtrPICTDESC* = POINTER TO PICTDESC;\r\r\tPROCEDURE (this: IOleControl) GetControlInfo* (VAR [nil] pCI: CONTROLINFO): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IOleControl) OnMnemonic* (VAR [nil] pMsg: WinApi.MSG): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IOleControl) OnAmbientPropertyChange* (dispid: WinOleAut.DISPID): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IOleControl) FreezeEvents* (bFreeze: WinApi.BOOL): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IOleControlSite) OnControlInfoChanged* (): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IOleControlSite) LockInPlaceActive* (fLock: WinApi.BOOL): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IOleControlSite) GetExtendedControl* (VAR [nil] ppDisp: WinOleAut.IDispatch): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IOleControlSite) TransformCoords* (VAR [nil] lpptlHimetric: WinApi.POINT; VAR [nil] lpptfContainer: POINTF; flags: SET): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IOleControlSite) TranslateAccelerator* (VAR [nil] lpMsg: WinApi.MSG; grfModifiers: INTEGER): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IOleControlSite) OnFocus* (fGotFocus: WinApi.BOOL): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IOleControlSite) ShowPropertyFrame* (): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: ISimpleFrameSite) PreMessageFilter* (hwnd: WinApi.HWND; msg: INTEGER; wp: WinApi.WPARAM; lp: WinApi.LPARAM; VAR [nil] lplResult: WinApi.LRESULT; VAR [nil] lpdwCookie: INTEGER): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: ISimpleFrameSite) PostMessageFilter* (hwnd: WinApi.HWND; msg: INTEGER; wp: WinApi.WPARAM; lp: WinApi.LPARAM; VAR [nil] lplResult: WinApi.LRESULT; dwCookie: INTEGER): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IErrorLog) AddError* (pszPropName: WinApi.PtrWSTR; VAR [nil] pExcepInfo: WinOleAut.EXCEPINFO): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPropertyBag) Read* (pszPropName: WinApi.PtrWSTR; VAR [nil] pVar: WinOleAut.VARIANT; pErrorLog: IErrorLog): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPropertyBag) Write* (pszPropName: WinApi.PtrWSTR; VAR [nil] pVar: WinOleAut.VARIANT): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPersistPropertyBag) InitNew* (): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPersistPropertyBag) Load* (pPropBag: IPropertyBag; pErrorLog: IErrorLog): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPersistPropertyBag) Save* (pPropBag: IPropertyBag; fClearDirty: WinApi.BOOL; fSaveAllProperties: WinApi.BOOL): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPersistStreamInit) IsDirty* (): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPersistStreamInit) Load* (pStm: WinOle.IStream): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPersistStreamInit) Save* (pStm: WinOle.IStream; fClearDirty: WinApi.BOOL): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPersistStreamInit) GetSizeMax* (VAR [nil] pcbSize: LONGINT): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPersistStreamInit) InitNew* (): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPersistMemory) IsDirty* (): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPersistMemory) Load* (lpStream: WinApi.PtrVoid; cbSize: INTEGER): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPersistMemory) Save* (lpStream: WinApi.PtrVoid; fClearDirty: WinApi.BOOL; cbSize: INTEGER): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPersistMemory) GetSizeMax* (VAR [nil] pcbSize: INTEGER): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPersistMemory) InitNew* (): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPropertyNotifySink) OnChanged* (dispid: WinOleAut.DISPID): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPropertyNotifySink) OnRequestEdit* (dispid: WinOleAut.DISPID): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IProvideClassInfo) GetClassInfoA* (VAR [nil] ppTI: WinOleAut.ITypeInfo): COM.RESULT, NEW, ABSTRACT;\r\t\r\tPROCEDURE (this: IProvideClassInfo2) GetGUID* (dwGuidKind: INTEGER; VAR [nil] pGUID: COM.GUID): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IClassFactory2) GetLicInfo* (VAR [nil] pLicInfo: LICINFO): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IClassFactory2) RequestLicKey* (dwResrved: INTEGER; VAR [nil] pbstrKey: WinOle.BSTR): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IClassFactory2) CreateInstanceLic* (pUnkOuter: COM.IUnknown; pUnkReserved: COM.IUnknown; IN [iid] riid: COM.GUID; bstrKey: WinOle.BSTR; OUT [new] ppvObject: COM.IUnknown): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: ISpecifyPropertyPages) GetPages* (VAR [nil] pPages: CAUUID): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPerPropertyBrowsing) GetDisplayString* (dispid: WinOleAut.DISPID; VAR [nil] lpbstr: WinOle.BSTR): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPerPropertyBrowsing) MapPropertyToPage* (dispid: WinOleAut.DISPID; VAR [nil] lpclsid: COM.GUID): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPerPropertyBrowsing) GetPredefinedStrings* (dispid: WinOleAut.DISPID; VAR [nil] lpcaStringsOut: CALPOLESTR; VAR [nil] lpcaCookiesOut: CADWORD): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPerPropertyBrowsing) GetPredefinedValue* (dispid: WinOleAut.DISPID; dwCookie: INTEGER; VAR [nil] lpvarOut: WinOleAut.VARIANT): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPropertyPageSite) OnStatusChange* (flags: SET): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPropertyPageSite) GetLocaleID* (VAR [nil] pLocaleID: WinOle.LCID): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPropertyPageSite) GetPageContainer* (VAR [nil] ppUnk: COM.IUnknown): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPropertyPageSite) TranslateAccelerator* (VAR [nil] lpMsg: WinApi.MSG): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPropertyPage) SetPageSite* (pPageSite: IPropertyPageSite): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPropertyPage) Activate* (hwndParent: WinApi.HWND; VAR [nil] lprc: WinApi.RECT; bModal: WinApi.BOOL): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPropertyPage) Deactivate* (): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPropertyPage) GetPageInfo* (VAR [nil] pPageInfo: PROPPAGEINFO): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPropertyPage) SetObjects* (cObjects: INTEGER; VAR [nil] ppunk: COM.IUnknown): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPropertyPage) Show* (nCmdShow: INTEGER): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPropertyPage) Move* (VAR [nil] prect: WinApi.RECT): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPropertyPage) IsPageDirty* (): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPropertyPage) Apply* (): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPropertyPage) Help* (lpszHelpDir: WinApi.PtrWSTR): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPropertyPage) TranslateAccelerator* (VAR [nil] lpMsg: WinApi.MSG): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPropertyPage2) EditProperty* (dispid: WinOleAut.DISPID): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IFont) get_Name* (VAR [nil] pname: WinOle.BSTR): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IFont) put_Name* (name: WinOle.BSTR): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IFont) get_Size* (VAR [nil] psize: WinApi.CY): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IFont) put_Size* (size: WinApi.CY): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IFont) get_Bold* (VAR [nil] pbold: WinApi.BOOL): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IFont) put_Bold* (bold: WinApi.BOOL): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IFont) get_Italic* (VAR [nil] pitalic: WinApi.BOOL): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IFont) put_Italic* (italic: WinApi.BOOL): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IFont) get_Underline* (VAR [nil] punderline: WinApi.BOOL): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IFont) put_Underline* (underline: WinApi.BOOL): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IFont) get_Strikethrough* (VAR [nil] pstrikethrough: WinApi.BOOL): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IFont) put_Strikethrough* (strikethrough: WinApi.BOOL): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IFont) get_Weight* (VAR [nil] pweight: SHORTINT): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IFont) put_Weight* (weight: SHORTINT): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IFont) get_Charset* (VAR [nil] pcharset: SHORTINT): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IFont) put_Charset* (charset: SHORTINT): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IFont) get_hFont* (VAR [nil] phfont: WinApi.HFONT): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IFont) Clone* (VAR [nil] lplpfont: IFont): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IFont) IsEqual* (lpFontOther: IFont): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IFont) SetRatio* (cyLogical: INTEGER; cyHimetric: INTEGER): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IFont) QueryTextMetrics* (VAR [nil] lptm: TEXTMETRICOLE): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IFont) AddRefHfont* (hfont: WinApi.HFONT): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IFont) ReleaseHfont* (hfont: WinApi.HFONT): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IFont) SetHdc* (hdc: WinApi.HDC): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPicture) get_Handle* (VAR [nil] phandle: OLE_HANDLE): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPicture) get_hPal* (VAR [nil] phpal: OLE_HANDLE): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPicture) get_Type* (VAR [nil] ptype: SHORTINT): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPicture) get_Width* (VAR [nil] pwidth: OLE_XSIZE_HIMETRIC): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPicture) get_Height* (VAR [nil] pheight: OLE_YSIZE_HIMETRIC): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPicture) Render* (hdc: WinApi.HDC; x: INTEGER; y: INTEGER; cx: INTEGER; cy: INTEGER; xSrc: OLE_XPOS_HIMETRIC; ySrc: OLE_YPOS_HIMETRIC; cxSrc: OLE_XSIZE_HIMETRIC; cySrc: OLE_YSIZE_HIMETRIC; VAR [nil] lprcWBounds: WinApi.RECT): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPicture) set_hPal* (hpal: OLE_HANDLE): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPicture) get_CurDC* (VAR [nil] phdcOut: WinApi.HDC): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPicture) SelectPicture* (hdcIn: WinApi.HDC; VAR [nil] phdcOut: WinApi.HDC; VAR [nil] phbmpOut: OLE_HANDLE): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPicture) get_KeepOriginalFormat* (VAR [nil] pfkeep: WinApi.BOOL): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPicture) put_KeepOriginalFormat* (fkeep: WinApi.BOOL): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPicture) PictureChanged* (): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPicture) SaveAsFile* (lpstream: WinOle.IStream; fSaveMemCopy: WinApi.BOOL; VAR [nil] lpcbSize: INTEGER): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE (this: IPicture) get_Attributes* (VAR [nil] lpdwAttr: INTEGER): COM.RESULT, NEW, ABSTRACT;\r\r\tPROCEDURE OleCreatePropertyFrame* (hwndOwner: WinApi.HWND; x: INTEGER; y: INTEGER; lpszCaption: WinApi.PtrWSTR; cObjects: INTEGER; VAR [nil] ppUnk: COM.IUnknown; cPages: INTEGER; VAR [nil] pPageClsID: COM.GUID; lcid: WinOle.LCID; dwReserved: INTEGER; pvReserved: WinApi.PtrVoid): COM.RESULT;\r\r\tPROCEDURE OleCreatePropertyFrameIndirect* (VAR [nil] lpParams: OCPFIPARAMS): COM.RESULT;\r\r\tPROCEDURE OleTranslateColor* (clr: OLE_COLOR; hpal: WinApi.HPALETTE; VAR [nil] lpcolorref: WinApi.COLORREF): COM.RESULT;\r\r\tPROCEDURE OleCreateFontIndirect* (VAR [nil] lpFontDesc: FONTDESC; IN [iid] riid: COM.GUID; OUT [new] lplpvObj: COM.IUnknown): COM.RESULT;\r\r\tPROCEDURE OleCreatePictureIndirect* (VAR [nil] lpPictDesc: PICTDESC; IN [iid] riid: COM.GUID; fOwn: WinApi.BOOL; OUT [new] lplpvObj: COM.IUnknown): COM.RESULT;\r\r\tPROCEDURE OleLoadPicture* (lpstream: WinOle.IStream; lSize: INTEGER; fRunmode: WinApi.BOOL; IN [iid] riid: COM.GUID; OUT [new] lplpvObj: COM.IUnknown): COM.RESULT;\r\r\tPROCEDURE OleIconToCursor* (hinstExe: WinApi.HINSTANCE; hIcon: WinApi.HICON): WinApi.HCURSOR;\r\rEND WinOleCtl.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 26
+          bodyPos: 27627
+          bodyLen: 8

@@ -1,0 +1,806 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Text\\Docu\\Rulers.odc"
+  size: 19955
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 19824
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 19638
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 19552
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                asc: 121900
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000003
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 9
+                bodyPos: 19552
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 19038
+                runListLen: 2145
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: TextRulers
+                    attr: 0
+                  - text: "\r\rDEFINITION TextRulers;\r\r\tIMPORT Stores, Models, Views, Properties, TextModels;\r\r\tCONST\r\t\tfirst = 0; left = 1; right = 2; lead = 3; asc = 4; dsc = 5; grid = 6; opts = 7; tabs = 8;\r\t\tleftAdjust = 0; rightAdjust = 1; noBreakInside = 2; pageBreak = 3; parJoin = 4;\r\t\trightFixed = 5;\r\t\tmaxTabs = 32;\r\t\tcenterTab = 0; rightTab = 1; barTab = 2;\r\r\tTYPE\r\t\tTab = RECORD \r\t\t\tstop: INTEGER;\r\t\t\ttype: SET\r\t\tEND;\r\r\t\tTabArray = RECORD\r\t\t\tlen: INTEGER;\r\t\t\ttab: ARRAY maxTabs OF Tab\r\t\tEND;\r\r\t\tAttributes = POINTER TO EXTENSIBLE RECORD (Stores.Store)\r\t\t\tinit-: BOOLEAN;\r\t\t\tfirst-, left-, right-, lead-, asc-, dsc-, grid-: INTEGER;\r\t\t\topts-: SET;\r\t\t\ttabs-: TabArray;\r\t\t\t(a: Attributes) InitFromProp (p: Properties.Property), NEW, EXTENSIBLE;\r\t\t\t(a: Attributes) ModifyFromProp- (p: Properties.Property), NEW, EXTENSIBLE;\r\t\t\t(a: Attributes) Equals (b: Attributes): BOOLEAN, NEW, EXTENSIBLE;\r\t\t\t(a: Attributes) Prop (): Properties.Property, NEW, EXTENSIBLE\r\t\tEND;\r\r\t\tAlienAttributes = POINTER TO RECORD (Attributes)\r\t\t\tstore-: Stores.Alien\r\t\tEND;\r\r\t\tStyle = POINTER TO ABSTRACT RECORD (Models.Model)\r\t\t\tattr-: Attributes;\r\t\t\t(s: Style) SetAttr (attr: Attributes), NEW, EXTENSIBLE\r\t\tEND;\r\r\t\tRuler = POINTER TO ABSTRACT RECORD (Views.View)\r\t\t\tstyle-: Style\r\t\tEND;\r\r\t\tProp = POINTER TO  RECORD (Properties.Property)\r\t\t\tfirst, left, right, lead, asc, dsc, grid: INTEGER;\r\t\t\topts: RECORD \r\t\t\t\tval, mask: SET\r\t\t\tEND;\r\t\t\ttabs: TabArray\r\t\tEND;\r\r\t\tUpdateMsg = RECORD (Models.UpdateMsg)\r\t\t\tstyle: Style;\r\t\t\toldAttr: Attributes\r\t\tEND;\r\r\t\tDirectory = POINTER TO RECORD\r\t\t\tattr-: Attributes;\r\t\t\t(d: Directory) New (style: Style): Ruler, NEW, ABSTRACT;\r\t\t\t(d: Directory) NewFromProp (p: Prop): Ruler, NEW, EXTENSIBLE;\r\t\t\t(d: Directory) NewStyle (attr: Attributes): Style, NEW, ABSTRACT;\r\t\t\t(d: Directory) SetAttr (attr: Attributes), NEW, EXTENSIBLE\r\t\tEND;\r\r\tVAR dir-, stdDir-: Directory;\r\r\tPROCEDURE ReadAttr (VAR rd: Stores.Reader; VAR a: Attributes);\r\tPROCEDURE WriteAttr (VAR wr: Stores.Writer; a: Attributes);\r\tPROCEDURE ModifiedAttr (a: Attributes; p: Properties.Property): Attributes;\r\r\tPROCEDURE SetCentered (r: Ruler);\r\tPROCEDURE SetJustified (r: Ruler);\r\tPROCEDURE SetLeftFlush (r: Ruler);\r\tPROCEDURE SetRightFlush (r: Ruler);\r\tPROCEDURE SetNoBreakInside (r: Ruler);\r\tPROCEDURE SetPageBreak (r: Ruler);\r\tPROCEDURE SetParJoin (r: Ruler);\r\tPROCEDURE SetAsc (r: Ruler; h: INTEGER);\r\tPROCEDURE SetDsc (r: Ruler; h: INTEGER);\r\tPROCEDURE SetFirst (r: Ruler; x: INTEGER);\r\tPROCEDURE SetGrid (r: Ruler; h: INTEGER);\r\tPROCEDURE SetLead (r: Ruler; h: INTEGER);\r\tPROCEDURE SetLeft (r: Ruler; x: INTEGER);\r\tPROCEDURE SetRight (r: Ruler; x: INTEGER);\r\tPROCEDURE SetFixedRight (r: Ruler; x: INTEGER);\r\tPROCEDURE AddTab (r: Ruler; x: INTEGER);\r\tPROCEDURE MakeBarTab (r: Ruler);\r\tPROCEDURE MakeCenterTab (r: Ruler);\r\tPROCEDURE MakeRightTab (r: Ruler);\r\r\tPROCEDURE CopyOf (r: Ruler; shallow: BOOLEAN): Ruler;\r\tPROCEDURE GetValidRuler (text: TextModels.Model; pos, hint: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\tVAR ruler: Ruler; VAR rpos: INTEGER);\r\tPROCEDURE Deposit;\r\tPROCEDURE SetDir (d: Directory);\r\rEND TextRulers.\r\r\r"
+                    attr: 1
+                  - text: TextRulers
+                    attr: 2
+                  - text: " are textaware views that, if embedded in a text, affect the text setting. A ruler supports interactive and program controlled adjustment of paragraph and limited page formatting. However, the ruler does not perform the actual setting of the text according to the format defined by the ruler. Text setters are used to actually set a text (cf. Section 6.4; "
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Text/Docu/Setters', 'Setters')"
+                      body:
+                        - text: TextSetters
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: ").\r\r\rCONST "
+                    attr: 1
+                  - text: first
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: left
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: right
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: lead
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: asc
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: dsc
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: grid
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: opts
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: tabs
+                    attr: 4
+                  - text: "\rProperty field selectors\rSignals that the named field of a "
+                    attr: 1
+                  - text: Prop
+                    attr: 2
+                  - text: " property is known, valid, or readOnly.\r\rCONST "
+                    attr: 1
+                  - text: leftAdjust
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: rightAdjust
+                    attr: 4
+                  - text: "\rPossible elements of "
+                    attr: 1
+                  - text: Attributes.opts
+                    attr: 2
+                  - text: ". If none is included, request centered lines; if leftAdjust is included alone, request left flushed lines; if rightAdjust is included alone, request right flushed lines; if both are included, request fully adjusted lines.\r\rCONST "
+                    attr: 1
+                  - text: noBreakInside
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: pageBreak
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: parJoin
+                    attr: 4
+                  - text: "\rPossible elements of "
+                    attr: 1
+                  - text: Attributes.opts
+                    attr: 2
+                  - text: ", where the inclusion of "
+                    attr: 1
+                  - text: pageBreak
+                    attr: 2
+                  - text: " overrides a possible inclusion of "
+                    attr: 1
+                  - text: parJoin
+                    attr: 2
+                  - text: ". If "
+                    attr: 1
+                  - text: noBreakInside
+                    attr: 2
+                  - text: " is included, request setting of the following paragraphs (up to the next ruler or the end of text) such that no page break is crossed by any of the paragraphs; a page break may be inserted between the paragraphs, but see "
+                    attr: 1
+                  - text: parJoin
+                    attr: 2
+                  - text: " below. (This may not be possible, or lead to unacceptably large white space, in which case a setter's heuristics may insert page breaks anyway.) If "
+                    attr: 1
+                  - text: pageBreak
+                    attr: 2
+                  - text: " is included, request setting to continue on the next fresh page. (If already at the top of a new page, the request is ignored.) If "
+                    attr: 1
+                  - text: parJoin
+                    attr: 2
+                  - text: " is included, the text following the ruler is requested to be set on the same page as the text following the next ruler. (Again, the setter may not be able to honour this request and be forced to insert page breaks anyway.)\r\rCONST "
+                    attr: 1
+                  - text: rightFixed
+                    attr: 4
+                  - text: "\rPossible element of "
+                    attr: 1
+                  - text: Attributes.opts
+                    attr: 2
+                  - text: ". If included, it means that the right margin of the text is fixed by the ruler. Otherwise the right border of the setting environment, usually a text view, is used as margin.\r\rCONST "
+                    attr: 1
+                  - text: maxTabs
+                    attr: 4
+                  - text: "\rMaximum number of tab stops that can be held by a TabArray structure. This limits the number of tab stops that can be defined for a ruler.\r\rCONST "
+                    attr: 1
+                  - text: centerTab
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: rightTab
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: barTab
+                    attr: 4
+                  - text: "\rPossible element of "
+                    attr: 1
+                  - text: Tab.type
+                    attr: 2
+                  - text: ". Set elements to be drawn from {"
+                    attr: 1
+                  - text: "centerTab, rightTab, barTab"
+                    attr: 2
+                  - text: "}. Tabulation is centred if centerTab IN type. It is right aligned if rightTab IN type. If neither option is set, tabulation is left aligned. Setting both options is illegal. If barTab IN type, then tab stop serves as the position of a vertical line drawn from the ruler containing this tab definition to the next ruler, or the end of text, if no further ruler follows. (The actual drawing of such a bar is left to the view displaying the text containing the ruler.)\r\r\rTYPE "
+                    attr: 1
+                  - text: Tab
+                    attr: 4
+                  - text: "\rDefines a single tab stop as a pair of a stop position and a tabulation type.\r\r"
+                    attr: 1
+                  - text: stop
+                    attr: 4
+                  - text: ": INTEGER\t[units]\rThe tab stop position, measured from the left margin of the setting context of the text, i.e., usually the view displaying the set text.\r\r"
+                    attr: 1
+                  - text: type
+                    attr: 4
+                  - text: ": SET\rTabulation type to be used for text controlled by this stop. Options drawn from {"
+                    attr: 1
+                  - text: centerTab
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: rightTab
+                    attr: 2
+                  - text: ", and "
+                    attr: 1
+                  - text: barTab
+                    attr: 2
+                  - text: "}, as defined above.\r\r\rTYPE "
+                    attr: 1
+                  - text: TabArray
+                    attr: 4
+                  - text: "\r"
+                    attr: 1
+                  - text: len
+                    attr: 4
+                  - text: ": INTEGER\t0 <= len <= "
+                    attr: 1
+                  - text: maxTabs
+                    attr: 2
+                  - text: "\rNumber of tab stops defined.\r"
+                    attr: 1
+                  - text: "\rtab"
+                    attr: 4
+                  - text: "-: ARRAY 32 OF Tab\t[units]\ttab[0 .. len) valid\rArray holding defined tab stops.\r\r\rTYPE "
+                    attr: 1
+                  - text: Attributes (Stores.Store)
+                    attr: 4
+                  - text: "\rEXTENSIBLE\rThe style of a ruler holds an attributes object.\rOnce created and initialized, attributes objects can no longer be modified, and hence can be freely shared among many ruler styles ("
+                    attr: 1
+                  - text: in the same domain
+                    attr: 2
+                  - text: "). Changing the attributes of a style is done by replacing the whole attributes object attached to the style; usually by a modified copy of the original attributes object. (Styles in turn may be shared by multiple rulers, causing all these rulers to change in synch when changing the attributes of the style.)\r\r"
+                    attr: 1
+                  - text: init
+                    attr: 4
+                  - text: "-: BOOLEAN\rAttributes object has been initialized and cannot be changed anymore.\r\r"
+                    attr: 1
+                  - text: first
+                    attr: 4
+                  - text: "-, "
+                    attr: 1
+                  - text: left
+                    attr: 4
+                  - text: "-, "
+                    attr: 1
+                  - text: right
+                    attr: 4
+                  - text: "-: INTEGER\t[units]\rFirst line indentation of every following paragraph, left margin (other than for first line of a paragraph), and right margin. All measured from the left margin of the view displaying the set text.\r\r"
+                    attr: 1
+                  - text: lead
+                    attr: 4
+                  - text: "-: INTEGER\t[units]\rVertical lead space inserted before every following paragraph, unless the paragraph happens to start a new page.\r\r"
+                    attr: 1
+                  - text: asc
+                    attr: 4
+                  - text: "-, "
+                    attr: 1
+                  - text: dsc
+                    attr: 4
+                  - text: "-: INTEGER\t[units]\rLower bounds on the ascender and descender of the lines of the following paragraphs.\r\r"
+                    attr: 1
+                  - text: grid
+                    attr: 4
+                  - text: "-: INTEGER\t[units]\t1 <= grid < 10000 * Ports.mm\rGrid spacing (if 1: no grid). Each line of the following paragraphs is set such that its base line falls on a grid line. (Depending on the setter used, this may cause overlaps of high lines, or it may cause higher lines to be moved to the next possible grid line in order to avoid overlaps.)\r\r"
+                    attr: 1
+                  - text: opts
+                    attr: 4
+                  - text: "-: SET\rFormatting options, drawn from the set {"
+                    attr: 1
+                  - text: leftAdjust
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: rightAdjust
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: noBreakInside
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: pageBreak
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: parJoin
+                    attr: 2
+                  - text: "}. The options "
+                    attr: 1
+                  - text: noBreakInside
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: parJoin
+                    attr: 2
+                  - text: " are requests that, depending on the setter's heuristics, may or may not be followed.\r\r"
+                    attr: 1
+                  - text: tabs
+                    attr: 4
+                  - text: "-: TabArray\r\rPROCEDURE (a: Attributes) "
+                    attr: 1
+                  - text: Equals
+                    attr: 4
+                  - text: " (b: Attributes): BOOLEAN\rNEW, EXTENSIBLE\rCompare two attributes objects for attribute equality.\r\rPre\ra.init\t20\rb # NIL\t"
+                    attr: 1
+                  - text: not explicitly checked
+                    attr: 2
+                  - text: "\rb.init\t21\r\rPost\rresult =  TypeOf(a) = TypeOf(b)  &  a.first = b.first  & ... &  a.tabs = b.tabs\r\rPROCEDURE (a: Attributes) "
+                    attr: 1
+                  - text: Prop
+                    attr: 4
+                  - text: " (): Properties.Property\rNEW, EXTENSIBLE\rReturn property list reflecting attribute values.\r\rPre\ra.init\t20\r\rPost\rresult # NIL\r\rPROCEDURE (a: Attributes) "
+                    attr: 1
+                  - text: ModifyFromProp
+                    attr: 4
+                  - text: "- (p: Properties.Property)\rNEW, EXTENSIBLE\rInitialize new attributes object according to the property list. (Values valid in the property list are taken from it, others are left intact.) Called by "
+                    attr: 1
+                  - text: ModifiedAttr
+                    attr: 2
+                  - text: ".\r\rPROCEDURE (a: Attributes) "
+                    attr: 1
+                  - text: InitFromProp
+                    attr: 4
+                  - text: " (p: Properties.Property)\rNEW, EXTENSIBLE\rInitialize according to property list; use "
+                    attr: 1
+                  - text: dir.attr
+                    attr: 2
+                  - text: " for defaults.\r\rPre\r~a.init\t20\r\rPost\ra.init\r\r\rTYPE "
+                    attr: 1
+                  - text: AlienAttributes (Attributes)
+                    attr: 4
+                  - text: "\rType of alien attributes objects, as returned by "
+                    attr: 1
+                  - text: ReadAttr
+                    attr: 2
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: store
+                    attr: 4
+                  - text: "-: Stores.Alien\rThe alien store enclosed by an alien attributes objects.\r\r\rTYPE "
+                    attr: 1
+                  - text: Style (Models.Model)
+                    attr: 4
+                  - text: "\rABSTRACT\rA style is a ruler model (and thus may be shared my multiple rulers).\r\r"
+                    attr: 1
+                  - text: attr
+                    attr: 4
+                  - text: "-: Attributes\rThe attributes defining this style's formatting requests.\r\rPROCEDURE (s: Style) "
+                    attr: 1
+                  - text: SetAttr
+                    attr: 4
+                  - text: " (attr: Attributes)\rNEW, EXTENSIBLE, Operation\rSet style attributes.\r\rPre\rattr # NIL\t"
+                    attr: 1
+                  - text: not explicitly checked
+                    attr: 2
+                  - text: "\rattr.init\t20\r\rPost\rs'.attr.Equals(attr)\r\ts.attr = s'.attr\r~s'.attr.Equals(attr)\r\ts.attr = a\t[ a.Equals(attr) ]\r\r\rTYPE "
+                    attr: 1
+                  - text: Ruler (Views.View)
+                    attr: 4
+                  - text: "\rABSTRACT\rRulers are the standard view on styles.\r\r"
+                    attr: 1
+                  - text: style
+                    attr: 4
+                  - text: "-: Style\rThe ruler's style.\r\rPROCEDURE (r: Ruler) "
+                    attr: 1
+                  - text: InitDomain
+                    attr: 4
+                  - text: " (d: Domains.Domain)\rEXTENSIBLE\rPrecondition added.\r\rPre\rr.style # NIL\t20\r\r\rTYPE "
+                    attr: 1
+                  - text: Prop (Properties.Property)
+                    attr: 4
+                  - text: "\rProperties of style attributes.\r\r"
+                    attr: 1
+                  - text: first
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: left
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: right
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: lead
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: asc
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: dsc
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: grid
+                    attr: 4
+                  - text: ": INTEGER\r"
+                    attr: 1
+                  - text: opts
+                    attr: 4
+                  - text: ": SET\r"
+                    attr: 1
+                  - text: tabs
+                    attr: 4
+                  - text: ": TabArray\rProperty fields\rEach property field corresponds to the attribute field of same name. (Property field "
+                    attr: 1
+                  - text: tabs
+                    attr: 2
+                  - text: " corresponds to ("
+                    attr: 1
+                  - text: tab
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: tabs
+                    attr: 2
+                  - text: ") in "
+                    attr: 1
+                  - text: Attributes
+                    attr: 2
+                  - text: ".)\r\r\rTYPE "
+                    attr: 1
+                  - text: UpdateMsg (Models.UpdateMsg)
+                    attr: 4
+                  - text: "\rMessage notifying of a change of attributes attached to a certain style. The message is "
+                    attr: 1
+                  - text: domaincast
+                    attr: 2
+                  - text: " and typically interpreted by all text views which display a text that contains a ruler that shares the changed style.\r\r"
+                    attr: 1
+                  - text: style
+                    attr: 4
+                  - text: ": Style\rThe style that has changed.\r\r"
+                    attr: 1
+                  - text: oldAttr
+                    attr: 4
+                  - text: ": Attributes\rThe attributes that were attached to "
+                    attr: 1
+                  - text: style
+                    attr: 2
+                  - text: " previously.\r\r\rTYPE "
+                    attr: 1
+                  - text: Directory
+                    attr: 4
+                  - text: "\rABSTRACT\rDirectory for rulers and styles.\r\r"
+                    attr: 1
+                  - text: attr
+                    attr: 4
+                  - text: "-: Attributes\tattr # NIL\rDefault attributes used when initializing new style.\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: SetAttr
+                    attr: 4
+                  - text: " (attr: Attributes)\rNEW, EXTENSIBLE\rSet default attributes. Ignores tab settings and page break options in "
+                    attr: 1
+                  - text: attr
+                    attr: 2
+                  - text: ". (Note that preset tabs in default rulers collide with tab settings frequently added under program control. Likewise, page break options are not normally useful global defaults.)\r\rPre\rattr # NIL\t"
+                    attr: 1
+                  - text: not explicitly checked
+                    attr: 2
+                  - text: "\rattr.init\t20\r\rPost\rd.attr = ModifiedAttr(attr, p)\r\t[ p.valid = {opts, tabs},\r\t\tp.tabs.len = 0, p.opts.mask = {noBreakInside, pageBreak, parJoin}, p.opts.val = {}\r\t]\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: NewStyle
+                    attr: 4
+                  - text: " (attr: Attributes): Style\rNEW, ABSTRACT\rReturn new style object initialized to hold attributes "
+                    attr: 1
+                  - text: attr
+                    attr: 2
+                  - text: ".\r\rPre\rattr # NIL\r\tattr.init\t20\r\rPost\rresult # NIL\rattr = NIL\r\tresult.attr = d.attr\rattr # NIL\r\tresult.attr = attr\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: New
+                    attr: 4
+                  - text: " (style: Style): Ruler\rNEW, ABSTRACT\rReturn new ruler object initialized to hold given style.\r\rPost\rresult # NIL\rstyle = NIL\r\tresult.style = d.NewStyle(NIL)\rstyle # NIL\r\tresult.style = style\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: NewFromProp
+                    attr: 4
+                  - text: " (p: Prop): Ruler\rNEW, EXTENSIBLE\rReturn new ruler object with style attributes initialized from give property list, using "
+                    attr: 1
+                  - text: d.attr
+                    attr: 2
+                  - text: " for default values.\r\rExcept for performance, equivalent to:\r\tVAR st: Stores.Stores; a: Attributes;\r\tst := Stores.Clone(d.attr); a := st(Attributnes);\r\ta.ModifyFrom(d.attr, p);\r\t"
+                    attr: 1
+                  - text: RETURN
+                    attr: 4
+                  - text: " d.New(d.NewStyle(a))\r\r\rVAR "
+                    attr: 1
+                  - text: dir
+                    attr: 4
+                  - text: "-, "
+                    attr: 1
+                  - text: stdDir
+                    attr: 4
+                  - text: "-: Directory\tdir # NIL, stdDir # NIL, stable stdDir = d\rDirectory and standard directory objects for rulers and styles.\r\r\rPROCEDURE  "
+                    attr: 1
+                  - text: ReadAttr
+                    attr: 4
+                  - text: " (VAR rd: Stores.Reader; VAR a: Attributes)\rRead an attributes object; in case the reader returns an alien store, the store is wrapped into an alien attributes object and the wrapper is returned.\r\rPre\r~rd.rider.eof\t20\rNextStore(rd) IS Attributes\t21\r\rPost\ra # NIL\r~MapsToAlien(NextStore(rd'))\r\ta = NextStore(rd')\rMapsToAlien(NextStore(rd'))\r\ta IS AlienAttributes\r\ta.store = NextStore(rd')\r\rPROCEDURE  "
+                    attr: 1
+                  - text: WriteAttr
+                    attr: 4
+                  - text: " (VAR wr: Stores.Writer; a: Attributes)\rRead an attributes object; in case the reader returns an alien store, the store is wrapped into an alien attributes object and the wrapper is returned.\r\rPre\ra # NIL\t20\r\rExcept for performance, equivalent to:\r\tWITH a: AlienAttributes DO wr.WriteStore(a.store) ELSE wr.WriteStore(a) END\r\rPROCEDURE "
+                    attr: 1
+                  - text: ModifiedAttr
+                    attr: 4
+                  - text: " (a: Attributes; p: Properties.Property): Attributes\rReturn copy of "
+                    attr: 1
+                  - text: a
+                    attr: 2
+                  - text: " with attribute settings identical to those in "
+                    attr: 1
+                  - text: a
+                    attr: 2
+                  - text: ", except where overridden by "
+                    attr: 1
+                  - text: p
+                    attr: 2
+                  - text: ".\r\rExcept for performance, equivalent to:\r\tVAR h: Attributes;\r\th := Stores.CopyOf(a)(Attributes); h.ModifyFromProp(p);\r\tRETURN h\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetCentered
+                    attr: 4
+                  - text: " (r: Ruler)\rPROCEDURE "
+                    attr: 1
+                  - text: SetJustified
+                    attr: 4
+                  - text: " (r: Ruler)\rPROCEDURE "
+                    attr: 1
+                  - text: SetLeftFlush
+                    attr: 4
+                  - text: " (r: Ruler)\rPROCEDURE "
+                    attr: 1
+                  - text: SetRightFlush
+                    attr: 4
+                  - text: " (r: Ruler)\rOperation\rSet ruler's text formatting mode by setting r.style.attr.opts * {"
+                    attr: 1
+                  - text: leftAdjust
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: rightAdjust
+                    attr: 2
+                  - text: "} to {}, {"
+                    attr: 1
+                  - text: leftAdjust
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: rightAdjust
+                    attr: 2
+                  - text: "}, {"
+                    attr: 1
+                  - text: leftAdjust
+                    attr: 2
+                  - text: "}, or {"
+                    attr: 1
+                  - text: rightAdjust
+                    attr: 2
+                  - text: "}, respectively.\r\rPre\rr.style # NIL\t20\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetNoBreakInside
+                    attr: 4
+                  - text: " (r: Ruler)\rPROCEDURE "
+                    attr: 1
+                  - text: SetPageBreak
+                    attr: 4
+                  - text: " (r: Ruler)\rPROCEDURE "
+                    attr: 1
+                  - text: SetParJoin
+                    attr: 4
+                  - text: " (r: Ruler)\rOperation\rSet ruler's page breaking options by including "
+                    attr: 1
+                  - text: noBreakInside
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: pageBreak
+                    attr: 2
+                  - text: ", or "
+                    attr: 1
+                  - text: parJoin
+                    attr: 2
+                  - text: " into r.style.attr.opts, respectively.\r\rPre\rr.style # NIL\t20\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetFirst
+                    attr: 4
+                  - text: " (r: Ruler; x: INTEGER)\rPROCEDURE "
+                    attr: 1
+                  - text: SetLeft
+                    attr: 4
+                  - text: " (r: Ruler; x: INTEGER)\rPROCEDURE "
+                    attr: 1
+                  - text: SetLead
+                    attr: 4
+                  - text: " (r: Ruler; h: INTEGER)\rPROCEDURE "
+                    attr: 1
+                  - text: SetAsc
+                    attr: 4
+                  - text: " (r: Ruler; h: INTEGER)\rPROCEDURE "
+                    attr: 1
+                  - text: SetDsc
+                    attr: 4
+                  - text: " (r: Ruler; h: INTEGER)\rPROCEDURE "
+                    attr: 1
+                  - text: SetGrid
+                    attr: 4
+                  - text: " (r: Ruler; h: INTEGER)\rOperation\rSet ruler's formatting attributes by setting r.style.attr.first, left, lead, asc, dsc, or grid, respectively.\r\rPre\rr.style # NIL\t20\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetRight
+                    attr: 4
+                  - text: " (r: Ruler; x: INTEGER)\rPROCEDURE "
+                    attr: 1
+                  - text: SetFixedRight
+                    attr: 4
+                  - text: " (r: Ruler; x: INTEGER)\rOperation\rSet ruler's right margin by setting r.style.attr.right = x and setting ("
+                    attr: 1
+                  - text: SetFixedRight
+                    attr: 2
+                  - text: ) or clearing (
+                    attr: 1
+                  - text: SetRight
+                    attr: 2
+                  - text: ") r.attr.opts * {"
+                    attr: 1
+                  - text: rightFixed
+                    attr: 2
+                  - text: "}.\r\rPre\rr.style # NIL\t20\r\rPROCEDURE "
+                    attr: 1
+                  - text: AddTab
+                    attr: 4
+                  - text: " (r: Ruler; x: INTEGER)\rOperation\rAdd a new tab to the right of the existing tabs set in "
+                    attr: 1
+                  - text: r
+                    attr: 2
+                  - text: ".\r\rPre\rr.style # NIL\t20\rr.style.attr.tabs.len = i\r\ti < maxTabs\t21\r\ti > 0\r\t\tr.style.attr.tabs.tab[i - 1].stop < x\t22\r\rPost\rr.style.attr.tabs.len = r.style'.attr.tabs.len + 1\rr.style.attr.tabs.tab[r.style.attr.tabs.len - 1].stop = x\r\rPROCEDURE "
+                    attr: 1
+                  - text: MakeBarTab
+                    attr: 4
+                  - text: " (r: Ruler)\rOperation\rChange the last tab of "
+                    attr: 1
+                  - text: r
+                    attr: 2
+                  - text: " to a bar tab.\r\rPre\rr.style # NIL\t20\rr.style.attr.tabs.len > 0\t21\r\rPost\rbarTab IN r.style.attr.tabs.tab[r.style.attr.tabs.len - 1].type\r\rPROCEDURE "
+                    attr: 1
+                  - text: MakeCenterTab
+                    attr: 4
+                  - text: " (r: Ruler)\rOperation\rChange the last tab of "
+                    attr: 1
+                  - text: r
+                    attr: 2
+                  - text: " to a center tab.\r\rPre\rr.style # NIL\t20\rr.style.attr.tabs.len > 0\t21\r\rPost\rr.style.attr.tabs.tab[r.style.attr.tabs.len - 1].type * {centerTab, rightTab} = centerTab\r\rPROCEDURE "
+                    attr: 1
+                  - text: MakeRightTab
+                    attr: 4
+                  - text: " (r: Ruler)\rOperation\rChange the last tab of "
+                    attr: 1
+                  - text: r
+                    attr: 2
+                  - text: " to a bar tab.\r\rPre\rr.style # NIL\t20\rr.style.attr.tabs.len > 0\t21\r\rPost\rr.style.attr.tabs.tab[r.style.attr.tabs.len - 1].type * {centerTab, rightTab} = righTab\r\rPROCEDURE "
+                    attr: 1
+                  - text: CopyOf
+                    attr: 4
+                  - text: " (r: Ruler; shallow: BOOLEAN): Ruler\rCreate [shallow] copy of ruler.\r\rPre\rr # NIL\t20\r\rExcept for performance, equivalent to:\r\tVAR v: Views.View;\r\tv := Views.CopyOf(r, shallow); "
+                    attr: 1
+                  - text: RETURN
+                    attr: 4
+                  - text: " v(Ruler)\r\rPROCEDURE "
+                    attr: 1
+                  - text: GetValidRuler
+                    attr: 4
+                  - text: " (text: TextModels.Model; pos, hint: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\t\tVAR ruler: Ruler; VAR rpos: INTEGER);\rLocate the ruler in "
+                    attr: 1
+                  - text: text
+                    attr: 2
+                  - text: " that dominates position "
+                    attr: 1
+                  - text: pos
+                    attr: 2
+                  - text: ". If a ruler position is known, it can be passed as a hint: ("
+                    attr: 1
+                  - text: ruler
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: rpos
+                    attr: 2
+                  - text: ") is first ruler before "
+                    attr: 1
+                  - text: hint
+                    attr: 2
+                  - text: ". Otherwise, pass "
+                    attr: 1
+                  - text: hint
+                    attr: 2
+                  - text: " = -1. On return, either the dominating ruler is returned as ("
+                    attr: 1
+                  - text: ruler
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: rpos
+                    attr: 2
+                  - text: "), or "
+                    attr: 1
+                  - text: ruler
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: rpos
+                    attr: 2
+                  - text: " remain unchanged.\r\rPre\rhint < 0  OR  rpos = Pos(ruler) &  no ruler in (rpos, hint]  &  0 <= pos <= t.Length()\r\rPost\rhint < rpos <= pos  &  rpos = Pos(ruler)  &  no ruler in (rpos, pos]  OR  (ruler, rpos) unmodified\r\rExcept for performance, equivalent to:\r\tVAR view: Views.View; rd: TextModels.Reader;\r\tIF pos < text.Length() THEN INC(pos) END;\t"
+                    attr: 1
+                  - text: "(* let a ruler dominate its own position! *)"
+                    attr: 2
+                  - text: "\r\tIF pos < hint THEN hint := -1 END;\r\trd := text.NewReader(rd); rd.SetPos(pos);\r\tREPEAT\r\t\trd.ReadPrevView(view)\r\tUNTIL rd.eot OR (view IS Ruler) OR (rd.Pos() < hint);\r\tIF (view # NIL) & (view IS Ruler) THEN\r\t\truler := view(Ruler); rpos := rd.Pos()\r\tEND\r\rPROCEDURE "
+                    attr: 1
+                  - text: Deposit
+                    attr: 4
+                  - text: "\rCreate new ruler and deposit in Views queue.\r\rExcept for performance, equivalent to:\r\tViews.Deposit(dir.New(NIL))\r\rPROCEDURE  "
+                    attr: 1
+                  - text: SetDir
+                    attr: 4
+                  - text: " (d: Directory)\rSet model directory.\r\rPre\rd # NIL\t20\rd.attr # NIL\t"
+                    attr: 1
+                  - text: not explicitly checked
+                    attr: 2
+                  - text: "\rd.attr.init\t21\r\rPost\rdir = d"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 13
+          bodyPos: 19920
+          bodyLen: 8

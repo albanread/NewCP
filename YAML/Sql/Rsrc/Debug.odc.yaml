@@ -1,0 +1,131 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Sql\\Rsrc\\Debug.odc"
+  size: 1153
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 1022
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 836
+          children:
+            - kind: FormViews.StdView
+              storeKind: store
+              typeChain:
+                - FormViews.StdViewDesc
+                - FormViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 750
+              children:
+                - kind: FormModels.StdModel
+                  storeKind: elem
+                  typeChain:
+                    - FormModels.StdModelDesc
+                    - FormModels.ModelDesc
+                    - Containers.ModelDesc
+                    - Models.ModelDesc
+                    - Stores.StoreDesc
+                  id: 1
+                  bodyPos: 376
+                  bodyLen: 507
+                  children:
+                    - kind: Controls.Group
+                      storeKind: store
+                      typeChain:
+                        - Controls.GroupDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 2
+                      bodyPos: 446
+                      bodyLen: 64
+                      label: Show Debug Output for
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.CheckBox
+                      storeKind: store
+                      typeChain:
+                        - Controls.CheckBoxDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 3
+                      bodyPos: 571
+                      bodyLen: 62
+                      link: SqlOdbc.debug
+                      label: SqlOdbc
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.CheckBox
+                      storeKind: store
+                      typeChain:
+                        - Controls.CheckBoxDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 671
+                      bodyLen: 54
+                      link: SqlDB.debug
+                      label: SqlDB
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.PushButton
+                      storeKind: store
+                      typeChain:
+                        - Controls.PushButtonDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 5
+                      bodyPos: 788
+                      bodyLen: 70
+                      link: StdCmds.CloseDialog
+                      label: Close
+                      opts: [false, true, false, false, false]
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: "<nil>"
+                      storeKind: nil
+                - kind: FormControllers.StdController
+                  storeKind: store
+                  typeChain:
+                    - FormControllers.StdControllerDesc
+                    - FormControllers.ControllerDesc
+                    - Containers.ControllerDesc
+                    - Controllers.ControllerDesc
+                    - Stores.StoreDesc
+                  id: 6
+                  bodyPos: 1027
+                  bodyLen: 9
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 7
+          bodyPos: 1118
+          bodyLen: 8

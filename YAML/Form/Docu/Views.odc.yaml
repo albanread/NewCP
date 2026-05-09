@@ -1,0 +1,260 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Form\\Docu\\Views.odc"
+  size: 5498
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 5367
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 5181
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 5095
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 6012000
+                asc: 121900
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000003
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 7
+                bodyPos: 5095
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 4581
+                runListLen: 638
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: FormViews
+                    attr: 0
+                  - text: "\r\rDEFINITION FormViews;\r\r\tIMPORT Ports, Views, Controllers, Containers, FormModels;\r\r\tCONST minBorder = 4 * Ports.point; maxBorder = 100 * Ports.mm;\r\r\tTYPE\r\t\tView = POINTER TO ABSTRACT RECORD (Containers.View)\r\t\t\t(v: View) ThisModel (): FormModels.Model, EXTENSIBLE;\r\t\t\t(v: View) SetBorder (border: INTEGER), NEW, ABSTRACT;\r\t\t\t(v: View) Border (): INTEGER, NEW, ABSTRACT;\r\t\t\t(v: View) SetGrid (grid, gridFactor: INTEGER), NEW, ABSTRACT;"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - text: "\t\t\t(v: View) Grid (): INTEGER, NEW, ABSTRACT;\r\t\t\t(v: View) GridFactor (): INTEGER, NEW, ABSTRACT;\r\t\t\t(v: View) SetBackground (background: Ports.Color), NEW, ABSTRACT\r\t\tEND;\r\r\t\tDirectory = POINTER TO ABSTRACT RECORD\r\t\t\t(d: Directory) New (f: FormModels.Model): View, NEW, ABSTRACT\r\t\tEND;\r\r\tVAR\r\t\tdir-, stdDir-: Directory;\r\t\tctrldir-: Controllers.Directory;\r\r\tPROCEDURE Focus (): View;\r\tPROCEDURE FocusModel (): FormModels.Model;\r\tPROCEDURE RoundToGrid (v: View; VAR x, y: INTEGER);\r\tPROCEDURE New (): View;\r\tPROCEDURE Deposit;\r\tPROCEDURE SetDir (d: Directory);\r\tPROCEDURE SetCtrlDir (d: Containers.Directory);\r\rEND FormViews.\r\r\r"
+                    attr: 1
+                  - text: FormViews
+                    attr: 3
+                  - text: " are the standard views on "
+                    attr: 1
+                  - text: FormModels
+                    attr: 3
+                  - text: ".\r\r\rCONST "
+                    attr: 1
+                  - text: "minBorder, maxBorder"
+                    attr: 4
+                  - text: "\rThe border of a form view is the minimal distance between any of the view borders and the bounding box of the embedded views. The preferred border can be set to a value in the range "
+                    attr: 1
+                  - text: "[minBorder .. maxBorder]"
+                    attr: 3
+                  - text: ".\r\r\rTYPE "
+                    attr: 1
+                  - text: View (Views.View)
+                    attr: 4
+                  - text: "\rABSTRACT\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: ThisModel
+                    attr: 4
+                  - text: " (): FormModels.Model\rEXTENSIBLE\rResult type is narrowed.\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: SetBorder
+                    attr: 4
+                  - text: " (border: INTEGER)\rNEW, ABSTRACT, Operation\rSets the view's preferred border (preferred minimal distance between any view edge and the closest embedded view).\r\rPre\rborder >= 0\t20\r\rPost\rborder < minBoder\r\tv.border = minBorder\rborder > maxBorder\r\tv.border = maxBorder\rminBorder <= border <= maxBorder\r\tv.border = border\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: Border
+                    attr: 4
+                  - text: " (): INTEGER\rNEW, ABSTRACT\rReturns the view's border.\r\rPost\rminBorder <= result <= maxBorder\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: SetGrid
+                    attr: 4
+                  - text: " (grid, gridFactor: INTEGER)\rNEW, ABSTRACT, Operation\rSets the view's preferred grid (preferred grid on which any embedded view's top-left corner should be aligned) and grid factor (when the grid is shown, every "
+                    attr: 1
+                  - text: gridFactor
+                    attr: 3
+                  - text: "-th grid unit a dotted line is displayed).\r\rPre\rgrid > 0\t20\rgridFactor > 0\t21\r\rPost\rv.Grid() = grid  &  v.GridFactor() = gridFactor\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: Grid
+                    attr: 4
+                  - text: " (): INTEGER\rNEW, ABSTRACT\rReturns the current grid.\r\rPost\rresult > 0\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: GridFactor
+                    attr: 4
+                  - text: " (): INTEGER\rNEW, ABSTRACT\rReturns the current grid factor.\r\rPost\rresult > 0\r\rPROCEDURE (v: View) "
+                    attr: 1
+                  - text: SetBackground
+                    attr: 4
+                  - text: " (background: Ports.Color)\rNEW, ABSTRACT\rSets a form's background color. Default is "
+                    attr: 1
+                  - text: Ports.dialogBackground
+                    attr: 3
+                  - text: ".\r\r\rTYPE "
+                    attr: 1
+                  - text: Directory
+                    attr: 4
+                  - text: "\rABSTRACT\rDirectory for form views.\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: New
+                    attr: 4
+                  - text: " (m: FormModels.Model): View\rInterface\rReturn a new view on "
+                    attr: 1
+                  - text: m
+                    attr: 3
+                  - text: "\r\rPre\rm # NIL\t20\r\rPost\rresult # NIL\rresult.ThisModel() = m\r\r\rVAR "
+                    attr: 1
+                  - text: dir
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: stdDir
+                    attr: 4
+                  - text: "-: Directory\tdir # NIL  &  stdDir # NIL\rDirectory and standard directory for form views.\r\rVAR "
+                    attr: 1
+                  - text: ctrldir
+                    attr: 4
+                  - text: "-: Controllers.Directory\tctrldir # NIL\rForm controller directory, installed by module "
+                    attr: 1
+                  - text: FormControllers
+                    attr: 3
+                  - text: " upon loading.\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: Focus
+                    attr: 4
+                  - text: " (): View\rReturns the focus form view, if it is one.\r\rPROCEDURE "
+                    attr: 1
+                  - text: FocusModel
+                    attr: 4
+                  - text: " (): FormModels.Model\rReturns the model of the focus form view, if it is one.\r\rPROCEDURE "
+                    attr: 1
+                  - text: RoundToGrid
+                    attr: 4
+                  - text: " (v: View; VAR x, y: INTEGER)\rRounds the coordinate "
+                    attr: 1
+                  - text: "(x, y)"
+                    attr: 3
+                  - text: " to the closest point on "
+                    attr: 1
+                  - text: v
+                    attr: 3
+                  - text: "'s grid.\r\rPre\rv # NIL\t20\rx > 0  &  y > 0\t21\r\rPost\rx MOD v.grid = 0\ry MOD v.grid = 0\r\rPROCEDURE "
+                    attr: 1
+                  - text: New
+                    attr: 4
+                  - text: " (): View\rReturns a new form view with a new empty form model, i.e., returns "
+                    attr: 1
+                  - text: FormViews.dir.New(FormModels.dir.New()).
+                    attr: 3
+                  - text: "\r\rPROCEDURE "
+                    attr: 1
+                  - text: Deposit
+                    attr: 4
+                  - text: "\r"
+                    attr: 1
+                  - text: Deposit
+                    attr: 3
+                  - text: " creates a new form view with a new empty form model and deposits the view.\r"
+                    attr: 1
+                  - text: Deposit
+                    attr: 3
+                  - text: " is called internally.\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetDir
+                    attr: 4
+                  - text: " (d: Directory)\rAssigns view directory.\r\rPre\rd # NIL\t20\r\rPost\rdir = d\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetCtrlDir
+                    attr: 4
+                  - text: " (d: Containers.Directory)\rAssigns the controller directory for form views.\r\rPre\rd # NIL\t20\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 11
+          bodyPos: 5463
+          bodyLen: 8

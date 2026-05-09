@@ -1,0 +1,915 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\System\\Docu\\Strings.odc"
+  size: 17542
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 17411
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 17225
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 17139
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                asc: 134600
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000003
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 7
+                bodyPos: 17139
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 16625
+                runListLen: 2273
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [4]
+                    font: Arial
+                    size: 101600
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                    offset: -25400
+                flow:
+                  - text: Strings
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\rDEFINITION Strings;\r\r\tCONST\r\t\tcharCode = -1; decimal = 10; hexadecimal = -2; roman = -3;\r\t\tdigitspace = 8FX;\r\t\thideBase = FALSE; showBase = TRUE;\r\r\tPROCEDURE IsLower (ch: CHAR): BOOLEAN;\r\tPROCEDURE IsUpper (ch: CHAR): BOOLEAN;\r\tPROCEDURE IsAlpha (ch: CHAR): BOOLEAN;\r\tPROCEDURE IsNumeric (ch: CHAR): BOOLEAN;\r\tPROCEDURE IsAlphaNumeric (ch: CHAR): BOOLEAN;\r\r\tPROCEDURE IsIdentStart (ch: CHAR): BOOLEAN;\r\tPROCEDURE IsIdent (ch: CHAR): BOOLEAN;\r\r\tPROCEDURE Valid (IN s: ARRAY OF CHAR): BOOLEAN;\r\tPROCEDURE Extract (s: ARRAY OF CHAR; pos, len: INTEGER; OUT res: ARRAY OF CHAR);\r\tPROCEDURE Find (IN s: ARRAY OF CHAR; IN pat: ARRAY OF CHAR; start: INTEGER;\r\t\t\t\t\t\t\t\t\tOUT pos: INTEGER);\r\tPROCEDURE Replace (VAR s: ARRAY OF CHAR; pos, len: INTEGER; IN rep: ARRAY OF CHAR);\r\tPROCEDURE Lower (ch: CHAR): CHAR;\r\tPROCEDURE Upper (ch: CHAR): CHAR;\r\tPROCEDURE ToLower (IN in: ARRAY OF CHAR; OUT out: ARRAY OF CHAR);\r\tPROCEDURE ToUpper (IN in: ARRAY OF CHAR; OUT out: ARRAY OF CHAR);\r\r\tPROCEDURE Utf8ToString (IN in: ARRAY OF SHORTCHAR; OUT out: ARRAY OF CHAR; \r\t\t\t\t\t\t\t\t\tOUT res: INTEGER);\r\tPROCEDURE StringToUtf8 (IN in: ARRAY OF CHAR; OUT out: ARRAY OF SHORTCHAR;\r\t\t\t\t\t\t\t\t\tOUT res: INTEGER);\r\r\tPROCEDURE IntToString (x: LONGINT; OUT s: ARRAY OF CHAR);\r\tPROCEDURE IntToStringForm (x: LONGINT; form, minWidth: INTEGER; fillCh: CHAR;\r\t\t\t\t\t\t\t\t\t\t\t\t\tshowBase: BOOLEAN; OUT s: ARRAY OF CHAR);\r\tPROCEDURE RealToString (x: REAL; OUT s: ARRAY OF CHAR);\r\tPROCEDURE RealToStringForm (x: REAL; precision, minW, expW: INTEGER; fillCh: CHAR;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT s: ARRAY OF CHAR);\r\tPROCEDURE SetToString (x: SET; OUT s: ARRAY OF CHAR);\r\tPROCEDURE StringToInt (IN s: ARRAY OF CHAR; OUT x, res: INTEGER);\r\tPROCEDURE StringToLInt (IN s: ARRAY OF CHAR; OUT x: LONGINT; res: INTEGER);\r\tPROCEDURE StringToReal (IN s: ARRAY OF CHAR; OUT x: REAL; OUT res: INTEGER);\r\tPROCEDURE StringToSet (IN s: ARRAY OF CHAR; OUT x: SET; OUT res: INTEGER);\r\rEND Strings.\r\r\rModule "
+                    attr: 2
+                  - text: Strings
+                    attr: 3
+                  - text: " is a simple and small string library. Its goal is to provide a few string operations that are both often needed and complicated to implement, in particular routines for conversions between numbers and strings. The library is optimized for convenience, not for efficiency.\rThis tradeoff is apparent in that some operations, such as "
+                    attr: 2
+                  - text: Extract
+                    attr: 3
+                  - text: ", use value parameters instead of IN parameters. This allows to pass the same variable both for input and output purposes, which is often convenient (a variable should never be passed to several IN/OUT/VAR parameters simultaneously, since this may cause interference between them).\rIt is not a goal to provide operations for all possible circumstances, since string processing in different applications simply varies to much to make this practical. Often it is useful to write a few string operations fully tailored to a particular application, which is usually easy to do. Moreover, such custom string operations can be optimized for speed, which is not possible for too general routines.\rNote that the language Component Pascal provides efficient built-in support for string assignment (implicitly or explicitly with the \"$\" operator), for string concatenation (with the \"+\" operator), and for counting the number of characters in a string (LEN(string$)).\r\r\rCONST "
+                    attr: 2
+                  - text: charCode
+                    attr: 1
+                  - text: "\rPossible value for parameter "
+                    attr: 2
+                  - text: form
+                    attr: 3
+                  - text: " of "
+                    attr: 2
+                  - text: IntToStringForm
+                    attr: 3
+                  - text: ", asking for formatting integers following the syntax of Component Pascal numerical character literals, e.g., "
+                    attr: 2
+                  - text: 0DX
+                    attr: 3
+                  - text: " or "
+                    attr: 2
+                  - text: 37X
+                    attr: 3
+                  - text: ".\r\rCONST "
+                    attr: 2
+                  - text: decimal
+                    attr: 1
+                  - text: "\rPossible value for parameter "
+                    attr: 2
+                  - text: form
+                    attr: 3
+                  - text: " of "
+                    attr: 2
+                  - text: IntToStringForm
+                    attr: 3
+                  - text: ", asking for formatting integers as decimal literals.\r\rCONST "
+                    attr: 2
+                  - text: hexadecimal
+                    attr: 1
+                  - text: "\rPossible value for parameter "
+                    attr: 2
+                  - text: form
+                    attr: 3
+                  - text: " of "
+                    attr: 2
+                  - text: IntToStringForm
+                    attr: 3
+                  - text: ", asking for formatting integers as hexadecimal literals.\r\rCONST "
+                    attr: 2
+                  - text: roman
+                    attr: 1
+                  - text: "\rPossible value for parameter "
+                    attr: 2
+                  - text: form
+                    attr: 3
+                  - text: " of "
+                    attr: 2
+                  - text: IntToStringForm
+                    attr: 3
+                  - text: ", asking for formatting integers as roman literals.\r\rCONST "
+                    attr: 2
+                  - text: digitspace
+                    attr: 1
+                  - text: "\rA digit space has the width of digit zero (0) which is equivalent to the width of all digits in most fonts, thus can be used for number formatting.\r\rCONST "
+                    attr: 2
+                  - text: hideBase
+                    attr: 1
+                  - text: ", "
+                    attr: 2
+                  - text: showBase
+                    attr: 1
+                  - text: "\rPossible values for parameter "
+                    attr: 2
+                  - text: showBase
+                    attr: 3
+                  - text: " of "
+                    attr: 2
+                  - text: IntToStringForm
+                    attr: 3
+                  - text: ", asking for showing / suppressing the base of the number format.\r\r\rPROCEDURE "
+                    attr: 2
+                  - text: IsLower
+                    attr: 1
+                  - text: " (ch: CHAR): BOOLEAN;\rReturns "
+                    attr: 2
+                  - text: "TRUE"
+                    attr: 3
+                  - text: " if "
+                    attr: 2
+                  - text: ch
+                    attr: 3
+                  - text: " is a lowercase letter.\r\rPROCEDURE "
+                    attr: 2
+                  - text: IsUpper
+                    attr: 1
+                  - text: " (ch: CHAR): BOOLEAN;\rReturns "
+                    attr: 2
+                  - text: "TRUE"
+                    attr: 3
+                  - text: " if "
+                    attr: 2
+                  - text: ch
+                    attr: 3
+                  - text: " is an uppercase letter.\r\rPROCEDURE "
+                    attr: 2
+                  - text: IsAlpha
+                    attr: 1
+                  - text: " (ch: CHAR): BOOLEAN;\rReturns "
+                    attr: 2
+                  - text: "TRUE"
+                    attr: 3
+                  - text: " if "
+                    attr: 2
+                  - text: ch
+                    attr: 3
+                  - text: " is a letter.\r\rPROCEDURE "
+                    attr: 2
+                  - text: IsNumeric
+                    attr: 1
+                  - text: " (ch: CHAR): BOOLEAN;\rReturns "
+                    attr: 2
+                  - text: "TRUE"
+                    attr: 3
+                  - text: " if "
+                    attr: 2
+                  - text: ch
+                    attr: 3
+                  - text: " is a digit.\r\rPROCEDURE "
+                    attr: 2
+                  - text: IsAlphaNumeric
+                    attr: 1
+                  - text: " (ch: CHAR): BOOLEAN;\rReturns "
+                    attr: 2
+                  - text: "TRUE"
+                    attr: 3
+                  - text: " if "
+                    attr: 2
+                  - text: ch
+                    attr: 3
+                  - text: " is it a letter or a digit.\r\r\rPROCEDURE "
+                    attr: 2
+                  - text: IsIdentStart
+                    attr: 1
+                  - text: " (ch: CHAR): BOOLEAN;\rReturns "
+                    attr: 2
+                  - text: "TRUE"
+                    attr: 3
+                  - text: " if "
+                    attr: 2
+                  - text: ch
+                    attr: 3
+                  - text: " can be the first character of a Component Pascal identifier.\r\rPROCEDURE "
+                    attr: 2
+                  - text: IsIdent
+                    attr: 1
+                  - text: " (ch: CHAR): BOOLEAN;\rReturns "
+                    attr: 2
+                  - text: "TRUE"
+                    attr: 3
+                  - text: " if "
+                    attr: 2
+                  - text: ch
+                    attr: 3
+                  - text: " can be a second or further character of a Component Pascal identifier.\r\r\rPROCEDURE  "
+                    attr: 2
+                  - text: Valid
+                    attr: 1
+                  - text: " (IN s: ARRAY OF CHAR): BOOLEAN\rReturns "
+                    attr: 2
+                  - text: "TRUE"
+                    attr: 3
+                  - text: " if and only if the array "
+                    attr: 2
+                  - text: s
+                    attr: 3
+                  - text: " contains at least one string terminator "
+                    attr: 2
+                  - text: 0X
+                    attr: 3
+                  - text: ".\r\rPost\rs contains a 0X character\r\tresult = TRUE\rs does not contain a 0X character\r\tresult = FALSE\r\rPROCEDURE "
+                    attr: 2
+                  - text: Upper
+                    attr: 1
+                  - text: " (ch: CHAR): CHAR\rConversion to uppercase characters. Handles the entire 16-bit Unicode character set. Character values that have no uppercase equivalent are returned unchanged.\r\rPROCEDURE "
+                    attr: 2
+                  - text: Lower
+                    attr: 1
+                  - text: " (ch: CHAR): CHAR\rConversion to lowercase characters. Handles the entire 16-bit Unicode character set. Character values that have no lowercase equivalent are returned unchanged.\r\rPROCEDURE "
+                    attr: 2
+                  - text: ToLower
+                    attr: 1
+                  - text: " (IN in: ARRAY OF CHAR; OUT out: ARRAY OF CHAR)\rConverts string "
+                    attr: 2
+                  - text: in
+                    attr: 3
+                  - text: " to lowercase characters and returns the result in "
+                    attr: 2
+                  - text: out
+                    attr: 3
+                  - text: ". Handles the entire 16-bit Unicode character set. Character values that have no lowercase equivalent are unchanged. The same actual parameter may be passed for "
+                    attr: 2
+                  - text: in
+                    attr: 3
+                  - text: " and "
+                    attr: 2
+                  - text: out
+                    attr: 3
+                  - text: ".\r\rPre\rValid(in)\tindex trap\r\rPost\rValid(out)\r\rPROCEDURE "
+                    attr: 2
+                  - text: ToUpper
+                    attr: 1
+                  - text: " (IN in: ARRAY OF CHAR; OUT out: ARRAY OF CHAR)\rConverts string "
+                    attr: 2
+                  - text: in
+                    attr: 3
+                  - text: "  to uppercase characters and returns the result in "
+                    attr: 2
+                  - text: out
+                    attr: 3
+                  - text: ". Handles the entire 16-bit Unicode character set. Character values that have no uppercase equivalent are unchanged. The same actual parameter may be passed for "
+                    attr: 2
+                  - text: in
+                    attr: 3
+                  - text: " and "
+                    attr: 2
+                  - text: out
+                    attr: 3
+                  - text: ".\r\rPre\rValid(in)\tindex trap\r\rPost\rValid(out)\r\rPROCEDURE "
+                    attr: 2
+                  - text: Extract
+                    attr: 1
+                  - text: " (s: ARRAY OF CHAR; pos, len: INTEGER; OUT res: ARRAY OF CHAR)\rExtracts the stretch "
+                    attr: 2
+                  - text: "[pos, MIN(pos+len, Len(s)))"
+                    attr: 3
+                  - text: " from "
+                    attr: 2
+                  - text: s
+                    attr: 3
+                  - text: " and returns it in "
+                    attr: 2
+                  - text: res
+                    attr: 3
+                  - text: ". The result is truncated if "
+                    attr: 2
+                  - text: res
+                    attr: 3
+                  - text: " is not large enough. The same actual parameter may be passed for "
+                    attr: 2
+                  - text: s
+                    attr: 3
+                  - text: " and "
+                    attr: 2
+                  - text: res
+                    attr: 3
+                  - text: ".\r\rPre\rlen >= 0\t20\rpos >= 0\t21\rValid(s)\t(not checked)\r\rPost\rValid(res)\rLEN(res$) = MAX(MIN(len, LEN(s'$)-pos, LEN(res)-1), 0)\r\rPROCEDURE "
+                    attr: 2
+                  - text: Replace
+                    attr: 1
+                  - text: " (VAR s: ARRAY OF CHAR; pos, len: INTEGER; IN rep: ARRAY OF CHAR)\rReplaces the stretch "
+                    attr: 2
+                  - text: "[pos, MIN(pos+len, Len(s)))"
+                    attr: 3
+                  - text: " in "
+                    attr: 2
+                  - text: s
+                    attr: 3
+                  - text: " with the string in "
+                    attr: 2
+                  - text: rep
+                    attr: 3
+                  - text: ". The characters after the replaced stretch are moved if necessary. The result is truncated if "
+                    attr: 2
+                  - text: s
+                    attr: 3
+                  - text: " is not large enough.\rHint: if "
+                    attr: 2
+                  - text: len = 0
+                    attr: 3
+                  - text: " then "
+                    attr: 2
+                  - text: rep
+                    attr: 3
+                  - text: " is inserted in "
+                    attr: 2
+                  - text: s
+                    attr: 3
+                  - text: " at position "
+                    attr: 2
+                  - text: pos
+                    attr: 3
+                  - text: ". If "
+                    attr: 2
+                  - text: LEN(rep$) = 0
+                    attr: 3
+                  - text: " then the stretch "
+                    attr: 2
+                  - text: "[pos, MIN(pos+len, LEN(s$)))"
+                    attr: 3
+                  - text: " is deleted from "
+                    attr: 2
+                  - text: s
+                    attr: 3
+                  - text: ".\r\rPre\rlen >= 0\t20\rpos >= 0\t21\rValid(s) & Valid(rep)\t(not checked)\r\rPost\rValid(s)\r\rPROCEDURE "
+                    attr: 2
+                  - text: Find
+                    attr: 1
+                  - text: " (IN s: ARRAY OF CHAR; IN pat: ARRAY OF CHAR; start: INTEGER;\r\t\t\t\t\t\t\t\tOUT pos: INTEGER);\rSearches the first occurrence of the pattern "
+                    attr: 2
+                  - text: pat
+                    attr: 3
+                  - text: " in string "
+                    attr: 2
+                  - text: s
+                    attr: 3
+                  - text: " after position "
+                    attr: 2
+                  - text: start
+                    attr: 3
+                  - text: ". If the pattern is found, the position of the first character of the pattern in "
+                    attr: 2
+                  - text: s
+                    attr: 3
+                  - text: " is returned in "
+                    attr: 2
+                  - text: pos
+                    attr: 3
+                  - text: ". If the pattern is not found, "
+                    attr: 2
+                  - text: pos
+                    attr: 3
+                  - text: " is "
+                    attr: 2
+                  - text: -1
+                    attr: 3
+                  - text: ".\r\rPre\rstart >= 0\t20\rValid(s) & Valid(pat)\t(not checked)\r\rPost\rpattern found\r\tpos is start position of pat in s\rpattern not found\r\tpos = -1\r\rPROCEDURE  "
+                    attr: 2
+                  - text: IntToStringForm
+                    attr: 1
+                  - text: " (x: LONGINT; form, minWidth: INTEGER; fillCh: CHAR;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\tshowBase: BOOLEAN; OUT s: ARRAY OF CHAR)\rConvert integer"
+                    attr: 2
+                  - text: " x"
+                    attr: 3
+                  - text: " into string "
+                    attr: 2
+                  - text: s
+                    attr: 3
+                  - text: ". If "
+                    attr: 2
+                  - text: form
+                    attr: 3
+                  - text: " is "
+                    attr: 2
+                  - text: charCode
+                    attr: 3
+                  - text: " or "
+                    attr: 2
+                  - text: hexadecimal
+                    attr: 3
+                  - text: ", "
+                    attr: 2
+                  - text: x
+                    attr: 3
+                  - text: " is converted to a base 16 representation. The total representation will at least have a width of "
+                    attr: 2
+                  - text: minWidth
+                    attr: 3
+                  - text: " characters, where padding (if required) takes place to the left using characters as specified by "
+                    attr: 2
+                  - text: fillCh
+                    attr: 3
+                  - text: ".\rIf "
+                    attr: 2
+                  - text: showBase
+                    attr: 3
+                  - text: " is "
+                    attr: 2
+                  - text: "TRUE"
+                    attr: 3
+                  - text: ", a suffix character is appended to the number representation according to the number form. The value "
+                    attr: 2
+                  - text: form = charCode
+                    attr: 3
+                  - text: " renders the suffix \"X\", while "
+                    attr: 2
+                  - text: form = hexadecimal
+                    attr: 3
+                  - text: " renders the suffix \"H\". These values of "
+                    attr: 2
+                  - text: form
+                    attr: 3
+                  - text: " also represent negative integers using a base-complement form of width "
+                    attr: 2
+                  - text: minWidth
+                    attr: 3
+                  - text: ", i.e., for negative hexadecimal numbers, "
+                    attr: 2
+                  - text: fillCh
+                    attr: 3
+                  - text: " is ignored and \"F\" is used instead (both for "
+                    attr: 2
+                  - text: form = charCode
+                    attr: 3
+                  - text: " and "
+                    attr: 2
+                  - text: form = hexadecimal
+                    attr: 3
+                  - text: "). For "
+                    attr: 2
+                  - text: form
+                    attr: 3
+                  - text: " values in the range 2..16, base-complement representation is not supported.\rE.g.\r\t"
+                    attr: 2
+                  - text: x
+                    attr: 3
+                  - text: " = -3, "
+                    attr: 2
+                  - text: form
+                    attr: 3
+                  - text: " = 16, "
+                    attr: 2
+                  - text: minWidth
+                    attr: 3
+                  - text: " = 4, "
+                    attr: 2
+                  - text: fillCh
+                    attr: 3
+                  - text: " = \" \" and "
+                    attr: 2
+                  - text: showBase
+                    attr: 3
+                  - text: " = FALSE renders a result of -3\r\t"
+                    attr: 2
+                  - text: x
+                    attr: 3
+                  - text: " = -3, "
+                    attr: 2
+                  - text: form
+                    attr: 3
+                  - text: " = "
+                    attr: 2
+                  - text: hexadecimal
+                    attr: 3
+                  - text: ", "
+                    attr: 2
+                  - text: minWidth
+                    attr: 3
+                  - text: " = 4, "
+                    attr: 2
+                  - text: fillCh
+                    attr: 3
+                  - text: " = \" \" and "
+                    attr: 2
+                  - text: showBase
+                    attr: 3
+                  - text: " = FALSE renders a result of FFFD\rIf "
+                    attr: 2
+                  - text: showBase
+                    attr: 3
+                  - text: " is "
+                    attr: 2
+                  - text: "TRUE"
+                    attr: 3
+                  - text: " and form is in the range 2..16, then the base is appended to the number, preceded by a \"%\" sign (e.g., \"10111001%2\").\rIf "
+                    attr: 2
+                  - text: "form = roman "
+                    attr: 3
+                  - text: "(roman numbers), then "
+                    attr: 2
+                  - text: showBase
+                    attr: 3
+                  - text: " is ignored.\r\rThe following conditions imply that "
+                    attr: 2
+                  - text: s
+                    attr: 3
+                  - text: " is large enough to hold the resulting string (Pre 23):\r\t"
+                    attr: 2
+                  - text: form = roman
+                    attr: 3
+                  - text: ": LEN("
+                    attr: 2
+                  - text: s
+                    attr: 3
+                  - text: ") > MAX("
+                    attr: 2
+                  - text: minWidth
+                    attr: 3
+                  - text: ", 15)\r\t("
+                    attr: 2
+                  - text: form
+                    attr: 3
+                  - text: " = "
+                    attr: 2
+                  - text: charCode
+                    attr: 3
+                  - text: ) OR (
+                    attr: 2
+                  - text: form
+                    attr: 3
+                  - text: " = "
+                    attr: 2
+                  - text: hexadecimal
+                    attr: 3
+                  - text: ) OR (
+                    attr: 2
+                  - text: form
+                    attr: 3
+                  - text: " >= 2) & ("
+                    attr: 2
+                  - text: form
+                    attr: 3
+                  - text: " <= 16):\r\t\tLEN("
+                    attr: 2
+                  - text: s
+                    attr: 3
+                  - text: ") > MAX("
+                    attr: 2
+                  - text: minWidth
+                    attr: 3
+                  - text: ", 4 + <"
+                    attr: 2
+                  - text: number of digits
+                    attr: 3
+                  - text: ">)\r\t\tWhere <"
+                    attr: 2
+                  - text: number of digits
+                    attr: 3
+                  - text: "> is 1 + Floor(Log"
+                    attr: 2
+                  - text: base
+                    attr: 4
+                  - text: (ABS(
+                    attr: 2
+                  - text: x
+                    attr: 3
+                  - text: "))), if ABS("
+                    attr: 2
+                  - text: x
+                    attr: 3
+                  - text: ") >= 1, and 1 otherwise.\rNote that these values are non-tight upper bounds of the required string length. In individual cases, actual requirements might be lower but the given bounds guarantee compliance with the precondition.\r\rPre\r(form = charCode) OR (form = hexadecimal) OR (form = roman) OR ((form >= 2) & (form <= 16))\t20\r(form # roman) OR (form = roman) & (x > 0) & (x < 3999)\t21\rminWidth >= 0\t22\rs is large enough to hold resulting string (see above)\t23\r\rPost\rValid(s)\r\rPROCEDURE "
+                    attr: 2
+                  - text: IntToString
+                    attr: 1
+                  - text: " (x: LONGINT; OUT s: ARRAY OF CHAR)\rWrite integer in default format.\rExcept for performance, equivalent to:\r\tIntToStringForm(x, decimal, 0, digitspace, FALSE, s)\r\rPROCEDURE "
+                    attr: 2
+                  - text: RealToStringForm
+                    attr: 1
+                  - text: " (x: REAL; precision, minW, expW: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\tfillCh: CHAR; OUT s: ARRAY OF CHAR)\rConvert real"
+                    attr: 2
+                  - text: " x"
+                    attr: 3
+                  - text: " into string "
+                    attr: 2
+                  - text: s
+                    attr: 3
+                  - text: ". The string created to represent the number is either in fixed point or in scientific format, according to "
+                    attr: 2
+                  - text: expW
+                    attr: 3
+                  - text: ". "
+                    attr: 2
+                  - text: precision
+                    attr: 3
+                  - text: " denotes the number of valid decimal places (usually 7 for short reals and 16 for reals). "
+                    attr: 2
+                  - text: minW
+                    attr: 3
+                  - text: " denotes the minimal length in characters. If necessary, preceding "
+                    attr: 2
+                  - text: fillCh
+                    attr: 3
+                  - text: " will be inserted. Numbers are always rounded to the last valid and visible digit.\r"
+                    attr: 2
+                  - text: expW
+                    attr: 3
+                  - text: " > 0: exponential format (scientific) with at least "
+                    attr: 2
+                  - text: expW
+                    attr: 3
+                  - text: " digits in the exponent.\r"
+                    attr: 2
+                  - text: expW
+                    attr: 3
+                  - text: " = 0: fixpoint or floatingpoint format, depending on "
+                    attr: 2
+                  - text: x
+                    attr: 3
+                  - text: ".\r"
+                    attr: 2
+                  - text: expW
+                    attr: 3
+                  - text: " < 0: fixpoint format with "
+                    attr: 2
+                  - text: -expW
+                    attr: 3
+                  - text: " digits after the decimal point.\r\rThe following conditions imply that "
+                    attr: 2
+                  - text: s
+                    attr: 3
+                  - text: " is large enough to hold the resulting string (Pre 23):\r\t("
+                    attr: 2
+                  - text: x
+                    attr: 3
+                  - text: " = inf) OR ("
+                    attr: 2
+                  - text: x
+                    attr: 3
+                  - text: " = -inf) OR ("
+                    attr: 2
+                  - text: x
+                    attr: 3
+                  - text: " = nan): LEN("
+                    attr: 2
+                  - text: s
+                    attr: 3
+                  - text: ") > MAX("
+                    attr: 2
+                  - text: minW
+                    attr: 3
+                  - text: ", 4)\r"
+                    attr: 2
+                  - text: "\texpW"
+                    attr: 3
+                  - text: " >= 0: LEN("
+                    attr: 2
+                  - text: s
+                    attr: 3
+                  - text: ") > MAX("
+                    attr: 2
+                  - text: minW
+                    attr: 3
+                  - text: ", "
+                    attr: 2
+                  - text: precision
+                    attr: 3
+                  - text: " + 7)\r"
+                    attr: 2
+                  - text: "\texpW"
+                    attr: 3
+                  - text: " < 0: LEN("
+                    attr: 2
+                  - text: s
+                    attr: 3
+                  - text: ") > MAX("
+                    attr: 2
+                  - text: minW
+                    attr: 3
+                  - text: ", 3 - "
+                    attr: 2
+                  - text: "expW "
+                    attr: 3
+                  - text: + <
+                    attr: 2
+                  - text: number of digits before the decimal point
+                    attr: 3
+                  - text: ">)\r\tWhere the <"
+                    attr: 2
+                  - text: number of digits before the decimal point
+                    attr: 3
+                  - text: "> is 1 + Floor(Log"
+                    attr: 2
+                  - text: 10
+                    attr: 4
+                  - text: (ABS(
+                    attr: 2
+                  - text: x
+                    attr: 3
+                  - text: "))), if ABS("
+                    attr: 2
+                  - text: x
+                    attr: 3
+                  - text: ") >= 1,\r\tand 1 otherwise.\rNote that these values are non-tight upper bounds of the required string length. In individual cases, actual requirements might be lower but the given bounds guarantee compliance with the precondition.\r\rPre\rprecision > 0\t20\r0 <= minW < LEN(s)\t21\r-LEN(s) < expW <= 3\t22\rs is large enough to hold resulting string (see above)\t23\r\rPos\rValid(s)\r\rPROCEDURE "
+                    attr: 2
+                  - text: RealToString
+                    attr: 1
+                  - text: " (x: REAL; OUT s: ARRAY OF CHAR)\rWrite real in default format.\rExcept for performance, equivalent to:\r\tRealToStringForm(x, 16, 0, 0, digitspace, s)\r\rPROCEDURE "
+                    attr: 2
+                  - text: SetToString
+                    attr: 1
+                  - text: "* (x: SET; OUT s: ARRAY OF CHAR)\rConvert set"
+                    attr: 2
+                  - text: " x"
+                    attr: 3
+                  - text: " into string "
+                    attr: 2
+                  - text: s
+                    attr: 3
+                  - text: ". For example the set {1,2,3,5} will be converted into the string \"{1..3, 5}\".\r\rPre\rs is large enough to hold resulting string\t23\r\rPos\rValid(s)\r\rPROCEDURE "
+                    attr: 2
+                  - text: StringToInt
+                    attr: 1
+                  - text: " (IN s: ARRAY OF CHAR; OUT x, res: INTEGER)\rPROCEDURE "
+                    attr: 2
+                  - text: StringToLInt
+                    attr: 1
+                  - text: " (IN s: ARRAY OF CHAR; OUT x: LONGINT; res: INTEGER)\rConverts the number contained in string "
+                    attr: 2
+                  - text: s
+                    attr: 3
+                  - text: " into value "
+                    attr: 2
+                  - text: x
+                    attr: 3
+                  - text: ". Legal integer number representations follow the syntax given below. Possible result codes are "
+                    attr: 2
+                  - text: res = 1
+                    attr: 3
+                  - text: " for overflow, "
+                    attr: 2
+                  - text: res = 2
+                    attr: 3
+                  - text: " for syntax error.\r\rSyntax:\r  number = ( [ \"+\" | \"-\" ] dec | hex ) 0X .\r  dec = digit { digit } .\r  hex = hexdigit { hexdigit } (\"H\" | \"X\") .\r  hexdigit = digit | \"A\" | \"B\" | \"C\" | \"D\" | \"E\" | \"F\" .\r  digit = \"0\" |  \"1\" |  \"2\" |  \"3\" |  \"4\" |  \"5\" |  \"6\" |  \"7\" |  \"8\" |  \"9\" .\r\rPost\rs is legal integer number representation\r\tx is converted integer number\r\tres = 0\rs is not a legal integer number representation\r\tres # 0\r\rPROCEDURE "
+                    attr: 2
+                  - text: StringToReal
+                    attr: 1
+                  - text: " (IN s: ARRAY OF CHAR; OUT x: REAL; OUT res: INTEGER)\rConverts string "
+                    attr: 2
+                  - text: s
+                    attr: 3
+                  - text: " given in fixed or scientific notation into value "
+                    attr: 2
+                  - text: x
+                    attr: 3
+                  - text: ". Possible result codes are "
+                    attr: 2
+                  - text: res = 1
+                    attr: 3
+                  - text: " for overflow, "
+                    attr: 2
+                  - text: res = 2
+                    attr: 3
+                  - text: " for syntax error.\r\rPost\rs is legal real number representation\r\tx is converted real number\r\tres = 0\rs is not legal real number representation\r\tres # 0\r\rPROCEDURE "
+                    attr: 2
+                  - text: StringToSet
+                    attr: 1
+                  - text: "* (IN s: ARRAY OF CHAR; OUT x: SET; OUT res: INTEGER)\rConverts string "
+                    attr: 2
+                  - text: s
+                    attr: 3
+                  - text: " given as Component Pascal set constant into value "
+                    attr: 2
+                  - text: x
+                    attr: 3
+                  - text: ". White space between symbols is allowed. Comments or symbolic names are not allowed. In the syntax below, dec stands for a positive integer number between MIN(SET) and MAX(SET). Possible result codes are "
+                    attr: 2
+                  - text: res = 1
+                    attr: 3
+                  - text: " for overflow, "
+                    attr: 2
+                  - text: res = 2
+                    attr: 3
+                  - text: " for syntax error.\r\rSyntax:\r  set = \"{\" [element {\",\" element}] \"}\".\r  element = dec [\"..\" dec].\r\rPost\rs is legal set representation\r\tx is converted set\r\tres = 0\rs is not legal set representation\r\tres # 0\r\rPROCEDURE "
+                    attr: 2
+                  - text: StringToUtf8
+                    attr: 1
+                  - text: " (IN in: ARRAY OF CHAR; OUT out: ARRAY OF SHORTCHAR;\r\t\t\t\t\t\t\t\t\tOUT res: INTEGER);\rConverts string "
+                    attr: 2
+                  - text: in
+                    attr: 3
+                  - text: " to its UTF-8 representation "
+                    attr: 2
+                  - text: out
+                    attr: 3
+                  - text: " and a result code "
+                    attr: 2
+                  - text: res
+                    attr: 3
+                  - text: ". The conversion does not check for illegal 16-bit Unicode characters.\r\rPre\rValid(in)\tindex trap\r\rPost\rValid(out)\rsuccessfull conversion\r\tres = 0 & out contains the converted string\rconversion with truncation\r\tres = 1 & out contains the truncated left part of the converted string\r\rPROCEDURE "
+                    attr: 2
+                  - text: Utf8ToString
+                    attr: 1
+                  - text: " (IN in: ARRAY OF SHORTCHAR; OUT out: ARRAY OF CHAR; \r\t\t\t\t\t\t\t\t\tOUT res: INTEGER);\rConverts "
+                    attr: 2
+                  - text: in
+                    attr: 3
+                  - text: " from UTF-8 representation to a string "
+                    attr: 2
+                  - text: out
+                    attr: 3
+                  - text: " and a result code "
+                    attr: 2
+                  - text: res
+                    attr: 3
+                  - text: ". The conversion does not check for illegal 16-bit Unicode characters.\r\rPre\rValid(in)\tindex trap\r\rPost\rValid(out)\rsuccessfull conversion\r\tres = 0 & out contains the converted string\rconversion with truncation\r\tres = 1 & out contains the truncated left part of the converted string\rconversion with format error\r\tres = 2 & out = LONG(in), where out may be truncated\r"
+                    attr: 2
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 11
+          bodyPos: 17507
+          bodyLen: 8

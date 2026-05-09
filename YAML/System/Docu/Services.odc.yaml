@@ -1,0 +1,368 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\System\\Docu\\Services.odc"
+  size: 6488
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 6357
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 6171
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 6085
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                asc: 134600
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000003
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 11
+                bodyPos: 6085
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 5571
+                runListLen: 1183
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: Services
+                    attr: 0
+                  - text: "\r\rDEFINITION Services;\r\r\tCONST\r\t\timmediately = -1; now = 0;\r\t\tresolution = 1000;\r\r\tTYPE\r\t\tAction = POINTER TO ABSTRACT RECORD\r\t\t\t(a: Action) Do-, NEW, ABSTRACT\r\t\tEND;\r\r\tPROCEDURE DoLater (a: Action; notBefore: LONGINT);\r\tPROCEDURE RemoveAction (a: Action);\r\tPROCEDURE Ticks (): LONGINT;\r\tPROCEDURE GetTypeName (IN rec: ANYREC; OUT type: ARRAY OF CHAR);\r\tPROCEDURE SameType (IN ra, rb: ANYREC): BOOLEAN;\r\tPROCEDURE IsExtensionOf (IN ra, rb: ANYREC): BOOLEAN;\r\tPROCEDURE Is (IN rec: ANYREC; IN type: ARRAY OF CHAR): BOOLEAN;\r\tPROCEDURE Extends (IN type, base: ARRAY OF CHAR): BOOLEAN;\r\tPROCEDURE Level (IN type: ARRAY OF CHAR): INTEGER;\r\tPROCEDURE TypeLevel (IN rec: ANYREC): INTEGER;\r\tPROCEDURE AdrOf (IN rec: ANYREC): INTEGER;\r\tPROCEDURE Collect;\r\rEND Services.\r\r\rThis module provides a variety of low-level services. Currently, only a timing service, a background processing service, and a reflection service is provided.\r"
+                    attr: 1
+                  - text: Actions
+                    attr: 2
+                  - text: " are objects whose "
+                    attr: 1
+                  - text: Do
+                    attr: 2
+                  - text: " procedures are executed in a delayed fashion, when the system is idle. An action which re-installs itself whenever it is invoked operates as a non-preemptive background task.\rThe reflection service, unlike module "
+                    attr: 1
+                  - text: Meta
+                    attr: 2
+                  - text: ", only works on records, and it is also applicable to temporary variables on the stack (while "
+                    attr: 1
+                  - text: Meta
+                    attr: 2
+                  - text: " items typically denote long-lived variables).\r\rExamples:\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Obx/Docu/Actions', 'ObxActions Docu')"
+                      body:
+                        - text: ObxActions  docu
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Obx/Docu/Cubes', 'ObxCubes Docu')"
+                      body:
+                        - text: ObxCubes  docu
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r\r\rCONST "
+                    attr: 1
+                  - text: immediately
+                    attr: 4
+                  - text: "\rThis value can be passed to "
+                    attr: 1
+                  - text: DoLater
+                    attr: 2
+                  - text: " as "
+                    attr: 1
+                  - text: notBefore
+                    attr: 2
+                  - text: " parameter, if the action must be executed as part of the currently executing command.\r\rCONST "
+                    attr: 1
+                  - text: now
+                    attr: 4
+                  - text: "\rThis value can be passed to "
+                    attr: 1
+                  - text: DoLater
+                    attr: 2
+                  - text: " as "
+                    attr: 1
+                  - text: notBefore
+                    attr: 2
+                  - text: " parameter, if the action should be executed as quickly as possible, after the currently executing command.\r\rCONST "
+                    attr: 1
+                  - text: resolution
+                    attr: 4
+                  - text: "\rTime resolution in ticks per second. The current time can be inquired by procedure "
+                    attr: 1
+                  - text: Ticks
+                    attr: 2
+                  - text: ".\r\r\rTYPE "
+                    attr: 1
+                  - text: Action
+                    attr: 4
+                  - text: "\rABSTRACT\rActions are objects whose "
+                    attr: 1
+                  - text: Do
+                    attr: 2
+                  - text: " procedures are called in a deferred way, when the system is idle again.\r\rPROCEDURE (a: Action) "
+                    attr: 1
+                  - text: Do-
+                    attr: 4
+                  - text: "\rNEW, ABSTRACT\rFor a registered action "
+                    attr: 1
+                  - text: a
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: a.Do
+                    attr: 2
+                  - text: " is called eventually, depending how it has been registered (see "
+                    attr: 1
+                  - text: DoLater
+                    attr: 2
+                  - text: ").\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: DoLater
+                    attr: 4
+                  - text: " (a: Action; notBefore: LONGINT)\rRegister an action. Its "
+                    attr: 1
+                  - text: Do
+                    attr: 2
+                  - text: " procedure will be executed once, later when time permits. "
+                    attr: 1
+                  - text: a.Do
+                    attr: 2
+                  - text: " is called eventually after "
+                    attr: 1
+                  - text: Ticks()
+                    attr: 2
+                  - text: " has reached "
+                    attr: 1
+                  - text: notBefore
+                    attr: 2
+                  - text: ", or if "
+                    attr: 1
+                  - text: notBefore = now
+                    attr: 2
+                  - text: ". If the action's Do "
+                    attr: 1
+                  - text: procedure
+                    attr: 2
+                  - text: " should be executed more than once, it may call "
+                    attr: 1
+                  - text: DoLater
+                    attr: 2
+                  - text: " to re-install itself. A particular action can only be registered once; additional attempts have no effect.\r\rPre\ra # NIL\t20\r\rPROCEDURE "
+                    attr: 1
+                  - text: RemoveAction
+                    attr: 4
+                  - text: " (a: Action)\rRemove a registered action. If action "
+                    attr: 1
+                  - text: a
+                    attr: 2
+                  - text: " is not registered or "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: ", nothing happens.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Ticks
+                    attr: 4
+                  - text: " (): LONGINT\rReturns the current time in clock ticks. These ticks have a resolution of "
+                    attr: 1
+                  - text: resolution
+                    attr: 2
+                  - text: "., i.e., "
+                    attr: 1
+                  - text: resolution
+                    attr: 2
+                  - text: " ticks per second.\r\rPROCEDURE "
+                    attr: 1
+                  - text: GetTypeName
+                    attr: 4
+                  - text: " (IN rec: ANYREC; OUT type: ARRAY OF CHAR)\rReturns the name of a record type, in the form \"module.type\". If a pointer is passed, its record type is returned. If the record is anonymous, the pointer's type name is returned, e.g., \"FormViews.StdView\".\r\rPROCEDURE "
+                    attr: 1
+                  - text: SameType
+                    attr: 4
+                  - text: " (IN ra, rb: ANYREC): BOOLEAN\rDetermines whether two record variables have (exactly!) the same type.\r\rPROCEDURE "
+                    attr: 1
+                  - text: IsExtensionOf
+                    attr: 4
+                  - text: " (IN ra, rb: ANYREC): BOOLEAN\rDetermines whether the record type of "
+                    attr: 1
+                  - text: ra
+                    attr: 2
+                  - text: " is the same or an extension of the type of "
+                    attr: 1
+                  - text: rb
+                    attr: 2
+                  - text: ".\r\rPROCEDURE "
+                    attr: 1
+                  - text: Is
+                    attr: 4
+                  - text: " (IN rec: ANYREC; IN type: ARRAY OF CHAR): BOOLEAN\rDetermines whether the record type of "
+                    attr: 1
+                  - text: rec
+                    attr: 2
+                  - text: " is the same or an extension of the type given in "
+                    attr: 1
+                  - text: type
+                    attr: 2
+                  - text: " (e.g., as \"FormViews.View\"). If type "
+                    attr: 1
+                  - text: type
+                    attr: 2
+                  - text: " was not found, "
+                    attr: 1
+                  - text: "FALSE"
+                    attr: 2
+                  - text: " is returned.\r\rPre\rtype # \"\"\t20\rtype has form \"module.type\"\t21\r\rPROCEDURE "
+                    attr: 1
+                  - text: Extends
+                    attr: 4
+                  - text: " (IN type, base: ARRAY OF CHAR): BOOLEAN\rDetermines whether the record type "
+                    attr: 1
+                  - text: type
+                    attr: 2
+                  - text: " is the same or an extension of the type "
+                    attr: 1
+                  - text: base
+                    attr: 2
+                  - text: ". If type "
+                    attr: 1
+                  - text: type
+                    attr: 2
+                  - text: " or "
+                    attr: 1
+                  - text: base
+                    attr: 2
+                  - text: " was not found, "
+                    attr: 1
+                  - text: "FALSE"
+                    attr: 2
+                  - text: " is returned.\r\rPre\rtype # \"\"  &  base # \"\"\t20\rtype and base have form \"module.type\"\t21\r\rPROCEDURE "
+                    attr: 1
+                  - text: Level
+                    attr: 4
+                  - text: " (IN type: ARRAY OF CHAR): INTEGER\rDetermines the extension level of a record type "
+                    attr: 1
+                  - text: type
+                    attr: 2
+                  - text: ". A newly introduced type has level 0. If type "
+                    attr: 1
+                  - text: type
+                    attr: 2
+                  - text: " was not found, "
+                    attr: 1
+                  - text: -1
+                    attr: 2
+                  - text: " is returned.\r\rPre\rtype # \"\"\t20\rtype has form \"module.type\"\t21\r\rPROCEDURE "
+                    attr: 1
+                  - text: TypeLevel
+                    attr: 4
+                  - text: " (IN rec: ANYREC): INTEGER\rDetermines the extension level of a record variable "
+                    attr: 1
+                  - text: rec
+                    attr: 2
+                  - text: "'s type. A newly introduced type has level 0.\r\rPROCEDURE "
+                    attr: 1
+                  - text: AdrOf
+                    attr: 4
+                  - text: " (IN rec: ANYREC): INTEGER\rReturns the address of a record variable.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Collect
+                    attr: 4
+                  - text: "\rForces a garbage collection.\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 15
+          bodyPos: 6453
+          bodyLen: 8

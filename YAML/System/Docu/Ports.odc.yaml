@@ -1,0 +1,1646 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\System\\Docu\\Ports.odc"
+  size: 58512
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 58381
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 58195
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 58109
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                asc: 134600
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000003
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 13
+                bodyPos: 58109
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 57595
+                runListLen: 26421
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [4]
+                    font: "*"
+                    size: 101600
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                flow:
+                  - text: Ports
+                    attr: 0
+                  - text: "\r\rDEFINITION Ports;\r\r\tIMPORT Fonts;\r\r\tCONST\r\t\tblack = 00000000H; white = 00FFFFFFH;\r\t\tgrey6 = 00F0F0F0H; grey12 = 00E0E0E0H; grey25 = 00C0C0C0H;\r\t\tgrey50 = 00808080H; grey75 = 00404040H;\r\t\tred = 000000FFH; green = 0000FF00H; blue = 00FF0000H;\r\t\tdefaultColor = 01000000H;\r\t\tmm = 36000; point = 12700; inch = 914400;\r\t\tfill = -1;\r\t\topenPoly = 0; closedPoly = 1; openBezier = 2; closedBezier = 3;\r\t\tinvert = 0; hilite = 1; dim25 = 2; dim50 = 3; dim75 = 4;\r\t\thide = FALSE; show = TRUE;\r\t\tarrowCursor = 0; textCursor = 1; graphicsCursor = 2; tableCursor = 3; bitmapCursor = 4; refCursor = 5;\r\t\tkeepBuffer = FALSE; disposeBuffer = TRUE;\r\r\tTYPE\r\t\tColor = INTEGER;\r\r\t\tPoint = RECORD\r\t\t\tx, y: INTEGER\r\t\tEND;\r\r\t\tPort = POINTER TO ABSTRACT RECORD\r\t\t\tunit-: INTEGER;\r\t\t\t(p: Port) Init (unit: INTEGER; printerMode: BOOLEAN), NEW;\r\t\t\t(p: Port) GetSize (OUT w, h: INTEGER), NEW, ABSTRACT;\r\t\t\t(p: Port) SetSize (w, h: INTEGER), NEW, ABSTRACT;\r\t\t\t(p: Port) NewRider (): INTEGER, NEW, ABSTRACT;\r\t\t\t(p: Port) OpenBuffer (l, t, r, b: INTEGER), NEW, ABSTRACT;\r\t\t\t(p: Port) CloseBuffer, NEW, ABSTRACT\r\t\tEND;\r\r\t\tRider = POINTER TO ABSTRACT RECORD\r\t\t\t(rd: Rider) SetRect (l, t, r, b: INTEGER), NEW, ABSTRACT;\r\t\t\t(rd: Rider) GetRect (OUT l, t, r, b: INTEGER), NEW, ABSTRACT;\r\t\t\t(rd: Rider) Base (): Port, NEW, ABSTRACT;\r\t\t\t(rd: Rider) Move (dx, dy: INTEGER), NEW, ABSTRACT;\r\t\t\t(rd: Rider) SaveRect (l, t, r, b: INTEGER; OUT res: INTEGER), NEW, ABSTRACT;\r\t\t\t(rd: Rider) RestoreRect (l, t, r, b: INTEGER; dispose: BOOLEAN), NEW, ABSTRACT;\r\t\t\t(rd: Rider) DrawRect (l, t, r, b, s: INTEGER; col: Color), NEW, ABSTRACT;\r\t\t\t(rd: Rider) DrawOval (l, t, r, b, s: INTEGER; col: Color), NEW, ABSTRACT;\r\t\t\t(rd: Rider) DrawLine (x0, y0, x1, y1, s: INTEGER; col: Color), NEW, ABSTRACT;\r\t\t\t(rd: Rider) DrawPath (IN p: ARRAY OF Point; n, s: INTEGER; col: Color;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tpath: INTEGER), NEW, ABSTRACT;\r\t\t\t(rd: Rider) MarkRect (l, t, r, b, s: INTEGER; mode: INTEGER; show: BOOLEAN), NEW, ABSTRACT;\r\t\t\t(rd: Rider) Scroll (dx, dy: INTEGER), NEW, ABSTRACT;\r\t\t\t(rd: Rider) SetCursor (cursor: INTEGER), NEW, ABSTRACT;\r\t\t\t(rd: Rider) Input (OUT x, y: INTEGER; OUT modifiers: SET;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT isDown: BOOLEAN), NEW, ABSTRACT;\r\t\t\t(rd: Rider) DrawSpace (x, y, w: INTEGER; col: Color; font: Fonts.Font), NEW, ABSTRACT;\r\t\t\t(rd: Rider) DrawString (x, y: INTEGER; col: Color; IN s: ARRAY OF CHAR;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tfont: Fonts.Font), NEW, ABSTRACT;\r\t\t\t(rd: Rider) DrawSString (x, y: INTEGER; col: Color; IN s: ARRAY OF SHORTCHAR;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tfont: Fonts.Font), NEW, ABSTRACT;\r\t\t\t(rd: Rider) CharIndex (x, pos: INTEGER; IN s: ARRAY OF CHAR;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tfont: Fonts.Font): INTEGER, NEW, ABSTRACT;\r\t\t\t(rd: Rider) SCharIndex (x, pos: INTEGER; IN s: ARRAY OF SHORTCHAR;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tfont: Fonts.Font): INTEGER, NEW, ABSTRACT;\r\t\t\t(rd: Rider) CharPos (x, index: INTEGER; IN s: ARRAY OF CHAR;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tfont: Fonts.Font): INTEGER, NEW, ABSTRACT;\r\t\t\t(rd: Rider) SCharPos (x, index: INTEGER; IN s: ARRAY OF SHORTCHAR;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tfont: Fonts.Font): INTEGER, NEW, ABSTRACT\r\t\tEND;\r\r\t\tFrame = POINTER TO ABSTRACT RECORD\r\t\t\tunit-: INTEGER;\r\t\t\tdot-: INTEGER;\r\t\t\trider-: Rider;\r\t\t\tgx-, gy-: INTEGER;\r\t\t\t(f: Frame) ConnectTo (p: Port), NEW, EXTENSIBLE;\r\t\t\t(f: Frame) SetOffset (gx, gy: INTEGER), NEW, EXTENSIBLE;\r\t\t\t(f: Frame) SaveRect (l, t, r, b: INTEGER; OUT res: INTEGER), NEW;\r\t\t\t(f: Frame) RestoreRect (l, t, r, b: INTEGER; dispose: BOOLEAN), NEW;\r\t\t\t(f: Frame) DrawRect (l, t, r, b, s: INTEGER; col: Color), NEW;\r\t\t\t(f: Frame) DrawOval (l, t, r, b, s: INTEGER; col: Color), NEW;\r\t\t\t(f: Frame) DrawLine (x0, y0, x1, y1, s: INTEGER; col: Color), NEW;\r\t\t\t(f: Frame) DrawPath (IN p: ARRAY OF Point; n, s: INTEGER; col: Color; path: INTEGER), NEW;\r\t\t\t(f: Frame) MarkRect (l, t, r, b, s: INTEGER; mode: INTEGER; show: BOOLEAN), NEW;\r\t\t\t(f: Frame) Scroll (dx, dy: INTEGER), NEW;\r\t\t\t(f: Frame) SetCursor (cursor: INTEGER), NEW;\r\t\t\t(f: Frame) Input (OUT x, y: INTEGER; OUT modifiers: SET; OUT isDown: BOOLEAN), NEW;\r\t\t\t(f: Frame) DrawSpace (x, y, w: INTEGER; col: Color; font: Fonts.Font), NEW;\r\t\t\t(f: Frame) DrawString (x, y: INTEGER; col: Color; IN s: ARRAY OF CHAR;\r\t\t\t\t\t\t\t\t\t\t\t\tfont: Fonts.Font), NEW;\r\t\t\t(f: Frame) DrawSString (x, y: INTEGER; col: Color; IN s: ARRAY OF SHORTCHAR;\r\t\t\t\t\t\t\t\t\t\t\t\tfont: Fonts.Font), NEW;\r\t\t\t(f: Frame) CharIndex (x, pos: INTEGER; IN s: ARRAY OF CHAR;\r\t\t\t\t\t\t\t\t\t\t\t\tfont: Fonts.Font): INTEGER, NEW;\r\t\t\t(f: Frame) SCharIndex (x, pos: INTEGER; IN s: ARRAY OF SHORTCHAR;\r\t\t\t\t\t\t\t\t\t\t\t\tfont: Fonts.Font): INTEGER, NEW;\r\t\t\t(f: Frame) CharPos (x, index: INTEGER; IN s: ARRAY OF CHAR;\r\t\t\t\t\t\t\t\t\t\t\t\tfont: Fonts.Font): INTEGER, NEW;\r\t\t\t(f: Frame) SCharPos (x, index: INTEGER; IN s: ARRAY OF SHORTCHAR;\r\t\t\t\t\t\t\t\t\t\t\t\tfont: Fonts.Font): INTEGER, NEW\r\t\tEND;\r\r\tVAR background, dialogBackground: Color;\r\r\tPROCEDURE IsPrinterPort (p: Port): BOOLEAN;\r\tPROCEDURE RGBColor (red, green, blue: INTEGER): Color;\r\rEND Ports.\r\r\r"
+                    attr: 1
+                  - text: Ports
+                    attr: 2
+                  - text: " are carriers for pixel data. Examples of ports are screen and printer ports.\r\r"
+                    attr: 1
+                  - text: Riders
+                    attr: 2
+                  - text: " are access paths to ports. The drawing operations of a rider are performed in a coordinate system with positive x-axis and negative y-axis, i.e., x values increase towards the right, while y values increase towards the bottom. This coordinate system is the same for every rider on a port, with the origin at the upper-left corner of the port. Points are coordinate pairs (in device coordinates) which denote the upper-left corner of a pixel:\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 5
+                      bodyPos: 660
+                      bodyLen: 847
+                    attr: 1
+                    w: 1358855
+                    h: 1435052
+                  - text: "\r\rFigure 1.  Drawing Plane\r\rA rider occupies a rectangle within the port area. Each rider acts as a clipping rectangle, to which all its drawing operations are clipped.\r\r"
+                    attr: 1
+                  - text: Frames
+                    attr: 2
+                  - text: " are port mappers, which provide port output operations and input from mouse and keyboard. Frame coordinates are scaled and translated such that they are independent of the frame's position on a port, and independent of the port's spacial resolution. For this reason, all frame operations use universal units (-> "
+                    attr: 1
+                  - text: Fonts
+                    attr: 2
+                  - text: ") for coordinates, while all port and rider operations use pixel coordinates.\r\r\rCONST "
+                    attr: 1
+                  - text: black
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: white
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: "grey6, grey12, grey25"
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: grey50
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: grey75
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: red
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: green
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: blue
+                    attr: 3
+                  - text: "\rRGB values for several important colors.\r\rCONST "
+                    attr: 1
+                  - text: defaultColor
+                    attr: 3
+                  - text: "\rThis is a pseudo color which is substituted by the currently set default foreground color for drawing.\r\rCONST "
+                    attr: 1
+                  - text: mm
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: "point, inch"
+                    attr: 3
+                  - text: "\rThree important distance measures in universal units.\r\rCONST "
+                    attr: 1
+                  - text: fill
+                    attr: 3
+                  - text: "\rThis value may be passed to the procedures "
+                    attr: 1
+                  - text: "DrawRect, DrawOval"
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: DrawPath
+                    attr: 2
+                  - text: ", and "
+                    attr: 1
+                  - text: MarkRect
+                    attr: 2
+                  - text: " as "
+                    attr: 1
+                  - text: size
+                    attr: 2
+                  - text: " parameter, to cause the drawing of a filled shape, instead of the shape's outline only.\r\rCONST "
+                    attr: 1
+                  - text: "openPoly, closedPoly, openBezier, closedBezier"
+                    attr: 3
+                  - text: "\rThese values may be passed to the procedure "
+                    attr: 1
+                  - text: DrawPath
+                    attr: 2
+                  - text: " as "
+                    attr: 1
+                  - text: path
+                    attr: 2
+                  - text: " parameter. They causes the drawing of a polyline, a polygon, an open Bezier curve, or of a closed Bezier curve. Note that with Bezier curves, only every third point lies on the curve.\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 7
+                      bodyPos: 1809
+                      bodyLen: 9610
+                    attr: 1
+                    w: 5537142
+                    h: 2222477
+                  - text: "\r\rFigure 2.  Various Path Examples\r\rCONST "
+                    attr: 1
+                  - text: "invert, hilite, dim25, dim50, dim75"
+                    attr: 3
+                  - text: "\rThese values may be passed as "
+                    attr: 1
+                  - text: mode
+                    attr: 2
+                  - text: "-parameter to procedure "
+                    attr: 1
+                  - text: MarkRect
+                    attr: 2
+                  - text: ". They cause the marked rectangle to become inverted, hilighted, or dimmed. The exact interpretation of these modes is platform-dependent.\rIn the simplest case, all three modes are implemented the same way, namely by inverting each bit in the color value which represents a pixel. Ideally, "
+                    attr: 1
+                  - text: hilite
+                    attr: 2
+                  - text: " should replace an area's background color with a user-selectable hilight-color, and vice versa. The three dimming modes, applied to a white background, deliver light, medium, and dark grey values, respectively.\r\rCONST "
+                    attr: 1
+                  - text: "hide, show"
+                    attr: 3
+                  - text: "\rThese values may be passed as "
+                    attr: 1
+                  - text: show
+                    attr: 2
+                  - text: "-parameter of the "
+                    attr: 1
+                  - text: MarkRect
+                    attr: 2
+                  - text: " procedures. "
+                    attr: 1
+                  - text: hide
+                    attr: 2
+                  - text: " means that an existing mark should be removed, and "
+                    attr: 1
+                  - text: show
+                    attr: 2
+                  - text: " means that the mark should be drawn. In some implementations, the operation may be identical for "
+                    attr: 1
+                  - text: hide
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: show
+                    attr: 2
+                  - text: ", but this is not guaranteed.\r\rCONST "
+                    attr: 1
+                  - text: arrowCursor
+                    attr: 3
+                  - text: "\rThe default shape of the cursor.\r\rCONST "
+                    attr: 1
+                  - text: textCursor
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: graphicsCursor
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: tableCursor
+                    attr: 3
+                  - text: ", "
+                    attr: 1
+                  - text: bitmapCursor
+                    attr: 3
+                  - text: "\rCursor shapes which correspond to the type of data currently being manipulated: sequential, large shapes, regularly arranged objects, small shapes.\r\rCONST "
+                    attr: 1
+                  - text: refCursor
+                    attr: 3
+                  - text: "\rCursor shape for indicating references, such as hyperlinks.\r\rCONST "
+                    attr: 1
+                  - text: "keepBuffer, disposeBuffer"
+                    attr: 3
+                  - text: "\rThese constants may be passed to the "
+                    attr: 1
+                  - text: dispose
+                    attr: 2
+                  - text: " parameters of procedures "
+                    attr: 1
+                  - text: Rider.RestoreRect
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: Frame.RestoreRect
+                    attr: 2
+                  - text: ".\r\r\rTYPE "
+                    attr: 1
+                  - text: Color
+                    attr: 3
+                  - text: " = INTEGER\rA color is a four-byte value where the least significant byte (interpreted as unsigned integer) specifies the red-intensity of an RGB triple. The next byte specifies the green-intensity, the third byte represents the blue-intensity. The most significant byte must be set to zero.\r\r\rTYPE "
+                    attr: 1
+                  - text: Point
+                    attr: 3
+                  - text: "\rThis type is used to construct paths for the "
+                    attr: 1
+                  - text: DrawPath
+                    attr: 2
+                  - text: " procedure. A path consists of an array of points, where points are coordinate pairs.\rPoints are used in drawing routines that call "
+                    attr: 1
+                  - text: DrawPath
+                    attr: 2
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: "x, y"
+                    attr: 3
+                  - text: ": INTEGER\rCoordinate pair.\r\r\rTYPE "
+                    attr: 1
+                  - text: Port
+                    attr: 3
+                  - text: "\rABSTRACT\rCarrier for pixel data.\rPorts are allocated and used internally.\rPorts are implemented internally.\r\r"
+                    attr: 1
+                  - text: unit
+                    attr: 3
+                  - text: "-: INTEGER\tunit > 0\rThe size of a pixel in universal units.\r\rPROCEDURE (p: Port) "
+                    attr: 1
+                  - text: Init
+                    attr: 3
+                  - text: " (unit: INTEGER; printerMode: BOOLEAN)\rSets the spacial resolution (in universal units per pixel). Parameter "
+                    attr: 1
+                  - text: printerMode
+                    attr: 2
+                  - text: " determines whether the port acts as a printing object.\r\rPre\rp.unit = 0  OR p.unit = unit\t20\runit > 0\t21\r\rPost\rp.unit = unit\r\rPROCEDURE (p: Port) "
+                    attr: 1
+                  - text: GetSize
+                    attr: 3
+                  - text: " (OUT w, h: INTEGER)\rNEW, ABSTRACT\rGet the port's current size (in pixels).\r\rPost\rw >= 0\rh >= 0\r\rPROCEDURE (p: Port) "
+                    attr: 1
+                  - text: SetSize
+                    attr: 3
+                  - text: " (w, h: INTEGER)\rNEW, ABSTRACT\rSets the port's size (in pixels).\r\rPre\rw >= 0\t20\rh >= 0\t21\r\rPROCEDURE (p: Port) "
+                    attr: 1
+                  - text: NewRider
+                    attr: 3
+                  - text: " (): Rider\rNEW, ABSTRACT\rReturns a rider that has the appropriate type for this port implementation.\r\rPROCEDURE (p: Port) "
+                    attr: 1
+                  - text: OpenBuffer
+                    attr: 3
+                  - text: " (l, t, r, b: INTEGER)\rNEW, ABSTRACT\rOpens an off-screen buffer for port "
+                    attr: 1
+                  - text: p
+                    attr: 2
+                  - text: ". The buffer is initialized with the contents of "
+                    attr: 1
+                  - text: p
+                    attr: 2
+                  - text: "'s rectangle "
+                    attr: 1
+                  - text: "(l, t, r, b)"
+                    attr: 2
+                  - text: ". "
+                    attr: 1
+                  - text: OpenBuffer
+                    attr: 2
+                  - text: " must be followed by a call to "
+                    attr: 1
+                  - text: CloseBuffer
+                    attr: 2
+                  - text: ". Calls to "
+                    attr: 1
+                  - text: OpenBuffer
+                    attr: 2
+                  - text: " must not be nested.\rUsed internally, for restoring a window flicker-free in the background. Not to be used for other purposes.\r\rPROCEDURE (p: Port) "
+                    attr: 1
+                  - text: CloseBuffer
+                    attr: 3
+                  - text: "\rNEW, ABSTRACT\rCopy back the contents of the port's off-screen buffer, and release the buffer. "
+                    attr: 1
+                  - text: OpenBuffer
+                    attr: 2
+                  - text: " must have been called before.\rUsed internally, for restoring a window flicker-free in the background. Not to be used for other purposes.\r\r\rTYPE "
+                    attr: 1
+                  - text: Rider
+                    attr: 3
+                  - text: "\rABSTRACT\rAccess path to a port (i.e., to a pixel carrier). A rider uses the same coordinate system as its port, with the origin being the upper-left corner of the port. All coordinates used for a rider are in device coordinates, i.e., in pixels. Riders also contain a clipping rectangle. Normally, it is manipulated automatically by the framework, but in special circumstances, it can be useful also for view programmers.\rRiders are allocated by ports.\rRiders are used internally (by frames, see below) and implemented internally.\r\rPROCEDURE (rd: Rider) "
+                    attr: 1
+                  - text: SetRect
+                    attr: 3
+                  - text: " (l, t, r, b: INTEGER)\rNEW, ABSTRACT\rSets the rider's clipping rectangle on the port (in pixels). Normally, this method is called by the framework only. If you use it explicitly, you should restore the old clipping rectangle after you are done. The framework sets up the clipping rectangle before a view's "
+                    attr: 1
+                  - text: Restore
+                    attr: 2
+                  - text: " method is called (-> Views.View.Restore). This ensures that drawing never occurs outside of the drawing area that belongs to the view, as long as the clipping rectangle is not modified by the view.\rThe clipping rectangle must never be made larger than the size set up by the framework, it may only be made smaller. Otherwise, the results are unpredictable.\r\rPre\r0 <= l <= r  &  0 <= t <= b\t20\r\rPROCEDURE (rd: Rider) "
+                    attr: 1
+                  - text: GetRect
+                    attr: 3
+                  - text: " (OUT l, t, r, b: INTEGER)\rNEW, ABSTRACT\rGets the rider's clipping rectangle on the port (in pixels).\r\rPost\r0 <= l <= r  &  0 <= t <= b\r\rPROCEDURE (rd: Rider) "
+                    attr: 1
+                  - text: Base
+                    attr: 3
+                  - text: " (): Port\rNEW, ABSTRACT\rReturns the port to which "
+                    attr: 1
+                  - text: rd
+                    attr: 2
+                  - text: " is connected.\r\rPost\rresult # NIL\r\rPROCEDURE (rd: Rider) "
+                    attr: 1
+                  - text: Move
+                    attr: 3
+                  - text: " (dx, dy: INTEGER)\rNEW, ABSTRACT\rUsed internally.\r\rPROCEDURE (rd: Rider) "
+                    attr: 1
+                  - text: SaveRect
+                    attr: 3
+                  - text: " (l, t, r, b: INTEGER; OUT res: INTEGER)\rNEW, ABSTRACT\rSaves a rectangle (parallel to the coordinate axes) of width "
+                    attr: 1
+                  - text: r - l
+                    attr: 2
+                  - text: " and of height "
+                    attr: 1
+                  - text: b - t
+                    attr: 2
+                  - text: " in a background buffer, from where it can be restored later using "
+                    attr: 1
+                  - text: RestoreRect
+                    attr: 2
+                  - text: ". "
+                    attr: 1
+                  - text: SaveRect
+                    attr: 2
+                  - text: " must be balanced by "
+                    attr: 1
+                  - text: "RestoreRect(l, t, r, b, disposeBuffer)"
+                    attr: 2
+                  - text: ". All coordinates are in pixels.\rCalls to "
+                    attr: 1
+                  - text: SaveRect
+                    attr: 2
+                  - text: " may not be nested, and they may not occur during restoration of a view (-> "
+                    attr: 1
+                  - text: Views.View.Restore
+                    attr: 2
+                  - text: "). The purpose of "
+                    attr: 1
+                  - text: SaveRect/RestoreRect
+                    attr: 2
+                  - text: " is to act as temporary buffering mechanism during mouse tracking (->"
+                    attr: 1
+                  - text: Views.View.HandleCtrlMsg
+                    attr: 2
+                  - text: ").\r "
+                    attr: 1
+                  - text: res = 0
+                    attr: 2
+                  - text: " means that the call was successful, otherwise "
+                    attr: 1
+                  - text: RestoreRect
+                    attr: 2
+                  - text: " must not be called.\r\rPre\r(l <= r) & (t <= b)\t20\r\rPROCEDURE (rd: Rider) "
+                    attr: 1
+                  - text: RestoreRect
+                    attr: 3
+                  - text: " (l, t, r, b: INTEGER; dispose: BOOLEAN)\rNEW, ABSTRACT\rAfter a successful call to "
+                    attr: 1
+                  - text: SaveRect
+                    attr: 2
+                  - text: ", the same rectangle, i.e., its pixelmap contents as it was upon saving, can be restored with "
+                    attr: 1
+                  - text: RestoreRect
+                    attr: 2
+                  - text: ". All coordinates are in pixels. "
+                    attr: 1
+                  - text: RestoreRect
+                    attr: 2
+                  - text: " can be called several times in succession; the last time with "
+                    attr: 1
+                  - text: dispose = disposeBuffer
+                    attr: 2
+                  - text: " and all other times with "
+                    attr: 1
+                  - text: dispose = keepBuffer
+                    attr: 2
+                  - text: ".\r\rPre\r(l <= r) & (t <= b)\t20\r\rPROCEDURE (rd: Rider) "
+                    attr: 1
+                  - text: DrawRect
+                    attr: 3
+                  - text: " (l, t, r, b, s: INTEGER; col: Color)\rNEW, ABSTRACT\rDraws a rectangle (parallel to the coordinate axes) of width "
+                    attr: 1
+                  - text: r - l
+                    attr: 2
+                  - text: " and of height "
+                    attr: 1
+                  - text: b - t
+                    attr: 2
+                  - text: ". All coordinates are in pixels. If "
+                    attr: 1
+                  - text: s < 0
+                    attr: 2
+                  - text: ", the rectangle is filled with color "
+                    attr: 1
+                  - text: col
+                    attr: 2
+                  - text: ". Otherwise, the rectangle is drawn as an outline of thickness "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: ". The outline is drawn "
+                    attr: 1
+                  - text: inside
+                    attr: 2
+                  - text: " of the rectangle. If "
+                    attr: 1
+                  - text: s = 0
+                    attr: 2
+                  - text: ", a very thin outline (hairline) is used.\r\rPre\r(l <= r) & (t <= b)\t20\r(s >= 0) OR (s = fill)\t21\r\rPROCEDURE (rd: Rider) "
+                    attr: 1
+                  - text: DrawOval
+                    attr: 3
+                  - text: " (l, t, r, b, s: INTEGER; col: Color)\rNEW, ABSTRACT\rDraws an ellipse (parallel to the coordinate axes) of width "
+                    attr: 1
+                  - text: r - l
+                    attr: 2
+                  - text: " and of height "
+                    attr: 1
+                  - text: b - t
+                    attr: 2
+                  - text: ". All coordinates are in pixels. If "
+                    attr: 1
+                  - text: s < 0
+                    attr: 2
+                  - text: ", the ellipse is filled with color "
+                    attr: 1
+                  - text: col
+                    attr: 2
+                  - text: ". Otherwise, the ellipse is drawn as an outline of thickness "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: ". The outline is drawn "
+                    attr: 1
+                  - text: inside
+                    attr: 2
+                  - text: " of the rectangle. If "
+                    attr: 1
+                  - text: s = 0
+                    attr: 2
+                  - text: ", a very thin outline (hairline) is used.\r\rPre\r(l <= r) & (t <= b)\t20\r(s >= 0) OR (s = fill)\t21\r\rPROCEDURE (rd: Rider) "
+                    attr: 1
+                  - text: DrawLine
+                    attr: 3
+                  - text: " (x0, y0, x1, y1, s: INTEGER; col: Color)\rNEW, ABSTRACT\rDraws a line from the point "
+                    attr: 1
+                  - text: "(x0, y0)"
+                    attr: 2
+                  - text: " to the point "
+                    attr: 1
+                  - text: "(x1, y1)"
+                    attr: 2
+                  - text: " of thickness "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: " in color "
+                    attr: 1
+                  - text: col
+                    attr: 2
+                  - text: ": All coordinates are in pixels.\rNote that if you need to draw strictly horizontal or vertical lines, you could use "
+                    attr: 1
+                  - text: DrawRect
+                    attr: 2
+                  - text: " with "
+                    attr: 1
+                  - text: fill
+                    attr: 2
+                  - text: " instead of "
+                    attr: 1
+                  - text: DrawLine
+                    attr: 2
+                  - text: ". The advantage of "
+                    attr: 1
+                  - text: DrawRect
+                    attr: 2
+                  - text: " is that it is clearer which pixels are really drawn, it's the pixels that are strictly inside the bounding rectangle.\r\r\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 8
+                      bodyPos: 12379
+                      bodyLen: 675
+                    attr: 1
+                    w: 2006544
+                    h: 1104869
+                  - text: "\r\rFigure 3:  Line\r\r\rIf "
+                    attr: 1
+                  - text: s = 0
+                    attr: 2
+                  - text: ", a very thin outline (hairline) is used.\r\rPre\rs >= 0\t20\r\rPROCEDURE (rd: Rider) "
+                    attr: 1
+                  - text: DrawPath
+                    attr: 3
+                  - text: " (IN p: ARRAY OF Point; n, s: INTEGER; col: Color;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tpath: INTEGER)\rNEW, ABSTRACT\rDraws the path consisting of points "
+                    attr: 1
+                  - text: "p[0] .. p[n - 1]"
+                    attr: 2
+                  - text: " in color "
+                    attr: 1
+                  - text: col
+                    attr: 2
+                  - text: ". The nature of the path is given by parameter "
+                    attr: 1
+                  - text: path
+                    attr: 2
+                  - text: ". It can either be a polyline, a polygon, an open Bezier curve, or a closed Bezier curve. The polyline is the same that a sequence of "
+                    attr: 1
+                  - text: DrawLine
+                    attr: 2
+                  - text: " operations would generate. For a polygon, the "
+                    attr: 1
+                  - text: n
+                    attr: 2
+                  - text: " points define the mathematical region which will be outlined or filled. An open path with "
+                    attr: 1
+                  - text: n
+                    attr: 2
+                  - text: " points results in "
+                    attr: 1
+                  - text: n - 1
+                    attr: 2
+                  - text: " path pieces, a closed path with "
+                    attr: 1
+                  - text: n
+                    attr: 2
+                  - text: " points results in "
+                    attr: 1
+                  - text: n
+                    attr: 2
+                  - text: " path pieces. All coordinates in the point array are in pixels.\r\rPre\rn >= 0\t20\rn <= LEN(p)\t21\r(s = fill)  =>  (path = closedPoly) OR (path = closedBezier)\t22\r(s >= 0) OR (s = fill)\t23\rpath IN {closedPoly, openPoly, closedBezier, openBezier}\t25\rpath = openPoly\r\tn >= 2\t20\rpath = closedPoly\r\tn >= 2\t20\rpath = openBezier\r\tn >= 4\t20\r\tn MOD 3 = 1\t24\rpath = closedBezier\r\tn >= 3\t20\r\tn MOD 3 = 0\t24\r\rPROCEDURE (rd: Rider) "
+                    attr: 1
+                  - text: MarkRect
+                    attr: 3
+                  - text: " (l, t, r, b, s: INTEGER; mode: INTEGER; show: BOOLEAN)\rNEW, ABSTRACT\rMarks a rectangle (parallel to the coordinate axes) of width "
+                    attr: 1
+                  - text: r - l
+                    attr: 2
+                  - text: " and of height "
+                    attr: 1
+                  - text: b - t
+                    attr: 2
+                  - text: ". All coordinates are in pixels. If "
+                    attr: 1
+                  - text: s < 0
+                    attr: 2
+                  - text: ", the rectangle is filled in some way dependent on "
+                    attr: 1
+                  - text: mode
+                    attr: 2
+                  - text: ". Otherwise, the rectangle is drawn as an outline of thickness "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: ". The outline is drawn "
+                    attr: 1
+                  - text: inside
+                    attr: 2
+                  - text: " of the rectangle. If "
+                    attr: 1
+                  - text: s = 0
+                    attr: 2
+                  - text: ", a very thin outline (hairline) is used.\rThe meaning of "
+                    attr: 1
+                  - text: mode
+                    attr: 2
+                  - text: " is implementation-dependent, but it must change the marked area in a visible way. "
+                    attr: 1
+                  - text: show
+                    attr: 2
+                  - text: " indicates whether the mark should be drawn or removed. Calling "
+                    attr: 1
+                  - text: MarkRect
+                    attr: 2
+                  - text: " with "
+                    attr: 1
+                  - text: show
+                    attr: 2
+                  - text: " and then directly afterwards with "
+                    attr: 1
+                  - text: hide
+                    attr: 2
+                  - text: " (otherwise with the same parameters) should re-establish exactly the state before the first call.\r\rPre\r(l <= r) & (l <= t)\t20\rs >= 0\t21\rmode IN {invert, hilite, dim25, dim50, dim75}\t22\r\rPROCEDURE (rd: Rider) "
+                    attr: 1
+                  - text: Scroll
+                    attr: 3
+                  - text: " (dx, dy: INTEGER)\rNEW, ABSTRACT\rShifts the rider's contents by vector "
+                    attr: 1
+                  - text: "(dx, dy)"
+                    attr: 2
+                  - text: ". The translation vector is given in pixels. Shifting occurs completely "
+                    attr: 1
+                  - text: within
+                    attr: 2
+                  - text: " the rider's rectangle, ie., pixels outside of it are neither written nor read. The part of the rectangle that becomes newly exposed is undefined.\rThe purpose of "
+                    attr: 1
+                  - text: Scroll
+                    attr: 2
+                  - text: " is to speed up scrolling operations by reusing existing pixel data instead of making the application redraw everything.\rHowever, under special circumstances, this procedure may not actually copy pixel data, but cause the application to restore part of the rectangle instead anyway.\rWarning: this operation may only be used on interactive ports, in order to update the screen display after a user manipulation.\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 9
+                      bodyPos: 13374
+                      bodyLen: 5237
+                    attr: 1
+                    w: 2200410
+                    h: 1485810
+                  - text: "\r\rFigure 4.  Effect of Scroll Operation\r\rPROCEDURE (rd: Rider) "
+                    attr: 1
+                  - text: SetCursor
+                    attr: 3
+                  - text: " (cursor: INTEGER)\rNEW, ABSTRACT\rSets the cursor to the given value.\r\rPre\rcursor IN {arrowCursor..refCursor}\t20\r\rPROCEDURE (rd: Rider) "
+                    attr: 1
+                  - text: Input
+                    attr: 3
+                  - text: " (OUT x, y: INTEGER; OUT modifiers: SET; OUT isDown: BOOLEAN)\rNEW, ABSTRACT\rPolls the current mouse location and tells whether the mouse button is currently pressed. All coordinates are in pixels. In "
+                    attr: 1
+                  - text: modifiers
+                    attr: 2
+                  - text: ", the currently pressed modifier keys are returned, like "
+                    attr: 1
+                  - text: Controllers.doubleClick
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Controllers.extend
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Controllers.modify
+                    attr: 2
+                  - text: ", and possibly additional platform-specific modifiers.\r\rPROCEDURE (rd: Rider) "
+                    attr: 1
+                  - text: DrawSpace
+                    attr: 3
+                  - text: " (x, y, w: INTEGER; col: Color; font: Fonts.Font) \rNEW, ABSTRACT;"
+                    attr: 1
+                  - text: "\r"
+                    attr: 4
+                  - text: "Draws a space character of width "
+                    attr: 1
+                  - text: "w. "
+                    attr: 2
+                  - text: "\rThe horizontal position is specified by "
+                    attr: 1
+                  - text: "x, "
+                    attr: 2
+                  - text: "the vertical baseline by "
+                    attr: 1
+                  - text: "y, "
+                    attr: 2
+                  - text: "the color "
+                    attr: 1
+                  - text: "by col, "
+                    attr: 2
+                  - text: "and the font attributes "
+                    attr: 1
+                  - text: by font
+                    attr: 2
+                  - text: ". All coordinates are in pixels. This method allows for drawing spaces decorated with underline or strike out.\r\rPre\rfont # NIL\r\rPROCEDURE (rd: Rider) "
+                    attr: 1
+                  - text: DrawString
+                    attr: 3
+                  - text: " (x, y: INTEGER; col: Color; IN s: ARRAY OF CHAR;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tfont: Fonts.Font)\rNEW, ABSTRACT\rDraws string "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: " in color "
+                    attr: 1
+                  - text: col
+                    attr: 2
+                  - text: " and font "
+                    attr: 1
+                  - text: font
+                    attr: 2
+                  - text: " with the base line at "
+                    attr: 1
+                  - text: y
+                    attr: 2
+                  - text: ". All coordinates are in pixels.\r\rPre\rfont # NIL\t20\r\rPROCEDURE (rd: Rider) "
+                    attr: 1
+                  - text: DrawSString
+                    attr: 3
+                  - text: " (x, y: INTEGER; col: Color; IN s: ARRAY OF SHORTCHAR;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tfont: Fonts.Font)\rNEW, ABSTRACT\rDraws short string "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: " in color "
+                    attr: 1
+                  - text: col
+                    attr: 2
+                  - text: " and font "
+                    attr: 1
+                  - text: font
+                    attr: 2
+                  - text: " with the base line at "
+                    attr: 1
+                  - text: y
+                    attr: 2
+                  - text: ". All coordinates are in pixels.\r\rPre\rfont # NIL\t20\r\rPROCEDURE (rd: Rider) "
+                    attr: 1
+                  - text: CharIndex
+                    attr: 3
+                  - text: " (x, pos: INTEGER; IN s: ARRAY OF CHAR;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tfont: Fonts.Font): INTEGER\rNEW, ABSTRACT\rGiven string "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: " at position "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: CharIndex
+                    attr: 2
+                  - text: " determines the index of the character which lies at position "
+                    attr: 1
+                  - text: pos
+                    attr: 2
+                  - text: ". All coordinates are in pixels. "
+                    attr: 1
+                  - text: Result = 0
+                    attr: 2
+                  - text: " means "
+                    attr: 1
+                  - text: pos
+                    attr: 2
+                  - text: " is at or left of the first character in "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: result = n - 1
+                    attr: 2
+                  - text: ", where "
+                    attr: 1
+                  - text: n
+                    attr: 2
+                  - text: " is the number of characters in string "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: ", means "
+                    attr: 1
+                  - text: po
+                    attr: 2
+                  - text: "s is right of the last character in "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: ".\r\rPre\rfont # NIL\t20\r\rPROCEDURE (rd: Rider) "
+                    attr: 1
+                  - text: LCharIndex
+                    attr: 3
+                  - text: " (x, pos: INTEGER; IN s: ARRAY OF SHORTCHAR;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tfont: Fonts.Font): INTEGER\rNEW, ABSTRACT\rGiven string "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: " at position "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: CharIndex
+                    attr: 2
+                  - text: " determines the index of the character which lies at position "
+                    attr: 1
+                  - text: pos
+                    attr: 2
+                  - text: ". All coordinates are in pixels. "
+                    attr: 1
+                  - text: Result = 0
+                    attr: 2
+                  - text: " means "
+                    attr: 1
+                  - text: pos
+                    attr: 2
+                  - text: " is at or left of the first character in "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: result = n - 1
+                    attr: 2
+                  - text: ", where "
+                    attr: 1
+                  - text: n
+                    attr: 2
+                  - text: " is the number of characters in string "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: ", means "
+                    attr: 1
+                  - text: po
+                    attr: 2
+                  - text: "s is right of the last character in "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: ".\r\rPre\rfont # NIL\t20\r\rPROCEDURE (rd: Rider) "
+                    attr: 1
+                  - text: CharPos
+                    attr: 3
+                  - text: " (x, index: INTEGER; IN s: ARRAY OF CHAR;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tfont: Fonts.Font): INTEGER\rNEW, ABSTRACT\rGiven string "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: " at position "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: CharPos
+                    attr: 2
+                  - text: " determines the position of character "
+                    attr: 1
+                  - text: index
+                    attr: 2
+                  - text: " in "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: ". All coordinates are in pixels. The position of the left margin of the character is returned.\r\rPre\rfont # NIL\t20\r\rPROCEDURE (rd: Rider) "
+                    attr: 1
+                  - text: LCharPos
+                    attr: 3
+                  - text: " (x, index: INTEGER; IN s: ARRAY OF SHORTCHAR;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tfont: Fonts.Font): INTEGER\rNEW, ABSTRACT\rGiven string "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: " at position "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: CharPos
+                    attr: 2
+                  - text: " determines the position of character "
+                    attr: 1
+                  - text: index
+                    attr: 2
+                  - text: " in "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: ". All coordinates are in pixels. The position of the left margin of the character is returned.\r\rPre\rfont # NIL\t20\r\r\rTYPE "
+                    attr: 1
+                  - text: Frame
+                    attr: 3
+                  - text: "\rABSTRACT\rA Frame is a mapper for a port. Every frame has its own coordinate system. All coordinates used for a frame are measured in universal units. Most frame operations forward to the frame's rider, i.e., they call the frame rider's corresponding procedure, and perform the necessary coordinate transformations (scaling between universal units and pixels, and a translation by the frame's origin).\rA frame "
+                    attr: 1
+                  - text: f
+                    attr: 2
+                  - text: " translates from local universal coordinates to global pixel coordinates using the following transformation:\r\t\tx := (f.gx + x) DIV f.unit; y := (f.gy + y) DIV f.unit;\t(* frame -> rider coordinates *)\rThe opposit transformation is:\r\t\tx := x * f.unit - f.gx; y := y * f.unit - f.gy;\t(* rider -> frame coordinates *)\rThe rider's clipping rectangle is always set up such that drawing cannot occur outside of the frame, i.e., outside of the drawing view. Be careful if you change the rider's clipping rectangle (using the rider's "
+                    attr: 1
+                  - text: SetRect
+                    attr: 2
+                  - text: " method), since this introduces mutable state that you have to manage.\rFrames are allocated by views.\rFrames are used by views, for drawing and for mouse polling.\rFrames are extended internally ("
+                    attr: 1
+                  - text: Views.Frame
+                    attr: 2
+                  - text: ").\r\r"
+                    attr: 1
+                  - text: unit
+                    attr: 3
+                  - text: "-: INTEGER\tunit > 0\rThe size of a pixel in universal units.\r\r"
+                    attr: 1
+                  - text: dot-
+                    attr: 3
+                  - text: ": INTEGER\tdot = point - point MOD unit\rThis value can be used as an approximation of "
+                    attr: 1
+                  - text: point
+                    attr: 2
+                  - text: ", rounded to a pixel. By using "
+                    attr: 1
+                  - text: dot
+                    attr: 2
+                  - text: " instead of "
+                    attr: 1
+                  - text: point
+                    attr: 2
+                  - text: ", ugly rounding errors can be avoided. For example, if you used "
+                    attr: 1
+                  - text: point
+                    attr: 2
+                  - text: " as the thickness of a line, and a pixel were slightly larger than "
+                    attr: 1
+                  - text: point
+                    attr: 2
+                  - text: ", the line might disappear altogether. Moreover, you may want to use a very thin line on the screen (about one pixel) as a hairline, but not have it become too small on a laser printer (where the frame's "
+                    attr: 1
+                  - text: unit
+                    attr: 2
+                  - text: " is much smaller than on screen). In these cases, "
+                    attr: 1
+                  - text: dot
+                    attr: 2
+                  - text: " comes handy.\r\r"
+                    attr: 1
+                  - text: rider
+                    attr: 3
+                  - text: "-: Ports.Rider\rRider which links the frame to a port.\r\r"
+                    attr: 1
+                  - text: "gx-, gy-"
+                    attr: 3
+                  - text: ": INTEGER\t[units]\rThe frame's origin in global coordinates (i.e., relative to the port's upper-left corner), but in units instead of pixels. This is an exception from the rule that riders use pixels, while frames use units.\r\rPROCEDURE (f: Frame) "
+                    attr: 1
+                  - text: ConnectTo
+                    attr: 3
+                  - text: " (p: Port)\rNEW, EXTENSIBLE\rConnects the frame to a port. All other frame procedures require a connected frame, i.e., "
+                    attr: 1
+                  - text: "rider # NIL"
+                    attr: 2
+                  - text: ". This precondition is not checked explicitly.\r"
+                    attr: 1
+                  - text: ConnectTo
+                    attr: 2
+                  - text: " is used internally.\r\rPost\rp = NIL\r\tf.unit = 0\r\tf.rider = NIL\rp # NIL\r\tf.unit = p.unit\r\tf.rider # NIL  &  f.rider.Base() = p\r\tf.dot = point - point MOD p.unit\r\rPROCEDURE (f: Frame) "
+                    attr: 1
+                  - text: SetOffset
+                    attr: 3
+                  - text: " (gx, gy: INTEGER)\rNEW, EXTENSIBLE\rSets the frame's origin, in global coordinates (i.e., relative to the port's upper-left corner), but in units instead of pixels. All local coordinates are relative to this origin. This method is only for internal use in the framework.\r"
+                    attr: 1
+                  - text: SetOffset
+                    attr: 2
+                  - text: " is used internally.\r\rPre\rf.rider # NIL\t20\r\rPost\rf.gx = gx  &  f.gy = gy\r\rPROCEDURE (f: Frame) "
+                    attr: 1
+                  - text: SaveRect
+                    attr: 3
+                  - text: " (l, t, r, b: INTEGER; OUT res: INTEGER)\rNEW\rSaves a rectangle (parallel to the coordinate axes) of width "
+                    attr: 1
+                  - text: r - l
+                    attr: 2
+                  - text: " and of height "
+                    attr: 1
+                  - text: b - t
+                    attr: 2
+                  - text: " in a background buffer, from where it can be restored later using "
+                    attr: 1
+                  - text: RestoreRect
+                    attr: 2
+                  - text: ". "
+                    attr: 1
+                  - text: SaveRect
+                    attr: 2
+                  - text: " must be balanced by "
+                    attr: 1
+                  - text: "RestoreRect(l, t, r, b, disposeBuffer)"
+                    attr: 2
+                  - text: ".\rCalls to "
+                    attr: 1
+                  - text: SaveRect
+                    attr: 2
+                  - text: " may not be nested, and they may not occur during restoration of a view (-> "
+                    attr: 1
+                  - text: Views.View.Restore
+                    attr: 2
+                  - text: "). The purpose of "
+                    attr: 1
+                  - text: SaveRect/RestoreRect
+                    attr: 2
+                  - text: " is to act as temporary buffering mechanism during mouse tracking (->"
+                    attr: 1
+                  - text: Views.View.HandleCtrlMsg
+                    attr: 2
+                  - text: ").\r "
+                    attr: 1
+                  - text: res = 0
+                    attr: 2
+                  - text: " means that the call was successful, otherwise "
+                    attr: 1
+                  - text: RestoreRect
+                    attr: 2
+                  - text: " must not be called.\r\rPre\r(l <= r) & (t <= b)\t20\r\rPROCEDURE (f: Frame) "
+                    attr: 1
+                  - text: RestoreRect
+                    attr: 3
+                  - text: " (l, t, r, b: INTEGER; dispose: BOOLEAN)\rNEW\rAfter a successful call to "
+                    attr: 1
+                  - text: SaveRect
+                    attr: 2
+                  - text: ", the same rectangle, i.e., its pixelmap contents as it was upon saving, can be restored with "
+                    attr: 1
+                  - text: RestoreRect
+                    attr: 2
+                  - text: ". "
+                    attr: 1
+                  - text: RestoreRect
+                    attr: 2
+                  - text: " can be called several times in succession; the last time with "
+                    attr: 1
+                  - text: dispose = disposeBuffer
+                    attr: 2
+                  - text: " and all other times with "
+                    attr: 1
+                  - text: dispose = keepBuffer
+                    attr: 2
+                  - text: ".\r\rPre\r(l <= r) & (t <= b)\t20\r\rPROCEDURE (f: Frame) "
+                    attr: 1
+                  - text: DrawRect
+                    attr: 3
+                  - text: " (l, t, r, b, s: INTEGER; col: Color)\rNEW\rDraws a rectangle (parallel to the coordinate axes) of width "
+                    attr: 1
+                  - text: r - l
+                    attr: 2
+                  - text: " and of height "
+                    attr: 1
+                  - text: b - t
+                    attr: 2
+                  - text: ". If "
+                    attr: 1
+                  - text: s < 0
+                    attr: 2
+                  - text: ", the rectangle is filled with color "
+                    attr: 1
+                  - text: col
+                    attr: 2
+                  - text: ". Otherwise, the rectangle is drawn as an outline of thickness "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: ". The outline is drawn "
+                    attr: 1
+                  - text: inside
+                    attr: 2
+                  - text: " of the rectangle. If "
+                    attr: 1
+                  - text: s = 0
+                    attr: 2
+                  - text: ", a very thin outline (hairline) is used.\r\rPre\r(l <= r) & (t <= b)\t20\r(s >= 0) OR (s = fill)\t21\r\rPROCEDURE (f: Frame) "
+                    attr: 1
+                  - text: DrawOval
+                    attr: 3
+                  - text: " (l, t, r, b, s: INTEGER; col: Color)\rNEW\rDraws an ellipse (parallel to the coordinate axes) of width "
+                    attr: 1
+                  - text: r - l
+                    attr: 2
+                  - text: " and of height "
+                    attr: 1
+                  - text: b - t
+                    attr: 2
+                  - text: ". If "
+                    attr: 1
+                  - text: s < 0
+                    attr: 2
+                  - text: ", the ellipse is filled with color "
+                    attr: 1
+                  - text: col
+                    attr: 2
+                  - text: ". Otherwise, the ellipse is drawn as an outline of thickness "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: ". The outline is drawn "
+                    attr: 1
+                  - text: inside
+                    attr: 2
+                  - text: " of the rectangle. If "
+                    attr: 1
+                  - text: s = 0
+                    attr: 2
+                  - text: ", a very thin outline (hairline) is used.\r\rPre\r(l <= r) & (t <= b)\t20\r(s >= 0) OR (s = fill)\t21\r\rPROCEDURE (f: Frame) "
+                    attr: 1
+                  - text: DrawLine
+                    attr: 3
+                  - text: " (x0, y0, x1, y1, s: INTEGER; col: Color)\rNEW\rDraws a line from the point "
+                    attr: 1
+                  - text: "(x0, y0)"
+                    attr: 2
+                  - text: " to the point "
+                    attr: 1
+                  - text: "(x1, y1)"
+                    attr: 2
+                  - text: " of thickness "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: " in color "
+                    attr: 1
+                  - text: col
+                    attr: 2
+                  - text: ":\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 11
+                      bodyPos: 19899
+                      bodyLen: 675
+                    attr: 1
+                    w: 2006547
+                    h: 1104870
+                  - text: "\r\rFigure 5.  Line\r\rIf "
+                    attr: 1
+                  - text: s = 0
+                    attr: 2
+                  - text: ", a very thin outline (hairline) is used.\r\rPre\rs >= 0\t20\r\rPROCEDURE (f: Frame) "
+                    attr: 1
+                  - text: DrawPath
+                    attr: 3
+                  - text: " (IN p: ARRAY OF Point; n, s: INTEGER; col: Color;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tpath: INTEGER)\rNEW\rDraws the path consisting of points "
+                    attr: 1
+                  - text: "p[0] .. p[n - 1]"
+                    attr: 2
+                  - text: " in color "
+                    attr: 1
+                  - text: col
+                    attr: 2
+                  - text: ". The nature of the path is given by parameter "
+                    attr: 1
+                  - text: path
+                    attr: 2
+                  - text: ". It can either be a polyline, a polygon, an open Bezier curve, or a closed Bezier curve. The polyline is the same that a sequence of "
+                    attr: 1
+                  - text: DrawLine
+                    attr: 2
+                  - text: " operations would generate. For a polygon, the n points define the mathematical region which will be outlined or filled. An open path with "
+                    attr: 1
+                  - text: n
+                    attr: 2
+                  - text: " points results in "
+                    attr: 1
+                  - text: n - 1
+                    attr: 2
+                  - text: " path pieces, a closed path with "
+                    attr: 1
+                  - text: n
+                    attr: 2
+                  - text: " points results in "
+                    attr: 1
+                  - text: n
+                    attr: 2
+                  - text: " path pieces.\r\rPre\rn >= 0\t20\rn <= LEN(p)\t21\r(s = fill)  =>  (path = closedPoly) OR (path = closedBezier)\t22\r(s >= 0) OR (s = fill)\t23\rpath IN {closedPoly, openPoly, closedBezier, openBezier}\t25\rpath = openPoly\r\tn >= 2\t20\rpath = closedPoly\r\tn >= 2\t20\rpath = openBezier\r\tn >= 4\t20\r\tn MOD 3 = 1\t24\rpath = closedBezier\r\tn >= 3\t20\r\tn MOD 3 = 0\t24\r\rPROCEDURE (f: Frame) "
+                    attr: 1
+                  - text: MarkRect
+                    attr: 3
+                  - text: " (l, t, r, b, s: INTEGER; mode: INTEGER; show: BOOLEAN)\rNEW\rMarks a rectangle (parallel to the coordinate axes) of width "
+                    attr: 1
+                  - text: r - l
+                    attr: 2
+                  - text: " and of height "
+                    attr: 1
+                  - text: b - t
+                    attr: 2
+                  - text: ". If "
+                    attr: 1
+                  - text: s < 0
+                    attr: 2
+                  - text: ", the rectangle is filled in some way, dependent on "
+                    attr: 1
+                  - text: mode
+                    attr: 2
+                  - text: ". Otherwise, the rectangle is drawn as an outline of thickness "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: ". If "
+                    attr: 1
+                  - text: s = 0
+                    attr: 2
+                  - text: ", a very thin outline (hairline) is used. The outline is drawn "
+                    attr: 1
+                  - text: inside
+                    attr: 2
+                  - text: " of the rectangle.\rThe meaning of "
+                    attr: 1
+                  - text: mode
+                    attr: 2
+                  - text: " is implementation-dependent, but it must change the marked area in a visible way."
+                    attr: 1
+                  - text: " show"
+                    attr: 2
+                  - text: " indicates whether the mark should be drawn or removed. Calling "
+                    attr: 1
+                  - text: MarkRect
+                    attr: 2
+                  - text: " with "
+                    attr: 1
+                  - text: show
+                    attr: 2
+                  - text: " and then directly afterwards with "
+                    attr: 1
+                  - text: hide
+                    attr: 2
+                  - text: " (otherwise with the same parameters) should re-establish exactly the state before the first call.\r\rPre\r(l <= r) & (t <= b)\t20\rs >= 0\t21\rmode IN {invert, hilite, dim25, dim50, dim75}\t22\r\rPROCEDURE (f: Frame) "
+                    attr: 1
+                  - text: Scroll
+                    attr: 3
+                  - text: " (dx, dy: INTEGER)\rNEW\rShifts the frame's area by vector "
+                    attr: 1
+                  - text: "(dx, dy)"
+                    attr: 2
+                  - text: ". Shifting occurs completely "
+                    attr: 1
+                  - text: within
+                    attr: 2
+                  - text: " the frame's rectangle, i.e., pixels outside of it are neither written nor read. The part of the rectangle which becomes newly exposed should be considered as undefined.\rThe purpose of "
+                    attr: 1
+                  - text: Scroll
+                    attr: 2
+                  - text: " is to speed up scrolling and editing operations by reusing existing pixel data instead of making the application redraw everything.\rHowever, under special circumstances, this procedure may not actually copy pixel data, but cause the application to restore part of the rectangle instead anyway.\rWarning: this operation may only be used on interactive ports, in order to update the screen display after a user manipulation.\r"
+                    attr: 1
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 12
+                      bodyPos: 20884
+                      bodyLen: 5237
+                    attr: 1
+                    w: 2200410
+                    h: 1485810
+                  - text: "\r\rFigure 6.  Effect of Scroll Operation\r\rPROCEDURE (f: Frame) "
+                    attr: 1
+                  - text: SetCursor
+                    attr: 3
+                  - text: " (cursor: INTEGER)\rNEW\rSets the cursor to the given value.\r"
+                    attr: 1
+                  - text: SetCursor
+                    attr: 2
+                  - text: " is used in polling loops during mouse tracking.\r\rPre\rcursor IN {arrowCursor..refCursor}\t20\r\rPROCEDURE (f: Frame) "
+                    attr: 1
+                  - text: Input
+                    attr: 3
+                  - text: " (OUT x, y: INTEGER; OUT modifiers: SET; OUT isDown: BOOLEAN)\rNEW\rPolls the current mouse location and tells whether the mouse button is currently pressed.\r"
+                    attr: 1
+                  - text: Input
+                    attr: 2
+                  - text: " is used in polling loops during mouse tracking. In "
+                    attr: 1
+                  - text: modifiers
+                    attr: 2
+                  - text: ", the currently pressed modifier keys are returned, like "
+                    attr: 1
+                  - text: Controllers.doubleClick
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Controllers.extend
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Controllers.modify
+                    attr: 2
+                  - text: ", and possibly additional platform-specific modifiers.\r\rPROCEDURE (f: Frame) "
+                    attr: 1
+                  - text: DrawSpace
+                    attr: 3
+                  - text: " (x, y, w: INTEGER; col: Color; font: Fonts.Font)\rNEW;"
+                    attr: 1
+                  - text: "\r"
+                    attr: 4
+                  - text: "Draws a space character of width "
+                    attr: 1
+                  - text: "w. "
+                    attr: 2
+                  - text: "\rThe horizontal position is specified by "
+                    attr: 1
+                  - text: "x, "
+                    attr: 2
+                  - text: "the vertical baseline by "
+                    attr: 1
+                  - text: "y, "
+                    attr: 2
+                  - text: "the color "
+                    attr: 1
+                  - text: "by col "
+                    attr: 2
+                  - text: "and the font attributes "
+                    attr: 1
+                  - text: by font
+                    attr: 2
+                  - text: ". This method allows for drawing spaces decorated with underline or strike out.\r\rPre\rfont # NIL\r\rPROCEDURE (f: Frame) "
+                    attr: 1
+                  - text: DrawString
+                    attr: 3
+                  - text: " (x, y: INTEGER; col: Color; IN s: ARRAY OF CHAR;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tfont: Fonts.Font)\rNEW\rDraws string "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: " in color "
+                    attr: 1
+                  - text: col
+                    attr: 2
+                  - text: " and font "
+                    attr: 1
+                  - text: font
+                    attr: 2
+                  - text: " with the base line at "
+                    attr: 1
+                  - text: y
+                    attr: 2
+                  - text: ".\r\rPre\rfont # NIL\t20\r\rPROCEDURE (f: Frame) "
+                    attr: 1
+                  - text: DrawSString
+                    attr: 3
+                  - text: " (x, y: INTEGER; col: Color; IN s: ARRAY OF SHORTCHAR;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tfont: Fonts.Font)\rNEW\rDraws short string "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: " in color "
+                    attr: 1
+                  - text: col
+                    attr: 2
+                  - text: " and font "
+                    attr: 1
+                  - text: font
+                    attr: 2
+                  - text: " with the base line at "
+                    attr: 1
+                  - text: y
+                    attr: 2
+                  - text: ".\r\rPre\rfont # NIL\t20\r\rPROCEDURE (f: Frame) "
+                    attr: 1
+                  - text: CharIndex
+                    attr: 3
+                  - text: " (x, pos: INTEGER; IN s: ARRAY OF CHAR;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tfont: Fonts.Font): INTEGER\rNEW\rGiven string "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: " at position "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: CharIndex
+                    attr: 2
+                  - text: " determines the index of the character which lies at position "
+                    attr: 1
+                  - text: pos
+                    attr: 2
+                  - text: ". "
+                    attr: 1
+                  - text: Result = 0
+                    attr: 2
+                  - text: " means "
+                    attr: 1
+                  - text: pos
+                    attr: 2
+                  - text: " is at or left of the first character in "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: result = n - 1
+                    attr: 2
+                  - text: ", where "
+                    attr: 1
+                  - text: n
+                    attr: 2
+                  - text: " is the number of characters in string "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: ", means "
+                    attr: 1
+                  - text: po
+                    attr: 2
+                  - text: "s is right of the last character in "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: ".\r\rPre\rfont # NIL\t20\r\rPROCEDURE (f: Frame) "
+                    attr: 1
+                  - text: SCharIndex
+                    attr: 3
+                  - text: " (x, pos: INTEGER; IN s: ARRAY OF SHORTCHAR;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tfont: Fonts.Font): INTEGER\rGiven short string "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: " at position "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: CharIndex
+                    attr: 2
+                  - text: " determines the index of the character which lies at position "
+                    attr: 1
+                  - text: pos
+                    attr: 2
+                  - text: ". "
+                    attr: 1
+                  - text: Result = 0
+                    attr: 2
+                  - text: " means "
+                    attr: 1
+                  - text: pos
+                    attr: 2
+                  - text: " is at or left of the first character in "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: result = n - 1
+                    attr: 2
+                  - text: ", where "
+                    attr: 1
+                  - text: n
+                    attr: 2
+                  - text: " is the number of characters in string "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: ", means "
+                    attr: 1
+                  - text: po
+                    attr: 2
+                  - text: "s is right of the last character in "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: ".\r\rPre\rfont # NIL\t20\r\rPROCEDURE (f: Frame) "
+                    attr: 1
+                  - text: CharPos
+                    attr: 3
+                  - text: " (x, index: INTEGER; IN s: ARRAY OF CHAR;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tfont: Fonts.Font): INTEGER\rGiven string "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: " at position "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: CharPos
+                    attr: 2
+                  - text: " determines the position of character "
+                    attr: 1
+                  - text: index
+                    attr: 2
+                  - text: " in "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: ". The position of the left margin of the character is returned.\r\rPre\rfont # NIL\t20\r\rPROCEDURE (f: Frame) "
+                    attr: 1
+                  - text: SCharPos
+                    attr: 3
+                  - text: " (x, index: INTEGER; IN s: ARRAY OF SHORTCHAR;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tfont: Fonts.Font): INTEGER\rGiven short string "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: " at position "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: CharPos
+                    attr: 2
+                  - text: " determines the position of character "
+                    attr: 1
+                  - text: index
+                    attr: 2
+                  - text: " in "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: ". The position of the left margin of the character is returned.\r\rPre\rfont # NIL\t20\r\r\rVAR "
+                    attr: 1
+                  - text: background
+                    attr: 3
+                  - text: ": Color\tbackground >= 0\rThis variable denotes the color which is used for the background of a window.\r\rVAR "
+                    attr: 1
+                  - text: dialogBackground
+                    attr: 3
+                  - text: ": Color\tdialogBackground >= 0\rThis variable denotes the color which is used for the background of a dialog.\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: IsPrinterPort
+                    attr: 3
+                  - text: " (p: Port): BOOLEAN\rDetermines whether a port represents a printer.\r\rPROCEDURE "
+                    attr: 1
+                  - text: RGBColor
+                    attr: 3
+                  - text: " (red, green, blue: INTEGER): Color\rConstructs a "
+                    attr: 1
+                  - text: Color
+                    attr: 2
+                  - text: " out of the red, green, and blue components.\r\rPre\r0 <= red < 256\t20\r0 <= green < 256\t21\r0 <= blue < 256\t22\r\rPost\rresult = blue * 65536  +  green * 256  + red\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 17
+          bodyPos: 58477
+          bodyLen: 8

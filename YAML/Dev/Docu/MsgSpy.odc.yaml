@@ -1,0 +1,196 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Dev\\Docu\\MsgSpy.odc"
+  size: 140264
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 140133
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 139947
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 139861
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                lead: 11430
+                asc: 104775
+                dsc: 28575
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 7
+                bodyPos: 139861
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 139347
+                runListLen: 136364
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                flow:
+                  - text: DevMsgSpy
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\rA tool that allows to inspect the messages which are sent to a view.\r\r\r"
+                    attr: 2
+                  - text: About the message spy
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - text: Message Spy
+                    attr: 3
+                  - text: " is a tool that logs the messages which are sent to a view through one of the methods "
+                    attr: 2
+                  - text: HandleCtrlMsg
+                    attr: 3
+                  - text: ", "
+                    attr: 2
+                  - text: HandleModelMsg
+                    attr: 3
+                  - text: ", "
+                    attr: 2
+                  - text: HandlePropMsg
+                    attr: 3
+                  - text: ", or "
+                    attr: 2
+                  - text: HandleViewMsg
+                    attr: 3
+                  - text: ". The message spy displays the type of all messages which are sent to the view and, upon request, also the complete message records.\rThis tool can help you if your view does not behave as you expect. With the message spy you can learn which messages the frameworks sends to your view and thus which messages you should answer.\r"
+                    attr: 2
+                  - text: "\rHow to inspect a view\r"
+                    attr: 1
+                  - text: "To open the Message Spy, choose "
+                    attr: 2
+                  - text: "Message Spy... "
+                    attr: 3
+                  - text: "from menu "
+                    attr: 2
+                  - text: Info
+                    attr: 3
+                  - text: ". This opens a dialog box similar to the one shown in Figure 1. If you want to inspect a view with the message spy, select it as a singleton and press the "
+                    attr: 2
+                  - text: Add View
+                    attr: 3
+                  - text: " button. If you want to remove a view from the message spy, select it as a singleton and press the same button, which is now labeled "
+                    attr: 2
+                  - text: Remove View
+                    attr: 3
+                  - text: ".\r\r\r"
+                    attr: 2
+                  - view:
+                      kind: HostPictures.StdView
+                      storeKind: store
+                      typeChain:
+                        - HostPictures.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 6
+                      bodyPos: 807
+                      bodyLen: 135897
+                    attr: 0
+                    w: 3467055
+                    h: 3543150
+                  - text: "\r\rFigure 1: The tool window of Message Spy\r\rThe tool dialog box of the message spy is divided into two parts. In the upper part, all recognized message types are displayed. This list grows over time. Whenever the message spy meets a message of a new type through any of its inspected views, this type is added to the list of recognized types. Since you might loose the overview over the message types soon, the "
+                    attr: 2
+                  - text: "Mark New Messages in List "
+                    attr: 3
+                  - text: "option causes all newly added message types to be selected. In this way you easily learn about messages involved in a particular action. The list of message types can be cleared with the "
+                    attr: 2
+                  - text: Clear List
+                    attr: 3
+                  - text: " button.\r\rIf the option "
+                    attr: 2
+                  - text: Show Messages in Log
+                    attr: 3
+                  - text: " is selected, then all messages sent to all inspected views whose types are selected in the type selection box are displayed in the lower part of the message spy dialog box. For each message, the type name is displayed followed by a diamond. If this diamond is clicked, then all instance variables of the message record are displayed in a separate window. The log is a regular text which can be scrolled and edited.\r\r"
+                    attr: 2
+                  - text: More information
+                    attr: 1
+                  - text: "\rAs message records are static (stack-allocated) variables they have to be copied in order to make them accessible beyond the call of the message handler. The consequence thereof is that only the contents of the message upon message call can be inspected, not how the message is answered by a particular view.\r\rNote that the message spy displays messages of any type sent to an intercepted view, this also includes messages of types which are not exported.\r\rIn order to intercept a view, the message spy adds a wrapper around the original view. This wrapper displays the messages and then forwards them to the wrapped view. By replacing a view by its wrapper, the type of the view changes, and thus some tools which depend on a view's type no longer work with inspected views.\r\rMenu command:\r\r\t\"Message Spy...\"\t\"\"\t\"StdCmds.OpenToolDialog('Dev/Rsrc/MsgSpy', 'Message Spy')\"\t\"\"\r"
+                    attr: 2
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 11
+          bodyPos: 140229
+          bodyLen: 8

@@ -1,0 +1,372 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Com\\Mod\\Enum.odc"
+  size: 11092
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 10961
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 10775
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 10689
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 10810
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 10296
+                runListLen: 2053
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE ComEnum;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)"
+                    attr: 1
+                  - text: "\r\r\tIMPORT COM, WinApi, WinOle, ComTools;\r\t\r\tTYPE\r\t\tIEnumUnknown = POINTER TO RECORD (WinOle.IEnumUnknown)\r\t\t\tcur: INTEGER;\r\t\t\tnum: INTEGER;\r\t\t\tdata: POINTER TO ARRAY OF COM.IUnknown\r\t\tEND;\r\t\t\r\t\tIEnumString = POINTER TO RECORD (WinOle.IEnumString)\r\t\t\tcur: INTEGER;\r\t\t\tnum: INTEGER;\r\t\t\tdata: POINTER TO ARRAY OF ARRAY OF CHAR\r\t\tEND;\r\t\t\r\t\tIEnumFORMATETC = POINTER TO RECORD (WinOle.IEnumFORMATETC)\r\t\t\tcur: INTEGER;\r\t\t\tnum: INTEGER;\r\t\t\tformat: POINTER TO ARRAY OF INTEGER;\r\t\t\taspect, tymed: POINTER TO ARRAY OF SET\r\t\tEND;\r\t\t\r\t\tIEnumOLEVERB = POINTER TO RECORD (WinOle.IEnumOLEVERB)\r\t\t\tcur: INTEGER;\r\t\t\tnum: INTEGER;\r\t\t\tverb: POINTER TO ARRAY OF INTEGER;\r\t\t\tname: POINTER TO ARRAY OF ARRAY OF CHAR;\r\t\t\tflags, attribs: POINTER TO ARRAY OF SET\r\t\tEND;\r\t\t\r\r\t"
+                    attr: 0
+                  - text: "(* IEnumUnknown  *)"
+                    attr: 1
+                  - text: "\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: CreateIEnumUnknown
+                    attr: 3
+                  - text: "* (num: INTEGER; IN data: ARRAY OF COM.IUnknown;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT enum: WinOle.IEnumUnknown);\r\t\tVAR i, n: INTEGER; new: IEnumUnknown;\r\tBEGIN\r\t\tNEW(new);\r\t\tIF new # NIL THEN\r\t\t\tnew.cur := 0;\r\t\t\tnew.num := num;\r\t\t\tNEW(new.data, num);\r\t\t\ti := 0;\r\t\t\tWHILE i < num DO new.data[i] := data[i]; INC(i) END;\r\t\t\tenum := new\r\t\tEND\r\tEND CreateIEnumUnknown;\r\t\r\tPROCEDURE (this: IEnumUnknown) Next (num: INTEGER; OUT elem: ARRAY [untagged] OF COM.IUnknown;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT [nil] fetched: INTEGER): COM.RESULT;\r\t\tVAR n: INTEGER;\r\tBEGIN\r\t\tn := 0;\r\t\tIF VALID(fetched) THEN fetched := 0\r\t\tELSIF num # 1 THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_POINTER\r\t\tEND;\r\t\tIF this.cur < this.num THEN\r\t\t\tWHILE (this.cur < this.num) & (num > 0) DO\r\t\t\t\telem[n] := this.data[this.cur];\r\t\t\t\tINC(this.cur); INC(n); DEC(num)\r\t\t\tEND;\r\t\t\tIF VALID(fetched) THEN fetched := n END;\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_FALSE\r\tEND Next;\r\t\r\tPROCEDURE (this: IEnumUnknown) Skip (num: INTEGER): COM.RESULT;\r\tBEGIN\r\t\tIF this.cur + num < this.num THEN\r\t\t\tINC(this.cur, num); "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_FALSE\r\t\tEND\r\tEND Skip;\r\t\r\tPROCEDURE (this: IEnumUnknown) Reset (): COM.RESULT;\r\tBEGIN\r\t\tthis.cur := 0; "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND Reset;\r\t\r\tPROCEDURE (this: IEnumUnknown) Clone (OUT enum: WinOle.IEnumUnknown): COM.RESULT;\r\t\tVAR new: IEnumUnknown;\r\tBEGIN\r\t\tNEW(new);\r\t\tIF new # NIL THEN\r\t\t\tnew.num := this.num;\r\t\t\tnew.cur := this.cur;\r\t\t\tnew.data := this.data;\r\t\t\tenum := new;\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_OUTOFMEMORY\r\t\tEND\r\tEND Clone;\r\t\r\t\r\t"
+                    attr: 0
+                  - text: "(* IEnumString  *)"
+                    attr: 1
+                  - text: "\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: CreateIEnumString
+                    attr: 3
+                  - text: "* (num: INTEGER; IN data: ARRAY OF ARRAY OF CHAR;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT enum: WinOle.IEnumString);\r\t\tVAR i, n: INTEGER; new: IEnumString;\r\tBEGIN\r\t\tNEW(new);\r\t\tIF new # NIL THEN\r\t\t\tnew.cur := 0;\r\t\t\tnew.num := num;\r\t\t\tNEW(new.data, num, LEN(data, 1));\r\t\t\ti := 0;\r\t\t\tWHILE i < num DO new.data[i] := data[i]$; INC(i) END;\r\t\t\tenum := new\r\t\tEND\r\tEND CreateIEnumString;\r\t\r\tPROCEDURE (this: IEnumString) Next (num: INTEGER; OUT elem: ARRAY [untagged] OF WinApi.PtrWSTR;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT [nil] fetched: INTEGER): COM.RESULT;\r\t\tVAR n: INTEGER;\r\tBEGIN\r\t\tn := 0;\r\t\tIF VALID(fetched) THEN fetched := 0\r\t\tELSIF num # 1 THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_POINTER\r\t\tEND;\r\t\tIF this.cur < this.num THEN\r\t\t\tWHILE (this.cur < this.num) & (num > 0) DO\r\t\t\t\telem[n] := ComTools.NewString(this.data[this.cur]);\r\t\t\t\tINC(this.cur); INC(n); DEC(num)\r\t\t\tEND;\r\t\t\tIF VALID(fetched) THEN fetched := n END;\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_FALSE\r\tEND Next;\r\t\r\tPROCEDURE (this: IEnumString) Skip (num: INTEGER): COM.RESULT;\r\tBEGIN\r\t\tIF this.cur + num < this.num THEN\r\t\t\tINC(this.cur, num); "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_FALSE\r\t\tEND\r\tEND Skip;\r\t\r\tPROCEDURE (this: IEnumString) Reset (): COM.RESULT;\r\tBEGIN\r\t\tthis.cur := 0; "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND Reset;\r\t\r\tPROCEDURE (this: IEnumString) Clone (OUT enum: WinOle.IEnumString): COM.RESULT;\r\t\tVAR new: IEnumString;\r\tBEGIN\r\t\tNEW(new);\r\t\tIF new # NIL THEN\r\t\t\tnew.num := this.num;\r\t\t\tnew.cur := this.cur;\r\t\t\tnew.data := this.data;\r\t\t\tenum := new;\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_OUTOFMEMORY\r\t\tEND\r\tEND Clone;\r\t\r\t\r\t"
+                    attr: 0
+                  - text: "(* IEnumFORMATETC  *)"
+                    attr: 1
+                  - text: "\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: CreateIEnumFORMATETC
+                    attr: 3
+                  - text: "* (num: INTEGER; IN format: ARRAY OF INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\tIN aspect, tymed: ARRAY OF SET;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT enum: WinOle.IEnumFORMATETC);\r\t\tVAR i, n: INTEGER; new: IEnumFORMATETC;\r\tBEGIN\r\t\tNEW(new);\r\t\tIF new # NIL THEN\r\t\t\tnew.cur := 0;\r\t\t\tnew.num := num;\r\t\t\tNEW(new.format, num);\r\t\t\tNEW(new.aspect, num);\r\t\t\tNEW(new.tymed, num);\r\t\t\ti := 0;\r\t\t\tWHILE i < num DO\r\t\t\t\tnew.format[i] := format[i];\r\t\t\t\tnew.aspect[i] := aspect[i];\r\t\t\t\tnew.tymed[i] := tymed[i];\r\t\t\t\tINC(i)\r\t\t\tEND;\r\t\t\tenum := new\r\t\tEND\r\tEND CreateIEnumFORMATETC;\r\t\r\tPROCEDURE (this: IEnumFORMATETC) Next (num: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT elem: ARRAY [untagged] OF WinOle.FORMATETC;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT [nil] fetched: INTEGER): COM.RESULT;\r\t\tVAR n: INTEGER;\r\tBEGIN\r\t\tn := 0;\r\t\tIF VALID(fetched) THEN fetched := 0\r\t\tELSIF num # 1 THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_POINTER\r\t\tEND;\r\t\tIF this.cur < this.num THEN\r\t\t\tWHILE (this.cur < this.num) & (num > 0) DO\r\t\t\t\tComTools.GenFormatEtc(SHORT(this.format[this.cur]), this.aspect[this.cur], this.tymed[this.cur], elem[n]);\r\t\t\t\tINC(this.cur); INC(n); DEC(num)\r\t\t\tEND;\r\t\t\tIF VALID(fetched) THEN fetched := n END;\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_FALSE\r\tEND Next;\r\t\r\tPROCEDURE (this: IEnumFORMATETC) Skip (num: INTEGER): COM.RESULT;\r\tBEGIN\r\t\tIF this.cur + num < this.num THEN\r\t\t\tINC(this.cur, num); "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_FALSE\r\t\tEND\r\tEND Skip;\r\t\r\tPROCEDURE (this: IEnumFORMATETC) Reset (): COM.RESULT;\r\tBEGIN\r\t\tthis.cur := 0; "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND Reset;\r\t\r\tPROCEDURE (this: IEnumFORMATETC) Clone (OUT enum: WinOle.IEnumFORMATETC): COM.RESULT;\r\t\tVAR new: IEnumFORMATETC;\r\tBEGIN\r\t\tNEW(new);\r\t\tIF new # NIL THEN\r\t\t\tnew.num := this.num;\r\t\t\tnew.cur := this.cur;\r\t\t\tnew.format := this.format;\r\t\t\tnew.aspect := this.aspect;\r\t\t\tnew.tymed := this.tymed;\r\t\t\tenum := new;\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_OUTOFMEMORY\r\t\tEND\r\tEND Clone;\r\t\r\t\r\t"
+                    attr: 0
+                  - text: "(* IEnumOLEVERB  *)"
+                    attr: 1
+                  - text: "\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: CreateIEnumOLEVERB
+                    attr: 3
+                  - text: "* (num: INTEGER; IN verb: ARRAY OF INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\tIN name: ARRAY OF ARRAY OF CHAR;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\tIN flags, attribs: ARRAY OF SET;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT enum: WinOle.IEnumOLEVERB);\r\t\tVAR i, n: INTEGER; new: IEnumOLEVERB;\r\tBEGIN\r\t\tNEW(new);\r\t\tIF new # NIL THEN\r\t\t\tnew.cur := 0;\r\t\t\tnew.num := num;\r\t\t\tNEW(new.verb, num);\r\t\t\tNEW(new.name, num, LEN(name, 1));\r\t\t\tNEW(new.flags, num);\r\t\t\tNEW(new.attribs, num);\r\t\t\ti := 0;\r\t\t\tWHILE i < num DO\r\t\t\t\tnew.verb[i] := verb[i];\r\t\t\t\tnew.name[i] := name[i]$;\r\t\t\t\tnew.flags[i] := flags[i];\r\t\t\t\tnew.attribs[i] := attribs[i];\r\t\t\t\tINC(i)\r\t\t\tEND;\r\t\t\tenum := new\r\t\tEND\r\tEND CreateIEnumOLEVERB;\r\t\r\tPROCEDURE (this: IEnumOLEVERB) Next (num: INTEGER; OUT elem: ARRAY [untagged] OF WinOle.OLEVERB;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT [nil] fetched: INTEGER): COM.RESULT;\r\t\tVAR n: INTEGER;\r\tBEGIN\r\t\tn := 0;\r\t\tIF VALID(fetched) THEN fetched := 0\r\t\tELSIF num # 1 THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_POINTER\r\t\tEND;\r\t\tIF this.cur < this.num THEN\r\t\t\tWHILE (this.cur < this.num) & (num > 0) DO\r\t\t\t\telem[n].lVerb := this.verb[this.cur];\r\t\t\t\telem[n].lpszVerbName := ComTools.NewString(this.name[this.cur]);\r\t\t\t\telem[n].fuFlags := this.flags[this.cur];\r\t\t\t\telem[n].grfAttribs := this.attribs[this.cur];\r\t\t\t\tINC(this.cur); INC(n); DEC(num)\r\t\t\tEND;\r\t\t\tIF VALID(fetched) THEN fetched := n END;\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_FALSE\r\tEND Next;\r\t\r\tPROCEDURE (this: IEnumOLEVERB) Skip (num: INTEGER): COM.RESULT;\r\tBEGIN\r\t\tIF this.cur + num < this.num THEN\r\t\t\tINC(this.cur, num); "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_FALSE\r\t\tEND\r\tEND Skip;\r\t\r\tPROCEDURE (this: IEnumOLEVERB) Reset (): COM.RESULT;\r\tBEGIN\r\t\tthis.cur := 0; "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND Reset;\r\t\r\tPROCEDURE (this: IEnumOLEVERB) Clone (OUT enum: WinOle.IEnumOLEVERB): COM.RESULT;\r\t\tVAR new: IEnumOLEVERB;\r\tBEGIN\r\t\tNEW(new);\r\t\tIF new # NIL THEN\r\t\t\tnew.num := this.num;\r\t\t\tnew.cur := this.cur;\r\t\t\tnew.verb := this.verb;\r\t\t\tnew.name := this.name;\r\t\t\tnew.flags := this.flags;\r\t\t\tnew.attribs := this.attribs;\r\t\t\tenum := new;\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_OUTOFMEMORY\r\t\tEND\r\tEND Clone;\r\t\r\t\rEND ComEnum.\r\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 11057
+          bodyLen: 8

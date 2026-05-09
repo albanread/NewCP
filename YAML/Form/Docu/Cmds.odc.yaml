@@ -1,0 +1,328 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Form\\Docu\\Cmds.odc"
+  size: 6732
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 6601
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 6415
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 6329
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                lead: 11500
+                asc: 121900
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 10
+                bodyPos: 6450
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 5936
+                runListLen: 1086
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                flow:
+                  - text: FormCmds
+                    attr: 0
+                  - text: "\r\rDEFINITION FormCmds;\r\r\tIMPORT Dialog;\r\r\tVAR\r\t\tgrid: RECORD \r\t\t\tresolution: INTEGER;\r\t\t\tmetricSystem: BOOLEAN\r\t\tEND;\r\r\tPROCEDURE AlignLeft;\r\tPROCEDURE AlignRight;\r\tPROCEDURE AlignTop;\r\tPROCEDURE AlignBottom;\r\tPROCEDURE AlignToRow;\r\tPROCEDURE AlignToColumn;\r\tPROCEDURE InitGridDialog;\r\tPROCEDURE SetGrid;\r\tPROCEDURE SelectOffGridViews;\r\tPROCEDURE ForceToGrid;\r\tPROCEDURE SetAsFirst;\r\tPROCEDURE SetAsLast;\r\tPROCEDURE SortViews;\r\tPROCEDURE InsertAround;\r\tPROCEDURE FocusGuard (VAR par: Dialog.Par);\r\tPROCEDURE SelectionGuard (VAR par: Dialog.Par);\r\tPROCEDURE SingletonGuard (VAR par: Dialog.Par);\r\rEND FormCmds.\r\r\rCommand package for form views. Its main purpose is to support layout editing, through various alignment and grid control commands.\r\rA possible menu using the above commands:\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      lead: 11500
+                      asc: 121900
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1656000 }
+                        - { stop: 1872000 }
+                        - { stop: 4140000 }
+                      attr: 2
+                      w: 360000000
+                      h: 444500
+                  - text: MENU
+                    attr: 2
+                  - text: " \"Layout\" (\"FormViews.View\")\r\t\"Align &Left\"\t\"\"\t\"FormCmds.AlignLeft\"\t\"FormCmds.SelectionGuard\"\r\t\"Align &Right\"\t\"\"\t\"FormCmds.AlignRight\"\t\"FormCmds.SelectionGuard\"\r\t\"Align &Top\"\t\"\"\t\"FormCmds.AlignTop\"\t\"FormCmds.SelectionGuard\"\r\t\"Align &Bottom\"\t\"\"\t\"FormCmds.AlignBottom\"\t\"FormCmds.SelectionGuard\"\r\t\"Align To Ro&w\"\t\"\"\t\"FormCmds.AlignToRow\"\t\"FormCmds.SelectionGuard\"\r\t\"Align To &Column\"\t\"\"\t\"FormCmds.AlignToColumn\"\t\"FormCmds.SelectionGuard\"\r\t"
+                    attr: 1
+                  - text: SEPARATOR
+                    attr: 2
+                  - text: "\r\t\"Set &Grid...\"\t\"\"\t\"FormCmds.InitGridDialog;\r\t\t\tStdCmds.OpenToolDialog('Form/Rsrc/Cmds', 'Set Grid')\"\r\t\t\t\t\"FormCmds.FocusGuard\"\r\t\"&Select Off-Grid Views\"\t\"\"\t\"FormCmds.SelectOffGridViews\"\t\"\"\r\t\"&Force To Grid\"\t\"\"\t\"FormCmds.ForceToGrid\"\t\"FormCmds.SelectionGuard\"\r\t"
+                    attr: 1
+                  - text: SEPARATOR
+                    attr: 2
+                  - text: "\r\t\"Set F&irst/Back\"\t\"\"\t\"FormCmds.SetAsFirst\"\t\"FormCmds.SingletonGuard\"\r\t\"Set L&ast/Front\"\t\"\"\t\"FormCmds.SetAsLast\"\t\"FormCmds.SingletonGuard\"\r\t\"Sort &Views\"\t\"\"\t\"FormCmds.SortViews\"\t\"FormCmds.FocusGuard\"\r\t"
+                    attr: 1
+                  - text: SEPARATOR
+                    attr: 2
+                  - text: "\r\t\"Insert Group Box\"\t\"\"\t\"FormCmds.InsertAround\"\t\"FormCmds.FocusGuard\"\rEND\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      lead: 11500
+                      asc: 121900
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r\rVAR "
+                    attr: 1
+                  - text: grid
+                    attr: 2
+                  - text: ": RECORD\rInteractor for the grid dialog box (Form/Rsrc/Cmds).\r\r"
+                    attr: 1
+                  - text: resolution
+                    attr: 2
+                  - text: ": INTEGER\tresolution > 0\rIf "
+                    attr: 1
+                  - text: metricSystem
+                    attr: 3
+                  - text: ", then "
+                    attr: 1
+                  - text: resolution
+                    attr: 3
+                  - text: " specifies how many grid positions exist for one millimeter.\rIf "
+                    attr: 1
+                  - text: ~metricSystem
+                    attr: 3
+                  - text: ", then "
+                    attr: 1
+                  - text: resolution
+                    attr: 3
+                  - text: " specifies how many grid positions exist for 1/16 inch.\rA higher value means that higher precision is possible.\r\r"
+                    attr: 1
+                  - text: metricSystem
+                    attr: 2
+                  - text: ": BOOLEAN\rDetermines whether the metric system (millimeters) is used or not (1/16 inches).\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: AlignLeft
+                    attr: 2
+                  - text: "\rGuard: FormCmds.SelectionGuard"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - text: "Move all selected views such that their left sides are aligned to the leftmost view in the selection.\r\rPROCEDURE "
+                    attr: 1
+                  - text: AlignRight
+                    attr: 2
+                  - text: "\rGuard: FormCmds.SelectionGuard"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - text: "Move all selected views such that their right sides are aligned to the rightmost view in the selection.\r\rPROCEDURE "
+                    attr: 1
+                  - text: AlignTop
+                    attr: 2
+                  - text: "\rGuard: FormCmds.SelectionGuard"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - text: "Move all selected views such that their top sides are aligned to the topmost view in the selection.\r\rPROCEDURE "
+                    attr: 1
+                  - text: AlignBottom
+                    attr: 2
+                  - text: "\rGuard: FormCmds.SelectionGuard"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - text: "Move all selected views such that their bottom sides are aligned to the bottommost view in the selection.\r\rPROCEDURE "
+                    attr: 1
+                  - text: AlignToRow
+                    attr: 2
+                  - text: "\rGuard: FormCmds.SelectionGuard"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - text: "Move all selected views such that their vertical centers become aligned horizontally.\r\rPROCEDURE "
+                    attr: 1
+                  - text: AlignToColumn
+                    attr: 2
+                  - text: "\rGuard: FormCmds.SelectionGuard"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - text: "Move all selected views such that their horizontal centers become aligned vertically.\r\rPROCEDURE "
+                    attr: 1
+                  - text: InitGridDialog
+                    attr: 2
+                  - text: "\rGuard: FormCmds.FocusGuard\rSets up "
+                    attr: 1
+                  - text: grid.resolution
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: grid.metricSystem
+                    attr: 3
+                  - text: " according to the values of the focus controller.\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetGrid
+                    attr: 2
+                  - text: "\rGuard: FormCmds.FocusGuard\rSets the focus view's "
+                    attr: 1
+                  - text: grid
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: gridFactor
+                    attr: 3
+                  - text: " to the values determined by "
+                    attr: 1
+                  - text: grid.resolution
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: grid.metricSystem
+                    attr: 3
+                  - text: ".\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - text: "PROCEDURE "
+                    attr: 1
+                  - text: SelectOffGridViews
+                    attr: 2
+                  - text: "\rGuard: FormCmds.FocusGuard\rSelects all views in the focus form whose top-left corners don't lie on the grid.\r\rPROCEDURE "
+                    attr: 1
+                  - text: ForceToGrid
+                    attr: 2
+                  - text: "\rGuard: FormCmds.FocusGuard\rMoves all views in the focus form such that their top-left corners come to lie on the grid.\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - text: "PROCEDURE "
+                    attr: 1
+                  - text: SetAsFirst
+                    attr: 2
+                  - text: "\rGuard: FormCmds.SingletonGuard\rSets the selected view to the first position (\"bottom\").\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetAsLast
+                    attr: 2
+                  - text: "\rGuard: FormCmds.SingletonGuard\rSets the selected view to the last position (\"top\").\r\rPROCEDURE "
+                    attr: 1
+                  - text: SortViews
+                    attr: 2
+                  - text: "\rGuard: FormCmds.FocusGuard\rSorts the back-to-front order of all views in a form such that they are geometrically sorted, i.e., a view whose upper edge is further up, or at the same hight but further to the left, is considered to come before (\"lower\") than the other one.\r\rPROCEDURE "
+                    attr: 1
+                  - text: InsertAround
+                    attr: 2
+                  - text: "\rGuard: FormCmds.SelectionGuard\rInserts a group box around the currently selected views.\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - text: "PROCEDURE "
+                    attr: 1
+                  - text: FocusGuard
+                    attr: 2
+                  - text: " (VAR par: Dialog.Par)\rThis guard disables the current menu item if the current front focus isn't a form view.\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - text: "PROCEDURE "
+                    attr: 1
+                  - text: SelectionGuard
+                    attr: 2
+                  - text: " (VAR par: Dialog.Par)\rThis guard disables the current menu item if the current front focus isn't a form view, or if it doesn't contain a selection.\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - text: "PROCEDURE "
+                    attr: 1
+                  - text: SingletonGuard
+                    attr: 2
+                  - text: " (VAR par: Dialog.Par)\rThis guard disables the current menu item if the current front focus isn't a form view, or if it doesn't contain a singleton.\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 14
+          bodyPos: 6697
+          bodyLen: 8

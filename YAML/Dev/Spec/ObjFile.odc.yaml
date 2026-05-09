@@ -1,0 +1,333 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Dev\\Spec\\ObjFile.odc"
+  size: 6777
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 6646
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 6460
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 6374
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 17
+                bodyPos: 6495
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 5981
+                runListLen: 1399
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 101600
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 101600
+                    color: 0x000000ff
+                    weight: 400
+                    style: 0x00000000
+                  - # [4]
+                    font: "*"
+                    size: 101600
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [5]
+                    font: "*"
+                    size: 101600
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [6]
+                    font: "*"
+                    size: 101600
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                flow:
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 396000 }
+                        - { stop: 1152000 }
+                      attr: 0
+                      w: 360000000
+                      h: 444500
+                  - text: BlackBox Object File Format
+                    attr: 1
+                  - text: "\r\rbh\t25.01.2007\tprocedure signatures added\rbj\t19.04.2001\tupdated file header with correct file tag and added processor field. Added semantic part of this docu.\rbh \t12.12.95\r"
+                    attr: 0
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 720000 }
+                        - { stop: 936000 }
+                      attr: 0
+                      w: 360000000
+                      h: 444500
+                  - text: "\r"
+                    attr: 0
+                  - text: "Syntax:"
+                    attr: 2
+                  - text: "\r\rObjFile\t=\tHeaderBlk MetaBlk DescBlk CodeBlk FixBlk UseBlk.\r\rHeaderBlk\t=\tOFTag processor4 headsize4 metasize4 descsize4 codesize4 datasize4 nofimp modname {impname} Align.\r\rOFTag\t=\t6FX 4FX 43X 46X.\r\rMetaBlk\t=\tRefBlk Align SigBlk ExpBlk PtrBlk FldBlk ImpBlk Names Consts Align.\r\rDescBlk\t=\tModBlk Align TDescBlk.\r\rExpBlk\t=\tDirectory.\r\rDirectory\t=\tnumobj4 {Object}.\r\rObject\t=\tfprint4 offs4 id4 Struct.\r\rSigBlk\t=\t{Signature}.\r\rSignature\t=\tStruct numPar4 {id4 Struct}.\r\rStruct\t=\tform4 | strRef4 | sigRef4.\r\rPtrBlk\t=\t{offset4}.\r\rFldBlk\t=\t{Directory | Signature}.\r\rImpBlk\t=\t{0.4}.\r\rNames\t=\t{char}.\r\rConsts\t=\t{byte}.\r\rAlign\t=\t{0X}.\r\rModBlk\t=\t0.4 opts4 0.4 0.4 term4 nofimp4 nofptr4 csize4 dsize4 rsize4\r\t\tcodeRef4 dataRef4 refsRef4 namesRef4 ptrsRef4 impRef4 expRef4 name.\r\rTDescBlk\t=\t{RecDesc | ArrDesc | DArrDesc | PtrDesc | ProcDesc | FieldList}.\r\rRecDesc\t=\t0.4 {methRef4} size4 modRef4 id4 {btypRef4} flistRef4 {ptrOffs4} sent4.\rArrDesc\t=\tnofele4 modRef4 id4 btypRef4.\rPtrDesc\t=\t0.4 modRef4 id4 btypRef4.\rProcDesc\t=\tfprint4 modRef4 id4 sigRef4.\rFieldList\t=\tDirectory.\r\rFixBlk\t=\tnewreclink newarrlink metalink desclink codelink datalink.\r\rlink\t=\t{fixupadr offset} 0X.\r\rUseBlk\t=\t{{UConst | UType | UVar | UProc} 0X}.\r\rUConst\t=\t1X name fprint.\rUType\t=\t2X name fprint opt link.\rUVar\t=\t3X name fprint link.\rUProc\t=\t4X name fprint link.\r\rRefBlk\t=\t{0F8X procend name {Mode Form adr name}}.\r\rMode\t=\tVar | VarPar.\rVar\t=\t0FDX.\rVarPar\t=\t0FFX.\r\rForm\t=\tBool | Char | "
+                    attr: 0
+                  - text: LChar
+                    attr: 3
+                  - text: " | SInt | Int | LInt | Real | LReal | Set | "
+                    attr: 0
+                  - text: LargeInt
+                    attr: 3
+                  - text: " | "
+                    attr: 0
+                  - text: AnyRec
+                    attr: 3
+                  - text: " |"
+                    attr: 0
+                  - text: " AnyPtr"
+                    attr: 3
+                  - text: " | Pointer | Proc | String | Struct.\rBool\t=\t1X.\rChar\t=\t2X.\r"
+                    attr: 0
+                  - text: "LChar \t=\t3X."
+                    attr: 3
+                  - text: "\rSInt\t=\t4X.\rInt\t=\t5X.\rLInt\t=\t6X.\rReal\t=\t7X.\rLReal\t=\t8X.\rSet\t=\t9X.\r"
+                    attr: 0
+                  - text: "LargeInt\t=\t0AX.\rAnyRec\t=\t0BX.\rAnyPtr\t=\t0CX."
+                    attr: 3
+                  - text: "\rPointer\t=\t0DX.\rProc\t=\t0EX.\rString\t=\t0FX.\rStruct\t=\t10X descRef4.\r\r\r"
+                    attr: 0
+                  - text: "Semantics:"
+                    attr: 2
+                  - text: "\r"
+                    attr: 0
+                  - text: "\r"
+                    attr: 4
+                  - text: Header
+                    attr: 5
+                  - text: "\rContains the sizes of the different blocks, the name of the module and a list of the names of the imported modules.\r\r"
+                    attr: 4
+                  - text: Meta
+                    attr: 5
+                  - text: "\rMeta information about the module. Only used by the modules "
+                    attr: 4
+                  - text: Meta
+                    attr: 6
+                  - text: " and "
+                    attr: 4
+                  - text: DevDebug
+                    attr: 6
+                  - text: ".\r\r"
+                    attr: 4
+                  - text: Desc
+                    attr: 5
+                  - text: "\rMeta information about the module which should stay in memory even when the module have been unloaded. Consists of two parts corresponding to the types Kernel.Module and Kernel.Type. The layout is made so the memory addresses can be directly mapped to variables of these types.\r\r"
+                    attr: 4
+                  - text: Code
+                    attr: 5
+                  - text: "\rContains the code for the module. The address of the Code section is the entry point to the body of the module.\r\r"
+                    attr: 4
+                  - text: Data
+                    attr: 5
+                  - text: "\rMemory space for the variables. Variables are stored in reversed order, i.e. the last global variable starts at this address.\r\r"
+                    attr: 4
+                  - text: Fixup
+                    attr: 5
+                  - text: "\rThe fixup bulk contains links into the different memory blocks where there is a need for updating the addresses. The following links exist:\r"
+                    attr: 4
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 864000 }
+                      attr: 4
+                      w: 360000000
+                      h: 444500
+                  - text: "\r"
+                    attr: 4
+                  - text: "\tnewreclink"
+                    attr: 6
+                  - text: "\tlink to the memory location where the procedure pointer for allocating new records is stored\r"
+                    attr: 4
+                  - text: "\tnewarrlink"
+                    attr: 6
+                  - text: "\tlink to the memory location where the procedure pointer for allocating new arrays is stored\r"
+                    attr: 4
+                  - text: "\tmetalink"
+                    attr: 6
+                  - text: "\tlink to the start of the fixup links in the meta bulk\r"
+                    attr: 4
+                  - text: "\tdesclink"
+                    attr: 6
+                  - text: "\tlink to the start of the fixup links in the desc bulk\r"
+                    attr: 4
+                  - text: "\tcodelink"
+                    attr: 6
+                  - text: "\tlink to the start of the fixup links in the code bulk\r"
+                    attr: 4
+                  - text: "\tdatalink"
+                    attr: 6
+                  - text: "\tlink to the start of the fixup links in the data bulk\r\rFor each memory block there is a list of fixup links. A link consists of two parts:\r\r"
+                    attr: 4
+                  - text: "\tfixupadr"
+                    attr: 6
+                  - text: "\tthe start of the memory location in need of fixup\r"
+                    attr: 4
+                  - text: "\toffset"
+                    attr: 6
+                  - text: "\tthe offset within the memory location to the first address which needs a fixup\r\rWhen "
+                    attr: 4
+                  - text: fixupadr
+                    attr: 6
+                  - text: " = 0X then the end of the list of fixups for the corresponding memory block has been reached.\r\rAt the position given by "
+                    attr: 4
+                  - text: fixupadr
+                    attr: 6
+                  - text: " + "
+                    attr: 4
+                  - text: offset
+                    attr: 6
+                  - text: " there are four bytes which should be overwritten with the new fixed "
+                    attr: 4
+                  - text: value
+                    attr: 6
+                  - text: ". But before writning to this address the four bytes should be read and interpreted as follows:\r\r\t- The most significant byte indicates the "
+                    attr: 4
+                  - text: type
+                    attr: 6
+                  - text: " of fixup that should be done.\r\t- The other three bytes, interpreted as an INTEGER, "
+                    attr: 4
+                  - text: x
+                    attr: 6
+                  - text: ".\r\t\rThe "
+                    attr: 4
+                  - text: type
+                    attr: 6
+                  - text: " and "
+                    attr: 4
+                  - text: x
+                    attr: 6
+                  - text: " are used as in the table."
+                    attr: 4
+                  - text: "\r\rFixup Types\t(mem[adr] = id * 2^24 + x, mem[adr] := value)\r"
+                    attr: 0
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 720000 }
+                        - { stop: 1440000 }
+                        - { stop: 2700000 }
+                      attr: 0
+                      w: 360000000
+                      h: 444500
+                  - text: "\rid\ttype\tvalue\tnext adr\r\r100\tabsolute\tobjadr + offs\tx\r101\trelative\tobjadr + offs - adr - 4\tx\r102\tcopy\tmem[objadr + offs]\tx\r103\ttable\tobjadr + x\tadr + 4\r104\ttable end\tobjadr + x\t-\r\rx = 0 indicates end of fixup for this address.\r"
+                    attr: 0
+                  - text: "\r"
+                    attr: 4
+                  - text: Use
+                    attr: 5
+                  - text: "\rFor each imported module this section contains a list of imported constants, types, variabled and procedures. With exception for constants they all need to be fixed in the same way as other links.\r"
+                    attr: 4
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 21
+          bodyPos: 6742
+          bodyLen: 8

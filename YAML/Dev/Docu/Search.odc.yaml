@@ -1,0 +1,213 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Dev\\Docu\\Search.odc"
+  size: 4092
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 3961
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 3775
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 3689
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                lead: 11500
+                asc: 134600
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 7
+                bodyPos: 3689
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 3175
+                runListLen: 518
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [4]
+                    font: Arial
+                    size: 101600
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                flow:
+                  - text: DevSearch
+                    attr: 0
+                  - text: "\r\rDEFINITION DevSearch;\r\r\tPROCEDURE Compare;\r\tPROCEDURE SearchInDocu (opts: ARRAY OF CHAR);\r\tPROCEDURE SearchInSources;\r\tPROCEDURE SelectCaseInSens (pat: ARRAY OF CHAR);\r\tPROCEDURE SelectCaseSens (pat: ARRAY OF CHAR);\r\rEND DevSearch.\r\r\rThis tool provides global search facilities (in all subsystems' "
+                    attr: 1
+                  - text: Docu
+                    attr: 2
+                  - text: " or "
+                    attr: 1
+                  - text: Mod
+                    attr: 2
+                  - text: " directories) and a text comparison feature. The search engine cooperates with module "
+                    attr: 1
+                  - text: TextCmds
+                    attr: 2
+                  - text: ", in that it uses the latter's find & replace interactor. This means that after having found a string using one of the search commands, the text command \"Find Again\" can be used to conveniently find further occurrences of the same string in the same text.\r\rTypical menu:\r\r"
+                    attr: 1
+                  - text: MENU
+                    attr: 3
+                  - text: "\r\t\"Search In Sources\"\t\"\"\t\"TextCmds.InitFindDialog; DevSearch.SearchInSources\"\t\"TextCmds.SelectionGuard\"\r\t\"Search In Docu (Case Sensitive)\"\t\"\"\t\"TextCmds.InitFindDialog; DevSearch.SearchInDocu('s')\"\t\"TextCmds.SelectionGuard\"\r\t\"Search In Docu (Case Insensitive)\"\t\"\"\t\"TextCmds.InitFindDialog; DevSearch.SearchInDocu('i')\"\t\"TextCmds.SelectionGuard\""
+                    attr: 1
+                  - text: "\r"
+                    attr: 4
+                  - text: "\t\"Compare Texts\"\t\"\"\t\"DevSearch.Compare\"\t\"TextCmds.FocusGuard\"\r"
+                    attr: 1
+                  - text: END
+                    attr: 3
+                  - text: "\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: Compare
+                    attr: 3
+                  - text: "\rGuard: top two windows are document windows\rPerform a textual comparison of the two topmost windows' contents. The comparison starts at each window's current caret position, or alternatively, at the end of its selection. The next difference which is found is indicated by advancing the caret or selection to the found difference. White space (spaces, tabs, carriage returns) are ignored during comparison.\r\rPROCEDURE "
+                    attr: 1
+                  - text: SearchInSources
+                    attr: 3
+                  - text: "\rGuard: TextCmds.SelectionGuard\rSearch all available sources (in all subsystems) for the occurrence of the selected text pattern. Search is case-sensitive.\r\rPROCEDURE "
+                    attr: 1
+                  - text: SearchInDocu
+                    attr: 3
+                  - text: " (opts: ARRAY OF CHAR)\rGuard: TextCmds.SelectionGuard\rSearch all available documentation texts (in all subsystems and in "
+                    attr: 1
+                  - text: Manuals
+                    attr: 2
+                  - text: ") for the occurrence of the selected text pattern. If the string "
+                    attr: 1
+                  - text: opts
+                    attr: 2
+                  - text: " starts with an 's' or 'S' then the search is case sensitive, if it starts with an 'i' or 'I' the search is case-insensitive and in all other cases the value from the Find dialog is used.\r\rPROCEDURE "
+                    attr: 1
+                  - text: SelectCaseInSens
+                    attr: 3
+                  - text: " (pat: ARRAY OF CHAR)\rSets up "
+                    attr: 1
+                  - text: TextCmds.find.find
+                    attr: 2
+                  - text: " with "
+                    attr: 1
+                  - text: pat
+                    attr: 2
+                  - text: ", calls "
+                    attr: 1
+                  - text: TextCmds.FindFirst
+                    attr: 2
+                  - text: " and opens the find dialog. This procedure is used by link views created with the above procedure "
+                    attr: 1
+                  - text: "SearchInDocu "
+                    attr: 2
+                  - text: "when the search was performed case-insensitive.\r\rPROCEDURE "
+                    attr: 1
+                  - text: SelectCaseSens
+                    attr: 3
+                  - text: " (pat: ARRAY OF CHAR)\rSets up "
+                    attr: 1
+                  - text: TextCmds.find.find
+                    attr: 2
+                  - text: " with "
+                    attr: 1
+                  - text: pat
+                    attr: 2
+                  - text: " and calls "
+                    attr: 1
+                  - text: TextCmds.FindFirst
+                    attr: 2
+                  - text: ". This procedure is used by link views created with the above procedures "
+                    attr: 1
+                  - text: SearchInSource
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: "SearchInDocu "
+                    attr: 2
+                  - text: "when the search was performed case-sensitive.\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 11
+          bodyPos: 4057
+          bodyLen: 8

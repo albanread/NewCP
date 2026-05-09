@@ -1,0 +1,166 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Docu\\PhoneDB.odc"
+  size: 2985
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 2854
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 2668
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 2582
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 152400
+                dsc: 25400
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 9
+                bodyPos: 2582
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 2068
+                runListLen: 540
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                flow:
+                  - text: "Overview by Example: ObxPhoneDB"
+                    attr: 0
+                  - text: "\r\rThis example is described in "
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/Tut-3', 'Chapter 3')"
+                      body:
+                        - text: chapter 3
+                          attr: 2
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: " of the BlackBox tutorial.\r\r\rDEFINITION ObxPhoneDB;\r\r\tTYPE String = ARRAY 32 OF CHAR;\r\r\tPROCEDURE LookupByIndex (index: INTEGER; OUT name, number: String);\r\tPROCEDURE LookupByName (name: String; OUT number: String);\r\tPROCEDURE LookupByNumber (number: String; OUT name: String);\r\rEND ObxPhoneDB.\r\r\rModule ObxPhoneDB provides access to a phone database. Access may happen by index, by name, or by number. An entry consists of a name and a phone number string. Neither may be empty. The smallest index is 0, and all entries are contiguous.\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: LookupByIndex
+                    attr: 3
+                  - text: " (index: INTEGER; OUT name, number: ARRAY OF CHAR)\rReturn the <name, number> pair of entry "
+                    attr: 1
+                  - text: index
+                    attr: 4
+                  - text: ". If the index is too large, <\"\", \"\"> is returned.\rThe procedure operates in constant time.\r\rPre\rindex >= 0\t20\r\rPost\rindex is legal\r\tname # \"\"  &  number # \"\"\rindex is not legal\r\tname = \"\"  &  number = \"\"\r\rPROCEDURE "
+                    attr: 1
+                  - text: LookupByName
+                    attr: 3
+                  - text: " (name: ARRAY OF CHAR; OUT number: ARRAY OF CHAR)\rReturns a phone number associated with "
+                    attr: 1
+                  - text: name
+                    attr: 4
+                  - text: ", or \"\" if no entry for "
+                    attr: 1
+                  - text: name
+                    attr: 4
+                  - text: " is found.\rThe procedure operates in linear time, depending on the size of the database.\r\rPost\rname found\r\tnumber # \"\"\rname not found\r\tnumber = \"\"\r\rPROCEDURE "
+                    attr: 1
+                  - text: LookupByNumber
+                    attr: 3
+                  - text: " (number: ARRAY OF CHAR; OUT name: ARRAY OF CHAR)\rReturns the name associated with "
+                    attr: 1
+                  - text: number
+                    attr: 4
+                  - text: ", or \"\" if no entry for "
+                    attr: 1
+                  - text: number
+                    attr: 4
+                  - text: " is found.\rThe procedure operates in linear time, depending on the size of the database.\r\rPost\rnumber found\r\tname # \"\"\rnumber not found\r\tname = \"\"\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 13
+          bodyPos: 2950
+          bodyLen: 8

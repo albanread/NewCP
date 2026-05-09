@@ -1,0 +1,194 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Dev\\Rsrc\\Browser.odc"
+  size: 2053
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 1922
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 1736
+          children:
+            - kind: FormViews.StdView
+              storeKind: store
+              typeChain:
+                - FormViews.StdViewDesc
+                - FormViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 1650
+              children:
+                - kind: FormModels.StdModel
+                  storeKind: elem
+                  typeChain:
+                    - FormModels.StdModelDesc
+                    - FormModels.ModelDesc
+                    - Containers.ModelDesc
+                    - Models.ModelDesc
+                    - Stores.StoreDesc
+                  id: 1
+                  bodyPos: 376
+                  bodyLen: 1407
+                  children:
+                    - kind: Controls.CheckBox
+                      storeKind: store
+                      typeChain:
+                        - Controls.CheckBoxDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 2
+                      bodyPos: 449
+                      bodyLen: 102
+                      link: DevBrowser.options.flatten
+                      label: Flat Interface
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.PushButton
+                      storeKind: store
+                      typeChain:
+                        - Controls.PushButtonDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 3
+                      bodyPos: 614
+                      bodyLen: 170
+                      link: "DevBrowser.ShowInterface('@c')"
+                      label: Show Client Interface
+                      guard: TextCmds.SelectionGuard
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.PushButton
+                      storeKind: store
+                      typeChain:
+                        - Controls.PushButtonDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 822
+                      bodyLen: 72
+                      link: StdCmds.CloseDialog
+                      label: "&Close"
+                      opts: [false, true, false, false, false]
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.CheckBox
+                      storeKind: store
+                      typeChain:
+                        - Controls.CheckBoxDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 5
+                      bodyPos: 932
+                      bodyLen: 100
+                      link: DevBrowser.options.hints
+                      label: Interface Hints
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.CheckBox
+                      storeKind: store
+                      typeChain:
+                        - Controls.CheckBoxDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 6
+                      bodyPos: 1070
+                      bodyLen: 96
+                      link: DevBrowser.options.formatted
+                      label: Formatted
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.PushButton
+                      storeKind: store
+                      typeChain:
+                        - Controls.PushButtonDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 7
+                      bodyPos: 1204
+                      bodyLen: 176
+                      link: "DevBrowser.ShowInterface('@e')"
+                      label: Show Extension Interface
+                      guard: TextCmds.SelectionGuard
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.PushButton
+                      storeKind: store
+                      typeChain:
+                        - Controls.PushButtonDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 8
+                      bodyPos: 1418
+                      bodyLen: 172
+                      link: "DevBrowser.ShowInterface('@')"
+                      label: Show Complete Interface
+                      guard: TextCmds.SelectionGuard
+                      opts: [true, false, false, false, false]
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.PushButton
+                      storeKind: store
+                      typeChain:
+                        - Controls.PushButtonDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 9
+                      bodyPos: 1628
+                      bodyLen: 130
+                      link: DevBrowser.SaveOptions
+                      label: Save Options
+                      guard: DevBrowser.SaveGuard
+                      opts: [true, false, false, false, false]
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: "<nil>"
+                      storeKind: nil
+                - kind: FormControllers.StdController
+                  storeKind: store
+                  typeChain:
+                    - FormControllers.StdControllerDesc
+                    - FormControllers.ControllerDesc
+                    - Containers.ControllerDesc
+                    - Controllers.ControllerDesc
+                    - Stores.StoreDesc
+                  id: 10
+                  bodyPos: 1927
+                  bodyLen: 9
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 11
+          bodyPos: 2018
+          bodyLen: 8

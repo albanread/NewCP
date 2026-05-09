@@ -1,0 +1,252 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Mod\\Dialog.odc"
+  size: 5475
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 5344
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 5158
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 5072
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Helvetica
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 5189
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 4675
+                runListLen: 1801
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE ObxDialog;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- 20150415, center #38, report passing receiver parameter IN to VAR\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT Dialog;\r\r\tVAR\r\t\t"
+                    attr: 0
+                  - text: dialog
+                    attr: 3
+                  - text: "*: RECORD\r\t\t\tlist*: Dialog.List;\r\t\t\tcombo*: Dialog.Combo;\r\t\t\tsum-: INTEGER;\r\t\t\tdisable*: BOOLEAN;\r\t\t\telems*: INTEGER\r\t\tEND;\r\t\tsel*: Dialog.Selection; (* hadled separately to avoid race condition in notifier *)\r\r\tPROCEDURE SetList (VAR l: Dialog.List; n: INTEGER);\r\t\tVAR i: INTEGER;\r\tBEGIN\r\t\tl.SetLen(n);\r\t\ti := 0;\r\t\tWHILE i # n DO\r\t\t\tCASE i OF\r\t\t\t| 0: l.SetItem(i, \"zero\")\r\t\t\t| 1: l.SetItem(i, \"one\")\r\t\t\t| 2: l.SetItem(i, \"two\")\r\t\t\t| 3: l.SetItem(i, \"three\")\r\t\t\t| 4: l.SetItem(i, \"four\")\r\t\t\t| 5: l.SetItem(i, \"five\")\r\t\t\t| 6: l.SetItem(i, \"six\")\r\t\t\t| 7: l.SetItem(i, \"seven\")\r\t\t\t| 8: l.SetItem(i, \"eight\")\r\t\t\t| 9: l.SetItem(i, \"nine\")\r\t\t\t| 10: l.SetItem(i, \"ten\")\r\t\t\t| 11: l.SetItem(i, \"eleven\")\r\t\t\tEND;\r\t\t\tINC(i)\r\t\tEND\r\tEND SetList;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SelNotifier
+                    attr: 3
+                  - text: "* (op, from, to: INTEGER);\r\tBEGIN\r\t\tIF op = Dialog.set THEN\t"
+                    attr: 0
+                  - text: "(* recalculate sum of selected numbers *)"
+                    attr: 1
+                  - text: "\r\t\t\tdialog.sum := (to - from + 1) * (to + from) DIV 2\r\t\tELSIF op = Dialog.excluded THEN\t"
+                    attr: 0
+                  - text: "(* correct sum after deselection of some numbers *)"
+                    attr: 1
+                  - text: "\r\t\t\tWHILE from <= to DO DEC(dialog.sum, from); INC(from) END\r\t\tELSIF op = Dialog.included THEN\t"
+                    attr: 0
+                  - text: "(* correct sum after selection of some numbers *)"
+                    attr: 1
+                  - text: "\r\t\t\tWHILE from <= to DO INC(dialog.sum, from); INC(from) END\r\t\tEND;\r\t\tDialog.Update(dialog)\t"
+                    attr: 0
+                  - text: "(* show new dialog.sum *)"
+                    attr: 1
+                  - text: "\r\tEND SelNotifier;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ElemsNotifier
+                    attr: 3
+                  - text: "* (op, from, to: INTEGER);\r\tBEGIN\r\t\tIF op = Dialog.changed THEN\r\t\t\tIF dialog.elems < 0 THEN\r\t\t\t\tdialog.elems := 0; Dialog.Update(dialog)\r\t\t\tELSIF dialog.elems > 12 THEN\r\t\t\t\tdialog.elems := 12; Dialog.Update(dialog)\r\t\t\tEND;\r\t\t\tSetList(dialog.list, dialog.elems);\t"
+                    attr: 0
+                  - text: "(* rebuild list *)"
+                    attr: 1
+                  - text: "\r\t\t\tDialog.UpdateList(dialog.list)\t"
+                    attr: 0
+                  - text: "(* update list  *)"
+                    attr: 1
+                  - text: "\r\t\tEND\r\tEND ElemsNotifier;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ListGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\tBEGIN\r\t\tpar.disabled := dialog.disable\r\tEND ListGuard;\r\rBEGIN\r\tdialog.elems := 2; SetList(dialog.list, dialog.elems);\r\tsel.SetLen(12);\r\tsel.SetItem(0, \"zero\"); sel.SetItem(1, \"one\"); sel.SetItem(2, \"two\");\r\tsel.SetItem(3, \"three\"); sel.SetItem(4, \"four\"); sel.SetItem(5, \"five\");\r\tsel.SetItem(6, \"six\"); sel.SetItem(7, \"seven\"); sel.SetItem(8, \"eight\");\r\tsel.SetItem(9, \"nine\"); sel.SetItem(10, \"ten\"); sel.SetItem(11, \"eleven\");\r\tdialog.combo.SetLen(12);\r\tdialog.combo.SetItem(0, \"zero\"); dialog.combo.SetItem(1, \"one\"); dialog.combo.SetItem(2, \"two\");\r\tdialog.combo.SetItem(3, \"three\"); dialog.combo.SetItem(4, \"four\"); dialog.combo.SetItem(5, \"five\");\r\tdialog.combo.SetItem(6, \"six\"); dialog.combo.SetItem(7, \"seven\"); dialog.combo.SetItem(8, \"eight\");\r\tdialog.combo.SetItem(9, \"nine\"); dialog.combo.SetItem(10, \"ten\"); dialog.combo.SetItem(11, \"eleven\")\rEND ObxDialog.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 5440
+          bodyLen: 8

@@ -1,0 +1,264 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Mod\\Omosi.odc"
+  size: 12805
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 12674
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 12488
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 12402
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 127000
+                dsc: 25400
+                grid: 152400
+                opts: 0x00000001
+              defaultAttr:
+                font: Helvetica
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 12519
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 12005
+                runListLen: 1783
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE ObxOmosi;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT Ports, Stores, Views, Controllers, Properties, Dialog;\r\r\tCONST\r\t\toutside = -1; white = 0; top = 1; left = 2; right = 3;\t"
+                    attr: 0
+                  - text: "(* Kind *)"
+                    attr: 1
+                  - text: "\r\t\tgridDefault = FALSE;\r\t\tminVersion = 0; maxVersion = 1;\r\r\tTYPE\r\t\tPalette = ARRAY 4 OF Ports.Color;\r\r\t\tKind = INTEGER;\r\t\tField = RECORD\r\t\t\tkind: Kind;\r\t\t\tsel: BOOLEAN\r\t\tEND;\r\t\tRow = ARRAY 8 OF Field;\r\t\tModel = ARRAY 15 OF Row;\r\r\t\tStdView = POINTER TO RECORD (Views.View)\r\t\t\t"
+                    attr: 0
+                  - text: "(* persistent state *)"
+                    attr: 1
+                  - text: "\r\t\t\tpal: Palette;\r\t\t\tmod: Model;\r\t\t\t"
+                    attr: 0
+                  - text: "(* non-persistent state *)"
+                    attr: 1
+                  - text: "\r\t\t\tsel: INTEGER;\r\t\t\tgrid: BOOLEAN\r\t\tEND;\r\r\t\tFieldPath = ARRAY 3 OF Ports.Point;\r\r\t\tFieldOp = POINTER TO RECORD (Stores.Operation)\r\t\t\tv: StdView; i, j: INTEGER; kind: Kind\r\t\tEND;\r\r\t\tColorOp = POINTER TO ColorOpDesc;\r\t\tColorOpDesc = RECORD (Stores.Operation)\r\t\t\tv: StdView; n: INTEGER; col: Ports.Color\r\t\tEND;\r\r\t\tUpdateMsg = RECORD (Views.Message)\r\t\t\ti, j: INTEGER\r\t\tEND;\r\r\tPROCEDURE InitRow (VAR row: Row; k: INTEGER);\r\t\tVAR i, l, r: INTEGER;\r\tBEGIN\r\t\tl := (8 - k) DIV 2; r := 8 - l;\r\t\ti := 0; WHILE i # l DO row[i].kind := outside; INC(i) END;\r\t\tWHILE i # r DO row[i].kind := white; INC(i) END;\r\t\tWHILE i # 8 DO row[i].kind := outside; INC(i) END;\r\t\ti := 0; WHILE i # 8 DO row[i].sel := FALSE; INC(i) END\r\tEND InitRow;\r\r\tPROCEDURE InitPalette (VAR p: Palette);\r\tBEGIN\r\t\tp[white] := Ports.white;\r\t\tp[top] := 0080FFH;\r\t\tp[left] := 004080H; \r\t\tp[right] := 000040H\r\tEND InitPalette;\r\r\tPROCEDURE InitModel (VAR m: Model);\r\t\tVAR j: INTEGER;\r\tBEGIN\r\t\tInitRow(m[0], 2); InitRow(m[1], 4); InitRow(m[2], 6);\r\t\tj := 3; WHILE j # 12 DO InitRow(m[j], 8); INC(j) END;\r\t\tInitRow(m[12], 6); InitRow(m[13], 4); InitRow(m[14], 2)\r\tEND InitModel;\r\r\tPROCEDURE H (s: INTEGER): INTEGER;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " s * 500 DIV 866\r\tEND H;\r\r\tPROCEDURE GetFieldPath (v: StdView; f: Ports.Frame; i, j: INTEGER; OUT p: FieldPath);\r\t\tVAR w, h, s: INTEGER; \r\tBEGIN\r\t\tv.context.GetSize(w, h); s := (w - f.unit) DIV 8; h := H(s);\r\t\tIF ODD(i + j) THEN\r\t\t\tp[0].x := i * s; p[0].y := (j + 1) * h;\r\t\t\tp[1].x := (i + 1) * s; p[1].y := j * h;\r\t\t\tp[2].x := (i + 1) * s; p[2].y := (j + 2) * h\r\t\tELSE\r\t\t\tp[0].x := i * s; p[0].y := j * h;\r\t\t\tp[1].x := (i + 1) * s; p[1].y := (j + 1) * h;\r\t\t\tp[2].x := i * s; p[2].y := (j + 2) * h\r\t\tEND\r\tEND GetFieldPath;\r\r\tPROCEDURE AdjustPath (f: Ports.Frame; i, j: INTEGER; VAR p: FieldPath);\r\t\tVAR d, e: INTEGER;\r\tBEGIN\r\t\td := 2 * f.dot; e := 3 * f.dot;\r\t\tIF ODD(i + j) THEN\r\t\t\tINC(p[0].x, e);\r\t\t\tDEC(p[1].x, d); INC(p[1].y, e);\r\t\t\tDEC(p[2].x, d); DEC(p[2].y, e)\r\t\tELSE\r\t\t\tINC(p[0].x, d); INC(p[0].y, e);\r\t\t\tDEC(p[1].x, e);\r\t\t\tINC(p[2].x, d); DEC(p[2].y, e)\r\t\tEND\r\tEND AdjustPath;\r\r\tPROCEDURE ValidField (v: StdView; i, j: INTEGER): BOOLEAN;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " (0 <= i) & (i < 8) & (0 <= j) & (j < 15) & (v.mod[j, i].kind > outside)\r\tEND ValidField;\r\r\tPROCEDURE DrawField (v: StdView; f: Ports.Frame; i, j: INTEGER);\r\t\tVAR col: Ports.Color; p: FieldPath;\r\tBEGIN\r\t\tIF ValidField(v, i, j) THEN\r\t\t\tcol := v.pal[v.mod[j, i].kind]; GetFieldPath(v, f, i, j, p);\r\t\t\tf.DrawPath(p, 3, Ports.fill, col, Ports.closedPoly);\r\r\t\t\tIF v.grid THEN\r\t\t\t\tf.DrawPath(p, 3, 0, Ports.grey25, Ports.closedPoly)\r\t\t\tEND;\r\t\t\tIF v.mod[j, i].sel THEN\r\t\t\t\tAdjustPath(f, i, j, p);\r\t\t\t\tf.DrawPath(p, 3, 0, 800000H, Ports.closedPoly)\r\t\t\tEND\r\t\tEND\r\tEND DrawField;\r\r\tPROCEDURE SelectField (v: StdView; f: Ports.Frame; i, j: INTEGER; sel: BOOLEAN);\r\tBEGIN\r\t\tIF ValidField(v, i, j) & (v.mod[j, i].sel # sel) THEN\r\t\t\tv.mod[j, i].sel := sel;\r\t\t\tIF sel THEN INC(v.sel) ELSE DEC(v.sel) END;\r\t\t\tDrawField(v, f, i, j)\r\t\tEND\r\tEND SelectField;\r\r\tPROCEDURE LocateField (v: StdView; f: Views.Frame; x, y: INTEGER; OUT i, j: INTEGER);\r\t\tVAR u, w, h, s, sx, sy: INTEGER;\r\tBEGIN\r\t\tv.context.GetSize(w, h); s := (w - f.unit) DIV 8;\r\t\tu := f.unit; h := H(s);\r\t\tsx := x DIV s; sy := y DIV h;\r\t\tIF (0 <= sx) & (sx < 9) & (0 <= sy) & (sy < 16) THEN\r\t\t\ti := SHORT(sx); j := SHORT(sy);\r\t\t\tIF ODD(i + j) THEN\r\t\t\t\tIF (s - x) MOD s * (h DIV u) >= y MOD h * (s DIV u) THEN DEC(j) END\r\t\t\tELSE\r\t\t\t\tIF x MOD s * (h DIV u) >= y MOD h * (s DIV u) THEN DEC(j) END\r\t\t\tEND;\r\t\t\tIF (i = 8) OR (j = 15) OR (j >= 0) & (v.mod[j, i].kind = outside) THEN j := -1 END\r\t\tELSE j := -1\r\t\tEND\r\tEND LocateField;\r\r\tPROCEDURE Select (v: StdView; set: BOOLEAN);\r\t\tVAR i, j, sel: INTEGER;\r\tBEGIN\r\t\tj := 0;\r\t\tWHILE j # 15 DO\r\t\t\ti := 0; WHILE i # 8 DO v.mod[j, i].sel := set; INC(i) END;\r\t\t\tINC(j)\r\t\tEND;\r\t\tIF set THEN sel := 64 ELSE sel := 0 END;\r\t\tIF v.sel # sel THEN v.sel := sel; Views.Update(v, Views.keepFrames) END\r\tEND Select;\r\r\tPROCEDURE Track (v: StdView; f: Views.Frame; x, y: INTEGER; buttons: SET);\r\t\tVAR script: Stores.Operation; op: FieldOp; cop: ColorOp; col: Ports.Color;\r\t\t\ti, j, i0, j0, i1, j1: INTEGER; isDown, prevSel, setCol: BOOLEAN; m: SET;\r\tBEGIN\r\t\tLocateField(v, f, x, y, i, j);\r\t\ti0 := i; j0 := j; prevSel := ValidField(v, i, j) & v.mod[j, i].sel;\r\t\tIF ~prevSel & ~(Controllers.extend IN buttons) & (v.sel > 0) THEN\r\t\t\tj := 0;\r\t\t\tWHILE j # 15 DO\r\t\t\t\ti := 0;\r\t\t\t\tWHILE i # 8 DO\r\t\t\t\t\tIF v.mod[j, i].sel THEN SelectField(v, f, i, j, FALSE) END;\r\t\t\t\t\tINC(i)\r\t\t\t\tEND;\r\t\t\t\tINC(j)\r\t\t\tEND;\r\t\t\tv.sel := 0; i := i0; j := j0\r\t\tEND;\r\t\tSelectField(v, f, i, j, ~prevSel OR ~(Controllers.extend IN buttons));\r\t\tREPEAT\r\t\t\tf.Input(x, y, m, isDown);\r\t\t\tLocateField(v, f, x, y, i1, j1); \r\t\t\tIF (i1 # i) OR (j1 # j) THEN\r\t\t\t\tIF ~(Controllers.extend IN buttons) THEN SelectField(v, f, i, j, FALSE) END;\r\t\t\t\ti := i1; j := j1;\r\t\t\t\tSelectField(v, f, i, j, ~prevSel OR ~(Controllers.extend IN buttons))\r\t\t\tEND\r\t\tUNTIL ~isDown;\r\t\tIF ~(Controllers.extend IN buttons) & ((i # i0) OR (j # j0) OR ~prevSel) THEN\r\t\t\tSelectField(v, f, i, j, FALSE)\r\t\tEND;\r\t\tIF ValidField(v, i, j) THEN\r\t\t\tIF Controllers.modify IN buttons THEN\r\t\t\t\tDialog.GetColor(v.pal[v.mod[j, i].kind], col, setCol);\r\t\t\t\tIF setCol THEN\r\t\t\t\t\tNEW(cop); cop.v := v; cop.n := v.mod[j, i].kind; cop.col := col;\r\t\t\t\t\tViews.Do(v, \"Color Change\", cop)\r\t\t\t\tEND\r\t\t\tELSIF ~(Controllers.extend IN buttons) THEN\r\t\t\t\tViews.BeginScript(v, \"Omosi Change\", script);\r\t\t\t\tj := 0;\r\t\t\t\tWHILE j # 15 DO\r\t\t\t\t\ti := 0;\r\t\t\t\t\tWHILE i # 8 DO\r\t\t\t\t\t\tIF (v.mod[j, i].sel OR (i = i1) & (j = j1)) & (v.mod[j, i].kind > outside) THEN\r\t\t\t\t\t\t\tNEW(op); op.v := v; op.i := i; op.j := j;\r\t\t\t\t\t\t\top.kind := (v.mod[j, i].kind + 1) MOD 4;\r\t\t\t\t\t\t\tViews.Do(v, \"\", op)\r\t\t\t\t\t\tEND;\r\t\t\t\t\t\tINC(i)\r\t\t\t\t\tEND;\r\t\t\t\t\tINC(j)\r\t\t\t\tEND;\r\t\t\t\tViews.EndScript(v, script)\r\t\t\tEND\r\t\tEND\r\tEND Track;\r\r\r\t"
+                    attr: 0
+                  - text: "(* FieldOp *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (op: FieldOp) Do;\r\t\tVAR k: Kind; msg: UpdateMsg;\r\tBEGIN\r\t\tk := op.v.mod[op.j, op.i].kind;\r\t\top.v.mod[op.j, op.i].kind := op.kind;\r\t\top.kind := k;\r\t\tmsg.i := op.i; msg.j := op.j; Views.Broadcast(op.v, msg)\r\tEND Do;\r\r\r\t"
+                    attr: 0
+                  - text: "(* ColorOp *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (op: ColorOp) Do;\r\t\tVAR c: Ports.Color;\r\tBEGIN\r\t\tc := op.v.pal[op.n]; op.v.pal[op.n] := op.col; op.col := c;\r\t\tViews.Update(op.v, Views.keepFrames)\r\tEND Do;\r\r\r\t"
+                    attr: 0
+                  - text: "(* View *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (v: StdView) Externalize (VAR wr: Stores.Writer);\r\t\tVAR i, j: INTEGER;\r\tBEGIN\r\t\twr.WriteVersion(maxVersion);\r\t\ti := 0; WHILE i # 4 DO wr.WriteInt(v.pal[i]); INC(i) END;\r\t\tj := 0;\r\t\tWHILE j # 15 DO\r\t\t\ti := 0; WHILE i # 8 DO wr.WriteInt(v.mod[j, i].kind); INC(i) END;\r\t\t\tINC(j)\r\t\tEND\r\tEND Externalize;\r\r\tPROCEDURE (v: StdView) Internalize (VAR rd: Stores.Reader);\r\t\tVAR i, j: INTEGER; version: INTEGER;\r\tBEGIN\r\t\trd.ReadVersion(minVersion, maxVersion, version);\r\t\tIF ~rd.cancelled THEN\r\t\t\ti := 0; WHILE i # 4 DO rd.ReadInt(v.pal[i]); INC(i) END;\r\t\t\tj := 0;\r\t\t\tWHILE j # 15 DO\r\t\t\t\ti := 0;\r\t\t\t\tWHILE i # 8 DO rd.ReadInt(v.mod[j, i].kind); v.mod[j, i].sel := FALSE; INC(i) END;\r\t\t\t\tINC(j)\r\t\t\tEND;\r\t\t\tv.grid := FALSE\r\t\tEND\r\tEND Internalize;\r\r\tPROCEDURE (v: StdView) CopyFromSimpleView (source: Views.View);\r\tBEGIN\r\t\tWITH source: StdView DO\r\t\t\tv.pal := source.pal; v.mod := source.mod;\r\t\t\tv.sel := source.sel; v.grid := gridDefault\r\t\tEND\r\tEND CopyFromSimpleView;\r\r\tPROCEDURE (v: StdView) Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\t\tVAR i, j: INTEGER;\r\tBEGIN\r\t\tj := 0;\r\t\tWHILE j # 15 DO\r\t\t\ti := 0; WHILE i # 8 DO DrawField(v, f, i, j); INC(i) END;\r\t\t\tINC(j)\r\t\tEND\r\tEND Restore;\r\r\tPROCEDURE (v: StdView) HandleViewMsg (f: Views.Frame; VAR msg: Views.Message);\r\tBEGIN\r\t\tWITH msg: UpdateMsg DO\r\t\t\tDrawField(v, f, msg.i, msg.j)\r\t\tELSE\r\t\tEND\r\tEND HandleViewMsg;\r\r\tPROCEDURE (v: StdView) HandleCtrlMsg (f: Views.Frame; VAR msg: Controllers.Message;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR focus: Views.View);\r\tBEGIN\r\t\tWITH msg: Controllers.TrackMsg DO\r\t\t\tTrack(v, f, msg.x, msg.y, msg.modifiers)\r\t\t| msg: Controllers.PollOpsMsg DO\r\t\t\tmsg.selectable := TRUE\r\t\t| msg: Controllers.SelectMsg DO\r\t\t\tSelect(v, msg.set)\r\t\tELSE\r\t\tEND\r\tEND HandleCtrlMsg;\r\r\tPROCEDURE (v: StdView) HandlePropMsg (VAR msg: Properties.Message);\r\t\tCONST minW = 3 * Ports.mm; stdW = 7 * Ports.mm;\t"
+                    attr: 0
+                  - text: "(* per field *)"
+                    attr: 1
+                  - text: "\r\tBEGIN\r\t\tWITH msg: Properties.SizePref DO\r\t\t\tIF (msg.w > Views.undefined) & (msg.h > Views.undefined) THEN\r\t\t\t\tDEC(msg.h, 1 * Ports.mm);\r\t\t\t\tProperties.ProportionalConstraint(1000, 2 * H(1000), msg.fixedW, msg.fixedH, msg.w, msg.h);\r\t\t\t\tIF msg.w < 8 * minW THEN\r\t\t\t\t\tmsg.w := 8 * minW; msg.h := 16 * H(minW)\r\t\t\t\tEND\r\t\t\tELSE\r\t\t\t\tmsg.w := 8 * stdW; msg.h := 16 * H(stdW)\r\t\t\tEND;\r\t\t\tINC(msg.h, 1 * Ports.mm)\r\t\t| msg: Properties.FocusPref DO\r\t\t\tmsg.setFocus := TRUE\r\t\tELSE\r\t\tEND\r\tEND HandlePropMsg;\r\r\r\t"
+                    attr: 0
+                  - text: "(* commands *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Deposit
+                    attr: 3
+                  - text: "*;\r\t\tVAR v: StdView;\r\tBEGIN\r\t\tNEW(v); InitPalette(v.pal); InitModel(v.mod); v.sel := 0; v.grid := FALSE; Views.Deposit(v)\r\tEND Deposit;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ToggleGrid
+                    attr: 3
+                  - text: "*;\r\t\tVAR v: Views.View;\r\tBEGIN\r\t\tv := Controllers.FocusView();\r\t\tIF v # NIL THEN\r\t\t\tWITH v: StdView DO\r\t\t\t\tv.grid := ~v.grid; Views.Update(v, Views.keepFrames)\r\t\t\tELSE\r\t\t\tEND\r\t\tEND \r\tEND ToggleGrid;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ResetColors
+                    attr: 3
+                  - text: "*;\r\t\tVAR v: Views.View; p0: Palette; script: Stores.Operation; cop: ColorOp; i: INTEGER;\r\tBEGIN\r\t\tv := Controllers.FocusView();\r\t\tIF v # NIL THEN\r\t\t\tWITH v: StdView DO\r\t\t\t\tViews.BeginScript(v, \"Reset Colors\", script);\r\t\t\t\tInitPalette(p0);\r\t\t\t\ti := 0;\r\t\t\t\tWHILE i # 4 DO\r\t\t\t\t\tNEW(cop); cop.v := v; cop.n := i; cop.col := p0[i]; Views.Do(v, \"\", cop); INC(i)\r\t\t\t\tEND;\r\t\t\t\tViews.EndScript(v, script)\r\t\t\tELSE\r\t\t\tEND\r\t\tEND \r\tEND ResetColors;\r\rEND ObxOmosi.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 12770
+          bodyLen: 8

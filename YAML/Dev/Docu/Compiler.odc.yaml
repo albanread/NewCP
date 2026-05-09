@@ -1,0 +1,167 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Dev\\Docu\\Compiler.odc"
+  size: 3285
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 3154
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 2968
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 2882
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                lead: 11500
+                asc: 121900
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 6
+                bodyPos: 2882
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 2368
+                runListLen: 366
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                flow:
+                  - text: DevCompiler
+                    attr: 0
+                  - text: "\r\rDEFINITION DevCompiler;\r\r\tPROCEDURE Compile;\r\tPROCEDURE CompileAndUnload;\r\tPROCEDURE CompileModuleList;\r\tPROCEDURE CompileSelection;\r\tPROCEDURE CompileThis;\r\t... plus some private commands ...\r\rEND DevCompiler.\r\r\rCommand package for the Component Pascal compiler. The compiler has no compiler options. Safety-critical runtime checks are always performed (type guards, array range checks, etc.), while non-critical runtime checks may not be generated (SHORT, integer overflows, testing of set membership). \"Critical\" means that non-local memory may be destroyed, with unknown global effects.\r\rTypical menu:\r\r"
+                    attr: 1
+                  - text: MENU
+                    attr: 2
+                  - text: "\r\t\"&Compile\"\t\"\"\t\"DevCompiler.Compile\"\t\"TextCmds.FocusGuard\"\r\t\"Compile and Unload\"\t\"\"\t\"DevCompiler.CompileAndUnload\"\t\"TextCmds.FocusGuard\"\r\t\"Compile &Selection\"\t\"\"\t\"DevCompiler.CompileSelection\"\t\"TextCmds.SelectionGuard\"\r\t\"Com&pile Module List\"\t\"\"\t\"DevCompiler.CompileModuleList\"\t\"TextCmds.SelectionGuard\"\r"
+                    attr: 1
+                  - text: END
+                    attr: 2
+                  - text: "\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: Compile
+                    attr: 2
+                  - text: "\rGuard: TextCmds.FocusGuard\rCompile the Component Pascal module whose source is in the focus view.\r\rPROCEDURE "
+                    attr: 1
+                  - text: CompileAndUnload
+                    attr: 2
+                  - text: "\rGuard: TextCmds.FocusGuard\rCompile the module whose source is in the focus view. If compilation is successful, it is attempted to unload the old version of this module. "
+                    attr: 1
+                  - text: CompileAndUnload
+                    attr: 3
+                  - text: " is convenient when developing top-level modules, i.e., modules which are not imported by any other modules, and thus can be unloaded individually.\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - text: "PROCEDURE "
+                    attr: 1
+                  - text: CompileModuleList
+                    attr: 2
+                  - text: "\rGuard: TextCmds.SelectionGuard\rCompile the list of modules whose names are selected. When the first error is detected, the offending source is opened to show the error.\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - text: "PROCEDURE "
+                    attr: 1
+                  - text: CompileSelection
+                    attr: 2
+                  - text: "\rGuard: TextCmds.SelectionGuard\rCompile the module, whose beginning is selected.\r\rPROCEDURE "
+                    attr: 1
+                  - text: CompileThis
+                    attr: 2
+                  - text: "\rUsed in a text with a "
+                    attr: 1
+                  - text: DevCommanders.View
+                    attr: 3
+                  - text: ". This command takes the text following it and interprets it as a list of modules that should be compiled. Similar to "
+                    attr: 1
+                  - text: CompileModuleList
+                    attr: 3
+                  - text: " except that no selection is necessary.\r\r... plus some private commands ...\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 10
+          bodyPos: 3250
+          bodyLen: 8

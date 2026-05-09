@@ -1,0 +1,281 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Std\\Docu\\Coder.odc"
+  size: 7829
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 7698
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 7512
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 7426
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                lead: 11500
+                asc: 121900
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 14
+                bodyPos: 7547
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 7033
+                runListLen: 1168
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: StdCoder
+                    attr: 0
+                  - text: "\r\rDEFINITION StdCoder;\r\r\tIMPORT TextModels, Views, Dialog;\r\r\tTYPE\r\t\tParList = RECORD \r\t\t\tlist: Dialog.Selection;\r\t\t\tstoreAs: Dialog.String\r\t\tEND;\r\r\tVAR par: ParList;\r\r\tPROCEDURE CloseDialog;\r\tPROCEDURE Decode;\r\tPROCEDURE DecodeAllFromText (text: TextModels.Model; beg: INTEGER; ask: BOOLEAN);\r\tPROCEDURE EncodeDocument;\r\tPROCEDURE EncodeFile;\r\tPROCEDURE EncodeFileList;\r\tPROCEDURE EncodeFocus;\r\tPROCEDURE EncodeSelection;\r\tPROCEDURE EncodedInText (text: TextModels.Model; beg: INTEGER): TextModels.Model;\r\tPROCEDURE EncodedView (v: Views.View): TextModels.Model;\r\tPROCEDURE ListEncodedMaterial;\r\tPROCEDURE Select (op, from, to: INTEGER);\r\tPROCEDURE StoreAll;\r\tPROCEDURE StoreSelection;\r\tPROCEDURE StoreSelectionGuard (VAR p: Dialog.Par);\r\tPROCEDURE StoreSingle;\r\tPROCEDURE StoreSingleGuard (VAR p: Dialog.Par);\r\rEND StdCoder.\r\r\r"
+                    attr: 1
+                  - text: StdCoder
+                    attr: 2
+                  - text: " (or "
+                    attr: 1
+                  - text: Coder
+                    attr: 2
+                  - text: " for short) can be used to encode a document, a view, a text stretch, or files into a textual form. The encoding uses characters that are expected not to be changed by any mail system. White space characters (blanks, tabs, new lines, etc.) may be added or removed arbitrarily, because they are ignored upon decoding.\r\rUpon decoding a document or a text stretch a new window will be opened. Files will be stored on disk.\r\rSuggested menu items, as they are standard in menu "
+                    attr: 1
+                  - text: Tools
+                    attr: 2
+                  - text: ":"
+                    attr: 1
+                  - text: "\r\r"
+                    attr: 3
+                  - ruler:
+                      left: 0
+                      right: 5868000
+                      asc: 127000
+                      dsc: 25400
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1728000 }
+                        - { stop: 1980000 }
+                        - { stop: 3996000 }
+                      attr: 3
+                      w: 360000000
+                      h: 444500
+                  - text: "\t\"Encode Document\"\t\"\"\t\"StdCoder.EncodeDocument\"   \t\"StdCmds.WindowGuard\"\r\t\"Encode Selection\"\t\"\"\t\"StdCoder.EncodeSelection\"\t\"TextCmds.SelectionGuard\"\r\t\"Encode File...\"\t\"\"\t\"StdCoder.EncodeFile\"\t\"\"\r\t\"Encode File List\"\t\"\"\t\"StdCoder.EncodeFileList\"\t\"TextCmds.SelectionGuard\"\r\t\"Decode...\"\t\"\"\t\"StdCoder.Decode\"\t\"TextCmds.FocusGuard\"\r\t\"About Encoded Material\"\t\"\"\t\"StdCoder.ListEncodedMaterial\"\t\"TextCmds.FocusGuard\"\r\r\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5868000
+                      asc: 127000
+                      dsc: 25400
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 3
+                      w: 360000000
+                      h: 444500
+                  - text: "PROCEDURE "
+                    attr: 1
+                  - text: EncodeDocument
+                    attr: 3
+                  - text: "\rGuard: StdCmds.WindowGuard\rEncodes the document in the current front window and opens a new window with the generated code.\r\rPROCEDURE "
+                    attr: 1
+                  - text: EncodeSelection
+                    attr: 3
+                  - text: "\rGuard: TextCmds.SelectionGuard\rEncodes the current text selection, and opens a new window with the generated code.\r\rPROCEDURE "
+                    attr: 1
+                  - text: EncodeFile
+                    attr: 3
+                  - text: "\rEncodes one file determined through the standard file opening dialog and opens a new window with the generated code.\r\rPROCEDURE "
+                    attr: 1
+                  - text: EncodeFileList
+                    attr: 3
+                  - text: "\rGuard: TextCmds.SelectionGuard\rEncodes several files and opens a new window with the generated code.\rA list of valid file names must be selected. File names must be specified with their complete path name relative to the BlackBox directory. Use the slash character (\"/\") to separate the individual parts of the path name. (Example: "
+                    attr: 1
+                  - text: Std/Code/Coder
+                    attr: 2
+                  - text: " .)\rThe path name is stored along with the encoding to allow for easy decoding of entire file packages. However, sometimes a file is kept in a different place than where it should be installed later. In such a case, a destination path name can be specified. The path name to be used during decoding can be given after an \"arrow\" (\"=>\").\rExample: "
+                    attr: 1
+                  - text: "NewStd/Code/NewCoder => Std/Code/Coder"
+                    attr: 2
+                  - text: " will lead to encoding of the file "
+                    attr: 1
+                  - text: NewCoder
+                    attr: 2
+                  - text: " in the directory "
+                    attr: 1
+                  - text: NewStd/Code
+                    attr: 2
+                  - text: ", but for decoding the name "
+                    attr: 1
+                  - text: "Std/Code/Coder "
+                    attr: 2
+                  - text: "will be used.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Decode
+                    attr: 3
+                  - text: "\rGuard: TextCmds.FocusGuard\rDecodes the information in the encoded text contained by the front window. The command scans for \"StdCoder.Decode\" as a tag that marks the begin of a code sequence. This allows e-mail headers and other text to precede the actual code. If a text selection is active in the front window, scanning will start at the begin of that selection.\rDepending on the kind of encoded data, that is, on the command used for encoding, one of the following actions will be taken:\r"
+                    attr: 1
+                  - ruler:
+                      first: 288000
+                      left: 432000
+                      right: 5940000
+                      asc: 127000
+                      dsc: 25400
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 432000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "-\tif a document was encoded (EncodeDocument, EncodeSelection), it is opened in a new window.\r\x0e-\tif a single file was encoded (EncodeFile), the standard file store dialog is opened allowing the user to store the file.\r\x0e-\tif a list of files was encoded (EncodeFileList), a special dialog is opened allowing the user to select files for decoding. The path names included during the encoding are shown in a list. One or several files can be selected from that list. After pressing a command button the selected files will be decoded. If only one file is selected, the path name can be changed or the standard file store dialog can be used to browse the directory hierarchy. Via another command button all files can be decoded and stored under the listed names, regardless of the selection.\r"
+                    attr: 1
+                  - text: "Note:"
+                    attr: 3
+                  - text: " The dialog should always be closed using the cancel button to allow StdCoder to release resources allocated temporarily to manage the dialog.\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5868000
+                      asc: 127000
+                      dsc: 25400
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "PROCEDURE "
+                    attr: 1
+                  - text: ListEncodedMaterial
+                    attr: 3
+                  - text: "\rGuard: TextCmds.FocusGuard\rOpens a text informing about what is encoded in the text displyed by the focus window. Like Decode, the command scans for a tag that marks the beginning of a code sequence.\r\rIn the programming interface, two further procedures are available:\r \rPROCEDURE "
+                    attr: 1
+                  - text: DecodeAllFromText
+                    attr: 3
+                  - text: " (text: TextModels.Model; beg: INTEGER; ask: BOOLEAN);\rWorks like "
+                    attr: 1
+                  - text: Decode
+                    attr: 2
+                  - text: ", but uses the passed text as source instead of the focus. At text position "
+                    attr: 1
+                  - text: beg
+                    attr: 2
+                  - text: " a search for the tag is started and the text following the tag is processed. Like with "
+                    attr: 1
+                  - text: Decode
+                    attr: 2
+                  - text: ", encoded documents are opened in windows and single files are stored via the standard store dialog. If the code was generated through "
+                    attr: 1
+                  - text: EncodeFileList
+                    attr: 2
+                  - text: ", the behavior depends on the value of the parameter "
+                    attr: 1
+                  - text: ask
+                    attr: 2
+                  - text: ". If it equals to "
+                    attr: 1
+                  - text: "TRUE"
+                    attr: 2
+                  - text: ", a dialog is displayed as done by "
+                    attr: 1
+                  - text: Decode
+                    attr: 2
+                  - text: " and the user is put into control. If it equals to "
+                    attr: 1
+                  - text: "FALSE"
+                    attr: 2
+                  - text: ", no dialog is displayed, but all files are decoded and installed under the name stored with them. This behavior corresponds to pressing the \"Decode All\" button in the dialog.\r\rPROCEDURE "
+                    attr: 1
+                  - text: EncodedView
+                    attr: 3
+                  - text: " (v: Views.View): TextModels.Model;\rGenerates a text containing the encoding of the passed view.\r\rPROCEDURE "
+                    attr: 1
+                  - text: EncodedInText
+                    attr: 3
+                  - text: " (text: TextModels.Model; beg: INTEGER): TextModels.Model;\rGenerates a text containing information about what is encoded in \"text\"."
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 18
+          bodyPos: 7794
+          bodyLen: 8

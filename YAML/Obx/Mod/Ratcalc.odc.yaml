@@ -1,0 +1,248 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Mod\\Ratcalc.odc"
+  size: 12852
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 12721
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 12535
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 12449
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 114300
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Helvetica
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 12566
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 12052
+                runListLen: 1743
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE ObxRatCalc;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT Stores, Models, Dialog, TextModels, TextControllers, TextMappers, Integers;\r\r\tCONST\r\t\t(* "
+                    attr: 0
+                  - text: scanner classes
+                    attr: 1
+                  - text: " *)\r\t\tstop = 0; int = 1; openPar = 2; closePar = 3; powOp = 4; mulOp = 5; addOp = 6;\r\t\tapproximationLength = 40;\r\r\tTYPE\r\t\tScanner = RECORD\r\t\t\tr: TextModels.Reader;\r\t\t\tnextCh: CHAR;\r\t\t\tend, level: INTEGER;\r\t\t\tpos: INTEGER;\r\t\t\tclass: INTEGER;\r\t\t\tnum, den: Integers.Integer;\r\t\t\top: CHAR;\r\t\t\terror: BOOLEAN\r\t\tEND;\r\r\t\tExpression = POINTER TO RECORD\r\t\t\top: CHAR;\r\t\t\tsub1, sub2: Expression;\r\t\t\tint: Integers.Integer\r\t\tEND;\r\r\tVAR zero, one, ten, hundred, maxExponent, minusOne: Integers.Integer;\r\r\r\t(* "
+                    attr: 0
+                  - text: scanning
+                    attr: 1
+                  - text: " *)\r\r\tPROCEDURE ReadInteger (r: TextModels.Reader; OUT nextCh: CHAR; OUT num, den: Integers.Integer);\r\t\tVAR i, j, l1, l2, beg: INTEGER; ch: CHAR; buf: POINTER TO ARRAY OF CHAR;\r\tBEGIN\r\t\tbeg := r.Pos() - 1; l1 := 0; l2 := 0;\r\t\tREPEAT INC(l1); r.ReadChar(ch) UNTIL r.eot OR (ch < \"0\") OR (ch > \"9\");\r\t\tIF ch = \".\" THEN\r\t\t\tr.ReadChar(ch);\r\t\t\tWHILE (ch >= \"0\") & (ch <= \"9\") DO INC(l2); r.ReadChar(ch) END\r\t\tEND;\r\t\tNEW(buf, l1 + l2 + 1);\r\t\ti := 0; r.SetPos(beg);\r\t\tREPEAT r.ReadChar(buf[i]); INC(i) UNTIL i = l1;\r\t\tIF l2 # 0 THEN\r\t\t\tj := l2; r.ReadChar(ch);\r\t\t\tREPEAT r.ReadChar(buf[i]); INC(i); DEC(j) UNTIL j = 0\r\t\tEND;\r\t\tbuf[i] := 0X;\r\t\tIntegers.ConvertFromString(buf^, num);\r\t\tIF l2 # 0 THEN\r\t\t\tbuf[0] := \"1\"; i := 1;\r\t\t\tREPEAT buf[i] := \"0\"; INC(i) UNTIL i = l2 + 1;\r\t\t\tbuf[i] := 0X;\r\t\t\tIntegers.ConvertFromString(buf^, den)\r\t\tELSE den := NIL\r\t\tEND;\r\t\tr.ReadChar(nextCh)\r\tEND ReadInteger;\r\r\tPROCEDURE (VAR s: Scanner) Read, NEW;\r\t\tVAR ch: CHAR;\r\tBEGIN\r\t\tIF ~s.error THEN\r\t\t\tch := s.nextCh;\r\t\t\tIF s.r.eot THEN s.pos := s.r.Pos() ELSE s.pos := s.r.Pos() - 1 END;\r\t\t\tWHILE ~s.r.eot & (s.r.Pos() <= s.end) & (ch <= \" \") DO s.r.ReadChar(ch) END;\r\t\t\tIF ~s.r.eot & (s.r.Pos() <= s.end) THEN\r\t\t\t\tIF (ch >= \"0\") & (ch <= \"9\") THEN s.class := int; ReadInteger(s.r, ch, s.num, s.den)\r\t\t\t\tELSIF (ch = \"+\") OR (ch = \"-\") THEN s.class := addOp; s.op := ch; s.r.ReadChar(ch)\r\t\t\t\tELSIF (ch = \"*\") OR (ch = \"/\") THEN s.class := mulOp; s.op := ch; s.r.ReadChar(ch)\r\t\t\t\tELSIF ch = \"^\" THEN s.class := powOp; s.op := ch; s.r.ReadChar(ch)\r\t\t\t\tELSIF ch = \"(\" THEN s.class := openPar; INC(s.level); s.r.ReadChar(ch)\r\t\t\t\tELSIF ch = \")\" THEN s.class := closePar; DEC(s.level); s.r.ReadChar(ch)\r\t\t\t\tELSE s.error := TRUE\r\t\t\t\tEND\r\t\t\tELSE s.class := stop\r\t\t\tEND;\r\t\t\ts.nextCh := ch\r\t\tELSE s.class := stop\r\t\tEND\r\tEND Read;\r\r\tPROCEDURE (VAR s: Scanner) ConnectTo (t: TextModels.Model; beg, end: INTEGER), NEW;\r\t\tVAR ch: CHAR;\r\tBEGIN\r\t\ts.r := t.NewReader(NIL); s.r.SetPos(beg); s.r.ReadChar(ch);\r\t\tWHILE ~s.r.eot & (beg < end) & (ch <= \" \") DO s.r.ReadChar(ch); INC(beg) END;\r\t\ts.nextCh := ch; s.pos := beg; s.end := end;\r\t\ts.level := 0; s.error := FALSE\r\tEND ConnectTo;\r\r\r\t(* "
+                    attr: 0
+                  - text: parsing
+                    attr: 1
+                  - text: " *)"
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\r\tPROCEDURE^ ReadExpression (VAR s: Scanner; OUT exp: Expression);\r\r\tPROCEDURE ReadFactor (VAR s: Scanner; OUT exp: Expression);\r\t\tVAR e: Expression;\r\tBEGIN\r\t\tIF s.class = openPar THEN\r\t\t\ts.Read;\r\t\t\tReadExpression(s, exp);\r\t\t\ts.error := s.error OR (s.class # closePar); s.Read\r\t\tELSIF s.class = int THEN\r\t\t\tIF s.den = NIL THEN\r\t\t\t\tNEW(exp); exp.op := \"i\"; exp.int := s.num\r\t\t\tELSE\r\t\t\t\tNEW(exp); exp.op := \"/\";\r\t\t\t\tNEW(e); e.op := \"i\"; e.int := s.num; exp.sub1 := e;\r\t\t\t\tNEW(e); e.op := \"i\"; e.int := s.den; exp.sub2 := e\r\t\t\tEND;\r\t\t\ts.Read\r\t\tELSE s.error := TRUE\r\t\tEND;\r\t\tIF ~s.error & (s.class = powOp) THEN\r\t\t\tNEW(e); e.op := s.op; e.sub1 := exp; exp := e;\r\t\t\ts.Read; ReadFactor(s, e.sub2)\r\t\tEND\r\tEND ReadFactor;\r\r\tPROCEDURE ReadTerm (VAR s: Scanner; OUT exp: Expression);\r\t\tVAR e: Expression;\r\tBEGIN\r\t\tReadFactor(s, exp);\r\t\tWHILE ~s.error & (s.class = mulOp) DO\r\t\t\tNEW(e); e.op := s.op; e.sub1 := exp; exp := e;\r\t\t\ts.Read; ReadFactor(s, exp.sub2)\r\t\tEND\r\tEND ReadTerm;\r\r\tPROCEDURE ReadExpression (VAR s: Scanner; OUT exp: Expression);\r\t\tVAR e: Expression;\r\tBEGIN\r\t\tIF (s.class = addOp) & (s.op = \"-\") THEN\r\t\t\ts.Read;\r\t\t\tNEW(e); e.op := \"i\"; e.int := zero;\r\t\t\tNEW(exp); exp.op := \"-\"; exp.sub1 := e;\r\t\t\tReadTerm(s, exp.sub2)\r\t\tELSE ReadTerm(s, exp)\r\t\tEND;\r\t\tWHILE ~s.error & (s.class = addOp) DO\r\t\t\tNEW(e); e.op := s.op; e.sub1 := exp; exp := e;\r\t\t\ts.Read; ReadTerm(s, exp.sub2)\r\t\tEND\r\tEND ReadExpression;\r\r\r\t(* "
+                    attr: 0
+                  - text: evaluation
+                    attr: 1
+                  - text: " *)\r\r\tPROCEDURE Normalize (VAR num, den: Integers.Integer);\r\t\tVAR g: Integers.Integer;\r\tBEGIN\r\t\tIF Integers.Sign(num) # 0 THEN\r\t\t\tg := Integers.GCD(num, den);\r\t\t\tnum := Integers.Quotient(num, g); den := Integers.Quotient(den, g);\r\t\t\tIF Integers.Sign(den) < 0 THEN\r\t\t\t\tnum := Integers.Product(num, minusOne); den := Integers.Abs(den)\r\t\t\tEND\r\t\tELSE den := one\r\t\tEND\r\tEND Normalize;\r\r\tPROCEDURE Evaluate (exp: Expression; OUT num, den: Integers.Integer; VAR error: INTEGER);\r\t\tVAR exponent: INTEGER; op: CHAR; n1, d1, n2, d2, g, h: Integers.Integer;\r\tBEGIN\r\t\terror := 0; op := exp.op;\r\t\tIF op = \"i\" THEN num := exp.int; den := one\r\t\tELSE\r\t\t\tEvaluate(exp.sub1, n1, d1, error);\r\t\t\tIF error = 0 THEN Evaluate(exp.sub2, n2, d2, error);\r\t\t\t\tIF error = 0 THEN\r\t\t\t\t\tIF (op = \"+\") OR (op = \"-\") THEN\r\t\t\t\t\t\tg := Integers.GCD(d1, d2); h := Integers.Quotient(d2, g);\r\t\t\t\t\t\tIF op = \"+\" THEN\r\t\t\t\t\t\t\tnum := Integers.Sum(\r\t\t\t\t\t\t\t\tIntegers.Product(n1, h), Integers.Product(n2, Integers.Quotient(d1, g)))\r\t\t\t\t\t\tELSE\r\t\t\t\t\t\t\tnum := Integers.Difference(\r\t\t\t\t\t\t\t\tIntegers.Product(n1, h), Integers.Product(n2, Integers.Quotient(d1, g)))\r\t\t\t\t\t\tEND;\r\t\t\t\t\t\tden := Integers.Product(d1, h);\r\t\t\t\t\t\tNormalize(num, den)\r\t\t\t\t\tELSIF op = \"*\" THEN\r\t\t\t\t\t\tnum := Integers.Product(n1, n2); den := Integers.Product(d1, d2);\r\t\t\t\t\t\tNormalize(num, den)\r\t\t\t\t\tELSIF op = \"/\" THEN\r\t\t\t\t\t\tIF Integers.Sign(n2) # 0 THEN\r\t\t\t\t\t\t\tnum := Integers.Product(n1, d2); den := Integers.Product(d1, n2);\r\t\t\t\t\t\t\tNormalize(num, den)\r\t\t\t\t\t\tELSE error := 1\r\t\t\t\t\t\tEND\r\t\t\t\t\tELSIF op = \"^\" THEN\r\t\t\t\t\t\tIF Integers.Sign(n1) = 0 THEN num := n1; den := d1\r\t\t\t\t\t\tELSE\r\t\t\t\t\t\t\tIF Integers.Compare(d2, one) = 0 THEN\r\t\t\t\t\t\t\t\tIF Integers.Sign(n2) = 0 THEN num := one; den := one\r\t\t\t\t\t\t\t\tELSE\r\t\t\t\t\t\t\t\t\tIF Integers.Sign(n2) < 0 THEN\r\t\t\t\t\t\t\t\t\t\tg := n1; n1 := d1; d1 := g; n2 := Integers.Abs(n2)\r\t\t\t\t\t\t\t\t\tEND;\r\t\t\t\t\t\t\t\t\tIF Integers.Compare(n2, maxExponent) <= 0 THEN\r\t\t\t\t\t\t\t\t\t\texponent := SHORT(Integers.Short(n2));\r\t\t\t\t\t\t\t\t\t\tnum := Integers.Power(n1, exponent); den := Integers.Power(d1, exponent);\r\t\t\t\t\t\t\t\t\t\tNormalize(num, den)\r\t\t\t\t\t\t\t\t\tELSE error := 3\r\t\t\t\t\t\t\t\t\tEND\r\t\t\t\t\t\t\t\tEND\r\t\t\t\t\t\t\tELSE error := 2\r\t\t\t\t\t\t\tEND\r\t\t\t\t\t\tEND\r\t\t\t\t\tELSE HALT(99)\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND Evaluate;\r\r\r\t(* "
+                    attr: 0
+                  - text: output
+                    attr: 1
+                  - text: " *)\r\r\tPROCEDURE WriteInteger (w: TextModels.Writer; x: Integers.Integer);\r\t\tVAR i: INTEGER;\r\tBEGIN\r\t\tIF Integers.Sign(x) # 0 THEN\r\t\t\tIF Integers.Sign(x) < 0 THEN w.WriteChar(\"-\") END;\r\t\t\ti := Integers.Digits10Of(x);\r\t\t\tREPEAT DEC(i); w.WriteChar(Integers.ThisDigit10(x, i)) UNTIL i = 0\r\t\tELSE w.WriteChar(\"0\")\r\t\tEND\r\tEND WriteInteger;\r\r\tPROCEDURE Replace (t: TextModels.Model; VAR beg, end: INTEGER; n, d: Integers.Integer;\r\t\t\t\t\t\t\t\t\ta: TextModels.Attributes);\r\t\tVAR s: Stores.Operation; w: TextMappers.Formatter;\r\tBEGIN\r\t\tModels.BeginScript(t, \"computation\", s);\r\t\tt.Delete(beg, end);\r\t\tw.ConnectTo(t); w.SetPos(beg); w.rider.SetAttr(a);\r\t\tWriteInteger(w.rider, n);\r\t\tIF (Integers.Sign(n) # 0) & (Integers.Compare(d, one) # 0) THEN\r\t\t\tw.WriteString(\" / \"); WriteInteger(w.rider, d)\r\t\tEND;\r\t\tModels.EndScript(t, s);\r\t\tend := w.Pos()\r\tEND Replace;\r\r\tPROCEDURE ReplaceReal (t: TextModels.Model; VAR beg, end: INTEGER; n, d: Integers.Integer;\r\t\t\t\t\t\t\t\t\t\t\ta: TextModels.Attributes);\r\t\tVAR i, k, e: INTEGER; q, r: Integers.Integer; s: Stores.Operation; w: TextMappers.Formatter;\r\tBEGIN\r\t\tModels.BeginScript(t, \"computation\", s);\r\t\tt.Delete(beg, end);\r\t\tw.ConnectTo(t); w.SetPos(beg); w.rider.SetAttr(a);\r\t\tIF Integers.Sign(n) < 0 THEN w.WriteChar(\"-\"); n := Integers.Abs(n) END;\r\t\tIntegers.QuoRem(n, d, q, r);\r\t\tk := Integers.Digits10Of(q);\r\t\tIF k > approximationLength THEN\r\t\t\tDEC(k); e := k;\r\t\t\tw.WriteChar(Integers.ThisDigit10(q, k)); w.WriteChar(\".\");\r\t\t\ti := 1;\r\t\t\tREPEAT DEC(k); w.WriteChar(Integers.ThisDigit10(q, k)); INC(i) UNTIL i = approximationLength;\r\t\t\tw.WriteString(\"...*10^\"); w.WriteInt(e)\r\t\tELSE\r\t\t\te := 0;\r\t\t\tIF (k = 0) & (Integers.Sign(r) # 0) & (Integers.Compare(Integers.Quotient(d, r), hundred) > 0)\r\t\t\tTHEN\r\t\t\t\tREPEAT\r\t\t\t\t\tIntegers.QuoRem(Integers.Product(ten, r), d, q, r); INC(e)\r\t\t\t\tUNTIL Integers.Sign(q) # 0\r\t\t\tELSIF k = 0 THEN k := 1\r\t\t\tEND;\r\t\t\tWriteInteger(w.rider, q);\r\t\t\tIF Integers.Sign(r) # 0 THEN\r\t\t\t\tw.WriteChar(\".\");\r\t\t\t\tREPEAT\r\t\t\t\t\tIntegers.QuoRem(Integers.Product(ten, r), d, q, r);\r\t\t\t\t\tWriteInteger(w.rider, q); INC(k)\r\t\t\t\tUNTIL (Integers.Sign(r) = 0) OR (k = approximationLength);\r\t\t\t\tIF Integers.Sign(r) # 0 THEN w.WriteString(\"...\") END\r\t\t\tEND;\r\t\t\tIF e # 0 THEN w.WriteString(\"*10^-\"); w.WriteInt(e) END\r\t\tEND;\r\t\tModels.EndScript(t, s);\r\t\tend := w.Pos()\r\tEND ReplaceReal;\r\r\r\t(* "
+                    attr: 0
+                  - text: commands
+                    attr: 1
+                  - text: " *)\r\r\tPROCEDURE Compute (approx: BOOLEAN);\r\t\tVAR beg, end, error: INTEGER; exp: Expression; s: Scanner;\r\t\t\tattr: TextModels.Attributes; c: TextControllers.Controller; num, den: Integers.Integer;\r\tBEGIN\r\t\tc := TextControllers.Focus();\r\t\tIF (c # NIL) & c.HasSelection() THEN\r\t\t\tc.GetSelection(beg, end); s.ConnectTo(c.text, beg, end); attr := s.r.attr; beg := s.pos;\r\t\t\ts.Read; ReadExpression(s, exp); end := s.pos;\r\t\t\tIF ~s.error & (s.class = stop) THEN\r\t\t\t\tEvaluate(exp, num, den, error);\r\t\t\t\tIF error = 0 THEN\r\t\t\t\t\tIF approx THEN ReplaceReal(c.text, beg, end, num, den, attr)\r\t\t\t\t\tELSE Replace(c.text, beg, end, num, den, attr)\r\t\t\t\t\tEND;\r\t\t\t\t\tc.SetSelection(beg, end)\r\t\t\t\tELSIF error = 1 THEN Dialog.ShowMsg(\"division by zero.\")\r\t\t\t\tELSIF error = 2 THEN Dialog.ShowMsg(\"non-integer exponent.\")\r\t\t\t\tELSIF error = 3 THEN Dialog.ShowMsg(\"exponent too large.\")\r\t\t\t\tELSE HALT(99)\r\t\t\t\tEND\r\t\t\tELSE\r\t\t\t\tDialog.ShowMsg(\"syntax error.\");\r\t\t\t\tc.SetCaret(s.pos)\r\t\t\tEND\r\t\tEND\r\tEND Compute;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Simplify
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tCompute(FALSE)\r\tEND Simplify;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Approximate
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tCompute(TRUE)\r\tEND Approximate;\r\r\rBEGIN\r\tzero := Integers.Long(0); one := Integers.Long(1); ten := Integers.Long(10);\r\thundred := Integers.Long(100); maxExponent := Integers.Long(1000000);\r\tminusOne := Integers.Long(-1)\rEND ObxRatCalc.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 12817
+          bodyLen: 8

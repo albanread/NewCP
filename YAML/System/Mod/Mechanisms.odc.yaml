@@ -1,0 +1,356 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\System\\Mod\\Mechanisms.odc"
+  size: 7386
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 7255
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 7069
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 6983
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 127000
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 114300
+                color: 0x00000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 7104
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 6590
+                runListLen: 2013
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE Mechanisms;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT Kernel, Views;\r\r\tCONST\r\t\t"
+                    attr: 0
+                  - text: "(** FocusBorderCursor/SelBorderCursor result **)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: inside
+                    attr: 3
+                  - text: "* = -1; "
+                    attr: 0
+                  - text: outside
+                    attr: 3
+                  - text: "* = -2;\t"
+                    attr: 0
+                  - text: "(** plus defined Ports cursors **)"
+                    attr: 1
+                  - text: "\r\r\t\t"
+                    attr: 0
+                  - text: "(** TrackToResize op **)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: cancelResize
+                    attr: 3
+                  - text: "* = 0; "
+                    attr: 0
+                  - text: resize
+                    attr: 3
+                  - text: "* = 1;\r\r\t\t"
+                    attr: 0
+                  - text: "(** TrackToDrop op **)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: cancelDrop
+                    attr: 3
+                  - text: "* = 0; "
+                    attr: 0
+                  - text: copy
+                    attr: 3
+                  - text: "* = 1; "
+                    attr: 0
+                  - text: move
+                    attr: 3
+                  - text: "* = 2; "
+                    attr: 0
+                  - text: link
+                    attr: 3
+                  - text: "* = 3;\r\r\t\t"
+                    attr: 0
+                  - text: "(** TrackToPick op **)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: cancelPick
+                    attr: 3
+                  - text: "* = 0; "
+                    attr: 0
+                  - text: pick
+                    attr: 3
+                  - text: "* = 1; "
+                    attr: 0
+                  - text: pickForeign
+                    attr: 3
+                  - text: "* = 2;\r\r\tTYPE\r\t\t"
+                    attr: 0
+                  - text: Hook
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Kernel.Hook) END;\r\r\tVAR hook: Hook;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetHook
+                    attr: 3
+                  - text: "*(h: Hook);\r\tBEGIN\r\t\thook := h\r\tEND SetHook;\r\r\tPROCEDURE (hook: Hook) "
+                    attr: 0
+                  - text: MarkFocusBorder
+                    attr: 3
+                  - text: "* (host: Views.Frame;\r\t\t\t\t\t\t\t\t\t\tfocus: Views.View; l, t, r, b: INTEGER;\r\t\t\t\t\t\t\t\t\t\tshow: BOOLEAN), NEW, ABSTRACT;\r\tPROCEDURE (hook: Hook) "
+                    attr: 0
+                  - text: MarkSingletonBorder
+                    attr: 3
+                  - text: "* (host: Views.Frame;\r\t\t\t\t\t\t\t\t\t\tview: Views.View; l, t, r, b: INTEGER;\r\t\t\t\t\t\t\t\t\t\tshow: BOOLEAN), NEW, ABSTRACT;\r\r\tPROCEDURE (hook: Hook) "
+                    attr: 0
+                  - text: FocusBorderCursor
+                    attr: 3
+                  - text: "* (host: Views.Frame;\r\t\t\t\t\t\t\t\t\t\tview: Views.View; l, t, r, b: INTEGER;\r\t\t\t\t\t\t\t\t\t\tx, y: INTEGER): INTEGER, NEW, ABSTRACT;\r\tPROCEDURE (hook: Hook) "
+                    attr: 0
+                  - text: SelBorderCursor
+                    attr: 3
+                  - text: "* (host: Views.Frame;\r\t\t\t\t\t\t\t\t\t\tview: Views.View; l, t, r, b: INTEGER;\r\t\t\t\t\t\t\t\t\t\tx, y: INTEGER): INTEGER, NEW, ABSTRACT;\r\r\tPROCEDURE (hook: Hook) "
+                    attr: 0
+                  - text: TrackToResize
+                    attr: 3
+                  - text: "* (host: Views.Frame; view: Views.View;\r\t\t\t\t\t\t\t\t\t\tminW, maxW, minH, maxH: INTEGER;\r\t\t\t\t\t\t\t\t\t\tVAR l, t, r, b: INTEGER; VAR op: INTEGER;\r\t\t\t\t\t\t\t\t\t\tVAR x, y: INTEGER; VAR buttons: SET), NEW, ABSTRACT;\r\tPROCEDURE (hook: Hook) "
+                    attr: 0
+                  - text: TrackToDrop
+                    attr: 3
+                  - text: "* (source: Views.Frame; view: Views.View;\r\t\t\t\t\t\t\t\t\t\tisSingle: BOOLEAN; w, h, rx, ry: INTEGER;\r\t\t\t\t\t\t\t\t\t\tVAR dest: Views.Frame; VAR destX, destY: INTEGER;\r\t\t\t\t\t\t\t\t\t\tVAR op: INTEGER;\r\t\t\t\t\t\t\t\t\t\tVAR x, y: INTEGER; VAR buttons: SET), NEW, ABSTRACT;\r\tPROCEDURE (hook: Hook) "
+                    attr: 0
+                  - text: TrackToPick
+                    attr: 3
+                  - text: "* (source: Views.Frame;\r\t\t\t\t\t\t\t\t\t\tVAR dest: Views.Frame; VAR destX, destY: INTEGER;\r\t\t\t\t\t\t\t\t\t\tVAR op: INTEGER;\r\t\t\t\t\t\t\t\t\t\tVAR x, y: INTEGER; VAR buttons: SET), NEW, ABSTRACT;\r\r\tPROCEDURE (hook: Hook) "
+                    attr: 0
+                  - text: PopUpAndSelect
+                    attr: 3
+                  - text: "* (f: Views.Frame;\r\t\t\t\t\t\t\t\t\t\tn, this: INTEGER;\r\t\t\t\t\t\t\t\t\t\ts: ARRAY OF ARRAY OF CHAR;\r\t\t\t\t\t\t\t\t\t\tenabled, checked: ARRAY OF BOOLEAN;\r\t\t\t\t\t\t\t\t\t\tVAR i: INTEGER;\r\t\t\t\t\t\t\t\t\t\tVAR x, y: INTEGER; VAR buttons: SET), NEW, ABSTRACT;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: MarkFocusBorder
+                    attr: 3
+                  - text: "* (host: Views.Frame;\r\t\t\t\t\t\t\t\t\t\tfocus: Views.View; l, t, r, b: INTEGER;\r\t\t\t\t\t\t\t\t\t\tshow: BOOLEAN);\r\tBEGIN\r\t\thook.MarkFocusBorder(host, focus, l, t, r, b, show)\r\tEND MarkFocusBorder;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: MarkSingletonBorder
+                    attr: 3
+                  - text: "* (host: Views.Frame;\r\t\t\t\t\t\t\t\t\t\tview: Views.View; l, t, r, b: INTEGER;\r\t\t\t\t\t\t\t\t\t\tshow: BOOLEAN);\r\tBEGIN\r\t\thook.MarkSingletonBorder(host, view, l, t, r, b, show)\r\tEND MarkSingletonBorder;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: FocusBorderCursor
+                    attr: 3
+                  - text: "* (host: Views.Frame;\r\t\t\t\t\t\t\t\t\t\tview: Views.View; l, t, r, b: INTEGER;\r\t\t\t\t\t\t\t\t\t\tx, y: INTEGER): INTEGER;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " hook.FocusBorderCursor(host, view, l, t, r, b, x, y)\r\tEND FocusBorderCursor;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SelBorderCursor
+                    attr: 3
+                  - text: "* (host: Views.Frame;\r\t\t\t\t\t\t\t\t\t\tview: Views.View; l, t, r, b: INTEGER;\r\t\t\t\t\t\t\t\t\t\tx, y: INTEGER): INTEGER;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " hook.SelBorderCursor(host, view, l, t, r, b, x, y)\r\tEND SelBorderCursor;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: TrackToResize
+                    attr: 3
+                  - text: "* (host: Views.Frame; view: Views.View;\r\t\t\t\t\t\t\t\t\t\tminW, maxW, minH, maxH: INTEGER;\r\t\t\t\t\t\t\t\t\t\tVAR l, t, r, b: INTEGER; VAR op: INTEGER;\r\t\t\t\t\t\t\t\t\t\tVAR x, y: INTEGER; VAR buttons: SET);\r\tBEGIN\r\t\thook.TrackToResize(host, view, minW, maxW, minH, maxH, l, t, r, b, op, x, y, buttons)\r\tEND TrackToResize;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: TrackToDrop
+                    attr: 3
+                  - text: "* (source: Views.Frame; view: Views.View;\r\t\t\t\t\t\t\t\t\t\tisSingle: BOOLEAN; w, h, rx, ry: INTEGER;\r\t\t\t\t\t\t\t\t\t\tVAR dest: Views.Frame; VAR destX, destY: INTEGER;\r\t\t\t\t\t\t\t\t\t\tVAR op: INTEGER;\r\t\t\t\t\t\t\t\t\t\tVAR x, y: INTEGER; VAR buttons: SET);\r\tBEGIN\r\t\thook.TrackToDrop(source, view, isSingle, w, h, rx, ry, dest, destX, destY, op, x, y, buttons)\r\tEND TrackToDrop;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: TrackToPick
+                    attr: 3
+                  - text: "* (source: Views.Frame;\r\t\t\t\t\t\t\t\t\t\tVAR dest: Views.Frame; VAR destX, destY: INTEGER;\r\t\t\t\t\t\t\t\t\t\tVAR op: INTEGER;\r\t\t\t\t\t\t\t\t\t\tVAR x, y: INTEGER; VAR buttons: SET);\r\tBEGIN\r\t\thook.TrackToPick(source, dest, destX, destY, op, x, y, buttons)\r\tEND TrackToPick;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: PopUpAndSelect
+                    attr: 3
+                  - text: "* (f: Views.Frame;\r\t\t\t\t\t\t\t\t\t\tn, this: INTEGER;\r\t\t\t\t\t\t\t\t\t\ts: ARRAY OF ARRAY OF CHAR;\r\t\t\t\t\t\t\t\t\t\tenabled, checked: ARRAY OF BOOLEAN;\r\t\t\t\t\t\t\t\t\t\tVAR i: INTEGER;\r\t\t\t\t\t\t\t\t\t\tVAR x, y: INTEGER; VAR buttons: SET);\r\tBEGIN\r\t\thook.PopUpAndSelect(f, n, this, s, enabled, checked, i, x, y, buttons)\r\tEND PopUpAndSelect;\r\rEND Mechanisms.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 7351
+          bodyLen: 8

@@ -1,0 +1,431 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Com\\Docu\\Connect.odc"
+  size: 8043
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 7912
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 7726
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 7640
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 114300
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 29
+                bodyPos: 7761
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 7247
+                runListLen: 2248
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [2]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [3]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [4]
+                    font: "*"
+                    size: 104775
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [5]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000002
+                  - # [6]
+                    font: "*"
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                flow:
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 0
+                      w: 360000000
+                      h: 444500
+                  - target:
+                      name: 7.7
+                      body:
+                        - text: ComConnect Example
+                          attr: 1
+                      attr: 1
+                      w: 150300
+                      h: 142875
+                  - text: "\r\r"
+                    attr: 1
+                  - text: "This example shows how connectable objects are implemented using the COM compiler. The example is described in detail in chapter four of the book \"Inside OLE\". Connectable objects offer an interface which allows to install interfaces which can be called back by the connectable object.\r\rA connectable object has to implement the interface "
+                    attr: 2
+                  - text: "IConnectionPointContainer "
+                    attr: 3
+                  - text: "with the two methods "
+                    attr: 2
+                  - text: "FindConnectionPoint "
+                    attr: 3
+                  - text: and
+                    attr: 2
+                  - text: " EnumConnectionPoints. "
+                    attr: 3
+                  - text: "With the first method, the connectable object can be asked for a specific outgoing interface. If the interface is supported, then a pointer to the "
+                    attr: 2
+                  - text: IConnectionPoint
+                    attr: 3
+                  - text: " is returned, the interface through which the callback interface can be installed. With the method "
+                    attr: 2
+                  - text: "EnumConnectionPoints "
+                    attr: 3
+                  - text: "the supported outgoing interfaces can be requested. The list of supported interfaces is returned in the form of an enumeration interface, "
+                    attr: 2
+                  - text: IEnumConnectionPoints
+                    attr: 3
+                  - text: ".\rIn our example, the connectable object keeps a list of the supported interfaces as an instance variable.\r\rThe "
+                    attr: 2
+                  - text: IConnectionPoint
+                    attr: 3
+                  - text: " interface allows to establish a connection between the connectable object and the client through the "
+                    attr: 2
+                  - text: "Advise "
+                    attr: 3
+                  - text: "method. A cookie (key) is returned as result. A connection point can support any number of connections. In our example, the constant "
+                    attr: 2
+                  - text: connMax
+                    attr: 3
+                  - text: " defines the number of connections that can be established. With the "
+                    attr: 2
+                  - text: Unadvise
+                    attr: 3
+                  - text: " method a connection can be terminated. The connection cookie must be passed as argument.\rAs argument of the "
+                    attr: 2
+                  - text: Advise
+                    attr: 3
+                  - text: " method the sink object's "
+                    attr: 2
+                  - text: IUnknown
+                    attr: 3
+                  - text: " interface is passed. From this interface the outgoing interface is requested and stored in the connection (the object implementing "
+                    attr: 2
+                  - text: IConnectionPoint
+                    attr: 3
+                  - text: ").\rBesides these two methods, the "
+                    attr: 2
+                  - text: IConnectionPoint
+                    attr: 3
+                  - text: " interface supports the methods "
+                    attr: 2
+                  - text: EnumConnections
+                    attr: 3
+                  - text: ", "
+                    attr: 2
+                  - text: GetConnectionPointContainer
+                    attr: 3
+                  - text: " and "
+                    attr: 2
+                  - text: GetConnectionInterface
+                    attr: 3
+                  - text: ". The implementation of the latter two functions is straight-forward. The "
+                    attr: 2
+                  - text: EnumConnections
+                    attr: 3
+                  - text: " function returns an enumeration of all the currently installed connections. This enumeration interface is implemented with "
+                    attr: 2
+                  - text: CEnumConnections
+                    attr: 3
+                  - text: ".\rThe implementation of "
+                    attr: 2
+                  - text: "IConnectionPoint "
+                    attr: 3
+                  - text: "has the following instance variables:\r\r"
+                    attr: 2
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      dsc: 25400
+                      grid: 1
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 288000 }
+                        - { stop: 432000 }
+                      attr: 2
+                      w: 360000000
+                      h: 444500
+                  - text: "\t\tCConnectionPoint = POINTER TO RECORD (WinOle.IConnectionPoint)\r\t\t\tobj: CConnObject;\r\t\t\tiid: COM.GUID;\r\t\t\tunk: ARRAY connMax OF COM.IUnknown;\r\t\t\tcookies: ARRAY connMax OF INTEGER;\r\t\t\tconn: INTEGER;\r\t\t\tnext: INTEGER\r\t\tEND;\r"
+                    attr: 2
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 4
+                      w: 360000000
+                      h: 444500
+                  - text: "\r"
+                    attr: 4
+                  - text: "The "
+                    attr: 2
+                  - text: obj
+                    attr: 3
+                  - text: " reference refers to the connectable object, i.e. to the object implementing the"
+                    attr: 2
+                  - text: " IConnection­PointContainer"
+                    attr: 3
+                  - text: " interface. \rThe GUID of the outgoing interface, which is supported by the concrete connection, is stored in the field "
+                    attr: 2
+                  - text: iid
+                    attr: 3
+                  - text: ". In our example this is always COM.GUID(IDuckEvents).\rAll installed connections are stored in the "
+                    attr: 2
+                  - text: unk
+                    attr: 3
+                  - text: " array. If an event is distributed through all conected interfaces, then the necessary interface is requested though the "
+                    attr: 2
+                  - text: IUnknown
+                    attr: 3
+                  - text: " interfaces installed in the "
+                    attr: 2
+                  - text: unk
+                    attr: 3
+                  - text: " array.\rThe cookies corresponding to the connections are stored in the "
+                    attr: 2
+                  - text: cookies
+                    attr: 3
+                  - text: " array. They are necessary to search a connection when "
+                    attr: 2
+                  - text: Unadvise
+                    attr: 3
+                  - text: " is called.\rThe "
+                    attr: 2
+                  - text: conn
+                    attr: 3
+                  - text: " field counts the number of installed connections, and the "
+                    attr: 2
+                  - text: next
+                    attr: 3
+                  - text: " field finally contains the last distributed "
+                    attr: 2
+                  - text: cookie
+                    attr: 3
+                  - text: ".\r\r"
+                    attr: 2
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x0000000b
+                      attr: 2
+                      w: 360000000
+                      h: 444500
+                  - text: "The "
+                    attr: 2
+                  - text: IDuckEvents
+                    attr: 3
+                  - text: " interface is used in this example as the outgoing interface. This interface supports the following three functions:\r\r"
+                    attr: 2
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      dsc: 25400
+                      grid: 1
+                      opts: 0x00000003
+                      attr: 2
+                      w: 360000000
+                      h: 444500
+                  - text: "\t\tIDuckEvents = POINTER TO ABSTRACT RECORD\r\t\t\t\t[\"{00021145-0000-0000-C000-000000000046}\"] (COM.IUnknown)\r\t\t\t(this: IDuckEvents) Quack (): COM.RESULT, NEW, ABSTRACT;\r\t\t\t(this: IDuckEvents) Flap (): COM.RESULT, NEW, ABSTRACT;\r\t\t\t(this: IDuckEvents) Paddle (): COM.RESULT, NEW, ABSTRACT;\r\t\tEND;\r"
+                    attr: 2
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 2
+                      w: 360000000
+                      h: 444500
+                  - text: "\rIn its instance variable, the concrete implementation of this interface keeps an identifier and the cookie which is obtained when the interface is installed in the connectable object. The implementation of the methods write a text to the log indicating that they have been called. They also write their identifier into the log.\r\rIn our example, the connectable object "
+                    attr: 2
+                  - text: CConnObject
+                    attr: 3
+                  - text: " offers the additional method "
+                    attr: 2
+                  - text: "TriggerEvent. "
+                    attr: 3
+                  - text: "With this method, an event can be sent through all registered "
+                    attr: 2
+                  - text: IDuckEvents
+                    attr: 3
+                  - text: " interfaces.\r\r\rThe module "
+                    attr: 2
+                  - text: ComConnect
+                    attr: 3
+                  - text: " offers the following commands\r"
+                    attr: 2
+                  - ruler:
+                      first: 144000
+                      left: 144000
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 2088000 }
+                      attr: 2
+                      w: 360000000
+                      h: 444500
+                  - text: "Init\tcreates two objects which implement the "
+                    attr: 2
+                  - text: IDuckEvents
+                    attr: 3
+                  - text: " interface\rRelease\tdisconnects all connections and frees the connectable object \r\t\tand the sink objects\rObjectCreate\tcreates the connectable object\rObjectRelease\treleases the connectable object\rSinkXConnect\tconnects a sink object to the connectable object\rSinkXDisconnect\tdisconnects a sink object from the connectable object\rTriggerQuack\tcalls the "
+                    attr: 2
+                  - text: Quack
+                    attr: 3
+                  - text: " method of all connected "
+                    attr: 2
+                  - text: IDuckEvents
+                    attr: 3
+                  - text: " interfaces\rTriggerFlap\tcalls the "
+                    attr: 2
+                  - text: Flap
+                    attr: 3
+                  - text: " method of all connected "
+                    attr: 2
+                  - text: IDuckEvents
+                    attr: 3
+                  - text: " interfaces\rTriggerPaddle\tcalls the "
+                    attr: 2
+                  - text: Paddle
+                    attr: 3
+                  - text: " method of all connected "
+                    attr: 2
+                  - text: IDuckEvents
+                    attr: 3
+                  - text: " interfaces\r\r\r"
+                    attr: 2
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 2088000 }
+                      attr: 2
+                      w: 360000000
+                      h: 444500
+                  - text: "This example is coded rather in a general way. It would be easy to extend the implementation to support more connections or more outgoing interfaces. If only one outgoing interface were supported, the code could be simplified at several places.\r\r\r"
+                    attr: 2
+                  - link:
+                      target: "StdCmds.OpenDoc('Com/Mod/Connect')"
+                      body:
+                        - text: ComConnect  sources
+                          attr: 6
+                      attr: 5
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 5
+                  - text: "\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 33
+          bodyPos: 8008
+          bodyLen: 8

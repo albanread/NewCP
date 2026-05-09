@@ -1,0 +1,288 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Mod\\Links.odc"
+  size: 6260
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 6129
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 5943
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 5857
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 114300
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Helvetica
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 5974
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 5460
+                runListLen: 1843
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE ObxLinks;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT\r\t\tFiles, Stores, Converters, Fonts, Ports, Views,\r\t\tTextModels, TextMappers, TextViews, StdLinks;\r\r\tPROCEDURE PathToLoc (IN path: ARRAY OF CHAR; OUT loc: Files.Locator);\r\t\tVAR i, j: INTEGER; ch: CHAR; name: ARRAY 256 OF CHAR;\r\tBEGIN\r\t\tloc := Files.dir.This(\"\");\r\t\tIF path # \"\" THEN\r\t\t\ti := 0; j := 0;\r\t\t\tREPEAT\r\t\t\t\tch := path[i]; INC(i);\r\t\t\t\tIF (ch = \"/\") OR (ch = 0X) THEN name[j] := 0X; j := 0; loc := loc.This(name)\r\t\t\t\tELSE name[j] := ch; INC(j)\r\t\t\t\tEND\r\t\t\tUNTIL (ch = 0X) OR (loc.res # 0)\r\t\tEND\r\tEND PathToLoc;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Directory
+                    attr: 3
+                  - text: "* (path: ARRAY OF CHAR);\r\t\tVAR t: TextModels.Model; f: TextMappers.Formatter; v: Views.View; tv: TextViews.View;\r\t\t\told, new: TextModels.Attributes; conv: Converters.Converter;\r\t\t\tloc: Files.Locator; li: Files.LocInfo; fi: Files.FileInfo; str: ARRAY 256 OF CHAR; title: Views.Title;\r\tBEGIN\r\t\tt := TextModels.dir.New();\r\t\tf.ConnectTo(t);\r\t\tf.WriteString(\"Directories\"); f.WriteLn;\r\t\told := f.rider.attr;\t"
+                    attr: 0
+                  - text: "(* save old text attributes for later use *)"
+                    attr: 1
+                  - text: "\r\t\tnew := TextModels.NewStyle(old, old.font.style + {Fonts.underline});\t"
+                    attr: 0
+                  - text: "(* use underline style *)"
+                    attr: 1
+                  - text: "\r\t\tnew := TextModels.NewColor(new, Ports.blue);\t"
+                    attr: 0
+                  - text: "(* use blue color *)"
+                    attr: 1
+                  - text: "\r\t\tf.rider.SetAttr(new);\t"
+                    attr: 0
+                  - text: "(* change current attributes of formatter *)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: "(* generate list of all locations *)"
+                    attr: 1
+                  - text: "\r\t\tPathToLoc(path, loc);\r\t\tli := Files.dir.LocList(loc);\r\t\tWHILE li # NIL DO\t"
+                    attr: 0
+                  - text: "(* no particular sorting order is guaranteed *)"
+                    attr: 1
+                  - text: "\r\t\t\tstr := \"ObxLinks.Directory('\";\r\t\t\tIF path # \"\" THEN str := str + path + \"/\" END;\r\t\t\tstr := str + li.name + \"')\";\r\t\t\tv := StdLinks.dir.NewLink(str);\r\t\t\tf.WriteView(v);\t"
+                    attr: 0
+                  - text: "(* insert left link view in text *)"
+                    attr: 1
+                  - text: "\r\t\t\tf.WriteString(li.name);\r\t\t\tv := StdLinks.dir.NewLink(\"\");\r\t\t\tf.WriteView(v);\t"
+                    attr: 0
+                  - text: "(* insert right link view in text *)"
+                    attr: 1
+                  - text: "\r\t\t\tf.WriteLn;\r\t\t\tli := li.next\r\t\tEND;\r\t\tf.rider.SetAttr(old);\t"
+                    attr: 0
+                  - text: "(* reset current attributes of formatter *)"
+                    attr: 1
+                  - text: "\r\t\tf.WriteLn;\r\t\tf.WriteString(\"Files\"); f.WriteLn;\r\t\tf.rider.SetAttr(new);\t"
+                    attr: 0
+                  - text: "(* change current attributes of formatter *)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: "(* generate a list of all files *)"
+                    attr: 1
+                  - text: "\r\t\tfi := Files.dir.FileList(loc);\r\t\tWHILE fi # NIL DO\t"
+                    attr: 0
+                  - text: "(* no particular sorting order is guaranteed *)"
+                    attr: 1
+                  - text: "\r\t\t\tconv := Converters.list; WHILE (conv # NIL) & (conv.fileType # fi.type) DO conv := conv.next END;\r\t\t\tIF conv # NIL THEN\t"
+                    attr: 0
+                  - text: "(* there is a converter for this file type *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tstr := \"ObxLinks.Open('\"; str := str + path + \"', '\";\r\t\t\t\tstr := str + fi.name + \"')\";\r\t\t\t\tv := StdLinks.dir.NewLink(str);\r\t\t\t\tf.WriteView(v);\t"
+                    attr: 0
+                  - text: "(* insert left link view in text *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tf.WriteString(fi.name);\r\t\t\t\tv := StdLinks.dir.NewLink(\"\");\r\t\t\t\tf.WriteView(v);\t"
+                    attr: 0
+                  - text: "(* insert right link view in text *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tf.WriteLn\r\t\t\tEND;\r\t\t\tfi := fi.next\r\t\tEND;\r\t\ttv := TextViews.dir.New(t);\r\t\t"
+                    attr: 0
+                  - text: "(* set Browser mode: *)"
+                    attr: 1
+                  - text: "\r\t\ttitle := \"Directory of \" + path;\r\t\tViews.OpenAux(tv, title)\r\tEND Directory;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Open
+                    attr: 3
+                  - text: "* (path, name: ARRAY OF CHAR);\r\t\tVAR loc: Files.Locator; f: Files.File; c: Converters.Converter; n: Files.Name; s: Stores.Store;\r\tBEGIN\r\t\tPathToLoc(path, loc); n := name$;\r\t\tIF loc # NIL THEN\r\t\t\tf := Files.dir.Old(loc, n, Files.shared);\r\t\t\tIF f # NIL THEN\r\t\t\t\t"
+                    attr: 0
+                  - text: "(* search in converter list for a converter that can import a file of this type *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tc := Converters.list; WHILE (c # NIL) & (c.fileType # f.type) DO c := c.next END;\r\t\t\t\tIF c # NIL THEN\r\t\t\t\t\tConverters.Import(loc, n, c, s);\r\t\t\t\t\tWITH s: Views.View DO\r\t\t\t\t\t\tViews.Open(s, loc, n, c)\r\t\t\t\t\tELSE\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND Open;\r\rEND ObxLinks.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 6225
+          bodyLen: 8

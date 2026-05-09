@@ -1,0 +1,257 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Com\\Docu\\Tools.odc"
+  size: 4674
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 4543
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 4357
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 4271
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 13
+                bodyPos: 4392
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 3878
+                runListLen: 1051
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000002
+                  - # [4]
+                    font: "*"
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                flow:
+                  - target:
+                      name: 7.10
+                      body:
+                        - text: ComTools
+                          attr: 0
+                      attr: 0
+                      w: 150300
+                      h: 142875
+                  - text: "\r\r"
+                    attr: 0
+                  - text: "ComTools is a library containing routines for the handling of often used and partially unsafe data structures. These data structures are unsafe because they contain C unions or C pointers (not interface pointers) or both.\r\rComTools can be imported as a tool package or its source can be used as starting point for customized implementations.\r\r\r"
+                    attr: 1
+                  - text: String handling
+                    attr: 2
+                  - text: "\r\rStrings are pointers to arrays of unspecified length. They must be allocated and deallocated manually.\r\r\tPROCEDURE "
+                    attr: 1
+                  - text: NewString
+                    attr: 0
+                  - text: " (IN str: ARRAY [untagged] OF CHAR): WinApi.PtrWSTR;\r\tPROCEDURE "
+                    attr: 1
+                  - text: NewEmptyString
+                    attr: 0
+                  - text: " (length: INTEGER): WinApi.PtrWSTR;\r\tPROCEDURE "
+                    attr: 1
+                  - text: FreeString
+                    attr: 0
+                  - text: " (VAR p: WinApi.PtrWSTR);\r\tPROCEDURE "
+                    attr: 1
+                  - text: NewSString
+                    attr: 0
+                  - text: " (IN str: ARRAY [untagged] OF SHORTCHAR): WinApi.PtrSTR;\r\tPROCEDURE "
+                    attr: 1
+                  - text: NewEmptySString
+                    attr: 0
+                  - text: " (length: INTEGER): WinApi.PtrSTR;\r\tPROCEDURE "
+                    attr: 1
+                  - text: FreeSString
+                    attr: 0
+                  - text: " (VAR p: WinApi.PtrSTR);\r\r\r"
+                    attr: 1
+                  - text: STGMEDIUM
+                    attr: 2
+                  - text: "\r\rThe STGMEDIUM structure contains a C union and various pointers. The following procedures can be used to properly initialize one of the seven possible STGMEDIUM variants:\r\r\tPROCEDURE "
+                    attr: 1
+                  - text: GenBitmapMedium
+                    attr: 0
+                  - text: " (bitmap: WinApi.HBITMAP; unk: COM.IUnknown;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR sm: WinOle.STGMEDIUM);\r\tPROCEDURE "
+                    attr: 1
+                  - text: GenEMetafileMedium
+                    attr: 0
+                  - text: " (emf: WinApi.HENHMETAFILE; unk: COM.IUnknown;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR sm: WinOle.STGMEDIUM);\r\tPROCEDURE "
+                    attr: 1
+                  - text: GenFileMedium
+                    attr: 0
+                  - text: " (name: ARRAY OF CHAR; unk: COM.IUnknown;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR sm: WinOle.STGMEDIUM);\r\tPROCEDURE "
+                    attr: 1
+                  - text: GenGlobalMedium
+                    attr: 0
+                  - text: " (hg: WinApi.HGLOBAL; unk: COM.IUnknown;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR sm: WinOle.STGMEDIUM);\r\tPROCEDURE "
+                    attr: 1
+                  - text: GenMetafileMedium
+                    attr: 0
+                  - text: " (mf: WinApi.HMETAFILEPICT; unk: COM.IUnknown;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR sm: WinOle.STGMEDIUM);\r\tPROCEDURE "
+                    attr: 1
+                  - text: GenStorageMedium
+                    attr: 0
+                  - text: " (stg: WinOle.IStorage; unk: COM.IUnknown;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR sm: WinOle.STGMEDIUM);\r\tPROCEDURE "
+                    attr: 1
+                  - text: GenStreamMedium
+                    attr: 0
+                  - text: " (stm: WinOle.IStream; unk: COM.IUnknown;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR sm: WinOle.STGMEDIUM);\r\rSafe access to the variable part of the structure should be done by one of these functions:\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\r\tPROCEDURE "
+                    attr: 1
+                  - text: MediumBitmap
+                    attr: 0
+                  - text: " (IN sm: WinOle.STGMEDIUM): WinApi.HBITMAP;\r\tPROCEDURE "
+                    attr: 1
+                  - text: MediumEnhMetafile
+                    attr: 0
+                  - text: " (IN sm: WinOle.STGMEDIUM): WinApi.HENHMETAFILE;\r\tPROCEDURE "
+                    attr: 1
+                  - text: MediumFile
+                    attr: 0
+                  - text: " (IN sm: WinOle.STGMEDIUM): WinApi.PtrWSTR;\r\tPROCEDURE "
+                    attr: 1
+                  - text: MediumGlobal
+                    attr: 0
+                  - text: " (IN sm: WinOle.STGMEDIUM): WinApi.HGLOBAL;\r\tPROCEDURE "
+                    attr: 1
+                  - text: MediumMetafile
+                    attr: 0
+                  - text: " (IN sm: WinOle.STGMEDIUM): WinApi.HMETAFILEPICT;\r\tPROCEDURE "
+                    attr: 1
+                  - text: MediumStorage
+                    attr: 0
+                  - text: " (IN sm: WinOle.STGMEDIUM): WinOle.IStorage;\r\tPROCEDURE "
+                    attr: 1
+                  - text: MediumStream
+                    attr: 0
+                  - text: " (IN sm: WinOle.STGMEDIUM): WinOle.IStream;\r\t\rSTGMEDIUM structures must be released manually. Use the OLE library procedure WinOle.ReleaseStgMedium for that purpose:\r\r\tPROCEDURE "
+                    attr: 1
+                  - text: ReleaseStgMedium
+                    attr: 0
+                  - text: " (VAR [nil] sm: WinOle.STGMEDIUM);\r\r\r"
+                    attr: 1
+                  - text: FORMATETC generation
+                    attr: 2
+                  - text: "\r\t\rThis procedure can be used to quickly initialize a FORMATETC structure.\r\r\tPROCEDURE "
+                    attr: 1
+                  - text: GenFormatEtc
+                    attr: 0
+                  - text: " (format: SHORTINT; aspect, tymed: SET; OUT f: WinOle.FORMATETC);\r\t\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 2160000
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 2160000 }
+                        - { stop: 2196000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: 
+                    attr: 3
+                  - link:
+                      target: "StdCmds.OpenDoc('Com/Mod/Tools')"
+                      body:
+                        - text: ComTools  sources
+                          attr: 4
+                      attr: 4
+                      w: 131250
+                      h: 142875
+                  - text: "\r\t"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 17
+          bodyPos: 4639
+          bodyLen: 8

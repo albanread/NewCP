@@ -1,0 +1,462 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Ctl\\Docu\\Dev-Man.odc"
+  size: 10878
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 10747
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 10561
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 10475
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                asc: 152400
+                dsc: 25400
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: "*"
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 29
+                bodyPos: 10600
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 10086
+                runListLen: 2326
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 304800
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [2]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [3]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [4]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [5]
+                    font: "*"
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                  - # [6]
+                    font: "*"
+                    size: 101600
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [7]
+                    font: Courier
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                flow:
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000002
+                      attr: 0
+                      w: 360000000
+                      h: 444500
+                  - view:
+                      kind: StdLogos.View
+                      storeKind: store
+                      typeChain:
+                        - StdLogos.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 5
+                      bodyPos: 760
+                      bodyLen: 7
+                    attr: 0
+                    w: 1219196
+                    h: 304799
+                  - text: " BlackBox\r"
+                    attr: 0
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      attr: 0
+                      w: 360000000
+                      h: 444500
+                  - text: "Developer Manual\rCtl Subsystem"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - text: "\r\rIntroduction"
+                    attr: 3
+                  - text: "\r\rThe Ctl subsystem contains tools for writing OLE automation controllers in BlackBox. OLE Automation is a standard for controlling objects implemented in one application (server) from within another application (controller). The interface of a server application is described in a type library. A type library specifies the objects provided by the application and the operations on these objects.\rTo write a controller in BlackBox, an interface module is used which contains a Component Pascal object for each object in the type library. These objects can be used like other Component Pascal objects in a convenient and typesafe way and hide the details of the automation standard used to communicate with the server application.\r\r"
+                    attr: 2
+                  - text: "Elements of an interface module\r\r"
+                    attr: 3
+                  - text: "An automation interface module declares the following elements:\r"
+                    attr: 2
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " Constants\rConstant declarations correspond to constant declarations in the type library. They are usually used as values for integer parameters of methods.\r"
+                    attr: 2
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " Alias Types\rAlias Types can be declared for all legal automation types (see below).\r"
+                    attr: 2
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " Object Types\rObject types are the main elements of an automation interface module. In general, automation objects can have methods and properties (fields). In BlackBox both methods and properties are implemented as methods.\rFor a property with name "
+                    attr: 2
+                  - text: Prop
+                    attr: 4
+                  - text: " and type "
+                    attr: 2
+                  - text: Type
+                    attr: 4
+                  - text: " two methods are declared:\rPROCEDURE (this: Object) Prop (): Type;\rPROCEDURE (this: Object) PUTProp (val: Type);\rThe latter is omitted if the property is read-only. The type of a property or method parameter can be any legal automation type (see below).\r"
+                    attr: 2
+                  - text: ꀢ
+                    attr: 2
+                    wide: true
+                  - text: " Procedures\rFor an object type with name "
+                    attr: 2
+                  - text: Object
+                    attr: 4
+                  - text: ", the following procedures are declared:\rPROCEDURE IsObject (v: CtlT.Any): BOOLEAN;\rPROCEDURE ThisObject (v: CtlT.Any): Object;\rThe two serve as type-test and type-guard for automation objects. These procedures can be used in places where otherwise one would call QueryInterface to retrieve the IDispatch interface of an object.\rFor objects marked as "
+                    attr: 2
+                  - text: creatable
+                    attr: 4
+                  - text: " in the type library an additional procedure is used for the allocation of a new object of that type:\rPROCEDURE NewObject (): Object;\r\r"
+                    attr: 2
+                  - text: "Legal data types\r"
+                    attr: 3
+                  - text: "\rBecause OLE Automation is a standard used to communicate between applications potentially written in different languages, a restricted set of legal data types must be used.\r\r"
+                    attr: 2
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 1332000 }
+                        - { stop: 2412000 }
+                      attr: 2
+                      w: 360000000
+                      h: 444500
+                  - text: "Basic Types:\rBOOLEAN\t\tFALSE or TRUE\rBYTE\t\t1 byte\rSHORTINT\t\t2 bytes\rINTEGER\t\t4 bytes\rSHORTREAL\t\t4 bytes\rREAL\t\t8 bytes\rCtlT.OleCy\t(=LONGINT)\t8 bytes, scaled by 10000\rCtlT.Date\t(=REAL)\tdate & time as a real value, see "
+                    attr: 2
+                  - link:
+                      target: "StdCmds.OpenBrowser('Ctl/Docu/T', 'CtlT')"
+                      body:
+                        - text: CtlT
+                          attr: 5
+                      attr: 2
+                      w: 131250
+                      h: 142875
+                  - text: " for conversion\rARRAY OF CHAR\t\tUnicode strings\rCtlT.RESULT\t(=INTEGER)\tOLE result values (4 bytes)\rCtlT.IUnknown\t\tOLE Interfaces (usually not used)\r\rObject Types:\rObject types are declared as record extensions of the type "
+                    attr: 2
+                  - text: CtlT.Object
+                    attr: 4
+                  - text: ".\r\rArrays:\rIn Ole Automation, multidimensional arrays of all types above can be used. Only one- and two-dimensional array are supported in BlackBox.\r\rUnspecified Type:\rIn OLE Automation there is a type covering all other legal automation types. It is used when a property or parameter is not statically typed at all. The type used in BlackBox for this purpose is "
+                    attr: 2
+                  - text: CtlT.Any
+                    attr: 4
+                  - text: ". The type "
+                    attr: 2
+                  - text: CtlT.Object
+                    attr: 4
+                  - text: " is an extension of "
+                    attr: 2
+                  - text: CtlT.Any
+                    attr: 4
+                  - text: ". Because basic types cannot be extensions of such a type in Component Pascal, a record type which is an extension of "
+                    attr: 2
+                  - text: CtlT.Any
+                    attr: 4
+                  - text: " is provided for each basic and array type. See "
+                    attr: 2
+                  - link:
+                      target: "StdCmds.OpenBrowser('Ctl/Docu/T', 'CtlT')"
+                      body:
+                        - text: CtlT
+                          attr: 5
+                      attr: 2
+                      w: 131250
+                      h: 142875
+                  - text: " for details.\r\r"
+                    attr: 2
+                  - text: Example
+                    attr: 3
+                  - text: "\r\rThe following is a short example relating plain OLE programming to the BlackBox approach.\r\rTo open a document in word, one has first to create an object for the application. Second, from this object a list of documents can be retrieved. Third, to this list a new document can be added. Below are the first two steps formulated each in C++ and in Component Pascal using the "
+                    attr: 2
+                  - link:
+                      target: "StdCmds.OpenBrowser('Ctl/Docu/Word9', 'Word9')"
+                      body:
+                        - text: Word9
+                          attr: 5
+                      attr: 2
+                      w: 131250
+                      h: 142875
+                  - text: " interface module.\r"
+                    attr: 2
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 2
+                      w: 360000000
+                      h: 444500
+                  - text: "\rCreating a new application, C++ version:\r\r"
+                    attr: 2
+                  - text: "\t\t"
+                    attr: 6
+                  - text: "::CoInitialize(NULL);\r"
+                    attr: 7
+                  - text: "\t\t"
+                    attr: 6
+                  - text: "CLSID clsid;\r"
+                    attr: 7
+                  - text: "\t\t"
+                    attr: 6
+                  - text: "CLSIDFromProgID(L\"Word.Application\", &clsid);  \r"
+                    attr: 7
+                  - text: "\t\t"
+                    attr: 6
+                  - text: "IUnknown* pUnk;\r"
+                    attr: 7
+                  - text: "\t\t"
+                    attr: 6
+                  - text: "HRESULT hr = ::CoCreateInstance(clsid, NULL, CLSCTX_SERVER,\r\t\t                                IID_IUnknown, (void**) &pUnk);\r"
+                    attr: 7
+                  - text: "\t\t"
+                    attr: 6
+                  - text: "IDispatch* pDispApp;\r"
+                    attr: 7
+                  - text: "\t\t"
+                    attr: 6
+                  - text: "hr = pUnk->QueryInterface(IID_IDispatch, (void**)&pDispApp);\r\r"
+                    attr: 7
+                  - text: "\rCreating a new application, BlackBox version:\r\r\t\t\tVAR app: CtlWord9._Application;\r\t\t...\r\t\t\tapp := CtlWord9.NewApplication()\r\r\rRetrieving the list of documents, C++ version:\r\r"
+                    attr: 2
+                  - text: "\t\t"
+                    attr: 6
+                  - text: "DISPPARAMS dpNoArgs = {NULL, NULL, 0, 0};\r"
+                    attr: 7
+                  - text: "\t\t"
+                    attr: 6
+                  - text: "VARIANT vResult;\r"
+                    attr: 7
+                  - text: "\t\t"
+                    attr: 6
+                  - text: "OLECHAR FAR* szFunction;\r"
+                    attr: 7
+                  - text: "\t\t"
+                    attr: 6
+                  - text: "IDispatch* pDispDocs;\r"
+                    attr: 7
+                  - text: "\t\t"
+                    attr: 6
+                  - text: "DISPID dispid_Docs;    \r\r"
+                    attr: 7
+                  - text: "\t\t"
+                    attr: 6
+                  - text: "szFunction = OLESTR(\"Documents\");\r"
+                    attr: 7
+                  - text: "\t\t"
+                    attr: 6
+                  - text: "hr = pDispApp->GetIDsOfNames (IID_NULL, &szFunction, 1, \r"
+                    attr: 7
+                  - text: "\t\t "
+                    attr: 6
+                  - text: "                              LOCALE_USER_DEFAULT, &dispid_Docs);\r"
+                    attr: 7
+                  - text: "\t\t"
+                    attr: 6
+                  - text: "hr = pDispApp->Invoke (dispid_Docs, IID_NULL, \r\t\t                       LOCALE_USER_DEFAULT, DISPATCH_PROPERTYGET, \r\t\t                       &dpNoArgs, &vResult, NULL, NULL);\r"
+                    attr: 7
+                  - text: "\t\t"
+                    attr: 6
+                  - text: "pDispDocs = vResult.pdispVal;\r"
+                    attr: 7
+                  - text: "\r\rRetrieving the list of documents, BlackBox version:\r\r"
+                    attr: 2
+                  - text: "\t\t\t"
+                    attr: 6
+                  - text: "VAR docs: CtlWord9.Documents;\r"
+                    attr: 2
+                  - text: "\t\t"
+                    attr: 6
+                  - text: "...\r"
+                    attr: 2
+                  - text: "\t\t\t"
+                    attr: 6
+                  - text: "docs := app.Documents()\r\r"
+                    attr: 2
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 1332000 }
+                        - { stop: 2412000 }
+                      attr: 2
+                      w: 360000000
+                      h: 444500
+                  - text: "\r"
+                    attr: 2
+                  - text: Callback interfaces
+                    attr: 3
+                  - text: "\r\rIn contrast to normal interfaces, a callback interface is implemented by the controller application and called by the server. In an automation interface, module callback interfaces are declared as abstract objects which are extensions of "
+                    attr: 2
+                  - text: CtlT.OutObject
+                    attr: 4
+                  - text: ". Such objects must be implemented in the controlling program and connected to the corresponding server object. Connection is done using "
+                    attr: 2
+                  - text: CtlT.Connect
+                    attr: 4
+                  - text: " for normal automation objects or "
+                    attr: 2
+                  - text: OleViews.Connect
+                    attr: 4
+                  - text: " for a server object contained in a BlackBox View.\r\r"
+                    attr: 2
+                  - text: Error Handling
+                    attr: 3
+                  - text: "\r\rThere are two general error sources: An automation method call can fail because of an exception in the server application, or because of an out-of-memory situation. An exception in the server raises a trap 10 in the automation interface module. Two string variables visible in the trap window, namely "
+                    attr: 2
+                  - text: source
+                    attr: 4
+                  - text: " and "
+                    attr: 2
+                  - text: description
+                    attr: 4
+                  - text: ","
+                    attr: 2
+                  - text: " "
+                    attr: 4
+                  - text: "show the available information about where and why the exception occurred. A third variable "
+                    attr: 2
+                  - text: param
+                    attr: 4
+                  - text: " holds the number of the parameter if the error belongs to a parameter value. An out-of-memory condition leads to a trap 11.\r\r"
+                    attr: 2
+                  - text: Available Automation interfaces
+                    attr: 3
+                  - text: "\r\rThe following table contains all automation interfaces currently available in BlackBox. The modules were generated automatically from the corresponding type libraries. The semantics of the objects contained in these modules are explained in the corresponding help files which are all contained on the MS Office CD but are not installed by default.\r\r"
+                    attr: 2
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 1620000 }
+                        - { stop: 3600000 }
+                      attr: 2
+                      w: 360000000
+                      h: 444500
+                  - text: "Module Name\tControlled Application\tHelp File"
+                    attr: 4
+                  - text: "\r\rCtlExcel5\tMS Excel 5.0\tVBA_XL.HLP\rCtlExcel8*\tMS Excel 8.0\tVBAXL8.HLP\rCtlExcel9\tMS Excel 9.0\tVBAXL9.CHM\rCtlWord8*\tMS Word 8.0\tVBAWRD8.HLP\rCtlWord9\tMS Word 9.0\tVBAWRD9.CHM\rCtlOutlook8*\tMS Outlook 8.0\tVBAOUTL.HLP\rCtlOutlook9\tMS Outlook 9.0\tVBAOUTL9.CHM\rCtlPowerPoint8*\tMS PowerPoint 8.0\tVBAPPT8.HLP\rCtlPowerPoint9\tMS PowerPoint 9.0\tVBAPPT9.CHM\rCtlAccess8*\tMS Access 8.0\tACVBA80.HLP\rCtlAccess9\tMS Access 9.0\tACMAIN9.CHM\rCtlGraph8*\tMS Graph 8.0\tVBAGRP8.HLP\rCtlGraph9\tMS Graph 9.0\tVBAGRP9.CHM\rCtlOffice\tMS Office 9.0\tVBAOFF9.CHM / VBAOFF8.HLP\rCtlOfficeBinder\tMS Binder 9.0\tVBABDR8.HLP\rCtlMSForms\tMS Forms 2.0\tFM20.HLP\rCtlDAO35*\tMS Data Access Objects 3.5\tDAO35.HLP\rCtlDAO36\tMS Data Access Objects 3.6\tDAO36.HLP\rCtlADODB\tMS ActiveX Data Objects 2.0\t-\rCtlVBIDE\tMS Visual Basic\tVEENOB3.HLP\rCtlStdType\tStandard OLE Types\t-\r\rThe modules marked with * used to be without a number in the previous release of BlackBox. Because Microsoft changed the interfaces of these products for Office 9.0, the names of the modules have been changed accordingly so that users can choose which interface to use.\r\rCtlVBIDE and CtlStdType contain types imported by other modules and are usually not used directly.\r"
+                    attr: 2
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 33
+          bodyPos: 10843
+          bodyLen: 8

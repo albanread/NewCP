@@ -1,0 +1,264 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Dev\\Mod\\ComInterfaceGen.odc"
+  size: 8421
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 8290
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 8104
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 8018
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5943600
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: "*"
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 24
+                bodyPos: 8143
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 7629
+                runListLen: 1852
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE DevComInterfaceGen;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- 20070205, bh, Unicode support\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT COM, WinApi, WinOle, WinOleAut, \r\t\tFiles, HostFiles, Strings, Dialog, StdDialog, Views, TextModels, TextViews, DevTypeLibs; \r\r\tTYPE\r\t\tEntry = POINTER TO RECORD\t"
+                    attr: 0
+                  - text: "(* registry typelib entry *)"
+                    attr: 1
+                  - text: "\r\t\t\tnext: Entry;\r\t\t\tindex: INTEGER;\r\t\t\tguid: COM.GUID;\r\t\t\tmajor, minor: SHORTINT;\r\t\t\tlcid: WinApi.LCID;\r\t\t\ttitle: ARRAY 256 OF CHAR;\r\t\t\tfile: ARRAY 256 OF CHAR\r\t\tEND;\r\r\tVAR\r\t\t"
+                    attr: 0
+                  - text: dialog
+                    attr: 3
+                  - text: "*: RECORD\r\t\t\tlibrary*: Dialog.List;\r\t\t\tfileName*: ARRAY 256 OF CHAR;\r\t\t\tmodName*: ARRAY 64 OF CHAR;\r\t\t\tlist, current: Entry\r\t\tEND;\r\r\tPROCEDURE GetName (tlib: WinOleAut.ITypeLib; VAR name: ARRAY OF CHAR);\r\t\tVAR res: INTEGER; s: WinOle.BSTR;\r\tBEGIN\r\t\tres := tlib.GetDocumentation(-1, s, NIL, NIL, NIL);\r\t\tname := s$;\r\t\tIF (name[0] >= \"a\") & (name[0] <= \"z\") THEN name[0] := CAP(name[0]) END;\r\t\tname := \"Ctl\" + name;\r\t\tWinOleAut.SysFreeString(s)\r\tEND GetName;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: GenAutomationInterface
+                    attr: 3
+                  - text: "*;\r\t\tVAR fn: Files.Name; loc: Files.Locator; t: TextModels.Model;\r\tBEGIN\r\t\tt := DevTypeLibs.AutomationInterface(dialog.fileName$, dialog.modName$);\r\t\tStdDialog.GetSubLoc(dialog.modName, \"Mod\", loc, fn); loc.res := 77;\r\t\tViews.Open(TextViews.dir.New(t), loc, fn, NIL)\t\t\r\tEND GenAutomationInterface;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: GenCustomInterface
+                    attr: 3
+                  - text: "*;\r\t\tVAR fn: Files.Name; loc: Files.Locator; t: TextModels.Model;\r\tBEGIN\r\t\tt := DevTypeLibs.CustomInterface(dialog.fileName$, dialog.modName$);\r\t\tStdDialog.GetSubLoc(dialog.modName, \"Mod\", loc, fn); loc.res := 77;\r\t\tViews.Open(TextViews.dir.New(t), loc, fn, NIL)\t\t\r\tEND GenCustomInterface;\t\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: Browse
+                    attr: 3
+                  - text: "*;\r\t\tVAR loc: Files.Locator; name: Files.Name;\r\t\t\tres: INTEGER; tlib: WinOleAut.ITypeLib; n: ARRAY 256 OF CHAR;\t\r\tBEGIN\r\t\tDialog.GetIntSpec(\"*\", loc, name);\r\t\tIF loc # NIL THEN\r\t\t\tdialog.fileName := loc(HostFiles.Locator).path$ + \"\\\" + name$;\r\t\t\tres := WinOleAut.LoadTypeLib(dialog.fileName, tlib);\r\t\t\tIF res >= 0 THEN\r\t\t\t\tGetName(tlib, n);\r\t\t\t\tdialog.modName := n$\r\t\t\tELSE\r\t\t\t\tdialog.modName := \"\"\r\t\t\tEND;\t\t\t\r\t\t\tdialog.library.index := 0;\r\t\t\tDialog.Update(dialog)\r\t\tEND\t\r\tEND Browse;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: TextFieldNotifier
+                    attr: 3
+                  - text: "* (op, from, to: INTEGER);\r\t\tVAR res: INTEGER; tlib: WinOleAut.ITypeLib; n: ARRAY 256 OF CHAR;\r\tBEGIN\r\t\tres := WinOleAut.LoadTypeLib(dialog.fileName, tlib);\r\t\tIF res >= 0 THEN\r\t\t\tGetName(tlib, n);\r\t\t\tdialog.modName := n$\r\t\tELSE\r\t\t\tdialog.modName := \"\"\r\t\tEND;\r\t\tdialog.library.index := 0;\r\t\tDialog.Update(dialog)\t\t\r\tEND TextFieldNotifier;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ListBoxNotifier
+                    attr: 3
+                  - text: "* (op, from, to: INTEGER);\r\t\tVAR name: ARRAY 260 OF CHAR; res: INTEGER; e: Entry;\r\t\t\ttlib: WinOleAut.ITypeLib; n: ARRAY 256 OF CHAR;\r\tBEGIN\r\t\tIF op = Dialog.changed THEN\r\t\t\tIF dialog.library.index # dialog.current.index THEN\r\t\t\t\te := dialog.list; WHILE e.index # dialog.library.index DO e := e.next END;\r\t\t\t\tdialog.current := e; dialog.fileName := e.file$\r\t\t\tEND;\r\t\t\tres := WinOleAut.LoadTypeLib(dialog.fileName, tlib);\r\t\t\tIF res >= 0 THEN\r\t\t\t\tGetName(tlib, n);\r\t\t\t\tdialog.modName := n$\r\t\t\tELSE\r\t\t\t\tdialog.modName := \"\";\r\t\t\t\tdialog.library.index := 0\t\t\t\t\t\t\t\r\t\t\tEND;\r\t\t\tDialog.Update(dialog)\r\t\tEND\r\tEND ListBoxNotifier;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: InitDialog
+                    attr: 3
+                  - text: "*;\r\t\tVAR tlKey, gKey, vKey, lidKey, fKey: WinApi.HKEY; guid: COM.GUID; e: Entry;\r\t\t\ti, j, k, res, idx, lcid, len: INTEGER; ver: REAL;\r\t\t\twstr: ARRAY 256 OF CHAR; nstr: ARRAY 16 OF CHAR;\r\tBEGIN\r\t\tNEW(dialog.list); dialog.list.next := NIL;\r\t\tdialog.list.index := 0;\r\t\tdialog.list.title := \" \"; dialog.list.file := \"\";\r\t\tdialog.current := dialog.list;\r\t\tres := WinApi.RegOpenKeyW(WinApi.HKEY_CLASSES_ROOT, \"TypeLib\", tlKey);\r\t\tidx := 1;\r\t\ti := 0; res := WinApi.RegEnumKeyW(tlKey, i, wstr, LEN(wstr));\r\t\tWHILE res = 0 DO\r\t\t\tres := WinOle.CLSIDFromString(wstr, guid);\r\t\t\tIF res = 0 THEN\r\t\t\t\tres := WinApi.RegOpenKeyW(tlKey, wstr, gKey);\r\t\t\t\tj := 0; res := WinApi.RegEnumKeyW(gKey, j, wstr, LEN(wstr));\r\t\t\t\tWHILE res = 0 DO\r\t\t\t\t\tStrings.StringToReal(wstr, ver, res);\r\t\t\t\t\tIF res = 0 THEN\r\t\t\t\t\t\tres := WinApi.RegOpenKeyW(gKey, wstr, vKey);\r\t\t\t\t\t\tk := 0; res := WinApi.RegEnumKeyW(vKey, k, wstr, LEN(wstr));\r\t\t\t\t\t\tWHILE res  = 0 DO\r\t\t\t\t\t\t\tStrings.StringToInt(wstr, lcid, res);"
+                    attr: 0
+                  - text: "\r\t\t\t\t\t\t\t"
+                    attr: 3
+                  - text: "IF res = 0 THEN\r\t\t\t\t\t\t\t\tres := WinApi.RegOpenKeyW(vKey, wstr, lidKey);\r\t\t\t\t\t\t\t\tres := WinApi.RegOpenKeyW(lidKey, \"Win32\", fKey);\r\t\t\t\t\t\t\t\tIF res # 0 THEN res := WinApi.RegOpenKeyW(lidKey, \"Win16\", fKey) END;\r\t\t\t\t\t\t\t\tIF res = 0 THEN\r\t\t\t\t\t\t\t\t\tNEW(e); e.next := dialog.list; dialog.list := e;\r\t\t\t\t\t\t\t\t\te.index := idx; INC(idx);\r\t\t\t\t\t\t\t\t\te.guid := guid;\r\t\t\t\t\t\t\t\t\te.major := SHORT(SHORT(ENTIER(ver)));\r\t\t\t\t\t\t\t\t\te.minor := SHORT(SHORT(ENTIER(ver * 100)) MOD 100);\r\t\t\t\t\t\t\t\t\te.lcid := lcid;\r\t\t\t\t\t\t\t\t\tlen := LEN(e.title);\r\t\t\t\t\t\t\t\t\tres := WinApi.RegQueryValueW(vKey, NIL, e.title, len);\r\t\t\t\t\t\t\t\t\tStrings.RealToString(ver, wstr);\r\t\t\t\t\t\t\t\t\tStrings.IntToString(lcid, nstr);\r\t\t\t\t\t\t\t\t\te.title := e.title + \" (\" + wstr + \", \" + nstr + \")\";\r\t\t\t\t\t\t\t\t\tlen := LEN(e.file);\r\t\t\t\t\t\t\t\t\tres := WinApi.RegQueryValueW(fKey, NIL, e.file, len)\r\t\t\t\t\t\t\t\tEND\r\t\t\t\t\t\t\tEND;\r\t\t\t\t\t\t\tINC(k); res := WinApi.RegEnumKeyW(vKey, k, wstr, LEN(wstr))\r\t\t\t\t\t\tEND\r\t\t\t\t\tEND;\r\t\t\t\t\tINC(j); res := WinApi.RegEnumKeyW(gKey, j, wstr, LEN(wstr))\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tINC(i); res := WinApi.RegEnumKeyW(tlKey, i, wstr, LEN(wstr))\r\t\tEND;\r\t\tdialog.library.SetLen(idx); e := dialog.list;\r\t\tWHILE e # NIL DO dialog.library.SetItem(e.index, e.title); e := e.next END;\r\t\tIF dialog.list.next # NIL THEN dialog.library.index := 1 ELSE dialog.library.index := 0 END;\r\t\tListBoxNotifier(Dialog.changed, 0, 0)\r\tEND InitDialog;\r\t\t\rEND DevComInterfaceGen.\r\r\r"
+                    attr: 0
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 23
+                      bodyPos: 2226
+                      bodyLen: 6
+                    attr: 0
+                    w: 168275
+                    h: 142875
+                  - text: "\"DevComInterfaceGen.InitDialog; StdCmds.OpenToolDialog('Dev/Rsrc/ComInterfaceGen', 'Generate Automation Interface')\""
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 28
+          bodyPos: 8386
+          bodyLen: 8

@@ -1,0 +1,148 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Win\\Docu\\Api.odc"
+  size: 2659
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 2528
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 2342
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 2256
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 7
+                bodyPos: 2377
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 1863
+                runListLen: 491
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 139700
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 139700
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [2]
+                    font: "*"
+                    size: 139700
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                flow:
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 149225
+                      dsc: 28575
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 1080000 }
+                      attr: 0
+                      w: 360000000
+                      h: 444500
+                  - text: "Windows Programming Interfaces\r"
+                    attr: 1
+                  - text: "\rThe "
+                    attr: 0
+                  - text: Win
+                    attr: 2
+                  - text: " subsystem contains the interface modules for the various Windows programming interfaces. The following table shows the available modules and a short desription of their contents:\r\r"
+                    attr: 0
+                  - text: module
+                    attr: 2
+                  - text: "\t"
+                    attr: 0
+                  - text: contents
+                    attr: 2
+                  - text: "\r\rWinApi\tbasic data types, error codes, basic Win32 functionality\rWinDlg\tcommon dialog box library\rWinCtl\tcommon controls\rWinOle\tbasic COM and OLE interfaces\rWinOleDlg\tOLE dialogs (OleUI...)\rWinOleAut\tOLE automation interfaces\t\rWinOleCtl\tOLE controls interfaces\rWinRpc\tremote procedure call functions\rWinNet\tnetworking and socket functions\rWinMM\tmultimedia services\rWinCmc\tMessaging Application Programming Interface (MAPI)\rWinSql\tDatabase services (ODBC)\r\r\r"
+                    attr: 0
+                  - text: Naming Conventions
+                    attr: 1
+                  - text: "\r\rNames are generally the same as in the corresponding C header and help files. An exception applies to pointers which are always named after the structure they point to with a \"Ptr\" prefix.\rExample:\r\rRECT = RECORD [untagged] left, top, right, bottom: INTEGER END;\rPtrRECT = POINTER TO RECT;\r\r\r"
+                    attr: 0
+                  - text: Parameters
+                    attr: 1
+                  - text: "\r\rParameters of pointer type are represented as variable parameters (VAR/IN/OUT) whenever possible.\r\r\r"
+                    attr: 0
+                  - text: Pointers to Pointers
+                    attr: 1
+                  - text: "\r\rPointers to pointers or basic types cannot be declared directly in Component Pascal. A type of the form\rp: POINTER TO ARRAY [untagged] OF BaseType;\ris used instead. You can use the form p[0] to dereference such a pointer.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 11
+          bodyPos: 2624
+          bodyLen: 8

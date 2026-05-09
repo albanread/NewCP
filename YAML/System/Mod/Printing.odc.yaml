@@ -1,0 +1,283 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\System\\Mod\\Printing.odc"
+  size: 9886
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 9755
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 9569
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 9483
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Geneva
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 9603
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 9089
+                runListLen: 1833
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE Printing;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT Kernel, Fonts, Ports, Dates, Printers, Views, Dialog, Strings;\r\t\r\tCONST maxNrOfSegments = 16;\r\r\tTYPE\r\t\t"
+                    attr: 0
+                  - text: PageInfo
+                    attr: 3
+                  - text: "* = RECORD\r\t\t\tfirst*, from*, to*: INTEGER; (** current IN **)\r\t\t\t\t(** first, from, to: OUT, preset to (0, 0, 9999) **)\r\t\t\talternate*: BOOLEAN;\r\t\t\ttitle*: Views.Title\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: Banner
+                    attr: 3
+                  - text: "* = RECORD\r\t\t\tfont*: Fonts.Font;\r\t\t\tgap*: INTEGER;\t(** OUT, prest to (0,0) **)\r\t\t\tleft*, right*: ARRAY 128 OF CHAR\t(** OUT, preset to \"\", \"\" **)\r\t\t\t\t"
+                    attr: 0
+                  - text: "(** anywhere in header or footer:"
+                    attr: 1
+                  - text: "\r"
+                    attr: 0
+                  - text: "\t\t\t\t\t&p - replaced by current page number as arabic numeral\r\t\t\t\t\t&r - replaced by current page number as roman numeral\r\t\t\t\t\t&R - replaced by current page number as capital roman numeral\r\t\t\t\t\t&a - replaced by current page number as alphanumeric character\r\t\t\t\t\t&A - replaced by current page number as capital alphanumeric character\r\t\t\t\t\t&d - replaced by printing date \r\t\t\t\t\t&t - replaced by printing time\r\t\t\t\t\t&&- replaced by & character\r\t\t\t\t\t&; - specifies split point\r\t\t\t\t\t&f - filename without path/title\r"
+                    attr: 1
+                  - text: "\t\t\t\t"
+                    attr: 0
+                  - text: "**)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: "Par*"
+                    attr: 3
+                  - text: " = POINTER TO LIMITED RECORD\r\t\t\tpage*: PageInfo;\r\t\t\theader*, footer*: Banner;\r\t\t\tcopies-: INTEGER\r\t\tEND;\r\r\t\tLine = RECORD\r\t\t\tbuf: ARRAY 256 OF CHAR;\r\t\t\tbeg: ARRAY maxNrOfSegments OF BYTE;\r\t\t\tlen: INTEGER\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: Hook
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Kernel.Hook) END;\r\r\tVAR\r\t\t"
+                    attr: 0
+                  - text: par
+                    attr: 3
+                  - text: "*: Par;\r\r\t\tmonth: ARRAY 12 * 3 + 1 OF CHAR;\r\t\tprintingHook: Hook;\r\r\tPROCEDURE (h: Hook) "
+                    attr: 0
+                  - text: Print
+                    attr: 3
+                  - text: "* (v: Views.View; par: Par), NEW, ABSTRACT;\r\tPROCEDURE (h: Hook) "
+                    attr: 0
+                  - text: Current
+                    attr: 3
+                  - text: "* (): INTEGER, NEW, ABSTRACT;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetHook
+                    attr: 3
+                  - text: "* (p: Hook);\r\tBEGIN\r\t\tprintingHook := p\r\tEND SetHook;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: NewPar
+                    attr: 3
+                  - text: "* (IN page: PageInfo; IN header, footer: Banner; copies: INTEGER): Par;\r\t\tVAR par: Par;\r\tBEGIN\r\t\tNEW(par);\r\t\tpar.page := page;\r\t\tpar.header := header;\r\t\tpar.footer := footer;\r\t\tpar.copies := copies;\r\t\tIF par.header.font = NIL THEN par.header.font := Fonts.dir.Default() END;\r\t\tIF par.footer.font = NIL THEN par.footer.font := Fonts.dir.Default() END;\r\t\tRETURN par\r\tEND NewPar;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: NewDefaultPar
+                    attr: 3
+                  - text: "* (title: Views.Title): Par;\r\t\tVAR par: Par;\r\tBEGIN\r\t\tNEW(par);\r\t\tpar.page.first := 1;\r\t\tpar.page.from := 0;\r\t\tpar.page.to := 9999;\r\t\tpar.page.alternate := FALSE;\r\t\tpar.copies := 1;\r\t\tpar.header.gap := 0; par.header.left := \"\"; par.header.right := \"\"; par.header.font := Fonts.dir.Default();\r\t\tpar.footer.gap := 0; par.footer.left := \"\"; par.footer.right := \"\"; par.header.font := Fonts.dir.Default();\r\t\tpar.page.title := title;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " par\r\tEND NewDefaultPar;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: PrintView
+                    attr: 3
+                  - text: "* (view: Views.View; p: Par);\r\tBEGIN\r\t\tASSERT(view # NIL, 20); ASSERT(p # NIL, 21);\r\t\tASSERT(par = NIL, 22); "
+                    attr: 0
+                  - text: "(* no recursive printing *)"
+                    attr: 1
+                  - text: "\r\t\tIF Printers.dir.Available() THEN\r\t\t\tASSERT(p.page.first >= 0, 23);\r\t\t\tASSERT(p.page.from >= 0, 24);\r\t\t\tASSERT(p.page.to >= p.page.from, 25);\r\t\t\tASSERT(printingHook # NIL, 100);\r\t\t\tprintingHook.Print(view, p)\r\t\tELSE Dialog.ShowMsg(\"#System:NoPrinterFound\")\r\t\tEND\r\tEND PrintView;\r\r\tPROCEDURE GetDateAndTime (IN date: Dates.Date; IN time: Dates.Time; \r\t\t\t\t\t\t\t\t\t\tVAR d, t: ARRAY OF CHAR);\r\t\tVAR i, j, k: INTEGER; s: ARRAY 8 OF CHAR;\r\tBEGIN\r\t\tStrings.IntToStringForm (date.day, Strings.decimal, 0, \"0\", FALSE, d);\r\t\t\r\t\tj := date.month * 3; i := j - 3; k := 0;\r\t\tWHILE i < j DO s[k] := month[i]; INC(k); INC(i) END; s[k] := 0X;\r\t\td := d + \"-\" + s;\r\t\t\r\t\tStrings.IntToStringForm (date.year, Strings.decimal, 0, \"0\", FALSE, s);\r\t\td := d + \"-\" + s;\r\t\t\r\t\tStrings.IntToStringForm (time.hour, Strings.decimal, 0, \"0\", FALSE, t);\r\t\tStrings.IntToStringForm (time.minute, Strings.decimal, 2, \"0\", FALSE, s);\r\t\tt := t + \":\" + s;\r\tEND GetDateAndTime;\r\r\tPROCEDURE Expand (s: ARRAY OF CHAR; IN date: Dates.Date; IN time: Dates.Time;\r\t\t\t\t\t\t\t\t\t\tIN title: Views.Title; pno: INTEGER; printing: BOOLEAN; VAR line: Line);\r\t\tVAR i, l: INTEGER; ch: CHAR; j: BYTE;\r\t\t\tp, d, t, r, rl: ARRAY 32 OF CHAR;\r\tBEGIN\r\t\tIF printing THEN \r\t\t\tStrings.IntToStringForm (pno, Strings.decimal, 0, \"0\", FALSE, p);\r\t\t\tIF (0 < pno) & (pno < 4000) THEN \r\t\t\t\tStrings.IntToStringForm(pno, Strings.roman, 0, \" \", FALSE, r)\r\t\t\tELSE\r\t\t\t\tr := p\r\t\t\tEND;\r\t\tELSE p := \"#\"; r := \"#\"\r\t\tEND;\r\t\t\r\t\tGetDateAndTime(date, time, d, t);\r\t\t\r\t\ti := 0; ch := s[i]; line.len := 0; j := 0;\r\t\tWHILE ch # 0X DO\r\t\t\tIF ch = \"&\" THEN\r\t\t\t\tINC(i); ch := s[i];\r\t\t\t\tIF ch = \"p\" THEN\r\t\t\t\t\tl := 0; WHILE p[l] # 0X DO line.buf[j] := p[l]; INC(j); INC(l) END\r\t\t\t\tELSIF ch = \"r\" THEN\r\t\t\t\t\tStrings.ToLower(r, rl);\r\t\t\t\t\tl := 0; WHILE rl[l] # 0X DO line.buf[j] := rl[l]; INC(j); INC(l) END\r\t\t\t\tELSIF ch = \"R\" THEN\r\t\t\t\t\tl := 0; WHILE r[l] # 0X DO line.buf[j] := r[l]; INC(j); INC(l) END\r\t\t\t\tELSIF (ch = \"a\") OR (ch = \"A\") THEN\r\t\t\t\t\tIF printing & (0 < pno) & (pno <= 26) THEN line.buf[j] := CHR(pno + ORD(ch) - 1); INC(j)\r\t\t\t\t\tELSE l := 0; WHILE p[l] # 0X DO line.buf[j] := p[l]; INC(j); INC(l) END\r\t\t\t\t\tEND\r\t\t\t\tELSIF ch = \"d\" THEN\r\t\t\t\t\tl := 0; WHILE d[l] # 0X DO line.buf[j] := d[l]; INC(j); INC(l) END\r\t\t\t\tELSIF ch = \"t\" THEN\r\t\t\t\t\tl := 0; WHILE t[l] # 0X DO line.buf[j] := t[l]; INC(j); INC(l) END\r\t\t\t\tELSIF ch = \"f\" THEN\r\t\t\t\t\tl := 0; WHILE title[l] # 0X DO line.buf[j] := title[l]; INC(j); INC(l) END\r\t\t\t\tELSIF ch = \";\" THEN\r\t\t\t\t\tIF (line.len < maxNrOfSegments-1) THEN line.beg[line.len] := j; INC(line.len) \r\t\t\t\t\tELSE line.buf[j] := \" \"; INC(j)\r\t\t\t\t\tEND\r\t\t\t\tELSIF ch = \"&\" THEN\r\t\t\t\t\tline.buf[j] := \"&\"; INC(j)\r\t\t\t\tEND;\r\t\t\t\tIF ch # 0X THEN INC(i); ch := s[i] END\r\t\t\tELSE line.buf[j] := ch; INC(j); INC(i); ch := s[i]\r\t\t\tEND\r\t\tEND;\r\t\tline.buf[j] := 0X; line.beg[line.len] := j; INC(line.len)\r\tEND Expand;\r\r\tPROCEDURE PrintLine (f: Views.Frame; font: Fonts.Font;\r\t\t\t\t\t\t\t\t\t\t\t\tx0, x1, y: INTEGER; VAR line: Line);\r\t\tVAR sp, dx, x: INTEGER; i, j, k: INTEGER; buf: ARRAY 128 OF CHAR;\r\tBEGIN\r\t\tsp := (x1 - x0 - font.StringWidth(line.buf));\r\t\tIF line.len = 1 THEN (* center *)\r\t\t\tf.DrawString(x0 + sp DIV 2, y, Ports.defaultColor, line.buf, font)\r\t\tELSE\r\t\t\tIF sp > 0 THEN dx := sp DIV (line.len - 1) ELSE dx := 0 END;\r\t\t\tk := 0; j := 0; x := x0;\r\t\t\tWHILE k < line.len DO\r\t\t\t\ti := 0;\r\t\t\t\tWHILE j < line.beg[k] DO\r\t\t\t\t\tbuf[i] := line.buf[j]; INC(i); INC(j)\r\t\t\t\tEND;\r\t\t\t\tbuf[i] := 0X;\r\t\t\t\tf.DrawString(x, y, Ports.defaultColor, buf, font);\r\t\t\t\tx := x + font.StringWidth(buf) + dx;\r\t\t\t\tINC(k)\r\t\t\tEND\r\t\tEND\r\tEND PrintLine;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: PrintBanner
+                    attr: 3
+                  - text: "* (f: Views.Frame; IN p: PageInfo; IN b: Banner; \r\t\t\tIN date: Dates.Date; IN time: Dates.Time; x0, x1, y: INTEGER);\r\t\tVAR line: Line; printing: BOOLEAN;\r\tBEGIN\r\t\tprinting := par # NIL;\r\t\tIF printing THEN\r\t\t\tASSERT(printingHook # NIL, 100);\r\t\t\tIF p.alternate & ~ODD(p.first + printingHook.Current()) THEN\r\t\t\t\tExpand(b.left, date, time, p.title, p.first + printingHook.Current(), printing, line)\r\t\t\tELSE\r\t\t\t\tExpand(b.right, date, time, p.title, p.first + printingHook.Current(), printing, line)\r\t\t\tEND\r\t\tELSE\r\t\t\tExpand(b.right, date, time, p.title, 0, printing, line)\r\t\tEND;\r\t\tPrintLine(f, b.font, x0, x1, y, line)\r\tEND PrintBanner;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Current
+                    attr: 3
+                  - text: "*(): INTEGER;\r\tBEGIN\r\t\tASSERT(par # NIL, 21);\r\t\tASSERT(printingHook # NIL, 100);\r\t\tRETURN printingHook.Current()\r\tEND Current;\r\rBEGIN\r\tmonth := \"JanFebMarAprMayJunJulAugSepOctNovDec\"\rEND Printing.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 9851
+          bodyLen: 8

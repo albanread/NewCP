@@ -1,0 +1,410 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Form\\Docu\\Models.odc"
+  size: 8868
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 8737
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 8551
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 8465
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 6012000
+                asc: 121900
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000003
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 6
+                bodyPos: 8465
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 7951
+                runListLen: 976
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: FormModels
+                    attr: 0
+                  - text: "\r\rDEFINITION FormModels;\r\r\tIMPORT Ports, Models, Views, Containers;\r\r\tCONST minView Size = 4 * Ports.point; maxViewSize = 1000 * Ports.mm;\r\r\tTYPE\r\t\tModel = POINTER TO ABSTRACT RECORD (Containers.Model)\r\t\t\t(m: Model) Insert (v: Views.View; l, t, r, b: INTEGER), NEW, ABSTRACT;\r\t\t\t(m: Model) Delete (v: Views.View), NEW, ABSTRACT;\r\t\t\t(m: Model) Resize (v: Views.View; l, t, r, b: INTEGER), NEW, ABSTRACT;\r\t\t\t(m: Model) PutAbove (v, pos: Views.View), NEW, ABSTRACT;\r\t\t\t(m: Model) Move (v: Views.View; dx, dy: INTEGER), NEW, ABSTRACT;\r\t\t\t(m: Model) Copy (VAR v: Views.View; dx, dy: INTEGER), NEW, ABSTRACT;\r\t\t\t(m: Model) NewReader (old: Reader): Reader, NEW, ABSTRACT;\r\t\t\t(m: Model) NewWriter (old: Writer): Writer, NEW, ABSTRACT;\r\t\t\t(m: Model) ViewAt (x, y: INTEGER): Views.View, NEW, ABSTRACT;\r\t\t\t(m: Model) NofViews (): INTEGER, NEW, ABSTRACT\r\t\tEND;\r\r\t\tDirectory = POINTER TO ABSTRACT RECORD\r\t\t\t(d: Directory) New (): Model, NEW, ABSTRACT\r\t\tEND;\r\r\t\tContext = POINTER TO ABSTRACT RECORD (Models.Context)\r\t\t\t(c: Context) ThisModel (): Model, ABSTRACT;\r\t\t\t(c: Context) GetRect (OUT l, t, r, b: INTEGER), NEW, ABSTRACT\r\t\tEND;\r\r\t\tReader = POINTER TO ABSTRACT RECORD\r\t\t\tview: Views.View;\r\t\t\tl, t, r, b: INTEGER;\r\t\t\t(r: Reader) Set (pos: Views.View), NEW, ABSTRACT;\r\t\t\t(r: Reader) ReadView (OUT v: Views.View), NEW, ABSTRACT\r\t\tEND;\r\r\t\tWriter = POINTER TO ABSTRACT RECORD\r\t\t\t(w: Writer) Set (pos: Views.View), NEW, ABSTRACT;\r\t\t\t(w: Writer) WriteView (v: Views.View; l, t, r, b: INTEGER), NEW, ABSTRACT\r\t\tEND;\r\r\t\tUpdateMsg = RECORD (Models.UpdateMsg)\r\t\t\tl, t, r, b: INTEGER\r\t\tEND;\r\r\tVAR dir-, stdDir-: Directory;\r\r\tPROCEDURE New (): Model;\r\tPROCEDURE CloneOf (source: Model): Model;\r\tPROCEDURE Copy (source: Model): Model;\r\tPROCEDURE SetDir (d: Directory);\r\rEND FormModels.\r\r\r"
+                    attr: 1
+                  - text: FormModels
+                    attr: 2
+                  - text: " are container models which contain views. They have no further intrinsic contents. Form models can be used to arrange rectangular views in arbitrary layouts. Their main use is as data entry forms and as dialog box layouts.\r\r\rCONST "
+                    attr: 1
+                  - text: minViewSize
+                    attr: 3
+                  - text: "\rThis is the minimal width and height of a view which is embedded in a form model.\r\rCONST "
+                    attr: 1
+                  - text: maxViewSize
+                    attr: 3
+                  - text: "\rThis is the maximal width and height of a view which is embedded in a form model.\r\r\rTYPE "
+                    attr: 1
+                  - text: Model (Containers.Model)
+                    attr: 3
+                  - text: "\rABSTRACT\rForm models are container models (-> Containers), which may contain rectangular views and nothing else.\r\rPROCEDURE (m: Model) "
+                    attr: 1
+                  - text: Insert
+                    attr: 3
+                  - text: " (v: Views.View; l, t, r, b: INTEGER)\rNEW, ABSTRACT, Operation\rInsert view "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: " with bounding box "
+                    attr: 1
+                  - text: "(l, t, r, b)"
+                    attr: 2
+                  - text: ".\r\rPre\rv # NIL\t20\rv.context = NIL\t22\rl <= r\t23\rt <= b\t24\r\rPost\rv in m\rv.context # NIL & v.context.ThisModel() = m\r\rPROCEDURE (m: Model) "
+                    attr: 1
+                  - text: Delete
+                    attr: 3
+                  - text: " (v: Views.View)\rNEW, ABSTRACT, Operation\rRemove "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: " from "
+                    attr: 1
+                  - text: m
+                    attr: 2
+                  - text: ".\r\rPre\rv in m\t20\r\rPost\r~(v in m)\r\rPROCEDURE (m: Model) "
+                    attr: 1
+                  - text: Resize
+                    attr: 3
+                  - text: " (v: Views.View; l, t, r, b: INTEGER)\rNEW, ABSTRACT, Operation\rRedefine bounding box of "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: ".\r\rPre\rv in m\t20\rl <= r\t21\rt <= b\t22\r\rPROCEDURE (m: Model) "
+                    attr: 1
+                  - text: PutAbove
+                    attr: 3
+                  - text: " (v, pos: Views.View)\rNEW, ABSTRACT, Operation\rChange the vertical order of view "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: ", such that it comes to lie directly above "
+                    attr: 1
+                  - text: p
+                    attr: 2
+                  - text: " if "
+                    attr: 1
+                  - text: "pos # NIL"
+                    attr: 2
+                  - text: ", otherwise it is put to the bottom of the view list.\r\rPre\rv in m\t20\rpos = NIL  OR  pos in m\t21\r\rPROCEDURE (m: Model) "
+                    attr: 1
+                  - text: Move
+                    attr: 3
+                  - text: " (v: Views.View; dx, dy: INTEGER)\rNEW, ABSTRACT, Operation\rMove view "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: " by "
+                    attr: 1
+                  - text: "(dx, dy)"
+                    attr: 2
+                  - text: ", without changing its size.\r\rPre\rv in m\t20\r\rPROCEDURE (m: Model) "
+                    attr: 1
+                  - text: Copy
+                    attr: 3
+                  - text: " (VAR v: Views.View; dx, dy: INTEGER)\rNEW, ABSTRACT, Operation\rCreate a copy of "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: " and put it at "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: "'s bounding box shifted by "
+                    attr: 1
+                  - text: "(dx, dy)"
+                    attr: 2
+                  - text: ". Parameter "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: " returns the copy.\r\rPre\rv # NIL\t20\rv.context # NIL\t21\rv.context.ThisModel() = m\t22\r\rPost\rv # NIL  &  v # v'\r\rPROCEDURE (m: Model) "
+                    attr: 1
+                  - text: NewReader
+                    attr: 3
+                  - text: " (old: Reader): Reader\rNEW, ABSTRACT\rReturns a reader connected to "
+                    attr: 1
+                  - text: m
+                    attr: 2
+                  - text: ". An old reader may be passed as input parameter, if it isn't in use anymore.\r\rPost\rresult # NIL\r\rPROCEDURE (m: Model) "
+                    attr: 1
+                  - text: NewWriter
+                    attr: 3
+                  - text: " (old: Writer): Writer\rNEW, ABSTRACT\rReturns a writer connected to "
+                    attr: 1
+                  - text: m
+                    attr: 2
+                  - text: ". An old writer may be passed as input parameter, if it isn't in use anymore.\r\rPost\rresult # NIL\r\rPROCEDURE (m: Model) "
+                    attr: 1
+                  - text: ViewAt
+                    attr: 3
+                  - text: " (x, y: INTEGER): Views.View\rNEW, ABSTRACT\rReturns the topmost view in "
+                    attr: 1
+                  - text: m
+                    attr: 2
+                  - text: " which encloses position "
+                    attr: 1
+                  - text: "(x, y)"
+                    attr: 2
+                  - text: ".\r\rPost\rresult # NIL\r\twhere (l, t, r, b) is the bounding box of v: (l <= x <= r) & (t <= y <= b)\rresult = NIL\r\tno view at (x, y)\r\t\rPROCEDURE (m: Model) "
+                    attr: 1
+                  - text: NofViews
+                    attr: 3
+                  - text: " (): INTEGER\rNEW, ABSTRACT\rReturns the number of views currently in "
+                    attr: 1
+                  - text: m
+                    attr: 2
+                  - text: ".\r\rPost\rresult >= 0\r\r\rTYPE "
+                    attr: 1
+                  - text: Directory
+                    attr: 3
+                  - text: "\rABSTRACT\rDirectory for the allocation of concrete form models.\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: New
+                    attr: 3
+                  - text: " (): Model\rNEW, ABSTRACT\rCreate and return a new concrete form model.\r\rPost\rresult # NIL\r\r\rTYPE "
+                    attr: 1
+                  - text: Context (Models.Context)
+                    attr: 3
+                  - text: "\rNEW, ABSTRACT\rContext of a view in a form.\r\rPROCEDURE (c: Context) "
+                    attr: 1
+                  - text: ThisModel
+                    attr: 3
+                  - text: " (): Model\rABSTRACT\rReturns the form which contains the context. Covariant narrowing of result type.\r\rPROCEDURE (c: Context) "
+                    attr: 1
+                  - text: GetRect
+                    attr: 3
+                  - text: " (OUT l, t, r, b: INTEGER)\rNEW, ABSTRACT\rReturns the bounding box of the context's view.\r\rPost\rl < r  &  t < b\r\r\rTYPE "
+                    attr: 1
+                  - text: Reader
+                    attr: 3
+                  - text: "\rABSTRACT\rInput rider on a form model.\r\r"
+                    attr: 1
+                  - text: view
+                    attr: 3
+                  - text: ": Views.View\rMost recently read view.\r\r"
+                    attr: 1
+                  - text: "l, t, r, b"
+                    attr: 3
+                  - text: ": INTEGER\tview # NIL => l < r & t < b\rBounding box of most recently read view.\r\rPROCEDURE (r: Reader) "
+                    attr: 1
+                  - text: Set
+                    attr: 3
+                  - text: " (pos: Views.View)\rNEW, ABSTRACT\rSet position of reader "
+                    attr: 1
+                  - text: r
+                    attr: 2
+                  - text: " to the view above "
+                    attr: 1
+                  - text: "pos "
+                    attr: 2
+                  - text: "(i.e., the next view to be read will be the one directly above "
+                    attr: 1
+                  - text: pos
+                    attr: 2
+                  - text: ") or to the bottom if "
+                    attr: 1
+                  - text: pos = NIL
+                    attr: 2
+                  - text: ".\r\rPre\rpos in Base(r)  OR  pos = NIL\t20\r\rPROCEDURE (r: Reader) "
+                    attr: 1
+                  - text: ReadView
+                    attr: 3
+                  - text: " (OUT v: Views.View)\rNEW, ABSTRACT\rReads the next view, in ascending order. If there is none, "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: " is set to "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: ". The reader's "
+                    attr: 1
+                  - text: view
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: "l, t, r, b"
+                    attr: 2
+                  - text: " fields will be set accordingly ("
+                    attr: 1
+                  - text: "l, t, r, b"
+                    attr: 2
+                  - text: " are undefined if view is"
+                    attr: 1
+                  - text: " NIL"
+                    attr: 2
+                  - text: ").\r\rPost\rv = r.view\r\r\rTYPE "
+                    attr: 1
+                  - text: Writer
+                    attr: 3
+                  - text: "\rABSTRACT\rOutput rider on a form.\r\rPROCEDURE (w: Writer) "
+                    attr: 1
+                  - text: Set
+                    attr: 3
+                  - text: " (pos: Views.View)\rInterface\rSet position of writer "
+                    attr: 1
+                  - text: w
+                    attr: 2
+                  - text: " to the view above "
+                    attr: 1
+                  - text: "pos "
+                    attr: 2
+                  - text: "(i.e., the next view to be written will be inserted directly above "
+                    attr: 1
+                  - text: pos
+                    attr: 2
+                  - text: ") or to the bottom if "
+                    attr: 1
+                  - text: pos = NIL
+                    attr: 2
+                  - text: ".\r\rPre\rpos in Base(r)  OR  pos = NIL\t20\r\rPROCEDURE (w: Writer) "
+                    attr: 1
+                  - text: WriteView
+                    attr: 3
+                  - text: " (v: Views.View; l, t, r, b: INTEGER)\rNEW, ABSTRACT\rInsert view "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: " at the current position in "
+                    attr: 1
+                  - text: w
+                    attr: 2
+                  - text: "'s form.\r\rPre\rv # NIL\t20\rv.context = NIL\t22\rl <= r\t23\rt <= b\t24\r\rPost\rv.context # NIL\r\r\rTYPE "
+                    attr: 1
+                  - text: UpdateMsg
+                    attr: 3
+                  - text: "\rThis message indicates that a rectangular part of a form needs to be updated on the screen.\rThe receiver must not switch on any marks as a reaction to having received this message.\rUpdateMsgs are sent by concrete form model implementations after any view modifications.\rUpdateMsgs are not extended.\r\r\rVAR "
+                    attr: 1
+                  - text: dir
+                    attr: 3
+                  - text: "-, "
+                    attr: 1
+                  - text: stdDir
+                    attr: 3
+                  - text: "-: Directory;\tdir # NIL  &  stdDir # NIL\rForm model directories.\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: New
+                    attr: 3
+                  - text: " (): Model\rReturns a new model. Equivalent to "
+                    attr: 1
+                  - text: dir.New()
+                    attr: 2
+                  - text: ".\r\rPost\rresult # NIL\r\rPROCEDURE "
+                    attr: 1
+                  - text: CloneOf
+                    attr: 3
+                  - text: " (source: Model): Model\rReturns a new empty model of the same type as "
+                    attr: 1
+                  - text: source
+                    attr: 2
+                  - text: ".\r\rPre\rsource # NIL\t20\r\rPost\rresult # NIL\r\rPROCEDURE "
+                    attr: 1
+                  - text: Copy
+                    attr: 3
+                  - text: " (source: Model): Model\rReturns a new model of the same type as "
+                    attr: 1
+                  - text: source
+                    attr: 2
+                  - text: ", with a copy of the contents of "
+                    attr: 1
+                  - text: source
+                    attr: 2
+                  - text: ".\r\rPre\rsource # NIL\t20\r\rPost\rresult # NIL\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetDir
+                    attr: 3
+                  - text: " (d: Directory)\rAssign directory.\r\rPre\rd # NIL\t20\r\rPost\rdir = d\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 10
+          bodyPos: 8833
+          bodyLen: 8

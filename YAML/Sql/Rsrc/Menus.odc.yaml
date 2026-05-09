@@ -1,0 +1,143 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Sql\\Rsrc\\Menus.odc"
+  size: 2038
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 1907
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 1721
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 1635
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: "*"
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 6
+                bodyPos: 1760
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 1246
+                runListLen: 458
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 101600
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 101600
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                flow:
+                  - ruler:
+                      left: 0
+                      right: 7128000
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000021
+                      tabs:
+                        - { stop: 180000 }
+                        - { stop: 1224000 }
+                        - { stop: 1584000 }
+                        - { stop: 4428000 }
+                      attr: 0
+                      w: 360000000
+                      h: 444500
+                  - text: "MENU "
+                    attr: 0
+                  - text: "\"SQL\"\r\t\"Browser...\"\t\"\"\t\"StdCmds.OpenAuxDialog('Sql/Rsrc/Browser', 'Browser')\"\t\"\"\r\t\"Execute\"\t\"\"\t\"SqlBrowser.ExecuteSel\"\t\"TextCmds.SelectionGuard\"\r\t"
+                    attr: 1
+                  - text: SEPARATOR
+                    attr: 0
+                  - text: "\r\t\"Company...\"\t\"\"\t\"SqlObxDB.Open; StdCmds.OpenAuxDialog('Sql/Rsrc/Company', 'Company')\"\t\"\"\r\t\"Ownership...\"\t\"\"\t\"SqlObxExt.Open; StdCmds.OpenAuxDialog('Sql/Rsrc/Owner', 'Ownership')\"\t\"\"\r\t"
+                    attr: 1
+                  - text: SEPARATOR
+                    attr: 0
+                  - text: "\r\t\"Insert Anchor\"\t\"\"\t\"SqlControls.DepositAnchor; StdCmds.PasteView\"\t\"StdCmds.PasteViewGuard\"\r\t\"Insert Table\"\t\"\"\t\"SqlControls.DepositTable; StdCmds.PasteView\"\t\"StdCmds.PasteViewGuard\"\r\t\"Open Table\"\t\"\"\t\"SqlControls.DepositTable; StdCmds.Open\"\t\"\"\r\t"
+                    attr: 1
+                  - text: SEPARATOR
+                    attr: 0
+                  - text: "\r\t\"Debug Options...\"\t\"\"\t\"StdCmds.OpenAuxDialog('Sql/Rsrc/Debug', 'Debug Options')\"\t\"\""
+                    attr: 1
+                  - text: "\r"
+                    attr: 0
+                  - text: "\t"
+                    attr: 1
+                  - text: SEPARATOR
+                    attr: 0
+                  - text: "\r\t\"Help\"\t\"\"\t\"StdCmds.OpenBrowser('Sql/Docu/Dev-Man', 'Sql Docu')\"\t\"\""
+                    attr: 1
+                  - text: "\rEND\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 10
+          bodyPos: 2003
+          bodyLen: 8

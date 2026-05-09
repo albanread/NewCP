@@ -1,0 +1,320 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Mod\\BlackBox.odc"
+  size: 15434
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 15303
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 15117
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 15031
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 127000
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Helvetica
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 15148
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 14634
+                runListLen: 1923
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE ObxBlackBox;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT Ports, Stores, Models, Views, Controllers, Properties, Fonts, Dialog, Services, Strings;\r\r\tCONST \r\t\tminVersion = 0; maxVersion = 0;\r\t\tminded = -3; marked = -4; markedAndMinded = -7;\t(* "
+                    attr: 0
+                  - text: inside marks
+                    attr: 1
+                  - text: " *)\r\t\tabsorbed = -1; reflected = -2;\t(* "
+                    attr: 0
+                  - text: "outside marks "
+                    attr: 1
+                  - text: "*)\r\r\tTYPE\r\t\tModel = POINTER TO RECORD (Models.Model)\r\t\t\tboard : POINTER TO ARRAY OF ARRAY OF BYTE;\r\t\t\tm, "
+                    attr: 0
+                  - text: "(* size of board *)"
+                    attr: 1
+                  - text: "\r\t\t\tp, "
+                    attr: 0
+                  - text: "(* number of atoms *)"
+                    attr: 1
+                  - text: "\r\t\t\tn, "
+                    attr: 0
+                  - text: "(* number of actual guess *)"
+                    attr: 1
+                  - text: "\r\t\t\tscore: INTEGER; \r\t\t\tshowsol: BOOLEAN\r\t\tEND;\r\r\t\tPath = POINTER TO RECORD\r\t\t\ti, j: INTEGER; next: Path\r\t\tEND;\r\r\t\tView = POINTER TO RECORD (Views.View)\r\t\t\tmodel: Model;\r\t\t\ti, j: INTEGER;\r\t\t\td: INTEGER;\r\t\t\tfont: Fonts.Font\r\t\tEND;\r\r\t\tUpdateMsg = RECORD (Models.UpdateMsg) END;\r\r\tVAR \r\t\t"
+                    attr: 0
+                  - text: para
+                    attr: 3
+                  - text: "*: RECORD\r\t\t\tnrOfAtoms*, boardSize*: INTEGER\r\t\tEND;\r\r\t\tseed: INTEGER;\r\r\tPROCEDURE UniRand (): REAL;\r\t\tCONST a = 16807; m = 2147483647; q = m DIV a; r = m MOD a;\r\tBEGIN\r\t\tseed := a*(seed MOD q) - r*(seed DIV q);\r\t\tIF seed <= 0 THEN seed := seed + m END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " seed * (1.0/m)\r\tEND UniRand;\r\r\t"
+                    attr: 0
+                  - text: "(* problem-specific part *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE Atom (m: Model; i,j: INTEGER): BOOLEAN;\r\t\tVAR b: BYTE;\r\tBEGIN\r\t\tb := m.board[i,j]; "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " (b = minded) OR (b = markedAndMinded)\r\tEND Atom;\r\r\tPROCEDURE Marked (m: Model; i,j: INTEGER): BOOLEAN;\r\t\tVAR b: BYTE;\r\tBEGIN\r\t\tb := m.board[i,j]; "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " (b = marked) OR (b = markedAndMinded)\r\tEND Marked;\r\r\tPROCEDURE Shoot (m: Model; i1, j1: INTEGER);\r\t\tVAR i, j, d, di, dj : INTEGER;\r\tBEGIN\r\t\tIF j1 = 0 THEN di := 0; dj := 1\r\t\tELSIF j1 = m.m+1 THEN di := 0; dj := -1\r\t\tELSIF i1 = 0 THEN di := 1; dj := 0\r\t\tELSIF i1 = m.m+1 THEN di := -1; dj := 0\r\t\tEND; \r\t\ti := i1; j := j1;\r\t\tIF ~Atom(m, i+di, j+dj) THEN\r\t\t\tREPEAT\r\t\t\t\tIF Atom(m, i+di+dj, j+di+dj) THEN d := di; di := -dj; dj := -d\r\t\t\t\tELSIF Atom(m,i+di-dj, j-di+dj) THEN d := di; di := dj; dj := d\r\t\t\t\tELSE i := i+di; j := j+dj\r\t\t\t\tEND\r\t\t\tUNTIL (i=0) OR (i=m.m+1) OR (j=0) OR (j=m.m+1) OR Atom(m, i+di, j+dj);\r\t\t\tIF (i=0) OR (i=m.m+1) OR (j=0) OR (j=m.m+1) THEN\r\t\t\t\tIF (i = i1) & (j = j1) THEN m.board[i1, j1] := reflected\r\t\t\t\tELSE INC(m.n); m.board[i,j] := SHORT(SHORT(m.n)); m.board[i1,j1] := SHORT(SHORT(m.n))\r\t\t\t\tEND\r\t\t\tELSE m.board[i1,j1] := absorbed\r\t\t\tEND\r\t\tELSE m.board[i1,j1] := absorbed\r\t\tEND\r\tEND Shoot;\r\r\tPROCEDURE GetPath (m: Model; i, j: INTEGER; VAR p: Path);\r\t\tVAR d, di, dj : INTEGER;\r\r\t\tPROCEDURE AddPoint(i, j: INTEGER); \r\t\t\tVAR q: Path;\r\t\tBEGIN\r\t\t\tIF (p = NIL) OR (p.i # i) OR (p.j # j) THEN NEW(q); q.i := i; q.j := j; q.next := p; p := q END\r\t\tEND AddPoint;\r\r\tBEGIN\r\t\tIF j = 0 THEN di := 0; dj := 1\r\t\tELSIF j = m.m+1 THEN di := 0; dj := -1\r\t\tELSIF i = 0 THEN di := 1; dj := 0\r\t\tELSIF i = m.m+1 THEN di := -1; dj := 0\r\t\tEND; \r\t\tIF ~Atom(m, i+di, j+dj) THEN AddPoint(i, j);\r\t\t\tREPEAT\r\t\t\t\tIF Atom(m, i+di+dj, j+di+dj) THEN d := di; di := -dj; dj := -d; AddPoint(i, j)\r\t\t\t\tELSIF Atom(m, i+di-dj, j-di+dj) THEN d := di; di := dj; dj := d; AddPoint(i, j)\r\t\t\t\tELSE i := i+di; j := j+dj\r\t\t\t\tEND;\r\t\t\tUNTIL (i = 0) OR (i = m.m+1) OR (j = 0) OR (j = m.m+1) OR Atom(m, i+di, j+dj);\r\t\t\tIF ~((i = 0) OR (i = m.m+1) OR (j = 0) OR (j = m.m+1)) THEN i := i+di; j := j+dj END;"
+                    attr: 0
+                  - text: "\r"
+                    attr: 3
+                  - text: "\t\t\tAddPoint(i, j)\r\t\tEND\r\tEND GetPath;\r\r\tPROCEDURE NewPuzzle (m: Model);\r\t\tVAR i, j, k: INTEGER;\r\tBEGIN\r\t\tFOR i := 0 TO m.m+1 DO FOR j := 0 TO m.m+1 DO m.board[i,j] := 0 END END;\t\t\r\t\tk := 0;\r\t\tWHILE k < m.p DO\r\t\t\ti := 1 + SHORT(SHORT(ENTIER(UniRand()*m.m)));\r\t\t\tj := 1 + SHORT(SHORT(ENTIER(UniRand()*m.m)));\r\t\t\tIF ~Atom(m, i, j) THEN m.board[i,j] := minded; INC(k) END\r\t\tEND\r\tEND NewPuzzle;\r\r\tPROCEDURE Score (m: Model): INTEGER;\r\t\tVAR i, j, score, n: INTEGER;\r\tBEGIN\r\t\tscore := 0; n := 0;\r\t\tFOR i := 0 TO m.m + 1 DO\r\t\t\tFOR j := 0 TO m.m + 1 DO\r\t\t\t\tIF (i = 0) OR (j = 0) OR (i = m.m+1) OR (j = m.m+1) THEN\r\t\t\t\t\tIF m.board[i,j] # 0 THEN INC(score) END\r\t\t\t\tELSE\r\t\t\t\t\tIF Marked(m, i, j) THEN INC(n);\r\t\t\t\t\t\tIF ~Atom(m, i, j) THEN INC(score, 5) END\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND;\r\t\tIF n < m.p THEN INC(score, 5 * (m.p - n)) END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " score\r\tEND Score;\r\r\t"
+                    attr: 0
+                  - text: "(* graphics part *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE DrawStringCentered (v: View; f: Ports.Frame; x, y: INTEGER; s: ARRAY OF CHAR);\r\t\tVAR asc, dsc, w: INTEGER;\r\tBEGIN\r\t\tv.font.GetBounds(asc, dsc, w);\r\t\tf.DrawString(x - v.font.StringWidth(s) DIV 2, y + asc DIV 2, Ports.black, s, v.font)\r\tEND DrawStringCentered;\r\r\tPROCEDURE GetCoord (v: View; i, j: INTEGER; VAR x, y: INTEGER);\r\tBEGIN\r\t\ty := j * v.d + v.d DIV 2 + 1;\r\t\tx := i * v.d + v.d DIV 2 + 1;\r\t\tIF i = 0 THEN INC(x, v.d DIV 2)\r\t\tELSIF i = v.model.m+1 THEN DEC(x, v.d DIV 2)\r\t\tELSIF j = 0 THEN INC(y, v.d DIV 2)\r\t\tELSIF j = v.model.m+1 THEN DEC(y, v.d DIV 2)\r\t\tEND\r\tEND GetCoord;\r\r\t"
+                    attr: 0
+                  - text: "(* Model *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE Init (m: Model);\r\tBEGIN\r\t\tm.m := para.boardSize; m.p := para.nrOfAtoms;\r\t\tNEW(m.board, m.m+2, m.m+2); NewPuzzle(m);\r\t\tm.n := 0; m.score := 0; m.showsol := FALSE\r\tEND Init;\r\r\tPROCEDURE (m: Model) Externalize (VAR wr: Stores.Writer);\r\t\tVAR i, j: INTEGER;\r\tBEGIN\r\t\twr.WriteVersion(maxVersion);\r\t\twr.WriteInt(m.m);\r\t\twr.WriteInt(m.p);\r\t\twr.WriteInt(m.n);\r\t\twr.WriteInt(m.score);\r\t\twr.WriteBool(m.showsol);\r\t\tFOR i := 0 TO m.m+1 DO\r\t\t\tFOR j := 0 TO m.m+1 DO\r\t\t\t\twr.WriteByte(m.board[i,j])\r\t\t\tEND\r\t\tEND\r\tEND Externalize;\r\r\tPROCEDURE (m: Model) Internalize (VAR rd: Stores.Reader);\r\t\tVAR version: INTEGER; i, j: INTEGER;\r\tBEGIN\r\t\trd.ReadVersion(minVersion, maxVersion, version);\r\t\tIF ~rd.cancelled THEN\r\t\t\trd.ReadInt(m.m);\r\t\t\trd.ReadInt(m.p);\r\t\t\trd.ReadInt(m.n);\r\t\t\trd.ReadInt(m.score);\r\t\t\trd.ReadBool(m.showsol);\r\t\t\tNEW(m.board, m.m+2, m.m+2);\r\t\t\tFOR i := 0 TO m.m+1 DO\r\t\t\t\tFOR j := 0 TO m.m+1 DO\r\t\t\t\t\trd.ReadByte(m.board[i,j])\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND Internalize;\r\r\tPROCEDURE (m: Model) CopyFrom (source: Stores.Store);\r\t\tVAR i, j: INTEGER;\r\tBEGIN\r\t\tWITH source: Model DO\r"
+                    attr: 0
+                  - text: "\t\t\t"
+                    attr: 3
+                  - text: "Init(m);\r\t\t\tm.m := source.m; NEW(m.board, m.m+2, m.m+2);\r\t\t\tm.n := source.n; m.p := source.p;\r\t\t\tm.score := source.score; m.showsol := source.showsol;\r\t\t\tFOR i := 0 TO m.m+1 DO\r\t\t\t\tFOR j := 0 TO m.m+1 DO m.board[i,j] := source.board[i,j] END\r\t\t\tEND\r\t\tEND\r\tEND CopyFrom;\r\r\t(* "
+                    attr: 0
+                  - text: View
+                    attr: 1
+                  - text: " *)\r\r\tPROCEDURE (v: View) Externalize (VAR wr: Stores.Writer);\r\tBEGIN\r\t\twr.WriteVersion(maxVersion);\r\t\twr.WriteInt(v.i);\r\t\twr.WriteInt(v.j);\r\t\twr.WriteStore(v.model)\t\t\r\tEND Externalize;\r\r\tPROCEDURE (v: View) Internalize (VAR rd: Stores.Reader);\r\t\tVAR version: INTEGER; st: Stores.Store;\r\tBEGIN\r\t\trd.ReadVersion(minVersion, maxVersion, version);\r\t\tIF ~rd.cancelled THEN\r\t\t\trd.ReadInt(v.i);\r\t\t\trd.ReadInt(v.j);\r\t\t\trd.ReadStore(st);\r\t\t\tv.model := st(Model);\r\t\t\tv.d := 0; \r\t\t\tv.font := NIL\r\t\tEND\r\tEND Internalize;\r\r\tPROCEDURE (v: View) CopyFromModelView (source: Views.View; model: Models.Model);\r\tBEGIN\r\t\tASSERT(model IS Model, 20);\r\t\tWITH source: View DO\r\t\t\tv.model := model(Model);\r\t\t\tv.i := source.i; v.j := source.j; v.d := source.d; v.font := source.font\r\t\tEND\r\tEND CopyFromModelView;\r\r\tPROCEDURE (v: View) ThisModel (): Models.Model;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " v.model\r\tEND ThisModel;\r\r\tPROCEDURE (v: View) Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\t\tVAR w, h, d, x, y, x1, y1, asc, dsc, fw, i, j: INTEGER; p: Path; s: ARRAY 16 OF CHAR;\r\tBEGIN\r"
+                    attr: 0
+                  - text: "\t"
+                    attr: 3
+                  - text: "\tv.context.GetSize(w, h); d := w DIV (v.model.m + 2);\r\t\tIF (v.font = NIL) OR (v.d # d) THEN\r\t\t\tv.d := d; v.font := Fonts.dir.This(\"Chicago\", d * 2 DIV 3, {}, Fonts.normal)\r\t\tEND;\r"
+                    attr: 0
+                  - text: "\r"
+                    attr: 3
+                  - text: "\t\tFOR i := 1 TO v.model.m + 1 DO\r\t\t\tf.DrawLine(d, i * d,w - d, i * d, f.unit, 0);\r\t\t\tf.DrawLine(i * d, d, i * d,w - d, f.unit, 0)\r\t\tEND;\r\t\tFOR i := 0 TO v.model.m + 1 DO\r\t\t\tFOR j := 0 TO v.model.m + 1 DO\r\t\t\t\tx := i * d + d DIV 2; y := j * d + d DIV 2;\r\r\t\t\t\tIF (i = 0) OR (i = v.model.m + 1) OR (j = 0) OR (j = v.model.m + 1) THEN\r\t\t\t\t\tIF v.model.board[i , j] = absorbed THEN DrawStringCentered(v, f, x, y, \"A\")\r\t\t\t\t\tELSIF v.model.board[i , j] = reflected THEN DrawStringCentered(v, f, x, y, \"R\")\r\t\t\t\t\tELSIF v.model.board[i, j] > 0 THEN\r\t\t\t\t\t\tStrings.IntToString(v.model.board[i, j], s); DrawStringCentered(v, f, x, y, s)\r\t\t\t\t\tEND\r\t\t\t\tELSE\r\t\t\t\t\tIF Marked(v.model, i, j) THEN r := (9 * d) DIV 20;\r\t\t\t\t\t\tf.DrawOval(x - r, y - r, x + r, y + r, Ports.fill, Ports.black)\r\t\t\t\t\tEND;\r\t\t\t\t\tIF v.model.showsol & Atom(v.model, i, j) THEN r := d DIV 3;\r\t\t\t\t\t\tIF Marked(v.model, i, j) THEN f.DrawOval(x - r, y - r, x + r, y + r, Ports.fill, Ports.white)\r\t\t\t\t\t\tELSE f.DrawOval(x - r, y - r, x + r, y + r, Ports.fill, Ports.black)\r\t\t\t\t\t\tEND\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND;\r\t\tIF (v.i > 0) OR (v.j > 0) THEN\r\t\t\tGetPath(v.model, v.i, v.j, p);\r\t\t\tIF p # NIL THEN\r\t\t\t\tGetCoord(v, p.i, p.j, x, y); p := p.next;\r\t\t\t\tWHILE p # NIL DO\r\t\t\t\t\tGetCoord(v, p.i, p.j, x1, y1);\r\t\t\t\t\tf.DrawLine(x, y, x1, y1, 2 * f.unit, 0); x := x1; y := y1; p := p.next\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND;\r\t\tStrings.IntToString(v.model.p, s);\r\t\tv.font.GetBounds(asc, dsc, fw);\r\t\tx := d; y := (v.model.m + 2) * d + (d + asc) DIV 2;\r\t\tf.DrawString(x, y, Ports.black, \"Atoms: \", v.font);  x := x + v.font.StringWidth(\"Atoms: \");\r\t\tf.DrawString(x, y, Ports.black, s, v.font); \r\t\tIF v.model.showsol THEN x := x + v.font.StringWidth(s);\r\t\t\tf.DrawString(x, y, Ports.black, \"  Score: \", v.font); x := x + v.font.StringWidth(\"  Score: \");\r\t\t\tStrings.IntToString(v.model.score, s); f.DrawString(x, y, Ports.black, s, v.font)\r\t\tEND\r\tEND Restore;\r\r\tPROCEDURE Track (v: View; f: Views.Frame; x, y: INTEGER; buttons: SET);\r\t\tVAR i, j: INTEGER; msg: UpdateMsg;\r\tBEGIN\r\t\ti := SHORT(x DIV v.d); j := SHORT(y DIV v.d);\r\t\tIF (i > 0) & (i <= v.model.m) & (j > 0) & (j <= v.model.m) THEN\t"
+                    attr: 0
+                  - text: "(* inside *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF Marked(v.model, i, j) THEN INC(v.model.board[i, j], 4)\r\t\t\tELSE DEC(v.model.board[i, j], 4) \r\t\t\tEND\r\t\tELSIF ((i = 0) OR (i = v.model.m + 1)) & (j > 0) & (j <= v.model.m)\r\t\tOR ((j = 0) OR (j  = v.model.m + 1)) & (i > 0) & (i <= v.model.m) THEN\r\t\t\tIF v.model.board[i, j] = 0 THEN Shoot(v.model, i, j) END;\r\t\t\tIF v.model.showsol THEN\r\t\t\t\tIF Controllers.modify IN buttons THEN v.i := i; v.j := j ELSE v.i := 0; v.j := 0 END\r\t\t\tEND\r\t\tEND;\r\t\tModels.Broadcast(v.model, msg)\r\tEND Track;\r\r\tPROCEDURE (v: View) HandleModelMsg (VAR msg: Models.Message);\r\t\tVAR w, h: INTEGER;\r\tBEGIN\r\t\tWITH msg: UpdateMsg DO\r\t\t\tIF ~v.model.showsol THEN v.i := 0; v.j := 0 END;\t"
+                    attr: 0
+                  - text: "(* adjust view to change of model *)"
+                    attr: 1
+                  - text: "\r\t\t\tv.context.GetSize(w, h); Views.UpdateIn(v, 0, 0, w, h,  Views.keepFrames)\r\t\tELSE\r\t\tEND\r\tEND HandleModelMsg;\r\r\tPROCEDURE (v: View) HandleCtrlMsg (f: Views.Frame; VAR msg: Controllers.Message;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR focus: Views.View);\r\tBEGIN\r\t\tWITH msg: Controllers.TrackMsg DO\r\t\t\tTrack(v, f, msg.x, msg.y, msg.modifiers); Views.SetDirty(v)\r\t\t| msg: Controllers.PollOpsMsg DO\r\t\t\tmsg.type := \"ObxBlackBox.View\"\r\t\tELSE\r\t\tEND\r\tEND HandleCtrlMsg;\r\r\tPROCEDURE (v: View) HandlePropMsg (VAR msg: Properties.Message);\r\tBEGIN\r\t\tWITH msg: Properties.SizePref DO\r\t\t\tIF (msg.w > Views.undefined) & (msg.h > Views.undefined) THEN\r\t\t\t\tProperties.ProportionalConstraint(v.model.m, v.model.m + 1, msg.fixedW, msg.fixedH, msg.w, msg.h)\r\t\t\tELSE\r\t\t\t\tmsg.w := 100 * Ports.mm; msg.h := msg.w * (v.model.m + 1) DIV v.model.m;\r\t\t\tEND;\r\t\t| msg: Properties.FocusPref DO\r\t\t\tmsg.setFocus := TRUE\r\t\tELSE\r\t\tEND\r\tEND HandlePropMsg;\r\r\t"
+                    attr: 0
+                  - text: "(* commands *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: "Deposit*"
+                    attr: 3
+                  - text: ";\r\t\tVAR v: View; m: Model;\r\tBEGIN\r\t\tNEW(m); Init(m);\r\t\tNEW(v); v.model := m; Stores.Join(v, m);\r\t\tViews.Deposit(v)\r\tEND Deposit;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ShowSolution
+                    attr: 3
+                  - text: "*;\r\t\tVAR v : Views.View; msg: UpdateMsg;\r\tBEGIN\r\t\tv := Controllers.FocusView();\r\t\tIF v # NIL THEN\r\t\t\tWITH v: View DO\r\t\t\t\tv.model.showsol := TRUE; v.model.score := Score(v.model);\r\t\t\t\tModels.Broadcast(v.model, msg)\r\t\t\tEND\r\t\tEND\r\tEND ShowSolution;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ShowSolutionGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\t\tVAR v: Views.View;\r\tBEGIN\r\t\tv := Controllers.FocusView();\r\t\tpar.disabled := (v = NIL) OR ~(v IS View) OR v(View).model.showsol\r\tEND ShowSolutionGuard;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: New
+                    attr: 3
+                  - text: "*;\r\t\tVAR v: Views.View; msg: UpdateMsg;\r\tBEGIN\r\t\tv := Controllers.FocusView();\r\t\tIF v # NIL THEN\r\t\t\tWITH v: View DO\r\t\t\t\tNewPuzzle(v.model);\r\t\t\t\tv.model.n := 0; v.model.score := 0; v.model.showsol := FALSE;\r\t\t\t\tv.i := 0; v.j := 0;\r\t\t\t\tModels.Broadcast(v.model, msg)\r\t\t\tEND\r\t\tEND\t\t\r\tEND New;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Set
+                    attr: 3
+                  - text: "*;\r\t\tVAR v : Views.View; msg: UpdateMsg; i, j: INTEGER;\r\tBEGIN\r\t\tv := Controllers.FocusView();\r\t\tIF v # NIL THEN\r\t\t\tWITH v: View DO\r\t\t\t\tv.model.p := 0;\r\t\t\t\tFOR i := 0 TO v.model.m + 1 DO\r\t\t\t\t\tFOR j := 0 TO v.model.m + 1 DO\r\t\t\t\t\t\tIF Marked(v.model, i, j) THEN INC(v.model.p); v.model.board[i,j] := minded\r\t\t\t\t\t\tELSE v.model.board[i,j] := 0\r\t\t\t\t\t\tEND\r\t\t\t\t\tEND\r\t\t\t\tEND;\r\t\t\t\tv.model.n := 0; v.model.score := 0; v.model.showsol := FALSE;\r\t\t\t\tv.i := 0; v.j := 0;\r\t\t\t\tModels.Broadcast(v.model, msg)\r\t\t\tEND\r\t\tEND\t\t\r\tEND Set;\r\rBEGIN\r\tseed := SHORT(Services.Ticks()); para.boardSize := 8; para.nrOfAtoms := 4\rEND ObxBlackBox.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 15399
+          bodyLen: 8

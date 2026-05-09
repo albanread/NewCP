@@ -1,0 +1,282 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Text\\Rsrc\\Cmds.odc"
+  size: 2765
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 2634
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 2448
+          children:
+            - kind: FormViews.StdView
+              storeKind: store
+              typeChain:
+                - FormViews.StdViewDesc
+                - FormViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 2362
+              children:
+                - kind: FormModels.StdModel
+                  storeKind: elem
+                  typeChain:
+                    - FormModels.StdModelDesc
+                    - FormModels.ModelDesc
+                    - Containers.ModelDesc
+                    - Models.ModelDesc
+                    - Stores.StoreDesc
+                  id: 1
+                  bodyPos: 376
+                  bodyLen: 2119
+                  children:
+                    - kind: Controls.Caption
+                      storeKind: store
+                      typeChain:
+                        - Controls.CaptionDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 2
+                      bodyPos: 448
+                      bodyLen: 34
+                      label: "F&ind:"
+                      opts: [true, false, false, false, false]
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.Field
+                      storeKind: store
+                      typeChain:
+                        - Controls.FieldDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 3
+                      bodyPos: 540
+                      bodyLen: 68
+                      link: TextCmds.find.find
+                      label: "F&ind"
+                      opts: [true, false, false, false, false]
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.Caption
+                      storeKind: store
+                      typeChain:
+                        - Controls.CaptionDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 646
+                      bodyLen: 70
+                      label: "R&epl:"
+                      guard: TextCmds.EditGuard
+                      opts: [true, false, false, false, false]
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.Field
+                      storeKind: store
+                      typeChain:
+                        - Controls.FieldDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 5
+                      bodyPos: 754
+                      bodyLen: 116
+                      link: TextCmds.find.replace
+                      label: "R&eplace"
+                      guard: TextCmds.EditGuard
+                      opts: [true, false, false, false, false]
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.PushButton
+                      storeKind: store
+                      typeChain:
+                        - Controls.PushButtonDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 6
+                      bodyPos: 933
+                      bodyLen: 124
+                      link: "TextCmds.FindFirst('')"
+                      label: "Find &First"
+                      guard: TextCmds.FindGuard
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.PushButton
+                      storeKind: store
+                      typeChain:
+                        - Controls.PushButtonDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 7
+                      bodyPos: 1095
+                      bodyLen: 132
+                      link: "TextCmds.FindAgain('')"
+                      label: "Find &Next"
+                      guard: TextCmds.FindAgainGuard
+                      opts: [true, false, false, false, false]
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.PushButton
+                      storeKind: store
+                      typeChain:
+                        - Controls.PushButtonDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 8
+                      bodyPos: 1265
+                      bodyLen: 120
+                      link: "TextCmds.Replace('')"
+                      label: "&Replace"
+                      guard: TextCmds.ReplaceGuard
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.PushButton
+                      storeKind: store
+                      typeChain:
+                        - Controls.PushButtonDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 9
+                      bodyPos: 1423
+                      bodyLen: 154
+                      link: "TextCmds.ReplaceAndFindNext('')"
+                      label: "Repl. && Fin&d"
+                      guard: TextCmds.ReplaceGuard
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.PushButton
+                      storeKind: store
+                      typeChain:
+                        - Controls.PushButtonDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 10
+                      bodyPos: 1615
+                      bodyLen: 140
+                      link: "TextCmds.ReplaceAll('')"
+                      label: "Replace &All"
+                      guard: TextCmds.ReplaceAllGuard
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.PushButton
+                      storeKind: store
+                      typeChain:
+                        - Controls.PushButtonDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 11
+                      bodyPos: 1793
+                      bodyLen: 70
+                      link: StdCmds.CloseDialog
+                      label: Close
+                      opts: [false, true, false, false, false]
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.CheckBox
+                      storeKind: store
+                      typeChain:
+                        - Controls.CheckBoxDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 12
+                      bodyPos: 1924
+                      bodyLen: 112
+                      link: TextCmds.find.wordBeginsWith
+                      label: "Word &Begins With"
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.CheckBox
+                      storeKind: store
+                      typeChain:
+                        - Controls.CheckBoxDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 13
+                      bodyPos: 2074
+                      bodyLen: 104
+                      link: TextCmds.find.wordEndsWith
+                      label: "Word &Ends With"
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.CheckBox
+                      storeKind: store
+                      typeChain:
+                        - Controls.CheckBoxDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 14
+                      bodyPos: 2216
+                      bodyLen: 94
+                      link: TextCmds.find.ignoreCase
+                      label: "Ignore &Case"
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.CheckBox
+                      storeKind: store
+                      typeChain:
+                        - Controls.CheckBoxDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 15
+                      bodyPos: 2348
+                      bodyLen: 122
+                      link: TextCmds.find.reverseOrientation
+                      label: "&Reverse Direction"
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: "<nil>"
+                      storeKind: nil
+                - kind: FormControllers.StdController
+                  storeKind: store
+                  typeChain:
+                    - FormControllers.StdControllerDesc
+                    - FormControllers.ControllerDesc
+                    - Containers.ControllerDesc
+                    - Controllers.ControllerDesc
+                    - Stores.StoreDesc
+                  id: 16
+                  bodyPos: 2639
+                  bodyLen: 9
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 17
+          bodyPos: 2730
+          bodyLen: 8

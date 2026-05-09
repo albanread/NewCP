@@ -1,0 +1,268 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Mod\\PhoneDB.odc"
+  size: 4568
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 4437
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 4251
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 4165
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 114300
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: "*"
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 4290
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 3776
+                runListLen: 1793
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE ObxPhoneDB;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tCONST\r\t\tmaxLen = 32;\t"
+                    attr: 0
+                  - text: "(* maximum length of name/number strings *)"
+                    attr: 1
+                  - text: "\r\t\tmaxEntries = 5;\t"
+                    attr: 0
+                  - text: "(* maximum number of entries in the database *)"
+                    attr: 1
+                  - text: "\r\r\tTYPE\r\t\t"
+                    attr: 0
+                  - text: String
+                    attr: 3
+                  - text: "* = ARRAY maxLen OF CHAR;\r\r\t\tEntry = RECORD\r\t\t\tname, number: String\r\t\tEND;\r\r\tVAR db: ARRAY maxEntries OF Entry;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: LookupByIndex
+                    attr: 3
+                  - text: "* (index: INTEGER; OUT name, number: String);\r\tBEGIN\t"
+                    attr: 0
+                  - text: "(* given an index, return the corresponding <name, number> pair *)"
+                    attr: 1
+                  - text: "\r\t\tASSERT(index >= 0);\r\t\tIF index < maxEntries THEN\r\t\t\tname := db[index].name; number := db[index].number\r\t\tELSE\r\t\t\tname := \"\"; number := \"\"\r\t\tEND\r\tEND LookupByIndex;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: LookupByName
+                    attr: 3
+                  - text: "* (name: String; OUT number: String);\r\t\tVAR i: INTEGER;\r\tBEGIN\t"
+                    attr: 0
+                  - text: "(* given a name, find the corresponding phone number *)"
+                    attr: 1
+                  - text: "\r\t\ti := 0; WHILE (i # maxEntries) & (db[i].name # name) DO INC(i) END;\r\t\tIF i # maxEntries THEN\t"
+                    attr: 0
+                  - text: "(* name found in db[i] *)"
+                    attr: 1
+                  - text: "\r\t\t\tnumber := db[i].number\r\t\tELSE\t"
+                    attr: 0
+                  - text: "(* name not found in db[0..maxEntries-1] *)"
+                    attr: 1
+                  - text: "\r\t\t\tnumber := \"\"\r\t\tEND\r\tEND LookupByName;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: LookupByNumber
+                    attr: 3
+                  - text: "* (number: String; OUT name: String);\r\t\tVAR i: INTEGER;\r\tBEGIN\t"
+                    attr: 0
+                  - text: "(* given a phone number, find the corresponding name *)"
+                    attr: 1
+                  - text: "\r\t\ti := 0; WHILE (i # maxEntries) & (db[i].number # number) DO INC(i) END;\r\t\tIF i # maxEntries THEN\t"
+                    attr: 0
+                  - text: "(* number found in db[i] *)"
+                    attr: 1
+                  - text: "\r\t\t\tname := db[i].name\r\t\tELSE\t"
+                    attr: 0
+                  - text: "(* number not found in db[0..maxEntries-1] *)"
+                    attr: 1
+                  - text: "\r\t\t\tname := \"\"\r\t\tEND\r\tEND LookupByNumber;\r\rBEGIN\t"
+                    attr: 0
+                  - text: "(* initialization of database contents *)"
+                    attr: 1
+                  - text: "\r\tdb[0].name := \"Daffy Duck\"; db[0].number := \"310-555-1212\";\r\tdb[1].name := \"Wile E. Coyote\"; db[1].number := \"408-555-1212\";\r\tdb[2].name := \"Scrooge McDuck\"; db[2].number := \"206-555-1212\";\r\tdb[3].name := \"Huey Lewis\"; db[3].number := \"415-555-1212\";\r\tdb[4].name := \"Thomas Dewey\"; db[4].number := \"617-555-1212\"\rEND ObxPhoneDB.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 4533
+          bodyLen: 8

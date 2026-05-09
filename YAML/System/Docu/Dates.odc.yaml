@@ -1,0 +1,298 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\System\\Docu\\Dates.odc"
+  size: 5337
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 5206
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 5020
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 4934
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                asc: 134600
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000003
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 10
+                bodyPos: 5055
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 4541
+                runListLen: 1014
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: Dates
+                    attr: 0
+                  - text: "\r\rDEFINITION Dates;\r\r\tCONST\r\t\tmonday = 0; tuesday = 1; wednesday = 2; thursday = 3; friday = 4; saturday = 5; sunday = 6;\r\t\tshort = 0; long = 1; abbreviated = 2; plainLong = 3; plainAbbreviated = 4;\r\r\tTYPE\r\t\tDate = RECORD \r\t\t\tyear, month, day: INTEGER\r\t\tEND;\r\r\t\tTime = RECORD \r\t\t\thour, minute, second: INTEGER\r\t\tEND;\r\r\tPROCEDURE ValidDate (IN d: Date): BOOLEAN;\r\tPROCEDURE ValidTime (IN t: Time): BOOLEAN;\r\tPROCEDURE GetDate (OUT d: Date);\r\tPROCEDURE GetTime (OUT t: Time);\r\tPROCEDURE GetEasterDate (year: INTEGER; OUT d: Date);\r\tPROCEDURE DayOfWeek (IN d: Date): INTEGER;\r\tPROCEDURE Day (IN d: Date): INTEGER;\r\tPROCEDURE DayToDate (n: INTEGER; OUT d: Date);\r\tPROCEDURE DateToString (IN d: Date; format: INTEGER; OUT str: ARRAY OF CHAR);\r\tPROCEDURE TimeToString (IN t: Time; OUT str: ARRAY OF CHAR);\r\rEND Dates.\r\r\rModule "
+                    attr: 1
+                  - text: Dates
+                    attr: 2
+                  - text: " provides basic procedures to work with dates. It covers the Julian calendar up to 10/4/1582 and the Gregorian calendar starting at 10/15/1582. Module "
+                    attr: 1
+                  - text: Dates
+                    attr: 2
+                  - text: " can deal with dates from 1/1/1 up to 12/31/9999. The types "
+                    attr: 1
+                  - text: Date
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: Time
+                    attr: 2
+                  - text: " are known to the framework and can be displayed by suitable controls.\r\r\rCONST "
+                    attr: 1
+                  - text: "monday, tuesday, wednesday, thursday, friday, saturday, sunday\r"
+                    attr: 3
+                  - text: "Possible return value of procedure "
+                    attr: 1
+                  - text: DayOfWeek.
+                    attr: 2
+                  - text: "\r\rCONST "
+                    attr: 1
+                  - text: "short,  long, abbreviated, plainLong, plainAbbreviated"
+                    attr: 3
+                  - text: "\rPossible value for parameter "
+                    attr: 1
+                  - text: format
+                    attr: 2
+                  - text: " of "
+                    attr: 1
+                  - text: DateToString
+                    attr: 2
+                  - text: " to specify the format.\r\r\rTYPE "
+                    attr: 1
+                  - text: "Date\r"
+                    attr: 3
+                  - text: "Date information.\r\r"
+                    attr: 1
+                  - text: year
+                    attr: 3
+                  - text: ": INTEGER\t0001 <= year <= 9999\r\r"
+                    attr: 1
+                  - text: month
+                    attr: 3
+                  - text: ": INTEGER\t1 <= month <= 12\r\r"
+                    attr: 1
+                  - text: day
+                    attr: 3
+                  - text: ": INTEGER\t1 <= day <= 31\r\r\rTYPE "
+                    attr: 1
+                  - text: "Time\r"
+                    attr: 3
+                  - text: "Time information.\r\r"
+                    attr: 1
+                  - text: hour
+                    attr: 3
+                  - text: ": INTEGER\t0 <= hour <= 23\r\r"
+                    attr: 1
+                  - text: minute
+                    attr: 3
+                  - text: ": INTEGER\t0 <= minute <= 59\r\r"
+                    attr: 1
+                  - text: second
+                    attr: 3
+                  - text: ": INTEGER\t0 <= second <= 59\r\r\rPROCEDURE  "
+                    attr: 1
+                  - text: ValidDate
+                    attr: 3
+                  - text: " (IN d: Date): BOOLEAN\rTest whether "
+                    attr: 1
+                  - text: "d "
+                    attr: 2
+                  - text: "is a valid date according to the Julian (before 1582) or Gregorian (after 1582) calendar. Dates between 10/5/1582 and 10/14/1582 did not exist and are not valid.\r\rPROCEDURE  "
+                    attr: 1
+                  - text: ValidTime
+                    attr: 3
+                  - text: " (IN t: Time): BOOLEAN\rTest whether time "
+                    attr: 1
+                  - text: t
+                    attr: 2
+                  - text: " is valid.\r\rPROCEUDRE "
+                    attr: 1
+                  - text: "GetDate "
+                    attr: 3
+                  - text: "(OUT d: Date)\rGet the current date.\r\rPROCEDURE "
+                    attr: 1
+                  - text: GetTime
+                    attr: 3
+                  - text: " (OUT t: Time)\rGet the current time.\r\rPROCEDURE "
+                    attr: 1
+                  - text: GetEasterDate
+                    attr: 3
+                  - text: " (year: INTEGER; OUT d: Date)\rGet the Easter date of "
+                    attr: 1
+                  - text: "year.\r\r"
+                    attr: 2
+                  - text: "Pre\r(year > 1582)  &  (year < 2300)\t20\r\rPROCEDURE "
+                    attr: 1
+                  - text: DayOfWeek
+                    attr: 3
+                  - text: " (IN d: Date): INTEGER\rReturn the weekday of date "
+                    attr: 1
+                  - text: d
+                    attr: 2
+                  - text: ".\r\rPre\rValidDate(d)\t(not explicitly checked)\r\rPost\rresult IN {monday .. sunday}\r\rPROCEDURE  "
+                    attr: 1
+                  - text: Day
+                    attr: 3
+                  - text: " (d: Date): INTEGER;\rFor date "
+                    attr: 1
+                  - text: d
+                    attr: 2
+                  - text: ", return the number of days since 1/1/1. Day(1/1/1) = 1. \rThe difference between two dates in days can be computed with "
+                    attr: 1
+                  - text: "Day(d2) - Day(d1).\r\r"
+                    attr: 2
+                  - text: "Pre\rValidDate(d)\t(not explicitly checked)\r\rPost\r(result > 0)  &  (result < 3652062)\r\rPROCEDURE  "
+                    attr: 1
+                  - text: DayToDate
+                    attr: 3
+                  - text: " (n: INTEGER; OUT d: Date);\rConvert the number of days since 1/1/1 into a date.\r"
+                    attr: 1
+                  - text: "DayToDate(Day(d1), d2) => d1=d2\r"
+                    attr: 2
+                  - text: "\rPre\r(n > 0)  &  (n < 3652062)\t(not explicitly checked)\r\rPost\rValidDate(d) & Day(d) = n\r\rPROCEDURE  "
+                    attr: 1
+                  - text: "DateToString "
+                    attr: 3
+                  - text: "(IN d: Date; format: INTEGER; OUT s: ARRAY OF CHAR);\rConvert the date "
+                    attr: 1
+                  - text: "d "
+                    attr: 2
+                  - text: "into string "
+                    attr: 1
+                  - text: "s. "
+                    attr: 2
+                  - text: "The format of the conversion is specified through the operation system, usually depending on country and language.\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 1260000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "format\texample\r"
+                    attr: 3
+                  - text: "short\t01/02/92\rabbreviated\tThu, Jan 2, 1992\rlong\tThursday, January 2, 1992\rplainAbbreviated\tJan 2, 1992\rplainLong\tJanuary 2, 1992\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rPre\rValidDate(d)\t(not explicitly checked)\rformat IN {short, abbreviated, long, plainAbbreviated, longAbbreviated}\t20\r\rPROCEDURE "
+                    attr: 1
+                  - text: TimeToString
+                    attr: 3
+                  - text: " (IN t: Time; OUT s: ARRAY OF CHAR);\rConvert the time "
+                    attr: 1
+                  - text: t
+                    attr: 2
+                  - text: " into string "
+                    attr: 1
+                  - text: s
+                    attr: 2
+                  - text: ". The format of the conversion is specified through the operating system.\r\rPre\rValidTime(t)\t(not explicitly checked)\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 14
+          bodyPos: 5302
+          bodyLen: 8

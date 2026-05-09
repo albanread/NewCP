@@ -1,0 +1,384 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Com\\Docu\\Aggregate.odc"
+  size: 7778
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 7647
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 7461
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 7375
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 114300
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 30
+                bodyPos: 7496
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 6982
+                runListLen: 2206
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: "*"
+                    size: 104775
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [4]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [5]
+                    font: "*"
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                flow:
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 0
+                      w: 360000000
+                      h: 444500
+                  - target:
+                      name: 7.8
+                      body:
+                        - text: ComAggregate Example
+                          attr: 0
+                      attr: 0
+                      w: 150300
+                      h: 142875
+                  - text: "\r\r"
+                    attr: 0
+                  - text: "This example shows how aggregation is implemented using the COM compiler. The example is described in detail in chapter two of the book \"Inside OLE\".\r\rWith aggregation, an object which implements one or several interfaces is reused without modification and without the need to forward each method of the reused interfaces. The reused object is called the inner one, and the object which reuses the inner object is called the outer object. The inner object delegates all calls to "
+                    attr: 1
+                  - text: QueryInterface
+                    attr: 2
+                  - text: " to the outer object, and the outer object has a reference to the inner object's "
+                    attr: 1
+                  - text: IUnknown
+                    attr: 2
+                  - text: " interface. This latter interface must not forward the "
+                    attr: 1
+                  - text: QueryInterface
+                    attr: 2
+                  - text: " calls, otherwise this would produce an infinite recursion. This implies that an aggregatable object must provide a separate implementation of the "
+                    attr: 1
+                  - text: IUnknown
+                    attr: 2
+                  - text: " interface, i.e. an aggregatable object consists of at least two records which both implement the "
+                    attr: 1
+                  - text: IUnknown
+                    attr: 2
+                  - text: " interface, where one "
+                    attr: 1
+                  - text: "QueryInterface "
+                    attr: 2
+                  - text: "method is forwarded, while the other is not. These two records will be linked by references from one to the other.\r\rThe interface which is reused has the "
+                    attr: 1
+                  - text: IAnimal
+                    attr: 2
+                  - text: " interface,\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      dsc: 25400
+                      grid: 1
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\t\tIAnimal = POINTER TO ABSTRACT RECORD\r\t\t\t\t\t\t\t\t\t\t\t[\"{00021143-0000-0000-C000-000000000046}\"] (COM.IUnknown)\r\t\t\t(this: IAnimal) Eat (): COM.RESULT, NEW, ABSTRACT;\r\t\t\t(this: IAnimal) Sleep (): COM.RESULT, NEW, ABSTRACT;\r\t\t\t(this: IAnimal) Procreate (): COM.RESULT, NEW, ABSTRACT;\r\t\tEND;\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 3
+                      w: 360000000
+                      h: 444500
+                  - text: "\rand the two objects which implement the aggregatable implementation of this interface are defined below.\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      dsc: 25400
+                      grid: 1
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\t\tCAnimal = POINTER TO RECORD (COM.IUnknown)\r\t\t\timpl: CImpIAnimal\r\t\tEND;\r\t\tCImpIAnimal = POINTER TO RECORD (IAnimal)\r\t\t\tobj: CAnimal\r\t\tEND;\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 3
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "The "
+                    attr: 1
+                  - text: CAnimal
+                    attr: 2
+                  - text: " record implements the "
+                    attr: 1
+                  - text: IUnknown
+                    attr: 2
+                  - text: " interface and the "
+                    attr: 1
+                  - text: CImplAnimal
+                    attr: 2
+                  - text: " record implements the "
+                    attr: 1
+                  - text: IAnimal
+                    attr: 2
+                  - text: " interface. If the object is aggregated, the calls to the "
+                    attr: 1
+                  - text: QueryInterface
+                    attr: 2
+                  - text: " method of the latter record are forwarded to the outer object.\r\rSince objects are created inside-out, the outer object is passed as a parameter to the procedure which creates an "
+                    attr: 1
+                  - text: IAnimal
+                    attr: 2
+                  - text: " object. If the reference to the outer object is not NIL, then the "
+                    attr: 1
+                  - text: IAnimal
+                    attr: 2
+                  - text: " object is aggregated. It is a convention of COM that then the "
+                    attr: 1
+                  - text: IUnknown
+                    attr: 2
+                  - text: " interface of the aggregated object must be requested upon object creation.\r\rAs the outer object has a reference to the inner one, and the inner one a reference to the outer one, there is a cycle of references which would prevent garbage collection. To avoid this, the reference from the inner to the outer object is a special reference which is not reference counted. Such references can be generated with the two-argument NEW. The default implementation of "
+                    attr: 1
+                  - text: QueryInterface
+                    attr: 2
+                  - text: " then automatically forwards the requests to the outer object. \rIf the object is not aggregated, we use the "
+                    attr: 1
+                  - text: CAnimal
+                    attr: 2
+                  - text: " record as \"outer\" object for the "
+                    attr: 1
+                  - text: CImplAnimal
+                    attr: 2
+                  - text: " object. This is the same pattern as in the ComObject example, i.e. a COM object which implements several interfaces.\rThe whole procedure to create an "
+                    attr: 1
+                  - text: IAnimal
+                    attr: 2
+                  - text: " object is given below. The first parameter (outer) determines whether the object is aggregated or not.\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      dsc: 25400
+                      grid: 1
+                      opts: 0x0000000b
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tPROCEDURE CreateAnimal (outer: COM.IUnknown; IN [iid] iid: COM.GUID;\r\t\t\t\t\t\t\t\t\t\tOUT [new] int: COM.IUnknown): COM.RESULT;\r\t\tVAR new: CAnimal;\r\tBEGIN\r\t\tIF (outer # NIL) & (iid # COM.ID(COM.IUnknown)) THEN "
+                    attr: 1
+                  - text: "\r\t\t\tRETURN"
+                    attr: 0
+                  - text: " WinApi.CLASS_E_NOAGGREGATION \r\t\tEND;\r\t\tNEW(new);\r\t\tIF new # NIL THEN\r\t\t\tIF outer = NIL THEN NEW(new.impl, new)\r\t\t\tELSE NEW(new.impl, outer)\r\t\t\tEND;\r\t\t\tIF new.impl # NIL THEN\r\t\t\t\tnew.impl.obj := new;\r\t\t\t\t"
+                    attr: 1
+                  - text: "StdLog.String(\"Animal allocated\"); Std"
+                    attr: 4
+                  - text: "Log.Ln;\r\t\t\t"
+                    attr: 1
+                  - text: "\tRETURN"
+                    attr: 0
+                  - text: " new.QueryInterface(iid, int)\r\t\t\tEND\r\t\tEND;\r\t\t"
+                    attr: 1
+                  - text: RETURN
+                    attr: 0
+                  - text: " WinApi.E_OUTOFMEMORY\r\tEND CreateAnimal;\r"
+                    attr: 1
+                  - text: "\r\r"
+                    attr: 3
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "The inner object's explicit "
+                    attr: 1
+                  - text: IUnknown
+                    attr: 2
+                  - text: " interface must control the inner object's reference count and implement the "
+                    attr: 1
+                  - text: "QueryInterface "
+                    attr: 2
+                  - text: "behavior for only the inner object. The procedure which is doing this has the following form:\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      dsc: 25400
+                      grid: 1
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tPROCEDURE (this: CAnimal) QueryInterface (IN [iid] iid: COM.GUID; \r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT [new] int: COM.IUnknown): COM.RESULT;\r\tBEGIN\r\t\tIF COM.QUERY(this, iid, int) OR COM.QUERY(this.impl, iid, int) THEN "
+                    attr: 1
+                  - text: RETURN
+                    attr: 0
+                  - text: " WinApi.S_OK\r\t\tELSE "
+                    attr: 1
+                  - text: RETURN
+                    attr: 0
+                  - text: " WinApi.E_NOINTERFACE\r\t\tEND\r\tEND QueryInterface;\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rNote that the COM.QUERY command on the "
+                    attr: 1
+                  - text: CImplAnimal
+                    attr: 2
+                  - text: " interface is not forwarded. It succeeds if the "
+                    attr: 1
+                  - text: IAnimal
+                    attr: 2
+                  - text: " interface is requested.\r\rNote that in the example, the outer object which implements the "
+                    attr: 1
+                  - text: IKoala
+                    attr: 2
+                  - text: " interface is also designed to support aggregation. The object is separated into two records, one implementing the "
+                    attr: 1
+                  - text: IUnknown
+                    attr: 2
+                  - text: " interface and the other the "
+                    attr: 1
+                  - text: IKoala
+                    attr: 2
+                  - text: " interface. This design is easy to extend if additional interfaces have to be supported.\r\rThe example finally provides some commands which allow to test the functionality of the IKoala-IAnimal implementation.\r\r\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenDoc('Com/Mod/Aggregate')"
+                      body:
+                        - text: ComAggregate  sources
+                          attr: 5
+                      attr: 5
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 5
+                  - text: "\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 34
+          bodyPos: 7743
+          bodyLen: 8

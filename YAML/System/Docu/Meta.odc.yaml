@@ -1,0 +1,804 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\System\\Docu\\Meta.odc"
+  size: 21857
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 21726
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 21540
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 21454
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                asc: 134600
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000003
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 19
+                bodyPos: 21575
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 21061
+                runListLen: 2719
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 101600
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [5]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                  - # [6]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [7]
+                    font: Arial
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [8]
+                    font: "*"
+                    size: 101600
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                flow:
+                  - text: Meta
+                    attr: 0
+                  - text: "\r\rDEFINITION Meta;\r\r\tCONST\r\t\tundef = 0;\r\t\ttypObj = 2; varObj = 3; procObj = 4; fieldObj = 5; modObj = 6; parObj = 7;\r\t\tboolTyp = 1; sCharTyp = 2; charTyp = 3;\r\t\tbyteTyp = 4; sIntTyp = 5; intTyp = 6; longTyp = 10; sRealTyp = 7; realTyp = 8;\r\t\tsetTyp = 9; anyRecTyp = 11; anyPtrTyp = 12; sysPtrTyp = 13;\r\t\tprocTyp = 16; recTyp = 17; arrTyp = 18; ptrTyp = 19;\r\t\tfinal = 0; extensible = 1; limited = 2; abstract = 3;\r\t\thidden = 1; readOnly = 2; exported = 4;\r"
+                    attr: 1
+                  - text: "\t\t"
+                    attr: 2
+                  - text: value = 10; in = 11; out = 12; var = 13;
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - text: "\r\tTYPE\r\t\tName = ARRAY 256 OF CHAR;\r\r\t\tValue = ABSTRACT RECORD END;\r\r\t\tItem = RECORD (Value)\r\t\t\tobj-, typ-, vis-, adr-: INTEGER;\r\t\t\t(IN i: Item) Valid (): BOOLEAN, NEW;\r\t\t\t(IN i: Item) GetTypeName (OUT mod, type: Name), NEW;\r\t\t\t(IN i: Item) BaseTyp (): INTEGER, NEW;\r\t\t\t(IN i: Item) Level (): INTEGER, NEW;\r\t\t\t(IN i: Item) Size (): INTEGER, NEW;\r\t\t\t(IN arr: Item) Len (): INTEGER, NEW;\r\t\t\t(IN in: Item) Lookup (IN name: ARRAY OF CHAR; VAR i: Item), NEW;\r\t\t\t(IN i: Item) GetBaseType (VAR base: Item), NEW;\r\t\t\t(IN rec: Item) GetThisBaseType (level: INTEGER; VAR base: Item), NEW;\r\t\t\t(IN proc: Item) NumParam (): INTEGER, NEW;\r\t\t\t(IN proc: Item) GetParam (n: INTEGER; VAR par: Item), NEW;\r\t\t\t(IN proc: Item) GetParamName (n: INTEGER; OUT name: Name), NEW;\r\t\t\t(IN proc: Item) GetReturnType (VAR type: Item), NEW;\r\t\t\t(IN rec: Item) Is (IN type: Value): BOOLEAN, NEW;\r\t\t\t(IN ptr: Item) Deref (VAR ref: Item), NEW;\r\t\t\t(IN arr: Item) Index (index: INTEGER; VAR elem: Item), NEW;\r\t\t\t(IN proc: Item) Call (OUT ok: BOOLEAN), NEW;\r\t\t\t(IN proc: Item) "
+                    attr: 1
+                  - text: ParamCall
+                    attr: 3
+                  - text: " (IN par: ARRAY OF Item; VAR dest: Item;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT ok: BOOLEAN), NEW;\r\t\t\t(IN proc: Item) "
+                    attr: 1
+                  - text: ParamCallVal
+                    attr: 3
+                  - text: " (IN par: "
+                    attr: 1
+                  - text: ARRAY OF POINTER TO Value
+                    attr: 3
+                  - text: "; VAR dest: Item;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT ok: BOOLEAN), NEW;\r\t\t\t(IN var: Item) GetVal (VAR x: Value; OUT ok: BOOLEAN), NEW;\r\t\t\t(IN var: Item) PutVal (IN x: Value; OUT ok: BOOLEAN), NEW;\r\t\t\t(IN var: Item) GetStringVal (OUT x: ARRAY OF CHAR; OUT ok: BOOLEAN), NEW;\r\t\t\t(IN var: Item) GetSStringVal (OUT x: ARRAY OF SHORTCHAR; OUT ok: BOOLEAN), NEW;\r\t\t\t(IN var: Item) PutStringVal (IN x: ARRAY OF CHAR; OUT ok: BOOLEAN), NEW;\r\t\t\t(IN var: Item) PutSStringVal (IN x: ARRAY OF SHORTCHAR; OUT ok: BOOLEAN), NEW;\r\t\t\t(IN var: Item) PtrVal (): ANYPTR, NEW;\r\t\t\t(IN var: Item) PutPtrVal (x: ANYPTR), NEW;\r\t\t\t(IN var: Item) IntVal (): INTEGER, NEW;\r\t\t\t(IN var: Item) PutIntVal (x: INTEGER), NEW;\r\t\t\t(IN var: Item) RealVal (): REAL, NEW;\r\t\t\t(IN var: Item) PutRealVal (x: REAL), NEW;\r\t\t\t(IN var: Item) LongVal (): LONGINT, NEW;\r\t\t\t(IN var: Item) PutLongVal (x: LONGINT), NEW;\r\t\t\t(IN var: Item) CharVal (): CHAR, NEW;\r\t\t\t(IN var: Item) PutCharVal (x: CHAR), NEW;\r\t\t\t(IN var: Item) BoolVal (): BOOLEAN, NEW;\r\t\t\t(IN var: Item) PutBoolVal (x: BOOLEAN), NEW;\r\t\t\t(IN var: Item) SetVal (): SET, NEW;\r\t\t\t(IN var: Item) PutSetVal (x: SET), NEW;\r\t\t\t(IN type: Item) New (): ANYPTR, NEW;\r\t\t\t(IN val: Item) Copy (): ANYPTR, NEW;\r\t\t\t(IN rec: Item) CallWith (proc: PROCEDURE (VAR rec, par: ANYREC); VAR par: ANYREC), NEW\r\t\tEND;\r\r\t\tScanner = RECORD \r\t\t\tthis-: Item;\r\t\t\teos-: BOOLEAN;\r\t\t\t(VAR s: Scanner) ConnectToMods, NEW;\r\t\t\t(VAR s: Scanner) ConnectTo (IN obj: Item), NEW;\r\t\t\t(VAR s: Scanner) Scan, NEW;\r\t\t\t(VAR s: Scanner) GetObjName (OUT name: Name), NEW;\r\t\t\t(VAR s: Scanner) Level (): INTEGER, NEW\r\t\tEND;\r\r\tLookupFilter = PROCEDURE (IN path: ARRAY OF CHAR; OUT i: Item; OUT done: BOOLEAN)\r\r\tPROCEDURE Lookup (IN name: ARRAY OF CHAR; OUT mod: Item);\r\tPROCEDURE LookupPath (IN path: ARRAY OF CHAR; OUT i: Item);\r\tPROCEDURE GetItem (obj: ANYPTR; OUT i: Item);\r\tPROCEDURE InstallFilter (filter: LookupFilter);\r\tPROCEDURE UninstallFilter (filter: LookupFilter);\r\tPROCEDURE GetThisItem (IN attr: ANYREC; OUT i: Item);\r\rEND Meta.\r\r\r"
+                    attr: 1
+                  - text: Meta
+                    attr: 4
+                  - text: " provides access to Component Pascal run-time type information. "
+                    attr: 1
+                  - text: Meta
+                    attr: 4
+                  - text: " is restricted to public information, i.e., it doesn't allow access to non-exported items of a module. "
+                    attr: 1
+                  - text: Meta
+                    attr: 4
+                  - text: " is safe, it doesn't allow to change data which is not exported as modifiable. Generally, "
+                    attr: 1
+                  - text: Meta
+                    attr: 4
+                  - text: " only allows to do with a module what could be done by a normal client module also. The difference is that "
+                    attr: 1
+                  - text: Meta
+                    attr: 4
+                  - text: " is more dynamic; it allows inspection and modification of data depending on run-time decisions, without static import of the inspected or modified module.\r\rConstants are not accessible via "
+                    attr: 1
+                  - text: Meta
+                    attr: 4
+                  - text: ", they are not represented at run-time in order to minimize space overhead.\r\rExamples:\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenDoc('Obx/Mod/Ctrls')"
+                      body:
+                        - text: ObxCtrls
+                          attr: 5
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\tslider control, extended from Controls.Control\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenDoc('Obx/Mod/FldCtrls')"
+                      body:
+                        - text: ObxFldCtrls
+                          attr: 5
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\tspecial-purpose text field control, extended from Controls.Control\r\rHow to call procedures using "
+                    attr: 1
+                  - text: Meta
+                    attr: 4
+                  - text: ":\rIn order to call an arbitrary procedure (methods are not possible) whose signature is statically known, the following must be done: first, an item must be created that describes the function:\r\r\tMeta.Lookup(moduleName, item);\r\tIF item.obj = Meta.modObj THEN\r\t\titem.Lookup(procedureName, item);\r\t\tIF item.obj = Meta.procObj THEN\r\t\t\titem.GetVal(item0, ok);\r\t\t\tIF ok THEN\r\t\t\t\titem0.fun(x)\r\t\t\t\t...\r\rThe item "
+                    attr: 1
+                  - text: item
+                    attr: 4
+                  - text: " is a normal, non-extended "
+                    attr: 1
+                  - text: Meta.Item
+                    attr: 4
+                  - text: " item. In contrast, "
+                    attr: 1
+                  - text: item0
+                    attr: 4
+                  - text: " must be an extension of "
+                    attr: 1
+                  - text: Meta.Value
+                    attr: 4
+                  - text: " that contains as one additional field a procedure variable of the correct type:\r\r\titem0: RECORD (Meta.Value)\r\t\t\t\tfun: PROCEDURE (x: REAL): REAL\r\t\t\tEND;\r\r\rCONST "
+                    attr: 1
+                  - text: undef
+                    attr: 6
+                  - text: "\rPossible result code for object classes, type classes, visibility classes.\r\rCONST "
+                    attr: 1
+                  - text: "typObj, varObj, procObj, fieldObj, modObj, parObj"
+                    attr: 6
+                  - text: "\rObject classes.\r\rCONST "
+                    attr: 1
+                  - text: "boolTyp, sCharTyp, charTyp, byteTyp, sintTyp, intTyp, longTyp,\r\t\t\tsRealTyp, realTyp, setTyp,"
+                    attr: 6
+                  - text: " "
+                    attr: 1
+                  - text: "anyRecTyp, anyPtrTyp, procTyp, recTyp, arrTyp, ptrTyp, \r\t\t\tsysPtrTyp"
+                    attr: 6
+                  - text: "\rType classes.\r\rCONST "
+                    attr: 1
+                  - text: "final, extensible, limited, abstract"
+                    attr: 6
+                  - text: "\rRecord attributes.\r\rCONST "
+                    attr: 1
+                  - text: "hidden, readOnly, exported"
+                    attr: 6
+                  - text: "\rVisibility classes.\r\rCONST "
+                    attr: 1
+                  - text: "value, in, out, var"
+                    attr: 6
+                  - text: "\rParameter kinds.\r\r\rTYPE "
+                    attr: 1
+                  - text: Name
+                    attr: 6
+                  - text: "\rString type for meta item names.\r\r\rTYPE "
+                    attr: 1
+                  - text: Value
+                    attr: 6
+                  - text: "\rABSTRACT\rA value may be extended exactly once, with a single field.\r\r\rTYPE "
+                    attr: 1
+                  - text: Item (Value)
+                    attr: 6
+                  - text: "\r\r"
+                    attr: 1
+                  - text: obj-
+                    attr: 6
+                  - text: ": INTEGER\r"
+                    attr: 1
+                  - text: typ-
+                    attr: 6
+                  - text: ": INTEGER\r"
+                    attr: 1
+                  - text: vis-
+                    attr: 6
+                  - text: ": INTEGER\r"
+                    attr: 1
+                  - text: adr-
+                    attr: 6
+                  - text: ": INTEGER\rProperties of the object represented by the item. The meaning of the fields depends on the class of the object as follows:\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 972000, kind: 0x00000001 }
+                        - { stop: 1836000, kind: 0x00000001 }
+                        - { stop: 2700000, kind: 0x00000001 }
+                        - { stop: 3564000, kind: 0x00000001 }
+                        - { stop: 4428000, kind: 0x00000001 }
+                        - { stop: 5292000, kind: 0x00000001 }
+                      version: 2
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "Class:\tType\tVariable\tProcedure\tField\tModule\tParameter\r"
+                    attr: 1
+                  - text: "obj:"
+                    attr: 4
+                  - text: "\t"
+                    attr: 1
+                  - text: "typObj\tvarObj\tprocObj\tfieldObj\tmodObj\tparObj"
+                    attr: 4
+                  - text: "\r"
+                    attr: 1
+                  - text: "typ:"
+                    attr: 4
+                  - text: "\ttype class\ttype class\t"
+                    attr: 1
+                  - text: undef
+                    attr: 4
+                  - text: "\ttype class\t"
+                    attr: 1
+                  - text: undef
+                    attr: 4
+                  - text: "\ttype class"
+                    attr: 1
+                  - text: "\rvis:"
+                    attr: 4
+                  - text: "\t"
+                    attr: 1
+                  - text: undef
+                    attr: 4
+                  - text: "\tvisibility\tvisibility\tvisibility\t"
+                    attr: 1
+                  - text: undef
+                    attr: 4
+                  - text: "\tkind"
+                    attr: 1
+                  - text: "\radr:"
+                    attr: 4
+                  - text: "\t0\taddress\taddress\toffset\t0\tnumber\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r\rPROCEDURE (IN i: Item) "
+                    attr: 1
+                  - text: Valid
+                    attr: 6
+                  - text: " (): BOOLEAN\rNEW\rDetermines whether the item is valid, i.e., initialized, set to a defined type, and its module is still loaded.\r\rPROCEDURE (IN i: Item) "
+                    attr: 1
+                  - text: GetTypeName
+                    attr: 6
+                  - text: " (OUT mod, type: Name)\rNEW\rGet the item's type name and the name of this type's module.\r\rPre\ri.Valid()\t20\ri.typ >= recTyp\t21\rmodule of type is still loaded\t24\r\rPROCEDURE (IN i: Item) "
+                    attr: 1
+                  - text: BaseTyp
+                    attr: 6
+                  - text: " (): INTEGER\rNEW\rReturns the item's base type.\r\rPre\ri.Valid()\t20\ri.typ IN {arrTyp, recTyp, ptrTyp}\t21\r\rPROCEDURE (IN i: Item) "
+                    attr: 1
+                  - text: Level
+                    attr: 6
+                  - text: " (): INTEGER\rNEW\rReturns the item's level.\r\rPre\ri.Valid()\t20\ri.typ IN {recTyp, arrTyp}\t21\r\rPROCEDURE (IN i: Item) "
+                    attr: 1
+                  - text: Size
+                    attr: 6
+                  - text: " (): INTEGER\rNEW\rReturns the item's size in bytes.\r\rPre\ri.Valid()\t20\ri.typ # undef\t21\r\rPROCEDURE (IN arr: Item) "
+                    attr: 1
+                  - text: Len
+                    attr: 6
+                  - text: " (): INTEGER\rNEW\rReturns the array's length.\r\rPre\ri.Valid()\t20\ri.typ = arrTyp\t21\r\rPROCEDURE (IN in: Item) "
+                    attr: 1
+                  - text: Lookup
+                    attr: 6
+                  - text: " (IN name: ARRAY OF CHAR; VAR i: Item)\rNEW\rLookup an item in a module or a field in a record.\r\rPre\rin.Valid()\t20\rin.obj = modObj  OR  in.typ = recTyp\t21\r\rPost\ri.obj # undef\r\tlookup was successful\ri.obj = undef\r\tlookup was not successful\r\rPROCEDURE (IN i: Item) "
+                    attr: 1
+                  - text: GetBaseType
+                    attr: 6
+                  - text: " (VAR base: Item)\rNEW\rAssign "
+                    attr: 1
+                  - text: i
+                    attr: 4
+                  - text: "'s base type to "
+                    attr: 1
+                  - text: base
+                    attr: 4
+                  - text: ".\r\rPre\ri.Valid()\t20\ri.typ IN {recTyp, arrTyp}\t21\r\rPROCEDURE (IN rec: Item) "
+                    attr: 1
+                  - text: GetThisBaseType
+                    attr: 6
+                  - text: " (level: INTEGER; VAR base: Item)\rNEW\rAssign "
+                    attr: 1
+                  - text: i
+                    attr: 4
+                  - text: "'s "
+                    attr: 1
+                  - text: level
+                    attr: 4
+                  - text: "-th base type to "
+                    attr: 1
+                  - text: base
+                    attr: 4
+                  - text: ". If the level does not exist, "
+                    attr: 1
+                  - text: i.obj
+                    attr: 4
+                  - text: " is set to "
+                    attr: 1
+                  - text: undef
+                    attr: 4
+                  - text: ".\r\rPre\rrec.Valid()\t20\rrec.typ IN {recTyp, arrTyp}\t21\rlevel >= 0  &  level < 16\t28\r\rPROCEDURE (IN proc: Item) "
+                    attr: 1
+                  - text: NumParam
+                    attr: 6
+                  - text: " (): INTEGER\rNEW\rReturns the number of parameters of a procedure or procedure type.\r\rPre\rproc.Valid()\t20\rproc.obj = procObj OR proc.typ = procTyp\t21\r\rPROCEDURE (IN proc: Item) "
+                    attr: 1
+                  - text: GetParam
+                    attr: 6
+                  - text: " (n: INTEGER; VAR par: Item)\rNEW\rAssigns the "
+                    attr: 1
+                  - text: n
+                    attr: 4
+                  - text: "-th parameter of "
+                    attr: 1
+                  - text: proc
+                    attr: 4
+                  - text: " to "
+                    attr: 1
+                  - text: par
+                    attr: 4
+                  - text: ". "
+                    attr: 1
+                  - text: n
+                    attr: 4
+                  - text: " must be in the range 0..proc.NumParam()-1. "
+                    attr: 1
+                  - text: par.obj
+                    attr: 4
+                  - text: " is set to "
+                    attr: 1
+                  - text: parObj
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: par.vis
+                    attr: 4
+                  - text: " reflects the kind of the parameter ("
+                    attr: 1
+                  - text: value
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: in
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: out
+                    attr: 4
+                  - text: ", or "
+                    attr: 1
+                  - text: var
+                    attr: 4
+                  - text: "), and "
+                    attr: 1
+                  - text: par.typ
+                    attr: 4
+                  - text: " its type.\r\rPre\rproc.Valid()\t20\rproc.obj = procObj OR proc.typ = procTyp\t21\r\rPROCEDURE (IN proc: Item) "
+                    attr: 1
+                  - text: GetParamName
+                    attr: 6
+                  - text: " (n: INTEGER; OUT name: Name)\rNEW\rAssigns the name of the "
+                    attr: 1
+                  - text: n
+                    attr: 4
+                  - text: "-th parameter of "
+                    attr: 1
+                  - text: proc
+                    attr: 4
+                  - text: " to "
+                    attr: 1
+                  - text: name
+                    attr: 4
+                  - text: ". If the parameter does not exist, name is set to \"\".\r\rPre\rproc.Valid()\t20\rproc.obj = procObj OR proc.typ = procTyp\t21\r\rPROCEDURE (IN proc: Item) "
+                    attr: 1
+                  - text: GetReturnType
+                    attr: 6
+                  - text: " (VAR type: Item)\rNEW\rAssigns the return type of a procedure or procedure type to "
+                    attr: 1
+                  - text: type
+                    attr: 4
+                  - text: ". For proper procedures "
+                    attr: 1
+                  - text: type.typ
+                    attr: 4
+                  - text: " is set to "
+                    attr: 1
+                  - text: undef
+                    attr: 4
+                  - text: ".\r\rPre\rproc.Valid()\t20\rproc.obj = procObj OR proc.typ = procTyp\t21\r\rPROCEDURE (IN rec: Item) "
+                    attr: 1
+                  - text: Is
+                    attr: 6
+                  - text: " (IN type: Value): BOOLEAN\rNEW\rPerform a type test "
+                    attr: 1
+                  - text: rec IS type
+                    attr: 4
+                  - text: ".\r\rPre\rrec.Valid()\t20\rrec.typ = recTyp\t21\rtype IS Item\r\ttype.Valid()\t20\r\ttype.typ = recTyp\t21\r~(type IS Item)\r\ttype.Level() = 1\t25\r\tnumber of fields of type = 1\t26\r\rPROCEDURE (IN ptr: Item) "
+                    attr: 1
+                  - text: Deref
+                    attr: 6
+                  - text: " (VAR ref: Item)\rNEW\rDereference pointer "
+                    attr: 1
+                  - text: ptr
+                    attr: 4
+                  - text: " and assign the result to "
+                    attr: 1
+                  - text: ref
+                    attr: 4
+                  - text: ".\r\rPre\rptr.typ IN {ptrTyp, anyPtrTyp, sysPtrTyp}\t21\rref must be a level 1 record\t25\rref must have exactly one field\t26\r\rPROCEDURE (IN arr: Item) "
+                    attr: 1
+                  - text: Index
+                    attr: 6
+                  - text: " (index: INTEGER; VAR elem: Item)\rNEW\rAssign the "
+                    attr: 1
+                  - text: index
+                    attr: 4
+                  - text: "-th element of array "
+                    attr: 1
+                  - text: arr
+                    attr: 4
+                  - text: " to "
+                    attr: 1
+                  - text: elem
+                    attr: 4
+                  - text: ".\r\rPre\rarr.Valid()\t20\rarr.typ = arrTyp\t21\rarr.obj = varObj\t22\r\rPROCEDURE (IN proc: Item) "
+                    attr: 1
+                  - text: Call
+                    attr: 6
+                  - text: " (OUT ok: BOOLEAN)\rNEW\rCall a parameterless procedure.\r\rPre\rproc.Valid()\t20\rproc.obj = procObj  OR  proc.obj = varObj & proc.typ = procTyp\t22\r\rPROCEDURE (IN proc: Item) "
+                    attr: 1
+                  - text: ParamCall
+                    attr: 7
+                  - text: " (IN par: ARRAY OF Item; VAR dest: Item;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT ok: BOOLEAN)\rNEW\rCall a procedure with a given set of parameters. "
+                    attr: 1
+                  - text: par
+                    attr: 4
+                  - text: " must contain a valid variable of appropriate type for each parameter of the procedure. Depending on the parameter kind, either the variable itself or its actual value is passed to the call. If the procedure returns a value, it is assigned to variable "
+                    attr: 1
+                  - text: dest
+                    attr: 4
+                  - text: ".\r\rPre\rproc.Valid()\t20\rproc.obj = procObj OR proc.obj = varObj & proc.typ = procTyp\t22\rLEN(par) >= proc.NumParam()\t32\rpar[i].Valid()\t20\rpar[i].obj = varObj\t22\rproc.GetParam(i).vis IN {out, var}\r"
+                    attr: 1
+                  - text: "\t"
+                    attr: 8
+                  - text: "par[i].vis = exported\t27\rproc.GetReturnType() valid\r\tdest.Valid()\t20\r\tdest.obj = varObj\t22\r\tdest.vis = exported\t27\r\t\rPROCEDURE (IN proc: Item) "
+                    attr: 1
+                  - text: ParamCallVal
+                    attr: 7
+                  - text: " (IN par: "
+                    attr: 1
+                  - text: ARRAY OF POINTER TO Value
+                    attr: 3
+                  - text: "; VAR dest: Value;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT ok: BOOLEAN)\rNEW\rCall a procedure with a given set of parameters. "
+                    attr: 1
+                  - text: par
+                    attr: 4
+                  - text: " must contain a valid variable item or a value record of appropriate type for each parameter of the procedure. Depending on the parameter kind, either the variable itself or its actual value is passed to the call. If the procedure returns a value, it is assigned to the variable item or value record"
+                    attr: 1
+                  - text: " dest"
+                    attr: 4
+                  - text: ".\r\rPre\rproc.Valid()\t20\rproc.obj = procObj OR proc.obj = varObj & proc.typ = procTyp\t22\rLEN(par) >= proc.NumParam()\t32\rpar[i] IS Item\r\tpar[i].Valid()\t20\r\tpar[i].obj = varObj\t22\rpar[i] IS Item & proc.GetParam(i).vis IN {out, var}\r"
+                    attr: 1
+                  - text: "\t"
+                    attr: 8
+                  - text: "par[i].vis = exported\t27\r~(par[i] IS Item)\r\tpar[i] is extension of Value\t25\r\tpar[i] contains a single field\t26\rproc.GetReturnType() valid & dest IS Item\r\tdest.Valid()\t20\r\tdest.obj = varObj\t22\r\tdest.vis = exported\t27\rproc.GetReturnType() valid & ~(dest IS Item)\r\tdest is extension of Value\t25\r\tdest contains a single field\t26\r\t\rPROCEDURE (IN var: Item) "
+                    attr: 1
+                  - text: GetVal
+                    attr: 6
+                  - text: " (VAR x: Value; OUT ok: BOOLEAN)\rNEW\rAssigns the value of var to x. The actual type of x must either be "
+                    attr: 1
+                  - text: "Item "
+                    attr: 4
+                  - text: "or a custom extension of "
+                    attr: 1
+                  - text: Value
+                    attr: 4
+                  - text: " containing a single field of any type. In the former case the item denotes the assigned variable, in the latter the value is assigned directly to the field.\r\rPre\rvar.Valid()\t20\rvar.obj IN {varObj, procObj}\t22\rx IS Item\r\tx.Valid()\t20\r\tx.obj = varObj\t22\r\tx.vis = exported\t27\r~(x IS Item)\r\tx is extension of Value\t25\r\tx contains a single field\t26\r\rPROCEDURE (IN var: Item) "
+                    attr: 1
+                  - text: PutVal
+                    attr: 6
+                  - text: " (IN x: Value; OUT ok: BOOLEAN)\rNEW\rAssigns the value of x to var. The actual type of x must either be "
+                    attr: 1
+                  - text: "Item "
+                    attr: 4
+                  - text: "or a custom extension of "
+                    attr: 1
+                  - text: Value
+                    attr: 4
+                  - text: " containing a single field of any type. In the former case the item denotes the value, in the latter the value is read directly from to the field.\r\rPre\rvar.Valid()\t20\rvar.obj = varObj\t22\rvar.vis = exported\t27\rx IS Item\r\tx.Valid()\t20\r"
+                    attr: 1
+                  - text: "\t"
+                    attr: 8
+                  - text: "x.obj IN {varObj, procObj}\t22\r~(x IS Item)\r\tx is extension of Value\t25\r\tx contains a single field\t26\r\rPROCEDURE (IN var: Item) "
+                    attr: 1
+                  - text: GetStringVal
+                    attr: 6
+                  - text: " (OUT x: ARRAY OF CHAR; OUT ok: BOOLEAN)\rNEW\rReads a string value from an item.\r\rPre\rvar.Valid()\t20\rvar.typ = arrTyp & var.BaseTyp() = charTyp\t21\rvar.obj = varObj\t22\r\rPROCEDURE (IN var: Item) "
+                    attr: 1
+                  - text: GetSStringVal
+                    attr: 6
+                  - text: " (OUT x: ARRAY OF SHORTCHAR; OUT ok: BOOLEAN)\rNEW\rReads a short string value from an item.\r\rPre\rvar.Valid()\t20\rvar.typ = arrTyp & var.BaseTyp() = sCharTyp\t21\rvar.obj = varObj\t22\r\rPROCEDURE (IN var: Item) "
+                    attr: 1
+                  - text: PtrVal
+                    attr: 6
+                  - text: " (): ANYPTR\rNEW\rReads a pointer value from an item.\r\rPre\rvar.Valid()\t20\rvar.typ IN {anyPtrTyp, ptrTyp}\t21\rvar.obj = varObj\t22\r\rPROCEDURE (IN var: Item) "
+                    attr: 1
+                  - text: IntVal
+                    attr: 6
+                  - text: " (): INTEGER\rNEW\rReads a integer value from an item.\r\rPre\rvar.Valid()\t20\rvar.typ IN (sCharTyp, charTyp, byteTyp, sIntTyp, intTyp}\t21\rvar.obj = varObj\t22\r\rPROCEDURE (IN var: Item) "
+                    attr: 1
+                  - text: RealVal
+                    attr: 6
+                  - text: " (): REAL\rNEW\rReads a real value from an item.\r\rPre\rvar.Valid()\t20\rvar.typ IN {sRealTyp, realTyp}\t21\rvar.obj = varObj\t22\r\rPROCEDURE (IN var: Item) "
+                    attr: 1
+                  - text: LongVal
+                    attr: 6
+                  - text: " (): LONGINT\rNEW\rReads a long value from an item.\r\rPre\rvar.Valid()\t20\rvar.typ = longTyp\t21\rvar.obj = varObj\t22\r\rPROCEDURE (IN var: Item) "
+                    attr: 1
+                  - text: CharVal
+                    attr: 6
+                  - text: " (): CHAR\rNEW\rReads a character value from an item.\r\rPre\rvar.Valid()\t20\rvar.typ IN {sCharTyp, charTyp}\t21\rvar.obj = varObj\t22\r\rPROCEDURE (IN var: Item) "
+                    attr: 1
+                  - text: BoolVal
+                    attr: 6
+                  - text: " (): BOOLEAN\rNEW\rReads a boolean value from an item.\r\rPre\rvar.Valid()\t20\rvar.typ = boolTyp\t21\rvar.obj = varObj\t22\r\rPROCEDURE (IN var: Item) "
+                    attr: 1
+                  - text: SetVal
+                    attr: 6
+                  - text: " (): SET\rNEW\rReads a set value from an item.\r\rPre\rvar.Valid()\t20\rvar.typ = setTyp\t21\rvar.obj = varObj\t22\r\rPROCEDURE (IN var: Item) "
+                    attr: 1
+                  - text: PutStringVal
+                    attr: 6
+                  - text: " (IN x: ARRAY OF CHAR; OUT ok: BOOLEAN)\rNEW\rWrites a string value to an item.\r\rPre\rvar.Valid()\t20\rvar.typ = arrTyp & var.BaseTyp() = charTyp\t21\rvar.obj = varObj\t22\rvar.vis = exported\t27\r\rPROCEDURE (IN var: Item) "
+                    attr: 1
+                  - text: PutSStringVal
+                    attr: 6
+                  - text: " (IN x: ARRAY OF SHORTCHAR; OUT ok: BOOLEAN)\rNEW\rWrites a short string value to an item.\r\rPre\rvar.Valid()\t20\rvar.typ = arrTyp & var.BaseTyp() = sCharTyp\t21\rvar.obj = varObj\t22\rvar.vis = exported\t27\r\rPROCEDURE (IN var: Item) "
+                    attr: 1
+                  - text: PutPtrVal
+                    attr: 6
+                  - text: " (x: ANYPTR)\rNEW\rWrites a pointer value to an item.\r\rPre\rvar.Valid()\t20\rvar.typ IN {anyPtrTyp, ptrTyp}\t21\rvar.obj = varObj\t22\rvar.vis = exported\t27\r\rPROCEDURE (IN var: Item) "
+                    attr: 1
+                  - text: PutIntVal
+                    attr: 6
+                  - text: " (x: INTEGER)\rNEW\rWrites an integer value to an item.\r\rPre\rvar.Valid()\t20\rvar.typ IN {sCharTyp, charTyp, byteTyp, sIntTyp, intTyp}\t21\rvar.obj = varObj\t22\rvar.vis = exported\t27\r\rPROCEDURE (IN var: Item) "
+                    attr: 1
+                  - text: PutRealVal
+                    attr: 6
+                  - text: " (x: REAL)\rNEW\rWrites a real value to an item.\r\rPre\rvar.Valid()\t20\rvar.typ IN {sRealTyp, realTyp}\t21\rvar.obj = varObj\t22\rvar.vis = exported\t27\r\rPROCEDURE (IN var: Item) "
+                    attr: 1
+                  - text: PutLongVal
+                    attr: 6
+                  - text: " (x: LONGINT)\rNEW\rWrites a long value to an item.\r\rPre\rvar.Valid()\t20\rvar.typ = longTyp\t21\rvar.obj = varObj\t22\rvar.vis = exported\t27\r\rPROCEDURE (IN var: Item) "
+                    attr: 1
+                  - text: PutCharVal
+                    attr: 6
+                  - text: " (x: CHAR)\rNEW\rWrites a character value to an item.\r\rPre\rvar.Valid()\t20\rvar.typ IN {sCharTyp, charTyp}\t21\rvar.obj = varObj\t22\rvar.vis = exported\t27\r\rPROCEDURE (IN var: Item) "
+                    attr: 1
+                  - text: PutBoolVal
+                    attr: 6
+                  - text: " (x: BOOLEAN)\rNEW\rWrites a boolean value to an item.\r\rPre\rvar.Valid()\t20\rvar.typ = boolTyp\t21\rvar.obj = varObj\t22\rvar.vis = exported\t27\r\rPROCEDURE (IN var: Item) "
+                    attr: 1
+                  - text: PutSetVal
+                    attr: 6
+                  - text: " (x: SET)\rNEW\rWrites a set value to an item.\r\rPre\rvar.Valid()\t20\rvar.typ = setTyp\t21\rvar.obj = varObj\t22\rvar.vis = exported\t27\r\rPROCEDURE (IN type: Item) "
+                    attr: 1
+                  - text: New
+                    attr: 6
+                  - text: " (): ANYPTR\rNEW\rGenerates a new empty heap object. The item must be a record or a pointer type. The type of the new object is the same as the pointer, or a pointer to the record described by the item.\r\rPre\rtype.Valid()\t20\rtype.typ IN (recTyp, ptrTyp)\t21\r\rPROCEDURE (IN val: Item) "
+                    attr: 1
+                  - text: Copy
+                    attr: 6
+                  - text: " (): ANYPTR\rNEW\rThe same as "
+                    attr: 1
+                  - text: New
+                    attr: 4
+                  - text: ", but also copies the contents byte by byte. The item must be a record variable.\r\rPre\rval.Valid()\t20\rval.typ = recTyp\t21\rval.obj = varObj\t22\r\rPROCEDURE (IN rec: Item) "
+                    attr: 1
+                  - text: CallWith
+                    attr: 6
+                  - text: " (proc: PROCEDURE (VAR rec, par: ANYREC); VAR par: ANYREC)\rNEW\rCall procedure proc with the parameters "
+                    attr: 1
+                  - text: rec
+                    attr: 4
+                  - text: " (i.e., the item itself, the \"self\" parameter) and parameter "
+                    attr: 1
+                  - text: par
+                    attr: 4
+                  - text: ".\r\rPre\rrec.Valid()\t20\rrec.typ = recTyp\t21\rrec.obj = varObj\t22\r\r\rTYPE "
+                    attr: 1
+                  - text: Scanner
+                    attr: 6
+                  - text: "\rA scanner allows to iterate over all modules, all items in a module, or all fields in a record.\r\r"
+                    attr: 1
+                  - text: this-
+                    attr: 6
+                  - text: ": Item\rThe result of the most recent "
+                    attr: 1
+                  - text: Scan
+                    attr: 4
+                  - text: " operation.\r\r"
+                    attr: 1
+                  - text: eos-
+                    attr: 6
+                  - text: ": BOOLEAN\rThis flag tells whether the most recent "
+                    attr: 1
+                  - text: Scan
+                    attr: 4
+                  - text: " operation has attempted to read beyond the last item.\r\rPROCEDURE (VAR s: Scanner) "
+                    attr: 1
+                  - text: ConnectToMods
+                    attr: 6
+                  - text: "\rNEW\rEach invocation of "
+                    attr: 1
+                  - text: s.Scan
+                    attr: 4
+                  - text: " will return another module.\r\rPost\rs.this.obj = undef\r~s.eos\r\rPROCEDURE (VAR s: Scanner) "
+                    attr: 1
+                  - text: ConnectTo
+                    attr: 6
+                  - text: " (IN obj: Item)\rNEW\rConnect the scanner to a particular module or record.\r\rPre\robj.Valid()\t20\robj.obj = modObj  OR  obj.typ = recTyp\t21\r\rPROCEDURE (VAR s: Scanner) "
+                    attr: 1
+                  - text: Scan
+                    attr: 6
+                  - text: "\rScan a new item. The result is put into "
+                    attr: 1
+                  - text: s.this
+                    attr: 4
+                  - text: ". If an attempt was made to scan beyond the last item, "
+                    attr: 1
+                  - text: s.eos
+                    attr: 4
+                  - text: " is set, otherwise it is cleared.\r\rPre\rs is connected\t20\r\rPROCEDURE (VAR s: Scanner) "
+                    attr: 1
+                  - text: GetObjName
+                    attr: 6
+                  - text: " (OUT name: Name)\rNEW\rGet the name of the most recently scanned item.\r\rPre\rs.this.Valid()\t20\r\rPROCEDURE (VAR s: Scanner) "
+                    attr: 1
+                  - text: Level
+                    attr: 6
+                  - text: " (): INTEGER\rNEW\rReturns the scanned record's extension level.\r\rPre\rs.this.Valid()\t20\rs connecte to record variable\t22\r\r\r"
+                    attr: 1
+                  - text: TYPE
+                    attr: 6
+                  - text: " LookupFilter = PROCEDURE (IN path: ARRAY OF CHAR; OUT i: Item; OUT done: BOOLEAN)\rType used for extension hook that allows "
+                    attr: 1
+                  - text: Meta
+                    attr: 4
+                  - text: " to operate remotely, for example.\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: Lookup
+                    attr: 6
+                  - text: " (IN name: ARRAY OF CHAR; OUT mod: Item)\rSet up an item to a module.\r\rPost\rmod.obj = modObject\r\tlookup was successful\rmod.obj = undef\r\tlookup was not successful\r\rPROCEDURE "
+                    attr: 1
+                  - text: LookupPath
+                    attr: 6
+                  - text: " (IN path: ARRAY OF CHAR; OUT i: Item)\rLookup an item via a whole designator, starting with a module name.\r\rPROCEDURE "
+                    attr: 1
+                  - text: GetItem
+                    attr: 6
+                  - text: " (obj: ANYPTR; OUT i: Item)\rCreate an item out of a pointer variable.\r\rPROCEDURE "
+                    attr: 1
+                  - text: InstallFilter
+                    attr: 6
+                  - text: " (filter: LookupFilter)\rInstall an extension hook.\r\rPROCEDURE "
+                    attr: 1
+                  - text: UninstallFilter
+                    attr: 6
+                  - text: " (filter: LookupFilter);\rUninstall an extension hook.\r\rPROCEDURE "
+                    attr: 1
+                  - text: GetThisItem
+                    attr: 6
+                  - text: " (IN attr: ANYREC; OUT i: Item)\rUsed internally in extension hooks (creates an item out of a record variable). Use "
+                    attr: 1
+                  - text: Lookup
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: LookupPath
+                    attr: 4
+                  - text: ", or "
+                    attr: 1
+                  - text: GetItem
+                    attr: 4
+                  - text: " instead.\r\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 23
+          bodyPos: 21822
+          bodyLen: 8

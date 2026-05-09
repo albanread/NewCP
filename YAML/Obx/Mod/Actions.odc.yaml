@@ -1,0 +1,232 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Mod\\Actions.odc"
+  size: 4493
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 4362
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 4176
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 4090
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 114300
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Helvetica
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 4207
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 3693
+                runListLen: 1739
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE ObxActions;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- 20150715, center #67, improvements for Obx->Primes...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 165735
+                      h: 142875
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 165735
+                      h: 142875
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT Services, Views, TextModels, TextMappers, TextViews, Math, Dialog;\r\r\tTYPE\r\t\tPrimeAction = POINTER TO RECORD (Services.Action)\r\t\t\tto, stepSize, current, divisor: INTEGER;\r\t\t\tf: TextMappers.Formatter\r\t\tEND;\r\r\tVAR\r\t\t"
+                    attr: 0
+                  - text: primeDlg
+                    attr: 3
+                  - text: "*: RECORD\r\t\t\tto*, stepSize*: INTEGER;\r\t\tEND;\r\r\tPROCEDURE Step (stepSize, to: INTEGER; VAR cur, divisor: INTEGER; f: TextMappers.Formatter);\r\t\tVAR end, sqrtCur: INTEGER;\r\tBEGIN\r\t\tWHILE (stepSize > 0) & (cur <= to) DO\r\t\t\tend := divisor + stepSize;\r\t\t\tsqrtCur := SHORT(ENTIER(Math.Sqrt(cur)));\r\t\t\tWHILE (divisor <= sqrtCur) & (divisor < end) & (cur MOD divisor # 0) DO divisor := divisor + 2 END;\r\t\t\tstepSize := end - divisor;\r\t\t\tIF divisor > sqrtCur THEN\t"
+                    attr: 0
+                  - text: "(* cur is a prime *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tf.WriteInt(cur); f.WriteLn;\r\t\t\t\tdivisor := 3; cur := cur + 2\r\t\t\tELSIF divisor < end THEN\t"
+                    attr: 0
+                  - text: "(* cur is not a prime, test next one *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tdivisor := 3; cur := cur + 2\r\t\t\tELSE\t"
+                    attr: 0
+                  - text: "(* time exhausted, continue test next time *)"
+                    attr: 1
+                  - text: "\r\t\t\tEND\r\t\tEND\r\tEND Step;\r\r\tPROCEDURE (a: PrimeAction) Do;\r\tBEGIN\r\t\tStep(a.stepSize, a.to, a.current, a.divisor, a.f);\r\t\tIF a.current <= a.to THEN\r\t\t\tServices.DoLater(a, Services.now)\r\t\tELSE\r\t\t\tDialog.ShowMsg(\"prime number calculation finished\")\r\t\tEND ;\r\tEND Do;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: StartPrimes
+                    attr: 3
+                  - text: "*;\r\t\tVAR a: PrimeAction;\r\tBEGIN\r\t\tNEW(a);\r\t\ta.to := primeDlg.to; a.stepSize := primeDlg.stepSize; a.current := 3; a.divisor := 3;\r\t\tIF a.stepSize < 1 THEN a.stepSize := 1 END ;\r\t\ta.f.ConnectTo(TextModels.dir.New());\r\t\ta.f.WriteInt(2); a.f.WriteLn;\r\t\tViews.OpenAux(TextViews.dir.New(a.f.rider.Base()), \"\");\r\t\tServices.DoLater(a, Services.now);\r\t\tDialog.ShowMsg(\"prime number calculation started\")\r\tEND StartPrimes;\r\rBEGIN\r\tprimeDlg.to := 1000; primeDlg.stepSize := 10\rEND ObxActions.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 4458
+          bodyLen: 8

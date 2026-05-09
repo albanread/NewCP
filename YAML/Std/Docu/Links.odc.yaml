@@ -1,0 +1,359 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Std\\Docu\\Links.odc"
+  size: 8585
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 8454
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 8268
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 8182
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                lead: 11500
+                asc: 134600
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 11
+                bodyPos: 8182
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 7668
+                runListLen: 1126
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [5]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: StdLinks
+                    attr: 0
+                  - text: "\r\rDEFINITION StdLinks;\r\r\tIMPORT Dialog, Views;\r\r\tTYPE\r\t\tLink = POINTER TO RECORD (Views.View)\r\t\t\tleftSide-: BOOLEAN;\r\t\t\t(v: Link) GetCmd (OUT cmd: ARRAY OF CHAR), NEW\r\t\tEND;\r\r\t\tTarget = POINTER TO RECORD (Views.View)\r\t\t\tleftSide-: BOOLEAN;\r\t\t\t(t: Target) GetIdent (OUT ident: ARRAY OF CHAR), NEW\r\t\tEND;"
+                    attr: 1
+                  - text: "\r\r"
+                    attr: 2
+                  - text: "\t\tDirectory = POINTER TO ABSTRACT RECORD \r\t\t\t(d: Directory) NewLink (IN cmd: ARRAY OF CHAR): Link, NEW, ABSTRACT;\r\t\t\t(d: Directory) NewTarget (IN ident: ARRAY OF CHAR): Target, NEW, ABSTRACT\r\t\tEND;\r\r\tVAR\r\t\tpar-: Link;\r\t\tdir-, stdDir-: Directory;\r\r\tPROCEDURE CreateGuard (VAR par: Dialog.Par);\r\tPROCEDURE CreateLink;\r\tPROCEDURE CreateTarget;\r\tPROCEDURE ShowTarget (ident: ARRAY OF CHAR);\r\tPROCEDURE SetDir (d: Directory);\r\rEND StdLinks.\r\r\rLink views, also called links, are views that always appear in pairs. They are only meaningful when embedded in texts. A pair brackets a stretch of text and contains a command. This an example of a link:\r\r\t"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('System/Docu/User-Man', 'User Manual')"
+                      body:
+                        - text: A link to the user manual
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r\rIf you do not see anything special to the left and right of the above text stretch, use "
+                    attr: 1
+                  - text: "Text>Show Marks"
+                    attr: 4
+                  - text: " to make the views visible.\r\rIf you click on either the left or right link view, the command associated with the link is executed. Moreover, the entire text stretch between the link pair is active also. The mouse cursor changes its shape when it points to the active stretch.\r\rIf you hold down the "
+                    attr: 1
+                  - text: modifier
+                    attr: 4
+                  - text: " key when clicking on one of the link stretch, the two views are transformed into a textual form:\r\r\t<StdCmds.OpenBrowser('System/Docu/User-Man', 'User Manual')>"
+                    attr: 1
+                  - text: A link to the user manual
+                    attr: 3
+                  - text: "<>\r\rThe syntax is \"<\" command sequence \">\" text stretch \"<\" \">\". The command sequence usually consists of a "
+                    attr: 1
+                  - text: StdCmds.OpenBrowser
+                    attr: 4
+                  - text: " command. However, any command may be used, e.g., like in the following specification:\r\r\t<Dialog.Beep; Dialog.Beep>"
+                    attr: 1
+                  - text: beep beep
+                    attr: 3
+                  - text: "<>\r\rTo turn this specification into an active text stretch, select it (from and including the first \"<\", to and including the last \">\") and then execute "
+                    attr: 1
+                  - text: "Tools>Create Link"
+                    attr: 4
+                  - text: ".\r\rYou may have noticed that the name \"link\" thus just denotes the most typical use of link views. They are not inherently specialized for text linking. The behavior is completely determined by the command sequence associated with them.\r\rIn order to use link views for hypertext linking, it must be possible to use link commands which open a particular piece of text. The standard command for this purpose is "
+                    attr: 1
+                  - text: StdCmds.OpenBrowser
+                    attr: 4
+                  - text: ". For example, the command "
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 9
+                      bodyPos: 1023
+                      bodyLen: 6
+                    attr: 4
+                    w: 177800
+                    h: 152400
+                  - text: "\"StdCmds.OpenBrowser('Obx/Docu/Sys-Map', 'Map to the Obx Subsystem')\""
+                    attr: 4
+                  - text: " opens the "
+                    attr: 1
+                  - text: Obx
+                    attr: 4
+                  - text: " map text in browser mode.\r\rSometimes it is useful to have a command which, as a reaction to activating it via a link view, scrolls the text in which the link view is embedded, to a certain target position. This target position can be marked with a pair of target views, which are created in a similar way as link views. The command to scroll to a certain target view is "
+                    attr: 1
+                  - text: ShowTarget
+                    attr: 4
+                  - text: ". To determine which target to show, a target contains an arbitrary identifier name.\r\rFor example, the link view with the specification\r\t<StdLinks.ShowTarget('first target')>"
+                    attr: 1
+                  - text: show target
+                    attr: 3
+                  - text: "<>\rcreates a link to a target given by the specification\r\t<first target>this is the first target<>\r\r"
+                    attr: 1
+                  - text: MENU
+                    attr: 5
+                  - text: "\r\t\"Create Link\"\t\"\"\t\"StdLinks.CreateLink\"\t\"StdLinks.CreateGuard\"\r\t\"Create Target\"\t\"\"\t\"StdLinks.CreateTarget\"\t\"StdLinks.CreateGuard\"\r"
+                    attr: 1
+                  - text: END
+                    attr: 5
+                  - text: "\r\r\rTYPE "
+                    attr: 1
+                  - text: Link (Views.View)
+                    attr: 5
+                  - text: "\rView type for links.\r\r"
+                    attr: 1
+                  - text: leftSide
+                    attr: 5
+                  - text: "-: BOOLEAN\rTells whether it is a left or a right view.\r\rPROCEDURE (v: Link) "
+                    attr: 1
+                  - text: GetCmd
+                    attr: 5
+                  - text: " (OUT cmd: ARRAY OF CHAR)\rNEW\rReturns the link's command.\r\rPost\rleftSide = (cmd # \"\")"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - text: "\r\rTYPE "
+                    attr: 1
+                  - text: Target (Views.View)
+                    attr: 5
+                  - text: "\rView type for targets.\r\r"
+                    attr: 1
+                  - text: leftSide
+                    attr: 5
+                  - text: "-: BOOLEAN\rTells whether it is a left or a right view.\r\rPROCEDURE (t: Target) "
+                    attr: 1
+                  - text: GetIdent
+                    attr: 5
+                  - text: " (OUT ident: ARRAY OF CHAR)\rNEW\rReturns the target's identifier.\r\rPost\rleftSide = (ident # \"\")"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - text: "\rTYPE "
+                    attr: 1
+                  - text: Directory
+                    attr: 5
+                  - text: "\rABSTRACT \rDirectory type for link/target views.\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: NewLink
+                    attr: 5
+                  - text: " (IN cmd: ARRAY OF CHAR): Link\rNEW, ABSTRACT\rReturns a new link view with "
+                    attr: 1
+                  - text: cmd
+                    attr: 4
+                  - text: " as command string. It is a left view if "
+                    attr: 1
+                  - text: "cmd # \"\""
+                    attr: 4
+                  - text: ", otherwise a right view.\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: NewTarget
+                    attr: 5
+                  - text: " (IN ident: ARRAY OF CHAR): Target\rNEW, ABSTRACT\rReturns a new target view with "
+                    attr: 1
+                  - text: ident
+                    attr: 4
+                  - text: " as identifier string. It is a left view if "
+                    attr: 1
+                  - text: "ident # \"\""
+                    attr: 4
+                  - text: ", otherwise a right view.\r\r\rVAR "
+                    attr: 1
+                  - text: par-
+                    attr: 5
+                  - text: ": Link\tpar # NIL exactly during the currently executed link command\rA command in a link can get access to its (left) link view, and thus to its context, via this variable during the execution of the command.\r\rVAR "
+                    attr: 1
+                  - text: "dir-, stdDir-"
+                    attr: 5
+                  - text: ": Directory\rLink/target directories.\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: CreateGuard
+                    attr: 5
+                  - text: " (VAR par: Dialog.Par)\rMenu guard procedure used for "
+                    attr: 1
+                  - text: CreateLink
+                    attr: 4
+                  - text: " and "
+                    attr: 1
+                  - text: CreateTarget
+                    attr: 4
+                  - text: ". "
+                    attr: 1
+                  - text: par.disabled
+                    attr: 4
+                  - text: " remains FALSE (i.e., the menu entry is not disabled) if the following holds. The focus view is a text view and the current text selection exactly covers a stretch of text with the syntax: \"<\" text \">\" text \"<>\".\r\rPROCEDURE "
+                    attr: 1
+                  - text: CreateLink
+                    attr: 5
+                  - text: "\rInsert a link into the focus text. To create a link, a piece of text with the following syntax must be selected: \"<\" "
+                    attr: 1
+                  - text: command sequence
+                    attr: 4
+                  - text: " \">\" "
+                    attr: 1
+                  - text: arbitrary text
+                    attr: 4
+                  - text: " \"<>\". The "
+                    attr: 1
+                  - text: command sequence
+                    attr: 4
+                  - text: " must not contain a \">\" character. The stretch \"<\" "
+                    attr: 1
+                  - text: command sequence
+                    attr: 4
+                  - text: " \">\" is replaced with the left link view. The stretch \"<>\" is replaced with the right link view. The link views can be hidden/shown with "
+                    attr: 1
+                  - text: "Text>Show Marks"
+                    attr: 4
+                  - text: " and "
+                    attr: 1
+                  - text: "Text>Hide Marks"
+                    attr: 4
+                  - text: ", resp. To edit the command sequence of a link, click on one of the link views with the modifier key pressed. This replaces the views with the original text.\r\rPROCEDURE "
+                    attr: 1
+                  - text: CreateTarget
+                    attr: 5
+                  - text: "\rInsert a target into the focus text. To create a target, a piece of text with the following syntax must be selected: \"<\" "
+                    attr: 1
+                  - text: target identifier
+                    attr: 4
+                  - text: " \">\" "
+                    attr: 1
+                  - text: arbitrary text
+                    attr: 4
+                  - text: " \"<>\". The target identifier must not contain a \">\" character. The stretch \"<\" "
+                    attr: 1
+                  - text: target identifier
+                    attr: 4
+                  - text: " \">\" will be replaced with the left target view. The stretch \"<>\" will be replaced with the right target view. Target views can be hidden/shown with "
+                    attr: 1
+                  - text: "Text>Show Marks"
+                    attr: 4
+                  - text: " and "
+                    attr: 1
+                  - text: "Text>Hide Marks"
+                    attr: 4
+                  - text: ", resp. To edit the target identifier of an existing target, click on one of the views with the modifier key pressed. This replaces the views with the original text.\r\rPROCEDURE "
+                    attr: 1
+                  - text: ShowTarget
+                    attr: 5
+                  - text: " (ident: ARRAY OF CHAR)\rSearches the first target view in the focus text whose target identifier equals "
+                    attr: 1
+                  - text: ident
+                    attr: 4
+                  - text: ". If one is found, the text is scrolled such that the target view is shown on the first line, and the text stretch between the left and right target views is selected. (Note: if the text is opened in mask mode, the selection is not visible.)\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetDir
+                    attr: 5
+                  - text: " (d: Directory)\rSets the link/target view directory.\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 15
+          bodyPos: 8550
+          bodyLen: 8

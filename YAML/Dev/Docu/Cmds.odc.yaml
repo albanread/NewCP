@@ -1,0 +1,175 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Dev\\Docu\\Cmds.odc"
+  size: 4000
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 3869
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 3683
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 3597
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                lead: 11500
+                asc: 121900
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 6
+                bodyPos: 3597
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 3083
+                runListLen: 386
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                flow:
+                  - text: DevCmds
+                    attr: 0
+                  - text: "\r\rDEFINITION DevCmds;\r\r\tIMPORT Dialog;\r\r\tPROCEDURE FlushResources;\r\tPROCEDURE OpenModuleList;\r\tPROCEDURE OpenFileList;\r\tPROCEDURE RevalidateViewGuard (VAR par: Dialog.Par);\r\tPROCEDURE RevalidateView;\r\tPROCEDURE SetCancelButton;\r\tPROCEDURE SetDefaultButton;\r\tPROCEDURE ShowControlList;\r\rEND DevCmds.\r\r\rPossible menu:\r\r"
+                    attr: 1
+                  - text: MENU
+                    attr: 2
+                  - text: "\r\t\"&Open Module List\"\t\"\"\t\"DevCmds.OpenModuleList\"\t\"TextCmds.SelectionGuard\"\r\t\"Open &File List\"\t\"\"\t\"DevCmds.OpenFileList\"\t\"TextCmds.SelectionGuard\"\r\t\"Flus&h Resources\"\t\"\"\t\"DevCmds.FlushResources\"\t\"\"\r\t\"Re&validate View\"\t\"\"\t\"DevCmds.RevalidateView\"\t\"DevCmds.RevalidateViewGuard\"\r\t"
+                    attr: 1
+                  - text: SEPARATOR
+                    attr: 2
+                  - text: "\r\t\"&Control List\"\t\"\"\t\"DevCmds.ShowControlList\"\t\"StdCmds.ContainerGuard\"\r\t\"Set &Default Button\"\t\"\"\t\"DevCmds.SetDefaultButton\"\t\"StdCmds.ContainerGuard\"\r\t\"Set Canc&el Button\"\t\"\"\t\"DevCmds.SetCancelButton\"\t\"StdCmds.ContainerGuard\"\r"
+                    attr: 1
+                  - text: END
+                    attr: 2
+                  - text: "\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: FlushResources
+                    attr: 2
+                  - text: "\rFlush menu guard and string translation resources. This command is needed when a menu item is disabled because its code could not be executed, but since then the code has become executable (e.g., due to a recompilation of a module, and possibly unloading an old module version). It is also needed if the string resource texts have been edited and saved, if the changes should become effective immediately, rather than only when BlackBox is started the next time.\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - text: "PROCEDURE "
+                    attr: 1
+                  - text: OpenModuleList
+                    attr: 2
+                  - text: "\rGuard: TextCmds.SelectionGuard\rOpens the modules whose names are selected, e.g.,\r\"FormModels FormViews\".\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - text: "PROCEDURE "
+                    attr: 1
+                  - text: OpenFileList
+                    attr: 2
+                  - text: "\rGuard: TextCmds.SelectionGuard\rOpens the files whose names are selected. The names must use the portable path name syntax, e.g.,\r\"Form/Mod/Models Form/Mod/Views\".\r\rPROCEDURE "
+                    attr: 1
+                  - text: RevalidateViewGuard
+                    attr: 2
+                  - text: " (VAR par: Dialog.Par)\rMenu guard for "
+                    attr: 1
+                  - text: Revalidate
+                    attr: 3
+                  - text: " View.\r\rPROCEDURE "
+                    attr: 1
+                  - text: RevalidateView
+                    attr: 2
+                  - text: "\rGuard: RevalidateViewGuard\rA view may have become invalid after a trap occurred. As a result, the view is greyed out and made passive (so that the same trap cannot occur anymore, thus preventing trap avalanches). However, sometimes it can be useful to revalidate the view and continue to work with it.\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetCancelButton
+                    attr: 2
+                  - text: "\rGuard: StdCmds.ContainerGuard\rMakes the selected view in the focus container a \"cancel\" button, i.e., in mask mode (-> Containers) it is considered pressed when the user enters the escape character.\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetDefaultButton
+                    attr: 2
+                  - text: "\rGuard: StdCmds.ContainerGuard\rMakes the selected view in the focus container a \"default\" button, i.e., in mask mode (-> Containers) it is considered pressed when the user enters a carriage return character.\r\rPROCEDURE "
+                    attr: 1
+                  - text: ShowControlList
+                    attr: 2
+                  - text: "\rGuard: StdCmds.ContainerGuard\rLists the properties of all views in the focus container which return control properties (-> Controls).\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 10
+          bodyPos: 3965
+          bodyLen: 8

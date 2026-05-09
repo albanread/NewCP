@@ -1,0 +1,623 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Std\\Mod\\Tables.odc"
+  size: 48721
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 48590
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 48404
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 48318
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5943600
+                asc: 114300
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: "*"
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 27
+                bodyPos: 48443
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 47929
+                runListLen: 2885
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE StdTables;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r\r"
+                    attr: 1
+                  - text: "\tIMPORT\r\t\tServices, Fonts, Ports, Dialog, Meta, Stores, Models, Views, Controllers, Containers, Properties, Controls,\r\t\tTextModels, TextViews, HostPorts;\r\r\tCONST\r\t\tminVersion = 0;\r\t\ttabVersion = 2;\r\t\tmaxCol = 256;\r\t\tdefColW = 30 * Ports.mm;\r\t\tleft = -1; right = -2; center = -3;\t"
+                    attr: 0
+                  - text: "(* adjustment modes *)"
+                    attr: 1
+                  - text: "\r\t\tmove = 1; adjust = 2; field = 3;\t"
+                    attr: 0
+                  - text: "(* cursor modes *)\r\r"
+                    attr: 1
+                  - text: "\t\ttab = 09X; ltab = 0AX; lineChar = 0DX; esc = 1BX;"
+                    attr: 0
+                  - text: "\r\r"
+                    attr: 1
+                  - text: "\t\t"
+                    attr: 0
+                  - text: line
+                    attr: 3
+                  - text: "* = 0DX;\t\t\t(* line feed characher for labels *)\r\t\t"
+                    attr: 0
+                  - text: deselect
+                    attr: 3
+                  - text: "* = -1; "
+                    attr: 0
+                  - text: select
+                    attr: 3
+                  - text: "* = -2; "
+                    attr: 0
+                  - text: changed
+                    attr: 3
+                  - text: "* = -3; (* notifier op-values *)\r\t\t"
+                    attr: 0
+                  - text: layoutEditable
+                    attr: 3
+                  - text: "* = 0; "
+                    attr: 0
+                  - text: dataEditable
+                    attr: 3
+                  - text: "* = 1; "
+                    attr: 0
+                  - text: selectionStyle
+                    attr: 3
+                  - text: "* = 2; (* values for property validity in Prop *)\r\t\t"
+                    attr: 0
+                  - text: noSelect
+                    attr: 3
+                  - text: "* = 0; "
+                    attr: 0
+                  - text: cellSelect
+                    attr: 3
+                  - text: "* = 1; "
+                    attr: 0
+                  - text: rowSelect
+                    attr: 3
+                  - text: "* = 2; "
+                    attr: 0
+                  - text: colSelect
+                    attr: 3
+                  - text: "* = 3; "
+                    attr: 0
+                  - text: crossSelect
+                    attr: 3
+                  - text: "* = 4; (* selection style values *)"
+                    attr: 0
+                  - text: "\r\r"
+                    attr: 1
+                  - text: "\tTYPE\r\t\t"
+                    attr: 0
+                  - text: Table
+                    attr: 3
+                  - text: "* = RECORD\r\t\t\trows-, cols-: INTEGER;\r\t\t\tselection: Selection;\r\t\t\tlabels: POINTER TO ARRAY OF Dialog.String;\r\t\t\tdata: POINTER TO ARRAY OF ARRAY OF Dialog.String;\r\t\t\tweights: POINTER TO ARRAY OF ARRAY OF INTEGER;\r\t\t\tstyles: POINTER TO ARRAY OF ARRAY OF SET;\r\t\t\tcolors: POINTER TO ARRAY OF ARRAY OF Ports.Color\r\t\tEND;\r\r\t\tSelection = POINTER TO RECORD\r\t\t\ton: BOOLEAN;\r\t\t\trow, col: INTEGER\t"
+                    attr: 0
+                  - text: "(** only valid if on = TRUE **)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: Prop
+                    attr: 3
+                  - text: "* = POINTER TO RECORD (Properties.Property)\r\t\t\tlayoutEditable*, dataEditable*: BOOLEAN;\r\t\t\tselectionStyle*: INTEGER\r\t\tEND;\r\r\t\tControl = POINTER TO RECORD (Controls.Control)\r\t\t\t"
+                    attr: 0
+                  - text: "(* persistent *)"
+                    attr: 1
+                  - text: "\r\t\t\tsprop: Properties.StdProp;\t"
+                    attr: 0
+                  - text: "(* font attributes *)\r"
+                    attr: 1
+                  - text: "\t\t\ttprop: Prop;\t"
+                    attr: 0
+                  - text: "(* table attributes *)"
+                    attr: 1
+                  - text: "\r"
+                    attr: 0
+                  - text: "\t\t\t"
+                    attr: 1
+                  - text: "columns: INTEGER;\t"
+                    attr: 0
+                  - text: "(* width[0..columns-1] and mode[0..columns-1] are defined *)"
+                    attr: 1
+                  - text: "\r\t\t\twidth: ARRAY maxCol OF INTEGER;\r\t\t\tmode: ARRAY maxCol OF INTEGER;\r\r\t\t\t"
+                    attr: 0
+                  - text: "(* not persistent *)"
+                    attr: 1
+                  - text: "\r\t\t\tfldFont, titFont: Fonts.Font;\t"
+                    attr: 0
+                  - text: "(* cell fonts *)"
+                    attr: 1
+                  - text: "\r\t\t\trowHeight, labelHeight, baseOff: INTEGER;\t"
+                    attr: 0
+                  - text: "(* height of rows, height of the label row and offset for font *)"
+                    attr: 1
+                  - text: "\r\t\t\torgRow, orgX: INTEGER;\t"
+                    attr: 0
+                  - text: "(* scroll state, orgX in coordinates, orgRow in rows *)"
+                    attr: 1
+                  - text: "\r\r\t\t\tselRow, selCol: INTEGER;\t"
+                    attr: 0
+                  - text: "(* selected field *)"
+                    attr: 1
+                  - text: "\r\t\t\tshowSelection: BOOLEAN;\r\t\t\thasSelection: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(* control has a selected field *)"
+                    attr: 1
+                  - text: "\r\r\t\t\tx, y, w, h: INTEGER;\r\t\t\tfield: Views.View\t"
+                    attr: 0
+                  - text: "(* textfield used to enter cell content *)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: Directory
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD END;\r\t\tStdDirectory = POINTER TO RECORD (Directory) END;\r\r\t\tPropOp = POINTER TO RECORD (Stores.Operation)\t"
+                    attr: 0
+                  - text: "(* typeface, style and size *)"
+                    attr: 1
+                  - text: "\r\t\t\ttab: Control;\r\t\t\tsprop: Properties.StdProp;\r\t\t\ttprop: Prop\r\t\tEND;\r\r\t\tFormatOp = POINTER TO RECORD (Stores.Operation)\t"
+                    attr: 0
+                  - text: "(* cell format *)"
+                    attr: 1
+                  - text: "\r\t\t\ttab: Control;\r\t\t\tcol, width, mode: INTEGER\r\t\tEND;\r\r\t\tTableValue = RECORD (Meta.Value)\r\t\t\tt: Table\r\t\tEND;\r\r\t\tContext = POINTER TO RECORD (Models.Context)\r\t\t\tw, h: INTEGER;\r\t\t\tbase: Views.View\r\t\tEND;\r\r\t\tAction = POINTER TO RECORD (Services.Action) END;\r\r\tVAR"
+                    attr: 0
+                  - text: "\r\t\tdir"
+                    attr: 3
+                  - text: "-, "
+                    attr: 0
+                  - text: stdDir
+                    attr: 3
+                  - text: "-: Directory;\r\t\t"
+                    attr: 0
+                  - text: text
+                    attr: 3
+                  - text: "*: Dialog.String;\t"
+                    attr: 0
+                  - text: "(* used to edit cell. Only one cell can be active at once *)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: dlg
+                    attr: 3
+                  - text: "*: RECORD\r\t\t\tlayoutEditable*, dataEditable*: BOOLEAN;\r\t\t\tselectionStyle*: Dialog.List;\r\t\t\tfingerprint: INTEGER;\r\t\t\tknown, valid: SET\r\t\tEND;\r\t\taction: Action;\r\t\t\r\tPROCEDURE CountLines (IN s: Dialog.String): INTEGER;\r\t\tVAR i, r, l: INTEGER;\r\tBEGIN\r\t\tr := 1; l := LEN(s$);\r\t\tFOR i := 0 TO l - 1 DO IF s[i] = line THEN INC(r) END END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " r\r\tEND CountLines;\r\r\r\t(* Prop *)\r\r\tPROCEDURE (p: Prop) "
+                    attr: 0
+                  - text: IntersectWith
+                    attr: 3
+                  - text: "* (q: Properties.Property; OUT equal: BOOLEAN);\r\t\tVAR valid: SET; p0: Prop;\r\tBEGIN\r\t\tp0 := q(Prop);\r\t\tvalid := p.valid * p0.valid; equal := TRUE;\r\t\tIF p.layoutEditable # p0.layoutEditable THEN EXCL(valid, layoutEditable) END;\r\t\tIF p.dataEditable # p0.dataEditable THEN EXCL(valid, dataEditable) END;\r\t\tIF p.selectionStyle # p0.selectionStyle THEN EXCL(valid, selectionStyle) END;\r\t\tIF valid # p.valid THEN p.valid := valid; equal := FALSE END\r\tEND IntersectWith;\r\r\t(* Table *)\r\r\tPROCEDURE (VAR tab: Table) "
+                    attr: 0
+                  - text: SetSize
+                    attr: 3
+                  - text: "* (rows, cols: INTEGER), NEW;\r\t\tVAR i, j, fr, fc: INTEGER;\r\t\t\tlabels: POINTER TO ARRAY OF Dialog.String;\r\t\t\tdata: POINTER TO ARRAY OF ARRAY OF Dialog.String;\r\t\t\tweights: POINTER TO ARRAY OF ARRAY OF INTEGER;\r\t\t\tstyles: POINTER TO ARRAY OF ARRAY OF SET;\r\t\t\tcolors: POINTER TO ARRAY OF ARRAY OF Ports.Color;\r\tBEGIN\r\t\tASSERT((rows >= 0) & (cols >= 0), 20); \r\t\tASSERT((cols > 0) OR ((cols = 0) & (rows = 0)), 21); \r\t\ttab.rows := rows; tab.cols := cols;\r\t\tIF rows > 0 THEN\r\t\t\tdata := tab.data; NEW(tab.data, rows, cols); weights := tab.weights; NEW(tab.weights, rows, cols);\r\t\t\tstyles := tab.styles; NEW(tab.styles, rows, cols); colors := tab.colors; NEW(tab.colors, rows, cols);\r\t\t\tIF data # NIL THEN\r\t\t\t\tFOR i := 0 TO MIN(rows, LEN(data, 0)) - 1 DO\r\t\t\t\t\tFOR j := 0 TO MIN(cols, LEN(data, 1)) - 1 DO\r\t\t\t\t\t\ttab.data[i, j] := data[i, j]; tab.weights[i, j] := weights[i, j]; tab.styles[i, j] := styles[i, j];\r\t\t\t\t\t\ttab.colors[i, j] := colors[i, j]\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\t(* set defaults *)\r\t\t\tIF data = NIL THEN fr := 0; fc := 0 ELSE fr := LEN(data, 0); fc := LEN(data, 1) END; \r\t\t\tFOR i := fr TO LEN(tab.data, 0) - 1 DO\r\t\t\t\tFOR j := fc TO LEN(tab.data, 1) - 1 DO\r\t\t\t\t\ttab.weights[i, j] := Fonts.normal; tab.styles[i, j] := {}; tab.colors[i, j] := Ports.black \r\t\t\t\tEND\r\t\t\tEND\r\t\tELSE\r\t\t\ttab.data := NIL\r\t\tEND;\r\t\tIF cols > 0 THEN\r\t\t\tlabels := tab.labels; NEW(tab.labels, cols);\r\t\t\tIF labels # NIL THEN\r\t\t\t\tFOR i := 0 TO MIN(cols, LEN(labels)) - 1 DO\r\t\t\t\t\ttab.labels[i] := labels[i]\r\t\t\t\tEND\r\t\t\tEND\r\t\tELSE\r\t\t\ttab.labels := NIL\r\t\tEND;\r\t\tIF tab.selection = NIL THEN\r\t\t\tNEW(tab.selection)\r\t\tELSE\r\t\t\ttab.selection.on := FALSE\r\t\tEND\r\tEND SetSize;\r\r\tPROCEDURE (VAR tab: Table) "
+                    attr: 0
+                  - text: SetItem
+                    attr: 3
+                  - text: "* (row, col: INTEGER; (*IN*) item: Dialog.String), NEW;\r\tBEGIN\r\t\tASSERT(tab.data # NIL, 20);\r\t\ttab.data[row, col] := item\r\tEND SetItem;\r\r\tPROCEDURE (VAR tab: Table) "
+                    attr: 0
+                  - text: GetItem
+                    attr: 3
+                  - text: "* (row, col: INTEGER; OUT item: Dialog.String), NEW;\r\tBEGIN\r\t\tASSERT(tab.data # NIL, 20);\r\t\titem := tab.data[row, col]\r\tEND GetItem;\r\r\tPROCEDURE (VAR tab: Table) "
+                    attr: 0
+                  - text: SetLabel
+                    attr: 3
+                  - text: "* (col: INTEGER; (*IN*)label: Dialog.String), NEW;\r\tBEGIN\r\t\tASSERT(tab.labels # NIL, 20);\r\t\ttab.labels[col] := label\r\tEND SetLabel;\r\r\tPROCEDURE (VAR tab: Table) "
+                    attr: 0
+                  - text: GetLabel
+                    attr: 3
+                  - text: "* (col: INTEGER; OUT label: Dialog.String), NEW;\r\tBEGIN\r\t\tASSERT(tab.labels # NIL, 20);\r\t\tlabel := tab.labels[col]\r\tEND GetLabel;\r\r\tPROCEDURE (VAR tab: Table) "
+                    attr: 0
+                  - text: HasSelection
+                    attr: 3
+                  - text: "* (): BOOLEAN, NEW;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " (tab.selection # NIL) & (tab.selection.on)\r\tEND HasSelection;\r\r\tPROCEDURE (VAR tab: Table) "
+                    attr: 0
+                  - text: GetSelection
+                    attr: 3
+                  - text: "* (OUT row, col: INTEGER), NEW;\r\tBEGIN\r\t\tASSERT(tab.selection # NIL, 20);\r\t\tASSERT(tab.selection.on, 21);\r\t\trow := tab.selection.row; col := tab.selection.col\r\tEND GetSelection;\r\r\tPROCEDURE (VAR tab: Table) "
+                    attr: 0
+                  - text: Select
+                    attr: 3
+                  - text: "* (row, col: INTEGER), NEW;\r\tBEGIN\r\t\tASSERT(tab.selection # NIL, 20);\r\t\ttab.selection.on := TRUE; tab.selection.row := row; tab.selection.col := col\r\tEND Select;\r\r\tPROCEDURE (VAR tab: Table) "
+                    attr: 0
+                  - text: Deselect
+                    attr: 3
+                  - text: "*, NEW;\r\tBEGIN\r\t\tASSERT(tab.selection # NIL, 20);\r\t\ttab.selection.on := FALSE\t\t\r\tEND Deselect;\r\r\tPROCEDURE (VAR tab: Table) "
+                    attr: 0
+                  - text: SetAttr
+                    attr: 3
+                  - text: "* (l, t, r, b: INTEGER; style: SET; weight: INTEGER; color: Ports.Color), NEW;\r\t\tVAR i, j: INTEGER;\r\tBEGIN\r\t\tASSERT(tab.data # NIL, 20);\r\t\tFOR i := t TO b DO\r\t\t\tFOR j := l TO r DO\r\t\t\t\ttab.weights[i, j] := weight; tab.styles[i, j] := style; tab.colors[i, j] := color\r\t\t\tEND\r\t\tEND\r\tEND SetAttr;\r\r\tPROCEDURE (VAR tab: Table) "
+                    attr: 0
+                  - text: GetAttr
+                    attr: 3
+                  - text: "* (row, col: INTEGER; OUT style: SET; OUT weight: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT color: Ports.Color), NEW;\r\tBEGIN\r\t\tASSERT(tab.data # NIL, 20);\r\t\tweight := tab.weights[row, col]; style := tab.styles[row, col]; color := tab.colors[row, col]\r\tEND GetAttr;\r\r\r"
+                    attr: 0
+                  - text: "\t(* Context *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (c: Context) GetSize (OUT w, h: INTEGER);\r\tBEGIN\r\t\tw := c.w; h := c.h\r\tEND GetSize;\r\r\tPROCEDURE (c: Context) Normalize (): BOOLEAN;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " c.base.context.Normalize()\r\tEND Normalize;\r\r\tPROCEDURE (c: Context) Consider (VAR p: Models.Proposal);\r\tBEGIN\r\t\tc.base.context.Consider(p)\r\tEND Consider;\r\r\tPROCEDURE (c: Context) ThisModel (): Models.Model;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " NIL\r\tEND ThisModel;\r\r\tPROCEDURE NewField(t: Control; col, w, h: INTEGER): Views.View;\r\t\tVAR c: Context; p: Controls.Prop; v: Views.View; prop: Properties.StdProp; setMsg: Properties.SetMsg;\r\tBEGIN\r\t\tNEW(p); p.link := \"StdTables.text\";\r\t\tIF t.mode[col] = left THEN p.opt[Controls.left] := TRUE\r\t\tELSIF t.mode[col] = right THEN p.opt[Controls.right] := TRUE\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: "(* bug in controls, thus adjusting has to be set to left mode *)"
+                    attr: 1
+                  - text: "\r\t\tp.opt[Controls.left] := TRUE;\r\t\tp.opt[Controls.right] := FALSE;\r\t\tv := Controls.dir.NewField(p);\r\r\t\tNEW(c); c.w := w; c.h := h; c.base := t;\r\t\tv.InitContext(c);\r\r\t\tNEW(prop);\r\t\tprop.typeface := t.fldFont.typeface;\r\t\tprop.size := t.fldFont.size - Fonts.point;\r\t\tprop.style.val := t.fldFont.style;\r\t\tprop.style.mask := t.fldFont.style;\r\t\tprop.weight := t.fldFont.weight;\r\t\tprop.valid := {Properties.typeface..Properties.weight};\r\t\tprop.known := prop.valid;\r\t\tsetMsg.prop := prop;\r\t\tViews.HandlePropMsg(v, setMsg);\r\t\tRETURN v\r\tEND NewField;\r\r\tPROCEDURE SendNotifyMsg (c: Control);\r\t\tVAR msg: Views.NotifyMsg;\r\tBEGIN\r\t\tmsg.id0 := c.item.adr; msg.id1 := msg.id0 + c.item.Size();\r\t\tmsg.opts := {2, 4}; (* update, guardcheck *)\r\t\tViews.Omnicast(msg)\r\tEND SendNotifyMsg;\r\r\tPROCEDURE GetSize(c: Control; OUT rows, cols: INTEGER);\r\t\tVAR item: Meta.Item;\r\tBEGIN\r\t\tIF c.item.Valid() THEN\r\t\t\titem := c.item;\r\t\t\tc.item.Lookup(\"rows\", item); rows := item.IntVal();\r\t\t\tc.item.Lookup(\"cols\", item); cols := item.IntVal()\r\t\tELSE\r\t\t\trows := 0; cols := 0\r\t\tEND\r\tEND GetSize;\r\r\tPROCEDURE GetLabel(c: Control; col: INTEGER; OUT val: Dialog.String; OUT ok: BOOLEAN);\r\t\tVAR t: TableValue;\r\tBEGIN\r\t\tASSERT(c.item.Valid(), 20);\r\t\tc.item.GetVal(t, ok); t.t.GetLabel(col, val)\r\tEND GetLabel;\r\r\tPROCEDURE GetAttr(c: Control; row, col: INTEGER; \r\t\t\t\t\t\t\t\tOUT style: SET; OUT weight: INTEGER; OUT color: Ports.Color; OUT ok: BOOLEAN);\r\t\tVAR t: TableValue;\r\tBEGIN\r\t\tASSERT(c.item.Valid(), 20);\r\t\tc.item.GetVal(t, ok); t.t.GetAttr(row, col, style, weight, color)\r\tEND GetAttr;\r\r\tPROCEDURE GetText(c: Control; row, col: INTEGER; OUT val: Dialog.String; OUT ok: BOOLEAN);\r\t\tVAR t: TableValue;\r\tBEGIN\r\t\tASSERT(c.item.Valid(), 20);\r\t\tc.item.GetVal(t, ok); t.t.GetItem(row, col, val)\r\tEND GetText;\r\r\tPROCEDURE SetText(c: Control; f: Views.Frame; row, col: INTEGER; IN val: Dialog.String; OUT ok: BOOLEAN);\r\t\tVAR t: TableValue;\r\tBEGIN\r\t\tASSERT(c.item.Valid(), 20);\r\t\tc.item.GetVal(t, ok);\r\t\tIF ok THEN\r\t\t\tt.t.SetItem(row, col, val);\r\t\t\t(* Notify(c, row, col, {}, changed); *)\r\t\t\tSendNotifyMsg(c);\r\t\t\tControls.Notify(c, f, changed, row, col)\r\t\tEND\r\tEND SetText;\r\r\tPROCEDURE GetSelection(c: Control; OUT on: BOOLEAN; OUT row, col: INTEGER; OUT ok: BOOLEAN);\r\t\tVAR t: TableValue;\r\tBEGIN\r\t\tASSERT(c.item.Valid(), 20);\r\t\tc.item.GetVal(t, ok);\r\t\tIF ok THEN\r\t\t\ton := t.t.HasSelection();\r\t\t\tIF on THEN t.t.GetSelection(row, col) ELSE row := -1; col := -1 END\r\t\tEND\r\tEND GetSelection;\r\r\tPROCEDURE SetSelection(c: Control; f: Views.Frame; on: BOOLEAN; row, col: INTEGER; OUT ok: BOOLEAN);\r\t\tVAR t: TableValue;\r\tBEGIN\r\t\tASSERT(c.item.Valid(), 20);\r\t\tc.item.GetVal(t, ok);\r\t\tIF ok THEN\r\t\t\tIF on THEN t.t.Select(row, col); Controls.Notify(c, f, select, row, col)\r\t\t\tELSE t.t.Deselect; Controls.Notify(c, f, deselect, row, col)\r\t\t\tEND;\r\t\t\tSendNotifyMsg(c)\r\t\tEND\r\tEND SetSelection;\r\r\r\tPROCEDURE SetupControl (t: Control);\r\t\tVAR i, asc, dsc, w: INTEGER;\r\tBEGIN\r\t\tt.fldFont := Fonts.dir.This(t.sprop.typeface, t.sprop.size, t.sprop.style.val, Fonts.normal);\r\t\tt.titFont := Fonts.dir.This(t.sprop.typeface, t.sprop.size, t.sprop.style.val, Fonts.bold);\r\t\tt.rowHeight := 3 * t.sprop.size DIV 2;\r\t\tt.fldFont.GetBounds(asc, dsc, w);\r\t\tt.rowHeight := asc + dsc + 4 * Ports.point;\r\t\tt.baseOff := (t.rowHeight - asc - dsc) DIV 2 + asc;\r\t\ti := t.columns;\r\t\tWHILE i < maxCol DO t.width[i] := defColW; t.mode[i] := center; INC(i) END;\r\t\tIF t.field # NIL THEN\r\t\t\tt.field.context(Context).h := t.rowHeight\r\t\tEND;\r\t\tt.labelHeight := t.rowHeight \r\tEND SetupControl;\r\r\r\t"
+                    attr: 0
+                  - text: "(** Directory **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: NewControl
+                    attr: 3
+                  - text: "* (p: Controls.Prop): Views.View, NEW, ABSTRACT;\r\r\r\t"
+                    attr: 0
+                  - text: "(* PropOp *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (op: PropOp) Do;\r\t\tVAR c: Control; sprop: Properties.StdProp; tprop: Prop;\r\tBEGIN\r\t\tASSERT((op.sprop # NIL) OR (op.tprop # NIL), 20);\r\t\tc := op.tab;\r\t\tIF op.sprop # NIL THEN\r\t\t\tsprop := Properties.CopyOf(c.sprop)(Properties.StdProp);\r\t\t\tsprop.valid := op.sprop.valid;\t"
+                    attr: 0
+                  - text: "(* fields to be restored *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF Properties.typeface IN sprop.valid THEN c.sprop.typeface := op.sprop.typeface END;\r\t\t\tIF Properties.size IN sprop.valid THEN c.sprop.size := op.sprop.size END;\r\t\t\tIF Properties.style IN sprop.valid THEN\r\t\t\t\tc.sprop.style.mask := c.sprop.style.mask + op.sprop.style.mask;\r\t\t\t\tc.sprop.style.val := c.sprop.style.val - op.sprop.style.mask + op.sprop.style.val\r\t\t\tEND;\r\t\t\tIF sprop.valid # {} THEN SetupControl(c) END;\r\t\t\top.sprop := sprop\r\t\tEND;\r\t\tIF op.tprop # NIL THEN\r\t\t\ttprop := Properties.CopyOf(c.tprop)(Prop);\r\t\t\ttprop.valid := op.tprop.valid;\t"
+                    attr: 0
+                  - text: "(* fields to be restored *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF layoutEditable IN tprop.valid THEN c.tprop.layoutEditable := op.tprop.layoutEditable END;\r\t\t\tIF dataEditable IN tprop.valid THEN c.tprop.dataEditable := op.tprop.dataEditable END;\r\t\t\tIF selectionStyle IN tprop.valid THEN c.tprop.selectionStyle := op.tprop.selectionStyle END;\r\t\t\top.tprop := tprop\r\t\tEND;\r\t\tViews.Update(c, Views.rebuildFrames)\r\tEND Do;\r\r\r\t"
+                    attr: 0
+                  - text: "(* FormatOp *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (op: FormatOp) Do;\r\t\tVAR t: Control; c, w, m: INTEGER;\r\tBEGIN\r\t\tt := op.tab; c := op.col; w := op.width; m := op.mode;\r\t\top.width := t.width[c]; op.mode := t.mode[c];\r\t\tt.width[c] := w; t.mode[c] := m;\r\t\tIF c >= t.columns THEN t.columns := c + 1 END;\r\t\tViews.Update(t, Views.keepFrames)\r\tEND Do;\r\r\r\t"
+                    attr: 0
+                  - text: "(* properties *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE PollProp (c: Control; VAR list: Properties.Property);\r\t\tVAR p: Properties.Property;\r\tBEGIN\r\t\tp := Properties.CopyOf(c.sprop);\r\t\tp.valid := {Properties.typeface, Properties.size, Properties.style, Properties.weight};\r\t\tp.known := p.valid; p.readOnly := {Properties.weight};\r\t\tProperties.Insert(list, p);\r\t\tp := Properties.CopyOf(c.tprop);\r\t\tp.valid := {layoutEditable, dataEditable, selectionStyle}; p.known := p.valid; p.readOnly := {};\r\t\tProperties.Insert(list, p)\r\tEND PollProp;\r\r\tPROCEDURE SetProp (c: Control; p: Properties.Property);\r\t\tVAR op: PropOp; valid: SET;\r\tBEGIN\r\t\top := NIL;\r\t\tWHILE p # NIL DO\r\t\t\tWITH p: Properties.StdProp DO\r\t\t\t\tvalid := p.valid * {Properties.typeface, Properties.size, Properties.style};\r\t\t\t\tIF valid # {} THEN\r\t\t\t\t\tIF op = NIL THEN NEW(op); op.tab := c END;\r\t\t\t\t\top.sprop := Properties.CopyOf(p)(Properties.StdProp);\r\t\t\t\t\top.sprop.valid := valid\r\t\t\t\tEND\r\t\t\t| p: Prop DO\r\t\t\t\tvalid := p.valid * {layoutEditable, dataEditable, selectionStyle};\r\t\t\t\tIF valid # {} THEN\r\t\t\t\t\tIF op = NIL THEN NEW(op); op.tab := c END;\r\t\t\t\t\top.tprop := Properties.CopyOf(p)(Prop);\r\t\t\t\t\top.tprop.valid := valid\r\t\t\t\tEND\r\t\t\tELSE\r\t\t\tEND;\r\t\t\tp := p.next\r\t\tEND;\r\t\tIF op # NIL THEN Views.Do(c, "
+                    attr: 0
+                  - text: "\"#System:SetProp\""
+                    attr: 3
+                  - text: ", op) END\r\tEND SetProp;\r\r\r\t"
+                    attr: 0
+                  - text: "(* Control *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE DrawBorder (f: Views.Frame; x, y, w, h: INTEGER);\r\tBEGIN\r"
+                    attr: 0
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 252000 }
+                        - { stop: 432000 }
+                        - { stop: 1800000 }
+                        - { stop: 2520000 }
+                        - { stop: 3240000 }
+                      attr: 0
+                      w: 360000000
+                      h: 444500
+                  - text: "\t\tf.DrawRect(x, \ty, \tx+f.dot, \ty+h, Ports.fill, Ports.white);\r\t\tf.DrawRect(x+f.dot, \ty+0, \tx+2 * f.dot,\ty+ h, Ports.fill, Ports.grey25);\r\t\tf.DrawRect(x+0, \ty+0, \tx+w, \ty+f.dot, Ports.fill, Ports.white);\r\t\tf.DrawRect(x+f.dot, \ty+f.dot, \tx+w, \ty+2 * f.dot, Ports.fill, Ports.grey25);\r\t\tf.DrawRect(x+w - f.dot, \ty+0, \tx+w, \ty+h, Ports.fill, Ports.grey50);\r\t\tf.DrawRect(x+w - 2 * f.dot, \ty+f.dot, \tx+w - f.dot, \ty+h - f.dot, Ports.fill, Ports.black);\r\t\tf.DrawRect(x+0, \ty+h - f.dot, \tx+w, \ty+h, Ports.fill, Ports.grey50);\r\t\tf.DrawRect(x+f.dot, \ty+h - 2 * f.dot, \tx+w - f.dot, \ty+h - f.dot, Ports.fill, Ports.black)\r"
+                    attr: 0
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 0
+                      w: 360000000
+                      h: 444500
+                  - text: "\tEND DrawBorder;\r\r\tPROCEDURE DrawLabel (f: Views.Frame; x, y, w, x0, y0, w0, h0, mode: INTEGER; \r\t\t\t\t\t\t\t\t\tVAR is: ARRAY OF CHAR; font: Fonts.Font; rowHeight: INTEGER);\r\t\tVAR dx, i, j, si, sw, rw: INTEGER; s: Dialog.String;\r\tBEGIN\r\t\tDEC(w, 4 * f.dot); INC(x, 2 * f.dot);\r\t\tj := 0; y := y - rowHeight;\r\t\tWHILE is[j] # 0X DO\r\t\t\tsi := 0;\r\t\t\tWHILE (is[j] # 0X) & (is[j] # line) DO s[si] := is[j]; INC(si); INC(j) END;\r\t\t\tIF is[j] = line THEN INC(j) END;\r\t\t\ts[si] := 0X; y := y + rowHeight;\r\t\t\tsw := font.StringWidth(s);\r\t\t\tIF sw > w THEN\r\t\t\t\trw := w - font.StringWidth(\"...\");\r\t\t\t\tIF (rw >= 0) & (LEN(s) >= 4) THEN\r\t\t\t\t\ti := f.CharIndex(0, rw, s, font);\r\t\t\t\t\tIF i > 0 THEN DEC(i) END;\r\t\t\t\t\tIF i > LEN(s) - 4 THEN i := LEN(s) - 4 END;\r\t\t\t\t\ts[i] := \".\"; s[i+1] := \".\"; s[i+2] := \".\"; s[i+3] := 0X;\r\t\t\t\t\tsw := font.StringWidth(s)\r\t\t\t\tELSE sw := 0\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tIF sw > 0 THEN\r\t\t\t\tdx := x;\r\t\t\t\tIF mode = center THEN dx := x +  (w - sw) DIV 2\r\t\t\t\tELSIF mode = right THEN dx := x + w - sw\r\t\t\t\tEND;\r\t\t\t\tf.DrawString(dx, y, Ports.black, s, font)\r\t\t\tEND\r\t\tEND;\r\t\tDrawBorder(f, x0, y0, w0, h0)\r\tEND DrawLabel;\r\r\tPROCEDURE DrawField (f: Views.Frame; x, y, w, mode: INTEGER; VAR s: ARRAY OF CHAR; font: Fonts.Font;\r\t\t\t\t\t\t\t\t\t\t\tcolor: Ports.Color);\r\t\tVAR i, sw, rw: INTEGER;\r\tBEGIN\r\t\tDEC(w, 4 * f.dot); INC(x, 2 * f.dot);\r\t\tsw := font.StringWidth(s);\r\t\tIF sw > w THEN\r\t\t\trw := w - font.StringWidth(\"...\");\r\t\t\tIF (rw >= 0) & (LEN(s) >= 4) THEN\r\t\t\t\ti := f.CharIndex(0, rw, s, font);\r\t\t\t\tIF i > 0 THEN DEC(i) END;\r\t\t\t\tIF i > LEN(s) - 4 THEN i := LEN(s) - 4 END;\r\t\t\t\ts[i] := \".\"; s[i+1] := \".\"; s[i+2] := \".\"; s[i+3] := 0X;\r\t\t\t\tsw := font.StringWidth(s)\r\t\t\tELSE sw := 0\r\t\t\tEND\r\t\tEND;\r\t\tIF sw > 0 THEN\r\t\t\tIF mode = center THEN INC(x, (w - sw) DIV 2)\r\t\t\tELSIF mode = right THEN INC(x, w - sw)\r\t\t\tEND;\r\t\t\tf.DrawString(x, y, color, s, font)\r\t\tEND\r\tEND DrawField;\r\r\tPROCEDURE GetRect(t: Control; f: Views.Frame; row, col: INTEGER; OUT x, y, w, h: INTEGER;\r\t\t\t\t\t\t\t\t\t\tOUT visible: BOOLEAN);\r\t\tVAR c: INTEGER;\r\tBEGIN\r\t\tc := 0; x := 2 * f.dot - t.orgX;\r\t\tWHILE c < col DO INC(x, t.width[c]); INC(c) END;\r\t\tIF row >= t.orgRow THEN\r\t\t\tvisible := TRUE;\r\t\t\tIF row = -1 THEN\r\t\t\t\th := t.labelHeight\r\t\t\tELSE\r\t\t\t\th := t.rowHeight\r\t\t\tEND;\r\t\t\ty := (row - t.orgRow) * t.rowHeight + t.labelHeight + 3 * f.dot;\r\t\t\tw := t.width[col] \r\t\tELSE\r\t\t\tvisible := FALSE\r\t\tEND\r\tEND GetRect;\r\r\r\tPROCEDURE DrawSelection (tab: Control; f: Views.Frame; selRow, selCol: INTEGER; show: BOOLEAN);\r\t\tVAR c, l, t, r, b, cols, rows: INTEGER;\r\tBEGIN\r\t\tIF (selRow >= tab.orgRow) OR (tab.tprop.selectionStyle IN {colSelect, crossSelect}) THEN\r\t\t\tGetSize(tab, rows, cols);\r\t\t\tIF (0 <= selRow) & (selRow < rows) & (0 <= selCol) & (selCol < cols) THEN\r\t\t\t\tIF tab.tprop.selectionStyle = cellSelect THEN\t(* "
+                    attr: 0
+                  - text: mark selected cell
+                    attr: 1
+                  - text: " *)\r\t\t\t\t\tl := 2 * f.dot - tab.orgX; c := 0;\r\t\t\t\t\tWHILE c < selCol DO INC(l, tab.width[c]); INC(c) END;\r\t\t\t\t\tr := l + tab.width[selCol];\t\t\t\t\t\r\t\t\t\t\tt := (selRow - tab.orgRow) * tab.rowHeight + tab.labelHeight + 3 * f.dot;\r\t\t\t\t\tb := t + tab.rowHeight;\r\t\t\t\t\tf.MarkRect(l + f.dot, t + f.dot, r - 2 * f.dot, b - 2 * f.dot, Ports.fill, Ports.hilite, show)\r\t\t\t\tELSIF tab.tprop.selectionStyle = rowSelect THEN\t(* "
+                    attr: 0
+                  - text: mark selected row
+                    attr: 1
+                  - text: " *)\r\t\t\t\t\tl := 2 * f.dot - tab.orgX; r := l; c := 0;\r\t\t\t\t\tWHILE c < cols DO INC(r, tab.width[c]); INC(c) END;\r\t\t\t\t\tt := (selRow - tab.orgRow) * tab.rowHeight + tab.labelHeight + 3 * f.dot;\r\t\t\t\t\tb := t + tab.rowHeight;\r\t\t\t\t\tf.MarkRect(l + f.dot, t + f.dot, r - 2 * f.dot, b - 2 * f.dot, Ports.fill, Ports.hilite, show)\r\t\t\t\tELSIF tab.tprop.selectionStyle = colSelect THEN\t(* "
+                    attr: 0
+                  - text: mark selected column
+                    attr: 1
+                  - text: " *)\r\t\t\t\t\tl := 2 * f.dot - tab.orgX; c := 0;\r\t\t\t\t\tWHILE c < selCol DO INC(l, tab.width[c]); INC(c) END;\r\t\t\t\t\tr := l + tab.width[selCol];\r\t\t\t\t\tt := tab.labelHeight + 3 * f.dot;\r\t\t\t\t\tb := t + tab.rowHeight * (rows - tab.orgRow);\r\t\t\t\t\tf.MarkRect(l + f.dot, t + f.dot, r - 2 * f.dot, b - 2 * f.dot, Ports.fill, Ports.hilite, show)\r\t\t\t\tELSIF tab.tprop.selectionStyle = crossSelect THEN\t(* "
+                    attr: 0
+                  - text: mark both the row and column
+                    attr: 1
+                  - text: " *)\r\t\t\t\t\tIF selRow >= tab.orgRow THEN\r\t\t\t\t\t\tl := 2 * f.dot - tab.orgX; r := l; c := 0;\r\t\t\t\t\t\tt := (selRow - tab.orgRow) * tab.rowHeight + tab.labelHeight + 3 * f.dot;\r\t\t\t\t\t\tb := t + tab.rowHeight;\r\t\t\t\t\t\tIF selCol > 0 THEN\r\t\t\t\t\t\t\tWHILE c < selCol DO INC(r, tab.width[c]); INC(c) END;\r\t\t\t\t\t\t\tf.MarkRect(l + f.dot, t + f.dot, r - 2 * f.dot, b - 2 * f.dot, Ports.fill, Ports.hilite, show)\r\t\t\t\t\t\tEND;\r\t\t\t\t\t\tIF selCol + 1 < cols THEN\r\t\t\t\t\t\t\tr := r + tab.width[selCol]; l := r; c := selCol + 1;\r\t\t\t\t\t\t\tWHILE c < cols DO INC(r, tab.width[c]); INC(c) END;\r\t\t\t\t\t\t\tf.MarkRect(l + f.dot, t + f.dot, r - 2 * f.dot, b - 2 * f.dot, Ports.fill, Ports.hilite, show)\r\t\t\t\t\t\tEND\r\t\t\t\t\tEND;\r\t\t\t\t\tl := 2 * f.dot - tab.orgX; c := 0;\r\t\t\t\t\tWHILE c < selCol DO INC(l, tab.width[c]); INC(c) END;\r\t\t\t\t\tr := l + tab.width[selCol];\r\t\t\t\t\tt := tab.labelHeight + 3 * f.dot;\r\t\t\t\t\tb := t + tab.rowHeight * (rows - tab.orgRow);\r\t\t\t\t\tf.MarkRect(l + f.dot, t + f.dot, r - 2 * f.dot, b - 2 * f.dot, Ports.fill, Ports.hilite, show)\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND DrawSelection;\r\r\tPROCEDURE Select (c: Control; f: Views.Frame; on: BOOLEAN);\r\t\tVAR ok: BOOLEAN;\r\tBEGIN\r\t\tIF on # c.hasSelection THEN\r\t\t\tc.hasSelection := on; c.showSelection := on;\r\t\t\tSetSelection(c, f, on, c.selRow, c.selCol, ok)\r\t\tEND\r\tEND Select;\r\r\tPROCEDURE ViewFromSelection (t: Control): Views.View;\r\t\tVAR str: Dialog.String; ok: BOOLEAN;\r\tBEGIN\r\t\tIF t.hasSelection & t.showSelection THEN\r\t\t\tGetText(t, t.selRow, t.selCol, str, ok);\r\t\t\tIF ok THEN\r\t\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TextViews.dir.New(TextModels.dir.NewFromString(str))\r\t\t\tELSE\r\t\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " NIL\r\t\t\tEND\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " NIL\r\t\tEND\r\tEND ViewFromSelection;\r\r\tPROCEDURE GetControlSize (t: Control; dot: INTEGER; OUT w, h: LONGINT);\r\t\tVAR r, c, i: INTEGER;\r\tBEGIN\r\t\tIF ~t.disabled & t.item.Valid() THEN\r\t\t\tw := 0; h := 0;\r\t\t\tGetSize(t, r, c);\r\t\t\ti := 0;\r\t\t\tWHILE (i < c) & (i < maxCol) DO INC(w, t.width[i]); INC(i) END;\r\t\t\tINC(w, 3 * dot);\r\t\t\th := LONG(r - t.orgRow) * t.rowHeight + t.labelHeight\r\t\tELSE\r\t\t\tw := Views.undefined; h := Views.undefined\r\t\tEND\r\tEND GetControlSize;\r\r\tPROCEDURE CheckPos (t: Control; x, y, dot: INTEGER; VAR col, type, p: INTEGER);\r\t\tVAR c, a: INTEGER; w, h: LONGINT;\r\tBEGIN\r\t\tGetControlSize(t, dot, w, h);\r\t\tINC(x, t.orgX);\r\t\tIF (x >= 0) & (x <= w) & (y >= 0) & (y <= h) THEN\r\t\t\tc := 0; w := 0; type := 0; INC(x, dot);\r\t\t\tWHILE (c < maxCol) & (x >= w + t.width[c]) DO INC(w, t.width[c]); INC(c) END;\r\t\t\tIF (x <= w + 3 * dot) & (c > 0) THEN\r\t\t\t\tcol := c - 1; p := SHORT(w) + dot - t.orgX; type := move\r\t\t\tELSIF y - dot < t.labelHeight THEN\r\t\t\t\ttype := adjust;\r\t\t\t\tcol := c; a := t.width[c] DIV 3;\r\t\t\t\tIF x < w + a THEN p := left\r\t\t\t\tELSIF x > w + a * 2 THEN p := right\r\t\t\t\tELSE p := center\r\t\t\t\tEND\r\t\t\tELSE\r\t\t\t\tcol := c; p := (y - t.labelHeight - dot) DIV t.rowHeight + t.orgRow - 1 + 1; type := field\r\t\t\tEND\r\t\tELSE type := 0\r\t\tEND\r\tEND CheckPos;\r\r\tPROCEDURE MoveLine (t: Control; f: Views.Frame; col, x0: INTEGER);\r\t\tVAR w, h, x, y, x1, limit: INTEGER; m: SET; isDown: BOOLEAN; op: FormatOp;\r\tBEGIN\r\t\tt.context.GetSize(w, h);\r\t\tx := x0; limit := x0 - t.width[col] + 2 * f.dot;\r\t\tREPEAT\r\t\t\tf.Input(x1, y, m, isDown);\r\t\t\tIF x1 < limit THEN x1 := limit END;\r\t\t\tIF x1 # x THEN\r\t\t\t\tf.MarkRect(x, 0, x + f.dot, h, Ports.fill, Ports.invert, FALSE);\r\t\t\t\tx := x1;\r\t\t\t\tf.MarkRect(x, 0, x + f.dot, h, Ports.fill, Ports.invert, TRUE)\r\t\t\tEND\r\t\tUNTIL ~isDown;\r\t\tNEW(op); op.tab := t; op.col := col;\r\t\top.width := t.width[col] + x - x0; op.mode := t.mode[col];\r\t\tViews.Do(t, \"#System:SetLayout\", op)\r\tEND MoveLine;\r\r\tPROCEDURE ChangeAdjust (t: Control; col, mode: INTEGER);\r\t\tVAR op: FormatOp;\r\tBEGIN\r\t\tNEW(op); op.tab := t; op.col := col;\r\t\top.width := t.width[col]; op.mode := mode;\r\t\tViews.Do(t, \"#System:SetLayout\", op)\r\tEND ChangeAdjust;\r\r\tPROCEDURE ControlSections (t: Control; f: Views.Frame; vertical: BOOLEAN; OUT size, part, pos: INTEGER);\r\t\tVAR r, c, w, max: INTEGER;\r\tBEGIN\r\t\tsize := 0; part := 0; pos := 0; GetSize(t, r, c);\r\t\tIF vertical THEN\r\t\t\tsize := r;\r\t\t\tpart := (f.b - (f.t + t.labelHeight + 3*f.dot)) DIV t.rowHeight;\r\t\t\tpos := t.orgRow\r\t\tELSE\r\t\t\tw := 0; max := MIN(c, maxCol);\r\t\t\tc := 0;\r\t\t\tWHILE (c < max) DO INC(w, t.width[c]); INC(c) END;\r\t\t\tsize := w + 3 * f.dot;\r\t\t\tpart := f.r - f.l;\r\t\t\tpos := t.orgX\r\t\tEND\r\tEND ControlSections;\r\r\tPROCEDURE ScrollControl (t: Control; f: Views.Frame; op, pos: INTEGER; vertical: BOOLEAN);\r\t\tVAR size, part, p, delta, l, t0, r, b: INTEGER;\r\tBEGIN\r\t\tIF vertical THEN\r\t\t\tControlSections(t, f, TRUE, size, part, p);\r\t\t\tdelta := part - 1;\r\t\t\tIF delta < 1 THEN delta := 1 END;\r\t\t\tCASE op OF\r\t\t\t| Controllers.decLine: DEC(p)\r\t\t\t| Controllers.incLine: INC(p)\r\t\t\t| Controllers.decPage: DEC(p, delta)\r\t\t\t| Controllers.incPage: INC(p, delta)\r\t\t\t| Controllers.gotoPos: p := pos\r\t\t\tEND;\r\t\t\tIF p > size - part THEN p := size - part END;\r\t\t\tIF p < 0 THEN p := 0 END;\r\t\t\tdelta := (f.gy + t.labelHeight + 3 * f.dot) DIV f.unit;\r\t\t\tf.rider.GetRect(l, t0, r, b);\r\t\t\tIF b > delta THEN\r\t\t\t\tIF t0 < delta THEN f.rider.SetRect(l, delta, r, b) END;\r\t\t\t\tViews.Scroll(t, 0, (t.orgRow - p) * t.rowHeight);\r\t\t\t\tIF f.rider # NIL THEN\r\t\t\t\t\tf.rider.SetRect(l, t0, r, b)\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tt.orgRow := p\r\t\tELSE\r\t\t\tControlSections(t, f, FALSE, size, part, p);\r\t\t\tdelta := part - defColW;\r\t\t\tIF delta < defColW THEN delta := defColW END;\r\t\t\tCASE op OF\r\t\t\t| Controllers.decLine: DEC(p, defColW)\r\t\t\t| Controllers.incLine: INC(p, defColW)\r\t\t\t| Controllers.decPage: DEC(p, delta)\r\t\t\t| Controllers.incPage: INC(p, delta)\r\t\t\t| Controllers.gotoPos: p := pos\r\t\t\tEND;\r\t\t\tIF p >= size - part THEN p := size - part END;\r\t\t\tIF p < 0 THEN p := 0 END;\r\t\t\tViews.Scroll(t, t.orgX - p, 0);\r\t\t\tt.orgX := p\r\t\tEND\r\tEND ScrollControl;\r\r\tPROCEDURE HandleChar (t: Control; f: Views.Frame; ch: CHAR);\r\tBEGIN\r\t\tCASE ch OF\r\t\t| 10X: ScrollControl(t, f, Controllers.decPage, 0, FALSE)\r\t\t| 11X: ScrollControl(t, f, Controllers.incPage, 0, FALSE)\r\t\t| 12X: ScrollControl(t, f, Controllers.decPage, 0, TRUE)\r\t\t| 13X: ScrollControl(t, f, Controllers.incPage, 0, TRUE)\r\t\t| 14X: ScrollControl(t, f, Controllers.gotoPos, 0, FALSE)\r\t\t| 15X: ScrollControl(t, f, Controllers.gotoPos, MAX(INTEGER), FALSE)\r\t\t| 16X: ScrollControl(t, f, Controllers.gotoPos, 0, TRUE)\r\t\t| 17X: ScrollControl(t, f, Controllers.gotoPos, MAX(INTEGER), TRUE)\r\t\t| 1CX: ScrollControl(t, f, Controllers.decLine, 0, FALSE)\r\t\t| 1DX: ScrollControl(t, f, Controllers.incLine, 0, FALSE)\r\t\t| 1EX: ScrollControl(t, f, Controllers.decLine, 0, TRUE)\r\t\t| 1FX: ScrollControl(t, f, Controllers.incLine, 0, TRUE)\r\t\t| 07X, 08X, 1BX: Select(t, f, FALSE)\t"
+                    attr: 0
+                  - text: "(* rdel, del, esc *)"
+                    attr: 1
+                  - text: "\r\t\tELSE\r\t\tEND\r\tEND HandleChar;\r\r\r\tPROCEDURE (t: Control) Internalize2 (VAR rd: Stores.Reader);\r\t\tVAR thisVersion, i: INTEGER; lockedLayout, lockedData, markRow, markCol: BOOLEAN;\r\tBEGIN\r\t\trd.ReadVersion(minVersion, tabVersion, thisVersion);\r\t\tIF ~rd.cancelled THEN\r\t\t\tIF thisVersion = tabVersion THEN (* "
+                    attr: 0
+                  - text: current table version
+                    attr: 1
+                  - text: " *)\r\t\t\t\tNEW(t.tprop);\r\t\t\t\trd.ReadBool(t.tprop.layoutEditable);\r\t\t\t\trd.ReadBool(t.tprop.dataEditable);\r\t\t\t\trd.ReadInt(t.tprop.selectionStyle)\r\t\t\tELSIF thisVersion = 1 THEN (* "
+                    attr: 0
+                  - text: "intermediate Table version (after 1.4 Beta, before 1.4 final)"
+                    attr: 1
+                  - text: " *)\r\t\t\t\trd.ReadBool(lockedLayout);\r\t\t\t\trd.ReadBool(lockedData);\r\t\t\t\trd.ReadBool(markRow);\r\t\t\t\trd.ReadBool(markCol);\r\t\t\t\tNEW(t.tprop);\r\t\t\t\tt.tprop.layoutEditable := ~lockedLayout; t.tprop.dataEditable := ~lockedData;\r\t\t\t\tIF markRow THEN\r\t\t\t\t\tIF markCol THEN t.tprop.selectionStyle := noSelect ELSE t.tprop.selectionStyle := rowSelect END\r\t\t\t\tELSE\r\t\t\t\t\tIF markCol THEN t.tprop.selectionStyle := colSelect ELSE t.tprop.selectionStyle := cellSelect END\r\t\t\t\tEND\r\t\t\tELSE (* "
+                    attr: 0
+                  - text: "old version, 1.4 Beta"
+                    attr: 1
+                  - text: " *)\r\t\t\t\tt.tprop.layoutEditable := TRUE; t.tprop.dataEditable := TRUE; t.tprop.selectionStyle := cellSelect\r\t\t\tEND;\r\t\t\tNEW(t.sprop);\r\t\t\trd.ReadString(t.sprop.typeface);\r\t\t\trd.ReadInt(t.sprop.size);\r\t\t\trd.ReadSet(t.sprop.style.val);\r\t\t\tt.sprop.style.mask := {Fonts.italic, Fonts.underline, Fonts.strikeout};\r\t\t\tt.sprop.weight := Fonts.normal;\r\t\t\trd.ReadInt(t.columns); i := 0;\r\t\t\tWHILE i < t.columns DO\r\t\t\t\trd.ReadInt(t.width[i]);\r\t\t\t\trd.ReadInt(t.mode[i]);\r\t\t\t\tINC(i)\r\t\t\tEND;\r\t\t\tSetupControl(t)\r\t\tEND\r\tEND Internalize2;\r\r\tPROCEDURE (t: Control) Externalize2 (VAR wr: Stores.Writer);\r\t\tVAR i: INTEGER;\r\tBEGIN\r\t\twr.WriteVersion(tabVersion);\r\t\twr.WriteBool(t.tprop.layoutEditable);\r\t\twr.WriteBool(t.tprop.dataEditable);\r\t\twr.WriteInt(t.tprop.selectionStyle);\r\t\twr.WriteString(t.sprop.typeface);\r\t\twr.WriteInt(t.sprop.size);\r\t\twr.WriteSet(t.sprop.style.val);\r\t\twr.WriteInt(t.columns); i := 0;\r\t\tWHILE i < t.columns DO\r\t\t\twr.WriteInt(t.width[i]);\r\t\t\twr.WriteInt(t.mode[i]);\r\t\t\tINC(i)\r\t\tEND\r\tEND Externalize2;\r\r\tPROCEDURE (t: Control) CopyFromSimpleView2 (source: Controls.Control);\r\tBEGIN\r\t\tWITH source: Control DO\r\t\t\tt.sprop := Properties.CopyOf(source.sprop)(Properties.StdProp);\r\t\t\tt.tprop := Properties.CopyOf(source.tprop)(Prop);\r\t\t\tt.columns := source.columns;\r\t\t\tt.width := source.width;\r\t\t\tt.mode := source.mode;\r\t\t\tSetupControl(t)\r\t\tEND\r\tEND CopyFromSimpleView2;\r\r\tPROCEDURE (t: Control) GetBackground (VAR color: Ports.Color);\r\tBEGIN\r\t\tcolor := Ports.background\r\tEND GetBackground;\r\r\tPROCEDURE Paint (c: Control; f: Views.Frame; l, t, r, b: INTEGER);\r\t\tVAR width, w, h, rows, cols, row, col, x, y, rowHeight, dl, weight: INTEGER; font: Fonts.Font;\r\t\t\tstr: Dialog.String; ok: BOOLEAN;style: SET; color: Ports.Color;\r\tBEGIN\r\t\tc.context.GetSize(w, h);\r\t\tIF ~c.disabled & c.item.Valid() THEN\r\t\t\tGetSize(c, rows, cols); \r\t\t\tDEC(c.rowHeight, c.rowHeight MOD f.unit);\r\t\t\trow := -1; y := 2 * f.dot; font := c.titFont;\r\t\t\tWHILE (row < rows) & (y < b) DO\r\t\t\t\tIF row = - 1 THEN\r\t\t\t\t\trowHeight := 1;\r\t\t\t\t\tFOR col := 0 TO cols - 1 DO\r\t\t\t\t\t\tGetLabel(c, col, str, ok); dl := CountLines(str);\r\t\t\t\t\t\tIF dl > rowHeight THEN rowHeight := dl END\r\t\t\t\t\tEND;\r\t\t\t\t\trowHeight := rowHeight * c.rowHeight;\r\t\t\t\t\tc.labelHeight := rowHeight\r\t\t\t\tELSE \r\t\t\t\t\trowHeight := c.rowHeight\r\t\t\t\tEND;\r\t\t\t\tIF ~Views.IsPrinterFrame(f) OR (y + rowHeight < b) THEN\r\t\t\t\t\tcol := 0; x := 2 * f.dot - c.orgX;\r\t\t\t\t\tWHILE (col < cols) & (col < maxCol) & (x < r) DO\r\t\t\t\t\t\twidth := c.width[col];\r\t\t\t\t\t\tIF x + width >= 0 THEN\r\t\t\t\t\t\t\tf.DrawRect(x - f.dot, y, x, y + rowHeight, Ports.fill, Ports.black);\t"
+                    attr: 0
+                  - text: "(* left vertical separation line *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\t\tIF ~Views.IsPrinterFrame(f) OR (x + width < r) THEN\r\t\t\t\t\t\t\t\tIF row = -1 THEN\r\t\t\t\t\t\t\t\t\tGetLabel(c, col, str, ok);\r\t\t\t\t\t\t\t\t\tf.DrawRect(x, y, x + width - f.dot, y + rowHeight - f.dot, Ports.fill, Ports.grey25);\r\t\t\t\t\t\t\t\t\t"
+                    attr: 0
+                  - text: "\t(* background *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\t\t\t\tDrawLabel(f, x, y + c.baseOff, width - f.dot, x, y, width, rowHeight,\r\t\t\t\t\t\t\t\t\t\t\t\t\t\tc.mode[col], str, font, c.rowHeight)\r\t\t\t\t\t\t\t\tELSE\r\t\t\t\t\t\t\t\t\tGetText(c, row, col, str, ok); GetAttr(c, row, col, style, weight, color, ok);\r\t\t\t\t\t\t\t\t\tf.DrawRect(x, y, x + width - f.dot, y + rowHeight - f.dot, Ports.fill, Ports.white);\r\t\t\t\t\t\t\t\t\t\t"
+                    attr: 0
+                  - text: "(* background *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\t\t\t\tDrawField(f, x, y + c.baseOff, width - f.dot, c.mode[col], str, \r\t\t\t\t\t\t\t\t\t\t\t\t\tFonts.dir.This(font.typeface, font.size, style, weight), color)\r\t\t\t\t\t\t\t\tEND\r\t\t\t\t\t\t\tEND\r\t\t\t\t\t\tEND;\r\t\t\t\t\t\tINC(col); INC(x, width)\r\t\t\t\t\tEND;\r\t\t\t\t\tf.DrawRect(x - f.dot, y, x, y + rowHeight, Ports.fill, Ports.black);\t"
+                    attr: 0
+                  - text: "(* right vertical separator line *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tIF Views.IsPrinterFrame(f) & (x >= r) THEN DEC(x, width) END;\r\r\t\t\t\t\tIF row = -1 THEN row := c.orgRow; font := c.fldFont; INC(y, f.dot)\r\t\t\t\t\tELSE INC(row)\r\t\t\t\t\tEND\r\t\t\t\tEND;\r\t\t\t\tINC(y, rowHeight);\r\t\t\t\tf.DrawRect(f.dot - c.orgX, y - f.dot, x, y, Ports.fill, Ports.black)\t"
+                    attr: 0
+                  - text: "(* bottom line "
+                    attr: 1
+                  - text: "*)\r\t\t\tEND;\r\t\t\tIF f.dot - c.orgX < x THEN\r\t\t\t\tf.DrawRect(f.dot - c.orgX, f.dot, x, 2 * f.dot, Ports.fill, Ports.black);\r\t\t\t\tf.DrawRect(f.dot - c.orgX, c.labelHeight + f.dot, x, c.labelHeight + 2 * f.dot, Ports.fill, Ports.black)\r\t\t\tEND\r\t\tELSE\r\t\t\tf.DrawRect(f.dot, f.dot, w - f.dot, h - f.dot, Ports.fill, Ports.grey25);\r\t\t\tf.DrawRect(0, 0, w, h, f.dot, Ports.black)\r\t\tEND\r\tEND Paint;\r\r\tPROCEDURE (c: Control) Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\t\tVAR visible: BOOLEAN; g: Views.Frame;\r\tBEGIN\r\t\tPaint(c, f, l, t, r, b);\r\t\tIF c.field # NIL THEN\r\t\t\tGetRect(c, f, c.selRow, c.selCol, c.x, c.y, c.w, c.h, visible);\r\t\t\tIF visible THEN Views.InstallFrame(f, c.field, c.x, c.y, 0, TRUE)\r\t\t\tELSE\r\t\t\t\tg := Views.ThisFrame(f, c.field); IF g # NIL THEN Views.RemoveFrame(f, g) END\r\t\t\tEND\r\t\tEND\r\tEND Restore;\r\t\r\tPROCEDURE (c: Control) Update (f: Views.Frame; op, from, to: INTEGER);\r\tBEGIN\r\t\tViews.Update(c, Views.keepFrames)\r\tEND Update;\r\r\tPROCEDURE (c: Control) RestoreMarks (f: Views.Frame; l, t, r, b: INTEGER);\r\t\tVAR row, col: INTEGER; ok, on: BOOLEAN;\r\tBEGIN\r\t\tIF c.item.Valid() THEN\r\t\t\tGetSelection(c, on, row, col, ok);\r\t\t\tIF ok THEN\r\t\t\t\tc.hasSelection := on;\r\t\t\t\tIF on THEN\r\t\t\t\t\tc.selRow := row; c.selCol := col;\r\t\t\t\t\tc.showSelection := c.field = NIL;\r\t\t\t\t\tIF c.showSelection THEN DrawSelection(c, f, c.selRow, c.selCol, TRUE) END\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND RestoreMarks;\r\r\tPROCEDURE AddEditField (t: Control; f: Views.Frame; row, col: INTEGER);\r\t\tVAR g: Views.Frame; mMsg: Controllers.MarkMsg; ok, visible: BOOLEAN;\r\tBEGIN\r\t\tGetRect(t, f, row, col, t.x, t.y, t.w, t.h, visible);\r\t\tIF visible THEN\r\t\t\tGetText(t, row, col, text, ok);\r\t\t\tt.field := NewField(t, col, t.w, t.h); Stores.Join(t, t.field);\r\r\t\t\tViews.InstallFrame(f, t.field, t.x, t.y, 0, TRUE);\r\t\t\tmMsg.show := TRUE; mMsg.focus := TRUE;\r\t\t\tg := Views.ThisFrame(f, t.field);\r\t\t\tIF g # NIL THEN Views.ForwardCtrlMsg(g, mMsg) END\r\t\tEND"
+                    attr: 0
+                  - text: "\r"
+                    attr: 3
+                  - text: "\tEND AddEditField;\r\r\tPROCEDURE DisableEditField (t: Control; f: Views.Frame; update: BOOLEAN);\r\t\tVAR g: Views.Frame; mMsg: Controllers.MarkMsg; ok: BOOLEAN;\r\tBEGIN\r\t\tIF t.field # NIL THEN\r\t\t\tmMsg.show := FALSE; mMsg.focus := FALSE;\r\t\t\tg := Views.ThisFrame(f, t.field);\r\t\t\tIF g # NIL THEN Views.ForwardCtrlMsg(g, mMsg); Views.RemoveFrame(f, g) END;\r\t\t\tt.field := NIL;\r\t\t\tIF update THEN SetText(t, f, t.selRow, t.selCol, text, ok) END;\r"
+                    attr: 0
+                  - text: "\t\t\t"
+                    attr: 3
+                  - text: "t.showSelection := TRUE\r\t\tEND\r\tEND DisableEditField;\r\r\tPROCEDURE MoveEditField (t: Control; f: Views.Frame; right: BOOLEAN);\r\t\tVAR rows, cols: INTEGER; ok: BOOLEAN;\r\tBEGIN\r\t\tDisableEditField(t, f, TRUE);\r\t\tGetSize(t, rows, cols);\r\t\tSelect(t, f, FALSE);\r\t\tIF right THEN\r\t\t\tt.selCol := (t.selCol + 1) MOD cols;\r\t\t\tIF t.selCol = 0 THEN t.selRow := (t.selRow + 1) MOD rows END\r\t\tELSE\r\t\t\tt.selCol := (t.selCol - 1) MOD cols;\r\t\t\tIF t.selCol = cols - 1 THEN t.selRow := (t.selRow - 1) MOD rows END\r\t\tEND;\r\t\tt.hasSelection := TRUE; t.showSelection := FALSE;\r\t\tSetSelection(t, f, TRUE, t.selRow, t.selCol, ok);\r\t\tAddEditField(t, f, t.selRow, t.selCol)\r\tEND MoveEditField;\r\r\tPROCEDURE TrackMouse (t: Control; f: Views.Frame; VAR r, c, type: INTEGER);\r\t\tVAR x, y, selr, selc: INTEGER; m: SET; isDown, sel: BOOLEAN;\r\tBEGIN\r\t\tselr := t.selRow; selc := t.selCol; sel := t.hasSelection;\r\t\tREPEAT\r\t\t\tf.Input(x, y, m, isDown);\r\t\t\tCheckPos(t, x, y, f.dot, c, type, r);\r\t\t\tIF sel & ((type # field) OR (selr # r) OR (selc # c)) THEN\r\t\t\t\tDrawSelection(t, f, selr, selc, FALSE)\r\t\t\tEND;\r\t\t\tIF (type = field) & (~sel OR (selr # r) OR (selc # c)) THEN\r\t\t\t\tDrawSelection(t, f, r, c, TRUE)\r\t\t\tEND;\r\t\t\tsel := type = field; selr := r; selc := c\r\t\tUNTIL ~isDown;\r\t\tIF ~sel & t.hasSelection THEN\r\t\t\tDrawSelection(t, f, t.selRow, t.selCol, TRUE)\r\t\tEND\r\tEND TrackMouse;\r\r\tPROCEDURE (t: Control) HandleCtrlMsg2 (f: Views.Frame; VAR msg: Controllers.Message;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR focus: Views.View);\r\t\tVAR p, col, type: INTEGER; x, y: INTEGER; m: SET; isDown: BOOLEAN;\r\t\t\tok, rebuild: BOOLEAN; c, w, size, part, pos: INTEGER;\r\tBEGIN\r\t\tIF ~t.disabled & t.item.Valid() THEN\r\t\t\tWITH msg: Controllers.PollOpsMsg DO\r\t\t\t\tIF t.field # NIL THEN focus := t.field\r\t\t\t\tELSIF t.hasSelection THEN msg.valid := {Controllers.copy}\r\t\t\t\tEND\r\t\t\t| msg: Controllers.PollCursorMsg DO\r\t\t\t\tIF (t.field # NIL) & (msg.x >= t.x) & (msg.x <= t.x + t.w) & (msg.y >= t.y) & (msg.y <= t.y + t.h) THEN\r\t\t\t\t\tfocus := t.field\r\t\t\t\tELSE\r\t\t\t\t\tCheckPos(t, msg.x, msg.y, f.dot, col, type, p);\r\t\t\t\t\tIF (type = move) & t.tprop.layoutEditable THEN msg.cursor := HostPorts.resizeHCursor\r\t\t\t\t\tELSIF (type = adjust) & t.tprop.layoutEditable THEN msg.cursor := Ports.refCursor\r\t\t\t\t\tELSIF  ~t.readOnly & (type = field) THEN msg.cursor := Ports.tableCursor\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\t| msg: Controllers.MarkMsg DO\r\t\t\t\tIF t.field # NIL THEN DisableEditField(t, f, TRUE); Views.Update(t, Views.rebuildFrames) END\r\t\t\t| msg: Controllers.SelectMsg DO\r\t\t\t\tIF t.field # NIL THEN focus := t.field\r\t\t\t\tELSIF ~msg.set THEN Select(t, f, FALSE)\r\t\t\t\tEND\r\t\t\t| msg: Controllers.EditMsg DO\r\t\t\t\tIF t.field # NIL THEN\r\t\t\t\t\tIF msg.op = Controllers.pasteChar THEN\r\t\t\t\t\t\tIF (msg.char = lineChar) OR (msg.char = esc) THEN\r\t\t\t\t\t\t\tDisableEditField(t, f, msg.char # esc); Views.Update(t, Views.rebuildFrames)\r\t\t\t\t\t\tELSIF (msg.char = tab) OR (msg.char = ltab) THEN\r\t\t\t\t\t\t\tMoveEditField(t, f, msg.char = tab); Views.Update(t, Views.rebuildFrames)\r\t\t\t\t\t\tELSE\r\t\t\t\t\t\t\tfocus := t.field\r\t\t\t\t\t\tEND\t\r\t\t\t\t\tELSE\r\t\t\t\t\t\tfocus := t.field\r\t\t\t\t\tEND\r\t\t\t\tELSE\r\t\t\t\t\tIF (msg.op = Controllers.pasteChar) & (msg.char = lineChar) &\r\t\t\t\t\t\t(t.tprop.selectionStyle = cellSelect) & t.hasSelection THEN\r\t\t\t\t\t\tt.showSelection := FALSE;\r\t\t\t\t\t\tSetSelection(t, f, TRUE, t.selRow, t.selCol, ok);\r\t\t\t\t\t\tAddEditField(t, f, t.selRow, t.selCol); Views.Update(t, Views.keepFrames)\r\t\t\t\t\tELSIF msg.op = Controllers.pasteChar THEN\r\t\t\t\t\t\tHandleChar(t, f, msg.char)\r\t\t\t\t\tELSIF msg.op = Controllers.copy THEN\r\t\t\t\t\t\tmsg.view := ViewFromSelection(t);\r\t\t\t\t\t\tmsg.w := 0; msg.h := 0; msg.isSingle := FALSE\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\t| msg: Controllers.TrackMsg DO\r\t\t\t\tIF (t.field # NIL) & (msg.x >= t.x) & (msg.x <= t.x + t.w) & (msg.y >= t.y) & (msg.y <= t.y + t.h) THEN\r\t\t\t\t\t\tfocus := t.field\r\t\t\t\tELSE\r\t\t\t\t\trebuild := t.field # NIL; DisableEditField(t, f, TRUE);\t"
+                    attr: 0
+                  - text: "(* update below after notifications *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tCheckPos(t, msg.x, msg.y, f.dot, col, type, p);\r\t\t\t\t\tIF type = move THEN\r\t\t\t\t\t\tIF t.tprop.layoutEditable THEN\r\t\t\t\t\t\t\tMoveLine(t, f, col, p)\r\t\t\t\t\t\tEND\r\t\t\t\t\tELSIF type = adjust THEN\r\t\t\t\t\t\tIF t.tprop.layoutEditable THEN\r\t\t\t\t\t\t\tChangeAdjust(t, col, p);\r\t\t\t\t\t\t\tREPEAT f.Input(x, y, m, isDown) UNTIL ~isDown\r\t\t\t\t\t\tEND\r\t\t\t\t\tELSIF ~t.readOnly & (type = field) THEN\r\t\t\t\t\t\tTrackMouse(t, f, p, col, type);\r\t\t\t\t\t\tIF type = field THEN\r\t\t\t\t\t\t\tIF ~t.readOnly & t.tprop.dataEditable\r\t\t\t\t\t\t\t\t& ((Controllers.doubleClick IN msg.modifiers) OR (t.tprop.selectionStyle = noSelect))\r\t\t\t\t\t\t\tTHEN\r\t\t\t\t\t\t\t\tSelect(t, f, FALSE);\r\t\t\t\t\t\t\t\tt.selRow := p; t.selCol := col; t.hasSelection := TRUE; t.showSelection := FALSE;\r\t\t\t\t\t\t\t\tSetSelection(t, f, TRUE, t.selRow, t.selCol, ok);\r\t\t\t\t\t\t\t\tAddEditField(t, f, p, col); Views.Update(t, Views.keepFrames)\r\t\t\t\t\t\t\tELSE\r\t\t\t\t\t\t\t\tIF (t.selRow # p) OR (t.selCol # col) OR ~t.hasSelection THEN\r\t\t\t\t\t\t\t\t\tSelect(t, f, FALSE);\r\t\t\t\t\t\t\t\t\tt.selRow := p; t.selCol := col;\r\t\t\t\t\t\t\t\t\tSelect(t, f, TRUE)\r\t\t\t\t\t\t\t\tELSIF t.tprop.selectionStyle = cellSelect THEN Select(t, f, FALSE)\r\t\t\t\t\t\t\t\tEND\r\t\t\t\t\t\t\tEND\r\t\t\t\t\t\tEND\r\t\t\t\t\tEND;\r\t\t\t\t\tIF rebuild THEN Views.Update(t, Views.rebuildFrames) END\r\t\t\t\tEND\r\t\t\t| msg: Controllers.PollSectionMsg DO\r\t\t\t\tControlSections(t, f, msg.vertical, msg.wholeSize, msg.partSize, msg.partPos);\r\t\t\t\tIF (msg.partPos > 0) & (msg.partPos > msg.wholeSize - msg.partSize) THEN\r\t\t\t\t\tScrollControl(t, f, Controllers.gotoPos, msg.wholeSize - msg.partSize, msg.vertical);\r\t\t\t\t\tControlSections(t, f, msg.vertical, msg.wholeSize, msg.partSize, msg.partPos)\r\t\t\t\tEND;\r\t\t\t\tmsg.valid := msg.partSize < msg.wholeSize;\r\t\t\t\tmsg.done := TRUE\r\t\t\t| msg: Controllers.ScrollMsg DO\r\t\t\t\tScrollControl(t, f, msg.op, msg.pos, msg.vertical);\r\t\t\t\tmsg.done := TRUE\r\t\t\t| msg: Controllers.PageMsg DO\r\t\t\t\tIF msg.op IN {Controllers.nextPageY, Controllers.gotoPageY} THEN\t"
+                    attr: 0
+                  - text: "(* vertical *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tControlSections(t, f, TRUE, size, part, pos);\r\t\t\t\t\tIF msg.op = Controllers.nextPageY THEN\r\t\t\t\t\t\tt.orgRow := pos + part\r\t\t\t\t\tELSE\r\t\t\t\t\t\tt.orgRow := msg.pageY * part\r\t\t\t\t\tEND;\r\t\t\t\t\tmsg.done := TRUE;\r\t\t\t\t\tmsg.eoy :=t.orgRow >= size\r\t\t\t\tELSE (* horizontal *)\r\t\t\t\t\tControlSections(t, f, FALSE, size, part, pos);\r\t\t\t\t\tIF msg.op = Controllers.nextPageX THEN\r\t\t\t\t\t\tt.orgX := pos + part\r\t\t\t\t\tELSE\r\t\t\t\t\t\tt.orgX := msg.pageX * part\r\t\t\t\t\tEND;\r\t\t\t\t\tIF (t.orgX > 0) & (t.orgX < size) THEN\r\t\t\t\t\t\tc := 0; w := 0;\r\t\t\t\t\t\tWHILE w < t.orgX DO INC(w, t.width[c]); INC(c) END;\r\t\t\t\t\t\tt.orgX := w - t.width[c-1] + 1*f.dot\r\t\t\t\t\tEND;\r\t\t\t\t\tmsg.done := TRUE;\r\t\t\t\t\tmsg.eox :=t.orgX >= size\r\t\t\t\tEND\r\t\t\tELSE\r\t\t\tEND\r\t\tEND\r\tEND HandleCtrlMsg2;\r\r\tPROCEDURE (t: Control) HandlePropMsg2 (VAR msg: Properties.Message);\r\t\tVAR w, h: LONGINT;\r\tBEGIN\r\t\tWITH msg: Properties.FocusPref DO\r\t\t\tIF ~t.disabled THEN msg.setFocus := TRUE END\r\t\t| msg: Properties.SizePref DO\r\t\t\tIF (msg.w = Views.undefined) & (msg.h = Views.undefined) THEN\r\t\t\t\tGetControlSize(t, Ports.point, w, h);\r\t\t\t\tmsg.w := SHORT(MIN(w, MAX(INTEGER)));\r\t\t\t\tmsg.h := SHORT(MIN(h, MAX(INTEGER)))\r\t\t\tEND;\r\t\t\tIF msg.w = Views.undefined THEN msg.w := 80 * Ports.mm END;\r\t\t\tIF msg.h = Views.undefined THEN msg.h := 30 * Ports.mm END\r\t\t| msg: Properties.ResizePref DO\r\t\t\tmsg.horFitToWin := TRUE;\r\t\t\tmsg.verFitToWin := TRUE\r\t\t| msg: Controls.PropPref DO\r\t\t\tmsg.valid := {Controls.link, Controls.label, Controls.guard, Controls.notifier}\r\t\t| msg: Properties.PollMsg DO\r\t\t\tPollProp(t, msg.prop)\r\t\t| msg: Properties.SetMsg DO\r\t\t\tSetProp(t, msg.prop)\r\t\t| msg: Properties.ControlPref DO\r\t\t\tIF (t.field # NIL) & ((msg.char = lineChar) OR (msg.char = esc) OR (msg.char = tab) OR (msg.char = ltab))\r\t\t\t\tOR (t.field = NIL) & (t.tprop.selectionStyle = cellSelect) & t.hasSelection & (msg.char = lineChar)\r\t\t\tTHEN\r\t\t\t\tmsg.accepts := TRUE\r\t\t\tEND\r\t\tELSE\r\t\t\tIF t.field # NIL THEN Views.HandlePropMsg(t.field, msg) END\r\t\tEND\r\tEND HandlePropMsg2;\r\r\tPROCEDURE (c: Control) CheckLink (VAR ok: BOOLEAN);\r\t\tVAR item: Meta.Item; mod: Meta.Name; name: Meta.Name;\r\tBEGIN\r\t\titem := c.item;\r\t\tIF (item.typ = Meta.recTyp) THEN\r\t\t\titem.GetTypeName(mod, name);\r\t\t\tIF (mod = \"StdTables\") & (name = \"Table\") THEN\r\t\t\t\tok := TRUE\r\t\t\tELSE\r\t\t\t\tok := FALSE\r\t\t\tEND\r\t\tELSE ok := FALSE\r\t\tEND\r\tEND CheckLink;\r\r\r\t"
+                    attr: 0
+                  - text: "(* Property Dialog *)"
+                    attr: 1
+                  - text: "\r\r\r\tPROCEDURE PollPropForDlg;\r\t\tVAR q: Properties.Property; p: Prop;\r\tBEGIN\r\t\tdlg.layoutEditable := TRUE; dlg.dataEditable := TRUE; dlg.selectionStyle.index := cellSelect;\r\t\tdlg.known := {}; dlg.valid := {};\r\t\tProperties.CollectProp(q);\r\t\tWHILE (q # NIL) & ~(q IS Prop) DO q := q.next END;\r\t\tIF q # NIL THEN\r\t\t\tp := q(Prop);\r\t\t\tdlg.known := p.known; dlg.valid := p.valid;\r\t\t\tIF layoutEditable IN p.valid THEN dlg.layoutEditable := p.layoutEditable END;\r\t\t\tIF dataEditable IN p.valid THEN dlg.dataEditable := p.dataEditable END;\r\t\t\tIF selectionStyle IN p.valid THEN dlg.selectionStyle.index := p.selectionStyle END\r\t\tEND;\r\t\tDialog.Update(dlg)\r\tEND PollPropForDlg;\r\r\tPROCEDURE SetPropFromDlg;\r\t\tVAR p: Prop;\r\tBEGIN\r\t\tNEW(p);\r\t\tp.known := dlg.known;\r\t\tp.valid := dlg.valid;\r\t\tp.layoutEditable := dlg.layoutEditable;\r\t\tp.dataEditable := dlg.dataEditable;\r\t\tp.selectionStyle := dlg.selectionStyle.index;\r\t\tProperties.EmitProp(NIL, p)\r\tEND SetPropFromDlg;\r\r\tPROCEDURE (a: Action) Do;\r\t\tVAR c: Containers.Controller; v: Views.View; fp: INTEGER;\r\tBEGIN\r\t\tControllers.SetCurrentPath(Controllers.targetPath);\r\t\tc := Containers.Focus(); fp := 0;\r\t\tIF c # NIL THEN\r\t\t\tc.GetFirstView(Containers.selection, v);\r\t\t\tWHILE v # NIL DO fp := fp + Services.AdrOf(v); c.GetNextView(Containers.selection, v) END\r\t\tEND;\r\t\tIF fp # dlg.fingerprint THEN PollPropForDlg; dlg.fingerprint := fp END;\r\t\tControllers.ResetCurrentPath();\r\t\tServices.DoLater(a, Services.Ticks() + Services.resolution DIV 2)\r\tEND Do;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: InitDialog
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tIF action = NIL THEN NEW(action); Services.DoLater(action, Services.now) END;\r\t\tControllers.SetCurrentPath(Controllers.targetPath);\r\t\tPollPropForDlg;\r\t\tControllers.ResetCurrentPath()\r\tEND InitDialog;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Set
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tControllers.SetCurrentPath(Controllers.targetPath);\r\t\tSetPropFromDlg; PollPropForDlg;\r\t\tControllers.ResetCurrentPath()\r\tEND Set;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Guard
+                    attr: 3
+                  - text: "* (idx: INTEGER; VAR par: Dialog.Par);\r\tBEGIN\r\t\tIF ~(idx IN dlg.known) THEN par.disabled := TRUE\r\t\tELSIF ~(idx IN dlg.valid) THEN par.undef := TRUE\r\t\tEND\r\tEND Guard;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Notifier
+                    attr: 3
+                  - text: "* (idx, op, from, to: INTEGER);\r\tBEGIN\r\t\tIF op = Dialog.changed THEN INCL(dlg.valid, idx) END\r\tEND Notifier;\r\r\r\t"
+                    attr: 0
+                  - text: "(* StdDirectory *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE InitStdProp (OUT p: Properties.StdProp);\r\t\tVAR f: Fonts.Font;\r\tBEGIN\r\t\tNEW(p);\r\t\tf := Fonts.dir.Default();\r\t\tp.typeface := f.typeface;\r\t\tp.size := f.size;\r\t\tp.style.val := f.style;\r\t\tp.style.mask := {Fonts.italic, Fonts.underline, Fonts.strikeout};\r\t\tp.weight := Fonts.normal\r\tEND InitStdProp;\r\r\tPROCEDURE InitTableProp (OUT p: Prop);\r\tBEGIN\r\t\tNEW(p);\r\t\tp.layoutEditable := TRUE; p.dataEditable := TRUE; p.selectionStyle := cellSelect\r\tEND InitTableProp;\r\r\tPROCEDURE (d: StdDirectory) NewControl (p: Controls.Prop): Views.View;\r\t\tVAR c: Control;\r\tBEGIN\r\t\tNEW(c); Controls.OpenLink(c, p); InitStdProp(c.sprop); InitTableProp(c.tprop); SetupControl(c);"
+                    attr: 0
+                  - text: " RETURN"
+                    attr: 3
+                  - text: " c\r\tEND NewControl;\r\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetDir
+                    attr: 3
+                  - text: "* (d: Directory);\r\tBEGIN\r\t\tASSERT(d # NIL, 20); dir := d\r\tEND SetDir;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: DepositControl
+                    attr: 3
+                  - text: "*;\r\t\tVAR p: Controls.Prop;\r\tBEGIN\r\t\tNEW(p);\r\t\tp.link := \"\"; p.label := \"\"; p.guard := \"\"; p.notifier := \"\";\r\t\tp.level := 0; p.opt[Controls.sorted] := FALSE;\r\t\tViews.Deposit(dir.NewControl(p))\r\tEND DepositControl;\r\r\tPROCEDURE SetupSelectionStyleList (VAR l: Dialog.List);\r\tBEGIN\r\t\tl.SetLen(5);\r\t\tl.SetItem(noSelect, \"No Selection\");\r\t\tl.SetItem(cellSelect, \"Select Cell\");\r\t\tl.SetItem(rowSelect, \"Select Row\");\r\t\tl.SetItem(colSelect, \"Select Column\");\r\t\tl.SetItem(crossSelect, \"Select Row & Column\")\r\tEND SetupSelectionStyleList;\r\r\tPROCEDURE Init;\r\t\tVAR d: StdDirectory;\r\tBEGIN\r\t\tNEW(d); stdDir := d; dir := d;\r\t\tSetupSelectionStyleList(dlg.selectionStyle)\r\tEND Init;\r\rBEGIN\r\tInit\rCLOSE\r\tServices.RemoveAction(action)\rEND StdTables.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 31
+          bodyPos: 48686
+          bodyLen: 8

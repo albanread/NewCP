@@ -1,0 +1,348 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\System\\Mod\\Integers.odc"
+  size: 29326
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 29195
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 29009
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 28923
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 114300
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Helvetica
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 29040
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 28526
+                runListLen: 1993
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE Integers;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT Files, Math;\r\r\tCONST\r\t\tB = 10000; DecPerDig = 4; BinBase = 16 * 1024;\r\t\tKaratsubaBreak = 41;\r\r\tTYPE\r\t\tIndex = INTEGER;\r\t\tDigit = SHORTINT;\r\t\tDoubleDigit = INTEGER;\r\r\t\tIntegerDesc = ARRAY OF Digit;\t(* "
+                    attr: 0
+                  - text: to hide internal structure from interface
+                    attr: 1
+                  - text: " *)\r\t\t"
+                    attr: 0
+                  - text: Integer
+                    attr: 3
+                  - text: "* = POINTER TO IntegerDesc;\r\t\tBuffer = RECORD\r\t\t\tdigit: Integer;\r\t\t\tbeg, len: Index\r\t\tEND;\r\r\tVAR zero, one, two, buf6: Integer;\r\r\tPROCEDURE CopyOf (x: Integer; len: Index): Integer;\r\t\tVAR buf: Integer;\r\tBEGIN\r\t\tASSERT(len > 0, 20);\r\t\tNEW(buf, len);\r\t\tREPEAT DEC(len); buf[len] := x[len] UNTIL len = 0;\r\t\tRETURN buf\r\tEND CopyOf;\r\r\t(* "
+                    attr: 0
+                  - text: Operations on Digits
+                    attr: 1
+                  - text: " *)\r\r\tPROCEDURE Add (x, y, sum: Integer; xL, yL: Index; OUT sumL: Index);\r\t\tVAR i, l: Index; c: Digit;\r\tBEGIN\r\t\tl := MIN(xL, yL);\r\t\ti := 0; c := 0;\r\t\tWHILE i < l DO c := SHORT(c DIV B + x[i] + y[i]); sum[i] := SHORT(c MOD B); INC(i) END;\r\t\tWHILE i < xL DO c := SHORT(c DIV B + x[i]); sum[i] := SHORT(c MOD B); INC(i) END;\r\t\tWHILE i < yL DO c := SHORT(c DIV B + y[i]); sum[i] := SHORT(c MOD B); INC(i) END;\r\t\tIF c >= B THEN sum[i] := SHORT(c DIV B); INC(i) END;\r\t\tsumL := i\r\tEND Add;\r\r\tPROCEDURE Subtract (x, y, dif: Integer; xL, yL: Index; OUT difL: Index);\r\t\tVAR i: Index; c, d: Digit;\r\tBEGIN\r\t\tASSERT(xL >= yL, 20);\r\t\ti := 0; difL := 0; c := 0;\r\t\tWHILE i < yL DO\r\t\t\tc := SHORT(c DIV B + x[i] - y[i]); d := SHORT(c MOD B);\r\t\t\tIF d # 0 THEN\r\t\t\t\tWHILE difL # i DO dif[difL] := 0; INC(difL) END;\r\t\t\t\tdif[i] := d; INC(difL)\r\t\t\tEND;\r\t\t\tINC(i)\r\t\tEND;\r\t\tWHILE i < xL DO\r\t\t\tc := SHORT(c DIV B + x[i]); d := SHORT(c MOD B);\r\t\t\tIF d # 0 THEN\r\t\t\t\tWHILE difL # i DO dif[difL] := 0; INC(difL) END;\r\t\t\t\tdif[i] := d; INC(difL)\r\t\t\tEND;\r\t\t\tINC(i)\r\t\tEND;\r\t\tASSERT(c DIV B = 0, 100)\r\tEND Subtract;\r\r\tPROCEDURE OneDigitMult (a, b: Buffer; VAR c: Buffer);\r\t\tVAR i: Index; carry, factor: DoubleDigit;\r\tBEGIN\r\t\tASSERT(a.len = 1, 20);\r\t\tfactor := a.digit[a.beg]; i := 0; carry := 0;\r\t\tWHILE i # b.len DO\r\t\t\tcarry := carry DIV B + factor * b.digit[b.beg + i]; c.digit[c.beg + i] := SHORT(carry MOD B);\r\t\t\tINC(i)\r\t\tEND;\r\t\tIF carry >= B THEN c.digit[c.beg + i] := SHORT(carry DIV B); INC(i) END;\r\t\tc.len := i\r\tEND OneDigitMult;\r\r\tPROCEDURE SimpleMult (a, b: Buffer; VAR c: Buffer);\r\t\tVAR i, j, k: Index; c0, c1: DoubleDigit;\r\tBEGIN\r\t\tASSERT(a.len <= b.len, 20);\r\t\tc.len := a.len + b.len - 1;\r\t\ti := 0; c0 := 0; c1 := 0;\r\t\tREPEAT\r\t\t\tIF i < b.len THEN\r\t\t\t\tIF i < a.len THEN j := i; k := 0 ELSE j := a.len - 1; k := i - a.len + 1 END;\r\t\t\t\tREPEAT\r\t\t\t\t\tc0 := c0 + a.digit[a.beg + j] * b.digit[b.beg + k];\r\t\t\t\t\tIF c0 > MAX(DoubleDigit) - BinBase * (B - 1) THEN\r\t\t\t\t\t\tc1 := c1 + c0 DIV BinBase; c0 := c0 MOD BinBase\r\t\t\t\t\tEND;\r\t\t\t\t\tDEC(j); INC(k)\r\t\t\t\tUNTIL j < 0\r\t\t\tELSE\r\t\t\t\tj := a.len - 1; k := i - a.len + 1;\r\t\t\t\tREPEAT\r\t\t\t\t\tc0 := c0 + a.digit[a.beg + j] * b.digit[b.beg + k];\r\t\t\t\t\tIF c0 > MAX(DoubleDigit) - BinBase * (B - 1) THEN\r\t\t\t\t\t\tc1 := c1 + c0 DIV BinBase; c0 := c0 MOD BinBase\r\t\t\t\t\tEND;\r\t\t\t\t\tDEC(j); INC(k)\r\t\t\t\tUNTIL k = b.len\r\t\t\tEND;\r\t\t\tIF c1 = 0 THEN c.digit[c.beg + i] := SHORT(c0 MOD B); c0 := c0 DIV B\r\t\t\tELSE\r\t\t\t\tc0 := c0 + BinBase * (c1 MOD B);\r\t\t\t\tc.digit[c.beg + i] := SHORT(c0 MOD B); c0 := c0 DIV B; c1 := c1 DIV B\r\t\t\tEND;\r\t\t\tINC(i)\r\t\tUNTIL i = c.len;\r\t\tIF c0 # 0 THEN c.digit[c.beg + c.len] := SHORT(c0); INC(c.len) END\r\tEND SimpleMult;\r\r\tPROCEDURE AddBuf (a, b: Buffer; VAR c: Buffer);\t(* "
+                    attr: 0
+                  - text: "c := a + b"
+                    attr: 1
+                  - text: " *)\r\t\tVAR i: Index; carry: Digit;\r\tBEGIN\r\t\tASSERT(a.len <= b.len, 20);\r\t\ti := 0; carry := 0;\r\t\tWHILE i # a.len DO\r\t\t\tcarry := SHORT(carry DIV B + a.digit[a.beg + i] + b.digit[b.beg + i]);\r\t\t\tc.digit[c.beg + i] := SHORT(carry MOD B);\r\t\t\tINC(i)\r\t\tEND;\r\t\tWHILE (i # b.len) & (carry >= B) DO\r\t\t\tcarry := SHORT(carry DIV B + b.digit[b.beg + i]); c.digit[c.beg + i] := SHORT(carry MOD B);\r\t\t\tINC(i)\r\t\tEND;\r\t\tIF carry >= B THEN c.digit[c.beg + i] := SHORT(carry DIV B); INC(i)\r\t\tELSE\r\t\t\tWHILE i # b.len DO c.digit[c.beg + i] := b.digit[b.beg + i]; INC(i) END\r\t\tEND;\r\t\tc.len := i\r\tEND AddBuf;\r\r\tPROCEDURE AddToBuf (VAR a: Buffer; b: Buffer; shift: Index);\t(* "
+                    attr: 0
+                  - text: "a := a + b * B^shift"
+                    attr: 1
+                  - text: " *)\r\t\tVAR i, n: Index; carry: Digit;\r\tBEGIN\r\t\tb.beg := b.beg - shift; b.len := b.len + shift; i := shift; n := MIN(a.len, b.len); carry := 0;\r\t\tWHILE i # n DO\r\t\t\tcarry := SHORT(carry DIV B + a.digit[a.beg + i] + b.digit[b.beg + i]);\r\t\t\ta.digit[a.beg + i] := SHORT(carry MOD B);\r\t\t\tINC(i)\r\t\tEND;\r\t\tIF i # a.len THEN\r\t\t\tWHILE (i # a.len) & (carry >= B) DO\r\t\t\t\tcarry := SHORT(carry DIV B + a.digit[a.beg + i]); a.digit[a.beg + i] := SHORT(carry MOD B);\r\t\t\t\tINC(i)\r\t\t\tEND;\r\t\t\tIF carry >= B THEN a.digit[a.beg + i] := SHORT(carry DIV B); INC(i) END\r\t\tELSE\r\t\t\tWHILE (i # b.len) & (carry >= B) DO\r\t\t\t\tcarry := SHORT(carry DIV B + b.digit[b.beg + i]); a.digit[a.beg + i] := SHORT(carry MOD B);\r\t\t\t\tINC(i)\r\t\t\tEND;\r\t\t\tIF carry >= B THEN a.digit[a.beg + i] := SHORT(carry DIV B); INC(i)\r\t\t\tELSE\r\t\t\t\tWHILE i # b.len DO a.digit[a.beg + i] := b.digit[b.beg + i]; INC(i) END\r\t\t\tEND\r\t\tEND;\r\t\ta.len := MAX(i, a.len)\r\tEND AddToBuf;\r\r\tPROCEDURE SubtractFromBuf (VAR a: Buffer; b, c: Buffer);\t(* "
+                    attr: 0
+                  - text: "a := a - b - c"
+                    attr: 1
+                  - text: " *)\r\t\tVAR i: Index; carry: Digit;\r\tBEGIN\r\t\tASSERT(b.len <= c.len, 20);\r\t\ti := 0; carry := 0;\r\t\tWHILE i # b.len DO\r\t\t\tcarry := SHORT(carry DIV B + a.digit[a.beg + i] - b.digit[b.beg + i] - c.digit[c.beg + i]);\r\t\t\ta.digit[a.beg + i] := SHORT(carry MOD B);\r\t\t\tINC(i)\r\t\tEND;\r\t\tWHILE i # c.len DO\r\t\t\tcarry := SHORT(carry DIV B + a.digit[a.beg + i] - c.digit[c.beg + i]);\r\t\t\ta.digit[a.beg + i] := SHORT(carry MOD B);\r\t\t\tINC(i)\r\t\tEND;\r\t\tWHILE carry < 0 DO\r\t\t\tcarry := SHORT(carry DIV B + a.digit[a.beg + i]); a.digit[a.beg + i]  := SHORT(carry MOD B);\r\t\t\tINC(i)\r\t\tEND;\r\t\tASSERT(i <= a.len, 100);\r\t\tWHILE (a.len # 0) & (a.digit[a.beg + a.len - 1] = 0) DO DEC(a.len) END\r\tEND SubtractFromBuf;\r\r\tPROCEDURE KStep (a, b: Buffer; VAR c: Buffer; stack: Buffer);\r\t\tVAR n2, i: Index; a0, a1, b0, b1, c0, c1, h: Buffer;\r\tBEGIN\r\t\tASSERT(a.len <= b.len, 20);\r\t\tIF a.len = 0 THEN c.len := 0\r\t\tELSIF a.len = 1 THEN OneDigitMult(a, b, c)\r\t\tELSIF a.len <= KaratsubaBreak THEN SimpleMult(a, b, c)\r\t\tELSE\r\t\t\tn2 := b.len DIV 2;\r\t\t\tc0.digit := c.digit; c0.beg := c.beg; c1.digit := c.digit; c1.beg := c.beg + 2 * n2;\r\t\t\ta0.digit := a.digit; a0.beg := a.beg; a0.len := MIN(a.len, n2);\r\t\t\ta1.digit := a.digit; a1.beg := a.beg + n2; a1.len := MAX(0, a.len - n2);\r\t\t\tWHILE (a0.len # 0) & (a0.digit[a0.beg + a0.len - 1] = 0) DO DEC(a0.len) END;\r\t\t\tb0.digit := b.digit; b0.beg := b.beg; b0.len := MIN(b.len, n2);\r\t\t\tb1.digit := b.digit; b1.beg := b.beg + n2; b1.len := MAX(0, b.len - n2);\r\t\t\tWHILE (b0.len # 0) & (b0.digit[b0.beg + b0.len - 1] = 0) DO DEC(b0.len) END;\r\t\t\tIF (a0.len # 0) OR (b0.len # 0) THEN\r\t\t\t\tIF a0.len <= a1.len THEN AddBuf(a0, a1, c1) ELSE AddBuf(a1, a0, c1) END;\r\t\t\t\tIF b0.len <= b1.len THEN AddBuf(b0, b1, c0) ELSE AddBuf(b1, b0, c0) END;\r\t\t\t\th.digit := stack.digit; h.beg := stack.beg; stack.beg := stack.beg + c0.len + c1.len;\r\t\t\t\tIF c0.len <= c1.len THEN KStep(c0, c1, h, stack) ELSE KStep(c1, c0, h, stack) END;\r\t\t\t\tIF a0.len <= b0.len THEN KStep(a0, b0, c0, stack) ELSE KStep(b0, a0, c0, stack) END;\r\t\t\t\tKStep(a1, b1, c1, stack);\r\t\t\t\tIF c0.len <= c1.len THEN SubtractFromBuf(h, c0, c1) ELSE SubtractFromBuf(h, c1, c0) END;\r\t\t\t\tIF c1.len # 0 THEN\r\t\t\t\t\ti := c0.beg + c0.len;\r\t\t\t\t\tWHILE i < c1.beg DO c.digit[i] := 0; INC(i) END;\r\t\t\t\t\tc.len := c1.beg + c1.len - c.beg\r\t\t\t\tELSE\r\t\t\t\t\tWHILE c0.len < n2 DO c0.digit[c0.beg + c0.len] := 0; INC(c0.len) END;\r\t\t\t\t\tc.len := c0.len\r\t\t\t\tEND;\r\t\t\t\tASSERT(h.len # 0, 100);\r\t\t\t\tAddToBuf(c, h, n2)\r\t\t\tELSE\r\t\t\t\tKStep(a1, b1, c1, stack); c.len := c1.beg + c1.len - c.beg;\r\t\t\t\ti := c.beg;\r\t\t\t\tWHILE i # c1.beg DO c.digit[i] := 0; INC(i) END\r\t\t\tEND\r\t\tEND\r\tEND KStep;\r\r\tPROCEDURE Karatsuba (x, y, pro:Integer; xL, yL: Index; OUT proL: Index);\r\t\tVAR a, b, c, stack: Buffer;\r\tBEGIN\r\t\tASSERT(xL <= yL, 20);\r\t\ta.digit := x; a.beg := 0; a.len := xL; b.digit := y; b.beg := 0; b.len := yL;\r\t\tc.digit := pro; c.beg := 0;\r\t\tNEW(stack.digit, 2 * b.len); stack.beg := 0;\r\t\tKStep(a, b, c, stack);\r\t\tproL := c.len\r\tEND Karatsuba;\r\t\r\tPROCEDURE Multiply (x, y, pro: Integer; xL, yL: Index; OUT proL: Index);\r\t\tVAR i, j, k: Index; c0, c1: DoubleDigit;\r\tBEGIN\r\t\tASSERT(xL <= yL, 20);\r\t\tIF xL > KaratsubaBreak THEN Karatsuba(x, y, pro, xL, yL, proL)\r\t\tELSIF xL = 1 THEN\r\t\t\tproL := 0; c1 := x[0]; c0 := 0;\r\t\t\tWHILE proL < yL DO\r\t\t\t\tc0 := c1 * y[proL] + c0; pro[proL] := SHORT(c0 MOD B);\r\t\t\t\tc0 := c0 DIV B ; INC(proL)\r\t\t\tEND;\r\t\t\tIF c0 # 0 THEN pro[proL] := SHORT(c0); INC(proL) END\r\t\tELSE\r\t\t\tproL := xL + yL - 1;\r\t\t\ti := 0; c0 := 0; c1 := 0;\r\t\t\tREPEAT\r\t\t\t\tIF i < yL THEN\r\t\t\t\t\tIF i < xL THEN j := i; k := 0 ELSE j := xL - 1; k := i - xL + 1 END;\r\t\t\t\t\tREPEAT\r\t\t\t\t\t\tc0 := c0 + x[j] * y[k];\r\t\t\t\t\t\tIF c0 > MAX(DoubleDigit) - BinBase * (B - 1) THEN\r\t\t\t\t\t\t\tc1 := c1 + c0 DIV BinBase; c0 := c0 MOD BinBase\r\t\t\t\t\t\tEND;\r\t\t\t\t\t\tDEC(j); INC(k)\r\t\t\t\t\tUNTIL j < 0\r\t\t\t\tELSE\r\t\t\t\t\tj := xL - 1; k := i - xL + 1;\r\t\t\t\t\tREPEAT\r\t\t\t\t\t\tc0 := c0 + x[j] * y[k];\r\t\t\t\t\t\tIF c0 > MAX(DoubleDigit) - BinBase * (B - 1) THEN\r\t\t\t\t\t\t\tc1 := c1 + c0 DIV BinBase; c0 := c0 MOD BinBase\r\t\t\t\t\t\tEND;\r\t\t\t\t\t\tDEC(j); INC(k)\r\t\t\t\t\tUNTIL k = yL\r\t\t\t\tEND;\r\t\t\t\tIF c1 = 0 THEN pro[i] := SHORT(c0 MOD B); c0 := c0 DIV B\r\t\t\t\tELSE c0 := c0 + BinBase * (c1 MOD B); pro[i] := SHORT(c0 MOD B);\r\t\t\t\t\tc0 := c0 DIV B; c1 := c1 DIV B\r\t\t\t\tEND;\r\t\t\t\tINC(i)\r\t\t\tUNTIL i = proL;\r\t\t\tIF c0 # 0 THEN pro[proL] := SHORT(c0); INC(proL) END\r\t\tEND\r\tEND Multiply;\r\r\tPROCEDURE DecomposeQuoRem (x, y: Integer; xL, yL: Index);\r\t\tVAR ix, iy, j: Index; d, q, h, yLead, ySecond: DoubleDigit; yBuf: Integer;\r\tBEGIN\r\t\tASSERT((yL # 0) & (y[yL - 1] # 0), 20);\r\t\tIF yL = 1 THEN\r\t\t\tj := xL - 1; h := 0; d := y[0];\r\t\t\tWHILE j >= 0 DO h := x[j] + h * B; x[j + 1] := SHORT(h DIV d); h := h MOD d; DEC(j) END;\r\t\t\tx[0] := SHORT(h)\r\t\tELSIF xL >= yL THEN\r\t\t\tx[xL] := 0; d := (B DIV 2 - 1) DIV y[yL - 1] + 1; yBuf := CopyOf(y, yL);\r\t\t\tIF d # 1 THEN\r\t\t\t\tj := 0; h := 0;\r\t\t\t\tWHILE j < xL DO h := d * x[j] + h DIV B; x[j] := SHORT(h MOD B); INC(j) END;\r\t\t\t\tx[xL] := SHORT(h DIV B);\r\t\t\t\tj := 0; h := 0;\r\t\t\t\tWHILE j < yL DO h := d * yBuf[j] + h DIV B; yBuf[j] := SHORT(h MOD B); INC(j) END;\r\t\t\t\tASSERT(h DIV B = 0, 100)\r\t\t\tEND;\r\t\t\tyLead := yBuf[yL - 1]; ySecond := yBuf[yL - 2]; j := xL;\r\t\t\tWHILE j >= yL DO\r\t\t\t\tIF x[j] # yLead THEN q := (x[j] * B + x[j - 1]) DIV yLead ELSE q := B - 1 END;\r\t\t\t\tWHILE ySecond * q > (x[j] * B + x[j - 1] - yLead * q) * B + x[j - 2] DO\r\t\t\t\t\tDEC(q)\r\t\t\t\tEND;\r\t\t\t\tix := j - yL; iy := 0; h := 0;\r\t\t\t\tWHILE iy < yL DO\r\t\t\t\t\th := x[ix] - q * yBuf[iy] + h DIV B; x[ix] := SHORT(h MOD B); INC(ix); INC(iy)\r\t\t\t\tEND;\r\t\t\t\tIF (-x[j]) # (h DIV B) THEN\r\t\t\t\t\tix := j - yL; iy := 0; h := 0;\r\t\t\t\t\tWHILE iy < yL DO\r\t\t\t\t\t\th := h DIV B + x[ix] + yBuf[iy]; x[ix] := SHORT(h MOD B); INC(ix); INC(iy)\r\t\t\t\t\tEND;\r\t\t\t\t\tx[j] := SHORT(q - 1)\r\t\t\t\tELSE x[j] := SHORT(q)\r\t\t\t\tEND;\r\t\t\t\tDEC(j)\r\t\t\tEND;\r\t\t\tIF d # 1 THEN\r\t\t\t\tj := yL; h := 0;\r\t\t\t\tWHILE j # 0 DO DEC(j); h := h + x[j]; x[j] := SHORT(h DIV d); h := (h MOD d) * B END\r\t\t\tEND\r\t\tEND\r\tEND DecomposeQuoRem;\r\r\tPROCEDURE GetQuoRem (x, y: Integer; xL, yL: Index; xNeg, yNeg: BOOLEAN;\r\t\t\t\t\t\t\t\t\t\t\t\tquo, rem: Integer; OUT quoL, remL: Index; OUT quoNeg, remNeg: BOOLEAN;\r\t\t\t\t\t\t\t\t\t\t\t\tdoQuo, doRem: BOOLEAN);\r\t\tVAR i: Index; c: Digit; xBuf: Integer;\r\tBEGIN\r\t\tASSERT(xL >= yL, 20);\r\t\txBuf := CopyOf(x, xL + 1);\r\t\tDecomposeQuoRem(xBuf, y, xL, yL);\r\t\ti := xL;\r\t\tWHILE (i >= yL) & (xBuf[i] = 0) DO DEC(i) END;\r\t\tquoL := i - yL + 1;\r\t\ti := yL - 1;\r\t\tWHILE (i >= 0) & (xBuf[i] = 0) DO DEC(i) END;\r\t\tremL := i + 1;\r\t\tIF doQuo THEN\r\t\t\tquoNeg := xNeg # yNeg;\r\t\t\tIF quoNeg & (remL # 0) THEN\r\t\t\t\ti := 0; c := 1;\r\t\t\t\tWHILE (i # quoL) & (c # 0) DO\r\t\t\t\t\tc := SHORT(c + xBuf[i + yL]); quo[i] := SHORT(c MOD B); c := SHORT(c DIV B);\r\t\t\t\t\tINC(i)\r\t\t\t\tEND;\r\t\t\t\tIF c = 0 THEN\r\t\t\t\t\tWHILE i # quoL DO quo[i] := xBuf[i + yL]; INC(i) END\r\t\t\t\tELSE quo[i] := c; INC(quoL)\r\t\t\t\tEND\r\t\t\tELSE\r\t\t\t\ti := 0;\r\t\t\t\tWHILE i # quoL DO quo[i] := xBuf[i + yL]; INC(i) END\r\t\t\tEND\r\t\tEND;\r\t\tIF doRem THEN\r\t\t\tremNeg := yNeg & (remL # 0);\r\t\t\tIF (xNeg # yNeg) & (remL # 0) THEN Subtract(y, xBuf, rem, yL, remL, remL)\r\t\t\tELSE\r\t\t\t\ti := 0;\r\t\t\t\tWHILE i # remL DO rem[i] := xBuf[i]; INC(i) END\r\t\t\tEND\r\t\tEND\r\tEND GetQuoRem;\r\r\tPROCEDURE BinPower (x: Integer; exp: INTEGER; y: Integer; xL: Index; OUT yL: Index);\r\t\tVAR zL: Index; b: INTEGER; z: Integer;\r\tBEGIN\r\t\tASSERT(exp > 0, 20); ASSERT(xL # 0, 21);\r\t\tb := 1;\r\t\tWHILE 2 * b <= exp DO b := 2 * b END;\r\t\ty[0] := 1; yL := 1; NEW(z, LEN(y^));\r\t\t(* "
+                    attr: 0
+                  - text: "y^b * x^exp = const.) & (2 * b > exp)"
+                    attr: 1
+                  - text: " *)\r\t\tWHILE (exp # 0) OR (b # 1) DO\r\t\t\tIF exp >= b THEN\r\t\t\t\texp := exp - b;\r\t\t\t\tIF xL <= yL THEN Multiply(x, y, z, xL, yL, zL) ELSE Multiply(y, x, z, yL, xL, zL) END\r\t\t\tELSE b := b DIV 2; Multiply(y, y, z, yL, yL, zL)\r\t\t\tEND;\r\t\t\tyL := zL;\r\t\t\tREPEAT DEC(zL); y[zL] := z[zL] UNTIL zL = 0\r\t\tEND\r\tEND BinPower;\r\r\t(* "
+                    attr: 0
+                  - text: Data Format Support
+                    attr: 1
+                  - text: " *)\r\r\tPROCEDURE New (nofDigits: Index): Integer;\r\t\tVAR x: Integer;\r\tBEGIN\r\t\tNEW(x, nofDigits + 2); RETURN x\r\tEND New;\r\r\tPROCEDURE SetLength (x: Integer; len: Index; negative: BOOLEAN);\r\t\tVAR low, high: Digit;\r\tBEGIN\r\t\tASSERT(len >= 0, 20); ASSERT(~negative OR (len # 0), 21);\r\t\tIF negative THEN len := -len END;\r\t\tlow := SHORT(len MOD 10000H - 8000H); high := SHORT(len DIV 10000H);\r\t\tx[LEN(x^) - 1] := low; x[LEN(x^) - 2] := high\r\tEND SetLength;\r\r\tPROCEDURE GetLength (x: Integer; OUT len: Index; OUT negative: BOOLEAN);\r\t\tVAR low, high: Digit;\r\tBEGIN\r\t\tlow := x[LEN(x^) - 1]; high := x[LEN(x^) - 2];\r\t\tlen := low + 8000H + high * 10000H;\r\t\tnegative := len < 0; len := ABS(len)\r\tEND GetLength;\r\r\t(* "
+                    attr: 0
+                  - text: "Exported Services "
+                    attr: 1
+                  - text: "*)\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Long
+                    attr: 3
+                  - text: "* (x: LONGINT): Integer;\r\t\tVAR i: Index; negative: BOOLEAN; int: Integer;\r\tBEGIN\r\t\tIF x # 0 THEN\r\t\t\tnegative := x < 0; x := ABS(x);\r\t\t\tint := New(5); i := 0;\r\t\t\tREPEAT int[i] := SHORT(SHORT(x MOD B)); x := x DIV B; INC(i) UNTIL x = 0;\r\t\t\tSetLength(int, i, negative)\r\t\tELSE int := zero\r\t\tEND;\r\t\tRETURN int\r\tEND Long;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Short
+                    attr: 3
+                  - text: "* (x: Integer): LONGINT;\r\t\tVAR i: Index; res: LONGINT; negative: BOOLEAN;\r\tBEGIN\r\t\tres := 0; GetLength(x, i, negative);\r\t\tWHILE i # 0 DO DEC(i); res := res * B + x[i] END;\r\t\tIF negative THEN res := -res END;\r\t\tRETURN res\r\tEND Short;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Entier
+                    attr: 3
+                  - text: "* (x: REAL): Integer;\r\t\tVAR mL, yL, i: Index; mx: REAL; ex: INTEGER; neg: BOOLEAN; y, z: Integer;\r\r\t\tPROCEDURE Inc(m: Integer; VAR mL: Index);\r\t\t\tVAR i: Index;\r\t\tBEGIN\r\t\t\ti := 0;\r\t\t\tWHILE m[i] = B - 1 DO m[i] := 0; INC(i) END;\r\t\t\tINC(m[i]);\r\t\t\tIF i = mL THEN INC(mL); m[mL] := 0 END\r\t\tEND Inc;\r\r\t\tPROCEDURE Double (m: Integer; VAR mL: Index);\r\t\t\tVAR i: Index; c: Digit;\r\t\tBEGIN\r\t\t\ti := 0; c := 0;\r\t\t\tWHILE i < mL DO\r\t\t\t\tc := SHORT(c + m[i] * 2); m[i] := SHORT(c MOD B); c := SHORT(c DIV B);\r\t\t\t\tINC(i)\r\t\t\tEND;\r\t\t\tIF c # 0 THEN INC(mL); m[mL] := 0; m[i] := c END\r\t\tEND Double;\r\r\tBEGIN\r\t\tIF (x >= 1) OR (x < 0) THEN\r\t\t\tneg := x < 0; x := ABS(x);\r\t\t\tmL := 0; buf6[0] := 0; mx := Math.Mantissa(x); ex := Math.Exponent(x);\r\t\t\tWHILE (mx # 0) & (ex > 0) DO\t(* "
+                    attr: 0
+                  - text: "mx * 2^ex + m * 2^ex = const."
+                    attr: 1
+                  - text: " *)\r\t\t\t\tIF ENTIER(mx) = 1 THEN Inc(buf6, mL); mx := mx - 1\r\t\t\t\tELSE ASSERT(ENTIER(mx) = 0, 100)\r\t\t\t\tEND;\r\t\t\t\tDouble(buf6, mL); mx := 2 * mx; DEC(ex)\r\t\t\tEND;\r\t\t\tIF (ENTIER(mx) = 1) & (ex = 0) THEN Inc(buf6, mL); mx := mx - 1 END;\r\t\t\tIF ex > 0 THEN\r\t\t\t\ty := New(mL + SHORT(ENTIER(Math.Ln(2) * ex / Math.Ln(B)) + 1));\r\t\t\t\tz := New(SHORT(ENTIER(Math.Ln(2) * ex / Math.Ln(B)) + 1));\r\t\t\t\tBinPower(two, ex, z, 1, yL);\r\t\t\t\tIF mL <= yL THEN Multiply(buf6, z, y, mL, yL, yL) ELSE Multiply(z, buf6, y, yL, mL, yL) END\r\t\t\tELSE\r\t\t\t\ty := New(mL + 1); yL := mL;\r\t\t\t\ti := 0;\r\t\t\t\tWHILE i # mL DO y[i] := buf6[i]; INC(i) END\r\t\t\tEND;\r\t\t\tIF neg & (mx # 0) THEN Inc(y, yL) END;\r\t\t\tSetLength(y, yL, neg)\r\t\tELSE y := zero\r\t\tEND;\r\t\tRETURN y\r\tEND Entier;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Float
+                    attr: 3
+                  - text: "* (x: Integer): REAL;\r\t\tVAR i: Index; y: REAL; negative: BOOLEAN;\r\tBEGIN\r\t\ty := 0; GetLength(x, i, negative);\r\t\tWHILE i # 0 DO DEC(i); y := y * B + x[i] END;\r\t\tIF negative THEN y := -y END;\r\t\tRETURN y\r\tEND Float;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Sign
+                    attr: 3
+                  - text: "* (x: Integer): INTEGER;\r\t\tVAR len: Index; negative: BOOLEAN;\r\tBEGIN\r\t\tGetLength(x, len, negative);\r\t\tIF len = 0 THEN RETURN 0\r\t\tELSIF negative THEN RETURN -1\r\t\tELSE RETURN 1\r\t\tEND\r\tEND Sign;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Abs
+                    attr: 3
+                  - text: "* (x: Integer): Integer;\r\t\tVAR len: Index; negative: BOOLEAN; y: Integer;\r\tBEGIN\r\t\tGetLength(x, len, negative);\r\t\tIF negative THEN\r\t\t\ty := New(len); SetLength(y, len, FALSE);\r\t\t\tREPEAT DEC(len); y[len] := x[len] UNTIL len = 0\r\t\tELSE y := x\r\t\tEND;\r\t\tRETURN y\r\tEND Abs;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Digits10Of
+                    attr: 3
+                  - text: "* (x: Integer): INTEGER;\r\t\tVAR i, n: Index; d: Digit; negative: BOOLEAN;\r\tBEGIN\r\t\tGetLength(x, n, negative);\r\t\tIF n # 0 THEN\r\t\t\td := x[n - 1]; i := 0;\r\t\t\tREPEAT INC(i); d := SHORT(d DIV 10) UNTIL d = 0;\r\t\t\tn := DecPerDig * (n - 1) + i\r\t\tEND;\r\t\tRETURN n\r\tEND Digits10Of;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ThisDigit10
+                    attr: 3
+                  - text: "* (x: Integer; exp10: INTEGER): CHAR;\r\t\tVAR i, n: Index; d: Digit; negative: BOOLEAN;\r\tBEGIN\r\t\tASSERT(exp10 >= 0, 20);\r\t\tGetLength(x, n, negative); i := exp10 DIV DecPerDig;\r\t\tIF n > i THEN\r\t\t\td := x[i]; i := exp10 MOD DecPerDig;\r\t\t\tWHILE i # 0 DO d := SHORT(d DIV 10); DEC(i) END;\r\t\t\td := SHORT(d MOD 10)\r\t\tELSE d := 0\r\t\tEND;\r\t\tRETURN CHR(ORD(\"0\") + d)\r\tEND ThisDigit10;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Compare
+                    attr: 3
+                  - text: "* (x, y: Integer): INTEGER;\r\t\tVAR xL, yL: Index; res: INTEGER; xNeg, yNeg: BOOLEAN;\r\tBEGIN\r\t\tGetLength(x, xL, xNeg); GetLength(y, yL, yNeg);\r\t\tIF xNeg = yNeg THEN\r\t\t\tIF (xL = yL) & (xL # 0) THEN\r\t\t\t\tDEC(xL);\r\t\t\t\tWHILE (xL # 0) & (x[xL] = y[xL]) DO DEC(xL) END;\r\t\t\t\tIF x[xL] = y[xL] THEN res := 0 ELSIF (x[xL] < y[xL]) = xNeg THEN res := 1 ELSE res := -1 END\r\t\t\tELSE\r\t\t\t\tIF xL = yL THEN res := 0 ELSIF (xL < yL) = xNeg THEN res := 1 ELSE res := -1 END\r\t\t\tEND\r\t\tELSIF xNeg THEN res := -1\r\t\tELSE res := 1\r\t\tEND;\r\t\tRETURN res\r\tEND Compare;\r\r\tPROCEDURE AddOp (x, y: Integer; subtract: BOOLEAN): Integer;\r\t\tVAR i, d, xL, yL, intL: Index; xNeg, yNeg: BOOLEAN; int: Integer;\r\tBEGIN\r\t\tGetLength(x, xL, xNeg); GetLength(y, yL, yNeg);\r\t\tIF yL = 0 THEN int := x\r\t\tELSIF xL = 0 THEN\r\t\t\tIF subtract THEN\r\t\t\t\tint := New(yL); SetLength(int, yL, ~yNeg);\r\t\t\t\tREPEAT DEC(yL); int[yL] := y[yL] UNTIL yL = 0\r\t\t\tELSE int := y\r\t\t\tEND\r\t\tELSIF (xNeg = yNeg) # subtract THEN\r\t\t\tint := New(MAX(xL, yL) + 1); Add(x, y, int, xL, yL, intL); SetLength(int, intL, xNeg)\r\t\tELSE\r\t\t\td := xL - yL;\r\t\t\tIF d # 0 THEN i := MAX(xL, yL) - 1\r\t\t\tELSE\r\t\t\t\ti := xL;\r\t\t\t\tREPEAT DEC(i); d := x[i] - y[i] UNTIL (i = 0) OR (d # 0)\r\t\t\tEND;\r\t\t\tIF d > 0 THEN\r\t\t\t\tint := New(i + 1); Subtract(x, y, int, xL, yL, intL); SetLength(int, intL, xNeg)\r\t\t\tELSIF d < 0 THEN\r\t\t\t\tint := New(i + 1); Subtract(y, x, int, yL, xL, intL); SetLength(int, intL, yNeg # subtract)\r\t\t\tELSE int := zero\r\t\t\tEND\r\t\tEND;\r\t\tRETURN int\r\tEND AddOp;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Sum
+                    attr: 3
+                  - text: "* (x, y: Integer): Integer;\r\tBEGIN\r\t\tRETURN AddOp(x, y, FALSE)\r\tEND Sum;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Difference
+                    attr: 3
+                  - text: "*(x, y: Integer): Integer;\r\tBEGIN\r\t\tRETURN AddOp(x, y, TRUE)\r\tEND Difference;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Product
+                    attr: 3
+                  - text: "* (x, y: Integer): Integer;\r\t\tVAR xL, yL, intL: Index; neg, xNeg, yNeg: BOOLEAN; int: Integer;\r\tBEGIN\r\t\tGetLength(x, xL, xNeg); GetLength(y, yL, yNeg); neg := xNeg # yNeg;\r\t\tIF xL > yL THEN int := x; x := y; y := int; intL := xL; xL := yL; yL := intL; xNeg := yNeg END;\r\t\t(* "
+                    attr: 0
+                  - text: "x.nofDigits <= y.nofDigits - yNeg no more valid!"
+                    attr: 1
+                  - text: " *)\r\t\tIF xL = 0 THEN int := zero\r\t\tELSIF (xL = 1) & (x[0] = 1) THEN\r\t\t\tIF xNeg THEN\r\t\t\t\tint := New(yL); SetLength(int, yL, neg);\r\t\t\t\tREPEAT DEC(yL); int[yL] := y[yL] UNTIL yL = 0\r\t\t\tELSE int := y\r\t\t\tEND\r\t\tELSE\r\t\t\tint := New(xL + yL); Multiply(x, y, int, xL, yL, intL); SetLength(int, intL, neg)\r\t\tEND;\r\t\tRETURN int\r\tEND Product;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Quotient
+                    attr: 3
+                  - text: "* (x, y: Integer): Integer;\r\t\tVAR xL, yL, intL, remL: Index; xNeg, yNeg, qNeg, rNeg: BOOLEAN;\r\t\t\tint: Integer;\r\tBEGIN\t\r\t\tGetLength(x, xL, xNeg); GetLength(y, yL, yNeg);\r\t\tASSERT(yL # 0, 20);\r\t\tIF xL < yL THEN int := zero\r\t\tELSIF (yL = 1) & (y[0] = 1) THEN\r\t\t\tIF yNeg THEN\r\t\t\t\tint := New(xL); SetLength(int, xL, ~xNeg);\r\t\t\t\tREPEAT DEC(xL); int[xL] := x[xL] UNTIL xL = 0\r\t\t\tELSE int := x\r\t\t\tEND\r\t\tELSE\r\t\t\tint := New(xL - yL + 2);\r\t\t\tGetQuoRem(x, y, xL, yL, xNeg, yNeg, int, NIL, intL, remL, qNeg, rNeg, TRUE, FALSE);\r\t\t\tSetLength(int, intL, qNeg)\r\t\tEND;\r\t\tRETURN int\r\tEND Quotient;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Remainder
+                    attr: 3
+                  - text: "* (x, y: Integer): Integer;\r\t\tVAR xL, yL, intL, quoL: Index; xNeg, yNeg, qNeg, rNeg: BOOLEAN;\r\t\t\tint: Integer;\r\tBEGIN\r\t\tGetLength(x, xL, xNeg); GetLength(y, yL, yNeg);\r\t\tASSERT(yL # 0, 20);\r\t\tIF xL < yL THEN int := x\r\t\tELSIF (yL = 1) & (y[0] = 1) THEN int := zero\r\t\tELSE\r\t\t\tint := New(yL);\r\t\t\tGetQuoRem(x, y, xL, yL, xNeg, yNeg, NIL, int, quoL, intL, qNeg, rNeg, FALSE, TRUE);\r\t\t\tSetLength(int, intL, rNeg)\r\t\tEND;\r\t\tRETURN int\r\tEND Remainder;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: QuoRem
+                    attr: 3
+                  - text: "* (x, y: Integer; OUT quo, rem: Integer);\r\t\tVAR xL, yL, quoL, remL: Index; xNeg, yNeg, qNeg, rNeg: BOOLEAN;\r\tBEGIN\r\t\tGetLength(x, xL, xNeg); GetLength(y, yL, yNeg);\r\t\tASSERT(yL # 0, 20);\r\t\tIF xL < yL THEN quo := zero; rem := x\r\t\tELSIF (yL = 1) & (y[0] = 1) THEN\r\t\t\trem := zero;\r\t\t\tIF yNeg THEN\r\t\t\t\tquo := New(xL); SetLength(quo, xL, ~xNeg);\r\t\t\t\tREPEAT DEC(xL); quo[xL] := x[xL] UNTIL xL = 0\r\t\t\tELSE quo := x\r\t\t\tEND\r\t\tELSE\r\t\t\tquo := New(xL - yL + 2); rem := New(yL);\r\t\t\tGetQuoRem(x, y, xL, yL, xNeg, yNeg, quo, rem, quoL, remL, qNeg, rNeg, TRUE, TRUE);\r\t\t\tSetLength(quo, quoL, qNeg); SetLength(rem, remL, rNeg)\r\t\tEND\r\tEND QuoRem;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: GCD
+                    attr: 3
+                  - text: "* (x, y: Integer): Integer;\r\t\tVAR xL, yL, i: Index; h: Digit; negative: BOOLEAN; xBuf, yBuf, int: Integer;\r\tBEGIN\r\t\tGetLength(x, xL, negative); GetLength(y, yL, negative);\r\t\tIF xL = 0 THEN int := y\r\t\tELSIF yL = 0 THEN int := x\r\t\tELSE\r\t\t\tIF xL >= yL THEN xBuf := CopyOf(x, xL + 1); yBuf := CopyOf(y, yL + 1)\r\t\t\tELSE xBuf := CopyOf(y, yL + 1); yBuf := CopyOf(x, xL + 1); i := xL; xL := yL; yL := i\r\t\t\tEND;\r\t\t\tWHILE yL # 0 DO\r\t\t\t\tDecomposeQuoRem(xBuf, yBuf, xL, yL);\r\t\t\t\txL := yL;\r\t\t\t\tWHILE (xL # 0) & (xBuf[xL - 1] = 0) DO DEC(xL) END;\r\t\t\t\ti := yL;\r\t\t\t\tWHILE i # 0 DO DEC(i); h := xBuf[i]; xBuf[i] := yBuf[i]; yBuf[i] := h END;\r\t\t\t\ti := xL; xL := yL; yL := i\r\t\t\tEND;\r\t\t\tint := New(xL); SetLength(int, xL, FALSE);\r\t\t\tWHILE xL # 0 DO DEC(xL); int[xL] := xBuf[xL] END\r\t\tEND;\r\t\tRETURN int\r\tEND GCD;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Power
+                    attr: 3
+                  - text: "* (x: Integer; exp: INTEGER): Integer;\r\t\tVAR xL, intL: Index; negative: BOOLEAN; int: Integer;\r\tBEGIN\r\t\tASSERT(exp >= 0, 20);\r\t\tGetLength(x, xL, negative);\r\t\tIF xL = 0 THEN int := zero\r\t\tELSIF (xL = 1) & (x[0] = 1) THEN\r\t\t\tIF negative & ~ODD(exp) THEN\r\t\t\t\tint := New(xL); SetLength(int, xL, FALSE);\r\t\t\t\tREPEAT DEC(xL); int[xL] := x[xL] UNTIL xL = 0\r\t\t\tELSE int := x\r\t\t\tEND\r\t\tELSIF exp = 0 THEN int := one\r\t\tELSIF exp = 1 THEN int := x\r\t\tELSE\r\t\t\tint := New(SHORT((xL - 1) * exp + ENTIER(Math.Ln(x[xL - 1] + 1) * exp / Math.Ln(B)) + 1));\r\t\t\tBinPower(x, exp, int, xL, intL); SetLength(int, intL, negative & ODD(exp))\r\t\tEND;\r\t\tRETURN int\r\tEND Power;\r\r\t(* "
+                    attr: 0
+                  - text: "Read from and Write to String and File "
+                    attr: 1
+                  - text: "*)\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ConvertFromString
+                    attr: 3
+                  - text: "* (IN s: ARRAY OF CHAR; OUT x: Integer);\r\t\tVAR i, j, k: INTEGER; dig, b: Digit; ch: CHAR; negative: BOOLEAN; new: Integer;\r\tBEGIN\r\t\ti := 0; ch := s[0];\r\t\tWHILE (ch # 0X) & (ch <= \" \") DO INC(i); ch := s[i] END;\r\t\tnegative := ch = \"-\";\r\t\tIF negative THEN INC(i); ch := s[i] END;\r\t\tIF ch = \"+\" THEN INC(i); ch := s[i] END;\r\t\tWHILE (ch # 0X) & (ch <= \" \") DO INC(i); ch := s[i] END;\r\t\tASSERT((ch >= \"0\") & (ch <= \"9\"), 20);\r\t\tWHILE ch = \"0\" DO INC(i); ch := s[i] END;\r\t\tIF (ch > \"0\") & (ch <= \"9\") THEN\r\t\t\tj := i;\r\t\t\tREPEAT INC(j); ch := s[j] UNTIL (ch < \"0\") OR (ch > \"9\");\r\t\t\tk := (j - i - 1) DIV DecPerDig + 2;\r\t\t\tnew := New(k); SetLength(new, k - 1, negative);\r\t\t\tk := (j - i) MOD DecPerDig;\r\t\t\tIF k # 0 THEN\r\t\t\t\tb := 1; DEC(k);\r\t\t\t\tWHILE k # 0 DO DEC(k); b := SHORT(b * 10) END\r\t\t\tELSE b := B DIV 10\r\t\t\tEND;\r\t\t\tREPEAT\r\t\t\t\tdig := 0;\r\t\t\t\tWHILE b # 0 DO\r\t\t\t\t\tdig := SHORT(dig + b * (ORD(s[i]) - ORD(\"0\"))); b := SHORT(b DIV 10);\r\t\t\t\t\tINC(i)\r\t\t\t\tEND;\r\t\t\t\tnew[(j - i) DIV DecPerDig] := dig; b := B DIV 10\r\t\t\tUNTIL i = j;\r\t\t\tx := new\r\t\tELSE x := zero\r\t\tEND\r\tEND ConvertFromString;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ConvertToString
+                    attr: 3
+                  - text: "* (x: Integer; OUT s: ARRAY OF CHAR);\r\t\tVAR j: Index; i: INTEGER; d, b: Digit; negative: BOOLEAN;\r\tBEGIN\r\t\tGetLength(x, j, negative);\r\t\tIF negative THEN s[0] := \"-\"; i := 1 ELSE i := 0 END;\r\t\tIF j # 0 THEN\r\t\t\tDEC(j); d := x[j]; b := B DIV 10;\r\t\t\tWHILE d DIV b = 0 DO b := SHORT(b DIV 10) END;\r\t\t\tREPEAT\r\t\t\t\ts[i] := CHR(d DIV b + ORD(\"0\")); INC(i); d := SHORT(d MOD b); b := SHORT(b DIV 10)\r\t\t\tUNTIL b = 0;\r\t\t\tWHILE j # 0 DO\r\t\t\t\tDEC(j); d := x[j]; b := B DIV 10;\r\t\t\t\tREPEAT\r\t\t\t\t\ts[i] := CHR(d DIV b + ORD(\"0\")); INC(i); d := SHORT(d MOD b); b := SHORT(b DIV 10)\r\t\t\t\tUNTIL b = 0\r\t\t\tEND\r\t\tELSE s[i] := \"0\"; INC(i)\r\t\tEND;\r\t\ts[i] := 0X\r\tEND ConvertToString;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Internalize
+                    attr: 3
+                  - text: "* (r: Files.Reader; OUT x: Integer);\r\t\tVAR len: Index; n, version: INTEGER; negative: BOOLEAN;\r\t\t\tnew: Integer; buf: ARRAY 4 OF BYTE;\r\tBEGIN\r\t\tr.ReadByte(buf[0]); version := buf[0];\r\t\tASSERT((version = 0) OR (version >= 128), 20);\r\t\tIF version = 0 THEN\r\t\t\tr.ReadBytes(buf, 0, 4);\r\t\t\tlen := (((buf[0] MOD 128) * 256 + buf[1] MOD 256) * 256\r\t\t\t\t+ buf[2] MOD 256) * 256 + buf[3] MOD 256;\r\t\t\tnew := New(len); SetLength(new, len, buf[0] < 0);\r\t\t\tWHILE len # 0 DO\r\t\t\t\tDEC(len);\r\t\t\t\tr.ReadBytes(buf, 0, 2); new[len] := SHORT((buf[0] MOD 256) * 256 + buf[1] MOD 256)\r\t\t\tEND;\r\t\t\tx := new\r\t\tELSE (* "
+                    attr: 0
+                  - text: "version >= 128"
+                    attr: 1
+                  - text: " *)\r\t\t\tr.ReadByte(buf[1]); n := (buf[0] MOD 256) * 256 + buf[1] MOD 256 - 32768;\r\t\t\tr.ReadBytes(buf, 0, 2); DEC(n);\r\t\t\tlen := (buf[0] MOD 256) * 256 + buf[1] MOD 256; negative := len < 0; len := ABS(len);\r\t\t\tnew := New(len); SetLength(new, len, negative);\r\t\t\tWHILE n # len DO DEC(n); r.ReadBytes(buf, 0, 2) END;\r\t\t\tWHILE len # 0 DO\r\t\t\t\tDEC(len);\r\t\t\t\tr.ReadBytes(buf, 0, 2); new[len] := SHORT((buf[0] MOD 256) * 256 + buf[1] MOD 256)\r\t\t\tEND;\r\t\t\tx := new\r\t\tEND\r\tEND Internalize;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Externalize
+                    attr: 3
+                  - text: "* (w: Files.Writer; x: Integer);\r\t\tVAR len, l: Index; d: Digit; i: INTEGER; negative: BOOLEAN; buf: ARRAY 4 OF BYTE;\r\r\t\tPROCEDURE Byte(x: INTEGER): BYTE;\r\t\tBEGIN\r\t\t\tASSERT((x >= MIN(BYTE)) & (x <= MAX(BYTE) - MIN(BYTE)), 20);\r\t\t\tIF x > MAX(BYTE) THEN RETURN SHORT(SHORT(x - 256)) ELSE RETURN SHORT(SHORT(x)) END\r\t\tEND Byte;\r\r\tBEGIN\r\t\tGetLength(x, len, negative); l := len; i := 4;\r\t\tREPEAT DEC(i); buf[i] := Byte(l MOD 256); l := l DIV 256 UNTIL i = 0;\r\t\tIF negative THEN buf[0] := Byte(128 + buf[0] MOD 256) END;\r\t\tw.WriteByte(0); w.WriteBytes(buf, 0, 4);\r\t\tWHILE len # 0 DO\r\t\t\tDEC(len);\r\t\t\td := x[len]; buf[0] := Byte(d DIV 256); buf[1] := Byte(d MOD 256); w.WriteBytes(buf, 0, 2)\r\t\tEND\r\tEND Externalize;\r\rBEGIN\r\tASSERT(B <= BinBase, 20);\r\tzero := New(0); SetLength(zero, 0, FALSE);\r\tone := New(1); one[0] := 1; SetLength(one, 1, FALSE);\r\ttwo := New(1); two[0] := 2; SetLength(two, 1, FALSE);\r\tNEW(buf6, 6)\rEND Integers.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 29291
+          bodyLen: 8

@@ -1,0 +1,1378 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Host\\Mod\\Windows.odc"
+  size: 74364
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 74233
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 74047
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 73961
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000021
+              defaultAttr:
+                font: Arial
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 25
+                bodyPos: 74082
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 73568
+                runListLen: 5232
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [4]
+                    font: "*"
+                    size: 101600
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE HostWindows;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems, Alexander Iljin, Josef Templ\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 74100
+                      h: 95250
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 74100
+                      h: 95250
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 74100
+                      h: 95250
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- 20060531, ai, Updated GetThisWindow to allow parameter p = NIL\r\t- 20060608, ai, Updated WMPaint processing to RETURN 0\r\t- 20070131, bh, Unicode support\r\t- 20070205, bh, Win32s handling removed\r\t- 20070209, bh, Windows character mapping removed\r\t- 20070210, jt, hookDocWinHandler added"
+                          attr: 0
+                        - text: "\r"
+                          attr: 1
+                        - text: "\t- 20070308, bh, handling of minimized windows corrected\r\t- 20080119, bh, handling of minimized windows corrected\r\t- 20141008, center #15, Dialog.appVersion used instead of Dialog.version \r\t- 20141213, center #21, Fixing Controllers.TickMsg.tick overflow bug.\r\t- 20150511, center #45, Redraw window when is resizing\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 165735
+                      h: 142875
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 165735
+                      h: 142875
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT"
+                    attr: 0
+                  - text: " "
+                    attr: 3
+                  - text: Log
+                    attr: 0
+                  - text: ","
+                    attr: 3
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: SYSTEM
+                    attr: 3
+                  - text: ", WinApi, Services,\r\t\tKernel, Meta, Files, HostFiles, Ports, HostRegistry, HostPorts, Properties,\r\t\tViews, Controllers, Containers, Dialog, Converters, Documents, Windows,\r\t\t"
+                    attr: 0
+                  - text: HostMechanisms
+                    attr: 1
+                  - text: " "
+                    attr: 0
+                  - text: "(* don't remove *)"
+                    attr: 1
+                  - text: ";\r\r\tCONST\r\t\t"
+                    attr: 0
+                  - text: inPlace
+                    attr: 3
+                  - text: "* = 31;\t"
+                    attr: 0
+                  - text: "(* flag for in place windows *)"
+                    attr: 1
+                  - text: "\r\t\tuntitledKey = \"#System:untitled\";\r\t\tallocKey = \"#Host:AllocatedMemory\";\r\t\ttotalKey = \"#Host:Total\";\r\t\tbyteKey = \"#Host:Bytes\";\r\t\tiClose = 100;\t"
+                    attr: 0
+                  - text: "(* known in HostMenus *)"
+                    attr: 1
+                  - text: "\r\t\tscrollRange = 16384;\r\t\tborderW = 5 * Ports.point;\r\t\tguardCheck = 4;\r\t\tuseSeparators = TRUE; noSeparators = FALSE; \t"
+                    attr: 0
+                  - text: "(* parameters to be used with AppendInt *)"
+                    attr: 1
+                  - text: "\r\r\t\tENTER = 0DX; ESC = 1BX;\r\t\tTAB = 09X; LTAB = 0AX; RDEL = 07X; LDEL = 08X;\r\t\tPL = 10X; PR = 11X; PU = 12X; PD = 13X;\r\t\tDL = 14X; DR = 15X; DU = 16X; DD = 17X;\r\t\tAL = 1CX; AR = 1DX; AU = 1EX; AD = 1FX;\r\r\t\tdebug = FALSE;\r\r\tTYPE\r\t\t"
+                    attr: 0
+                  - text: Hook
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD END;\r\r\t\t"
+                    attr: 0
+                  - text: Window
+                    attr: 3
+                  - text: "* = POINTER TO EXTENSIBLE RECORD (Windows.Window)\r\t\t\thook*: Hook;\r\t\t\twnd-: WinApi.HANDLE;\r\t\t\tchild-: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(* if window is a child of the application window *)\r\t\t\t"
+                    attr: 1
+                  - text: "dlg: BOOLEAN;"
+                    attr: 0
+                  - text: "\t(* if window has a 3d dialog border *)"
+                    attr: 1
+                  - text: "\r\t\t\tfix: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(* window is opened with fix coordinates *)"
+                    attr: 1
+                  - text: "\r\t\t\tnext: Window;\t"
+                    attr: 0
+                  - text: "(* window ring, to prevent garbage collection of windows *)"
+                    attr: 1
+                  - text: "\r\t\t\ttrapped: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(* if window caused trap, it won't get idle messages anymore *)"
+                    attr: 1
+                  - text: "\r\t\t\tsetup: BOOLEAN;\r\t\t\tdirty: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(* dirty mark shown *)"
+                    attr: 1
+                  - text: "\r\t\t\tused: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(* window received at least on message *)"
+                    attr: 1
+                  - text: "\r\t\t\tdw, dh: INTEGER;\t"
+                    attr: 0
+                  - text: "(* window size correction for tools *)"
+                    attr: 1
+                  - text: "\r\t\t\tmw, mh: INTEGER;\t"
+                    attr: 0
+                  - text: "(* max window size *)\r\t\t\t"
+                    attr: 1
+                  - text: "destroyed: BOOLEAN;\r\t\t\tminimized: BOOLEAN;\r\t\t\twheelPos: INTEGER;\r\t\t\ttitle: Views.Title\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: Directory
+                    attr: 3
+                  - text: "* = POINTER TO EXTENSIBLE RECORD (Windows.Directory)\r\t\t\tunit*: INTEGER;\r\t\t\tinvisible*: BOOLEAN;\r\t\t\tunmov"
+                    attr: 0
+                  - text: e
+                    attr: 3
+                  - text: "able*: BOOLEAN;\r\t\t\tbackground*: BOOLEAN\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: ScrollInfo
+                    attr: 3
+                  - text: "* = RECORD [1]\r\t\t\tsize*: INTEGER;\r\t\t\tmask*: SET;\r\t\t\tmin*, max*, page*, pos*: INTEGER;\r\t\t\ttrackPos*: INTEGER\r\t\tEND;\r\r\r\tVAR\r\t\t"
+                    attr: 0
+                  - text: visualScroll
+                    attr: 3
+                  - text: "*: BOOLEAN;\r\t\t"
+                    attr: 0
+                  - text: memInStatus
+                    attr: 3
+                  - text: "*: BOOLEAN;\r\t\t"
+                    attr: 0
+                  - text: noAppWin
+                    attr: 3
+                  - text: "*: BOOLEAN; (* If true only tool windows are shown *)\r\t\t"
+                    attr: 0
+                  - text: noClientScroll
+                    attr: 3
+                  - text: "*: BOOLEAN; (* If true the client window of the application window doesn't display scroll bars*)\r\t\t"
+                    attr: 0
+                  - text: fullSize
+                    attr: 3
+                  - text: "*: BOOLEAN; (* If true the client window of the application window doesn't display scroll bars*)\r\t\t"
+                    attr: 0
+                  - text: dir
+                    attr: 3
+                  - text: "-: Directory;\r\t\t"
+                    attr: 0
+                  - text: main
+                    attr: 3
+                  - text: "-, "
+                    attr: 0
+                  - text: client
+                    attr: 3
+                  - text: "-, "
+                    attr: 0
+                  - text: status
+                    attr: 3
+                  - text: "-: WinApi.HANDLE;\t"
+                    attr: 0
+                  - text: "(* main windows *)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: unit
+                    attr: 3
+                  - text: "-: INTEGER;\t"
+                    attr: 0
+                  - text: "(* resolution of main window *)\r\t\t"
+                    attr: 1
+                  - text: ctl3d
+                    attr: 3
+                  - text: "-: WinApi.HANDLE;\r\t\t"
+                    attr: 0
+                  - text: scW
+                    attr: 3
+                  - text: "-, "
+                    attr: 0
+                  - text: scH
+                    attr: 3
+                  - text: "-: INTEGER;\t"
+                    attr: 0
+                  - text: "(* screen width and height *)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: mainW
+                    attr: 3
+                  - text: "-, "
+                    attr: 0
+                  - text: mainH
+                    attr: 3
+                  - text: "-: INTEGER;\t"
+                    attr: 0
+                  - text: "(* main window client area size *)\r"
+                    attr: 1
+                  - text: "\t\tmainHook*: Hook;\r\r\t\ttWindow, fWindow: Window;\t"
+                    attr: 0
+                  - text: "(* target and front focus windows *)\r"
+                    attr: 1
+                  - text: "\t\taWindow: Window;\t"
+                    attr: 0
+                  - text: "(* activated child window *)"
+                    attr: 1
+                  - text: "\r\t\tnewNumber: INTEGER;\t"
+                    attr: 0
+                  - text: "(* number for next untitled document *)"
+                    attr: 1
+                  - text: "\r\t\twinAnchor: Window;\t"
+                    attr: 0
+                  - text: "(* list of all windows, from top to bottom, first is dumy header *)\r\t\t"
+                    attr: 1
+                  - text: "bgWindow: Window; \t(* current background window, if any *)\r\t\twhiteBrush, nullPen: WinApi.HANDLE;\r\t\tdocIcon, dirtyIcon: WinApi.HANDLE;\r\t\tinstance: WinApi.HANDLE;\t"
+                    attr: 0
+                  - text: "(* application instance *)"
+                    attr: 1
+                  - text: "\r\t\tcbViewer: Window;\t"
+                    attr: 0
+                  - text: "(* pseudo window for clipboard drawing *)"
+                    attr: 1
+                  - text: "\r\t\tcbValid: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(* clipboard contents is valid *)"
+                    attr: 1
+                  - text: "\r\t\tmainActive: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(* main is active window *)"
+                    attr: 1
+                  - text: "\r\t\tactivating: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(* used for mouse window activation *)\r"
+                    attr: 1
+                  - text: "\t\tactMod: Kernel.Module;\r"
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\t\tfont, info: WinApi.HANDLE;\r\t\tstatusH, alloc, total: INTEGER;\r\t\tallocStr, totalStr, byteStr: ARRAY 256 OF CHAR;\r\t\tidleTraped: BOOLEAN;\r\t\tshowState: INTEGER;\t"
+                    attr: 0
+                  - text: "(* show command for main window *)"
+                    attr: 1
+                  - text: "\r\r\t\tlBorder, tBorder, rBorder, bBorder: INTEGER;\t"
+                    attr: 0
+                  - text: "(* space for tools in main window *)\r"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: hookDocWinHandler
+                    attr: 3
+                  - text: "*: PROCEDURE (\r\t\t\twnd: WinApi.HANDLE; message, wParam, lParam: INTEGER; VAR res: INTEGER): BOOLEAN;\r\t\t\t"
+                    attr: 0
+                  - text: "(* hook for handling application specific messages; returns TRUE iff handled *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE ScrollModPressed (): BOOLEAN;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.GetAsyncKeyState(11H) < 0\r\tEND ScrollModPressed;\r\r"
+                    attr: 0
+                  - text: "\t(* auxiliary portable prcedures *)\r"
+                    attr: 1
+                  - text: "\r\tPROCEDURE GetSection (w: Window; focus, vertical: BOOLEAN;\r\t\t\t\t\t\t\t\tVAR size, sect, pos: INTEGER; VAR valid: BOOLEAN);\r\t\tVAR msg: Controllers.PollSectionMsg;\r\tBEGIN\t"
+                    attr: 0
+                  - text: "(* portable *)"
+                    attr: 1
+                  - text: "\r\t\tmsg.focus := focus; msg.vertical := vertical;\r\t\tmsg.wholeSize := 1; msg.partSize := 0; msg.partPos := 0;\r\t\tmsg.valid := FALSE; msg.done := FALSE;\r\t\tw.ForwardCtrlMsg(msg);\r\t\tIF msg.done THEN\r\t\t\tsize := msg.wholeSize; sect := msg.partSize; pos := msg.partPos;\r\t\t\tIF size < 0 THEN size := 0 END;\r\t\t\tIF sect < 0 THEN sect := 0 ELSIF sect > size THEN sect := size END;\r\t\t\tIF pos > size - sect THEN pos := size - sect END;\r\t\t\tIF pos < 0 THEN pos := 0 END\r\t\tELSE size := 1; sect := 0; pos := 0\r\t\tEND;\r\t\tvalid := msg.valid\r\tEND GetSection;\r\r\tPROCEDURE SetOrigin (w: Window; focus, vertical: BOOLEAN; pos: INTEGER);\r"
+                    attr: 0
+                  - text: "\t(* set origin of window's view *)\r"
+                    attr: 1
+                  - text: "\t\tVAR msg: Controllers.ScrollMsg;\r\tBEGIN\t"
+                    attr: 0
+                  - text: "(* portable *)"
+                    attr: 1
+                  - text: "\r\t\tmsg.focus := focus; msg.vertical := vertical;\r\t\tmsg.op := Controllers.gotoPos; msg.pos := pos;\r\t\tmsg.done := FALSE;\r\t\tw.ForwardCtrlMsg(msg)\r\tEND SetOrigin;\r\r\tPROCEDURE Scroll (w: Window; focus, vertical: BOOLEAN; dir: INTEGER);\r\t"
+                    attr: 0
+                  - text: "(* scroll relative, by line or page increment or decrement *)"
+                    attr: 1
+                  - text: "\r\t\tVAR msg: Controllers.ScrollMsg; c: Containers.Controller; v: Views.View;\r\tBEGIN\t"
+                    attr: 0
+                  - text: "(* portable *)\r"
+                    attr: 1
+                  - text: "\t\tc := w.doc.ThisController(); v := c.ThisFocus();\r\t\tIF (v # NIL) & (v IS Containers.View) THEN\r\t\t\tContainers.FadeMarks(v(Containers.View).ThisController(), FALSE)\r\t\tEND;\r"
+                    attr: 3
+                  - text: "\t\tmsg.focus := focus; msg.vertical := vertical;\r\t\tmsg.op := dir;\r\t\tmsg.done := FALSE;\r\t\tw.ForwardCtrlMsg(msg)\r\tEND Scroll;\r\r\r"
+                    attr: 0
+                  - text: "\t(** miscellaneous procedures **)\r"
+                    attr: 1
+                  - text: "\r\tPROCEDURE "
+                    attr: 0
+                  - text: ActualWnd
+                    attr: 3
+                  - text: "* (): WinApi.HANDLE;\r\tBEGIN\r(*\r\t\tIF (fWindow # NIL) & ~fWindow.child & fWindow.used THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " fWindow.wnd\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " main\r\t\tEND\r*)\r\t\tIF (fWindow # NIL) & ~fWindow.child & fWindow.used THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " fWindow.wnd\r\t\tELSIF WinApi.IsWindowVisible(main) # 0 THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " main\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 0\r\t\tEND\r\tEND ActualWnd;\r\r\tPROCEDURE ThisWindow (wnd: WinApi.HANDLE): Window;\r\t(* determine window by its WindowPtr *)\r\tBEGIN\r\t\tIF wnd = cbViewer.wnd THEN RETURN cbViewer\r\t\tELSE RETURN SYSTEM.VAL(Window, WinApi.GetWindowLongW(wnd, 0))\r\t\tEND\r\tEND ThisWindow;\r\r\tPROCEDURE AppendInt (VAR s: ARRAY OF CHAR; n: INTEGER; useSeparators: BOOLEAN);\r\t\tVAR len: INTEGER; i, j: INTEGER; d: ARRAY 32 OF CHAR;\r\tBEGIN\r\t\tASSERT(n >= 0, 20);\r\t\ti := 0; REPEAT\r\t\t\td[i] := CHR(30H + n MOD 10); INC(i); n := n DIV 10;\r\t\t\tIF useSeparators & (i MOD 4 = 3) & (n # 0) THEN d[i] := \"'\"; INC(i) END\r\t\tUNTIL n = 0;\r\t\tlen := LEN(s) - 1;\r\t\tj := 0; WHILE s[j] # 0X DO INC(j) END;\r\t\tIF j + i < len THEN\r\t\t\tREPEAT DEC(i); s[j] := d[i]; INC(j) UNTIL i = 0;\r\t\t\ts[j] := 0X\r\t\tEND\r\tEND AppendInt;\r\r\tPROCEDURE Append (VAR s: ARRAY OF CHAR; t: ARRAY OF CHAR);\r\t\tVAR len: INTEGER; i, j: INTEGER; ch: CHAR;\r\tBEGIN\r\t\tlen := LEN(s);\r\t\ti := 0; WHILE s[i] # 0X DO INC(i) END;\r\t\tj := 0; REPEAT ch := t[j]; s[i] := ch; INC(j); INC(i) UNTIL (ch = 0X) OR (i = len);\r\t\ts[len - 1] := 0X\r\tEND Append;\r\r\tPROCEDURE StripTitle (VAR s: Views.Title);\r\t\tVAR i: INTEGER;\r\tBEGIN\r\t\tIF s[0] = \"<\" THEN\r\t\t\ti := 1; WHILE (s[i] # \">\") & (s[i] # 0X) DO s[i - 1] := s[i]; INC(i) END;\r\t\t\tDEC(i); s[i] := 0X\r\t\tEND\r\tEND StripTitle;\r\r\tPROCEDURE GenTitle (w: Window; name: ARRAY OF CHAR; VAR title: ARRAY OF CHAR);\r\t"
+                    attr: 0
+                  - text: "(* generate window title for a document *)"
+                    attr: 1
+                  - text: "\r\t\tVAR newName: ARRAY 64 OF CHAR; i: INTEGER;\r\tBEGIN\r\t\tIF w.sub THEN title[0] := \"<\"; title[1] := 0X ELSE title[0] := 0X END;\r\t\tIF name # \"\" THEN\r\t\t\ti := 0;\r\t\t\tWHILE name[i] # 0X DO INC(i) END;\r\t\t\tIF (i > 4) & (name[i-4] = \".\") & (CAP(name[i-3]) = \"O\") & (CAP(name[i-2]) = \"D\") & (CAP(name[i-1]) = \"C\")\r\t\t\tTHEN\r\t\t\t\tname[i-4] := 0X\r\t\t\tEND;\r\t\t\tAppend(title, name)\r\t\tELSE\r\t\t\tDialog.MapString(untitledKey, newName);\r\t\t\tAppend(title, newName); AppendInt(title, newNumber, noSeparators);\r\t\t\tINC(newNumber)\r\t\tEND;\r\t\tIF w.sub THEN Append(title, \">\") END\r\tEND GenTitle;\r\r\tPROCEDURE GenPathTitle (w: Window; OUT title: ARRAY OF CHAR);\r\t\tVAR loc: Files.Locator; ch: CHAR; s1, s2: HostFiles.FullName; i, j: INTEGER;\r\tBEGIN\r\t\tloc := w.loc; title := \"\";\r\t\tWITH loc: HostFiles.Locator DO\r\t\t\ti := 0; ch := loc.path[0]; j := 0; s2 := \"\";\r\t\t\tWHILE ch # 0X DO\r\t\t\t\tIF (ch = \"\\\") OR (ch = \"/\") THEN\r\t\t\t\t\ts1[j] := 0X; s2 := s1$; j := 0\r\t\t\t\tELSE\r\t\t\t\t\ts1[j] := ch; INC(j)\r\t\t\t\tEND;\r\t\t\t\tINC(i); ch := loc.path[i]\r\t\t\tEND;\r\t\t\ts1[j] := 0X;\r\t\t\tIF ((CAP(s1[0]) = \"M\") & (CAP(s1[1]) = \"O\") & (CAP(s1[2]) = \"D\") & (s1[3] = 0X) OR\r\t\t\t\t(CAP(s1[0]) = \"D\") & (CAP(s1[1]) = \"O\") & (CAP(s1[2]) = \"C\") & (CAP(s1[3]) = \"U\") & (s1[4] = 0X) OR\r\t\t\t\t(CAP(s1[0]) = \"R\") & (CAP(s1[1]) = \"S\") & (CAP(s1[2]) = \"R\") & (CAP(s1[3]) = \"C\") & (s1[4] = 0X))\r\t\t\t\t& (s2 # \"\") THEN\r\t\t\t\ttitle := \"(\"; Append(title, s2); Append(title, \")\")\r\t\t\tEND\r\t\tELSE\r\t\tEND;\r\t\tAppend(title, w.name)\r\tEND GenPathTitle;\r\r\tPROCEDURE ThisStyle (base, flags: SET): SET;\r\tBEGIN\r\t\tIF ~(Windows.noHScroll IN flags) THEN INCL(base, 20) END;\t"
+                    attr: 0
+                  - text: "(* hor scrollbar *)"
+                    attr: 1
+                  - text: "\r\t\tIF ~(Windows.noVScroll IN flags) THEN INCL(base, 21) END;\t"
+                    attr: 0
+                  - text: "(* ver scrollbar *)"
+                    attr: 1
+                  - text: "\r\t\tIF ~(Windows.noResize IN flags) THEN INCL(base, 18) END;\t"
+                    attr: 0
+                  - text: "(* sizing border *)\r"
+                    attr: 1
+                  - text: "\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " base\r\tEND ThisStyle;\r\r\tPROCEDURE^ (w: Window) UpdateScrollbars (focus: BOOLEAN), NEW;\r\r\r"
+                    attr: 0
+                  - text: "\t(* Hook *)\r\r"
+                    attr: 1
+                  - text: "\tPROCEDURE (hk: Hook) "
+                    attr: 0
+                  - text: Activate
+                    attr: 3
+                  - text: "* (on: BOOLEAN), NEW, ABSTRACT;\r\tPROCEDURE (hk: Hook) "
+                    attr: 0
+                  - text: Focus
+                    attr: 3
+                  - text: "* (on: BOOLEAN), NEW, ABSTRACT;\r\tPROCEDURE (hk: Hook) "
+                    attr: 0
+                  - text: Resize
+                    attr: 3
+                  - text: "* (w, h: INTEGER), NEW, ABSTRACT;\r\r\r"
+                    attr: 0
+                  - text: "\t(* Window creation *)\r\r"
+                    attr: 1
+                  - text: "\tPROCEDURE OpenDoc (w: Window; l, t, r, b: INTEGER; min, max: BOOLEAN);\r"
+                    attr: 0
+                  - text: "\t\t(* first part of Open, called from directory.open *)\r"
+                    attr: 1
+                  - text: "\t\tVAR dw, dh, res: INTEGER; wnd: WinApi.HANDLE; m: WinApi.MDICREATESTRUCTW; c: Containers.Controller;\r\tBEGIN\r\t\tASSERT(~(Windows.isTool IN w.flags), 20);\r\t\tm.szTitle := \"\";\r\t\tIF Windows.isAux IN w.flags THEN m.szClass := \"Oberon Aux\"\r\t\tELSE m.szClass := \"Oberon Doc\"\r\t\tEND;\r\t\tm.hOwner := instance;\r\t\tm.x := WinApi.CW_USEDEFAULT;\r\t\tm.y := WinApi.CW_USEDEFAULT;\r\t\tm.cx := WinApi.CW_USEDEFAULT;\r\t\tm.cy := WinApi.CW_USEDEFAULT;\r\t\tIF (l >= 0) & (t >= 0) & ~((l = 0) & (t = 0) & (r = 0) & (b = 0)) THEN\r\t\t\tm.x := l; m.y := t;\r\t\t\tIF (r > l) & (b > t) THEN\r\t\t\t\tm.cx := r - l; m.cy := b - t; w.fix := TRUE\r\t\t\tEND\r\t\tEND;\r(*\r\t\tIF (l < r) & (t < b) THEN\r\t\t\tm.x := l; m.w := r - l; m.y := t; m.h := b - t; w.fix := TRUE\r\t\tELSE\r\t\t\tm.x := WinApi.CWUseDefault;\r\t\t\tm.y := WinApi.CWUseDefault;\r\t\t\tm.w := WinApi.CWUseDefault;\r\t\t\tm.h := WinApi.CWUseDefault\r\t\tEND;\r*)\r\t\tm.style := ThisStyle({}, w.flags);\r\t\tIF ~(Windows.noResize IN w.flags) THEN\r\t\t\tIF max THEN INCL(m.style, 24) END\t(* maximized *)\r(*\r\t\t\tIF min THEN INCL(m.style, 29) END\t(* minimized *)\r*)\r\t\tEND;\r\t\tm.lParam := SYSTEM.VAL(INTEGER, w);\r\t\tw.child := TRUE;\r\r\t\tc := w.doc.ThisController();\r\t\tIF dir.background THEN\r\t\t\tw.doc.PollRect(l, t, r, b);\r\t\t\tdw := (r - l ) DIV w.frame.unit; dh := (b - t) DIV w.frame.unit; (* TODO: Correct this *)\r\t\t\tIF Documents.winWidth IN c.opts THEN m.cx := mainW ELSE m.cx := dw END;\r\t\t\tIF Documents.winHeight IN c.opts THEN m.cy := mainH ELSE m.cy := dh END;\r\t\t\tm.x := 0; m.y := 0;\r\t\t\tw.fix := TRUE;\r\t\t\tm.style := {}\r\t\tEND;\r\t\twnd := WinApi.SendMessageW(client, WinApi.WM_MDICREATE, 0, SYSTEM.ADR(m));\r\t\tIF dir.background THEN\r\t\t\tres := WinApi.SetWindowPos(\r\t\t\t\twnd, 1 (* HWND_BOTTOM *), 0, 0, 0, 0, WinApi.SWP_NOSIZE + WinApi.SWP_NOMOVE)\r\t\tEND;\r\t\tIF ~(Windows.noResize IN w.flags) THEN\r(*\r\t\t\tIF max THEN res := WinApi.ShowWindow(wnd, 3) END;\t(* maximized *)\r*)\r\t\t\tIF min THEN res := WinApi.ShowWindow(wnd, 6) END\t(* minimized *)\r\t\tEND;\r\t\tc.SetFocus(w.doc.ThisView());\r\t\tres := WinApi.SetFocus(wnd);\r\t\tres := WinApi.UpdateWindow(wnd)\r\tEND OpenDoc;\r\r\tPROCEDURE CreateDoc (wnd: WinApi.HANDLE; wParam, lParam: INTEGER);\r"
+                    attr: 0
+                  - text: "\t\t(* second part of Open, called from window handler *)\r"
+                    attr: 1
+                  - text: "\t\tVAR res, cw, ch, u, dl, dt, dr, db: INTEGER; w: Window; style, f: SET; v: Views.View; col: Ports.Color;\r\t\t\tdc: WinApi.HANDLE; rect, crect: WinApi.RECT; c: Containers.Controller;\r\t\t\tcs: WinApi.PtrCREATESTRUCTW; mdics: WinApi.PtrMDICREATESTRUCTW;\r\tBEGIN\r\t\tcs := SYSTEM.VAL(WinApi.PtrCREATESTRUCTW, lParam);\r\t\tmdics := SYSTEM.VAL(WinApi.PtrMDICREATESTRUCTW, cs.lpCreateParams);\r\t\tw := SYSTEM.VAL(Window, mdics.lParam);\r\t\tres := WinApi.SetWindowLongW(wnd, 0, SYSTEM.VAL(INTEGER, w));\r\t\tw.wnd := wnd;\r\t\tdc := WinApi.GetDC(wnd);\r\t\tw.port(HostPorts.Port).SetDC(dc, wnd);\r\t\tIF ~(Windows.noHScroll IN w.flags) THEN\r\t\t\tres := WinApi.SetScrollRange(wnd, WinApi.SB_HORZ, 0, scrollRange, 1)\r\t\tEND;\r\t\tIF ~(Windows.noVScroll IN w.flags) THEN\r\t\t\tres := WinApi.SetScrollRange(wnd, WinApi.SB_VERT, 0, scrollRange, 1)\r\t\tEND;\r"
+                    attr: 0
+                  - text: "\t\tv := w.doc.ThisView(); f := {};\r\t\tWITH v: Containers.View DO\r\t\t\tc := v.ThisController();\r\t\t\tIF c # NIL THEN f := c.opts END\r\t\tELSE\r\t\tEND;\r\t\tcol := Views.transparent; v.GetBackground(col);\r\t\tw.dlg := ({Containers.noCaret, Containers.noSelection} - f = {})\t"
+                    attr: 3
+                  - text: "(* mask mode *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t& (col = Ports.dialogBackground);\t"
+                    attr: 3
+                  - text: "(* dialog background *)"
+                    attr: 1
+                  - text: "\r"
+                    attr: 3
+                  - text: "\r\t\tstyle := BITS(WinApi.GetWindowLongW(wnd, -16));\r\t\tstyle := ThisStyle(style - {20, 21, 18}, w.flags);\r\t\tIF Windows.noResize IN w.flags THEN\r\t\t\tstyle := style - (WinApi.WS_THICKFRAME + WinApi.WS_MAXIMIZEBOX) + WinApi.WS_BORDER\r\t\tELSE\r\t\t\tstyle := style + WinApi.WS_THICKFRAME\r\t\tEND;\r\r\t\tIF dir.background THEN\r\t\t\tstyle := style - (WinApi.WS_THICKFRAME + WinApi.WS_MAXIMIZEBOX +\r\t\t\t\t WinApi.WS_MINIMIZEBOX + WinApi.WS_BORDER + WinApi.WS_DLGFRAME);\r\t\t\tres := WinApi.ShowScrollBar(wnd, WinApi.SB_BOTH, WinApi.FALSE)\r\t\tEND;\r\r\t\tres := WinApi.SetWindowLongW(wnd, -16, ORD(style));\r\t\tstyle := BITS(WinApi.GetWindowLongW(wnd, -20));\r\t\tIF ~dir.background THEN INCL(style, 8) ELSE EXCL(style, 8) END;\t"
+                    attr: 0
+                  - text: "(* window edge *)\r\t\t"
+                    attr: 1
+                  - text: "IF w.dlg THEN "
+                    attr: 0
+                  - text: "(* INCL(style, 0) *)"
+                    attr: 3
+                  - text: " ELSE INCL(style, 9) END;\t"
+                    attr: 0
+                  - text: "(* dialog modal frame, client edge *)"
+                    attr: 1
+                  - text: "\r\r\t\tres := WinApi.SetWindowLongW(wnd, -20, ORD(style));\r\t\tres := WinApi.SetWindowPos(w.wnd, 0, 0, 0, 0, 0, {0, 1, 2, 3, 5});\r\t\t\t"
+                    attr: 0
+                  - text: "(* no size, no move, no z order, no redraw, frame changed *)"
+                    attr: 1
+                  - text: "\r\t\tres := WinApi.GetClientRect(wnd, rect);\r\t\tu := w.frame.unit; cw := rect.right; ch := rect.bottom;\r\t\t"
+                    attr: 0
+                  - text: "w.port.SetSize(0, 0);\r"
+                    attr: 3
+                  - text: "\t\tw.doc.PollRect(dl, dt, dr, db);\r\t\tIF w.fix THEN\r\t\t\tIF dir.background THEN\r\t\t\t\tw.doc.SetRect(0, 0, dr - dl , db - dt) (* TODO: Corrct this *)\r\t\t\tELSE\r\t\t\t\tIF w.dlg THEN w.doc.SetRect(0, 0, cw * u, ch * u)\r\t\t\t\tELSE w.doc.SetRect(borderW, borderW, cw * u - borderW, ch * u - borderW)\r\t\t\t\tEND\r\t\t\tEND\r\t\tELSIF w.dlg THEN\r\t\t\tcw := (dr - dl) DIV u;\r\t\t\tch := (db - dt) DIV u;\r\t\t\tw.doc.SetRect(0, 0, dr - dl, db - dt)\r\t\tELSE\r\t\t\tres := WinApi.GetClientRect(client, crect);\r\t\t\tcw := (dr - dl + 2 * borderW) DIV u + 1;\r\t\t\tch := (db - dt + 2 * borderW) DIV u + 1;\r\t\t\tIF ~(Windows.noHScroll IN w.flags) & (cw > crect.right - 40) THEN cw := crect.right - 80 END;\r\t\t\tIF ~(Windows.noVScroll IN w.flags) & (ch > crect.bottom - 40) THEN ch := crect.bottom - 80 END;\r(*\r\t\t\tIF cw > rect.right THEN cw := rect.right END;\r\t\t\tIF ch > rect.bottom THEN ch := rect.bottom END;\r*)\r"
+                    attr: 0
+                  - text: "\t\t\t"
+                    attr: 3
+                  - text: "w.doc.SetRect(borderW, borderW, borderW + dr - dl, borderW + db - dt)"
+                    attr: 0
+                  - text: "\r"
+                    attr: 3
+                  - text: "\t\tEND;\r\t\tIF cw < 0 THEN cw := 0 END;\r\t\tIF ch < 0 THEN ch := 0 END;\r\t\tw.SetSize(cw, ch);\r\t\tw.Restore(0, 0, cw, ch);\r\t\tw.Update;\r\t\tw.UpdateScrollbars(FALSE);\r"
+                    attr: 0
+                  - text: "\t\tIF ~w.fix THEN"
+                    attr: 3
+                  - text: " w.SetSize(cw, ch) "
+                    attr: 0
+                  - text: END;
+                    attr: 3
+                  - text: "\r"
+                    attr: 0
+                  - text: "\t\tres := WinApi.GetWindowRect(wnd, rect);\r\t\tw.mw := rect.right - rect.left; w.mh := rect.bottom - rect.top;\r\t"
+                    attr: 3
+                  - text: "\tHostMechanisms.InstallDropTarget(wnd, w);"
+                    attr: 0
+                  - text: "\r\t\t"
+                    attr: 3
+                  - text: "w.setup := TRUE\r\tEND CreateDoc;\r\r\tPROCEDURE OpenDlg (w: Window; l, t, r, b: INTEGER; min, max: BOOLEAN);\r"
+                    attr: 0
+                  - text: "\t\t(* first part of Open, called from directory.open *)\r"
+                    attr: 1
+                  - text: "\t\tVAR res, cx, cy, cw, ch: INTEGER; wnd: WinApi.HANDLE; style: SET;\r\t\t\trect: WinApi.RECT; c: Containers.Controller;\r\tBEGIN\r\t\tASSERT(Windows.isTool IN w.flags, 20);\r\t\tstyle := ThisStyle({7, 19, 22, 23, (*25,*) 31}, w.flags);\t"
+                    attr: 0
+                  - text: "(* dialog, sysmenu, border, clipchildren, popup *)\r"
+                    attr: 1
+                  - text: "\t\tw.child := FALSE; w.dlg := TRUE;\r\t\tres := WinApi.GetWindowRect(main, rect);\r\t\tcw := (rect.right - rect.left) DIV 2;\r\t\tcx := rect.left + cw DIV 2;\r\t\tch := (rect.bottom - rect.top) DIV 2;\r\t\tcy := rect.top + ch DIV 2;\r\t\tIF (l >= 0) & (t >= 0) & ~((l = 0) & (t = 0) & (r = 0) & (b = 0)) THEN\r\t\t\tcx := l; cy := t;\r\t\t\tIF (r > l) & (b > t) THEN\r\t\t\t\tcw := r - l; ch := b - t; w.fix := TRUE\r\t\t\tEND\r\t\tEND;\r(*\r\t\tIF (l < r) & (t < b) THEN\r\t\t\tcx := l; cw := r - l; cy := t; ch := b - t; w.fix := TRUE\r\t\tELSE\r\t\t\tres := WinApi.GetWindowRect(main, rect);\r\t\t\tcw := (rect.right - rect.left) DIV 2;\r\t\t\tcx := rect.left + cw DIV 2;\r\t\t\tch := (rect.bottom - rect.top) DIV 2;\r\t\t\tcy := rect.top + ch DIV 2\r\t\tEND;\r*)\r\t\tIF noAppWin THEN\r\t\t\tstyle := style + WinApi.WS_MINIMIZEBOX;\r\t\t\twnd := WinApi.CreateWindowExW(WinApi.WS_EX_APPWINDOW + WinApi.WS_EX_DLGMODALFRAME,\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\"Oberon Dlg\", \"\", style, cx, cy, cw, ch,\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tActualWnd(), 0, instance, SYSTEM.VAL(INTEGER, w))\r\t\tELSE\r\t\t\twnd := WinApi.CreateWindowExW({"
+                    attr: 0
+                  - text: 0
+                    attr: 3
+                  - text: "}, \"Oberon Dlg\", \"\", style, cx, cy, cw, ch,\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tActualWnd(), 0, instance, SYSTEM.VAL(INTEGER, w))\r\t\tEND;\r\t\tres := WinApi.ShowWindow(wnd, 1);\r\t\tc := w.doc.ThisController();\r\t\tc.SetFocus(w.doc.ThisView());\r\t\tres := WinApi.SetFocus(wnd);\r\t\tres := WinApi.UpdateWindow(wnd)\r\tEND OpenDlg;\r\r\tPROCEDURE CreateDlg (wnd: WinApi.HANDLE; wParam, lParam: INTEGER);\r"
+                    attr: 0
+                  - text: "\t\t(* second part of Open, called from window handler *)\r"
+                    attr: 1
+                  - text: "\t\tVAR res, cw, ch, dl, dt, dr, db: INTEGER; w: Window;\r\t\t\tdc, menu: WinApi.HANDLE; rect: WinApi.RECT;\r\t\t\tcs: WinApi.PtrCREATESTRUCTW;\r\tBEGIN\r\t\tcs := SYSTEM.VAL(WinApi.PtrCREATESTRUCTW, lParam);\r\t\tw := SYSTEM.VAL(Window, cs.lpCreateParams);\r\t\tres := WinApi.SetWindowLongW(wnd, 0, SYSTEM.VAL(INTEGER, w));\r\t\tw.wnd := wnd; w.child := FALSE; w.dlg := TRUE;\r\t\tIF ~(inPlace IN w.flags) THEN\r\r\t\t\tmenu := WinApi.GetSystemMenu(wnd, 0);\r\t\t\tres := WinApi.RemoveMenu(menu, 0F000H, {});\t"
+                    attr: 0
+                  - text: "(* SC_SIZE *)\r\t\t"
+                    attr: 1
+                  - text: "\tIF ~noAppWin THEN res := WinApi.RemoveMenu(menu, 0F020H, {}) END;\t"
+                    attr: 0
+                  - text: "(* SC_MINIMIZE *)"
+                    attr: 1
+                  - text: "\r\t\t\tres := WinApi.RemoveMenu(menu, 0F030H, {});\t"
+                    attr: 0
+                  - text: "(* SC_MAXIMIZE *)"
+                    attr: 1
+                  - text: "\r\t\t\tres := WinApi.RemoveMenu(menu, 0F120H, {});\t"
+                    attr: 0
+                  - text: "(* SC_RESTORE *)"
+                    attr: 1
+                  - text: "\r"
+                    attr: 0
+                  - text: "\t\t\t"
+                    attr: 1
+                  - text: "IF dir.unmoveable THEN\r\t\t\t\tres := WinApi.RemoveMenu(menu, 0F010H, {})\t"
+                    attr: 0
+                  - text: "(* SC_MOVE *)"
+                    attr: 1
+                  - text: "\r\t\t\tEND;\r\r\t\t\tdc := WinApi.GetDC(wnd);\r\t\t\tw.port(HostPorts.Port).SetDC(dc, wnd);\r\t\t\tIF ~(Windows.noHScroll IN w.flags) THEN\r\t\t\t\tres := WinApi.SetScrollRange(wnd, WinApi.SB_HORZ, 0, scrollRange, 1)\r\t\t\tEND;\r\t\t\tIF ~(Windows.noVScroll IN w.flags) THEN\r\t\t\t\tres := WinApi.SetScrollRange(wnd, WinApi.SB_VERT, 0, scrollRange, 1)\r\t\t\tEND;\r\t\t\tres := WinApi.GetClientRect(wnd, rect);\r\t\t\tIF w.fix THEN\r\t\t\t\tcw := rect.right; ch := rect.bottom;\r\t\t\t\tw.doc.SetRect(0, 0, cw * w.frame.unit, ch * w.frame.unit)\r\t\t\tELSE\r\t\t\t\tw.doc.PollRect(dl, dt, dr, db);\r\t\t\t\tcw := (dr - dl) DIV w.frame.unit;\r\t\t\t\tch := (db - dt) DIV w.frame.unit;\r\t\t\t\tw.doc.SetRect(0, 0, dr - dl, db - dt)\r\t\t\tEND;\r\t\t\tIF cw < 0 THEN cw := 0 END;\r\t\t\tIF ch < 0 THEN ch := 0 END;\r\t\t\tw.SetSize(cw, ch);\r\t\t\tw.Restore(0, 0, cw, ch);\r\t\t\tw.Update;\r\t\t\tw.UpdateScrollbars(FALSE);\r\t\t\tw.SetSize(cw, ch)\r\t\tEND;"
+                    attr: 0
+                  - text: "\r\t\t"
+                    attr: 3
+                  - text: "HostMechanisms.InstallDropTarget(wnd, w);"
+                    attr: 0
+                  - text: "\r\t\t"
+                    attr: 3
+                  - text: "w.setup := TRUE\r\tEND CreateDlg;\r\r\r\r"
+                    attr: 0
+                  - text: "\t(** Window **)\r"
+                    attr: 1
+                  - text: "\r\tPROCEDURE (w: Window) "
+                    attr: 0
+                  - text: ForwardCtrlMsg
+                    attr: 3
+                  - text: "* (VAR msg: Controllers.Message), EXTENSIBLE;\r\t\tVAR d: BOOLEAN; res: INTEGER;\r\tBEGIN\r\t\tIF w.frame # NIL THEN\r\t\t\tViews.SetRoot(w.frame, w.frame.view, w = fWindow, w.flags);\r\t\t\tw.ForwardCtrlMsg^(msg);\r\t\t\tWITH msg: Controllers.ScrollMsg DO\r\t\t\t\tw.UpdateScrollbars(FALSE)\r\t\t\tELSE\r\t\t\tEND;\r"
+                    attr: 0
+                  - text: "\t\t\t"
+                    attr: 1
+                  - text: "IF (w.flags * {Windows.isAux, Windows.isTool} = {}) & (w.seq # NIL) THEN\r\t\t\t\td := ~(Windows.neverDirty IN w.flags) & w.seq.Dirty();\r\t\t\t\tIF (d # w.dirty) & (w = aWindow) THEN\r\t\t\t\t\tres := WinApi.SendMessageW(w.wnd, WinApi.WM_NCACTIVATE, 1, 0);\r\t\t\t\t\tIF WinApi.IsZoomed(w.wnd) # 0 THEN res := WinApi.DrawMenuBar(main) END\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND ForwardCtrlMsg;\r\r\tPROCEDURE (w: Window) "
+                    attr: 0
+                  - text: SetSize
+                    attr: 3
+                  - text: "* (width, height: INTEGER);\r\t\tVAR res, x, y, dw, dh: INTEGER; cr, wr: WinApi.RECT; p: WinApi.POINT;\r\tBEGIN\r\t\tIF w.port # NIL THEN\r\t\t\tIF (width = 0) & (height = 0) THEN\r\t\t\t\tw.minimized := TRUE\r\t\t\t\t(* no SetSize^ call *)\r\t\t\tELSE\r\t\t\t\tw.minimized := FALSE;\r"
+                    attr: 0
+                  - text: "\t"
+                    attr: 4
+                  - text: "\t\t\tw.SetSize^(width, height);\r\t\t\t\tres := WinApi.GetClientRect(w.wnd, cr);\r\t\t\t\tdw := width - cr.right; dh := height - cr.bottom;\r\t\t\t\tIF ~(inPlace IN w.flags) & (w # cbViewer) & ((dw # 0) OR (dh # 0)) THEN\r\t\t\t\t\tres := WinApi.GetWindowRect(w.wnd, wr);\r\t\t\t\t\tp.x := wr.left; p.y := wr.top;\r\t\t\t\t\tIF ~(Windows.isTool IN w.flags) THEN res := WinApi.ScreenToClient(client, p) END;\r\t\t\t\t\tx := p.x; y := p.y;\r\t\t\t\t\tIF Windows.isTool IN w.flags THEN DEC(x, dw DIV 2); DEC(y, dh DIV 2) END;\r\t\t\t\t\twidth := wr.right - wr.left + dw; height := wr.bottom - wr.top + dh;\r\t\t\t\t\tIF w.child THEN\r\t\t\t\t\t\tres := WinApi.GetClientRect(client, cr);\r\t\t\t\t\t\tdw := cr.right; dh := cr.bottom\r\t\t\t\t\tELSE\r\t\t\t\t\t\tdw := scW; dh := scH\r\t\t\t\t\tEND;\r\t\t\t\t\tIF x + width > dw THEN x := dw - width END;\r\t\t\t\t\tIF y + height > dh THEN y := dh - height END;\r\r\t\t\t\t\tIF x < 0 THEN x := 0 END;\r\t\t\t\t\tIF y < 0 THEN y := 0 END;\r\t(*\r\t\t\t\t\tIF x + width > dw THEN width := dw - x END;\r\t\t\t\t\tIF y + height > dh THEN height := dh - y END;\r\t*)\r\t\t\t\t\tres := WinApi.SetWindowPos(w.wnd, 0, x, y, width, height,\r\t\t\t\t\t\tWinApi.SWP_FRAMECHANGED + WinApi.SWP_NOZORDER + WinApi.SWP_NOACTIVATE)\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND SetSize;\r\r\tPROCEDURE (w: Window) SetTitle2* (title: Views.Title), NEW;\r"
+                    attr: 0
+                  - text: "\t(* assign name of window, generate title out of name, and update window title bar *)\r"
+                    attr: 1
+                  - text: "\t\tVAR res: INTEGER; h: Window; t: ARRAY 256 OF CHAR;\r\tBEGIN\r\t\tASSERT(w.wnd # 0, 20);\r\t\tStripTitle(title);\r\t\th := w;\r\t\tREPEAT\r\t\t\tGenTitle(h, title, t);\r\t\t\tres := WinApi.SetWindowTextW(h.wnd, t);\r\t\t\th := h.link(Window)\r\t\tUNTIL h = w\r\tEND SetTitle2;\r\r\tPROCEDURE (w: Window) "
+                    attr: 0
+                  - text: SetTitle
+                    attr: 3
+                  - text: "* (title: Views.Title);\r\tBEGIN\r\t\tASSERT(w.wnd # 0, 20);\r\t\tw.title := title; Dialog.MapString(w.title, title);\r\t\tw.SetTitle2(title)\r\tEND SetTitle;\r\r\tPROCEDURE (w: Window) "
+                    attr: 0
+                  - text: RefreshTitle
+                    attr: 3
+                  - text: "* ;"
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\t\tVAR title: Views.Title;\r\tBEGIN\r\t\tASSERT(w.wnd # 0, 20);\r\t\tDialog.MapString(w.title, title);\r\t\tw.SetTitle2(title)\r\tEND RefreshTitle;\r\r\tPROCEDURE (w: Window) "
+                    attr: 0
+                  - text: GetTitle
+                    attr: 3
+                  - text: "* (OUT title: Views.Title);\r"
+                    attr: 0
+                  - text: "\t(* get name of window *)\r"
+                    attr: 1
+                  - text: "\t\tVAR res: INTEGER;\r\tBEGIN\r\t\tASSERT(w.wnd # 0, 20);\r\t\ttitle := w.title;\r\t\tIF title = \"\" THEN\r\t\t\tres := WinApi.GetWindowTextW(w.wnd, title, LEN(title));\r\t\t\tStripTitle(title)\r\t\tEND\r\tEND GetTitle;\r\r\tPROCEDURE (w: Window) "
+                    attr: 0
+                  - text: SetSpec
+                    attr: 3
+                  - text: "* (loc: Files.Locator; name: Files.Name; conv: Converters.Converter);\r\t\tVAR title: Views.Title;\r\tBEGIN\r\t\tIF name # \"\" THEN Kernel.MakeFileName(name, \"\") END;\r\t\tw.SetSpec^ (loc, name, conv);\r\t\tIF (loc # NIL) & (w.wnd # 0) THEN GenPathTitle(w, title); w.SetTitle(title) END\r\tEND SetSpec;\r\r\tPROCEDURE (w: Window) Mark (do, wk: BOOLEAN), NEW;\r\t\tVAR mark: Controllers.MarkMsg;\r\tBEGIN\r\t\tmark.show := do;\r\t\tmark.focus := ~wk;\r\t\tw.ForwardCtrlMsg(mark);\r\t\tProperties.IncEra\r\tEND Mark;\r\r\tPROCEDURE (w: Window) "
+                    attr: 0
+                  - text: MouseDown
+                    attr: 3
+                  - text: "* (x, y, time: INTEGER; modifiers: SET);\r"
+                    attr: 0
+                  - text: "\t(* handle a mouse down event in window *)\r"
+                    attr: 1
+                  - text: "\t\tVAR pw, ph: INTEGER; track: Controllers.TrackMsg;\r\tBEGIN\r\t\ttrack.modifiers := modifiers;\r\t\tw.port.GetSize(pw, ph); track.x := x * w.port.unit; track.y := y * w.port.unit;\r\t\tw.ForwardCtrlMsg(track);\r\t\tProperties.IncEra\r\tEND MouseDown;\r\r\tPROCEDURE (w: Window) "
+                    attr: 0
+                  - text: KeyDown
+                    attr: 3
+                  - text: "* (ch: CHAR; buttons: SET);\r\tBEGIN\r\t\tw.KeyDown^(ch, buttons);\r\t\tProperties.IncEra\r\tEND KeyDown;\r\r\r\tPROCEDURE UpdateScrollbar (w: Window; vertical, focus: BOOLEAN);\r\t\tVAR res, size, sect, pos, type, p, q, m: INTEGER; valid: BOOLEAN; i: WinApi.SCROLLINFO;\r\t\t\tmsg: Controllers.PollSectionMsg; f: Views.Frame;\r\tBEGIN\r\t\tIF w.frame = NIL THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " END;\r\t\tIF vertical THEN type := WinApi.SB_VERT ELSE type := WinApi.SB_HORZ END;\r\t\tGetSection(w, focus, vertical, size, sect, pos, valid);\r\t\tIF valid THEN\r\t\t\tres := WinApi.ShowScrollBar(w.wnd, type, 1);\r\t\t\tres := WinApi.EnableScrollBar(w.wnd, type, WinApi.ESB_ENABLE_BOTH);\r\t\t\tp := WinApi.MulDiv(pos, scrollRange, size - sect);\r\t\t\ti.cbSize := SIZE(WinApi.SCROLLINFO); i.fMask := {0, 1, 2};\t"
+                    attr: 0
+                  - text: "(* range, page, pos *)\r"
+                    attr: 1
+                  - text: "\t\t\tres := WinApi.GetScrollInfo(w.wnd, type, i);\r\t\t\tIF res # 0 THEN\r\t\t\t\tIF sect > 0 THEN q := WinApi.MulDiv(sect, scrollRange, size - sect); m := scrollRange + q\r\t\t\t\tELSE q := -1; m := scrollRange\r\t\t\t\tEND;\r\t\t\t\tIF (i.nPos # p) OR (i.nPage # q + 1) THEN\r\t\t\t\t\ti.nPos := p; i.nPage := q + 1; i.nMax := m;\r\t\t\t\t\tres := WinApi.SetScrollInfo(w.wnd, type, i, 1)\r\t\t\t\tEND\r\t\t\tELSIF p # WinApi.GetScrollPos(w.wnd, type) THEN\r\t\t\t\tres := WinApi.SetScrollPos(w.wnd, type, p, 1)\r\t\t\tEND\r\t\tELSIF ~focus THEN\r\t\t\tmsg.focus := FALSE; msg.vertical := vertical; msg.done := FALSE;\r\t\t\tf := Views.ThisFrame(w.frame, w.doc.ThisView());\r\t\t\tIF f # NIL THEN\r\t\t\t\tViews.ForwardCtrlMsg(f, msg);\r\t\t\t\tIF msg.done THEN\r\t\t\t\t\tres := WinApi.ShowScrollBar(w.wnd, type, 1);\r\t\t\t\t\tres := WinApi.EnableScrollBar(w.wnd, type, WinApi.ESB_DISABLE_BOTH)\r\t\t\t\tELSE res := WinApi.ShowScrollBar(w.wnd, type, 0)\r\t\t\t\tEND\r\t\t\tELSE res := WinApi.ShowScrollBar(w.wnd, type, 0)\r\t\t\tEND\r\t\tEND\r\tEND UpdateScrollbar;\r\r\tPROCEDURE (w: Window) Scroll (code, p: INTEGER; focus, vertical: BOOLEAN), NEW;\r\t\tVAR res, size, sect, pos, type: INTEGER; valid, noBuf: BOOLEAN;\r\tBEGIN\r\t\tGetSection(w, focus, vertical, size, sect, pos, valid);\r\t\tIF valid THEN\r\t\t\tnoBuf := HostPorts.noBuffer; HostPorts.noBuffer := TRUE;\r\t\t\tIF code = WinApi.SB_THUMBPOSITION THEN\r\t\t\t\tSetOrigin(w, focus, vertical, WinApi.MulDiv(p, size - sect, scrollRange))\r\t\t\tELSIF visualScroll & (code = WinApi.SB_THUMBTRACK) THEN\r\t\t\t\tSetOrigin(w, focus, vertical, WinApi.MulDiv(p, size - sect, scrollRange));\r\t\t\t\tres := WinApi.UpdateWindow(w.wnd);\r\t\t\t\t"
+                    attr: 0
+                  - text: dir.Update(w)
+                    attr: 3
+                  - text: "\r\t\t\tELSIF code = WinApi.SB_LINEUP THEN Scroll(w, focus, vertical, Controllers.decLine)\r\t\t\tELSIF code = WinApi.SB_LINEDOWN THEN Scroll(w, focus, vertical, Controllers.incLine)\r\t\t\tELSIF code = WinApi.SB_PAGEUP THEN Scroll(w, focus, vertical, Controllers.decPage)\r\t\t\tELSIF code = WinApi.SB_PAGEDOWN THEN Scroll(w, focus, vertical, Controllers.incPage)\r\t\t\tEND;\r"
+                    attr: 0
+                  - text: "(*\r\t\t\tUpdateScrollbar(w, vertical, focus);\r*)\r\t\t\t"
+                    attr: 3
+                  - text: "GetSection(w, focus, vertical, size, sect, pos, valid);\r\t\t\tIF vertical THEN type := WinApi.SB_VERT ELSE type := WinApi.SB_HORZ END;\r\t\t\tres := WinApi.SetScrollPos(w.wnd, type, WinApi.MulDiv(pos, scrollRange, size - sect), 1);\r\t\t\t"
+                    attr: 0
+                  - text: "dir.Update(w);\r"
+                    attr: 3
+                  - text: "\t\t\tHostPorts.noBuffer := noBuf\r\t\tEND\r\tEND Scroll;\r\r\tPROCEDURE (w: Window) UpdateScrollbars (focus: BOOLEAN), NEW;\r\tBEGIN\r\t\tIF (WinApi.GetAsyncKeyState(1) >= 0)\r\t\t\t\t& (WinApi.GetAsyncKeyState(4) >= 0)\r\t\t\t\t& (WinApi.GetAsyncKeyState(2) >= 0) THEN\r\t\t\tIF ~(Windows.noHScroll IN w.flags) THEN UpdateScrollbar(w, FALSE, focus) END;\r\t\t\tIF ~(Windows.noVScroll IN w.flags) THEN UpdateScrollbar(w, TRUE, focus) END\r\t\tEND\r\tEND UpdateScrollbars;\r\r\tPROCEDURE (w: Window) UpdateCursor (x, y: INTEGER; modifiers: SET), NEW;\r\t\tVAR pw, ph: INTEGER; msg: Controllers.PollCursorMsg; cur: INTEGER;\r\tBEGIN\r\t\tw.port.GetSize(pw, ph);\r\t\tIF ((w = fWindow) OR (w = tWindow) OR ~w.child) & (x >= 0) & (x < pw) & (y >= 0) & (y < ph) THEN\r\t\t\tmsg.x := x * w.frame.unit; msg.y := y * w.frame.unit; msg.cursor := Ports.arrowCursor;\r\t\t\tmsg.modifiers := modifiers;\r\t\t\tw.ForwardCtrlMsg(msg); cur := msg.cursor\r\t\tELSE cur := Ports.arrowCursor\r\t\tEND;\r\t\tIF cur >= 0 THEN w.frame.SetCursor(cur) END\r\tEND UpdateCursor;\r\r\tPROCEDURE (w: Window) PutOnTop, NEW;\r\t\tVAR v: Window;\r\tBEGIN\r\t\tIF w # bgWindow THEN\r\t\t\tv := winAnchor;\r\t\t\tWHILE (v # NIL) & (v.next # w) DO v := v.next END;\r\t\t\tIF v # NIL THEN\r\t\t\t\tv.next := w.next; w.next := winAnchor.next; winAnchor.next := w\r\t\t\tEND\r\t\tEND\r\tEND PutOnTop;\r\r\tPROCEDURE (w: Window) "
+                    attr: 0
+                  - text: Close
+                    attr: 3
+                  - text: "*, EXTENSIBLE;\r\t\tVAR res: INTEGER; h: Window;\r\tBEGIN\r\t\tASSERT(w.frame # NIL, 20);\r\t\tIF bgWindow = w THEN bgWindow := NIL END;\r\t\tIF fWindow = w THEN\r\t\t\tw.Mark(FALSE, FALSE); fWindow := NIL;\r\t\t\tIF tWindow = w THEN tWindow := NIL END\r\t\tELSIF tWindow = w THEN\r\t\t\tw.Mark(FALSE, FALSE); tWindow := NIL\r\t\tEND;\r(*\r\t\t"
+                    attr: 0
+                  - text: "(* remove all shown marks in all windows *)"
+                    attr: 1
+                  - text: "\r"
+                    attr: 0
+                  - text: "\t\tIF fWindow # NIL THEN\r\t\t\tASSERT(fWindow.frame # NIL, 125); ASSERT(fWindow.wnd # 0, 126);\r\t\t\tmark.show := FALSE; fWindow.ForwardCtrlMsg(mark)\r\t\tEND;\r\t\ttWindow := NIL; fWindow := NIL;\r"
+                    attr: 3
+                  - text: "*)\r(*\r\t\tIF w = fWindow THEN fWindow := NIL END;\r\t\tIF w = tWindow THEN tWindow := NIL END;"
+                    attr: 0
+                  - text: "\r"
+                    attr: 3
+                  - text: "*)\r\t\th := winAnchor;\r\t\tWHILE (h.next # NIL) & (h.next # w) DO h := h.next END;\r\t\tASSERT(h.next = w, 21);\r\t\th.next := w.next; w.next := NIL;\r\t\tHostMechanisms.RemoveDropTarget(w.wnd);\r"
+                    attr: 0
+                  - text: "\t\tw.Close^;\r"
+                    attr: 3
+                  - text: "\t\tIF ~w.destroyed THEN\r\t\t\tw.destroyed := TRUE;\r\t\t\tIF w.child THEN\r\t\t\t\tIF WinApi.IsZoomed(w.wnd) # 0 THEN\r\t\t\t\t\tres := WinApi.SendMessageW(client, WinApi.WM_MDIRESTORE, w.wnd, 0)"
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\t"
+                    attr: 0
+                  - text: "\t\t\t"
+                    attr: 1
+                  - text: "END;\r\t\t\t\tres := WinApi.SendMessageW(client, WinApi.WM_MDIDESTROY, w.wnd, 0)\r\t\t\tELSE\r\t\t\t\tres := WinApi.DestroyWindow(w.wnd)\r\t\t\tEND;\r\t\t\tw.trapped := TRUE; w.wnd := 0\r\t\tEND;\r\t\tASSERT(w.frame = NIL, 60)\r\tEND Close;\r\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ShowMain
+                    attr: 3
+                  - text: "*;\r\t\tVAR res: INTEGER; menu: WinApi.HANDLE;\r\tBEGIN\r\t\tIF debug THEN Log.String(\"show main\"); Log.Ln END;\r\t\tIF fullSize THEN\r\t\t\tmenu := WinApi.GetSystemMenu(main, 0);\r\t\t\tres := WinApi.RemoveMenu(menu, WinApi.SC_MOVE, {})\r\t\tEND;\r\t\tres := WinApi.ShowWindow(main, showState);\r\t\tres := WinApi.UpdateWindow(main);\r\t\tshowState := WinApi.SW_SHOW\r\tEND ShowMain;\r\r\r"
+                    attr: 0
+                  - text: "\t(* Directory *)\r"
+                    attr: 1
+                  - text: "\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: Open
+                    attr: 3
+                  - text: "* (\r\t\tw: Windows.Window; doc: Documents.Document; flags: SET; name: Views.Title;\r\t\tloc: Files.Locator; fname: Files.Name; conv: Converters.Converter\r\t), EXTENSIBLE;\r\t\tVAR res: INTEGER; v, bg: Window; p: HostPorts.Port;\r\tBEGIN\r\t\tWITH w: Window DO\r\t\t\t(* if background then it has to be and AuxDialog *)\r\t\t\tIF d.background\r\t\t\t\t& ((Windows.isTool IN flags) OR ~(Windows.noHScroll IN flags) OR ~(Windows.noVScroll IN flags))\r\t\t\tTHEN\r\t\t\t\td.background := FALSE\r\t\t\tEND;\r"
+                    attr: 0
+                  - text: "\t\t\t(* port allocation *)\r"
+                    attr: 1
+                  - text: "\t\t\tNEW(p);\r\t\t\tIF d.unit # 0 THEN p.Init(d.unit, Ports.screen) ELSE p.Init(unit, Ports.screen) END;\r"
+                    attr: 0
+                  - text: "\t\t\t(* initialization *)\r"
+                    attr: 1
+                  - text: "\t\t\tw.trapped := FALSE;\r\t\t\tw.Init(p);\r\t\t\td.Open^(w, doc, flags, name, loc, fname, conv);\r\t\t\tIF w # cbViewer THEN\r\t\t\t\tIF ~d.background THEN\r\t\t\t\t\tw.next := winAnchor.next; winAnchor.next := w\t"
+                    attr: 0
+                  - text: "(* new top window *)\r\t\t\t\t"
+                    attr: 1
+                  - text: "ELSE\r\t\t\t\t\tv := winAnchor;\r\t\t\t\t\tWHILE v.next # NIL DO v := v.next END; v.next := w; w.next := NIL;\r\t\t\t\t\tbg := bgWindow; bgWindow := w (* new background window *)"
+                    attr: 0
+                  - text: "\r\t\t\t\t"
+                    attr: 1
+                  - text: "END;\r\t\t\t\tIF ~(inPlace IN w.flags) THEN\r"
+                    attr: 0
+                  - text: "\t\t\t\t\t(* window creation *)\r"
+                    attr: 1
+                  - text: "\t\t\t\t\tIF Windows.isTool IN flags THEN\r\t\t\t\t\t\tOpenDlg(w, d.l, d.t, d.r, d.b, d.minimized, d.maximized)\r\t\t\t\t\tELSE\r\t\t\t\t\t\tIF ~d.invisible & (WinApi.IsWindowVisible(main) = 0) THEN ShowMain END;\r\t\t\t\t\t\tOpenDoc(w, d.l, d.t, d.r, d.b, d.minimized, d.maximized)\r\t\t\t\t\tEND;\r\t\t\t\t\tIF (loc # NIL) & (name = fname) THEN GenPathTitle(w, name) END;\r\t\t\t\t\tw.SetTitle(name);\r\t\t\t\t\t"
+                    attr: 0
+                  - text: "IF Windows.isTool IN flags THEN\r"
+                    attr: 3
+                  - text: "\t\t\t\t\t"
+                    attr: 0
+                  - text: "\tres := WinApi.SendMessageW(w.wnd, WinApi.WM_NCACTIVATE, 0, 0);\r"
+                    attr: 3
+                  - text: "\t\t\t\t\t"
+                    attr: 0
+                  - text: "\tres := WinApi.SendMessageW(w.wnd, WinApi.WM_NCACTIVATE, 1, 0)\r"
+                    attr: 3
+                  - text: "\t\t\t\t\t"
+                    attr: 0
+                  - text: "END;\r"
+                    attr: 3
+                  - text: "\t\t\t\t\tASSERT(w.frame # NIL, 60)\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\td.l := -1; d.t := -1; d.r := -1; d.b := -1;\r\t\t\td.minimized := FALSE; d.maximized := FALSE;\r\t\t\td.unit := 0;\r\t\t\td.unmoveable := FALSE;\r\t\t\tIF d.background THEN\r\t\t\t\tIF bg # NIL THEN dir.Close(bg) END;\r\t\t\t\tbgWindow := w;\r\t\t\t\td.background := FALSE\r\t\t\tEND\r\t\tEND\r\tEND Open;\r\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: First
+                    attr: 3
+                  - text: "* (): Window;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " winAnchor.next\r\tEND First;\r\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: Next
+                    attr: 3
+                  - text: "* (w: Windows.Window): Window;\r\tBEGIN\r\t\tIF w # NIL THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " w(Window).next ELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " NIL END\r\tEND Next;\r\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: New
+                    attr: 3
+                  - text: "* (): Window, EXTENSIBLE;\r\t\tVAR w: Window;\r\tBEGIN\r\t\tNEW(w); "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " w\r\tEND New;\r\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: Focus
+                    attr: 3
+                  - text: "* (target: BOOLEAN): Window;\r\tBEGIN\r\t\tIF target THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " tWindow ELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " fWindow END\r\tEND Focus;\r\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: Select
+                    attr: 3
+                  - text: "* (w: Windows.Window; lazy: BOOLEAN);\r\t\tVAR res: INTEGER;\r\tBEGIN\r\t\tWITH w: Window DO\r\t\t\tIF ~(inPlace IN w.flags) THEN\r\t\t\t\tres := WinApi.SetForegroundWindow(main);\r\t\t\t\tIF w.child THEN res := WinApi.BringWindowToTop(main) END\r\t\t\tEND;\r\t\t\tIF WinApi.IsIconic(w.wnd) # 0 THEN\r\t\t\t\tres := WinApi.ShowWindow(w.wnd, 9);\t"
+                    attr: 0
+                  - text: "(* restore *)\r"
+                    attr: 1
+                  - text: "\t\t\t\tres := WinApi.InvalidateRect(w.wnd, NIL, 0)\r\t\t\tEND;\r\t\t\tIF WinApi.GetTopWindow(main) # w.wnd THEN\r\t\t\t\tres := WinApi.BringWindowToTop(w.wnd)\r\t\t\tEND;\r(*\r\t\t\tres := WinApi.UpdateWindow(w.wnd);\r*)\r\t\t\tres := WinApi.SetFocus(w.wnd)\r\t\tEND\r\tEND Select;\r\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: GetThisWindow
+                    attr: 3
+                  - text: "* (p: Ports.Port; px, py: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT x, y: INTEGER; OUT w: Windows.Window);\r\t\tVAR res: INTEGER; wnd: WinApi.HANDLE; pt: WinApi.POINT; s: ARRAY 32 OF CHAR;\r\tBEGIN\r\t\tpt.x := px; pt.y := py;\r\t\tIF p # NIL THEN\r\t\t\twnd := p(HostPorts.Port).wnd;\r\t\t\tres := WinApi.ClientToScreen(wnd, pt)\r\t\tEND;\r\t\twnd := WinApi.WindowFromPoint(pt);\r\t\tIF wnd # 0 THEN\r\t\t\tres := WinApi.GetClassNameW(wnd, s, LEN(s));\r\t\t\tIF (s = \"Oberon Doc\") OR (s = \"Oberon Aux\") OR (s = \"Oberon Dlg\") THEN\r\t\t\t\tres := WinApi.ScreenToClient(wnd, pt);\r\t\t\t\tx := pt.x; y := pt.y; w := ThisWindow(wnd)\r\t\t\tELSE\r\t\t\t\tw := NIL\r\t\t\tEND\r\t\tELSE\r\t\t\tw := NIL\r\t\tEND\r\tEND GetThisWindow;\r\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: Close
+                    attr: 3
+                  - text: "* (w: Windows.Window);\r\t\tVAR v, u: Windows.Window; h: Window;\r\tBEGIN\r\t\th := winAnchor; WHILE (h.next # NIL) & (h.next # w) DO h := h.next END;\r\t\tIF h.next = w THEN\r\t\t\tIF ~w.sub THEN\r\t\t\t\tv := w.link;\r\t\t\t\tWHILE v # w DO u := v.link; v.Close; v := u END\r\t\t\tEND;\r\t\t\tw.Close\r\t\tEND\r\tEND Close;\r\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: GetBounds
+                    attr: 3
+                  - text: "* (OUT w, h: INTEGER);\r\t\tVAR rect: WinApi.RECT; res: INTEGER;\r\tBEGIN\r\t\tres := WinApi.GetClientRect(client, rect);\r\t\tw := rect.right; h := rect.bottom\r\tEND GetBounds;\r\r\r"
+                    attr: 0
+                  - text: "\t(** window handlers **)\r\r"
+                    attr: 1
+                  - text: "\tPROCEDURE "
+                    attr: 0
+                  - text: CallHeapShow
+                    attr: 3
+                  - text: "* (a: INTEGER);\r\t\tTYPE P = PROCEDURE(a: INTEGER; t: ARRAY OF CHAR);\r\t\t\tV = RECORD (Meta.Value) p: P END;\r\t\tVAR i: Meta.Item; ok: BOOLEAN; v: V;\r\tBEGIN\r\t\tMeta.Lookup(\"DevDebug\", i);\r\t\tIF i.obj = Meta.modObj THEN i.Lookup(\"ShowHeapObject\", i);\r\t\t\tIF i.obj = Meta.procObj THEN i.GetVal(v, ok);\r\t\t\t\tIF ok THEN v.p(a, \"\") END\r\t\t\tEND\r\t\tEND\r\tEND CallHeapShow;\r"
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\tPROCEDURE KeyModifiers (data: INTEGER): SET;\r\t\tVAR b: SET;\r\tBEGIN\r\t\tb := {};\r\t\tIF WinApi.GetKeyState(10H) < 0 THEN INCL(b, Controllers.extend); INCL(b, HostPorts.shift) END;\r\t\tIF WinApi.GetKeyState(11H) < 0 THEN INCL(b, Controllers.modify); INCL(b, HostPorts.ctrl) END;\r\t\tIF ODD(data DIV 20000000H) THEN INCL(b, HostPorts.alt) END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " b\r\tEND KeyModifiers;\r\r\tPROCEDURE HandleKey (wnd: WinApi.HANDLE; code, ext: INTEGER);\r\t\tVAR b: SET; w: Window; pmsg: Controllers.PollFocusMsg; scroll: BOOLEAN; c: Containers.Controller;\r\tBEGIN\r\t\tw := ThisWindow(wnd); b := KeyModifiers(ext); w.used := TRUE;\r\t\tscroll := ODD(WinApi.GetKeyState(91H)) "
+                    attr: 0
+                  - text: "(* scroll lock *)"
+                    attr: 1
+                  - text: ";\r\t\tpmsg.focus := NIL; w.ForwardCtrlMsg(pmsg);\r\t\tIF (pmsg.focus # NIL) & (pmsg.focus.view IS Containers.View) THEN\r\t\t\tc := pmsg.focus.view(Containers.View).ThisController();\r\t\t\tIF (c # NIL) & (Containers.noCaret IN c.opts) THEN scroll := TRUE END\r\t\tEND;\r\t\tCASE code OF\r\t\t| 2EH: w.KeyDown(RDEL, b)\t"
+                    attr: 0
+                  - text: "(* delete -> right delete *)"
+                    attr: 1
+                  - text: "\r\t\t| 08H: w.KeyDown(LDEL, b)\t"
+                    attr: 0
+                  - text: "(* backspace -> left delete *)"
+                    attr: 1
+                  - text: "\r\t\t| 09H: "
+                    attr: 0
+                  - text: "(* tab *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF Controllers.extend IN b THEN w.KeyDown(LTAB, b)\t"
+                    attr: 0
+                  - text: "(* left tab *)"
+                    attr: 1
+                  - text: "\r\t\t\tELSE w.KeyDown(TAB, b)\t"
+                    attr: 0
+                  - text: "(* right tab *)"
+                    attr: 1
+                  - text: "\r\t\t\tEND\r\t\t| 0DH: w.KeyDown(ENTER, b)\t"
+                    attr: 0
+                  - text: "(* enter *)"
+                    attr: 1
+                  - text: "\r\t\t| 1BH: w.KeyDown(ESC, b)\t"
+                    attr: 0
+                  - text: "(* escape *)"
+                    attr: 1
+                  - text: "\r\t\t| 21H:"
+                    attr: 0
+                  - text: "\t(* page up *)\r\t\t"
+                    attr: 1
+                  - text: "\tIF scroll THEN\r\t\t\t\tw.Scroll(WinApi.SB_PAGEUP, 0, TRUE, ~(Controllers.modify IN b))\r\t\t\tELSIF Controllers.modify IN b THEN "
+                    attr: 0
+                  - text: "(* move caret left one page *)\r\t\t\t\t"
+                    attr: 1
+                  - text: "w.KeyDown(PL, b - {Controllers.modify})\r\t\t\tELSE "
+                    attr: 0
+                  - text: "(* move caret up one page *)\r\t\t\t\t"
+                    attr: 1
+                  - text: "w.KeyDown(PU, b)"
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\t\t\tEND\r\t\t| 22H: "
+                    attr: 0
+                  - text: "(* page down *)"
+                    attr: 1
+                  - text: "\r"
+                    attr: 0
+                  - text: "\t\t"
+                    attr: 1
+                  - text: "\tIF scroll THEN\r\t\t\t\tw.Scroll(WinApi.SB_PAGEDOWN, 0, TRUE, ~(Controllers.modify IN b))\r\t\t\tELSIF Controllers.modify IN b THEN "
+                    attr: 0
+                  - text: "(* move caret right one page *)\r\t\t\t\t"
+                    attr: 1
+                  - text: "w.KeyDown(PR, b - {Controllers.modify})"
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\t\t\tELSE "
+                    attr: 0
+                  - text: "(* move caret down one page *)\r\t\t\t\t"
+                    attr: 1
+                  - text: "w.KeyDown(PD, b)\r\t\t\tEND\r\t\t| 23H: "
+                    attr: 0
+                  - text: "(* end *)"
+                    attr: 1
+                  - text: "\r"
+                    attr: 0
+                  - text: "\t\t"
+                    attr: 1
+                  - text: "\tIF scroll THEN\r\t\t\t\tw.Scroll(WinApi.SB_THUMBPOSITION, scrollRange, TRUE, Controllers.modify IN b)\r\t\t\tELSIF Controllers.modify IN b THEN "
+                    attr: 0
+                  - text: "(* move caret to doc end *)\r\t\t\t\t"
+                    attr: 1
+                  - text: "w.KeyDown(DD, b - {Controllers.modify})"
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\t\t\tELSE "
+                    attr: 0
+                  - text: "(* move caret to line end *)\r\t\t\t\t"
+                    attr: 1
+                  - text: "w.KeyDown(DR, b)"
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\t\t\tEND\r\t\t| 24H: "
+                    attr: 0
+                  - text: "(* home *)\r\t\t"
+                    attr: 1
+                  - text: "\tIF scroll THEN\r\t\t\t\tw.Scroll(WinApi.SB_THUMBPOSITION, 0, TRUE, Controllers.modify IN b)\r\t\t\tELSIF Controllers.modify IN b THEN "
+                    attr: 0
+                  - text: "(* move caret to doc start *)\r\t\t\t\t"
+                    attr: 1
+                  - text: "w.KeyDown(DU, b - {Controllers.modify})"
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\t\t\tELSE "
+                    attr: 0
+                  - text: "(* move caret to line start *)\r\t\t\t\t"
+                    attr: 1
+                  - text: "w.KeyDown(DL, b)"
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\t\t\tEND\r\t\t| 25H: "
+                    attr: 0
+                  - text: "(* left *)\r\t\t\t"
+                    attr: 1
+                  - text: "IF scroll THEN\r\t\t\t\tw.Scroll(WinApi.SB_LINEUP, 0, TRUE, FALSE)\r\t\t\tELSE\r\t\t\t\tw.KeyDown(AL, b)\r\t\t\tEND\r\t\t| 26H: "
+                    attr: 0
+                  - text: "(* up *)"
+                    attr: 1
+                  - text: "\r"
+                    attr: 0
+                  - text: "\t\t\t"
+                    attr: 1
+                  - text: "IF scroll THEN\r\t\t\t\tw.Scroll(WinApi.SB_LINEUP, 0, TRUE, TRUE)\r\t\t\tELSE\r\t\t\t\tw.KeyDown(AU, b)\r\t\t\tEND\r\t\t| 27H: "
+                    attr: 0
+                  - text: "(* right *)"
+                    attr: 1
+                  - text: "\r"
+                    attr: 0
+                  - text: "\t\t\t"
+                    attr: 1
+                  - text: "IF scroll THEN\r\t\t\t\tw.Scroll(WinApi.SB_LINEDOWN, 0, TRUE, FALSE)\r\t\t\tELSE\r\t\t\t\tw.KeyDown(AR, b)\r\t\t\tEND\r\t\t| 28H: "
+                    attr: 0
+                  - text: "(* down *)"
+                    attr: 1
+                  - text: "\r"
+                    attr: 0
+                  - text: "\t\t\t"
+                    attr: 1
+                  - text: "IF scroll THEN\r\t\t\t\tw.Scroll(WinApi.SB_LINEDOWN, 0, TRUE, TRUE)\r\t\t\tELSE\r\t\t\t\tw.KeyDown(AD, b)\r\t\t\tEND\r\t\tELSE\r\t\tEND;\r\t\tProperties.IncEra\r\tEND HandleKey;\r\r\tPROCEDURE HandleChar (wnd: WinApi.HANDLE; wParam, lParam: INTEGER);\r\t\tVAR w: Window; mod: SET; ch: CHAR;\r\tBEGIN\r\t\tIF (wParam >= 20H) & (wParam # 7FH) THEN\r\t\t\tw := ThisWindow(wnd); mod := KeyModifiers(lParam); w.used := TRUE;\r\t\t\tIF WinApi.VkKeyScanW(CHR(wParam)) >= 4 * 256 THEN EXCL(mod, HostPorts.alt) END;\r\t\t\tw.KeyDown(CHR(wParam), mod)\r\t\tEND\r\tEND HandleChar;\r\r\tPROCEDURE HandleMouse (wnd: WinApi.HANDLE; wParam, lParam: INTEGER);\r\t\tVAR w: Window; isDown: BOOLEAN; x, y: INTEGER; b: SET; f, g: Views.Frame;\r\tBEGIN\r\t\tw := ThisWindow(wnd); b := {}; w.used := TRUE;\r\t\tIF ODD(wParam) THEN INCL(b, HostPorts.left) END;\r\t\tIF ODD(wParam DIV 16) THEN INCL(b, HostPorts.middle) END;\r\t\tIF ODD(wParam DIV 2) THEN INCL(b, HostPorts.right) END;\r\t\tisDown := b # {};\r\t\tIF ODD(wParam DIV 4) THEN INCL(b, HostPorts.shift); INCL(b, Controllers.extend) END;\r\t\tIF ODD(wParam DIV 8) THEN INCL(b, HostPorts.ctrl); INCL(b, Controllers.modify) END;\r\t\tIF WinApi.GetAsyncKeyState(12H) < 0 THEN INCL(b, HostPorts.alt) END;\r\t\tIF ODD(wParam DIV 128) THEN INCL(b, Controllers.doubleClick) END;\r\t\tx := lParam MOD 65536;\r\t\ty := lParam DIV 65536;\r\t\tHostPorts.SetMouseState(x, y, b, isDown);\r\t\tIF wParam DIV 256 = 1 THEN\r\t\t\tIF {HostPorts.middle, HostPorts.shift, HostPorts.ctrl} - b = {} THEN\r\t\t\t\tCallHeapShow(SYSTEM.VAL(INTEGER, w))\r\t\t\tELSIF {HostPorts.middle, HostPorts.shift, HostPorts.alt} - b = {} THEN\r\t\t\t\tf := w.frame; x := x * f.unit; y := y * f.unit;\r\t\t\t\tREPEAT g := f; f := Views.FrameAt(g, x - g.gx, y - g.gy) UNTIL f = NIL;\r\t\t\t\tCallHeapShow(SYSTEM.VAL(INTEGER, g))\r\t\t\tELSIF ~activating THEN\r\t\t\t\tw.MouseDown(x, y, 0, b)\r\t\t\tEND\r\t\tELSIF wParam DIV 256 = 2 THEN\r\t\t\tw.UpdateCursor(x, y, b)\r\t\tEND;\r\t\tIF ~isDown THEN activating := FALSE END;\r\t\tProperties.IncEra\r\tEND HandleMouse;\r\r\tPROCEDURE DeactivateWin (wnd: WinApi.HANDLE; wParam, lParam: INTEGER);\r\t\tVAR w: Window;\r\tBEGIN\r\t\tw := ThisWindow(wnd);\r\t\tIF fWindow = w THEN\r\t\t\tw.Mark(FALSE, TRUE); fWindow := NIL;\r\t\t\tIF (inPlace IN w.flags) OR ~(Windows.isTool IN w.flags) THEN\r\t\t\t\tw.Mark(TRUE, TRUE);\r\t\t\t\tIF (w # aWindow) & ~(inPlace IN w.flags) THEN tWindow := NIL END\r\t\t\tEND\r\t\tEND\r\tEND DeactivateWin;\r\r\tPROCEDURE ActivateWin (wnd: WinApi.HANDLE; wParam, lParam: INTEGER);\r\t\tVAR res: INTEGER; w: Window;\r\tBEGIN\r\t\tw := ThisWindow(wnd);\r\t\tIF fWindow # w THEN\r\t\t\tIF fWindow # NIL THEN\r\t\t\t\tDeactivateWin(fWindow.wnd, 0, 0)\r\t\t\tEND;\r\t\t\tw.PutOnTop;\r\t\t\tres := WinApi.UpdateWindow(wnd);\r\t\t\tIF (inPlace IN w.flags) OR ~(Windows.isTool IN w.flags) THEN\r\t\t\t\tw.Mark(FALSE, TRUE);\r\t\t\t\ttWindow := w\r\t\t\tEND;\r\t\t\tfWindow := w; w.Mark(TRUE, TRUE);\r\t\t\tProperties.IncEra;\r(*\r\t\t\tDialog.CheckGuards\r*)\r\t\t\tDialog.Notify(0, 0, {guardCheck})\r\t\tEND\r\tEND ActivateWin;\r\r\r\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ActivateWindow
+                    attr: 3
+                  - text: "* (w: Windows.Window; do: BOOLEAN);\r\tBEGIN\r\t\tIF debug THEN\r\t\t\tIF do THEN Log.String(\"Activate \") ELSE Log.String(\"Deactivate \") END;\r\t\t\tLog.IntForm(SYSTEM.VAL(INTEGER, w), 16, 8, \"0\", FALSE);\r\t\t\tLog.Char(\" \");\r\t\t\tLog.IntForm(SYSTEM.VAL(INTEGER, fWindow), 16, 8, \"0\", FALSE);\r\t\t\tIF inPlace IN w.flags THEN Log.String(\" ip\") END;\r\t\t\tIF Windows.isTool IN w.flags THEN Log.String(\" tool\") END;\r\t\t\tLog.Ln\r\t\tEND;\r\r\t\tIF do THEN ActivateWin(w(Window).wnd, 0, 0)\r\t\tELSE DeactivateWin(w(Window).wnd, 0, 0)\r\t\tEND\r\tEND ActivateWindow;\r\r\tPROCEDURE SizeWin (wnd: WinApi.HANDLE; w, h: INTEGER);\r\t\tVAR v: Window;\r\tBEGIN\r\t\tv := ThisWindow(wnd);\r\t\tIF ~(inPlace IN v.flags) THEN\r\t\t\tv.SetSize(w, h)\r\t\tEND;\r\t\tIF v.hook # NIL THEN v.hook.Resize(w, h) END\r\tEND SizeWin;\r\r\tPROCEDURE ScrollWin (wnd: WinApi.HANDLE; wParam, vertical: INTEGER);\r\t\tVAR w: Window;\r\tBEGIN\r\t\tw := ThisWindow(wnd);\r\t\tIF ~activating THEN w.Scroll(wParam MOD 65536, wParam DIV 65536, ScrollModPressed(), vertical # 0)\r\t\tEND\r\tEND ScrollWin;\r\r\tPROCEDURE WheelScroll (wnd: WinApi.HANDLE; wParam, lParam: INTEGER);\r\t\tVAR w: Window; res, lines, delta, keys: INTEGER; msg: Controllers.WheelMsg;\r\t\t\tp: WinApi.POINT;\r\tBEGIN\r\t\tdelta := wParam DIV 10000H; keys := wParam MOD 10000H;\r\t\tw := ThisWindow(wnd);\r\t\tlines := 3;\r\t\tres := WinApi.SystemParametersInfoW(104 (*SPI_GETWHEELSCROLLLINES*), 0, SYSTEM.ADR(lines), 0);\r\t\tp.x := lParam MOD 65536; p.y := lParam DIV 65536;\r\t\tres := WinApi.ScreenToClient(wnd, p);\r\t\tmsg.x := p.x * w.port.unit; msg.y := p.y * w.port.unit;\r\t\tmsg.nofLines := 0; msg.op := -1;\r\t\tIF lines > 10 THEN\t"
+                    attr: 0
+                  - text: "(* scroll pages *)"
+                    attr: 1
+                  - text: "\r\t\t\tINC(w.wheelPos, delta);\r\t\t\tIF w.wheelPos >= 120 THEN\r\t\t\t\tmsg.op := Controllers.decPage;\r\t\t\t\tDEC(w.wheelPos, 120)\r\t\t\tELSIF w.wheelPos <= -120 THEN\r\t\t\t\tmsg.op := Controllers.incPage;\r\t\t\t\tINC(w.wheelPos, 120)\r\t\t\tEND\r\t\tELSIF lines > 0 THEN\r\t\t\tINC(w.wheelPos, delta * lines);\r\t\t\tWHILE w.wheelPos >= 120 DO\r\t\t\t\tmsg.op := Controllers.decLine;\r\t\t\t\tINC(msg.nofLines);\r\t\t\t\tDEC(w.wheelPos, 120)\r\t\t\tEND;\r\t\t\tWHILE w.wheelPos <= -120 DO\r\t\t\t\tmsg.op := Controllers.incLine;\r\t\t\t\tINC(msg.nofLines);\r\t\t\t\tINC(w.wheelPos, 120)\r\t\t\tEND\r\t\tEND;\r\t\tmsg.done := FALSE;\r\t\tIF msg.op >= 0 THEN w.ForwardCtrlMsg(msg) END;\r\t\tIF ~msg.done THEN (* "
+                    attr: 0
+                  - text: scroll document
+                    attr: 1
+                  - text: " *)\r\t\t\tCASE msg.op OF\r\t\t\t| Controllers.decPage:\r\t\t\t\tw.Scroll(WinApi.SB_PAGEUP, 0, ODD(keys DIV 8), ~ODD(keys DIV 4))\r\t\t\t| Controllers.incPage:\r\t\t\t\tw.Scroll(WinApi.SB_PAGEDOWN, 0, ODD(keys DIV 8), ~ODD(keys DIV 4))\r\t\t\t| Controllers.decLine:\r\t\t\t\tWHILE msg.nofLines > 0 DO\r\t\t\t\t\tw.Scroll(WinApi.SB_LINEUP, 0, ODD(keys DIV 8), ~ODD(keys DIV 4));\r\t\t\t\t\tDEC(msg.nofLines)\r\t\t\t\tEND\r\t\t\t| Controllers.incLine:\r\t\t\t\tWHILE msg.nofLines > 0 DO\r\t\t\t\t\tw.Scroll(WinApi.SB_LINEDOWN, 0, ODD(keys DIV 8), ~ODD(keys DIV 4));\r\t\t\t\t\tDEC(msg.nofLines)\r\t\t\t\tEND\r\t\t\tELSE\r\t\t\tEND\r(*\r\t\t\tIF lines > 10 THEN\t"
+                    attr: 0
+                  - text: "(* scroll pages *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tINC(w.wheelPos, delta);\r\t\t\t\tIF w.wheelPos >= 120 THEN\r\t\t\t\t\tw.Scroll(WinApi.SBPageUp, 0, ODD(keys DIV 8), ~ODD(keys DIV 4));\r\t\t\t\t\tDEC(w.wheelPos, 120)\r\t\t\t\tELSIF w.wheelPos <= -120 THEN\r\t\t\t\t\tw.Scroll(WinApi.SBPageDown, 0, ODD(keys DIV 8), ~ODD(keys DIV 4));\r\t\t\t\t\tINC(w.wheelPos, 120)\r\t\t\t\tEND\r\t\t\tELSIF lines > 0 THEN\r\t\t\t\tINC(w.wheelPos, delta * lines);\r\t\t\t\tWHILE w.wheelPos >= 120 DO\r\t\t\t\t\tw.Scroll(WinApi.SBLineUp, 0, ODD(keys DIV 8), ~ODD(keys DIV 4));\r\t\t\t\t\tDEC(w.wheelPos, 120)\r\t\t\t\tEND;\r\t\t\t\tWHILE w.wheelPos <= -120 DO\r\t\t\t\t\tw.Scroll(WinApi.SBLineDown, 0, ODD(keys DIV 8), ~ODD(keys DIV 4));\r\t\t\t\t\tINC(w.wheelPos, 120)\r\t\t\t\tEND\r\t\t\tEND\r*)\r\t\tEND\r\tEND WheelScroll;\r\r\tPROCEDURE InvalidateWin (wnd, dc: WinApi.HANDLE; paint: INTEGER);\r\t\tTYPE RectPtr = POINTER TO WinApi.RECT;\r\t\tVAR w: Window; rp: RectPtr;\r\tBEGIN\r\t\tw := ThisWindow(wnd);\r\t\tw.port(HostPorts.Port).SetDC(dc, wnd);\r\t\trp := SYSTEM.VAL(RectPtr, paint);\r\t\tw.Restore(rp.left, rp.top, rp.right, rp.bottom)\r\tEND InvalidateWin;\r\r\tPROCEDURE PaintWin (wnd: WinApi.HANDLE; a, b: INTEGER);\r\t\tVAR w: Window;\r\tBEGIN\r\t\tw := ThisWindow(wnd);\r\t\tw.Update\r\tEND PaintWin;\r\r\tPROCEDURE [2] DocWinHandler (wnd: WinApi.HANDLE; message, wParam, lParam: INTEGER): INTEGER;\r\t\tVAR res, x, dx, dy: INTEGER; w: Window; ps: WinApi.PAINTSTRUCT;\r\t\t\t(* pm: WinApi.PMinMaxInfo; *)\r\t\t\trec: WinApi.RECT; style, st: SET; wp: WinApi.WINDOWPOS;\r\tBEGIN\r\t\tControllers.SetCurrentPath(Controllers.targetPath);\r\t\tIF (hookDocWinHandler # NIL) & hookDocWinHandler(wnd, message, wParam, lParam, res) THEN\r\t\t\tControllers.ResetCurrentPath();\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " res\r\t\tEND;\r\t\tCASE message OF\r\t\t| WinApi.WM_CREATE:\r\t\t\tKernel.Try(CreateDoc, wnd, wParam, lParam)\r\t\t| WinApi.WM_CLOSE:\r\t\t\tres := WinApi.SendMessageW(main, WinApi.WM_COMMAND, iClose, 0);\r\t\t\tControllers.ResetCurrentPath();\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 0\r\t\t| WinApi.WM_DESTROY:\r\t\t\tw := ThisWindow(wnd);\r\t\t\tIF ~w.destroyed THEN\r\t\t\t\tw.destroyed := TRUE;\r\t\t\t\tw.Close\r\t\t\tEND;\r\t\t\tIF w = aWindow THEN aWindow := NIL END;\r\t\t\tIF w = tWindow THEN tWindow := NIL END\r\t\t| WinApi.WM_CHILDACTIVATE:\r\t\t\tw := ThisWindow(wnd);\r\t\t\tw.PutOnTop; aWindow := w;\r\t\t\ttWindow := w\r\t\t| WinApi.WM_SETFOCUS:\r\t\t\tw := ThisWindow(wnd);\r\t\t\tIF debug THEN\r\t\t\t\tLog.String(\"Doc: SetFocus \");\r\t\t\t\tLog.IntForm(SYSTEM.VAL(INTEGER, w), 16, 8, \"0\", FALSE);\r\t\t\t\tLog.Char(\" \");\r\t\t\t\tLog.IntForm(SYSTEM.VAL(INTEGER, fWindow), 16, 8, \"0\", FALSE);\r\t\t\t\tIF inPlace IN w.flags THEN Log.String(\" ip\") END;\r\t\t\t\tIF Windows.isTool IN w.flags THEN Log.String(\" tool\") END;\r\t\t\t\tLog.Ln\r\t\t\tEND;\r\t\t\t"
+                    attr: 0
+                  - text: "IF tWindow # w THEN"
+                    attr: 3
+                  - text: " activating := TRUE END;\r\t\t\tIF w = bgWindow THEN\r\t\t\t\tres := WinApi.SetWindowPos(wnd, 1 (* HWND_BOTTOM *), 0, 0, 0, 0,\r\t\t\t\t\tWinApi.SWP_NOSIZE + WinApi.SWP_NOMOVE + WinApi.SWP_NOREDRAW)\r\t\t\tEND;\r\t\t\tKernel.Try(ActivateWin, wnd, wParam, lParam);\r\t\t\tIF w.hook # NIL THEN w.hook.Focus(TRUE) END\r\t\t| WinApi.WM_KILLFOCUS:\r\t\t\tw := ThisWindow(wnd);\r\t\t\tIF debug THEN\r\t\t\t\tLog.String(\"Doc: KillFocus \");\r\t\t\t\tLog.IntForm(SYSTEM.VAL(INTEGER, w), 16, 8, \"0\", FALSE);\r\t\t\t\tLog.Char(\" \");\r\t\t\t\tLog.IntForm(SYSTEM.VAL(INTEGER, fWindow), 16, 8, \"0\", FALSE);\r\t\t\t\tIF inPlace IN w.flags THEN Log.String(\" ip\") END;\r\t\t\t\tIF Windows.isTool IN w.flags THEN Log.String(\" tool\") END;\r\t\t\t\tLog.Ln\r\t\t\tEND;\r\t\t\tIF wParam # main THEN Kernel.Try(DeactivateWin, wnd, wParam, lParam) END;\r\t\t\tIF w.hook # NIL THEN w.hook.Focus(FALSE) END\r\t\t| WinApi.WM_SIZE:\r\t\t\tw := ThisWindow(wnd);\r\t\t\tIF (w = bgWindow) & ((wParam = WinApi.SIZE_MAXHIDE) OR (wParam = WinApi.SIZE_MAXSHOW)) THEN\r\t\t\t\tControllers.ResetCurrentPath();\r\t\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 0\r\t\t\tELSE\r\t\t\t\tKernel.Try(SizeWin, wnd, lParam MOD 65536, lParam DIV 65536)\r\t\t\tEND\r\t\t| WinApi.WM_HSCROLL:\r\t\t\tKernel.Try(ScrollWin, wnd, wParam, 0);\r\t\t\tControllers.ResetCurrentPath();\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 0\r\t\t| WinApi.WM_VSCROLL:\r\t\t\tKernel.Try(ScrollWin, wnd, wParam, 1);\r\t\t\tControllers.ResetCurrentPath();\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 0\r\t\t| WinApi.WM_MOUSEWHEEL:\r\t\t\tKernel.Try(WheelScroll, wnd, wParam, lParam);\r\t\t\tControllers.ResetCurrentPath();\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 0\r\t\t| WinApi.WM_PAINT:\r\t\t\tw := ThisWindow(wnd);\r\t\t\tw.GetSize(dx, dy);\r\t\t\tIF ~w.minimized THEN\r\t\t\t\t"
+                    attr: 0
+                  - text: "(* clip region must be reset to ensure correct ps.paint ! *)\r"
+                    attr: 1
+                  - text: "\t\t\t\tres := WinApi.SelectClipRgn(w.port(HostPorts.Port).dc, 0);\r\t"
+                    attr: 0
+                  - text: "\t\t"
+                    attr: 1
+                  - text: "\tx := WinApi.BeginPaint(w.wnd, ps);\r\t\t\t\tKernel.Try(InvalidateWin, wnd, x, SYSTEM.ADR(ps.rcPaint));\r\t\t\t\tres := WinApi.EndPaint(w.wnd, ps);\r\t\t\t\tKernel.Try(PaintWin, wnd, 0, 0);\r\t\t\t\tControllers.ResetCurrentPath();\r\t\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 0\r\t\t\tEND\r\t\t| WinApi.WM_LBUTTONDOWN, WinApi.WM_RBUTTONDOWN, WinApi.WM_MBUTTONDOWN:\r\t\t\tIF wnd # WinApi.GetFocus() THEN\r\t\t\t\tres := WinApi.SendMessageW(client, WinApi.WM_MDIACTIVATE, wnd, 0);\r\t\t\t\tres := WinApi.SetFocus(wnd)\r\t\t\tEND;\r\t\t\tres := WinApi.SetCapture(wnd);\r\t\t\tKernel.Try(HandleMouse, wnd, wParam + 256, lParam);\r\t\t\tIF WinApi.GetCapture() = wnd THEN res := WinApi.ReleaseCapture() END;\r\t\t\tControllers.ResetCurrentPath();\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 0\r\t\t| WinApi.WM_LBUTTONDBLCLK, WinApi.WM_RBUTTONDBLCLK, WinApi.WM_MBUTTONDBLCLK:\r\t\t\tres := WinApi.SetCapture(wnd);\r\t\t\tKernel.Try(HandleMouse, wnd, wParam + (128 + 256), lParam);\r\t\t\tIF WinApi.GetCapture() = wnd THEN res := WinApi.ReleaseCapture() END;\r\t\t\tControllers.ResetCurrentPath();\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 0\r\t\t| WinApi.WM_LBUTTONUP, WinApi.WM_RBUTTONUP, WinApi.WM_MBUTTONUP:\r\t\t\tKernel.Try(HandleMouse, wnd, wParam, lParam);\r\t\t\tControllers.ResetCurrentPath();\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 0\r\t\t| WinApi.WM_MOUSEMOVE:\r\t\t\tKernel.Try(HandleMouse, wnd, wParam + (2 * 256), lParam);\r\t\t\tControllers.ResetCurrentPath();\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 0\r\t\t| WinApi.WM_KEYDOWN:\r\t\t\tKernel.Try(HandleKey, wnd, wParam, lParam);\r\t\t\tIF (wParam = WinApi.VK_TAB)\r\t\t\t\tOR (wParam = WinApi.VK_LEFT) OR (wParam = WinApi.VK_UP)\r\t\t\t\tOR (wParam = WinApi.VK_RIGHT) OR (wParam = WinApi.VK_DOWN)\r\t\t\tTHEN\r\t\t\t\tres := WinApi.SendMessageW(wnd, 0127H "
+                    attr: 0
+                  - text: "(* WM_CHANGEUISTATE *)"
+                    attr: 1
+                  - text: ",\r\t\t\t\t\t\t\t2 "
+                    attr: 0
+                  - text: "(* UIS_CLEAR *) "
+                    attr: 1
+                  - text: "+ 10000H "
+                    attr: 0
+                  - text: "(* UISF_HIDEFOCUS *)"
+                    attr: 1
+                  - text: ", 0)\r\t\t\tEND\r\t\t| WinApi.WM_SYSKEYDOWN:\r\t\t\tIF wParam = WinApi.VK_MENU THEN\r\t\t\t\tres := WinApi.SendMessageW(wnd, 0127H "
+                    attr: 0
+                  - text: "(* WM_CHANGEUISTATE *)"
+                    attr: 1
+                  - text: ",\r\t\t\t\t\t\t\t2 "
+                    attr: 0
+                  - text: "(* UIS_CLEAR *)"
+                    attr: 1
+                  - text: " + 10000H "
+                    attr: 0
+                  - text: "(* UISF_HIDEFOCUS *)"
+                    attr: 1
+                  - text: " + 20000H "
+                    attr: 0
+                  - text: "(* UISF_HIDEACCEL *)"
+                    attr: 1
+                  - text: ", 0)\r\t\t\tEND\r\t\t| WinApi.WM_CHAR:\r\t\t\tKernel.Try(HandleChar, wnd, wParam, lParam);\r\t\t\tControllers.ResetCurrentPath();\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 0\r(*\r\t\t| WinApi.WM_UNICHAR:\r\t\t\tIF wParam = WinApi.UNICODE_NOCHAR THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 1 END;\r\t\t\tKernel.Try(HandleChar, wnd, wParam, lParam);\r\t\t\tControllers.ResetCurrentPath();\r\t\t"
+                    attr: 0
+                  - text: "\tRETURN"
+                    attr: 3
+                  - text: " 0\r*)\r\t\t| WinApi.WM_NCLBUTTONDOWN:\r\t\t\tIF activating & ((wParam = 6) OR (wParam = 7) OR (wParam = 20)) THEN\t"
+                    attr: 0
+                  - text: "(* in scrollbar, close *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tControllers.ResetCurrentPath();\r\t\t\t"
+                    attr: 0
+                  - text: "\tRETURN"
+                    attr: 3
+                  - text: " 0\r\t\t\tEND\r\t\t| WinApi.WM_NCLBUTTONUP, WinApi.WM_NCRBUTTONUP:\r\t\t\tactivating := FALSE\r\t\t| WinApi.WM_MDIACTIVATE:\r\t\t\tw := ThisWindow(wnd);\r\t\t\tIF w.hook # NIL THEN w.hook.Activate(wnd = lParam) END\r\t\t| WinApi.WM_NCACTIVATE:\r\t\t\tw := ThisWindow(wnd);\r\t\t\tIF (w = bgWindow) OR ((bgWindow # NIL) & (wParam MOD 65536 = WinApi.FALSE)) THEN\r\t\t\t\tres := WinApi.SetWindowPos(bgWindow.wnd, 1 (* HWND_BOTTOM *), 0, 0, 0, 0,\r\t\t\t\t\tWinApi.SWP_NOSIZE + WinApi.SWP_NOMOVE + WinApi.SWP_NOACTIVATE)\r\t\t\tEND;\r\t\t\tstyle := BITS(WinApi.GetWindowLongW(wnd, -16));\r\t\t\tIF wParam MOD 65536 # 0 THEN\r\t\t\t\tIF ~mainActive & (w # tWindow) & (tWindow # NIL) THEN\r\t\t\t\t\tst := BITS(WinApi.GetWindowLongW(tWindow.wnd, -16));\r\t\t\t\t\tst := st - {16, 17, 19};\t(* minimize box, maximize box, sysmenu *)\r\t\t\t\t\tres := WinApi.SetWindowLongW(tWindow.wnd, -16, ORD(st));\r\t\t\t\t\tres := WinApi.GetWindowRect(tWindow.wnd, rec);\r\t\t\t\t\tx := WinApi.CreateRectRgnIndirect(rec);\r\t\t\t\t\tres := WinApi.SendMessageW(tWindow.wnd, WinApi.WM_NCPAINT, x, 0)\r\t\t\t\tEND;\r"
+                    attr: 0
+                  - text: "\t\t\t\t"
+                    attr: 1
+                  - text: "IF (w.flags * {Windows.isAux, Windows.isTool} = {}) THEN\r\t\t\t\t\tIF ~(Windows.neverDirty IN w.flags) & w.seq.Dirty() THEN\r\t\t\t\t\t\tres := WinApi.SetClassLongW(wnd, -14, dirtyIcon); w.dirty := TRUE\r\t\t\t\t\tELSE\r\t\t\t\t\t\tres := WinApi.SetClassLongW(wnd, -14, docIcon); w.dirty := FALSE\r\t\t\t\t\tEND\r\t\t\t\tEND;\r\t\t\t\tstyle := style + WinApi.WS_MINIMIZEBOX + WinApi.WS_SYSMENU;\r\t\t\t\tIF ~(Windows.noResize IN w.flags) THEN style := style + WinApi.WS_MAXIMIZEBOX END"
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\t\t\tELSIF mainActive THEN\r\t\t\t\tstyle := style - {16, 17, 19}\t"
+                    attr: 0
+                  - text: "(* minimize box, maximize box, sysmenu *)"
+                    attr: 1
+                  - text: "\r\t\t\tEND;\r\t\t\tres := WinApi.SetWindowLongW(wnd, -16, ORD(style))\r\t\t| WinApi.WM_WINDOWPOSCHANGED:\r\t\t\tw := ThisWindow(wnd);\r\t\t\twp := SYSTEM.VAL(WinApi.WINDOWPOS, lParam);\r\t\t\tIF (w = bgWindow) & (wp.hwndInsertAfter # 1 (* HWND_BOTTOM *)) THEN\r\t\t\t\tres := WinApi.SetWindowPos(wnd, 1 (* HWND_BOTTOM *), 0, 0, 0, 0,\r\t\t\t\t\tWinApi.SWP_NOSIZE + WinApi.SWP_NOMOVE + WinApi.SWP_NOACTIVATE)\r\t\t\tEND\r(*\r\t\t| WinApi.WM_GETMINMAXINFO:\r\t\t\tw := ThisWindow(wnd);\r\t\t\tIF (w # NIL) & (w.mw > 0) & (Windows.noResize IN w.flags) THEN\r\t\t\t\tpm := SYSTEM.VAL(WinApi.PMinMaxInfo, lParam);\r\t\t\t\tpm.maxTrackSize.x := w.mw;\r\t\t\t\tpm.maxTrackSize.y := w.mh;\r\t\t\t\tControllers.ResetCurrentPath();\r\t\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 0\r\t\t\tEND\r*)\r\t\tELSE\r\t\tEND;\r\t\tControllers.ResetCurrentPath();\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.DefMDIChildProcW(wnd, message, wParam, lParam)\r\tEND DocWinHandler;\r\r\tPROCEDURE [2] DialogHandler (wnd: WinApi.HANDLE; message, wParam, lParam: INTEGER): INTEGER;\r\t\tVAR res, x, dx, dy: INTEGER; w: Window; ps: WinApi.PAINTSTRUCT;\r\tBEGIN\r\t\tControllers.SetCurrentPath(Controllers.targetPath);\r\t\tCASE message OF\r\t\t| WinApi.WM_CREATE:\r\t\t\tKernel.Try(CreateDlg, wnd, wParam, lParam)\r\t\t| WinApi.WM_CLOSE:\r\t\t\tres := WinApi.SendMessageW(main, WinApi.WM_COMMAND, iClose, 0);\r\t\t\tControllers.ResetCurrentPath();\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 0\r\t\t| WinApi.WM_DESTROY:\r\t\t\tw := ThisWindow(wnd);\r\t\t\tIF ~w.destroyed THEN\r\t\t\t\tw.destroyed := TRUE;\r\t\t\t\tw.Close\r\t\t\tEND\r\t\t| WinApi.WM_SETFOCUS:\r\t\t\tw := ThisWindow(wnd);\r\t\t\tIF debug THEN\r\t\t\t\tLog.String(\"Dlg: SetFocus \");\r\t\t\t\tLog.IntForm(SYSTEM.VAL(INTEGER, w), 16, 8, \"0\", FALSE);\r\t\t\t\tLog.Char(\" \");\r\t\t\t\tLog.IntForm(SYSTEM.VAL(INTEGER, fWindow), 16, 8, \"0\", FALSE);\r\t\t\t\tIF inPlace IN w.flags THEN Log.String(\" ip\") END;\r\t\t\t\tIF Windows.isTool IN w.flags THEN Log.String(\" tool\") END;\r\t\t\t\tLog.Ln\r\t\t\tEND;\r\t\t\tKernel.Try(ActivateWin, wnd, wParam, lParam);\r\t\t\tIF w.hook # NIL THEN w.hook.Focus(TRUE) END\r\t\t| WinApi.WM_KILLFOCUS:\r\t\t\tw := ThisWindow(wnd);\r\t\t\tIF debug THEN\r\t\t\t\tLog.String(\"Dlg: KillFocus \");\r\t\t\t\tLog.IntForm(SYSTEM.VAL(INTEGER, w), 16, 8, \"0\", FALSE);\r\t\t\t\tLog.Char(\" \");\r\t\t\t\tLog.IntForm(SYSTEM.VAL(INTEGER, fWindow), 16, 8, \"0\", FALSE);\r\t\t\t\tIF inPlace IN w.flags THEN Log.String(\" ip\") END;\r\t\t\t\tIF Windows.isTool IN w.flags THEN Log.String(\" tool\") END;\r\t\t\t\tLog.Ln\r\t\t\tEND;\r\t\t\tIF ~(inPlace IN w.flags) THEN Kernel.Try(DeactivateWin, wnd, wParam, lParam) END;\r\t\t\tIF w.hook # NIL THEN w.hook.Focus(FALSE) END\r\t\t| WinApi.WM_SIZE:\r\t\t\tw := ThisWindow(wnd);\r\t\t\tKernel.Try(SizeWin, wnd, lParam MOD 65536 + w.dw, lParam DIV 65536 + w.dh)\r\t\t| WinApi.WM_HSCROLL:\r\t\t\tKernel.Try(ScrollWin, wnd, wParam, 0);\r\t\t\tControllers.ResetCurrentPath();\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 0\r\t\t| WinApi.WM_VSCROLL:\r\t\t\tKernel.Try(ScrollWin, wnd, wParam, 1);\r\t\t\tControllers.ResetCurrentPath();\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 0\r\t\t| WinApi.WM_MOUSEWHEEL:\r\t\t\tKernel.Try(WheelScroll, wnd, wParam, lParam);\r\t\t\tControllers.ResetCurrentPath();\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 0\r\t\t| WinApi.WM_PAINT:\r\t\t\tw := ThisWindow(wnd);\r\t\t\tw.GetSize(dx, dy);\r\t\t\tIF ~w.minimized THEN\r\t\t\t\t"
+                    attr: 0
+                  - text: "(* clip region must be reset to ensure correct ps.paint ! *)\r"
+                    attr: 1
+                  - text: "\t\t\t\tres := WinApi.SelectClipRgn(w.port(HostPorts.Port).dc, 0);\r\t"
+                    attr: 0
+                  - text: "\t\t"
+                    attr: 1
+                  - text: "\tx := WinApi.BeginPaint(w.wnd, ps);\r\t\t\t\tKernel.Try(InvalidateWin, wnd, x, SYSTEM.ADR(ps.rcPaint));\r\t\t\t\tres := WinApi.EndPaint(w.wnd, ps);\r\t\t\t\tKernel.Try(PaintWin, wnd, 0, 0);\r\t\t\t\tControllers.ResetCurrentPath();\r\t\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 0\r\t\t\tEND\r\t\t| WinApi.WM_LBUTTONDOWN, WinApi.WM_RBUTTONDOWN, WinApi.WM_MBUTTONDOWN:\r\t\t\tres := WinApi.SetCapture(wnd);\r\t\t\tKernel.Try(HandleMouse, wnd, wParam + 256, lParam);\r\t\t\tIF WinApi.GetCapture() = wnd THEN res := WinApi.ReleaseCapture() END;\r\t\t\tControllers.ResetCurrentPath();\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 0\r\t\t| WinApi.WM_LBUTTONDBLCLK, WinApi.WM_RBUTTONDBLCLK, WinApi.WM_MBUTTONDBLCLK:\r\t\t\tres := WinApi.SetCapture(wnd);\r\t\t\tKernel.Try(HandleMouse, wnd, wParam + (128 + 256), lParam);\r\t\t\tIF WinApi.GetCapture() = wnd THEN res := WinApi.ReleaseCapture() END;\r\t\t\tControllers.ResetCurrentPath();\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 0\r\t\t| WinApi.WM_LBUTTONUP, WinApi.WM_RBUTTONUP, WinApi.WM_MBUTTONUP:\r\t\t\tKernel.Try(HandleMouse, wnd, wParam, lParam);\r\t\t\tControllers.ResetCurrentPath();\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 0\r\t\t| WinApi.WM_MOUSEMOVE:\r\t\t\tKernel.Try(HandleMouse, wnd, wParam + (2 * 256), lParam);\r\t\t\tControllers.ResetCurrentPath();\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 0\r\t\t| WinApi.WM_KEYDOWN:\r\t\t\tKernel.Try(HandleKey, wnd, wParam, lParam);\r\t\t\tIF (wParam = WinApi.VK_TAB)\r\t\t\t\tOR (wParam = WinApi.VK_LEFT) OR (wParam = WinApi.VK_UP)\r\t\t\t\tOR (wParam = WinApi.VK_RIGHT) OR (wParam = WinApi.VK_DOWN)\r\t\t\tTHEN\r\t\t\t\tres := WinApi.SendMessageW(wnd, 0127H "
+                    attr: 0
+                  - text: "(* WM_CHANGEUISTATE *)"
+                    attr: 1
+                  - text: ",\r\t\t\t\t\t\t\t2 "
+                    attr: 0
+                  - text: "(* UIS_CLEAR *) "
+                    attr: 1
+                  - text: "+ 10000H "
+                    attr: 0
+                  - text: "(* UISF_HIDEFOCUS *)"
+                    attr: 1
+                  - text: ", 0)\r\t\t\tEND\r\t\t| WinApi.WM_SYSKEYDOWN:\r\t\t\tIF wParam = WinApi.VK_MENU THEN\r\t\t\t\tres := WinApi.SendMessageW(wnd, 0127H "
+                    attr: 0
+                  - text: "(* WM_CHANGEUISTATE *)"
+                    attr: 1
+                  - text: ",\r\t\t\t\t\t\t\t2 "
+                    attr: 0
+                  - text: "(* UIS_CLEAR *)"
+                    attr: 1
+                  - text: " + 10000H "
+                    attr: 0
+                  - text: "(* UISF_HIDEFOCUS *)"
+                    attr: 1
+                  - text: " + 20000H "
+                    attr: 0
+                  - text: "(* UISF_HIDEACCEL *)"
+                    attr: 1
+                  - text: ", 0)\r\t\t\tEND\r\t\t| WinApi.WM_CHAR, WinApi.WM_SYSCHAR:\r\t\t\tKernel.Try(HandleChar, wnd, wParam, lParam);\r\t\t\tControllers.ResetCurrentPath();\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 0\r\t\t| WinApi.WM_ACTIVATE:\r\t\t\tw := ThisWindow(wnd);\r\t\t\tIF w.hook # NIL THEN w.hook.Activate(wParam # 0) END\r\t\tELSE\r\t\tEND;\r\t\tControllers.ResetCurrentPath();\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.DefWindowProcW(wnd, message, wParam, lParam)\r\tEND DialogHandler;\r\r\r\r"
+                    attr: 0
+                  - text: "\t(** clipboard handling **)\r"
+                    attr: 1
+                  - text: "\r\tPROCEDURE "
+                    attr: 0
+                  - text: OpenClipboard
+                    attr: 3
+                  - text: "* (doc: Documents.Document);\r\tBEGIN\r\t\tNEW(cbViewer);\r\t\tdir.Open(cbViewer, doc, {Windows.neverDirty}, \"Clipboard\", NIL, \"\", NIL)\r\tEND OpenClipboard;\r"
+                    attr: 0
+                  - text: "(*\r\tPROCEDURE SizeClipboard* (wnd: WinApi.Handle; w, h: LONGINT);\r\t\tVAR res: LONGINT; dc: WinApi.Handle;\r\tBEGIN\r\t\tcbViewer.wnd := wnd;\r\t\tdc := WinApi.GetDC(wnd);\r\t\tcbViewer.port(HostPorts.Port).SetDC(dc, wnd);\r(*\r\t\tres := WinApi.ShowScrollBar(wnd, WinApi.SBHorz, 1);\r\t\tres := WinApi.SetScrollRange(wnd, WinApi.SBHorz, 0, scrollRange, 1);\r\t\tres := WinApi.ShowScrollBar(wnd, WinApi.SBVert, 1);\r\t\tres := WinApi.SetScrollRange(wnd, WinApi.SBVert, 0, scrollRange, 1);\r*)\r\t\tKernel.Try(SizeWin, wnd, w, h);\r(*\r\t\tcbViewer.UpdateScrollbars(FALSE);\r*)\r\t\tres := WinApi.ReleaseDC(wnd, dc);\r\tEND SizeClipboard;\r\r\tPROCEDURE PaintClipboard* (wnd: WinApi.Handle; VAR ps: WinApi.PaintStruct);\r\t\tVAR res: LONGINT; dc: WinApi.Handle;\r\tBEGIN\r\t\tcbViewer.wnd := wnd;\r\t\tres := WinApi.SelectClipRgn(ps.dc, 0);\r\t\tKernel.Try(InvalidateWin, wnd, ps.dc, ADR(ps.paint));\r\t\tKernel.Try(PaintWin, wnd, 0, 0)\r\tEND PaintClipboard;\r\r\tPROCEDURE ScrollClipboard* (wnd: WinApi.Handle; code, pos: LONGINT; vertical: BOOLEAN);\r\t\tVAR res: LONGINT; dc: WinApi.Handle;\r\tBEGIN\r\t\tcbViewer.wnd := wnd;\r(*\r\t\tdc := WinApi.GetDC(wnd);\r\t\tcbViewer.port(HostPorts.Port).SetDC(dc, wnd);\r\t\tcbViewer.Scroll(code, pos, vertical);\r\t\tcbViewer.SetSize(cbViewer.port.w, cbViewer.port.h);\r\t\tcbViewer.UpdateScrollbars(FALSE);\r\t\tres := WinApi.ReleaseDC(wnd, dc)\r*)\r\tEND ScrollClipboard;\r*)"
+                    attr: 1
+                  - text: "\r\r"
+                    attr: 0
+                  - text: "\t(** miscellaneous **)\r\r"
+                    attr: 1
+                  - text: "\tPROCEDURE UpdateInfo;\r\t\tVAR res: INTEGER; str: ARRAY 256 OF CHAR;\r\tBEGIN\r\t\tIF memInStatus & ((alloc # Kernel.Allocated()) "
+                    attr: 0
+                  - text: "(*"
+                    attr: 3
+                  - text: " OR (total # Kernel.Used()) "
+                    attr: 0
+                  - text: "*)"
+                    attr: 3
+                  - text: " ) THEN\r\t\t\talloc := Kernel.Allocated(); total := Kernel.Used();\r\t\t\tstr := allocStr$; AppendInt(str, alloc, useSeparators); Append(str, byteStr);\r(*\r\t\t\tAppend(str, totalStr); AppendInt(str, total, useSeparators); Append(str, byteStr);\r*)\r\t\t\tres := WinApi.SetWindowTextW(info, str)\r\t\tEND\r\tEND UpdateInfo;\r(*\r\tPROCEDURE Check;\r\t\tVAR i: INTEGER; s: SET; obj: Kernel.Object;\r\tBEGIN\r\t\tIF Documents.dispMsgHeight = 0 THEN\r\t\t\tIF actMod = NIL THEN actMod := Kernel.modList END;\r\t\t\tIF actMod.refcnt >= 0 THEN\r\t\t\t\tobj := Kernel.ThisObject(actMod, \"~\");\r\t\t\t\ts := BITS(actMod.csize);\r\t\t\t\ti := ORD(s / SYSTEM.ROT(s, 7) / SYSTEM.ROT(s, -8));\r\t\t\t\tIF (obj = NIL) OR (obj.fprint # i) OR (obj.offs # ADR(obj^)) THEN\r\t\t\t\t\tSYSTEM.PUT(ADR(Documents.dispMsgHeight), (* LONG( *)(* LONG( *)1)\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tactMod := actMod.next\r\t\tEND\r\tEND Check;\r*)\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetVisualScroll
+                    attr: 3
+                  - text: "* (do: BOOLEAN);\r\tBEGIN\r\t\tIF visualScroll # do THEN\r\t\t\tvisualScroll := do;\r\t\t\tHostRegistry.WriteBool(\"VisualScroll\", do)\r\t\tEND\r\tEND SetVisualScroll;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Idle
+                    attr: 3
+                  - text: "*;\r\t\tVAR w: Window; tick: Controllers.TickMsg; focus: BOOLEAN;\r\tBEGIN\r\t\tw := dir.Focus(FALSE);\r\t\tIF (w # NIL) & ~w.trapped THEN\r\t\t\tw.trapped := TRUE;\r\t\t\tIF w.frame # NIL THEN\r\t\t\t\ttick.tick := Services.Ticks();\r\t\t\t\tw.ForwardCtrlMsg(tick)\r\t\t\tEND;\r\t\t\tw.trapped := FALSE\r\t\tEND;\r\t\tfocus := ScrollModPressed(); w := dir.First();\r\t\tWHILE w # NIL DO\r\t\t\tIF ~w.trapped THEN\r\t\t\t\tw.trapped := TRUE;\r\t\t\t\tw.UpdateScrollbars(focus & (w = fWindow));\r\t\t\t\tw.trapped := FALSE\r\t\t\tEND;\r\t\t\tw := dir.Next(w)\r\t\tEND;\r\t\tIF ~idleTraped THEN\r\t\t\tidleTraped := TRUE;\r\t\t\tIF WinApi.GetAsyncKeyState(1) >= 0 THEN activating := FALSE END;\r\t\t\tIF WinApi.GetAsyncKeyState(2) >= 0 THEN activating := FALSE END;\r\t\t\tUpdateInfo;\r(*\r\t\t\tCheck;\r*)\r\t\t\tidleTraped := FALSE\r\t\tEND;\r\t\tServices.actionHook.Step\r\tEND Idle;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ActivateMain
+                    attr: 3
+                  - text: "* (do: BOOLEAN);\r\tBEGIN\r\t\tmainActive := do\r\tEND ActivateMain;\r\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ResizeMainWindow
+                    attr: 3
+                  - text: "* (type, w, h: INTEGER);\r\t\tVAR res, m: INTEGER;\r\tBEGIN\r\t\tm := w DIV 2;\r\t\tmainW := w - lBorder - rBorder;\r\t\tmainH := h - tBorder - bBorder;\r\t\tIF Dialog.showsStatus THEN DEC(mainH, statusH) END;\r(*\r\t\tres := WinApi.DefFrameProcW(main, client, WinApi.WMSize, type, mainW + mainH * 65536);\r*)\r\t\tIF debug THEN Log.String(\"resize main window\"); Log.Ln END;\r\t\tres := WinApi.MoveWindow(client, lBorder, tBorder, mainW, mainH, 1);\r\t\tIF Dialog.showsStatus THEN\r\t\t\tIF memInStatus THEN\r\t\t\t\tres := WinApi.MoveWindow(status, 0, h - statusH, m + 1, statusH, 1);\r\t\t\t\tres := WinApi.MoveWindow(info, m, h - statusH, w - m, statusH, 1);\r\t\t\t\tres := WinApi.ShowWindow(info, 1)\r\t\t\tELSE\r\t\t\t\tres := WinApi.MoveWindow(status, 0, h - statusH, w, statusH, 1);\r\t\t\t\tres := WinApi.ShowWindow(info, 0)\r\t\t\tEND;\r\t\t\tres := WinApi.ShowWindow(status, 1)\r\t\tELSE\r\t\t\tres := WinApi.ShowWindow(status, 0);\r\t\t\tres := WinApi.ShowWindow(info, 0)\r\t\tEND\r\tEND ResizeMainWindow;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetMainBorderWidth
+                    attr: 3
+                  - text: "* (l, t, r, b: INTEGER);\r\t\tVAR res: INTEGER; rect: WinApi.RECT;\r\tBEGIN\r\t\tlBorder := l; tBorder := t; rBorder := r; bBorder := b;\r\t\tres := WinApi.GetClientRect(main, rect);\r\t\tResizeMainWindow(0, rect.right, rect.bottom)\r\tEND SetMainBorderWidth;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: GetMainBorder
+                    attr: 3
+                  - text: "* (VAR l, t, r, b: INTEGER);\r\t\tVAR res: INTEGER; rect: WinApi.RECT;\r\tBEGIN\r\t\tres := WinApi.GetClientRect(main, rect);\r\t\tl := 0; t := 0; r := rect.right; b := rect.bottom;\r\t\tIF Dialog.showsStatus THEN DEC(b, statusH) END\r\tEND GetMainBorder;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SaveWindowState
+                    attr: 3
+                  - text: "*;\r\t\tVAR res: INTEGER; wp: WinApi.WINDOWPLACEMENT; list: ARRAY 10 OF INTEGER;\r\tBEGIN\r\t\tIF ~fullSize THEN\r\t\t\twp.length := SIZE(WinApi.WINDOWPLACEMENT);\r\t\t\tres := WinApi.GetWindowPlacement(main, wp);\r\t\t\tIF res # 0 THEN\r\t\t\t\tlist[0] := wp.rcNormalPosition.left;\r\t\t\t\tlist[1] := wp.rcNormalPosition.top;\r\t\t\t\tlist[2] := wp.rcNormalPosition.right;\r\t\t\t\tlist[3] := wp.rcNormalPosition.bottom;\r\t\t\t\tlist[4] := wp.ptMinPosition.x;\r\t\t\t\tlist[5] := wp.ptMinPosition.y;\r\t\t\t\tlist[6] := wp.ptMaxPosition.x;\r\t\t\t\tlist[7] := wp.ptMaxPosition.y;\r\t\t\t\tlist[8] := wp.showCmd;\r\t\t\t\tIF 1 IN wp.flags THEN list[9] := 1 ELSE list[9] := 0 END;\r\t\t\t\tHostRegistry.WriteIntList(\"MainWindow\", list)\r\t\t\tELSE\r\t\t\t\tres := WinApi.GetLastError(); HALT(120)\r\t\t\tEND\r\t\tEND\r\tEND SaveWindowState;\r\r\tPROCEDURE LoadWindowState ();\r\t\tVAR res: INTEGER; wp: WinApi.WINDOWPLACEMENT; list: ARRAY 10 OF INTEGER;\r\t\t\tsi: WinApi.STARTUPINFOW; rect: WinApi.RECT;\r\tBEGIN\r\t\tlist[8] := 0; list[9] := 0;\r\t\tIF fullSize THEN\r\t\t\twp.length := SIZE(WinApi.WINDOWPLACEMENT);\r\t\t\twp.flags := WinApi.WPF_SETMINPOSITION + WinApi.WPF_RESTORETOMAXIMIZED;\r\t\t\tres := WinApi.SystemParametersInfoW(WinApi.SPI_GETWORKAREA, 0, SYSTEM.ADR(rect), 0);\r\t\t\twp.rcNormalPosition.left := rect.left;\r\t\t\twp.rcNormalPosition.top := rect.top;\r\t\t\twp.rcNormalPosition.right := rect.right;\r\t\t\twp.rcNormalPosition.bottom := rect.bottom;\r\t\t\twp.ptMinPosition.x := rect.left;\r\t\t\twp.ptMinPosition.y := rect.top;\r\t\t\twp.ptMaxPosition.x := rect.left;\r\t\t\twp.ptMaxPosition.y := rect.top;\r\t\t\twp.showCmd := WinApi.SW_HIDE;\r\t\t\tshowState := WinApi.SW_SHOW;\r\t\t\tres := WinApi.SetWindowPlacement(main, wp)\r\t\tELSE\r\t\t\tHostRegistry.ReadIntList(\"MainWindow\", list, res);\r\t\t\tIF res = 0 THEN\r\t\t\t\twp.length := SIZE(WinApi.WINDOWPLACEMENT);\r\t\t\t\twp.flags := {0}; \t"
+                    attr: 0
+                  - text: "(* set min pos *)"
+                    attr: 1
+                  - text: "\r\t\t\t\twp.rcNormalPosition.left := list[0];\r\t\t\t\twp.rcNormalPosition.top := list[1];\r\t\t\t\twp.rcNormalPosition.right := list[2];\r\t\t\t\twp.rcNormalPosition.bottom := list[3];\r\t\t\t\twp.ptMinPosition.x := list[4];\r\t\t\t\twp.ptMinPosition.y := list[5];\r\t\t\t\tIF list[8] = 0 THEN\t"
+                    attr: 0
+                  - text: "(* v1.0..v1.1 *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\twp.showCmd := list[6];\r\t\t\t\t\twp.ptMaxPosition.x := -1;\r\t\t\t\t\twp.ptMaxPosition.y := -1\r\t\t\t\tELSE\t"
+                    attr: 0
+                  - text: "(* v1.11.. *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\twp.ptMaxPosition.x := list[6];\r\t\t\t\t\twp.ptMaxPosition.y := list[7];\r\t\t\t\t\twp.showCmd := list[8];\r\t\t\t\t\tIF list[9] > 0 THEN INCL(wp.flags, 1) END\t"
+                    attr: 0
+                  - text: "(* restore maximized *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tEND;\r\t\t\t\tsi.cb := SIZE(WinApi.STARTUPINFOW);\r\t\t\t\tWinApi.GetStartupInfoW(si);\r\t\t\t\tIF 0 IN si.dwFlags THEN\t"
+                    attr: 0
+                  - text: "(* showWindow valid *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tIF si.wShowWindow > 1 THEN wp.showCmd := si.wShowWindow\r\t\t\t\t\tELSIF wp.showCmd = 2 THEN\t"
+                    attr: 0
+                  - text: "(* restore minimized *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\tIF 1 IN wp.flags THEN wp.showCmd := 3 ELSE wp.showCmd := 9 END\r\t\t\t\t\tEND\r\t\t\t\tEND;\r\t\t\t\tshowState := wp.showCmd; wp.showCmd := WinApi.SW_HIDE;\r\t\t\t\tres := WinApi.SetWindowPlacement(main, wp)\r\t\t\tEND\r\t\tEND\r\tEND LoadWindowState;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: CreateMainWindows
+                    attr: 3
+                  - text: "* (menuBar, winMenu: WinApi.HANDLE; Handler: WinApi.WNDPROC);\r\t\tVAR res: INTEGER; class: WinApi.WNDCLASSW; ccs: WinApi.CLIENTCREATESTRUCT;\r\t\t\tdc: WinApi.HANDLE; tm: WinApi.TEXTMETRICW;\r\tBEGIN\r"
+                    attr: 0
+                  - text: "\t\t(* init window classes *)\r"
+                    attr: 1
+                  - text: "\t\tclass.hCursor := WinApi.LoadCursorW(0, SYSTEM.VAL(WinApi.PtrWSTR, WinApi.IDC_ARROW));\r\t\tclass.hIcon := WinApi.LoadIconW(instance, SYSTEM.VAL(WinApi.PtrWSTR, 1));\r\t\tIF (class.hIcon = 0) OR (class.hIcon = 1) THEN\r\t\t\tclass.hIcon := WinApi.LoadIconW(0, SYSTEM.VAL(WinApi.PtrWSTR, WinApi.IDI_APPLICATION))\r\t\tEND;\r\t\tclass.lpszMenuName := NIL;\r\t\tclass.lpszClassName := \"Oberon App\";\r\t\tclass.hbrBackground := "
+                    attr: 0
+                  - text: "0; (* 12 + 1; *)"
+                    attr: 3
+                  - text: "\t(* application workspace color *)\r\t\tclass.style := WinApi.CS_VREDRAW + WinApi.CS_HREDRAW + WinApi.CS_DBLCLKS + WinApi.CS_OWNDC;\r\t\tclass.hInstance := instance;\r\t\tclass.lpfnWndProc := Handler;\r\t\tclass.cbClsExtra := 0;\r\t\tclass.cbWndExtra := 4;\r\t\tres := WinApi.RegisterClassW(class);\r\t\tclass.hCursor := 0;\t(* no class cursor *)\r\t\tclass.lpszMenuName := NIL;\r\t\tclass.hbrBackground := 0;\t(* no background *)\r\t\tclass.lpszClassName := \"Oberon Dlg\";\r\t\tclass.lpfnWndProc := DialogHandler;\r\t\tres := WinApi.RegisterClassW(class);\r\t\tclass.lpszClassName := \"Oberon Aux\";\r\t\tclass.lpfnWndProc := DocWinHandler;\r\t\tres := WinApi.RegisterClassW(class);\r\t\tdocIcon := WinApi.LoadIconW(instance, SYSTEM.VAL(WinApi.PtrWSTR, 2));\r\t\tIF (docIcon = 0) OR (docIcon = 1) THEN\r\t\t\tdocIcon := WinApi.LoadIconW(0, SYSTEM.VAL(WinApi.PtrWSTR, WinApi.IDI_APPLICATION))\r\t\tEND;\r\t\tdirtyIcon := WinApi.LoadIconW(instance, SYSTEM.VAL(WinApi.PtrWSTR, 5));\r\t\tIF (dirtyIcon = 0) OR (dirtyIcon = 1) THEN dirtyIcon := docIcon END;\r\t\tclass.hIcon := docIcon;\r\t\tclass.lpszClassName := \"Oberon Doc\";\r\t\tclass.lpfnWndProc := DocWinHandler;\r\t\tres := WinApi.RegisterClassW(class);\r"
+                    attr: 0
+                  - text: "\t\t(* open main windows *)\r"
+                    attr: 1
+                  - text: "\t\tIF ~fullSize THEN\r\t\t\tmain := WinApi.CreateWindowExW({8, 9}, \"Oberon App\", Dialog.appName,\r\t\t\t\t\t\t\t\t\t\t\t\t\t{16..19, 22, 23},\t"
+                    attr: 0
+                  - text: "(* maxbox, minbox, frame, sysmenu, title, border *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\t\t\t\t\t\t\t\tWinApi.CW_USEDEFAULT, WinApi.CW_USEDEFAULT,\r\t\t\t\t\t\t\t\t\t\t\t\t\tWinApi.CW_USEDEFAULT, WinApi.CW_USEDEFAULT,\r\t\t\t\t\t\t\t\t\t\t\t\t\t0, menuBar, instance, 0)\r\t\tELSE\r\t\t\tmain := WinApi.CreateWindowExW({8, 9}, \"Oberon App\", Dialog.appName,\r\t\t\t\t\t\t\t\t\t\t\t\t\tWinApi.WS_MINIMIZEBOX + WinApi.WS_SYSMENU + WinApi.WS_CAPTION,\r\t\t\t\t\t\t\t\t\t\t\t\t\tWinApi.CW_USEDEFAULT, WinApi.CW_USEDEFAULT,\r\t\t\t\t\t\t\t\t\t\t\t\t\tWinApi.CW_USEDEFAULT, WinApi.CW_USEDEFAULT,\r\t\t\t\t\t\t\t\t\t\t\t\t\t0, menuBar, instance, 0)\r\t\tEND;\r\t\tccs.hWindowMenu := winMenu;\r\t\tccs.idFirstChild := 10000;\r\t\tIF noClientScroll THEN\r\t\t\tclient := WinApi.CreateWindowExW({}, \"MDICLIENT\", NIL,\r\t\t\t\t\t\t\t\t\t\t\t\t\t{25, 30},\t"
+                    attr: 0
+                  - text: "(* clipchildren, child *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\t\t\t\t\t\t\t\t0, 0, 0, 0,\r\t\t\t\t\t\t\t\t\t\t\t\t\tmain, 32767, instance, SYSTEM.ADR(ccs))\r\t\tELSE\r\t\t\tclient := WinApi.CreateWindowExW({}, \"MDICLIENT\", NIL,\r\t\t\t\t\t\t\t\t\t\t\t\t\t{20, 21, 25, 30},\t"
+                    attr: 0
+                  - text: "(* scroll, clipchildren, child *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\t\t\t\t\t\t\t\t0, 0, 0, 0,\r\t\t\t\t\t\t\t\t\t\t\t\t\tmain, 32767, instance, SYSTEM.ADR(ccs))\r\t\tEND;\r\t\tstatus := WinApi.CreateWindowExW({}, \"STATIC\", NIL,\r\t\t\t\t\t\t\t\t\t\t\t\t{7, 23, 30},\t"
+                    attr: 0
+                  - text: "(* left, noprefix, border, child *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\t\t\t\t\t\t\t0, 0, 0, 0,\r\t\t\t\t\t\t\t\t\t\t\t\tmain, 32766, instance, 0);\r\t\tinfo := WinApi.CreateWindowExW({}, \"STATIC\", NIL,\r\t\t\t\t\t\t\t\t\t\t\t{7, 23, 30},\t"
+                    attr: 0
+                  - text: "(* left, noprefix, border, child *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\t\t\t\t\t\t0, 0, 0, 0,\r\t\t\t\t\t\t\t\t\t\t\tmain, 32765, instance, 0);\r\t\tres := WinApi.SendMessageW(status, WinApi.WM_SETFONT, font, 1);\r\t\tres := WinApi.SendMessageW(info, WinApi.WM_SETFONT, font, 1);\r\t\tdc := WinApi.GetDC(status);\r\t\tres := WinApi.GetTextMetricsW(dc, tm);\r\t\tres := WinApi.ReleaseDC(status, dc);\r\t\tstatusH := tm.tmHeight;\r\t\tshowState := WinApi.SW_SHOW;\r\t\tLoadWindowState();\r\t\tres := WinApi.ShowWindow(client, 1);\r\t\tIF Dialog.showsStatus THEN\r\t\t\tres := WinApi.ShowWindow(status, 1);\r\t\t\tIF memInStatus THEN\r\t\t\t\tres := WinApi.ShowWindow(info, 1)\r\t\t\tEND\r\t\tEND;\r(*\t"
+                    attr: 0
+                  - text: moved to HostMenus
+                    attr: 1
+                  - text: "\r\t\tres := WinApi.ShowWindow(main, WinApi.SW_SHOW);\r\t\tres := WinApi.UpdateWindow(main);\r*)\r\t\tKernel.mainWnd := main;\r\t\tdc := WinApi.GetDC(main);\r\t\tunit := Ports.inch DIV WinApi.GetDeviceCaps(dc, WinApi.LOGPIXELSY);\r\t\tres := WinApi.ReleaseDC(main, dc);\r\r\t\tDialog.MapString(allocKey, allocStr);\r\t\tDialog.MapString(totalKey, totalStr);\r\t\tDialog.MapString(byteKey, byteStr);\r\r\t\tIF Dialog.appName = \"BlackBox\" THEN\r\t\t\tDialog.ShowStatus(Dialog.appName + \" \" + Dialog.appVersion)\r\t\tEND;\r\r"
+                    attr: 0
+                  - text: "\t\tHostMechanisms.InstallDropTarget(client, NIL)\r"
+                    attr: 3
+                  - text: "\tEND CreateMainWindows;\r\r\tPROCEDURE Init;\r\t\tVAR res: INTEGER; d: Directory; dc: WinApi.HANDLE;\r\t\t\tRegister: PROCEDURE(i: WinApi.HANDLE): INTEGER; p: WinApi.PtrWSTR;\r\tBEGIN\r\t\tinstance := WinApi.GetModuleHandleW(NIL);\r\t\tdc := WinApi.GetDC(0);\r\t\tunit := Ports.inch DIV WinApi.GetDeviceCaps(dc, WinApi.LOGPIXELSY);\r\t\tres := WinApi.ReleaseDC(0, dc);\r\t\tscW := WinApi.GetSystemMetrics(0);\t"
+                    attr: 0
+                  - text: "(* screen width *)"
+                    attr: 1
+                  - text: "\r\t\tscH := WinApi.GetSystemMetrics(1);\t"
+                    attr: 0
+                  - text: "(* screen height *)"
+                    attr: 1
+                  - text: "\r\t\tNEW(d); d.l := -1; d.t := -1; d.r := -1; d.b := -1; dir := d; Windows.SetDir(d);\r\t\tNEW(winAnchor); winAnchor.next := NIL;\t"
+                    attr: 0
+                  - text: "(* dummy header *)"
+                    attr: 1
+                  - text: "\r\t\ttWindow := NIL; fWindow := NIL; aWindow := NIL; bgWindow := NIL;\r\t\tnoClientScroll := FALSE; fullSize := FALSE; noAppWin := FALSE;\r\t\twhiteBrush := WinApi.GetStockObject(WinApi.WHITE_BRUSH);\r\t\tnullPen := WinApi.GetStockObject(WinApi.NULL_PEN);\r\t\tfont := WinApi.GetStockObject(WinApi.DEFAULT_GUI_FONT);\r\t\tcbValid := FALSE; newNumber := 1;\r\t\tvisualScroll := TRUE; HostRegistry.ReadBool(\"VisualScroll\", visualScroll, res);\r\tEND Init;\r\rBEGIN\r\tInit\rEND HostWindows.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 29
+          bodyPos: 74329
+          bodyLen: 8

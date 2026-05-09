@@ -1,0 +1,439 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Com\\Docu\\PhoneBook.odc"
+  size: 43794
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 43663
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 43477
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 43391
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 114300
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 37
+                bodyPos: 43512
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 42998
+                runListLen: 37894
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: "*"
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                  - # [4]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                flow:
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 0
+                      w: 360000000
+                      h: 444500
+                  - target:
+                      name: 7.4
+                      body:
+                        - text: ComPhoneBook Example
+                          attr: 0
+                      attr: 0
+                      w: 150300
+                      h: 142875
+                  - text: "\r\r"
+                    attr: 0
+                  - text: "In this example we show the implementation of a COM component which implements a simple phone directory database that manages customer names and telephone numbers. This database can be queried by name and by number.\r\rFor our phone directory service we define the interface "
+                    attr: 1
+                  - text: ILookup
+                    attr: 2
+                  - text: ". This interface contains the methods "
+                    attr: 1
+                  - text: LookupByName
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: LookupByNumber
+                    attr: 2
+                  - text: ", which return a phone number for a given name, and vice versa. Clients of the phonebook component can access the component's services through this interface only. The interface identifier (IID) of this interface is {C4910D71-BA7D-11CD-94E8-08001701A8A3}. This IID is a globally unique identifier (GUID), i.e., unique in time and space. The definition of this interface "
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenDoc('Com/Interfaces/Lookup/Lookup.idl')"
+                      body:
+                        - text: ILookup.idl
+                          attr: 3
+                      attr: 3
+                      w: 131250
+                      h: 142875
+                  - text: " in the Microsoft interface definition language (MIDL) is shown below:\r\r"
+                    attr: 1
+                  - ruler:
+                      first: 216000
+                      left: 216000
+                      right: 5940000
+                      dsc: 25400
+                      grid: 1
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "[\r\tobject,\r\tuuid(c4910d71-ba7d-11cd-94e8-08001701a8a3),\r\tpointer_default(unique)\r]\r\rinterface ILookup : IUnknown\r{\r\timport \"unknwn.idl\";\r\tHRESULT LookupByName([in] LPTSTR lpName, [out, string] WCHAR **lplpNumber);\r\tHRESULT LookupByNumber([in] LPTSTR lpNumber, [out, string] WCHAR **lplpName);\r}"
+                    attr: 1
+                  - text: "\r\r"
+                    attr: 4
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "In the DTC Component Pascal, this interface is defined as an abstract extension of COM.IUnknown marked by its IID. The compiler does prohibit instantiation of objects of this type, and it does also prohibit implementation of the abstract methods, but variables of type "
+                    attr: 1
+                  - text: ILookup
+                    attr: 2
+                  - text: " can be used as interface pointers as we will see later.\r\r\tTYPE\r\t\t"
+                    attr: 1
+                  - text: ILookup
+                    attr: 0
+                  - text: "* = POINTER TO ABSTRACT RECORD\r\t\t\t\t[\"{C4910D71-BA7D-11CD-94E8-08001701A8A3}\"] (COM.IUnknown) END;\r\r\tPROCEDURE (this: ILookup) "
+                    attr: 1
+                  - text: LookupByName
+                    attr: 0
+                  - text: "*(\r\t\tname: WinApi.PtrWSTR; OUT number: WinApi.PtrWSTR): COM.RESULT, NEW, ABSTRACT;\r\tPROCEDURE (this: ILookup) "
+                    attr: 1
+                  - text: LookupByNumber
+                    attr: 0
+                  - text: "*(\r\t\tnumber: WinApi.PtrWSTR; OUT name: WinApi.PtrWSTR): COM.RESULT, NEW, ABSTRACT;\r\rThe implementation of the phone book directory interface is an extension of the abstract interface record ILookup. The phone book is represented as a linear list. The root of the list is stored as private data in the interface record. The two methods "
+                    attr: 1
+                  - text: LookupByName
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: LookupByNumber
+                    attr: 2
+                  - text: " implement a simple linear search. If no entry is found, a special error code is returned. Module "
+                    attr: 1
+                  - text: ComTools
+                    attr: 2
+                  - text: " offers auxiliary routines to convert e.g. strings from and to Windows data structures.\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      dsc: 25400
+                      grid: 1
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tTYPE\r\t\tCLookup = POINTER TO RECORD (ILookup)\r\t\t\tphoneBook: Entry\r\t\tEND;\r\t\tEntry = POINTER TO RECORD\r\t\t\tnext: Entry;\r\t\t\tname, number: ARRAY 32 OF CHAR\r\t\tEND;\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 4
+                      w: 360000000
+                      h: 444500
+                  - text: "\r\rTo allow access to instances of this COM class, a factory object needs to be provided. The "
+                    attr: 1
+                  - text: CreateInstance
+                    attr: 2
+                  - text: " method creates a new object, initializes it and returns the requested interface (in this example this might be the interface "
+                    attr: 1
+                  - text: IUnknown
+                    attr: 2
+                  - text: " or "
+                    attr: 1
+                  - text: ILookup
+                    attr: 2
+                  - text: "). Note, that the implementation of the interface is usually not exported, only the CLSID must be known in order to create new instances of this class. \rThe procedures "
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 21
+                      bodyPos: 1928
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: " ComPhoneBook.Register and "
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 22
+                      bodyPos: 1974
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: " ComPhoneBook.Unregister can be used to register a reference of the factory object in the COM library, from where it can be requested using the CLSID.\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      dsc: 25400
+                      grid: 1
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tCONST\r\t\t"
+                    attr: 1
+                  - text: CLSID
+                    attr: 0
+                  - text: "* = \"{E67D346C-2A5B-11D0-ADBA-00C01500554E}\";\r\t\r\tTYPE\r\t\tLookupFactory = POINTER TO RECORD (WinOle.IClassFactory) END;\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 4
+                      w: 360000000
+                      h: 444500
+                  - text: "\rIn module "
+                    attr: 1
+                  - text: ComPhoneBookClient
+                    attr: 2
+                  - text: " the implementation of a simple client of the phone directory is given. With the Windows procedure "
+                    attr: 1
+                  - text: CoCreateInstance
+                    attr: 2
+                  - text: " a new instance of the phone directory object is created. If the creation is successful, a pointer to the interface "
+                    attr: 1
+                  - text: ILookup
+                    attr: 2
+                  - text: " is assigned to the interface pointer "
+                    attr: 1
+                  - text: "phoneBook, "
+                    attr: 2
+                  - text: "through which the methods "
+                    attr: 1
+                  - text: LookupByName
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: LookupByNumber
+                    attr: 2
+                  - text: " can be called.\r\rThe combo box shown in the figure below can be opened with the command \r\t"
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 27
+                      bodyPos: 2348
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: "\"StdCmds.OpenToolDialog('Com/Rsrc/PhoneBook', 'PhoneBook')\"\rThrough this mask, the phone directory can be accessed.\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      dsc: 25400
+                      grid: 1
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - view:
+                      kind: OleClient.View
+                      storeKind: store
+                      typeChain:
+                        - OleClient.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 30
+                      bodyPos: 2538
+                      bodyLen: 35382
+                      children:
+                        - kind: OleClient.Model
+                          storeKind: elem
+                          typeChain:
+                            - OleClient.ModelDesc
+                            - Models.ModelDesc
+                            - Stores.StoreDesc
+                          id: 10
+                          bodyPos: 2584
+                          bodyLen: 35336
+                    attr: 1
+                    w: 2459880
+                    h: 1127160
+                  - text: "\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rIt is also possible to use this interface across process boundaries. For this purpose, however, marshalling code must be provided in proxy and stub objects, and the reference to the DLL which implements the proxy and stub objects must be registered in the Windows registry.\r\rThe proxy and stub code can be generated with the MIDL compiler based on the interface description in the Microsoft interface definition language. The MIDL compiler generates C source code. For the ILookup interface all necessary files are provided in the directory Com/Interfaces/Lookup. The generated DLL is a self registering DLL, i.e., you have to execute the program REGSVR32 on this DLL in order to register it.\r\rOnce the proxy and stub DLLs have been registered, it is possible to communicate across process boundaries. You can test this if you start BlackBox in two separate processes, register the factory object in one process using the command "
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 33
+                      bodyPos: 38089
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: " ComPhoneBook.Register and look for phone book entries in the other process through the dialog "
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 34
+                      bodyPos: 38135
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: "\"StdCmds.OpenToolDialog('Com/Rsrc/PhoneBook', 'PhoneBook')\".\r\rIf you have DCOM installed, then the two Component Pascal programs can even run on two different machines. The parameter in the call of procedure WinOle.CoCreateInstance needs then to be adjusted.\r\r\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenDoc('Com/Mod/PhoneBook')"
+                      body:
+                        - text: ComPhoneBook  sources
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 41
+          bodyPos: 43759
+          bodyLen: 8

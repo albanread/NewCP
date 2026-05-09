@@ -1,0 +1,470 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Sql\\Mod\\ObxDriv.odc"
+  size: 12344
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 12213
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 12027
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 11941
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5943600
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 12062
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 11548
+                runListLen: 2298
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE SqlObxDriv;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r\r\t(* this is a template to be filled out *)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT Dates, Dialog, Services, SqlDrivers;\r\r\tCONST\r\t"
+                    attr: 0
+                  - text: "\t(* general error code *)"
+                    attr: 1
+                  - text: "\r\t\tconnectionsExceeded = 4;\r\t\toutOfTables = 5;\r\t\tnotExecutable = 6;\r\t\tcannotOpenDB = 7;\r\t\twrongIdentification = 8;\r\t\t\r\t\t"
+                    attr: 0
+                  - text: "(* table read error codes *)"
+                    attr: 1
+                  - text: "\r\t\tconverted = 1;\r\t\ttruncated = 2;\r\t\toverflow = 3;\r\t\tincompatible = 4;\r\t\t\r\t"
+                    attr: 0
+                  - text: "\t(* states *)"
+                    attr: 1
+                  - text: "\r\t\tconnecting = 1;\r\t\tconnected = 2;\r\t\texecuting = 3;\r\t\tclosed = 4;\r\t\t\r\tTYPE\r\t\tTable = POINTER TO RECORD (SqlDrivers.Table)\r\t\t\trows, columns: INTEGER;\r\t\t\t"
+                    attr: 0
+                  - text: "(* additional resultset related data *)"
+                    attr: 3
+                  - text: "\r\t\tEND;\r\r\t\tDriver = POINTER TO RECORD (SqlDrivers.Driver)\r\t\t\t"
+                    attr: 0
+                  - text: "(* the state variable is not strictly necessary, it is used here to show the conceptual states *)"
+                    attr: 1
+                  - text: "\r"
+                    attr: 0
+                  - text: "\t\t\t"
+                    attr: 1
+                  - text: "state: INTEGER;\t"
+                    attr: 0
+                  - text: "(* connecting, connected, executing, closed *)"
+                    attr: 1
+                  - text: "\r\t\t\t"
+                    attr: 0
+                  - text: "(* additional database related data *)"
+                    attr: 3
+                  - text: "\r\t\tEND;\r\r\t\r"
+                    attr: 0
+                  - text: "\t(* Driver *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (d: Driver) Ready (): BOOLEAN;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: "(* check for completion if asynchronous operation in progress *)"
+                    attr: 3
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " (d.state # closed) & <asynchronous operation terminated>\r\tEND Ready;\r\r\tPROCEDURE (d: Driver) EndOpen (OUT res: INTEGER);\r\t"
+                    attr: 0
+                  - text: "(* Pre: database connection was initiated by Open\t20\r\t\t\t\td.Ready()\t21 *)"
+                    attr: 1
+                  - text: "\r\tBEGIN\r\t\tASSERT(d.state = connecting, 20);\r\t\tASSERT(d.Ready(), 21);\r\t\t"
+                    attr: 0
+                  - text: "(* deliver result of asynchronous database connection request *)\r\t\t(* return res = 0 if open is synchronous *)"
+                    attr: 3
+                  - text: "\r\t\td.state := connected; res := 0\r\tEND EndOpen;\r\r\tPROCEDURE (d: Driver) BeginExec (IN statement: ARRAY OF CHAR; data: SqlDrivers.Blob;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tasync, showErr: BOOLEAN; OUT res: INTEGER);\r\t"
+                    attr: 0
+                  - text: "(* asynchronous execution is optional, a driver may legally execute synchronously if async is TRUE *)\r"
+                    attr: 1
+                  - text: "\t"
+                    attr: 0
+                  - text: "(* Pre: statement # \"\"\t20\r\t\t\t\tno other execution started\t21 *)"
+                    attr: 1
+                  - text: "\r\t"
+                    attr: 0
+                  - text: "(* Post: res = 0 <=> execution has started and will be completed later with EndExec\r\t\t\t\t~async => d.Ready() *)"
+                    attr: 1
+                  - text: "\r\tBEGIN\r\t\tASSERT(statement # \"\", 20);\r\t\tASSERT(d.state = connected, 21);\r\t\tWHILE data # NIL DO\r\t\t\t"
+                    attr: 0
+                  - text: "(* pass blob data in database specific way *)"
+                    attr: 3
+                  - text: "\r\t\t\tdata := data.next\r\t\tEND;\r\t\tIF async THEN\r\t\t\t"
+                    attr: 0
+                  - text: "(* try to start asynchronous execution of statement *)"
+                    attr: 3
+                  - text: "\r\t\tELSE\r\t\t\t"
+                    attr: 0
+                  - text: "(* try to execute statement *)"
+                    attr: 3
+                  - text: "\r\t\tEND;\r\t\tIF <successful> THEN\r\t\t\td.state := executing; res := 0\r\t\tELSE\r\t\t\tres := notExecutable\r\t\tEND\r\tEND BeginExec;\r\r\tPROCEDURE (d: Driver) EndExec (VAR t: SqlDrivers.Table; OUT rows, columns, res: INTEGER);\r\t"
+                    attr: 0
+                  - text: "(* Pre: execution was started successfully with BeginExec\t20\r\t\t\t\td.Ready()\t21 *)"
+                    attr: 1
+                  - text: "\r\t"
+                    attr: 0
+                  - text: "(* Post: res = 0  <=>  (t # NIL) OR (rows = 0) & (columns = 0) *)"
+                    attr: 1
+                  - text: "\r\t\tVAR h: Table;\r\tBEGIN\r\t\tASSERT(d.state = executing, 20);\r\t\tASSERT(d.Ready(), 21);\r\t\td.state := connected;\r\t\tIF <successful execution returning a result set> THEN\r\t\t\tNEW(h); h.Init(d);\r\t\t\t"
+                    attr: 0
+                  - text: "(* initialize table data *)"
+                    attr: 3
+                  - text: "\r\t\t\th.columns := <number of columns in result set>;\t"
+                    attr: 0
+                  - text: "(* h.columns > 0 *)"
+                    attr: 1
+                  - text: "\r\t\t\th.rows := <number of rows in result set>;\t\t"
+                    attr: 0
+                  - text: "(* h.rows >= 0 *)"
+                    attr: 1
+                  - text: "\r\t\t\tt := h; columns := h.columns; rows := h.rows; res := 0\r\t\tELSIF <successful execution without result set>"
+                    attr: 0
+                  - text: " "
+                    attr: 1
+                  - text: THEN
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\t\t\tt := NIL; columns := 0; rows := 0; res := 0"
+                    attr: 0
+                  - text: "\r\t\t"
+                    attr: 1
+                  - text: ELSE
+                    attr: 0
+                  - text: " (* execution failed *)\r\t\t\t"
+                    attr: 1
+                  - text: "t := NIL; columns := 0; rows := 0; res := notExecutable"
+                    attr: 0
+                  - text: "\r\t\t"
+                    attr: 1
+                  - text: "END\r\tEND EndExec;\r\r\tPROCEDURE (d: Driver) Commit (accept: BOOLEAN; OUT res: INTEGER);\r\tBEGIN\r\t\tIF accept THEN\r\t\t"
+                    attr: 0
+                  - text: "\t"
+                    attr: 1
+                  - text: "(* commit actual transaction *)"
+                    attr: 3
+                  - text: "\r\t\t\tres := 0\r\t\tELSE\r\t\t\tIF <rollback possible> THEN\r\t\t\t\t"
+                    attr: 0
+                  - text: "(* rollback actual transaction *)"
+                    attr: 3
+                  - text: "\r\t\t\t\tres := 0\r\t\t\tELSE res := notExecutable\r\t\t\tEND\r\t\tEND\r\tEND Commit;\r\r\tPROCEDURE (d: Driver) Cleanup;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: "(* cleanup database data *)"
+                    attr: 3
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: "(* release database specific resources *)"
+                    attr: 3
+                  - text: "\r\t\td.state := closed\r\tEND Cleanup;\r\t\r\r"
+                    attr: 0
+                  - text: "\t(* Table *)"
+                    attr: 1
+                  - text: "\r\t\r\tPROCEDURE (t: Table) ReadInteger (row, column: INTEGER; OUT val: INTEGER);\r\tBEGIN\r\t\tASSERT(row >= 0, 20); ASSERT(row < t.rows, 21);\r\t\tASSERT(column >= 0, 22); ASSERT(column < t.columns, 23);\r\t\t"
+                    attr: 0
+                  - text: "(* try to read an integer from table *)"
+                    attr: 3
+                  - text: "\r\t\tIF <table value is not an integer> THEN val := 0; t.res := incompatible\r\t\tELSIF <table value is out of range> THEN val := 0; t.res := overflow\r\t\tELSE val := <value>\r\t\tEND\r\tEND ReadInteger;\r\r\tPROCEDURE (t: Table) ReadReal (row, column: INTEGER; OUT val: LONGREAL);\r\tBEGIN\r\t\tASSERT(row >= 0, 20); ASSERT(row < t.rows, 21);\r\t\tASSERT(column >= 0, 22); ASSERT(column < t.columns, 23);\r\t\t"
+                    attr: 0
+                  - text: "(* try to read a real from table *)"
+                    attr: 3
+                  - text: "\r\t\tIF <table value is not a real> THEN val := 0; t.res := incompatible\r\t\tELSIF <table value is out of range> THEN val := 0; t.res := overflow\r\t\tELSE val := <value>\r\t\tEND\r\tEND ReadReal;\r\r\tPROCEDURE (t: Table) ReadDate (row, column: INTEGER; OUT val: Dates.Date);\r\tBEGIN\r\t\tASSERT(row >= 0, 20); ASSERT(row < t.rows, 21);\r\t\tASSERT(column >= 0, 22); ASSERT(column < t.columns, 23);\r\t\t"
+                    attr: 0
+                  - text: "(* try to read a date from table *)"
+                    attr: 3
+                  - text: "\r\t\tIF <table value is not a date> THEN\r\t\t\tval.year := 0; val.month := 0; val.day := 0; t.res := incompatible\r\t\tELSE\r\t\t\tval.year := <value>; val.month := <value>; val.day := <value>\r\t\tEND\r\tEND ReadDate;\r\r\tPROCEDURE (t: Table) ReadTime (row, column: INTEGER; OUT val: Dates.Time);\r\tBEGIN\r\t\tASSERT(row >= 0, 20); ASSERT(row < t.rows, 21);\r\t\tASSERT(column >= 0, 22); ASSERT(column < t.columns, 23);\r\t\t"
+                    attr: 0
+                  - text: "(* try to read a time from table *)"
+                    attr: 3
+                  - text: "\r\t\tIF <table value is not a time> THEN\r\t\t\tval.hour := 0; val.minute := 0; val.second := 0; t.res := incompatible\r\t\tELSE\r\t\t\tval.hour := <value>; val.minute := <value>; val.second := <value>\r\t\tEND\r\tEND ReadTime;\r\r\tPROCEDURE (t: Table) ReadCurrency (row, column: INTEGER; OUT val: Dialog.Currency);\r\tBEGIN\r\t\tASSERT(row >= 0, 20); ASSERT(row < t.rows, 21);\r\t\tASSERT(column >= 0, 22); ASSERT(column < t.columns, 23);\r\t\t"
+                    attr: 0
+                  - text: "(* try to read a currency from table *)"
+                    attr: 3
+                  - text: "\r\t\tIF <table value is not a currency> THEN\r\t\t\tval.val := 0; val.scale := 0; t.res := incompatible\r\t\tELSE\r\t\t\tval.val := <value>; val.scale := <value>\r\t\tEND\r\tEND ReadCurrency;\r\r\tPROCEDURE (t: Table) ReadString (row, column: INTEGER; OUT str: ARRAY OF CHAR);\r\t\t"
+                    attr: 0
+                  - text: "(* any value should be readable as a string *)"
+                    attr: 1
+                  - text: "\r\tBEGIN\r\t\tASSERT(row >= 0, 20); ASSERT(row < t.rows, 21);\r\t\tASSERT(column >= 0, 22); ASSERT(column < t.columns, 23);\r\t\t"
+                    attr: 0
+                  - text: "(* try to read a string from table *)"
+                    attr: 3
+                  - text: "\r\t\tIF <table value is not a string> THEN\r\t\t\t(* convert table value to a string *)\r\t\t\tt.res := converted\r\t\tEND;\r\t\tIF <length of string (incl 0X)> > LEN(str) THEN\r\t\t\t"
+                    attr: 0
+                  - text: "(* copy truncated string to str *)"
+                    attr: 3
+                  - text: "\r\t\t\tt.res := truncated\r\t\tELSE\r\t\t\t"
+                    attr: 0
+                  - text: "(* copy string to str *)"
+                    attr: 3
+                  - text: "\r\t\tEND\r\tEND ReadString;\r\r\tPROCEDURE (t: Table) ReadVarString (row, column: INTEGER; OUT str: SqlDrivers.String);\r\t\t"
+                    attr: 0
+                  - text: "(* any value should be readable as a string *)"
+                    attr: 1
+                  - text: "\r\tBEGIN\r\t\tASSERT(row >= 0, 20); ASSERT(row < t.rows, 21);\r\t\tASSERT(column >= 0, 22); ASSERT(column < t.columns, 23);\r\t\t"
+                    attr: 0
+                  - text: "(* try to read a string from table *)"
+                    attr: 3
+                  - text: "\r\t\tIF <table value is not a string> THEN\r\t\t\t"
+                    attr: 0
+                  - text: "(* convert table value to a string *)"
+                    attr: 3
+                  - text: "\r\t\t\tt.res := converted\r\t\tEND;\r\t\tIF (str = NIL) OR (<length of string (incl 0X)> > LEN(str^)) THEN\r\t\t\tNEW(str, <length of string (incl 0X)>)\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: "(* copy string to str^ *)"
+                    attr: 3
+                  - text: "\r\tEND ReadVarString;\r\t\r\tPROCEDURE (t: Table) ReadBlob (row, column: INTEGER; VAR len: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT data: POINTER TO ARRAY OF BYTE);\r\t\t"
+                    attr: 0
+                  - text: "(* blobs are not zero terminated *)"
+                    attr: 1
+                  - text: "\r\tBEGIN\r\t\tASSERT(row >= 0, 20); ASSERT(row < t.rows, 21);\r\t\tASSERT(column >= 0, 22); ASSERT(column < t.columns, 23);\r\t\t"
+                    attr: 0
+                  - text: "(* try to read a blob from table *)"
+                    attr: 3
+                  - text: "\r\t\tIF <table value is not a blob> THEN\r\t\t\tlen := 0; t.res := incompatible\r\t\tELSE\r\t\t\tlen := <length of blob>;\r\t\t\tIF (data = NIL) OR (len > LEN(data^)) THEN NEW(str, len) END;\r\t\t\t"
+                    attr: 0
+                  - text: "(* copy blob data to data^ *)"
+                    attr: 3
+                  - text: "\r\t\tEND\r\tEND ReadBlob;\r\r\tPROCEDURE (t: Table) ReadName (column: INTEGER; OUT str: SqlDrivers.String);\r\tBEGIN\r\t\tASSERT(column >= 0, 20); ASSERT(column < t.columns, 21);\r\t\t"
+                    attr: 0
+                  - text: "(* get column name *)"
+                    attr: 3
+                  - text: "\r\t\tIF (str = NIL) OR (<length of name (incl 0X)> > LEN(str^)) THEN\r\t\t\tNEW(str, <length of name (incl 0X)>)\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: "(* copy name to str^ *)"
+                    attr: 3
+                  - text: "\r\tEND ReadName;\r\r\tPROCEDURE (t: Table) ReadType (column: INTEGER; OUT str: SqlDrivers.String);\r\tBEGIN\r\t\tASSERT(column >= 0, 20); ASSERT(column < t.columns, 21);\r\t\t"
+                    attr: 0
+                  - text: "(* get column type *)"
+                    attr: 3
+                  - text: "\r\t\tIF (str = NIL) OR (<length of type (incl 0X)> > LEN(str^)) THEN\r\t\t\tNEW(str, <length of type (incl 0X)>)\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: "(* copy type to str^ *)"
+                    attr: 3
+                  - text: "\r\tEND ReadType;\r\r\tPROCEDURE (t: Table) Cleanup;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: "(* cleanup resultset data *)"
+                    attr: 3
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: "(* release resultset specific resources *)"
+                    attr: 3
+                  - text: "\r\tEND Cleanup;\r\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: "Open*"
+                    attr: 3
+                  - text: " (id, password, datasource: ARRAY OF CHAR;\r\t\t\t\t\t\t\t\t\t\t\t\tasync, showErr: BOOLEAN; VAR d: SqlDrivers.Driver; OUT res: INTEGER);\r\t"
+                    attr: 0
+                  - text: "(* asynchronous operation is optional, a driver may legally open synchronously if async is TRUE *)\r"
+                    attr: 1
+                  - text: "\t"
+                    attr: 0
+                  - text: "(* Post: res = 0 <=> connection has started and will be completed later with EndOpen\r\t\t\t\tres = 0 <=> d # NIL\r"
+                    attr: 1
+                  - text: "\t\t"
+                    attr: 0
+                  - text: "\t\t~async & (res = 0) => d.Ready() *)"
+                    attr: 1
+                  - text: "\r\t\tVAR h: Driver;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: "(* check id & password *)"
+                    attr: 3
+                  - text: "\r\t\tIF <valid> THEN\r\t\t\tIF async THEN\r\t\t\t\t"
+                    attr: 0
+                  - text: "(* try to start connect request to datasource *)"
+                    attr: 3
+                  - text: "\r\t\t\tELSE\r\t\t\t\t"
+                    attr: 0
+                  - text: "(* try to connect to datasource *)"
+                    attr: 3
+                  - text: "\r\t\t\tEND;\r\t\t\tIF <successful> THEN\r\t\t\t\tNEW(h); h.Init(\"<blob representation in statements>\");\r\t\t\t\t"
+                    attr: 0
+                  - text: "(* Initialize driver data *)"
+                    attr: 3
+                  - text: "\r\t\t\t\th.state := connecting; d := h; res := 0\r\t\t\tELSE\r\t\t\t\td := NIL; res := cannotOpenDB\r\t\t\tEND\r\t\tELSE\r\t\t\td := NIL; res := wrongIdentification\r\t\tEND\r\tEND Open;\r\rEND SqlObxDriv.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 12309
+          bodyLen: 8

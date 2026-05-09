@@ -1,0 +1,591 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Std\\Mod\\CFrames.odc"
+  size: 12901
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 12770
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 12584
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 12498
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                dsc: 25400
+                grid: 1
+                opts: 0x00000021
+              defaultAttr:
+                font: Geneva
+                size: 114300
+                color: 0x00000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 12618
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 12104
+                runListLen: 2603
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE StdCFrames;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT Fonts, Ports, Views, Dates, Dialog;\r\r\tCONST "
+                    attr: 0
+                  - text: lineUp
+                    attr: 3
+                  - text: "* = 0; "
+                    attr: 0
+                  - text: lineDown
+                    attr: 3
+                  - text: "* = 1; "
+                    attr: 0
+                  - text: pageUp
+                    attr: 3
+                  - text: "* = 2; "
+                    attr: 0
+                  - text: pageDown
+                    attr: 3
+                  - text: "* = 3;\r\r\tTYPE\r\t\t"
+                    attr: 0
+                  - text: Frame
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Views.Frame)\r\t\t\tdisabled*, undef*, readOnly*, noRedraw*: BOOLEAN;\r\t\t\tfont*: Fonts.Font\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: PushButton
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Frame)\r\t\t\tlabel*: ARRAY 256 OF CHAR;\r\t\t\tdefault*, cancel*: BOOLEAN;\r\t\t\tDo*: PROCEDURE (f: PushButton)\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: CheckBox
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Frame)\r\t\t\tlabel*: ARRAY 256 OF CHAR;\r\t\t\tGet*: PROCEDURE (f: CheckBox; OUT on: BOOLEAN);\r\t\t\tSet*: PROCEDURE (f: CheckBox; on: BOOLEAN)\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: RadioButton
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Frame)\r\t\t\tlabel*: ARRAY 256 OF CHAR;\r\t\t\tGet*: PROCEDURE (f: RadioButton; OUT on: BOOLEAN);\r\t\t\tSet*: PROCEDURE (f: RadioButton; on: BOOLEAN)\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: ScrollBar
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Frame)\r\t\t\tTrack*: PROCEDURE (f: ScrollBar; dir: INTEGER; VAR pos: INTEGER);\r\t\t\tGet*: PROCEDURE (f: ScrollBar; OUT size, sect, pos: INTEGER);\r\t\t\tSet*: PROCEDURE (f: ScrollBar; pos: INTEGER)\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: Field
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Frame)\r\t\t\tmaxLen*: INTEGER;"
+                    attr: 0
+                  - text: "\t(* max num of characters in field (w/o 0X) *)\r\t\t\t"
+                    attr: 1
+                  - text: "left*, right*, multiLine*, password*: BOOLEAN;\r\t\t\tGet*: PROCEDURE (f: Field; OUT string: ARRAY OF CHAR);\r\t\t\tSet*: PROCEDURE (f: Field; IN string: ARRAY OF CHAR);\r\t\t\tEqual*: PROCEDURE (f: Field; IN s1, s2: ARRAY OF CHAR): BOOLEAN\r\t\tEND;\r\t\t\r\t\t"
+                    attr: 0
+                  - text: UpDownField
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Frame)\r\t\t\tmin*, max*, inc*: INTEGER;"
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\t\t\tGet*: PROCEDURE (f: UpDownField; OUT val: INTEGER);\r\t\t\tSet*: PROCEDURE (f: UpDownField; val: INTEGER)\r\t\tEND;\r\t\t\t\r\t\t"
+                    attr: 0
+                  - text: DateField
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Frame)\r\t\t\tGet*: PROCEDURE (f: DateField; OUT date: Dates.Date);\r\t\t\tSet*: PROCEDURE (f: DateField; IN date: Dates.Date);\r\t\t\tGetSel*: PROCEDURE (f: DateField; OUT sel: INTEGER);\r\t\t\tSetSel*: PROCEDURE (f: DateField; sel: INTEGER)\r\t\tEND;\r\t\t\t\r\t\t"
+                    attr: 0
+                  - text: TimeField
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Frame)\r\t\t\tGet*: PROCEDURE (f: TimeField; OUT date: Dates.Time);\r\t\t\tSet*: PROCEDURE (f: TimeField; IN date: Dates.Time);\r\t\t\tGetSel*: PROCEDURE (f: TimeField; OUT sel: INTEGER);\r\t\t\tSetSel*: PROCEDURE (f: TimeField; sel: INTEGER)\r\t\tEND;\r\t\t\t\r\t\t"
+                    attr: 0
+                  - text: ColorField
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Frame)\r\t\t\tGet*: PROCEDURE (f: ColorField; OUT col: INTEGER);\r\t\t\tSet*: PROCEDURE (f: ColorField; col: INTEGER)\r\t\tEND;\r\t\t\r\t\t"
+                    attr: 0
+                  - text: ListBox
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Frame)\r\t\t\tsorted*: BOOLEAN;\r\t\t\tGet*: PROCEDURE (f: ListBox; OUT i: INTEGER);\r\t\t\tSet*: PROCEDURE (f: ListBox; i: INTEGER);\r\t\t\tGetName*: PROCEDURE (f: ListBox; i: INTEGER; VAR name: ARRAY OF CHAR)\r\t\tEND;\r\t\t\r\t\t"
+                    attr: 0
+                  - text: SelectionBox
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Frame)\r\t\t\tsorted*: BOOLEAN;\r\t\t\tGet*: PROCEDURE (f: SelectionBox; i: INTEGER; OUT in: BOOLEAN);\r\t\t\tIncl*: PROCEDURE (f: SelectionBox; from, to: INTEGER);\r\t\t\tExcl*: PROCEDURE (f: SelectionBox; from, to: INTEGER);\r\t\t\tSet*: PROCEDURE (f: SelectionBox; from, to: INTEGER);\r\t\t\tGetName*: PROCEDURE (f: SelectionBox; i: INTEGER; VAR name: ARRAY OF CHAR)\r\t\tEND;\r\t\t\r\t\t"
+                    attr: 0
+                  - text: ComboBox
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Frame)\r\t\t\tsorted*: BOOLEAN;\r\t\t\tGet*: PROCEDURE (f: ComboBox; OUT string: ARRAY OF CHAR);\r\t\t\tSet*: PROCEDURE (f: ComboBox; IN string: ARRAY OF CHAR);\r\t\t\tGetName*: PROCEDURE (f: ComboBox; i: INTEGER; VAR name: ARRAY OF CHAR)\r\t\tEND;\r\t\t\r\t\t"
+                    attr: 0
+                  - text: Caption
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Frame)\r\t\t\tlabel*: ARRAY 256 OF CHAR;"
+                    attr: 0
+                  - text: "\r\t\t\t"
+                    attr: 1
+                  - text: "left*, right*: BOOLEAN;\r\t\tEND;\r\t\t\r\t\t"
+                    attr: 0
+                  - text: Group
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Frame)\r\t\t\tlabel*: ARRAY 256 OF CHAR\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: TreeFrame
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Frame)\r\t\t\tsorted*, haslines*, hasbuttons*, atroot*, foldericons*: BOOLEAN;\r\t\t\tNofNodes*: PROCEDURE (f: TreeFrame): INTEGER;\r\t\t\tChild*: PROCEDURE (f: TreeFrame; node: Dialog.TreeNode): Dialog.TreeNode;\r\t\t\tParent*: PROCEDURE (f: TreeFrame; node: Dialog.TreeNode): Dialog.TreeNode;\r\t\t\tNext*:  PROCEDURE (f: TreeFrame; node: Dialog.TreeNode): Dialog.TreeNode;\r\t\t\tSelect*:  PROCEDURE (f: TreeFrame; node: Dialog.TreeNode);\r\t\t\tSelected*:  PROCEDURE (f: TreeFrame): Dialog.TreeNode;\r\t\t\tSetExpansion*:  PROCEDURE (f: TreeFrame; tn: Dialog.TreeNode; expanded: BOOLEAN)\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: Directory
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD END;\r\r\r\tVAR\r\t\t"
+                    attr: 0
+                  - text: setFocus
+                    attr: 3
+                  - text: "*: BOOLEAN;\r\t\t"
+                    attr: 0
+                  - text: defaultFont
+                    attr: 3
+                  - text: "*, "
+                    attr: 0
+                  - text: defaultLightFont
+                    attr: 3
+                  - text: "*: Fonts.Font;\r\t\t"
+                    attr: 0
+                  - text: dir
+                    attr: 3
+                  - text: "-, "
+                    attr: 0
+                  - text: stdDir
+                    attr: 3
+                  - text: "-: Directory;\r\r\r\t"
+                    attr: 0
+                  - text: "(** Frame **)"
+                    attr: 1
+                  - text: "\r\r\t\t\r\tPROCEDURE (f: Frame) "
+                    attr: 0
+                  - text: "MouseDown*"
+                    attr: 3
+                  - text: " (x, y: INTEGER; buttons: SET), NEW, EMPTY;\r\tPROCEDURE (f: Frame) "
+                    attr: 0
+                  - text: "WheelMove*"
+                    attr: 3
+                  - text: " (x, y: INTEGER; op, nofLines: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR done: BOOLEAN), NEW, EMPTY;\r\tPROCEDURE (f: Frame) "
+                    attr: 0
+                  - text: "KeyDown*"
+                    attr: 3
+                  - text: " (ch: CHAR), NEW, EMPTY;\r\tPROCEDURE (f: Frame) "
+                    attr: 0
+                  - text: "Restore*"
+                    attr: 3
+                  - text: " (l, t, r, b: INTEGER), NEW, ABSTRACT;\r\tPROCEDURE (f: Frame) "
+                    attr: 0
+                  - text: "UpdateList*"
+                    attr: 3
+                  - text: ", NEW, EMPTY;\r\tPROCEDURE (f: Frame) "
+                    attr: 0
+                  - text: "Mark*"
+                    attr: 3
+                  - text: " (on, focus: BOOLEAN), NEW, EMPTY;\r\tPROCEDURE (f: Frame) "
+                    attr: 0
+                  - text: "Edit*"
+                    attr: 3
+                  - text: " (op: INTEGER; VAR v: Views.View; VAR w, h: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\t\tVAR singleton, clipboard: BOOLEAN), NEW, EMPTY;\r\tPROCEDURE (f: Frame) "
+                    attr: 0
+                  - text: "GetCursor*"
+                    attr: 3
+                  - text: " (x, y: INTEGER; modifiers: SET; VAR cursor: INTEGER), NEW, EMPTY;\r\r\tPROCEDURE (f: Frame) "
+                    attr: 0
+                  - text: "Update*"
+                    attr: 3
+                  - text: ", NEW, EXTENSIBLE;\r\t\tVAR l, t, r, b: INTEGER; root: Views.RootFrame;\r\tBEGIN\r\t\tl := f.l + f.gx; t := f.t + f.gy; r := f.r + f.gx; b := f.b + f.gy;\r\t\troot := Views.RootOf(f);\r\t\tViews.UpdateRoot(root, l, t, r, b, Views.keepFrames);\r\t\tViews.ValidateRoot(root)\r\tEND Update;\r\r\tPROCEDURE (f: Frame) "
+                    attr: 0
+                  - text: "DblClickOk*"
+                    attr: 3
+                  - text: " (x, y: INTEGER): BOOLEAN, NEW, EXTENSIBLE;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\tEND DblClickOk;\r\r\r\t"
+                    attr: 0
+                  - text: "(** Field **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (f: Field) "
+                    attr: 0
+                  - text: Idle
+                    attr: 3
+                  - text: "* (), NEW, ABSTRACT;\r\tPROCEDURE (f: Field) "
+                    attr: 0
+                  - text: Select
+                    attr: 3
+                  - text: "* (from, to: INTEGER), NEW, ABSTRACT;\r\tPROCEDURE (f: Field) "
+                    attr: 0
+                  - text: GetSelection
+                    attr: 3
+                  - text: "* (OUT from, to: INTEGER), NEW, ABSTRACT;\r\tPROCEDURE (f: Field) "
+                    attr: 0
+                  - text: Length
+                    attr: 3
+                  - text: "* (): INTEGER, NEW, ABSTRACT;\r\r\tPROCEDURE (f: Field) "
+                    attr: 0
+                  - text: "GetCursor*"
+                    attr: 3
+                  - text: " (x, y: INTEGER; modifiers: SET; VAR cursor: INTEGER), EXTENSIBLE;\r\tBEGIN\r\t\tcursor := Ports.textCursor\r\tEND GetCursor;\r\r\r\t"
+                    attr: 0
+                  - text: "(** UpDownField **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (f: UpDownField) "
+                    attr: 0
+                  - text: "Idle*"
+                    attr: 3
+                  - text: ", NEW, ABSTRACT;\r\tPROCEDURE (f: UpDownField) "
+                    attr: 0
+                  - text: "Select*"
+                    attr: 3
+                  - text: " (from, to: INTEGER), NEW, ABSTRACT;\r\tPROCEDURE (f: UpDownField) "
+                    attr: 0
+                  - text: GetSelection
+                    attr: 3
+                  - text: "* (OUT from, to: INTEGER), NEW, ABSTRACT;\r\r\tPROCEDURE (f: UpDownField) "
+                    attr: 0
+                  - text: "GetCursor*"
+                    attr: 3
+                  - text: " (x, y: INTEGER; modifiers: SET;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR cursor: INTEGER), EXTENSIBLE;\r\tBEGIN\r\t\tcursor := Ports.textCursor\r\tEND GetCursor;\r\r\r\t"
+                    attr: 0
+                  - text: "(** SelectionBox **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (f: SelectionBox) "
+                    attr: 0
+                  - text: Select
+                    attr: 3
+                  - text: "* (from, to: INTEGER), NEW, ABSTRACT;\r\tPROCEDURE (f: SelectionBox) "
+                    attr: 0
+                  - text: GetSelection
+                    attr: 3
+                  - text: "* (OUT from, to: INTEGER), NEW, ABSTRACT;\r\t\r\tPROCEDURE (f: SelectionBox) "
+                    attr: 0
+                  - text: UpdateRange
+                    attr: 3
+                  - text: "* (op, from, to: INTEGER), NEW, EXTENSIBLE;\r\tBEGIN\r\t\tf.Update\r\tEND UpdateRange;\r\r\r\t"
+                    attr: 0
+                  - text: "(** ComboBox **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (f: ComboBox) "
+                    attr: 0
+                  - text: Idle
+                    attr: 3
+                  - text: "* (), NEW, ABSTRACT;\r\tPROCEDURE (f: ComboBox) "
+                    attr: 0
+                  - text: Select
+                    attr: 3
+                  - text: "* (from, to: INTEGER), NEW, ABSTRACT;\r\tPROCEDURE (f: ComboBox) "
+                    attr: 0
+                  - text: GetSelection
+                    attr: 3
+                  - text: "* (OUT from, to: INTEGER), NEW, ABSTRACT;\r\tPROCEDURE (f: ComboBox) "
+                    attr: 0
+                  - text: Length
+                    attr: 3
+                  - text: "* (): INTEGER, NEW, ABSTRACT;\r\t\r\t"
+                    attr: 0
+                  - text: "(* TreeFrame **)"
+                    attr: 1
+                  - text: "\r\tPROCEDURE (f: TreeFrame) "
+                    attr: 0
+                  - text: "GetSize* "
+                    attr: 3
+                  - text: "(OUT w, h: INTEGER), NEW, ABSTRACT;\r\r\t"
+                    attr: 0
+                  - text: "(** Directory **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: GetPushButtonSize
+                    attr: 3
+                  - text: "* (VAR w, h: INTEGER), NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: GetCheckBoxSize
+                    attr: 3
+                  - text: "* (VAR w, h: INTEGER), NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: GetRadioButtonSize
+                    attr: 3
+                  - text: "* (VAR w, h: INTEGER), NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: GetScrollBarSize
+                    attr: 3
+                  - text: "* (VAR w, h: INTEGER), NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: GetFieldSize
+                    attr: 3
+                  - text: "* (max: INTEGER; VAR w, h: INTEGER), NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: GetUpDownFieldSize
+                    attr: 3
+                  - text: "* (max: INTEGER; VAR w, h: INTEGER), NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: GetDateFieldSize
+                    attr: 3
+                  - text: "* (VAR w, h: INTEGER), NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: GetTimeFieldSize
+                    attr: 3
+                  - text: "* (VAR w, h: INTEGER), NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: GetColorFieldSize
+                    attr: 3
+                  - text: "* (VAR w, h: INTEGER), NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: GetListBoxSize
+                    attr: 3
+                  - text: "* (VAR w, h: INTEGER), NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: GetSelectionBoxSize
+                    attr: 3
+                  - text: "* (VAR w, h: INTEGER), NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: GetComboBoxSize
+                    attr: 3
+                  - text: "* (VAR w, h: INTEGER), NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: GetCaptionSize
+                    attr: 3
+                  - text: "* (VAR w, h: INTEGER), NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: GetGroupSize
+                    attr: 3
+                  - text: "* (VAR w, h: INTEGER), NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: GetTreeFrameSize
+                    attr: 3
+                  - text: "* (VAR w, h: INTEGER), NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: NewPushButton
+                    attr: 3
+                  - text: "* (): PushButton, NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: NewCheckBox
+                    attr: 3
+                  - text: "* (): CheckBox, NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: NewRadioButton
+                    attr: 3
+                  - text: "* (): RadioButton, NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: NewScrollBar
+                    attr: 3
+                  - text: "* (): ScrollBar, NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: NewField
+                    attr: 3
+                  - text: "* (): Field, NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: NewUpDownField
+                    attr: 3
+                  - text: "* (): UpDownField, NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: NewDateField
+                    attr: 3
+                  - text: "* (): DateField, NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: NewTimeField
+                    attr: 3
+                  - text: "* (): TimeField, NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: NewColorField
+                    attr: 3
+                  - text: "* (): ColorField, NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: NewListBox
+                    attr: 3
+                  - text: "* (): ListBox, NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: NewSelectionBox
+                    attr: 3
+                  - text: "* (): SelectionBox, NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: NewComboBox
+                    attr: 3
+                  - text: "* (): ComboBox, NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: NewCaption
+                    attr: 3
+                  - text: "* (): Caption, NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: NewGroup
+                    attr: 3
+                  - text: "* (): Group, NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: NewTreeFrame
+                    attr: 3
+                  - text: "* (): TreeFrame, NEW, ABSTRACT;\r\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetDir
+                    attr: 3
+                  - text: "* (d: Directory);\r\tBEGIN\r\t\tASSERT(d # NIL, 20); dir := d;\r\t\tIF stdDir = NIL THEN stdDir := d END\r\tEND SetDir;\r\rBEGIN\r\tsetFocus := FALSE\rEND StdCFrames.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 12866
+          bodyLen: 8

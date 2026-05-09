@@ -1,0 +1,268 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Docu\\FileTree.odc"
+  size: 4334
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 4203
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 4017
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 3931
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 152400
+                dsc: 25400
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 11
+                bodyPos: 3931
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 3417
+                runListLen: 878
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [4]
+                    font: Arial
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [5]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                flow:
+                  - text: "Overview by Example: ObxFileTree"
+                    attr: 0
+                  - text: "\r\rThis example illustrates the use of the "
+                    attr: 1
+                  - text: TreeControl
+                    attr: 2
+                  - text: ". The aim is to create a file browser similar to the Windows Explorer. To keep it simple, the user interface will consist of a text field, three buttons, and a "
+                    attr: 1
+                  - text: TreeControl
+                    attr: 2
+                  - text: ". When the user types a path to a directory in the text field and clicks on the "
+                    attr: 1
+                  - text: Display
+                    attr: 2
+                  - text: " button the files and folders in the given directory are shown in the tree. The user can browse the files and folders in the tree, and a double click on a file opens the file in BlackBox.\r\r"
+                    attr: 1
+                  - text: The Interactors
+                    attr: 3
+                  - text: "\rTo achieve this user interface we need a "
+                    attr: 1
+                  - text: Dialog.String
+                    attr: 2
+                  - text: " variable to connect to the text field, we need two procedures to connect to the "
+                    attr: 1
+                  - text: Display
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: Open
+                    attr: 2
+                  - text: " buttons respectively, and we need a "
+                    attr: 1
+                  - text: Dialog.Tree
+                    attr: 2
+                  - text: " variable to connect to the "
+                    attr: 1
+                  - text: TreeControl
+                    attr: 2
+                  - text: ". We also need a notifier to connect to "
+                    attr: 1
+                  - text: TreeControl
+                    attr: 2
+                  - text: ". This notifier should detect a double click on a leaf in the tree and open the corresponding file.\r\rThe "
+                    attr: 1
+                  - text: TreeControl
+                    attr: 2
+                  - text: " has several properties which can be modified with the property inspector. For this example the default properties are sufficient. In particular the option \"Folder icons\" should be switched on. This option makes the "
+                    attr: 1
+                  - text: TreeControl
+                    attr: 2
+                  - text: " show icons in front of each node in the tree. The leaf nodes get a \"file\" icon and the nodes that have subnodes get a \"folder\" icon. This option gives our program the same look and feel as the Windows Explorer.\r\rThe only problem is that if a file directory does not contain any files it will be a leaf node and thus look like a file and not a folder. For this purpose the "
+                    attr: 1
+                  - text: Dialog.TreeNode
+                    attr: 2
+                  - text: " offers a method called "
+                    attr: 1
+                  - text: ViewAsFolder
+                    attr: 2
+                  - text: ", which makes a node in a tree display a folder icon even if it doesn't have any subnodes.\r\r"
+                    attr: 1
+                  - text: The Implemantation
+                    attr: 3
+                  - text: "\rTo implement this, this example uses four procedures:\r\rPROCEDURE BuildDirTree (loc: Files.Locator; parent: Dialog.TreeNode);\rPROCEDURE "
+                    attr: 1
+                  - text: Update
+                    attr: 3
+                  - text: "*;\rPROCEDURE "
+                    attr: 1
+                  - text: Open
+                    attr: 3
+                  - text: "*;\rPROCEDURE "
+                    attr: 1
+                  - text: OpenGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\r"
+                    attr: 1
+                  - text: BuildDirTree
+                    attr: 2
+                  - text: " recursively adds files and folders to the tree, and also makes sure that the "
+                    attr: 1
+                  - text: ViewAsFolder
+                    attr: 2
+                  - text: " attribute is set for nodes that are folders. "
+                    attr: 1
+                  - text: Update
+                    attr: 2
+                  - text: " is the procedure that is connected to the "
+                    attr: 1
+                  - text: Display
+                    attr: 2
+                  - text: " command button in the user interface. This procedure clears the tree and then calls "
+                    attr: 1
+                  - text: BuildDirTree
+                    attr: 2
+                  - text: ". The procedure "
+                    attr: 1
+                  - text: "Open "
+                    attr: 2
+                  - text: "opens the selected folder or file. StdCmds.DefaultOnDoubleClick, which is set as the "
+                    attr: 1
+                  - text: TreeControl
+                    attr: 2
+                  - text: "'s notifier procedure, executes the default command "
+                    attr: 1
+                  - text: Open
+                    attr: 2
+                  - text: " when the "
+                    attr: 1
+                  - text: TreeControl
+                    attr: 2
+                  - text: " is double-clicked."
+                    attr: 1
+                  - text: "\r"
+                    attr: 4
+                  - text: "\r"
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 7
+                      bodyPos: 1049
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: " \"StdCmds.OpenToolDialog('Obx/Rsrc/FileTree', 'ObxFileTree Demo')\"\r\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenDoc('Obx/Mod/FileTree')"
+                      body:
+                        - text: ObxFileTree  sources
+                          attr: 5
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 15
+          bodyPos: 4299
+          bodyLen: 8

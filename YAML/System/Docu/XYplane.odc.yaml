@@ -1,0 +1,214 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\System\\Docu\\XYplane.odc"
+  size: 2951
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 2820
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 2634
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 2548
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                asc: 134600
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000003
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 6
+                bodyPos: 2548
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 2034
+                runListLen: 486
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                flow:
+                  - text: XYplane
+                    attr: 0
+                  - text: "\r\rDEFINITION XYplane;\r\r\tCONST erase = 0; draw = 1;\r\r\tVAR X, Y, W, H: INTEGER;\r\r\tPROCEDURE Open;\r\tPROCEDURE Dot (x, y, mode: INTEGER);\r\tPROCEDURE IsDot (x, y: INTEGER): BOOLEAN;\r\tPROCEDURE ReadKey (): CHAR;\r\tPROCEDURE Clear;\r\rEND XYplane.\r\r\rThis module is provided for compatibility with the book \"Programming in Oberon\" by Reiser/Wirth. It is useful when learning the language. It is not recommended for use in production programs.\r\r\rCONST "
+                    attr: 1
+                  - text: erase
+                    attr: 2
+                  - text: "\rThis value can be passed to parameter "
+                    attr: 1
+                  - text: mode
+                    attr: 3
+                  - text: " in procedure "
+                    attr: 1
+                  - text: Dot
+                    attr: 3
+                  - text: ". It indicates that a white dot should be placed at the given coordinates.\r\rCONST "
+                    attr: 1
+                  - text: draw
+                    attr: 2
+                  - text: "\rThis value can be passed to parameter "
+                    attr: 1
+                  - text: mode
+                    attr: 3
+                  - text: " in procedure "
+                    attr: 1
+                  - text: Dot
+                    attr: 3
+                  - text: ". It indicates that a black dot should be placed at the given coordinates.\r\r\rVAR "
+                    attr: 1
+                  - text: "X, Y, W, H"
+                    attr: 2
+                  - text: "\rThese values define the rectangle in which drawing occurs. "
+                    attr: 1
+                  - text: "(X, Y)"
+                    attr: 3
+                  - text: " is the lower-left corner of the rectangle, "
+                    attr: 1
+                  - text: "(W, H)"
+                    attr: 3
+                  - text: " its size. In BlackBox, "
+                    attr: 1
+                  - text: "(X, Y)"
+                    attr: 3
+                  - text: " is always "
+                    attr: 1
+                  - text: "(0, 0)"
+                    attr: 3
+                  - text: ". Unlike the port model of BlackBox, "
+                    attr: 1
+                  - text: XYplane
+                    attr: 3
+                  - text: " has its origin at the lower-left corner of the drawing area, and positive Y values "
+                    attr: 1
+                  - text: above
+                    attr: 3
+                  - text: " the origin.\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: Open
+                    attr: 2
+                  - text: "\rOpens a new window for drawing. The window's contents is cleared to white.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Dot
+                    attr: 2
+                  - text: " (x, y, mode: INTEGER)\rDraws a white dot ("
+                    attr: 1
+                  - text: mode = erase
+                    attr: 3
+                  - text: ) or a black dot (
+                    attr: 1
+                  - text: mode = draw
+                    attr: 3
+                  - text: ").\r\rPROCEDURE "
+                    attr: 1
+                  - text: IsDot
+                    attr: 2
+                  - text: " (x, y: INTEGER): BOOLEAN\rReturns whether the dot at "
+                    attr: 1
+                  - text: "(x, y)"
+                    attr: 3
+                  - text: " is white ("
+                    attr: 1
+                  - text: "FALSE"
+                    attr: 3
+                  - text: ) or black (
+                    attr: 1
+                  - text: "TRUE"
+                    attr: 3
+                  - text: ").\r\rPROCEDURE "
+                    attr: 1
+                  - text: ReadKey
+                    attr: 2
+                  - text: " (): CHAR\rIf a key has been pressed, it is returned as result. Otherwise, "
+                    attr: 1
+                  - text: 0X
+                    attr: 3
+                  - text: " is returned.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Clear
+                    attr: 2
+                  - text: "\rErases the whole drawing area (setting it to white).\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 10
+          bodyPos: 2916
+          bodyLen: 8

@@ -1,0 +1,722 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Host\\Mod\\Menus.odc"
+  size: 45579
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 45448
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 45262
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 45176
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000021
+              defaultAttr:
+                font: Arial
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 24
+                bodyPos: 45297
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 44783
+                runListLen: 3281
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [4]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000001
+                flow:
+                  - text: "MODULE HostMenus;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems, Alexander Iljin, Josef Templ\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- 20060315, jt, hookApplWinHandler introduced\r\t- 20061225, ai, Added UpdateType to fix bug in PopupMenu\r\t- 20070201, bh, Unicode support\r\t- 20070205, bh, Win32s handling removed\r\t- 20140930 center #17, off-by-one error fixed in IncludingFileCommandLine\r\t- 20141104, center #19, 16-bit Unicode support for Component Pascal identifiers added\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT SYSTEM, WinApi, Kernel, Log, Services,\r\t\tFonts, Files, Strings, Ports, Stores, Properties, Printers, Dialog,\r\t\tModels, Views, Controllers, Containers, Converters,\r\t\tDocuments, Windows, Controls,\r\t\tStdDialog, StdInterpreter, StdCmds, HostFonts, HostPorts, \r\t\tHostFiles, HostWindows, HostDialog, HostClipboard, HostCmds, HostCFrames;\r\r\tCONST\r\t\tdebug = FALSE;\r\t\t\r\t\tidlePeriod = 50; "
+                    attr: 0
+                  - text: "(* ms *)"
+                    attr: 1
+                  - text: "\r\t\tgcCycle = 100;\r\r\t\t"
+                    attr: 0
+                  - text: "(* hints *)"
+                    attr: 1
+                  - text: "\r\t\timpAll = 0;\t"
+                    attr: 0
+                  - text: "(* can import all file types *)"
+                    attr: 1
+                  - text: "\r\r\t\tHYPHEN = 90X; NBHYPHEN = 91X; SOFTHYPHEN = 0ADX;\r\t\tNBSPACE = 0A0X; NUMSPACE = 8FX;\r\r\t\tiClose = 100; "
+                    attr: 0
+                  - text: "(* known in HostWindows *)\r\t\t"
+                    attr: 1
+                  - text: iUndo = 112; iCut = 114; iCopy = 115; iPaste = 116;
+                    attr: 0
+                  - text: "\r\t\t"
+                    attr: 1
+                  - text: "iObject = 120; iPopup = 160; iProperties = 163;\r\t\tiObjEdit = 161; iObjOpen = 162; iVerb0 = 200;\r\t\tiOpen = 102; iUpdateMenus = 111; iExit = 110;\r\r"
+                    attr: 0
+                  - text: "\t\t(* custom menus *)\r"
+                    attr: 1
+                  - text: "\t\tfirstId = 300;\r\t\t\r\t\t"
+                    attr: 0
+                  - text: "(* apllication states *)"
+                    attr: 1
+                  - text: "\r\t\trunning = 0; hidden = 1; embedded = 2; noAppWin = 3;\r\t\t\r\t\t(* File for specifying command line options *)\r\t\tcmdLinePath = \"System/Rsrc\"; cmdLineFile = \"CommandLine.txt\";\r\t\t\r\r\tTYPE\r\t\t"
+                    attr: 0
+                  - text: Item
+                    attr: 3
+                  - text: "* = POINTER TO RECORD (StdDialog.Item)\r\t\t\tid-, code-: INTEGER;\r\t\t\tshift-, ctrl-, del: BOOLEAN\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: Menu
+                    attr: 3
+                  - text: "* = POINTER TO RECORD\r\t\t\tnext-: Menu;\r\t\t\tmenu-, type-: Dialog.String;\r\t\t\tfirstItem-, lastItem: Item;\r\t\t\tmenuH-: WinApi.HANDLE;\r\t\t\tisWinMenu-: BOOLEAN;\r\t\t\tisPopup-: BOOLEAN;\r\t\t\tclass-: INTEGER;\r\t\t\thot, maxId: INTEGER\r\t\tEND;\r\t\t\r\t\t"
+                    attr: 0
+                  - text: TypeMsg
+                    attr: 3
+                  - text: "* = EXTENSIBLE RECORD (Properties.Message)\r\t\t\ttype*: ARRAY 64 OF CHAR\t"
+                    attr: 0
+                  - text: "(** OUT, preset to \"\" **)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\t\t\r\r\tVAR\r\t\t"
+                    attr: 0
+                  - text: "(* active menu bar state *)\r"
+                    attr: 1
+                  - text: "\t\t"
+                    attr: 0
+                  - text: menus-
+                    attr: 3
+                  - text: ": Menu;\r\t\t"
+                    attr: 0
+                  - text: menuBar
+                    attr: 3
+                  - text: "-: WinApi.HANDLE;\r\t\t"
+                    attr: 0
+                  - text: lastId
+                    attr: 3
+                  - text: "-: INTEGER;\t"
+                    attr: 0
+                  - text: "(* last custom menu id *)"
+                    attr: 1
+                  - text: "\r\t\t\r\t\t"
+                    attr: 0
+                  - text: disablePipe
+                    attr: 3
+                  - text: "*: BOOLEAN;\r\t\t\r\t\t"
+                    attr: 0
+                  - text: hookApplWinHandler
+                    attr: 3
+                  - text: "*: PROCEDURE (message, wPar, lPar: INTEGER; VAR res: INTEGER): BOOLEAN;\r"
+                    attr: 0
+                  - text: "\t\t\t(* hook for handling application specific messages; returns TRUE iff handled *)\t\t\r"
+                    attr: 1
+                  - text: "\t\twinMenu, popMenu: WinApi.HANDLE;\r\t\ttype: Stores.TypeName;\r\r\t\t"
+                    attr: 0
+                  - text: "(* new menu bar state *)"
+                    attr: 1
+                  - text: "\r\t\tnewMenuBar, newWinMenu, newPopMenu: WinApi.HANDLE;\r\t\tnextId: INTEGER;\t"
+                    attr: 0
+                  - text: "(* id of next menu item *)"
+                    attr: 1
+                  - text: "\r\t\tfirstMenu, lastMenu, curMenu: Menu;\r\t\t\r\t\tgc: INTEGER;\t"
+                    attr: 0
+                  - text: "(* how many events must be executed before next GC *)\r"
+                    attr: 1
+                  - text: "\t\tdefMenu: WinApi.HANDLE;\t"
+                    attr: 0
+                  - text: "(* default menu *)"
+                    attr: 1
+                  - text: "\r\t\tobjMenu: WinApi.HANDLE;\t"
+                    attr: 0
+                  - text: "(* object menu (verbs) *)"
+                    attr: 1
+                  - text: "\r\t\tshiftStr, ctrlStr, spaceStr: Dialog.String;\r\t\tminusCode: INTEGER;\t"
+                    attr: 0
+                  - text: "(* key code for \"-\" *)"
+                    attr: 1
+                  - text: "\r\t\tnum: INTEGER;\r\t\tmsgId: INTEGER;\r\t\t\r\t\tlocks-: INTEGER;\r\t\tstate: INTEGER;\r\t\t\r\t\topenUsed: BOOLEAN;\r\t\topenParam: ARRAY 256 OF CHAR;\r\t\t\r\t\tisCont*, isObj*: BOOLEAN;\r\t\t\r\t\tUpdateOleMenus*: PROCEDURE;\r\t\tTranslateOleKeys1*: PROCEDURE (VAR msg: WinApi.MSG; VAR done: BOOLEAN);\r\t\tTranslateOleKeys2*: PROCEDURE (VAR msg: WinApi.MSG; VAR done: BOOLEAN);\r\t\t\r\r\tPROCEDURE [1] FINIT 0DBH, 0E3H;\r\tPROCEDURE [1] FCLEX 0DBH, 0E2H;"
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\tPROCEDURE [1] FLDCW 0D9H, 06DH, 0FCH;\t"
+                    attr: 0
+                  - text: "(* -4, FP *)"
+                    attr: 1
+                  - text: "\r\tPROCEDURE [1] FSTCW 0D9H, 07DH, 0FCH;\t"
+                    attr: 0
+                  - text: "(* -4, FP *)\r"
+                    attr: 1
+                  - text: "\tPROCEDURE [1] FSTSW 0DDH, 07DH, 0FCH;\t"
+                    attr: 0
+                  - text: "(* -4, FP *)\r\t\r"
+                    attr: 1
+                  - text: "\tPROCEDURE CheckFpu;\r\t\tVAR cw: SET;\r\tBEGIN\r\t\tFSTCW;\r\t\tIF cw * {0..5, 8..11} # {1, 2, 3, 4, 5, 8, 9} THEN\r\t\t\tcw := cw - {0..5, 8..11} + {1, 2, 3, 4, 5, 8, 9};\r\t\t\tFCLEX; FLDCW\r\t\tEND\r\tEND CheckFpu;\r\t\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Collect
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tgc := 0\r\tEND Collect;\r\r\r\t"
+                    attr: 0
+                  - text: "(* hidden application support *)"
+                    attr: 1
+                  - text: "\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: Lock
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tINC(locks);\r\t\tIF state = embedded THEN state := hidden END\r\tEND Lock;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: Unlock
+                    attr: 3
+                  - text: "*;\r\t\tVAR res: INTEGER;\r\tBEGIN\r\t\tDEC(locks);\r\t\tIF (state = hidden) & (locks = 0) THEN\r\t\t\tHostClipboard.Flush;\r\t\t\tres := WinApi.DestroyWindow(HostWindows.main)\r\t\tEND\r\tEND Unlock;\r\t\r\r"
+                    attr: 0
+                  - text: "\t(* shortcut support *)\r"
+                    attr: 1
+                  - text: "\r\tPROCEDURE Append (VAR a: ARRAY OF CHAR; b: ARRAY OF CHAR);\t"
+                    attr: 0
+                  - text: "(* a := a + b *)"
+                    attr: 1
+                  - text: "\r\t\tVAR i, j: INTEGER;\r\tBEGIN\r\t\ti := 0; j := 0;\r\t\tWHILE a[i] # 0X DO INC(i) END;\r\t\tWHILE b[j] # 0X DO a[i] := b[j]; INC(i); INC(j) END;\r\t\ta[i] := 0X\r\tEND Append;\r\t\r\tPROCEDURE SetShortcut (VAR i: Item; VAR name: Dialog.String);\r\t\tVAR j, n: INTEGER; ch, nch: CHAR; a: ARRAY 4 OF CHAR;\r\tBEGIN\r\t\ti.shift := FALSE; i.ctrl := FALSE; i.code := 0; j := 0; ch := i.shortcut[0];\r\t\tWHILE (ch # 0X) & (i.code = 0) DO INC(j);\r\t\t\tIF (ch >= \"a\") & (ch <= \"z\") THEN ch := CAP(ch) END;\r\t\t\tnch := i.shortcut[j];\r\t\t\tIF ch = \"*\" THEN i.shift := TRUE\r\t\t\tELSIF ch = \"^\" THEN i.ctrl := TRUE\r\t\t\tELSIF (ch >= \"A\") & (ch <= \"Z\") OR (ch >= \"0\") & (ch <= \"9\") OR (ch = \" \") THEN\r\t\t\t\tIF (nch >= \"a\") & (nch <= \"z\") THEN nch := CAP(nch) END;\r\t\t\t\tIF nch = 0X THEN i.code := ORD(ch); i.ctrl := TRUE\r\t\t\t\tELSIF ch = \"F\" THEN\r\t\t\t\t\tn := 0;\r\t\t\t\t\tWHILE (nch >= \"0\") & (nch <= \"9\") DO\r\t\t\t\t\t\tn := 10 * n + ORD(nch) - ORD(\"0\"); INC(j); nch := i.shortcut[j]\r\t\t\t\t\tEND;\r\t\t\t\t\tIF (n >= 1) & (n <= 16) THEN i.code := 70H - 1 + n END\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tch := nch\r\t\tEND;\r\t\tIF i.code # 0 THEN\r\t\t\tAppend(name, \"\t\");"
+                    attr: 0
+                  - text: "\t(* tab *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF i.shift THEN Append(name, shiftStr) END;\r\t\t\tIF i.ctrl THEN Append(name, ctrlStr) END;\r\t\t\tIF i.code >= 70H THEN\r\t\t\t\ta[0] := \"F\"; n := i.code - 70H + 1; j := 1;\r\t\t\t\tIF n > 9 THEN a[1] := \"1\"; DEC(n, 10); INC(j) END;\r\t\t\t\ta[j] := CHR(n + ORD(\"0\")); a[j+1] := 0X;\r\t\t\t\tAppend(name, a)\r\t\t\tELSIF i.code = ORD(\" \") THEN Append(name, spaceStr)\r\t\t\tELSE a[0] := CHR(i.code); a[1] := 0X; Append(name, a)\r\t\t\tEND\r\t\tEND\r\tEND SetShortcut;\r\t\r"
+                    attr: 0
+                  - text: "\t(* hotkey support *)\r"
+                    attr: 1
+                  - text: "\r\tPROCEDURE NextWord (VAR name: Dialog.String; i: INTEGER): INTEGER;\r\tBEGIN\r\t\tWHILE (name[i] # 0X) & (name[i] # \" \") DO INC(i) END;\r\t\tWHILE name[i] = \" \" DO INC(i) END;\r\t\tIF (CAP(name[i]) < \"A\") OR (CAP(name[i]) > \"Z\") THEN i := -1 END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " i\r\tEND NextWord;\r\t\r\tPROCEDURE SetHotkey (VAR name: Dialog.String; i: INTEGER);\r\t\tVAR j: INTEGER;\r\tBEGIN\r\t\tIF name[i] # \"&\" THEN\r\t\t\tj := i;\r\t\t\tWHILE name[j] # 0X DO INC(j) END;\r\t\t\tWHILE j >= i DO name[j+1] := name[j]; DEC(j) END;\r\t\t\tname[i] := \"&\"\r\t\tEND\r\tEND SetHotkey;\r\t\r\tPROCEDURE GetHotkey (VAR name: Dialog.String; VAR pos: INTEGER; VAR used: SET);\r\t\tVAR i: INTEGER; ch: CHAR;\r\tBEGIN\r\t\ti := 0; ch := name[0];\r\t\tWHILE ch # 0X DO\r\t\t\tIF ch = \"&\" THEN\r\t\t\t\tch := name[i + 1];\r\t\t\t\tIF ch = \"&\" THEN INC(i)\r\t\t\t\tELSE\r\t\t\t\t\tpos := i; ch := CAP(ch);\r\t\t\t\t\tIF (ch >= \"A\") & (ch <= \"Z\") THEN INCL(used, ORD(ch) - ORD(\"A\")) END;\r\t\t\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " \r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tINC(i); ch := name[i]\r\t\tEND;\r\t\tpos := -1\r\tEND GetHotkey;\r\t\r\tPROCEDURE FirstFree (VAR name: Dialog.String; VAR used: SET): INTEGER;\r\t\tVAR i: INTEGER; ch: CHAR;\r\tBEGIN\r\t\ti := 0; ch := CAP(name[0]);\r\t\tWHILE (name[i] # 0X) & ((ch < \"A\") OR (ch > \"Z\") OR (ORD(ch) - ORD(\"A\") IN used)) DO\r\t\t\tINC(i); ch := CAP(name[i])\r\t\tEND;\r\t\tIF ch # 0X THEN INCL(used, ORD(ch) - ORD(\"A\"))\r\t\tELSE i := -1\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " i\r\tEND FirstFree;\r\r\tPROCEDURE SetHotkeys (VAR tab: ARRAY OF Dialog.String; n: INTEGER);\r\t\tVAR i, j: INTEGER; ch: CHAR; pos: POINTER TO ARRAY OF INTEGER; used: SET;\r\tBEGIN\r\t\tNEW(pos, LEN(tab));\r\t\tused := {}; i := 0;\r\t\tWHILE i < n DO GetHotkey(tab[i], pos[i], used); INC(i) END;\r\t\ti := 0;\r\t\tWHILE i < n DO\r\t\t\tIF pos[i] = -1 THEN\r\t\t\t\tch := CAP(tab[i, 0]);\r\t\t\t\tIF (ch >= \"A\") & (ch <= \"Z\") & ~(ORD(ch) - ORD(\"A\") IN used) THEN\r\t\t\t\t\tINCL(used, ORD(ch) - ORD(\"A\"));\r\t\t\t\t\tpos[i] := 0\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tINC(i)\r\t\tEND;\r\t\ti := 0;\r\t\tWHILE i < n DO\r\t\t\tIF pos[i] = -1 THEN\r\t\t\t\tj := NextWord(tab[i], 0);\r\t\t\t\tWHILE j >= 0 DO\r\t\t\t\t\tch := CAP(tab[i, j]);\r\t\t\t\t\tIF ~(ORD(ch) - ORD(\"A\") IN used) THEN\r\t\t\t\t\t\tINCL(used, ORD(ch) - ORD(\"A\"));\r\t\t\t\t\t\tpos[i] := j; j := -1\r\t\t\t\t\tELSE\r\t\t\t\t\t\tj := NextWord(tab[i], j)\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tINC(i)\r\t\tEND;\r\t\ti := 0;\r\t\tWHILE i < n DO\r\t\t\tIF pos[i] = -1 THEN pos[i] := FirstFree(tab[i], used) END;\r\t\t\tIF pos[i] >= 0 THEN SetHotkey(tab[i], pos[i]) END;\r\t\t\tINC(i)\r\t\tEND\r\tEND SetHotkeys;\r\t\r\tPROCEDURE UpdateHotkey (VAR old, new: Dialog.String);\r\t\tVAR i, j: INTEGER; used: SET; ch: CHAR;\r\tBEGIN\r\t\tGetHotkey(new, i, used);\r\t\tIF i = -1 THEN\r\t\t\tused := {}; GetHotkey(old, i, used);\r\t\t\tIF used # {} THEN\r\t\t\t\tused := -used; i := -1; j := 0;\r\t\t\t\tWHILE j >= 0 DO\r\t\t\t\t\tch := CAP(new[j]);\r\t\t\t\t\tIF ~(ORD(ch) - ORD(\"A\") IN used) THEN\r\t\t\t\t\t\ti := j; j := -1\r\t\t\t\t\tELSE\r\t\t\t\t\t\tj := NextWord(new, j)\r\t\t\t\t\tEND\r\t\t\t\tEND;\r\t\t\t\tIF i = -1 THEN i := FirstFree(new, used) END;\r\t\t\t\tIF i >= 0 THEN SetHotkey(new, i) END\r\t\t\tEND\r\t\tEND\r\tEND UpdateHotkey;\r\t\r\r"
+                    attr: 0
+                  - text: "\t(* custom menus *)\r\t\r\t"
+                    attr: 1
+                  - text: "PROCEDURE AppendMenu (menu: WinApi.HANDLE; id: INTEGER; name: Dialog.String);\r\t\tVAR res: INTEGER;\r\tBEGIN\r\t\tDialog.MapString(name, name);\r\t\tres := WinApi.AppendMenuW(menu, {}, id, name)\r\tEND AppendMenu;"
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\r\tPROCEDURE "
+                    attr: 0
+                  - text: FirstMenu
+                    attr: 3
+                  - text: "* (): Menu;\r\tBEGIN\r\t\tRETURN menus\r\tEND FirstMenu;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: DeleteAll
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tWHILE WinApi.RemoveMenu(menuBar, 0, WinApi.MF_BYPOSITION) # 0 DO END;\r\t\tfirstMenu := NIL; lastMenu := NIL; curMenu := NIL;\r\t\tnewWinMenu := 0; newPopMenu := 0;\r\t\tnextId := firstId\r\tEND DeleteAll;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Open
+                    attr: 3
+                  - text: "* (menu, type: ARRAY OF CHAR);\r\tBEGIN\r\t\tASSERT(curMenu = NIL, 20); ASSERT(menu # \"\", 21);\r\t\tNEW(curMenu); curMenu.next := NIL;\r\t\tcurMenu.menuH := WinApi.CreatePopupMenu();\r\t\t(* curMenu.menu := menu$; *)\r\t\tDialog.MapString(menu, curMenu.menu);\r\t\tcurMenu.type := type$;\r\t\tcurMenu.firstItem := NIL\r\tEND Open;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: AddItem
+                    attr: 3
+                  - text: "* (item, string, shortcut, filter: Dialog.String);\r\t\tVAR i: Item; id: INTEGER;\r\tBEGIN\r\t\tASSERT(curMenu # NIL, 20); ASSERT(item # \"\", 21); ASSERT(string # \"\", 22);\r\t\tIF string = \"HostMenus.WindowList\" THEN\r\t\t\tcurMenu.isWinMenu := TRUE\r\t\tELSE\r\t\t\tNEW(i); i.next := NIL;\r\t\t\tIF curMenu.lastItem = NIL THEN curMenu.firstItem := i ELSE curMenu.lastItem.next := i END;\r\t\t\tcurMenu.lastItem := i;\r\t\t\tStdDialog.AddItem(i, item, string, filter, shortcut);\r\t\t\tIF string = \"HostMenus.ObjectMenu\" THEN id := iObject\r\t\t\tELSE id := nextId; INC(nextId)\r\t\t\tEND;\r\t\t\ti.id := id;\r\t\t\tIF id > curMenu.maxId THEN curMenu.maxId := id END\r\t\tEND\r\tEND AddItem;\r\r\tPROCEDURE ChangeItem (m: Menu; i: Item; VAR name: Dialog.String);\r\t\tVAR res: INTEGER; old: Dialog.String;\r\tBEGIN\r\t\tres := WinApi.GetMenuStringW(m.menuH, i.id, old, LEN(old), {});\r\t\tUpdateHotkey(old, name);\r\t\tSetShortcut(i, name)\r\tEND ChangeItem;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: AddSeparator
+                    attr: 3
+                  - text: "*;\r\t\tVAR i: Item;\r\tBEGIN\r\t\tASSERT(curMenu # NIL, 20);\r\t\tNEW(i); i.next := NIL;\r\t\tIF curMenu.lastItem = NIL THEN curMenu.firstItem := i ELSE curMenu.lastItem.next := i END;\r\t\tcurMenu.lastItem := i;\r\t\tStdDialog.AddItem(i, \"\", \"\", \"\", \"\");\r\t\ti.id := 0\r\tEND AddSeparator;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: Close
+                    attr: 3
+                  - text: "*;\r\t\tVAR res, j, n: INTEGER; i: StdDialog.Item; tab: POINTER TO ARRAY OF Dialog.String;\r\tBEGIN\r\t\tASSERT(curMenu # NIL, 20);\r\t\ti := curMenu.firstItem; n := 0;\r\t\tWHILE i # NIL DO i := i.next; INC(n) END;\r\t\tNEW(tab, n);\r\t\ti := curMenu.firstItem; j := 0;\r\t\tWHILE i # NIL DO Dialog.MapString(i.item, tab[j]); (* tab[j] := i.item^$; *)i := i.next; INC(j) END;\r\t\tSetHotkeys(tab, j);\r\t\ti := curMenu.firstItem; j := 0;\r\t\tWHILE i # NIL DO\r\t\t\tWITH i: Item DO\r\t\t\t\tIF i.item^ # \"\" THEN\r\t\t\t\t\tSetShortcut(i, tab[j]);\r\t\t\t\t\tIF i.id = iObject THEN\r\t\t\t\t\t\tres := WinApi.AppendMenuW(curMenu.menuH, WinApi.MF_POPUP, objMenu, tab[j])\r\t\t\t\t\tELSE\r\t\t\t\t\t\tres := WinApi.AppendMenuW(curMenu.menuH, {}, i.id, tab[j])\r\t\t\t\t\tEND\r\t\t\t\tELSIF i.next # NIL THEN\r\t\t\t\t\tres := WinApi.AppendMenuW(curMenu.menuH, WinApi.MF_SEPARATOR, 0, NIL)\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\ti := i.next; INC(j)\r\t\tEND;\r\t\tIF curMenu.menu = \"*\" THEN curMenu.isPopup := TRUE END;\r\t\tIF curMenu.type = \"WindowMenu\" THEN curMenu.isWinMenu := TRUE; curMenu.type := \"\" END;\r\t\tIF curMenu.isWinMenu THEN newWinMenu := curMenu.menuH\r\t\tELSIF curMenu.type = \"PopupMenu\" THEN newPopMenu := curMenu.menuH\r\t\tEND;\r\t\tIF lastMenu = NIL THEN firstMenu := curMenu ELSE lastMenu.next := curMenu END;\r\t\tlastMenu := curMenu; curMenu := NIL\r\tEND Close;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: InitMenus
+                    attr: 3
+                  - text: "*;\r\t\tVAR m, n, old: Menu; res, i: INTEGER; used, u: SET; tp: Stores.TypeName; oldBar: WinApi.HANDLE;\r\tBEGIN\r\t\tASSERT(curMenu = NIL, 20);\r\t\tIF firstMenu # NIL THEN\r\t\t\tused := {}; m := firstMenu;\r\t\t\tWHILE m # NIL DO GetHotkey(m.menu, m.hot, used); m := m.next END;\r\t\t\tm := firstMenu; i := 0;\r\t\t\tWHILE m # NIL DO\r\t\t\t\tIF (m.hot = -1) & (m.type = \"\") THEN m.hot := FirstFree(m.menu, used) END;\r\t\t\t\tIF m.isWinMenu THEN m.class := 4; i := 100\r\t\t\t\tELSIF m.isPopup THEN m.class := 10\r\t\t\t\tELSIF i = 0 THEN m.class := 0\r\t\t\t\tELSIF i < 3 THEN m.class := 1\r\t\t\t\tELSIF i < 100 THEN m.class := 3\r\t\t\t\tELSE m.class := 5\r\t\t\t\tEND;\r\t\t\t\tm := m.next; INC(i)\r\t\t\tEND;\r\t\t\tm := firstMenu;\r\t\t\tWHILE m # NIL DO\r\t\t\t\tIF m.hot = -1 THEN\r\t\t\t\t\ttp := m.type$; u := used; n := m;\r\t\t\t\t\tWHILE n # NIL DO\r\t\t\t\t\t\tIF (n.hot = -1) & (n.type = tp) THEN n.hot := FirstFree(n.menu, u) END;\r\t\t\t\t\t\tn := n.next\r\t\t\t\t\tEND\r\t\t\t\tEND;\r\t\t\t\tIF m.hot >= 0 THEN SetHotkey(m.menu, m.hot) END;\r\t\t\t\tm := m.next\r\t\t\tEND;\r\t\t\tnewMenuBar := WinApi.CreateMenu();\r\t\t\tm := firstMenu;\r\t\t\tWHILE m # NIL DO\r\t\t\t\tIF ((m.type = \"\") OR (m.type = type)) & ~m.isPopup THEN\r\t\t\t\t\tres := WinApi.AppendMenuW(newMenuBar, WinApi.MF_POPUP, m.menuH, m.menu)\r\t\t\t\tEND;\r\t\t\t\tm := m.next\r\t\t\tEND;\r\t\t\toldBar := menuBar; menuBar := newMenuBar;\r\t\t\twinMenu := newWinMenu; popMenu := newPopMenu;\r\t\t\told := menus; menus := firstMenu; lastId := nextId;\r\t\t\tIF UpdateOleMenus # NIL THEN UpdateOleMenus() END;\r\t\t\tres := WinApi.SendMessageW(HostWindows.client, WinApi.WM_MDISETMENU, menuBar, winMenu);\r\t\t\tIF res # 0 THEN\r\t\t\t\tres := WinApi.DrawMenuBar(HostWindows.main);\r\t\t\t\tm := old;\r\t\t\t\tWHILE m # NIL DO\t"
+                    attr: 0
+                  - text: "(* prevent submenus from being deleted *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tWHILE WinApi.RemoveMenu(m.menuH, 0, WinApi.MF_BYPOSITION) # 0 DO END;\r\t\t\t\t\tres := WinApi.DestroyMenu(m.menuH);\r\t\t\t\t\tm := m.next\r\t\t\t\tEND;\r\t\t\t\tres := WinApi.DestroyMenu(oldBar)\r\t\t\tEND\r\t\tEND\r\tEND InitMenus;\r\t\r\r"
+                    attr: 0
+                  - text: "\t(* Menu Dispatching *)\r"
+                    attr: 1
+                  - text: "\r\tPROCEDURE "
+                    attr: 0
+                  - text: Cascade
+                    attr: 3
+                  - text: "*;\r\t\tVAR res: INTEGER;\r\tBEGIN\r\t\tres := WinApi.SendMessageW(HostWindows.client, WinApi.WM_MDICASCADE, 2, 0)\r\tEND Cascade;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: TileHorizontal
+                    attr: 3
+                  - text: "*;\r\t\tVAR res: INTEGER;\r\tBEGIN\r\t\tres := WinApi.SendMessageW(HostWindows.client, WinApi.WM_MDITILE, 3, 0)\r\tEND TileHorizontal;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: TileVertical
+                    attr: 3
+                  - text: "*;\r\t\tVAR res: INTEGER;\r\tBEGIN\r\t\tres := WinApi.SendMessageW(HostWindows.client, WinApi.WM_MDITILE, 2, 0)\r\tEND TileVertical;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: ArrangeIcons
+                    attr: 3
+                  - text: "*;\r\t\tVAR res: INTEGER;\r\tBEGIN\r\t\tres := WinApi.SendMessageW(HostWindows.client, WinApi.WM_MDIICONARRANGE, 0, 0)\r\tEND ArrangeIcons;\r\t\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: Exit
+                    attr: 3
+                  - text: "*;\r\t\tVAR res: INTEGER;\r\tBEGIN\r\t\tres := WinApi.SendMessageW(HostWindows.main, WinApi.WM_CLOSE, 0, 0)\r\tEND Exit;\r\t\r\r\tPROCEDURE SetFocus;\r\t\tVAR c: Containers.Controller; f: Views.Frame; v, s: Views.View;\r\tBEGIN\r\t\tf := Controllers.FocusFrame(); v := f.view;\r\t\tWITH v: Containers.View DO\r\t\t\tc := v.ThisController();\r\t\t\ts := c.Singleton();\r\t\t\tIF s # NIL THEN c.SetFocus(s) END\r\t\tELSE\r\t\tEND\r\tEND SetFocus;\r\t\r\tPROCEDURE OpenWindow;\r\t\tVAR c: Containers.Controller; f: Views.Frame; v, s: Views.View; doc: Documents.Document;\r\t\t\twin: Windows.Window; title: Views.Title;\r\tBEGIN\r\t\tf := Controllers.FocusFrame(); v := f.view;\r\t\tWITH v: Containers.View DO\r\t\t\tc := v.ThisController();\r\t\t\ts := c.Singleton();\r\t\t\tIF (s # NIL) & (s.ThisModel() # NIL) THEN\r\t\t\t\twin := Windows.dir.Focus(Controllers.frontPath); ASSERT(win # NIL, 100);\r\t\t\t\tdoc := win.doc.DocCopyOf(s);\r\t\t\t\tc := doc.ThisController();\r\t\t\t\tc.SetOpts(c.opts - {Documents.pageWidth, Documents.pageHeight}\r\t\t\t\t\t\t\t\t\t\t+ {Documents.winWidth, Documents.winHeight});\r\t\t\t\t(* Stores.InitDomain(doc, v.domain); done by DocCopyOf *)\r\t\t\t\twin.GetTitle(title);\r\t\t\t\tWindows.dir.OpenSubWindow(Windows.dir.New(), doc, {Windows.isAux}, title)\r\t\t\tEND\r\t\tELSE\r\t\tEND\r\tEND OpenWindow;\r\t\r\tPROCEDURE HandleVerb (n: INTEGER);\r\t\tVAR v: Views.View; dvm: Properties.DoVerbMsg;\r\tBEGIN\r\t\tv := Containers.FocusSingleton();\r\t\tIF v # NIL THEN\r\t\t\tdvm.frame := Views.ThisFrame(Controllers.FocusFrame(), v);\r\t\t\tdvm.verb := n;\r\t\t\tViews.HandlePropMsg(v, dvm)\r\t\tEND\r\tEND HandleVerb;\r\t\r\tPROCEDURE CheckVerb (v: Views.View; n: INTEGER; VAR pvm: Properties.PollVerbMsg);\r\tBEGIN\r\t\tpvm.verb := n;\r\t\tpvm.label := \"\";\r\t\tpvm.disabled := FALSE; pvm.checked := FALSE;\r\t\tViews.HandlePropMsg(v, pvm)\r\tEND CheckVerb;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: PrimaryVerb
+                    attr: 3
+                  - text: "*;\r\t\tVAR v: Views.View; pvm: Properties.PollVerbMsg;\r\tBEGIN\r\t\tv := Containers.FocusSingleton();\r\t\tIF v # NIL THEN\r\t\t\tCheckVerb(v, 0, pvm);\r\t\t\tIF pvm.label # \"\" THEN HandleVerb(0)\r\t\t\tELSE  SetFocus\r\t\t\tEND\r\t\tEND\r\tEND PrimaryVerb;\r(*\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: ObjProperties
+                    attr: 3
+                  - text: "*;\r\t\tVAR res: INTEGER; p, q: Properties.Property; s: Views.View;\r\tBEGIN\r\t\tProperties.CollectProp(p);\r\t\ts := Containers.FocusSingleton();\r\t\tIF s # NIL THEN\r\t\t\tq := p;\r\t\t\tWHILE (q # NIL) & ~(q IS Controls.Prop) DO q := q.next END;\r\t\t\tIF q # NIL THEN\r\t\t\t\tDialog.Call(\r\t\t\t\t\"DevInspector.InitDialog; StdCmds.OpenToolDialog('DevInspector.inspect', '#Host:ControlInspector')\"\r\t\t\t\t, \"\", res);\r\t\t\t\tIF res = 0 THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " END\r\t\t\tEND\r\t\tEND;\r\t\tq := p;\r\t\tWHILE (q # NIL) & ~(q IS Properties.StdProp) DO q := q.next END;\r\t\tIF (q # NIL) & (Properties.typeface IN p.known) THEN\r\t\t\tHostDialog.FontDialog\r\t\tEND\r\tEND ObjProperties;\r*)\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: ObjectMenu
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: HALT
+                    attr: 3
+                  - text: "(127)\r\tEND ObjectMenu;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: WindowList
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: HALT
+                    attr: 3
+                  - text: "(127)\r\tEND WindowList;\r(*\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: PropertiesGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\t\tVAR res: INTEGER; p, q: Properties.Property; s: Views.View;\r\tBEGIN\r\t\tProperties.CollectProp(p);\r\t\ts := Containers.FocusSingleton();\r\t\tIF s # NIL THEN\r\t\t\tq := p;\r\t\t\tWHILE (q # NIL) & ~(q IS Controls.Prop) DO q := q.next END;\r\t\t\tIF q # NIL THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " END\r\t\tEND;\r\t\tq := p;\r\t\tWHILE (q # NIL) & ~(q IS Properties.StdProp) DO q := q.next END;\r\t\tIF (q # NIL) & (Properties.typeface IN p.known) THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " END;\r\t\tpar.disabled := TRUE\r\tEND PropertiesGuard;\r*)\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: ObjectMenuGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\t\tVAR v: Views.View; pvm: Properties.PollVerbMsg; i, id, res: INTEGER; msg: TypeMsg; str: Dialog.String;\r\tBEGIN\r\t\tv := Containers.FocusSingleton();\r\t\tIF v # NIL THEN\r\t\t\t"
+                    attr: 0
+                  - text: "(* remove old object menu entries *)"
+                    attr: 1
+                  - text: "\r\t\t\tWHILE WinApi.RemoveMenu(objMenu, 0, WinApi.MF_BYPOSITION) # 0 DO END;\r\t\t\t"
+                    attr: 0
+                  - text: "(* insert verbs *)\r"
+                    attr: 1
+                  - text: "\t\t\ti := 0; id := iVerb0;\r\t\t\tCheckVerb(v, 0, pvm);\r\t\t\tIF pvm.label = \"\" THEN\r\t\t\t\tAppendMenu(objMenu, iObjEdit, \"#Host:Edit\");\r\t\t\t\tAppendMenu(objMenu, iObjOpen, \"#Host:Open\");\r\t\t\t\tIF v.ThisModel() = NIL THEN\r\t\t\t\t\tres := WinApi.EnableMenuItem(objMenu, iObjOpen, WinApi.MF_GRAYED)\r\t\t\t\tEND;\r\t\t\t\tINC(i); INC(id);\r\t\t\t\tCheckVerb(v, i, pvm)\r\t\t\tEND;\r\t\t\tWHILE (id < firstId) & (pvm.label # \"\") DO\r\t\t\t\tstr := pvm.label$;\r\t\t\t\tAppendMenu(objMenu, id, str);\r\t\t\t\tIF pvm.disabled THEN res := WinApi.EnableMenuItem(objMenu, id, WinApi.MF_GRAYED) END;\r\t\t\t\tIF pvm.checked THEN res := WinApi.CheckMenuItem(objMenu, id, WinApi.MF_CHECKED) END;\r\t\t\t\tINC(i); INC(id);\r\t\t\t\tCheckVerb(v, i, pvm)\r\t\t\tEND;\r\t\t\tmsg.type := \"\";\r\t\t\tViews.HandlePropMsg(v, msg);\r\t\t\tIF msg.type # \"\" THEN\r\t\t\t\tDialog.MapString(\"#Host:Object\", str);\r\t\t\t\tpar.label := msg.type + \" \" + str\r\t\t\tELSE\r\t\t\t\tDialog.MapString(\"#Host:Object\", par.label)\r\t\t\tEND\r\t\tELSE\r\t\t\tpar.disabled := TRUE;\r\t\t\tDialog.MapString(\"#Host:Object\", par.label)\r\t\tEND\r\tEND ObjectMenuGuard;\r\r\tPROCEDURE^ UpdateType ();\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: PopupMenu
+                    attr: 3
+                  - text: "*;\r\t\tVAR f: Views.Frame; res, x, y: INTEGER; d: BOOLEAN; pt: WinApi.POINT; m: SET;\r\t\t\tmenu: Menu; menuH: WinApi.HANDLE;\r\tBEGIN\r\t\tf := Controllers.FocusFrame();\r\t\tIF (f # NIL) & f.front THEN\r\t\t\tUpdateType();\r\t\t\tmenu := menus;\r\t\t\tWHILE (menu # NIL) & (~menu.isPopup OR (menu.type # \"\") & (menu.type # type)) DO\r\t\t\t\tmenu := menu.next\r\t\t\tEND;\r\t\t\tIF menu # NIL THEN menuH := menu.menuH ELSE menuH := popMenu END;\r\t\t\tIF WinApi.GetCapture() # 0 THEN f.Input(x, y, m, d)\r\t\t\tELSE x := (f.l + f.r) DIV 2; y := (f.t + f.b) DIV 2\r\t\t\tEND;\r\t\t\tpt.x := (x + f.gx) DIV f.unit; pt.y := (y + f.gy) DIV f.unit;\r\t\t\tres := WinApi.ClientToScreen(f.rider(HostPorts.Rider).port.wnd, pt);\r\t\t\tres := WinApi.TrackPopupMenu(menuH, {1}, pt.x, pt.y + 2, 0, HostWindows.main, NIL)\r\t\tEND\r\tEND PopupMenu;\r\t\r\t\r\t"
+                    attr: 0
+                  - text: "(* menu dispatching *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE PrepareMenu (wnd, menu: WinApi.HANDLE; lParam: INTEGER);\r"
+                    attr: 0
+                  - text: "\t(* this procedure is called after the user has clicked into the menu bar, but before\r\t\tshowing the menu; to prepare item enabling/disabling, check marks, etc. *)\r"
+                    attr: 1
+                  - text: "\t\tVAR res, n: INTEGER; failed, ok: BOOLEAN; par: Dialog.Par; m: Menu; i: StdDialog.Item; str: Dialog.String;\r\tBEGIN\r\t\tm := menus;\r\t\tWHILE (m # NIL) & (m.menuH # menu) DO m := m.next END;\r\t\tIF m # NIL THEN\r\t\t\ti := m.firstItem; n := 0;\r\t\t\tWHILE i # NIL DO\r\t\t\t\tWITH i: Item DO\r\t\t\t\t\tIF i.filter^ # \"\" THEN\t"
+                    attr: 0
+                  - text: "(* custom menu item with custom guard *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\tStdDialog.CheckFilter(i, failed, ok, par);\r\t\t\t\t\t\tIF ~failed THEN\r\t\t\t\t\t\t\tIF par.label = \"-\" THEN\r\t\t\t\t\t\t\t\tIF ~i.del THEN\r\t\t\t\t\t\t\t\t\tres := WinApi.RemoveMenu(m.menuH, n, WinApi.MF_BYPOSITION);\r\t\t\t\t\t\t\t\t\ti.del := TRUE\r\t\t\t\t\t\t\t\tEND;\r\t\t\t\t\t\t\t\tDEC(n)\r\t\t\t\t\t\t\tELSE\r\t\t\t\t\t\t\t\tIF i.del THEN\r\t\t\t\t\t\t\t\t\tres := WinApi.InsertMenuW(m.menuH, n, WinApi.MF_BYPOSITION, i.id, \"+\");\r\t\t\t\t\t\t\t\t\ti.del := FALSE\r\t\t\t\t\t\t\t\tEND;\r\t\t\t\t\t\t\t\tIF par.label # i.item$ THEN\r\t\t\t\t\t\t\t\t\tDialog.MapString(par.label, str);\r\t\t\t\t\t\t\t\t\tChangeItem(m, i, str);\r\t\t\t\t\t\t\t\t\tIF i.id = iObject THEN\r\t\t\t\t\t\t\t\t\t\tres := WinApi.ModifyMenuW(\r\t\t\t\t\t\t\t\t\t\t\tm.menuH, n, WinApi.MF_BYPOSITION + WinApi.MF_POPUP, objMenu, str)\r\t\t\t\t\t\t\t\t\tELSE\r\t\t\t\t\t\t\t\t\t\tres := WinApi.ModifyMenuW(m.menuH, n, WinApi.MF_BYPOSITION, i.id, str)\r\t\t\t\t\t\t\t\t\tEND\r\t\t\t\t\t\t\t\tEND;\r\t\t\t\t\t\t\t\tIF par.disabled THEN\r\t\t\t\t\t\t\t\t\tres := WinApi.EnableMenuItem(\r\t\t\t\t\t\t\t\t\t\tm.menuH, n, WinApi.MF_BYPOSITION + WinApi.MF_GRAYED)\r\t\t\t\t\t\t\t\tELSE\r\t\t\t\t\t\t\t\t\tres := WinApi.EnableMenuItem(m.menuH, n, WinApi.MF_BYPOSITION)\r\t\t\t\t\t\t\t\tEND;\r\t\t\t\t\t\t\t\tIF par.checked & ~ODD(WinApi.GetMenuState(m.menuH, n, WinApi.MF_BYPOSITION))\r\t\t\t\t\t\t\t\tTHEN\r\t\t\t\t\t\t\t\t\tres := WinApi.CheckMenuItem(\r\t\t\t\t\t\t\t\t\t\tm.menuH, n, WinApi.MF_BYPOSITION + WinApi.MF_CHECKED)\r\t\t\t\t\t\t\t\tELSE\r\t\t\t\t\t\t\t\t\tres := WinApi.CheckMenuItem(m.menuH, n, WinApi.MF_BYPOSITION)\r\t\t\t\t\t\t\t\tEND;\r\t\t\t\t\t\t\t\tIF ~ok THEN\r\t\t\t\t\t\t\t\t\t"
+                    attr: 0
+                  - text: "(* mark with \"?\" !!! *)"
+                    attr: 3
+                  - text: "\r\t\t\t\t\t\t\t\t\tres := WinApi.EnableMenuItem(\r\t\t\t\t\t\t\t\t\t\tm.menuH, n, WinApi.MF_BYPOSITION + WinApi.MF_GRAYED)\r\t\t\t\t\t\t\t\tEND\r\t\t\t\t\t\t\tEND\r\t\t\t\t\t\tEND\r\t\t\t\t\tEND\r\t\t\t\tEND;\r\t\t\t\ti := i.next; INC(n)\r\t\t\tEND\r\t\tEND\r\tEND PrepareMenu;\r\t\r\tPROCEDURE HandleCustomMenu (id: INTEGER);\r\t\tVAR m: Menu; i: StdDialog.Item; \r\tBEGIN\r\t\tm := menus;\r\t\tWHILE (m # NIL) & (m.maxId < id) DO m := m.next END;\r\t\tIF m # NIL THEN i := m.firstItem;\r\t\t\tWHILE (i # NIL) & (i(Item).id # id) DO i := i.next END;\r\t\t\tIF i # NIL THEN StdDialog.HandleItem(i) END\r\t\tEND\r\tEND HandleCustomMenu;\r\r\tPROCEDURE MenuCommand (wnd: WinApi.HANDLE; wParam, lParam: INTEGER);\r\t\tVAR res, id: INTEGER; old: WinApi.HANDLE;\r\tBEGIN\r\r\t\told := WinApi.SetCursor(HostPorts.cursors[HostPorts.busyCursor]);\r\t\tDialog.ShowStatus(\"\");\r\r\t\tDEC(gc); id := wParam MOD 65536;\r\t\tCASE id OF\r\t\t| iClose: HostCmds.Close\r\t\t| iUndo: StdCmds.Undo\r\t\t| iCut: HostCmds.Cut\r\t\t| iCopy: HostCmds.Copy\r\t\t| iPaste: HostCmds.Paste\r\t\t| iOpen: HostCmds.Open\r\t\t| iExit: Exit\r\t\t| iUpdateMenus: Dialog.Call(\"StdMenuTool.UpdateAllMenus\", \"\", res)\r\t\t| iPopup: PopupMenu\r\t\t| iObjEdit: SetFocus\r\t\t| iObjOpen: OpenWindow\r\t\t| iProperties: StdCmds.ShowProp\r\t\tELSE\r\t\t\tIF id < firstId THEN HandleVerb(id - iVerb0)\r\t\t\tELSE\r\t\t\t\tres := 0;\t"
+                    attr: 0
+                  - text: "(* prevent from parasitic anchors on stack *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tHandleCustomMenu(id)\r\t\t\tEND\r\t\tEND;\r\t\tProperties.IncEra;\r\r\t\told := WinApi.SetCursor(old)\r\r\tEND MenuCommand;\r\t\r\t\r\tPROCEDURE TranslateAccelerators (VAR msg: WinApi.MSG; filter: SET; VAR done: BOOLEAN);\r\t\tVAR m: Menu; i: StdDialog.Item; id, code: INTEGER; ctrl, shift, alt: BOOLEAN; ch: CHAR;\r\t\t\tfailed, ok: BOOLEAN; par: Dialog.Par;\r\tBEGIN\r\t\tIF (msg.message = WinApi.WM_SYSKEYDOWN) OR (msg.message = WinApi.WM_KEYDOWN) THEN\r\t\t\tcode := msg.wParam; id := 0; ch := 0X;\r\t\t\tshift := WinApi.GetKeyState(10H) < 0;\r\t\t\tctrl := WinApi.GetKeyState(11H) < 0;\r\t\t\talt := ODD(msg.lParam DIV 20000000H);\r\t\t\tIF 1 IN filter THEN\r\t\t\t\tIF shift & (code = 79H) THEN id := iPopup\t"
+                    attr: 0
+                  - text: "(* shift F10 *)\r"
+                    attr: 1
+                  - text: "\t\t\t\tELSIF alt THEN\r\t\t\t\t\tIF code = 08H THEN id := iUndo\t"
+                    attr: 0
+                  - text: "(* alt bs *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tELSIF code = 0DH THEN id := iProperties\t"
+                    attr: 0
+                  - text: "(* alt enter *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tELSIF code = 5DH THEN id := iProperties\t"
+                    attr: 0
+                  - text: "(* alt application *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tELSIF (code = minusCode) & shift THEN ch := NBHYPHEN\r\t\t\t\t\tELSIF (code = ORD(\" \")) & shift THEN ch := NBSPACE\r\t\t\t\t\tEND\r\t\t\t\tELSIF ctrl THEN\r\t\t\t\t\tIF code = ORD(\" \") THEN\r\t\t\t\t\t\tIF shift THEN ch := NUMSPACE END\r\t\t\t\t\tELSIF code = 2DH THEN\r\t\t\t\t\t\tid := iCopy\t"
+                    attr: 0
+                  - text: "(* ctrl insert *)\r\t\t\t\t"
+                    attr: 1
+                  - text: "\tELSIF code = minusCode THEN\r\t\t\t\t\t\tIF shift THEN ch := SOFTHYPHEN ELSE ch := HYPHEN END\r\t\t\t\t\tEND\r\t\t\t\tELSIF shift THEN\r\t\t\t\t\tIF code = 2EH THEN id := iCut\t"
+                    attr: 0
+                  - text: "(* shift delete *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tELSIF code = 2DH THEN id := iPaste\t"
+                    attr: 0
+                  - text: "(* shift insert *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tEND\r\t\t\t\tELSIF code = 5DH THEN id := iPopup\t"
+                    attr: 0
+                  - text: "(* application *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tELSIF code = 1BH THEN done := TRUE\t"
+                    attr: 0
+                  - text: "(* esc *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tIF (id = 0) & ~alt & (ctrl OR (code >= 70H) & (code <= 7FH)) "
+                    attr: 0
+                  - text: "(* function key *)"
+                    attr: 1
+                  - text: " THEN\r\t\t\t\tm := menus;\r\t\t\t\tWHILE (m # NIL) & (id = 0) DO\r\t\t\t\t\tIF ((m.type = \"\") OR (m.type = type)) & ~m.isPopup & (m.class IN filter) THEN\r\t\t\t\t\t\ti := m.firstItem;\r\t\t\t\t\t\tWHILE (i # NIL) &\r\t\t\t\t\t\t\t((i(Item).code # code) OR (i(Item).ctrl # ctrl) OR (i(Item).shift # shift)) DO i := i.next END;\r\t\t\t\t\t\tIF i # NIL THEN\r\t\t\t\t\t\t\tIF i.filter^ # \"\" THEN StdDialog.CheckFilter(i, failed, ok , par) END;\r\t\t\t\t\t\t\tIF (i.filter^ = \"\") OR ~failed & ~par.disabled THEN id := i(Item).id END\r\t\t\t\t\t\tEND\r\t\t\t\t\tEND;\r\t\t\t\t\tm := m.next\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tIF id # 0 THEN\r\t\t\t\tmsg.message := WinApi.WM_COMMAND; msg.wParam := id + 65536;\r\t\t\t\tmsg.hwnd := HostWindows.main; msg.lParam := 0; done := TRUE\r\t\t\tELSIF ch # 0X THEN\r\t\t\t\tmsg.message := WinApi.WM_CHAR; msg.wParam := ORD(ch); done := TRUE\r\t\t\tEND\r\t\tEND\r\tEND TranslateAccelerators;\r\r\r\tPROCEDURE OpenFile (VAR name: ARRAY OF CHAR; l, t, r, b: INTEGER; VAR ok: BOOLEAN);\r\t\tVAR res: INTEGER; loc: Files.Locator; np: WinApi.PtrWSTR; path: HostFiles.FullName;\r\t\t\tfile: Files.Name; v: Views.View; conv: Converters.Converter; f: Files.File;\r\tBEGIN\r\t\tok := FALSE;\r\t\tres := WinApi.GetFullPathNameW(name, LEN(path), path, np);\r\t\tIF np # NIL THEN\r\t\t\tfile := np^$;\r\t\t\tIF file # \"\" THEN\r\t\t\t\tDEC(SYSTEM.VAL(INTEGER, np), "
+                    attr: 0
+                  - text: 2
+                    attr: 3
+                  - text: "); np^[0] := 0X;\r\t\t\t\tloc := HostFiles.NewLocator(path);\r\t\t\t\tf := Files.dir.Old(loc, file, Files.shared);\r\t\t\t\tIF f # NIL THEN\r\t\t\t\t\tconv := Converters.list;\r\t\t\t\t\tWHILE (conv # NIL) & (conv.fileType # f.type) DO conv := conv.next END;\r\t\t\t\t\tIF conv = NIL THEN\r\t\t\t\t\t\tconv := Converters.list;\r\t\t\t\t\t\tWHILE (conv # NIL) & ~(impAll IN conv.opts) DO conv := conv.next END\r\t\t\t\t\tEND;\r\t\t\t\t\tIF f.type = \"\" THEN file := file + \".\" END;\r\t\t\t\t\tv := Views.Old(Views.dontAsk, loc, file, conv);\r\t\t\t\t\tIF v # NIL THEN\r\t\t\t\t\t\tHostWindows.dir.l := l; HostWindows.dir.t := t; HostWindows.dir.r := r; HostWindows.dir.b := b;\r\t\t\t\t\t\tViews.Open(v, loc, file, conv); ok := TRUE;\r\t\t\t\t\t\tHostWindows.dir.l := 0; HostWindows.dir.t := 0; HostWindows.dir.r := 0; HostWindows.dir.b := 0\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND OpenFile;\r\t\r\tPROCEDURE IncludingFileCommandLine(\r\t\tIN line: ARRAY [untagged] OF CHAR\r\t): POINTER TO ARRAY OF CHAR;\r\t\tVAR f: Files.File; r: Files.Reader; i, len: INTEGER; \r\t\t\theader: ARRAY 12 OF BYTE; keyword: ARRAY 12 OF CHAR;\r\t\t\tb: POINTER TO ARRAY OF BYTE;\r\t\t\tl2: POINTER TO ARRAY OF CHAR;\r\tBEGIN\r\t\tlen := LEN(line$);\r\t\tf := Files.dir.Old(Files.dir.This(cmdLinePath), cmdLineFile, Files.shared);\r\t\tIF (f # NIL) & (f.Length() > LEN(header)) THEN\r\t\t\tr := f.NewReader(NIL); r.ReadBytes(header, 0, LEN(header));\r\t\t\tFOR i := 0 TO LEN(header) - 1 DO keyword[i] := CHR(header[i]) END;\r\t\t\tkeyword[LEN(keyword) - 1] := 0X;\r\t\t\tIF keyword = 'COMMANDLINE' THEN\r\t\t\t\tNEW(b, f.Length() - LEN(header)); NEW(l2, LEN(b) + len + 1);\r\t\t\t\tr.ReadBytes(b, 0, LEN(b));\r\t\t\t\tFOR i := 0 TO len - 1 DO l2[i] := line[i] END; l2[i] := \" \";\r\t\t\t\tFOR i := 0 TO LEN(b) - 1 DO l2[i + len + 1] := CHR(b[i] MOD 256) END;\r\t\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " l2\r\t\t\tEND\r\t\tEND;\r\t\tNEW(l2, len + 1); \r\t\tl2^ := line$;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " l2\r\tEND IncludingFileCommandLine;\r\t\r\tPROCEDURE ReadCommandLine (IN line: ARRAY [untagged] OF CHAR; open: BOOLEAN);\r\t\tVAR name, opt: ARRAY 260 OF CHAR; i, l, t, r, b, res: INTEGER; ok: BOOLEAN;\r\t\t\r\t\tPROCEDURE CopyName;\r\t\t\tVAR ch, tch: CHAR; j: INTEGER;\r\t\tBEGIN\r\t\t\tj := 0; ch := line[i]; tch := \" \";\r\t\t\tWHILE ch = \" \" DO INC(i); ch := line[i] END;\r\t\t\tIF (ch = \"'\") OR (ch = '\"') THEN tch := ch; INC(i); ch := line[i] END;\r\t\t\tWHILE (ch >= \" \") & (ch # tch) DO\r\t\t\t\tname[j] := ch;\r\t\t\t\tIF Strings.IsLower(ch) THEN ch := Strings.Upper(ch)\r\t\t\t\tELSIF ch = \"-\" THEN ch := \"/\"\r\t\t\t\tEND;\r\t\t\t\topt[j] := ch; INC(j); INC(i); ch := line[i]\r\t\t\tEND;\r\t\t\tIF ch > \" \" THEN INC(i); ch := line[i] END;\r\t\t\tWHILE (ch # 0X) & (ch <= \" \") DO INC(i); ch := line[i] END;\r\t\t\tname[j] := 0X; opt[j] := 0X\r\t\tEND CopyName;\r\t\t\r\tBEGIN\r\t\tl := 0; t := 0; r := 0; b := 0; i := 0;\r\t\tCopyName;\t"
+                    attr: 0
+                  - text: "(* skip program name *)"
+                    attr: 1
+                  - text: "\r\t\tWHILE line[i] > \" \" DO\r\t\t\tCopyName;\r\t\t\tIF opt = \"/LOAD\" THEN\t"
+                    attr: 0
+                  - text: "(* load module *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tCopyName;\r\t\t\t\tIF open THEN Kernel.LoadMod(name) END\r\t\t\tELSIF opt = \"/USE\" THEN\t"
+                    attr: 0
+                  - text: "(* use directory *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tCopyName\t"
+                    attr: 0
+                  - text: "(* working directory: handled in HostFiles *)"
+                    attr: 1
+                  - text: "\r\t\t\tELSIF opt = \"/P\" THEN\t"
+                    attr: 0
+                  - text: "(* print file *)"
+                    attr: 1
+                  - text: "\t"
+                    attr: 0
+                  - text: "(* to be completed !!! *)"
+                    attr: 4
+                  - text: "\r\t\t\t\tCopyName;\r\t\t\t\tIF open THEN\r\t\t\t\t\tOpenFile(name, 0, 0, 0, 0, ok);\r\t\t\t\t\tIF ok THEN HostCmds.Print END\r\t\t\t\tEND\r\t\t\tELSIF opt = \"/PT\" THEN\t"
+                    attr: 0
+                  - text: "(* print file to printer *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tCopyName; CopyName; CopyName; CopyName\t"
+                    attr: 0
+                  - text: "(* to be completed !!! *)"
+                    attr: 4
+                  - text: "\r\t\t\tELSIF opt = \"/EMBEDDING\" THEN\t"
+                    attr: 0
+                  - text: "(* start as server *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tIF ~open THEN state := embedded END\r\t\t\tELSIF opt = \"/NOAPPWIN\" THEN\t"
+                    attr: 0
+                  - text: "(* start without application window *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tIF ~open THEN state := noAppWin; HostWindows.noAppWin := TRUE END\r\t\t\tELSIF opt = \"/NOSCROLL\" THEN\t"
+                    attr: 0
+                  - text: "(* no scroll bars in  application window *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tHostWindows.noClientScroll := TRUE\r\t\t\tELSIF opt = \"/FULLSIZE\" THEN\r\t\t\t\tHostWindows.fullSize := TRUE\r\t\t\tELSIF opt = \"/LTRB\" THEN\t"
+                    attr: 0
+                  - text: "(* window position *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tCopyName; Strings.StringToInt(name, l, res);\r\t\t\t\tCopyName; Strings.StringToInt(name, t, res);\r\t\t\t\tCopyName; Strings.StringToInt(name, r, res);\r\t\t\t\tCopyName; Strings.StringToInt(name, b, res)\r\t\t\tELSIF opt = \"/LANG\" THEN\r\t\t\t\tCopyName;\r\t\t\t\tIF LEN(name$) = 2 THEN\r\t\t\t\t\tStrings.ToLower(name, name); Dialog.SetLanguage(name$, Dialog.nonPersistent)\r\t\t\t\tEND\r\t\t\tELSIF opt = \"/O\" THEN\t"
+                    attr: 0
+                  - text: "(* open file *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tCopyName; openUsed := TRUE;\r\t\t\t\tIF open THEN OpenFile(name, l, t, r, b, ok) END;\r\t\t\t\topenParam := '/O \"' + name$ + '\"';\r\t\t\t\tl := 0; t := 0; r := 0; b := 0\r\t\t\tELSIF opt = \"/PAR\" THEN\r\t\t\t\tCopyName;\r\t\t\t\tDialog.commandLinePars := name$\r\t\t\tELSE\t"
+                    attr: 0
+                  - text: "(* open file *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tIF open THEN OpenFile(name, l, t, r, b, ok) END;\r\t\t\t\tl := 0; t := 0; r := 0; b := 0\r\t\t\tEND\r\t\tEND\r\tEND ReadCommandLine;\r\r\tPROCEDURE DropFiles (wnd: WinApi.HANDLE; wParam, lParam: INTEGER);\r\t\tVAR i, n, res: INTEGER; name: ARRAY 260 OF CHAR; ok: BOOLEAN;\r\tBEGIN\r\t\tIF state = noAppWin THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " END;\r\t\tn := WinApi.DragQueryFileW(wParam, -1, name, LEN(name)); i := 0;\r\t\tWHILE i < n DO\r\t\t\tres := WinApi.DragQueryFileW(wParam, i, name, LEN(name));\r\t\t\tOpenFile(name, 0, 0, 0, 0, ok);\r\t\t\tIF ok THEN res := WinApi.SetForegroundWindow(HostWindows.main) END;\r\t\t\tINC(i)\r\t\tEND;\r\t\tWinApi.DragFinish(wParam)\r\tEND DropFiles;\r\r\r"
+                    attr: 0
+                  - text: "\t(* main window handler *)\r\t\r"
+                    attr: 1
+                  - text: "\tPROCEDURE Quit (wnd: WinApi.HANDLE; wParam, lParam: INTEGER);\r\tBEGIN\r\t\tHostCmds.Quit\r\tEND Quit;\r\t\r\tPROCEDURE UpdateMenus;\r\t\tVAR res: INTEGER; m: Menu; old: WinApi.HANDLE;\r\tBEGIN\r\t\told := menuBar; menuBar := WinApi.CreateMenu();\r\t\tm := menus;\r\t\tWHILE m # NIL DO\r\t\t\tIF ((m.type = \"\") OR (m.type = type)) & ~m.isPopup THEN\r\t\t\t\tres := WinApi.AppendMenuW(menuBar, WinApi.MF_POPUP,  m.menuH, m.menu)\r\t\t\tEND;\r\t\t\tm := m.next\r\t\tEND;\r\t\tres := WinApi.SendMessageW(HostWindows.client, WinApi.WM_MDISETMENU, menuBar, winMenu);\r\t\tres := WinApi.DrawMenuBar(HostWindows.main);\r\t\tWHILE WinApi.RemoveMenu(old, 0, WinApi.MF_BYPOSITION) # 0 DO END;\r\t\tres := WinApi.DestroyMenu(old)\r\tEND UpdateMenus;\r\r\tPROCEDURE UpdateType;\r\t\tVAR ops: Controllers.PollOpsMsg;\r\tBEGIN\r\t\tControllers.SetCurrentPath(Controllers.targetPath);\r\t\tControllers.PollOps(ops);\r\t\tIF (ops.type # type) & (menus # NIL) & (WinApi.GetMenu(HostWindows.main) = menuBar) THEN\r\t\t\ttype := ops.type$;\r\t\t\tUpdateMenus\r\t\tEND;\r\t\tControllers.ResetCurrentPath()\r\tEND UpdateType;\r\r\tPROCEDURE TimerTick (wnd: WinApi.HANDLE; wParam, lParam: INTEGER);\r\t\tVAR ops: Controllers.PollOpsMsg;\r\tBEGIN\r\t\tIF ~Log.synch THEN Log.FlushBuf END;\r\t\tIF ~HostCFrames.inHandleMouse THEN HostWindows.Idle END;\r\t\tUpdateType()\r\tEND TimerTick;\r\t\r\tPROCEDURE Flush (wnd: WinApi.HANDLE; wParam, lParam: INTEGER);\r\tBEGIN\r\t\tHostClipboard.Flush\r\tEND Flush;\r\t\r\t\r\tPROCEDURE [2] ApplWinHandler (wnd: WinApi.HANDLE; message, wParam, lParam: INTEGER): INTEGER;\r\t\tTYPE PPS = POINTER TO WinApi.PAINTSTRUCT; PR = POINTER TO WinApi.RECT;\r\t\tVAR res: INTEGER; w: WinApi.HANDLE; r: WinApi.RECT; hit: BOOLEAN;\r\t\t\tProc: PROCEDURE; s: ARRAY 256 OF CHAR;\r\tBEGIN\r\t\tControllers.SetCurrentPath(Controllers.targetPath);\r\t\tIF (hookApplWinHandler # NIL) & hookApplWinHandler(message, wParam, lParam, res) THEN\r\t\t\tControllers.ResetCurrentPath();\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " res\r\t\tEND;\r\t\tCASE message OF\r\t\t| WinApi.WM_CLOSE, WinApi.WM_QUERYENDSESSION:\r\t\t\tKernel.Try(Quit, wnd, wParam, lParam);\r\t\t\tIF HostCmds.quit THEN\r\t\t\t\tHostWindows.SaveWindowState;\r\t\t\t\tIF locks = 0 THEN\r\t\t\t\t\tKernel.Try(Flush, wnd, 0, 0)\r\t\t\t\tELSE\r\t\t\t\t\tstate := hidden;\r\t\t\t\t\tres := WinApi.ShowWindow(HostWindows.main, WinApi.SW_HIDE);\r\t\t\t\t\tControllers.ResetCurrentPath();\r\t\t\t\t\tRETURN 0\r\t\t\t\tEND\r\t\t\tELSE gc := 0;\r\t\t\t\tControllers.ResetCurrentPath();\r\t\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 0\r\t\t\tEND\r\t\t| WinApi.WM_DESTROY:\r\t\t\tWinApi.PostQuitMessage(0);\r\t\t\tControllers.ResetCurrentPath();\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 0\r\t\t| WinApi.WM_ACTIVATE:\r\t\t\tIF debug THEN Log.String(\"activate hack\"); Log.Ln END;\r"
+                    attr: 0
+                  - text: "\t\t\tIF wParam MOD 65536 # 0 THEN HostWindows.ActivateMain(TRUE) END\r\t\t| WinApi.WM_NCACTIVATE:\r\t\t\tIF wParam MOD 65536 = 0 THEN HostWindows.ActivateMain(FALSE) END\r"
+                    attr: 3
+                  - text: "\t\t| WinApi.WM_COMMAND:\r\t\t\tControllers.SetCurrentPath(Controllers.frontPath);\r\t\t\t"
+                    attr: 0
+                  - text: "(* prevent from parasitic anchors on stack *)"
+                    attr: 1
+                  - text: "\r\t\t\tres := 0; w := 0; r.left := 0; r.top := 0; r.right := 0; r.bottom := 0; hit := FALSE; \r\t\t\tKernel.Try(MenuCommand, wnd, wParam, lParam);\r\t\t\tControllers.ResetCurrentPath()\r\t\t| WinApi.WM_INITMENUPOPUP:\r\t\t\tControllers.SetCurrentPath(Controllers.frontPath);\r\t\t\tKernel.Try(PrepareMenu, wnd, wParam, lParam);\r\t\t\tControllers.ResetCurrentPath()\r(*\r\t\t| WinApi.WMRenderFormat:\r\t\t\tKernel.Try(Export, wnd, wParam, 0)\r\t\t| WinApi.WMRenderAllFormats:\r\t\t\tKernel.Try(Export, wnd, 0, 0)\r\t\t| WinApi.WMPaintClipboard:\r\t\t\tpps := SYSTEM.VAL(PPS, WinApi.GlobalLock(lParam));\r\t\t\tHostWindows.PaintClipboard(wParam, pps^);\r\t\t\tres := WinApi.GlobalUnlock(lParam);\r\t\t\tControllers.ResetCurrentPath();\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 0\r\t\t| WinApi.WMSizeClipboard:\r\t\t\tpr := SYSTEM.VAL(PR, WinApi.GlobalLock(lParam));\r\t\t\tHostWindows.SizeClipboard(wParam, pr.right, pr.bottom);\r\t\t\tres := WinApi.GlobalUnlock(lParam);\r\t\t\tControllers.ResetCurrentPath();\r\t\t\tRETURN 0\r\t\t| WinApi.WMHScrollClipboard:\r\t\t\tHostWindows.ScrollClipboard(wParam, lParam MOD 65536, lParam DIV 65536 MOD 65536, FALSE);\r\t\t\tControllers.ResetCurrentPath();\r\t\t\tRETURN 0\r\t\t| WinApi.WMVScrollClipboard:\r\t\t\tHostWindows.ScrollClipboard(wParam, lParam MOD 65536, lParam DIV 65536 MOD 65536, TRUE);\r\t\t\tControllers.ResetCurrentPath();\r\t\t\tRETURN 0\r\t\t| WinApi.WMAskCBFormatName:\r\t\t\tSYSTEM.MOVE(SYSTEM.ADR(\"BlackBox\"), lParam, 9);\r\t\t\tControllers.ResetCurrentPath();\r\t\t\tRETURN 0\r\t\t| WinApi.WMDestroyClipboard:\r\t\t\tHostClipboard.Destroy;\r\t\t\tControllers.ResetCurrentPath();\r\t\t\tRETURN 0\r*)\r\t\t| WinApi.WM_SYSCOLORCHANGE:\r\t\t\tIF HostWindows.ctl3d # 0 THEN\r\t\t\t\tSYSTEM.PUT(\r\t\t\t\t\tSYSTEM.ADR(Proc), WinApi.GetProcAddress(HostWindows.ctl3d, \"Ctl3dColorChange\"));\r\t\t\t\tIF Proc # NIL THEN Proc() END\r\t\t\tEND;\r\t\t\tHostPorts.ResetColors;\r\t\t\tres := WinApi.DeleteObject(HostPorts.dialogBrush);\r\t\t\tHostPorts.dialogBrush := WinApi.CreateSolidBrush(Ports.dialogBackground)\r\t\t| WinApi.WM_DROPFILES:\r\t\t\tKernel.Try(DropFiles, wnd, wParam, lParam);\r\t\t\tControllers.ResetCurrentPath();\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 0\r\t\t| WinApi.WM_TIMER:\r\t\t\tKernel.Try(TimerTick, wnd, wParam, lParam);\r\t\t\tControllers.ResetCurrentPath();\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 0\r\t\t| WinApi.WM_SIZE:\r\t\t\tHostWindows.ResizeMainWindow(wParam, lParam MOD 65536, lParam DIV 65536);\r\t\t\tControllers.ResetCurrentPath();\r\t\t\tIF HostWindows.mainHook # NIL THEN\r\t\t\t\tHostWindows.mainHook.Resize(lParam MOD 65536, lParam DIV 65536)\r\t\t\tEND;\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 0\r"
+                    attr: 0
+                  - text: "\t\t"
+                    attr: 3
+                  - text: "| WinApi.WM_SETFOCUS:\r\t\t\tIF HostWindows.mainHook # NIL THEN HostWindows.mainHook.Focus(TRUE) END\r"
+                    attr: 0
+                  - text: "\t\t"
+                    attr: 3
+                  - text: "| WinApi.WM_KILLFOCUS:\r\t\t\tIF HostWindows.mainHook # NIL THEN HostWindows.mainHook.Focus(FALSE) END\r"
+                    attr: 0
+                  - text: "\t\t"
+                    attr: 3
+                  - text: "| WinApi.WM_ACTIVATEAPP:\r\t\t\tIF HostWindows.mainHook # NIL THEN HostWindows.mainHook.Activate(wParam # 0) END\r\t\t| WinApi.WM_CTLCOLORSTATIC:\t"
+                    attr: 0
+                  - text: "(* status bar colors *)"
+                    attr: 1
+                  - text: "\r\t\t\tres := WinApi.SetTextColor(wParam, HostPorts.dialogTextCol);\r\t\t\tres := WinApi.SetBkColor(wParam, Ports.dialogBackground);\r\t\t\tControllers.ResetCurrentPath();\r\t\t\tRETURN HostPorts.dialogBrush\r\t\tELSE\r\t\t\tIF (message = msgId) & ~disablePipe THEN\r\t\t\t\tIF (wParam >= 0FFFFC000H) & (wParam < 0) THEN\r\t\t\t\t\tHostWindows.ShowMain; state := running;\r\t\t\t\t\tIF WinApi.IsIconic(HostWindows.main) # 0 THEN\r\t\t\t\t\t\tres := WinApi.ShowWindow(HostWindows.main, WinApi.SW_RESTORE)\r\t\t\t\t\tEND;\r\t\t\t\t\tres := WinApi.GlobalGetAtomNameW(SHORT(wParam), s, LEN(s));\r\t\t\t\t\tReadCommandLine(s, TRUE);\r\t\t\t\t\tres := WinApi.GlobalAddAtomW(\"<file_opened>\");\r\t\t\t\t\tres := WinApi.GlobalDeleteAtom(SHORT(wParam))\r\t\t\t\tEND;\r\t\t\t\tControllers.ResetCurrentPath();\r\t\t\t\tRETURN 0\r\t\t\tEND\r\t\tEND;\r\t\tControllers.ResetCurrentPath();\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.DefFrameProcW(wnd, HostWindows.client, message, wParam, lParam)\r\tEND ApplWinHandler;\r\r\r"
+                    attr: 0
+                  - text: "\t(* Initialization *)\r"
+                    attr: 1
+                  - text: "\t\r\tPROCEDURE CreateDefaultMenu;\r\t\tVAR res: INTEGER;\r\tBEGIN\r\t\tdefMenu := WinApi.CreatePopupMenu();\r\t\tres := WinApi.AppendMenuW(defMenu, {}, iOpen, \"&Open\");\r\t\tres := WinApi.AppendMenuW(defMenu, {}, iUpdateMenus, \"&Menu\");\r\t\tres := WinApi.AppendMenuW(defMenu, WinApi.MF_SEPARATOR, 0, NIL);\r\t\tres := WinApi.AppendMenuW(defMenu, {}, iExit, \"E&xit\");\r\t\tmenuBar := WinApi.CreateMenu(); winMenu := 0; popMenu := 0;\r\t\tres := WinApi.AppendMenuW(menuBar, WinApi.MF_POPUP, defMenu, \"&File\")\r\tEND CreateDefaultMenu;\r\t\r\tPROCEDURE DestroyMenus;\t"
+                    attr: 0
+                  - text: "(* module terminator *)"
+                    attr: 1
+                  - text: "\r\t\tVAR res: INTEGER; m: Menu; Proc: PROCEDURE(i: WinApi.HANDLE);\r\tBEGIN\r\t\tm := menus;\r\t\tWHILE m # NIL DO\r\t\t\tres := WinApi.DestroyMenu(m.menuH);\r\t\t\tm := m.next\r\t\tEND;\r\t\tIF HostWindows.ctl3d # 0 THEN\r\t\t\tSYSTEM.PUT(SYSTEM.ADR(Proc), WinApi.GetProcAddress(HostWindows.ctl3d, \"Ctl3dUnregister\"));\r\t\t\tIF Proc # NIL THEN Proc(WinApi.GetModuleHandleW(NIL)) END\r\t\tEND\r\tEND DestroyMenus;\r\t\r\r"
+                    attr: 0
+                  - text: "\t(* main event loop *)\r"
+                    attr: 1
+                  - text: "\t\r\tPROCEDURE Loop;\r\t\tVAR res, n: INTEGER; msg: WinApi.MSG; done: BOOLEAN; f: SET; w: HostWindows.Window;\r\tBEGIN\r\t\tHostWindows.dir.invisible := FALSE;\r\t\tIF state = hidden THEN HostWindows.ShowMain; state := running END;\r\t\tgc := 0; n := 0;\r\t\tWHILE WinApi.GetMessageW(msg, 0, 0, 0) # 0 DO\r\t\t\t"
+                    attr: 0
+                  - text: CheckFpu;
+                    attr: 3
+                  - text: "\r\t\t\tIF WinApi.IsWindowVisible(HostWindows.main) # 0 THEN state := running END;\r\t\t\tdone := FALSE;\r\t\t\tIF isCont & (TranslateOleKeys1 # NIL) THEN\r\t\t\t\tTranslateOleKeys1(SYSTEM.VAL(WinApi.MSG, msg), done)\r\t\t\tEND;\r\t\t\tIF ~done & ~isObj THEN\r\t\t\t\tdone := WinApi.TranslateMDISysAccel(HostWindows.client, msg) # 0\r\t\t\tEND;\r\t\t\tIF ~done THEN\r\t\t\t\tIF isObj THEN f := {1, 3, 5} ELSIF isCont THEN f := {0, 2, 4} ELSE f := {0..5} END;\r\t\t\t\tTranslateAccelerators(msg, f, done);\r\t\t\t\tIF ~done & isObj & (TranslateOleKeys2 # NIL) THEN\r\t\t\t\t\tTranslateOleKeys2(SYSTEM.VAL(WinApi.MSG, msg), done)\r\t\t\t\tELSE done := FALSE\r\t\t\t\tEND;\r\t\t\t\tIF ~done THEN\r\t\t\t\t\tres := WinApi.TranslateMessage(msg);\r\t\t\t\t\tres := WinApi.DispatchMessageW(msg)\r\t\t\t\tEND;\r\t\t\t\tServices.actionHook.Loop\r\t\t\tEND;\r\t\t\tINC(n);\r\t\t\tIF (n > num) OR (WinApi.PeekMessageW(msg, 0, 0, 0, 0) = 0) THEN\r\t\t\t\tWindows.dir.Update(NIL); n := 0\r\t\t\tEND;\r\t\t\tIF state = hidden THEN DEC(gc) END;\r\t\t\tIF ((gc <= 0) OR Kernel.WouldFinalize()) & ~HostCmds.quit THEN\r\t\t\t\tmsg.message := 0; msg.hwnd := 0; msg.wParam := 0; msg.lParam := 0;\r\t\t\t\tmsg.time := 0; msg.pt.x := 0; msg.pt.y := 0; res := 0;\r\t\t\t\tKernel.Collect; gc := gcCycle\r\t\t\tEND;\r\t\t\tIF state = noAppWin THEN\r\t\t\t\tw := HostWindows.dir.First();\r\t\t\t\tWHILE (w # NIL) & ~(Windows.isTool IN w.flags) DO w := HostWindows.dir.Next(w) END;\r\t\t\t\tIF w = NIL THEN Exit ELSE w := NIL END\r\t\t\tEND\r\t\tEND;\r\t\tKernel.Quit(msg.wParam)\r"
+                    attr: 0
+                  - text: "\t\t(* never returns *)\r"
+                    attr: 1
+                  - text: "\tEND Loop;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: OpenApp
+                    attr: 3
+                  - text: "*;\r\t\tVAR res: INTEGER; Proc: PROCEDURE(i: WinApi.HANDLE); atom: SHORTINT;\r\tBEGIN\r\t\tIF HostWindows.ctl3d # 0 THEN\r\t\t\tSYSTEM.PUT(\r\t\t\t\tSYSTEM.ADR(Proc), WinApi.GetProcAddress(HostWindows.ctl3d, \"Ctl3dAutoSubclass\"));\r\t\t\tIF Proc # NIL THEN Proc(WinApi.GetModuleHandleW(NIL)) END\r\t\tEND;\r\t\tReadCommandLine(IncludingFileCommandLine(WinApi.GetCommandLineW()), FALSE);\r\t\tIF openUsed THEN\r\t\t\tatom := WinApi.GlobalAddAtomW(openParam);\r\t\t\tIF atom # 0 THEN\r\t\t\t\tres := WinApi.SendMessageW(-1, msgId, atom, 0);\r\t\t\t\tWinApi.Sleep(100);\r\t\t\t\tres := WinApi.GlobalDeleteAtom(atom);\r\t\t\t\tatom := WinApi.GlobalFindAtomW(\"<file_opened>\");\r\t\t\t\tIF atom # 0 THEN res := WinApi.GlobalDeleteAtom(atom) END;\r\t\t\t\tIF (atom # 0) OR (res # 0) THEN Kernel.Quit(1) END\r\t\t\tEND\r\t\tEND;\r\t\tHostWindows.CreateMainWindows(menuBar, winMenu, ApplWinHandler);\r\t\tIF state = running THEN HostWindows.ShowMain END;\r\t\tres := WinApi.SetTimer(HostWindows.main, 1, idlePeriod, NIL);\r\t\tWinApi.DragAcceptFiles(HostWindows.main, 1);\r\t\tHostWindows.dir.invisible := TRUE\r\tEND OpenApp;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: Run
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tReadCommandLine(IncludingFileCommandLine(WinApi.GetCommandLineW()), TRUE);\r\t\tKernel.Start(Loop)\r\tEND Run;\r\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetNum
+                    attr: 3
+                  - text: "* (n: INTEGER);\r\tBEGIN\r\t\tnum := n\r\tEND SetNum;\r\r\r\tPROCEDURE Init;\r\t\tVAR res: INTEGER; s: ARRAY 256 OF CHAR;\r\tBEGIN\r\t\tstate := running;\r\t\tHostCmds.quit := FALSE;\r\t\tCreateDefaultMenu;\r\t\tobjMenu := WinApi.CreatePopupMenu();\r\t\tlastId := firstId; menus := NIL;\r\t\ttype := \"undef\";\r\t\tHostPorts.dialogBrush := WinApi.CreateSolidBrush(Ports.dialogBackground);\r\t\tminusCode := WinApi.VkKeyScanW(\"-\");\r\t\tIF minusCode # -1 THEN minusCode := minusCode MOD 256 END;\r\t\tDialog.MapString(\"#Host:Shift\", shiftStr);\r\t\tDialog.MapString(\"#Host:Ctrl\", ctrlStr);\r\t\tDialog.MapString(\"#Host:Space\", spaceStr);\r\t\tgc := 0; num := 10;\r\t\tres := WinApi.GetModuleFileNameW(0, s, LEN(s));\r\t\tmsgId := WinApi.RegisterWindowMessageW(s)\r\tEND Init;\r\rBEGIN\r\tKernel.InstallCleaner(Collect);\r\tInit\rCLOSE\r\tKernel.RemoveCleaner(Collect);\r\tDestroyMenus\rEND HostMenus.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 28
+          bodyPos: 45544
+          bodyLen: 8

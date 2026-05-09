@@ -1,0 +1,952 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\System\\Docu\\Controls.odc"
+  size: 26534
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 26403
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 26217
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 26131
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                asc: 134600
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000003
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 26252
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 25738
+                runListLen: 3404
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                flow:
+                  - text: Controls
+                    attr: 0
+                  - text: "\r\rDEFINITION Controls;\r\r\tIMPORT Meta, Dialog, Views, Properties;\r\r\tCONST\r\t\topt0 = 0; opt1 = 1; opt2 = 2; opt3 = 3; opt4 = 4;\r\t\tlink = 5; label = 6; guard = 7; notifier = 8; level = 9;\r\t\tdefault = opt0; cancel = opt1;\r\t\tleft = opt0; right = opt1; multiLine = opt2; password = opt3;\r\t\tsorted = opt0;\r\t\thaslines = opt1; hasbuttons = opt2; atroot = opt3; foldericons = opt4;\r\r\tTYPE\r\t\tControl = POINTER TO ABSTRACT RECORD (Views.View)\r\t\t\titem-: Meta.Item;\r\t\t\tdisabled-, undef-, readOnly-, customFont-: BOOLEAN;\r\t\t\tfont-: Fonts.Font;\r\t\t\tlabel-: Dialog.String;\r\t\t\tprop-: Prop;\r\t\t\t(c: Control) Internalize- (VAR rd: Stores.Reader);\r\t\t\t(c: Control) Externalize- (VAR wr: Stores.Writer);\r\t\t\t(c: Control) CopyFromSimpleView- (source: Views.View);\r\t\t\t(c: Control) HandleViewMsg- (f: Views.Frame; VAR msg: Views.Message);\r\t\t\t(c: Control) HandleCtrlMsg (f: Views.Frame; VAR msg: Views.CtrlMessage;\r\t\t\t\t\t\t\t\t\t\t\t\t\tVAR focus: Views.View);\r\t\t\t(c: Control) HandlePropMsg- (VAR msg: Views.PropMessage);\r\r\t\t\t(c: Control) Internalize2- (VAR rd: Stores.Reader), NEW, EMPTY;\r\t\t\t(c: Control) Externalize2- (VAR wr: Stores.Writer), NEW, EMPTY;\r\t\t\t(c: Control) CopyFromSimpleView2- (source: Control), NEW, EMPTY;\r\t\t\t(c: Control) HandleViewMsg2- (f: Views.Frame; VAR msg: Views.Message), NEW, EMPTY;\r\t\t\t(c: Control) HandleCtrlMsg2- (f: Views.Frame; VAR msg: Views.CtrlMessage;\r\t\t\t\t\t\t\t\t\t\t\t\t\tVAR focus: Views.View), NEW, EMPTY;\r\t\t\t(c: Control) HandlePropMsg2- (VAR p: Views.PropMessage), NEW, EMPTY;\r\r\t\t\t(c: Control) CheckLink- (VAR ok: BOOLEAN), NEW, EMPTY;\r\t\t\t(c: Control) Update- (f: Views.Frame; op, from, to: INTEGER), NEW, EMPTY;\r\t\t\t(c: Control) UpdateList- (f: Views.Frame), NEW, EMPTY\r\t\tEND;\r\r\t\tDirectory = POINTER TO ABSTRACT RECORD \r\t\t\t(d: Directory) NewPushButton (p: Prop): Control, NEW, ABSTRACT;\r\t\t\t(d: Directory) NewCheckBox (p: Prop): Control, NEW, ABSTRACT;\r\t\t\t(d: Directory) NewRadioButton (p: Prop): Control, NEW, ABSTRACT;\r\t\t\t(d: Directory) NewListBox (p: Prop): Control, NEW, ABSTRACT;\r\t\t\t(d: Directory) NewSelectionBox (p: Prop): Control, NEW, ABSTRACT;\r\t\t\t(d: Directory) NewField (p: Prop): Control, NEW, ABSTRACT;\r\t\t\t(d: Directory) NewUpDownField (p: Prop): Control, NEW, ABSTRACT;\r\t\t\t(d: Directory) NewDateField (p: Prop): Control, NEW, ABSTRACT;\r\t\t\t(d: Directory) NewTimeField (p: Prop): Control, NEW, ABSTRACT;\r\t\t\t(d: Directory) NewTreeControl (p: Prop): Control, NEW, ABSTRACT;\r\t\t\t(d: Directory) NewColorField (p: Prop): Control, NEW, ABSTRACT;\r\t\t\t(d: Directory) NewComboBox (p: Prop): Control, NEW, ABSTRACT;\r\t\t\t(d: Directory) NewCaption (p: Prop): Control, NEW, ABSTRACT;\r\t\t\t(d: Directory) NewGroup (p: Prop): Control, NEW, ABSTRACT\r\t\tEND;\r\r\t\tProp = POINTER TO RECORD (Properties.Property)\r\t\t\topt: ARRAY 5 OF BOOLEAN;\r\t\t\tlink, label, guard, notifier: Dialog.String;\r\t\t\tlevel: INTEGER;\r\t\t\t(p: Prop) IntersectWith (q: Properties.Property; OUT equal: BOOLEAN)\r\t\tEND;\r\r\t\tDefaultsPref = RECORD (Properties.Preference)\r\t\t\tdisabled, undef, readOnly: BOOLEAN\r\t\tEND;\r\r\t\tPropPref = RECORD (Properties.Preference)\r\t\t\tvalid: SET\r\t\tEND;\r\r\tVAR\r\t\tdir-, stdDir-: Directory;\r\t\tpar-: Control;\r\r\tPROCEDURE Notify (c: Control; f: Views.Frame; op, from, to: INTEGER);\r\tPROCEDURE OpenLink (c: Control; p: Prop);\r\tPROCEDURE Relink;\r\tPROCEDURE DepositPushButton;\r\tPROCEDURE DepositCheckBox;\r\tPROCEDURE DepositRadioButton;\r\tPROCEDURE DepositListBox;\r\tPROCEDURE DepositSelectionBox;\r\tPROCEDURE DepositField;\r\tPROCEDURE DepositUpDownField;\r\tPROCEDURE DepositDateField;\r\tPROCEDURE DepositTimeField;\r\tPROCEDURE DepositTreeControl;\r\tPROCEDURE DepositColorField;\r\tPROCEDURE DepositComboBox;\r\tPROCEDURE DepositCaption;\r\tPROCEDURE DepositGroup;\r\tPROCEDURE DepositCancelButton;\r\tPROCEDURE SetDir (d: Directory);\r\rEND Controls.\r\r\rModule "
+                    attr: 1
+                  - text: Controls
+                    attr: 2
+                  - text: " provides a variety of standard user interface elements, so-called "
+                    attr: 1
+                  - text: controls
+                    attr: 2
+                  - text: ". In BlackBox, a control is an extended view. As every view, a control can be embedded in any general container (-> Containers), such as forms (-> FormModels) but also texts (-> TextModels). Usually, controls are put into forms.\r\rThe standard controls provided by BlackBox are: command buttons (push buttons), check boxes, radio buttons, list boxes, selection boxes, (text, date, time and color) fields, combo boxes, tree controls, captions, and groups.\r\rUnlike other views, these BlackBox controls can be "
+                    attr: 1
+                  - text: linked
+                    attr: 2
+                  - text: " to a program variable, or more exactly: to any field accessible through a globally declared variable. When the control is opened, BlackBox tries to link the control to its variable, using the advanced metaprogramming capabilities of the BlackBox "
+                    attr: 1
+                  - text: Meta
+                    attr: 2
+                  - text: " module. In this way, the link between control and variable can be built up automatically when a dialog is newly created or loaded from a file, and correct linking (i.e., correct typing) can be guaranteed even after a dialog layout had been edited or otherwise manipulated.\r\rControls may take on different states at run-time. Depending on the control and on the underlying user interface, these states may be represented in visually distinct ways:\r\renabled/disabled\r\tOnly enabled controls may be modified interactively.\r\tTo disable a control, its guard should set "
+                    attr: 1
+                  - text: par.disabled
+                    attr: 2
+                  - text: " to "
+                    attr: 1
+                  - text: "TRUE"
+                    attr: 2
+                  - text: ".\r\tA control which cannot be linked to its variable is always disabled.\rdefined/undefined\r\tIllegal or otherwise undefined values may be hilighted as such.\r\tTo mark a control as undefined, its guard should set "
+                    attr: 1
+                  - text: par.undef
+                    attr: 2
+                  - text: " to "
+                    attr: 1
+                  - text: "TRUE"
+                    attr: 2
+                  - text: ".\rnormal/read-only\r\tControls may be denoted as read-only, i.e., under program control only.\r\tTo mark a control as read-only, its guard should set "
+                    attr: 1
+                  - text: par.readOnly
+                    attr: 2
+                  - text: " to "
+                    attr: 1
+                  - text: "TRUE"
+                    attr: 2
+                  - text: ".\r\tControls which are linked to read-only variables are always read-only.\r\rNote that the above states are temporary, i.e., determined wholly at run-time; they are never externalized or internalized.\r\rAll controls have the following persistent properties, which are externalized when the controls are written to files:\r\rlink\r\tThis is the name of a global variable, to which the control is linked, e.g.,"
+                    attr: 1
+                  - text: "\r\tTextCmds.find.replace"
+                    attr: 2
+                  - text: ".\rlabel\r\tThis is the displayed string.\r\t(not applicable to (text, date, time and color) fields, list boxes, selection boxes, combo boxes)\r\tA \"&\" character indicates which character of the label should be underlined\r\t(For the keyboard shortcut. This is a Windows feature, and not available on Mac OS).\r\tIf you want a \"&\" to appear, you should write a \"&&\".\rguard\r\tThis optional command name denotes a guard procedure which allows to disable/enable a\r\tcontrol selectively, and to set the undef and readOnly states as well.\rnotifier\r\tThis optional command name denotes a notifier procedure which allows to do something\r\twhenever the value of a control was changed interactively.\rlight font\r\tA field may either be displayed in the standard font for this purpose, or in a more\r\tdiscreet (\"light\") font. On some platforms, this property may be interpreted only in fields\r\tand captions.\r\r\rThese properties, as well as further control-specific properties (see below) can be set interactively using a suitable tool (-> DevInspector), or programmatically using the "
+                    attr: 1
+                  - text: Properties.SetMsg
+                    attr: 2
+                  - text: ".\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 792000 }
+                      attr: 3
+                      w: 360000000
+                      h: 444500
+                  - text: Command Button
+                    attr: 3
+                  - text: "\rPressing a command button invokes a parameterless exported Component Pascal procedure. A command button is either linked to a parameterless exported procedure. It can be either a constant (a normal procedure) or a procedure variable.\r\rAdditional properties:\rdefault\tThe button is activated when the user presses "
+                    attr: 1
+                  - text: return
+                    attr: 2
+                  - text: " or "
+                    attr: 1
+                  - text: enter
+                    attr: 2
+                  - text: ".\rcancel\tThe button is activated when the user presses "
+                    attr: 1
+                  - text: escape
+                    attr: 2
+                  - text: ".\r\r\r"
+                    attr: 1
+                  - text: Check Box
+                    attr: 3
+                  - text: "\rA check box lets the user toggle between two states, checked and unchecked. A check box is linked to a "
+                    attr: 1
+                  - text: BOOLEAN
+                    attr: 2
+                  - text: " field or variable.\rAlternatively, a check box can also be linked to a "
+                    attr: 1
+                  - text: SET
+                    attr: 2
+                  - text: " field or variable. The "
+                    attr: 1
+                  - text: level
+                    attr: 2
+                  - text: " property then specifies to which entry of the set the control is linked to. The control is checked if the inspected element is in the set. A check box can also be linked to a "
+                    attr: 1
+                  - text: Dialog.Selection
+                    attr: 2
+                  - text: " field or variable. The "
+                    attr: 1
+                  - text: level
+                    attr: 2
+                  - text: " property then indicates which element of the "
+                    attr: 1
+                  - text: val
+                    attr: 2
+                  - text: " set of the selection is inspected.\r\rAdditional property:\rlevel\tif a check box is linked to a set or to a "
+                    attr: 1
+                  - text: Dialog.Selection
+                    attr: 2
+                  - text: " variable, then the level field\r\tindicates which set element is displayed by the control.\r\r\r"
+                    attr: 1
+                  - text: Radio Button
+                    attr: 3
+                  - text: "\rRadio buttons let the user choose between several alternatives. Each alternative is represented as a radio button. At any time, exactly one of the radio buttons is \"on\", while all others are \"off\".\rAll radio buttons which belong to one selection are linked to the same integer field. Each radio button is \"on\" for another value of the integer field. This value can be configured with the "
+                    attr: 1
+                  - text: level
+                    attr: 2
+                  - text: " property.\r\rAdditional property:\rlevel\ta radio button is \"on\" when the value of the variable to which the button is\r\tbound is equal to the level value.\r\r\r"
+                    attr: 1
+                  - text: List Box
+                    attr: 3
+                  - text: "\rA list box presents a list of strings to the user. From this list, at most one entry can be selected. List boxes are linked to a "
+                    attr: 1
+                  - text: Dialog.List
+                    attr: 2
+                  - text: ".\r\r\r"
+                    attr: 1
+                  - text: Selection Box
+                    attr: 3
+                  - text: "\rA selection box presents a list of strings to the user. From this list, an arbitrary number of entries can be selected. Selection boxes are linked to a "
+                    attr: 1
+                  - text: Dialog.Selection
+                    attr: 2
+                  - text: ".\r\r\r"
+                    attr: 1
+                  - text: Field
+                    attr: 3
+                  - text: "\rA text field lets the user type in a string. Fields are either linked to "
+                    attr: 1
+                  - text: "ARRAY n OF CHAR, BYTE, SHORTINT, INTEGER, LONGINT, SHORTREAL, REAL, Dialog.Combo"
+                    attr: 2
+                  - text: " or "
+                    attr: 1
+                  - text: Dialog.Currency
+                    attr: 2
+                  - text: " fields. Fields perform some basic checks, such as for the maximum permissible string length, or for the permissible character set (for numbers, only digits and a few characters like \"-\" or \".\" make sense).\r\rAdditional property:\rmulti line\tThe field linked to "
+                    attr: 1
+                  - text: ARRAY n OF CHAR
+                    attr: 2
+                  - text: " may display several lines.\r\tA carriage return character is accepted on input.\rpassword\tDon't display the characters that have been typed in.\r\r"
+                    attr: 1
+                  - text: UpDownField
+                    attr: 3
+                  - text: "\rThe "
+                    attr: 1
+                  - text: UpDownField
+                    attr: 2
+                  - text: " is a special text field linked to a "
+                    attr: 1
+                  - text: "BYTE, SHORTINT, INTEGER"
+                    attr: 2
+                  - text: " or "
+                    attr: 1
+                  - text: LONGINT
+                    attr: 2
+                  - text: " variable. The value of the integer can be incremented and decremented through arrows.\r\r\r"
+                    attr: 1
+                  - text: "DateField\r"
+                    attr: 3
+                  - text: "A date field lets the user specify a date. Date fields are linked to variables of type "
+                    attr: 1
+                  - text: Dates.Date
+                    attr: 2
+                  - text: ". On input, date fields only allow valid dates.\r\r\r"
+                    attr: 1
+                  - text: Time Field
+                    attr: 3
+                  - text: "\rA time field lets the user specify a time. Time fields are linked to variables of type "
+                    attr: 1
+                  - text: Dates.Time
+                    attr: 2
+                  - text: ". On input, time fields only allow valid times.\r\r\r"
+                    attr: 1
+                  - text: Tree Control
+                    attr: 3
+                  - text: "\rA tree control presents a tree of strings to the user. From this tree, at most one node can be selected. Tree Controls are linked to a "
+                    attr: 1
+                  - text: Dialog.Tree
+                    attr: 2
+                  - text: ".\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 1296000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rAdditional properties:\rSorted\tNodes with the same parent are displayed in alphabetical order \r\trather than in the order they were added to the tree.\rLines\tLines are drawn between nodes in the tree.\rButtons\tA button with a \"+\" or a \"-\" sign is drawn in front of nodes that have children.\rLines/Buttons at Root\tLines and buttons are drawn also at the root level in the tree.\rFolder Icons\tIcons are used to show nodes as folders or leafs.\r\r"
+                    attr: 1
+                  - text: "Color Field\r"
+                    attr: 3
+                  - text: "A color field lets the user specify a color. Color fields are linked to variables of type "
+                    attr: 1
+                  - text: Dialog.Color
+                    attr: 2
+                  - text: " or of type "
+                    attr: 1
+                  - text: Ports.Color
+                    attr: 2
+                  - text: ".\r\r\r"
+                    attr: 1
+                  - text: Combo Box
+                    attr: 3
+                  - text: "\rA combo box is a combination of a text field with a list box. Like a list box, it presents a list of strings from which can be chosen. Additionally, it provides a field in which a value may be typed in. This value may be one in the list, or another value altogether. Combo boxes are linked to a "
+                    attr: 1
+                  - text: Dialog.Combo
+                    attr: 2
+                  - text: ".\r\r\r"
+                    attr: 1
+                  - text: Caption
+                    attr: 3
+                  - text: "\rA caption is a static string, which cannot be manipulated by the user. Typically, a field is accompanied by a caption which tells what the meaning of the field is. Captions may either be unlinked, or linked to the same record field as their corresponding field. Captions are not completely passive in that they may be enabled or disabled (e.g., \"greyed out\") as other controls.\r\r\r"
+                    attr: 1
+                  - text: Group
+                    attr: 3
+                  - text: "\rA group is a rectangular frame with a label in it. It allows to logically group several controls together.\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r\rGuard commands can be associated with a control. Such a command has the following signature:\r\r\tPROCEDURE Guard (VAR par: Dialog.Par)\r\rThe main purpose of a guard command is to disable a control when necessary. This is done in the following way:\r\r\tPROCEDURE Guard (VAR par: Dialog.Par);\r\tBEGIN\r\t\tpar.disabled := "
+                    attr: 1
+                  - text: condition
+                    attr: 2
+                  - text: "\r\tEND Guard;\r\rControls which are always enabled need no guard. Besides disabling a control, guards may also set a control to an undefined or read-only state ("
+                    attr: 1
+                  - text: par.undef
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: par.readOnly
+                    attr: 2
+                  - text: ").\r\rNotifier commands can be associated with a control. Such a command has the signature of "
+                    attr: 1
+                  - text: Dialog.NotifierProc
+                    attr: 2
+                  - text: ", i.e.,\r\r\tPROCEDURE Notifier (op, from, to: INTEGER)\r\rThe purpose of a notifier command is to give a program the opportunity to customize the behavior of a control when its state is being modified by the user. For example, a status message may be shown when the user clicks onto a command button, and remove again when the user releases the button again (this can be done using the "
+                    attr: 1
+                  - text: Dialog.ShowStatus
+                    attr: 2
+                  - text: " procedure). Or, a notifier may perform some checks after each character typed into a text field. Another example are selection boxes: for each item / item range which is selected/deselected, a notification is produced. This makes it possible to e.g. update the count of currently selected items of this selection box.\r\rExamples:\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Obx/Docu/Controls', 'ObxControls Docu')"
+                      body:
+                        - text: ObxControls  docu
+                          attr: 4
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\tthe use of guards and notifiers\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Obx/Docu/Dialog', 'ObxDialog Docu')"
+                      body:
+                        - text: ObxDialog  docu
+                          attr: 4
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\tthe use of selection boxes and combo boxes\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Obx/Docu/Buttons', 'ObxButtons Docu')"
+                      body:
+                        - text: ObxButtons docu
+                          attr: 4
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\tcontrol not extended from Controls.Control  shows how to handle control properties\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenDoc('Obx/Mod/Ctrls')"
+                      body:
+                        - text: ObxCtrls
+                          attr: 4
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\tslider control, extended from Controls.Control\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenDoc('Obx/Mod/FldCtrls')"
+                      body:
+                        - text: ObxFldCtrls
+                          attr: 4
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\tspecial-purpose text field control, extended from Controls.Control\r\r\rCONST "
+                    attr: 1
+                  - text: "opt0, opt1, opt2, opt3, opt4"
+                    attr: 3
+                  - text: "\rElements of a control property's "
+                    attr: 1
+                  - text: valid
+                    attr: 2
+                  - text: " set. They determine whether their corresponding "
+                    attr: 1
+                  - text: optN
+                    attr: 2
+                  - text: " fields are valid.\r\rCONST "
+                    attr: 1
+                  - text: link
+                    attr: 3
+                  - text: "\rElement of a control property's "
+                    attr: 1
+                  - text: valid
+                    attr: 2
+                  - text: " set. It determines whether the "
+                    attr: 1
+                  - text: link
+                    attr: 2
+                  - text: " field is valid.\r\rCONST "
+                    attr: 1
+                  - text: label
+                    attr: 3
+                  - text: "\rElement of a control property's "
+                    attr: 1
+                  - text: valid
+                    attr: 2
+                  - text: " set. It determines whether the "
+                    attr: 1
+                  - text: label
+                    attr: 2
+                  - text: " field is valid.\r\rCONST "
+                    attr: 1
+                  - text: guard
+                    attr: 3
+                  - text: "\rElement of a control property's "
+                    attr: 1
+                  - text: valid
+                    attr: 2
+                  - text: " set. It determines whether the "
+                    attr: 1
+                  - text: guard
+                    attr: 2
+                  - text: " field is valid.\r\rCONST "
+                    attr: 1
+                  - text: notifier
+                    attr: 3
+                  - text: "\rElement of a control property's "
+                    attr: 1
+                  - text: valid
+                    attr: 2
+                  - text: " set. It determines whether the "
+                    attr: 1
+                  - text: notifier
+                    attr: 2
+                  - text: " field is valid.\r\rCONST "
+                    attr: 1
+                  - text: level
+                    attr: 3
+                  - text: "\rElement of a control property's "
+                    attr: 1
+                  - text: valid
+                    attr: 2
+                  - text: " set. It determines whether the "
+                    attr: 1
+                  - text: level
+                    attr: 2
+                  - text: " field is valid.\r\rCONST "
+                    attr: 1
+                  - text: "default, cancel"
+                    attr: 3
+                  - text: "\rAliases of "
+                    attr: 1
+                  - text: opt0
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: opt1
+                    attr: 2
+                  - text: ", used for command buttons.\r\rCONST "
+                    attr: 1
+                  - text: "left, right, multiLine, password"
+                    attr: 3
+                  - text: "\rAliases of "
+                    attr: 1
+                  - text: opt0
+                    attr: 2
+                  - text: " to "
+                    attr: 1
+                  - text: opt3
+                    attr: 2
+                  - text: " used for text entry fields\r\rCONST "
+                    attr: 1
+                  - text: sorted
+                    attr: 3
+                  - text: "\rAlias of "
+                    attr: 1
+                  - text: opt0
+                    attr: 2
+                  - text: " used for list-structured controls (list/selection/combo boxes/tree control).\r\rCONST "
+                    attr: 1
+                  - text: haslines
+                    attr: 3
+                  - text: "\rAlias of "
+                    attr: 1
+                  - text: opt1
+                    attr: 2
+                  - text: " used for tree control.\r\rCONST "
+                    attr: 1
+                  - text: hasbuttons
+                    attr: 3
+                  - text: "\rAlias of "
+                    attr: 1
+                  - text: opt2
+                    attr: 2
+                  - text: " used for tree control.\r\rCONST "
+                    attr: 1
+                  - text: atroot
+                    attr: 3
+                  - text: "\rAlias of "
+                    attr: 1
+                  - text: opt3
+                    attr: 2
+                  - text: " used for tree control.\r\rCONST "
+                    attr: 1
+                  - text: foldericons
+                    attr: 3
+                  - text: "\rAlias of "
+                    attr: 1
+                  - text: opt4
+                    attr: 2
+                  - text: " used for tree control.\r\r\rTYPE "
+                    attr: 1
+                  - text: Control (Views.View)
+                    attr: 3
+                  - text: "\rABSTRACT\rBase type for controls that can be linked to global variables or procedures via metaprogramming. Such a control has no separate model, the item to which it is linked takes the role of a model.\r\r"
+                    attr: 1
+                  - text: item
+                    attr: 3
+                  - text: "-: Meta.Item\rThis item describes the variable or procedure to which the control is linked.\r\r"
+                    attr: 1
+                  - text: disabled
+                    attr: 3
+                  - text: "-, "
+                    attr: 1
+                  - text: undef
+                    attr: 3
+                  - text: "-, "
+                    attr: 1
+                  - text: readOnly
+                    attr: 3
+                  - text: "-: BOOLEAN\rThe current temporary state of any control.\r\r"
+                    attr: 1
+                  - text: customFont
+                    attr: 3
+                  - text: "-: BOOLEAN\rThis flag determines whether the control's font is taken from the operating system configuration, or from the "
+                    attr: 1
+                  - text: font
+                    attr: 2
+                  - text: " variable below.\r\r"
+                    attr: 1
+                  - text: font
+                    attr: 3
+                  - text: "-: Fonts.Font\tfont # NIL -> customFont\rThe control's custom font ("
+                    attr: 1
+                  - text: customFont
+                    attr: 2
+                  - text: " must be "
+                    attr: 1
+                  - text: "TRUE"
+                    attr: 2
+                  - text: " when "
+                    attr: 1
+                  - text: font
+                    attr: 2
+                  - text: " is used, i.e., when it is not "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: ").\r\r"
+                    attr: 1
+                  - text: label
+                    attr: 3
+                  - text: "-: Dialog.String\rThe control's label.\r\r"
+                    attr: 1
+                  - text: prop
+                    attr: 3
+                  - text: "-: Prop\tprop # NIL\rThe control attributes of this control.\r\rPROCEDURE (c: Control) "
+                    attr: 1
+                  - text: Internalize2
+                    attr: 3
+                  - text: "- (VAR rd: Stores.Reader), NEW, EMPTY;\rPROCEDURE (c: Control) "
+                    attr: 1
+                  - text: Externalize2
+                    attr: 3
+                  - text: "- (VAR wr: Stores.Writer), NEW, EMPTY;\rPROCEDURE (c: Control) "
+                    attr: 1
+                  - text: CopyFromSimpleView2
+                    attr: 3
+                  - text: "- (source: Control), NEW, EMPTY;\rPROCEDURE (c: Control) "
+                    attr: 1
+                  - text: HandleViewMsg2
+                    attr: 3
+                  - text: "- (f: Views.Frame; VAR msg: Views.Message)\rPROCEDURE (c: Control) "
+                    attr: 1
+                  - text: HandleCtrlMsg2
+                    attr: 3
+                  - text: "- (f: Views.Frame; VAR msg: Views.CtrlMessage;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR focus: Views.View)\rPROCEDURE (c: Control) "
+                    attr: 1
+                  - text: HandlePropMsg2
+                    attr: 3
+                  - text: "- (VAR p: Views.PropMessage)\rNEW, EMPTY\rExtension hooks for "
+                    attr: 1
+                  - text: Internalize
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: Externalize
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: "CopyFromSimpleView, HandleCtrlMsg, HandlePropMsg, HandlePropMsg"
+                    attr: 2
+                  - text: ". These methods are made final, and call their new empty extension hooks.\r\rPROCEDURE (c: Control) "
+                    attr: 1
+                  - text: CheckLink
+                    attr: 3
+                  - text: "- (VAR ok: BOOLEAN)\rNEW, EMPTY\rThis hook procedure allows a control to check whether the item to which it is linked is acceptable. For example, a checkbox control would accept a link to a Boolean item, but not to an integer item.\r\rPROCEDURE (c: Control) "
+                    attr: 1
+                  - text: Update
+                    attr: 3
+                  - text: "- (f: Views.Frame; op, from, to: INTEGER)\rNEW, EMPTY\rUpdate the display of a control. For list-structured controls, the list is not changed.\r\rPROCEDURE (c: Control) "
+                    attr: 1
+                  - text: UpdateList
+                    attr: 3
+                  - text: "- (f: Views.Frame)\rNEW, EMPTY\rUpdate the display of a list-structured control, including a rebuilding of its list elements.\r\r\rTYPE "
+                    attr: 1
+                  - text: Directory
+                    attr: 3
+                  - text: " \rABSTRACT\rDirectory type for standard controls.\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: NewPushButton
+                    attr: 3
+                  - text: " (p: Prop): Control\rNEW, ABSTRACT\rAllocates and returns a new command button.\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: NewCheckBox
+                    attr: 3
+                  - text: " (p: Prop): Control\rNEW, ABSTRACT\rAllocates and returns a new check box.\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: NewRadioButton
+                    attr: 3
+                  - text: " (p: Prop): Control\rNEW, ABSTRACT\rAllocates and returns a new radio button.\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: NewListBox
+                    attr: 3
+                  - text: " (p: Prop): Control\rNEW, ABSTRACT\rAllocates and returns a new list box.\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: NewSelectionBox
+                    attr: 3
+                  - text: " (p: Prop): Control\rNEW, ABSTRACT\rAllocates and returns a new selection box.\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: NewField
+                    attr: 3
+                  - text: " (p: Prop): Control\rNEW, ABSTRACT\rAllocates and returns a new text field.\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: NewUpDownField
+                    attr: 3
+                  - text: " (p: Prop): Control\rNEW, ABSTRACT\rAllocates and returns a new text field with up and down arrows.\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: NewDateField
+                    attr: 3
+                  - text: " (p: Prop): Control\rNEW, ABSTRACT\rAllocates and returns a new date field.\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: NewTimeField
+                    attr: 3
+                  - text: " (p: Prop): Control\rNEW, ABSTRACT\rAllocates and returns a new time field.\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: NewTreeControl
+                    attr: 3
+                  - text: " (p: Prop): Control\rNEW, ABSTRACT\rAllocates and returns a new tree control.\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: NewColorField
+                    attr: 3
+                  - text: " (p: Prop): Control\rNEW, ABSTRACT\rAllocates and returns a new color field.\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: NewComboBox
+                    attr: 3
+                  - text: " (p: Prop): Control\rNEW, ABSTRACT\rAllocates and returns a new combo box.\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: NewCaption
+                    attr: 3
+                  - text: " (p: Prop): Control\rNEW, ABSTRACT\rAllocates and returns a new text caption.\r\rPROCEDURE (d: Directory) "
+                    attr: 1
+                  - text: NewGroup
+                    attr: 3
+                  - text: " (p: Prop): Control\rNEW, ABSTRACT\rAllocates and returns a new group.\r\r\rTYPE "
+                    attr: 1
+                  - text: Prop (Properties.Property)
+                    attr: 3
+                  - text: "\rA property object describes various attributes of a control. There are messages which allow to poll or set the control properties of a control (-> Properties, -> Controllers).\r\r"
+                    attr: 1
+                  - text: opt
+                    attr: 3
+                  - text: ": ARRAY 5 OF BOOLEAN;\rUp to five Boolean options. Their meaning depends on the control's type.\r\r"
+                    attr: 1
+                  - text: link
+                    attr: 3
+                  - text: ": Dialog.String\rName of the field or procedure to which control is linked, e.g., \"TextCmds.find.replace\".\r\r"
+                    attr: 1
+                  - text: label
+                    attr: 3
+                  - text: ": Dialog.String\rString label of the control. Ignored for fields, list boxes, selection boxes, combo boxes and tree controls.\r\r"
+                    attr: 1
+                  - text: guard
+                    attr: 3
+                  - text: ": Dialog.String\rOptional name of guard command.\r\r"
+                    attr: 1
+                  - text: notifier
+                    attr: 3
+                  - text: ": Dialog.String\rOptional name of notifier command.\r\r"
+                    attr: 1
+                  - text: level
+                    attr: 3
+                  - text: ": INTEGER\tonly valid for radio buttons.\rDetermines for which value of the bound variable the control is \"on\".\r\r\rTYPE "
+                    attr: 1
+                  - text: DefaultsPref (Properties.Preference)
+                    attr: 3
+                  - text: "\rThis preference message allows to override the general defaults of a control's temporary state.\r\r"
+                    attr: 1
+                  - text: "disabled, undef, readOnly"
+                    attr: 3
+                  - text: ": BOOLEAN\rState of the control. It is being determined in three steps:\r1) general default:\r\tdisabled := ~c.item.Valid()\r\tundef := FALSE\r\treadOnly := c.item.vis = Meta.readOnly\r2) control-specific default:\r\tby handling the "
+                    attr: 1
+                  - text: DefaultsPref
+                    attr: 2
+                  - text: " message, the general default can be overwritten.\r\tFor example, with buttons: disabled := link = \"\"\r3) guard call:\r\tIf there is a guard, the guard result is used, otherwise the default.\r\r\rTYPE "
+                    attr: 1
+                  - text: PropPref (Properties.Preference)
+                    attr: 3
+                  - text: "\rPreference message which allows to specify the valid properties of the receiving control.\r{link, label, guard, notifier, customFont} is the default. By handling the "
+                    attr: 1
+                  - text: PropPref
+                    attr: 2
+                  - text: " message, elements of the valid set can be added or removed.\r\r"
+                    attr: 1
+                  - text: valid
+                    attr: 3
+                  - text: ": SET\r\r\rVAR "
+                    attr: 1
+                  - text: "dir-, stdDir-"
+                    attr: 3
+                  - text: ": Directory\tdir # NIL  &  stdDir # NIL\rDirectories for the lookup of standard controls.\r\rVAR "
+                    attr: 1
+                  - text: par-
+                    attr: 3
+                  - text: ": Control\rBefore a control's guard or notifier procedure is called, and before any controller message is sent to it, the control is assigned to "
+                    attr: 1
+                  - text: par
+                    attr: 2
+                  - text: ". Afterwards, it is reset to its previous value. This variable can be used in a command to determine the currently active control.\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: Notify
+                    attr: 3
+                  - text: " (c: Control; f: Views.Frame; op, from, to: INTEGER)\rUsed internally.\r\rPROCEDURE "
+                    attr: 1
+                  - text: OpenLink
+                    attr: 3
+                  - text: " (c: Control; p: Prop)\rTry to link control "
+                    attr: 1
+                  - text: c
+                    attr: 2
+                  - text: " according to control property "
+                    attr: 1
+                  - text: p
+                    attr: 2
+                  - text: ".\r\rPre\rc # NIL\t20\rp # NIL\t21\r\rPROCEDURE "
+                    attr: 1
+                  - text: Relink
+                    attr: 3
+                  - text: "\rForce a re-evaluation of the control's link.\r\rPROCEDURE  "
+                    attr: 1
+                  - text: DepositPushButton
+                    attr: 3
+                  - text: "\rAllocate a new command button using "
+                    attr: 1
+                  - text: dir.NewPushButton
+                    attr: 2
+                  - text: " and deposit it.\r\rPROCEDURE  "
+                    attr: 1
+                  - text: DepositCheckBox
+                    attr: 3
+                  - text: "\rAllocate a new check box using "
+                    attr: 1
+                  - text: dir.NewCheckBox
+                    attr: 2
+                  - text: " and deposit it.\r\rPROCEDURE  "
+                    attr: 1
+                  - text: DepositRadioButton
+                    attr: 3
+                  - text: "\rAllocate a new command button using "
+                    attr: 1
+                  - text: dir.NewPushButton
+                    attr: 2
+                  - text: " and deposit it.\r\rPROCEDURE  "
+                    attr: 1
+                  - text: DepositListBox
+                    attr: 3
+                  - text: "\rAllocate a new radio button using "
+                    attr: 1
+                  - text: dir.NewRadioButton
+                    attr: 2
+                  - text: " and deposit it.\r\rPROCEDURE  "
+                    attr: 1
+                  - text: DepositSelectionBox
+                    attr: 3
+                  - text: "\rAllocate a new selection box using "
+                    attr: 1
+                  - text: dir.NewSelectionBox
+                    attr: 2
+                  - text: " and deposit it.\r\rPROCEDURE  "
+                    attr: 1
+                  - text: DepositField
+                    attr: 3
+                  - text: "\rAllocate a new field using "
+                    attr: 1
+                  - text: dir.NewField
+                    attr: 2
+                  - text: " and deposit it.\r\rPROCEDURE  "
+                    attr: 1
+                  - text: DepositUpDownField
+                    attr: 3
+                  - text: "\rAllocate a new up-down-field using "
+                    attr: 1
+                  - text: dir.NewUpDownField
+                    attr: 2
+                  - text: " and deposit it.\r\rPROCEDURE  "
+                    attr: 1
+                  - text: DepositDateField
+                    attr: 3
+                  - text: "\rAllocate a new field using "
+                    attr: 1
+                  - text: dir.NewDateField
+                    attr: 2
+                  - text: " and deposit it.\r\rPROCEDURE  "
+                    attr: 1
+                  - text: DepositTimeField
+                    attr: 3
+                  - text: "\rAllocate a new field using "
+                    attr: 1
+                  - text: dir.NewTimeField
+                    attr: 2
+                  - text: " and deposit it.\r\rPROCEDURE "
+                    attr: 1
+                  - text: "DepositTreeControl\r"
+                    attr: 3
+                  - text: "Allocate a new tree control using "
+                    attr: 1
+                  - text: dir.NewTreeControl
+                    attr: 2
+                  - text: " and deposit it.\r\rPROCEDURE  "
+                    attr: 1
+                  - text: DepositColorField
+                    attr: 3
+                  - text: "\rAllocate a new field using "
+                    attr: 1
+                  - text: dir.NewColorField
+                    attr: 2
+                  - text: " and deposit it.\r\rPROCEDURE  "
+                    attr: 1
+                  - text: DepositComboBox
+                    attr: 3
+                  - text: "\rAllocate a new combo box using "
+                    attr: 1
+                  - text: dir.NewComboBox
+                    attr: 2
+                  - text: " and deposit it.\r\rPROCEDURE  "
+                    attr: 1
+                  - text: DepositCaption
+                    attr: 3
+                  - text: "\rAllocate a new caption using "
+                    attr: 1
+                  - text: dir.NewCaption
+                    attr: 2
+                  - text: " and deposit it.\r\rPROCEDURE  "
+                    attr: 1
+                  - text: DepositGroup
+                    attr: 3
+                  - text: "\rAllocate a new group using "
+                    attr: 1
+                  - text: dir.NewGroup
+                    attr: 2
+                  - text: " and deposit it.\r\rPROCEDURE  "
+                    attr: 1
+                  - text: DepositCancelButton
+                    attr: 3
+                  - text: "\rAllocate a new command button using "
+                    attr: 1
+                  - text: dir.NewPushButton
+                    attr: 2
+                  - text: " and deposit it. The button's link property is initialized to \"StdCmds.CloseDialog\" and its cancel-property is set to "
+                    attr: 1
+                  - text: "TRUE"
+                    attr: 2
+                  - text: ".\r\rPROCEDURE  "
+                    attr: 1
+                  - text: SetDir
+                    attr: 3
+                  - text: " (d: Directory)\rAssigns directory.\r"
+                    attr: 1
+                  - text: SetDir
+                    attr: 2
+                  - text: " is used in configuration routines.\r\rPre\rd # NIL\t20\r\rPost\rstdDir' = NIL\r\tstdDir = d\rstdDir' # NIL\r\tstdDir = stdDir'\rdir = d\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 26499
+          bodyLen: 8

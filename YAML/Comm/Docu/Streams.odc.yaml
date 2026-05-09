@@ -1,0 +1,482 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Comm\\Docu\\Streams.odc"
+  size: 12149
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 12018
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 11832
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 11746
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                asc: 152400
+                dsc: 25400
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 6
+                bodyPos: 11746
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 11232
+                runListLen: 1156
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: CommStreams
+                    attr: 0
+                  - text: "\r\rDEFINITION CommStreams;\r\r\tCONST\r\t\tdone = 0;\r\t\tnoSuchProtocol = 1;\r\t\tinvalidLocalAdr = 2;\r\t\tinvalidRemoteAdr = 3;\r\t\tnetworkDown = 4;\r\t\tlocalAdrInUse = 5;\r\t\tremoteAdrInUse = 6;\r\r\tTYPE\r\t\tAdr = POINTER TO ARRAY OF CHAR;\r\r\t\tListener = POINTER TO ABSTRACT RECORD \r\t\t\t(l: Listener) Accept (OUT s: Stream), NEW, ABSTRACT;\r\t\t\t(l: Listener) Close, NEW, ABSTRACT;\r\t\t\t(l: Listener) LocalAdr (): Adr, NEW, ABSTRACT\r\t\tEND;\r\r\t\tStream = POINTER TO ABSTRACT RECORD \r\t\t\t(s: Stream) Close, NEW, ABSTRACT;\r\t\t\t(s: Stream) IsConnected (): BOOLEAN, NEW, ABSTRACT;\r\t\t\t(s: Stream) ReadBytes (VAR x: ARRAY OF BYTE; beg, len: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\tOUT read: INTEGER), NEW, ABSTRACT;\r\t\t\t(s: Stream) RemoteAdr (): Adr, NEW, ABSTRACT;\r\t\t\t(s: Stream) WriteBytes (IN x: ARRAY OF BYTE; beg, len: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\tOUT written: INTEGER), NEW, ABSTRACT\r\t\tEND;\r\r\tPROCEDURE NewListener (protocol, localAdr: ARRAY OF CHAR; OUT l: Listener;\r\t\t\t\t\t\t\t\t\t\t\t\tOUT res: INTEGER);\r\tPROCEDURE NewStream (protocol, localAdr, remoteAdr: ARRAY OF CHAR; OUT s: Stream;\r\t\t\t\t\t\t\t\t\t\t\t\tOUT res: INTEGER);\r\rEND CommStreams.\r\r\rModule "
+                    attr: 1
+                  - text: CommStreams
+                    attr: 2
+                  - text: " defines the interfaces of two types: "
+                    attr: 1
+                  - text: Stream
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: Listener
+                    attr: 2
+                  - text: ". The interface is designed with reliable connection-oriented protocols in mind. Implementations of the stream and listener interfaces provide the actual communication channels. A TCP/IP implementation which internally uses a \"sockets\" interface is a typical example. Only implementors, not clients, need to extend the "
+                    attr: 1
+                  - text: Stream
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: Listener
+                    attr: 2
+                  - text: " types. In the following text it is distinguished between clients and implementors of these interface types.\rThe stream interface is non-blocking. The reason for this approach is the non-modal nature of the BlackBox Component Framework. Letting one component block the whole system (and thus the user) would be contrary to the framework's basic design goals. Implementing non-blocking communicating objects is easy, although unconvential. Fortunately, object-oriented programming lends itself to a straight-forward implementation of such objects.\r\r"
+                    attr: 1
+                  - text: Specification for clients
+                    attr: 3
+                  - text: "\r\r"
+                    attr: 1
+                  - text: Streams
+                    attr: 2
+                  - text: " are full-duplex synchronous communication channels. They are used through read and write procedures. These procedures "
+                    attr: 1
+                  - text: never
+                    attr: 2
+                  - text: " block. The read procedure reads as much data as possible and then returns immediately. The write procedure writes as much data (into an internal buffer) as possible and then returns immediately. The number of bytes read or written is returned as a result of the procedures.\r\rNote that depending on the used protocol, individual read or write operations can have considerable overhead. This means that transferring entire groups of data in one step whenever possible can lead to a considerable performance increase, compared to sending the same data in several steps.\r\rThere exist two ways to obtain a new object of type "
+                    attr: 1
+                  - text: Stream
+                    attr: 2
+                  - text: ", which represents a newly created connection. If a connection is to be made to a partner awaiting requests (\"server\"), the procedure "
+                    attr: 1
+                  - text: NewStream
+                    attr: 2
+                  - text: " is used. As parameters the name of the protocol to be used (or more exactly, it's driver module's name), and address identifiers for the remote port and for a local port are passed. The format of these identifiers, which are passed as character strings, depend on the protocol that is used.\r\rIf the possibility to listen for calls from another site (\"client\") is to be offered, a listener object is created first. Such a listener is used to test whether a connection request has been made by another site. Whenever this is the case, a new "
+                    attr: 1
+                  - text: Stream
+                    attr: 2
+                  - text: " object can be obtained from the listener. The listener itself can be used further until it is explicitly closed.\r\r"
+                    attr: 1
+                  - text: Requirements for implementors
+                    attr: 3
+                  - text: "\r\rImplementors of the interface have to implement all the procedures of the types "
+                    attr: 1
+                  - text: Stream
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: Listener
+                    attr: 2
+                  - text: " according to the specification described in the previous section. Furthermore, two procedures for object allocation must be exported, with the following signatures:\r\rPROCEDURE NewStream (localAdr, remoteAdr: ARRAY OF CHAR; OUT s: Stream; OUT res: INTEGER)\rPROCEDURE NewListener (localAdr: ARRAY OF CHAR; OUT l: Listener; OUT res: INTEGER)\r\rThese procedures will be activated by "
+                    attr: 1
+                  - text: CommStreams
+                    attr: 2
+                  - text: " using the metaprogramming facility of BlackBox. For example, if the protocol is TCP/IP, its driver's module name is used as protocol name, e.g., \"CommTCP\". For creating a stream, \"CommTCP.NewStream\" is called with the above described arguments. For creating a listener, \"CommTCP.NewListener\" is called with its set of arguments.\r\r\rCONST "
+                    attr: 1
+                  - text: done
+                    attr: 3
+                  - text: "\rPredefined value for parameter "
+                    attr: 1
+                  - text: res
+                    attr: 2
+                  - text: " of "
+                    attr: 1
+                  - text: NewStream
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: NewListener
+                    attr: 2
+                  - text: ". Signals that the operation could be carried out.\r\rCONST "
+                    attr: 1
+                  - text: noSuchProtocol
+                    attr: 3
+                  - text: "\rPredefined value for parameter "
+                    attr: 1
+                  - text: res
+                    attr: 2
+                  - text: " of "
+                    attr: 1
+                  - text: NewStream
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: NewListener
+                    attr: 2
+                  - text: ". Signals that the module specified as "
+                    attr: 1
+                  - text: protocol
+                    attr: 2
+                  - text: " could not be found, could not be loaded, or does not implement the required interface.\r\rCONST "
+                    attr: 1
+                  - text: networkDown
+                    attr: 3
+                  - text: "\rPredefined value for parameter "
+                    attr: 1
+                  - text: res
+                    attr: 2
+                  - text: " of "
+                    attr: 1
+                  - text: NewStream
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: NewListener
+                    attr: 2
+                  - text: ". Signals that the network resource used by the specified "
+                    attr: 1
+                  - text: protocol
+                    attr: 2
+                  - text: " is not available and hence no connections can be made.\r\rCONST "
+                    attr: 1
+                  - text: invalidLocalAdr
+                    attr: 3
+                  - text: "\rPredefined value for parameter "
+                    attr: 1
+                  - text: res
+                    attr: 2
+                  - text: " of "
+                    attr: 1
+                  - text: NewStream
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: NewListener
+                    attr: 2
+                  - text: ". Signals that the value specified as "
+                    attr: 1
+                  - text: localAdr
+                    attr: 2
+                  - text: " could not be used; either because the string was syntactically invalid, or because the specified address does not exist.\r\rCONST "
+                    attr: 1
+                  - text: localAdrInUse
+                    attr: 3
+                  - text: "\rPredefined value for parameter "
+                    attr: 1
+                  - text: res
+                    attr: 2
+                  - text: " of "
+                    attr: 1
+                  - text: NewStream
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: NewListener
+                    attr: 2
+                  - text: ". Signals that the value specified as "
+                    attr: 1
+                  - text: localAdr
+                    attr: 2
+                  - text: " could not be used because the address is in use already.\r\rCONST "
+                    attr: 1
+                  - text: invalidRemoteAdr
+                    attr: 3
+                  - text: "\rPredefined value for parameter "
+                    attr: 1
+                  - text: res
+                    attr: 2
+                  - text: " of "
+                    attr: 1
+                  - text: NewStream
+                    attr: 2
+                  - text: ". Signals that the value specified as "
+                    attr: 1
+                  - text: remoteAdr
+                    attr: 2
+                  - text: " could not be used; either because the string was syntactically invalid, or because the specified address does not exist.\r\rCONST "
+                    attr: 1
+                  - text: remoteAdrInUse
+                    attr: 3
+                  - text: "\rPredefined value for parameter "
+                    attr: 1
+                  - text: res
+                    attr: 2
+                  - text: " of "
+                    attr: 1
+                  - text: NewStream
+                    attr: 2
+                  - text: ". Signals that the value specified as "
+                    attr: 1
+                  - text: remoteAdr
+                    attr: 2
+                  - text: " could not be used because the address is in use already.\r\r\rTYPE "
+                    attr: 1
+                  - text: Adr
+                    attr: 3
+                  - text: "\rDynamic string type for names of local or remote addresses.\r\r\rTYPE "
+                    attr: 1
+                  - text: "Listener\r"
+                    attr: 3
+                  - text: "ABSTRACT\rObjects of type "
+                    attr: 1
+                  - text: Listener
+                    attr: 2
+                  - text: " offer services to the network.\r\rPROCEDURE (l: Listener) "
+                    attr: 1
+                  - text: Accept
+                    attr: 3
+                  - text: " (OUT s: Stream)\rNEW, ABSTRACT\rCreates a new "
+                    attr: 1
+                  - text: Stream
+                    attr: 2
+                  - text: " when a remote site requests a connection. "
+                    attr: 1
+                  - text: Accept
+                    attr: 2
+                  - text: " never blocks: either it returns a new stream, or "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: " if no service was requested from the network. If the listener is closed, "
+                    attr: 1
+                  - text: Accept
+                    attr: 2
+                  - text: " always returns "
+                    attr: 1
+                  - text: NIL
+                    attr: 2
+                  - text: ".\r\rPost\rs = NIL\r\tno service was requested\rs # NIL\r\tservice was requested over the network\r\rPROCEDURE (l: Listener) "
+                    attr: 1
+                  - text: Close
+                    attr: 3
+                  - text: "\rNEW, ABSTRACT\rCloses the listener, so that no services can't be requested over the network anymore. "
+                    attr: 1
+                  - text: Close
+                    attr: 2
+                  - text: " has no effect if the listener was closed already.\r\rPROCEDURE (l: Listener) "
+                    attr: 1
+                  - text: LocalAdr
+                    attr: 3
+                  - text: "\rNEW, ABSTRACT\rReturns the name of the local port on which the listener listens.\r\r\rTYPE "
+                    attr: 1
+                  - text: Stream
+                    attr: 3
+                  - text: "\rABSTRACT\rObjects of type "
+                    attr: 1
+                  - text: Stream
+                    attr: 2
+                  - text: " represent full-duplex connections.\r\rPROCEDURE (s: Stream) "
+                    attr: 1
+                  - text: Close
+                    attr: 3
+                  - text: "\rNEW, ABSTRACT\rCloses the connection. If the connection was already closed, "
+                    attr: 1
+                  - text: Close
+                    attr: 2
+                  - text: " has no effect.\r\rPost\r~s.IsConnected()\r\rPROCEDURE (s: Stream) "
+                    attr: 1
+                  - text: IsConnected
+                    attr: 3
+                  - text: " (): BOOLEAN\rNEW, ABSTRACT\rTests whether connection is still open, or whether it has been closed by either partner of the connection. No data can be read anymore.\r"
+                    attr: 1
+                  - text: IsConnected
+                    attr: 2
+                  - text: " is not precise in time. It only represents the current knowledge of the stream implementation about the state of the connection. In reality, this state may already have changed. This means that "
+                    attr: 1
+                  - text: IsConnected
+                    attr: 2
+                  - text: " may still return "
+                    attr: 1
+                  - text: "TRUE"
+                    attr: 2
+                  - text: " even if the connection has already been closed down.\r\rPost\rresult = FALSE\r\tconnection has been closed by one of the partners\rresult = TRUE\r\tconnection is probably still open\r\rPROCEDURE (s: Stream) "
+                    attr: 1
+                  - text: ReadBytes
+                    attr: 3
+                  - text: " (VAR x: ARRAY OF BYTE; beg, len: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT read: INTEGER)\rNEW, ABSTRACT\rReceives up to "
+                    attr: 1
+                  - text: len
+                    attr: 2
+                  - text: " bytes from the communication link and reads them. The procedure never blocks. No bytes are read if "
+                    attr: 1
+                  - text: ~s.IsConnected()
+                    attr: 2
+                  - text: ".\r\rPre\rbeg >= 0\t20\rlen > 0\t21\rLEN(x) >= beg + len\t22\r\rPost\rread >= 0\rx[beg ... beg + read[ = bytes read\r\rPROCEDURE (s: Stream) "
+                    attr: 1
+                  - text: WriteBytes
+                    attr: 3
+                  - text: " (IN x: ARRAY OF BYTE; beg, len: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT written: INTEGER)\rNEW, ABSTRACT\rSends up to "
+                    attr: 1
+                  - text: len
+                    attr: 2
+                  - text: " bytes over the communication link. The procedure never blocks. How many bytes are written might depend on internal resources, like buffer size. However, no guarantee of reception of the data by the partner site is given. No bytes are written if "
+                    attr: 1
+                  - text: ~s.IsConnected()
+                    attr: 2
+                  - text: ".\r\rPre\rbeg >= 0\t20\rlen > 0\t21\rLEN(x) >= beg + len\t22\r\rPost\rwritten >= 0\rx[beg ... beg + written[ = bytes written\r\r\rPROCEDURE  "
+                    attr: 1
+                  - text: NewListener
+                    attr: 3
+                  - text: " (protocol, localAdr: ARRAY OF CHAR; OUT l: Listener; OUT res: INTEGER)\rOffers connections on the port specified by "
+                    attr: 1
+                  - text: "localAdr "
+                    attr: 2
+                  - text: "using the transport service "
+                    attr: 1
+                  - text: protocol
+                    attr: 2
+                  - text: ". The format of "
+                    attr: 1
+                  - text: localAdr
+                    attr: 2
+                  - text: " depends on the protocol used.\rFor TCP/IP, "
+                    attr: 1
+                  - text: "protocol = \"CommTCP\""
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: localAdr
+                    attr: 2
+                  - text: " is the local port number (may be the empty string).\rResult codes (parameter "
+                    attr: 1
+                  - text: res
+                    attr: 2
+                  - text: ") may be one of the following (see "
+                    attr: 1
+                  - text: const
+                    attr: 2
+                  - text: " definitions above) or a protocol-specific value:\r\tdone, noSuchProtocol, networkDown,  invalidLocalAdr, localAdrInUse\r\rPre\rprotocol # \"\"\t20\r\rPost\rres = 0\r\tl # NIL\r\tlistener is open\rres # 0\r\tl = NIL\r\rPROCEDURE  "
+                    attr: 1
+                  - text: NewStream
+                    attr: 3
+                  - text: " (protocol, localAdr, remoteAdr: ARRAY OF CHAR;\r\t\t\t\t\t\t\t\t\t\t\t\tOUT s: Stream; OUT res: INTEGER)\rConnects to the site and port specified by "
+                    attr: 1
+                  - text: "remoteAdr "
+                    attr: 2
+                  - text: "using the local port given by "
+                    attr: 1
+                  - text: localAdr.
+                    attr: 2
+                  - text: " The format of the addresses depend on the protocol used. For example, for "
+                    attr: 1
+                  - text: "protocol = \"CommTCP\""
+                    attr: 2
+                  - text: ", "
+                    attr: 1
+                  - text: localAdr
+                    attr: 2
+                  - text: " must be a port number, e.g., 4. If the empty string is passed, port number 0 (\"don't care\") is used. The "
+                    attr: 1
+                  - text: remoteAdr
+                    attr: 2
+                  - text: " must either be an IP address such as \"100.0.0.7\", or the host's name. Either of them may optionally be followed by a \":\" and a port number, e.g., \"100.0.0.7:2\". Without this option, port number 0 is assumed.\rFor TCP/IP, "
+                    attr: 1
+                  - text: "protocol = \"CommTCP\""
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: localAdr
+                    attr: 2
+                  - text: " is the local port number (may be the empty string).\rResult codes (parameter "
+                    attr: 1
+                  - text: res
+                    attr: 2
+                  - text: ") may be one of the following (see "
+                    attr: 1
+                  - text: const
+                    attr: 2
+                  - text: " definitions above) or a protocol-specific value:\r\tdone, noSuchProtocol, networkDown, invalidLocalAdr, localAdrInUse, invalidRemoteAdr, remoteAdrInUse\r\rPre\rprotocol # \"\"\t20\r\rPost\rres = 0\r\ts # NIL\r\tstream is open\rres # 0\r\ts = NIL\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 10
+          bodyPos: 12114
+          bodyLen: 8

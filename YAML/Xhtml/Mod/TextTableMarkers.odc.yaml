@@ -1,0 +1,320 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Xhtml\\Mod\\TextTableMarkers.odc"
+  size: 6150
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 6019
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 5833
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 5747
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5943600
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: "*"
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 5872
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 5358
+                runListLen: 1941
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE XhtmlTextTableMarkers;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- see View.HandleCtrMsg\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT Ports, Stores, Views, Controllers, Properties, TextModels;\r\r\tCONST minVersion = 0; maxVersion = 1;\r\r\tTYPE\r\t\tView = POINTER TO RECORD (Views.View)\r\t\t\topenMark: BOOLEAN\r\t\tEND;\r\r\r\t"
+                    attr: 0
+                  - text: "(* View *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (v: View) Internalize (VAR rd: Stores.Reader);\r\t\tVAR version: INTEGER;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: "(* v is not initialized *)\r\t\t(* v.Domain() = NIL *)"
+                    attr: 1
+                  - text: "\r\t\tIF ~rd.cancelled THEN\r\t\t\trd.ReadVersion(minVersion, maxVersion, version);\r\t\t\tIF ~rd.cancelled THEN\r\t\t\t\trd.ReadBool(v.openMark)\r\t\t\tEND\r\t\tEND\r\tEND Internalize;\r\r\tPROCEDURE (v: View) Externalize (VAR wr: Stores.Writer);\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: "(* v is initialized *)"
+                    attr: 1
+                  - text: "\r\t\twr.WriteVersion(maxVersion);\r\t\twr.WriteBool(v.openMark)\r\tEND Externalize;\r\r\tPROCEDURE (v: View) CopyFromSimpleView (source: Views.View);\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: "(* v is not initialized *)\r\t\t(* v.Domain() = NIL *)\r\t\t(* source # NIL *)\r\t\t(* source is initialized *)\r\t\t(* TYP(v) = TYP(source) *)"
+                    attr: 1
+                  - text: "\r\t\tWITH source: View DO\r\t\t\tv.openMark := source.openMark\r\t\tEND\r\tEND CopyFromSimpleView;\r\r\tPROCEDURE (v: View) Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\t\tVAR w, h, s: INTEGER;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: "(* f # NIL *)"
+                    attr: 1
+                  - text: "\r\t\tIF ~Views.IsPrinterFrame(f) THEN\r\t\t\tv.context.GetSize(w, h); w := f.r - f.l;\r\t\t\ts := 2 * f.dot;\r\t\t\tf.DrawRect(0, 0, s, h, Ports.fill, Ports.grey25);\t"
+                    attr: 0
+                  - text: "(* left border *)"
+                    attr: 1
+                  - text: "\r\t\t\tf.DrawRect(w - s, 0, w, h, Ports.fill, Ports.grey25);\t"
+                    attr: 0
+                  - text: "(* right border *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF v.openMark THEN\r\t\t\t\tf.DrawRect(s, 0, w - s, s, Ports.fill, Ports.grey25);\t"
+                    attr: 0
+                  - text: "(* top border *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tf.DrawRect(s, s, w - s, h, Ports.fill, Ports.grey12)\t"
+                    attr: 0
+                  - text: "(* interior *)"
+                    attr: 1
+                  - text: "\r\t\t\tELSE\r\t\t\t\tf.DrawRect(s, h - s, w - s, h, Ports.fill, Ports.grey25);\t"
+                    attr: 0
+                  - text: "(* bottom border *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tf.DrawRect(s, 0, w - s, h - s, Ports.fill, Ports.grey12)\t"
+                    attr: 0
+                  - text: "(* interior *)"
+                    attr: 1
+                  - text: "\r\t\t\tEND\r\t\tEND\r\tEND Restore;\r\r\tPROCEDURE (v: View) HandleCtrlMsg (f: Views.Frame; VAR msg: Controllers.Message; VAR focus: Views.View);\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: "(* f # NIL *)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: "(* focus = NIL *)"
+                    attr: 1
+                  - text: "\r\t\tWITH msg: Controllers.PollOpsMsg DO\r\t\t\t"
+                    attr: 0
+                  - text: "(* specify which editing operations are supported *)"
+                    attr: 3
+                  - text: "\r\t\t| msg: Controllers.TrackMsg DO\r\t\t\t"
+                    attr: 0
+                  - text: "(* implement mouse tracking *)"
+                    attr: 3
+                  - text: "\r\t\t| msg: Controllers.EditMsg DO\r\t\t\t"
+                    attr: 0
+                  - text: "(* implement editing operations *)"
+                    attr: 3
+                  - text: "\r\t\tELSE"
+                    attr: 0
+                  - text: "\t(* ignore other messages *)"
+                    attr: 1
+                  - text: "\r\t\tEND\r\tEND HandleCtrlMsg;\r\r\tPROCEDURE (v: View) HandlePropMsg (VAR msg: Properties.Message);\r\t\tCONST viewHeight = 2 * Ports.mm;\r\tBEGIN\r\t\tWITH msg: Properties.SizePref DO\r\t\t\tmsg.w := 10000 * Ports.mm; msg.h := viewHeight\r\t\t| msg: Properties.ResizePref DO\r\t\t\tmsg.fixed := TRUE\r\t\t| msg: TextModels.Pref DO\r\t\t\t(*msg.opts := {TextModels.maskChar};\r\t\t\tmsg.mask := TextModels.para*)\r\t\tELSE\t"
+                    attr: 0
+                  - text: "(* ignore other messages *)"
+                    attr: 1
+                  - text: "\r\t\tEND\r\tEND HandlePropMsg;\r\r\r\t"
+                    attr: 0
+                  - text: "(** miscellaneous **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: IsOpenMark
+                    attr: 3
+                  - text: "* (v: Views.View): BOOLEAN;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " (v # NIL) & (v IS View) & v(View).openMark\r\tEND IsOpenMark;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: IsCloseMark
+                    attr: 3
+                  - text: "* (v: Views.View): BOOLEAN;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " (v # NIL) & (v IS View) & ~v(View).openMark\r\tEND IsCloseMark;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: New
+                    attr: 3
+                  - text: "* (openMark: BOOLEAN): Views.View;\r\t\tVAR v: View;\r\tBEGIN\r\t\tNEW(v); v.openMark := openMark; "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " v\r\tEND New;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: DepositOpenMark
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tViews.Deposit(New(TRUE))\r\tEND DepositOpenMark;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: DepositCloseMark
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tViews.Deposit(New(FALSE))\r\tEND DepositCloseMark;\r\rEND XhtmlTextTableMarkers.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 6115
+          bodyLen: 8

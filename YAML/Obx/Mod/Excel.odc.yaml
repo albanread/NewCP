@@ -1,0 +1,256 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Mod\\Excel.odc"
+  size: 8053
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 7922
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 7736
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 7650
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 7771
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 7257
+                runListLen: 1763
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE ObxExcel;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT\r\t\tCtlT, CtlExcel := CtlExcel9, Dates, Views, Containers,\r\t\tOleViews, TextModels, TextViews, TextMappers, StdLog;\r\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: "ShowExcel*;\r\t\t"
+                    attr: 3
+                  - text: "VAR ws: CtlExcel.Worksheet; wb: CtlExcel.Workbook;\r\t\t\trange: CtlExcel.Range;\r\t\t\ta: ARRAY 3 OF INTEGER;\r\t\t\td: Dates.Date; t: Dates.Time;\r\t\t\tdate: CtlT.OleDate; "
+                    attr: 0
+                  - text: "(* = REAL *)"
+                    attr: 1
+                  - text: "\r\t\t\tcy: CtlT.OleCy;  "
+                    attr: 0
+                  - text: "(* = LONGINT *)"
+                    attr: 1
+                  - text: "\r\t\t\tv: Views.View;\r\t\t\ttext: TextModels.Model; out: TextMappers.Formatter;"
+                    attr: 0
+                  - text: "\r"
+                    attr: 3
+                  - text: "\tBEGIN\r\t\tv := OleViews.NewObjectView(\"Excel.Sheet\");\r\t\tIF v # NIL THEN\r\t\t\t"
+                    attr: 0
+                  - text: "(* in excel 8.0 Excel.Sheet is a workbook object ! *)"
+                    attr: 1
+                  - text: "\r\t\t\twb := CtlExcel.This_Workbook(OleViews.AutoObject(v));\r\t\t\tws := CtlExcel.This_Worksheet(wb.Worksheets().Item(CtlT.Int(1)));\r\r\t\t\trange := ws.Range(CtlT.Str(\"A1\"), NIL);\r\t\t\trange.PUTValue(CtlT.Str(\"Hello World\"));\r\t\t\trange.PUTColumnWidth(CtlT.Int(12));\t"
+                    attr: 0
+                  - text: "(* unit = width of \"0\" in standard font *)"
+                    attr: 1
+                  - text: "\r\t\t\tws.Range(CtlT.Str(\"B1\"), NIL).PUTValue(CtlT.Int(13));\r\t\t\td.year := 1996; d.month := 8; d.day := 5;\r\t\t\tt.hour := 10; t.minute := 5; t.second := 30;\r\t\t\tdate := CtlT.OleDateFromDateAndTime(d, t);"
+                    attr: 0
+                  - text: "\t(* (day - 1.1.1900 + 2) + hour / 24 + minute / (24 * 60) + ... *)"
+                    attr: 1
+                  - text: "\r\t\t\trange := ws.Range(CtlT.Str(\"C1\"), NIL);\r\t\t\trange.PUTValue(CtlT.Date(date));\r\t\t\trange.PUTColumnWidth(CtlT.Int(15));\r\t\t\tcy := 133500;\t"
+                    attr: 0
+                  - text: "(* 13.35 *)"
+                    attr: 1
+                  - text: "\r\t\t\tws.Range(CtlT.Str(\"D1\"), NIL).PUTValue(CtlT.Cy(cy));\r\t\t\ta[0] := 1; a[1] := 2; a[2] := 3;\r\t\t\tws.Range(CtlT.Str(\"A2\"), CtlT.Str(\"C2\")).PUTValue(CtlT.IntArr(a));\r\t\t\tws.Range(CtlT.Str(\"D2\"), NIL).PUTValue(CtlT.Str(\"=A2+B2+C2\"));\r\t\t\t\r\t\t\ttext := TextModels.dir.New();\r\t\t\tout.ConnectTo(text);\r\t\t\tout.WriteString(\"Excel Automation Example\");\r\t\t\tout.WriteLn; out.WriteLn; out.WriteLn;\r\t\t\tout.WriteTab; out.WriteTab; out.WriteView(v);\r\t\t\tout.WriteLn; out.WriteLn; out.WriteLn;\r\t\t\tViews.OpenView(TextViews.dir.New(text));\r\t\tELSE\r\t\t\tStdLog.String(\"cannot open excel object\"); StdLog.Ln\r\t\tEND\r\tEND ShowExcel;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: ReadExcel
+                    attr: 3
+                  - text: "*;\r\t\tVAR v: Views.View; ws: CtlExcel.Worksheet;\r\t\t\tobj: CtlT.Object;\r\t\t\tp: POINTER TO ARRAY OF ARRAY OF CtlT.Any;\r\t\t\tval, cell: CtlT.Any; r, c: INTEGER;\r\t\t\tdate: Dates.Date; time: Dates.Time;\r\t\t\tstr: ARRAY 256 OF CHAR;\r\tBEGIN\r\t\tv := Containers.FocusSingleton();\r\t\tIF v # NIL THEN\r\t\t\tIF OleViews.IsAutoView(v) THEN\r\t\t\t\tobj:= OleViews.AutoObject(v);\r\t\t\t\tIF CtlExcel.Is_Workbook(obj) THEN\r\t\t\t\t\tws := CtlExcel.This_Worksheet(CtlExcel.This_Workbook(obj).Worksheets().Item(CtlT.Int(1)));\r\t\t\t\t\tval := ws.Range(CtlT.Str(\"A1\"), CtlT.Str(\"E5\")).Value();\r\t\t\t\t\tASSERT(val # NIL, 10);\r\t\t\t\t\tASSERT(val.dim = 2, 11);\r\t\t\t\t\tASSERT(val.typeId = CtlT.any, 12);\r\t\t\t\t\tp := val(CtlT.AnyArray2).p; r := 0;\r\t\t\t\t\tStdLog.Int(LEN(p^)); StdLog.Int(LEN(p^, 1)); StdLog.Ln;\r\t\t\t\t\tWHILE r < LEN(p^) DO\r\t\t\t\t\t\tc := 0;\r\t\t\t\t\t\tWHILE c < LEN(p^, 1) DO\r\t\t\t\t\t\t\tcell := p[r, c];\r\t\t\t\t\t\t\tIF cell # NIL THEN\r\t\t\t\t\t\t\t\tASSERT(cell.dim = 0, 13);\r\t\t\t\t\t\t\t\tStdLog.String(\"Cell \"); StdLog.Char(CHR(c + ORD(\"A\"))); StdLog.Int(r); StdLog.String(\": \");\r\t\t\t\t\t\t\t\tCASE cell.typeId OF\r\t\t\t\t\t\t\t\t| CtlT.byte: StdLog.Int(cell(CtlT.ByteT).val)\r\t\t\t\t\t\t\t\t| CtlT.shortint: StdLog.Int(cell(CtlT.ShortInt).val)\r\t\t\t\t\t\t\t\t| CtlT.integer: StdLog.Int(cell(CtlT.Integer).val)\r\t\t\t\t\t\t\t\t| CtlT.shortreal: StdLog.Real(cell(CtlT.ShortReal).val)\r\t\t\t\t\t\t\t\t| CtlT.real: StdLog.Real(cell(CtlT.RealT).val)\r\t\t\t\t\t\t\t\t| CtlT.result: StdLog.IntForm(cell(CtlT.Result).val, 16, 8, \"0\", FALSE)\r\t\t\t\t\t\t\t\t| CtlT.date: CtlT.OleDateToDateAndTime(cell(CtlT.DateT).val, date, time);\r\t\t\t\t\t\t\t\t\tDates.DateToString(date, Dates.short, str); StdLog.String(str);\r\t\t\t\t\t\t\t\t\tStdLog.String(\"  \");\r\t\t\t\t\t\t\t\t\tDates.TimeToString(time, str); StdLog.String(str)\r\t\t\t\t\t\t\t\t| CtlT.currency: StdLog.Int(SHORT(cell(CtlT.Currency).val DIV 10000));\r\t\t\t\t\t\t\t\t\tStdLog.Char(\".\");\r\t\t\t\t\t\t\t\t\tStdLog.IntForm(SHORT(cell(CtlT.Currency).val MOD 10000), 10, 4, \"0\", FALSE);\r\t\t\t\t\t\t\t\t| CtlT.boolean: StdLog.Bool(cell(CtlT.Boolean).val)\r\t\t\t\t\t\t\t\t| CtlT.string: StdLog.String(cell(CtlT.String).val^)\r\t\t\t\t\t\t\t\t| CtlT.object: StdLog.String(\"<object>\")\r\t\t\t\t\t\t\t\t| CtlT.interface: StdLog.String(\"<interface>\")\r\t\t\t\t\t\t\t\tEND;\r\t\t\t\t\t\t\t\tStdLog.Ln\r\t\t\t\t\t\t\tEND;\r\t\t\t\t\t\t\tINC(c)\r\t\t\t\t\t\tEND;\r\t\t\t\t\t\tINC(r)\r\t\t\t\t\tEND\r\t\t\t\tELSE\r\t\t\t\t\tStdLog.String(\"not a worksheet\"); StdLog.Ln\r\t\t\t\tEND\r\t\t\tELSE\r\t\t\t\tStdLog.String(\"not an OLE object\"); StdLog.Ln\r\t\t\tEND\r\t\tELSE\r\t\t\tStdLog.String(\"no singleton\"); StdLog.Ln\r\t\tEND\r\tEND ReadExcel;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: OpenChart
+                    attr: 3
+                  - text: "*;\r\t\tVAR ws: CtlExcel.Worksheet; wb: CtlExcel.Workbook; ch: CtlExcel.Chart;\r\t\t\tobj: CtlT.Object; v: Views.View;\r\t\t\ta: CtlExcel.Application;"
+                    attr: 0
+                  - text: "\r"
+                    attr: 3
+                  - text: "\tBEGIN\r\t\tv := Containers.FocusSingleton();\r\t\tIF v # NIL THEN\r\t\t\tIF OleViews.IsAutoView(v) THEN\r\t\t\t\tobj:= OleViews.AutoObject(v);\r\t\t\t\tIF CtlExcel.Is_Workbook(obj) THEN\r\t\t\t\t\tws := CtlExcel.This_Worksheet(CtlExcel.This_Workbook(obj).Worksheets().Item(CtlT.Int(1)));\r\t\t\t\t\ta := ws.Application();\r\t\t\t\t\ta.PUTVisible(TRUE);\r\t\t\t\t\twb := a.Workbooks().Add(NIL);\r\t\t\t\t\tch := CtlExcel.This_Chart(wb.Sheets().Add(NIL, NIL, NIL, CtlT.Int(CtlExcel.xlChart)));\r\t\t\t\t\tch.ChartWizard(ws.Range(CtlT.Str(\"A2\"), CtlT.Str(\"E2\")), CtlT.Int(CtlExcel.xlBar), NIL, NIL, NIL, NIL, NIL,\r\t\t\t\t\t\t\t\t\t\t\tCtlT.Str(\"Demo Chart\"), NIL, NIL, NIL);\r\t\t\t\tELSE\r\t\t\t\t\tStdLog.String(\"not a worksheet\"); StdLog.Ln\r\t\t\t\tEND\r\t\t\tELSE\r\t\t\t\tStdLog.String(\"not an OLE object\"); StdLog.Ln\r\t\t\tEND\r\t\tELSE\r\t\t\tStdLog.String(\"no singleton\"); StdLog.Ln\r\t\tEND\r\tEND OpenChart;\r\t\r\t\rEND ObxExcel.\r\t\t\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 8018
+          bodyLen: 8

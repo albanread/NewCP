@@ -1,0 +1,1299 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\System\\Mod\\Dialog.odc"
+  size: 41239
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 41108
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 40922
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 40836
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                dsc: 25400
+                grid: 1
+                opts: 0x00000021
+              defaultAttr:
+                font: Geneva
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 26
+                bodyPos: 40956
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 40442
+                runListLen: 4773
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [4]
+                    font: "*"
+                    size: 114300
+                    color: 0x00000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [5]
+                    font: "*"
+                    size: 114300
+                    color: 0x00000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [6]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 550
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE Dialog;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- 20050718, mf, additional Update procedures\r\t- 20070129, bh, Unicode string mapping\r\t- 20070130, bh, new windows versions\r\t- 20141008, center #15, appVersion added\r\t- 20150326, center #33, adding platform detection for wine, Windows 7, and Windows 8 \r\t- 20150415, center #38, report passing receiver parameter IN to VAR\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT "
+                    attr: 0
+                  - text: SYSTEM
+                    attr: 3
+                  - text: ", Kernel, Files;\r\r\tCONST\r\t\t"
+                    attr: 0
+                  - text: pressed
+                    attr: 3
+                  - text: "* = 1; "
+                    attr: 0
+                  - text: "released*"
+                    attr: 3
+                  - text: " = 2; "
+                    attr: 0
+                  - text: changed
+                    attr: 3
+                  - text: "* = 3; "
+                    attr: 0
+                  - text: included
+                    attr: 3
+                  - text: "* = 5; "
+                    attr: 0
+                  - text: excluded
+                    attr: 3
+                  - text: "* = 6; "
+                    attr: 0
+                  - text: set
+                    attr: 3
+                  - text: "* = 7;\t"
+                    attr: 0
+                  - text: "(** notify ops **)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: ok
+                    attr: 3
+                  - text: "* = 1; "
+                    attr: 0
+                  - text: "yes"
+                    attr: 3
+                  - text: "* = 2; "
+                    attr: 0
+                  - text: "no"
+                    attr: 3
+                  - text: "* = 3; "
+                    attr: 0
+                  - text: "cancel*"
+                    attr: 3
+                  - text: " = 4;\t"
+                    attr: 0
+                  - text: "(** GetOK forms & results **)\r"
+                    attr: 1
+                  - text: "\t\t"
+                    attr: 0
+                  - text: persistent
+                    attr: 3
+                  - text: "* = TRUE; "
+                    attr: 0
+                  - text: "nonPersistent*"
+                    attr: 3
+                  - text: " = FALSE;\t(** "
+                    attr: 0
+                  - text: constants for SetLanguage
+                    attr: 1
+                  - text: " **)\r\r\t\tstringLen = 256;\r\t\tbufLen = 252;\r\r\t\trsrcDir = \"Rsrc\";\r\t\tstringFile = \"Strings\";\r\t\tTAB = 09X; CR = 0DX;\r\t\tupdate = 2;\t"
+                    attr: 0
+                  - text: "(* notify options *)"
+                    attr: 1
+                  - text: "\r\t\tlistUpdate = 3;\r\t\tguardCheck = 4;\r\r\t\t"
+                    attr: 0
+                  - text: windows32s
+                    attr: 3
+                  - text: "* = 11;\r\t\t"
+                    attr: 0
+                  - text: windows95
+                    attr: 3
+                  - text: "* = 12;\r\t\t"
+                    attr: 0
+                  - text: windowsNT3
+                    attr: 3
+                  - text: "* = 13;\r\t\t"
+                    attr: 0
+                  - text: windowsNT4
+                    attr: 3
+                  - text: "* = 14;\r\t\t"
+                    attr: 0
+                  - text: windows2000
+                    attr: 3
+                  - text: "* = 15;\r\t\t"
+                    attr: 0
+                  - text: windows98
+                    attr: 3
+                  - text: "* = 16;\r\t\t"
+                    attr: 0
+                  - text: windowsXP
+                    attr: 3
+                  - text: "* = 17;\r\t\t"
+                    attr: 0
+                  - text: windowsVista
+                    attr: 3
+                  - text: "* = 18;\r"
+                    attr: 0
+                  - text: "\t\t"
+                    attr: 4
+                  - text: windows7
+                    attr: 5
+                  - text: "* = 19;\r\t\t"
+                    attr: 4
+                  - text: windows8
+                    attr: 5
+                  - text: "* = 10;\r"
+                    attr: 4
+                  - text: "\t\t"
+                    attr: 0
+                  - text: macOS
+                    attr: 3
+                  - text: "* = 21;\r\t\t"
+                    attr: 0
+                  - text: macOSX
+                    attr: 3
+                  - text: "* = 22;\r\t\t"
+                    attr: 0
+                  - text: linux
+                    attr: 3
+                  - text: "* = 30;\r\t\t"
+                    attr: 0
+                  - text: tru64
+                    attr: 3
+                  - text: "* = 40;\r\r\t\t"
+                    attr: 0
+                  - text: firstPos
+                    attr: 3
+                  - text: "* = 0;\r\t\t"
+                    attr: 0
+                  - text: lastPos
+                    attr: 3
+                  - text: "* = -1;\r\r\tTYPE\r\t\t"
+                    attr: 0
+                  - text: String
+                    attr: 3
+                  - text: "* = ARRAY stringLen OF CHAR;\r\r\t\tBuf = POINTER TO RECORD\r\t\t\tnext: Buf;\r\t\t\ts: ARRAY bufLen OF CHAR\r\t\tEND;\r\r\t\tStrList = RECORD\r\t\t\tlen, max: INTEGER;\t"
+                    attr: 0
+                  - text: "(* number of items, max number of items *)"
+                    attr: 1
+                  - text: "\r\t\t\tstrings: Buf;\t"
+                    attr: 0
+                  - text: "(* string buffer list. strings[0] = 0X -> uninitialized items appear as empty *)"
+                    attr: 1
+                  - text: "\r\t\t\tend: INTEGER;\t"
+                    attr: 0
+                  - text: "(* next free position in string buffer list *)"
+                    attr: 1
+                  - text: "\r\t\t\tscnt: INTEGER;\t"
+                    attr: 0
+                  - text: "(* number of strings in list, including unused entries *)"
+                    attr: 1
+                  - text: "\r\t\t\titems: POINTER TO ARRAY OF INTEGER\t"
+                    attr: 0
+                  - text: "(* indices into string buffer list *)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: List
+                    attr: 3
+                  - text: "* = RECORD\r\t\t\tindex*: INTEGER;\t"
+                    attr: 0
+                  - text: "(** val IN [0, n-1] **)"
+                    attr: 1
+                  - text: "\r\t\t\tlen-: INTEGER;\r\t\t\tl: StrList\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: Combo
+                    attr: 3
+                  - text: "* = RECORD\r\t\t\titem*: String;\r\t\t\tlen-: INTEGER;\r\t\t\tl: StrList\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: Selection
+                    attr: 3
+                  - text: "* = RECORD\r\t\t\tlen-: INTEGER;\r\t\t\tsel: POINTER TO ARRAY OF SET;\r\t\t\tl: StrList\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: Currency
+                    attr: 3
+                  - text: "* = RECORD"
+                    attr: 0
+                  - text: "\t(* number = val * 10^-scale *)"
+                    attr: 1
+                  - text: "\r\t\t\tval*: LONGINT;\r\t\t\tscale*: INTEGER\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: Color
+                    attr: 3
+                  - text: "* = RECORD\r\t\t\tval*: INTEGER\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: TreeNode
+                    attr: 3
+                  - text: "* = POINTER TO LIMITED RECORD\r\t\t\tnofChildren: INTEGER;\r\t\t\tname: String;\r\t\t\tparent, next, prev, firstChild: TreeNode;\r\t\t\tviewAsFolder, expanded: BOOLEAN;\r\t\t\tdata: ANYPTR;\r\t\t\ttree: INTEGER\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: Tree
+                    attr: 3
+                  - text: "* = RECORD\r\t\t\tnofRoots, nofNodes: INTEGER;\r\t\t\tfirstRoot, selected: TreeNode\r\t\tEND;\r\r\t\t(** command procedure types**)\r\r\t\t"
+                    attr: 0
+                  - text: Par
+                    attr: 3
+                  - text: "* = RECORD\t"
+                    attr: 0
+                  - text: "(** parameter for guard procedures **)"
+                    attr: 1
+                  - text: "\r\t\t\tdisabled*: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(** OUT, preset to FALSE **)"
+                    attr: 1
+                  - text: "\r\t\t\tchecked*: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(** OUT, preset to default **)"
+                    attr: 1
+                  - text: "\r\t\t\tundef*: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(** OUT, preset to default **)"
+                    attr: 1
+                  - text: "\r\t\t\treadOnly*: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(** OUT, preset to default **)"
+                    attr: 1
+                  - text: "\r\t\t\tlabel*: String\t"
+                    attr: 0
+                  - text: "(** OUT, preset to \"\" **)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: GuardProc
+                    attr: 3
+                  - text: "* = PROCEDURE (VAR par: Par);\r\t\t"
+                    attr: 0
+                  - text: NotifierProc
+                    attr: 3
+                  - text: "* = PROCEDURE (op, from, to: INTEGER);\r\r\t\tStringPtr = POINTER TO ARRAY [untagged] OF CHAR;\r\t\tStringTab = POINTER TO RECORD\r\t\t\tnext: StringTab;\r\t\t\tname: Files.Name;\r\t\t\tkey: POINTER TO ARRAY OF StringPtr;\r\t\t\tstr: POINTER TO ARRAY OF StringPtr;\r\t\t\tdata: POINTER TO ARRAY OF CHAR\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: LangNotifier
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD next: LangNotifier END;\r\t\t"
+                    attr: 0
+                  - text: Language
+                    attr: 3
+                  - text: "* = ARRAY 3 OF CHAR;\r\r\t\tLangTrapCleaner = POINTER TO RECORD (Kernel.TrapCleaner) END;\r\r\t\t"
+                    attr: 0
+                  - text: GetHook
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Kernel.Hook) END;\r\t\t"
+                    attr: 0
+                  - text: ShowHook
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Kernel.Hook) END;\r\t\t"
+                    attr: 0
+                  - text: CallHook
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Kernel.Hook) END;\r\t\t"
+                    attr: 0
+                  - text: NotifyHook
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Kernel.Hook) END;\r\t\t"
+                    attr: 0
+                  - text: LanguageHook
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Kernel.Hook) END;\r"
+                    attr: 0
+                  - text: "\t\t"
+                    attr: 4
+                  - text: WineHook
+                    attr: 5
+                  - text: "* = POINTER TO ABSTRACT RECORD (Kernel.Hook) END;\r"
+                    attr: 4
+                  - text: "\r\tVAR\r\t\t"
+                    attr: 0
+                  - text: metricSystem
+                    attr: 3
+                  - text: "*: BOOLEAN;\r\t\t"
+                    attr: 0
+                  - text: showsStatus
+                    attr: 3
+                  - text: "*: BOOLEAN;\r\t\t"
+                    attr: 0
+                  - text: platform
+                    attr: 3
+                  - text: "*: INTEGER;\r\t\t"
+                    attr: 0
+                  - text: commandLinePars
+                    attr: 3
+                  - text: "*: String;\r\t\t"
+                    attr: 0
+                  - text: version
+                    attr: 3
+                  - text: "*: INTEGER;\r\t\t"
+                    attr: 0
+                  - text: appName
+                    attr: 3
+                  - text: "*: ARRAY 32 OF CHAR;\r\t\t"
+                    attr: 0
+                  - text: appVersion
+                    attr: 3
+                  - text: "*: ARRAY 32 OF CHAR;\r\t\t"
+                    attr: 0
+                  - text: language-
+                    attr: 3
+                  - text: ": Language;\r\t\t"
+                    attr: 0
+                  - text: user
+                    attr: 3
+                  - text: "*: ARRAY 32 OF CHAR;\r\t\t"
+                    attr: 0
+                  - text: caretPeriod
+                    attr: 3
+                  - text: "*: INTEGER;\r\t\t"
+                    attr: 0
+                  - text: thickCaret
+                    attr: 3
+                  - text: "*: BOOLEAN;\r\r\t\ttabList: StringTab;\r\t\tlangNotifiers: LangNotifier;\r\t\tcurrentNotifier: LangNotifier;\r\r\t\tgethook: GetHook;\r\t\tshowHook: ShowHook;\r\t\tcallHook: CallHook;\r\t\tnotifyHook: NotifyHook;\r\t\tlanguageHook: LanguageHook;\r\t\twineHook: WineHook;\r\r\tPROCEDURE (h: GetHook) "
+                    attr: 0
+                  - text: GetOK
+                    attr: 3
+                  - text: "* (IN str, p0, p1, p2: ARRAY OF CHAR; form: SET;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT res: INTEGER), NEW, ABSTRACT;\r\tPROCEDURE (h: GetHook) "
+                    attr: 0
+                  - text: GetColor
+                    attr: 3
+                  - text: "* (in: INTEGER; OUT out: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT set: BOOLEAN), NEW, ABSTRACT;\r\tPROCEDURE (h: GetHook) "
+                    attr: 0
+                  - text: GetIntSpec
+                    attr: 3
+                  - text: "* (IN defType: Files.Type; VAR loc: Files.Locator;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT name: Files.Name), NEW, ABSTRACT;\r\tPROCEDURE (h: GetHook) "
+                    attr: 0
+                  - text: GetExtSpec
+                    attr: 3
+                  - text: "* (IN defName: Files.Name; IN defType: Files.Type;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR loc: Files.Locator; OUT name: Files.Name), NEW, ABSTRACT;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetGetHook
+                    attr: 3
+                  - text: "*(h: GetHook);\r\tBEGIN\r\t\tgethook := h\r\tEND SetGetHook;\r\r\tPROCEDURE (h: ShowHook) "
+                    attr: 0
+                  - text: ShowParamMsg
+                    attr: 3
+                  - text: "* (IN str, p0, p1, p2: ARRAY OF CHAR), NEW, ABSTRACT;\r\tPROCEDURE (h: ShowHook) "
+                    attr: 0
+                  - text: ShowParamStatus
+                    attr: 3
+                  - text: "*"
+                    attr: 6
+                  - text: " (IN str, p0, p1, p2: ARRAY OF CHAR), NEW, ABSTRACT;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetShowHook
+                    attr: 3
+                  - text: "* (h: ShowHook);\r\tBEGIN\r\t\tshowHook := h\r\tEND SetShowHook;\r\r\tPROCEDURE (h: CallHook) "
+                    attr: 0
+                  - text: Call
+                    attr: 3
+                  - text: "* (IN proc, errorMsg: ARRAY OF CHAR; VAR res: INTEGER), NEW, ABSTRACT;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetCallHook
+                    attr: 3
+                  - text: "* (h: CallHook);\r\tBEGIN\r\t\tcallHook := h\r\tEND SetCallHook;\r\r\tPROCEDURE (h: NotifyHook) "
+                    attr: 0
+                  - text: Notify
+                    attr: 3
+                  - text: "* (id0, id1: INTEGER; opts: SET), NEW, ABSTRACT;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetNotifyHook
+                    attr: 3
+                  - text: "* (h: NotifyHook);\r\tBEGIN\r\t\tnotifyHook := h\r\tEND SetNotifyHook;\r\r\tPROCEDURE (h: LanguageHook) "
+                    attr: 0
+                  - text: SetLanguage
+                    attr: 3
+                  - text: "* (lang: Language; persistent: BOOLEAN;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT ok: BOOLEAN), NEW, ABSTRACT;\r\tPROCEDURE (h: LanguageHook) "
+                    attr: 0
+                  - text: GetPersistentLanguage
+                    attr: 3
+                  - text: "* (OUT lang: Language), NEW, ABSTRACT;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetLanguageHook
+                    attr: 3
+                  - text: "* (h: LanguageHook);\r\tBEGIN\r\t\tlanguageHook := h\r\tEND SetLanguageHook;\r"
+                    attr: 0
+                  - text: "\r\tPROCEDURE (h: WineHook) "
+                    attr: 4
+                  - text: IsWine
+                    attr: 5
+                  - text: "* (): BOOLEAN, NEW, ABSTRACT;\r\t\r\tPROCEDURE "
+                    attr: 4
+                  - text: SetWineHook
+                    attr: 5
+                  - text: "*(h: WineHook);\r\tBEGIN\r\t\twineHook := h\r\tEND SetWineHook;\r\r\tPROCEDURE "
+                    attr: 4
+                  - text: "IsWine*"
+                    attr: 5
+                  - text: " (): BOOLEAN;\r\tBEGIN\r\t\t"
+                    attr: 4
+                  - text: RETURN
+                    attr: 5
+                  - text: " (wineHook # NIL) & wineHook.IsWine()\r\tEND IsWine;\r\r\tPROCEDURE "
+                    attr: 4
+                  - text: "IsWindows*"
+                    attr: 5
+                  - text: " (): BOOLEAN;\r\tBEGIN\r\t\tCASE platform OF\r\t\t  windows32s..windows7, windows8: "
+                    attr: 4
+                  - text: RETURN
+                    attr: 5
+                  - text: " TRUE\r\t\tELSE "
+                    attr: 4
+                  - text: RETURN
+                    attr: 5
+                  - text: " FALSE\r\t\tEND\r\tEND IsWindows;\r\r\tPROCEDURE "
+                    attr: 4
+                  - text: "IsMac*"
+                    attr: 5
+                  - text: " (): BOOLEAN;\r\tBEGIN\r\t\tCASE platform OF\r\t\t  macOS, macOSX: "
+                    attr: 4
+                  - text: RETURN
+                    attr: 5
+                  - text: " TRUE\r\t\tELSE "
+                    attr: 4
+                  - text: RETURN
+                    attr: 5
+                  - text: " FALSE\r\t\tEND\r\tEND IsMac;\r\r\tPROCEDURE "
+                    attr: 4
+                  - text: "IsLinux*"
+                    attr: 5
+                  - text: " (): BOOLEAN;\r\tBEGIN\r\t\t"
+                    attr: 4
+                  - text: "RETURN "
+                    attr: 5
+                  - text: "platform = linux\r\tEND IsLinux;\r\r"
+                    attr: 4
+                  - text: "\tPROCEDURE ReadStringFile (subsys: Files.Name; f: Files.File; VAR tab: StringTab);\r\t\tVAR i, j, h, n, s, x, len, next, down, end: INTEGER; in, in1: Files.Reader;\r\t\t\tch: CHAR; b: BYTE; p, q: StringPtr;\r\t\t\t\r\t\tPROCEDURE ReadInt (OUT x: INTEGER);\r\t\t\tVAR b: BYTE;\r\t\tBEGIN\r\t\t\tin.ReadByte(b); x := b MOD 256;\r\t\t\tin.ReadByte(b); x := x + (b MOD 256) * 100H;\r\t\t\tin.ReadByte(b); x := x + (b MOD 256) * 10000H;\r\t\t\tin.ReadByte(b); x := x + b * 1000000H\r\t\tEND ReadInt;\r\t\t\r\t\tPROCEDURE ReadHead (OUT next, down, end: INTEGER);\r\t\t\tVAR b, t: BYTE; n: INTEGER;\r\t\tBEGIN\r\t\t\tin.ReadByte(b);\r\t\t\tREPEAT\r\t\t\t\tin.ReadByte(t);\r\t\t\t\tIF t = -14 THEN ReadInt(n)\r\t\t\t\tELSE\r\t\t\t\t\tREPEAT in.ReadByte(b) UNTIL b = 0\r\t\t\t\tEND\r\t\t\tUNTIL t # -15;\r\t\t\tReadInt(n);\r\t\t\tReadInt(next); next := next + in.Pos();\r\t\t\tReadInt(down); down := down + in.Pos();\r\t\t\tReadInt(end); end := end + in.Pos()\r\t\tEND ReadHead;\r\t\r\tBEGIN\r\t\ttab := NIL;\r\t\tIF f # NIL THEN\t"
+                    attr: 0
+                  - text: "(* read text file *)"
+                    attr: 1
+                  - text: "\r\t\t\tin := f.NewReader(NIL); in1 :=  f.NewReader(NIL);\r\t\t\tIF (in # NIL) & (in1 # NIL) THEN\r\t\t\t\tin.SetPos(8); ReadHead(next, down, end);\t"
+                    attr: 0
+                  - text: "(* document view *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tin.SetPos(down); ReadHead(next, down, end);\t"
+                    attr: 0
+                  - text: "(* document model *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tin.SetPos(down); ReadHead(next, down, end);\t"
+                    attr: 0
+                  - text: "(* text view *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tin.SetPos(down); ReadHead(next, down, end);\t"
+                    attr: 0
+                  - text: "(* text model *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tin.ReadByte(b); in.ReadByte(b); in.ReadByte(b);\t"
+                    attr: 0
+                  - text: "(* versions *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tin.ReadByte(b); in.ReadByte(b); in.ReadByte(b);\r\t\t\t\tReadInt(x); in1.SetPos(in.Pos() + x);\t"
+                    attr: 0
+                  - text: "(* text offset *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tnext := down;\r\t\t\t\tNEW(tab); tab.name := subsys$;\r\t\t\t\tNEW(tab.data, f.Length());\r\t\t\t\tn := 0; i := 0; s := 0; in.ReadByte(b);\r\t\t\t\tWHILE b # -1 DO\r\t\t\t\t\tIF next = in.Pos() THEN ReadHead(next, down, end); in.SetPos(end) END;\t"
+                    attr: 0
+                  - text: "(* skip attributes *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tReadInt(len);\r\t\t\t\t\tIF len > 0 THEN\t"
+                    attr: 0
+                  - text: "(* shortchar run *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\tWHILE len > 0 DO\r\t\t\t\t\t\t\tin1.ReadByte(b); ch := CHR(b MOD 256);\r\t\t\t\t\t\t\tIF ch >= \" \" THEN\r\t\t\t\t\t\t\t\tIF s = 0 THEN j := i; s := 1 END;\t"
+                    attr: 0
+                  - text: "(* start of left part *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\t\t\ttab.data[j] := ch; INC(j)\r\t\t\t\t\t\t\tELSIF (s = 1) & (ch = TAB) THEN\r\t\t\t\t\t\t\t\ttab.data[j] := 0X; INC(j);\r\t\t\t\t\t\t\t\ts := 2\t"
+                    attr: 0
+                  - text: "(* start of right part *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\t\tELSIF (s = 2) & (ch = CR) THEN\r\t\t\t\t\t\t\t\ttab.data[j] := 0X; INC(j);\r\t\t\t\t\t\t\t\tINC(n); i := j; s := 0\t"
+                    attr: 0
+                  - text: "(* end of line *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\t\tELSE\r\t\t\t\t\t\t\t\ts := 0\t"
+                    attr: 0
+                  - text: "(* reset *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\t\tEND;\r\t\t\t\t\t\t\tDEC(len)\r\t\t\t\t\t\tEND\r\t\t\t\t\tELSIF len < 0 THEN\t\t"
+                    attr: 0
+                  - text: "(* longchar run *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\tWHILE len < 0 DO\r\t\t\t\t\t\t\tin1.ReadByte(b); x := b MOD 256; in1.ReadByte(b); ch := CHR(x + 256 * (b + 128));\r\t\t\t\t\t\t\tIF s = 0 THEN j := i; s := 1 END;\t"
+                    attr: 0
+                  - text: "(* start of left part *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\t\ttab.data[j] := ch; INC(j);\r\t\t\t\t\t\t\tINC(len, 2)\r\t\t\t\t\t\tEND\r\t\t\t\t\tELSE\t"
+                    attr: 0
+                  - text: "(* view *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\tReadInt(x); ReadInt(x); in1.ReadByte(b);\t"
+                    attr: 0
+                  - text: "(* ignore *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tEND;\r\t\t\t\t\tIF next = in.Pos() THEN ReadHead(next, down, end); in.SetPos(end) END;\t"
+                    attr: 0
+                  - text: "(* skip view data *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tin.ReadByte(b);\r\t\t\t\tEND;\r\t\t\t\tIF n > 0 THEN\r\t\t\t\t\tNEW(tab.key, n); NEW(tab.str, n); i := 0; j := 0;\r\t\t\t\t\tWHILE j < n DO\r\t\t\t\t\t\ttab.key[j] := "
+                    attr: 0
+                  - text: SYSTEM.VAL
+                    attr: 3
+                  - text: "(StringPtr, "
+                    attr: 0
+                  - text: SYSTEM.ADR
+                    attr: 3
+                  - text: "(tab.data[i]));\r\t\t\t\t\t\tWHILE tab.data[i] >= \" \" DO INC(i) END;\r\t\t\t\t\t\tINC(i);\r\t\t\t\t\t\ttab.str[j] := "
+                    attr: 0
+                  - text: SYSTEM.VAL
+                    attr: 3
+                  - text: "(StringPtr, "
+                    attr: 0
+                  - text: SYSTEM.ADR
+                    attr: 3
+                  - text: "(tab.data[i]));\r\t\t\t\t\t\tWHILE tab.data[i] >= \" \" DO INC(i) END;\r\t\t\t\t\t\tINC(i); INC(j)\r\t\t\t\t\tEND;\r\t\t\t\t\t"
+                    attr: 0
+                  - text: "(* sort keys (shellsort) *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\th := 1; REPEAT h := h*3 + 1 UNTIL h > n;\r\t\t\t\t\tREPEAT h := h DIV 3; i := h;\r\t\t\t\t\t\tWHILE i < n DO p := tab.key[i]; q := tab.str[i]; j := i;\r\t\t\t\t\t\t\tWHILE (j >= h) & (tab.key[j-h]^ > p^) DO\r\t\t\t\t\t\t\t\ttab.key[j] := tab.key[j-h]; tab.str[j] := tab.str[j-h]; j := j-h\r\t\t\t\t\t\t\tEND;\r\t\t\t\t\t\t\ttab.key[j] := p; tab.str[j] := q; INC(i)\r\t\t\t\t\t\tEND\r\t\t\t\t\tUNTIL h = 1\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND ReadStringFile;\r\r\tPROCEDURE MergeTabs (VAR master, extra: StringTab): StringTab;\r\t\tVAR tab: StringTab; nofKeys, datalength, di, mi, ei, ml, el, ti, i: INTEGER;\r\tBEGIN\r\t\tIF (extra = NIL) OR (extra.key = NIL) THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " master END;\r\t\tIF (master = NIL) OR (master.key = NIL)  THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " extra END;\r\t\tml := LEN(master.key); el := LEN(extra.key);\r\t\tmi := 0; ei := 0; datalength := 0; nofKeys := 0;\r\t\t"
+                    attr: 0
+                  - text: "(* find out how big the resulting table will be *)"
+                    attr: 1
+                  - text: "\r\t\tWHILE (mi < ml) OR (ei < el) DO\r\t\t\tINC(nofKeys);\r\t\t\tIF (mi < ml) & (ei < el) & (master.key[mi]$ = extra.key[ei]$) THEN\r\t\t\t\tdatalength := datalength + LEN(master.key[mi]$) + LEN(master.str[mi]$) + 2; INC(mi); INC(ei)\r\t\t\tELSIF (ei < el) & ((mi >= ml) OR (master.key[mi]$ > extra.key[ei]$)) THEN\r\t\t\t\tdatalength := datalength + LEN(extra.key[ei]$) + LEN(extra.str[ei]$) + 2; INC(ei)\r\t\t\tELSE\r\t\t\t\tdatalength := datalength + LEN(master.key[mi]$) + LEN(master.str[mi]$) + 2; INC(mi)\r\t\t\tEND\r\t\tEND;\r\t\tNEW(tab); tab.name := master.name;\r\t\tNEW(tab.key, nofKeys); NEW(tab.str, nofKeys); NEW(tab.data, datalength);\r\t\tmi := 0; ei := 0; di := 0; ti := 0;\r\t\t"
+                    attr: 0
+                  - text: "(* do the merge *)"
+                    attr: 1
+                  - text: "\r\t\tWHILE (mi < ml) OR (ei < el) DO\r\t\t\tIF  (mi < ml) & (ei < el) & (master.key[mi]$ = extra.key[ei]$)  THEN\r\t\t\t\ti := 0; tab.key[ti] := "
+                    attr: 0
+                  - text: SYSTEM.VAL
+                    attr: 3
+                  - text: "(StringPtr, "
+                    attr: 0
+                  - text: SYSTEM.ADR
+                    attr: 3
+                  - text: "(tab.data[di]));\r\t\t\t\tWHILE  master.key[mi][i] # 0X DO tab.data[di] := master.key[mi][i]; INC(di); INC(i) END;\r\t\t\t\ttab.data[di] :=0X; INC(di); i := 0;\r\t\t\t\ttab.str[ti] := "
+                    attr: 0
+                  - text: SYSTEM.VAL
+                    attr: 3
+                  - text: "(StringPtr, "
+                    attr: 0
+                  - text: SYSTEM.ADR
+                    attr: 3
+                  - text: "(tab.data[di]));\r\t\t\t\tWHILE master.str[mi][i] # 0X DO tab.data[di] := master.str[mi][i]; INC(di); INC(i) END;\r\t\t\t\t tab.data[di] :=0X; INC(di);\r\t\t\t\tINC(mi); INC(ei)\r\t\t\tELSIF (ei < el) & ((mi >= ml) OR (master.key[mi]$ > extra.key[ei]$)) THEN\r\t\t\t\ti := 0; tab.key[ti] := "
+                    attr: 0
+                  - text: SYSTEM.VAL
+                    attr: 3
+                  - text: "(StringPtr, "
+                    attr: 0
+                  - text: SYSTEM.ADR
+                    attr: 3
+                  - text: "(tab.data[di]));\r\t\t\t\tWHILE extra.key[ei][i] # 0X DO tab.data[di] := extra.key[ei][i]; INC(di); INC(i) END;\r\t\t\t\ttab.data[di] :=0X; INC(di); i := 0;\r\t\t\t\ttab.str[ti] := "
+                    attr: 0
+                  - text: SYSTEM.VAL
+                    attr: 3
+                  - text: "(StringPtr, "
+                    attr: 0
+                  - text: SYSTEM.ADR
+                    attr: 3
+                  - text: "(tab.data[di]));\r\t\t\t\tWHILE  extra.str[ei][i] # 0X DO tab.data[di] := extra.str[ei][i]; INC(di); INC(i) END;\r\t\t\t\t tab.data[di] :=0X; INC(di);\r\t\t\t\tINC(ei)\r\t\t\tELSE\r\t\t\t\ti := 0; tab.key[ti] := "
+                    attr: 0
+                  - text: SYSTEM.VAL
+                    attr: 3
+                  - text: "(StringPtr, "
+                    attr: 0
+                  - text: SYSTEM.ADR
+                    attr: 3
+                  - text: "(tab.data[di]));\r\t\t\t\tWHILE master.key[mi][i] # 0X DO  tab.data[di] := master.key[mi][i]; INC(di); INC(i) END;\r\t\t\t\ttab.data[di] :=0X; INC(di); i := 0;\r\t\t\t\ttab.str[ti] := "
+                    attr: 0
+                  - text: SYSTEM.VAL
+                    attr: 3
+                  - text: "(StringPtr, "
+                    attr: 0
+                  - text: SYSTEM.ADR
+                    attr: 3
+                  - text: "(tab.data[di]));\r\t\t\t\tWHILE master.str[mi][i] # 0X DO  tab.data[di] := master.str[mi][i]; INC(di); INC(i) END;\r\t\t\t\t tab.data[di] :=0X; INC(di);\r\t\t\t\tINC(mi)\r\t\t\tEND;\r\t\t\tINC(ti)\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " tab\r\tEND MergeTabs;\r\r\tPROCEDURE LoadStringTab (subsys: Files.Name; VAR tab: StringTab);\r\t\tVAR loc: Files.Locator; f: Files.File; name: Files.Name; ltab: StringTab;\r\tBEGIN\r\t\ttab := NIL;\r\t\tname := stringFile; Kernel.MakeFileName(name, \"\");\r\t\tloc := Files.dir.This(subsys); loc := loc.This(rsrcDir);\r\t\tIF loc # NIL THEN\r\t\t\t f := Files.dir.Old(loc, name, Files.shared);\r\t\t\tReadStringFile(subsys, f, tab);\r\t\t\tIF language # \"\" THEN\r\t\t\t\tloc := loc.This(language);\r\t\t\t\tIF loc # NIL THEN\r\t\t\t\t\t f := Files.dir.Old(loc, name, Files.shared);\r\t\t\t\t\tReadStringFile(subsys, f, ltab);\r\t\t\t\t\ttab := MergeTabs(ltab, tab)\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tIF tab # NIL THEN tab.next := tabList; tabList := tab END\r\t\tEND\r\tEND LoadStringTab;\r\r\tPROCEDURE SearchString (VAR in: ARRAY OF CHAR; OUT out: ARRAY OF CHAR);\r\t\tVAR i, j, k, len: INTEGER; ch: CHAR; subsys: Files.Name; tab: StringTab;\r\tBEGIN\r\t\tout := \"\";\r\t\tIF in[0] = \"#\" THEN\r\t\t\ti := 0; ch := in[1];\r\t\t\tWHILE (ch # 0X) (* & (ch # \".\") *) & (ch # \":\") DO subsys[i] := ch; INC(i); ch := in[i + 1] END;\r\t\t\tsubsys[i] := 0X;\r\t\t\tIF ch # 0X THEN\r\t\t\t\tINC(i, 2); ch := in[i]; j := 0;\r\t\t\t\tWHILE (ch # 0X) DO in[j] := ch; INC(i); INC(j); ch := in[i] END;\r\t\t\t\tin[j] := 0X\r\t\t\tELSE\r\t\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: "\r\t\t\tEND;\r\t\t\ttab := tabList;\r\t\t\tWHILE (tab # NIL) & (tab.name # subsys) DO tab := tab.next END;\r\t\t\tIF tab = NIL THEN LoadStringTab(subsys, tab) END;\r\t\t\tIF tab # NIL THEN\r\t\t\t\ti := 0;\r\t\t\t\tIF tab.key = NIL THEN j := 0 ELSE j := LEN(tab.key^) END;\r\t\t\t\tWHILE i < j DO\t"
+                    attr: 0
+                  - text: "(* binary search *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tk := (i + j) DIV 2;\r\t\t\t\t\tIF tab.key[k]^ < in THEN i := k + 1 ELSE j := k END\r\t\t\t\tEND;\r\t\t\t\tIF (tab.key # NIL) & (j < LEN(tab.key^)) & (tab.key[j]^ = in) THEN\r\t\t\t\t\tk := 0; len := LEN(out)-1;\r\t\t\t\t\tWHILE (k < len) & (tab.str[j][k] # 0X) DO\r\t\t\t\t\t\tout[k] := tab.str[j][k]; INC(k)\r\t\t\t\t\tEND;\r\t\t\t\t\tout[k] := 0X\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND SearchString;\r\r\r\tPROCEDURE Init (VAR l: StrList);\r\tBEGIN\r\t\tl.len := 0; l.max := 0; l.end := 0; l.scnt := 0\r\tEND Init;\r\r\tPROCEDURE Compact (VAR l: StrList);\r\t\tVAR i, j, k: INTEGER; ibuf, jbuf: Buf; ch: CHAR;\r\tBEGIN\r\t\ti := 1; ibuf := l.strings; j := 1; jbuf := l.strings;\r\t\tWHILE j < l.end DO\r\t\t\t(* "
+                    attr: 0
+                  - text: find index entry
+                    attr: 1
+                  - text: " k "
+                    attr: 0
+                  - text: pointing to position
+                    attr: 1
+                  - text: " j *)\r\t\t\tk := 0; WHILE (k < l.len) & (l.items[k] # j) DO INC(k) END;\r\t\t\tIF k < l.len THEN\t(* "
+                    attr: 0
+                  - text: copy string
+                    attr: 1
+                  - text: " *)\r\t\t\t\tl.items[k] := i;\r\t\t\t\tREPEAT\r\t\t\t\t\tch := jbuf.s[j MOD bufLen]; INC(j);\r\t\t\t\t\tIF j MOD bufLen = 0 THEN jbuf := jbuf.next END;\r\t\t\t\t\tibuf.s[i MOD bufLen] := ch; INC(i);\r\t\t\t\t\tIF i MOD bufLen = 0 THEN ibuf := ibuf.next END\r\t\t\t\tUNTIL ch = 0X\r\t\t\tELSE (* "
+                    attr: 0
+                  - text: skip next string
+                    attr: 1
+                  - text: " *)\r\t\t\t\tREPEAT\r\t\t\t\t\tch := jbuf.s[j MOD bufLen]; INC(j);\r\t\t\t\t\tIF j MOD bufLen = 0 THEN jbuf := jbuf.next END\r\t\t\t\tUNTIL ch = 0X\r\t\t\tEND\r\t\tEND;\r\t\tibuf.next := NIL;\t(* "
+                    attr: 0
+                  - text: release superfluous buffers
+                    attr: 1
+                  - text: " *)\r\t\tl.end := i; l.scnt := l.len\r\tEND Compact;\r\r\tPROCEDURE SetLen (VAR l: StrList; len: INTEGER);\r\t\tCONST D = 32;\r\t\tVAR i, newmax: INTEGER;\r\t\t\titems: POINTER TO ARRAY OF INTEGER;\r\tBEGIN\r\t\tIF l.items = NIL THEN Init(l) END;\r\t\tIF (l.max - D < len) & (len <= l.max) THEN\r\t\t\t(* "
+                    attr: 0
+                  - text: we do not reallocate anything
+                    attr: 1
+                  - text: " *)\r\t\tELSE\r\t\t\tnewmax := (len + D-1) DIV D * D;\r\t\t\tIF newmax > 0 THEN\r\t\t\t\tIF l.strings = NIL THEN NEW(l.strings); (* "
+                    attr: 0
+                  - text: "l.strings[0] := 0X; "
+                    attr: 1
+                  - text: "*) l.end := 1 END;\r\t\t\t\tNEW(items, newmax);\r\t\t\t\tIF len < l.len THEN i := len ELSE i := l.len END;\r\t\t\t\tWHILE i > 0 DO DEC(i); items[i] := l.items[i] END;\r\t\t\t\tl.items := items\r\t\t\tEND;\r\t\t\tl.max := newmax\r\t\tEND;\r\t\tl.len := len;\r\t\tIF (l.scnt > 32) & (l.scnt > 2 * l.len) THEN Compact(l) END\r\tEND SetLen;\r\r\tPROCEDURE GetItem (VAR l: StrList; index: INTEGER; VAR item: String);\r\t\tVAR i, j, k: INTEGER; b: Buf; ch: CHAR;\r\tBEGIN\r\t\tIF l.items = NIL THEN Init(l) END;\r\t\tIF (index >= 0) & (index < l.len) THEN\r\t\t\ti := l.items[index]; j := i MOD bufLen; i := i DIV bufLen;\r\t\t\tb := l.strings; WHILE i # 0 DO b := b.next; DEC(i) END;\r\t\t\tk := 0;\r\t\t\tREPEAT\r\t\t\t\tch := b.s[j]; INC(j); IF j = bufLen THEN j := 0; b := b.next END;\r\t\t\t\titem[k] := ch; INC(k)\r\t\t\tUNTIL ch = 0X\r\t\tELSE\r\t\t\titem := \"\"\r\t\tEND\r\tEND GetItem;\r\r\tPROCEDURE SetItem (VAR l: StrList; index: INTEGER; item: ARRAY OF CHAR);\r\t\tVAR len, i, j, k: INTEGER; b: Buf; ch: CHAR;\r\tBEGIN\r\t\tIF l.items = NIL THEN Init(l) END;\r\t\tIF index >= l.len THEN SetLen(l, index + 1) END;\r\t\tIF (l.scnt > 32) & (l.scnt > 2 * l.len) THEN Compact(l) END;\r\t\tlen := 0; WHILE item[len] # 0X DO INC(len) END;\r\t\tIF len >= stringLen THEN len := stringLen - 1; item[len] := 0X END;\t"
+                    attr: 0
+                  - text: "(* clip long strings *)"
+                    attr: 1
+                  - text: "\r\t\tl.items[index] := l.end;\r\t\ti := l.end; j := i MOD bufLen; i := i DIV bufLen;\r\t\tb := l.strings; WHILE i # 0 DO b := b.next; DEC(i) END;\r\t\tk := 0;\r\t\tREPEAT\r\t\t\tch := item[k]; INC(k); INC(l.end);\r\t\t\tb.s[j] := ch; INC(j); IF j = bufLen THEN j := 0; NEW(b.next); b := b.next END\r\t\tUNTIL ch = 0X;\r\t\tINC(l.scnt)\r\tEND SetItem;\r\r\tPROCEDURE SetResources (VAR l: StrList; IN key: ARRAY OF CHAR);\r\t\tVAR i, k, j, x: INTEGER; ch: CHAR; s, a: ARRAY 16 OF CHAR; h, item: ARRAY 256 OF CHAR;\r\tBEGIN\r\t\tIF l.items = NIL THEN Init(l) END;\r\t\ti := 0;\r\t\tREPEAT\r\t\t\tx := i;\r\t\t\tj := 0; REPEAT a[j] := CHR(x MOD 10 + ORD(\"0\")); x := x DIV 10; INC(j) UNTIL x = 0;\r\t\t\tk := 0; REPEAT DEC(j); ch := a[j]; s[k] := ch; INC(k) UNTIL j = 0;\r\t\t\ts[k] := 0X;\r\t\t\th := key + \"[\" + s + \"]\";\r\t\t\tSearchString(h, item);\r\t\t\tIF item # \"\" THEN SetItem(l, i, item) END;\r\t\t\tINC(i)\r\t\tUNTIL item = \"\"\r\tEND SetResources;\r\r\r\t"
+                    attr: 0
+                  - text: "(** List **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (VAR l: List) "
+                    attr: 0
+                  - text: "SetLen*"
+                    attr: 3
+                  - text: " (len: INTEGER), NEW;\r\tBEGIN\r\t\tASSERT(len >= 0, 20);\r\t\tSetLen(l.l, len);\r\t\tl.len := l.l.len\r\tEND SetLen;\r\r\tPROCEDURE (VAR l: List) "
+                    attr: 0
+                  - text: "GetItem*"
+                    attr: 3
+                  - text: " (index: INTEGER; OUT item: String), NEW;\r\tBEGIN\r\t\tGetItem(l.l, index, item);\r\t\tl.len := l.l.len\r\tEND GetItem;\r\r\tPROCEDURE (VAR l: List) "
+                    attr: 0
+                  - text: "SetItem*"
+                    attr: 3
+                  - text: " (index: INTEGER; IN item: ARRAY OF CHAR), NEW;\r\tBEGIN\r\t\tASSERT(index >= 0, 20); ASSERT(item # \"\", 21);\r\t\tSetItem(l.l, index, item);\r\t\tl.len := l.l.len\r\tEND SetItem;\r\r\tPROCEDURE (VAR l: List) "
+                    attr: 0
+                  - text: "SetResources*"
+                    attr: 3
+                  - text: " (IN key: ARRAY OF CHAR), NEW;\r\tBEGIN\r\t\tASSERT(key # \"\", 20);\r\t\tSetResources(l.l, key);\r\t\tl.len := l.l.len\r\tEND SetResources;\r\r\r\t"
+                    attr: 0
+                  - text: "(** Selection **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (VAR s: Selection) "
+                    attr: 0
+                  - text: "SetLen*"
+                    attr: 3
+                  - text: " (len: INTEGER), NEW;\r\t\tVAR sel: POINTER TO ARRAY OF SET; i: INTEGER;\r\tBEGIN\r\t\tASSERT(len >= 0, 20);\r\t\tSetLen(s.l, len);\r\t\tlen := len + (MAX(SET) - 1) DIV MAX(SET);\r\t\tIF len  = 0 THEN s.sel := NIL\r\t\tELSIF s.sel = NIL THEN NEW(s.sel, len)\r\t\tELSIF LEN(s.sel^) # len THEN\r\t\t\tNEW(sel, len);\r\t\t\tIF LEN(s.sel^) < len THEN len := LEN(s.sel^) END;\r\t\t\ti := 0; WHILE i < len DO sel[i] := s.sel[i]; INC(i) END;\r\t\t\ts.sel := sel\r\t\tEND;\r\t\ts.len := s.l.len\r\tEND SetLen;\r\r\tPROCEDURE (VAR s: Selection) "
+                    attr: 0
+                  - text: "GetItem*"
+                    attr: 3
+                  - text: " (index: INTEGER; OUT item: String), NEW;\r\tBEGIN\r\t\tGetItem(s.l, index, item);\r\t\ts.len := s.l.len\r\tEND GetItem;\r\r\tPROCEDURE (VAR s: Selection) "
+                    attr: 0
+                  - text: "SetItem*"
+                    attr: 3
+                  - text: " (index: INTEGER; IN item: ARRAY OF CHAR), NEW;\r\tBEGIN\r\t\tASSERT(index >= 0, 20); (*ASSERT(index < s.l.len, 21);*) ASSERT(item # \"\", 21);\r\t\tSetItem(s.l, index, item);\r\t\tIF s.l.len > s.len THEN s.SetLen(s.l.len) END\r\tEND SetItem;\r\r\tPROCEDURE (VAR s: Selection) "
+                    attr: 0
+                  - text: "SetResources*"
+                    attr: 3
+                  - text: " (IN key: ARRAY OF CHAR), NEW;\r\tBEGIN\r\t\tASSERT(key # \"\", 20);\r\t\tSetResources(s.l, key);\r\t\tIF s.l.len > s.len THEN s.SetLen(s.l.len) END\r\tEND SetResources;\r\r\tPROCEDURE (VAR s: Selection) "
+                    attr: 0
+                  - text: "In*"
+                    attr: 3
+                  - text: " (index: INTEGER): BOOLEAN, NEW;\r\tBEGIN\r\t\tIF s.l.items = NIL THEN Init(s.l); s.len := s.l.len END;\r\t\tIF s.sel # NIL THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " (index MOD 32) IN (s.sel[index DIV 32]) ELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " FALSE END\r\tEND In;\r\r\tPROCEDURE (VAR s: Selection) "
+                    attr: 0
+                  - text: "Excl*"
+                    attr: 3
+                  - text: " (from, to: INTEGER), NEW;\r\tBEGIN\r\t\tIF s.l.items = NIL THEN Init(s.l); s.len := s.l.len END;\r\t\tIF from < 0 THEN from := 0 END;\r\t\tIF to >= s.l.len THEN to := s.l.len - 1 END;\r\t\tWHILE from <= to DO EXCL(s.sel[from DIV 32], from MOD 32); INC(from) END\r\tEND Excl;\r\r\tPROCEDURE (VAR s: Selection) "
+                    attr: 0
+                  - text: "Incl*"
+                    attr: 3
+                  - text: " (from, to: INTEGER), NEW;\r\tBEGIN\r\t\tIF s.l.items = NIL THEN Init(s.l); s.len := s.l.len END;\r\t\tIF from < 0 THEN from := 0 END;\r\t\tIF to >= s.l.len THEN to := s.l.len - 1 END;\r\t\tWHILE from <= to DO INCL(s.sel[from DIV 32], from MOD 32); INC(from) END\r\tEND Incl;\r\r\r\t"
+                    attr: 0
+                  - text: "(** Combo **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (VAR c: Combo) "
+                    attr: 0
+                  - text: "SetLen*"
+                    attr: 3
+                  - text: " (len: INTEGER), NEW;\r\tBEGIN\r\t\tASSERT(len >= 0, 20);\r\t\tSetLen(c.l, len);\r\t\tc.len := c.l.len\r\tEND SetLen;\r\r\tPROCEDURE (VAR c: Combo) "
+                    attr: 0
+                  - text: "GetItem*"
+                    attr: 3
+                  - text: " (index: INTEGER; OUT item: String), NEW;\r\tBEGIN\r\t\tGetItem(c.l, index, item);\r\t\tc.len := c.l.len\r\tEND GetItem;\r\r\tPROCEDURE (VAR c: Combo) "
+                    attr: 0
+                  - text: "SetItem*"
+                    attr: 3
+                  - text: " (index: INTEGER; IN item: ARRAY OF CHAR), NEW;\r\tBEGIN\r\t\tASSERT(index >= 0, 20); ASSERT(item # \"\", 21);\r\t\tSetItem(c.l, index, item);\r\t\tc.len := c.l.len\r\tEND SetItem;\r\r\tPROCEDURE (VAR c: Combo) "
+                    attr: 0
+                  - text: "SetResources*"
+                    attr: 3
+                  - text: " (IN key: ARRAY OF CHAR), NEW;\r\tBEGIN\r\t\tASSERT(key # \"\", 20);\r\t\tSetResources(c.l, key);\r\t\tc.len := c.l.len\r\tEND SetResources;\r\r\r\t"
+                    attr: 0
+                  - text: "(* Tree and TreeNode *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (tn: TreeNode) "
+                    attr: 0
+                  - text: "SetName* "
+                    attr: 3
+                  - text: "(name: String), NEW;\r\tBEGIN\r\t\ttn.name := name\r\tEND SetName;\r\r\tPROCEDURE (tn: TreeNode) "
+                    attr: 0
+                  - text: "GetName* "
+                    attr: 3
+                  - text: "(OUT name: String), NEW;\r\tBEGIN\r\t\tname := tn.name\r\tEND GetName;\r\r\tPROCEDURE (tn: TreeNode) "
+                    attr: 0
+                  - text: "SetData* "
+                    attr: 3
+                  - text: "(data: ANYPTR), NEW;\r\tBEGIN\r\t\ttn.data := data\r\tEND SetData;\r\r\tPROCEDURE (tn: TreeNode) "
+                    attr: 0
+                  - text: "Data* "
+                    attr: 3
+                  - text: "(): ANYPTR, NEW;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " tn.data\r\tEND Data;\r\r\tPROCEDURE (tn: TreeNode) "
+                    attr: 0
+                  - text: "NofChildren* "
+                    attr: 3
+                  - text: "(): INTEGER, NEW;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " tn.nofChildren\r\tEND NofChildren;\r\r\tPROCEDURE (tn: TreeNode) "
+                    attr: 0
+                  - text: "SetExpansion* "
+                    attr: 3
+                  - text: "(expanded: BOOLEAN), NEW;\r\tBEGIN\r\t\ttn.expanded := expanded\r\tEND SetExpansion;\r\r\tPROCEDURE (tn: TreeNode) "
+                    attr: 0
+                  - text: "IsExpanded* "
+                    attr: 3
+                  - text: "(): BOOLEAN, NEW;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " tn.expanded\r\tEND IsExpanded;\r\r\tPROCEDURE (tn: TreeNode) "
+                    attr: 0
+                  - text: "IsFolder* "
+                    attr: 3
+                  - text: "(): BOOLEAN, NEW;\r\tBEGIN\r\t\tIF (~tn.viewAsFolder) & (tn.firstChild = NIL) THEN\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " FALSE\r\t\tELSE\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\tEND\r\tEND IsFolder;\r\r\tPROCEDURE (tn: TreeNode) "
+                    attr: 0
+                  - text: ViewAsFolder
+                    attr: 3
+                  - text: "* (isFolder: BOOLEAN), NEW;\r\tBEGIN\r\t\ttn.viewAsFolder := isFolder\r\tEND ViewAsFolder;\r\r\tPROCEDURE (VAR t: Tree) "
+                    attr: 0
+                  - text: NofNodes
+                    attr: 3
+                  - text: "* (): INTEGER, NEW;\r\tBEGIN\r\t\tIF t.firstRoot = NIL THEN\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 0\r\t\tELSE\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " MAX(0, t.nofNodes)\r\t\tEND\r\tEND NofNodes;\r\r\tPROCEDURE (VAR t: Tree) "
+                    attr: 0
+                  - text: NofRoots
+                    attr: 3
+                  - text: "* (): INTEGER, NEW;\r\tBEGIN\r\t\tIF t.firstRoot = NIL THEN\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 0\r\t\tELSE\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " MAX(0, t.nofRoots)\r\t\tEND\r\tEND NofRoots;\r\r\tPROCEDURE (VAR t: Tree) "
+                    attr: 0
+                  - text: Parent
+                    attr: 3
+                  - text: "* (node: TreeNode): TreeNode, NEW;\r\tBEGIN\r\t\tASSERT(node # NIL, 20); ASSERT(node.tree = SYSTEM.ADR(t), 21);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " node.parent\r\tEND Parent;\r\r\tPROCEDURE (VAR t: Tree) "
+                    attr: 0
+                  - text: Next
+                    attr: 3
+                  - text: "* (node: TreeNode): TreeNode, NEW;\r\tBEGIN\r\t\tASSERT(node # NIL, 20); ASSERT(node.tree = SYSTEM.ADR(t), 21);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " node.next\r\tEND Next;\r\r\tPROCEDURE (VAR t: Tree) "
+                    attr: 0
+                  - text: Prev
+                    attr: 3
+                  - text: "* (node: TreeNode): TreeNode, NEW;\r\tBEGIN\r\t\tASSERT(node # NIL, 20); ASSERT(node.tree = SYSTEM.ADR(t), 21);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " node.prev\r\tEND Prev;\r\r\tPROCEDURE (VAR t: Tree) "
+                    attr: 0
+                  - text: Child
+                    attr: 3
+                  - text: "* (node: TreeNode; pos: INTEGER): TreeNode, NEW;\r\t\tVAR cur: TreeNode;\r\tBEGIN\r\t\tASSERT(pos >= lastPos, 20); ASSERT((node = NIL) OR (node.tree = SYSTEM.ADR(t)), 21);\r\t\tIF node = NIL THEN cur := t.firstRoot\r\t\tELSE cur := node.firstChild END;\r\t\tIF pos = lastPos THEN\r\t\t\tWHILE (cur # NIL) & (cur.next # NIL) DO cur := cur.next END\r\t\tELSE\r\t\t\tWHILE (cur # NIL) & (pos > 0) DO cur := cur.next; DEC(pos) END\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " cur\r\tEND Child;\r\r\tPROCEDURE (VAR t: Tree) "
+                    attr: 0
+                  - text: Selected
+                    attr: 3
+                  - text: "* (): TreeNode, NEW;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " t.selected\r\tEND Selected;\r\r\tPROCEDURE (VAR t: Tree) "
+                    attr: 0
+                  - text: Select
+                    attr: 3
+                  - text: "* (node: TreeNode), NEW;\r\tBEGIN\r\t\tASSERT((node = NIL) OR (node.tree = SYSTEM.ADR(t)), 20);\r\t\tIF (node # NIL) OR (t.nofRoots = 0) THEN\r\t\t\tt.selected := node\r\t\tELSE\r\t\t\tt.selected := t.Child(NIL, 0)\r\t\tEND\r\tEND Select;\r\r\tPROCEDURE Include (IN t: Tree; node: TreeNode);\r\t\tVAR c: TreeNode;\r\tBEGIN\r\t\tASSERT(node # NIL, 20); ASSERT(node.tree = 0, 100);\r\t\tnode.tree := SYSTEM.ADR(t);\r\t\tc := node.firstChild;\r\t\tWHILE c # NIL DO Include(t, c); c := c.next END\r\tEND Include;\r\r\tPROCEDURE (VAR t: Tree) InsertAt (parent: TreeNode; pos: INTEGER; node: TreeNode), NEW;\r\t\tVAR\r\t\t\tcur, prev: TreeNode;\r\tBEGIN\r\t\tASSERT(node # NIL, 20); ASSERT(pos >= lastPos, 21);\r\t\tASSERT((parent = NIL) OR (parent.tree = SYSTEM.ADR(t)), 22); ASSERT(node.tree = 0, 23);\r\t\tInclude(t, node);\r\t\tIF parent = NIL THEN\t"
+                    attr: 0
+                  - text: "(* Add new root *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF (t.firstRoot = NIL) OR (pos = 0) THEN\r\t\t\t\tnode.next := t.firstRoot; node.prev := NIL;\r\t\t\t\tIF t.firstRoot # NIL THEN t.firstRoot.prev := node END;\r\t\t\t\tt.firstRoot := node\r\t\t\tELSE\r\t\t\t\tcur := t.firstRoot;\r\t\t\t\tIF pos = lastPos THEN pos := t.nofRoots END;\r\t\t\t\tWHILE (cur # NIL) & (pos > 0) DO\r\t\t\t\t\tprev := cur; cur := t.Next(cur); DEC(pos)\r\t\t\t\tEND;\r\t\t\t\tIF cur = NIL THEN\r\t\t\t\t\tprev.next := node; node.prev := prev\r\t\t\t\tELSE\r\t\t\t\t\tnode.next := cur; node.prev := cur.prev; cur.prev := node; prev.next := node\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tINC(t.nofRoots)\r\t\tELSE\t"
+                    attr: 0
+                  - text: "(* Add child *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF pos = lastPos THEN pos := parent.nofChildren END;\r\t\t\tIF (parent.firstChild = NIL) OR (pos = 0) THEN\r\t\t\t\tIF parent.firstChild # NIL THEN parent.firstChild.prev := node END;\r\t\t\t\tnode.prev := NIL; node.next := parent.firstChild; parent.firstChild := node\r\t\t\tELSE\r\t\t\t\tcur := parent.firstChild;\r\t\t\t\tWHILE (cur # NIL) & (pos > 0) DO\r\t\t\t\t\tprev := cur; cur := t.Next(cur); DEC(pos)\r\t\t\t\tEND;\r\t\t\t\tIF cur = NIL THEN\r\t\t\t\t\tprev.next := node; node.prev := prev\r\t\t\t\tELSE\r\t\t\t\t\tnode.next := cur; node.prev := cur.prev; cur.prev := node; prev.next := node\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tINC(parent.nofChildren)\r\t\tEND;\r\t\tnode.parent := parent;\r\t\tINC(t.nofNodes)\r\tEND InsertAt;\r\r\tPROCEDURE (VAR t: Tree) "
+                    attr: 0
+                  - text: NewChild
+                    attr: 3
+                  - text: "* (parent: TreeNode; pos: INTEGER; name: String): TreeNode, NEW;\r\t\tVAR\r\t\t\tnew: TreeNode;\r\tBEGIN\r\t\tNEW(new); new.tree := 0;\r\t\tnew.SetName(name); new.expanded := FALSE; new.nofChildren := 0;\r\t\tnew.viewAsFolder := FALSE;\r\t\tt.InsertAt(parent, pos, new);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " new\r\tEND NewChild;\r\r\tPROCEDURE (VAR t: Tree) CountChildren (node: TreeNode): INTEGER, NEW;\r\t\tVAR tot, nofc, i: INTEGER;\r\tBEGIN\r\t\ttot := 0;\r\t\tIF node # NIL THEN\r\t\t\tnofc := node.nofChildren; tot := nofc;\r\t\t\tFOR i := 0 TO nofc -1 DO\r\t\t\t\ttot := tot + t.CountChildren(t.Child(node, i))\r\t\t\tEND\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " tot\r\tEND CountChildren;\r\r\tPROCEDURE Exclude (VAR t: Tree; node: TreeNode);\r\t\tVAR c: TreeNode;\r\tBEGIN\r\t\tASSERT(node # NIL, 20); ASSERT(node.tree = SYSTEM.ADR(t), 100);\r\t\tIF t.Selected() = node THEN t.Select(NIL) END;\r\t\tnode.tree := 0;\r\t\tc := node.firstChild;\r\t\tWHILE c # NIL DO Exclude(t, c); c := c.next END\r\tEND Exclude;\r\r\tPROCEDURE (VAR t: Tree) "
+                    attr: 0
+                  - text: Delete
+                    attr: 3
+                  - text: "* (node: TreeNode): INTEGER, NEW;\r\t\tVAR\r\t\t\tndel: INTEGER;\r\tBEGIN\r\t\tASSERT(node # NIL, 20); ASSERT(node.tree = SYSTEM.ADR(t), 21);\r\t\tndel := t.CountChildren(node);\r\t\tIF node.parent = NIL THEN\t"
+                    attr: 0
+                  - text: "(* root node *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF node.prev = NIL THEN\r\t\t\t\tIF node.next # NIL THEN\r\t\t\t\t\tt.firstRoot := node.next;\r\t\t\t\t\tnode.next.prev := NIL\r\t\t\t\tELSE\r\t\t\t\t\tt.firstRoot := NIL\r\t\t\t\tEND\r\t\t\tELSE\r\t\t\t\tnode.prev.next := node.next;\r\t\t\t\tIF node.next # NIL THEN node.next.prev := node.prev END\r\t\t\tEND;\r\t\t\tDEC(t.nofRoots)\r\t\tELSE\r\t\t\tIF node.prev = NIL THEN\r\t\t\t\tIF node.next # NIL THEN\r\t\t\t\t\tnode.parent.firstChild := node.next;\r\t\t\t\t\tnode.next.prev := NIL\r\t\t\t\tELSE\r\t\t\t\t\tnode.parent.firstChild := NIL\r\t\t\t\tEND\r\t\t\tELSE\r\t\t\t\tnode.prev.next := node.next;\r\t\t\t\tIF node.next # NIL THEN node.next.prev := node.prev END\r\t\t\tEND;\r\t\t\tDEC(node.parent.nofChildren)\r\t\tEND;\r\t\tnode.parent := NIL; node.next := NIL; node.prev := NIL;\r\t\tExclude(t, node);\r\t\tndel := ndel + 1;\r\t\tt.nofNodes := t.nofNodes - ndel;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " ndel\r\tEND Delete;\r\r\tPROCEDURE (VAR t: Tree) "
+                    attr: 0
+                  - text: Move
+                    attr: 3
+                  - text: "* (node, parent: TreeNode; pos: INTEGER), NEW;\r\t\tVAR ndel, nofn: INTEGER; s: TreeNode;\r\tBEGIN\r\t\tASSERT(node # NIL, 20);  ASSERT(pos >= lastPos, 21);\r\t\tASSERT(node.tree = SYSTEM.ADR(t), 22);\r\t\tnofn := t.NofNodes();\r\t\ts := t.Selected();\r\t\tndel := t.Delete(node); t.InsertAt(parent, pos, node);\r\t\tt.nofNodes := t.nofNodes + ndel - 1;\r\t\tIF (s # NIL) & (t.Selected() # s) THEN t.Select(s) END;\r\t\tASSERT(nofn = t.NofNodes(), 60)\r\tEND Move;\r\r\tPROCEDURE (VAR t: Tree) "
+                    attr: 0
+                  - text: DeleteAll
+                    attr: 3
+                  - text: "*, NEW;\r\tBEGIN\r\t\tt.nofRoots := 0; t.nofNodes := 0; t.firstRoot := NIL; t.selected := NIL\r\tEND DeleteAll;\r\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Notify
+                    attr: 3
+                  - text: "* (id0, id1: INTEGER; opts: SET);\r\tBEGIN\r\t\tASSERT(notifyHook # NIL, 100);\r\t\tnotifyHook.Notify(id0, id1, opts)\r\tEND Notify;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Update
+                    attr: 3
+                  - text: "* (IN x: ANYREC);\r\t\tVAR type: Kernel.Type; adr, size: INTEGER;\r\tBEGIN\r\t\tadr := "
+                    attr: 0
+                  - text: SYSTEM.ADR
+                    attr: 3
+                  - text: "(x);\r\t\ttype := Kernel.TypeOf(x);\r\t\tsize := type.size;\r\t\tIF size = 0 THEN size := 1 END;\r\t\tNotify(adr, adr + size, {update, guardCheck})\r\tEND Update;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: UpdateBool
+                    attr: 3
+                  - text: "* (VAR x: BOOLEAN);\r\t\tVAR adr: INTEGER;\r\tBEGIN\r\t\tadr := "
+                    attr: 0
+                  - text: SYSTEM.ADR
+                    attr: 3
+                  - text: "(x);\r\t\tNotify(adr, adr + SIZE(BOOLEAN), {update, guardCheck})\r\tEND UpdateBool;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: UpdateSChar
+                    attr: 3
+                  - text: "* (VAR x: SHORTCHAR);\r\t\tVAR adr: INTEGER;\r\tBEGIN\r\t\tadr := "
+                    attr: 0
+                  - text: SYSTEM.ADR
+                    attr: 3
+                  - text: "(x);\r\t\tNotify(adr, adr + SIZE(SHORTCHAR), {update, guardCheck})\r\tEND UpdateSChar;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: UpdateChar
+                    attr: 3
+                  - text: "* (VAR x: CHAR);\r\t\tVAR adr: INTEGER;\r\tBEGIN\r\t\tadr := "
+                    attr: 0
+                  - text: SYSTEM.ADR
+                    attr: 3
+                  - text: "(x);\r\t\tNotify(adr, adr + SIZE(CHAR), {update, guardCheck})\r\tEND UpdateChar;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: UpdateByte
+                    attr: 3
+                  - text: "* (VAR x: BYTE);\r\t\tVAR adr: INTEGER;\r\tBEGIN\r\t\tadr := "
+                    attr: 0
+                  - text: SYSTEM.ADR
+                    attr: 3
+                  - text: "(x);\r\t\tNotify(adr, adr + SIZE(BYTE), {update, guardCheck})\r\tEND UpdateByte;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: UpdateSInt
+                    attr: 3
+                  - text: "* (VAR x: SHORTINT);\r\t\tVAR adr: INTEGER;\r\tBEGIN\r\t\tadr := "
+                    attr: 0
+                  - text: SYSTEM.ADR
+                    attr: 3
+                  - text: "(x);\r\t\tNotify(adr, adr + SIZE(SHORTINT), {update, guardCheck})\r\tEND UpdateSInt;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: UpdateInt
+                    attr: 3
+                  - text: "* (VAR x: INTEGER);\r\t\tVAR adr: INTEGER;\r\tBEGIN\r\t\tadr := "
+                    attr: 0
+                  - text: SYSTEM.ADR
+                    attr: 3
+                  - text: "(x);\r\t\tNotify(adr, adr + SIZE(INTEGER), {update, guardCheck})\r\tEND UpdateInt;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: UpdateLInt
+                    attr: 3
+                  - text: "* (VAR x: LONGINT);\r\t\tVAR adr: INTEGER;\r\tBEGIN\r\t\tadr := "
+                    attr: 0
+                  - text: SYSTEM.ADR
+                    attr: 3
+                  - text: "(x);\r\t\tNotify(adr, adr + SIZE(LONGINT), {update, guardCheck})\r\tEND UpdateLInt;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: UpdateSReal
+                    attr: 3
+                  - text: "* (VAR x: SHORTREAL);\r\t\tVAR adr: INTEGER;\r\tBEGIN\r\t\tadr := "
+                    attr: 0
+                  - text: SYSTEM.ADR
+                    attr: 3
+                  - text: "(x);\r\t\tNotify(adr, adr + SIZE(SHORTREAL), {update, guardCheck})\r\tEND UpdateSReal;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: UpdateReal
+                    attr: 3
+                  - text: "* (VAR x: REAL);\r\t\tVAR adr: INTEGER;\r\tBEGIN\r\t\tadr := "
+                    attr: 0
+                  - text: SYSTEM.ADR
+                    attr: 3
+                  - text: "(x);\r\t\tNotify(adr, adr + SIZE(REAL), {update, guardCheck})\r\tEND UpdateReal;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: UpdateSet
+                    attr: 3
+                  - text: "* (VAR x: SET);\r\t\tVAR adr: INTEGER;\r\tBEGIN\r\t\tadr := "
+                    attr: 0
+                  - text: SYSTEM.ADR
+                    attr: 3
+                  - text: "(x);\r\t\tNotify(adr, adr + SIZE(SET), {update, guardCheck})\r\tEND UpdateSet;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: UpdateSString
+                    attr: 3
+                  - text: "* (IN x: ARRAY OF SHORTCHAR);\r\t\tVAR adr: INTEGER;\r\tBEGIN\r\t\tadr := "
+                    attr: 0
+                  - text: SYSTEM.ADR
+                    attr: 3
+                  - text: "(x);\r\t\tNotify(adr, adr + LEN(x) * SIZE(SHORTCHAR), {update, guardCheck})\r\tEND UpdateSString;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: UpdateString
+                    attr: 3
+                  - text: "* (IN x: ARRAY OF CHAR);\r\t\tVAR adr: INTEGER;\r\tBEGIN\r\t\tadr := "
+                    attr: 0
+                  - text: SYSTEM.ADR
+                    attr: 3
+                  - text: "(x);\r\t\tNotify(adr, adr + LEN(x) * SIZE(CHAR), {update, guardCheck})\r\tEND UpdateString;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: UpdateList
+                    attr: 3
+                  - text: "* (IN x: ANYREC);\r\t\tVAR type: Kernel.Type; adr, size: INTEGER;\r\tBEGIN\r\t\tadr := "
+                    attr: 0
+                  - text: SYSTEM.ADR
+                    attr: 3
+                  - text: "(x);\r\t\ttype := Kernel.TypeOf(x);\r\t\tsize := type.size;\r\t\tIF size = 0 THEN size := 1 END;\r\t\tNotify(adr, adr + size, {listUpdate, guardCheck})\r\tEND UpdateList;\r\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: GetOK
+                    attr: 3
+                  - text: "* (IN str, p0, p1, p2: ARRAY OF CHAR; form: SET; OUT res: INTEGER);\r\tBEGIN\r\t\tASSERT(((yes IN form) = (no IN form)) & ((yes IN form) # (ok IN form)), 20);\r\t\tASSERT(gethook # NIL, 100);\r\t\tgethook.GetOK(str, p0, p1, p2, form, res)\r\tEND GetOK;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: GetIntSpec
+                    attr: 3
+                  - text: "* (defType: Files.Type; VAR loc: Files.Locator; OUT name: Files.Name);\r\tBEGIN\r\t\tASSERT(gethook # NIL, 100);\r\t\tgethook.GetIntSpec(defType, loc, name)\r\tEND GetIntSpec;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: GetExtSpec
+                    attr: 3
+                  - text: "* (defName: Files.Name; defType: Files.Type; VAR loc: Files.Locator;\r\t\t\t\t\t\t\t\t\t\t\t\tOUT name: Files.Name);\r\tBEGIN\r\t\tASSERT(gethook # NIL, 100);\r\t\tgethook.GetExtSpec(defName, defType, loc, name)\r\tEND GetExtSpec;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: GetColor
+                    attr: 3
+                  - text: "* (in: INTEGER; OUT out: INTEGER; OUT set: BOOLEAN);\r\tBEGIN\r\t\tASSERT(gethook # NIL, 100);\r\t\tgethook.GetColor(in, out, set)\r\tEND GetColor;\r\r\r\tPROCEDURE Subst (in: ARRAY OF CHAR; IN p0, p1, p2: ARRAY OF CHAR; VAR out: ARRAY OF CHAR);\r\t\tVAR len, i, j, k: INTEGER; ch, c: CHAR;\r\tBEGIN\r\t\ti := 0; ch := in[i]; j := 0; len := LEN(out) - 1;\r\t\tWHILE (ch # 0X) & (j < len) DO\r\t\t\tIF ch = \"^\" THEN\r\t\t\t\tINC(i); ch := in[i];\r\t\t\t\tIF ch = \"0\" THEN\r\t\t\t\t\tk := 0; c := p0[0];\r\t\t\t\t\tWHILE (c # 0X) & (j < len) DO out[j] := c; INC(j); INC(k); c := p0[k] END;\r\t\t\t\t\tINC(i); ch := in[i]\r\t\t\t\tELSIF ch = \"1\" THEN\r\t\t\t\t\tk := 0; c := p1[0];\r\t\t\t\t\tWHILE (c # 0X) & (j < len) DO out[j] := c; INC(j); INC(k); c := p1[k] END;\r\t\t\t\t\tINC(i); ch := in[i]\r\t\t\t\tELSIF ch = \"2\" THEN\r\t\t\t\t\tk := 0; c := p2[0];\r\t\t\t\t\tWHILE (c # 0X) & (j < len) DO out[j] := c; INC(j); INC(k); c := p2[k] END;\r\t\t\t\t\tINC(i); ch := in[i]\r\t\t\t\tELSE out[j] := \"^\"; INC(j)\r\t\t\t\tEND\r\t\t\tELSE out[j] := ch; INC(j); INC(i); ch := in[i]\r\t\t\tEND\r\t\tEND;\r\t\tout[j] := 0X\r\tEND Subst;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: FlushMappings
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\ttabList := NIL\r\tEND FlushMappings;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: MapParamString
+                    attr: 3
+                  - text: "* (in, p0, p1, p2: ARRAY OF CHAR; OUT out: ARRAY OF CHAR);\r\t"
+                    attr: 0
+                  - text: "(* use in as key in string table file, and return corresponding string in out.\r\t\tIf the resource lookup fails, return in in out *)"
+                    attr: 1
+                  - text: "\r\tBEGIN\r\t\tSearchString(in, out);\r\t\tIF out # \"\" THEN Subst(out, p0, p1, p2, out)\r\t\tELSE Subst(in, p0, p1, p2, out)\r\t\tEND\r\tEND MapParamString;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: MapString
+                    attr: 3
+                  - text: "* (in: ARRAY OF CHAR; OUT out: ARRAY OF CHAR);\r\t\tVAR len, k: INTEGER;\r\tBEGIN\r\t\tSearchString(in, out);\r\t\tIF out = \"\" THEN\r\t\t\tk := 0; len := LEN(out)-1;\r\t\t\tWHILE (k < len) & (in[k] # 0X) DO out[k] := in[k]; INC(k) END;\r\t\t\tout[k] := 0X\r\t\tEND\r\tEND MapString;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ShowMsg
+                    attr: 3
+                  - text: "* (IN str: ARRAY OF CHAR);\r\tBEGIN\r\t\tASSERT(str # \"\", 20);\r\t\tASSERT(showHook # NIL, 100);\r\t\tshowHook.ShowParamMsg(str, \"\", \"\", \"\")\r\tEND ShowMsg;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ShowParamMsg
+                    attr: 3
+                  - text: "* (IN str, p0, p1, p2: ARRAY OF CHAR);\r\tBEGIN\r\t\tASSERT(str # \"\", 20);\r\t\tASSERT(showHook # NIL, 100);\r\t\tshowHook.ShowParamMsg(str,p0, p1, p2)\r\tEND ShowParamMsg;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ShowStatus
+                    attr: 3
+                  - text: "* (IN str: ARRAY OF CHAR);\r\tBEGIN\r\t\tASSERT(showHook # NIL, 100);\r\t\tshowHook.ShowParamStatus(str, \"\", \"\", \"\")\r\tEND ShowStatus;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ShowParamStatus
+                    attr: 3
+                  - text: "* (IN str, p0, p1, p2: ARRAY OF CHAR);\r\tBEGIN\r\t\tASSERT(showHook # NIL, 100);\r\t\tshowHook.ShowParamStatus(str, p0, p1, p2)\r\tEND ShowParamStatus;\r\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Call
+                    attr: 3
+                  - text: "* (IN proc, errorMsg: ARRAY OF CHAR; OUT res: INTEGER);\r\tBEGIN\r\t\tASSERT(callHook # NIL, 100);\r\t\tcallHook.Call(proc, errorMsg, res)\r\tEND Call;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Beep
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tKernel.Beep\r\tEND Beep;\r\r\tPROCEDURE (n: LangNotifier) "
+                    attr: 0
+                  - text: Notify
+                    attr: 3
+                  - text: "-(), NEW, ABSTRACT;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: RegisterLangNotifier
+                    attr: 3
+                  - text: "* (notifier: LangNotifier);\r\t\tVAR nl: LangNotifier;\r\tBEGIN\r\t\tASSERT(notifier # NIL, 20);\r\t\tnl := langNotifiers;\r\t\tWHILE (nl # NIL) & (nl # notifier) DO nl := nl.next END;\r\t\tIF nl = NIL THEN\r\t\t\tnotifier.next := langNotifiers; langNotifiers := notifier\r\t\tEND\r\tEND RegisterLangNotifier;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: RemoveLangNotifier
+                    attr: 3
+                  - text: "* (notifier: LangNotifier);\r\t\tVAR nl, prev: LangNotifier;\r\tBEGIN\r\t\tASSERT(notifier # NIL, 20);\r\t\tnl := langNotifiers; prev := NIL;\r\t\tWHILE (nl # NIL) & (nl # notifier) DO prev := nl; nl := nl.next END;\r\t\tIF nl # NIL THEN\r\t\t\tIF prev = NIL THEN  langNotifiers := langNotifiers.next ELSE prev.next := nl.next END;\r\t\t\tnl.next := NIL\r\t\tEND\r\tEND RemoveLangNotifier;\r\r\tPROCEDURE Exec (a, b, c: INTEGER);\r\t\tVAR nl: LangNotifier;\r\tBEGIN\r\t\tnl := currentNotifier; currentNotifier := NIL;\r\t\tnl.Notify;\r\t\tcurrentNotifier := nl\r\tEND Exec;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetLanguage
+                    attr: 3
+                  - text: "* (lang: Language; persistent: BOOLEAN);\r\t\tVAR nl, t: LangNotifier; ok: BOOLEAN;\r\tBEGIN\r\t\tASSERT((lang = \"\") OR (LEN(lang$) = 2), 20);\r\t\tASSERT(languageHook # NIL, 100);\r\t\tIF lang # language THEN\r\t\t\tlanguageHook.SetLanguage(lang, persistent, ok);\r\t\t\tIF ok THEN\r\t\t\t\tlanguage := lang; FlushMappings;\r\t\t\t\tnl := langNotifiers;\r\t\t\t\tWHILE nl # NIL DO\r\t\t\t\t\tcurrentNotifier := nl;\r\t\t\t\t\tKernel.Try(Exec, 0, 0, 0);\r\t\t\t\t\tIF currentNotifier = NIL THEN\r\t\t\t\t\t\tt := nl; nl := nl.next; RemoveLangNotifier(t)\t(* "
+                    attr: 0
+                  - text: "Notifier trapped, remove it"
+                    attr: 1
+                  - text: " *)\r\t\t\t\t\tELSE\r\t\t\t\t\t\tnl := nl.next\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tcurrentNotifier := NIL\r\t\tEND\r\tEND SetLanguage;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ResetLanguage
+                    attr: 3
+                  - text: "*;\r\t\tVAR lang: Language;\r\tBEGIN\r\t\tASSERT(languageHook # NIL, 100);\r\t\tlanguageHook.GetPersistentLanguage(lang);\r\t\tSetLanguage(lang, nonPersistent)\r\tEND ResetLanguage;\r\rBEGIN\r\tappName := \"BlackBox\"; showsStatus := FALSE; caretPeriod := 500; thickCaret := FALSE; user := \"\"\rEND Dialog.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 30
+          bodyPos: 41204
+          bodyLen: 8

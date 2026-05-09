@@ -1,0 +1,256 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Std\\Mod\\ViewSizer.odc"
+  size: 7030
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 6899
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 6713
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 6627
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 127000
+                dsc: 25400
+                grid: 1
+                opts: 0x00000021
+              defaultAttr:
+                font: Geneva
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 6747
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 6233
+                runListLen: 1763
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE StdViewSizer;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT Services, Ports, Dialog, Views, Containers, Properties;\r\r\tCONST width = 1; height = 2;\r\r\tVAR\r\t\t"
+                    attr: 0
+                  - text: size
+                    attr: 3
+                  - text: "*: RECORD\r\t\t\ttypeName-: Dialog.String;\r\t\t\tw*, h*: REAL;\r\t\t\tproportional*, fixedW, fixedH: BOOLEAN;\r\t\t\tunit, scaleW, scaleH, lastChanged: INTEGER;\r\t\t\tunitText: ARRAY 6 OF CHAR;\r\t\t\tview: Views.View;\r\t\t\tcontainer: Containers.Controller\r\t\tEND;\r\r\tPROCEDURE ConnectDialog (v: Views.View; c: Containers.Controller);\r\t\tVAR pref: Properties.ResizePref;\r\tBEGIN\r\t\tIF (v # NIL) & (v.context # NIL) THEN\r\t\t\tIF Dialog.metricSystem THEN size.unit := Ports.mm * 10; size.unitText := \"cm\"\r\t\t\tELSE size.unit := Ports.inch; size.unitText := \"inch\"\r\t\t\tEND;\r\t\t\tsize.view := v; size.container := c;\r\t\t\tServices.GetTypeName(v, size.typeName);\r\t\t\tv.context.GetSize(size.scaleW, size.scaleH);\r\t\t\tsize.w := size.scaleW / size.unit; size.h := size.scaleH / size.unit;\r\t\t\tpref.fixed := FALSE;\r\t\t\tpref.horFitToPage := FALSE; pref.verFitToPage := FALSE;\r\t\t\tpref.horFitToWin := FALSE; pref.verFitToWin := FALSE;\r\t\t\tViews.HandlePropMsg(v, pref);\r\t\t\tsize.fixedW := pref.fixed;\r\t\t\tsize.fixedH := pref.fixed;\r\t\t\tsize.proportional := FALSE\r\t\tELSE\r\t\t\tsize.view := NIL; size.container := c; size.typeName := \"\"\r\t\tEND;\r\t\tDialog.Update(size)\r\tEND ConnectDialog;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetViewSize
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tIF size.view # NIL THEN\r\t\t\tsize.view.context.SetSize(SHORT(ENTIER(size.w * size.unit + 0.5)),\r\t\t\t\t\t\t\t\t\t\t\t\tSHORT(ENTIER(size.h * size.unit + 0.5)));\r\t\t\tIF size.container # NIL THEN size.container.SetSingleton(size.view) END;\r\t\t\tConnectDialog(size.view, size.container)\r\t\tELSE Dialog.Beep\r\t\tEND\r\tEND SetViewSize;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: InitDialog
+                    attr: 3
+                  - text: "*;\r\t\tVAR v: Views.View; c: Containers.Controller;\r\tBEGIN\r\t\tc := Containers.Focus();\r\t\tIF c # NIL THEN v := c.Singleton() ELSE v := NIL END;\r\t\tIF (v # size.view) OR (c # size.container) THEN ConnectDialog(v, c) END\r\tEND InitDialog;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ResetDialog
+                    attr: 3
+                  - text: "*;\r\t\tVAR proportional: BOOLEAN; v: Views.View;\r\tBEGIN\r\t\tproportional := size.proportional; v := size.view;\r\t\tsize.view := NIL; InitDialog;\r\t\tIF proportional & (v = size.view) THEN size.proportional := TRUE; Dialog.Update(size) END\r\tEND ResetDialog;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: WidthGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\tBEGIN\r\t\tInitDialog;\r\t\tpar.disabled := size.view = NIL;\r\t\tpar.readOnly := size.fixedW\r\tEND WidthGuard;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: HeightGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\tBEGIN\r\t\tInitDialog;\r\t\tpar.disabled := size.view = NIL;\r\t\tpar.readOnly := size.fixedH\r\tEND HeightGuard;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ProportionGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\tBEGIN\r\t\tpar.disabled := (size.view = NIL) OR size.fixedW OR size.fixedH OR (size.scaleW = 0) OR (size.scaleH = 0)\r\tEND ProportionGuard;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: UnitGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\tBEGIN\r\t\tIF size.view # NIL THEN par.label := size.unitText$ ELSE par.label := \"\" END\r\tEND UnitGuard;\r\r\tPROCEDURE AdjustDialogToPref (fixedW, fixedH: BOOLEAN);\r\t\tVAR w, h: INTEGER; w0, h0: REAL; pref: Properties.SizePref;\r\tBEGIN\r\t\tw := SHORT(ENTIER(size.w * size.unit + 0.5)); h := SHORT(ENTIER(size.h * size.unit + 0.5));\r\t\tIF size.proportional & (w > 0) & (h > 0) & (size.scaleW > 0) & (size.scaleH > 0) THEN\r\t\t\tProperties.ProportionalConstraint(size.scaleW, size.scaleH, fixedW, fixedH, w, h)\r\t\tEND;\r\t\tpref.w := w; pref.h := h; pref.fixedW := fixedW; pref.fixedH := fixedH;\r\t\tViews.HandlePropMsg(size.view, pref);\r\t\tIF ~fixedW THEN w0 := pref.w / size.unit ELSE w0 := size.w END;\r\t\tIF ~fixedH THEN h0 := pref.h / size.unit ELSE h0 := size.h END;\r\t\tIF (w0 # size.w) OR (h0 # size.h) THEN size.w := w0; size.h := h0; Dialog.Update(size) END\r\tEND AdjustDialogToPref;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: WNotifier
+                    attr: 3
+                  - text: "* (op, from, to: INTEGER);\r\tBEGIN\r\t\tIF size.w > 0 THEN AdjustDialogToPref(TRUE, FALSE); size.lastChanged := width\r\t\tELSIF size.w # 0 THEN Dialog.Beep\r\t\tEND\r\tEND WNotifier;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: HNotifier
+                    attr: 3
+                  - text: "* (op, from, to: INTEGER);\r\tBEGIN\r\t\tIF size.h > 0 THEN AdjustDialogToPref(FALSE, TRUE); size.lastChanged := height\r\t\tELSIF size.h # 0 THEN Dialog.Beep\r\t\tEND\r\tEND HNotifier;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ProportionNotifier
+                    attr: 3
+                  - text: "* (op, from, to: INTEGER);\r\tBEGIN\r\t\tIF (op = Dialog.changed) & size.proportional THEN\r\t\t\tIF size.lastChanged = width THEN AdjustDialogToPref(TRUE, FALSE)\r\t\t\tELSIF size.lastChanged = height THEN AdjustDialogToPref(FALSE, TRUE)\r\t\t\tEND\r\t\tEND\r\tEND ProportionNotifier;\r\rEND StdViewSizer.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 6995
+          bodyLen: 8

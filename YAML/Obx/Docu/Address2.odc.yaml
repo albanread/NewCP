@@ -1,0 +1,225 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Docu\\Address2.odc"
+  size: 3227
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 3096
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 2910
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 2824
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 152400
+                dsc: 25400
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 15
+                bodyPos: 2945
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 2547
+                runListLen: 2120
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                flow:
+                  - text: "Overview by Example: ObxAddress2"
+                    attr: 0
+                  - text: "\r\rThis example combines features of earlier examples: it allows to enter an address via a mask, and a push button causes the entered data to be appended to a text in a file. Afterwards, the entered data is cleared again. Controls must be notified when a program modifies an interactor. For this purpose, there is the "
+                    attr: 1
+                  - text: Dialog.Update
+                    attr: 2
+                  - text: " procedure which takes an interactor as parameter.\r\r\t"
+                    attr: 1
+                  - view:
+                      kind: TextViews.StdView
+                      storeKind: store
+                      typeChain:
+                        - TextViews.StdViewDesc
+                        - TextViews.ViewDesc
+                        - Containers.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 5
+                      bodyPos: 624
+                      bodyLen: 1876
+                      hideMarks: true
+                      defaultRuler:
+                        left: 0
+                        right: 5940000
+                        asc: 127000
+                        dsc: 25400
+                        grid: 1
+                        opts: 0x00000001
+                      defaultAttr:
+                        font: Arial
+                        size: 114300
+                        color: 0x01000000
+                        weight: 400
+                        style: 0x00000000
+                      controller:
+                        kind: TextControllers.StdCtrl
+                        storeKind: store
+                        typeChain:
+                          - TextControllers.StdCtrlDesc
+                          - TextControllers.ControllerDesc
+                          - Containers.ControllerDesc
+                          - Controllers.ControllerDesc
+                          - Stores.StoreDesc
+                        id: 11
+                        bodyPos: 2317
+                        bodyLen: 9
+                      content:
+                        kind: TextModels.StdModel
+                        storeKind: elem
+                        typeChain:
+                          - TextModels.StdModelDesc
+                          - TextModels.ModelDesc
+                          - Containers.ModelDesc
+                          - Models.ModelDesc
+                          - Stores.StoreDesc
+                        id: 2
+                        bodyPos: 649
+                        bodyLen: 1530
+                        runListLen: 469
+                        attrPool:
+                          - # [0]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 400
+                            style: 0x00000000
+                          - # [1]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 700
+                            style: 0x00000000
+                          - # [2]
+                            font: Arial
+                            size: 127000
+                            color: 0x01000000
+                            weight: 400
+                            style: 0x00000001
+                        flow:
+                          - ruler:
+                              left: 0
+                              right: 5040000
+                              asc: 127000
+                              dsc: 25400
+                              grid: 1
+                              opts: 0x00000001
+                              tabs:
+                                - { stop: 108000 }
+                                - { stop: 216000 }
+                                - { stop: 324000 }
+                                - { stop: 432000 }
+                                - { stop: 540000 }
+                                - { stop: 648000 }
+                                - { stop: 1152000 }
+                                - { stop: 2376000 }
+                              attr: 0
+                              w: 360000000
+                              h: 444500
+                          - text: "MODULE ObxAddress2;\r\r\tIMPORT Files, Converters, Views, Dialog, TextModels, TextMappers, TextViews;\r\r\tVAR\r\t\t"
+                            attr: 0
+                          - text: adr
+                            attr: 1
+                          - text: "*: RECORD\r\t\t\tname*:\tARRAY 64 OF CHAR;\r\t\t\tcity*:\t\tARRAY 24 OF CHAR;\r\t\t\tcountry*:\tARRAY 16 OF CHAR;\r\t\t\tcustomer:\tINTEGER;\r\t\t\tupdate*:\tBOOLEAN\r\t\tEND;\r\r\tPROCEDURE "
+                            attr: 0
+                          - text: OpenText
+                            attr: 1
+                          - text: "*;\r\t\tVAR loc: Files.Locator; name: Files.Name; conv: Converters.Converter;\r\t\t\tv: Views.View; t: TextModels.Model; f: TextMappers.Formatter;\r\tBEGIN\r\t\tloc := NIL; name := \"\"; conv := NIL;\r\t\tv := Views.Old(Views.ask, loc, name, conv);\r\t\tIF (v # NIL) & (v IS TextViews.View) THEN\r\t\t\tt := v(TextViews.View).ThisModel();\r\t\t\tf.ConnectTo(t);\r\t\t\tf.SetPos(t.Length());\r\t\t\tf.WriteString(adr.name); f.WriteTab;\r\t\t\tf.WriteString(adr.city); f.WriteTab;\r\t\t\tf.WriteString(adr.country); f.WriteTab;\r\t\t\tf.WriteInt(adr.customer); f.WriteTab;\r\t\t\tf.WriteBool(adr.update); f.WriteLn;\r\t\t\tViews.OpenView(v);\r\t\t\tadr.name := \"\"; adr.city := \"\"; adr.country := \"\"; adr.customer := 0; adr.update := FALSE;\r\t\t\tDialog.Update(adr)\t"
+                            attr: 0
+                          - text: "(* update all controls for adr *)"
+                            attr: 2
+                          - text: "\r\t\tEND\r\tEND OpenText;\r\rEND ObxAddress2.\r"
+                            attr: 0
+                    attr: 1
+                    w: 5681800
+                    h: 5530900
+                  - text: "\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 19
+          bodyPos: 3192
+          bodyLen: 8

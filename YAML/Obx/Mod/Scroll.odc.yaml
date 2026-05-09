@@ -1,0 +1,232 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Mod\\Scroll.odc"
+  size: 7356
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 7225
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 7039
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 6953
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 114300
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: "*"
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 7078
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 6564
+                runListLen: 1703
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE ObxScroll;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT Stores, Fonts, Ports, Views, Controllers, Properties;\r\r\tCONST\r\t\tminVersion = 0; maxVersion = 0;\r\t\tcellSize = 7 * Ports.mm;\r\t\tboardSize = 10;\r\r\tTYPE\r\t\tView = POINTER TO RECORD (Views.View)\r\t\t\tx, y: INTEGER\r\t\tEND;\r\r\tPROCEDURE (v: View) Externalize (VAR wr: Stores.Writer);\r\tBEGIN\r\t\twr.WriteVersion(maxVersion);\r\t\twr.WriteInt(v.x); wr.WriteInt(v.y)\r\tEND Externalize;\r\r\tPROCEDURE (v: View) Internalize (VAR rd: Stores.Reader);\r\t\tVAR version: INTEGER;\r\tBEGIN\r\t\trd.ReadVersion(minVersion, maxVersion, version);\r\t\tIF ~rd.cancelled THEN\r\t\t\trd.ReadInt(v.x); rd.ReadInt(v.y)\r\t\tEND\r\tEND Internalize;\r\r\tPROCEDURE (v: View) CopyFromSimpleView (source: Views.View);\r\tBEGIN\r\t\tWITH source: View DO\r\t\t\tv.x := source.x; v.y := source.y\r\t\tEND\r\tEND CopyFromSimpleView;\r\r\tPROCEDURE (v: View) Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\t\tVAR x, y, asc, dsc, w: INTEGER; color: Ports.Color; str: ARRAY 3 OF CHAR; font: Fonts.Font;\r\tBEGIN\r\t\tstr := \"00\"; font := Fonts.dir.Default();\r\t\tx := l DIV cellSize;\r\t\tIF Views.IsPrinterFrame(f) THEN r := r - r MOD cellSize END;\r\t\tWHILE (x * cellSize < r) & (v.x + x < boardSize) DO\r\t\t\ty := t DIV cellSize;\r\t\t\tIF Views.IsPrinterFrame(f) THEN b := b - b MOD cellSize END;\r\t\t\tWHILE (y * cellSize < b) & (v.y + y < boardSize) DO\r\t\t\t\tIF ODD(x + y + v.x + v.y) THEN color := Ports.black ELSE color := Ports.white END;\r\t\t\t\tf.DrawRect(x * cellSize, y * cellSize, (x + 1) * cellSize, (y + 1) * cellSize, Ports.fill, color);\r\t\t\t\tstr[0] := CHR(ORD(\"0\") + x + v.x); str[1] := CHR(ORD(\"0\") + y + v.y);\r\t\t\t\tfont.GetBounds(asc, dsc, w);\r\t\t\t\tf.DrawString(\r\t\t\t\t\t(x * cellSize + cellSize DIV 2) - font.StringWidth(str) DIV 2,\r\t\t\t\t\t(y * cellSize + cellSize DIV 2) + asc DIV 2, Ports.red, str, font);\r\t\t\t\tINC(y)\r\t\t\tEND;\r\t\t\tINC(x)\r\t\tEND\r\tEND Restore;\r\r\tPROCEDURE (v: View) HandleCtrlMsg (f: Views.Frame; VAR msg: Views.CtrlMessage; VAR focus: Views.View);\r\t\tVAR val, vis, w, h: INTEGER; changed: BOOLEAN;\r\tBEGIN\r\t\tWITH msg: Controllers.PollSectionMsg DO\r\t\t\tv.context.GetSize(w, h);\r\t\t\tmsg.focus := FALSE;\t"
+                    attr: 0
+                  - text: "(* v is not a container *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF msg.vertical THEN\r\t\t\t\tmsg.partSize := h DIV cellSize;\r\t\t\t\tmsg.wholeSize := boardSize + MAX(0, msg.partSize +  v.y - boardSize);\r\t\t\t\tmsg.partPos := v.y\r\t\t\tELSE\r\t\t\t\tmsg.partSize := w DIV cellSize;\r\t\t\t\tmsg.wholeSize := boardSize + MAX(0, msg.partSize + v.x - boardSize);\r\t\t\t\tmsg.partPos := v.x\r\t\t\tEND;\r\t\t\tmsg.valid := (msg.partSize < msg.wholeSize);\r\t\t\tmsg.done := TRUE\r\t\t| msg: Controllers.ScrollMsg DO\r\t\t\tv.context.GetSize(w, h); changed := FALSE;\r\t\t\tmsg.focus := FALSE;\t"
+                    attr: 0
+                  - text: "(* v is not a container *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF msg.vertical THEN\r\t\t\t\tval := v.y; vis := h DIV cellSize\r\t\t\tELSE\r\t\t\t\tval := v.x; vis := w DIV cellSize\r\t\t\tEND;\r\t\t\tCASE msg.op OF\r\t\t\tControllers.decLine:\r\t\t\t\tIF val > 0 THEN DEC(val); changed := TRUE END\r\t\t\t| Controllers.incLine:\r\t\t\t\tIF val < boardSize - vis THEN INC(val); changed := TRUE END\r\t\t\t| Controllers.decPage:\r\t\t\t\tDEC(val, vis); changed := TRUE;\r\t\t\t\tIF val < 0THEN val := 0 END\r\t\t\t| Controllers.incPage:\r\t\t\t\tINC(val, vis); changed := TRUE;\r\t\t\t\tIF val > boardSize - vis THEN val := boardSize - vis END\r\t\t\t| Controllers.gotoPos:\r\t\t\t\tval := msg.pos; changed := TRUE\r\t\t\tEND;\r\t\t\tIF msg.vertical THEN v.y := val ELSE v.x := val END;\r\t\t\tmsg.done := TRUE;\r\t\t\tIF changed THEN Views.Update(v, Views.keepFrames) END\r\t\t| msg: Controllers.PageMsg DO\r\t\t\tv.context.GetSize(w, h);\r\t\t\tIF msg.op IN {Controllers.nextPageY, Controllers.gotoPageY} THEN\r\t\t\t\tvis := h DIV cellSize\r\t\t\tELSE\r\t\t\t\tvis := w DIV cellSize\r\t\t\tEND;\r\t\t\tCASE msg.op OF\r\t\t\tControllers.nextPageX:\r\t\t\t\tINC(v.x, vis)\r\t\t\t| Controllers.nextPageY:\r\t\t\t\tINC(v.y, vis)\r\t\t\t| Controllers.gotoPageX:\r\t\t\t\tv.x := msg.pageX * vis\r\t\t\t| Controllers.gotoPageY:\r\t\t\t\tv.y := msg.pageY * vis\r\t\t\tEND;\r\t\t\tmsg.done := TRUE;\r\t\t\tmsg.eox := v.x >= boardSize;\r\t\t\tmsg.eoy := v.y >= boardSize\r\t\tELSE\r\t\tEND\r\tEND HandleCtrlMsg;\r\r\tPROCEDURE (v: View) HandlePropMsg (VAR p: Properties.Message);\r\tBEGIN\r\t\tWITH p: Properties.SizePref DO\r\t\t\tIF p.w = Views.undefined THEN p.w := (boardSize - v.x) * cellSize END;\r\t\t\tIF p.h = Views.undefined THEN p.h := (boardSize - v.y) * cellSize END\r\t\t| p: Properties.ResizePref DO\r\t\t\tp.horFitToWin := TRUE;\r\t\t\tp.verFitToWin := TRUE\r\t\t| p: Properties.FocusPref DO\r\t\t\tp.setFocus := TRUE\r\t\tELSE\t"
+                    attr: 0
+                  - text: "(* ignore other messages *)"
+                    attr: 1
+                  - text: "\r\t\tEND\r\tEND HandlePropMsg;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Deposit
+                    attr: 3
+                  - text: "*;\r\t\tVAR v: View;\r\tBEGIN\r\t\tNEW(v); v.x := 0; v.y := 0; Views.Deposit(v)\r\tEND Deposit;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: DepositAt
+                    attr: 3
+                  - text: "* (x, y: INTEGER);\r\t\tVAR v: View;\r\tBEGIN\r\t\tNEW(v); v.x := 0; v.y := 0;\r\t\tIF (x > 0) & (x < boardSize) THEN v.x := x END;\r\t\tIF (y > 0) & (y < boardSize) THEN v.y := y END;\r\t\tViews.Deposit(v)\r\tEND DepositAt;\r\rEND ObxScroll.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 7321
+          bodyLen: 8

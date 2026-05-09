@@ -1,0 +1,879 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\System\\Mod\\Controls.odc"
+  size: 98221
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 98090
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 97904
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 97818
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                dsc: 25400
+                grid: 1
+                opts: 0x00000021
+              defaultAttr:
+                font: Geneva
+                size: 114300
+                color: 0x00000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 97938
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 97424
+                runListLen: 3460
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE Controls;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- 20141027, center #19, full Unicode support for Component Pascal identifiers added\r\t- 20150521, center #51, support for ANYPTR and SYSTEM.PTR in LookupPath\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT\r\t\t"
+                    attr: 0
+                  - text: Kernel
+                    attr: 3
+                  - text: ", Dates, Dialog, Meta, Services, Stores, Views, Properties, \r\t\tStrings, Fonts, Ports, Controllers, Windows, StdCFrames;\r\r\tCONST\r\t\t"
+                    attr: 0
+                  - text: "(** elements of Property.valid **)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: opt0
+                    attr: 3
+                  - text: "* = 0; "
+                    attr: 0
+                  - text: opt1
+                    attr: 3
+                  - text: "* = 1; "
+                    attr: 0
+                  - text: opt2
+                    attr: 3
+                  - text: "* = 2;"
+                    attr: 0
+                  - text: " opt3"
+                    attr: 3
+                  - text: "* = 3; "
+                    attr: 0
+                  - text: opt4
+                    attr: 3
+                  - text: "* = 4;\r\t\t"
+                    attr: 0
+                  - text: link
+                    attr: 3
+                  - text: "* = 5; "
+                    attr: 0
+                  - text: label
+                    attr: 3
+                  - text: "* = 6; "
+                    attr: 0
+                  - text: guard
+                    attr: 3
+                  - text: "* = 7; "
+                    attr: 0
+                  - text: notifier
+                    attr: 3
+                  - text: "* = 8; "
+                    attr: 0
+                  - text: level
+                    attr: 3
+                  - text: "* = 9;\r\r\t\t"
+                    attr: 0
+                  - text: default
+                    attr: 3
+                  - text: "* = opt0; "
+                    attr: 0
+                  - text: cancel
+                    attr: 3
+                  - text: "* = opt1;\r\t\t"
+                    attr: 0
+                  - text: left
+                    attr: 3
+                  - text: "* = opt0; "
+                    attr: 0
+                  - text: right
+                    attr: 3
+                  - text: "* = opt1; "
+                    attr: 0
+                  - text: multiLine
+                    attr: 3
+                  - text: "* = opt2; "
+                    attr: 0
+                  - text: password
+                    attr: 3
+                  - text: "* = opt3;\r\t\t"
+                    attr: 0
+                  - text: sorted
+                    attr: 3
+                  - text: "* = opt0;\r\t\t"
+                    attr: 0
+                  - text: haslines
+                    attr: 3
+                  - text: "* = opt1; "
+                    attr: 0
+                  - text: hasbuttons
+                    attr: 3
+                  - text: "* = opt2; "
+                    attr: 0
+                  - text: atroot
+                    attr: 3
+                  - text: "* = opt3; "
+                    attr: 0
+                  - text: foldericons
+                    attr: 3
+                  - text: "* = opt4;\r\r\t\tminVersion = 0; maxBaseVersion = 4;\r\t\tpbVersion = 0; cbVersion = 0; rbVersion = 0; fldVersion = 0; \r\t\tdfldVersion = 0; tfldVersion = 0; cfldVersion = 0;\r\t\tlbxVersion = 0; sbxVersion = 0; cbxVersion = 0; capVersion = 1; grpVersion = 0; \r\t\ttfVersion = 0; \r\r\t\trdel = 07X; ldel = 08X;  tab = 09X; ltab = 0AX; lineChar = 0DX; esc = 01BX;\r\t\tarrowLeft = 1CX; arrowRight = 1DX; arrowUp = 1EX; arrowDown = 1FX;\r\r\t\tupdate = 2;\t"
+                    attr: 0
+                  - text: "(* notify options *)"
+                    attr: 1
+                  - text: "\r\t\tlistUpdate = 3;\r\t\tguardCheck = 4;\r\t\tflushCaches = 5;\t"
+                    attr: 0
+                  - text: "(* re-map labels for flushed string resources, after a language change *)"
+                    attr: 1
+                  - text: "\r\t\t\r\t\tmaxAdr = 8;\r\r\tTYPE\r\t\t"
+                    attr: 0
+                  - text: Prop
+                    attr: 3
+                  - text: "* = POINTER TO RECORD (Properties.Property)\r\t\t\topt*: ARRAY 5 OF BOOLEAN;\r\t\t\tlink*: Dialog.String;\r\t\t\tlabel*: Dialog.String;\r\t\t\tguard*: Dialog.String;\r\t\t\tnotifier*: Dialog.String;\r\t\t\tlevel*: INTEGER\r\t\tEND;\r\t\t\r\t\t"
+                    attr: 0
+                  - text: Directory
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD END;\r\r\t\t"
+                    attr: 0
+                  - text: Control
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Views.View)\r\t\t\titem-: Meta.Item;\r"
+                    attr: 0
+                  - text: "\t\t\t"
+                    attr: 1
+                  - text: "disabled-, undef-, readOnly-, customFont-: BOOLEAN;\r\t\t\tfont-: Fonts.Font;\r\t\t\tlabel-: Dialog.String;\r\t\t\tprop-: Prop;\r\t\t\tadr: ARRAY maxAdr OF INTEGER;\r\t\t\tnum: INTEGER;\r\t\t\tstamp: INTEGER;\r\t\t\tshortcut: CHAR;\r\t\t\tguardErr, notifyErr: BOOLEAN\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: DefaultsPref
+                    attr: 3
+                  - text: "* = RECORD (Properties.Preference)\r\t\t\tdisabled*: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(** OUT, preset to ~c.item.Valid() *)"
+                    attr: 1
+                  - text: "\r\t\t\tundef*: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(** OUT, preset to FALSE *)"
+                    attr: 1
+                  - text: "\r\t\t\treadOnly*: BOOLEAN\t"
+                    attr: 0
+                  - text: "(** OUT, preset to c.item.vis = readOnly *)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: PropPref
+                    attr: 3
+                  - text: "* = RECORD (Properties.Preference)\r\t\t\tvalid*: SET\t"
+                    attr: 0
+                  - text: "(** OUT, preset to {link, label, guard, notifier, customFont} *)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\tPushButton = POINTER TO RECORD (Control) END;\r\r\t\tCheckBox = POINTER TO RECORD (Control) END;\r\r\t\tRadioButton = POINTER TO RECORD (Control) END;\r\r\t\tField = POINTER TO RECORD (Control)\r\t\t\tmaxLen: INTEGER\r\t\tEND;\r\r\t\tUpDownField = POINTER TO RECORD (Control)\r\t\t\tmin, max, inc: INTEGER\r\t\tEND;\r\r\t\tDateField = POINTER TO RECORD (Control) \r\t\t\tselection: INTEGER\t"
+                    attr: 0
+                  - text: "(* 0: no selection, 1..n-1: this part selected, -1: part n selected *)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\tTimeField = POINTER TO RECORD (Control) \r\t\t\tselection: INTEGER\r\t\tEND;\r\r\t\tColorField = POINTER TO RECORD (Control) END;\r\r\t\tListBox = POINTER TO RECORD (Control) END;\r\r\t\tSelectionBox = POINTER TO RECORD (Control) END;\r\r\t\tComboBox = POINTER TO RECORD (Control) END;\r\r\t\tCaption = POINTER TO RECORD (Control) END;\r\r\t\tGroup = POINTER TO RECORD (Control) END;\r\r\t\tTreeControl = POINTER TO RECORD (Control) END;\r\r\t\tStdDirectory = POINTER TO RECORD (Directory) END;\r\r\t\tOp = POINTER TO RECORD (Stores.Operation)\r\t\t\tctrl: Control;\r\t\t\tprop: Prop\r\t\tEND;\r\r\t\tFontOp = POINTER TO RECORD (Stores.Operation)\r\t\t\tctrl: Control;\r\t\t\tfont: Fonts.Font;\r\t\t\tcustom: BOOLEAN\r\t\tEND;\r\r\t\tNotifyMsg = RECORD (Views.NotifyMsg)\r\t\t\tframe: Views.Frame;\r\t\t\top, from, to: INTEGER\r\t\tEND;\r\r\t\tUpdateCachesMsg = RECORD (Views.UpdateCachesMsg) END;\r\r\t\tSelectPtr = POINTER TO Dialog.Selection;\r\t\t\r\t\tProcValue = RECORD (Meta.Value) p*: PROCEDURE END;\r\t\tSelectValue = RECORD (Meta.Value) p*: SelectPtr END;\r\t\tGuardProcVal = RECORD (Meta.Value) p*: Dialog.GuardProc END;\r\t\tNotifyProcValOld = RECORD (Meta.Value) p*: PROCEDURE (op, from, to: INTEGER) END;\r\t\tGuardProcPVal = RECORD (Meta.Value) p*: PROCEDURE(n: INTEGER; VAR p: Dialog.Par) END;\r\t\tNotifyProcPVal = RECORD (Meta.Value) p*: PROCEDURE(n, op, f, t: INTEGER) END;\r\r\t\tParam = RECORD from, to, i: INTEGER; n: Dialog.String END;\r\t\t\r\t\tTVParam = RECORD l: INTEGER; e: BOOLEAN; nodeIn, nodeOut: Dialog.TreeNode END; \r\r\t\tAction = POINTER TO RECORD (Services.Action) \r\t\t\tw: Windows.Window;\r\t\t\tresolution, cnt: INTEGER\r\t\tEND;\r\r\t\tTrapCleaner = POINTER TO RECORD (Kernel.TrapCleaner) END;\r\r\tVAR\r\t\t"
+                    attr: 0
+                  - text: dir
+                    attr: 3
+                  - text: "-, "
+                    attr: 0
+                  - text: stdDir
+                    attr: 3
+                  - text: "-: Directory;\r\t\t"
+                    attr: 0
+                  - text: par
+                    attr: 3
+                  - text: "-: Control;\r\t\tstamp: INTEGER;\r\t\taction: Action;\r\t\tcleaner:  TrapCleaner;\r\t\tcleanerInstalled: INTEGER;\r\r\r\t"
+                    attr: 0
+                  - text: "(** Cleaner **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (c: TrapCleaner) Cleanup;\r\tBEGIN\r\t\tpar := NIL;\r\t\tcleanerInstalled := 0\r\tEND Cleanup;\r\r\r\tPROCEDURE (c: Control) "
+                    attr: 0
+                  - text: Update
+                    attr: 3
+                  - text: "- (f: Views.Frame; op, from, to: INTEGER), NEW, EMPTY;\r\tPROCEDURE (c: Control) "
+                    attr: 0
+                  - text: UpdateList
+                    attr: 3
+                  - text: "- (f: Views.Frame), NEW, EMPTY;\r\tPROCEDURE (c: Control) "
+                    attr: 0
+                  - text: CheckLink
+                    attr: 3
+                  - text: "- (VAR ok: BOOLEAN), NEW, EMPTY;\r\tPROCEDURE (c: Control) "
+                    attr: 0
+                  - text: HandlePropMsg2
+                    attr: 3
+                  - text: "- (VAR p: Views.PropMessage), NEW, EMPTY;\r\tPROCEDURE (c: Control) "
+                    attr: 0
+                  - text: HandleViewMsg2
+                    attr: 3
+                  - text: "- (f: Views.Frame; VAR msg: Views.Message), NEW, EMPTY;\r\tPROCEDURE (c: Control) "
+                    attr: 0
+                  - text: HandleCtrlMsg2
+                    attr: 3
+                  - text: "- (f: Views.Frame; VAR msg: Views.CtrlMessage;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR focus: Views.View), NEW, EMPTY;\r\tPROCEDURE (c: Control) "
+                    attr: 0
+                  - text: Externalize2
+                    attr: 3
+                  - text: "- (VAR wr: Stores.Writer), NEW, EMPTY;\r\tPROCEDURE (c: Control) "
+                    attr: 0
+                  - text: Internalize2
+                    attr: 3
+                  - text: "- (VAR rd: Stores.Reader), NEW, EMPTY;\r\r\r\t"
+                    attr: 0
+                  - text: "(* auxiliary procedures *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE IsShortcut (ch: CHAR; c: Control): BOOLEAN;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " Strings.Upper(ch) = c.shortcut\r\tEND IsShortcut;\r\r\tPROCEDURE ExtractShortcut (c: Control);\r\t\tVAR label: Dialog.String; i: INTEGER; ch, sCh: CHAR;\r\tBEGIN\r\t\tDialog.MapString(c.label, label);\r\t\ti := 0; ch := label[0]; sCh := \"&\";\r\t\tWHILE sCh = \"&\" DO\r\t\t\tWHILE (ch # 0X) & (ch # \"&\") DO INC(i); ch := label[i] END;\r\t\t\tIF ch = 0X THEN sCh := 0X\r\t\t\tELSE INC(i); sCh := label[i]; INC(i); ch := label[i]\r\t\t\tEND\r\t\tEND;\r\t\tc.shortcut := Strings.Upper(sCh)\r\tEND ExtractShortcut;\r\r\tPROCEDURE GetGuardProc (name: ARRAY OF CHAR; VAR i: Meta.Item; VAR err: BOOLEAN;\r\t\t\t\t\t\t\t\t\t\t\t\tVAR par: BOOLEAN; VAR n: INTEGER);\r\t\tVAR j, k, e: INTEGER; num: ARRAY 32 OF CHAR;\r\tBEGIN\r\t\tj := 0;\r\t\tWHILE (name[j] # 0X) & (name[j] # \"(\") DO INC(j) END;\r\t\tIF name[j] = \"(\" THEN\r\t\t\tINC(j); k := 0;\r\t\t\tWHILE (name[j] # 0X) & (name[j] # \")\") DO num[k] := name[j]; INC(j); INC(k) END;\r\t\t\tIF (name[j] = \")\") & (name[j+1] = 0X) THEN\r\t\t\t\tnum[k] := 0X; Strings.StringToInt(num, n, e);\r\t\t\t\tIF e = 0 THEN\r\t\t\t\t\tname[j - k - 1] := 0X;\r\t\t\t\t\tMeta.LookupPath(name, i); par := TRUE\r\t\t\t\tELSE\r\t\t\t\t\tIF ~err THEN\r\t\t\t\t\t\tDialog.ShowParamMsg(\"#System:SyntaxErrorIn\", name, \"\", \"\");\r\t\t\t\t\t\terr := TRUE\r\t\t\t\t\tEND;\r\t\t\t\t\tMeta.Lookup(\"\", i);\r\t\t\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: "\r\t\t\t\tEND\r\t\t\tELSE\r\t\t\t\tIF ~err THEN\r\t\t\t\t\tDialog.ShowParamMsg(\"#System:SyntaxErrorIn\", name, \"\", \"\");\r\t\t\t\t\terr := TRUE\r\t\t\t\tEND;\r\t\t\t\tMeta.Lookup(\"\", i);\r\t\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: "\r\t\t\tEND\r\t\tELSE\r\t\t\tMeta.LookupPath(name, i); par := FALSE\r\t\tEND;\r\t\tIF (i.obj = Meta.procObj) OR (i.obj = Meta.varObj) & (i.typ = Meta.procTyp) THEN (*ok *)\r\t\tELSE\r\t\t\tIF ~err THEN\r\t\t\t\tIF i.obj = Meta.undef THEN\r\t\t\t\t\tDialog.ShowParamMsg(\"#System:NotFound\", name, \"\", \"\")\r\t\t\t\tELSE\r\t\t\t\t\tDialog.ShowParamMsg(\"#System:HasWrongType\", name, \"\", \"\")\r\t\t\t\tEND;\r\t\t\t\terr := TRUE\r\t\t\tEND;\r\t\t\tMeta.Lookup(\"\", i)\r\t\tEND\r\tEND GetGuardProc;\r\t\r\tPROCEDURE CallGuard (c: Control);\r\t\tVAR ok, up: BOOLEAN; n: INTEGER; dpar: Dialog.Par; p: Control;\r\t\t\tv: GuardProcVal; vp: GuardProcPVal; i: Meta.Item; pref: DefaultsPref;\r\tBEGIN\r\t\tControllers.SetCurrentPath(Controllers.targetPath);\r\t\tpref.disabled := ~c.item.Valid();\r\t\tpref.undef := FALSE;\r\t\tpref.readOnly := c.item.vis = Meta.readOnly;\r\t\tViews.HandlePropMsg(c, pref);\r\t\tc.disabled := pref.disabled;\r\t\tc.undef := pref.undef;\r\t\tc.readOnly := pref.readOnly;\r\t\tc.label := c.prop.label$;\r\t\tIF ~c.disabled & (c.prop.guard # \"\") & ~c.guardErr THEN\r\t\t\tIF cleanerInstalled = 0 THEN Kernel.PushTrapCleaner(cleaner) END;\r\t\t\tINC(cleanerInstalled);\r\t\t\tp := par; par := c;\r\t\t\tdpar.disabled := FALSE; dpar.undef := FALSE;\r\t\t\tdpar.readOnly := c.readOnly;\r\t\t\tdpar.checked := FALSE; dpar.label := c.label$;\r\t\t\tGetGuardProc(c.prop.guard, i, c.guardErr, up, n);\r\t\t\tIF i.obj # Meta.undef THEN\r\t\t\t\tIF up THEN\t"
+                    attr: 0
+                  - text: "(* call with numeric parameter *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\ti.GetVal(vp, ok);\r\t\t\t\t\tIF ok THEN vp.p(n, dpar) END\r\t\t\t\tELSE\r\t\t\t\t\ti.GetVal(v, ok);\r\t\t\t\t\tIF ok THEN v.p(dpar) END\r\t\t\t\tEND;\r\t\t\t\tIF ok THEN\r\t\t\t\t\tc.disabled := dpar.disabled;\r\t\t\t\t\tc.undef := dpar.undef;\r\t\t\t\t\tIF dpar.readOnly THEN c.readOnly := TRUE END;\r\t\t\t\t\tIF dpar.label # c.label THEN c.label := dpar.label END\r\t\t\t\tELSIF ~c.guardErr THEN\r\t\t\t\t\tDialog.ShowParamMsg(\"#System:HasWrongType\", c.prop.guard, \"\", \"\");\r\t\t\t\t\tc.guardErr := TRUE\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tpar := p;\r\t\t\tDEC(cleanerInstalled);\r\t\t\tIF cleanerInstalled = 0 THEN Kernel.PopTrapCleaner(cleaner) END\r\t\tEND;\r\t\tExtractShortcut(c);\r\t\tControllers.ResetCurrentPath()\r\tEND CallGuard;\r\r\tPROCEDURE CallNotifier (c: Control; op, from, to: INTEGER);\r\t\tVAR ok, up: BOOLEAN; n: INTEGER; vold: NotifyProcValOld; vp: NotifyProcPVal;\r\t\t\ti: Meta.Item; p: Control;\r\tBEGIN\r\t\tIF c.prop.notifier # \"\" THEN\r\t\t\tIF cleanerInstalled = 0 THEN Kernel.PushTrapCleaner(cleaner) END;\r\t\t\tINC(cleanerInstalled);\r\t\t\tp := par; par := c;\r\t\t\tIF c.prop.notifier[0] = \"!\" THEN\r\t\t\t\tIF op = Dialog.pressed THEN\r\t\t\t\t\tc.prop.notifier[0] := \" \";\r\t\t\t\t\tDialog.ShowStatus(c.prop.notifier);\r\t\t\t\t\tc.prop.notifier[0] := \"!\"\r\t\t\t\tELSIF op = Dialog.released THEN\r\t\t\t\t\tDialog.ShowStatus(\"\")\r\t\t\t\tEND\r\t\t\tELSE\r\t\t\t\tGetGuardProc(c.prop.notifier, i, c.notifyErr, up, n);\r\t\t\t\tIF i.obj # Meta.undef THEN\r\t\t\t\t\tIF up THEN\t"
+                    attr: 0
+                  - text: "(* call with numeric parameter *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\ti.GetVal(vp, ok);\r\t\t\t\t\t\tIF ok THEN vp.p(n, op, from, to) END\r\t\t\t\t\tELSE\r\t\t\t\t\t\ti.GetVal(vold, ok);\r\t\t\t\t\t\tIF ok THEN vold.p(op, from, to) END\r\t\t\t\t\tEND;\r\t\t\t\t\tIF ~ok & ~c.notifyErr THEN\r\t\t\t\t\t\tDialog.ShowParamMsg(\"#System:HasWrongType\", c.prop.notifier, \"\", \"\");\r\t\t\t\t\t\tc.notifyErr := TRUE\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tpar := p;\r\t\t\tDEC(cleanerInstalled);\r\t\t\tIF cleanerInstalled = 0 THEN Kernel.PopTrapCleaner(cleaner) END\r\t\tEND\r\tEND CallNotifier;\r\r\tPROCEDURE DCHint (modifiers: SET): INTEGER;\r\tBEGIN\r\t\tIF Controllers.doubleClick IN modifiers THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 1\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 0\r\t\tEND\r\tEND DCHint;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Notify
+                    attr: 3
+                  - text: "* (c: Control; f: Views.Frame; op, from, to: INTEGER);\r\t\tVAR msg: NotifyMsg;\r\tBEGIN\r\t\tIF ~c.readOnly & ~ c.disabled THEN\r\t\t\tCallNotifier(c, op, from, to);\r\t\t\tIF op >= Dialog.changed THEN\r"
+                    attr: 0
+                  - text: "\t\t\t\t"
+                    attr: 3
+                  - text: "msg.id0 := c.item.adr; msg.id1 := msg.id0 + c.item.Size(); msg.frame := f;\r\t\t\t\tmsg.op := op; msg.from := from; msg.to := to;\r\t\t\t\tmsg.opts := {update, guardCheck};\r\t\t\t\tViews.Omnicast(msg)\r\t\t\tEND\r\t\tEND\r\tEND Notify;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: NotifyFlushCaches
+                    attr: 3
+                  - text: "*;\r\t\tVAR msg: NotifyMsg;\r\tBEGIN\r\t\tmsg.opts := {flushCaches}; msg.id0 := 0; msg.id1 := 0;\r\t\tViews.Omnicast(msg)\r\tEND NotifyFlushCaches;\r\t\r\tPROCEDURE GetName (VAR path, name: ARRAY OF CHAR; VAR i: INTEGER);\r\t\tVAR j: INTEGER; ch: CHAR;\r\tBEGIN\r\t\tj := 0; ch := path[i];\r\t\tWHILE (j < LEN(name) - 1) & Strings.IsIdent(ch) DO\r\t\t\tname[j] := ch; INC(i); INC(j); ch := path[i]\r\t\tEND;\r\t\tIF (ch = 0X) OR (ch = \".\") OR (ch = \"[\") OR (ch = \"^\") THEN name[j] := 0X\r\t\tELSE name[0] := 0X\r\t\tEND\r\tEND GetName;\r\r\tPROCEDURE LookupPath (path: ARRAY OF CHAR; VAR i: Meta.Item;\r\t\t\t\t\t\t\t\t\t\t\t\tVAR adr: ARRAY OF INTEGER; VAR num: INTEGER);\r\t\tVAR j, n: INTEGER; name: Meta.Name; ch: CHAR;\r\tBEGIN\r\t\tpath[LEN(path) - 1] := 0X; j := 0; num := 0;\r\t\tGetName(path, name, j); Meta.Lookup(name, i);\r\t\tIF (i.obj = Meta.modObj) & (path[j] = \".\") THEN\r\t\t\tINC(j); GetName(path, name, j);\r\t\t\ti.Lookup(name, i); ch := path[j]; INC(j);\r\t\t\tWHILE i.obj = Meta.varObj DO\r\t\t\t\tadr[num] := i.adr;\r\t\t\t\tIF num < LEN(adr) - 1 THEN INC(num) END;\r\t\t\t\tIF ch = 0X THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " \r\t\t\t\tELSIF i.typ IN {Meta.ptrTyp, Meta.anyPtrTyp, Meta.sysPtrTyp} THEN\r\t\t\t\t\tIF ch = \"^\" THEN ch := path[j]; INC(j) END;\r\t\t\t\t\ti.Deref(i)\r\t\t\t\tELSIF (i.typ = Meta.recTyp) & (ch = \".\") THEN\r\t\t\t\t\tGetName(path, name, j); i.Lookup(name, i);\r\t\t\t\t\tch := path[j]; INC(j)\r\t\t\t\tELSIF (i.typ = Meta.arrTyp) & (ch = \"[\") THEN\r\t\t\t\t\tch := path[j]; INC(j); n := 0;\r\t\t\t\t\tWHILE (ch >= \"0\") & (ch <= \"9\") DO n := 10 * n + ORD(ch) - ORD(\"0\"); ch := path[j]; INC(j) END;\r\t\t\t\t\tIF ch = \"]\" THEN ch := path[j]; INC(j); i.Index(n, i) ELSE Meta.Lookup(\"\", i) END\r\t\t\t\tELSE Meta.Lookup(\"\", i)\r\t\t\t\tEND\r\t\t\tEND\r\t\tELSE\r\t\t\tMeta.LookupPath(path, i); num := 0;\r\t\t\tIF i.obj = Meta.varObj THEN adr[0] := i.adr; num := 1\r\t\t\tELSIF i.obj # Meta.procObj THEN Meta.Lookup(\"\", i)\r\t\t\tEND\r\t\tEND\r\tEND LookupPath;\r\r\tPROCEDURE Sort (VAR adr: ARRAY OF INTEGER; num: INTEGER);\r\t\tVAR i, j, p: INTEGER;\r\tBEGIN\r\t\ti := 1;\r\t\tWHILE i < num DO\r\t\t\tp := adr[i]; j := i;\r\t\t\tWHILE (j >= 1) & (adr[j - 1] > p) DO adr[j] := adr[j - 1]; DEC(j) END;\r\t\t\tadr[j] := p; INC(i)\r\t\tEND\r\tEND Sort;\r\r\tPROCEDURE GetTypeName (IN item: Meta.Item; OUT name: Meta.Name);\r\t\tVAR mod: Meta.Name;\r\tBEGIN\r\t\tIF (item.typ = Meta.recTyp) THEN\r\t\t\titem.GetTypeName(mod, name);\r\t\t\tIF (mod = \"Dialog\") OR (mod = \"Dates\") THEN (* ok *)\r\t\t\tELSE name := \"\"\r\t\t\tEND\r\t\tELSE name := \"\"\r\t\tEND\r\tEND GetTypeName;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: OpenLink
+                    attr: 3
+                  - text: "* (c: Control; p: Prop);\r\t\tVAR ok: BOOLEAN;\r\tBEGIN\r\t\tASSERT(c # NIL, 20); ASSERT(p # NIL, 21);\r\t\tc.num := 0;\r\t\tc.prop := Properties.CopyOf(p)(Prop);\r\t\tIF c.font = NIL THEN\r\t\t\tIF c.customFont THEN c.font := StdCFrames.defaultLightFont\r\t\t\tELSE c.font := StdCFrames.defaultFont\r\t\t\tEND\r\t\tEND;\r\t\tc.guardErr := FALSE; c.notifyErr := FALSE;\r\t\tLookupPath(p.link, c.item, c.adr, c.num);\r\t\tIF c.item.obj = Meta.varObj THEN\r\t\t\tSort(c.adr, c.num);\r\t\t\tok := TRUE; c.CheckLink(ok);\r\t\t\tIF ~ok THEN\r\t\t\t\tMeta.Lookup(\"\", c.item);\r\t\t\t\tDialog.ShowParamMsg(\"#System:HasWrongType\", p.link, \"\", \"\")\r\t\t\tEND\r\t\tELSE\r\t\t\tMeta.Lookup(\"\", c.item); c.num := 0\r\t\tEND;\r\t\tCallGuard(c);\r\t\tc.stamp := stamp\r\tEND OpenLink;\r\r\r\t"
+                    attr: 0
+                  - text: "(** Prop **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (p: Prop) "
+                    attr: 0
+                  - text: "IntersectWith*"
+                    attr: 3
+                  - text: " (q: Properties.Property; OUT equal: BOOLEAN);\r\t\tVAR valid: SET;\r\tBEGIN\r\t\tWITH q: Prop DO\r\t\t\tvalid := p.valid * q.valid; equal := TRUE;\r\t\t\tIF p.link # q.link THEN EXCL(valid, link) END;\r\t\t\tIF p.label # q.label THEN EXCL(valid, label) END;\r\t\t\tIF p.guard # q.guard THEN EXCL(valid, guard) END;\r\t\t\tIF p.notifier # q.notifier THEN EXCL(valid, notifier) END;\r\t\t\tIF p.level # q.level THEN EXCL(valid, level) END;\r\t\t\tIF p.opt[0] # q.opt[0] THEN EXCL(valid, opt0) END;\r\t\t\tIF p.opt[1] # q.opt[1] THEN EXCL(valid, opt1) END;\r\t\t\tIF p.opt[2] # q.opt[2] THEN EXCL(valid, opt2) END;\r\t\t\tIF p.opt[3] # q.opt[3] THEN EXCL(valid, opt3) END;\r\t\t\tIF p.opt[4] # q.opt[4] THEN EXCL(valid, opt4) END;\r\t\t\tIF p.valid # valid THEN p.valid := valid; equal := FALSE END\r\t\tEND\r\tEND IntersectWith;\r\r\r\t"
+                    attr: 0
+                  - text: "(* Control *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (c: Control) "
+                    attr: 0
+                  - text: CopyFromSimpleView
+                    attr: 3
+                  - text: "2- (source: Control), NEW, EMPTY;\r\r\tPROCEDURE (c: Control) "
+                    attr: 0
+                  - text: CopyFromSimpleView
+                    attr: 3
+                  - text: "- (source: Views.View);\r\tBEGIN\r\t\tWITH source: Control DO\r\t\t\tc.item := source.item;\r\t\t\tc.adr := source.adr;\r\t\t\tc.num := source.num;\r\t\t\tc.disabled := source.disabled;\r\t\t\tc.undef := source.undef;\r\t\t\tc.readOnly := source.readOnly;\r\t\t\tc.shortcut := source.shortcut;\r\t\t\tc.customFont := source.customFont;\r\t\t\tc.font := source.font;\r\t\t\tc.label := source.label$;\r\t\t\tc.prop := Properties.CopyOf(source.prop)(Prop);\r\t\t\tc.CopyFromSimpleView2(source)\r\t\tEND\r\tEND CopyFromSimpleView;\r\r\tPROCEDURE (c: Control) "
+                    attr: 0
+                  - text: Internalize
+                    attr: 3
+                  - text: "- (VAR rd: Stores.Reader);\r\t\tVAR thisVersion: INTEGER; x, def, canc, sort: BOOLEAN;\r\tBEGIN\r\t\tc.Internalize^(rd);\r\t\tIF rd.cancelled THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " END;\r\t\trd.ReadVersion(minVersion, maxBaseVersion, thisVersion);\r\t\tIF rd.cancelled THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " END;\r\t\tNEW(c.prop);\r\t\tIF thisVersion >= 3 THEN\r\t\t\trd.ReadString(c.prop.link);\r\t\t\trd.ReadString(c.prop.label);\r\t\t\trd.ReadString(c.prop.guard);\r\t\t\trd.ReadString(c.prop.notifier);\r\t\t\trd.ReadInt(c.prop.level);\r\t\t\trd.ReadBool(c.customFont);\r\t\t\trd.ReadBool(c.prop.opt[0]);\r\t\t\trd.ReadBool(c.prop.opt[1]);\r\t\t\trd.ReadBool(c.prop.opt[2]);\r\t\t\trd.ReadBool(c.prop.opt[3]);\r\t\t\trd.ReadBool(c.prop.opt[4]);\r\t\t\tIF c.customFont & (thisVersion = 4) THEN\r\t\t\t\tViews.ReadFont(rd, c.font)\r\t\t\tEND\r\t\tELSE\r\t\t\trd.ReadXString(c.prop.link);\r\t\t\trd.ReadXString(c.prop.label);\r\t\t\trd.ReadXString(c.prop.guard);\r\t\t\tc.prop.notifier := \"\";\r\t\t\tc.prop.opt[2] := FALSE;\r\t\t\tc.prop.opt[3] := FALSE;\r\t\t\tc.prop.opt[4] := FALSE;\r\t\t\tsort := FALSE;\r\t\t\tIF thisVersion = 2 THEN\r\t\t\t\trd.ReadXString(c.prop.notifier);\r\t\t\t\trd.ReadBool(sort);\r\t\t\t\trd.ReadBool(c.prop.opt[multiLine])\r\t\t\tELSIF thisVersion = 1 THEN\r\t\t\t\trd.ReadXString(c.prop.notifier);\r\t\t\t\trd.ReadBool(sort)\r\t\t\tEND;\r\t\t\trd.ReadBool(x);\t"
+                    attr: 0
+                  - text: "(* free, was sed for prop.element *)"
+                    attr: 1
+                  - text: "\r\t\t\trd.ReadBool(def); \r\t\t\trd.ReadBool(canc);\r\t\t\trd.ReadXInt(c.prop.level);\r\t\t\trd.ReadBool(c.customFont);\r\t\t\tc.prop.opt[default] := def OR sort OR (c IS Field);\r\t\t\tc.prop.opt[cancel] := canc\r\t\tEND;\r\t\tc.Internalize2(rd);\r\t\tOpenLink(c, c.prop)\r\tEND Internalize;\r\r\tPROCEDURE (c: Control) "
+                    attr: 0
+                  - text: Externalize
+                    attr: 3
+                  - text: "- (VAR wr: Stores.Writer);\r\tBEGIN\r\t\tc.Externalize^(wr);\r\t\twr.WriteVersion(maxBaseVersion);\r\t\twr.WriteString(c.prop.link);\r\t\twr.WriteString(c.prop.label);\r\t\twr.WriteString(c.prop.guard);\r\t\twr.WriteString(c.prop.notifier);\r\t\twr.WriteInt(c.prop.level);\r\t\twr.WriteBool(c.customFont);\r\t\twr.WriteBool(c.prop.opt[0]);\r\t\twr.WriteBool(c.prop.opt[1]);\r\t\twr.WriteBool(c.prop.opt[2]);\r\t\twr.WriteBool(c.prop.opt[3]);\r\t\twr.WriteBool(c.prop.opt[4]);\r\t\tIF c.customFont THEN Views.WriteFont(wr, c.font) END;\r\t\tc.Externalize2(wr)\r\tEND Externalize;\r\r\tPROCEDURE (c: Control) "
+                    attr: 0
+                  - text: HandleViewMsg
+                    attr: 3
+                  - text: "- (f: Views.Frame; VAR msg: Views.Message);\r\t\tVAR disabled, undef, readOnly, done, allDone: BOOLEAN; i: INTEGER; lbl: Dialog.String;\r\tBEGIN\r\t\tWITH msg: Views.NotifyMsg DO\r\t\t\tdone := FALSE; allDone := FALSE;\r\t\t\tIF guardCheck IN msg.opts THEN\r\t\t\t\t"
+                    attr: 0
+                  - text: "(* should call c.Update for each frame but Views.Update only once *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tWITH f: StdCFrames.Caption DO lbl := f.label$\r\t\t\t\t| f: StdCFrames.PushButton DO lbl := f.label$\r\t\t\t\t| f: StdCFrames.RadioButton DO lbl := f.label$\r\t\t\t\t| f: StdCFrames.CheckBox DO lbl := f.label$\r\t\t\t\t| f: StdCFrames.Group DO lbl := f.label$\r\t\t\t\tELSE lbl := c.label$\r\t\t\t\tEND;\r\t\t\t\tWITH f: StdCFrames.Frame DO\r\t\t\t\t\tdisabled := f.disabled; undef := f.undef; readOnly := f.readOnly\r\t\t\t\tELSE\r\t\t\t\t\tdisabled := c.disabled; undef := c.undef; readOnly := c.readOnly\r\t\t\t\tEND;\r\t\t\t\tCallGuard(c);\r\t\t\t\tIF (c.disabled # disabled) OR (c.undef # undef)\r\t\t\t\tOR (c.readOnly # readOnly) OR (c.label # lbl) THEN\r\t\t\t\t\tWITH f: StdCFrames.Frame DO\r\t\t\t\t\t\tIF f.noRedraw THEN\r\t\t\t\t\t\t\tf.disabled := c.disabled;\r\t\t\t\t\t\t\tf.undef := c.undef;\r\t\t\t\t\t\t\tf.readOnly := c.readOnly;\r\t\t\t\t\t\t\tc.Update(f, 0, 0, 0); done := TRUE\r\t\t\t\t\t\tELSE Views.Update(c, Views.rebuildFrames); allDone := TRUE\r\t\t\t\t\t\tEND\r\t\t\t\t\tELSE Views.Update(c, Views.keepFrames); done := TRUE\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tIF flushCaches IN msg.opts THEN\r\t\t\t\tViews.Update(c, Views.rebuildFrames)\r\t\t\tEND;\r\t\t\ti := 0; WHILE (i < c.num) & (c.adr[i] < msg.id0) DO INC(i) END;\r\t\t\tIF (i < c.num) & (c.adr[i] < msg.id1) & ~allDone THEN\r\t\t\t\tIF (update IN msg.opts) & ~done THEN\r\t\t\t\t\tWITH msg: NotifyMsg DO\r\t\t\t\t\t\tIF msg.frame # f THEN\t"
+                    attr: 0
+                  - text: "(* don't update origin frame *)\r\t\t\t\t\t\t\t"
+                    attr: 1
+                  - text: "c.Update(f, msg.op, msg.from, msg.to)\r\t\t\t\t\t\tEND\r\t\t\t\t\tELSE\r\t\t\t\t\t\tc.Update(f, 0, 0, 0)\r\t\t\t\t\tEND\r\t\t\t\tEND;\r\t\t\t\tIF listUpdate IN msg.opts THEN\r\t\t\t\t\tc.UpdateList(f)\r\t\t\t\tEND\r\t\t\tEND\r\t\t| msg: Views.UpdateCachesMsg DO\r\t\t\tIF c.stamp # stamp THEN\r\t\t\t\tOpenLink(c, c.prop);\r\t\t\t\tIF msg IS UpdateCachesMsg THEN\r\t\t\t\t\tViews.Update(c, Views.rebuildFrames)\r\t\t\t\tEND\r\t\t\tEND\r\t\tELSE\r\t\tEND;\r\t\tc.HandleViewMsg2(f, msg)\r\tEND HandleViewMsg;\r\r\tPROCEDURE (c: Control) "
+                    attr: 0
+                  - text: HandleCtrlMsg
+                    attr: 3
+                  - text: "* (f: Views.Frame; VAR msg: Controllers.Message;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR focus: Views.View);\r\t\tVAR sp: Properties.SizeProp; p: Control; dcOk: BOOLEAN;\r\tBEGIN\r\t\tIF cleanerInstalled = 0 THEN Kernel.PushTrapCleaner(cleaner) END;\r\t\tINC(cleanerInstalled);\r\t\tp := par; par := c;\r\t\tWITH msg: Properties.PollPickMsg DO\r\t\t\tmsg.dest := f\r\t\t| msg: Properties.PickMsg DO\r\t\t\tNEW(sp); sp.known := {Properties.width, Properties.height}; sp.valid := sp.known;\r\t\t\tc.context.GetSize(sp.width, sp.height);\r\t\t\tProperties.Insert(msg.prop, sp)\r\t\t| msg: Controllers.TrackMsg DO\r\t\t\tIF ~c.disabled THEN\r\t\t\t\tdcOk := TRUE;\r\t\t\t\tIF f IS StdCFrames.Frame THEN dcOk := f(StdCFrames.Frame).DblClickOk(msg.x, msg.y) END;\r\t\t\t\tIF (DCHint(msg.modifiers) = 1)  & dcOk THEN\r\t\t\t\t\t(* double click *)\r\t\t\t\t\tNotify(c, f, Dialog.pressed, 1, 0)\r\t\t\t\tELSE\r\t\t\t\t\tNotify(c, f, Dialog.pressed, 0, 0)\r\t\t\t\tEND\r\t\t\tEND\r\t\tELSE\r\t\tEND;\r\t\tc.HandleCtrlMsg2(f, msg, focus);\r\t\tWITH msg: Controllers.TrackMsg DO\r\t\t\tIF ~c.disabled THEN\r\t\t\t\tNotify(c, f, Dialog.released, 0, 0)\r\t\t\tEND\r\t\tELSE\r\t\tEND;\r\t\tpar := p;\r\t\tDEC(cleanerInstalled);\r\t\tIF cleanerInstalled = 0 THEN Kernel.PopTrapCleaner(cleaner) END\r\tEND HandleCtrlMsg;\r\r\tPROCEDURE (c: Control) "
+                    attr: 0
+                  - text: HandlePropMsg
+                    attr: 3
+                  - text: "- (VAR msg: Properties.Message);\r\t\tVAR fpref: Properties.FocusPref; stp: Properties.StdProp;\r\t\t\tcp: Prop; ppref: PropPref; op: Op; valid: SET; p: Properties.Property;\r\t\t\tfop: FontOp; face: Fonts.Typeface; size, weight: INTEGER; style: SET;\r\tBEGIN\r\t\tWITH msg: Properties.ControlPref DO\r\t\t\tIF (msg.char = lineChar) OR (msg.char = esc) THEN msg.accepts := FALSE END;\r\t\t\tIF ~c.disabled & ~c.readOnly & IsShortcut(msg.char, c) THEN\r\t\t\t\tfpref.hotFocus := FALSE; fpref.setFocus := FALSE; fpref.atLocation := FALSE;\r\t\t\t\tViews.HandlePropMsg(c, fpref);\r\t\t\t\tIF fpref.setFocus THEN msg.getFocus := TRUE END\r\t\t\tEND\r\t\t| msg: Properties.PollMsg DO\r\t\t\tppref.valid := {link, label, notifier, guard};\r\t\t\tViews.HandlePropMsg(c, ppref);\r\t\t\tcp := Properties.CopyOf(c.prop)(Prop);\r\t\t\tcp.valid := ppref.valid; cp.known := cp.valid; cp.readOnly := {};\r\t\t\tProperties.Insert(msg.prop, cp);\r\t\t\tNEW(stp);\r\t\t\tstp.valid := {Properties.typeface..Properties.weight};\r\t\t\tstp.known := stp.valid;\r\t\t\tIF c.customFont THEN stp.typeface := c.font.typeface$\r\t\t\tELSE stp.typeface := Fonts.default\r\t\t\tEND;\r\t\t\tstp.size := c.font.size; stp.style.val := c.font.style; stp.weight := c.font.weight;\r\t\t\tstp.style.mask := {Fonts.italic, Fonts.strikeout, Fonts.underline};\r\t\t\tProperties.Insert(msg.prop, stp)\r\t\t| msg: Properties.SetMsg DO\r\t\t\tp := msg.prop; op := NIL; fop := NIL;\r\t\t\tWHILE (p # NIL) & (op = NIL) DO\r\t\t\t\tWITH p: Prop DO\r\t\t\t\t\tppref.valid := {link, label, notifier, guard};\r\t\t\t\t\tViews.HandlePropMsg(c, ppref);\r\t\t\t\t\tvalid := p.valid * ppref.valid;\r\t\t\t\t\tIF valid # {} THEN\r\t\t\t\t\t\tNEW(op); \r\t\t\t\t\t\top.ctrl := c; \r\t\t\t\t\t\top.prop := Properties.CopyOf(p)(Prop); op.prop.valid := valid\r\t\t\t\t\tEND\r\t\t\t\t| p: Properties.StdProp DO\r\t\t\t\t\tvalid := p.valid * {Properties.typeface..Properties.weight};\r\t\t\t\t\tIF valid # {} THEN\r\t\t\t\t\t\tNEW(fop); fop.ctrl := c;\r\t\t\t\t\t\tface := c.font.typeface$; size := c.font.size; style := c.font.style; weight := c.font.weight;\r\t\t\t\t\t\tIF Properties.typeface IN p.valid THEN face := p.typeface$;\r\t\t\t\t\t\t\tIF face = Fonts.default THEN face := StdCFrames.defaultFont.typeface END\r\t\t\t\t\t\tEND;\r\t\t\t\t\t\tIF Properties.size IN p.valid THEN size := p.size END;\r\t\t\t\t\t\tIF Properties.style IN p.valid THEN\r\t\t\t\t\t\t\tstyle := (p.style.val * p.style.mask) + (style - p.style.mask)\r\t\t\t\t\t\tEND;\r\t\t\t\t\t\tIF Properties.weight IN p.valid THEN weight := p.weight END;\r\t\t\t\t\t\tfop.custom := TRUE;\r\t\t\t\t\t\tfop.font := Fonts.dir.This(face, size, style, weight);\r\t\t\t\t\t\tIF (fop.font.typeface = StdCFrames.defaultFont.typeface)\r\t\t\t\t\t\t& (fop.font.size = StdCFrames.defaultFont.size)\r\t\t\t\t\t\t& (fop.font.style = StdCFrames.defaultFont.style)\r\t\t\t\t\t\t& (fop.font.weight = StdCFrames.defaultFont.weight) THEN\r\t\t\t\t\t\t\tfop.custom := FALSE;\r\t\t\t\t\t\t\tfop.font := StdCFrames.defaultFont\r\t\t\t\t\t\tEND\r\t\t\t\t\tEND\r\t\t\t\tELSE\r\t\t\t\tEND;\r\t\t\t\tp := p.next\r\t\t\tEND;\r\t\t\tIF op # NIL THEN Views.Do(c, \"#System:SetProp\", op) END;\r\t\t\tIF fop # NIL THEN Views.Do(c, \"#System:SetProp\", fop) END\r\t\t| msg: Properties.TypePref DO\r\t\t\tIF Services.Is(c, msg.type) THEN msg.view := c END\r\t\tELSE\r\t\tEND;\r\t\tc.HandlePropMsg2(msg)\r\tEND HandlePropMsg;\r\r\r\t"
+                    attr: 0
+                  - text: "(* Op *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (op: Op) Do;\r\t\tVAR c: Control; prop: Prop;\r\tBEGIN\r\t\tc := op.ctrl;\r\t\tprop := Properties.CopyOf(c.prop)(Prop);\r\t\tprop.valid := op.prop.valid;\t"
+                    attr: 0
+                  - text: "(* fields to be restored *)"
+                    attr: 1
+                  - text: "\r\t\tIF link IN op.prop.valid THEN c.prop.link := op.prop.link END;\r\t\tIF label IN op.prop.valid THEN c.prop.label := op.prop.label END;\r\t\tIF guard IN op.prop.valid THEN c.prop.guard := op.prop.guard END;\r\t\tIF notifier IN op.prop.valid THEN c.prop.notifier := op.prop.notifier END;\r\t\tIF level IN op.prop.valid THEN c.prop.level := op.prop.level END;\r\t\tIF opt0 IN op.prop.valid THEN c.prop.opt[0] := op.prop.opt[0] END;\r\t\tIF opt1 IN op.prop.valid THEN c.prop.opt[1] := op.prop.opt[1] END;\r\t\tIF opt2 IN op.prop.valid THEN c.prop.opt[2] := op.prop.opt[2] END;\r\t\tIF opt3 IN op.prop.valid THEN c.prop.opt[3] := op.prop.opt[3] END;\r\t\tIF opt4 IN op.prop.valid THEN c.prop.opt[4] := op.prop.opt[4] END;\r\t\tIF c.prop.guard # prop.guard THEN c.guardErr := FALSE END;\r\t\tIF c.prop.notifier # prop.notifier THEN c.notifyErr := FALSE END;\r\t\tIF c.prop.link # prop.link THEN OpenLink(c, c.prop) ELSE CallGuard(c) END;\r\t\top.prop := prop;\r\t\tViews.Update(c, Views.rebuildFrames)\r\tEND Do;\r\r\tPROCEDURE (op: FontOp) Do;\r\t\tVAR c: Control; custom: BOOLEAN; font: Fonts.Font;\r\tBEGIN\r\t\tc := op.ctrl;\r\t\tcustom := c.customFont; c.customFont := op.custom; op.custom := custom;\r\t\tfont := c.font; c.font := op.font; op.font := font;\r\t\tViews.Update(c, Views.rebuildFrames)\r\tEND Do;\r\r\r"
+                    attr: 0
+                  - text: "\t(* ------------------------- standard controls ------------------------- *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE CatchCtrlMsg (c: Control; f: Views.Frame; VAR msg: Controllers.Message;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR focus: Views.View);\r\tBEGIN\r\t\tIF ~c.disabled THEN\r\t\t\tWITH f: StdCFrames.Frame DO\r\t\t\t\tWITH msg: Controllers.PollCursorMsg DO\r\t\t\t\t\tf.GetCursor(msg.x, msg.y, msg.modifiers, msg.cursor)\r\t\t\t\t| msg: Controllers.PollOpsMsg DO\r\t\t\t\t\tmsg.valid := {Controllers.pasteChar}\r\t\t\t\t| msg: Controllers.TrackMsg DO\r\t\t\t\t\tf.MouseDown(msg.x, msg.y, msg.modifiers)\r\t\t\t\t| msg: Controllers.MarkMsg DO\r\t\t\t\t\tf.Mark(msg.show, msg.focus)\r\t\t\t\t|msg: Controllers.WheelMsg DO\r\t\t\t\t\tf.WheelMove(msg.x, msg.y, msg.op, msg.nofLines, msg.done)\r\t\t\t\tELSE\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND CatchCtrlMsg;\r\t\r\r\t"
+                    attr: 0
+                  - text: "(** Directory **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: "NewPushButton*"
+                    attr: 3
+                  - text: " (p: Prop): Control, NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: "NewCheckBox*"
+                    attr: 3
+                  - text: " (p: Prop): Control, NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: "NewRadioButton*"
+                    attr: 3
+                  - text: " (p: Prop): Control, NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: "NewField*"
+                    attr: 3
+                  - text: " (p: Prop): Control, NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: "NewUpDownField*"
+                    attr: 3
+                  - text: " (p: Prop): Control, NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: "NewDateField*"
+                    attr: 3
+                  - text: " (p: Prop): Control, NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: "NewTimeField*"
+                    attr: 3
+                  - text: " (p: Prop): Control, NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: "NewColorField*"
+                    attr: 3
+                  - text: " (p: Prop): Control, NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: "NewListBox*"
+                    attr: 3
+                  - text: " (p: Prop): Control, NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: "NewSelectionBox*"
+                    attr: 3
+                  - text: " (p: Prop): Control, NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: "NewComboBox*"
+                    attr: 3
+                  - text: " (p: Prop): Control, NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: "NewCaption*"
+                    attr: 3
+                  - text: " (p: Prop): Control, NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: "NewGroup*"
+                    attr: 3
+                  - text: " (p: Prop): Control, NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: "NewTreeControl*"
+                    attr: 3
+                  - text: " (p: Prop): Control, NEW, ABSTRACT;\r\r\r\t"
+                    attr: 0
+                  - text: "(* PushButton *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE Call (c: PushButton);\r\t\tVAR res: INTEGER; p: Control; ok: BOOLEAN; msg: Views.NotifyMsg;\r\tBEGIN\r\t\tIF c.item.Valid() & ((c.item.obj = Meta.procObj) OR (c.item.obj = Meta.varObj) & (c.item.typ = Meta.procTyp)) THEN\r\t\t\tIF cleanerInstalled = 0 THEN Kernel.PushTrapCleaner(cleaner) END;\r\t\t\tINC(cleanerInstalled);\r\t\t\tp := par; c.item.Call(ok); par := p;\r\t\t\tDEC(cleanerInstalled);\r\t\t\tIF cleanerInstalled = 0 THEN Kernel.PopTrapCleaner(cleaner) END;\r\t\t\tIF ~ok THEN Dialog.ShowMsg(\"#System:BehaviorNotAccessible\") END\r\t\tELSIF c.prop.link # \"\" THEN\r\t\t\tIF cleanerInstalled = 0 THEN Kernel.PushTrapCleaner(cleaner) END;\r\t\t\tINC(cleanerInstalled);\r\t\t\tp := par; par := c; Dialog.Call(c.prop.link, \" \", res); par := p;\r\t\t\tDEC(cleanerInstalled);\r\t\t\tIF cleanerInstalled = 0 THEN Kernel.PopTrapCleaner(cleaner) END\r\t\tELSE Dialog.ShowMsg(\"#System:NoBehaviorBound\")\r\t\tEND;\r\t\tmsg.opts := {guardCheck};\r\t\tViews.Omnicast(msg)\r\tEND Call;\r\t\r\tPROCEDURE Do (f: StdCFrames.PushButton);\r\tBEGIN\r\t\tCall(f.view(PushButton))\r\tEND Do;\r\r\tPROCEDURE (c: PushButton) Internalize2 (VAR rd: Stores.Reader);\r\t\tVAR thisVersion: INTEGER;\r\tBEGIN\r\t\trd.ReadVersion(minVersion, pbVersion, thisVersion)\r\tEND Internalize2;\r\r\tPROCEDURE (c: PushButton) Externalize2 (VAR wr: Stores.Writer);\r\tBEGIN\r\t\twr.WriteVersion(pbVersion)\r\tEND Externalize2;\r\r\tPROCEDURE (c: PushButton) GetNewFrame (VAR frame: Views.Frame);\r\t\tVAR f: StdCFrames.PushButton;\r\tBEGIN\r\t\tf := StdCFrames.dir.NewPushButton();\r\t\tf.disabled := c.disabled;\r\t\tf.undef := c.undef;\r\t\tf.readOnly := c.readOnly;\r\t\tf.font := c.font;\r\t\tf.label := c.label$;\r\t\tf.default := c.prop.opt[default];\r\t\tf.cancel := c.prop.opt[cancel];\r\t\tf.Do := Do;\r\t\tframe := f\r\tEND GetNewFrame;\r\r\tPROCEDURE (c: PushButton) Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\tBEGIN\r\t\tWITH f: StdCFrames.Frame DO f.Restore(l, t, r, b) END\r\tEND Restore;\r\r\tPROCEDURE (c: PushButton) HandleCtrlMsg2 (f: Views.Frame; VAR msg: Controllers.Message;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR focus: Views.View);\r\tBEGIN\r\t\tIF ~c.disabled THEN\r\t\t\tWITH f: StdCFrames.Frame DO\r\t\t\t\tWITH msg: Controllers.EditMsg DO\r\t\t\t\t\tIF (msg.op = Controllers.pasteChar)\r\t\t\t\t\t\t& ((msg.char = lineChar)\r\t\t\t\t\t\t\tOR (msg.char = \" \")\r\t\t\t\t\t\t\tOR (msg.char = esc) & c.prop.opt[cancel]\r\t\t\t\t\t\t\tOR IsShortcut(msg.char, c)) THEN f.KeyDown(msg.char) END\r\t\t\t\tELSE\r\t\t\t\t\tCatchCtrlMsg(c, f, msg, focus)\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND HandleCtrlMsg2;\r\r\tPROCEDURE (c: PushButton) HandlePropMsg2 (VAR msg: Properties.Message);\r\tBEGIN\r\t\tWITH msg: Properties.ControlPref DO\r\t\t\tmsg.accepts := ~c.disabled & ((msg.char = lineChar) & c.prop.opt[default]\r\t\t\t\tOR (msg.char = esc) & c.prop.opt[cancel]\r\t\t\t\tOR IsShortcut(msg.char, c))\r\t\t| msg: Properties.FocusPref DO\r\t\t\tIF ~c.disabled & ~ c.readOnly THEN\r\t\t\t\tmsg.hotFocus := TRUE; msg.setFocus := StdCFrames.setFocus\r\t\t\tEND\r\t\t| msg: Properties.SizePref DO\r\t\t\tStdCFrames.dir.GetPushButtonSize(msg.w, msg.h)\r\t\t| msg: PropPref DO\r\t\t\tmsg.valid := {link, label, guard, notifier, default, cancel}\r\t\t| msg: DefaultsPref DO\r\t\t\tIF c.prop.link # \"\" THEN msg.disabled := FALSE END\r\t\tELSE\r\t\tEND\r\tEND HandlePropMsg2;\r\t\r\tPROCEDURE (c: PushButton) Update (f: Views.Frame; op, from, to: INTEGER);\r\tBEGIN\r\t\tf(StdCFrames.PushButton).label := c.label$;\r\t\tf(StdCFrames.Frame).Update\r\tEND Update;\r\t\r\tPROCEDURE (c: PushButton) CheckLink (VAR ok: BOOLEAN);\r\tBEGIN\r\t\tok := c.item.typ = Meta.procTyp\r\tEND CheckLink;\r\r\r\t"
+                    attr: 0
+                  - text: "(* CheckBox *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE GetCheckBox (f: StdCFrames.CheckBox; OUT x: BOOLEAN);\r\t\tVAR c: CheckBox;\r\tBEGIN\r\t\tx := FALSE;\r\t\tc := f.view(CheckBox);\r\t\tIF c.item.Valid() THEN\r\t\t\tIF c.item.typ = Meta.boolTyp THEN x := c.item.BoolVal()\r\t\t\tELSIF c.item.typ = Meta.setTyp THEN x := c.prop.level IN c.item.SetVal()\r\t\t\tEND\r\t\tEND\r\tEND GetCheckBox;\r\r\tPROCEDURE SetCheckBox (f: StdCFrames.CheckBox; x: BOOLEAN);\r\t\tVAR c: CheckBox; s: SET;\r\tBEGIN\r\t\tc := f.view(CheckBox);\r\t\tIF c.item.Valid() & ~c.readOnly THEN\r\t\t\tIF c.item.typ = Meta.boolTyp THEN\r\t\t\t\tc.item.PutBoolVal(x); Notify(c, f, Dialog.changed, 0, 0)\r\t\t\tELSIF c.item.typ = Meta.setTyp THEN\r\t\t\t\ts := c.item.SetVal();\r\t\t\t\tIF x THEN INCL(s, c.prop.level) ELSE EXCL(s, c.prop.level) END;\r\t\t\t\tc.item.PutSetVal(s);\r\t\t\t\tIF x THEN Notify(c, f, Dialog.included, c.prop.level, c.prop.level)\r\t\t\t\tELSE Notify(c, f, Dialog.excluded, c.prop.level, c.prop.level)\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND SetCheckBox;\r\r\tPROCEDURE (c: CheckBox) Internalize2 (VAR rd: Stores.Reader);\r\t\tVAR thisVersion: INTEGER;\r\tBEGIN\r\t\trd.ReadVersion(minVersion, cbVersion, thisVersion)\r\tEND Internalize2;\r\r\tPROCEDURE (c: CheckBox) Externalize2 (VAR wr: Stores.Writer);\r\tBEGIN\r\t\twr.WriteVersion(cbVersion)\r\tEND Externalize2;\r\r\tPROCEDURE (c: CheckBox) GetNewFrame (VAR frame: Views.Frame);\r\t\tVAR f: StdCFrames.CheckBox;\r\tBEGIN\r\t\tf :=  StdCFrames.dir.NewCheckBox();\r\t\tf.disabled := c.disabled;\r\t\tf.undef := c.undef;\r\t\tf.readOnly := c.readOnly;\r\t\tf.font := c.font;\r\t\tf.label := c.label$;\r\t\tf.Get := GetCheckBox;\r\t\tf.Set := SetCheckBox;\r\t\tframe := f\r\tEND GetNewFrame;\r\r\tPROCEDURE (c: CheckBox) Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\tBEGIN\r\t\tWITH f: StdCFrames.Frame DO f.Restore(l, t, r, b) END\r\tEND Restore;\r\r\tPROCEDURE (c: CheckBox) HandleCtrlMsg2 (f: Views.Frame; VAR msg: Controllers.Message;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR focus: Views.View);\r\tBEGIN\r\t\tIF ~c.disabled & ~c.readOnly THEN\r\t\t\tWITH f: StdCFrames.Frame DO\r\t\t\t\tWITH msg: Controllers.EditMsg DO\r\t\t\t\t\tIF (msg.op = Controllers.pasteChar)\r\t\t\t\t\t\t& ((msg.char = \" \") OR IsShortcut(msg.char, c)) THEN f.KeyDown(msg.char) END\r\t\t\t\tELSE\r\t\t\t\t\tCatchCtrlMsg(c, f, msg, focus)\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND HandleCtrlMsg2;\r\r\tPROCEDURE (c: CheckBox) HandlePropMsg2 (VAR msg: Properties.Message);\r\tBEGIN\r\t\tWITH msg: Properties.ControlPref DO\r\t\t\tIF ~c.disabled & ~c.readOnly THEN\r\t\t\t\tIF (msg.char = tab) OR (msg.char = ltab) THEN\r\t\t\t\t"
+                    attr: 0
+                  - text: "\t(* tabs set focus to first checkbox only *)\r\t\t\t\t\t"
+                    attr: 1
+                  - text: "IF (msg.focus # NIL) & (msg.focus IS CheckBox)\r\t\t\t\t\t\t\t& (msg.focus(CheckBox).item.adr = c.item.adr) THEN\r\t\t\t\t\t\tmsg.getFocus := FALSE\r\t\t\t\t\tEND\r"
+                    attr: 0
+                  - text: "\t\t\t\t"
+                    attr: 1
+                  - text: "ELSIF (msg.char >= arrowLeft) & (msg.char <= arrowDown) THEN\r\t\t\t\t\t"
+                    attr: 0
+                  - text: "(* arrows set focus to next checkbox bound to same variable *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tmsg.getFocus := StdCFrames.setFocus\r\t\t\t\t\t\t& (msg.focus # NIL)\r\t\t\t\t\t\t& (msg.focus IS CheckBox)\r\t\t\t\t\t\t& (msg.focus(CheckBox).item.adr = c.item.adr);\r\t\t\t\t\tmsg.accepts := msg.getFocus & (msg.focus # c)\r\t\t\t\tELSIF IsShortcut(msg.char, c) THEN\r\t\t\t\t\tmsg.accepts := TRUE; msg.getFocus := StdCFrames.setFocus\r\t\t\t\tELSIF msg.char # \" \" THEN\r\t\t\t\t\tmsg.accepts := FALSE\r\t\t\t\tEND\r\t\t\tEND\r\t\t| msg: Properties.FocusPref DO\r\t\t\tIF ~c.disabled & ~c.readOnly THEN\r\t\t\t\tmsg.hotFocus := TRUE; msg.setFocus := StdCFrames.setFocus\r\t\t\tEND\r\t\t| msg: Properties.SizePref DO\r\t\t\tStdCFrames.dir.GetCheckBoxSize(msg.w, msg.h)\r\t\t| msg: PropPref DO\r\t\t\tmsg.valid := {link, label, guard, notifier, level}\r\t\tELSE\r\t\tEND\r\tEND HandlePropMsg2;\r\r\tPROCEDURE (c: CheckBox) CheckLink (VAR ok: BOOLEAN);\r\tBEGIN\r\t\tok := (c.item.typ = Meta.boolTyp) OR (c.item.typ = Meta.setTyp)\r\tEND CheckLink;\r\r\tPROCEDURE (c: CheckBox) Update (f: Views.Frame; op, from, to: INTEGER);\r\tBEGIN\r\t\tIF (op = 0) OR (c.item.typ = Meta.boolTyp) OR (c.prop.level = to) THEN\r\t\t\tf(StdCFrames.CheckBox).label := c.label$;\r\t\t\tf(StdCFrames.Frame).Update\r\t\tEND\r\tEND Update;\r\t\r\r\t"
+                    attr: 0
+                  - text: "(* RadioButton *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE GetRadioButton (f: StdCFrames.RadioButton; OUT x: BOOLEAN);\r\t\tVAR c: RadioButton;\r\tBEGIN\r\t\tx := FALSE;\r\t\tc := f.view(RadioButton);\r\t\tIF c.item.Valid() THEN\r\t\t\tIF c.item.typ = Meta.boolTyp THEN x := c.item.BoolVal() = (c.prop.level # 0)\r\t\t\tELSE x := c.item.IntVal() = c.prop.level\r\t\t\tEND\r\t\tEND\r\tEND GetRadioButton;\r\r\tPROCEDURE SetRadioButton (f: StdCFrames.RadioButton; x: BOOLEAN);\r\t\tVAR c: RadioButton; old: INTEGER;\r\tBEGIN\r\t\tIF x THEN\r\t\t\tc := f.view(RadioButton);\r\t\t\tIF c.item.Valid() & ~c.readOnly THEN\r\t\t\t\tIF c.item.typ = Meta.boolTyp THEN\r\t\t\t\t\tIF c.item.BoolVal() THEN old := 1 ELSE old := 0 END;\r\t\t\t\t\tIF c.prop.level # old THEN\r\t\t\t\t\t\tc.item.PutBoolVal(c.prop.level # 0);\r\t\t\t\t\t\tNotify(c, f, Dialog.changed, old, c.prop.level)\r\t\t\t\t\tEND\r\t\t\t\tELSE\r\t\t\t\t\told := c.item.IntVal();\r\t\t\t\t\tIF c.prop.level # old THEN\r\t\t\t\t\t\tc.item.PutIntVal(c.prop.level);\r\t\t\t\t\t\tNotify(c, f, Dialog.changed, old, c.prop.level)\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND SetRadioButton;\r\r\tPROCEDURE (c: RadioButton) Internalize2 (VAR rd: Stores.Reader);\r\t\tVAR thisVersion: INTEGER;\r\tBEGIN\r\t\trd.ReadVersion(minVersion, rbVersion, thisVersion)\r\tEND Internalize2;\r\r\tPROCEDURE (c: RadioButton) Externalize2 (VAR wr: Stores.Writer);\r\tBEGIN\r\t\twr.WriteVersion(rbVersion)\r\tEND Externalize2;\r\r\tPROCEDURE (c: RadioButton) GetNewFrame (VAR frame: Views.Frame);\r\t\tVAR f: StdCFrames.RadioButton;\r\tBEGIN\r\t\tf := StdCFrames.dir.NewRadioButton();\r\t\tf.disabled := c.disabled;\r\t\tf.undef := c.undef;\r\t\tf.readOnly := c.readOnly;\r\t\tf.font := c.font;\r\t\tf.label := c.label$;\r\t\tf.Get := GetRadioButton;\r\t\tf.Set := SetRadioButton;\r\t\tframe := f\r\tEND GetNewFrame;\r\r\tPROCEDURE (c: RadioButton) Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\tBEGIN\r\t\tWITH f: StdCFrames.Frame DO f.Restore(l, t, r, b) END\r\tEND Restore;\r\r\tPROCEDURE (c: RadioButton) HandleCtrlMsg2 (f: Views.Frame; VAR msg: Controllers.Message;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR focus: Views.View);\r\tBEGIN\r\t\tIF ~c.disabled & ~c.readOnly THEN\r\t\t\tWITH f: StdCFrames.Frame DO\r\t\t\t\tWITH msg: Controllers.EditMsg DO\r\t\t\t\t\tIF (msg.op = Controllers.pasteChar)\r\t\t\t\t\t\t& ((msg.char <= \" \") OR IsShortcut(msg.char, c)) THEN f.KeyDown(msg.char) END\r\t\t\t\tELSE\r\t\t\t\t\tCatchCtrlMsg(c, f, msg, focus)\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND HandleCtrlMsg2;\r\r\tPROCEDURE (c: RadioButton) HandlePropMsg2 (VAR msg: Properties.Message);\r\t\tVAR hot: BOOLEAN;\r\tBEGIN\r\t\tWITH msg: Properties.ControlPref DO\r\t\t\tIF ~c.disabled & ~c.readOnly THEN\r\t\t\t\tIF (msg.char = tab) OR (msg.char = ltab) THEN\r\t\t\t\t"
+                    attr: 0
+                  - text: "\t(* tabs set focus to active radio button only *)\r"
+                    attr: 1
+                  - text: "\t\t\t\t\tIF c.item.Valid() THEN\r\t\t\t\t\t\tIF c.item.typ = Meta.boolTyp THEN hot := c.item.BoolVal() = (c.prop.level # 0)\r\t\t\t\t\t\tELSE hot := c.item.IntVal() = c.prop.level\r\t\t\t\t\t\tEND\r\t\t\t\t\tELSE hot := FALSE\r\t\t\t\t\tEND;\r\t\t\t\t\tIF ~hot THEN msg.getFocus := FALSE END\r"
+                    attr: 0
+                  - text: "\t\t\t\t"
+                    attr: 1
+                  - text: "ELSIF (msg.char >= arrowLeft) & (msg.char <= arrowDown) THEN\r\t\t\t\t\t"
+                    attr: 0
+                  - text: "(* arrows set focus to next radio button bound to same variable *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tmsg.getFocus := StdCFrames.setFocus\r\t\t\t\t\t\t& (msg.focus # NIL) & (msg.focus IS RadioButton)\r\t\t\t\t\t\t& (msg.focus(RadioButton).item.adr = c.item.adr);\r\t\t\t\t\tmsg.accepts := msg.getFocus & (msg.focus # c)\r\t\t\t\tELSIF IsShortcut(msg.char, c) THEN\r\t\t\t\t\tmsg.accepts := TRUE; msg.getFocus := StdCFrames.setFocus\r\t\t\t\tELSIF msg.char # \" \" THEN\r\t\t\t\t\tmsg.accepts := FALSE\r\t\t\t\tEND\r\t\t\tEND\r\t\t| msg: Properties.FocusPref DO\r\t\t\tIF ~c.disabled & ~c.readOnly THEN\r\t\t\t\tmsg.hotFocus := TRUE; msg.setFocus := StdCFrames.setFocus\r \t\t\tEND\r\t\t| msg: Properties.SizePref DO\r\t\t\tStdCFrames.dir.GetRadioButtonSize(msg.w, msg.h)\r\t\t| msg: PropPref DO\r\t\t\tmsg.valid := {link, label, guard, notifier, level}\r\t\tELSE\r\t\tEND\r\tEND HandlePropMsg2;\r\r\tPROCEDURE (c: RadioButton) CheckLink (VAR ok: BOOLEAN);\r\t\tVAR name: Meta.Name;\r\tBEGIN\r\t\tGetTypeName(c.item, name);\r\t\tIF name = \"List\" THEN c.item.Lookup(\"index\", c.item) END;\r\t\tok := (c.item.typ >= Meta.byteTyp) & (c.item.typ <= Meta.intTyp) OR (c.item.typ = Meta.boolTyp)\r\tEND CheckLink;\r\r\tPROCEDURE (c: RadioButton) Update (f: Views.Frame; op, from, to: INTEGER);\r\tBEGIN\r\t\tIF (op = 0) OR (c.prop.level = to) OR (c.prop.level = from) THEN\r\t\t\tf(StdCFrames.RadioButton).label := c.label$;\r\t\t\tf(StdCFrames.Frame).Update\r\t\tEND\r\tEND Update;\r\t\r\r\t"
+                    attr: 0
+                  - text: "(* Field *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE LongToString (x: LONGINT; OUT s: ARRAY OF CHAR);\r\t\tVAR d: ARRAY 24 OF CHAR; i, j: INTEGER;\r\tBEGIN\r\t\tIF x = MIN(LONGINT) THEN\r\t\t\ts := \"-9223372036854775808\"\r\t\tELSE\r\t\t\ti := 0; j := 0;\r\t\t\tIF x < 0 THEN s[0] := \"-\"; i := 1; x := -x END;\r\t\t\tREPEAT d[j] := CHR(x MOD 10 + ORD(\"0\")); INC(j); x := x DIV 10 UNTIL x = 0;\r\t\t\tWHILE j > 0 DO DEC(j); s[i] := d[j]; INC(i) END;\r\t\t\ts[i] := 0X\r\t\tEND\r\tEND LongToString;\r\r\tPROCEDURE StringToLong (IN s: ARRAY OF CHAR; OUT x: LONGINT; OUT res: INTEGER);\r\t\tVAR i, sign, d: INTEGER;\r\tBEGIN\r\t\ti := 0; sign := 1; x := 0; res := 0;\r\t\tWHILE s[i] = \" \" DO INC(i) END;\r\t\tIF s[i] = \"-\" THEN sign := -1; INC(i) END;\r\t\tWHILE s[i] = \" \" DO INC(i) END;\r\t\tIF s[i] = 0X THEN res := 2 END;\r\t\tWHILE (s[i] >= \"0\") & (s[i] <= \"9\") DO\r\t\t\td := ORD(s[i]) - ORD(\"0\"); INC(i);\r\t\t\tIF x <= (MAX(LONGINT) - d) DIV 10 THEN x := 10 * x + d\r\t\t\tELSE res := 1\r\t\t\tEND\r\t\tEND;\r\t\tx := x * sign;\r\t\tIF s[i] # 0X THEN res := 2 END\r\tEND StringToLong;\r\r\tPROCEDURE FixToInt (fix: ARRAY OF CHAR; OUT int: ARRAY OF CHAR; scale: INTEGER);\r\t\tVAR i, j: INTEGER;\r\tBEGIN\r\t\tIF scale > 24 THEN scale := 24 ELSIF scale < 0 THEN scale := 0 END;\r\t\ti := 0; j := 0;\r\t\tWHILE (fix[i] # \".\") & (fix[i] # 0X) DO int[j] := fix[i]; INC(i); INC(j) END;\r\t\tIF fix[i] = \".\" THEN INC(i) END;\r\t\tWHILE (scale > 0) & (fix[i] >= \"0\") & (fix[i] <= \"9\") DO int[j] := fix[i]; INC(i); INC(j); DEC(scale) END;\r\t\tWHILE scale > 0 DO int[j] := \"0\"; INC(j); DEC(scale) END;\r\t\tint[j] := 0X\r\tEND FixToInt;\r\r\tPROCEDURE IntToFix (int: ARRAY OF CHAR; OUT fix: ARRAY OF CHAR; scale: INTEGER);\r\t\tVAR i, j, n: INTEGER;\r\tBEGIN\r\t\tIF scale > 24 THEN scale := 24 ELSIF scale < 0 THEN scale := 0 END;\r\t\tn := LEN(int$); i := 0; j := 0;\r\t\tWHILE int[i] < \"0\" DO fix[j] := int[i]; INC(i); INC(j); DEC(n) END;\r\t\tIF n > scale THEN\r\t\t\tWHILE n > scale DO fix[j] := int[i]; INC(i); INC(j); DEC(n) END\r\t\tELSE\r\t\t\tfix[j] := \"0\"; INC(j)\r\t\tEND;\r\t\tfix[j] := \".\"; INC(j);\r\t\tWHILE n < scale DO fix[j] := \"0\"; INC(j); DEC(scale) END;\r\t\tWHILE n > 0 DO  fix[j] := int[i]; INC(i); INC(j); DEC(n) END;\r\t\tfix[j] := 0X\r\tEND IntToFix;\r\r\tPROCEDURE GetField (f: StdCFrames.Field; OUT x: ARRAY OF CHAR);\r\t\tVAR c: Field; ok: BOOLEAN; b, v: Meta.Item; mod, name: Meta.Name;\r\tBEGIN\r\t\tx := \"\";\r\t\tc := f.view(Field);\r\t\tIF c.item.Valid() THEN\r\t\t\tIF c.item.typ = Meta.arrTyp THEN\r\t\t\t\tc.item.GetStringVal(x, ok)\r\t\t\tELSIF c.item.typ IN {Meta.byteTyp, Meta.sIntTyp, Meta.intTyp} THEN\r\t\t\t\tStrings.IntToString(c.item.IntVal(), x);\r\t\t\t\tIF c.prop.level > 0 THEN IntToFix(x, x, c.prop.level) END\r\t\t\tELSIF c.item.typ = Meta.longTyp THEN\r\t\t\t\tLongToString(c.item.LongVal(), x);\r\t\t\t\tIF c.prop.level > 0 THEN IntToFix(x, x, c.prop.level) END\r\t\t\tELSIF c.item.typ = Meta.sRealTyp THEN\r\t\t\t\tIF c.prop.level <= 0 THEN\r\t\t\t\t\tStrings.RealToStringForm(c.item.RealVal(), 7, 0, c.prop.level, \" \", x)\r\t\t\t\tELSE\r\t\t\t\t\tStrings.RealToStringForm(c.item.RealVal(), c.prop.level, 0, 1, \" \", x)\r\t\t\t\tEND\r\t\t\tELSIF c.item.typ = Meta.realTyp THEN\r\t\t\t\tIF c.prop.level <= 0 THEN\r\t\t\t\t\tStrings.RealToStringForm(c.item.RealVal(), 16, 0, c.prop.level, \" \", x)\r\t\t\t\tELSE\r\t\t\t\t\tStrings.RealToStringForm(c.item.RealVal(), c.prop.level, 0, 1, \" \", x)\r\t\t\t\tEND\r\t\t\tELSIF c.item.typ = Meta.recTyp THEN\r\t\t\t\tc.item.GetTypeName(mod, name);\r\t\t\t\tIF mod = \"Dialog\" THEN\r\t\t\t\t\tIF name = \"Currency\" THEN\r\t\t\t\t\t\tc.item.Lookup(\"val\", v); c.item.Lookup(\"scale\", b);\r\t\t\t\t\t\tLongToString(v.LongVal(), x); IntToFix(x, x, b.IntVal())\r\t\t\t\t\tELSE (* Combo *)\r\t\t\t\t\t\tc.item.Lookup(\"item\", v); "
+                    attr: 0
+                  - text: "(* Combo *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\tIF v.typ = Meta.arrTyp THEN v.GetStringVal(x, ok) END\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\tEND\r\t\tELSE\r\t\t\tx := c.label$\r\t\tEND\r\tEND GetField;\r\r\tPROCEDURE SetField (f: StdCFrames.Field; IN x: ARRAY OF CHAR);\r\t\tVAR c: Field; ok: BOOLEAN; i, res, old: INTEGER; r, or: REAL; b, v: Meta.Item;\r\t\t\tmod, name: Meta.Name; long, long0: LONGINT;\r\t\t\ts: ARRAY 1024 OF CHAR;\r\tBEGIN\r\t\tc := f.view(Field);\r\t\tIF c.item.Valid() & ~c.readOnly THEN\r\t\t\tCASE c.item.typ OF\r\t\t\t| Meta.arrTyp:\r\t\t\t\tc.item.GetStringVal(s, ok);\r\t\t\t\tIF ~ok OR (s$ # x$) THEN\r\t\t\t\t\tc.item.PutStringVal(x, ok);\r\t\t\t\t\tIF ok THEN Notify(c, f, Dialog.changed, 0, 0) ELSE Dialog.Beep END\r\t\t\t\tEND\r\t\t\t| Meta.byteTyp:\r\t\t\t\tIF x = \"\" THEN i := 0; res := 0\r\t\t\t\tELSIF c.prop.level > 0 THEN FixToInt(x, s, c.prop.level); Strings.StringToInt(s, i, res)\r\t\t\t\tELSE Strings.StringToInt(x, i, res)\r\t\t\t\tEND;\r\t\t\t\tIF (res = 0) & (i >= MIN(BYTE)) & (i <= MAX(BYTE)) THEN\r\t\t\t\t\told := c.item.IntVal();\r\t\t\t\t\tIF i # old THEN c.item.PutIntVal(i); Notify(c, f, Dialog.changed, old, i) END\r\t\t\t\tELSIF x # \"-\" THEN\r\t\t\t\t\tDialog.Beep\r\t\t\t\tEND\r\t\t\t| Meta.sIntTyp:\r\t\t\t\tIF x = \"\" THEN i := 0; res := 0\r\t\t\t\tELSIF c.prop.level > 0 THEN FixToInt(x, s, c.prop.level); Strings.StringToInt(s, i, res)\r\t\t\t\tELSE Strings.StringToInt(x, i, res)\r\t\t\t\tEND;\r\t\t\t\tIF (res = 0) & (i >= MIN(SHORTINT)) & (i <= MAX(SHORTINT)) THEN\r\t\t\t\t\told := c.item.IntVal();\r\t\t\t\t\tIF i # old THEN c.item.PutIntVal(i); Notify(c, f, Dialog.changed, old, i) END\r\t\t\t\tELSIF x # \"-\" THEN\r\t\t\t\t\tDialog.Beep\r\t\t\t\tEND\r\t\t\t| Meta.intTyp:\r\t\t\t\tIF x = \"\" THEN i := 0; res := 0\r\t\t\t\tELSIF c.prop.level > 0 THEN FixToInt(x, s, c.prop.level); Strings.StringToInt(s, i, res)\r\t\t\t\tELSE Strings.StringToInt(x, i, res)\r\t\t\t\tEND;\r\t\t\t\tIF res = 0 THEN\r\t\t\t\t\told := c.item.IntVal();\r\t\t\t\t\tIF i # old THEN c.item.PutIntVal(i); Notify(c, f, Dialog.changed, old, i) END\r\t\t\t\tELSIF x # \"-\" THEN\r\t\t\t\t\tDialog.Beep\r\t\t\t\tEND\r\t\t\t| Meta.longTyp:\r\t\t\t\tIF x = \"\" THEN long := 0; res := 0\r\t\t\t\tELSE FixToInt(x, s, c.prop.level); StringToLong(s, long, res)\r\t\t\t\tEND;\r\t\t\t\tIF res = 0 THEN\r\t\t\t\t\tlong0 := c.item.LongVal();\r\t\t\t\t\tIF long # long0 THEN c.item.PutLongVal(long); Notify(c, f, Dialog.changed, 0, 0) END\r\t\t\t\tELSIF x # \"-\" THEN\r\t\t\t\t\tDialog.Beep\r\t\t\t\tEND\r\t\t\t| Meta.sRealTyp:\r\t\t\t\tIF (x = \"\") OR (x = \"-\") THEN r := 0; res := 0 ELSE Strings.StringToReal(x, r, res) END;\r\t\t\t\tIF (res = 0) & (r >= MIN(SHORTREAL)) & (r <= MAX(SHORTREAL)) THEN\r\t\t\t\t\tor := c.item.RealVal();\r\t\t\t\t\tIF r # or THEN c.item.PutRealVal(r); Notify(c, f, Dialog.changed, 0, 0) END\r\t\t\t\tELSIF x # \"-\" THEN\r\t\t\t\t\tDialog.Beep\r\t\t\t\tEND\r\t\t\t| Meta.realTyp:\r\t\t\t\tIF (x = \"\") OR (x = \"-\") THEN r := 0; res := 0 ELSE Strings.StringToReal(x, r, res) END;\r\t\t\t\tIF res = 0 THEN\r\t\t\t\t\tor := c.item.RealVal();\r\t\t\t\t\tIF r # or THEN c.item.PutRealVal(r); Notify(c, f, Dialog.changed, 0, 0) END\r\t\t\t\tELSIF x # \"-\" THEN\r\t\t\t\t\tDialog.Beep\r\t\t\t\tEND\r\t\t\t| Meta.recTyp:\r\t\t\t\tc.item.GetTypeName(mod, name);\r\t\t\t\tIF mod = \"Dialog\" THEN\r\t\t\t\t\tIF name = \"Currency\" THEN\r\t\t\t\t\t\tc.item.Lookup(\"val\", v); c.item.Lookup(\"scale\", b);\r\t\t\t\t\t\tIF x = \"\" THEN long := 0; res := 0\r\t\t\t\t\t\tELSE FixToInt(x, s, b.IntVal()); StringToLong(s, long, res)\r\t\t\t\t\t\tEND;\r\t\t\t\t\t\tIF res = 0 THEN\r\t\t\t\t\t\t\tlong0 := v.LongVal();\r\t\t\t\t\t\t\tIF long # long0 THEN v.PutLongVal(long); Notify(c, f, Dialog.changed, 0, 0) END\r\t\t\t\t\t\tELSIF x # \"-\" THEN\r\t\t\t\t\t\t\tDialog.Beep\r\t\t\t\t\t\tEND\r\t\t\t\t\tELSE\t"
+                    attr: 0
+                  - text: "(* name = \"Combo\" *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\tc.item.Lookup(\"item\", v);\r\t\t\t\t\t\tIF v.typ = Meta.arrTyp THEN\r\t\t\t\t\t\t\tv.GetStringVal(s, ok);\r\t\t\t\t\t\t\tIF ~ok OR (s$ # x$) THEN\r\t\t\t\t\t\t\t\tv.PutStringVal(x, ok);\r\t\t\t\t\t\t\t\tIF ok THEN Notify(c, f, Dialog.changed, 0, 0) ELSE Dialog.Beep END\r\t\t\t\t\t\t\tEND\r\t\t\t\t\t\tEND\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND SetField;\r\r\tPROCEDURE EqualField (f: StdCFrames.Field; IN s1, s2: ARRAY OF CHAR): BOOLEAN;\r\t\tVAR c: Field; i1, i2, res1, res2: INTEGER; r1, r2: REAL; l1, l2: LONGINT;\r\t\t\tmod, name: Meta.Name; t1, t2: ARRAY 64 OF CHAR; b: Meta.Item;\r\tBEGIN\r\t\tc := f.view(Field);\r\t\tCASE c.item.typ OF\r\t\t| Meta.arrTyp:\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " s1 = s2\r\t\t| Meta.byteTyp, Meta.sIntTyp, Meta.intTyp:\r\t\t\tIF c.prop.level > 0 THEN\r\t\t\t\tFixToInt(s1, t1, c.prop.level); Strings.StringToInt(t1, i1, res1);\r\t\t\t\tFixToInt(s2, t2, c.prop.level); Strings.StringToInt(t2, i2, res2)\r\t\t\tELSE\r\t\t\t\tStrings.StringToInt(s1, i1, res1);\r\t\t\t\tStrings.StringToInt(s2, i2, res2)\r\t\t\tEND;\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " (res1 = 0) & (res2 = 0) & (i1 = i2) \r\t\t| Meta.longTyp:\r\t\t\tIF c.prop.level > 0 THEN\r\t\t\t\tFixToInt(s1, t1, c.prop.level); StringToLong(t1, l1, res1);\r\t\t\t\tFixToInt(s2, t2, c.prop.level); StringToLong(t2, l2, res2)\r\t\t\tELSE\r\t\t\t\tStringToLong(s1, l1, res1);\r\t\t\t\tStringToLong(s2, l2, res2)\r\t\t\tEND;\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " (res1 = 0) & (res2 = 0) & (l1 = l2) \r\t\t| Meta.sRealTyp, Meta.realTyp:\r\t\t\tStrings.StringToReal(s1, r1, res1);\r\t\t\tStrings.StringToReal(s2, r2, res2);\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " (res1 = 0) & (res2 = 0) & (r1 = r2) \r\t\t| Meta.recTyp:\r\t\t\tc.item.GetTypeName(mod, name);\r\t\t\tIF mod = \"Dialog\" THEN\r\t\t\t\tIF name = \"Currency\" THEN\r\t\t\t\t\tc.item.Lookup(\"scale\", b); i1 := b.IntVal();\r\t\t\t\t\tFixToInt(s1, t1, i1); StringToLong(t1, l1, res1);\r\t\t\t\t\tFixToInt(s2, t2, i1); StringToLong(t2, l2, res2);\r\t\t\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " (res1 = 0) & (res2 = 0) & (l1 =l2)\r\t\t\t\tELSE (* name = \"Combo\" *)\r\t\t\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " s1 = s2\r\t\t\t\tEND\r\t\t\tEND\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " s1 = s2\r\t\tEND\r\tEND EqualField;\r\r\tPROCEDURE (c: Field) CopyFromSimpleView2 (source: Control);\r\tBEGIN\r\t\tWITH source: Field DO c.maxLen := source.maxLen END\r\tEND CopyFromSimpleView2;\r\r\tPROCEDURE (c: Field) Internalize2 (VAR rd: Stores.Reader);\r\t\tVAR thisVersion: INTEGER;\r\tBEGIN\r\t\trd.ReadVersion(minVersion, fldVersion, thisVersion)\r\tEND Internalize2;\r\r\tPROCEDURE (c: Field) Externalize2 (VAR wr: Stores.Writer);\r\tBEGIN\r\t\twr.WriteVersion(fldVersion)\r\tEND Externalize2;\r\r\tPROCEDURE (c: Field) GetNewFrame (VAR frame: Views.Frame);\r\t\tVAR f: StdCFrames.Field;\r\tBEGIN\r\t\tf := StdCFrames.dir.NewField();\r\t\tf.disabled := c.disabled;\r\t\tf.undef := c.undef;\r\t\tf.readOnly := c.readOnly;\r\t\tf.font := c.font;\r\t\tf.maxLen := c.maxLen;\r\t\tf.left := c.prop.opt[left];\r\t\tf.right := c.prop.opt[right];\r\t\tf.multiLine := c.prop.opt[multiLine];\r\t\tf.password := c.prop.opt[password];\r\t\tf.Get := GetField;\r\t\tf.Set := SetField;\r\t\tf.Equal := EqualField;\r\t\tframe := f\r\tEND GetNewFrame;\r\r\tPROCEDURE (c: Field) Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\tBEGIN\r\t\tWITH f: StdCFrames.Frame DO f.Restore(l, t, r, b) END\r\tEND Restore;\r\r\tPROCEDURE (c: Field) HandleCtrlMsg2 (f: Views.Frame; VAR msg: Controllers.Message;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR focus: Views.View);\r\t\tVAR ch: CHAR; mod, name: Meta.Name;\r\tBEGIN\r\t\tWITH f: StdCFrames.Field DO\r\t\t\tIF ~c.disabled & ~c.readOnly THEN\r\t\t\t\tWITH msg: Controllers.PollOpsMsg DO\r\t\t\t\t\tmsg.selectable := TRUE;\r\t\t\t\t\t"
+                    attr: 0
+                  - text: "(* should ask Frame if there is a selection for cut or copy! *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tmsg.valid := {Controllers.pasteChar, Controllers.cut, Controllers.copy, Controllers.paste}\r\t\t\t\t| msg: Controllers.TickMsg DO\r\t\t\t\t\tf.Idle\r\t\t\t\t| msg: Controllers.EditMsg DO\r\t\t\t\t\tIF msg.op = Controllers.pasteChar THEN\r\t\t\t\t\t\tch := msg.char;\r\t\t\t\t\t\tIF (ch = ldel) OR (ch = rdel) OR (ch >= 10X) & (ch <= 1FX)\r\t\t\t\t\t\t\tOR (\"0\" <= ch) & (ch <= \"9\") OR (ch = \"+\") OR (ch = \"-\")\r\t\t\t\t\t\t\tOR (c.item.typ = Meta.arrTyp)\r\t\t\t\t\t\t\tOR (c.item.typ IN {Meta.sRealTyp, Meta.realTyp}) & ((ch = \".\") OR (ch = \"E\"))\r\t\t\t\t\t\t\tOR (c.prop.level > 0) & (ch = \".\")\r\t\t\t\t\t\t\tTHEN f.KeyDown(ch)\r\t\t\t\t\t\tELSIF c.item.typ = Meta.recTyp THEN\r\t\t\t\t\t\t\tc.item.GetTypeName(mod, name);\r\t\t\t\t\t\t\tIF (mod = \"Dialog\") & (name = \"Combo\") OR (ch = \".\") THEN\r\t\t\t\t\t\t\t\tf.KeyDown(ch)\r\t\t\t\t\t\t\tELSE Dialog.Beep\r\t\t\t\t\t\t\tEND\r\t\t\t\t\t\tELSE Dialog.Beep\r\t\t\t\t\t\tEND\r\t\t\t\t\tELSE\r\t\t\t\t\t\tf.Edit(msg.op, msg.view, msg.w, msg.h, msg.isSingle, msg.clipboard)\r\t\t\t\t\tEND\r\t\t\t\t| msg: Controllers.SelectMsg DO\r\t\t\t\t\tIF msg.set THEN f.Select(0, MAX(INTEGER))\r\t\t\t\t\tELSE f.Select(-1, -1)\r\t\t\t\t\tEND\r\t\t\t\t| msg: Controllers.MarkMsg DO\r\t\t\t\t\tf.Mark(msg.show, msg.focus);\r\t\t\t\t\tIF ~msg.show & msg.focus THEN f.Update END;\r\t\t\t\t\tIF msg.show & msg.focus THEN f.Select(0, MAX(INTEGER)) END\r\t\t\t\tELSE\r\t\t\t\t\tCatchCtrlMsg(c, f, msg, focus)\r\t\t\t\tEND\r\t\t\tELSIF ~c.disabled THEN\r\t\t\t\tWITH msg: Controllers.TrackMsg DO\r\t\t\t\t\tf.MouseDown(msg.x, msg.y, msg.modifiers)\r\t\t\t\tELSE\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND HandleCtrlMsg2;\r\r\tPROCEDURE (c: Field) HandlePropMsg2 (VAR msg: Properties.Message);\r\tBEGIN\r\t\tWITH msg: Properties.ControlPref DO\r\t\t\tIF msg.char = lineChar THEN msg.accepts := c.prop.opt[multiLine] & (msg.focus = c)\r\t\t\tELSIF msg.char = esc THEN msg.accepts := FALSE\r\t\t\tEND;\r\t\t\tIF ~c.disabled & ~c.readOnly & IsShortcut(msg.char, c) THEN msg.getFocus := TRUE END\r\t\t| msg: Properties.FocusPref DO\r\t\t\tIF ~c.disabled & ~c.readOnly THEN\r\t\t\t\tmsg.setFocus := TRUE\r\t\t\tELSIF~c.disabled THEN\r\t\t\t\tmsg.hotFocus := TRUE\r\t\t\tEND\r\t\t| msg: Properties.SizePref DO\r\t\t\tStdCFrames.dir.GetFieldSize(c.maxLen, msg.w, msg.h)\r\t\t| msg: PropPref DO\r\t\t\tmsg.valid := {link, label, guard, level, notifier, left, right, multiLine, password}\r\t\tELSE\r\t\tEND\r\tEND HandlePropMsg2;\r\r\tPROCEDURE (c: Field) CheckLink (VAR ok: BOOLEAN);\r\t\tVAR t: INTEGER; name: Meta.Name;\r\tBEGIN\r\t\tGetTypeName(c.item, name); t := c.item.typ;\r\t\tIF (t = Meta.arrTyp) & (c.item.BaseTyp() = Meta.charTyp) THEN c.maxLen := SHORT(c.item.Len() - 1)\r\t\tELSIF t = Meta.byteTyp THEN c.maxLen := 6\r\t\tELSIF t = Meta.sIntTyp THEN c.maxLen := 9\r\t\tELSIF t = Meta.intTyp THEN c.maxLen := 13\r\t\tELSIF t = Meta.longTyp THEN c.maxLen := 24\r\t\tELSIF t = Meta.sRealTyp THEN c.maxLen := 16\r\t\tELSIF t = Meta.realTyp THEN c.maxLen := 24\r\t\tELSIF name = \"Combo\" THEN c.maxLen := 64\r"
+                    attr: 0
+                  - text: "\t"
+                    attr: 3
+                  - text: "\tELSIF name = \"Currency\" THEN c.maxLen := 16\r\t\tELSE ok := FALSE\r\t\tEND\r\tEND CheckLink;\r\r\tPROCEDURE (c: Field) Update (f: Views.Frame; op, from, to: INTEGER);\r\tBEGIN\r\t\tf(StdCFrames.Frame).Update\r\tEND Update;\r\t\r\r\t"
+                    attr: 0
+                  - text: "(* UpDownField *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE GetUpDownField (f: StdCFrames.UpDownField; OUT val: INTEGER);\r\t\tVAR c: UpDownField;\r\tBEGIN\r\t\tval := 0;\r\t\tc := f.view(UpDownField);\r\t\tIF c.item.Valid() THEN val := c.item.IntVal() END\r\tEND GetUpDownField;\r\r\tPROCEDURE SetUpDownField (f: StdCFrames.UpDownField; val: INTEGER);\r\t\tVAR c: UpDownField; old: INTEGER;\r\tBEGIN\r\t\tc := f.view(UpDownField);\r\t\tIF c.item.Valid() & ~c.readOnly THEN\r\t\t\tIF (val >= c.min) & (val <= c.max) THEN\r\t\t\t\told := c.item.IntVal();\r\t\t\t\tIF old # val THEN c.item.PutIntVal(val); Notify(c, f, Dialog.changed, old, val) END\r\t\t\tELSE Dialog.Beep\r\t\t\tEND\r\t\tEND\r\tEND SetUpDownField;\r\t\r\tPROCEDURE (c: UpDownField) CopyFromSimpleView2 (source: Control);\r\tBEGIN\r\t\tWITH source: UpDownField DO\r\t\t\tc.min := source.min;\r\t\t\tc.max := source.max;\r\t\t\tc.inc := source.inc\r\t\tEND\r\tEND CopyFromSimpleView2;\r\r\tPROCEDURE (c: UpDownField) Internalize2 (VAR rd: Stores.Reader);\r\t\tVAR thisVersion: INTEGER;\r\tBEGIN\r\t\trd.ReadVersion(minVersion, fldVersion, thisVersion)\r\tEND Internalize2;\r\r\tPROCEDURE (c: UpDownField) Externalize2 (VAR wr: Stores.Writer);\r\tBEGIN\r\t\twr.WriteVersion(fldVersion)\r\tEND Externalize2;\r\r\tPROCEDURE (c: UpDownField) GetNewFrame (VAR frame: Views.Frame);\r\t\tVAR f: StdCFrames.UpDownField;\r\tBEGIN\r\t\tf := StdCFrames.dir.NewUpDownField();\r\t\tf.disabled := c.disabled;\r\t\tf.undef := c.undef;\r\t\tf.readOnly := c.readOnly;\r\t\tf.font := c.font;\r\t\tf.min := c.min;\r\t\tf.max := c.max;\r\t\tf.inc := c.inc;\r\t\tf.Get := GetUpDownField;\r\t\tf.Set := SetUpDownField;\r\t\tframe := f\r\tEND GetNewFrame;\r\r\tPROCEDURE (c: UpDownField) Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\tBEGIN\r\t\tWITH f: StdCFrames.Frame DO f.Restore(l, t, r, b) END\r\tEND Restore;\r\r\tPROCEDURE (c: UpDownField) HandleCtrlMsg2 (f: Views.Frame; VAR msg: Controllers.Message;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR focus: Views.View);\r\t\tVAR ch: CHAR;\r\tBEGIN\r\t\tIF ~c.disabled & ~c.readOnly THEN\r\t\t\tWITH f: StdCFrames.UpDownField DO\r\t\t\t\tWITH msg: Controllers.PollOpsMsg DO\r\t\t\t\t\tmsg.selectable := TRUE;\r\t\t\t\t\t"
+                    attr: 0
+                  - text: "(* should ask view if there is a selection for cut or copy! *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tmsg.valid := {Controllers.pasteChar, Controllers.cut, Controllers.copy, Controllers.paste}\r\t\t\t\t| msg: Controllers.TickMsg DO\r\t\t\t\t\tf.Idle\r\t\t\t\t| msg: Controllers.EditMsg DO\r\t\t\t\t\tIF msg.op = Controllers.pasteChar THEN\r\t\t\t\t\t\tch := msg.char;\r\t\t\t\t\t\tIF (ch = ldel) OR (ch = rdel) OR (ch >= 10X) & (ch <= 1FX)\r\t\t\t\t\t\t\tOR (\"0\" <= ch) & (ch <= \"9\") OR (ch = \"+\") OR (ch = \"-\")\r\t\t\t\t\t\t\tOR (c.item.typ = Meta.arrTyp)\r\t\t\t\t\t\t\tTHEN f.KeyDown(ch)\r\t\t\t\t\t\tELSE Dialog.Beep\r\t\t\t\t\t\tEND\r\t\t\t\t\tELSE\r\t\t\t\t\t\tf.Edit(msg.op, msg.view, msg.w, msg.h, msg.isSingle, msg.clipboard)\r\t\t\t\t\tEND\r\t\t\t\t| msg: Controllers.SelectMsg DO\r\t\t\t\t\tIF msg.set THEN f.Select(0, MAX(INTEGER))\r\t\t\t\t\tELSE f.Select(-1, -1)\r\t\t\t\t\tEND\r\t\t\t\t| msg: Controllers.MarkMsg DO\r\t\t\t\t\tf.Mark(msg.show, msg.focus);\r\t\t\t\t\tIF msg.show & msg.focus THEN f.Select(0, MAX(INTEGER)) END\r\t\t\t\tELSE\r\t\t\t\t\tCatchCtrlMsg(c, f, msg, focus)\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND HandleCtrlMsg2;\r\r\tPROCEDURE (c: UpDownField) HandlePropMsg2 (VAR msg: Properties.Message);\r\t\tVAR m: INTEGER; n: INTEGER;\r\tBEGIN\r\t\tWITH msg: Properties.ControlPref DO\r\t\t\tIF (msg.char = lineChar) OR (msg.char = esc) THEN msg.accepts := FALSE END;\r\t\t\tIF ~c.disabled & ~c.readOnly & IsShortcut(msg.char, c) THEN msg.getFocus := TRUE END\r\t\t| msg: Properties.FocusPref DO\r\t\t\tIF ~c.disabled & ~c.readOnly THEN\r\t\t\t\tmsg.setFocus := TRUE\r\t\t\tEND\r\t\t| msg: Properties.SizePref DO\r\t\t\tm := -c.min;\r\t\t\tIF c.max > m THEN m := c.max END;\r\t\t\tn := 3;\r\t\t\tWHILE m > 99 DO INC(n); m := m DIV 10 END;\r\t\t\tStdCFrames.dir.GetUpDownFieldSize(n, msg.w, msg.h)\r\t\t| msg: PropPref DO\r\t\t\tmsg.valid := {link, label, guard, notifier}\r\t\tELSE\r\t\tEND\r\tEND HandlePropMsg2;\r\r\tPROCEDURE (c: UpDownField) CheckLink (VAR ok: BOOLEAN);\r\tBEGIN\r\t\tIF c.item.typ = Meta.byteTyp THEN c.min := MIN(BYTE); c.max := MAX(BYTE)\r\t\tELSIF c.item.typ = Meta.sIntTyp THEN c.min := MIN(SHORTINT); c.max := MAX(SHORTINT)\r\t\tELSIF c.item.typ = Meta.intTyp THEN c.min := MIN(INTEGER); c.max := MAX(INTEGER)\r\t\tELSE ok := FALSE\r\t\tEND;\r\t\tc.inc := 1\r\tEND CheckLink;\r\r\tPROCEDURE (c: UpDownField) Update (f: Views.Frame; op, from, to: INTEGER);\r\tBEGIN\r\t\tf(StdCFrames.Frame).Update\r\tEND Update;\r\t\r\r\t"
+                    attr: 0
+                  - text: "(* DateField *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE GetDateField (f: StdCFrames.DateField; OUT date: Dates.Date);\r\t\tVAR c: DateField; v: Meta.Item;\r\tBEGIN\r\t\tdate.year := 1; date.month := 1; date.day := 1;\r\t\tc := f.view(DateField);\r\t\tIF c.item.Valid() THEN\r\t\t\tc.item.Lookup(\"year\", v); IF v.typ = Meta.intTyp THEN date.year := SHORT(v.IntVal()) END;\r\t\t\tc.item.Lookup(\"month\", v); IF v.typ = Meta.intTyp THEN date.month := SHORT(v.IntVal()) END;\r\t\t\tc.item.Lookup(\"day\", v); IF v.typ = Meta.intTyp THEN date.day := SHORT(v.IntVal()) END\r\t\tEND\r\tEND GetDateField;\r\t\r\tPROCEDURE SetDateField(f:  StdCFrames.DateField; IN date: Dates.Date);\r\t\tVAR c: DateField; v: Meta.Item;\r\tBEGIN\r\t\tc := f.view(DateField);\r\t\tIF c.item.Valid() & ~c.readOnly THEN\r\t\t\tc.item.Lookup(\"year\", v); IF v.typ = Meta.intTyp THEN v.PutIntVal(date.year) END;\r\t\t\tc.item.Lookup(\"month\", v); IF v.typ = Meta.intTyp THEN v.PutIntVal(date.month) END;\r\t\t\tc.item.Lookup(\"day\", v); IF v.typ = Meta.intTyp THEN v.PutIntVal(date.day) END;\r\t\t\tNotify(c, f, Dialog.changed, 0, 0)\r\t\tEND\r\tEND SetDateField;\r\t\r\tPROCEDURE GetDateFieldSelection (f: StdCFrames.DateField; OUT sel: INTEGER);\r\tBEGIN\r\t\tsel := f.view(DateField).selection\r\tEND GetDateFieldSelection;\r\t\r\tPROCEDURE SetDateFieldSelection (f: StdCFrames.DateField; sel: INTEGER);\r\tBEGIN\r\t\tf.view(DateField).selection := sel\r\tEND SetDateFieldSelection;\r\t\r\tPROCEDURE (c: DateField) CopyFromSimpleView2 (source: Control);\r\tBEGIN\r\t\tWITH source: DateField DO c.selection := source.selection END\r\tEND CopyFromSimpleView2;\r\r\tPROCEDURE (c: DateField) Internalize2 (VAR rd: Stores.Reader);\r\t\tVAR thisVersion: INTEGER;\r\tBEGIN\r\t\trd.ReadVersion(minVersion, dfldVersion, thisVersion);\r\t\tc.selection := 0\r\tEND Internalize2;\r\r\tPROCEDURE (c: DateField) Externalize2 (VAR wr: Stores.Writer);\r\tBEGIN\r\t\twr.WriteVersion(dfldVersion)\r\tEND Externalize2;\r\r\tPROCEDURE (c: DateField) GetNewFrame (VAR frame: Views.Frame);\r\t\tVAR f: StdCFrames.DateField;\r\tBEGIN\r\t\tf := StdCFrames.dir.NewDateField();\r\t\tf.disabled := c.disabled;\r\t\tf.undef := c.undef;\r\t\tf.readOnly := c.readOnly;\r\t\tf.font := c.font;\r\t\tf.Get := GetDateField;\r\t\tf.Set := SetDateField;\r\t\tf.GetSel := GetDateFieldSelection;\r\t\tf.SetSel := SetDateFieldSelection;\r\t\tframe := f\r\tEND GetNewFrame;\r\r\tPROCEDURE (c: DateField) Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\tBEGIN\r\t\tWITH f: StdCFrames.Frame DO f.Restore(l, t, r, b) END\r\tEND Restore;\r\r\tPROCEDURE (c: DateField) HandleCtrlMsg2 (f: Views.Frame; VAR msg: Controllers.Message;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR focus: Views.View);\r\tBEGIN\r\t\tIF ~c.disabled & ~c.readOnly THEN\r\t\t\tWITH f: StdCFrames.DateField DO\r\t\t\t\tWITH msg: Controllers.PollOpsMsg DO\r\t\t\t\t\tmsg.valid := {Controllers.pasteChar, Controllers.copy}\r\t\t\t\t| msg: Controllers.EditMsg DO\r\t\t\t\t\tIF msg.op = Controllers.pasteChar THEN\r\t\t\t\t\t\tf.KeyDown(msg.char)\r\t\t\t\t\tELSE\r\t\t\t\t\t\tf.Edit(msg.op, msg.view, msg.w, msg.h, msg.isSingle, msg.clipboard)\r\t\t\t\t\tEND\r\t\t\t\t| msg: Controllers.TickMsg DO\r\t\t\t\t\tIF f.mark THEN\r\t\t\t\t\t\tIF c.selection = 0 THEN c.selection := 1; Views.Update(c, Views.keepFrames) END\r\t\t\t\t\tEND\r\t\t\t\tELSE\r\t\t\t\t\tCatchCtrlMsg(c, f, msg, focus)\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND HandleCtrlMsg2;\r\r\tPROCEDURE (c: DateField) HandlePropMsg2 (VAR msg: Properties.Message);\r\tBEGIN\r\t\tWITH msg: Properties.ControlPref DO\r\t\t\tIF (msg.char = lineChar) OR (msg.char = esc) THEN\r\t\t\t\tmsg.accepts := FALSE\r\t\t\tELSIF (msg.char = tab) OR (msg.char = ltab) THEN\r\t\t\t\tmsg.accepts := ((msg.focus # c) & (~c.disabled & ~c.readOnly)) OR \r\t\t\t\t\t(msg.focus = c) & ((msg.char = tab) & (c.selection # -1) OR (msg.char = ltab) & (c.selection # 1));\r\t\t\t\tmsg.getFocus := msg.accepts\r\t\t\tEND;\r\t\t\tIF ~c.disabled & ~c.readOnly & IsShortcut(msg.char, c) THEN msg.getFocus := TRUE END\r\t\t| msg: Properties.FocusPref DO\r\t\t\tIF ~c.disabled & ~c.readOnly THEN\r\t\t\t\tmsg.setFocus := TRUE\r\t\t\tEND\r\t\t| msg: Properties.SizePref DO\r\t\t\tStdCFrames.dir.GetDateFieldSize(msg.w, msg.h)\r\t\t| msg: PropPref DO\r\t\t\tmsg.valid := {link, label, guard, notifier}\r\t\tELSE\r\t\tEND\r\tEND HandlePropMsg2;\r\r\tPROCEDURE (c: DateField) CheckLink (VAR ok: BOOLEAN);\r\t\tVAR name: Meta.Name;\r\tBEGIN\r\t\tGetTypeName(c.item, name);\r\t\tok := name = \"Date\"\r\tEND CheckLink;\r\r\tPROCEDURE (c: DateField) Update (f: Views.Frame; op, from, to: INTEGER);\r\tBEGIN\r\t\tf(StdCFrames.Frame).Update\r\tEND Update;\r\t\r\r\t"
+                    attr: 0
+                  - text: "(* TimeField *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE GetTimeField (f: StdCFrames.TimeField; OUT time: Dates.Time);\r\t\tVAR c: TimeField; v: Meta.Item;\r\tBEGIN\r\t\ttime.hour := 0; time.minute := 0; time.second := 0;\r\t\tc := f.view(TimeField);\r\t\tIF c.item.Valid() THEN\r\t\t\tc.item.Lookup(\"hour\", v); IF v.typ = Meta.intTyp THEN time.hour := SHORT(v.IntVal()) END;\r\t\t\tc.item.Lookup(\"minute\", v); IF v.typ = Meta.intTyp THEN time.minute := SHORT(v.IntVal()) END;\r\t\t\tc.item.Lookup(\"second\", v); IF v.typ = Meta.intTyp THEN time.second := SHORT(v.IntVal()) END\r\t\tEND\r\tEND GetTimeField;\r\t\r\tPROCEDURE SetTimeField(f:  StdCFrames.TimeField; IN date: Dates.Time);\r\t\tVAR c: TimeField; v: Meta.Item;\r\tBEGIN\r\t\tc := f.view(TimeField);\r\t\tIF c.item.Valid() & ~c.readOnly THEN\r\t\t\tc.item.Lookup(\"hour\", v); IF v.typ = Meta.intTyp THEN v.PutIntVal(date.hour) END;\r\t\t\tc.item.Lookup(\"minute\", v); IF v.typ = Meta.intTyp THEN v.PutIntVal(date.minute) END;\r\t\t\tc.item.Lookup(\"second\", v); IF v.typ = Meta.intTyp THEN v.PutIntVal(date.second) END;\r\t\t\tNotify(c, f, Dialog.changed, 0, 0)\r\t\tEND\r\tEND SetTimeField;\r\t\r\tPROCEDURE GetTimeFieldSelection (f: StdCFrames.TimeField; OUT sel: INTEGER);\r\tBEGIN\r\t\tsel := f.view(TimeField).selection\r\tEND GetTimeFieldSelection;\r\t\r\tPROCEDURE SetTimeFieldSelection (f: StdCFrames.TimeField; sel: INTEGER);\r\tBEGIN\r\t\tf.view(TimeField).selection := sel\r\tEND SetTimeFieldSelection;\r\t\r\tPROCEDURE (c: TimeField) CopyFromSimpleView2 (source: Control);\r\tBEGIN\r\t\tWITH source: TimeField DO c.selection := source.selection END\r\tEND CopyFromSimpleView2;\r\r\tPROCEDURE (c: TimeField) Internalize2 (VAR rd: Stores.Reader);\r\t\tVAR thisVersion: INTEGER;\r\tBEGIN\r\t\trd.ReadVersion(minVersion, tfldVersion, thisVersion);\r\t\tc.selection := 0\r\tEND Internalize2;\r\r\tPROCEDURE (c: TimeField) Externalize2 (VAR wr: Stores.Writer);\r\tBEGIN\r\t\twr.WriteVersion(tfldVersion)\r\tEND Externalize2;\r\r\tPROCEDURE (c: TimeField) GetNewFrame (VAR frame: Views.Frame);\r\t\tVAR f: StdCFrames.TimeField;\r\tBEGIN\r\t\tf := StdCFrames.dir.NewTimeField();\r\t\tf.disabled := c.disabled;\r\t\tf.undef := c.undef;\r\t\tf.readOnly := c.readOnly;\r\t\tf.font := c.font;\r\t\tf.Get := GetTimeField;\r\t\tf.Set := SetTimeField;\r\t\tf.GetSel := GetTimeFieldSelection;\r\t\tf.SetSel := SetTimeFieldSelection;\r\t\tframe := f\r\tEND GetNewFrame;\r\r\tPROCEDURE (c: TimeField) Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\tBEGIN\r\t\tWITH f: StdCFrames.Frame DO f.Restore(l, t, r, b) END\r\tEND Restore;\r\r\tPROCEDURE (c: TimeField) HandleCtrlMsg2 (f: Views.Frame; VAR msg: Controllers.Message;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR focus: Views.View);\r\tBEGIN\r\t\tIF ~c.disabled & ~c.readOnly THEN\r\t\t\tWITH f: StdCFrames.TimeField DO\r\t\t\t\tWITH msg: Controllers.PollOpsMsg DO\r\t\t\t\t\tmsg.valid := {Controllers.pasteChar, Controllers.copy}\r\t\t\t\t| msg: Controllers.EditMsg DO\r\t\t\t\t\tIF msg.op = Controllers.pasteChar THEN\r\t\t\t\t\t\tf.KeyDown(msg.char)\r\t\t\t\t\tELSE\r\t\t\t\t\t\tf.Edit(msg.op, msg.view, msg.w, msg.h, msg.isSingle, msg.clipboard)\r\t\t\t\t\tEND\r\t\t\t\t| msg: Controllers.TickMsg DO\r\t\t\t\t\tIF f.mark THEN\r\t\t\t\t\t\tIF c.selection = 0 THEN c.selection := 1; Views.Update(c, Views.keepFrames) END\r\t\t\t\t\tEND\r\t\t\t\tELSE\r\t\t\t\t\tCatchCtrlMsg(c, f, msg, focus)\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND HandleCtrlMsg2;\r\r\tPROCEDURE (c: TimeField) HandlePropMsg2 (VAR msg: Properties.Message);\r\tBEGIN\r\t\tWITH msg: Properties.ControlPref DO\r\t\t\tIF (msg.char = lineChar) OR (msg.char = esc) THEN\r\t\t\t\tmsg.accepts := FALSE\r\t\t\tELSIF (msg.char = tab) OR (msg.char = ltab) THEN\r\t\t\t\tmsg.accepts := (msg.focus # c) OR \r\t\t\t\t\t((msg.char = tab) & (c.selection # -1)) OR ((msg.char = ltab) & (c.selection # 1))\r\t\t\tEND;\r\t\t\tIF ~c.disabled & ~c.readOnly & IsShortcut(msg.char, c) THEN msg.getFocus := TRUE END\r\t\t| msg: Properties.FocusPref DO\r\t\t\tIF ~c.disabled & ~c.readOnly THEN\r\t\t\t\tmsg.setFocus := TRUE\r\t\t\tEND\r\t\t| msg: Properties.SizePref DO\r\t\t\tStdCFrames.dir.GetTimeFieldSize(msg.w, msg.h)\r\t\t| msg: PropPref DO\r\t\t\tmsg.valid := {link, label, guard, notifier}\r\t\tELSE\r\t\tEND\r\tEND HandlePropMsg2;\r\r\tPROCEDURE (c: TimeField) CheckLink (VAR ok: BOOLEAN);\r\t\tVAR name: Meta.Name;\r\tBEGIN\r\t\tGetTypeName(c.item, name);\r\t\tok := name = \"Time\"\r\tEND CheckLink;\r\r\tPROCEDURE (c: TimeField) Update (f: Views.Frame; op, from, to: INTEGER);\r\tBEGIN\r\t\tf(StdCFrames.Frame).Update\r\tEND Update;\r\t\r\r\t"
+                    attr: 0
+                  - text: "(* ColorField *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE GetColorField (f: StdCFrames.ColorField; OUT col: INTEGER);\r\t\tVAR c: ColorField; v: Meta.Item;\r\tBEGIN\r\t\tcol := Ports.defaultColor;\r\t\tc := f.view(ColorField);\r\t\tIF c.item.Valid() THEN\r\t\t\tIF c.item.typ = Meta.intTyp THEN\r\t\t\t\tcol := c.item.IntVal()\r\t\t\tELSE\r\t\t\t\tc.item.Lookup(\"val\", v); IF v.typ = Meta.intTyp THEN col := v.IntVal() END\r\t\t\tEND\r\t\tEND\r\tEND GetColorField;\r\t\r\tPROCEDURE SetColorField(f:  StdCFrames.ColorField; col: INTEGER);\r\t\tVAR c: ColorField; v: Meta.Item; old: INTEGER;\r\tBEGIN\r\t\tc := f.view(ColorField);\r\t\tIF c.item.Valid() & ~c.readOnly THEN\r\t\t\tIF c.item.typ = Meta.intTyp THEN\r\t\t\t\told := c.item.IntVal();\r\t\t\t\tIF old # col THEN c.item.PutIntVal(col); Notify(c, f, Dialog.changed, old, col) END\r\t\t\tELSE\r\t\t\t\tc.item.Lookup(\"val\", v); \r\t\t\t\tIF v.typ = Meta.intTyp THEN \r\t\t\t\t\told := v.IntVal();\r\t\t\t\t\tIF old # col THEN v.PutIntVal(col); Notify(c, f, Dialog.changed, old, col) END\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND SetColorField;\r\t\r\tPROCEDURE (c: ColorField) Internalize2 (VAR rd: Stores.Reader);\r\t\tVAR thisVersion: INTEGER;\r\tBEGIN\r\t\trd.ReadVersion(minVersion, cfldVersion, thisVersion)\r\tEND Internalize2;\r\r\tPROCEDURE (c: ColorField) Externalize2 (VAR wr: Stores.Writer);\r\tBEGIN\r\t\twr.WriteVersion(cfldVersion)\r\tEND Externalize2;\r\r\tPROCEDURE (c: ColorField) GetNewFrame (VAR frame: Views.Frame);\r\t\tVAR f: StdCFrames.ColorField;\r\tBEGIN\r\t\tf := StdCFrames.dir.NewColorField();\r\t\tf.disabled := c.disabled;\r\t\tf.undef := c.undef;\r\t\tf.readOnly := c.readOnly;\r\t\tf.font := c.font;\r\t\tf.Get := GetColorField;\r\t\tf.Set := SetColorField;\r\t\tframe := f\r\tEND GetNewFrame;\r\r\tPROCEDURE (c: ColorField) Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\tBEGIN\r\t\tWITH f: StdCFrames.Frame DO f.Restore(l, t, r, b) END\r\tEND Restore;\r\r\tPROCEDURE (c: ColorField) HandleCtrlMsg2 (f: Views.Frame; VAR msg: Controllers.Message;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR focus: Views.View);\r\tBEGIN\r\t\tIF ~c.disabled & ~c.readOnly THEN\r\t\t\tWITH f: StdCFrames.ColorField DO\r\t\t\t\tWITH msg: Controllers.EditMsg DO\r\t\t\t\t\tIF msg.op = Controllers.pasteChar THEN\r\t\t\t\t\t\tf.KeyDown(msg.char)\r\t\t\t\t\tELSE\r\t\t\t\t\t\tf.Edit(msg.op, msg.view, msg.w, msg.h, msg.isSingle, msg.clipboard)\r\t\t\t\t\tEND\r\t\t\t\tELSE\r\t\t\t\t\tCatchCtrlMsg(c, f, msg, focus)\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND HandleCtrlMsg2;\r\r\tPROCEDURE (c: ColorField) HandlePropMsg2 (VAR msg: Properties.Message);\r\tBEGIN\r\t\tWITH msg: Properties.ControlPref DO\r\t\t\tmsg.accepts := ~c.disabled & ~c.readOnly & IsShortcut(msg.char, c)\r\t\t| msg: Properties.FocusPref DO\r\t\t\tIF ~c.disabled & ~c.readOnly THEN\r\t\t\t\tmsg.hotFocus := TRUE; msg.setFocus := StdCFrames.setFocus\r\t\t\tEND\r\t\t| msg: Properties.SizePref DO\r\t\t\tStdCFrames.dir.GetColorFieldSize(msg.w, msg.h)\r\t\tELSE\r\t\tEND\r\tEND HandlePropMsg2;\r\r\tPROCEDURE (c: ColorField) CheckLink (VAR ok: BOOLEAN);\r\t\tVAR name: Meta.Name;\r\tBEGIN\r\t\tGetTypeName(c.item, name);\r\t\tok := (name = \"Color\") OR (c.item.typ = Meta.intTyp)\r\tEND CheckLink;\r\r\tPROCEDURE (c: ColorField) Update (f: Views.Frame; op, from, to: INTEGER);\r\tBEGIN\r\t\tf(StdCFrames.Frame).Update\r\tEND Update;\r\t\r\r\t"
+                    attr: 0
+                  - text: "(* ListBox *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE GetListBox (f: StdCFrames.ListBox; OUT i: INTEGER);\r\t\tVAR c: ListBox; v: Meta.Item;\r\tBEGIN\r\t\ti := -1;\r\t\tc := f.view(ListBox);\r\t\tIF c.item.Valid() THEN\r\t\t\tc.item.Lookup(\"index\", v);\r\t\t\tIF v.typ = Meta.intTyp THEN i := v.IntVal() END\r\t\tEND\r\tEND GetListBox;\r\r\tPROCEDURE SetListBox (f: StdCFrames.ListBox; i: INTEGER);\r\t\tVAR c: ListBox; v: Meta.Item; old: INTEGER;\r\tBEGIN\r\t\tc := f.view(ListBox);\r\t\tIF c.item.Valid() & ~c.readOnly THEN\r\t\t\tc.item.Lookup(\"index\", v);\r\t\t\tIF v.typ = Meta.intTyp THEN\r\t\t\t\told := v.IntVal();\r\t\t\t\tIF i # old THEN v.PutIntVal(i); Notify(c, f, Dialog.changed, old, i) END\r\t\t\tEND\r\t\tEND\r\tEND SetListBox;\r\t\r\tPROCEDURE GetFName (VAR rec, par: ANYREC);\r\tBEGIN\r\t\tWITH par: Param DO\r\t\t\tWITH rec: Dialog.List DO rec.GetItem(par.i, par.n)\r\t\t\t| rec: Dialog.Selection DO rec.GetItem(par.i, par.n)\r\t\t\t| rec: Dialog.Combo DO rec.GetItem(par.i, par.n)\r\t\t\tELSE par.n := \"\"\r\t\t\tEND\r\t\tEND\r\tEND GetFName;\r\t\r\tPROCEDURE GetListName (f: StdCFrames.ListBox; i: INTEGER; VAR name: ARRAY OF CHAR);\r\t\tVAR c: ListBox; par: Param;\r\tBEGIN\r\t\tpar.n := \"\";\r\t\tc := f.view(ListBox);\r\t\tIF c.item.Valid() THEN\r\t\t\tpar.i := i;\r\t\t\tc.item.CallWith(GetFName, par)\r\t\tEND;\r\t\tname := par.n$\r\tEND GetListName;\r\r\tPROCEDURE (c: ListBox) Internalize2 (VAR rd: Stores.Reader);\r\t\tVAR thisVersion: INTEGER;\r\tBEGIN\r\t\trd.ReadVersion(minVersion, lbxVersion, thisVersion)\r\tEND Internalize2;\r\r\tPROCEDURE (c: ListBox) Externalize2 (VAR wr: Stores.Writer);\r\tBEGIN\r\t\twr.WriteVersion(lbxVersion)\r\tEND Externalize2;\r\r\tPROCEDURE (c: ListBox) GetNewFrame (VAR frame: Views.Frame);\r\t\tVAR f: StdCFrames.ListBox;\r\tBEGIN\r\t\tf := StdCFrames.dir.NewListBox();\r\t\tf.disabled := c.disabled;\r\t\tf.undef := c.undef;\r\t\tf.readOnly := c.readOnly;\r\t\tf.font := c.font;\r\t\tf.sorted := c.prop.opt[sorted];\r\t\tf.Get := GetListBox;\r\t\tf.Set := SetListBox;\r\t\tf.GetName := GetListName;\r\t\tframe := f\r\tEND GetNewFrame;\r\r\tPROCEDURE (c: ListBox) Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\tBEGIN\r\t\tWITH f: StdCFrames.Frame DO f.Restore(l, t, r, b) END\r\tEND Restore;\r\r\tPROCEDURE (c: ListBox) HandleCtrlMsg2 (f: Views.Frame; VAR msg: Controllers.Message;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR focus: Views.View);\r\tBEGIN\r\t\tWITH f: StdCFrames.ListBox DO\r\t\t\tIF ~c.disabled & ~c.readOnly THEN\r\t\t\t\tWITH msg: Controllers.EditMsg DO\r\t\t\t\t\tIF msg.op = Controllers.pasteChar THEN f.KeyDown(msg.char) END\r\t\t\t\tELSE\r\t\t\t\t\tCatchCtrlMsg(c, f, msg, focus)\r\t\t\t\tEND\r\t\t\tELSIF ~c.disabled THEN\r\t\t\t\tWITH msg: Controllers.TrackMsg DO\r\t\t\t\t\tf.MouseDown(msg.x, msg.y, msg.modifiers)\r\t\t\t\tELSE\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND HandleCtrlMsg2;\r\r\tPROCEDURE (c: ListBox) HandlePropMsg2 (VAR msg: Properties.Message);\r\tBEGIN\r\t\tWITH msg: Properties.ControlPref DO\r\t\t\tIF (msg.char = lineChar) OR (msg.char = esc) THEN msg.accepts := FALSE END;\r\t\t\tIF ~c.disabled & ~c.readOnly & IsShortcut(msg.char, c) THEN msg.getFocus := TRUE END\r\t\t| msg: Properties.FocusPref DO\r\t\t\tIF ~c.disabled & ~c.readOnly THEN\r\t\t\t\tmsg.setFocus := TRUE\r\t\t\tELSIF~c.disabled THEN\r\t\t\t\tmsg.hotFocus := TRUE\r\t\t\tEND\r\t\t| msg: Properties.SizePref DO\r\t\t\tStdCFrames.dir.GetListBoxSize(msg.w, msg.h)\r\t\t| msg: PropPref DO\r\t\t\tmsg.valid := {link, label, guard, notifier, sorted}\r\t\tELSE\r\t\tEND\r\tEND HandlePropMsg2;\r\r\tPROCEDURE (c: ListBox) CheckLink (VAR ok: BOOLEAN);\r\t\tVAR name: Meta.Name;\r\tBEGIN\r\t\tGetTypeName(c.item, name);\r\t\tok := name = \"List\"\r\tEND CheckLink;\r\r\tPROCEDURE (c: ListBox) Update (f: Views.Frame; op, from, to: INTEGER);\r\tBEGIN\r\t\tf(StdCFrames.Frame).Update\r\tEND Update;\r\t\r\tPROCEDURE (c: ListBox) UpdateList (f: Views.Frame);\r\tBEGIN\r\t\tf(StdCFrames.Frame).UpdateList\r\tEND UpdateList;\r\t\r\r\t"
+                    attr: 0
+                  - text: "(* SelectionBox *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE InLargeSet (VAR rec, par: ANYREC);\r\tBEGIN\r\t\tWITH par: Param DO\r\t\t\tWITH rec: Dialog.Selection DO\r\t\t\t\tIF rec.In(par.i) THEN par.i := 1 ELSE par.i := 0 END\r\t\t\tELSE par.i := 0\r\t\t\tEND\r\t\tEND\r\tEND InLargeSet;\r\t\r\tPROCEDURE GetSelectionBox (f: StdCFrames.SelectionBox; i: INTEGER; OUT in: BOOLEAN);\r\t\tVAR c: SelectionBox; lv: SelectValue; par: Param;\r\tBEGIN\r\t\tin := FALSE;\r\t\tc := f.view(SelectionBox);\r\t\tIF c.item.Valid() THEN\r\t\t\tIF c.item.Is(lv) THEN\r\t\t\t\tpar.i := i;\r\t\t\t\tc.item.CallWith(InLargeSet, par);\r\t\t\t\tin := par.i # 0\r\t\t\tEND\r\t\tEND\r\tEND GetSelectionBox;\r\r\tPROCEDURE InclLargeSet (VAR rec, par: ANYREC);\r\tBEGIN\r\t\tWITH par: Param DO\r\t\t\tWITH rec: Dialog.Selection DO\r\t\t\t\tIF (par.from # par.to) OR ~rec.In(par.from) THEN\r\t\t\t\t\trec.Incl(par.from, par.to); par.i := 1\r\t\t\t\tELSE par.i := 0\r\t\t\t\tEND\r\t\t\tELSE par.i := 0\r\t\t\tEND\r\t\tEND\r\tEND InclLargeSet;\r\t\r\tPROCEDURE InclSelectionBox (f: StdCFrames.SelectionBox; from, to: INTEGER);\r\t\tVAR c: SelectionBox; lv: SelectValue; par: Param;\r\tBEGIN\r\t\tc := f.view(SelectionBox);\r\t\tIF c.item.Valid() & ~c.readOnly THEN\r\t\t\tIF c.item.Is(lv) THEN\r\t\t\t\tpar.from := from; par.to := to;\r\t\t\t\tc.item.CallWith(InclLargeSet, par);\r\t\t\t\tIF par.i # 0 THEN Notify(c, f, Dialog.included, from, to) END\r\t\t\tEND\r\t\tEND\r\tEND InclSelectionBox;\r\t\r\tPROCEDURE ExclLargeSet (VAR rec, par: ANYREC);\r\tBEGIN\r\t\tWITH par: Param DO\r\t\t\tWITH rec: Dialog.Selection DO\r\t\t\t\tIF (par.from # par.to) OR rec.In(par.from) THEN\r\t\t\t\t\trec.Excl(par.from, par.to); par.i := 1\r\t\t\t\tELSE par.i := 0\r\t\t\t\tEND\r\t\t\tELSE par.i := 0\r\t\t\tEND\r\t\tEND\r\tEND ExclLargeSet;\r\t\r\tPROCEDURE ExclSelectionBox (f: StdCFrames.SelectionBox; from, to: INTEGER);\r\t\tVAR c: SelectionBox; lv: SelectValue; par: Param;\r\tBEGIN\r\t\tc := f.view(SelectionBox);\r\t\tIF c.item.Valid() & ~c.readOnly THEN\r\t\t\tIF c.item.Is(lv) THEN\r\t\t\t\tpar.from := from; par.to := to;\r\t\t\t\tc.item.CallWith(ExclLargeSet, par);\r\t\t\t\tIF par.i # 0 THEN Notify(c, f, Dialog.excluded, from, to) END\r\t\t\tEND\r\t\tEND\r\tEND ExclSelectionBox;\r\t\r\tPROCEDURE SetSelectionBox (f: StdCFrames.SelectionBox; from, to: INTEGER);\r\t\tVAR c: SelectionBox; lv: SelectValue; par: Param;\r\tBEGIN\r\t\tc := f.view(SelectionBox);\r\t\tIF c.item.Valid() & ~c.readOnly THEN\r\t\t\tIF c.item.Is(lv) THEN\r\t\t\t\tpar.from := 0; par.to := MAX(INTEGER);\r\t\t\t\tc.item.CallWith(ExclLargeSet, par);\r\t\t\t\tpar.from := from; par.to := to;\r\t\t\t\tc.item.CallWith(InclLargeSet, par);\r\t\t\t\tNotify(c, f, Dialog.set, from, to)\r\t\t\tEND\r\t\tEND\r\tEND SetSelectionBox;\r\t\r\tPROCEDURE GetSelName (f: StdCFrames.SelectionBox; i: INTEGER; VAR name: ARRAY OF CHAR);\r\t\tVAR c: SelectionBox; par: Param;\r\tBEGIN\r\t\tpar.n := \"\";\r\t\tc := f.view(SelectionBox);\r\t\tIF c.item.Valid() THEN\r\t\t\tpar.i := i;\r\t\t\tc.item.CallWith(GetFName, par)\r\t\tEND;\r\t\tname := par.n$\r\tEND GetSelName;\r\r\tPROCEDURE (c: SelectionBox) Internalize2 (VAR rd: Stores.Reader);\r\t\tVAR thisVersion: INTEGER;\r\tBEGIN\r\t\trd.ReadVersion(minVersion, sbxVersion, thisVersion)\r\tEND Internalize2;\r\r\tPROCEDURE (c: SelectionBox) Externalize2 (VAR wr: Stores.Writer);\r\tBEGIN\r\t\twr.WriteVersion(sbxVersion)\r\tEND Externalize2;\r\r\tPROCEDURE (c: SelectionBox) GetNewFrame (VAR frame: Views.Frame);\r\t\tVAR f: StdCFrames.SelectionBox;\r\tBEGIN\r\t\tf := StdCFrames.dir.NewSelectionBox();\r\t\tf.disabled := c.disabled;\r\t\tf.undef := c.undef;\r\t\tf.readOnly := c.readOnly;\r\t\tf.font := c.font;\r\t\tf.sorted := c.prop.opt[sorted];\r\t\tf.Get := GetSelectionBox;\r\t\tf.Incl := InclSelectionBox;\r\t\tf.Excl := ExclSelectionBox;\r\t\tf.Set := SetSelectionBox;\r\t\tf.GetName := GetSelName;\r\t\tframe := f\r\tEND GetNewFrame;\r\r\tPROCEDURE (c: SelectionBox) Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\tBEGIN\r\t\tWITH f: StdCFrames.Frame DO f.Restore(l, t, r, b) END\r\tEND Restore;\r\r\tPROCEDURE (c: SelectionBox) HandleCtrlMsg2 (f: Views.Frame; VAR msg: Controllers.Message;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR focus: Views.View);\r\tBEGIN\r\t\tWITH f: StdCFrames.SelectionBox DO\r\t\t\tIF ~c.disabled & ~c.readOnly THEN\r\t\t\t\tWITH msg: Controllers.EditMsg DO\r\t\t\t\t\tIF msg.op = Controllers.pasteChar THEN f.KeyDown(msg.char) END\r\t\t\t\t| msg: Controllers.SelectMsg DO\r\t\t\t\t\tIF msg.set THEN f.Select(0, MAX(INTEGER))\r\t\t\t\t\tELSE f.Select(-1, -1)\r\t\t\t\t\tEND\r\t\t\t\tELSE\r\t\t\t\t\tCatchCtrlMsg(c, f, msg, focus)\r\t\t\t\tEND\r\t\t\tELSIF ~c.disabled THEN\r\t\t\t\tWITH msg: Controllers.TrackMsg DO\r\t\t\t\t\tf.MouseDown(msg.x, msg.y, msg.modifiers)\r\t\t\t\tELSE\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND HandleCtrlMsg2;\r\r\tPROCEDURE (c: SelectionBox) HandlePropMsg2 (VAR msg: Properties.Message);\r\tBEGIN\r\t\tWITH msg: Properties.ControlPref DO\r\t\t\tIF (msg.char = lineChar) OR (msg.char = esc) THEN msg.accepts := FALSE END;\r\t\t\tIF ~c.disabled & ~c.readOnly & IsShortcut(msg.char, c) OR msg.getFocus THEN\r\t\t\t\tmsg.getFocus := StdCFrames.setFocus\r\t\t\tEND\r\t\t| msg: Properties.FocusPref DO\r\t\t\tIF ~c.disabled & ~c.readOnly THEN\r\t\t\t\tmsg.setFocus := TRUE\r\t\t\tELSIF~c.disabled THEN\r\t\t\t\tmsg.hotFocus := TRUE\r\t\t\tEND\r\t\t| msg: Properties.SizePref DO\r\t\t\tStdCFrames.dir.GetSelectionBoxSize(msg.w, msg.h)\r\t\t| msg: PropPref DO\r\t\t\tmsg.valid := {link, label, guard, notifier, sorted}\r\t\tELSE\r\t\tEND\r\tEND HandlePropMsg2;\r\r\tPROCEDURE (c: SelectionBox) CheckLink (VAR ok: BOOLEAN);\r\t\tVAR name: Meta.Name;\r\tBEGIN\r\t\tGetTypeName(c.item, name);\r\t\tok := name = \"Selection\"\r\tEND CheckLink;\r\r\tPROCEDURE (c: SelectionBox) Update (f: Views.Frame; op, from, to: INTEGER);\r\tBEGIN\r\t\tIF (op >= Dialog.included) & (op <= Dialog.set) THEN\r\t\t\tf(StdCFrames.SelectionBox).UpdateRange(op, from, to)\r\t\tELSE\r\t\t\tf(StdCFrames.Frame).Update\r\t\tEND\r\tEND Update;\r\t\r\tPROCEDURE (c: SelectionBox) UpdateList (f: Views.Frame);\r\tBEGIN\r\t\tf(StdCFrames.Frame).UpdateList\r\tEND UpdateList;\r\t\r\r\t"
+                    attr: 0
+                  - text: "(* ComboBox *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE GetComboBox (f: StdCFrames.ComboBox; OUT x: ARRAY OF CHAR);\r\t\tVAR c: ComboBox; ok: BOOLEAN; v: Meta.Item;\r\tBEGIN\r\t\tx := \"\";\r\t\tc := f.view(ComboBox);\r\t\tIF c.item.Valid() THEN\r\t\t\tc.item.Lookup(\"item\", v);\r\t\t\tIF v.typ = Meta.arrTyp THEN v.GetStringVal(x, ok) END\r\t\tEND\r\tEND GetComboBox;\r\r\tPROCEDURE SetComboBox (f: StdCFrames.ComboBox; IN x: ARRAY OF CHAR);\r\t\tVAR c: ComboBox; ok: BOOLEAN; v: Meta.Item; s: ARRAY 1024 OF CHAR;\r\tBEGIN\r\t\tc := f.view(ComboBox);\r\t\tIF c.item.Valid() & ~c.readOnly THEN\r\t\t\tc.item.Lookup(\"item\", v);\r\t\t\tIF v.typ = Meta.arrTyp THEN\r\t\t\t\tv.GetStringVal(s, ok);\r\t\t\t\tIF ~ok OR (s$ # x$) THEN\r\t\t\t\t\tv.PutStringVal(x, ok);\r\t\t\t\t\tIF ok THEN Notify(c, f, Dialog.changed, 0, 0) END\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND SetComboBox;\r\r\tPROCEDURE GetComboName (f: StdCFrames.ComboBox; i: INTEGER; VAR name: ARRAY OF CHAR);\r\t\tVAR c: ComboBox; par: Param;\r\tBEGIN\r\t\tpar.n := \"\";\r\t\tc := f.view(ComboBox);\r\t\tIF c.item.Valid() THEN\r\t\t\tpar.i := i;\r\t\t\tc.item.CallWith(GetFName, par)\r\t\tEND;\r\t\tname := par.n$\r\tEND GetComboName;\r\r\tPROCEDURE (c: ComboBox) Internalize2 (VAR rd: Stores.Reader);\r\t\tVAR thisVersion: INTEGER;\r\tBEGIN\r\t\trd.ReadVersion(minVersion, cbxVersion, thisVersion)\r\tEND Internalize2;\r\r\tPROCEDURE (c: ComboBox) Externalize2 (VAR wr: Stores.Writer);\r\tBEGIN\r\t\twr.WriteVersion(cbxVersion)\r\tEND Externalize2;\r\r\tPROCEDURE (c: ComboBox) GetNewFrame (VAR frame: Views.Frame);\r\t\tVAR f: StdCFrames.ComboBox;\r\tBEGIN\r\t\tf := StdCFrames.dir.NewComboBox();\r\t\tf.disabled := c.disabled;\r\t\tf.undef := c.undef;\r\t\tf.readOnly := c.readOnly;\r\t\tf.font := c.font;\r\t\tf.sorted := c.prop.opt[sorted];\r\t\tf.Get := GetComboBox;\r\t\tf.Set := SetComboBox;\r\t\tf.GetName := GetComboName;\r\t\tframe := f\r\tEND GetNewFrame;\r\r\tPROCEDURE (c: ComboBox) Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\tBEGIN\r\t\tWITH f: StdCFrames.Frame DO f.Restore(l, t, r, b) END\r\tEND Restore;\r\r\tPROCEDURE (c: ComboBox) HandleCtrlMsg2 (f: Views.Frame; VAR msg: Controllers.Message;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR focus: Views.View);\r\tBEGIN\r\t\tWITH f: StdCFrames.ComboBox DO\r\t\t\tIF ~c.disabled & ~c.readOnly THEN\r\t\t\t\tWITH msg: Controllers.PollOpsMsg DO\r\t\t\t\t\tmsg.selectable := TRUE;\r\t\t\t\t\t"
+                    attr: 0
+                  - text: "(* should ask Frame if there is a selection for cut or copy! *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tmsg.valid := {Controllers.pasteChar, Controllers.cut, Controllers.copy, Controllers.paste}\r\t\t\t\t| msg: Controllers.TickMsg DO\r\t\t\t\t\tf.Idle\r\t\t\t\t| msg: Controllers.EditMsg DO\r\t\t\t\t\tIF msg.op = Controllers.pasteChar THEN\r\t\t\t\t\t\tf.KeyDown(msg.char)\r\t\t\t\t\tELSE\r\t\t\t\t\t\tf.Edit(msg.op, msg.view, msg.w, msg.h, msg.isSingle, msg.clipboard)\r\t\t\t\t\tEND\r\t\t\t\t| msg: Controllers.SelectMsg DO\r\t\t\t\t\tIF msg.set THEN f.Select(0, MAX(INTEGER))\r\t\t\t\t\tELSE f.Select(-1, -1)\r\t\t\t\t\tEND\r\t\t\t\t| msg: Controllers.MarkMsg DO\r\t\t\t\t\tf.Mark(msg.show, msg.focus);\r\t\t\t\t\tIF msg.show & msg.focus THEN f.Select(0, MAX(INTEGER)) END\r\t\t\t\t| msg: Controllers.TrackMsg DO\r\t\t\t\t\tf.MouseDown(msg.x, msg.y, msg.modifiers)\r\t\t\t\tELSE\r\t\t\t\t\tCatchCtrlMsg(c, f, msg, focus)\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND HandleCtrlMsg2;\r\r\tPROCEDURE (c: ComboBox) HandlePropMsg2 (VAR msg: Properties.Message);\r\tBEGIN\r\t\tWITH msg: Properties.ControlPref DO\r\t\t\tIF (msg.char = lineChar) OR (msg.char = esc) THEN msg.accepts := FALSE END;\r\t\t\tIF ~c.disabled & ~c.readOnly & IsShortcut(msg.char, c) THEN msg.getFocus := TRUE END\r\t\t| msg: Properties.FocusPref DO\r\t\t\tIF ~c.disabled & ~c.readOnly THEN\r\t\t\t\tmsg.setFocus := TRUE\r\t\t\tEND\r\t\t| msg: Properties.SizePref DO\r\t\t\tStdCFrames.dir.GetComboBoxSize(msg.w, msg.h)\r\t\t| msg: PropPref DO\r\t\t\tmsg.valid := {link, label, guard, notifier, sorted}\r\t\tELSE\r\t\tEND\r\tEND HandlePropMsg2;\r\r\tPROCEDURE (c: ComboBox) CheckLink (VAR ok: BOOLEAN);\r\t\tVAR name: Meta.Name;\r\tBEGIN\r\t\tGetTypeName(c.item, name);\r\t\tok := name = \"Combo\"\r\tEND CheckLink;\r\r\tPROCEDURE (c: ComboBox) Update (f: Views.Frame; op, from, to: INTEGER);\r\tBEGIN\r\t\tf(StdCFrames.Frame).Update\r\tEND Update;\r\t\r\tPROCEDURE (c: ComboBox) UpdateList (f: Views.Frame);\r\tBEGIN\r\t\tf(StdCFrames.Frame).UpdateList\r\tEND UpdateList;\r\t\r\r\t"
+                    attr: 0
+                  - text: "(* Caption *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (c: Caption) Internalize2 (VAR rd: Stores.Reader);\r\t\tVAR thisVersion: INTEGER;\r\tBEGIN\r\t\trd.ReadVersion(minVersion, capVersion, thisVersion);\r\t\tIF thisVersion < 1 THEN c.prop.opt[left] := TRUE END\r\tEND Internalize2;\r\r\tPROCEDURE (c: Caption) Externalize2 (VAR wr: Stores.Writer);\r\tBEGIN\r\t\t(* "
+                    attr: 0
+                  - text: Save old version for captions that are compatible with the old version
+                    attr: 1
+                  - text: " *)\r\t\tIF c.prop.opt[left] THEN wr.WriteVersion(0) ELSE wr.WriteVersion(capVersion) END\r\tEND Externalize2;\r\r\tPROCEDURE (c: Caption) GetNewFrame (VAR frame: Views.Frame);\r\t\tVAR f: StdCFrames.Caption;\r\tBEGIN\r\t\tf := StdCFrames.dir.NewCaption();\r\t\tf.disabled := c.disabled;\r\t\tf.undef := c.undef;\r\t\tf.readOnly := c.readOnly;\r\t\tf.font := c.font;\r\t\tf.label := c.label$;\r\t\tf.left := c.prop.opt[left];\r\t\tf.right := c.prop.opt[right];\r\t\tframe := f\r\tEND GetNewFrame;\r\r\tPROCEDURE (c: Caption) Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\tBEGIN\r\t\tWITH f: StdCFrames.Frame DO f.Restore(l, t, r, b) END\r\tEND Restore;\r\r\tPROCEDURE (c: Caption) HandlePropMsg2 (VAR msg: Properties.Message);\r\tBEGIN\r\t\tWITH msg: Properties.SizePref DO\r\t\t\tStdCFrames.dir.GetCaptionSize(msg.w, msg.h)\r\t\t| msg: PropPref DO\r\t\t\tmsg.valid := {link, label, guard, left, right}\r\t\t| msg: DefaultsPref DO\r\t\t\tIF c.prop.link = \"\" THEN msg.disabled := FALSE END\r\t\tELSE\r\t\tEND\r\tEND HandlePropMsg2;\r\r\tPROCEDURE (c: Caption) Update (f: Views.Frame; op, from, to: INTEGER);\r\tBEGIN\r\t\tf(StdCFrames.Caption).label := c.label$;\r\t\tf(StdCFrames.Frame).Update\r\tEND Update;\r\t\r\r\t"
+                    attr: 0
+                  - text: "(* Group *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (c: Group) Internalize2 (VAR rd: Stores.Reader);\r\t\tVAR thisVersion: INTEGER;\r\tBEGIN\r\t\trd.ReadVersion(minVersion, grpVersion, thisVersion)\r\tEND Internalize2;\r\r\tPROCEDURE (c: Group) Externalize2 (VAR wr: Stores.Writer);\r\tBEGIN\r\t\twr.WriteVersion(grpVersion)\r\tEND Externalize2;\r\r\tPROCEDURE (c: Group) GetNewFrame (VAR frame: Views.Frame);\r\t\tVAR f: StdCFrames.Group;\r\tBEGIN\r\t\tf := StdCFrames.dir.NewGroup();\r\t\tf.disabled := c.disabled;\r\t\tf.undef := c.undef;\r\t\tf.readOnly := c.readOnly;\r\t\tf.font := c.font;\r\t\tf.label := c.label$;\r\t\tframe := f\r\tEND GetNewFrame;\r\r\tPROCEDURE (c: Group) Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\tBEGIN\r\t\tWITH f: StdCFrames.Frame DO f.Restore(l, t, r, b) END\r\tEND Restore;\r\r\tPROCEDURE (c: Group) HandlePropMsg2 (VAR msg: Properties.Message);\r\tBEGIN\r\t\tWITH msg: Properties.SizePref DO\r\t\t\tStdCFrames.dir.GetGroupSize(msg.w, msg.h)\r\t\t| msg: PropPref DO\r\t\t\tmsg.valid := {link, label, guard}\r\t\t| msg: DefaultsPref DO\r\t\t\tIF c.prop.link = \"\" THEN msg.disabled := FALSE END\r\t\tELSE\r\t\tEND\r\tEND HandlePropMsg2;\r\r\tPROCEDURE (c: Group) Update (f: Views.Frame; op, from, to: INTEGER);\r\tBEGIN\r\t\tf(StdCFrames.Group).label := c.label$;\r\t\tf(StdCFrames.Frame).Update\r\tEND Update;\r\t\r\t\r\t"
+                    attr: 0
+                  - text: "(* TreeControl *)"
+                    attr: 1
+                  - text: "\r\t\r\tPROCEDURE (c: TreeControl) Internalize2 (VAR rd: Stores.Reader);\r\t\tVAR thisVersion: INTEGER;\r\tBEGIN\r\t\trd.ReadVersion(minVersion, tfVersion, thisVersion)\r\tEND Internalize2;\r\r\tPROCEDURE (c: TreeControl) Externalize2 (VAR wr: Stores.Writer);\r\tBEGIN\r\t\twr.WriteVersion(tfVersion)\r\tEND Externalize2;\r\r\tPROCEDURE TVNofNodesF (VAR rec, par: ANYREC);\r\tBEGIN\r\t\tWITH par: TVParam DO \r\t\t\tWITH rec: Dialog.Tree DO par.l := rec.NofNodes()\r\t\t\tELSE par.l := 0\r\t\t\tEND\r\t\tEND\r\tEND TVNofNodesF;\r\t\r\tPROCEDURE TVNofNodes (f: StdCFrames.TreeFrame): INTEGER;\r\t\tVAR c: TreeControl; par: TVParam;\r\tBEGIN\r\t\tc := f.view(TreeControl); par.l := 0;\r\t\tIF c.item.Valid() THEN c.item.CallWith(TVNofNodesF, par) END;\r\t\tRETURN par.l\r\tEND TVNofNodes;\r\t\r\tPROCEDURE TVChildF (VAR rec, par: ANYREC);\r\tBEGIN\r\t\tWITH par: TVParam DO \r\t\t\tWITH rec: Dialog.Tree DO par.nodeOut := rec.Child(par.nodeIn, Dialog.firstPos)\r\t\t\tELSE par.nodeOut := NIL\r\t\t\tEND\r\t\tEND\r\tEND TVChildF;\r\t\r\tPROCEDURE TVChild (f: StdCFrames.TreeFrame; node: Dialog.TreeNode): Dialog.TreeNode;\r\t\tVAR c: TreeControl; par: TVParam;\r\tBEGIN\r\t\tc := f.view(TreeControl); par.nodeIn := node; par.nodeOut := NIL;\r\t\tIF c.item.Valid() THEN c.item.CallWith(TVChildF, par) END;\r\t\tRETURN par.nodeOut\r\tEND TVChild;\r\t\r\tPROCEDURE TVParentF (VAR rec, par: ANYREC);\r\tBEGIN\r\t\tWITH par: TVParam DO \r\t\t\tWITH rec: Dialog.Tree DO par.nodeOut := rec.Parent(par.nodeIn)\r\t\t\tELSE par.nodeOut := NIL\r\t\t\tEND\r\t\tEND\r\tEND TVParentF;\r\t\r\tPROCEDURE TVParent (f: StdCFrames.TreeFrame; node: Dialog.TreeNode): Dialog.TreeNode;\r\t\tVAR c: TreeControl; par: TVParam;\r\tBEGIN\r\t\tc := f.view(TreeControl); par.nodeIn := node; par.nodeOut := NIL;\r\t\tIF c.item.Valid() THEN c.item.CallWith(TVParentF, par) END;\r\t\tRETURN par.nodeOut\r\tEND TVParent;\r\t\r\tPROCEDURE TVNextF (VAR rec, par: ANYREC);\r\tBEGIN\r\t\tWITH par: TVParam DO \r\t\t\tWITH rec: Dialog.Tree DO par.nodeOut := rec.Next(par.nodeIn)\r\t\t\tELSE par.nodeOut := NIL\r\t\t\tEND\r\t\tEND\r\tEND TVNextF;\r\t\r\tPROCEDURE TVNext (f: StdCFrames.TreeFrame; node: Dialog.TreeNode): Dialog.TreeNode;\r\t\tVAR c: TreeControl; par: TVParam;\r\tBEGIN\r\t\tc := f.view(TreeControl); par.nodeIn := node; par.nodeOut := NIL;\r\t\tIF c.item.Valid() THEN c.item.CallWith(TVNextF, par) END;\r\t\tRETURN par.nodeOut\r\tEND TVNext;\r\t\r\tPROCEDURE TVSelectF (VAR rec, par: ANYREC);\r\tBEGIN\r\t\tWITH par: TVParam DO \r\t\t\tWITH rec: Dialog.Tree DO rec.Select(par.nodeIn) END\r\t\tEND\r\tEND TVSelectF;\r\t\r\tPROCEDURE TVSelect (f: StdCFrames.TreeFrame; node: Dialog.TreeNode);\r\t\tVAR c: TreeControl; par: TVParam;\r\tBEGIN\r\t\tc := f.view(TreeControl); par.nodeIn := node;\r\t\tIF c.item.Valid() THEN \r\t\t\tc.item.CallWith(TVSelectF, par);\r\t\t\tNotify(c, f, Dialog.changed, 0, 0)\r\t\tEND\r\tEND TVSelect;\r\t\r\tPROCEDURE TVSelectedF (VAR rec, par: ANYREC);\r\tBEGIN\r\t\tWITH par: TVParam DO \r\t\t\tWITH rec: Dialog.Tree DO par.nodeOut := rec.Selected()\r\t\t\tELSE par.nodeOut := NIL\r\t\t\tEND\r\t\tEND\r\tEND TVSelectedF;\r\t\r\tPROCEDURE TVSelected (f: StdCFrames.TreeFrame): Dialog.TreeNode;\r\t\tVAR c: TreeControl; par: TVParam;\r\tBEGIN\r\t\tc := f.view(TreeControl); par.nodeOut := NIL;\r\t\tIF c.item.Valid() THEN c.item.CallWith(TVSelectedF, par) END;\r\t\tRETURN par.nodeOut\r\tEND TVSelected;\r\t\r\tPROCEDURE TVSetExpansionF (VAR rec, par: ANYREC);\r\tBEGIN\r\t\tWITH par: TVParam DO \r\t\t\tpar.nodeIn.SetExpansion(par.e)\r\t\tEND\r\tEND TVSetExpansionF;\r\t\r\tPROCEDURE TVSetExpansion (f: StdCFrames.TreeFrame; tn: Dialog.TreeNode; expanded: BOOLEAN);\r\t\tVAR c: TreeControl; par: TVParam;\r\tBEGIN\r\t\tc := f.view(TreeControl); par.e := expanded; par.nodeIn := tn;\r\t\tIF c.item.Valid() THEN c.item.CallWith(TVSetExpansionF, par) END\r\tEND TVSetExpansion;\r\r\tPROCEDURE (c: TreeControl) GetNewFrame (VAR frame: Views.Frame);\r\t\tVAR f: StdCFrames.TreeFrame;\r\tBEGIN\r\t\tf := StdCFrames.dir.NewTreeFrame();\r\t\tf.disabled := c.disabled;\r\t\tf.undef := c.undef;\r\t\tf.readOnly := c.readOnly;\r\t\tf.font := c.font;\r\t\tf.sorted := c.prop.opt[sorted];\r\t\tf.haslines := c.prop.opt[haslines];\r\t\tf.hasbuttons := c.prop.opt[hasbuttons];\r\t\tf.atroot := c.prop.opt[atroot];\r\t\tf.foldericons := c.prop.opt[foldericons];\r\t\tf.NofNodes := TVNofNodes;\r\t\tf.Child := TVChild;\r\t\tf.Parent := TVParent;\r\t\tf.Next := TVNext;\r\t\tf.Select := TVSelect;\r\t\tf.Selected := TVSelected;\r\t\tf.SetExpansion := TVSetExpansion;\r\t\tframe := f\r\tEND GetNewFrame;\r\r\tPROCEDURE (c: TreeControl) UpdateList (f: Views.Frame);\r\tBEGIN\r\t\tf(StdCFrames.Frame).UpdateList()\r\tEND UpdateList;\r\t\r\tPROCEDURE (c: TreeControl) Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\tBEGIN\r\t\tWITH f: StdCFrames.Frame DO f.Restore(l, t, r, b) END\r\tEND Restore;\r\t\r\tPROCEDURE (c: TreeControl) HandleCtrlMsg2 (f: Views.Frame; VAR msg: Controllers.Message;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR focus: Views.View);\r\tBEGIN\r\t\tWITH f: StdCFrames.TreeFrame DO\r\t\t\tIF ~c.disabled & ~c.readOnly THEN\r\t\t\t\tWITH msg: Controllers.EditMsg DO\r\t\t\t\t\tIF (msg.op = Controllers.pasteChar) THEN \r\t\t\t\t\t\tf.KeyDown(msg.char)\r\t\t\t\t\tEND\r\t\t\t\tELSE\r\t\t\t\t\tCatchCtrlMsg(c, f, msg, focus)\r\t\t\t\tEND\r\t\t\tELSIF ~c.disabled THEN\r\t\t\t\tWITH msg: Controllers.TrackMsg DO\r\t\t\t\t\tf.MouseDown(msg.x, msg.y, msg.modifiers)\r\t\t\t\tELSE\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND HandleCtrlMsg2;\r\r\tPROCEDURE (c: TreeControl) HandlePropMsg2 (VAR msg: Properties.Message);\r\tBEGIN\t\t\t\r\t\tWITH msg: Properties.ControlPref DO\r\t\t\tIF (msg.char = lineChar) OR (msg.char = esc) THEN msg.accepts := FALSE END;\r\t\t\tIF ~c.disabled & ~c.readOnly & IsShortcut(msg.char, c) OR msg.getFocus THEN\r\t\t\t\tmsg.getFocus := StdCFrames.setFocus\r\t\t\tEND\r\t\t| msg: Properties.FocusPref DO\r\t\t\tIF ~c.disabled & ~c.readOnly THEN\r\t\t\t\tmsg.setFocus := TRUE\r\t\t\tELSIF~c.disabled THEN\r\t\t\t\tmsg.hotFocus := TRUE\r\t\t\tEND\r\t\t| msg: Properties.SizePref DO\r\t\t\tStdCFrames.dir.GetTreeFrameSize(msg.w, msg.h)\r\t\t| msg: PropPref DO\r\t\t\tmsg.valid := {link, label, guard, notifier, sorted, haslines, hasbuttons, atroot, foldericons}\r\t\t| msg: Properties.ResizePref DO\r\t\t\tmsg.horFitToWin := TRUE; msg.verFitToWin := TRUE\r\t\tELSE\r\t\tEND\r\tEND HandlePropMsg2;\r\r\tPROCEDURE (c: TreeControl) CheckLink (VAR ok: BOOLEAN);\r\t\tVAR name: Meta.Name;\r\tBEGIN\r\t\tGetTypeName(c.item, name);\r\t\tok := name = \"Tree\"\r\tEND CheckLink;\r\r\tPROCEDURE (c: TreeControl) Update (f: Views.Frame; op, from, to: INTEGER);\r\tBEGIN\r\t\tf(StdCFrames.Frame).Update\r\tEND Update;\r\t\r\r\t"
+                    attr: 0
+                  - text: "(* StdDirectory *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (d: StdDirectory) NewPushButton (p: Prop): Control;\r\t\tVAR c: PushButton;\r\tBEGIN\r\t\tNEW(c); OpenLink(c, p); "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " c\r\tEND NewPushButton;\r\r\tPROCEDURE (d: StdDirectory) NewCheckBox (p: Prop): Control;\r\t\tVAR c: CheckBox;\r\tBEGIN\r\t\tNEW(c); OpenLink(c, p); "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " c\r\tEND NewCheckBox;\r\r\tPROCEDURE (d: StdDirectory) NewRadioButton (p: Prop): Control;\r\t\tVAR c: RadioButton;\r\tBEGIN\r\t\tNEW(c); OpenLink(c, p); "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " c\r\tEND NewRadioButton;\r\r\tPROCEDURE (d: StdDirectory) NewField (p: Prop): Control;\r\t\tVAR c: Field;\r\tBEGIN\r\t\tNEW(c); OpenLink(c, p); "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " c\r\tEND NewField;\r\t\r\tPROCEDURE (d: StdDirectory) NewUpDownField (p: Prop): Control;\r\t\tVAR c: UpDownField;\r\tBEGIN\r\t\tNEW(c); OpenLink(c, p); "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " c\r\tEND NewUpDownField;\r\t\r\tPROCEDURE (d: StdDirectory) NewDateField (p: Prop): Control;\r\t\tVAR c: DateField;\r\tBEGIN\r\t\tNEW(c); OpenLink(c, p); "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " c\r\tEND NewDateField;\r\r\tPROCEDURE (d: StdDirectory) NewTimeField (p: Prop): Control;\r\t\tVAR c: TimeField;\r\tBEGIN\r\t\tNEW(c); OpenLink(c, p); "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " c\r\tEND NewTimeField;\r\t\r\tPROCEDURE (d: StdDirectory) NewColorField (p: Prop): Control;\r\t\tVAR c: ColorField;\r\tBEGIN\r\t\tNEW(c); OpenLink(c, p); "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " c\r\tEND NewColorField;\r\r\tPROCEDURE (d: StdDirectory) NewListBox (p: Prop): Control;\r\t\tVAR c: ListBox;\r\tBEGIN\r\t\tNEW(c); OpenLink(c, p); "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " c\r\tEND NewListBox;\r\r\tPROCEDURE (d: StdDirectory) NewSelectionBox (p: Prop): Control;\r\t\tVAR c: SelectionBox;\r\tBEGIN\r\t\tNEW(c); OpenLink(c, p); "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " c\r\tEND NewSelectionBox;\r\r\tPROCEDURE (d: StdDirectory) NewComboBox (p: Prop): Control;\r\t\tVAR c: ComboBox;\r\tBEGIN\r\t\tNEW(c); OpenLink(c, p); "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " c\r\tEND NewComboBox;\r\r\tPROCEDURE (d: StdDirectory) NewCaption (p: Prop): Control;\r\t\tVAR c: Caption;\r\tBEGIN\r\t\tNEW(c); OpenLink(c, p); "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " c\r\tEND NewCaption;\r\r\tPROCEDURE (d: StdDirectory) NewGroup (p: Prop): Control;\r\t\tVAR c: Group;\r\tBEGIN\r\t\tNEW(c); OpenLink(c, p); "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " c\r\tEND NewGroup;\r\r\tPROCEDURE (d: StdDirectory) NewTreeControl (p: Prop): Control;\r\t\tVAR c: TreeControl;\r\tBEGIN\r\t\tNEW(c); OpenLink(c, p); "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " c\r\tEND NewTreeControl;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetDir
+                    attr: 3
+                  - text: "* (d: Directory);\r\tBEGIN\r\t\tASSERT(d # NIL, 20); dir := d\r\tEND SetDir;\r\r\tPROCEDURE InitProp (VAR p: Prop);\r\tBEGIN\r\t\tNEW(p);\r\t\tp.link := \"\"; p.label := \"\"; p.guard := \"\"; p.notifier := \"\";\r\t\tp.level := 0;\r\t\tp.opt[0] := FALSE; p.opt[1] := FALSE;\r\t\tp.opt[2] := FALSE; p.opt[3] := FALSE;\r\t\tp.opt[4] := FALSE\r\tEND InitProp;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: DepositPushButton
+                    attr: 3
+                  - text: "*;\r\t\tVAR p: Prop;\r\tBEGIN\r\t\tInitProp(p);\r\t\tp.label := \"#System:"
+                    attr: 0
+                  - text: untitled
+                    attr: 3
+                  - text: "\";\r\t\tViews.Deposit(dir.NewPushButton(p))\r\tEND DepositPushButton;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: DepositCheckBox
+                    attr: 3
+                  - text: "*;\r\t\tVAR p: Prop;\r\tBEGIN\r\t\tInitProp(p);\r\t\tp.label := \"#System:"
+                    attr: 0
+                  - text: untitled
+                    attr: 3
+                  - text: "\";\r\t\tViews.Deposit(dir.NewCheckBox(p))\r\tEND DepositCheckBox;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: DepositRadioButton
+                    attr: 3
+                  - text: "*;\r\t\tVAR p: Prop;\r\tBEGIN\r\t\tInitProp(p);\r\t\tp.label := \"#System:"
+                    attr: 0
+                  - text: untitled
+                    attr: 3
+                  - text: "\";\r\t\tViews.Deposit(dir.NewRadioButton(p))\r\tEND DepositRadioButton;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: DepositField
+                    attr: 3
+                  - text: "*;\r\t\tVAR p: Prop;\r\tBEGIN\r\t\tInitProp(p); p.opt[left] := TRUE;\r\t\tViews.Deposit(dir.NewField(p))\r\tEND DepositField;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: DepositUpDownField
+                    attr: 3
+                  - text: "*;\r\t\tVAR p: Prop;\r\tBEGIN\r\t\tInitProp(p);\r\t\tViews.Deposit(dir.NewUpDownField(p))\r\tEND DepositUpDownField;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: DepositDateField
+                    attr: 3
+                  - text: "*;\r\t\tVAR p: Prop;\r\tBEGIN\r\t\tInitProp(p);\r\t\tViews.Deposit(dir.NewDateField(p))\r\tEND DepositDateField;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: DepositTimeField
+                    attr: 3
+                  - text: "*;\r\t\tVAR p: Prop;\r\tBEGIN\r\t\tInitProp(p);\r\t\tViews.Deposit(dir.NewTimeField(p))\r\tEND DepositTimeField;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: DepositColorField
+                    attr: 3
+                  - text: "*;\r\t\tVAR p: Prop;\r\tBEGIN\r\t\tInitProp(p);\r\t\tViews.Deposit(dir.NewColorField(p))\r\tEND DepositColorField;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: DepositListBox
+                    attr: 3
+                  - text: "*;\r\t\tVAR p: Prop;\r\tBEGIN\r\t\tInitProp(p);\r\t\tViews.Deposit(dir.NewListBox(p))\r\tEND DepositListBox;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: DepositSelectionBox
+                    attr: 3
+                  - text: "*;\r\t\tVAR p: Prop;\r\tBEGIN\r\t\tInitProp(p);\r\t\tViews.Deposit(dir.NewSelectionBox(p))\r\tEND DepositSelectionBox;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: DepositComboBox
+                    attr: 3
+                  - text: "*;\r\t\tVAR p: Prop;\r\tBEGIN\r\t\tInitProp(p);\r\t\tViews.Deposit(dir.NewComboBox(p))\r\tEND DepositComboBox;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: DepositCancelButton
+                    attr: 3
+                  - text: "*;\r\t\tVAR p: Prop;\r\tBEGIN\r\t\tInitProp(p);\r\t\tp.link := \"StdCmds.CloseDialog\"; p.label := \"#System:"
+                    attr: 0
+                  - text: Cancel
+                    attr: 3
+                  - text: "\"; p.opt[cancel] := TRUE;\r\t\tViews.Deposit(dir.NewPushButton(p))\r\tEND DepositCancelButton;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: DepositCaption
+                    attr: 3
+                  - text: "*;\r\t\tVAR p: Prop;\r\tBEGIN\r\t\tInitProp(p); p.opt[left] := TRUE;\r\t\tp.label := \"#System:"
+                    attr: 0
+                  - text: Caption
+                    attr: 3
+                  - text: "\";\r\t\tViews.Deposit(dir.NewCaption(p))\r\tEND DepositCaption;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: DepositGroup
+                    attr: 3
+                  - text: "*;\r\t\tVAR p: Prop;\r\tBEGIN\r\t\tInitProp(p);\r\t\tp.label := \"#System:"
+                    attr: 0
+                  - text: Caption
+                    attr: 3
+                  - text: "\";\r\t\tViews.Deposit(dir.NewGroup(p))\r\tEND DepositGroup;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: DepositTreeControl
+                    attr: 3
+                  - text: "*;\r\t\tVAR p: Prop;\r\tBEGIN\r\t\tInitProp(p);\r\t\tp.opt[haslines] := TRUE; p.opt[hasbuttons] := TRUE; p.opt[atroot] := TRUE; p.opt[foldericons] := TRUE;\r\t\tViews.Deposit(dir.NewTreeControl(p))\r\tEND DepositTreeControl;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Relink
+                    attr: 3
+                  - text: "*;\r\t\tVAR msg: UpdateCachesMsg;\r\tBEGIN\r\t\tINC(stamp);\r\t\tViews.Omnicast(msg)\r\tEND Relink;\r\r\r\tPROCEDURE Init;\r\t\tVAR d: StdDirectory;\r\tBEGIN\r\t\tpar := NIL; stamp := 0;\r\t\tNEW(d); stdDir := d; dir := d;\r\t\tNEW(cleaner); cleanerInstalled := 0\r\tEND Init;\r\r\r"
+                    attr: 0
+                  - text: "\t(* check guards action *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (a: Action) Do;\r\t\tVAR msg: Views.NotifyMsg;\r\tBEGIN\r\t\tIF Windows.dir # NIL THEN\r\t\t\tIF a.w # NIL THEN\r\t\t\t\tINC(a.cnt);\r\t\t\t\tmsg.id0 := 0; msg.id1 := 0; msg.opts := {guardCheck};\r\t\t\t\tIF a.w.seq # NIL THEN a.w.seq.Handle(msg) END;\r\t\t\t\ta.w := Windows.dir.Next(a.w);\r\t\t\t\tWHILE (a.w # NIL) & a.w.sub DO a.w := Windows.dir.Next(a.w) END\r\t\t\tELSE\r\t\t\t\tIF a.cnt = 0 THEN a.resolution := Services.resolution\r\t\t\t\tELSE a.resolution := Services.resolution DIV a.cnt DIV 2\r\t\t\t\tEND;\r\t\t\t\ta.cnt := 0;\r\t\t\t\ta.w := Windows.dir.First();\r\t\t\t\tWHILE (a.w # NIL) & a.w.sub DO a.w := Windows.dir.Next(a.w) END\r\t\t\tEND\r\t\tEND;\r\t\tServices.DoLater(a, Services.Ticks() + a.resolution)\r\tEND Do;\r\rBEGIN\r\tInit;\r\tNEW(action); action.w := NIL; action.cnt := 0; Services.DoLater(action, Services.now)\rCLOSE\r\tServices.RemoveAction(action)\rEND Controls.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 98186
+          bodyLen: 8

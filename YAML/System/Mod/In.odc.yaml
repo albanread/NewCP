@@ -1,0 +1,244 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\System\\Mod\\In.odc"
+  size: 4293
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 4162
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 3976
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 3890
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000021
+              defaultAttr:
+                font: Arial
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 4011
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 3497
+                runListLen: 1733
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE In;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT TextMappers, TextControllers;\r\r\tVAR\r\t\t"
+                    attr: 0
+                  - text: Done
+                    attr: 3
+                  - text: "-: BOOLEAN;\r\t\ts: TextMappers.Scanner;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Open
+                    attr: 3
+                  - text: "*;\r\t\tVAR c: TextControllers.Controller; beg, end: INTEGER;\r\tBEGIN\r\t\tc := TextControllers.Focus();\r\t\tIF c # NIL THEN\r\t\t\tIF c.HasSelection() THEN c.GetSelection(beg, end) ELSE beg := 0 END;\r\t\t\ts.ConnectTo(c.text); s.SetPos(beg); s.rider.Read; Done := TRUE\r\t\tELSE\r\t\t\ts.ConnectTo(NIL); Done := FALSE\r\t\tEND\r\tEND Open;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Char
+                    attr: 3
+                  - text: "* (OUT ch: CHAR);\r\tBEGIN\r\t\tIF Done THEN\r\t\t\tIF s.rider.eot THEN Done := FALSE\r\t\t\tELSE ch := s.rider.char; s.rider.Read\r\t\t\tEND\r\t\tEND\r\tEND Char;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Int
+                    attr: 3
+                  - text: "* (OUT i: INTEGER);\r\tBEGIN\r\t\tIF Done THEN\r\t\t\ts.Scan;\r\t\t\tIF (s.type = TextMappers.int) THEN\r\t\t\t\ti := s.int\r\t\t\tELSE Done := FALSE\r\t\t\tEND\r\t\tEND\r\tEND Int;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: LongInt
+                    attr: 3
+                  - text: "* (OUT l: LONGINT);\r\tBEGIN\r\t\tIF Done THEN\r\t\t\ts.Scan;\r\t\t\tIF (s.type = TextMappers.lint) OR (s.type = TextMappers.int) THEN\r\t\t\t\tl := s.lint\r\t\t\tELSE Done := FALSE\r\t\t\tEND\r\t\tEND\r\tEND LongInt;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Real
+                    attr: 3
+                  - text: "* (OUT x: REAL);\r\tBEGIN\r\t\tIF Done THEN\r\t\t\ts.Scan;\r\t\t\tIF s.type = TextMappers.real THEN\r\t\t\t\tx := SHORT(s.real)\r\t\t\tELSIF s.type = TextMappers.int THEN\r\t\t\t\tx := s.int\r\t\t\tELSE Done := FALSE\r\t\t\tEND\r\t\tEND\r\tEND Real;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Name
+                    attr: 3
+                  - text: "* (OUT name: ARRAY OF CHAR);\r\tBEGIN\r\t\tIF Done THEN\r\t\t\ts.Scan;\r\t\t\tTextMappers.ScanQualIdent(s, name, Done)\r\t\tEND\r\tEND Name;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: String
+                    attr: 3
+                  - text: "* (OUT str: ARRAY OF CHAR);\r\tBEGIN\r\t\tIF Done THEN\r\t\t\ts.Scan;\r\t\t\tIF s.type = TextMappers.string THEN\r\t\t\t\tstr := s.string$\r\t\t\tELSE Done := FALSE\r\t\t\tEND\r\t\tEND\r\tEND String;\r\rEND In.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 4258
+          bodyLen: 8

@@ -1,0 +1,584 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Com\\Mod\\Connect.odc"
+  size: 16765
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 16634
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 16448
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 16362
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 34
+                bodyPos: 16483
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 15969
+                runListLen: 2700
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE ComConnect;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\treferences\t= \"adapted from Connect sample in \"Inside OLE\", 2nd ed.\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\r\tIMPORT COM, WinApi, WinOle, StdLog;\r\t\r\tCONST\r\t\tconnPoints = 1;\r\t\tconnMax = 2;\r\t\t\r\t\teventQuack = 1; eventFlap = 2; eventPaddle = 3;\r\t\t\r\t\tSINK1 = 0; SINK2 = 1;\r\t\t\r\t\t\r\tTYPE\r\t\tIDuckEvents = POINTER TO \r\t\t\t\t\tABSTRACT RECORD [\"{00021145-0000-0000-C000-000000000046}\"] (COM.IUnknown) END;\r\t\t\r\t\t\r\t\tCEnumConnectionPoints = POINTER TO RECORD (WinOle.IEnumConnectionPoints)\r\t\t\tcur: INTEGER;\r\t\t\tnum: INTEGER;\r\t\t\tdata: ARRAY connPoints OF WinOle.IConnectionPoint\r\t\tEND;\r\t\t\r\t\tCEnumConnections = POINTER TO RECORD (WinOle.IEnumConnections)\r\t\t\tcur: INTEGER;\r\t\t\tnum: INTEGER;\r\t\t\tdata: ARRAY connMax OF WinOle.CONNECTDATA\r\t\tEND;\r\t\t\r\t\tCConnectionPoint = POINTER TO RECORD (WinOle.IConnectionPoint)\r\t\t\tobj: CConnObject;\r\t\t\tiid: COM.GUID;\r\t\t\tunk: ARRAY connMax OF COM.IUnknown;\r\t\t\tcookies: ARRAY connMax OF INTEGER;\r\t\t\tconn: INTEGER;\r\t\t\tnext: INTEGER\r\t\tEND;\r\t\t\r\t\tCConnObject = POINTER TO RECORD (WinOle.IConnectionPointContainer)\r\t\t\tconnPt: ARRAY connPoints OF CConnectionPoint\r\t\tEND;\r\t\t\r\t\tCDuckEvents = POINTER TO RECORD (IDuckEvents)\r\t\t\tid: INTEGER;\r\t\t\tcookie: INTEGER\r\t\tEND;\r\t\r\t\r\tVAR\r\t\tsink: ARRAY 2 OF CDuckEvents;\r\t\tobj: CConnObject;\r\t\t\r\t\t\r\t(* ---------- IDuckEvents ---------- *)\r\t\r\tPROCEDURE (this: IDuckEvents) Quack (): COM.RESULT, NEW, ABSTRACT;\r\tPROCEDURE (this: IDuckEvents) Flap (): COM.RESULT, NEW, ABSTRACT;\r\tPROCEDURE (this: IDuckEvents) Paddle (): COM.RESULT, NEW, ABSTRACT;\r\t\r\t\r\t(* ---------- CDuckEvents ---------- *)\r\t\r\tPROCEDURE CreateCDuckEvents (id: INTEGER; OUT new: CDuckEvents);\r\tBEGIN\r\t\tNEW(new);\r\t\tIF new # NIL THEN\r\t\t\tnew.id := id;\r\t\t\tnew.cookie := 0\r\t\tEND\r\tEND CreateCDuckEvents;\r\t\r\tPROCEDURE (this: CDuckEvents) Quack (): COM.RESULT;\r\tBEGIN\r\t\tStdLog.String(\"Sink \"); StdLog.Int(this.id + 1); StdLog.String(\" received Quack\"); StdLog.Ln;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND Quack;\r\t\r\tPROCEDURE (this: CDuckEvents) Flap (): COM.RESULT;\r\tBEGIN\r\t\tStdLog.String(\"Sink \"); StdLog.Int(this.id + 1); StdLog.String(\" received Flap\"); StdLog.Ln;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND Flap;\r\t\r\tPROCEDURE (this: CDuckEvents) Paddle (): COM.RESULT;\r\tBEGIN\r\t\tStdLog.String(\"Sink \"); StdLog.Int(this.id + 1); StdLog.String(\" received Paddle\"); StdLog.Ln;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND Paddle;\r\t\r\t\r\t(* ---------- CEnumConnections ---------- *)\r\t\r\tPROCEDURE CreateCEnumConnections (num: INTEGER; VAR data: ARRAY OF WinOle.CONNECTDATA;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT new: CEnumConnections);\r\t\tVAR i: INTEGER;\r\tBEGIN\r\t\tNEW(new);\r\t\tIF new # NIL THEN\r\t\t\tnew.cur := 0;\r\t\t\tnew.num := num;\r\t\t\ti := 0;\r\t\t\tWHILE i < num DO new.data[i] := data[i]; INC(i) END\r\t\tEND\r\tEND CreateCEnumConnections;\r\t\r\tPROCEDURE (this: CEnumConnections) Next (num: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT elem: ARRAY [untagged] OF WinOle.CONNECTDATA;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT [nil] fetched: INTEGER): COM.RESULT;\r\t\tVAR n: INTEGER;\r\tBEGIN\r\t\tn := 0;\r\t\tIF VALID(fetched) THEN fetched := 0\r\t\tELSIF num # 1 THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_POINTER\r\t\tEND;\r\t\tIF this.cur < this.num THEN\r\t\t\tWHILE (this.cur < this.num) & (num > 0) DO\r\t\t\t\telem[n] := this.data[this.cur];\r\t\t\t\tINC(this.cur); INC(n); DEC(num)\r\t\t\tEND;\r\t\t\tIF VALID(fetched) THEN fetched := n END;\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_FALSE\r\tEND Next;\r\t\r\tPROCEDURE (this: CEnumConnections) Skip (num: INTEGER): COM.RESULT;\r\tBEGIN\r\t\tIF this.cur + num < this.num THEN\r\t\t\tINC(this.cur, num); "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_FALSE\r\t\tEND\r\tEND Skip;\r\t\r\tPROCEDURE (this: CEnumConnections) Reset (): COM.RESULT;\r\tBEGIN\r\t\tthis.cur := 0; "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND Reset;\r\t\r\tPROCEDURE (this: CEnumConnections) Clone (OUT enum: WinOle.IEnumConnections): COM.RESULT;\r\t\tVAR new: CEnumConnections;\r\tBEGIN\r\t\tCreateCEnumConnections(this.num, this.data, new);\r\t\tIF new # NIL THEN\r\t\t\tnew.cur := this.cur;\r\t\t\tenum := new;\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_OUTOFMEMORY\r\t\tEND\r\tEND Clone;\r\t\r\t\r\t(* ---------- CConnectionPoint ---------- *)\r\t\r\tPROCEDURE CreateCConnectionPoint (obj: CConnObject; IN iid: COM.GUID; OUT new: CConnectionPoint);\r\t\tVAR i: INTEGER;\r\tBEGIN\r\t\tNEW(new);\r\t\tIF new # NIL THEN\r\t\t\tnew.iid := iid;\r\t\t\tnew.obj := obj;\r\t\t\tnew.conn := 0;\r\t\t\tnew.next := 100\r\t\tEND\r\tEND CreateCConnectionPoint;\r\t\r\tPROCEDURE (this: CConnectionPoint) GetConnectionInterface (OUT iid: COM.GUID): COM.RESULT;\r\tBEGIN\r\t\tiid := this.iid; "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND GetConnectionInterface;\r\t\r\tPROCEDURE (this: CConnectionPoint) GetConnectionPointContainer\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t(OUT cpc: WinOle.IConnectionPointContainer): COM.RESULT;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " this.obj.QueryInterface(COM.ID(cpc), cpc)\r\tEND GetConnectionPointContainer;\r\t\r\tPROCEDURE (this: CConnectionPoint) Advise (sink: COM.IUnknown; OUT cookie: INTEGER): COM.RESULT;\r\t\tVAR res: COM.RESULT; unk: COM.IUnknown; i: INTEGER;\r\tBEGIN\r\t\tIF this.conn < connMax THEN\r\t\t\tres := sink.QueryInterface(this.iid, unk);\r\t\t\tIF res >= 0 THEN\r\t\t\t\ti := 0;\r\t\t\t\tWHILE this.unk[i] # NIL DO INC(i) END;\r\t\t\t\tthis.unk[i] := unk;\r\t\t\t\tINC(this.next);\r\t\t\t\tthis.cookies[i] := this.next;\r\t\t\t\tcookie := this.next;\r\t\t\t\tINC(this.conn);\r\t\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.CONNECT_E_CANNOTCONNECT\r\t\t\tEND\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.CONNECT_E_ADVISELIMIT\r\t\tEND\r\tEND Advise;\r\t\r\tPROCEDURE (this: CConnectionPoint) Unadvise (cookie: INTEGER): COM.RESULT;\r\t\tVAR i: INTEGER;\r\tBEGIN\r\t\tIF cookie # 0 THEN\r\t\t\ti := 0;\r\t\t\tWHILE (i < connMax) & (this.cookies[i] # cookie) DO INC(i) END;\r\t\t\tIF i < connMax THEN\r\t\t\t\tthis.unk[i] := NIL;\r\t\t\t\tthis.cookies[i] := 0;\r\t\t\t\tDEC(this.conn);\r\t\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.CONNECT_E_NOCONNECTION\r\t\t\tEND\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_INVALIDARG\r\t\tEND\r\tEND Unadvise;\r\t\r\tPROCEDURE (this: CConnectionPoint) EnumConnections (\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT enum: WinOle.IEnumConnections): COM.RESULT;\r\t\tVAR p: ARRAY connMax OF WinOle.CONNECTDATA; i, j: INTEGER; c: CEnumConnections;\r\tBEGIN\r\t\tIF this.conn > 0 THEN\r\t\t\ti := 0; j := 0;\r\t\t\tWHILE i < connMax DO\r\t\t\t\tIF this.unk[i] # NIL THEN\r\t\t\t\t\tp[j].pUnk := this.unk[i];\r\t\t\t\t\tp[j].dwCookie := this.cookies[i];\r\t\t\t\t\tINC(j)\r\t\t\t\tEND;\r\t\t\t\tINC(i)\r\t\t\tEND;\r\t\t\tCreateCEnumConnections(this.conn, p, c);\r\t\t\tIF c # NIL THEN\r\t\t\t\tenum := c;\r\t\t\t"
+                    attr: 0
+                  - text: "\tRETURN"
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_OUTOFMEMORY\r\t\t\tEND\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.OLE_E_NOCONNECTION\r\t\tEND\r\tEND EnumConnections;\r\t\r\t\r\t(* ---------- CEnumConnectionPoints ---------- *)\r\t\r\tPROCEDURE CreateCEnumConnectionPoints (num: INTEGER; VAR data: ARRAY OF WinOle.IConnectionPoint;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR new: CEnumConnectionPoints);\r\t\tVAR i: INTEGER;\r\tBEGIN\r\t\tNEW(new);\r\t\tIF new # NIL THEN\r\t\t\tnew.cur := 0;\r\t\t\tnew.num := num;\r\t\t\ti := 0;\r\t\t\tWHILE i < num DO new.data[i] := data[i]; INC(i) END\r\t\tEND\r\tEND CreateCEnumConnectionPoints;\r\t\r\tPROCEDURE (this: CEnumConnectionPoints) Next (num: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT elem: ARRAY [untagged] OF WinOle.IConnectionPoint;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT [nil] fetched: INTEGER): COM.RESULT;\r\t\tVAR n: INTEGER;\r\tBEGIN\r\t\tn := 0;\r\t\tIF VALID(fetched) THEN fetched := 0\r\t\tELSIF num # 1 THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_POINTER\r\t\tEND;\r\t\tIF this.cur < this.num THEN\r\t\t\tWHILE (this.cur < this.num) & (num > 0) DO\r\t\t\t\telem[n] := this.data[this.cur];\r\t\t\t\tINC(this.cur); INC(n); DEC(num)\r\t\t\tEND;\r\t\t\tIF VALID(fetched) THEN fetched := n END;\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_FALSE\r\tEND Next;\r\t\r\tPROCEDURE (this: CEnumConnectionPoints) Skip (num: INTEGER): COM.RESULT;\r\tBEGIN\r\t\tIF this.cur + num < this.num THEN\r\t\t\tINC(this.cur, num); "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_FALSE\r\t\tEND\r\tEND Skip;\r\t\r\tPROCEDURE (this: CEnumConnectionPoints) Reset (): COM.RESULT;\r\tBEGIN\r\t\tthis.cur := 0; "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND Reset;\r\t\r\tPROCEDURE (this: CEnumConnectionPoints) Clone (\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT enum: WinOle.IEnumConnectionPoints): COM.RESULT;\r\t\tVAR new: CEnumConnectionPoints;\r\tBEGIN\r\t\tCreateCEnumConnectionPoints(this.num, this.data, new);\r\t\tIF new # NIL THEN\r\t\t\tnew.cur := this.cur;\r\t\t\tenum := new;\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_OUTOFMEMORY\r\t\tEND\r\tEND Clone;\r\t\r\t\r\t(* ---------- CConnObject ---------- *)\r\t\r\tPROCEDURE CreateCConnObject (VAR new: CConnObject);\r\t\tVAR i, n: INTEGER;\r\tBEGIN\r\t\tNEW(new);\r\t\tIF new # NIL THEN\r\t\t\ti := 0;\r\t\t\tWHILE i < connPoints DO\r\t\t\t\tCreateCConnectionPoint(new, COM.ID(IDuckEvents), new.connPt[i]);\r\t\t\t\tINC(i)\r\t\t\tEND\r\t\tEND\r\tEND CreateCConnObject;\r\t\r\tPROCEDURE (this: CConnObject) EnumConnectionPoints\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t(OUT enum: WinOle.IEnumConnectionPoints): COM.RESULT;\r\t\tVAR i: INTEGER; cp: ARRAY connPoints OF WinOle.IConnectionPoint; ce: CEnumConnectionPoints;\r\tBEGIN\r\t\ti := 0;\r\t\tWHILE i < connPoints DO cp[i] := this.connPt[i]; INC(i) END;\r\t\tCreateCEnumConnectionPoints(connPoints, cp, ce);\r\t\tIF ce # NIL THEN\r\t\t\tenum := ce;\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_OUTOFMEMORY\r\t\tEND\r\tEND EnumConnectionPoints;\r\t\r\tPROCEDURE (this: CConnObject) FindConnectionPoint (IN iid: COM.GUID;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOUT conn: WinOle.IConnectionPoint): COM.RESULT;\r\t\tVAR\r\tBEGIN\r\t\tIF iid = COM.ID(IDuckEvents) THEN\r\t\t\tconn := this.connPt[0];\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_NOINTERFACE\r\t\tEND\r\tEND FindConnectionPoint;\r\t\r\tPROCEDURE (this: CConnObject) TriggerEvent (event: INTEGER): BOOLEAN, NEW;\r\t\tVAR enum: WinOle.IEnumConnections; cd: ARRAY 1 OF WinOle.CONNECTDATA;\r\t\t\tduck: IDuckEvents; n: INTEGER;\r\tBEGIN\r\t\tIF this.connPt[0].EnumConnections(enum) >= 0 THEN\r\t\t\tWHILE enum.Next(1, cd, NIL) = WinApi.S_OK DO\r\t\t\t\tIF cd[0].pUnk.QueryInterface(COM.ID(duck), duck) >= 0 THEN\r\t\t\t\t\tCASE event OF\r\t\t\t\t\t| eventQuack: n := duck.Quack()\r\t\t\t\t\t| eventFlap: n := duck.Flap()\r\t\t\t\t\t| eventPaddle: n := duck.Paddle()\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " FALSE\r\t\tEND\r\tEND TriggerEvent;\r\r\t\r\t(* ---------- commands ---------- *)\r\t\r\tPROCEDURE GetConnectionPoint (): WinOle.IConnectionPoint;\r\t\tVAR res: COM.RESULT; cont: WinOle.IConnectionPointContainer; cp: WinOle.IConnectionPoint;\r\tBEGIN\r\t\tres := obj.QueryInterface(COM.ID(cont), cont);\r\t\tIF res >= 0 THEN\r\t\t\tres := cont.FindConnectionPoint(COM.ID(IDuckEvents), cp);\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " cp\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " NIL\r\t\tEND\r\tEND GetConnectionPoint;\r\t\r\tPROCEDURE Connect (id: INTEGER);\r\t\tVAR cp: WinOle.IConnectionPoint; res: COM.RESULT;\r\tBEGIN\r\t\tIF obj # NIL THEN\r\t\t\tIF sink[id].cookie = 0 THEN\r\t\t\t\tcp := GetConnectionPoint();\r\t\t\t\tIF cp # NIL THEN\r\t\t\t\t\tres := cp.Advise(sink[id], sink[id].cookie);\r\t\t\t\t\tIF res < 0 THEN StdLog.String(\"Connection failed\"); StdLog.Ln\r\t\t\t\t\tELSE StdLog.String(\"Connection complete\"); StdLog.Ln\r\t\t\t\t\tEND\r\t\t\t\tELSE\r\t\t\t\t\tStdLog.String(\"Failed to get IConnectionPoint\"); StdLog.Ln\r\t\t\t\tEND\r\t\t\tELSE\r\t\t\t\tStdLog.String(\"Sink already connected\"); StdLog.Ln\r\t\t\tEND\r\t\tELSE\r\t\t\tStdLog.String(\"No object\"); StdLog.Ln\r\t\tEND\r\tEND Connect;\r\t\r\tPROCEDURE Disconnect (id: INTEGER);\r\t\tVAR cp: WinOle.IConnectionPoint; res: COM.RESULT;\r\tBEGIN\r\t\tIF obj # NIL THEN\r\t\t\tIF sink[id].cookie # 0 THEN\r\t\t\t\tcp := GetConnectionPoint();\r\t\t\t\tIF cp # NIL THEN\r\t\t\t\t\tres := cp.Unadvise(sink[id].cookie);\r\t\t\t\t\tIF res < 0 THEN StdLog.String(\"Disconnection failed\"); StdLog.Ln\r\t\t\t\t\tELSE\r\t\t\t\t\t\tStdLog.String(\"Disconnection complete\"); StdLog.Ln;\r\t\t\t\t\t\tsink[id].cookie := 0\r\t\t\t\t\tEND\r\t\t\t\tELSE\r\t\t\t\t\tStdLog.String(\"Failed to get IConnectionPoint\"); StdLog.Ln\r\t\t\t\tEND\r\t\t\tELSE\r\t\t\t\tStdLog.String(\"Sink not connected\"); StdLog.Ln\r\t\t\tEND\r\t\tELSE\r\t\t\tStdLog.String(\"No object\"); StdLog.Ln\r\t\tEND\r\tEND Disconnect;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: Init
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tCreateCDuckEvents(SINK1, sink[SINK1]);\r\t\tCreateCDuckEvents(SINK2, sink[SINK2]);\r\tEND Init;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: Release
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tobj := NIL;\r\t\tDisconnect(SINK1);\r\t\tDisconnect(SINK2);\r\t\tsink[SINK1] := NIL;\r\t\tsink[SINK2] := NIL\r\tEND Release;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ObjectCreate
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tCreateCConnObject(obj);\r\t\tIF obj # NIL THEN\r\t\t\tStdLog.String(\" Object created\"); StdLog.Ln\r\t\tEND\r\tEND ObjectCreate;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: ObjectRelease
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tIF obj # NIL THEN\r\t\t\tobj := NIL;\r\t\t\tStdLog.String(\"Object released\"); StdLog.Ln\r\t\tELSE\r\t\t\tStdLog.String(\"No object\"); StdLog.Ln\r\t\tEND\r\tEND ObjectRelease;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: Sink1Connect
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tConnect(SINK1)\r\tEND Sink1Connect;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: Sink1Disconnect
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tDisconnect(SINK1)\r\tEND Sink1Disconnect;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: Sink2Connect
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tConnect(SINK2)\r\tEND Sink2Connect;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: Sink2Disconnect
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tDisconnect(SINK2)\r\tEND Sink2Disconnect;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: TriggerQuack
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tIF obj # NIL THEN\r\t\t\tIF ~obj.TriggerEvent(eventQuack) THEN\r\t\t\t\tStdLog.String(\"No connected sinks\"); StdLog.Ln\r\t\t\tEND\r\t\tELSE\r\t\t\tStdLog.String(\"No object\"); StdLog.Ln\r\t\tEND\r\tEND TriggerQuack;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: TriggerFlap
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tIF obj # NIL THEN\r\t\t\tIF ~obj.TriggerEvent(eventFlap) THEN\r\t\t\t\tStdLog.String(\"No connected sinks\"); StdLog.Ln\r\t\t\tEND\r\t\tELSE\r\t\t\tStdLog.String(\"No object\"); StdLog.Ln\r\t\tEND\r\tEND TriggerFlap;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: TriggerPaddle
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tIF obj # NIL THEN\r\t\t\tIF ~obj.TriggerEvent(eventPaddle) THEN\r\t\t\t\tStdLog.String(\"No connected sinks\"); StdLog.Ln\r\t\t\tEND\r\t\tELSE\r\t\t\tStdLog.String(\"No object\"); StdLog.Ln\r\t\tEND\r\tEND TriggerPaddle;\r\t\rEND ComConnect.\r\r\r"
+                    attr: 0
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 23
+                      bodyPos: 2614
+                      bodyLen: 6
+                    attr: 0
+                    w: 168275
+                    h: 142875
+                  - text: " ComConnect.Init\r"
+                    attr: 0
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 24
+                      bodyPos: 2660
+                      bodyLen: 6
+                    attr: 0
+                    w: 168275
+                    h: 142875
+                  - text: " ComConnect.Release\r\r"
+                    attr: 0
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 25
+                      bodyPos: 2706
+                      bodyLen: 6
+                    attr: 0
+                    w: 168275
+                    h: 142875
+                  - text: " ComConnect.ObjectCreate\r"
+                    attr: 0
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 26
+                      bodyPos: 2752
+                      bodyLen: 6
+                    attr: 0
+                    w: 168275
+                    h: 142875
+                  - text: " ComConnect.ObjectRelease\r\r"
+                    attr: 0
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 27
+                      bodyPos: 2798
+                      bodyLen: 6
+                    attr: 0
+                    w: 168275
+                    h: 142875
+                  - text: " ComConnect.Sink1Connect\r"
+                    attr: 0
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 28
+                      bodyPos: 2844
+                      bodyLen: 6
+                    attr: 0
+                    w: 168275
+                    h: 142875
+                  - text: " ComConnect.Sink1Disconnect\r"
+                    attr: 0
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 29
+                      bodyPos: 2890
+                      bodyLen: 6
+                    attr: 0
+                    w: 168275
+                    h: 142875
+                  - text: " ComConnect.Sink2Connect\r"
+                    attr: 0
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 30
+                      bodyPos: 2936
+                      bodyLen: 6
+                    attr: 0
+                    w: 168275
+                    h: 142875
+                  - text: " ComConnect.Sink2Disconnect\r\r"
+                    attr: 0
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 31
+                      bodyPos: 2982
+                      bodyLen: 6
+                    attr: 0
+                    w: 168275
+                    h: 142875
+                  - text: " ComConnect.TriggerFlap\r"
+                    attr: 0
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 32
+                      bodyPos: 3028
+                      bodyLen: 6
+                    attr: 0
+                    w: 168275
+                    h: 142875
+                  - text: " ComConnect.TriggerPaddle\r"
+                    attr: 0
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 33
+                      bodyPos: 3074
+                      bodyLen: 6
+                    attr: 0
+                    w: 168275
+                    h: 142875
+                  - text: " ComConnect.TriggerQuack\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 38
+          bodyPos: 16730
+          bodyLen: 8

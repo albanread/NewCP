@@ -1,0 +1,468 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Dev\\Mod\\Browser.odc"
+  size: 44614
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 44483
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 44297
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 44211
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000021
+              defaultAttr:
+                font: Arial
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 25
+                bodyPos: 44332
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 43818
+                runListLen: 2682
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [4]
+                    font: "*"
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000000
+                  - # [5]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE DevBrowser;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- 20070123, bh, StringConst changed to show Unicode strings\r\t- 20070123, bh, ProcSysFlag call in Structure (sysflags for procedure types)\r\t- 20141027, center #19, full Unicode support for Component Pascal identifiers added\r\t- 20150513, center #43, extending the size of code procedures\r\t- 20150530, center #19, missing Utf-8 conversions added\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 165735
+                      h: 142875
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 165735
+                      h: 142875
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT\r\t\tKernel, Files, Fonts, Dates, Ports, Stores, Views, Properties, Dialog, Documents,\r\t\tTextModels, TextMappers, TextRulers, TextViews, TextControllers, StdDialog, StdFolds,\r\t\tDevCPM, DevCPT, HostRegistry;\r\r\tCONST\r\t\twidth = 170 * Ports.mm;\t"
+                    attr: 0
+                  - text: "(* view width *)"
+                    attr: 1
+                  - text: "\r\t\theight = 300 * Ports.mm;\r\r\t\t"
+                    attr: 0
+                  - text: "(* visibility *)"
+                    attr: 1
+                  - text: "\r\t\tinternal = 0; external = 1; externalR = 2; inPar = 3; outPar = 4;\r\r\t\t"
+                    attr: 0
+                  - text: "(* object modes *"
+                    attr: 1
+                  - text: ")\r\t\tvar = 1; varPar = 2; const = 3; field = 4; type = 5; lProc = 6; xProc = 7; cProc = 9; iProc = 10;\r\t\tmod = 11; head = 12; tProc = 13; ptrType = 31;\r\r\t\t"
+                    attr: 0
+                  - text: "(* structure forms *)"
+                    attr: 1
+                  - text: "\r\t\tundef = 0; bool = 2; sChar = 3; byte = 4; sInt = 5; int = 6; sReal = 7; real = 8;\r\t\tset = 9; sString = 10; nilTyp = 11; noTyp = 12; pointer = 13; procTyp = 14; comp = 15;\r\t\tchar = 16; string = 17; lInt = 18;\r\r\t\t"
+                    attr: 0
+                  - text: "(* composite structure forms *)"
+                    attr: 1
+                  - text: "\r\t\tbasic = 1; array = 2; dynArray = 3; record = 4;\r\r\t\t"
+                    attr: 0
+                  - text: "(* attribute flags (attr.adr, struct.attribute, proc.conval.setval) *)"
+                    attr: 1
+                  - text: "\r\t\tnewAttr = 16; absAttr = 17; limAttr = 18; empAttr = 19; extAttr = 20;\r\r\t\t"
+                    attr: 0
+                  - text: "(* additional scanner types *)"
+                    attr: 1
+                  - text: "\r\t\timport = 100; module = 101; semicolon = 102; becomes = 103; comEnd = 104;\r\r\t\tmodNotFoundKey = \"#Dev:ModuleNotFound\";\r\t\tnoSuchItemExportedKey = \"#Dev:NoSuchItemExported\";\r\t\tnoSuchExtItemExportedKey = \"#Dev:NoSuchExtItemExported\";\r\t\tnoModuleNameSelectedKey = \"#Dev:NoModuleNameSelected\";\r\t\tnoItemNameSelectedKey = \"#Dev:NoItemNameSelected\";\r\r\t\tregKey = \"Dev\\Browser\\\";\r\r\tTYPE\r\t\tTProcList = POINTER TO RECORD\r\t\t\tfld: DevCPT.Object;\r\t\t\tattr: SET;\t(* newAttr *)\r\t\t\tnext: TProcList\r\t\tEND;\r\r\tVAR\r\t\tglobal: RECORD\r\t\t\thints: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(* display low-level hints such as field offsets *)"
+                    attr: 1
+                  - text: "\r\t\t\tflatten: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(* include fields/bound procs of base types as well *)"
+                    attr: 1
+                  - text: "\r\t\t\thideHooks: BOOLEAN;\t(* hide hook procedures and interfaces *)\r\t\t\tclientinterface, extensioninterface: BOOLEAN;\r\t\t\tsectAttr, keyAttr: TextModels.Attributes;\t"
+                    attr: 0
+                  - text: "(* formatting of section and other keywords *)"
+                    attr: 1
+                  - text: "\r\t\t\tlevel: INTEGER;\t"
+                    attr: 0
+                  - text: "(* current indentation level *)"
+                    attr: 1
+                  - text: "\r\t\t\tgap: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(* request for lazy Ln, issued with next Indent *)"
+                    attr: 1
+                  - text: "\r\t\t\tsingleton: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(* selectively display one object's definition *)"
+                    attr: 1
+                  - text: "\r\t\t\tthisObj: DevCPT.Name;\t"
+                    attr: 0
+                  - text: "(* singleton => selected object *)"
+                    attr: 1
+                  - text: "\r\t\t\tout: TextMappers.Formatter;\t"
+                    attr: 0
+                  - text: "(* formatter used to produce definition text *)\r"
+                    attr: 1
+                  - text: "\t\t\tsystemUsed: BOOLEAN;\r\t\t\tcomUsed: BOOLEAN;\r\t\t\tmodUsed: ARRAY 127 OF BOOLEAN;\r\t\t\tpos: INTEGER\r\t\tEND;\r\t\tinp: Files.Reader;\r\t\timp: ARRAY 256 OF Kernel.Utf8Name;\r\t\tnum, lev, max: INTEGER;\r\r\t\toptions*: RECORD\r\t\t\thints*: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(* display low-level hints such as field offsets *)"
+                    attr: 1
+                  - text: "\r\t\t\tflatten*: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(* include fields/bound procs of base types as well *)"
+                    attr: 1
+                  - text: "\r\t\t\tformatted*: BOOLEAN;\r\t\t\tshints, sflatten, sformatted: BOOLEAN\t(* saved values *)\r\t\tEND;\r\r\tPROCEDURE IsHook(typ: DevCPT.Struct): BOOLEAN;\r\tBEGIN\r\t\tWHILE ((typ.form = pointer) OR (typ.form = comp)) & (typ.BaseTyp # NIL) DO typ := typ.BaseTyp END;\r\t\tRETURN (DevCPT.GlbMod[typ.mno].name^ = \"Kernel\") & (typ.strobj.name^ = \"Hook^\")\r\tEND IsHook;\r\r\t"
+                    attr: 0
+                  - text: "(* auxilliary *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE GetSelection (VAR text: TextModels.Model; VAR beg, end: INTEGER);\r\t\tVAR c: TextControllers.Controller;\r\tBEGIN\r\t\tc := TextControllers.Focus();\r\t\tIF (c # NIL) & c.HasSelection() THEN\r\t\t\ttext := c.text; c.GetSelection(beg, end)\r\t\tELSE\r\t\t\ttext := NIL\r\t\tEND\r\tEND GetSelection;\r\r\tPROCEDURE GetQualIdent (VAR mod, ident: DevCPT.Name; VAR t: TextModels.Model);\r\t\tVAR s: TextMappers.Scanner; beg, end, res: INTEGER;\r\tBEGIN\r\t\tGetSelection(t, beg, end);\r\t\tIF t # NIL THEN\r\t\t\ts.ConnectTo(t); s.SetOpts({7});\t"
+                    attr: 0
+                  - text: "(* acceptUnderscores *)"
+                    attr: 1
+                  - text: "\r\t\t\ts.SetPos(beg); s.Scan;\r\t\t\tIF (s.type = TextMappers.string) & (s.len < LEN(mod)) THEN\r\t\t\t\tKernel.StringToUtf8(s.string, mod, res); \r\t\t\t\ts.Scan;\r\t\t\t\tIF (s.type = TextMappers.char) & (s.char = \".\") & (s.Pos() "
+                    attr: 0
+                  - text: <=
+                    attr: 3
+                  - text: " end) THEN\r\t\t\t\t\ts.Scan;\r\t\t\t\t\tIF (s.type = TextMappers.string) & (s.len < LEN(ident)) THEN\r\t\t\t\t\t\tKernel.StringToUtf8(s.string, ident, res);\r\t\t\t\t\tELSE mod[0] := 0X; ident[0] := 0X\r\t\t\t\t\tEND\r\t\t\t\tELSE ident[0] := 0X\r\t\t\t\tEND\r\t\t\tELSE mod[0] := 0X; ident[0] := 0X\r\t\t\tEND\r\t\tELSE mod[0] := 0X; ident[0] := 0X\r\t\tEND\r\tEND GetQualIdent;\r\r\tPROCEDURE Scan (VAR s: TextMappers.Scanner);\r\tBEGIN\r\t\ts.Scan;\r\t\tIF s.type = TextMappers.string THEN\r\t\t\tIF s.string = \"IMPORT\" THEN s.type := import\r\t\t\tELSIF s.string = \"MODULE\" THEN s.type := module\r\t\t\tEND\r\t\tELSIF s.type = TextMappers.char THEN\r\t\t\tIF s.char = \";\" THEN s.type := semicolon\r\t\t\tELSIF s.char = \":\" THEN\r\t\t\t\tIF s.rider.char = \"=\" THEN s.rider.Read; s.type := becomes END\r\t\t\tELSIF s.char = \"(\" THEN\r\t\t\t\tIF s.rider.char = \"*\" THEN\r\t\t\t\t\ts.rider.Read;\r\t\t\t\t\tREPEAT Scan(s) UNTIL (s.type = TextMappers.eot) OR (s.type = comEnd);\r\t\t\t\t\tScan(s)\r\t\t\t\tEND\r\t\t\tELSIF s.char = \"*\" THEN\r\t\t\t\tIF s.rider.char = \")\" THEN s.rider.Read; s.type := comEnd END\r\t\t\tEND\r\t\tEND\r\tEND Scan;\r\r\tPROCEDURE CheckModName (VAR mod: DevCPT.Name; t: TextModels.Model);\r\t\tVAR s: TextMappers.Scanner; res: INTEGER;\r\tBEGIN\r\t\ts.ConnectTo(t); s.SetPos(0); Scan(s);\r\t\tIF s.type = module THEN\r\t\t\tScan(s);\r\t\t\tWHILE (s.type # TextMappers.eot) & (s.type # import) DO Scan(s) END;\r\t\t\tWHILE (s.type # TextMappers.eot) & (s.type # semicolon)\r\t\t\t\t\t& ((s.type # TextMappers.string) OR (s.string # mod)) DO Scan(s) END;\r\t\t\tIF s.type = TextMappers.string THEN\r\t\t\t\tScan(s);\r\t\t\t\tIF s.type = becomes THEN\r\t\t\t\t\tScan(s);\r\t\t\t\t\tIF s.type = TextMappers.string THEN\r\t\t\t\t\t\tKernel.StringToUtf8(s.string, mod, res); \r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND CheckModName;\r\r\r\tPROCEDURE NewRuler (): TextRulers.Ruler;\r\t\tVAR ra: TextRulers.Attributes; p: TextRulers.Prop;\r\tBEGIN\r\t\tNEW(p); p.valid := {TextRulers.right, TextRulers.opts};\r\t\tp.opts.val := {(*TextRulers.rightFixed*)}; p.opts.mask := p.opts.val;\r\t\tp.right := width;\r\t\tNEW(ra); ra.InitFromProp(p);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TextRulers.dir.New(TextRulers.dir.NewStyle(ra))\r\tEND NewRuler;\r\r\tPROCEDURE Append (VAR d: ARRAY OF CHAR; s: ARRAY OF SHORTCHAR);\r\t\tVAR l, ld, ls: INTEGER;\r\tBEGIN\r\t\tl := LEN(d); ld := LEN(d$); ls := LEN(s$);\r\t\tIF ld + ls >= l THEN\r\t\t\ts[l - ld - 1] := 0X; d := d + s;\r\t\t\td[l - 2] := \".\"; d[l - 3] := \".\"; d[l - 4] := \".\"\r\t\tELSE\r\t\t\td := d + s\r\t\tEND\r\tEND Append;\r\r\tPROCEDURE IsLegal (name: POINTER TO ARRAY OF SHORTCHAR): BOOLEAN;\r\t\tVAR i: INTEGER;\r\tBEGIN\r\t\tIF name^ = \"\" THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " FALSE END;\r\t\tIF name[0] = \"@\" THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " global.hints END;\r\t\ti := 0;\r\t\tWHILE name[i] # 0X DO INC(i) END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " name[i-1] # \"^\"\r\tEND IsLegal;\r\r\r\t"
+                    attr: 0
+                  - text: "(* output formatting *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE Char (ch: CHAR);\r\tBEGIN\r\t\tglobal.out.WriteChar(ch)\r\tEND Char;\r\r\tPROCEDURE String (IN s: ARRAY OF SHORTCHAR);\r\t\tVAR res: INTEGER; n: ARRAY 256 OF CHAR;\r\tBEGIN\r\t\tKernel.Utf8ToString(s, n, res); "
+                    attr: 0
+                  - text: "\r"
+                    attr: 4
+                  - text: "\t\tglobal.out.WriteString("
+                    attr: 0
+                  - text: n
+                    attr: 5
+                  - text: ")\r\tEND String;\r\r\tPROCEDURE StringConst (s: ARRAY OF SHORTCHAR; long: BOOLEAN);\r\t\tVAR i, x, y: INTEGER; quoted, first: BOOLEAN;\r\tBEGIN\r\t\tIF long THEN\r\t\t\ti := 0; REPEAT DevCPM.GetUtf8(s, y, i) UNTIL (y = 0) OR (y >= 100H);\r\t\t\tIF y = 0 THEN global.out.WriteString(\"LONG(\") END\r\t\tEND;\r\t\ti := 0; quoted := FALSE; first := TRUE;\r\t\tIF long THEN DevCPM.GetUtf8(s, x, i) ELSE x := ORD(s[i]); INC(i) END;\r\t\tWHILE x # 0 DO\r\t\t\tIF (x < ORD(\" \"))\r\t\t\t\t\tOR (x >= 7FH) & (x <= 9FH)\r\t\t\t\t\tOR (x >= 0D800H) & (x <= 0F8FFH)\r\t\t\t\t\tOR (x >= 0FFF0H) THEN\t"
+                    attr: 0
+                  - text: "(* nonprintable character *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tIF quoted THEN global.out.WriteChar('\"') END;\r\t\t\t\tIF ~first THEN global.out.WriteString(\" + \") END;\r\t\t\t\tIF x >= 0A00H THEN global.out.WriteIntForm(x, TextMappers.hexadecimal, 4, \"0\", FALSE)\r\t\t\t\tELSIF x >= 0A0H THEN global.out.WriteIntForm(x, TextMappers.hexadecimal, 3, \"0\", FALSE)\r\t\t\t\tELSE global.out.WriteIntForm(x, TextMappers.hexadecimal, 2, \"0\", FALSE)\r\t\t\t\tEND;\r\t\t\t\tglobal.out.WriteChar(\"X\");\r\t\t\t\tquoted := FALSE\r\t\t\tELSE\t"
+                    attr: 0
+                  - text: "(* printable character *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tIF ~quoted THEN\r\t\t\t\t\tIF ~first THEN global.out.WriteString(\" + \") END;\r\t\t\t\t\tglobal.out.WriteChar('\"')\r\t\t\t\tEND;\r\t\t\t\tglobal.out.WriteChar(CHR(x));\r\t\t\t\tquoted := TRUE\r\t\t\tEND;\r\t\t\tIF long THEN DevCPM.GetUtf8(s, x, i) ELSE x := ORD(s[i]); INC(i) END;\r\t\t\tfirst := FALSE\r\t\tEND;\r\t\tIF first THEN global.out.WriteString('\"\"') END;\r\t\tIF quoted THEN global.out.WriteChar('\"') END;\r\t\tIF long & (y = 0) THEN global.out.WriteChar(\")\") END\r\tEND StringConst;\r\r\tPROCEDURE ProperString (s: ARRAY OF SHORTCHAR);\r\t\tVAR i, res: INTEGER; str: ARRAY LEN(DevCPT.Name) OF CHAR;\r\tBEGIN\r\t\tIF s # \"\" THEN\r\t\t\tKernel.Utf8ToString(s, str, res);\r\t\t\ti := 0; WHILE (s[i] # 0X) & (s[i] # \"^\") DO global.out.WriteChar(str[i]); INC(i) END\r\t\tEND\r\tEND ProperString;\r\r\tPROCEDURE Keyword (s: ARRAY OF CHAR);\r\t\tVAR a: TextModels.Attributes;\r\tBEGIN\r\t\tIF global.keyAttr # NIL THEN a := global.out.rider.attr; global.out.rider.SetAttr(global.keyAttr) END;\r\t\tglobal.out.WriteString(s);\r\t\tIF global.keyAttr # NIL THEN global.out.rider.SetAttr(a) END\r\tEND Keyword;\r\r\tPROCEDURE Section (VAR out: TextMappers.Formatter; s: ARRAY OF CHAR);\r\t\tVAR a: TextModels.Attributes;\r\tBEGIN\r\t\tIF global.sectAttr # NIL THEN a := out.rider.attr; out.rider.SetAttr(global.sectAttr) END;\r\t\tout.WriteString(s);\r\t\tIF global.sectAttr # NIL THEN out.rider.SetAttr(a) END\r\tEND Section;\r\r\tPROCEDURE Int (i: INTEGER);\r\tBEGIN\r\t\tglobal.out.WriteInt(i)\r\tEND Int;\r\r\tPROCEDURE Hex (x, n: INTEGER);\r\tBEGIN\r\t\tIF n > 1 THEN Hex(x DIV 16, n - 1) END;\r\t\tx := x MOD 16;\r\t\tIF x >= 10 THEN global.out.WriteChar(CHR(x + ORD(\"A\") - 10))\r\t\tELSE global.out.WriteChar(CHR(x + ORD(\"0\")))\r\t\tEND\r\tEND Hex;\r\r\tPROCEDURE Ln;\r\tBEGIN\r\t\tglobal.out.WriteLn\r\tEND Ln;\r\r\tPROCEDURE Indent;\r\t\tVAR i: INTEGER;\r\tBEGIN\r\t\tIF global.gap THEN global.gap := FALSE; Ln END;\r\t\ti := global.level; WHILE i > 0 DO global.out.WriteTab; DEC(i) END\r\tEND Indent;\r\r\tPROCEDURE Guid (ext: DevCPT.ConstExt);\r\tBEGIN\r\t\tChar(\"{\");\r\t\tHex(ORD(ext[2]) + 256 * ORD(ext[3]), 4);\r\t\tHex(ORD(ext[0]) + 256 * ORD(ext[1]), 4);\r\t\tChar(\"-\");\r\t\tHex(ORD(ext[4]) + 256 * ORD(ext[5]), 4);\r\t\tChar(\"-\");\r\t\tHex(ORD(ext[6]) + 256 * ORD(ext[7]), 4);\r\t\tChar(\"-\");\r\t\tHex(ORD(ext[8]), 2);\r\t\tHex(ORD(ext[9]), 2);\r\t\tChar(\"-\");\r\t\tHex(ORD(ext[10]), 2);\r\t\tHex(ORD(ext[11]), 2);\r\t\tHex(ORD(ext[12]), 2);\r\t\tHex(ORD(ext[13]), 2);\r\t\tHex(ORD(ext[14]), 2);\r\t\tHex(ORD(ext[15]), 2);\r\t\tChar(\"}\")\r\tEND Guid;\r\r\r\t"
+                    attr: 0
+                  - text: "(* special marks *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE Hint (label: ARRAY OF SHORTCHAR; i: INTEGER; adj: BOOLEAN);\r\tBEGIN\r\t\tIF global.hints THEN\r\t\t\tChar(\"[\"); String(label);\r\t\t\tIF adj & (0 <= i) & (i < 10) THEN Char(TextModels.digitspace) END;\r\t\t\tInt(i);\r\t\t\tString(\"] \")\r\t\tEND\r\tEND Hint;\r\r\tPROCEDURE Hint3 (label1, label2, label3: ARRAY OF SHORTCHAR; i1, i2, i3: INTEGER);\r\tBEGIN\r\t\tIF global.hints THEN\r\t\t\tChar(\"[\"); String(label1); Int(i1); String(label2); Int(i2); String(label3); Int(i3); String(\"] \")\r\t\tEND\r\tEND Hint3;\r\r\tPROCEDURE Vis (i: INTEGER);\r\tBEGIN\r\t\tIF i # external THEN Char(\"-\") END\r\tEND Vis;\r\r\tPROCEDURE ProcSysFlag (flag: INTEGER);\r\tBEGIN\r\t\tIF flag # 0 THEN\r\t\t\tString(\" [\");\r\t\t\tIF flag = -10 THEN String(\"ccall\")\r\t\t\tELSE Int(flag)\r\t\t\tEND;\r\t\t\tChar(\"]\")\r\t\tEND\r\tEND ProcSysFlag;\r\r\tPROCEDURE ParSysFlag (flag: INTEGER);\r\t\tVAR pos: INTEGER;\r\tBEGIN\r\t\tIF flag # 0 THEN\r\t\t\tString(\" [\");\r\t\t\tpos := global.out.Pos();\r\t\t\tIF ODD(flag) THEN String(\"nil\") END;\r(*\r\t\t\tIF ODD(flag DIV 2) & (flag # 18) THEN\r\t\t\t\tIF global.out.Pos() # pos THEN String(\", \") END;\r\t\t\t\tString(\"in\")\r\t\t\tEND;\r\t\t\tIF ODD(flag DIV 4) & (flag # 12) THEN\r\t\t\t\tIF global.out.Pos() # pos THEN String(\", \") END;\r\t\t\t\tString(\"out\")\r\t\t\tEND;\r*)\r\t\t\tIF flag DIV 8 = 1 THEN\r\t\t\t\tIF global.out.Pos() # pos THEN String(\", \") END;\r\t\t\t\tString(\"new\")\r\t\t\tELSIF flag DIV 8 = 2 THEN\r\t\t\t\tIF global.out.Pos() # pos THEN String(\", \") END;\r\t\t\t\tString(\"iid\")\r\t\t\tELSIF flag DIV 8 # 0 THEN\r\t\t\t\tIF global.out.Pos() # pos THEN String(\", \") END;\r\t\t\t\tInt(flag DIV 8 * 8)\r\t\t\tEND;\r\t\t\tChar(\"]\")\r\t\tEND\r\tEND ParSysFlag;\r\r\tPROCEDURE StructSysFlag (typ: DevCPT.Struct);\r\t\tVAR flag: INTEGER;\r\tBEGIN\r\t\tflag := typ.sysflag;\r\t\tIF (flag # 0) & ((typ.form # pointer) OR (flag = 2)) THEN\r\t\t\tString(\" [\");\r\t\t\tIF flag = 1 THEN String(\"untagged\")\r\t\t\tELSIF flag = 2 THEN String(\"handle\")\r\t\t\tELSIF flag = 3 THEN String(\"noalign\")\r\t\t\tELSIF flag = 4 THEN String(\"align2\")\r\t\t\tELSIF flag = 5 THEN String(\"align4\")\r\t\t\tELSIF flag = 6 THEN String(\"align8\")\r\t\t\tELSIF flag = 7 THEN String(\"union\")\r\t\t\tELSIF flag = 10 THEN\r\t\t\t\tIF typ.ext # NIL THEN Char('\"'); String(typ.ext^); Char('\"')\r\t\t\t\tELSE String(\"interface\")\r\t\t\t\tEND\r\t\t\tELSIF flag = 20 THEN String(\"som\")\r\t\t\tELSE Int(flag)\r\t\t\tEND;\r\t\t\tChar(\"]\")\r\t\tEND\r\tEND StructSysFlag;\r\r\tPROCEDURE SysStrings (obj: DevCPT.Object);\r\tBEGIN\r\t\tIF global.hints & ((obj.entry # NIL) OR (obj.library # NIL)) THEN\r\t\t\tString(' [\"');\r\t\t\tIF obj.library # NIL THEN String(obj.library^); String('\", \"') END;\r\t\t\tIF obj.entry # NIL THEN String(obj.entry^) END;\r\t\t\tString('\"]')\r\t\tEND\r\tEND SysStrings;\r\r\r\t"
+                    attr: 0
+                  - text: "(* non-terminals *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE ^ Structure (typ: DevCPT.Struct);\r\r\tPROCEDURE Qualifier (mno: INTEGER);\r\tBEGIN\r\t\tIF (mno > 1) OR (mno = 1) & global.singleton THEN\r\t\t\tglobal.modUsed[mno] := TRUE;\r\t\t\tString(DevCPT.GlbMod[mno].name^); Char(\".\")\r\t\tEND\r\tEND Qualifier;\r\r\tPROCEDURE LocalName (obj: DevCPT.Object);\r\tBEGIN\r\t\tQualifier(0); String(obj.name^)\r\tEND LocalName;\r\r\tPROCEDURE TypName (typ: DevCPT.Struct; force: BOOLEAN);\r\tBEGIN\r\t\tIF force OR IsLegal(typ.strobj.name) THEN\r\t\t\tIF (typ.mno > 1) OR (typ.mno = 1)\r\t\t\t\t& ((typ.form >= pointer) OR (typ.BaseTyp # DevCPT.undftyp)) & global.singleton\r\t\t\tTHEN\r\t\t\t\tQualifier(typ.mno)\r\t\t\tELSIF typ = DevCPT.sysptrtyp THEN\t"
+                    attr: 0
+                  - text: "(* PTR is in SYSTEM *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tString(\"SYSTEM.\");\r\t\t\t\tglobal.systemUsed := TRUE\r\t\t\tELSIF\r\t\t\t\t(typ = DevCPT.guidtyp) OR (typ = DevCPT.restyp) OR (typ = DevCPT.iunktyp) OR (typ = DevCPT.punktyp)\r\t\t\tTHEN\r\t\t\t\tString(\"COM.\");\r\t\t\t\tglobal.comUsed := TRUE\r\t\t\tEND;\r\t\t\tIF force THEN ProperString(typ.strobj.name^) ELSE String(typ.strobj.name^) END\r\t\tELSE\r\t\t\tStructure(typ)\r\t\tEND\r\tEND TypName;\r\r\tPROCEDURE ParList (VAR par: DevCPT.Object);\r\tBEGIN\r\t\tIF par.mode = varPar THEN\r\t\t\tIF par.vis = inPar THEN Keyword(\"IN\")\r\t\t\tELSIF par.vis = outPar THEN Keyword(\"OUT\")\r\t\t\tELSE Keyword(\"VAR\")\r\t\t\tEND;\r\t\t\tParSysFlag(par.sysflag); Char(\" \")\r\t\tEND;\r\t\tString(par.name^);\r\t\tWHILE (par.link # NIL) & (par.link.typ = par.typ) & (par.link.mode = par.mode)\r\t\t\t\t& (par.link.vis = par.vis) & (par.link.sysflag = par.sysflag) DO\n\r\t\t\tpar := par.link; String(\", \"); String(par.name^)\r\t\tEND;\r\t\tString(\": \"); TypName(par.typ, FALSE)\r\tEND ParList;\r\r\tPROCEDURE Signature (result: DevCPT.Struct; par: DevCPT.Object);\r\t\tVAR paren, res: BOOLEAN;\r\tBEGIN\r\t\tres := result # DevCPT.notyp; paren := res OR (par # NIL);\r\t\tIF paren THEN String(\" (\") END;\r\t\tIF par # NIL THEN\r\t\t\tParList(par); par := par.link;\r\t\t\tWHILE par # NIL DO String(\"; \"); ParList(par); par := par.link END\r\t\tEND;\r\t\tIF paren THEN Char(\")\") END;\r\t\tIF res THEN String(\": \"); TypName(result, FALSE) END\r\tEND Signature;\r\r\tPROCEDURE TProcs (rec: DevCPT.Struct; fld: DevCPT.Object; oldProcs: TProcList; VAR newProcs: TProcList);\r\t\tVAR old: DevCPT.Object; p, elem: TProcList;\r\tBEGIN\r\t\tIF fld # NIL THEN\r\t\t\tTProcs(rec, fld.left, oldProcs, newProcs);\r\t\t\tIF (fld.mode = tProc) & IsLegal(fld.name) THEN\r\t\t\t\tDevCPT.FindBaseField(fld.name^, rec, old);\r\t\t\t\tIF (old = NIL) OR (fld.typ # old.typ) OR (* (rec.attribute # 0) & *) (fld.conval.setval # old.conval.setval)\r\t\t\t\tTHEN\r\t\t\t\t\tIF global.extensioninterface OR global.clientinterface THEN\r\t\t\t\t\t\t(* do not show methods with equal name *)\r\t\t\t\t\t\tp := oldProcs;\r\t\t\t\t\t\tWHILE (p # NIL) & (p.fld.name^ # fld.name^) DO p := p.next END\r\t\t\t\t\tEND;\r\t\t\t\t\tIF p = NIL THEN\r\t\t\t\t\t\tNEW(elem); elem.next := newProcs; newProcs := elem;\r\t\t\t\t\t\telem.fld := fld;\r\t\t\t\t\t\tIF old = NIL THEN INCL(elem.attr, newAttr) END;\r\t\t\t\t\t\tIF absAttr IN fld.conval.setval THEN INCL(elem.attr, absAttr)\r\t\t\t\t\t\tELSIF empAttr IN fld.conval.setval THEN INCL(elem.attr, empAttr)\r\t\t\t\t\t\tELSIF extAttr IN fld.conval.setval THEN INCL(elem.attr, extAttr)\r\t\t\t\t\t\tEND\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tTProcs(rec, fld.right, oldProcs, newProcs)\r\t\tEND\r\tEND TProcs;\r\r(*\r\tPROCEDURE AdjustTProcs (typ: DevCPT.Struct; fld: DevCPT.Object);\r\t\tVAR receiver, old: DevCPT.Object; base: DevCPT.Struct;\r\tBEGIN\r\t\tIF fld # NIL THEN\r\t\t\tAdjustTProcs(typ, fld.left);\r\t\t\tIF (fld.mode = tProc) & IsLegal(fld.name) THEN\r\t\t\t\tDevCPT.FindBaseField(fld.name^, typ, old);\r\t\t\t\tIF old # NIL THEN\r\t\t\t\t\tIF fld.conval.setval * {absAttr, empAttr, extAttr} = {} THEN\r\t\t\t\t\t\told.conval.setval := old.conval.setval - {absAttr, empAttr, extAttr}\r\t\t\t\t\tELSIF (extAttr IN fld.conval.setval) & (empAttr IN old.conval.setval) THEN\r\t\t\t\t\t\t(* do not list methods which only change attribute from empty to extensible *)\r\t\t\t\t\t\told.conval.setval := old.conval.setval + {extAttr} - {empAttr}\r\t\t\t\t\tEND;\r\t\t\t\t\tIF fld.typ # old.typ THEN (* do not show base methods of covariant overwritten methods *)\r\t\t\t\t\t\told.typ := fld.typ; old.conval.setval := {}\r\t\t\t\t\tEND;\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tAdjustTProcs(typ, fld.right)\r\t\tEND;\r\t\tIF (typ.BaseTyp # NIL) & (typ.BaseTyp # DevCPT.iunktyp) THEN\r\t\t\tAdjustTProcs(typ.BaseTyp, typ.BaseTyp.link)\r\t\tEND\r\tEND AdjustTProcs;\r*)\r\r\tPROCEDURE TypeboundProcs (typ: DevCPT.Struct; VAR cont: BOOLEAN; top: BOOLEAN;\r\t\t\t\t\t\t\t\t\t\t\t\tVAR list: TProcList; recAttr: INTEGER);\r\t\tVAR receiver: DevCPT.Object; new, p, q: TProcList;\r\tBEGIN\r\t\tIF (typ # NIL) & (typ # DevCPT.iunktyp) THEN\r\t\t\tTProcs(typ, typ.link, list, new);\r\r\t\t\tp := list;\r\t\t\tWHILE new # NIL DO\r\t\t\t\tq := new.next; new.next := p; p := new; new := q\r\t\t\tEND;\r\t\t\tlist := p;\r\r\t\t\tIF global.flatten THEN\r\t\t\t\tTypeboundProcs(typ.BaseTyp, cont, FALSE, list, recAttr);\r\t\t\t\tIF (typ.BaseTyp = NIL) OR (typ.BaseTyp = DevCPT.iunktyp) THEN\r(*\r\t\t\t\t\tIF global.extensioninterface & (recAttr IN {absAttr, extAttr}) THEN\r\t\t\t\t\t\tIF cont THEN Char(\";\") END;\r\t\t\t\t\t\tLn; Indent;\r\t\t\t\t\t\tString(\"(a: ANYPTR) FINALIZE-, \"); Keyword(\"NEW\"); String(\", \"); Keyword(\"EMPTY\");\r\t\t\t\t\t\tcont := TRUE\r\t\t\t\t\tEND\r*)\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tIF top THEN (* writeList *)\r\t\t\t\tWHILE list # NIL DO\r\t\t\t\t\tIF ~global.clientinterface & ~global.extensioninterface (* default *)\r\t\t\t\t\tOR global.clientinterface & (list.fld.vis = external)\r\t\t\t\t\tOR global.extensioninterface & (recAttr IN {absAttr, extAttr}) & (list.attr * {absAttr, empAttr, extAttr} # {})\r\t\t\t\t\tTHEN\r\r\t\t\t\t\t\tIF cont THEN Char(\";\") END;\r\t\t\t\t\t\tLn;\r\t\t\t\t\t\treceiver := list.fld.link;\r\t\t\t\t\t\tIndent; Hint(\"entry \", list.fld.num, TRUE);\r\t(*\r\t\t\t\t\t\tKeyword(\"PROCEDURE\"); String(\" (\");\r\t*)\r\t\t\t\t\t\tChar(\"(\");\r\t\t\t\t\t\tIF receiver.mode = varPar THEN\r\t\t\t\t\t\t\tIF receiver.vis = inPar THEN Keyword(\"IN\") ELSE Keyword(\"VAR\") END;\r\t\t\t\t\t\t\tChar(\" \")\r\t\t\t\t\t\tEND;\r\t\t\t\t\t\tString(receiver.name^); String(\": \");\r\t\t\t\t\t\tIF IsLegal(receiver.typ.strobj.name) & (receiver.typ.mno = 1) THEN\r\t\t\t\t\t\t\tString(receiver.typ.strobj.name^)\r\t\t\t\t\t\tELSE TypName(receiver.typ, FALSE)\r\t\t\t\t\t\tEND;\r\t\t\t\t\t\tString(\") \"); String(list.fld.name^); Vis(list.fld.vis);\r\t\t\t\t\t\tSysStrings(list.fld);\r\t\t\t\t\t\tSignature(list.fld.typ, receiver.link);\r\t\t\t\t\t\tIF newAttr IN list.attr THEN String(\", \"); Keyword(\"NEW\") END;\r\t\t\t\t\t\tIF absAttr IN list.attr THEN String(\", \"); Keyword(\"ABSTRACT\")\r\t\t\t\t\t\tELSIF empAttr IN list.attr THEN String(\", \"); Keyword(\"EMPTY\")\r\t\t\t\t\t\tELSIF extAttr IN list.attr THEN String(\", \"); Keyword(\"EXTENSIBLE\")\r\t\t\t\t\t\tEND;\r\t\t\t\t\t\tcont := TRUE\r\t\t\t\t\tEND;\r\t\t\t\t\tlist := list.next\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND TypeboundProcs;\r\r\tPROCEDURE Flds (typ: DevCPT.Struct; VAR cont: BOOLEAN);\r\t\tVAR fld: DevCPT.Object;\r\tBEGIN\r\t\tfld := typ.link;\r\t\tWHILE (fld # NIL) & (fld.mode = field) DO\r\t\t\tIF IsLegal(fld.name) THEN\r\t\t\t\tIF cont THEN Char(\";\") END;\r\t\t\t\tLn;\r\t\t\t\tIndent; Hint(\"offset \", fld.adr, TRUE);\r\t\t\t\tIF typ.mno > 1 THEN String(\"(* \"); TypName(typ, TRUE); String(\" *) \") END;\r\t\t\t\tString(fld.name^);\r\t\t\t\tWHILE (fld.link # NIL) & (fld.link.typ = fld.typ) & (fld.link.name # NIL) DO\r\t\t\t\t\tVis(fld.vis); fld := fld.link; String(\", \"); String(fld.name^)\r\t\t\t\tEND;\r\t\t\t\tVis(fld.vis); String(\": \"); TypName(fld.typ, FALSE);\r\t\t\t\tcont := TRUE\r\t\t\tEND;\r\t\t\tfld := fld.link\r\t\tEND\r\tEND Flds;\r\r\tPROCEDURE Fields (typ: DevCPT.Struct; VAR cont: BOOLEAN);\r\tBEGIN\r\t\tIF typ # NIL THEN\r\t\t\tIF global.flatten THEN Fields(typ.BaseTyp, cont) END;\r\t\t\tFlds(typ, cont)\r\t\tEND\r\tEND Fields;\r\r\tPROCEDURE BaseTypes (typ: DevCPT.Struct);\r\tBEGIN\r\t\tIF typ.BaseTyp # NIL THEN\r\t\t\tChar(\"(\"); TypName(typ.BaseTyp, TRUE);\r\t\t\tIF global.flatten THEN BaseTypes(typ.BaseTyp) END;\r\t\t\tChar(\")\")\r\t\tEND\r\tEND BaseTypes;\r\r\tPROCEDURE Structure (typ: DevCPT.Struct);\r\t\tVAR cont: BOOLEAN; p: TProcList;\r\tBEGIN\r\t\tINC(global.level);\r\t\tCASE typ.form OF\r\t\t  pointer:\r\t\t\tKeyword(\"POINTER\"); StructSysFlag(typ); Char(\" \");\r\t\t\tKeyword(\"TO\"); Char(\" \"); DEC(global.level); TypName(typ.BaseTyp, FALSE); INC(global.level)\r\t\t| procTyp:\r\t\t\tKeyword(\"PROCEDURE\"); ProcSysFlag(typ.sysflag); Signature(typ.BaseTyp, typ.link)\r\t\t| comp:\r\t\t\tCASE typ.comp OF\r\t\t\t  array:\r\t\t\t\tKeyword(\"ARRAY\"); StructSysFlag(typ); Char(\" \"); Int(typ.n); Char(\" \");\r\t\t\t\tKeyword(\"OF\"); Char(\" \"); TypName(typ.BaseTyp, FALSE)\r\t\t\t| dynArray:\r\t\t\t\tKeyword(\"ARRAY\"); StructSysFlag(typ); Char(\" \");\r\t\t\t\tKeyword(\"OF\"); Char(\" \"); TypName(typ.BaseTyp, FALSE)\r\t\t\t| record:\r\t\t\t\tIF typ.attribute = absAttr THEN Keyword(\"ABSTRACT \")\r\t\t\t\tELSIF typ.attribute = limAttr THEN Keyword(\"LIMITED \")\r\t\t\t\tELSIF typ.attribute = extAttr THEN Keyword(\"EXTENSIBLE \")\r\t\t\t\tEND;\r\t\t\t\tKeyword(\"RECORD\"); StructSysFlag(typ);\r\t\t\t\tChar(\" \"); Hint3(\"tprocs \", \", size \", \", align \", typ.n, typ.size, typ.align);\r\t\t\t\tcont := FALSE;\r\t\t\t\tBaseTypes(typ); Fields(typ, cont); TypeboundProcs(typ, cont, TRUE, p, typ.attribute);\r\t\t\t\tIF cont THEN Ln; DEC(global.level); Indent; INC(global.level) ELSE Char (\" \") END;\r\t\t\t\tKeyword(\"END\")\r\t\t\tEND\r\t\tELSE\r\t\t\tIF (typ.BaseTyp # DevCPT.undftyp) THEN TypName(typ.BaseTyp, FALSE) END\t(* alias structures *)\r\t\tEND;\r\t\tDEC(global.level)\r\tEND Structure;\r\r\tPROCEDURE Const (obj: DevCPT.Object);\r\t\tVAR con: DevCPT.Const; s: SET; i, x, y: INTEGER; r: REAL;\r\tBEGIN\r\t\tIndent; LocalName(obj); SysStrings(obj); String(\" = \");\r\t\tcon := obj.conval;\r\t\tCASE obj.typ.form OF\r\t\t  bool:\r\t\t\tIF con.intval = 1 THEN String(\"TRUE\") ELSE String(\"FALSE\") END\r\t\t| sChar, char:\r\t\t\tIF con.intval >= 0A000H THEN\r\t\t\t\tHex(con.intval, 5); Char(\"X\")\r\t\t\tELSIF con.intval >= 0100H THEN\r\t\t\t\tHex(con.intval, 4); Char(\"X\")\r\t\t\tELSIF con.intval >= 0A0H THEN\r\t\t\t\tHex(con.intval, 3); Char(\"X\")\r\t\t\tELSIF (con.intval >= 32) & (con.intval <= 126) THEN\r\t\t\t\tChar(22X); Char(CHR(con.intval)); Char(22X)\r\t\t\tELSE\r\t\t\t\tHex(con.intval, 2); Char(\"X\")\r\t\t\tEND\r\t\t| byte, sInt, int:\r\t\t\tInt(con.intval)\r\t\t| lInt:\r\t\t\ty := SHORT(ENTIER((con.realval + con.intval) / 4294967296.0));\r\t\t\tr := con.realval + con.intval - y * 4294967296.0;\r\t\t\tIF r > MAX(INTEGER) THEN r := r - 4294967296.0 END;\r\t\t\tx := SHORT(ENTIER(r));\r\t\t\tHex(y, 8); Hex(x, 8); Char(\"L\")\r\t\t| set:\r\t\t\tChar(\"{\"); i := 0; s := con.setval;\r\t\t\tWHILE i <= MAX(SET) DO\r\t\t\t\tIF i IN s THEN Int(i); EXCL(s, i);\r\t\t\t\t\tIF s # {} THEN String(\", \") END\r\t\t\t\tEND;\r\t\t\t\tINC(i)\r\t\t\tEND;\r\t\t\tChar(\"}\")\r\t\t| sReal, real:\r\t\t\tglobal.out.WriteReal(con.realval)\r\t\t| sString:\r\t\t\tStringConst(con.ext^, FALSE)\r\t\t| string:\r\t\t\tStringConst(con.ext^, TRUE)\r\t\t| nilTyp:\r\t\t\tKeyword(\"NIL\")\r\t\t| comp:\t(* guid *)\r\t\t\tChar(\"{\"); Guid(con.ext); Char(\"}\")\r\t\tEND;\r\t\tChar(\";\"); Ln\r\tEND Const;\r\r\tPROCEDURE AliasType (typ: DevCPT.Struct);\r\tBEGIN\r\t\tIF global.singleton & IsLegal(typ.strobj.name) THEN\r\t\t\tWHILE typ.BaseTyp # DevCPT.undftyp DO\r\t\t\t\tChar(\";\"); Ln; Indent;\r\t\t\t\tString(typ.strobj.name^); SysStrings(typ.strobj); String(\" = \");\r\t\t\t\tIF typ.form >= pointer THEN\r\t\t\t\t\tStructure(typ); typ := DevCPT.int16typ\r\t\t\t\tELSE\r\t\t\t\t\ttyp := typ.BaseTyp;\r\t\t\t\t\tTypName(typ, FALSE)\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND AliasType;\r\r\tPROCEDURE NotExtRec(typ: DevCPT.Struct): BOOLEAN;\r\tBEGIN\r\t\tRETURN (typ.form = comp) & ((typ.comp # record) OR ~(typ.attribute IN {absAttr, extAttr}))\r\t\t\tOR (typ.form = procTyp)\r\tEND NotExtRec;\r\r\tPROCEDURE Type (obj: DevCPT.Object);\r\tBEGIN\r\t\tIF global.hideHooks & IsHook(obj.typ) THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " END;\r\r\t\tIF global.extensioninterface\r(*\r\t\t& (obj.typ.strobj = obj) & ~((obj.typ.form < pointer) & (obj.typ.BaseTyp # DevCPT.undftyp))\r*)\r\t\t& (NotExtRec(obj.typ)\r\t\t\tOR\r\t\t\t(obj.typ.form = pointer) & ~IsLegal(obj.typ.BaseTyp.strobj.name) &\r\t\t\t\tNotExtRec(obj.typ.BaseTyp)\r\t\t)\r\r\t\tTHEN\r\t\t\tIF global.singleton THEN RETURN END;\r\t\t\tglobal.out.rider.SetAttr(TextModels.NewColor(global.out.rider.attr, Ports.grey50));\r\t\t\tIF global.pos < global.out.rider.Pos() THEN\r\t\t\t\tglobal.out.rider.Base().SetAttr(global.pos, global.out.rider.Pos()-1, global.out.rider.attr)\r\t\t\tEND\r\t\tEND;\r\r\t\tIndent; LocalName(obj); SysStrings(obj); String(\" = \");\r\t\tIF obj.typ.strobj # obj THEN\r\t\t\tTypName(obj.typ, FALSE);\r\t\t\tAliasType(obj.typ)\r\t\tELSIF (obj.typ.form < pointer) & (obj.typ.BaseTyp # DevCPT.undftyp) THEN\r\t\t\tTypName(obj.typ.BaseTyp, FALSE);\r\t\t\tAliasType(obj.typ.BaseTyp)\r\t\tELSE\r\t\t\tStructure(obj.typ)\r\t\tEND;\r\t\tChar(\";\"); Ln;\r\t\tglobal.gap := TRUE\r\tEND Type;\r\r\tPROCEDURE PtrType (obj: DevCPT.Object);\r\t\tVAR base: DevCPT.Object;\r\tBEGIN\r\t\tType(obj);\r\t\tbase := obj.typ.BaseTyp.strobj;\r\t\tIF (base # NIL) & (base # DevCPT.anytyp.strobj) & (base # DevCPT.iunktyp.strobj)\r\t\t\t\t& (base.vis # internal) & (base.typ.strobj # NIL) & ~(global.hideHooks & IsHook(base.typ)) THEN\r\t\t\t"
+                    attr: 0
+                  - text: "(* show named record with pointer; avoid repetition *)"
+                    attr: 1
+                  - text: "\r"
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\t\tIF global.extensioninterface\r\t\t& (base.typ.strobj = base) & ~((obj.typ.form < pointer) & (obj.typ.BaseTyp # DevCPT.undftyp))\r\t\t& (NotExtRec(base.typ)\r\t\t\tOR\r\t\t\t(base.typ.form = pointer) & ~IsLegal(base.typ.BaseTyp.strobj.name) &\r\t\t\t\tNotExtRec(base.typ.BaseTyp)\r\t\t)\r\r\t\tTHEN\r\t\t\tIF global.singleton THEN\r\t\t\t\tIF global.pos < global.out.rider.Pos() THEN\r\t\t\t\t\tglobal.out.rider.Base().Delete(global.pos, global.out.rider.Pos());\r\t\t\t\t\tglobal.out.rider.SetPos(global.pos)\r\t\t\t\tEND;\r\t\t\t\tRETURN\r\t\t\tEND;\r\t\t\tglobal.out.rider.SetAttr(TextModels.NewColor(global.out.rider.attr, Ports.grey50));\r\t\t\tIF global.pos < global.out.rider.Pos() THEN\r\t\t\t\tglobal.out.rider.Base().SetAttr(global.pos, global.out.rider.Pos()-1, global.out.rider.attr)\r\t\t\tEND\r\t\tEND;\r"
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\t\t\tglobal.gap := FALSE;\r\t\t\tIndent;\r\t\t\tString(base.name^); SysStrings(base); String(\" = \");\r\t\t\tIF base.typ.strobj # base THEN\r\t\t\t\tTypName(base.typ, FALSE);\r\t\t\t\tAliasType(obj.typ)\r\t\t\tELSIF (obj.typ.form < pointer) & (obj.typ.BaseTyp # DevCPT.undftyp) THEN\r\t\t\t\tTypName(obj.typ.BaseTyp, FALSE);\r\t\t\t\tAliasType(obj.typ.BaseTyp)\r\t\t\tELSE\r\t\t\t\tStructure(base.typ)\r\t\t\tEND;\r\t\t\tChar(\";\"); Ln;\r\t\t\tbase.vis := internal;\r\t\t\tglobal.gap := TRUE\r\t\tEND\r\tEND PtrType;\r\r\tPROCEDURE Var (obj: DevCPT.Object);\r\tBEGIN\r\t\tIF global.hideHooks & IsHook(obj.typ) THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " END;\r\t\tIndent; LocalName(obj); Vis(obj.vis); SysStrings(obj); String(\": \");\r\t\tTypName(obj.typ, FALSE); Char(\";\"); Ln\r\tEND Var;\r\r\tPROCEDURE Proc (obj: DevCPT.Object);\r\t\tVAR ext: DevCPT.ConstExt; i, m: INTEGER;\r\tBEGIN\r\t\tIF global.hideHooks &"
+                    attr: 0
+                  - text: " "
+                    attr: 3
+                  - text: "(obj.link # NIL) & (obj.link.link = NIL) & IsHook(obj.link.typ) THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " END;\r\t\tIF global.extensioninterface THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " END;\r\t\tIndent; Keyword(\"PROCEDURE\"); (* Char(\" \"); *)\r\t\tIF obj.mode = cProc THEN String(\" [code]\")\r\t\tELSIF obj.mode = iProc THEN String(\" [callback]\")\r\t\tELSE ProcSysFlag(obj.sysflag)\r\t\tEND;\r\t\tChar(\" \"); LocalName(obj);\r\t\t(*IF obj.mode # cProc THEN SysStrings(obj) END;*)\r\t\tSysStrings(obj);\r\t\tSignature(obj.typ, obj.link);\r\t\tIF (obj.mode = cProc) & global.hints THEN\r\t\t\tLn;\r\t\t\tINC(global.level); Indent;\r\t\t\text := obj.conval.ext;\r\t\t\tIF ext # NIL THEN m := LEN(ext^); i := 0;\r\t\t\t\tWHILE i < m DO\r\t\t\t\t\tglobal.out.WriteIntForm(ORD(ext^[i]), TextMappers.hexadecimal, 3, \"0\", TextMappers.showBase);\r\t\t\t\t\tINC(i);\r\t\t\t\t\tIF i < m THEN String(\", \") END;\r\t\t\t\tEND;\r\t\t\tEND;\r\t\t\tDEC(global.level)\r\t\tEND;\r\t\tChar(\";\"); Ln\r\tEND Proc;\r\r\r\t"
+                    attr: 0
+                  - text: "(* tree traversal *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE Objects (obj: DevCPT.Object; mode: SET);\r\t\tVAR m: BYTE; a: TextModels.Attributes;\r\tBEGIN\r\t\tIF obj # NIL THEN\r\t\t\tINC(lev); INC(num); max := MAX(max, lev);\r\t\t\tObjects(obj.left, mode);\r\t\t\tm := obj.mode; IF (m = type) & (obj.typ.form = pointer) THEN m := ptrType END;\r\t\t\tIF (m IN mode) & (obj.vis # internal) & (obj.name # NIL) &\r\t\t\t\t\t(~global.singleton OR (obj.name^ = global.thisObj)) THEN\r\t\t\t\tglobal.pos := global.out.rider.Pos(); a := global.out.rider.attr;\r\t\t\t\tCASE m OF\r\t\t\t\t  const: Const(obj)\r\t\t\t\t| type: Type(obj)\r\t\t\t\t| ptrType: PtrType(obj)\r\t\t\t\t| var: Var(obj)\r\t\t\t\t| xProc, cProc, iProc: Proc(obj)\r\t\t\t\tEND;\r\t\t\t\tglobal.out.rider.SetAttr(a)\r\t\t\tEND;\r\t\t\tObjects(obj.right, mode);\r\t\t\tDEC(lev)\r\t\tEND\r\tEND Objects;\r\r\r\t"
+                    attr: 0
+                  - text: "(* definition formatting *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE PutSection (VAR out: TextMappers.Formatter; s: ARRAY OF CHAR);\r\t\tVAR buf, def: TextModels.Model; i: INTEGER;\r\tBEGIN\r\t\tbuf := global.out.rider.Base();\r\t\tIF buf.Length() > 0 THEN\r\t\t\tIF ~global.singleton THEN Ln END;\r\t\t\tdef := out.rider.Base(); out.SetPos(def.Length());\r\t\t\tIF s # \"\" THEN\t"
+                    attr: 0
+                  - text: "(* prepend section keyword *)"
+                    attr: 1
+                  - text: "\r\t\t\t\ti := global.level - 1; WHILE i > 0 DO out.WriteTab; DEC(i) END;\r\t\t\t\tSection(out, s); out.WriteLn\r\t\t\tEND;\r\t\t\tdef.Append(buf);\r\t\t\tglobal.pos := 0;\r\t\t\tglobal.out.rider.SetPos(0)\r\t\tEND;\r\t\tglobal.gap := FALSE\r\tEND PutSection;\r\r\tPROCEDURE Scope (def: TextModels.Model; this: DevCPT.Name);\r\t\tVAR out: TextMappers.Formatter; i: INTEGER; a: TextModels.Attributes;\r\tBEGIN\r\t\tglobal.gap := FALSE; global.thisObj := this; global.singleton := (this # \"\");\r\t\tglobal.systemUsed := FALSE; global.comUsed := FALSE;\r\t\ti := 1; WHILE i < LEN(global.modUsed) DO global.modUsed[i] := FALSE; INC(i) END;\r\t\tout.ConnectTo(def);\r\t\tINC(global.level);\r\t\tIF ~(global.extensioninterface & global.singleton) THEN\r\t\t\tIF global.extensioninterface THEN\r\t\t\t\ta := global.out.rider.attr; global.out.rider.SetAttr(TextModels.NewColor(a, Ports.grey50))\r\t\t\tEND;\r\t\t\tObjects(DevCPT.GlbMod[1].right, {const});\r\t\t\tIF global.extensioninterface THEN global.out.rider.SetAttr(a) END;\r\t\t\tPutSection(out, \"CONST\")\r\t\tEND;\r\t\tObjects(DevCPT.GlbMod[1].right, {ptrType});\r\t\tObjects(DevCPT.GlbMod[1].right, {type}); PutSection(out, \"TYPE\");\r\t\tIF ~global.extensioninterface THEN\r\t\t\tObjects(DevCPT.GlbMod[1].right, {var}); PutSection(out, \"VAR\")\r\t\tEND;\r\t\tDEC(global.level);\r\t\tnum := 0; lev := 0; max := 0;\r\t\tObjects(DevCPT.GlbMod[1].right, {xProc, cProc}); PutSection(out, \"\")\r\tEND Scope;\r\r\tPROCEDURE Modules;\r\t\tVAR i, j, n: INTEGER;\r\tBEGIN\r\t\tn := 0; j := 2;\r\t\tIF global.systemUsed THEN INC(n) END;\r\t\tIF global.comUsed THEN INC(n) END;\r\t\tWHILE j < DevCPT.nofGmod DO\r\t\t\tIF global.modUsed[j] THEN INC(n) END;\r\t\t\tINC(j)\r\t\tEND;\r\t\tIF n > 0 THEN\r\t\t\tIndent; Section(global.out, \"IMPORT\"); INC(global.level);\r\t\t\tIF n < 10 THEN Char(\" \") ELSE Ln; Indent END;\r\t\t\ti := 0; j := 2;\r\t\t\tIF global.systemUsed THEN\r\t\t\t\tString(\"SYSTEM\"); INC(i);\r\t\t\t\tIF i < n THEN String(\", \") END\r\t\t\tEND;\r\t\t\tIF global.comUsed THEN\r\t\t\t\tString(\"COM\"); INC(i);\r\t\t\t\tIF i < n THEN String(\", \") END\r\t\t\tEND;\r\t\t\tWHILE i < n DO\r\t\t\t\tIF global.modUsed[j] THEN\r\t\t\t\t\tString(DevCPT.GlbMod[j].name^); INC(i);\r(*\r\t\t\t\t\tIF (DevCPT.GlbMod[j].strings # NIL) & (DevCPT.GlbMod[j].strings.ext # NIL) THEN\r\t\t\t\t\t\tString(' [\"'); String(DevCPT.GlbMod[j].strings.ext^); String('\"]')\r\t\t\t\t\tEND;\r*)\r\t\t\t\t\tIF i < n THEN\r\t\t\t\t\t\tChar(\",\");\r\t\t\t\t\t\tIF i MOD 10 = 0 THEN Ln; Indent ELSE Char(\" \") END\r\t\t\t\t\tEND\r\t\t\t\tEND;\r\t\t\t\tINC(j)\r\t\t\tEND;\r\t\t\tChar(\";\"); Ln; Ln\r\t\tEND\r\tEND Modules;\r\r\r\t"
+                    attr: 0
+                  - text: "(* compiler interfacing *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE OpenCompiler (mod: DevCPT.Name; VAR noerr: BOOLEAN);\r\t\tVAR null: TextModels.Model; main: DevCPT.Name;\r\tBEGIN\r\t\tnull := TextModels.dir.New();\r\t\tDevCPM.Init(null.NewReader(NIL), null);\r(*\r\t\tDevCPT.Init({}); DevCPT.Open(mod); DevCPT.SelfName := \"AvoidErr154\";\r*)\r\t\tDevCPT.Init({}); main := \"@mainMod\"; DevCPT.Open(main);\r\t\tDevCPT.processor := 0;\t"
+                    attr: 0
+                  - text: "(* accept all sym files *)"
+                    attr: 1
+                  - text: "\r\t\tDevCPT.Import(\"@notself\", mod, noerr);\r\t\tIF ~DevCPM.noerr THEN noerr := FALSE END\r\tEND OpenCompiler;\r\r\tPROCEDURE CloseCompiler;\r\tBEGIN\r\t\tDevCPT.Close;\r\t\tDevCPM.Close\r\tEND CloseCompiler;\r\r\r\tPROCEDURE Browse"
+                    attr: 0
+                  - text: " "
+                    attr: 3
+                  - text: "(\r\t\tident: DevCPT.Name; opts: ARRAY OF CHAR; VAR view: Views.View; VAR title: Views.Title\r\t);\r\t\tVAR def, buf: TextModels.Model; v: TextViews.View; h: BOOLEAN;\r\t\t\tp: Properties.BoundsPref; mod: DevCPT.Name; i: INTEGER; \r\t\t\tstr, str1: ARRAY LEN(DevCPT.Name) OF CHAR;\r\t\t\tres: INTEGER; n: DevCPT.Name;\r\tBEGIN\r\t\tmod := DevCPT.GlbMod[1].name^$;\r\t\ti := 0;\r\t\tglobal.hints := FALSE; global.flatten := FALSE; global.hideHooks := TRUE;\r\t\tglobal.clientinterface := FALSE; global.extensioninterface := FALSE;\r\t\tglobal.keyAttr := NIL; global.sectAttr := NIL;\r\r\t\tIF opts[0] = '@' THEN\r\t\t\tIF options.hints THEN opts := opts + \"+\" END;\r\t\t\tIF options.flatten THEN opts := opts + \"!\" END;\r\t\t\tIF options.formatted THEN opts := opts + \"/\" END\r\t\tEND;\r\r\t\tWHILE opts[i] # 0X DO\r\t\t\tCASE opts[i] OF\r\t\t\t| '+': global.hints := TRUE\r\t\t\t| '!': global.flatten := TRUE\r\t\t\t| '&': global.hideHooks := FALSE\r\t\t\t| '/':\r\t\t\t\t(* global.keyAttr := TextModels.NewStyle(TextModels.dir.attr, {Fonts.underline}); *)\r\t\t\t\tglobal.keyAttr := TextModels.NewWeight(TextModels.dir.attr, Fonts.bold);\r\t\t\t\tglobal.sectAttr := TextModels.NewWeight(TextModels.dir.attr, Fonts.bold)\r\t\t\t| 'c': global.clientinterface := TRUE\r\t\t\t| 'e' : global.extensioninterface := TRUE\r\t\t\tELSE\r\t\t\tEND;\r\t\t\tINC(i)\r\t\tEND;\r\t\tIF global.clientinterface & global.extensioninterface THEN\r\t\t\tglobal.clientinterface := FALSE; global.extensioninterface := FALSE\r\t\tEND;\r\t\tIF global.extensioninterface THEN global.hideHooks := FALSE END;\r\t\tdef := TextModels.dir.New();\r\t\tbuf := TextModels.dir.New(); global.out.ConnectTo(buf);\r\t\tIF ident # \"\" THEN\r\t\t\th := global.hideHooks; global.hideHooks := FALSE;\r\t\t\tglobal.level := 0; Scope(def, ident);\r\t\t\tglobal.hideHooks := h;\r\t\t\tdef.Append(buf);\r\t\t\tIF def.Length() > 0 THEN\r\t\t\t\tv := TextViews.dir.New(def);\r\t\t\t\tv.SetDefaults(NewRuler(), TextViews.dir.defAttr);\r\t\t\t\tp.w := Views.undefined; p.h := Views.undefined; Views.HandlePropMsg(v, p);\r"
+                    attr: 0
+                  - text: "\t\t\t\t"
+                    attr: 5
+                  - text: "n := mod$ + \".\" + ident; Kernel.Utf8ToString(n, title, res);"
+                    attr: 0
+                  - text: "\r"
+                    attr: 5
+                  - text: "\t\t\t\tview := Documents.dir.New(v, p.w, p.h)\r\t\t\tELSE\r\t\t\t\tKernel.Utf8ToString(mod$, str, res);\r\t\t\t\tKernel.Utf8ToString(ident$, str1, res);\r\t\t\t\ttitle := \"\";\r\t\t\t\tIF global.extensioninterface THEN\r\t\t\t\t\tDialog.ShowParamMsg(noSuchExtItemExportedKey, str, str1, \"\")\r\t\t\t\tELSE\r\t\t\t\t\tDialog.ShowParamMsg(noSuchItemExportedKey, str, str1, \"\")\r\t\t\t\tEND\r\t\t\tEND\r\t\tELSE\r\t\t\tglobal.level := 1; Scope(def, \"\");\r\t\t\tSection(global.out, \"END\"); Char(\" \"); String(mod); Char(\".\"); Ln;\r\t\t\tdef.Append(buf);\r\t\t\tSection(global.out, \"DEFINITION\"); Char(\" \"); String(mod);\r\t\t\tIF (DevCPT.GlbMod[1].library # NIL) THEN\r\t\t\t\tString(' [\"'); String(DevCPT.GlbMod[1].library^); String('\"]')\r\t\t\tELSIF DevCPT.impProc # 0 THEN\r\t\t\t\tglobal.out.WriteTab; String(\"(* nonportable\");\r\t\t\t\tIF DevCPT.impProc = 10 THEN String(\" (i386)\")\r\t\t\t\tELSIF DevCPT.impProc = 20 THEN String(\" (68k)\")\r\t\t\t\tEND;\r\t\t\t\tString(\" *)\")\r\t\t\tEND;\r\t\t\tChar(\";\"); Ln; Ln;\r\t\t\tModules;\r\t\t\tbuf.Append(def);\r\t\t\tv := TextViews.dir.New(buf);\r\t\t\tv.SetDefaults(NewRuler(), TextViews.dir.defAttr);\r"
+                    attr: 0
+                  - text: "\t\t\t"
+                    attr: 5
+                  - text: "Kernel.Utf8ToString(mod, title, res);"
+                    attr: 0
+                  - text: "\r"
+                    attr: 5
+                  - text: "\t\t\tview := Documents.dir.New(v, width, height)\r\t\tEND;\r\t\tglobal.out.ConnectTo(NIL);\r\t\tglobal.keyAttr := NIL; global.sectAttr := NIL\r\tEND Browse;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ShowInterface
+                    attr: 3
+                  - text: "* (opts: ARRAY OF CHAR);\r\t\tVAR noerr: BOOLEAN; mod, ident: DevCPT.Name; v: Views.View; title: Views.Title; t: TextModels.Model;\r\t\t\tstr: ARRAY 256 OF CHAR; res: INTEGER;\r\tBEGIN\r\t\tGetQualIdent(mod, ident, t);\r\t\tCheckModName(mod, t);\r\t\tIF mod # \"\" THEN\r\t\t\tOpenCompiler(mod, noerr);\r\t\t\tIF noerr & "
+                    attr: 0
+                  - text: "(DevCPT.GlbMod[1] # NIL) & (DevCPT.GlbMod[1].name^ = mod) "
+                    attr: 3
+                  - text: "THEN\r\t\t\t\tBrowse(ident, opts, v, title);\r\t\t\t\tIF v # NIL THEN\r\t\t\t\t\tIF global.clientinterface THEN Append(title, \" (client interface)\")\r\t\t\t\t\tELSIF global.extensioninterface THEN Append(title, \" (extension interface)\")\r\t\t\t\t\tEND;\r\t\t\t\t\tViews.OpenAux(v, title)\r\t\t\t\tEND\r\t\t\tELSE Kernel.Utf8ToString(mod$, str, res); Dialog.ShowParamMsg(modNotFoundKey, str, \"\", \"\")\r\t\t\tEND;\r\t\t\tCloseCompiler\r\t\tELSE Dialog.ShowMsg(noModuleNameSelectedKey)\r\t\tEND;\r\t\tKernel.Cleanup\r\tEND ShowInterface;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ImportSymFile
+                    attr: 3
+                  - text: "* (f: Files.File; OUT s: Stores.Store);\r\t\tVAR v: Views.View; title: Views.Title; noerr: BOOLEAN;\r\tBEGIN\r\t\tASSERT(f # NIL, 20);\r\t\tDevCPM.file := f;\r\t\tOpenCompiler(\"@file\", noerr);\r\t\tIF noerr THEN\r\t\t\tBrowse(\"\", \"\", v, title);\r\t\t\ts := v\r\t\tEND;\r\t\tCloseCompiler;\r\t\tDevCPM.file := NIL;\r\t\tKernel.Cleanup\r\tEND ImportSymFile;\r\r\r"
+                    attr: 0
+                  - text: "\t(* codefile browser *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE RWord (VAR x: INTEGER);\r\t\tVAR b: BYTE; y: INTEGER;\r\tBEGIN\r\t\tinp.ReadByte(b); y := b MOD 256;\r\t\tinp.ReadByte(b); y := y + 100H * (b MOD 256);\r\t\tinp.ReadByte(b); y := y + 10000H * (b MOD 256);\r\t\tinp.ReadByte(b); x := y + 1000000H * b\r\tEND RWord;\r\r\tPROCEDURE RNum (VAR x: INTEGER);\r\t\tVAR b: BYTE; s, y: INTEGER;\r\tBEGIN\r\t\ts := 0; y := 0; inp.ReadByte(b);\r\t\tWHILE b < 0 DO INC(y, ASH(b + 128, s)); INC(s, 7); inp.ReadByte(b) END;\r\t\tx := ASH((b + 64) MOD 128 - 64, s) + y\r\tEND RNum;\r\r\tPROCEDURE RName (VAR name: ARRAY OF SHORTCHAR);\r\t\tVAR b: BYTE; i, n: INTEGER;\r\tBEGIN\r\t\ti := 0; n := LEN(name) - 1; inp.ReadByte(b);\r\t\tWHILE (i < n) & (b # 0) DO name[i] := SHORT(CHR(b)); INC(i); inp.ReadByte(b) END;\r\t\tWHILE b # 0 DO inp.ReadByte(b) END;\r\t\tname[i] := 0X\r\tEND RName;\r\r\tPROCEDURE RLink;\r\t\tVAR x: INTEGER;\r\tBEGIN\r\t\tRNum(x);\r\t\tWHILE x # 0 DO RNum(x); RNum(x) END\r\tEND RLink;\r\r\tPROCEDURE RShort (p: INTEGER; OUT x: INTEGER);\r\t\tVAR b0, b1: BYTE;\r\tBEGIN\r\t\tinp.ReadByte(b0); inp.ReadByte(b1);\r\t\tIF p = 10 THEN x := b0 MOD 256 + b1 * 256\t"
+                    attr: 0
+                  - text: "(* little endian *)"
+                    attr: 1
+                  - text: "\r\t\tELSE x := b1 MOD 256 + b0 * 256"
+                    attr: 0
+                  - text: "\t(* big endian *)"
+                    attr: 1
+                  - text: "\r\t\tEND\r\tEND RShort;\r\r\tPROCEDURE ReadHeader (file: Files.File; VAR view: Views.View; VAR title: Views.Title);\r\t\tVAR n, i, p, fp, hs, ms, ds, cs, vs, m, res: INTEGER; name: Kernel.Utf8Name; first: BOOLEAN;\r\t\t\ttext: TextModels.Model; v: TextViews.View; fold: StdFolds.Fold; d: Dates.Date; t: Dates.Time;\r\t\t\tstr: ARRAY 64 OF CHAR;\r\tBEGIN\r\t\ttext := TextModels.dir.New(); global.out.ConnectTo(text);\r\t\tinp := file.NewReader(NIL);\r\t\tinp.SetPos(0); RWord(n);\r\t\tIF n = 6F4F4346H THEN\r\t\t\tRWord(p); RWord(hs); RWord(ms); RWord(ds); RWord(cs); RWord(vs);\r\t\t\tRNum(n); RName(name); Kernel.Utf8ToString(name, title, res); i := 0;\r\t\t\tWHILE i < n DO RName(imp[i]); INC(i) END;\r\t\t\tString(\"MODULE \"); String(name); Ln;\r\t\t\tString(\"processor: \");\r\t\t\tIF p = 10 THEN String(\"80x86\")\r\t\t\tELSIF p = 20 THEN String(\"68000\")\r\t\t\tELSIF p = 30 THEN String(\"PPC\")\r\t\t\tELSIF p = 40 THEN String(\"SH3\")\r\t\t\tELSE Int(p)\r\t\t\tEND;\r\t\t\tLn;\r\t\t\tString(\"meta size: \"); Int(ms); Ln;\r\t\t\tString(\"desc size: \"); Int(ds); Ln;\r\t\t\tString(\"code size: \"); Int(cs); Ln;\r\t\t\tString(\"data size: \"); Int(vs); Ln;\r\t\t\tinp.SetPos(hs + ms + 12);\r\t\t\tRShort(p, d.year); RShort(p, d.month); RShort(p, d.day);\r\t\t\tRShort(p, t.hour); RShort(p, t.minute); RShort(p, t.second);\r\t\t\tString(\"compiled: \");\r\t\t\tDates.DateToString(d, Dates.short, str); global.out.WriteString(str); String(\"  \");\r\t\t\tDates.TimeToString(t, str); global.out.WriteString(str); Ln;\r\t\t\tInt(n); String(\" imports:\"); Ln;\r\t\t\tinp.SetPos(hs + ms + ds + cs);\r\t\t\tRLink; RLink; RLink; RLink; RLink; RLink; i := 0;\r\t\t\tWHILE i < n DO\r\t\t\t\tglobal.out.WriteTab; String(imp[i]); global.out.WriteTab;\r\t\t\t\tRNum(p);\r\t\t\t\tIF p # 0 THEN\r\t\t\t\t\tfold := StdFolds.dir.New(StdFolds.expanded, \"\", TextModels.dir.New());\r\t\t\t\t\tglobal.out.WriteView(fold); Char(\" \"); first := TRUE;\r\t\t\t\t\tWHILE p # 0 DO\r\t\t\t\t\t\tRName(name); RNum(fp);\r\t\t\t\t\t\tIF p = 2 THEN RNum(m) END;\r\t\t\t\t\t\tIF p # 1 THEN RLink END;\r\t\t\t\t\t\tIF name # \"\" THEN\r\t\t\t\t\t\t\tIF ~first THEN String(\", \") END;\r\t\t\t\t\t\t\tfirst := FALSE; String(name)\r\t\t\t\t\t\tEND;\r\t\t\t\t\t\tRNum(p)\r\t\t\t\t\tEND;\r\t\t\t\t\tChar(\" \");\r\t\t\t\t\tfold := StdFolds.dir.New(StdFolds.expanded, \"\", NIL);\r\t\t\t\t\tglobal.out.WriteView(fold);\r\t\t\t\t\tfold.Flip(); global.out.SetPos(text.Length())\r\t\t\t\tEND;\r\t\t\t\tINC(i); Ln\r\t\t\tEND\r\t\tELSE String(\"wrong file tag: \"); Hex(n, 8)\r\t\tEND;\r\t\tv := TextViews.dir.New(text);\r\t\tv.SetDefaults(NewRuler(), TextViews.dir.defAttr);\r\t\tview := Documents.dir.New(v, width, height);\r\t\tglobal.out.ConnectTo(NIL);\r\t\tinp := NIL\r\tEND ReadHeader;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ShowCodeFile
+                    attr: 3
+                  - text: "*;\r\t\tVAR t: TextModels.Model; f: Files.File; v: Views.View; title: Views.Title; mod, ident: DevCPT.Name;\r\t\t\tname: Files.Name; loc: Files.Locator; str: ARRAY 256 OF CHAR; res: INTEGER;\r\tBEGIN\r\t\tGetQualIdent(mod, ident, t);\r\t\tIF mod # \"\" THEN\r\t\t\tKernel.Utf8ToString(mod$, str, res);\r\t\t\tStdDialog.GetSubLoc(str, \"Code\", loc, name);\r\t\t\tf := Files.dir.Old(loc, name, Files.shared);\r\t\t\tIF f # NIL THEN\r\t\t\t\tReadHeader(f, v, title);\r\t\t\t\tIF v # NIL THEN Views.OpenAux(v, title) END\r\t\t\tELSE Dialog.ShowParamMsg(modNotFoundKey, str, \"\", \"\")\r\t\t\tEND\r\t\tELSE Dialog.ShowMsg(noModuleNameSelectedKey)\r\t\tEND\r\tEND ShowCodeFile;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ImportCodeFile
+                    attr: 3
+                  - text: "* (f: Files.File; OUT s: Stores.Store);\r\t\tVAR v: Views.View; title: Views.Title;\r\tBEGIN\r\t\tASSERT(f # NIL, 20);\r\t\tReadHeader(f, v, title);\r\t\ts := v\r\tEND ImportCodeFile;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SaveOptions
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tHostRegistry.WriteBool(regKey + 'hints', options.hints);\r\t\tHostRegistry.WriteBool(regKey + 'flatten', options.flatten);\r\t\tHostRegistry.WriteBool(regKey + 'formatted', options.formatted);\r\t\toptions.sflatten := options.flatten;\r\t\toptions.shints := options.hints;\r\t\toptions.sformatted := options.formatted\r\tEND SaveOptions;\r\r\tPROCEDURE SaveGuard*(VAR par: Dialog.Par);\r\tBEGIN\r\t\tpar.disabled := (options.sflatten = options.flatten)\r\t\t& (options.shints = options.hints)\r\t\t& (options.sformatted = options.formatted)\r\tEND SaveGuard;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Init
+                    attr: 3
+                  - text: "*;\r\t\tVAR res: INTEGER;\r\tBEGIN\r\t\tHostRegistry.ReadBool(regKey + 'hints', options.hints, res);\r\t\tIF res # 0 THEN options.hints := FALSE END;\r\t\tHostRegistry.ReadBool(regKey + 'flatten', options.flatten, res);\r\t\tIF res # 0 THEN options.flatten := TRUE END;\r\t\tHostRegistry.ReadBool(regKey + 'formatted', options.formatted, res);\r\t\tIF res # 0 THEN options.formatted := FALSE END;"
+                    attr: 0
+                  - text: "\r\t\t"
+                    attr: 1
+                  - text: "Dialog.Update(options);\r\t\toptions.sflatten := options.flatten;\r\t\toptions.shints := options.hints;\r\t\toptions.sformatted := options.formatted\r\tEND Init;\r\rBEGIN\r\tInit\rEND DevBrowser.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 29
+          bodyPos: 44579
+          bodyLen: 8

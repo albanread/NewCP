@@ -1,0 +1,264 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Dev\\Mod\\Cmds.odc"
+  size: 11008
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 10877
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 10691
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 10605
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 127000
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 101600
+                color: 0x00000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 10726
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 10212
+                runListLen: 1783
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE DevCmds; \r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT\r\t\tServices, Files, Fonts, Ports, Stores, Models, Views, Controllers, Dialog,\r\t\tContainers, Controls, Properties, Documents,\r\t\tTextModels, TextMappers, TextRulers, TextViews, TextControllers,\r\t\tStdDialog, StdCmds,\r\t\tHostMenus;\r\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: OpenModuleList
+                    attr: 3
+                  - text: "*;\r\t\tVAR v: Views.View;\r\t\t\tc: TextControllers.Controller; s: TextMappers.Scanner;\r\t\t\tloc: Files.Locator; name: Files.Name;\r\t\t\tbeg, end: INTEGER; error, one: BOOLEAN;\r\tBEGIN\r\t\tc := TextControllers.Focus();\r\t\tIF c # NIL THEN\r\t\t\ts.ConnectTo(c.text);\r\t\t\tIF c.HasSelection() THEN c.GetSelection(beg, end)\r\t\t\tELSE beg := 0; end := c.text.Length()\r\t\t\tEND;\r\t\t\ts.SetPos(beg); s.Scan; one := FALSE;\r\t\t\tWHILE (s.start < end) & (s.type = TextMappers.string) & (s.len < LEN(name)) DO\r\t\t\t\ts.Scan; one := TRUE\r\t\t\tEND;\r\t\t\tIF one & ((s.start >= end) OR (s.type = TextMappers.eot)) THEN\r\t\t\t\ts.SetPos(beg); s.Scan; error := FALSE;\r\t\t\t\tWHILE (s.start < end) & (s.type = TextMappers.string) & ~error DO\r\t\t\t\t\tStdDialog.GetSubLoc(s.string, \"Mod\", loc, name);\r\t\t\t\t\tIF loc # NIL THEN\r\t\t\t\t\t\tv := Views.OldView(loc, name);\r\t\t\t\t\t\tIF v # NIL THEN\r\t\t\t\t\t\t\tViews.Open(v, loc, name, NIL)\r\t\t\t\t\t\tELSE\r\t\t\t\t\t\t\tDialog.ShowParamMsg(\"#System:CannotOpenFile\", name, \"\", \"\");\r\t\t\t\t\t\t\terror := TRUE\r\t\t\t\t\t\tEND\r\t\t\t\t\tELSE\r\t\t\t\t\t\tDialog.ShowParamMsg(\"#Dev:ModuleNotFound\", s.string, \"\", \"\");\r\t\t\t\t\t\terror := TRUE\r\t\t\t\t\tEND;\r\t\t\t\t\ts.Scan\r\t\t\t\tEND\r\t\t\tELSE Dialog.ShowMsg(\"#Dev:NotOnlyModNames\")\r\t\t\tEND;\r\t\t\ts.ConnectTo(NIL)\r\t\tELSE Dialog.ShowMsg(\"#Text:FocusShouldBeText\")\r\t\tEND\r\tEND OpenModuleList;\r\t\r\tPROCEDURE Scan (VAR s: TextMappers.Scanner);\r\t\tVAR ch: CHAR; i, max: INTEGER;\r\tBEGIN\r\t\ts.Skip(ch);\r\t\tIF s.type # TextMappers.eot THEN\r\t\t\tIF ch = '\"' THEN s.Scan;\r\t\t\tELSE i := 0; max := LEN(s.string)-1;\r\t\t\t\tWHILE (i < max) & ~s.rider.eot & (ch > \" \") DO\r\t\t\t\t\ts.string[i] := ch; s.rider.ReadChar(ch); INC(i);\r\t\t\t\tEND;\r\t\t\t\ts.string[i] := 0X; s.len := SHORT(i);\r\t\t\t\tIF s.len > 0 THEN s.type := TextMappers.string\r\t\t\t\tELSE s.type := TextMappers.invalid\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND Scan;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: OpenFileList
+                    attr: 3
+                  - text: "*;\t(* "
+                    attr: 0
+                  - text: "Pre: focus is text and has a selection"
+                    attr: 1
+                  - text: " *)\r\t\tVAR c: TextControllers.Controller; s: TextMappers.Scanner; beg, end: INTEGER;\r\tBEGIN\r\t\tc := TextControllers.Focus();\r\t\tIF (c # NIL) & c.HasSelection() THEN \r\t\t\tc.GetSelection(beg, end);\r\t\t\ts.ConnectTo(c.text);\r\t\t\ts.SetPos(beg); Scan(s);\r\t\t\tWHILE (s.type # TextMappers.eot) & (s.start < end) DO\r\t\t\t\tIF s.type = TextMappers.string THEN StdCmds.OpenDoc(s.string) END;\r\t\t\t\tScan(s);\r\t\t\tEND\r\t\tELSE Dialog.ShowMsg(\"#Text:FocusShouldBeText\")\r\t\tEND\r\tEND OpenFileList;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: FlushResources
+                    attr: 3
+                  - text: "*;\r\t\tVAR m: HostMenus.Menu; i: StdDialog.Item;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: "(* flush menu guards *)"
+                    attr: 1
+                  - text: "\r\t\tm := HostMenus.FirstMenu();\r\t\tWHILE m # NIL DO\r\t\t\ti := m.firstItem; WHILE i # NIL DO StdDialog.ClearGuards(i); i := i.next END;\r\t\t\tm := m.next\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: "(* flush string cache *)"
+                    attr: 1
+                  - text: "\r\t\tDialog.FlushMappings\r\tEND FlushResources;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: RevalidateView
+                    attr: 3
+                  - text: "*;\r\t\tVAR ops: Controllers.PollOpsMsg; v: Views.View;\r\tBEGIN\r\t\tControllers.PollOps(ops);\r\t\tIF ops.singleton # NIL THEN v := ops.singleton\r\t\tELSE v := Controllers.FocusView();\r\t\tEND;\r\t\tIF v # NIL THEN Views.RevalidateView(v) END\r\tEND RevalidateView;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: RevalidateViewGuard
+                    attr: 3
+                  - text: "* (VAR par: Dialog.Par);\r\t\tVAR ops: Controllers.PollOpsMsg; v: Views.View;\r\tBEGIN\r\t\tControllers.PollOps(ops);\r\t\tIF ops.singleton # NIL THEN v := ops.singleton\r\t\tELSE v := Controllers.FocusView();\r\t\tEND;\r\t\tIF (v = NIL) OR ~Views.IsInvalid(v) THEN par.disabled := TRUE END\r\tEND RevalidateViewGuard;\r\r\tPROCEDURE SetDefault (c: Views.View; default: BOOLEAN);\r\t\tVAR p: Controls.Prop; msg: Properties.SetMsg;\r\tBEGIN\r\t\tNEW(p); p.valid := {Controls.opt0}; p.opt[Controls.default] := default;\r\t\tmsg.prop := p; Views.HandlePropMsg(c, msg)\r\tEND SetDefault;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetDefaultButton
+                    attr: 3
+                  - text: "*;\r\t\tVAR s, v: Views.View; c: Containers.Controller; script: Stores.Operation;\r\tBEGIN\r\t\tc := Containers.Focus();\r\t\tIF c # NIL THEN\r\t\t\ts := c.Singleton();\r\t\t\tc.SelectAll(FALSE);\r\t\t\tViews.BeginScript(c.ThisView(), \"#Dev:SetDefault\", script);\r\t\t\tc.GetFirstView(Containers.any, v);\r\t\t\tWHILE v # NIL DO SetDefault(v, FALSE); c.GetNextView(Containers.any, v) END;\r\t\t\tIF s # NIL THEN SetDefault(s, TRUE); c.SetSingleton(s) END;\r\t\t\tViews.EndScript(c.ThisView(), script)\r\t\tELSE Dialog.Beep\r\t\tEND\r\tEND SetDefaultButton;\r\r\tPROCEDURE SetCancel (c: Views.View; cancel: BOOLEAN);\r\t\tVAR p: Controls.Prop; msg: Properties.SetMsg;\r\tBEGIN\r\t\tNEW(p); p.valid := {Controls.opt1}; p.opt[Controls.cancel] := cancel;\r\t\tmsg.prop := p; Views.HandlePropMsg(c, msg)\r\tEND SetCancel;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetCancelButton
+                    attr: 3
+                  - text: "*;\r\t\tVAR s, v: Views.View; c: Containers.Controller; script: Stores.Operation;\r\tBEGIN\r\t\tc := Containers.Focus();\r\t\tIF c # NIL THEN\r\t\t\ts := c.Singleton();\r\t\t\tc.SelectAll(FALSE);\r\t\t\tViews.BeginScript(c.ThisView(), \"#Dev:SetCancel\", script);\r\t\t\tc.GetFirstView(Containers.any, v);\r\t\t\tWHILE v # NIL DO SetCancel(v, FALSE); c.GetNextView(Containers.any, v) END;\r\t\t\tIF s # NIL THEN SetCancel(s, TRUE); c.SetSingleton(s) END;\r\t\t\tViews.EndScript(c.ThisView(), script)\r\t\tELSE Dialog.Beep\r\t\tEND\r\tEND SetCancelButton;\r\r\tPROCEDURE NewRuler (): TextRulers.Ruler;\r\t\tCONST mm = Ports.mm; pt = Ports.point;\r\t\tVAR p: TextRulers.Prop;\r\tBEGIN\r\t\tNEW(p);\r\t\tp.valid := {TextRulers.right, TextRulers.tabs, TextRulers.opts};\r\t\tp.opts.val := {TextRulers.rightFixed}; p.opts.mask := p.opts.val;\r\t\tp.tabs.len := 7;\r\t\tp.right := 200 * mm;\r\t\tp.tabs.tab[0].stop := 40 * mm; p.tabs.tab[0].type := {TextRulers.rightTab};\r\t\tp.tabs.tab[1].stop := 50 * mm; p.tabs.tab[1].type := {TextRulers.rightTab};\r\t\tp.tabs.tab[2].stop := 55 * mm;\r\t\tp.tabs.tab[3].stop := 90 * mm;\r\t\tp.tabs.tab[4].stop := 100 * mm;\r\t\tp.tabs.tab[5].stop := 140 * mm;\r\t\tp.tabs.tab[6].stop := 180 * mm; p.tabs.tab[6].type := {TextRulers.rightTab};\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TextRulers.dir.NewFromProp(p)\r\tEND NewRuler;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ShowControlList
+                    attr: 3
+                  - text: "*;\r\t"
+                    attr: 0
+                  - text: "(** Guard: StdCmds.ContainerGuard **)"
+                    attr: 1
+                  - text: "\r\t\tVAR c: Containers.Controller; v: Views.View; s, t: Stores.TypeName;\r\t\t\tmsg: Properties.PollMsg; p: Properties.Property;\r\t\t\tout: TextMappers.Formatter; str: Dialog.String; w, h: INTEGER;\r\r\t\tPROCEDURE WriteEntry(name, value: Dialog.String);\r\t\tBEGIN\r\t\t\tout.WriteTab; out.WriteString(name); out.WriteTab; out.WriteString(value); out.WriteLn\r\t\tEND WriteEntry;\r\r\tBEGIN\r\t\tc := Containers.Focus();\r\t\tIF c # NIL THEN\r\t\t\tout.ConnectTo(TextModels.dir.New());out.WriteView(NewRuler());\r\t\t\tout.rider.SetAttr(TextModels.NewStyle(out.rider.attr, {Fonts.italic}));\r\t\t\tout.WriteString(\"type\"); out.WriteTab;\r\t\t\tout.WriteString(\"width\"); out.WriteTab;\r\t\t\tout.WriteString(\"height\"); out.WriteTab;\r\t\t\tout.WriteString(\"label\"); out.WriteTab;\r\t\t\tout.WriteString(\"link\"); out.WriteTab;\r\t\t\tout.WriteString(\"guard\"); out.WriteTab;\r\t\t\tout.WriteString(\"notifier\"); out.WriteTab;\r\t\t\tout.WriteString(\"level\"); out.WriteTab;\r\t\t\tout.WriteLn; out.WriteLn;\r\t\t\tout.rider.SetAttr(TextModels.NewStyle(out.rider.attr, {}));\r\t\t\tc.GetFirstView(Containers.any, v);\r\t\t\tWHILE v # NIL DO\r\t\t\t\tServices.GetTypeName(v, t);\r\t\t\t\ts := \"#Dev:\"; s := s + t;\r\t\t\t\tDialog.MapString(s, s);\r\t\t\t\tout.WriteString(s); out.WriteTab;\r\t\t\t\tv.context.GetSize(w, h);\r\t\t\t\tout.WriteInt(w DIV Ports.point); out.WriteTab;\r\t\t\t\tout.WriteInt(h DIV Ports.point); out.WriteTab;\r\t\t\t\tmsg.prop := NIL; Views.HandlePropMsg(v, msg);\r\t\t\t\tp := msg.prop; WHILE (p # NIL) & ~(p IS Controls.Prop) DO p := p.next END;\r\t\t\t\tIF p # NIL THEN\r\t\t\t\t\tWITH p: Controls.Prop DO\r\t\t\t\t\t\tIF Controls.label IN p.valid THEN out.WriteString(p.label) END; out.WriteTab;\r\t\t\t\t\t\tIF Controls.link IN p.valid THEN out.WriteString(p.link) END; out.WriteTab;\r\t\t\t\t\t\tIF Controls.level IN p.valid THEN out.WriteTab; out.WriteTab; out.WriteInt(p.level) END;\r\t\t\t\t\t\tIF (Controls.guard IN p.valid) & (p.guard # \"\") OR\r\t\t\t\t\t\t\t(Controls.notifier IN p.valid) & (p.notifier # \"\") THEN\r\t\t\t\t\t\t\tout.WriteLn; out.WriteTab; out.WriteTab; out.WriteTab; out.WriteTab; out.WriteTab;\r\t\t\t\t\t\t\tIF Controls.guard IN p.valid THEN out.WriteString(p.guard) END; out.WriteTab;\r\t\t\t\t\t\t\tIF Controls.notifier IN p.valid THEN out.WriteString(p.notifier) END\r\t\t\t\t\t\tEND\r\t\t\t\t\tEND\r\t\t\t\tEND;\r\t\t\t\tout.WriteLn;\r\t\t\t\tc.GetNextView(Containers.any, v)\r\t\t\tEND;\r\t\t\tViews.OpenAux(Documents.dir.New(TextViews.dir.New(out.rider.Base()), 200*Ports.mm, -1), \"Controls\");\r\t\tEND\r\tEND ShowControlList;\r\rEND DevCmds.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 10973
+          bodyLen: 8

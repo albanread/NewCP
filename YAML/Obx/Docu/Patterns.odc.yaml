@@ -1,0 +1,168 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Docu\\Patterns.odc"
+  size: 3409
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 3278
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 3092
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 3006
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 152400
+                dsc: 25400
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 9
+                bodyPos: 3006
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 2492
+                runListLen: 554
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                flow:
+                  - text: "Overview by Example: ObxPatterns"
+                    attr: 0
+                  - text: "\r\rThis view displays a series of concentric rectangles. The view contains no special state; its display is completely determined by its current size alone.\r\rThe view implementation is very simple. However, there are three aspects of this program which are noteworthy:\r\rFirst, although the view has no state, it still extends the "
+                    attr: 1
+                  - text: Internalize
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: Externalize
+                    attr: 2
+                  - text: " procedures bound to type "
+                    attr: 1
+                  - text: View
+                    attr: 2
+                  - text: ". This is done only in order to store a version number of the view. It is strongly recommended to store such a version number even in the simplest of views, in order to provide file format extensibility for future versions of the view implementation.\r\rSecond, the view contains no special state of its own. However, its display may differ, depending on its current size. A view does not manage its own size, since its size is completely determined by the context in which the view is embedded. A view can determine its current size by asking its context via the context's "
+                    attr: 1
+                  - text: GetSize
+                    attr: 2
+                  - text: " procedure.\r\rThird, while a view's size is completely controlled by its context, the context still may (but need not!) cooperate when the size is determined. For example, when a view is newly inserted into a container, the container may ask the view for its preferred size; or when it wants to change the embedded view's current size, it may give the view the opportunity to define constraints on its size, e.g., by limiting width or height to some minimal or maximal values. The container can cooperate by sending a size preference ("
+                    attr: 1
+                  - text: Properties.SizePrefs
+                    attr: 2
+                  - text: ") to the embedded view, containing the proposed sizes (which may be undefined). The view thus gets the opportunity to modify these values to indicate its preferences.\r\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenDoc('Obx/Mod/Patterns')"
+                      body:
+                        - text: ObxPatterns  sources
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r\r"
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 8
+                      bodyPos: 918
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: " \"ObxPatterns.Deposit; StdCmds.Open\"\r\rNote: in order to change the pattern view's size, first select it using command "
+                    attr: 1
+                  - text: "Edit->Select Document"
+                    attr: 2
+                  - text: ", then manipulate one of the resize handles.\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 13
+          bodyPos: 3374
+          bodyLen: 8

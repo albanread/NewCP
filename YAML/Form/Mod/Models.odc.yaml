@@ -1,0 +1,640 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Form\\Mod\\Models.odc"
+  size: 18734
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 18603
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 18417
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 18331
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 127000
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: "*"
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 18456
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 17942
+                runListLen: 2723
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE FormModels;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tpurpose\t= \"\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT Ports, Stores, Models, Views, Properties, Containers;\r\r\tCONST\r\t\t"
+                    attr: 0
+                  - text: minViewSize
+                    attr: 3
+                  - text: "* = 4 * Ports.point;\t"
+                    attr: 0
+                  - text: "(** size of smallest embedded view **)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: maxViewSize
+                    attr: 3
+                  - text: "* = 1000 * Ports.mm;\t"
+                    attr: 0
+                  - text: "(** size of largest embedded view **)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: "(* range of currently supported versions *)"
+                    attr: 1
+                  - text: "\r\t\tminVersion = 0; maxBaseVersion = 0; maxStdVersion = 0;\r\r\tTYPE\r\t\t"
+                    attr: 0
+                  - text: "(* interface types *)"
+                    attr: 1
+                  - text: "\r\r\t\t"
+                    attr: 0
+                  - text: Model
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Containers.Model) END;\r\r\t\t"
+                    attr: 0
+                  - text: Directory
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD END;\r\r\t\t"
+                    attr: 0
+                  - text: Context
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Models.Context) END;\r\t\t\r\t\t\r\t\t"
+                    attr: 0
+                  - text: Reader
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD\r\t\t\tview*: Views.View;\t"
+                    attr: 0
+                  - text: "(** most recently read view **)"
+                    attr: 1
+                  - text: "\r\t\t\tl*, t*, r*, b*: INTEGER\t"
+                    attr: 0
+                  - text: "(** bounding box of most recently read view **)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: Writer
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD END;\r\r\r\t\t"
+                    attr: 0
+                  - text: UpdateMsg
+                    attr: 3
+                  - text: "* = RECORD (Models.UpdateMsg)\r\t\t\t"
+                    attr: 0
+                  - text: "(** the receiver of this message must not switch on any marks **)"
+                    attr: 1
+                  - text: "\r\t\t\tl*, t*, r*, b*: INTEGER\t"
+                    attr: 0
+                  - text: "(** (l < r) & (b < t) **)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\r\t\t"
+                    attr: 0
+                  - text: "(* concrete types *)"
+                    attr: 1
+                  - text: "\r\r\t\tStdDirectory = POINTER TO RECORD (Directory) END;\r\r\t\tStdModel = POINTER TO RECORD (Model)\r\t\t\tcontexts: StdContext\t"
+                    attr: 0
+                  - text: "(* list of views in form, ordered from bottom to top *)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\tStdContext = POINTER TO RECORD (Context)\r\t\t\tnext: StdContext;\t"
+                    attr: 0
+                  - text: "(* next upper view *)"
+                    attr: 1
+                  - text: "\r\t\t\tform: StdModel;\t"
+                    attr: 0
+                  - text: "(* form # NIL *)"
+                    attr: 1
+                  - text: "\r\t\t\tview: Views.View;\t"
+                    attr: 0
+                  - text: "(* view # NIL *)"
+                    attr: 1
+                  - text: "\r\t\t\tl, t, r, b: INTEGER\t"
+                    attr: 0
+                  - text: "(* (r - l >= minViewSize) & (b - t >= minViewSize) *)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\tStdReader = POINTER TO RECORD (Reader)\r\t\t\tform: StdModel;\t"
+                    attr: 0
+                  - text: "(* form # NIL *)"
+                    attr: 1
+                  - text: "\r\t\t\tpos: StdContext\t"
+                    attr: 0
+                  - text: "(* next ReadView: read view above pos *)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\tStdWriter = POINTER TO RECORD (Writer)\r\t\t\tform: StdModel;\t"
+                    attr: 0
+                  - text: "(* form # NIL *)"
+                    attr: 1
+                  - text: "\r\t\t\tpos: StdContext\t"
+                    attr: 0
+                  - text: "(* next WriteView: insert view above pos *)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\r\t\tFormOp = POINTER TO RECORD (Stores.Operation)\r\t\t\tdel, ins: StdContext;\t"
+                    attr: 0
+                  - text: "(* ((del = NIL) # (ins = NIL)) OR (del = ins) *)"
+                    attr: 1
+                  - text: "\r\t\t\tpos: StdContext\t"
+                    attr: 0
+                  - text: "(* ins # NIL => next Do: insert ins above pos *)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\tResizeOp = POINTER TO RECORD (Stores.Operation)\r\t\t\tcontext: StdContext;\t"
+                    attr: 0
+                  - text: "(* context # NIL *)"
+                    attr: 1
+                  - text: "\r\t\t\tl, t, r, b: INTEGER\t"
+                    attr: 0
+                  - text: "(* (r - l >= minViewSize) & (b - t >= minViewSize) *)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\tReplaceViewOp = POINTER TO RECORD (Stores.Operation)\r\t\t\tcontext: StdContext;\t"
+                    attr: 0
+                  - text: "(* context # NIL *)"
+                    attr: 1
+                  - text: "\r\t\t\tview: Views.View\t"
+                    attr: 0
+                  - text: "(* view # NIL *)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\r\tVAR "
+                    attr: 0
+                  - text: dir
+                    attr: 3
+                  - text: "-, "
+                    attr: 0
+                  - text: stdDir
+                    attr: 3
+                  - text: "-: Directory;\t"
+                    attr: 0
+                  - text: "(** (dir # NIL) & (stdDir # NIL) **)"
+                    attr: 1
+                  - text: "\r\r\r\t"
+                    attr: 0
+                  - text: "(** Model **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (f: Model) "
+                    attr: 0
+                  - text: GetEmbeddingLimits
+                    attr: 3
+                  - text: "* (OUT minW, maxW,\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tminH, maxH: INTEGER), EXTENSIBLE;\r\tBEGIN\r\t\tminH := minViewSize; minW := minViewSize;\r\t\tmaxH := maxViewSize; maxW := maxViewSize\r\tEND GetEmbeddingLimits;\r\r\tPROCEDURE (f: Model) "
+                    attr: 0
+                  - text: Insert
+                    attr: 3
+                  - text: "* (v: Views.View; l, t, r, b: INTEGER), NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(**\r\t\tv # NIL\t20\r\t\tv.init\t21\r\t\tv.context = NIL\t22\r\t\tl <= r\t23\r\t\tt <= b\t24\r\t**)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (f: Model) "
+                    attr: 0
+                  - text: Delete
+                    attr: 3
+                  - text: "* (v: Views.View), NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(** v in f\t20 **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (f: Model) "
+                    attr: 0
+                  - text: Resize
+                    attr: 3
+                  - text: "* (v: Views.View; l, t, r, b: INTEGER), NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(**\r\t\tv in f\t20\r\t\tl <= r\t21\r\t\tt <= b\t22\r\t**)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (f: Model) "
+                    attr: 0
+                  - text: Top
+                    attr: 3
+                  - text: "* (): Views.View, NEW, ABSTRACT;\r\r\tPROCEDURE (f: Model) "
+                    attr: 0
+                  - text: PutAbove
+                    attr: 3
+                  - text: "* (v, pos: Views.View), NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(**\r\t\tv in f\t20\r\t\t(pos = NIL) OR (pos in f)\t21\r\t**)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (f: Model) "
+                    attr: 0
+                  - text: Move
+                    attr: 3
+                  - text: "* (v: Views.View; dx, dy: INTEGER), NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(** v in f\t20 **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (f: Model) "
+                    attr: 0
+                  - text: Copy
+                    attr: 3
+                  - text: "* (VAR v: Views.View; dx, dy: INTEGER), NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(** v in f\t20 **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (f: Model) "
+                    attr: 0
+                  - text: NewReader
+                    attr: 3
+                  - text: "* (old: Reader): Reader, NEW, ABSTRACT;\r\r\tPROCEDURE (f: Model) "
+                    attr: 0
+                  - text: NewWriter
+                    attr: 3
+                  - text: "* (old: Writer): Writer, NEW, ABSTRACT;\r\r\tPROCEDURE (f: Model) "
+                    attr: 0
+                  - text: ViewAt
+                    attr: 3
+                  - text: "* (x, y: INTEGER): Views.View, NEW, ABSTRACT;\r\r\tPROCEDURE (f: Model) "
+                    attr: 0
+                  - text: NofViews
+                    attr: 3
+                  - text: "* (): INTEGER, NEW, ABSTRACT;\r\r\r\t"
+                    attr: 0
+                  - text: "(** Directory **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: New
+                    attr: 3
+                  - text: "* (): Model, NEW, ABSTRACT;\r\r\r\t"
+                    attr: 0
+                  - text: "(** Context **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (c: Context) "
+                    attr: 0
+                  - text: ThisModel
+                    attr: 3
+                  - text: "* (): Model, ABSTRACT;\r\r\tPROCEDURE (c: Context) "
+                    attr: 0
+                  - text: GetRect
+                    attr: 3
+                  - text: "* (OUT l, t, r, b: INTEGER), NEW, ABSTRACT;\r\r\r\t"
+                    attr: 0
+                  - text: "(** Reader **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (rd: Reader) "
+                    attr: 0
+                  - text: Set
+                    attr: 3
+                  - text: "* (pos: Views.View), NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(** (pos = NIL) OR (pos in r's form)\t20 **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (rd: Reader) "
+                    attr: 0
+                  - text: ReadView
+                    attr: 3
+                  - text: "* (OUT v: Views.View), NEW, ABSTRACT;\r\r\r\t"
+                    attr: 0
+                  - text: "(** Writer **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (wr: Writer) "
+                    attr: 0
+                  - text: Set
+                    attr: 3
+                  - text: "* (pos: Views.View), NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(** (pos = NIL) OR (pos in w's form)\t20 **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (wr: Writer) "
+                    attr: 0
+                  - text: WriteView
+                    attr: 3
+                  - text: "* (v: Views.View; l, t, r, b: INTEGER), NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(**\r\t\tv # NIL\t20\r\t\tv.init\t21\r\t\tv.context = NIL\t22\r\t\tl <= r\t23\r\t\tt <= b\t24\r\t**)"
+                    attr: 1
+                  - text: "\r\r\r\t"
+                    attr: 0
+                  - text: "(* StdModel *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE ThisContext (f: StdModel; view: Views.View): StdContext;\r\t\tVAR c: StdContext;\r\tBEGIN\r\t\tc := f.contexts; WHILE (c # NIL) & (c.view # view) DO c := c.next END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " c\r\tEND ThisContext;\r\r\tPROCEDURE NewContext (form: StdModel; view: Views.View; l, t, r, b: INTEGER): StdContext;\r\t\tVAR c: StdContext;\r\tBEGIN\r\t\tASSERT(form # NIL, 100); ASSERT(view.context = NIL, 101);\r\t\tIF r - l < minViewSize THEN r := l + minViewSize END;\r\t\tIF b - t < minViewSize THEN b := t + minViewSize END;\r\t\tNEW(c); c.form := form; c.view := view; c.l := l; c.t := t; c.r := r; c.b := b;\r\t\tStores.Join(form, view);\r\t\tview.InitContext(c);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " c\r\tEND NewContext;\r\r\tPROCEDURE InsertAbove (c, pos: StdContext);\r\tBEGIN\r\t\tIF pos = NIL THEN\r\t\t\tc.next := NIL; c.form.contexts := c\r\t\tELSE\r\t\t\tc.next := pos.next; pos.next := c\r\t\tEND\r\tEND InsertAbove;\r\r\tPROCEDURE (f: StdModel) Internalize (VAR rd: Stores.Reader);\r\t\tVAR thisVersion, l, t, r, b, x: INTEGER; top, h: StdContext; v: Views.View;\r\tBEGIN\r\t\trd.ReadVersion(minVersion, maxStdVersion, thisVersion);\r\t\tIF ~rd.cancelled THEN\r\t\t\trd.ReadVersion(0, 0, thisVersion); rd.ReadInt(x);\t"
+                    attr: 0
+                  - text: "(* backward compatibility with Rel. 1.3 *)"
+                    attr: 1
+                  - text: "\r\t\t\tViews.ReadView(rd, v); top := NIL;\r\t\t\tWHILE v # NIL DO\r\t\t\t\trd.ReadInt(l); rd.ReadInt(t); rd.ReadInt(r); rd.ReadInt(b);\r\t\t\t\th := NewContext(f, v, l, t, r, b);\r\t\t\t\tInsertAbove(h, top); top := h;\r\t\t\t\tViews.ReadView(rd, v)\r\t\t\tEND\r\t\tEND\r\tEND Internalize;\r\r\tPROCEDURE (f: StdModel) Externalize (VAR wr: Stores.Writer);\r\t\tVAR c: StdContext;\r\tBEGIN\r\t\twr.WriteVersion(maxStdVersion);\r\t\twr.WriteVersion(0); wr.WriteInt(0);\t"
+                    attr: 0
+                  - text: "(* backward compatibility with Rel. 1.3 *)"
+                    attr: 1
+                  - text: "\r\t\tc := f.contexts;\r\t\tWHILE c # NIL DO\r\t\t\tIF Stores.ExternalizeProxy(c.view) # NIL THEN\r\t\t\t\tViews.WriteView(wr, c.view);\r\t\t\t\twr.WriteInt(c.l); wr.WriteInt(c.t);\r\t\t\t\twr.WriteInt(c.r); wr.WriteInt(c.b)\r\t\t\tEND;\r\t\t\tc := c.next\r\t\tEND;\r\t\twr.WriteStore(NIL)\r\tEND Externalize;\r\r\tPROCEDURE (f: StdModel) CopyFrom (source: Stores.Store);\r\t\tVAR c, top, h: StdContext;\r\tBEGIN\r\t\tWITH source: StdModel DO\r\t\t\tc := source.contexts; top := NIL;\r\t\t\tWHILE c # NIL DO\r\t\t\t\th := NewContext(f, Views.CopyOf(c.view, Views.deep), c.l, c.t, c.r, c.b);\r\t\t\t\tInsertAbove(h, top); top := h;\r\t\t\t\tc := c.next\r\t\t\tEND\r\t\tEND\r\tEND CopyFrom;\r\r\tPROCEDURE (f: StdModel) InitFrom (source: Containers.Model);\r\tBEGIN\r\t\tf.contexts := NIL\r\tEND InitFrom;\r\r\tPROCEDURE (f: StdModel) ReplaceView (old, new: Views.View);\r\t\tVAR op: ReplaceViewOp; c: StdContext;\r\tBEGIN\r\t\tc := ThisContext(f, old); ASSERT(c # NIL, 20);\r\t\tASSERT(new # NIL, 21); ASSERT((new.context = NIL) OR (new.context = c), 23);\r\t\tIF old # new THEN\r\t\t\t(* Stores.InitDomain(new, f.domain); *) Stores.Join(f, new);\r\t\t\tnew.InitContext(c);\t"
+                    attr: 0
+                  - text: "(* both views share same context *)"
+                    attr: 1
+                  - text: "\r\t\t\tNEW(op); op.context := c; op.view := new;\r\t\t\tModels.Do(f, \"#System:ReplaceView\", op)\r\t\tEND\r\tEND ReplaceView;\r\r\tPROCEDURE (f: StdModel) Insert (v: Views.View; l, t, r, b: INTEGER);\r\t\tVAR op: FormOp; c, h, top: StdContext;\r\tBEGIN\r\t\tASSERT(v # NIL, 20); ASSERT(v.context = NIL, 22);\r\t\tASSERT(l <= r, 23); ASSERT(t <= b, 24);\r\t\th := f.contexts; top := NIL; WHILE h # NIL DO top := h; h := h.next END;\r\t\tc := NewContext(f, v, l, t, r, b);\r\t\tNEW(op); op.del := NIL; op.ins := c; op.pos := top;\r\t\tModels.Do(f, \"#System:Insertion\", op)\r\tEND Insert;\r\r\tPROCEDURE (f: StdModel) Delete (v: Views.View);\r\t\tVAR op: FormOp; c: StdContext;\r\tBEGIN\r\t\tc := ThisContext(f, v); ASSERT(c # NIL, 20);\r\t\tNEW(op); op.del := c; op.ins := NIL; op.pos := NIL;\r\t\tModels.Do(f, \"#System:Deletion\", op)\r\tEND Delete;\r\r\tPROCEDURE (f: StdModel) Resize (v: Views.View; l, t, r, b: INTEGER);\r\t\tVAR op: ResizeOp; c: StdContext;\r\tBEGIN\r\t\tc := ThisContext(f, v); ASSERT(c # NIL, 20);\r\t\tASSERT(r >= l, 21); ASSERT(b >= t, 22);\r\t\tIF r - l < minViewSize THEN r := l + minViewSize END;\r\t\tIF b - t < minViewSize THEN b := t + minViewSize END;\r\t\tNEW(op); op.context := c; op.l := l; op.t := t; op.r := r; op.b := b;\r\t\tModels.Do(f, \"#System:Resizing\", op)\r\tEND Resize;\r\r\tPROCEDURE (f: StdModel) Top (): Views.View;\r\t\tVAR h, top: StdContext;\r\tBEGIN\r\t\ttop := NIL; h := f.contexts;\r\t\tWHILE h # NIL DO top := h; h := h.next END;\r\t\tIF top # NIL THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " top.view ELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " NIL END\r\tEND Top;\r\r\tPROCEDURE (f: StdModel) PutAbove (v, pos: Views.View);\r\t\tVAR op: FormOp; c, d: StdContext;\r\tBEGIN\r\t\tc := ThisContext(f, v); ASSERT(c # NIL, 20);\r\t\td := ThisContext(f, pos); ASSERT((pos = NIL) OR (d # NIL), 21);\r\t\tIF v # pos THEN\r\t\t\tNEW(op); op.del := c; op.ins := c; op.pos := d;\r\t\t\tModels.Do(f, \"#Form:ChangeZOrder\", op)\r\t\tEND\r\tEND PutAbove;\r\r\tPROCEDURE (f: StdModel) Move (v: Views.View; dx, dy: INTEGER);\r\t\tVAR op: ResizeOp; c: StdContext;\r\tBEGIN\r\t\tc := ThisContext(f, v); ASSERT(c # NIL, 20);\r\t\tIF (dx # 0) OR (dy # 0) THEN\r\t\t\tNEW(op); op.context := c;\r\t\t\top.l := c.l + dx; op.t := c.t + dy; op.r := c.r + dx; op.b := c.b + dy;\r\t\t\tModels.Do(f, \"#System:Moving\", op)\r\t\tEND\r\tEND Move;\r\r\tPROCEDURE (f: StdModel) Copy (VAR v: Views.View; dx, dy: INTEGER);\r\t\tVAR op: FormOp; c, h, top: StdContext;\r\tBEGIN\r\t\tc := ThisContext(f, v); ASSERT(c # NIL, 20);\r\t\th := f.contexts; top := NIL; WHILE h # NIL DO top := h; h := h.next END;\r\t\th := NewContext(f, Views.CopyOf(v, Views.deep), c.l + dx, c.t + dy, c.r + dx, c.b + dy);\r\t\tNEW(op); op.del := NIL; op.ins := h; op.pos := top;\r\t\tModels.Do(f, \"#System:Copying\", op);\r\t\tv := h.view\r\tEND Copy;\r\r\tPROCEDURE (f: StdModel) NewReader (old: Reader): Reader;\r\t\tVAR r: StdReader;\r\tBEGIN\r\t\tIF (old = NIL) OR ~(old IS StdReader) THEN NEW(r) ELSE r := old(StdReader) END;\r\t\tr.view := NIL; r.l := 0; r.t := 0; r.r := 0; r.b := 0;\r\t\tr.form := f; r.pos := NIL;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " r\r\tEND NewReader;\r\r\tPROCEDURE (f: StdModel) NewWriter (old: Writer): Writer;\r\t\tVAR w: StdWriter;\r\tBEGIN\r\t\tIF (old = NIL) OR ~(old IS StdWriter) THEN NEW(w) ELSE w := old(StdWriter) END;\r\t\tw.form := f; w.pos := NIL;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " w\r\tEND NewWriter;\r\r\tPROCEDURE (f: StdModel) ViewAt (x, y: INTEGER): Views.View;\r\t\tVAR c, top: StdContext;\r\tBEGIN\r\t\tc := f.contexts; top := NIL;\r\t\tWHILE c # NIL DO\r\t\t\tIF (x >= c.l) & (y >= c.t) & (x < c.r) & (y < c.b) THEN top := c END;\r\t\t\tc := c.next\r\t\tEND;\r\t\tIF top = NIL THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " NIL ELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " top.view END\r\tEND ViewAt;\r\r\tPROCEDURE (f: StdModel) NofViews (): INTEGER;\r\t\tVAR c: StdContext; n: INTEGER;\r\tBEGIN\r\t\tn := 0; c := f.contexts; WHILE c # NIL DO INC(n); c := c.next END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " n\r\tEND NofViews;\r\r\r\t"
+                    attr: 0
+                  - text: "(* StdContext *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (c: StdContext) ThisModel (): Model;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " c.form\r\tEND ThisModel;\r\r\tPROCEDURE (c: StdContext) GetSize (OUT w, h: INTEGER);\r\tBEGIN\r\t\tw := c.r - c.l; h := c.b - c.t\r\tEND GetSize;\r\r\tPROCEDURE (c: StdContext) SetSize (w, h: INTEGER);\r\t\tVAR w0, h0: INTEGER;\r\tBEGIN\r\t\tw0 := c.r - c.l; h0 := c.b - c.t; ASSERT(w0 > 0, 100); ASSERT(h0 > 0, 101);\r\t\tProperties.PreferredSize(\r\t\t\t\tc.view, minViewSize, maxViewSize, minViewSize, maxViewSize, w0, h0, w, h);\r\t\tIF (w # w0) OR (h # h0) THEN\r\t\t\tc.form.Resize(c.view, c.l, c.t, c.l + w, c.t + h)\r\t\tEND\r\tEND SetSize;\r\r\tPROCEDURE (c: StdContext) Normalize (): BOOLEAN;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " FALSE\r\tEND Normalize;\r\r\tPROCEDURE (c: StdContext) GetRect (OUT l, t, r, b: INTEGER);\r\tBEGIN\r\t\tl := c.l; t := c.t; r := c.r; b := c.b\r\tEND GetRect;\r\r\r\t"
+                    attr: 0
+                  - text: "(* StdDirectory *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (d: StdDirectory) New (): Model;\r\t\tVAR f: StdModel;\r\tBEGIN\r\t\tNEW(f); "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " f\r\tEND New;\r\r\r\t"
+                    attr: 0
+                  - text: "(* StdReader *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (rd: StdReader) Set (pos: Views.View);\r\t\tVAR c: StdContext;\r\tBEGIN\r\t\tIF pos = NIL THEN c := NIL ELSE c := ThisContext(rd.form, pos); ASSERT(c # NIL, 20) END;\r\t\trd.view := NIL; rd.l := 0; rd.t := 0; rd.r := 0; rd.b := 0;\r\t\trd.pos := c\r\tEND Set;\r\r\tPROCEDURE (rd: StdReader) ReadView (OUT v: Views.View);\r\t\tVAR c: StdContext;\r\tBEGIN\r\t\tc := rd.pos;\r\t\tIF c = NIL THEN c := rd.form.contexts ELSE c := c.next END;\r\t\tIF c # NIL THEN\r\t\t\trd.view := c.view; rd.l := c.l; rd.t := c.t; rd.r := c.r; rd.b := c.b;\r\t\t\trd.pos := c\r\t\tELSE\r\t\t\trd.view := NIL; rd.l := 0; rd.t := 0; rd.r := 0; rd.b := 0\r\t\tEND;\r\t\tv := rd.view\r\tEND ReadView;\r\r\r\t"
+                    attr: 0
+                  - text: "(* StdWriter *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (wr: StdWriter) Set (pos: Views.View);\r\t\tVAR c: StdContext;\r\tBEGIN\r\t\tIF pos = NIL THEN c := NIL ELSE c := ThisContext(wr.form, pos); ASSERT(c # NIL, 20) END;\r\t\twr.pos := c\r\tEND Set;\r\r\tPROCEDURE (wr: StdWriter) WriteView (v: Views.View; l, t, r, b: INTEGER);\r\t\tVAR op: FormOp; c: StdContext;\r\tBEGIN\r\t\tASSERT(v # NIL, 20); ASSERT(v.context = NIL, 22);\r\t\tASSERT(l <= r, 23); ASSERT(t <= b, 24);\r\t\tc := NewContext(wr.form, v, l, t, r, b);\r\t\tNEW(op); op.del := NIL; op.ins := c; op.pos := wr.pos;\r\t\twr.pos := c;\r\t\tModels.Do(wr.form, \"#System:Insertion\", op)\r\tEND WriteView;\r\r\r\t"
+                    attr: 0
+                  - text: "(* operations *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE Update (c: StdContext);\r\t\tVAR msg: UpdateMsg;\r\tBEGIN\r\t\tmsg.l := c.l; msg.t := c.t; msg.r := c.r; msg.b := c.b; Models.Broadcast(c.form, msg)\r\tEND Update;\r\r\tPROCEDURE (op: FormOp) Do;\r\t\tVAR f: StdModel; c, p, pos: StdContext;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: "(* delete *)"
+                    attr: 1
+                  - text: "\r\t\tpos := NIL;\r\t\tc := op.del;\r\t\tIF c # NIL THEN\r\t\t\tf := c.form; ASSERT(f # NIL, 100);\r\t\t\tp := f.contexts; ASSERT(p # NIL, 101);\r\t\t\tIF p = c THEN\r\t\t\t\tf.contexts := c.next\r\t\t\tELSE\r\t\t\t\tWHILE p.next # c DO p := p.next; ASSERT(p # NIL, 102) END;\r\t\t\t\tpos := p; p.next := c.next\r\t\t\tEND;\r\t\t\tc.next := NIL;\r\t\t\tUpdate(c)\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: "(* insert *)"
+                    attr: 1
+                  - text: "\r\t\tc := op.ins;\r\t\tIF c # NIL THEN\r\t\t\tf := c.form; ASSERT(f # NIL, 103);\r\t\t\tp := f.contexts;\r\t\t\tIF op.pos = NIL THEN\r\t\t\t\tc.next := f.contexts; f.contexts := c\r\t\t\tELSE\r\t\t\t\tc.next := op.pos.next; op.pos.next := c\r\t\t\tEND;\r\t\t\tUpdate(c)\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: "(* swap ins and del for undo *)"
+                    attr: 1
+                  - text: "\r\t\tp := op.del; op.del := op.ins; op.ins := p; op.pos := pos\r\tEND Do;\r\r\tPROCEDURE (op: ResizeOp) Do;\r\t\tVAR c: StdContext; l, t, r, b: INTEGER;\r\tBEGIN\r\t\tc := op.context;\r\t\t"
+                    attr: 0
+                  - text: "(* save old state of context *)"
+                    attr: 1
+                  - text: "\r\t\tl := c.l; t := c.t; r := c.r; b := c.b;\r\t\tUpdate(c);\r\t\t"
+                    attr: 0
+                  - text: "(* set new state of context *)"
+                    attr: 1
+                  - text: "\r\t\tc.l := op.l; c.t := op.t; c.r := op.r; c.b := op.b;\r\t\tUpdate(c);\r\t\t"
+                    attr: 0
+                  - text: "(* old state is new undo state *)"
+                    attr: 1
+                  - text: "\r\t\top.l := l; op.t := t; op.r := r; op.b := b\r\tEND Do;\r\r\tPROCEDURE (op: ReplaceViewOp) Do;\r\t\tVAR c: StdContext; view: Views.View;\r\tBEGIN\r\t\tc := op.context;\r\t\t"
+                    attr: 0
+                  - text: "(* save old state of context *)"
+                    attr: 1
+                  - text: "\r\t\tview := c.view;\r\t\t"
+                    attr: 0
+                  - text: "(* set new state of context *)"
+                    attr: 1
+                  - text: "\r\t\tc.view := op.view;\r\t\tUpdate(c);\r\t\t"
+                    attr: 0
+                  - text: "(* old state is new undo state *)"
+                    attr: 1
+                  - text: "\r\t\top.view := view\r\tEND Do;\r\r\r\t"
+                    attr: 0
+                  - text: "(** miscellaneous **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: New
+                    attr: 3
+                  - text: "* (): Model;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " dir.New()\r\tEND New;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: CloneOf
+                    attr: 3
+                  - text: "* (source: Model): Model;\r\tBEGIN\r\t\tASSERT(source # NIL, 20);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " Containers.CloneOf(source)(Model)\r\tEND CloneOf;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Copy
+                    attr: 3
+                  - text: "* (source: Model): Model;\r\tBEGIN\r\t\tASSERT(source # NIL, 20);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " Stores.CopyOf(source)(Model)\r\tEND Copy;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetDir
+                    attr: 3
+                  - text: "* (d: Directory);\r\t"
+                    attr: 0
+                  - text: "(** d # NIL\t20 **)"
+                    attr: 1
+                  - text: "\r\tBEGIN\r\t\tASSERT(d # NIL, 20); dir := d\r\tEND SetDir;\r\r\tPROCEDURE Init;\r\t\tVAR d: StdDirectory;\r\tBEGIN\r\t\tNEW(d); dir := d; stdDir := d\r\tEND Init;\r\rBEGIN\r\tInit\rEND FormModels.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 18699
+          bodyLen: 8

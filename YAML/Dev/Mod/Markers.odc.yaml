@@ -1,0 +1,367 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Dev\\Mod\\Markers.odc"
+  size: 14881
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 14750
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 14564
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 14478
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 114300
+                color: 0x00000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 14599
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 14085
+                runListLen: 2082
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE DevMarkers;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- 20070301, bh, helper strings enlarged to 1024 characters\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT\r\t\tKernel, Files, Stores, Fonts, Ports, Models, Views, Controllers, Properties, Dialog,\r\t\tTextModels, TextSetters, TextViews, TextControllers, TextMappers;\r\r\tCONST\r\t\t"
+                    attr: 0
+                  - text: "(** View.mode **)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: undefined
+                    attr: 3
+                  - text: "* = 0; "
+                    attr: 0
+                  - text: mark
+                    attr: 3
+                  - text: "* = 1; "
+                    attr: 0
+                  - text: message
+                    attr: 3
+                  - text: "* = 2; \r\t\tfirstMode = 1; lastMode = 2;\r\r\t\t"
+                    attr: 0
+                  - text: "(** View.err **)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: noCode
+                    attr: 3
+                  - text: "* = 9999;\r\r\t\terrFile = \"Errors\"; point = Ports.point;\r\r\tTYPE\r\t\t"
+                    attr: 0
+                  - text: View
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Views.View)\r\t\t\tmode-: INTEGER;\r\t\t\terr-: INTEGER;\r\t\t\tmsg-: POINTER TO ARRAY OF CHAR;\r\t\t\tera: INTEGER\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: Directory
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD END;\r\r\r\t\tStdView = POINTER TO RECORD (View) END;\r\r\t\tStdDirectory = POINTER TO RECORD (Directory) END;\r\r\t\tSetModeOp = POINTER TO RECORD (Stores.Operation)\r\t\t\tview: View;\r\t\t\tmode: INTEGER\r\t\tEND;\r\t\t\r\r\tVAR\r\t\t"
+                    attr: 0
+                  - text: dir
+                    attr: 3
+                  - text: "-, "
+                    attr: 0
+                  - text: stdDir
+                    attr: 3
+                  - text: "-: Directory;\r\r\t\tglobR: TextModels.Reader; globW: TextModels.Writer;\t"
+                    attr: 0
+                  - text: "(* recycling done in Load, Insert *)"
+                    attr: 1
+                  - text: "\r\t\t\r\t\tthisEra: INTEGER;\r\r\r\t"
+                    attr: 0
+                  - text: "(** View **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: CopyFromSimpleView
+                    attr: 3
+                  - text: "- (source: Views.View), EXTENSIBLE;\r\tBEGIN\r\t\t(* v.CopyFrom^(source); *)\r\t\tWITH source: View DO\r\t\t\tv.err := source.err; v.mode := source.mode;\r\t\t\tIF source.msg # NIL THEN\r\t\t\t\tNEW(v.msg, LEN(source.msg^)); v.msg^ := source.msg^$\r\t\t\tEND\r\t\tEND\r\tEND CopyFromSimpleView;\r\r(*\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: InitContext
+                    attr: 3
+                  - text: "* (context: Models.Context), EXTENSIBLE;\r\tBEGIN\r\t\tASSERT(v.mode # undefined, 20);\r\t\tv.InitContext^(context)\r\tEND InitContext;\r*)\r\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: InitErr
+                    attr: 3
+                  - text: "* (err: INTEGER), NEW, EXTENSIBLE;\r\tBEGIN\r\t\tASSERT(v.msg = NIL, 20);\r\t\tIF v.err # err THEN v.err := err; v.mode := mark END;\r\t\tIF v.mode = undefined THEN v.mode := mark END\r\tEND InitErr;\r\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: InitMsg
+                    attr: 3
+                  - text: "* (msg: ARRAY OF CHAR), NEW, EXTENSIBLE;\r\t\tVAR i: INTEGER; str: ARRAY 1024 OF CHAR;\r\tBEGIN\r\t\tASSERT(v.msg = NIL, 20);\r\t\tDialog.MapString(msg, str);\r\t\ti := 0; WHILE str[i] # 0X DO INC(i) END;\r\t\tNEW(v.msg, i + 1); v.msg^ := str$;\r\t\tv.mode := mark\r\tEND InitMsg;\r\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: SetMode
+                    attr: 3
+                  - text: "* (mode: INTEGER), NEW, EXTENSIBLE;\r\t\tVAR op: SetModeOp;\r\tBEGIN\r\t\tASSERT((firstMode <= mode) & (mode <= lastMode), 20);\r\t\tIF v.mode # mode THEN\r\t\t\tNEW(op); op.view := v; op.mode := mode;\r\t\t\tViews.Do(v, \"#System:ViewSetting\", op)\r\t\tEND\r\tEND SetMode;\r\r\r\t"
+                    attr: 0
+                  - text: "(** Directory **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: New
+                    attr: 3
+                  - text: "* (type: INTEGER): View, NEW, ABSTRACT;\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: NewMsg
+                    attr: 3
+                  - text: "* (msg: ARRAY OF CHAR): View, NEW, ABSTRACT;\r\r\r\t"
+                    attr: 0
+                  - text: "(* SetModeOp *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (op: SetModeOp) Do;\r\t\tVAR v: View; mode: INTEGER;\r\tBEGIN\r\t\tv := op.view;\r\t\tmode := v.mode; v.mode := op.mode; op.mode := mode;\r\t\tViews.Update(v, Views.keepFrames);\r\t\tIF v.context # NIL THEN v.context.SetSize(Views.undefined, Views.undefined) END\r\tEND Do;\r\r\tPROCEDURE ToggleMode (v: View);\r\t\tVAR mode: INTEGER;\r\tBEGIN\r\t\tIF ABS(v.err) # noCode THEN\r\t\t\tIF v.mode < lastMode THEN mode := v.mode + 1 ELSE mode := firstMode END\r\t\tELSE\r\t\t\tIF v.mode < message THEN mode := v.mode + 1 ELSE mode := firstMode END\r\t\tEND;\r\t\tv.SetMode(mode)\r\tEND ToggleMode;\r\r\r\t"
+                    attr: 0
+                  - text: "(* primitives for StdView *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE NumToStr (x: INTEGER; VAR s: ARRAY OF CHAR; VAR i: INTEGER);\r\t\tVAR j: INTEGER; m: ARRAY 32 OF CHAR;\r\tBEGIN\r\t\tASSERT(x >= 0, 20);\r\t\tj := 0; REPEAT m[j] := CHR(x MOD 10 + ORD(\"0\")); x := x DIV 10; INC(j) UNTIL x = 0;\r\t\ti := 0; REPEAT DEC(j); s[i] := m[j]; INC(i) UNTIL j = 0;\r\t\ts[i] := 0X\r\tEND NumToStr;\r\r\tPROCEDURE Load (v: StdView);\r\t\tVAR view: Views.View; t: TextModels.Model; s: TextMappers.Scanner;\r\t\t\terr: INTEGER; i: INTEGER; ch: CHAR; loc: Files.Locator;\r\t\t\tmsg: ARRAY 1024 OF CHAR;\r\tBEGIN\r\t\terr := ABS(v.err); NumToStr(err, msg, i);\r\t\tloc := Files.dir.This(\"Dev\"); IF loc = NIL THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " END;\r\t\tloc := loc.This(\"Rsrc\"); IF loc = NIL THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " END;\r\t\tview := Views.OldView(loc, errFile);\r\t\tIF (view # NIL) & (view IS TextViews.View) THEN\r\t\t\tt := view(TextViews.View).ThisModel();\r\t\t\tIF t # NIL THEN\r\t\t\t\ts.ConnectTo(t);\r\t\t\t\tREPEAT\r\t\t\t\t\ts.Scan\r\t\t\t\tUNTIL ((s.type = TextMappers.int) & (s.int = err)) OR (s.type = TextMappers.eot);\r\t\t\t\tIF s.type = TextMappers.int THEN\r\t\t\t\t\ts.Skip(ch); i := 0;\r\t\t\t\t\tWHILE (ch >= \" \") & (i < LEN(msg) - 1) DO\r\t\t\t\t\t\tmsg[i] := ch; INC(i); s.rider.ReadChar(ch)\r\t\t\t\t\tEND;\r\t\t\t\t\tmsg[i] := 0X\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND;\r\t\tNEW(v.msg, i + 1); v.msg^ := msg$\r\tEND Load;\r\r\tPROCEDURE DrawMsg (v: StdView; f: Views.Frame; font: Fonts.Font; color: Ports.Color);\r\t\tVAR w, h, asc, dsc: INTEGER;\r\tBEGIN\r\t\tCASE v.mode OF\r\t\t  mark:\r\t\t\tv.context.GetSize(w, h);\r\t\t\tf.DrawLine(point, 0, w - 2 * point, h, 0, color);\r\t\t\tf.DrawLine(w - 2 * point, 0, point, h, 0, color)\r\t\t| message:\r\t\t\tfont.GetBounds(asc, dsc, w);\r\t\t\tf.DrawString(2 * point, asc, color, v.msg^, font)\r\t\tEND\r\tEND DrawMsg;\r\t\r\tPROCEDURE ShowMsg (v: StdView);\r\tBEGIN\r\t\tIF v.msg = NIL THEN Load(v) END;\r\t\tDialog.ShowStatus(v.msg^)\r\tEND ShowMsg;\r\r\tPROCEDURE Track (v: StdView; f: Views.Frame; x, y: INTEGER; buttons: SET);\r\t\tVAR c: Models.Context; t: TextModels.Model; u, w, h: INTEGER; isDown, in, in0: BOOLEAN; m: SET;\r\tBEGIN\r\t\tv.context.GetSize(w, h); u := f.dot; in0 := FALSE;\r\t\tin := (0 <= x) & (x < w) & (0 <= y) & (y < h);\r\t\tREPEAT\r\t\t\tIF in # in0 THEN\r\t\t\t\tf.MarkRect(u, 0, w - u, h, Ports.fill, Ports.invert, Ports.show); in0 := in\r\t\t\tEND;\r\t\t\tf.Input(x, y, m, isDown);\r\t\t\tin := (0 <= x) & (x < w) & (0 <= y) & (y < h)\r\t\tUNTIL ~isDown;\r\t\tIF in0 THEN\r\t\t\tf.MarkRect(u, 0, w - u, h, Ports.fill, Ports.invert, Ports.hide);\r\t\t\tIF Dialog.showsStatus & ~(Controllers.modify IN buttons) & ~(Controllers.doubleClick IN buttons) THEN\r\t\t\t\tShowMsg(v)\r\t\t\tELSE\r\t\t\t\tToggleMode(v)\r\t\t\tEND;\r\t\t\tc := v.context;\r\t\t\tWITH c: TextModels.Context DO\r\t\t\t\tt := c.ThisModel();\r\t\t\t\tTextControllers.SetCaret(t, c.Pos() + 1)\r\t\t\tELSE\r\t\t\tEND\r\t\tEND\r\tEND Track;\r\r\tPROCEDURE SizePref (v: StdView; VAR p: Properties.SizePref);\r\t\tVAR c: Models.Context; a: TextModels.Attributes; font: Fonts.Font; asc, dsc, w: INTEGER;\r\tBEGIN\r\t\tc := v.context;\r\t\tIF (c # NIL) & (c IS TextModels.Context) THEN a := c(TextModels.Context).Attr(); font := a.font\r\t\tELSE font := Fonts.dir.Default()\r\t\tEND;\r\t\tfont.GetBounds(asc, dsc, w);\r\t\tp.h := asc + dsc;\r\t\tCASE v.mode OF\r\t\t  mark:\r\t\t\tp.w := p.h + 2 * point\r\t\t| message:\r\t\t\tIF v.msg = NIL THEN Load(v) END;\r\t\t\tp.w := font.StringWidth(v.msg^) + 4 * point\r\t\tEND\r\tEND SizePref;\r\r\r\t"
+                    attr: 0
+                  - text: "(* StdView *)"
+                    attr: 1
+                  - text: "\r\r"
+                    attr: 0
+                  - text: "\tPROCEDURE (v: StdView) ExternalizeAs (VAR s1: Stores.Store);\r\tBEGIN\r\t\ts1 := NIL\r\tEND ExternalizeAs;\r"
+                    attr: 3
+                  - text: "\r\tPROCEDURE (v: StdView) SetMode(mode: INTEGER);\r\tBEGIN v.SetMode^(mode); ShowMsg(v)\r\tEND SetMode;\r\r\tPROCEDURE (v: StdView) Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\t\tVAR c: Models.Context; a: TextModels.Attributes; font: Fonts.Font; color: Ports.Color;\r\t\t\tw, h: INTEGER;\r\tBEGIN\r\t\tc := v.context; c.GetSize(w, h);\r\t\tWITH c: TextModels.Context DO a := c.Attr(); font := a.font ELSE font := Fonts.dir.Default() END;\r\t\tIF TRUE (*f.colors >= 4*) THEN color := Ports.grey50 ELSE color := Ports.defaultColor END;\r\t\tIF v.err >= 0 THEN\r\t\t\tf.DrawRect(point, 0, w - point, h, Ports.fill, color);\r\t\t\tDrawMsg(v, f, font, Ports.background)\r\t\tELSE\r\t\t\tf.DrawRect(point, 0, w - point, h, 0, color);\r\t\t\tDrawMsg(v, f, font, Ports.defaultColor)\r\t\tEND\r\tEND Restore;\r\r\tPROCEDURE (v: StdView) GetBackground (VAR color: Ports.Color);\r\tBEGIN\r\t\tcolor := Ports.background\r\tEND GetBackground;\r\r\tPROCEDURE (v: StdView) HandleCtrlMsg (f: Views.Frame; VAR msg: Controllers.Message;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR focus: Views.View);\r\tBEGIN\r\t\tWITH msg: Controllers.TrackMsg DO\r\t\t\tTrack(v, f, msg.x, msg.y, msg.modifiers)\r\t\tELSE\r\t\tEND\r\tEND HandleCtrlMsg;\r\r\tPROCEDURE (v: StdView) HandlePropMsg (VAR msg: Properties.Message);\r\t\tVAR c: Models.Context; a: TextModels.Attributes; font: Fonts.Font; asc, w: INTEGER;\r\tBEGIN\r\t\tWITH msg: Properties.Preference DO\r\t\t\tWITH msg: Properties.SizePref DO\r\t\t\t\tSizePref(v, msg)\r\t\t\t| msg: Properties.ResizePref DO\r\t\t\t\tmsg.fixed := TRUE\r\t\t\t| msg: Properties.FocusPref DO\r\t\t\t\tmsg.hotFocus := TRUE\r(*\r\t\t\t| msg: Properties.StorePref DO\r\t\t\t\tmsg.view := NIL\r*)\r\t\t\t| msg: TextSetters.Pref DO\r\t\t\t\tc := v.context;\r\t\t\t\tIF (c # NIL) & (c IS TextModels.Context) THEN\r\t\t\t\t\ta := c(TextModels.Context).Attr(); font := a.font\r\t\t\t\tELSE\r\t\t\t\t\tfont := Fonts.dir.Default()\r\t\t\t\tEND;\r\t\t\t\tfont.GetBounds(asc, msg.dsc, w)\r\t\t\tELSE\r\t\t\tEND\r\t\tELSE\r\t\tEND\r\tEND HandlePropMsg;\r\r\r\t"
+                    attr: 0
+                  - text: "(* StdDirectory *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (d: StdDirectory) New (err: INTEGER): View;\r\t\tVAR v: StdView;\r\tBEGIN\r\t\tNEW(v); v.InitErr(err); "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " v\r\tEND New;\r\r\tPROCEDURE (d: StdDirectory) NewMsg (msg: ARRAY OF CHAR): View;\r\t\tVAR v: StdView;\r\tBEGIN\r\t\tNEW(v); v.InitErr(noCode); v.InitMsg(msg); "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " v\r\tEND NewMsg;\r\r\r\t"
+                    attr: 0
+                  - text: "(** Cleaner **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE Cleanup;\r\tBEGIN\r\t\tglobR := NIL; globW := NIL\r\tEND Cleanup;\r\t\r\r\t"
+                    attr: 0
+                  - text: "(** miscellaneous **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Insert
+                    attr: 3
+                  - text: "* (text: TextModels.Model; pos: INTEGER; v: View);\r\t\tVAR w: TextModels.Writer; r: TextModels.Reader;\r\tBEGIN\r\t\tASSERT(v.era = 0, 20);\r\t\tModels.BeginModification(Models.clean, text);\r\t\tv.era := thisEra;\r\t\tIF pos > text.Length() THEN pos := text.Length() END;\r\t\tglobW := text.NewWriter(globW); w := globW; w.SetPos(pos);\r\t\tIF pos > 0 THEN DEC(pos) END;\r\t\tglobR := text.NewReader(globR); r := globR; r.SetPos(pos); r.Read;\r\t\tIF r.attr # NIL THEN w.SetAttr(r.attr) END;\r\t\tw.WriteView(v, Views.undefined, Views.undefined);\r\t\tModels.EndModification(Models.clean, text);\r\tEND Insert;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Unmark
+                    attr: 3
+                  - text: "* (text: TextModels.Model);\r\t\tVAR r: TextModels.Reader; v: Views.View; pos: INTEGER;\r\t\t\tscript: Stores.Operation;\r\tBEGIN\r\t\tModels.BeginModification(Models.clean, text);\r\t\tModels.BeginScript(text, \"#Dev:DeleteMarkers\", script);\r\t\tr := text.NewReader(NIL); r.ReadView(v);\r\t\tWHILE ~r.eot DO\r\t\t\tIF r.view IS View THEN\r\t\t\t\tpos := r.Pos() - 1; text.Delete(pos, pos + 1); r.SetPos(pos)\r\t\t\tEND;\r\t\t\tr.ReadView(v)\r\t\tEND;\r\t\tINC(thisEra);\r\t\tModels.EndScript(text, script);\r\t\tModels.EndModification(Models.clean, text);\r\tEND Unmark;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ShowFirstError
+                    attr: 3
+                  - text: "* (text: TextModels.Model; focusOnly: BOOLEAN);\r\t\tVAR v1: Views.View; pos: INTEGER;\r\tBEGIN\r\t\tglobR := text.NewReader(globR); globR.SetPos(0);\r\t\tREPEAT globR.ReadView(v1) UNTIL globR.eot OR (v1 IS View);\r\t\tIF ~globR.eot THEN\r\t\t\tpos := globR.Pos();\r\t\t\tTextViews.ShowRange(text, pos, pos, focusOnly);\r\t\t\tTextControllers.SetCaret(text, pos);\r\t\t\tv1(View).SetMode(v1(View).mode)\r\t\tEND\r\tEND ShowFirstError;\r\r\r\t"
+                    attr: 0
+                  - text: "(** commands **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: UnmarkErrors
+                    attr: 3
+                  - text: "*;\r\t\tVAR t: TextModels.Model;\r\tBEGIN\r\t\tt := TextViews.FocusText();\r\t\tIF t # NIL THEN Unmark(t) END\r\tEND UnmarkErrors;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: NextError
+                    attr: 3
+                  - text: "*;\r\t\tVAR c: TextControllers.Controller; t: TextModels.Model; v1: Views.View;\r\t\t\tbeg, pos: INTEGER;\r\tBEGIN\r\t\tc := TextControllers.Focus();\r\t\tIF c # NIL THEN\r\t\t\tt := c.text;\r\t\t\tIF c.HasCaret() THEN pos := c.CaretPos()\r\t\t\tELSIF c.HasSelection() THEN c.GetSelection(beg, pos)\r\t\t\tELSE pos := 0\r\t\t\tEND;\r\t\t\tTextControllers.SetSelection(t, TextControllers.none, TextControllers.none);\r\t\t\tglobR := t.NewReader(globR); globR.SetPos(pos);\r\t\t\tREPEAT globR.ReadView(v1) UNTIL globR.eot OR (v1 IS View);\r\t\t\tIF ~globR.eot THEN\r\t\t\t\tpos := globR.Pos(); v1(View).SetMode(v1(View).mode);\r\t\t\t\tTextViews.ShowRange(t, pos, pos, TextViews.focusOnly)\r\t\t\tELSE\r\t\t\t\tpos := 0; Dialog.Beep\r\t\t\tEND;\r\t\t\tTextControllers.SetCaret(t, pos);\r\t\t\tglobR := NIL\r\t\tEND\r\tEND NextError;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ToggleCurrent
+                    attr: 3
+                  - text: "*;\r\t\tVAR c: TextControllers.Controller; t: TextModels.Model; v: Views.View; pos: INTEGER;\r\tBEGIN\r\t\tc := TextControllers.Focus();\r\t\tIF (c # NIL) & c.HasCaret() THEN\r\t\t\tt := c.text; pos := c.CaretPos();\r\t\t\tglobR := t.NewReader(globR); globR.SetPos(pos); globR.ReadPrev;\r\t\t\tv := globR.view;\r\t\t\tIF (v # NIL) & (v IS View) THEN ToggleMode(v(View)) END;\r\t\t\tTextViews.ShowRange(t, pos, pos, TextViews.focusOnly);\r\t\t\tTextControllers.SetCaret(t, pos);\r\t\t\tglobR := NIL\r\t\tEND\r\tEND ToggleCurrent;\r\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetDir
+                    attr: 3
+                  - text: "* (d: Directory);\r\tBEGIN\r\t\tdir := d\r\tEND SetDir;\r\r\r\tPROCEDURE Init;\r\t\tVAR d: StdDirectory;\r\tBEGIN\r\t\tthisEra := 1;\r\t\tNEW(d); dir := d; stdDir := d\r\tEND Init;\r\rBEGIN\r\tInit; Kernel.InstallCleaner(Cleanup)\rCLOSE\r\tKernel.RemoveCleaner(Cleanup)\rEND DevMarkers.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 14846
+          bodyLen: 8

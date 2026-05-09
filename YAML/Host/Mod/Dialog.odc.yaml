@@ -1,0 +1,761 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Host\\Mod\\Dialog.odc"
+  size: 39923
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 39792
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 39606
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 39520
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000021
+              defaultAttr:
+                font: Arial
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 31
+                bodyPos: 39641
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 39127
+                runListLen: 3796
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [4]
+                    font: "*"
+                    size: 114300
+                    color: 0x00000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [5]
+                    font: "*"
+                    size: 114300
+                    color: 0x00000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [6]
+                    font: "*"
+                    size: 101600
+                    color: 0x00000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [7]
+                    font: "*"
+                    size: 114300
+                    color: 0x00000000
+                    weight: 400
+                    style: 0x00000001
+                flow:
+                  - text: "MODULE HostDialog;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- 20070130, bh, new Windows versions\r\t- 20070131, bh, Unicode support\r\t- 20070319, bh, page orientation added to page setup dialog\r\t- 20150326, center #33, adding platform detection for wine, Windows 7, and Windows 8 \r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 165735
+                      h: 142875
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 165735
+                      h: 142875
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\tIMPORT\r\t\tWinApi, WinDlg,  "
+                    attr: 0
+                  - text: "SYSTEM,"
+                    attr: 3
+                  - text: "\r\t\tKernel, Strings, Dates, Fonts, Ports, Files, Stores, Views, Controllers, Properties,\r\t\tPrinters, Dialog, Windows, Converters, Services,\r\t\tHostFonts, HostFiles, HostRegistry, HostPorts, HostWindows, HostPrinters,\r\t\tStdCmds,\r\t\tHostCFrames "
+                    attr: 0
+                  - text: "(* don't remove *)"
+                    attr: 1
+                  - text: ";\r\r\r\tCONST\r\t\t"
+                    attr: 0
+                  - text: "(** CloseDialog res **)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: save
+                    attr: 3
+                  - text: "* = 1; "
+                    attr: 0
+                  - text: cancel
+                    attr: 3
+                  - text: "* = 2;\r\r\t\tdirtyString = \"#Host:SaveChanges\";\r\r\r\tTYPE\r\t\tPreview = POINTER TO RECORD (Views.View) END;\r\r\t\tUpdateMsg = RECORD (Views.Message) END;\r\r\t\tDatesHook = POINTER TO RECORD (Dates.Hook) END;\r\t\tDialogHook = POINTER TO RECORD (Dialog.GetHook) END;\r\t\tShowHook = POINTER TO RECORD (Dialog.ShowHook) END;\r\t\tGetSpecHook = POINTER TO RECORD (Views.GetSpecHook) END;\r\t\tLanguageHook = POINTER TO RECORD (Dialog.LanguageHook) END;\r"
+                    attr: 0
+                  - text: "\t\tWineHook = POINTER TO RECORD (Dialog.WineHook) isWine: BOOLEAN END;\r"
+                    attr: 4
+                  - text: "\r\r\tVAR\r\t\t"
+                    attr: 0
+                  - text: window
+                    attr: 3
+                  - text: "-: Windows.Window;\t"
+                    attr: 0
+                  - text: "(** window created/selected by most recent Old or Open **)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: oldWindow
+                    attr: 3
+                  - text: "-: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(** most recent Old or Open selected existing window **)\r\r"
+                    attr: 1
+                  - text: "\t\t"
+                    attr: 0
+                  - text: osVersion
+                    attr: 3
+                  - text: "-: INTEGER;\r\t\t"
+                    attr: 0
+                  - text: extType
+                    attr: 3
+                  - text: "*: Files.Type;\r\r\t\t"
+                    attr: 0
+                  - text: impType
+                    attr: 3
+                  - text: "*: RECORD\r\t\t\tlist*: Dialog.List;\r\t\t\tdone: BOOLEAN\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: setup
+                    attr: 3
+                  - text: "*: RECORD\r\t\t\tdecorate*: BOOLEAN;\r\t\t\tlandscape*: BOOLEAN;\r\t\t\tleft*, right*, top*, bottom*: REAL;\r\t\t\tw, h: INTEGER;\r\t\t\ths, vs: REAL\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: prefs
+                    attr: 3
+                  - text: "*: RECORD\r\t\t\tuseTTMetric*: BOOLEAN;\r\t\t\tvisualScroll*: BOOLEAN;\r\t\t\tstatusbar*: INTEGER;\r\t\t\tthickCaret*: BOOLEAN;\r\t\t\tcaretPeriod*: INTEGER\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: ShowOleStatus
+                    attr: 3
+                  - text: "*: PROCEDURE (w: Windows.Window; s: ARRAY OF CHAR);\r\r\t\t"
+                    attr: 0
+                  - text: actualPath
+                    attr: 3
+                  - text: "*: ARRAY 256 OF CHAR;\r\r"
+                    attr: 0
+                  - text: "\t\t"
+                    attr: 1
+                  - text: "fn: WinDlg.OPENFILENAMEW;\r\t\tftype: ARRAY 16 OF CHAR;\r\t\tfilter: ARRAY 2048 OF CHAR;\r\t\tfname: ARRAY 260 OF CHAR;\r\t\tprt: WinDlg.PRINTDLGW;\r\t\tfont: WinDlg.CHOOSEFONTW;\r\t\tlogFont: WinApi.LOGFONTW;\r\t\tcol: WinDlg.CHOOSECOLORW;\r\t\tcustomColors: ARRAY 16 OF Ports.Color;\r\t\tprefFName, prefDName: Fonts.Typeface;\r\t\tprefFSize, prefDSize, prefDWght: INTEGER;\r\t\tprefDStyle: SET;\r\t\ttypeList: ARRAY 64 OF Converters.Converter;\r\t\tdefConv: Converters.Converter;\r\t\tall: Converters.Converter;\r\r\t\tdialogHook: DialogHook;\r"
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\r\tPROCEDURE Append (VAR s: ARRAY OF CHAR; VAR idx: INTEGER; IN t: ARRAY OF CHAR);\r\t\tVAR len, i: INTEGER; ch: CHAR;\r\tBEGIN\r\t\ti := 0; ch := t[0]; len := LEN(s) - 1;\r\t\tWHILE (idx < len) & (ch # 0X) DO s[idx] := ch; INC(idx); INC(i); ch := t[i] END;\r\t\ts[idx] := 0X\r\tEND Append;\r\r\tPROCEDURE SAppend (VAR s: ARRAY OF CHAR; VAR idx: INTEGER; IN t: ARRAY OF CHAR);\r\t\tVAR len, i: INTEGER; ch: CHAR;\r\tBEGIN\r\t\ti := 0; ch := t[0]; len := LEN(s) - 1;\r\t\tWHILE (idx < len) & (ch # 0X) DO s[idx] := ch; INC(idx); INC(i); ch := t[i] END;\r\t\ts[idx] := 0X\r\tEND SAppend;\r\r\tPROCEDURE MapConv (cmd: ARRAY OF CHAR; VAR name: ARRAY OF CHAR);\r\t\tVAR i: INTEGER; sub, str: Dialog.String;\r\tBEGIN\r\t\tstr := cmd$; i := 0;\r\t\tWHILE str[i] >= \"0\" DO INC(i) END;\r\t\tstr[i] := 0X;\r\t\tKernel.SplitName(str, sub, str);\r\t\tIF sub = \"\" THEN sub := \"System\" END;\r\t\tstr := \"#\"; i := 1;\r\t\tAppend(str, i, sub);\r\t\tAppend(str, i, \":\");\r\t\tAppend(str, i, cmd);\r\t\tDialog.MapString(str, name)\r\tEND MapConv;\r\r\tPROCEDURE WaitDialogClose;\r\t"
+                    attr: 0
+                  - text: "(* simulates modal dialog *)\r"
+                    attr: 1
+                  - text: "\t\tVAR res: INTEGER; w: HostWindows.Window; msg: WinApi.MSG;\r\tBEGIN\r\t\tw := HostWindows.dir.First();\r\t\tREPEAT\r\t\t\tIF WinApi.PeekMessageW(msg, 0, 0, 0, 1) # 0 THEN\r\t\t\t\tIF (msg.hwnd = w.wnd) OR (msg.message = WinApi.WM_PAINT) THEN\r\t\t\t\t\tres := WinApi.TranslateMessage(msg);\r\t\t\t\t\tres := WinApi.DispatchMessageW(msg)\r\t\t\t\tEND\r\t\t\tEND\r\t\tUNTIL w.wnd = 0\r\tEND WaitDialogClose;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ShowParamStatus
+                    attr: 3
+                  - text: "* (IN str, p0, p1, p2: ARRAY OF CHAR);\r\t\tVAR res: INTEGER; st: ARRAY 513 OF CHAR; w: Windows.Window;\r\tBEGIN\r\t\tDialog.MapParamString(str, p0, p1, p2, st);\r\t\tw := Windows.dir.Focus(Controllers.targetPath);\r\t\tIF (w # NIL) & (HostWindows.inPlace IN w.flags) & (ShowOleStatus # NIL) THEN\r\t\t\tShowOleStatus(w, \" \" + st)\r\t\tELSE\r\t\t\tst := \" \" + st;\r\t\t\tres := WinApi.SetWindowTextW(HostWindows.status, st);\r\t\t\tres := WinApi.UpdateWindow(HostWindows.status)\r\t\tEND\r\tEND ShowParamStatus;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ShowParamMsg
+                    attr: 3
+                  - text: "* (IN str, p0, p1, p2: ARRAY OF CHAR);\r\t\tVAR res: INTEGER; st: ARRAY 512 OF CHAR;\r\tBEGIN\r\t\tASSERT(str # \"\", 20);\r(*\r\t\tIF Dialog.showsStatus THEN\r\t\t\tShowParamStatus(str, p0, p1, p2)\r\t\tELSE\r*)\r\t\t\tDialog.MapParamString(str, p0, p1, p2, st);\r\t\t\tres := WinApi.MessageBoxW(HostWindows.ActualWnd(), st, Dialog.appName, {4, 5})\r(*\r\t\tEND\r*)\r\tEND ShowParamMsg;\r\r\tPROCEDURE (h: ShowHook) ShowParamMsg (IN str, p0, p1, p2: ARRAY OF CHAR);\r\tBEGIN\r\t\tShowParamMsg(str, p0, p1, p2)\r\tEND ShowParamMsg;\r\r\tPROCEDURE (h: ShowHook) ShowParamStatus (IN str, p0, p1, p2: ARRAY OF CHAR);\r\tBEGIN\r\t\tShowParamStatus(str, p0, p1, p2)\r\tEND ShowParamStatus;\r\r"
+                    attr: 0
+                  - text: "\t(** general OK dialog **)\r"
+                    attr: 1
+                  - text: "\r\tPROCEDURE (hook: DialogHook) GetOK (IN str, p0, p1, p2: ARRAY OF CHAR; form: SET; OUT res: INTEGER);\r\t\tVAR r: INTEGER; st: ARRAY 512 OF CHAR; type: SET;\r\tBEGIN\r\t\tASSERT(str # \"\", 20);\r\t\tDialog.MapParamString(str, p0, p1, p2, st);\r\t\tIF Dialog.yes IN form THEN\r\t\t\tIF Dialog.cancel IN form THEN type := WinApi.MB_YESNOCANCEL + WinApi.MB_ICONQUESTION\r\t\t\tELSE type := WinApi.MB_YESNO + WinApi.MB_ICONQUESTION\r\t\t\tEND\r\t\tELSE\r\t\t\tIF Dialog.cancel IN form THEN type := WinApi.MB_OKCANCEL + WinApi.MB_ICONWARNING\r\t\t\tELSE type := WinApi.MB_OK + WinApi.MB_ICONWARNING\r\t\t\tEND\r\t\tEND;\r\t\tr := WinApi.MessageBoxW(HostWindows.ActualWnd(), st, Dialog.appName, type);\r\t\tIF r = WinApi.IDOK THEN res := Dialog.ok\r\t\tELSIF r = WinApi.IDCANCEL THEN res := Dialog.cancel\r\t\tELSIF r = WinApi.IDYES THEN res := Dialog.yes\r\t\tELSIF r = WinApi.IDNO THEN res := Dialog.no\r\t\tELSE res := 0\r\t\tEND\r\tEND GetOK;\r\r\r\t"
+                    attr: 0
+                  - text: "(** time **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (hook: DatesHook) GetTime (OUT d: Dates.Date; OUT t: Dates.Time);\r\t\tVAR dt: WinApi.SYSTEMTIME;\r\tBEGIN\r\t\tWinApi.GetLocalTime(dt);\r\t\td.year := dt.wYear; d.month := dt.wMonth; d.day := dt.wDay;\r\t\tt.hour := dt.wHour; t.minute := dt.wMinute; t.second := dt.wSecond\r\tEND GetTime;\r\r\tPROCEDURE (hook: DatesHook) GetUTCTime (OUT d: Dates.Date; OUT t: Dates.Time);\r\t\tVAR dt: WinApi.SYSTEMTIME;\r\tBEGIN\r\t\tWinApi.GetSystemTime(dt);\r\t\td.year := dt.wYear; d.month := dt.wMonth; d.day := dt.wDay;\r\t\tt.hour := dt.wHour; t.minute := dt.wMinute; t.second := dt.wSecond\r\tEND GetUTCTime;\r\r\tPROCEDURE (hook: DatesHook) GetUTCBias (OUT bias: INTEGER);\r\t\tVAR res: INTEGER; info: WinApi.TIME_ZONE_INFORMATION;\r\tBEGIN\r\t\tbias := 0;\r\t\tres := WinApi.GetTimeZoneInformation(info);\r\t\tIF res # -1 THEN\r\t\t\tIF BITS(res) = WinApi.TIME_ZONE_ID_DAYLIGHT THEN bias := info.Bias + info.DaylightBias\r\t\t\tELSE bias := info.Bias + info.StandardBias\r\t\t\tEND\r\t\tEND\r\tEND GetUTCBias;\r\r\r\t"
+                    attr: 0
+                  - text: "(** import type dialog **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ImpOk
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\timpType.done := TRUE;\r\t\tStdCmds.CloseDialog\r\tEND ImpOk;\r\r\r"
+                    attr: 0
+                  - text: "\t(** file dialogs **)\r"
+                    attr: 1
+                  - text: "\r\tPROCEDURE (hook: DialogHook) GetIntSpec (\r\t\tIN defType: Files.Type; VAR loc: Files.Locator; OUT name: Files.Name\r\t);\r\t"
+                    attr: 0
+                  - text: "(* asks user for a file name (for file internalization) *)"
+                    attr: 1
+                  - text: "\r\t\tVAR res, i, j: INTEGER; lfn: ARRAY 260 OF CHAR;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: "(* set filter *)"
+                    attr: 1
+                  - text: "\r\t\tftype := defType$; i := 0;\r\t\tIF ftype = \"\" THEN ftype := \"odc\" END;\r\t\tIF ftype # \"*\" THEN\r\t\t\tSAppend(filter, i, \"*.\"); SAppend(filter, i, ftype); INC(i);\r\t\t\tSAppend(filter, i, \"*.\"); SAppend(filter, i, ftype); INC(i)\r\t\tELSE ftype := \"\"\r\t\tEND;\r\t\tSAppend(filter, i, \"*.*\"); INC(i);\r\t\tSAppend(filter, i, \"*.*\"); INC(i);\r\t\tfilter[i] := 0X;\r\t\t"
+                    attr: 0
+                  - text: "(* open dialog *)\r\t\t"
+                    attr: 1
+                  - text: "fn.nFilterIndex := 1;\r\t\tfname := \"\";\r\t\tIF loc # NIL THEN\t"
+                    attr: 0
+                  - text: "(* set old dir *)"
+                    attr: 1
+                  - text: "\r\t\t\tactualPath := loc(HostFiles.Locator).path$; i := 0\r(*\r\t\t\tWHILE actualPath[i] # 0X DO INC(i) END;\r\t\t\tactualPath[i] := \"\\\"; actualPath[i+1] := 0X\r*)\r\t\tEND;"
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\t\tfn.Flags := {2, 3, 11, 12, 19};\t"
+                    attr: 0
+                  - text: "(* hideReadOnly, noChangeDir, pathMustExist, fileMustExist, new look *)"
+                    attr: 1
+                  - text: "\r\t\tfn.hwndOwner := HostWindows.ActualWnd();\r\t\tIF WinDlg.GetOpenFileNameW(fn) # 0 THEN\r\t\t\ti := 0; j := fn.nFileOffset;\r\t\t\tWHILE fname[j] # 0X DO name[i] := fname[j]; INC(i); INC(j) END;\r\t\t\tname[i] := 0X; fname[fn.nFileOffset - 1] := 0X;\r\t\t\tactualPath := fname$; lfn := fname$;\r\t\t\tloc := HostFiles.NewLocator(lfn)\r\t\tELSE\r\t\t\tloc := NIL;\r\t\t\tres := WinDlg.CommDlgExtendedError();\r\t\t\tASSERT(res = 0, 100)\r\t\tEND;\r\t\tres := WinApi.SetCursor(HostPorts.cursors[HostPorts.busyCursor])\r\tEND GetIntSpec;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: GetIntSpec
+                    attr: 3
+                  - text: "* (VAR loc: Files.Locator; VAR name: Files.Name; VAR conv: Converters.Converter);\r\t"
+                    attr: 0
+                  - text: "(* asks user for a file name (for file internalization) *)"
+                    attr: 1
+                  - text: "\r\t\tVAR res, i, j, n: INTEGER; t: Dialog.String; c: Converters.Converter; lfn: ARRAY 260 OF CHAR;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: "(* set filter *)"
+                    attr: 1
+                  - text: "\r\t\tftype := \"odc\";\r\t\tIF loc # NIL THEN\r\t\t\tdefConv := conv;\r\t\t\tIF conv # NIL THEN ftype := conv.fileType$ END\r\t\tEND;\r\t\ttypeList[0] := Converters.list;\t"
+                    attr: 0
+                  - text: "(* document converter *)"
+                    attr: 1
+                  - text: "\r\t\tDialog.MapString(\"#Host:Document\", t);\r\t\ti := 0; SAppend(filter, i, t); SAppend(filter, i, \" (*.odc)\"); INC(i);\r\t\tSAppend(filter, i, \"*.odc\"); INC(i); n := 1;\r"
+                    attr: 0
+                  - text: "\t\t"
+                    attr: 1
+                  - text: "fn.nFilterIndex := 1;\r\t\tc := Converters.list;\r\t\tWHILE c # NIL DO\r\t\t\tIF (c.imp # \"\") & (c.fileType # \"odc\") THEN\r\t\t\t\ttypeList[n] := c;\r\t\t\t\tMapConv(c.imp, t); SAppend(filter, i, t);\r\t\t\t\tSAppend(filter, i, \" (*.\"); SAppend(filter, i, c.fileType);\r\t\t\t\tSAppend(filter, i, \")\"); INC(i);\r\t\t\t\tSAppend(filter, i, \"*.\"); SAppend(filter, i, c.fileType); INC(i);\r\t\t\t\tIF defConv = c THEN fn.nFilterIndex := n + 1 END;\r\t\t\t\tINC(n)\r\t\t\tEND;\r\t\t\tc := c.next\r\t\tEND;\r\t\tDialog.MapString(\"#Host:AllFiles\", t);\r\t\tSAppend(filter, i, t); SAppend(filter, i, \" (*.*)\"); INC(i);\r\t\tSAppend(filter, i, \"*.*\"); INC(i);\r\t\tfilter[i] := 0X;\r\t\tIF defConv = all THEN fn.nFilterIndex := n + 1 END;\r\t\t"
+                    attr: 0
+                  - text: "(* open dialog *)\r"
+                    attr: 1
+                  - text: "\t\tIF loc # NIL THEN fname := name$\r\t\tELSE fname := \"\"\r\t\tEND;\r\t\tIF loc # NIL THEN\t"
+                    attr: 0
+                  - text: "(* set old dir *)"
+                    attr: 1
+                  - text: "\r\t\t\tactualPath := loc(HostFiles.Locator).path$; i := 0;\r\t\t\tWHILE actualPath[i] # 0X DO INC(i) END;\r\t\t\tactualPath[i] := \"\\\"; actualPath[i+1] := 0X\r\t\tEND;"
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\t\tfn.Flags := {2, 3, 11, 12, 19};\t"
+                    attr: 0
+                  - text: "(* hideReadOnly, noChangeDir, pathMustExist, fileMustExist, new look *)"
+                    attr: 1
+                  - text: "\r\t\tfn.hwndOwner := HostWindows.ActualWnd();\r\t\tIF WinDlg.GetOpenFileNameW(fn) # 0 THEN\r\t\t\ti := 0; j := fn.nFileOffset;\r\t\t\tWHILE fname[j] # 0X DO name[i] := fname[j]; INC(i); INC(j) END;\r\t\t\tname[i] := 0X; fname[fn.nFileOffset - 1] := 0X;\r\t\t\tactualPath := fname$; lfn := fname$;\r\t\t\tloc := HostFiles.NewLocator(lfn);\r\t\t\tIF fn.nFilterIndex <= n THEN\r\t\t\t\tconv := typeList[fn.nFilterIndex - 1];\r\t\t\t\tdefConv := conv\r\t\t\tELSE\t"
+                    attr: 0
+                  - text: "(* ask for desired file type *)\r"
+                    attr: 1
+                  - text: "\t\t\t\timpType.list.SetLen(n);\r\t\t\t\tDialog.MapString(\"#Host:Document\", t); impType.list.SetItem(0, t);\r\t\t\t\ti := 1;\r\t\t\t\tWHILE i < n DO\r\t\t\t\t\tMapConv(typeList[i].imp, t); impType.list.SetItem(i, t);\r\t\t\t\t\tINC(i)\r\t\t\t\tEND;\r\t\t\t\timpType.list.index := 0;\r\t\t\t\timpType.done := FALSE;\r\t\t\t\tDialog.Call(\"StdCmds.OpenToolDialog('HostDialog.impType', '#Host:OpenFile')\", \" \", res);\r\t\t\t\tWaitDialogClose;\r\t\t\t\tIF impType.done THEN\r\t\t\t\t\tconv := typeList[impType.list.index]\r\t\t\t\tELSE"
+                    attr: 0
+                  - text: "\r\t\t\t\t"
+                    attr: 3
+                  - text: "\tloc := NIL; conv := NIL\r\t\t\t\tEND;\r\t\t\t\tdefConv := all\r\t\t\tEND\r\t\tELSE\r\t\t\tloc := NIL; conv := NIL;\r\t\t\tres := WinDlg.CommDlgExtendedError();\r\t\t\tASSERT(res = 0, 100)\r\t\tEND;\r\t\tres := WinApi.SetCursor(HostPorts.cursors[HostPorts.busyCursor])\r\tEND GetIntSpec;\r\r\tPROCEDURE (h: GetSpecHook) GetIntSpec (VAR loc: Files.Locator; VAR name: Files.Name;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR conv: Converters.Converter);\r\tBEGIN\r\t\tGetIntSpec(loc, name, conv)\r\tEND GetIntSpec;\r\r\tPROCEDURE [2] HookProc (wnd: WinApi.HANDLE; msg, wParam, lParam: INTEGER): INTEGER;\r\t"
+                    attr: 0
+                  - text: "(* 06.11.02. not needed anymore. "
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r"
+                          attr: 0
+                        - text: "\t\tFor earlier Windows versions, this procedure was supposed to transfer the file-type from\r\t\tthe \"Save as type\" control to the \"File name\" control. But since Windows 98, it seems neither\r\t\tto work properly nor to be need anymore."
+                          attr: 1
+                      body: []
+                      attr: 1
+                      w: 165735
+                      h: 142875
+                  - text: " *)"
+                    attr: 1
+                  - text: "\r\t\tVAR i, j: INTEGER; s: ARRAY 256 OF CHAR; t: ARRAY 8 OF CHAR; edit: WinApi.HANDLE;\r\tBEGIN\r\t\tIF (msg = WinApi.WM_COMMAND) & (lParam # 0) & (wParam = 10470H) THEN\r\t\t\ti := WinApi.GetWindowTextW(lParam, s, LEN(s));\r\t\t\tDEC(i);\r\t\t\tIF s[i] = \")\" THEN DEC(i) END;\r\t\t\tj := i;\r\t\t\tWHILE (j >= 0) & (s[j] # \".\") DO DEC(j) END;\r\t\t\tIF (j > 0) & (s[j-1] = \"*\") & (j >= i - 3) & (j < i) THEN\r\t\t\t\tt[0] := s[j+1]; t[1] := s[j+2]; t[2] := s[j+3]; t[i-j] := 0X;\r\t\t\t\tedit := WinApi.GetDlgItem(WinApi.GetParent(lParam), 480H);\r\t\t\t\tIF edit # 0 THEN\r\t\t\t\t\ti := WinApi.GetWindowTextW(edit, s, LEN(s)); j := i - 1;\r\t\t\t\t\tWHILE (j >= 0) & (s[j] # \".\") DO DEC(j) END;\r\t\t\t\t\tIF j < 0 THEN j := i END;\r\t\t\t\t\ts[j] := \".\"; s[j+1] := t[0]; s[j+2] := t[1]; s[j+3] := t[2]; s[j+4] := 0X;\r\t\t\t\t\ti := WinApi.SetWindowTextW(edit, s)\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " 0\r\tEND HookProc;\r\r\tPROCEDURE (hook: DialogHook) GetExtSpec (\r\t\tIN default: Files.Name; IN defType: Files.Type; VAR loc: Files.Locator; OUT name: Files.Name\r\t);\r\t"
+                    attr: 0
+                  - text: "(* ask user for a file name (for file externalization) *)\r"
+                    attr: 1
+                  - text: "\t\tVAR res, i, j: INTEGER; lfn: ARRAY 260 OF CHAR;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: "(* set filter *)"
+                    attr: 1
+                  - text: "\r\t\tftype := defType$; i := 0;\r\t\tIF ftype = \"\" THEN ftype := \"odc\" END;\r\t\tIF ftype # \"*\" THEN\r\t\t\tSAppend(filter, i, \"*.\"); SAppend(filter, i, ftype); INC(i);\r\t\t\tSAppend(filter, i, \"*.\"); SAppend(filter, i, ftype); INC(i)\r\t\tELSE ftype := \"\"\r\t\tEND;\r\t\tSAppend(filter, i, \"*.*\"); INC(i);\r\t\tSAppend(filter, i, \"*.*\"); INC(i);\r\t\tfilter[i] := 0X;\r\t\t"
+                    attr: 0
+                  - text: "(* open dialog *)\r\t\t"
+                    attr: 1
+                  - text: "fn.nFilterIndex := 1;\r\t\tfname := default$;\r\t\tIF loc # NIL THEN\t"
+                    attr: 0
+                  - text: "(* set old dir *)"
+                    attr: 1
+                  - text: "\r\t\t\tactualPath := loc(HostFiles.Locator).path$; i := 0\r(*\r\t\t\tWHILE actualPath[i] # 0X DO INC(i) END;\r\t\t\tactualPath[i] := \"\\\"; actualPath[i+1] := 0X\r*)\r\t\tEND;"
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\t\tfn.Flags := {1, 2, 3, 11, 19};\t"
+                    attr: 0
+                  - text: "(* overwritePrompt, hideReadOnly, noChangeDir, pathMustExist, new look *)"
+                    attr: 1
+                  - text: "\r\t\tfn.hwndOwner := HostWindows.ActualWnd();\r\t\tres := WinDlg.GetSaveFileNameW(fn);\r\t\tIF (res = 0) & (WinDlg.CommDlgExtendedError() = 3002H) THEN\r\t\t\tfname := \"\";\r\t\t\tres := WinDlg.GetSaveFileNameW(fn)\r\t\tEND;\r\t\tIF res # 0 THEN\r\t\t\ti := 0; j := fn.nFileOffset;\r\t\t\tWHILE fname[j] # 0X DO name[i] := fname[j]; INC(i); INC(j) END;\r\t\t\tname[i] := 0X; fname[fn.nFileOffset - 1] := 0X;\r\t\t\tactualPath := fname$; lfn := fname$;\r\t\t\tloc := HostFiles.NewLocator(lfn)\r\t\tELSE\r\t\t\tloc := NIL;\r\t\t\tres := WinDlg.CommDlgExtendedError();\r\t\t\tASSERT(res = 0, 100)\r\t\tEND;\r\t\tres := WinApi.SetCursor(HostPorts.cursors[HostPorts.busyCursor])\r\tEND GetExtSpec;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: GetExtSpec
+                    attr: 3
+                  - text: "* (\r\t\ts: Stores.Store; VAR loc: Files.Locator; VAR name: Files.Name; VAR conv: Converters.Converter\r\t);\r\t"
+                    attr: 0
+                  - text: "(* ask user for a file name (for file externalization) *)\r"
+                    attr: 1
+                  - text: "\t\tVAR res, i, j, n: INTEGER; t: ARRAY 64 OF CHAR; c: Converters.Converter;\r\t\t\tlfn: ARRAY 260 OF CHAR;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: "(* set filter *)\r\t\t"
+                    attr: 1
+                  - text: "IF conv # NIL THEN ftype := conv.fileType$ ELSE ftype := \"odc\" END;\r\t\ttypeList[0] := Converters.list;\t"
+                    attr: 0
+                  - text: "(* document converter *)"
+                    attr: 1
+                  - text: "\r\t\tc := Converters.list; fn.nFilterIndex := 1;\r\t\tDialog.MapString(\"#Host:Document\", t);\r\t\ti := 0; SAppend(filter, i, t); SAppend(filter, i, \" (*.odc)\"); INC(i);\r\t\tSAppend(filter, i, \"*.odc\"); INC(i); n := 1;\r\t\tWHILE c # NIL DO\r\t\t\tIF (c.exp # \"\") & ((c.storeType = \"\") OR Services.Is(s, c.storeType)) & (c.fileType # \"odc\") THEN\r\t\t\t\ttypeList[n] := c;\r\t\t\t\tMapConv(c.exp, t); SAppend(filter, i, t);\r\t\t\t\tSAppend(filter, i, \" (*.\"); SAppend(filter, i, c.fileType);\r\t\t\t\tSAppend(filter, i, \")\"); INC(i);\r\t\t\t\tSAppend(filter, i, \"*.\"); SAppend(filter, i, c.fileType); INC(i);\r\t\t\t\tIF c = conv THEN fn.nFilterIndex := n + 1 END;\r\t\t\t\tINC(n)\r\t\t\tEND;\r\t\t\tc := c.next\r\t\tEND;\r\t\tfilter[i] := 0X;\r\t\t"
+                    attr: 0
+                  - text: "(* open dialog *)\r"
+                    attr: 1
+                  - text: "\t\tfname := name$; i := 0;\r\t\t"
+                    attr: 0
+                  - text: "(* overwritePrompt, hideReadOnly, noChangeDir, (* en hook, *) pathMustExist *)"
+                    attr: 1
+                  - text: "\r\t\tfn.Flags := {1, 2, 3, (* 5 ,*) 11, 19};\r\t\tWHILE fname[i] # 0X DO INC(i) END;\r\t\tWHILE (i > 0) & (fname[i] # \".\") DO DEC(i) END;\r\t\tIF i > 0 THEN\r\t\t\tIF (conv # NIL) & (conv.exp = \"\") THEN\r\t\t\t\tftype := \"odc\"; fname[i] := 0X\r\t\t\tELSE\r\t\t\t\tj := 0;\r\t\t\t\tWHILE (ftype[j] # 0X) & (CAP(fname[i+j+1]) = CAP(ftype[j])) DO INC(j) END;\r\t\t\t\tIF fname[i+j+1] = ftype[j] THEN fname[i] := 0X END\r\t\t\tEND\r\t\tEND;\r\t\tIF loc # NIL THEN\t"
+                    attr: 0
+                  - text: "(* set old dir *)"
+                    attr: 1
+                  - text: "\r\t\t\tactualPath := loc(HostFiles.Locator).path$; i := 0;\r\t\t\tWHILE actualPath[i] # 0X DO INC(i) END;\r\t\t\tactualPath[i] := \"\\\"; actualPath[i+1] := 0X\r\t\tEND;"
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\t\tfn.hwndOwner := HostWindows.ActualWnd();\r\t\tres := WinDlg.GetSaveFileNameW(fn);\r\t\tIF (res = 0) & (WinDlg.CommDlgExtendedError() = 3002H) THEN\r\t\t\tfname := \"\";\r\t\t\tres := WinDlg.GetSaveFileNameW(fn)\r\t\tEND;\r\t\tIF res # 0 THEN\r\t\t\ti := 0; j := fn.nFileOffset;\r\t\t\tWHILE fname[j] # 0X DO name[i] := fname[j]; INC(i); INC(j) END;\r\t\t\tname[i] := 0X; fname[fn.nFileOffset - 1] := 0X;\r\t\t\tactualPath := fname$; lfn := fname$;\r\t\t\tloc := HostFiles.NewLocator(lfn);\r\t\t\tconv := typeList[fn.nFilterIndex - 1]\r\t\tELSE\r\t\t\tloc := NIL;\r\t\t\tres := WinDlg.CommDlgExtendedError();\r\t\t\tASSERT(res = 0, 100)\r\t\tEND;\r\t\tres := WinApi.SetCursor(HostPorts.cursors[HostPorts.busyCursor])\r\tEND GetExtSpec;\r\r\tPROCEDURE (h: GetSpecHook) GetExtSpec (\r\t\ts: Stores.Store; VAR loc: Files.Locator; VAR name: Files.Name; VAR conv: Converters.Converter\r\t);\r\tBEGIN\r\t\tGetExtSpec(s, loc, name, conv)\r\tEND GetExtSpec;\r\r"
+                    attr: 0
+                  - text: "\t(* printer dialogs *)\r\r"
+                    attr: 1
+                  - text: "\t"
+                    attr: 0
+                  - text: "(* page setup previewer view *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (v: Preview) Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\t\tCONST scale = 16; rmm = Ports.mm DIV scale; size = 460 * rmm;\r\t\tVAR u, w, h, x, y, uu: INTEGER;\r\tBEGIN\r\t\tu := f.unit;\r\t\tIF Dialog.metricSystem THEN uu := 10 * rmm ELSE uu := Ports.inch DIV scale END;\r\t\tw := setup.w DIV scale;\r\t\th := setup.h DIV scale;\r\t\tx := (size - w) DIV 2;\r\t\ty := (size - h) DIV 2;\r\t\tl := SHORT(ENTIER(setup.left * uu));\r\t\tt := SHORT(ENTIER(setup.top * uu));\r\t\tr := SHORT(ENTIER(setup.right * uu));\r\t\tb := SHORT(ENTIER(setup.bottom * uu));\r\t\tf.DrawRect(x, y, x + w, y + h, Ports.fill, Ports.background);\r\t\tf.DrawRect(x - u, y - u, x + w + u, y + h + u, 0, Ports.defaultColor);\r\t\tIF setup.decorate THEN\r\t\t\tIF t < 14 * rmm THEN t := 14 * rmm END;\r\t\t\tf.DrawRect(x + l, y + 10 * rmm, x + l + 20 * rmm, y + 10 * rmm + u, Ports.fill, Ports.defaultColor);\r\t\t\tf.DrawRect(x + w - r - 8 * rmm, y + 10 * rmm, x + w - r, y + 10 * rmm + u, Ports.fill, Ports.defaultColor)\r\t\tEND;\r\t\tIF (w - r > l) & (h - b > t) THEN\r\t\t\tf.DrawRect(x + l, y + t, x + w - r, y + h - b, 0, Ports.defaultColor)\r\t\tEND\r\tEND Restore;\r\r\tPROCEDURE (v: Preview) HandleViewMsg (f: Views.Frame; VAR msg: Views.Message);\r\tBEGIN\r\t\tWITH msg: UpdateMsg DO\r\t\t\tViews.Update(v, Views.keepFrames)\r\t\tELSE\r\t\tEND\r\tEND HandleViewMsg;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Deposit
+                    attr: 3
+                  - text: "*;\r\t\tVAR v: Preview;\r\tBEGIN\r\t\tNEW(v); Views.Deposit(v)\r\tEND Deposit;\r\r\t"
+                    attr: 0
+                  - text: "(* page setup dialog *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetupNotify
+                    attr: 3
+                  - text: "* (op, from, to: INTEGER);\r\t\tVAR msg: UpdateMsg; t: INTEGER;\r\tBEGIN\r\t\tIF op = Dialog.changed THEN\r\t\t\tIF setup.landscape # (setup.w > setup.h) THEN\r\t\t\t\tt := setup.w; setup.w := setup.h; setup.h := t\r\t\t\tEND;\r"
+                    attr: 0
+                  - text: "\t\t\t"
+                    attr: 3
+                  - text: "Views.Omnicast(msg);\r\t\t\tDialog.Update(setup)"
+                    attr: 0
+                  - text: "\r"
+                    attr: 3
+                  - text: "\t\tEND\r\tEND SetupNotify;\r\r"
+                    attr: 0
+                  - text: "\t"
+                    attr: 3
+                  - text: "PROCEDURE "
+                    attr: 0
+                  - text: SetupOk
+                    attr: 3
+                  - text: "*;\r\t\tVAR win: Windows.Window; w, h, l, t, r, b, uu: INTEGER;\r\tBEGIN\r\t\twin := Windows.dir.Focus(Controllers.targetPath);\r\t\tIF win # NIL THEN\r\t\t\tIF Dialog.metricSystem THEN uu := 10 * Ports.mm ELSE uu := Ports.inch END;\r\t\t\tw := setup.w; h := setup.h;\r\t\t\tl := SHORT(ENTIER(setup.left * uu));\r\t\t\tt := SHORT(ENTIER(setup.top * uu));\r\t\t\tr := w - SHORT(ENTIER(setup.right * uu));\r\t\t\tb := h - SHORT(ENTIER(setup.bottom * uu));\r\t\t\tIF (0 <= l) & (l < r) & (r <= w) & (0 <= t) & (t < b) & (b <= h) THEN\r\t\t\t\twin.doc.SetPage(w, h, l, t, r, b, setup.decorate);\r\t\t\t\tStdCmds.CloseDialog\r\t\t\tELSE\r\t\t\t\tDialog.Beep\r\t\t\tEND\r\t\tEND\r\tEND SetupOk;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: InitPageSetup
+                    attr: 3
+                  - text: "*;\r\t\tVAR win: Windows.Window; w, h, pw, ph, l, t, r, b, uu: INTEGER; p: Printers.Printer;\r\tBEGIN\r\t\twin := Windows.dir.Focus(Controllers.targetPath);\r\t\tIF win # NIL THEN\r\t\t\tIF Dialog.metricSystem THEN uu := Ports.mm DIV 10 ELSE uu := Ports.inch DIV 100 END;\r\t\t\twin.doc.PollPage(w, h, l, t, r, b, setup.decorate);\r\t\t\tp := Printers.dir.Current();\r\t\t\tIF p # NIL THEN HostPrinters.GetPage(p, pw, ph);\r\t\t\t\tIF (pw > ph) = (w > h) THEN w := pw; h := ph ELSE w := ph; h := pw END\r\t\t\tEND;"
+                    attr: 0
+                  - text: "\r\t\t\t"
+                    attr: 3
+                  - text: "r := w - r; b := h - b;\r\t\t\tsetup.left := l DIV uu / 100;\r\t\t\tsetup.right := r DIV uu / 100;\r\t\t\tsetup.top := t DIV uu / 100;\r\t\t\tsetup.bottom := b DIV uu / 100;\r\t\t\tsetup.w := w; setup.h := h;\r\t\t\tsetup.hs := setup.right + setup.left;\r\t\t\tsetup.vs := setup.bottom + setup.top;\r\t\t\tsetup.landscape := w > h\r\t\tEND\r\tEND InitPageSetup;\r\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: PrintDialog
+                    attr: 3
+                  - text: "* (\r\t\thasSelection: BOOLEAN; VAR from, to, copies: INTEGER; VAR selection: BOOLEAN\r\t);\r\t\tVAR res: INTEGER;\r\tBEGIN\r\t\tprt.Flags := {18 (*, 20 *)};\t"
+                    attr: 0
+                  - text: "(* use dev mode copies, hide print to file *)\r"
+                    attr: 1
+                  - text: "\t\tIF ~hasSelection THEN INCL(prt.Flags, 2) END;\t"
+                    attr: 0
+                  - text: "(* no selection *)"
+                    attr: 1
+                  - text: "\r\t\tprt.nCopies := 1;\r\t\tprt.hwndOwner := HostWindows.ActualWnd();\r\t\tprt.nFromPage := 1; prt.nToPage := 1;\r\t\tres := WinDlg.PrintDlgW(prt);\r\t\tIF (res = 0) & (WinDlg.CommDlgExtendedError() = 4106) THEN\r\t\t\tprt.hDevMode := 0;\r\t\t\tres := WinDlg.PrintDlgW(prt)\r\t\tEND;\r\t\tIF (res = 0) & (WinDlg.CommDlgExtendedError() = 4108) THEN\r\t\t\tprt.hDevMode := 0; prt.hDevNames := 0;\r\t\t\tres := WinDlg.PrintDlgW(prt)\r\t\tEND;\r\t\tHostPrinters.SetCurrent(prt.hDevNames, prt.hDevMode);\r\t\tIF res # 0 THEN\r\t\t\tIF 0 IN prt.Flags THEN selection := TRUE; from := 0; to := 0\t"
+                    attr: 0
+                  - text: "(* print selection *)\r"
+                    attr: 1
+                  - text: "\t\t\tELSIF 1 IN prt.Flags THEN selection := FALSE; from := prt.nFromPage - 1; to := prt.nToPage - 1 "
+                    attr: 0
+                  - text: "(* print pages *)"
+                    attr: 1
+                  - text: "\r\t\t\tELSE selection := FALSE; from := 0; to := 32767\t"
+                    attr: 0
+                  - text: "(* print all *)\r"
+                    attr: 1
+                  - text: "\t\t\tEND;\r\t\t\tcopies := prt.nCopies\r\t\tELSE\r\t\t\tcopies := 0;\r\t\t\tres := WinDlg.CommDlgExtendedError();\r\t\t\tASSERT(res = 0, 100)\r\t\tEND\r\tEND PrintDialog;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: PrintSetup
+                    attr: 3
+                  - text: "*;\r\t\tVAR res: INTEGER; pt: Printers.Printer;\r\tBEGIN\r\t\tpt := Printers.dir.Current();\r\t\tIF pt # NIL THEN\r\t\t\tpt.SetOrientation(setup.landscape);\r\t\t\tHostPrinters.GetCurrent(prt.hDevNames, prt.hDevMode)\r\t\tEND;\r\t\tprt.Flags := {6};"
+                    attr: 0
+                  - text: "\t(* PrintSetup *)\r"
+                    attr: 1
+                  - text: "\t\tprt.hwndOwner := HostWindows.ActualWnd();\r\t\tres := WinDlg.PrintDlgW(prt);\r\t\tIF (res = 0) & (WinDlg.CommDlgExtendedError() = 4108) THEN\r\t\t\tprt.hDevMode := 0; prt.hDevNames := 0;\r\t\t\tres := WinDlg.PrintDlgW(prt)\r\t\tEND;\r\t\tHostPrinters.SetCurrent(prt.hDevNames, prt.hDevMode);\r\t\tpt := Printers.dir.Current();\r\t\tIF pt # NIL THEN\r\t\t\tHostPrinters.GetPage(pt, setup.w, setup.h);\r\t\t\tsetup.landscape := setup.w > setup.h\r\t\tEND;\r\t\tSetupNotify(Dialog.changed, 0, 0)\r\tEND PrintSetup;\r\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: CloseDialog
+                    attr: 3
+                  - text: "* (w: Windows.Window; quit: BOOLEAN; VAR res: INTEGER);\r\t\tVAR r: INTEGER; title: Views.Title; text: ARRAY 256 OF CHAR;\r\tBEGIN\r\t\tw.GetTitle(title);\r\t\tDialog.MapParamString(dirtyString, title, 0DX, 0DX, text);\r\t\tr := WinApi.MessageBoxW(w(HostWindows.Window).wnd, text, Dialog.appName, {0, 1, 5});\r\t\tIF r = 6 THEN res := save\r\t\tELSIF r = 2 THEN res := cancel\r\t\tELSE res := 0\r\t\tEND;\r\t\tr := WinApi.SetCursor(HostPorts.cursors[HostPorts.busyCursor])\r\tEND CloseDialog;\r\r\tPROCEDURE (hook: DialogHook) GetColor (in: Ports.Color; OUT out: Ports.Color; OUT set: BOOLEAN);\r\t\tVAR res: INTEGER;\r\tBEGIN\r\t\tcol.rgbResult := in;\r\t\tIF col.rgbResult = Ports.defaultColor THEN col.rgbResult := HostPorts.textCol END;\r\t\tcol.hwndOwner := HostWindows.ActualWnd();\r\t\tset := WinDlg.ChooseColorW(col) # 0;\r\t\tout := col.rgbResult;\r\t\tIF ~set THEN\r\t\t\tres := WinDlg.CommDlgExtendedError();\r\t\t\tASSERT(res = 0, 100)\r\t\tEND;\r\t\tres := WinApi.SetCursor(HostPorts.cursors[HostPorts.busyCursor])\r\tEND GetColor;"
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\r\tPROCEDURE "
+                    attr: 0
+                  - text: ColorDialog
+                    attr: 3
+                  - text: "*;\r\t"
+                    attr: 0
+                  - text: "(* open color dialog and set selection to choosen color *)"
+                    attr: 1
+                  - text: "\r\t\tVAR set: BOOLEAN; p: Properties.StdProp; col: Ports.Color;\r\tBEGIN\r\t\tProperties.CollectStdProp(p);\r\t\tIF ~(Properties.color IN p.known) THEN p.color.val := Ports.black END;\r\t\t(* ColorDialog0(p.color.val, col, set); *)\r\t\tdialogHook.GetColor(p.color.val, col, set);\r\t\tIF set THEN StdCmds.Color(col) END\r\tEND ColorDialog;\r\r"
+                    attr: 0
+                  - text: "\t"
+                    attr: 1
+                  - text: "PROCEDURE FontDialog0 (full: BOOLEAN; VAR typeface: ARRAY OF CHAR; VAR size: INTEGER;\r\t\tVAR color: Ports.Color; VAR weight: INTEGER; VAR style: SET; VAR set: BOOLEAN\r\t);\r\t\tVAR res: INTEGER;\r\tBEGIN\r\t\tlogFont.lfHeight := -((size + HostWindows.unit DIV 2) DIV HostWindows.unit);\r\t\tlogFont.lfWeight := weight;\r\t\tIF Fonts.italic IN style THEN logFont.lfItalic := 1X ELSE logFont.lfItalic := 0X END;\r\t\tIF Fonts.underline IN style THEN logFont.lfUnderline := 1X ELSE logFont.lfUnderline := 0X END;\r\t\tIF Fonts.strikeout IN style THEN logFont.lfStrikeOut := 1X ELSE logFont.lfStrikeOut := 0X END;\r\t\tlogFont.lfFaceName := typeface$;\r\t\tfont.hwndOwner := HostWindows.ActualWnd();\r\t\tIF full THEN\r\t\t\tfont.Flags := {0, 6, 8, 11, 16}\t"
+                    attr: 0
+                  - text: "(* screenFonts, initToLogFont, effects, noVectorFonts, forceFontExist *)\r"
+                    attr: 1
+                  - text: "\t\tELSE\r\t\t\tfont.Flags := {0, 6, 11, 20, 21}"
+                    attr: 0
+                  - text: "\t(* screenFonts, initToLogFont, noVectorFonts, no style, no size *)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\t\tIF color = Ports.defaultColor THEN font.rgbColors := HostPorts.textCol ELSE font.rgbColors := color END;\r\t\tset := WinDlg.ChooseFontW(font) # 0;\r\t\tIF set THEN\r\t\t\ttypeface := logFont.lfFaceName$;\r\t\t\tsize := font.iPointSize * Ports.point DIV 10;"
+                    attr: 0
+                  - text: "\r\t\t\tASSERT((size + HostWindows.unit DIV 2) DIV HostWindows.unit = ABS(logFont."
+                    attr: 3
+                  - text: lfHeight
+                    attr: 0
+                  - text: "), 120);\r"
+                    attr: 3
+                  - text: "\t\t\tweight := logFont.lfWeight;\r\t\t\tstyle := {};\r\t\t\tIF logFont.lfItalic # 0X THEN INCL(style, Fonts.italic) END;\r\t\t\tIF logFont.lfUnderline # 0X THEN INCL(style, Fonts.underline) END;\r\t\t\tIF logFont.lfStrikeOut # 0X THEN INCL(style, Fonts.strikeout) END;\r\t\t\tIF font.rgbColors = HostPorts.textCol THEN color := Ports.defaultColor ELSE color := font.rgbColors END\r\t\tELSE\r\t\t\tres := WinDlg.CommDlgExtendedError();\r\t\t\tASSERT(res = 0, 100)\r\t\tEND;\r\t\tres := WinApi.SetCursor(HostPorts.cursors[HostPorts.busyCursor])\r\tEND FontDialog0;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: FontDialog
+                    attr: 3
+                  - text: "*;\r"
+                    attr: 0
+                  - text: "\t(** open font dialog and set selection to choosen attributes **)\r"
+                    attr: 1
+                  - text: "\t\tVAR set: BOOLEAN; p, p0: Properties.StdProp;\r\tBEGIN\r\t\tProperties.CollectStdProp(p0);\r\t\tIF Properties.typeface IN p0.known THEN\r\t\t\tNEW(p); p.typeface := p0.typeface$;\r\t\t\tp.size := p0.size; p.color.val := p0.color.val;\r\t\t\tp.weight := p0.weight; p.style := p0.style;\r\t\t\tFontDialog0(TRUE, p.typeface, p.size, p.color.val, p.weight, p.style.val, set);\r\t\t\tIF set THEN\r\t\t\t\tp.valid := {Properties.typeface, Properties.style, Properties.weight, Properties.size, Properties.color};\r\t\t\t\tp.style.mask := {Fonts.italic, Fonts.underline, Fonts.strikeout};\r\t\t\t\tProperties.EmitProp(NIL, p)\r\t\t\tEND\r\t\tEND\r\tEND FontDialog;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: "TypefaceDialog*"
+                    attr: 3
+                  - text: ";\r"
+                    attr: 0
+                  - text: "\t(** open font dialog and set selection to choosen typeface **)\r"
+                    attr: 1
+                  - text: "\t\tVAR set: BOOLEAN; p, p0: Properties.StdProp; s: INTEGER; c: Ports.Color; w: INTEGER; st: SET;\r\tBEGIN\r\t\tProperties.CollectStdProp(p0);\r\t\tIF Properties.typeface IN p0.known THEN\r\t\t\tNEW(p); p.typeface := p0.typeface$;\r\t\t\tFontDialog0(FALSE, p.typeface, s, c, w, st, set);\r\t\t\tIF set THEN\r\t\t\t\tp.valid := {Properties.typeface};\r\t\t\t\tProperties.EmitProp(NIL, p)\r\t\t\tEND\r\t\tEND\r\tEND TypefaceDialog;\r\r\r\t"
+                    attr: 0
+                  - text: "(* preferences dialog *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: DefFont
+                    attr: 3
+                  - text: "*;\r\t\tVAR tf: Fonts.Typeface; size: INTEGER; color: Ports.Color; w: INTEGER; style: SET; set: BOOLEAN;\r\tBEGIN\r\t\ttf := prefFName;\r\t\tsize := prefFSize;\r\t\tw := Fonts.normal;\r\t\tstyle := {};\r\t\tcolor := Ports.defaultColor;\r\t\tFontDialog0(TRUE, tf, size, color, w, style, set);\r\t\tIF set THEN\r\t\t\tprefFName := tf; prefFSize := size\r\t\tEND\r\tEND DefFont;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: DlgFont
+                    attr: 3
+                  - text: "*;\r\t\tVAR tf: Fonts.Typeface; size: INTEGER; color: Ports.Color; w: INTEGER; style: SET; set: BOOLEAN;\r\tBEGIN\r\t\ttf := prefDName;\r\t\tsize := prefDSize;\r\t\tw := prefDWght;\r\t\tstyle := prefDStyle;\r\t\tcolor := Ports.defaultColor;\r\t\tFontDialog0(TRUE, tf, size, color, w, style, set);\r\t\tIF set THEN\r\t\t\tprefDName := tf; prefDSize := size; prefDStyle := style; prefDWght := w\r\t\tEND\r\tEND DlgFont;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: PrefOk
+                    attr: 3
+                  - text: "*;\r\t\tVAR res: INTEGER; rect: WinApi.RECT;\r\tBEGIN\r\t\tHostFonts.SetDefaultFont(prefFName, prefFSize);\r\t\tHostFonts.SetDialogFont(prefDName, prefDSize, prefDStyle, prefDWght);\r\t\tHostFonts.SetTTMetric(prefs.useTTMetric);\r\t\tHostWindows.SetVisualScroll(prefs.visualScroll);\r\t\tIF prefs.statusbar = 1 THEN Dialog.showsStatus := TRUE; HostWindows.memInStatus := FALSE\r\t\tELSIF prefs.statusbar = 2 THEN Dialog.showsStatus := TRUE; HostWindows.memInStatus := TRUE\r\t\tELSE Dialog.showsStatus := FALSE\r\t\tEND;\r\t\tDialog.Call(\"StdCmds.UpdateAll\", \"\", res);\r\t\tDialog.Call(\"StdCmds.RecalcAllSizes\", \"\", res);\r\t\tDialog.Call(\"TextCmds.UpdateDefaultAttr\", \"\", res);\r\t\tHostCFrames.SetDefFonts;\r\t\tHostRegistry.WriteBool(\"noStatus\", ~Dialog.showsStatus);\r\t\tHostRegistry.WriteBool(\"memStatus\", HostWindows.memInStatus);\r\t\tres := WinApi.GetClientRect(HostWindows.main, rect);\r\t\tHostWindows.ResizeMainWindow(0, rect.right, rect.bottom);\r\t\tDialog.thickCaret := prefs.thickCaret;\r\t\tDialog.caretPeriod := prefs.caretPeriod;\r\t\tHostRegistry.WriteBool(\"thickCaret\", Dialog.thickCaret);\r\t\tHostRegistry.WriteInt(\"caretPeriod\", Dialog.caretPeriod)\r\tEND PrefOk;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: InitPrefDialog
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tprefFName := HostFonts.defFont.alias;\r\t\tprefFSize := HostFonts.defFont.size;\r\t\tprefDName := HostFonts.dlgFont.typeface;\r\t\tprefDSize := HostFonts.dlgFont.size;\r\t\tprefDStyle := HostFonts.dlgFont.style;\r\t\tprefDWght := HostFonts.dlgFont.weight;\r\t\tprefs.useTTMetric := HostFonts.useTTMetric;\r\t\tprefs.visualScroll := HostWindows.visualScroll;\r\t\tIF ~Dialog.showsStatus THEN prefs.statusbar := 0\r\t\tELSIF HostWindows.memInStatus THEN prefs.statusbar := 2\r\t\tELSE prefs.statusbar := 1\r\t\tEND;\r\t\tprefs.thickCaret := Dialog.thickCaret;\r\t\tprefs.caretPeriod := Dialog.caretPeriod\r\tEND InitPrefDialog;\r\r\r\t"
+                    attr: 0
+                  - text: "(* date / time *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (hook: DatesHook) DateToString (d: Dates.Date; format: INTEGER; OUT str: ARRAY OF CHAR);\r\t\tVAR res, pos, i: INTEGER; time: WinApi.SYSTEMTIME; fmt: ARRAY 64 OF CHAR;\r\tBEGIN\r\t\ttime.wYear := SHORT(d.year); time.wMonth := SHORT(d.month); time.wDay := SHORT(d.day);\r\t\tIF format = Dates.short THEN\r\t\t\tres := WinApi.GetDateFormatW(\r\t\t\t\tHostRegistry.localeId, WinApi.DATE_SHORTDATE, time, NIL, str, LEN(str))\r\t\tELSIF format = Dates.long THEN\r\t\t\tres := WinApi.GetDateFormatW(HostRegistry.localeId, WinApi.DATE_LONGDATE, time, NIL, str, LEN(str))\r\t\tELSE\r\t\t\tres := WinApi.GetLocaleInfoW(HostRegistry.localeId, WinApi.LOCALE_SLONGDATE, fmt, LEN(fmt));\r\t\t\tIF format # Dates.abbreviated THEN\t"
+                    attr: 0
+                  - text: "(* remove weekday *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tStrings.Find(fmt, \"dddd\", 0, pos); i := pos + 4;\r\t\t\t\tIF pos < 0 THEN Strings.Find(fmt, \"ddd\", 0, pos); i := pos + 3 END;\r\t\t\t\tIF pos >= 0 THEN\r\t\t\t\t\tWHILE (fmt[i] # 0X) & (CAP(fmt[i]) < \"A\") OR (CAP(fmt[i]) > \"Z\") DO INC(i) END;\r\t\t\t\t\tStrings.Replace(fmt, pos, i - pos, \"\")\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tIF format # Dates.plainLong THEN\t"
+                    attr: 0
+                  - text: "(* abbreviated *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tStrings.Find(fmt, \"dddd\", 0, pos);\r\t\t\t\tIF pos >= 0 THEN Strings.Replace(fmt, pos, 4, \"ddd\") END;\r\t\t\t\tStrings.Find(fmt, \"MMMM\", 0, pos);\r\t\t\t\tIF pos >= 0 THEN Strings.Replace(fmt, pos, 4, \"MMM\") END\r\t\t\tEND;\r\t\t\tres := WinApi.GetDateFormatW(HostRegistry.localeId, {}, time, fmt, str, LEN(str))\r\t\tEND;\r\t\tIF res = 0 THEN str := \"?\" END\r\tEND DateToString;\r\r\tPROCEDURE (hook: DatesHook) TimeToString (t: Dates.Time; OUT str: ARRAY OF CHAR);\r\t\tVAR res: INTEGER; time: WinApi.SYSTEMTIME;\r\tBEGIN\r\t\ttime.wHour := SHORT(t.hour); time.wMinute := SHORT(t.minute);\r\t\ttime.wSecond := SHORT(t.second); time.wMilliseconds := 0;\r\t\tres := WinApi.GetTimeFormatW(HostRegistry.localeId, {}, time, NIL, str, LEN(str));\r\t\tIF res = 0 THEN str := \"?\" END\r\tEND TimeToString;\r\r\tPROCEDURE (hook: LanguageHook) SetLanguage (\r\t\tlang: Dialog.Language; persistent: BOOLEAN; OUT ok: BOOLEAN\r\t);\r\tBEGIN\r\t\tok := (lang = \"\") OR (LEN(lang$) = 2);\r\t\tIF ok & persistent THEN HostRegistry.WriteString(\"language\", lang) END\r\tEND SetLanguage;\r\r\tPROCEDURE (hook: LanguageHook) GetPersistentLanguage (OUT lang: Dialog.Language);\r\t\tVAR res: INTEGER; s: ARRAY 32 OF CHAR;\r\tBEGIN\r\t\tHostRegistry.ReadString(\"language\", s, res);\r\t\tIF res = 0 THEN\r\t\t\tASSERT((s = \"\") OR (LEN(s$) = 2), 100);\r\t\t\tlang := s$\r\t\tELSE lang := \"\"\r\t\tEND\r\tEND GetPersistentLanguage;\r"
+                    attr: 0
+                  - text: "\r\tPROCEDURE (hook: WineHook) "
+                    attr: 4
+                  - text: IsWine
+                    attr: 5
+                  - text: "* (): BOOLEAN;\r\t\tVAR h: WinApi.HMODULE; adr: WinApi.FARPROC; res: INTEGER;\r\tBEGIN\r\t\tIF hook.isWine THEN "
+                    attr: 4
+                  - text: RETURN
+                    attr: 5
+                  - text: " TRUE\r\t\tELSE\r"
+                    attr: 4
+                  - text: "\t"
+                    attr: 6
+                  - text: "\t\t"
+                    attr: 4
+                  - text: "(* http://habrahabr.ru/blogs/development/76131/ *)"
+                    attr: 7
+                  - text: "\r"
+                    attr: 4
+                  - text: "\t"
+                    attr: 6
+                  - text: "\t\th := WinApi.LoadLibraryW(\"ntdll.dll\");\r"
+                    attr: 4
+                  - text: "\t"
+                    attr: 6
+                  - text: "\t\tIF h # WinApi.NULL THEN\r"
+                    attr: 4
+                  - text: "\t"
+                    attr: 6
+                  - text: "\t\t\tadr := WinApi.GetProcAddress(h, \"wine_get_version\");\r"
+                    attr: 4
+                  - text: "\t"
+                    attr: 6
+                  - text: "\t\t\tres := WinApi.FreeLibrary(h);\r"
+                    attr: 4
+                  - text: "\t"
+                    attr: 6
+                  - text: "\t\t\tIF adr # NIL THEN hook.isWine := TRUE; "
+                    attr: 4
+                  - text: RETURN
+                    attr: 5
+                  - text: " TRUE END\r"
+                    attr: 4
+                  - text: "\t"
+                    attr: 6
+                  - text: "\t\tEND ;\r"
+                    attr: 4
+                  - text: "\t"
+                    attr: 6
+                  - text: "\t\tDialog.SetWineHook(NIL); "
+                    attr: 4
+                  - text: "(* ~Dialog.IsWine() *)"
+                    attr: 7
+                  - text: "\r"
+                    attr: 4
+                  - text: "\t"
+                    attr: 6
+                  - text: "\t\t"
+                    attr: 4
+                  - text: RETURN
+                    attr: 5
+                  - text: " FALSE\r\t\tEND\r\tEND IsWine;\r"
+                    attr: 4
+                  - text: "\r\tPROCEDURE "
+                    attr: 0
+                  - text: Start
+                    attr: 3
+                  - text: "* (name: ARRAY OF CHAR);\r\t\tVAR res: INTEGER; info: WinApi.STARTUPINFOW; process: WinApi.PROCESS_INFORMATION;\r\tBEGIN\r\t\t(* res := WinApi.WinExec(name, WinApi.SW_NORMAL) *)\r\t\tWinApi.GetStartupInfoW(info);\r\t\tinfo.wShowWindow := WinApi.SW_NORMAL;\r\t\tres := WinApi.CreateProcessW(NIL, name, NIL, NIL, WinApi.FALSE, {}, 0, NIL, info, process)\r\tEND Start;\r\r\r"
+                    attr: 0
+                  - text: "\t(* initialization *)\r"
+                    attr: 1
+                  - text: "\r\tPROCEDURE InitDialogs;\r\t\tVAR i: INTEGER;\r\tBEGIN\r"
+                    attr: 0
+                  - text: "\t\t(* file dialog data structure *)\r\t\t"
+                    attr: 1
+                  - text: "fn.lStructSize := SIZE(WinDlg.OPENFILENAMEW);\r\t\tfn.hInstance := 0;\r\t\tfn.lpstrCustomFilter := NIL;\r\t\tfn.lpstrFilter := filter; fn.nFilterIndex := 1;\r\t\ti := WinApi.GetCurrentDirectoryW(LEN(actualPath), actualPath);\r\t\tfn.lpstrInitialDir := actualPath;\r\t\tfn.lpstrTitle := NIL; fn.lpstrFileTitle := NIL;\r\t\tfn.lpstrFile := fname; fn.nMaxFile := LEN(fname);\r\t\tfn.lpstrDefExt := ftype; ftype := \"$\";\r\t\tfn.lpfnHook := HookProc;\r\t\t"
+                    attr: 0
+                  - text: "(* print dialog data structure *)"
+                    attr: 1
+                  - text: "\r\t\tprt.lStructSize := SIZE(WinDlg.PRINTDLGW);\r\t\tprt.hDevMode := 0;\r\t\tprt.hDevNames := 0;\r\t\tprt.nMinPage := 1;\r\t\tprt.nMaxPage := -1;\r\t\t"
+                    attr: 0
+                  - text: "(* font dialog data structure *)"
+                    attr: 1
+                  - text: "\r\t\tfont.lStructSize := SIZE(WinDlg.CHOOSEFONTW);\r\t\tfont.hDC := 0;\r\t\tfont.lpLogFont := SYSTEM.VAL(WinApi.PtrLOGFONTW, SYSTEM.ADR(logFont));\r"
+                    attr: 0
+                  - text: "\t\t"
+                    attr: 1
+                  - text: "font.rgbColors := 0;\r\t\tfont.hInstance := 0;\r\t\tfont.lpszStyle := NIL;\r\t\tfont.nFontType := 2000H;\t"
+                    attr: 0
+                  - text: "(* screenFontType *)"
+                    attr: 1
+                  - text: "\r\t\tlogFont.lfWidth := 0;\r\t\tlogFont.lfEscapement := 0;\r\t\tlogFont.lfOrientation := 0;\r\t\tlogFont.lfCharSet := 0X;\r\t\tlogFont.lfOutPrecision := 0X;\r\t\tlogFont.lfClipPrecision := 0X;\r\t\tlogFont.lfQuality := 0X;\r\t\tlogFont.lfPitchAndFamily := 0X;\r\t\t"
+                    attr: 0
+                  - text: "(* color dialog data structure *)"
+                    attr: 1
+                  - text: "\r\t\tcol.lStructSize := SIZE(WinDlg.CHOOSECOLORW);\r\t\tcol.lpCustColors := customColors;\r\t\tcol.Flags := {0};\t"
+                    attr: 0
+                  - text: "(* rgbInit *)\r"
+                    attr: 1
+                  - text: "\t\ti := 0;\r\t\tWHILE i < 16 DO customColors[i] := 0FFFFFFH; INC(i) END\r\tEND InitDialogs;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Init
+                    attr: 3
+                  - text: "*;\r\t\tVAR n, v, res: INTEGER; b: BOOLEAN;\r\t\t\tgetSpecHook: GetSpecHook;\r\t\t\tdatesHook: DatesHook;\r\t\t\tshowHook: ShowHook;\r\t\t\tlanguageHook: LanguageHook;\r"
+                    attr: 0
+                  - text: "\t\t\twineHook: WineHook;\r"
+                    attr: 4
+                  - text: "\tBEGIN\r\t\tNEW(all);\r\t\tv := WinApi.GetVersion();\r\t\tosVersion := v MOD 256 * 100 + v DIV 256 MOD 256;\r\t\tIF v >= 0 THEN\r\t\t\tIF osVersion < 400 THEN Dialog.platform := Dialog.windowsNT3\r\t\t\tELSIF osVersion < 500 THEN Dialog.platform := Dialog.windowsNT4\r\t\t\tELSIF osVersion = 500 THEN Dialog.platform := Dialog.windows2000\r\t\t\tELSIF osVersion < 600 THEN Dialog.platform := Dialog.windowsXP\r\t\t\tELSIF osVersion = 600 THEN Dialog.platform := Dialog.windowsVista\r\t\t\tELSIF osVersion = 601 THEN Dialog.platform := Dialog.windows7\r\t\t\tELSE Dialog.platform := Dialog.windows8\r\t\t\tEND\r\t\tELSE Dialog.platform := Dialog.windows98\r\t\tEND;\r\t\tNEW(wineHook);\r\t\tDialog.SetWineHook(wineHook);\r\r\t\tHostRegistry.ReadBool(\"noStatus\", b, res); Dialog.showsStatus := (res # 0) OR ~b;\r\t\tHostRegistry.ReadBool(\"memStatus\", b, res); HostWindows.memInStatus := (res = 0) & b;\r\r\t\tHostRegistry.ReadBool(\"thickCaret\", b, res); IF res = 0 THEN Dialog.thickCaret := b END;\r\t\tHostRegistry.ReadInt(\"caretPeriod\", n, res); IF res = 0 THEN Dialog.caretPeriod := n END;\r\r\t\tNEW(showHook); Dialog.SetShowHook(showHook);\r(*\r\t\tHooks.showParamMsg := ShowParamMsg;\r\t\tHooks.showParamStatus := ShowParamStatus;\r*)\r\r\t\tNEW(dialogHook); Dialog.SetGetHook(dialogHook);\r(*\r\t\tHooks.getOK := GetOK;\r\t\tHooks.getIntSpec := GetIntSpec0;\r\t\tHooks.getExtSpec := GetExtSpec0;\r\t\tHooks.getColor := ColorDialog0;\r*)\r\r(*\r\t\tSequencers.GetIntSpec := GetIntSpec;\r\t\tSequencers.GetExtSpec := GetExtSpec;\r*)\r\t\tNEW(getSpecHook); Views.SetGetSpecHook(getSpecHook);\r\r\t\tHostFiles.MapParamString := Dialog.MapParamString;\r\r\t\tNEW(datesHook); Dates.SetHook(datesHook);\r(*\r\t\tHooks.getTime := GetTime;\r\t\tHooks.dateToString := DateToString;\r\t\tHooks.timeToString := TimeToString\r*)\r\t\tNEW(languageHook); Dialog.SetLanguageHook(languageHook); Dialog.ResetLanguage\r\tEND Init;\r\rBEGIN\r\tInit;\r\tInitDialogs\rEND HostDialog.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 35
+          bodyPos: 39888
+          bodyLen: 8

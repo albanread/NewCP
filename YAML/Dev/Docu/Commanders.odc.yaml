@@ -1,0 +1,217 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Dev\\Docu\\Commanders.odc"
+  size: 3606
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 3475
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 3289
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 3203
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                lead: 11500
+                asc: 121900
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 12
+                bodyPos: 3324
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 2810
+                runListLen: 923
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                flow:
+                  - text: DevCommanders
+                    attr: 0
+                  - text: "\r\rDEFINITION DevCommanders;\r\r\tTYPE\r\t\tPar = POINTER TO RECORD \r\t\t\ttext: TextModels.Model;\r\t\t\tbeg, end: INTEGER\r\t\tEND;\r\r\tVAR\r\t\tpar: Par;\r\r\tPROCEDURE Deposit;\r\tPROCEDURE DepositEnd;\r\t... plus some private items ...\r\rEND DevCommanders.\r\r\rA commander is a view which interprets and executes the command or command sequence written behind the commander. It only operates when embedded in a text.\rCommanders can be useful during development; e.g., they may be embedded directly in the source code of a program. They are not intended for use in end-user applications, due to their non-standard user interface experience.\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      lead: 11500
+                      asc: 121900
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 1368000 }
+                        - { stop: 1548000 }
+                        - { stop: 4500000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\rTypical menu:\r\"Insert Commander\"\t\"\"\t\"DevCommanders.Deposit; StdCmds.PasteView\"\t\"StdCmds.PasteViewGuard\"\r\"Insert EndCommander\"\t\"\"\t\"DevCommanders.DepositEnd; StdCmds.PasteView\"\t\"StdCmds.PasteViewGuard\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      lead: 11500
+                      asc: 121900
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r\rTYPE "
+                    attr: 1
+                  - text: Par
+                    attr: 2
+                  - text: "\rParameter context of a command's execution. This is used with commands such as\r\t"
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 10
+                      bodyPos: 1118
+                      bodyLen: 6
+                    attr: 3
+                    w: 177800
+                    h: 152400
+                  - text: DevCompiler.CompileThis ObxViews1 ObxViews2
+                    attr: 3
+                  - view:
+                      kind: DevCommanders.StdEndView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdEndViewDesc
+                        - DevCommanders.EndViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 11
+                      bodyPos: 1221
+                      bodyLen: 2
+                    attr: 3
+                    w: 88900
+                    h: 152400
+                  - text: "\r\r"
+                    attr: 1
+                  - text: text
+                    attr: 2
+                  - text: ": TextModels.Model\rThe text containing the activated commander and command.\r\r"
+                    attr: 1
+                  - text: beg
+                    attr: 2
+                  - text: ": INTEGER\rBegin of the parameters to the command, that is, the text position immediately behind the last character of the command itself.\r\r"
+                    attr: 1
+                  - text: end
+                    attr: 2
+                  - text: ": INTEGER\rEnd of the parameters to the command. This is either the end of the text or the position of the next commander or "
+                    attr: 1
+                  - text: EndView
+                    attr: 3
+                  - text: " in the text.\r\r\rVAR "
+                    attr: 1
+                  - text: par-
+                    attr: 2
+                  - text: ": Par\tpar # NIL exactly during the currently executed command\rA command can get access to the text, and thus to its context, via this variable during the execution of the command.\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: Deposit
+                    attr: 2
+                  - text: "\rDeposit command for commanders.\r\rPROCEDURE "
+                    attr: 1
+                  - text: DepositEnd
+                    attr: 2
+                  - text: "\rDeposit command for a "
+                    attr: 1
+                  - text: DevCommanders.EndView
+                    attr: 3
+                  - text: ". Marks the end of the command for the preceding commander. If no end view is present the commander reads until another commander is found or until the text ends.\r\rThis module contains several other items which are used internally.\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 16
+          bodyPos: 3571
+          bodyLen: 8

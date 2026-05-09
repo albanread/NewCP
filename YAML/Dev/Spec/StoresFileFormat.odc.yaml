@@ -1,0 +1,106 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Dev\\Spec\\StoresFileFormat.odc"
+  size: 2443
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 2312
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 2126
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 2040
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: "*"
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 4
+                bodyPos: 2044
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 1530
+                runListLen: 134
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 101600
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 101600
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                flow:
+                  - text: Stores File Format
+                    attr: 0
+                  - text: "\r\rStream = { Byte | Structure }.\r\rStructure = Nil | Link | Object.\r\rNil = nil Comment Next.\r\rLink = (link | newlink) ObjectId Comment Next.\r\t(* newlink and link have same meaning in new format, but newlink causes assertion trap in old *)\r\t(* if Next = 0 & Comment = 0 indecates end of link chain, whereas Next = 0 & Comment = 1 indicates\r\t\tnext store at Pos(Next) + 4 *)\r\r\rObject = (elem | store) TypePath Comment Next Down Length Stream.\r\t(* elem = Models.Model-derived type; for backward comp only *)\r \rComment = 00000000. (* extension hook *)\r\rObjectId = 32bits. (* index into object dictionary *)\r\rNext = 32bits. (* offset to next object on same nesting level; 00000000 if none *)\r\rDown = 32bits. (* offset to first object on next lower nesting level; 00000000 if none *)\r\rLength = 32bits. (* length of this object (including all subobjects) *)\r\r\r \rTypePath = OldType | NewType. (* sequence of type names from most precise to root base type *)\r\rOldType = oldType TypeId.\r\rNewType = { NewExtension } (NewBase | OldType).\r\rNewExtension = newExt TypeName.\r\rNewBase = newBase TypeName.\r\rTypeName = String.\r\rTypeId = 32bits. (* index into type dictionary *)\r \r\r \rnil = 80. (* nil store *)\r\rlink = 81. (* link to another elem in same file *)\r\rstore = 82. (* general store *)\r\relem = 83. (* elem store *)\r\rnewlink = 84. (* link to another non-elem store in same file *)\r "
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 8
+          bodyPos: 2408
+          bodyLen: 8

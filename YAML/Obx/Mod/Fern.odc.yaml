@@ -1,0 +1,200 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Mod\\Fern.odc"
+  size: 4037
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 3906
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 3720
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 3634
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 127000
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Helvetica
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 19
+                bodyPos: 3751
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 3237
+                runListLen: 1360
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE ObxFern;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\treferences\t= \"Martin Reiser, Niklaus Wirth, Programming In Oberon, ISBN 0201565439\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT ObxRandom, In, Out, XYplane;\r\r\tVAR\r\t\ta1, b1, c1, d1, e1, f1, p1: REAL;\r\t\ta2, b2, c2, d2, e2, f2, p2: REAL;\r\t\ta3, b3, c3, d3, e3, f3, p3: REAL;\r\t\ta4, b4, c4, d4, e4, f4, p4: REAL;\r\t\tX, Y: REAL;\r\t\tx0: INTEGER;\r\t\ty0: INTEGER;\r\t\te: INTEGER;\r\t\tinitialized: BOOLEAN;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Draw
+                    attr: 3
+                  - text: "*;\r\t\tVAR x, y: REAL; xi, eta: INTEGER; rn: REAL;\r\tBEGIN\r\t\tIF initialized THEN\r\t\t\tREPEAT\r\t\t\t\trn := ObxRandom.Uniform();\r\t\t\t\tIF rn < p1 THEN\r\t\t\t\t\tx := a1 * X + b1 * Y + e1; y := c1 * X + d1 * Y + f1\r\t\t\t\tELSIF rn < (p1 + p2) THEN\r\t\t\t\t\tx := a2 *X + b2 * Y + e2; y := c2 * X + d2 * Y + f2\r\t\t\t\tELSIF rn < (p1 + p2 + p3) THEN\r\t\t\t\t\tx := a3 * X + b3 * Y + e3; y := c3 * X + d3 * Y + f3\r\t\t\t\tELSE\r\t\t\t\t\tx := a4 * X + b4 * Y + e4; y := c4 * X + d4 * Y + f4\r\t\t\t\tEND;\r\t\t\t\tX := x; xi := x0 + SHORT(ENTIER(X * e));\r\t\t\t\tY := y; eta := y0 + SHORT(ENTIER(Y * e));\r\t\t\t\tXYplane.Dot(xi, eta, XYplane.draw)\r\t\t\tUNTIL \"s\" = XYplane.ReadKey()\r\t\tEND\r\tEND Draw;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Init
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tX := 0; Y := 0;\r\t\tinitialized := FALSE;\r\t\tIn.Open;\r\t\tIn.Int(x0); In.Int(y0); In.Int(e);\r\t\tIn.Real(a1); In.Real(a2); In.Real(a3); In.Real(a4);\r\t\tIn.Real(b1); In.Real(b2); In.Real(b3); In.Real(b4);\r\t\tIn.Real(c1); In.Real(c2); In.Real(c3); In.Real(c4);\r\t\tIn.Real(d1); In.Real(d2); In.Real(d3); In.Real(d4);\r\t\tIn.Real(e1); In.Real(e2); In.Real(e3); In.Real(e4);\r\t\tIn.Real(f1); In.Real(f2); In.Real(f3); In.Real(f4);\r\t\tIn.Real(p1); In.Real(p2); In.Real(p3); In.Real(p4);\r\t\tIF In.Done THEN XYplane.Open; initialized := TRUE\r\t\tELSE Out.String(\"Parameter error: select a list of 31 numbers\"); Out.Ln\r\t\tEND\r\tEND Init;\r\rBEGIN\r\tinitialized := FALSE\rEND ObxFern.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 23
+          bodyPos: 4002
+          bodyLen: 8

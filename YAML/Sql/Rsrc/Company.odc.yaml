@@ -1,0 +1,355 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Sql\\Rsrc\\Company.odc"
+  size: 3302
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 3171
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 2985
+          children:
+            - kind: FormViews.StdView
+              storeKind: store
+              typeChain:
+                - FormViews.StdViewDesc
+                - FormViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 2899
+              children:
+                - kind: FormModels.StdModel
+                  storeKind: elem
+                  typeChain:
+                    - FormModels.StdModelDesc
+                    - FormModels.ModelDesc
+                    - Containers.ModelDesc
+                    - Models.ModelDesc
+                    - Stores.StoreDesc
+                  id: 1
+                  bodyPos: 376
+                  bodyLen: 2656
+                  children:
+                    - kind: Controls.Group
+                      storeKind: store
+                      typeChain:
+                        - Controls.GroupDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 2
+                      bodyPos: 446
+                      bodyLen: 65
+                      label: Company
+                      customFont: true
+                      controlVersion: 4
+                      trailingBytes: 30
+                    - kind: Controls.PushButton
+                      storeKind: store
+                      typeChain:
+                        - Controls.PushButtonDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 3
+                      bodyPos: 574
+                      bodyLen: 104
+                      link: SqlObxDB.Insert
+                      label: Insert
+                      guard: SqlObxUI.InsertGuard
+                      opts: [true, false, false, false, false]
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.Caption
+                      storeKind: store
+                      typeChain:
+                        - Controls.CaptionDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 738
+                      bodyLen: 55
+                      label: Id
+                      customFont: true
+                      opts: [true, false, false, false, false]
+                      controlVersion: 4
+                      trailingBytes: 30
+                    - kind: Controls.Field
+                      storeKind: store
+                      typeChain:
+                        - Controls.FieldDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 5
+                      bodyPos: 851
+                      bodyLen: 121
+                      link: SqlObxDB.company.id
+                      guard: SqlObxUI.ROGuard
+                      customFont: true
+                      opts: [true, false, false, false, false]
+                      controlVersion: 4
+                      trailingBytes: 30
+                    - kind: Controls.Caption
+                      storeKind: store
+                      typeChain:
+                        - Controls.CaptionDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 6
+                      bodyPos: 1010
+                      bodyLen: 59
+                      label: Name
+                      customFont: true
+                      opts: [true, false, false, false, false]
+                      controlVersion: 4
+                      trailingBytes: 30
+                    - kind: Controls.Field
+                      storeKind: store
+                      typeChain:
+                        - Controls.FieldDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 7
+                      bodyPos: 1107
+                      bodyLen: 139
+                      link: SqlObxDB.company.name
+                      notifier: SqlObxUI.TypingNotifier
+                      customFont: true
+                      opts: [true, false, false, false, false]
+                      controlVersion: 4
+                      trailingBytes: 30
+                    - kind: Controls.PushButton
+                      storeKind: store
+                      typeChain:
+                        - Controls.PushButtonDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 8
+                      bodyPos: 1284
+                      bodyLen: 104
+                      link: SqlObxDB.Update
+                      label: Update
+                      guard: SqlObxUI.UpdateGuard
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.Caption
+                      storeKind: store
+                      typeChain:
+                        - Controls.CaptionDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 9
+                      bodyPos: 1426
+                      bodyLen: 57
+                      label: CEO
+                      customFont: true
+                      opts: [true, false, false, false, false]
+                      controlVersion: 4
+                      trailingBytes: 30
+                    - kind: Controls.Field
+                      storeKind: store
+                      typeChain:
+                        - Controls.FieldDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 10
+                      bodyPos: 1521
+                      bodyLen: 137
+                      link: SqlObxDB.company.ceo
+                      notifier: SqlObxUI.TypingNotifier
+                      customFont: true
+                      opts: [true, false, false, false, false]
+                      controlVersion: 4
+                      trailingBytes: 30
+                    - kind: Controls.PushButton
+                      storeKind: store
+                      typeChain:
+                        - Controls.PushButtonDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 11
+                      bodyPos: 1696
+                      bodyLen: 104
+                      link: SqlObxDB.Delete
+                      label: Delete
+                      guard: SqlObxUI.DeleteGuard
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.Caption
+                      storeKind: store
+                      typeChain:
+                        - Controls.CaptionDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 12
+                      bodyPos: 1838
+                      bodyLen: 69
+                      label: Employees
+                      customFont: true
+                      opts: [true, false, false, false, false]
+                      controlVersion: 4
+                      trailingBytes: 30
+                    - kind: Controls.Field
+                      storeKind: store
+                      typeChain:
+                        - Controls.FieldDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 13
+                      bodyPos: 1945
+                      bodyLen: 149
+                      link: SqlObxDB.company.employees
+                      notifier: SqlObxUI.TypingNotifier
+                      customFont: true
+                      opts: [true, false, false, false, false]
+                      controlVersion: 4
+                      trailingBytes: 30
+                    - kind: Controls.PushButton
+                      storeKind: store
+                      typeChain:
+                        - Controls.PushButtonDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 14
+                      bodyPos: 2132
+                      bodyLen: 102
+                      link: SqlObxDB.Revert
+                      label: Clear
+                      guard: SqlObxUI.RevertGuard
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.Caption
+                      storeKind: store
+                      typeChain:
+                        - Controls.CaptionDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 15
+                      bodyPos: 2272
+                      bodyLen: 63
+                      label: Search
+                      customFont: true
+                      opts: [true, false, false, false, false]
+                      controlVersion: 4
+                      trailingBytes: 30
+                    - kind: Controls.PushButton
+                      storeKind: store
+                      typeChain:
+                        - Controls.PushButtonDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 16
+                      bodyPos: 2373
+                      bodyLen: 92
+                      link: SqlObxDB.Find
+                      label: Find
+                      guard: SqlObxUI.FindGuard
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.PushButton
+                      storeKind: store
+                      typeChain:
+                        - Controls.PushButtonDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 17
+                      bodyPos: 2503
+                      bodyLen: 104
+                      link: SqlObxGen.GenNet
+                      label: Graph
+                      guard: SqlObxUI.DeleteGuard
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: SqlControls.Anchor
+                      storeKind: store
+                      typeChain:
+                        - SqlControls.AnchorDesc
+                        - SqlControls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 18
+                      bodyPos: 2694
+                      bodyLen: 47
+                    - kind: Controls.PushButton
+                      storeKind: store
+                      typeChain:
+                        - Controls.PushButtonDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 19
+                      bodyPos: 2779
+                      bodyLen: 108
+                      link: StdCmds.CloseDialog
+                      label: Close
+                      guard: SqlObxUI.CloseGuard
+                      opts: [false, true, false, false, false]
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.UpDownField
+                      storeKind: store
+                      typeChain:
+                        - Controls.UpDownFieldDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 20
+                      bodyPos: 2951
+                      bodyLen: 56
+                    - kind: "<nil>"
+                      storeKind: nil
+                - kind: FormControllers.StdController
+                  storeKind: store
+                  typeChain:
+                    - FormControllers.StdControllerDesc
+                    - FormControllers.ControllerDesc
+                    - Containers.ControllerDesc
+                    - Controllers.ControllerDesc
+                    - Stores.StoreDesc
+                  id: 21
+                  bodyPos: 3176
+                  bodyLen: 9
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 22
+          bodyPos: 3267
+          bodyLen: 8

@@ -1,0 +1,419 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Std\\Docu\\Log.odc"
+  size: 8749
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 8618
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 8432
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 8346
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                lead: 11500
+                asc: 121900
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 6
+                bodyPos: 8346
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 7832
+                runListLen: 996
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: StdLog
+                    attr: 0
+                  - text: "\r\rDEFINITION StdLog;\r\r\tIMPORT TextViews, Views, TextRulers, TextModels;\r\r\tCONST\r\t\tcharCode = -1; decimal = 10; hexadecimal = -2;\r\t\thideBase = FALSE; showBase = TRUE;\r\r\tVAR\r\t\tbuf-: TextModels.Model;\r\t\tdefruler-: TextRulers.Ruler;\r\t\tdir-: TextViews.Directory;\r\t\ttext-: TextModels.Model;\r\r\tPROCEDURE Bool (x: BOOLEAN);\r\tPROCEDURE Char (ch: CHAR);\r\tPROCEDURE Int (i: INTEGER);\r\tPROCEDURE IntForm (x: LONGINT; base, minWidth: INTEGER; fillCh: CHAR; showBase: BOOLEAN);\r\tPROCEDURE Real (x: REAL);\r\tPROCEDURE RealForm (x: REAL; precision, minW, expW: INTEGER; fillCh: CHAR);\r\tPROCEDURE Set (x: SET);\r\tPROCEDURE String (IN str: ARRAY OF CHAR);\r\tPROCEDURE ParamMsg (IN msg, p0, p1, p2: ARRAY OF CHAR);\r\tPROCEDURE Msg (IN msg: ARRAY OF CHAR);\r\tPROCEDURE Tab;\r\tPROCEDURE Para;\r\tPROCEDURE Ln;\r\tPROCEDURE View (v: Views.View);\r\tPROCEDURE ViewForm (v: Views.View; w, h: INTEGER);\r\r\tPROCEDURE New;\r\tPROCEDURE Open;\r\tPROCEDURE Clear;\r\tPROCEDURE NewView (): TextViews.View;\r\tPROCEDURE SetDefaultRuler (ruler: TextRulers.Ruler);\r\tPROCEDURE SetDir (d: TextViews.Directory);\r\rEND StdLog.\r\r\rModule "
+                    attr: 1
+                  - text: StdLog
+                    attr: 2
+                  - text: " provides a log text and procedures that simplify writing into the log text. Typically, log windows are only used during development, not for end user environments. The log window is opened by the following statement in procedure "
+                    attr: 1
+                  - text: Config.Setup
+                    attr: 2
+                  - text: ":\r\tDialog.Call(\"StdLog.Open\", \"\", res)\r\r\rCONST "
+                    attr: 1
+                  - text: charCode
+                    attr: 3
+                  - text: "\rPossible value for parameter "
+                    attr: 1
+                  - text: base
+                    attr: 2
+                  - text: " of "
+                    attr: 1
+                  - text: IntForm
+                    attr: 2
+                  - text: ", asking for formatting integers following the syntax of Component Pascal numerical character literals. (For example, 0DX is the code for "
+                    attr: 1
+                  - text: line
+                    attr: 2
+                  - text: ", and 37X the code for \"7\".)\r\rCONST "
+                    attr: 1
+                  - text: decimal
+                    attr: 3
+                  - text: "\rPossible value for parameter "
+                    attr: 1
+                  - text: base
+                    attr: 2
+                  - text: " of "
+                    attr: 1
+                  - text: IntForm
+                    attr: 2
+                  - text: ", asking for formatting integers as decimal literals.\r\rCONST "
+                    attr: 1
+                  - text: hexadecimal
+                    attr: 3
+                  - text: "\rPossible value for parameter "
+                    attr: 1
+                  - text: base
+                    attr: 2
+                  - text: " of "
+                    attr: 1
+                  - text: IntForm
+                    attr: 2
+                  - text: ", asking for formatting integers as hexadecimal literals.\r\rCONST "
+                    attr: 1
+                  - text: hideBase
+                    attr: 3
+                  - text: "\rPossible value for parameter "
+                    attr: 1
+                  - text: showBase
+                    attr: 2
+                  - text: " of "
+                    attr: 1
+                  - text: IntForm
+                    attr: 2
+                  - text: ", asking for suppression of the base indicator.\r\rCONST "
+                    attr: 1
+                  - text: showBase
+                    attr: 3
+                  - text: "\rPossible value for parameter "
+                    attr: 1
+                  - text: showBase
+                    attr: 2
+                  - text: " of "
+                    attr: 1
+                  - text: IntForm
+                    attr: 2
+                  - text: ", asking for output of the base indicator.\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: Bool
+                    attr: 3
+                  - text: " (x: BOOLEAN)\rWrites a Boolean value to the log.\rExcept for performance, equivalent to:\r\tIF x THEN String(\"$TRUE\") ELSE String(\"$FALSE\") END\r\rPROCEDURE "
+                    attr: 1
+                  - text: Char
+                    attr: 3
+                  - text: " (ch: CHAR)\rWrites a character value to the log. For control characters the numerical literal form enclosed in spaces is written (e.g., \" 9X \" for a tab code).\rNote that it is much more efficient to use "
+                    attr: 1
+                  - text: String
+                    attr: 2
+                  - text: " if more than one character needs to be written.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Int
+                    attr: 3
+                  - text: " (i: INTEGER)\rWrites an integer value to the log.\rExcept for performance, equivalent to:\r\tIntForm(x, decimal, 0, digitspace, showBase)\rwhere "
+                    attr: 1
+                  - text: digitspace
+                    attr: 2
+                  - text: " = 8FX.\r\rPROCEDURE "
+                    attr: 1
+                  - text: IntForm
+                    attr: 3
+                  - text: " (x: LONGINT; base, minWidth: INTEGER; fillCh: CHAR; showBase: BOOLEAN)\rWrite integer "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ". The numeral string used to represent the number is relative to base "
+                    attr: 1
+                  - text: base
+                    attr: 2
+                  - text: ". The total representation form will at least have a width of "
+                    attr: 1
+                  - text: minWidth
+                    attr: 2
+                  - text: " characters, where padding (if required) takes place to the left using characters as specified by "
+                    attr: 1
+                  - text: fillCh
+                    attr: 2
+                  - text: ". If nondecimal, the base can be requested to form part of the representation using "
+                    attr: 1
+                  - text: showBase
+                    attr: 2
+                  - text: ". The special value "
+                    attr: 1
+                  - text: base
+                    attr: 2
+                  - text: " = "
+                    attr: 1
+                  - text: charCode
+                    attr: 2
+                  - text: " renders the base suffix \"X\", while "
+                    attr: 1
+                  - text: base
+                    attr: 2
+                  - text: " = "
+                    attr: 1
+                  - text: hexadecimal
+                    attr: 2
+                  - text: " renders the suffix \"H\". All other nondecimal bases are represented by a trailing \"%\" followed by the decimal numerical literal representing the base value itself. Nondecimal representations of negative integers are formed using a basecomplement form of width "
+                    attr: 1
+                  - text: minWidth
+                    attr: 2
+                  - text: ". E.g., "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: " = -3 renders for "
+                    attr: 1
+                  - text: base
+                    attr: 2
+                  - text: " = 16 and "
+                    attr: 1
+                  - text: minWidth
+                    attr: 2
+                  - text: " = 2 as \"FD\".\r\rPre\r(base = charCode) OR (base = hexadecimal) OR ((base >= 2) & (base <= 16))\t20\rminWidth >= 0\t22\r\rPROCEDURE "
+                    attr: 1
+                  - text: Real
+                    attr: 3
+                  - text: " (x: REAL)\rWrites a real value to the log.\rExcept for performance, equivalent to:\r\tWriteRealForm(x, 16, 0, 0, digitspace)\rwhere "
+                    attr: 1
+                  - text: digitspace
+                    attr: 2
+                  - text: " = 8FX.\r\rPROCEDURE "
+                    attr: 1
+                  - text: RealForm
+                    attr: 3
+                  - text: " (x: REAL; precision, minW, expW: INTEGER; fillCh: CHAR)\rWrite real "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ". The numeral string used to represent the number is either in fixed point or in scientific format, according to "
+                    attr: 1
+                  - text: expW
+                    attr: 2
+                  - text: ". "
+                    attr: 1
+                  - text: precision
+                    attr: 2
+                  - text: " denotes the number of valid decimal places (usually 7 for short reals and 16 for reals). "
+                    attr: 1
+                  - text: minW
+                    attr: 2
+                  - text: " denotes the minimal length in characters. If necessary, preceding "
+                    attr: 1
+                  - text: fillCh
+                    attr: 2
+                  - text: " will be inserted. Numbers are always rounded to the last valid and visible digit.\r"
+                    attr: 1
+                  - text: expW
+                    attr: 2
+                  - text: " > 0: exponential format (scientific) with at least "
+                    attr: 1
+                  - text: expW
+                    attr: 2
+                  - text: " digits in the exponent.\r"
+                    attr: 1
+                  - text: expW
+                    attr: 2
+                  - text: " = 0: fixpoint or floatingpoint format, depending on "
+                    attr: 1
+                  - text: x
+                    attr: 2
+                  - text: ".\r"
+                    attr: 1
+                  - text: expW
+                    attr: 2
+                  - text: " < 0: fixpoint format with "
+                    attr: 1
+                  - text: -expW
+                    attr: 2
+                  - text: " digits after the decimal point.\rFor more details, see also the description of "
+                    attr: 1
+                  - text: Strings.RealToStringForm
+                    attr: 2
+                  - text: ".\r\rPre\rprecision > 0\t20\r0 <= minW\t21\rexpW <= 3\t22\r\rPROCEDURE "
+                    attr: 1
+                  - text: Set
+                    attr: 3
+                  - text: " (x: SET)\rWrites a set value to the log.\rExcept for performance, equivalent to:\r\tVAR i: INTEGER;\r\tChar(\"{\"); i := MIN(SET);\r\tWHILE x # {} DO\r\t\tIF i IN x THEN\r\t\t\tInt(i); EXCL(x, i);\r\t\t\tIF (i + 2 <= MAX(SET)) & (i + 1 IN x) & (i + 2 IN x) THEN\r\t\t\t\tString(\"..\");\r\t\t\t\tx := x - {i + 1, i + 2}; INC(i, 3);\r\t\t\t\tWHILE (i <= MAX(SET)) & (i IN x) DO EXCL(x, i); INC(i) END;\r\t\t\t\tInt(i - 1)\r\t\t\tEND;\r\t\t\tIF x # {} THEN String(\", \") END\r\t\tEND;\r\t\tINC(i)\r\tEND;\r\tChar(\"}\")\r\rPROCEDURE "
+                    attr: 1
+                  - text: String
+                    attr: 3
+                  - text: " (IN str: ARRAY OF CHAR)\rWrites a string value to the log.\r\rPROCEDURE "
+                    attr: 1
+                  - text: ParamMsg
+                    attr: 3
+                  - text: " (IN msg, p0, p1, p2: ARRAY OF CHAR)\rWrites a parameterized message string value mapped by the "
+                    attr: 1
+                  - text: Dialog.MapParamString
+                    attr: 2
+                  - text: " facility to the log.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Msg
+                    attr: 3
+                  - text: " (IN msg: ARRAY OF CHAR)\rWrites a message string value mapped by the "
+                    attr: 1
+                  - text: Dialog.MapParamString
+                    attr: 2
+                  - text: " facility to the log.\r\rExcept for performance, equivalent to:\r\tParamMsg(msg, \"\", \"\", \"\")\r\rPROCEDURE "
+                    attr: 1
+                  - text: Tab
+                    attr: 3
+                  - text: "\rWrites a tab character (9X) to the log.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Para
+                    attr: 3
+                  - text: "\rWrites a paragraph character (0EX) to the log. Afterwards, it makes sure that the current end of the log text is visible.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Ln
+                    attr: 3
+                  - text: "\rWrites a carriage return character (0DX) to the log. Afterwards, it makes sure that the current end of the log text is visible.\r\rPROCEDURE "
+                    attr: 1
+                  - text: View
+                    attr: 3
+                  - text: " (v: Views.View)\rWrites a view to the log. The size of the view is determined by the text container in cooperation with the view itself.\r\rPROCEDURE "
+                    attr: 1
+                  - text: ViewForm
+                    attr: 3
+                  - text: " (v: Views.View; w, h: INTEGER)\rWrites a view to the log, and forces it to a particular size given in "
+                    attr: 1
+                  - text: w
+                    attr: 2
+                  - text: " and "
+                    attr: 1
+                  - text: h
+                    attr: 2
+                  - text: " in universal units.\r\rPROCEDURE "
+                    attr: 1
+                  - text: New
+                    attr: 3
+                  - text: "\rUsed internally.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Open
+                    attr: 3
+                  - text: "\rOpens a log window if none is open, otherwise it brings the log window to the top.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Clear
+                    attr: 3
+                  - text: "\rClears the log text.\r\rPROCEDURE "
+                    attr: 1
+                  - text: NewView
+                    attr: 3
+                  - text: " (): TextViews.View\rUsed internally.\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetDefaultRuler
+                    attr: 3
+                  - text: " (ruler: TextRulers.Ruler)\rSets the default ruler.\r\rPre\rruler # NIL\t20\r\rPost\rdefruler = ruler\r\rPROCEDURE "
+                    attr: 1
+                  - text: SetDir
+                    attr: 3
+                  - text: " (d: TextViews.Directory)\rSet up the directory object for log text views.\r\rPre\rd # NIL\t20\r\rPost\rdir = d\r\r\rVAR "
+                    attr: 1
+                  - text: buf
+                    attr: 3
+                  - text: "-: TextModels.Model\rThe buffer used internally for minimizing screen refreshes.\r\rVAR "
+                    attr: 1
+                  - text: defruler
+                    attr: 3
+                  - text: "-: TextRulers.Ruler\rThe log text's default ruler.\r\rVAR "
+                    attr: 1
+                  - text: dir
+                    attr: 3
+                  - text: "-: TextViews.Directory\rUsed internally.\r\rVAR "
+                    attr: 1
+                  - text: text
+                    attr: 3
+                  - text: "-: TextModels.Model\rThe log text.\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 10
+          bodyPos: 8714
+          bodyLen: 8

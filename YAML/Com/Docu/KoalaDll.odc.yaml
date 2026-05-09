@@ -1,0 +1,259 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Com\\Docu\\KoalaDll.odc"
+  size: 4445
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 4314
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 4128
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 4042
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 114300
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 21
+                bodyPos: 4163
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 3649
+                runListLen: 1458
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [3]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [4]
+                    font: "*"
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                  - # [5]
+                    font: "*"
+                    size: 104775
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                flow:
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 0
+                      w: 360000000
+                      h: 444500
+                  - target:
+                      name: 7.2
+                      body:
+                        - text: ComKoalaDll Example
+                          attr: 0
+                      attr: 0
+                      w: 150300
+                      h: 142875
+                  - text: "\r\r"
+                    attr: 0
+                  - text: "This version of the Koala example can be linked as an independent "
+                    attr: 1
+                  - text: DLL
+                    attr: 2
+                  - text: ". It can be tested with the ObjUser.exe program which is provided with the book \"Inside OLE\". Note that you have to set the ObjUser.exe program into "
+                    attr: 1
+                  - text: DLL
+                    attr: 2
+                  - text: " mode.\r\rThe implementation of the "
+                    attr: 1
+                  - text: DLL
+                    attr: 2
+                  - text: " only slightly differs from the first "
+                    attr: 1
+                  - text: ComKoala
+                    attr: 3
+                  - text: " implementation. One difference is that a counter is provided which counts the number of instances. This counter is incremented whenever a new object is created ("
+                    attr: 1
+                  - text: CreateInstance
+                    attr: 3
+                  - text: " method), and it is decremented if the last interface reference is removed ("
+                    attr: 1
+                  - text: RELEASE
+                    attr: 3
+                  - text: " finalizer).\r\rEvery in-process server must provide the two functions "
+                    attr: 1
+                  - text: DllGetClassObject
+                    attr: 3
+                  - text: " and "
+                    attr: 1
+                  - text: DllCanUnloadNow
+                    attr: 3
+                  - text: ". The first procedure is called whenever a factory is required, and with the second command it is tested whether the "
+                    attr: 1
+                  - text: DLL
+                    attr: 2
+                  - text: " can be unloaded. The "
+                    attr: 1
+                  - text: DLL
+                    attr: 2
+                  - text: " can be unloaded if no object generated by a factory of the DLL is referenced through an interface pointer and if no factory of the DLL was locked with the factory's "
+                    attr: 1
+                  - text: LockServer
+                    attr: 3
+                  - text: " method.\r\rThis "
+                    attr: 1
+                  - text: ComKoalaDll
+                    attr: 3
+                  - text: " example can be linked to DKoala1.dll with the following command:\r\r\t"
+                    attr: 1
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 10
+                      bodyPos: 1182
+                      bodyLen: 6
+                    attr: 1
+                    w: 177800
+                    h: 152400
+                  - text: "DevLinker.LinkDll \"Com/DKoala1.dll\" := Kernel+ ComKoalaDll# ~\r\t\rThe registry must be informed about which "
+                    attr: 1
+                  - text: DLL
+                    attr: 2
+                  - text: " to launch if a IKoala factory is required. The necessary registry file "
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenDoc('Com/Reg/DKoala1.reg')"
+                      body:
+                        - text: Com/Reg/DKoala1.reg
+                          attr: 4
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: " is given below. Use the REGEDIT tool to update the registry. Adjust path names if necessary!\r\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      dsc: 25400
+                      grid: 1
+                      opts: 0x00000003
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "REGEDIT\rHKEY_CLASSES_ROOT\\Koala1.0 = Koala Object Chapter 5\rHKEY_CLASSES_ROOT\\Koala1.0\\CLSID = {00021146-0000-0000-C000-000000000046}\rHKEY_CLASSES_ROOT\\Koala = Koala Object Chapter 5\rHKEY_CLASSES_ROOT\\Koala\\CurVer = Koala1.0\rHKEY_CLASSES_ROOT\\Koala\\CLSID = {00021146-0000-0000-C000-000000000046}\r\rHKEY_CLASSES_ROOT\\CLSID\\{00021146-0000-0000-C000-000000000046} = Koala Object Chapter 5\rHKEY_CLASSES_ROOT\\CLSID\\{00021146-0000-0000-C000-000000000046}\\ProgID = Koala1.0\rHKEY_CLASSES_ROOT\\CLSID\\{00021146-0000-0000-C000-000000000046}\\VersionIndependentProgID = Koala\rHKEY_CLASSES_ROOT\\CLSID\\{00021146-0000-0000-C000-000000000046}\\InprocServer32 = C:\\BlackBox\\Com\\DKoala1.dll\rHKEY_CLASSES_ROOT\\CLSID\\{00021146-0000-0000-C000-000000000046}\\NotInsertable\r"
+                    attr: 5
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 152400
+                      dsc: 25400
+                      grid: 177800
+                      opts: 0x00000003
+                      attr: 5
+                      w: 360000000
+                      h: 444500
+                  - text: "\r\r"
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenDoc('Com/Mod/KoalaDll')"
+                      body:
+                        - text: ComKoalaDll  sources
+                          attr: 4
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 25
+          bodyPos: 4410
+          bodyLen: 8

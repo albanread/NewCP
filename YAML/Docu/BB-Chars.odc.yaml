@@ -1,0 +1,281 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Docu\\BB-Chars.odc"
+  size: 9937
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 9806
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 9620
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 9534
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                asc: 160000
+                dsc: 43200
+                grid: 203200
+                opts: 0x00000003
+              defaultAttr:
+                font: Arial
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 20
+                bodyPos: 9655
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 9141
+                runListLen: 1439
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                  - # [4]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [5]
+                    font: Arial
+                    size: 127000
+                    color: 0x000000ff
+                    weight: 400
+                    style: 0x00000000
+                flow:
+                  - text: Character Set
+                    attr: 0
+                  - text: "\r\r\r"
+                    attr: 1
+                  - text: Contents
+                    attr: 2
+                  - text: "\r\r"
+                    attr: 1
+                  - link:
+                      target: "StdLinks.ShowTarget('Character')"
+                      body:
+                        - text: Character set listing
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r"
+                    attr: 1
+                  - link:
+                      target: "StdLinks.ShowTarget('Control')"
+                      body:
+                        - text: Control codes used in BlackBox
+                          attr: 3
+                      attr: 1
+                      w: 131250
+                      h: 142875
+                  - text: "\r\r\rThe character set for the Component Pascal "
+                    attr: 1
+                  - text: SHORTCHAR
+                    attr: 4
+                  - text: " data type is an 8-bit character set based on the ISO 8859-1 standard. It includes the ASCII (American Standard Code for Information Interchange) and the so-called Latin-1 extension to ASCII. Latin-1 includes most characters necessary for writing in languages which are based on Latin.\rThe character set for the Component Pascal "
+                    attr: 1
+                  - text: CHAR
+                    attr: 4
+                  - text: " data type is Unicode.\r\rBoth ASCII and Latin-1 contain slots for control characters, which are character codes used for various purposes, but which do not correspond to any glyph, i.e. visual representation of a character.\r\rFor BlackBox, several punctuation marks from the 16-bit Unicode standard have been mapped into the unused upper control code portion of Latin-1.\r\r\r"
+                    attr: 1
+                  - target:
+                      name: Character
+                      body:
+                        - text: Character set listing
+                          attr: 2
+                      attr: 2
+                      w: 150300
+                      h: 142875
+                  - text: "\r\rThe following list gives the names of every non-control code in the character set. The same naming conventions are used as in the Unicode standard, of which the Component Pascal character set is a subset.\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 720000 }
+                        - { stop: 1080000 }
+                        - { stop: 3240000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "Hex\tChar\tName\tComment\r\r20\t \tSPACE\r21\t!\tEXCLAMATION MARK\r22\t\"\tQUOTATION MARK\r23\t#\tNUMBER SIGN\r24\t$\tDOLLAR SIGN\r25\t%\tPERCENT SIGN\r26\t&\tAMPERSAND\r27\t'\tAPOSTROPHE-QUOTE\r28\t(\tOPENING PARENTHESIS\r29\t)\tCLOSING PARENTHESIS\r2A\t*\tASTERISK\r2B\t+\tPLUS SIGN\r2C\t,\tCOMMA\r2D\t-\tHYPHEN-MINUS\tuse as minus only, for hyphens\r\t\t\tsee codes 90, 91 and AD\r2E\t.\tPERIOD\r2F\t/\tSLASH\r30\t0\tDIGIT ZERO\r31\t1\tDIGIT ONE\r32\t2\tDIGIT TWO\r33\t3\tDIGIT THREE\r34\t4\tDIGIT FOUR\r35\t5\tDIGIT FIVE\r36\t6\tDIGIT SIX\r37\t7\tDIGIT SEVEN\r38\t8\tDIGIT EIGHT\r39\t9\tDIGIT NINE\r3A\t:\tCOLON\r3B\t;\tSEMICOLON\r3C\t<\tLESS-THAN SIGN\r3D\t=\tEQUAL SIGN\r3E\t>\tGREATER-THAN SIGN\r3F\t?\tQUESTION MARK\r40\t@\tCOMMERCIAL AT\r41\tA\tLATIN CAPITAL LETTER A\r42\tB\tLATIN CAPITAL LETTER B\r43\tC\tLATIN CAPITAL LETTER C\r44\tD\tLATIN CAPITAL LETTER D\r45\tE\tLATIN CAPITAL LETTER E\r46\tF\tLATIN CAPITAL LETTER F\r47\tG\tLATIN CAPITAL LETTER G\r48\tH\tLATIN CAPITAL LETTER H\r49\tI\tLATIN CAPITAL LETTER I\r4A\tJ\tLATIN CAPITAL LETTER J\r4B\tK\tLATIN CAPITAL LETTER K\r4C\tL\tLATIN CAPITAL LETTER L\r4D\tM\tLATIN CAPITAL LETTER M\r4E\tN\tLATIN CAPITAL LETTER N\r4F\tO\tLATIN CAPITAL LETTER O\r50\tP\tLATIN CAPITAL LETTER P\r51\tQ\tLATIN CAPITAL LETTER Q\r52\tR\tLATIN CAPITAL LETTER R\r53\tS\tLATIN CAPITAL LETTER S\r54\tT\tLATIN CAPITAL LETTER T\r55\tU\tLATIN CAPITAL LETTER U\r56\tV\tLATIN CAPITAL LETTER V\r57\tW\tLATIN CAPITAL LETTER W\r58\tX\tLATIN CAPITAL LETTER X\r59\tY\tLATIN CAPITAL LETTER Y\r5A\tZ\tLATIN CAPITAL LETTER Z\r5B\t[\tOPENING-SQUARE BRACKET\r5C\t\\\tBACKSLASH\r5D\t]\tCLOSING SQUARE BRACKET\r5E\t^\tSPACING CIRCUMFLEX\r5F\t_\tSPACING UNDERSCORE\r60\t`\tSPACING GRAVE\r61\ta\tLATIN SMALL LETTER A\r62\tb\tLATIN SMALL LETTER B\r63\tc\tLATIN SMALL LETTER C\r64\td\tLATIN SMALL LETTER D\r65\te\tLATIN SMALL LETTER E\r66\tf\tLATIN SMALL LETTER F\r67\tg\tLATIN SMALL LETTER G\r68\th\tLATIN SMALL LETTER H\r69\ti\tLATIN SMALL LETTER I\r6A\tj\tLATIN SMALL LETTER J\r6B\tk\tLATIN SMALL LETTER K\r6C\tl\tLATIN SMALL LETTER L\r6D\tm\tLATIN SMALL LETTER M\r6E\tn\tLATIN SMALL LETTER N\r6F\to\tLATIN SMALL LETTER O\r70\tp\tLATIN SMALL LETTER P\r71\tq\tLATIN SMALL LETTER Q\r72\tr\tLATIN SMALL LETTER R\r73\ts\tLATIN SMALL LETTER S\r74\tt\tLATIN SMALL LETTER T\r75\tu\tLATIN SMALL LETTER U\r76\tv\tLATIN SMALL LETTER V\r77\tw\tLATIN SMALL LETTER W\r78\tx\tLATIN SMALL LETTER X\r79\ty\tLATIN SMALL LETTER Y\r7A\tz\tLATIN SMALL LETTER Z\r7B\t{\tOPENING CURLY BRACKET\r7C\t|\tVERTICAL BAR\r7D\t}\tCLOSING CURLY BRACKET\r7E\t~\tTILDE\r7F\t\treserved\r\r80 .. 89\t\treserved\r8A\t"
+                    attr: 1
+                  - text: 腠
+                    attr: 1
+                    wide: true
+                  - text: "\tLATIN CAPITAL LETTER S CARON\t(Unicode 0160)"
+                    attr: 1
+                  - text: "\r"
+                    attr: 5
+                  - text: "8B\t\tZERO WIDTH SPACE\t(Unicode 200B)\r8C\t"
+                    attr: 1
+                  - text: 腒
+                    attr: 1
+                    wide: true
+                  - text: "\tLATIN CAPITAL LIGATURE OE\t(Unicode 0152)\r8D\t\treserved\r8E\t"
+                    attr: 1
+                  - text: 腽
+                    attr: 1
+                    wide: true
+                  - text: "\tLATIN CAPITAL LETTER Z CARON\t(Unicode 017D)\r8F\t\tDIGIT SPACE\t(not in Unicode)\r90\t\tHYPHEN\t(Unicode 2010)\r91\t\tNON-BREAKING HYPHEN\t(Unicode 2011)\r92 .. 99\t\treserved\r9A\t"
+                    attr: 1
+                  - text: 腡
+                    attr: 1
+                    wide: true
+                  - text: "\tLATIN SMALL LETTER S CARON\t(Unicode 0161)\r9B\t\treserved\r9C\t"
+                    attr: 1
+                  - text: 腓
+                    attr: 1
+                    wide: true
+                  - text: "\tLATIN SMALL LIGATURE OE\t(Unicode 0153)\r9D\t\treserved\r9E\t"
+                    attr: 1
+                  - text: 腾
+                    attr: 1
+                    wide: true
+                  - text: "\tLATIN SMALL LETTER Z CARON\t(Unicode 017E)\r9F\t"
+                    attr: 1
+                  - text: 腸
+                    attr: 1
+                    wide: true
+                  - text: "\tLATIN CAPITAL LETTER Y DIAERESIS\t(Unicode 0178)\r\rA0\t \tNON-BREAKING SPACE\rA1\t¡\tINVERTED EXCLAMATION MARK\rA2\t¢\tCENT SIGN\rA3\t£\tPOUND SIGN\rA4\t¤\tCURRENCY SIGN\rA5\t¥\tYEN SIGN\rA6\t¦\tBROKEN VERTICAL BAR\rA7\t§\tSECTION SIGN\rA8\t¨\tSPACING DIAERESIS\rA9\t©\tCOPYRIGHT SIGN\rAA\tª\tFEMININE ORDINAL INDICATOR\rAB\t«\tLEFT POINTING GUILLEMET\rAC\t¬\tNOT SIGN\rAD\t­\tSOFT HYPHEN\rAE\t®\tREGISTERED TRADE MARK SIGN\rAF\t¯\tSPACING MACRON\rB0\t°\tDEGREE SIGN\rB1\t±\tPLUS-OR-MINUS SIGN\rB2\t²\tSUPERSCRIPT DIGIT TWO\rB3\t³\tSUPERSCRIPT DIGIT THREE\rB4\t´\tSPACING ACUTE\rB5\tµ\tMICRO SIGN\rB6\t¶\tPARAGRAPH SIGN\rB7\t·\tMIDDLE DOT\rB8\t¸\tSPACING CEDILLA\rB9\t¹\tSUPERSCRIPT DIGIT ONE\rBA\tº\tMASCULINE ORDINAL INDICATOR\rBB\t»\tRIGHT POINTING GUILLEMET\rBC\t¼\tFRACTION ONE QUARTER\rBD\t½\tFRACTION ONE HALF\rBE\t¾\tFRACTION THREE QUARTERS\rBF\t¿\tINVERTED QUESTION MARK\rC0\tÀ\tLATIN CAPITAL LETTER A GRAVE\rC1\tÁ\tLATIN CAPITAL LETTER A ACUTE\rC2\tÂ\tLATIN CAPITAL LETTER A CIRCUMFLEX\rC3\tÃ\tLATIN CAPITAL LETTER A TILDE\rC4\tÄ\tLATIN CAPITAL LETTER A DIAERESIS\rC5\tÅ\tLATIN CAPITAL LETTER A RING\rC6\tÆ\tLATIN CAPITAL LETTER A E\rC7\tÇ\tLATIN CAPITAL LETTER C CEDILLA\rC8\tÈ\tLATIN CAPITAL LETTER E GRAVE\rC9\tÉ\tLATIN CAPITAL LETTER E ACUTE\rCA\tÊ\tLATIN CAPITAL LETTER E CIRCUMFLEX\rCB\tË\tLATIN CAPITAL LETTER E DIAERESIS\rCC\tÌ\tLATIN CAPITAL LETTER I GRAVE\rCD\tÍ\tLATIN CAPITAL LETTER I ACUTE\rCE\tÎ\tLATIN CAPITAL LETTER I CIRCUMFLEX\rCF\tÏ\tLATIN CAPITAL LETTER I DIAERESIS\rD0\tÐ\tLATIN CAPITAL LETTER ETH\rD1\tÑ\tLATIN CAPITAL LETTER N TILDE\rD2\tÒ\tLATIN CAPITAL LETTER O GRAVE\rD3\tÓ\tLATIN CAPITAL LETTER O ACUTE\rD4\tÔ\tLATIN CAPITAL LETTER O CIRCUMFLEX\rD5\tÕ\tLATIN CAPITAL LETTER O TILDE\rD6\tÖ\tLATIN CAPITAL LETTER O DIAERESIS\rD7\t×\tMULTIPLICATION SIGN\rD8\tØ\tLATIN CAPITAL LETTER 0 SLASH\rD9\tÙ\tLATIN CAPITAL LETTER U GRAVE\rDA\tÚ\tLATIN CAPITAL LETTER U ACUTE\rDB\tÛ\tLATIN CAPITAL LETTER U CIRCUMFLEX\rDC\tÜ\tLATIN CAPITAL LETTER U DIAERESIS\rDD\tÝ\tLATIN CAPITAL LETTER Y ACUTE\rDE\tÞ\tLATIN CAPITAL LETTER THORN\rDF\tß\tLATIN SMALL LETTER SHARP S\rE0\tà\tLATIN SMALL LETTER A GRAVE\rE1\tá\tLATIN SMALL LETTER A ACUTE\rE2\tâ\tLATIN SMALL LETTER A CIRCUMFLEX\rE3\tã\tLATIN SMALL LETTER A TILDE\rE4\tä\tLATIN SMALL LETTER A DIAERESIS\rE5\tå\tLATIN SMALL LETTER A RING\rE6\tæ\tLATIN SMALL LETTER A E\rE7\tç\tLATIN SMALL LETTER C CEDILLA\rE8\tè\tLATIN SMALL LETTER E GRAVE\rE9\té\tLATIN SMALL LETTER E ACUTE\rEA\tê\tLATIN SMALL LETTER E CIRCUMFLEX\rEB\të\tLATIN SMALL LETTER E DIAERESIS\rEC\tì\tLATIN SMALL LETTER I GRAVE\rED\tí\tLATIN SMALL LETTER I ACUTE\rEE\tî\tLATIN SMALL LETTER I CIRCUMFLEX\rEF\tï\tLATIN SMALL LETTER I DIAERESIS\rF0\tð\tLATIN SMALL LETTER ETH\rF1\tñ\tLATIN SMALL LETTER N TILDE\rF2\tò\tLATIN SMALL LETTER O GRAVE\rF3\tó\tLATIN SMALL LETTER O ACUTE\rF4\tô\tLATIN SMALL LETTER O CIRCUMFLEX\rF5\tõ\tLATIN SMALL LETTER O TILDE\rF6\tö\tLATIN SMALL LETTER O DIAERESIS\rF7\t÷\tDIVISION SIGN\rF8\tø\tLATIN SMALL LETTER O SLASH\rF9\tù\tLATIN SMALL LETTER U GRAVE\rFA\tú\tLATIN SMALL LETTER U ACUTE\rFB\tû\tLATIN SMALL LETTER U CIRCUMFLEX\rFC\tü\tLATIN SMALL LETTER U DIAERESIS\rFD\tý\tLATIN SMALL LETTER Y ACUTE\rFE\tþ\tLATIN SMALL LETTER THORN\rFF\tÿ\tLATIN SMALL LETTER Y DIAERESIS\r\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 0
+                      asc: 134600
+                      dsc: 43200
+                      grid: 177800
+                      opts: 0x00000003
+                      tabs:
+                        - { stop: 504000 }
+                        - { stop: 1296000 }
+                        - { stop: 2880000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r\r"
+                    attr: 1
+                  - target:
+                      name: Control
+                      body:
+                        - text: Control codes used in BlackBox
+                          attr: 2
+                      attr: 2
+                      w: 150300
+                      h: 142875
+                  - text: "\r\rThe following control codes are used in the BlackBox Component Framework:\r\r00X\tnul\tstring terminator\r01X\tunicode\tunicode mask character\r02X\tviewcode\tview mask character\r07X\trdel\tright delete key\r08X\tdel\tleft delete key\r"
+                    attr: 1
+                  - text: 09X
+                    attr: 2
+                  - text: "\t"
+                    attr: 1
+                  - text: tab
+                    attr: 2
+                  - text: "\ttabulator key\r0AX\tltab\treverse tabulator key\r"
+                    attr: 1
+                  - text: "0DX\tline"
+                    attr: 2
+                  - text: "\treturn key\t(Unicode 2028, LINE SEPARATOR)\r"
+                    attr: 1
+                  - text: "0EX\tpara"
+                    attr: 2
+                  - text: "\tparagraph separator\t(Unicode 2029, PARAGRAPH SEPARATOR)\r10X\tpL\tpage left\r11X\tpR\tpage right\r12X\tpU\tpage up\r13X\tpD\tpage down\r14X\tdL\tdocument left\r15X\tdR\tdocument right\r16X\tdU\tdocument up\r17X\tdD\tdocument down\r1BX\tesc\tescape key\r1CX\taL\tarrow left key\r1DX\taR\tarrow right key\r1EX\taU\tarrow up key\r1FX\taD\tarrow down key\r\rOf these codes, only "
+                    attr: 1
+                  - text: tab
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: "line,"
+                    attr: 4
+                  - text: " and "
+                    attr: 1
+                  - text: para
+                    attr: 4
+                  - text: " should ever be stored in a text, i.e., are not considered to be control codes in BlackBox. The ASCII DEL code (07FX) is not used in BlackBox and remains reserved.\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 24
+          bodyPos: 9902
+          bodyLen: 8

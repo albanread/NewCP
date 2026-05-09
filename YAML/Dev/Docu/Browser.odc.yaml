@@ -1,0 +1,193 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Dev\\Docu\\Browser.odc"
+  size: 5230
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 5099
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 4913
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 4827
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                lead: 11500
+                asc: 121900
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 7
+                bodyPos: 4827
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 4313
+                runListLen: 468
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [4]
+                    font: Arial
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                flow:
+                  - text: DevBrowser
+                    attr: 0
+                  - text: "\r\rDEFINITION DevBrowser;\r\r\tPROCEDURE ImportSymFile (f: Files.File; OUT s: Stores.Store);\r\tPROCEDURE ShowInterface (opts: ARRAY OF CHAR);\r\tPROCEDURE ImportCodeFile (f: Files.File; OUT s: Stores.Store);\r\tPROCEDURE ShowCodeFile;\r\rEND DevBrowser.\r\r\rThe browser shows the interface of a module or of an item in a module. It extract the necessary interface information out of the module's symbol file. A symbol file contains only minimal information, it doesn't contain comments nor does it retain information about the textual order in which a module's item have been defined (their display is sorted alphabetically). For records, the browser only shows newly introduced fields and procedures (or procedures redefined with covariant function results). You can follow the record type hiearchy to the base type by applying the browser command again on the base type name in the record declaration.\rThe browser is also able to decode a code file and to display important information about the code file. In particular, the imported items (types, procedures, etc.) are shown to indicate on which features provided by other modules a given module depends (sometimes called the \"required interface\" of a module, in contrast to the \"provided interface\", i.e., the exported functionality of the module).\rBoth browser functions are available also as importers (-> Converters), which can be installed with the following statements in "
+                    attr: 1
+                  - text: Config.Startup
+                    attr: 2
+                  - text: ":\r\rWindows:\r\tConverters.Register(\"DevBrowser.ImportSymFile\", \"\", \"TextViews.View\", \"OSF\", {});\r\tConverters.Register(\"DevBrowser.ImportCodeFile\", \"\", \"TextViews.View\", \"OCF\", {});\r\rMac OS:\r\tConverters.Register(\"DevBrowser.ImportSymFile\", \"\", \"TextViews.View\", \"oSYM\", {});\r\tConverters.Register(\"DevBrowser.ImportCodeFile\", \"\", \"TextViews.View\", \"oOBJ\", {});\r\rPossible menu:\r\r"
+                    attr: 1
+                  - text: MENU
+                    attr: 3
+                  - text: "\r\t\"&Interface\"\t\"\"\t\"DevBrowser.ShowInterface('')\"\t\"TextCmds.SelectionGuard\"\r\t\"&Flat Interface\"\t\"\"\t\"DevBrowser.ShowInterface('!')\"\t\"TextCmds.SelectionGuard\"\r\t\"Import Interface\"\t\"\"\t\"DevBrowser.ShowCodeFile\"\t\"TextCmds.SelectionGuard\"\r"
+                    attr: 1
+                  - text: END
+                    attr: 3
+                  - text: "\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 4
+                  - text: "\rPROCEDURE "
+                    attr: 1
+                  - text: ImportSymFile
+                    attr: 3
+                  - text: " (f: Files.File; OUT s: Stores.Store)\rThis procedure is installed upon startup of BlackBox as an importer for symbol files (-> Converters). The importer converts the symbol file into a textual browser output.\r\rPROCEDURE "
+                    attr: 1
+                  - text: ShowInterface
+                    attr: 3
+                  - text: " (opts: ARRAY OF CHAR)\rGuard: TextCmds.SelectionGuard\rIf a module name is selected, this command shows the complete definition of the module. If a qualident is selected, only the definition of the corresponding item is shown.\r"
+                    attr: 1
+                  - text: "opts = \"\""
+                    attr: 2
+                  - text: " creates an output which only shows the newly introduced extensions in the case of record types.\r"
+                    attr: 1
+                  - text: "opts = \""
+                    attr: 2
+                  - text: "!"
+                    attr: 1
+                  - text: "\""
+                    attr: 2
+                  - text: " creates an output which also shows the inherited base type features of record types (\"flat interface\").\r"
+                    attr: 1
+                  - text: "opts = \"+"
+                    attr: 2
+                  - text: "\" creates an output which shows some additional low-level information useful for a compiler developer (not further documented).\r"
+                    attr: 1
+                  - text: "opts = \"/"
+                    attr: 2
+                  - text: "\" creates an output which is formatted in a special way. Inofficially known as the \"Dijkstra option\".\r"
+                    attr: 1
+                  - text: opts
+                    attr: 2
+                  - text: " = \"&\" creates an output which also shows hooks in the interface.\r"
+                    attr: 1
+                  - text: opts
+                    attr: 2
+                  - text: " = \"@\" creates an output using the settings from the interface browser dialog.\r"
+                    attr: 1
+                  - text: opts
+                    attr: 2
+                  - text: " = \"c\" creates an output which shows only the items being usable in client modules.\r"
+                    attr: 1
+                  - text: opts
+                    attr: 2
+                  - text: " = \"e\" creates an output which shows only the items being extensible.\rSeveral options may be combined.\r\rPROCEDURE "
+                    attr: 1
+                  - text: ImportCodeFile
+                    attr: 3
+                  - text: " (f: Files.File; OUT s: Stores.Store)\rThis procedure is installed upon startup of BlackBox as an importer for code files (-> Converters). The importer converts the code file into a textual browser output.\r\rPROCEDURE "
+                    attr: 1
+                  - text: ShowCodeFile
+                    attr: 3
+                  - text: "\rGuard: TextCmds.SelectionGuard\rIf a module name is selected, this command shows some information about the code file of the compiled module. If a qualident is selected, only the definition of the corresponding item is shown.\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 11
+          bodyPos: 5195
+          bodyLen: 8

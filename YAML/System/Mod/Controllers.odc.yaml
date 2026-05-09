@@ -1,0 +1,771 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\System\\Mod\\Controllers.odc"
+  size: 15446
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 15315
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 15129
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 15043
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 114300
+                color: 0x00000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 15164
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 14650
+                runListLen: 3103
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE Controllers;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 74100
+                      h: 95250
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 74100
+                      h: 95250
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 74100
+                      h: 95250
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- 20141213, center #21, Fixing Controllers.TickMsg.tick overflow bug.\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 63500
+                      h: 95250
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 63500
+                      h: 95250
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\t\r\tIMPORT "
+                    attr: 0
+                  - text: Kernel
+                    attr: 3
+                  - text: ", Services, Ports, Stores, Models, Views;\r\r\tCONST\r\t\t"
+                    attr: 0
+                  - text: "(** Forward target **)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: targetPath
+                    attr: 3
+                  - text: "* = TRUE; "
+                    attr: 0
+                  - text: frontPath
+                    attr: 3
+                  - text: "* = FALSE;\r\r\t\t"
+                    attr: 0
+                  - text: "(** ScrollMsg.op **)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: decLine
+                    attr: 3
+                  - text: "* = 0; "
+                    attr: 0
+                  - text: incLine
+                    attr: 3
+                  - text: "* = 1; "
+                    attr: 0
+                  - text: decPage
+                    attr: 3
+                  - text: "* = 2; "
+                    attr: 0
+                  - text: incPage
+                    attr: 3
+                  - text: "* = 3; "
+                    attr: 0
+                  - text: gotoPos
+                    attr: 3
+                  - text: "* = 4;\r\r\t\t"
+                    attr: 0
+                  - text: "(** PageMsg.op **)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: nextPageX
+                    attr: 3
+                  - text: "* = 0; "
+                    attr: 0
+                  - text: nextPageY
+                    attr: 3
+                  - text: "* = 1; "
+                    attr: 0
+                  - text: gotoPageX
+                    attr: 3
+                  - text: "* = 2; "
+                    attr: 0
+                  - text: gotoPageY
+                    attr: 3
+                  - text: "* = 3;\r\r\t\t"
+                    attr: 0
+                  - text: "(** PollOpsMsg.valid, EditMsg.op **)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: cut
+                    attr: 3
+                  - text: "* = 0; "
+                    attr: 0
+                  - text: copy
+                    attr: 3
+                  - text: "* = 1;\r\t\t"
+                    attr: 0
+                  - text: pasteChar
+                    attr: 3
+                  - text: "* = 2; (*"
+                    attr: 0
+                  - text: " pasteLChar"
+                    attr: 3
+                  - text: "* = 3; *) "
+                    attr: 0
+                  - text: paste
+                    attr: 3
+                  - text: "* = 4; (* "
+                    attr: 0
+                  - text: pasteView
+                    attr: 3
+                  - text: "* = 5; *)\r\r\t\t"
+                    attr: 0
+                  - text: "(** TrackMsg.modifiers, EditMsg.modifiers **)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: doubleClick
+                    attr: 3
+                  - text: "* = 0;\t"
+                    attr: 0
+                  - text: "(** clicking history **)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: extend
+                    attr: 3
+                  - text: "* = 1; "
+                    attr: 0
+                  - text: modify
+                    attr: 3
+                  - text: "* = 2;\t"
+                    attr: 0
+                  - text: "(** modifier keys **)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: "(* extend = Sub.extend; modify = Sub.modify *)"
+                    attr: 1
+                  - text: "\r\r\t\t"
+                    attr: 0
+                  - text: "(** PollDropMsg.mark, PollDrop mark **)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: noMark
+                    attr: 3
+                  - text: "* = FALSE; "
+                    attr: 0
+                  - text: mark
+                    attr: 3
+                  - text: "* = TRUE;\r\t\t"
+                    attr: 0
+                  - text: "(** PollDropMsg.show, PollDrop show **)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: hide
+                    attr: 3
+                  - text: "* = FALSE; "
+                    attr: 0
+                  - text: show
+                    attr: 3
+                  - text: "* = TRUE;\r\r\t\tminVersion = 0; maxVersion = 0;\r\r\r\tTYPE\r\r\t\t"
+                    attr: 0
+                  - text: "(** messages **)"
+                    attr: 1
+                  - text: "\r\r\t\t"
+                    attr: 0
+                  - text: Message
+                    attr: 3
+                  - text: "* = Views.CtrlMessage;\r\r\t\t"
+                    attr: 0
+                  - text: PollFocusMsg
+                    attr: 3
+                  - text: "* = EXTENSIBLE RECORD (Message)\r\t\t\tfocus*: Views.Frame\t"
+                    attr: 0
+                  - text: "(** OUT, preset to NIL **)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: PollSectionMsg
+                    attr: 3
+                  - text: "* = RECORD (Message)\r\t\t\tfocus*, vertical*: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(** IN **)"
+                    attr: 1
+                  - text: "\r\t\t\twholeSize*: INTEGER;\t"
+                    attr: 0
+                  - text: "(** OUT, preset to 1 **)"
+                    attr: 1
+                  - text: "\r\t\t\tpartSize*: INTEGER;\t"
+                    attr: 0
+                  - text: "(** OUT, preset to 1 **)"
+                    attr: 1
+                  - text: "\r\t\t\tpartPos*: INTEGER;\t"
+                    attr: 0
+                  - text: "(** OUT, preset to 0 **)"
+                    attr: 1
+                  - text: "\r\t\t\tvalid*, done*: BOOLEAN\t"
+                    attr: 0
+                  - text: "(** OUT, preset to (FALSE, FALSE) **)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: PollOpsMsg
+                    attr: 3
+                  - text: "* = RECORD (Message)\r\t\t\ttype*: Stores.TypeName;\t"
+                    attr: 0
+                  - text: "(** OUT, preset to \"\" **)"
+                    attr: 1
+                  - text: "\r\t\t\tpasteType*: Stores.TypeName;\t"
+                    attr: 0
+                  - text: "(** OUT, preset to \"\" **)"
+                    attr: 1
+                  - text: "\r\t\t\tsingleton*: Views.View;\t"
+                    attr: 0
+                  - text: "(** OUT, preset to NIL **)"
+                    attr: 1
+                  - text: "\r\t\t\tselectable*: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(** OUT, preset to FALSE **)"
+                    attr: 1
+                  - text: "\r\t\t\tvalid*: SET\t"
+                    attr: 0
+                  - text: "(** OUT, preset to {} **)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: ScrollMsg
+                    attr: 3
+                  - text: "* = RECORD (Message)\r\t\t\tfocus*, vertical*: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(** IN **)"
+                    attr: 1
+                  - text: "\r\t\t\top*: INTEGER;\t"
+                    attr: 0
+                  - text: "(** IN **)"
+                    attr: 1
+                  - text: "\r\t\t\tpos*: INTEGER;\t"
+                    attr: 0
+                  - text: "(** IN **)"
+                    attr: 1
+                  - text: "\r\t\t\tdone*: BOOLEAN\t"
+                    attr: 0
+                  - text: "(** OUT, preset to FALSE **)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: PageMsg
+                    attr: 3
+                  - text: "* = RECORD (Message)\r\t\t\top*: INTEGER;\t"
+                    attr: 0
+                  - text: "(** IN **)"
+                    attr: 1
+                  - text: "\r\t\t\tpageX*, pageY*: INTEGER;\t"
+                    attr: 0
+                  - text: "(** IN **)"
+                    attr: 1
+                  - text: "\r\t\t\tdone*, eox*, eoy*: BOOLEAN\t"
+                    attr: 0
+                  - text: "(** OUT, preset to (FALSE, FALSE, FALSE) **)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: TickMsg
+                    attr: 3
+                  - text: "* = RECORD (Message)\r\t\t\ttick*: LONGINT\t"
+                    attr: 0
+                  - text: "(** IN **)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: MarkMsg
+                    attr: 3
+                  - text: "* = RECORD (Message)\r\t\t\tshow*: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(** IN **)"
+                    attr: 1
+                  - text: "\r\t\t\tfocus*: BOOLEAN\t"
+                    attr: 0
+                  - text: "(** IN **)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: SelectMsg
+                    attr: 3
+                  - text: "* = RECORD (Message)\r\t\t\tset*: BOOLEAN\t"
+                    attr: 0
+                  - text: "(** IN **)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\r\t\t"
+                    attr: 0
+                  - text: RequestMessage
+                    attr: 3
+                  - text: "* = ABSTRACT RECORD (Message)\r\t\t\trequestFocus*: BOOLEAN\t"
+                    attr: 0
+                  - text: "(** OUT, preset (by framework) to FALSE **)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: EditMsg
+                    attr: 3
+                  - text: "* = RECORD (RequestMessage)\r\t\t\top*: INTEGER;\t"
+                    attr: 0
+                  - text: "(** IN **)"
+                    attr: 1
+                  - text: "\r\t\t\tmodifiers*: SET;\t"
+                    attr: 0
+                  - text: "(** IN, valid if op IN {pasteChar, pasteLchar} **)"
+                    attr: 1
+                  - text: "\r\t\t\tchar*: CHAR;\t"
+                    attr: 0
+                  - text: "(** IN, valid if op = pasteChar **)"
+                    attr: 1
+                  - text: "\r\t\t\tview*: Views.View; w*, h*: INTEGER;\t"
+                    attr: 0
+                  - text: "(** IN, valid if op  = paste **)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t"
+                    attr: 0
+                  - text: "(** OUT, valid if op IN {cut, copy} **)"
+                    attr: 1
+                  - text: "\r\t\t\tisSingle*: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(** dito **)\r\t\t\t"
+                    attr: 1
+                  - text: "clipboard*: BOOLEAN\t"
+                    attr: 0
+                  - text: "(** IN, valid if op IN {cut, copy, paste} **)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: ReplaceViewMsg
+                    attr: 3
+                  - text: "* = RECORD (RequestMessage)\r\t\t\told*, new*: Views.View\t"
+                    attr: 0
+                  - text: "(** IN **)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\r\t\t"
+                    attr: 0
+                  - text: CursorMessage
+                    attr: 3
+                  - text: "* = ABSTRACT RECORD (RequestMessage)\r\t\t\tx*, y*: INTEGER\t"
+                    attr: 0
+                  - text: "(** IN, needs translation when passed on **)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: PollCursorMsg
+                    attr: 3
+                  - text: "* = RECORD (CursorMessage)\r\t\t\tcursor*: INTEGER;\t"
+                    attr: 0
+                  - text: "(** OUT, preset to Ports.arrowCursor **)\r\t\t\t"
+                    attr: 1
+                  - text: "modifiers*: SET\t"
+                    attr: 0
+                  - text: "(** IN **)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: TrackMsg
+                    attr: 3
+                  - text: "* = RECORD (CursorMessage)\r\t\t\tmodifiers*: SET\t"
+                    attr: 0
+                  - text: "(** IN **)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: WheelMsg
+                    attr: 3
+                  - text: "* = RECORD (CursorMessage)\r\t\t\tdone*: BOOLEAN; \t\t(** "
+                    attr: 0
+                  - text: must be set if the message is handled
+                    attr: 1
+                  - text: " **)\r\t\t\top*, nofLines*: INTEGER;\r\t\tEND;\r\r\r\t\t"
+                    attr: 0
+                  - text: TransferMessage
+                    attr: 3
+                  - text: "* = ABSTRACT RECORD (CursorMessage)\r\t\t\tsource*: Views.Frame;\t"
+                    attr: 0
+                  - text: "(** IN, home frame of transfer originator, may be NIL if unknown **)"
+                    attr: 1
+                  - text: "\r\t\t\tsourceX*, sourceY*: INTEGER\t"
+                    attr: 0
+                  - text: "(** IN, reference point in source frame, defined if source # NIL **)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: PollDropMsg
+                    attr: 3
+                  - text: "* = RECORD (TransferMessage)\r\t\t\tmark*: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(** IN, request to mark drop target **)"
+                    attr: 1
+                  - text: "\r\t\t\tshow*: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(** IN, if mark then show/hide target mark **)"
+                    attr: 1
+                  - text: "\r\t\t\ttype*: Stores.TypeName;\t"
+                    attr: 0
+                  - text: "(** IN, type of view to drop **)"
+                    attr: 1
+                  - text: "\r\t\t\tisSingle*: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(** IN, view to drop is singleton **)"
+                    attr: 1
+                  - text: "\r\t\t\tw*, h*: INTEGER;\t"
+                    attr: 0
+                  - text: "(** IN, size of view to drop, may be 0, 0 **)"
+                    attr: 1
+                  - text: "\r\t\t\trx*, ry*: INTEGER;\t"
+                    attr: 0
+                  - text: "(** IN, reference point in view **)"
+                    attr: 1
+                  - text: "\r\t\t\tdest*: Views.Frame\t"
+                    attr: 0
+                  - text: "(** OUT, preset to NIL, set if DropMsg is acceptable **)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: DropMsg
+                    attr: 3
+                  - text: "* = RECORD (TransferMessage)\r\t\t\tview*: Views.View;\t"
+                    attr: 0
+                  - text: "(** IN, drop this *)"
+                    attr: 1
+                  - text: "\r\t\t\tisSingle*: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(** IN, view to drop is singleton **)"
+                    attr: 1
+                  - text: "\r\t\t\tw*, h*: INTEGER;\t"
+                    attr: 0
+                  - text: "(** IN, proposed size *)"
+                    attr: 1
+                  - text: "\r\t\t\trx*, ry*: INTEGER\t"
+                    attr: 0
+                  - text: "(** IN, reference point in view **)\r"
+                    attr: 1
+                  - text: "\t\tEND;\r\r\r\t\t"
+                    attr: 0
+                  - text: "(** controllers **)"
+                    attr: 1
+                  - text: "\r\r\t\t"
+                    attr: 0
+                  - text: Controller
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Stores.Store) END;\r\r\r\t\t"
+                    attr: 0
+                  - text: "(** forwarders **)"
+                    attr: 1
+                  - text: "\r\r\t\t"
+                    attr: 0
+                  - text: Forwarder
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD\r\t\t\tnext: Forwarder\r\t\tEND;\r\r\t\tTrapCleaner = POINTER TO RECORD (Kernel.TrapCleaner) END;\r\t\tPathInfo = POINTER TO RECORD\r\t\t\tpath: BOOLEAN; prev: PathInfo\r\t\tEND;\r\t\t\r\t\tBalanceCheckAction = POINTER TO RECORD (Services.Action) \r\t\t\twait: WaitAction\r\t\tEND;\r\t\tWaitAction = POINTER TO RECORD (Services.Action) \r\t\t\tcheck: BalanceCheckAction\r\t\tEND;\r\r\tVAR\r\t\t"
+                    attr: 0
+                  - text: path
+                    attr: 3
+                  - text: "-: BOOLEAN;\r\r\t\tlist: Forwarder;\r\t\t\r\t\tcleaner: TrapCleaner;\r\t\tprevPath, cache: PathInfo;\r\t\t\r\r\r\t(** BalanceCheckAction **)\r\t\r\tPROCEDURE (a: BalanceCheckAction) Do;\r\tBEGIN\r\t\tServices.DoLater(a.wait, Services.resolution);\r\t\tASSERT(prevPath = NIL, 100);\r\tEND Do;\r\t\r\tPROCEDURE (a: WaitAction) Do;\r\tBEGIN\r\t\tServices.DoLater(a.check, Services.immediately)\r\tEND Do;\r\r\t(** Cleaner **)\r\r\tPROCEDURE (c: TrapCleaner) Cleanup;\r\tBEGIN\r\t\tpath := frontPath;\r\t\tprevPath := NIL\r\tEND Cleanup;\r\r\tPROCEDURE NewPathInfo(): PathInfo;\r\t\tVAR c: PathInfo;\r\tBEGIN\r\t\tIF cache = NIL THEN NEW(c)\r\t\tELSE c := cache; cache := cache.prev\r\t\tEND;\r\t\tRETURN c\r\tEND NewPathInfo;\r\t\r\tPROCEDURE DisposePathInfo(c: PathInfo);\r\tBEGIN\r\t\tc.prev := cache; cache := c\r\tEND DisposePathInfo;\r\r\r\t"
+                    attr: 0
+                  - text: "(** Controller **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: Internalize-
+                    attr: 3
+                  - text: " (VAR rd: Stores.Reader), EXTENSIBLE;\r\t"
+                    attr: 0
+                  - text: "(** pre: ~c.init **)"
+                    attr: 1
+                  - text: "\r\t"
+                    attr: 0
+                  - text: "(** post: c.init **)"
+                    attr: 1
+                  - text: "\r\t\tVAR thisVersion: INTEGER;\r\tBEGIN\r\t\tc.Internalize^(rd);\r\t\trd.ReadVersion(minVersion, maxVersion, thisVersion)\r\tEND Internalize;\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: Externalize-
+                    attr: 3
+                  - text: " (VAR wr: Stores.Writer), EXTENSIBLE;\r\t"
+                    attr: 0
+                  - text: "(** pre: c.init **)"
+                    attr: 1
+                  - text: "\r\tBEGIN\r\t\tc.Externalize^(wr);\r\t\twr.WriteVersion(maxVersion)\r\tEND Externalize;\r\r\r\t"
+                    attr: 0
+                  - text: "(** Forwarder **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (f: Forwarder) "
+                    attr: 0
+                  - text: "Forward*"
+                    attr: 3
+                  - text: " (target: BOOLEAN; VAR msg: Message), NEW, ABSTRACT;\r\tPROCEDURE (f: Forwarder) "
+                    attr: 0
+                  - text: "Transfer*"
+                    attr: 3
+                  - text: " (VAR msg: TransferMessage), NEW, ABSTRACT;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Register
+                    attr: 3
+                  - text: "* (f: Forwarder);\r\t\tVAR t: Forwarder;\r\tBEGIN\r\t\tASSERT(f # NIL, 20);\r\t\tt := list; WHILE (t # NIL) & (t # f) DO t := t.next END;\r\t\tIF t = NIL THEN f.next := list; list := f END\r\tEND Register;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Delete
+                    attr: 3
+                  - text: "* (f: Forwarder);\r\t\tVAR t: Forwarder;\r\tBEGIN\r\t\tASSERT(f # NIL, 20);\r\t\tIF f = list THEN\r\t\t\tlist := list.next\r\t\tELSE\r\t\t\tt := list; WHILE (t # NIL) & (t.next # f) DO t := t.next END;\r\t\t\tIF t # NIL THEN t.next := f.next END\r\t\tEND;\r\t\tf.next := NIL\r\tEND Delete;\r\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ForwardVia
+                    attr: 3
+                  - text: "* (target: BOOLEAN; VAR msg: Message);\r\t\tVAR t: Forwarder;\r\tBEGIN\r\t\tt := list; WHILE t # NIL DO t.Forward(target, msg); t := t.next END\r\tEND ForwardVia;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetCurrentPath
+                    attr: 3
+                  - text: "* (target: BOOLEAN);\r\t\tVAR p: PathInfo;\r\tBEGIN\r\t\tIF prevPath = NIL THEN Kernel.PushTrapCleaner(cleaner) END;\r\t\tp := NewPathInfo(); p.prev := prevPath; prevPath := p; p.path := path;\r\t\tpath := target\r\tEND SetCurrentPath;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: ResetCurrentPath
+                    attr: 3
+                  - text: "*;\r\t\tVAR p: PathInfo;\r\tBEGIN\r\t\tIF prevPath # NIL THEN "
+                    attr: 0
+                  - text: "(* otherwise trap cleaner may have already removed prefPath objects *)"
+                    attr: 1
+                  - text: "\r\t\t\tp := prevPath; prevPath := p.prev; path := p.path;\r\t\t\tIF prevPath = NIL THEN Kernel.PopTrapCleaner(cleaner) END;\r\t\t\tDisposePathInfo(p)\r\t\tEND\r\tEND ResetCurrentPath;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Forward
+                    attr: 3
+                  - text: "* (VAR msg: Message);\r\tBEGIN\r\t\tForwardVia(path, msg)\r\tEND Forward;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: PollOps
+                    attr: 3
+                  - text: "* (VAR msg: PollOpsMsg);\r\tBEGIN\r\t\tmsg.type := \"\";\r\t\tmsg.pasteType := \"\";\r\t\tmsg.singleton := NIL;\r\t\tmsg.selectable := FALSE;\r\t\tmsg.valid := {};\r\t\tForward(msg)\r\tEND PollOps;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: PollCursor
+                    attr: 3
+                  - text: "* (x, y: INTEGER; modifiers: SET; OUT cursor: INTEGER);\r\t\tVAR msg: PollCursorMsg;\r\tBEGIN\r\t\tmsg.x := x; msg.y := y; msg.cursor := Ports.arrowCursor; msg.modifiers := modifiers;\r\t\tForward(msg);\r\t\tcursor := msg.cursor\r\tEND PollCursor;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Transfer
+                    attr: 3
+                  - text: "* (x, y: INTEGER; source: Views.Frame; sourceX, sourceY: INTEGER; VAR msg: TransferMessage);\r\t\tVAR t: Forwarder;\r\tBEGIN\r\t\tASSERT(source # NIL, 20);\r\t\tmsg.x := x; msg.y := y;\r\t\tmsg.source := source; msg.sourceX := sourceX; msg.sourceY := sourceY;\r\t\tt := list; WHILE t # NIL DO t.Transfer(msg); t := t.next END\r\tEND Transfer;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: PollDrop
+                    attr: 3
+                  - text: "* (x, y: INTEGER;\r\t\t\t\t\t\t\tsource: Views.Frame; sourceX, sourceY: INTEGER;\r\t\t\t\t\t\t\tmark, show: BOOLEAN;\r\t\t\t\t\t\t\ttype: Stores.TypeName;\r\t\t\t\t\t\t\tisSingle: BOOLEAN;\r\t\t\t\t\t\t\tw, h, rx, ry: INTEGER;\r\t\t\t\t\t\t\tOUT dest: Views.Frame; OUT destX, destY: INTEGER);\r\t\tVAR msg: PollDropMsg;\r\tBEGIN\r\t\tASSERT(source # NIL, 20);\r\t\tmsg.mark := mark; msg.show := show; msg.type := type; msg.isSingle := isSingle;\r\t\tmsg.w := w; msg.h := h; msg.rx := rx; msg.ry := ry; msg.dest := NIL;\r\t\tTransfer(x, y, source, sourceX, sourceY, msg);\r\t\tdest := msg.dest; destX := msg.x; destY := msg.y\r\tEND PollDrop;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Drop
+                    attr: 3
+                  - text: "* (x, y: INTEGER; source: Views.Frame; sourceX, sourceY: INTEGER;\r\t\t\t\t\t\t\t\t\tview: Views.View; isSingle: BOOLEAN; w, h, rx, ry: INTEGER);\r\t\tVAR msg: DropMsg;\r\tBEGIN\r\t\tASSERT(source # NIL, 20); ASSERT(view # NIL, 21);\r\t\tmsg.view := view; msg.isSingle := isSingle;\r\t\tmsg.w := w; msg.h := h; msg.rx := rx; msg.ry := ry;\r\t\tTransfer(x, y, source, sourceX, sourceY, msg)\r\tEND Drop;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: PasteView
+                    attr: 3
+                  - text: "* (view: Views.View; w, h: INTEGER; clipboard: BOOLEAN);\r\t\tVAR msg: EditMsg;\r\tBEGIN\r\t\tASSERT(view # NIL, 20);\r\t\tmsg.op := paste; msg.isSingle := TRUE;\r\t\tmsg.clipboard := clipboard;\r\t\tmsg.view := view; msg.w := w; msg.h := h;\r\t\tForward(msg)\r\tEND PasteView;\r\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: FocusFrame
+                    attr: 3
+                  - text: "* (): Views.Frame;\r\t\tVAR msg: PollFocusMsg;\r\tBEGIN\r\t\tmsg.focus := NIL; Forward(msg); "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " msg.focus\r\tEND FocusFrame;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: FocusView
+                    attr: 3
+                  - text: "* (): Views.View;\r\t\tVAR focus: Views.Frame;\r\tBEGIN\r\t\tfocus := FocusFrame();\r\t\tIF focus # NIL THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " focus.view ELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " NIL END\r\tEND FocusView;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: FocusModel
+                    attr: 3
+                  - text: "* (): Models.Model;\r\t\tVAR focus: Views.Frame;\r\tBEGIN\r\t\tfocus := FocusFrame();\r\t\tIF focus # NIL THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " focus.view.ThisModel() ELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " NIL END\r\tEND FocusModel;\r\r\r\tPROCEDURE HandleCtrlMsgs (op: INTEGER; f, g: Views.Frame; VAR msg: Message; VAR mark, front, req: BOOLEAN);\r\t"
+                    attr: 0
+                  - text: "(* g = f.up OR g = NIL *)"
+                    attr: 1
+                  - text: "\r\t\tCONST pre = 0; translate = 1; backoff = 2; final = 3;\r\tBEGIN\r\t\tCASE op OF\r\t\t  pre:\r\t\t\tWITH msg: MarkMsg DO\r\t\t\t\tIF msg.show & (g # NIL) THEN mark := TRUE; front := g.front END\r\t\t\t| msg: RequestMessage DO\r\t\t\t\tmsg.requestFocus := FALSE\r\t\t\tELSE\r\t\t\tEND\r\t\t| translate:\r\t\t\tWITH msg: CursorMessage DO\r\t\t\t\tmsg.x := msg.x + f.gx - g.gx;\r\t\t\t\tmsg.y := msg.y + f.gy - g.gy\r\t\t\tELSE\r\t\t\tEND\r\t\t| backoff:\r\t\t\tWITH msg: MarkMsg DO\r\t\t\t\tIF ~msg.show THEN mark := FALSE; front := FALSE END\r\t\t\t| msg: RequestMessage DO\r\t\t\t\treq := msg.requestFocus\r\t\t\tELSE\r\t\t\tEND\r\t\t| final:\r\t\t\tWITH msg: PollFocusMsg DO\r\t\t\t\tIF msg.focus = NIL THEN msg.focus := f END\r\t\t\t| msg: MarkMsg DO\r\t\t\t\tIF ~msg.show THEN mark := FALSE; front := FALSE END\r\t\t\t| msg: RequestMessage DO\r\t\t\t\treq := msg.requestFocus\r\t\t\tELSE\r\t\t\tEND\r\t\tEND\r\tEND HandleCtrlMsgs;\r\r\r\tPROCEDURE Init;\r\t\tVAR action: BalanceCheckAction; w: WaitAction;\r\tBEGIN\r\t\tViews.InitCtrl(HandleCtrlMsgs);\r\t\tNEW(cleaner);\r\t\tNEW(action); NEW(w); action.wait := w; w.check := action; Services.DoLater(action, Services.immediately);\r\tEND Init;\r\rBEGIN\r\tInit\rEND Controllers.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 15411
+          bodyLen: 8

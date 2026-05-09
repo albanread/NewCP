@@ -1,0 +1,308 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Ole\\Mod\\Views.odc"
+  size: 5869
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 5738
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 5552
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 5466
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 5587
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 5073
+                runListLen: 1893
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE OleViews;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT COM, WinApi, WinOle, WinOleAut, CtlT, Properties, Views, Containers, Windows, OleServer, OleClient;\r\t\r\t(* client wrappers *)\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: NewObjectView
+                    attr: 3
+                  - text: "* (name: ARRAY OF CHAR): Views.View;\r\t\tVAR clsid: COM.GUID; res: COM.RESULT;\r\tBEGIN\r\t\tIF name[0] = \"{\" THEN res := WinOle.CLSIDFromString(name, clsid)\r\t\tELSE res := WinOle.CLSIDFromProgID(name, clsid)\r\t\tEND;\r\t\tIF res = WinApi.S_OK THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " OleClient.NewView(clsid)\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " NIL\r\t\tEND\r\tEND NewObjectView;\r(*\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: NewObjectViewFrom
+                    attr: 3
+                  - text: "* (obj: CtlT.Object): Views.View;\r\t\tVAR disp: WinOleAut.IDispatch;\r\tBEGIN\r\t\tdisp := CtlT.Disp(obj);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " OleClient.NewViewFrom(disp)\r\tEND NewObjectViewFrom;\r*)\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: NewObjectViewFromClipboard
+                    attr: 3
+                  - text: "* (): Views.View;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " OleClient.NewViewFromCB()\r\tEND NewObjectViewFromClipboard;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: IsObjectView
+                    attr: 3
+                  - text: "* (v: Views.View): BOOLEAN;\r\t\tVAR unk: COM.IUnknown;\r\tBEGIN\r\t\tunk := OleClient.IUnknown(v);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " unk # NIL\r\tEND IsObjectView;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: IsAutoView
+                    attr: 3
+                  - text: "* (v: Views.View): BOOLEAN;\r\t\tVAR unk: COM.IUnknown; disp: WinOleAut.IDispatch; res: COM.RESULT;\r\tBEGIN\r\t\tunk := OleClient.IUnknown(v);\r\t\tIF unk # NIL THEN\r\t\t\tres := unk.QueryInterface(COM.ID(disp), disp);\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " res = WinApi.S_OK\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " FALSE\r\t\tEND\r\tEND IsAutoView;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: OleObject
+                    attr: 3
+                  - text: "* (v: Views.View): CtlT.Interface;\r\t\tVAR unk: COM.IUnknown;\r\tBEGIN\r\t\tunk := OleClient.IUnknown(v);\r\t\tIF unk # NIL THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " CtlT.Intfce(unk)\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " NIL\r\t\tEND\r\tEND OleObject;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: AutoObject
+                    attr: 3
+                  - text: "* (v: Views.View): CtlT.Object;\r\t\tVAR unk: COM.IUnknown; disp: WinOleAut.IDispatch; res: COM.RESULT;\r\tBEGIN\r\t\tunk := OleClient.IUnknown(v);\r\t\tIF unk # NIL THEN\r\t\t\tres := unk.QueryInterface(COM.ID(disp), disp);\r\t\t\tIF res = WinApi.S_OK THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " CtlT.Obj(disp) END\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " NIL\r\tEND AutoObject;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: Deposit
+                    attr: 3
+                  - text: "* (name: ARRAY OF CHAR);\r\t\tVAR v: Views.View;\r\tBEGIN\r\t\tv := NewObjectView(name);\r\t\tIF v # NIL THEN Views.Deposit(v) END\r\tEND Deposit;\r(*\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: Activate
+                    attr: 3
+                  - text: "*;\r\t\tVAR v, dv: Views.View; msg: Properties.DoVerbMsg; w: Windows.Window; f: Views.Frame;\r\tBEGIN\r\t\tv := Containers.FocusSingleton();\r\t\tIF v # NIL THEN\r\t\t\tw := Windows.dir.Focus(TRUE);\r\t\t\tIF w # NIL THEN\r\t\t\t\tdv := w.doc.ThisView();\r\t\t\t\tf := Views.ThisFrame(w.frame, dv);\r\t\t\t\tmsg.frame := Views.ThisFrame(f, v);\r\t\t\t\tmsg.verb := WinOle.OLEIVERB_SHOW;\r\t\t\t\tViews.HandlePropMsg(v, msg)\r\t\t\tEND\r\t\tEND\r\tEND Activate;\r*)\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: Connect
+                    attr: 3
+                  - text: "* (sink: CtlT.OutObject; source: Views.View);\r\t\tVAR iid: COM.GUID; disp: WinOleAut.IDispatch;\r\tBEGIN\r\t\tsink.GetIID(iid); disp := CtlT.Disp(sink);\r\t\tOleClient.Connect(source, iid, disp)\r\tEND Connect;\r\t\r(*\t\r\t(* server wrappers *)\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: NewViewObject
+                    attr: 3
+                  - text: "* (v: Views.View): CtlT.Interface;\r\tBEGIN\r\t\tASSERT(v.context = NIL, 20);\r\t\t\r\tEND NewViewObject;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: IsViewObject
+                    attr: 3
+                  - text: "* (i: CtlT.Interface): BOOLEAN;\r\tBEGIN\r\t\r\tEND IsViewObject;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: View
+                    attr: 3
+                  - text: "* (i: CtlT.Interface): Views.View;\r\tBEGIN\r\t\r\tEND View;\r*)\t\r\r\rEND OleViews.\r\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 5834
+          bodyLen: 8

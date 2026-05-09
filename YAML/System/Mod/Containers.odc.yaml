@@ -1,0 +1,1156 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\System\\Mod\\Containers.odc"
+  size: 50589
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 50458
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 50272
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 50186
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000021
+              defaultAttr:
+                font: Arial
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 50307
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 49793
+                runListLen: 4013
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE Containers;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT "
+                    attr: 0
+                  - text: Kernel
+                    attr: 3
+                  - text: ", Services, Ports, Dialog, Stores, Models, Views, Controllers, Properties, Mechanisms;\r\r\tCONST\r\t\t"
+                    attr: 0
+                  - text: "(** Controller.opts **)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: noSelection
+                    attr: 3
+                  - text: "* = 0; "
+                    attr: 0
+                  - text: noFocus
+                    attr: 3
+                  - text: "* = 1; "
+                    attr: 0
+                  - text: noCaret
+                    attr: 3
+                  - text: "* = 2;\r\t\t"
+                    attr: 0
+                  - text: mask
+                    attr: 3
+                  - text: "* = {noSelection, noCaret}; "
+                    attr: 0
+                  - text: layout
+                    attr: 3
+                  - text: "* = {noFocus};\r\t\tmodeOpts = {noSelection, noFocus, noCaret};\r\r\t\t"
+                    attr: 0
+                  - text: "(** Controller.SelectAll select **)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: deselect
+                    attr: 3
+                  - text: "* = FALSE; "
+                    attr: 0
+                  - text: select
+                    attr: 3
+                  - text: "* = TRUE;\r\r\t\t"
+                    attr: 0
+                  - text: "(** Controller.PollNativeProp/etc. selection **)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: any
+                    attr: 3
+                  - text: "* = FALSE; "
+                    attr: 0
+                  - text: selection
+                    attr: 3
+                  - text: "* = TRUE;\r\r\t\t"
+                    attr: 0
+                  - text: "(** Mark/MarkCaret/MarkSelection/MarkSingleton show **)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: hide
+                    attr: 3
+                  - text: "* = FALSE; "
+                    attr: 0
+                  - text: show
+                    attr: 3
+                  - text: "* = TRUE;\r\r\t\tindirect = FALSE; direct = TRUE;\r\r\t\tTAB = 9X; LTAB = 0AX; ENTER = 0DX; ESC = 01BX;\r\t\tPL = 10X; PR = 11X; PU = 12X; PD = 13X;\r\t\tDL = 14X; DR = 15; DU = 16X; DD = 17X;\r\t\tAL = 1CX; AR = 1DX; AU = 1EX; AD = 1FX;\r\r\t\tminVersion = 0; maxModelVersion = 0; maxViewVersion = 0; maxCtrlVersion = 0;\r\r\t\t"
+                    attr: 0
+                  - text: "(* buttons *)"
+                    attr: 1
+                  - text: "\r\t\tleft = 16; middle = 17; right = 18; alt = 28;\t"
+                    attr: 0
+                  - text: "(* same as in HostPorts! *)"
+                    attr: 1
+                  - text: "\r\r\r\tTYPE\r\t\t"
+                    attr: 0
+                  - text: Model
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Models.Model) END;\r\r\t\t"
+                    attr: 0
+                  - text: View
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Views.View)\r\t\t\tmodel: Model;\r\t\t\tcontroller: Controller;\r\t\t\talienCtrl: Stores.Store\t"
+                    attr: 0
+                  - text: "(* alienCtrl = NIL  OR  controller = NIL *)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: Controller
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Controllers.Controller)\r\t\t\topts-: SET;\r\t\t\tmodel: Model;\t"
+                    attr: 0
+                  - text: "(* connected iff model # NIL *)"
+                    attr: 1
+                  - text: "\r\t\t\tview: View;\r\t\t\tfocus, singleton: Views.View;\r\t\t\tbVis: BOOLEAN\t"
+                    attr: 0
+                  - text: "(* control visibility of focus/singleton border *)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: Directory
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD END;\r\r\t\tPollFocusMsg = RECORD (Controllers.PollFocusMsg)\r\t\t\tall: BOOLEAN;\r\t\t\tctrl: Controller\r\t\tEND;\r\t\t\r\t\tViewOp = POINTER TO RECORD (Stores.Operation)\r\t\t\tv: View;\r\t\t\tcontroller: Controller;\t"
+                    attr: 0
+                  - text: "(* may be NIL *)"
+                    attr: 1
+                  - text: "\r\t\t\talienCtrl: Stores.Store\r\t\tEND;\r\r\t\tControllerOp = POINTER TO RECORD (Stores.Operation)\r\t\t\tc: Controller;\r\t\t\topts: SET\r\t\tEND;\r\r\t\tViewMessage = ABSTRACT RECORD (Views.Message) END;\r\r\t\tFocusMsg = RECORD (ViewMessage)\r\t\t\tset: BOOLEAN\r\t\tEND;\r\r\t\tSingletonMsg = RECORD (ViewMessage)\r\t\t\tset: BOOLEAN\r\t\tEND;\r\r\t\tFadeMsg = RECORD (ViewMessage)\r\t\t\tshow: BOOLEAN\r\t\tEND;\r\t\t\r\t\t"
+                    attr: 0
+                  - text: DropPref
+                    attr: 3
+                  - text: "* = RECORD (Properties.Preference)\r\t\t\tmode-: SET;\r\t\t\tokToDrop*: BOOLEAN\r\t\tEND;\r\t\t\r\t\t"
+                    attr: 0
+                  - text: GetOpts
+                    attr: 3
+                  - text: "* = RECORD (Views.PropMessage)\r\t\t\tvalid*, opts*: SET\r\t\tEND;\r\t\t\r\t\t"
+                    attr: 0
+                  - text: SetOpts
+                    attr: 3
+                  - text: "* = RECORD (Views.PropMessage)\r\t\t\tvalid*, opts*: SET\r\t\tEND;\r\t\r\r\tPROCEDURE ^ (v: View) SetController* (c: Controller), NEW;\r\tPROCEDURE ^ (v: View) InitModel* (m: Model), NEW;\r\r\tPROCEDURE ^ Focus* (): Controller;\r\tPROCEDURE ^ ClaimFocus (v: Views.View): BOOLEAN;\r\tPROCEDURE ^ MarkFocus (c: Controller; f: Views.Frame; show: BOOLEAN);\r\tPROCEDURE ^ MarkSingleton* (c: Controller; f: Views.Frame; show: BOOLEAN);\r\tPROCEDURE ^ FadeMarks* (c: Controller; show: BOOLEAN);\r\tPROCEDURE ^ CopyView (source: Controller; VAR view: Views.View; VAR w, h: INTEGER);\r\tPROCEDURE ^ ThisProp (c: Controller; direct: BOOLEAN): Properties.Property;\r\tPROCEDURE ^ SetProp (c: Controller; old, p: Properties.Property; direct: BOOLEAN);\r\r\r\tPROCEDURE ^ (c: Controller) "
+                    attr: 0
+                  - text: "InitView*"
+                    attr: 3
+                  - text: " (v: Views.View), NEW;\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: InitView2
+                    attr: 3
+                  - text: "* (v: Views.View), NEW, EMPTY;\r\tPROCEDURE ^ (c: Controller) "
+                    attr: 0
+                  - text: "ThisView*"
+                    attr: 3
+                  - text: " (): View, NEW, EXTENSIBLE;\r\tPROCEDURE ^ (c: Controller) "
+                    attr: 0
+                  - text: "ThisFocus*"
+                    attr: 3
+                  - text: " (): Views.View, NEW, EXTENSIBLE;\r\tPROCEDURE ^ (c: Controller) "
+                    attr: 0
+                  - text: "ConsiderFocusRequestBy*"
+                    attr: 3
+                  - text: " (view: Views.View), NEW;\r\tPROCEDURE ^ (c: Controller) "
+                    attr: 0
+                  - text: "RestoreMarks*"
+                    attr: 3
+                  - text: " (f: Views.Frame; l, t, r, b: INTEGER), NEW;\r\tPROCEDURE ^ (c: Controller) "
+                    attr: 0
+                  - text: "Neutralize*"
+                    attr: 3
+                  - text: ", NEW;\r\t"
+                    attr: 0
+                  - text: "(** called by view's Neutralize **)"
+                    attr: 1
+                  - text: "\r\tPROCEDURE ^ (c: Controller) "
+                    attr: 0
+                  - text: "HandleModelMsg*"
+                    attr: 3
+                  - text: " (VAR msg: Models.Message), NEW, EXTENSIBLE;\r\t"
+                    attr: 0
+                  - text: "(** called by view's HandleModelMsg after handling msg **)"
+                    attr: 1
+                  - text: "\r\tPROCEDURE ^ (c: Controller) "
+                    attr: 0
+                  - text: "HandleViewMsg*"
+                    attr: 3
+                  - text: " (f: Views.Frame; VAR msg: Views.Message), NEW, EXTENSIBLE;\r\t"
+                    attr: 0
+                  - text: "(** called by view's HandleViewMsg after handling msg **)"
+                    attr: 1
+                  - text: "\r\tPROCEDURE ^ (c: Controller) "
+                    attr: 0
+                  - text: "HandleCtrlMsg*"
+                    attr: 3
+                  - text: " (f: Views.Frame; VAR msg: Controllers.Message; VAR focus: Views.View), NEW, EXTENSIBLE;\r\t"
+                    attr: 0
+                  - text: "(** called by view's HandleCtrlMsg *before* handling msg; focus is respected/used by view **)"
+                    attr: 1
+                  - text: "\r\tPROCEDURE ^ (c: Controller) "
+                    attr: 0
+                  - text: "HandlePropMsg*"
+                    attr: 3
+                  - text: " (VAR msg: Views.PropMessage), NEW, EXTENSIBLE;\r\t"
+                    attr: 0
+                  - text: "(** called by view's HandlePropMsg after handling msg; controller can override view **)"
+                    attr: 1
+                  - text: "\r\r\t"
+                    attr: 0
+                  - text: "(** Model **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (m: Model) "
+                    attr: 0
+                  - text: Internalize-
+                    attr: 3
+                  - text: " (VAR rd: Stores.Reader), EXTENSIBLE;\r\t\tVAR thisVersion: INTEGER;\r\tBEGIN\r\t\tm.Internalize^(rd);\r\t\tIF rd.cancelled THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " END;\r\t\trd.ReadVersion(minVersion, maxModelVersion, thisVersion)\r\tEND Internalize;\r\r\tPROCEDURE (m: Model) "
+                    attr: 0
+                  - text: Externalize-
+                    attr: 3
+                  - text: " (VAR wr: Stores.Writer), EXTENSIBLE;\r\tBEGIN\r\t\tm.Externalize^(wr);\r\t\twr.WriteVersion(maxModelVersion)\r\tEND Externalize;\r\r\tPROCEDURE (m: Model) "
+                    attr: 0
+                  - text: "GetEmbeddingLimits*"
+                    attr: 3
+                  - text: " (OUT minW, maxW, minH, maxH: INTEGER), NEW, ABSTRACT;"
+                    attr: 0
+                  - text: "\r"
+                    attr: 3
+                  - text: "\tPROCEDURE (m: Model) "
+                    attr: 0
+                  - text: "ReplaceView*"
+                    attr: 3
+                  - text: " (old, new: Views.View), NEW, ABSTRACT;\r\tPROCEDURE (m: Model) InitFrom- (source: Model), NEW, EMPTY;\r\r\t"
+                    attr: 0
+                  - text: "(** View **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: AcceptableModel
+                    attr: 3
+                  - text: "- (m: Model): BOOLEAN, NEW, ABSTRACT;\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: InitModel2
+                    attr: 3
+                  - text: "- (m: Model), NEW, EMPTY;\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: "InitModel*"
+                    attr: 3
+                  - text: " (m: Model), NEW;\r\tBEGIN\r\t\tASSERT((v.model = NIL) OR (v.model = m), 20);\r\t\tASSERT(m # NIL, 21);\r\t\tASSERT(v.AcceptableModel(m), 22);\r\t\tv.model := m;\r\t\tStores.Join(v, m);\r\t\tv.InitModel2(m)\r\tEND InitModel;\r\t\r\t\r\tPROCEDURE (v: View) Externalize2- (VAR rd: Stores.Writer), NEW, EMPTY;\r\tPROCEDURE(v: View) Internalize2- (VAR rd: Stores.Reader), NEW, EMPTY;\r\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: Internalize-
+                    attr: 3
+                  - text: " (VAR rd: Stores.Reader);\r\t\tVAR st: Stores.Store; c: Controller; m: Model; thisVersion: INTEGER;\r\tBEGIN\r\t\tv.Internalize^(rd);\r\t\tIF rd.cancelled THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " END;\r\t\trd.ReadVersion(minVersion, maxViewVersion, thisVersion);\r\t\tIF rd.cancelled THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " END;\r\t\trd.ReadStore(st); ASSERT(st # NIL, 100);\r\t\tIF ~(st IS Model) THEN\r\t\t\trd.TurnIntoAlien(Stores.alienComponent);\r\t\t\tStores.Report(\"#System:AlienModel\", \"\", \"\", \"\");\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: "\r\t\tEND;\r\t\tm := st(Model);\r\t\trd.ReadStore(st);\r\t\tIF st = NIL THEN c := NIL; v.alienCtrl := NIL\r\t\tELSIF st IS Stores.Alien THEN\r\t\t\tc := NIL; v.alienCtrl := st; Stores.Join(v, v.alienCtrl);\r\t\t\tStores.Report(\"#System:AlienControllerWarning\", \"\", \"\", \"\")\r\t\tELSE c := st(Controller); v.alienCtrl := NIL\r\t\tEND;\r\t\tv.InitModel(m);\r\t\tIF c # NIL THEN v.SetController(c) ELSE v.controller := NIL END;\r\t\tv.Internalize2(rd)\r\tEND Internalize;\r\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: Externalize-
+                    attr: 3
+                  - text: " (VAR wr: Stores.Writer);\r\tBEGIN\r\t\tASSERT(v.model # NIL, 20);\r\t\tv.Externalize^(wr);\r\t\twr.WriteVersion(maxViewVersion);\r\t\twr.WriteStore(v.model);\r\t\tIF v.controller # NIL THEN wr.WriteStore(v.controller)\r\t\tELSE wr.WriteStore(v.alienCtrl)\r\t\tEND;\r\t\tv.Externalize2(wr)\r\tEND Externalize;\r\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: CopyFromModelView2
+                    attr: 3
+                  - text: "- (source: Views.View; model: Models.Model), NEW, EMPTY;\r\t\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: CopyFromModelView-
+                    attr: 3
+                  - text: " (source: Views.View; model: Models.Model);\r\t\tVAR c: Controller;\r\tBEGIN\r\t\tWITH source: View DO\r\t\t\tv.InitModel(model(Model));\r\t\t\tIF source.controller # NIL THEN\r\t\t\t\tc := Stores.CopyOf(source.controller)(Controller)\r\t\t\tELSE\r\t\t\t\tc := NIL\r\t\t\tEND;\r\t\t\tIF source.alienCtrl # NIL THEN v.alienCtrl := Stores.CopyOf(source.alienCtrl)(Stores.Alien) END;\r\t\t\tIF c # NIL THEN v.SetController(c) ELSE v.controller := NIL END\r\t\tEND;\r\t\tv.CopyFromModelView2(source, model)\r\tEND CopyFromModelView;\r\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: "ThisModel*"
+                    attr: 3
+                  - text: " (): Model, EXTENSIBLE;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " v.model\r\tEND ThisModel;\r\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: "SetController*"
+                    attr: 3
+                  - text: " (c: Controller), NEW;\r\t\tVAR op: ViewOp;\r\tBEGIN\r\t\tASSERT(v.model # NIL, 20);\r\t\tIF v.controller # c THEN\r\t\t\tStores.Join(v, c);\r\t\t\tNEW(op); op.v := v; op.controller := c; op.alienCtrl := NIL;\r\t\t\tViews.Do(v, \"#System:ViewSetting\", op)\r\t\tEND\r\tEND SetController;\r\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: "ThisController*"
+                    attr: 3
+                  - text: " (): Controller, NEW, EXTENSIBLE;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " v.controller\r\tEND ThisController;\r\t\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: "GetRect*"
+                    attr: 3
+                  - text: " (f: Views.Frame; view: Views.View; OUT l, t, r, b: INTEGER), NEW, ABSTRACT;\r\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: "RestoreMarks*"
+                    attr: 3
+                  - text: " (f: Views.Frame; l, t, r, b: INTEGER);\r\tBEGIN\r\t\tIF v.controller # NIL THEN v.controller.RestoreMarks(f, l, t, r, b) END\r\tEND RestoreMarks;\r\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: "Neutralize*"
+                    attr: 3
+                  - text: ";\r\tBEGIN\r\t\tIF v.controller # NIL THEN v.controller.Neutralize END\r\tEND Neutralize;\r\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: ConsiderFocusRequestBy-
+                    attr: 3
+                  - text: " (view: Views.View);\r\tBEGIN\r\t\tIF v.controller # NIL THEN v.controller.ConsiderFocusRequestBy(view) END\r\tEND ConsiderFocusRequestBy;\r\r\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: HandleModelMsg2-
+                    attr: 3
+                  - text: " (VAR msg: Models.Message), NEW, EMPTY;\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: HandleViewMsg2-
+                    attr: 3
+                  - text: " (f: Views.Frame; VAR msg: Views.Message), NEW, EMPTY;\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: HandlePropMsg2-
+                    attr: 3
+                  - text: " (VAR p: Properties.Message), NEW, EMPTY;\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: HandleCtrlMsg2-
+                    attr: 3
+                  - text: " (f: Views.Frame; VAR msg: Controllers.Message; \r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR focus: Views.View), NEW, EMPTY;\r\r\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: HandleModelMsg-
+                    attr: 3
+                  - text: " (VAR msg: Models.Message);\r\tBEGIN\r\t\tv.HandleModelMsg2(msg);\r\t\tIF v.controller # NIL THEN v.controller.HandleModelMsg(msg) END\r\tEND HandleModelMsg;\r\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: HandleViewMsg-
+                    attr: 3
+                  - text: " (f: Views.Frame; VAR msg: Views.Message);\r\tBEGIN\r\t\tv.HandleViewMsg2(f, msg);\r\t\tIF v.controller # NIL THEN v.controller.HandleViewMsg(f, msg) END\r\tEND HandleViewMsg;\r\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: "HandleCtrlMsg*"
+                    attr: 3
+                  - text: " (f: Views.Frame; VAR msg: Controllers.Message; VAR focus: Views.View);\r\tBEGIN\r\t\tIF v.controller # NIL THEN v.controller.HandleCtrlMsg(f, msg, focus) END;\r\t\tv.HandleCtrlMsg2(f, msg, focus);\r\t\tWITH msg: Controllers.PollSectionMsg DO\r\t\t\tIF ~msg.focus THEN focus := NIL END\r\t\t| msg: Controllers.ScrollMsg DO\r\t\t\tIF ~msg.focus THEN focus := NIL END\r\t\tELSE\r\t\tEND\r\tEND HandleCtrlMsg;\r\r\tPROCEDURE (v: View) "
+                    attr: 0
+                  - text: HandlePropMsg-
+                    attr: 3
+                  - text: " (VAR p: Properties.Message);\r\tBEGIN\r\t\tv.HandlePropMsg2(p);\r\t\tIF v.controller # NIL THEN v.controller.HandlePropMsg(p) END\r\tEND HandlePropMsg ;\r\r\r\t"
+                    attr: 0
+                  - text: "(** Controller **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (c: Controller) Externalize2- (VAR rd: Stores.Writer), NEW, EMPTY;\r\tPROCEDURE(c: Controller) Internalize2- (VAR rd: Stores.Reader), NEW, EMPTY;\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: Internalize-
+                    attr: 3
+                  - text: " (VAR rd: Stores.Reader);\r\t\tVAR v: INTEGER;\r\tBEGIN\r\t\tc.Internalize^(rd);\r\t\tIF rd.cancelled THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " END;\r\t\trd.ReadVersion(minVersion, maxCtrlVersion, v);\r\t\tIF rd.cancelled THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " END;\r\t\trd.ReadSet(c.opts);\r\t\tc.Internalize2(rd)\r\tEND Internalize;\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: Externalize-
+                    attr: 3
+                  - text: " (VAR wr: Stores.Writer);\r\tBEGIN\r\t\tc.Externalize^(wr);\r\t\twr.WriteVersion(maxCtrlVersion);\r\t\twr.WriteSet(c.opts);\r\t\tc.Externalize2(wr)\r\tEND Externalize;\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: CopyFrom-
+                    attr: 3
+                  - text: " (source: Stores.Store), EXTENSIBLE;\r\tBEGIN\r\t\tWITH source: Controller DO\r\t\t\tc.opts := source.opts;\r\t\t\tc.focus := NIL; c.singleton := NIL;\r\t\t\tc.bVis := FALSE\r\t\tEND\r\tEND CopyFrom;\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "InitView*"
+                    attr: 3
+                  - text: " (v: Views.View), NEW;\r\t\tVAR view: View; model: Model;\r\tBEGIN\r\t\tASSERT((v = NIL) # (c.view = NIL) OR (v = c.view), 21);\r\t\tIF c.view = NIL THEN\r\t\t\tASSERT(v IS View, 22);\t"
+                    attr: 0
+                  - text: "(* subclass may assert narrower type *)"
+                    attr: 1
+                  - text: "\r\t\t\tview := v(View);\r\t\t\tmodel := view.ThisModel(); ASSERT(model # NIL, 24);\r\t\t\tc.view := view; c.model := model;\r\t\t\tStores.Join(c, c.view)\r\t\tELSE\r\t\t\tc.view.Neutralize; c.view := NIL; c.model := NIL\r\t\tEND;\r\t\tc.focus := NIL; c.singleton := NIL; c.bVis := FALSE;\r\t\tc.InitView2(v)\r\tEND InitView;\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "ThisView*"
+                    attr: 3
+                  - text: " (): View, NEW, EXTENSIBLE;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " c.view\r\tEND ThisView;\r\r\r\t"
+                    attr: 0
+                  - text: "(** options **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "SetOpts*"
+                    attr: 3
+                  - text: " (opts: SET), NEW, EXTENSIBLE;\r\t\tVAR op: ControllerOp;\r\tBEGIN\r\t\tIF c.view # NIL THEN\r\t\t\tNEW(op); op.c := c; op.opts := opts;\r\t\t\tViews.Do(c.view, \"#System:ChangeOptions\", op)\r\t\tELSE\r\t\t\tc.opts := opts\r\t\tEND\r\tEND SetOpts;\r\r\r\t"
+                    attr: 0
+                  - text: "(** subclass hooks **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "GetContextType*"
+                    attr: 3
+                  - text: " (OUT type: Stores.TypeName), NEW, ABSTRACT;\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "GetValidOps*"
+                    attr: 3
+                  - text: " (OUT valid: SET), NEW, ABSTRACT;\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "NativeModel*"
+                    attr: 3
+                  - text: " (m: Models.Model): BOOLEAN, NEW, ABSTRACT;\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "NativeView*"
+                    attr: 3
+                  - text: " (v: Views.View): BOOLEAN, NEW, ABSTRACT;\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "NativeCursorAt*"
+                    attr: 3
+                  - text: " (f: Views.Frame; x, y: INTEGER): INTEGER, NEW, ABSTRACT;\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "PickNativeProp*"
+                    attr: 3
+                  - text: " (f: Views.Frame; x, y: INTEGER; VAR p: Properties.Property), NEW, EMPTY;\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "PollNativeProp*"
+                    attr: 3
+                  - text: " (selection: BOOLEAN; VAR p: Properties.Property; VAR truncated: BOOLEAN), NEW, EMPTY;\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "SetNativeProp*"
+                    attr: 3
+                  - text: " (selection: BOOLEAN; old, p: Properties.Property), NEW, EMPTY;\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: MakeViewVisible
+                    attr: 3
+                  - text: "* (v: Views.View), NEW, EMPTY;\r\t\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "GetFirstView*"
+                    attr: 3
+                  - text: " (selection: BOOLEAN; OUT v: Views.View), NEW, ABSTRACT;\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "GetNextView*"
+                    attr: 3
+                  - text: " (selection: BOOLEAN; VAR v: Views.View), NEW, ABSTRACT;\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "GetPrevView*"
+                    attr: 3
+                  - text: " (selection: BOOLEAN; VAR v: Views.View), NEW, EXTENSIBLE;\r\t\tVAR p, q: Views.View;\r\tBEGIN\r\t\tASSERT(v # NIL, 20);\r\t\tc.GetFirstView(selection, p);\r\t\tIF p # v THEN\r\t\t\tWHILE (p # NIL) & (p # v) DO q := p; c.GetNextView(selection, p) END;\r\t\t\tASSERT(p # NIL, 21);\r\t\t\tv := q\r\t\tELSE\r\t\t\tv := NIL\r\t\tEND\r\tEND GetPrevView;\r\t\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "CanDrop*"
+                    attr: 3
+                  - text: " (f: Views.Frame; x, y: INTEGER): BOOLEAN, NEW, EXTENSIBLE;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\tEND CanDrop;\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "GetSelectionBounds*"
+                    attr: 3
+                  - text: " (f: Views.Frame; OUT x, y, w, h: INTEGER), NEW, EXTENSIBLE;\r\t\tVAR g: Views.Frame; v: Views.View;\r\tBEGIN\r\t\tx := 0; y := 0; w := 0; h := 0;\r\t\tv := c.singleton;\r\t\tIF v # NIL THEN\r\t\t\tg := Views.ThisFrame(f, v);\r\t\t\tIF g # NIL THEN\r\t\t\t\tx := g.gx - f.gx; y := g.gy - f.gy;\r\t\t\t\tv.context.GetSize(w, h)\r\t\t\tEND\r\t\tEND\r\tEND GetSelectionBounds;\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "MarkDropTarget*"
+                    attr: 3
+                  - text: " (src, dst: Views.Frame;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tsx, sy, dx, dy, w, h, rx, ry: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\ttype: Stores.TypeName;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tisSingle, show: BOOLEAN), NEW, EMPTY;\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "Drop*"
+                    attr: 3
+                  - text: " (src, dst: Views.Frame; sx, sy, dx, dy, w, h, rx, ry: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\t\t\tview: Views.View; isSingle: BOOLEAN), NEW, ABSTRACT;\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "MarkPickTarget*"
+                    attr: 3
+                  - text: " (src, dst: Views.Frame;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tsx, sy, dx, dy: INTEGER; show: BOOLEAN), NEW, EMPTY;\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "TrackMarks*"
+                    attr: 3
+                  - text: " (f: Views.Frame; x, y: INTEGER; units, extend, add: BOOLEAN), NEW, ABSTRACT;\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "Resize*"
+                    attr: 3
+                  - text: " (view: Views.View; l, t, r, b: INTEGER), NEW, ABSTRACT;\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "DeleteSelection*"
+                    attr: 3
+                  - text: ", NEW, ABSTRACT;\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "MoveLocalSelection*"
+                    attr: 3
+                  - text: " (src, dst: Views.Frame; sx, sy, dx, dy: INTEGER), NEW, ABSTRACT;\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "CopyLocalSelection*"
+                    attr: 3
+                  - text: " (src, dst: Views.Frame; sx, sy, dx, dy: INTEGER), NEW, ABSTRACT;\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "SelectionCopy*"
+                    attr: 3
+                  - text: " (): Model, NEW, ABSTRACT;\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "NativePaste*"
+                    attr: 3
+                  - text: " (m: Models.Model; f: Views.Frame), NEW, ABSTRACT;\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "ArrowChar*"
+                    attr: 3
+                  - text: " (f: Views.Frame; ch: CHAR; units, select: BOOLEAN), NEW, ABSTRACT;\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "ControlChar*"
+                    attr: 3
+                  - text: " (f: Views.Frame; ch: CHAR), NEW, ABSTRACT;\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "PasteChar*"
+                    attr: 3
+                  - text: " (ch: CHAR), NEW, ABSTRACT;\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "PasteView*"
+                    attr: 3
+                  - text: " (f: Views.Frame; v: Views.View; w, h: INTEGER), NEW, ABSTRACT;\r\r\r\t"
+                    attr: 0
+                  - text: "(** selection **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "HasSelection*"
+                    attr: 3
+                  - text: " (): BOOLEAN, NEW, EXTENSIBLE;\r\t"
+                    attr: 0
+                  - text: "(** extended by subclass to include intrinsic selections **)"
+                    attr: 1
+                  - text: "\r\tBEGIN\r\t\tASSERT(c.model # NIL, 20);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " c.singleton # NIL\r\tEND HasSelection;\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "Selectable*"
+                    attr: 3
+                  - text: " (): BOOLEAN, NEW, ABSTRACT;\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "Singleton*"
+                    attr: 3
+                  - text: " (): Views.View, NEW;\t"
+                    attr: 0
+                  - text: "(* LEAF *)"
+                    attr: 3
+                  - text: "\r\tBEGIN\r\t\tIF c = NIL THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " NIL\r\t\tELSE"
+                    attr: 0
+                  - text: " RETURN"
+                    attr: 3
+                  - text: " c.singleton\r\t\tEND\r\tEND Singleton;\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "SetSingleton*"
+                    attr: 3
+                  - text: " (s: Views.View), NEW, EXTENSIBLE;\r\t"
+                    attr: 0
+                  - text: "(** extended by subclass to adjust intrinsic selections **)"
+                    attr: 1
+                  - text: "\r\t\tVAR con: Models.Context; msg: SingletonMsg;\r\tBEGIN\r\t\tASSERT(c.model # NIL, 20);\r\t\tASSERT(~(noSelection IN c.opts), 21);\r\t\tIF c.singleton # s THEN\r\t\t\tIF s # NIL THEN\r\t\t\t\tcon := s.context;\r\t\t\t\tASSERT(con # NIL, 22); ASSERT(con.ThisModel() = c.model, 23);\r\t\t\t\tc.view.Neutralize\r\t\t\tELSIF c.singleton # NIL THEN\r\t\t\t\tc.bVis := FALSE; msg.set := FALSE; Views.Broadcast(c.view, msg)\r\t\t\tEND;\r\t\t\tc.singleton := s;\r\t\t\tIF s # NIL THEN c.bVis := TRUE; msg.set := TRUE; Views.Broadcast(c.view, msg) END\r\t\tEND\r\tEND SetSingleton;\r\t\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "SelectAll*"
+                    attr: 3
+                  - text: " (select: BOOLEAN), NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(** replaced by subclass to include intrinsic selections **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "InSelection*"
+                    attr: 3
+                  - text: " (f: Views.Frame; x, y: INTEGER): BOOLEAN, NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(** replaced by subclass to include intrinsic selections **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "MarkSelection*"
+                    attr: 3
+                  - text: " (f: Views.Frame; show: BOOLEAN), NEW, EXTENSIBLE;\r\t"
+                    attr: 0
+                  - text: "(** replaced by subclass to include intrinsic selections **)"
+                    attr: 1
+                  - text: "\r\tBEGIN\r\t\tMarkSingleton(c, f, show)\r\tEND MarkSelection;\r\r\r\t"
+                    attr: 0
+                  - text: "(** focus **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "ThisFocus*"
+                    attr: 3
+                  - text: " (): Views.View, NEW, EXTENSIBLE;\r\tBEGIN\r\t\tASSERT(c.model # NIL, 20);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " c.focus\r\tEND ThisFocus;\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "SetFocus*"
+                    attr: 3
+                  - text: " (focus: Views.View), NEW;\t"
+                    attr: 0
+                  - text: "(* LEAF *)"
+                    attr: 3
+                  - text: "\r\t\tVAR focus0: Views.View; con: Models.Context; msg: FocusMsg;\r\tBEGIN\r\t\tASSERT(c.model # NIL, 20);\r\t\tfocus0 := c.focus;\r\t\tIF focus # focus0 THEN\r\t\t\tIF focus # NIL THEN\r\t\t\t\tcon := focus.context;\r\t\t\t\tASSERT(con # NIL, 21); ASSERT(con.ThisModel() = c.model, 22);\r\t\t\t\tIF focus0 = NIL THEN c.view.Neutralize END\r\t\t\tEND;\r\t\t\tIF focus0 # NIL THEN\r\t\t\t\tIF ~Views.IsInvalid(focus0) THEN focus0.Neutralize END;\r\t\t\t\tc.bVis := FALSE; msg.set := FALSE; Views.Broadcast(c.view, msg)\r\t\t\tEND;\r\t\t\tc.focus := focus;\r\t\t\tIF focus # NIL THEN\r\t\t\t\tc.MakeViewVisible(focus);\r\t\t\t\tc.bVis := TRUE; msg.set := TRUE; Views.Broadcast(c.view, msg)\r\t\t\tEND\r\t\tEND\r\tEND SetFocus;\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "ConsiderFocusRequestBy*"
+                    attr: 3
+                  - text: " (view: Views.View), NEW;\r\t\tVAR con: Models.Context;\r\tBEGIN\r\t\tASSERT(c.model # NIL, 20);\r\t\tASSERT(view # NIL, 21); con := view.context;\r\t\tASSERT(con # NIL, 22); ASSERT(con.ThisModel() = c.model, 23);\r\t\tIF c.focus = NIL THEN c.SetFocus(view) END\r\tEND ConsiderFocusRequestBy;\r\r\r\t"
+                    attr: 0
+                  - text: "(** caret **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "HasCaret*"
+                    attr: 3
+                  - text: " (): BOOLEAN, NEW, ABSTRACT;\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "MarkCaret*"
+                    attr: 3
+                  - text: " (f: Views.Frame; show: BOOLEAN), NEW, ABSTRACT;\r\r\r\t"
+                    attr: 0
+                  - text: "(** general marking protocol **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE CheckMaskFocus (c: Controller; f: Views.Frame; VAR focus: Views.View);\r\t\tVAR v: Views.View;\r\tBEGIN\r\t\tIF f.mark & (c.opts * modeOpts = mask) & (c.model # NIL) & ((focus = NIL) OR ~ClaimFocus(focus)) THEN\r\t\t\tc.GetFirstView(any, v);\r\t\t\tWHILE (v # NIL) & ~ClaimFocus(v) DO c.GetNextView(any, v) END;\r\t\t\tIF v # NIL THEN\r\t\t\t\tc.SetFocus(v);\r\t\t\t\tfocus := v\r\t\t\tELSE c.SetFocus(NIL); focus := NIL\r\t\t\tEND\r\t\tEND\r\tEND CheckMaskFocus;\r\t\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "Mark*"
+                    attr: 3
+                  - text: " (f: Views.Frame; l, t, r, b: INTEGER; show: BOOLEAN), NEW, EXTENSIBLE;\r\tBEGIN\r\t\tMarkFocus(c, f, show); c.MarkSelection(f, show); c.MarkCaret(f, show)\r\tEND Mark;\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: RestoreMarks2-
+                    attr: 3
+                  - text: " (f: Views.Frame; l, t, r, b: INTEGER), NEW, EMPTY;\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "RestoreMarks*"
+                    attr: 3
+                  - text: " (f: Views.Frame; l, t, r, b: INTEGER), NEW;\r\tBEGIN\r\t\tIF f.mark THEN\r\t\t\tc.Mark(f, l, t, r, b, show);\r\t\t\tc.RestoreMarks2(f, l, t, r, b)\r\t\tEND\r\tEND RestoreMarks;\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: Neutralize2-
+                    attr: 3
+                  - text: ", NEW, EMPTY;\r\t"
+                    attr: 0
+                  - text: "(** caret needs to be removed by this method **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "Neutralize*"
+                    attr: 3
+                  - text: ", NEW;\r\tBEGIN\r\t\tc.SetFocus(NIL); c.SelectAll(deselect);\r\t\tc.Neutralize2\r\tEND Neutralize;\r\r\r\t"
+                    attr: 0
+                  - text: "(** message handlers **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "HandleModelMsg*"
+                    attr: 3
+                  - text: " (VAR msg: Models.Message), NEW, EXTENSIBLE;\r\tBEGIN\r\t\tASSERT(c.model # NIL, 20)\r\tEND HandleModelMsg;\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "HandleViewMsg*"
+                    attr: 3
+                  - text: " (f: Views.Frame; VAR msg: Views.Message), NEW, EXTENSIBLE;\r\t\tVAR g: Views.Frame; mark: Controllers.MarkMsg;\r\tBEGIN\r\t\tASSERT(c.model # NIL, 20);\r\t\tIF msg.view = c.view THEN\r\t\t\tWITH msg: ViewMessage DO\r\t\t\t\tWITH msg: FocusMsg DO\r\t\t\t\t\tg := Views.ThisFrame(f, c.focus);\r\t\t\t\t\tIF g # NIL THEN\r\t\t\t\t\t\tIF msg.set THEN\r\t\t\t\t\t\t\tMarkFocus(c, f, show);\r\t\t\t\t\t\t\tmark.show := TRUE; mark.focus := TRUE;\r\t\t\t\t\t\t\tViews.ForwardCtrlMsg(g, mark)\r\t\t\t\t\t\tELSE\r\t\t\t\t\t\t\tmark.show := FALSE; mark.focus := TRUE;\r\t\t\t\t\t\t\tViews.ForwardCtrlMsg(g, mark);\r\t\t\t\t\t\t\tMarkFocus(c, f, hide)\r\t\t\t\t\t\tEND\r\t\t\t\t\tEND\r\t\t\t\t| msg: SingletonMsg DO\r\t\t\t\t\tMarkSingleton(c, f, msg.set)\r\t\t\t\t| msg: FadeMsg DO\r\t\t\t\t\tMarkFocus(c, f, msg.show);\r\t\t\t\t\tMarkSingleton(c, f, msg.show)\r\t\t\t\tEND\r\t\t\tELSE\r\t\t\tEND\r\t\tEND\r\tEND HandleViewMsg;\r\r\r\tPROCEDURE CollectControlPref (c: Controller; focus: Views.View; ch: CHAR; cyclic: BOOLEAN;\r\t\t\t\t\t\t\t\t\t\t\t\tVAR v: Views.View; VAR getFocus, accepts: BOOLEAN);\r\t\tVAR first, w: Views.View; p: Properties.ControlPref; back: BOOLEAN;\r\tBEGIN\r\t\tback := (ch = LTAB) OR (ch = AL) OR (ch = AU); first := c.focus;\r\t\tIF first = NIL THEN\r\t\t\tc.GetFirstView(any, first);\r\t\t\tIF back THEN w := first;\r\t\t\t\tWHILE w # NIL DO first := w; c.GetNextView(any, w) END\r\t\t\tEND\r\t\tEND;\r\t\tv := first;\r\t\tWHILE v # NIL DO\r\t\t\tp.char := ch; p.focus := focus;\r\t\t\tp.getFocus := (v # focus) & ((ch = TAB) OR (ch = LTAB)) & ClaimFocus(v);\r\t\t\tp.accepts := (v = focus) & (ch # TAB) & (ch # LTAB);\r\t\t\tViews.HandlePropMsg(v, p);\r\t\t\tIF p.accepts OR (v # focus) & p.getFocus THEN\r\t\t\t"
+                    attr: 0
+                  - text: "\t"
+                    attr: 3
+                  - text: "getFocus := p.getFocus; accepts := p.accepts;\r\t\t\t\t"
+                    attr: 0
+                  - text: "RETURN\r\t\t\t"
+                    attr: 3
+                  - text: "END;\r\t\t\tIF back THEN c.GetPrevView(any, v) ELSE c.GetNextView(any, v) END;\r\t\t\tIF cyclic & (v = NIL) THEN\r\t\t\t\tc.GetFirstView(any, v);\r\t\t\t\tIF back THEN w := v;\r\t\t\t\t\tWHILE w # NIL DO v := w; c.GetNextView(any, w) END\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tIF v = first THEN v := NIL END\r\t\tEND;\r\t\tgetFocus := FALSE; accepts := FALSE\r\tEND CollectControlPref;\r\t\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "HandlePropMsg*"
+                    attr: 3
+                  - text: " (VAR msg: Properties.Message), NEW, EXTENSIBLE;\r\t\tVAR v: Views.View;\r\tBEGIN\r\t\tASSERT(c.model # NIL, 20);\r\t\tWITH msg: Properties.PollMsg DO\r\t\t\tmsg.prop := ThisProp(c, indirect)\r\t\t| msg: Properties.SetMsg DO\r\t\t\tSetProp(c, msg.old, msg.prop, indirect)\r\t\t| msg: Properties.FocusPref DO\r\t\t\tIF {noSelection, noFocus, noCaret} - c.opts # {} THEN msg.setFocus := TRUE END\r\t\t| msg: GetOpts DO\r\t\t\tmsg.valid := modeOpts; msg.opts := c.opts\r\t\t| msg: SetOpts DO\r\t\t\tc.SetOpts(c.opts - msg.valid + (msg.opts * msg.valid))\r\t\t| msg: Properties.ControlPref DO\r\t\t\tIF c.opts * modeOpts = mask THEN\r\t\t\t\tv := msg.focus;\r\t\t\t\tIF v = c.view THEN v := c.focus END;\r\t\t\t\tCollectControlPref(c, v, msg.char, FALSE, v, msg.getFocus, msg.accepts);\r\t\t\t\tIF msg.getFocus THEN msg.accepts := TRUE END\r\t\t\tEND\r\t\tELSE\r\t\tEND\r\tEND HandlePropMsg;\r\r\r\t"
+                    attr: 0
+                  - text: "(** Directory **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: "NewController*"
+                    attr: 3
+                  - text: " (opts: SET): Controller, NEW, ABSTRACT;\r\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: "New*"
+                    attr: 3
+                  - text: " (): Controller, NEW, EXTENSIBLE;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " d.NewController({})\r\tEND New;\r\r\r\t"
+                    attr: 0
+                  - text: "(* ViewOp *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (op: ViewOp) Do;\r\t\tVAR v: View; c0, c1: Controller; a0, a1: Stores.Store;\r\tBEGIN\r\t\tv := op.v; c0 := v.controller; a0 := v.alienCtrl; c1 := op.controller; a1 := op.alienCtrl;\r\t\tIF c0 # NIL THEN c0.InitView(NIL) END;\r\t\tv.controller := c1; v.alienCtrl := a1;\r\t\top.controller := c0; op.alienCtrl := a0;\r\t\tIF c1 # NIL THEN c1.InitView(v) END;\r\t\tViews.Update(v, Views.keepFrames)\r\tEND Do;\r\r\r\t"
+                    attr: 0
+                  - text: "(* ControllerOp *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (op: ControllerOp) Do;\r\t\tVAR c: Controller; opts: SET;\r\tBEGIN\r\t\tc := op.c;\r\t\topts := c.opts; c.opts := op.opts; op.opts := opts;\r\t\tViews.Update(c.view, Views.keepFrames)\r\tEND Do;\r\r\r\t"
+                    attr: 0
+                  - text: "(* Controller implementation support *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE BorderVisible (c: Controller; f: Views.Frame): BOOLEAN;\r\tBEGIN\r\t\tIF 31 IN c.opts THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE END;\r\t\tIF f IS Views.RootFrame THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " FALSE END;\r\t\tIF Services.Is(c.focus, \"OleClient.View\") THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " FALSE END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\tEND BorderVisible;\r\r\tPROCEDURE MarkFocus (c: Controller; f: Views.Frame; show: BOOLEAN);\r\t\tVAR focus: Views.View; f1: Views.Frame; l, t, r, b: INTEGER;\r\tBEGIN\r\t\tfocus := c.focus;\r\t\tIF f.front & (focus # NIL) & (~show OR c.bVis) & BorderVisible(c, f) & ~(noSelection IN c.opts) THEN\r\t\t\tf1 := Views.ThisFrame(f, focus);\r\t\t\tIF f1 # NIL THEN\r\t\t\t\tc.bVis := show;\r\t\t\t\tc.view.GetRect(f, focus, l, t, r, b);\r\t\t\t\tIF (l # MAX(INTEGER)) & (t # MAX(INTEGER)) THEN\r\t\t\t\t\tMechanisms.MarkFocusBorder(f, focus, l, t, r, b, show)\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND MarkFocus;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: MarkSingleton
+                    attr: 3
+                  - text: "* (c: Controller; f: Views.Frame; show: BOOLEAN);\r\t\tVAR l, t, r, b: INTEGER;\r\tBEGIN\r\t\tIF (*(f.front OR f.target) &*) (~show OR c.bVis) & (c.singleton # NIL) THEN\r\t\t\tc.bVis := show;\r\t\t\tc.view.GetRect(f, c.singleton, l, t, r, b);\r\t\t\tIF (l # MAX(INTEGER)) & (t # MAX(INTEGER)) THEN\r\t\t\t\tMechanisms.MarkSingletonBorder(f, c.singleton, l, t, r, b, show)\r\t\t\tEND\r\t\tEND\r\tEND MarkSingleton;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: FadeMarks
+                    attr: 3
+                  - text: "* (c: Controller; show: BOOLEAN);\r\t\tVAR msg: FadeMsg; v: Views.View; fc: Controller;\r\tBEGIN\r\t\tIF (c.focus # NIL) OR (c.singleton # NIL) THEN\r\t\t\tIF c.bVis # show THEN\r\t\t\t\tIF ~show THEN\r\t\t\t\t\tv := c.focus;\r\t\t\t\t\tWHILE (v # NIL) & (v IS View) DO\r\t\t\t\t\t\tfc := v(View).ThisController();\r\t\t\t\t\t\tfc.bVis := FALSE; v := fc.focus\r\t\t\t\t\tEND\r\t\t\t\tEND;\r\t\t\t\tc.bVis := show; msg.show := show; Views.Broadcast(c.view, msg)\r\t\t\tEND\r\t\tEND\r\tEND FadeMarks;\r\r\r\t"
+                    attr: 0
+                  - text: "(* handle controller messages in editor mode *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE ClaimFocus (v: Views.View): BOOLEAN;\r\t\tVAR p: Properties.FocusPref;\r\tBEGIN\r\t\tp.atLocation := FALSE;\r\t\tp.hotFocus := FALSE; p.setFocus := FALSE;\r\t\tViews.HandlePropMsg(v, p);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " p.setFocus\r\tEND ClaimFocus;\r\t\r\tPROCEDURE ClaimFocusAt (v: Views.View; f, g: Views.Frame; x, y: INTEGER; mask: BOOLEAN): BOOLEAN;\r\t\tVAR p: Properties.FocusPref;\r\tBEGIN\r\t\tp.atLocation := TRUE; p.x := x + f.gx - g.gx; p.y := y + f.gy - g.gy;\r\t\tp.hotFocus := FALSE; p.setFocus := FALSE;\r\t\tViews.HandlePropMsg(v, p);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " p.setFocus & (mask OR ~p.hotFocus)\r\tEND ClaimFocusAt;\r\t\r\tPROCEDURE NeedFocusAt (v: Views.View; f, g: Views.Frame; x, y: INTEGER): BOOLEAN;\r\t\tVAR p: Properties.FocusPref;\r\tBEGIN\r\t\tp.atLocation := TRUE; p.x := x + f.gx - g.gx; p.y := y + f.gy - g.gy;\r\t\tp.hotFocus := FALSE; p.setFocus := FALSE;\r\t\tViews.HandlePropMsg(v, p);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " p.hotFocus OR p.setFocus\r\tEND NeedFocusAt;\r\r\r\tPROCEDURE TrackToResize (c: Controller; f: Views.Frame; v: Views.View; x, y: INTEGER; buttons: SET);\r\t\tVAR minW, maxW, minH, maxH,  l, t, r, b,  w0, h0,  w, h: INTEGER; op: INTEGER; sg, fc: Views.View;\r\tBEGIN\r\t\tc.model.GetEmbeddingLimits(minW, maxW, minH, maxH);\r\t\tc.view.GetRect(f, v, l, t, r, b);\r\t\tw0 := r - l; h0 := b - t; w := w0; h := h0;\r\t\tMechanisms.TrackToResize(f, v, minW, maxW, minH, maxH, l, t, r, b, op, x, y, buttons);\r\t\tIF op = Mechanisms.resize THEN\r\t\t\tsg := c.singleton; fc := c.focus;\r\t\t\tc.Resize(v, l, t, r, b);\r\t\t\tIF c.singleton # sg THEN c.SetSingleton(sg) END;\r\t\t\tIF c.focus # fc THEN c.focus := fc; c.bVis := FALSE END\t"
+                    attr: 0
+                  - text: "(* delayed c.SetFocus(fc) *)"
+                    attr: 1
+                  - text: "\r\t\tEND\r\tEND TrackToResize;\r\r\tPROCEDURE TrackToDrop (c: Controller; f: Views.Frame; VAR x, y: INTEGER; buttons: SET;\r\t\t\t\t\t\t\t\t\tVAR pass: BOOLEAN);\r\t\tVAR dest: Views.Frame; m: Models.Model; v: Views.View;\r\t\t\tx0, y0, x1, y1, w, h, rx, ry, destX, destY: INTEGER; op: INTEGER; isDown, isSingle: BOOLEAN; mo: SET;\r\tBEGIN\t"
+                    attr: 0
+                  - text: "(* drag and drop c's selection: mouse is in selection *)"
+                    attr: 1
+                  - text: "\r\t\tx0 := x; y0 := y;\r\t\tREPEAT\r\t\t\tf.Input(x1, y1, mo, isDown)\r\t\tUNTIL ~isDown OR (ABS(x1 - x) > 3 * Ports.point) OR (ABS(y1 - y) > 3 * Ports.point);\r\t\tpass := ~isDown;\r\t\tIF ~pass THEN\r\t\t\tv := c.Singleton();\r\t\t\tIF v = NIL THEN v := c.view; isSingle := FALSE\r\t\t\tELSE isSingle := TRUE\r\t\t\tEND;\r\t\t\tc.GetSelectionBounds(f, rx, ry, w, h);\r\t\t\trx := x0 - rx; ry := y0 - ry;\r\t\t\tIF rx < 0 THEN rx := 0 ELSIF rx > w THEN rx := w END;\r\t\t\tIF ry < 0 THEN ry := 0 ELSIF ry > h THEN ry := h END;\r"
+                    attr: 0
+                  - text: "\t\t\t"
+                    attr: 1
+                  - text: "IF noCaret IN c.opts THEN op := Mechanisms.copy ELSE op := 0 END;\r\t\t\tMechanisms.TrackToDrop(f, v, isSingle, w, h, rx, ry, dest, destX, destY, op, x, y, buttons);\r\t\t\tIF (op IN {Mechanisms.copy, Mechanisms.move}) THEN\t"
+                    attr: 0
+                  - text: "(* copy or move selection *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tIF dest # NIL THEN\r\t\t\t\t\tm := dest.view.ThisModel();\r\t\t\t\t\tIF (dest.view = c.view) OR (m # NIL) & (m = c.view.ThisModel()) THEN\t"
+                    attr: 0
+                  - text: "(* local drop *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\tIF op = Mechanisms.copy THEN\t"
+                    attr: 0
+                  - text: "(* local copy *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\t\tc.CopyLocalSelection(f, dest, x0, y0, destX, destY)\r\t\t\t\t\t\tELSIF op = Mechanisms.move THEN\t"
+                    attr: 0
+                  - text: "(* local move *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\t\tc.MoveLocalSelection(f, dest, x0, y0, destX, destY)\r\t\t\t\t\t\tEND\r\t\t\t\t\tELSE\t"
+                    attr: 0
+                  - text: "(* non-local drop *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\tCopyView(c, v, w, h);\t"
+                    attr: 0
+                  - text: "(* create copy of selection *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\tIF (op = Mechanisms.copy) OR (noCaret IN c.opts) THEN\t"
+                    attr: 0
+                  - text: "(* drop copy *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\t\tControllers.Drop(x, y, f, x0, y0, v, isSingle, w, h, rx, ry)\r\t\t\t\t\t\tELSIF op = Mechanisms.move THEN\t"
+                    attr: 0
+                  - text: "(* drop copy and delete original *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\t\tControllers.Drop(x, y, f, x0, y0, v, isSingle, w, h, rx, ry);\r\t\t\t\t\t\t\tc.DeleteSelection;\r\t\t\t\t\t\tEND\r\t\t\t\t\tEND\r\t\t\t\tELSIF (op = Mechanisms.move) & ~(noCaret IN c.opts) THEN\r\t\t\t\t\tc.DeleteSelection\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND TrackToDrop;\r\r\tPROCEDURE TrackToPick (c: Controller; f: Views.Frame; x, y: INTEGER; buttons: SET;\r\t\t\t\t\t\t\t\t\tVAR pass: BOOLEAN);\r\t\tVAR p: Properties.Property; dest: Views.Frame; x0, y0, x1, y1, destX, destY: INTEGER;\r\t\t\top: INTEGER; isDown: BOOLEAN; m: SET;\r\tBEGIN\r\t\tx0 := x; y0 := y;\r\t\tREPEAT\r\t\t\tf.Input(x1, y1, m, isDown)\r\t\tUNTIL ~isDown OR (ABS(x1 - x) > 3 * Ports.point) OR (ABS(y1 - y) > 3 * Ports.point);\r\t\tpass := ~isDown;\r\t\tIF ~pass THEN\r\t\t\tMechanisms.TrackToPick(f, dest, destX, destY, op, x, y, buttons);\r\t\t\tIF op IN {Mechanisms.pick, Mechanisms.pickForeign} THEN\r\t\t\t\tProperties.Pick(x, y, f, x0, y0, p);\r\t\t\t\tIF p # NIL THEN SetProp(c, NIL, p, direct) END\r\t\t\tEND\r\t\tEND\r\tEND TrackToPick;\r\r\tPROCEDURE MarkViews (f: Views.Frame);\r\t\tVAR x, y: INTEGER; isDown: BOOLEAN; root: Views.RootFrame; m: SET;\r\tBEGIN\r\t\troot := Views.RootOf(f);\r\t\tViews.MarkBorders(root);\r\t\tREPEAT f.Input(x, y, m, isDown) UNTIL ~isDown;\r\t\tViews.MarkBorders(root)\r\tEND MarkViews;\r\r\tPROCEDURE Track (c: Controller; f: Views.Frame; VAR msg: Controllers.TrackMsg; VAR focus: Views.View);\r\t\tVAR res, l, t, r, b: INTEGER; cursor: INTEGER; sel: Views.View; obj: Views.Frame;\r\t\t\tinSel, pass, extend, add, double, popup: BOOLEAN;\r\tBEGIN\r\t\tcursor := Mechanisms.outside; sel := c.Singleton();\r\t\tIF focus # NIL THEN\r\t\t\tc.view.GetRect(f, focus, l, t, r, b);\r\t\t\tIF (BorderVisible(c, f) OR (f IS Views.RootFrame)) & ~(noSelection IN c.opts) THEN\r\t\t\t\tcursor := Mechanisms.FocusBorderCursor(f, focus, l, t, r, b, msg.x, msg.y)\r\t\t\tELSIF (msg.x >= l) & (msg.x <= r) & (msg.y >= t) & (msg.y <= b) THEN\r\t\t\t\tcursor := Mechanisms.inside\r\t\t\tEND\r\t\tELSIF sel # NIL THEN\r\t\t\tc.view.GetRect(f, sel, l, t, r, b);\r\t\t\tcursor := Mechanisms.SelBorderCursor(f, sel, l, t, r, b, msg.x, msg.y)\r\t\tEND;\r\t\tIF cursor >= 0 THEN\r\t\t\tIF focus # NIL THEN\r"
+                    attr: 0
+                  - text: "\t\t\t\t(* resize focus *)\r"
+                    attr: 1
+                  - text: "\t\t\t\tTrackToResize(c, f, focus, msg.x, msg.y, msg.modifiers);\r\t\t\t\tfocus := NIL\r\t\t\tELSE\r"
+                    attr: 0
+                  - text: "\t\t\t\t(* resize singleton *)\r\t\t\t\t"
+                    attr: 1
+                  - text: "TrackToResize(c, f, sel, msg.x, msg.y, msg.modifiers)"
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\t\t\tEND\r\t\tELSIF (focus # NIL) & (cursor = Mechanisms.inside) THEN\r"
+                    attr: 0
+                  - text: "\t\t\t(* forward to focus *)\r"
+                    attr: 1
+                  - text: "\t\tELSE\r\t\t\tIF (focus # NIL) & (c.opts * modeOpts # mask) THEN c.SetFocus(NIL) END;\r\t\t\tfocus := NIL;\r\t\t\tinSel := c.InSelection(f, msg.x, msg.y);\r\t\t\textend := Controllers.extend IN msg.modifiers;\r\t\t\tadd := Controllers.modify IN msg.modifiers;\r\t\t\tdouble := Controllers.doubleClick IN msg.modifiers;\r\t\t\tpopup := right IN msg.modifiers;\r\t\t\tobj := Views.FrameAt(f, msg.x, msg.y);\r\t\t\tIF ~inSel &"
+                    attr: 0
+                  - text: " (~extend OR (noSelection IN c.opts))"
+                    attr: 3
+                  - text: " THEN \r\t\t\t\tIF obj # NIL THEN\r\t\t\t\t\tIF ~(noFocus IN c.opts) & NeedFocusAt(obj.view, f, obj, msg.x, msg.y)\r\t\t\t\t\t\t\t& "
+                    attr: 0
+                  - text: (~(alt IN msg.modifiers) OR (noSelection IN c.opts))
+                    attr: 3
+                  - text: " THEN\r\t\t\t\t\t\t"
+                    attr: 0
+                  - text: "(* set hot focus *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\tfocus := obj.view;\r\t\t\t\t\t\tIF ClaimFocusAt(focus, f, obj, msg.x, msg.y, c.opts * modeOpts = mask) THEN\r\t\t\t\t\t\t\t"
+                    attr: 0
+                  - text: "(* set permanent focus *)\r"
+                    attr: 1
+                  - text: "\t\t\t\t\t\t\t"
+                    attr: 3
+                  - text: c.SelectAll(deselect);
+                    attr: 0
+                  - text: "\r"
+                    attr: 3
+                  - text: "\t\t\t\t\t\t\tc.SetFocus(focus)\r\t\t\t\t\t\tEND\r\t\t\t\t\tEND;\r\t\t\t\t\tIF (focus = NIL) & ~add & ~(noSelection IN c.opts) THEN\r\t\t\t\t\t\t"
+                    attr: 0
+                  - text: "(* select object *)\r\t\t\t\t\t\t"
+                    attr: 1
+                  - text: "c.SelectAll(deselect);\r\t\t\t\t\t\tc.SetSingleton(obj.view); inSel := TRUE\r\t\t\t\t\tEND\r\t\t\t\tELSIF ~add THEN c.SelectAll(deselect)\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tIF focus = NIL THEN\r\t\t\t\tIF inSel & double & (popup OR (alt IN msg.modifiers)) THEN "
+                    attr: 0
+                  - text: "(* properties *)"
+                    attr: 1
+                  - text: "\r"
+                    attr: 3
+                  - text: "\t\t\t\t\tDialog.Call(\"StdCmds.ShowProp\", \"\", res)\r\t\t\t\tELSIF inSel & double & (obj # NIL) THEN"
+                    attr: 0
+                  - text: " "
+                    attr: 3
+                  - text: "(* primary verb *)"
+                    attr: 1
+                  - text: "\r"
+                    attr: 3
+                  - text: "\t\t\t\t\tDialog.Call(\"HostMenus.PrimaryVerb\", \"\", res)\r\t\t\t\tELSIF ~inSel & (alt IN msg.modifiers) & extend THEN\r\t\t\t\t\tMarkViews(f)\r\t\t\t\tELSE\r\t\t\t\t\tIF inSel & ~extend THEN "
+                    attr: 0
+                  - text: "(* drag *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\tIF (alt IN msg.modifiers) OR (middle IN msg.modifiers) THEN\r\t\t\t\t\t\t\tIF ~(noCaret IN c.opts) THEN\r\t\t\t\t\t\t\t\tTrackToPick(c, f, msg.x, msg.y, msg.modifiers, pass)\r\t\t\t\t\t\t\tEND\r\t\t\t\t\t\tELSE\r\t\t\t\t\t\t\tTrackToDrop(c, f, msg.x, msg.y, msg.modifiers, pass)\r\t\t\t\t\t\tEND;\r\t\t\t\t\t\tIF ~pass THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " END\r\t\t\t\t\tEND;\r\t\t\t\t\tIF ~(noSelection IN c.opts) & (~inSel OR extend OR add OR (obj = NIL) & ~popup) THEN "
+                    attr: 0
+                  - text: "(* select *)\r"
+                    attr: 1
+                  - text: "\t\t\t\t\t\tc.TrackMarks(f, msg.x, msg.y, double, extend, add)\r\t\t\t\t\tEND;\r\t\t\t\t\tIF popup THEN Dialog.Call(\"HostMenus.PopupMenu\", \"\", res) END\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND Track;\r\r\tPROCEDURE CopyView (source: Controller; VAR view: Views.View; VAR w, h: INTEGER);\r\t\tVAR s: Views.View; m: Model; v: View; p: Properties.BoundsPref;\r\tBEGIN\r\t\ts := source.Singleton();\r\t\tIF s # NIL THEN\t"
+                    attr: 0
+                  - text: "(* create a copy of singular selection *)"
+                    attr: 1
+                  - text: "\r\t\t\tview := Views.CopyOf(s, Views.deep); s.context.GetSize(w, h)\r\t\tELSE\t"
+                    attr: 0
+                  - text: "(* create a copy of view with a copy of whole selection as contents *)"
+                    attr: 1
+                  - text: "\r\t\t\tm := source.SelectionCopy();\r\t\t\tv := Views.CopyWithNewModel(source.view, m)(View);\r\t\t\tp.w := Views.undefined; p.h := Views.undefined; Views.HandlePropMsg(v, p);\r\t\t\tview := v; w := p.w; h := p.h\r\t\tEND\r\tEND CopyView;\r\r\tPROCEDURE Paste (c: Controller; f: Views.Frame; v: Views.View; w, h: INTEGER);\r\t\tVAR m: Models.Model;\r\tBEGIN\r\t\tm := v.ThisModel();\r\t\tIF (m # NIL) & c.NativeModel(m) THEN\r\t\t\t"
+                    attr: 0
+                  - text: "(* paste whole contents of source view *)"
+                    attr: 1
+                  - text: "\r\t\t\tc.NativePaste(m, f)\r\t\tELSE\r\t\t\t"
+                    attr: 0
+                  - text: "(* paste whole view *)"
+                    attr: 1
+                  - text: "\r\t\t\tc.PasteView(f, v (* Views.CopyOf(v, Views.deep) *), w, h)\r\t\tEND\r\tEND Paste;\r\r\tPROCEDURE GetValidOps (c: Controller; VAR valid: SET);\r\tBEGIN\r\t\tvalid := {}; c.GetValidOps(valid);\r\t\tIF noCaret IN c.opts THEN\r\t\t\tvalid := valid\r\t\t\t\t- {Controllers.pasteChar, Controllers.pasteChar,\r\t\t\t\t\tControllers.paste, Controllers.cut}\r\t\tEND\r\tEND GetValidOps;\r\r\r\tPROCEDURE Transfer (c: Controller; f: Views.Frame;\r\t\t\t\t\t\t\t\tVAR msg: Controllers.TransferMessage; VAR focus: Views.View);\r\t\tVAR g: Views.Frame; inSelection: BOOLEAN; dMsg: DropPref;\r\tBEGIN\r\t\tfocus := NIL;\r\t\tg := Views.FrameAt(f, msg.x, msg.y);\r\t\tWITH msg: Controllers.PollDropMsg DO\r\t\t\tinSelection := c.InSelection(f, msg.x, msg.y);\r\t\t\tdMsg.mode := c.opts; dMsg.okToDrop := FALSE;\r\t\t\tIF g # NIL THEN Views.HandlePropMsg(g.view, dMsg) END;\r\t\t\tIF (g # NIL) & ~inSelection & (dMsg.okToDrop OR ~(noFocus IN c.opts))THEN\r\t\t\t\tfocus := g.view\r\t\t\tELSIF ~(noCaret IN c.opts) & c.CanDrop(f, msg.x, msg.y) THEN\r\t\t\t\tmsg.dest := f;\r\t\t\t\tIF msg.mark THEN\r\t\t\t\t\tc.MarkDropTarget(msg.source, f, msg.sourceX, msg.sourceY, msg.x, msg.y, msg.w, msg.h, msg.rx, msg.ry,\r\t\t\t\t\t\t\t\t\t\t\tmsg.type, msg.isSingle, msg.show)\r\t\t\t\tEND\r\t\t\tEND\r\t\t| msg: Controllers.DropMsg DO\r\t\t\tinSelection := c.InSelection(f, msg.x, msg.y);\r\t\t\tdMsg.mode := c.opts; dMsg.okToDrop := FALSE;\r\t\t\tIF g # NIL THEN Views.HandlePropMsg(g.view, dMsg) END;\r\t\t\tIF (g # NIL) & ~inSelection & (dMsg.okToDrop OR ~(noFocus IN c.opts))THEN\r\t\t\t\tfocus := g.view\r\t\t\tELSIF ~(noCaret IN c.opts) & c.CanDrop(f, msg.x, msg.y) THEN\r\t\t\t\tc.Drop(msg.source, f, msg.sourceX, msg.sourceY, msg.x, msg.y, msg.w, msg.h,\r\t\t\t\t\t\t\tmsg.rx, msg.ry, msg.view, msg.isSingle)\r\t\t\tEND\r\t\t| msg: Properties.PollPickMsg DO\r\t\t\tIF g # NIL THEN\r\t\t\t\tfocus := g.view\r\t\t\tELSE\r\t\t\t\tmsg.dest := f;\r\t\t\t\tIF msg.mark THEN\r\t\t\t\t\tc.MarkPickTarget(msg.source, f, msg.sourceX, msg.sourceY, msg.x, msg.y, msg.show)\r\t\t\t\tEND\r\t\t\tEND\r\t\t| msg: Properties.PickMsg DO\r\t\t\tIF g # NIL THEN\r\t\t\t\tfocus := g.view\r\t\t\tELSE\r\t\t\t\tc.PickNativeProp(f, msg.x, msg.y, msg.prop)\r\t\t\tEND\r\t\tELSE\r\t\t\tIF g # NIL THEN focus := g.view END\r\t\tEND\r\tEND Transfer;\r\r\tPROCEDURE FocusHasSel (): BOOLEAN;\r\t\tVAR msg: Controllers.PollOpsMsg;\r\tBEGIN\r\t\tControllers.PollOps(msg);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " msg.selectable & (Controllers.copy IN msg.valid)\r\tEND FocusHasSel;\r"
+                    attr: 0
+                  - text: "\t\r"
+                    attr: 3
+                  - text: "\tPROCEDURE FocusEditor (): Controller;\r\t\tVAR msg: PollFocusMsg;\r\tBEGIN\r\t\tmsg.focus := NIL; msg.ctrl := NIL; msg.all := FALSE;\r\t\tControllers.Forward(msg);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " msg.ctrl\r\tEND FocusEditor;\r\r\tPROCEDURE Edit (c: Controller; f: Views.Frame;\r\t\t\t\t\t\t\t\tVAR msg: Controllers.EditMsg; VAR focus: Views.View);\r\t\tVAR g: Views.Frame; v: Views.View; res: INTEGER;\r\t\t\tvalid: SET; select, units, getFocus, accepts: BOOLEAN;\r\t\t\tsel: Controllers.SelectMsg;\r\tBEGIN\r\t\tIF (c.opts * modeOpts # mask) & (focus = NIL) THEN\r\t\t\tIF (msg.op = Controllers.pasteChar) & (msg.char = ESC) THEN\r\t\t\t\tc.SelectAll(FALSE)\r\t\t\tELSIF (c.Singleton() # NIL) & (msg.op = Controllers.pasteChar) &\r\t\t\t\t\t(msg.char = ENTER) THEN\r"
+                    attr: 0
+                  - text: "\t\t\t"
+                    attr: 3
+                  - text: "\tDialog.Call(\"HostMenus.PrimaryVerb\", \"\", res)"
+                    attr: 0
+                  - text: "\r"
+                    attr: 3
+                  - text: "\t\t\tELSE\r\t\t\t\tGetValidOps(c, valid);\r\t\t\t\tIF msg.op IN valid THEN\r\t\t\t\t\tCASE msg.op OF\r\t\t\t\t\t| Controllers.pasteChar:\r\t\t\t\t\t\tIF msg.char >= \" \" THEN\r\t\t\t\t\t\t\tc.PasteChar(msg.char)\r\t\t\t\t\t\tELSIF (AL <= msg.char) & (msg.char <= AD) OR\r\t\t\t\t\t\t\t(PL <= msg.char) & (msg.char <= DD) THEN\r\t\t\t\t\t\t\tselect := Controllers.extend IN msg.modifiers;\r\t\t\t\t\t\t\tunits := Controllers.modify IN msg.modifiers;\r\t\t\t\t\t\t\tc.ArrowChar(f, msg.char, units, select)\r\t\t\t\t\t\tELSE c.ControlChar(f, msg.char)\r\t\t\t\t\t\tEND\r\t\t\t\t\t| Controllers.cut, Controllers.copy:\r\t\t\t\t\t\tCopyView(c, msg.view, msg.w, msg.h);\r\t\t\t\t\t\tmsg.isSingle := c.Singleton() # NIL;\r\t\t\t\t\t\tIF msg.op = Controllers.cut THEN c.DeleteSelection END\r\t\t\t\t\t| Controllers.paste:\r\t\t\t\t\t\tIF msg.isSingle THEN\r\t\t\t\t\t\t\tc.PasteView(f, msg.view (* Views.CopyOf(msg.view, Views.deep) *), msg.w, msg.h)\r\t\t\t\t\t\tELSE\r\t\t\t\t\t\t\tPaste(c, f, msg.view, msg.w, msg.h)\r\t\t\t\t\t\tEND\r\t\t\t\t\tELSE\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\tEND\r\t\tELSIF (c.opts * modeOpts # mask)\r\t\t\t\t& (msg.op = Controllers.pasteChar) & (msg.char = ESC)\r\t\t\t\t& (~(f IS Views.RootFrame) OR (31 IN c.opts))\r\t\t\t\t& (c = FocusEditor()) \r\t\t\t\t& ((Controllers.extend IN msg.modifiers) OR ~FocusHasSel()) THEN\r\t\t\tIF 31 IN c.opts THEN INCL(msg.modifiers, 31)\r\t\t\tELSE c.SetSingleton(focus)\r\t\t\tEND;\r\t\t\tfocus := NIL\r\t\tELSIF (c.opts * modeOpts # mask) & (c = Focus()) THEN\r\t\t\t"
+                    attr: 0
+                  - text: "(* do some generic processing for non-container views *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF (msg.op = Controllers.pasteChar) & (msg.char = ESC) THEN\r\t\t\t\tg := Views.ThisFrame(f, focus);\r\t\t\t\tIF g # NIL THEN sel.set := FALSE; Views.ForwardCtrlMsg(g, sel) END\r\t\t\tEND\r\t\tELSIF (c.opts * modeOpts = mask) & (msg.op = Controllers.pasteChar) THEN\r\t\t\tIF alt IN msg.modifiers THEN\r\t\t\t\tCollectControlPref (c, NIL, msg.char, TRUE, v, getFocus, accepts)\r\t\t\tELSE\r\t\t\t\tCollectControlPref (c, focus, msg.char, TRUE, v, getFocus, accepts)\r\t\t\tEND;\r\t\t\t IF v = NIL THEN\r\t\t\t\tCheckMaskFocus(c, f, focus);\r\t\t\t\tCollectControlPref(c, focus, msg.char, TRUE, v, getFocus, accepts)\r\t\t\tEND;\r\t\t\tIF v # NIL THEN\r\t\t\t\tIF getFocus & (v # focus) THEN\r\t\t\t\t\tc.SetFocus(v)\r\t\t\t\tEND;\r\t\t\t\tIF accepts THEN\r\t\t\t\t\tg := Views.ThisFrame(f, v);\r\t\t\t\t\tIF g # NIL THEN Views.ForwardCtrlMsg(g, msg) END\r\t\t\t\tEND;\r\t\t\t\tfocus := NIL\r\t\t\tEND\r\t\tEND\r\tEND Edit;\r\r\tPROCEDURE PollCursor (c: Controller; f: Views.Frame; VAR msg: Controllers.PollCursorMsg; VAR focus: Views.View);\r\t\tVAR l, t, r, b: INTEGER; cursor: INTEGER; sel: Views.View; obj: Views.Frame; inSel: BOOLEAN;\r\tBEGIN\r\t\tcursor := Mechanisms.outside; sel := c.Singleton();\r\t\tIF focus # NIL THEN\r\t\t\tc.view.GetRect(f, focus, l, t, r, b);\r\t\t\tIF (BorderVisible(c, f) OR (f IS Views.RootFrame)) & ~(noSelection IN c.opts) THEN\r\t\t\t\tcursor := Mechanisms.FocusBorderCursor(f, focus, l, t, r, b, msg.x, msg.y)\r\t\t\tELSIF (msg.x >= l) & (msg.x <= r) & (msg.y >= t) & (msg.y <= b) THEN\r\t\t\t\tcursor := Mechanisms.inside\r\t\t\tEND\r\t\tELSIF sel # NIL THEN\r\t\t\tc.view.GetRect(f, sel, l, t, r, b);\r\t\t\tcursor := Mechanisms.SelBorderCursor(f, sel, l, t, r, b, msg.x, msg.y)\r\t\tEND;\r\t\tIF cursor >= 0 THEN\r\t\t\tmsg.cursor := cursor; focus := NIL\r\t\tELSIF (focus # NIL) & (cursor = Mechanisms.inside) THEN\r"
+                    attr: 0
+                  - text: "\t\t\t"
+                    attr: 1
+                  - text: "msg.cursor := Ports.arrowCursor"
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\t\tELSE\r\t\t\tIF noCaret IN c.opts THEN msg.cursor := Ports.arrowCursor \r\t\t\tELSE msg.cursor := c.NativeCursorAt(f, msg.x, msg.y)\t"
+                    attr: 0
+                  - text: "(* if nothing else, use native cursor *)"
+                    attr: 1
+                  - text: "\r\t\t\tEND;\r\t\t\tfocus := NIL; inSel := FALSE;\r\t\t\tIF ~(noSelection IN c.opts) THEN inSel := c.InSelection(f, msg.x, msg.y) END;\r\t\t\tIF ~inSel THEN\r\t\t\t\tobj := Views.FrameAt(f, msg.x, msg.y);\r\t\t\t\tIF obj # NIL THEN\r\t\t\t\t\tIF ~(noFocus IN c.opts) & NeedFocusAt(obj.view, f, obj, msg.x, msg.y) THEN\r\t\t\t\t\t\tfocus := obj.view;\r\t\t\t\t\t\tmsg.cursor := Ports.arrowCursor\r\t\t\t\t\tELSIF ~(noSelection IN c.opts) THEN\r\t\t\t\t\t\tinSel := TRUE\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tIF focus = NIL THEN\r\t\t\t\tIF inSel THEN\r\t\t\t\t\tmsg.cursor := Ports.arrowCursor\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND PollCursor;\r\r\tPROCEDURE PollOps (c: Controller; f: Views.Frame;\r\t\t\t\t\t\t\t\tVAR msg: Controllers.PollOpsMsg; VAR focus: Views.View);\r\tBEGIN\r\t\tIF focus = NIL THEN\r\t\t\tmsg.type := \"\";\r\t\t\tIF ~(noSelection IN c.opts) THEN c.GetContextType(msg.type) END;\r\t\t\tmsg.selectable := ~(noSelection IN c.opts) & c.Selectable();\r\t\t\tGetValidOps(c, msg.valid);\r\t\t\tmsg.singleton := c.Singleton()\r\t\tEND\r\tEND PollOps;\r\r\tPROCEDURE ReplaceView (c: Controller; old, new: Views.View);\r\tBEGIN\r\t\tASSERT(old.context # NIL, 20);\r\t\tASSERT((new.context = NIL) OR (new.context = old.context), 22);\r\t\tIF old.context.ThisModel() = c.model THEN\r\t\t\tc.model.ReplaceView(old, new)\r\t\tEND;\r\t\tIF c.singleton = old THEN c.singleton := new END;\r\t\tIF c.focus = old THEN c.focus := new END\r\tEND ReplaceView;\r\r\tPROCEDURE ViewProp (v: Views.View): Properties.Property;\r\t\tVAR poll: Properties.PollMsg;\r\tBEGIN\r\t\tpoll.prop := NIL; Views.HandlePropMsg(v, poll); "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " poll.prop\r\tEND ViewProp;\r\r\tPROCEDURE SetViewProp (v: Views.View; old, p: Properties.Property);\r\t\tVAR set: Properties.SetMsg;\r\tBEGIN\r\t\tset.old := old; set.prop := p; Views.HandlePropMsg(v, set)\r\tEND SetViewProp;\r\r\tPROCEDURE SizeProp (v: Views.View): Properties.Property;\r\t\tVAR sp: Properties.SizeProp;\r\tBEGIN\r\t\tNEW(sp); sp.known := {Properties.width, Properties.height}; sp.valid := sp.known;\r\t\tv.context.GetSize(sp.width, sp.height);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " sp\r\tEND SizeProp;\r\r\tPROCEDURE SetSizeProp (v: Views.View; p: Properties.SizeProp);\r\t\tVAR w, h: INTEGER;\r\tBEGIN\r\t\tIF p.valid # {Properties.width, Properties.height} THEN\r\t\t\tv.context.GetSize(w, h)\r\t\tEND;\r\t\tIF Properties.width IN p.valid THEN w := p.width END;\r\t\tIF Properties.height IN p.valid THEN h := p.height END;\r\t\tv.context.SetSize(w, h)\r\tEND SetSizeProp;\r\r\tPROCEDURE ThisProp (c: Controller; direct: BOOLEAN): Properties.Property;\r\t\tCONST scanCutoff = MAX(INTEGER) "
+                    attr: 0
+                  - text: "(* 50 *)"
+                    attr: 1
+                  - text: ";\t"
+                    attr: 0
+                  - text: "(* bound number of polled embedded views *)"
+                    attr: 1
+                  - text: "\r\t\tVAR v: Views.View; np, vp, p: Properties.Property; k: INTEGER; trunc, equal: BOOLEAN;\r\tBEGIN\r\t\ttrunc := FALSE; k := 1;\r\t\tnp := NIL; c.PollNativeProp(direct, np, trunc);\r\t\tv := NIL; c.GetFirstView(direct, v);\r\t\tIF v # NIL THEN\r\t\t\tProperties.Insert(np, SizeProp(v));\r\t\t\tvp := ViewProp(v);\r\t\t\tk := scanCutoff; c.GetNextView(direct, v);\r\t\t\tWHILE (v # NIL) & (k > 0) DO\r\t\t\t\tDEC(k);\r\t\t\t\tProperties.Insert(np, SizeProp(v));\r\t\t\t\tProperties.Intersect(vp, ViewProp(v), equal);\r\t\t\t\tc.GetNextView(direct, v)\r\t\t\tEND;\r\t\t\tIF c.singleton # NIL THEN Properties.Merge(np, vp); vp := np\r\t\t\tELSE Properties.Merge(vp, np)\r\t\t\tEND\r\t\tELSE vp := np\r\t\tEND;\r\t\tIF trunc OR (k = 0) THEN\r\t\t\tp := vp; WHILE p # NIL DO p.valid := {}; p := p.next END\r\t\tEND;\r\t\tIF noCaret IN c.opts THEN\r\t\t\tp := vp; WHILE p # NIL DO p.readOnly := p.valid; p := p.next END\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " vp\r\tEND ThisProp;\r\r\tPROCEDURE SetProp (c: Controller; old, p: Properties.Property; direct: BOOLEAN);\r\t\tTYPE\r\t\t\tViewList = POINTER TO RECORD next: ViewList; view: Views.View END;\r\t\tVAR v: Views.View; q, sp: Properties.Property; equal: BOOLEAN; s: Stores.Operation;\r\t\t\tlist, last: ViewList;\r\tBEGIN\r\t\tIF noCaret IN c.opts THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " END;\r\t\tViews.BeginScript(c.view, \"#System:SetProp\", s);\r\t\tq := p; WHILE (q # NIL) & ~(q IS Properties.SizeProp) DO q := q.next END;\r\t\tlist := NIL; v := NIL; c.GetFirstView(direct, v);\r\t\tWHILE v # NIL DO\r\t\t\tIF list = NIL THEN NEW(list); last := list\r\t\t\tELSE NEW(last.next); last := last.next\r\t\t\tEND;\r\t\t\tlast.view := v;\r\t\t\tc.GetNextView(direct, v)\r\t\tEND;\r\t\tc.SetNativeProp(direct, old, p);\r\t\tWHILE list # NIL DO\r\t\t\tv := list.view; list := list.next;\r\t\t\tSetViewProp(v, old, p);\r\t\t\tIF direct & (q # NIL) THEN\r\t\t\t\t"
+                    attr: 0
+                  - text: "(* q IS "
+                    attr: 1
+                  - text: Properties.
+                    attr: 0
+                  - text: Size
+                    attr: 1
+                  - text: Prop
+                    attr: 0
+                  - text: " *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tIF old # NIL THEN\r\t\t\t\t\tsp := SizeProp(v);\r\t\t\t\t\tProperties.Intersect(sp, old, equal);\r\t\t\t\t\tProperties.Intersect(sp, old, equal)\r\t\t\t\tEND;\r\t\t\t\tIF (old = NIL) OR equal THEN\r\t\t\t\t\tSetSizeProp(v, q(Properties.SizeProp))\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND;\r\t\tViews.EndScript(c.view, s)\r\tEND SetProp;\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: "HandleCtrlMsg*"
+                    attr: 3
+                  - text: " (f: Views.Frame;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t VAR msg: Controllers.Message; VAR focus: Views.View), NEW, EXTENSIBLE;\r\tBEGIN\r\t\tfocus := c.focus;\r\t\tWITH msg: Controllers.PollCursorMsg DO\r\t\t\tPollCursor(c, f, msg, focus)\r\t\t| msg: Controllers.PollOpsMsg DO\r\t\t\tPollOps(c, f, msg, focus)\r\t\t| msg: PollFocusMsg DO\r\t\t\tIF msg.all OR (c.opts * modeOpts # mask) & (c.focus # NIL) THEN msg.ctrl := c END\r\t\t| msg: Controllers.TrackMsg DO\r\t\t\tTrack(c, f, msg, focus)\r\t\t| msg: Controllers.EditMsg DO\r\t\t\tEdit(c, f, msg, focus)\r\t\t| msg: Controllers.TransferMessage DO\r\t\t\tTransfer(c, f, msg, focus)\r\t\t| msg: Controllers.SelectMsg DO\r\t\t\tIF focus = NIL THEN c.SelectAll(msg.set) END\r\t\t| msg: Controllers.TickMsg DO\r\t\t\tFadeMarks(c, show);\r\t\t\tCheckMaskFocus(c, f, focus)\r\t\t| msg: Controllers.MarkMsg DO\r\t\t\tc.bVis := msg.show;\r\t\t\tc.Mark(f, f.l, f.t, f.r, f.b, msg.show)\r\t\t| msg: Controllers.ReplaceViewMsg DO\r\t\t\tReplaceView(c, msg.old, msg.new)\r\t\t| msg: Properties.CollectMsg DO\r\t\t\tIF focus = NIL THEN\r\t\t\t\tmsg.poll.prop := ThisProp(c, direct)\r\t\t\tEND\r\t\t| msg: Properties.EmitMsg DO\r\t\t\tIF focus = NIL THEN\r\t\t\t\tSetProp(c, msg.set.old, msg.set.prop, direct)\r\t\t\tEND\r\t\tELSE\r\t\tEND\r\tEND HandleCtrlMsg;\r\r\r\t"
+                    attr: 0
+                  - text: "(** miscellaneous **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Focus
+                    attr: 3
+                  - text: "* (): Controller;\r\t\tVAR msg: PollFocusMsg;\r\tBEGIN\r\t\tmsg.focus := NIL; msg.ctrl := NIL; msg.all := TRUE;\r\t\tControllers.Forward(msg);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " msg.ctrl\r\tEND Focus;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: FocusSingleton
+                    attr: 3
+                  - text: "* (): Views.View;\r\t\tVAR c: Controller; v: Views.View;\r\tBEGIN\r\t\tc := Focus();\r\t\tIF c # NIL THEN v := c.Singleton() ELSE v := NIL END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " v\r\tEND FocusSingleton;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: CloneOf
+                    attr: 3
+                  - text: "* (m: Model): Model;\r\t\tVAR h: Model;\r\tBEGIN\r\t\tASSERT(m # NIL, 20);\r\t\tKernel.NewObj(h, Kernel.TypeOf(m));\r\t\th.InitFrom(m);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " h\r\tEND CloneOf;\r\rEND Containers.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 50554
+          bodyLen: 8

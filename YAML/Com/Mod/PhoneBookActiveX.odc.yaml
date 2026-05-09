@@ -1,0 +1,344 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Com\\Mod\\PhoneBookActiveX.odc"
+  size: 11046
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 10915
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 10729
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 10643
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 26
+                bodyPos: 10764
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 10250
+                runListLen: 2139
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE ComPhoneBookActiveX;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT COM, WinApi, WinOle, ComTools, WinOleAut;\r\t\r\tCONST\r\t\t"
+                    attr: 0
+                  - text: "CLSID*"
+                    attr: 3
+                  - text: " = \"{E67D346B-2A5B-11D0-ADBA-00C01500554E}\";\r\t\tE_NotFound = -2147467259;\r\t\ttypelibrary = \"C:\\BlackBox\\Com\\Interfaces\\DPhoneBook\\phone.tlb\";\r\t\r\tTYPE\r\t\t"
+                    attr: 0
+                  - text: "ILookup*"
+                    attr: 3
+                  - text: " = POINTER TO ABSTRACT RECORD\r\t\t\t[\"{C4910D72-BA7D-11CD-94E8-08001701A8A3}\"] (WinOleAut.IDispatch)\r\t\tEND;\r\t\r\t\tCLookup = POINTER TO RECORD (ILookup) END;\r\t\t\r\t\tLookupFactory = POINTER TO RECORD (WinOle.IClassFactory) END;\r\t\r\t\tEntry = POINTER TO EntryDesc;\r\t\tEntryDesc = RECORD\r\t\t\tnext: Entry;\r\t\t\tname, number: ARRAY 32 OF CHAR\r\t\tEND;\r\t\r\tVAR\r\t\tlocks: INTEGER;\r\t\tobjects: INTEGER;\r\t\t\r\t\tphoneBook: Entry;\r\t\r\t(* ---------- ILookup ---------- *)\r\t\r\tPROCEDURE (this: ILookup) "
+                    attr: 0
+                  - text: LookupByName
+                    attr: 3
+                  - text: "*(\r\t\tname: WinApi.PtrWSTR; OUT number: WinApi.PtrWSTR): COM.RESULT, NEW, ABSTRACT;\r\t\r\tPROCEDURE (this: ILookup) "
+                    attr: 0
+                  - text: LookupByNumber
+                    attr: 3
+                  - text: "*(\r\t\tnumber: WinApi.PtrWSTR; OUT name: WinApi.PtrWSTR): COM.RESULT, NEW, ABSTRACT;\r\t\t\r\t(* ---------- CLookup ---------- *)\r\t\t\r\t(* use default QueryInterface implementation *)\r\t(* AddRef & Release implemented implicitly by the compiler *)\r\t\r\tPROCEDURE (this: CLookup) LookupByName(name: WinApi.PtrWSTR;\r\t\t\tOUT number: WinApi.PtrWSTR): COM.RESULT;\r\t\tVAR e: Entry; ustr: ARRAY [untagged] 32 OF CHAR; i: INTEGER;\r\tBEGIN\r\t\te := phoneBook;\r\t\tWHILE (e # NIL) & (e.name # name^) DO e := e.next END;\r\t\tIF e # NIL THEN i := 0;\r\t\t\tREPEAT ustr[i] := e.number[i]; INC(i) UNTIL e.number[i-1] = 0X;\r\t\t\tnumber := ComTools.NewString(ustr);\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\tELSE\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " E_NotFound\r\t\tEND\r\tEND LookupByName;\r\t\r\tPROCEDURE (this: CLookup) LookupByNumber(number: WinApi.PtrWSTR;\r\t\t\t\tOUT name: WinApi.PtrWSTR): COM.RESULT;\r\t\tVAR e: Entry; \r\t\t\tustr: ARRAY [untagged] 32 OF CHAR; i: INTEGER;\r\tBEGIN \r\t\te := phoneBook;\r\t\tWHILE (e # NIL) & (e.number # number^) DO e := e.next END;\r\t\tIF e # NIL THEN i := 0;\r\t\t\tREPEAT ustr[i] := e.name[i]; INC(i) UNTIL e.name[i-1] = 0X;\r\t\t\tname := ComTools.NewString(ustr);\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\tELSE\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " E_NotFound\r\t\tEND\r\tEND LookupByNumber;\r\t\r\tPROCEDURE (this: CLookup) Invoke (dispIdMember: WinOleAut.DISPID;\r\t\tIN riid: COM.GUID;\r\t\tlcid: WinOle.LCID; wFlags: SHORTINT; VAR [nil] pDispParams: WinOleAut.DISPPARAMS; \r\t\tOUT [nil] pVarResult: WinOleAut.VARIANT; OUT [nil] pExcepInfo: WinOleAut.EXCEPINFO;\r\t\tOUT [nil] puArgErr: INTEGER\r\t): COM.RESULT;\r\t\tVAR wstr: WinApi.PtrWSTR; res: INTEGER; (* bstr: WinOle.BSTR; *)\r\tBEGIN\r\t\tIF (dispIdMember = 1) OR (dispIdMember = 2) THEN\r\t\t\tIF pDispParams.cArgs = 1 THEN\r\t\t\t\tIF pDispParams.rgvarg[0].vt = WinOle.VT_BSTR THEN\r\t\t\t\t\tIF dispIdMember = 1 THEN \r\t\t\t\t\t\tres := this.LookupByName(pDispParams.rgvarg[0].u.bstrVal, wstr)\r\t\t\t\t\tELSE\r\t\t\t\t\t\tres := this.LookupByNumber(pDispParams.rgvarg[0].u.bstrVal, wstr)\r\t\t\t\t\tEND;\r\t\t\t\t\tIF res = 0 THEN\r\t\t\t\t\t\tpVarResult.vt := WinOle.VT_BSTR;\r\t\t\t\t\t\tpVarResult.u.bstrVal := WinOleAut.SysAllocString(wstr^);\r\t\t\t\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\t\t\t\t\tELSE\r\t\t\t\t\t\tpExcepInfo.wCode := 0;\r\t\t\t\t\t\tpExcepInfo.wReserved := 0;\r\t\t\t\t\t\tpExcepInfo.bstrSource := WinOleAut.SysAllocString(\"PhoneBook.Lookup\");\r\t\t\t\t\t\tpExcepInfo.bstrDescription := WinOleAut.SysAllocString(\"Entry not found\");\r\t\t\t\t\t\tpExcepInfo.bstrHelpFile := NIL;\r\t\t\t\t\t\tpExcepInfo.pfnDeferredFillIn := NIL;\r\t\t\t\t\t\tpExcepInfo.scode := res;\r\t\t\t\t\t"
+                    attr: 0
+                  - text: "\tRETURN"
+                    attr: 3
+                  - text: " WinApi.DISP_E_EXCEPTION\r\t\t\t\t\tEND\r\t\t\t\tELSE RETURN WinApi.DISP_E_BADVARTYPE\r\t\t\t\tEND\r\t\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.DISP_E_BADPARAMCOUNT\r\t\t\tEND;\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.DISP_E_MEMBERNOTFOUND\r\t\tEND\t\t\r\tEND Invoke;\r\r\tPROCEDURE (this: CLookup) GetIDsOfNames (IN [nil] riid: COM.GUID (* NULL *);\r\t\tIN [nil] rgszNames: WinApi.PtrWSTR;  cNames: INTEGER; "
+                    attr: 0
+                  - text: lcid
+                    attr: 3
+                  - text: ": WinOle.LCID;\r\t\tOUT [nil] rgDispId: WinOleAut.DISPID\r\t): COM.RESULT;\r\t\tVAR lib: WinOleAut.ITypeLib; ptinfo: WinOleAut.ITypeInfo; names: WinApi.PtrWSTR;res: INTEGER;\r\tBEGIN\r\t\tres := WinOleAut.LoadTypeLib(ComTools.NewString(typelibrary), lib);\r\t\tres := lib.GetTypeInfoOfGuid(COM.ID(ILookup), ptinfo);\r\t\tnames := ComTools.NewString(rgszNames^);\r\t\tres := WinOleAut.DispGetIDsOfNames(ptinfo, names, cNames, rgDispId);\r\t\tRETURN 0\r\tEND GetIDsOfNames;\r\t\r\tPROCEDURE (this: CLookup) GetTypeInfo (iTInfo: INTEGER; lcid: WinOle.LCID; \r\t\t\t\t\t\t\t\t\t\t\tOUT [nil] ppTInfo: WinOleAut.ITypeInfo): COM.RESULT;\r\t\tVAR lib: WinOleAut.ITypeLib; res: INTEGER;\r\tBEGIN\r\t\tres := WinOleAut.LoadTypeLib(ComTools.NewString(typelibrary), lib);\r\t\tRETURN lib.GetTypeInfo(iTInfo, ppTInfo)\r\tEND GetTypeInfo;\r\t\r\tPROCEDURE (this: CLookup) GetTypeInfoCount (OUT [nil] pctinfo: INTEGER): COM.RESULT;\r\tBEGIN \r\t\tpctinfo := 1;\t(* type info available *)\r\t\tRETURN 0 \r\tEND GetTypeInfoCount;\r\r"
+                    attr: 0
+                  - text: "\t"
+                    attr: 1
+                  - text: "PROCEDURE (this: CLookup) RELEASE;\t"
+                    attr: 0
+                  - text: "(* called when last com reference is removed *)"
+                    attr: 1
+                  - text: "\r\tBEGIN\r\t\tDEC(objects)\r\tEND RELEASE;\r\t\r\t(* ---------- LookupFactory ---------- *)\r\t\r\t(* use default QueryInterface implementation *)\r\t(* AddRef & Release implemented implicitly by the compiler *)\r\t\r\tPROCEDURE (this: LookupFactory) CreateInstance (outer: COM.IUnknown;\r\t\t\t\tIN [iid] iid: COM.GUID; OUT [new] int: COM.IUnknown): COM.RESULT;\r\t\tVAR res: COM.RESULT; new: CLookup;\r\tBEGIN\r\t\tIF outer # NIL THEN RETURN WinApi.CLASS_E_NOAGGREGATION END;\r\t\tNEW(new);\r\t\tIF new # NIL THEN \r\t\t\tres := new.QueryInterface(iid, int);\r\t\t\tIF res >= 0 THEN INC(objects) END;\r\t\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " res\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_OUTOFMEMORY\r\t\tEND\r\tEND CreateInstance;\r\t\r\tPROCEDURE (this: LookupFactory) LockServer (lock: WinApi.BOOL): COM.RESULT;\r\tBEGIN\r\t\tIF lock # 0 THEN INC(locks) ELSE DEC(locks) END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK\r\tEND LockServer;\r\t\r"
+                    attr: 0
+                  - text: "\t(* ---------- dll interface ---------- *)\r"
+                    attr: 1
+                  - text: "\t\r\tPROCEDURE"
+                    attr: 0
+                  - text: " DllGetClassObject"
+                    attr: 3
+                  - text: "* (IN clsid: COM.GUID;\r\t\t\t\t\t\t\t\t\t\t\t\tIN [iid] iid: COM.GUID; OUT [new] int: COM.IUnknown): COM.RESULT;\r\t\tVAR obj: LookupFactory;\r\tBEGIN\r\t\tIF clsid = CLSID THEN\r\t\t\tNEW(obj);\r\t\t\tIF obj # NIL THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " obj.QueryInterface(iid, int)\r\t\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_OUTOFMEMORY;\r\t\t\tEND\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.E_FAIL\r\t\tEND\r\tEND DllGetClassObject;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: DllCanUnloadNow
+                    attr: 3
+                  - text: "* (): COM.RESULT;\r\tBEGIN\r\t\tIF (objects = 0) & (locks = 0) THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_OK ELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " WinApi.S_FALSE END\r\tEND DllCanUnloadNow;\r\r\r\tPROCEDURE NewEntry(name, number: ARRAY OF CHAR);\r\t\tVAR e: Entry;\r\tBEGIN\r\t\tNEW(e); e.next  := phoneBook; phoneBook := e; e.name := name$; e.number := number$\r\tEND NewEntry;\r\rBEGIN\t\r\tlocks := 0; objects := 0;\r\tNewEntry(\"Daffy Duck\", \"310-555-1212\");\r\tNewEntry(\"Wile E. Coyote\", \"408-555-1212\");\r\tNewEntry(\"Scrooge McDuck\", \"206-555-1212\");\r\tNewEntry(\"Huey Lewis\", \"415-555-1212\");\r\tNewEntry(\"Thomas Dewey\", \"617-555-1212\");\rEND ComPhoneBookActiveX.\r\r"
+                    attr: 0
+                  - view:
+                      kind: DevCommanders.StdView
+                      storeKind: store
+                      typeChain:
+                        - DevCommanders.StdViewDesc
+                        - DevCommanders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 23
+                      bodyPos: 2384
+                      bodyLen: 6
+                    attr: 0
+                    w: 168275
+                    h: 142875
+                  - text: " DevLinker.LinkDll \"Com/phone.dll\" := Kernel+ ComTools ComPhoneBookActiveX# ~\r\r\r"
+                    attr: 0
+                  - ruler:
+                      left: 0
+                      right: 7200000
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000021
+                      attr: 0
+                      w: 360000000
+                      h: 444500
+                  - text: "REGEDIT\rHKEY_CLASSES_ROOT\\PhoneBook = PhoneBook ActiveX Control\rHKEY_CLASSES_ROOT\\PhoneBook\\CLSID = {E67D346B-2A5B-11D0-ADBA-00C01500554E}\rHKEY_CLASSES_ROOT\\PhoneBook\\TypeLib = {C4910D73-BA7D-11CD-94E8-08001701A8A3}\r\rHKEY_CLASSES_ROOT\\CLSID\\{E67D346B-2A5B-11D0-ADBA-00C01500554E} = PhoneBook ActiveX Control\rHKEY_CLASSES_ROOT\\CLSID\\{E67D346B-2A5B-11D0-ADBA-00C01500554E}\\ProgID = PhoneBook1.0\rHKEY_CLASSES_ROOT\\CLSID\\{E67D346B-2A5B-11D0-ADBA-00C01500554E}\\Control\rHKEY_CLASSES_ROOT\\CLSID\\{E67D346B-2A5B-11D0-ADBA-00C01500554E}\\Version = 1.0\rHKEY_CLASSES_ROOT\\CLSID\\{E67D346B-2A5B-11D0-ADBA-00C01500554E}\\VersionIndependentProgID = PhoneBook\rHKEY_CLASSES_ROOT\\CLSID\\{E67D346B-2A5B-11D0-ADBA-00C01500554E}\\TypeLib = {C4910D73-BA7D-11CD-94E8-08001701A8A3}\rHKEY_CLASSES_ROOT\\CLSID\\{E67D346B-2A5B-11D0-ADBA-00C01500554E}\\InprocServer32 = C:\\BlackBox\\Com\\phone.dll\rHKEY_CLASSES_ROOT\\CLSID\\{E67D346B-2A5B-11D0-ADBA-00C01500554E}\\NotInsertable\r\rHKEY_CLASSES_ROOT\\TypeLib\\{C4910D73-BA7D-11CD-94E8-08001701A8A3}\\1.0 = PhoneBook ActiveX Control\rHKEY_CLASSES_ROOT\\TypeLib\\{C4910D73-BA7D-11CD-94E8-08001701A8A3}\\1.0\\0\\win32 = C:\\BlackBox\\Com\\Interfaces\\DPhoneBook\\phone.tlb\rHKEY_CLASSES_ROOT\\TypeLib\\{C4910D73-BA7D-11CD-94E8-08001701A8A3}\\1.0\\FLAGS = 0\rHKEY_CLASSES_ROOT\\TypeLib\\{C4910D73-BA7D-11CD-94E8-08001701A8A3}\\1.0\\HELPDIR = C:\\BlackBox\\Com\\Interfaces\\DPhoneBook"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 30
+          bodyPos: 11011
+          bodyLen: 8

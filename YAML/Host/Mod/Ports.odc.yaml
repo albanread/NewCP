@@ -1,0 +1,706 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Host\\Mod\\Ports.odc"
+  size: 38760
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 38629
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 38443
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 38357
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 7315200
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000021
+              defaultAttr:
+                font: Arial
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 38478
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 37964
+                runListLen: 3438
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE HostPorts;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems, Marco Ciot, Alexander Iljin\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- 20060325, mc, Rider.Input changed for the benefit of background task response.\r\t- 20060903, ai, call to ValidateRect from Port.CloseBuffer to fix painting bug deleted\r\t- 20060915, ai, call to UpdateWindow in Rider.Input to fix ScrollWhileTracking painting bug added\r\t- 20070130, bh, Unicode support\r\t- 20070205, bh, Win32s handling removed\r\t- 20070827, bh, improved width and figureSpace handling in long string ops\r\t- 20141215, center #23, fixing bugs in WinApi plus some refinements and extensions\r\t- 20150610, center #60, DrawSpace added for underlined white space\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT\r\t\t"
+                    attr: 0
+                  - text: "SYSTEM, "
+                    attr: 3
+                  - text: "WinApi, Kernel, Fonts, Ports, Dialog, Services, HostFonts;\r\t\r\tCONST\r\t\t"
+                    attr: 0
+                  - text: resizeHCursor
+                    attr: 3
+                  - text: "* = 16; "
+                    attr: 0
+                  - text: resizeVCursor
+                    attr: 3
+                  - text: "* = 17; "
+                    attr: 0
+                  - text: resizeLCursor
+                    attr: 3
+                  - text: "* = 18; "
+                    attr: 0
+                  - text: resizeRCursor
+                    attr: 3
+                  - text: "* = 19; "
+                    attr: 0
+                  - text: resizeCursor
+                    attr: 3
+                  - text: "* = 20;\r\t\t"
+                    attr: 0
+                  - text: busyCursor
+                    attr: 3
+                  - text: "* = 21; "
+                    attr: 0
+                  - text: stopCursor
+                    attr: 3
+                  - text: "* = 22;"
+                    attr: 0
+                  - text: "\r\t\tmoveCursor"
+                    attr: 3
+                  - text: "* = 23; "
+                    attr: 0
+                  - text: copyCursor
+                    attr: 3
+                  - text: "* = 24; "
+                    attr: 0
+                  - text: linkCursor
+                    attr: 3
+                  - text: "* = 25;"
+                    attr: 0
+                  - text: " pickCursor"
+                    attr: 3
+                  - text: "* = 26;\r\t\t"
+                    attr: 0
+                  - text: focusPat
+                    attr: 3
+                  - text: "* = 5;\r\t\t\r\t\textend = 1; modify = 2; (* "
+                    attr: 0
+                  - text: "same as Controllers.extend and Controllers.modify  !!! "
+                    attr: 1
+                  - text: "*)\r\r\t\t"
+                    attr: 0
+                  - text: "(** buttons **)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: left
+                    attr: 3
+                  - text: "* = 16; "
+                    attr: 0
+                  - text: middle
+                    attr: 3
+                  - text: "* = 17; "
+                    attr: 0
+                  - text: right
+                    attr: 3
+                  - text: "* = 18;\r\t\t"
+                    attr: 0
+                  - text: shift
+                    attr: 3
+                  - text: "* = 24; "
+                    attr: 0
+                  - text: ctrl
+                    attr: 3
+                  - text: "* = 25; "
+                    attr: 0
+                  - text: opt
+                    attr: 3
+                  - text: "* = 26; "
+                    attr: 0
+                  - text: cmd
+                    attr: 3
+                  - text: "* = 27; "
+                    attr: 0
+                  - text: alt
+                    attr: 3
+                  - text: "* = 28;\r\t\t\r\t\tcopy = 00CC0020H;\t"
+                    attr: 0
+                  - text: "(* raster code for source copy *)"
+                    attr: 1
+                  - text: "\r\t\txor = 00A50065H;\t"
+                    attr: 0
+                  - text: "(* raster code for xor function *)"
+                    attr: 1
+                  - text: "\r\t\tfigureSpace = 8FX;\r\t\t\r\tTYPE\r\t\t"
+                    attr: 0
+                  - text: Port
+                    attr: 3
+                  - text: "* = POINTER TO RECORD (Ports.Port)\r\t\t\tw-, h-: INTEGER;\r\t\t\tdc-: WinApi.HANDLE;\t"
+                    attr: 0
+                  - text: "(* actual dc *)"
+                    attr: 1
+                  - text: "\r\t\t\twnd-: WinApi.HANDLE;\t"
+                    attr: 0
+                  - text: "(* used for invalidation, may be null *)\r"
+                    attr: 1
+                  - text: "\t\t\thomedc-: WinApi.HANDLE;\t"
+                    attr: 0
+                  - text: "(* unbuffered dc *)"
+                    attr: 1
+                  - text: "\r\t\t\tmap: WinApi.HANDLE;\t"
+                    attr: 0
+                  - text: "(* buffer bitmap *)\r"
+                    attr: 1
+                  - text: "\t\t\tbl, bt, br, bb: INTEGER;\t"
+                    attr: 0
+                  - text: "(* buffer rectangle *)"
+                    attr: 1
+                  - text: "\r\t\t\tbx, by: INTEGER\t"
+                    attr: 0
+                  - text: "(* bitmap pattern offset *)\r"
+                    attr: 1
+                  - text: "\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: Rider
+                    attr: 3
+                  - text: "* = POINTER TO EXTENSIBLE RECORD (Ports.Rider)\r\t\t\tl-, t-, r-, b-: INTEGER;\r\t\t\tport-: Port;\r\t\t\tdx, dy: INTEGER;\t"
+                    attr: 0
+                  - text: "(* scroll offset *)\r\t\t\t"
+                    attr: 1
+                  - text: "map: WinApi.HANDLE;\t"
+                    attr: 0
+                  - text: "(* save bitmap *)\r\t\t\t"
+                    attr: 1
+                  - text: "dc: WinApi.HANDLE;\t"
+                    attr: 0
+                  - text: "(* save dc *)\r\t\t\t"
+                    attr: 1
+                  - text: "sl, st, sr, sb: INTEGER\t"
+                    attr: 0
+                  - text: "(* save rect *)\r"
+                    attr: 1
+                  - text: "\t\tEND;\r\r\r\tVAR\r"
+                    attr: 0
+                  - text: "\t\t(* system colors *)\r"
+                    attr: 1
+                  - text: "\t\ttextCol"
+                    attr: 3
+                  - text: "-, "
+                    attr: 0
+                  - text: selBackground
+                    attr: 3
+                  - text: "-, "
+                    attr: 0
+                  - text: selTextCol
+                    attr: 3
+                  - text: "-,"
+                    attr: 0
+                  - text: "\r\t\tdialogTextCol"
+                    attr: 3
+                  - text: "-, "
+                    attr: 0
+                  - text: dialogShadowCol
+                    attr: 3
+                  - text: "-, "
+                    attr: 0
+                  - text: dialogLightCol
+                    attr: 3
+                  - text: "-: Ports.Color;\r\t\t\r\t\t"
+                    attr: 0
+                  - text: dialogBrush
+                    attr: 3
+                  - text: "*, "
+                    attr: 0
+                  - text: dim50Brush
+                    attr: 3
+                  - text: "-: WinApi.HANDLE;\r\t\t\r\t\t"
+                    attr: 0
+                  - text: debug
+                    attr: 3
+                  - text: "*, "
+                    attr: 0
+                  - text: noBuffer
+                    attr: 3
+                  - text: "*, flag*: BOOLEAN;\r\r\t\t"
+                    attr: 0
+                  - text: cursors
+                    attr: 3
+                  - text: "-: ARRAY 32 OF WinApi.HANDLE;\r\t\t\r\t\tnullBrush, nullPen: WinApi.HANDLE;\r\t\tinvertBrush, dim25Brush, dim75Brush, focusBrush: WinApi.HANDLE;\r\t\tgrgn: WinApi.HANDLE;\r\t\tmx, my: INTEGER;\t"
+                    attr: 0
+                  - text: "(* actual mouse coordinates *)\r\t\t"
+                    attr: 1
+                  - text: "mb: SET;\t"
+                    attr: 0
+                  - text: "(* actual mouse buttons & modifiers *)\r\t\t\r"
+                    attr: 1
+                  - text: "\r\tPROCEDURE Wait;\r\t\tVAR t: LONGINT;\r\tBEGIN\r\t\tt := Kernel.Time() + Kernel.timeResolution;\r\t\tREPEAT UNTIL Kernel.Time() > t\r\tEND Wait;\r\t\r\t\t\r\t"
+                    attr: 0
+                  - text: "(** Port **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (p: Port) "
+                    attr: 0
+                  - text: "SetSize*"
+                    attr: 3
+                  - text: " (w, h: INTEGER);\r\tBEGIN\r\t\tASSERT(w >= 0, 20); ASSERT(h >= 0, 21);\r\t\tp.w := w; p.h := h\r\tEND SetSize;\r\t\r\tPROCEDURE (p: Port) "
+                    attr: 0
+                  - text: "GetSize*"
+                    attr: 3
+                  - text: " (OUT w, h: INTEGER);\r\tBEGIN\r\t\tw := p.w; h := p.h\r\tEND GetSize;\r\t\r\tPROCEDURE (p: Port) "
+                    attr: 0
+                  - text: NewRider
+                    attr: 3
+                  - text: "* (): Rider;\r\t\tVAR h: Rider;\r\tBEGIN\r\t\tNEW(h); h.port := p;"
+                    attr: 0
+                  - text: " RETURN"
+                    attr: 3
+                  - text: " h\r\tEND NewRider;\r\t\r\tPROCEDURE (p: Port) "
+                    attr: 0
+                  - text: SetDC
+                    attr: 3
+                  - text: "* (dc, wnd: WinApi.HANDLE), NEW;\r\t\tVAR res: INTEGER;\r\tBEGIN\r\t\tASSERT(p.unit # 0, 20); ASSERT(dc # 0, 21);\r\t\tp.dc := dc; p.homedc := dc;\r\t\tres := WinApi.SetBkMode(dc, WinApi.TRANSPARENT);\r\t\tres := ORD(WinApi.SetTextAlign(dc, BITS(24)));\r\t\tres := WinApi.SetPolyFillMode(dc, 2);\r\t\tres := WinApi.SelectObject(dc, nullPen);\r\t\tres := WinApi.SelectObject(dc, nullBrush);\r\t\tp.wnd := wnd\r\tEND SetDC;\r\r\tPROCEDURE (p: Port) "
+                    attr: 0
+                  - text: OpenBuffer
+                    attr: 3
+                  - text: "* (l, t, r, b: INTEGER);\r\t\tVAR res: INTEGER; dc: WinApi.HANDLE; pt: WinApi.POINT;\r\tBEGIN\r\t\tASSERT(p.dc # 0, 20);\r\t\tIF l < 0 THEN l := 0 END;\r\t\tIF t < 0 THEN t := 0 END;\r\t\tIF r > p.w THEN r := p.w END;\r\t\tIF b > p.h THEN b := p.h END;\r\t\tIF (l < r) & (t < b) THEN\r\t\t\tp.bl := l; p.bt := t; p.br := r; p.bb := b;\r\t\t\tIF ~noBuffer THEN\r\t\t\t\tdc := WinApi.CreateCompatibleDC(p.homedc);\r\t\t\t\tIF dc # 0 THEN\r\t\t\t\t\tIF p.wnd # 0 THEN\t"
+                    attr: 0
+                  - text: "(* byte align bitmap to screen *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\tpt.x := l; pt.y := 0;\r\t\t\t\t\t\tres := WinApi.ClientToScreen(p.wnd, pt);\r\t\t\t\t\t\tpt.x := pt.x DIV 8 * 8;\r\t\t\t\t\t\tres := WinApi.ScreenToClient(p.wnd, pt);\r\t\t\t\t\t\tl := pt.x\r\t\t\t\t\tEND;\r\t\t\t\t\tp.map := WinApi.CreateCompatibleBitmap(p.homedc, r - l, b - t);\r\t\t\t\t\tIF p.map # 0 THEN\r\t\t\t\t\t\tres := WinApi.SelectObject(dc, p.map);\r\t\t"
+                    attr: 0
+                  - text: "\t\t\t\t"
+                    attr: 3
+                  - text: "res := WinApi.SetBkMode(dc, WinApi.TRANSPARENT);\r\t\t\t\t\t\tres := ORD(WinApi.SetTextAlign(dc, BITS(24)));\r\t\t\t\t\t\tres := WinApi.SetPolyFillMode(dc, 2);\r\t\t\t\t\t\tres := WinApi.SetWindowOrgEx(dc, l, t, NIL);\r\t\t\t\t\t\tres := WinApi.SelectObject(dc, nullPen);\r\t\t\t\t\t\tres := WinApi.SelectObject(dc, nullBrush);\r\t\t\t\t\t\tp.dc := dc; p.bx := l; p.by := t;\r\t\t\t\t\tELSE\r\t\t\t\t\t\tres := WinApi.DeleteDC(dc)\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND OpenBuffer;\r\t\r\tPROCEDURE (p: Port) "
+                    attr: 0
+                  - text: CloseBuffer
+                    attr: 3
+                  - text: "*;\r\t\tVAR res: INTEGER; rect: WinApi.RECT;\r\tBEGIN\r\t\tIF p.map # 0 THEN\r\t\t\tres := WinApi.SelectClipRgn(p.homedc, 0);\r\t\t\tres := WinApi.BitBlt(p.homedc, p.bl, p.bt, p.br - p.bl, p.bb - p.bt, p.dc, p.bl, p.bt, copy);"
+                    attr: 0
+                  - text: "\r"
+                    attr: 1
+                  - text: "\t\t\tres := WinApi.DeleteDC(p.dc);\r\t\t\tres := WinApi.DeleteObject(p.map)\r\t\tEND;\r"
+                    attr: 0
+                  - text: "(*\r"
+                    attr: 1
+                  - text: "\t\tIF p.wnd # 0 THEN\r\t\t\trect.left := p.bl; rect.top := p.bt; rect.right := p.br; rect.bottom := p.bb;\r\t\t\tres := WinApi.ValidateRect(p.wnd, rect)\r\t\tEND;\r"
+                    attr: 0
+                  - text: "*)\r"
+                    attr: 1
+                  - text: "\t\tp.dc := p.homedc; p.map := 0;\r\t\tp.bx := 0; p.by := 0\r\tEND CloseBuffer;\r\t\r\r\t"
+                    attr: 0
+                  - text: "(** Rider **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (rd: Rider) "
+                    attr: 0
+                  - text: Base
+                    attr: 3
+                  - text: "* (): Ports.Port, EXTENSIBLE;\r\tBEGIN\r\t\tASSERT(rd.port # NIL, 20); ASSERT(rd.port.dc # 0, 21);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " rd.port\r\tEND Base;\r\r\tPROCEDURE (rd: Rider) "
+                    attr: 0
+                  - text: "SetRect*"
+                    attr: 3
+                  - text: " (l, t, r, b: INTEGER);\r\tBEGIN\r\t\tASSERT((l <= r) & (t <= b), 20);\r\t\tASSERT(rd.port # NIL, 21);\r\t\trd.l := l; rd.t := t; rd.r := r; rd.b := b\r\tEND SetRect;\r\r\tPROCEDURE (rd: Rider) "
+                    attr: 0
+                  - text: "GetRect*"
+                    attr: 3
+                  - text: " (OUT l, t, r, b: INTEGER);\r\tBEGIN\r\t\tl := rd.l; t := rd.t; r := rd.r; b := rd.b\r\tEND GetRect;\r\r\tPROCEDURE SetClipRegion (rd: Rider; dc: WinApi.HANDLE);\r\t\tVAR res, res1: INTEGER;\r\tBEGIN\r\t\tIF rd.port.wnd = 0 THEN res := WinApi.SaveDC(dc)\r\t\tELSE res := WinApi.SelectClipRgn(dc, 0);\r\t\tEND;\r\t\tres := WinApi.IntersectClipRect(dc, rd.l, rd.t, rd.r, rd.b)\r\tEND SetClipRegion;\r\r\tPROCEDURE (rd: Rider) "
+                    attr: 0
+                  - text: InitPort
+                    attr: 3
+                  - text: "* (port: Port), NEW;\r\tBEGIN\r\t\tASSERT(rd.port = NIL, 20); ASSERT(port # NIL, 21); ASSERT(port.dc # 0, 22);\r\t\trd.port := port; rd.dx := 0; rd.dy := 0\r\tEND InitPort;\r\r\tPROCEDURE (rd: Rider) "
+                    attr: 0
+                  - text: Move
+                    attr: 3
+                  - text: "* (dx, dy: INTEGER);\r\tBEGIN\r\t\tINC(rd.dx, dx); INC(rd.dy, dy)\r\tEND Move;\r\r\tPROCEDURE (rd: Rider) "
+                    attr: 0
+                  - text: DrawRect
+                    attr: 3
+                  - text: "* (l, t, r, b, s: INTEGER; col: Ports.Color);\r\t\tVAR res, h: INTEGER; p: Port; dc, oldb, oldp: WinApi.HANDLE; pt: WinApi.POINT;\r\tBEGIN\r\t\tASSERT(rd.port # NIL, 100);\r\t\tp := rd.port; dc := p.dc;\r\t\tIF p.wnd = 0 THEN res := WinApi.SaveDC(dc)\r\t\tELSE res := WinApi.SelectClipRgn(dc, 0);\r\t\tEND;\r\t\tres := WinApi.IntersectClipRect(dc, rd.l, rd.t, rd.r, rd.b);\r\t\tIF col = Ports.defaultColor THEN col := textCol END;\r\t\tIF s = 0 THEN s := 1 END;\r\t\tIF (s < 0) OR (r-l < 2*s) OR (b-t < 2*s) THEN\r\t\t\tINC(r); INC(b);\r\t\t\tIF (col # textCol) & (col # Ports.background) THEN\r\t\t\t\tres := WinApi.SetBrushOrgEx(dc, (rd.dx - p.bx) MOD 8, (rd.dy - p.by) MOD 8, NIL)\r\t\t\tEND;\r\t\t\toldb := WinApi.SelectObject(dc, WinApi.CreateSolidBrush(col));\r\t\t\toldp := WinApi.SelectObject(dc, nullPen);\r\t\t\tres := WinApi.Rectangle(dc, l, t, r, b);\r\t\t\tres := WinApi.DeleteObject(WinApi.SelectObject(dc, oldb));\r\t\t\tres := WinApi.SelectObject(dc, oldp)\r\t\tELSE\r\t\t\th := s DIV 2; INC(l, h); INC(t, h); h := (s-1) DIV 2; DEC(r, h); DEC(b, h);\r\t\t\toldb := WinApi.SelectObject(dc, nullBrush);\r\t\t\toldp := WinApi.SelectObject(dc, WinApi.CreatePen(WinApi.PS_SOLID, s, col));\r\t\t\tres := WinApi.Rectangle(dc, l, t, r, b);\r\t\t\tres := WinApi.SelectObject(dc, oldb);\r\t\t\tres := WinApi.DeleteObject(WinApi.SelectObject(dc, oldp))\r\t\tEND;\r\t\tIF p.wnd = 0 THEN res := WinApi.RestoreDC(dc, -1) END\r\t\t;IF debug THEN Wait END\r\tEND DrawRect;\r\r\tPROCEDURE (rd: Rider) "
+                    attr: 0
+                  - text: DrawOval
+                    attr: 3
+                  - text: "* (l, t, r, b, s: INTEGER; col: Ports.Color);\r\t\tVAR res, h: INTEGER; p: Port; dc, oldb, oldp: WinApi.HANDLE; pt: WinApi.POINT; rect: WinApi.RECT;\r\tBEGIN\r\t\tASSERT(rd.port # NIL, 100);\r\t\tp := rd.port; dc := p.dc;\r\t\tIF p.wnd = 0 THEN res := WinApi.SaveDC(dc)\r\t\tELSE res := WinApi.SelectClipRgn(dc, 0);\r\t\tEND;\r\t\tres := WinApi.IntersectClipRect(dc, rd.l, rd.t, rd.r, rd.b);\r\t\tIF col = Ports.defaultColor THEN col := textCol END;\r\t\tIF s < 0 THEN\r\t\t\tINC(r); INC(b);\r\t\t\tIF (col # textCol) & (col # Ports.background) THEN\r\t\t\t\tres := WinApi.SetBrushOrgEx(dc, (rd.dx - p.bx) MOD 8, (rd.dy - p.by) MOD 8, NIL)\r\t\t\tEND;\r\t\t\toldb := WinApi.SelectObject(dc, WinApi.CreateSolidBrush(col));\r\t\t\toldp := WinApi.SelectObject(dc, nullPen);\r\t\t\tres := WinApi.Ellipse(dc, l, t, r, b);\r\t\t\tres := WinApi.DeleteObject(WinApi.SelectObject(dc, oldb));\r\t\t\tres := WinApi.SelectObject(dc, oldp)\r\t\tELSE\r\t\t\tIF s = 0 THEN s := 1 END;\r\t\t\th := s DIV 2; INC(l, h); INC(t, h); h := (s-1) DIV 2; DEC(r, h); DEC(b, h);\r\t\t\toldb := WinApi.SelectObject(dc, nullBrush);\r\t\t\toldp := WinApi.SelectObject(dc, WinApi.CreatePen(WinApi.PS_SOLID, s, col));\r\t\t\tres := WinApi.Ellipse(dc, l, t, r, b);\r\t\t\tres := WinApi.SelectObject(dc, oldb);\r\t\t\tres := WinApi.DeleteObject(WinApi.SelectObject(dc, oldp))\r\t\tEND;\r\t\tIF p.wnd = 0 THEN res := WinApi.RestoreDC(dc, -1) END\r\t\t;IF debug THEN Wait END\r\tEND DrawOval;\r\r\tPROCEDURE (rd: Rider) "
+                    attr: 0
+                  - text: DrawLine
+                    attr: 3
+                  - text: "* (x0, y0, x1, y1, s: INTEGER; col: Ports.Color);\r\t\tVAR res: INTEGER; pt: WinApi.POINT; p: Port; dc, oldb, oldp: WinApi.HANDLE;\r\tBEGIN\r\t\tASSERT(s >= 0, 20);\r\t\tASSERT(rd.port # NIL, 100);\r\t\tp := rd.port; dc := p.dc;\r\t\tIF p.wnd = 0 THEN res := WinApi.SaveDC(dc)\r\t\tELSE res := WinApi.SelectClipRgn(dc, 0);\r\t\tEND;\r\t\tres := WinApi.IntersectClipRect(dc, rd.l, rd.t, rd.r, rd.b);\r\t\tIF col = Ports.defaultColor THEN col := textCol END;\r\t\tIF s <= 0 THEN s := 1 END;\r\t\toldp := WinApi.SelectObject(dc, WinApi.CreatePen(WinApi.PS_SOLID, s, col));\r\t\tres := WinApi.MoveToEx(dc, x0, y0, pt);\r\t\tres := WinApi.LineTo(dc, x1, y1);\r\t\tres := WinApi.DeleteObject(WinApi.SelectObject(dc, oldp));\r\t\tIF p.wnd = 0 THEN res := WinApi.RestoreDC(dc, -1) END\r\t\t;IF debug THEN Wait END\r\tEND DrawLine;\r\t\r\tPROCEDURE (rd: Rider) "
+                    attr: 0
+                  - text: DrawPath
+                    attr: 3
+                  - text: "* (\r\t\tIN pts: ARRAY OF Ports.Point; n, s: INTEGER; col: Ports.Color; path: INTEGER\r\t);\r\r\t\tTYPE\r\t\t\tPAP = POINTER TO ARRAY [1] OF WinApi.POINT;\r\r\t\tVAR\r\t\t\tres, i, j, k: INTEGER; p: Port; dc, oldp, oldb: WinApi.HANDLE;\r\t\t\tpap: PAP; pt: WinApi.POINT; poly: ARRAY 256 OF WinApi.POINT;\r\t\t\tpolyPtr: POINTER TO ARRAY OF Ports.Point; polyLen: INTEGER;\r\r\t\tPROCEDURE Bezier(x0, y0, xd0, yd0, x1, y1, xd1, yd1: INTEGER);\r\t\t\tVAR x, y, xd, yd, i: INTEGER;\r\t\tBEGIN\r\t\t\tIF ABS(x0 + xd0 - x1) + ABS(x0 + xd1 - x1) + ABS(y0 + yd0 - y1) + ABS(y0 + yd1 - y1) < 8 THEN\r\t\t\t\tIF k > polyLen - 2 THEN\r\t\t\t\t\tNEW(polyPtr, polyLen * 2);\r\t\t\t\t\ti := 0; WHILE i < polyLen DO polyPtr[i] := SYSTEM."
+                    attr: 0
+                  - text: VAL
+                    attr: 3
+                  - text: "(Ports.Point, pap[i]); INC(i) END;\r\t\t\t\t\tpolyLen := polyLen * 2; pap := SYSTEM."
+                    attr: 0
+                  - text: VAL
+                    attr: 3
+                  - text: "(PAP, SYSTEM."
+                    attr: 0
+                  - text: ADR
+                    attr: 3
+                  - text: "(polyPtr^))\r\t\t\t\tEND;\r\t\t\t\tpap[k].x := x0; pap[k].y := y0; INC(k)\r\t\t\tELSE\r\t\t\t\tx := ((xd0 - xd1) DIV 4 + x0 + x1 + 1) DIV 2;\r\t\t\t\ty := ((yd0 - yd1) DIV 4 + y0 + y1 + 1) DIV 2;\r\t\t\t\txd := ((x1 - x0) * 3 - (xd0 + xd1) DIV 2 + 2) DIV 4;\r\t\t\t\tyd := ((y1 - y0) * 3 - (yd0 + yd1) DIV 2 + 2) DIV 4;\r\t\t\t\tBezier(x0, y0, xd0 DIV 2, yd0 DIV 2, x, y, xd, yd);\r\t\t\t\tBezier(x, y, xd, yd, x1, y1, xd1 DIV 2, yd1 DIV 2)\r\t\t\tEND\r\t\tEND Bezier;\r\t\r\tBEGIN\r\t\tASSERT(rd.port # NIL, 100);\r\t\tp := rd.port; dc := p.dc;\r\t\tIF p.wnd = 0 THEN res := WinApi.SaveDC(dc)\r\t\tELSE res := WinApi.SelectClipRgn(dc, 0);\r\t\tEND;\r\t\tres := WinApi.IntersectClipRect(dc, rd.l, rd.t, rd.r, rd.b);\r\t\tIF col = Ports.defaultColor THEN col := textCol END;\r\t\tpap := SYSTEM."
+                    attr: 0
+                  - text: VAL
+                    attr: 3
+                  - text: "(PAP, SYSTEM."
+                    attr: 0
+                  - text: ADR
+                    attr: 3
+                  - text: "(pts));\r\t\t\r\t\tASSERT(n >= 0, 20); ASSERT(n <= LEN(pts), 21);\r\t\tASSERT(s >= Ports.fill, 23);\r\t\tIF s < 0 THEN\r\t\t\tres := WinApi.SetBrushOrgEx(dc, (rd.dx - p.bx) MOD 8, (rd.dy - p.by) MOD 8, NIL);\r\t\t\toldb := WinApi.SelectObject(dc, WinApi.CreateSolidBrush(col));\r\t\t\toldp := WinApi.SelectObject(dc, nullPen);\r\t\t\tIF path = Ports.closedPoly THEN\r\t\t\t\tASSERT(n >= 2, 20);\r\t\t\t\tres := WinApi.Polygon(dc, pap, n)\r\t\t\tELSE\r\t\t\t\tASSERT(n >= 3, 20);\r\t\t\t\tASSERT(path = Ports.closedBezier, 22);\r\t\t\t\tASSERT(n MOD 3 = 0, 24);\r\t\t\t\tpap := SYSTEM."
+                    attr: 0
+                  - text: VAL
+                    attr: 3
+                  - text: "(PAP, SYSTEM."
+                    attr: 0
+                  - text: ADR
+                    attr: 3
+                  - text: "(poly)); polyLen := LEN(poly);\r\t\t\t\ti := 0; k := 0;\r\t\t\t\tWHILE i < n DO\r\t\t\t\t\tj := i+3;\r\t\t\t\t\tIF j = n THEN j := 0 END;\r\t\t\t\t\tBezier(pts[i].x, pts[i].y, (pts[i+1].x - pts[i].x) * 3, (pts[i+1].y - pts[i].y) * 3,\r\t\t\t\t\t\t\tpts[j].x, pts[j].y, (pts[j].x - pts[i+2].x) * 3, (pts[j].y - pts[i+2].y) * 3);\r\t\t\t\t\tINC(i, 3)\r\t\t\t\tEND;\r\t\t\t\tres := WinApi.Polygon(dc, pap, k)\r\t\t\tEND;\r\t\t\tres := WinApi.DeleteObject(WinApi.SelectObject(dc, oldb));\r\t\t\tres := WinApi.SelectObject(dc, oldp)\r\t\tELSE\r\t\t\tIF s = 0 THEN s := 1 END;\r\t\t\toldb := WinApi.SelectObject(dc, nullBrush);\r\t\t\toldp := WinApi.SelectObject(dc, WinApi.CreatePen(WinApi.PS_SOLID, s, col));\r\t\t\tIF path = Ports.closedPoly THEN\r\t\t\t\tASSERT(n >= 2, 20);\r\t\t\t\tres := WinApi.Polygon(dc, pap, n)\r\t\t\tELSIF path = Ports.openPoly THEN\r\t\t\t\tASSERT(n >= 2, 20);\r\t\t\t\tres := WinApi.Polyline(dc, pap, n)\r\t\t\tELSE\r\t\t\t\tIF path = Ports.closedBezier THEN\r\t\t\t\t\tASSERT(n >= 3, 20);\r\t\t\t\t\tASSERT(n MOD 3 = 0, 24)\r\t\t\t\tELSE\r\t\t\t\t\tASSERT(n >= 4, 20);\r\t\t\t\t\tASSERT(path = Ports.openBezier, 25);\r\t\t\t\t\tASSERT(n MOD 3 = 1, 24)\r\t\t\t\tEND;\r\t\t\t\tpap := SYSTEM."
+                    attr: 0
+                  - text: VAL
+                    attr: 3
+                  - text: "(PAP, SYSTEM."
+                    attr: 0
+                  - text: ADR
+                    attr: 3
+                  - text: "(poly)); polyLen := LEN(poly);\r\t\t\t\ti := 0;\r\t\t\t\tWHILE i < n-2 DO\r\t\t\t\t\tk := 0; j := i+3;\r\t\t\t\t\tIF j = n THEN j := 0 END;\r\t\t\t\t\tBezier(pts[i].x, pts[i].y, (pts[i+1].x - pts[i].x) * 3, (pts[i+1].y - pts[i].y) * 3,\r\t\t\t\t\t\t\tpts[j].x, pts[j].y, (pts[j].x - pts[i+2].x) * 3, (pts[j].y - pts[i+2].y) * 3);\r\t\t\t\t\tpap[k].x := pts[j].x; pap[k].y := pts[j].y; INC(k);\r\t\t\t\t\tres := WinApi.Polyline(dc, pap, k);\r\t\t\t\t\tINC(i, 3)\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tres := WinApi.SelectObject(dc, oldb);\r\t\t\tres := WinApi.DeleteObject(WinApi.SelectObject(dc, oldp))\r\t\tEND;\r\t\tIF p.wnd = 0 THEN res := WinApi.RestoreDC(dc, -1) END\r\t\t;IF debug THEN Wait END\r\tEND DrawPath;\r\r\tPROCEDURE (rd: Rider) "
+                    attr: 0
+                  - text: MarkRect
+                    attr: 3
+                  - text: "* (l, t, r, b, s, mode: INTEGER; show: BOOLEAN);\r\t\tVAR res: INTEGER; p: Port; dc, old: WinApi.HANDLE; pt: WinApi.POINT;\r\tBEGIN\r\t\tASSERT(rd.port # NIL, 100);\r\t\tp := rd.port; dc := p.dc;\r\t\tIF p.wnd = 0 THEN res := WinApi.SaveDC(dc)\r\t\tELSE res := WinApi.SelectClipRgn(dc, 0);\r\t\tEND;\r\t\tres := WinApi.IntersectClipRect(dc, rd.l, rd.t, rd.r, rd.b);\r\t\tres := WinApi.SetBrushOrgEx(dc, (rd.dx - p.bx) MOD 8, (rd.dy - p.by) MOD 8, NIL);\r\t\tIF (mode = Ports.invert) OR (mode = Ports.hilite) THEN\r\t\t\told := WinApi.SelectObject(dc, invertBrush)\r\t\tELSIF mode = Ports.dim25 THEN\r\t\t\tres := WinApi.UnrealizeObject(dim25Brush); old := WinApi.SelectObject(dc, dim25Brush)\r\t\tELSIF mode = Ports.dim50 THEN\r\t\t\tres := WinApi.UnrealizeObject(dim50Brush); old := WinApi.SelectObject(dc, dim50Brush)\r\t\tELSIF mode = Ports.dim75 THEN\r\t\t\tres := WinApi.UnrealizeObject(dim75Brush); old := WinApi.SelectObject(dc, dim75Brush)\r\t\tELSE "
+                    attr: 0
+                  - text: "(* mode = focusPat *"
+                    attr: 1
+                  - text: ")\r\t\t\tres := WinApi.UnrealizeObject(focusBrush); old := WinApi.SelectObject(dc, focusBrush)\r\t\tEND;\r\t\tres := WinApi.SetTextColor(dc, Ports.black);\r\t\t\r\t\tIF l < -32768 THEN l := -32768 END;\t"
+                    attr: 0
+                  - text: "(* ??? *)"
+                    attr: 1
+                  - text: "\r\t\tIF t < -32768 THEN t := -32768 END;\r\t\tIF r > 32767 THEN r := 32767 END;\r\t\tIF b > 32767 THEN b := 32767 END;\r\t\t\r\t\tIF s = 0 THEN s := 1 END;\r\t\tIF (s < 0) OR (r-l < 2*s) OR (b-t < 2*s) THEN\r\t\t\tres := WinApi.PatBlt(dc, l, t, r-l, b-t, xor);\r\t\tELSE\r\t\t\tres := WinApi.PatBlt(dc, l, t, s, b-t, xor); DEC(r, s);\r\t\t\tres := WinApi.PatBlt(dc, r, t, s, b-t, xor); INC(l, s);\r\t\t\tres := WinApi.PatBlt(dc, l, t, r-l, s, xor); DEC(b, s);\r\t\t\tres := WinApi.PatBlt(dc, l, b, r-l, s, xor);\r\t\tEND;\r\t\told := WinApi.SelectObject(dc, old);\r\t\tIF p.wnd = 0 THEN res := WinApi.RestoreDC(dc, -1) END\r\t\t;IF debug THEN Wait END\r\tEND MarkRect;\r\r\t\r\tPROCEDURE (rd: Rider) "
+                    attr: 0
+                  - text: Scroll
+                    attr: 3
+                  - text: "* (dx, dy: INTEGER);\r\t\tVAR res: INTEGER; p: Port; dc, par: WinApi.HANDLE; rect, rt: WinApi.RECT; pt: WinApi.POINT;\r\tBEGIN\r\t\tASSERT(rd.port # NIL, 100);\r\t\tp := rd.port; dc := p.dc;\r(*\r\t\tIF p.wnd # 0 THEN res := WinApi.UpdateWindow(p.wnd) END;\r*)\r\t\tIF p.wnd = 0 THEN res := WinApi.SaveDC(dc)\r\t\tELSE res := WinApi.SelectClipRgn(dc, 0);\r\t\tEND;\r\t\tres := WinApi.IntersectClipRect(dc, rd.l, rd.t, rd.r, rd.b);\r\t\trect.left := rd.l; rect.top := rd.t; rect.right := rd.r; rect.bottom := rd.b;\r\t\tres := WinApi.ScrollDC(dc, dx, dy, rect, rect, grgn, rt);\r\t\tIF p.wnd # 0 THEN\r\t\t\tres := WinApi.InvalidateRgn(p.wnd, grgn, "
+                    attr: 0
+                  - text: 1
+                    attr: 3
+                  - text: ");\r\t\t\tpar := WinApi.GetParent(p.wnd);\r\t\t\tIF (par # 0) & (WinApi.GetTopWindow(par) # p.wnd) THEN\r\t\t\t\tres := WinApi.UpdateWindow(p.wnd)\r\t\t\tEND\r\t\tEND;\r"
+                    attr: 0
+                  - text: "\t\t(* pattern origin correction *)\r"
+                    attr: 1
+                  - text: "\t\tINC(rd.dx, dx); INC(rd.dy, dy);\r\t\tIF p.wnd = 0 THEN res := WinApi.RestoreDC(dc, -1) END\r\t\t;IF debug THEN Wait END\r\tEND Scroll;\r\r\r\tPROCEDURE (rd: Rider) "
+                    attr: 0
+                  - text: SetCursor
+                    attr: 3
+                  - text: "* (cursor: INTEGER);\r\t\tVAR old: WinApi.HANDLE;\r\tBEGIN\r\t\told := WinApi.SetCursor(cursors[cursor])\r\tEND SetCursor;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetMouseState
+                    attr: 3
+                  - text: "* (x, y: INTEGER; but: SET; isDown: BOOLEAN);\r\tBEGIN\r\t\tmx := x; my := y; mb := but\r\tEND SetMouseState;\r\t\r\tPROCEDURE (rd: Rider) "
+                    attr: 0
+                  - text: Input
+                    attr: 3
+                  - text: "* (OUT x, y: INTEGER; OUT modifiers: SET; OUT isDown: BOOLEAN);\r\t\tVAR msg: WinApi.MSG; wnd, mw: WinApi.HANDLE; pt: WinApi.POINT; res: INTEGER; set: SET;\r\tBEGIN\r\t\tWinApi.Sleep(1);\r\t\twnd := rd.port.wnd; mw := WinApi.GetCapture();\r\t\tres := WinApi.UpdateWindow(wnd);\r\t\tIF WinApi.PeekMessageW(msg, mw, WinApi.WM_MOUSEMOVE,\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tWinApi.WM_MBUTTONDBLCLK, 1) # 0 THEN\r\t\t\tmx := (msg.lParam + 32768) MOD 65536 - 32768; my := msg.lParam DIV 65536;\r\t\t\tIF (mw # 0) & (wnd # mw) THEN\r\t\t\t\tpt.x := mx; pt.y := my; res := WinApi.ClientToScreen(mw, pt);\r\t\t\t\tres := WinApi.ScreenToClient(wnd, pt); mx := pt.x; my := pt.y\r\t\t\tEND;\r\t\t\tmb := {};\r\t\t\tset := SYSTEM.VAL(SET, msg.wParam);\r\t\t\tIF WinApi.MK_LBUTTON * set # {} THEN INCL(mb, left) END;\r\t\t\tIF WinApi.MK_MBUTTON * set # {} THEN INCL(mb, middle) END;\r\t\t\tIF WinApi.MK_RBUTTON * set # {} THEN INCL(mb, right) END;\r\t\t\tIF WinApi.MK_CONTROL * set # {} THEN INCL(mb, ctrl) END;\r\t\t\tIF WinApi.MK_SHIFT * set # {} THEN INCL(mb, shift) END;\r\t\t\tIF WinApi.GetAsyncKeyState(12H) < 0 THEN INCL(mb, alt) END;\r\t\tEND;\r\t\tIF WinApi.GetSystemMetrics(WinApi.SM_SWAPBUTTON) # 0 THEN\r\t\t\tIF WinApi.GetAsyncKeyState(1) >= 0 THEN EXCL(mb, right) END;\r\t\t\tIF WinApi.GetAsyncKeyState(2) >= 0 THEN EXCL(mb, left) END\r\t\tELSE\r\t\t\tIF WinApi.GetAsyncKeyState(1) >= 0 THEN EXCL(mb, left) END;\r\t\t\tIF WinApi.GetAsyncKeyState(2) >= 0 THEN EXCL(mb, right) END\r\t\tEND;\r\t\tIF WinApi.GetAsyncKeyState(4) >= 0 THEN EXCL(mb, middle) END;\r\t\tIF WinApi.GetAsyncKeyState(WinApi.VK_SHIFT) < 0 THEN\r\t\t\tmb := mb + {shift, extend} ELSE  mb := mb - {shift, extend}\r\t\tEND;\r\t\tIF WinApi.GetAsyncKeyState(WinApi.VK_CONTROL) < 0 THEN\r\t\t\tmb := mb + {ctrl, modify} ELSE  mb := mb - {ctrl, modify}\r\t\tEND;\r\t\tIF WinApi.GetAsyncKeyState(WinApi.VK_MENU) < 0 THEN INCL(mb, alt) ELSE EXCL(mb, alt) END;\r\t\tx := mx; y := my; modifiers := mb; isDown := mb * {left, middle, right} # {}\r\tEND Input;\r\t\r\tPROCEDURE (rd: Rider) "
+                    attr: 0
+                  - text: DrawSString
+                    attr: 3
+                  - text: "* (\r\t\tx, y: INTEGER; col: Ports.Color; IN s: ARRAY OF SHORTCHAR; font: Fonts.Font\r\t);\r\t\tVAR res, i, a, b, c, w, u, n: INTEGER; p: Port; dc, old: WinApi.HANDLE; ch: SHORTCHAR;\r\t\t\tdf: HostFonts.DevFont; dx: ARRAY 1024 OF INTEGER;\r\t\t\ts1: ARRAY 1024 OF SHORTCHAR; fsp: BOOLEAN;\r\tBEGIN\r\t\tASSERT(rd.port # NIL, 100);\r\t\tWITH font: HostFonts.Font DO\r\t\t\tp := rd.port; dc := p.dc; u := p.unit;\r\t\t\tIF p.wnd = 0 THEN res := WinApi.SaveDC(dc)\r\t\t\tELSE res := WinApi.SelectClipRgn(dc, 0);\r\t\t\tEND;\r\t\t\tres := WinApi.IntersectClipRect(dc, rd.l, rd.t, rd.r, rd.b);\r\t\t\tdf := font.dev;\r\t\t\tWHILE (df # NIL) & (df.unit # u) DO df := df.next END;\r\t\t\tIF df = NIL THEN HostFonts.InsertDevFont(dc, font, df, u) \r\t\t\tELSE old := WinApi.SelectObject(dc, df.id)\r\t\t\tEND;\r\t\t\tIF col = Ports.defaultColor THEN col := textCol END;\r\t\t\tres := WinApi.SetTextColor(dc, col);\r\t\t\tIF df.noGap THEN INC(x) END;\t"
+                    attr: 0
+                  - text: "(* caret pos optimization *)"
+                    attr: 1
+                  - text: "\r\t\t\tINC(x, font.ftab[ORD(s[0])] DIV u);\r\t\t\ta := LEN(s) - 1; n := 0; ch := s[0]; fsp := FALSE;\r\t\t\tWHILE (n < a) & (ch # 0X) DO\r\t\t\t\tIF ch = figureSpace THEN fsp := TRUE END;\r\t\t\t\tINC(n); ch := s[n]\r\t\t\tEND;\r\t\t\tIF (df.id = font.id) & ~fsp THEN\t"
+                    attr: 0
+                  - text: "(* native metric *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tres := WinApi.TextOutA(dc, x, y, s, n)\r\t\t\tELSE\t"
+                    attr: 0
+                  - text: "(* adapt to meta metric *)"
+                    attr: 1
+                  - text: "\r\t\t\t\ta := 0; b := 0; i := 0; ch := s[0];\r\t\t\t\tWHILE i < n DO\r\t\t\t\t\tc := df.wtab[ORD(ch)]; INC(a, c); dx[i] := c;\r\t\t\t\t\tINC(b, font.wtab[ORD(ch)]);\r\t\t\t\t\ts1[i] := s[i];\r\t\t\t\t\tIF ch = figureSpace THEN s1[i] := \" \" END;\r\t\t\t\t\tINC(i); ch := s[i]\r\t\t\t\tEND;\r\t\t\t\tn := i; c := b DIV u - a; i := 0; w := 0; a := 0;\r\t\t\t\tWHILE i < n DO\r\t\t\t\t\tINC(w, c); b := w DIV n; INC(dx[i], b - a); a := b; INC(i)\r\t\t\t\tEND;\r\t\t\t\tres := WinApi.ExtTextOutA(dc, x, y, 0, NIL, s1, n, dx)\r\t\t\tEND\r\t\tEND;\r\t\tIF p.wnd = 0 THEN res := WinApi.RestoreDC(dc, -1) END\r\tEND DrawSString;\r\r\tPROCEDURE (rd: Rider) "
+                    attr: 0
+                  - text: SCharIndex
+                    attr: 3
+                  - text: "* (\r\t\tx, pos: INTEGER; IN s: ARRAY OF SHORTCHAR; font: Fonts.Font\r\t): INTEGER;\r\t\tVAR d, u, i, n, a, b, c, w: INTEGER; df: HostFonts.DevFont; ch: SHORTCHAR; dc: WinApi.HANDLE;\r\tBEGIN\r\t\tASSERT(rd.port # NIL, 100);\r\t\tWITH font: HostFonts.Font DO\r\t\t\tu := rd.port.unit; df := font.dev;\r\t\t\tWHILE (df # NIL) & (df.unit # u) DO df := df.next END;\r\t\t\tIF df = NIL THEN HostFonts.InsertDevFont(rd.port.dc, font, df, u) END;\r\t\t\ta := 0; b := 0; n := LEN(s) - 1; i := 0; ch := s[0];\r\t\t\tWHILE (i < n) & (ch # 0X) DO\r\t\t\t\tINC(a, df.wtab[ORD(ch)]);\r\t\t\t\tINC(b, font.wtab[ORD(ch)]);\r\t\t\t\tINC(i); ch := s[i]\r\t\t\tEND;\r\t\t\tn := i; c := b DIV u - a; i := 0; w := 0; a := 0;\r\t\t\tINC(x, font.ftab[ORD(s[0])] DIV u);\r\t\t\td := df.wtab[ORD(s[0])];\r\t\t\tWHILE (i < n) & (pos > x + d DIV 2) DO\r\t\t\t\tINC(w, c); b := w DIV n; INC(d, b - a); a := b;\r\t\t\t\tINC(i); INC(x, d); d := df.wtab[ORD(s[i])]\r\t\t\tEND\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " i\r\tEND SCharIndex;\r\r\tPROCEDURE (rd: Rider) "
+                    attr: 0
+                  - text: SCharPos
+                    attr: 3
+                  - text: "* (\r\t\tx, index: INTEGER; IN s: ARRAY OF SHORTCHAR; font: Fonts.Font\r\t): INTEGER;\r\t\tVAR i, u, n, a, b, c, w: INTEGER; df: HostFonts.DevFont; ch: SHORTCHAR;\r\tBEGIN\r\t\tASSERT(rd.port # NIL, 100); ASSERT(index <= LEN(s), 101);\r\t\tWITH font: HostFonts.Font DO\r\t\t\tu := rd.port.unit; df := font.dev;\r\t\t\tWHILE (df # NIL) & (df.unit # u) DO df := df.next END;\r\t\t\tIF df = NIL THEN HostFonts.InsertDevFont(rd.port.dc, font, df, u) END;\r\t\t\ta := 0; b := 0; n := LEN(s) - 1; i := 0; ch := s[0];\r\t\t\tWHILE (i < n) & (ch # 0X) DO\r\t\t\t\tINC(a, df.wtab[ORD(ch)]);\r\t\t\t\tINC(b, font.wtab[ORD(ch)]);\r\t\t\t\tINC(i); ch := s[i]\r\t\t\tEND;\r\t\t\tn := i; c := b DIV u - a; i := 0; w := 0; a := 0;\r\t\t\tINC(x, font.ftab[ORD(s[0])] DIV u);\r\t\t\tWHILE (i < n) & (i < index) DO\r\t\t\t\tINC(w, c); b := w DIV n; INC(x, b - a); a := b;\r\t\t\t\tINC(x, df.wtab[ORD(s[i])]); INC(i)\r\t\t\tEND\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " x\r\tEND SCharPos;\r\r\tPROCEDURE (rd: Rider) "
+                    attr: 0
+                  - text: DrawString
+                    attr: 3
+                  - text: "* (\r\t\tx, y: INTEGER; col: Ports.Color; IN s: ARRAY OF CHAR; font: Fonts.Font\r\t);\r\t\tVAR res, i, a, b, c, n, w, u: INTEGER; p: Port; dc, old: WinApi.HANDLE;\r\t\t\tdf: HostFonts.DevFont; dx: ARRAY 1024 OF INTEGER;\r\t\t\ts1: ARRAY 1024 OF CHAR; fsp: BOOLEAN;\r\tBEGIN\r\t\tASSERT(rd.port # NIL, 100);\r\t\tWITH font: HostFonts.Font DO\r\t\t\tp := rd.port; dc := p.dc; u := p.unit;\r\t\t\tIF p.wnd = 0 THEN res := WinApi.SaveDC(dc)\r\t\t\tELSE res := WinApi.SelectClipRgn(dc, 0);\r\t\t\tEND;\r\t\t\tres := WinApi.IntersectClipRect(dc, rd.l, rd.t, rd.r, rd.b);\r\t\t\tIF col = Ports.defaultColor THEN col := textCol END;\r\t\t\tdf := font.dev;\r\t\t\tWHILE (df # NIL) & (df.unit # u) DO df := df.next END;\r\t\t\tn := LEN(s) - 1; i := 0; fsp := FALSE;\r\t\t\tWHILE (i < n) & (s[i] # 0X) DO\r\t\t\t\tIF s[i] = figureSpace THEN fsp := TRUE END;\r\t\t\t\tINC(i)\r\t\t\tEND;\r\t\t\tIF (df # NIL) & (df.id = font.id) & ~fsp THEN\t"
+                    attr: 0
+                  - text: "(* native metric *)"
+                    attr: 1
+                  - text: "\r\t\t\t\ti := 0;\r\t\t\t\tWHILE (i < n) & (s[i] # 0X) DO INC(i) END;\r\t\t\t\tres := WinApi.SelectObject(dc, df.id);\r\t\t\t\tIF df.noGap THEN INC(x) END;\t"
+                    attr: 0
+                  - text: "(* caret pos optimization *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tres := WinApi.SetTextColor(dc, col);\r\t\t\t\tres := WinApi.TextOutW(dc, x, y, s, i)\r\t\t\tELSE\t"
+                    attr: 0
+                  - text: "(* adapt to meta metric *)"
+                    attr: 1
+                  - text: "\r\t\t\t\told := WinApi.SelectObject(dc, font.id);\r\t\t\t\ta := 0; b := 0; i := 0;\r\t\t\t\tWHILE (i < n) & (s[i] # 0X) DO INC(b, font.wTab(dc, s[i])); INC(i) END;\r\t\t\t\tINC(x, font.fTab(dc, s[0]) DIV u);\r\t\t\t\tIF df = NIL THEN HostFonts.InsertDevFont(dc, font, df, u)\r\t\t\t\tELSE res := WinApi.SelectObject(dc, df.id)\r\t\t\t\tEND;\r\t\t\t\tn := i; i := 0;\r\t\t\t\tWHILE i < n DO\r\t\t\t\t\tc := df.wTab(dc, s[i]);\r\t\t\t\t\tIF s[i] = figureSpace THEN s1[i] := \" \" ELSE s1[i] := s[i] END;\r\t\t\t\t\tINC(a, c); dx[i] := c; INC(i)\r\t\t\t\tEND;\r\t\t\t\tc := b DIV u - a; i := 0; w := 0; a := 0;\r\t\t\t\tWHILE i < n DO\r\t\t\t\t\tINC(w, c); b := w DIV n; INC(dx[i], b - a); a := b; INC(i)\r\t\t\t\tEND;\r\t\t\t\tres := WinApi.SetTextColor(dc, col);\r\t\t\t\tIF df.noGap THEN INC(x) END;\t"
+                    attr: 0
+                  - text: "(* caret pos optimization *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tres := WinApi.ExtTextOutW(dc, x, y, 0, NIL, s1, n, dx)\r\t\t\tEND\r\t\tEND;\r\t\tIF p.wnd = 0 THEN res := WinApi.RestoreDC(dc, -1) END\r\tEND DrawString;\r\r\tPROCEDURE (rd: Rider) "
+                    attr: 0
+                  - text: DrawSpace
+                    attr: 3
+                  - text: "* (x, y, w: INTEGER; col: Ports.Color; font: Fonts.Font);\r\t\tVAR right, res, u: INTEGER; dx: ARRAY 1 OF INTEGER; \r\t\t\tp: Port; dc, old: WinApi.HANDLE; df: HostFonts.DevFont; \r\tBEGIN\r\t\tp := rd.port; dc := p.dc; u := p.unit;\r\t\tIF p.wnd = 0 THEN res := WinApi.SaveDC(dc)\r\t\tELSE res := WinApi.SelectClipRgn(dc, 0);\r\t\tEND;\r\t\tres := WinApi.IntersectClipRect(dc, rd.l, rd.t, rd.r, rd.b);\r\t\tWITH font: HostFonts.Font DO\r\t\t\tdf := font.dev;\r\t\t\tWHILE (df # NIL) & (df.unit # u) DO df := df.next END;\r\t\t\tIF df = NIL THEN HostFonts.InsertDevFont(dc, font, df, u) \r\t\t\tELSE old := WinApi.SelectObject(dc, df.id)\r\t\t\tEND;\r\t\t\tIF col = Ports.defaultColor THEN col := textCol END;\r\t\t\tres := WinApi.SetTextColor(dc, col);\r\t\t\tdx[0] := w;\r\t\t\tres := WinApi.ExtTextOutA(dc, x, y, 0, NIL, \" \", 1, dx)\r\t\tEND ;\r\t\tIF p.wnd = 0 THEN res := WinApi.RestoreDC(dc, -1) END\r\tEND DrawSpace;\r\r\tPROCEDURE (rd: Rider) "
+                    attr: 0
+                  - text: CharIndex
+                    attr: 3
+                  - text: "* (x, pos: INTEGER; IN s: ARRAY OF CHAR; font: Fonts.Font): INTEGER;\r\t\tVAR res, d, u, i, a, b, c, w, n: INTEGER;\r\t\t\tdf: HostFonts.DevFont; dc: WinApi.HANDLE;\r\tBEGIN\r\t\tASSERT(rd.port # NIL, 100);\r\t\tdc := rd.port.dc;\r\t\tWITH font: HostFonts.Font DO\r\t\t\tres := WinApi.SelectObject(dc, font.id);\r\t\t\tu := rd.port.unit; df := font.dev;\r\t\t\tWHILE (df # NIL) & (df.unit # u) DO df := df.next END;\r\t\t\ta := 0; b := 0; n := LEN(s) - 1; i := 0;\r\t\t\tWHILE (i < n) & (s[i] # 0X) DO INC(b, font.wTab(dc, s[i])); INC(i) END;\r\t\t\tINC(x, font.fTab(dc, s[0]) DIV u);\r\t\t\tIF df = NIL THEN HostFonts.InsertDevFont(dc, font, df, u)\r\t\t\tELSE res := WinApi.SelectObject(dc, df.id)\r\t\t\tEND;\r\t\t\tn := i; i := 0;\r\t\t\tWHILE i < n DO\r\t\t\t\tc := df.wTab(dc, s[i]);\r\t\t\t\tINC(a, c); INC(i)\r\t\t\tEND;\r\t\t\tc := b DIV u - a; i := 0; w := 0; a := 0;\r\t\t\td := df.wTab(dc, s[0]);\r\t\t\tWHILE (i < n) & (pos > x + d DIV 2) DO\r\t\t\t\tINC(w, c); b := w DIV n; INC(d, b - a); a := b;\r\t\t\t\tINC(i); INC(x, d);\r\t\t\t\td := df.wTab(dc, s[i])\r\t\t\tEND\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " i\r\tEND CharIndex;\r\r\tPROCEDURE (rd: Rider) "
+                    attr: 0
+                  - text: CharPos
+                    attr: 3
+                  - text: "* (x, index: INTEGER; IN s: ARRAY OF CHAR; font: Fonts.Font): INTEGER;\r\t\tVAR res, i, u, a, b, c, w, d, n: INTEGER;\r\t\t\tdf: HostFonts.DevFont; dc: WinApi.HANDLE;\r\tBEGIN\r\t\tASSERT(rd.port # NIL, 100); ASSERT(index <= LEN(s), 101);\r\t\tdc := rd.port.dc;\r\t\tWITH font: HostFonts.Font DO\r\t\t\tres := WinApi.SelectObject(dc, font.id);\r\t\t\tu := rd.port.unit; df := font.dev;\r\t\t\tWHILE (df # NIL) & (df.unit # u) DO df := df.next END;\r\t\t\ta := 0; b := 0; n := LEN(s) - 1; i := 0;\r\t\t\tWHILE (i < n) & (s[i] # 0X) DO INC(b, font.wTab(dc, s[i])); INC(i) END;\r\t\t\tINC(x, font.fTab(dc, s[0]) DIV u);\r\t\t\tIF df = NIL THEN HostFonts.InsertDevFont(dc, font, df, u)\r\t\t\tELSE res := WinApi.SelectObject(dc, df.id)\r\t\t\tEND;\r\t\t\tn := i; i := 0;\r\t\t\tWHILE i < n DO\r\t\t\t\tc := df.wTab(dc, s[i]);\r\t\t\t\tINC(a, c); INC(i)\r\t\t\tEND;\r\t\t\tc := b DIV u - a; i := 0; w := 0; a := 0;\r\t\t\tWHILE (i < n) & (i < index) DO\r\t\t\t\tINC(w, c); b := w DIV n; INC(x, b - a); a := b;\r\t\t\t\td := df.wTab(dc, s[i]);\r\t\t\t\tINC(x, d); INC(i)\r\t\t\tEND\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " x\r\tEND CharPos;\r\t\r\tPROCEDURE (rd: Rider) "
+                    attr: 0
+                  - text: SaveRect
+                    attr: 3
+                  - text: "* (l, t, r, b: INTEGER; VAR res: INTEGER);\r\t\tVAR rs: INTEGER; p: Port;\r\tBEGIN\r\t\tres := 1; p := rd.port;\r\t\tASSERT(p.dc # 0, 20);\r\t\tIF l < 0 THEN l := 0 END;\r\t\tIF t < 0 THEN t := 0 END;\r\t\tIF r > p.w THEN r := p.w END;\r\t\tIF b > p.h THEN b := p.h END;\r\t\tIF (l < r) & (t < b) THEN\r\t\t\trd.sl := l; rd.st := t; rd.sr := r; rd.sb := b;\r\t\t\trd.dc := WinApi.CreateCompatibleDC(p.dc);\r\t\t\tIF rd.dc # 0 THEN\r\t\t\t\trd.map := WinApi.CreateCompatibleBitmap(p.dc, r - l, b - t);\r\t\t\t\tIF rd.map # 0 THEN\r\t\t\t\t\trs := WinApi.SelectObject(rd.dc, rd.map);\r\t\t\t\t\trs := WinApi.BitBlt(rd.dc, 0, 0, r - l, b - t, p.dc, l, t, copy);\r\t\t\t\t\tres := 0\r\t\t\t\tELSE\r\t\t\t\t\trs := WinApi.DeleteDC(rd.dc); rd.dc := 0\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND SaveRect;\r\t\r\tPROCEDURE (rd: Rider) "
+                    attr: 0
+                  - text: RestoreRect
+                    attr: 3
+                  - text: "* (l, t, r, b: INTEGER; dispose: BOOLEAN);\r\t\tVAR res: INTEGER; p: Port; dc: WinApi.HANDLE;\r\tBEGIN\r\t\tIF rd.dc # 0 THEN\r\t\t\tp := rd.port; dc := p.dc;\r\t\t\tIF p.wnd = 0 THEN res := WinApi.SaveDC(dc)\r\t\t\tELSE res := WinApi.SelectClipRgn(dc, 0);\r\t\t\tEND;\r\t\t\tres := WinApi.IntersectClipRect(dc, rd.l, rd.t, rd.r, rd.b);\r\t\t\tIF l < rd.sl THEN l := rd.sl END;\r\t\t\tIF t < rd.st THEN t := rd.st END;\r\t\t\tIF r > rd.sr THEN r := rd.sr END;\r\t\t\tIF b > rd.sb THEN b := rd.sb END;\r\t\t\tres := WinApi.BitBlt(dc, l, t, r - l, b - t, rd.dc, l - rd.sl, t - rd.st, copy);\r\t\t\tIF dispose THEN\r\t\t\t\tres := WinApi.DeleteDC(rd.dc);\r\t\t\t\tres := WinApi.DeleteObject(rd.map);\r\t\t\t\trd.dc := 0; rd.map := 0\r\t\t\tEND;\r\t\t\tIF p.wnd = 0 THEN res := WinApi.RestoreDC(dc, -1) END\r\t\tEND\r\tEND RestoreRect;\r\t\r\tPROCEDURE (rd: Rider) "
+                    attr: 0
+                  - text: CopyFrom
+                    attr: 3
+                  - text: "* (sdc: WinApi.HANDLE; x, y: INTEGER), NEW;\r\t\tVAR res: INTEGER; p: Port; dc: WinApi.HANDLE;\r\tBEGIN\r\t\tASSERT(rd.port # NIL, 100);\r\t\tp := rd.port; dc := p.dc;\r\t\tIF p.wnd = 0 THEN res := WinApi.SaveDC(dc)\r\t\tELSE res := WinApi.SelectClipRgn(dc, 0);\r\t\tEND;\r\t\tres := WinApi.IntersectClipRect(dc, rd.l, rd.t, rd.r, rd.b);\r\t\tres := WinApi.BitBlt(dc, rd.l, rd.t, rd.r - rd.l, rd.b - rd.t, sdc, x, y, copy);\r\t\tIF p.wnd = 0 THEN res := WinApi.RestoreDC(dc, -1) END\r\tEND CopyFrom;\r\t\r\tPROCEDURE (rd: Rider) "
+                    attr: 0
+                  - text: DrawBitmap
+                    attr: 3
+                  - text: "* (bmdc: WinApi.HANDLE; bw, bh, x, y, w, h: INTEGER), NEW;\r\t\tVAR res, u: INTEGER; p: Port; dc: WinApi.HANDLE;\r\tBEGIN\r\t\tASSERT(rd.port # NIL, 100);\r\t\tp := rd.port;\r"
+                    attr: 0
+                  - text: "\t\t"
+                    attr: 3
+                  - text: "dc := p.dc; u := p.unit;\r\t\tres := WinApi.SaveDC(dc);\r\t\tIF p.wnd # 0 THEN res := WinApi.SelectClipRgn(dc, 0) END;\r\t\tres := WinApi.IntersectClipRect(dc, rd.l, rd.t, rd.r, rd.b);\r\t\tIF (bw * u = w) & (bh * u = h) THEN\r\t\t\tres := WinApi.BitBlt(dc, x DIV u, y DIV u, bw, bh, bmdc, 0, 0, copy)\r\t\tELSE\r\t\t\tres := WinApi.StretchBlt(dc, x DIV u, y DIV u, w DIV u, h DIV u, bmdc, 0, 0, bw, bh, copy)\r\t\tEND;\r\t\tres := WinApi.RestoreDC(dc, -1)\r\tEND DrawBitmap;\r\t\r\tPROCEDURE (rd: Rider) "
+                    attr: 0
+                  - text: DrawMetafile
+                    attr: 3
+                  - text: "* (mf: WinApi.HANDLE; mode, x, y, w, h: INTEGER), NEW;\r\t\tVAR res, oldMode, u: INTEGER; p: Port; dc: WinApi.HANDLE;\r\tBEGIN\r\t\tASSERT(rd.port # NIL, 100);\r\t\tp := rd.port;\r\t\t"
+                    attr: 0
+                  - text: "p.CloseBuffer;\r\t\t"
+                    attr: 3
+                  - text: "dc := p.dc; u := p.unit;\r\t\tres := WinApi.SaveDC(dc);\r\t\tIF p.wnd # 0 THEN res := WinApi.SelectClipRgn(dc, 0) END;\r\t\tres := WinApi.IntersectClipRect(dc, rd.l, rd.t, rd.r, rd.b);\r\t\toldMode := WinApi.SetMapMode(dc, mode);\r\t\tres := WinApi.SetViewportOrgEx(dc, x DIV u, y DIV u, NIL);\r\t\tres := WinApi.SetViewportExtEx(dc, w DIV u, h DIV u, NIL);\r\t\tres := ORD(WinApi.SetTextAlign(dc, {}));\r\t\tres := WinApi.PlayMetaFile(dc, mf);\r\t\tres := WinApi.SetViewportOrgEx(dc, 0, 0, NIL);\r\t\tres := WinApi.SetMapMode(dc, oldMode);\r\t\tres := WinApi.RestoreDC(dc, -1)\r\tEND DrawMetafile;\r\t\r\tPROCEDURE (rd: Rider) "
+                    attr: 0
+                  - text: FixOrigin
+                    attr: 3
+                  - text: "*, NEW;\r\t\tVAR p: Port; res: INTEGER;\r\tBEGIN\r\t\tp := rd.port;\r\t\tres := WinApi.SetBrushOrgEx(p.dc, (rd.dx - p.bx) MOD 8, (rd.dy - p.by) MOD 8, NIL)\r\tEND FixOrigin;\r\r\t\r\t"
+                    attr: 0
+                  - text: "(** miscellaneous **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ResetColors
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tPorts.background := WinApi.GetSysColor(5);\r\t\ttextCol := WinApi.GetSysColor(8);\r\t\tselBackground := WinApi.GetSysColor(13);\r\t\tselTextCol := WinApi.GetSysColor(14);\r\t\tPorts.dialogBackground := WinApi.GetSysColor(15);\r\t\tdialogTextCol := WinApi.GetSysColor(18);\r\t\tdialogShadowCol := WinApi.GetSysColor(16);\r\t\tdialogLightCol := WinApi.GetSysColor(20);\r\tEND ResetColors;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetPrinterColors
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tPorts.background := Ports.white;\r\t\ttextCol := Ports.black;\r\t\tselBackground := Ports.white;\r\t\tselTextCol := Ports.black;\r\t\tPorts.dialogBackground := Ports.white\r\tEND SetPrinterColors;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ToggleDebug
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tdebug := ~debug; noBuffer := debug\r\tEND ToggleDebug;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: ToggleBuffer
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tnoBuffer := ~noBuffer\r\tEND ToggleBuffer;\r\t\r\tPROCEDURE Init;\r\t\tVAR i: INTEGER; instance, bm: WinApi.HANDLE; pat: ARRAY 12 OF SHORTINT;\r\tBEGIN\r\t\tinstance := WinApi.GetModuleHandleW(NIL);\r\t\tResetColors;\r\t\tgrgn := WinApi.CreateRectRgn(0, 0, 0, 0);\r\t\tnullBrush := WinApi.GetStockObject(WinApi.NULL_BRUSH);\r\t\tnullPen := WinApi.GetStockObject(WinApi.NULL_PEN);\r\t\tcursors[Ports.arrowCursor] :=\r\t\t\tWinApi.LoadCursorW(0, SYSTEM.VAL(WinApi.PtrWSTR, WinApi.IDC_ARROW));\r\t\tcursors[Ports.textCursor] := WinApi.LoadCursorW(0, SYSTEM.VAL(WinApi.PtrWSTR, WinApi.IDC_IBEAM));\r\t\tcursors[Ports.graphicsCursor] :=\r\t\t\tWinApi.LoadCursorW(0, SYSTEM.VAL(WinApi.PtrWSTR, WinApi.IDC_CROSS));\r\t\tcursors[Ports.bitmapCursor] :=\r\t\t\tWinApi.LoadCursorW(0, SYSTEM.VAL(WinApi.PtrWSTR, WinApi.IDC_CROSS));\r\t\tcursors[Ports.tableCursor] := WinApi.LoadCursorW(instance, SYSTEM.VAL(WinApi.PtrWSTR, 7));\r\t\tIF cursors[Ports.tableCursor] = 0 THEN cursors[Ports.tableCursor] := cursors[Ports.graphicsCursor] END;\r\t\tcursors[Ports.refCursor] := WinApi.LoadCursorW(instance, SYSTEM.VAL(WinApi.PtrWSTR, 6));\r\t\tcursors[resizeHCursor] := WinApi.LoadCursorW(0, SYSTEM.VAL(WinApi.PtrWSTR, WinApi.IDC_SIZEWE));\r\t\tcursors[resizeVCursor] := WinApi.LoadCursorW(0, SYSTEM.VAL(WinApi.PtrWSTR, WinApi.IDC_SIZENS));\r\t\tcursors[resizeLCursor] := WinApi.LoadCursorW(0, SYSTEM.VAL(WinApi.PtrWSTR, WinApi.IDC_SIZENWSE));\r\t\tcursors[resizeRCursor] := WinApi.LoadCursorW(0, SYSTEM.VAL(WinApi.PtrWSTR, WinApi.IDC_SIZENESW));\r\t\tcursors[resizeCursor] := WinApi.LoadCursorW(0, SYSTEM.VAL(WinApi.PtrWSTR, WinApi.IDC_SIZE));\r\t\tcursors[busyCursor] := WinApi.LoadCursorW(0, SYSTEM.VAL(WinApi.PtrWSTR, WinApi.IDC_WAIT));\r\t\tcursors[stopCursor] := WinApi.LoadCursorW(0, SYSTEM.VAL(WinApi.PtrWSTR, WinApi.IDC_NO));\r\t\tcursors[moveCursor] := WinApi.LoadCursorW(instance, SYSTEM.VAL(WinApi.PtrWSTR, 1));\r\t\tcursors[copyCursor] := WinApi.LoadCursorW(instance, SYSTEM.VAL(WinApi.PtrWSTR, 2));\r\t\tcursors[linkCursor] := WinApi.LoadCursorW(instance, SYSTEM.VAL(WinApi.PtrWSTR, 3));\r\t\tcursors[pickCursor] := WinApi.LoadCursorW(instance, SYSTEM.VAL(WinApi.PtrWSTR, 4));\r\t\tIF cursors[stopCursor] = 0 THEN\r\t\t\tcursors[stopCursor] := WinApi.LoadCursorW(instance, SYSTEM.VAL(WinApi.PtrWSTR, 5))\r\t\tEND;\r\t\ti := 0;\r\t\tWHILE i < LEN(cursors) DO\r\t\t\tIF cursors[i] = 0 THEN cursors[i] := cursors[Ports.arrowCursor] END;\r\t\t\tINC(i)\r\t\tEND;\r\t\tpat[0] := 0EEH; pat[1] := 0DDH; pat[2] := 0BBH; pat[3] := 077H;\r\t\tpat[4] := 0EEH; pat[5] := 0DDH; pat[6] := 0BBH; pat[7] := 077H;\r\t\tbm := WinApi.CreateBitmap(8, 8, 1, 1, SYSTEM.ADR(pat));\r\t\tfocusBrush := WinApi.CreatePatternBrush(bm);\r\t\tpat[0] := 0EEH; pat[1] := 0BBH; pat[2] := 0DDH; pat[3] := 077H;\r\t\tpat[4] := 0EEH; pat[5] := 0BBH; pat[6] := 0DDH; pat[7] := 077H;\r\t\tbm := WinApi.CreateBitmap(8, 8, 1, 1, SYSTEM.ADR(pat));\r\t\tdim25Brush := WinApi.CreatePatternBrush(bm);\r\t\tpat[0] := 0AAH; pat[1] := 055H; pat[2] := 0AAH; pat[3] := 055H;\r\t\tpat[4] := 0AAH; pat[5] := 055H; pat[6] := 0AAH; pat[7] := 055H;\r\t\tbm := WinApi.CreateBitmap(8, 8, 1, 1, SYSTEM.ADR(pat));\r\t\tdim50Brush := WinApi.CreatePatternBrush(bm);\r\t\tpat[0] := 011H; pat[1] := 044H; pat[2] := 022H; pat[3] := 088H;\r\t\tpat[4] := 011H; pat[5] := 044H; pat[6] := 022H; pat[7] := 088H;\r\t\tbm := WinApi.CreateBitmap(8, 8, 1, 1, SYSTEM.ADR(pat));\r\t\tdim75Brush := WinApi.CreatePatternBrush(bm);\r\t\tinvertBrush := WinApi.GetStockObject(WinApi.BLACK_BRUSH);\r\tEND Init;\r\rBEGIN\r\tInit\rEND HostPorts.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 38725
+          bodyLen: 8

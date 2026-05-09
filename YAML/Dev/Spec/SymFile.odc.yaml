@@ -1,0 +1,278 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Dev\\Spec\\SymFile.odc"
+  size: 3932
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 3801
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 3615
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 3529
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 104775
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 10
+                bodyPos: 3650
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 3136
+                runListLen: 1118
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 104775
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 152400
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 104775
+                    color: 0x00008000
+                    weight: 400
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 104775
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000000
+                  - # [4]
+                    font: Arial
+                    size: 104775
+                    color: 0x000000ff
+                    weight: 400
+                    style: 0x00000000
+                flow:
+                  - ruler:
+                      left: 0
+                      right: 5940000
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 720000 }
+                        - { stop: 1080000 }
+                        - { stop: 1296000 }
+                        - { stop: 1800000 }
+                        - { stop: 2520000 }
+                        - { stop: 2880000 }
+                        - { stop: 3600000 }
+                        - { stop: 4320000 }
+                        - { stop: 4680000 }
+                      attr: 0
+                      w: 360000000
+                      h: 444500
+                  - text: Oberon/F Symbol File Format
+                    attr: 1
+                  - text: "\tbh    "
+                    attr: 0
+                  - view:
+                      kind: StdStamps.StdView
+                      storeKind: store
+                      typeChain:
+                        - StdStamps.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 6
+                      bodyPos: 866
+                      bodyLen: 181
+                    attr: 0
+                    w: 952500
+                    h: 133350
+                  - text: "\r"
+                    attr: 0
+                  - text: 漜
+                    attr: 0
+                    wide: true
+                  - text: "\rSymFile\t=\ttag4 "
+                    attr: 0
+                  - text: processor
+                    attr: 2
+                  - text: " version Module { Object } .\r\rModule\t=\t0 | negmno | [ LIB name ] MNAME name .\r\rObject\t=\t[ "
+                    attr: 0
+                  - text: SYS value
+                    attr: 2
+                  - text: " ] [ "
+                    attr: 0
+                  - text: LIB name
+                    attr: 2
+                  - text: " ] [ "
+                    attr: 0
+                  - text: ENTRY name
+                    attr: 2
+                  - text: " ]\r\t\t\t( Constant name\r\t\t\t| TYPE Struct\r\t\t\t| ALIAS Struct name\r\t\t\t| (RVAR | VAR) Struct name\r\t\t\t| (XPRO | IPRO) Signature name\r\t\t\t"
+                    attr: 0
+                  - text: "| CPRO Signature len { code1 } name"
+                    attr: 2
+                  - text: "\r\t\t\t).\r\rConstant\t=\t  CHAR8 value1\r"
+                    attr: 0
+                  - text: "\t\t"
+                    attr: 3
+                  - text: "| CHAR16 value2\r\t\t| BOOL ( FALSE | TRUE )\r\t\t| ( INT8 | INT16 | INT32 | INT64 | SET ) value\r\t\t| REAL32 value4\r\t\t| REAL64 value8\r\t\t| STRING8 name\r\t\t| STRING16 length utf8string\r\t\t| NIL .\r\rStruct\t=\t  negref\r\t\t| STRUCT Module name ["
+                    attr: 0
+                  - text: " SYS value "
+                    attr: 2
+                  - text: "] [ "
+                    attr: 0
+                  - text: "LIB name "
+                    attr: 2
+                  - text: "] ["
+                    attr: 0
+                  - text: " ENTRY name "
+                    attr: 2
+                  - text: "] [ "
+                    attr: 0
+                  - text: "STRING name "
+                    attr: 2
+                  - text: "]\r\t\t\t( PTR Struct\r\t\t\t| ARR Struct nofElem\r\t\t\t| DARR Struct\r\t\t\t| ( REC "
+                    attr: 0
+                  - text: "| ABSREC | EXTREC"
+                    attr: 4
+                  - text: " | FINREC"
+                    attr: 3
+                  - text: " "
+                    attr: 4
+                  - text: ") Struct "
+                    attr: 0
+                  - text: size align
+                    attr: 2
+                  - text: " nofMeth { Field } { Method } END\r\t\t\t| PRO Signature\r"
+                    attr: 0
+                  - text: "\t\t"
+                    attr: 4
+                  - text: "\t| ALIAS Struct"
+                    attr: 0
+                  - text: "\r"
+                    attr: 4
+                  - text: "\t\t\t) .\r\rField\t=\t( FLD | RFLD ) Struct name "
+                    attr: 0
+                  - text: offset
+                    attr: 2
+                  - text: " | ( HDPTR | "
+                    attr: 0
+                  - text: SYS value
+                    attr: 2
+                  - text: " | HDPRO ) "
+                    attr: 0
+                  - text: offset
+                    attr: 2
+                  - text: " .\r\rMethod\t=\t"
+                    attr: 0
+                  - text: "[ IMPO ]"
+                    attr: 4
+                  - text: " ["
+                    attr: 0
+                  - text: " ENTRY name "
+                    attr: 2
+                  - text: "]\r\t\t\t( TPRO "
+                    attr: 0
+                  - text: "| ABSPRO | EMPPRO | EXTPRO "
+                    attr: 4
+                  - text: "| FINPRO"
+                    attr: 3
+                  - text: " ) Signature name methno | HDTPRO methno .\r\rSignature\t=\tStruct { [ "
+                    attr: 0
+                  - text: "SYS value "
+                    attr: 2
+                  - text: "] ( VALPAR | VARPAR | INPAR | OUTPAR ) Struct "
+                    attr: 0
+                  - text: offset
+                    attr: 2
+                  - text: " name } END .\r\r\rMNAME\t=\t16\t\t"
+                    attr: 0
+                  - text: "BYTE\t=\t1\tbyte\t=\t1"
+                    attr: 3
+                  - text: "\rEND \t=\t18\t\tBOOL\t=\t2\tboolean\t=\t2\rTYPE\t=\t19\t\tCHAR8\t=\t3\tchar8\t=\t3\rALIAS\t=\t20\t\tINT8\t=\t4\tint8\t=\t4\rVAR\t=\t21\t\tINT16\t=\t5\tint16\t=\t5\rRVAR\t=\t22\t\tINT32\t=\t6\tint32\t=\t6\rVALPAR\t=\t23\t\tREAL32\t=\t7\treal32\t=\t7\rVARPAR\t=\t24\t\tREAL64\t=\t8\treal64\t=\t8\rFLD\t=\t25\t\tSET\t=\t9\tset\t=\t9\rRFLD\t=\t26\t\tSTRING8\t=\t10\t\rHDPTR\t=\t27\t\tNIL\t=\t11\t\rHDPRO\t=\t28\t\t\t\t\tnotyp\t=\t12\rTPRO\t=\t29\t\t\t\t\tsysptr\t=\t13\rHDTPRO\t=\t30\t\t\t\t\tanypointer\t=\t14\rXPRO\t=\t31\t\t\t\t\tanyrecord\t=\t15\rIPRO\t=\t32\t\tCHAR16\t=\t16\tchar16\t=\t16\rCPRO\t=\t33\t\tSTRING16\t=\t17\t\rSTRUCT\t=\t34\t\tINT64\t=\t18\tint64\t=\t18\rSYS\t=\t35\t\t\t\t\tresult\t=\t20\rPTR\t=\t36\t\t\t\t\tiunknown\t=\t21\rARR\t=\t37\t\t\t\t\tptriunk\t=\t22\rDARR\t=\t38\t"
+                    attr: 0
+                  - text: "\t\t\t\t"
+                    attr: 4
+                  - text: "guid\t=\t23\rREC\t=\t39\t"
+                    attr: 0
+                  - text: "\tHDUTPTR\t=\t41"
+                    attr: 3
+                  - text: "\rPRO\t=\t40\t\tLIB\t=\t42\rINPAR \t=\t25\t\tENTRY\t=\t43\tFALSE\t=\t0\rOUTPAR\t=\t26\t"
+                    attr: 0
+                  - text: "\tFINPRO\t=\t31"
+                    attr: 3
+                  - text: "\tTRUE\t=\t1\r"
+                    attr: 0
+                  - text: "FINREC\t=\t25"
+                    attr: 3
+                  - text: "\t\tABSPRO\t=\t32\rABSREC\t=\t26\t\tEMPPRO\t=\t33\rEXTREC\t=\t27\t\tEXTPRO\t=\t34\tIMPO\t=\t22"
+                    attr: 4
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 14
+          bodyPos: 3897
+          bodyLen: 8

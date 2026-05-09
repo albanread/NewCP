@@ -1,0 +1,267 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Std\\Docu\\Scrollers.odc"
+  size: 5351
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 5220
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 5034
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 4948
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                lead: 11500
+                asc: 121900
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 6
+                bodyPos: 4948
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 4434
+                runListLen: 616
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: StdScrollers
+                    attr: 0
+                  - text: "\r\rDEFINITION StdScrollers;\r\r\tIMPORT Dialog, Properties, Views;\r\r\tCONST\r\t\thorBar = 0; verBar = 1; horHide = 2; verHide = 3; width = 4; height = 5; savePos = 7; showBorder = 6;\r\r\tTYPE\r\t\tProp = POINTER TO RECORD (Properties.Property)\r\t\t\thorBar, verBar, horHide, verHide: BOOLEAN;\r\t\t\twidth, height: INTEGER;\r\t\t\tshowBorder, savePos: BOOLEAN\r\t\tEND;\r\r\tVAR\r\t\tdialog: RECORD \r\t\t\thorizontal, vertical: RECORD \r\t\t\t\tmode: INTEGER;\r\t\t\t\tadapt: BOOLEAN;\r\t\t\t\tsize: REAL\r\t\t\tEND;\r\t\t\tshowBorder, savePos: BOOLEAN\r\t\tEND;\r\r\tPROCEDURE AddScroller;\r\tPROCEDURE RemoveScroller;\r\tPROCEDURE InitDialog;\r\tPROCEDURE Set;\r\tPROCEDURE DialogGuard (VAR par: Dialog.Par);\r\tPROCEDURE HeightGuard (VAR par: Dialog.Par);\r\tPROCEDURE WidthGuard (VAR par: Dialog.Par);\r\tPROCEDURE HorAdaptGuard (VAR par: Dialog.Par);\r\tPROCEDURE VerAdaptGuard (VAR par: Dialog.Par);\r\tPROCEDURE WrappedView (v: Views.View): Views.View;\r\rEND StdScrollers.\r\r\rModule "
+                    attr: 1
+                  - text: StdScrollers
+                    attr: 2
+                  - text: " provides a wrapper view which can be wrapped around any other view to provide it with a horizontal and/or vertical scrollbar. For example, a text view in a form may be wrapped in a scroller in order to allow the scrolling of text that doesn't completely fit in the text view.\r\r\rCONST "
+                    attr: 1
+                  - text: "horBar, verBar, horHide, verHide, width, height, savePos, showBorder"
+                    attr: 3
+                  - text: "\rProperty elements of the "
+                    attr: 1
+                  - text: Prop
+                    attr: 2
+                  - text: " descriptor.\r\r\rTYPE "
+                    attr: 1
+                  - text: Prop
+                    attr: 3
+                  - text: " (Properties.Property)\rProperties describing the attributes of a scroller view.\r\r"
+                    attr: 1
+                  - text: horBar
+                    attr: 3
+                  - text: ": BOOLEAN\rIs there a horizontal scrollbar?\r\r"
+                    attr: 1
+                  - text: verBar
+                    attr: 3
+                  - text: ": BOOLEAN\rIs there a vertical scrollbar?\r\r"
+                    attr: 1
+                  - text: horHide
+                    attr: 3
+                  - text: ": BOOLEAN\thorHide -> horBar\rOnly valid if "
+                    attr: 1
+                  - text: horBar
+                    attr: 2
+                  - text: ". This leaves three legal possibilities:\r~horBar\t\t\t\t\tscrollbar is never visible\rhorBar  &  horHide\tscrollbar is only visible when needed (appears or disappears automatically)\rhorBar  &  ~horHide\tscrollbar is always visible\r\r"
+                    attr: 1
+                  - text: verHide
+                    attr: 3
+                  - text: ": BOOLEAN\tverHide -> verBar\rOnly valid if "
+                    attr: 1
+                  - text: verBar
+                    attr: 2
+                  - text: ". This leaves three legal possibilities:\r~verBar\t\t\t\t\tscrollbar is never visible\rverBar  &  verHide\tscrollbar is only visible when needed (appears or disappears automatically)\rverBar  &  ~verHide\tscrollbar is always visible\r\r"
+                    attr: 1
+                  - text: "width, height"
+                    attr: 3
+                  - text: ": INTEGER\twidth >= 0  &  height >= 0\t[units]\rSize of the wrapped view.\rA value of 0 means that the wrapped view automatically adapts its size to the scroller (wrapper) view. Other values are fixed sizes.\r\r"
+                    attr: 1
+                  - text: showBorder
+                    attr: 3
+                  - text: ": BOOLEAN\rDisplay a border around the wrapped view.\r\r"
+                    attr: 1
+                  - text: savePos
+                    attr: 3
+                  - text: ": BOOLEAN\rSave the current scroll position when the wrapper is saved to disk, and makes scrolling undoable.\r\r\rVAR\r"
+                    attr: 1
+                  - text: dialog
+                    attr: 3
+                  - text: ": RECORD\rInteractor for setting the scroller properties of a singleton selection.\r\r"
+                    attr: 1
+                  - text: "horizontal, vertical"
+                    attr: 3
+                  - text: ": RECORD\rDescriptor of scrollbar behavior for both dimensions.\r\r\t"
+                    attr: 1
+                  - text: mode
+                    attr: 3
+                  - text: ": INTEGER\tmode IN {0, 1, 2}\r\t\t0: never a scrollbar\r\t\t1: automatic scrollbar\r\t\t2: always a scrollbar\r\t"
+                    attr: 1
+                  - text: adapt
+                    attr: 3
+                  - text: ": BOOLEAN\r\t\tadapt: set size (width or height) to 0\r\t\t~adapt: retain a fixed size\r\t"
+                    attr: 1
+                  - text: size
+                    attr: 3
+                  - text: ": REAL\r\t\tsize in cm ("
+                    attr: 1
+                  - text: Dialog.metricSystem
+                    attr: 2
+                  - text: ) or in inches (
+                    attr: 1
+                  - text: ~Dialog.metricSystem
+                    attr: 2
+                  - text: ")\r\r"
+                    attr: 1
+                  - text: "showBorder, savePos"
+                    attr: 3
+                  - text: ": BOOLEAN\rValues according to property descriptor.\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: AddScroller
+                    attr: 3
+                  - text: "\rGuard: StdCmds.SingletonGuard\rWraps a scroller around the selected view.\r\rPROCEDURE "
+                    attr: 1
+                  - text: RemoveScroller
+                    attr: 3
+                  - text: "\rGuard: StdCmds.SingletonGuard\rRemoves the scroller which is selected.\r\rPROCEDURE "
+                    attr: 1
+                  - text: InitDialog
+                    attr: 3
+                  - text: "\rInitializes variable "
+                    attr: 1
+                  - text: dialog
+                    attr: 2
+                  - text: " according to the selected scroller view.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Set
+                    attr: 3
+                  - text: "\rApplies the newly defined properties to the selected scroller view.\r\rPROCEDURE "
+                    attr: 1
+                  - text: DialogGuard
+                    attr: 3
+                  - text: " (VAR par: Dialog.Par)\rPROCEDURE "
+                    attr: 1
+                  - text: HeightGuard
+                    attr: 3
+                  - text: " (VAR par: Dialog.Par)\rPROCEDURE "
+                    attr: 1
+                  - text: WidthGuard
+                    attr: 3
+                  - text: " (VAR par: Dialog.Par)\rPROCEDURE "
+                    attr: 1
+                  - text: HorAdaptGuard
+                    attr: 3
+                  - text: " (VAR par: Dialog.Par)\rPROCEDURE "
+                    attr: 1
+                  - text: VerAdaptGuard
+                    attr: 3
+                  - text: " (VAR par: Dialog.Par)\rVarious guards for the "
+                    attr: 1
+                  - text: Std/Rsrc/Scrollers
+                    attr: 2
+                  - text: " dialog box.\r\rPROCEDURE "
+                    attr: 1
+                  - text: WrappedView
+                    attr: 3
+                  - text: " (v: Views.View): Views.View\rReturns the wrapped view of "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: " if "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: " is a scroller view implemented in "
+                    attr: 1
+                  - text: StdScrollers
+                    attr: 2
+                  - text: ". Otherwise, returns "
+                    attr: 1
+                  - text: v
+                    attr: 2
+                  - text: ".\r\rPre\rv # NIL\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 10
+          bodyPos: 5316
+          bodyLen: 8

@@ -1,0 +1,181 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Std\\Rsrc\\Tables.odc"
+  size: 1979
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 1848
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 1662
+          children:
+            - kind: FormViews.StdView
+              storeKind: store
+              typeChain:
+                - FormViews.StdViewDesc
+                - FormViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 1576
+              children:
+                - kind: FormModels.StdModel
+                  storeKind: elem
+                  typeChain:
+                    - FormModels.StdModelDesc
+                    - FormModels.ModelDesc
+                    - Containers.ModelDesc
+                    - Models.ModelDesc
+                    - Stores.StoreDesc
+                  id: 1
+                  bodyPos: 376
+                  bodyLen: 1333
+                  children:
+                    - kind: Controls.Caption
+                      storeKind: store
+                      typeChain:
+                        - Controls.CaptionDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 2
+                      bodyPos: 448
+                      bodyLen: 146
+                      link: StdTables.dlg.selectionStyle
+                      label: "Selection Style:"
+                      guard: StdTables.Guard(2)
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.ListBox
+                      storeKind: store
+                      typeChain:
+                        - Controls.ListBoxDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 3
+                      bodyPos: 654
+                      bodyLen: 156
+                      link: StdTables.dlg.selectionStyle
+                      guard: StdTables.Guard(2)
+                      notifier: StdTables.Notifier(2)
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.CheckBox
+                      storeKind: store
+                      typeChain:
+                        - Controls.CheckBoxDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 871
+                      bodyLen: 186
+                      link: StdTables.dlg.layoutEditable
+                      label: Layout Editable
+                      guard: StdTables.Guard(0)
+                      notifier: StdTables.Notifier(0)
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.CheckBox
+                      storeKind: store
+                      typeChain:
+                        - Controls.CheckBoxDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 5
+                      bodyPos: 1095
+                      bodyLen: 178
+                      link: StdTables.dlg.dataEditable
+                      label: Data Editable
+                      guard: StdTables.Guard(1)
+                      notifier: StdTables.Notifier(1)
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.PushButton
+                      storeKind: store
+                      typeChain:
+                        - Controls.PushButtonDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 6
+                      bodyPos: 1336
+                      bodyLen: 110
+                      link: StdTables.Set; StdCmds.CloseDialog
+                      label: "#System:OK"
+                      opts: [true, false, false, false, false]
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.PushButton
+                      storeKind: store
+                      typeChain:
+                        - Controls.PushButtonDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 7
+                      bodyPos: 1484
+                      bodyLen: 88
+                      link: StdCmds.CloseDialog
+                      label: "#System:Cancel"
+                      opts: [false, true, false, false, false]
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: Controls.PushButton
+                      storeKind: store
+                      typeChain:
+                        - Controls.PushButtonDesc
+                        - Controls.ControlDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 8
+                      bodyPos: 1610
+                      bodyLen: 74
+                      link: StdTables.Set
+                      label: "#System:Apply"
+                      controlVersion: 4
+                      trailingBytes: 1
+                    - kind: "<nil>"
+                      storeKind: nil
+                - kind: FormControllers.StdController
+                  storeKind: store
+                  typeChain:
+                    - FormControllers.StdControllerDesc
+                    - FormControllers.ControllerDesc
+                    - Containers.ControllerDesc
+                    - Controllers.ControllerDesc
+                    - Stores.StoreDesc
+                  id: 9
+                  bodyPos: 1853
+                  bodyLen: 9
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 10
+          bodyPos: 1944
+          bodyLen: 8

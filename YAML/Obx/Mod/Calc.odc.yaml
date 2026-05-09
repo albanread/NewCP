@@ -1,0 +1,224 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Mod\\Calc.odc"
+  size: 8909
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 8778
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 8592
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 8506
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 114300
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Helvetica
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 8623
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 8109
+                runListLen: 1683
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE ObxCalc;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT Stores, Ports, Views, Properties, Controllers, Dialog, Fonts, Strings;\r\r\tCONST minVersion = 0; maxVersion = 0; mm = Ports.mm; CR = 0DX;\r\r\tTYPE\r\t\tStack = POINTER TO RECORD\r\t\t\tnext: Stack;\r\t\t\tval: INTEGER\r\t\tEND;\r\r\t\tView = POINTER TO RECORD (Views.View)\r\t\t\tstack: Stack;\r\t\t\teditMode, enterMode: BOOLEAN\r\t\tEND;\r\r\tVAR\r\t\tfont: Fonts.Font;\r\t\tlabels: ARRAY 21 OF CHAR;\r\r\tPROCEDURE LocateField (v: View; f: Views.Frame; x, y: INTEGER; VAR i, j: INTEGER;\r\t\t\t\t\t\t\t\t\t\t\tVAR valid: BOOLEAN);\r\tBEGIN\r\t\tx := x DIV mm - 3; y := y DIV mm - 12; i := SHORT(x DIV 9); j := SHORT(y DIV 9);\r\t\tvalid := (i >= 0) & (i < 4) & (j >= 0) & (j < 5) & (x MOD 9 < 7) & (y MOD 9 < 7)\r\tEND LocateField;\r\r\tPROCEDURE SelectField (v: View; f: Ports.Frame; i, j: INTEGER);\r\t\tCONST point = Ports.point;\r\t\tVAR x, y: INTEGER;\r\tBEGIN\r\t\tx := (3 + i * 9) * mm; y := (12 + j * 9) * mm;\r\t\tf.MarkRect(x + point, y + point, x + 6 * mm - point, y + 6 * mm - point, Ports.fill, Ports.hilite, TRUE)\r\tEND SelectField;\r\r\tPROCEDURE HandleKey (v: View; i, j: INTEGER);\r\t\tVAR k, n: INTEGER; s: Stack;\r\tBEGIN\r\t\tk := j*4 + i; s := v.stack;\r\t\tIF k IN {0, 1, 2, 3, 7, 11, 15} THEN\r\t\t\tIF s.next # NIL THEN\r\t\t\t\tIF k = 0 THEN (* swap *) s := s.next; v.stack.next := s.next; s.next := v.stack; v.stack := s\r\t\t\t\tELSIF k = 1 THEN v.stack := s.next\r\t\t\t\tELSIF k IN {2, 3} THEN\r\t\t\t\t\tIF s.val = 0 THEN Dialog.Beep\r\t\t\t\t\tELSIF k = 2 THEN s.next.val := s.next.val MOD s.val; v.stack := s.next\r\t\t\t\t\tELSE s.next.val := s.next.val DIV s.val; v.stack := s.next\r\t\t\t\t\tEND\r\t\t\t\tELSIF k = 7 THEN s.next.val := s.next.val * s.val; v.stack := s.next\r\t\t\t\tELSIF k = 11 THEN s.next.val := s.next.val - s.val; v.stack := s.next\r\t\t\t\tELSIF k = 15 THEN s.next.val := s.next.val + s.val; v.stack := s.next\r\t\t\t\tEND\r\t\t\tELSE\r\t\t\t\tIF k = 0 THEN NEW(s); s.val := 0; s.next := v.stack; v.stack := s\r\t\t\t\tELSIF k = 11 THEN s.val := -s.val\r\t\t\t\tELSIF k = 15 THEN (* skip *)\r\t\t\t\tELSE s.val := 0\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\tv.editMode := FALSE\r\t\tELSIF k = 18 THEN  (* ± *) \r\t\t\ts.val := - s.val\r\t\tELSIF k = 16THEN (* delete *)\r\t\t\tIF v.editMode THEN s.val := s.val DIV 10\r\t\t\tELSE s.val := 0; v.editMode := TRUE\r\t\t\tEND\r\t\tELSIF k = 19 THEN (* enter *)\r\t\t\tNEW(s); s.val := v.stack.val; s.next := v.stack; v.stack := s;\r\t\t\tv.editMode := FALSE\r\t\tELSE (* edit operation *)\r\t\t\tIF k = 17 THEN (* 0 *) n := 0 ELSE n := (3-j)*3 + 1 + i END;\r\t\t\tIF ~v.editMode & ~v.enterMode THEN\r\t\t\t\tNEW(s); s.val := n; s.next := v.stack; v.stack := s; v.editMode := TRUE\r\t\t\tELSIF ~v.editMode THEN s.val := n; v.editMode := TRUE\r\t\t\tELSIF s.val >= 0 THEN\r\t\t\t\tIF s.val > (MAX(INTEGER) - n) DIV 10 THEN Dialog.Beep ELSE s.val := 10*s.val + n END\r\t\t\tELSE \r\t\t\t\tIF s.val < (MIN(INTEGER) + n) DIV 10 THEN Dialog.Beep ELSE s.val := 10*s.val - n END\r\t\t\tEND\r\t\tEND;\r\t\tv.enterMode := k = 19;\r\t\tViews.Update(v, Views.keepFrames)\r\tEND HandleKey;\r\r\tPROCEDURE Track (v: View; f: Views.Frame; x, y: INTEGER; buttons: SET);\r\t\tVAR i, j, i1, j1: INTEGER; isDown, valid, sel: BOOLEAN; m: SET;\r\tBEGIN\r\t\tLocateField(v, f, x, y, i, j, sel);\r\t\tIF sel THEN\r\t\t\tSelectField(v, f, i, j);\r\t\t\tREPEAT f.Input(x, y, m, isDown);\r\t\t\t\tLocateField(v, f, x, y, i1, j1, valid); \r\t\t\t\tIF ~valid OR (i1 # i) OR (j1 # j) THEN\r\t\t\t\t\tIF sel THEN sel := FALSE; SelectField(v, f, i, j) END\r\t\t\t\tELSE\r\t\t\t\t\tIF ~sel THEN sel := TRUE; SelectField(v, f, i, j) END\r\t\t\t\tEND\r\t\t\tUNTIL ~isDown;\r\t\t\tIF sel THEN HandleKey(v, i, j); SelectField(v, f, i, j) END\r\t\tEND\r\tEND Track;\r\r\tPROCEDURE Init (v: View);\r\tBEGIN\r\t\tNEW(v.stack); v.stack.val := 0; v.editMode := TRUE; v.enterMode := FALSE\r\tEND Init;\r\r\t(* View *)\r\r\tPROCEDURE (v: View) Externalize (VAR wr: Stores.Writer);\r\tBEGIN\r\t\twr.WriteVersion(maxVersion);\r\tEND Externalize;\r\r\tPROCEDURE (v: View) Internalize (VAR rd: Stores.Reader);\r\t\tVAR version: INTEGER;\r\tBEGIN\r\t\trd.ReadVersion(minVersion, maxVersion, version);\r\t\tIF ~rd.cancelled THEN Init(v) END\r\tEND Internalize;\r\r\tPROCEDURE (v: View) CopyFromSimpleView (source: Views.View);\r\tBEGIN\r\t\tInit(v)\r\tEND CopyFromSimpleView;\r\r\tPROCEDURE (v: View) Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\t\tVAR i, j: INTEGER; x, y, asc, dsc, w: INTEGER; s: ARRAY 2 OF CHAR;\r\t\t\tdisplay: ARRAY 12 OF CHAR;\r\tBEGIN\r\t\tStrings.IntToStringForm(v.stack.val, Strings.decimal, 11, \" \", FALSE, display);\r\t\tf.DrawRect(0, 0, 40 * mm, 58 * mm, 0, Ports.black);\r\t\tf.DrawRect(3 * mm, 3 * mm, 37 * mm, 10 * mm, 0, Ports.black);\r\t\tf.DrawString(6 * mm, 8 * mm, Ports.black, display, font);\r\t\tj := 0;\r\t\tWHILE j # 5 DO\r\t\t\ti := 0; y := (12 + j * 9) * mm;\r\t\t\tWHILE i # 4 DO\r\t\t\t\tx := (3 + i * 9) * mm;\r\t\t\t\tf.DrawRect(x, y, x + 6 * mm, y + 6 * mm, 0, Ports.black);\r\t\t\t\tf.DrawRect(x + mm, y + 6 * mm, x + 7 * mm, y + 7 * mm, Ports.fill, Ports.black);\r\t\t\t\tf.DrawRect(x + 6 * mm, y + Ports.mm, x + 7 * mm, y + 7 * mm, Ports.fill, Ports.black);\r\t\t\t\ts[0] := labels[j * 4 + i]; s[1] := 0X;\r\t\t\t\tfont.GetBounds(asc, dsc, w);\r\t\t\t\tf.DrawString(x + 3 * mm - w DIV 2, y + 3 * mm + asc DIV 2, Ports.black, s, font);\r\t\t\t\tINC(i)\r\t\t\tEND;\r\t\t\tINC(j)\r\t\tEND\r\tEND Restore;\r\r\tPROCEDURE (v: View) HandleCtrlMsg (f: Views.Frame; VAR msg: Controllers.Message;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR focus: Views.View);\r\t\tVAR i, j, k: INTEGER;\r\tBEGIN\r\t\tWITH msg: Controllers.TrackMsg DO\r\t\t\tTrack(v, f, msg.x, msg.y, msg.modifiers)\r\t\t| msg: Controllers.EditMsg DO\r\t\t\tIF msg.op = Controllers.pasteChar THEN\r\t\t\t\tIF msg.char = CR THEN k := 19\r\t\t\t\tELSIF msg.char = 08X THEN k := 16\r\t\t\t\tELSE\r\t\t\t\t\tk := 0; WHILE (k # 20) & (CAP(labels[k]) # CAP(msg.char)) DO INC(k) END\r\t\t\t\tEND;\r\t\t\t\tIF k < 20 THEN\r\t\t\t\t\ti := k MOD 4; j := k DIV 4;\r\t\t\t\t\tSelectField(v, f, i, j); HandleKey(v, i, j); SelectField(v, f, i, j)\r\t\t\t\tEND\r\t\t\tEND\r\t\tELSE\r\t\tEND\r\tEND HandleCtrlMsg;\r\r\tPROCEDURE (v: View) HandlePropMsg (VAR msg: Properties.Message);\r\tBEGIN\r\t\tWITH msg: Properties.ResizePref DO\r\t\t\tmsg.fixed := TRUE\r\t\t| msg: Properties.SizePref DO\r\t\t\tmsg.w := 40 * mm; msg.h := 58 * mm\r\t\t| msg: Properties.FocusPref DO\r\t\t\tmsg.setFocus := TRUE\r\t\tELSE\r\t\tEND\r\tEND HandlePropMsg;\r\r\t(* commands *)\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: New
+                    attr: 3
+                  - text: "* (): View;\r\t\tVAR v: View;\r\tBEGIN\r\t\tNEW(v); Init(v); "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " v\r\tEND New;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Deposit
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tViews.Deposit(New())\r\tEND Deposit;\r\rBEGIN \r\tfont := Fonts.dir.This(\"Courier\", 11 * Fonts.point, {}, Fonts.normal);\r\tlabels := \"sp÷/789*456-123+C0±^\"\rEND  ObxCalc.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 8874
+          bodyLen: 8

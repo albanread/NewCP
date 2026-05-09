@@ -1,0 +1,256 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Obx\\Mod\\Graphs.odc"
+  size: 8014
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 7883
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 7697
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 7611
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 127000
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Helvetica
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 7728
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 7214
+                runListLen: 1763
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE ObxGraphs;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT Services, Stores, Ports, Models, Views, Controllers, Properties, TextModels, TextViews, TextMappers;\r\r\tCONST minVersion = 0; maxVersion = 0;\r\r\tTYPE\r\t\tValue = POINTER TO RECORD\r\t\t\tnext: Value;\r\t\t\tval: INTEGER\r\t\tEND;\r\r\t\tModel = POINTER TO RECORD (Models.Model)\r\t\t\tvalues: Value\r\t\tEND;\r\r\t\tView = POINTER TO RECORD (Views.View)\r\t\t\tmodel: Model\r\t\tEND;\r\r\t\tModelOp = POINTER TO RECORD (Stores.Operation)\r\t\t\tmodel: Model;\r\t\t\tvalues: Value\r\t\tEND;\r\r\tPROCEDURE (op: ModelOp) Do;\r\t\tVAR v: Value; msg: Models.UpdateMsg;\r\tBEGIN\r\t\tv := op.model.values; op.model.values := op.values; op.values := v;\t"
+                    attr: 0
+                  - text: "(* swap *)"
+                    attr: 1
+                  - text: "\r\t\tModels.Broadcast(op.model, msg)\r\tEND Do;\r\r\r\tPROCEDURE (m: Model) Internalize (VAR rd: Stores.Reader);\r\t\tVAR version: INTEGER; n: INTEGER; v, last: Value;\r\tBEGIN\r\t\trd.ReadVersion(minVersion, maxVersion, version);\r\t\tIF ~rd.cancelled THEN\r\t\t\tlast := NIL;\r\t\t\trd.ReadInt(n);\t"
+                    attr: 0
+                  - text: "(* read number of values *)"
+                    attr: 1
+                  - text: "\r\t\t\tWHILE n # 0 DO\r\t\t\t\tNEW(v); rd.ReadInt(v.val);\r\t\t\t\tIF last = NIL THEN m.values := v ELSE last.next := v END;\t"
+                    attr: 0
+                  - text: "(* append value *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tlast := v;\r\t\t\t\tDEC(n)\r\t\t\tEND\r\t\tEND\r\tEND Internalize;\r\r\tPROCEDURE (m: Model) Externalize (VAR wr: Stores.Writer);\r\t\tVAR v: Value; n: INTEGER;\r\tBEGIN\r\t\twr.WriteVersion(maxVersion);\r\t\tv := m.values; n := 0; WHILE v # NIL DO INC(n); v := v.next END;\r\t\twr.WriteInt(n);\t"
+                    attr: 0
+                  - text: "(* write number of values *)"
+                    attr: 1
+                  - text: "\r\t\tv := m.values; WHILE v # NIL DO wr.WriteInt(v.val); v := v.next END\r\tEND Externalize;\r\r\tPROCEDURE (m: Model) CopyFrom (source: Stores.Store);\r\tBEGIN\r\t\tm.values := source(Model).values\t"
+                    attr: 0
+                  - text: "(* values are immutable and thus can be shared *)"
+                    attr: 1
+                  - text: "\r\tEND CopyFrom;\r\r\tPROCEDURE (m: Model) SetValues (v: Value), NEW;\r\t\tVAR op: ModelOp;\r\tBEGIN\r\t\tNEW(op); op.model := m; op.values := v;\r\t\tModels.Do(m, \"Set Values\", op)\r\tEND SetValues;\r\r\r\tPROCEDURE OpenData (v: View);\r\t\tVAR t: TextModels.Model; f: TextMappers.Formatter; h: Value;\r\tBEGIN\r\t\tt := TextModels.dir.New();\r\t\tf.ConnectTo(t);\r\t\th := v.model.values;\r\t\tWHILE h # NIL DO\r\t\t\tf.WriteInt(h.val); f.WriteLn;\r\t\t\th := h.next\r\t\tEND;\r\t\tViews.OpenAux(TextViews.dir.New(t), \"Values\")\r\tEND OpenData;\r\r\tPROCEDURE DropData (t: TextModels.Model; v: View);\r\t\tVAR s: TextMappers.Scanner; first, last, h: Value;\r\tBEGIN\r\t\ts.ConnectTo(t);\r\t\ts.Scan;\r\t\tWHILE s.type = TextMappers.int DO\r\t\t\tNEW(h); h.val := s.int;\r\t\t\tIF last = NIL THEN first := h ELSE last.next := h END;\r\t\t\tlast := h;\r\t\t\ts.Scan\r\t\tEND;\r\t\tv.model.SetValues(first)\r\tEND DropData;\r\r\r\tPROCEDURE (v: View) Internalize (VAR rd: Stores.Reader);\r\t\tVAR version: INTEGER; st: Stores.Store;\r\tBEGIN\r\t\trd.ReadVersion(minVersion, maxVersion, version);\r\t\tIF ~rd.cancelled THEN\r\t\t\trd.ReadStore(st);\r\t\t\tv.model := st(Model)\r\t\tEND\r\tEND Internalize;\r\r\tPROCEDURE (v: View) CopyFromModelView (source: Views.View; model: Models.Model);\r\tBEGIN\r\t\tASSERT(model IS Model, 20);\r\t\tWITH source: View DO\r\t\t\tv.model := model(Model)\r\t\tEND\r\tEND CopyFromModelView;\r\r\tPROCEDURE (v: View) Externalize (VAR wr: Stores.Writer);\r\tBEGIN\r\t\twr.WriteVersion(maxVersion);\r\t\twr.WriteStore(v.model)\r\tEND Externalize;\r\r\tPROCEDURE (v: View) ThisModel (): Models.Model;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " v.model\r\tEND ThisModel;\r\r\tPROCEDURE (v: View) Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\t\tVAR h: Value; n: INTEGER; width, height, d, x: INTEGER;\r\tBEGIN\r\t\th := v.model.values; n := 0; WHILE h # NIL DO INC(n); h := h.next END;\t"
+                    attr: 0
+                  - text: "(* count values *)"
+                    attr: 1
+                  - text: "\r\t\tIF n > 0 THEN\r\t\t\tv.context.GetSize(width, height);\r\t\t\td := width DIV n; x := 0;\r\t\t\th := v.model.values;\r\t\t\tWHILE h # NIL DO\r\t\t\t\tf.DrawRect(x, height - h.val * Ports.mm, x + d, height, Ports.fill, Ports.grey50);\r\t\t\t\th := h.next; INC(x, d)\r\t\t\tEND\r\t\tEND\r\tEND Restore;\r\r\tPROCEDURE (v: View) HandleModelMsg (VAR msg: Models.Message);\r\tBEGIN\r\t\tWITH msg: Models.UpdateMsg DO\r\t\t\tViews.Update(v, Views.keepFrames)\r\t\tELSE\r\t\tEND\r\tEND HandleModelMsg;\r\r\tPROCEDURE (v: View) HandleCtrlMsg (f: Views.Frame; VAR msg: Views.CtrlMessage;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR focus: Views.View);\r\t\tVAR x, y, w, h: INTEGER; modifiers: SET; isDown: BOOLEAN;\r\tBEGIN\r\t\tWITH msg: Controllers.TrackMsg DO\r\t\t\tREPEAT f.Input(x, y, modifiers, isDown) UNTIL ~isDown;\r\t\t\tv.context.GetSize(w, h);\r\t\t\tIF (x >= 0) & (y >= 0) & (x < w) & (y < h) THEN OpenData(v) END\r\t\t| msg: Controllers.PollDropMsg DO\r\t\t\tIF Services.Extends(msg.type, \"TextViews.View\") THEN\r\t\t\t\tmsg.dest := f "
+                    attr: 0
+                  - text: "(* enable drop target feedback *)"
+                    attr: 1
+                  - text: "\r\t\t\tEND\r\t\t| msg: Controllers.DropMsg DO\r\t\t\tIF msg.view IS TextViews.View THEN\r\t\t\t\tDropData(msg.view(TextViews.View).ThisModel(), v)\t"
+                    attr: 0
+                  - text: "(* interpret dropped text *)"
+                    attr: 1
+                  - text: "\r\t\t\tEND\r\t\tELSE\r\t\tEND\r\tEND HandleCtrlMsg;\r\r\tPROCEDURE (v: View) HandlePropMsg (VAR msg: Properties.Message);\r\t\tCONST min = 10 * Ports.mm; max = 160 * Ports.mm; pref = 90 * Ports.mm;\r\tBEGIN\r\t\tWITH msg: Properties.SizePref DO\t"
+                    attr: 0
+                  - text: "(* prevent illegal sizes *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF msg.w = Views.undefined THEN msg.w := pref\r\t\t\tELSIF msg.w < min THEN msg.w := min\r\t\t\tELSIF msg.w > max THEN msg.w := max\r\t\t\tEND;\r\t\t\tIF msg.h = Views.undefined THEN msg.h := pref\r\t\t\tELSIF msg.h < min THEN msg.h := min\r\t\t\tELSIF msg.h > max THEN msg.h := max\r\t\t\tEND\r\t\t| msg: Properties.FocusPref DO\r\t\t\tmsg.hotFocus := TRUE\r\t\tELSE\r\t\tEND\r\tEND HandlePropMsg;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Deposit
+                    attr: 3
+                  - text: "*;\r\t\tVAR m: Model; v: View;\r\tBEGIN\r\t\tNEW(m);\r\t\tNEW(v); v.model := m; Stores.Join(v, m);\r\t\tViews.Deposit(v)\r\tEND Deposit;\r\rEND ObxGraphs."
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 7979
+          bodyLen: 8

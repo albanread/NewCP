@@ -1,0 +1,202 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\System\\Docu\\In.odc"
+  size: 3919
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 3788
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 3602
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 3516
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                asc: 134600
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000003
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 6
+                bodyPos: 3516
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 3002
+                runListLen: 456
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                flow:
+                  - text: In
+                    attr: 0
+                  - text: "\r\rDEFINITION In;\r\r\tVAR Done-: BOOLEAN;\r\r\tPROCEDURE Open;\r\tPROCEDURE Char (OUT ch: CHAR);\r\tPROCEDURE Int (OUT i: INTEGER);\r\tPROCEDURE LongInt (OUT l: LONGINT);\r\tPROCEDURE Real (OUT x: REAL);\r\tPROCEDURE Name (OUT name: ARRAY OF CHAR);\r\tPROCEDURE String (OUT str: ARRAY OF CHAR);\r\rEND In.\r\r\rThis module is provided for compatibility with the book \"Programming in Oberon\" by Reiser/Wirth. It is useful when learning the language. It is not recommended for use in production programs.\r\r\rVAR "
+                    attr: 1
+                  - text: Done
+                    attr: 2
+                  - text: "\rThis variable indicates whether the most recent input operation has succeeded. It is set to "
+                    attr: 1
+                  - text: "TRUE"
+                    attr: 3
+                  - text: " by a successful "
+                    attr: 1
+                  - text: Open
+                    attr: 3
+                  - text: ", and set to "
+                    attr: 1
+                  - text: "FALSE"
+                    attr: 3
+                  - text: " by the first unsuccessful input operation. Once set to "
+                    attr: 1
+                  - text: "FALSE"
+                    attr: 3
+                  - text: ", it remains "
+                    attr: 1
+                  - text: "FALSE"
+                    attr: 3
+                  - text: " until the next "
+                    attr: 1
+                  - text: Open
+                    attr: 3
+                  - text: ".\r\rPROCEDURE "
+                    attr: 1
+                  - text: Open
+                    attr: 2
+                  - text: "\rThis procedure opens the input stream. In BlackBox, the input stream is opened onto the target focus' text. If there is no target focus, or if it doesn't contain text, "
+                    attr: 1
+                  - text: Done
+                    attr: 3
+                  - text: " is set to FALSE. If there is a target focus containing text, the input stream is connected to the beginning of the text if there is no selection, otherwise to the beginning of the selection.\r\rPost\rDone\r\tinput stream was opened successfully\r~Done\r\tinput stream couldn't be opened\r\rPROCEDURE "
+                    attr: 1
+                  - text: Char
+                    attr: 2
+                  - text: " (OUT ch: CHAR)\rIf "
+                    attr: 1
+                  - text: Done
+                    attr: 3
+                  - text: " holds, this procedure attempts to read a character, otherwise it does nothing.\r\rPost\rDone\r\tch has been read\r~Done\r\tno character could be read\r\rPROCEDURE "
+                    attr: 1
+                  - text: Int
+                    attr: 2
+                  - text: " (OUT i: INTEGER)\rIf "
+                    attr: 1
+                  - text: Done
+                    attr: 3
+                  - text: " holds, this procedure attempts to read an integer, otherwise it does nothing.\r\rPost\rDone\r\ti has been read\r~Done\r\tno integer could be read\r\rPROCEDURE "
+                    attr: 1
+                  - text: LongInt
+                    attr: 2
+                  - text: " (OUT l: LONGINT)\rIf "
+                    attr: 1
+                  - text: Done
+                    attr: 3
+                  - text: " holds, this procedure attempts to read a long integer, otherwise it does nothing.\r\rPost\rDone\r\tl has been read\r~Done\r\tno long integer could be read\r\rPROCEDURE "
+                    attr: 1
+                  - text: Real
+                    attr: 2
+                  - text: " (OUT x: REAL)\rIf "
+                    attr: 1
+                  - text: Done
+                    attr: 3
+                  - text: " holds, this procedure attempts to read a real number, otherwise it does nothing.\r\rPost\rDone\r\tx has been read\r~Done\r\tno real number could be read\r\rPROCEDURE "
+                    attr: 1
+                  - text: Name
+                    attr: 2
+                  - text: " (OUT name: ARRAY OF CHAR)\rIf "
+                    attr: 1
+                  - text: Done
+                    attr: 3
+                  - text: " holds, this procedure attempts to read a name, otherwise it does nothing. A name is a sequence of legal Component Pascal identifiers concatenated by periods, e.g., \"Dialog.Beep\".\r\rPost\rDone\r\tx has been read\r~Done\r\tno name could be read\r\rPROCEDURE "
+                    attr: 1
+                  - text: String
+                    attr: 2
+                  - text: " (OUT str: ARRAY OF CHAR)\rIf "
+                    attr: 1
+                  - text: Done
+                    attr: 3
+                  - text: " holds, this procedure attempts to read a string, otherwise it does nothing. A string is a sequence of characters delimited by white space (i.e., blanks, carriage returns, tabulators) or by double quotes (\").\r\rPost\rDone\r\tstr has been read\r~Done\r\tno string could be read\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 10
+          bodyPos: 3884
+          bodyLen: 8

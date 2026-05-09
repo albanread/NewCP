@@ -1,0 +1,277 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Dev\\Rsrc\\New\\Models5.odc"
+  size: 4252
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 4121
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 3935
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 3849
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 6012000
+                asc: 121900
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000003
+              defaultAttr:
+                font: Helvetica
+                size: 114300
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 8
+                bodyPos: 3845
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 3331
+                runListLen: 1067
+                attrPool:
+                  - # [0]
+                    font: Helvetica
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: Helvetica
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000004
+                  - # [2]
+                    font: Helvetica
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [3]
+                    font: Helvetica
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [4]
+                    font: Helvetica
+                    size: 114300
+                    color: 0x000000ff
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE "
+                    attr: 0
+                  - text: New
+                    attr: 1
+                  - text: "Models;\r"
+                    attr: 0
+                  - text: "(* "
+                    attr: 2
+                  - view:
+                      kind: StdStamps.StdView
+                      storeKind: store
+                      typeChain:
+                        - StdStamps.StdViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 5
+                      bodyPos: 659
+                      bodyLen: 341
+                    attr: 2
+                    w: 1038225
+                    h: 142875
+                  - text: " *)"
+                    attr: 2
+                  - text: "\r\r\tIMPORT Stores, Models;\r\r\tCONST minVersion = 0; maxVersion = 0;\r\r\tTYPE\r\t\t"
+                    attr: 0
+                  - text: Model
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Models.Model) END;\r\r\t\t"
+                    attr: 0
+                  - text: Directory
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD END;\r\r\t\t"
+                    attr: 0
+                  - text: UpdateMsg
+                    attr: 3
+                  - text: "* = RECORD (Models.UpdateMsg)\r\t\t\t"
+                    attr: 0
+                  - text: "(* message fields *)"
+                    attr: 4
+                  - text: "\r\t\tEND;\r\r\t\tStdModel = POINTER TO RECORD (Model)\r\t\t\t"
+                    attr: 0
+                  - text: "(* model fields *)"
+                    attr: 4
+                  - text: "\r\t\tEND;\r\r\t\tStdDirectory = POINTER TO RECORD (Directory) END;\r\r\t\tOp = POINTER TO RECORD (Stores.Operation)\r\t\t\tmodel: StdModel;\r\t\t\t"
+                    attr: 0
+                  - text: "(* model-operation fields *)"
+                    attr: 4
+                  - text: "\r\t\tEND;\r\r\r\tVAR "
+                    attr: 0
+                  - text: dir
+                    attr: 3
+                  - text: "-, "
+                    attr: 0
+                  - text: stdDir
+                    attr: 3
+                  - text: "-: Directory;\r\r\r\t"
+                    attr: 0
+                  - text: "(** Model **)"
+                    attr: 2
+                  - text: "\r\r\r\r\t"
+                    attr: 0
+                  - text: "(** Directory **)"
+                    attr: 2
+                  - text: "\r\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: New
+                    attr: 3
+                  - text: "* (): Model, NEW, ABSTRACT;\r\r\r\t"
+                    attr: 0
+                  - text: "(* Op *)"
+                    attr: 2
+                  - text: "\r\r\tPROCEDURE (op: Op) Do;\r\t\tVAR msg: UpdateMsg;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: "(* perform model operation and set up the fields of the update message accordingly *)"
+                    attr: 4
+                  - text: "\r\t\tModels.Broadcast(op.model, msg)\t"
+                    attr: 0
+                  - text: "(* update all views on this model *)"
+                    attr: 2
+                  - text: "\r\tEND Do;\r\r\tPROCEDURE NewOp (model: StdModel "
+                    attr: 0
+                  - text: "(* additional parameters *)"
+                    attr: 4
+                  - text: " ): Op;\r\t\tVAR op: Op;\r\tBEGIN\r\t\tASSERT(model # NIL, 100);\r\t\tNEW(op); op.model := model;\r\t\t"
+                    attr: 0
+                  - text: "(* set up operation parameters *)"
+                    attr: 4
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " op\r\tEND NewOp;\r\r\r\t"
+                    attr: 0
+                  - text: "(* StdModel *)"
+                    attr: 2
+                  - text: "\r\r\tPROCEDURE (m: StdModel) Internalize (VAR rd: Stores.Reader);\r\t\tVAR version: INTEGER;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: "(* m is not initalized *)\r\t\t(* m.Domain() = NIL *)"
+                    attr: 2
+                  - text: "\r\t\tm.Internalize^(rd);\r\t\tIF ~rd.cancelled THEN\r\t\t\trd.ReadVersion(minVersion, maxVersion, version);\r\t\t\tIF ~rd.cancelled THEN\r\t\t\t\t"
+                    attr: 0
+                  - text: "(* read model fields *)"
+                    attr: 4
+                  - text: "\r\t\t\tEND\r\t\tEND\r\tEND Internalize;\r\r\tPROCEDURE (m: StdModel) Externalize (VAR wr: Stores.Writer);\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: "(* m is initalized *)"
+                    attr: 2
+                  - text: "\r\t\tm.Externalize^(wr);\r\t\twr.WriteVersion(maxVersion);\r\t\t"
+                    attr: 0
+                  - text: "(* write model fields *)"
+                    attr: 4
+                  - text: "\r\tEND Externalize;\r\r\tPROCEDURE (m: StdModel) CopyFrom (source: Stores.Store);\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: "(* m is not yet initialized *)"
+                    attr: 2
+                  - text: "\r"
+                    attr: 0
+                  - text: "\t\t(* m.Domain() = NIL *)"
+                    attr: 2
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: "(* source # NIL *)"
+                    attr: 2
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: "(* TYP(source) = TYP(m) *)\r"
+                    attr: 2
+                  - text: "\t\tWITH source: StdModel DO\r\t\t\t"
+                    attr: 0
+                  - text: "(* perform deep copy of source *)"
+                    attr: 4
+                  - text: "\r\t\tEND\r\tEND CopyFrom;\r\r\r\t"
+                    attr: 0
+                  - text: "(* StdDirectory *)"
+                    attr: 2
+                  - text: "\r\r\tPROCEDURE (d: StdDirectory) New (): Model;\r\t\tVAR m: StdModel;\r\tBEGIN\r\t\tNEW(m);"
+                    attr: 0
+                  - text: "\r\t\t(* initialize m *)"
+                    attr: 4
+                  - text: ";\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " m\r\tEND New;\r\r\r\t"
+                    attr: 0
+                  - text: "(** miscellaneous **)"
+                    attr: 2
+                  - text: "\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetDir
+                    attr: 3
+                  - text: "* (d: Directory);\r\tBEGIN\r\t\tASSERT(d # NIL, 20);\r\t\tdir := d\r\tEND SetDir;\r\r\tPROCEDURE Init;\r\t\tVAR d: StdDirectory;\r\tBEGIN\r\t\tNEW(d); stdDir := d; dir := d\r\tEND Init;\r\rBEGIN\r\tInit\rEND "
+                    attr: 0
+                  - text: New
+                    attr: 1
+                  - text: "Models.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 12
+          bodyPos: 4217
+          bodyLen: 8

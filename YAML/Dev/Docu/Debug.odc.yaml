@@ -1,0 +1,203 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Dev\\Docu\\Debug.odc"
+  size: 4828
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 4697
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 4511
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 4425
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                lead: 11500
+                asc: 121900
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 6
+                bodyPos: 4425
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 3911
+                runListLen: 456
+                attrPool:
+                  - # [0]
+                    font: Arial
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [3]
+                    font: Arial
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                flow:
+                  - text: DevDebug
+                    attr: 0
+                  - text: "\r\rDEFINITION DevDebug;\r\r\tIMPORT Views, Kernel;\r\r\tPROCEDURE Execute;\r\tPROCEDURE ShowGlobalVariables;\r\tPROCEDURE ShowLoadedModules;\r\tPROCEDURE ShowViewState;\r\tPROCEDURE Unload;\r\tPROCEDURE UnloadModuleList;\r\tPROCEDURE UnloadThis;\r\tPROCEDURE HeapRefView (adr: INTEGER; name: ARRAY OF CHAR): Views.View;\r\tPROCEDURE ShowHeapObject (adr: INTEGER; title: ARRAY OF CHAR);\r\tPROCEDURE SourcePos (mod: Kernel.Module; codePos: INTEGER): INTEGER;\r\tPROCEDURE UpdateGlobals (name: ARRAY OF CHAR);\r\tPROCEDURE UpdateModules;\r\rEND DevDebug.\r\r\rWhen a run-time error occurs, e.g., a division by zero, a \"trap text\" is opened which displays the procedure call chain. It is possible to use this text to navigate through data structures. Several other commands are useful when analyzing the state of the system.\rNote that debugging is done completely within BlackBox; there is no separate debugger environment. Debugging occurs \"post mortem\" with respect to commands, i.e., a command produces a run-time error, is aborted, and then debugged. However, the run-time error usually does not affect the loaded modules and the data structures which are anchored there, nor the open documents. In other words, debugging occurs \"run-time\" with respect to the application as a whole.\r\rA possible menu:\r\r"
+                    attr: 1
+                  - text: MENU
+                    attr: 2
+                  - text: "\r\t\"&Loaded Modules\"\t\"\"\t\"DevDebug.ShowLoadedModules\"\t\"\"\r\t\"&Global Variables\"\t\"\"\t\"DevDebug.ShowGlobalVariables\"\t\"TextCmds.SelectionGuard\"\r\t\"&View State\"\t\"\"\t\"DevDebug.ShowViewState\"\t\"StdCmds.SingletonGuard\"\r\t\"E&xecute\"\t\"\"\t\"DevDebug.Execute\"\t\"TextCmds.SelectionGuard\"\r\t\"&Unload\"\t\"\"\t\"DevDebug.Unload\"\t\"TextCmds.FocusGuard\"\r\t\"Unloa&d Module List\"\t\"\"\t\"DevDebug.UnloadModuleList\"\t\"TextCmds.SelectionGuard\"\r"
+                    attr: 1
+                  - text: END
+                    attr: 2
+                  - text: "\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: Execute
+                    attr: 2
+                  - text: "\rGuard: TextCmds.SelectionGuard\rExecute the string (between quotation marks), which must have the form of a Component Pascal command sequence, e.g., \"Dialog.Beep; Dialog.Beep\". For simple commands, the string delimiters may be omitted, e.g., Dialog.Beep (-> StdInterpreter).\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - text: "PROCEDURE "
+                    attr: 1
+                  - text: ShowGlobalVariables
+                    attr: 2
+                  - text: "\rGuard: TextCmds.SelectionGuard\rShow the global variables of the module whose name is selected.\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - text: "PROCEDURE "
+                    attr: 1
+                  - text: ShowLoadedModules
+                    attr: 2
+                  - text: "\rShow the list of all loaded modules. This command can be convenient to determine the modules which should be linked together when building an application.\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - text: "PROCEDURE "
+                    attr: 1
+                  - text: ShowViewState
+                    attr: 2
+                  - text: "\rGuard: TextCmds.FocusGuard\rShow the state of the current focus view.\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - text: "PROCEDURE "
+                    attr: 1
+                  - text: Unload
+                    attr: 2
+                  - text: "\rGuard: TextCmds.FocusGuard\rTries to unload the module whose source is in the focus view. Unloading fails if the specified module is not loaded yet, or if it is not a top module.\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 2
+                  - text: "PROCEDURE "
+                    attr: 1
+                  - text: UnloadModuleList
+                    attr: 2
+                  - text: "\rGuard: TextCmds.SelectionGuard\rTries to unload a list of modules whose names are selected. Unloading may partially or completely fail if one of the specified modules is not loaded yet, or if it is still being imported by at least one client module. Modules must be unloaded from top to bottom.\r\rPROCEDURE "
+                    attr: 1
+                  - text: UnloadThis
+                    attr: 2
+                  - text: "\rUsed in a text with a "
+                    attr: 1
+                  - text: DevCommanders.View
+                    attr: 3
+                  - text: ". This command takes the text following it and interprets it as a list of modules that should be unloaded. Similar to "
+                    attr: 1
+                  - text: UnloadModuleList
+                    attr: 3
+                  - text: " except that no selection is necessary.\r\rPROCEDURE "
+                    attr: 1
+                  - text: HeapRefView
+                    attr: 2
+                  - text: " (adr: INTEGER; name: ARRAY OF CHAR): Views.View\rPROCEDURE "
+                    attr: 1
+                  - text: ShowHeapObject
+                    attr: 2
+                  - text: " (adr: INTEGER; title: ARRAY OF CHAR)\rPROCEDURE "
+                    attr: 1
+                  - text: SourcePos
+                    attr: 2
+                  - text: " (mod: Kernel.Module; codePos: INTEGER): INTEGER\rPROCEDURE "
+                    attr: 1
+                  - text: UpdateGlobals
+                    attr: 2
+                  - text: " (name: ARRAY OF CHAR)\rPROCEDURE "
+                    attr: 1
+                  - text: UpdateModules
+                    attr: 2
+                  - text: "\rThese procedures are used internally.\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 10
+          bodyPos: 4793
+          bodyLen: 8

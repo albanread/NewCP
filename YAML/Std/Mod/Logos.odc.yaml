@@ -1,0 +1,247 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Std\\Mod\\Logos.odc"
+  size: 6898
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 6767
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 6581
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 6495
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                dsc: 25400
+                grid: 1
+                opts: 0x00000021
+              defaultAttr:
+                font: Geneva
+                size: 114300
+                color: 0x00000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 6615
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 6101
+                runListLen: 1743
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE StdLogos;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT Ports, Stores, Views, Controllers, Properties;\r\r\tCONST\r\t\tW = 4;\r\t\tbaseSize = 24 * Ports.point;\r\r\t\tcolBase = 00202020H;\r\r\t\tchangeColorKey = \"#System:ChangeColor\";\r\r\t\tminVersion = 0; maxVersion = 0;\r\r\r\tTYPE\r\t\tView = POINTER TO RECORD (Views.View)\r\t\t\tc: Ports.Color\r\t\tEND;\r\t\t\r\t\tChangeSizeOp = POINTER TO RECORD (Stores.Operation)\r\t\t\tview: View;\r\t\t\tsize: INTEGER;\r\t\tEND;\r\t\r\t\tChangeColorOp = POINTER TO RECORD (Stores.Operation)\r\t\t\tview: View;\r\t\t\tcolor: Ports.Color\r\t\tEND;\r\t\t\r\t"
+                    attr: 0
+                  - text: "(* curve painting *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE Paint (f: Views.Frame; size: INTEGER; col, bgnd: Ports.Color);\r\t\tVAR i, d, s, g, m, a, b, l, l0, rl, rt, rr, rb: INTEGER; c: Ports.Color;\r\tBEGIN\r\t\ts := size DIV 10; d := size DIV 2; g := d DIV 8; m := size * W DIV 2;\r\t\tf.DrawOval(0, s * 2, size * W, size, Ports.fill, col);\r\t\tf.DrawOval(s * W, s * 11 DIV 4, (size - s) * W, size - s * 3 DIV 4, Ports.fill, bgnd);\r\t\ta := m; b := m + d; c := 7 * colBase; i := 0;\r\t\tWHILE i < 4 DO\r\t\t\tf.DrawOval(a, 0, b, d, Ports.fill, c);\r\t\t\tINC(a, g); DEC(b, g); DEC(c, colBase); INC(i)\r\t\tEND;\r\t\tf.rider.GetRect(rl, rt, rr, rb);\r\t\tl0 := rl; l := (f.gx + m + d DIV 2) DIV f.unit;\r\t\tIF l < rr THEN\r\t\t\tf.rider.SetRect(l, rt, rr, rb);\r\t\t\ta := m; b := m + d; c := 0; i := 0;\r\t\t\tWHILE i < 4 DO\r\t\t\t\tf.DrawOval(a, 0, b, d, Ports.fill, c);\r\t\t\t\tINC(a, g); DEC(b, g); INC(c, colBase); INC(i)\r\t\t\tEND;\r\t\t\tf.rider.SetRect(l0, rt, rr, rb)\r\t\tEND\r\tEND Paint;\r\r\t"
+                    attr: 0
+                  - text: "(* ChangeOp *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (op: ChangeSizeOp) Do;\r\t\tVAR v: View; size, w: INTEGER;\r\tBEGIN\r\t\tv := op.view;\r\t\tsize := op.size; v.context.GetSize(w, op.size); v.context.SetSize(size * W, size);\r\t\tViews.Update(v, Views.keepFrames)\r\tEND Do;\r\r\tPROCEDURE (op: ChangeColorOp) Do;\r\t\tVAR v: View; color: Ports.Color;\r\tBEGIN\r\t\tv := op.view;\r\t\tcolor := op.color; op.color := v.c; v.c := color;\r\t\tViews.Update(v, Views.keepFrames)\r\tEND Do;\r\r\t"
+                    attr: 0
+                  - text: "(* View *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (v: View) Internalize (VAR rd: Stores.Reader);\r\t\tVAR thisVersion: INTEGER;\r\tBEGIN\r\t\tv.Internalize^(rd); IF rd.cancelled THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " END;\r\t\trd.ReadVersion(minVersion, maxVersion, thisVersion); IF rd.cancelled THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " END;\r\t\trd.ReadInt(v.c)\r\tEND Internalize;\r\r\tPROCEDURE (v: View) Externalize (VAR wr: Stores.Writer);\r\tBEGIN\r\t\tv.Externalize^(wr);\r\t\twr.WriteVersion(maxVersion);\r\t\twr.WriteInt(v.c)\r\tEND Externalize;\r\r\tPROCEDURE (v: View) CopyFromSimpleView (source: Views.View);\r\tBEGIN\r\t\tWITH source: View DO v.c := source.c END\r\tEND CopyFromSimpleView;\r\r\tPROCEDURE (v: View) Restore (f: Views.Frame; l, t, r, b: INTEGER);\r\t\tVAR w, h: INTEGER; bgnd: Ports.Color; g: Views.Frame;\r\tBEGIN\r\t\tg := f;\r\t\tREPEAT\r\t\t\tg := Views.HostOf(g);\r\t\t\tbgnd := Views.transparent;\r\t\t\tg.view.GetBackground(bgnd)\r\t\tUNTIL bgnd # Views.transparent;\r\t\tv.context.GetSize(w, h);\r\t\tPaint(f, h, v.c, bgnd)\r\tEND Restore;\r\t\r\tPROCEDURE (v: View) HandleCtrlMsg (f: Views.Frame; VAR msg: Controllers.Message;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tVAR focus: Views.View);\r\tBEGIN\r\t\tWITH msg: Properties.CollectMsg DO\r\t\t\tViews.HandlePropMsg(v, msg.poll)\r\t\t| msg: Properties.EmitMsg DO\r\t\t\tViews.HandlePropMsg(v, msg.set)\r\t\tELSE\t"
+                    attr: 0
+                  - text: "(* ignore other messages *)"
+                    attr: 1
+                  - text: "\r\t\tEND\r\tEND HandleCtrlMsg;\r\r\tPROCEDURE (v: View) HandlePropMsg (VAR msg: Properties.Message);\r\t\tVAR q: Properties.Property; p: Properties.StdProp;\r\t\t\tcop: ChangeColorOp;\r\tBEGIN\r\t\tWITH msg: Properties.SizePref DO\r\t\t\tIF (msg.w > Views.undefined) & (msg.h > Views.undefined) THEN\r\t\t\t\t"
+                    attr: 0
+                  - text: "(* constrain proposed size *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tProperties.ProportionalConstraint(W, 1, msg.fixedW, msg.fixedH, msg.w, msg.h)\r\t\t\tELSE\r\t\t\t\t"
+                    attr: 0
+                  - text: "(* return default size *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tmsg.w := W * baseSize; msg.h := baseSize\r\t\t\tEND\r\t\t| msg: Properties.PollMsg DO\r\t\t\tNEW(p); p.known := {Properties.color}; p.valid := p.known;\r\t\t\tp.color.val := v.c;\r\t\t\tmsg.prop := p\r\t\t| msg: Properties.SetMsg DO\r\t\t\tq := msg.prop;\r\t\t\tWHILE q # NIL DO\r\t\t\t\tWITH q: Properties.StdProp DO\r\t\t\t\t\tIF Properties.color IN q.valid THEN\r\t\t\t\t\t\tNEW(cop); cop.view := v; cop.color := q.color.val;\r\t\t\t\t\t\tViews.Do(v, changeColorKey, cop)\r\t\t\t\t\tEND;\r\t\t\t\tELSE\r\t\t\t\tEND;\r\t\t\t\tq :=q.next\r\t\t\tEND\r\t\tELSE\r\t\tEND\r\tEND HandlePropMsg;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: Deposit
+                    attr: 3
+                  - text: "*;\r\t\tVAR v: View;\r\tBEGIN\r\t\tNEW(v); v.c := Ports.grey50; Views.Deposit(v)\r\tEND Deposit;\r\rEND StdLogos.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 6863
+          bodyLen: 8

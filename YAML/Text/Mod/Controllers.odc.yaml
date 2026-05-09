@@ -1,0 +1,1024 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Text\\Mod\\Controllers.odc"
+  size: 56155
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 56024
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 55838
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 55752
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 5940000
+                asc: 127000
+                dsc: 25400
+                grid: 1
+                opts: 0x00000001
+              defaultAttr:
+                font: Arial
+                size: 114300
+                color: 0x00000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 55873
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 55359
+                runListLen: 3733
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE TextControllers;\r"
+                    attr: 0
+                  - text: "(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 74100
+                      h: 95250
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 74100
+                      h: 95250
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 74100
+                      h: 95250
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- 20141213, center #21, Fixing Controllers.TickMsg.tick overflow bug.\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 63500
+                      h: 95250
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 63500
+                      h: 95250
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r"
+                    attr: 1
+                  - text: "\r\tIMPORT\r\t\tServices, Stores, Ports, Models, Views, Dialog, Controllers, Properties, Containers,\r\t\tTextModels, TextRulers, TextSetters, TextViews;\r\r\tCONST\r\t\t"
+                    attr: 0
+                  - text: noAutoScroll
+                    attr: 3
+                  - text: "* = 16; "
+                    attr: 0
+                  - text: noAutoIndent
+                    attr: 3
+                  - text: "* = 17;\r\r\t\t"
+                    attr: 0
+                  - text: "(** Controller.SetCaret pos; Controller.SetSelection beg, end **)"
+                    attr: 1
+                  - text: "\r\t\t"
+                    attr: 0
+                  - text: none
+                    attr: 3
+                  - text: "* = -1;\r\r\t\t"
+                    attr: 0
+                  - text: "(* Track mode *)"
+                    attr: 1
+                  - text: "\r\t\tchars = 0; words = 1; lines = 2;\t"
+                    attr: 0
+                  - text: "(* plus \"none\", defined above *)"
+                    attr: 1
+                  - text: "\r\r\t\tenter = 3X; rdel = 7X; ldel = 8X;\r\t\taL = 1CX; aR = 1DX; aU = 1EX; aD = 1FX;\r\t\tpL = 10X; pR = 11X; pU = 12X; pD = 13X;\r\t\tdL = 14X; dR = 15X; dU = 16X; dD = 17X;\r\r\t\tviewcode = TextModels.viewcode;\r\t\ttab = TextModels.tab; line = TextModels.line; para = TextModels.para;\r\r\t\tpoint = Ports.point; mm = Ports.mm; inch16 = Ports.inch DIV 16;\r\r\t\tboundCaret = TRUE;\r\t\tlenCutoff = 2000;\t"
+                    attr: 0
+                  - text: "(* max run length inspected to fetch properties *)"
+                    attr: 1
+                  - text: "\r\r\t\tattrChangeKey = \"#Text:AttributeChange\";\r\t\tresizingKey = \"#System:Resizing\";\r\t\tinsertingKey = \"#System:Inserting\";\r\t\tdeletingKey = \"#System:Deleting\";\r\t\tmovingKey = \"#System:Moving\";\r\t\tcopyingKey = \"#System:Copying\";\r\t\tlinkingKey = \"#System:Linking\";\r\t\treplacingKey = \"#System:Replacing\";\r\r\t\tminVersion = 0; maxVersion = 0; maxStdVersion = 0;\r\r\r\tTYPE\r\t\t"
+                    attr: 0
+                  - text: Controller
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Containers.Controller)\r\t\t\tview-: TextViews.View;\r\t\t\ttext-: TextModels.Model\t"
+                    attr: 0
+                  - text: "(** view # NIL => text = view.ThisText() **)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: Directory
+                    attr: 3
+                  - text: "* = POINTER TO ABSTRACT RECORD (Containers.Directory) END;\r\r\r\t\t"
+                    attr: 0
+                  - text: FilterPref
+                    attr: 3
+                  - text: "* = RECORD (Properties.Preference)\r\t\t\tcontroller*: Controller;\t"
+                    attr: 0
+                  - text: "(** IN, set to text controller asking for filter **)"
+                    attr: 1
+                  - text: "\r\t\t\tframe*: Views.Frame;\t"
+                    attr: 0
+                  - text: "(** IN, set to frame of controlled text view **)"
+                    attr: 1
+                  - text: "\r\t\t\tx*, y*: INTEGER;\t"
+                    attr: 0
+                  - text: "(** IN, set to coordinates of cursor in frame space **)"
+                    attr: 1
+                  - text: "\r\t\t\tfilter*: BOOLEAN\t"
+                    attr: 0
+                  - text: "(** preset to FALSE **)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: FilterPollCursorMsg
+                    attr: 3
+                  - text: "* = RECORD (Controllers.Message)\r\t\t\tcontroller*: Controller;\t"
+                    attr: 0
+                  - text: "(** IN, set to text controller asking for filter **)"
+                    attr: 1
+                  - text: "\r\t\t\tx*, y*: INTEGER;\r\t\t\tcursor*: INTEGER;\t"
+                    attr: 0
+                  - text: "(** as for Controllers.PollCursorMsg **)\r\t\t\t"
+                    attr: 1
+                  - text: "done*: BOOLEAN\t"
+                    attr: 0
+                  - text: "(** OUT; initialized to FALSE **)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: FilterTrackMsg
+                    attr: 3
+                  - text: "* = RECORD (Controllers.Message)\r\t\t\tcontroller*: Controller;\t"
+                    attr: 0
+                  - text: "(** IN, set to text controller asking for filter **)"
+                    attr: 1
+                  - text: "\r\t\t\tx*, y*: INTEGER;\r\t\t\tmodifiers*: SET;\t"
+                    attr: 0
+                  - text: "(** as for Controllers.TrackMsg **)"
+                    attr: 1
+                  - text: "\r"
+                    attr: 0
+                  - text: "\t\t\t"
+                    attr: 1
+                  - text: "done*: BOOLEAN\t"
+                    attr: 0
+                  - text: "(** OUT; initialized to FALSE **)"
+                    attr: 1
+                  - text: "\r\t\tEND;\r\r\r\t\tStdCtrl = POINTER TO RECORD (Controller)\r\t\t\t"
+                    attr: 0
+                  - text: "(* general state *)"
+                    attr: 1
+                  - text: "\r\t\t\tcachedRd: TextModels.Reader;\r\t\t\tcachedWr: TextModels.Writer;\r\t\t\tinsAttr: TextModels.Attributes;  "
+                    attr: 0
+                  - text: "(* preset attrs for next typed char *)"
+                    attr: 1
+                  - text: "\r\t\t\tautoBeg, autoEnd: INTEGER;\t"
+                    attr: 0
+                  - text: "(* lazy auto-scrolling;\r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tinvalid if (-1, .); initially (MAX(LONGINT), 0) *)"
+                    attr: 1
+                  - text: "\r\t\t\t"
+                    attr: 0
+                  - text: "(* caret *)"
+                    attr: 1
+                  - text: "\r\t\t\tcarPos: INTEGER;\t"
+                    attr: 0
+                  - text: "(* HasCaret()  iff  0 <= carPos <= text.Length() *)"
+                    attr: 1
+                  - text: "\r\t\t\tcarLast: INTEGER;\t"
+                    attr: 0
+                  - text: "(* used to recover caret at meaningful position *)"
+                    attr: 1
+                  - text: "\r\t\t\tcarX, lastX: INTEGER;\t"
+                    attr: 0
+                  - text: "(* arrow up/down anti-aliasing *)"
+                    attr: 1
+                  - text: "\r\t\t\tcarTick: LONGINT;\t"
+                    attr: 0
+                  - text: "(* next tick to invert flashing caret mark *)"
+                    attr: 1
+                  - text: "\r\t\t\tcarVisible: BOOLEAN;\t"
+                    attr: 0
+                  - text: "(* caret currently visible - used for flashing caret *)"
+                    attr: 1
+                  - text: "\r\t\t\t"
+                    attr: 0
+                  - text: "(* selection *)"
+                    attr: 1
+                  - text: "\r\t\t\tselBeg, selEnd: INTEGER;\t"
+                    attr: 0
+                  - text: "(* HasSel()  iff  0 <= selBeg < selEnd <= text.Length() *)"
+                    attr: 1
+                  - text: "\r\t\t\taliasSelBeg, aliasSelEnd: INTEGER;\t"
+                    attr: 0
+                  - text: "(* need lazy synchronization? *)"
+                    attr: 1
+                  - text: "\r\t\t\tselPin0, selPin1: INTEGER;\t"
+                    attr: 0
+                  - text: "(* anchor points of selection *)"
+                    attr: 1
+                  - text: "\r\t\t\t"
+                    attr: 0
+                  - text: "(* most recent scroll-while-tracking step *)"
+                    attr: 1
+                  - text: "\r\t\t\tlastStep: LONGINT\r\t\tEND;\r\r\t\tStdDirectory = POINTER TO RECORD (Directory) END;\r\r\r\t\t"
+                    attr: 0
+                  - text: "(* messages *)"
+                    attr: 1
+                  - text: "\r\r\t\t"
+                    attr: 0
+                  - text: ModelMessage
+                    attr: 3
+                  - text: "* = ABSTRACT RECORD (Models.Message) END;\r\t\t\t"
+                    attr: 0
+                  - text: "(** messages to control virtual model extensions, such as marks **)"
+                    attr: 1
+                  - text: "\r\r\t\t"
+                    attr: 0
+                  - text: SetCaretMsg
+                    attr: 3
+                  - text: "* = EXTENSIBLE RECORD (ModelMessage)\r\t\t\tpos*: INTEGER\r\t\tEND;\r\r\t\t"
+                    attr: 0
+                  - text: SetSelectionMsg
+                    attr: 3
+                  - text: "* = EXTENSIBLE RECORD (ModelMessage)\r\t\t\tbeg*, end*: INTEGER\r\t\tEND;\r\r\r\t\tViewMessage = ABSTRACT RECORD (Views.Message) END;\r\r\t\tCaretMsg = RECORD (ViewMessage)\r\t\t\tshow: BOOLEAN\r\t\tEND;\r\r\t\tSelectionMsg = RECORD (ViewMessage)\r\t\t\tbeg, end: INTEGER;\r\t\t\tshow: BOOLEAN\r\t\tEND;\r\r\r\t\t"
+                    attr: 0
+                  - text: "(* miscellaneous *)"
+                    attr: 1
+                  - text: "\r\r\t\tTrackState = RECORD\r\t\t\tx, y: INTEGER;\r\t\t\ttoggle: BOOLEAN\r\t\tEND;\r\r\r\tVAR\r\t\t"
+                    attr: 0
+                  - text: dir
+                    attr: 3
+                  - text: "-, "
+                    attr: 0
+                  - text: stdDir
+                    attr: 3
+                  - text: "-: Directory;\r\r\r\tPROCEDURE CachedReader (c: StdCtrl): TextModels.Reader;\r\t\tVAR rd: TextModels.Reader;\r\tBEGIN\r\t\trd := c.text.NewReader(c.cachedRd); c.cachedRd := NIL; "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " rd\r\tEND CachedReader;\r\r\tPROCEDURE CacheReader (c: StdCtrl; rd: TextModels.Reader);\r\tBEGIN\r\t\tc.cachedRd := rd\r\tEND CacheReader;\r\r\r\tPROCEDURE CachedWriter (c: StdCtrl; attr: TextModels.Attributes): TextModels.Writer;\r\t\tVAR wr: TextModels.Writer;\r\tBEGIN\r\t\twr := c.text.NewWriter(c.cachedWr); wr.SetAttr(attr);\r\t\tc.cachedRd := NIL; "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " wr\r\tEND CachedWriter;\r\r\tPROCEDURE CacheWriter (c: StdCtrl; wr: TextModels.Writer);\r\tBEGIN\r\t\tc.cachedWr := wr\r\tEND CacheWriter;\r\r\r\t"
+                    attr: 0
+                  - text: "(** Controller **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: Internalize2
+                    attr: 3
+                  - text: "- (VAR rd: Stores.Reader), EXTENSIBLE;\r\t\tVAR v: INTEGER;\r\tBEGIN\r\t\t(* c.Internalize^(rd); *)\r\t\trd.ReadVersion(minVersion, maxVersion, v)\r\tEND Internalize2;\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: Externalize2
+                    attr: 3
+                  - text: "- (VAR wr: Stores.Writer), EXTENSIBLE;\r\tBEGIN\r\t\t(* c.Externalize^(wr); *)\r\t\twr.WriteVersion(maxVersion)\r\tEND Externalize2;\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: InitView2
+                    attr: 3
+                  - text: "* (v: Views.View), EXTENSIBLE;\r\tBEGIN\r\t\tASSERT((v = NIL) # (c.view = NIL), 21);\r\t\tIF c.view = NIL THEN ASSERT(v IS TextViews.View, 22) END;\r\t\t(* c.InitView^(v); *)\r\t\tIF v # NIL THEN c.view := v(TextViews.View); c.text := c.view.ThisModel()\r\t\tELSE c.view := NIL; c.text := NIL\r\t\tEND\r\tEND InitView2;\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: ThisView
+                    attr: 3
+                  - text: "* (): TextViews.View, EXTENSIBLE;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " c.view\r\tEND ThisView;\r\r\r\t"
+                    attr: 0
+                  - text: "(** caret **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: CaretPos
+                    attr: 3
+                  - text: "* (): INTEGER, NEW, ABSTRACT;\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: SetCaret
+                    attr: 3
+                  - text: "* (pos: INTEGER), NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(** pre: pos = none  OR  0 <= pos <= c.text.Length() **)"
+                    attr: 1
+                  - text: "\r\t"
+                    attr: 0
+                  - text: "(** post: "
+                    attr: 1
+                  - text: c.
+                    attr: 0
+                  - text: "carPos = pos **)"
+                    attr: 1
+                  - text: "\r\r\r\t"
+                    attr: 0
+                  - text: "(** selection **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: GetSelection
+                    attr: 3
+                  - text: "* (OUT beg, end: INTEGER), NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(** post: beg = end  OR  0 <= beg <= end <= c.text.Length() **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (c: Controller) "
+                    attr: 0
+                  - text: SetSelection
+                    attr: 3
+                  - text: "* (beg, end: INTEGER), NEW, ABSTRACT;\r\t"
+                    attr: 0
+                  - text: "(** pre: beg = end  OR  0 <= beg < end <= c.text.Length() **)"
+                    attr: 1
+                  - text: "\r\t"
+                    attr: 0
+                  - text: "(** post: c.selBeg = beg, c.selEnd = end **)"
+                    attr: 1
+                  - text: "\r\r\r\t"
+                    attr: 0
+                  - text: "(** Directory **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: NewController
+                    attr: 3
+                  - text: "* (opts: SET): Controller, ABSTRACT;\r\r\tPROCEDURE (d: Directory) "
+                    attr: 0
+                  - text: New
+                    attr: 3
+                  - text: "* (): Controller, EXTENSIBLE;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " d.NewController({})\r\tEND New;\r\r\r\t"
+                    attr: 0
+                  - text: "(** miscellaneous **)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetDir
+                    attr: 3
+                  - text: "* (d: Directory);\r\tBEGIN\r\t\tASSERT(d # NIL, 20); dir := d\r\tEND SetDir;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Install
+                    attr: 3
+                  - text: "*;\r\tBEGIN\r\t\tTextViews.SetCtrlDir(dir)\r\tEND Install;\r\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Focus
+                    attr: 3
+                  - text: "* (): Controller;\r\t\tVAR v: Views.View; c: Containers.Controller;\r\tBEGIN\r\t\tv := Controllers.FocusView();\r\t\tIF (v # NIL) & (v IS TextViews.View) THEN\r\t\t\tc := v(TextViews.View).ThisController();\r\t\t\tIF (c # NIL) & (c IS Controller) THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " c(Controller)\r\t\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " NIL\r\t\t\tEND\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " NIL\r\t\tEND\r\tEND Focus;\r\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetCaret
+                    attr: 3
+                  - text: "* (text: TextModels.Model; pos: INTEGER);\r\t"
+                    attr: 0
+                  - text: "(** pre: text # NIL,  pos = none  OR  0 <= pos <= text.Length() **)"
+                    attr: 1
+                  - text: "\r\t\tVAR cm: SetCaretMsg;\r\tBEGIN\r\t\tASSERT(text # NIL, 20); ASSERT(none <= pos, 21); ASSERT(pos <= text.Length(), 22);\r\t\tcm.pos := pos; Models.Broadcast(text, cm)\r\tEND SetCaret;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: SetSelection
+                    attr: 3
+                  - text: "* (text: TextModels.Model; beg, end: INTEGER);\r\t"
+                    attr: 0
+                  - text: "(** pre: text # NIL,  beg = end  OR  0 <= beg < end <= text.Length() **)"
+                    attr: 1
+                  - text: "\r\t\tVAR sm: SetSelectionMsg;\r\tBEGIN\r\t\tASSERT(text # NIL, 20);\r\t\tIF beg # end THEN\r\t\t\tASSERT(0 <= beg, 21); ASSERT(beg < end, 22); ASSERT(end <= text.Length(), 23)\r\t\tEND;\r\t\tsm.beg := beg; sm.end := end; Models.Broadcast(text, sm)\r\tEND SetSelection;\r\r\r\t"
+                    attr: 0
+                  - text: "(* support for cursor/selection/focus marking *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE BlinkCaret (c: StdCtrl; f: Views.Frame; tick: LONGINT);\r\t\tVAR vis: BOOLEAN;\r\tBEGIN\r\t\tIF (c.carPos # none) & f.front & (tick >= c.carTick) THEN\r\t\t\tIF c.carVisible THEN\r\t\t\t\tc.MarkCaret(f, Containers.hide); c.carVisible := FALSE\r\t\t\tELSE\r\t\t\t\tc.carVisible := TRUE; c.MarkCaret(f, Containers.show)\r\t\t\tEND;\r\t\t\tc.carTick := tick + Dialog.caretPeriod\r\t\tEND\r\tEND BlinkCaret;\r\r\tPROCEDURE FlipCaret (c: StdCtrl; show: BOOLEAN);\r\t\tVAR msg: CaretMsg;\r\tBEGIN\r\t\tmsg.show := show;\r\t\tViews.Broadcast(c.view, msg)\r\tEND FlipCaret;\r\r\tPROCEDURE CheckCaret (c: StdCtrl);\r\t\tVAR text: TextModels.Model; len, pos: INTEGER;\r\tBEGIN\r\t\tIF ~(Containers.noCaret IN c.opts) THEN\r\t\t\tIF (c.carPos = none) & ~(boundCaret & (c.selBeg # c.selEnd)) & (c.ThisFocus() = NIL) THEN\r\t\t\t\ttext := c.text; len := text.Length(); pos := c.carLast; \r\t\t\t\tIF pos < 0 THEN pos := 0 ELSIF pos > len THEN pos := len END;\r\t\t\t\t(* c.carVisible := FALSE; c.carTick := 0;\t"
+                    attr: 0
+                  - text: "(* force visible mark *) *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tSetCaret(text, pos)\r\t\t\tEND\r\t\tELSE c.carPos := none\r\t\tEND\r\tEND CheckCaret;\r\r\r\r\tPROCEDURE HiliteRect (f: Views.Frame; l, t, r, b, s: INTEGER; show: BOOLEAN);\r\tBEGIN\r\t\tIF s = Ports.fill THEN\r\t\t\tf.MarkRect(l, t, r, b, Ports.fill, Ports.hilite, show)\r\t\tELSE\r\t\t\tf.MarkRect(l, t, r - s, t + s, s, Ports.hilite, show);\r\t\t\tf.MarkRect(l, t + s, l + s, b - s, s, Ports.hilite, show);\r\t\t\tf.MarkRect(l + s, b - s, r, b, s, Ports.hilite, show);\r\t\t\tf.MarkRect(r - s, t + s, r, b - s, s, Ports.hilite, show)\r\t\tEND\r\tEND HiliteRect;\r\r\tPROCEDURE MarkSelRange (c: StdCtrl; f: Views.Frame; b, e: TextViews.Location;\r\t\tfront, show: BOOLEAN\r\t);\r\t\tVAR fw, ff, r, t: INTEGER;\r\tBEGIN\r\t\tIF front THEN fw := 0; ff := Ports.fill ELSE fw := f.dot; ff := fw END;\r\t\tIF b.start # e.start THEN\r\t\t\tr := f.r; t := b.y + b.asc + b.dsc;\r\t\t\tHiliteRect(f, b.x, b.y, r + fw, t + fw, ff, show);\r\t\t\tIF t < e.y THEN HiliteRect(f, 0, t, r + fw, e.y + fw, ff, show) END;\r\t\t\tb.x := f.l; b.y := e.y\r\t\tEND;\r\t\tHiliteRect(f, b.x, b.y, e.x + fw, e.y + e.asc + e.dsc + fw, ff, show)\r\tEND MarkSelRange;\r\r\tPROCEDURE MarkSelection (c: StdCtrl; f: Views.Frame; beg, end: INTEGER; show: BOOLEAN);\r\t\tVAR b, e: TextViews.Location; s: Views.View; \r\tBEGIN\r\t\tIF (beg # end)"
+                    attr: 0
+                  - text: " & f.mark"
+                    attr: 3
+                  - text: " THEN\r\t\t\tASSERT(beg < end, 20);\r\t\t\ts := c.Singleton();\r\t\t\tIF s # NIL THEN\r\t\t\t\tIF beg + 1 = end THEN Containers.MarkSingleton(c, f, show) END\r\t\t\tELSE\r\t\t\t\tc.view.GetThisLocation(f, beg, b); c.view.GetThisLocation(f, end, e);\r\t\t\t\tIF (b.pos < e.pos) OR (b.pos = e.pos) & (b.x < e.x) THEN\r\t\t\t\t\tMarkSelRange(c, f, b, e, f.front, show)\r\t\t\t\tEND\r\t\t\tEND\r\t\tEND\r\tEND MarkSelection;\r\r\tPROCEDURE FlipSelection (c: StdCtrl; beg, end: INTEGER; show: BOOLEAN);\r\t\tVAR msg: SelectionMsg;\r\tBEGIN\r\t\tmsg.beg := beg; msg.end := end; msg.show := show;\r\t\tViews.Broadcast(c.view, msg)\r\tEND FlipSelection;\r\r\r\tPROCEDURE InitMarks (c: StdCtrl);\r\tBEGIN\r\t\tc.autoBeg := MAX(INTEGER); c.autoEnd := 0;\r\t\tc.carPos := none; c.carVisible := FALSE; c.carLast := none; c.carTick := 0; c.carX := -1;\r\t\tc.selBeg := none; c.selEnd := none;\r\t\tc.lastStep := 0\r\tEND InitMarks;\r\r\tPROCEDURE AutoShowRange (c: StdCtrl; beg, end: INTEGER);\r\tBEGIN\r\t\tIF (beg <= c.autoBeg) & (c.autoEnd <= end) THEN\r\t\t\tc.autoBeg := beg; c.autoEnd := end\t"
+                    attr: 0
+                  - text: "(* new range includes old range: expand *)"
+                    attr: 1
+                  - text: "\r\t\tELSE\r\t\t\tc.autoBeg := -1\t"
+                    attr: 0
+                  - text: "(* schizopheric scroll request -> don't scroll at all *)"
+                    attr: 1
+                  - text: "\r\t\tEND\r\tEND AutoShowRange;\r\r\tPROCEDURE UpdateMarks (c: StdCtrl; op: INTEGER; beg, end, delta: INTEGER);\r\t"
+                    attr: 0
+                  - text: "(* ensure that marks are valid after updates *)"
+                    attr: 1
+                  - text: "\r\tBEGIN\r\t\tCASE op OF\r\t\t  TextModels.insert:\r\t\t\tc.carLast := end; c.selBeg := end; c.selEnd := end; beg := end\r\t\t| TextModels.delete:\r\t\t\tc.carLast := beg; c.selBeg := beg; c.selEnd := beg; end := beg\r\t\t| TextModels.replace:\r\t\tELSE\r\t\t\t"
+                    attr: 0
+                  - text: HALT
+                    attr: 3
+                  - text: "(100)\r\t\tEND;\r\t\tAutoShowRange(c, beg, end)\r\tEND UpdateMarks;\r\r\r\t"
+                    attr: 0
+                  - text: "(* support for smart cut/copy/paste and attributing *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE LegalChar (ch: CHAR): BOOLEAN;\r\tBEGIN\r\t\tIF ch < 100X THEN\r\t\t\tCASE ORD(ch) OF\r\t\t\t\tORD(viewcode),\r\t\t\t\tORD(tab), ORD(line), ORD(para),\r\t\t\t\tORD(\" \") .. 7EH, 80H .. 0FFH: "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " FALSE\r\t\t\tEND\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\tEND\r\tEND LegalChar;\r\r\tPROCEDURE LeftTerminator (ch: CHAR): BOOLEAN;\r\tBEGIN\r\t\tIF ch < 100X THEN\r\t\t\tCASE ch OF\r\t\t\t\tviewcode, tab, line, para, '\"', \"'\", \"(\", \"[\", \"{\": "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " FALSE\r\t\t\tEND\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\tEND\r\tEND LeftTerminator;\r\r\tPROCEDURE RightTerminator (ch, ch1: CHAR): BOOLEAN;\r\tBEGIN\r\t\tIF ch < 100X THEN\r\t\t\tCASE ch OF\r\t\t\t  0X, viewcode, tab, line, para,\r\t\t\t  \"!\", '\"', \"'\", \"(\", \")\", \",\", \";\", \"?\", \"[\", \"]\", \"{\", \"}\": "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\t| \".\", \":\":\r\t\t\t\tCASE ch1 OF\r\t\t\t\t  0X, viewcode, tab, line, para, \" \": "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\t\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " FALSE\r\t\t\t\tEND\r\t\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " FALSE\r\t\t\tEND\r\t\tELSE "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TRUE\r\t\tEND\r\tEND RightTerminator;\r\r\tPROCEDURE ReadLeft (rd: TextModels.Reader; pos: INTEGER; OUT ch: CHAR);\r\tBEGIN\r\t\tIF pos > 0 THEN rd.SetPos(pos - 1); rd.ReadChar(ch)\r\t\tELSE rd.SetPos(pos); ch := \" \"\r\t\tEND\r\tEND ReadLeft;\r\r\tPROCEDURE SmartRange (c: StdCtrl; VAR beg, end: INTEGER);\r\t"
+                    attr: 0
+                  - text: "(* if possible and whole words are covered,\r\textend [beg, end) to encompass either a leading or a trailing blank *)"
+                    attr: 1
+                  - text: "\r\t\tVAR rd: TextModels.Reader; we, be: INTEGER; ch, ch0, ch1: CHAR; rightTerm: BOOLEAN;\r\tBEGIN\r(*\r"
+                    attr: 0
+                  - text: disable intelligent delete/cut/move for now
+                    attr: 3
+                  - text: "\r\t\trd := CachedReader(c); ReadLeft(rd, beg, ch0); rd.ReadChar(ch);\r\t\tIF ((ch0 <= \" \") OR LeftTerminator(ch0)) & (ch # \" \") THEN\r\t\t\t"
+                    attr: 0
+                  - text: "(* range covers beg of word *)"
+                    attr: 1
+                  - text: "\r"
+                    attr: 0
+                  - text: "\t"
+                    attr: 1
+                  - text: "\t\twe := beg; be := beg;\r"
+                    attr: 0
+                  - text: "\t"
+                    attr: 1
+                  - text: "\t\tWHILE (ch # 0X) & (be <= end) DO\r\t\t\t\tch1 := ch; rd.ReadChar(ch); INC(be);\r\t\t\t\tIF (ch1 # \" \") & ((be <= end) OR ~RightTerminator(ch1, ch)) THEN we := be END\r\t\t\tEND;\r\t\t\trightTerm := RightTerminator(ch1, ch);\r"
+                    attr: 0
+                  - text: "\t"
+                    attr: 1
+                  - text: "\t\tIF (beg < we) & (we = end) & ((we < be) OR rightTerm) THEN\r\t\t\t\t"
+                    attr: 0
+                  - text: "(* range covers end of word *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tIF (we < be) & (ch1 = \" \") THEN\r\t\t\t\t\tINC(end)\t"
+                    attr: 0
+                  - text: "(* include trailing blank *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tELSIF (beg > 0) & rightTerm & (ch0 = \" \") THEN\r\t\t\t\t\tDEC(beg)\t"
+                    attr: 0
+                  - text: "(* include leading blank *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tEND\r"
+                    attr: 0
+                  - text: "\t"
+                    attr: 1
+                  - text: "\t\tEND\r\t\tEND;\r\t\tCacheReader(c, rd)\r*)\r\tEND SmartRange;\r\r\tPROCEDURE OnlyWords (c: StdCtrl; beg, end: INTEGER): BOOLEAN;\r\t\tVAR rd: TextModels.Reader; we, be: INTEGER; ch, ch0, ch1: CHAR;\r\t\t\trightTerm, words: BOOLEAN;\r\tBEGIN\r\t\twords := FALSE;\r\t\trd := CachedReader(c); ReadLeft(rd, beg, ch0); rd.ReadChar(ch);\r\t\tIF ((ch0 <= \" \") OR LeftTerminator(ch0)) & (ch # \" \") THEN"
+                    attr: 0
+                  - text: "\t(* range covers beg of word *)"
+                    attr: 1
+                  - text: "\r\t\t\twe := beg; be := beg;\r\t\t\tWHILE (ch # 0X) & (be <= end) DO\r\t\t\t\tch1 := ch; rd.ReadChar(ch); INC(be);\r\t\t\t\tIF (ch1 # \" \") & ((be <= end) OR ~RightTerminator(ch1, ch)) THEN\r\t\t\t\t\twe := be\r\t\t\t\tEND\r\t\t\tEND;\r\t\t\trightTerm := RightTerminator(ch1, ch);\r\t\t\tIF (beg < we) & (we = end) & ((we < be) OR rightTerm) THEN\t"
+                    attr: 0
+                  - text: "(* range covers end of word *)"
+                    attr: 1
+                  - text: "\r\t\t\t\twords := TRUE\r\t\t\tEND\r\t\tEND;\r\t\tCacheReader(c, rd);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " words\r\tEND OnlyWords;\r\r\tPROCEDURE GetTargetField (t: TextModels.Model; pos: INTEGER;\r\t\tVAR touchL, touchM, touchR: BOOLEAN\r\t);\r\t\tVAR rd: TextModels.Reader; ch0, ch1: CHAR; leftTerm, rightTerm: BOOLEAN;\r\tBEGIN\r\t\trd := t.NewReader(NIL); ReadLeft(rd, pos, ch0); rd.ReadChar(ch1);\r\t\tleftTerm := (ch0 <= \" \") OR LeftTerminator(ch0);\r\t\trightTerm := (ch1 <= \" \") OR RightTerminator(ch1, 0X);\r\t\ttouchL := ~leftTerm & rightTerm;\r\t\ttouchM := ~leftTerm & ~rightTerm;\r\t\ttouchR := leftTerm & ~rightTerm\r\tEND GetTargetField;\r\r\tPROCEDURE LeftExtend (t: TextModels.Model; attr: TextModels.Attributes);\r\t\tVAR wr: TextModels.Writer;\r\tBEGIN\r\t\twr := t.NewWriter(NIL); wr.SetAttr(attr); wr.SetPos(0); wr.WriteChar(\" \")\r\tEND LeftExtend;\r\r\tPROCEDURE RightExtend (t: TextModels.Model; attr: TextModels.Attributes);\r\t\tVAR wr: TextModels.Writer;\r\tBEGIN\r\t\twr := t.NewWriter(NIL); wr.SetPos(t.Length()); wr.SetAttr(attr); wr.WriteChar(\" \")\r\tEND RightExtend;\r\r\tPROCEDURE MergeAdjust (target, inset: TextModels.Model; pos: INTEGER; OUT start: INTEGER);\r\t\tVAR rd: TextModels.Reader; a: TextModels.Attributes; ch, ch1: CHAR;\r\t\t\ttouchL, touchM, touchR: BOOLEAN;\r\tBEGIN\r\t\tstart := pos;\r(*\r"
+                    attr: 0
+                  - text: disable intelligent paste for now
+                    attr: 3
+                  - text: "\r\t\tGetTargetField(target, pos, touchL, touchM, touchR);\r\t\tIF touchL THEN\r\t\t\trd := inset.NewReader(NIL); rd.SetPos(0);\r\t\t\trd.ReadChar(ch); a := rd.attr; rd.ReadChar(ch1);\r\t\t\tIF (ch > \" \") & ~RightTerminator(ch, ch1) THEN LeftExtend(inset, a); INC(start) END\r\t\tEND;\r\t\tIF touchR & (inset.Length() > 0) THEN\r\t\t\trd := inset.NewReader(rd); rd.SetPos(inset.Length() - 1); rd.ReadChar(ch);\r\t\t\tIF (ch > \" \") & ~LeftTerminator(ch) THEN RightExtend(inset, rd.attr) END\r\t\tEND\r*)\r\tEND MergeAdjust;\r\r\r\tPROCEDURE InsertionAttr (c: StdCtrl): TextModels.Attributes;\r\t\tVAR rd: TextModels.Reader; r: TextRulers.Ruler; a: TextModels.Attributes; ch: CHAR;\r\tBEGIN\r\t\ta := c.insAttr;\r\t\tIF a = NIL THEN\r\t\t\trd := CachedReader(c); a := NIL;\r\t\t\tIF c.carPos # none THEN\r\t\t\t\tReadLeft(rd, c.carPos, ch); a := rd.attr;\r\t\t\t\tIF ((ch <= \" \") OR (ch = TextModels.nbspace)) & (c.carPos < c.text.Length()) THEN\r\t\t\t\t\trd.ReadChar(ch);\r\t\t\t\t\tIF ch > \" \" THEN a := rd.attr END\r\t\t\t\tEND\r\t\t\tELSIF boundCaret & (c.selBeg # c.selEnd) THEN\r\t\t\t\trd.SetPos(c.selBeg); rd.ReadChar(ch); a := rd.attr;\r\t\t\t\t"
+                    attr: 0
+                  - text: "c.insAttr := a"
+                    attr: 3
+                  - text: "\r\t\t\tEND;\r\t\t\tIF a = NIL THEN c.view.PollDefaults(r, a) END;\r\t\t\tCacheReader(c, rd)\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " a\r\tEND InsertionAttr;\r\r\r\tPROCEDURE GetTargetRange (c: StdCtrl; OUT beg, end: INTEGER);\r\tBEGIN\r\t\tIF boundCaret & (c.selBeg # c.selEnd) THEN\r\t\t\tbeg := c.selBeg; end := c.selEnd\r\t\tELSE\r\t\t\tbeg := c.carPos; end := beg\r\t\tEND\r\tEND GetTargetRange;\r\r\r\tPROCEDURE DoEdit (name: Stores.OpName;\r\t\tc: StdCtrl; beg, end: INTEGER;\r\t\tattr: TextModels.Attributes; ch: CHAR; view: Views.View; w, h: INTEGER;\r\t\tbuf: TextModels.Model; bufbeg, bufend: INTEGER;\t"
+                    attr: 0
+                  - text: "(* buf # NIL & bufend < 0: bufend = buf.Length() *)"
+                    attr: 1
+                  - text: "\r\t\tpos: INTEGER\r\t);\r\t\tVAR script: Stores.Operation; wr: TextModels.Writer; cluster: BOOLEAN;\r\tBEGIN\r\t\tIF (beg < end)\t"
+                    attr: 0
+                  - text: "(* something to delete *)"
+                    attr: 1
+                  - text: "\r\t\tOR (attr # NIL)\t"
+                    attr: 0
+                  - text: "(* something new to write *)"
+                    attr: 1
+                  - text: "\r\t\tOR (buf # NIL)\t"
+                    attr: 0
+                  - text: "(* something new to insert *)"
+                    attr: 1
+                  - text: "\r\t\tTHEN\r\t\t\tcluster := (beg < end) OR (attr = NIL) OR (view # NIL);\r\t\t\t"
+                    attr: 0
+                  - text: "(* don't script when typing a single character -> TextModels will bunch if possible *)"
+                    attr: 1
+                  - text: "\r\t\t\t"
+                    attr: 0
+                  - text: "(* ~cluster => name is reverted to #System.Inserting by TextModels *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF cluster THEN Models.BeginScript(c.text, name, script) END;\r\t\t\tIF beg < end THEN\r\t\t\t\tc.text.Delete(beg, end);\r\t\t\t\tIF pos > beg THEN DEC(pos, end - beg) END\r\t\t\tEND;\r\t\t\tIF attr # NIL THEN\r\t\t\t\tASSERT(buf = NIL, 20);\r\t\t\t\twr := CachedWriter(c, attr); wr.SetPos(pos);\r\t\t\t\tIF view # NIL THEN wr.WriteView(view, w, h) ELSE wr.WriteChar(ch) END;\r\t\t\t\tCacheWriter(c, wr)\r\t\t\tELSIF buf # NIL THEN\r\t\t\t\tIF bufend < 0 THEN bufend := buf.Length() END;\r\t\t\t\tc.text.Insert(pos, buf, bufbeg, bufend)\r\t\t\tEND;\r\t\t\tIF cluster THEN Models.EndScript(c.text, script) END;\r\t\t\t"
+                    attr: 0
+                  - text: CheckCaret(c)
+                    attr: 3
+                  - text: "\r\t\tEND\r\tEND DoEdit;\r\r\r\t"
+                    attr: 0
+                  - text: "(* editing *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE ThisPos (v: TextViews.View; f: Views.Frame; x, y: INTEGER): INTEGER;\r\t\tVAR loc: TextViews.Location; pos: INTEGER;\r\tBEGIN\r\t\tpos := v.ThisPos(f, x, y); v.GetThisLocation(f, pos, loc);\r\t\tIF (loc.view # NIL) & (x > (loc.l + loc.r) DIV 2) THEN INC(pos) END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " pos\r\tEND ThisPos;\r\r\tPROCEDURE ShowPos (c: StdCtrl; beg, end: INTEGER);\r\tBEGIN\r\t\tIF ~(noAutoScroll IN c.opts) THEN\r\t\t\tc.view.ShowRange(beg, end, TextViews.focusOnly)\r\t\tEND\r\tEND ShowPos;\r\r\r\tPROCEDURE Indentation (c: StdCtrl; pos: INTEGER): TextModels.Model;\r\t"
+                    attr: 0
+                  - text: "(* pre: c.carPos # none *)"
+                    attr: 1
+                  - text: "\r\t\tVAR st: TextSetters.Setter; buf: TextModels.Model; rd: TextModels.Reader;\r\t\t\twr: TextModels.Writer; ch: CHAR; spos: INTEGER;\r\tBEGIN\r\t\tbuf := NIL;\r\t\trd := CachedReader(c);\r\t\tst := c.view.ThisSetter(); spos := st.ThisSequence(pos); rd.SetPos(spos); rd.ReadChar(ch);\r\t\tIF (ch = tab) & (spos < pos) THEN\r\t\t\tbuf := TextModels.CloneOf(c.text); wr := buf.NewWriter(NIL); wr.SetPos(buf.Length());\r\t\t\twr.SetAttr(InsertionAttr(c));\r\t\t\twr.WriteChar(line);\r\t\t\tREPEAT wr.WriteChar(tab); rd.ReadChar(ch) UNTIL (ch # tab) OR (rd.Pos() > pos)\r\t\tEND;\r\t\tCacheReader(c, rd);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " buf\r\tEND Indentation;\r\r\tPROCEDURE InsertChar (c: StdCtrl; ch: CHAR);\r\t\tVAR buf: TextModels.Model; attr: TextModels.Attributes;\r\t\t\tbeg, end: INTEGER; legal: BOOLEAN; name: Stores.OpName;\r\tBEGIN\r\t\tattr := NIL; buf := NIL;\r\t\tIF ch < 100X THEN legal := LegalChar(ch) ELSE legal := "
+                    attr: 0
+                  - text: "TRUE"
+                    attr: 3
+                  - text: " END;\t"
+                    attr: 0
+                  - text: "(* should check Unicode *)"
+                    attr: 3
+                  - text: "\r\t\tIF (ch = ldel) OR (ch = rdel) THEN name := deletingKey ELSE name := replacingKey END;\r\t\tIF boundCaret & (c.selBeg # c.selEnd) & (legal OR (ch = ldel) OR (ch = rdel) OR (ch = enter)) THEN\r\t\t\tbeg := c.selBeg; end := c.selEnd;\r\t\t\tIF (ch = ldel) OR (ch = rdel) THEN SmartRange(c, beg, end); ch := 0X END\r\t\tELSE\r\t\t\tbeg := c.carPos; end := beg\r\t\tEND;\r\t\tIF (c.carPos # none) OR boundCaret & (c.selBeg # c.selEnd) THEN\r\t\t\tIF (ch = line) OR (ch = enter) THEN\r\t\t\t\tIF noAutoIndent IN c.opts THEN buf := NIL ELSE buf := Indentation(c, beg) END;\r\t\t\t\tIF buf = NIL THEN ch := line; legal := TRUE ELSE ch := 0X; legal := FALSE END\r\t\t\tEND;\r\t\t\tIF legal THEN\r\t\t\t\tattr := InsertionAttr(c)\r\t\t\tELSIF (ch = ldel) & (c.carPos > 0) THEN\r\t\t\t\tbeg := c.carPos - 1; end := c.carPos\r\t\t\tELSIF (ch = rdel) & (c.carPos < c.text.Length()) THEN\r\t\t\t\tbeg := c.carPos; end := c.carPos + 1\r\t\t\tEND\r\t\tEND;\r\t\tDoEdit(name, c, beg, end, attr, ch, NIL, 0, 0, buf, 0, -1, beg)\r\tEND InsertChar;\r\r\tPROCEDURE InsertText (c: StdCtrl; beg, end: INTEGER; text: TextModels.Model; OUT start: INTEGER);\r\t\tVAR buf: TextModels.Model;\r\tBEGIN\r\t\tbuf := TextModels.CloneOf(text); buf.InsertCopy(0, text, 0, text.Length());\r\t\tIF beg = end THEN MergeAdjust(c.text, buf, beg, start) ELSE start := beg END;\r\t\tDoEdit(insertingKey, c, beg, end, NIL, 0X, NIL, 0, 0, buf, 0, -1, beg)\r\tEND InsertText;\r\r\tPROCEDURE InsertView (c: StdCtrl; beg, end: INTEGER; v: Views.View; w, h: INTEGER);\r\tBEGIN\r\t\tDoEdit(insertingKey, c, beg, end, InsertionAttr(c), 0X, v, w, h, NIL, 0, 0, beg)\r\tEND InsertView;\r\r\r\tPROCEDURE InSubFrame (f, f1: Views.Frame; x, y: INTEGER): BOOLEAN;\r\tBEGIN\r\t\tINC(x, f.gx - f1.gx); INC(y, f.gy - f1.gy);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " (f1.l <= x) & (x < f1.r) & (f1.t <= y) & (y < f1.b)\r\tEND InSubFrame;\r\r\tPROCEDURE InFrame (f: Views.Frame; x, y: INTEGER): BOOLEAN;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " (f.l <= x) & (x < f.r) & (f.t <= y) & (y < f.b)\r\tEND InFrame;\r\r\r\t"
+                    attr: 0
+                  - text: "(* filtered tracking *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE IsFilter (v: Views.View; c: StdCtrl; f: Views.Frame; x, y: INTEGER): BOOLEAN;\r\t\tVAR pref: FilterPref;\r\tBEGIN\r\t\tpref.controller := c; pref.frame := f; pref.x := x; pref.y := y;\r\t\tpref.filter := FALSE;\r\t\tViews.HandlePropMsg(v, pref);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " pref.filter\r\tEND IsFilter;\r\r\tPROCEDURE FindFilter (c: StdCtrl; f: Views.Frame; x, y: INTEGER; OUT filter: Views.View);\r\t\tCONST catchRange = 1000;\r\t\tVAR rd: TextModels.Reader; pos, beg, end: INTEGER; isF: BOOLEAN;\r\tBEGIN\r\t\tc.view.GetRange(f, beg, end); DEC(beg, catchRange);\r\t\tpos := c.view.ThisPos(f, x, y);\r\t\tIF pos < c.text.Length() THEN INC(pos) END;\t"
+                    attr: 0
+                  - text: "(* let filter handle itself *)"
+                    attr: 1
+                  - text: "\r\t\trd := CachedReader(c); rd.SetPos(pos);\r\t\tREPEAT\r\t\t\trd.ReadPrevView(filter);\r\t\t\tisF := (filter # NIL) & IsFilter(filter, c, f, x, y);\r\t\tUNTIL isF OR rd.eot OR (rd.Pos() < beg);\r\t\tIF ~isF THEN filter := NIL END;\r\t\tCacheReader(c, rd)\r\tEND FindFilter;\r\r\tPROCEDURE FilteredPollCursor (c: StdCtrl; f: Views.Frame;\r\t\tVAR msg: Controllers.PollCursorMsg; VAR done: BOOLEAN\r\t);\r\t\tVAR filter, focus: Views.View; x, y: INTEGER; modifiers: SET; isDown: BOOLEAN; fmsg: FilterPollCursorMsg;\r\tBEGIN\r\t\tFindFilter(c, f, msg.x, msg.y, filter);\r\t\tIF filter # NIL THEN\r\t\t\t(* f.Input(x, y, modifiers, isDown); *)\r\t\t\tfmsg.x := msg.x; fmsg.y := msg.y; fmsg.cursor := msg.cursor;\r\t\t\tfmsg.controller := c; fmsg.done := FALSE;\r\t\t\t"
+                    attr: 0
+                  - text: "(*Views.ForwardCtrlMsg(f, fmsg) - does not work f.view # filter !!*)"
+                    attr: 3
+                  - text: "\r\t\t\tfocus := NIL;\r\t\t\tfilter.HandleCtrlMsg(f, fmsg, focus);\r\t\t\tIF fmsg.done THEN msg.cursor := fmsg.cursor END;\r\t\t\tdone := fmsg.done\r\t\tEND\r\tEND FilteredPollCursor;\r\r\tPROCEDURE FilteredTrack (c: StdCtrl; f: Views.Frame;\r\t\tVAR msg: Controllers.TrackMsg; VAR done: BOOLEAN\r\t);\r\t\tVAR filter, focus: Views.View; fmsg: FilterTrackMsg;\r\tBEGIN\r\t\tFindFilter(c, f, msg.x, msg.y, filter);\r\t\tIF filter # NIL THEN\r\t\t\tfmsg.x := msg.x; fmsg.y := msg.y; fmsg.modifiers := msg.modifiers;\r\t\t\tfmsg.controller := c; fmsg.done := FALSE;\r\t\t\t"
+                    attr: 0
+                  - text: "(*Views.ForwardCtrlMsg(f, fmsg) - does not work f.view # filter !!*)\r\t\t\t"
+                    attr: 3
+                  - text: "focus := NIL; filter.HandleCtrlMsg(f, fmsg, focus);\r\t\t\tdone := fmsg.done\r\t\tEND\r\tEND FilteredTrack;\r\r\r\t"
+                    attr: 0
+                  - text: "(* StdCtrl *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (c: StdCtrl) Internalize2 (VAR rd: Stores.Reader);\r\t\tVAR thisVersion: INTEGER;\r\tBEGIN\r\t\tc.Internalize2^(rd);\r\t\tIF rd.cancelled THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " END;\r\t\trd.ReadVersion(minVersion, maxStdVersion, thisVersion);\r\t\tIF rd.cancelled THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " END;\r\t\tInitMarks(c)\r\tEND Internalize2;\r\r\tPROCEDURE (c: StdCtrl) Externalize2 (VAR wr: Stores.Writer);\r\tBEGIN\r\t\tc.Externalize2^(wr);\r\t\twr.WriteVersion(maxStdVersion)\r\tEND Externalize2;\r\r\tPROCEDURE (c: StdCtrl) CopyFrom (source: Stores.Store);\r\tBEGIN\r\t\tc.CopyFrom^(source); InitMarks(c)\r\tEND CopyFrom;\r\r\tPROCEDURE (c: StdCtrl) Neutralize2;\r\tBEGIN\r\t\t(* c.Neutralize^; *)\r\t\tc.SetCaret(none)\r\tEND Neutralize2;\r\r\tPROCEDURE (c: StdCtrl) GetContextType (OUT type: Stores.TypeName);\r\tBEGIN\r\t\ttype := \"TextViews.View\"\r\tEND GetContextType;\r\r\tPROCEDURE (c: StdCtrl) GetValidOps (OUT valid: SET);\r\tBEGIN\r\t\tvalid := {};\r\t\tIF (c.carPos # none) OR (boundCaret & (c.selBeg # c.selEnd)) THEN\r\t\t\tvalid := valid + {Controllers.pasteChar, Controllers.paste}\r\t\tEND;\r\t\tIF c.selBeg # c.selEnd THEN\r\t\t\tvalid := valid + {Controllers.cut, Controllers.copy}\r\t\tEND\r\tEND GetValidOps;\r\r\tPROCEDURE (c: StdCtrl) NativeModel (m: Models.Model): BOOLEAN;\r\tBEGIN\r\t\tASSERT(m # NIL, 20);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " m IS TextModels.Model\r\tEND NativeModel;\r\r\tPROCEDURE (c: StdCtrl) NativeView (v: Views.View): BOOLEAN;\r\tBEGIN\r\t\tASSERT(v # NIL, 20);\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " v IS TextViews.View\r\tEND NativeView;\r\r\tPROCEDURE (c: StdCtrl) NativeCursorAt (f: Views.Frame; x, y: INTEGER): INTEGER;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " Ports.textCursor\r\tEND NativeCursorAt;\r\r\tPROCEDURE (c: StdCtrl) PollNativeProp (selection: BOOLEAN;\r\t\tVAR p: Properties.Property; VAR truncated: BOOLEAN\r\t);\r\t\tVAR beg, end: INTEGER;\r\tBEGIN\r\t\tIF selection & (c.selBeg = c.selEnd) THEN\r\t\t\tp := InsertionAttr(c).Prop(); truncated := FALSE\r\t\tELSE\r\t\t\tIF selection THEN beg := c.selBeg; end := c.selEnd\r\t\t\tELSE beg := 0; end := c.text.Length()\r\t\t\tEND;\r"
+                    attr: 0
+                  - text: "(*\r\t\t\ttruncated := (end - beg > lenCutoff);\r\t\t\tIF truncated THEN end := beg + lenCutoff END;\r*)\r"
+                    attr: 3
+                  - text: "\t\t\tp := c.text.Prop(beg, end)\r\t\tEND\r\tEND PollNativeProp;\r\r\tPROCEDURE (c: StdCtrl) SetNativeProp (selection: BOOLEAN; old, p: Properties.Property);\r\t\tVAR t: TextModels.Model; beg, end: INTEGER;\r\tBEGIN\r\t\tt := c.text;\r\t\tIF selection THEN beg := c.selBeg; end := c.selEnd ELSE beg := 0; end := t.Length() END;\r\t\tIF beg < end THEN\r\t\t\tt.Modify(beg, end, old, p);\r\t\t\tIF selection THEN c.SetSelection(beg, end) END\r\t\tELSIF selection THEN\r\t\t\tc.insAttr := TextModels.ModifiedAttr(InsertionAttr(c), p)\r\t\tEND\r\tEND SetNativeProp;\r\r\tPROCEDURE (c: StdCtrl) MakeViewVisible (v: Views.View);\r\t\tVAR pos: INTEGER;\r\tBEGIN\r\t\tASSERT(v # NIL, 20);\r\t\tASSERT(v.context # NIL, 21);\r\t\tASSERT(v.context.ThisModel() = c.text, 22);\r\t\tpos := v.context(TextModels.Context).Pos();\r\t\tShowPos(c, pos, pos + 1)\r\tEND MakeViewVisible;\r\r\tPROCEDURE (c: StdCtrl) GetFirstView (selection: BOOLEAN; OUT v: Views.View);\r\t\tVAR rd: TextModels.Reader; beg, end: INTEGER;\r\tBEGIN\r\t\tIF selection THEN beg := c.selBeg; end := c.selEnd\r\t\tELSE beg := 0; end := c.text.Length()\r\t\tEND;\r\t\tIF beg < end THEN\r\t\t\trd := CachedReader(c); rd.SetPos(beg); rd.ReadView(v);\r\t\t\tIF rd.Pos() > end THEN v := NIL END;\r\t\t\tCacheReader(c, rd)\r\t\tELSE v := NIL\r\t\tEND\r\tEND GetFirstView;\r\r\tPROCEDURE (c: StdCtrl) GetNextView (selection: BOOLEAN; VAR v: Views.View);\r\t\tVAR con: Models.Context; rd: TextModels.Reader; beg, end, pos: INTEGER;\r\tBEGIN\r\t\tASSERT(v # NIL, 20); con := v.context;\r\t\tASSERT(con # NIL, 21); ASSERT(con.ThisModel() = c.text, 22);\r\t\tIF selection THEN beg := c.selBeg; end := c.selEnd\r\t\tELSE beg := 0; end := c.text.Length()\r\t\tEND;\r\t\tpos := con(TextModels.Context).Pos();\r\t\tIF (beg <= pos) & (pos < end) THEN\r\t\t\trd := CachedReader(c); rd.SetPos(pos + 1); rd.ReadView(v);\r\t\t\tIF rd.Pos() > end THEN v := NIL END;\r\t\t\tCacheReader(c, rd)\r\t\tELSE v := NIL\r\t\tEND\r\tEND GetNextView;\r\r\tPROCEDURE (c: StdCtrl) GetPrevView (selection: BOOLEAN; VAR v: Views.View);\r\t\tVAR con: Models.Context; rd: TextModels.Reader; beg, end, pos: INTEGER;\r\tBEGIN\r\t\tASSERT(v # NIL, 20); con := v.context;\r\t\tASSERT(con # NIL, 21); ASSERT(con.ThisModel() = c.text, 22);\r\t\tIF selection THEN beg := c.selBeg; end := c.selEnd\r\t\tELSE beg := 0; end := c.text.Length()\r\t\tEND;\r\t\tpos := con(TextModels.Context).Pos();\r\t\tIF (beg < pos) & (pos <= end) THEN\r\t\t\trd := CachedReader(c); rd.SetPos(pos); rd.ReadPrevView(v);\r\t\t\tIF rd.Pos() < beg THEN v := NIL END;\r\t\t\tCacheReader(c, rd)\r\t\tELSE v := NIL\r\t\tEND\r\tEND GetPrevView;\r\r\tPROCEDURE (c: StdCtrl) GetSelectionBounds (f: Views.Frame; OUT x, y, w, h: INTEGER);\r\t\tVAR b, e: TextViews.Location;\r\tBEGIN\r\t\tc.GetSelectionBounds^(f, x, y, w, h);\r\t\tIF w = Views.undefined THEN\r\t\t\tc.view.GetThisLocation(f, c.selBeg, b);\r\t\t\tc.view.GetThisLocation(f, c.selEnd, e);\r\t\t\tIF b.start = e.start THEN x := b.x; w := e.x - b.x;\r\t\t\tELSE x := f.l; w := f.r - f.l;\r\t\t\tEND;\r\t\t\ty := b.y; h := e.y + e.asc + e.dsc - b.y\r\t\tEND\r\tEND GetSelectionBounds;\r\r\tPROCEDURE (c: StdCtrl) MarkPickTarget (source, f: Views.Frame;\r\t\tsx, sy, x, y: INTEGER; show: BOOLEAN\r\t);\r\t\tVAR b, e: TextViews.Location; pos: INTEGER;\r\tBEGIN\r\t\tpos := c.view.ThisPos(f, x, y);\r\t\tIF pos < c.text.Length() THEN\r\t\t\tc.view.GetThisLocation(f, pos, b);\r\t\t\tc.view.GetThisLocation(f, pos + 1, e);\r\t\t\tIF (b.pos < e.pos) OR (b.pos = e.pos) & (b.x < e.x) THEN\r\t\t\t\tMarkSelRange(c, f, b, e, TRUE, show)\r\t\t\tEND\r\t\tEND\r\tEND MarkPickTarget;\r\r\tPROCEDURE (c: StdCtrl) MarkDropTarget (source, f: Views.Frame;\r\t\tsx, sy, dx, dy, w, h, rx, ry: INTEGER; type: Stores.TypeName; isSingle, show: BOOLEAN\r\t);\r\t\tVAR loc: TextViews.Location; pos: INTEGER;\r\tBEGIN\r\t\tpos := c.view.ThisPos(f, dx, dy);\r\t\tIF (source # NIL) & ((source.view = f.view) OR (source.view.ThisModel() = f.view.ThisModel()))\r\t\t& (c.selBeg < pos) & (pos < c.selEnd) THEN\r\t\t\tpos := c.selBeg\r\t\tEND;\r\t\tc.view.GetThisLocation(f, pos, loc);\r\t\tf.MarkRect(loc.x, loc.y, loc.x + f.unit, loc.y + loc.asc + loc.dsc, Ports.fill, Ports.invert, show);\r\t\tIF (isSingle OR ~Services.Extends(type, \"TextViews.View\")) & (w > 0) & (h > 0) THEN\r\t\t\tDEC(dx, rx); DEC(dy, ry);\r\t\t\tf.MarkRect(dx, dy, dx + w, dy + h, 0, Ports.dim25, show)\r\t\tEND\r\tEND MarkDropTarget;\r\r\r\tPROCEDURE GetThisLine (c: StdCtrl; pos: INTEGER; OUT beg, end: INTEGER);\r\t\tVAR st: TextSetters.Setter;\r\tBEGIN\r\t\tst := c.view.ThisSetter();\r\t\tbeg := st.ThisLine(pos); end := st.NextLine(beg);\r\t\tIF end = beg THEN end := c.text.Length() END;\r\tEND GetThisLine;\r\r\tPROCEDURE GetThisChunk (c: StdCtrl; f: Views.Frame;\r\t\tVAR s: TrackState; OUT beg, end: INTEGER; OUT mode: INTEGER\r\t);\r\t\tVAR v: TextViews.View; b, e: TextViews.Location;\r\t\t\tst: TextSetters.Setter; ruler: TextRulers.Ruler; ra: TextRulers.Attributes;\r\t\t\tpos, r: INTEGER;\r\tBEGIN\r\t\tv := c.view; st := v.ThisSetter(); pos := ThisPos(v, f, s.x, s.y);\r\t\truler := TextViews.ThisRuler(v, pos); ra := ruler.style.attr;\r\t\tr := ra.right; IF ~(TextRulers.rightFixed IN ra.opts) OR (r > f.r) THEN r := f.r END;\r\t\tst.GetWord(pos, beg, end);\r\t\tv.GetThisLocation(f, beg, b); v.GetThisLocation(f, end, e);\r\t\tIF (s.x < f.l) OR (s.x >= r) THEN\t"
+                    attr: 0
+                  - text: "(* outside of line box: whole line *)"
+                    attr: 1
+                  - text: "\r\t\t\tGetThisLine(c, pos, beg, end);\r\t\t\tmode := lines\r\t\tELSIF (s.y < b.y) OR (s.y < b.y + b.asc + b.dsc) & (s.x < b.x)\r\t\tOR (s.y >= e.y) & (s.x >= e.x) OR (s.y >= e.y + e.asc + e.dsc) THEN\r\t\t\t"
+                    attr: 0
+                  - text: "(* outside of word: single char *)"
+                    attr: 1
+                  - text: "\r\t\t\tbeg := ThisPos(v, f, s.x, s.y); v.GetThisLocation(f, beg, b);\r\t\t\tIF (b.x > s.x) & (beg > 0) THEN DEC(beg) END;\r\t\t\tIF beg < c.text.Length() THEN end := beg + 1 ELSE end := beg END;\r\t\t\tmode := words\r\t\tELSE\t"
+                    attr: 0
+                  - text: "(* whole word *)"
+                    attr: 1
+                  - text: "\r\t\t\tmode := words\r\t\tEND\r\tEND GetThisChunk;\r\r\tPROCEDURE SetSel (c: StdCtrl; beg, end: INTEGER);\r\t"
+                    attr: 0
+                  - text: "(* pre: ~(Containers.noSelection IN c.opts) *)"
+                    attr: 1
+                  - text: "\r\tBEGIN\r\t\tIF beg >= end THEN c.SetCaret(beg) ELSE c.SetSelection(beg, end) END\r\tEND SetSel;\r\r\tPROCEDURE PrepareToTrack (c: StdCtrl; f: Views.Frame;\r\t\tVAR s: TrackState; mode: INTEGER;\r\t\tVAR pin0, pin1, pos: INTEGER\r\t);\r\t\tVAR loc: TextViews.Location; beg, end: INTEGER; m: INTEGER;\r\tBEGIN\r\t\tpos := ThisPos(c.view, f, s.x, s.y);\r\t\tIF mode IN {chars, words, lines} THEN\r\t\t\tGetThisChunk(c, f, s, pin0, pin1, m)\r\t\tELSE pin0 := pos; pin1 := pos\r\t\tEND;\r\t\tIF s.toggle & ((c.selBeg # c.selEnd) OR boundCaret & (c.carPos # none))\r\t\t& ~(Containers.noSelection IN c.opts) THEN\t"
+                    attr: 0
+                  - text: "(* modify existing selection *)"
+                    attr: 1
+                  - text: "\r\t\t\tIF c.selBeg # c.selEnd THEN\r\t\t\t\tbeg := c.selBeg; end := c.selEnd\r\t\t\tELSE\r\t\t\t\tbeg := c.carPos; end := beg; c.selPin0 := beg; c.selPin1 := beg\r\t\t\tEND;\r\t\t\tIF pin1 > c.selPin0 THEN\r\t\t\t\tend := pin1; pin0 := beg\r\t\t\tELSIF pin0 < c.selPin1 THEN\r\t\t\t\tbeg := pin0; pin0 := end\r\t\t\tEND;\r\t\t\tSetSel(c, beg, end);\r\t\t\tpin1 := pin0\r\t\tELSIF mode IN {chars, words, lines} THEN\r\t\t\tSetSel(c, pin0, pin1);\r\t\t\tpos := pin1\r\t\tELSE\r\t\t\tSetCaret(c.text, pos)\r\t\tEND;\r\t\tc.lastStep := Services.Ticks()\r\tEND PrepareToTrack;\r\r\tPROCEDURE ScrollDelay (d: INTEGER): INTEGER;\r\t\tVAR second, delay: INTEGER;\r\tBEGIN\r\t\tsecond := Services.resolution;\r\t\tIF d < 2 * mm THEN delay := second DIV 2\r\t\tELSIF d < 4 * mm THEN delay := second DIV 3\r\t\tELSIF d < 6 * mm THEN delay := second DIV 5\r\t\tELSIF d < 8 * mm THEN delay := second DIV 10\r\t\tELSE delay := second DIV 20\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " delay\r\tEND ScrollDelay;\r\r\tPROCEDURE ScrollWhileTracking (c: StdCtrl; f: Views.Frame; VAR x0, y0, x, y: INTEGER);\r\t"
+                    attr: 0
+                  - text: "(* currently, there are no provisions to scroll while tracking inside an embedded view *)"
+                    attr: 1
+                  - text: "\r\t\tVAR now: LONGINT; "
+                    attr: 0
+                  - text: "(* "
+                    attr: 3
+                  - text: "normalize: BOOLEAN; "
+                    attr: 0
+                  - text: "*)"
+                    attr: 3
+                  - text: " scr: Controllers.ScrollMsg;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: "(*"
+                    attr: 3
+                  - text: " normalize := c.view.context.Normalize(); "
+                    attr: 0
+                  - text: "*)"
+                    attr: 3
+                  - text: "\r\t\tnow := Services.Ticks();\r\t\tIF x < f.l THEN x0 := x; x := f.l ELSIF x > f.r THEN x0 := x; x := f.r END;\r\t\tIF (y < f.t) "
+                    attr: 0
+                  - text: "(*"
+                    attr: 3
+                  - text: " & normalize"
+                    attr: 0
+                  - text: "*)"
+                    attr: 3
+                  - text: " THEN\r\t\t\tIF c.lastStep + ScrollDelay(f.t - y) <= now THEN\r\t\t\t\tc.lastStep := now;\r\t\t\t\tscr.focus := "
+                    attr: 0
+                  - text: "TRUE"
+                    attr: 3
+                  - text: "; scr.vertical := TRUE; scr.op := Controllers.decLine;\r"
+                    attr: 0
+                  - text: "\t\t\t\tscr.done := FALSE;\r"
+                    attr: 3
+                  - text: "\t\t\t\tControllers.ForwardVia(Controllers.frontPath, scr)\r\t\t\tEND\r\t\tELSIF (y > f.b) "
+                    attr: 0
+                  - text: "(*"
+                    attr: 3
+                  - text: " & normalize "
+                    attr: 0
+                  - text: "*)"
+                    attr: 3
+                  - text: " THEN\r\t\t\tIF c.lastStep + ScrollDelay(y - f.b) <= now THEN\r\t\t\t\tc.lastStep := now;\r\t\t\t\tscr.focus := "
+                    attr: 0
+                  - text: "TRUE"
+                    attr: 3
+                  - text: "; scr.vertical := "
+                    attr: 0
+                  - text: "TRUE"
+                    attr: 3
+                  - text: "; scr.op := Controllers.incLine;\r\t\t\t\t"
+                    attr: 0
+                  - text: "scr.done := FALSE;\r"
+                    attr: 3
+                  - text: "\t\t\t\tControllers.ForwardVia(Controllers.frontPath, scr)\r\t\t\tEND\r\t\tELSE\r\t\t\ty0 := y\r\t\tEND\r\tEND ScrollWhileTracking;\r\r\tPROCEDURE (c: StdCtrl) TrackMarks (f: Views.Frame; x, y: INTEGER; units, extend, add: BOOLEAN);\r\t\tVAR s: TrackState; pos, beg, end, pin0, pin1, p, p1: INTEGER;\r\t\t\tmodifiers: SET; mode, m: INTEGER; isDown, noSel: BOOLEAN;\r\tBEGIN\r\t\tIF c.opts * Containers.mask # Containers.mask THEN\t"
+                    attr: 0
+                  - text: "(* track caret or selection *)"
+                    attr: 1
+                  - text: "\r\t\t\ts.x := x; s.y := y; s.toggle := extend;\r\t\t\tnoSel := Containers.noSelection IN c.opts;\r\t\t\tIF units & ~noSel THEN\t"
+                    attr: 0
+                  - text: "(* select units, i.e. words or lines *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tGetThisChunk(c, f, s, beg, end, mode)\r\t\t\tELSE\t"
+                    attr: 0
+                  - text: "(* set caret or selection *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tmode := none\r\t\t\tEND;\r\t\t\tPrepareToTrack(c, f, s, mode, pin0, pin1, p); x := s.x; y := s.y;\r\t\t\tbeg := pin0; end := pin1;\r\t\t\tIF p < pin0 THEN beg := p ELSIF p > pin1 THEN end := p END;\r\t\t\tp := -1;\r\t\t\tf.Input(s.x, s.y, modifiers, isDown);\r\t\t\tWHILE isDown DO\r(*\r\t\t\tREPEAT\r\t\t\t\tf.Input(s.x, s.y, modifiers, isDown);\r*)\r\t\t\t\tIF (s.x # x) OR (s.y # y) THEN\r\t\t\t\t\tScrollWhileTracking(c, f, x, y, s.x, s.y);\r\t\t\t\t\tp1 := ThisPos(c.view, f, s.x, s.y);\r\t\t\t\t\tIF p1 # p THEN\r\t\t\t\t\t\tp := p1;\r\t\t\t\t\t\tIF mode IN {words, lines} THEN\r\t\t\t\t\t\t\tIF mode = words THEN\r\t\t\t\t\t\t\t\tGetThisChunk(c, f, s, beg, end, m)\r\t\t\t\t\t\t\tELSE\r\t\t\t\t\t\t\t\tGetThisLine(c, p, beg, end)\r\t\t\t\t\t\t\tEND;\r\t\t\t\t\t\t\tIF p > pin0 THEN pos := end ELSE pos := beg END\r\t\t\t\t\t\tELSE pos := p\r\t\t\t\t\t\tEND;\r\t\t\t\t\t\tbeg := pin0; end := pin1;\r\t\t\t\t\t\tIF noSel THEN\r\t\t\t\t\t\t\tc.SetCaret(pos)\r\t\t\t\t\t\tELSE\r\t\t\t\t\t\t\tIF pos < pin0 THEN beg := pos ELSIF pos > pin1 THEN end := pos END;\r\t\t\t\t\t\t\tSetSel(c, beg, end);\r\t\t\t\t\t\t\tIF c.selPin0 = c.selPin1 THEN\r\t\t\t\t\t\t\t\tIF pos < pin0 THEN c.selPin0 := pos; c.selPin1 := pin1\r\t\t\t\t\t\t\t\tELSIF pos > pin1 THEN c.selPin0 := pin0; c.selPin1 := pos\r\t\t\t\t\t\t\t\tEND\r\t\t\t\t\t\t\tEND\r\t\t\t\t\t\tEND\r\t\t\t\t\tEND\r\t\t\t\tEND;\r\t\t\t\tf.Input(s.x, s.y, modifiers, isDown)\r\t\t\tEND\r(*\r\t\t\tUNTIL ~isDown\r*)\r\t\tEND\r\tEND TrackMarks;\r\r\tPROCEDURE (c: StdCtrl) Resize (v: Views.View; l, t, r, b: INTEGER);\r\t\tVAR con: Models.Context;\r\tBEGIN\r\t\tASSERT(v # NIL, 20); con := v.context;\r\t\tASSERT(con # NIL, 21); ASSERT(con.ThisModel() = c.text, 22);\r\t\tcon.SetSize(r - l, b - t)\r\tEND Resize;\r\r\tPROCEDURE (c: StdCtrl) DeleteSelection;\r\t\tVAR beg, end: INTEGER;\r\tBEGIN\r\t\tbeg := c.selBeg; end := c.selEnd;\r\t\tIF beg # end THEN\r\t\t\tSmartRange(c, beg, end);\r\t\t\tDoEdit(deletingKey, c, beg, end, NIL, 0X, NIL, 0, 0, NIL, 0, 0, 0)\r\t\tEND\r\tEND DeleteSelection;\r\r\tPROCEDURE (c: StdCtrl) MoveLocalSelection (f, dest: Views.Frame; x, y, dx, dy: INTEGER);\r\t\tVAR buf: TextModels.Model; pos, beg0, end0, beg, end, start, len: INTEGER;\r\tBEGIN\r\t\tpos := dest.view(TextViews.View).ThisPos(dest, dx, dy);\r"
+                    attr: 0
+                  - text: "(* smart move disabled for now --> use true move instead of copy"
+                    attr: 3
+                  - text: "\r\t\tbeg0 := c.selBeg; end0 := c.selEnd; beg := beg0; end := end0;\r\t\tSmartRange(c, beg, end);\r\t\tIF (beg < pos) & (pos < end) THEN pos := beg END;\r\t\tbuf := TextModels.CloneOf(c.text); buf.CopyFrom(0, c.text, beg0, end0);\r\t\tIF OnlyWords(c, beg0, end0) THEN MergeAdjust(c.text, buf, pos, start) ELSE start := pos END;\r\t\tlen := end0 - beg0;\r\t\tIF start >= end THEN DEC(start, end - beg) END;\r\t\tIF pos # beg THEN\r\t\t\tDoEdit(movingKey, c, beg, end, NIL, 0X, NIL, 0, 0, buf, pos);\r\t\t\tSetSelection(c.text, start, start + len);\r\t\t\tAutoShowRange(c, start, start + len)\r\t\tEND\r"
+                    attr: 0
+                  - text: "*)"
+                    attr: 3
+                  - text: "\r\t\tbeg := c.selBeg; end := c.selEnd;\r\t\tIF (pos < beg) OR (pos > end) THEN\r\t\t\tlen := end - beg; start := pos;\r\t\t\tIF start >= end THEN DEC(start, len) END;\r\t\t\tDoEdit(movingKey, c, 0, 0, NIL, 0X, NIL, 0, 0, c.text, beg, end, pos);\r\t\t\tSetSelection(c.text, start, start + len);\r\t\t\tAutoShowRange(c, start, start + len)\r\t\tEND\r\tEND MoveLocalSelection;\r\r\tPROCEDURE (c: StdCtrl) CopyLocalSelection (f, dest: Views.Frame; x, y, dx, dy: INTEGER);\r\t\tVAR buf: TextModels.Model; pos, beg, end, start, len: INTEGER;\r\tBEGIN\r\t\tpos := dest.view(TextViews.View).ThisPos(dest, dx, dy);\r\t\tbeg := c.selBeg; end := c.selEnd;\r\t\tIF (beg < pos) & (pos < end) THEN pos := beg END;\r\t\tbuf := TextModels.CloneOf(c.text); buf.InsertCopy(0, c.text, beg, end);\r\t\tIF OnlyWords(c, beg, end) THEN MergeAdjust(c.text, buf, pos, start) ELSE start := pos END;\r\t\tlen := end - beg;\r\t\tDoEdit(copyingKey, c, 0, 0, NIL, 0X, NIL, 0, 0, buf, 0, -1, pos);\r\t\tSetSelection(c.text, start, start + len);\r\t\tAutoShowRange(c, start, start + len)\r\tEND CopyLocalSelection;\r\r\tPROCEDURE (c: StdCtrl) SelectionCopy (): Containers.Model;\r\t\tVAR t: TextModels.Model;\r\tBEGIN\r\t\tIF c.selBeg # c.selEnd THEN\r\t\t\tt := TextModels.CloneOf(c.text); t.InsertCopy(0, c.text, c.selBeg, c.selEnd);\r\t\tELSE t := NIL\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " t\r\tEND SelectionCopy;\r\r\tPROCEDURE (c: StdCtrl) NativePaste (m: Models.Model; f: Views.Frame);\r\t\tVAR beg, end, start: INTEGER;\r\tBEGIN\r\t\tWITH m: TextModels.Model DO\r\t\t\tGetTargetRange(c, beg, end);\r\t\t\tIF beg # none THEN InsertText(c, beg, end, m, start) END\r\t\tEND\r\tEND NativePaste;\r\r\tPROCEDURE (c: StdCtrl) ArrowChar (f: Views.Frame; ch: CHAR; units, select: BOOLEAN);\r\t\tVAR st: TextSetters.Setter; v: TextViews.View; loc: TextViews.Location;\r\t\t\torg, len,  p, pos,  b, e,  beg, end,  d, d0, edge,  x, dy: INTEGER;\r\t\t\tchange, rightEdge, rightDir: BOOLEAN;\r\t\t\tscroll: Controllers.ScrollMsg;\r\tBEGIN\r\t\tc.insAttr := NIL;\r\t\tModels.StopBunching(c.text);\r\t\tv := c.view; st := v.ThisSetter();\r\t\tchange := select OR (c.selBeg = c.selEnd);\r\t\tIF c.selBeg # c.selEnd THEN beg := c.selBeg; end := c.selEnd\r\t\tELSE beg := c.carPos; end := beg; c.carLast := beg\r\t\tEND;\r\t\tlen := c.text.Length();\r\t\trightDir := (ch = aR) OR (ch = pR) OR (ch = dR) OR (ch = aD) OR (ch = pD) OR (ch = dD);\r\t\trightEdge := \tchange & (c.carLast < end)\r\t\t\t\t\t\t\tOR rightDir & (~change OR (beg = end) & (c.carLast = end));\r\t\tIF rightEdge THEN edge := end ELSE edge := beg END;\r\t\t"
+                    attr: 0
+                  - text: "ShowPos(c, edge, edge);"
+                    attr: 3
+                  - text: "\r\t\tb := beg; e := end; d := edge; d0 := edge;\r\t\tCASE ch OF\r\t\t| aL:\r\t\t\tIF units THEN\r\t\t\t\tp := d; e := d;\r\t\t\t\tWHILE (p > 0) & ((edge = d) OR (edge = e)) DO DEC(p); st.GetWord(p, edge, e) END;\r\t\t\tELSIF change THEN DEC(edge)\r\t\t\tEND\r\t\t| pL, dL:\r\t\t\tv.GetThisLocation(f, edge, loc); edge := loc.start\r\t\t| aR:\r\t\t\tIF units THEN\r\t\t\t\tp := d; e := edge;\r\t\t\t\tWHILE (p < len) & ((edge <= d) OR (edge = e)) DO INC(p); st.GetWord(p, edge, e) END\r\t\t\tELSIF change THEN INC(edge)\r\t\t\tEND\r\t\t| pR, dR:\r\t\t\tv.GetThisLocation(f, edge, loc); p := st.NextLine(loc.start);\r\t\t\tIF p = loc.start THEN p := len ELSE DEC(p) END;\r\t\t\tIF p > edge THEN edge := p END\r\t\t| aU:\r\t\t\tIF units THEN\r\t\t\t\tp := st.ThisSequence(edge);\r\t\t\t\tIF p < edge THEN edge := p ELSE edge := st.PreviousSequence(edge) END\r\t\t\tELSE\r\t\t\t\tv.PollOrigin(org, dy); v.GetThisLocation(f, edge, loc);\r\t\t\t\tIF c.lastX >= 0 THEN x := c.lastX ELSE x := loc.x END;\r\t\t\t\tc.carX := x;\r\t\t\t\tIF loc.start > 0 THEN\r\t\t\t\t\tedge := v.ThisPos(f, x, loc.y - 1);\r\t\t\t\t\tIF (edge >= loc.start) & (org > 0) THEN\r\t\t\t\t\t\tv.SetOrigin(org - 1, 0);\r\t\t\t\t\t\tv.GetThisLocation(f, edge, loc);\r\t\t\t\t\t\tedge := v.ThisPos(f, x, loc.y - 1)\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\tEND\r\t\t| pU:\r\t\t\tv.PollOrigin(org, dy);\r\t\t\tIF edge > org THEN edge := org\r\t\t\tELSIF org > 0 THEN\r\t\t\t\t"
+                    attr: 0
+                  - text: "scroll.focus := TRUE;"
+                    attr: 3
+                  - text: " scroll.vertical := TRUE; scroll.op := Controllers.decPage;\r\t\t\t\t"
+                    attr: 0
+                  - text: "scroll.done := FALSE;"
+                    attr: 3
+                  - text: "\r\t\t\t\tViews.ForwardCtrlMsg(f, scroll);\r\t\t\t\tv.PollOrigin(edge, dy)\r\t\t\tEND\r\t\t| dU:\r\t\t\tedge := 0\r\t\t| aD:\r\t\t\tIF units THEN\r\t\t\t\tp := st.NextSequence(st.ThisSequence(edge));\r\t\t\t\tIF p > edge THEN edge := p ELSE edge := st.NextSequence(p) END\r\t\t\tELSE\r\t\t\t\tv.GetThisLocation(f, edge, loc);\r\t\t\t\tIF c.lastX >= 0 THEN x := c.lastX ELSE x := loc.x END;\r\t\t\t\tc.carX := x;\r\t\t\t\tedge := v.ThisPos(f, x, loc.y + loc.asc + loc.dsc + 1)\r\t\t\tEND\r\t\t| pD:\r\t\t\tv.GetRange(f, b, e);\r\t\t\tIF e < len THEN\r\t\t\t\t"
+                    attr: 0
+                  - text: "scroll.focus := TRUE;"
+                    attr: 3
+                  - text: " scroll.vertical := TRUE; scroll.op := Controllers.incPage;\r\t\t\t\t"
+                    attr: 0
+                  - text: "scroll.done := FALSE;"
+                    attr: 3
+                  - text: "\r\t\t\t\tViews.ForwardCtrlMsg(f, scroll);\r\t\t\t\tv.GetRange(f, edge, e)\r\t\t\tELSE edge := len\r\t\t\tEND\r\t\t| dD:\r\t\t\tedge := len\r\t\tEND;\r\t\tIF rightEdge THEN end := edge ELSE beg := edge END;\r\t\tIF ~select THEN\r\t\t\tIF rightDir THEN beg := edge ELSE end := edge END\r\t\tEND;\r\t\tIF beg < 0 THEN beg := 0 ELSIF beg > len THEN beg := len END;\r\t\tIF end < beg THEN end := beg ELSIF end > len THEN end := len END;\r\t\tIF beg = end THEN\r\t\t\tShowPos(c, beg, end)\r\t\tELSE\r\t\t\tIF rightEdge THEN ShowPos(c, end - 1, end) ELSE ShowPos(c, beg, beg + 1) END\r\t\tEND;\r\t\tSetSel(c, beg, end)\r\tEND ArrowChar;\r\r\tPROCEDURE (c: StdCtrl) ControlChar (f: Views.Frame; ch: CHAR);\r\tBEGIN\r\t\tInsertChar(c, ch)\r\tEND ControlChar;\r\r\tPROCEDURE (c: StdCtrl) PasteChar (ch: CHAR);\r\tBEGIN\r\t\tInsertChar(c, ch)\r\tEND PasteChar;\r\r\tPROCEDURE (c: StdCtrl) PasteView (f: Views.Frame; v: Views.View; w, h: INTEGER);\r\t\tVAR t: TextModels.Model; pos, start, beg, end, len: INTEGER;\r\tBEGIN\r\t\tGetTargetRange(c, beg, end);\r\t\tIF beg # none THEN InsertView(c, beg, end, v, w, h) END\r\tEND PasteView;\r\r\tPROCEDURE (c: StdCtrl) Drop (src, f: Views.Frame; sx, sy, x, y, w, h, rx, ry: INTEGER;\r\t\tv: Views.View; isSingle: BOOLEAN\r\t);\r\t\tVAR t: TextModels.Model; pos, start, beg, end, len: INTEGER;\r\tBEGIN\r\t\tpos := ThisPos(c.view, f, x, y);\r\t\tWITH v: TextViews.View DO t := v.ThisModel() ELSE t := NIL END;\r\t\tIF (t # NIL) & ~isSingle THEN\r\t\t\tInsertText(c, pos, pos, t, start); len := t.Length()\r\t\tELSE\r\t\t\tInsertView(c, pos, pos, v, w, h); start := pos; len := 1\r\t\tEND;\r\t\tSetSelection(c.text, start, start + len);\r\t\tAutoShowRange(c, start, start + len)\r\tEND Drop;\r\r\tPROCEDURE (c: StdCtrl) PickNativeProp (f: Views.Frame; x, y: INTEGER; VAR p: Properties.Property);\r\t\tVAR rd: TextModels.Reader;\r\tBEGIN\r\t\trd := CachedReader(c); rd.SetPos(ThisPos(c.view, f, x, y)); rd.Read;\r\t\tIF ~rd.eot THEN p := rd.attr.Prop() ELSE p := NIL END;\r\t\tCacheReader(c, rd)\r\tEND PickNativeProp;\r\r\tPROCEDURE (c: StdCtrl) HandleModelMsg (VAR msg: Models.Message);\r\t\tVAR done: BOOLEAN;\r\tBEGIN\r\t\tc.HandleModelMsg^(msg);\r\t\tIF msg.model = c.text THEN\r\t\t\tWITH msg: Models.UpdateMsg DO\r\t\t\t\tWITH msg: TextModels.UpdateMsg DO\r\t\t\t\t\tCASE msg.op OF\r\t\t\t\t\t  TextModels.insert, TextModels.delete, TextModels.replace:\r\t\t\t\t\t\tUpdateMarks(c, msg.op, msg.beg, msg.end, msg.delta)\r\t\t\t\t\tELSE\t"
+                    attr: 0
+                  - text: "(* unknown text op happened *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\t\tc.view.Neutralize\r\t\t\t\t\tEND\r\t\t\t\tELSE\t"
+                    attr: 0
+                  - text: "(* unknown text update happened *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tc.view.Neutralize\r\t\t\t\tEND\r\t\t\t| msg: ModelMessage DO\r\t\t\t\tWITH msg: SetCaretMsg DO\r\t\t\t\t\tc.SetCaret(msg.pos)\r\t\t\t\t| msg: SetSelectionMsg DO\r\t\t\t\t\tc.SetSelection(msg.beg, msg.end)\r\t\t\t\tELSE\r\t\t\t\tEND\r\t\t\tELSE\r\t\t\tEND\r\t\tEND\r\tEND HandleModelMsg;\r\r\tPROCEDURE (c: StdCtrl) HandleViewMsg (f: Views.Frame; VAR msg: Views.Message);\r\tBEGIN\r\t\tc.HandleViewMsg^(f, msg);\r\t\tIF msg.view = c.view THEN\r\t\t\tWITH msg: ViewMessage DO\r\t\t\t\tWITH msg: CaretMsg DO\r\t\t\t\t\tc.MarkCaret(f, msg.show)\r\t\t\t\t| msg: SelectionMsg DO\r\t\t\t\t\tMarkSelection(c, f, msg.beg, msg.end, msg.show)\r\t\t\t\tEND\r\t\t\tELSE\r\t\t\tEND\r\t\tEND\r\tEND HandleViewMsg;\r\r\tPROCEDURE (c: StdCtrl) HandleCtrlMsg (f: Views.Frame;\r\t\tVAR msg: Controllers.Message; VAR focus: Views.View\r\t);\r\t\tVAR g: Views.Frame; beg, end: INTEGER; done: BOOLEAN;\r\tBEGIN\r\t\tIF (msg IS Controllers.MarkMsg) OR (msg IS Controllers.TickMsg) THEN\r\t\t\tbeg := c.autoBeg; end := c.autoEnd;\r\t\t\tc.autoBeg := MAX(INTEGER); c.autoEnd := 0\r\t\tEND;\r\t\tWITH msg: Controllers.TickMsg DO\r\t\t\tIF ~(noAutoScroll IN c.opts)\r\t\t\t\t& (0 <= beg) & (beg <= end) & (end <= c.text.Length())\r\t\t\t\t& c.view.context.Normalize()\r\t\t\tTHEN\r\t\t\t\tc.view.ShowRange(beg, end, TextViews.focusOnly)\r\t\t\tEND;\r\t\t\tIF focus = NIL THEN\r\t\t\t\tCheckCaret(c); BlinkCaret(c, f, msg.tick);\r\t\t\t\tIF (c.selBeg # c.aliasSelBeg) OR (c.selEnd # c.aliasSelEnd) THEN\r\t\t\t\t\t"
+                    attr: 0
+                  - text: "(* lazy update of text-synchronous alias marks *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tc.aliasSelBeg := c.selBeg; c.aliasSelEnd := c.selEnd;\r\t\t\t\t\tSetSelection(c.text, c.selBeg, c.selEnd)\r\t\t\t\tEND\r\t\t\tEND\r\t\t| msg: Controllers.MarkMsg DO\r\t\t\tc.carX := -1;\r\t\t\tIF msg.show THEN c.carVisible := TRUE; c.carTick := 0 END\r\t\t| msg: Controllers.TrackMsg DO\r\t\t\tc.insAttr := NIL; c.carX := -1; Models.StopBunching(c.text)\r\t\t| msg: Controllers.EditMsg DO\r\t\t\tc.lastX := c.carX; c.carX := -1;\r\t\t\tIF focus = NIL THEN CheckCaret(c) END\r\t\t| msg: Controllers.ReplaceViewMsg DO\r\t\t\tc.carX := -1\r\t\t| msg: Controllers.TransferMessage DO\r\t\t\tc.carX := -1\r\t\t| msg: Properties.EmitMsg DO\r\t\t\tc.carX := -1\r\t\tELSE\r\t\tEND;\r\t\tdone := FALSE;\r\t\tWITH msg: Controllers.CursorMessage DO\r\t\t\tIF TRUE (* Containers.noCaret IN c.opts *) THEN\t"
+                    attr: 0
+                  - text: "(* mask or browser mode *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tg := Views.FrameAt(f, msg.x, msg.y);\r\t\t\t\tIF (g = NIL) OR IsFilter(g.view, c, f, msg.x, msg.y) THEN\r\t\t\t\t\tWITH msg: Controllers.PollCursorMsg DO\r\t\t\t\t\t\tFilteredPollCursor(c, f, msg, done)\r\t\t\t\t\t| msg: Controllers.TrackMsg DO\r\t\t\t\t\t\tFilteredTrack(c, f, msg, done)\r\t\t\t\t\tELSE\r\t\t\t\t\tEND\r\t\t\t\tEND\r\t\t\tEND\r\t\tELSE\r\t\tEND;\r\t\tIF ~done THEN c.HandleCtrlMsg^(f, msg, focus) END\r\tEND HandleCtrlMsg;\r\r\r\t"
+                    attr: 0
+                  - text: "(* caret *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (c: StdCtrl) HasCaret (): BOOLEAN;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " c.carPos # none\r\tEND HasCaret;\r\r\tPROCEDURE (c: StdCtrl) MarkCaret (f: Views.Frame; show: BOOLEAN);\r\t\tCONST carW = 1; carMinH = 7;\t"
+                    attr: 0
+                  - text: "(* in frame dots *)"
+                    attr: 1
+                  - text: "\r\t\tVAR loc: TextViews.Location; pos, beg, end,  u, x, y, w, h: INTEGER; fm: INTEGER;\r\tBEGIN\r\t\tpos := c.carPos;\r\t\tIF (pos # none)"
+                    attr: 0
+                  - text: " & f.mark"
+                    attr: 3
+                  - text: " & (f.front & c.carVisible OR ~f.front) THEN\r\t\t\tc.view.GetRange(f, beg, end);\r\t\t\tIF (beg <= pos) & (pos <= end) THEN\r\t\t\t\tu := f.dot;\r\t\t\t\tc.view.GetThisLocation(f, pos, loc);\r\t\t\t\tIF f.front THEN fm := Ports.invert ELSE fm := Ports.dim50 END;\r\t\t\t\tx := loc.x; y := loc.y; h := loc.asc + loc.dsc;\r\t\t\t\tIF Dialog.thickCaret THEN w := 2 * carW * u ELSE w := carW * u END;\r\t\t\t\tIF x >= f.r - w THEN DEC(x, w) END;\r\t\t\t\tIF h < carMinH * u THEN h := carMinH * u END;\t"
+                    attr: 0
+                  - text: "(* special caret in lines of (almost) zero height *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tf.MarkRect(x, y, x + w, y + h, Ports.fill, fm, show)\r\t\t\tEND\r\t\tEND\r\tEND MarkCaret;\r\r\tPROCEDURE (c: StdCtrl) CaretPos (): INTEGER;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " c.carPos\r\tEND CaretPos;\r\r\tPROCEDURE (c: StdCtrl) SetCaret (pos: INTEGER);\r\tBEGIN\r\t\tASSERT(none <= pos, 20); ASSERT(pos <= c.text.Length(), 21);\r\t\t"
+                    attr: 0
+                  - text: "c.insAttr := NIL;"
+                    attr: 3
+                  - text: "\r\t\tIF pos # c.carPos THEN\r\t\t\tIF (pos # none) & (c.carPos = none) THEN\r\t\t\t\tIF boundCaret THEN c.SetSelection(none, none) END;\r\t\t\t\tc.SetFocus(NIL)\r\t\t\tEND;\r\r\t\t\tIF Containers.noCaret IN c.opts THEN pos := none END;\r\t\t\tIF c.carPos # none THEN\r\t\t\t\tc.carLast := c.carPos; FlipCaret(c, Containers.hide)\r\t\t\tEND;\r\t\t\tc.carPos := pos;\r\t\t\tIF pos # none THEN\r\t\t\t\tc.carVisible := TRUE; c.carTick := Services.Ticks() + Dialog.caretPeriod; FlipCaret(c, Containers.show)\r\t\t\tEND\r\t\tEND\r\tEND SetCaret;\r\r\r\t"
+                    attr: 0
+                  - text: "(* selection *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (c: StdCtrl) HasSelection (): BOOLEAN;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " c.selBeg # c.selEnd\r\tEND HasSelection;\r\r\tPROCEDURE (c: StdCtrl) Selectable (): BOOLEAN;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " c.text.Length() > 0\r\tEND Selectable;\r\r\tPROCEDURE (c: StdCtrl) SetSingleton (s: Views.View);\r\t\tVAR s0: Views.View;\r\tBEGIN\r\t\ts0 := c.Singleton();\r\t\tc.SetSingleton^(s);\r\t\ts := c.Singleton();\r\t\tIF s # s0 THEN\r\t\t\tc.insAttr := NIL;\r\t\t\tIF s # NIL THEN\r\t\t\t\tc.selBeg := s.context(TextModels.Context).Pos(); c.selEnd := c.selBeg + 1;\r\t\t\t\tc.selPin0 := c.selBeg; c.selPin1 := c.selEnd\r\t\t\tELSE c.selBeg := none; c.selEnd := none\r\t\t\tEND\r\t\tEND\r\tEND SetSingleton;\r\r\tPROCEDURE (c: StdCtrl) SelectAll (select: BOOLEAN);\r\t"
+                    attr: 0
+                  - text: "(** extended by subclass to include intrinsic selections **)"
+                    attr: 1
+                  - text: "\r\tBEGIN\r\t\tIF select THEN c.SetSelection(0, c.text.Length()) ELSE c.SetSelection(none, none) END\r\tEND SelectAll;\r\r\tPROCEDURE (c: StdCtrl) InSelection (f: Views.Frame; x, y: INTEGER): BOOLEAN;\r\t"
+                    attr: 0
+                  - text: "(* pre: c.selBeg # c.selEnd *)"
+                    attr: 1
+                  - text: "\r\t"
+                    attr: 0
+                  - text: "(* post: (x, y) in c.selection *)"
+                    attr: 1
+                  - text: "\r\t\tVAR b, e: TextViews.Location; y0, y1, y2, y3: INTEGER;\r\tBEGIN\r\t\tc.view.GetThisLocation(f, c.selBeg, b); y0 := b.y; y1 := y0 + b.asc + b.dsc;\r\t\tc.view.GetThisLocation(f, c.selEnd, e); y2 := e.y; y3 := y2 + e.asc + e.dsc;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " ((y >= y0) & (x >= b.x) OR (y >= y1)) & ((y < y2) OR (y < y3) & (x < e.x))\r\tEND InSelection;\r\r\tPROCEDURE (c: StdCtrl) MarkSelection (f: Views.Frame; show: BOOLEAN);\r\tBEGIN\r\t\tMarkSelection(c, f, c.selBeg, c.selEnd, show)\r\tEND MarkSelection;\r\r\tPROCEDURE (c: StdCtrl) GetSelection (OUT beg, end: INTEGER);\r\tBEGIN\r\t\tbeg := c.selBeg; end := c.selEnd\r\tEND GetSelection;\r\r\tPROCEDURE (c: StdCtrl) SetSelection (beg, end: INTEGER);\r\t\tVAR t: TextModels.Model; rd: TextModels.Reader;\r\t\t\tbeg0, end0, p: INTEGER; singleton: BOOLEAN;\r\tBEGIN\r\t\tt := c.text; ASSERT(t # NIL, 20);\r\t\tIF Containers.noSelection IN c.opts THEN end := beg\r\t\tELSIF beg # end THEN\r\t\t\tASSERT(0 <= beg, 21); ASSERT(beg < end, 22); ASSERT(end <= t.Length(), 23)\r\t\tEND;\r\t\tbeg0 := c.selBeg; end0 := c.selEnd;\r\t\t"
+                    attr: 0
+                  - text: "c.insAttr := NIL;"
+                    attr: 3
+                  - text: "\r\t\tIF (beg # beg0) OR (end # end0) THEN\r\t\t\tIF (beg # end) & (c.selBeg = c.selEnd) THEN\r\t\t\t\tIF boundCaret THEN\r\t\t\t\t\tIF c.carPos = end THEN p := c.carPos ELSE p := beg END;\r\t\t\t\t\tc.SetCaret(none); c.carLast := p\r\t\t\t\tEND;\r\t\t\t\tc.SetFocus(NIL);\r\t\t\t\tc.selPin0 := beg; c.selPin1 := end\r\t\t\tELSIF boundCaret & (beg = end) THEN\r\t\t\t\tc.selPin1 := c.selPin0\t"
+                    attr: 0
+                  - text: "(* clear selection anchors *)"
+                    attr: 1
+                  - text: "\r\t\t\tEND;\r\t\t\tIF beg + 1 = end THEN\r\t\t\t\trd := CachedReader(c);\r\t\t\t\trd.SetPos(beg); rd.Read; singleton := rd.view # NIL;\r\t\t\t\tCacheReader(c, rd)\r\t\t\tELSE singleton := FALSE\r\t\t\tEND;\r\t\t\tIF singleton THEN\t"
+                    attr: 0
+                  - text: "(* native or singleton -> singleton *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tIF rd.view # c.Singleton() THEN c.SetSingleton(rd.view) END\r\t\t\tELSIF c.Singleton() # NIL THEN\t"
+                    attr: 0
+                  - text: "(* singleton -> native *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tc.SetSingleton(NIL);\r\t\t\t\tc.selBeg := beg; c.selEnd := end;\r\t\t\t\tFlipSelection(c, beg, end, Containers.show)\r\t\t\tELSE\t"
+                    attr: 0
+                  - text: "(* native -> native *)"
+                    attr: 1
+                  - text: "\r\t\t\t\tc.selBeg := beg; c.selEnd := end;\r\t\t\t\tIF (beg0 <= beg) & (end <= end0) THEN\t"
+                    attr: 0
+                  - text: "(* reduce *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tp := end0; end0 := beg; beg := end; end := p\r\t\t\t\tELSIF (beg <= beg0) & (end0 <= end) THEN\t"
+                    attr: 0
+                  - text: "(* extend *)"
+                    attr: 1
+                  - text: " \r\t\t\t\t\tp := end; end := beg0; beg0 := end0; end0 := p\r\t\t\t\tELSIF (beg <= beg0) & (beg0 <= end) THEN\t"
+                    attr: 0
+                  - text: "(* shift left *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tp := end; end := beg0; beg0 := p\r\t\t\t\tELSIF (end >= end0) & (beg <= end0) THEN\t"
+                    attr: 0
+                  - text: "(* shift right *)"
+                    attr: 1
+                  - text: "\r\t\t\t\t\tp := end0; end0 := beg; beg := p\r\t\t\t\tEND;\r\t\t\t\tIF beg0 < end0 THEN FlipSelection(c, beg0, end0, Containers.show) END;\r\t\t\t\tIF beg < end THEN FlipSelection(c, beg, end, Containers.show) END\r\t\t\tEND\r\t\tEND\r\tEND SetSelection;\r\r\r\t"
+                    attr: 0
+                  - text: "(* StdDirectory *)"
+                    attr: 1
+                  - text: "\r\r\tPROCEDURE (d: StdDirectory) NewController (opts: SET): Controller;\r\t\tVAR c: StdCtrl;\r\tBEGIN\r\t\tNEW(c); c.SetOpts(opts); InitMarks(c); "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " c\r\tEND NewController;\r\r\r\tPROCEDURE Init;\r\t\tVAR d: StdDirectory;\r\tBEGIN\r\t\tNEW(d); dir := d; stdDir := d\r\tEND Init;\r\rBEGIN\r\tInit\rEND TextControllers.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 56120
+          bodyLen: 8

@@ -1,0 +1,749 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\Ctl\\Docu\\T.odc"
+  size: 17688
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 17557
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 17371
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 17285
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 0
+                lead: 11500
+                asc: 121900
+                dsc: 43200
+                grid: 177800
+                opts: 0x00000001
+              defaultAttr:
+                font: "*"
+                size: 127000
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 10
+                bodyPos: 17289
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 16775
+                runListLen: 2041
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 203200
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [2]
+                    font: Helvetica
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [3]
+                    font: Helvetica
+                    size: 127000
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000002
+                  - # [4]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                  - # [5]
+                    font: "*"
+                    size: 127000
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                flow:
+                  - text: CtlT
+                    attr: 0
+                  - text: "\r\rDEFINITION CtlT;\r\r\tIMPORT Dates;\r\r\tCONST\r\t\tshortint = 2; integer = 3; shortreal = 4; real = 5; currency = 6; date = 7; string = 8;\r\t\tobject = 9; result = 10; boolean = 11; any = 12; interface = 13; byte = 17; enumerator = -1;\r\r\tTYPE\r\t\tStrg = POINTER TO ARRAY OF CHAR;\r\t\tOleCy = LONGINT;\r\t\tOleDate = REAL;\r\r\t\tIUnknown = COM.IUnknown;\r\t\tIDispatch = WinOleAut.IDispatch;\r\t\tRESULT = INTEGER;\r\t\tGUID = COM.GUID;\r\t\tVariant = WinOleAut.VARIANT;\r\t\tParList = ARRAY [untagged] OF Variant;\r\r\t\tAny = POINTER TO ABSTRACT RECORD \r\t\t\ttypeId, dim: SHORTINT;\r\t\t\t(x: Any) Bool (): BOOLEAN, NEW, EXTENSIBLE;\r\t\t\t(x: Any) Byte (): BYTE, NEW, EXTENSIBLE;\r\t\t\t(x: Any) Cy (): OleCy, NEW, EXTENSIBLE;\r\t\t\t(x: Any) Date (): OleDate, NEW, EXTENSIBLE;\r\t\t\t(x: Any) Int (): INTEGER, NEW, EXTENSIBLE;\r\t\t\t(x: Any) Real (): REAL, NEW, EXTENSIBLE;\r\t\t\t(x: Any) SInt (): SHORTINT, NEW, EXTENSIBLE;\r\t\t\t(x: Any) SReal (): SHORTREAL, NEW, EXTENSIBLE;\r\t\t\t(x: Any) Str (): Strg, NEW, EXTENSIBLE\r\t\tEND;\r\r\t\tObject = POINTER TO ABSTRACT RECORD (Any)\r\t\t\tdisp: IDispatch\r\t\tEND;\r\r\t\tOutObject = POINTER TO ABSTRACT RECORD (Object)\r\t\t\tsource: Object;\r\t\t\t(obj: OutObject) GetIID (OUT iid: GUID), NEW, ABSTRACT;\r\t\t\t(obj: OutObject) Invoke (id, n: INTEGER; VAR par: ParList; VAR ret: Variant), NEW, ABSTRACT\r\t\tEND;\r\r\t\tByteT = POINTER TO RECORD (Any) val: BYTE END;\r\t\tShortInt = POINTER TO RECORD (Any) val: SHORTINT END;\r\t\tInteger = POINTER TO RECORD (Any) val: INTEGER END;\r\t\tShortReal = POINTER TO RECORD (Any) val: SHORTREAL END;\r\t\tRealT = POINTER TO RECORD (Any) val: REAL END;\r\t\tBoolean = POINTER TO RECORD (Any) val: BOOLEAN END;\r\t\tResult = POINTER TO RECORD (Any) val: RESULT END;\r\t\tCurrency = POINTER TO RECORD (Any) val: OleCy END;\r\t\tDateT = POINTER TO RECORD (Any) val: OleDate END;\r\t\tString = POINTER TO RECORD (Any) val: Strg END;\r\t\tInterface = POINTER TO RECORD (Any) val: IUnknown END;\r\r\t\tAnyArray = POINTER TO RECORD (Any) p: POINTER TO ARRAY OF Any END;\r\t\tObjectArray = POINTER TO RECORD (Any) p: POINTER TO ARRAY OF Object END;\r\t\tByteArray = POINTER TO RECORD (Any) p: POINTER TO ARRAY OF BYTE END;\r\t\tShortIntArray = POINTER TO RECORD (Any) p: POINTER TO ARRAY OF SHORTINT END;\r\t\tIntegerArray = POINTER TO RECORD (Any) p: POINTER TO ARRAY OF INTEGER END;\r\t\tShortRealArray = POINTER TO RECORD (Any) p: POINTER TO ARRAY OF SHORTREAL END;\r\t\tRealArray = POINTER TO RECORD (Any) p: POINTER TO ARRAY OF REAL END;\r\t\tBooleanArray = POINTER TO RECORD (Any) p: POINTER TO ARRAY OF BOOLEAN END;\r\t\tResultArray = POINTER TO RECORD (Any) p: POINTER TO ARRAY OF RESULT END;\r\t\tCurrencyArray = POINTER TO RECORD (Any) p: POINTER TO ARRAY OF OleCy END;\r\t\tDateArray = POINTER TO RECORD (Any) p: POINTER TO ARRAY OF OleDate END;\r\t\tStringArray = POINTER TO RECORD (Any) p: POINTER TO ARRAY OF Strg END;\r\t\tInterfaceArray = POINTER TO RECORD (Any) p: POINTER TO ARRAY OF IUnknown END;\r\r\t\tAnyArray2 = POINTER TO RECORD (Any) p: POINTER TO ARRAY OF ARRAY OF Any END;\r\t\tObjectArray2 = POINTER TO RECORD (Any) p: POINTER TO ARRAY OF ARRAY OF Object END;\r\t\tByteArray2 = POINTER TO RECORD (Any) p: POINTER TO ARRAY OF ARRAY OF BYTE END;\r\t\tShortIntArray2 = POINTER TO RECORD (Any) p: POINTER TO ARRAY OF ARRAY OF SHORTINT END;\r\t\tIntegerArray2 = POINTER TO RECORD (Any) p: POINTER TO ARRAY OF ARRAY OF INTEGER END;\r\t\tShortRealArray2 = POINTER TO RECORD (Any) p: POINTER TO ARRAY OF ARRAY OF SHORTREAL END;\r\t\tRealArray2 = POINTER TO RECORD (Any) p: POINTER TO ARRAY OF ARRAY OF REAL END;\r\t\tBooleanArray2 = POINTER TO RECORD (Any) p: POINTER TO ARRAY OF ARRAY OF BOOLEAN END;\r\t\tResultArray2 = POINTER TO RECORD (Any) p: POINTER TO ARRAY OF ARRAY OF RESULT END;\r\t\tCurrencyArray2 = POINTER TO RECORD (Any) p: POINTER TO ARRAY OF ARRAY OF OleCy END;\r\t\tDateArray2 = POINTER TO RECORD (Any) p: POINTER TO ARRAY OF ARRAY OF OleDate END;\r\t\tStringArray2 = POINTER TO RECORD (Any) p: POINTER TO ARRAY OF ARRAY OF Strg END;\r\t\tInterfaceArray2 = POINTER TO RECORD (Any) p: POINTER TO ARRAY OF ARRAY OF IUnknown END;\r\r\t\tEnumerator = POINTER TO ABSTRACT RECORD \r\t\t\t(e: Enumerator) First (): Any, NEW, ABSTRACT;\r\t\t\t(e: Enumerator) Next (): Any, NEW, ABSTRACT\r\t\tEND;\r\r\tVAR\r\t\tcontext: SET;\r\t\tlcid: INTEGER;\r\r\tPROCEDURE OleDateFromDateAndTime (IN date: Dates.Date; IN time: Dates.Time): OleDate;\r\tPROCEDURE OleDateToDateAndTime (d: OleDate; OUT date: Dates.Date; OUT time: Dates.Time);\r\t\r\tPROCEDURE Obj (disp: IDispatch): Object;\r\tPROCEDURE Byte (val: BYTE): ByteT;\r\tPROCEDURE SInt (val: SHORTINT): ShortInt;\r\tPROCEDURE Int (val: INTEGER): Integer;\r\tPROCEDURE SReal (val: SHORTREAL): ShortReal;\r\tPROCEDURE Real (val: REAL): RealT;\r\tPROCEDURE Bool (val: BOOLEAN): Boolean;\r\tPROCEDURE Res (val: RESULT): Result;\r\tPROCEDURE Cy (val: OleCy): Currency;\r\tPROCEDURE Date (val: OleDate): DateT;\r\tPROCEDURE Str (IN val: ARRAY OF CHAR): String;\r\tPROCEDURE Intfce (val: IUnknown): Interface;\r\r\tPROCEDURE AnyArr (IN val: ARRAY OF Any): AnyArray;\r\tPROCEDURE ObjArr (IN val: ARRAY OF Object): ObjectArray;\r\tPROCEDURE ByteArr (IN val: ARRAY OF BYTE): ByteArray;\r\tPROCEDURE SIntArr (IN val: ARRAY OF SHORTINT): ShortIntArray;\r\tPROCEDURE IntArr (IN val: ARRAY OF INTEGER): IntegerArray;\r\tPROCEDURE SRealArr (IN val: ARRAY OF SHORTREAL): ShortRealArray;\r\tPROCEDURE RealArr (IN val: ARRAY OF REAL): RealArray;\r\tPROCEDURE BoolArr (IN val: ARRAY OF BOOLEAN): BooleanArray;\r\tPROCEDURE ResArr (IN val: ARRAY OF RESULT): ResultArray;\r\tPROCEDURE CyArr (IN val: ARRAY OF OleCy): CurrencyArray;\r\tPROCEDURE DateArr (IN val: ARRAY OF OleDate): DateArray;\r\tPROCEDURE StrArr (IN val: ARRAY OF Strg): StringArray;\r\tPROCEDURE IntfceArr (IN val: ARRAY OF IUnknown): InterfaceArray;\r\t\r\tPROCEDURE AnyArr2 (IN val: ARRAY OF ARRAY OF Any): AnyArray2;\r\tPROCEDURE ObjArr2 (IN val: ARRAY OF ARRAY OF Object): ObjectArray2;\r\tPROCEDURE ByteArr2 (IN val: ARRAY OF ARRAY OF BYTE): ByteArray2;\r\tPROCEDURE SIntArr2 (IN val: ARRAY OF ARRAY OF SHORTINT): ShortIntArray2;\r\tPROCEDURE IntArr2 (IN val: ARRAY OF ARRAY OF INTEGER): IntegerArray2;\r\tPROCEDURE SRealArr2 (IN val: ARRAY OF ARRAY OF SHORTREAL): ShortRealArray2;\r\tPROCEDURE RealArr2 (IN val: ARRAY OF ARRAY OF REAL): RealArray2;\r\tPROCEDURE BoolArr2 (IN val: ARRAY OF ARRAY OF BOOLEAN): BooleanArray2;\r\tPROCEDURE ResArr2 (IN val: ARRAY OF ARRAY OF RESULT): ResultArray2;\r\tPROCEDURE CyArr2 (IN val: ARRAY OF ARRAY OF OleCy): CurrencyArray2;\r\tPROCEDURE DateArr2 (IN val: ARRAY OF ARRAY OF OleDate): DateArray2;\r\tPROCEDURE StrArr2 (IN val: ARRAY OF ARRAY OF Strg): StringArray2;\r\tPROCEDURE IntfceArr2 (IN val: ARRAY OF ARRAY OF IUnknown): InterfaceArray2;\r\t\r\tPROCEDURE Connect (sink: OutObject; source: Object);\r\tPROCEDURE Disconnect (sink: OutObject; source: Object);\r\tPROCEDURE Disp (obj: Object): IDispatch;\r\rEND CtlT.\r\r\rBase module for OLE automation controller applications. For an introduction to automation controller development see the "
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Ctl/Docu/Dev-Man', 'Ctl Developer Manual')"
+                      body:
+                        - text: Developer Manual
+                          attr: 3
+                      attr: 2
+                      w: 131250
+                      h: 142875
+                  - text: ".\r\r\rCONST"
+                    attr: 1
+                  - text: " any, object, byte, shortint, integer"
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: shortreal
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: "real, boolean,\r\t\t\tresult, currency, date, string, interface, enumerator\r"
+                    attr: 4
+                  - text: "Constants used as values of the "
+                    attr: 1
+                  - text: typeId
+                    attr: 5
+                  - text: " field of type "
+                    attr: 1
+                  - text: Any.
+                    attr: 5
+                  - text: "\r\r\rTYPE "
+                    attr: 1
+                  - text: "Strg\r"
+                    attr: 4
+                  - text: "Basic string type. Used for string-typed out- and in/out-parameters and return values. For in-parameters the type ARRAY OF CHAR is used to permit string constants as actual parameters.\r\r\rTYPE "
+                    attr: 1
+                  - text: "OleCy\r"
+                    attr: 4
+                  - text: "Basic currency type used in OLE. "
+                    attr: 1
+                  - text: OleCy
+                    attr: 5
+                  - text: " is a fixed point number with 4 decimal digits after the decimal point, stored in a 64 bit integer. The integer value 73500 corresponds to the currency value 7.35.\r\r\rTYPE "
+                    attr: 1
+                  - text: OleDate
+                    attr: 4
+                  - text: "\rBasic date/time type used in OLE. "
+                    attr: 1
+                  - text: OleDate
+                    attr: 5
+                  - text: " is a 64 bit floating point number containing a fractional day count. The value 2.0 corresponds to midnight 1.1.1900. The exact conversion formula is:\rx := ((second / 60 + minute) / 60 + hour) / 24 + day + 2\rwhere "
+                    attr: 1
+                  - text: x
+                    attr: 5
+                  - text: " is the resulting real number and "
+                    attr: 1
+                  - text: day
+                    attr: 5
+                  - text: " is the day count since 1.1.1900.\rThe procedures "
+                    attr: 1
+                  - text: OleDateFromDateAndTime
+                    attr: 5
+                  - text: " and "
+                    attr: 1
+                  - text: OleDateToDateAndTime
+                    attr: 5
+                  - text: " are provided for conversions between "
+                    attr: 1
+                  - text: OleDate
+                    attr: 5
+                  - text: " and the BlackBox types "
+                    attr: 1
+                  - text: Dates.Date
+                    attr: 5
+                  - text: " amd "
+                    attr: 1
+                  - text: Dates.Time.
+                    attr: 5
+                  - text: "\r\r\rTYPE "
+                    attr: 1
+                  - text: IUnknown
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: IDispatch
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: RESULT
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: GUID
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: Variant
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: "ParList\r"
+                    attr: 4
+                  - text: "OLE types used internally in the automation interface modules.\r\r\rTYPE "
+                    attr: 1
+                  - text: Any
+                    attr: 4
+                  - text: "\rABSTRACT\rBase type of all automation types. Covers all possible automation types including arrays. "
+                    attr: 1
+                  - text: Any
+                    attr: 5
+                  - text: " is used if the type of a parameter of an automation method is not statically defined. "
+                    attr: 1
+                  - text: NIL
+                    attr: 5
+                  - text: " can be used for parameters of type "
+                    attr: 1
+                  - text: Any
+                    attr: 5
+                  - text: " if the parameter is not used at all (legal for optional parameters).\r\r"
+                    attr: 1
+                  - text: typeId
+                    attr: 4
+                  - text: ": SHORTINT\r"
+                    attr: 1
+                  - text: dim
+                    attr: 4
+                  - text: ": SHORTINT\rType and (array-) dimension of the represented value. "
+                    attr: 1
+                  - text: dim
+                    attr: 5
+                  - text: " is 0 for a scalar value and > 0 for an array. "
+                    attr: 1
+                  - text: typeId
+                    attr: 5
+                  - text: " can be one of the basic types "
+                    attr: 1
+                  - text: byte
+                    attr: 5
+                  - text: ", "
+                    attr: 1
+                  - text: shortint
+                    attr: 5
+                  - text: ", "
+                    attr: 1
+                  - text: integer
+                    attr: 5
+                  - text: ", "
+                    attr: 1
+                  - text: shortreal
+                    attr: 5
+                  - text: ", "
+                    attr: 1
+                  - text: real
+                    attr: 5
+                  - text: ", "
+                    attr: 1
+                  - text: boolean
+                    attr: 5
+                  - text: ", "
+                    attr: 1
+                  - text: result
+                    attr: 5
+                  - text: ", "
+                    attr: 1
+                  - text: currency
+                    attr: 5
+                  - text: ", "
+                    attr: 1
+                  - text: date
+                    attr: 5
+                  - text: ", "
+                    attr: 1
+                  - text: string
+                    attr: 5
+                  - text: ", or "
+                    attr: 1
+                  - text: interface
+                    attr: 5
+                  - text: "; or one of the special types "
+                    attr: 1
+                  - text: object
+                    attr: 5
+                  - text: ", "
+                    attr: 1
+                  - text: enumerator
+                    attr: 5
+                  - text: ", or "
+                    attr: 1
+                  - text: any
+                    attr: 5
+                  - text: ". "
+                    attr: 1
+                  - text: typeId
+                    attr: 5
+                  - text: " = "
+                    attr: 1
+                  - text: enumerator
+                    attr: 5
+                  - text: " implies "
+                    attr: 1
+                  - text: dim
+                    attr: 5
+                  - text: " = 0. "
+                    attr: 1
+                  - text: typeId
+                    attr: 5
+                  - text: " = "
+                    attr: 1
+                  - text: any
+                    attr: 5
+                  - text: " is only used with "
+                    attr: 1
+                  - text: dim
+                    attr: 5
+                  - text: " > 0 and means an array with unspecified or inhomogeneous element type.\r\rPROCEDURE (x: Any) "
+                    attr: 1
+                  - text: Bool
+                    attr: 4
+                  - text: " (): BOOLEAN\rPROCEDURE (x: Any) "
+                    attr: 1
+                  - text: Byte
+                    attr: 4
+                  - text: " (): BYTE\rPROCEDURE (x: Any) "
+                    attr: 1
+                  - text: Cy
+                    attr: 4
+                  - text: " (): OleCy\rPROCEDURE (x: Any) "
+                    attr: 1
+                  - text: Date
+                    attr: 4
+                  - text: " (): OleDate\rPROCEDURE (x: Any) "
+                    attr: 1
+                  - text: Int
+                    attr: 4
+                  - text: " (): INTEGER\rPROCEDURE (x: Any) "
+                    attr: 1
+                  - text: Real
+                    attr: 4
+                  - text: " (): REAL\rPROCEDURE (x: Any) "
+                    attr: 1
+                  - text: SInt
+                    attr: 4
+                  - text: " (): SHORTINT\rPROCEDURE (x: Any) "
+                    attr: 1
+                  - text: SReal
+                    attr: 4
+                  - text: " (): SHORTREAL\rPROCEDURE (x: Any) "
+                    attr: 1
+                  - text: Str
+                    attr: 4
+                  - text: " (): Strg\rNEW, EXTENSIBLE\rUsed for convenient access to basic type values. Values are converted to the return type if necessary.\r\rPre\rvalue type is convertible to result type\t20\r\r\rTYPE "
+                    attr: 1
+                  - text: Object (Any)
+                    attr: 4
+                  - text: "\rABSTRACT\rBase type of all automation objects implemented in automation interface modules.\r\r"
+                    attr: 1
+                  - text: disp
+                    attr: 4
+                  - text: ": IDispatch\rUsed internally.\r\r\rTYPE "
+                    attr: 1
+                  - text: OutObject (Object)
+                    attr: 4
+                  - text: "\rABSTRACT\rBase type of all callback objects. An abstract extension with the specific methods is declared in the automation interface module. A concrete implementation can be declared in a user module and connected to an event source by "
+                    attr: 1
+                  - text: Connect
+                    attr: 5
+                  - text: " or "
+                    attr: 1
+                  - text: OleViews.Connect
+                    attr: 5
+                  - text: ".\r\r"
+                    attr: 1
+                  - text: source
+                    attr: 4
+                  - text: ": Object;\rThe connected source object.\r\rPROCEDURE (obj: OutObject) "
+                    attr: 1
+                  - text: GetIID
+                    attr: 4
+                  - text: " (OUT iid: GUID)\rPROCEDURE (obj: OutObject) "
+                    attr: 1
+                  - text: Invoke
+                    attr: 4
+                  - text: " (id, n: INTEGER; VAR par: ParList; VAR ret: Variant)\rNEW, ABSTRACT\rImplemented in the automation interface module, used internally.\r\r\rTYPE "
+                    attr: 1
+                  - text: ByteT
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: ShortInt
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: Integer
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: ShortReal
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: RealT
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: Boolean
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: Result
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: Currency
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: DateT
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: String
+                    attr: 4
+                  - text: ", "
+                    attr: 1
+                  - text: "Interface\r"
+                    attr: 4
+                  - text: "Concrete implementations of scalar basic type objects.\r\r"
+                    attr: 1
+                  - text: val
+                    attr: 4
+                  - text: ": <type>\rActual value.\r\r\rTYPE "
+                    attr: 1
+                  - text: "AnyArray, ObjectArray, ByteArray, ShortIntArray, IntegerArray, ShortRealArray, RealArray, BooleanArray, ResultArray, CurrencyArray, DateArray, StringArray, InterfaceArray"
+                    attr: 4
+                  - text: "\rConcrete implementations of one-dimensional array objects.\r\r"
+                    attr: 1
+                  - text: p
+                    attr: 4
+                  - text: ": POINTER TO ARRAY OF <type>\rActual values.\r\r\rTYPE "
+                    attr: 1
+                  - text: "AnyArray2, ObjectArray2, ByteArray2, ShortIntArray2, IntegerArray2,"
+                    attr: 4
+                  - text: " "
+                    attr: 1
+                  - text: "ShortRealArray2,\r\t\t"
+                    attr: 4
+                  - text: " "
+                    attr: 1
+                  - text: "RealArray2,"
+                    attr: 4
+                  - text: " "
+                    attr: 1
+                  - text: "BooleanArray2,"
+                    attr: 4
+                  - text: " "
+                    attr: 1
+                  - text: "ResultArray2,"
+                    attr: 4
+                  - text: " "
+                    attr: 1
+                  - text: "CurrencyArray2,"
+                    attr: 4
+                  - text: " "
+                    attr: 1
+                  - text: "DateArray2,"
+                    attr: 4
+                  - text: " "
+                    attr: 1
+                  - text: "StringArray2,\r"
+                    attr: 4
+                  - text: "\t"
+                    attr: 1
+                  - text: "\t InterfaceArray2\r"
+                    attr: 4
+                  - text: "Concrete implementations of two-dimensional array objects.\r\r"
+                    attr: 1
+                  - text: p
+                    attr: 4
+                  - text: ": POINTER TO ARRAY OF ARRAY OF <type>\rActual values.\r\r\rTYPE "
+                    attr: 1
+                  - text: "Enumerator\r"
+                    attr: 4
+                  - text: "ABSTRACT\rBase type of enumerators. Enumerators are used to access all elements of a collection object in a systematic way. A concrete enumerator can be requested from a collection object through the method "
+                    attr: 1
+                  - text: "_NewEnum.\r"
+                    attr: 5
+                  - text: "\rPROCEDURE (e: Enumerator) "
+                    attr: 1
+                  - text: First
+                    attr: 4
+                  - text: " (): Any\rNEW, ABSTRACT\rReturns the first object from a collection or "
+                    attr: 1
+                  - text: NIL
+                    attr: 5
+                  - text: " if the collection is empty.\r\rPROCEDURE (e: Enumerator) "
+                    attr: 1
+                  - text: Next
+                    attr: 4
+                  - text: " (): Any\rNEW, ABSTRACT\rReturns the next consecutive object from a collection or "
+                    attr: 1
+                  - text: NIL
+                    attr: 5
+                  - text: " if the there are no more objects in the collection.\r\r\rVAR "
+                    attr: 1
+                  - text: context
+                    attr: 4
+                  - text: ": SET\rThe COM object allocation contect used to allocate new automation objects. Initialized to "
+                    attr: 1
+                  - text: WinOle.CLSCTX_INPROC_SERVER
+                    attr: 5
+                  - text: " + "
+                    attr: 1
+                  - text: WinOle.CLSCTX_LOCAL_SERVER
+                    attr: 5
+                  - text: ". Can be changed if a different allocation context should be used.\r\rVAR "
+                    attr: 1
+                  - text: lcid
+                    attr: 4
+                  - text: ": INTEGER\rThe language identifier used in automation method calls. Initialized to "
+                    attr: 1
+                  - text: WinApi.LOCALE_SYSTEM_DEFAULT
+                    attr: 5
+                  - text: " . Can be changed if a different language identifier should be used.\r\r\rPROCEDURE "
+                    attr: 1
+                  - text: OleDateFromDateAndTime
+                    attr: 4
+                  - text: " (IN date: Dates.Date; IN time: Dates.Time): OleDate\rConverts BlackBox "
+                    attr: 1
+                  - text: Date
+                    attr: 5
+                  - text: " and "
+                    attr: 1
+                  - text: Time
+                    attr: 5
+                  - text: " structures to an "
+                    attr: 1
+                  - text: OleDate
+                    attr: 5
+                  - text: " value.\r\rPROCEDURE "
+                    attr: 1
+                  - text: OleDateToDateAndTime
+                    attr: 4
+                  - text: " (d: OleDate; OUT date: Dates.Date; OUT time: Dates.Time)\rConverts an "
+                    attr: 1
+                  - text: OleDate
+                    attr: 5
+                  - text: " value to BlackBox "
+                    attr: 1
+                  - text: Date
+                    attr: 5
+                  - text: " and "
+                    attr: 1
+                  - text: Time
+                    attr: 5
+                  - text: " structures.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Connect
+                    attr: 4
+                  - text: " (sink: OutObject; source: Object)\rUsed to connect a callback object (an object implementing a callback interface) to an event source.\r\rPre\rsink is not connected\t20\rsource is connectable\t21\r\rPROCEDURE "
+                    attr: 1
+                  - text: Disconnect
+                    attr: 4
+                  - text: " (sink: OutObject; source: Object)\rUsed to disconnect a callback object (an object implementing a callback interface) from an event source.\r\rPre\rsink is connected to source\t20\r\rPROCEDURE "
+                    attr: 1
+                  - text: Obj
+                    attr: 4
+                  - text: " (disp: IDispatch): Object\rPROCEDURE "
+                    attr: 1
+                  - text: Byte
+                    attr: 4
+                  - text: " (val: BYTE): ByteT\rPROCEDURE "
+                    attr: 1
+                  - text: SInt
+                    attr: 4
+                  - text: " (val: SHORTINT): ShortInt\rPROCEDURE "
+                    attr: 1
+                  - text: Int
+                    attr: 4
+                  - text: " (val: INTEGER): Integer\rPROCEDURE "
+                    attr: 1
+                  - text: SReal
+                    attr: 4
+                  - text: " (val: SHORTREAL): ShortReal\rPROCEDURE "
+                    attr: 1
+                  - text: Real
+                    attr: 4
+                  - text: " (val: REAL): RealT\rPROCEDURE "
+                    attr: 1
+                  - text: Bool
+                    attr: 4
+                  - text: " (val: BOOLEAN): Boolean\rPROCEDURE "
+                    attr: 1
+                  - text: Res
+                    attr: 4
+                  - text: " (val: RESULT): Result\rPROCEDURE "
+                    attr: 1
+                  - text: Cy
+                    attr: 4
+                  - text: " (val: OleCy): Currency\rPROCEDURE "
+                    attr: 1
+                  - text: Date
+                    attr: 4
+                  - text: " (val: OleDate): DateT\rPROCEDURE "
+                    attr: 1
+                  - text: Str
+                    attr: 4
+                  - text: " (IN val: ARRAY OF CHAR): String\rPROCEDURE "
+                    attr: 1
+                  - text: Intfce
+                    attr: 4
+                  - text: " (val: IUnknown): Interface\rGenerator functions for scalar basic type objects.\r\rPROCEDURE "
+                    attr: 1
+                  - text: AnyArr
+                    attr: 4
+                  - text: " (IN val: ARRAY OF Any): AnyArray\rPROCEDURE "
+                    attr: 1
+                  - text: ObjArr
+                    attr: 4
+                  - text: " (IN val: ARRAY OF Object): ObjectArray\rPROCEDURE "
+                    attr: 1
+                  - text: ByteArr
+                    attr: 4
+                  - text: " (IN val: ARRAY OF BYTE): ByteArray\rPROCEDURE "
+                    attr: 1
+                  - text: SIntArr
+                    attr: 4
+                  - text: " (IN val: ARRAY OF SHORTINT): ShortIntArray\rPROCEDURE "
+                    attr: 1
+                  - text: IntArr
+                    attr: 4
+                  - text: " (IN val: ARRAY OF INTEGER): IntegerArray\rPROCEDURE "
+                    attr: 1
+                  - text: SRealArr
+                    attr: 4
+                  - text: " (IN val: ARRAY OF SHORTREAL): ShortRealArray\rPROCEDURE "
+                    attr: 1
+                  - text: RealArr
+                    attr: 4
+                  - text: " (IN val: ARRAY OF REAL): RealArray\rPROCEDURE "
+                    attr: 1
+                  - text: BoolArr
+                    attr: 4
+                  - text: " (IN val: ARRAY OF BOOLEAN): BooleanArray\rPROCEDURE "
+                    attr: 1
+                  - text: ResArr
+                    attr: 4
+                  - text: " (IN val: ARRAY OF RESULT): ResultArray\rPROCEDURE "
+                    attr: 1
+                  - text: CyArr
+                    attr: 4
+                  - text: " (IN val: ARRAY OF OleCy): CurrencyArray\rPROCEDURE "
+                    attr: 1
+                  - text: DateArr
+                    attr: 4
+                  - text: " (IN val: ARRAY OF OleDate): DateArray\rPROCEDURE "
+                    attr: 1
+                  - text: StrArr
+                    attr: 4
+                  - text: " (IN val: ARRAY OF Strg): StringArray\rPROCEDURE "
+                    attr: 1
+                  - text: IntfceArr
+                    attr: 4
+                  - text: " (IN val: ARRAY OF IUnknown): InterfaceArray\rGenerator functions for one-dimensional array objects.\r\rPROCEDURE "
+                    attr: 1
+                  - text: AnyArr2
+                    attr: 4
+                  - text: " (IN val: ARRAY OF ARRAY OF Any): AnyArray2\rPROCEDURE "
+                    attr: 1
+                  - text: ObjArr2
+                    attr: 4
+                  - text: " (IN val: ARRAY OF ARRAY OF Object): ObjectArray2\rPROCEDURE "
+                    attr: 1
+                  - text: ByteArr2
+                    attr: 4
+                  - text: " (IN val: ARRAY OF ARRAY OF BYTE): ByteArray2\rPROCEDURE "
+                    attr: 1
+                  - text: SIntArr2
+                    attr: 4
+                  - text: " (IN val: ARRAY OF ARRAY OF SHORTINT): ShortIntArray2\rPROCEDURE "
+                    attr: 1
+                  - text: IntArr2
+                    attr: 4
+                  - text: " (IN val: ARRAY OF ARRAY OF INTEGER): IntegerArray2\rPROCEDURE "
+                    attr: 1
+                  - text: SRealArr2
+                    attr: 4
+                  - text: " (IN val: ARRAY OF ARRAY OF SHORTREAL): ShortRealArray2\rPROCEDURE "
+                    attr: 1
+                  - text: RealArr2
+                    attr: 4
+                  - text: " (IN val: ARRAY OF ARRAY OF REAL): RealArray2\rPROCEDURE "
+                    attr: 1
+                  - text: BoolArr2
+                    attr: 4
+                  - text: " (IN val: ARRAY OF ARRAY OF BOOLEAN): BooleanArray2\rPROCEDURE "
+                    attr: 1
+                  - text: ResArr2
+                    attr: 4
+                  - text: " (IN val: ARRAY OF ARRAY OF RESULT): ResultArray2\rPROCEDURE "
+                    attr: 1
+                  - text: CyArr2
+                    attr: 4
+                  - text: " (IN val: ARRAY OF ARRAY OF OleCy): CurrencyArray2\rPROCEDURE "
+                    attr: 1
+                  - text: DateArr2
+                    attr: 4
+                  - text: " (IN val: ARRAY OF ARRAY OF OleDate): DateArray2\rPROCEDURE "
+                    attr: 1
+                  - text: StrArr2
+                    attr: 4
+                  - text: " (IN val: ARRAY OF ARRAY OF Strg): StringArray2\rPROCEDURE "
+                    attr: 1
+                  - text: IntfceArr2
+                    attr: 4
+                  - text: " (IN val: ARRAY OF ARRAY OF IUnknown): InterfaceArray2\rGenerator functions for two-dimensional array objects.\r\rPROCEDURE "
+                    attr: 1
+                  - text: Disp
+                    attr: 4
+                  - text: " (obj: Object): IDispatch\rUsed internally.\r"
+                    attr: 1
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 14
+          bodyPos: 17653
+          bodyLen: 8

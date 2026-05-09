@@ -1,0 +1,1008 @@
+odc:
+  format: 1
+  source: "C:\\projects\\BlackBox Component Builder 1.7-a1\\System\\Mod\\SMath.odc"
+  size: 15070
+  document:
+    - kind: Documents.StdDocument
+      storeKind: store
+      typeChain:
+        - Documents.StdDocumentDesc
+        - Documents.DocumentDesc
+        - Containers.ViewDesc
+        - Views.ViewDesc
+        - Stores.StoreDesc
+      id: 0
+      bodyPos: 131
+      bodyLen: 14939
+      children:
+        - kind: Documents.Model
+          storeKind: elem
+          typeChain:
+            - Documents.ModelDesc
+            - Containers.ModelDesc
+            - Models.ModelDesc
+            - Stores.StoreDesc
+          id: 0
+          bodyPos: 234
+          bodyLen: 14753
+          children:
+            - kind: TextViews.StdView
+              storeKind: store
+              typeChain:
+                - TextViews.StdViewDesc
+                - TextViews.ViewDesc
+                - Containers.ViewDesc
+                - Views.ViewDesc
+                - Stores.StoreDesc
+              id: 1
+              bodyPos: 304
+              bodyLen: 14667
+              hideMarks: true
+              defaultRuler:
+                left: 0
+                right: 7315200
+                asc: 104775
+                dsc: 28575
+                grid: 1
+                opts: 0x00000021
+              defaultAttr:
+                font: Arial
+                size: 101600
+                color: 0x01000000
+                weight: 400
+                style: 0x00000000
+              controller:
+                kind: TextControllers.StdCtrl
+                storeKind: store
+                typeChain:
+                  - TextControllers.StdCtrlDesc
+                  - TextControllers.ControllerDesc
+                  - Containers.ControllerDesc
+                  - Controllers.ControllerDesc
+                  - Stores.StoreDesc
+                id: 23
+                bodyPos: 14788
+                bodyLen: 9
+              content:
+                kind: TextModels.StdModel
+                storeKind: elem
+                typeChain:
+                  - TextModels.StdModelDesc
+                  - TextModels.ModelDesc
+                  - Containers.ModelDesc
+                  - Models.ModelDesc
+                  - Stores.StoreDesc
+                id: 1
+                bodyPos: 376
+                bodyLen: 14274
+                runListLen: 3643
+                attrPool:
+                  - # [0]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000000
+                  - # [1]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 400
+                    style: 0x00000001
+                  - # [2]
+                    font: "*"
+                    size: 114300
+                    color: 0x00ff0000
+                    weight: 400
+                    style: 0x00000003
+                  - # [3]
+                    font: "*"
+                    size: 114300
+                    color: 0x01000000
+                    weight: 700
+                    style: 0x00000000
+                flow:
+                  - text: "MODULE SMath; "
+                    attr: 0
+                  - text: "\r(**\r"
+                    attr: 1
+                  - view:
+                      kind: StdHeaders.View
+                      storeKind: store
+                      typeChain:
+                        - StdHeaders.ViewDesc
+                        - Views.ViewDesc
+                        - Stores.StoreDesc
+                      id: 4
+                      bodyPos: 575
+                      bodyLen: 62
+                    attr: 1
+                    w: 360000000
+                    h: 168275
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      tabs:
+                        - { stop: 144000 }
+                        - { stop: 1080000 }
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\tproject\t= \"BlackBox\"\r\torganization\t= \"www.oberon.ch\"\r\tcontributors\t= \"Oberon microsystems\"\r\tversion\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tcopyright\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenToolDialog('System/Rsrc/About', 'About BlackBox')"
+                      body:
+                        - text: System/Rsrc/About
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tlicense\t= \""
+                    attr: 1
+                  - link:
+                      target: "StdCmds.OpenBrowser('Docu/BB-License', 'BlackBox License')"
+                      body:
+                        - text: Docu/BB-License
+                          attr: 2
+                      attr: 1
+                      w: 121725
+                      h: 133350
+                  - text: "\"\r\tchanges\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- YYYYMMDD, nn, ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r\tissues\t= \""
+                    attr: 1
+                  - fold:
+                      collapsed: true
+                      hidden:
+                        - text: "\r\t- ...\r\t"
+                          attr: 0
+                      body: []
+                      attr: 1
+                      w: 123825
+                      h: 133350
+                  - text: "\"\r"
+                    attr: 1
+                  - ruler:
+                      left: 0
+                      right: 5943600
+                      asc: 104775
+                      dsc: 28575
+                      grid: 1
+                      opts: 0x00000001
+                      attr: 1
+                      w: 360000000
+                      h: 444500
+                  - text: "\r**)\r\r"
+                    attr: 1
+                  - text: "\tIMPORT "
+                    attr: 0
+                  - text: SYSTEM
+                    attr: 3
+                  - text: ";\r\r\tVAR eps, e: SHORTREAL;\r\r\r"
+                    attr: 0
+                  - text: "\t(* code procedures for 80387 math coprocessor *)\r\r"
+                    attr: 1
+                  - text: "\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FLD (x: SHORTREAL);\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] TOP (): SHORTREAL;\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FSW (): INTEGER 0DFH, 0E0H;\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FSWs (): SET 0DFH, 0E0H;\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] ST0 (): SHORTREAL 0D9H, 0C0H;\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] ST1 (): SHORTREAL 0D9H, 0C1H;\r\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FXCH 0D9H, 0C9H;\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FLDst0 0D9H, 0C0H;\t"
+                    attr: 0
+                  - text: "(* doublicate st[0] *)"
+                    attr: 1
+                  - text: "\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FSTPst0 0DDH, 0D8H;\t"
+                    attr: 0
+                  - text: "(* remove st[0] *)"
+                    attr: 1
+                  - text: "\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FSTPst1 0DDH, 0D9H;\t"
+                    attr: 0
+                  - text: "(* remove st[1] *)"
+                    attr: 1
+                  - text: "\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FSTPDe 0DBH, 05DH, 0F4H;\t"
+                    attr: 0
+                  - text: "(* FSTPD -12[FP] *)"
+                    attr: 1
+                  - text: "\t"
+                    attr: 0
+                  - text: "(* COMPILER DEPENDENT *)\r"
+                    attr: 1
+                  - text: "\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] WAIT 09BH;\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FNOP 0D9H, 0D0H;\r\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FLD0 0D9H, 0EEH;\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FLD1 0D9H, 0E8H;\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FLDPI 0D9H, 0EBH;\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FLDLN2 0D9H, 0EDH;\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FLDLG2 0D9H, 0ECH;\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FLDL2E 0D9H, 0EAH;\r\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FADD 0DEH, 0C1H;\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FADDst0 0D8H, 0C0H;\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FSUB 0DEH, 0E9H;\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FSUBn 0DCH, 0E9H;\t"
+                    attr: 0
+                  - text: "(* no pop *)"
+                    attr: 1
+                  - text: "\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FSUBR 0DEH, 0E1H;\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FSUBst1 0D8H, 0E1H;\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FMUL 0DEH, 0C9H;\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FMULst0 0D8H, 0C8H;\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FMULst1st0 0DCH, 0C9H;\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FDIV 0DEH, 0F9H;\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FDIVR 0DEH, 0F1H;\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FDIVRst1 0D8H, 0F9H;\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FCHS 0D9H, 0E0H;\r\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FCOM 0D8H, 0D1H;\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FSWax 0DFH, 0E0H;\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] SAHF 09EH;\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] JBE4 076H, 004H;\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] JAE4 073H, 004H;\r\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FRNDINT 0D9H, 0FCH;\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FSCALE 0D9H, 0FDH;\t"
+                    attr: 0
+                  - text: "(* st[0] * 2^FLOOR(st[1]) *)"
+                    attr: 1
+                  - text: "\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FXTRACT 0D9H, 0F4H;\t"
+                    attr: 0
+                  - text: "(* exp -> st[1]; mant -> st[0] *)"
+                    attr: 1
+                  - text: "\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FXAM 0D9H, 0E5H;\r\t\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FSQRT 0D9H, 0FAH;\t"
+                    attr: 0
+                  - text: "(* st[0] >= 0 *)"
+                    attr: 1
+                  - text: "\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FSIN 0D9H, 0FEH;\t"
+                    attr: 0
+                  - text: "(* |st[0]| < 2^63 *)"
+                    attr: 1
+                  - text: "\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FCOS 0D9H, 0FFH;\t"
+                    attr: 0
+                  - text: "(* |st[0]| < 2^63 *)"
+                    attr: 1
+                  - text: "\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FTAN 0D9H, 0F2H;\t"
+                    attr: 0
+                  - text: "(* |st[0]| < 2^63 *)"
+                    attr: 1
+                  - text: "\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FATAN 0D9H, 0F3H;\t"
+                    attr: 0
+                  - text: "(* atan2(st[1], st[0]) *)"
+                    attr: 1
+                  - text: "\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FYL2X 0D9H, 0F1H;\t"
+                    attr: 0
+                  - text: "(* st[1] * log2(st[0]), st[0] > 0 *)"
+                    attr: 1
+                  - text: "\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] FYL2XP1 0D9H, 0F9H;\t"
+                    attr: 0
+                  - text: "(* st[1] * log2(1 + st[0]), |st[0]| < 1-sqrt(2)/2 *)"
+                    attr: 1
+                  - text: "\r\tPROCEDURE ["
+                    attr: 0
+                  - text: code
+                    attr: 3
+                  - text: "] F2XM1 0D9H, 0F0H;\t"
+                    attr: 0
+                  - text: "(* 2^st[0] - 1, |st[0]| <= 1 *)"
+                    attr: 1
+                  - text: "\r\r\r\tPROCEDURE IsNan (x: SHORTREAL): BOOLEAN;\r\tBEGIN\r\t\tFLD(x); FXAM; FSTPst0;"
+                    attr: 0
+                  - text: " "
+                    attr: 3
+                  - text: "WAIT; "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " FSWs() * {8, 10} = {8}\r\tEND IsNan;\r\r\r\t"
+                    attr: 0
+                  - text: "(* sin, cos, tan argument reduction *)"
+                    attr: 1
+                  - text: "\r\t\r\tPROCEDURE Reduce;\r\tBEGIN\r\t\tFXAM; WAIT;\r\t\tIF ~(8 IN FSWs()) & (ABS(ST0()) > 1.0E18) THEN\r\t\t\t"
+                    attr: 0
+                  - text: "(* to be completed *)"
+                    attr: 1
+                  - text: "\r\t\t\tFSTPst0;"
+                    attr: 0
+                  - text: " "
+                    attr: 3
+                  - text: "FLD0\r\t\tEND;\r\tEND Reduce;\r\r\r"
+                    attr: 0
+                  - text: "\t(** SHORTREAL precision **)\r"
+                    attr: 1
+                  - text: "\r"
+                    attr: 0
+                  - text: "\t"
+                    attr: 1
+                  - text: "PROCEDURE "
+                    attr: 0
+                  - text: Pi
+                    attr: 3
+                  - text: "* (): SHORTREAL;\r\tBEGIN\r\t\tFLDPI; "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TOP()\r\tEND Pi;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: Eps
+                    attr: 3
+                  - text: "* (): SHORTREAL;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " eps\r\tEND Eps;\r\t\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: Sqrt
+                    attr: 3
+                  - text: "* (x: SHORTREAL): SHORTREAL;\r\tBEGIN\r"
+                    attr: 0
+                  - text: "\t\t(* 20, argument of Sqrt must not be negative *)\r"
+                    attr: 1
+                  - text: "\t\tFLD(x); FSQRT; WAIT; "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TOP()\r\tEND Sqrt;\r\t\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Exp
+                    attr: 3
+                  - text: "* (x: SHORTREAL): SHORTREAL;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: "(* 2 ^ (x * 1/ln(2)) *)"
+                    attr: 1
+                  - text: "\r\t\tFLD(x); FLDL2E; FMUL;\r\t\tIF ABS(ST0()) = INF THEN FLD1\r\t\tELSE FLDst0; FRNDINT; FXCH; FSUBst1; FNOP; F2XM1; FLD1; FADD\r\t\tEND;\r\t\tFSCALE; FSTPst1; "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TOP()\r\tEND Exp;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Ln
+                    attr: 3
+                  - text: "* (x: SHORTREAL): SHORTREAL;\r\tBEGIN\r"
+                    attr: 0
+                  - text: "\t\t(* 20, argument of Ln must not be negative *)\r"
+                    attr: 1
+                  - text: "\t\t"
+                    attr: 0
+                  - text: "(* ln(2) * ld(x) *)"
+                    attr: 1
+                  - text: "\r\t\tFLDLN2; FLD(x); FYL2X; WAIT; "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TOP()\r\tEND Ln;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: Log
+                    attr: 3
+                  - text: "* (x: SHORTREAL): SHORTREAL;\r\tBEGIN\r"
+                    attr: 0
+                  - text: "\t\t(* 20, argument of Log must not be negative *)\r"
+                    attr: 1
+                  - text: "\t\t"
+                    attr: 0
+                  - text: "(* log(2) * ld(x) *)"
+                    attr: 1
+                  - text: "\r\t\tFLDLG2; FLD(x); FYL2X; WAIT; "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TOP()\r\tEND Log;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Power
+                    attr: 3
+                  - text: "* (x, y: SHORTREAL): SHORTREAL;\r\tBEGIN\r\t\tASSERT(x >= 0, 20);\r\t\tASSERT((x # 0.0)  OR  (y # 0.0), 21);\r\t\tASSERT((x # INF)  OR  (y # 0.0), 22);\r\t\tASSERT((x # 1.0)  OR  (ABS(y) # INF), 23);\r\t\t"
+                    attr: 0
+                  - text: "(* 2 ^ (y * ld(x)) *)"
+                    attr: 1
+                  - text: "\r\t\tFLD(y); FLD(x); FYL2X;\r\t\tIF ABS(ST0()) = INF THEN FLD1\r\t\tELSE FLDst0; FRNDINT; FXCH; FSUBst1; FNOP; F2XM1; FLD1; FADD\r\t\tEND;\r\t\tFSCALE; FSTPst1; WAIT; "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TOP()\r\tEND Power;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: IntPower
+                    attr: 3
+                  - text: "* (x: SHORTREAL; n: INTEGER): SHORTREAL;\r\tBEGIN \r\t\tFLD1; FLD(x);\r\t\tIF n = MIN(INTEGER) THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " IntPower(x, n + 1) / x END;\r\t\tIF n <= 0 THEN FDIVRst1;"
+                    attr: 0
+                  - text: " (* 1 / x *)"
+                    attr: 1
+                  - text: " n := -n END;\r\t\tWHILE n > 0 DO\r\t\t\tIF ODD(n) THEN FMULst1st0; "
+                    attr: 0
+                  - text: "(* y := y * x *)"
+                    attr: 1
+                  - text: " DEC(n)\r\t\t\tELSE FMULst0; "
+                    attr: 0
+                  - text: "(* x := x * x *)"
+                    attr: 1
+                  - text: " n := n DIV 2\r\t\t\tEND\r\t\tEND;\r\t\tFSTPst0; "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TOP()\r\tEND IntPower;\r\t\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Sin
+                    attr: 3
+                  - text: "* (x: SHORTREAL): SHORTREAL;\r\tBEGIN\r"
+                    attr: 0
+                  - text: "\t\t(* 20, ABS(x) # INF *)\r"
+                    attr: 1
+                  - text: "\t\tFLD(x); Reduce; FSIN; WAIT; "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TOP()\r\tEND Sin;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Cos
+                    attr: 3
+                  - text: "* (x: SHORTREAL): SHORTREAL;\r\tBEGIN\r"
+                    attr: 0
+                  - text: "\t\t(* 20, ABS(x) # INF *)\r"
+                    attr: 1
+                  - text: "\t\tFLD(x); Reduce; FCOS; WAIT; "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TOP()\r\tEND Cos;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Tan
+                    attr: 3
+                  - text: "* (x: SHORTREAL): SHORTREAL;\r\tBEGIN\r"
+                    attr: 0
+                  - text: "\t\t(* 20, ABS(x) # INF *)\r"
+                    attr: 1
+                  - text: "\t\tFLD(x); Reduce; FTAN; FSTPst0; WAIT; "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TOP()\r\tEND Tan;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: ArcSin
+                    attr: 3
+                  - text: "* (x: SHORTREAL): SHORTREAL;\r\tBEGIN\r"
+                    attr: 0
+                  - text: "\t\t(* 20, -1.0 <= x <= 1.0 *)\r"
+                    attr: 1
+                  - text: "\t\t"
+                    attr: 0
+                  - text: "(* atan2(x, sqrt(1 - x*x)) *)"
+                    attr: 1
+                  - text: "\r\t\tFLD(x); FLDst0; FMULst0; FLD1; FSUBR; FSQRT; FNOP; FATAN; WAIT; "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TOP()\r\tEND ArcSin;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: ArcCos
+                    attr: 3
+                  - text: "* (x: SHORTREAL): SHORTREAL;\r\tBEGIN\r"
+                    attr: 0
+                  - text: "\t\t(* 20, -1.0 <= x <= 1.0 *)\r"
+                    attr: 1
+                  - text: "\t\t"
+                    attr: 0
+                  - text: "(* atan2(sqrt(1 - x*x), x) *)"
+                    attr: 1
+                  - text: "\r\t\tFLD(x); FMULst0; FLD1; FSUBR; FSQRT; FLD(x); FATAN; WAIT; "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TOP()\r\tEND ArcCos;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: ArcTan
+                    attr: 3
+                  - text: "* (x: SHORTREAL): SHORTREAL;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: "(* atan2(x, 1) *)"
+                    attr: 1
+                  - text: "\r\t\tFLD(x); FLD1; FATAN; "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TOP()\r\tEND ArcTan;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: ArcTan2
+                    attr: 3
+                  - text: "* (y, x: SHORTREAL): SHORTREAL;\r\tBEGIN\r\t\tASSERT((y # 0)  OR (x # 0), 20);\r\t\tASSERT((ABS(y) # INF)  OR  (ABS(x)  # INF), 21);\r\t\tFLD(y); FLD(x); FATAN; WAIT; "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TOP()\r\tEND ArcTan2;\r\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Sinh
+                    attr: 3
+                  - text: "* (x: SHORTREAL): SHORTREAL;\r\tBEGIN\r\t\t(* IF IsNan(x) THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " x END; *)\r\t\t"
+                    attr: 0
+                  - text: "(* abs(x) * 1/ln(2) *)"
+                    attr: 1
+                  - text: "\r\t\tFLD(ABS(x)); FLDL2E; FMUL;\r\t\tIF ST0() < 0.5 THEN\r\t\t\t"
+                    attr: 0
+                  - text: "(* (2^z - 1) + (2^z - 1) / ((2^z - 1) + 1) *)"
+                    attr: 1
+                  - text: "\r\t\t\tF2XM1; FLDst0; FLDst0; FLD1; FADD; FDIV; FADD\r\t\tELSIF ST0() # INF THEN\r\t\t\t"
+                    attr: 0
+                  - text: "(* 2^z - 1 / 2^z *)"
+                    attr: 1
+                  - text: "\r\t\t\tFLDst0; FRNDINT; FXCH; FSUBst1; FNOP; F2XM1; FLD1; FADD; FSCALE;\r\t\t\tFSTPst1; FLDst0; FLD1; FDIVR; FSUB\r\t\tEND;\r\t\tIF x < 0 THEN FCHS END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TOP() * 0.5\r\tEND Sinh;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: Cosh
+                    attr: 3
+                  - text: "* (x: SHORTREAL): SHORTREAL;\r\tBEGIN\r\t\t(* IF IsNan(x) THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " x END; *)\r\t\t"
+                    attr: 0
+                  - text: "(* 2^(abs(x) * 1/ln(2)) *)"
+                    attr: 1
+                  - text: "\r\t\tFLD(ABS(x));\r\t\tIF ST0() # INF THEN \r\t\t\tFLDL2E; FMUL; FLDst0; FRNDINT; FXCH; FSUBst1; FNOP; F2XM1; FLD1; FADD; FSCALE;\r\t\t\tFSTPst1;\r\t\t"
+                    attr: 0
+                  - text: "\t(* z + 1/z *)"
+                    attr: 1
+                  - text: "\r\t\t\tFLDst0; FLD1; FDIVR; FADD\r\t\tEND;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TOP() * 0.5\r\tEND Cosh;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: Tanh
+                    attr: 3
+                  - text: "* (x: SHORTREAL): SHORTREAL;\r\tBEGIN\r\t\t(* IF IsNan(x) THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " x END; *)\r\t\t"
+                    attr: 0
+                  - text: "(* abs(x) * 1/ln(2) * 2 *)"
+                    attr: 1
+                  - text: "\r\t\tFLD(ABS(x)); FLDL2E; FMUL; FADDst0;\r\t\tIF ST0() < 0.5 THEN\r\t\t\t"
+                    attr: 0
+                  - text: "(* (2^z - 1) / (2^z + 1) *)"
+                    attr: 1
+                  - text: "\r\t\t\tF2XM1; FLDst0; FLD(2); FADD; FDIV\r\t\tELSIF ST0() < 65 THEN\r\t\t\t"
+                    attr: 0
+                  - text: "(* 1 - 2 / (2^z + 1) *)"
+                    attr: 1
+                  - text: "\r\t\t\tFLDst0; FRNDINT; FXCH; FSUBst1; FNOP; F2XM1; FLD1; FADD; FSCALE; FSTPst1; FLD1; FADD; FLD(2); FDIVR; FLD1; FSUBR\r\t\tELSE\r\t\t\tFSTPst0; FLD1\r\t\tEND;\r\t\tIF x < 0 THEN FCHS END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TOP()\r\tEND Tanh;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: ArcSinh
+                    attr: 3
+                  - text: "* (x: SHORTREAL): SHORTREAL;\r\tBEGIN\r\t\t(* IF IsNan(x) THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " x END; *)\r\t\t(* x*x *)\r\t\tFLDLN2; FLD(ABS(x)); FLDst0; FMULst0;\r\t\tIF ST0() < 0.067 THEN\r\t\t\t"
+                    attr: 0
+                  - text: "(* ln(2) * ld(1 + x*x / (sqrt(x*x + 1) + 1) + x) *)"
+                    attr: 1
+                  - text: "\r\t\t\tFLDst0; FLD1; FADD; FSQRT; FLD1; FADD; FDIV; FADD; FYL2XP1\r\t\tELSE\r\t\t\t"
+                    attr: 0
+                  - text: "(* ln(2) * ld(x + sqrt(x*x + 1)) *)\r\t\t\t"
+                    attr: 1
+                  - text: "FLD1; FADD; FSQRT; FADD; FYL2X\r\t\tEND;\r\t\tIF x < 0 THEN FCHS END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TOP()\r\tEND ArcSinh;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: ArcCosh
+                    attr: 3
+                  - text: "* (x: SHORTREAL): SHORTREAL;\r\tBEGIN\r"
+                    attr: 0
+                  - text: "\t\t(* 20, x >= 1.0 *)\r"
+                    attr: 1
+                  - text: "\t\t(* IF IsNan(x) THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " x END; *)\r\t\t"
+                    attr: 0
+                  - text: "(* ln(2) * ld(x + sqrt(x*x - 1)) *)\r\t\t"
+                    attr: 1
+                  - text: "FLDLN2; FLD(x); FLDst0; FMULst0; FLD1; FSUB; FSQRT; FADD; FYL2X; WAIT; "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TOP()\r\tEND ArcCosh;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: ArcTanh
+                    attr: 3
+                  - text: "* (x: SHORTREAL): SHORTREAL;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: "(* 20, -1.0 <= x <= 1.0 *)"
+                    attr: 1
+                  - text: "\r\t\t(* IF IsNan(x) THEN "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " x END; *)\r\t\t"
+                    attr: 0
+                  - text: "(* |x| *)\r"
+                    attr: 1
+                  - text: "\t\tFLDLN2; FLD(ABS(x)); \r\t\tIF ST0() < 0.12 THEN\r\t\t\t"
+                    attr: 0
+                  - text: "(* ln(2) * ld(1 + 2*x / (1 - x)) *)\r\t\t\t"
+                    attr: 1
+                  - text: "FLDst0; FLD1; FSUBR; FDIV; FADDst0; FYL2XP1\r\t\tELSE\r\t\t\t"
+                    attr: 0
+                  - text: "(* ln(2) * ld((1 + x) / (1 - x)) *)\r\t\t\t"
+                    attr: 1
+                  - text: "FLDst0; FLD1; FADD; FXCH; FLD1; FSUBR; FDIV; FNOP; FYL2X\r\t\tEND;\r\t\tIF x < 0 THEN FCHS END;\r\t\tWAIT;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TOP() * 0.5\r\tEND ArcTanh;\r\t\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: Floor
+                    attr: 3
+                  - text: "* (x: SHORTREAL): SHORTREAL;\r\tBEGIN\r\t\tFLD(x); FLDst0; FRNDINT; FCOM; FSWax; FSTPst1; SAHF; JBE4; FLD1; FSUB; "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TOP()\r\tEND Floor;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: Ceiling
+                    attr: 3
+                  - text: "* (x: SHORTREAL): SHORTREAL;\r\tBEGIN\r\t\tFLD(x); FLDst0; FRNDINT; FCOM; FSWax; FSTPst1; SAHF; JAE4; FLD1; FADD; "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TOP()\r\tEND Ceiling;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: "Round*"
+                    attr: 3
+                  - text: " (x: SHORTREAL): SHORTREAL;\r\tBEGIN\r\t\tFLD(x); \r\t\tIF ABS(ST0()) = INF THEN RETURN TOP() END;\r\t\tFLDst0; FRNDINT; FSUBn; FXCH;\r\t\tIF TOP() = 0.5 THEN FLD1; FADD END;\r\t\t"
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TOP()\r\tEND Round;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Trunc
+                    attr: 3
+                  - text: "* (x: SHORTREAL): SHORTREAL;\r\tBEGIN \r\t\tFLD(x); FLDst0; FRNDINT;\r\t\tIF ST1() >= 0 THEN\r\t\t\tFCOM; FSWax; FSTPst1; SAHF; JBE4; FLD1; FSUB\r\t\tELSE\r\t\t\tFCOM; FSWax; FSTPst1; SAHF; JAE4; FLD1; FADD\r\t\tEND;\r"
+                    attr: 0
+                  - text: "\t\tRETURN"
+                    attr: 3
+                  - text: " TOP()\r\tEND Trunc;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Frac
+                    attr: 3
+                  - text: "* (x: SHORTREAL): SHORTREAL;\r\tBEGIN\r\t\t"
+                    attr: 0
+                  - text: "(* 20, x # INF  &  x # -INF *)"
+                    attr: 1
+                  - text: "\r\t\tFLD(x); FLDst0; FRNDINT;\r\t\tIF ST1() >= 0 THEN\r\t\t\tFCOM; FSWax; SAHF; JBE4; FLD1; FSUB\r\t\tELSE\r\t\t\tFCOM; FSWax; SAHF; JAE4; FLD1; FADD\r\t\tEND;\r"
+                    attr: 0
+                  - text: "\t\t"
+                    attr: 3
+                  - text: "FSUB; WAIT; "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TOP()\r\tEND Frac;\r\t\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: "Sign*"
+                    attr: 3
+                  - text: " (x: SHORTREAL): SHORTREAL;\r\tBEGIN\r\t\tFLD(x); FXAM; WAIT;\r\t\tCASE FSW() DIV 256 MOD 8 OF\r\t\t| 0, 2: FSTPst0;"
+                    attr: 0
+                  - text: " RETURN"
+                    attr: 3
+                  - text: " 0.0\r\t\t| 1, 4, 5: FSTPst0;"
+                    attr: 0
+                  - text: " RETURN"
+                    attr: 3
+                  - text: " 1.0\r\t\t| 3, 6, 7: FSTPst0;"
+                    attr: 0
+                  - text: " RETURN"
+                    attr: 3
+                  - text: " -1.0\r\t\tEND\r\tEND Sign;\r\r\tPROCEDURE "
+                    attr: 0
+                  - text: Mantissa
+                    attr: 3
+                  - text: "* (x: SHORTREAL): SHORTREAL;\r\tBEGIN\r\t\tFLD(x); FXAM; WAIT;\r\t\tCASE FSW() DIV 256 MOD 8 OF\r\t\t| 4, 6: FXTRACT; FSTPst1; "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TOP()\r\t\t| 0, 2: FSTPst0;"
+                    attr: 0
+                  - text: " RETURN"
+                    attr: 3
+                  - text: " 0.0\t"
+                    attr: 0
+                  - text: "(* zero *)"
+                    attr: 1
+                  - text: "\r\t\t| 5: FSTPst0;"
+                    attr: 0
+                  - text: " RETURN"
+                    attr: 3
+                  - text: " 1.0\t"
+                    attr: 0
+                  - text: "(* inf *)"
+                    attr: 1
+                  - text: "\r\t\t| 7: FSTPst0;"
+                    attr: 0
+                  - text: " RETURN"
+                    attr: 3
+                  - text: " -1.0\t"
+                    attr: 0
+                  - text: "(* -inf *)"
+                    attr: 1
+                  - text: "\r\t\t| 1: FSTPst0;"
+                    attr: 0
+                  - text: " RETURN"
+                    attr: 3
+                  - text: " 1.5\t"
+                    attr: 0
+                  - text: "(* nan *)"
+                    attr: 1
+                  - text: "\r\t\t| 3: FSTPst0;"
+                    attr: 0
+                  - text: " RETURN"
+                    attr: 3
+                  - text: " -1.5\t"
+                    attr: 0
+                  - text: "(* -nan *)"
+                    attr: 1
+                  - text: "\r\t\tEND\r\tEND Mantissa;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: Exponent
+                    attr: 3
+                  - text: "* (x: SHORTREAL): INTEGER;\t"
+                    attr: 0
+                  - text: "(* COMPILER DEPENDENT *)"
+                    attr: 1
+                  - text: "\r\t\tVAR e: INTEGER;\t"
+                    attr: 0
+                  - text: "(* "
+                    attr: 1
+                  - text: e
+                    attr: 0
+                  - text: " is set by FSTPDe! *)"
+                    attr: 1
+                  - text: "\r\tBEGIN\r\t\tFLD(x); FXAM; WAIT;\r\t\tCASE FSW() DIV 256 MOD 8 OF\r\t\t| 4, 6: FXTRACT; FSTPst0; FSTPDe; WAIT; "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " e\r\t\t| 0, 2: FSTPst0;"
+                    attr: 0
+                  - text: " RETURN"
+                    attr: 3
+                  - text: " 0\t"
+                    attr: 0
+                  - text: "(* zero *)"
+                    attr: 1
+                  - text: "\r\t\t| 1, 3, 5, 7: FSTPst0;"
+                    attr: 0
+                  - text: " RETURN"
+                    attr: 3
+                  - text: " MAX(INTEGER)\t"
+                    attr: 0
+                  - text: "(* inf or nan*)"
+                    attr: 1
+                  - text: "\r\t\tEND\r\tEND Exponent;\r\t\r\tPROCEDURE "
+                    attr: 0
+                  - text: Real
+                    attr: 3
+                  - text: "* (m: SHORTREAL; e: INTEGER): SHORTREAL;\r\t\tVAR s: SET;\r\tBEGIN\r\t\tIF (m = 0) THEN RETURN 0.0 END;\r\t\tASSERT(~IsNan(m) & (1 <= ABS(m)) & (ABS(m) < 2), 20);\r\t\tIF e = MAX(INTEGER) THEN\r\t\t\t"
+                    attr: 0
+                  - text: SYSTEM.GET
+                    attr: 3
+                  - text: "(SYSTEM.ADR(m) + 4, s);\r\t\t\t"
+                    attr: 0
+                  - text: SYSTEM.PUT
+                    attr: 3
+                  - text: "(SYSTEM.ADR(m) + 4, s + {20..30});\r\t\t\t"
+                    attr: 0
+                  - text: "RETURN "
+                    attr: 3
+                  - text: "m\r\t\tELSE\r\t\t\tFLD(e); FLD(m); FSCALE; FSTPst1; "
+                    attr: 0
+                  - text: RETURN
+                    attr: 3
+                  - text: " TOP()\r\t\tEND\r\tEND Real;\r\rBEGIN\r\teps := 1.0E+0; e := 2.0E+0;\r\tWHILE e > 1.0E+0 DO eps := eps/2.0E+0; e := 1.0E+0 + eps END; eps := 2.0E+0 * eps;\rEND SMath.\r"
+                    attr: 0
+        - kind: Documents.Controller
+          storeKind: store
+          typeChain:
+            - Documents.ControllerDesc
+            - Containers.ControllerDesc
+            - Controllers.ControllerDesc
+            - Stores.StoreDesc
+          id: 27
+          bodyPos: 15035
+          bodyLen: 8
