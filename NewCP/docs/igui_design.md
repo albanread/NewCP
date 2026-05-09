@@ -195,6 +195,13 @@ Several legacy parameters are intentionally dropped:
   side of the path centerline.
 - **Corner radius** — `0.0` means a sharp rectangle; non-zero values
   produce Direct2D rounded rectangles with that radius on both axes.
+- **Physical units** — DIPs are the wire unit. Application code that
+  prefers physical units (mm, inches) is expected to convert at the
+  CP-side call site. A small future helper module `iGuiUnits` may
+  provide `MmToDip` / `InchToDip` utilities, but iGui itself does not
+  carry a per-port `unit` value the way BlackBox `Ports.Port.unit` did
+  — DPI awareness lives in `iGui.GetDpi` and the `dpi-change` event
+  instead (see [DPI](#dpi)).
 
 ### Composition state
 
@@ -226,6 +233,8 @@ pub enum SurfaceCmd {
     PushOffset       { dx: f32, dy: f32 },
     PopOffset,
     ScrollRect       { rect: Rect, dx: f32, dy: f32 },
+    SaveRect         { slot: u8, rect: Rect },
+    RestoreRect      { slot: u8 },
     InstallChildViewBounds { child_id: u32, rect: Rect },
 
     // ─── Geometry — fills ──────────────────────────────────────────
@@ -268,7 +277,7 @@ pub struct Rect  { pub x0: f32, pub y0: f32, pub x1: f32, pub y1: f32 }
 pub struct Point { pub x: f32, pub y: f32 }
 pub struct Rgba  { pub r: f32, pub g: f32, pub b: f32, pub a: f32 }
 
-pub enum MarkMode { Highlight, Invert, Dim }
+pub enum MarkMode { Highlight, Invert, Dim25, Dim50, Dim75 }
 
 pub enum PathCmd {
     MoveTo  (Point),
@@ -348,6 +357,23 @@ space active at push time.
 undefined; the caller is expected to redraw it. Implementation:
 intra-buffer GPU copy; falls back to a temporary bitmap when source
 and destination overlap and copy ordering cannot be safe.
+
+**`SaveRect { slot, rect }`** — copy the contents of `rect` from the
+pane buffer into a per-pane off-screen bitmap addressed by `slot`
+(0..7). Used for transient overlays (rubber-band marquees, drag
+ghosts, focus reticles) that need to restore the underlying pixels
+when the overlay moves or releases. Implementation: lazy-allocate a
+DXGI bitmap on first use of each slot; `CopyFromRenderTarget` from
+the live render target into the slot bitmap. The slot bitmap auto-
+resizes to fit the largest rect saved into it during the pane's
+lifetime.
+
+**`RestoreRect { slot }`** — paint the contents of slot `slot` back
+into the pane at the rect captured by the most recent matching
+`SaveRect`. Implementation: `DrawBitmap` from the slot bitmap into
+the render target. After restore, the slot remains valid; calling
+`SaveRect` again overwrites it. A pane has 8 slots; using more is a
+batch error.
 
 **`InstallChildViewBounds { child_id, rect }`** — record the rect at
 which a logical child view of CP-side composition will be drawn.
@@ -452,7 +478,11 @@ emits replies into the event mailbox after each query is answered.
 - `Highlight` — fill with system selection color at ~30% alpha.
 - `Invert` — XOR composition with white. `D2D1_COMPOSITE_MODE_XOR`
   `FillRectangle` with a white brush.
-- `Dim` — fill with system window color at ~50% alpha.
+- `Dim25` / `Dim50` / `Dim75` — fill with system window color at
+  25% / 50% / 75% alpha respectively. The three levels exist
+  because BlackBox uses different intensities for drag-state
+  shadows, disabled-control overlays, and dimmed selections — and
+  collapsing them loses semantic distinctions consumers will need.
 
 **`Caret { rect, color }`** — `FillRectangle(rect, brush)`.
 `rect.x1 - rect.x0` is caret thickness (typically 1 DIP).
@@ -477,6 +507,8 @@ focus visual style later without touching call sites.
 | `PushOffset` | `SetTransform(prev * Translation)` |
 | `PopOffset` | `SetTransform(prev)` |
 | `ScrollRect` | intra-buffer GPU copy / temporary bitmap fallback |
+| `SaveRect` | `CopyFromRenderTarget` into per-slot bitmap |
+| `RestoreRect` | `DrawBitmap` from per-slot bitmap |
 | `InstallChildViewBounds` | host-state map insert |
 | `FillRect` | `FillRectangle` / `FillRoundedRectangle` |
 | `FillOval` | `FillEllipse` |
@@ -522,6 +554,88 @@ parameter list expanded to scalars. The exact signatures live in the
 The closed enum here is the authoritative source; the CP signatures
 follow from it.
 
+## System colors
+
+BlackBox encodes "system color" as bit 31 of an ARGB value, so a draw
+call referring to `selectionBackground` resolves to whatever the
+current Windows theme says at draw time. iGui keeps explicit `Rgba`
+on every command (the surface protocol stays simple) and exposes
+system theme colors through a separate query API.
+
+The GUI thread caches the current theme palette and refreshes it on
+`WM_SYSCOLORCHANGE` and `WM_THEMECHANGED`. After refresh it emits a
+`theme-change` event so language-thread views can repaint anything
+that used theme colors.
+
+```
+TYPE SystemColor* = INTSHORT;   (* enum constants in iGui *)
+CONST
+  ScWindowBg*, ScWindowFg*,
+  ScControlBg*, ScControlFg*,
+  ScSelectionBg*, ScSelectionFg*,
+  ScHighlightBg*, ScHighlightFg*,
+  ScDisabledFg*,
+  ScCaret*,
+  ScDialogBg*, ScDialogFg* : SystemColor;
+
+PROCEDURE iGui.SystemColor*(kind: SystemColor;
+                             VAR r, g, b, a: REAL): INTSHORT;
+```
+
+The Rust side reads the relevant `GetSysColor` / `DwmGetColorization`
+values once per refresh and answers `SystemColor` from cache. Calling
+the query produces no Win32 traffic in steady state.
+
+## Cursor
+
+BlackBox's `PollCursorMsg` lets a view say "show this cursor while
+the pointer is here". iGui exposes this as a per-pane setter the
+language thread calls in response to `mouse` events with `move`. The
+GUI thread reads the per-pane cursor state on `WM_SETCURSOR`.
+
+```
+TYPE CursorKind* = INTSHORT;
+CONST
+  CrArrow*, CrIBeam*, CrCrosshair*, CrHand*, CrWait*,
+  CrResizeNS*, CrResizeEW*, CrResizeNESW*, CrResizeNWSE*,
+  CrSizeAll*, CrNotAllowed*, CrHelp* : CursorKind;
+
+PROCEDURE iGui.SetCursor*(childId: INTEGER; kind: CursorKind);
+```
+
+Setting an unknown kind is a no-op; the previous value persists.
+The default at child creation is `CrArrow`.
+
+## DPI
+
+iGui surfaces are DPI-aware. Each child window tracks the DPI of the
+monitor it currently sits on; per-child swap chains and Direct2D
+device contexts are created at the right scale.
+
+```
+PROCEDURE iGui.GetDpi*(childId: INTEGER; VAR dpiX, dpiY: REAL): INTSHORT;
+```
+
+`GetDpi` returns the current effective DPI at the time of the call
+(typically `(96, 96)` for 100% scaling, `(192, 192)` for 200%).
+
+When the user drags a child between monitors with different scaling,
+or changes display scale at runtime:
+
+1. Win32 sends `WM_DPICHANGED` (or `WM_DPICHANGED_AFTERPARENT` for
+   non-top-level windows).
+2. The GUI thread tears down and recreates the affected child's swap
+   chain, Direct2D bitmap target, and brush cache at the new DPI.
+3. The GUI thread emits a `dpi-change` event with the new
+   `(dpiX, dpiY)` values.
+4. Language-thread views observing the affected child re-submit a
+   batch redrawn at the new scale (DIP geometry stays the same;
+   only physical pixel mapping changes — most code does not need
+   to react).
+
+Process-wide DPI awareness is enabled at iGui startup via
+`SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2)`.
+
 ## Channels
 
 Three channels, no callbacks across thread boundaries.
@@ -555,16 +669,27 @@ Event kinds (initial set):
 
 | Kind | Carried fields |
 |---|---|
-| `key` | childId, vkey, scancode, mods, repeat, down/up |
-| `char` | childId, codepoint, mods |
-| `mouse` | childId, x, y, button, mods, down/up/move/wheel |
+| `key` | childId, vkey, scancode, mods, repeat, down/up, time_ms |
+| `char` | childId, codepoint, mods, time_ms |
+| `mouse` | childId, x, y, button, mods, down/up/move/wheel, wheel_delta, wheel_lines, time_ms |
 | `focus` | childId, gained |
 | `resize` | childId, width, height |
 | `paint` | childId — hint that a redraw is desired (rare; usually CP drives) |
 | `close` | childId — user clicked the child's close box |
 | `menu` | menuId, itemId |
 | `frame-close` | the user closed the MDI frame |
+| `theme-change` | new system color palette is in effect; cached `SystemColor` values were refreshed |
+| `dpi-change` | childId, dpiX, dpiY — child swap chain has been recreated at the new scale |
 | `surface-reply` | childId, requestId, reply payload (from MeasureTextRun, CharIndexAtPoint, etc.) |
+
+`time_ms` carries `GetMessageTime()` for the underlying Win32 message
+so language-thread controllers can implement double-click, drag
+threshold, and key-repeat coalescing without asking the GUI thread.
+
+Wheel events carry both a precise `wheel_delta` (raw `WHEEL_DELTA`
+units, 120 per notch) and a resolved `wheel_lines` reading the system
+"lines per scroll" preference, so callers can pick whichever
+granularity suits the surface.
 
 Events are typed, not JSON. The mailbox transports a fixed
 `IGuiEvent` struct.
@@ -676,6 +801,12 @@ DEFINITION iGui;
   PROCEDURE OpenChild* (title: ARRAY OF SHORTCHAR; VAR childId: INTEGER): INTSHORT;
   PROCEDURE CloseChild*(childId: INTEGER): INTSHORT;
   PROCEDURE SetTitle*  (childId: INTEGER; title: ARRAY OF SHORTCHAR);
+  PROCEDURE SetCursor* (childId: INTEGER; kind: CursorKind);
+  PROCEDURE GetDpi*    (childId: INTEGER; VAR dpiX, dpiY: REAL): INTSHORT;
+
+  (* system theme *)
+  PROCEDURE SystemColor* (kind: SystemColor;
+                          VAR r, g, b, a: REAL): INTSHORT;
 
   (* menu *)
   PROCEDURE SetMenu*   (spec: ARRAY OF SHORTCHAR);   (* compact textual menu spec *)
@@ -702,6 +833,8 @@ DEFINITION iGui;
   PROCEDURE EmitPushOffset*   (dx, dy: REAL);
   PROCEDURE EmitPopOffset*    ;
   PROCEDURE EmitScrollRect*   (x0, y0, x1, y1, dx, dy: REAL);
+  PROCEDURE EmitSaveRect*     (slot: INTSHORT; x0, y0, x1, y1: REAL);
+  PROCEDURE EmitRestoreRect*  (slot: INTSHORT);
   PROCEDURE EmitInstallChildViewBounds* (childId: INTSHORT;
                                          x0, y0, x1, y1: REAL);
 
@@ -754,7 +887,8 @@ DEFINITION iGui;
                               alignment, trimming: INTSHORT;
                               r, g, b, a: REAL);
 
-  (* overlays *)
+  (* overlays — mode is one of MarkHighlight / MarkInvert /
+     MarkDim25 / MarkDim50 / MarkDim75 *)
   PROCEDURE EmitMarkRect*     (x0, y0, x1, y1: REAL; mode: INTSHORT);
   PROCEDURE EmitCaret*        (x0, y0, x1, y1: REAL; r, g, b, a: REAL);
   PROCEDURE EmitSelectionRange*(x0, y0, x1, y1: REAL; r, g, b, a: REAL);
@@ -831,6 +965,47 @@ new primitive means adding both a `SurfaceCmd` variant and the matching
 - **child-view bounds retention** as host-owned state for nested view
   composition
 
+## BlackBox host-contract alignment
+
+The primitive set is sized for a future where BlackBox-equivalent CP
+modules can be ported onto iGui without rewriting the framework's
+host-touching code. Specific correspondences:
+
+| BlackBox abstraction | iGui equivalent |
+|---|---|
+| `Ports.Rider.DrawRect` | `FillRect` / `StrokeRect` |
+| `Ports.Rider.DrawOval` | `FillOval` / `StrokeOval` |
+| `Ports.Rider.DrawLine` | `DrawLine` |
+| `Ports.Rider.DrawPath` (open/closed poly/bezier) | `DrawPath` with `PathCmd::MoveTo/LineTo/QuadTo/CubicTo/Close` |
+| `Ports.Rider.MarkRect` (invert / hilite / dim25/50/75) | `MarkRect` with the matching 5-mode `MarkMode` |
+| `Ports.Rider.DrawString` / `DrawSString` | `DrawTextRun` |
+| `Ports.Rider.CharIndex` / `CharPos` | `CharIndexAtPoint` / `PointAtCharIndex` |
+| `Ports.Rider.SaveRect` / `RestoreRect` | `SaveRect` / `RestoreRect` |
+| `Ports.Port.unit` (resolution-independent coordinates) | DIPs on the wire + future `iGuiUnits` helper |
+| `Frame.SetOffset(gx, gy)` | `PushOffset` / `PopOffset` |
+| `Frame.SetRect` clipping | `PushClipRect` / `PopClipRect` |
+| BlackBox 32-bit ARGB with bit-31 system-color flag | explicit `Rgba` + `iGui.SystemColor` query |
+| `Controllers.PollCursorMsg` | `iGui.SetCursor` per pane |
+| `Controllers.MouseDown(x, y, time, mods)` | `mouse` event with `time_ms` and `mods` |
+| `Controllers.WheelMsg(x, y, op, nofLines)` | `mouse` event with `wheel_delta` and `wheel_lines` |
+| `Windows.Window.Restore(l,t,r,b)` + `Update` | batch + `SubmitBatch` + GUI-thread drain |
+| `Windows.Directory` window enumeration | future iGui helper, not on the surface protocol |
+| Native menu, native dialog | not part of the surface contract; iGui menus are convenience for non-BlackBox-equivalent code |
+| `HostClipboard` | Phase 8 |
+
+What BlackBox expected of the host that iGui deliberately does **not**
+provide on the surface protocol:
+
+- a per-port `unit` value — DPI awareness lives in `iGui.GetDpi`
+  instead, and unit conversion is a CP-side concern
+- system-wide message hooks (`Views.MsgHook`) — iGui's MVC traffic
+  stays on the language thread; cross-thread observation is not a
+  surface concept
+- single-threaded event loop assumption — replaced explicitly by the
+  GUI/language thread split
+- pattern fills and custom rasters beyond saved bitmaps — `DrawPath`
+  with explicit fill/stroke covers what BlackBox actually used
+
 ## Crate structure
 
 The implementation lives in `newcp-runtime` under a new module tree:
@@ -874,33 +1049,50 @@ cleanly.
 1. Spawn the existing kernel/runtime on a worker thread once the frame
    is up.
 2. Add the event mailbox (MPSC, bounded). Wire WM_KEY*, WM_CHAR,
-   WM_MOUSE*, WM_SIZE, WM_CLOSE, WM_COMMAND into typed events.
+   WM_MOUSE*, WM_SIZE, WM_CLOSE, WM_COMMAND, WM_MOUSEWHEEL into
+   typed events. Carry `time_ms` (`GetMessageTime()`) on every input
+   event; carry both raw `wheel_delta` and resolved `wheel_lines`
+   on wheel events.
 3. Add `iGui.NextEvent`, `iGui.OnEvent`, `iGui.RunLoop`,
    `iGui.AddObserver`, `iGui.Notify`, `iGui.Quit`.
 4. Provide the `Mod/iGui.cp` DEFINITION module.
 
 Acceptance: a CP module can register a key handler and receive typed
-key events.
+key events with time stamps; mouse-wheel events carry both delta
+forms.
 
-### Phase 3 — Child windows + geometry primitives
+### Phase 3 — Child windows + geometry primitives + DPI + cursor
 
 1. Add MDI child window class, `iGui.OpenChild`, `iGui.CloseChild`,
    `iGui.SetTitle`.
-2. Allocate one SPSC pane batch ring per child.
-3. Implement the surface executor: drain the pending batch on
+2. Enable `DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2` at process
+   startup.
+3. Allocate one SPSC pane batch ring per child. Allocate one swap
+   chain + Direct2D bitmap target per child at the child's current
+   monitor DPI.
+4. Implement `iGui.GetDpi` and the `dpi-change` event. Handle
+   `WM_DPICHANGED` / `WM_DPICHANGED_AFTERPARENT` by tearing down and
+   recreating the affected child's swap chain, render target, and
+   brush cache, then emitting `dpi-change`.
+5. Implement `iGui.SetCursor` and the `WM_SETCURSOR` handler that
+   reads per-pane cursor state.
+6. Implement the surface executor: drain the pending batch on
    `WM_PAINT`, dispatch `SurfaceCmd` variants.
-4. Implement the **lifecycle** group: `Clear`, `PresentHint`.
-5. Implement the **geometry — fills** group: `FillRect`, `FillOval`,
+7. Implement the **lifecycle** group: `Clear`, `PresentHint`.
+8. Implement the **geometry — fills** group: `FillRect`, `FillOval`,
    `FillCircle`.
-6. Implement the **geometry — strokes** group: `StrokeRect`,
+9. Implement the **geometry — strokes** group: `StrokeRect`,
    `StrokeOval`, `StrokeCircle`, `DrawLine`, `DrawArc`.
-7. Wire the brush cache and stroke-style cache.
-8. Add `iGui.BeginBatch` / matching `iGui.Emit*` procedures /
-   `iGui.SubmitBatch`.
+10. Wire the brush cache and stroke-style cache.
+11. Add `iGui.BeginBatch` / matching `iGui.Emit*` procedures /
+    `iGui.SubmitBatch`.
 
 Acceptance: a CP module opens two children and paints a recognisable
 geometric scene into each (rects, ovals, circles, arcs, lines), end
-to end, with no panic and no leaks across child close.
+to end, with no panic and no leaks across child close. The cursor
+changes shape over hot regions on `mouse` events. Dragging the frame
+between two monitors at different scales triggers a `dpi-change`
+event; the redrawn scene stays crisp at the new DPI.
 
 ### Phase 4 — Text via DirectWrite
 
@@ -914,22 +1106,31 @@ to end, with no panic and no leaks across child close.
 Acceptance: a CP module renders proportional text and round-trips a
 hit-test that matches caret geometry.
 
-### Phase 5 — Composition, overlays, paths
+### Phase 5 — Composition, overlays, paths, system theme
 
 1. Implement the **composition** group: `PushClipRect`, `PopClipRect`,
-   `PushOffset`, `PopOffset`, `ScrollRect`, `InstallChildViewBounds`.
+   `PushOffset`, `PopOffset`, `ScrollRect`, `SaveRect`, `RestoreRect`,
+   `InstallChildViewBounds`. The `SaveRect`/`RestoreRect` slots
+   allocate per-pane DXGI bitmaps lazily (8 slots per pane).
 2. Implement the **overlays** group: `MarkRect` (Highlight / Invert /
-   Dim), `Caret`, `SelectionRange`, `FocusRing`.
+   Dim25 / Dim50 / Dim75), `Caret`, `SelectionRange`, `FocusRing`.
 3. Implement the **geometry — paths** group: `DrawPath` with the full
    `PathCmd` enum and `StrokeStyle`. Wire the `ID2D1StrokeStyle1`
    cache.
-4. Verify mismatched clip / offset push/pop aborts the batch with a
-   structured diagnostic.
+4. Implement system-color caching and `iGui.SystemColor`. Handle
+   `WM_SYSCOLORCHANGE` and `WM_THEMECHANGED` by refreshing the cache
+   and emitting `theme-change`.
+5. Verify mismatched clip / offset push/pop aborts the batch with a
+   structured diagnostic. Verify `SaveRect`/`RestoreRect` pairing is
+   per-slot, not stacked.
 
 Acceptance: a CP-side text view exercises selection, caret blinking,
 clipped scrolling, and a non-trivial `DrawPath` (e.g. a rounded badge
-with cubic curves) without flicker. **At end of Phase 5 every variant
-in the closed `SurfaceCmd` enum is implemented in Rust.**
+with cubic curves) without flicker. A demo using `MarkDim50` for a
+disabled-control overlay reads the dim color from `iGui.SystemColor`
+and repaints itself when a theme change occurs. **At end of Phase 5
+every variant in the closed `SurfaceCmd` enum is implemented in
+Rust.**
 
 ### Phase 6 — Menu + standard MDI commands
 
@@ -949,6 +1150,29 @@ Acceptance: a multi-document demo with a working File / Window menu.
 
 Acceptance: `newcp-runtime` builds without any wingui references and
 the demo modules under `Mod/` run on iGui.
+
+### Phase 8 — Clipboard
+
+BlackBox expects clipboard support for both plain text and serialised
+views (embedded objects). iGui handles this in a separate phase
+because it is not a drawing primitive — it does not extend the closed
+`SurfaceCmd` enum.
+
+1. Add `iGui.ClipboardGetText(VAR text: ARRAY OF SHORTCHAR): INTSHORT`
+   and `iGui.ClipboardSetText(text: ARRAY OF SHORTCHAR): INTSHORT`,
+   backed by `OpenClipboard` / `GetClipboardData(CF_UNICODETEXT)` /
+   `SetClipboardData` on the GUI thread. Calls from the language
+   thread post a request and wait for a `clipboard-reply` event,
+   following the same round-trip pattern as `MeasureTextRun`.
+2. Add an opaque `ClipboardObject` slot for serialised CP-managed
+   payloads: `iGui.ClipboardSetObject(typeName, VAR bytes: ARRAY OF
+   SHORTCHAR; len: INTEGER)` and the matching getter. The GUI thread
+   stores the payload as a private clipboard format keyed by
+   registered name; cross-process round-trip is left to a later
+   phase.
+
+Acceptance: a CP module copies a string and an opaque payload to the
+clipboard; another CP run pastes them back identically.
 
 ## Open questions
 
