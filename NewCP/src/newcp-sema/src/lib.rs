@@ -4098,6 +4098,12 @@ impl<'a> Analyzer<'a> {
                 base.as_ref()
                     .and_then(|parent| self.lookup_record_member(parent, name, local_symbols))
             }
+            // CP §6.4: a pointer designator denotes the referenced record;
+            // `p.f` is shorthand for `p^.f`. Recurse through the pointee so
+            // pointer-aliased receivers, vars, and parameters all work.
+            SemanticType::Pointer { target, .. } => {
+                self.lookup_record_member(&target, name, local_symbols)
+            }
             _ => None,
         }
     }

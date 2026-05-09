@@ -892,6 +892,13 @@ impl<'m> LowerCtx<'m> {
     /// Returns `None` if the designator is not a method call and normal
     /// lowering should continue.
     fn lower_bound_proc_call_expr(&mut self, des: &Designator) -> Option<IrValue> {
+        // The parser greedily packs `b.Method` as `QualIdent { module: Some("b"),
+        // name: "Method" }`. `normalize_designator` turns it back into base="b"
+        // + Field("Method") when "b" is a local rather than a module — match the
+        // multi-selector shape so the rest of this function can handle both.
+        let des_normalized = self.normalize_designator(des);
+        let des = &des_normalized;
+
         // Pattern: selectors end with [.., Field(method_name), Call(args)].
         let selectors = &des.selectors;
         let n = selectors.len();
@@ -932,9 +939,27 @@ impl<'m> LowerCtx<'m> {
             type_qualified
         };
 
+        // Resolve a pointer alias (`Foo = POINTER TO FooDesc`) down to the
+        // underlying record type name. Methods are declared on the record,
+        // not the pointer alias, and the vtable / sema lookups below use
+        // the record name.
+        let type_record_name: &str = self
+            .module_symbols
+            .iter()
+            .find(|s| matches!(s.kind, SymbolKind::Type) && s.name == type_local_name)
+            .and_then(|s| s.declared_type.as_ref())
+            .and_then(|t| match t {
+                SemanticType::Pointer { target, .. } => match target.as_ref() {
+                    SemanticType::Named { name, module: None, .. } => Some(name.as_str()),
+                    _ => None,
+                },
+                _ => None,
+            })
+            .unwrap_or(type_local_name);
+
         // Check that method_name is actually a METHOD (not a data field) of this type.
         // Use the sema symbol table to look at Record.methods.
-        let slot = method_slot_in_vtable(type_local_name, method_name, self.module_symbols)?;
+        let slot = method_slot_in_vtable(type_record_name, method_name, self.module_symbols)?;
 
         // Lower the receiver.  For pointer types, load the pointer first; for Ref types
         // the address already IS the right thing.  We produce the object pointer (ptr).
@@ -961,6 +986,7 @@ impl<'m> LowerCtx<'m> {
         }
 
         // Look up the return type from the method's module-level symbol.
+        // Match against `type_record_name` so pointer aliases resolve.
         let ret_ty = self
             .module_symbols
             .iter()
@@ -972,7 +998,7 @@ impl<'m> LowerCtx<'m> {
                     }).and_then(|r| match r {
                         SemanticType::Named { name, .. } => Some(name.as_str()),
                         _ => None,
-                    }) == Some(type_local_name)
+                    }) == Some(type_record_name)
             })
             .and_then(|s| {
                 if let Some(SemanticType::Procedure(pt)) = &s.declared_type {
@@ -984,6 +1010,11 @@ impl<'m> LowerCtx<'m> {
             .unwrap_or(IrType::Void);
 
         if ret_ty == IrType::Void {
+            // Void methods are typically called as statements (`b.Set(42);`).
+            // Emit the dispatch and return a placeholder; the statement path
+            // discards it. Sema rejects void-returning calls in expression
+            // position, so reaching here from an expression is well-formed
+            // only when the caller intends to ignore the value.
             self.push(Instr::MethodCall {
                 dst: None,
                 descriptor: receiver_ptr,
@@ -991,8 +1022,6 @@ impl<'m> LowerCtx<'m> {
                 args: lowered_args,
                 ret_ty: IrType::Void,
             });
-            self.record_diagnostic("void method call used as expression");
-            // Return something innocuous; callers that use the result will get void.
             return Some(IrValue::ConstBool(false));
         }
 
@@ -3572,6 +3601,14 @@ pub fn method_slot_in_vtable(
 ) -> Option<u32> {
     use newcp_sema::SymbolKind;
     let sym = module_symbols.iter().find(|s| s.kind == SymbolKind::Type && s.name == type_name)?;
+    // CP §6.4: TYPE Foo = POINTER TO FooDesc; methods declared on FooDesc
+    // are reachable through Foo. Recurse on the pointee so callers can
+    // pass either the pointer-alias name or the record-desc name.
+    if let Some(SemanticType::Pointer { target, .. }) = sym.declared_type.as_ref() {
+        if let SemanticType::Named { name, module: None, .. } = target.as_ref() {
+            return method_slot_in_vtable(name, method_name, module_symbols);
+        }
+    }
     let SemanticType::Record { base, methods, .. } = sym.declared_type.as_ref()? else {
         return None;
     };
@@ -3613,6 +3650,13 @@ fn count_vtable_slots(type_name: &str, module_symbols: &[SemanticSymbol]) -> u32
         Some(ty) => ty,
         None => return 0,
     };
+    // Pointer-alias passthrough — see method_slot_in_vtable for the
+    // motivation. `Foo = POINTER TO FooDesc` -> count slots of FooDesc.
+    if let SemanticType::Pointer { target, .. } = ty {
+        if let SemanticType::Named { name, module: None, .. } = target.as_ref() {
+            return count_vtable_slots(name, module_symbols);
+        }
+    }
     let (base, methods) = match ty {
         SemanticType::Record { base, methods, .. } => (base, methods),
         _ => return 0,

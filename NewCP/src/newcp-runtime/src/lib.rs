@@ -972,6 +972,9 @@ pub fn runtime_symbol_address(symbol_name: &str) -> Option<usize> {
     if symbol_name == "__newcp_sys_new" {
         return Some(gc::__newcp_sys_new as *const () as usize);
     }
+    if symbol_name == "__newcp_new_rec" {
+        return Some(gc::__newcp_new_rec as *const () as usize);
+    }
     if symbol_name == "__newcp_trap" {
         return Some(__newcp_trap as *const () as usize);
     }
@@ -1014,6 +1017,7 @@ mod tests {
         assert!(interface.contains("ReadInt:Procedure:procedure"));
         assert!(interface.contains("WriteChar:Procedure:procedure"));
         assert!(interface.contains("WriteInt:Procedure:procedure"));
+        assert!(interface.contains("WriteReal:Procedure:procedure"));
         assert!(interface.contains("WriteLn:Procedure:procedure"));
     }
 

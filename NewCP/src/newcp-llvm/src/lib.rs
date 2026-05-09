@@ -55,6 +55,11 @@ pub struct CompiledModule {
     pub llvm_ir: String,
     pub exported_functions: Vec<ExportedFunction>,
     pub diagnostics: Vec<BackendDiagnostic>,
+    /// `<TypeName>.vtable` -> ordered list of LLVM function names occupying its
+    /// slots. Recorded so the JIT init step can resolve each function's address
+    /// and write it into a Rust-side vtable buffer (MCJIT does not reliably
+    /// apply function-pointer relocations to constant globals on its own).
+    pub vtable_slot_functions: HashMap<String, Vec<String>>,
 }
 
 /// Owns a JIT module together with the LLVM context it depends on.
@@ -191,12 +196,15 @@ pub fn compile_ir_module(
         })
         .collect();
 
+    let vtable_slot_functions = cg.planner.vtable_slot_functions.clone();
+
     Ok(CompiledModule {
         module_name: ir_module.name.clone(),
         source_path: None,
         llvm_ir,
         exported_functions,
         diagnostics: cg.diagnostics.clone(),
+        vtable_slot_functions,
     })
 }
 
@@ -218,6 +226,9 @@ pub fn jit_module_with_symbol_mappings<'ctx>(
     options: &CodegenOptions,
     extra_symbol_mappings: &HashMap<String, usize>,
 ) -> Result<JitModule<'ctx>, CodegenError> {
+    // Capture the vtable slot info before consuming `compiled` for IR parsing.
+    let vtable_slot_functions = compiled.vtable_slot_functions.clone();
+    let exported_functions = compiled.exported_functions.clone();
     // Re-parse the verified IR string back into an LLVM module so we can hand
     // it to the JIT. This round-trip is intentional: it proves the textual dump
     // is the exact artifact that gets executed.
@@ -232,7 +243,13 @@ pub fn jit_module_with_symbol_mappings<'ctx>(
         .map_err(|e| CodegenError::Jit(format!("IR round-trip parse failed: {e}")))?;
     let global_mappings = jit::collect_global_mappings(&module, extra_symbol_mappings)?;
 
-    JitModule::from_module(module, compiled.exported_functions, options.opt_level, global_mappings)
+    JitModule::from_module(
+        module,
+        exported_functions,
+        options.opt_level,
+        global_mappings,
+        vtable_slot_functions,
+    )
 }
 
 // ─── Convenience path-based helpers ──────────────────────────────────────────

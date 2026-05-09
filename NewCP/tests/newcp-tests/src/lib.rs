@@ -1546,6 +1546,31 @@ mod tests {
         assert_eq!(run_function("Mod/Tests/MathSmoke.cp", "ShortStrToRealCheck"), 425);
     }
 
+    // -------------------------------------------------------------------------
+    // OOP: pointer-aliased records — sema + IR layers verified.
+    //
+    // Full virtual-dispatch JIT execution still requires fixing MCJIT's
+    // vtable-relocation path; tests for `b.Set(42)` style dispatch live in
+    // Mod/Tests/{PtrMethod, AbstractDispatch}.cp but are not yet runnable
+    // end-to-end. See docs/oop_runtime_status.md.
+    // -------------------------------------------------------------------------
+
+    #[test]
+    fn ptr_alloc_no_dispatch() {
+        // Smallest tagged-record test: NEW + write field + read field, no
+        // method call. Verifies __newcp_new_rec sets up the BlockHeader and
+        // returns a usable payload pointer.
+        assert_eq!(run_function("Mod/Tests/PtrAlloc.cp", "Run"), 42);
+    }
+
+    #[test]
+    fn ptr_alloc_block_header_tag_is_typedesc() {
+        // After NEW(b), `*(addr - 16)` (the BlockHeader.tag field) must be
+        // the TypeDesc address with the GC mark bit cleared. Verifies the
+        // allocator threads the type descriptor correctly.
+        assert_eq!(run_function("Mod/Tests/PtrSet.cp", "Probe"), 1);
+    }
+
     #[test]
     fn strings_real_to_short_str_round_trip() {
         // Format into SHORTCHAR buffer (via Narrow) then parse back (via Widen).

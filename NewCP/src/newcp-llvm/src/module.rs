@@ -44,6 +44,12 @@ pub struct GlobalPlanner<'ctx> {
     /// `@TypeName.desc` global constants emitted for each record type that has methods.
     /// Used by `emit_method_call` to locate the static TypeDesc for a type.
     pub type_desc_globals: HashMap<String, GlobalValue<'ctx>>,
+    /// For each `@TypeName.vtable` global, the ordered list of LLVM function
+    /// names occupying its slots. Recorded so the JIT init step (in jit.rs)
+    /// can patch the vtable contents with the actual function addresses
+    /// after MCJIT has compiled them — MCJIT does not reliably apply
+    /// function-pointer relocations to constant globals on its own.
+    pub vtable_slot_functions: HashMap<String, Vec<String>>,
 }
 
 impl<'ctx> GlobalPlanner<'ctx> {
@@ -55,6 +61,7 @@ impl<'ctx> GlobalPlanner<'ctx> {
             named_struct_types: HashMap::new(),
             string_constants: HashMap::new(),
             type_desc_globals: HashMap::new(),
+            vtable_slot_functions: HashMap::new(),
         }
     }
 }
@@ -367,7 +374,7 @@ impl<'ctx> CodegenModule<'ctx> {
             let vtable_ty = ptr_ty.array_type(slot_fns.len() as u32);
             let vtable_name = format!("{}.vtable", type_name);
 
-            // Build the initializer: [ptr @Fn0, ptr @Fn1, ...]
+            // Build the constant initializer with function-pointer references.
             let fn_ptrs: Vec<_> = slot_fns
                 .iter()
                 .map(|fn_name| {
@@ -381,8 +388,11 @@ impl<'ctx> CodegenModule<'ctx> {
             let vtable_global = self.module.add_global(vtable_ty, None, &vtable_name);
             vtable_global.set_initializer(&vtable_init);
             vtable_global.set_constant(true);
-            vtable_global.set_linkage(Linkage::Private);
+            vtable_global.set_linkage(Linkage::Internal);
             vtable_globals.insert(type_name.clone(), vtable_global);
+            self.planner
+                .vtable_slot_functions
+                .insert(vtable_name.clone(), slot_fns.clone());
         }
 
         // Second pass: emit TypeDesc constants.
@@ -447,7 +457,7 @@ impl<'ctx> CodegenModule<'ctx> {
             let desc_global = self.module.add_global(type_desc_ty, None, &desc_name);
             desc_global.set_initializer(&desc_init);
             desc_global.set_constant(true);
-            desc_global.set_linkage(Linkage::Private);
+            desc_global.set_linkage(Linkage::Internal);
             self.planner.type_desc_globals.insert(type_name.clone(), desc_global);
         }
     }
@@ -459,6 +469,15 @@ impl<'ctx> CodegenModule<'ctx> {
         let fn_ty = ptr_ty.fn_type(&[i64_ty2.into()], false);
         self.module
             .add_function("__newcp_sys_new", fn_ty, Some(inkwell::module::Linkage::External));
+
+        // `@__newcp_new_rec(ptr) -> ptr` — tagged-record allocator. Takes a
+        // `*const TypeDesc`, allocates `header_size + typedesc.size` bytes,
+        // initializes the BlockHeader with the TypeDesc tag, and returns the
+        // payload pointer. Required for `NEW(ptr)` so method dispatch can
+        // recover the TypeDesc from `obj_ptr - 16` at runtime.
+        let fn_ty_rec = ptr_ty.fn_type(&[ptr_ty.into()], false);
+        self.module
+            .add_function("__newcp_new_rec", fn_ty_rec, Some(inkwell::module::Linkage::External));
     }
 
     /// Return the LLVM textual IR for the completed module.

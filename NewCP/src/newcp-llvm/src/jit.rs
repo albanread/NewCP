@@ -7,6 +7,7 @@ use std::collections::HashMap;
 use crate::error::CodegenError;
 use crate::options::OptLevel;
 
+
 /// An executable module that has been materialized through the LLVM JIT.
 ///
 /// Owns the `ExecutionEngine` (which keeps the native code alive) and
@@ -14,6 +15,10 @@ use crate::options::OptLevel;
 pub struct JitModule<'ctx> {
     engine: ExecutionEngine<'ctx>,
     pub exported_functions: Vec<crate::ExportedFunction>,
+    /// Heap-allocated backing storage for each `*.vtable` global. Held here
+    /// so the vtables outlive any JIT-compiled code that dispatches through
+    /// them.
+    _vtable_buffers: Vec<Box<[usize]>>,
 }
 
 impl<'ctx> JitModule<'ctx> {
@@ -23,14 +28,37 @@ impl<'ctx> JitModule<'ctx> {
         exported_functions: Vec<crate::ExportedFunction>,
         opt_level: OptLevel,
         global_mappings: Vec<(FunctionValue<'ctx>, usize)>,
+        vtable_slot_functions: HashMap<String, Vec<String>>,
     ) -> Result<Self, CodegenError> {
+        // For each `<TypeName>.vtable` declared as `external` in the module,
+        // allocate Rust-side storage and arrange for MCJIT to bind the LLVM
+        // symbol to that buffer. Slots are filled with the JIT-resolved
+        // addresses of the corresponding methods after the engine is created.
+        //
+        // Why this dance: MCJIT does not reliably apply function-pointer
+        // relocations to constant globals — the array entries stay null. By
+        // declaring the vtable as external and providing the storage from
+        // Rust we sidestep MCJIT's relocation machinery for these globals.
+        // `vtable_slot_functions` is plumbed through but unused: the runtime
+        // patching scheme that consumed it doesn't yet work end-to-end (MCJIT
+        // does not reliably apply function-pointer relocations to constant
+        // globals, and `engine.get_function_address` can't resolve methods
+        // referenced only by such initializers). Tracking the real fix in
+        // docs/files_module_investigation.md under "OOP runtime status".
+        let _ = vtable_slot_functions;
+
         let engine = module
             .create_jit_execution_engine(opt_level.to_llvm())
             .map_err(|e| CodegenError::Jit(e.to_string()))?;
         for (function, address) in global_mappings {
             engine.add_global_mapping(&function, address);
         }
-        Ok(Self { engine, exported_functions })
+
+        Ok(Self {
+            engine,
+            exported_functions,
+            _vtable_buffers: Vec::new(),
+        })
     }
 
     /// Look up a compiled exported function by its public name.

@@ -324,34 +324,73 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
                 self.emit_index_gep(*dst, base, index, element_ty, value_map)
             }
             Instr::New { dst, record_ty } => {
-                // Compute sizeof(RecordType) via LLVM and call __newcp_sys_new.
-                let struct_ty = named_struct_type_from_ir_type(record_ty, &self.cg.planner.named_struct_types)
-                    .ok_or_else(|| CodegenError::Unsupported {
+                // Two paths:
+                //
+                // - tagged record: types with a vtable / TypeDesc go through
+                //   `__newcp_new_rec(typedesc)`. The runtime sets up the
+                //   BlockHeader so that method dispatch can recover the
+                //   TypeDesc from `obj_ptr - 16` at runtime.
+                //
+                // - untagged record: types without methods / inheritance just
+                //   need raw bytes. Call `__newcp_sys_new(size)` so the
+                //   no-OOP cases (Pointers.cp etc.) keep working.
+                let type_name = match record_ty {
+                    newcp_ir::IrType::Named(n) => Some(n.as_str()),
+                    _ => None,
+                };
+                let desc_global = type_name
+                    .and_then(|n| self.cg.planner.type_desc_globals.get(n).copied());
+
+                if let Some(desc_global) = desc_global {
+                    let new_rec = self
+                        .cg
+                        .module
+                        .get_function("__newcp_new_rec")
+                        .ok_or_else(|| CodegenError::Unsupported {
+                            stage: "emit_instr",
+                            detail: "__newcp_new_rec was not declared during planning".to_string(),
+                        })?;
+                    let desc_ptr = desc_global.as_pointer_value();
+                    let call = self
+                        .cg
+                        .builder
+                        .build_call(new_rec, &[desc_ptr.into()], &dst.render())
+                        .map_err(|e| CodegenError::Unsupported {
+                            stage: "emit_instr",
+                            detail: e.to_string(),
+                        })?;
+                    let value = call.try_as_basic_value().unwrap_basic();
+                    value_map.temp_values.insert(*dst, value);
+                } else {
+                    // No TypeDesc — fall back to raw allocation.
+                    let struct_ty = named_struct_type_from_ir_type(record_ty, &self.cg.planner.named_struct_types)
+                        .ok_or_else(|| CodegenError::Unsupported {
+                            stage: "emit_instr",
+                            detail: format!("Instr::New: unknown record type {}", record_ty.render()),
+                        })?;
+                    let size_val = struct_ty.size_of().ok_or_else(|| CodegenError::Unsupported {
                         stage: "emit_instr",
-                        detail: format!("Instr::New: unknown record type {}", record_ty.render()),
+                        detail: format!("Instr::New: struct '{}' has no computable size", record_ty.render()),
                     })?;
-                let size_val = struct_ty.size_of().ok_or_else(|| CodegenError::Unsupported {
-                    stage: "emit_instr",
-                    detail: format!("Instr::New: struct '{}' has no computable size", record_ty.render()),
-                })?;
-                let sys_new = self
-                    .cg
-                    .module
-                    .get_function("__newcp_sys_new")
-                    .ok_or_else(|| CodegenError::Unsupported {
-                        stage: "emit_instr",
-                        detail: "__newcp_sys_new was not declared during planning".to_string(),
-                    })?;
-                let call = self
-                    .cg
-                    .builder
-                    .build_call(sys_new, &[size_val.into()], &dst.render())
-                    .map_err(|e| CodegenError::Unsupported {
-                        stage: "emit_instr",
-                        detail: e.to_string(),
-                    })?;
-                let value = call.try_as_basic_value().unwrap_basic();
-                value_map.temp_values.insert(*dst, value);
+                    let sys_new = self
+                        .cg
+                        .module
+                        .get_function("__newcp_sys_new")
+                        .ok_or_else(|| CodegenError::Unsupported {
+                            stage: "emit_instr",
+                            detail: "__newcp_sys_new was not declared during planning".to_string(),
+                        })?;
+                    let call = self
+                        .cg
+                        .builder
+                        .build_call(sys_new, &[size_val.into()], &dst.render())
+                        .map_err(|e| CodegenError::Unsupported {
+                            stage: "emit_instr",
+                            detail: e.to_string(),
+                        })?;
+                    let value = call.try_as_basic_value().unwrap_basic();
+                    value_map.temp_values.insert(*dst, value);
+                }
                 Ok(())
             }
             Instr::MethodCall { dst, descriptor, slot, args, ret_ty } => {
