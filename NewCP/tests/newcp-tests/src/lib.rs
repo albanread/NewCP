@@ -2301,6 +2301,49 @@ mod tests {
     }
 
     #[test]
+    fn kernel_probe_widget_reflection() {
+        // TypeOf round-trips a heap allocation through its declared
+        // TypeDesc; SizeOf > 0; LevelOf == 0 for a root type; BaseOf
+        // is NIL.
+        assert_eq!(
+            run_function("Mod/Tests/KernelProbe.cp", "WidgetReflection"),
+            1,
+            "Widget reflection must succeed via Kernel.TypeOf / SizeOf / LevelOf / BaseOf"
+        );
+    }
+
+    #[test]
+    fn kernel_probe_gadget_reflection() {
+        // Gadget extends Widget — LevelOf == 1, BaseOf chains to
+        // Widget's TypeDesc, SizeOf is strictly larger.
+        assert_eq!(
+            run_function("Mod/Tests/KernelProbe.cp", "GadgetReflection"),
+            1,
+            "Gadget reflection must show one level above Widget"
+        );
+    }
+
+    #[test]
+    fn kernel_probe_time_monotonic() {
+        assert_eq!(
+            run_function("Mod/Tests/KernelProbe.cp", "TimeMonotonic"),
+            1,
+            "Kernel.Time must be positive and non-decreasing"
+        );
+    }
+
+    #[test]
+    fn kernel_probe_new_obj_round_trip() {
+        // Kernel.NewObj allocates a record from a runtime-typed handle;
+        // the resulting pointer round-trips through Kernel.TypeOf.
+        assert_eq!(
+            run_function("Mod/Tests/KernelProbe.cp", "NewObjRoundTrip"),
+            1,
+            "Kernel.NewObj round-trip via Kernel.TypeOf must succeed"
+        );
+    }
+
+    #[test]
     fn cross_module_inherited_concrete_method_dispatches() {
         // XMethodBase.BaseDesc has a concrete inherited method `Init(v)`
         // whose body lives in XMethodBase. XMethodChild.ChildDesc extends

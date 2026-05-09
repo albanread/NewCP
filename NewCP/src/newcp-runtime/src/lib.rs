@@ -3,6 +3,7 @@ pub mod gc;
 pub mod heap_introspect;
 pub mod host_date_sys;
 pub mod host_file_sys;
+pub mod kernel_sys;
 pub mod math;
 pub mod smath;
 
@@ -817,6 +818,12 @@ impl BootstrapReport {
         kernel.register_native_module(console_module);
         kernel.register_native_module(math_module);
         kernel.register_native_module(smath_module);
+        // Replace the placeholder resident "Kernel" / register a "KernelSys"
+        // entry with the real Rust shims for Time, Beep, type reflection,
+        // and NewObj. Both modules expose the same primitives under
+        // different name conventions; one Rust function backs each pair.
+        kernel.register_native_module(kernel_sys::kernel_sys_native_module_artifact());
+        kernel.register_native_module(kernel_sys::kernel_native_module_artifact());
         #[cfg(windows)]
         kernel.register_native_module(igui_module);
         kernel.register_hosted_module(host_menus);
@@ -938,6 +945,8 @@ fn builtin_native_modules() -> Vec<NativeModuleArtifact> {
         smath::native_module_artifact(),
         host_file_sys::native_module_artifact(),
         host_date_sys::native_module_artifact(),
+        kernel_sys::kernel_sys_native_module_artifact(),
+        kernel_sys::kernel_native_module_artifact(),
     ];
     #[cfg(windows)]
     modules.push(igui::native_module_artifact());
