@@ -88,16 +88,13 @@ BEGIN
   RETURN 1
 END NewObjRoundTrip;
 
-(** Verify GetTypeName returns the bare type name.
-
-    Note: declaring `name: Kernel.Name` triggers a CP-side alias
-    resolution bug — the codegen allocates an 8-byte pointer slot
-    instead of the 256-element array Kernel.Name aliases to. Using
-    a direct `ARRAY 256 OF CHAR` declaration sidesteps it; the bug
-    is unrelated to the Kernel surface. *)
+(** Verify GetTypeName returns the bare type name. Uses `Kernel.Name`
+    (the imported alias of `ARRAY 256 OF CHAR`) — this exercises the
+    cross-module-array-alias resolution that was broken at one point
+    and is now fixed in newcp-ir's map_semantic_type. *)
 PROCEDURE WidgetTypeNameMatches*(): INTEGER;
   VAR w: Widget; t: Kernel.Type;
-      name: ARRAY 256 OF CHAR;
+      name: Kernel.Name;
       i: INTEGER; expected: ARRAY 12 OF CHAR;
 BEGIN
   NEW(w);
@@ -117,7 +114,7 @@ END WidgetTypeNameMatches;
 (** Verify GetQualifiedTypeName returns the qualified Module.Type form. *)
 PROCEDURE WidgetQualifiedTypeName*(): INTEGER;
   VAR w: Widget; t: Kernel.Type;
-      name: ARRAY 256 OF CHAR;
+      name: Kernel.Name;
       i: INTEGER; expected: ARRAY 32 OF CHAR;
 BEGIN
   NEW(w);

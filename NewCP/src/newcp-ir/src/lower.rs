@@ -72,6 +72,24 @@ pub fn map_semantic_type(ty: &SemanticType) -> IrType {
         SemanticType::Builtin(bt) => map_builtin(*bt),
         SemanticType::Nil => IrType::Ptr(Box::new(IrType::Opaque("nil".to_string()))),
         SemanticType::Named { module, name, .. } => {
+            // Cross-module type aliases need to unwrap to their underlying
+            // form here. Without this, `VAR n: Kernel.Name` (where
+            // Kernel.Name = ARRAY 256 OF CHAR) lowers to `IrType::Named(
+            // "Kernel.Name")`, which the LLVM lowerer can't find in its
+            // named-struct registry — so it falls back to `ptr` and the
+            // alloca becomes an 8-byte pointer slot instead of a
+            // 256-element array. Records keep their Named form because
+            // LLVM uses the registered struct type for them.
+            //
+            // Local aliases (`module: None`) are not unwrapped here yet:
+            // map_semantic_type has no local-symbols context. The same
+            // issue can in principle bite local aliases of array/scalar
+            // types — fix when the call sites grow a context plumb.
+            if let Some(m) = module {
+                if let Some(unwrapped) = resolve_cross_module_alias(m, name) {
+                    return unwrapped;
+                }
+            }
             let full = match module {
                 Some(m) => format!("{m}.{name}"),
                 None => name.clone(),
@@ -132,6 +150,52 @@ pub fn map_semantic_type(ty: &SemanticType) -> IrType {
         }
         SemanticType::Procedure(_) => IrType::Opaque("proc-type".to_string()),
         SemanticType::BuiltinProc(_) => IrType::Opaque("builtin-proc".to_string()),
+    }
+}
+
+/// Look up `name` in the imported module's symbol table and decide
+/// whether the IR layer should keep it as `IrType::Named("Module.Name")`
+/// or unwrap it to the underlying form.
+///
+/// Records keep their `Named` form because the LLVM backend registers
+/// each record type as a named LLVM struct (and field GEPs go through
+/// that registration). Pointer-to-record likewise — the codegen keeps
+/// the Named target inside a `Ptr(Named(...))` because struct-field
+/// access through the pointer needs the struct registration.
+///
+/// Everything else — arrays, scalars, plain pointer-to-non-record —
+/// must unwrap, otherwise consumers (alloca, field access of array
+/// elements, etc.) see only an opaque `ptr` instead of the real shape.
+///
+/// Returns `None` if the imported module cannot be loaded, the name is
+/// not exported, or the alias points at a record (in which case the
+/// caller keeps the existing `IrType::Named` behaviour).
+fn resolve_cross_module_alias(module_name: &str, name: &str) -> Option<IrType> {
+    use newcp_sema::SymbolKind;
+    let sema = find_imported_module_sema(module_name)?;
+    let sym = sema
+        .symbols
+        .iter()
+        .find(|s| s.kind == SymbolKind::Type && s.name == name && s.exported)?;
+    let underlying = sym.declared_type.as_ref()?;
+
+    // Records and pointer-to-record stay Named so the LLVM backend
+    // resolves them via its struct registry. Pointer-to-array (rare
+    // but legal) we unwrap because its IR shape is well-defined.
+    match underlying {
+        SemanticType::Record { .. } => None,
+        SemanticType::Pointer { target, .. }
+            if matches!(
+                target.as_ref(),
+                SemanticType::Record { .. }
+                    | SemanticType::Named { .. }
+            ) =>
+        {
+            // Keep Pointer<Named<...>> shape — the existing
+            // map_semantic_type pointer arm handles it.
+            None
+        }
+        _ => Some(map_semantic_type(underlying)),
     }
 }
 
