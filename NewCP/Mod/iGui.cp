@@ -70,4 +70,25 @@ PROCEDURE CloseChild*(childId: INTEGER): INTSHORT;
 (* Update the title bar of an MDI child. *)
 PROCEDURE SetTitle*(childId: INTEGER; title: ARRAY OF SHORTCHAR);
 
+(* ── Phase 3b: surface batch builder ──────────────────────────────
+   Build a batch by calling BeginBatch(childId), then any number of
+   Emit* procedures, then SubmitBatch(). A new batch supersedes the
+   previous one for the same child; whatever is in the latest batch
+   defines what the child paints on every WM_PAINT. *)
+
+PROCEDURE BeginBatch*(childId: INTEGER);
+PROCEDURE SubmitBatch*(): INTSHORT;
+
+(* lifecycle *)
+PROCEDURE EmitClear*(r, g, b, a: REAL);
+PROCEDURE EmitPresentHint*;
+
+(* geometry *)
+PROCEDURE EmitFillRect*(x0, y0, x1, y1, cornerRadius,
+                        r, g, b, a: REAL);
+PROCEDURE EmitStrokeRect*(x0, y0, x1, y1, cornerRadius, halfThickness,
+                          r, g, b, a: REAL);
+PROCEDURE EmitDrawLine*(x0, y0, x1, y1, halfThickness,
+                        r, g, b, a: REAL);
+
 END iGui.

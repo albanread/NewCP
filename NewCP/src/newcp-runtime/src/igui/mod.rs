@@ -10,12 +10,14 @@
 
 #![cfg(windows)]
 
+pub mod batch;
 pub mod channels;
 mod child;
 pub mod cp_exports;
 mod d2d;
 mod d3d;
 mod dwrite;
+mod executor;
 mod registry;
 mod renderer;
 mod window;

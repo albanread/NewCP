@@ -25,9 +25,11 @@ use windows::Win32::UI::WindowsAndMessaging::{
     WM_NCCREATE, WM_NCDESTROY, WM_PAINT, WM_SETTEXT, WM_SIZE, WNDCLASSEXW, WNDCLASS_STYLES,
 };
 
+use super::batch as batch_mod;
 use super::channels::{self, IGuiEvent};
 use super::d2d::SwapChainTarget;
 use super::d3d::present;
+use super::executor;
 use super::registry;
 use super::renderer;
 use super::IGuiError;
@@ -54,17 +56,29 @@ impl ChildState {
         let target = target_slot.as_ref().unwrap();
         target.bind(&r.d2d);
 
-        let color = phase3a_palette(self.child_id);
+        let pending = batch_mod::snapshot(self.child_id);
+
+        unsafe { r.d2d.context.BeginDraw() };
+
+        if let Some(batch) = pending.as_ref() {
+            executor::execute(batch)?;
+        } else {
+            // No CP batch yet — paint the deterministic per-child
+            // background so the user sees an opened child clearly.
+            let color = phase3a_palette(self.child_id);
+            unsafe {
+                r.d2d.context.Clear(Some(&D2D1_COLOR_F {
+                    r: color[0],
+                    g: color[1],
+                    b: color[2],
+                    a: 1.0,
+                }));
+            }
+        }
+
+        let mut tag1 = 0u64;
+        let mut tag2 = 0u64;
         unsafe {
-            r.d2d.context.BeginDraw();
-            r.d2d.context.Clear(Some(&D2D1_COLOR_F {
-                r: color[0],
-                g: color[1],
-                b: color[2],
-                a: 1.0,
-            }));
-            let mut tag1 = 0u64;
-            let mut tag2 = 0u64;
             r.d2d
                 .context
                 .EndDraw(Some(&mut tag1), Some(&mut tag2))
@@ -210,6 +224,7 @@ unsafe extern "system" fn child_wnd_proc(
                 channels::push(IGuiEvent::Close {
                     child_id: state.child_id,
                 });
+                batch_mod::forget(state.child_id);
                 registry::unregister(state.child_id);
             }
             if !raw.is_null() {

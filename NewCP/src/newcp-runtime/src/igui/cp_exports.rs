@@ -9,6 +9,7 @@ use std::sync::OnceLock;
 use windows::Win32::Foundation::{HWND, LPARAM, WPARAM};
 use windows::Win32::UI::WindowsAndMessaging::{PostMessageW, WM_CLOSE};
 
+use super::batch::{self as batch_mod, Point, Rect, Rgba, SurfaceCmd};
 use super::channels::{self, kind, IGuiEvent};
 use crate::{
     ExportDirectory, ExportEntry, HostedModuleArtifact, NativeExportBinding, NativeModuleArtifact,
@@ -69,11 +70,16 @@ pub extern "C" fn igui_quit() {
 
 /// `iGui.OpenChild(title: ARRAY OF SHORTCHAR; VAR childId: INTEGER): INTSHORT`.
 ///
-/// Reads the null-terminated SHORTCHAR title, creates an MDI child via
-/// `SendMessageW(WM_MDICREATE)` on the GUI thread, writes the new
-/// child id to `*out_child`. Returns 1 on success, 0 on failure.
+/// NewCP's ABI appends a hidden `$len: i64` argument after every open-
+/// array pointer. We accept it here even though we scan for the
+/// SHORTCHAR NUL terminator ourselves; ignoring it would shift all
+/// later arguments by one register/stack slot.
 #[unsafe(export_name = "iGui.OpenChild")]
-pub extern "C" fn igui_open_child(title: *const u8, out_child: *mut i64) -> i32 {
+pub extern "C" fn igui_open_child(
+    title: *const u8,
+    _title_len: i64,
+    out_child: *mut i64,
+) -> i32 {
     if title.is_null() || out_child.is_null() {
         return 0;
     }
@@ -100,12 +106,106 @@ pub extern "C" fn igui_close_child(child_id: i64) -> i32 {
 
 /// `iGui.SetTitle(childId: INTEGER; title: ARRAY OF SHORTCHAR)`.
 #[unsafe(export_name = "iGui.SetTitle")]
-pub extern "C" fn igui_set_title(child_id: i64, title: *const u8) {
+pub extern "C" fn igui_set_title(child_id: i64, title: *const u8, _title_len: i64) {
     if title.is_null() {
         return;
     }
     let title_str = unsafe { read_cp_shortstr(title) };
     super::window::set_child_title(child_id, &title_str);
+}
+
+// ─── Phase 3b: batch builder + first geometry primitives ─────────────
+
+#[unsafe(export_name = "iGui.BeginBatch")]
+pub extern "C" fn igui_begin_batch(child_id: i64) {
+    batch_mod::begin(child_id);
+}
+
+#[unsafe(export_name = "iGui.SubmitBatch")]
+pub extern "C" fn igui_submit_batch() -> i32 {
+    let Some(batch) = batch_mod::finish() else {
+        return 0;
+    };
+    if batch_mod::submit(batch) {
+        1
+    } else {
+        0
+    }
+}
+
+#[unsafe(export_name = "iGui.EmitClear")]
+pub extern "C" fn igui_emit_clear(r: f32, g: f32, b: f32, a: f32) {
+    batch_mod::push(SurfaceCmd::Clear {
+        color: Rgba { r, g, b, a },
+    });
+}
+
+#[unsafe(export_name = "iGui.EmitPresentHint")]
+pub extern "C" fn igui_emit_present_hint() {
+    batch_mod::push(SurfaceCmd::PresentHint);
+}
+
+#[unsafe(export_name = "iGui.EmitFillRect")]
+#[allow(clippy::too_many_arguments)]
+pub extern "C" fn igui_emit_fill_rect(
+    x0: f32,
+    y0: f32,
+    x1: f32,
+    y1: f32,
+    corner_radius: f32,
+    r: f32,
+    g: f32,
+    b: f32,
+    a: f32,
+) {
+    batch_mod::push(SurfaceCmd::FillRect {
+        rect: Rect { x0, y0, x1, y1 },
+        corner_radius,
+        color: Rgba { r, g, b, a },
+    });
+}
+
+#[unsafe(export_name = "iGui.EmitStrokeRect")]
+#[allow(clippy::too_many_arguments)]
+pub extern "C" fn igui_emit_stroke_rect(
+    x0: f32,
+    y0: f32,
+    x1: f32,
+    y1: f32,
+    corner_radius: f32,
+    half_thickness: f32,
+    r: f32,
+    g: f32,
+    b: f32,
+    a: f32,
+) {
+    batch_mod::push(SurfaceCmd::StrokeRect {
+        rect: Rect { x0, y0, x1, y1 },
+        corner_radius,
+        half_thickness,
+        color: Rgba { r, g, b, a },
+    });
+}
+
+#[unsafe(export_name = "iGui.EmitDrawLine")]
+#[allow(clippy::too_many_arguments)]
+pub extern "C" fn igui_emit_draw_line(
+    x0: f32,
+    y0: f32,
+    x1: f32,
+    y1: f32,
+    half_thickness: f32,
+    r: f32,
+    g: f32,
+    b: f32,
+    a: f32,
+) {
+    batch_mod::push(SurfaceCmd::DrawLine {
+        p0: Point { x: x0, y: y0 },
+        p1: Point { x: x1, y: y1 },
+        half_thickness,
+        color: Rgba { r, g, b, a },
+    });
 }
 
 /// CP `ARRAY OF SHORTCHAR` is passed as a bare pointer to a sequence
@@ -272,6 +372,13 @@ pub fn native_module_artifact() -> NativeModuleArtifact {
                 ExportEntry::procedure("OpenChild"),
                 ExportEntry::procedure("CloseChild"),
                 ExportEntry::procedure("SetTitle"),
+                ExportEntry::procedure("BeginBatch"),
+                ExportEntry::procedure("SubmitBatch"),
+                ExportEntry::procedure("EmitClear"),
+                ExportEntry::procedure("EmitPresentHint"),
+                ExportEntry::procedure("EmitFillRect"),
+                ExportEntry::procedure("EmitStrokeRect"),
+                ExportEntry::procedure("EmitDrawLine"),
             ]),
             "iGui.bootstrap",
             "Integrated GUI: MDI frame, Direct2D surfaces, typed event mailbox",
@@ -283,6 +390,25 @@ pub fn native_module_artifact() -> NativeModuleArtifact {
             NativeExportBinding::procedure("OpenChild", igui_open_child as *const () as usize),
             NativeExportBinding::procedure("CloseChild", igui_close_child as *const () as usize),
             NativeExportBinding::procedure("SetTitle", igui_set_title as *const () as usize),
+            NativeExportBinding::procedure("BeginBatch", igui_begin_batch as *const () as usize),
+            NativeExportBinding::procedure("SubmitBatch", igui_submit_batch as *const () as usize),
+            NativeExportBinding::procedure("EmitClear", igui_emit_clear as *const () as usize),
+            NativeExportBinding::procedure(
+                "EmitPresentHint",
+                igui_emit_present_hint as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "EmitFillRect",
+                igui_emit_fill_rect as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "EmitStrokeRect",
+                igui_emit_stroke_rect as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "EmitDrawLine",
+                igui_emit_draw_line as *const () as usize,
+            ),
         ],
     )
 }
