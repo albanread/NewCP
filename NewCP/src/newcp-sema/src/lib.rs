@@ -290,6 +290,11 @@ pub struct SemanticSymbol {
     pub declared_type: Option<SemanticType>,
     pub const_value: Option<ConstValue>,
     pub simd_shape: Option<SimdShape>,
+    /// Only meaningful for `kind == Parameter`: the parameter's CP
+    /// passing mode (`Some(In)` / `Some(Var)` / `Some(Out)`, or `None`
+    /// for value-mode). Used by assignment validation to reject writes
+    /// through `IN` parameters.
+    pub param_mode: Option<ParamMode>,
 }
 
 #[derive(Debug, Clone, PartialEq)]
@@ -562,6 +567,7 @@ impl<'a> Analyzer<'a> {
                 declared_type: None,
                 const_value: None,
                 simd_shape: None,
+                param_mode: None,
             });
         }
 
@@ -581,6 +587,7 @@ impl<'a> Analyzer<'a> {
                         declared_type,
                         const_value,
                         simd_shape: None,
+                        param_mode: None,
                     })
                 }
                 Declaration::Type(item) => {
@@ -598,6 +605,7 @@ impl<'a> Analyzer<'a> {
                         )),
                         const_value: None,
                         simd_shape: None,
+                        param_mode: None,
                     })
                 }
                 Declaration::Var(item) => {
@@ -613,6 +621,7 @@ impl<'a> Analyzer<'a> {
                             declared_type: Some(declared_type.clone()),
                             const_value: None,
                             simd_shape: None,
+                            param_mode: None,
                         });
                     }
                 }
@@ -635,6 +644,7 @@ impl<'a> Analyzer<'a> {
                         )),
                         const_value: None,
                         simd_shape: None,
+                        param_mode: None,
                     })
                 }
                 Declaration::Forward(item) => {
@@ -657,6 +667,7 @@ impl<'a> Analyzer<'a> {
                         ))),
                         const_value: None,
                         simd_shape: None,
+                        param_mode: None,
                     })
                 }
             }
@@ -700,6 +711,7 @@ impl<'a> Analyzer<'a> {
                 declared_type: Some(self.resolve_receiver_type(receiver.ty.as_str(), &scope_type_names)),
                 const_value: None,
                 simd_shape: None,
+                param_mode: None,
             });
         }
 
@@ -852,6 +864,7 @@ impl<'a> Analyzer<'a> {
                     declared_type: Some(ty.clone()),
                     const_value: None,
                     simd_shape: None,
+                    param_mode: None,
                 });
             }
         }
@@ -1317,6 +1330,42 @@ impl<'a> Analyzer<'a> {
         self.collect_type_names(&section.ty, scope_type_names);
         Self::validate_type_expr(&section.ty, scope_type_names, self.has_system_import, procedure_name, diagnostics);
         let declared_type = self.resolve_type_expr(&section.ty, scope_type_names);
+
+        // Reject value-mode (no IN/VAR/OUT) parameters whose type is a
+        // record or fixed array. NewCP's ABI passes records and arrays
+        // by reference at the call site; declaring a value-mode record
+        // param creates a silent caller-callee ABI mismatch (caller
+        // passes ptr, callee declares value-struct), which only fails
+        // to crash because the optimizer typically DCE's the body. The
+        // user's intent is unclear — IN (read-only ref), VAR (mutable
+        // ref), or OUT (output ref) — so force the choice explicitly.
+        // Receivers are exempt: CP records use `(b: BoxDesc)` for
+        // value-receiver methods and the implicit by-ref ABI is
+        // standard there.
+        if section.mode.is_none() {
+            let is_record = self.semantic_type_is_record(&declared_type, local_symbols);
+            let is_fixed_array = matches!(
+                &declared_type,
+                SemanticType::Array { lengths, .. } if !lengths.is_empty()
+            );
+            if is_record || is_fixed_array {
+                let kind = if is_record { "record" } else { "fixed-size array" };
+                for name in &section.names {
+                    diagnostics.push(make_diagnostic(
+                        procedure_name,
+                        section.span.start.line,
+                        section.span.start.column,
+                        format!(
+                            "{kind} parameter '{name}' must use IN, VAR, or OUT — \
+                             value-mode {kind} parameters have ambiguous ABI in NewCP \
+                             (caller passes by reference; use IN for read-only, \
+                             VAR for mutable, OUT for output)"
+                        ),
+                    ));
+                }
+            }
+        }
+
         for name in &section.names {
             Self::record_duplicate_name(
                 scope_names,
@@ -1335,7 +1384,23 @@ impl<'a> Analyzer<'a> {
                 declared_type: Some(declared_type.clone()),
                 const_value: None,
                 simd_shape: None,
+                param_mode: section.mode,
             });
+        }
+    }
+
+    /// True if `ty` is (or resolves through Named aliases to) a Record.
+    /// Pointer-aliased types do NOT count — they're scalars at the ABI
+    /// level. Used by parameter-declaration validation.
+    fn semantic_type_is_record(
+        &self,
+        ty: &SemanticType,
+        local_symbols: &[SemanticSymbol],
+    ) -> bool {
+        match self.resolve_named_type_one_level(ty, local_symbols) {
+            SemanticType::Record { .. } => true,
+            SemanticType::Pointer { .. } => false,
+            _ => false,
         }
     }
 
@@ -1370,6 +1435,7 @@ impl<'a> Analyzer<'a> {
                         declared_type,
                         const_value,
                         simd_shape: None,
+                        param_mode: None,
                     })
                 }
                 Declaration::Type(item) => {
@@ -1387,6 +1453,7 @@ impl<'a> Analyzer<'a> {
                         )),
                         const_value: None,
                         simd_shape: None,
+                        param_mode: None,
                     })
                 }
                 Declaration::Var(item) => {
@@ -1402,6 +1469,7 @@ impl<'a> Analyzer<'a> {
                             declared_type: Some(declared_type.clone()),
                             const_value: None,
                             simd_shape: None,
+                            param_mode: None,
                         });
                     }
                 }
@@ -1430,6 +1498,7 @@ impl<'a> Analyzer<'a> {
                         ))),
                         const_value: None,
                         simd_shape: None,
+                        param_mode: None,
                     })
                 }
                 Declaration::Forward(item) => {
@@ -1457,6 +1526,7 @@ impl<'a> Analyzer<'a> {
                         ))),
                         const_value: None,
                         simd_shape: None,
+                        param_mode: None,
                     })
                 }
             }
@@ -3120,6 +3190,25 @@ impl<'a> Analyzer<'a> {
                     ),
                 ));
             }
+            // CP §10.1.1: a parameter declared `IN` is read-only.
+            // Reject any assignment whose root is an IN parameter,
+            // including writes through fields (`p.field`) and indexed
+            // elements (`p[i]`). This conservative rule matches the
+            // BlackBox compiler's enforcement.
+            if symbol.param_mode == Some(ParamMode::In) {
+                diagnostics.push(make_diagnostic(
+                    procedure_name,
+                    line,
+                    column,
+                    format!(
+                        "cannot assign through IN parameter '{}' — \
+                         IN parameters are read-only (use VAR if the \
+                         callee needs to mutate the caller's data, or \
+                         OUT if the parameter is purely an output)",
+                        symbol.name
+                    ),
+                ));
+            }
         }
     }
 
@@ -4397,6 +4486,7 @@ fn builtin_symbols() -> Vec<SemanticSymbol> {
             declared_type: Some(SemanticType::Builtin(*builtin)),
             const_value: None,
             simd_shape: None,
+            param_mode: None,
         })
         .collect::<Vec<_>>();
 
@@ -4409,6 +4499,7 @@ fn builtin_symbols() -> Vec<SemanticSymbol> {
             declared_type: Some(SemanticType::Builtin(BuiltinType::Boolean)),
             const_value: Some(ConstValue::Boolean(true)),
             simd_shape: None,
+            param_mode: None,
         },
         SemanticSymbol {
             name: "FALSE".to_string(),
@@ -4418,6 +4509,7 @@ fn builtin_symbols() -> Vec<SemanticSymbol> {
             declared_type: Some(SemanticType::Builtin(BuiltinType::Boolean)),
             const_value: Some(ConstValue::Boolean(false)),
             simd_shape: None,
+            param_mode: None,
         },
         SemanticSymbol {
             name: "INF".to_string(),
@@ -4427,6 +4519,7 @@ fn builtin_symbols() -> Vec<SemanticSymbol> {
             declared_type: Some(SemanticType::Builtin(BuiltinType::Real)),
             const_value: None,
             simd_shape: None,
+            param_mode: None,
         },
     ]);
 
@@ -4438,6 +4531,7 @@ fn builtin_symbols() -> Vec<SemanticSymbol> {
         declared_type: Some(SemanticType::BuiltinProc(*builtin)),
         const_value: None,
         simd_shape: None,
+        param_mode: None,
     }));
 
     symbols

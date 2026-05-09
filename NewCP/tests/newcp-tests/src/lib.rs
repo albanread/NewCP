@@ -1811,6 +1811,49 @@ mod tests {
 
 
     // -------------------------------------------------------------------------
+    // Footgun demo: value-mode record param leaks writes back to caller
+    // (NewCP records pass by reference at the ABI level, breaking CP's
+    // value-semantics contract). Test currently passes with 999, proving
+    // the bug. Sema fix below would make the ValueRecordFootgun source
+    // a hard sema error, so this test would then fail compilation.
+    // -------------------------------------------------------------------------
+
+    #[test]
+    fn in_param_write_rejected_by_sema() {
+        // Three patterns of write-through-IN that sema should all
+        // reject: scalar `n := 7`, field `b.value := 99`, and
+        // indexed `a[0] := 1` — for the IN params declared in
+        // Mod/Tests/InParamWrite.cp.
+        let err = loader_error("Mod/Tests/InParamWrite.cp")
+            .expect("expected sema to reject IN-parameter writes");
+        for needle in [
+            "cannot assign through IN parameter 'n'",
+            "cannot assign through IN parameter 'b'",
+            "cannot assign through IN parameter 'a'",
+        ] {
+            assert!(
+                err.contains(needle),
+                "expected '{needle}' in diagnostic, got: {err}"
+            );
+        }
+    }
+
+    #[test]
+    fn value_record_param_rejected_by_sema() {
+        // Sema now rejects value-mode record/array parameters because
+        // NewCP's records-pass-by-reference ABI made the value-mode
+        // declaration silently lie. The user must pick IN/VAR/OUT
+        // explicitly. The fixture declares `Mutate(b: Box)` with no
+        // mode — sema must reject it with the IN/VAR/OUT prompt.
+        let err = loader_error("Mod/Tests/ValueRecordFootgun.cp")
+            .expect("expected sema to reject value-mode record param");
+        assert!(
+            err.contains("must use IN, VAR, or OUT"),
+            "expected IN/VAR/OUT prompt, got: {err}"
+        );
+    }
+
+    // -------------------------------------------------------------------------
     // Dates: pure-value arithmetic (no clock dependency)
     // -------------------------------------------------------------------------
 
