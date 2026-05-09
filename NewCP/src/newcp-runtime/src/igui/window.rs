@@ -172,11 +172,12 @@ where
     channels::install();
     super::system_colors::sample();
 
-    // Install a default menu so redit is reachable even before any
-    // language-thread code runs. `iGui.SetMenu` from CP will replace
-    // this, but `menu::install_for_frame` always re-appends the redit
-    // entry so the editor stays available.
-    if let Some(default_menu) = super::redit::build_default_menu_bar() {
+    // Install a default Tools menu so the built-in editor and log
+    // view are reachable even before any language-thread code runs.
+    // `iGui.SetMenu` from CP will replace this, but
+    // `menu::install_for_frame` always re-appends the tools so they
+    // stay available.
+    if let Some(default_menu) = super::tools_menu::build_default_menu_bar() {
         let _ = unsafe {
             windows::Win32::UI::WindowsAndMessaging::SetMenu(hwnd, Some(default_menu))
         };
@@ -192,10 +193,10 @@ where
             .map_err(|e| IGuiError::Win32(format!("spawn language thread: {e}")))?;
     }
 
-    // Frame-level accelerator table. Currently a single binding —
-    // Ctrl+Shift+E maps to the redit menu command, so the failover
-    // editor is reachable by keyboard from any focus state.
-    let accel: Option<HACCEL> = super::redit::build_accelerator_table();
+    // Frame-level accelerator table for the built-in tools:
+    // Ctrl+Shift+E opens redit, Ctrl+Shift+L opens the log view,
+    // both regardless of which child has focus.
+    let accel: Option<HACCEL> = super::tools_menu::build_accelerator_table();
 
     let mut msg = MSG::default();
     let exit_code = unsafe {
@@ -295,11 +296,18 @@ unsafe extern "system" fn frame_wnd_proc(
         }
         WM_COMMAND => {
             let cmd_id = (wparam.0 & 0xFFFF) as u16;
-            // Redit is wired before the user menu so it works even if
-            // no language-thread spec has been installed.
+            // Built-in tools (redit, log view) are wired before the
+            // user menu so they work even if no language-thread spec
+            // has been installed.
             if cmd_id == super::redit::MENU_CMD_ID {
                 if mdi.0 as isize != 0 {
                     super::redit::open(hwnd, mdi);
+                }
+                return LRESULT(0);
+            }
+            if cmd_id == super::log_view::MENU_CMD_ID {
+                if mdi.0 as isize != 0 {
+                    super::log_view::open(hwnd, mdi);
                 }
                 return LRESULT(0);
             }

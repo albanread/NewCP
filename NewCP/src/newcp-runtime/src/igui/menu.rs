@@ -232,9 +232,9 @@ pub fn install_for_frame(frame: HWND, mdi_client: HWND, spec: &str) -> bool {
             return false;
         }
     };
-    // Always re-append redit so the failover editor stays available
-    // regardless of what the language thread installed.
-    super::redit::append_to_menu_bar(menu);
+    // Always re-append the built-in tools (redit + log view) so they
+    // stay reachable regardless of what the language thread set.
+    super::tools_menu::append_tools_menu(menu);
     let set_result = unsafe { SetMenu(frame, Some(menu)) };
     let draw_result = unsafe { DrawMenuBar(frame) };
     eprintln!(

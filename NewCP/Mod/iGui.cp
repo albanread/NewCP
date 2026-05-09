@@ -352,4 +352,17 @@ PROCEDURE SetRedrawRate*(childId: INTEGER; intervalMs: INTEGER): INTSHORT;
 
 PROCEDURE LayoutCacheStats*(VAR hits, misses, size: INTEGER): INTSHORT;
 
+(* Failover log (Rust-owned ring buffer).
+
+   LogAppend writes one line to the always-on log buffer maintained
+   inside iGui itself. Identical adjacent lines coalesce — the log
+   view shows them as `(xN) message` instead of producing duplicates,
+   which is what you want when something starts spinning out the same
+   panic message. The log view is opened from `Tools > Log` or
+   Ctrl+Shift+L, sits on the left of the MDI client by default, and
+   survives a language-thread fault: the buffer lives on the UI side,
+   so it stays readable even when CP code has stopped running. *)
+
+PROCEDURE LogAppend*(s: ARRAY OF SHORTCHAR);
+
 END iGui.

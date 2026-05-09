@@ -69,13 +69,12 @@ use windows::Win32::UI::Input::KeyboardAndMouse::{
 /// we use the well-known winuser.h value directly.
 const MK_LBUTTON: u32 = 0x0001;
 use windows::Win32::UI::WindowsAndMessaging::{
-    AppendMenuW, BringWindowToTop, CreateAcceleratorTableW, CreateMenu, CreatePopupMenu,
-    DefMDIChildProcW, GetClientRect, GetWindowLongPtrW, IsWindow, LoadCursorW, RegisterClassExW,
-    SendMessageW, SetWindowLongPtrW, ACCEL, CW_USEDEFAULT, FCONTROL, FSHIFT, FVIRTKEY,
-    GWLP_USERDATA, HACCEL, HMENU, IDC_IBEAM, MDICREATESTRUCTW, MF_POPUP, MF_STRING,
-    WHEEL_DELTA, WM_CHAR, WM_DPICHANGED_AFTERPARENT, WM_KEYDOWN, WM_LBUTTONDOWN, WM_LBUTTONUP,
-    WM_MDIACTIVATE, WM_MDICREATE, WM_MOUSEMOVE, WM_MOUSEWHEEL, WM_NCCREATE, WM_NCDESTROY,
-    WM_PAINT, WM_SETFOCUS, WM_SIZE, WNDCLASSEXW, WNDCLASS_STYLES, WS_OVERLAPPEDWINDOW, WS_VISIBLE,
+    BringWindowToTop, DefMDIChildProcW, GetClientRect, GetWindowLongPtrW, IsWindow, LoadCursorW,
+    RegisterClassExW, SendMessageW, SetWindowLongPtrW, CW_USEDEFAULT, GWLP_USERDATA, IDC_IBEAM,
+    MDICREATESTRUCTW, WHEEL_DELTA, WM_CHAR, WM_DPICHANGED_AFTERPARENT, WM_KEYDOWN,
+    WM_LBUTTONDOWN, WM_LBUTTONUP, WM_MDIACTIVATE, WM_MDICREATE, WM_MOUSEMOVE, WM_MOUSEWHEEL,
+    WM_NCCREATE, WM_NCDESTROY, WM_PAINT, WM_SETFOCUS, WM_SIZE, WNDCLASSEXW, WNDCLASS_STYLES,
+    WS_OVERLAPPEDWINDOW, WS_VISIBLE,
 };
 
 use super::renderer;
@@ -158,66 +157,8 @@ pub fn register_class() -> Result<(), super::IGuiError> {
     Ok(())
 }
 
-/// Append "Tools > redit" to the supplied menu bar. Always called on
-/// the GUI thread after the user-supplied submenus have been built,
-/// so redit is the rightmost top-level item regardless of what the
-/// language thread sets via `iGui.SetMenu`.
-pub fn append_to_menu_bar(bar: HMENU) {
-    let popup = match unsafe { CreatePopupMenu() } {
-        Ok(p) => p,
-        Err(e) => {
-            eprintln!("[redit] CreatePopupMenu failed: {e}");
-            return;
-        }
-    };
-    let item: Vec<u16> = "redit\tCtrl+Shift+E\0".encode_utf16().collect();
-    if let Err(e) = unsafe {
-        AppendMenuW(
-            popup,
-            MF_STRING,
-            MENU_CMD_ID as usize,
-            PCWSTR(item.as_ptr()),
-        )
-    } {
-        eprintln!("[redit] AppendMenuW(item) failed: {e}");
-        return;
-    }
-    let title: Vec<u16> = "&Tools\0".encode_utf16().collect();
-    if let Err(e) = unsafe {
-        AppendMenuW(
-            bar,
-            MF_POPUP,
-            popup.0 as usize,
-            PCWSTR(title.as_ptr()),
-        )
-    } {
-        eprintln!("[redit] AppendMenuW(popup) failed: {e}");
-    }
-}
-
-/// Build a stand-alone menu bar containing only "Tools > redit".
-/// Used at frame startup when no language-thread menu has been set.
-pub fn build_default_menu_bar() -> Option<HMENU> {
-    let bar = unsafe { CreateMenu() }.ok()?;
-    append_to_menu_bar(bar);
-    Some(bar)
-}
-
-/// Build the frame-level accelerator table. Currently a single entry
-/// for Ctrl+Shift+E mapped to the redit menu command, so users can
-/// open the editor from any focus state without having to reach for
-/// the menu. Returned `HACCEL` is owned by the frame WndProc and lives
-/// for the process lifetime.
-pub fn build_accelerator_table() -> Option<HACCEL> {
-    let entries = [ACCEL {
-        fVirt: FCONTROL | FSHIFT | FVIRTKEY,
-        key: b'E' as u16,
-        cmd: MENU_CMD_ID,
-    }];
-    unsafe { CreateAcceleratorTableW(&entries) }
-        .ok()
-        .filter(|h| !h.is_invalid())
-}
+// The Tools menu and frame accelerator table now live in
+// `tools_menu`, which knows about both redit and the log view.
 
 /// Open the redit child, or activate it if already open. Called from
 /// the frame WndProc when the user picks the menu item or hits the

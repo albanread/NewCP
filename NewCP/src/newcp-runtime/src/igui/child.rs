@@ -1582,6 +1582,7 @@ pub fn register_classes() -> Result<(), IGuiError> {
     let _ = unsafe { RegisterClassExW(&render) };
 
     super::redit::register_class()?;
+    super::log_view::register_class()?;
 
     Ok(())
 }

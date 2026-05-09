@@ -404,6 +404,17 @@ pub extern "C" fn igui_set_menu(spec: *const u8, _spec_len: i64) -> i32 {
     }
 }
 
+/// `iGui.LogAppend(s: ARRAY OF SHORTCHAR)` — push one line into the
+/// process-wide Rust log ring buffer. Identical adjacent lines
+/// coalesce into a count badge instead of producing duplicate
+/// entries. The log view (Tools > Log / Ctrl+Shift+L) repaints
+/// automatically when it's open. Safe to call from any thread.
+#[unsafe(export_name = "iGui.LogAppend")]
+pub extern "C" fn igui_log_append(s: *const u8, _s_len: i64) {
+    let line = unsafe { read_cp_shortstr(s) };
+    super::log_view::append(&line);
+}
+
 #[unsafe(export_name = "iGui.MdiCascade")]
 pub extern "C" fn igui_mdi_cascade() {
     super::window::dispatch_mdi_verb(super::menu::MdiVerb::Cascade);
@@ -1236,6 +1247,7 @@ pub fn native_module_artifact() -> NativeModuleArtifact {
                 ExportEntry::procedure("MdiArrangeIcons"),
                 ExportEntry::procedure("SetRedrawRate"),
                 ExportEntry::procedure("LayoutCacheStats"),
+                ExportEntry::procedure("LogAppend"),
             ]),
             "iGui.bootstrap",
             "Integrated GUI: MDI frame, Direct2D surfaces, typed event mailbox",
@@ -1429,6 +1441,11 @@ pub fn native_module_artifact() -> NativeModuleArtifact {
             NativeExportBinding::procedure(
                 "LayoutCacheStats",
                 igui_layout_cache_stats as *const () as usize,
+            ),
+            // ─── Failover log (Rust-owned ring buffer) ────────────
+            NativeExportBinding::procedure(
+                "LogAppend",
+                igui_log_append as *const () as usize,
             ),
         ],
     )

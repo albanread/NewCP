@@ -19,11 +19,13 @@ mod d2d;
 mod d3d;
 mod dwrite;
 mod executor;
+mod log_view;
 mod menu;
 pub(crate) mod redit;
 mod registry;
 mod renderer;
 mod replies;
+mod tools_menu;
 pub mod system_colors;
 mod window;
 
