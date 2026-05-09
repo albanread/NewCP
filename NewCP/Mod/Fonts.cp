@@ -18,7 +18,7 @@ MODULE Fonts;
 
      Fonts.cp           (this file — abstract types, BlackBox-verbatim)
        ▲
-       │  (HostFonts.fontDesc extends Fonts.FontDesc — privately)
+       │  (HostFonts privately extends Fonts.FontDesc / DirectoryDesc)
      HostFonts.cp       (concrete, calls HostFontsSys for measurement)
        │
        ▼
