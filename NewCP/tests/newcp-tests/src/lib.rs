@@ -2344,6 +2344,26 @@ mod tests {
     }
 
     #[test]
+    fn kernel_loop_quits_when_pre_armed() {
+        // Both scenarios run in one test so they share a single
+        // process-global QUIT_SIGNAL deterministically. cargo's
+        // parallel test runner means concurrently calling
+        // Kernel.Loop from two tests would race on the signal.
+        // No GUI thread runs in the test process; the loop exits
+        // cleanly because Quit is pre-armed before each Loop call.
+        assert_eq!(
+            run_function("Mod/Tests/KernelLoopProbe.cp", "RunOneShot"),
+            1,
+            "Kernel.Loop should exit cleanly when Quit is pre-armed"
+        );
+        assert_eq!(
+            run_function("Mod/Tests/KernelLoopProbe.cp", "QuitBeforeAnyEvent"),
+            1,
+            "pre-armed Quit must skip handler invocation entirely"
+        );
+    }
+
+    #[test]
     fn cross_module_inherited_concrete_method_dispatches() {
         // XMethodBase.BaseDesc has a concrete inherited method `Init(v)`
         // whose body lives in XMethodBase. XMethodChild.ChildDesc extends

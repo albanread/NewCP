@@ -76,6 +76,46 @@ TYPE
     TrapCleanerDesc* = ABSTRACT RECORD END;
     TrapCleaner*     = POINTER TO TrapCleanerDesc;
 
+    (** Generic event record for the language-thread event loop.
+        Field semantics are kind-dependent; see the EvKey / EvChar /
+        EvMouse / ... constants below for the per-kind layout. The
+        same wire shape iGui.NextEvent uses, so handlers can pass
+        Event values straight through to lower-level dispatch
+        without re-marshaling. *)
+    Event* = RECORD
+        kind*:    INTEGER;   (* one of EvNone, EvKey, EvChar, ... *)
+        childId*: INTEGER;   (* originating child window, or 0  *)
+        timeMs*:  INTEGER;   (* event timestamp, or 0           *)
+        p1*:      INTEGER;
+        p2*:      INTEGER;
+        p3*:      INTEGER;
+        p4*:      INTEGER
+    END;
+
+    (** Event-loop callback signature. The handler receives one event
+        per loop iteration; setting `quit # 0` causes Loop to exit
+        cleanly after the current call returns. The runtime synthesises
+        an EvFrameClose event when the UI thread's frame closes, so
+        handlers that want to honour OS-driven shutdown can just check
+        `ev.kind = EvFrameClose` and set quit. *)
+    EventHandler* = PROCEDURE (VAR ev: Event; VAR quit: INTEGER);
+
+CONST
+    (* Event kinds. Match iGui.Ev* constants byte-for-byte. *)
+    EvNone*        = 0;
+    EvKey*         = 1;
+    EvChar*        = 2;
+    EvMouse*       = 3;
+    EvFocus*       = 4;
+    EvResize*      = 5;
+    EvPaint*       = 6;
+    EvClose*       = 7;
+    EvFrameClose*  = 8;
+    EvMenu*        = 9;
+    EvThemeChange* = 10;
+    EvDpiChange*   = 11;
+    EvTick*        = 13;
+
 (* -- TrapCleaner contract ------------------------------------------------ *)
 
 PROCEDURE (c: TrapCleanerDesc) Cleanup*, NEW, ABSTRACT;
@@ -155,5 +195,27 @@ PROCEDURE Time* (): LONGINT;
 
 PROCEDURE Beep* ();
     (** System bell — best effort. Never traps. *)
+
+(* -- Event loop --------------------------------------------------------- *)
+
+PROCEDURE Loop* (handler: EventHandler);
+    (** Run the language-thread event loop. Blocks until the handler
+        sets `quit # 0`, until an `EvFrameClose` arrives, or until
+        another thread calls `Kernel.Quit`. On every real event the
+        handler is invoked once with that event and a `quit` slot;
+        between events (when no GUI input is queued) the loop runs
+        an internal idle hook (GC pressure check, finalizer drain,
+        retired-generation collection) without calling the handler.
+
+        Re-entrancy: not supported. A second `Kernel.Loop` call from
+        inside a handler will trap. *)
+
+PROCEDURE Quit* (code: INTEGER);
+    (** Signal the running event loop to exit at the next iteration.
+        Safe to call from any thread. `code` is recorded for the
+        bootstrap shell to retrieve via the future `ExitCode`
+        accessor; not yet inspected. The OS-side frame is *not*
+        closed by this call — pair with `iGui.Quit` if a clean
+        process shutdown is required. *)
 
 END Kernel.

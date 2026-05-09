@@ -23,12 +23,16 @@
 //! value as `i64`, `VAR` parameters are passed as raw pointers, return
 //! values are `i64` (or `()` for void).
 
+use std::sync::atomic::{AtomicI64, Ordering};
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use crate::gc::{self, BlockHeader, TypeDesc};
 use crate::{
     ExportDirectory, ExportEntry, HostedModuleArtifact, NativeExportBinding, NativeModuleArtifact,
 };
+
+#[cfg(windows)]
+use crate::igui::channels::{self as igui_channels, IGuiEvent};
 
 /// Mask to strip the GC mark bit from a `BlockHeader.tag`.
 const MARK_BIT: usize = 1;
@@ -163,6 +167,248 @@ pub extern "C" fn kernel_sys_new_obj(p: *mut *mut u8, t: i64) {
     unsafe { *p = payload };
 }
 
+// ─── Event loop ──────────────────────────────────────────────────────────
+
+/// Wire layout of the CP `Kernel.Event` record. Seven `i64`s in
+/// declaration order — same shape as the `iGui.NextEvent` VAR-output
+/// list, so a Loop handler can pass an Event straight through to
+/// lower-level dispatch without re-marshaling.
+#[repr(C)]
+#[derive(Debug, Default, Clone, Copy)]
+struct CpEvent {
+    kind: i64,
+    child_id: i64,
+    time_ms: i64,
+    p1: i64,
+    p2: i64,
+    p3: i64,
+    p4: i64,
+}
+
+// Event-kind constants — must stay in sync with the EvX values in
+// Mod/Kernel.cp and Mod/iGui.cp.
+const EV_NONE: i64 = 0;
+const EV_KEY: i64 = 1;
+const EV_CHAR: i64 = 2;
+const EV_MOUSE: i64 = 3;
+const EV_FOCUS: i64 = 4;
+const EV_RESIZE: i64 = 5;
+const EV_CLOSE: i64 = 7;
+const EV_FRAME_CLOSE: i64 = 8;
+const EV_MENU: i64 = 9;
+const EV_THEME_CHANGE: i64 = 10;
+const EV_DPI_CHANGE: i64 = 11;
+const EV_TICK: i64 = 13;
+
+/// CP procedure-pointer ABI for `Kernel.EventHandler`. CP `VAR`
+/// parameters become raw pointers in the C calling convention; the
+/// handler reads/writes `*ev` and `*quit` in place.
+type CpEventHandler = extern "C" fn(*mut CpEvent, *mut i64);
+
+/// Cross-thread quit signal. Set by `Kernel.Quit`, polled by
+/// `Kernel.Loop` once per iteration. `Relaxed` ordering is sufficient
+/// because the loop also re-reads it after every handler call, and
+/// the worst-case latency is one event-handling round trip.
+static QUIT_SIGNAL: AtomicI64 = AtomicI64::new(0);
+
+/// `Kernel.Quit(code)`. Posts an exit signal observable by the next
+/// `Kernel.Loop` iteration. Callable from any thread.
+#[unsafe(no_mangle)]
+pub extern "C" fn kernel_sys_quit(code: i64) {
+    // Reserve 0 for "running" so a single race-free check works.
+    let stored = if code == 0 { 1 } else { code };
+    QUIT_SIGNAL.store(stored, Ordering::Relaxed);
+}
+
+/// Re-entrancy guard. Thread-local so legitimate parallel callers
+/// (e.g. cargo test running two `Kernel.Loop` integration tests
+/// concurrently) don't trip it; the actual concern this catches is
+/// "a handler running inside Loop calls Loop again", which is
+/// per-thread by definition.
+thread_local! {
+    static LOOP_DEPTH: std::cell::Cell<u32> = const { std::cell::Cell::new(0) };
+}
+
+#[cfg(windows)]
+fn pack_igui_event(ev: IGuiEvent, out: &mut CpEvent) {
+    *out = CpEvent::default();
+    match ev {
+        IGuiEvent::Key {
+            child_id,
+            vkey,
+            scancode,
+            mods,
+            repeat,
+            down,
+            time_ms,
+        } => {
+            out.kind = EV_KEY;
+            out.child_id = child_id;
+            out.time_ms = time_ms;
+            out.p1 = vkey;
+            out.p2 = scancode;
+            out.p3 = mods;
+            out.p4 = (if down { 1 } else { 0 }) | (repeat << 16);
+        }
+        IGuiEvent::Char {
+            child_id,
+            codepoint,
+            mods,
+            time_ms,
+        } => {
+            out.kind = EV_CHAR;
+            out.child_id = child_id;
+            out.time_ms = time_ms;
+            out.p1 = codepoint;
+            out.p2 = mods;
+        }
+        IGuiEvent::Mouse {
+            child_id,
+            x,
+            y,
+            op,
+            button,
+            mods,
+            wheel_delta,
+            wheel_lines,
+            time_ms,
+        } => {
+            out.kind = EV_MOUSE;
+            out.child_id = child_id;
+            out.time_ms = time_ms;
+            out.p1 = x;
+            out.p2 = y;
+            out.p3 = mods | (button << 8) | (op << 16);
+            out.p4 = (wheel_delta & 0xFFFF) | (wheel_lines << 16);
+        }
+        IGuiEvent::Focus { child_id, gained } => {
+            out.kind = EV_FOCUS;
+            out.child_id = child_id;
+            out.p1 = if gained { 1 } else { 0 };
+        }
+        IGuiEvent::Resize {
+            child_id,
+            width,
+            height,
+        } => {
+            out.kind = EV_RESIZE;
+            out.child_id = child_id;
+            out.p1 = width;
+            out.p2 = height;
+        }
+        IGuiEvent::Close { child_id } => {
+            out.kind = EV_CLOSE;
+            out.child_id = child_id;
+        }
+        IGuiEvent::FrameClose => {
+            out.kind = EV_FRAME_CLOSE;
+        }
+        IGuiEvent::ThemeChange => {
+            out.kind = EV_THEME_CHANGE;
+        }
+        IGuiEvent::DpiChange {
+            child_id,
+            dpi_x,
+            dpi_y,
+        } => {
+            out.kind = EV_DPI_CHANGE;
+            out.child_id = child_id;
+            out.p1 = dpi_x;
+            out.p2 = dpi_y;
+        }
+        IGuiEvent::Menu { menu_id, item_id } => {
+            out.kind = EV_MENU;
+            out.p1 = menu_id;
+            out.p2 = item_id;
+        }
+        IGuiEvent::Tick { child_id, time_ms } => {
+            out.kind = EV_TICK;
+            out.child_id = child_id;
+            out.time_ms = time_ms;
+        }
+    }
+}
+
+/// Internal idle hook. Runs when no event arrived in the poll window.
+/// Today this is a no-op modulo `gc::collect()` pressure heuristics
+/// which fire from `__newcp_new_rec` already; future work hangs the
+/// loader's `drive_quiescent_collection`, finalizer drain, and a
+/// pluggable framework idle list off this function.
+fn run_idle_hooks() {
+    // Intentionally empty for now. See doc comment.
+}
+
+/// `Kernel.Loop(handler)`. The platform-agnostic CP-side event loop.
+///
+/// Drains the iGui mailbox one event at a time, packs each into a
+/// `CpEvent`, and calls the handler. On poll timeout (no event for
+/// `IDLE_TIMEOUT_MS`), runs `run_idle_hooks` without invoking the
+/// handler. Exits when:
+/// - the handler sets `*quit != 0`, or
+/// - an `EvFrameClose` event arrives (handler is called once for it,
+///   then the loop returns), or
+/// - another thread calls `Kernel.Quit`.
+///
+/// On non-Windows builds the iGui channel is unavailable; the loop
+/// becomes a quit-poll spin until `Kernel.Quit` fires. Headless
+/// CP programs that don't touch GUI state still get a working
+/// event-loop shape this way.
+#[unsafe(no_mangle)]
+pub extern "C" fn kernel_sys_loop(handler: CpEventHandler) {
+    const IDLE_TIMEOUT_MS: i64 = 50;
+    let nested = LOOP_DEPTH.with(|d| {
+        let prev = d.get();
+        d.set(prev + 1);
+        prev > 0
+    });
+    if nested {
+        LOOP_DEPTH.with(|d| d.set(d.get().saturating_sub(1)));
+        panic!("Kernel.Loop is not re-entrant on a single thread");
+    }
+    // Note: do NOT reset QUIT_SIGNAL on entry. A Quit posted *before*
+    // Loop is a legitimate pre-arm pattern (used by tests, and by any
+    // production code that wants a fail-safe early-exit hook); resetting
+    // here would silently swallow it. Quit's contract is "the flag
+    // persists until the loop observes it" — and "observe" means
+    // "exit". If we ever want to restart Loop after a Quit, that
+    // becomes an explicit `Kernel.ResetQuit` call, not an implicit
+    // reset on entry.
+
+    let mut quit: i64 = 0;
+    while quit == 0 && QUIT_SIGNAL.load(Ordering::Relaxed) == 0 {
+        let mut ev = CpEvent::default();
+        let got_event;
+        #[cfg(windows)]
+        {
+            got_event = match igui_channels::next_event(IDLE_TIMEOUT_MS) {
+                Some(ig) => {
+                    pack_igui_event(ig, &mut ev);
+                    true
+                }
+                None => false,
+            };
+        }
+        #[cfg(not(windows))]
+        {
+            // Headless: just sleep so the spin doesn't peg a CPU.
+            std::thread::sleep(std::time::Duration::from_millis(IDLE_TIMEOUT_MS as u64));
+            got_event = false;
+        }
+
+        if got_event {
+            let was_frame_close = ev.kind == EV_FRAME_CLOSE;
+            handler(&mut ev as *mut _, &mut quit as *mut _);
+            if was_frame_close {
+                quit = 1;
+            }
+        } else {
+            run_idle_hooks();
+        }
+    }
+
+    LOOP_DEPTH.with(|d| d.set(d.get().saturating_sub(1)));
+}
+
 // ─── Native module registrations ─────────────────────────────────────────
 
 /// The set of (cp_name, fn_ptr) entries shared by both `KernelSys` and
@@ -179,6 +425,8 @@ fn kernel_exports() -> Vec<(&'static str, *const ())> {
         ("SizeOf",   kernel_sys_type_size as *const ()),
         ("LevelOf",  kernel_sys_level_of  as *const ()),
         ("NewObj",   kernel_sys_new_obj   as *const ()),
+        ("Loop",     kernel_sys_loop      as *const ()),
+        ("Quit",     kernel_sys_quit      as *const ()),
     ]
 }
 
@@ -327,6 +575,46 @@ mod tests {
         assert_eq!(kernel_sys_type_base(0), 0);
         assert_eq!(kernel_sys_type_size(0), 0);
         assert_eq!(kernel_sys_level_of(0), 0);
+    }
+
+    extern "C" fn quit_immediately_handler(_ev: *mut CpEvent, quit: *mut i64) {
+        unsafe { *quit = 1 };
+    }
+
+    #[test]
+    fn loop_exits_when_quit_signal_set_before_entry() {
+        // QUIT_SIGNAL is process-global; serialise with the rest of
+        // the runtime test suite so concurrent runs don't race.
+        let _t = lock_tests();
+        QUIT_SIGNAL.store(0, Ordering::Relaxed);
+
+        // No GUI thread is running in this test process, so the loop
+        // would otherwise spin forever waiting for events. Pre-arming
+        // the quit signal makes the very first iteration exit.
+        kernel_sys_quit(7);
+        kernel_sys_loop(quit_immediately_handler);
+
+        // Reset for downstream tests — Quit(0) is *not* a reset
+        // (`0` is remapped to `1` to keep the "set" sentinel
+        // unambiguous); only a direct store clears the flag.
+        QUIT_SIGNAL.store(0, Ordering::Relaxed);
+    }
+
+    #[test]
+    fn quit_signal_round_trips() {
+        let _t = lock_tests();
+        QUIT_SIGNAL.store(0, Ordering::Relaxed);
+
+        // Quit always stores a non-zero "stopping" sentinel, even
+        // when called with code 0 — that way the loop's poll
+        // unambiguously distinguishes "not requested" (== 0) from
+        // "requested" (anything else).
+        kernel_sys_quit(42);
+        assert_eq!(QUIT_SIGNAL.load(Ordering::Relaxed), 42);
+        kernel_sys_quit(0);
+        assert_ne!(QUIT_SIGNAL.load(Ordering::Relaxed), 0);
+
+        QUIT_SIGNAL.store(0, Ordering::Relaxed);
     }
 
     #[test]
