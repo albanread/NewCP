@@ -20,6 +20,7 @@ const COMMANDS: &[&str] = &[
     "dump-ir",
     "dump-llvm",
     "dump-asm",
+    "dump-heap",
 ];
 
 fn main() {
@@ -49,6 +50,11 @@ fn main() {
 
         println!("{}", invoke_command(&command_path));
         return;
+    }
+
+    if command == "dump-heap" {
+        let remaining: Vec<String> = args.collect();
+        std::process::exit(run_dump_heap(&remaining));
     }
 
     if command == "describe-interface" {
@@ -184,11 +190,87 @@ fn print_usage() {
     eprintln!("  newcp-driver check-dir <dir>");
     eprintln!("  newcp-driver run-igui [Module.Command]           (Windows only)");
     eprintln!("  newcp-driver <dump-command> [--opt <none|less|default|aggressive>] <file>");
+    eprintln!("  newcp-driver dump-heap [--counters|--clusters|--types|--roots|--json] [--after <Module.Command>]");
     eprintln!();
     eprintln!("commands:");
     for command in COMMANDS {
         eprintln!("  {command}");
     }
+}
+
+/// `dump-heap` subcommand. Optionally bootstraps the loader and runs a
+/// command (`--after <Module.Command>`) before snapshotting, so the heap
+/// has something interesting to report. Output mode is selected by an
+/// optional flag; default is the full text report.
+fn run_dump_heap(args: &[String]) -> i32 {
+    use newcp_runtime::heap_introspect::{
+        take_lite_snapshot, take_snapshot, RenderMode,
+    };
+
+    let mut mode = RenderMode::Full;
+    let mut emit_json = false;
+    let mut after_command: Option<String> = None;
+
+    let mut i = 0;
+    while i < args.len() {
+        match args[i].as_str() {
+            "--counters" => mode = RenderMode::Counters,
+            "--clusters" => mode = RenderMode::Clusters,
+            "--types" => mode = RenderMode::Types,
+            "--roots" => mode = RenderMode::Roots,
+            "--json" => emit_json = true,
+            "--after" => {
+                i += 1;
+                let Some(cmd) = args.get(i) else {
+                    eprintln!("missing argument to --after\n");
+                    print_usage();
+                    return 2;
+                };
+                after_command = Some(cmd.clone());
+            }
+            other => {
+                eprintln!("unknown dump-heap flag: {other}\n");
+                print_usage();
+                return 2;
+            }
+        }
+        i += 1;
+    }
+
+    // Hold the session alive across the snapshot. If we drop it earlier, the
+    // OwnedJitModule(s) in `active_executable_images` go with it, freeing
+    // every TypeDesc emitted by those modules. Heap blocks still tagged with
+    // those TypeDescs would then segfault during the per-block walk. This is
+    // the exact lifetime hazard the `RetiredImageDropPredicate` integration
+    // is meant to address — until that wires up, the only safe pattern is
+    // "session outlives heap reads".
+    let _session_guard = match after_command.as_deref() {
+        None => None,
+        Some(cmd) => {
+            let mut session = newcp_loader::LoaderSession::new();
+            if let Err(error) = session.invoke_command(cmd) {
+                eprintln!("dump-heap --after failed: {error}");
+                return 2;
+            }
+            Some(session)
+        }
+    };
+
+    // Type catalog + cluster occupancy require the per-block walk; counters /
+    // roots-only modes can use the cheaper lite path.
+    let snapshot = match mode {
+        RenderMode::Counters | RenderMode::Roots => take_lite_snapshot(),
+        _ => take_snapshot(),
+    };
+
+    if emit_json {
+        println!("{}", snapshot.to_json());
+    } else {
+        print!("{}", snapshot.render(mode));
+    }
+
+    drop(_session_guard);
+    0
 }
 
 /// Run iGui on the main (Win32 message-loop) thread. If a command path

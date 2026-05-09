@@ -18,8 +18,10 @@
 //! by adding a new cluster.
 
 use std::alloc::Layout;
+use std::sync::atomic::{AtomicU64, Ordering};
 use std::sync::Mutex;
 use std::thread::ThreadId;
+use std::time::Instant;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // BlockHeader
@@ -203,6 +205,100 @@ unsafe impl Sync for ModuleDesc {}
 unsafe impl Send for ModuleDesc {}
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Heap counters — always-on atomic instrumentation
+// ─────────────────────────────────────────────────────────────────────────────
+
+/// Process-global, atomic counters covering allocation, reclamation, and
+/// collection cycles. Read by `heap_introspect::current_counters()`; updated
+/// in place by the alloc and sweep paths.
+///
+/// Hot-path cost is one or two `Relaxed` `fetch_add`s per allocation. Removing
+/// instrumentation costs nothing at the call site since the operations live
+/// inside `__newcp_new_rec` and `Cluster::sweep`, not in JIT-emitted code.
+pub(crate) struct HeapCounters {
+    // Lifetime totals.
+    pub(crate) alloc_blocks_lifetime: AtomicU64,
+    pub(crate) alloc_bytes_lifetime: AtomicU64,
+    pub(crate) free_blocks_lifetime: AtomicU64,
+    pub(crate) free_bytes_lifetime: AtomicU64,
+
+    // Path attribution.
+    pub(crate) bump_path_blocks: AtomicU64,
+    pub(crate) free_list_path_blocks: AtomicU64,
+    pub(crate) grow_events: AtomicU64,
+
+    // Collection.
+    pub(crate) collect_cycles: AtomicU64,
+    pub(crate) collect_total_nanos: AtomicU64,
+    pub(crate) collect_last_nanos: AtomicU64,
+    pub(crate) collect_last_reclaimed_bytes: AtomicU64,
+
+    // Live state (refreshed at end of sweep).
+    pub(crate) live_blocks: AtomicU64,
+    pub(crate) live_bytes: AtomicU64,
+    pub(crate) cluster_count: AtomicU64,
+    pub(crate) module_root_count: AtomicU64,
+
+    // Pressure.
+    pub(crate) peak_live_bytes: AtomicU64,
+}
+
+impl HeapCounters {
+    const fn zeroed() -> Self {
+        Self {
+            alloc_blocks_lifetime: AtomicU64::new(0),
+            alloc_bytes_lifetime: AtomicU64::new(0),
+            free_blocks_lifetime: AtomicU64::new(0),
+            free_bytes_lifetime: AtomicU64::new(0),
+            bump_path_blocks: AtomicU64::new(0),
+            free_list_path_blocks: AtomicU64::new(0),
+            grow_events: AtomicU64::new(0),
+            collect_cycles: AtomicU64::new(0),
+            collect_total_nanos: AtomicU64::new(0),
+            collect_last_nanos: AtomicU64::new(0),
+            collect_last_reclaimed_bytes: AtomicU64::new(0),
+            live_blocks: AtomicU64::new(0),
+            live_bytes: AtomicU64::new(0),
+            cluster_count: AtomicU64::new(0),
+            module_root_count: AtomicU64::new(0),
+            peak_live_bytes: AtomicU64::new(0),
+        }
+    }
+
+    pub(crate) fn reset(&self) {
+        // Used by test harnesses and `dump-heap --reset`. Not for production
+        // code paths — clearing live counters mid-run will mislead any
+        // observer reading concurrently.
+        self.alloc_blocks_lifetime.store(0, Ordering::Relaxed);
+        self.alloc_bytes_lifetime.store(0, Ordering::Relaxed);
+        self.free_blocks_lifetime.store(0, Ordering::Relaxed);
+        self.free_bytes_lifetime.store(0, Ordering::Relaxed);
+        self.bump_path_blocks.store(0, Ordering::Relaxed);
+        self.free_list_path_blocks.store(0, Ordering::Relaxed);
+        self.grow_events.store(0, Ordering::Relaxed);
+        self.collect_cycles.store(0, Ordering::Relaxed);
+        self.collect_total_nanos.store(0, Ordering::Relaxed);
+        self.collect_last_nanos.store(0, Ordering::Relaxed);
+        self.collect_last_reclaimed_bytes.store(0, Ordering::Relaxed);
+        self.live_blocks.store(0, Ordering::Relaxed);
+        self.live_bytes.store(0, Ordering::Relaxed);
+        self.cluster_count.store(0, Ordering::Relaxed);
+        self.module_root_count.store(0, Ordering::Relaxed);
+        self.peak_live_bytes.store(0, Ordering::Relaxed);
+    }
+}
+
+pub(crate) static HEAP_COUNTERS: HeapCounters = HeapCounters::zeroed();
+
+/// Which path satisfied an allocation request. Threaded through
+/// `Cluster::try_alloc` so `__newcp_new_rec` can attribute it to a counter.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub(crate) enum AllocPath {
+    Bump,
+    FreeList,
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Cluster — backing storage for managed allocations
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -236,15 +332,15 @@ struct FreeBlockLink {
 /// `block_starts` is a side-table bitmap (1 bit per `BLOCK_ALIGN`-aligned
 /// position) where a set bit marks the start of a formed block. It enables
 /// O(1)-amortised `resolve()` for the conservative stack scanner.
-struct Cluster {
+pub(crate) struct Cluster {
     /// Cluster base address (16-aligned).
-    base: *mut u8,
+    pub(crate) base: *mut u8,
     /// Cluster size in bytes.
-    size: usize,
+    pub(crate) size: usize,
     /// Offset of the first byte past all formed blocks; `[0, bump)` is walkable.
-    bump: usize,
+    pub(crate) bump: usize,
     /// Head of this cluster's free-block linked list (header pointer or null).
-    free_list: *mut u8,
+    pub(crate) free_list: *mut u8,
     /// Layout used to allocate the cluster itself; required for eventual `dealloc`.
     layout: Layout,
     /// Block-start bitmap. Bit `i` is set iff a block begins at offset
@@ -349,11 +445,12 @@ impl Cluster {
     }
 
     /// Tries to satisfy a `total_size`-byte allocation from this cluster's
-    /// free list, then from bump space. Returns the **header** pointer.
-    /// Payload memory is zeroed before return.
+    /// free list, then from bump space. Returns the **header** pointer plus
+    /// the path that satisfied it (for counter attribution). Payload memory
+    /// is zeroed before return.
     ///
     /// `total_size` must be a multiple of `BLOCK_ALIGN` and at least `MIN_BLOCK`.
-    unsafe fn try_alloc(&mut self, total_size: usize) -> Option<*mut u8> {
+    unsafe fn try_alloc(&mut self, total_size: usize) -> Option<(*mut u8, AllocPath)> {
         let header_size = std::mem::size_of::<BlockHeader>();
 
         // ── 1. Free-list (first-fit). ──────────────────────────────────────
@@ -389,7 +486,7 @@ impl Cluster {
                     let final_size = (*(block as *const BlockHeader)).block_size;
                     let payload = block.add(header_size);
                     std::ptr::write_bytes(payload, 0, final_size - header_size);
-                    return Some(block);
+                    return Some((block, AllocPath::FreeList));
                 }
                 prev_link = next_link;
             }
@@ -408,7 +505,7 @@ impl Cluster {
                 // on a partially-initialised header during a window).
             }
             self.mark_block_start(block_offset);
-            return Some(block);
+            return Some((block, AllocPath::Bump));
         }
 
         None
@@ -453,8 +550,10 @@ impl Cluster {
 
     /// Sweeps this cluster: rebuilds the free list from unmarked blocks,
     /// invokes finalizers on newly-dead blocks, clears the mark bit on
-    /// survivors, and coalesces adjacent free blocks.
-    unsafe fn sweep(&mut self) {
+    /// survivors, and coalesces adjacent free blocks. Returns per-cluster
+    /// stats so the global counters can be updated from `collect_inner`.
+    unsafe fn sweep(&mut self) -> SweepStats {
+        let mut stats = SweepStats::default();
         let header_size = std::mem::size_of::<BlockHeader>();
         self.free_list = std::ptr::null_mut();
         let mut offset: usize = 0;
@@ -480,10 +579,14 @@ impl Cluster {
                 if !was_free && is_marked {
                     // Survivor: clear mark and continue.
                     (*hdr).clear_mark();
+                    stats.live_blocks += 1;
+                    stats.live_bytes += block_size as u64;
                     prev_free = std::ptr::null_mut();
                 } else {
                     // Free block (newly dead, or already free).
                     if is_dead {
+                        stats.freed_blocks += 1;
+                        stats.freed_bytes += block_size as u64;
                         // Invoke finalizer (if any) before wiping payload.
                         let td = (type_bits) as *const TypeDesc;
                         if !td.is_null() {
@@ -518,7 +621,19 @@ impl Cluster {
                 offset += block_size;
             }
         }
+
+        stats
     }
+}
+
+/// Per-cluster sweep accounting, summed by `collect_inner` and folded into
+/// the global heap counters.
+#[derive(Debug, Default, Clone, Copy)]
+pub(crate) struct SweepStats {
+    pub(crate) live_blocks: u64,
+    pub(crate) live_bytes: u64,
+    pub(crate) freed_blocks: u64,
+    pub(crate) freed_bytes: u64,
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -527,24 +642,27 @@ impl Cluster {
 
 /// Rust-owned per-module root record. Owns a copy of the offset array so the
 /// GC never holds pointers into caller-managed memory.
-struct ModuleRoots {
+pub(crate) struct ModuleRoots {
+    /// Module name as supplied at registration. `<unnamed>` if the legacy
+    /// `__newcp_register_module` was used.
+    pub(crate) name: String,
     /// Start address of the module's packed global data struct.
-    var_base: *const u8,
+    pub(crate) var_base: *const u8,
     /// Owned copy of the byte-offset list for pointer fields within `var_base`.
-    offsets: Vec<isize>,
+    pub(crate) offsets: Vec<isize>,
 }
 
 // Access to `var_base` is always serialised through the `GC` mutex.
 unsafe impl Send for ModuleRoots {}
 
-struct GcState {
+pub(crate) struct GcState {
     /// Stack address recorded by `__newcp_init_gc`. The conservative scan
     /// walks upward from the current SP to this address.
     ///
     /// Follow-on action: If the runtime adds support for multiple concurrent
     /// managed threads, this must be decoupled from the global state and
     /// moved to a `thread_local!` cell.
-    base_stack: usize,
+    pub(crate) base_stack: usize,
     /// Identity of the thread that called `__newcp_init_gc`.
     ///
     /// **MVP-internal guard.** The current GC is single-threaded, and this
@@ -555,11 +673,11 @@ struct GcState {
     /// scheme; see the "Multi-thread roadmap" section of
     /// `docs/garbage-collection.md`.
     /// `None` until the GC has been initialised.
-    owner_thread: Option<ThreadId>,
+    pub(crate) owner_thread: Option<ThreadId>,
     /// Backing storage for all managed allocations.
-    clusters: Vec<Cluster>,
+    pub(crate) clusters: Vec<Cluster>,
     /// All registered module root descriptors, in registration order.
-    modules: Vec<ModuleRoots>,
+    pub(crate) modules: Vec<ModuleRoots>,
 }
 
 /// Process-global GC state, protected by a mutex.
@@ -608,7 +726,10 @@ fn total_block_size(payload_size: usize) -> usize {
 
 /// Walks the cluster list and tries to allocate `total_size` bytes from any
 /// existing cluster. Does **not** trigger collection or grow the heap.
-unsafe fn try_alloc_in_clusters(gc: &mut GcState, total_size: usize) -> Option<*mut u8> {
+unsafe fn try_alloc_in_clusters(
+    gc: &mut GcState,
+    total_size: usize,
+) -> Option<(*mut u8, AllocPath)> {
     for cluster in &mut gc.clusters {
         if let Some(block) = unsafe { cluster.try_alloc(total_size) } {
             return Some(block);
@@ -659,7 +780,85 @@ pub unsafe extern "C" fn __newcp_register_module(
     let offsets = unsafe { std::slice::from_raw_parts(offsets_ptr, count).to_vec() };
     let mut gc = GC.lock().unwrap();
     debug_assert_owner_thread(&gc);
-    gc.modules.push(ModuleRoots { var_base, offsets });
+    gc.modules.push(ModuleRoots {
+        name: "<unnamed>".to_string(),
+        var_base,
+        offsets,
+    });
+    HEAP_COUNTERS
+        .module_root_count
+        .store(gc.modules.len() as u64, Ordering::Relaxed);
+}
+
+/// Like `__newcp_register_module`, but tags the registration with the module
+/// name supplied by the loader. The introspect module surfaces this name in
+/// snapshots; the GC trace path doesn't use it.
+///
+/// `name_utf8` must point to `name_len` bytes of UTF-8. The bytes are copied
+/// immediately, so the caller need not keep them alive.
+///
+/// # Safety
+/// All the safety conditions of `__newcp_register_module` apply, plus
+/// `name_utf8` / `name_len` must form a valid UTF-8 byte slice.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn __newcp_register_module_named(
+    name_utf8: *const u8,
+    name_len: usize,
+    var_base: *const u8,
+    offsets_ptr: *const isize,
+    count: usize,
+) {
+    let name = if name_utf8.is_null() || name_len == 0 {
+        "<unnamed>".to_string()
+    } else {
+        let bytes = unsafe { std::slice::from_raw_parts(name_utf8, name_len) };
+        std::str::from_utf8(bytes)
+            .map(str::to_string)
+            .unwrap_or_else(|_| "<invalid-utf8>".to_string())
+    };
+    let offsets = unsafe { std::slice::from_raw_parts(offsets_ptr, count).to_vec() };
+    let mut gc = GC.lock().unwrap();
+    debug_assert_owner_thread(&gc);
+    gc.modules.push(ModuleRoots {
+        name,
+        var_base,
+        offsets,
+    });
+    HEAP_COUNTERS
+        .module_root_count
+        .store(gc.modules.len() as u64, Ordering::Relaxed);
+}
+
+/// Run `f` against the locked GC state. Used by `heap_introspect` to take a
+/// consistent snapshot without leaking `GcState` itself.
+pub(crate) fn with_locked_state<R>(f: impl FnOnce(&GcState) -> R) -> R {
+    let gc = GC.lock().unwrap();
+    f(&gc)
+}
+
+/// Wipe the global GC state. Test helper only; not part of the public API.
+#[cfg(test)]
+pub(crate) fn reset_for_test() {
+    let mut gc = GC.lock().unwrap();
+    gc.clusters.clear();
+    gc.modules.clear();
+    gc.base_stack = 0;
+    gc.owner_thread = None;
+}
+
+/// Shared mutex serialising every test that touches the process-global GC
+/// state across test modules in this crate.
+#[cfg(test)]
+pub(crate) static GLOBAL_TEST_LOCK: Mutex<()> = Mutex::new(());
+
+/// Acquire `GLOBAL_TEST_LOCK`, recovering from poisoning so a single failing
+/// test doesn't cascade-poison every subsequent test.
+#[cfg(test)]
+pub(crate) fn lock_tests_global() -> std::sync::MutexGuard<'static, ()> {
+    match GLOBAL_TEST_LOCK.lock() {
+        Ok(g) => g,
+        Err(p) => p.into_inner(),
+    }
 }
 
 /// Allocates and zero-initialises a new heap record.
@@ -703,7 +902,7 @@ pub unsafe extern "C" fn __newcp_new_rec(tag: *const TypeDesc) -> *mut u8 {
     debug_assert_owner_thread(&gc);
 
     // Step 1: try existing clusters.
-    let block = unsafe { try_alloc_in_clusters(&mut gc, total_size) }
+    let (block, path) = unsafe { try_alloc_in_clusters(&mut gc, total_size) }
         .or_else(|| {
             // Step 2: allocation pressure → run a collection and retry.
             unsafe { collect_inner(&mut gc, sp) };
@@ -712,10 +911,31 @@ pub unsafe extern "C" fn __newcp_new_rec(tag: *const TypeDesc) -> *mut u8 {
         .unwrap_or_else(|| {
             // Step 3: heap growth.
             gc.clusters.push(Cluster::new(total_size));
+            HEAP_COUNTERS.grow_events.fetch_add(1, Ordering::Relaxed);
+            HEAP_COUNTERS
+                .cluster_count
+                .store(gc.clusters.len() as u64, Ordering::Relaxed);
             let last = gc.clusters.last_mut().expect("just pushed");
             unsafe { last.try_alloc(total_size) }
                 .expect("fresh cluster must satisfy the request that drove its creation")
         });
+
+    // Counter updates (Relaxed: lifetime totals are monotonic; no ordering
+    // dependency between fields matters to readers).
+    HEAP_COUNTERS.alloc_blocks_lifetime.fetch_add(1, Ordering::Relaxed);
+    HEAP_COUNTERS
+        .alloc_bytes_lifetime
+        .fetch_add(total_size as u64, Ordering::Relaxed);
+    match path {
+        AllocPath::Bump => {
+            HEAP_COUNTERS.bump_path_blocks.fetch_add(1, Ordering::Relaxed);
+        }
+        AllocPath::FreeList => {
+            HEAP_COUNTERS
+                .free_list_path_blocks
+                .fetch_add(1, Ordering::Relaxed);
+        }
+    }
 
     unsafe {
         let hdr = block as *mut BlockHeader;
@@ -977,6 +1197,7 @@ pub fn collect() {
 ///   covers all live managed roots.
 /// - Caller must hold the `GC` mutex (`gc` is the locked `MutexGuard`'s `&mut`).
 unsafe fn collect_inner(gc: &mut GcState, sp: usize) {
+    let cycle_start = Instant::now();
     // ── Phase 1a: Clear all mark bits across every cluster ───────────────────
     unsafe {
         for cluster in &mut gc.clusters {
@@ -1034,9 +1255,56 @@ unsafe fn collect_inner(gc: &mut GcState, sp: usize) {
     // Follow-on action: release fully-empty clusters (all blocks free,
     // coalesced into a single span equal to `bump`) back to the OS once a
     // policy is decided.
+    let mut totals = SweepStats::default();
     unsafe {
         for cluster in &mut gc.clusters {
-            cluster.sweep();
+            let s = cluster.sweep();
+            totals.live_blocks += s.live_blocks;
+            totals.live_bytes += s.live_bytes;
+            totals.freed_blocks += s.freed_blocks;
+            totals.freed_bytes += s.freed_bytes;
+        }
+    }
+
+    // ── Counter updates ──────────────────────────────────────────────────────
+    let elapsed = cycle_start.elapsed().as_nanos() as u64;
+    HEAP_COUNTERS.collect_cycles.fetch_add(1, Ordering::Relaxed);
+    HEAP_COUNTERS
+        .collect_total_nanos
+        .fetch_add(elapsed, Ordering::AcqRel);
+    HEAP_COUNTERS
+        .collect_last_nanos
+        .store(elapsed, Ordering::Relaxed);
+    HEAP_COUNTERS
+        .collect_last_reclaimed_bytes
+        .store(totals.freed_bytes, Ordering::Relaxed);
+    HEAP_COUNTERS
+        .free_blocks_lifetime
+        .fetch_add(totals.freed_blocks, Ordering::Relaxed);
+    HEAP_COUNTERS
+        .free_bytes_lifetime
+        .fetch_add(totals.freed_bytes, Ordering::Relaxed);
+    HEAP_COUNTERS
+        .live_blocks
+        .store(totals.live_blocks, Ordering::Relaxed);
+    HEAP_COUNTERS
+        .live_bytes
+        .store(totals.live_bytes, Ordering::Relaxed);
+    HEAP_COUNTERS
+        .cluster_count
+        .store(gc.clusters.len() as u64, Ordering::Relaxed);
+    // Peak high-water mark: AcqRel CAS so a concurrent reader (multi-thread
+    // future) sees a coherent ordering relative to live_bytes.
+    let mut peak = HEAP_COUNTERS.peak_live_bytes.load(Ordering::Acquire);
+    while totals.live_bytes > peak {
+        match HEAP_COUNTERS.peak_live_bytes.compare_exchange_weak(
+            peak,
+            totals.live_bytes,
+            Ordering::AcqRel,
+            Ordering::Acquire,
+        ) {
+            Ok(_) => break,
+            Err(observed) => peak = observed,
         }
     }
 }
@@ -1049,18 +1317,11 @@ unsafe fn collect_inner(gc: &mut GcState, sp: usize) {
 mod tests {
     use super::*;
 
-    /// Tests run serially because they share the process-global `GC` state.
-    /// We just acquire the mutex around the whole scenario; tests panic on
-    /// failure rather than returning an `Err`.
-    static TEST_LOCK: Mutex<()> = Mutex::new(());
-
-    /// Acquire the test lock, recovering from poisoning so a single failing
-    /// test doesn't cascade-poison every subsequent test in this module.
+    // Tests run serially because they share the process-global `GC` state.
+    // The shared lock lives at module scope so heap_introspect tests can use
+    // it too — see `super::lock_tests_global`.
     fn lock_tests() -> std::sync::MutexGuard<'static, ()> {
-        match TEST_LOCK.lock() {
-            Ok(g) => g,
-            Err(p) => p.into_inner(),
-        }
+        super::lock_tests_global()
     }
 
     /// Wipes the global GC state to a known-empty baseline so each test

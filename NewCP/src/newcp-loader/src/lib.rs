@@ -199,6 +199,9 @@ struct ActiveExecutableImage {
     module_name: String,
     generation: u64,
     export_addresses: HashMap<String, usize>,
+    /// `llvm_name -> address` for every method body emitted by this module.
+    /// Importers read this when patching their cross-module vtable slots.
+    method_addresses: HashMap<String, usize>,
     image: OwnedJitModule,
 }
 
@@ -214,8 +217,42 @@ struct StagedModuleUpdate {
     artifact: newcp_runtime::CompiledModuleArtifact,
     compiled_module_entry: String,
     materialized_record: MaterializedModuleRecord,
-    executable_image: Option<(OwnedJitModule, HashMap<String, usize>)>,
+    /// `(image, export_addresses, method_addresses)`.
+    executable_image: Option<(
+        OwnedJitModule,
+        HashMap<String, usize>,
+        HashMap<String, usize>,
+    )>,
     retirement_reason: RetirementReason,
+}
+
+/// Predicate that vetoes dropping a retired executable image. Receives the
+/// module name and generation; returns `true` if the loader is allowed to
+/// release the JIT memory, `false` to keep the image retained for the next
+/// quiescent pass.
+///
+/// This is the integration point for heap-side liveness checks: the GC's
+/// `BlockHeader.tag` and `ModuleDesc.var_base` both point into a JIT image's
+/// memory. Dropping an image whose `TypeDesc`s or `var_base` are still
+/// reachable from any live block would dangle those pointers. Until the
+/// `heap_introspection` module lands, no probe is set by default and image
+/// drops follow stack-quiescence alone (see `garbage_collect_retired`).
+pub struct RetiredImageDropPredicate(Box<dyn Fn(&str, u64) -> bool + 'static>);
+
+impl RetiredImageDropPredicate {
+    pub fn new(predicate: impl Fn(&str, u64) -> bool + 'static) -> Self {
+        Self(Box::new(predicate))
+    }
+
+    fn call(&self, module_name: &str, generation: u64) -> bool {
+        (self.0)(module_name, generation)
+    }
+}
+
+impl std::fmt::Debug for RetiredImageDropPredicate {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str("RetiredImageDropPredicate(<fn>)")
+    }
 }
 
 #[derive(Debug)]
@@ -231,7 +268,16 @@ pub struct LoaderSession {
     last_failure: Option<LoaderFailureRecord>,
     next_generation: u64,
     next_scope_id: u64,
+    /// Monotonic counter advanced by `note_quiescent_point` once no execution
+    /// scope is open. Retired records are reclaimed only when their
+    /// `collect_after_quiescent_epoch` is `<=` this value: the `+1` offset
+    /// applied at retirement time means "wait for the next quiescent
+    /// boundary", which is the earliest moment we can be sure the previous
+    /// generation's stack frames are gone.
     quiescent_epoch: u64,
+    /// Optional veto hook over executable-image drops. See
+    /// [`RetiredImageDropPredicate`].
+    retired_image_drop_predicate: Option<RetiredImageDropPredicate>,
 }
 
 impl LoaderSession {
@@ -249,7 +295,33 @@ impl LoaderSession {
             next_generation: 1,
             next_scope_id: 1,
             quiescent_epoch: 0,
+            retired_image_drop_predicate: None,
         }
+    }
+
+    /// Install a predicate that gets the final say on whether a retired
+    /// executable image may be dropped. See [`RetiredImageDropPredicate`].
+    pub fn set_retired_image_drop_predicate(&mut self, predicate: RetiredImageDropPredicate) {
+        self.retired_image_drop_predicate = Some(predicate);
+    }
+
+    pub fn clear_retired_image_drop_predicate(&mut self) {
+        self.retired_image_drop_predicate = None;
+    }
+
+    /// Advance quiescence and reclaim retired generations in a single step.
+    ///
+    /// Returns `Some(epoch)` if the cycle ran, `None` if any execution scope
+    /// is currently open (in which case nothing is reclaimed). Safe to call
+    /// after every command invocation; without it, retired `OwnedJitModule`s
+    /// accumulate forever.
+    pub fn drive_quiescent_collection(&mut self) -> Option<u64> {
+        if !self.can_observe_quiescent_point() {
+            return None;
+        }
+        let epoch = self.note_quiescent_point().ok()?;
+        let _ = self.garbage_collect_retired();
+        Some(epoch)
     }
 
     pub fn report(&self) -> &BootstrapReport {
@@ -354,27 +426,64 @@ impl LoaderSession {
         let root_ref = loaded.load.graph.root_path.display().to_string();
         let scope_id = self.begin_execution_scope(&root_ref)?;
 
-        let execution_result: Result<Vec<String>, String> = (|| {
+        // Resolve the export address up front; failure here returns through
+        // the same end-of-scope cleanup as a successful run.
+        let address_result = {
             let export_path = format!("{}.{}", loaded.command.module_name, loaded.command.command_name);
-            let address = self
-                .active_export_address(&loaded.command.module_name, &export_path)
-                .ok_or_else(|| format!("command executable not materialized: {command_path}"))?;
+            self.active_export_address(&loaded.command.module_name, &export_path)
+                .ok_or_else(|| format!("command executable not materialized: {command_path}"))
+        };
 
-            let command_fn: unsafe extern "C" fn() = unsafe { std::mem::transmute(address) };
-            unsafe { command_fn() };
+        // Outcome of the actual JIT call: success, error, or a pending panic
+        // payload that we re-raise after cleanup.
+        enum Outcome {
+            Ok,
+            Err(String),
+            Panic(Box<dyn std::any::Any + Send>),
+        }
 
-            Ok(vec![loaded.command.render()])
-        })();
+        let outcome = match address_result {
+            Err(error) => Outcome::Err(error),
+            Ok(address) => {
+                let command_fn: unsafe extern "C" fn() = unsafe { std::mem::transmute(address) };
+                // catch_unwind: a Rust-side panic crossing the JIT boundary
+                // (codegen bug, debug assertion in a runtime intrinsic) must
+                // not skip end_execution_scope; otherwise the scope set jams
+                // and every subsequent note_quiescent_point fails forever.
+                // `command_fn` is `extern "C" fn()`, so its execution is
+                // UnwindSafe; we assert that for the surrounding closure.
+                let panic_result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| unsafe {
+                    command_fn();
+                }));
+                match panic_result {
+                    Ok(()) => Outcome::Ok,
+                    Err(payload) => Outcome::Panic(payload),
+                }
+            }
+        };
 
+        // Always close the scope. Always.
         let _ = self.end_execution_scope(scope_id);
-        let execution_log = execution_result?;
 
-        Ok(LoaderCommandInvokeResult {
-            command: loaded.command,
-            load_log: loaded.load.load_log,
-            execution_log,
-            materialized_modules: loaded.load.materialized_modules,
-        })
+        // Drive a quiescent collection now that the scope set is empty. This
+        // is the *only* place retired generations get reclaimed in normal
+        // operation; without it, every recompile leaks one OwnedJitModule.
+        // No-op when another scope remains open (re-entrant call paths).
+        let _ = self.drive_quiescent_collection();
+
+        match outcome {
+            Outcome::Panic(payload) => std::panic::resume_unwind(payload),
+            Outcome::Err(error) => Err(error),
+            Outcome::Ok => {
+                let execution_log = vec![loaded.command.render()];
+                Ok(LoaderCommandInvokeResult {
+                    command: loaded.command,
+                    load_log: loaded.load.load_log,
+                    execution_log,
+                    materialized_modules: loaded.load.materialized_modules,
+                })
+            }
+        }
     }
 
     pub fn retired_executable_image_count(&self) -> usize {
@@ -428,8 +537,6 @@ impl LoaderSession {
     }
 
     pub fn garbage_collect_retired(&mut self) -> Vec<RetiredMaterialization> {
-        let mut retained = Vec::new();
-        let mut collected = Vec::new();
         let pinned_generations = self
             .active_execution_scopes
             .values()
@@ -437,33 +544,70 @@ impl LoaderSession {
             .map(|pinned| (pinned.module_name.clone(), pinned.generation))
             .collect::<HashSet<_>>();
 
-        for retired in self.retired_materializations.drain(..) {
-            if retired.collect_after_quiescent_epoch <= self.quiescent_epoch
-                && !pinned_generations.contains(&(retired.name.clone(), retired.generation))
+        // Phase 1 — pick the (name, generation) pairs that are eligible for
+        // reclamation. A pair is eligible iff:
+        //   1. its retire-epoch has been reached (stack-quiescence), and
+        //   2. no open execution scope is pinning it, and
+        //   3. the optional drop predicate doesn't veto it (heap-quiescence
+        //      hook for a future heap-introspection observer; defaults to
+        //      "no veto" when no probe is registered).
+        // Metadata (`RetiredMaterialization`) and image
+        // (`RetiredExecutableImage`) share the same eligibility — keeping
+        // them in lock-step prevents bookkeeping/image divergence on veto.
+        let probe = self.retired_image_drop_predicate.as_ref();
+        let mut drop_keys: HashSet<(String, u64)> = HashSet::new();
+        for retired in &self.retired_materializations {
+            let key = (retired.name.clone(), retired.generation);
+            let stack_clear = retired.collect_after_quiescent_epoch <= self.quiescent_epoch;
+            let unpinned = !pinned_generations.contains(&key);
+            let probe_allows = probe.map_or(true, |p| p.call(&retired.name, retired.generation));
+            if stack_clear && unpinned && probe_allows {
+                drop_keys.insert(key);
+            }
+        }
+        // Probe also gates pure-image entries that no longer have matching
+        // metadata (defensive — should not happen with current code paths).
+        for retired in &self.retired_executable_images {
+            let key = (retired.module_name.clone(), retired.generation);
+            if drop_keys.contains(&key) {
+                continue;
+            }
+            let stack_clear = retired.collect_after_quiescent_epoch <= self.quiescent_epoch;
+            let unpinned = !pinned_generations.contains(&key);
+            let probe_allows =
+                probe.map_or(true, |p| p.call(&retired.module_name, retired.generation));
+            if stack_clear && unpinned && probe_allows && !self
+                .retired_materializations
+                .iter()
+                .any(|r| (r.name == key.0) && r.generation == key.1)
             {
-                collected.push(retired);
-            } else {
-                retained.push(retired);
+                drop_keys.insert(key);
             }
         }
 
-        self.retired_materializations = retained;
-        let collected_generations = collected
-            .iter()
-            .map(|retired| (retired.name.clone(), retired.generation))
-            .collect::<HashSet<_>>();
+        // Phase 2 — partition the metadata vector by eligibility.
+        let (collected, retained_meta): (Vec<_>, Vec<_>) = self
+            .retired_materializations
+            .drain(..)
+            .partition(|r| drop_keys.contains(&(r.name.clone(), r.generation)));
+        self.retired_materializations = retained_meta;
+
+        // Phase 3 — drop or retain images using the same key set. Drop
+        // releases the OwnedJitModule, which tears down its LLVM context and
+        // executable memory. After this point any pointer into that image
+        // (TypeDesc addresses in heap block tags, ModuleDesc.var_base in GC
+        // module roots) is dangling — see RetiredImageDropPredicate.
         let mut retained_executables = Vec::new();
         for retired in self.retired_executable_images.drain(..) {
-            if retired.collect_after_quiescent_epoch <= self.quiescent_epoch
-                && collected_generations.contains(&(retired.module_name.clone(), retired.generation))
-            {
-                let _ = retired.image.exported_function_count();
+            let key = (retired.module_name.clone(), retired.generation);
+            if drop_keys.contains(&key) {
                 drop(retired);
             } else {
                 retained_executables.push(retired);
             }
         }
         self.retired_executable_images = retained_executables;
+
         collected
     }
 
@@ -579,10 +723,20 @@ impl LoaderSession {
         let mut materialized_modules = Vec::new();
         let mut staged_updates = Vec::new();
         let mut staged_export_addresses: HashMap<String, HashMap<String, usize>> = HashMap::new();
+        // Method-body addresses staged in this pass, keyed
+        // module → llvm_name → address. Importers compiled later in the
+        // same pass read this for cross-module vtable patching.
+        let mut staged_method_addresses: HashMap<String, HashMap<String, usize>> = HashMap::new();
         let mut next_generation = self.next_generation;
 
         for module in &graph.modules {
             let stamp = source_file_stamp(&module.path)?;
+            // Transitive rebuild propagation depends on `graph.modules` being
+            // in topological / DFS post-order: any module rebuilt earlier in
+            // this loop (direct or transitive import) is already in
+            // `rebuilt_modules`, so checking the *direct* import list is
+            // sufficient. If the discovery order ever stops being topological,
+            // this loses transitivity silently — guard at the source if so.
             let dependency_changed = module
                 .spec
                 .imports
@@ -637,7 +791,11 @@ impl LoaderSession {
             let generation = next_generation;
             next_generation += 1;
             let import_symbol_mappings =
-                self.collect_import_symbol_mappings(module, &staged_export_addresses);
+                self.collect_import_symbol_mappings(
+                    module,
+                    &staged_export_addresses,
+                    &staged_method_addresses,
+                );
             let compiled = compile_executable_image(&module.path, generation).map_err(|error| {
                 self.record_failure(
                     Some(module.spec.name.clone()),
@@ -671,8 +829,10 @@ impl LoaderSession {
                 module.path.display()
             );
 
-            if let Some((_, export_addresses)) = &executable_image {
+            if let Some((_, export_addresses, method_addresses)) = &executable_image {
                 staged_export_addresses.insert(module.spec.name.clone(), export_addresses.clone());
+                staged_method_addresses
+                    .insert(module.spec.name.clone(), method_addresses.clone());
             }
 
             staged_updates.push(StagedModuleUpdate {
@@ -727,13 +887,14 @@ impl LoaderSession {
                 .retain(|entry| !entry.starts_with(&format!("{} [", module_name)));
             self.report.compiled_modules.push(update.compiled_module_entry);
 
-            if let Some((image, export_addresses)) = update.executable_image {
+            if let Some((image, export_addresses, method_addresses)) = update.executable_image {
                 self.active_executable_images.insert(
                     module_name.clone(),
                     ActiveExecutableImage {
                         module_name: module_name.clone(),
                         generation: update.materialized_record.generation,
                         export_addresses,
+                        method_addresses,
                         image,
                     },
                 );
@@ -808,6 +969,7 @@ impl LoaderSession {
         &self,
         module: &SourceModuleRecord,
         staged_export_addresses: &HashMap<String, HashMap<String, usize>>,
+        staged_method_addresses: &HashMap<String, HashMap<String, usize>>,
     ) -> HashMap<String, usize> {
         let mut symbol_mappings = HashMap::new();
         let debug = std::env::var("NEWCP_JIT_DEBUG").is_ok();
@@ -866,12 +1028,25 @@ impl LoaderSession {
                 for (public_name, address) in export_addresses {
                     symbol_mappings.insert(public_name.clone(), *address);
                 }
+                // Also publish staged method addresses (cross-module
+                // vtable patching uses qualified `<Module>.<llvm_name>`
+                // keys; the IR layer emits matching slot names).
+                if let Some(method_addresses) = staged_method_addresses.get(import) {
+                    for (llvm_name, address) in method_addresses {
+                        symbol_mappings
+                            .insert(format!("{import}.{llvm_name}"), *address);
+                    }
+                }
                 continue;
             }
 
             if let Some(image) = self.active_executable_images.get(import) {
                 for (public_name, address) in &image.export_addresses {
                     symbol_mappings.insert(public_name.clone(), *address);
+                }
+                for (llvm_name, address) in &image.method_addresses {
+                    symbol_mappings
+                        .insert(format!("{import}.{llvm_name}"), *address);
                 }
                 continue;
             }
@@ -1315,7 +1490,14 @@ fn materialize_compiled_image(
     generation: u64,
     compiled: CompiledModule,
     import_symbol_mappings: &HashMap<String, usize>,
-) -> Result<(OwnedJitModule, HashMap<String, usize>), String> {
+) -> Result<
+    (
+        OwnedJitModule,
+        HashMap<String, usize>,
+        HashMap<String, usize>,
+    ),
+    String,
+> {
     let mut options = CodegenOptions::default();
     options.export_generation = Some(generation);
     // Public exports the loader needs to resolve to JIT addresses:
@@ -1352,7 +1534,12 @@ fn materialize_compiled_image(
         })
         .collect::<Result<HashMap<_, _>, String>>()?;
 
-    Ok((image, export_addresses))
+    // Method-body addresses keyed by their LLVM symbol — exposed to
+    // downstream importers as `<ImportedModule>.<llvm_name>` for
+    // cross-module vtable patching.
+    let method_addresses = image.collect_method_addresses();
+
+    Ok((image, export_addresses, method_addresses))
 }
 
 pub fn bootstrap_plan() -> String {
@@ -2422,6 +2609,112 @@ mod tests {
 
         assert_eq!(collected.len(), 1);
         assert_eq!(collected[0].name, "Root");
+
+        let _ = std::fs::remove_dir_all(&root_dir);
+    }
+
+    #[test]
+    fn invoke_command_drives_quiescent_collection() {
+        // After a recompile-and-invoke cycle, retired generations must be
+        // reclaimed automatically — without an explicit note_quiescent_point /
+        // garbage_collect_retired call from the client.
+        //
+        // The Run body is intentionally empty: this test runs in parallel
+        // with Console-capturing tests, and any WriteLn output emitted here
+        // would land in their capture buffers.
+        let root_dir = std::env::temp_dir().join("newcp-loader-invoke-drives-gc");
+        let _ = std::fs::remove_dir_all(&root_dir);
+        std::fs::create_dir_all(&root_dir).expect("create gc-drive temp dir");
+        std::fs::write(
+            root_dir.join("Root.cp"),
+            "MODULE Root; PROCEDURE Run*; BEGIN END Run; END Root.",
+        )
+        .expect("write Root.cp");
+
+        let mut session = LoaderSession::new();
+        let command_path = format!("{}::Run", root_dir.join("Root.cp").display());
+
+        // First invoke materializes the module.
+        session.invoke_command(&command_path).expect("first invoke");
+        assert_eq!(
+            session.retired_materializations().len(),
+            0,
+            "no retirement on first compile"
+        );
+
+        // Edit + reinvoke. The previous generation gets retired, then the
+        // auto-drive at the end of invoke_command collects it.
+        std::thread::sleep(std::time::Duration::from_millis(5));
+        std::fs::write(
+            root_dir.join("Root.cp"),
+            "MODULE Root; CONST Tag* = 1; PROCEDURE Run*; BEGIN END Run; END Root.",
+        )
+        .expect("rewrite Root.cp");
+
+        session.invoke_command(&command_path).expect("second invoke");
+
+        assert_eq!(
+            session.retired_materializations().len(),
+            0,
+            "auto-drive should reclaim retired metadata after invoke_command"
+        );
+        assert_eq!(
+            session.retired_executable_image_count(),
+            0,
+            "auto-drive should reclaim retired JIT images after invoke_command"
+        );
+        newcp_runtime::console::reset();
+
+        let _ = std::fs::remove_dir_all(&root_dir);
+    }
+
+    #[test]
+    fn retired_image_drop_predicate_can_veto_collection() {
+        // A drop predicate returning false must pin retired images and their
+        // matching metadata across collection cycles, even when stack-quiescent.
+        let root_dir = std::env::temp_dir().join("newcp-loader-drop-veto");
+        let _ = std::fs::remove_dir_all(&root_dir);
+        std::fs::create_dir_all(&root_dir).expect("create drop-veto temp dir");
+        std::fs::write(root_dir.join("Leaf.cp"), "MODULE Leaf; END Leaf.")
+            .expect("write Leaf.cp");
+        std::fs::write(root_dir.join("Root.cp"), "MODULE Root; IMPORT Leaf; END Root.")
+            .expect("write Root.cp");
+
+        let mut session = LoaderSession::new();
+        // Block every drop. Realistic probes would scan the heap; here we
+        // just verify the veto path.
+        session.set_retired_image_drop_predicate(RetiredImageDropPredicate::new(
+            |_name, _gen| false,
+        ));
+
+        session
+            .ensure_module_loaded(root_dir.join("Root.cp").to_str().expect("utf-8 temp path"))
+            .expect("initial load");
+
+        std::thread::sleep(std::time::Duration::from_millis(5));
+        std::fs::write(root_dir.join("Root.cp"), "MODULE Root; IMPORT Leaf; CONST X* = 1; END Root.")
+            .expect("rewrite Root.cp");
+        session
+            .ensure_import_graph_loaded(root_dir.join("Root.cp").to_str().expect("utf-8 temp path"))
+            .expect("refresh load");
+
+        assert_eq!(session.retired_materializations().len(), 1);
+        session.note_quiescent_point().expect("quiescent");
+        let collected = session.garbage_collect_retired();
+
+        // Veto: nothing collected, both metadata and image still retained.
+        assert!(collected.is_empty(), "predicate veto should suppress collection");
+        assert_eq!(
+            session.retired_materializations().len(),
+            1,
+            "metadata must follow image fate when probe vetoes"
+        );
+
+        // Lift the veto and re-run: the now-eligible records get reclaimed.
+        session.clear_retired_image_drop_predicate();
+        let collected = session.garbage_collect_retired();
+        assert_eq!(collected.len(), 1);
+        assert!(session.retired_materializations().is_empty());
 
         let _ = std::fs::remove_dir_all(&root_dir);
     }

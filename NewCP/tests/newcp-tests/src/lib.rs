@@ -158,6 +158,21 @@ mod tests {
         (stdout, code)
     }
 
+    /// Run `dump-heap` with the given mode flags from the workspace root.
+    fn dump_heap(extra: &[&str]) -> (String, i32) {
+        let mut argv = vec!["dump-heap"];
+        argv.extend_from_slice(extra);
+        let out = Command::new(driver_bin())
+            .args(&argv)
+            .current_dir(workspace_root())
+            .output()
+            .expect("failed to spawn driver binary");
+        let mut combined = String::from_utf8_lossy(&out.stdout).into_owned();
+        combined.push_str(&String::from_utf8_lossy(&out.stderr));
+        let code = out.status.code().unwrap_or(-1);
+        (combined, code)
+    }
+
     /// Run `invoke-command <cmd>` from the workspace root and return (stdout+stderr, exit_code).
     fn invoke_command(cmd: &str) -> (String, i32) {
         let out = Command::new(driver_bin())
@@ -2283,5 +2298,103 @@ mod tests {
     fn calc_real_param_and_return() {
         // AddReal(1.5, 2.5): REAL -> REAL; ENTIER -> 4
         assert_eq!(run_function("Mod/Tests/Calc.cp", "RealParam"), 4);
+    }
+
+    #[test]
+    fn cross_module_inherited_concrete_method_dispatches() {
+        // XMethodBase.BaseDesc has a concrete inherited method `Init(v)`
+        // whose body lives in XMethodBase. XMethodChild.ChildDesc extends
+        // BaseDesc and inherits Init without override. XMethodChild.Test
+        // calls c.Init(21) via virtual dispatch, then c.Doubled() which
+        // returns value*2. Expect 42.
+        //
+        // Until the cross-module vtable patcher lands, the inherited slot
+        // points at __newcp_unimpl_method_trap and the call aborts.
+        assert_eq!(run_function("Mod/Tests/XMethodChild.cp", "Test"), 42);
+    }
+
+    #[test]
+    fn dump_heap_after_heaptest_reports_all_buckets() {
+        // HeapTest.Run allocates 200 + 100 + 40 + 10 = 350 records of four
+        // distinct types. The full snapshot must surface them all.
+        let (output, code) = dump_heap(&["--after", "Mod/Tests/HeapTest.cp::Run"]);
+        assert_eq!(
+            code, 0,
+            "dump-heap --after HeapTest.Run should succeed\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("alloc-lifetime:               350 blocks"),
+            "expected lifetime alloc count 350\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("cluster-count: 1"),
+            "expected one cluster grown\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("live 350 blocks"),
+            "expected per-cluster walk to show 350 live blocks\noutput:\n{output}"
+        );
+        // Type catalog: four buckets, with the expected per-type instance
+        // counts. Names render as `Type@0x...` until codegen co-emits names.
+        assert!(
+            output.contains("instances    200"),
+            "expected 200-instance bucket (Tiny)\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("instances    100"),
+            "expected 100-instance bucket (Small)\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("instances     40"),
+            "expected 40-instance bucket (Mid)\noutput:\n{output}"
+        );
+        assert!(
+            output.contains("instances     10"),
+            "expected 10-instance bucket (Big)\noutput:\n{output}"
+        );
+    }
+
+    #[test]
+    fn dump_heap_counters_only_is_lite() {
+        // The --counters mode skips the per-block walk; only the counters
+        // section appears, no clusters / types / module roots blocks.
+        let (output, code) = dump_heap(&["--counters", "--after", "Mod/Tests/HeapTest.cp::Run"]);
+        assert_eq!(code, 0, "dump-heap --counters should succeed\noutput:\n{output}");
+        assert!(output.contains("counters:"));
+        assert!(
+            !output.contains("clusters:"),
+            "--counters mode must not include the clusters section\noutput:\n{output}"
+        );
+        assert!(
+            !output.contains("types ("),
+            "--counters mode must not include the types section\noutput:\n{output}"
+        );
+    }
+
+    #[test]
+    fn dump_heap_json_is_well_formed() {
+        // JSON mode must emit a well-formed object containing the expected
+        // top-level keys. We don't parse it (no serde dep here) — a substring
+        // smoke check is enough to catch shape regressions.
+        let (output, code) = dump_heap(&["--json", "--after", "Mod/Tests/HeapTest.cp::Run"]);
+        assert_eq!(code, 0, "dump-heap --json should succeed\noutput:\n{output}");
+        // Strip the leading "350\n" Console output before the JSON line.
+        let json_line = output
+            .lines()
+            .find(|line| line.starts_with('{'))
+            .expect("JSON line missing from dump-heap --json output");
+        assert!(json_line.starts_with('{') && json_line.ends_with('}'));
+        for key in [
+            "\"counters\":",
+            "\"clusters\":",
+            "\"modules\":",
+            "\"types\":",
+            "\"alloc_blocks_lifetime\":350",
+        ] {
+            assert!(
+                json_line.contains(key),
+                "expected key {key} in JSON output\nline:\n{json_line}"
+            );
+        }
     }
 }

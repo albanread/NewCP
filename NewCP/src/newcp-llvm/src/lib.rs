@@ -76,6 +76,12 @@ pub struct CompiledModule {
 pub struct OwnedJitModule {
     context: Box<Context>,
     jit: ManuallyDrop<JitModule<'static>>,
+    /// Unique LLVM symbol names of every method body emitted in this module
+    /// — derived from the union of `vtable_slot_functions`'s values, with
+    /// any cross-module references (`Module.Foo`) excluded. The loader
+    /// uses this to publish each module's method addresses for downstream
+    /// importers' vtable patching.
+    method_llvm_names: Vec<String>,
 }
 
 impl OwnedJitModule {
@@ -91,6 +97,20 @@ impl OwnedJitModule {
         options: &CodegenOptions,
         extra_symbol_mappings: &HashMap<String, usize>,
     ) -> Result<Self, CodegenError> {
+        // Snapshot the unique local-method LLVM names *before* compiled is
+        // consumed by the JIT pipeline. Names containing `.` are
+        // cross-module references and are skipped — they're satisfied via
+        // `extra_symbol_mappings`, not by this module's image.
+        let mut method_llvm_names: Vec<String> = compiled
+            .vtable_slot_functions
+            .values()
+            .flat_map(|v| v.iter())
+            .filter(|n| !n.contains('.'))
+            .cloned()
+            .collect();
+        method_llvm_names.sort();
+        method_llvm_names.dedup();
+
         let context = Box::new(Context::create());
         let jit = jit_module_with_symbol_mappings(&context, compiled, options, extra_symbol_mappings)?;
         let jit = unsafe { std::mem::transmute::<JitModule<'_>, JitModule<'static>>(jit) };
@@ -98,7 +118,22 @@ impl OwnedJitModule {
         Ok(Self {
             context,
             jit: ManuallyDrop::new(jit),
+            method_llvm_names,
         })
+    }
+
+    /// Resolve every locally-emitted method-body symbol to its address.
+    /// The loader publishes these as cross-module symbols (keyed
+    /// `<ImporterSeesAs>.<llvm_name>`) so importers' vtable slots can be
+    /// patched to point at the right body.
+    pub fn collect_method_addresses(&self) -> HashMap<String, usize> {
+        let mut out = HashMap::new();
+        for name in &self.method_llvm_names {
+            if let Ok(addr) = self.jit.export_address_by_llvm_name(name) {
+                out.insert(name.clone(), addr);
+            }
+        }
+        out
     }
 
     pub fn exported_function_count(&self) -> usize {
@@ -256,6 +291,9 @@ pub fn jit_module_with_symbol_mappings<'ctx>(
         .map_err(|e| CodegenError::Jit(format!("IR round-trip parse failed: {e}")))?;
     let global_mappings = jit::collect_global_mappings(&module, extra_symbol_mappings)?;
 
+    // The same `extra_symbol_mappings` map carries cross-module method
+    // addresses. The vtable patcher consults it for slot names that don't
+    // match any local function (qualified `Module.Foo` form).
     JitModule::from_module(
         module,
         exported_functions,
@@ -264,6 +302,7 @@ pub fn jit_module_with_symbol_mappings<'ctx>(
         vtable_slot_functions,
         vtable_init_function_name,
         vtable_externs,
+        extra_symbol_mappings,
     )
 }
 

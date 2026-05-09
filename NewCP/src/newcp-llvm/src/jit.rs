@@ -36,6 +36,7 @@ impl<'ctx> JitModule<'ctx> {
         vtable_slot_functions: HashMap<String, Vec<String>>,
         vtable_init_function_name: Option<String>,
         vtable_externs: Vec<(String, usize)>,
+        cross_module_method_addresses: &HashMap<String, usize>,
     ) -> Result<Self, CodegenError> {
         // No longer used; the LLVM init-function approach was abandoned
         // because MCJIT does not relocate function pointers in either
@@ -98,24 +99,31 @@ impl<'ctx> JitModule<'ctx> {
         engine.run_static_constructors();
 
         // Returns `Ok(Some(addr))` for a resolvable method, `Ok(None)` if
-        // the method is inherited from a base in another module (and thus
-        // not present in this LLVM module — the slot stays NULL), or
-        // `Err` for a true resolution failure on a method that IS in this
-        // module.
+        // the method is inherited from a base in another module *and* its
+        // address is not in the cross-module map (the slot then gets the
+        // unimpl trap), or `Err` for a true resolution failure on a method
+        // that IS in this module.
         let resolve_method_address = |fn_name: &str| -> Result<Option<usize>, CodegenError> {
-            let Some(fn_val) = method_functions.get(fn_name) else {
-                return Ok(None);
-            };
-            // SAFETY: `fn_val` belongs to the module now owned by `engine`.
-            let addr = unsafe {
-                LLVMGetPointerToGlobal(engine.as_mut_ptr(), fn_val.as_value_ref())
-            } as usize;
-            if addr == 0 {
-                return Err(CodegenError::Jit(format!(
-                    "vtable patch: method {fn_name} resolved to null address"
-                )));
+            if let Some(fn_val) = method_functions.get(fn_name) {
+                // SAFETY: `fn_val` belongs to the module now owned by `engine`.
+                let addr = unsafe {
+                    LLVMGetPointerToGlobal(engine.as_mut_ptr(), fn_val.as_value_ref())
+                } as usize;
+                if addr == 0 {
+                    return Err(CodegenError::Jit(format!(
+                        "vtable patch: method {fn_name} resolved to null address"
+                    )));
+                }
+                return Ok(Some(addr));
             }
-            Ok(Some(addr))
+            // Cross-module fallback: the slot was seeded with a qualified
+            // `Module.RecordType_Method` symbol whose body lives in an
+            // already-materialized importer chain. The loader populated
+            // `cross_module_method_addresses` keyed by that exact symbol.
+            if let Some(&addr) = cross_module_method_addresses.get(fn_name) {
+                return Ok(Some(addr));
+            }
+            Ok(None)
         };
 
         // DIAGNOSTIC: probe whether method functions are findable BEFORE
@@ -265,6 +273,13 @@ impl<'ctx> JitModule<'ctx> {
             .map_err(|e| CodegenError::Jit(format!(
                 "symbol lookup failed for '{llvm_name}' (public: '{public_name}'): {e}"
             )))
+    }
+
+    /// Resolve a symbol by its raw LLVM name. Used by the loader to expose
+    /// method-body addresses to importers for cross-module vtable patching.
+    pub fn export_address_by_llvm_name(&self, llvm_name: &str) -> Result<usize, CodegenError> {
+        self.lookup_export_address_by_llvm_name(llvm_name)
+            .map_err(CodegenError::Jit)
     }
 
     fn lookup_export_address_by_llvm_name(&self, llvm_name: &str) -> Result<usize, String> {

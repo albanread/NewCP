@@ -1,5 +1,6 @@
 pub mod console;
 pub mod gc;
+pub mod heap_introspect;
 pub mod host_date_sys;
 pub mod host_file_sys;
 pub mod math;

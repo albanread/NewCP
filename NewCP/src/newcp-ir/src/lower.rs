@@ -3801,31 +3801,39 @@ fn flatten_param_modes_and_types(
 }
 
 /// Walk the inheritance chain of `record_name` (within `symbols`) and
-/// return `(declaring_type_name, method_name)` pairs in vtable-slot
-/// order. Used to seed the vtable of a cross-module-extended concrete
-/// record so that override slot indices line up with the imported base.
+/// return `(declaring_module, declaring_type_name, method_name)` triples
+/// in vtable-slot order. Used to seed the vtable of a cross-module-
+/// extended concrete record so that override slot indices line up with
+/// the imported base.
 ///
-/// Each pair represents the function-pointer text the seed vtable holds
-/// for that slot — typically the abstract-method shim emitted by the
-/// declaring module. Concrete subclasses overwrite these slots.
+/// `declaring_module` is `Some(module_name)` when the slot's body lives
+/// in another JIT module (cross-module inheritance), `None` when the
+/// slot's body is in the current module being compiled.
+///
+/// Each triple represents the function-pointer text the seed vtable
+/// holds for that slot — typically the abstract-method shim emitted by
+/// the declaring module. Concrete subclasses overwrite these slots.
 fn collect_inherited_method_names(
     record_name: &str,
     symbols: &[SemanticSymbol],
-) -> Vec<(String, String)> {
+    declaring_module: Option<&str>,
+) -> Vec<(Option<String>, String, String)> {
     use newcp_sema::SymbolKind;
     let Some(sym) = symbols.iter().find(|s| s.kind == SymbolKind::Type && s.name == record_name)
     else { return Vec::new() };
     let Some(SemanticType::Record { base, methods, .. }) = sym.declared_type.as_ref()
     else { return Vec::new() };
 
-    // Inherited slots come first.
-    let mut result: Vec<(String, String)> = match base.as_deref() {
+    // Inherited slots come first. Recursion preserves the current
+    // `declaring_module` for local hops; a cross-module hop replaces it
+    // with the imported module's name.
+    let mut result: Vec<(Option<String>, String, String)> = match base.as_deref() {
         Some(SemanticType::Named { name, module: None, .. }) => {
-            collect_inherited_method_names(name, symbols)
+            collect_inherited_method_names(name, symbols, declaring_module)
         }
         Some(SemanticType::Named { name, module: Some(m), .. }) => {
             find_imported_module_sema(m)
-                .map(|sema| collect_inherited_method_names(name, &sema.symbols))
+                .map(|sema| collect_inherited_method_names(name, &sema.symbols, Some(m.as_str())))
                 .unwrap_or_default()
         }
         _ => Vec::new(),
@@ -3835,7 +3843,11 @@ fn collect_inherited_method_names(
     // simply replace existing slots and don't add new ones.
     for method in methods {
         if method.signature.is_new {
-            result.push((record_name.to_string(), method.name.clone()));
+            result.push((
+                declaring_module.map(str::to_string),
+                record_name.to_string(),
+                method.name.clone(),
+            ));
         }
     }
 
@@ -4216,14 +4228,24 @@ fn collect_type_vtables(
             // with the base's method (typically an abstract-method shim);
             // every override on this concrete record replaces the
             // corresponding slot below.
+            //
+            // Slots inherited from another module are qualified
+            // `Module.RecordType_Method` so the JIT vtable patcher can
+            // recognise them as cross-module references and resolve the
+            // address from the loader's import-symbol map.
             find_imported_module_sema(module_name)
                 .map(|sema| {
-                    collect_inherited_method_names(base_record_name, &sema.symbols)
-                        .into_iter()
-                        .map(|(decl_type_name, method_name)| {
-                            format!("{decl_type_name}_{method_name}")
-                        })
-                        .collect()
+                    collect_inherited_method_names(
+                        base_record_name,
+                        &sema.symbols,
+                        Some(module_name.as_str()),
+                    )
+                    .into_iter()
+                    .map(|(decl_module, decl_type_name, method_name)| match decl_module {
+                        Some(m) => format!("{m}.{decl_type_name}_{method_name}"),
+                        None => format!("{decl_type_name}_{method_name}"),
+                    })
+                    .collect()
                 })
                 .unwrap_or_default()
         } else {
