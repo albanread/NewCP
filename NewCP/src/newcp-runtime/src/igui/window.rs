@@ -11,11 +11,13 @@
 #![cfg(windows)]
 
 use std::ptr;
+use std::sync::OnceLock;
 use std::sync::Mutex;
 
 use windows::core::{w, PCWSTR};
 use windows::Win32::Foundation::{HWND, LPARAM, LRESULT, RECT, WPARAM};
 use windows::Win32::System::LibraryLoader::GetModuleHandleW;
+use windows::Win32::System::Threading::GetCurrentThreadId;
 use windows::Win32::UI::HiDpi::{
     SetProcessDpiAwarenessContext, DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2,
 };
@@ -34,7 +36,7 @@ use windows::Win32::UI::WindowsAndMessaging::{
 };
 
 use super::channels::{self, modifier, mouse_op, IGuiEvent};
-use super::child::{self, ChildBootstrap, CHILD_CLASS};
+use super::child::{self, MdiBootstrap, MDI_CHILD_CLASS};
 use super::cp_exports::FRAME_HWND;
 use super::registry;
 use super::renderer;
@@ -53,10 +55,15 @@ const WM_IGUI_SET_TITLE: u32 = WM_USER + 3;
 
 /// HWND of the MDI client. Set by `run` after `CreateWindowExW`.
 static MDI_CLIENT: Mutex<Option<isize>> = Mutex::new(None);
+static GUI_THREAD_ID: OnceLock<u32> = OnceLock::new();
 
 fn mdi_client_hwnd() -> Option<HWND> {
     let raw = MDI_CLIENT.lock().ok()?;
     raw.map(|r| HWND(r as *mut _))
+}
+
+pub(crate) fn gui_thread_id() -> Option<u32> {
+    GUI_THREAD_ID.get().copied()
 }
 
 /// Public entry point. Opens the iGui frame, sets up the MDI client,
@@ -70,6 +77,7 @@ where
     unsafe {
         let _ = SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
     }
+    let _ = GUI_THREAD_ID.set(unsafe { GetCurrentThreadId() });
 
     let h_instance = unsafe { GetModuleHandleW(None) }
         .map_err(|e| IGuiError::Win32(format!("GetModuleHandleW failed: {e}")))?
@@ -95,7 +103,7 @@ where
     if unsafe { RegisterClassExW(&frame_class) } == 0 {
         return Err(IGuiError::Win32("RegisterClassExW (frame) returned 0".into()));
     }
-    child::register_class()?;
+    child::register_classes()?;
 
     // Renderer comes up before any window so child WM_NCCREATE can build
     // its swap chain immediately.
@@ -204,9 +212,9 @@ unsafe extern "system" fn frame_wnd_proc(
             let req_ptr = lparam.0 as *mut CloseChildRequest;
             if !req_ptr.is_null() {
                 let req = unsafe { &mut *req_ptr };
-                if let Some(child_hwnd) = registry::hwnd_of(req.child_id) {
+                if let Some(mdi_child) = registry::mdi_hwnd_of(req.child_id) {
                     if mdi.0 as isize != 0 {
-                        child::close_via_mdi(mdi, child_hwnd);
+                        child::close_via_mdi(mdi, mdi_child);
                         req.ok = true;
                     }
                 }
@@ -217,8 +225,8 @@ unsafe extern "system" fn frame_wnd_proc(
             let req_ptr = lparam.0 as *mut SetTitleRequest;
             if !req_ptr.is_null() {
                 let req = unsafe { &*req_ptr };
-                if let Some(child_hwnd) = registry::hwnd_of(req.child_id) {
-                    child::set_title(child_hwnd, &req.title);
+                if let Some(mdi_child) = registry::mdi_hwnd_of(req.child_id) {
+                    child::set_title(mdi_child, &req.title);
                 }
             }
             LRESULT(0)
@@ -334,19 +342,19 @@ unsafe extern "system" fn frame_wnd_proc(
 fn handle_open_child(req: &OpenChildRequest) -> Option<i64> {
     let mdi = mdi_client_hwnd()?;
     let child_id = registry::allocate_child_id();
-    let bootstrap = Box::into_raw(Box::new(ChildBootstrap { child_id }));
+    let bootstrap = Box::into_raw(Box::new(MdiBootstrap { child_id }));
     let h_module = unsafe { GetModuleHandleW(None) }.ok()?;
     let h_owner = windows::Win32::Foundation::HANDLE(h_module.0);
 
     let mdi_create = MDICREATESTRUCTW {
-        szClass: CHILD_CLASS,
+        szClass: MDI_CHILD_CLASS,
         szTitle: PCWSTR::from_raw(req.title.as_ptr()),
         hOwner: h_owner,
         x: CW_USEDEFAULT,
         y: CW_USEDEFAULT,
         cx: CW_USEDEFAULT,
         cy: CW_USEDEFAULT,
-        style: WS_CHILD | WS_VISIBLE | WS_OVERLAPPEDWINDOW,
+        style: WS_VISIBLE | WS_OVERLAPPEDWINDOW,
         lParam: LPARAM(bootstrap as isize),
     };
     let result = unsafe {

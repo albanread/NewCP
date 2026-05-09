@@ -88,7 +88,8 @@ static PANE_STATES: Mutex<Option<HashMap<i64, Arc<PaneBatch>>>> = Mutex::new(Non
 
 /// Hand `batch` to the GUI thread for child `child_id`. Replaces any
 /// previously-submitted batch for the same child. Triggers a redraw by
-/// invalidating the child's HWND.
+/// invalidating the **render host** HWND (the borderless inner child
+/// that owns the swap chain and WM_PAINT loop).
 pub fn submit(batch: PaneBatch) -> bool {
     let child_id = batch.child_id;
     let arc = Arc::new(batch);
@@ -97,7 +98,7 @@ pub fn submit(batch: PaneBatch) -> bool {
         let map = guard.get_or_insert_with(HashMap::new);
         map.insert(child_id, arc);
     }
-    if let Some(hwnd) = registry::hwnd_of(child_id) {
+    if let Some(hwnd) = registry::render_hwnd_of(child_id) {
         let _ = unsafe { InvalidateRect(Some(hwnd), None, false) };
         true
     } else {

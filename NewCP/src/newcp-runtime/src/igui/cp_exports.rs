@@ -134,9 +134,18 @@ pub extern "C" fn igui_submit_batch() -> i32 {
 }
 
 #[unsafe(export_name = "iGui.EmitClear")]
-pub extern "C" fn igui_emit_clear(r: f32, g: f32, b: f32, a: f32) {
+pub extern "C" fn igui_emit_clear(r: f64, g: f64, b: f64, a: f64) {
+    eprintln!(
+        "[igui-export] EmitClear rgba=({:.3}, {:.3}, {:.3}, {:.3})",
+        r, g, b, a
+    );
     batch_mod::push(SurfaceCmd::Clear {
-        color: Rgba { r, g, b, a },
+        color: Rgba {
+            r: r as f32,
+            g: g as f32,
+            b: b as f32,
+            a: a as f32,
+        },
     });
 }
 
@@ -148,63 +157,106 @@ pub extern "C" fn igui_emit_present_hint() {
 #[unsafe(export_name = "iGui.EmitFillRect")]
 #[allow(clippy::too_many_arguments)]
 pub extern "C" fn igui_emit_fill_rect(
-    x0: f32,
-    y0: f32,
-    x1: f32,
-    y1: f32,
-    corner_radius: f32,
-    r: f32,
-    g: f32,
-    b: f32,
-    a: f32,
+    x0: f64,
+    y0: f64,
+    x1: f64,
+    y1: f64,
+    corner_radius: f64,
+    r: f64,
+    g: f64,
+    b: f64,
+    a: f64,
 ) {
+    eprintln!(
+        "[igui-export] EmitFillRect rect=({:.1}, {:.1})-({:.1}, {:.1}) radius={:.1} rgba=({:.3}, {:.3}, {:.3}, {:.3})",
+        x0, y0, x1, y1, corner_radius, r, g, b, a
+    );
     batch_mod::push(SurfaceCmd::FillRect {
-        rect: Rect { x0, y0, x1, y1 },
-        corner_radius,
-        color: Rgba { r, g, b, a },
+        rect: Rect {
+            x0: x0 as f32,
+            y0: y0 as f32,
+            x1: x1 as f32,
+            y1: y1 as f32,
+        },
+        corner_radius: corner_radius as f32,
+        color: Rgba {
+            r: r as f32,
+            g: g as f32,
+            b: b as f32,
+            a: a as f32,
+        },
     });
 }
 
 #[unsafe(export_name = "iGui.EmitStrokeRect")]
 #[allow(clippy::too_many_arguments)]
 pub extern "C" fn igui_emit_stroke_rect(
-    x0: f32,
-    y0: f32,
-    x1: f32,
-    y1: f32,
-    corner_radius: f32,
-    half_thickness: f32,
-    r: f32,
-    g: f32,
-    b: f32,
-    a: f32,
+    x0: f64,
+    y0: f64,
+    x1: f64,
+    y1: f64,
+    corner_radius: f64,
+    half_thickness: f64,
+    r: f64,
+    g: f64,
+    b: f64,
+    a: f64,
 ) {
+    eprintln!(
+        "[igui-export] EmitStrokeRect rect=({:.1}, {:.1})-({:.1}, {:.1}) radius={:.1} half_thickness={:.1} rgba=({:.3}, {:.3}, {:.3}, {:.3})",
+        x0, y0, x1, y1, corner_radius, half_thickness, r, g, b, a
+    );
     batch_mod::push(SurfaceCmd::StrokeRect {
-        rect: Rect { x0, y0, x1, y1 },
-        corner_radius,
-        half_thickness,
-        color: Rgba { r, g, b, a },
+        rect: Rect {
+            x0: x0 as f32,
+            y0: y0 as f32,
+            x1: x1 as f32,
+            y1: y1 as f32,
+        },
+        corner_radius: corner_radius as f32,
+        half_thickness: half_thickness as f32,
+        color: Rgba {
+            r: r as f32,
+            g: g as f32,
+            b: b as f32,
+            a: a as f32,
+        },
     });
 }
 
 #[unsafe(export_name = "iGui.EmitDrawLine")]
 #[allow(clippy::too_many_arguments)]
 pub extern "C" fn igui_emit_draw_line(
-    x0: f32,
-    y0: f32,
-    x1: f32,
-    y1: f32,
-    half_thickness: f32,
-    r: f32,
-    g: f32,
-    b: f32,
-    a: f32,
+    x0: f64,
+    y0: f64,
+    x1: f64,
+    y1: f64,
+    half_thickness: f64,
+    r: f64,
+    g: f64,
+    b: f64,
+    a: f64,
 ) {
+    eprintln!(
+        "[igui-export] EmitDrawLine p0=({:.1}, {:.1}) p1=({:.1}, {:.1}) half_thickness={:.1} rgba=({:.3}, {:.3}, {:.3}, {:.3})",
+        x0, y0, x1, y1, half_thickness, r, g, b, a
+    );
     batch_mod::push(SurfaceCmd::DrawLine {
-        p0: Point { x: x0, y: y0 },
-        p1: Point { x: x1, y: y1 },
-        half_thickness,
-        color: Rgba { r, g, b, a },
+        p0: Point {
+            x: x0 as f32,
+            y: y0 as f32,
+        },
+        p1: Point {
+            x: x1 as f32,
+            y: y1 as f32,
+        },
+        half_thickness: half_thickness as f32,
+        color: Rgba {
+            r: r as f32,
+            g: g as f32,
+            b: b as f32,
+            a: a as f32,
+        },
     });
 }
 

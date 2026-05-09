@@ -6,7 +6,6 @@
 
 #![cfg(windows)]
 
-use windows::core::Interface;
 use windows::Win32::Graphics::Direct2D::Common::{
     D2D1_ALPHA_MODE_IGNORE, D2D1_PIXEL_FORMAT, D2D_SIZE_U,
 };
@@ -88,10 +87,7 @@ impl SwapChainTarget {
 
     /// Bind this bitmap as the active render target on the D2D context.
     pub fn bind(&self, d2d: &D2dContext) {
-        unsafe {
-            d2d.context
-                .SetTarget(&self.bitmap.cast::<windows::Win32::Graphics::Direct2D::ID2D1Image>().unwrap())
-        };
+        unsafe { d2d.context.SetTarget(&self.bitmap) };
     }
 
     /// Detach the active render target (call before resizing the swap

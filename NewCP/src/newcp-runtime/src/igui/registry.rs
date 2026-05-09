@@ -18,9 +18,19 @@ use windows::Win32::Foundation::HWND;
 /// monotonic and never reused, even after a child closes.
 static NEXT_CHILD_ID: AtomicI64 = AtomicI64::new(2);
 
-static REGISTRY: Mutex<Option<HashMap<i64, isize>>> = Mutex::new(None);
+#[derive(Clone, Copy)]
+pub struct ChildEntry {
+    /// MDI child HWND — what the user sees as a document window
+    /// (title bar, system menu, MDI activate/close behavior).
+    pub mdi: isize,
+    /// Borderless render host HWND — child of the MDI child, fills its
+    /// client area, owns the swap chain and the WM_PAINT loop.
+    pub render: isize,
+}
 
-fn with_registry<R>(f: impl FnOnce(&mut HashMap<i64, isize>) -> R) -> R {
+static REGISTRY: Mutex<Option<HashMap<i64, ChildEntry>>> = Mutex::new(None);
+
+fn with_registry<R>(f: impl FnOnce(&mut HashMap<i64, ChildEntry>) -> R) -> R {
     let mut guard = REGISTRY.lock().expect("igui child registry mutex poisoned");
     let map = guard.get_or_insert_with(HashMap::new);
     f(map)
@@ -30,9 +40,15 @@ pub fn allocate_child_id() -> i64 {
     NEXT_CHILD_ID.fetch_add(1, Ordering::Relaxed)
 }
 
-pub fn register(child_id: i64, hwnd: HWND) {
+pub fn register(child_id: i64, mdi: HWND, render: HWND) {
     with_registry(|map| {
-        map.insert(child_id, hwnd.0 as isize);
+        map.insert(
+            child_id,
+            ChildEntry {
+                mdi: mdi.0 as isize,
+                render: render.0 as isize,
+            },
+        );
     });
 }
 
@@ -42,26 +58,20 @@ pub fn unregister(child_id: i64) {
     });
 }
 
-pub fn hwnd_of(child_id: i64) -> Option<HWND> {
-    with_registry(|map| map.get(&child_id).copied().map(|raw| HWND(raw as *mut _)))
+pub fn mdi_hwnd_of(child_id: i64) -> Option<HWND> {
+    with_registry(|map| map.get(&child_id).copied().map(|e| HWND(e.mdi as *mut _)))
 }
 
-/// Reverse lookup. Used by the child WndProc to figure out its own id
-/// from its HWND when handling events.
-pub fn id_of(hwnd: HWND) -> Option<i64> {
-    let raw = hwnd.0 as isize;
-    with_registry(|map| {
-        map.iter()
-            .find_map(|(id, h)| if *h == raw { Some(*id) } else { None })
-    })
+pub fn render_hwnd_of(child_id: i64) -> Option<HWND> {
+    with_registry(|map| map.get(&child_id).copied().map(|e| HWND(e.render as *mut _)))
 }
 
 /// Snapshot of all registered children. Used by frame teardown to
-/// close everything.
+/// close everything via WM_MDIDESTROY (against the MDI HWND).
 pub fn snapshot() -> Vec<(i64, HWND)> {
     with_registry(|map| {
         map.iter()
-            .map(|(id, raw)| (*id, HWND(*raw as *mut _)))
+            .map(|(id, e)| (*id, HWND(e.mdi as *mut _)))
             .collect()
     })
 }
