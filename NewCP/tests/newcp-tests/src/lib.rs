@@ -1475,6 +1475,30 @@ mod tests {
     }
 
     // -------------------------------------------------------------------------
+    // arr := "stringliteral" for fixed-size CHAR / SHORTCHAR arrays  (§9.1)
+    // -------------------------------------------------------------------------
+
+    #[test]
+    fn calc_arr_assign_char_literal() {
+        // a := "ABC"; ORD(a[2]) == 'C' == 67. Asserts CHAR (UTF-32) memcpy lands
+        // the right code point at index 2.
+        assert_eq!(run_function("Mod/Tests/Calc.cp", "ArrAssignCharLit"), 67);
+    }
+
+    #[test]
+    fn calc_arr_assign_shortchar_literal() {
+        // a := "abc" with `a: ARRAY 8 OF SHORTCHAR`. Literal defaults to CHAR;
+        // assignment must retype the source to SHORTCHAR for the byte-wise memcpy.
+        assert_eq!(run_function("Mod/Tests/Calc.cp", "ArrAssignShortCharLit"), 98);
+    }
+
+    #[test]
+    fn calc_arr_assign_literal_null_terminator() {
+        // a := "hi"; a[2] must be 0X (NUL terminator copied).
+        assert_eq!(run_function("Mod/Tests/Calc.cp", "ArrAssignLitNullTerm"), 0);
+    }
+
+    // -------------------------------------------------------------------------
     // ENTIER: floor of real → INTEGER  (§10.3)
     // -------------------------------------------------------------------------
 

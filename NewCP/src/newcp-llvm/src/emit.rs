@@ -205,7 +205,15 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
                 self.emit_call(*dst, callee, args, ret_ty, value_map)
             }
             Instr::AddrOf { dst, sym } => {
-                let ptr = self.resolve_pointer(sym, value_map)?;
+                // ConstStr: materialize the private string global, then take
+                // its address. Used by lower_statement to memcpy a string
+                // literal into a fixed-size CHAR/SHORTCHAR array.
+                let ptr = match sym {
+                    IrValue::ConstStr(s, elem_ty) => {
+                        self.cg.get_or_emit_string_constant(s, elem_ty)
+                    }
+                    _ => self.resolve_pointer(sym, value_map)?,
+                };
                 let value = self
                     .cg
                     .builder

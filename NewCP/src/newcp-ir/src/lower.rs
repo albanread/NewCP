@@ -2363,6 +2363,45 @@ impl<'m> LowerCtx<'m> {
                 while let Some(IrType::Ref(inner)) = slot_ty.clone() {
                     slot_ty = Some(*inner);
                 }
+
+                // String-literal initialization of a fixed-size CHAR/SHORTCHAR
+                // array (`digits := "0123456789ABCDEF"`). The default Cast path
+                // can't lower ptr -> [N x char]; instead emit a memcpy from the
+                // string literal's private global into the array slot.
+                if let (Some(IrType::Array { element, len }), IrValue::ConstStr(s, lit_elem)) =
+                    (slot_ty.clone(), &rhs)
+                {
+                    let elem = *element.clone();
+                    let elem_size: usize = match elem {
+                        IrType::Char => 4,
+                        IrType::ShortChar | IrType::U8 | IrType::I8 => 1,
+                        _ => 0,
+                    };
+                    if elem_size > 0 {
+                        // Retype the literal's element to match the destination
+                        // (e.g. literal defaults to CHAR but target is SHORTCHAR).
+                        let src = if *lit_elem != elem {
+                            IrValue::ConstStr(s.clone(), elem.clone())
+                        } else {
+                            rhs.clone()
+                        };
+                        let lit_units = s.chars().count() + 1;	// + NUL terminator
+                        let copy_units = lit_units.min(len as usize);
+                        let bytes = (copy_units * elem_size) as i128;
+
+                        // Convert pointer-typed dst/src to i64 addresses for MemCopy.
+                        let dst_t = self.fresh_temp();
+                        self.push(Instr::AddrOf { dst: dst_t, sym: addr.clone() });
+                        let src_t = self.fresh_temp();
+                        self.push(Instr::AddrOf { dst: src_t, sym: src });
+                        self.push(Instr::MemCopy {
+                            dst: IrValue::Temp(dst_t, IrType::I64),
+                            src: IrValue::Temp(src_t, IrType::I64),
+                            len: IrValue::ConstInt(bytes, IrType::I64),
+                        });
+                        return;
+                    }
+                }
                 let rhs = if let Some(slot_ty) = slot_ty {
                     if slot_ty != rhs.ty() {
                         let t = self.fresh_temp();

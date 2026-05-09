@@ -483,6 +483,29 @@ BEGIN RETURN MAX(SET) END MaxSetIdx;                      (* expected 31 *)
 PROCEDURE MinShortInt*(): INTEGER;
 BEGIN RETURN MIN(SHORTINT) END MinShortInt;               (* expected -32768 *)
 
+(* --- arr := stringliteral for fixed-size CHAR/SHORTCHAR arrays --- *)
+
+PROCEDURE ArrAssignCharLit*(): INTEGER;
+  VAR a: ARRAY 8 OF CHAR;
+BEGIN
+  a := "ABC";
+  RETURN ORD(a[2])              (* 'C' = 67 *)
+END ArrAssignCharLit;
+
+PROCEDURE ArrAssignShortCharLit*(): INTEGER;
+  VAR a: ARRAY 8 OF SHORTCHAR;
+BEGIN
+  a := "abc";
+  RETURN ORD(a[1])              (* 'b' = 98 *)
+END ArrAssignShortCharLit;
+
+PROCEDURE ArrAssignLitNullTerm*(): INTEGER;
+  VAR a: ARRAY 8 OF SHORTCHAR;
+BEGIN
+  a := "hi";
+  RETURN ORD(a[2])              (* must be 0 — terminator copied *)
+END ArrAssignLitNullTerm;
+
 (* --- ENTIER: floor of a real number → INTEGER (LONGINT in spec) --- *)
 
 PROCEDURE EntierFloor*(): LONGINT;
