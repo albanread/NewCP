@@ -1445,6 +1445,36 @@ mod tests {
     }
 
     // -------------------------------------------------------------------------
+    // MIN(T) / MAX(T) — single-argument form returns the type's bounds (§10.3)
+    // -------------------------------------------------------------------------
+
+    #[test]
+    fn calc_max_longint() {
+        assert_eq!(run_function("Mod/Tests/Calc.cp", "MaxLong"), i64::MAX);
+    }
+
+    #[test]
+    fn calc_min_longint_plus_one() {
+        // MIN(LONGINT) + 1 == -i64::MAX
+        assert_eq!(run_function("Mod/Tests/Calc.cp", "MinLong"), -i64::MAX);
+    }
+
+    #[test]
+    fn calc_max_intshort() {
+        assert_eq!(run_function("Mod/Tests/Calc.cp", "MaxIntShort"), i32::MAX as i64);
+    }
+
+    #[test]
+    fn calc_max_set_index() {
+        assert_eq!(run_function("Mod/Tests/Calc.cp", "MaxSetIdx"), 31);
+    }
+
+    #[test]
+    fn calc_min_shortint() {
+        assert_eq!(run_function("Mod/Tests/Calc.cp", "MinShortInt"), i16::MIN as i64);
+    }
+
+    // -------------------------------------------------------------------------
     // ENTIER: floor of real → INTEGER  (§10.3)
     // -------------------------------------------------------------------------
 

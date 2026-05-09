@@ -131,6 +131,75 @@ fn map_record_layout(layout: SemanticRecordLayout) -> RecordLayout {
     }
 }
 
+/// True when the IR type is a scalar numeric or character value that
+/// `Instr::Cast` knows how to convert (sign/zero-extend, truncate, fp-cast).
+/// Used to gate implicit return-value widening so we don't try to coerce
+/// across pointers, records, arrays, etc.
+fn is_scalar_castable(ty: &IrType) -> bool {
+    matches!(
+        ty,
+        IrType::I8
+            | IrType::I16
+            | IrType::I32
+            | IrType::I64
+            | IrType::U8
+            | IrType::U16
+            | IrType::U32
+            | IrType::U64
+            | IrType::Bool
+            | IrType::Char
+            | IrType::ShortChar
+            | IrType::F32
+            | IrType::F64
+    )
+}
+
+/// Single-argument `MIN(T)` / `MAX(T)`: extract the bounds of a basic type as a
+/// constant. The argument is a bare type identifier (`LONGINT`, `INTEGER`,
+/// `REAL`, `CHAR`, `SET`, ...). Returns `None` if the arg is not a
+/// recognized type name.
+fn min_max_one_arg(arg: &Expr, max: bool) -> Option<IrValue> {
+    // The arg must be a bare designator naming a builtin type.
+    let name = match arg {
+        Expr::Designator(des)
+            if des.base.module.is_none() && des.selectors.is_empty() =>
+        {
+            des.base.name.as_str()
+        }
+        _ => return None,
+    };
+    Some(match (name, max) {
+        // Signed integers: 2's-complement range.
+        ("BYTE", false)     => IrValue::ConstInt(0, IrType::U8),
+        ("BYTE", true)      => IrValue::ConstInt(255, IrType::U8),
+        ("SHORTINT", false) => IrValue::ConstInt(i16::MIN as i128, IrType::I16),
+        ("SHORTINT", true)  => IrValue::ConstInt(i16::MAX as i128, IrType::I16),
+        ("INTSHORT", false) => IrValue::ConstInt(i32::MIN as i128, IrType::I32),
+        ("INTSHORT", true)  => IrValue::ConstInt(i32::MAX as i128, IrType::I32),
+        ("INTEGER", false)  => IrValue::ConstInt(i64::MIN as i128, IrType::I64),
+        ("INTEGER", true)   => IrValue::ConstInt(i64::MAX as i128, IrType::I64),
+        ("LONGINT", false)  => IrValue::ConstInt(i64::MIN as i128, IrType::I64),
+        ("LONGINT", true)   => IrValue::ConstInt(i64::MAX as i128, IrType::I64),
+        // Character types: ordinal range. SHORTCHAR is 8-bit (0..255).
+        // CHAR is a 32-bit Unicode scalar (0..10FFFF inclusive).
+        ("SHORTCHAR", false) => IrValue::ConstInt(0, IrType::ShortChar),
+        ("SHORTCHAR", true)  => IrValue::ConstInt(0xFF, IrType::ShortChar),
+        ("CHAR", false)      => IrValue::ConstInt(0, IrType::Char),
+        ("CHAR", true)       => IrValue::ConstInt(0x10_FFFF, IrType::Char),
+        // SET range: returned as INTEGER per CP spec.
+        ("SET", false) => IrValue::ConstInt(0, IrType::I64),
+        ("SET", true)  => IrValue::ConstInt(31, IrType::I64),
+        // Real types — CP defines MIN(REAL) as the smallest positive value
+        // (the IEEE-754 normalized minimum) and MAX(REAL) as the largest finite
+        // value. SHORTREAL = f32, REAL = f64.
+        ("SHORTREAL", false) => IrValue::ConstReal(f32::MIN_POSITIVE as f64, IrType::F32),
+        ("SHORTREAL", true)  => IrValue::ConstReal(f32::MAX as f64, IrType::F32),
+        ("REAL", false)      => IrValue::ConstReal(f64::MIN_POSITIVE, IrType::F64),
+        ("REAL", true)       => IrValue::ConstReal(f64::MAX, IrType::F64),
+        _ => return None,
+    })
+}
+
 fn map_builtin(bt: BuiltinType) -> IrType {
     match bt {
         BuiltinType::Boolean => IrType::Bool,
@@ -1810,6 +1879,17 @@ impl<'m> LowerCtx<'m> {
                 self.record_diagnostic("LEN: argument is not a fixed-size array or open-array param");
                 Some(IrValue::ConstInt(0, IrType::I64))
             }
+            // MAX(T) / MIN(T): single-arg form takes a *type* identifier and
+            // returns the type's largest / smallest value as a constant. CP spec
+            // §10.3. Used heavily by overflow-aware integer parsers.
+            //
+            //   MIN(REAL)         smallest positive normal        (IEEE-754 MIN_POSITIVE)
+            //   MAX(REAL)         largest finite value            (IEEE-754 MAX)
+            //   MIN(INTEGER)..    standard signed range
+            //   MIN(SET) = 0      MAX(SET) = 31  (returned as INTEGER)
+            //   MIN(CHAR) = 0X    MAX(CHAR) = 10FFFFX  (Unicode scalar range)
+            "MAX" if args.len() == 1 => return min_max_one_arg(args.first()?, /*max=*/ true),
+            "MIN" if args.len() == 1 => return min_max_one_arg(args.first()?, /*max=*/ false),
             // MAX(x, y): two-argument maximum (branchless via sign-bit mask)            //   diff = x - y
             //   mask = ASH(diff, -(bits-1))  → -1 if x < y, 0 if x >= y
             //   not_mask = mask XOR -1
@@ -2269,12 +2349,20 @@ impl<'m> LowerCtx<'m> {
             Statement::Assignment { target, value, .. } => {
                 let rhs = self.lower_expr(value);
                 let addr = self.designator_addr(target);
-                // Coerce rhs to match the slot type when they differ.
-                // This handles cases like SHORT(INTEGER)→I32 stored into a SHORTINT:I16 slot.
-                let slot_ty = match addr.ty() {
+                // Coerce rhs to match the slot's element type when they differ.
+                // Handles e.g. SHORT(INTEGER)→I32 stored into a SHORTINT:I16 slot.
+                //
+                // For VAR/OUT/IN params the addr is `Ref(Ref(T))` (the outer Ref is
+                // the slot for the param itself; the inner Ref is the runtime
+                // pointer to the caller's variable). The actual storage element is
+                // T, not Ref(T), so peel through nested Refs to find it.
+                let mut slot_ty = match addr.ty() {
                     IrType::Ref(inner) | IrType::Ptr(inner) => Some(*inner),
                     _ => None,
                 };
+                while let Some(IrType::Ref(inner)) = slot_ty.clone() {
+                    slot_ty = Some(*inner);
+                }
                 let rhs = if let Some(slot_ty) = slot_ty {
                     if slot_ty != rhs.ty() {
                         let t = self.fresh_temp();
@@ -2577,7 +2665,24 @@ impl<'m> LowerCtx<'m> {
     fn lower_return(&mut self, expr: Option<&Expr>) {
         if self.result_slot.is_some() {
             if let Some(ret_expr) = expr {
-                let val = self.lower_expr(ret_expr);
+                let mut val = self.lower_expr(ret_expr);
+                // Numeric/char widening: coerce to the procedure's declared
+                // return type when the expression's type is narrower or
+                // smaller. Without this, `RETURN MIN(SHORTINT)` from an
+                // `: INTEGER` proc performs an i16 store into the i64 result
+                // slot, leaving the upper bytes undefined.
+                //
+                // We restrict the cast to scalar numeric / char types so we
+                // don't try to coerce across pointers, records, arrays, etc.
+                let ret_ty = self.proc.ret_ty.clone();
+                if val.ty() != ret_ty
+                    && is_scalar_castable(&val.ty())
+                    && is_scalar_castable(&ret_ty)
+                {
+                    let t = self.fresh_temp();
+                    self.push(Instr::Cast { dst: t, value: val, to_ty: ret_ty.clone() });
+                    val = IrValue::Temp(t, ret_ty);
+                }
                 self.push(Instr::StoreResult { value: val });
             }
         }

@@ -465,6 +465,24 @@ PROCEDURE LenOpenArrayForward*(): INTEGER;
   VAR a: ARRAY 17 OF SHORTCHAR;
 BEGIN RETURN LenOpenArrayForwarder(a) END LenOpenArrayForward;  (* expected 17 *)
 
+(* --- MIN(T) / MAX(T): single-arg form returns the type's bounds --- *)
+
+PROCEDURE MaxLong*(): LONGINT;
+BEGIN RETURN MAX(LONGINT) END MaxLong;                    (* expected 9223372036854775807 *)
+
+PROCEDURE MinLong*(): LONGINT;
+BEGIN RETURN MIN(LONGINT) + 1 END MinLong;                (* MIN can't be a result_type sentinel; +1 keeps it inside the test ABI *)
+                                                          (* expected -9223372036854775807 *)
+
+PROCEDURE MaxIntShort*(): INTEGER;
+BEGIN RETURN MAX(INTSHORT) END MaxIntShort;               (* expected 2147483647 *)
+
+PROCEDURE MaxSetIdx*(): INTEGER;
+BEGIN RETURN MAX(SET) END MaxSetIdx;                      (* expected 31 *)
+
+PROCEDURE MinShortInt*(): INTEGER;
+BEGIN RETURN MIN(SHORTINT) END MinShortInt;               (* expected -32768 *)
+
 (* --- ENTIER: floor of a real number → INTEGER (LONGINT in spec) --- *)
 
 PROCEDURE EntierFloor*(): LONGINT;
