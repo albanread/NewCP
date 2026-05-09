@@ -179,6 +179,7 @@ PROCEDURE Run*;
     kind, childId, timeMs, p1, p2, p3, p4: INTEGER;
     ok: INTSHORT;
     childA, childB: INTEGER;
+    hits, misses, size: INTEGER;
 BEGIN
   Console.WriteShortString("Phase 4 demo: DirectWrite text + sync queries");
   Console.WriteLn;
@@ -191,7 +192,8 @@ BEGIN
   PaintChildA(childA);
   PaintChildB(childB);
 
-  Console.WriteShortString("close the frame to exit"); Console.WriteLn;
+  Console.WriteShortString("close the frame to exit (layout cache stats print on exit)");
+  Console.WriteLn;
 
   REPEAT
     ok := iGui.NextEvent(kind, childId, timeMs, p1, p2, p3, p4, -1);
@@ -204,7 +206,14 @@ BEGIN
         EXIT
       END
     END
-  UNTIL FALSE
+  UNTIL FALSE;
+
+  IF iGui.LayoutCacheStats(hits, misses, size) # 0 THEN
+    Console.WriteShortString("layout cache on exit: hits="); Console.WriteInt(hits);
+    Console.WriteShortString(" misses="); Console.WriteInt(misses);
+    Console.WriteShortString(" size="); Console.WriteInt(size);
+    Console.WriteLn
+  END
 END Run;
 
 END Phase4TextDemo.

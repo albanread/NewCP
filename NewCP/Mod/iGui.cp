@@ -343,4 +343,13 @@ PROCEDURE MdiArrangeIcons*;
 
 PROCEDURE SetRedrawRate*(childId: INTEGER; intervalMs: INTEGER): INTSHORT;
 
+(* ── Diagnostics ──────────────────────────────────────────────────
+   LayoutCacheStats reads the DirectWrite layout cache counters.
+   `hits`/`misses` are monotonic since process start; `size` is the
+   current entry count (capped at 256, LRU-evicted). Useful for
+   tests and demos that want to confirm the cache is actually
+   serving repeats. *)
+
+PROCEDURE LayoutCacheStats*(VAR hits, misses, size: INTEGER): INTSHORT;
+
 END iGui.

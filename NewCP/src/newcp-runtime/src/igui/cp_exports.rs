@@ -350,6 +350,27 @@ pub extern "C" fn igui_emit_draw_arc(
     });
 }
 
+// ─── Diagnostics: DirectWrite layout cache stats ─────────────────────
+
+/// `iGui.LayoutCacheStats(VAR hits, misses, size: INTEGER)`. Reads
+/// the GUI thread's text-layout cache counters. Used by tests and
+/// the log-view demo to confirm the cache is doing useful work.
+/// Returns 1 always.
+#[unsafe(export_name = "iGui.LayoutCacheStats")]
+pub extern "C" fn igui_layout_cache_stats(
+    out_hits: *mut i64,
+    out_misses: *mut i64,
+    out_size: *mut i64,
+) -> i32 {
+    let (hits, misses, size) = super::dwrite::layout_cache_stats();
+    unsafe {
+        if !out_hits.is_null() { *out_hits = hits as i64; }
+        if !out_misses.is_null() { *out_misses = misses as i64; }
+        if !out_size.is_null() { *out_size = size as i64; }
+    }
+    1
+}
+
 // ─── Animation tick (deferred design open-question #3) ───────────────
 
 /// `iGui.SetRedrawRate(childId: INTEGER; intervalMs: INTEGER): INTSHORT`.
@@ -1214,6 +1235,7 @@ pub fn native_module_artifact() -> NativeModuleArtifact {
                 ExportEntry::procedure("MdiCloseAll"),
                 ExportEntry::procedure("MdiArrangeIcons"),
                 ExportEntry::procedure("SetRedrawRate"),
+                ExportEntry::procedure("LayoutCacheStats"),
             ]),
             "iGui.bootstrap",
             "Integrated GUI: MDI frame, Direct2D surfaces, typed event mailbox",
@@ -1403,6 +1425,10 @@ pub fn native_module_artifact() -> NativeModuleArtifact {
             NativeExportBinding::procedure(
                 "SetRedrawRate",
                 igui_set_redraw_rate as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "LayoutCacheStats",
+                igui_layout_cache_stats as *const () as usize,
             ),
         ],
     )

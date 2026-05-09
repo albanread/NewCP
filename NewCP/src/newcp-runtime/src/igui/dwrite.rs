@@ -1,17 +1,27 @@
 //! DirectWrite factory and font manager.
 //!
 //! Owns the process-wide `IDWriteFactory2` and the system font
-//! collection. Phase 4 adds a format cache keyed on
+//! collection. The format cache is keyed on
 //! `(family, size, weight, style, stretch, alignment, locale)` so
 //! repeated `DrawTextRun` calls with the same descriptor reuse one
-//! `IDWriteTextFormat`. Layouts are not cached yet — they're rebuilt
-//! each call. Optimization for a follow-up phase if profiling
-//! warrants it.
+//! `IDWriteTextFormat`.
+//!
+//! The layout cache is keyed on
+//! `(format_ptr, text, max_width, trimming)`. Text rendered
+//! repeatedly (a transcript line that stays on screen across many
+//! redraws, a heading, a measure round-trip's twin draw call) hits
+//! the cache and skips `CreateTextLayout`. The cache is LRU with
+//! capacity 256.
 
 #![cfg(windows)]
 
 use std::cell::RefCell;
 use std::collections::HashMap;
+use std::sync::atomic::{AtomicU64, AtomicUsize, Ordering};
+use std::sync::Mutex;
+
+// RefCell is still used by the format cache below, just not the layout
+// cache.
 
 use windows::core::{Interface, PCWSTR};
 use windows::Win32::Graphics::DirectWrite::{
@@ -134,12 +144,85 @@ pub fn format_for(run: &TextRun) -> Result<IDWriteTextFormat, IGuiError> {
     })
 }
 
-/// Build an `IDWriteTextLayout` for the run. Layouts aren't cached
-/// yet — every text command rebuilds. The format _is_ cached so the
-/// expensive part (font face resolution) only happens once per
-/// formatting tuple.
+// ─── Layout cache ───────────────────────────────────────────────────
+
+#[derive(Clone, Eq, PartialEq, Hash)]
+struct LayoutKey {
+    format_ptr: usize,
+    text: String,
+    max_width_q: u32,
+    trimming: TextTrimming,
+}
+
+struct LayoutCacheEntry {
+    layout: IDWriteTextLayout,
+    last_used: u64,
+}
+
+const LAYOUT_CACHE_CAP: usize = 256;
+
+// Process-wide cache so the language-thread-callable stats getter
+// can read accurate numbers. The cache itself is touched only
+// inside `layout_for`, which runs on the GUI thread during
+// WM_PAINT, so contention is negligible — but the counters need to
+// be visible across threads for diagnostics.
+static LAYOUTS: Mutex<Option<HashMap<LayoutKey, LayoutCacheEntry>>> = Mutex::new(None);
+static LAYOUT_TICK: AtomicU64 = AtomicU64::new(0);
+static LAYOUT_HITS: AtomicU64 = AtomicU64::new(0);
+static LAYOUT_MISSES: AtomicU64 = AtomicU64::new(0);
+static LAYOUT_SIZE: AtomicUsize = AtomicUsize::new(0);
+
+fn layout_tick() -> u64 {
+    LAYOUT_TICK.fetch_add(1, Ordering::Relaxed).wrapping_add(1)
+}
+
+/// Sentinel quantization for `max_width = None` (no wrap). Plain
+/// `f32::MAX.to_bits()` collides with explicit `f32::MAX` callers,
+/// but None and "very large" should hash the same anyway — anyone
+/// passing f32::MAX gets the same layout result.
+fn quantize_max_width(w: Option<f32>) -> u32 {
+    w.unwrap_or(f32::MAX).to_bits()
+}
+
+/// Read-only diagnostic snapshot of cache stats. Callable from any
+/// thread; counters are atomics, size is the process-wide cache's
+/// current entry count.
+#[allow(dead_code)] // exposed for ad-hoc profiling / tests
+pub fn layout_cache_stats() -> (u64, u64, usize) {
+    (
+        LAYOUT_HITS.load(Ordering::Relaxed),
+        LAYOUT_MISSES.load(Ordering::Relaxed),
+        LAYOUT_SIZE.load(Ordering::Relaxed),
+    )
+}
+
+/// Build or fetch an `IDWriteTextLayout` for `run`. Cache hits skip
+/// `CreateTextLayout` entirely; misses build, store, and evict via
+/// LRU when the cache is at capacity.
 pub fn layout_for(run: &TextRun) -> Result<IDWriteTextLayout, IGuiError> {
     let format = format_for(run)?;
+    let format_ptr = format.as_raw() as usize;
+    let key = LayoutKey {
+        format_ptr,
+        text: run.text.clone(),
+        max_width_q: quantize_max_width(run.max_width),
+        trimming: run.trimming,
+    };
+
+    // Cache lookup. Bump last_used inside the locked region.
+    {
+        let mut guard = LAYOUTS.lock().expect("LAYOUTS poisoned");
+        let map = guard.get_or_insert_with(HashMap::new);
+        if let Some(entry) = map.get_mut(&key) {
+            entry.last_used = layout_tick();
+            let layout = entry.layout.clone();
+            LAYOUT_HITS.fetch_add(1, Ordering::Relaxed);
+            return Ok(layout);
+        }
+    }
+    LAYOUT_MISSES.fetch_add(1, Ordering::Relaxed);
+
+    // Miss: build, then insert with LRU eviction if at capacity.
     let factory = &super::renderer::ctx().dwrite.factory;
     let text_w = utf16(&run.text);
     let max_width = run.max_width.unwrap_or(f32::MAX);
@@ -148,9 +231,33 @@ pub fn layout_for(run: &TextRun) -> Result<IDWriteTextLayout, IGuiError> {
         factory.CreateTextLayout(&text_w, &format, max_width, max_height)
     }
     .map_err(|e| IGuiError::DWrite(format!("CreateTextLayout: {e}")))?;
-
-    // Apply trimming if requested.
     apply_trimming(&layout, run.trimming)?;
+
+    {
+        let mut guard = LAYOUTS.lock().expect("LAYOUTS poisoned");
+        let map = guard.get_or_insert_with(HashMap::new);
+        if map.len() >= LAYOUT_CACHE_CAP {
+            // Evict the least-recently-used entry. O(N) over the cap
+            // size; trivial at 256 and keeps the cache structure
+            // simple. Switch to a real LRU (linked-hash-map) if this
+            // ever profiles hot.
+            if let Some(victim) = map
+                .iter()
+                .min_by_key(|(_, e)| e.last_used)
+                .map(|(k, _)| k.clone())
+            {
+                map.remove(&victim);
+            }
+        }
+        map.insert(
+            key,
+            LayoutCacheEntry {
+                layout: layout.clone(),
+                last_used: layout_tick(),
+            },
+        );
+        LAYOUT_SIZE.store(map.len(), Ordering::Relaxed);
+    }
     Ok(layout)
 }
 
