@@ -9,8 +9,10 @@ use std::sync::OnceLock;
 use windows::Win32::Foundation::{HWND, LPARAM, WPARAM};
 use windows::Win32::UI::WindowsAndMessaging::{PostMessageW, WM_CLOSE};
 
-use super::batch::{self as batch_mod, Point, Rect, Rgba, SurfaceCmd};
+use super::batch::{self as batch_mod, Point, Rect, Rgba, SurfaceCmd, TextRun};
 use super::channels::{self, kind, IGuiEvent};
+use super::dwrite as dwrite_mod;
+use super::replies;
 use crate::{
     ExportDirectory, ExportEntry, HostedModuleArtifact, NativeExportBinding, NativeModuleArtifact,
 };
@@ -348,6 +350,277 @@ pub extern "C" fn igui_emit_draw_arc(
     });
 }
 
+// ─── Phase 4: text ───────────────────────────────────────────────────
+
+/// Build a `TextRun` from the wide list of CP-passed scalars.
+/// Open-array params each carry a hidden `$len: i64` after the
+/// pointer, matching the project's CP ABI rule. We scan to NUL
+/// ourselves and treat the lengths as upper bounds.
+#[allow(clippy::too_many_arguments)]
+fn build_text_run(
+    text: *const u8,
+    origin_x: f64,
+    origin_y: f64,
+    family: *const u8,
+    size: f64,
+    weight: i32,
+    style: i32,
+    stretch: i32,
+    locale: *const u8,
+    color_r: f64,
+    color_g: f64,
+    color_b: f64,
+    color_a: f64,
+    max_width: f64,
+    alignment: i32,
+    trimming: i32,
+) -> TextRun {
+    let text_str = unsafe { read_cp_shortstr(text) };
+    let family_str = unsafe { read_cp_shortstr(family) };
+    let locale_str = unsafe { read_cp_shortstr(locale) };
+    let max_width = if max_width > 0.0 {
+        Some(max_width as f32)
+    } else {
+        None
+    };
+    TextRun {
+        text: text_str,
+        origin: Point {
+            x: origin_x as f32,
+            y: origin_y as f32,
+        },
+        family: if family_str.is_empty() {
+            "Segoe UI".to_string()
+        } else {
+            family_str
+        },
+        size: size as f32,
+        weight: weight.clamp(100, 900) as u16,
+        style: dwrite_mod::cp_style(style),
+        stretch: dwrite_mod::cp_stretch(stretch),
+        locale: if locale_str.is_empty() {
+            "en-us".to_string()
+        } else {
+            locale_str
+        },
+        color: Rgba {
+            r: color_r as f32,
+            g: color_g as f32,
+            b: color_b as f32,
+            a: color_a as f32,
+        },
+        max_width,
+        alignment: dwrite_mod::cp_align(alignment),
+        trimming: dwrite_mod::cp_trimming(trimming),
+    }
+}
+
+/// `iGui.EmitDrawTextRun(text, x, y, fontSize, family, weight, style,
+/// stretch, locale, maxWidth, alignment, trimming, r, g, b, a)`.
+///
+/// CP open arrays each contribute (`*const u8`, `i64` length); the
+/// length is the buffer capacity, not the meaningful string length —
+/// we still scan for NUL.
+#[unsafe(export_name = "iGui.EmitDrawTextRun")]
+#[allow(clippy::too_many_arguments)]
+pub extern "C" fn igui_emit_draw_text_run(
+    text: *const u8,
+    _text_len: i64,
+    origin_x: f64,
+    origin_y: f64,
+    font_size: f64,
+    family: *const u8,
+    _family_len: i64,
+    weight: i32,
+    style: i32,
+    stretch: i32,
+    locale: *const u8,
+    _locale_len: i64,
+    max_width: f64,
+    alignment: i32,
+    trimming: i32,
+    r: f64,
+    g: f64,
+    b: f64,
+    a: f64,
+) {
+    let run = build_text_run(
+        text, origin_x, origin_y, family, font_size, weight, style, stretch, locale,
+        r, g, b, a, max_width, alignment, trimming,
+    );
+    batch_mod::push(SurfaceCmd::DrawTextRun { run });
+}
+
+/// `iGui.MeasureTextRun(childId, text, fontSize, family, weight, style,
+/// stretch, locale, maxWidth, alignment, trimming,
+/// VAR width, height, ascent: REAL; VAR lineCount: INTEGER): INTSHORT`.
+///
+/// Submits a measure batch for `child_id`, blocks up to 5s on the
+/// reply channel. Returns 1 on success, 0 on failure / timeout.
+#[unsafe(export_name = "iGui.MeasureTextRun")]
+#[allow(clippy::too_many_arguments)]
+pub extern "C" fn igui_measure_text_run(
+    child_id: i64,
+    text: *const u8,
+    _text_len: i64,
+    font_size: f64,
+    family: *const u8,
+    _family_len: i64,
+    weight: i32,
+    style: i32,
+    stretch: i32,
+    locale: *const u8,
+    _locale_len: i64,
+    max_width: f64,
+    alignment: i32,
+    trimming: i32,
+    out_width: *mut f64,
+    out_height: *mut f64,
+    out_ascent: *mut f64,
+    out_line_count: *mut i64,
+) -> i32 {
+    let run = build_text_run(
+        text, 0.0, 0.0, family, font_size, weight, style, stretch, locale,
+        0.0, 0.0, 0.0, 1.0, max_width, alignment, trimming,
+    );
+    let request_id = replies::alloc_id();
+    let rx = replies::install(request_id);
+    batch_mod::begin(child_id);
+    batch_mod::push(SurfaceCmd::MeasureTextRun {
+        request_id,
+        run,
+    });
+    if batch_mod::finish().and_then(|b| {
+        // Submit the batch directly without going through submit() so
+        // we don't lose the ordering with a concurrent draw batch.
+        Some(batch_mod::submit(b))
+    }) != Some(true)
+    {
+        return 0;
+    }
+    match replies::wait(rx) {
+        Some(replies::Reply::Metrics {
+            width,
+            height,
+            ascent,
+            line_count,
+        }) => {
+            unsafe {
+                if !out_width.is_null() { *out_width = width as f64 }
+                if !out_height.is_null() { *out_height = height as f64 }
+                if !out_ascent.is_null() { *out_ascent = ascent as f64 }
+                if !out_line_count.is_null() { *out_line_count = line_count as i64 }
+            }
+            1
+        }
+        _ => 0,
+    }
+}
+
+/// `iGui.CharIndexAtPoint(childId, text, fontSize, family, weight, style,
+/// stretch, locale, x, y,
+/// VAR charIndex: INTEGER; VAR isInside, isTrailing: INTSHORT): INTSHORT`.
+#[unsafe(export_name = "iGui.CharIndexAtPoint")]
+#[allow(clippy::too_many_arguments)]
+pub extern "C" fn igui_char_index_at_point(
+    child_id: i64,
+    text: *const u8,
+    _text_len: i64,
+    font_size: f64,
+    family: *const u8,
+    _family_len: i64,
+    weight: i32,
+    style: i32,
+    stretch: i32,
+    locale: *const u8,
+    _locale_len: i64,
+    x: f64,
+    y: f64,
+    out_char_index: *mut i64,
+    out_is_inside: *mut i32,
+    out_is_trailing: *mut i32,
+) -> i32 {
+    let run = build_text_run(
+        text, 0.0, 0.0, family, font_size, weight, style, stretch, locale,
+        0.0, 0.0, 0.0, 1.0, -1.0, 0, 0,
+    );
+    let request_id = replies::alloc_id();
+    let rx = replies::install(request_id);
+    batch_mod::begin(child_id);
+    batch_mod::push(SurfaceCmd::CharIndexAtPoint {
+        request_id,
+        run,
+        point: Point {
+            x: x as f32,
+            y: y as f32,
+        },
+    });
+    if batch_mod::finish().map(batch_mod::submit) != Some(true) {
+        return 0;
+    }
+    match replies::wait(rx) {
+        Some(replies::Reply::HitTestPoint {
+            char_index,
+            is_inside,
+            is_trailing,
+        }) => {
+            unsafe {
+                if !out_char_index.is_null() { *out_char_index = char_index as i64 }
+                if !out_is_inside.is_null() { *out_is_inside = if is_inside { 1 } else { 0 } }
+                if !out_is_trailing.is_null() { *out_is_trailing = if is_trailing { 1 } else { 0 } }
+            }
+            1
+        }
+        _ => 0,
+    }
+}
+
+/// `iGui.PointAtCharIndex(childId, text, fontSize, family, weight, style,
+/// charIndex, VAR x, y, height: REAL): INTSHORT`.
+#[unsafe(export_name = "iGui.PointAtCharIndex")]
+#[allow(clippy::too_many_arguments)]
+pub extern "C" fn igui_point_at_char_index(
+    child_id: i64,
+    text: *const u8,
+    _text_len: i64,
+    font_size: f64,
+    family: *const u8,
+    _family_len: i64,
+    weight: i32,
+    style: i32,
+    char_index: i64,
+    out_x: *mut f64,
+    out_y: *mut f64,
+    out_height: *mut f64,
+) -> i32 {
+    let run = build_text_run(
+        text, 0.0, 0.0, family, font_size, weight, style, 5, std::ptr::null(),
+        0.0, 0.0, 0.0, 1.0, -1.0, 0, 0,
+    );
+    let request_id = replies::alloc_id();
+    let rx = replies::install(request_id);
+    batch_mod::begin(child_id);
+    batch_mod::push(SurfaceCmd::PointAtCharIndex {
+        request_id,
+        run,
+        char_index: char_index.max(0) as u32,
+    });
+    if batch_mod::finish().map(batch_mod::submit) != Some(true) {
+        return 0;
+    }
+    match replies::wait(rx) {
+        Some(replies::Reply::HitTestPosition { x, y, height }) => {
+            unsafe {
+                if !out_x.is_null() { *out_x = x as f64 }
+                if !out_y.is_null() { *out_y = y as f64 }
+                if !out_height.is_null() { *out_height = height as f64 }
+            }
+            1
+        }
+        _ => 0,
+    }
+}
+
 // ─── Phase 3c: DPI + cursor ──────────────────────────────────────────
 
 /// `iGui.GetDpi(childId: INTEGER; VAR dpiX, dpiY: REAL): INTSHORT`.
@@ -382,7 +655,12 @@ pub extern "C" fn igui_set_cursor(child_id: i64, kind: i32) {
 /// CP `ARRAY OF SHORTCHAR` is passed as a bare pointer to a sequence
 /// of bytes terminated by `0X`. This helper reads up to 4096 bytes,
 /// stops at the first NUL, and returns the lossy UTF-8 decoding.
+/// Null pointer returns the empty string so internal callers that
+/// substitute defaults can pass `null()` safely.
 unsafe fn read_cp_shortstr(ptr: *const u8) -> String {
+    if ptr.is_null() {
+        return String::new();
+    }
     const MAX: usize = 4096;
     let mut len = 0usize;
     while len < MAX {
@@ -555,6 +833,10 @@ pub fn native_module_artifact() -> NativeModuleArtifact {
                 ExportEntry::procedure("EmitStrokeOval"),
                 ExportEntry::procedure("EmitStrokeCircle"),
                 ExportEntry::procedure("EmitDrawArc"),
+                ExportEntry::procedure("EmitDrawTextRun"),
+                ExportEntry::procedure("MeasureTextRun"),
+                ExportEntry::procedure("CharIndexAtPoint"),
+                ExportEntry::procedure("PointAtCharIndex"),
                 ExportEntry::procedure("GetDpi"),
                 ExportEntry::procedure("SetCursor"),
             ]),
@@ -606,6 +888,22 @@ pub fn native_module_artifact() -> NativeModuleArtifact {
             NativeExportBinding::procedure(
                 "EmitDrawArc",
                 igui_emit_draw_arc as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "EmitDrawTextRun",
+                igui_emit_draw_text_run as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "MeasureTextRun",
+                igui_measure_text_run as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "CharIndexAtPoint",
+                igui_char_index_at_point as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "PointAtCharIndex",
+                igui_point_at_char_index as *const () as usize,
             ),
             NativeExportBinding::procedure(
                 "GetDpi",

@@ -396,9 +396,154 @@ fn execute_d2d_batch(
                     &brush,
                 )?;
             }
+            // ─── Phase 4: text ─────────────────────────────────────
+            SurfaceCmd::DrawTextRun { run } => {
+                draw_text_run(target, run)?;
+            }
+            SurfaceCmd::MeasureTextRun { request_id, run } => {
+                run_measure(*request_id, run);
+            }
+            SurfaceCmd::CharIndexAtPoint { request_id, run, point } => {
+                run_hit_test_point(*request_id, run, *point);
+            }
+            SurfaceCmd::PointAtCharIndex {
+                request_id,
+                run,
+                char_index,
+            } => {
+                run_hit_test_position(*request_id, run, *char_index);
+            }
         }
     }
     Ok(())
+}
+
+// ─── Phase 4 text execution helpers ──────────────────────────────────
+
+fn draw_text_run(
+    target: &ID2D1HwndRenderTarget,
+    run: &batch_mod::TextRun,
+) -> Result<(), IGuiError> {
+    let layout = super::dwrite::layout_for(run)?;
+    let brush = solid_brush(target, run.color)?;
+    let origin = Vector2 {
+        X: run.origin.x,
+        Y: run.origin.y,
+    };
+    unsafe {
+        target.DrawTextLayout(
+            origin,
+            &layout,
+            &brush,
+            windows::Win32::Graphics::Direct2D::D2D1_DRAW_TEXT_OPTIONS_NONE,
+        )
+    };
+    Ok(())
+}
+
+fn run_measure(request_id: u32, run: &batch_mod::TextRun) {
+    let reply = match super::dwrite::layout_for(run) {
+        Ok(layout) => {
+            let mut m =
+                windows::Win32::Graphics::DirectWrite::DWRITE_TEXT_METRICS::default();
+            match unsafe { layout.GetMetrics(&mut m) } {
+                Ok(()) => {
+                    let ascent = first_line_ascent(&layout).unwrap_or(0.0);
+                    super::replies::Reply::Metrics {
+                        width: m.width,
+                        height: m.height,
+                        ascent,
+                        line_count: m.lineCount,
+                    }
+                }
+                Err(e) => super::replies::Reply::Failed {
+                    message: format!("GetMetrics: {e}"),
+                },
+            }
+        }
+        Err(e) => super::replies::Reply::Failed {
+            message: format!("{e}"),
+        },
+    };
+    super::replies::deliver(request_id, reply);
+}
+
+fn first_line_ascent(layout: &windows::Win32::Graphics::DirectWrite::IDWriteTextLayout) -> Option<f32> {
+    let mut count: u32 = 0;
+    // First call gets the required count.
+    let _ = unsafe {
+        layout.GetLineMetrics(None, &mut count)
+    };
+    if count == 0 {
+        return None;
+    }
+    let mut buf = vec![
+        windows::Win32::Graphics::DirectWrite::DWRITE_LINE_METRICS::default();
+        count as usize
+    ];
+    let mut actual: u32 = 0;
+    unsafe { layout.GetLineMetrics(Some(&mut buf), &mut actual) }.ok()?;
+    Some(buf.first()?.baseline)
+}
+
+fn run_hit_test_point(request_id: u32, run: &batch_mod::TextRun, point: batch_mod::Point) {
+    let reply = match super::dwrite::layout_for(run) {
+        Ok(layout) => {
+            let mut is_trailing = windows::core::BOOL(0);
+            let mut is_inside = windows::core::BOOL(0);
+            let mut metrics =
+                windows::Win32::Graphics::DirectWrite::DWRITE_HIT_TEST_METRICS::default();
+            match unsafe {
+                layout.HitTestPoint(
+                    point.x - run.origin.x,
+                    point.y - run.origin.y,
+                    &mut is_trailing,
+                    &mut is_inside,
+                    &mut metrics,
+                )
+            } {
+                Ok(()) => super::replies::Reply::HitTestPoint {
+                    char_index: metrics.textPosition,
+                    is_inside: is_inside.as_bool(),
+                    is_trailing: is_trailing.as_bool(),
+                },
+                Err(e) => super::replies::Reply::Failed {
+                    message: format!("HitTestPoint: {e}"),
+                },
+            }
+        }
+        Err(e) => super::replies::Reply::Failed {
+            message: format!("{e}"),
+        },
+    };
+    super::replies::deliver(request_id, reply);
+}
+
+fn run_hit_test_position(request_id: u32, run: &batch_mod::TextRun, char_index: u32) {
+    let reply = match super::dwrite::layout_for(run) {
+        Ok(layout) => {
+            let mut x: f32 = 0.0;
+            let mut y: f32 = 0.0;
+            let mut metrics =
+                windows::Win32::Graphics::DirectWrite::DWRITE_HIT_TEST_METRICS::default();
+            match unsafe {
+                layout.HitTestTextPosition(char_index, false, &mut x, &mut y, &mut metrics)
+            } {
+                Ok(()) => super::replies::Reply::HitTestPosition {
+                    x: x + run.origin.x,
+                    y: y + run.origin.y,
+                    height: metrics.height,
+                },
+                Err(e) => super::replies::Reply::Failed {
+                    message: format!("HitTestTextPosition: {e}"),
+                },
+            }
+        }
+        Err(e) => super::replies::Reply::Failed {
+            message: format!("{e}"),
+        },
+    };
+    super::replies::deliver(request_id, reply);
 }
 
 fn solid_brush(
@@ -569,6 +714,23 @@ fn log_ui_batch(child_id: i64, batch: &batch_mod::PaneBatch) {
                 "[igui-batch-ui]   #{index} DrawArc center=({:.1}, {:.1}) r={:.1} rot={:.3} half_ap={:.3} ht={:.1} rgba=({:.3}, {:.3}, {:.3}, {:.3})",
                 center.x, center.y, radius, rotation_rad, half_aperture_rad, half_thickness,
                 color.r, color.g, color.b, color.a
+            ),
+            SurfaceCmd::DrawTextRun { run } => eprintln!(
+                "[igui-batch-ui]   #{index} DrawTextRun \"{}\" origin=({:.1}, {:.1}) family=\"{}\" size={:.1} weight={} rgba=({:.3}, {:.3}, {:.3}, {:.3})",
+                run.text, run.origin.x, run.origin.y, run.family, run.size, run.weight,
+                run.color.r, run.color.g, run.color.b, run.color.a
+            ),
+            SurfaceCmd::MeasureTextRun { request_id, run } => eprintln!(
+                "[igui-batch-ui]   #{index} MeasureTextRun req={request_id} text=\"{}\"",
+                run.text
+            ),
+            SurfaceCmd::CharIndexAtPoint { request_id, run, point } => eprintln!(
+                "[igui-batch-ui]   #{index} CharIndexAtPoint req={request_id} text=\"{}\" pt=({:.1}, {:.1})",
+                run.text, point.x, point.y
+            ),
+            SurfaceCmd::PointAtCharIndex { request_id, run, char_index } => eprintln!(
+                "[igui-batch-ui]   #{index} PointAtCharIndex req={request_id} text=\"{}\" char={}",
+                run.text, char_index
             ),
         }
     }
@@ -853,6 +1015,23 @@ fn execute_gdi_batch(
             | SurfaceCmd::DrawArc { .. } => {
                 eprintln!(
                     "[igui-gdi] Phase 3c primitive in GDI fallback — skipped (D2D path is the real one)"
+                );
+            }
+            // Text primitives need DirectWrite; no GDI fallback. The
+            // sync queries still need to satisfy any blocked CP caller
+            // so we deliver a Failed reply instead of letting them
+            // time out.
+            SurfaceCmd::DrawTextRun { .. } => {
+                eprintln!("[igui-gdi] DrawTextRun in GDI fallback — skipped");
+            }
+            SurfaceCmd::MeasureTextRun { request_id, .. }
+            | SurfaceCmd::CharIndexAtPoint { request_id, .. }
+            | SurfaceCmd::PointAtCharIndex { request_id, .. } => {
+                super::replies::deliver(
+                    *request_id,
+                    super::replies::Reply::Failed {
+                        message: "text query unsupported on GDI fallback".into(),
+                    },
                 );
             }
         }

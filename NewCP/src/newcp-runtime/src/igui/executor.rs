@@ -217,6 +217,16 @@ pub fn execute(batch: &PaneBatch) -> Result<bool, IGuiError> {
                 draw_arc(ctx, *center, *radius, *rotation_rad, *half_aperture_rad,
                          stroke_w, &brush, no_stroke)?;
             }
+            // The device-context executor is currently dormant; the
+            // active text path is in child.rs::execute_d2d_batch via
+            // the HwndRenderTarget. Keep these arms exhaustive so this
+            // file builds.
+            SurfaceCmd::DrawTextRun { .. }
+            | SurfaceCmd::MeasureTextRun { .. }
+            | SurfaceCmd::CharIndexAtPoint { .. }
+            | SurfaceCmd::PointAtCharIndex { .. } => {
+                eprintln!("[igui-executor] text command on dormant DC path — ignored");
+            }
         }
     }
 

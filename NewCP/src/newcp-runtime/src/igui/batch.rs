@@ -43,6 +43,64 @@ pub struct Point {
     pub y: f32,
 }
 
+// ─── Phase 4: text descriptors ───────────────────────────────────────
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum FontStyle {
+    Normal,
+    Italic,
+    Oblique,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum FontStretch {
+    UltraCondensed,
+    ExtraCondensed,
+    Condensed,
+    SemiCondensed,
+    Normal,
+    SemiExpanded,
+    Expanded,
+    ExtraExpanded,
+    UltraExpanded,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum TextAlign {
+    Leading,
+    Trailing,
+    Center,
+    Justified,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum TextTrimming {
+    None,
+    EllipsisChar,
+    EllipsisWord,
+}
+
+/// Full text-run descriptor passed across the CP / Rust boundary by
+/// every text command (DrawTextRun + the three synchronous queries).
+/// Draw, measure, and hit-test must resolve against the same
+/// `IDWriteTextLayout` for results to agree, so all four commands
+/// carry exactly the same fields.
+#[derive(Debug, Clone)]
+pub struct TextRun {
+    pub text: String,
+    pub origin: Point,
+    pub family: String,
+    pub size: f32,        // DIPs
+    pub weight: u16,      // DWRITE_FONT_WEIGHT (100..900)
+    pub style: FontStyle,
+    pub stretch: FontStretch,
+    pub locale: String,   // BCP-47, e.g. "en-us"
+    pub color: Rgba,
+    pub max_width: Option<f32>, // None = no wrap
+    pub alignment: TextAlign,
+    pub trimming: TextTrimming,
+}
+
 #[derive(Debug, Clone)]
 pub enum SurfaceCmd {
     Clear {
@@ -94,6 +152,26 @@ pub enum SurfaceCmd {
         half_aperture_rad: f32,
         half_thickness: f32,
         color: Rgba,
+    },
+    // ─── Phase 4: text ─────────────────────────────────────────────
+    DrawTextRun {
+        run: TextRun,
+    },
+    /// GUI thread answers via `replies::deliver_metrics`, keyed on
+    /// `request_id`. The originating CP call blocks on its reply slot.
+    MeasureTextRun {
+        request_id: u32,
+        run: TextRun,
+    },
+    CharIndexAtPoint {
+        request_id: u32,
+        run: TextRun,
+        point: Point,
+    },
+    PointAtCharIndex {
+        request_id: u32,
+        run: TextRun,
+        char_index: u32,
     },
 }
 

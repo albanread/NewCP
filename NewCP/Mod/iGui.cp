@@ -63,6 +63,33 @@ CONST
   CrHelp*        = 11;
   CrAppStarting* = 12;
 
+  (* font style for text descriptors *)
+  FsNormal*  = 0;
+  FsItalic*  = 1;
+  FsOblique* = 2;
+
+  (* font stretch *)
+  FwUltraCondensed* = 1;
+  FwExtraCondensed* = 2;
+  FwCondensed*      = 3;
+  FwSemiCondensed*  = 4;
+  FwNormal*         = 5;
+  FwSemiExpanded*   = 6;
+  FwExpanded*       = 7;
+  FwExtraExpanded*  = 8;
+  FwUltraExpanded*  = 9;
+
+  (* text alignment *)
+  AlignLeading*   = 0;
+  AlignTrailing*  = 1;
+  AlignCenter*    = 2;
+  AlignJustified* = 3;
+
+  (* text trimming *)
+  TrimNone*         = 0;
+  TrimEllipsisChar* = 1;
+  TrimEllipsisWord* = 2;
+
 (* Block on the event mailbox. Returns 1 if an event was delivered, 0 on
    timeout. timeoutMs < 0 blocks indefinitely. *)
 PROCEDURE NextEvent*(VAR kind, childId, timeMs, p1, p2, p3, p4: INTEGER;
@@ -127,5 +154,57 @@ PROCEDURE EmitDrawArc*(cx, cy, radius,
 
 PROCEDURE GetDpi*(childId: INTEGER; VAR dpiX, dpiY: REAL): INTSHORT;
 PROCEDURE SetCursor*(childId: INTEGER; kind: INTSHORT);
+
+(* ── Phase 4: text via DirectWrite ────────────────────────────────
+   DrawTextRun is async — added to the current batch and rendered on
+   the next paint. Measure/CharIndexAtPoint/PointAtCharIndex submit
+   their own one-command batch and block on the GUI thread reply
+   channel for up to 5 seconds. All four resolve against the same
+   DirectWrite layout for the given (text, family, size, weight,
+   style, stretch, locale) tuple, so draw and hit-test geometry
+   agree.
+
+   weight is 100..900 (DWRITE_FONT_WEIGHT). style/stretch/alignment/
+   trimming pick from the Fs* / Fw* / Align* / Trim* constants
+   above. maxWidth < 0 disables wrap. family/locale empty strings
+   default to "Segoe UI" / "en-us". *)
+
+PROCEDURE EmitDrawTextRun*(text: ARRAY OF SHORTCHAR;
+                           x, y, fontSize: REAL;
+                           family: ARRAY OF SHORTCHAR;
+                           weight, style, stretch: INTSHORT;
+                           locale: ARRAY OF SHORTCHAR;
+                           maxWidth: REAL;
+                           alignment, trimming: INTSHORT;
+                           r, g, b, a: REAL);
+
+PROCEDURE MeasureTextRun*(childId: INTEGER;
+                          text: ARRAY OF SHORTCHAR;
+                          fontSize: REAL;
+                          family: ARRAY OF SHORTCHAR;
+                          weight, style, stretch: INTSHORT;
+                          locale: ARRAY OF SHORTCHAR;
+                          maxWidth: REAL;
+                          alignment, trimming: INTSHORT;
+                          VAR width, height, ascent: REAL;
+                          VAR lineCount: INTEGER): INTSHORT;
+
+PROCEDURE CharIndexAtPoint*(childId: INTEGER;
+                            text: ARRAY OF SHORTCHAR;
+                            fontSize: REAL;
+                            family: ARRAY OF SHORTCHAR;
+                            weight, style, stretch: INTSHORT;
+                            locale: ARRAY OF SHORTCHAR;
+                            x, y: REAL;
+                            VAR charIndex: INTEGER;
+                            VAR isInside, isTrailing: INTSHORT): INTSHORT;
+
+PROCEDURE PointAtCharIndex*(childId: INTEGER;
+                            text: ARRAY OF SHORTCHAR;
+                            fontSize: REAL;
+                            family: ARRAY OF SHORTCHAR;
+                            weight, style: INTSHORT;
+                            charIndex: INTEGER;
+                            VAR x, y, height: REAL): INTSHORT;
 
 END iGui.
