@@ -27,6 +27,7 @@ pub mod kind {
     pub const THEME_CHANGE: i64 = 10;
     pub const DPI_CHANGE: i64 = 11;
     pub const SURFACE_REPLY: i64 = 12;
+    pub const TICK: i64 = 13;
 }
 
 /// Mouse-event sub-kinds packed into the `mouse_op` field. Each is a
@@ -107,6 +108,14 @@ pub enum IGuiEvent {
     Menu {
         menu_id: i64,
         item_id: i64,
+    },
+    /// Animation tick. Fires from a Win32 timer running on a child's
+    /// render host; Win32 auto-coalesces queued WM_TIMERs so the
+    /// language thread sees at most one tick per child per drain
+    /// cycle even if it lags.
+    Tick {
+        child_id: i64,
+        time_ms: i64,
     },
 }
 

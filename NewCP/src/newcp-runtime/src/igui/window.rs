@@ -55,6 +55,13 @@ const WM_IGUI_CLOSE_CHILD: u32 = WM_USER + 2;
 const WM_IGUI_SET_TITLE: u32 = WM_USER + 3;
 const WM_IGUI_SET_MENU: u32 = WM_USER + 4;
 const WM_IGUI_MDI_VERB: u32 = WM_USER + 5;
+/// Sent from the language thread to a render-host HWND to install
+/// or clear a Win32 timer driving `EvTick` events.
+/// `wparam` carries the interval in ms (0 = clear), `lparam` is unused.
+pub(crate) const WM_IGUI_SET_TIMER: u32 = WM_USER + 6;
+/// Win32 timer id used by the redraw-rate ticker. One timer per
+/// render host; reusing the same id replaces the previous one.
+pub(crate) const TICK_TIMER_ID: usize = 0xA1;
 
 /// HWND of the MDI client. Set by `run` after `CreateWindowExW`.
 static MDI_CLIENT: Mutex<Option<isize>> = Mutex::new(None);
@@ -595,6 +602,25 @@ pub fn set_menu(spec: &str) -> bool {
         )
     };
     req.ok
+}
+
+/// Install or clear the per-child redraw timer. `interval_ms <= 0`
+/// clears the timer; otherwise WM_TIMER fires every `interval_ms`
+/// milliseconds and the render host pushes an `EvTick` event.
+pub fn set_redraw_rate(child_id: i64, interval_ms: i64) -> bool {
+    let Some(render_hwnd) = registry::render_hwnd_of(child_id) else {
+        return false;
+    };
+    let interval = if interval_ms <= 0 { 0 } else { interval_ms as usize };
+    unsafe {
+        SendMessageW(
+            render_hwnd,
+            WM_IGUI_SET_TIMER,
+            Some(WPARAM(interval)),
+            Some(LPARAM(0)),
+        )
+    };
+    true
 }
 
 /// Marshal an MDI verb to the GUI thread for execution.

@@ -350,6 +350,25 @@ pub extern "C" fn igui_emit_draw_arc(
     });
 }
 
+// ─── Animation tick (deferred design open-question #3) ───────────────
+
+/// `iGui.SetRedrawRate(childId: INTEGER; intervalMs: INTEGER): INTSHORT`.
+///
+/// Schedules an `EvTick` event for `childId` every `intervalMs`
+/// milliseconds. `intervalMs <= 0` disables the timer for that
+/// child. Win32 auto-coalesces queued WM_TIMERs, so a backed-up
+/// language thread sees at most one tick per drain cycle.
+///
+/// Returns 1 on success, 0 if `childId` is unknown.
+#[unsafe(export_name = "iGui.SetRedrawRate")]
+pub extern "C" fn igui_set_redraw_rate(child_id: i64, interval_ms: i64) -> i32 {
+    if super::window::set_redraw_rate(child_id, interval_ms) {
+        1
+    } else {
+        0
+    }
+}
+
 // ─── Phase 6: menu + MDI verbs ───────────────────────────────────────
 
 /// `iGui.SetMenu(spec: ARRAY OF SHORTCHAR): INTSHORT`. See
@@ -1106,6 +1125,11 @@ fn write_event(
             p1 = menu_id;
             p2 = item_id;
         }
+        IGuiEvent::Tick { child_id, time_ms } => {
+            k = kind::TICK;
+            child = child_id;
+            t = time_ms;
+        }
     }
 
     unsafe {
@@ -1189,6 +1213,7 @@ pub fn native_module_artifact() -> NativeModuleArtifact {
                 ExportEntry::procedure("MdiTileV"),
                 ExportEntry::procedure("MdiCloseAll"),
                 ExportEntry::procedure("MdiArrangeIcons"),
+                ExportEntry::procedure("SetRedrawRate"),
             ]),
             "iGui.bootstrap",
             "Integrated GUI: MDI frame, Direct2D surfaces, typed event mailbox",
@@ -1374,6 +1399,10 @@ pub fn native_module_artifact() -> NativeModuleArtifact {
             NativeExportBinding::procedure(
                 "MdiArrangeIcons",
                 igui_mdi_arrange_icons as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "SetRedrawRate",
+                igui_set_redraw_rate as *const () as usize,
             ),
         ],
     )

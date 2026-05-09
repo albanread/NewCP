@@ -43,11 +43,12 @@ use windows::Win32::System::LibraryLoader::GetModuleHandleW;
 use windows::Win32::System::Threading::GetCurrentThreadId;
 use windows::Win32::UI::WindowsAndMessaging::{
     CreateWindowExW, DefMDIChildProcW, DefWindowProcW, GetClientRect, GetParent,
-    GetWindowLongPtrW, IsWindow, IsWindowVisible, LoadCursorW, RegisterClassExW, SendMessageW,
-    SetWindowLongPtrW, SetWindowPos, CREATESTRUCTW, GWLP_USERDATA, IDC_ARROW,
-    MDICREATESTRUCTW, SWP_NOACTIVATE, SWP_NOZORDER, WINDOW_EX_STYLE, WM_DPICHANGED_AFTERPARENT,
-    WM_ERASEBKGND, WM_MDIDESTROY, WM_NCCREATE, WM_NCDESTROY, WM_PAINT, WM_SETCURSOR,
-    WM_SETTEXT, WM_SIZE, WNDCLASSEXW, WNDCLASS_STYLES, WS_CHILD, WS_CLIPSIBLINGS, WS_VISIBLE,
+    GetWindowLongPtrW, IsWindow, IsWindowVisible, KillTimer, LoadCursorW, RegisterClassExW,
+    SendMessageW, SetTimer, SetWindowLongPtrW, SetWindowPos, CREATESTRUCTW, GWLP_USERDATA,
+    IDC_ARROW, MDICREATESTRUCTW, SWP_NOACTIVATE, SWP_NOZORDER, WINDOW_EX_STYLE,
+    WM_DPICHANGED_AFTERPARENT, WM_ERASEBKGND, WM_MDIDESTROY, WM_NCCREATE, WM_NCDESTROY,
+    WM_PAINT, WM_SETCURSOR, WM_SETTEXT, WM_SIZE, WM_TIMER, WNDCLASSEXW, WNDCLASS_STYLES,
+    WS_CHILD, WS_CLIPSIBLINGS, WS_VISIBLE,
 };
 
 use super::batch as batch_mod;
@@ -1796,6 +1797,36 @@ unsafe extern "system" fn render_host_wnd_proc(
             } else {
                 unsafe { DefWindowProcW(hwnd, msg, wparam, lparam) }
             }
+        }
+        x if x == super::window::WM_IGUI_SET_TIMER => {
+            // Install or clear the per-child redraw timer.
+            let interval = wparam.0;
+            if interval == 0 {
+                let _ = unsafe { KillTimer(Some(hwnd), super::window::TICK_TIMER_ID) };
+            } else {
+                let _ = unsafe {
+                    SetTimer(
+                        Some(hwnd),
+                        super::window::TICK_TIMER_ID,
+                        interval as u32,
+                        None,
+                    )
+                };
+            }
+            LRESULT(0)
+        }
+        WM_TIMER if wparam.0 == super::window::TICK_TIMER_ID => {
+            if !raw.is_null() {
+                let state = unsafe { &*raw };
+                let now = unsafe {
+                    windows::Win32::UI::WindowsAndMessaging::GetMessageTime()
+                };
+                channels::push(IGuiEvent::Tick {
+                    child_id: state.child_id,
+                    time_ms: now as i64,
+                });
+            }
+            LRESULT(0)
         }
         WM_DPICHANGED_AFTERPARENT => {
             // The parent (MDI child) just changed DPI; refresh ours.

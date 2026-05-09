@@ -30,6 +30,7 @@ CONST
   EvThemeChange* = 10;
   EvDpiChange*   = 11;
   EvSurfaceReply* = 12;
+  EvTick*        = 13;
 
   (* mouse op sub-kinds packed into p3 high byte *)
   MouseMove*       = 0;
@@ -331,5 +332,15 @@ PROCEDURE MdiTileH*;
 PROCEDURE MdiTileV*;
 PROCEDURE MdiCloseAll*;
 PROCEDURE MdiArrangeIcons*;
+
+(* ── Animation tick ───────────────────────────────────────────────
+   SetRedrawRate schedules an EvTick event for childId every
+   intervalMs milliseconds. intervalMs <= 0 disables the timer.
+   Win32 auto-coalesces queued WM_TIMERs, so a backed-up language
+   thread sees at most one tick per child per drain cycle.
+
+   Returns 1 on success, 0 if childId is unknown. *)
+
+PROCEDURE SetRedrawRate*(childId: INTEGER; intervalMs: INTEGER): INTSHORT;
 
 END iGui.
