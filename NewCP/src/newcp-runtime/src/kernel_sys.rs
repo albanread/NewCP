@@ -496,10 +496,12 @@ fn module_name_from_handle(handle: i64) -> Option<String> {
 
 /// Process-wide registry of known TypeDescs, keyed by qualified
 /// name. Populated by:
-///   1. (Future) codegen-emitted `__newcp_register_type(td)` calls
-///      at module-init time. This is the proper population path
-///      and lets `Kernel.ThisType` work for any type in any
-///      currently-loaded module.
+///   1. Codegen-emitted `__newcp_register_type(td)` calls at
+///      module-init time (see `__newcp_register_type` below).
+///      This is the load-bearing path — every module's
+///      `<Module>.__init_types` function calls register_type for
+///      each emitted TypeDesc, which the loader runs before
+///      `<Module>.body`.
 ///   2. The test-only [`register_known_type_for_test`] helper for
 ///      unit tests with hand-fabricated TypeDescs.
 ///
@@ -530,6 +532,36 @@ fn reset_type_registry_for_test() {
         .lock()
         .expect("type registry mutex poisoned");
     reg.clear();
+}
+
+/// JIT-callable runtime symbol — codegen emits a call to this
+/// function for every TypeDesc the module declares, packed inside
+/// a per-module `<Module>.__init_types` function the loader runs
+/// before `<Module>.body`.
+///
+/// Reads the TypeDesc's `name` field (UTF-32 qualified name like
+/// `"Stores.StoreDesc"`) and inserts the (name, td) pair into the
+/// registry. Idempotent — re-registration with the same name
+/// updates the address (e.g. on hot reload).
+///
+/// # Safety
+/// `td` must be a valid `*const TypeDesc` whose `name` field
+/// points at a UTF-32 zero-terminated codepoint stream, or null.
+#[unsafe(no_mangle)]
+pub extern "C" fn __newcp_register_type(td: *const TypeDesc) {
+    if td.is_null() {
+        return;
+    }
+    let Some(name) = type_desc_qualified_name_string(td as i64) else {
+        return;
+    };
+    let mut reg = TYPE_DESC_REGISTRY
+        .lock()
+        .expect("type registry mutex poisoned");
+    // Replace existing entry so a re-loaded module's TypeDesc
+    // address shadows the prior one.
+    reg.retain(|(n, _)| n != &name);
+    reg.push((name, td as i64));
 }
 
 /// `Kernel.ThisType(m: Module; IN typeName: ARRAY OF CHAR): Type`.

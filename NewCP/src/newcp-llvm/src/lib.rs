@@ -66,6 +66,11 @@ pub struct CompiledModule {
     /// The current JIT patches the emitted mutable globals in place rather
     /// than redirecting them through externally allocated storage.
     pub vtable_externs: Vec<(String, usize)>,
+    /// LLVM symbol name of the synthetic `<Module>.__init_types`
+    /// function this compilation emitted, or `None` if the module
+    /// declares no TypeDescs. The loader looks this symbol up by
+    /// name and calls it before `<Module>.body`.
+    pub init_types_function: Option<String>,
 }
 
 /// Owns a JIT module together with the LLVM context it depends on.
@@ -138,6 +143,14 @@ impl OwnedJitModule {
 
     pub fn exported_function_count(&self) -> usize {
         self.jit.exported_functions.len()
+    }
+
+    /// Resolve any LLVM symbol name to its address. Used by the
+    /// loader for synthetic codegen-only functions (like
+    /// `<Module>.__init_types`) that aren't in the public-export
+    /// manifest but live in the JIT-emitted module.
+    pub fn export_address_by_llvm_name(&self, llvm_name: &str) -> Result<usize, CodegenError> {
+        self.jit.export_address_by_llvm_name(llvm_name)
     }
 
     pub fn export_address(&self, public_name: &str) -> Result<usize, CodegenError> {
@@ -217,6 +230,12 @@ pub fn compile_ir_module(
         emitter.emit(proc)?;
     }
 
+    // Stage 4b: emit the synthetic per-module `__init_types` function
+    // (calls `__newcp_register_type` for every TypeDesc this module
+    // declares). The loader runs this before the module's body so
+    // `Kernel.ThisType` works without requiring a prior allocation.
+    let init_types_name = cg.emit_init_types_function(ir_module, options);
+
     cg.optimize(options.opt_level, &machine)?;
 
     // Stage 5: verify.
@@ -250,6 +269,7 @@ pub fn compile_ir_module(
         vtable_slot_functions,
         vtable_init_function_name,
         vtable_externs,
+        init_types_function: init_types_name,
     })
 }
 

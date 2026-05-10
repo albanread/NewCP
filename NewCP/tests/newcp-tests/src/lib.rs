@@ -2469,14 +2469,28 @@ mod tests {
     #[test]
     fn kernel_probe_this_type_nil_when_unseen() {
         // ThisType returns NIL when the (module, type) pair has no
-        // matching TypeDesc visible in the heap. Validates the
-        // "module known but type not heap-resident" path that S2
-        // will need to recognise before falling through to alien
-        // dispatch.
+        // matching TypeDesc registered. Validates the "module known
+        // but type unregistered" path Stores.ThisType falls through
+        // to alien dispatch on.
         assert_eq!(
             run_function("Mod/Tests/KernelProbe.cp", "ThisTypeNilWhenUnseen"),
             1,
             "ThisType must return NIL for unseen (module, type) pairs"
+        );
+    }
+
+    #[test]
+    fn kernel_probe_this_type_finds_registered_type() {
+        // KernelProbe's WidgetDesc / GadgetDesc are registered at
+        // module-init time via the codegen-emitted __init_types
+        // function. The probe verifies the registry mechanics —
+        // CP-side compiled-module name registration is still
+        // pending so we can't ThisMod("KernelProbe") yet, but the
+        // type-init plumbing is exercised end-to-end.
+        assert_eq!(
+            run_function("Mod/Tests/KernelProbe.cp", "ThisTypeFindsRegisteredType"),
+            1,
+            "ThisType reflection plumb (registry populated by __init_types)"
         );
     }
 

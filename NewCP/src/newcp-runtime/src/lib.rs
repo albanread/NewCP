@@ -1046,6 +1046,9 @@ pub fn runtime_symbol_address(symbol_name: &str) -> Option<usize> {
     if symbol_name == "__newcp_unimpl_method_trap" {
         return Some(__newcp_unimpl_method_trap as *const () as usize);
     }
+    if symbol_name == "__newcp_register_type" {
+        return Some(kernel_sys::__newcp_register_type as *const () as usize);
+    }
 
     let (module_name, export_name) = symbol_name.split_once('.')?;
     native_export_address(module_name, export_name)

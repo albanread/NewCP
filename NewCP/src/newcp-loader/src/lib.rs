@@ -202,6 +202,10 @@ struct ActiveExecutableImage {
     /// `llvm_name -> address` for every method body emitted by this module.
     /// Importers read this when patching their cross-module vtable slots.
     method_addresses: HashMap<String, usize>,
+    /// Address of the synthetic `<Module>.__init_types` function, if
+    /// codegen emitted one. The loader runs it before `<Module>.body`
+    /// so `Kernel.ThisType` can find every type at module-init time.
+    init_types_addr: Option<usize>,
     image: OwnedJitModule,
 }
 
@@ -217,11 +221,12 @@ struct StagedModuleUpdate {
     artifact: newcp_runtime::CompiledModuleArtifact,
     compiled_module_entry: String,
     materialized_record: MaterializedModuleRecord,
-    /// `(image, export_addresses, method_addresses)`.
+    /// `(image, export_addresses, method_addresses, init_types_addr)`.
     executable_image: Option<(
         OwnedJitModule,
         HashMap<String, usize>,
         HashMap<String, usize>,
+        Option<usize>,
     )>,
     retirement_reason: RetirementReason,
 }
@@ -829,7 +834,7 @@ impl LoaderSession {
                 module.path.display()
             );
 
-            if let Some((_, export_addresses, method_addresses)) = &executable_image {
+            if let Some((_, export_addresses, method_addresses, _)) = &executable_image {
                 staged_export_addresses.insert(module.spec.name.clone(), export_addresses.clone());
                 staged_method_addresses
                     .insert(module.spec.name.clone(), method_addresses.clone());
@@ -887,7 +892,9 @@ impl LoaderSession {
                 .retain(|entry| !entry.starts_with(&format!("{} [", module_name)));
             self.report.compiled_modules.push(update.compiled_module_entry);
 
-            if let Some((image, export_addresses, method_addresses)) = update.executable_image {
+            if let Some((image, export_addresses, method_addresses, init_types_addr)) =
+                update.executable_image
+            {
                 self.active_executable_images.insert(
                     module_name.clone(),
                     ActiveExecutableImage {
@@ -895,6 +902,7 @@ impl LoaderSession {
                         generation: update.materialized_record.generation,
                         export_addresses,
                         method_addresses,
+                        init_types_addr,
                         image,
                     },
                 );
@@ -918,6 +926,20 @@ impl LoaderSession {
             let Some(image) = self.active_executable_images.get(&module.spec.name) else {
                 continue;
             };
+            // Run the synthetic per-module type-init function FIRST,
+            // before the user's body. It calls __newcp_register_type for
+            // every TypeDesc this module declares so Kernel.ThisType
+            // resolves them without requiring a prior NEW(...) call.
+            // Some modules (definition-only or no record types) won't
+            // emit one — None just skips the call.
+            if let Some(init_addr) = image.init_types_addr {
+                // Safety: codegen-emitted as `extern "C" fn()`.
+                unsafe {
+                    let init_fn: extern "C" fn() = std::mem::transmute(init_addr);
+                    init_fn();
+                }
+            }
+
             let body_symbol = format!("{}.body", module.spec.name);
             let Some(&addr) = image.export_addresses.get(&body_symbol) else {
                 continue; // module has no body (e.g. DEFINITION MODULE)
@@ -1495,6 +1517,7 @@ fn materialize_compiled_image(
         OwnedJitModule,
         HashMap<String, usize>,
         HashMap<String, usize>,
+        Option<usize>,
     ),
     String,
 > {
@@ -1519,6 +1542,10 @@ fn materialize_compiled_image(
             }
         }
     }
+    // Capture the per-module type-init function's LLVM name before the
+    // CompiledModule is consumed by the JIT. None when the module
+    // declares no record types with TypeDescs.
+    let init_types_llvm_name = compiled.init_types_function.clone();
     let image = OwnedJitModule::from_compiled_with_symbol_mappings(compiled, &options, import_symbol_mappings)
         .map_err(|error| format!("failed to JIT materialize executable image from {}: {error}", path.display()))?;
     let export_addresses = public_exports
@@ -1539,7 +1566,14 @@ fn materialize_compiled_image(
     // cross-module vtable patching.
     let method_addresses = image.collect_method_addresses();
 
-    Ok((image, export_addresses, method_addresses))
+    // Resolve the init-types entry point if codegen emitted one. The
+    // loader calls it before `<Module>.body` so every TypeDesc is
+    // registered with `Kernel.ThisType` at module-init time.
+    let init_types_addr = init_types_llvm_name
+        .as_deref()
+        .and_then(|name| image.export_address_by_llvm_name(name).ok());
+
+    Ok((image, export_addresses, method_addresses, init_types_addr))
 }
 
 pub fn bootstrap_plan() -> String {

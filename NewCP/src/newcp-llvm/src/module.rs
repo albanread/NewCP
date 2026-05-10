@@ -576,6 +576,68 @@ impl<'ctx> CodegenModule<'ctx> {
         let fn_ty_rec = ptr_ty.fn_type(&[ptr_ty.into()], false);
         self.module
             .add_function("__newcp_new_rec", fn_ty_rec, Some(inkwell::module::Linkage::External));
+
+    }
+
+    /// Emit `<Module>.__init_types` — a synthetic exported function that
+    /// calls `__newcp_register_type` for every TypeDesc declared in this
+    /// module. The loader runs this before `<Module>.body`.
+    ///
+    /// Returns the function name as recorded in the export manifest, so
+    /// the loader can look it up directly. `None` if this module declares
+    /// no TypeDescs (in which case there's nothing to register).
+    pub(crate) fn emit_init_types_function(
+        &mut self,
+        ir_module: &IrModule,
+        options: &crate::CodegenOptions,
+    ) -> Option<String> {
+        let mut td_globals: Vec<inkwell::values::GlobalValue<'ctx>> = Vec::new();
+        for type_name in ir_module.type_vtables.keys() {
+            let desc_name = format!("{type_name}.desc");
+            if let Some(g) = self.module.get_global(&desc_name) {
+                td_globals.push(g);
+            }
+        }
+        if td_globals.is_empty() {
+            return None;
+        }
+
+        let void_ty = self.context.void_type();
+        let fn_ty = void_ty.fn_type(&[], false);
+        let llvm_name = options.exported_symbol_name(&ir_module.name, "__init_types");
+        let fn_val = self
+            .module
+            .add_function(&llvm_name, fn_ty, Some(inkwell::module::Linkage::External));
+        let entry = self.context.append_basic_block(fn_val, "entry");
+
+        let builder = self.context.create_builder();
+        builder.position_at_end(entry);
+
+        // `@__newcp_register_type(ptr) -> void` — runtime entry point
+        // that adds a TypeDesc to the global type registry keyed by
+        // qualified name. We declare it lazily here (rather than in
+        // declare_sys_new) so modules that don't emit any TypeDescs
+        // never reference it.
+        let register_fn = self
+            .module
+            .get_function("__newcp_register_type")
+            .unwrap_or_else(|| {
+                let void_ty = self.context.void_type();
+                let ptr_ty_arg = self.context.ptr_type(inkwell::AddressSpace::default());
+                let fn_ty_reg = void_ty.fn_type(&[ptr_ty_arg.into()], false);
+                self.module.add_function(
+                    "__newcp_register_type",
+                    fn_ty_reg,
+                    Some(inkwell::module::Linkage::External),
+                )
+            });
+
+        for td in td_globals {
+            let _ = builder.build_call(register_fn, &[td.as_pointer_value().into()], "");
+        }
+        let _ = builder.build_return(None);
+
+        Some(llvm_name)
     }
 
     /// Return the LLVM textual IR for the completed module.
