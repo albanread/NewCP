@@ -2434,6 +2434,95 @@ impl<'m> LowerCtx<'m> {
         }
     }
 
+    /// CFG-based short-circuit lowering for the boolean `&` / `OR`
+    /// operators (CP §8.2.3).
+    ///
+    /// Shape:
+    ///
+    /// ```text
+    ///   <current>:
+    ///       <lower left>
+    ///       condbr lv, true_target, false_target
+    ///
+    ///   eval_right:
+    ///       <lower right>
+    ///       store slot, rv
+    ///       br merge
+    ///
+    ///   take_short:
+    ///       store slot, <short-circuit constant>
+    ///       br merge
+    ///
+    ///   merge:
+    ///       result = load slot
+    /// ```
+    ///
+    /// For `&` the short-circuit constant is FALSE and the eval-right
+    /// branch is the TRUE arm.  For `OR` they swap.
+    ///
+    /// The merge slot is a synthetic `GlobalRef("$lshort_<id>", Ref(Bool))`;
+    /// the LLVM emit layer's `ensure_named_slot` auto-allocates it in
+    /// the entry block on first reference.  No explicit alloca IR
+    /// instruction is needed.
+    fn lower_short_circuit_boolean(
+        &mut self,
+        left: &Expr,
+        op: BinaryOp,
+        right: &Expr,
+    ) -> IrValue {
+        let lv = self.lower_expr(left);
+
+        // Unique slot name per short-circuit expression so nested
+        // `&` / `OR` don't clobber each other.  TempId's render is
+        // already monotonic and unique within the procedure.
+        let slot_id = self.fresh_temp();
+        let slot_name = format!("$lshort_{}", slot_id.render());
+        let slot = IrValue::GlobalRef(slot_name, IrType::Ref(Box::new(IrType::Bool)));
+
+        let eval_right = self.alloc_block();
+        let take_short = self.alloc_block();
+        let merge = self.alloc_block();
+
+        let (true_target, false_target, short_value) = match op {
+            BinaryOp::And => (eval_right, take_short, false),
+            BinaryOp::Or => (take_short, eval_right, true),
+            _ => unreachable!("lower_short_circuit_boolean called with non-&/OR op"),
+        };
+
+        self.set_term(Terminator::CondBr {
+            cond: lv,
+            true_target,
+            false_target,
+        });
+
+        // take_short: store the short-circuit constant + jump to merge.
+        self.switch_to(take_short);
+        self.push(Instr::Store {
+            addr: slot.clone(),
+            value: IrValue::ConstBool(short_value),
+        });
+        self.set_term(Terminator::Br { target: merge });
+
+        // eval_right: lower the right operand, store, jump to merge.
+        self.switch_to(eval_right);
+        let rv = self.lower_expr(right);
+        self.push(Instr::Store {
+            addr: slot.clone(),
+            value: rv,
+        });
+        self.set_term(Terminator::Br { target: merge });
+
+        // merge: load the slot to produce the result.
+        self.switch_to(merge);
+        let result = self.fresh_temp();
+        self.push(Instr::Load {
+            dst: result,
+            addr: slot,
+            ty: IrType::Bool,
+        });
+        IrValue::Temp(result, IrType::Bool)
+    }
+
     fn lower_binary(&mut self, left: &Expr, op: BinaryOp, right: &Expr) -> IrValue {
         // CP string-content compare: when both operands are
         // char-array-shaped (ARRAY OF CHAR/SHORTCHAR variables, char
@@ -2448,6 +2537,20 @@ impl<'m> LowerCtx<'m> {
             if let Some(result) = self.try_lower_string_compare(left, op, right) {
                 return result;
             }
+        }
+
+        // CP §8.2.3: `&` and `OR` short-circuit.  Lowering both
+        // operands eagerly and then doing a bitwise combine — which is
+        // what the generic path below would do — calls the right
+        // operand even when the left already decides the result.  That
+        // breaks the load-bearing CP idiom `IF (p # NIL) & (p.x > 0)`,
+        // which under non-short-circuit semantics dereferences NIL
+        // whenever `p` is NIL.  Intercept here and emit a CFG-shaped
+        // lowering: branch on the left; only evaluate the right in the
+        // appropriate arm; phi-equivalent via a stack slot read at the
+        // merge.
+        if matches!(op, BinaryOp::And | BinaryOp::Or) {
+            return self.lower_short_circuit_boolean(left, op, right);
         }
 
         // The IS operator's right operand is a TYPE designator, not an

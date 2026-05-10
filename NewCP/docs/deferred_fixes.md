@@ -10,6 +10,17 @@ during ports. Don't put unrelated TODOs here; this is for places where
 
 ---
 
+## 🔴 Urgent
+
+> Items here should jump the queue ahead of feature work — they're load-bearing
+> CP idioms whose breakage is silent / unsafe rather than loud / contained.
+
+*(Currently empty — #19 short-circuit was filed here, fixed, and the
+entry retired.  The matrix probe `M_Expr_ShortCircuit_NilGuard` is
+the regression target.)*
+
+---
+
 ## Compiler / language
 
 ### 1. Value-mode record/array params: rejected, not honoured
@@ -410,6 +421,106 @@ certainly a SHORTCHAR (`i8`) formal being supplied with a CHAR
 (`Cast` IR), narrow in the prologue, or align the formal's declared
 type. Re-run the suite at `NEWCP_OPT=none` until all 8 cases pass;
 add the `NEWCP_OPT=none` lane to CI so the bug class stays out.
+
+### 19. ~~Logical `&` / `OR` do not short-circuit~~ — FIXED
+
+**Status**: closed. `newcp-ir/src/lower.rs::lower_short_circuit_boolean`
+emits a CFG-shaped lowering — branch on the left operand, only
+evaluate the right operand in the appropriate arm, phi-equivalent
+via a synthetic `$lshort_<id>` stack slot at the merge.
+
+**Regression coverage**: matrix probes
+`M_Expr_LogicalAnd_ShortCircuit`, `M_Expr_LogicalOr_ShortCircuit`,
+and `M_Expr_ShortCircuit_NilGuard` (the last one exercises the
+`IF (p # NIL) & (p.field > 0) THEN` BlackBox idiom that was
+silently dereferencing NIL before the fix).
+
+### 20. Sema rejects subset/superset (`<=` / `>=`) on SET operands
+
+**Where**: sema's relational-operator type table. Surfaced by
+matrix probe `M_Expr_SET_Equality` (`#[ignore]`-flagged).
+
+**Workaround**: probe ignored. Real code that wants a subset test
+can use the equivalent `(a * b) = a` (intersection equals self).
+
+**Why deferred**: CP §8.2.5 defines `s1 <= s2` as "s1 is a subset
+of s2" and `s1 >= s2` as superset. The sema reports
+`invalid operands for <=: SET and SET`. Just needs adding the
+SET-SET pair to the relational-operator type table; the runtime
+already supports the operation through `(a * b) = a` so no
+codegen work is required.
+
+**Closing it**: extend the relational-operator type rules in
+`newcp-sema` to allow SET on both sides for `<=` / `>=` /
+`<` / `>`, lowering to the subset/superset semantics. Un-ignore
+the probe.
+
+### 21. Multi-dimensional fixed-array indexing crashes codegen
+
+**Where**: LLVM emit for `arr[i, j]` where `arr` is declared as
+`ARRAY M, N OF T`. Surfaced by matrix probe
+`M_MultiDim_FixedArray` (`#[ignore]`-flagged).
+
+**Workaround**: probe ignored. Real code can use nested
+single-dim arrays (`ARRAY M OF ARRAY N OF T`) instead, which
+works because each dimension is its own GEP step.
+
+**Why deferred**: the comma-syntax `arr[i, j]` lowers to
+something that loads the inner `[N x T]` row as a value and then
+tries to use it as an index. The fix is to chain GEPs instead of
+materialising the inner row.
+
+**Closing it**: in `newcp-ir`'s multi-index lowering, emit a
+sequence of `IndexGep` instructions (one per dimension) instead
+of a single GEP that drops the trailing index. Un-ignore the
+probe to confirm; expected packed value 250.
+
+### 22. Method dispatch on a call-result receiver reads wild memory
+
+**Where**: receiver lowering in `newcp-ir/src/lower.rs`. Surfaced
+by matrix probe `M_Method_On_Function_Result`
+(`#[ignore]`-flagged).
+
+**Workaround**: probe shipped ignored. Real code can assign the
+call result to a local first and call through the local — that
+path uses a designator-based receiver, which works.
+
+**Why deferred**: the plain-record-dispatch refactor (earlier in
+the test-matrix landing) lowers receivers via `designator_addr`.
+A call-as-prefix (`Make(99).Get()`) produces a Temp IrValue
+rather than a designator, so the receiver lookup reads the wrong
+slot and the body dereferences an uninitialised pointer
+(observed: `1881534181456` instead of `99`).
+
+**Closing it**: in the bound-proc-call lowering, when the prefix
+expression is itself a procedure call (rather than a designator),
+materialise its result into a synthetic Temp slot and use that
+Temp as the receiver pointer. Un-ignore the probe to confirm.
+
+### 23. Sema mis-types receiver as the underlying record when the method's return type is the receiver's pointer alias
+
+**Where**: sema's return-type checking. Surfaced by matrix probe
+`M_Method_Returns_Pointer` (`#[ignore]`-flagged).
+
+**Workaround**: probe shipped ignored. A method that returns
+`Box` (pointer alias) can be rewritten to return `BoxDesc` (the
+record) but that loses the BlackBox-faithful builder-pattern
+idiom; or the caller can wrap in `(b: Box) Method (): BoxDesc`
+and have callers narrow back. Neither is great.
+
+**Why deferred**: the receiver-canonicalisation work elsewhere in
+sema already chases pointer aliases to their record names so
+method dispatch lines up. The return-type check needs the
+mirror-image canonicalisation: when comparing `RETURN b` (where
+`b` is a pointer-aliased receiver) against the declared return
+type `Box`, sema must recognise that `b`'s type and `Box` agree.
+Currently it reports `expected Box, found BoxDesc`.
+
+**Closing it**: in sema's `check_return_type` / equivalent, when
+the actual type is a record and the expected type is a pointer
+alias to that same record, allow the implicit narrowing (or
+better: canonicalise both sides to the underlying record name
+before comparing). Un-ignore the probe to confirm.
 
 ---
 

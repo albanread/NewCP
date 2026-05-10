@@ -464,3 +464,539 @@ fn matrix_module_begin_block_initializes_state() {
     );
 }
 
+/// CP §8.2.3 — `&` evaluates the right operand only if the left is TRUE; a side effect in the right operand must NOT fire when the left is FALSE
+#[test]
+fn matrix_expr_logical_and_short_circuits() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_LogicalAnd_ShortCircuit.cp", "Run"),
+        1,
+        "matrix probe expr_logical_and_short_circuits (`&` evaluates the right operand only if the left is TRUE; a side effect in the right operand must NOT fire when the left is FALSE — §8.2.3) returned the wrong value",
+    );
+}
+
+/// CP §8.2.3 — the load-bearing CP idiom `IF (p # NIL) & (p.field > 0) THEN ...` must NOT dereference p when it is NIL (short-circuit eval); without the fix every defensive NIL guard in BlackBox source silently crashes on the FALSE branch
+#[test]
+fn matrix_expr_short_circuit_nil_guard_idiom() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_ShortCircuit_NilGuard.cp", "Run"),
+        42,
+        "matrix probe expr_short_circuit_nil_guard_idiom (the load-bearing CP idiom `IF (p # NIL) & (p.field > 0) THEN ...` must NOT dereference p when it is NIL (short-circuit eval); without the fix every defensive NIL guard in BlackBox source silently crashes on the FALSE branch — §8.2.3) returned the wrong value",
+    );
+}
+
+/// CP §8.2.3 — `OR` evaluates the right operand only if the left is FALSE; a side effect in the right operand must NOT fire when the left is TRUE
+#[test]
+fn matrix_expr_logical_or_short_circuits() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_LogicalOr_ShortCircuit.cp", "Run"),
+        1,
+        "matrix probe expr_logical_or_short_circuits (`OR` evaluates the right operand only if the left is FALSE; a side effect in the right operand must NOT fire when the left is TRUE — §8.2.3) returned the wrong value",
+    );
+}
+
+/// CP §8.2.5 — relational operators on CHAR follow code-point order
+#[test]
+fn matrix_expr_relational_on_char() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_Relational_CHAR.cp", "Run"),
+        11111,
+        "matrix probe expr_relational_on_char (relational operators on CHAR follow code-point order — §8.2.5) returned the wrong value",
+    );
+}
+
+/// CP §8.2.5 — POINTER = NIL / # NIL and pointer-to-pointer equality compare identity, not contents
+#[test]
+fn matrix_expr_pointer_nil_comparisons() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_Relational_Pointer_NIL.cp", "Run"),
+        11110,
+        "matrix probe expr_pointer_nil_comparisons (POINTER = NIL / # NIL and pointer-to-pointer equality compare identity, not contents — §8.2.5) returned the wrong value",
+    );
+}
+
+/// CP §10.3 — ORD(CHR(n)) = n for every code point in the CHAR range
+#[test]
+fn matrix_expr_ord_chr_round_trip() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_ORD_CHR_RoundTrip.cp", "Run"),
+        257,
+        "matrix probe expr_ord_chr_round_trip (ORD(CHR(n)) = n for every code point in the CHAR range — §10.3) returned the wrong value",
+    );
+}
+
+/// CP §8.2.2 — REAL +, -, *, / arithmetic with ENTIER to land in an INTEGER result
+#[test]
+fn matrix_expr_real_arithmetic_packs_to_integer() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_REAL_Arithmetic.cp", "Run"),
+        21,
+        "matrix probe expr_real_arithmetic_packs_to_integer (REAL +, -, *, / arithmetic with ENTIER to land in an INTEGER result — §8.2.2) returned the wrong value",
+    );
+}
+
+/// CP §10.3 — LEN on a string literal passed through an open-array IN param counts elements including the trailing NUL
+#[test]
+fn matrix_expr_len_on_string_literal_via_open_array() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_LEN_OnString.cp", "Run"),
+        4,
+        "matrix probe expr_len_on_string_literal_via_open_array (LEN on a string literal passed through an open-array IN param counts elements including the trailing NUL — §10.3) returned the wrong value",
+    );
+}
+
+/// CP §8.2.5 — SET equality (=) and subset/superset (<=, >=) compare by membership, not by literal construction
+#[test]
+#[ignore = "KNOWN BUG: sema rejects `<=` and `>=` on SET operands with `invalid operands for <=: SET and SET`. CP §8.2.5 defines these as subset / superset tests; needs to be wired through the relational-operator type table. File under deferred_fixes #20."]
+fn matrix_expr_set_equality_and_subset() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_SET_Equality.cp", "Run"),
+        1111,
+        "matrix probe expr_set_equality_and_subset (SET equality (=) and subset/superset (<=, >=) compare by membership, not by literal construction — §8.2.5) returned the wrong value",
+    );
+}
+
+/// CP §9.4 — IF / ELSIF / ELSE chain selects the first matching arm and skips the rest
+#[test]
+fn matrix_stmt_if_elsif_chain() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Stmt_IF_ElsIf_Chain.cp", "Run"),
+        33,
+        "matrix probe stmt_if_elsif_chain (IF / ELSIF / ELSE chain selects the first matching arm and skips the rest — §9.4) returned the wrong value",
+    );
+}
+
+/// CP §9.4 — IF without ELSE leaves state untouched when the condition is FALSE
+#[test]
+fn matrix_stmt_if_without_else() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Stmt_IF_NoElse.cp", "Run"),
+        7,
+        "matrix probe stmt_if_without_else (IF without ELSE leaves state untouched when the condition is FALSE — §9.4) returned the wrong value",
+    );
+}
+
+/// CP §9.7 — WHILE loop evaluates the condition first; body skipped entirely if it starts FALSE
+#[test]
+fn matrix_stmt_while_loop_basic() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Stmt_WHILE_Loop.cp", "Run"),
+        55,
+        "matrix probe stmt_while_loop_basic (WHILE loop evaluates the condition first; body skipped entirely if it starts FALSE — §9.7) returned the wrong value",
+    );
+}
+
+/// CP §10 — a procedure may call itself recursively; classic factorial confirms the call stack and return values both behave
+#[test]
+fn matrix_stmt_procedure_direct_recursion() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Stmt_Procedure_Recursion.cp", "Run"),
+        720,
+        "matrix probe stmt_procedure_direct_recursion (a procedure may call itself recursively; classic factorial confirms the call stack and return values both behave — §10) returned the wrong value",
+    );
+}
+
+/// CP §10 — procedure with no parameters and no return value (void); callable both with and without empty parens per BlackBox idiom
+#[test]
+fn matrix_stmt_procedure_no_params() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Stmt_Procedure_NoParams.cp", "Run"),
+        100,
+        "matrix probe stmt_procedure_no_params (procedure with no parameters and no return value (void); callable both with and without empty parens per BlackBox idiom — §10) returned the wrong value",
+    );
+}
+
+/// CP §6.3 — record containing a fixed-size array field; field-then-index access paths walk through the parent struct's GEP before the array GEP
+#[test]
+fn matrix_record_with_fixed_array_field() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Record_With_Array_Field.cp", "Run"),
+        60,
+        "matrix probe record_with_fixed_array_field (record containing a fixed-size array field; field-then-index access paths walk through the parent struct's GEP before the array GEP — §6.3) returned the wrong value",
+    );
+}
+
+/// CP §6.3 — record with a pointer field — a freshly NEW'd record has its pointer fields zero-initialised to NIL
+#[test]
+#[ignore = "KNOWN BUG (same family as #14): `NEW(o.ptr)` where `ptr` is a record-field pointer trips IR codegen with `Instr::New: unknown record type opaque:new-ptr`. See deferred_fixes #14."]
+fn matrix_record_with_pointer_field_initially_nil() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Record_With_Pointer_Field.cp", "Run"),
+        9,
+        "matrix probe record_with_pointer_field_initially_nil (record with a pointer field — a freshly NEW'd record has its pointer fields zero-initialised to NIL — §6.3) returned the wrong value",
+    );
+}
+
+/// CP §6.2 / 8.4 — multi-dimensional fixed array — `ARRAY M, N OF T` indexed as `a[i, j]` (CP syntax) or `a[i][j]`
+#[test]
+#[ignore = "KNOWN BUG: multi-dim fixed array indexing `arr[i, j]` panics in LLVM emit with `Found ArrayValue but expected the IntValue variant` — the code path loads a full row [N x T] and then tries to use it as an index. Single-dim arrays work fine; the multi-index lowering path needs to chain GEPs instead of loading the inner array. File under deferred_fixes #21."]
+fn matrix_multi_dim_fixed_array_access() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_MultiDim_FixedArray.cp", "Run"),
+        250,
+        "matrix probe multi_dim_fixed_array_access (multi-dimensional fixed array — `ARRAY M, N OF T` indexed as `a[i, j]` (CP syntax) or `a[i][j]` — §6.2 / 8.4) returned the wrong value",
+    );
+}
+
+/// CP §10.2 — a method may recurse on the same receiver (Fibonacci on a counter receiver — silly but exercises the dispatch + recursion path)
+#[test]
+fn matrix_method_can_call_itself_recursively() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Method_Recursive.cp", "Run"),
+        21,
+        "matrix probe method_can_call_itself_recursively (a method may recurse on the same receiver (Fibonacci on a counter receiver — silly but exercises the dispatch + recursion path) — §10.2) returned the wrong value",
+    );
+}
+
+/// CP §10.2 — Sub.Method overrides Mid.Method overrides Base.Method; dispatch via Base pointer to a Sub instance lands in Sub's body
+#[test]
+fn matrix_override_three_levels_deep() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Override_Three_Levels_Deep.cp", "Run"),
+        4242,
+        "matrix probe override_three_levels_deep (Sub.Method overrides Mid.Method overrides Base.Method; dispatch via Base pointer to a Sub instance lands in Sub's body — §10.2) returned the wrong value",
+    );
+}
+
+/// CP §10.1 — OUT open-array param — callee writes propagate to caller's array buffer
+#[test]
+fn matrix_param_out_open_array_writes_through() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Param_OUT_OpenArray.cp", "Run"),
+        60,
+        "matrix probe param_out_open_array_writes_through (OUT open-array param — callee writes propagate to caller's array buffer — §10.1) returned the wrong value",
+    );
+}
+
+/// CP §10.3 — ASSERT(TRUE, code) returns without trapping; this exercises the cooperative-poll path that ASSERT inserts but no trap fires
+#[test]
+fn matrix_builtin_assert_true_does_not_trap() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Builtin_ASSERT_TrueIsNoOp.cp", "Run"),
+        99,
+        "matrix probe builtin_assert_true_does_not_trap (ASSERT(TRUE, code) returns without trapping; this exercises the cooperative-poll path that ASSERT inserts but no trap fires — §10.3) returned the wrong value",
+    );
+}
+
+/// CP §10.3 — MIN(T) / MAX(T) yield the type's range bounds at compile time
+#[test]
+fn matrix_builtin_min_max_of_type_constants() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Builtin_MIN_MAX_OfType.cp", "Run"),
+        4,
+        "matrix probe builtin_min_max_of_type_constants (MIN(T) / MAX(T) yield the type's range bounds at compile time — §10.3) returned the wrong value",
+    );
+}
+
+/// CP §12 — SYSTEM.ADR(v) yields v's address as an INTEGER; comparing the same variable's address to itself must produce TRUE
+#[test]
+fn matrix_system_adr_returns_an_address_word() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_SYSTEM_ADR_RoundTrip.cp", "Run"),
+        1,
+        "matrix probe system_adr_returns_an_address_word (SYSTEM.ADR(v) yields v's address as an INTEGER; comparing the same variable's address to itself must produce TRUE — §12) returned the wrong value",
+    );
+}
+
+/// CP §6.1 — a chain of type aliases (`TYPE A = INTEGER; B = A; C = B`) — assigning between any two is allowed and arithmetic still works
+#[test]
+fn matrix_type_alias_chain_resolves_to_underlying() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Type_Alias_Chain.cp", "Run"),
+        100,
+        "matrix probe type_alias_chain_resolves_to_underlying (a chain of type aliases (`TYPE A = INTEGER; B = A; C = B`) — assigning between any two is allowed and arithmetic still works — §6.1) returned the wrong value",
+    );
+}
+
+/// CP §10.3 — NEW zero-initialises every field of the allocated record — INTEGER fields read 0, BOOLEAN reads FALSE, POINTER reads NIL
+#[test]
+fn matrix_record_fields_zero_initialised_on_NEW() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Record_Field_DefaultZero.cp", "Run"),
+        1111,
+        "matrix probe record_fields_zero_initialised_on_NEW (NEW zero-initialises every field of the allocated record — INTEGER fields read 0, BOOLEAN reads FALSE, POINTER reads NIL — §10.3) returned the wrong value",
+    );
+}
+
+/// CP §6.4 / 10.3 — POINTER TO ARRAY OF T with NEW(p, n) — dynamic open-array allocated on the heap, length retrievable via LEN(p^)
+#[test]
+fn matrix_type_pointer_to_open_array_dynamic_new() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Type_PointerToOpenArray_NEW.cp", "Run"),
+        30,
+        "matrix probe type_pointer_to_open_array_dynamic_new (POINTER TO ARRAY OF T with NEW(p, n) — dynamic open-array allocated on the heap, length retrievable via LEN(p^) — §6.4 / 10.3) returned the wrong value",
+    );
+}
+
+/// CP §7 / 11 — module-level VARs without a BEGIN-block initialiser default to zero / FALSE / NIL — same rule as record fields
+#[test]
+fn matrix_module_var_default_zero_when_no_init() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Module_VAR_DefaultZero.cp", "Run"),
+        111,
+        "matrix probe module_var_default_zero_when_no_init (module-level VARs without a BEGIN-block initialiser default to zero / FALSE / NIL — same rule as record fields — §7 / 11) returned the wrong value",
+    );
+}
+
+/// CP §8.2.5 — `x IN s` membership test over SET elements
+#[test]
+fn matrix_expr_set_in_membership() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_SET_Membership.cp", "Run"),
+        11,
+        "matrix probe expr_set_in_membership (`x IN s` membership test over SET elements — §8.2.5) returned the wrong value",
+    );
+}
+
+/// CP §8.2.4 — INCL/EXCL on a SET behave as bit-set / bit-clear; cast to INTEGER via SYSTEM.VAL recovers the underlying word
+#[test]
+fn matrix_expr_bit_style_operations_via_set() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_Bit_Style_Via_SET.cp", "Run"),
+        42,
+        "matrix probe expr_bit_style_operations_via_set (INCL/EXCL on a SET behave as bit-set / bit-clear; cast to INTEGER via SYSTEM.VAL recovers the underlying word — §8.2.4) returned the wrong value",
+    );
+}
+
+/// CP §8.2.5 — relational operators (<, <=, =, >, >=) on REAL operands
+#[test]
+fn matrix_expr_real_relational() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_REAL_Relational.cp", "Run"),
+        1111,
+        "matrix probe expr_real_relational (relational operators (<, <=, =, >, >=) on REAL operands — §8.2.5) returned the wrong value",
+    );
+}
+
+/// CP §8.1 — INTEGER hex literals (suffix `H`) are accepted in arithmetic; mixed with decimal literals they pack into the same INTEGER type
+#[test]
+fn matrix_expr_hex_literal_arithmetic() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_Hex_Literals.cp", "Run"),
+        511,
+        "matrix probe expr_hex_literal_arithmetic (INTEGER hex literals (suffix `H`) are accepted in arithmetic; mixed with decimal literals they pack into the same INTEGER type — §8.1) returned the wrong value",
+    );
+}
+
+/// CP §8.1 — CHAR hex literals (suffix `X`) — `41X` is the same CHAR as `"A"` (ASCII 65)
+#[test]
+fn matrix_expr_char_hex_literals_match_decimal() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_CHAR_Hex_Literals.cp", "Run"),
+        1,
+        "matrix probe expr_char_hex_literals_match_decimal (CHAR hex literals (suffix `X`) — `41X` is the same CHAR as `\"A\"` (ASCII 65) — §8.1) returned the wrong value",
+    );
+}
+
+/// CP §10.3 — CAP(c) returns the uppercase letter for lowercase ASCII; non-letters pass through unchanged
+#[test]
+fn matrix_expr_cap_uppercases_lowercase_only() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_CAP_Builtin.cp", "Run"),
+        67,
+        "matrix probe expr_cap_uppercases_lowercase_only (CAP(c) returns the uppercase letter for lowercase ASCII; non-letters pass through unchanged — §10.3) returned the wrong value",
+    );
+}
+
+/// CP §9.6 — WITH ELSE arm fires when the receiver's dynamic type matches none of the listed type guards
+#[test]
+fn matrix_stmt_with_else_arm_fires_when_no_match() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Stmt_WITH_ElseOnly.cp", "Run"),
+        999,
+        "matrix probe stmt_with_else_arm_fires_when_no_match (WITH ELSE arm fires when the receiver's dynamic type matches none of the listed type guards — §9.6) returned the wrong value",
+    );
+}
+
+/// CP §9.4 — an IF/ELSIF arm with an empty statement sequence (just a semicolon effectively, or nothing) compiles and runs cleanly
+#[test]
+fn matrix_stmt_empty_if_arm_is_legal() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Stmt_Empty_If_Arm.cp", "Run"),
+        5,
+        "matrix probe stmt_empty_if_arm_is_legal (an IF/ELSIF arm with an empty statement sequence (just a semicolon effectively, or nothing) compiles and runs cleanly — §9.4) returned the wrong value",
+    );
+}
+
+/// CP §10.2 / 8.4 — method dispatch on the return value of a procedure call (`Make().Method()`) — exercises temporary lifetime + receiver lowering
+#[test]
+#[ignore = "KNOWN BUG: method dispatch on a procedure-call result (`Make(99).Get()`) returns a wild value (uninitialised memory read) instead of 99. The receiver-lowering refactor for plain record method dispatch worked off `designator_addr`, but a call-as-prefix produces a Temp IrValue rather than a designator — so the dispatch path is reading the wrong slot. File under deferred_fixes #22 and un-ignore once call-result-as-receiver is wired up."]
+fn matrix_method_called_on_function_result() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Method_On_Function_Result.cp", "Run"),
+        99,
+        "matrix probe method_called_on_function_result (method dispatch on the return value of a procedure call (`Make().Method()`) — exercises temporary lifetime + receiver lowering — §10.2 / 8.4) returned the wrong value",
+    );
+}
+
+/// CP §10.2 / 8.4 — method dispatch on an element of `ARRAY N OF Ptr` — receiver lowering must descend through the index GEP before the vtable lookup
+#[test]
+#[ignore = "KNOWN BUG (same family as #14): NEW(arr[i]) where arr is an ARRAY OF Pointer trips IR codegen with `Instr::New: unknown record type [N x named:Item]`. The destination-type resolution doesn't walk past the index-GEP to find the pointer's referent record. See deferred_fixes #14."]
+fn matrix_method_called_on_array_element_pointer() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Method_On_ArrayElement.cp", "Run"),
+        27,
+        "matrix probe method_called_on_array_element_pointer (method dispatch on an element of `ARRAY N OF Ptr` — receiver lowering must descend through the index GEP before the vtable lookup — §10.2 / 8.4) returned the wrong value",
+    );
+}
+
+/// CP §10 — procedure that returns a POINTER TO record — caller receives the heap pointer and can mutate the record through it
+#[test]
+fn matrix_procedure_returns_pointer_to_record() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Procedure_Returns_Pointer.cp", "Run"),
+        1000,
+        "matrix probe procedure_returns_pointer_to_record (procedure that returns a POINTER TO record — caller receives the heap pointer and can mutate the record through it — §10) returned the wrong value",
+    );
+}
+
+/// CP §10.2 — VAR receiver on a plain record — method body can write through the receiver and the caller sees the change
+#[test]
+fn matrix_var_receiver_mutates_value_record() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_VAR_Receiver_Mutates_Record.cp", "Run"),
+        88,
+        "matrix probe var_receiver_mutates_value_record (VAR receiver on a plain record — method body can write through the receiver and the caller sees the change — §10.2) returned the wrong value",
+    );
+}
+
+/// CP §10.2 — subclass override of an EMPTY method must actually execute its body when the method is dispatched through a base pointer
+#[test]
+fn matrix_override_empty_method_with_real_body() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Override_EmptyMethod_WithBody.cp", "Run"),
+        41,
+        "matrix probe override_empty_method_with_real_body (subclass override of an EMPTY method must actually execute its body when the method is dispatched through a base pointer — §10.2) returned the wrong value",
+    );
+}
+
+/// CP §10.2 — the receiver formal name may differ across methods on the same record (`(self: Foo)` vs `(this: Foo)` vs `(f: Foo)`) — sema must bind each to its own scope
+#[test]
+fn matrix_receiver_name_differs_across_methods() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Receiver_Differently_Named.cp", "Run"),
+        28,
+        "matrix probe receiver_name_differs_across_methods (the receiver formal name may differ across methods on the same record (`(self: Foo)` vs `(this: Foo)` vs `(f: Foo)`) — sema must bind each to its own scope — §10.2) returned the wrong value",
+    );
+}
+
+/// CP §6.1 — SHORTINT arithmetic (CP's narrow-width signed integer); operates within range and assigns back to SHORTINT
+#[test]
+fn matrix_type_shortint_arithmetic() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Type_SHORTINT_Arithmetic.cp", "Run"),
+        200,
+        "matrix probe type_shortint_arithmetic (SHORTINT arithmetic (CP's narrow-width signed integer); operates within range and assigns back to SHORTINT — §6.1) returned the wrong value",
+    );
+}
+
+/// CP §6.1 — LONGINT declared explicitly; values out of INTEGER range survive through to the runtime
+#[test]
+fn matrix_type_longint_explicit_assignment() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Type_LONGINT_Explicit.cp", "Run"),
+        10,
+        "matrix probe type_longint_explicit_assignment (LONGINT declared explicitly; values out of INTEGER range survive through to the runtime — §6.1) returned the wrong value",
+    );
+}
+
+/// CP §10.3 — LONG(x) widens a narrower numeric type to LONGINT / LONGREAL; SHORT(x) narrows.  Round-trip preserves the value when it fits.
+#[test]
+fn matrix_builtin_long_short_round_trip() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Builtin_LONG_SHORT_Casts.cp", "Run"),
+        250,
+        "matrix probe builtin_long_short_round_trip (LONG(x) widens a narrower numeric type to LONGINT / LONGREAL; SHORT(x) narrows.  Round-trip preserves the value when it fits. — §10.3) returned the wrong value",
+    );
+}
+
+/// CP §10.3 — ASH(n, k) arithmetic shift: positive k = left shift, negative = signed right shift
+#[test]
+fn matrix_builtin_ash_arithmetic_shift() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Builtin_ASH_Shifts.cp", "Run"),
+        32,
+        "matrix probe builtin_ash_arithmetic_shift (ASH(n, k) arithmetic shift: positive k = left shift, negative = signed right shift — §10.3) returned the wrong value",
+    );
+}
+
+/// CP §12 — SYSTEM.VAL(T, x) reinterprets `x`'s bit pattern as type T — used here to pull the bit pattern of a SET out as an INTEGER
+#[test]
+fn matrix_system_val_reinterprets_set_as_integer() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_SYSTEM_VAL_TypePunning.cp", "Run"),
+        41,
+        "matrix probe system_val_reinterprets_set_as_integer (SYSTEM.VAL(T, x) reinterprets `x`'s bit pattern as type T — used here to pull the bit pattern of a SET out as an INTEGER — §12) returned the wrong value",
+    );
+}
+
+/// CP §12 — SYSTEM.LSH(n, k) — logical (unsigned) shift; positive k shifts left, negative right, zero-fills on both ends
+#[test]
+fn matrix_system_lsh_logical_shift() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_SYSTEM_LSH_Bitshift.cp", "Run"),
+        256,
+        "matrix probe system_lsh_logical_shift (SYSTEM.LSH(n, k) — logical (unsigned) shift; positive k shifts left, negative right, zero-fills on both ends — §12) returned the wrong value",
+    );
+}
+
+/// CP §5 / 11 — module-level CONSTs are constant expressions and may be combined with each other in further CONST declarations and in run-time arithmetic
+#[test]
+fn matrix_module_constants_used_in_arithmetic() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Module_Const_Arithmetic.cp", "Run"),
+        110,
+        "matrix probe module_constants_used_in_arithmetic (module-level CONSTs are constant expressions and may be combined with each other in further CONST declarations and in run-time arithmetic — §5 / 11) returned the wrong value",
+    );
+}
+
+/// CP §10.2 — the same plain record can have both value-style (read) and VAR (write) receiver methods; dispatch picks the right shape for each based on the call site's needs
+#[test]
+fn matrix_value_and_var_receivers_coexist_on_same_record() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Receiver_Value_And_VAR_Coexist.cp", "Run"),
+        50,
+        "matrix probe value_and_var_receivers_coexist_on_same_record (the same plain record can have both value-style (read) and VAR (write) receiver methods; dispatch picks the right shape for each based on the call site's needs — §10.2) returned the wrong value",
+    );
+}
+
+/// CP §8.2.2 — INTSHORT + INTEGER promotes to INTEGER; INTEGER + LONGINT promotes to LONGINT — value preserved through the chain
+#[test]
+fn matrix_expr_mixed_width_promotion() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_MixedWidth_Arithmetic.cp", "Run"),
+        1234,
+        "matrix probe expr_mixed_width_promotion (INTSHORT + INTEGER promotes to INTEGER; INTEGER + LONGINT promotes to LONGINT — value preserved through the chain — §8.2.2) returned the wrong value",
+    );
+}
+
+/// CP §10 — method whose return type is the receiver's own pointer alias — classic builder-style chain
+#[test]
+#[ignore = "KNOWN BUG: sema mis-types the receiver inside a method body when the method's signature returns the receiver's pointer alias. `(b: Box) WithValue (): Box` body sees `b` as `BoxDesc` (the underlying record), so `RETURN b` reports `return type mismatch: expected Box, found BoxDesc`. The receiver itself is a pointer; this is a sema canonicalisation gap in the return-type check. File under deferred_fixes #23."]
+fn matrix_method_returns_pointer_to_self_type() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Method_Returns_Pointer.cp", "Run"),
+        35,
+        "matrix probe method_returns_pointer_to_self_type (method whose return type is the receiver's own pointer alias — classic builder-style chain — §10) returned the wrong value",
+    );
+}
+
+/// CP §9.7 — FOR without BY uses step 1; the loop variable is in scope after END
+#[test]
+fn matrix_stmt_for_default_step() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Stmt_For_StepOf_One.cp", "Run"),
+        10,
+        "matrix probe stmt_for_default_step (FOR without BY uses step 1; the loop variable is in scope after END — §9.7) returned the wrong value",
+    );
+}
+
+/// CP §9 / 9.7 — an IF nested inside a FOR loop sees the loop variable and the FOR sees state mutated by the IF
+#[test]
+fn matrix_stmt_nested_if_inside_for() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Stmt_Nested_IF_Inside_For.cp", "Run"),
+        6,
+        "matrix probe stmt_nested_if_inside_for (an IF nested inside a FOR loop sees the loop variable and the FOR sees state mutated by the IF — §9 / 9.7) returned the wrong value",
+    );
+}
+
