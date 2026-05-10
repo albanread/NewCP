@@ -110,9 +110,17 @@ fn render_test_file(probes: &[Probe]) -> String {
             "        run_function(\"Mod/Tests/Matrix/{}.cp\", \"Run\"),\n",
             probe.module_name
         ));
+        // The probe description lands inside a Rust format string —
+        // escape literal `{` / `}` (e.g. SET literals like `{0..7}`)
+        // so the macro doesn't treat them as placeholders.
+        let desc_escaped = probe
+            .description
+            .replace('{', "{{")
+            .replace('}', "}}")
+            .replace('"', "\\\"");
         out.push_str(&format!(
             "        {},\n        \"matrix probe {} ({} \u{2014} §{}) returned the wrong value\",\n",
-            probe.expected_value, probe.test_name, probe.description, probe.spec_section
+            probe.expected_value, probe.test_name, desc_escaped, probe.spec_section
         ));
         out.push_str("    );\n");
         out.push_str("}\n\n");

@@ -312,6 +312,75 @@ ends in a field selector, follow the field's declared type to
 resolve the record name instead of falling back to
 `Opaque("new-ptr")`. Un-ignore the matrix probe to lock the fix in.
 
+### 16. `IS` test against an uninstantiated record type crashes
+
+**Where**: IR / runtime type-test fast path. Surfaced by the matrix
+probes `M_AnyPtr_IS_Test` and `M_Expr_Pointer_IS_Test` (both
+`#[ignore]`-flagged with this entry as their reason).
+
+**Workaround**: probes shipped ignored. Real code paths so far have
+only `IS`-tested against types that were also instantiated
+elsewhere in the same translation unit, so their `TypeDesc` was
+registered before the test ran.
+
+**Why deferred**: surfaced by the matrix's first expansion pass.
+Easy to write a reduction (a 20-line probe) but the fix sits in
+the runtime type-test path — likely a NIL `TypeDesc` deref that
+needs to be hardened, or codegen needs to ensure every declared
+record type's `TypeDesc` is registered even when never NEW'd.
+
+**Closing it**: harden `__newcp_type_test` (or the IR
+`Instr::TypeCheck` lowering) so a NIL `TypeDesc` on the
+right-hand-side comparison returns `false` instead of segfaulting.
+Verify by un-ignoring both probes; their packed values are 110 and
+1010 respectively.
+
+### 17. `IN p: PointerAlias` dereference crashes at runtime
+
+**Where**: parameter-access codegen. Surfaced by matrix probe
+`M_Param_IN_Pointer_Deref` (`#[ignore]`-flagged with this entry).
+
+**Workaround**: probe shipped ignored. Most real code uses `VAR`
+or value-mode (or method receivers) when it wants to deref a
+pointer in the callee.
+
+**Why deferred**: the codegen for `IN <pointer-alias>` parameters
+appears to misread the slot — treating it like a record value and
+skipping the heap-pointer Load — and the resulting bad address
+causes `STATUS_ACCESS_VIOLATION` on first field access. Shape is
+similar to the method-dispatch-receiver fix landed earlier in
+this round, but on the parameter-access path rather than the
+receiver path.
+
+**Closing it**: in `lower_designator` / param-slot lowering, when
+the formal's IR type is `Ref(Named(N))` and `N` resolves to a
+pointer alias (not a record), emit the load that fetches the heap
+pointer before GEPing for the field. Then un-ignore the probe.
+
+### 18. Indirect call through a procedure-typed parameter mis-types its args
+
+**Where**: sema's type resolution for call expressions whose callee
+is a procedure-typed parameter (not a local var or named
+procedure). Surfaced by matrix probe `M_ProcType_Param_Callback`
+(`#[ignore]`-flagged with this entry).
+
+**Workaround**: probe shipped ignored. The other procedure-type
+probe (`M_ProcType_IndirectCall`) assigns the proc-value to a
+*local* before calling, which works — so production code paths
+have a clean workaround: copy the param to a local and call
+through that.
+
+**Why deferred**: surfaced by the matrix on first expansion. Sema
+reports `found unresolved:seed` for an argument that's a peer
+parameter in the same procedure — so the lookup scope is broken
+specifically when the call's callee is itself a procedure-typed
+parameter (not when it's a local var of the same type).
+
+**Closing it**: walk `lower_bound_proc_call_expr` / its sibling
+indirect-call resolution and make sure the surrounding scope's
+local symbols stay visible while the callee's signature is being
+matched. Un-ignore the probe to confirm; its `Run` returns 121.
+
 ### 15. CHAR / SHORTCHAR width mismatch at call boundary (8 failures at `-O0`)
 
 **Where**: `Mod/Strings.cp` and transitively `Mod/Math.cp`. Surfaced
@@ -341,28 +410,6 @@ certainly a SHORTCHAR (`i8`) formal being supplied with a CHAR
 (`Cast` IR), narrow in the prologue, or align the formal's declared
 type. Re-run the suite at `NEWCP_OPT=none` until all 8 cases pass;
 add the `NEWCP_OPT=none` lane to CI so the bug class stays out.
-
-
-
-**Where**: `Mod/Integers.cp` (full BlackBox bignum module, lifted but
-not yet compiling end-to-end).
-
-**Workaround**: source committed; sema accepts it (after fixes in this
-landing for type-alias resolution into builtins, OUT-pointer-to-array
-indexing, value-mode `Buffer` params switched to `IN` with explicit
-local copies in `KStep`/`AddToBuf`, MAX/MIN with user type alias args).
-LLVM emit fails on calls like `New(SHORT(... + ENTIER(...)))` because
-of item 12 above (the `SHORT` truncates `i64`→`i32` at IR level even
-though `New`'s parameter is also `i64`).
-
-**Why deferred**: the right fix is item 12 — making SHORT semantically
-aware. Hacking the source to drop the SHORTs would diverge it from
-the BlackBox original and lose the type-narrowing intent that other
-back-ends rely on.
-
-**Closing it**: implement item 12, then re-run `check-mod` /
-`dump-llvm` and add `Integers` tests covering `Sum`, `Difference`,
-`Product`, `Quotient`, `Power`, `ConvertFromString`/`ConvertToString`.
 
 ---
 

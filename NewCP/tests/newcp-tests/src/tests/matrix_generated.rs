@@ -160,3 +160,307 @@ fn matrix_super_call_lands_in_base_method_body() {
     );
 }
 
+/// CP §10.2 — three-level inheritance (Base ← Mid ← Sub) — calling a method via a Sub pointer must reach Sub's override; calling via Mid pointer to a Sub instance must also reach Sub's override (virtual dispatch)
+#[test]
+fn matrix_multi_level_inheritance_dispatch() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_MultiLevel_Inheritance_Dispatch.cp", "Run"),
+        137,
+        "matrix probe multi_level_inheritance_dispatch (three-level inheritance (Base ← Mid ← Sub) — calling a method via a Sub pointer must reach Sub's override; calling via Mid pointer to a Sub instance must also reach Sub's override (virtual dispatch) — §10.2) returned the wrong value",
+    );
+}
+
+/// CP §10.2 — EMPTY method is callable and is a no-op; subclass may override or leave the default in place
+#[test]
+fn matrix_empty_method_callable_as_noop() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Empty_Method_Is_NoOp.cp", "Run"),
+        5,
+        "matrix probe empty_method_callable_as_noop (EMPTY method is callable and is a no-op; subclass may override or leave the default in place — §10.2) returned the wrong value",
+    );
+}
+
+/// CP §10.1 — VAR pointer param — callee may reassign the pointer itself, and the caller sees the new target
+#[test]
+fn matrix_param_var_pointer_can_be_swapped() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Param_VAR_Pointer.cp", "Run"),
+        99,
+        "matrix probe param_var_pointer_can_be_swapped (VAR pointer param — callee may reassign the pointer itself, and the caller sees the new target — §10.1) returned the wrong value",
+    );
+}
+
+/// CP §10.1 — IN pointer param — callee may dereference and read fields (writing to the pointer itself is a sema error, covered separately)
+#[test]
+#[ignore = "KNOWN BUG: `IN p: PointerAlias` parameter crashes with STATUS_ACCESS_VIOLATION when the body dereferences `p`. Likely the param-lowering treats the pointer alias as a record value and skips the necessary heap-pointer Load (similar shape to the method-dispatch receiver fix but on the parameter-access path). File under deferred_fixes #17 and un-ignore once IN-pointer field access is fixed."]
+fn matrix_param_in_pointer_target_is_readable() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Param_IN_Pointer_Deref.cp", "Run"),
+        42,
+        "matrix probe param_in_pointer_target_is_readable (IN pointer param — callee may dereference and read fields (writing to the pointer itself is a sema error, covered separately) — §10.1) returned the wrong value",
+    );
+}
+
+/// CP §8.4 / 8.5 — ANYPTR carrying a typed pointer narrows back to the concrete type via the `p(T)` type-guard syntax
+#[test]
+fn matrix_anyptr_narrowed_via_type_guard() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_AnyPtr_TypeGuard.cp", "Run"),
+        73,
+        "matrix probe anyptr_narrowed_via_type_guard (ANYPTR carrying a typed pointer narrows back to the concrete type via the `p(T)` type-guard syntax — §8.4 / 8.5) returned the wrong value",
+    );
+}
+
+/// CP §8.5 — `IS` test on ANYPTR returns TRUE for the actual dynamic type and FALSE for an unrelated record
+#[test]
+#[ignore = "KNOWN BUG: `IS` test on ANYPTR against a record type whose TypeDesc has not been instantiated elsewhere in the module segfaults at runtime (STATUS_ACCESS_VIOLATION). Likely the type-test fast path dereferences a NIL TypeDesc when the Bag side of the test has never been registered. File under deferred_fixes #16 and un-ignore once the lookup hardens the NIL-TypeDesc case."]
+fn matrix_anyptr_is_test_distinguishes_types() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_AnyPtr_IS_Test.cp", "Run"),
+        110,
+        "matrix probe anyptr_is_test_distinguishes_types (`IS` test on ANYPTR returns TRUE for the actual dynamic type and FALSE for an unrelated record — §8.5) returned the wrong value",
+    );
+}
+
+/// CP §6.5 / 10.1 — procedure-typed value passed as a parameter and invoked inside the callee (callback pattern)
+#[test]
+#[ignore = "KNOWN BUG: sema mis-types the argument of an indirect call through a procedure-typed parameter — `f(seed)` reports `found unresolved:seed` even though `seed` is a peer parameter in the same proc.  `M_ProcType_IndirectCall` works because that probe assigns the proc-value to a local first and calls the local — so the bug is specific to calling through a parameter, not through a local. File under deferred_fixes #18."]
+fn matrix_proc_type_param_invoked_as_callback() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_ProcType_Param_Callback.cp", "Run"),
+        121,
+        "matrix probe proc_type_param_invoked_as_callback (procedure-typed value passed as a parameter and invoked inside the callee (callback pattern) — §6.5 / 10.1) returned the wrong value",
+    );
+}
+
+/// CP §10.1 / 8.1 — value-mode open array of records — prologue must memmove the full array width (count * sizeof(record)), not just the first element
+#[test]
+fn matrix_open_array_of_records_is_private_copy() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_OpenArray_Of_Records_ValueCopy.cp", "Run"),
+        50,
+        "matrix probe open_array_of_records_is_private_copy (value-mode open array of records — prologue must memmove the full array width (count * sizeof(record)), not just the first element — §10.1 / 8.1) returned the wrong value",
+    );
+}
+
+/// CP §10.1 / 8.2 — open-array of CHAR — iteration with LEN(p) walks the right element width; classic string-handling idiom
+#[test]
+fn matrix_open_array_of_char_iteration() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_OpenArray_Of_CHAR.cp", "Run"),
+        295,
+        "matrix probe open_array_of_char_iteration (open-array of CHAR — iteration with LEN(p) walks the right element width; classic string-handling idiom — §10.1 / 8.2) returned the wrong value",
+    );
+}
+
+/// CP §8.2.2 — CP's DIV is floored division (rounds toward -∞), unlike C's / on negative dividends
+#[test]
+fn matrix_expr_div_floors_toward_negative_infinity() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_DIV_Floored.cp", "Run"),
+        10004,
+        "matrix probe expr_div_floors_toward_negative_infinity (CP's DIV is floored division (rounds toward -∞), unlike C's / on negative dividends — §8.2.2) returned the wrong value",
+    );
+}
+
+/// CP §8.2.2 — CP's MOD with a positive divisor always returns a non-negative result, matching the floored-DIV identity a = (a DIV b) * b + (a MOD b)
+#[test]
+fn matrix_expr_mod_result_is_non_negative_when_divisor_positive() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_MOD_NonNegative.cp", "Run"),
+        1212,
+        "matrix probe expr_mod_result_is_non_negative_when_divisor_positive (CP's MOD with a positive divisor always returns a non-negative result, matching the floored-DIV identity a = (a DIV b) * b + (a MOD b) — §8.2.2) returned the wrong value",
+    );
+}
+
+/// CP §8.2.4 — SET literal with range syntax `{lo..hi}` populates every element in the inclusive interval
+#[test]
+fn matrix_expr_set_construction_with_range() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_SET_RangeConstruction.cp", "Run"),
+        248,
+        "matrix probe expr_set_construction_with_range (SET literal with range syntax `{{lo..hi}}` populates every element in the inclusive interval — §8.2.4) returned the wrong value",
+    );
+}
+
+/// CP §8.2.4 — SET union (+), intersection (*), difference (-), symmetric difference (/) on small sets
+#[test]
+fn matrix_expr_set_union_intersect_difference() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_SET_Operators.cp", "Run"),
+        4321,
+        "matrix probe expr_set_union_intersect_difference (SET union (+), intersection (*), difference (-), symmetric difference (/) on small sets — §8.2.4) returned the wrong value",
+    );
+}
+
+/// CP §8.5 — IS test on a record-pointer narrows correctly across an extensible hierarchy
+#[test]
+#[ignore = "KNOWN BUG (same family as M_AnyPtr_IS_Test): IS test against a record type with no instantiated TypeDesc (Other is declared but never NEW'd) crashes with STATUS_ACCESS_VIOLATION. See deferred_fixes #16."]
+fn matrix_expr_is_test_on_pointer_to_extensible() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_Pointer_IS_Test.cp", "Run"),
+        1010,
+        "matrix probe expr_is_test_on_pointer_to_extensible (IS test on a record-pointer narrows correctly across an extensible hierarchy — §8.5) returned the wrong value",
+    );
+}
+
+/// CP §10.3 — ENTIER(r) floors a REAL toward -∞ and returns the LONGINT result (CP semantics: ENTIER(-2.3) = -3, not -2)
+#[test]
+fn matrix_expr_entier_floors_negative_real() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_ENTIER_NegativeReal.cp", "Run"),
+        280,
+        "matrix probe expr_entier_floors_negative_real (ENTIER(r) floors a REAL toward -∞ and returns the LONGINT result (CP semantics: ENTIER(-2.3) = -3, not -2) — §10.3) returned the wrong value",
+    );
+}
+
+/// CP §10.3 — ABS / ODD / MIN / MAX predeclared procedures on INTEGER
+#[test]
+fn matrix_builtin_abs_odd_min_max() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Builtin_ABS_ODD_MIN_MAX.cp", "Run"),
+        1111,
+        "matrix probe builtin_abs_odd_min_max (ABS / ODD / MIN / MAX predeclared procedures on INTEGER — §10.3) returned the wrong value",
+    );
+}
+
+/// CP §9.5 — CASE statement on INTEGER with range labels + single labels + ELSE
+#[test]
+fn matrix_stmt_case_integer_with_ranges() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Stmt_CASE_IntegerRanges.cp", "Run"),
+        246,
+        "matrix probe stmt_case_integer_with_ranges (CASE statement on INTEGER with range labels + single labels + ELSE — §9.5) returned the wrong value",
+    );
+}
+
+/// CP §9.5 — CASE statement on CHAR with single + range labels
+#[test]
+fn matrix_stmt_case_on_char() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Stmt_CASE_CHAR.cp", "Run"),
+        333,
+        "matrix probe stmt_case_on_char (CASE statement on CHAR with single + range labels — §9.5) returned the wrong value",
+    );
+}
+
+/// CP §9.7 — FOR loop with explicit positive non-unit BY step
+#[test]
+fn matrix_stmt_for_positive_step() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Stmt_FOR_PositiveStep.cp", "Run"),
+        25,
+        "matrix probe stmt_for_positive_step (FOR loop with explicit positive non-unit BY step — §9.7) returned the wrong value",
+    );
+}
+
+/// CP §9.7 — FOR loop with negative BY step counts down inclusive
+#[test]
+fn matrix_stmt_for_negative_step() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Stmt_FOR_NegativeStep.cp", "Run"),
+        15,
+        "matrix probe stmt_for_negative_step (FOR loop with negative BY step counts down inclusive — §9.7) returned the wrong value",
+    );
+}
+
+/// CP §9.6 — WITH statement with multiple type-arm branches dispatches to the arm that matches the dynamic type
+#[test]
+fn matrix_stmt_with_multi_arm_narrowing() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Stmt_WITH_MultiArm.cp", "Run"),
+        33,
+        "matrix probe stmt_with_multi_arm_narrowing (WITH statement with multiple type-arm branches dispatches to the arm that matches the dynamic type — §9.6) returned the wrong value",
+    );
+}
+
+/// CP §9.8 — EXIT inside a nested LOOP leaves only the innermost loop, not the outer
+#[test]
+fn matrix_stmt_loop_exit_only_inner() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Stmt_LOOP_EXIT_Nested.cp", "Run"),
+        11,
+        "matrix probe stmt_loop_exit_only_inner (EXIT inside a nested LOOP leaves only the innermost loop, not the outer — §9.8) returned the wrong value",
+    );
+}
+
+/// CP §9.6 / 10 — RETURN nested inside a WITH arm exits the procedure and yields the WITH-narrowed value
+#[test]
+fn matrix_stmt_return_from_inside_with() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Stmt_RETURN_FromInside_WITH.cp", "Run"),
+        77,
+        "matrix probe stmt_return_from_inside_with (RETURN nested inside a WITH arm exits the procedure and yields the WITH-narrowed value — §9.6 / 10) returned the wrong value",
+    );
+}
+
+/// CP §9.7 — REPEAT/UNTIL evaluates the body before the test — guaranteed at least one iteration even when the condition is initially true
+#[test]
+fn matrix_stmt_repeat_until_runs_at_least_once() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Stmt_REPEAT_Until.cp", "Run"),
+        4,
+        "matrix probe stmt_repeat_until_runs_at_least_once (REPEAT/UNTIL evaluates the body before the test — guaranteed at least one iteration even when the condition is initially true — §9.7) returned the wrong value",
+    );
+}
+
+/// CP §10.3 — INC/DEC predeclared mutate their argument; the two-arg form takes an explicit delta
+#[test]
+fn matrix_builtin_inc_dec_with_and_without_delta() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Builtin_INC_DEC.cp", "Run"),
+        13,
+        "matrix probe builtin_inc_dec_with_and_without_delta (INC/DEC predeclared mutate their argument; the two-arg form takes an explicit delta — §10.3) returned the wrong value",
+    );
+}
+
+/// CP §10.3 — INCL/EXCL predeclared add/remove a single SET element
+#[test]
+fn matrix_builtin_incl_excl_on_set() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Builtin_INCL_EXCL.cp", "Run"),
+        211,
+        "matrix probe builtin_incl_excl_on_set (INCL/EXCL predeclared add/remove a single SET element — §10.3) returned the wrong value",
+    );
+}
+
+/// CP §10.3 — LEN on a fixed-size array is a constant; LEN on an open-array parameter pulls the hidden $len companion
+#[test]
+fn matrix_builtin_len_on_fixed_and_open_arrays() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Builtin_LEN_OnDifferentArrayKinds.cp", "Run"),
+        87,
+        "matrix probe builtin_len_on_fixed_and_open_arrays (LEN on a fixed-size array is a constant; LEN on an open-array parameter pulls the hidden $len companion — §10.3) returned the wrong value",
+    );
+}
+
+/// CP §11 — a procedure may call another procedure declared later in the same module — sema resolves the forward reference at the module level
+#[test]
+fn matrix_module_forward_call_resolves_after_decl() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Module_ForwardReference.cp", "Run"),
+        49,
+        "matrix probe module_forward_call_resolves_after_decl (a procedure may call another procedure declared later in the same module — sema resolves the forward reference at the module level — §11) returned the wrong value",
+    );
+}
+
+/// CP §11 / 7 — module-level VARs are shared state across procedure calls in the same module's body
+#[test]
+fn matrix_module_level_var_shared_across_procs() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Module_VAR_Shared.cp", "Run"),
+        30,
+        "matrix probe module_level_var_shared_across_procs (module-level VARs are shared state across procedure calls in the same module's body — §11 / 7) returned the wrong value",
+    );
+}
+
+/// CP §11 — the module-level BEGIN block runs once at load time, before any exported procedure is called
+#[test]
+fn matrix_module_begin_block_initializes_state() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Module_BEGIN_Block_Runs.cp", "Run"),
+        99,
+        "matrix probe module_begin_block_initializes_state (the module-level BEGIN block runs once at load time, before any exported procedure is called — §11) returned the wrong value",
+    );
+}
+
