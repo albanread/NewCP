@@ -2379,6 +2379,93 @@ mod tests {
         );
     }
 
+    /// Locate the BlackBox 1.7 distribution. Tests skip cleanly
+    /// when it's absent — set `NEWCP_BB_DIST` to override.
+    fn bb_distribution_root() -> Option<std::path::PathBuf> {
+        if let Ok(p) = std::env::var("NEWCP_BB_DIST") {
+            let path = std::path::PathBuf::from(p);
+            if path.exists() {
+                return Some(path);
+            }
+        }
+        let default = std::path::PathBuf::from("E:/BlackBox Component Builder 1.7-a1");
+        if default.exists() {
+            return Some(default);
+        }
+        None
+    }
+
+    /// Copy `Empty.odc` from the BB distribution into the well-
+    /// known fixture path the CP probe references. Returns `Ok`
+    /// if the fixture is staged and the probe can be expected to
+    /// find it; `Err` with a descriptive message otherwise.
+    fn stage_empty_odc_fixture() -> Result<(), String> {
+        let Some(dist) = bb_distribution_root() else {
+            return Err("BlackBox 1.7 distribution not found (set NEWCP_BB_DIST)".to_string());
+        };
+        let src = dist.join("Empty.odc");
+        if !src.exists() {
+            return Err(format!("Empty.odc not found at {}", src.display()));
+        }
+        let workspace = workspace_root();
+        let fixture_dir = workspace.join("Mod/Tests/_fixtures");
+        std::fs::create_dir_all(&fixture_dir)
+            .map_err(|e| format!("create fixture dir: {e}"))?;
+        let dst = fixture_dir.join("Empty.odc");
+        std::fs::copy(&src, &dst).map_err(|e| format!("copy Empty.odc: {e}"))?;
+        Ok(())
+    }
+
+    /// Run a CP probe with the test process cwd pinned to the
+    /// workspace root. The CP probe's `OpenDocument` strings are
+    /// hard-coded relative to the workspace root (`Mod/Tests/...`);
+    /// without this the test-crate-relative cwd misroutes them.
+    /// Restores the original cwd on completion.
+    fn run_function_at_workspace_root(module_ref: &str, proc_name: &str) -> i64 {
+        let saved = std::env::current_dir().expect("get cwd");
+        std::env::set_current_dir(workspace_root()).expect("chdir to workspace");
+        let result = run_function(module_ref, proc_name);
+        std::env::set_current_dir(&saved).expect("chdir back");
+        result
+    }
+
+    #[test]
+    fn stores_probe_open_walk_empty() {
+        // Stage the fixture; skip cleanly if the BB distribution
+        // isn't available on this machine.
+        match stage_empty_odc_fixture() {
+            Ok(()) => {}
+            Err(msg) => {
+                eprintln!("[stores_probe] skipping: {msg}");
+                return;
+            }
+        }
+
+        // OpenAndWalkEmpty: full happy path.
+        assert_eq!(
+            run_function_at_workspace_root("Mod/Tests/StoresProbe.cp", "OpenAndWalkEmpty"),
+            1,
+            "Stores S1 should open Empty.odc, walk root, find a child, close cleanly"
+        );
+    }
+
+    #[test]
+    fn stores_probe_negative_paths() {
+        // The negative-path probes don't need a fixture file —
+        // they exercise OpenDocument-on-missing-file and
+        // invalid-handle behaviour. Always run.
+        assert_eq!(
+            run_function_at_workspace_root("Mod/Tests/StoresProbe.cp", "OpenMissingFails"),
+            1,
+            "Stores.OpenDocument must return NIL for a missing file"
+        );
+        assert_eq!(
+            run_function_at_workspace_root("Mod/Tests/StoresProbe.cp", "InvalidHandlesReturnZero"),
+            1,
+            "all Stores.* shims must return 0 / empty for invalid handles"
+        );
+    }
+
     #[test]
     fn kernel_probe_this_type_nil_when_unseen() {
         // ThisType returns NIL when the (module, type) pair has no

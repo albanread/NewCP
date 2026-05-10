@@ -6,6 +6,7 @@ pub mod host_file_sys;
 pub mod kernel_sys;
 pub mod math;
 pub mod smath;
+pub mod stores_sys;
 
 #[cfg(windows)]
 pub mod igui;
@@ -824,6 +825,8 @@ impl BootstrapReport {
         // different name conventions; one Rust function backs each pair.
         kernel.register_native_module(kernel_sys::kernel_sys_native_module_artifact());
         kernel.register_native_module(kernel_sys::kernel_native_module_artifact());
+        kernel.register_native_module(stores_sys::stores_sys_native_module_artifact());
+        kernel.register_native_module(stores_sys::stores_native_module_artifact());
         #[cfg(windows)]
         kernel.register_native_module(igui_module);
         kernel.register_hosted_module(host_menus);
@@ -842,6 +845,8 @@ impl BootstrapReport {
         kernel_sys::register_known_module("SMath");
         kernel_sys::register_known_module("HostFileSys");
         kernel_sys::register_known_module("HostDateSys");
+        kernel_sys::register_known_module("StoresSys");
+        kernel_sys::register_known_module("Stores");
         #[cfg(windows)]
         kernel_sys::register_known_module("iGui");
         kernel_sys::register_known_module("HostMenus");
@@ -965,6 +970,8 @@ fn builtin_native_modules() -> Vec<NativeModuleArtifact> {
         host_date_sys::native_module_artifact(),
         kernel_sys::kernel_sys_native_module_artifact(),
         kernel_sys::kernel_native_module_artifact(),
+        stores_sys::stores_sys_native_module_artifact(),
+        stores_sys::stores_native_module_artifact(),
     ];
     #[cfg(windows)]
     modules.push(igui::native_module_artifact());
