@@ -471,6 +471,14 @@ impl KernelState {
 
     pub fn register_compiled_module(&mut self, artifact: CompiledModuleArtifact) -> ModuleId {
         self.retire_active_module(&artifact.name);
+        // Compiled CP modules are visible to `Kernel.ThisMod` once they
+        // join the runtime's module set. The previous workflow required
+        // each new module's name to be added to the manual
+        // `kernel_sys::register_known_module(...)` list at boot, which
+        // (a) didn't scale beyond a handful of well-known modules and
+        // (b) prevented test probes from looking themselves up. Doing
+        // the publication here keeps every loader path in sync.
+        kernel_sys::register_known_module(&artifact.name);
         self.register_jit_module(
             artifact.name,
             artifact.imports,
@@ -1013,6 +1021,67 @@ fn panic_trap(message: String) -> ! {
     std::process::abort();
 }
 
+/// String-content equality for two NUL-terminated CHAR (UTF-32) buffers.
+///
+/// Walks both buffers concurrently up to the first 0 codepoint on either
+/// side; returns 1 iff both terminators land at the same index AND every
+/// preceding codepoint matched.  This mirrors BlackBox CP's
+/// "ARRAY OF CHAR `=` ARRAY OF CHAR" semantics — same semantics for both
+/// fixed-array variables and string-literal globals because both layouts
+/// store a NUL-terminated codepoint sequence.
+///
+/// Caller responsibility: each pointer must address a NUL-terminated
+/// sequence.  String literals emitted by the LLVM backend always
+/// terminate; ARRAY OF CHAR variables are zero-initialised by the
+/// runtime and never advance their write cursor past the array's
+/// declared length, so they always have at least one terminator within
+/// bounds.
+#[unsafe(no_mangle)]
+pub extern "C" fn __newcp_string_eq_char(lhs: *const u32, rhs: *const u32) -> i64 {
+    if lhs.is_null() || rhs.is_null() {
+        return if lhs == rhs { 1 } else { 0 };
+    }
+    unsafe {
+        let mut i = 0usize;
+        loop {
+            let l = *lhs.add(i);
+            let r = *rhs.add(i);
+            if l != r {
+                return 0;
+            }
+            if l == 0 {
+                return 1;
+            }
+            i += 1;
+        }
+    }
+}
+
+/// String-content equality for two NUL-terminated SHORTCHAR (Latin-1)
+/// buffers — same shape as `__newcp_string_eq_char` but operating on
+/// 8-bit codepoints.  Used when both operands are SHORTCHAR-arrays /
+/// SHORTCHAR-string-literals (8-bit channel).
+#[unsafe(no_mangle)]
+pub extern "C" fn __newcp_string_eq_shortchar(lhs: *const u8, rhs: *const u8) -> i64 {
+    if lhs.is_null() || rhs.is_null() {
+        return if lhs == rhs { 1 } else { 0 };
+    }
+    unsafe {
+        let mut i = 0usize;
+        loop {
+            let l = *lhs.add(i);
+            let r = *rhs.add(i);
+            if l != r {
+                return 0;
+            }
+            if l == 0 {
+                return 1;
+            }
+            i += 1;
+        }
+    }
+}
+
 /// Smalltalk-style `doesNotUnderstand:` for vtable slots that the JIT
 /// couldn't bind to a concrete function (typically because the slot
 /// represents a concrete-but-inherited method whose body lives in a
@@ -1048,6 +1117,18 @@ pub fn runtime_symbol_address(symbol_name: &str) -> Option<usize> {
     }
     if symbol_name == "__newcp_register_type" {
         return Some(kernel_sys::__newcp_register_type as *const () as usize);
+    }
+    if symbol_name == "__newcp_lookup_typedesc" {
+        return Some(kernel_sys::__newcp_lookup_typedesc as *const () as usize);
+    }
+    if symbol_name == "__newcp_safepoint" {
+        return Some(gc::__newcp_safepoint as *const () as usize);
+    }
+    if symbol_name == "__newcp_string_eq_char" {
+        return Some(__newcp_string_eq_char as *const () as usize);
+    }
+    if symbol_name == "__newcp_string_eq_shortchar" {
+        return Some(__newcp_string_eq_shortchar as *const () as usize);
     }
 
     let (module_name, export_name) = symbol_name.split_once('.')?;

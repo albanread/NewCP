@@ -206,6 +206,14 @@ PROCEDURE Time* (): LONGINT;
 PROCEDURE Beep* ();
     (** System bell — best effort. Never traps. *)
 
+PROCEDURE Collect* ();
+    (** Explicit garbage-collection cycle.  Cooperatively pauses every
+        registered mutator thread, marks live objects, sweeps dead
+        ones, and runs any pending finalizers.  Returns once the
+        world is fully resumed.  Cheap to call; the runtime
+        short-circuits if nothing has been allocated since the last
+        cycle. *)
+
 (* -- Event loop --------------------------------------------------------- *)
 
 PROCEDURE Loop* (handler: EventHandler);

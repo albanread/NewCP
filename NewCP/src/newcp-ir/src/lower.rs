@@ -1967,7 +1967,103 @@ impl<'m> LowerCtx<'m> {
         IrValue::Temp(t, ty)
     }
 
+    /// Recognise the CP "string-content compare" pattern: `=` / `#`
+    /// where both operands are CHAR (or both SHORTCHAR) arrays /
+    /// pointers / literals.  Returns `Some(IrValue::Temp(_, Bool))`
+    /// when handled, or `None` to let the regular binary lowering
+    /// take over.
+    fn try_lower_string_compare(
+        &mut self,
+        left: &Expr,
+        op: BinaryOp,
+        right: &Expr,
+    ) -> Option<IrValue> {
+        let l_kind = self.string_compare_operand_kind(left)?;
+        let r_kind = self.string_compare_operand_kind(right)?;
+        if l_kind != r_kind {
+            return None;
+        }
+        let lhs_ptr = self.lower_string_operand_ptr(left, l_kind)?;
+        let rhs_ptr = self.lower_string_operand_ptr(right, r_kind)?;
+        let dst = self.fresh_temp();
+        let eq = matches!(op, BinaryOp::Equal);
+        let elem_is_short = matches!(l_kind, StringElemKind::ShortChar);
+        self.push(Instr::StringCompare {
+            dst,
+            lhs: lhs_ptr,
+            rhs: rhs_ptr,
+            eq,
+            elem_is_short,
+        });
+        Some(IrValue::Temp(dst, IrType::Bool))
+    }
+
+    /// Element-kind classification used by `try_lower_string_compare`.
+    /// Returns `Some` only for operands that are genuinely string-like
+    /// — fixed-size CHAR/SHORTCHAR arrays (or pointers/refs to them),
+    /// and multi-character string literals.  Single-character literals
+    /// stay on the regular integer-compare path because the IR's
+    /// `lower_literal` already lowers them to a CHAR value (`ConstChar`)
+    /// rather than a string-pointer (`ConstStr`).
+    fn string_compare_operand_kind(&mut self, expr: &Expr) -> Option<StringElemKind> {
+        match expr {
+            Expr::Literal { value: Literal::String(s), .. } => {
+                let inner = s.trim_matches('"').trim_matches('\'');
+                if inner.chars().count() > 1 {
+                    Some(StringElemKind::Char)
+                } else {
+                    None
+                }
+            }
+            Expr::Designator(des) => {
+                let ty = self.designator_ir_type(des)?;
+                string_elem_kind_from_array_ir_type(&ty)
+            }
+            _ => None,
+        }
+    }
+
+    /// Produce the pointer-typed IrValue this operand should pass to
+    /// the runtime helper.  For designators, we emit `designator_addr`
+    /// (the alloca / GEP'd pointer) rather than going through
+    /// `lower_expr` (which would load the array as a value, losing the
+    /// address).  For string literals, the existing `ConstStr` lowering
+    /// already produces a pointer.
+    fn lower_string_operand_ptr(
+        &mut self,
+        expr: &Expr,
+        kind: StringElemKind,
+    ) -> Option<IrValue> {
+        match expr {
+            Expr::Literal { value: Literal::String(s), .. } => {
+                let inner = s.trim_matches('"').trim_matches('\'');
+                let elem_ty = match kind {
+                    StringElemKind::Char => IrType::Char,
+                    StringElemKind::ShortChar => IrType::ShortChar,
+                };
+                Some(IrValue::ConstStr(inner.to_string(), elem_ty))
+            }
+            Expr::Designator(des) => Some(self.designator_addr(des)),
+            _ => None,
+        }
+    }
+
     fn lower_binary(&mut self, left: &Expr, op: BinaryOp, right: &Expr) -> IrValue {
+        // CP string-content compare: when both operands are
+        // char-array-shaped (ARRAY OF CHAR/SHORTCHAR variables, char
+        // pointers, or string literals), `=` and `#` walk codepoints
+        // up to the first 0X terminator on either side instead of
+        // comparing addresses. We intercept here so we can pass the
+        // operand addresses directly to a runtime helper, bypassing
+        // the value-load path the regular lowering would use (loading
+        // a 32xchar array as a value loses the address information
+        // we need). See `__newcp_string_eq_char` in the runtime.
+        if matches!(op, BinaryOp::Equal | BinaryOp::NotEqual) {
+            if let Some(result) = self.try_lower_string_compare(left, op, right) {
+                return result;
+            }
+        }
+
         let mut lv = self.lower_expr(left);
         let mut rv = self.lower_expr(right);
 
@@ -3751,6 +3847,13 @@ pub fn lower_procedure(
 
     ctx.switch_to(entry);
 
+    // Cooperative GC safepoint poll at every CP procedure entry.
+    // Lowers to a call to `__newcp_safepoint`; the runtime fast-path
+    // is one atomic load + branch.  Together with the implicit poll
+    // at `__newcp_new_rec` entry, this gives the collector enough
+    // points to pause every mutator within bounded time.
+    ctx.push(Instr::Safepoint);
+
     if let Some(body) = &ast_proc.body {
         if let Some(stmts) = &body.body {
             ctx.lower_statements(stmts);
@@ -3993,6 +4096,35 @@ fn find_imported_module_sema(module_name: &str) -> Option<SemanticModule> {
     None
 }
 
+/// Element-kind classification for the `=` / `#` string-content
+/// compare path. Used by `try_lower_string_compare` to ensure both
+/// operands carry the same character width before delegating to the
+/// runtime helper.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum StringElemKind {
+    Char,
+    ShortChar,
+}
+
+/// Recognise a CP "char-array-like" IR type — fixed-size CHAR /
+/// SHORTCHAR array, or a pointer/ref through to such an array.
+/// Bare CHAR / SHORTCHAR types are deliberately *not* matched here
+/// because element-level CHAR comparisons (`q[i] # "."`) belong on
+/// the regular integer-compare path.
+fn string_elem_kind_from_array_ir_type(ty: &IrType) -> Option<StringElemKind> {
+    match ty {
+        IrType::Array { element, .. } => match element.as_ref() {
+            IrType::Char => Some(StringElemKind::Char),
+            IrType::ShortChar => Some(StringElemKind::ShortChar),
+            _ => None,
+        },
+        IrType::Ptr(inner) | IrType::UntaggedPtr(inner) | IrType::Ref(inner) => {
+            string_elem_kind_from_array_ir_type(inner)
+        }
+        _ => None,
+    }
+}
+
 /// Recursively search `dir` for a file named `filename`. Used by
 /// `load_cached_import` to resolve sibling-Mod imports across directory
 /// nesting (e.g. `Mod/Tests/Foo.cp` importing `Mod/Bar.cp`).
@@ -4168,6 +4300,7 @@ pub fn lower_module(sema: &SemanticModule, ast: &ModuleAst) -> IrModule {
 
     let named_types = collect_named_types(&sema.name, &sema.imports, &sema.symbols, &mut import_cache);
     let (type_vtables, type_bases) = collect_type_vtables(&sema.name, &sema.symbols);
+    let type_finalizers = collect_type_finalizers(&sema.symbols);
 
     IrModule {
         name: sema.name.clone(),
@@ -4177,6 +4310,64 @@ pub fn lower_module(sema: &SemanticModule, ast: &ModuleAst) -> IrModule {
         named_types,
         type_vtables,
         type_bases,
+        type_finalizers,
+    }
+}
+
+/// For each record type that owns a `Finalize` method (locally or via
+/// its inheritance chain), record the LLVM function name the GC sweep
+/// should invoke before reclaiming each block of that type.  Cross-
+/// module-base finalizers are deferred to the JIT-time symbol resolver;
+/// only same-module chains are walked here.
+fn collect_type_finalizers(
+    module_symbols: &[SemanticSymbol],
+) -> std::collections::HashMap<String, String> {
+    use newcp_sema::SymbolKind;
+    let mut out: std::collections::HashMap<String, String> = std::collections::HashMap::new();
+    for sym in module_symbols {
+        if sym.kind != SymbolKind::Type {
+            continue;
+        }
+        if let Some(name) = find_finalize_in_chain(&sym.name, module_symbols) {
+            out.insert(sym.name.clone(), name);
+        }
+    }
+    out
+}
+
+/// Walk `type_name`'s inheritance chain (this module only) looking for
+/// the deepest declaration of a method literally named `Finalize`.
+/// Returns the LLVM function name (`<defining_type>_Finalize`) of the
+/// first match, or `None` if no Finalize is found.
+fn find_finalize_in_chain(
+    type_name: &str,
+    module_symbols: &[SemanticSymbol],
+) -> Option<String> {
+    use newcp_sema::SymbolKind;
+    let mut current = type_name.to_string();
+    let mut guard = 0usize;
+    loop {
+        guard += 1;
+        if guard > 64 {
+            return None;
+        }
+        let sym = module_symbols
+            .iter()
+            .find(|s| s.kind == SymbolKind::Type && s.name == current)?;
+        let SemanticType::Record { methods, base, .. } =
+            sym.declared_type.as_ref().unwrap_or(&SemanticType::Nil)
+        else {
+            return None;
+        };
+        if methods.iter().any(|m| m.name == "Finalize") {
+            return Some(format!("{current}_Finalize"));
+        }
+        match base.as_deref() {
+            Some(SemanticType::Named { name, module: None, .. }) => {
+                current = name.clone();
+            }
+            _ => return None,
+        }
     }
 }
 

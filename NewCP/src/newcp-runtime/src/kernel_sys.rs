@@ -555,6 +555,13 @@ pub extern "C" fn __newcp_register_type(td: *const TypeDesc) {
     let Some(name) = type_desc_qualified_name_string(td as i64) else {
         return;
     };
+    // Mirror the registration into the GC's TypeDesc registry so the
+    // loader's RetiredImageDropPredicate can pin a JIT image while
+    // any live block still tags one of its TypeDescs. The module name
+    // is the qualified name's first segment (e.g. "XMethodChild" in
+    // "XMethodChild.ChildDesc").
+    let owner_module = name.split('.').next().map(|s| s.to_string());
+    crate::gc::register_typedesc(td as usize, owner_module);
     let mut reg = TYPE_DESC_REGISTRY
         .lock()
         .expect("type registry mutex poisoned");
@@ -593,6 +600,47 @@ pub extern "C" fn kernel_sys_this_type(
         .expect("type registry mutex poisoned");
     reg.iter()
         .find(|(n, _)| n == &qualified)
+        .map(|(_, addr)| *addr)
+        .unwrap_or(0)
+}
+
+/// Look up a TypeDesc by its already-qualified name (e.g.
+/// "TextModels.StdModelDesc"), encoded as a NUL-terminated 8-bit
+/// C string.  Returns the TypeDesc address (suitable for passing
+/// to `__newcp_new_rec`) or 0 when no entry matches.
+///
+/// Used by codegen: when a `NEW(p)` for a cross-module pointer
+/// type compiles in a module that doesn't carry the target's
+/// TypeDesc global, we fall through to this runtime registry
+/// lookup. The qualified name is emitted as a private string
+/// constant alongside the call site, so the codegen avoids the
+/// extern-global linkage gymnastics that would otherwise be
+/// required to share a typed-desc pointer across compiled CP
+/// modules.
+#[unsafe(no_mangle)]
+pub extern "C" fn __newcp_lookup_typedesc(qualified_name: *const u8) -> i64 {
+    if qualified_name.is_null() {
+        return 0;
+    }
+    // Read the 0-terminated UTF-8 / Latin-1 byte sequence the
+    // codegen emits.
+    let mut len = 0usize;
+    while unsafe { *qualified_name.add(len) } != 0 {
+        len += 1;
+        if len > 4096 {
+            return 0;
+        }
+    }
+    let bytes = unsafe { std::slice::from_raw_parts(qualified_name, len) };
+    let name = match std::str::from_utf8(bytes) {
+        Ok(s) => s,
+        Err(_) => return 0,
+    };
+    let reg = TYPE_DESC_REGISTRY
+        .lock()
+        .expect("type registry mutex poisoned");
+    reg.iter()
+        .find(|(n, _)| n == name)
         .map(|(_, addr)| *addr)
         .unwrap_or(0)
 }
@@ -859,7 +907,15 @@ fn kernel_exports() -> Vec<(&'static str, *const ())> {
         ("GetQualifiedTypeName", kernel_sys_get_qualified_type_name as *const ()),
         ("ThisMod",         kernel_sys_this_mod          as *const ()),
         ("ThisType",        kernel_sys_this_type         as *const ()),
+        ("Collect",         kernel_sys_collect           as *const ()),
     ]
+}
+
+/// `Kernel.Collect()` — explicit GC cycle.  Called from CP code that
+/// wants to force a stop-the-world mark + sweep + finalizer drain.
+#[unsafe(no_mangle)]
+pub extern "C" fn kernel_sys_collect() {
+    crate::gc::collect();
 }
 
 fn build_artifact(module_name: &str, summary: &'static str) -> NativeModuleArtifact {

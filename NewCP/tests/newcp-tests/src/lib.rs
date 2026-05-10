@@ -2628,4 +2628,20 @@ mod tests {
             );
         }
     }
+
+    #[test]
+    fn finalizer_runs_when_block_reclaimed() {
+        // The probe allocates 64 records of a type with a `Finalize`
+        // method, drops every reference, calls Kernel.Collect, and
+        // returns the delta (finalizers fired this call).  Runs
+        // inside one `run_function` so the JIT module hosting the
+        // TypeDesc stays loaded across the alloc → collect → drain
+        // sequence.
+        const N: i64 = 64;
+        let delta = run_function("Mod/Tests/FinalizerProbe.cp", "AllocAndDrop");
+        assert!(
+            delta >= N,
+            "expected at least {N} finalizers to fire, got delta={delta}"
+        );
+    }
 }

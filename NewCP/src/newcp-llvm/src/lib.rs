@@ -71,6 +71,11 @@ pub struct CompiledModule {
     /// declares no TypeDescs. The loader looks this symbol up by
     /// name and calls it before `<Module>.body`.
     pub init_types_function: Option<String>,
+    /// `(typedesc_global_name, finalize_fn_name)` pairs.  The JIT
+    /// resolves each `finalize_fn_name` to its address and writes
+    /// it into the corresponding TypeDesc's `finalizer` slot
+    /// (offset 16) at JIT-init time.
+    pub finalizer_patches: Vec<(String, String)>,
 }
 
 /// Owns a JIT module together with the LLVM context it depends on.
@@ -259,6 +264,7 @@ pub fn compile_ir_module(
     let vtable_slot_functions = cg.planner.vtable_slot_functions.clone();
     let vtable_init_function_name = cg.planner.vtable_init_function_name.clone();
     let vtable_externs = cg.planner.vtable_externs.clone();
+    let finalizer_patches = cg.planner.finalizer_patches.clone();
 
     Ok(CompiledModule {
         module_name: ir_module.name.clone(),
@@ -270,6 +276,7 @@ pub fn compile_ir_module(
         vtable_init_function_name,
         vtable_externs,
         init_types_function: init_types_name,
+        finalizer_patches,
     })
 }
 
@@ -296,6 +303,7 @@ pub fn jit_module_with_symbol_mappings<'ctx>(
     let vtable_slot_functions = compiled.vtable_slot_functions.clone();
     let vtable_init_function_name = compiled.vtable_init_function_name.clone();
     let vtable_externs = compiled.vtable_externs.clone();
+    let finalizer_patches = compiled.finalizer_patches.clone();
     let exported_functions = compiled.exported_functions.clone();
     // Re-parse the verified IR string back into an LLVM module so we can hand
     // it to the JIT. This round-trip is intentional: it proves the textual dump
@@ -323,6 +331,7 @@ pub fn jit_module_with_symbol_mappings<'ctx>(
         vtable_init_function_name,
         vtable_externs,
         extra_symbol_mappings,
+        finalizer_patches,
     )
 }
 

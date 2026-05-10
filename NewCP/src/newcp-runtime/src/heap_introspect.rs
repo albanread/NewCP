@@ -10,7 +10,7 @@ use std::collections::HashMap;
 use std::sync::atomic::Ordering;
 use std::time::{SystemTime, UNIX_EPOCH};
 
-use crate::gc::{self, BlockHeader, Cluster, GcState, ModuleRoots, TypeDesc, HEAP_COUNTERS};
+use crate::gc::{self, BlockHeader, Cluster, ModuleRoots, TypeDesc, HEAP_COUNTERS};
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Counters — Layer 1
@@ -140,8 +140,8 @@ pub struct HeapSnapshot {
 /// use [`take_snapshot`] when those numbers matter.
 pub fn take_lite_snapshot() -> HeapSnapshot {
     let counters = current_counters();
-    let (clusters, modules) = gc::with_locked_state(|state| {
-        (snapshot_clusters_lite(state), snapshot_modules(state))
+    let (clusters, modules) = gc::with_heap_locked(|heap| {
+        (snapshot_clusters_lite(heap), snapshot_modules(heap))
     });
     HeapSnapshot {
         taken_at_ns_since_epoch: now_ns(),
@@ -157,11 +157,11 @@ pub fn take_lite_snapshot() -> HeapSnapshot {
 /// GC for the duration of the walk.
 pub fn take_snapshot() -> HeapSnapshot {
     let counters = current_counters();
-    let (clusters, modules, types) = gc::with_locked_state(|state| {
+    let (clusters, modules, types) = gc::with_heap_locked(|heap| {
         (
-            snapshot_clusters_full(state),
-            snapshot_modules(state),
-            snapshot_types(state),
+            snapshot_clusters_full(heap),
+            snapshot_modules(heap),
+            snapshot_types(heap),
         )
     });
     HeapSnapshot {
@@ -173,9 +173,8 @@ pub fn take_snapshot() -> HeapSnapshot {
     }
 }
 
-fn snapshot_clusters_lite(state: &GcState) -> Vec<ClusterSnapshot> {
-    state
-        .clusters
+fn snapshot_clusters_lite(heap: &gc::Heap) -> Vec<ClusterSnapshot> {
+    heap.clusters
         .iter()
         .enumerate()
         .map(|(index, cluster)| ClusterSnapshot {
@@ -188,9 +187,8 @@ fn snapshot_clusters_lite(state: &GcState) -> Vec<ClusterSnapshot> {
         .collect()
 }
 
-fn snapshot_clusters_full(state: &GcState) -> Vec<ClusterSnapshot> {
-    state
-        .clusters
+fn snapshot_clusters_full(heap: &gc::Heap) -> Vec<ClusterSnapshot> {
+    heap.clusters
         .iter()
         .enumerate()
         .map(|(index, cluster)| {
@@ -216,9 +214,8 @@ fn snapshot_clusters_full(state: &GcState) -> Vec<ClusterSnapshot> {
         .collect()
 }
 
-fn snapshot_modules(state: &GcState) -> Vec<ModuleRootSnapshot> {
-    state
-        .modules
+fn snapshot_modules(heap: &gc::Heap) -> Vec<ModuleRootSnapshot> {
+    heap.modules
         .iter()
         .map(|m| {
             let pointer_values: Vec<usize> = m
@@ -239,11 +236,11 @@ fn snapshot_modules(state: &GcState) -> Vec<ModuleRootSnapshot> {
         .collect()
 }
 
-fn snapshot_types(state: &GcState) -> Vec<TypeSnapshot> {
+fn snapshot_types(heap: &gc::Heap) -> Vec<TypeSnapshot> {
     let header_size = std::mem::size_of::<BlockHeader>();
     let mut buckets: HashMap<usize, TypeBucket> = HashMap::new();
 
-    for cluster in &state.clusters {
+    for cluster in &heap.clusters {
         let mut offset = 0usize;
         unsafe {
             while offset < cluster.bump {

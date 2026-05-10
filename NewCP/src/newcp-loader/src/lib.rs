@@ -1,7 +1,28 @@
 use std::collections::{HashMap, HashSet};
 use std::fs;
 use std::path::{Path, PathBuf};
+use std::sync::Mutex;
 use std::time::UNIX_EPOCH;
+
+/// JIT images retained beyond their owning `LoaderSession`'s lifetime.
+///
+/// When a `LoaderSession` drops, its active and retired executable images
+/// would normally drop with it — unmapping the JIT memory that backs every
+/// `TypeDesc` and method body for those modules.  But heap blocks allocated
+/// during the session still tag their owning TypeDesc, and may even still
+/// be reachable from another live root after the session goes away.  We
+/// therefore move every image into this process-global pool on session
+/// `Drop`, where it stays mapped for the rest of the process lifetime.
+///
+/// `OwnedJitModule` wraps inkwell pointer state that isn't `Send`; we
+/// hand-roll a `Send`/`Sync` shell because the retention pool only ever
+/// drops at process exit (when no other thread is alive).  No method on
+/// the wrapped image is ever called after it lands here.
+struct RetainedImage(OwnedJitModule);
+unsafe impl Send for RetainedImage {}
+unsafe impl Sync for RetainedImage {}
+
+static RETAINED_IMAGES: Mutex<Vec<RetainedImage>> = Mutex::new(Vec::new());
 
 use newcp_llvm::{CodegenOptions, CompiledModule, OwnedJitModule};
 use newcp_parser::{parse_source_module, SourceExportKind, SourceModuleSpec};
@@ -287,7 +308,7 @@ pub struct LoaderSession {
 
 impl LoaderSession {
     pub fn new() -> Self {
-        Self {
+        let mut session = Self {
             report: BootstrapReport::new(),
             compiler: ResidentCompiler::bootstrap(),
             graph_cache: HashMap::new(),
@@ -301,7 +322,15 @@ impl LoaderSession {
             next_scope_id: 1,
             quiescent_epoch: 0,
             retired_image_drop_predicate: None,
-        }
+        };
+        // Install the default heap-quiescence probe: refuse to drop a
+        // retired image while any heap block still tags one of its
+        // TypeDescs.  Without this, the GC can dereference a freed
+        // TypeDesc during a later mark/sweep cycle.
+        session.set_retired_image_drop_predicate(RetiredImageDropPredicate::new(
+            |module_name, _generation| newcp_runtime::gc::module_has_no_live_blocks(module_name),
+        ));
+        session
     }
 
     /// Install a predicate that gets the final say on whether a retired
@@ -313,6 +342,31 @@ impl LoaderSession {
     pub fn clear_retired_image_drop_predicate(&mut self) {
         self.retired_image_drop_predicate = None;
     }
+}
+
+impl Drop for LoaderSession {
+    fn drop(&mut self) {
+        // The JIT memory backing every `TypeDesc`, method body, and
+        // module-static `var_base` is owned by `OwnedJitModule`. Letting
+        // those drop with the session would unmap pages still referenced
+        // by surviving heap blocks — a later GC mark/sweep would then
+        // dereference freed memory.  Move every image into the global
+        // retention pool instead; the process keeps them mapped for the
+        // rest of its lifetime.
+        let mut retained = match RETAINED_IMAGES.lock() {
+            Ok(g) => g,
+            Err(p) => p.into_inner(),
+        };
+        for (_, image) in self.active_executable_images.drain() {
+            retained.push(RetainedImage(image.image));
+        }
+        for retired in self.retired_executable_images.drain(..) {
+            retained.push(RetainedImage(retired.image));
+        }
+    }
+}
+
+impl LoaderSession {
 
     /// Advance quiescence and reclaim retired generations in a single step.
     ///

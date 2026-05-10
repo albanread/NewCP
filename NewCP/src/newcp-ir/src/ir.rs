@@ -209,6 +209,27 @@ pub enum Instr {
     NewArray { dst: TempId, elem_ty: IrType, len: IrValue },
     /// `store result_slot, value`  — internal: prepare RETURN value before Br function_exit
     StoreResult { value: IrValue },
+    /// Cooperative GC safepoint poll.  Codegen emits this at every CP
+    /// procedure entry; lowering is a call to `__newcp_safepoint`.
+    /// The runtime fast-path is one atomic load + branch; the slow
+    /// path parks the thread for the duration of an in-flight
+    /// stop-the-world collection cycle.
+    Safepoint,
+    /// `t = streq lhs, rhs : elem` — Component Pascal string-content
+    /// compare for two NUL-terminated CHAR / SHORTCHAR buffers.
+    ///
+    /// `lhs` and `rhs` are pointer-typed IrValues (Ref(T) or Ptr(T))
+    /// pointing at the first element of each buffer.  `eq` is `true`
+    /// for `=`, `false` for `#`.  `elem_is_short` selects the runtime
+    /// helper width: `false` → CHAR (UTF-32, i32 elements),
+    /// `true` → SHORTCHAR (Latin-1, i8 elements).
+    ///
+    /// Walks both buffers up to the first 0X codepoint on either side
+    /// and returns an i1 result: `true` iff `eq` matches the
+    /// terminator-aligned content equality.  Lowered to a CALL into
+    /// the `__newcp_string_eq_char` / `__newcp_string_eq_shortchar`
+    /// runtime helper.
+    StringCompare { dst: TempId, lhs: IrValue, rhs: IrValue, eq: bool, elem_is_short: bool },
 }
 
 /// The terminating instruction of a basic block.

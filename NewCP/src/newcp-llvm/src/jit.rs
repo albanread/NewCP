@@ -37,6 +37,7 @@ impl<'ctx> JitModule<'ctx> {
         vtable_init_function_name: Option<String>,
         vtable_externs: Vec<(String, usize)>,
         cross_module_method_addresses: &HashMap<String, usize>,
+        finalizer_patches: Vec<(String, String)>,
     ) -> Result<Self, CodegenError> {
         // No longer used; the LLVM init-function approach was abandoned
         // because MCJIT does not relocate function pointers in either
@@ -215,6 +216,50 @@ impl<'ctx> JitModule<'ctx> {
                         return Err(CodegenError::Jit(format!(
                             "vtable patch: cannot resolve method {fn_name} for {vtable_name}[{slot_idx}]: {e}"
                         )));
+                    }
+                }
+            }
+        }
+
+        // Patch each TypeDesc.finalizer slot.  The TypeDesc layout
+        // (matching newcp_runtime::gc::TypeDesc) places `finalizer` at
+        // offset 16 (size@0, module@8, finalizer@16, ...).
+        const FINALIZER_OFFSET: usize = 16;
+        for (desc_global_name, fn_name) in &finalizer_patches {
+            let cvt_name = match std::ffi::CString::new(desc_global_name.as_str()) {
+                Ok(s) => s,
+                Err(_) => continue,
+            };
+            let desc_addr = unsafe {
+                LLVMGetGlobalValueAddress(engine.as_mut_ptr(), cvt_name.as_ptr())
+            } as usize;
+            if desc_addr == 0 {
+                if debug {
+                    eprintln!(
+                        "[jit] finalizer patch: TypeDesc global '{desc_global_name}' has \
+                         address 0; skipping (function {fn_name} won't run as finalizer)"
+                    );
+                }
+                continue;
+            }
+            match resolve_method_address(fn_name) {
+                Ok(Some(fn_addr)) => {
+                    let slot = (desc_addr + FINALIZER_OFFSET) as *mut usize;
+                    // SAFETY: TypeDesc is a JIT-allocated #[repr(C)]
+                    // struct with finalizer at offset 16; storage is
+                    // writable (set_constant(false) at emit time).
+                    unsafe { slot.write(fn_addr) };
+                    if debug {
+                        eprintln!(
+                            "[jit] finalizer {desc_global_name}.finalizer = {fn_name} @ 0x{fn_addr:x}"
+                        );
+                    }
+                }
+                Ok(None) | Err(_) => {
+                    if debug {
+                        eprintln!(
+                            "[jit] finalizer for {desc_global_name}: {fn_name} not resolvable; slot left null"
+                        );
                     }
                 }
             }

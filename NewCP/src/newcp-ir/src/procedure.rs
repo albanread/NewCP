@@ -293,6 +293,14 @@ pub struct IrModule {
     /// Key: simple type name.  Value: `Some("BaseTypeName")` or `None`.
     /// Used when emitting `TypeDesc.base` to chain the descriptor for `IS`/`WITH`.
     pub type_bases: std::collections::HashMap<String, Option<String>>,
+    /// Per-type finalizer LLVM function name, if the record (or any base
+    /// in its inheritance chain) declares a `Finalize` method.  When
+    /// non-empty, the JIT layer patches the address of this function
+    /// into the type's `TypeDesc.finalizer` field; the GC sweep calls
+    /// it before reclaiming each block of this type.
+    ///
+    /// Key: simple type name. Value: LLVM function name (e.g. `"BoxDesc_Finalize"`).
+    pub type_finalizers: std::collections::HashMap<String, String>,
 }
 
 impl IrModule {
@@ -435,6 +443,19 @@ fn render_instr(instr: &Instr) -> String {
         StoreResult { value } => {
             format!("store result, {}", value.render())
         }
+        StringCompare { dst, lhs, rhs, eq, elem_is_short } => {
+            let op = if *eq { "streq" } else { "strne" };
+            let elem = if *elem_is_short { "shortchar" } else { "char" };
+            format!(
+                "{} = {} {}, {} : {}",
+                dst.render(),
+                op,
+                lhs.render(),
+                rhs.render(),
+                elem,
+            )
+        }
+        Safepoint => "safepoint".to_string(),
     }
 }
 

@@ -245,6 +245,7 @@ mod tests {
             named_types: std::collections::HashMap::new(),
             type_vtables: std::collections::HashMap::new(),
             type_bases: std::collections::HashMap::new(),
+            type_finalizers: std::collections::HashMap::new(),
         };
 
         let rendered = format_lowering_diagnostics(&module);

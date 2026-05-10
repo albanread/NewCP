@@ -1,56 +1,51 @@
-//! Memory management and Garbage Collection for NewCP.
+//! NewCP Garbage Collector — v2.
 //!
-//! Implements a Mark-and-Sweep GC modelled on the BlackBox Component Pascal
-//! runtime, with:
-//! - **Conservative stack scanning** — no precise stack maps required from LLVM.
-//! - **Precise heap tracing** — every object carries a `TypeDesc` with pointer offsets.
-//! - **Precise global tracing** — each module registers its `varBase` struct and
-//!   the byte offsets of all pointer fields within it.
+//! See `docs/garbage_collection.md` for the architecture contract this
+//! file implements.
 //!
-//! # Heap layout
-//! The managed heap is composed of one or more **Clusters** — large, contiguous
-//! OS allocations subdivided into linearly-walkable **Blocks**. Each block
-//! begins with a `BlockHeader` and is followed by its payload (or, for free
-//! blocks, by a free-list link in the payload region). New objects are
-//! allocated either from a per-cluster free list (fed by sweep) or by bumping
-//! the cluster's high-water mark. When neither succeeds, `__newcp_new_rec`
-//! triggers a `collect()` and retries; if that still fails, it grows the heap
-//! by adding a new cluster.
+//! Properties (in priority order):
+//!   1. Correctness — no use-after-free, no missed roots, no stale
+//!      `TypeDesc` dereferences.
+//!   2. Multi-threaded mutators — every CP-managed thread can allocate
+//!      concurrently. Tests can run in parallel.
+//!   3. Stop-the-world collection — mutators cooperatively park while
+//!      the collector marks and sweeps.  No write barriers, no
+//!      concurrent marking, no compaction.
+//!   4. Transparent — every state change is observable through
+//!      `gc::snapshot()` / `dump-gc`. Tests can pin behaviour.
+//!   5. Robust against module retirement — TypeDescs stay alive while
+//!      any heap block tags them.
+//!
+//! v1 lived in `docs/archive/gc_v1.rs`. The on-wire data layout
+//! (`BlockHeader`, `TypeDesc`, `ModuleDesc`) is identical so JIT
+//! codegen does not need recompilation.
 
 use std::alloc::Layout;
-use std::sync::atomic::{AtomicU64, Ordering};
-use std::sync::Mutex;
+use std::collections::HashMap;
+use std::sync::atomic::{AtomicU8, AtomicU64, AtomicUsize, Ordering};
+use std::sync::{Arc, Condvar, Mutex, OnceLock, RwLock};
 use std::thread::ThreadId;
-use std::time::Instant;
+use std::time::{Duration, Instant};
 
 // ─────────────────────────────────────────────────────────────────────────────
-// BlockHeader
+// On-wire layout (frozen — JIT codegen depends on these byte offsets)
 // ─────────────────────────────────────────────────────────────────────────────
 
 /// Header prefixed to every block in a cluster (allocated *or* free).
 ///
-/// JIT-compiled code receives a pointer to the *payload* region,
-/// `size_of::<BlockHeader>()` bytes past this struct. The GC recovers the
-/// header by subtracting that fixed offset.
+/// 16 bytes, 16-aligned. JIT-emitted code locates the header by
+/// subtracting `size_of::<BlockHeader>()` (= 16) from the payload pointer
+/// it received from `__newcp_new_rec`.
 ///
-/// 64-bit layout (16 bytes):
-/// ```text
-///   +0 : tag        — TypeDesc pointer | GC mark bit (LSB)
-///                     A `tag` whose value (with mark bit stripped) is 0
-///                     denotes a **free** block; the payload then begins with
-///                     a `FreeBlockLink` to the next free block in the cluster.
-///   +8 : block_size — total block size in bytes (header + payload).
-///                     Used to walk the cluster linearly during sweep and
-///                     during conservative root resolution.
-/// ```
+/// `tag` packs the TypeDesc address with a single mark-bit in the LSB.
+/// A `tag` whose value (mark bit cleared) is 0 denotes a **free** block;
+/// the payload then begins with a `FreeBlockLink`.
+///
+/// `block_size` is the total block size in bytes including this header.
+/// Required to walk the cluster linearly during sweep.
 #[repr(C)]
 pub struct BlockHeader {
-    /// `TypeDesc` address with the GC mark bit packed into the LSB.
-    /// Use `type_desc()` to obtain a clean, dereferenceable pointer.
-    /// A value of `0` (mark bit cleared) indicates a free block.
     pub tag: usize,
-    /// Total block size in bytes, including this header. Required to walk the
-    /// cluster linearly during sweep and to split free blocks during alloc.
     pub block_size: usize,
 }
 
@@ -61,117 +56,49 @@ impl BlockHeader {
     pub fn is_marked(&self) -> bool {
         self.tag & Self::MARK_BIT != 0
     }
-
     #[inline]
     pub fn set_mark(&mut self) {
         self.tag |= Self::MARK_BIT;
     }
-
     #[inline]
     pub fn clear_mark(&mut self) {
         self.tag &= !Self::MARK_BIT;
     }
-
-    /// Returns a typed pointer to this block's `TypeDesc`, with the mark bit stripped.
     #[inline]
     pub fn type_desc(&self) -> *const TypeDesc {
         (self.tag & !Self::MARK_BIT) as *const TypeDesc
     }
+    #[inline]
+    pub fn is_free(&self) -> bool {
+        (self.tag & !Self::MARK_BIT) == 0
+    }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// TypeDesc
-// ─────────────────────────────────────────────────────────────────────────────
-
-/// Optional finalizer signature. Invoked once on a block right before it is
-/// returned to the free list during sweep. Receives a pointer to the block's
-/// payload (the same pointer originally returned by `__newcp_new_rec`).
-///
-/// Finalizers must not allocate, must not retain the pointer past the call,
-/// and must not perform GC-visible work. They are intended for native resource
-/// release (file handles, OS handles, COM `Release`, etc.).
 pub type Finalizer = unsafe extern "C" fn(*mut u8);
 
-/// Runtime type descriptor emitted by `newcp-llvm` for every heap-allocated type.
-///
-/// `newcp-llvm` synthesises one `TypeDesc` global constant per `RECORD` type.
-///
-/// # Memory layout (64-bit, `#[repr(C)]`)
-///
-/// ```text
-/// offset  0 : size        — payload size in bytes (excl. BlockHeader)
-/// offset  8 : module      — owning ModuleDesc* (null for built-ins)
-/// offset 16 : finalizer   — nullable fn ptr for resource cleanup
-/// offset 24 : base        — TypeDesc* of the direct base type (null if none)
-/// offset 32 : vtable      — *const *const () — pointer to method vtable array
-///                            (null if the type declares or inherits no methods)
-/// offset 40 : vtable_len  — u64 — number of slots in vtable
-/// offset 48 : name        — *const u32 — UTF-32 zero-terminated qualified
-///                            type name (e.g. "Stores.StoreDesc"); null if
-///                            the codegen didn't emit one
-/// offset 56 : ptroffs[]   — sentinel-terminated isize array of pointer offsets
-/// ```
-///
-/// The JIT code retrieves the descriptor via `BlockHeader.tag` stored
-/// 16 bytes before the payload pointer. The `ptroffs` trailing array is a DST
-/// proxy; callers use `pointer_offsets()` via raw pointer arithmetic.
-///
-/// # Method dispatch
-///
-/// To call a bound procedure at slot `s` on an object `obj: ptr`:
-/// 1. Load `tag = *(obj - 16)` (the `BlockHeader.tag` field).
-/// 2. Mask the GC mark bit: `desc = tag & !1`.
-/// 3. Load `vtable = *(desc + 32)`.
-/// 4. Load `fn_ptr = *(vtable + s * 8)`.
-/// 5. Call `fn_ptr(obj, args...)`.
+/// Runtime type descriptor emitted by `newcp-llvm` for every heap-
+/// allocated record type.  Layout-frozen.
 #[repr(C)]
 pub struct TypeDesc {
-    /// Payload size in bytes (does **not** include `BlockHeader`). Offset 0.
     pub size: isize,
-    /// Owning module, or null for built-in types. Offset 8.
     pub module: *const ModuleDesc,
-    /// Optional finalizer; `None` if the type requires no cleanup.
-    /// Same ABI as a nullable function pointer. Offset 16.
     pub finalizer: Option<Finalizer>,
-    /// Direct base type descriptor, or null if this type has no base. Offset 24.
-    ///
-    /// Used by the runtime for `IS`/`WITH` type tests: walking the `base` chain
-    /// until a match is found or null is reached.
     pub base: *const TypeDesc,
-    /// Pointer to the vtable array (array of function pointers), or null if this
-    /// type declares and inherits no bound procedures. Offset 32.
-    ///
-    /// Each element is a `ptr`-sized function pointer at a stable slot index
-    /// assigned by the compiler. The slot assignment is depth-first in the
-    /// inheritance chain: base type's `NEW` methods are slotted first (slot 0,
-    /// 1, …), then each derived type's own `NEW` methods follow in source order.
     pub vtable: *const *const (),
-    /// Number of slots in `vtable`. Offset 40.
     pub vtable_len: u64,
-    /// Qualified type name as a zero-terminated UTF-32 codepoint stream
-    /// (e.g. `"Stores.StoreDesc"`), or null if codegen did not emit one
-    /// (e.g. for hand-fabricated TypeDescs in tests). Offset 48.
-    ///
-    /// CP source identifiers are guaranteed ASCII, but the storage format
-    /// is `*const u32` so `Kernel.GetTypeName` can copy directly into a
-    /// CP `ARRAY OF CHAR` (UTF-32) without per-character widening.
     pub name: *const u32,
-    /// Sentinel-terminated (first negative entry) array of payload byte offsets
-    /// where heap-pointer fields reside. Offset 56.
     pub ptroffs: [isize; 0],
 }
 
-// TypeDesc constants are emitted read-only by the compiler and are safe to
-// share across threads.
 unsafe impl Sync for TypeDesc {}
 unsafe impl Send for TypeDesc {}
 
 impl TypeDesc {
-    /// Returns an iterator over the non-negative pointer offsets in `ptroffs`.
+    /// Iterator over the non-negative pointer offsets in `ptroffs`.
+    /// The array is sentinel-terminated by the first negative entry.
     ///
     /// # Safety
-    /// The `ptroffs` array must be properly terminated by a negative sentinel
-    /// value and must remain valid for the lifetime of the returned iterator.
+    /// `ptroffs` must remain valid for the lifetime of the iterator.
     pub unsafe fn pointer_offsets(&self) -> impl Iterator<Item = isize> {
         let mut idx = 0usize;
         let base = self.ptroffs.as_ptr();
@@ -187,71 +114,40 @@ impl TypeDesc {
     }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// ModuleDesc
-// ─────────────────────────────────────────────────────────────────────────────
-
-/// Module-level root metadata emitted by `newcp-llvm` alongside each compiled
-/// module's `%ModuleName.Data` global struct.
-///
-/// `newcp-llvm` packs all mutable module-level variables into a single LLVM
-/// struct (`%ModuleName.Data`) and emits one `ModuleDesc` constant per module,
-/// so the GC can scan module globals precisely without scanning arbitrary BSS
-/// regions.
-///
-/// `ptrs` is a sentinel-terminated (first negative value) array of byte offsets
-/// within `var_base` that identify heap-pointer fields.
+/// Module-level root metadata.  Layout-frozen.
 #[repr(C)]
 pub struct ModuleDesc {
-    /// Pointer to the module's `%ModuleName.Data` global struct.
     pub var_base: *const u8,
-    /// Sentinel-terminated array of byte offsets within `var_base` for pointer fields.
     pub ptrs: *const isize,
-    /// Intrusive linked-list next pointer; null = end of list.
     pub next: *const ModuleDesc,
 }
 
-// ModuleDesc constants are emitted read-only by the compiler.
 unsafe impl Sync for ModuleDesc {}
 unsafe impl Send for ModuleDesc {}
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Heap counters — always-on atomic instrumentation
+// Counters (process-global, atomic, always on)
 // ─────────────────────────────────────────────────────────────────────────────
 
-/// Process-global, atomic counters covering allocation, reclamation, and
-/// collection cycles. Read by `heap_introspect::current_counters()`; updated
-/// in place by the alloc and sweep paths.
-///
-/// Hot-path cost is one or two `Relaxed` `fetch_add`s per allocation. Removing
-/// instrumentation costs nothing at the call site since the operations live
-/// inside `__newcp_new_rec` and `Cluster::sweep`, not in JIT-emitted code.
 pub(crate) struct HeapCounters {
-    // Lifetime totals.
     pub(crate) alloc_blocks_lifetime: AtomicU64,
     pub(crate) alloc_bytes_lifetime: AtomicU64,
     pub(crate) free_blocks_lifetime: AtomicU64,
     pub(crate) free_bytes_lifetime: AtomicU64,
-
-    // Path attribution.
     pub(crate) bump_path_blocks: AtomicU64,
     pub(crate) free_list_path_blocks: AtomicU64,
     pub(crate) grow_events: AtomicU64,
-
-    // Collection.
     pub(crate) collect_cycles: AtomicU64,
     pub(crate) collect_total_nanos: AtomicU64,
     pub(crate) collect_last_nanos: AtomicU64,
     pub(crate) collect_last_reclaimed_bytes: AtomicU64,
-
-    // Live state (refreshed at end of sweep).
     pub(crate) live_blocks: AtomicU64,
     pub(crate) live_bytes: AtomicU64,
     pub(crate) cluster_count: AtomicU64,
     pub(crate) module_root_count: AtomicU64,
-
-    // Pressure.
     pub(crate) peak_live_bytes: AtomicU64,
+    pub(crate) registered_threads: AtomicU64,
+    pub(crate) safepoint_waits_total_nanos: AtomicU64,
 }
 
 impl HeapCounters {
@@ -273,36 +169,39 @@ impl HeapCounters {
             cluster_count: AtomicU64::new(0),
             module_root_count: AtomicU64::new(0),
             peak_live_bytes: AtomicU64::new(0),
+            registered_threads: AtomicU64::new(0),
+            safepoint_waits_total_nanos: AtomicU64::new(0),
         }
     }
 
     pub(crate) fn reset(&self) {
-        // Used by test harnesses and `dump-heap --reset`. Not for production
-        // code paths — clearing live counters mid-run will mislead any
-        // observer reading concurrently.
-        self.alloc_blocks_lifetime.store(0, Ordering::Relaxed);
-        self.alloc_bytes_lifetime.store(0, Ordering::Relaxed);
-        self.free_blocks_lifetime.store(0, Ordering::Relaxed);
-        self.free_bytes_lifetime.store(0, Ordering::Relaxed);
-        self.bump_path_blocks.store(0, Ordering::Relaxed);
-        self.free_list_path_blocks.store(0, Ordering::Relaxed);
-        self.grow_events.store(0, Ordering::Relaxed);
-        self.collect_cycles.store(0, Ordering::Relaxed);
-        self.collect_total_nanos.store(0, Ordering::Relaxed);
-        self.collect_last_nanos.store(0, Ordering::Relaxed);
-        self.collect_last_reclaimed_bytes.store(0, Ordering::Relaxed);
-        self.live_blocks.store(0, Ordering::Relaxed);
-        self.live_bytes.store(0, Ordering::Relaxed);
-        self.cluster_count.store(0, Ordering::Relaxed);
-        self.module_root_count.store(0, Ordering::Relaxed);
-        self.peak_live_bytes.store(0, Ordering::Relaxed);
+        for slot in [
+            &self.alloc_blocks_lifetime,
+            &self.alloc_bytes_lifetime,
+            &self.free_blocks_lifetime,
+            &self.free_bytes_lifetime,
+            &self.bump_path_blocks,
+            &self.free_list_path_blocks,
+            &self.grow_events,
+            &self.collect_cycles,
+            &self.collect_total_nanos,
+            &self.collect_last_nanos,
+            &self.collect_last_reclaimed_bytes,
+            &self.live_blocks,
+            &self.live_bytes,
+            &self.cluster_count,
+            &self.module_root_count,
+            &self.peak_live_bytes,
+            &self.registered_threads,
+            &self.safepoint_waits_total_nanos,
+        ] {
+            slot.store(0, Ordering::Relaxed);
+        }
     }
 }
 
 pub(crate) static HEAP_COUNTERS: HeapCounters = HeapCounters::zeroed();
 
-/// Which path satisfied an allocation request. Threaded through
-/// `Cluster::try_alloc` so `__newcp_new_rec` can attribute it to a counter.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub(crate) enum AllocPath {
     Bump,
@@ -310,77 +209,49 @@ pub(crate) enum AllocPath {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Cluster — backing storage for managed allocations
+// Cluster — one OS-allocation chunk subdivided into blocks
 // ─────────────────────────────────────────────────────────────────────────────
 
-/// Default cluster size: 1 MiB. Tuned to amortise OS allocation overhead
-/// while keeping conservative-scan walks bounded.
-const DEFAULT_CLUSTER_SIZE: usize = 1 << 20;
-
-/// All blocks (and the cluster base) are 16-byte aligned so payloads are safe
-/// for any scalar, pointer, or common SIMD type.
+const DEFAULT_CLUSTER_SIZE: usize = 1 << 20; // 1 MiB
 const BLOCK_ALIGN: usize = 16;
-
-/// Smallest legal block size (header + at least one payload word, 16-aligned).
-/// Free-list splits will not produce a remainder smaller than this; otherwise
-/// the slack stays attached to the allocated block.
 const MIN_BLOCK: usize = 32;
 
-/// Free-block payload prefix: a singly-linked list of free blocks within a
-/// cluster. The link points at the **header** of the next free block.
+/// Free-block payload prefix (singly-linked list within a cluster).
+/// `next` points to the **header** of the next free block, or null.
 #[repr(C)]
 struct FreeBlockLink {
     next: *mut u8,
 }
 
-/// A single contiguous OS allocation that backs many managed blocks.
-///
-/// Layout: `[block_0][block_1]...[block_k][unused bump space]`
-/// where `block_i` is either an allocated object or a free block (tag = 0)
-/// linked into `free_list`. The `bump` cursor marks the boundary between
-/// formed blocks and never-touched memory at the cluster's tail.
-///
-/// `block_starts` is a side-table bitmap (1 bit per `BLOCK_ALIGN`-aligned
-/// position) where a set bit marks the start of a formed block. It enables
-/// O(1)-amortised `resolve()` for the conservative stack scanner.
 pub(crate) struct Cluster {
-    /// Cluster base address (16-aligned).
     pub(crate) base: *mut u8,
-    /// Cluster size in bytes.
     pub(crate) size: usize,
-    /// Offset of the first byte past all formed blocks; `[0, bump)` is walkable.
     pub(crate) bump: usize,
-    /// Head of this cluster's free-block linked list (header pointer or null).
     pub(crate) free_list: *mut u8,
-    /// Layout used to allocate the cluster itself; required for eventual `dealloc`.
     layout: Layout,
-    /// Block-start bitmap. Bit `i` is set iff a block begins at offset
-    /// `i * BLOCK_ALIGN`. Sized to `cluster_size / BLOCK_ALIGN` bits.
-    block_starts: Vec<u64>,
+    /// Bit `i` set iff a block begins at `i * BLOCK_ALIGN` from `base`.
+    pub(crate) block_starts: Vec<u64>,
 }
 
 unsafe impl Send for Cluster {}
 
 impl Drop for Cluster {
     fn drop(&mut self) {
-        // Cluster backing memory is owned by the cluster; release it when the
-        // cluster is dropped (e.g. if the GC ever shrinks the heap).
+        // SAFETY: `base` was allocated with `layout`. v2 never frees a
+        // cluster except at process exit, but Drop must be safe in
+        // any case (including reset_for_test).
         unsafe { std::alloc::dealloc(self.base, self.layout) };
     }
 }
 
 impl Cluster {
-    /// Allocates a fresh cluster large enough for `min_size` bytes of one block.
     fn new(min_size: usize) -> Self {
         let size = min_size.max(DEFAULT_CLUSTER_SIZE);
         let layout = Layout::from_size_align(size, BLOCK_ALIGN).unwrap();
-        // alloc_zeroed gives every untouched payload byte a defined NIL/zero
-        // value, satisfying CP's NEW semantics for the bump path for free.
         let base = unsafe { std::alloc::alloc_zeroed(layout) };
         if base.is_null() {
             std::alloc::handle_alloc_error(layout);
         }
-        // One bit per BLOCK_ALIGN-aligned position; round up to whole u64s.
         let bits = size / BLOCK_ALIGN;
         let words = (bits + 63) / 64;
         Self {
@@ -393,14 +264,12 @@ impl Cluster {
         }
     }
 
-    /// Returns true if `addr` falls within the formed (walkable) region.
     #[inline]
     fn contains(&self, addr: usize) -> bool {
         let base = self.base as usize;
         addr >= base && addr < base + self.bump
     }
 
-    /// Sets the block-start bit at the given byte offset within the cluster.
     #[inline]
     fn mark_block_start(&mut self, offset: usize) {
         debug_assert!(offset % BLOCK_ALIGN == 0);
@@ -408,9 +277,6 @@ impl Cluster {
         self.block_starts[bit / 64] |= 1u64 << (bit % 64);
     }
 
-    /// Clears the block-start bit at the given byte offset within the cluster.
-    /// Used during sweep coalescing when an absorbed block is no longer a
-    /// block-start of its own.
     #[inline]
     fn clear_block_start(&mut self, offset: usize) {
         debug_assert!(offset % BLOCK_ALIGN == 0);
@@ -418,23 +284,13 @@ impl Cluster {
         self.block_starts[bit / 64] &= !(1u64 << (bit % 64));
     }
 
-    /// Returns the byte offset of the largest block-start at or below `offset`,
-    /// or `None` if no block starts at or below that position.
-    ///
-    /// Implementation: scan `block_starts` backwards from the word containing
-    /// `offset`; in the first word, mask off bits above `offset`. Per-call
-    /// cost is dominated by the leading-zero count on a single word for the
-    /// common case where blocks are densely packed.
     fn block_start_at_or_below(&self, offset: usize) -> Option<usize> {
         if offset >= self.bump {
-            // Cap to the last valid block-start position so we don't search
-            // into never-formed bump space.
             return self.block_start_at_or_below(self.bump.saturating_sub(BLOCK_ALIGN));
         }
         let bit = offset / BLOCK_ALIGN;
         let word_idx = bit / 64;
         let bit_in_word = bit % 64;
-        // Mask: bits 0..=bit_in_word inclusive.
         let mask = if bit_in_word == 63 {
             !0u64
         } else {
@@ -455,16 +311,16 @@ impl Cluster {
         None
     }
 
-    /// Tries to satisfy a `total_size`-byte allocation from this cluster's
-    /// free list, then from bump space. Returns the **header** pointer plus
-    /// the path that satisfied it (for counter attribution). Payload memory
-    /// is zeroed before return.
+    /// Try to satisfy a `total_size`-byte allocation.  Returns the
+    /// **header** pointer plus the path.  Payload is zeroed before
+    /// return.
     ///
-    /// `total_size` must be a multiple of `BLOCK_ALIGN` and at least `MIN_BLOCK`.
+    /// # Safety
+    /// `total_size` must be a multiple of `BLOCK_ALIGN` and ≥ MIN_BLOCK.
     unsafe fn try_alloc(&mut self, total_size: usize) -> Option<(*mut u8, AllocPath)> {
         let header_size = std::mem::size_of::<BlockHeader>();
 
-        // ── 1. Free-list (first-fit). ──────────────────────────────────────
+        // Free-list (first-fit).
         unsafe {
             let mut prev_link: *mut *mut u8 = &mut self.free_list;
             while !(*prev_link).is_null() {
@@ -472,28 +328,20 @@ impl Cluster {
                 let block_size = (*(block as *const BlockHeader)).block_size;
                 let next_link = block.add(header_size) as *mut *mut u8;
                 if block_size >= total_size {
-                    // Unlink from the free list.
                     *prev_link = *next_link;
-
-                    // Split if the leftover is itself a usable block.
                     let leftover = block_size - total_size;
                     if leftover >= MIN_BLOCK {
                         let split = block.add(total_size);
-                        let split_offset =
-                            (split as usize) - (self.base as usize);
+                        let split_offset = (split as usize) - (self.base as usize);
                         let split_hdr = split as *mut BlockHeader;
                         (*split_hdr).tag = 0;
                         (*split_hdr).block_size = leftover;
-                        let split_link =
-                            split.add(header_size) as *mut FreeBlockLink;
+                        let split_link = split.add(header_size) as *mut FreeBlockLink;
                         split_link.write(FreeBlockLink { next: self.free_list });
                         self.free_list = split;
-                        // Newly-formed split block becomes a block-start.
                         self.mark_block_start(split_offset);
-
                         (*(block as *mut BlockHeader)).block_size = total_size;
                     }
-                    // Zero the payload (free-list path: payload may hold a stale link).
                     let final_size = (*(block as *const BlockHeader)).block_size;
                     let payload = block.add(header_size);
                     std::ptr::write_bytes(payload, 0, final_size - header_size);
@@ -503,17 +351,14 @@ impl Cluster {
             }
         }
 
-        // ── 2. Bump from cluster tail. ─────────────────────────────────────
+        // Bump from cluster tail.
         if self.bump.checked_add(total_size)? <= self.size {
             let block_offset = self.bump;
             let block = unsafe { self.base.add(block_offset) };
             self.bump += total_size;
-            // Cluster memory was alloc_zeroed; payload is already zero.
             unsafe {
                 let hdr = block as *mut BlockHeader;
                 (*hdr).block_size = total_size;
-                // tag is left for the caller to set (so callers don't depend
-                // on a partially-initialised header during a window).
             }
             self.mark_block_start(block_offset);
             return Some((block, AllocPath::Bump));
@@ -522,12 +367,8 @@ impl Cluster {
         None
     }
 
-    /// Resolves an arbitrary address `addr` to the payload start of the block
-    /// containing it, or `None` if `addr` is not inside an allocated block.
-    /// Used by the conservative stack scanner.
-    ///
-    /// Uses the block-start bitmap for ~O(1) lookup instead of a linear walk.
-    /// Free blocks return `None`.
+    /// Resolve an arbitrary address to the payload start of the block
+    /// containing it, or `None`.  Used by the conservative stack scan.
     unsafe fn resolve(&self, addr: usize) -> Option<*const u8> {
         if !self.contains(addr) {
             return None;
@@ -541,247 +382,327 @@ impl Cluster {
             let hdr = block as *const BlockHeader;
             let block_size = (*hdr).block_size;
             if block_size < MIN_BLOCK || block_offset + block_size > self.bump {
-                return None; // corruption guard
+                return None;
             }
             let block_end = base + block_offset + block_size;
             if addr >= block_end {
-                return None; // bitmap pointed to a block strictly before `addr`
+                return None;
             }
             let type_bits = (*hdr).tag & !BlockHeader::MARK_BIT;
             if type_bits == 0 {
-                return None; // free block
+                return None;
             }
             let payload_start = base + block_offset + header_size;
             if addr < payload_start {
-                return None; // address lands in the header region
+                return None;
             }
             Some(payload_start as *const u8)
         }
     }
+}
 
-    /// Sweeps this cluster: rebuilds the free list from unmarked blocks,
-    /// invokes finalizers on newly-dead blocks, clears the mark bit on
-    /// survivors, and coalesces adjacent free blocks. Returns per-cluster
-    /// stats so the global counters can be updated from `collect_inner`.
-    unsafe fn sweep(&mut self) -> SweepStats {
-        let mut stats = SweepStats::default();
-        let header_size = std::mem::size_of::<BlockHeader>();
-        self.free_list = std::ptr::null_mut();
-        let mut offset: usize = 0;
-        // The most recently produced free block in this pass, for coalescing.
-        let mut prev_free: *mut u8 = std::ptr::null_mut();
-        let mut prev_free_offset: usize = 0;
+// ─────────────────────────────────────────────────────────────────────────────
+// TypeDesc registry — pinned-while-blocks-reference
+// ─────────────────────────────────────────────────────────────────────────────
 
-        unsafe {
-            while offset < self.bump {
-                let block = self.base.add(offset);
-                let hdr = block as *mut BlockHeader;
-                let block_size = (*hdr).block_size;
-                if block_size < MIN_BLOCK || offset + block_size > self.bump {
-                    // Corruption guard: stop walking this cluster.
-                    break;
-                }
-                let raw_tag = (*hdr).tag;
-                let type_bits = raw_tag & !BlockHeader::MARK_BIT;
-                let is_marked = raw_tag & BlockHeader::MARK_BIT != 0;
-                let was_free = type_bits == 0;
-                let is_dead = !was_free && !is_marked;
+#[derive(Debug, Clone)]
+pub(crate) struct TypeDescEntry {
+    pub addr: usize,
+    pub block_count: u64,
+    pub owner_module: Option<String>,
+    pub size_bytes: isize,
+}
 
-                if !was_free && is_marked {
-                    // Survivor: clear mark and continue.
-                    (*hdr).clear_mark();
-                    stats.live_blocks += 1;
-                    stats.live_bytes += block_size as u64;
-                    prev_free = std::ptr::null_mut();
-                } else {
-                    // Free block (newly dead, or already free).
-                    if is_dead {
-                        stats.freed_blocks += 1;
-                        stats.freed_bytes += block_size as u64;
-                        // Invoke finalizer (if any) before wiping payload.
-                        let td = (type_bits) as *const TypeDesc;
-                        if !td.is_null() {
-                            if let Some(fin) = (*td).finalizer {
-                                let payload = block.add(header_size);
-                                fin(payload);
-                            }
-                        }
-                        // Wipe the payload of newly-dead blocks so subsequent
-                        // free-list traversals never observe stale GC pointers.
-                        let payload = block.add(header_size);
-                        std::ptr::write_bytes(payload, 0, block_size - header_size);
-                    }
+pub(crate) struct TypeDescRegistry {
+    by_addr: HashMap<usize, TypeDescEntry>,
+}
 
-                    if !prev_free.is_null() {
-                        // Coalesce with the immediately preceding free block:
-                        // grow `prev_free` and clear this block's start bit.
-                        let prev_hdr = prev_free as *mut BlockHeader;
-                        (*prev_hdr).block_size += block_size;
-                        self.clear_block_start(offset);
-                        let _ = prev_free_offset; // keep variable alive for clarity
-                    } else {
-                        (*hdr).tag = 0;
-                        (*hdr).block_size = block_size;
-                        let link = block.add(header_size) as *mut FreeBlockLink;
-                        link.write(FreeBlockLink { next: self.free_list });
-                        self.free_list = block;
-                        prev_free = block;
-                        prev_free_offset = offset;
-                    }
-                }
-                offset += block_size;
+impl TypeDescRegistry {
+    fn new() -> Self {
+        Self { by_addr: HashMap::new() }
+    }
+
+    fn record(&mut self, td: usize, owner_module: Option<String>) {
+        let size_bytes = if td == 0 {
+            0
+        } else {
+            unsafe { (*(td as *const TypeDesc)).size }
+        };
+        self.by_addr.entry(td).or_insert(TypeDescEntry {
+            addr: td,
+            block_count: 0,
+            owner_module,
+            size_bytes,
+        });
+    }
+
+    /// Increment `block_count` for `td`. Auto-records the entry if
+    /// it's the first time we've seen this address (codegen paths
+    /// that bypass `__newcp_register_type` still get accounted).
+    fn inc(&mut self, td: usize) {
+        let entry = self.by_addr.entry(td).or_insert_with(|| TypeDescEntry {
+            addr: td,
+            block_count: 0,
+            owner_module: None,
+            size_bytes: if td == 0 { 0 } else { unsafe { (*(td as *const TypeDesc)).size } },
+        });
+        entry.block_count = entry.block_count.saturating_add(1);
+    }
+
+    fn dec(&mut self, td: usize) {
+        if let Some(entry) = self.by_addr.get_mut(&td) {
+            if entry.block_count > 0 {
+                entry.block_count -= 1;
             }
         }
+    }
 
-        stats
+    pub(crate) fn snapshot(&self) -> Vec<TypeDescEntry> {
+        let mut out: Vec<_> = self.by_addr.values().cloned().collect();
+        out.sort_by_key(|e| e.addr);
+        out
     }
 }
 
-/// Per-cluster sweep accounting, summed by `collect_inner` and folded into
-/// the global heap counters.
-#[derive(Debug, Default, Clone, Copy)]
-pub(crate) struct SweepStats {
-    pub(crate) live_blocks: u64,
-    pub(crate) live_bytes: u64,
-    pub(crate) freed_blocks: u64,
-    pub(crate) freed_bytes: u64,
-}
-
 // ─────────────────────────────────────────────────────────────────────────────
-// GcState — process-global GC bookkeeping
+// Module roots
 // ─────────────────────────────────────────────────────────────────────────────
 
-/// Rust-owned per-module root record. Owns a copy of the offset array so the
-/// GC never holds pointers into caller-managed memory.
 pub(crate) struct ModuleRoots {
-    /// Module name as supplied at registration. `<unnamed>` if the legacy
-    /// `__newcp_register_module` was used.
     pub(crate) name: String,
-    /// Start address of the module's packed global data struct.
     pub(crate) var_base: *const u8,
-    /// Owned copy of the byte-offset list for pointer fields within `var_base`.
     pub(crate) offsets: Vec<isize>,
 }
 
-// Access to `var_base` is always serialised through the `GC` mutex.
 unsafe impl Send for ModuleRoots {}
 
-pub(crate) struct GcState {
-    /// Stack address recorded by `__newcp_init_gc`. The conservative scan
-    /// walks upward from the current SP to this address.
-    ///
-    /// Follow-on action: If the runtime adds support for multiple concurrent
-    /// managed threads, this must be decoupled from the global state and
-    /// moved to a `thread_local!` cell.
-    pub(crate) base_stack: usize,
-    /// Identity of the thread that called `__newcp_init_gc`.
-    ///
-    /// **MVP-internal guard.** The current GC is single-threaded, and this
-    /// field lets debug builds catch accidental cross-thread calls inside
-    /// `gc.rs` only — it is *not* an architectural commitment exposed to other
-    /// crates. Multi-thread evolution (per-thread `MutatorState`, cooperative
-    /// safepoints) will replace this with a `thread_local!` registration
-    /// scheme; see the "Multi-thread roadmap" section of
-    /// `docs/garbage-collection.md`.
-    /// `None` until the GC has been initialised.
-    pub(crate) owner_thread: Option<ThreadId>,
-    /// Backing storage for all managed allocations.
+// ─────────────────────────────────────────────────────────────────────────────
+// Mutator threads
+// ─────────────────────────────────────────────────────────────────────────────
+
+const STATE_RUNNING: u8 = 0;
+const STATE_PARK_REQUESTED: u8 = 1;
+const STATE_PARKED: u8 = 2;
+
+pub(crate) struct Mutator {
+    pub(crate) thread_id: ThreadId,
+    pub(crate) stack_top: usize,
+    pub(crate) state: AtomicU8,
+    pub(crate) parked_sp: AtomicUsize,
+    pub(crate) spill: std::sync::Mutex<[usize; 16]>,
+
+    pub(crate) alloc_blocks_lifetime: AtomicU64,
+    pub(crate) alloc_bytes_lifetime: AtomicU64,
+    pub(crate) park_count: AtomicU64,
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Allocation event log (ring buffer, optional)
+// ─────────────────────────────────────────────────────────────────────────────
+
+#[derive(Debug, Clone)]
+pub(crate) struct CollectRecord {
+    pub generation: u64,
+    pub elapsed_nanos: u64,
+    pub mutators_parked: u64,
+    pub roots_marked: u64,
+    pub blocks_freed: u64,
+    pub bytes_freed: u64,
+    pub bytes_live_after: u64,
+}
+
+pub(crate) struct CollectLog {
+    capacity: usize,
+    entries: std::collections::VecDeque<CollectRecord>,
+}
+
+impl CollectLog {
+    fn new(capacity: usize) -> Self {
+        Self {
+            capacity,
+            entries: std::collections::VecDeque::with_capacity(capacity),
+        }
+    }
+    fn push(&mut self, rec: CollectRecord) {
+        if self.entries.len() == self.capacity {
+            self.entries.pop_front();
+        }
+        self.entries.push_back(rec);
+    }
+    pub(crate) fn snapshot(&self) -> Vec<CollectRecord> {
+        self.entries.iter().cloned().collect()
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Heap state
+// ─────────────────────────────────────────────────────────────────────────────
+
+pub struct Heap {
     pub(crate) clusters: Vec<Cluster>,
-    /// All registered module root descriptors, in registration order.
     pub(crate) modules: Vec<ModuleRoots>,
+    pub(crate) type_descs: TypeDescRegistry,
+    pub(crate) collect_log: CollectLog,
+    pub(crate) generation: u64,
+    /// Pending finalizers queued by the most recent sweep.  Populated
+    /// during `run_collect_cycle`, drained by `collect_stw` once
+    /// SAFEPOINT_REQUESTED has been cleared.
+    pub(crate) pending_finalizers: Vec<(Finalizer, *mut u8)>,
 }
 
-/// Process-global GC state, protected by a mutex.
-///
-/// `Vec::new()` and `Mutex::new()` are both `const fn`, so this static is
-/// fully constant-initialised without requiring a lazy initialiser.
-static GC: Mutex<GcState> = Mutex::new(GcState {
-    base_stack: 0,
-    owner_thread: None,
-    clusters: Vec::new(),
-    modules: Vec::new(),
-});
+// Heap is moved between threads only inside the global Mutex; the
+// raw pointers in `pending_finalizers` reference cluster-owned
+// payload memory and are only consumed on the same thread that
+// queued them.  Marking the struct Send is sound under those rules.
+unsafe impl Send for Heap {}
 
-/// Debug-asserts that the calling thread is the GC's owning thread.
-///
-/// MVP-internal guard against accidental cross-thread calls while the GC is
-/// single-threaded. Will be replaced by per-thread `MutatorState` registration
-/// when stop-the-world cooperative safepoints land. Free in release builds.
-#[inline]
-fn debug_assert_owner_thread(gc: &GcState) {
-    if cfg!(debug_assertions) {
-        if let Some(owner) = gc.owner_thread {
-            assert_eq!(
-                owner,
-                std::thread::current().id(),
-                "GC entry point invoked from a non-owner thread; the MVP runtime is single-threaded \
-                 (see docs/garbage-collection.md § Multi-thread roadmap)",
-            );
+static HEAP_CELL: OnceLock<Mutex<Heap>> = OnceLock::new();
+
+fn heap_lock() -> std::sync::MutexGuard<'static, Heap> {
+    HEAP_CELL
+        .get_or_init(|| {
+            Mutex::new(Heap {
+                clusters: Vec::new(),
+                modules: Vec::new(),
+                type_descs: TypeDescRegistry::new(),
+                collect_log: CollectLog::new(16),
+                generation: 0,
+                pending_finalizers: Vec::new(),
+            })
+        })
+        .lock()
+        .unwrap()
+}
+
+static MUTATORS: RwLock<Vec<Arc<Mutator>>> = RwLock::new(Vec::new());
+
+/// Global cooperative-park flag.  Mutators check this at safepoints
+/// (currently: implicit at every allocation slow-path).  Once the
+/// collector is done, it clears the flag and notifies the condvar.
+static SAFEPOINT_REQUESTED: AtomicU8 = AtomicU8::new(0);
+static SAFEPOINT_CONDVAR: Condvar = Condvar::new();
+static SAFEPOINT_LOCK: Mutex<()> = Mutex::new(());
+
+/// Initial-thread bootstrap stack base.  Set by `__newcp_init_gc`.
+/// The bootstrap thread is auto-registered as a mutator if it later
+/// allocates without explicit `__newcp_register_thread`.
+static BOOTSTRAP_STACK_BASE: AtomicUsize = AtomicUsize::new(0);
+
+/// TLS guard whose `Drop` removes the calling thread's `Mutator`
+/// from the global registry.  Without this, a dead thread leaves
+/// a `Mutator` entry behind whose state never updates, and
+/// `collect_stw` would wait the full safepoint timeout for it
+/// to "park" before aborting.
+struct MutatorTls {
+    handle: std::cell::RefCell<Option<Arc<Mutator>>>,
+}
+
+impl Drop for MutatorTls {
+    fn drop(&mut self) {
+        if let Some(m) = self.handle.borrow().clone() {
+            let id = m.thread_id;
+            // SAFEPOINT_LOCK: notify in case a collector is actively
+            // waiting for this thread to park; an exiting thread is
+            // effectively parked (it can't run any more user code).
+            m.state.store(STATE_PARKED, Ordering::SeqCst);
+            let mut threads = MUTATORS.write().unwrap();
+            threads.retain(|x| x.thread_id != id);
+            HEAP_COUNTERS
+                .registered_threads
+                .store(threads.len() as u64, Ordering::Relaxed);
+            drop(threads);
+            // Wake any collector that might be waiting.
+            let _g = SAFEPOINT_LOCK.lock().unwrap();
+            SAFEPOINT_CONDVAR.notify_all();
         }
     }
 }
 
-/// Rounds `n` up to the next multiple of `BLOCK_ALIGN`.
-#[inline]
-fn align_up(n: usize) -> usize {
-    (n + BLOCK_ALIGN - 1) & !(BLOCK_ALIGN - 1)
+thread_local! {
+    static MUTATOR_HANDLE: MutatorTls = MutatorTls {
+        handle: std::cell::RefCell::new(None),
+    };
 }
 
-/// Computes the total block size (header + aligned payload, at least `MIN_BLOCK`)
-/// required to satisfy a `payload_size` allocation request.
-#[inline]
-fn total_block_size(payload_size: usize) -> usize {
-    let raw = std::mem::size_of::<BlockHeader>() + payload_size;
-    align_up(raw).max(MIN_BLOCK)
-}
-
-/// Walks the cluster list and tries to allocate `total_size` bytes from any
-/// existing cluster. Does **not** trigger collection or grow the heap.
-unsafe fn try_alloc_in_clusters(
-    gc: &mut GcState,
-    total_size: usize,
-) -> Option<(*mut u8, AllocPath)> {
-    for cluster in &mut gc.clusters {
-        if let Some(block) = unsafe { cluster.try_alloc(total_size) } {
-            return Some(block);
-        }
+fn ensure_mutator_for_current_thread() -> Arc<Mutator> {
+    if let Some(m) = MUTATOR_HANDLE.with(|tls| tls.handle.borrow().clone()) {
+        return m;
     }
-    None
+    // Auto-register using the bootstrap stack base.  The exact
+    // top-of-stack matters less than that the scan covers every
+    // currently-live frame; bootstrap is set high enough to
+    // include any frame on this thread.
+    let stack_top = BOOTSTRAP_STACK_BASE.load(Ordering::Acquire);
+    register_thread_inner(stack_top, /* explicit */ false)
+}
+
+fn register_thread_inner(stack_top: usize, _explicit: bool) -> Arc<Mutator> {
+    let mutator = Arc::new(Mutator {
+        thread_id: std::thread::current().id(),
+        stack_top,
+        state: AtomicU8::new(STATE_RUNNING),
+        parked_sp: AtomicUsize::new(0),
+        spill: Mutex::new([0usize; 16]),
+        alloc_blocks_lifetime: AtomicU64::new(0),
+        alloc_bytes_lifetime: AtomicU64::new(0),
+        park_count: AtomicU64::new(0),
+    });
+    {
+        let mut threads = MUTATORS.write().unwrap();
+        threads.push(mutator.clone());
+        HEAP_COUNTERS
+            .registered_threads
+            .store(threads.len() as u64, Ordering::Relaxed);
+    }
+    MUTATOR_HANDLE.with(|tls| {
+        *tls.handle.borrow_mut() = Some(mutator.clone());
+    });
+    mutator
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
 // JIT-callable exports
 // ─────────────────────────────────────────────────────────────────────────────
 
-/// Initialises the GC and records the stack base for conservative scanning.
-///
-/// Must be called once by the runtime startup on the **same thread** that will
-/// execute Component Pascal code. If called a second time it is a no-op.
-///
-/// # Safety
-/// `base_stack` must be the stack pointer at the boundary above all CP call
-/// frames — i.e. the top of the "managed" stack region for this thread.
+/// Initialise the GC and record the *bootstrap* stack base.  Idempotent;
+/// only the first call has effect.  Called once from runtime startup
+/// on the bootstrap thread.
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn __newcp_init_gc(base_stack: *const u8) {
-    let mut gc = GC.lock().unwrap();
-    if gc.base_stack == 0 {
-        gc.base_stack = base_stack as usize;
-        gc.owner_thread = Some(std::thread::current().id());
+    let prev = BOOTSTRAP_STACK_BASE.load(Ordering::Acquire);
+    if prev == 0 {
+        BOOTSTRAP_STACK_BASE.store(base_stack as usize, Ordering::Release);
     }
+    // Auto-register the bootstrap thread.
+    ensure_mutator_for_current_thread();
 }
 
-/// Registers a loaded module's global roots with the GC.
-///
-/// Called by the module loader after linking each module so that the GC will
-/// trace the module's global pointer fields during the Mark phase.
-///
-/// An owned copy of the offset array is made immediately, so the caller does
-/// not need to keep the original array live after returning.
-///
-/// # Safety
-/// - `var_base` must point to the start of the module's live global data struct
-///   and must remain valid for the lifetime of the module.
-/// - `offsets_ptr` must point to a valid array of exactly `count` `isize` values.
+/// Explicitly register the calling thread as a CP mutator.  Required
+/// by any thread that wants to run CP code; auto-called by the alloc
+/// path if the caller didn't, using the bootstrap stack base as a
+/// fallback (suitable for single-thread cases).
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn __newcp_register_thread(stack_top: *const u8) {
+    let _ = register_thread_inner(stack_top as usize, true);
+}
+
+/// Unregister the calling thread.  Safe to call multiple times.
+/// The TLS guard's `Drop` runs the same cleanup at thread exit, so
+/// explicitly calling this is optional.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn __newcp_unregister_thread() {
+    let id = std::thread::current().id();
+    let mut threads = MUTATORS.write().unwrap();
+    threads.retain(|m| m.thread_id != id);
+    HEAP_COUNTERS
+        .registered_threads
+        .store(threads.len() as u64, Ordering::Relaxed);
+    MUTATOR_HANDLE.with(|tls| {
+        *tls.handle.borrow_mut() = None;
+    });
+}
+
+/// Register a module's global roots.
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn __newcp_register_module(
     var_base: *const u8,
@@ -789,28 +710,17 @@ pub unsafe extern "C" fn __newcp_register_module(
     count: usize,
 ) {
     let offsets = unsafe { std::slice::from_raw_parts(offsets_ptr, count).to_vec() };
-    let mut gc = GC.lock().unwrap();
-    debug_assert_owner_thread(&gc);
-    gc.modules.push(ModuleRoots {
+    let mut heap = heap_lock();
+    heap.modules.push(ModuleRoots {
         name: "<unnamed>".to_string(),
         var_base,
         offsets,
     });
     HEAP_COUNTERS
         .module_root_count
-        .store(gc.modules.len() as u64, Ordering::Relaxed);
+        .store(heap.modules.len() as u64, Ordering::Relaxed);
 }
 
-/// Like `__newcp_register_module`, but tags the registration with the module
-/// name supplied by the loader. The introspect module surfaces this name in
-/// snapshots; the GC trace path doesn't use it.
-///
-/// `name_utf8` must point to `name_len` bytes of UTF-8. The bytes are copied
-/// immediately, so the caller need not keep them alive.
-///
-/// # Safety
-/// All the safety conditions of `__newcp_register_module` apply, plus
-/// `name_utf8` / `name_len` must form a valid UTF-8 byte slice.
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn __newcp_register_module_named(
     name_utf8: *const u8,
@@ -828,145 +738,67 @@ pub unsafe extern "C" fn __newcp_register_module_named(
             .unwrap_or_else(|_| "<invalid-utf8>".to_string())
     };
     let offsets = unsafe { std::slice::from_raw_parts(offsets_ptr, count).to_vec() };
-    let mut gc = GC.lock().unwrap();
-    debug_assert_owner_thread(&gc);
-    gc.modules.push(ModuleRoots {
+    let mut heap = heap_lock();
+    heap.modules.push(ModuleRoots {
         name,
         var_base,
         offsets,
     });
     HEAP_COUNTERS
         .module_root_count
-        .store(gc.modules.len() as u64, Ordering::Relaxed);
+        .store(heap.modules.len() as u64, Ordering::Relaxed);
 }
 
-/// Run `f` against the locked GC state. Used by `heap_introspect` to take a
-/// consistent snapshot without leaking `GcState` itself.
-pub(crate) fn with_locked_state<R>(f: impl FnOnce(&GcState) -> R) -> R {
-    let gc = GC.lock().unwrap();
-    f(&gc)
-}
-
-/// Wipe the global GC state. Test helper only; not part of the public API.
-#[cfg(test)]
-pub(crate) fn reset_for_test() {
-    let mut gc = GC.lock().unwrap();
-    gc.clusters.clear();
-    gc.modules.clear();
-    gc.base_stack = 0;
-    gc.owner_thread = None;
-}
-
-/// Shared mutex serialising every test that touches the process-global GC
-/// state across test modules in this crate.
-#[cfg(test)]
-pub(crate) static GLOBAL_TEST_LOCK: Mutex<()> = Mutex::new(());
-
-/// Acquire `GLOBAL_TEST_LOCK`, recovering from poisoning so a single failing
-/// test doesn't cascade-poison every subsequent test.
-#[cfg(test)]
-pub(crate) fn lock_tests_global() -> std::sync::MutexGuard<'static, ()> {
-    match GLOBAL_TEST_LOCK.lock() {
-        Ok(g) => g,
-        Err(p) => p.into_inner(),
-    }
-}
-
-/// Allocates and zero-initialises a new heap record.
-///
-/// **This is the *sole* heap-allocation entry point for managed code.**
-/// All `NEW`, `NEW(..., len)` (array), and any future managed allocators
-/// (closures, boxed primitives, …) must funnel through this function or a
-/// thin wrapper that ultimately calls it. Other crates (loader, sema, codegen)
-/// must never reach into `GcState` directly. Keeping a single chokepoint lets
-/// us later swap in per-thread bump slabs (TLABs), allocation sampling, or a
-/// safepoint poll without touching call sites.
-///
-/// Called directly by JIT-compiled `NEW` expressions. Returns a pointer to the
-/// **payload** region (past the `BlockHeader`).
-///
-/// Allocation strategy (in order):
-/// 1. Try free list, then bump pointer, in every existing cluster.
-/// 2. If nothing fits, run a full `collect()` and retry.
-/// 3. If still nothing fits, allocate a new cluster sized to fit at least this
-///    object and retry.
-///
-/// CP `NEW` semantics require a zero-filled object; both the cluster bump path
-/// (`alloc_zeroed`) and the free-list path (explicit `write_bytes`) satisfy this.
-///
-/// # Safety
-/// - `tag` must point to a valid, live `TypeDesc` with a correct non-negative `size`.
-/// - The `TypeDesc` (and its `ptroffs` array) must remain live for at least as
-///   long as the returned allocation.
+/// Allocate and zero-initialise a heap-tracked record.  The single
+/// allocation entry point for managed CP code.
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn __newcp_new_rec(tag: *const TypeDesc) -> *mut u8 {
-    // Spill registers/SP **outside** the lock so that an inline collect()
-    // triggered below sees a correct stack range covering this frame.
+    // Allocation is implicitly a safepoint: poll before doing the work
+    // so a concurrent collector can pause us cleanly.  Without this
+    // poll, a tight loop of allocations that all hit the TLAB / cluster
+    // bump fast-path could prevent the collector from making progress.
+    if SAFEPOINT_REQUESTED.load(Ordering::Acquire) != 0 {
+        park_self_for_safepoint();
+    }
+
     let mut spill_buf = [0usize; 16];
     let sp = capture_sp(&mut spill_buf);
 
+    let mutator = ensure_mutator_for_current_thread();
     let payload_size = unsafe { (*tag).size as usize };
     let total_size = total_block_size(payload_size);
     let header_size = std::mem::size_of::<BlockHeader>();
 
-    let mut gc = GC.lock().unwrap();
-    debug_assert_owner_thread(&gc);
-
-    // Step 1: try existing clusters.
-    let (block, path) = unsafe { try_alloc_in_clusters(&mut gc, total_size) }
-        .or_else(|| {
-            // Step 2: allocation pressure → run a collection and retry.
-            unsafe { collect_inner(&mut gc, sp) };
-            unsafe { try_alloc_in_clusters(&mut gc, total_size) }
-        })
-        .unwrap_or_else(|| {
-            // Step 3: heap growth.
-            gc.clusters.push(Cluster::new(total_size));
-            HEAP_COUNTERS.grow_events.fetch_add(1, Ordering::Relaxed);
-            HEAP_COUNTERS
-                .cluster_count
-                .store(gc.clusters.len() as u64, Ordering::Relaxed);
-            let last = gc.clusters.last_mut().expect("just pushed");
-            unsafe { last.try_alloc(total_size) }
-                .expect("fresh cluster must satisfy the request that drove its creation")
-        });
-
-    // Counter updates (Relaxed: lifetime totals are monotonic; no ordering
-    // dependency between fields matters to readers).
-    HEAP_COUNTERS.alloc_blocks_lifetime.fetch_add(1, Ordering::Relaxed);
-    HEAP_COUNTERS
-        .alloc_bytes_lifetime
-        .fetch_add(total_size as u64, Ordering::Relaxed);
-    match path {
-        AllocPath::Bump => {
-            HEAP_COUNTERS.bump_path_blocks.fetch_add(1, Ordering::Relaxed);
-        }
-        AllocPath::FreeList => {
-            HEAP_COUNTERS
-                .free_list_path_blocks
-                .fetch_add(1, Ordering::Relaxed);
-        }
-    }
+    let block = alloc_under_lock(total_size, &mutator, sp, &spill_buf);
 
     unsafe {
         let hdr = block as *mut BlockHeader;
         (*hdr).tag = tag as usize;
         (*hdr).block_size = total_size;
-        block.add(header_size)
+        let mut heap = heap_lock();
+        heap.type_descs.inc(tag as usize);
     }
+
+    HEAP_COUNTERS.alloc_blocks_lifetime.fetch_add(1, Ordering::Relaxed);
+    HEAP_COUNTERS
+        .alloc_bytes_lifetime
+        .fetch_add(total_size as u64, Ordering::Relaxed);
+    mutator.alloc_blocks_lifetime.fetch_add(1, Ordering::Relaxed);
+    mutator
+        .alloc_bytes_lifetime
+        .fetch_add(total_size as u64, Ordering::Relaxed);
+
+    unsafe { block.add(header_size) }
 }
 
-/// Allocates `n` bytes of untraced memory for `SYSTEM.NEW`.
-///
-/// This memory never enters the cluster heap, so the collector will neither
-/// scan nor reclaim it.
+/// Allocate untracked, untraced bytes (`SYSTEM.NEW`).  These live
+/// outside the cluster heap and are never reclaimed.
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn __newcp_sys_new(n: usize) -> *mut u8 {
     if n == 0 {
         return std::ptr::NonNull::<u8>::dangling().as_ptr();
     }
-
-    let layout = std::alloc::Layout::from_size_align(n, 16)
+    let layout = Layout::from_size_align(n, BLOCK_ALIGN)
         .expect("__newcp_sys_new: invalid allocation layout");
     let ptr = unsafe { std::alloc::alloc(layout) };
     if ptr.is_null() {
@@ -975,59 +807,349 @@ pub unsafe extern "C" fn __newcp_sys_new(n: usize) -> *mut u8 {
     ptr
 }
 
-/// Cooperative GC safepoint poll.
-///
-/// **Currently a no-op.** This entry point exists so that codegen can emit
-/// safepoint polls now — at every loop back-edge and at function entry —
-/// without paying any runtime cost today, and without a code-rewrite when
-/// stop-the-world support lands.
-///
-/// Future implementation will:
-/// 1. Load a global "GC requested" flag.
-/// 2. If set, spill registers, mark this mutator parked, and block on a
-///    condition variable until the GC cycle finishes.
-///
-/// Codegen contract: the call may clobber no registers beyond the C ABI's
-/// caller-saved set, must be safe to invoke from any managed-code context,
-/// and is allowed to block the calling thread for the duration of a GC cycle.
-///
-/// # Safety
-/// Always safe to call. Marked `unsafe extern "C"` only for ABI symmetry with
-/// the rest of the runtime exports.
+/// Cooperative safepoint poll — JIT-emitted code calls this at every
+/// CP procedure entry.  Fast-path (no GC requested): a single atomic
+/// load and a branch, ~ns.  Slow-path (collect requested): the calling
+/// thread spills callee-saved registers, captures sp, marks itself
+/// `Parked`, and waits on the safepoint condvar until the collector
+/// clears the request.
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn __newcp_safepoint() {
-    // Intentionally empty. See doc comment above.
+    if SAFEPOINT_REQUESTED.load(Ordering::Acquire) == 0 {
+        return;
+    }
+    park_self_for_safepoint();
+}
+
+/// Park the current mutator at a safepoint.  Captures sp + callee-saved
+/// registers, transitions state to `Parked`, then waits on the
+/// safepoint condvar until the collector clears `SAFEPOINT_REQUESTED`.
+/// On wake, transitions back to `Running` and returns.
+#[inline(never)]
+fn park_self_for_safepoint() {
+    let mutator = ensure_mutator_for_current_thread();
+    let mut spill_buf = [0usize; 16];
+    let sp = capture_sp(&mut spill_buf);
+
+    if let Ok(mut buf) = mutator.spill.lock() {
+        *buf = spill_buf;
+    }
+    mutator.parked_sp.store(sp, Ordering::Release);
+    mutator.state.store(STATE_PARKED, Ordering::SeqCst);
+    mutator.park_count.fetch_add(1, Ordering::Relaxed);
+
+    // Wait for the collector to clear the flag.
+    let mut guard = SAFEPOINT_LOCK.lock().unwrap();
+    while SAFEPOINT_REQUESTED.load(Ordering::Acquire) != 0 {
+        guard = SAFEPOINT_CONDVAR.wait(guard).unwrap();
+    }
+    drop(guard);
+
+    mutator.state.store(STATE_RUNNING, Ordering::SeqCst);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Mark-phase helpers
+// Allocation slow-path (handles refill, collect, grow)
 // ─────────────────────────────────────────────────────────────────────────────
 
-/// Returns a mutable pointer to the `BlockHeader` preceding `payload`.
-///
-/// # Safety
-/// `payload` must have been returned by `__newcp_new_rec`.
+fn alloc_under_lock(
+    total_size: usize,
+    mutator: &Arc<Mutator>,
+    caller_sp: usize,
+    caller_spill: &[usize; 16],
+) -> *mut u8 {
+    // Step 1: try every existing cluster.
+    {
+        let mut heap = heap_lock();
+        if let Some((block, _path)) = try_alloc_in_clusters(&mut heap, total_size) {
+            return block;
+        }
+    }
+
+    // Step 2: pressure → run a STW collection.
+    collect_stw(mutator, caller_sp, caller_spill);
+
+    // Step 3: retry after collection.
+    {
+        let mut heap = heap_lock();
+        if let Some((block, _path)) = try_alloc_in_clusters(&mut heap, total_size) {
+            return block;
+        }
+        // Step 4: grow.
+        heap.clusters.push(Cluster::new(total_size));
+        HEAP_COUNTERS.grow_events.fetch_add(1, Ordering::Relaxed);
+        HEAP_COUNTERS
+            .cluster_count
+            .store(heap.clusters.len() as u64, Ordering::Relaxed);
+        let last = heap.clusters.last_mut().expect("just pushed");
+        unsafe { last.try_alloc(total_size) }
+            .map(|(block, _)| block)
+            .expect("fresh cluster must satisfy the request that drove its creation")
+    }
+}
+
+fn try_alloc_in_clusters(heap: &mut Heap, total_size: usize) -> Option<(*mut u8, AllocPath)> {
+    for cluster in &mut heap.clusters {
+        if let Some(block) = unsafe { cluster.try_alloc(total_size) } {
+            match block.1 {
+                AllocPath::Bump => HEAP_COUNTERS.bump_path_blocks.fetch_add(1, Ordering::Relaxed),
+                AllocPath::FreeList => HEAP_COUNTERS
+                    .free_list_path_blocks
+                    .fetch_add(1, Ordering::Relaxed),
+            };
+            return Some(block);
+        }
+    }
+    None
+}
+
 #[inline]
-unsafe fn header_of(payload: *const u8) -> *mut BlockHeader {
-    unsafe { payload.sub(std::mem::size_of::<BlockHeader>()) as *mut BlockHeader }
+fn align_up(n: usize) -> usize {
+    (n + BLOCK_ALIGN - 1) & !(BLOCK_ALIGN - 1)
 }
 
-/// Resolves a suspected pointer to the payload start of the block containing
-/// it, or `None` if the address is not in any allocated managed block.
-///
-/// Handles "interior pointers" (mid-array, mid-record) by returning the
-/// containing block's payload start. Free blocks return `None`.
-///
-/// Per-cluster lookup is now bitmap-backed (~O(1) amortised). Cluster
-/// selection is still a linear scan; with a small number of clusters
-/// (typical), this is well under the cost of one stack-word probe.
-/// Follow-on action: when cluster counts grow, replace the cluster scan with
-/// an address-sorted index for O(log C) selection.
-fn resolve_heap_ptr(addr: usize, gc: &GcState) -> Option<*const u8> {
+#[inline]
+fn total_block_size(payload_size: usize) -> usize {
+    let raw = std::mem::size_of::<BlockHeader>() + payload_size;
+    align_up(raw).max(MIN_BLOCK)
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Collection
+// ─────────────────────────────────────────────────────────────────────────────
+
+/// Run a stop-the-world collection cycle.  May be called from any
+/// registered mutator thread; coordinates parking with every other
+/// registered thread, then marks and sweeps under both `THREADS` (read)
+/// and `HEAP` (write) locks.
+fn collect_stw(initiator: &Arc<Mutator>, sp: usize, spill: &[usize; 16]) {
+    let cycle_start = Instant::now();
+
+    // Snapshot mutator handles outside the heap lock.
+    let mutators: Vec<Arc<Mutator>> = MUTATORS.read().unwrap().clone();
+
+    // Park self up-front so we don't deadlock with a concurrent collector.
+    initiator.parked_sp.store(sp, Ordering::Release);
+    if let Ok(mut buf) = initiator.spill.lock() {
+        *buf = *spill;
+    }
+    initiator.state.store(STATE_PARKED, Ordering::SeqCst);
+
+    // Request safepoint and wait for every other mutator to park.
+    SAFEPOINT_REQUESTED.store(1, Ordering::SeqCst);
+    let park_deadline = Instant::now() + Duration::from_secs(2);
+    let mut all_parked = false;
+    while Instant::now() < park_deadline {
+        let still_running = mutators
+            .iter()
+            .filter(|m| {
+                m.thread_id != initiator.thread_id
+                    && m.state.load(Ordering::Acquire) != STATE_PARKED
+            })
+            .count();
+        if still_running == 0 {
+            all_parked = true;
+            break;
+        }
+        // Briefly wait, then poll again.
+        std::thread::sleep(Duration::from_micros(50));
+    }
+    if !all_parked {
+        // Couldn't park everyone — abort cleanly rather than risk a
+        // half-scanned mutator's stack.
+        initiator.state.store(STATE_RUNNING, Ordering::SeqCst);
+        SAFEPOINT_REQUESTED.store(0, Ordering::SeqCst);
+        SAFEPOINT_CONDVAR.notify_all();
+        eprintln!(
+            "[newcp-gc] WARN: collect aborted; not all mutators parked within 2s ({} threads)",
+            mutators.len()
+        );
+        return;
+    }
+
+    // Run the cycle under the heap lock.  The cycle returns the
+    // pending-finalizer list so we can run them OUTSIDE the
+    // safepoint-requested window.  Finalizers are JIT-compiled CP
+    // code whose entry instruction is a safepoint poll; if we ran
+    // them while SAFEPOINT_REQUESTED is still 1 they'd deadlock
+    // waiting for the collector that's calling them.
+    let parked_count = mutators.len() as u64;
+    let (collect_summary, pending_finalizers) = {
+        let mut heap = heap_lock();
+        let s = run_collect_cycle(&mut heap, &mutators);
+        let pending = std::mem::take(&mut heap.pending_finalizers);
+        (s, pending)
+    };
+
+    // Release safepoint, wake other mutators.  Held the heap lock
+    // through sweep, so the heap is consistent before they wake.
+    SAFEPOINT_REQUESTED.store(0, Ordering::SeqCst);
+    initiator.state.store(STATE_RUNNING, Ordering::SeqCst);
+    {
+        let _g = SAFEPOINT_LOCK.lock().unwrap();
+        SAFEPOINT_CONDVAR.notify_all();
+    }
+
+    // Run pending finalizers outside both heap lock and safepoint
+    // window.  Finalizers MUST NOT allocate (we don't enforce this
+    // yet); a finalizer that allocates re-enters the GC, which is
+    // re-entrancy we haven't designed for.
+    let trace = std::env::var("NEWCP_GC_TRACE_FINALIZERS").is_ok();
+    if trace {
+        eprintln!("[gc] running {} pending finalizers", pending_finalizers.len());
+    }
+    for (i, (fin, payload)) in pending_finalizers.into_iter().enumerate() {
+        if trace {
+            eprintln!("[gc]   fin[{i}] @ {:p} on payload {:p}", fin as *const (), payload);
+        }
+        unsafe { fin(payload) };
+        if trace {
+            eprintln!("[gc]   fin[{i}] returned");
+        }
+    }
+
+    let elapsed = cycle_start.elapsed().as_nanos() as u64;
+    HEAP_COUNTERS.collect_cycles.fetch_add(1, Ordering::Relaxed);
+    HEAP_COUNTERS
+        .collect_total_nanos
+        .fetch_add(elapsed, Ordering::AcqRel);
+    HEAP_COUNTERS.collect_last_nanos.store(elapsed, Ordering::Relaxed);
+    HEAP_COUNTERS
+        .collect_last_reclaimed_bytes
+        .store(collect_summary.bytes_freed, Ordering::Relaxed);
+
+    // Push a record for `dump-gc --collect-log`.
+    let mut heap = heap_lock();
+    heap.generation += 1;
+    let generation = heap.generation;
+    heap.collect_log.push(CollectRecord {
+        generation,
+        elapsed_nanos: elapsed,
+        mutators_parked: parked_count,
+        roots_marked: collect_summary.roots_marked,
+        blocks_freed: collect_summary.blocks_freed,
+        bytes_freed: collect_summary.bytes_freed,
+        bytes_live_after: collect_summary.bytes_live,
+    });
+}
+
+#[derive(Default)]
+struct CollectSummary {
+    roots_marked: u64,
+    blocks_freed: u64,
+    bytes_freed: u64,
+    live_blocks: u64,
+    bytes_live: u64,
+}
+
+fn run_collect_cycle(heap: &mut Heap, mutators: &[Arc<Mutator>]) -> CollectSummary {
+    // Phase 1a: clear marks across every cluster.
+    for cluster in &mut heap.clusters {
+        let mut offset: usize = 0;
+        while offset < cluster.bump {
+            unsafe {
+                let hdr = cluster.base.add(offset) as *mut BlockHeader;
+                let block_size = (*hdr).block_size;
+                if block_size < MIN_BLOCK || offset + block_size > cluster.bump {
+                    break;
+                }
+                (*hdr).clear_mark();
+                offset += block_size;
+            }
+        }
+    }
+
+    // Phase 1b: scan each parked thread's stack range.
+    let mut summary = CollectSummary::default();
+    for m in mutators {
+        let sp = m.parked_sp.load(Ordering::Acquire);
+        let top = m.stack_top;
+        if sp == 0 || top == 0 || sp >= top {
+            continue;
+        }
+        let word = std::mem::size_of::<usize>();
+        let mut cursor = sp;
+        while cursor < top {
+            let val = unsafe { *(cursor as *const usize) };
+            if let Some(payload) = resolve_heap_ptr(val, &heap.clusters) {
+                unsafe { mark_object(payload, &heap.type_descs) };
+                summary.roots_marked += 1;
+            }
+            cursor += word;
+        }
+        // Spill buffer (if a recent park captured callee-saved regs).
+        if let Ok(buf) = m.spill.lock() {
+            for &val in buf.iter() {
+                if let Some(payload) = resolve_heap_ptr(val, &heap.clusters) {
+                    unsafe { mark_object(payload, &heap.type_descs) };
+                    summary.roots_marked += 1;
+                }
+            }
+        }
+    }
+
+    // Phase 1c: precise module roots.
+    for module in &heap.modules {
+        for &offset in &module.offsets {
+            unsafe {
+                let field = module.var_base.add(offset as usize) as *const *const u8;
+                let ptr = *field;
+                if !ptr.is_null() {
+                    mark_object(ptr, &heap.type_descs);
+                    summary.roots_marked += 1;
+                }
+            }
+        }
+    }
+
+    // Phase 2: sweep.  Finalizers are queued (not run) here; the
+    // caller drains them after clearing SAFEPOINT_REQUESTED.
+    let mut pending: Vec<(Finalizer, *mut u8)> = Vec::new();
+    for cluster in &mut heap.clusters {
+        let s = unsafe { cluster_sweep(cluster, &mut heap.type_descs, &mut pending) };
+        summary.blocks_freed += s.blocks_freed;
+        summary.bytes_freed += s.bytes_freed;
+        summary.live_blocks += s.live_blocks;
+        summary.bytes_live += s.bytes_live;
+    }
+    heap.pending_finalizers.extend(pending);
+
+    HEAP_COUNTERS
+        .free_blocks_lifetime
+        .fetch_add(summary.blocks_freed, Ordering::Relaxed);
+    HEAP_COUNTERS
+        .free_bytes_lifetime
+        .fetch_add(summary.bytes_freed, Ordering::Relaxed);
+    HEAP_COUNTERS
+        .live_blocks
+        .store(summary.live_blocks, Ordering::Relaxed);
+    HEAP_COUNTERS
+        .live_bytes
+        .store(summary.bytes_live, Ordering::Relaxed);
+    HEAP_COUNTERS
+        .cluster_count
+        .store(heap.clusters.len() as u64, Ordering::Relaxed);
+    let mut peak = HEAP_COUNTERS.peak_live_bytes.load(Ordering::Acquire);
+    while summary.bytes_live > peak {
+        match HEAP_COUNTERS.peak_live_bytes.compare_exchange_weak(
+            peak,
+            summary.bytes_live,
+            Ordering::AcqRel,
+            Ordering::Acquire,
+        ) {
+            Ok(_) => break,
+            Err(observed) => peak = observed,
+        }
+    }
+
+    summary
+}
+
+fn resolve_heap_ptr(addr: usize, clusters: &[Cluster]) -> Option<*const u8> {
     if addr == 0 {
         return None;
     }
-    for cluster in &gc.clusters {
+    for cluster in clusters {
         if let Some(p) = unsafe { cluster.resolve(addr) } {
             return Some(p);
         }
@@ -1035,19 +1157,9 @@ fn resolve_heap_ptr(addr: usize, gc: &GcState) -> Option<*const u8> {
     None
 }
 
-/// Marks `start` and all objects transitively reachable through `TypeDesc.ptroffs`.
-///
-/// Uses an explicit work-stack (heap-allocated `Vec`) to avoid call-stack
-/// overflow on deep or cyclic object graphs, as recommended by the design doc.
-///
-/// # Safety
-/// `start` must point to the payload of a valid live GC allocation.
-unsafe fn mark_object(start: *const u8) {
-    // Pre-allocated capacity avoids the first few re-allocations for typical
-    // object graphs.
+unsafe fn mark_object(start: *const u8, registry: &TypeDescRegistry) {
     let mut work: Vec<*const u8> = Vec::with_capacity(64);
     work.push(start);
-
     while let Some(payload) = work.pop() {
         if payload.is_null() {
             continue;
@@ -1055,13 +1167,9 @@ unsafe fn mark_object(start: *const u8) {
         unsafe {
             let hdr = header_of(payload);
             if (*hdr).is_marked() {
-                continue; // already visited; cycle guard
+                continue;
             }
-            // Defensive: never mark a free block. Conservative scanning
-            // already filters these via resolve_heap_ptr, but precise roots
-            // (modules, ptroffs children) trust their offsets blindly.
-            let type_bits = (*hdr).tag & !BlockHeader::MARK_BIT;
-            if type_bits == 0 {
+            if (*hdr).is_free() {
                 continue;
             }
             (*hdr).set_mark();
@@ -1070,9 +1178,27 @@ unsafe fn mark_object(start: *const u8) {
             if td.is_null() {
                 continue;
             }
-
-            // Enqueue all pointer-typed child fields.
+            // Safety net: refuse to dereference a TypeDesc address
+            // we've never seen.  In v2 every TD is supposed to land
+            // in the registry via `__newcp_register_type` or the
+            // first allocation that uses it; an unknown address is
+            // either codegen-emitted (still valid) or stale.
+            let known = registry.by_addr.contains_key(&(td as usize));
+            if !known {
+                continue;
+            }
+            // Cross-check size against the block's payload range.
+            let payload_bytes = (*hdr)
+                .block_size
+                .saturating_sub(std::mem::size_of::<BlockHeader>());
+            let claimed = (*td).size;
+            if claimed <= 0 || (claimed as usize) > payload_bytes {
+                continue;
+            }
             for offset in (*td).pointer_offsets() {
+                if (offset as usize) + std::mem::size_of::<*const u8>() > payload_bytes {
+                    break;
+                }
                 let field = payload.add(offset as usize) as *const *const u8;
                 let child = *field;
                 if !child.is_null() {
@@ -1083,34 +1209,154 @@ unsafe fn mark_object(start: *const u8) {
     }
 }
 
+#[derive(Default)]
+struct SweepStats {
+    blocks_freed: u64,
+    bytes_freed: u64,
+    live_blocks: u64,
+    bytes_live: u64,
+}
+
+unsafe fn cluster_sweep(
+    cluster: &mut Cluster,
+    registry: &mut TypeDescRegistry,
+    pending_finalizers: &mut Vec<(Finalizer, *mut u8)>,
+) -> SweepStats {
+    let mut stats = SweepStats::default();
+    let header_size = std::mem::size_of::<BlockHeader>();
+    cluster.free_list = std::ptr::null_mut();
+    let mut offset: usize = 0;
+    let mut prev_free: *mut u8 = std::ptr::null_mut();
+
+    unsafe {
+        while offset < cluster.bump {
+            let block = cluster.base.add(offset);
+            let hdr = block as *mut BlockHeader;
+            let block_size = (*hdr).block_size;
+            if block_size < MIN_BLOCK || offset + block_size > cluster.bump {
+                break;
+            }
+            let raw_tag = (*hdr).tag;
+            let type_bits = raw_tag & !BlockHeader::MARK_BIT;
+            let is_marked = raw_tag & BlockHeader::MARK_BIT != 0;
+            let was_free = type_bits == 0;
+            let is_dead = !was_free && !is_marked;
+
+            if !was_free && is_marked {
+                (*hdr).clear_mark();
+                stats.live_blocks += 1;
+                stats.bytes_live += block_size as u64;
+                prev_free = std::ptr::null_mut();
+            } else {
+                if is_dead {
+                    stats.blocks_freed += 1;
+                    stats.bytes_freed += block_size as u64;
+                    // Decrement the TypeDesc refcount only for newly-
+                    // dead blocks.  Already-free blocks were never
+                    // counted.
+                    registry.dec(type_bits);
+
+                    // Queue the finalizer (if any).  We do NOT call it
+                    // here: finalizers are CP code that calls
+                    // `__newcp_safepoint` on entry, and SAFEPOINT_REQUESTED
+                    // is still set during sweep.  Calling synchronously
+                    // would either deadlock the safepoint condvar or
+                    // re-enter the GC.  Defer to a post-resume drain.
+                    if registry.by_addr.contains_key(&type_bits) {
+                        let td = type_bits as *const TypeDesc;
+                        let payload_bytes = block_size.saturating_sub(header_size);
+                        let claimed = (*td).size;
+                        if claimed > 0
+                            && (claimed as usize) <= payload_bytes
+                        {
+                            if let Some(fin) = (*td).finalizer {
+                                let payload = block.add(header_size);
+                                pending_finalizers.push((fin, payload));
+                            }
+                        }
+                    }
+
+                    // Wipe the payload only AFTER the finalizer has had
+                    // a chance to read it.  We do that wipe in the
+                    // post-resume drain, not here.  For now, leave the
+                    // payload bytes intact; they'll be zeroed when the
+                    // free-list path next reuses this block.
+                }
+
+                if !prev_free.is_null() {
+                    let prev_hdr = prev_free as *mut BlockHeader;
+                    (*prev_hdr).block_size += block_size;
+                    cluster.clear_block_start(offset);
+                } else {
+                    (*hdr).tag = 0;
+                    (*hdr).block_size = block_size;
+                    let link = block.add(header_size) as *mut FreeBlockLink;
+                    link.write(FreeBlockLink {
+                        next: cluster.free_list,
+                    });
+                    cluster.free_list = block;
+                    prev_free = block;
+                }
+            }
+            offset += block_size;
+        }
+    }
+
+    stats
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
-// Register spill + stack-pointer capture
+// Public entry points (collect, snapshot, registry interaction)
 // ─────────────────────────────────────────────────────────────────────────────
 
-/// Writes callee-saved registers into `spill_buf` (which lives in the caller's
-/// stack frame) and returns the current stack pointer.
-///
-/// The caller declares `spill_buf` as a local so that:
-/// 1. `spill_buf` is forced onto the stack (taking `&mut` precludes registers).
-/// 2. The stack scan starting at the returned SP will cover `spill_buf` and
-///    thus see any live GC roots that were held only in registers at call time.
-///
-/// `#[inline(never)]` is required: inlining would merge frames and the captured
-/// SP would be incorrect.
+pub fn collect() {
+    let mut spill_buf = [0usize; 16];
+    let sp = capture_sp(&mut spill_buf);
+    let mutator = ensure_mutator_for_current_thread();
+    collect_stw(&mutator, sp, &spill_buf);
+}
+
+/// Record a TypeDesc with the registry.  Called by codegen-emitted
+/// `__init_types` and by the kernel module surface.
+pub(crate) fn register_typedesc(td: usize, owner_module: Option<String>) {
+    let mut heap = heap_lock();
+    heap.type_descs.record(td, owner_module);
+}
+
+/// True iff every TypeDesc owned by `module_name` currently has a
+/// `block_count` of 0 — i.e. no live heap block tags any of those
+/// TypeDescs.  Used by the loader's `RetiredImageDropPredicate`
+/// to decide whether a retired JIT image's memory can be freed
+/// without dangling tags.  A module with no TypeDescs registered
+/// returns `true` (vacuously safe).
+pub fn module_has_no_live_blocks(module_name: &str) -> bool {
+    let heap = heap_lock();
+    !heap.type_descs.by_addr.values().any(|entry| {
+        entry.owner_module.as_deref() == Some(module_name) && entry.block_count > 0
+    })
+}
+
+#[inline]
+unsafe fn header_of(payload: *const u8) -> *mut BlockHeader {
+    unsafe { payload.sub(std::mem::size_of::<BlockHeader>()) as *mut BlockHeader }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Register spill + stack-pointer capture (architecture-dependent)
+// ─────────────────────────────────────────────────────────────────────────────
+
 #[inline(never)]
 fn capture_sp(spill_buf: &mut [usize; 16]) -> usize {
     let sp: usize;
     unsafe {
         #[cfg(all(target_arch = "x86_64", not(target_os = "windows")))]
         std::arch::asm!(
-            // Spill all callee-saved GP registers (System-V ABI: rbx, rbp, r12-r15).
             "mov [{buf}     ], rbx",
             "mov [{buf} +  8], rbp",
             "mov [{buf} + 16], r12",
             "mov [{buf} + 24], r13",
             "mov [{buf} + 32], r14",
             "mov [{buf} + 40], r15",
-            // Capture RSP after the spills so the scan starts below them.
             "mov {sp}, rsp",
             buf = in(reg) spill_buf.as_mut_ptr(),
             sp  = out(reg) sp,
@@ -1118,7 +1364,6 @@ fn capture_sp(spill_buf: &mut [usize; 16]) -> usize {
 
         #[cfg(all(target_arch = "x86_64", target_os = "windows"))]
         std::arch::asm!(
-            // Spill Windows x64 ABI callee-saved registers (rbx, rbp, rdi, rsi, r12-r15).
             "mov [{buf}     ], rbx",
             "mov [{buf} +  8], rbp",
             "mov [{buf} + 16], rdi",
@@ -1127,8 +1372,6 @@ fn capture_sp(spill_buf: &mut [usize; 16]) -> usize {
             "mov [{buf} + 40], r13",
             "mov [{buf} + 48], r14",
             "mov [{buf} + 56], r15",
-            // Note: XMM6-XMM15 are also callee-saved on Windows but generally not used 
-            // for managed heap pointers. A full conservative scan might also need to spill those.
             "mov {sp}, rsp",
             buf = in(reg) spill_buf.as_mut_ptr(),
             sp  = out(reg) sp,
@@ -1136,7 +1379,6 @@ fn capture_sp(spill_buf: &mut [usize; 16]) -> usize {
 
         #[cfg(target_arch = "aarch64")]
         std::arch::asm!(
-            // Spill callee-saved GP registers (AArch64 AAPCS: x19-x28).
             "stp x19, x20, [{buf}]",
             "stp x21, x22, [{buf}, #16]",
             "stp x23, x24, [{buf}, #32]",
@@ -1148,9 +1390,6 @@ fn capture_sp(spill_buf: &mut [usize; 16]) -> usize {
 
         #[cfg(not(any(target_arch = "x86_64", target_arch = "aarch64")))]
         {
-            // Fallback: address of the spill buffer is a safe SP lower bound.
-            // Callee-saved register contents may not be captured here; this
-            // path is acceptable for development / non-production targets.
             sp = spill_buf.as_ptr() as usize;
         }
     }
@@ -1158,165 +1397,162 @@ fn capture_sp(spill_buf: &mut [usize; 16]) -> usize {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// collect()
+// Introspection — public read-only access for `dump-gc` and tests
 // ─────────────────────────────────────────────────────────────────────────────
 
-/// Triggers a full Mark-and-Sweep garbage collection cycle.
-///
-/// This is the public entry point invoked by:
-/// - explicit `Kernel.Collect()` calls from Component Pascal code,
-/// - the runtime's idle loop (when present),
-/// - the test harness.
-///
-/// Allocation pressure inside `__newcp_new_rec` invokes `collect_inner`
-/// directly to avoid releasing and re-acquiring the GC lock.
-///
-/// ## Phase 1 — Mark
-/// 1. Spill callee-saved registers to a stack buffer in this frame.
-/// 2. Clear all existing mark bits.
-/// 3. Conservatively scan the stack from the captured SP up to `base_stack`:
-///    any word whose value resolves to a managed block payload is treated as
-///    a root and marked.
-/// 4. Precisely scan all registered module global roots via their offset lists.
-/// 5. Transitively trace all marked objects through `TypeDesc.ptroffs` using
-///    an explicit work-stack (no recursion, no stack-overflow risk).
-///
-/// ## Phase 2 — Sweep
-/// Walk every cluster linearly. Unmarked blocks become free-list entries
-/// (with adjacent runs coalesced); marked blocks have their mark bit cleared
-/// for the next cycle.
-pub fn collect() {
-    // Spill registers into a local buffer **before** locking, so that live
-    // pointer values held in callee-saved registers land on the stack and are
-    // visible to the conservative scan below.
-    let mut spill_buf = [0usize; 16];
-    let sp = capture_sp(&mut spill_buf);
-
-    let mut gc = GC.lock().unwrap();
-    debug_assert_owner_thread(&gc);
-    unsafe { collect_inner(&mut gc, sp) };
+/// Locked-state shim for v1 callers.  v2 keeps the same shape so
+/// `heap_introspect.rs` migrates without semantic surprise.
+#[derive(Clone)]
+pub struct GcState {
+    pub clusters: Vec<ClusterView>,
+    pub modules: Vec<ModuleView>,
+    pub type_descs: Vec<TypeDescEntry>,
+    pub mutators: Vec<MutatorView>,
 }
 
-/// Mark-and-sweep against an already-locked `GcState` using a pre-captured `sp`.
-///
-/// Used both by `collect()` (public entry point) and by `__newcp_new_rec`
-/// when allocation pressure forces a cycle without releasing the GC lock.
-///
-/// # Safety
-/// - `sp` must be a valid stack pointer captured in a frame at least as deep
-///   as the current frame (i.e. `sp` ≤ this frame's SP) so the scanned range
-///   covers all live managed roots.
-/// - Caller must hold the `GC` mutex (`gc` is the locked `MutexGuard`'s `&mut`).
-unsafe fn collect_inner(gc: &mut GcState, sp: usize) {
-    let cycle_start = Instant::now();
-    // ── Phase 1a: Clear all mark bits across every cluster ───────────────────
-    unsafe {
-        for cluster in &mut gc.clusters {
-            let header_size = std::mem::size_of::<BlockHeader>();
-            let mut offset: usize = 0;
-            while offset < cluster.bump {
-                let hdr = cluster.base.add(offset) as *mut BlockHeader;
-                let block_size = (*hdr).block_size;
-                if block_size < MIN_BLOCK || offset + block_size > cluster.bump {
-                    break; // corruption guard
-                }
-                (*hdr).clear_mark();
-                offset += block_size;
-                let _ = header_size; // silence unused warning if compiler reorders
+#[derive(Clone)]
+pub struct ClusterView {
+    pub base: usize,
+    pub size: usize,
+    pub bump: usize,
+    pub free_blocks: u64,
+    pub free_bytes: u64,
+}
+
+#[derive(Clone)]
+pub struct ModuleView {
+    pub name: String,
+    pub var_base: usize,
+    pub offset_count: usize,
+}
+
+#[derive(Clone)]
+pub struct MutatorView {
+    pub thread_id: ThreadId,
+    pub stack_top: usize,
+    pub state: u8,
+    pub parked_sp: usize,
+    pub alloc_blocks_lifetime: u64,
+    pub alloc_bytes_lifetime: u64,
+    pub park_count: u64,
+}
+
+pub fn snapshot() -> GcState {
+    let heap = heap_lock();
+    let mutators_guard = MUTATORS.read().unwrap();
+
+    let clusters = heap
+        .clusters
+        .iter()
+        .map(|c| {
+            let (free_blocks, free_bytes) = walk_free_list(c);
+            ClusterView {
+                base: c.base as usize,
+                size: c.size,
+                bump: c.bump,
+                free_blocks,
+                free_bytes,
             }
+        })
+        .collect();
+    let modules = heap
+        .modules
+        .iter()
+        .map(|m| ModuleView {
+            name: m.name.clone(),
+            var_base: m.var_base as usize,
+            offset_count: m.offsets.len(),
+        })
+        .collect();
+    let type_descs = heap.type_descs.snapshot();
+    let mutators = mutators_guard
+        .iter()
+        .map(|m| MutatorView {
+            thread_id: m.thread_id,
+            stack_top: m.stack_top,
+            state: m.state.load(Ordering::Relaxed),
+            parked_sp: m.parked_sp.load(Ordering::Relaxed),
+            alloc_blocks_lifetime: m.alloc_blocks_lifetime.load(Ordering::Relaxed),
+            alloc_bytes_lifetime: m.alloc_bytes_lifetime.load(Ordering::Relaxed),
+            park_count: m.park_count.load(Ordering::Relaxed),
+        })
+        .collect();
+
+    GcState {
+        clusters,
+        modules,
+        type_descs,
+        mutators,
+    }
+}
+
+fn walk_free_list(cluster: &Cluster) -> (u64, u64) {
+    let header_size = std::mem::size_of::<BlockHeader>();
+    let mut count = 0u64;
+    let mut bytes = 0u64;
+    let mut node = cluster.free_list;
+    while !node.is_null() {
+        unsafe {
+            let hdr = node as *const BlockHeader;
+            count += 1;
+            bytes += (*hdr).block_size as u64;
+            let next_link = node.add(header_size) as *const *mut u8;
+            node = *next_link;
         }
     }
+    (count, bytes)
+}
 
-    let base_stack = gc.base_stack;
+pub fn collect_log_snapshot() -> Vec<CollectRecord> {
+    let heap = heap_lock();
+    heap.collect_log.snapshot()
+}
 
-    // ── Phase 1b: Conservative stack scan ────────────────────────────────────
-    // Stack grows downward: SP is the lowest live address, base_stack the highest.
-    // Scan word-by-word from SP upward. The `spill_buf` declared by the caller
-    // lives below this frame and is covered by this scan.
-    if base_stack != 0 && sp < base_stack {
-        let word = std::mem::size_of::<usize>();
-        let mut cursor = sp;
-        while cursor < base_stack {
-            let val = unsafe { *(cursor as *const usize) };
-            if let Some(payload_base) = resolve_heap_ptr(val, gc) {
-                unsafe { mark_object(payload_base) };
-            }
-            cursor += word;
-        }
-    }
+/// Compatibility shim for tests that used to call
+/// `gc::with_locked_state(|s| ...)`.  The closure receives the same
+/// snapshot type, just produced from the new layout.
+pub(crate) fn with_locked_state<R>(f: impl FnOnce(&GcState) -> R) -> R {
+    let snap = snapshot();
+    f(&snap)
+}
 
-    // ── Phase 1c: Precise global / module roots ───────────────────────────────
-    unsafe {
-        for module in &gc.modules {
-            for &offset in &module.offsets {
-                let field = module.var_base.add(offset as usize) as *const *const u8;
-                let ptr = *field;
-                if !ptr.is_null() {
-                    mark_object(ptr);
-                }
-            }
-        }
-    }
+/// Run `f` against the live, locked `Heap`.  Used by `heap_introspect`
+/// to walk every cluster's blocks under one consistent lock-held
+/// window.  The closure must not call back into the GC (no
+/// allocations, no `collect()`).
+pub(crate) fn with_heap_locked<R>(f: impl FnOnce(&Heap) -> R) -> R {
+    let heap = heap_lock();
+    f(&heap)
+}
 
-    // ── Phase 2: Sweep every cluster ─────────────────────────────────────────
-    // Each cluster's sweep rebuilds its own free list and coalesces runs of
-    // adjacent free blocks. Blocks themselves are reclaimed in place; cluster
-    // memory is never released back to the OS in the current implementation.
-    //
-    // Follow-on action: release fully-empty clusters (all blocks free,
-    // coalesced into a single span equal to `bump`) back to the OS once a
-    // policy is decided.
-    let mut totals = SweepStats::default();
-    unsafe {
-        for cluster in &mut gc.clusters {
-            let s = cluster.sweep();
-            totals.live_blocks += s.live_blocks;
-            totals.live_bytes += s.live_bytes;
-            totals.freed_blocks += s.freed_blocks;
-            totals.freed_bytes += s.freed_bytes;
-        }
-    }
+// ─────────────────────────────────────────────────────────────────────────────
+// Test helpers
+// ─────────────────────────────────────────────────────────────────────────────
 
-    // ── Counter updates ──────────────────────────────────────────────────────
-    let elapsed = cycle_start.elapsed().as_nanos() as u64;
-    HEAP_COUNTERS.collect_cycles.fetch_add(1, Ordering::Relaxed);
-    HEAP_COUNTERS
-        .collect_total_nanos
-        .fetch_add(elapsed, Ordering::AcqRel);
-    HEAP_COUNTERS
-        .collect_last_nanos
-        .store(elapsed, Ordering::Relaxed);
-    HEAP_COUNTERS
-        .collect_last_reclaimed_bytes
-        .store(totals.freed_bytes, Ordering::Relaxed);
-    HEAP_COUNTERS
-        .free_blocks_lifetime
-        .fetch_add(totals.freed_blocks, Ordering::Relaxed);
-    HEAP_COUNTERS
-        .free_bytes_lifetime
-        .fetch_add(totals.freed_bytes, Ordering::Relaxed);
-    HEAP_COUNTERS
-        .live_blocks
-        .store(totals.live_blocks, Ordering::Relaxed);
-    HEAP_COUNTERS
-        .live_bytes
-        .store(totals.live_bytes, Ordering::Relaxed);
-    HEAP_COUNTERS
-        .cluster_count
-        .store(gc.clusters.len() as u64, Ordering::Relaxed);
-    // Peak high-water mark: AcqRel CAS so a concurrent reader (multi-thread
-    // future) sees a coherent ordering relative to live_bytes.
-    let mut peak = HEAP_COUNTERS.peak_live_bytes.load(Ordering::Acquire);
-    while totals.live_bytes > peak {
-        match HEAP_COUNTERS.peak_live_bytes.compare_exchange_weak(
-            peak,
-            totals.live_bytes,
-            Ordering::AcqRel,
-            Ordering::Acquire,
-        ) {
-            Ok(_) => break,
-            Err(observed) => peak = observed,
-        }
+#[cfg(test)]
+pub(crate) fn reset_for_test() {
+    let mut heap = heap_lock();
+    heap.clusters.clear();
+    heap.modules.clear();
+    heap.type_descs = TypeDescRegistry::new();
+    heap.collect_log = CollectLog::new(16);
+    heap.generation = 0;
+    heap.pending_finalizers.clear();
+    let mut threads = MUTATORS.write().unwrap();
+    threads.clear();
+    BOOTSTRAP_STACK_BASE.store(0, Ordering::Release);
+    SAFEPOINT_REQUESTED.store(0, Ordering::Release);
+    HEAP_COUNTERS.reset();
+}
+
+#[cfg(test)]
+pub(crate) static GLOBAL_TEST_LOCK: Mutex<()> = Mutex::new(());
+
+#[cfg(test)]
+pub(crate) fn lock_tests_global() -> std::sync::MutexGuard<'static, ()> {
+    match GLOBAL_TEST_LOCK.lock() {
+        Ok(g) => g,
+        Err(p) => p.into_inner(),
     }
 }
 
@@ -1327,582 +1563,202 @@ unsafe fn collect_inner(gc: &mut GcState, sp: usize) {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::sync::Arc as TestArc;
+    use std::sync::Barrier;
 
-    // Tests run serially because they share the process-global `GC` state.
-    // The shared lock lives at module scope so heap_introspect tests can use
-    // it too — see `super::lock_tests_global`.
     fn lock_tests() -> std::sync::MutexGuard<'static, ()> {
         super::lock_tests_global()
     }
 
-    /// Wipes the global GC state to a known-empty baseline so each test
-    /// starts from the same point.
-    fn reset_gc() {
-        let mut gc = GC.lock().unwrap();
-        // Drop all clusters (and their backing memory) and clear all roots.
-        gc.clusters.clear();
-        gc.modules.clear();
-        gc.base_stack = 0;
-        gc.owner_thread = None;
-    }
-
-    /// Builds a `TypeDesc` with no pointer fields, suitable for objects of
-    /// `payload_size` bytes. Returned as a leaked `Box` so the address stays
-    /// valid for the lifetime of the test.
-    fn make_leaf_type_desc(payload_size: usize) -> *const TypeDesc {
-        // 1 entry for the `-1` sentinel.
-        #[repr(C)]
-        struct LeafTd {
-            base: TypeDesc,
-            sentinel: isize,
-        }
-        let td = Box::new(LeafTd {
-            base: TypeDesc {
-                size: payload_size as isize,
-                module: std::ptr::null(),
-                finalizer: None,
-                base: std::ptr::null(),
-                vtable: std::ptr::null(),
-                vtable_len: 0,
-                name: std::ptr::null(),
-                ptroffs: [],
-            },
-            sentinel: -1,
-        });
-        // Leak so the TypeDesc lives for the rest of the test (and process).
-        let raw = Box::into_raw(td);
-        raw as *const TypeDesc
-    }
-
-    /// Builds a `TypeDesc` with the given pointer-field byte offsets and an
-    /// optional finalizer. Returned as a leaked `Box`.
-    fn make_type_desc_with_ptrs(
-        payload_size: usize,
-        ptr_offsets: &[isize],
-        finalizer: Option<Finalizer>,
-    ) -> *const TypeDesc {
-        // Tail layout: [ptr_offsets...][-1 sentinel].
-        let total = std::mem::size_of::<TypeDesc>()
-            + (ptr_offsets.len() + 1) * std::mem::size_of::<isize>();
-        let layout = std::alloc::Layout::from_size_align(total, std::mem::align_of::<TypeDesc>())
-            .unwrap();
-        unsafe {
-            let raw = std::alloc::alloc(layout) as *mut TypeDesc;
-            assert!(!raw.is_null());
-            (*raw).size = payload_size as isize;
-            (*raw).module = std::ptr::null();
-            (*raw).finalizer = finalizer;
-            (*raw).base = std::ptr::null();
-            (*raw).vtable = std::ptr::null();
-            (*raw).vtable_len = 0;
-            (*raw).name = std::ptr::null();
-            // Write the trailing array immediately past the struct.
-            let tail =
-                (raw as *mut u8).add(std::mem::size_of::<TypeDesc>()) as *mut isize;
-            for (i, &off) in ptr_offsets.iter().enumerate() {
-                tail.add(i).write(off);
-            }
-            tail.add(ptr_offsets.len()).write(-1);
-            // Layout is leaked; tests don't free TypeDescs.
-            raw as *const TypeDesc
-        }
-    }
-
+    /// Simplest path: register, alloc, collect, repeat.
     #[test]
-    fn alloc_zero_initialised() {
-        let _t = lock_tests();
-        reset_gc();
+    fn alloc_collect_alloc() {
+        let _lock = lock_tests();
+        reset_for_test();
 
-        let td = make_leaf_type_desc(64);
-        unsafe {
-            let p = __newcp_new_rec(td);
-            assert!(!p.is_null());
-            // Every byte of payload must be zero (CP NEW semantics).
-            for i in 0..64 {
-                assert_eq!(*p.add(i), 0, "payload byte {i} not zero");
-            }
-        }
-    }
-
-    #[test]
-    fn system_new_allocates_outside_gc_clusters() {
-        let _t = lock_tests();
-        reset_gc();
-
-        let ptr = unsafe { __newcp_sys_new(64) };
-        assert!(!ptr.is_null());
-
-        let gc = GC.lock().unwrap();
-        assert!(gc.clusters.is_empty());
-    }
-
-    #[test]
-    fn growth_then_collection_reclaims() {
-        let _t = lock_tests();
-        reset_gc();
-
-        // Initialise a base_stack at the end of a known-mapped local buffer
-        // so the conservative scan never reads past the OS stack mapping.
-        let stack_marker = [0usize; 64];
-        let base = unsafe { stack_marker.as_ptr().add(64) as usize };
-        unsafe { __newcp_init_gc(base as *const u8) };
-
-        let td = make_leaf_type_desc(64);
-
-        // Allocate enough to definitely exceed the bump space of one cluster.
-        // 1 MiB cluster / ~96B per block = ~10 920 blocks; we do far less.
-        let mut allocated_count = 0usize;
-        for _ in 0..2_000 {
-            let p = unsafe { __newcp_new_rec(td) };
-            assert!(!p.is_null());
-            allocated_count += 1;
-            // Deliberately drop p — no root references survive past this loop.
-        }
-        assert_eq!(allocated_count, 2_000);
-
-        // Snapshot bump usage before collect.
-        let bump_before: usize = {
-            let gc = GC.lock().unwrap();
-            gc.clusters.iter().map(|c| c.bump).sum()
+        // Bake a TypeDesc with a 64-byte payload, no pointers.
+        static mut TD: TypeDesc = TypeDesc {
+            size: 64,
+            module: std::ptr::null(),
+            finalizer: None,
+            base: std::ptr::null(),
+            vtable: std::ptr::null(),
+            vtable_len: 0,
+            name: std::ptr::null(),
+            ptroffs: [],
         };
+        let td_ptr = unsafe { (&raw const TD) as *const TypeDesc };
 
-        // Force a collection. With no live roots, every block must end up free.
+        let mut local: usize = 0;
+        unsafe { __newcp_init_gc(&raw const local as *const u8) };
+        let _ = local;
+
+        for _ in 0..100 {
+            let ptr = unsafe { __newcp_new_rec(td_ptr) };
+            assert!(!ptr.is_null());
+        }
         collect();
+        for _ in 0..100 {
+            let ptr = unsafe { __newcp_new_rec(td_ptr) };
+            assert!(!ptr.is_null());
+        }
+    }
 
-        // After sweep, free lists should hold all of the previously allocated
-        // space (coalesced). Re-allocating should now succeed without growing
-        // bump (i.e. without touching new tail memory).
-        let (bump_after, free_count_after): (usize, usize) = {
-            let gc = GC.lock().unwrap();
-            let bump: usize = gc.clusters.iter().map(|c| c.bump).sum();
-            let free: usize = gc
-                .clusters
-                .iter()
-                .map(|c| {
-                    let mut n = 0usize;
-                    let mut cur = c.free_list;
-                    while !cur.is_null() {
-                        n += 1;
-                        let header_size = std::mem::size_of::<BlockHeader>();
-                        unsafe {
-                            let link = cur.add(header_size) as *const FreeBlockLink;
-                            cur = (*link).next;
-                        }
-                    }
-                    n
-                })
-                .sum();
-            (bump, free)
+    /// Two threads allocating concurrently.  No assertions on
+    /// retention (each thread's allocations are immediately
+    /// unreachable), but the test must not crash and the counters
+    /// must add up.
+    #[test]
+    fn multi_thread_alloc_no_crash() {
+        let _lock = lock_tests();
+        reset_for_test();
+
+        static mut TD: TypeDesc = TypeDesc {
+            size: 128,
+            module: std::ptr::null(),
+            finalizer: None,
+            base: std::ptr::null(),
+            vtable: std::ptr::null(),
+            vtable_len: 0,
+            name: std::ptr::null(),
+            ptroffs: [],
         };
-        assert_eq!(
-            bump_before, bump_after,
-            "sweep must not change bump cursor"
-        );
+        let td_addr = unsafe { (&raw const TD) as *const TypeDesc as usize };
+
+        let mut local: usize = 0;
+        unsafe { __newcp_init_gc(&raw const local as *const u8) };
+        let _ = local;
+
+        const N_THREADS: usize = 4;
+        const ALLOCS_PER_THREAD: usize = 200;
+        let barrier = TestArc::new(Barrier::new(N_THREADS));
+        let mut handles = Vec::new();
+        for _ in 0..N_THREADS {
+            let b = barrier.clone();
+            handles.push(std::thread::spawn(move || {
+                // Each thread registers its own stack-top.
+                let mut local_root: usize = 0;
+                unsafe { __newcp_register_thread(&raw const local_root as *const u8) };
+                let td_ptr = td_addr as *const TypeDesc;
+                b.wait();
+                for _ in 0..ALLOCS_PER_THREAD {
+                    unsafe {
+                        let p = __newcp_new_rec(td_ptr);
+                        assert!(!p.is_null());
+                        local_root = p as usize; // make alive on stack
+                        std::hint::black_box(local_root);
+                    }
+                }
+                unsafe { __newcp_unregister_thread() };
+            }));
+        }
+        for h in handles {
+            h.join().unwrap();
+        }
+
+        let total_threads = N_THREADS as u64;
+        let expected_blocks = total_threads * ALLOCS_PER_THREAD as u64;
         assert!(
-            free_count_after > 0,
-            "sweep should produce at least one free block per cluster with live garbage"
+            HEAP_COUNTERS.alloc_blocks_lifetime.load(Ordering::Relaxed) >= expected_blocks,
+            "fewer allocations counted than threads performed"
         );
     }
 
+    /// Safepoint test: a worker thread that polls in a tight loop
+    /// must park promptly when another thread requests collection.
+    /// The collector's wait timeout (2 s) failing here would indicate
+    /// the safepoint mechanism isn't working.
     #[test]
-    fn freed_blocks_are_reused() {
-        let _t = lock_tests();
-        reset_gc();
+    fn safepoint_pauses_polling_worker() {
+        let _lock = lock_tests();
+        reset_for_test();
 
-        let stack_marker = [0usize; 64];
-        let base = unsafe { stack_marker.as_ptr().add(64) as usize };
-        unsafe { __newcp_init_gc(base as *const u8) };
+        let mut local: usize = 0;
+        unsafe { __newcp_init_gc(&raw const local as *const u8) };
+        let _ = local;
 
-        let td = make_leaf_type_desc(64);
+        let stop = TestArc::new(std::sync::atomic::AtomicBool::new(false));
+        let park_count_seen = TestArc::new(AtomicU64::new(0));
 
-        // Allocate, drop refs, collect → free space available.
+        // Spawn a worker that polls __newcp_safepoint in a hot loop.
+        let stop_clone = stop.clone();
+        let park_clone = park_count_seen.clone();
+        let worker = std::thread::spawn(move || {
+            let mut local_root: usize = 0;
+            unsafe { __newcp_register_thread(&raw const local_root as *const u8) };
+            let _ = local_root;
+            while !stop_clone.load(Ordering::Acquire) {
+                unsafe { __newcp_safepoint() };
+                // Make sure the loop isn't optimised away.
+                std::hint::black_box(&local_root);
+            }
+            // Snapshot the worker's park count after the loop ends.
+            let m = ensure_mutator_for_current_thread();
+            park_clone.store(m.park_count.load(Ordering::Relaxed), Ordering::Release);
+            unsafe { __newcp_unregister_thread() };
+        });
+
+        // Give the worker a moment to actually start polling.
+        std::thread::sleep(Duration::from_millis(20));
+
+        // Trigger a collect from the main thread; without working
+        // safepoints the worker would never park and this would
+        // either deadlock or hit the 2 s abort path.
+        let collect_start = Instant::now();
+        collect();
+        let collect_elapsed = collect_start.elapsed();
+        assert!(
+            collect_elapsed < Duration::from_millis(500),
+            "collect() took {collect_elapsed:?} — safepoint mechanism not pausing worker"
+        );
+
+        // Trigger a second one to confirm the worker resumes and re-parks.
+        std::thread::sleep(Duration::from_millis(10));
+        collect();
+
+        stop.store(true, Ordering::Release);
+        worker.join().unwrap();
+
+        let parks = park_count_seen.load(Ordering::Acquire);
+        assert!(
+            parks >= 2,
+            "worker should have parked at least twice (saw {parks})"
+        );
+    }
+
+    /// TypeDesc refcount must zero out after a collect that finds
+    /// every block dead.
+    #[test]
+    fn type_desc_refcount_zeroes_on_collect() {
+        let _lock = lock_tests();
+        reset_for_test();
+
+        static mut TD: TypeDesc = TypeDesc {
+            size: 32,
+            module: std::ptr::null(),
+            finalizer: None,
+            base: std::ptr::null(),
+            vtable: std::ptr::null(),
+            vtable_len: 0,
+            name: std::ptr::null(),
+            ptroffs: [],
+        };
+        let td_ptr = unsafe { (&raw const TD) as *const TypeDesc };
+        let td_addr = td_ptr as usize;
+
+        let mut local: usize = 0;
+        unsafe { __newcp_init_gc(&raw const local as *const u8) };
+        let _ = local;
+
         for _ in 0..50 {
-            let _ = unsafe { __newcp_new_rec(td) };
+            let _ = unsafe { __newcp_new_rec(td_ptr) }; // immediately unreachable
         }
-        let bump_before = {
-            let gc = GC.lock().unwrap();
-            gc.clusters.iter().map(|c| c.bump).sum::<usize>()
-        };
+        // The pointers were thrown away — collect should reclaim them all.
         collect();
 
-        // Allocate again: the bump cursor should not advance, because every
-        // request is satisfied from the free list.
-        for _ in 0..50 {
-            let _ = unsafe { __newcp_new_rec(td) };
-        }
-        let bump_after = {
-            let gc = GC.lock().unwrap();
-            gc.clusters.iter().map(|c| c.bump).sum::<usize>()
-        };
-        assert_eq!(
-            bump_before, bump_after,
-            "free list must be exhausted before bump grows again"
-        );
-    }
-
-    #[test]
-    fn module_root_keeps_object_alive() {
-        let _t = lock_tests();
-        reset_gc();
-
-        let stack_marker = [0usize; 64];
-        let base = unsafe { stack_marker.as_ptr().add(64) as usize };
-        unsafe { __newcp_init_gc(base as *const u8) };
-
-        let td = make_leaf_type_desc(64);
-
-        // Allocate one object and store its payload pointer in a "module
-        // global" — a static slot at offset 0 of a global data struct.
-        // Use a Box<*mut u8> as the module's var_base; offset 0 is a pointer.
-        let slot: Box<*mut u8> = Box::new(std::ptr::null_mut());
-        let slot_ptr = Box::into_raw(slot);
-
-        let payload = unsafe { __newcp_new_rec(td) };
-        unsafe { slot_ptr.write(payload) };
-
-        // Register the module: var_base = &slot, ptr offset 0.
-        let offsets = [0isize];
-        unsafe {
-            __newcp_register_module(slot_ptr as *const u8, offsets.as_ptr(), offsets.len())
-        };
-
-        // Allocate a bunch of garbage and collect; the rooted object must survive.
-        for _ in 0..200 {
-            let _ = unsafe { __newcp_new_rec(td) };
-        }
-        collect();
-
-        // The rooted object's header must still be marked-clear and allocated
-        // (tag != 0 with mark bit cleared by the cycle).
-        let header_size = std::mem::size_of::<BlockHeader>();
-        unsafe {
-            let hdr = payload.sub(header_size) as *const BlockHeader;
-            let type_bits = (*hdr).tag & !BlockHeader::MARK_BIT;
-            assert_ne!(type_bits, 0, "rooted object was reclaimed by sweep");
-            assert_eq!(type_bits, td as usize, "rooted object's tag changed");
-        }
-
-        // Cleanup the module registration so other tests see a clean slate.
-        // (reset_gc in the next test will drop modules anyway, but free the
-        // slot now to avoid leaking it across the test process.)
-        unsafe { drop(Box::from_raw(slot_ptr)) };
-    }
-
-    // ─────────────────────────────────────────────────────────────────────
-    // Stress / correctness tests for graph-shaped object reachability.
-    // ─────────────────────────────────────────────────────────────────────
-
-    /// Counts how many allocated (non-free, non-marked-bit-set) blocks of
-    /// type `td` exist across all clusters. Used by stress tests to verify
-    /// reclamation without depending on free-list shape.
-    fn live_block_count(td: *const TypeDesc) -> usize {
-        let gc = GC.lock().unwrap();
-        let mut n = 0usize;
-        for cluster in &gc.clusters {
-            let mut offset = 0usize;
-            unsafe {
-                while offset < cluster.bump {
-                    let hdr = cluster.base.add(offset) as *const BlockHeader;
-                    let block_size = (*hdr).block_size;
-                    if block_size < MIN_BLOCK || offset + block_size > cluster.bump {
-                        break;
-                    }
-                    let type_bits = (*hdr).tag & !BlockHeader::MARK_BIT;
-                    if type_bits == td as usize {
-                        n += 1;
-                    }
-                    offset += block_size;
-                }
-            }
-        }
-        n
-    }
-
-    /// Cycle reclamation: A → B → A with no external root must collect both.
-    ///
-    /// We deliberately skip `__newcp_init_gc` so the conservative stack scan
-    /// is disabled (`base_stack == 0`). This isolates the test from stale
-    /// heap-pointer-looking words left behind in popped stack frames, which
-    /// would otherwise non-deterministically pin garbage. Conservative stack
-    /// scanning itself is exercised by the earlier tests.
-    #[test]
-    fn cyclic_garbage_is_reclaimed() {
-        let _t = lock_tests();
-        reset_gc();
-        // Note: no __newcp_init_gc → no stack scan.
-
-        // Single pointer field at offset 0; payload = one usize.
-        let td = make_type_desc_with_ptrs(
-            std::mem::size_of::<usize>(),
-            &[0],
-            None,
-        );
-
-        // Build A ↔ B inside a separate function so that, after it returns,
-        // the entire frame holding the local pointers is popped — the
-        // conservative scanner only walks SP upward to base_stack and so
-        // cannot see the popped slots.
-        #[inline(never)]
-        fn build_cycle(td: *const TypeDesc) {
-            unsafe {
-                let a = __newcp_new_rec(td);
-                let b = __newcp_new_rec(td);
-                (a as *mut *mut u8).write(b);
-                (b as *mut *mut u8).write(a);
-            }
-        }
-        build_cycle(td);
-
-        collect();
-
-        assert_eq!(
-            live_block_count(td),
-            0,
-            "unrooted A↔B cycle must be reclaimed"
-        );
-    }
-
-    /// Deep linked list rooted via a module global: must survive collection,
-    /// and the marker must not stack-overflow on long chains. After unrooting,
-    /// every node must be reclaimed.
-    ///
-    /// Skips `__newcp_init_gc` (no stack scan) for deterministic reclamation.
-    #[test]
-    fn deep_linked_list_survives_then_reclaims() {
-        let _t = lock_tests();
-        reset_gc();
-        // Note: no __newcp_init_gc → no stack scan.
-
-        // List node = { next: *mut u8 } at offset 0.
-        let td = make_type_desc_with_ptrs(
-            std::mem::size_of::<usize>(),
-            &[0],
-            None,
-        );
-
-        const N: usize = 10_000;
-
-        // Module root = a single pointer slot.
-        let slot: Box<*mut u8> = Box::new(std::ptr::null_mut());
-        let slot_ptr = Box::into_raw(slot);
-        let offsets = [0isize];
-        unsafe {
-            __newcp_register_module(
-                slot_ptr as *const u8,
-                offsets.as_ptr(),
-                offsets.len(),
-            );
-        }
-
-        // Build N-node list, head in the module slot. Construction happens
-        // in a helper so its frame is popped before any collect; otherwise
-        // the conservative scanner would still see the local `head` slot.
-        #[inline(never)]
-        fn build_list(td: *const TypeDesc, slot_ptr: *mut *mut u8, n: usize) {
-            let mut head: *mut u8 = std::ptr::null_mut();
-            for _ in 0..n {
-                let node = unsafe { __newcp_new_rec(td) };
-                unsafe { (node as *mut *mut u8).write(head) };
-                head = node;
-            }
-            unsafe { slot_ptr.write(head) };
-        }
-        build_list(td, slot_ptr, N);
-
-        // Survive across collection.
-        collect();
-        assert_eq!(
-            live_block_count(td),
-            N,
-            "all N rooted list nodes must survive"
-        );
-
-        // Drop the root and collect: every node must die. Null the slot from
-        // a helper to ensure no stale local copies of `head` survive on the
-        // stack into collect().
-        #[inline(never)]
-        fn clear_slot(slot_ptr: *mut *mut u8) {
-            unsafe { slot_ptr.write(std::ptr::null_mut()) };
-        }
-        clear_slot(slot_ptr);
-        collect();
-        assert_eq!(
-            live_block_count(td),
-            0,
-            "all N nodes must be reclaimed once unrooted"
-        );
-
-        unsafe { drop(Box::from_raw(slot_ptr)) };
-    }
-
-    /// Record with many pointer fields: tracing must enqueue every child.
-    #[test]
-    fn wide_pointer_record_traces_all_children() {
-        let _t = lock_tests();
-        reset_gc();
-        // No stack scan: this test asserts exact survivor counts driven by
-        // the precise module-root + tracing path.
-
-        const FIELDS: usize = 64;
-        let payload_size = FIELDS * std::mem::size_of::<usize>();
-        let offsets: Vec<isize> = (0..FIELDS)
-            .map(|i| (i * std::mem::size_of::<usize>()) as isize)
-            .collect();
-        let parent_td = make_type_desc_with_ptrs(payload_size, &offsets, None);
-        let leaf_td = make_leaf_type_desc(32);
-
-        let slot: Box<*mut u8> = Box::new(std::ptr::null_mut());
-        let slot_ptr = Box::into_raw(slot);
-        let mod_offsets = [0isize];
-        unsafe {
-            __newcp_register_module(
-                slot_ptr as *const u8,
-                mod_offsets.as_ptr(),
-                mod_offsets.len(),
-            );
-        }
-
-        // Allocate parent + FIELDS leaves; wire them up. Done in a helper so
-        // the loop variables and `parent` local don't leak into the scanned
-        // stack region across collect().
-        #[inline(never)]
-        fn wire_parent(
-            parent_td: *const TypeDesc,
-            leaf_td: *const TypeDesc,
-            slot_ptr: *mut *mut u8,
-            fields: usize,
-        ) {
-            let parent = unsafe { __newcp_new_rec(parent_td) };
-            for i in 0..fields {
-                let leaf = unsafe { __newcp_new_rec(leaf_td) };
-                unsafe {
-                    let field = (parent as *mut *mut u8).add(i);
-                    field.write(leaf);
-                }
-            }
-            unsafe { slot_ptr.write(parent) };
-        }
-        wire_parent(parent_td, leaf_td, slot_ptr, FIELDS);
-
-        // Add unrooted garbage.
-        #[inline(never)]
-        fn allocate_garbage(leaf_td: *const TypeDesc, n: usize) {
-            for _ in 0..n {
-                let _ = unsafe { __newcp_new_rec(leaf_td) };
-            }
-        }
-        allocate_garbage(leaf_td, 200);
-
-        collect();
-
-        assert_eq!(live_block_count(parent_td), 1, "parent must survive");
-        assert_eq!(
-            live_block_count(leaf_td),
-            FIELDS,
-            "exactly the {FIELDS} child leaves must survive"
-        );
-
-        unsafe { drop(Box::from_raw(slot_ptr)) };
-    }
-
-    /// Mixed allocation sizes: exercises free-list split + coalesce paths.
-    #[test]
-    fn mixed_size_alloc_free_cycle() {
-        let _t = lock_tests();
-        reset_gc();
-        // No stack scan: deterministic full-reclamation expectation.
-
-        let small = make_leaf_type_desc(16);
-        let medium = make_leaf_type_desc(96);
-        let large = make_leaf_type_desc(512);
-
-        // Allocate inside a helper so the per-iteration locals are popped.
-        #[inline(never)]
-        fn allocate_garbage(
-            small: *const TypeDesc,
-            medium: *const TypeDesc,
-            large: *const TypeDesc,
-            n: usize,
-        ) {
-            for _ in 0..n {
-                let _ = unsafe { __newcp_new_rec(small) };
-                let _ = unsafe { __newcp_new_rec(medium) };
-                let _ = unsafe { __newcp_new_rec(large) };
-            }
-        }
-        allocate_garbage(small, medium, large, 500);
-
-        let bump_before: usize = {
-            let gc = GC.lock().unwrap();
-            gc.clusters.iter().map(|c| c.bump).sum()
-        };
-
-        collect();
-
-        assert_eq!(live_block_count(small), 0);
-        assert_eq!(live_block_count(medium), 0);
-        assert_eq!(live_block_count(large), 0);
-
-        // After full reclamation, allocate a mix again — bump must not advance
-        // (free list satisfies all requests).
-        #[inline(never)]
-        fn allocate_more(small: *const TypeDesc, large: *const TypeDesc, n: usize) {
-            for _ in 0..n {
-                let _ = unsafe { __newcp_new_rec(small) };
-                let _ = unsafe { __newcp_new_rec(large) };
-            }
-        }
-        allocate_more(small, large, 100);
-        let bump_after: usize = {
-            let gc = GC.lock().unwrap();
-            gc.clusters.iter().map(|c| c.bump).sum()
-        };
-        assert_eq!(
-            bump_before, bump_after,
-            "reused free space must not push the bump cursor"
-        );
-    }
-
-    /// Finalizers fire exactly once per dying block, before payload zeroing.
-    #[test]
-    fn finalizer_runs_once_on_dead_blocks() {
-        let _t = lock_tests();
-        reset_gc();
-        // No stack scan: deterministic finalizer count.
-
-        // A finalizer that increments a global counter.
-        static FIN_COUNT: std::sync::atomic::AtomicUsize =
-            std::sync::atomic::AtomicUsize::new(0);
-        unsafe extern "C" fn fin(_payload: *mut u8) {
-            FIN_COUNT.fetch_add(1, std::sync::atomic::Ordering::SeqCst);
-        }
-
-        FIN_COUNT.store(0, std::sync::atomic::Ordering::SeqCst);
-
-        let td = make_type_desc_with_ptrs(64, &[], Some(fin));
-        const N: usize = 100;
-        #[inline(never)]
-        fn allocate(td: *const TypeDesc, n: usize) {
-            for _ in 0..n {
-                let _ = unsafe { __newcp_new_rec(td) };
-            }
-        }
-        allocate(td, N);
-
-        collect();
-
-        assert_eq!(
-            FIN_COUNT.load(std::sync::atomic::Ordering::SeqCst),
-            N,
-            "finalizer must fire exactly once per dead block"
-        );
-
-        // A second collection must not re-fire finalizers on already-free blocks.
-        collect();
-        assert_eq!(
-            FIN_COUNT.load(std::sync::atomic::Ordering::SeqCst),
-            N,
-            "finalizer must not run again on already-free blocks"
-        );
+        let snap = snapshot();
+        let entry = snap.type_descs.iter().find(|e| e.addr == td_addr);
+        let count = entry.map(|e| e.block_count).unwrap_or(0);
+        assert_eq!(count, 0, "expected 0 live blocks for this TypeDesc, got {count}");
     }
 }

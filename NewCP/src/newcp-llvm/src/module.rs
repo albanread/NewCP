@@ -56,6 +56,12 @@ pub struct GlobalPlanner<'ctx> {
     /// Ordered list of `(vtable_global_name, slot_count)` for every vtable
     /// emitted as a mutable global. Retained as metadata only.
     pub vtable_externs: Vec<(String, usize)>,
+    /// `(typedesc_global_name, finalize_fn_name)` pairs for every record
+    /// type that has a `Finalize` method.  The JIT layer resolves
+    /// `finalize_fn_name`'s address and writes it into the TypeDesc's
+    /// finalizer slot (offset 16) at JIT-init time, after the vtable
+    /// patch but before any allocation can run.
+    pub finalizer_patches: Vec<(String, String)>,
 }
 
 impl<'ctx> GlobalPlanner<'ctx> {
@@ -71,6 +77,7 @@ impl<'ctx> GlobalPlanner<'ctx> {
             vtable_slot_functions: HashMap::new(),
             vtable_init_function_name: None,
             vtable_externs: Vec::new(),
+            finalizer_patches: Vec::new(),
         }
     }
 }
@@ -356,6 +363,37 @@ impl<'ctx> CodegenModule<'ctx> {
         ptr
     }
 
+    /// Emit (or reuse) a private NUL-terminated 8-bit C-string
+    /// constant.  Used by codegen call sites that pass plain ASCII
+    /// names to the runtime — e.g. cross-module typedesc lookup
+    /// via `__newcp_lookup_typedesc`.  Distinct from the CHAR /
+    /// SHORTCHAR string constants emitted for CP-side string
+    /// literals, which carry through the broader UTF-32 / Latin-1
+    /// expectations.
+    pub fn get_or_emit_cstring_constant(&mut self, s: &str) -> PointerValue<'ctx> {
+        let cache_key = format!("c8:{s}");
+        if let Some(&ptr) = self.planner.string_constants.get(&cache_key) {
+            return ptr;
+        }
+        let i8_ty = self.context.i8_type();
+        let bytes: Vec<u8> = s.bytes().chain(std::iter::once(0u8)).collect();
+        let arr_ty = i8_ty.array_type(bytes.len() as u32);
+        let vals: Vec<_> = bytes.iter().map(|&b| i8_ty.const_int(b as u64, false)).collect();
+        let initializer = i8_ty.const_array(&vals);
+        let idx = self.planner.string_constants.len();
+        let global_name = format!(".cstr.{idx}");
+        let global = self.module.add_global(arr_ty, None, &global_name);
+        global.set_initializer(&initializer);
+        global.set_constant(true);
+        global.set_linkage(inkwell::module::Linkage::Private);
+        let zero = self.context.i32_type().const_zero();
+        let ptr = unsafe {
+            global.as_pointer_value().const_in_bounds_gep(arr_ty, &[zero, zero])
+        };
+        self.planner.string_constants.insert(cache_key, ptr);
+        ptr
+    }
+
     /// Emit `@TypeName.vtable` and `@TypeName.desc` constant globals for every
     /// record type in `ir_module.type_vtables`.
     ///
@@ -519,9 +557,32 @@ impl<'ctx> CodegenModule<'ctx> {
 
             let desc_global = self.module.add_global(type_desc_ty, None, &desc_name);
             desc_global.set_initializer(&desc_init);
-            desc_global.set_constant(true);
-            desc_global.set_linkage(Linkage::Internal);
+            // Non-constant + external linkage so the JIT layer can
+            // resolve the address (`get_global_value_address`) and
+            // patch the finalizer slot in place.  Initializer bytes
+            // serve as defaults for the patched fields.
+            desc_global.set_constant(false);
+            desc_global.set_linkage(Linkage::External);
             self.planner.type_desc_globals.insert(type_name.clone(), desc_global);
+
+            // If this type has a `Finalize` method, queue a finalizer
+            // patch.  The JIT layer will resolve the function address
+            // and write it into the TypeDesc.finalizer field
+            // (offset 16) once the engine is built.  Resolve through
+            // `function_llvm_names` so we record the LLVM-mangled
+            // form (e.g. `FinalizerProbe$g1$BoxDesc_Finalize`) that
+            // the JIT's `method_functions` table is keyed by.
+            if let Some(fn_name) = ir_module.type_finalizers.get(type_name) {
+                let llvm_name = self
+                    .planner
+                    .function_llvm_names
+                    .get(fn_name)
+                    .cloned()
+                    .unwrap_or_else(|| fn_name.clone());
+                self.planner
+                    .finalizer_patches
+                    .push((desc_name.clone(), llvm_name));
+            }
         }
 
         // Anchor every method function against DCE (and against MCJIT's

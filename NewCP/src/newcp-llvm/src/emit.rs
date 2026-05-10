@@ -182,6 +182,24 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
                     })?;
                 Ok(())
             }
+            Instr::StringCompare {
+                dst,
+                lhs,
+                rhs,
+                eq,
+                elem_is_short,
+            } => self.emit_string_compare_instr(*dst, lhs, rhs, *eq, *elem_is_short, value_map),
+            Instr::Safepoint => {
+                let helper = self.get_or_declare_safepoint();
+                self.cg
+                    .builder
+                    .build_call(helper, &[], "safepoint")
+                    .map_err(|e| CodegenError::Unsupported {
+                        stage: "emit_safepoint",
+                        detail: e.to_string(),
+                    })?;
+                Ok(())
+            }
             Instr::UnOp { dst, op, operand, ty } => {
                 let value = self.emit_unop(*op, operand, ty, value_map)?;
                 value_map.temp_values.insert(*dst, value);
@@ -326,24 +344,30 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
                 self.emit_index_gep(*dst, base, index, element_ty, value_map)
             }
             Instr::New { dst, record_ty } => {
-                // Two paths:
+                // Three paths:
                 //
-                // - tagged record: types with a vtable / TypeDesc go through
-                //   `__newcp_new_rec(typedesc)`. The runtime sets up the
-                //   BlockHeader so that method dispatch can recover the
-                //   TypeDesc from `obj_ptr - 16` at runtime.
+                // - tagged record, type defined locally: emit a direct
+                //   `__newcp_new_rec(@type.desc)` call against the
+                //   compiled-in TypeDesc global.
                 //
-                // - untagged record: types without methods / inheritance just
-                //   need raw bytes. Call `__newcp_sys_new(size)` so the
-                //   no-OOP cases (Pointers.cp etc.) keep working.
+                // - tagged record, type defined in another CP module
+                //   (qualified name e.g. "TextModels.StdModelDesc"):
+                //   look up the TypeDesc address at runtime via the
+                //   `__newcp_lookup_typedesc` registry helper. This
+                //   avoids the cross-module linker symbol gymnastics
+                //   that would be required to share TypeDesc globals
+                //   between compiled CP modules.
+                //
+                // - untagged record (anonymous, no Named type): just
+                //   allocate raw bytes via `__newcp_sys_new(size)`.
                 let type_name = match record_ty {
                     newcp_ir::IrType::Named(n) => Some(n.as_str()),
                     _ => None,
                 };
-                let desc_global = type_name
+                let local_desc_global = type_name
                     .and_then(|n| self.cg.planner.type_desc_globals.get(n).copied());
 
-                if let Some(desc_global) = desc_global {
+                if let Some(desc_global) = local_desc_global {
                     let new_rec = self
                         .cg
                         .module
@@ -362,6 +386,54 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
                             detail: e.to_string(),
                         })?;
                     let value = call.try_as_basic_value().unwrap_basic();
+                    value_map.temp_values.insert(*dst, value);
+                } else if let Some(qualified) = type_name.filter(|n| n.contains('.')) {
+                    // Cross-module typed allocation: look up the
+                    // TypeDesc at runtime by qualified name, then
+                    // dispatch through __newcp_new_rec.
+                    let lookup = self.get_or_declare_lookup_typedesc();
+                    let new_rec = self
+                        .cg
+                        .module
+                        .get_function("__newcp_new_rec")
+                        .ok_or_else(|| CodegenError::Unsupported {
+                            stage: "emit_instr",
+                            detail: "__newcp_new_rec was not declared during planning".to_string(),
+                        })?;
+                    let name_global = self.cg.get_or_emit_cstring_constant(qualified);
+                    let lookup_call = self
+                        .cg
+                        .builder
+                        .build_call(lookup, &[name_global.into()], "typedesc")
+                        .map_err(|e| CodegenError::Unsupported {
+                            stage: "emit_instr",
+                            detail: e.to_string(),
+                        })?;
+                    let typedesc_i64 = lookup_call
+                        .try_as_basic_value()
+                        .unwrap_basic()
+                        .into_int_value();
+                    let typedesc_ptr = self
+                        .cg
+                        .builder
+                        .build_int_to_ptr(
+                            typedesc_i64,
+                            self.cg.context.ptr_type(inkwell::AddressSpace::default()),
+                            "typedesc.ptr",
+                        )
+                        .map_err(|e| CodegenError::Unsupported {
+                            stage: "emit_instr",
+                            detail: e.to_string(),
+                        })?;
+                    let new_call = self
+                        .cg
+                        .builder
+                        .build_call(new_rec, &[typedesc_ptr.into()], &dst.render())
+                        .map_err(|e| CodegenError::Unsupported {
+                            stage: "emit_instr",
+                            detail: e.to_string(),
+                        })?;
+                    let value = new_call.try_as_basic_value().unwrap_basic();
                     value_map.temp_values.insert(*dst, value);
                 } else {
                     // No TypeDesc — fall back to raw allocation.
@@ -2045,6 +2117,147 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
         self.cg
             .module
             .add_function(NAME, fn_ty, Some(inkwell::module::Linkage::External))
+    }
+
+    /// Get or declare `@__newcp_safepoint() -> void`.  Codegen emits
+    /// a call to this at every CP procedure entry as a cooperative
+    /// GC poll point.
+    fn get_or_declare_safepoint(&self) -> FunctionValue<'ctx> {
+        const NAME: &str = "__newcp_safepoint";
+        if let Some(f) = self.cg.module.get_function(NAME) {
+            return f;
+        }
+        let void_ty = self.cg.context.void_type();
+        let fn_ty = void_ty.fn_type(&[], false);
+        self.cg
+            .module
+            .add_function(NAME, fn_ty, Some(inkwell::module::Linkage::External))
+    }
+
+    /// Get or declare `@__newcp_lookup_typedesc(ptr) -> i64` —
+    /// used by cross-module `NEW(p)` to resolve a TypeDesc address
+    /// via the runtime registry by qualified name.
+    fn get_or_declare_lookup_typedesc(&self) -> FunctionValue<'ctx> {
+        const NAME: &str = "__newcp_lookup_typedesc";
+        if let Some(f) = self.cg.module.get_function(NAME) {
+            return f;
+        }
+        let ptr_ty = self.cg.context.ptr_type(inkwell::AddressSpace::default());
+        let i64_ty = self.cg.context.i64_type();
+        let fn_ty = i64_ty.fn_type(&[ptr_ty.into()], false);
+        self.cg
+            .module
+            .add_function(NAME, fn_ty, Some(inkwell::module::Linkage::External))
+    }
+
+    /// Get or declare `@__newcp_string_eq_char(ptr, ptr) -> i64`.  The
+    /// runtime walks two NUL-terminated UTF-32 buffers and returns 1
+    /// when their codepoint sequences match, 0 otherwise.
+    fn get_or_declare_string_eq_char(&self) -> FunctionValue<'ctx> {
+        const NAME: &str = "__newcp_string_eq_char";
+        if let Some(f) = self.cg.module.get_function(NAME) {
+            return f;
+        }
+        let ptr_ty = self.cg.context.ptr_type(inkwell::AddressSpace::default());
+        let i64_ty = self.cg.context.i64_type();
+        let fn_ty = i64_ty.fn_type(&[ptr_ty.into(), ptr_ty.into()], false);
+        self.cg
+            .module
+            .add_function(NAME, fn_ty, Some(inkwell::module::Linkage::External))
+    }
+
+    /// SHORTCHAR (Latin-1) twin of `__newcp_string_eq_char`.
+    fn get_or_declare_string_eq_shortchar(&self) -> FunctionValue<'ctx> {
+        const NAME: &str = "__newcp_string_eq_shortchar";
+        if let Some(f) = self.cg.module.get_function(NAME) {
+            return f;
+        }
+        let ptr_ty = self.cg.context.ptr_type(inkwell::AddressSpace::default());
+        let i64_ty = self.cg.context.i64_type();
+        let fn_ty = i64_ty.fn_type(&[ptr_ty.into(), ptr_ty.into()], false);
+        self.cg
+            .module
+            .add_function(NAME, fn_ty, Some(inkwell::module::Linkage::External))
+    }
+
+    /// Emit `Instr::StringCompare` — walk two NUL-terminated CHAR /
+    /// SHORTCHAR buffers via the runtime helper, then convert the i64
+    /// 1/0 return into an i1 (and invert when the op is `#`).
+    fn emit_string_compare_instr(
+        &mut self,
+        dst: TempId,
+        lhs: &IrValue,
+        rhs: &IrValue,
+        eq: bool,
+        elem_is_short: bool,
+        value_map: &mut ValueMap<'ctx>,
+    ) -> Result<(), CodegenError> {
+        let lhs_ptr = self.resolve_string_operand_ptr(lhs, value_map)?;
+        let rhs_ptr = self.resolve_string_operand_ptr(rhs, value_map)?;
+        let helper = if elem_is_short {
+            self.get_or_declare_string_eq_shortchar()
+        } else {
+            self.get_or_declare_string_eq_char()
+        };
+        let call = self
+            .cg
+            .builder
+            .build_call(helper, &[lhs_ptr.into(), rhs_ptr.into()], "streq")
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "emit_string_compare",
+                detail: e.to_string(),
+            })?;
+        let i64_eq = call.try_as_basic_value().unwrap_basic().into_int_value();
+        let i1_eq = self
+            .cg
+            .builder
+            .build_int_truncate(i64_eq, self.cg.context.bool_type(), "streq.bool")
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "emit_string_compare",
+                detail: e.to_string(),
+            })?;
+        let result = if eq {
+            i1_eq
+        } else {
+            self.cg
+                .builder
+                .build_not(i1_eq, "strne")
+                .map_err(|e| CodegenError::Unsupported {
+                    stage: "emit_string_compare",
+                    detail: e.to_string(),
+                })?
+        };
+        value_map.temp_values.insert(dst, result.into());
+        Ok(())
+    }
+
+    /// Resolve a string-compare operand to a pointer.  ConstStr →
+    /// global string constant; designator-address (Ref-typed
+    /// IrValue) → its alloca/GEP pointer.  Other shapes fall back
+    /// to the basic-value resolver and we attempt to extract a
+    /// pointer; if none is available, NULL is passed (the runtime
+    /// helper handles NULL inputs as "unequal").
+    fn resolve_string_operand_ptr(
+        &mut self,
+        value: &IrValue,
+        value_map: &mut ValueMap<'ctx>,
+    ) -> Result<PointerValue<'ctx>, CodegenError> {
+        if let IrValue::ConstStr(s, elem_ty) = value {
+            return Ok(self.cg.get_or_emit_string_constant(s, elem_ty));
+        }
+        if matches!(value.ty(), IrType::Ref(_)) {
+            return self.resolve_pointer(value, value_map);
+        }
+        let basic = self.resolve_basic_value(value, value_map)?;
+        if basic.is_pointer_value() {
+            Ok(basic.into_pointer_value())
+        } else {
+            Ok(self
+                .cg
+                .context
+                .ptr_type(inkwell::AddressSpace::default())
+                .const_null())
+        }
     }
 
     /// Get or declare the TypeDesc sentinel global for the named type.
