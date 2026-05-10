@@ -1251,3 +1251,256 @@ fn matrix_expr_dec_with_negative_delta() {
     );
 }
 
+/// CP §6.3 / 6.4 — record contains a pointer to its own POINTER TO type — classic linked-list node. Construct a 3-element list and sum the values.
+#[test]
+fn matrix_type_record_self_referential_pointer() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Type_LinkedList_SelfReference.cp", "Run"),
+        60,
+        "matrix probe type_record_self_referential_pointer (record contains a pointer to its own POINTER TO type — classic linked-list node. Construct a 3-element list and sum the values. — §6.3 / 6.4) returned the wrong value",
+    );
+}
+
+/// CP §10.1 / 10.2 — method with two OUT parameters; both must materialise in the caller's slots after the call
+#[test]
+fn matrix_method_with_multiple_out_params() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Method_MultipleOUTParams.cp", "Run"),
+        35,
+        "matrix probe method_with_multiple_out_params (method with two OUT parameters; both must materialise in the caller's slots after the call — §10.1 / 10.2) returned the wrong value",
+    );
+}
+
+/// CP §10 — procedure whose return type is SET; caller stores into its own set and tests membership
+#[test]
+fn matrix_proc_returns_set() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Proc_Returns_SET.cp", "Run"),
+        1,
+        "matrix probe proc_returns_set (procedure whose return type is SET; caller stores into its own set and tests membership — §10) returned the wrong value",
+    );
+}
+
+/// CP §10 — procedure whose return type is REAL; caller stores then prints via ENTIER for an integer assertion
+#[test]
+fn matrix_proc_returns_real() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Proc_Returns_REAL.cp", "Run"),
+        12,
+        "matrix probe proc_returns_real (procedure whose return type is REAL; caller stores then prints via ENTIER for an integer assertion — §10) returned the wrong value",
+    );
+}
+
+/// CP §6.3 / 6.5 — record field of procedure type — caller assigns and invokes through the field designator
+#[test]
+#[ignore = "KNOWN BUG: calling a procedure-typed *record field* (`d.f(7)`) tries to emit a direct call to a mangled name like `DispatcherDesc_f` instead of loading the field and doing an indirect call. The indirect-call path through a procedure-typed local variable works (M_ProcType_IndirectCall), so the bug is specific to call-through-field. File under deferred_fixes #25."]
+fn matrix_type_procedure_typed_field_in_record() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Type_ProcedureField_InRecord.cp", "Run"),
+        49,
+        "matrix probe type_procedure_typed_field_in_record (record field of procedure type — caller assigns and invokes through the field designator — §6.3 / 6.5) returned the wrong value",
+    );
+}
+
+/// CP §6.3 — an empty record (no fields) is a legal CP type; NEW on its pointer alias succeeds and returns a non-NIL handle
+#[test]
+fn matrix_type_empty_record_compiles_and_allocs() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Type_EmptyRecord.cp", "Run"),
+        1,
+        "matrix probe type_empty_record_compiles_and_allocs (an empty record (no fields) is a legal CP type; NEW on its pointer alias succeeds and returns a non-NIL handle — §6.3) returned the wrong value",
+    );
+}
+
+/// CP §6.4 — POINTER TO record whose field is itself a POINTER TO record — two levels of indirection from the outer pointer
+#[test]
+#[ignore = "KNOWN BUG (same family as #14): NEW(o.child) where o is a heap pointer and child is a record-field pointer trips IR codegen with `Instr::New: unknown record type opaque:new-ptr`."]
+fn matrix_type_pointer_to_pointer_field() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Type_Pointer_To_Pointer.cp", "Run"),
+        77,
+        "matrix probe type_pointer_to_pointer_field (POINTER TO record whose field is itself a POINTER TO record — two levels of indirection from the outer pointer — §6.4) returned the wrong value",
+    );
+}
+
+/// CP §9.5 — CASE arms set a BOOLEAN flag that the caller later inspects
+#[test]
+fn matrix_stmt_case_drives_boolean_flag() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Stmt_CASE_With_BOOLEAN_Result.cp", "Run"),
+        1,
+        "matrix probe stmt_case_drives_boolean_flag (CASE arms set a BOOLEAN flag that the caller later inspects — §9.5) returned the wrong value",
+    );
+}
+
+/// CP §8.2.5 — a comparison expression yields a BOOLEAN value that can be stored in a variable and reused
+#[test]
+fn matrix_expr_boolean_value_stored_from_comparison() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_BOOLEAN_FromComparison.cp", "Run"),
+        7,
+        "matrix probe expr_boolean_value_stored_from_comparison (a comparison expression yields a BOOLEAN value that can be stored in a variable and reused — §8.2.5) returned the wrong value",
+    );
+}
+
+/// CP §6.1 — INTSHORT (16-bit signed) — values within range survive a roundtrip through a procedure parameter
+#[test]
+fn matrix_type_intshort_roundtrip() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Type_INTSHORT_Roundtrip.cp", "Run"),
+        32000,
+        "matrix probe type_intshort_roundtrip (INTSHORT (16-bit signed) — values within range survive a roundtrip through a procedure parameter — §6.1) returned the wrong value",
+    );
+}
+
+/// CP §6.3 / 10.2 — a method on a subclass reads a field declared in its abstract base record
+#[test]
+fn matrix_method_accesses_inherited_field() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Method_OnInheritedField.cp", "Run"),
+        50,
+        "matrix probe method_accesses_inherited_field (a method on a subclass reads a field declared in its abstract base record — §6.3 / 10.2) returned the wrong value",
+    );
+}
+
+/// CP §10.1 — procedure with seven INTEGER parameters; exercises the calling convention for argument counts past the typical register threshold
+#[test]
+fn matrix_procedure_with_seven_parameters() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Procedure_LongParameterList.cp", "Run"),
+        28,
+        "matrix probe procedure_with_seven_parameters (procedure with seven INTEGER parameters; exercises the calling convention for argument counts past the typical register threshold — §10.1) returned the wrong value",
+    );
+}
+
+/// CP §10.2 — method dispatches via the receiver to another method, then uses the result inside its own return expression
+#[test]
+fn matrix_method_dispatches_to_other_method_then_returns() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Method_Inside_Method.cp", "Run"),
+        200,
+        "matrix probe method_dispatches_to_other_method_then_returns (method dispatches via the receiver to another method, then uses the result inside its own return expression — §10.2) returned the wrong value",
+    );
+}
+
+/// CP §8.2.5 / 8.2.3 — CP doesn't natively support `a < b < c`; the idiom is `(a < b) & (b < c)` and relies on short-circuit AND
+#[test]
+fn matrix_expr_comparison_chained_via_and() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_Comparison_Chain_Manual.cp", "Run"),
+        1,
+        "matrix probe expr_comparison_chained_via_and (CP doesn't natively support `a < b < c`; the idiom is `(a < b) & (b < c)` and relies on short-circuit AND — §8.2.5 / 8.2.3) returned the wrong value",
+    );
+}
+
+/// CP §9.7 — FOR loop whose range spans negative to positive integers
+#[test]
+fn matrix_stmt_for_range_across_zero() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Stmt_FOR_RangeAcrossZero.cp", "Run"),
+        0,
+        "matrix probe stmt_for_range_across_zero (FOR loop whose range spans negative to positive integers — §9.7) returned the wrong value",
+    );
+}
+
+/// CP §5 — module-level CONST with a hex literal value, used in arithmetic and bit operations
+#[test]
+fn matrix_module_const_hex_literal() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Module_CONST_HexLiteral.cp", "Run"),
+        255,
+        "matrix probe module_const_hex_literal (module-level CONST with a hex literal value, used in arithmetic and bit operations — §5) returned the wrong value",
+    );
+}
+
+/// CP §10.3 / 8.4 — INC applied to a record's field designator updates the field in-place
+#[test]
+fn matrix_expr_inc_on_record_field() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_INC_OnRecord_Field.cp", "Run"),
+        50,
+        "matrix probe expr_inc_on_record_field (INC applied to a record's field designator updates the field in-place — §10.3 / 8.4) returned the wrong value",
+    );
+}
+
+/// CP §10.3 / 8.4 — INC applied to an array element designator updates the element in-place; the other elements stay untouched
+#[test]
+fn matrix_expr_inc_on_array_element() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_INC_OnArray_Element.cp", "Run"),
+        88,
+        "matrix probe expr_inc_on_array_element (INC applied to an array element designator updates the element in-place; the other elements stay untouched — §10.3 / 8.4) returned the wrong value",
+    );
+}
+
+/// CP §10 — a procedure with multiple early-return points; sema must accept all of them as valid termination
+#[test]
+fn matrix_stmt_return_from_many_paths() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Stmt_RETURN_Many_Paths.cp", "Run"),
+        30,
+        "matrix probe stmt_return_from_many_paths (a procedure with multiple early-return points; sema must accept all of them as valid termination — §10) returned the wrong value",
+    );
+}
+
+/// CP §6.3 / 8.5 — ANYPTR carrying various record-derived pointers can be discriminated with IS tests inside a single procedure
+#[test]
+#[ignore = "KNOWN BUG (#16 family): `IS A` against a record type whose TypeDesc has not been instantiated (here A is declared but never NEW'd) segfaults at runtime."]
+fn matrix_type_anyrec_pointer_param_dispatches_via_is() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Type_ANYREC_Param.cp", "Run"),
+        22,
+        "matrix probe type_anyrec_pointer_param_dispatches_via_is (ANYPTR carrying various record-derived pointers can be discriminated with IS tests inside a single procedure — §6.3 / 8.5) returned the wrong value",
+    );
+}
+
+/// CP §9.7 — FOR loop where the step is larger than the range — the body runs exactly once (at TO) or zero times depending on direction
+#[test]
+fn matrix_stmt_for_with_large_step() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Stmt_FOR_WithLargeStep.cp", "Run"),
+        1,
+        "matrix probe stmt_for_with_large_step (FOR loop where the step is larger than the range — the body runs exactly once (at TO) or zero times depending on direction — §9.7) returned the wrong value",
+    );
+}
+
+/// CP §10 — procedure with no return value, called for its side effect; verifies that void procedures emit clean returns
+#[test]
+fn matrix_procedure_void_compiles_and_runs() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Procedure_NoReturn_Void.cp", "Run"),
+        99,
+        "matrix probe procedure_void_compiles_and_runs (procedure with no return value, called for its side effect; verifies that void procedures emit clean returns — §10) returned the wrong value",
+    );
+}
+
+/// CP §8.2.3 — `~~b` is `b` (double negation); short-circuits don't apply to the unary operator
+#[test]
+fn matrix_expr_negate_boolean_twice() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_NegateBoolean.cp", "Run"),
+        1,
+        "matrix probe expr_negate_boolean_twice (`~~b` is `b` (double negation); short-circuits don't apply to the unary operator — §8.2.3) returned the wrong value",
+    );
+}
+
+/// CP §5 — CONSTs of different primitive types — integer, BOOLEAN, CHAR, REAL, string-literal — all coexist and remain usable in their natural contexts
+#[test]
+fn matrix_type_constants_in_multiple_forms() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Type_Constants_Multiple_Forms.cp", "Run"),
+        65,
+        "matrix probe type_constants_in_multiple_forms (CONSTs of different primitive types — integer, BOOLEAN, CHAR, REAL, string-literal — all coexist and remain usable in their natural contexts — §5) returned the wrong value",
+    );
+}
+
+/// CP §9.7 / 8.2.3 — WHILE with a short-circuit-protected NIL-guard condition; the loop must terminate cleanly when the list pointer goes NIL
+#[test]
+fn matrix_stmt_while_compound_short_circuit_condition() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Stmt_While_Compound_Condition.cp", "Run"),
+        6,
+        "matrix probe stmt_while_compound_short_circuit_condition (WHILE with a short-circuit-protected NIL-guard condition; the loop must terminate cleanly when the list pointer goes NIL — §9.7 / 8.2.3) returned the wrong value",
+    );
+}
+

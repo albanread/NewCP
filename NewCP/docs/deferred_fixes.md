@@ -542,6 +542,26 @@ without converting first.
 `is_float_ir`-driven branch handles int→float but may be missing
 SHORTREAL→REAL). Un-ignore the probe to confirm; expected 18.
 
+### 25. Calling a procedure-typed *record field* mis-routes through a direct call
+
+**Where**: call-site lowering in `newcp-ir`. Surfaced by matrix
+probe `M_Type_ProcedureField_InRecord` (`#[ignore]`-flagged).
+
+**Workaround**: probe ignored. Real code can copy the field into
+a local procedure-typed var first and call through the local
+(that path works — see `M_ProcType_IndirectCall`).
+
+**Why deferred**: `d.f(7)` where `d.f` is a record field of
+procedure type tries to emit `call DispatcherDesc_f` (a mangled
+method-style name) instead of loading the field and emitting an
+indirect call through the loaded function pointer.
+
+**Closing it**: in `lower_bound_proc_call_expr` (or its sibling
+that handles `obj.field` callables), recognise when the prefix
+designator resolves to a procedure-typed field — emit a Load of
+the field then an indirect Call, the same path a procedure-typed
+local variable uses. Un-ignore the probe to confirm; expected 49.
+
 ---
 
 ## Conventions for adding entries

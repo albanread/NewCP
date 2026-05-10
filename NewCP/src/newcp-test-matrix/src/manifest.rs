@@ -3366,4 +3366,642 @@ END M_Expr_DEC_WithDelta.
 "#,
         ignored: None,
     },
+
+
+    // ─── Cycle 2: more types, dispatch, parameters, primitives ──────
+
+    Probe {
+        module_name: "M_Type_LinkedList_SelfReference",
+        test_name: "type_record_self_referential_pointer",
+        spec_section: "6.3 / 6.4",
+        description: "record contains a pointer to its own POINTER TO type — classic \
+                      linked-list node. Construct a 3-element list and sum the values.",
+        expected_value: 60,
+        cp_source: r#"MODULE M_Type_LinkedList_SelfReference;
+    TYPE
+        NodeDesc = RECORD value: INTEGER; next: Node END;
+        Node     = POINTER TO NodeDesc;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR head, a, b, p: Node; sum: INTEGER;
+    BEGIN
+        NEW(head); head.value := 10;
+        NEW(a);    a.value    := 20;
+        NEW(b);    b.value    := 30;
+        head.next := a;
+        a.next    := b;
+        b.next    := NIL;
+        sum := 0;
+        p := head;
+        WHILE p # NIL DO
+            sum := sum + p.value;
+            p := p.next
+        END;
+        RETURN sum                            (* 60 *)
+    END Run;
+END M_Type_LinkedList_SelfReference.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Method_MultipleOUTParams",
+        test_name: "method_with_multiple_out_params",
+        spec_section: "10.1 / 10.2",
+        description: "method with two OUT parameters; both must materialise in the caller's \
+                      slots after the call",
+        expected_value: 35,
+        cp_source: r#"MODULE M_Method_MultipleOUTParams;
+    TYPE
+        BoxDesc = EXTENSIBLE RECORD a, b: INTEGER END;
+        Box     = POINTER TO BoxDesc;
+
+    PROCEDURE (b: Box) Snapshot* (OUT x: INTEGER; OUT y: INTEGER), NEW;
+    BEGIN x := b.a; y := b.b END Snapshot;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR b: Box; p, q: INTEGER;
+    BEGIN
+        NEW(b);
+        b.a := 12; b.b := 23;
+        b.Snapshot(p, q);
+        RETURN p + q                          (* 35 *)
+    END Run;
+END M_Method_MultipleOUTParams.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Proc_Returns_SET",
+        test_name: "proc_returns_set",
+        spec_section: "10",
+        description: "procedure whose return type is SET; caller stores into its own set \
+                      and tests membership",
+        expected_value: 1,
+        cp_source: r#"MODULE M_Proc_Returns_SET;
+    PROCEDURE Build (): SET;
+        VAR s: SET;
+    BEGIN
+        s := {2, 4, 6};
+        RETURN s
+    END Build;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR s: SET;
+    BEGIN
+        s := Build();
+        IF (4 IN s) & ~(3 IN s) THEN RETURN 1 ELSE RETURN 0 END
+    END Run;
+END M_Proc_Returns_SET.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Proc_Returns_REAL",
+        test_name: "proc_returns_real",
+        spec_section: "10",
+        description: "procedure whose return type is REAL; caller stores then prints via \
+                      ENTIER for an integer assertion",
+        expected_value: 12,
+        cp_source: r#"MODULE M_Proc_Returns_REAL;
+    PROCEDURE Compute (n: INTEGER): REAL;
+    BEGIN RETURN n * 1.5 END Compute;
+
+    PROCEDURE Run* (): LONGINT;
+        VAR r: REAL;
+    BEGIN
+        r := Compute(8);
+        RETURN ENTIER(r)
+    END Run;
+END M_Proc_Returns_REAL.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Type_ProcedureField_InRecord",
+        test_name: "type_procedure_typed_field_in_record",
+        spec_section: "6.3 / 6.5",
+        description: "record field of procedure type — caller assigns and invokes through \
+                      the field designator",
+        expected_value: 49,
+        cp_source: r#"MODULE M_Type_ProcedureField_InRecord;
+    TYPE
+        Op = PROCEDURE (x: INTEGER): INTEGER;
+        DispatcherDesc = RECORD f: Op END;
+        Dispatcher     = POINTER TO DispatcherDesc;
+
+    PROCEDURE Square (x: INTEGER): INTEGER;
+    BEGIN RETURN x * x END Square;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR d: Dispatcher;
+    BEGIN
+        NEW(d);
+        d.f := Square;
+        RETURN d.f(7)                          (* 49 *)
+    END Run;
+END M_Type_ProcedureField_InRecord.
+"#,
+        ignored: Some(
+            "KNOWN BUG: calling a procedure-typed *record field* (`d.f(7)`) \
+             tries to emit a direct call to a mangled name like \
+             `DispatcherDesc_f` instead of loading the field and doing an \
+             indirect call. The indirect-call path through a procedure-typed \
+             local variable works (M_ProcType_IndirectCall), so the bug is \
+             specific to call-through-field. File under deferred_fixes #25.",
+        ),
+    },
+
+    Probe {
+        module_name: "M_Type_EmptyRecord",
+        test_name: "type_empty_record_compiles_and_allocs",
+        spec_section: "6.3",
+        description: "an empty record (no fields) is a legal CP type; NEW on its pointer \
+                      alias succeeds and returns a non-NIL handle",
+        expected_value: 1,
+        cp_source: r#"MODULE M_Type_EmptyRecord;
+    TYPE
+        VoidDesc = RECORD END;
+        Void     = POINTER TO VoidDesc;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR p: Void;
+    BEGIN
+        NEW(p);
+        IF p # NIL THEN RETURN 1 ELSE RETURN 0 END
+    END Run;
+END M_Type_EmptyRecord.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Type_Pointer_To_Pointer",
+        test_name: "type_pointer_to_pointer_field",
+        spec_section: "6.4",
+        description: "POINTER TO record whose field is itself a POINTER TO record — \
+                      two levels of indirection from the outer pointer",
+        expected_value: 77,
+        cp_source: r#"MODULE M_Type_Pointer_To_Pointer;
+    TYPE
+        InnerDesc = RECORD value: INTEGER END;
+        Inner     = POINTER TO InnerDesc;
+        OuterDesc = RECORD child: Inner END;
+        Outer     = POINTER TO OuterDesc;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR o: Outer;
+    BEGIN
+        NEW(o);
+        NEW(o.child);
+        o.child.value := 77;
+        RETURN o.child.value
+    END Run;
+END M_Type_Pointer_To_Pointer.
+"#,
+        ignored: Some(
+            "KNOWN BUG (same family as #14): NEW(o.child) where o is a heap \
+             pointer and child is a record-field pointer trips IR codegen \
+             with `Instr::New: unknown record type opaque:new-ptr`.",
+        ),
+    },
+
+    Probe {
+        module_name: "M_Stmt_CASE_With_BOOLEAN_Result",
+        test_name: "stmt_case_drives_boolean_flag",
+        spec_section: "9.5",
+        description: "CASE arms set a BOOLEAN flag that the caller later inspects",
+        expected_value: 1,
+        cp_source: r#"MODULE M_Stmt_CASE_With_BOOLEAN_Result;
+    PROCEDURE Run* (): INTEGER;
+        VAR n: INTEGER; flag: BOOLEAN;
+    BEGIN
+        n := 3;
+        flag := FALSE;
+        CASE n OF
+          0:        flag := FALSE
+        | 1, 2, 3:  flag := TRUE
+        ELSE        flag := FALSE
+        END;
+        IF flag THEN RETURN 1 ELSE RETURN 0 END
+    END Run;
+END M_Stmt_CASE_With_BOOLEAN_Result.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Expr_BOOLEAN_FromComparison",
+        test_name: "expr_boolean_value_stored_from_comparison",
+        spec_section: "8.2.5",
+        description: "a comparison expression yields a BOOLEAN value that can be stored \
+                      in a variable and reused",
+        expected_value: 7,
+        cp_source: r#"MODULE M_Expr_BOOLEAN_FromComparison;
+    PROCEDURE Run* (): INTEGER;
+        VAR a, b: INTEGER; flag: BOOLEAN;
+    BEGIN
+        a := 5; b := 3;
+        flag := a > b;
+        IF flag THEN RETURN 7 ELSE RETURN 0 END
+    END Run;
+END M_Expr_BOOLEAN_FromComparison.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Type_INTSHORT_Roundtrip",
+        test_name: "type_intshort_roundtrip",
+        spec_section: "6.1",
+        description: "INTSHORT (16-bit signed) — values within range survive a roundtrip \
+                      through a procedure parameter",
+        expected_value: 32000,
+        cp_source: r#"MODULE M_Type_INTSHORT_Roundtrip;
+    PROCEDURE Pass (x: INTSHORT): INTSHORT;
+    BEGIN RETURN x END Pass;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR n: INTSHORT;
+    BEGIN
+        n := 32000;
+        n := Pass(n);
+        RETURN n
+    END Run;
+END M_Type_INTSHORT_Roundtrip.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Method_OnInheritedField",
+        test_name: "method_accesses_inherited_field",
+        spec_section: "6.3 / 10.2",
+        description: "a method on a subclass reads a field declared in its abstract base \
+                      record",
+        expected_value: 50,
+        cp_source: r#"MODULE M_Method_OnInheritedField;
+    TYPE
+        BaseDesc = ABSTRACT RECORD value*: INTEGER END;
+        Base     = POINTER TO BaseDesc;
+        SubDesc  = RECORD (BaseDesc) END;
+        Sub      = POINTER TO SubDesc;
+
+    PROCEDURE (s: Sub) Doubled* (): INTEGER, NEW;
+    BEGIN RETURN s.value * 2 END Doubled;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR s: Sub;
+    BEGIN
+        NEW(s);
+        s.value := 25;
+        RETURN s.Doubled()                    (* 50 *)
+    END Run;
+END M_Method_OnInheritedField.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Procedure_LongParameterList",
+        test_name: "procedure_with_seven_parameters",
+        spec_section: "10.1",
+        description: "procedure with seven INTEGER parameters; exercises the calling \
+                      convention for argument counts past the typical register threshold",
+        expected_value: 28,
+        cp_source: r#"MODULE M_Procedure_LongParameterList;
+    PROCEDURE Sum7 (a, b, c, d, e, f, g: INTEGER): INTEGER;
+    BEGIN
+        RETURN a + b + c + d + e + f + g
+    END Sum7;
+
+    PROCEDURE Run* (): INTEGER;
+    BEGIN
+        RETURN Sum7(1, 2, 3, 4, 5, 6, 7)   (* 28 *)
+    END Run;
+END M_Procedure_LongParameterList.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Method_Inside_Method",
+        test_name: "method_dispatches_to_other_method_then_returns",
+        spec_section: "10.2",
+        description: "method dispatches via the receiver to another method, then uses the \
+                      result inside its own return expression",
+        expected_value: 200,
+        cp_source: r#"MODULE M_Method_Inside_Method;
+    TYPE
+        BoxDesc = EXTENSIBLE RECORD x: INTEGER END;
+        Box     = POINTER TO BoxDesc;
+
+    PROCEDURE (b: Box) Raw* (): INTEGER, NEW;
+    BEGIN RETURN b.x END Raw;
+
+    PROCEDURE (b: Box) Scaled* (factor: INTEGER): INTEGER, NEW;
+    BEGIN RETURN b.Raw() * factor END Scaled;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR b: Box;
+    BEGIN
+        NEW(b);
+        b.x := 50;
+        RETURN b.Scaled(4)                    (* 50 * 4 = 200 *)
+    END Run;
+END M_Method_Inside_Method.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Expr_Comparison_Chain_Manual",
+        test_name: "expr_comparison_chained_via_and",
+        spec_section: "8.2.5 / 8.2.3",
+        description: "CP doesn't natively support `a < b < c`; the idiom is `(a < b) & \
+                      (b < c)` and relies on short-circuit AND",
+        expected_value: 1,
+        cp_source: r#"MODULE M_Expr_Comparison_Chain_Manual;
+    PROCEDURE Run* (): INTEGER;
+        VAR a, b, c: INTEGER;
+    BEGIN
+        a := 1; b := 5; c := 10;
+        IF (a < b) & (b < c) THEN RETURN 1 ELSE RETURN 0 END
+    END Run;
+END M_Expr_Comparison_Chain_Manual.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Stmt_FOR_RangeAcrossZero",
+        test_name: "stmt_for_range_across_zero",
+        spec_section: "9.7",
+        description: "FOR loop whose range spans negative to positive integers",
+        expected_value: 0,
+        cp_source: r#"MODULE M_Stmt_FOR_RangeAcrossZero;
+    PROCEDURE Run* (): INTEGER;
+        VAR i, sum: INTEGER;
+    BEGIN
+        sum := 0;
+        FOR i := -3 TO 3 DO sum := sum + i END;
+        RETURN sum                            (* -3-2-1+0+1+2+3 = 0 *)
+    END Run;
+END M_Stmt_FOR_RangeAcrossZero.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Module_CONST_HexLiteral",
+        test_name: "module_const_hex_literal",
+        spec_section: "5",
+        description: "module-level CONST with a hex literal value, used in arithmetic and \
+                      bit operations",
+        expected_value: 255,
+        cp_source: r#"MODULE M_Module_CONST_HexLiteral;
+    CONST mask = 0FFH;
+
+    PROCEDURE Run* (): INTEGER;
+    BEGIN
+        RETURN mask                           (* 255 *)
+    END Run;
+END M_Module_CONST_HexLiteral.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Expr_INC_OnRecord_Field",
+        test_name: "expr_inc_on_record_field",
+        spec_section: "10.3 / 8.4",
+        description: "INC applied to a record's field designator updates the field in-place",
+        expected_value: 50,
+        cp_source: r#"MODULE M_Expr_INC_OnRecord_Field;
+    TYPE Counter = RECORD count: INTEGER END;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR c: Counter;
+    BEGIN
+        c.count := 40;
+        INC(c.count, 10);
+        RETURN c.count
+    END Run;
+END M_Expr_INC_OnRecord_Field.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Expr_INC_OnArray_Element",
+        test_name: "expr_inc_on_array_element",
+        spec_section: "10.3 / 8.4",
+        description: "INC applied to an array element designator updates the element \
+                      in-place; the other elements stay untouched",
+        expected_value: 88,
+        cp_source: r#"MODULE M_Expr_INC_OnArray_Element;
+    PROCEDURE Run* (): INTEGER;
+        VAR a: ARRAY 3 OF INTEGER;
+    BEGIN
+        a[0] := 10; a[1] := 20; a[2] := 30;
+        INC(a[1], 28);
+        RETURN a[0] + a[1] + a[2]            (* 10 + 48 + 30 = 88 *)
+    END Run;
+END M_Expr_INC_OnArray_Element.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Stmt_RETURN_Many_Paths",
+        test_name: "stmt_return_from_many_paths",
+        spec_section: "10",
+        description: "a procedure with multiple early-return points; sema must accept all \
+                      of them as valid termination",
+        expected_value: 30,
+        cp_source: r#"MODULE M_Stmt_RETURN_Many_Paths;
+    PROCEDURE Classify (n: INTEGER): INTEGER;
+    BEGIN
+        IF n < 0 THEN RETURN -1 END;
+        IF n = 0 THEN RETURN 0 END;
+        IF n > 100 THEN RETURN 999 END;
+        RETURN n
+    END Classify;
+
+    PROCEDURE Run* (): INTEGER;
+    BEGIN
+        RETURN Classify(30)                   (* 30 *)
+    END Run;
+END M_Stmt_RETURN_Many_Paths.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Type_ANYREC_Param",
+        test_name: "type_anyrec_pointer_param_dispatches_via_is",
+        spec_section: "6.3 / 8.5",
+        description: "ANYPTR carrying various record-derived pointers can be discriminated \
+                      with IS tests inside a single procedure",
+        expected_value: 22,
+        cp_source: r#"MODULE M_Type_ANYREC_Param;
+    TYPE
+        BaseDesc = EXTENSIBLE RECORD END;
+        Base     = POINTER TO BaseDesc;
+        ADesc    = RECORD (BaseDesc) END;
+        A        = POINTER TO ADesc;
+        BDesc    = RECORD (BaseDesc) END;
+        B        = POINTER TO BDesc;
+
+    PROCEDURE Inspect (p: Base): INTEGER;
+    BEGIN
+        IF p IS A THEN RETURN 11 END;
+        IF p IS B THEN RETURN 22 END;
+        RETURN 0
+    END Inspect;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR b: B; bp: Base;
+    BEGIN
+        NEW(b);
+        bp := b;
+        RETURN Inspect(bp)
+    END Run;
+END M_Type_ANYREC_Param.
+"#,
+        ignored: Some(
+            "KNOWN BUG (#16 family): `IS A` against a record type whose \
+             TypeDesc has not been instantiated (here A is declared but \
+             never NEW'd) segfaults at runtime.",
+        ),
+    },
+
+    Probe {
+        module_name: "M_Stmt_FOR_WithLargeStep",
+        test_name: "stmt_for_with_large_step",
+        spec_section: "9.7",
+        description: "FOR loop where the step is larger than the range — the body runs \
+                      exactly once (at TO) or zero times depending on direction",
+        expected_value: 1,
+        cp_source: r#"MODULE M_Stmt_FOR_WithLargeStep;
+    PROCEDURE Run* (): INTEGER;
+        VAR i, count: INTEGER;
+    BEGIN
+        count := 0;
+        FOR i := 0 TO 5 BY 100 DO INC(count) END;
+        RETURN count                          (* 1 iteration: i=0 *)
+    END Run;
+END M_Stmt_FOR_WithLargeStep.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Procedure_NoReturn_Void",
+        test_name: "procedure_void_compiles_and_runs",
+        spec_section: "10",
+        description: "procedure with no return value, called for its side effect; verifies \
+                      that void procedures emit clean returns",
+        expected_value: 99,
+        cp_source: r#"MODULE M_Procedure_NoReturn_Void;
+    VAR result: INTEGER;
+
+    PROCEDURE SetResult (n: INTEGER);
+    BEGIN result := n END SetResult;
+
+    PROCEDURE Run* (): INTEGER;
+    BEGIN
+        result := 0;
+        SetResult(99);
+        RETURN result
+    END Run;
+END M_Procedure_NoReturn_Void.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Expr_NegateBoolean",
+        test_name: "expr_negate_boolean_twice",
+        spec_section: "8.2.3",
+        description: "`~~b` is `b` (double negation); short-circuits don't apply to the \
+                      unary operator",
+        expected_value: 1,
+        cp_source: r#"MODULE M_Expr_NegateBoolean;
+    PROCEDURE Run* (): INTEGER;
+        VAR b: BOOLEAN;
+    BEGIN
+        b := TRUE;
+        IF ~~b THEN RETURN 1 ELSE RETURN 0 END
+    END Run;
+END M_Expr_NegateBoolean.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Type_Constants_Multiple_Forms",
+        test_name: "type_constants_in_multiple_forms",
+        spec_section: "5",
+        description: "CONSTs of different primitive types — integer, BOOLEAN, CHAR, REAL, \
+                      string-literal — all coexist and remain usable in their natural \
+                      contexts",
+        expected_value: 65,
+        cp_source: r#"MODULE M_Type_Constants_Multiple_Forms;
+    CONST
+        n = 65;
+        b = TRUE;
+        c = "A";
+        r = 1.0;
+
+    PROCEDURE Run* (): INTEGER;
+    BEGIN
+        IF b & (c = "A") & (ENTIER(r) = 1) THEN
+            RETURN n
+        ELSE
+            RETURN 0
+        END
+    END Run;
+END M_Type_Constants_Multiple_Forms.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Stmt_While_Compound_Condition",
+        test_name: "stmt_while_compound_short_circuit_condition",
+        spec_section: "9.7 / 8.2.3",
+        description: "WHILE with a short-circuit-protected NIL-guard condition; the loop \
+                      must terminate cleanly when the list pointer goes NIL",
+        expected_value: 6,
+        cp_source: r#"MODULE M_Stmt_While_Compound_Condition;
+    TYPE
+        NodeDesc = RECORD value: INTEGER; next: Node END;
+        Node     = POINTER TO NodeDesc;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR head, a, p: Node; sum: INTEGER;
+    BEGIN
+        NEW(head); head.value := 1;
+        NEW(a);    a.value    := 2;
+        head.next := a;
+        a.next    := NIL;
+        sum := 0;
+        p := head;
+        (* WHILE (p # NIL) & (p.value < 10) — the second conjunct
+           must NOT be evaluated when p is NIL.  Without short-circuit
+           the loop would crash on p = NIL. *)
+        WHILE (p # NIL) & (p.value < 10) DO
+            sum := sum + p.value * 2;
+            p := p.next
+        END;
+        RETURN sum                            (* 2 + 4 = 6 *)
+    END Run;
+END M_Stmt_While_Compound_Condition.
+"#,
+        ignored: None,
+    },
 ];
