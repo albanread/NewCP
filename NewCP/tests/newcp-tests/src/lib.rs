@@ -243,11 +243,20 @@ mod tests {
                 && output.contains("getelementptr inbounds %Point, ptr %p_ref1, i32 0, i32 1"),
             "expected Point procedures to use %Point GEPs\noutput:\n{output}"
         );
+        // Value-mode record params are passed as `ptr` at the C ABI
+        // level — the call site emits `designator_addr(arg)` and the
+        // callee prologue memmoves the bytes into a stack-local copy
+        // (`alloca` + `llvm.memmove` near the entry).  Subsequent
+        // field accesses GEP into that local copy.  This is the
+        // CP §8.1 private-copy contract; struct-by-value at the LLVM
+        // signature level would be an ABI mismatch with the call
+        // site.
         assert!(
-            output.contains("define i1 @Contains(%Rect %0, %Point %1)")
+            output.contains("define i1 @Contains(ptr %0, ptr %1)")
                 && output.contains("getelementptr inbounds %Point, ptr %p, i32 0, i32 0")
-                && output.contains("getelementptr inbounds %Rect, ptr %r, i32 0, i32 0"),
-            "expected mixed Point/Rect accesses to keep the correct parent struct types\noutput:\n{output}"
+                && output.contains("getelementptr inbounds %Rect, ptr %r, i32 0, i32 0")
+                && output.contains("call void @llvm.memmove"),
+            "expected value-mode record params lowered to ptr with prologue memmove\noutput:\n{output}"
         );
     }
 
@@ -1827,14 +1836,6 @@ mod tests {
     }
 
 
-    // -------------------------------------------------------------------------
-    // Footgun demo: value-mode record param leaks writes back to caller
-    // (NewCP records pass by reference at the ABI level, breaking CP's
-    // value-semantics contract). Test currently passes with 999, proving
-    // the bug. Sema fix below would make the ValueRecordFootgun source
-    // a hard sema error, so this test would then fail compilation.
-    // -------------------------------------------------------------------------
-
     #[test]
     fn dyn_array_new_and_index_round_trip() {
         // POINTER TO ARRAY OF SHORTINT, NEW(p, 4), p[i] := v, sum.
@@ -1869,17 +1870,24 @@ mod tests {
     }
 
     #[test]
-    fn value_record_param_rejected_by_sema() {
-        // Sema now rejects value-mode record/array parameters because
-        // NewCP's records-pass-by-reference ABI made the value-mode
-        // declaration silently lie. The user must pick IN/VAR/OUT
-        // explicitly. The fixture declares `Mutate(b: Box)` with no
-        // mode — sema must reject it with the IN/VAR/OUT prompt.
-        let err = loader_error("Mod/Tests/ValueRecordFootgun.cp")
-            .expect("expected sema to reject value-mode record param");
-        assert!(
-            err.contains("must use IN, VAR, or OUT"),
-            "expected IN/VAR/OUT prompt, got: {err}"
+    fn value_record_param_is_private_copy() {
+        // CP §8.1: a value-mode record param is a private copy. The
+        // ABI passes the caller's pointer; the callee prologue
+        // memmoves the bytes into a stack-local alloca, so writes
+        // through the param don't leak back. Mutate(b: Box) writes
+        // 999 into b.value; the caller's record stays at 42.
+        assert_eq!(
+            run_function("Mod/Tests/ValueRecordParamProbe.cp", "Run"),
+            42,
+        );
+    }
+
+    #[test]
+    fn value_fixed_array_param_is_private_copy() {
+        // Same private-copy contract for fixed-size array params.
+        assert_eq!(
+            run_function("Mod/Tests/ValueFixedArrayProbe.cp", "Run"),
+            42,
         );
     }
 
@@ -3374,6 +3382,19 @@ mod tests {
         assert_eq!(
             run_function("Mod/Tests/WithProbe.cp", "Run"),
             88_070,
+        );
+    }
+
+    #[test]
+    fn value_open_array_param_is_private_copy() {
+        // CP §8.1: value-mode open-array params are private copies.
+        // Mutate(a) writes p[0] := 99 in the callee; the caller's a[0]
+        // must remain 7. Ports.DrawPath's inner Draw helper relies on
+        // exactly this idiom — if it fails, that helper silently
+        // mutates the user's IN array.
+        assert_eq!(
+            run_function("Mod/Tests/ValueOpenArrayProbe.cp", "Run"),
+            7,
         );
     }
 

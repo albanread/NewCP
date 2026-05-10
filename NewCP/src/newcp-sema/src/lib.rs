@@ -1383,40 +1383,12 @@ impl<'a> Analyzer<'a> {
         Self::validate_type_expr(&section.ty, scope_type_names, self.has_system_import, procedure_name, diagnostics);
         let declared_type = self.resolve_type_expr(&section.ty, scope_type_names);
 
-        // Reject value-mode (no IN/VAR/OUT) parameters whose type is a
-        // record or fixed array. NewCP's ABI passes records and arrays
-        // by reference at the call site; declaring a value-mode record
-        // param creates a silent caller-callee ABI mismatch (caller
-        // passes ptr, callee declares value-struct), which only fails
-        // to crash because the optimizer typically DCE's the body. The
-        // user's intent is unclear — IN (read-only ref), VAR (mutable
-        // ref), or OUT (output ref) — so force the choice explicitly.
-        // Receivers are exempt: CP records use `(b: BoxDesc)` for
-        // value-receiver methods and the implicit by-ref ABI is
-        // standard there.
-        if section.mode.is_none() {
-            let is_record = self.semantic_type_is_record(&declared_type, local_symbols);
-            let is_fixed_array = matches!(
-                &declared_type,
-                SemanticType::Array { lengths, .. } if !lengths.is_empty()
-            );
-            if is_record || is_fixed_array {
-                let kind = if is_record { "record" } else { "fixed-size array" };
-                for name in &section.names {
-                    diagnostics.push(make_diagnostic(
-                        procedure_name,
-                        section.span.start.line,
-                        section.span.start.column,
-                        format!(
-                            "{kind} parameter '{name}' must use IN, VAR, or OUT — \
-                             value-mode {kind} parameters have ambiguous ABI in NewCP \
-                             (caller passes by reference; use IN for read-only, \
-                             VAR for mutable, OUT for output)"
-                        ),
-                    ));
-                }
-            }
-        }
+        // Value-mode record / fixed-array / open-array parameters are
+        // honoured per CP §8.1: the LLVM ABI passes a pointer to the
+        // caller's data and the callee prologue (in newcp-llvm's
+        // `bind_proc_slots`) memmoves the bytes into a stack-local
+        // copy.  No sema rejection here — the codegen handles the
+        // private-copy semantics.
 
         for name in &section.names {
             Self::record_duplicate_name(

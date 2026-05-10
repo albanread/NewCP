@@ -264,11 +264,31 @@ impl<'ctx> CodegenModule<'ctx> {
         let named_types = self.planner.named_struct_types.clone();
         let lowerer = TypeLowerer::new(self.context);
 
-        // Build parameter type list.
+        // Build parameter type list.  CP value-mode aggregate params
+        // (records, fixed-size arrays — IR types that natively lower to
+        // a struct or [N x T]) need a pointer at the C ABI level: the
+        // call site emits `designator_addr(arg)` for them and the
+        // callee prologue memmoves the bytes into a private stack
+        // alloca (see `bind_proc_slots`).  Forcing the LLVM formal to
+        // `ptr` here keeps the call-site/callee shapes in sync.
+        // Receivers, IN/VAR/OUT, open arrays, and pointer types are
+        // already pointer-typed at IR level so this override leaves
+        // them untouched.
         let mut param_types = Vec::new();
+        let ptr_ty = self.context.ptr_type(inkwell::AddressSpace::default());
         for (_name, ty) in &proc.params {
             match lowerer.lower_basic(ty, Some(&named_types)) {
-                Ok(t) => param_types.push(t.into()),
+                Ok(t) => {
+                    let lowered = if matches!(
+                        t,
+                        BasicTypeEnum::StructType(_) | BasicTypeEnum::ArrayType(_)
+                    ) {
+                        ptr_ty.into()
+                    } else {
+                        t.into()
+                    };
+                    param_types.push(lowered);
+                }
                 Err(e) => {
                     if options.strict_unsupported {
                         return Err(e);
@@ -280,8 +300,7 @@ impl<'ctx> CodegenModule<'ctx> {
                         ty.render(),
                         e
                     ));
-                    param_types
-                        .push(self.context.ptr_type(inkwell::AddressSpace::default()).into());
+                    param_types.push(ptr_ty.into());
                 }
             }
         }

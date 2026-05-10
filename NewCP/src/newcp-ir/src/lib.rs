@@ -8,7 +8,7 @@ mod lower;
 pub use types::{IrType, RecordLayout};
 pub use ir::{BasicBlock, BinOp, BlockId, Instr, IrValue, TempId, Terminator, TrapKind, UnOp};
 pub use procedure::{IrGlobal, IrModule, IrProcedure, LoweringDiagnostic};
-pub use lower::{lower_module, lower_procedure, map_semantic_type};
+pub use lower::{lower_module, lower_procedure, map_semantic_type, OPEN_ARRAY_LEN_SUFFIX};
 
 use std::path::Path;
 use newcp_parser::read_module_ast;

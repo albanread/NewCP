@@ -59,7 +59,7 @@ pub(crate) fn push_import_search_root(path: &Path) -> ImportSearchRootGuard {
 /// hidden `<name>$len: I64` parameter holding the array's element count.
 /// `LEN(arr)` on an open-array param lowers to a load of this hidden slot.
 /// This is the suffix used for the hidden param's name in `IrProcedure.params`.
-pub(crate) const OPEN_ARRAY_LEN_SUFFIX: &str = "$len";
+pub const OPEN_ARRAY_LEN_SUFFIX: &str = "$len";
 
 /// Returns true when `ty` is a Component Pascal open array
 /// (i.e. `ARRAY OF T` with no explicit length).
@@ -1042,7 +1042,12 @@ impl<'m> LowerCtx<'m> {
             match des.selectors.first() {
                 Some(Selector::Call(args)) => {
                     let mut args_lowered = upvalue_args;
-                    args_lowered.extend(self.lower_call_args(&callee, args));
+                    let lowered_user_args = if is_local_nested_proc {
+                        self.lower_call_args_with_lookup(&base_name, args)
+                    } else {
+                        self.lower_call_args(&callee, args)
+                    };
+                    args_lowered.extend(lowered_user_args);
                     let ret_ty = self.callee_return_type(&callee);
                     if ret_ty == IrType::Void {
                         self.push(Instr::Call {
@@ -1070,7 +1075,12 @@ impl<'m> LowerCtx<'m> {
                         selectors: Vec::new(),
                     });
                     let mut args_lowered = upvalue_args;
-                    args_lowered.extend(self.lower_call_args(&callee, &[arg]));
+                    let lowered_user_args = if is_local_nested_proc {
+                        self.lower_call_args_with_lookup(&base_name, &[arg])
+                    } else {
+                        self.lower_call_args(&callee, &[arg])
+                    };
+                    args_lowered.extend(lowered_user_args);
                     let ret_ty = self.callee_return_type(&callee);
                     if ret_ty == IrType::Void {
                         self.push(Instr::Call {
@@ -2030,6 +2040,33 @@ impl<'m> LowerCtx<'m> {
 
     fn lower_call_args(&mut self, callee: &IrValue, args: &[Expr]) -> Vec<IrValue> {
         let proc_ty = self.callee_procedure_type(callee);
+        let (expected_modes, expected_types) = flatten_param_modes_and_types(proc_ty.as_ref());
+        self.lower_args_with_signature(args, &expected_modes, &expected_types)
+    }
+
+    /// Variant of `lower_call_args` that resolves the callee's signature
+    /// via an alternate name (e.g. the original unmangled nested-proc
+    /// name) instead of the IrValue's name.  Needed because nested-proc
+    /// calls go out as a flat `Outer_Inner` symbol that sema does not
+    /// know about — without this the call site forgets to push the
+    /// hidden `$len` companion for open-array args, leaving the LLVM
+    /// signature short by one and tripping the verifier as soon as
+    /// anything keeps the inner proc alive.
+    fn lower_call_args_with_lookup(
+        &mut self,
+        lookup_name: &str,
+        args: &[Expr],
+    ) -> Vec<IrValue> {
+        let proc_ty = self
+            .symbols
+            .iter()
+            .rev()
+            .find(|symbol| symbol.name == lookup_name)
+            .and_then(|symbol| symbol.declared_type.as_ref())
+            .and_then(|ty| match ty {
+                SemanticType::Procedure(proc_ty) => Some(proc_ty.clone()),
+                _ => None,
+            });
         let (expected_modes, expected_types) = flatten_param_modes_and_types(proc_ty.as_ref());
         self.lower_args_with_signature(args, &expected_modes, &expected_types)
     }

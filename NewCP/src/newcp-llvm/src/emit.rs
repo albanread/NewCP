@@ -7,7 +7,7 @@ use inkwell::types::{BasicType, BasicTypeEnum, StructType};
 use inkwell::values::{BasicMetadataValueEnum, BasicValueEnum, FunctionValue, PointerValue};
 use inkwell::{FloatPredicate, IntPredicate};
 
-use newcp_ir::{BinOp, BlockId, IrProcedure, IrType, IrValue, TempId, UnOp};
+use newcp_ir::{BinOp, BlockId, IrProcedure, IrType, IrValue, TempId, UnOp, OPEN_ARRAY_LEN_SUFFIX};
 
 use crate::error::CodegenError;
 use crate::module::CodegenModule;
@@ -928,10 +928,65 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
             if matches!(ty, IrType::Ref(_)) {
                 value_map.ref_param_slots.insert(name.clone(), slot);
             }
-            self.cg.builder.build_store(slot, param).map_err(|e| CodegenError::Unsupported {
-                stage: "emit",
-                detail: e.to_string(),
-            })?;
+
+            // Decide ABI shape for this param:
+            //
+            // - Aggregate IR types (Array{...}, Named-record, UntaggedRecord)
+            //   that are NOT Ref-wrapped are CP value-mode aggregate
+            //   parameters.  `declare_procedure` lowers them to `ptr` at
+            //   the LLVM signature level so the call site (which always
+            //   passes a `designator_addr`) lines up with the formal.
+            //   The slot itself is still alloca'd as the value type
+            //   (struct or [N x T]); we memmove the caller's bytes into
+            //   the slot here so the body's field/index access reads
+            //   from a private copy.
+            //
+            // - Everything else (scalar value, pointer, Ref) is stored
+            //   directly into the slot as today.
+            let llvm_ty = self.lower_basic_type(ty)?;
+            let is_value_aggregate_param = !matches!(ty, IrType::Ref(_))
+                && matches!(
+                    llvm_ty,
+                    BasicTypeEnum::StructType(_) | BasicTypeEnum::ArrayType(_)
+                );
+            if is_value_aggregate_param {
+                self.copy_value_aggregate_param_to_slot(name, llvm_ty, slot, param)?;
+            } else {
+                self.cg.builder.build_store(slot, param).map_err(|e| CodegenError::Unsupported {
+                    stage: "emit",
+                    detail: e.to_string(),
+                })?;
+            }
+
+            // CP §8.1: a value-mode open-array parameter is a private
+            // copy.  At the C ABI boundary the caller passes a (data
+            // ptr, len) pair, so without intervention the callee's slot
+            // aliases the caller's buffer and writes leak back.  When
+            // we see (Ptr/UntaggedPtr) + a sibling `<name>$len` formal
+            // and ty is *not* Ref-wrapped (i.e. value mode, not
+            // IN/VAR/OUT), allocate a stack-local copy of the caller's
+            // data, memmove into it, and rebind the slot so subsequent
+            // designator accesses go through the local copy.
+            let next = proc.params.get(index + 1);
+            let is_value_open_array_param = matches!(ty, IrType::Ptr(_) | IrType::UntaggedPtr(_))
+                && next.is_some_and(|(next_name, next_ty)| {
+                    next_name == &format!("{name}{OPEN_ARRAY_LEN_SUFFIX}")
+                        && matches!(next_ty, IrType::I64)
+                });
+            if is_value_open_array_param {
+                let elem_ty = match ty {
+                    IrType::Ptr(inner) | IrType::UntaggedPtr(inner) => inner.as_ref().clone(),
+                    _ => unreachable!(),
+                };
+                self.copy_open_array_param_to_local(
+                    name,
+                    &elem_ty,
+                    slot,
+                    param,
+                    fn_val,
+                    index + 1,
+                )?;
+            }
         }
 
         if proc.ret_ty != IrType::Void {
@@ -1912,6 +1967,160 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
                 stage: "emit_instr",
                 detail: e.to_string(),
             })?;
+        Ok(())
+    }
+
+    /// Prologue helper for value-mode aggregate params (records and
+    /// fixed-size arrays).  The LLVM formal for these is `ptr` (set up
+    /// in `declare_procedure`), but the slot is alloca'd as the value
+    /// type — copy `sizeof(slot)` bytes from the caller-supplied
+    /// pointer into the slot so the body sees a private copy.
+    fn copy_value_aggregate_param_to_slot(
+        &mut self,
+        name: &str,
+        slot_llvm_ty: BasicTypeEnum<'ctx>,
+        slot: PointerValue<'ctx>,
+        incoming_data_ptr: BasicValueEnum<'ctx>,
+    ) -> Result<(), CodegenError> {
+        let i1_ty = self.cg.context.bool_type();
+        let total_bytes = match slot_llvm_ty {
+            BasicTypeEnum::StructType(t) => t.size_of().ok_or_else(|| CodegenError::Unsupported {
+                stage: "value_aggregate_param_copy",
+                detail: format!("struct param '{name}' has no size"),
+            })?,
+            BasicTypeEnum::ArrayType(t) => t.size_of().ok_or_else(|| CodegenError::Unsupported {
+                stage: "value_aggregate_param_copy",
+                detail: format!("array param '{name}' has no size"),
+            })?,
+            _ => unreachable!("caller filtered to struct/array LLVM types"),
+        };
+        let memmove = self.get_or_declare_memmove();
+        self.cg
+            .builder
+            .build_call(
+                memmove,
+                &[
+                    slot.into(),
+                    incoming_data_ptr.into(),
+                    total_bytes.into(),
+                    i1_ty.const_zero().into(),
+                ],
+                &format!("{name}.value.memmove"),
+            )
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "value_aggregate_param_copy",
+                detail: e.to_string(),
+            })?;
+        Ok(())
+    }
+
+    /// Prologue helper for value-mode open-array params.  Emits a stack
+    /// alloca sized at `len * sizeof(elem)`, memmoves the caller's data
+    /// into it, and rewrites the param's slot so subsequent designator
+    /// accesses go through the private copy.  Caller must have already
+    /// stored the incoming data pointer into `slot`; this routine
+    /// overwrites that store.
+    fn copy_open_array_param_to_local(
+        &mut self,
+        name: &str,
+        elem_ty: &IrType,
+        slot: PointerValue<'ctx>,
+        incoming_data_ptr: BasicValueEnum<'ctx>,
+        fn_val: FunctionValue<'ctx>,
+        len_param_index: usize,
+    ) -> Result<(), CodegenError> {
+        let i64_ty = self.cg.context.i64_type();
+        let i8_ty = self.cg.context.i8_type();
+        let i1_ty = self.cg.context.bool_type();
+
+        let elem_llvm_ty = self.lower_basic_type(elem_ty)?;
+        let elem_size: inkwell::values::IntValue<'ctx> = match elem_llvm_ty {
+            inkwell::types::BasicTypeEnum::IntType(t) => t.size_of(),
+            inkwell::types::BasicTypeEnum::FloatType(t) => t.size_of(),
+            inkwell::types::BasicTypeEnum::PointerType(t) => t.size_of(),
+            inkwell::types::BasicTypeEnum::StructType(t) => t.size_of().ok_or_else(|| {
+                CodegenError::Unsupported {
+                    stage: "open_array_value_copy",
+                    detail: format!("struct element {elem_ty:?} has no size"),
+                }
+            })?,
+            inkwell::types::BasicTypeEnum::ArrayType(t) => t.size_of().ok_or_else(|| {
+                CodegenError::Unsupported {
+                    stage: "open_array_value_copy",
+                    detail: format!("array element {elem_ty:?} has no size"),
+                }
+            })?,
+            other => {
+                return Err(CodegenError::Unsupported {
+                    stage: "open_array_value_copy",
+                    detail: format!("element type {other:?} has no computable size"),
+                });
+            }
+        };
+
+        let len_param = fn_val.get_nth_param(len_param_index as u32).ok_or_else(|| {
+            CodegenError::Unsupported {
+                stage: "open_array_value_copy",
+                detail: format!("missing $len param for value-mode open array '{name}'"),
+            }
+        })?;
+        let len_int = len_param.into_int_value();
+        let len_i64 = if len_int.get_type().get_bit_width() == 64 {
+            len_int
+        } else {
+            self.cg
+                .builder
+                .build_int_z_extend(len_int, i64_ty, &format!("{name}.copy.len"))
+                .map_err(|e| CodegenError::Unsupported {
+                    stage: "open_array_value_copy",
+                    detail: e.to_string(),
+                })?
+        };
+
+        let byte_count = self
+            .cg
+            .builder
+            .build_int_mul(len_i64, elem_size, &format!("{name}.copy.bytes"))
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "open_array_value_copy",
+                detail: e.to_string(),
+            })?;
+
+        let local = self
+            .cg
+            .builder
+            .build_array_alloca(i8_ty, byte_count, &format!("{name}.copy"))
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "open_array_value_copy",
+                detail: e.to_string(),
+            })?;
+
+        let memmove = self.get_or_declare_memmove();
+        self.cg
+            .builder
+            .build_call(
+                memmove,
+                &[
+                    local.into(),
+                    incoming_data_ptr.into(),
+                    byte_count.into(),
+                    i1_ty.const_zero().into(),
+                ],
+                &format!("{name}.copy.memmove"),
+            )
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "open_array_value_copy",
+                detail: e.to_string(),
+            })?;
+
+        self.cg
+            .builder
+            .build_store(slot, local)
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "open_array_value_copy",
+                detail: e.to_string(),
+            })?;
+
         Ok(())
     }
 
