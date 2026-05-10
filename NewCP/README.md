@@ -1,10 +1,10 @@
 # NewCP
 
-NewCP is a new Component Pascal compiler and runtime intended to recreate the BlackBox programming model with a modern in-memory architecture.
+NewCP is a new Component Pascal compiler and runtime that recreates the BlackBox programming model on a modern, memory-resident, JIT-first architecture.
 
-The current engineering rule is to keep the bootstrap slice minimal: implement only the resident Rust pieces and temporary facade modules required to bring up the compiler, compile the first CP modules, and then replace those temporary Rust modules with CP-built equivalents.
+The engineering rule is to keep the bootstrap slice minimal: implement only the resident Rust pieces and temporary facade modules required to bring up the compiler, compile the first CP modules, and then replace those facades with CP-built equivalents.
 
-The target is not a batch compiler that emits native object files as its primary product. The target is a memory-resident system that can:
+NewCP is not a batch compiler that emits native object files as its primary product. It is a memory-resident system that can:
 
 - parse and type-check Component Pascal modules
 - lower them through a modern compiler pipeline
@@ -14,11 +14,9 @@ The target is not a batch compiler that emits native object files as its primary
 - load additional modules dynamically on demand
 - preserve enough of the BlackBox runtime model to support documents, commands, views, stores, reflection, and dynamic services
 
-## Core decision
+## Core decisions
 
-NewCP is JIT-first.
-
-NewCP is also 64-bit first.
+NewCP is **JIT-first** and **64-bit first**.
 
 The original BlackBox loader worked with object files, symbol files, type descriptors, fixups, and dynamic module initialization. NewCP keeps the dynamic module model, but the default execution model is different:
 
@@ -30,164 +28,183 @@ The original BlackBox loader worked with object files, symbol files, type descri
 - additional modules may be JIT-compiled later into the same process
 - unloading is optional and secondary; correctness of dynamic loading matters more than memory reclamation
 
-Memory is no longer treated as the scarce resource that shaped the original loader. BlackBox is small enough now that the whole environment can live in memory.
+Memory is no longer the scarce resource that shaped the original loader. BlackBox is small enough now that the whole environment can live in memory.
 
-This should be read as a deliberate break from the original 32-bit deployment assumptions. A 32-bit runtime is not a design target for the first system.
+## Current status (2026-05-10)
 
-## Design set
+NewCP is past the bootstrap-shape phase. The compiler pipeline, JIT, runtime, and a usable framework slice are all live in one process.
 
-- [docs/blackbox-jit-compatibility.md](docs/blackbox-jit-compatibility.md)
-- [docs/compiler-architecture.md](docs/compiler-architecture.md)
-- [docs/roadmap.md](docs/roadmap.md)
+### Compiler pipeline
+
+All ten phases run end-to-end, each with its own textual dump:
+
+- lexer / parser / sema / module-graph / CFG / typed IR / LLVM IR / native asm
+- ORC-style materialization through MCJIT (single execution engine per module today)
+- runtime registration via a structured native-module artifact, so Rust-hosted modules and CP modules look the same from the loader's point of view
+
+The driver exposes the pipeline directly: `dump-tokens`, `dump-ast`, `dump-sema`, `dump-module-graph`, `dump-cfg`, `dump-ir`, `dump-llvm`, `dump-asm`, `dump-heap`, plus `describe-interface` and `load-module`.
+
+### Language
+
+Working on the JIT today, with regression tests in [`Mod/Tests`](Mod/Tests) and [`tests/newcp-tests`](tests/newcp-tests):
+
+- scalars, arrays (including multidimensional and open arrays), records, sets, strings
+- procedures, nested procedures, value/`VAR`/`IN` parameter modes (with sema rejecting value-mode record/array params and writes through `IN`)
+- control flow: `IF`, `CASE`, `WHILE`, `REPEAT`, `LOOP`, `FOR`, `WITH`, `EXIT`, `RETURN`
+- pointers and `NEW`, including pointer-aliased records
+- type tests (`IS` / `WITH`) via `Instr::TypeCheck` + `Terminator::TypeTest`
+- record extension and inherited field access via typed GEP across the extension chain
+- **virtual method dispatch** end-to-end on the JIT: vtables emitted as mutable globals, patched after MCJIT materialization via `LLVMGetPointerToGlobal` (working around MCJIT's lack of relocation for function-pointer constants in vtable initializers — see [`docs/oop_runtime_status.md`](docs/oop_runtime_status.md))
+- abstract-base virtual dispatch
+- `SYSTEM` intrinsics: `AddrOf`, `BitCast`, `LoadRaw`, `StoreRaw`, `Lsh`, `Rot`, `MemCopy`, `SysNew`
+- module-body init pipeline; cross-module record-by-reference; cross-module type-alias unwrap
+
+87+ pure-compute JIT integration tests cover spec compliance for arithmetic boundaries, arrays, sets, and multidimensional access.
+
+### Runtime
+
+- garbage collector with cluster/block layout, tagged allocations via `__newcp_new_rec`, mark/sweep, finalizers, module roots
+- `heap_introspect` snapshot facility (`dump-heap`) — counters always-on, structured `HeapSnapshot` on demand, full type-by-instance walks for diagnostics
+- panic-safe execution scopes; cross-module vtable patching; `LoaderSession` with active/retired generations and a drop-predicate hook for hot reload
+- ODC envelope reader (`newcp-odc`) round-trips a 675-file `.odc` corpus from BlackBox 1.7
+- read-only document walker (Stores S1) backed by `newcp-odc` via a `stores_sys.rs` shim
+
+### Framework slice
+
+CP modules currently live in [`Mod/`](Mod) and run on the JIT:
+
+- **`Kernel`** — the BlackBox-equivalent runtime surface. Bound to Rust today: `Time`, `Beep`, `TypeOf`, `BaseOf`, `SizeOf`, `LevelOf`, `NewObj`, `Loop`, `Quit`, `Event`, `EventHandler`, `PushTrapCleaner`, `PopTrapCleaner`, `GetTypeName`, `GetQualifiedTypeName`, `ThisMod`, `ThisType`. Still declared-only: `GetModName`, `ModOf`, `GetLoaderResult`.
+- **`Files`** + **`HostFiles`** — abstract interface module + concrete subclass; cross-module OOP is exercised here.
+- **`Dates`** + **`HostDates`** — abstract surface plus host-backed implementation; `DatesArith` / `DatesClock` integration tests pass on the JIT.
+- **`Fonts`** + **`HostFonts`** — full `HostFonts` impl with `FontProbe` smoke test. `HostFonts` ships with renamed local types as a workaround for the documented sema name-collision case.
+- **`Math`**, **`SMath`**, **`Strings`** — full `RealToStringForm`, `StringIntFmt`, etc.
+- **`Console`**, **`Log`**, **`Integers`**
+- **`Stores`** + **`StoresSys`** — Stage S1 read-only envelope walker (`OpenDocument` / `RootStore` / `FirstChild` / `NextSibling` / `GetTypeName` / `GetBodyLen` / `GetKind`). Stage S2 (typed `Internalize`/`Externalize`/`CopyFrom`, `Reader`, `Writer`, `Domain`) is the next headline port.
+- **`iGui`** — the integrated GUI; see below.
+
+The `HostXxxSys` layering pattern is honored: abstract `Xxx.cp` stays import-free, `HostXxx.cp` imports `HostXxxSys.cp`, and only the `Sys` module imports `iGui`.
+
+### iGui — integrated MDI windowing
+
+iGui replaces the old external `multiwingui` / `wingui.dll` host with an MDI windowing layer implemented directly inside `newcp-runtime`. It is `x86_64-pc-windows-msvc` only, backed by Direct2D + DirectWrite, and inverts the previous startup ownership so that the GUI is the main thread and the language runtime is launched after the GUI is up.
+
+The phased demos under [`Mod/demo/igui/`](Mod/demo/igui) match the iGui design phases:
+
+| Phase | Demo | What it shows |
+|---|---|---|
+| 2 | `Phase2EventDemo.cp` | event mailbox round-trip on the language thread |
+| 3a | `Phase3aMdiDemo.cp` | MDI frame + child windows |
+| 3b/3c | `Phase3bGeometryDemo.cp` / `Phase3cGeometryDemo.cp` | rect/path/ellipse/arc primitives + DPI + cursor |
+| 4 | `Phase4TextDemo.cp` | DirectWrite text + synchronous query channel + layout cache |
+| 5 | `Phase5CompositionDemo.cp` | composition + overlays + paths + system colors |
+| 6 | `Phase6MenuDemo.cp` | menu bar + standard MDI verbs |
+| 7 | `Phase7TickDemo.cp` | animation tick |
+
+A Rust-thread `redit` UI-thread fail-safe editor for CP source ships alongside iGui as a recovery tool, and the `Log` view is a durable Rust ring buffer surfaced through a Tools window.
+
+### Tests
+
+- 188 / 188 integration tests
+- 50 / 50 runtime tests
+- 29 / 29 loader tests
+- all other crates green
+
+## What's next
+
+See [`docs/next_milestones.md`](docs/next_milestones.md) for the rolling plan. The current sequence:
+
+1. **Stores Stage S2** — typed `Internalize`/`Externalize`/`CopyFrom`, `Reader`, `Writer`, `Domain`. The headline port. Multi-day.
+2. **Heap-side dangling-TypeDesc probe** before S2 ships, so the hot-reload story stays sound while CP records start populating the heap.
+3. **`Kernel.ModOf` / `Kernel.GetModName` / `Kernel.GetLoaderResult`** — close out the reflection surface using the name-based workaround (no codegen-side `ModuleDesc` emission for now).
+4. **`HostMenus` from CP on top of `Kernel.Loop`** — a separate work-stream once `iGui.OpenChild` and the MDI plumbing it needs are in place.
+
+Documented background:
+
+- [`docs/blackbox_architecture.md`](docs/blackbox_architecture.md) — what the original BlackBox shape looked like
+- [`docs/blackbox-jit-compatibility.md`](docs/blackbox-jit-compatibility.md) — what we keep, what we change
+- [`docs/compiler-architecture.md`](docs/compiler-architecture.md) — pipeline + binding policy (direct CP-to-CP, native Rust-hosted, late-bound)
+- [`docs/roadmap.md`](docs/roadmap.md) — phases 0–7
+- [`docs/oop_runtime_status.md`](docs/oop_runtime_status.md) — virtual dispatch on MCJIT
+- [`docs/igui_design.md`](docs/igui_design.md) — GUI process / thread model
+- [`docs/stores_module_design.md`](docs/stores_module_design.md) — full Stores port plan (S1–S6)
+- [`docs/heap_introspection.md`](docs/heap_introspection.md) — `dump-heap` design
+- [`docs/garbage-collection.md`](docs/garbage-collection.md) — heap layout, mark/sweep, multi-thread roadmap
+- [`docs/odc_doc.md`](docs/odc_doc.md) — in-memory document model
+- [`docs/system-module.md`](docs/system-module.md) — `SYSTEM` intrinsic surface
+- [`docs/usersguide_to_cp_oop.md`](docs/usersguide_to_cp_oop.md) — OOP patterns the framework relies on
+
+Open issues worth knowing about:
+
+- [`docs/bug_report_short.md`](docs/bug_report_short.md) — `SHORT(LONGINT)` truncation; affects `Mod/Integers.cp`, not blocking Stores
+- [`docs/bug_report_sema_name_collision.md`](docs/bug_report_sema_name_collision.md) — sema infinite recursion on certain local-vs-import name collisions; `HostFonts` works around it with renamed locals
+- [`docs/deferred_fixes.md`](docs/deferred_fixes.md) — index of known shipped workarounds
 
 ## Phase visibility
 
 NewCP must not behave like an opaque compiler pipeline.
 
-Each major phase should be:
+Each major phase is:
 
 - discrete in implementation
 - invokable independently where practical
 - observable through stable textual dumps
 - suitable for regression tests and human review
 
-The expected review artifacts include:
-
-- token stream dumps
-- parse tree / AST dumps
-- bound symbol and type dumps
-- module graph dumps
-- control-flow graph dumps
-- typed IR dumps
-- LLVM IR dumps
-- final assembly dumps
+The shipped review artifacts: token stream, AST, bound symbol/type, module graph, CFG, typed IR, LLVM IR, final assembly, heap snapshot.
 
 This is a design requirement, not an optional debugging feature.
 
-## Host language note
-
-Rust is the current preferred implementation language for both the resident runtime and the compiler.
-
-Reasons:
-
-- native deployment without a managed VM
-- suitable for low-level runtime and kernel work
-- suitable for compiler front-end and IR work
-- good fit for keeping the whole system in one toolchain
-- practical interop options with LLVM through bindings or a narrow native bridge
-
-In concrete terms, the pieces expected to be written in Rust from the start are:
-
-- the resident `Kernel` equivalent
-- the startup/bootstrap `Init` equivalent
-- the compiler pipeline and driver
-- the JIT loader and runtime symbol/link infrastructure
-
-Component Pascal modules are then compiled by that Rust-hosted system and materialized into memory on demand.
-
-Anything beyond that should be treated as deferred unless it is strictly required to bootstrap the compiler or to replace an existing Rust-hosted facade with a CP module.
-
-## Application shape
-
-NewCP should begin with the same broad split that BlackBox used:
-
-- a resident `Kernel` equivalent for module tables, type descriptors, runtime services, and loader/JIT coordination
-- a separate `Init` equivalent that boots the application, loads the first modules, registers core services, and enters the live environment
-
-This is a better starting point than treating application startup as an undifferentiated blob. The compiler itself should live alongside that resident core as a Rust component and should compile Component Pascal modules into the running process.
-
-## Source layout target
-
-This folder is currently design-first. The intended implementation layout is:
+## Source layout
 
 ```text
 NewCP/
   docs/
-  Mod/
+  Mod/                        Component Pascal modules + Tests/ + demo/igui/
   src/
     newcp-lexer/
     newcp-parser/
     newcp-sema/
     newcp-ir/
     newcp-llvm/
-    newcp-runtime/
+    newcp-runtime/            kernel, GC, heap_introspect, iGui, host_*_sys, stores_sys
     newcp-loader/
+    newcp-odc/                .odc envelope reader
     newcp-driver/
   tests/
     newcp-tests/
     newcp-compat-tests/
 ```
 
-## First build target
+## Driver surface
 
-The first useful end-to-end target is:
+- `newcp-driver describe-interface InitShell` — show the in-memory interface descriptor for a live module
+- `newcp-driver load-module HostMenus` — look for `Mod/HostMenus.cp` and load it
+- `newcp-driver load-module HostMenus HostMenus.OpenApp` — load and invoke a command immediately
+- `newcp-driver dump-tokens|dump-ast|dump-sema|dump-module-graph|dump-cfg|dump-ir|dump-llvm|dump-asm|dump-heap`
 
-1. lex and parse a module
-2. dump tokens and syntax
-3. build typed IR
-4. lower procedures into CFG form
-5. dump CFG and IR
-6. emit LLVM IR
-7. dump LLVM IR and final assembly
-8. JIT a module body
-9. register the module in a runtime module table
-10. call exported commands from the runtime
+## Application shape
 
-That is the smallest slice that proves the architecture.
+Same broad split as BlackBox:
 
-For now, "smallest" should be read aggressively: if a service, module, descriptor surface, or compatibility feature is not required to get from Rust bootstrap to the first self-hosting CP replacements, it should stay out of the implementation slice.
+- a resident `Kernel` equivalent for module tables, type descriptors, runtime services, and loader/JIT coordination
+- a separate `Init` equivalent that boots the application, loads the first modules, registers core services, and enters the live environment
 
-## Current scaffold
+The compiler itself lives alongside that resident core as a Rust component and compiles Component Pascal modules into the running process.
 
-The Rust workspace has been created with these crates:
-
-- `newcp-lexer`
-- `newcp-parser`
-- `newcp-sema`
-- `newcp-ir`
-- `newcp-llvm`
-- `newcp-runtime`
-- `newcp-loader`
-- `newcp-driver`
-- `newcp-tests`
-- `newcp-compat-tests`
-
-There is also a top-level `Mod/` folder for Component Pascal source modules that the resident compiler can compile and load.
-
-The driver surface is intentionally phase-oriented from the start and is expected to grow around commands such as:
-
-- `describe-interface`
-- `load-module`
-- `dump-tokens`
-- `dump-ast`
-- `dump-sema`
-- `dump-module-graph`
-- `dump-cfg`
-- `dump-ir`
-- `dump-llvm`
-- `dump-asm`
-
-Current convention:
-
-- `newcp-driver describe-interface InitShell` shows the in-memory interface descriptor for a live module
-- `newcp-driver load-module HostMenus` looks for `Mod/HostMenus.cp`
-- `newcp-driver load-module HostMenus HostMenus.OpenApp` loads the module and invokes a command immediately
-
-## Minimal bootstrap set
-
-The current target is not to recreate the whole BlackBox framework up front. The target is to keep just enough live infrastructure in Rust to compile and replace modules incrementally.
-
-The intended minimal bootstrap set is:
-
-- resident `Kernel`
-- resident `Init`
-- resident compiler pipeline and driver
-- resident JIT loader and runtime registries
-- only the smallest temporary Rust facade modules needed to let the compiler start and load CP modules
-- a `Mod/` source folder containing the first CP modules we expect to compile into the running process
-
-The intended replacement rule is:
+## Replacement rule
 
 - start with Rust only where the compiler cannot yet provide the module
 - once a CP module can be compiled and loaded reliably, prefer the CP module over the Rust facade
 - do not add new Rust-hosted framework modules unless the bootstrap path is blocked without them
+
+## Host language
+
+Rust hosts the resident runtime and the compiler. Reasons:
+
+- native deployment without a managed VM
+- suitable for low-level runtime and kernel work
+- suitable for compiler front-end and IR work
+- one toolchain for the whole system
+- practical interop with LLVM through Inkwell
+
+Component Pascal modules are compiled by that Rust-hosted system and materialized into memory on demand. The pieces written in Rust from the start are: the resident `Kernel` equivalent, the startup/bootstrap `Init` equivalent, the compiler pipeline and driver, the JIT loader and runtime symbol/link infrastructure, the GC, the iGui MDI host, and the small `HostXxxSys` shims.
