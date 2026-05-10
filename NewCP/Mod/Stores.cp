@@ -20,7 +20,7 @@ MODULE Stores;
    `Stores.StoreDesc_Internalize` symbol the loader can publish.
 *)
 
-    IMPORT StoresSys;
+    IMPORT Kernel, StoresSys;
 
 CONST
     KindNil*     = 0;
@@ -45,21 +45,27 @@ TYPE
         the UI can render an Undo/Redo menu label. *)
     OpName* = ARRAY 32 OF CHAR;
 
-    (** Typed reader cursor.  Carries the legacy integer handle plus
-        the sticky-eof flag; richer methods (ReadInt, ReadStore, …)
-        will land alongside as the Stores OO surface fills out.  For
-        now consumers go through the flat `Stores.ReaderRead*`
-        primitives keyed off `rd.handle`. *)
+    (** Opaque writer handle (mirrors `ReaderHandle`).  The runtime
+        slots a `WriterState` per handle; 0 = invalid. *)
+    WriterHandle* = INTEGER;
+
+    (** Typed reader cursor.  Carries the integer handle plus the
+        sticky-eof flag.  Direct field access and the typed
+        `ReadByte` / `ReadInt` / … methods below let `Internalize`
+        implementations consume primitive fields without touching
+        `StoresSys` directly. *)
     Reader* = RECORD
         handle*: ReaderHandle;
         eof*:    BOOLEAN
     END;
 
-    (** Typed writer.  Symmetric with Reader; today just a placeholder
-        — the writer-side runtime path isn't ported yet, so the field
-        list is empty. *)
+    (** Typed writer.  Symmetric with Reader; backed by an in-memory
+        buffer in the runtime.  `Externalize` implementations call
+        the typed `WriteByte` / `WriteInt` / … methods to append
+        primitive fields; `Stores.CopyOf` uses the buffer as the
+        round-trip carrier between Externalize and Internalize. *)
     Writer* = RECORD
-        dummy: INTEGER       (* placeholder so the record has non-zero size *)
+        handle*: WriterHandle
     END;
 
     (** Abstract base for every persistable record.  Models, Views,
@@ -179,5 +185,169 @@ BEGIN RETURN StoresSys.ReaderSkipInlineStore(r) END ReaderSkipInlineStore;
 
 PROCEDURE ReaderReadInlineStore* (r: ReaderHandle): StoreHandle;
 BEGIN RETURN StoresSys.ReaderReadInlineStore(r) END ReaderReadInlineStore;
+
+
+(* --- S2 writer cursor primitives -------------------------------------- *)
+(* Symmetric with the reader trampolines.  Same thin facade pattern:
+   each procedure forwards to the matching `StoresSys.Writer*` shim;
+   the typed `Writer` record (and its method-style wrappers below)
+   lets callers stay above the integer-handle layer. *)
+
+PROCEDURE NewWriter* (): WriterHandle;
+BEGIN RETURN StoresSys.NewWriter() END NewWriter;
+
+PROCEDURE CloseWriter* (w: WriterHandle);
+BEGIN StoresSys.CloseWriter(w) END CloseWriter;
+
+PROCEDURE WriterPos* (w: WriterHandle): INTEGER;
+BEGIN RETURN StoresSys.WriterPos(w) END WriterPos;
+
+PROCEDURE WriterWriteByte* (w: WriterHandle; b: INTEGER);
+BEGIN StoresSys.WriterWriteByte(w, b) END WriterWriteByte;
+
+PROCEDURE WriterWriteInt* (w: WriterHandle; x: INTEGER);
+BEGIN StoresSys.WriterWriteInt(w, x) END WriterWriteInt;
+
+PROCEDURE WriterWriteXInt* (w: WriterHandle; x: INTEGER);
+BEGIN StoresSys.WriterWriteXInt(w, x) END WriterWriteXInt;
+
+PROCEDURE WriterWriteLong* (w: WriterHandle; x: INTEGER);
+BEGIN StoresSys.WriterWriteLong(w, x) END WriterWriteLong;
+
+PROCEDURE WriterWriteBool* (w: WriterHandle; x: INTEGER);
+BEGIN StoresSys.WriterWriteBool(w, x) END WriterWriteBool;
+
+PROCEDURE WriterWriteBytes*
+    (w: WriterHandle; IN buf: ARRAY OF BYTE; len: INTEGER): INTEGER;
+BEGIN RETURN StoresSys.WriterWriteBytes(w, buf, len) END WriterWriteBytes;
+
+(** Consume the writer's accumulated bytes and return a Reader
+    anchored at the resulting in-memory buffer.  The writer's own
+    buffer is left empty afterwards; clients should still call
+    `CloseWriter` to release the handle. *)
+PROCEDURE OpenReaderFromWriter* (w: WriterHandle): ReaderHandle;
+BEGIN RETURN StoresSys.OpenReaderFromWriter(w) END OpenReaderFromWriter;
+
+
+(* --- Store-tree cloning ------------------------------------------------- *)
+
+(** Allocate a fresh, zero-initialised Store of the same runtime
+    type as `template`.  Mirrors BlackBox `Stores.NewExt`.  Used
+    by `CopyOf` to materialise the destination of a clone before
+    streaming the source's externalised bytes into it.  Returns
+    NIL when `template` is NIL or its type is not registered. *)
+PROCEDURE NewExt* (template: Store): Store;
+    VAR t: Kernel.Type; s: Store;
+BEGIN
+    IF template = NIL THEN RETURN NIL END;
+    t := Kernel.TypeOf(template);
+    IF t = NIL THEN RETURN NIL END;
+    Kernel.NewObj(s, t);
+    RETURN s
+END NewExt;
+
+(** Deep-clone `s` by round-tripping through an in-memory buffer:
+    allocate a fresh Store of the same dynamic type via `NewExt`,
+    `Externalize` the source into a Writer, hand the buffer over
+    to a Reader, and `Internalize` it into the new Store.  Returns
+    the new Store (never aliasing `s`), or NIL if `s` is NIL or
+    `NewExt` fails.
+
+    This replaces BlackBox's `Stores.CopyOf` and is what
+    `Models.CopyOf` (and any other Cut/Copy/Paste-style code)
+    should sit on. *)
+PROCEDURE CopyOf* (s: Store): Store;
+    VAR copy: Store;
+        wr:   Writer;
+        rd:   Reader;
+BEGIN
+    IF s = NIL THEN RETURN NIL END;
+    copy := NewExt(s);
+    IF copy = NIL THEN RETURN NIL END;
+
+    wr.handle := NewWriter();
+    s.Externalize(wr);
+
+    rd.handle := OpenReaderFromWriter(wr.handle);
+    rd.eof    := FALSE;
+    CloseWriter(wr.handle);
+
+    copy.Internalize(rd);
+    CloseReader(rd.handle);
+
+    RETURN copy
+END CopyOf;
+
+
+(* --- Typed Reader / Writer methods ------------------------------------ *)
+(* BlackBox-faithful method-style API on top of the trampolines.
+   Concrete `Internalize` / `Externalize` implementations should
+   call these so the integer handle stays an implementation detail.
+   `eof` on the Reader is sticky: once a read crosses `body_end`
+   the runtime returns 0 / NIL and the next `Eof()` call yields
+   TRUE.  We mirror that here by polling the runtime after each
+   primitive read so callers can branch on `rd.eof`. *)
+
+PROCEDURE (VAR rd: Reader) ReadByte* (OUT b: BYTE), NEW;
+BEGIN
+    b := SHORT(SHORT(StoresSys.ReaderReadByte(rd.handle)));
+    rd.eof := StoresSys.ReaderEof(rd.handle) # 0
+END ReadByte;
+
+PROCEDURE (VAR rd: Reader) ReadInt* (OUT x: INTEGER), NEW;
+BEGIN
+    x := StoresSys.ReaderReadInt(rd.handle);
+    rd.eof := StoresSys.ReaderEof(rd.handle) # 0
+END ReadInt;
+
+PROCEDURE (VAR rd: Reader) ReadXInt* (OUT x: INTEGER), NEW;
+BEGIN
+    x := StoresSys.ReaderReadXInt(rd.handle);
+    rd.eof := StoresSys.ReaderEof(rd.handle) # 0
+END ReadXInt;
+
+PROCEDURE (VAR rd: Reader) ReadLong* (OUT x: INTEGER), NEW;
+BEGIN
+    x := StoresSys.ReaderReadLong(rd.handle);
+    rd.eof := StoresSys.ReaderEof(rd.handle) # 0
+END ReadLong;
+
+PROCEDURE (VAR rd: Reader) ReadBool* (OUT b: BOOLEAN), NEW;
+BEGIN
+    b := StoresSys.ReaderReadBool(rd.handle) # 0;
+    rd.eof := StoresSys.ReaderEof(rd.handle) # 0
+END ReadBool;
+
+PROCEDURE (VAR rd: Reader) ReadBytes*
+    (VAR buf: ARRAY OF BYTE; len: INTEGER), NEW;
+    VAR got: INTEGER;
+BEGIN
+    got := StoresSys.ReaderReadBytes(rd.handle, buf, len);
+    rd.eof := (got # len) OR (StoresSys.ReaderEof(rd.handle) # 0)
+END ReadBytes;
+
+PROCEDURE (VAR wr: Writer) WriteByte* (b: BYTE), NEW;
+BEGIN StoresSys.WriterWriteByte(wr.handle, b) END WriteByte;
+
+PROCEDURE (VAR wr: Writer) WriteInt* (x: INTEGER), NEW;
+BEGIN StoresSys.WriterWriteInt(wr.handle, x) END WriteInt;
+
+PROCEDURE (VAR wr: Writer) WriteXInt* (x: INTEGER), NEW;
+BEGIN StoresSys.WriterWriteXInt(wr.handle, x) END WriteXInt;
+
+PROCEDURE (VAR wr: Writer) WriteLong* (x: INTEGER), NEW;
+BEGIN StoresSys.WriterWriteLong(wr.handle, x) END WriteLong;
+
+PROCEDURE (VAR wr: Writer) WriteBool* (b: BOOLEAN), NEW;
+BEGIN
+    IF b THEN StoresSys.WriterWriteBool(wr.handle, 1)
+    ELSE StoresSys.WriterWriteBool(wr.handle, 0)
+    END
+END WriteBool;
+
+PROCEDURE (VAR wr: Writer) WriteBytes*
+    (IN buf: ARRAY OF BYTE; len: INTEGER), NEW;
+    VAR ignore: INTEGER;
+BEGIN ignore := StoresSys.WriterWriteBytes(wr.handle, buf, len) END WriteBytes;
 
 END Stores.

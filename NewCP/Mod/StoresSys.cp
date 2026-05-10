@@ -68,4 +68,25 @@ PROCEDURE ReaderReadInlineStore* (reader: INTEGER): INTEGER;
     (** Consume an inline child and return its `Store` handle.
         Returns 0 if cursor is not at a child. *)
 
+
+(* --- S2 in-memory writer (round-trip backing for Stores.CopyOf) ------
+   Symmetric with the reader primitives.  All writes are append-only;
+   the wire format is little-endian for multi-byte integers, matching
+   what the matching `ReaderRead*` consumes.  `OpenReaderFromWriter`
+   moves the writer's accumulated bytes into a fresh in-memory buffer
+   and returns a Reader anchored at that buffer's first byte; the
+   buffer is released when the Reader is closed. *)
+
+PROCEDURE NewWriter*        (): INTEGER;
+PROCEDURE CloseWriter*      (writer: INTEGER);
+PROCEDURE WriterPos*        (writer: INTEGER): INTEGER;
+PROCEDURE WriterWriteByte*  (writer: INTEGER; b: INTEGER);
+PROCEDURE WriterWriteInt*   (writer: INTEGER; x: INTEGER);   (* 4-byte LE *)
+PROCEDURE WriterWriteXInt*  (writer: INTEGER; x: INTEGER);   (* 2-byte LE *)
+PROCEDURE WriterWriteLong*  (writer: INTEGER; x: INTEGER);   (* 8-byte LE *)
+PROCEDURE WriterWriteBool*  (writer: INTEGER; x: INTEGER);   (* 0/1 *)
+PROCEDURE WriterWriteBytes* (writer: INTEGER; IN buf: ARRAY OF BYTE; len: INTEGER): INTEGER;
+
+PROCEDURE OpenReaderFromWriter* (writer: INTEGER): INTEGER;
+
 END StoresSys.

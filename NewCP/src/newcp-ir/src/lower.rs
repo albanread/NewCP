@@ -1349,22 +1349,80 @@ impl<'m> LowerCtx<'m> {
                 imported_sema_holder.is_some()
             );
         }
-        let slot = method_slot_in_vtable(type_record_name, method_name, lookup_symbols)?;
+        // CP §6.4: a plain `RECORD` (no `EXTENSIBLE` / `ABSTRACT`
+        // flavor) cannot be extended, so any method declared on it
+        // has exactly one binding and the call is statically
+        // resolvable.  No vtable needed; the receiver doesn't have
+        // a TypeDesc header either (plain records are alloca'd
+        // header-less).  Detect that case and skip both the slot
+        // lookup and the receiver Load — we'll emit a direct
+        // `Instr::Call` to `<Type>_<Method>` with the slot address
+        // as the first arg instead of a vtable-driven `MethodCall`.
+        let receiver_record_is_plain = lookup_symbols
+            .iter()
+            .find(|s| matches!(s.kind, SymbolKind::Type) && s.name == type_record_name)
+            .and_then(|s| s.declared_type.as_ref())
+            .map(|t| matches!(
+                t,
+                SemanticType::Record { flavor: None, base: None, .. }
+            ))
+            .unwrap_or(false);
 
-        // Lower the receiver.  For pointer types, load the pointer first; for Ref types
-        // the address already IS the right thing.  We produce the object pointer (ptr).
+        let slot = if receiver_record_is_plain {
+            0
+        } else {
+            method_slot_in_vtable(type_record_name, method_name, lookup_symbols)?
+        };
+
+        // Lower the receiver.  Decision is purely IR-shape driven:
+        //
+        //   - `Ref(Named(N))` where N resolves (in sema) to a record:
+        //     the slot holds the record value itself (e.g. `wr: Writer`
+        //     local).  The slot pointer IS the record pointer — never
+        //     Load (that would pull out a struct value).
+        //   - `Ref(Named(N))` where N is a pointer alias, or
+        //     `Ref(Ptr/UntaggedPtr(_))`: the slot holds a heap pointer
+        //     (regular pointer-typed local, or a method-receiver
+        //     formal lifted to `Ptr(record)` by `lower_procedure`).
+        //     Load the slot to get the heap pointer.
+        //   - Anything else: pass through.
+        //
+        // The plain-vs-tagged dispatch decision (direct vs vtable)
+        // is orthogonal — see the branch below.
+        fn slot_holds_record_value(
+            addr_ty: &IrType,
+            symbols: &[SemanticSymbol],
+        ) -> bool {
+            let IrType::Ref(inner) = addr_ty else { return false; };
+            let IrType::Named(name) = inner.as_ref() else { return false; };
+            let local_name = name.split('.').next_back().unwrap_or(name.as_str());
+            symbols
+                .iter()
+                .find(|s| matches!(s.kind, SymbolKind::Type) && s.name == local_name)
+                .and_then(|s| s.declared_type.as_ref())
+                .map(|t| matches!(t, SemanticType::Record { .. }))
+                .unwrap_or(false)
+        }
         let receiver_ptr: IrValue = {
             let addr = self.designator_addr(&prefix_des);
-            match addr.ty() {
-                // addr is Ref(Ptr(...)) or Ref(Named(...)) — load to get the ptr value
-                IrType::Ref(inner) if matches!(inner.as_ref(), IrType::Ptr(_) | IrType::Named(_)) => {
-                    let t = self.fresh_temp();
-                    let obj_ty = *inner;
-                    self.push(Instr::Load { dst: t, addr, ty: obj_ty.clone() });
-                    IrValue::Temp(t, obj_ty)
+            let addr_ty = addr.ty();
+            if slot_holds_record_value(&addr_ty, lookup_symbols) {
+                addr
+            } else {
+                match addr_ty {
+                    IrType::Ref(inner)
+                        if matches!(
+                            inner.as_ref(),
+                            IrType::Ptr(_) | IrType::UntaggedPtr(_) | IrType::Named(_)
+                        ) =>
+                    {
+                        let t = self.fresh_temp();
+                        let obj_ty = *inner;
+                        self.push(Instr::Load { dst: t, addr, ty: obj_ty.clone() });
+                        IrValue::Temp(t, obj_ty)
+                    }
+                    _ => addr,
                 }
-                // addr is already a pointer-ish — use it directly
-                _ => addr,
             }
         };
 
@@ -1428,6 +1486,49 @@ impl<'m> LowerCtx<'m> {
             // Receiver becomes the first arg (super calls are direct
             // calls — no methodcall trampoline; the callee expects
             // the receiver pointer in slot 0).
+            let mut args_with_recv: Vec<IrValue> = Vec::with_capacity(lowered_args.len() + 1);
+            args_with_recv.push(receiver_ptr);
+            args_with_recv.extend(lowered_args);
+            if ret_ty == IrType::Void {
+                self.push(Instr::Call {
+                    dst: None,
+                    callee,
+                    args: args_with_recv,
+                    ret_ty: IrType::Void,
+                });
+                return Some(IrValue::ConstBool(false));
+            }
+            let t = self.fresh_temp();
+            self.push(Instr::Call {
+                dst: Some(t),
+                callee,
+                args: args_with_recv,
+                ret_ty: ret_ty.clone(),
+            });
+            return Some(IrValue::Temp(t, ret_ty));
+        }
+
+        if receiver_record_is_plain {
+            // Direct, statically-bound call.  Plain records can't
+            // be extended, so the method is uniquely owned by the
+            // receiver's record.  Determine the implementing module
+            // from `type_qualified` (e.g. "Stores.Writer" → module
+            // "Stores"); a bare local name means same-module.
+            let decl_module: Option<String> = type_qualified
+                .split_once('.')
+                .map(|(m, _)| m.to_string());
+            let mangled = format!("{type_record_name}_{method_name}");
+            let callee = match decl_module {
+                Some(m) => IrValue::ImportRef(
+                    m,
+                    mangled,
+                    IrType::Opaque("plain-record-method".to_string()),
+                ),
+                None => IrValue::GlobalRef(
+                    mangled,
+                    IrType::Opaque("plain-record-method".to_string()),
+                ),
+            };
             let mut args_with_recv: Vec<IrValue> = Vec::with_capacity(lowered_args.len() + 1);
             args_with_recv.push(receiver_ptr);
             args_with_recv.extend(lowered_args);

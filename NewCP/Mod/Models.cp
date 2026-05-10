@@ -23,12 +23,6 @@ MODULE Models;
 
    Divergences still in place:
 
-   - `Internalize` / `Externalize` overrides on `Model` are skipped —
-     they need Stores.Reader / Writer as records.  Super calls already
-     work (see SuperProbe).
-   - `CopyOf` is an identity stub.  BlackBox dispatches through
-     `Stores.CopyOf(m)(Model)` which clones the entire store tree;
-     we need Domain semantics for that.
    - The Sequencer's `Do` / `BeginScript` / `LastOp` / etc. take a
      `Stores.Store` — currently NIL since concrete Store instances
      aren't allocated yet (the OO surface is empty).  Hook the proper
@@ -50,8 +44,9 @@ MODULE Models;
 
     TYPE
         (** Abstract document model.  Extends `Stores.Store` so every
-            Model is also persistable (Internalize / Externalize will
-            land via super calls once Reader / Writer become records).
+            Model is also persistable — Internalize / Externalize chain
+            into the Stores.StoreDesc base via super calls, which is
+            what `Stores.CopyOf` round-trips through.
             `era` is incremented on every `Broadcast`; `guard` traps
             reentrant broadcasts; `seq` is the optional sequencer this
             model dispatches messages through (ANYPTR so we don't drag
@@ -128,11 +123,19 @@ MODULE Models;
         RETURN m.era
     END Era;
 
-    (** Identity stub — see Divergences above. *)
+    (** Deep-clone `m` by round-tripping through `Stores.CopyOf`,
+        then narrow the resulting `Stores.Store` back to a `Model`.
+        BlackBox-faithful — every concrete model subclass that
+        carries data is responsible for overriding `Internalize` /
+        `Externalize` so the bytes round-trip; this layer just
+        delegates.  Traps if `m = NIL` or the dynamic type isn't
+        actually a Model (the type guard fires). *)
     PROCEDURE CopyOf* (m: Model): Model;
+        VAR copy: Stores.Store;
     BEGIN
         ASSERT(m # NIL, 20);
-        RETURN m
+        copy := Stores.CopyOf(m);
+        RETURN copy(Model)
     END CopyOf;
 
     (** Install / replace the sequencer this model dispatches through.

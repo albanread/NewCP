@@ -72,19 +72,41 @@ struct FlatNode {
     next_sibling: Option<u32>,
 }
 
+/// Where a Reader's body bytes come from.
+///
+/// `Document` is the original on-disk source: bytes live inside a
+/// `DocumentEntry.doc.bytes`, and `parent_node_idx` lets the
+/// inline-store helpers locate sibling children in the doc's flat
+/// node tree.
+///
+/// `Buffer` is an in-memory slot used by `Stores.CopyOf` and any
+/// other round-trip path: the bytes live in `StoresState.buffers`.
+/// Buffer-sourced readers have no node tree, so the inline-store
+/// helpers degrade to "no inline child here" (return 0).
+enum ReaderSource {
+    Document { doc_handle: u32, parent_node_idx: u32 },
+    Buffer { buffer_handle: u32 },
+}
+
 /// Cursor into a store's body bytes. Reader handles are 1-based
 /// indices into a process-global table; the entry references a
-/// document handle plus the start/end of the relevant body and
-/// the current read position. `parent_node_idx` records the
-/// node-index in the document's flat table so the inline-child
-/// helpers can locate this Reader's source store and walk its
-/// children without re-resolving the handle.
+/// `ReaderSource` plus the start/end of the relevant body and the
+/// current read position.  `body_start` / `body_end` / `cursor` are
+/// always absolute offsets into whatever buffer the source resolves
+/// to (file bytes or in-memory buffer).
 struct ReaderState {
-    doc_handle: u32,
-    parent_node_idx: u32,
+    source: ReaderSource,
     body_start: u64,
     body_end: u64,
     cursor: u64,
+}
+
+/// In-memory writer.  Bytes are appended via `writer_write_*`; the
+/// final buffer is consumed by `open_reader_from_writer`, which
+/// moves it into `StoresState.buffers` and hands back a Reader
+/// whose source points at that buffer.
+struct WriterState {
+    buffer: Vec<u8>,
 }
 
 struct DocumentEntry {
@@ -97,6 +119,10 @@ struct DocumentEntry {
 struct StoresState {
     documents: Vec<Option<DocumentEntry>>,
     readers: Vec<Option<ReaderState>>,
+    writers: Vec<Option<WriterState>>,
+    /// Backing storage for buffer-sourced readers.  Owned `Vec<u8>`
+    /// per slot so the Reader can borrow `&[u8]` slices through it.
+    buffers: Vec<Option<Vec<u8>>>,
 }
 
 impl StoresState {
@@ -104,6 +130,8 @@ impl StoresState {
         Self {
             documents: Vec::new(),
             readers: Vec::new(),
+            writers: Vec::new(),
+            buffers: Vec::new(),
         }
     }
 }
@@ -346,8 +374,7 @@ pub extern "C" fn stores_sys_open_reader(store: i64) -> i64 {
 
     let mut state = STATE.lock().expect("stores state mutex poisoned");
     let reader = ReaderState {
-        doc_handle,
-        parent_node_idx: node_idx,
+        source: ReaderSource::Document { doc_handle, parent_node_idx: node_idx },
         body_start,
         body_end,
         cursor: body_start,
@@ -363,7 +390,10 @@ pub extern "C" fn stores_sys_open_reader(store: i64) -> i64 {
 }
 
 /// `StoresSys.CloseReader(r: INTEGER)`. Releases the reader handle.
-/// Subsequent reads against `r` return 0 / set EOF.
+/// Subsequent reads against `r` return 0 / set EOF.  For
+/// buffer-sourced readers (created by `open_reader_from_writer`)
+/// the backing buffer slot is released too — otherwise the bytes
+/// leak for the lifetime of the process.
 #[unsafe(no_mangle)]
 pub extern "C" fn stores_sys_close_reader(reader: i64) {
     if reader <= 0 {
@@ -371,14 +401,34 @@ pub extern "C" fn stores_sys_close_reader(reader: i64) {
     }
     let mut state = STATE.lock().expect("stores state mutex poisoned");
     let idx = (reader - 1) as usize;
-    if let Some(slot) = state.readers.get_mut(idx) {
-        *slot = None;
+    let backing_buffer = match state.readers.get_mut(idx) {
+        Some(slot) => {
+            let bh = slot
+                .as_ref()
+                .and_then(|r| match r.source {
+                    ReaderSource::Buffer { buffer_handle } => Some(buffer_handle),
+                    _ => None,
+                });
+            *slot = None;
+            bh
+        }
+        None => None,
+    };
+    if let Some(bh) = backing_buffer {
+        let buf_idx = (bh as usize).saturating_sub(1);
+        if let Some(slot) = state.buffers.get_mut(buf_idx) {
+            *slot = None;
+        }
     }
 }
 
+/// Run `f` with mutable access to the reader and a `&[u8]` slice
+/// covering its underlying byte buffer (whether that's a doc's
+/// file bytes or an in-memory buffer slot).  Returns `None` if any
+/// handle in the chain is invalid.
 fn with_reader_mut<F, R>(reader: i64, f: F) -> Option<R>
 where
-    F: FnOnce(&mut ReaderState, &Document) -> R,
+    F: FnOnce(&mut ReaderState, &[u8]) -> R,
 {
     if reader <= 0 {
         return None;
@@ -386,26 +436,42 @@ where
     let mut state = STATE.lock().expect("stores state mutex poisoned");
     let idx = (reader - 1) as usize;
     let r = state.readers.get_mut(idx)?.as_mut()?;
-    let doc_idx = (r.doc_handle as usize).checked_sub(1)?;
-    // Borrow split: the reader and the document live in the same
-    // StoresState. We need a mutable borrow of the reader and an
-    // immutable borrow of the matching document. Split via
-    // disjoint indexing.
+    let source_idx = match r.source {
+        ReaderSource::Document { doc_handle, .. } => {
+            (None::<usize>, (doc_handle as usize).checked_sub(1)?)
+        }
+        ReaderSource::Buffer { buffer_handle } => {
+            (Some((buffer_handle as usize).checked_sub(1)?), 0)
+        }
+    };
+    // Borrow split: reader, documents, and buffers all live in the
+    // same StoresState.  Disjoint indexing via raw pointers is safe
+    // because the &mut state lock keeps any other thread out.
     let readers_ptr: *mut Option<ReaderState> = &mut state.readers[idx];
-    let documents_ptr: *const Option<DocumentEntry> = &state.documents[doc_idx];
-    // SAFETY: idx and doc_idx index disjoint Vecs in StoresState;
-    // the &mut state lock prevents any other thread from touching
-    // either.
-    unsafe {
-        let r_ref = (*readers_ptr).as_mut()?;
-        let d_ref = (*documents_ptr).as_ref()?;
-        Some(f(r_ref, &d_ref.doc))
+    match source_idx {
+        (None, doc_idx) => {
+            let documents_ptr: *const Option<DocumentEntry> = &state.documents[doc_idx];
+            unsafe {
+                let r_ref = (*readers_ptr).as_mut()?;
+                let d_ref = (*documents_ptr).as_ref()?;
+                Some(f(r_ref, &d_ref.doc.bytes))
+            }
+        }
+        (Some(buf_idx), _) => {
+            let buffers_ptr: *const Option<Vec<u8>> = &state.buffers[buf_idx];
+            unsafe {
+                let r_ref = (*readers_ptr).as_mut()?;
+                let b_ref = (*buffers_ptr).as_ref()?;
+                Some(f(r_ref, b_ref.as_slice()))
+            }
+        }
     }
 }
 
+/// Read-only counterpart to `with_reader_mut`.
 fn with_reader<F, R>(reader: i64, f: F) -> Option<R>
 where
-    F: FnOnce(&ReaderState, &Document) -> R,
+    F: FnOnce(&ReaderState, &[u8]) -> R,
 {
     if reader <= 0 {
         return None;
@@ -413,9 +479,18 @@ where
     let state = STATE.lock().expect("stores state mutex poisoned");
     let idx = (reader - 1) as usize;
     let r = state.readers.get(idx)?.as_ref()?;
-    let doc_idx = (r.doc_handle as usize).checked_sub(1)?;
-    let entry = state.documents.get(doc_idx)?.as_ref()?;
-    Some(f(r, &entry.doc))
+    match r.source {
+        ReaderSource::Document { doc_handle, .. } => {
+            let doc_idx = (doc_handle as usize).checked_sub(1)?;
+            let entry = state.documents.get(doc_idx)?.as_ref()?;
+            Some(f(r, &entry.doc.bytes))
+        }
+        ReaderSource::Buffer { buffer_handle } => {
+            let buf_idx = (buffer_handle as usize).checked_sub(1)?;
+            let buf = state.buffers.get(buf_idx)?.as_ref()?;
+            Some(f(r, buf.as_slice()))
+        }
+    }
 }
 
 /// `StoresSys.ReaderPos(r: INTEGER): INTEGER`. Current cursor
@@ -449,15 +524,15 @@ pub extern "C" fn stores_sys_reader_eof(reader: i64) -> i64 {
 /// Read N bytes starting at the cursor, advance by N, return the
 /// raw bytes. Sets EOF (cursor = body_end) if N exceeds remaining.
 fn reader_read_n(reader: i64, n: usize) -> Option<Vec<u8>> {
-    with_reader_mut(reader, |r, doc| {
+    with_reader_mut(reader, |r, bytes| {
         if r.cursor + n as u64 > r.body_end {
             r.cursor = r.body_end;
             return None;
         }
         let start = r.cursor as usize;
-        let bytes = doc.bytes[start..start + n].to_vec();
+        let out = bytes[start..start + n].to_vec();
         r.cursor += n as u64;
-        Some(bytes)
+        Some(out)
     })
     .flatten()
 }
@@ -557,8 +632,11 @@ pub extern "C" fn stores_sys_reader_skip_inline_store(reader: i64) -> i64 {
         Some(r) => r,
         None => return 0,
     };
-    let doc_handle = r.doc_handle;
-    let parent_node_idx = r.parent_node_idx;
+    // Buffer-sourced readers have no node tree — nothing to walk.
+    let (doc_handle, parent_node_idx) = match r.source {
+        ReaderSource::Document { doc_handle, parent_node_idx } => (doc_handle, parent_node_idx),
+        ReaderSource::Buffer { .. } => return 0,
+    };
     let cursor = r.cursor;
     // Snapshot reader fields then drop &mut so we can search the
     // documents table without overlapping borrows.
@@ -592,8 +670,10 @@ pub extern "C" fn stores_sys_reader_read_inline_store(reader: i64) -> i64 {
         Some(r) => r,
         None => return 0,
     };
-    let doc_handle = r.doc_handle;
-    let parent_node_idx = r.parent_node_idx;
+    let (doc_handle, parent_node_idx) = match r.source {
+        ReaderSource::Document { doc_handle, parent_node_idx } => (doc_handle, parent_node_idx),
+        ReaderSource::Buffer { .. } => return 0,
+    };
     let cursor = r.cursor;
     drop(r);
     let (child_idx, advance_to) =
@@ -632,6 +712,176 @@ pub extern "C" fn stores_sys_reader_read_bytes(
     n as i64
 }
 
+// ─── Writer (in-memory) primitives ──────────────────────────────────────
+//
+// The writer is the second half of `Stores.CopyOf`'s round-trip
+// machinery: a `Store.Externalize` walk appends bytes here, then
+// `open_reader_from_writer` consumes the buffer and produces a
+// Reader the matching `Internalize` walk can drain.  Every primitive
+// matches a corresponding `reader_read_*` on the wire format
+// (little-endian for multi-byte integers).
+
+/// Allocate a fresh in-memory writer and return its 1-based handle.
+/// 0 is reserved for "invalid".
+#[unsafe(no_mangle)]
+pub extern "C" fn stores_sys_new_writer() -> i64 {
+    let mut state = STATE.lock().expect("stores state mutex poisoned");
+    let writer = WriterState { buffer: Vec::new() };
+    for (i, slot) in state.writers.iter_mut().enumerate() {
+        if slot.is_none() {
+            *slot = Some(writer);
+            return (i + 1) as i64;
+        }
+    }
+    state.writers.push(Some(writer));
+    state.writers.len() as i64
+}
+
+/// Release a writer handle.  Subsequent writer ops against `w`
+/// silently no-op.  Does NOT release any buffer that was already
+/// consumed by `open_reader_from_writer` — that buffer lives in
+/// the buffers slot until its reader is closed.
+#[unsafe(no_mangle)]
+pub extern "C" fn stores_sys_close_writer(writer: i64) {
+    if writer <= 0 {
+        return;
+    }
+    let mut state = STATE.lock().expect("stores state mutex poisoned");
+    let idx = (writer - 1) as usize;
+    if let Some(slot) = state.writers.get_mut(idx) {
+        *slot = None;
+    }
+}
+
+fn with_writer_mut<F, R>(writer: i64, f: F) -> Option<R>
+where
+    F: FnOnce(&mut WriterState) -> R,
+{
+    if writer <= 0 {
+        return None;
+    }
+    let mut state = STATE.lock().expect("stores state mutex poisoned");
+    let idx = (writer - 1) as usize;
+    let w = state.writers.get_mut(idx)?.as_mut()?;
+    Some(f(w))
+}
+
+/// Current write position = number of bytes buffered so far.
+#[unsafe(no_mangle)]
+pub extern "C" fn stores_sys_writer_pos(writer: i64) -> i64 {
+    with_writer_mut(writer, |w| w.buffer.len() as i64).unwrap_or(0)
+}
+
+/// Append one byte (low 8 bits of `b`).
+#[unsafe(no_mangle)]
+pub extern "C" fn stores_sys_writer_write_byte(writer: i64, b: i64) {
+    let _ = with_writer_mut(writer, |w| w.buffer.push(b as u8));
+}
+
+/// Append a 4-byte little-endian signed integer (mirrors `ReaderReadInt`).
+#[unsafe(no_mangle)]
+pub extern "C" fn stores_sys_writer_write_int(writer: i64, x: i64) {
+    let _ = with_writer_mut(writer, |w| {
+        w.buffer.extend_from_slice(&(x as i32).to_le_bytes())
+    });
+}
+
+/// Append a 2-byte little-endian signed short (mirrors `ReaderReadXInt`).
+#[unsafe(no_mangle)]
+pub extern "C" fn stores_sys_writer_write_xint(writer: i64, x: i64) {
+    let _ = with_writer_mut(writer, |w| {
+        w.buffer.extend_from_slice(&(x as i16).to_le_bytes())
+    });
+}
+
+/// Append an 8-byte little-endian signed integer (mirrors `ReaderReadLong`).
+#[unsafe(no_mangle)]
+pub extern "C" fn stores_sys_writer_write_long(writer: i64, x: i64) {
+    let _ = with_writer_mut(writer, |w| w.buffer.extend_from_slice(&x.to_le_bytes()));
+}
+
+/// Append a single byte: 1 if `x != 0`, 0 otherwise (mirrors `ReaderReadBool`).
+#[unsafe(no_mangle)]
+pub extern "C" fn stores_sys_writer_write_bool(writer: i64, x: i64) {
+    let _ = with_writer_mut(writer, |w| w.buffer.push(if x != 0 { 1 } else { 0 }));
+}
+
+/// `StoresSys.WriterWriteBytes(w; IN buf: ARRAY OF BYTE; len: INTEGER): INTEGER`.
+/// Appends `len` bytes from `buf`; returns the number actually
+/// written (= `len` on success, 0 on error).  CP's open-array
+/// fat-pointer ABI passes a hidden length companion after `buf`
+/// which we ignore — `len` is the authoritative count.
+#[unsafe(no_mangle)]
+pub extern "C" fn stores_sys_writer_write_bytes(
+    writer: i64,
+    buf: *const u8,
+    _buf_len: i64,
+    len: i64,
+) -> i64 {
+    if buf.is_null() || len <= 0 {
+        return 0;
+    }
+    let n = len as usize;
+    let slice = unsafe { std::slice::from_raw_parts(buf, n) };
+    with_writer_mut(writer, |w| {
+        w.buffer.extend_from_slice(slice);
+        n as i64
+    })
+    .unwrap_or(0)
+}
+
+/// Consume the writer's buffer, install it in a fresh buffer slot,
+/// and return a Reader handle whose body covers the entire buffer.
+/// The writer's own buffer is left empty (not closed); callers who
+/// no longer need the writer should follow up with
+/// `stores_sys_close_writer`.  Returns 0 if `w` is invalid.
+#[unsafe(no_mangle)]
+pub extern "C" fn stores_sys_open_reader_from_writer(writer: i64) -> i64 {
+    if writer <= 0 {
+        return 0;
+    }
+    let mut state = STATE.lock().expect("stores state mutex poisoned");
+    let idx = (writer - 1) as usize;
+    let buffer: Vec<u8> = match state.writers.get_mut(idx).and_then(|s| s.as_mut()) {
+        Some(w) => std::mem::take(&mut w.buffer),
+        None => return 0,
+    };
+    let body_len = buffer.len() as u64;
+
+    // Install the buffer in the buffers Vec.  `buffer` is moved
+    // exactly once: into the matching free slot, or pushed on the
+    // tail if every slot is occupied.
+    let mut pending: Option<Vec<u8>> = Some(buffer);
+    let mut buffer_handle: u32 = 0;
+    for (i, slot) in state.buffers.iter_mut().enumerate() {
+        if slot.is_none() {
+            *slot = pending.take();
+            buffer_handle = (i + 1) as u32;
+            break;
+        }
+    }
+    if let Some(b) = pending {
+        state.buffers.push(Some(b));
+        buffer_handle = state.buffers.len() as u32;
+    }
+
+    // Allocate a Reader whose source points at that buffer.
+    let reader = ReaderState {
+        source: ReaderSource::Buffer { buffer_handle },
+        body_start: 0,
+        body_end: body_len,
+        cursor: 0,
+    };
+    for (i, slot) in state.readers.iter_mut().enumerate() {
+        if slot.is_none() {
+            *slot = Some(reader);
+            return (i + 1) as i64;
+        }
+    }
+    state.readers.push(Some(reader));
+    state.readers.len() as i64
+}
+
 // ─── Native module registration ─────────────────────────────────────────
 
 use crate::{
@@ -665,6 +915,17 @@ fn stores_exports() -> &'static [(&'static str, *const ())] {
         ("ReaderReadBytes",  stores_sys_reader_read_bytes as *const ()),
         ("ReaderSkipInlineStore", stores_sys_reader_skip_inline_store as *const ()),
         ("ReaderReadInlineStore", stores_sys_reader_read_inline_store as *const ()),
+        // S2 in-memory writer (round-trip backing for Stores.CopyOf)
+        ("NewWriter",        stores_sys_new_writer        as *const ()),
+        ("CloseWriter",      stores_sys_close_writer      as *const ()),
+        ("WriterPos",        stores_sys_writer_pos        as *const ()),
+        ("WriterWriteByte",  stores_sys_writer_write_byte as *const ()),
+        ("WriterWriteInt",   stores_sys_writer_write_int  as *const ()),
+        ("WriterWriteXInt",  stores_sys_writer_write_xint as *const ()),
+        ("WriterWriteLong",  stores_sys_writer_write_long as *const ()),
+        ("WriterWriteBool",  stores_sys_writer_write_bool as *const ()),
+        ("WriterWriteBytes", stores_sys_writer_write_bytes as *const ()),
+        ("OpenReaderFromWriter", stores_sys_open_reader_from_writer as *const ()),
     ]
 }
 

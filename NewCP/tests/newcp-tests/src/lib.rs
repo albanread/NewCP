@@ -3399,6 +3399,48 @@ mod tests {
     }
 
     #[test]
+    fn models_copy_of_delegates_to_stores_copy_of() {
+        // Models.CopyOf is no longer an identity stub — it delegates
+        // to Stores.CopyOf which round-trips through the Externalize
+        // / Internalize hooks. TaggedModel adds an INTEGER tag to
+        // ModelDesc; the probe asserts the cloned tag survives a
+        // mutation to the source. Returns 9907 on a true clone,
+        // 9999 on identity-aliasing.
+        assert_eq!(
+            run_function("Mod/Tests/ModelsCopyOfProbe.cp", "Run"),
+            9907,
+        );
+    }
+
+    #[test]
+    fn stores_copy_of_round_trips_a_concrete_subclass() {
+        // BoxDesc extends Stores.StoreDesc with one INTEGER field
+        // and overrides Externalize/Internalize to round-trip it.
+        // CopyOf must produce a fresh heap object whose `value`
+        // matches the source, and subsequent mutation of the source
+        // must not leak. Probe returns 999_042 only on a true clone;
+        // the old identity stub would have produced 999_999.
+        assert_eq!(
+            run_function("Mod/Tests/StoresCopyOfProbe.cp", "Run"),
+            999_042,
+        );
+    }
+
+    #[test]
+    fn stores_writer_round_trip_through_in_memory_buffer() {
+        // The in-memory Writer + buffer-sourced Reader is the
+        // foundation Stores.CopyOf will sit on. Probe writes 1 byte
+        // (42), 1 INTEGER (1234), 1 LONG (9_999_999_999), 1 BOOLEAN
+        // (TRUE) into a writer, hands the buffer over to a reader,
+        // drains it, and packs the values into 4_200_124_397 only
+        // if every primitive round-tripped intact.
+        assert_eq!(
+            run_function("Mod/Tests/StoresWriterRoundTripProbe.cp", "Run"),
+            4_200_124_397,
+        );
+    }
+
+    #[test]
     fn pointer_alias_receivers_bind_to_underlying_record() {
         // Methods declared with the BlackBox-style pointer-alias
         // receiver (`(s: Sub) Method` where `Sub = POINTER TO SubDesc`)
