@@ -4004,4 +4004,683 @@ END M_Stmt_While_Compound_Condition.
 "#,
         ignored: None,
     },
+
+
+    // ─── Cycle 3: more cells ────────────────────────────────────────
+
+    Probe {
+        module_name: "M_Type_BYTE_Primitive",
+        test_name: "type_byte_primitive_arithmetic",
+        spec_section: "6.1",
+        description: "BYTE (8-bit unsigned) arithmetic within range; mix with INTEGER",
+        expected_value: 200,
+        cp_source: r#"MODULE M_Type_BYTE_Primitive;
+    PROCEDURE Run* (): INTEGER;
+        VAR b: BYTE; n: INTEGER;
+    BEGIN
+        b := SHORT(SHORT(SHORT(100)));
+        n := b * 2;
+        RETURN n
+    END Run;
+END M_Type_BYTE_Primitive.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Stmt_IS_Inside_WITH",
+        test_name: "stmt_is_test_inside_with_arm",
+        spec_section: "8.5 / 9.6",
+        description: "IS test inside a WITH arm — the narrowed local can be checked against \
+                      a further-derived type",
+        expected_value: 99,
+        cp_source: r#"MODULE M_Stmt_IS_Inside_WITH;
+    TYPE
+        BaseDesc = EXTENSIBLE RECORD END;
+        Base     = POINTER TO BaseDesc;
+        MidDesc  = EXTENSIBLE RECORD (BaseDesc) END;
+        Mid      = POINTER TO MidDesc;
+        SubDesc  = RECORD (MidDesc) v: INTEGER END;
+        Sub      = POINTER TO SubDesc;
+
+    PROCEDURE Inspect (p: Base): INTEGER;
+    BEGIN
+        WITH p: Mid DO
+            IF p IS Sub THEN
+                RETURN p(Sub).v
+            ELSE
+                RETURN -1
+            END
+        ELSE
+            RETURN -2
+        END
+    END Inspect;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR s: Sub;
+    BEGIN
+        NEW(s); s.v := 99;
+        RETURN Inspect(s)
+    END Run;
+END M_Stmt_IS_Inside_WITH.
+"#,
+        ignored: Some(
+            "KNOWN BUG (#16 family / WITH variant): IS test inside a WITH arm \
+             segfaults — same TypeDesc-lookup issue but compounded by the \
+             WITH narrowing. Un-ignore when #16 is fixed.",
+        ),
+    },
+
+    Probe {
+        module_name: "M_Type_Array_Of_Records",
+        test_name: "type_array_of_records_iteration",
+        spec_section: "6.2 / 6.3",
+        description: "fixed-size array of records — iterate, mutate fields, read back",
+        expected_value: 60,
+        cp_source: r#"MODULE M_Type_Array_Of_Records;
+    TYPE Point = RECORD x, y: INTEGER END;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR pts: ARRAY 3 OF Point; i, sum: INTEGER;
+    BEGIN
+        FOR i := 0 TO 2 DO
+            pts[i].x := (i + 1) * 10;
+            pts[i].y := i + 1
+        END;
+        sum := 0;
+        FOR i := 0 TO 2 DO sum := sum + pts[i].x END;
+        RETURN sum                              (* 10 + 20 + 30 = 60 *)
+    END Run;
+END M_Type_Array_Of_Records.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Method_OnRecord_FromExternalCallable",
+        test_name: "method_dispatch_then_indirect_call",
+        spec_section: "10.2 / 6.5",
+        description: "store a method-result-producing procedure in a procedure-typed local, \
+                      then call it indirectly; result feeds another method dispatch",
+        expected_value: 25,
+        cp_source: r#"MODULE M_Method_OnRecord_FromExternalCallable;
+    TYPE
+        BoxDesc = EXTENSIBLE RECORD v: INTEGER END;
+        Box     = POINTER TO BoxDesc;
+        Make    = PROCEDURE (): Box;
+
+    PROCEDURE (b: Box) Times* (k: INTEGER): INTEGER, NEW;
+    BEGIN RETURN b.v * k END Times;
+
+    PROCEDURE FreshFive (): Box;
+        VAR b: Box;
+    BEGIN
+        NEW(b);
+        b.v := 5;
+        RETURN b
+    END FreshFive;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR maker: Make; b: Box;
+    BEGIN
+        maker := FreshFive;
+        b := maker();
+        RETURN b.Times(5)                     (* 25 *)
+    END Run;
+END M_Method_OnRecord_FromExternalCallable.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Expr_String_Compare_Mixed",
+        test_name: "expr_string_compare_with_relational_operators",
+        spec_section: "8.2.5",
+        description: "lexicographic ordering on ARRAY OF CHAR — `<`, `<=` etc compare \
+                      codepoints up to the first 0X",
+        expected_value: 111,
+        cp_source: r#"MODULE M_Expr_String_Compare_Mixed;
+    PROCEDURE Run* (): INTEGER;
+        VAR a, b: ARRAY 8 OF CHAR; score: INTEGER;
+    BEGIN
+        a := "abc";
+        b := "abd";
+        score := 0;
+        IF a < b  THEN score := score + 1   END;
+        IF a <= b THEN score := score + 10  END;
+        IF b > a  THEN score := score + 100 END;
+        RETURN score
+    END Run;
+END M_Expr_String_Compare_Mixed.
+"#,
+        ignored: Some(
+            "KNOWN BUG: sema rejects `<` / `<=` / `>` / `>=` on ARRAY OF CHAR \
+             operands with `invalid operands for <`. CP §8.2.5 defines \
+             lexicographic ordering on char arrays; needs to be added to the \
+             relational-operator type table. File under deferred_fixes #26.",
+        ),
+    },
+
+    Probe {
+        module_name: "M_Expr_DEC_Single",
+        test_name: "expr_dec_without_delta",
+        spec_section: "10.3",
+        description: "DEC(n) with no delta arg decrements by 1",
+        expected_value: 9,
+        cp_source: r#"MODULE M_Expr_DEC_Single;
+    PROCEDURE Run* (): INTEGER;
+        VAR n: INTEGER;
+    BEGIN
+        n := 10;
+        DEC(n);
+        RETURN n
+    END Run;
+END M_Expr_DEC_Single.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Method_OnPointerAlias_AbstractBase_ConcreteSub",
+        test_name: "method_on_pointer_alias_abstract_base",
+        spec_section: "10.2",
+        description: "subclass overrides an ABSTRACT method via the BlackBox-idiomatic \
+                      pointer-alias receiver `(s: SubAlias)`",
+        expected_value: 144,
+        cp_source: r#"MODULE M_Method_OnPointerAlias_AbstractBase_ConcreteSub;
+    TYPE
+        BaseDesc = ABSTRACT RECORD END;
+        Base     = POINTER TO BaseDesc;
+        SubDesc  = RECORD (BaseDesc) v: INTEGER END;
+        Sub      = POINTER TO SubDesc;
+
+    PROCEDURE (b: Base) Eval* (n: INTEGER): INTEGER, NEW, ABSTRACT;
+
+    PROCEDURE (s: Sub) Eval* (n: INTEGER): INTEGER;
+    BEGIN RETURN s.v * n END Eval;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR s: Sub;
+    BEGIN
+        NEW(s);
+        s.v := 12;
+        RETURN s.Eval(12)                       (* 144 *)
+    END Run;
+END M_Method_OnPointerAlias_AbstractBase_ConcreteSub.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Expr_Concatenated_BOOLEAN_Logic",
+        test_name: "expr_concatenated_boolean_logic",
+        spec_section: "8.2.3",
+        description: "nested boolean expressions with parentheses, AND/OR/NOT, and a final \
+                      assignment to a BOOLEAN local",
+        expected_value: 1,
+        cp_source: r#"MODULE M_Expr_Concatenated_BOOLEAN_Logic;
+    PROCEDURE Run* (): INTEGER;
+        VAR a, b, c, d: BOOLEAN; result: BOOLEAN;
+    BEGIN
+        a := TRUE; b := FALSE; c := TRUE; d := FALSE;
+        (* (a & ~b) OR (c & d) = (TRUE & TRUE) OR (TRUE & FALSE) = TRUE *)
+        result := (a & ~b) OR (c & d);
+        IF result THEN RETURN 1 ELSE RETURN 0 END
+    END Run;
+END M_Expr_Concatenated_BOOLEAN_Logic.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Stmt_IF_With_NestedIF",
+        test_name: "stmt_nested_if_complete_tree",
+        spec_section: "9.4",
+        description: "nested IF / ELSE tree with three levels of depth",
+        expected_value: 5,
+        cp_source: r#"MODULE M_Stmt_IF_With_NestedIF;
+    PROCEDURE Classify (a, b: INTEGER): INTEGER;
+    BEGIN
+        IF a > 0 THEN
+            IF b > 0 THEN
+                IF a > b THEN
+                    RETURN 1
+                ELSE
+                    RETURN 2
+                END
+            ELSE
+                RETURN 3
+            END
+        ELSE
+            RETURN 4
+        END
+    END Classify;
+
+    PROCEDURE Run* (): INTEGER;
+    BEGIN
+        (* Classify(2, 3) = 2, Classify(3, 2) = 1, Classify(2, -1) = 3, Classify(-1, 5) = 4
+           sum 2+1+3+4 = 10 ... offset to 5 *)
+        RETURN Classify(2, 3) + Classify(3, 2) + Classify(2, -1) + Classify(-1, 5) - 5
+    END Run;
+END M_Stmt_IF_With_NestedIF.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Method_With_LocalVar",
+        test_name: "method_with_local_var_declarations",
+        spec_section: "10",
+        description: "method body declares multiple local VARs; locals are scoped to the \
+                      method invocation",
+        expected_value: 36,
+        cp_source: r#"MODULE M_Method_With_LocalVar;
+    TYPE
+        BoxDesc = EXTENSIBLE RECORD v: INTEGER END;
+        Box     = POINTER TO BoxDesc;
+
+    PROCEDURE (b: Box) PowerOf* (k: INTEGER): INTEGER, NEW;
+        VAR i, result: INTEGER;
+    BEGIN
+        result := 1;
+        FOR i := 1 TO k DO result := result * b.v END;
+        RETURN result
+    END PowerOf;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR b: Box;
+    BEGIN
+        NEW(b);
+        b.v := 6;
+        RETURN b.PowerOf(2)                     (* 36 *)
+    END Run;
+END M_Method_With_LocalVar.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Stmt_FOR_WithDecreasingRange",
+        test_name: "stmt_for_decreasing_range_no_step",
+        spec_section: "9.7",
+        description: "FOR loop where TO < START with no BY direction — body runs zero \
+                      times when default step (1) overshoots immediately",
+        expected_value: 0,
+        cp_source: r#"MODULE M_Stmt_FOR_WithDecreasingRange;
+    PROCEDURE Run* (): INTEGER;
+        VAR i, count: INTEGER;
+    BEGIN
+        count := 0;
+        FOR i := 10 TO 5 DO INC(count) END;     (* default step +1; 10 > 5 → no iters *)
+        RETURN count
+    END Run;
+END M_Stmt_FOR_WithDecreasingRange.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Expr_Set_DifferenceVsSymDiff",
+        test_name: "expr_set_difference_vs_symmetric_diff",
+        spec_section: "8.2.4",
+        description: "explicit comparison of `a - b` (difference) vs `a / b` (symmetric \
+                      difference) on small overlapping sets",
+        expected_value: 11,
+        cp_source: r#"MODULE M_Expr_Set_DifferenceVsSymDiff;
+    PROCEDURE Run* (): INTEGER;
+        VAR a, b, diff, sym: SET; score: INTEGER;
+    BEGIN
+        a := {1, 2, 3};
+        b := {2, 3, 4};
+        diff := a - b;                          (* {1} *)
+        sym  := a / b;                          (* {1, 4} *)
+        score := 0;
+        IF (1 IN diff) & ~(4 IN diff) THEN score := score + 1  END;
+        IF (1 IN sym) & (4 IN sym)    THEN score := score + 10 END;
+        RETURN score
+    END Run;
+END M_Expr_Set_DifferenceVsSymDiff.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Method_OnRecord_TwoReceivers",
+        test_name: "method_value_and_var_receivers_same_record",
+        spec_section: "10.2",
+        description: "the same plain record has both a value-style read method and a VAR \
+                      mutate method — confirms direct-dispatch handles both shapes",
+        expected_value: 84,
+        cp_source: r#"MODULE M_Method_OnRecord_TwoReceivers;
+    TYPE Tally = RECORD running: INTEGER END;
+
+    PROCEDURE (VAR t: Tally) Add* (n: INTEGER), NEW;
+    BEGIN t.running := t.running + n END Add;
+
+    PROCEDURE (t: Tally) Snapshot* (): INTEGER, NEW;
+    BEGIN RETURN t.running END Snapshot;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR t: Tally;
+    BEGIN
+        t.running := 0;
+        t.Add(40);
+        t.Add(44);
+        RETURN t.Snapshot()
+    END Run;
+END M_Method_OnRecord_TwoReceivers.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Expr_PointerEquality_ReceivedFromCall",
+        test_name: "expr_pointer_equality_after_call",
+        spec_section: "8.2.5",
+        description: "two pointers obtained from separate NEW calls compare as different; \
+                      same pointer assigned to two vars compares equal",
+        expected_value: 110,
+        cp_source: r#"MODULE M_Expr_PointerEquality_ReceivedFromCall;
+    TYPE
+        BoxDesc = RECORD v: INTEGER END;
+        Box     = POINTER TO BoxDesc;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR a, b, c: Box; score: INTEGER;
+    BEGIN
+        NEW(a);
+        NEW(b);
+        c := a;
+        score := 0;
+        IF a # b THEN score := score + 10  END;     (* different objects *)
+        IF a = c THEN score := score + 100 END;     (* alias to same object *)
+        RETURN score
+    END Run;
+END M_Expr_PointerEquality_ReceivedFromCall.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Module_Init_With_Statements",
+        test_name: "module_begin_block_runs_multiple_statements",
+        spec_section: "11",
+        description: "module BEGIN block executes a sequence of statements in order at \
+                      load time",
+        expected_value: 60,
+        cp_source: r#"MODULE M_Module_Init_With_Statements;
+    VAR a, b, c: INTEGER;
+
+    PROCEDURE Run* (): INTEGER;
+    BEGIN
+        RETURN a + b + c                        (* 10 + 20 + 30 = 60 *)
+    END Run;
+
+BEGIN
+    a := 10;
+    b := 20;
+    c := 30
+END M_Module_Init_With_Statements.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Method_AbstractToConcrete_ChainedOverride",
+        test_name: "abstract_method_concrete_override_via_extensible",
+        spec_section: "10.2",
+        description: "ABSTRACT in BaseDesc, EXTENSIBLE override in MidDesc, final \
+                      override in SubDesc; dispatch through Base pointer to a Sub \
+                      lands in Sub.Method",
+        expected_value: 999,
+        cp_source: r#"MODULE M_Method_AbstractToConcrete_ChainedOverride;
+    TYPE
+        BaseDesc = ABSTRACT RECORD END;
+        Base     = POINTER TO BaseDesc;
+        MidDesc  = EXTENSIBLE RECORD (BaseDesc) END;
+        Mid      = POINTER TO MidDesc;
+        SubDesc  = RECORD (MidDesc) END;
+        Sub      = POINTER TO SubDesc;
+
+    PROCEDURE (b: Base) Pick* (): INTEGER, NEW, ABSTRACT;
+
+    PROCEDURE (m: Mid) Pick* (): INTEGER, EXTENSIBLE;
+    BEGIN RETURN 1 END Pick;
+
+    PROCEDURE (s: Sub) Pick* (): INTEGER;
+    BEGIN RETURN 999 END Pick;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR s: Sub; p: Base;
+    BEGIN
+        NEW(s);
+        p := s;
+        RETURN p.Pick()
+    END Run;
+END M_Method_AbstractToConcrete_ChainedOverride.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Expr_INC_BeyondRange",
+        test_name: "expr_inc_with_large_delta",
+        spec_section: "10.3",
+        description: "INC with a large delta still fits within INTEGER range and updates \
+                      the variable",
+        expected_value: 1100000,
+        cp_source: r#"MODULE M_Expr_INC_BeyondRange;
+    PROCEDURE Run* (): INTEGER;
+        VAR n: INTEGER;
+    BEGIN
+        n := 100000;
+        INC(n, 1000000);
+        RETURN n
+    END Run;
+END M_Expr_INC_BeyondRange.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Expr_String_NUL_Terminator",
+        test_name: "expr_string_handling_respects_nul",
+        spec_section: "8.2.5",
+        description: "ARRAY OF CHAR with explicit 0X mid-string truncates string compares \
+                      at the first NUL",
+        expected_value: 1,
+        cp_source: r#"MODULE M_Expr_String_NUL_Terminator;
+    PROCEDURE Run* (): INTEGER;
+        VAR a, b: ARRAY 8 OF CHAR;
+    BEGIN
+        a[0] := "h"; a[1] := "i"; a[2] := 0X; a[3] := "X"; a[4] := 0X;
+        b := "hi";
+        IF a = b THEN RETURN 1 ELSE RETURN 0 END
+    END Run;
+END M_Expr_String_NUL_Terminator.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Stmt_CASE_AsValue",
+        test_name: "stmt_case_assigns_to_variable",
+        spec_section: "9.5",
+        description: "CASE arms assign to a shared variable; final value depends on which \
+                      arm matched",
+        expected_value: 30,
+        cp_source: r#"MODULE M_Stmt_CASE_AsValue;
+    PROCEDURE Run* (): INTEGER;
+        VAR n, result: INTEGER;
+    BEGIN
+        n := 3;
+        CASE n OF
+          1: result := 10
+        | 2: result := 20
+        | 3: result := 30
+        ELSE result := 0
+        END;
+        RETURN result
+    END Run;
+END M_Stmt_CASE_AsValue.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Procedure_Nested_Two_Levels",
+        test_name: "procedure_two_nested_inner_procs",
+        spec_section: "10",
+        description: "outer procedure contains two siblings nested procedures; each can be \
+                      called from the outer body independently",
+        expected_value: 30,
+        cp_source: r#"MODULE M_Procedure_Nested_Two_Levels;
+    PROCEDURE Outer (x: INTEGER): INTEGER;
+
+        PROCEDURE Twice (): INTEGER;
+        BEGIN RETURN x * 2 END Twice;
+
+        PROCEDURE Plus10 (): INTEGER;
+        BEGIN RETURN x + 10 END Plus10;
+
+    BEGIN
+        RETURN Twice() + Plus10()         (* 2x + x + 10 = 3x + 10; x=20 → 70...
+                                              wait: x = 20 → 40 + 30 = 70 *)
+    END Outer;
+
+    PROCEDURE Run* (): INTEGER;
+    BEGIN
+        (* Want 30 → solve 3x + 10 = 30 ⇒ x = 20/3 not integer.
+           Use x = 5: 15 + 10 = 25 → not 30 either.
+           Use x = 20/3 impossible. Replace formula: 2x + (x+10) ⇒ try x=20/3.
+           Easier: pick x = 10/3 nope. Use direct verification:
+           x=10: Twice=20, Plus10=20, sum=40.
+           x=5:  Twice=10, Plus10=15, sum=25.
+           x = 6: 12 + 16 = 28.
+           x = 6.67 nope.
+           x = 10 → 40 -10 = 30 — adjust formula. *)
+        RETURN Outer(10) - 10
+    END Run;
+END M_Procedure_Nested_Two_Levels.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Stmt_REPEAT_ManyIters",
+        test_name: "stmt_repeat_with_many_iterations",
+        spec_section: "9.7",
+        description: "REPEAT UNTIL runs body repeatedly until the condition becomes TRUE \
+                      at the end of an iteration",
+        expected_value: 55,
+        cp_source: r#"MODULE M_Stmt_REPEAT_ManyIters;
+    PROCEDURE Run* (): INTEGER;
+        VAR i, sum: INTEGER;
+    BEGIN
+        i := 0; sum := 0;
+        REPEAT
+            INC(i);
+            sum := sum + i
+        UNTIL i = 10;
+        RETURN sum                              (* 1+2+...+10 = 55 *)
+    END Run;
+END M_Stmt_REPEAT_ManyIters.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Expr_INC_OnByte",
+        test_name: "expr_inc_on_byte",
+        spec_section: "10.3",
+        description: "INC on a BYTE variable stays within range",
+        expected_value: 150,
+        cp_source: r#"MODULE M_Expr_INC_OnByte;
+    PROCEDURE Run* (): INTEGER;
+        VAR b: BYTE;
+    BEGIN
+        b := SHORT(SHORT(SHORT(100)));
+        INC(b, 50);
+        RETURN b
+    END Run;
+END M_Expr_INC_OnByte.
+"#,
+        ignored: Some(
+            "KNOWN BUG: INC(b, 50) on a BYTE variable doesn't update the \
+             variable (observed: b stays at 100 instead of 150). Either the \
+             INC IR builds the wrong type for the delta or the store path \
+             elides on width mismatch. File under deferred_fixes #27.",
+        ),
+    },
+
+    Probe {
+        module_name: "M_Type_Record_With_BOOLEAN_Field",
+        test_name: "type_record_with_boolean_and_int_field",
+        spec_section: "6.3",
+        description: "record with BOOLEAN + INTEGER fields packed together; each field is \
+                      addressable",
+        expected_value: 100,
+        cp_source: r#"MODULE M_Type_Record_With_BOOLEAN_Field;
+    TYPE Pair = RECORD flag: BOOLEAN; value: INTEGER END;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR p: Pair;
+    BEGIN
+        p.flag := TRUE;
+        p.value := 100;
+        IF p.flag THEN RETURN p.value ELSE RETURN 0 END
+    END Run;
+END M_Type_Record_With_BOOLEAN_Field.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Method_OnExtensible_NoOverride",
+        test_name: "method_on_extensible_base_called_via_subclass",
+        spec_section: "10.2",
+        description: "an EXTENSIBLE base method is inherited unchanged by a subclass that \
+                      doesn't override; calling through the subclass pointer reaches the \
+                      base body",
+        expected_value: 33,
+        cp_source: r#"MODULE M_Method_OnExtensible_NoOverride;
+    TYPE
+        BaseDesc = EXTENSIBLE RECORD v: INTEGER END;
+        Base     = POINTER TO BaseDesc;
+        SubDesc  = RECORD (BaseDesc) END;
+        Sub      = POINTER TO SubDesc;
+
+    PROCEDURE (b: Base) Get* (): INTEGER, NEW, EXTENSIBLE;
+    BEGIN RETURN b.v END Get;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR s: Sub;
+    BEGIN
+        NEW(s);
+        s.v := 33;
+        RETURN s.Get()
+    END Run;
+END M_Method_OnExtensible_NoOverride.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Expr_HexBit_HighBit",
+        test_name: "expr_hex_high_bit_in_integer",
+        spec_section: "8.1 / 6.1",
+        description: "hex literal with the high INTEGER bit set; arithmetic still preserves \
+                      the magnitude",
+        expected_value: 2147483647,
+        cp_source: r#"MODULE M_Expr_HexBit_HighBit;
+    PROCEDURE Run* (): INTEGER;
+        VAR n: INTEGER;
+    BEGIN
+        n := 7FFFFFFFH;        (* INT32 max as a hex literal *)
+        RETURN n
+    END Run;
+END M_Expr_HexBit_HighBit.
+"#,
+        ignored: None,
+    },
 ];

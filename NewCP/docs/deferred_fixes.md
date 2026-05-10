@@ -562,6 +562,44 @@ designator resolves to a procedure-typed field — emit a Load of
 the field then an indirect Call, the same path a procedure-typed
 local variable uses. Un-ignore the probe to confirm; expected 49.
 
+### 26. Sema rejects relational `<` / `<=` / `>` / `>=` on ARRAY OF CHAR
+
+**Where**: sema's relational-operator type table. Surfaced by
+matrix probe `M_Expr_String_Compare_Mixed` (`#[ignore]`-flagged).
+
+**Workaround**: probe ignored. Real code that wants
+lexicographic ordering can call a runtime helper directly.
+
+**Why deferred**: CP §8.2.5 defines `<` etc on `ARRAY OF CHAR`
+as character-by-character lexicographic. The string-equality
+helper (`__newcp_string_eq_char`) already exists; we'd need
+companion ordering helpers and sema acceptance of the operand
+pair.
+
+**Closing it**: add ARRAY-OF-CHAR-vs-ARRAY-OF-CHAR rows to the
+relational-operator sema table for `<`, `<=`, `>`, `>=`; emit
+calls to new runtime helpers (mirroring the `=` / `#` path).
+Un-ignore the probe to confirm; expected 111.
+
+### 27. INC on BYTE doesn't update the variable
+
+**Where**: codegen of `INC(b, delta)` when b is BYTE.  Surfaced
+by matrix probe `M_Expr_INC_OnByte` (`#[ignore]`-flagged).
+
+**Workaround**: probe ignored. Real code can read into INTEGER,
+compute, narrow with SHORT-chain.
+
+**Why deferred**: INC(b, 50) leaves b unchanged (observed:
+returns 100 instead of 150).  Likely an integer-width mismatch
+in the IR store path — the delta is INTEGER (i64) but the slot
+is BYTE (i8); something in the store either drops to the wrong
+slot or stores into a temp that's never read back.
+
+**Closing it**: trace INC's IR lowering for BYTE/SHORTINT/INTSHORT
+targets — verify the load+add+store chain types align and the
+final store lands in the named slot.  Un-ignore the probe;
+expected 150.
+
 ---
 
 ## Conventions for adding entries

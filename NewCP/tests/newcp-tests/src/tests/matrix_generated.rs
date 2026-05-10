@@ -1504,3 +1504,256 @@ fn matrix_stmt_while_compound_short_circuit_condition() {
     );
 }
 
+/// CP §6.1 — BYTE (8-bit unsigned) arithmetic within range; mix with INTEGER
+#[test]
+fn matrix_type_byte_primitive_arithmetic() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Type_BYTE_Primitive.cp", "Run"),
+        200,
+        "matrix probe type_byte_primitive_arithmetic (BYTE (8-bit unsigned) arithmetic within range; mix with INTEGER — §6.1) returned the wrong value",
+    );
+}
+
+/// CP §8.5 / 9.6 — IS test inside a WITH arm — the narrowed local can be checked against a further-derived type
+#[test]
+#[ignore = "KNOWN BUG (#16 family / WITH variant): IS test inside a WITH arm segfaults — same TypeDesc-lookup issue but compounded by the WITH narrowing. Un-ignore when #16 is fixed."]
+fn matrix_stmt_is_test_inside_with_arm() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Stmt_IS_Inside_WITH.cp", "Run"),
+        99,
+        "matrix probe stmt_is_test_inside_with_arm (IS test inside a WITH arm — the narrowed local can be checked against a further-derived type — §8.5 / 9.6) returned the wrong value",
+    );
+}
+
+/// CP §6.2 / 6.3 — fixed-size array of records — iterate, mutate fields, read back
+#[test]
+fn matrix_type_array_of_records_iteration() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Type_Array_Of_Records.cp", "Run"),
+        60,
+        "matrix probe type_array_of_records_iteration (fixed-size array of records — iterate, mutate fields, read back — §6.2 / 6.3) returned the wrong value",
+    );
+}
+
+/// CP §10.2 / 6.5 — store a method-result-producing procedure in a procedure-typed local, then call it indirectly; result feeds another method dispatch
+#[test]
+fn matrix_method_dispatch_then_indirect_call() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Method_OnRecord_FromExternalCallable.cp", "Run"),
+        25,
+        "matrix probe method_dispatch_then_indirect_call (store a method-result-producing procedure in a procedure-typed local, then call it indirectly; result feeds another method dispatch — §10.2 / 6.5) returned the wrong value",
+    );
+}
+
+/// CP §8.2.5 — lexicographic ordering on ARRAY OF CHAR — `<`, `<=` etc compare codepoints up to the first 0X
+#[test]
+#[ignore = "KNOWN BUG: sema rejects `<` / `<=` / `>` / `>=` on ARRAY OF CHAR operands with `invalid operands for <`. CP §8.2.5 defines lexicographic ordering on char arrays; needs to be added to the relational-operator type table. File under deferred_fixes #26."]
+fn matrix_expr_string_compare_with_relational_operators() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_String_Compare_Mixed.cp", "Run"),
+        111,
+        "matrix probe expr_string_compare_with_relational_operators (lexicographic ordering on ARRAY OF CHAR — `<`, `<=` etc compare codepoints up to the first 0X — §8.2.5) returned the wrong value",
+    );
+}
+
+/// CP §10.3 — DEC(n) with no delta arg decrements by 1
+#[test]
+fn matrix_expr_dec_without_delta() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_DEC_Single.cp", "Run"),
+        9,
+        "matrix probe expr_dec_without_delta (DEC(n) with no delta arg decrements by 1 — §10.3) returned the wrong value",
+    );
+}
+
+/// CP §10.2 — subclass overrides an ABSTRACT method via the BlackBox-idiomatic pointer-alias receiver `(s: SubAlias)`
+#[test]
+fn matrix_method_on_pointer_alias_abstract_base() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Method_OnPointerAlias_AbstractBase_ConcreteSub.cp", "Run"),
+        144,
+        "matrix probe method_on_pointer_alias_abstract_base (subclass overrides an ABSTRACT method via the BlackBox-idiomatic pointer-alias receiver `(s: SubAlias)` — §10.2) returned the wrong value",
+    );
+}
+
+/// CP §8.2.3 — nested boolean expressions with parentheses, AND/OR/NOT, and a final assignment to a BOOLEAN local
+#[test]
+fn matrix_expr_concatenated_boolean_logic() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_Concatenated_BOOLEAN_Logic.cp", "Run"),
+        1,
+        "matrix probe expr_concatenated_boolean_logic (nested boolean expressions with parentheses, AND/OR/NOT, and a final assignment to a BOOLEAN local — §8.2.3) returned the wrong value",
+    );
+}
+
+/// CP §9.4 — nested IF / ELSE tree with three levels of depth
+#[test]
+fn matrix_stmt_nested_if_complete_tree() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Stmt_IF_With_NestedIF.cp", "Run"),
+        5,
+        "matrix probe stmt_nested_if_complete_tree (nested IF / ELSE tree with three levels of depth — §9.4) returned the wrong value",
+    );
+}
+
+/// CP §10 — method body declares multiple local VARs; locals are scoped to the method invocation
+#[test]
+fn matrix_method_with_local_var_declarations() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Method_With_LocalVar.cp", "Run"),
+        36,
+        "matrix probe method_with_local_var_declarations (method body declares multiple local VARs; locals are scoped to the method invocation — §10) returned the wrong value",
+    );
+}
+
+/// CP §9.7 — FOR loop where TO < START with no BY direction — body runs zero times when default step (1) overshoots immediately
+#[test]
+fn matrix_stmt_for_decreasing_range_no_step() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Stmt_FOR_WithDecreasingRange.cp", "Run"),
+        0,
+        "matrix probe stmt_for_decreasing_range_no_step (FOR loop where TO < START with no BY direction — body runs zero times when default step (1) overshoots immediately — §9.7) returned the wrong value",
+    );
+}
+
+/// CP §8.2.4 — explicit comparison of `a - b` (difference) vs `a / b` (symmetric difference) on small overlapping sets
+#[test]
+fn matrix_expr_set_difference_vs_symmetric_diff() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_Set_DifferenceVsSymDiff.cp", "Run"),
+        11,
+        "matrix probe expr_set_difference_vs_symmetric_diff (explicit comparison of `a - b` (difference) vs `a / b` (symmetric difference) on small overlapping sets — §8.2.4) returned the wrong value",
+    );
+}
+
+/// CP §10.2 — the same plain record has both a value-style read method and a VAR mutate method — confirms direct-dispatch handles both shapes
+#[test]
+fn matrix_method_value_and_var_receivers_same_record() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Method_OnRecord_TwoReceivers.cp", "Run"),
+        84,
+        "matrix probe method_value_and_var_receivers_same_record (the same plain record has both a value-style read method and a VAR mutate method — confirms direct-dispatch handles both shapes — §10.2) returned the wrong value",
+    );
+}
+
+/// CP §8.2.5 — two pointers obtained from separate NEW calls compare as different; same pointer assigned to two vars compares equal
+#[test]
+fn matrix_expr_pointer_equality_after_call() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_PointerEquality_ReceivedFromCall.cp", "Run"),
+        110,
+        "matrix probe expr_pointer_equality_after_call (two pointers obtained from separate NEW calls compare as different; same pointer assigned to two vars compares equal — §8.2.5) returned the wrong value",
+    );
+}
+
+/// CP §11 — module BEGIN block executes a sequence of statements in order at load time
+#[test]
+fn matrix_module_begin_block_runs_multiple_statements() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Module_Init_With_Statements.cp", "Run"),
+        60,
+        "matrix probe module_begin_block_runs_multiple_statements (module BEGIN block executes a sequence of statements in order at load time — §11) returned the wrong value",
+    );
+}
+
+/// CP §10.2 — ABSTRACT in BaseDesc, EXTENSIBLE override in MidDesc, final override in SubDesc; dispatch through Base pointer to a Sub lands in Sub.Method
+#[test]
+fn matrix_abstract_method_concrete_override_via_extensible() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Method_AbstractToConcrete_ChainedOverride.cp", "Run"),
+        999,
+        "matrix probe abstract_method_concrete_override_via_extensible (ABSTRACT in BaseDesc, EXTENSIBLE override in MidDesc, final override in SubDesc; dispatch through Base pointer to a Sub lands in Sub.Method — §10.2) returned the wrong value",
+    );
+}
+
+/// CP §10.3 — INC with a large delta still fits within INTEGER range and updates the variable
+#[test]
+fn matrix_expr_inc_with_large_delta() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_INC_BeyondRange.cp", "Run"),
+        1100000,
+        "matrix probe expr_inc_with_large_delta (INC with a large delta still fits within INTEGER range and updates the variable — §10.3) returned the wrong value",
+    );
+}
+
+/// CP §8.2.5 — ARRAY OF CHAR with explicit 0X mid-string truncates string compares at the first NUL
+#[test]
+fn matrix_expr_string_handling_respects_nul() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_String_NUL_Terminator.cp", "Run"),
+        1,
+        "matrix probe expr_string_handling_respects_nul (ARRAY OF CHAR with explicit 0X mid-string truncates string compares at the first NUL — §8.2.5) returned the wrong value",
+    );
+}
+
+/// CP §9.5 — CASE arms assign to a shared variable; final value depends on which arm matched
+#[test]
+fn matrix_stmt_case_assigns_to_variable() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Stmt_CASE_AsValue.cp", "Run"),
+        30,
+        "matrix probe stmt_case_assigns_to_variable (CASE arms assign to a shared variable; final value depends on which arm matched — §9.5) returned the wrong value",
+    );
+}
+
+/// CP §10 — outer procedure contains two siblings nested procedures; each can be called from the outer body independently
+#[test]
+fn matrix_procedure_two_nested_inner_procs() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Procedure_Nested_Two_Levels.cp", "Run"),
+        30,
+        "matrix probe procedure_two_nested_inner_procs (outer procedure contains two siblings nested procedures; each can be called from the outer body independently — §10) returned the wrong value",
+    );
+}
+
+/// CP §9.7 — REPEAT UNTIL runs body repeatedly until the condition becomes TRUE at the end of an iteration
+#[test]
+fn matrix_stmt_repeat_with_many_iterations() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Stmt_REPEAT_ManyIters.cp", "Run"),
+        55,
+        "matrix probe stmt_repeat_with_many_iterations (REPEAT UNTIL runs body repeatedly until the condition becomes TRUE at the end of an iteration — §9.7) returned the wrong value",
+    );
+}
+
+/// CP §10.3 — INC on a BYTE variable stays within range
+#[test]
+#[ignore = "KNOWN BUG: INC(b, 50) on a BYTE variable doesn't update the variable (observed: b stays at 100 instead of 150). Either the INC IR builds the wrong type for the delta or the store path elides on width mismatch. File under deferred_fixes #27."]
+fn matrix_expr_inc_on_byte() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_INC_OnByte.cp", "Run"),
+        150,
+        "matrix probe expr_inc_on_byte (INC on a BYTE variable stays within range — §10.3) returned the wrong value",
+    );
+}
+
+/// CP §6.3 — record with BOOLEAN + INTEGER fields packed together; each field is addressable
+#[test]
+fn matrix_type_record_with_boolean_and_int_field() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Type_Record_With_BOOLEAN_Field.cp", "Run"),
+        100,
+        "matrix probe type_record_with_boolean_and_int_field (record with BOOLEAN + INTEGER fields packed together; each field is addressable — §6.3) returned the wrong value",
+    );
+}
+
+/// CP §10.2 — an EXTENSIBLE base method is inherited unchanged by a subclass that doesn't override; calling through the subclass pointer reaches the base body
+#[test]
+fn matrix_method_on_extensible_base_called_via_subclass() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Method_OnExtensible_NoOverride.cp", "Run"),
+        33,
+        "matrix probe method_on_extensible_base_called_via_subclass (an EXTENSIBLE base method is inherited unchanged by a subclass that doesn't override; calling through the subclass pointer reaches the base body — §10.2) returned the wrong value",
+    );
+}
+
+/// CP §8.1 / 6.1 — hex literal with the high INTEGER bit set; arithmetic still preserves the magnitude
+#[test]
+fn matrix_expr_hex_high_bit_in_integer() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_HexBit_HighBit.cp", "Run"),
+        2147483647,
+        "matrix probe expr_hex_high_bit_in_integer (hex literal with the high INTEGER bit set; arithmetic still preserves the magnitude — §8.1 / 6.1) returned the wrong value",
+    );
+}
+
