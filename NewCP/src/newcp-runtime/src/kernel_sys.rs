@@ -9,14 +9,16 @@
 //! top of the existing GC and `TypeDesc` layout.
 //!
 //! Deferred for follow-up commits:
-//! - `ThisMod` / `ThisType` / `GetTypeName` / `GetModName` — need the
-//!   type-name-on-`TypeDesc` codegen change (also wanted by
-//!   heap_introspection).
-//! - `PushTrapCleaner` / `PopTrapCleaner` — new runtime feature.
+//! - `GetModName` / `ModOf` — need the TypeDesc.module field wiring
+//!   (codegen-side ModuleDesc emission, or a name-based fallback).
 //! - `LastLoaderResult` — needs a global last-failure slot synced from
 //!   the loader.
-//! - The event-loop primitive (`Kernel.Loop`, `Kernel.Quit`,
-//!   `EventSource` registration) — its own focused commit.
+//!
+//! Done since the original first slice:
+//! - `Loop`, `Quit`, `Event`, `EventHandler` (commit 03fab50)
+//! - `PushTrapCleaner`, `PopTrapCleaner` (commit 02c78dc)
+//! - `GetTypeName`, `GetQualifiedTypeName` (commit 8d9c2bd)
+//! - `ThisMod`, `ThisType` (this commit)
 //!
 //! ABI conventions match the existing `host_file_sys` / `host_date_sys`
 //! pattern: every export is `extern "C"`, scalar args are passed by
@@ -409,6 +411,160 @@ pub extern "C" fn kernel_sys_loop(handler: CpEventHandler) {
     LOOP_DEPTH.with(|d| d.set(d.get().saturating_sub(1)));
 }
 
+// ─── Module / Type lookup (Kernel.ThisMod / Kernel.ThisType) ─────────────
+
+/// Process-wide registry of "known" module names — the universe over
+/// which `Kernel.ThisMod` succeeds. Populated by:
+///   1. The bootstrap shell, which calls
+///      [`register_known_module`] for every native-module artifact it
+///      registers.
+///   2. (Future) the loader, when a compiled CP source module finishes
+///      materializing.
+///
+/// `ThisMod` returns the 1-based index of the name in this Vec
+/// (treated as an opaque `Module` handle by CP code). `ThisType`
+/// reverse-maps the handle back to the name and walks the heap for
+/// the matching TypeDesc.
+static MODULE_REGISTRY: std::sync::Mutex<Vec<String>> = std::sync::Mutex::new(Vec::new());
+
+/// Register `name` as a known module. Idempotent — duplicate names
+/// are silently dropped. Public so the runtime's bootstrap and
+/// (eventually) the loader can populate the registry.
+pub fn register_known_module(name: &str) {
+    let mut reg = MODULE_REGISTRY.lock().expect("module registry mutex poisoned");
+    if !reg.iter().any(|n| n == name) {
+        reg.push(name.to_string());
+    }
+}
+
+/// Test-only helper: clear the registry. Used by unit tests that
+/// need a deterministic starting state across runs.
+#[cfg(test)]
+fn reset_module_registry_for_test() {
+    let mut reg = MODULE_REGISTRY.lock().expect("module registry mutex poisoned");
+    reg.clear();
+}
+
+/// Decode a UTF-32 zero-terminated codepoint stream into a Rust
+/// `String`. CP source identifiers are guaranteed ASCII so the
+/// codepoint→char conversion is lossless.
+fn read_cp_utf32_string(ptr: *const u32, max_len: i64) -> String {
+    if ptr.is_null() {
+        return String::new();
+    }
+    let cap = if max_len <= 0 { 4096 } else { max_len as usize };
+    let mut s = String::with_capacity(16);
+    for i in 0..cap {
+        let cp = unsafe { *ptr.add(i) };
+        if cp == 0 {
+            break;
+        }
+        if let Some(c) = char::from_u32(cp) {
+            s.push(c);
+        }
+    }
+    s
+}
+
+/// `Kernel.ThisMod(IN name: ARRAY OF CHAR): Module`. Looks the name
+/// up in the module registry and returns a 1-based handle, or 0
+/// (NIL) if no such module is registered. The handle is opaque to
+/// CP code — the only thing it does with it is pass it to
+/// `Kernel.ThisType`.
+#[unsafe(no_mangle)]
+pub extern "C" fn kernel_sys_this_mod(name_ptr: *const u32, name_len: i64) -> i64 {
+    let name = read_cp_utf32_string(name_ptr, name_len);
+    if name.is_empty() {
+        return 0;
+    }
+    let reg = MODULE_REGISTRY.lock().expect("module registry mutex poisoned");
+    reg.iter()
+        .position(|n| n == &name)
+        .map(|idx| (idx + 1) as i64)
+        .unwrap_or(0)
+}
+
+/// Reverse-map a Module handle (1-based registry index) back to its
+/// name. `None` if the handle is 0 or out of range.
+fn module_name_from_handle(handle: i64) -> Option<String> {
+    if handle <= 0 {
+        return None;
+    }
+    let reg = MODULE_REGISTRY.lock().expect("module registry mutex poisoned");
+    reg.get((handle - 1) as usize).cloned()
+}
+
+/// Process-wide registry of known TypeDescs, keyed by qualified
+/// name. Populated by:
+///   1. (Future) codegen-emitted `__newcp_register_type(td)` calls
+///      at module-init time. This is the proper population path
+///      and lets `Kernel.ThisType` work for any type in any
+///      currently-loaded module.
+///   2. The test-only [`register_known_type_for_test`] helper for
+///      unit tests with hand-fabricated TypeDescs.
+///
+/// We deliberately do NOT walk the heap to discover TypeDescs:
+/// the heap can outlive the JIT image that emitted a TypeDesc
+/// (cross-test isolation, future hot reload), so a tag in a
+/// surviving block may point at unmapped memory. Registry-based
+/// lookup is the only safe path.
+static TYPE_DESC_REGISTRY: std::sync::Mutex<Vec<(String, i64)>> =
+    std::sync::Mutex::new(Vec::new());
+
+/// Test-only: register a TypeDesc by its qualified name so
+/// `kernel_sys_this_type` can find it. Production code populates
+/// the registry from codegen (when the per-module-init hook
+/// lands); tests use this helper directly.
+#[cfg(test)]
+fn register_known_type_for_test(qualified_name: &str, td_addr: i64) {
+    let mut reg = TYPE_DESC_REGISTRY
+        .lock()
+        .expect("type registry mutex poisoned");
+    reg.retain(|(n, _)| n != qualified_name);
+    reg.push((qualified_name.to_string(), td_addr));
+}
+
+#[cfg(test)]
+fn reset_type_registry_for_test() {
+    let mut reg = TYPE_DESC_REGISTRY
+        .lock()
+        .expect("type registry mutex poisoned");
+    reg.clear();
+}
+
+/// `Kernel.ThisType(m: Module; IN typeName: ARRAY OF CHAR): Type`.
+/// Find the TypeDesc whose qualified name is `<module-name>.<typeName>`.
+/// Returns the TypeDesc address (treated as `Type` by CP code), or
+/// 0 if no matching TypeDesc has been registered.
+///
+/// Today the registry is empty until codegen-emitted module-init
+/// hooks land. CP-side production usage will get NIL back for
+/// every call until that work ships; integration tests that need
+/// the lookup to succeed populate the registry through the
+/// test-only helper.
+#[unsafe(no_mangle)]
+pub extern "C" fn kernel_sys_this_type(
+    m: i64,
+    type_name_ptr: *const u32,
+    type_name_len: i64,
+) -> i64 {
+    let Some(module_name) = module_name_from_handle(m) else {
+        return 0;
+    };
+    let type_name = read_cp_utf32_string(type_name_ptr, type_name_len);
+    if type_name.is_empty() {
+        return 0;
+    }
+    let qualified = format!("{module_name}.{type_name}");
+    let reg = TYPE_DESC_REGISTRY
+        .lock()
+        .expect("type registry mutex poisoned");
+    reg.iter()
+        .find(|(n, _)| n == &qualified)
+        .map(|(_, addr)| *addr)
+        .unwrap_or(0)
+}
+
 // ─── Type-name lookup ────────────────────────────────────────────────────
 
 /// Read the UTF-32 zero-terminated name attached to a `TypeDesc` and
@@ -669,6 +825,8 @@ fn kernel_exports() -> Vec<(&'static str, *const ())> {
         ("PopTrapCleaner",  kernel_sys_pop_trap_cleaner  as *const ()),
         ("GetTypeName",     kernel_sys_get_type_name     as *const ()),
         ("GetQualifiedTypeName", kernel_sys_get_qualified_type_name as *const ()),
+        ("ThisMod",         kernel_sys_this_mod          as *const ()),
+        ("ThisType",        kernel_sys_this_type         as *const ()),
     ]
 }
 
@@ -961,6 +1119,70 @@ mod tests {
 
         let depth = TRAP_CLEANERS.with(|s| s.borrow().len());
         assert_eq!(depth, 0);
+    }
+
+    #[test]
+    fn this_mod_returns_handle_for_registered_module() {
+        let _t = lock_tests();
+        reset_module_registry_for_test();
+
+        register_known_module("Stores");
+        register_known_module("TextModels");
+
+        // UTF-32 zero-terminated buffer for "Stores".
+        let stores_utf32: Vec<u32> = "Stores".chars().map(|c| c as u32).chain(std::iter::once(0)).collect();
+        let h = kernel_sys_this_mod(stores_utf32.as_ptr(), stores_utf32.len() as i64);
+        assert_eq!(h, 1, "first-registered module gets handle 1");
+
+        let textmodels_utf32: Vec<u32> =
+            "TextModels".chars().map(|c| c as u32).chain(std::iter::once(0)).collect();
+        let h2 = kernel_sys_this_mod(textmodels_utf32.as_ptr(), textmodels_utf32.len() as i64);
+        assert_eq!(h2, 2);
+
+        // Unknown module returns 0.
+        let unknown_utf32: Vec<u32> =
+            "DoesNotExist".chars().map(|c| c as u32).chain(std::iter::once(0)).collect();
+        let h3 = kernel_sys_this_mod(unknown_utf32.as_ptr(), unknown_utf32.len() as i64);
+        assert_eq!(h3, 0);
+
+        // Empty name returns 0.
+        let empty: Vec<u32> = vec![0];
+        let h4 = kernel_sys_this_mod(empty.as_ptr(), 1);
+        assert_eq!(h4, 0);
+    }
+
+    #[test]
+    fn this_type_resolves_registered_typedesc() {
+        let _t = lock_tests();
+        reset_module_registry_for_test();
+        reset_type_registry_for_test();
+
+        register_known_module("MyMod");
+        // Use a fake TypeDesc address (just a non-zero value).
+        let fake_td_addr: i64 = 0xCAFEBABE_DEADBEEF_u64 as i64;
+        register_known_type_for_test("MyMod.MyDesc", fake_td_addr);
+
+        // ThisMod("MyMod") → handle.
+        let mod_utf32: Vec<u32> =
+            "MyMod".chars().map(|c| c as u32).chain(std::iter::once(0)).collect();
+        let m = kernel_sys_this_mod(mod_utf32.as_ptr(), mod_utf32.len() as i64);
+        assert_ne!(m, 0);
+
+        // ThisType(m, "MyDesc") → fake_td_addr.
+        let type_utf32: Vec<u32> =
+            "MyDesc".chars().map(|c| c as u32).chain(std::iter::once(0)).collect();
+        let found = kernel_sys_this_type(m, type_utf32.as_ptr(), type_utf32.len() as i64);
+        assert_eq!(found, fake_td_addr);
+
+        // Unknown type returns 0.
+        let bogus_utf32: Vec<u32> =
+            "Bogus".chars().map(|c| c as u32).chain(std::iter::once(0)).collect();
+        let bogus = kernel_sys_this_type(m, bogus_utf32.as_ptr(), bogus_utf32.len() as i64);
+        assert_eq!(bogus, 0);
+
+        // Bad module handle returns 0.
+        let bad = kernel_sys_this_type(99999, type_utf32.as_ptr(), type_utf32.len() as i64);
+        assert_eq!(bad, 0);
     }
 
     #[test]

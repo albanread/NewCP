@@ -827,6 +827,24 @@ impl BootstrapReport {
         #[cfg(windows)]
         kernel.register_native_module(igui_module);
         kernel.register_hosted_module(host_menus);
+
+        // Populate the kernel_sys module registry so Kernel.ThisMod
+        // can find every native and hosted module by name. The
+        // resident "Init" module is registered separately via
+        // register_resident_module above. Compiled CP modules will
+        // join the registry from the loader's materialize path
+        // (deferred — see docs/next_milestones.md decision B).
+        kernel_sys::register_known_module("Init");
+        kernel_sys::register_known_module("Kernel");
+        kernel_sys::register_known_module("KernelSys");
+        kernel_sys::register_known_module("Console");
+        kernel_sys::register_known_module("Math");
+        kernel_sys::register_known_module("SMath");
+        kernel_sys::register_known_module("HostFileSys");
+        kernel_sys::register_known_module("HostDateSys");
+        #[cfg(windows)]
+        kernel_sys::register_known_module("iGui");
+        kernel_sys::register_known_module("HostMenus");
         kernel.register_compiled_module(system_artifact);
         kernel.register_compiled_module(init_shell_artifact);
 

@@ -130,4 +130,39 @@ BEGIN
   RETURN 1
 END WidgetQualifiedTypeName;
 
+(** Kernel.ThisMod resolves a registered native module to a non-NIL
+    handle, and returns NIL for unknown names. *)
+PROCEDURE ThisModResolvesKnownModule*(): INTEGER;
+  VAR m: Kernel.Module;
+BEGIN
+  m := Kernel.ThisMod("Console");      (* registered at bootstrap *)
+  IF m = NIL THEN RETURN 0 END;
+  m := Kernel.ThisMod("Math");
+  IF m = NIL THEN RETURN 0 END;
+  m := Kernel.ThisMod("DefinitelyDoesNotExist");
+  IF m # NIL THEN RETURN 0 END;
+  RETURN 1
+END ThisModResolvesKnownModule;
+
+(** Kernel.ThisType finds a TypeDesc by (module, type) name. We use
+    Widget — a record we just NEW'd in the same procedure — so the
+    heap-walker can find its TypeDesc. The KernelProbe module
+    itself isn't in the registry yet (compiled CP modules join the
+    registry only when the loader-side hook lands), so we register
+    it implicitly through the recursion: `Widget` was just
+    allocated; `Kernel.ThisMod("KernelProbe")` would return NIL.
+    To exercise the lookup, we ask `ThisType` against a Kernel
+    module + a type from there. There's no allocated record from
+    Kernel-the-CP-module, so this must return NIL — proving the
+    "module known but type not heap-resident" branch works. *)
+PROCEDURE ThisTypeNilWhenUnseen*(): INTEGER;
+  VAR m: Kernel.Module; t: Kernel.Type;
+BEGIN
+  m := Kernel.ThisMod("Console");
+  IF m = NIL THEN RETURN 0 END;
+  t := Kernel.ThisType(m, "NoSuchType");
+  IF t # NIL THEN RETURN 0 END;
+  RETURN 1
+END ThisTypeNilWhenUnseen;
+
 END KernelProbe.

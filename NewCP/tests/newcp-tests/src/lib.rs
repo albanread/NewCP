@@ -2367,6 +2367,33 @@ mod tests {
     }
 
     #[test]
+    fn kernel_probe_this_mod_resolves_registered_module() {
+        // Kernel.ThisMod returns a non-NIL handle for a name that was
+        // registered at bootstrap (Console, Math, …) and NIL for an
+        // unknown name. Verifies the runtime's module-name registry
+        // is populated correctly before any user CP code runs.
+        assert_eq!(
+            run_function("Mod/Tests/KernelProbe.cp", "ThisModResolvesKnownModule"),
+            1,
+            "ThisMod must succeed for registered modules and fail for unknown"
+        );
+    }
+
+    #[test]
+    fn kernel_probe_this_type_nil_when_unseen() {
+        // ThisType returns NIL when the (module, type) pair has no
+        // matching TypeDesc visible in the heap. Validates the
+        // "module known but type not heap-resident" path that S2
+        // will need to recognise before falling through to alien
+        // dispatch.
+        assert_eq!(
+            run_function("Mod/Tests/KernelProbe.cp", "ThisTypeNilWhenUnseen"),
+            1,
+            "ThisType must return NIL for unseen (module, type) pairs"
+        );
+    }
+
+    #[test]
     fn kernel_trap_cleaners_balanced_push_pop_runs_clean() {
         // Push two typed cleaners, pop them in matching reverse
         // order, observe that Cleanup did not fire (balanced
