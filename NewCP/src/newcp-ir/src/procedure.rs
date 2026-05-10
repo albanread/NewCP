@@ -301,6 +301,20 @@ pub struct IrModule {
     ///
     /// Key: simple type name. Value: LLVM function name (e.g. `"BoxDesc_Finalize"`).
     pub type_finalizers: std::collections::HashMap<String, String>,
+
+    /// Cross-module base relationships for runtime base-chain patching.
+    ///
+    /// Key: simple type name in **this** module (e.g. `"TestSequencerDesc"`).
+    /// Value: the qualified name of the base type in another module
+    /// (e.g. `"Sequencers.SequencerDesc"`).
+    ///
+    /// `type_bases` only carries local bases — cross-module ones land
+    /// here so `__init_types` can patch the local TypeDesc's `base`
+    /// field at runtime via the `__newcp_lookup_typedesc` registry.
+    /// Without that runtime patch, the IS-test base chain stops at the
+    /// first cross-module step and `seq IS Sequencer` returns false
+    /// even when the dynamic type is in fact a Sequencer extension.
+    pub cross_module_bases: std::collections::HashMap<String, String>,
 }
 
 impl IrModule {

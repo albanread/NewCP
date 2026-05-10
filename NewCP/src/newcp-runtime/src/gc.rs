@@ -1341,6 +1341,58 @@ unsafe fn header_of(payload: *const u8) -> *mut BlockHeader {
     unsafe { payload.sub(std::mem::size_of::<BlockHeader>()) as *mut BlockHeader }
 }
 
+/// Runtime type test for `IS` / `WITH` dispatch on heap-allocated
+/// records.
+///
+/// Given `payload_ptr` (the data pointer a CP variable holds — what
+/// `NEW(p)` returned) and `target_td` (the `TypeDesc*` of the type
+/// being tested against), return `true` iff `payload_ptr`'s dynamic
+/// type either *is* `target_td` or extends it.  A NIL payload, NIL
+/// target, or a target type the dynamic type's chain doesn't reach
+/// all return `false`.
+///
+/// Walks the block header at `payload_ptr - 16` to read the tag,
+/// strips the GC mark bit, then chases the TypeDesc's `base` chain.
+///
+/// # Safety
+/// `payload_ptr` must either be NIL or point at a managed heap block's
+/// payload (i.e. produced by `__newcp_new_rec`).  Stack-allocated
+/// records have no header and pointing this function at them reads
+/// arbitrary stack memory; callers responsible for ensuring heap-
+/// allocated subjects (per CP §8.10 — IS / type-guard on record VAR
+/// params requires an extensible record's runtime type, which our
+/// codegen only emits for heap blocks today).
+#[unsafe(no_mangle)]
+pub extern "C" fn __newcp_type_test(
+    payload_ptr: *const u8,
+    target_td: *const TypeDesc,
+) -> bool {
+    if payload_ptr.is_null() || target_td.is_null() {
+        return false;
+    }
+    let header = unsafe { header_of(payload_ptr) };
+    let tag = unsafe { (*header).tag };
+    let dynamic_td = (tag & !BlockHeader::MARK_BIT) as *const TypeDesc;
+    if dynamic_td.is_null() {
+        return false;
+    }
+    // Chase the base chain — target_td matches if the dynamic type or
+    // any ancestor equals it.  Bound the walk so a malformed cycle
+    // can't hang the runtime.
+    let mut cursor = dynamic_td;
+    for _ in 0..256 {
+        if cursor == target_td {
+            return true;
+        }
+        let next = unsafe { (*cursor).base };
+        if next.is_null() {
+            return false;
+        }
+        cursor = next;
+    }
+    false
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Register spill + stack-pointer capture (architecture-dependent)
 // ─────────────────────────────────────────────────────────────────────────────

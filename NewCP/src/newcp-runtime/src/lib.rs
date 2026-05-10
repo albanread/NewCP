@@ -834,7 +834,11 @@ impl BootstrapReport {
         kernel.register_native_module(kernel_sys::kernel_sys_native_module_artifact());
         kernel.register_native_module(kernel_sys::kernel_native_module_artifact());
         kernel.register_native_module(stores_sys::stores_sys_native_module_artifact());
-        kernel.register_native_module(stores_sys::stores_native_module_artifact());
+        // `Stores.cp` is now a compiled CP module that trampolines
+        // through `StoresSys`; the loader picks up its source from
+        // `Mod/Stores.cp` and JITs the typed surface (StoreDesc /
+        // Reader / Writer / Domain).  No native artifact published
+        // for "Stores" — the CP image owns the symbol space.
         #[cfg(windows)]
         kernel.register_native_module(igui_module);
         kernel.register_hosted_module(host_menus);
@@ -854,7 +858,9 @@ impl BootstrapReport {
         kernel_sys::register_known_module("HostFileSys");
         kernel_sys::register_known_module("HostDateSys");
         kernel_sys::register_known_module("StoresSys");
-        kernel_sys::register_known_module("Stores");
+        // "Stores" is registered later — the CP-compiled module joins
+        // the registry when the loader materializes it from
+        // `Mod/Stores.cp`.
         #[cfg(windows)]
         kernel_sys::register_known_module("iGui");
         kernel_sys::register_known_module("HostMenus");
@@ -1123,6 +1129,9 @@ pub fn runtime_symbol_address(symbol_name: &str) -> Option<usize> {
     }
     if symbol_name == "__newcp_safepoint" {
         return Some(gc::__newcp_safepoint as *const () as usize);
+    }
+    if symbol_name == "__newcp_type_test" {
+        return Some(gc::__newcp_type_test as *const () as usize);
     }
     if symbol_name == "__newcp_string_eq_char" {
         return Some(__newcp_string_eq_char as *const () as usize);

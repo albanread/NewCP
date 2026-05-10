@@ -651,8 +651,8 @@ mod tests {
             "expected __newcp_type_test to be declared\noutput:\n{output}"
         );
         assert!(
-            output.contains("@__newcp_typedesc_Sub"),
-            "expected TypeDesc sentinel global for Sub\noutput:\n{output}"
+            output.contains("@Sub.desc"),
+            "expected TypeDesc global for Sub\noutput:\n{output}"
         );
         assert!(
             output.contains("%typetest = call i1 @__newcp_type_test"),
@@ -709,10 +709,12 @@ mod tests {
             output.contains("icmp ne ptr"),
             "expected pointer NIL check to use icmp ne ptr\noutput:\n{output}"
         );
-        // NEW(d) should call __newcp_sys_new
+        // NEW(d) should now go through __newcp_new_rec with the
+        // record's TypeDesc — every record type gets a TypeDesc so
+        // Kernel.TypeOf, IS-tests, and GC tracing all work uniformly.
         assert!(
-            output.contains("call ptr @__newcp_sys_new"),
-            "expected NEW(d) to emit call to __newcp_sys_new\noutput:\n{output}"
+            output.contains("call ptr @__newcp_new_rec(ptr @Data.desc)"),
+            "expected NEW(d) to emit call to __newcp_new_rec with @Data.desc\noutput:\n{output}"
         );
     }
 
@@ -3356,6 +3358,144 @@ mod tests {
             ),
             1,
             "Empty (terminator-only) run list must decode as zero pieces"
+        );
+    }
+
+    #[test]
+    fn with_statement_dispatches_to_correct_arm_via_runtime_type_test() {
+        // Two record types extend a common AnimalDesc abstract base.
+        // Identify(a) uses `WITH a: Dog DO ... | a: Cat DO ... ELSE ...`
+        // to pick a kind-specific accessor.  The runtime type test
+        // (`__newcp_type_test`) walks the heap-block header at -16 to
+        // read the dynamic TypeDesc tag and chases the base chain
+        // looking for a match.  Run() exercises Dog (88), Cat (-7),
+        // and NIL (0) in the same call:
+        //   (88 * 1000) + ((-(-7)) * 10) + 0 = 88_070.
+        assert_eq!(
+            run_function("Mod/Tests/WithProbe.cp", "Run"),
+            88_070,
+        );
+    }
+
+    #[test]
+    fn pointer_alias_receivers_bind_to_underlying_record() {
+        // Methods declared with the BlackBox-style pointer-alias
+        // receiver (`(s: Sub) Method` where `Sub = POINTER TO SubDesc`)
+        // should bind to the underlying record SubDesc — same as
+        // writing `(s: SubDesc) Method`.  Run() allocates a Sub,
+        // calls Greet(7) which is dispatched to SubDesc's override.
+        // SubDesc.Greet sets tag=7, extra=70.  Returns
+        // (tag * 100) + extra = 770.
+        assert_eq!(
+            run_function("Mod/Tests/PointerReceiverProbe.cp", "Run"),
+            770,
+        );
+    }
+
+    #[test]
+    fn super_call_crosses_module_boundary_to_base_method() {
+        // Cross-module super: ChildDesc (in SuperXmodProbe) extends
+        // SuperBase.BaseDesc and overrides Bump.  The override
+        // chains via `c.Bump^(v)` to the base in another module.
+        // Same expectation as the same-module case: traceBase=3,
+        // traceChild=30, packed as 330.
+        assert_eq!(
+            run_function("Mod/Tests/SuperXmodProbe.cp", "Run"),
+            330,
+        );
+    }
+
+    #[test]
+    fn super_call_dispatches_to_base_method() {
+        // ChildDesc.Bump overrides BaseDesc.Bump and chains via
+        // `c.Bump^(v)` to the base implementation, then adds its own
+        // contribution.  Run() allocates a Child, calls Bump(3):
+        //   BaseDesc.Bump:  traceBase += 3        -> 3
+        //   ChildDesc.Bump: traceChild += 3*10    -> 30
+        // Returns (traceBase * 100) + traceChild = 330.
+        assert_eq!(
+            run_function("Mod/Tests/SuperProbe.cp", "Run"),
+            330,
+        );
+    }
+
+    #[test]
+    fn models_dispatch_procs_forward_to_sequencer_or_fall_back() {
+        // The probe wires up a TestSequencer + TestOp and calls each
+        // of Models's Sequencer-driven dispatch procs (Do, BeginScript,
+        // EndScript, Bunch) — verifying they all forward to the
+        // installed sequencer.  Then it detaches the sequencer (passes
+        // NIL) and calls Do again — the WITH ELSE branch fires, which
+        // dispatches `op.Do()` (the abstract Stores.Operation method)
+        // directly.  Returns:
+        //   doCount × 1e5 + beginScriptCount × 1e4
+        //     + endScriptCount × 1000 + bunchCount × 100 + opDoCount
+        // Expect 111_101 — one of each Sequencer call plus one op.Do().
+        assert_eq!(
+            run_function("Mod/Tests/ModelsDispatchProbe.cp", "Run"),
+            111_101,
+        );
+    }
+
+    #[test]
+    fn models_broadcast_dispatches_through_installed_sequencer() {
+        // The probe installs a TestSequencer (cross-module-extending
+        // Sequencers.SequencerDesc) on a TinyModel and broadcasts a
+        // NeutralizeMsg twice.  Each Broadcast dispatches to the
+        // sequencer's Handle via WITH on the model's ANYPTR `seq`
+        // field; Handle then WITHs `msg` (VAR ANYREC) back to
+        // Models.Message to read the era.  This exercises:
+        //   * runtime IS test (`__newcp_type_test`) on heap subjects
+        //     (the Sequencer ptr) AND stack subjects (the NeutralizeMsg
+        //     record, via the shadow-header RTTI)
+        //   * cross-module base patching at __init_types
+        //   * vtable dispatch through the WITH-narrowed receiver
+        // Run() returns:
+        //   (Era(m) * 1_000_000) + (handleEra * 1000) + handleCount
+        // Expect 2_002_002 = (2 × 1m) + (2 × 1k) + 2.
+        assert_eq!(
+            run_function("Mod/Tests/ModelsProbe.cp", "Run"),
+            2_002_002,
+        );
+    }
+
+    #[test]
+    fn ports_frame_translates_user_to_device_coords() {
+        // The probe sets up a Frame on a Port with unit = 100 and
+        // offset gx = 50 / gy = 70, then calls Frame.DrawRect with
+        // user-space (l=0, t=0, r=200, b=300, s=fill, col=red).
+        // The frame divides every coordinate by `unit` after adding
+        // the offset, so the rider sees:
+        //   l = (50 + 0)   DIV 100 = 0
+        //   t = (70 + 0)   DIV 100 = 0
+        //   r = (50 + 200) DIV 100 = 2
+        //   b = (70 + 300) DIV 100 = 3
+        // Run() returns:
+        //   (rectCallCount * 1_000_000) + (rectR * 1000) + (rectB * 100)
+        //     + (rectColor MOD 1000)
+        // Expect 1_002_555 = 1 × 1m + 2 × 1k + 3 × 100 + (red=255 MOD 1000).
+        assert_eq!(
+            run_function("Mod/Tests/PortsProbe.cp", "Run"),
+            1_002_555,
+        );
+    }
+
+    #[test]
+    fn sequencers_notifier_chain_dispatches_in_lifo_order() {
+        // The probe installs a TestDirectory, asks for a Sequencer via
+        // Sequencers.dir.New(), hooks two notifiers (ids 1 and 2) via
+        // InstallNotifier, then broadcasts a PingMsg with tag = 99.
+        // InstallNotifier pushes onto the head of the chain, so the
+        // firing order is LIFO: n2 runs first, then n1.  Each notifier
+        // type-guards `msg` (VAR Sequencers.Message) against PingMsg
+        // — exercises the runtime IS test on a stack-allocated record
+        // backed by the shadow-header RTTI.  Run() returns:
+        //   (notifyCount * 1_000_000) + (lastTag * 1_000)
+        //     + (notifyTrace[0] * 10) + notifyTrace[1]
+        // Expect 2_099_021 = 2×1m + 99×1k + (2 × 10) + 1.
+        assert_eq!(
+            run_function("Mod/Tests/SequencersProbe.cp", "Run"),
+            2_099_021,
         );
     }
 

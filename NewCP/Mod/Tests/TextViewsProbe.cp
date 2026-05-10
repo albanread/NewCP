@@ -7,8 +7,8 @@ MODULE TextViewsProbe;
 IMPORT Stores, HostStores, TextModels, TextViews;
 
 (** DFS through `s` looking for a `TextViews.StdViewDesc`. *)
-PROCEDURE FindStdViewIn (s: Stores.Store): Stores.Store;
-    VAR child, found: Stores.Store; name: ARRAY 64 OF CHAR;
+PROCEDURE FindStdViewIn (s: Stores.StoreHandle): Stores.StoreHandle;
+    VAR child, found: Stores.StoreHandle; name: ARRAY 64 OF CHAR;
 BEGIN
     IF s = 0 THEN RETURN 0 END;
     Stores.GetTypeName(s, name);

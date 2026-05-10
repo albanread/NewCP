@@ -908,6 +908,7 @@ fn kernel_exports() -> Vec<(&'static str, *const ())> {
         ("ThisMod",         kernel_sys_this_mod          as *const ()),
         ("ThisType",        kernel_sys_this_type         as *const ()),
         ("Collect",         kernel_sys_collect           as *const ()),
+        ("TrapCount",       kernel_sys_trap_count        as *const ()),
     ]
 }
 
@@ -916,6 +917,22 @@ fn kernel_exports() -> Vec<(&'static str, *const ())> {
 #[unsafe(no_mangle)]
 pub extern "C" fn kernel_sys_collect() {
     crate::gc::collect();
+}
+
+/// Snapshot of the process-wide trap counter.  Today returns 0 — our
+/// `__newcp_trap` aborts the process rather than incrementing a
+/// counter and unwinding — but the counter is still surfaced under
+/// the BlackBox-faithful `Kernel.TrapCount` name so the framework
+/// reentrancy guards (`Models.Broadcast`, `Models.Domaincast`,
+/// `Sequencers.*`) compile and behave correctly: the snapshot they
+/// store as `TrapCount() + 1` never gets invalidated, so the
+/// "still my generation" assertion passes on unbroken control flow.
+/// Once we land recoverable traps, increment this counter at every
+/// trap site and the existing reentry guards will start catching
+/// orphaned in-flight broadcasts for free.
+#[unsafe(no_mangle)]
+pub extern "C" fn kernel_sys_trap_count() -> i64 {
+    0
 }
 
 fn build_artifact(module_name: &str, summary: &'static str) -> NativeModuleArtifact {

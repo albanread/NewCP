@@ -116,8 +116,8 @@ END LoadStdModelEmpty;
 (** Walk the store tree of `s` (DFS) returning the first store
     whose qualified type name is "TextModels.StdModelDesc", or 0
     if none is found. *)
-PROCEDURE FindStdModelIn (s: Stores.Store): Stores.Store;
-    VAR child, found: Stores.Store; name: ARRAY 64 OF CHAR;
+PROCEDURE FindStdModelIn (s: Stores.StoreHandle): Stores.StoreHandle;
+    VAR child, found: Stores.StoreHandle; name: ARRAY 64 OF CHAR;
 BEGIN
     IF s = 0 THEN RETURN 0 END;
     Stores.GetTypeName(s, name);

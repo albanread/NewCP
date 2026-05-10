@@ -942,7 +942,7 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
     }
 
     fn ensure_named_slot(
-        &self,
+        &mut self,
         name: &str,
         ty: &IrType,
         value_map: &mut ValueMap<'ctx>,
@@ -962,12 +962,160 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
         } else {
             slot_builder.position_at_end(entry_block);
         }
+
+        // For record-typed locals, mirror the heap layout
+        // (`__newcp_new_rec`) so `__newcp_type_test` works uniformly:
+        // alloca a `[16-byte BlockHeader] [record payload]` buffer
+        // and hand back a pointer to the payload.  The header's tag
+        // field is initialised at proc entry with the static
+        // TypeDesc — local TypeDescs get a constant write, cross-
+        // module ones go through the `__newcp_lookup_typedesc`
+        // registry so the address resolves once imports are loaded.
+        if let Some(record_name) = self.tagged_record_name_for_ir_type(ty) {
+            return self.alloca_record_with_header(
+                name,
+                ty,
+                &record_name,
+                value_map,
+                slot_builder,
+            );
+        }
+
         let slot = slot_builder.build_alloca(llvm_ty, name).map_err(|e| CodegenError::Unsupported {
             stage: "emit",
             detail: e.to_string(),
         })?;
         value_map.named_slots.insert(name.to_string(), slot);
         Ok(slot)
+    }
+
+    /// Return the simple/qualified record-type name for `ty` if it
+    /// resolves to a record type that has a TypeDesc emitted (locally
+    /// or cross-module).  Pointer / non-record / unknown types return
+    /// `None`.
+    fn tagged_record_name_for_ir_type(&self, ty: &IrType) -> Option<String> {
+        match ty {
+            IrType::Named(name) => {
+                // Record types live in `named_struct_types` after the
+                // planner has walked the module.  Pointer aliases land
+                // there too, so distinguish by checking whether the
+                // basic-type lower for `Named(name)` is a struct.
+                let is_struct = self
+                    .cg
+                    .planner
+                    .named_struct_types
+                    .get(name.as_str())
+                    .is_some();
+                if is_struct {
+                    Some(name.clone())
+                } else {
+                    None
+                }
+            }
+            _ => None,
+        }
+    }
+
+    /// Alloca a `[16-byte header][record payload]` buffer, write the
+    /// static TypeDesc into the tag slot, and stash the payload
+    /// pointer (= alloca + 16) in `named_slots[name]`.
+    fn alloca_record_with_header(
+        &mut self,
+        name: &str,
+        record_ty: &IrType,
+        record_name: &str,
+        value_map: &mut ValueMap<'ctx>,
+        slot_builder: inkwell::builder::Builder<'ctx>,
+    ) -> Result<PointerValue<'ctx>, CodegenError> {
+        use inkwell::AddressSpace;
+        let i8_ty = self.cg.context.i8_type();
+        let i64_ty = self.cg.context.i64_type();
+        let ptr_ty = self.cg.context.ptr_type(AddressSpace::default());
+
+        // 1. Resolve record size.
+        let record_llvm_ty = self.lower_basic_type(record_ty)?;
+        let record_size_val = match record_llvm_ty {
+            inkwell::types::BasicTypeEnum::StructType(t) => t.size_of(),
+            other => {
+                return Err(CodegenError::Unsupported {
+                    stage: "alloca_record_with_header",
+                    detail: format!("expected struct type for record alloca, got {other:?}"),
+                });
+            }
+        }
+        .ok_or_else(|| CodegenError::Unsupported {
+            stage: "alloca_record_with_header",
+            detail: format!("struct {record_name} has no computable size"),
+        })?;
+
+        // 2. Total = header(16) + record_size.  Round up to 8-byte
+        // alignment so the payload is naturally aligned.
+        let header_size = i64_ty.const_int(16, false);
+        let total_bytes = slot_builder
+            .build_int_add(record_size_val, header_size, "rec.slot.size")
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "alloca_record_with_header",
+                detail: e.to_string(),
+            })?;
+        let raw_alloca = slot_builder
+            .build_array_alloca(i8_ty, total_bytes, &format!("{name}.shadow"))
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "alloca_record_with_header",
+                detail: e.to_string(),
+            })?;
+        // 3. Payload = raw_alloca + 16.
+        let payload_offset = i64_ty.const_int(16, false);
+        let payload_ptr = unsafe {
+            slot_builder
+                .build_in_bounds_gep(i8_ty, raw_alloca, &[payload_offset], name)
+                .map_err(|e| CodegenError::Unsupported {
+                    stage: "alloca_record_with_header",
+                    detail: e.to_string(),
+                })?
+        };
+
+        // 4. Resolve the TypeDesc address and write it into the tag
+        // field at offset 0.  Local TypeDescs are constant globals;
+        // cross-module ones get a runtime lookup.
+        let typedesc_ptr_val: inkwell::values::PointerValue<'ctx> =
+            if let Some(g) = self.cg.planner.type_desc_globals.get(record_name) {
+                g.as_pointer_value()
+            } else {
+                // Cross-module TypeDesc — call __newcp_lookup_typedesc
+                // at proc entry.  This requires the imported module's
+                // __init_types to have run already; the loader's
+                // dependency-ordered init guarantees that.
+                let lookup_fn = self.get_or_declare_lookup_typedesc();
+                let qualified = if record_name.contains('.') {
+                    record_name.to_string()
+                } else {
+                    record_name.to_string()
+                };
+                let name_global = self.cg.get_or_emit_cstring_constant(&qualified);
+                let call = slot_builder
+                    .build_call(lookup_fn, &[name_global.into()], "td.local.lookup")
+                    .map_err(|e| CodegenError::Unsupported {
+                        stage: "alloca_record_with_header",
+                        detail: e.to_string(),
+                    })?;
+                let td_i64 = call.try_as_basic_value().unwrap_basic().into_int_value();
+                slot_builder
+                    .build_int_to_ptr(td_i64, ptr_ty, "td.local.ptr")
+                    .map_err(|e| CodegenError::Unsupported {
+                        stage: "alloca_record_with_header",
+                        detail: e.to_string(),
+                    })?
+            };
+        // tag is at raw_alloca + 0.
+        let _ = slot_builder
+            .build_store(raw_alloca, typedesc_ptr_val)
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "alloca_record_with_header",
+                detail: e.to_string(),
+            })?;
+
+        value_map.named_slots.insert(name.to_string(), payload_ptr);
+        Ok(payload_ptr)
     }
 
     fn lower_basic_type(&self, ty: &IrType) -> Result<BasicTypeEnum<'ctx>, CodegenError> {
@@ -977,7 +1125,7 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
     }
 
     fn resolve_pointer(
-        &self,
+        &mut self,
         value: &IrValue,
         value_map: &mut ValueMap<'ctx>,
     ) -> Result<PointerValue<'ctx>, CodegenError> {
@@ -2087,8 +2235,56 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
             return Ok(self.cg.context.bool_type().const_zero().into());
         };
 
-        let obj_ptr = self.resolve_basic_value(value, value_map)?;
-        let typedesc_ptr = self.get_or_declare_typedesc(type_name);
+        // The subject can come in two shapes:
+        //   - a value (Temp, loaded pointer): resolve_basic_value
+        //   - a Ref-typed designator (e.g. GlobalRef("msg") for a
+        //     VAR record param): resolve_pointer, which handles
+        //     ref_param_slots indirection so the address we end up
+        //     with IS the record's payload pointer.
+        let obj_ptr: BasicValueEnum<'ctx> = if matches!(value.ty(), IrType::Ref(_)) {
+            self.resolve_pointer(value, value_map)?.into()
+        } else {
+            self.resolve_basic_value(value, value_map)?
+        };
+
+        // Local types — `<Type>.desc` is emitted in this module, hand
+        // back the global pointer.  Cross-module types — route through
+        // the runtime TypeDesc registry the same way cross-module
+        // `NEW` does, since the TypeDesc global lives in the other
+        // module under a different mangled name (e.g. `SequencerDesc.desc`,
+        // not `Sequencers.SequencerDesc.desc`).
+        let typedesc_ptr = if type_name.contains('.')
+            && !self.cg.planner.type_desc_globals.contains_key(type_name)
+        {
+            let lookup = self.get_or_declare_lookup_typedesc();
+            let name_global = self.cg.get_or_emit_cstring_constant(type_name);
+            let lookup_call = self
+                .cg
+                .builder
+                .build_call(lookup, &[name_global.into()], "typedesc.is")
+                .map_err(|e| CodegenError::Unsupported {
+                    stage: "emit_type_check",
+                    detail: e.to_string(),
+                })?;
+            let typedesc_i64 = lookup_call
+                .try_as_basic_value()
+                .unwrap_basic()
+                .into_int_value();
+            self.cg
+                .builder
+                .build_int_to_ptr(
+                    typedesc_i64,
+                    self.cg.context.ptr_type(inkwell::AddressSpace::default()),
+                    "typedesc.is.ptr",
+                )
+                .map_err(|e| CodegenError::Unsupported {
+                    stage: "emit_type_check",
+                    detail: e.to_string(),
+                })?
+        } else {
+            self.get_or_declare_typedesc(type_name)
+        };
+
         let type_test_fn = self.get_or_declare_type_test_fn();
         let call = self
             .cg
@@ -2260,20 +2456,35 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
         }
     }
 
-    /// Get or declare the TypeDesc sentinel global for the named type.
+    /// Get or declare a TypeDesc global pointer for `type_name`.
     ///
-    /// Declares `@__newcp_typedesc_{mangled} = external global i8` (opaque placeholder).
-    /// Dots in the type name are replaced with underscores.
+    /// Resolution order:
+    /// 1. **Local types** — look up `planner.type_desc_globals` for a
+    ///    TypeDesc emitted in this module (named `<TypeName>.desc`).
+    ///    The global is real; we just hand back the pointer.
+    /// 2. **Cross-module types** — emit a `<Module>.<Type>.desc`
+    ///    external declaration that the JIT linker resolves to the
+    ///    other module's TypeDesc, falling back to a runtime lookup
+    ///    via `__newcp_lookup_typedesc` at use time.  For now we use
+    ///    the loader's external-symbol mechanism; see how cross-
+    ///    module method calls handle the same problem.
+    /// 3. **Unknown** — declare a placeholder global so codegen
+    ///    proceeds; the JIT will fail to link rather than crash.
     fn get_or_declare_typedesc(&self, type_name: &str) -> PointerValue<'ctx> {
-        let mangled = type_name.replace('.', "_");
-        let global_name = format!("__newcp_typedesc_{mangled}");
-        if let Some(g) = self.cg.module.get_global(&global_name) {
+        // Local TypeDesc — we already emitted `<Type>.desc`.
+        if let Some(g) = self.cg.planner.type_desc_globals.get(type_name) {
             return g.as_pointer_value();
         }
-        // Use i8 as opaque placeholder; the actual TypeDesc layout is TBD.
-        // External linkage with no initializer = a declaration, not a definition.
+        // Already declared (e.g. on a previous call within this module).
+        let desc_name = format!("{type_name}.desc");
+        if let Some(g) = self.cg.module.get_global(&desc_name) {
+            return g.as_pointer_value();
+        }
+        // Cross-module / unresolved: declare an external `<Type>.desc`.
+        // The JIT side resolves these via the loader's per-module
+        // export table, which exposes every emitted TypeDesc global.
         let i8_ty = self.cg.context.i8_type();
-        let global = self.cg.module.add_global(i8_ty, None, &global_name);
+        let global = self.cg.module.add_global(i8_ty, None, &desc_name);
         global.set_linkage(inkwell::module::Linkage::External);
         global.as_pointer_value()
     }

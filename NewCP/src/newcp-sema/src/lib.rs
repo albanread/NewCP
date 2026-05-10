@@ -857,7 +857,16 @@ impl<'a> Analyzer<'a> {
         let upvalues: Vec<(String, SemanticType)> = parent_locals
             .iter()
             .filter(|s| {
-                matches!(s.kind, SymbolKind::Variable | SymbolKind::Parameter)
+                // Include the outer method's receiver too — BlackBox-faithful
+                // CP code commonly captures `self` from a type-bound method
+                // (e.g. `Frame.DrawPath` has a nested `Draw` that reads
+                // `f.unit`, `f.gx`, etc.).  Without this, the nested proc's
+                // body sees `f` as unresolved and IR falls through to
+                // `Opaque`, causing pointer→i64 cast failures downstream.
+                matches!(
+                    s.kind,
+                    SymbolKind::Variable | SymbolKind::Parameter | SymbolKind::Receiver
+                )
                     && free_names.contains(&s.name)
                     && !own_names.contains(&s.name)
             })
@@ -1142,8 +1151,9 @@ impl<'a> Analyzer<'a> {
                     // use NEW", check whether the method is inherited
                     // from an *imported* base — if so, this is a
                     // cross-module override and should not require NEW.
+                    let canonical_recv = self.canonical_receiver_record(&receiver.ty);
                     let cross_module_override = self
-                        .has_inherited_method_anywhere(&receiver.ty, procedure_name);
+                        .has_inherited_method_anywhere(&canonical_recv, procedure_name);
                     if !procedure.heading.attributes.is_new && !cross_module_override {
                         self.diagnostics.push(make_diagnostic(
                             None,
@@ -1217,17 +1227,43 @@ impl<'a> Analyzer<'a> {
 
             if record_flavor == Some(RecordFlavor::Abstract)
                 && let Some(base_name) = base_name.as_deref()
-                && self.record_type_info(base_name).map(|(flavor, _)| flavor) != Some(Some(RecordFlavor::Abstract))
             {
-                self.diagnostics.push(make_diagnostic(
-                    None,
-                    procedure.heading.span.start.line,
-                    procedure.heading.span.start.column,
-                    format!(
-                        "abstract record {} must extend an abstract base type",
-                        receiver.ty
-                    ),
-                ));
+                // Resolve the base's flavor.  Local types use the
+                // current module's declarations; cross-module bases
+                // (`Models.ModelDesc extends Stores.StoreDesc`) need
+                // an import lookup since `record_type_info` only sees
+                // the local module.  Canonicalize the receiver name
+                // so the pointer-alias receiver form (`(m: Model)`)
+                // queries the underlying record (`ModelDesc`).
+                let canonical_recv = self.canonical_receiver_record(&receiver.ty);
+                let qualified_info = self.record_type_info_qualified(&canonical_recv);
+                let cross_mod_base = qualified_info
+                    .as_ref()
+                    .and_then(|(_, b)| b.as_ref())
+                    .and_then(|(m, n)| m.as_ref().map(|module| (module.clone(), n.clone())));
+                let base_is_abstract = if let Some((module, name)) = cross_mod_base {
+                    self.imported_modules
+                        .get(&module)
+                        .and_then(|symbols| symbols.iter().find(|s| s.name == name))
+                        .and_then(|s| s.declared_type.as_ref())
+                        .map(|t| matches!(t, SemanticType::Record { flavor: Some(RecordFlavor::Abstract), .. }))
+                        .unwrap_or(false)
+                } else {
+                    self.record_type_info(base_name)
+                        .map(|(flavor, _)| flavor)
+                        == Some(Some(RecordFlavor::Abstract))
+                };
+                if !base_is_abstract {
+                    self.diagnostics.push(make_diagnostic(
+                        None,
+                        procedure.heading.span.start.line,
+                        procedure.heading.span.start.column,
+                        format!(
+                            "abstract record {} must extend an abstract base type",
+                            receiver.ty
+                        ),
+                    ));
+                }
             }
         }
 
@@ -1846,11 +1882,20 @@ impl<'a> Analyzer<'a> {
         receiver_type_name: &str,
         scope_type_names: &HashSet<String>,
     ) -> SemanticType {
+        // CP §11.5: a method receiver may be the record type or its
+        // pointer alias.  Both forms bind the method to the same
+        // record and have the same calling convention (the receiver
+        // is passed as a pointer to the record's payload).  Normalize
+        // the pointer-alias form to the underlying record so every
+        // downstream consumer (IR proc-name mangling, vtable slot
+        // lookup, override matching, etc.) sees a single canonical
+        // shape.
+        let canonical = self.canonical_receiver_record(receiver_type_name);
         self.resolve_named_type(
             &QualIdent {
                 span: self.module.span,
                 module: None,
-                name: receiver_type_name.to_string(),
+                name: canonical,
             },
             scope_type_names,
         )
@@ -1978,6 +2023,10 @@ impl<'a> Analyzer<'a> {
         type_name: &str,
         scope_type_names: &HashSet<String>,
     ) -> Vec<MethodType> {
+        // CP §11.5: a method receiver may be the record type or its
+        // pointer alias.  Match both forms when collecting the
+        // record's methods — `(s: SubDesc)` and `(s: Sub)` (where
+        // `Sub = POINTER TO SubDesc`) bind to the same record.
         self.module
             .declarations
             .iter()
@@ -1987,7 +2036,9 @@ impl<'a> Analyzer<'a> {
                         .heading
                         .receiver
                         .as_ref()
-                        .is_some_and(|receiver| receiver.ty == type_name) =>
+                        .is_some_and(|receiver| {
+                            self.canonical_receiver_record(&receiver.ty) == type_name
+                        }) =>
                 {
                     Some(MethodType {
                         name: procedure.heading.name.name.clone(),
@@ -1997,6 +2048,27 @@ impl<'a> Analyzer<'a> {
                 _ => None,
             })
             .collect()
+    }
+
+    /// Canonical record name a receiver type binds to.  When the
+    /// receiver is a pointer alias `Foo = POINTER TO FooDesc`, this
+    /// returns `"FooDesc"`; for direct record names it returns the
+    /// name unchanged.  Cross-module aliases stay unchanged because
+    /// methods bind to the record-defining module, not the importer.
+    fn canonical_receiver_record(&self, type_name: &str) -> String {
+        for declaration in &self.module.declarations {
+            let Declaration::Type(type_decl) = declaration else { continue; };
+            if type_decl.name.name != type_name { continue; }
+            if let TypeExpr::Pointer { target, .. } = &type_decl.ty {
+                if let TypeExpr::QualIdent { ident, .. } = target.as_ref() {
+                    if ident.module.is_none() {
+                        return ident.name.clone();
+                    }
+                }
+            }
+            break;
+        }
+        type_name.to_string()
     }
 
     fn record_type_info(&self, type_name: &str) -> Option<(Option<RecordFlavor>, Option<String>)> {
@@ -2065,18 +2137,48 @@ impl<'a> Analyzer<'a> {
     }
 
     fn find_record_decl(&self, type_name: &str) -> Option<&'a TypeDecl> {
-        self.module.declarations.iter().find_map(|declaration| match declaration {
+        let direct = self.module.declarations.iter().find_map(|declaration| match declaration {
             Declaration::Type(type_decl) if type_decl.name.name == type_name => Some(type_decl),
             _ => None,
-        })
+        })?;
+        // CP §11.5: a method receiver may be either the record type or
+        // its pointer alias.  When the lookup landed on a pointer
+        // alias (`Foo = POINTER TO FooDesc`), chase one level to the
+        // record itself so the caller's `record_flavor` / `base_name`
+        // checks see the underlying record's shape.  Without this every
+        // BlackBox-style method declaration `(s: Foo) Method` gets
+        // mis-flagged as "record Foo must be ABSTRACT" because the
+        // pointer alias matches no flavor.
+        if let TypeExpr::Pointer { target, .. } = &direct.ty {
+            if let TypeExpr::QualIdent { ident, .. } = target.as_ref() {
+                if ident.module.is_none() {
+                    if let Some(target_decl) = self.module.declarations.iter().find_map(|declaration| match declaration {
+                        Declaration::Type(type_decl) if type_decl.name.name == ident.name => Some(type_decl),
+                        _ => None,
+                    }) {
+                        return Some(target_decl);
+                    }
+                }
+            }
+        }
+        Some(direct)
     }
 
     fn find_inherited_method(&self, type_name: &str, method_name: &str) -> Option<&'a ProcedureDecl> {
-        let mut current = self.record_type_info(type_name).and_then(|(_, base)| base);
+        // Normalize the starting receiver name to its underlying record
+        // type so callers passing the pointer-alias form (e.g. `Sub`)
+        // walk the same chain as the Desc form (`SubDesc`).
+        let canonical_start = self.canonical_receiver_record(type_name);
+        let mut current = self.record_type_info(&canonical_start).and_then(|(_, base)| base);
         while let Some(base_name) = current {
+            // Match procedures whose receiver — written as either the
+            // record-Desc form OR a pointer alias to it — binds to
+            // `base_name`.
             if let Some(method) = self.module.declarations.iter().find_map(|declaration| match declaration {
                 Declaration::Procedure(procedure)
-                    if procedure.heading.receiver.as_ref().is_some_and(|receiver| receiver.ty == base_name)
+                    if procedure.heading.receiver.as_ref().is_some_and(|receiver| {
+                        self.canonical_receiver_record(&receiver.ty) == base_name
+                    })
                         && procedure.heading.name.name == method_name =>
                 {
                     Some(procedure)
@@ -2645,6 +2747,14 @@ impl<'a> Analyzer<'a> {
                     ..
                 } => {
                     for arm in arms {
+                        // For a guarded arm `WITH v: T DO body`, narrow
+                        // `v` to type T inside the body so field /
+                        // method lookups resolve against T's layout.
+                        // We push a shadowing symbol with the narrowed
+                        // type and pop it after walking.  CP §9.3:
+                        // within the body, `v` is treated as having the
+                        // guard type, but only for the body's lifetime.
+                        let mut narrowed_locals: Vec<SemanticSymbol> = local_symbols.to_vec();
                         if let Some(guard) = &arm.guard {
                             self.walk_guard(guard, procedure_name, scope_type_names, resolutions);
                             self.validate_with_guard(
@@ -2654,12 +2764,45 @@ impl<'a> Analyzer<'a> {
                                 local_symbols,
                                 diagnostics,
                             );
+                            // Look up the original symbol to inherit
+                            // mode/exported flags; only the type changes.
+                            if let Some(orig) = local_symbols
+                                .iter()
+                                .rev()
+                                .find(|s| s.name == guard.variable.name)
+                            {
+                                let narrowed_ty = self.resolve_type_decl(
+                                    None,
+                                    &TypeExpr::QualIdent {
+                                        span: guard.ty.span,
+                                        ident: guard.ty.clone(),
+                                    },
+                                    scope_type_names,
+                                    local_symbols,
+                                );
+                                // CP §9.3: a record-typed guard variable
+                                // stays a record; a pointer-typed one
+                                // stays a pointer (to the narrowed
+                                // record).  Wrap the resolved record in
+                                // a Pointer if the original symbol was
+                                // pointer-typed.
+                                let final_ty = match orig.declared_type.as_ref() {
+                                    Some(SemanticType::Pointer { untagged, .. }) => SemanticType::Pointer {
+                                        target: Box::new(narrowed_ty),
+                                        untagged: *untagged,
+                                    },
+                                    _ => narrowed_ty,
+                                };
+                                let mut narrowed = orig.clone();
+                                narrowed.declared_type = Some(final_ty);
+                                narrowed_locals.push(narrowed);
+                            }
                         }
                         self.walk_statements(
                             &arm.body,
                             procedure_name,
                             scope_type_names,
-                            local_symbols,
+                            &narrowed_locals,
                             expected_result_type,
                             resolutions,
                             diagnostics,
@@ -3527,7 +3670,15 @@ impl<'a> Analyzer<'a> {
         let either_imported = matches!(target_type, SemanticType::Named { kind: NamedTypeKind::Imported, .. })
             || matches!(static_record_type, SemanticType::Named { kind: NamedTypeKind::Imported, .. })
             || matches!(target_for_extends, SemanticType::Named { kind: NamedTypeKind::Imported, .. });
-        if !either_imported && !self.record_type_extends(&target_for_extends, &static_record_type, local_symbols) {
+        // ANYPTR / ANYREC subjects narrow to any record — skip the
+        // structural extends check.
+        let subject_is_universal = matches!(
+            static_record_type,
+            SemanticType::Builtin(BuiltinType::AnyRec) | SemanticType::Builtin(BuiltinType::AnyPtr)
+        );
+        if !either_imported && !subject_is_universal
+            && !self.record_type_extends(&target_for_extends, &static_record_type, local_symbols)
+        {
             let (line, column) = position;
             diagnostics.push(make_diagnostic(
                 procedure_name,
@@ -3554,6 +3705,15 @@ impl<'a> Analyzer<'a> {
         // recognised as a pointer subject for type-guard purposes.
         let resolved = self.resolve_named_type_one_level(subject_type, local_symbols);
         match &resolved {
+            // ANYPTR / ANYREC are universal supertypes — every
+            // pointer-to-record (resp. record) narrows from them.
+            // The extends check downstream sees AnyRec and accepts
+            // any concrete record target (CP §11.7 allows the type
+            // guard regardless).
+            SemanticType::Builtin(BuiltinType::AnyPtr)
+            | SemanticType::Builtin(BuiltinType::AnyRec) => {
+                Some(SemanticType::Builtin(BuiltinType::AnyRec))
+            }
             SemanticType::Pointer { target, .. } => {
                 if self.is_record_type(target, local_symbols) {
                     Some((**target).clone())
@@ -4169,8 +4329,26 @@ impl<'a> Analyzer<'a> {
             }
 
             if let Some(actual) = self.infer_expr_type(actual_expr, local_symbols, scope_type_names) {
+                // CP §8.1: a VAR / IN / OUT parameter of record type
+                // accepts any extension of that record type.  The
+                // formal binds to the actual's storage in place, so
+                // there's no truncation hazard — the callee just sees
+                // the base subobject view.  We unwrap one level of
+                // named-alias on both sides so cross-module record
+                // names (e.g. Sequencers.Message) hit the Record arm.
+                let record_extension_ok = matches!(
+                    expected.mode,
+                    Some(ParamMode::Var) | Some(ParamMode::In) | Some(ParamMode::Out)
+                ) && {
+                    let exp = self.resolve_named_type_one_level(&expected.ty, local_symbols);
+                    let act = self.resolve_named_type_one_level(&actual, local_symbols);
+                    matches!(exp, SemanticType::Record { .. })
+                        && matches!(act, SemanticType::Record { .. })
+                        && self.record_type_extends(&actual, &expected.ty, local_symbols)
+                };
                 let compatible = self.types_are_assignment_compatible(&expected.ty, &actual, local_symbols)
-                    || integer_literal_fits_target(actual_expr, &expected.ty);
+                    || integer_literal_fits_target(actual_expr, &expected.ty)
+                    || record_extension_ok;
                 if !compatible {
                     let (line, column) = expr_position(actual_expr);
                     diagnostics.push(make_diagnostic(
@@ -4461,6 +4639,37 @@ impl<'a> Analyzer<'a> {
             return true;
         }
 
+        // ANYPTR is the universal pointer type — accepts NIL, any
+        // pointer-typed value, any procedure value.  CP §6.4: ANYPTR
+        // is the supertype of every pointer type; assignment from a
+        // typed pointer to ANYPTR is implicit.
+        if matches!(expected, SemanticType::Builtin(BuiltinType::AnyPtr))
+            && matches!(
+                actual,
+                SemanticType::Pointer { .. }
+                    | SemanticType::Procedure(_)
+                    | SemanticType::Nil
+                    | SemanticType::Builtin(BuiltinType::AnyPtr)
+            )
+        {
+            return true;
+        }
+        // The reverse — narrowing from ANYPTR to a typed pointer —
+        // is NOT implicit; CP requires a type guard (`p(SomePtr)`)
+        // or WITH for that.  No automatic acceptance here.
+
+        // ANYREC is the universal record type; in a VAR/IN/OUT param
+        // position any record extension flows through (mirrors the
+        // record-extension widening already covered for typed bases).
+        if matches!(expected, SemanticType::Builtin(BuiltinType::AnyRec)) {
+            let actual_resolved = self.resolve_named_type_one_level(&actual, local_symbols);
+            if matches!(actual_resolved, SemanticType::Record { .. })
+                || matches!(actual, SemanticType::Builtin(BuiltinType::AnyRec))
+            {
+                return true;
+            }
+        }
+
         if is_numeric_type(&expected) && is_numeric_type(&actual) {
             return numeric_rank(&actual) <= numeric_rank(&expected);
         }
@@ -4711,8 +4920,17 @@ fn collect_free_names_in_stmts(stmts: &[newcp_parser::Statement]) -> HashSet<Str
     fn walk_expr(expr: &Expr, names: &mut HashSet<String>) {
         match expr {
             Expr::Designator(des) => {
+                // The parser eagerly folds `x.y` into a module-prefixed
+                // QualIdent when `x` could lexically be a module name —
+                // so for `f.unit` (where `f` is a record-typed local),
+                // the QualIdent ends up as `(module: Some("f"), name: "unit")`.
+                // The free-name walk has to consider both halves: register
+                // `name` when no module prefix, otherwise register the
+                // prefix as the actual free reference.
                 if des.base.module.is_none() {
                     names.insert(des.base.name.clone());
+                } else if let Some(m) = &des.base.module {
+                    names.insert(m.clone());
                 }
                 for sel in &des.selectors {
                     match sel {
@@ -5488,13 +5706,28 @@ fn infer_additive_or_multiplicative_result(
 
 fn are_relation_compatible(left: &SemanticType, right: &SemanticType) -> bool {
     // NIL is assignment-compatible with any pointer or procedure type,
-    // including named types that alias pointers/procedures.
+    // including named types that alias pointers/procedures, plus
+    // ANYPTR (the universal pointer supertype).
     let nil_compatible = |other: &SemanticType| {
         matches!(
             other,
             SemanticType::Pointer { .. }
                 | SemanticType::Procedure(_)
                 | SemanticType::Named { .. }
+                | SemanticType::Builtin(BuiltinType::AnyPtr)
+        )
+    };
+    // ANYPTR compares with any pointer / procedure / ANYPTR — for `=`
+    // / `#`, identity comparison is well-defined across the universal
+    // supertype.
+    let anyptr_compatible = |other: &SemanticType| {
+        matches!(
+            other,
+            SemanticType::Pointer { .. }
+                | SemanticType::Procedure(_)
+                | SemanticType::Named { .. }
+                | SemanticType::Builtin(BuiltinType::AnyPtr)
+                | SemanticType::Nil
         )
     };
     left == right
@@ -5503,6 +5736,8 @@ fn are_relation_compatible(left: &SemanticType, right: &SemanticType) -> bool {
         || (is_string_like_type(left) && is_string_like_type(right))
         || (matches!(left, SemanticType::Nil) && nil_compatible(right))
         || (matches!(right, SemanticType::Nil) && nil_compatible(left))
+        || (matches!(left, SemanticType::Builtin(BuiltinType::AnyPtr)) && anyptr_compatible(right))
+        || (matches!(right, SemanticType::Builtin(BuiltinType::AnyPtr)) && anyptr_compatible(left))
         || are_pointer_types_relation_compatible(left, right)
 }
 

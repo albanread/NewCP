@@ -696,6 +696,61 @@ impl<'ctx> CodegenModule<'ctx> {
         for td in td_globals {
             let _ = builder.build_call(register_fn, &[td.as_pointer_value().into()], "");
         }
+
+        // Patch cross-module base pointers.  TypeDesc layout has
+        // `base: *const TypeDesc` at offset 24 (size: i64 @ 0,
+        // module: ptr @ 8, finalizer: ptr @ 16, base: ptr @ 24).
+        // For each (Type, "Module.Base") pair in cross_module_bases:
+        //   base_addr = __newcp_lookup_typedesc("Module.Base")
+        //   store base_addr -> &<Type>.desc.base
+        // The runtime IS-test then walks across module boundaries.
+        if !ir_module.cross_module_bases.is_empty() {
+            let lookup_fn = self.module.get_function("__newcp_lookup_typedesc")
+                .unwrap_or_else(|| {
+                    let i64_ty = self.context.i64_type();
+                    let ptr_ty_arg = self.context.ptr_type(inkwell::AddressSpace::default());
+                    let fn_ty_lookup = i64_ty.fn_type(&[ptr_ty_arg.into()], false);
+                    self.module.add_function(
+                        "__newcp_lookup_typedesc",
+                        fn_ty_lookup,
+                        Some(inkwell::module::Linkage::External),
+                    )
+                });
+            let i8_ty_local = self.context.i8_type();
+            let i64_ty_local = self.context.i64_type();
+            let ptr_ty_local = self.context.ptr_type(inkwell::AddressSpace::default());
+            let base_offset = i64_ty_local.const_int(24, false);
+            for (type_name, qualified_base) in &ir_module.cross_module_bases {
+                let desc_name = format!("{type_name}.desc");
+                let Some(desc_global) = self.module.get_global(&desc_name) else {
+                    continue;
+                };
+                // `__newcp_lookup_typedesc` takes a NUL-terminated 8-bit
+                // C string of the qualified type name.
+                let name_global = self.get_or_emit_cstring_constant(qualified_base);
+                let lookup_call = builder
+                    .build_call(lookup_fn, &[name_global.into()], "td.base.lookup")
+                    .ok();
+                let Some(lookup_call) = lookup_call else { continue; };
+                let base_i64 = lookup_call.try_as_basic_value().unwrap_basic().into_int_value();
+                let base_ptr_val = match builder.build_int_to_ptr(base_i64, ptr_ty_local, "td.base.ptr") {
+                    Ok(v) => v,
+                    Err(_) => continue,
+                };
+                let base_field_ptr = match unsafe {
+                    builder.build_in_bounds_gep(
+                        i8_ty_local,
+                        desc_global.as_pointer_value(),
+                        &[base_offset],
+                        "td.base.field",
+                    )
+                } {
+                    Ok(v) => v,
+                    Err(_) => continue,
+                };
+                let _ = builder.build_store(base_field_ptr, base_ptr_val);
+            }
+        }
         let _ = builder.build_return(None);
 
         Some(llvm_name)

@@ -67,6 +67,21 @@ pub(crate) fn is_open_array(ty: &SemanticType) -> bool {
     matches!(ty, SemanticType::Array { lengths, .. } if lengths.is_empty())
 }
 
+/// Bit width of an integer-shaped IR type, or `None` when the type
+/// isn't an integer kind we widen across at call boundaries.  CHAR /
+/// SHORTCHAR aren't included here — `lower_args_with_signature`
+/// handles those via its dedicated SHORTCHAR→CHAR widen above so
+/// that quirky character-typed call sites stay isolated.
+pub(crate) fn integer_ir_bit_width(ty: &IrType) -> Option<u32> {
+    Some(match ty {
+        IrType::I8 | IrType::U8 => 8,
+        IrType::I16 | IrType::U16 => 16,
+        IrType::I32 | IrType::U32 => 32,
+        IrType::I64 | IrType::U64 => 64,
+        _ => return None,
+    })
+}
+
 pub fn map_semantic_type(ty: &SemanticType) -> IrType {
     match ty {
         SemanticType::Builtin(bt) => map_builtin(*bt),
@@ -392,6 +407,122 @@ impl<'m> LowerCtx<'m> {
     /// If `type_name` is a named pointer alias, return the concrete IR pointer type.
     ///
     /// E.g. `DataPtr = POINTER TO Data` → `Some(IrType::Ptr(Named("Data")))`.
+    /// If `qual` names a TYPE (not a variable / procedure / module),
+    /// return its IR form as a Named or built-in.  Used by type-guard
+    /// designator paths (`v(T).field` and `v(T).method(...)`) where
+    /// the AST's `(T)` lives as a `Selector::AmbiguousParen` and we
+    /// have to disambiguate type-name from one-arg-call.  Walks the
+    /// procedure's local symbols, the module's symbols, then any
+    /// imported module table for a cross-module guard like `v(M.T)`.
+    fn qualident_as_type_ir(&mut self, qual: &QualIdent) -> Option<IrType> {
+        if let Some(module) = &qual.module {
+            let sema = find_imported_module_sema(module)?;
+            let is_type = sema
+                .symbols
+                .iter()
+                .any(|s| s.kind == SymbolKind::Type && s.name == qual.name);
+            if !is_type {
+                return None;
+            }
+            return Some(IrType::Named(format!("{module}.{}", qual.name)));
+        }
+        let is_type = self
+            .symbols
+            .iter()
+            .chain(self.module_symbols.iter())
+            .any(|s| s.kind == SymbolKind::Type && s.name == qual.name);
+        if !is_type {
+            return None;
+        }
+        Some(IrType::Named(qual.name.clone()))
+    }
+
+    /// Decide whether `des` names a designator whose top-level value
+    /// is a record (as opposed to a pointer-to-record or some other
+    /// kind).  Used by IS-test / WITH lowering to choose between
+    /// `lower_expr` (which double-derefs through ref_param_slots and
+    /// reads the record's first field as a pointer — wrong for IS)
+    /// and `designator_addr` (which yields the record's payload
+    /// pointer once the param-slot indirection is resolved — right).
+    ///
+    /// Conservative: returns true only for empty-selector designators
+    /// whose base symbol is a record-typed parameter, receiver, or
+    /// local.  Field-access chains and pointer dereferences flow
+    /// through the regular value path.
+    fn designator_is_record_subject(&self, des: &newcp_parser::Designator) -> bool {
+        if !des.selectors.is_empty() {
+            return false;
+        }
+        let name = &des.base.name;
+        if des.base.module.is_some() {
+            return false;
+        }
+        let sem_ty = self
+            .symbols
+            .iter()
+            .rev()
+            .chain(self.module_symbols.iter())
+            .find(|s| s.name == *name)
+            .and_then(|s| s.declared_type.as_ref());
+        let Some(sem_ty) = sem_ty else { return false; };
+        // Walk one level of Named alias; check the underlying form.
+        // Local Named refs land in module_symbols; cross-module ones
+        // need an import lookup.  Fully-resolved Record / AnyRec
+        // forms count; Pointer / Procedure / scalars don't.
+        let resolved_owned: Option<SemanticType> = match sem_ty {
+            SemanticType::Named { module: None, name: n, .. } => self
+                .module_symbols
+                .iter()
+                .find(|s| matches!(s.kind, SymbolKind::Type) && s.name == *n)
+                .and_then(|s| s.declared_type.clone()),
+            SemanticType::Named { module: Some(m), name: n, .. } => find_imported_module_sema(m)
+                .and_then(|sema| {
+                    sema.symbols
+                        .iter()
+                        .find(|s| matches!(s.kind, SymbolKind::Type) && s.name == *n)
+                        .and_then(|s| s.declared_type.clone())
+                }),
+            other => Some(other.clone()),
+        };
+        matches!(resolved_owned, Some(SemanticType::Record { .. }))
+            || matches!(resolved_owned, Some(SemanticType::Builtin(BuiltinType::AnyRec)))
+    }
+
+    /// Chase a `Named(...)` IR type through its declared alias chain
+    /// until we reach a non-Named form (or run out of definitions).
+    /// Used to widen integer args at call boundaries when the formal's
+    /// nominal type is itself an alias (`Color = INTEGER`).
+    fn resolve_named_to_underlying_ir(&self, mut ty: IrType) -> IrType {
+        for _ in 0..16 {
+            let IrType::Named(name) = &ty else {
+                return ty;
+            };
+            // Cross-module form `Module.Type`.
+            let resolved: Option<IrType> = if let Some((module, local)) = name.split_once('.') {
+                find_imported_module_sema(module).and_then(|sema| {
+                    sema.symbols
+                        .iter()
+                        .find(|s| s.kind == SymbolKind::Type && s.name == local)
+                        .and_then(|s| s.declared_type.as_ref())
+                        .map(map_semantic_type)
+                })
+            } else {
+                self.symbols
+                    .iter()
+                    .rev()
+                    .chain(self.module_symbols.iter().rev())
+                    .find(|s| s.kind == SymbolKind::Type && s.name == name.as_str())
+                    .and_then(|s| s.declared_type.as_ref())
+                    .map(map_semantic_type)
+            };
+            match resolved {
+                Some(next) if next != ty => ty = next,
+                _ => return ty,
+            }
+        }
+        ty
+    }
+
     fn resolve_named_as_ptr_ir_type(&self, type_name: &str) -> Option<IrType> {
         // Cross-module type alias `"Module.Type"` — load the imported
         // module's sema and resolve there. Required so field-access on a
@@ -1096,17 +1227,27 @@ impl<'m> LowerCtx<'m> {
         let des_normalized = self.normalize_designator(des);
         let des = &des_normalized;
 
-        // Pattern: selectors end with [.., Field(method_name), Call(args)]
-        // or [.., Field(method_name), AmbiguousParen(single_qualident)].
-        // The parser emits `AmbiguousParen` when the parenthesised content
-        // is a single qualident that could be either a type-guard target
-        // or a one-argument call; for method dispatch it's always a call.
+        // Two patterns we accept:
+        //   Regular method call: `[..., Field(name), Call(args)]` or
+        //                        `[..., Field(name), AmbiguousParen(qi)]`.
+        //   Super call:          `[..., Field(name), Dereference, Call(args)]`.
+        // The super-call form (CP §11.5: `recv.Method^(args)`) bypasses
+        // the receiver's vtable and resolves directly to the BASE type's
+        // implementation of `name` — used in EXTENSIBLE override bodies
+        // to chain into the inherited behaviour.
         let selectors = &des.selectors;
         let n = selectors.len();
         if n < 2 {
             return None;
         }
-        let Selector::Field(method_name) = &selectors[n - 2] else {
+        let is_super_call = n >= 3
+            && matches!(&selectors[n - 2], Selector::Dereference)
+            && matches!(
+                &selectors[n - 1],
+                Selector::Call(_) | Selector::AmbiguousParen(_)
+            );
+        let method_field_idx = if is_super_call { n - 3 } else { n - 2 };
+        let Selector::Field(method_name) = &selectors[method_field_idx] else {
             return None;
         };
         // Materialise the call arguments. For `Selector::AmbiguousParen`
@@ -1125,12 +1266,13 @@ impl<'m> LowerCtx<'m> {
             _ => return None,
         };
 
-        // Resolve the receiver designator (everything before the last two selectors).
-        // We need to know the RECORD type of the receiver so we can look up the slot.
+        // Resolve the receiver designator (everything before the
+        // method-name field).  We need to know the RECORD type of the
+        // receiver so we can look up the slot.
         let prefix_des = Designator {
             span: des.span,
             base: des.base.clone(),
-            selectors: selectors[..n - 2].to_vec(),
+            selectors: selectors[..method_field_idx].to_vec(),
         };
         let prefix_ty = self.designator_ir_type(&prefix_des);
         if std::env::var("NEWCP_IR_DEBUG").is_ok() {
@@ -1216,9 +1358,12 @@ impl<'m> LowerCtx<'m> {
             }
         };
 
-        // Look up the method's full signature in the receiver's module
-        // symbols. We need both the parameter modes/types (for arg
-        // lowering) and the result type (for the call's IR result).
+        // Look up the method's full signature.  Direct hit first: a
+        // Procedure symbol whose receiver is the receiver record itself.
+        // If absent, walk the inheritance chain — `f.DrawRect` on a
+        // `TestFrame extends FrameDesc` resolves to FrameDesc's DrawRect,
+        // which lives in another module.  Required so call-site arg
+        // widening (INTSHORT→INTEGER and friends) sees the formal types.
         let method_sig: Option<newcp_sema::ProcedureType> = lookup_symbols
             .iter()
             .find(|s| {
@@ -1234,7 +1379,8 @@ impl<'m> LowerCtx<'m> {
             .and_then(|s| match &s.declared_type {
                 Some(SemanticType::Procedure(pt)) => Some(pt.clone()),
                 _ => None,
-            });
+            })
+            .or_else(|| find_method_signature_in_chain(type_record_name, method_name, lookup_symbols));
 
         // Lower the call args using the shared signature-driven helper so
         // open-array fat-pointer ABI, VAR-mode address passing, fixed-
@@ -1250,6 +1396,49 @@ impl<'m> LowerCtx<'m> {
             .as_ref()
             .map(|pt| pt.result_type.as_ref().map(|t| map_semantic_type(t)).unwrap_or(IrType::Void))
             .unwrap_or(IrType::Void);
+
+        if is_super_call {
+            // Super call: bypass dispatch, call the BASE type's method
+            // body directly.  Walk the receiver type's base chain to
+            // find the type that DECLARES (or last overrides) the
+            // method — that's the implementation `Super^()` targets.
+            let (decl_module, decl_type, _) =
+                find_super_target(type_record_name, method_name, lookup_symbols)?;
+            let callee = match decl_module {
+                Some(m) => IrValue::ImportRef(
+                    m,
+                    format!("{decl_type}_{method_name}"),
+                    IrType::Opaque("super-callee".to_string()),
+                ),
+                None => IrValue::GlobalRef(
+                    format!("{decl_type}_{method_name}"),
+                    IrType::Opaque("super-callee".to_string()),
+                ),
+            };
+            // Receiver becomes the first arg (super calls are direct
+            // calls — no methodcall trampoline; the callee expects
+            // the receiver pointer in slot 0).
+            let mut args_with_recv: Vec<IrValue> = Vec::with_capacity(lowered_args.len() + 1);
+            args_with_recv.push(receiver_ptr);
+            args_with_recv.extend(lowered_args);
+            if ret_ty == IrType::Void {
+                self.push(Instr::Call {
+                    dst: None,
+                    callee,
+                    args: args_with_recv,
+                    ret_ty: IrType::Void,
+                });
+                return Some(IrValue::ConstBool(false));
+            }
+            let t = self.fresh_temp();
+            self.push(Instr::Call {
+                dst: Some(t),
+                callee,
+                args: args_with_recv,
+                ret_ty: ret_ty.clone(),
+            });
+            return Some(IrValue::Temp(t, ret_ty));
+        }
 
         if ret_ty == IrType::Void {
             // Void methods are typically called as statements (`b.Set(42);`).
@@ -1331,6 +1520,34 @@ impl<'m> LowerCtx<'m> {
 
         for selector in &des.selectors {
             match selector {
+                // Type guard `v(T).field` — narrow the static type
+                // attached to `addr` so subsequent Field selectors see
+                // T's layout, not v's declared base type.  The runtime
+                // check is independent (sema lowers it via TypeCheck
+                // earlier in the chain when needed); here we only
+                // relabel the IR-level type since LLVM uses opaque
+                // pointers and no real cast is required.
+                Selector::AmbiguousParen(qual) => {
+                    if let Some(guarded) = self.qualident_as_type_ir(qual) {
+                        let new_ref = IrType::Ref(Box::new(guarded));
+                        addr = match addr {
+                            IrValue::Temp(id, _) => IrValue::Temp(id, new_ref),
+                            IrValue::GlobalRef(n, _) => IrValue::GlobalRef(n, new_ref),
+                            IrValue::ImportRef(m, n, _) => IrValue::ImportRef(m, n, new_ref),
+                            other => other,
+                        };
+                        continue;
+                    }
+                    // Not a type — fall through to the default selector
+                    // path that recovers the address via `designator_ir_type`.
+                    let pointee_ty = self
+                        .designator_ir_type(&des)
+                        .unwrap_or_else(|| IrType::Opaque("addr".to_string()));
+                    addr = match &module_opt {
+                        Some(m) => IrValue::ImportRef(m.clone(), des.base.name.clone(), IrType::Ref(Box::new(pointee_ty))),
+                        None => IrValue::GlobalRef(des.base.name.clone(), IrType::Ref(Box::new(pointee_ty))),
+                    };
+                }
                 Selector::Field(fname) => {
                     let mut gep_base = addr.clone();
                     let mut base_ty = addr.ty();
@@ -1922,13 +2139,44 @@ impl<'m> LowerCtx<'m> {
             // `41X` and similar hex literals are typed as SHORTCHAR but a CHAR
             // formal expects a 32-bit value at the ABI level.
             let expects_char = matches!(expected_types.get(index), Some(SemanticType::Builtin(BuiltinType::Char)));
-            let final_value = if expects_char && value.ty() == IrType::ShortChar {
+            let mut final_value = if expects_char && value.ty() == IrType::ShortChar {
                 let t = self.fresh_temp();
                 self.push(Instr::Cast { dst: t, value: value.clone(), to_ty: IrType::Char });
                 IrValue::Temp(t, IrType::Char)
             } else {
                 value
             };
+
+            // Widen narrower integer constants/temps to the formal's integer
+            // width at every CALL ABI boundary.  Hex literals like `0FFH`
+            // are typed as INTSHORT (i32), but `Color = INTEGER (i64)` —
+            // without this widening, a `methodcall(... i32 255)` lands in a
+            // callee param slot expecting i64, leaving the high 32 bits as
+            // junk and reading back as a giant nondeterministic value.
+            //
+            // Mirrors CP §8.1: smaller numeric types are assignment-
+            // compatible with wider ones, so the widen is always safe.
+            // Resolve the formal's IR type through any Named alias chain
+            // (e.g. `Color = INTEGER`) so an INTEGER-backed alias still
+            // counts as an integer width here.
+            if let Some(expected_sem) = expected_types.get(index) {
+                let expected_ir_ty =
+                    self.resolve_named_to_underlying_ir(map_semantic_type(expected_sem));
+                if let (Some(from_w), Some(to_w)) = (
+                    integer_ir_bit_width(&final_value.ty()),
+                    integer_ir_bit_width(&expected_ir_ty),
+                ) {
+                    if from_w < to_w {
+                        let t = self.fresh_temp();
+                        self.push(Instr::Cast {
+                            dst: t,
+                            value: final_value.clone(),
+                            to_ty: expected_ir_ty.clone(),
+                        });
+                        final_value = IrValue::Temp(t, expected_ir_ty);
+                    }
+                }
+            }
 
             out.push(final_value.clone());
 
@@ -2064,8 +2312,18 @@ impl<'m> LowerCtx<'m> {
             }
         }
 
+        // The IS operator's right operand is a TYPE designator, not an
+        // expression — lowering it as an expression emits a bogus
+        // `load <TypeName>` and leaves `Opaque(...)` temps lying around
+        // that codegen can't resolve.  Lower only the left here; the
+        // right is consumed directly by the BinaryOp::Is arm below
+        // (which extracts the type name out of the AST).
         let mut lv = self.lower_expr(left);
-        let mut rv = self.lower_expr(right);
+        let mut rv = if op == BinaryOp::Is {
+            IrValue::ConstBool(false) // placeholder — never read by Is path
+        } else {
+            self.lower_expr(right)
+        };
 
         // Integer -> float promotion for mixed-type expressions. Component
         // Pascal allows integer operands to participate in REAL/SHORTREAL
@@ -2154,8 +2412,26 @@ impl<'m> LowerCtx<'m> {
                 }
                 _ => IrType::Opaque("is-check".to_string()),
             };
+            // For a record-typed left subject (`VAR msg: Message`,
+            // `IN rec: Foo`, etc.), `lower_expr` would emit two
+            // dereferences via the ref_param_slots ABI — first to
+            // get the caller's record address, then to read the
+            // record's first field as a pointer.  The IS test wants
+            // the record's payload pointer, which is exactly the
+            // single-dereferenced address.  Switch to designator_addr
+            // for the left subject when it's a record-typed designator.
+            let subject_val = if let Expr::Designator(des) = left {
+                let left_is_record_subject = self.designator_is_record_subject(des);
+                if left_is_record_subject {
+                    self.designator_addr(des)
+                } else {
+                    lv
+                }
+            } else {
+                lv
+            };
             let t = self.fresh_temp();
-            self.push(Instr::TypeCheck { dst: t, value: lv, ty: ir_ty });
+            self.push(Instr::TypeCheck { dst: t, value: subject_val, ty: ir_ty });
             return IrValue::Temp(t, IrType::Bool);
         }
 
@@ -2824,6 +3100,19 @@ impl<'m> LowerCtx<'m> {
                         map_semantic_type(field_sem_ty)
                     } else {
                         IrType::Opaque(format!("field:{fname}"))
+                    }
+                }
+                // Type guard: `msg(PingMsg).tag` — narrows the static
+                // type to the guard target so subsequent field lookups
+                // use PingMsg's layout, not Message's.  The runtime
+                // check is separate (lowered by the IS path / a
+                // dedicated TypeGuard terminator); here we only need
+                // the type substitution for codegen.
+                (Selector::AmbiguousParen(qual), other) => {
+                    if let Some(guarded) = self.qualident_as_type_ir(qual) {
+                        guarded
+                    } else {
+                        other
                     }
                 }
                 (_, other) => other,
@@ -3628,24 +3917,96 @@ impl<'m> LowerCtx<'m> {
                     QualIdent { module: Some(m), name, .. } => (Some(m.clone()), name.clone()),
                     QualIdent { name, .. } => (None, name.clone()),
                 };
-                let guard_ty = match m_opt {
+                // CP §9.3 lets the guard target a pointer alias
+                // (`WITH p: SomePtr DO`).  TypeDescs are emitted for
+                // the underlying record (e.g. `SomePtrDesc`), so the
+                // runtime IS test needs the record name to resolve
+                // its `<Record>.desc` global.  Chase the alias here.
+                let initial_guard_ty = match &m_opt {
                     Some(m) => IrType::Named(format!("{m}.{ty_name}")),
-                    None => IrType::Named(ty_name),
+                    None => IrType::Named(ty_name.clone()),
                 };
-                let subject_t = self.fresh_temp();
-                let subject_addr = IrValue::GlobalRef(
-                    var_name.clone(),
-                    IrType::Ref(Box::new(IrType::Opaque("with-subject".to_string()))),
-                );
-                self.push(Instr::Load {
-                    dst: subject_t,
-                    addr: subject_addr,
-                    ty: IrType::Opaque("with-subject".to_string()),
-                });
-                let subject_val = IrValue::Temp(
-                    subject_t,
-                    IrType::Opaque("with-subject".to_string()),
-                );
+                let guard_ty = match self.resolve_named_as_ptr_ir_type(
+                    &match &initial_guard_ty {
+                        IrType::Named(n) => n.clone(),
+                        _ => String::new(),
+                    },
+                ) {
+                    Some(IrType::Ptr(inner)) | Some(IrType::UntaggedPtr(inner)) => *inner,
+                    _ => initial_guard_ty,
+                };
+                // Subject value: route through `designator_addr` so the
+                // shape works for every variable kind (pointer var,
+                // VAR/IN record param, ANYPTR local) without us having
+                // to enumerate them.  For pointer-typed vars,
+                // designator_addr returns `Ref(Ptr(...))`; we need to
+                // load once to get the heap-payload pointer the IS
+                // test expects.  For VAR record params, the LLVM
+                // ref_param_slots magic already produces the payload
+                // pointer at the addr level — so we keep the addr
+                // value directly.
+                let subject_des = newcp_parser::Designator {
+                    span: guard.variable.span,
+                    base: QualIdent {
+                        span: guard.variable.span,
+                        module: None,
+                        name: var_name.clone(),
+                    },
+                    selectors: Vec::new(),
+                };
+                let subject_addr = self.designator_addr(&subject_des);
+                // Decide based on the SEMA type whether the subject's
+                // value is pointer-shaped (so we need to load the slot
+                // to get the heap pointer) or record-shaped (so the
+                // slot's address IS the payload pointer thanks to the
+                // shadow-header alloca, no load needed).  Looking at
+                // the IR type alone conflates ANYPTR and ANYREC (both
+                // lower to Opaque).
+                let subject_sem_ty = self
+                    .symbols
+                    .iter()
+                    .rev()
+                    .find(|s| s.name == var_name)
+                    .and_then(|s| s.declared_type.clone());
+                let needs_load = match subject_sem_ty {
+                    Some(SemanticType::Pointer { .. })
+                    | Some(SemanticType::Procedure(_))
+                    | Some(SemanticType::Builtin(BuiltinType::AnyPtr)) => true,
+                    Some(SemanticType::Record { .. })
+                    | Some(SemanticType::Builtin(BuiltinType::AnyRec)) => false,
+                    Some(SemanticType::Named { module, name, .. }) => {
+                        // Resolve one alias level: pointer alias → load,
+                        // record alias → don't.  Cross-module aliases
+                        // get the same treatment via find_imported_module_sema.
+                        let resolved: Option<SemanticType> = match &module {
+                            None => self
+                                .module_symbols
+                                .iter()
+                                .find(|s| matches!(s.kind, SymbolKind::Type) && s.name == name)
+                                .and_then(|s| s.declared_type.clone()),
+                            Some(m) => find_imported_module_sema(m).and_then(|sema| {
+                                sema.symbols
+                                    .iter()
+                                    .find(|s| matches!(s.kind, SymbolKind::Type) && s.name == name)
+                                    .and_then(|s| s.declared_type.clone())
+                            }),
+                        };
+                        matches!(resolved, Some(SemanticType::Pointer { .. }))
+                    }
+                    _ => true, // conservative: load unknown types
+                };
+                let subject_val = if needs_load {
+                    let subject_t = self.fresh_temp();
+                    let load_ty = IrType::Opaque("with-subject".to_string());
+                    self.push(Instr::Load {
+                        dst: subject_t,
+                        addr: subject_addr,
+                        ty: load_ty.clone(),
+                    });
+                    IrValue::Temp(subject_t, load_ty)
+                } else {
+                    subject_addr
+                };
 
                 self.set_term(Terminator::TypeTest {
                     value: subject_val,
@@ -3655,10 +4016,28 @@ impl<'m> LowerCtx<'m> {
                 });
 
                 self.switch_to(body_block);
-                // Within the body, treat `var_name` as having the narrowed pointer type so
-                // field access resolves against the guard record type (e.g. Bird, not Animal).
-                let guard_ref_ty = IrType::Ref(Box::new(guard_ty));
-                self.with_type_overrides.push((var_name.clone(), guard_ref_ty));
+                // Within the body, treat `var_name` as having the
+                // user-written narrowed type — keep the pointer-alias
+                // name (e.g. `Dog`) intact instead of substituting the
+                // record-Desc form, so the existing
+                // `resolve_named_as_ptr_ir_type` auto-deref path in
+                // `designator_addr` recognises it as a pointer alias
+                // and emits the Load.  `guard_ty` (already alias-
+                // chased above for the IS-test global lookup) only
+                // applies to the runtime test, not to body codegen.
+                //
+                // Do NOT pre-wrap with `Ref(...)` — `base_symbol_ir_type`
+                // returns the variable's value type (parameters are
+                // `Named(...)`, locals are bare types), and downstream
+                // `designator_addr` adds the `Ref` wrap itself.  Pre-
+                // wrapping here would produce `Ref(Ref(...))` which the
+                // bound-proc-call path doesn't recognise.
+                let user_written_ty = match &m_opt {
+                    Some(m) => IrType::Named(format!("{m}.{ty_name}")),
+                    None => IrType::Named(ty_name.clone()),
+                };
+                self.with_type_overrides
+                    .push((var_name.clone(), user_written_ty));
                 self.lower_statements(&arm.body);
                 self.with_type_overrides.pop();
                 self.set_term(Terminator::Br { target: merge_block });
@@ -4007,7 +4386,10 @@ fn collect_inherited_method_names(
     };
 
     // NEW methods declared on this record extend the vtable; overrides
-    // simply replace existing slots and don't add new ones.
+    // replace the matching inherited slot in place so the call is
+    // dispatched to the most-derived implementation.  This matters for
+    // multi-level inheritance: a subclass's vtable must reflect every
+    // override on every intermediate ancestor — not just its own.
     for method in methods {
         if method.signature.is_new {
             result.push((
@@ -4015,6 +4397,18 @@ fn collect_inherited_method_names(
                 record_name.to_string(),
                 method.name.clone(),
             ));
+        } else {
+            // Override.  Find the existing slot whose method name
+            // matches and replace its declaring-type entry with this
+            // record.  (We only need to match by method name because
+            // CP's override rule fixes the receiver type.)
+            if let Some(slot_idx) = result.iter().position(|(_, _, m)| *m == method.name) {
+                result[slot_idx] = (
+                    declaring_module.map(str::to_string),
+                    record_name.to_string(),
+                    method.name.clone(),
+                );
+            }
         }
     }
 
@@ -4229,8 +4623,20 @@ pub fn lower_module(sema: &SemanticModule, ast: &ModuleAst) -> IrModule {
             ast_procs
                 .iter()
                 .find(|p| {
-                    p.heading.name.name == sema_proc.name
-                        && p.heading.receiver.as_ref().map(|r| r.ty.as_str()) == receiver_type_name
+                    if p.heading.name.name != sema_proc.name {
+                        return false;
+                    }
+                    // Sema canonicalizes pointer-alias receivers to their
+                    // underlying record (`Sub` → `SubDesc`).  Apply the
+                    // same chase here when comparing against the AST so
+                    // a method declared with `(s: Sub)` still matches its
+                    // sema entry whose receiver is `SubDesc`.
+                    let ast_recv_canonical: Option<String> = p
+                        .heading
+                        .receiver
+                        .as_ref()
+                        .map(|r| canonicalize_receiver_name(&r.ty, &sema.symbols));
+                    ast_recv_canonical.as_deref() == receiver_type_name
                 })
                 .map(|ast_proc| lower_procedure(
                     sema_proc,
@@ -4252,16 +4658,27 @@ pub fn lower_module(sema: &SemanticModule, ast: &ModuleAst) -> IrModule {
             let parent_name = sema_nested.parent_proc.as_deref()?;
             // Unqualified inner name: strip "ParentName_" prefix from the qualified name.
             let inner_name = sema_nested.name.strip_prefix(&format!("{parent_name}_"))?;
-            // Find the outer AST proc.
-            let parent_ast = ast_procs.iter().find(|p| p.heading.name.name == parent_name)?;
-            // Find the nested AST proc inside the outer proc's body.
-            let nested_ast = parent_ast
-                .body
-                .as_ref()?
-                .declarations
+            // Find the outer AST proc whose body actually contains a
+            // matching nested decl.  When the source has multiple
+            // type-bound methods sharing a name (e.g. RiderDesc.DrawPath
+            // ABSTRACT plus FrameDesc.DrawPath concrete with a nested
+            // helper), `find()` on name alone would pick the abstract
+            // one first and return None for the body lookup.  Walk
+            // every same-named outer proc and use the first whose body
+            // actually contains the inner decl.
+            let (parent_ast, nested_ast) = ast_procs
                 .iter()
-                .filter_map(|d| match d { Declaration::Procedure(p) => Some(p), _ => None })
-                .find(|p| p.heading.name.name == inner_name)?;
+                .filter(|p| p.heading.name.name == parent_name)
+                .find_map(|p| {
+                    let body = p.body.as_ref()?;
+                    let inner = body
+                        .declarations
+                        .iter()
+                        .filter_map(|d| match d { Declaration::Procedure(np) => Some(np), _ => None })
+                        .find(|np| np.heading.name.name == inner_name)?;
+                    Some((*p, inner))
+                })?;
+            let _ = parent_ast;
             Some(lower_procedure(
                 sema_nested,
                 nested_ast,
@@ -4301,6 +4718,7 @@ pub fn lower_module(sema: &SemanticModule, ast: &ModuleAst) -> IrModule {
     let named_types = collect_named_types(&sema.name, &sema.imports, &sema.symbols, &mut import_cache);
     let (type_vtables, type_bases) = collect_type_vtables(&sema.name, &sema.symbols);
     let type_finalizers = collect_type_finalizers(&sema.symbols);
+    let cross_module_bases = collect_cross_module_bases(&sema.symbols);
 
     IrModule {
         name: sema.name.clone(),
@@ -4311,7 +4729,31 @@ pub fn lower_module(sema: &SemanticModule, ast: &ModuleAst) -> IrModule {
         type_vtables,
         type_bases,
         type_finalizers,
+        cross_module_bases,
     }
+}
+
+/// Walk every record type in the module and surface those whose direct
+/// base lives in another module — used by `module.rs` to emit a runtime
+/// patch in `__init_types` that fills the local TypeDesc's `base` field
+/// via `__newcp_lookup_typedesc` once the import chain is loaded.
+fn collect_cross_module_bases(
+    module_symbols: &[SemanticSymbol],
+) -> std::collections::HashMap<String, String> {
+    use newcp_sema::SymbolKind;
+    let mut out = std::collections::HashMap::new();
+    for sym in module_symbols {
+        if sym.kind != SymbolKind::Type {
+            continue;
+        }
+        let Some(SemanticType::Record { base: Some(base), .. }) = sym.declared_type.as_ref() else {
+            continue;
+        };
+        if let SemanticType::Named { module: Some(m), name, .. } = base.as_ref() {
+            out.insert(sym.name.clone(), format!("{m}.{name}"));
+        }
+    }
+    out
 }
 
 /// For each record type that owns a `Finalize` method (locally or via
@@ -4449,9 +4891,10 @@ fn collect_type_vtables(
         else {
             continue;
         };
-        if methods.is_empty() && base.is_none() {
-            continue; // plain record with no methods — no vtable
-        }
+        // Every record type emits an entry — including abstract bases
+        // with no own methods (the runtime IS test walks every record's
+        // base chain looking for a TypeDesc match, and a missing base
+        // entry would break the chain).  Empty vtables are fine.
 
         // Record direct base name (local only for now — cross-module
         // bases stay None here; vtable construction below handles them
@@ -4535,9 +4978,14 @@ fn collect_type_vtables(
             }
         }
 
-        if !vtable.is_empty() {
-            vtables.insert(sym.name.clone(), vtable);
-        }
+        // Always insert the entry — even when the vtable ends up empty.
+        // Without an entry, module.rs skips emitting a TypeDesc for this
+        // record, and `NEW(p)` for a `POINTER TO ThisDesc` falls through
+        // to raw `__newcp_sys_new` (untagged, no GC header).  That's
+        // wrong even for "trivial" extensions: subsequent `Kernel.TypeOf`
+        // / GC tracing / IS-tests need the header tag.  Empty vtables
+        // are perfectly fine — they just mean no methods to dispatch.
+        vtables.insert(sym.name.clone(), vtable);
     }
 
     (vtables, bases)
@@ -4546,6 +4994,124 @@ fn collect_type_vtables(
 /// Find the vtable slot index of `method_name` in type `type_name` (within this module).
 ///
 /// Returns `None` if the type or method is not found.
+/// Mirror of sema's `canonical_receiver_record`.  When `name` is a
+/// local pointer alias `Foo = POINTER TO FooDesc`, return `"FooDesc"`;
+/// otherwise return `name` verbatim.  Used by the IR layer to match
+/// AST procedure receiver names against sema's already-normalized
+/// canonical form so methods declared with the BlackBox-faithful
+/// pointer-alias receiver still find their AST counterpart.
+fn canonicalize_receiver_name(name: &str, module_symbols: &[SemanticSymbol]) -> String {
+    use newcp_sema::SymbolKind;
+    let Some(sym) = module_symbols
+        .iter()
+        .find(|s| s.kind == SymbolKind::Type && s.name == name)
+    else {
+        return name.to_string();
+    };
+    match sym.declared_type.as_ref() {
+        Some(SemanticType::Pointer { target, .. }) => match target.as_ref() {
+            SemanticType::Named { module: None, name: target_name, .. } => target_name.clone(),
+            _ => name.to_string(),
+        },
+        _ => name.to_string(),
+    }
+}
+
+/// Locate the BASE-side target of a super call.  A super call from
+/// inside `recv_record_name`'s `method_name` body must call the
+/// nearest ancestor's implementation — i.e. walk the base chain and
+/// return the first record that declares (or overrides) the method.
+///
+/// Returns `(module, type_name, method_name)` where `module` is
+/// `Some(...)` for cross-module inheritance.  `None` when no
+/// ancestor implements the method (which is a sema error caught
+/// earlier — we'd never reach this in well-formed code).
+fn find_super_target(
+    recv_record_name: &str,
+    method_name: &str,
+    module_symbols: &[SemanticSymbol],
+) -> Option<(Option<String>, String, String)> {
+    // Find the receiver record's base.
+    let sym = module_symbols
+        .iter()
+        .find(|s| s.kind == SymbolKind::Type && s.name == recv_record_name)?;
+    let SemanticType::Record { base, .. } = sym.declared_type.as_ref()? else {
+        return None;
+    };
+    let base = base.as_deref()?;
+    // Walk the base chain looking for the first record that has the
+    // method directly in its `methods` list.
+    fn walk(
+        ty: &SemanticType,
+        method_name: &str,
+        local_symbols: &[SemanticSymbol],
+    ) -> Option<(Option<String>, String, String)> {
+        match ty {
+            SemanticType::Named { module: None, name, .. } => {
+                let sym = local_symbols
+                    .iter()
+                    .find(|s| s.kind == SymbolKind::Type && s.name == *name)?;
+                let SemanticType::Record { base, methods, .. } = sym.declared_type.as_ref()? else {
+                    return None;
+                };
+                if methods.iter().any(|m| m.name == method_name) {
+                    return Some((None, name.clone(), method_name.to_string()));
+                }
+                walk(base.as_deref()?, method_name, local_symbols)
+            }
+            SemanticType::Named { module: Some(m), name, .. } => {
+                let sema = find_imported_module_sema(m)?;
+                let sym = sema
+                    .symbols
+                    .iter()
+                    .find(|s| s.kind == SymbolKind::Type && s.name == *name)?;
+                let SemanticType::Record { base, methods, .. } = sym.declared_type.as_ref()? else {
+                    return None;
+                };
+                if methods.iter().any(|mt| mt.name == method_name) {
+                    return Some((Some(m.clone()), name.clone(), method_name.to_string()));
+                }
+                walk(base.as_deref()?, method_name, &sema.symbols)
+            }
+            _ => None,
+        }
+    }
+    walk(base, method_name, module_symbols)
+}
+
+/// Walk a record's inheritance chain looking for a method signature.
+/// Returns the most-derived `ProcedureType` (with receiver, parameter
+/// modes/types, and result type) for `method_name` reachable from
+/// `record_name` — including methods declared on a base type, possibly
+/// in another module.  Returns `None` if no method by that name is
+/// reachable, including the implicit-NIL case where the type isn't a
+/// record at all.
+fn find_method_signature_in_chain(
+    record_name: &str,
+    method_name: &str,
+    module_symbols: &[SemanticSymbol],
+) -> Option<newcp_sema::ProcedureType> {
+    let sym = module_symbols
+        .iter()
+        .find(|s| s.kind == SymbolKind::Type && s.name == record_name)?;
+    let SemanticType::Record { base, methods, .. } = sym.declared_type.as_ref()? else {
+        return None;
+    };
+    if let Some(m) = methods.iter().find(|m| m.name == method_name) {
+        return Some(m.signature.clone());
+    }
+    match base.as_deref() {
+        Some(SemanticType::Named { name, module: None, .. }) => {
+            find_method_signature_in_chain(name, method_name, module_symbols)
+        }
+        Some(SemanticType::Named { name, module: Some(m), .. }) => {
+            let sema = find_imported_module_sema(m)?;
+            find_method_signature_in_chain(name, method_name, &sema.symbols)
+        }
+        _ => None,
+    }
+}
+
 pub fn method_slot_in_vtable(
     type_name: &str,
     method_name: &str,

@@ -31,7 +31,7 @@ TYPE
 
 (** Allocate a new Reader bound to `s`'s body.  Returns NIL when
     the source store has no body (nil/link/newlink) or is invalid. *)
-PROCEDURE NewReader* (s: Stores.Store): Reader;
+PROCEDURE NewReader* (s: Stores.StoreHandle): Reader;
     VAR r: Reader; h: INTEGER;
 BEGIN
     h := Stores.OpenReader(s);
@@ -152,10 +152,10 @@ END SkipInlineStore;
 
 (** Consume an inline child store and return its handle so the
     caller can materialize it via `NewStore`.  Returns 0 (not a
-    valid `Stores.Store`) when the cursor is not on a child
+    valid `Stores.StoreHandle`) when the cursor is not on a child
     header — callers should check.  Pairs with `SkipInlineStore`
     when the typed instance isn't needed. *)
-PROCEDURE (r: ReaderDesc) ReadInlineStore* (): Stores.Store, NEW;
+PROCEDURE (r: ReaderDesc) ReadInlineStore* (): Stores.StoreHandle, NEW;
 BEGIN
     IF (r.handle = 0) OR r.eof THEN RETURN 0 END;
     RETURN Stores.ReaderReadInlineStore(r.handle)
@@ -234,7 +234,7 @@ END NewLikeOf;
 (** Open a Reader on `src`'s body, dispatch through `dst`'s
     Internalize override, and close the reader.  Returns the
     final eof flag — TRUE if reads ran past the body's end. *)
-PROCEDURE InternalizeFrom* (src: Stores.Store; dst: Store): BOOLEAN;
+PROCEDURE InternalizeFrom* (src: Stores.StoreHandle; dst: Store): BOOLEAN;
     VAR rd: Reader; eof: BOOLEAN;
 BEGIN
     rd := NewReader(src);
@@ -250,7 +250,7 @@ END InternalizeFrom;
     Returns NIL when the source store's type isn't registered or
     allocation fails; on success the returned object has been
     populated by its own `Internalize` method. *)
-PROCEDURE NewStore* (src: Stores.Store): Store;
+PROCEDURE NewStore* (src: Stores.StoreHandle): Store;
     VAR name: Kernel.Name; s: Store; eof: BOOLEAN;
 BEGIN
     IF src = 0 THEN RETURN NIL END;

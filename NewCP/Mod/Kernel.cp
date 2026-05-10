@@ -214,6 +214,15 @@ PROCEDURE Collect* ();
         short-circuits if nothing has been allocated since the last
         cycle. *)
 
+PROCEDURE TrapCount* (): INTEGER;
+    (** Snapshot of the process-wide trap counter.  Increments each
+        time a recoverable trap fires (today: never, since traps
+        abort).  Used by reentrancy guards in the model / sequencer
+        layers — a procedure records `TrapCount() + 1` on entry,
+        and on re-entry asserts the snapshot still matches.  When
+        a trap fires the counter advances and the assertion catches
+        the orphaned guard.  See `Models.Broadcast` / `Models.Domaincast`. *)
+
 (* -- Event loop --------------------------------------------------------- *)
 
 PROCEDURE Loop* (handler: EventHandler);
