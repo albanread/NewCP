@@ -292,6 +292,78 @@ back-ends rely on.
 `dump-llvm` and add `Integers` tests covering `Sum`, `Difference`,
 `Product`, `Quotient`, `Power`, `ConvertFromString`/`ConvertToString`.
 
+### 14. `NEW(record_field_pointer)` — IR can't resolve destination record type
+
+**Where**: `newcp-ir` lowering of `Instr::New`, exercised by the
+matrix probe `M_Method_On_RecordField` (currently
+`#[ignore]`-flagged in `src/newcp-test-matrix/src/manifest.rs`).
+
+**Workaround**: probe is shipped ignored with the reason string
+pointing at this entry. Real code paths avoid the pattern by
+NEW-ing into a local pointer first then assigning into the field.
+
+**Why deferred**: surfaced by the matrix on its first run after the
+strategy in `docs/test_matrix.md` landed; the framework ports
+haven't tripped over it yet so it stays in the deferred list rather
+than blocking active work.
+
+**Closing it**: in IR `lower_new`, when the destination designator
+ends in a field selector, follow the field's declared type to
+resolve the record name instead of falling back to
+`Opaque("new-ptr")`. Un-ignore the matrix probe to lock the fix in.
+
+### 15. CHAR / SHORTCHAR width mismatch at call boundary (8 failures at `-O0`)
+
+**Where**: `Mod/Strings.cp` and transitively `Mod/Math.cp`. Surfaced
+by running the full test suite with `NEWCP_OPT=none`; the LLVM
+verifier reports `Call parameter type does not match function
+signature! i32 143 / i8` against `Strings$g1$RealToShortStrForm`'s
+formal. Eight tests fail at `-O0`:
+`math_exponent_decomposition`, `math_int_power_via_native_module`,
+`math_pi_via_native_module`, `math_sqrt_via_native_module`,
+`strings_real_to_short_str_round_trip`,
+`strings_real_to_string_round_trip`,
+`strings_short_str_to_real`, `strings_string_to_real_roundtrip`.
+
+**Workaround**: default `-O2` lane silently truncates the `i32` to
+`i8` so the bug never reaches the verifier. The suite passes at
+`-O2` (247 tests green) but the latent ABI mismatch is real.
+
+**Why deferred**: the test-matrix infrastructure that uncovered it
+was the priority for the current landing. The fix is a localised
+call-site widening / narrowing decision and belongs in its own
+session so it can be measured against the `-O0` lane cleanly.
+
+**Closing it**: walk the `RealToShortStrForm` call site (and any
+others the `-O0` verifier flags) — the argument is almost
+certainly a SHORTCHAR (`i8`) formal being supplied with a CHAR
+(`i32`) value or vice versa. Either widen at the call site
+(`Cast` IR), narrow in the prologue, or align the formal's declared
+type. Re-run the suite at `NEWCP_OPT=none` until all 8 cases pass;
+add the `NEWCP_OPT=none` lane to CI so the bug class stays out.
+
+
+
+**Where**: `Mod/Integers.cp` (full BlackBox bignum module, lifted but
+not yet compiling end-to-end).
+
+**Workaround**: source committed; sema accepts it (after fixes in this
+landing for type-alias resolution into builtins, OUT-pointer-to-array
+indexing, value-mode `Buffer` params switched to `IN` with explicit
+local copies in `KStep`/`AddToBuf`, MAX/MIN with user type alias args).
+LLVM emit fails on calls like `New(SHORT(... + ENTIER(...)))` because
+of item 12 above (the `SHORT` truncates `i64`→`i32` at IR level even
+though `New`'s parameter is also `i64`).
+
+**Why deferred**: the right fix is item 12 — making SHORT semantically
+aware. Hacking the source to drop the SHORTs would diverge it from
+the BlackBox original and lose the type-narrowing intent that other
+back-ends rely on.
+
+**Closing it**: implement item 12, then re-run `check-mod` /
+`dump-llvm` and add `Integers` tests covering `Sum`, `Difference`,
+`Product`, `Quotient`, `Power`, `ConvertFromString`/`ConvertToString`.
+
 ---
 
 ## Conventions for adding entries

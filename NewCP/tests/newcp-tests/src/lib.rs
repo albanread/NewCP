@@ -1,5 +1,10 @@
 #[cfg(test)]
 mod tests {
+    // Generated tier-5 probe matrix (see `docs/test_matrix.md` and
+    // `src/newcp-test-matrix/`).  Re-run `cargo run -p newcp-test-matrix`
+    // to regenerate after editing the manifest.
+    mod matrix_generated;
+
     use std::path::{Path, PathBuf};
     use std::process::Command;
 

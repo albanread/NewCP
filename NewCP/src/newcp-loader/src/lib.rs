@@ -24,7 +24,7 @@ unsafe impl Sync for RetainedImage {}
 
 static RETAINED_IMAGES: Mutex<Vec<RetainedImage>> = Mutex::new(Vec::new());
 
-use newcp_llvm::{CodegenOptions, CompiledModule, OwnedJitModule};
+use newcp_llvm::{CodegenOptions, CompiledModule, OptLevel, OwnedJitModule};
 use newcp_parser::{parse_source_module, SourceExportKind, SourceModuleSpec};
 use newcp_runtime::{
     BootstrapReport, CompilerService, ExportEntry, ExportDirectory, ExportKind,
@@ -1555,10 +1555,32 @@ fn compile_executable_image(path: &Path, generation: u64) -> Result<CompiledModu
         }
     }
 
-    let mut options = CodegenOptions::default();
-    options.export_generation = Some(generation);
+    let options = loader_codegen_options(generation);
     newcp_llvm::compile_from_path(path, &options)
         .map_err(|error| format!("failed to compile executable image from {}: {error}", path.display()))
+}
+
+/// Build the `CodegenOptions` the loader uses for every JIT compile.
+///
+/// Honours the `NEWCP_OPT` environment variable, which accepts
+/// `none|less|default|aggressive` (mirroring the driver's `--opt`
+/// flag).  Unset / unrecognised → `OptLevel::Default` (O2).
+///
+/// The override is what powers the `-O0` test lane: when the suite
+/// runs with `NEWCP_OPT=none`, LLVM keeps every emitted function
+/// alive even if it has no externally visible effect — surfacing
+/// latent ABI mismatches that DCE would otherwise sweep under the
+/// rug.  See `docs/test_matrix.md` "Tier 8 / infrastructure" for the
+/// rationale.
+fn loader_codegen_options(generation: u64) -> CodegenOptions {
+    let mut options = CodegenOptions::default();
+    options.export_generation = Some(generation);
+    if let Ok(value) = std::env::var("NEWCP_OPT") {
+        if let Some(level) = OptLevel::from_str(value.trim()) {
+            options.opt_level = level;
+        }
+    }
+    options
 }
 
 fn materialize_compiled_image(
@@ -1575,8 +1597,7 @@ fn materialize_compiled_image(
     ),
     String,
 > {
-    let mut options = CodegenOptions::default();
-    options.export_generation = Some(generation);
+    let options = loader_codegen_options(generation);
     // Public exports the loader needs to resolve to JIT addresses:
     //   - emitted procedures from `compiled.exported_functions`
     //     (correctly excludes abstract/forward declarations that have
