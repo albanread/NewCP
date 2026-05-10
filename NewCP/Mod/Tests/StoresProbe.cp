@@ -90,4 +90,157 @@ BEGIN
   RETURN 1
 END InvalidHandlesReturnZero;
 
+(** Open a Reader on the root store and exercise the cursor:
+    the cursor starts at 0, advances one byte per ReadByte, and
+    ReaderSetPos seeks back to the start. Returns 1 on success. *)
+PROCEDURE ReaderBasicCursor*(): INTEGER;
+  VAR doc, root, r: INTEGER;
+      bodyLen, b0, b1, posAfter, posReset: INTEGER;
+BEGIN
+  doc := Stores.OpenDocument("Mod/Tests/_fixtures/Empty.odc");
+  IF doc = 0 THEN RETURN 0 END;
+  root := Stores.RootStore(doc);
+  IF root = 0 THEN Stores.CloseDocument(doc); RETURN 0 END;
+  bodyLen := Stores.GetBodyLen(root);
+  IF bodyLen < 2 THEN Stores.CloseDocument(doc); RETURN 0 END;
+
+  r := Stores.OpenReader(root);
+  IF r = 0 THEN Stores.CloseDocument(doc); RETURN 0 END;
+  IF Stores.ReaderPos(r) # 0 THEN
+    Stores.CloseReader(r); Stores.CloseDocument(doc); RETURN 0
+  END;
+  IF Stores.ReaderEof(r) # 0 THEN
+    Stores.CloseReader(r); Stores.CloseDocument(doc); RETURN 0
+  END;
+
+  b0 := Stores.ReaderReadByte(r);
+  posAfter := Stores.ReaderPos(r);
+  IF posAfter # 1 THEN
+    Stores.CloseReader(r); Stores.CloseDocument(doc); RETURN 0
+  END;
+
+  b1 := Stores.ReaderReadByte(r);
+  IF Stores.ReaderPos(r) # 2 THEN
+    Stores.CloseReader(r); Stores.CloseDocument(doc); RETURN 0
+  END;
+
+  Stores.ReaderSetPos(r, 0);
+  posReset := Stores.ReaderPos(r);
+  IF posReset # 0 THEN
+    Stores.CloseReader(r); Stores.CloseDocument(doc); RETURN 0
+  END;
+  (* Re-reading the first byte must yield the same value. *)
+  IF Stores.ReaderReadByte(r) # b0 THEN
+    Stores.CloseReader(r); Stores.CloseDocument(doc); RETURN 0
+  END;
+
+  (* Suppress unused-variable warning. *)
+  IF b1 < 0 THEN RETURN 0 END;
+
+  Stores.CloseReader(r);
+  Stores.CloseDocument(doc);
+  RETURN 1
+END ReaderBasicCursor;
+
+(** Seek to body_len → Eof asserts. ReaderSetPos clamps to body
+    bounds, so a deliberate over-seek lands at body_len. *)
+PROCEDURE ReaderEofAtEnd*(): INTEGER;
+  VAR doc, root, r: INTEGER;
+      bodyLen: INTEGER;
+BEGIN
+  doc := Stores.OpenDocument("Mod/Tests/_fixtures/Empty.odc");
+  IF doc = 0 THEN RETURN 0 END;
+  root := Stores.RootStore(doc);
+  IF root = 0 THEN Stores.CloseDocument(doc); RETURN 0 END;
+  bodyLen := Stores.GetBodyLen(root);
+  IF bodyLen <= 0 THEN Stores.CloseDocument(doc); RETURN 0 END;
+
+  r := Stores.OpenReader(root);
+  IF r = 0 THEN Stores.CloseDocument(doc); RETURN 0 END;
+
+  Stores.ReaderSetPos(r, bodyLen);
+  IF Stores.ReaderEof(r) # 1 THEN
+    Stores.CloseReader(r); Stores.CloseDocument(doc); RETURN 0
+  END;
+  IF Stores.ReaderPos(r) # bodyLen THEN
+    Stores.CloseReader(r); Stores.CloseDocument(doc); RETURN 0
+  END;
+
+  (* Clamp on over-seek. *)
+  Stores.ReaderSetPos(r, bodyLen + 1000);
+  IF Stores.ReaderPos(r) # bodyLen THEN
+    Stores.CloseReader(r); Stores.CloseDocument(doc); RETURN 0
+  END;
+
+  Stores.CloseReader(r);
+  Stores.CloseDocument(doc);
+  RETURN 1
+END ReaderEofAtEnd;
+
+(** Read N bytes through ReadBytes; the slice we get back must
+    match the byte-by-byte read at the same offset. *)
+PROCEDURE ReaderReadBytesMatchesByteByByte*(): INTEGER;
+  CONST N = 8;
+  VAR doc, root, r1, r2: INTEGER;
+      bodyLen, i, got: INTEGER;
+      bbuf: ARRAY N OF BYTE;
+      single: ARRAY N OF INTEGER;
+BEGIN
+  doc := Stores.OpenDocument("Mod/Tests/_fixtures/Empty.odc");
+  IF doc = 0 THEN RETURN 0 END;
+  root := Stores.RootStore(doc);
+  IF root = 0 THEN Stores.CloseDocument(doc); RETURN 0 END;
+  bodyLen := Stores.GetBodyLen(root);
+  IF bodyLen < N THEN Stores.CloseDocument(doc); RETURN 0 END;
+
+  (* Reader 1: byte-by-byte. *)
+  r1 := Stores.OpenReader(root);
+  IF r1 = 0 THEN Stores.CloseDocument(doc); RETURN 0 END;
+  i := 0;
+  WHILE i < N DO
+    single[i] := Stores.ReaderReadByte(r1);
+    INC(i)
+  END;
+  Stores.CloseReader(r1);
+
+  (* Reader 2: bulk ReadBytes. *)
+  r2 := Stores.OpenReader(root);
+  IF r2 = 0 THEN Stores.CloseDocument(doc); RETURN 0 END;
+  got := Stores.ReaderReadBytes(r2, bbuf, N);
+  IF got # N THEN
+    Stores.CloseReader(r2); Stores.CloseDocument(doc); RETURN 0
+  END;
+  IF Stores.ReaderPos(r2) # N THEN
+    Stores.CloseReader(r2); Stores.CloseDocument(doc); RETURN 0
+  END;
+  i := 0;
+  WHILE i < N DO
+    IF single[i] # bbuf[i] THEN
+      Stores.CloseReader(r2); Stores.CloseDocument(doc); RETURN 0
+    END;
+    INC(i)
+  END;
+
+  Stores.CloseReader(r2);
+  Stores.CloseDocument(doc);
+  RETURN 1
+END ReaderReadBytesMatchesByteByByte;
+
+(** OpenReader on an invalid store handle returns 0; reads on an
+    invalid reader return 0 / EOF. *)
+PROCEDURE InvalidReaderHandlesReturnZero*(): INTEGER;
+  VAR bbuf: ARRAY 4 OF BYTE;
+BEGIN
+  IF Stores.OpenReader(0) # 0 THEN RETURN 0 END;
+  IF Stores.ReaderPos(0) # 0 THEN RETURN 0 END;
+  IF Stores.ReaderEof(0) # 1 THEN RETURN 0 END;
+  IF Stores.ReaderReadByte(0) # 0 THEN RETURN 0 END;
+  IF Stores.ReaderReadInt(0) # 0 THEN RETURN 0 END;
+  IF Stores.ReaderReadXInt(0) # 0 THEN RETURN 0 END;
+  IF Stores.ReaderReadLong(0) # 0 THEN RETURN 0 END;
+  IF Stores.ReaderReadBool(0) # 0 THEN RETURN 0 END;
+  IF Stores.ReaderReadBytes(0, bbuf, 4) # 0 THEN RETURN 0 END;
+  RETURN 1
+END InvalidReaderHandlesReturnZero;
+
 END StoresProbe.

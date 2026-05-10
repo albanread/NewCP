@@ -38,4 +38,34 @@ PROCEDURE GetTypeName*   (store: INTEGER; OUT name: ARRAY OF CHAR);
 PROCEDURE GetBodyLen*    (store: INTEGER): INTEGER;
 PROCEDURE GetKind*       (store: INTEGER): INTEGER;
 
+(* --- S2 reader cursor primitives -------------------------------------- *)
+
+PROCEDURE OpenReader*      (store: INTEGER): INTEGER;
+PROCEDURE CloseReader*     (reader: INTEGER);
+
+PROCEDURE ReaderPos*       (reader: INTEGER): INTEGER;
+PROCEDURE ReaderSetPos*    (reader: INTEGER; pos: INTEGER);
+PROCEDURE ReaderEof*       (reader: INTEGER): INTEGER;
+
+PROCEDURE ReaderReadByte*  (reader: INTEGER): INTEGER;
+PROCEDURE ReaderReadInt*   (reader: INTEGER): INTEGER;   (* 4-byte LE *)
+PROCEDURE ReaderReadXInt*  (reader: INTEGER): INTEGER;   (* 2-byte LE *)
+PROCEDURE ReaderReadLong*  (reader: INTEGER): INTEGER;   (* 8-byte LE *)
+PROCEDURE ReaderReadBool*  (reader: INTEGER): INTEGER;   (* 0/1 *)
+PROCEDURE ReaderReadBytes* (reader: INTEGER; VAR buf: ARRAY OF BYTE; len: INTEGER): INTEGER;
+
+(* --- Inline-child-store helpers (S2 cont.) ----------------------------
+   When the reader's cursor sits exactly at the start of an inline
+   child store of the parent the reader was opened on, these
+   helpers consume that child.  They return 0 / NIL when the cursor
+   is not on a child header. *)
+
+PROCEDURE ReaderSkipInlineStore* (reader: INTEGER): INTEGER;
+    (** Advance past an inline child without materializing it.
+        Returns 1 on success, 0 if cursor is not at a child. *)
+
+PROCEDURE ReaderReadInlineStore* (reader: INTEGER): INTEGER;
+    (** Consume an inline child and return its `Store` handle.
+        Returns 0 if cursor is not at a child. *)
+
 END StoresSys.

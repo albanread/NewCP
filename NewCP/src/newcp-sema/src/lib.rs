@@ -363,6 +363,15 @@ pub struct SemanticModule {
     pub procedures: Vec<SemanticProcedure>,
     pub selector_resolutions: Vec<SelectorResolution>,
     pub diagnostics: Vec<SemanticDiagnostic>,
+    /// Symbols of every module the analyser pulled in transitively
+    /// (this module's direct imports plus *their* imports).  Exposed
+    /// so a parent analyser can fold them into its own
+    /// `imported_modules` table — necessary when an alias chain
+    /// crosses several modules (e.g. TextViews uses HostStores
+    /// which exposes a Stores.Store return type, requiring TextViews
+    /// to see Stores' symbol table even though it doesn't import
+    /// Stores directly).
+    pub imported_modules: HashMap<String, Vec<SemanticSymbol>>,
 }
 
 pub fn dump_sema(path: &Path) -> String {
@@ -535,6 +544,7 @@ impl<'a> Analyzer<'a> {
             procedures: self.procedures.clone(),
             selector_resolutions: self.selector_resolutions.clone(),
             diagnostics: self.diagnostics.clone(),
+            imported_modules: self.imported_modules.clone(),
         }
     }
 
@@ -602,6 +612,7 @@ impl<'a> Analyzer<'a> {
                             Some(&item.name.name),
                             &item.ty,
                             &self.module_type_names,
+                            &[],
                         )),
                         const_value: None,
                         simd_shape: None,
@@ -1455,6 +1466,7 @@ impl<'a> Analyzer<'a> {
                             Some(&item.name.name),
                             &item.ty,
                             scope_type_names,
+                            local_symbols,
                         )),
                         const_value: None,
                         simd_shape: None,
@@ -1463,7 +1475,7 @@ impl<'a> Analyzer<'a> {
                 }
                 Declaration::Var(item) => {
                     Self::validate_type_expr(&item.ty, scope_type_names, self.has_system_import, procedure_name, diagnostics);
-                    let declared_type = self.resolve_type_expr(&item.ty, scope_type_names);
+                    let declared_type = self.resolve_type_expr_with_locals(&item.ty, scope_type_names, local_symbols);
                     for name in &item.names {
                         Self::record_identdef_duplicate(scope_names, name, procedure_name, "duplicate procedure-scope declaration", diagnostics);
                         local_symbols.push(SemanticSymbol {
@@ -1849,7 +1861,19 @@ impl<'a> Analyzer<'a> {
         ty: &TypeExpr,
         scope_type_names: &HashSet<String>,
     ) -> SemanticType {
-        self.resolve_type_decl(None, ty, scope_type_names)
+        self.resolve_type_decl(None, ty, scope_type_names, &[])
+    }
+
+    /// Variant that has access to the enclosing procedure's local
+    /// symbol table. Needed so array-bound expressions can reference
+    /// procedure-scoped CONSTs (e.g. `CONST N = 8; VAR a: ARRAY N OF INTEGER`).
+    fn resolve_type_expr_with_locals(
+        &self,
+        ty: &TypeExpr,
+        scope_type_names: &HashSet<String>,
+        local_symbols: &[SemanticSymbol],
+    ) -> SemanticType {
+        self.resolve_type_decl(None, ty, scope_type_names, local_symbols)
     }
 
     fn resolve_type_decl(
@@ -1857,6 +1881,7 @@ impl<'a> Analyzer<'a> {
         owner_name: Option<&str>,
         ty: &TypeExpr,
         scope_type_names: &HashSet<String>,
+        local_symbols: &[SemanticSymbol],
     ) -> SemanticType {
         match ty {
             TypeExpr::QualIdent { ident, .. } => self.resolve_named_type(ident, scope_type_names),
@@ -1868,14 +1893,16 @@ impl<'a> Analyzer<'a> {
             } => SemanticType::Array {
                 lengths: lengths.iter().map(|len_expr| {
                     // Evaluate the length expression to a numeric constant if possible.
-                    // This handles named constants like TextMax as well as literals.
-                    if let Some(ConstValue::Integer(n)) = evaluate_const_expr(len_expr, &[], &self.module_symbols) {
+                    // Looks up CONSTs declared in the enclosing procedure first
+                    // (so `CONST N = 8; VAR a: ARRAY N OF INTEGER` resolves) and
+                    // then named module-level constants.
+                    if let Some(ConstValue::Integer(n)) = evaluate_const_expr(len_expr, local_symbols, &self.module_symbols) {
                         n.to_string()
                     } else {
                         render_expr(len_expr)
                     }
                 }).collect(),
-                element_type: Box::new(self.resolve_type_decl(None, element_type, scope_type_names)),
+                element_type: Box::new(self.resolve_type_decl(None, element_type, scope_type_names, local_symbols)),
                 untagged: matches!(self.normalize_sys_flag(sys_flag.as_ref()), Some(NormalizedSysFlag::Untagged)),
             },
             TypeExpr::Record {
@@ -1899,7 +1926,7 @@ impl<'a> Analyzer<'a> {
                     .unwrap_or_default(),
             },
             TypeExpr::Pointer { sys_flag, target, .. } => SemanticType::Pointer {
-                target: Box::new(self.resolve_type_decl(None, target, scope_type_names)),
+                target: Box::new(self.resolve_type_decl(None, target, scope_type_names, local_symbols)),
                 untagged: matches!(self.normalize_sys_flag(sys_flag.as_ref()), Some(NormalizedSysFlag::Untagged)),
             },
             TypeExpr::Procedure {
@@ -1914,7 +1941,7 @@ impl<'a> Analyzer<'a> {
                 result_type: formal_parameters
                     .as_ref()
                     .and_then(|parameters| parameters.result_type.as_ref())
-                    .map(|result| Box::new(self.resolve_type_decl(None, result, scope_type_names))),
+                    .map(|result| Box::new(self.resolve_type_decl(None, result, scope_type_names, local_symbols))),
                 is_new: false,
                 flavor: None,
             }),
@@ -1980,6 +2007,35 @@ impl<'a> Analyzer<'a> {
             },
             _ => None,
         })
+    }
+
+    /// Follow a chain of `Named` type aliases (local or cross-module)
+    /// until we reach the underlying structural type. Used by binary-
+    /// operand validation so a CP `INTEGER` literal compares cleanly
+    /// against a parameter typed by an imported alias like
+    /// `Stores.Store = INTEGER`. Returns the original type when no
+    /// alias chain applies (so non-Named types pass through untouched).
+    fn unwrap_named_aliases(
+        &self,
+        ty: SemanticType,
+        local_symbols: &[SemanticSymbol],
+    ) -> SemanticType {
+        let mut current = ty;
+        let mut seen: HashSet<String> = HashSet::new();
+        loop {
+            let resolved = resolve_named_type_alias(
+                &current,
+                local_symbols,
+                &self.module_symbols,
+                &self.imported_modules,
+                &mut seen,
+            )
+            .cloned();
+            match resolved {
+                Some(next) if next != current => current = next,
+                _ => return current,
+            }
+        }
     }
 
     fn resolve_alias_to_builtin_target(&self, name: &str) -> Option<BuiltinType> {
@@ -3299,8 +3355,12 @@ impl<'a> Analyzer<'a> {
                     return;
                 }
 
-                let left_type = self.infer_expr_type(left, local_symbols, scope_type_names);
-                let right_type = self.infer_expr_type(right, local_symbols, scope_type_names);
+                let left_type = self
+                    .infer_expr_type(left, local_symbols, scope_type_names)
+                    .map(|t| self.unwrap_named_aliases(t, local_symbols));
+                let right_type = self
+                    .infer_expr_type(right, local_symbols, scope_type_names)
+                    .map(|t| self.unwrap_named_aliases(t, local_symbols));
                 if let (Some(left_type), Some(right_type)) = (left_type, right_type) {
                     let valid = match op {
                         BinaryOp::Add => {
@@ -3712,6 +3772,35 @@ impl<'a> Analyzer<'a> {
             return None;
         }
 
+        // Module-qualified designator that isn't a SYSTEM builtin: when the
+        // imported module's CP source has been loaded, verify the name is
+        // actually exported by it. Without this check sema silently lets
+        // unresolved cross-module references through, and codegen later
+        // emits malformed IR (cf. "unsupported cast from PointerType to i64"
+        // when a runtime native artifact happened to expose the name).
+        if current.is_none() {
+            if let Some(module_name) = designator.base.module.as_deref() {
+                if let Some(symbols) = self.imported_modules.get(module_name) {
+                    let found = symbols
+                        .iter()
+                        .any(|sym| sym.name == designator.base.name && sym.exported);
+                    if !found {
+                        let (line, column) = designator_position(&designator);
+                        diagnostics.push(make_diagnostic(
+                            procedure_name,
+                            line,
+                            column,
+                            format!(
+                                "module {} has no exported declaration named {}",
+                                module_name, designator.base.name
+                            ),
+                        ));
+                        return None;
+                    }
+                }
+            }
+        }
+
         let mut current = current?;
         for selector in &designator.selectors {
             match self.validate_selector(
@@ -3746,28 +3835,42 @@ impl<'a> Analyzer<'a> {
             Selector::Field(name) => match self.lookup_record_member(base, name, local_symbols) {
                 Some(RecordMember::Field(ty)) => Some(ty),
                 Some(RecordMember::Method(signature)) => Some(SemanticType::Procedure(signature)),
-                None if matches!(base, SemanticType::Record { .. }) => {
-                    diagnostics.push(make_diagnostic(
-                        procedure_name,
-                        line,
-                        column,
-                        format!(
-                            "field {} does not exist on {}",
-                            name,
-                            render_semantic_type(base)
-                        ),
-                    ));
-                    None
-                }
-                // Imported or cross-module Named types: we can't verify field/method existence
-                // without loading the imported module's symbol table.  Suppress the error and
-                // return None so sema does not cascade false positives on the remaining selectors.
-                None if matches!(
-                    base,
-                    SemanticType::Named { kind: NamedTypeKind::Imported, .. }
-                        | SemanticType::Named { kind: NamedTypeKind::Unresolved, .. }
-                ) => None,
-                _ => {
+                None => {
+                    // Decide between "field does not exist on a record we
+                    // can see" (a real error) and "base is an opaque named
+                    // type we can't introspect" (suppress, can't be sure).
+                    //
+                    // We can now resolve cross-module imported records via
+                    // `imported_modules`, so every Named with kind
+                    // `UserDefined` or `Imported` whose underlying form
+                    // (after one alias hop, possibly through a pointer)
+                    // is a `Record` qualifies as visible — a missing field
+                    // there is a real diagnostic, not an unknown-record
+                    // suppression.
+                    if base_is_introspectable_record(
+                        base,
+                        local_symbols,
+                        &self.module_symbols,
+                        &self.imported_modules,
+                    ) {
+                        diagnostics.push(make_diagnostic(
+                            procedure_name,
+                            line,
+                            column,
+                            format!(
+                                "field {} does not exist on {}",
+                                name,
+                                render_semantic_type(base)
+                            ),
+                        ));
+                        return None;
+                    }
+                    if matches!(
+                        base,
+                        SemanticType::Named { kind: NamedTypeKind::Unresolved, .. }
+                    ) {
+                        return None;
+                    }
                     diagnostics.push(make_diagnostic(
                         procedure_name,
                         line,
@@ -4341,8 +4444,12 @@ impl<'a> Analyzer<'a> {
         actual: &SemanticType,
         local_symbols: &[SemanticSymbol],
     ) -> bool {
-        let expected = self.resolve_named_type_one_level(expected, local_symbols);
-        let actual = self.resolve_named_type_one_level(actual, local_symbols);
+        // Unwrap alias chains fully on both sides — a cross-module
+        // alias like `Stores.Store = INTEGER` needs at least two
+        // hops (imported Named → INTEGER → Builtin(Integer)) before
+        // we can compare structurally against an INTEGER target.
+        let expected = self.unwrap_named_aliases(expected.clone(), local_symbols);
+        let actual = self.unwrap_named_aliases(actual.clone(), local_symbols);
 
         if expected == actual {
             return true;
@@ -4815,6 +4922,47 @@ fn resolve_simd_scalar_lane(
     }
 }
 
+/// Does `ty` reach a `Record` (after at most one alias hop and at most
+/// one pointer dereference)?  Used by the missing-field diagnostic to
+/// decide between "the record exists, you mis-spelled the field" and
+/// "the base is opaque to us, suppress".  Now that imported modules'
+/// symbol tables are populated, every cross-module record with a CP
+/// source counts as introspectable.
+fn base_is_introspectable_record(
+    ty: &SemanticType,
+    local_symbols: &[SemanticSymbol],
+    module_symbols: &[SemanticSymbol],
+    imported_modules: &HashMap<String, Vec<SemanticSymbol>>,
+) -> bool {
+    let mut seen: HashSet<String> = HashSet::new();
+    let resolved = resolve_named_type_alias(
+        ty,
+        local_symbols,
+        module_symbols,
+        imported_modules,
+        &mut seen,
+    )
+    .cloned()
+    .unwrap_or_else(|| ty.clone());
+    match &resolved {
+        SemanticType::Record { .. } => true,
+        SemanticType::Pointer { target, .. } => {
+            let mut seen: HashSet<String> = HashSet::new();
+            let inner = resolve_named_type_alias(
+                target,
+                local_symbols,
+                module_symbols,
+                imported_modules,
+                &mut seen,
+            )
+            .cloned()
+            .unwrap_or_else(|| (**target).clone());
+            matches!(inner, SemanticType::Record { .. })
+        }
+        _ => false,
+    }
+}
+
 fn resolve_named_type_alias<'a>(
     ty: &'a SemanticType,
     local_symbols: &'a [SemanticSymbol],
@@ -4950,7 +5098,8 @@ fn load_imported_module_symbols(
             .collect();
         let qualified_symbols: Vec<SemanticSymbol> = analyzed
             .symbols
-            .into_iter()
+            .iter()
+            .cloned()
             .map(|mut sym| {
                 if let Some(ty) = sym.declared_type.as_mut() {
                     qualify_local_named_refs(ty, &import.name, &local_type_names);
@@ -4968,6 +5117,17 @@ fn load_imported_module_symbols(
             );
         }
         out.insert(import.name.clone(), qualified_symbols);
+
+        // Fold the imported module's own imported_modules table into
+        // ours so cross-module type-alias chains that traverse more
+        // than one hop resolve.  Each transitive entry's symbols were
+        // already qualified by the inner analyser; we don't want to
+        // re-qualify under the wrong module name, so merge as-is.
+        // Direct entries take precedence on collision (an outer
+        // import of X overrides any transitive sighting of X).
+        for (transitive_name, transitive_syms) in analyzed.imported_modules {
+            out.entry(transitive_name).or_insert(transitive_syms);
+        }
     }
     out
 }
@@ -5340,9 +5500,99 @@ fn are_relation_compatible(left: &SemanticType, right: &SemanticType) -> bool {
     left == right
         || (is_numeric_type(left) && is_numeric_type(right))
         || (is_character_like_type(left) && is_character_like_type(right))
-        || (is_string_type(left) && is_string_type(right))
+        || (is_string_like_type(left) && is_string_like_type(right))
         || (matches!(left, SemanticType::Nil) && nil_compatible(right))
         || (matches!(right, SemanticType::Nil) && nil_compatible(left))
+        || are_pointer_types_relation_compatible(left, right)
+}
+
+/// Pointer-to-record relation compatibility for `=` / `#`.  CP allows
+/// comparing pointers whose target record types lie on the same
+/// inheritance chain (one extends the other, possibly via several
+/// ancestors).  Used so a base-typed handle can be `=`-compared
+/// against a subtype handle without sema rejecting it.
+fn are_pointer_types_relation_compatible(left: &SemanticType, right: &SemanticType) -> bool {
+    let (SemanticType::Pointer { target: lt, .. }, SemanticType::Pointer { target: rt, .. }) =
+        (left, right)
+    else {
+        return false;
+    };
+    // Both pointer targets must be (named) record types. We don't have
+    // the analyser's import map at this layer, so we accept any pair
+    // where the targets are syntactically related: identical, or one
+    // is a Named ref whose base — locally observable via the Record's
+    // `base` chain — eventually matches the other. The full extension
+    // walk happens later in IR; this gate just stops the "obviously
+    // unrelated pointers" diagnostic.
+    record_chains_overlap(lt, rt)
+}
+
+fn record_chains_overlap(a: &SemanticType, b: &SemanticType) -> bool {
+    // Either side must be a Record (or a Named ref to a record). If
+    // we only see Named-without-resolved-base on one side, accept —
+    // we can't disprove the relation at this layer.
+    if a == b {
+        return true;
+    }
+    if let (SemanticType::Named { module: am, name: an, .. },
+            SemanticType::Named { module: bm, name: bn, .. }) = (a, b) {
+        if am == bm && an == bn {
+            return true;
+        }
+    }
+    // Walk a's base chain looking for b.
+    let mut cur = a;
+    loop {
+        match cur {
+            SemanticType::Record { base: Some(parent), .. } => {
+                if parent.as_ref() == b {
+                    return true;
+                }
+                cur = parent.as_ref();
+            }
+            _ => break,
+        }
+    }
+    // Walk b's base chain looking for a.
+    let mut cur = b;
+    loop {
+        match cur {
+            SemanticType::Record { base: Some(parent), .. } => {
+                if parent.as_ref() == a {
+                    return true;
+                }
+                cur = parent.as_ref();
+            }
+            _ => break,
+        }
+    }
+    // Conservatively accept when at least one side is a Named ref we
+    // can't fully inspect at this layer — false negatives here are
+    // worse than false positives because the IR layer re-validates.
+    matches!(a, SemanticType::Named { .. }) || matches!(b, SemanticType::Named { .. })
+}
+
+/// Like is_string_type but also accepts ARRAY OF CHAR / ARRAY OF
+/// SHORTCHAR — CP treats `name # "lit"` as valid when name is a
+/// fixed CHAR array and the literal is a string. Used by relation
+/// compatibility so `name # "expected"` doesn't trip on the
+/// declared-array-vs-string-literal mismatch.
+fn is_string_like_type(ty: &SemanticType) -> bool {
+    if is_string_type(ty) {
+        return true;
+    }
+    if is_character_like_type(ty) {
+        return true;
+    }
+    matches!(
+        ty,
+        SemanticType::Array { element_type, .. }
+            if matches!(
+                element_type.as_ref(),
+                SemanticType::Builtin(BuiltinType::Char)
+                    | SemanticType::Builtin(BuiltinType::ShortChar)
+            )
+    )
 }
 
 fn are_ordered_relation_compatible(left: &SemanticType, right: &SemanticType) -> bool {

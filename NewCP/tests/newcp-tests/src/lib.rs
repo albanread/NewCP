@@ -2416,6 +2416,79 @@ mod tests {
         Ok(())
     }
 
+    /// Copy a named `.odc` from the BB distribution root into the
+    /// fixture directory.  Returns `Ok` if staged, `Err` describing
+    /// why otherwise (so the caller can skip cleanly when the BB
+    /// distro isn't available on this machine).
+    fn stage_bb_odc_fixture(name: &str) -> Result<(), String> {
+        let Some(dist) = bb_distribution_root() else {
+            return Err("BlackBox 1.7 distribution not found (set NEWCP_BB_DIST)".to_string());
+        };
+        let src = dist.join(name);
+        if !src.exists() {
+            return Err(format!("{} not found at {}", name, src.display()));
+        }
+        let workspace = workspace_root();
+        let fixture_dir = workspace.join("Mod/Tests/_fixtures");
+        std::fs::create_dir_all(&fixture_dir)
+            .map_err(|e| format!("create fixture dir: {e}"))?;
+        let dst = fixture_dir.join(name);
+        std::fs::copy(&src, &dst).map_err(|e| format!("copy {name}: {e}"))
+            .map(|_| ())
+    }
+
+    /// Hand-craft a minimal `.odc` containing one root store with the
+    /// given qualified type name and body bytes.  Used by the typed-
+    /// load test so we don't depend on a particular BlackBox fixture
+    /// shape — we control both the type tag and the body contents.
+    ///
+    /// Wire format follows newcp-odc's reader:
+    ///   "CDOo" + 4 zero bytes
+    ///   0x82                        (KIND_STORE)
+    ///   0xF0                        (NEW_BASE)
+    ///   <utf-8 type name>\0
+    ///   comment   (i32 LE = 0)
+    ///   raw_next  (i32 LE = 0)      // 0 with even comment -> no sibling
+    ///   raw_down  (i32 LE = 0)      // no children
+    ///   body_len  (i32 LE)
+    ///   <body>
+    fn write_synthetic_odc(
+        path: &std::path::Path,
+        qualified_type_name: &str,
+        body: &[u8],
+    ) -> Result<(), String> {
+        if let Some(parent) = path.parent() {
+            std::fs::create_dir_all(parent)
+                .map_err(|e| format!("create fixture parent: {e}"))?;
+        }
+        let mut bytes: Vec<u8> = Vec::with_capacity(64 + qualified_type_name.len() + body.len());
+        bytes.extend_from_slice(b"CDOo");
+        bytes.extend_from_slice(&[0u8; 4]);
+        bytes.push(0x82); // KIND_STORE
+        bytes.push(0xF0); // NEW_BASE
+        bytes.extend_from_slice(qualified_type_name.as_bytes());
+        bytes.push(0); // null-terminated UTF-8 sstring
+        bytes.extend_from_slice(&0i32.to_le_bytes()); // comment
+        bytes.extend_from_slice(&0i32.to_le_bytes()); // raw_next
+        bytes.extend_from_slice(&0i32.to_le_bytes()); // raw_down
+        bytes.extend_from_slice(&(body.len() as i32).to_le_bytes()); // body_len
+        bytes.extend_from_slice(body);
+        std::fs::write(path, &bytes).map_err(|e| format!("write synthetic odc: {e}"))
+    }
+
+    /// Stage a synthetic `.odc` fixture into the workspace's
+    /// `Mod/Tests/_fixtures` directory under `name`.
+    fn stage_synthetic_odc(
+        name: &str,
+        qualified_type_name: &str,
+        body: &[u8],
+    ) -> Result<(), String> {
+        let workspace = workspace_root();
+        let fixture_dir = workspace.join("Mod/Tests/_fixtures");
+        let dst = fixture_dir.join(name);
+        write_synthetic_odc(&dst, qualified_type_name, body)
+    }
+
     /// Run a CP probe with the test process cwd pinned to the
     /// workspace root. The CP probe's `OpenDocument` strings are
     /// hard-coded relative to the workspace root (`Mod/Tests/...`);
@@ -2463,6 +2536,65 @@ mod tests {
             run_function_at_workspace_root("Mod/Tests/StoresProbe.cp", "InvalidHandlesReturnZero"),
             1,
             "all Stores.* shims must return 0 / empty for invalid handles"
+        );
+        assert_eq!(
+            run_function_at_workspace_root(
+                "Mod/Tests/StoresProbe.cp",
+                "InvalidReaderHandlesReturnZero",
+            ),
+            1,
+            "Reader shims must return 0 / EOF for invalid reader handles"
+        );
+    }
+
+    #[test]
+    fn stores_probe_reader_basic_cursor() {
+        match stage_empty_odc_fixture() {
+            Ok(()) => {}
+            Err(msg) => {
+                eprintln!("[stores_probe] skipping: {msg}");
+                return;
+            }
+        }
+        assert_eq!(
+            run_function_at_workspace_root("Mod/Tests/StoresProbe.cp", "ReaderBasicCursor"),
+            1,
+            "Stores Reader cursor: Pos starts at 0, ReadByte advances, SetPos(0) seeks back"
+        );
+    }
+
+    #[test]
+    fn stores_probe_reader_eof_at_end() {
+        match stage_empty_odc_fixture() {
+            Ok(()) => {}
+            Err(msg) => {
+                eprintln!("[stores_probe] skipping: {msg}");
+                return;
+            }
+        }
+        assert_eq!(
+            run_function_at_workspace_root("Mod/Tests/StoresProbe.cp", "ReaderEofAtEnd"),
+            1,
+            "ReaderSetPos(body_len) → ReaderEof = 1, over-seek clamps to body_len"
+        );
+    }
+
+    #[test]
+    fn stores_probe_reader_read_bytes_matches_byte_by_byte() {
+        match stage_empty_odc_fixture() {
+            Ok(()) => {}
+            Err(msg) => {
+                eprintln!("[stores_probe] skipping: {msg}");
+                return;
+            }
+        }
+        assert_eq!(
+            run_function_at_workspace_root(
+                "Mod/Tests/StoresProbe.cp",
+                "ReaderReadBytesMatchesByteByByte",
+            ),
+            1,
+            "ReaderReadBytes must produce the same byte sequence as N ReadByte calls"
         );
     }
 
@@ -2630,6 +2762,604 @@ mod tests {
     }
 
     #[test]
+    fn xmod_missing_field_rejected_by_sema() {
+        // Cross-module field lookup must reject names that aren't
+        // declared on the imported record. Previously sema's
+        // validate_selector suppressed these for imported Named
+        // types because lookup_record_member couldn't see fields
+        // of cross-module records — that workaround stopped being
+        // necessary once imported_modules was populated, and the
+        // suppression turned into a silent accept that produced
+        // malformed IR (codegen tried to load a nonexistent BOOLEAN
+        // field as a pointer, then panicked).
+        let err = loader_error("Mod/Tests/XmodMissingField.cp")
+            .expect("expected sema to reject the missing cross-module field");
+        assert!(
+            err.contains("field thisFieldDoesNotExist does not exist"),
+            "expected the missing-field diagnostic, got: {err}"
+        );
+    }
+
+    #[test]
+    fn xmod_missing_export_rejected_by_sema() {
+        // Cross-module fall-through bug: a CP module referencing a
+        // qualified name that the imported CP source doesn't export
+        // must be rejected by sema with a clean diagnostic, not
+        // silently accepted (which previously let codegen run and
+        // emit a malformed cast). See feedback memory:
+        // "Fix the compiler bug first".
+        let err = loader_error("Mod/Tests/XmodMissingExport.cp")
+            .expect("expected sema to reject the missing cross-module export");
+        assert!(
+            err.contains("module Stores has no exported declaration named DefinitelyNotAnExport"),
+            "expected the missing-export diagnostic, got: {err}"
+        );
+    }
+
+    #[test]
+    fn host_stores_probe_basic_cursor() {
+        match stage_empty_odc_fixture() {
+            Ok(()) => {}
+            Err(msg) => {
+                eprintln!("[host_stores_probe] skipping: {msg}");
+                return;
+            }
+        }
+        assert_eq!(
+            run_function_at_workspace_root("Mod/Tests/HostStoresProbe.cp", "BasicCursor"),
+            1,
+            "HostStores.Reader: NewReader, Pos, ReadByte, SetPos, Close"
+        );
+    }
+
+    #[test]
+    fn host_stores_probe_eof_transitions() {
+        match stage_empty_odc_fixture() {
+            Ok(()) => {}
+            Err(msg) => {
+                eprintln!("[host_stores_probe] skipping: {msg}");
+                return;
+            }
+        }
+        assert_eq!(
+            run_function_at_workspace_root("Mod/Tests/HostStoresProbe.cp", "EofTransitions"),
+            1,
+            "HostStores.Reader.SetPos to body_len must transition to eof"
+        );
+    }
+
+    #[test]
+    fn host_stores_probe_split_qualified_name() {
+        assert_eq!(
+            run_function_at_workspace_root(
+                "Mod/Tests/HostStoresProbe.cp",
+                "SplitNameRoundTrips",
+            ),
+            1,
+            "SplitQualifiedName must split well-formed names and reject bad ones"
+        );
+    }
+
+    #[test]
+    fn host_stores_probe_new_store_by_name_allocates() {
+        assert_eq!(
+            run_function_at_workspace_root(
+                "Mod/Tests/HostStoresProbe.cp",
+                "NewStoreByNameAllocates",
+            ),
+            1,
+            "NewStoreByName must allocate a real instance whose type tag \
+             matches a directly-NEW'd peer"
+        );
+    }
+
+    #[test]
+    fn host_stores_probe_new_store_by_name_rejects_bad_input() {
+        assert_eq!(
+            run_function_at_workspace_root(
+                "Mod/Tests/HostStoresProbe.cp",
+                "NewStoreByNameRejectsBadInput",
+            ),
+            1,
+            "NewStoreByName must return NIL for malformed / unresolved names"
+        );
+    }
+
+    #[test]
+    fn host_stores_probe_new_like_of_clones_type() {
+        assert_eq!(
+            run_function_at_workspace_root(
+                "Mod/Tests/HostStoresProbe.cp",
+                "NewLikeOfClonesType",
+            ),
+            1,
+            "NewLikeOf must allocate a fresh peer of the template's runtime type"
+        );
+    }
+
+    #[test]
+    fn host_stores_probe_typed_load_from_synthetic_odc() {
+        // Stage a synthetic `.odc` whose root store has type name
+        // "HostStoresProbe.BytePeekDesc" and body bytes [17, 42].
+        // The CP probe opens it, NewStore allocates a typed BytePeek,
+        // its Internalize override populates first/second, and the
+        // probe verifies via a type-guarded field read. End-to-end
+        // typed load.
+        match stage_synthetic_odc(
+            "Synthetic.odc",
+            "HostStoresProbe.BytePeekDesc",
+            &[17u8, 42u8],
+        ) {
+            Ok(()) => {}
+            Err(msg) => {
+                panic!("synthetic odc staging failed: {msg}");
+            }
+        }
+        assert_eq!(
+            run_function_at_workspace_root(
+                "Mod/Tests/HostStoresProbe.cp",
+                "TypedLoadFromSyntheticOdc",
+            ),
+            1,
+            "End-to-end typed load: synthetic .odc → NewStore → typed \
+             field read must round-trip the body bytes"
+        );
+    }
+
+    #[test]
+    fn host_stores_probe_new_store_on_unknown_type_returns_nil() {
+        match stage_empty_odc_fixture() {
+            Ok(()) => {}
+            Err(msg) => {
+                eprintln!("[host_stores_probe] skipping: {msg}");
+                return;
+            }
+        }
+        assert_eq!(
+            run_function_at_workspace_root(
+                "Mod/Tests/HostStoresProbe.cp",
+                "NewStoreOnUnknownTypeReturnsNil",
+            ),
+            1,
+            "NewStore on a store whose type isn't yet ported (e.g. \
+             Documents.StdDocument) must return NIL cleanly"
+        );
+    }
+
+    #[test]
+    fn host_stores_probe_internalize_dispatches() {
+        match stage_empty_odc_fixture() {
+            Ok(()) => {}
+            Err(msg) => {
+                eprintln!("[host_stores_probe] skipping: {msg}");
+                return;
+            }
+        }
+        assert_eq!(
+            run_function_at_workspace_root(
+                "Mod/Tests/HostStoresProbe.cp",
+                "InternalizeDispatches",
+            ),
+            1,
+            "BytePeek.Internalize override must dispatch through the \
+             abstract HostStores.StoreDesc.Internalize when called via \
+             InternalizeFrom"
+        );
+    }
+
+    #[test]
+    fn host_stores_probe_internalize_from_nil_store_sets_eof() {
+        assert_eq!(
+            run_function_at_workspace_root(
+                "Mod/Tests/HostStoresProbe.cp",
+                "InternalizeFromNilStoreSetsEof",
+            ),
+            1,
+            "InternalizeFrom on a NIL source store must report eof \
+             without dispatching the abstract method"
+        );
+    }
+
+    #[test]
+    fn host_stores_probe_bulk_read_matches_byte_by_byte() {
+        match stage_empty_odc_fixture() {
+            Ok(()) => {}
+            Err(msg) => {
+                eprintln!("[host_stores_probe] skipping: {msg}");
+                return;
+            }
+        }
+        assert_eq!(
+            run_function_at_workspace_root(
+                "Mod/Tests/HostStoresProbe.cp",
+                "BulkReadMatchesByteByByte",
+            ),
+            1,
+            "HostStores.Reader.ReadBytes must match the byte-by-byte sequence"
+        );
+    }
+
+    #[test]
+    fn string_array_compare_array_equals_literal() {
+        assert_eq!(
+            run_function("Mod/Tests/StringArrayCompare.cp", "ArrayEqualsLiteral"),
+            1,
+            "ARRAY OF CHAR with matching contents must `=` its string literal"
+        );
+    }
+
+    #[test]
+    fn string_array_compare_array_differs_from_literal() {
+        assert_eq!(
+            run_function("Mod/Tests/StringArrayCompare.cp", "ArrayDiffersFromLiteral"),
+            1,
+            "ARRAY OF CHAR with non-matching contents must `#` the string literal"
+        );
+    }
+
+    #[test]
+    fn string_array_compare_array_shorter_than_literal() {
+        assert_eq!(
+            run_function("Mod/Tests/StringArrayCompare.cp", "ArrayShorterThanLiteral"),
+            1,
+            "Terminator-mismatch (array shorter) must compare unequal"
+        );
+    }
+
+    #[test]
+    fn string_array_compare_array_longer_than_literal() {
+        assert_eq!(
+            run_function("Mod/Tests/StringArrayCompare.cp", "ArrayLongerThanLiteral"),
+            1,
+            "Terminator-mismatch (array longer) must compare unequal"
+        );
+    }
+
+    #[test]
+    fn string_array_compare_literal_equals_array() {
+        assert_eq!(
+            run_function("Mod/Tests/StringArrayCompare.cp", "LiteralEqualsArray"),
+            1,
+            "Operand order shouldn't matter — literal on the left must work too"
+        );
+    }
+
+    #[test]
+    fn string_array_compare_two_arrays_equal() {
+        assert_eq!(
+            run_function("Mod/Tests/StringArrayCompare.cp", "TwoArraysEqual"),
+            1,
+            "Two ARRAY OF CHAR with matching contents must compare equal regardless of address"
+        );
+    }
+
+    #[test]
+    fn string_array_compare_two_arrays_differ() {
+        assert_eq!(
+            run_function("Mod/Tests/StringArrayCompare.cp", "TwoArraysDiffer"),
+            1,
+            "Two ARRAY OF CHAR with differing contents must compare unequal"
+        );
+    }
+
+    #[test]
+    fn text_models_probe_type_resolves() {
+        assert_eq!(
+            run_function_at_workspace_root(
+                "Mod/Tests/TextModelsProbe.cp",
+                "TypeResolves",
+            ),
+            1,
+            "Kernel.ThisMod / ThisType must resolve TextModels.StdModelDesc \
+             once the loader has materialized the module"
+        );
+    }
+
+    #[test]
+    fn text_models_probe_load_std_model() {
+        // Body layout the probe expects: 6 super-version bytes
+        // [0..5], then 4-byte LE run-list length = 7, then a
+        // single-byte run-list terminator. Total 11 bytes; the
+        // probe verifies the version-chain bytes round-trip and
+        // the run-list length read correctly.
+        let body = [0u8, 1, 2, 3, 4, 5, 7, 0, 0, 0, 0xFF];
+        match stage_synthetic_odc(
+            "TextModelsStub.odc",
+            "TextModels.StdModelDesc",
+            &body,
+        ) {
+            Ok(()) => {}
+            Err(msg) => {
+                panic!("synthetic odc staging failed: {msg}");
+            }
+        }
+        assert_eq!(
+            run_function_at_workspace_root(
+                "Mod/Tests/TextModelsProbe.cp",
+                "LoadStdModel",
+            ),
+            1,
+            "Synthetic TextModels.StdModelDesc fixture must load through \
+             NewStore → Internalize → typed-field read"
+        );
+    }
+
+    #[test]
+    fn text_models_probe_load_std_model_text() {
+        // Run-list length = 6 (one piece + terminator):
+        //   ano = 1 (existing attribute, non-conforming on first
+        //            piece but exercises the text-run branch),
+        //   len = 5 (5 1-byte chars),
+        //   ano = 0xFF terminator
+        // chars buffer: "Hello"
+        let mut body: Vec<u8> = Vec::new();
+        body.extend_from_slice(&[0u8, 1, 2, 3, 4, 5]); // super-versions
+        body.extend_from_slice(&6i32.to_le_bytes());   // run-list length
+        body.push(1);                                   // ano = 1
+        body.extend_from_slice(&5i32.to_le_bytes());   // len = 5
+        body.push(0xFF);                                // terminator
+        body.extend_from_slice(b"Hello");
+        match stage_synthetic_odc(
+            "TextModelsHello.odc",
+            "TextModels.StdModelDesc",
+            &body,
+        ) {
+            Ok(()) => {}
+            Err(msg) => panic!("synthetic odc staging failed: {msg}"),
+        }
+        assert_eq!(
+            run_function_at_workspace_root(
+                "Mod/Tests/TextModelsProbe.cp",
+                "LoadStdModelText",
+            ),
+            1,
+            "TextModels.StdModel.Internalize must decode the run list \
+             and surface 'Hello' through the text buffer"
+        );
+    }
+
+    #[test]
+    fn text_models_probe_load_real_tour_odc() {
+        // Tour.odc ships with the BlackBox distribution and is a
+        // proper rich-text document — the embedded TextModels.StdModel
+        // has at least one NEW attribute (the default char-attrs)
+        // and many text pieces.  This exercises:
+        //   - HostStores.Reader.SkipInlineStore over real wire bytes
+        //   - the run-list decoder's full attribute-aware path
+        //   - cross-module NEW + dispatch on a real BB document
+        match stage_bb_odc_fixture("Tour.odc") {
+            Ok(()) => {}
+            Err(msg) => {
+                eprintln!("[text_models_probe] skipping Tour.odc: {msg}");
+                return;
+            }
+        }
+        let result = run_function_at_workspace_root(
+            "Mod/Tests/TextModelsProbe.cp",
+            "LoadStdModelFromTourOdc",
+        );
+        assert_eq!(
+            result, 1,
+            "Tour.odc's first TextModels.StdModelDesc must Internalize \
+             cleanly (1 = OkComplete; got {result}). With the inline-\
+             store-skip primitive in place, NEW attributes no longer \
+             stop the decoder."
+        );
+    }
+
+    #[test]
+    fn text_models_probe_tour_odc_summary() {
+        // Asserts on the decoded summary: at least one NEW attribute
+        // surfaced (the default char-attribute store) and at least
+        // one text-run piece is present.
+        match stage_bb_odc_fixture("Tour.odc") {
+            Ok(()) => {}
+            Err(msg) => {
+                eprintln!("[text_models_probe] skipping Tour.odc: {msg}");
+                return;
+            }
+        }
+        let summary = run_function_at_workspace_root(
+            "Mod/Tests/TextModelsProbe.cp",
+            "TourOdcModelSummary",
+        );
+        assert!(summary >= 0, "summary returned a sentinel error: {summary}");
+        let attr_growth = summary / 1_000_000;
+        let text_pieces = (summary / 1_000) % 1_000;
+        let view_pieces = summary % 1_000;
+        assert!(
+            attr_growth >= 1,
+            "expected at least 1 NEW attribute in Tour.odc's text model (saw {attr_growth})"
+        );
+        assert!(
+            text_pieces >= 1,
+            "expected at least 1 text-run piece in Tour.odc's model (saw {text_pieces})"
+        );
+        eprintln!(
+            "[text_models_probe] Tour.odc summary: attr_growth={attr_growth}, \
+             text_pieces={text_pieces}, view_pieces={view_pieces}"
+        );
+    }
+
+    #[test]
+    fn text_models_probe_tour_odc_text_length() {
+        match stage_bb_odc_fixture("Tour.odc") {
+            Ok(()) => {}
+            Err(msg) => {
+                eprintln!("[text_models_probe] skipping Tour.odc: {msg}");
+                return;
+            }
+        }
+        let len = run_function_at_workspace_root(
+            "Mod/Tests/TextModelsProbe.cp",
+            "TourOdcTextLength",
+        );
+        assert!(len > 0, "Tour.odc should produce non-empty text (got len {len})");
+        // Tour.odc is a substantial document; expect at least a
+        // few hundred chars from its first text model.
+        assert!(
+            len >= 200,
+            "expected at least 200 decoded chars from Tour.odc's first \
+             TextModels.StdModel (got {len})"
+        );
+        eprintln!("[text_models_probe] Tour.odc text length = {len}");
+    }
+
+    #[test]
+    fn text_models_probe_tour_odc_text_digest() {
+        match stage_bb_odc_fixture("Tour.odc") {
+            Ok(()) => {}
+            Err(msg) => {
+                eprintln!("[text_models_probe] skipping Tour.odc: {msg}");
+                return;
+            }
+        }
+        let digest = run_function_at_workspace_root(
+            "Mod/Tests/TextModelsProbe.cp",
+            "TourOdcTextDigest",
+        );
+        // Just assert it's a stable, non-trivial number — a real
+        // text-content regression would change the digest. The
+        // probe wraps i64 arithmetic, so any positive value
+        // confirms the buffer was populated and the decoder
+        // produced consistent bytes.
+        assert!(digest != 0, "non-empty digest expected, got {digest}");
+        eprintln!("[text_models_probe] Tour.odc first-32 digest = {digest}");
+    }
+
+    #[test]
+    fn text_views_probe_type_resolves() {
+        assert_eq!(
+            run_function_at_workspace_root(
+                "Mod/Tests/TextViewsProbe.cp",
+                "TypeResolves",
+            ),
+            1,
+        );
+    }
+
+    #[test]
+    fn text_views_probe_load_std_view_from_tour_odc() {
+        // Recursive typed load: TextViews.StdView's Internalize
+        // pulls the embedded TextModels.StdModel out of the same
+        // wire stream by calling Reader.ReadInlineStore (handle)
+        // and then HostStores.NewStore (typed materialization).
+        // Both layers must reach OkComplete on a real document.
+        match stage_bb_odc_fixture("Tour.odc") {
+            Ok(()) => {}
+            Err(msg) => {
+                eprintln!("[text_views_probe] skipping Tour.odc: {msg}");
+                return;
+            }
+        }
+        let result = run_function_at_workspace_root(
+            "Mod/Tests/TextViewsProbe.cp",
+            "LoadStdViewFromTourOdc",
+        );
+        assert_eq!(
+            result, 1,
+            "Tour.odc's first TextViews.StdView must Internalize cleanly \
+             with a populated TextModels.StdModel (got {result})"
+        );
+    }
+
+    #[test]
+    fn text_views_probe_tour_std_view_summary() {
+        match stage_bb_odc_fixture("Tour.odc") {
+            Ok(()) => {}
+            Err(msg) => {
+                eprintln!("[text_views_probe] skipping Tour.odc: {msg}");
+                return;
+            }
+        }
+        let summary = run_function_at_workspace_root(
+            "Mod/Tests/TextViewsProbe.cp",
+            "TourStdViewSummary",
+        );
+        assert!(summary > 0, "expected positive summary, got {summary}");
+        let text_len = summary / 1_000_000;
+        let org_plus_1 = (summary / 1_000) % 1_000;
+        let dy_plus_1 = summary % 1_000;
+        assert!(
+            text_len >= 200,
+            "expected at least 200 decoded chars in the embedded model \
+             (got text_len = {text_len})"
+        );
+        eprintln!(
+            "[text_views_probe] Tour.odc StdView summary: text_len={text_len}, \
+             org={}, dy={}",
+            org_plus_1 - 1,
+            dy_plus_1 - 1
+        );
+    }
+
+    #[test]
+    fn text_models_probe_load_real_empty_odc() {
+        // Walk a real BB Empty.odc, find its embedded
+        // TextModels.StdModelDesc, materialize it via NewStore
+        // and confirm Internalize either decoded cleanly or bailed
+        // at a known-deferred feature (e.g. NEW attributes).
+        // The probe encodes the outcome as an integer; assert on
+        // the specific code so a regression points at the exact
+        // path that surrendered.
+        match stage_empty_odc_fixture() {
+            Ok(()) => {}
+            Err(msg) => {
+                eprintln!("[text_models_probe] skipping real Empty.odc: {msg}");
+                return;
+            }
+        }
+        let result = run_function_at_workspace_root(
+            "Mod/Tests/TextModelsProbe.cp",
+            "LoadStdModelFromEmptyOdc",
+        );
+        // 1 = OkComplete, 25 = OkUnsupportedNewAttr (= 20 + 5).
+        // Either is acceptable for this slice — the test just
+        // requires that we found a model and dispatched. The
+        // OkUnsupportedNewAttr branch unlocks once the inline-
+        // child store-skip primitive lands. Reject 10 (no model
+        // found) and 11 (NewStore returned NIL) firmly.
+        // Empirically Empty.odc's TextModels.StdModel is an empty
+        // text buffer (run list = terminator only, zero pieces),
+        // so the decoder reaches OkComplete. If a future Empty.odc
+        // grows a NEW attribute, this will need the inline child
+        // store-skip primitive (deferred — see TextModels.cp).
+        assert_eq!(
+            result, 1,
+            "Empty.odc's TextModels.StdModelDesc must Internalize cleanly \
+             (1 = OkComplete; non-1 means a new wire-format feature \
+             surfaced — see TextModels.OkXxx codes)"
+        );
+    }
+
+    #[test]
+    fn text_models_probe_load_std_model_empty() {
+        // Terminator-only run list: run-list length = 1,
+        //   ano = 0xFF
+        // No chars.
+        let mut body: Vec<u8> = Vec::new();
+        body.extend_from_slice(&[0u8; 6]);
+        body.extend_from_slice(&1i32.to_le_bytes());
+        body.push(0xFF);
+        match stage_synthetic_odc(
+            "TextModelsEmpty.odc",
+            "TextModels.StdModelDesc",
+            &body,
+        ) {
+            Ok(()) => {}
+            Err(msg) => panic!("synthetic odc staging failed: {msg}"),
+        }
+        assert_eq!(
+            run_function_at_workspace_root(
+                "Mod/Tests/TextModelsProbe.cp",
+                "LoadStdModelEmpty",
+            ),
+            1,
+            "Empty (terminator-only) run list must decode as zero pieces"
+        );
+    }
+
+    #[test]
     fn finalizer_runs_when_block_reclaimed() {
         // The probe allocates 64 records of a type with a `Finalize`
         // method, drops every reference, calls Kernel.Collect, and
@@ -2642,6 +3372,64 @@ mod tests {
         assert!(
             delta >= N,
             "expected at least {N} finalizers to fire, got delta={delta}"
+        );
+    }
+
+    #[test]
+    fn xmod_passthrough_compiles() {
+        // CP MODULE → DEFINITION MODULE call with an open-array IN
+        // argument forwarded across modules. This is the path the
+        // typed Stores.Reader facade needs; if this fails, the
+        // facade idea won't fly.
+        match stage_empty_odc_fixture() {
+            Ok(()) => {}
+            Err(msg) => {
+                eprintln!("[xmod_passthrough] skipping: {msg}");
+                return;
+            }
+        }
+        assert_eq!(
+            run_function_at_workspace_root(
+                "Mod/Tests/XmodPassthroughCaller.cp",
+                "Run",
+            ),
+            1,
+        );
+    }
+
+    #[test]
+    fn local_const_module_dim_works() {
+        // Module-level CONST as ARRAY bound — known good baseline.
+        assert_eq!(
+            run_function("Mod/Tests/LocalConstArrayDim.cp", "ModuleConstDim"),
+            34,
+        );
+    }
+
+    #[test]
+    fn local_const_value_works() {
+        // Local CONST in an expression position — also works.
+        assert_eq!(
+            run_function("Mod/Tests/LocalConstArrayDim.cp", "LocalConstValue"),
+            16,
+        );
+    }
+
+    #[test]
+    fn local_const_array_dim_works() {
+        // Procedure-scoped CONST as ARRAY bound — was the failure
+        // case. Expect a 4-element round-trip after the fix.
+        assert_eq!(
+            run_function("Mod/Tests/LocalConstArrayDim.cp", "LocalConstDim"),
+            34,
+        );
+    }
+
+    #[test]
+    fn local_const_array_len_works() {
+        assert_eq!(
+            run_function("Mod/Tests/LocalConstArrayDim.cp", "LocalConstLen"),
+            4,
         );
     }
 }

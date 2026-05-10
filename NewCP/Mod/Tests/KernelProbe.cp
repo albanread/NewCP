@@ -155,34 +155,29 @@ BEGIN
   RETURN 1
 END ThisTypeNilWhenUnseen;
 
-(** With codegen-emitted __init_types running before this module's
-    body, `Kernel.ThisType` resolves a record type declared in this
-    very module. The KernelProbe module needs to be in the module
-    registry too — that lookup will fail until the loader
-    populates it from compiled-CP modules (still TBD), so we
-    explicitly look up KernelProbe.WidgetDesc through TypeOf
-    instead, which goes through TypeOf → BlockHeader.tag and
-    matches what __init_types registered. *)
+(** Codegen emits per-module `__init_types` that registers every
+    declared TypeDesc; the loader auto-registers each compiled CP
+    module's name with `Kernel.ThisMod`. End-to-end:
+    `Kernel.ThisMod("KernelProbe")` returns the module handle,
+    `Kernel.ThisType(_, "WidgetDesc")` returns the TypeDesc, and
+    that TypeDesc identity-equals `Kernel.TypeOf(w)` for a freshly
+    NEW'd `Widget`. *)
 PROCEDURE ThisTypeFindsRegisteredType*(): INTEGER;
   VAR w: Widget; td, looked_up: Kernel.Type; m: Kernel.Module;
 BEGIN
   NEW(w);
   td := Kernel.TypeOf(w);
   IF td = NIL THEN RETURN 0 END;
-  (* The compiled-CP module's name isn't yet in the module registry
-     (loader-side hook deferred), so ThisMod("KernelProbe") returns
-     NIL. Use Kernel itself instead — the test only needs to verify
-     ThisType resolves *some* registered type. We register the
-     KernelProbe types via __init_types but can't address them by
-     name yet; the resolution path is verified by the unit test in
-     kernel_sys::tests, this CP-side smoke just checks the
-     reflection plumb. *)
-  m := Kernel.ThisMod("Kernel");
+
+  m := Kernel.ThisMod("KernelProbe");
   IF m = NIL THEN RETURN 0 END;
-  (* Kernel module exists but has no TypeDesc-bearing records to
-     find. Accept NIL here. *)
-  looked_up := Kernel.ThisType(m, "Module");  (* declared but no concrete TypeDesc *)
-  IF looked_up # NIL THEN RETURN 0 END;
+  looked_up := Kernel.ThisType(m, "WidgetDesc");
+  IF looked_up = NIL THEN RETURN 0 END;
+  IF looked_up # td THEN RETURN 0 END;
+
+  (* Negative path: a name not declared by this module returns NIL
+     even when the module handle is valid. *)
+  IF Kernel.ThisType(m, "NoSuchTypeDesc") # NIL THEN RETURN 0 END;
   RETURN 1
 END ThisTypeFindsRegisteredType;
 
