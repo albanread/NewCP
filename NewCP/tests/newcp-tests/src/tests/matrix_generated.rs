@@ -1000,3 +1000,254 @@ fn matrix_stmt_nested_if_inside_for() {
     );
 }
 
+/// CP §8.2.2 / 6.1 — SHORTREAL (32-bit float) arithmetic; round-trips through ENTIER to land in an INTEGER
+#[test]
+#[ignore = "KNOWN BUG: SHORTREAL arithmetic mixed with REAL operand produces wild result (observed: 2097152 instead of 18).  Either SHORTREAL arithmetic doesn't sign-extend / convert properly when mixed with REAL operands, or ENTIER on the resulting REAL drops bits. File under deferred_fixes #24."]
+fn matrix_expr_shortreal_arithmetic() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_SHORTREAL_Arithmetic.cp", "Run"),
+        18,
+        "matrix probe expr_shortreal_arithmetic (SHORTREAL (32-bit float) arithmetic; round-trips through ENTIER to land in an INTEGER — §8.2.2 / 6.1) returned the wrong value",
+    );
+}
+
+/// CP §8.1 — negative integer literal used directly in an expression
+#[test]
+fn matrix_expr_negative_literal_in_expression() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_Negative_Literal.cp", "Run"),
+        7,
+        "matrix probe expr_negative_literal_in_expression (negative integer literal used directly in an expression — §8.1) returned the wrong value",
+    );
+}
+
+/// CP §6.1 / 8.2.4 — SET(32) supports the full 0..31 element range; bit 31 is the highest allowable element
+#[test]
+fn matrix_expr_set_max_bit_index() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_SET_BitMax.cp", "Run"),
+        1,
+        "matrix probe expr_set_max_bit_index (SET(32) supports the full 0..31 element range; bit 31 is the highest allowable element — §6.1 / 8.2.4) returned the wrong value",
+    );
+}
+
+/// CP §8.2.5 — relational comparisons on LONGINT values that exceed INTEGER range
+#[test]
+fn matrix_expr_longint_relational() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_LONGINT_Relational.cp", "Run"),
+        111,
+        "matrix probe expr_longint_relational (relational comparisons on LONGINT values that exceed INTEGER range — §8.2.5) returned the wrong value",
+    );
+}
+
+/// CP §8.2.5 — `=` on two ARRAY OF CHAR variables (not literals) compares by content up to the first 0X terminator
+#[test]
+fn matrix_expr_string_equality_on_two_arrays() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_StringEquality_CharArray.cp", "Run"),
+        1,
+        "matrix probe expr_string_equality_on_two_arrays (`=` on two ARRAY OF CHAR variables (not literals) compares by content up to the first 0X terminator — §8.2.5) returned the wrong value",
+    );
+}
+
+/// CP §8.2.5 — `#` on two ARRAY OF CHAR variables returns TRUE for differing content
+#[test]
+fn matrix_expr_string_inequality_on_two_arrays() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_StringInequality_CharArray.cp", "Run"),
+        1,
+        "matrix probe expr_string_inequality_on_two_arrays (`#` on two ARRAY OF CHAR variables returns TRUE for differing content — §8.2.5) returned the wrong value",
+    );
+}
+
+/// CP §9.5 — a CASE inside another CASE arm — nested branching with separate label sets
+#[test]
+fn matrix_stmt_nested_case() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Stmt_Nested_CASE.cp", "Run"),
+        33,
+        "matrix probe stmt_nested_case (a CASE inside another CASE arm — nested branching with separate label sets — §9.5) returned the wrong value",
+    );
+}
+
+/// CP §9.5 — CASE without ELSE — when one of the labels matches, that arm runs and the statement completes normally
+#[test]
+fn matrix_stmt_case_without_else_matches_one() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Stmt_CASE_Without_ELSE.cp", "Run"),
+        5,
+        "matrix probe stmt_case_without_else_matches_one (CASE without ELSE — when one of the labels matches, that arm runs and the statement completes normally — §9.5) returned the wrong value",
+    );
+}
+
+/// CP §9.7 — WHILE body never runs when the condition is FALSE on entry
+#[test]
+fn matrix_stmt_while_body_skipped_when_false() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Stmt_WHILE_NoIterations.cp", "Run"),
+        0,
+        "matrix probe stmt_while_body_skipped_when_false (WHILE body never runs when the condition is FALSE on entry — §9.7) returned the wrong value",
+    );
+}
+
+/// CP §10.2 — one method on a record calls another method on the same record through the receiver
+#[test]
+fn matrix_method_calls_sibling_method_on_same_receiver() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Method_Calls_Sibling_Method.cp", "Run"),
+        100,
+        "matrix probe method_calls_sibling_method_on_same_receiver (one method on a record calls another method on the same record through the receiver — §10.2) returned the wrong value",
+    );
+}
+
+/// CP §10.2 / 6.1 — method whose return type is BOOLEAN; the call result drives an IF
+#[test]
+fn matrix_method_returns_boolean() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Method_ReturnsBoolean.cp", "Run"),
+        42,
+        "matrix probe method_returns_boolean (method whose return type is BOOLEAN; the call result drives an IF — §10.2 / 6.1) returned the wrong value",
+    );
+}
+
+/// CP §6.5 — a procedure-typed variable can be reassigned between calls; the second call dispatches to the new target
+#[test]
+fn matrix_proc_value_reassigned_mid_flight() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Proc_Value_Reassigned.cp", "Run"),
+        28,
+        "matrix probe proc_value_reassigned_mid_flight (a procedure-typed variable can be reassigned between calls; the second call dispatches to the new target — §6.5) returned the wrong value",
+    );
+}
+
+/// CP §6.3 — a record with INTEGER, BOOLEAN, REAL, and CHAR fields exercises field offset / alignment for multiple primitive widths
+#[test]
+fn matrix_type_record_with_mixed_field_types() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Type_RecordWith_Three_Field_Types.cp", "Run"),
+        1023,
+        "matrix probe type_record_with_mixed_field_types (a record with INTEGER, BOOLEAN, REAL, and CHAR fields exercises field offset / alignment for multiple primitive widths — §6.3) returned the wrong value",
+    );
+}
+
+/// CP §10.3 — COPY(src, dst) duplicates the contents of one fixed array into another of the same shape
+#[test]
+fn matrix_builtin_copy_between_fixed_arrays() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Builtin_COPY_FixedArray.cp", "Run"),
+        12,
+        "matrix probe builtin_copy_between_fixed_arrays (COPY(src, dst) duplicates the contents of one fixed array into another of the same shape — §10.3) returned the wrong value",
+    );
+}
+
+/// CP §9.4 / 8.2.3 — IF condition that ANDs / ORs multiple comparisons — exercises the short-circuit lowering across more than two operands
+#[test]
+fn matrix_stmt_if_with_compound_condition() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Stmt_IF_ChainedCondition.cp", "Run"),
+        1,
+        "matrix probe stmt_if_with_compound_condition (IF condition that ANDs / ORs multiple comparisons — exercises the short-circuit lowering across more than two operands — §9.4 / 8.2.3) returned the wrong value",
+    );
+}
+
+/// CP §8.2.3 — `&` binds tighter than `OR`: `a OR b & c` parses as `a OR (b & c)`
+#[test]
+fn matrix_expr_mixed_and_or_precedence() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_MixedAndOr_Precedence.cp", "Run"),
+        1,
+        "matrix probe expr_mixed_and_or_precedence (`&` binds tighter than `OR`: `a OR b & c` parses as `a OR (b & c)` — §8.2.3) returned the wrong value",
+    );
+}
+
+/// CP §8.2.3 — `~` binds tightest among logical ops; `~a & b` parses as `(~a) & b`
+#[test]
+fn matrix_expr_not_precedence_higher_than_and() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_NOT_Precedence.cp", "Run"),
+        1,
+        "matrix probe expr_not_precedence_higher_than_and (`~` binds tightest among logical ops; `~a & b` parses as `(~a) & b` — §8.2.3) returned the wrong value",
+    );
+}
+
+/// CP §9.8 — LOOP runs until EXIT; the exit condition can be anywhere in the body
+#[test]
+fn matrix_stmt_loop_indefinite_with_exit() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Stmt_LOOP_Indefinite.cp", "Run"),
+        10,
+        "matrix probe stmt_loop_indefinite_with_exit (LOOP runs until EXIT; the exit condition can be anywhere in the body — §9.8) returned the wrong value",
+    );
+}
+
+/// CP §10.3 — ABS works on REAL operands too, not just integer types
+#[test]
+fn matrix_expr_abs_on_real() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_ABS_OnReal.cp", "Run"),
+        7,
+        "matrix probe expr_abs_on_real (ABS works on REAL operands too, not just integer types — §10.3) returned the wrong value",
+    );
+}
+
+/// CP §10.1 — OUT BOOLEAN param — callee write propagates to caller's slot
+#[test]
+fn matrix_param_out_boolean_writes_through() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Param_OUT_BOOLEAN.cp", "Run"),
+        1,
+        "matrix probe param_out_boolean_writes_through (OUT BOOLEAN param — callee write propagates to caller's slot — §10.1) returned the wrong value",
+    );
+}
+
+/// CP §10.1 — VAR REAL param — callee mutation propagates
+#[test]
+fn matrix_param_var_real_mutates_caller() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Param_VAR_REAL.cp", "Run"),
+        10,
+        "matrix probe param_var_real_mutates_caller (VAR REAL param — callee mutation propagates — §10.1) returned the wrong value",
+    );
+}
+
+/// CP §10 — mutually-recursive procedures (IsEven calls IsOdd which calls IsEven) — sema must resolve the forward reference both ways
+#[test]
+fn matrix_recursive_mutual_two_procs() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Recursive_Mutual.cp", "Run"),
+        1,
+        "matrix probe recursive_mutual_two_procs (mutually-recursive procedures (IsEven calls IsOdd which calls IsEven) — sema must resolve the forward reference both ways — §10) returned the wrong value",
+    );
+}
+
+/// CP §7 — multiple VAR declarations in a single procedure; each gets its own slot and the values don't bleed across
+#[test]
+fn matrix_stmt_sequential_var_declarations() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Stmt_Sequential_Var_Decl.cp", "Run"),
+        1234,
+        "matrix probe stmt_sequential_var_declarations (multiple VAR declarations in a single procedure; each gets its own slot and the values don't bleed across — §7) returned the wrong value",
+    );
+}
+
+/// CP §5 / 6.2 — module-level CONST used as an array dimension; the compiler must fold the CONST at type-check time
+#[test]
+fn matrix_type_constant_drives_array_size() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Type_Const_In_ArraySize.cp", "Run"),
+        4,
+        "matrix probe type_constant_drives_array_size (module-level CONST used as an array dimension; the compiler must fold the CONST at type-check time — §5 / 6.2) returned the wrong value",
+    );
+}
+
+/// CP §10.3 — DEC(n, k) is equivalent to n := n - k for any integer k
+#[test]
+fn matrix_expr_dec_with_negative_delta() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_DEC_WithDelta.cp", "Run"),
+        15,
+        "matrix probe expr_dec_with_negative_delta (DEC(n, k) is equivalent to n := n - k for any integer k — §10.3) returned the wrong value",
+    );
+}
+

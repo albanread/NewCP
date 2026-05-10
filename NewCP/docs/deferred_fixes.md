@@ -522,6 +522,26 @@ alias to that same record, allow the implicit narrowing (or
 better: canonicalise both sides to the underlying record name
 before comparing). Un-ignore the probe to confirm.
 
+### 24. SHORTREAL mixed with REAL operand produces wild result
+
+**Where**: codegen / IR lowering for mixed-precision float
+arithmetic. Surfaced by matrix probe
+`M_Expr_SHORTREAL_Arithmetic` (`#[ignore]`-flagged).
+
+**Workaround**: probe ignored. Real code can stick to REAL
+throughout, which works.
+
+**Why deferred**: `SHORT(3.0) * SHORT(2.5) * 2.4` evaluates to
+2097152 instead of 18.0.  Either the SHORTREAL → REAL promotion
+on the third operand is wrong, or ENTIER on the REAL result
+truncates the wrong bits, or the IR is treating the f32 as f64
+without converting first.
+
+**Closing it**: trace the float-width-promotion lowering in
+`newcp-ir/src/lower.rs::lower_binary` (the existing
+`is_float_ir`-driven branch handles int→float but may be missing
+SHORTREAL→REAL). Un-ignore the probe to confirm; expected 18.
+
 ---
 
 ## Conventions for adding entries

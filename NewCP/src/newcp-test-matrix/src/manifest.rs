@@ -2786,4 +2786,584 @@ END M_Stmt_Nested_IF_Inside_For.
 "#,
         ignored: None,
     },
+
+
+    // ─── Cycle 1: more expression / statement / OO cells ────────────
+
+    Probe {
+        module_name: "M_Expr_SHORTREAL_Arithmetic",
+        test_name: "expr_shortreal_arithmetic",
+        spec_section: "8.2.2 / 6.1",
+        description: "SHORTREAL (32-bit float) arithmetic; round-trips through ENTIER \
+                      to land in an INTEGER",
+        expected_value: 18,
+        cp_source: r#"MODULE M_Expr_SHORTREAL_Arithmetic;
+    PROCEDURE Run* (): LONGINT;
+        VAR x, y: SHORTREAL;
+    BEGIN
+        x := SHORT(3.0);
+        y := SHORT(2.5);
+        RETURN ENTIER(x * y * 2.4)      (* 3.0*2.5*2.4 = 18.0 → 18 *)
+    END Run;
+END M_Expr_SHORTREAL_Arithmetic.
+"#,
+        ignored: Some(
+            "KNOWN BUG: SHORTREAL arithmetic mixed with REAL operand produces \
+             wild result (observed: 2097152 instead of 18).  Either SHORTREAL \
+             arithmetic doesn't sign-extend / convert properly when mixed \
+             with REAL operands, or ENTIER on the resulting REAL drops bits. \
+             File under deferred_fixes #24.",
+        ),
+    },
+
+    Probe {
+        module_name: "M_Expr_Negative_Literal",
+        test_name: "expr_negative_literal_in_expression",
+        spec_section: "8.1",
+        description: "negative integer literal used directly in an expression",
+        expected_value: 7,
+        cp_source: r#"MODULE M_Expr_Negative_Literal;
+    PROCEDURE Run* (): INTEGER;
+        VAR x: INTEGER;
+    BEGIN
+        x := 10 + (-3);
+        RETURN x
+    END Run;
+END M_Expr_Negative_Literal.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Expr_SET_BitMax",
+        test_name: "expr_set_max_bit_index",
+        spec_section: "6.1 / 8.2.4",
+        description: "SET(32) supports the full 0..31 element range; bit 31 is the \
+                      highest allowable element",
+        expected_value: 1,
+        cp_source: r#"MODULE M_Expr_SET_BitMax;
+    PROCEDURE Run* (): INTEGER;
+        VAR s: SET;
+    BEGIN
+        s := {0, 31};
+        IF (0 IN s) & (31 IN s) THEN RETURN 1 ELSE RETURN 0 END
+    END Run;
+END M_Expr_SET_BitMax.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Expr_LONGINT_Relational",
+        test_name: "expr_longint_relational",
+        spec_section: "8.2.5",
+        description: "relational comparisons on LONGINT values that exceed INTEGER range",
+        expected_value: 111,
+        cp_source: r#"MODULE M_Expr_LONGINT_Relational;
+    PROCEDURE Run* (): INTEGER;
+        VAR a, b: LONGINT; score: INTEGER;
+    BEGIN
+        a := 10000000000;
+        b := 20000000000;
+        score := 0;
+        IF a < b           THEN score := score + 1   END;
+        IF b > a           THEN score := score + 10  END;
+        IF a + a = b       THEN score := score + 100 END;
+        RETURN score
+    END Run;
+END M_Expr_LONGINT_Relational.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Expr_StringEquality_CharArray",
+        test_name: "expr_string_equality_on_two_arrays",
+        spec_section: "8.2.5",
+        description: "`=` on two ARRAY OF CHAR variables (not literals) compares by content \
+                      up to the first 0X terminator",
+        expected_value: 1,
+        cp_source: r#"MODULE M_Expr_StringEquality_CharArray;
+    PROCEDURE Run* (): INTEGER;
+        VAR a, b: ARRAY 8 OF CHAR;
+    BEGIN
+        a := "hello";
+        b := "hello";
+        IF a = b THEN RETURN 1 ELSE RETURN 0 END
+    END Run;
+END M_Expr_StringEquality_CharArray.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Expr_StringInequality_CharArray",
+        test_name: "expr_string_inequality_on_two_arrays",
+        spec_section: "8.2.5",
+        description: "`#` on two ARRAY OF CHAR variables returns TRUE for differing content",
+        expected_value: 1,
+        cp_source: r#"MODULE M_Expr_StringInequality_CharArray;
+    PROCEDURE Run* (): INTEGER;
+        VAR a, b: ARRAY 8 OF CHAR;
+    BEGIN
+        a := "hello";
+        b := "world";
+        IF a # b THEN RETURN 1 ELSE RETURN 0 END
+    END Run;
+END M_Expr_StringInequality_CharArray.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Stmt_Nested_CASE",
+        test_name: "stmt_nested_case",
+        spec_section: "9.5",
+        description: "a CASE inside another CASE arm — nested branching with separate label \
+                      sets",
+        expected_value: 33,
+        cp_source: r#"MODULE M_Stmt_Nested_CASE;
+    PROCEDURE Classify (kind, sub: INTEGER): INTEGER;
+    BEGIN
+        CASE kind OF
+          1:
+            CASE sub OF
+              10: RETURN 11
+            | 20: RETURN 33
+            ELSE  RETURN 19
+            END
+        | 2: RETURN 200
+        ELSE  RETURN 999
+        END
+    END Classify;
+
+    PROCEDURE Run* (): INTEGER;
+    BEGIN
+        RETURN Classify(1, 20)
+    END Run;
+END M_Stmt_Nested_CASE.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Stmt_CASE_Without_ELSE",
+        test_name: "stmt_case_without_else_matches_one",
+        spec_section: "9.5",
+        description: "CASE without ELSE — when one of the labels matches, that arm runs \
+                      and the statement completes normally",
+        expected_value: 5,
+        cp_source: r#"MODULE M_Stmt_CASE_Without_ELSE;
+    PROCEDURE Run* (): INTEGER;
+        VAR x: INTEGER;
+    BEGIN
+        x := 0;
+        CASE 2 OF
+          1: x := 1
+        | 2: x := 5
+        | 3: x := 9
+        END;
+        RETURN x
+    END Run;
+END M_Stmt_CASE_Without_ELSE.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Stmt_WHILE_NoIterations",
+        test_name: "stmt_while_body_skipped_when_false",
+        spec_section: "9.7",
+        description: "WHILE body never runs when the condition is FALSE on entry",
+        expected_value: 0,
+        cp_source: r#"MODULE M_Stmt_WHILE_NoIterations;
+    PROCEDURE Run* (): INTEGER;
+        VAR i, count: INTEGER;
+    BEGIN
+        i := 10; count := 0;
+        WHILE i < 5 DO INC(count); INC(i) END;
+        RETURN count
+    END Run;
+END M_Stmt_WHILE_NoIterations.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Method_Calls_Sibling_Method",
+        test_name: "method_calls_sibling_method_on_same_receiver",
+        spec_section: "10.2",
+        description: "one method on a record calls another method on the same record \
+                      through the receiver",
+        expected_value: 100,
+        cp_source: r#"MODULE M_Method_Calls_Sibling_Method;
+    TYPE
+        BoxDesc = EXTENSIBLE RECORD value: INTEGER END;
+        Box     = POINTER TO BoxDesc;
+
+    PROCEDURE (b: Box) Get* (): INTEGER, NEW;
+    BEGIN RETURN b.value END Get;
+
+    PROCEDURE (b: Box) DoubleViaGet* (): INTEGER, NEW;
+    BEGIN RETURN b.Get() * 2 END DoubleViaGet;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR b: Box;
+    BEGIN
+        NEW(b);
+        b.value := 50;
+        RETURN b.DoubleViaGet()         (* 100 *)
+    END Run;
+END M_Method_Calls_Sibling_Method.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Method_ReturnsBoolean",
+        test_name: "method_returns_boolean",
+        spec_section: "10.2 / 6.1",
+        description: "method whose return type is BOOLEAN; the call result drives an IF",
+        expected_value: 42,
+        cp_source: r#"MODULE M_Method_ReturnsBoolean;
+    TYPE
+        BoxDesc = EXTENSIBLE RECORD v: INTEGER END;
+        Box     = POINTER TO BoxDesc;
+
+    PROCEDURE (b: Box) IsPositive* (): BOOLEAN, NEW;
+    BEGIN RETURN b.v > 0 END IsPositive;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR b: Box;
+    BEGIN
+        NEW(b);
+        b.v := 42;
+        IF b.IsPositive() THEN RETURN b.v ELSE RETURN -1 END
+    END Run;
+END M_Method_ReturnsBoolean.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Proc_Value_Reassigned",
+        test_name: "proc_value_reassigned_mid_flight",
+        spec_section: "6.5",
+        description: "a procedure-typed variable can be reassigned between calls; the \
+                      second call dispatches to the new target",
+        expected_value: 28,
+        cp_source: r#"MODULE M_Proc_Value_Reassigned;
+    TYPE UnaryOp = PROCEDURE (x: INTEGER): INTEGER;
+
+    PROCEDURE Triple (x: INTEGER): INTEGER;
+    BEGIN RETURN x * 3 END Triple;
+
+    PROCEDURE AddTen (x: INTEGER): INTEGER;
+    BEGIN RETURN x + 10 END AddTen;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR f: UnaryOp; a, b: INTEGER;
+    BEGIN
+        f := Triple;
+        a := f(6);          (* 18 *)
+        f := AddTen;
+        b := f(0);          (* 10 *)
+        RETURN a + b        (* 28 *)
+    END Run;
+END M_Proc_Value_Reassigned.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Type_RecordWith_Three_Field_Types",
+        test_name: "type_record_with_mixed_field_types",
+        spec_section: "6.3",
+        description: "a record with INTEGER, BOOLEAN, REAL, and CHAR fields exercises \
+                      field offset / alignment for multiple primitive widths",
+        expected_value: 1023,
+        cp_source: r#"MODULE M_Type_RecordWith_Three_Field_Types;
+    TYPE Mixed = RECORD
+        n: INTEGER;
+        b: BOOLEAN;
+        r: REAL;
+        c: CHAR
+    END;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR m: Mixed; score: INTEGER;
+    BEGIN
+        m.n := 1000;
+        m.b := TRUE;
+        m.r := 1.5;
+        m.c := "X";
+        score := 0;
+        IF m.n = 1000 THEN score := score + 1000 END;
+        IF m.b THEN score := score + 20 END;
+        IF ENTIER(m.r * 2.0) = 3 THEN score := score + 3 END;
+        IF m.c = "X" THEN score := score + 0 END;
+        RETURN score                          (* 1000 + 20 + 3 = 1023 *)
+    END Run;
+END M_Type_RecordWith_Three_Field_Types.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Builtin_COPY_FixedArray",
+        test_name: "builtin_copy_between_fixed_arrays",
+        spec_section: "10.3",
+        description: "COPY(src, dst) duplicates the contents of one fixed array into \
+                      another of the same shape",
+        expected_value: 12,
+        cp_source: r#"MODULE M_Builtin_COPY_FixedArray;
+    PROCEDURE Run* (): INTEGER;
+        VAR src, dst: ARRAY 3 OF INTEGER;
+    BEGIN
+        src[0] := 3; src[1] := 4; src[2] := 5;
+        dst[0] := 0; dst[1] := 0; dst[2] := 0;
+        dst := src;             (* whole-array assignment in CP *)
+        RETURN dst[0] + dst[1] + dst[2]       (* 12 *)
+    END Run;
+END M_Builtin_COPY_FixedArray.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Stmt_IF_ChainedCondition",
+        test_name: "stmt_if_with_compound_condition",
+        spec_section: "9.4 / 8.2.3",
+        description: "IF condition that ANDs / ORs multiple comparisons — exercises the \
+                      short-circuit lowering across more than two operands",
+        expected_value: 1,
+        cp_source: r#"MODULE M_Stmt_IF_ChainedCondition;
+    PROCEDURE Run* (): INTEGER;
+        VAR a, b, c: INTEGER;
+    BEGIN
+        a := 1; b := 2; c := 3;
+        IF (a < b) & (b < c) & (a < c) THEN
+            RETURN 1
+        ELSE
+            RETURN 0
+        END
+    END Run;
+END M_Stmt_IF_ChainedCondition.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Expr_MixedAndOr_Precedence",
+        test_name: "expr_mixed_and_or_precedence",
+        spec_section: "8.2.3",
+        description: "`&` binds tighter than `OR`: `a OR b & c` parses as `a OR (b & c)`",
+        expected_value: 1,
+        cp_source: r#"MODULE M_Expr_MixedAndOr_Precedence;
+    PROCEDURE Run* (): INTEGER;
+        VAR a, b, c: BOOLEAN;
+    BEGIN
+        a := TRUE; b := FALSE; c := FALSE;
+        (* a OR (b & c) = TRUE OR (FALSE & FALSE) = TRUE *)
+        IF a OR b & c THEN RETURN 1 ELSE RETURN 0 END
+    END Run;
+END M_Expr_MixedAndOr_Precedence.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Expr_NOT_Precedence",
+        test_name: "expr_not_precedence_higher_than_and",
+        spec_section: "8.2.3",
+        description: "`~` binds tightest among logical ops; `~a & b` parses as `(~a) & b`",
+        expected_value: 1,
+        cp_source: r#"MODULE M_Expr_NOT_Precedence;
+    PROCEDURE Run* (): INTEGER;
+        VAR a, b: BOOLEAN;
+    BEGIN
+        a := FALSE; b := TRUE;
+        (* (~a) & b = TRUE & TRUE = TRUE *)
+        IF ~a & b THEN RETURN 1 ELSE RETURN 0 END
+    END Run;
+END M_Expr_NOT_Precedence.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Stmt_LOOP_Indefinite",
+        test_name: "stmt_loop_indefinite_with_exit",
+        spec_section: "9.8",
+        description: "LOOP runs until EXIT; the exit condition can be anywhere in the body",
+        expected_value: 10,
+        cp_source: r#"MODULE M_Stmt_LOOP_Indefinite;
+    PROCEDURE Run* (): INTEGER;
+        VAR n: INTEGER;
+    BEGIN
+        n := 0;
+        LOOP
+            INC(n);
+            IF n >= 10 THEN EXIT END
+        END;
+        RETURN n
+    END Run;
+END M_Stmt_LOOP_Indefinite.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Expr_ABS_OnReal",
+        test_name: "expr_abs_on_real",
+        spec_section: "10.3",
+        description: "ABS works on REAL operands too, not just integer types",
+        expected_value: 7,
+        cp_source: r#"MODULE M_Expr_ABS_OnReal;
+    PROCEDURE Run* (): LONGINT;
+        VAR x: REAL;
+    BEGIN
+        x := -7.0;
+        RETURN ENTIER(ABS(x))
+    END Run;
+END M_Expr_ABS_OnReal.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Param_OUT_BOOLEAN",
+        test_name: "param_out_boolean_writes_through",
+        spec_section: "10.1",
+        description: "OUT BOOLEAN param — callee write propagates to caller's slot",
+        expected_value: 1,
+        cp_source: r#"MODULE M_Param_OUT_BOOLEAN;
+    PROCEDURE SetTrue (OUT b: BOOLEAN);
+    BEGIN b := TRUE END SetTrue;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR flag: BOOLEAN;
+    BEGIN
+        flag := FALSE;
+        SetTrue(flag);
+        IF flag THEN RETURN 1 ELSE RETURN 0 END
+    END Run;
+END M_Param_OUT_BOOLEAN.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Param_VAR_REAL",
+        test_name: "param_var_real_mutates_caller",
+        spec_section: "10.1",
+        description: "VAR REAL param — callee mutation propagates",
+        expected_value: 10,
+        cp_source: r#"MODULE M_Param_VAR_REAL;
+    PROCEDURE Double (VAR x: REAL);
+    BEGIN x := x * 2.0 END Double;
+
+    PROCEDURE Run* (): LONGINT;
+        VAR x: REAL;
+    BEGIN
+        x := 5.0;
+        Double(x);
+        RETURN ENTIER(x)            (* 10 *)
+    END Run;
+END M_Param_VAR_REAL.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Recursive_Mutual",
+        test_name: "recursive_mutual_two_procs",
+        spec_section: "10",
+        description: "mutually-recursive procedures (IsEven calls IsOdd which calls \
+                      IsEven) — sema must resolve the forward reference both ways",
+        expected_value: 1,
+        cp_source: r#"MODULE M_Recursive_Mutual;
+    PROCEDURE IsOdd  (n: INTEGER): BOOLEAN;
+    BEGIN
+        IF n = 0 THEN RETURN FALSE
+        ELSE RETURN IsEven(n - 1)
+        END
+    END IsOdd;
+
+    PROCEDURE IsEven (n: INTEGER): BOOLEAN;
+    BEGIN
+        IF n = 0 THEN RETURN TRUE
+        ELSE RETURN IsOdd(n - 1)
+        END
+    END IsEven;
+
+    PROCEDURE Run* (): INTEGER;
+    BEGIN
+        IF IsEven(10) & IsOdd(7) THEN RETURN 1 ELSE RETURN 0 END
+    END Run;
+END M_Recursive_Mutual.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Stmt_Sequential_Var_Decl",
+        test_name: "stmt_sequential_var_declarations",
+        spec_section: "7",
+        description: "multiple VAR declarations in a single procedure; each gets its own \
+                      slot and the values don't bleed across",
+        expected_value: 1234,
+        cp_source: r#"MODULE M_Stmt_Sequential_Var_Decl;
+    PROCEDURE Run* (): INTEGER;
+        VAR a: INTEGER;
+        VAR b: INTEGER;
+        VAR c, d: INTEGER;
+    BEGIN
+        a := 1; b := 2; c := 3; d := 4;
+        RETURN a * 1000 + b * 100 + c * 10 + d
+    END Run;
+END M_Stmt_Sequential_Var_Decl.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Type_Const_In_ArraySize",
+        test_name: "type_constant_drives_array_size",
+        spec_section: "5 / 6.2",
+        description: "module-level CONST used as an array dimension; the compiler must \
+                      fold the CONST at type-check time",
+        expected_value: 4,
+        cp_source: r#"MODULE M_Type_Const_In_ArraySize;
+    CONST size = 4;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR arr: ARRAY size OF INTEGER;
+    BEGIN
+        arr[0] := 0; arr[1] := 0; arr[2] := 0; arr[3] := 0;
+        RETURN LEN(arr)              (* 4 *)
+    END Run;
+END M_Type_Const_In_ArraySize.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Expr_DEC_WithDelta",
+        test_name: "expr_dec_with_negative_delta",
+        spec_section: "10.3",
+        description: "DEC(n, k) is equivalent to n := n - k for any integer k",
+        expected_value: 15,
+        cp_source: r#"MODULE M_Expr_DEC_WithDelta;
+    PROCEDURE Run* (): INTEGER;
+        VAR n: INTEGER;
+    BEGIN
+        n := 100;
+        DEC(n, 85);
+        RETURN n
+    END Run;
+END M_Expr_DEC_WithDelta.
+"#,
+        ignored: None,
+    },
 ];
