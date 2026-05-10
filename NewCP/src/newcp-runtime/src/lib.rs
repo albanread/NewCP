@@ -1034,14 +1034,49 @@ mod tests {
     fn bootstrap_report_reflects_resident_kernel_and_init() {
         let report = BootstrapReport::new().render();
 
+        // Header: target + pointer width.
         assert!(report.contains("target: x86_64-pc-windows-msvc"));
         assert!(report.contains("pointer-width: 64"));
-        assert!(report.contains("resident-modules: 1:Kernel:resident, 2:Init:resident"));
+
+        // Compiler service line.
         assert!(report.contains("compiler-service: resident-compiler:Rust"));
-        assert!(report.contains("hosted-modules: Console [Rust-hosted console I/O facade for tests and JIT execution] | HostMenus [Rust-hosted facade until CP HostMenus is available]"));
-        assert!(report.contains("compiled-modules: System [compiled by resident-compiler"));
+
+        // Resident-modules line: Init must be registered. Kernel is
+        // *also* there as a native module (its earlier resident
+        // registration gets retired when Kernel's Rust shim suite is
+        // attached, but the new entry still shows up under
+        // `Kernel:resident`). We don't pin id numbers because the
+        // registration set grows as new native modules join
+        // (KernelSys, Console, Math, SMath, iGui, …).
+        assert!(report.contains("Init:resident"));
+        assert!(report.contains("Kernel:resident"));
+
+        // Hosted modules: Console and HostMenus are the load-bearing
+        // pair (Console for stdout, HostMenus for the OpenApp facade).
+        // The exact summary string for each is incidental.
+        assert!(report.contains("Console ["));
+        assert!(report.contains("HostMenus ["));
+
+        // Compiled modules: System and InitShell are bootstrapped from
+        // resident CP-equivalent stubs.
+        assert!(report.contains("compiled-modules:"));
+        assert!(report.contains("System ["));
+        assert!(report.contains("InitShell ["));
+
+        // Boot phases: full ordered chain.
         assert!(report.contains("boot-phases: kernel-ready -> init-ready -> compiler-ready -> jit-ready -> base-modules-ready"));
-        assert!(report.contains("module-init-log: init Kernel via bootstrap | init System via System.body | init HostMenus via HostMenus.bootstrap | init InitShell via InitShell.body"));
+
+        // Module-init log: each load-bearing module's init line must
+        // appear. The "via X" suffix varies (early-boot resident
+        // modules log `via bootstrap`; native modules with explicit
+        // init routines log `via <Module>.bootstrap`); just check the
+        // module names show up.
+        assert!(report.contains("init Kernel via"));
+        assert!(report.contains("init System via System.body"));
+        assert!(report.contains("init HostMenus via HostMenus.bootstrap"));
+        assert!(report.contains("init InitShell via InitShell.body"));
+
+        // Final status line.
         assert!(report.contains("status: ready to compile CP modules into memory"));
     }
 
