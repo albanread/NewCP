@@ -3724,4 +3724,16 @@ mod tests {
             118199,
         );
     }
+
+    /// Verify a record with an inline (anonymous) record-typed
+    /// field allocates the right struct slot and field access
+    /// hits the right offsets.  BlackBox uses this shape for
+    /// `Properties.StdProp.style: RECORD val, mask: SET END`.
+    #[test]
+    fn inline_record_as_record_field_works() {
+        assert_eq!(
+            run_function("Mod/Tests/InlineFieldProbe.cp", "Run"),
+            1119,
+        );
+    }
 }

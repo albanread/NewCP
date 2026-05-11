@@ -134,13 +134,29 @@ pub fn map_semantic_type(ty: &SemanticType) -> IrType {
                 result
             }
         }
-        SemanticType::Record { layout, .. } => match layout {
-            SemanticRecordLayout::Tagged => IrType::Opaque("anon-record".to_string()),
-            _ => IrType::UntaggedRecord {
-                name: "anon-record".to_string(),
-                layout: map_record_layout(*layout),
-            },
-        },
+        SemanticType::Record { layout, fields, base, .. } => {
+            // Anonymous inline record (no name).  Synthesise a Named
+            // type whose name is derived from the record's structural
+            // content, so:
+            //   - the same shape always maps to the same Named (lets
+            //     `collect_named_types` deduplicate and lets two
+            //     identically-shaped inline records share their LLVM
+            //     struct definition);
+            //   - `flatten_fields_for_ir_type` / the LLVM planner can
+            //     register the fields under that Named key and resolve
+            //     field-access GEPs against it instead of falling
+            //     through to the `field:<name>` GlobalRef stub (which
+            //     manifests as `cast i32 to opaque:field:x` at codegen
+            //     time when the inner field is a SET).
+            // The Opaque/UntaggedRecord fallback used to land here;
+            // it lost the layout and broke both inline-record VARs
+            // (closed by deferred_fixes #30 with a synthetic-Named
+            // approach at the variable level) and inline-record record
+            // *fields* (this fix — the field-level variant of #30).
+            let hash = anonymous_record_content_hash(fields, base.as_deref(), *layout);
+            let _ = map_record_layout(*layout);
+            IrType::Named(format!("__anon_inline_{:016x}", hash))
+        }
         SemanticType::Pointer { target, untagged } => {
             // Special case: `POINTER TO ARRAY OF T` (open-array target).
             // The natural mapping `Ptr(Ptr(T))` (because open arrays
@@ -365,6 +381,67 @@ struct LowerCtx<'m> {
 /// real layout instead of `Opaque("anon-record")`.
 fn synthetic_anon_record_name(module: &str, var: &str) -> String {
     format!("__anon_record_{module}_{var}")
+}
+
+/// Deterministic content-hash for an anonymous inline `SemanticType::Record`.
+///
+/// Used by both `map_semantic_type` (to mint the synthetic Named that
+/// the IR / LLVM layers track the record by) and `collect_named_types`
+/// (to register the same name with the actual flattened fields).
+/// The hash covers field names / order / types and the layout flag,
+/// so structurally identical inline records share their LLVM struct
+/// while structurally distinct ones get distinct types.
+fn anonymous_record_content_hash(
+    fields: &[newcp_sema::FieldType],
+    base: Option<&SemanticType>,
+    layout: SemanticRecordLayout,
+) -> u64 {
+    use std::collections::hash_map::DefaultHasher;
+    use std::hash::{Hash, Hasher};
+    let mut hasher = DefaultHasher::new();
+    (layout as u8).hash(&mut hasher);
+    if let Some(b) = base {
+        "B".hash(&mut hasher);
+        sem_type_token(b).hash(&mut hasher);
+    } else {
+        "N".hash(&mut hasher);
+    }
+    for field in fields {
+        for name in &field.names {
+            name.hash(&mut hasher);
+        }
+        sem_type_token(&field.ty).hash(&mut hasher);
+    }
+    hasher.finish()
+}
+
+/// Stable string fingerprint of a `SemanticType` for use inside
+/// `anonymous_record_content_hash`.  Doesn't need to round-trip — only
+/// to be deterministic and discriminating.  Nested anonymous records
+/// recurse through this function so their fingerprint is part of the
+/// outer hash.
+fn sem_type_token(ty: &SemanticType) -> String {
+    match ty {
+        SemanticType::Builtin(b) => format!("B:{b:?}"),
+        SemanticType::BuiltinProc(p) => format!("BP:{p:?}"),
+        SemanticType::Nil => "Nil".to_string(),
+        SemanticType::Named { module, name, .. } => {
+            format!("N:{}:{name}", module.as_deref().unwrap_or(""))
+        }
+        SemanticType::Array { lengths, element_type, untagged } => {
+            format!("A:{}:{lengths:?}:{}", untagged, sem_type_token(element_type))
+        }
+        SemanticType::Record { fields, base, layout, .. } => {
+            // Recurse via the same hash so deeply-nested inline records
+            // contribute to the outer fingerprint.
+            let h = anonymous_record_content_hash(fields, base.as_deref(), *layout);
+            format!("R:{h:016x}")
+        }
+        SemanticType::Pointer { target, untagged } => {
+            format!("P:{untagged}:{}", sem_type_token(target))
+        }
+        SemanticType::Procedure(_) => "Proc".to_string(),
+    }
 }
 
 impl<'m> LowerCtx<'m> {
@@ -749,6 +826,23 @@ impl<'m> LowerCtx<'m> {
             })
     }
 
+    /// Walk every reachable `SemanticType::Record { .. }` in the
+    /// module's symbol table and return the first whose synthesised
+    /// content-hash name matches `target_name`.  Used by
+    /// `flatten_fields_for_ir_type` to recover the actual fields of an
+    /// inline anonymous record whose only surface name is the
+    /// `__anon_inline_<hash>` synthetic.
+    fn find_anonymous_inline_record(&self, target_name: &str) -> Option<SemanticType> {
+        for sym in self.module_symbols.iter().chain(self.symbols.iter()) {
+            if let Some(ty) = sym.declared_type.as_ref() {
+                if let Some(found) = search_anonymous_inline(ty, target_name) {
+                    return Some(found);
+                }
+            }
+        }
+        None
+    }
+
     /// Flatten record fields for an IR type, including support for dot-qualified
     /// imported types like `"TypeExt.Bird"`.
     ///
@@ -761,6 +855,29 @@ impl<'m> LowerCtx<'m> {
                     cursor = inner.as_ref();
                 }
                 IrType::Named(n) => {
+                    // Synthetic name for an inline anonymous record
+                    // appearing as a FIELD of another record (e.g.
+                    // `RECORD val, mask: SET END` inside StdProp). The
+                    // hash is built from the record's structural shape;
+                    // walk all reachable SemanticTypes and find the one
+                    // whose hash matches, then flatten its fields.
+                    if let Some(_hash_suffix) = n.strip_prefix("__anon_inline_") {
+                        let target_name = n.clone();
+                        let found = self
+                            .find_anonymous_inline_record(&target_name);
+                        let result = match found {
+                            Some(sem_ty) => Self::flatten_record_fields(&sem_ty),
+                            None => Vec::new(),
+                        };
+                        if std::env::var("NEWCP_IR_DEBUG").is_ok() {
+                            eprintln!(
+                                "[ir] flatten_fields_for {n} (inline-anon): {} fields",
+                                result.len(),
+                            );
+                        }
+                        return result;
+                    }
+
                     // Synthetic name for an inline anonymous record on a
                     // module-level VAR. Look up the originating VAR symbol
                     // (the suffix after the module name) and flatten its
@@ -5934,6 +6051,19 @@ fn collect_named_types(
         map.insert(synth, flat);
     }
 
+    // Inline anonymous records appearing as FIELDS of another record
+    // (e.g. `StdProp.style: RECORD val, mask: SET END`).  `map_semantic_type`
+    // maps these to `IrType::Named("__anon_inline_<content-hash>")`; we
+    // walk every record we've collected so far, find every such field's
+    // SemanticType, register the flattened fields under the matching
+    // synthetic name, and recurse so deeper nesting works too.
+    register_anonymous_inline_records(
+        module_symbols,
+        module_name,
+        import_cache,
+        &mut map,
+    );
+
     // Collect exported record types from imported modules, stored under "Module.Type" keys.
     for import_name in imports {
         // Load (or retrieve from cache), then clone to release the borrow so we can
@@ -5957,6 +6087,128 @@ fn collect_named_types(
     }
 
     map
+}
+
+/// Recursive search for an anonymous inline `SemanticType::Record` whose
+/// content-hash matches `target_name`.  Used by
+/// `LowerCtx::find_anonymous_inline_record`.
+fn search_anonymous_inline(ty: &SemanticType, target_name: &str) -> Option<SemanticType> {
+    match ty {
+        SemanticType::Record { fields, base, layout, .. } => {
+            let synth = format!(
+                "__anon_inline_{:016x}",
+                anonymous_record_content_hash(fields, base.as_deref(), *layout),
+            );
+            if synth == target_name {
+                return Some(ty.clone());
+            }
+            // Recurse into base and fields.
+            if let Some(b) = base.as_deref() {
+                if let Some(found) = search_anonymous_inline(b, target_name) {
+                    return Some(found);
+                }
+            }
+            for f in fields {
+                if let Some(found) = search_anonymous_inline(&f.ty, target_name) {
+                    return Some(found);
+                }
+            }
+            None
+        }
+        SemanticType::Array { element_type, .. } => {
+            search_anonymous_inline(element_type, target_name)
+        }
+        SemanticType::Pointer { target, .. } => {
+            search_anonymous_inline(target, target_name)
+        }
+        _ => None,
+    }
+}
+
+/// Walk every record type and every record-typed field in the module
+/// and register an entry in `map` for every anonymous inline
+/// `SemanticType::Record` we encounter, keyed by its content-hash name
+/// (matching what `map_semantic_type` emits).  Recurses so nested
+/// inline records all get registered.
+fn register_anonymous_inline_records(
+    module_symbols: &[SemanticSymbol],
+    current_module: &str,
+    import_cache: &mut std::collections::HashMap<String, SemanticModule>,
+    map: &mut std::collections::HashMap<String, Vec<(String, IrType)>>,
+) {
+    use newcp_sema::SymbolKind;
+    for sym in module_symbols {
+        if !matches!(sym.kind, SymbolKind::Type | SymbolKind::Variable) {
+            continue;
+        }
+        if let Some(sem_ty) = &sym.declared_type {
+            walk_anonymous_inline_records(
+                sem_ty,
+                module_symbols,
+                current_module,
+                import_cache,
+                map,
+            );
+        }
+    }
+}
+
+/// Recursive helper for `register_anonymous_inline_records`.  Looks for
+/// inline `SemanticType::Record` instances inside `ty` (in its fields
+/// and recursively in those fields' types), registers each under the
+/// content-hash name that `map_semantic_type` produces, and recurses
+/// into both the inline record's own fields and any base chain.
+fn walk_anonymous_inline_records(
+    ty: &SemanticType,
+    module_symbols: &[SemanticSymbol],
+    current_module: &str,
+    import_cache: &mut std::collections::HashMap<String, SemanticModule>,
+    map: &mut std::collections::HashMap<String, Vec<(String, IrType)>>,
+) {
+    match ty {
+        SemanticType::Record { fields, base, layout, .. } => {
+            // If this record is itself anonymous (we don't have a way to
+            // know directly — but we conservatively try to register
+            // every record we encounter; named-type registration above
+            // already covers the named ones, so an extra register here
+            // is benign for those because they'd produce the SAME name
+            // ONLY if their structural hash matched).  We register the
+            // anonymous shape using the content-hash name.
+            let synth = format!(
+                "__anon_inline_{:016x}",
+                anonymous_record_content_hash(fields, base.as_deref(), *layout),
+            );
+            if !map.contains_key(&synth) {
+                let flat = flatten_fields_deep(
+                    ty, module_symbols, current_module, import_cache,
+                );
+                if !flat.is_empty() {
+                    map.insert(synth, flat);
+                }
+            }
+            // Recurse into the base (if it's an anonymous record itself).
+            if let Some(b) = base.as_deref() {
+                walk_anonymous_inline_records(b, module_symbols, current_module, import_cache, map);
+            }
+            // Recurse into every field's type.
+            for field in fields {
+                walk_anonymous_inline_records(
+                    &field.ty,
+                    module_symbols,
+                    current_module,
+                    import_cache,
+                    map,
+                );
+            }
+        }
+        SemanticType::Array { element_type, .. } => {
+            walk_anonymous_inline_records(element_type, module_symbols, current_module, import_cache, map);
+        }
+        SemanticType::Pointer { target, .. } => {
+            walk_anonymous_inline_records(target, module_symbols, current_module, import_cache, map);
+        }
+        _ => {}
+    }
 }
 
 /// Flatten all fields (including inherited ones) for a record-like SemanticType.
