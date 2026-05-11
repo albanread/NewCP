@@ -3701,4 +3701,27 @@ mod tests {
             111124,
         );
     }
+
+    /// Controllers.Controller extension + Containers.Controller chain.
+    ///
+    /// Workout for the cross-module controller hierarchy:
+    /// - leaf `MyControllerDesc` extending `Controllers.ControllerDesc`
+    ///   overrides `Domain` (inherited via Stores.Store) and dispatches
+    ///   through the vtable;
+    /// - `BoundControllerDesc` extending `Containers.ControllerDesc`
+    ///   widens to both `Containers.Controller` and the inherited
+    ///   `Controllers.Controller` base, proving the type identity
+    ///   stitches Containers -> Controllers -> Stores together;
+    /// - a `TaggedEditMsg` reads back fields inherited through
+    ///   the RequestMessage chain.
+    ///
+    /// Expected packed result 118199 — see the procedure body for
+    /// the exact decomposition.
+    #[test]
+    fn controllers_extension_chain_dispatches_through_modules() {
+        assert_eq!(
+            run_function("Mod/Tests/ControllerExtBase.cp", "Run"),
+            118199,
+        );
+    }
 }

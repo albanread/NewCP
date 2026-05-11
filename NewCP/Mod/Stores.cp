@@ -45,6 +45,12 @@ TYPE
         the UI can render an Undo/Redo menu label. *)
     OpName* = ARRAY 32 OF CHAR;
 
+    (** Type-name string.  BlackBox-faithful 64-char ARRAY used to
+        carry a Store's qualified type name (e.g.
+        "TextModels.StdModel") through PollOpsMsg / PollDropMsg /
+        the cross-module type registry. *)
+    TypeName* = ARRAY 64 OF CHAR;
+
     (** Opaque writer handle (mirrors `ReaderHandle`).  The runtime
         slots a `WriterState` per handle; 0 = invalid. *)
     WriterHandle* = INTEGER;

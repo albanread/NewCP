@@ -12,9 +12,12 @@ MODULE Containers;
    pieces that need modules not yet ported:
 
    - `Containers.Controller` (extends `Controllers.Controller`)
-     and everything that touches it: the `controller` field on
-     `View`, `SetController`, `ThisController`, the focus / mark
-     protocol, the controller half of Internalize/Externalize.
+     is included as an abstract base now that `Controllers` has
+     landed; its concrete method shape (`SetController`,
+     `ThisController`, the focus / mark protocol, the controller
+     half of Internalize/Externalize) is still deferred until
+     `Controllers.Forwarder` and the module-level routing
+     procedures port.
    - `DropPref` (extends `Properties.Preference`).
    - `ViewOp` / `ControllerOp` undo operations.
    - The Internalize/Externalize bodies that call `rd.ReadVersion`
@@ -29,7 +32,7 @@ MODULE Containers;
    Containers.Model` works end-to-end.
 *)
 
-    IMPORT Stores, Models, Views;
+    IMPORT Stores, Models, Views, Controllers;
 
     CONST
         (** Controller.opts — option set for selection/focus/caret display. *)
@@ -74,15 +77,27 @@ MODULE Containers;
         Model*     = POINTER TO ModelDesc;
 
         (** Container-side abstract view.  Carries the model the view
-            wraps; the `controller` slot is deferred to the next slice
-            (waiting on `Controllers` to port).  `alienCtrl` is a
-            placeholder for a deserialised controller whose concrete
-            type wasn't in scope at load time. *)
+            wraps and the controller that mediates input/focus for
+            it.  `alienCtrl` is a placeholder for a deserialised
+            controller whose concrete type wasn't in scope at load
+            time. *)
         ViewDesc* = ABSTRACT RECORD (Views.ViewDesc)
-            model-:     Model;
-            alienCtrl-: Stores.Store
+            model-:      Model;
+            controller-: Controller;
+            alienCtrl-:  Stores.Store
         END;
         View* = POINTER TO ViewDesc;
+
+        (** Container-side abstract controller.  Concrete container
+            controllers (`TextControllers.Controller`, …) extend
+            this.  The full BlackBox surface adds `opts`, `model`,
+            `view`, `focus`, `singleton`, `bVis` instance fields
+            and a large method bundle; this slice carries just the
+            type so `Containers.ViewDesc.controller` can be typed
+            against it.  Subsequent slices grow the field set as
+            `Forwarder` and the routing procs port. *)
+        ControllerDesc* = ABSTRACT RECORD (Controllers.ControllerDesc) END;
+        Controller*     = POINTER TO ControllerDesc;
 
 
         (** Common base for the container-flavoured view messages
