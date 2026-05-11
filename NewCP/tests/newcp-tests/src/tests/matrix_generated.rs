@@ -1782,7 +1782,6 @@ fn matrix_expr_constant_fold_used_as_array_size() {
 
 /// CP §8.2.5 — module-level CONST SET; IN-membership tests at runtime must see the same bits the constant-folder produced
 #[test]
-#[ignore = "KNOWN BUG #28: SET constant membership test produces wrong value (observed 101, expected differs). Either constant SET folding is buggy or `IN` on a constant LHS short-circuits incorrectly. File for investigation."]
 fn matrix_expr_set_constant_membership_tests() {
     assert_eq!(
         run_function("Mod/Tests/Matrix/M_Expr_SET_Constant_Membership.cp", "Run"),

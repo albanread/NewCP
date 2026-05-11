@@ -528,15 +528,29 @@ to the target's slot type before the BinOp.
 **Regression coverage**: matrix probe `M_Expr_INC_OnByte`
 un-ignored.
 
-### 28. SET constant membership wrong value
+### 28. ~~SET constant membership wrong value~~ — FIXED
 
 **Where**: SET literal / constant membership lowering. Surfaced
 by matrix probe `M_Expr_SET_Constant_Membership`
-(`#[ignore]`-flagged).
+(originally `#[ignore]`-flagged).
 
-**Status**: filed for investigation. Probe returns 101 vs the
-expected packed value. Either constant SET folding is buggy or
-`IN` on a constant-LHS short-circuits incorrectly.
+**Status**: closed. The root cause was that the sema constant
+folder didn't recognise `Expr::Set { .. }`, so a CONST SET
+declaration ended up with `const_value: None`. References to
+the CONST then fell through to `designator_addr` → load from
+a global that nobody initialised, producing zero. The 101
+result came from the four IN-membership tests evaluating
+against bits=0 (3 NOT IN ✓, 4 NOT IN ✗, 5 NOT IN ✓, 8 NOT IN ✗).
+
+Fix: extend `ConstValue` with `Set(u32)`, fold `Expr::Set { .. }`
+in `evaluate_const_expr` (singletons and ranges, both folded
+through `evaluate_const_expr` so nested CONST integers resolve),
+and translate `ConstValue::Set(bits)` to `IrValue::ConstInt(bits,
+IrType::Set(32))` in `lower_const_designator`. `const_value_type`
+gained the matching `BuiltinType::Set` arm.
+
+**Regression coverage**: matrix probe
+`M_Expr_SET_Constant_Membership` un-ignored.
 
 ### 29. NEW on `POINTER TO ARRAY n OF T` (fixed array) fails
 

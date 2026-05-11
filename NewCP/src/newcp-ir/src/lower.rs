@@ -1779,6 +1779,7 @@ impl<'m> LowerCtx<'m> {
             ConstValue::String(value) => IrValue::ConstStr(value, IrType::Char),
             ConstValue::Char(value) => IrValue::ConstChar(value),
             ConstValue::Boolean(value) => IrValue::ConstBool(value),
+            ConstValue::Set(bits) => IrValue::ConstInt(bits as i128, IrType::Set(32)),
         })
     }
 

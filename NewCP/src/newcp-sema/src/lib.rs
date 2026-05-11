@@ -304,6 +304,11 @@ pub enum ConstValue {
     String(String),
     Char(char),
     Boolean(bool),
+    /// CP SET constant — the resolved bitmask. SET literals fold
+    /// at sema time so `IN`/`+`/`*`/`-` against a CONST SET use the
+    /// real bits rather than zero (the value a missing const_value
+    /// would inherit from an uninitialised global).
+    Set(u32),
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -6100,6 +6105,30 @@ fn evaluate_const_expr(
                 _ => None,
             }
         }
+        Expr::Set { elements, .. } => {
+            let mut bits: u32 = 0;
+            for elem in elements {
+                let start = match evaluate_const_expr(&elem.start, local_symbols, module_symbols)? {
+                    ConstValue::Integer(n) if (0..32).contains(&n) => n as u32,
+                    _ => return None,
+                };
+                let end = if let Some(end_expr) = &elem.end {
+                    match evaluate_const_expr(end_expr, local_symbols, module_symbols)? {
+                        ConstValue::Integer(n) if (0..32).contains(&n) => n as u32,
+                        _ => return None,
+                    }
+                } else {
+                    start
+                };
+                if end < start {
+                    return None;
+                }
+                for b in start..=end {
+                    bits |= 1u32 << b;
+                }
+            }
+            Some(ConstValue::Set(bits))
+        }
         Expr::Binary { left, op, right, .. } => {
             let lv = evaluate_const_expr(left, local_symbols, module_symbols)?;
             let rv = evaluate_const_expr(right, local_symbols, module_symbols)?;
@@ -6174,6 +6203,7 @@ fn const_value_type(value: &Option<ConstValue>) -> Option<SemanticType> {
         Some(ConstValue::Char(_))    => Some(SemanticType::Builtin(BuiltinType::Char)),
         Some(ConstValue::String(_))  => Some(SemanticType::Builtin(BuiltinType::String)),
         Some(ConstValue::Boolean(_)) => Some(SemanticType::Builtin(BuiltinType::Boolean)),
+        Some(ConstValue::Set(_))     => Some(SemanticType::Builtin(BuiltinType::Set)),
         None => None,
     }
 }
@@ -6408,6 +6438,7 @@ fn render_symbol_row(sym: &SemanticSymbol) -> String {
             ConstValue::Char(c)    => format!(" = '{c}'"),
             ConstValue::String(s)  => format!(" = \"{s}\""),
             ConstValue::Boolean(b) => format!(" = {b}"),
+            ConstValue::Set(bits)  => format!(" = {{ bits=0x{bits:08x} }}"),
         })
         .unwrap_or_default();
     let simd_str = sym

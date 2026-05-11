@@ -4689,12 +4689,7 @@ END M_Expr_Constant_Fold_InArraySize.
     END Run;
 END M_Expr_SET_Constant_Membership.
 "#,
-        ignored: Some(
-            "KNOWN BUG #28: SET constant membership test produces wrong \
-             value (observed 101, expected differs). Either constant SET \
-             folding is buggy or `IN` on a constant LHS short-circuits \
-             incorrectly. File for investigation.",
-        ),
+        ignored: None,
     },
 
     Probe {
