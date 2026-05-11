@@ -5083,13 +5083,7 @@ END M_Stmt_WITH_Rebind_PerIteration.
     END Run;
 END M_Expr_TypeGuard_AsLHS_Designator.
 "#,
-        ignored: Some(
-            "KNOWN BUG #31: sema rejects a narrowed designator on the LHS \
-             of an assignment (`p(Sub).field := value`) with \
-             `assignment target is not assignable`. The type guard should \
-             yield an l-value that subsequent selectors can address. \
-             Workaround: assign via an intermediate typed variable.",
-        ),
+        ignored: None,
     },
 
     Probe {

@@ -3395,11 +3395,19 @@ impl<'a> Analyzer<'a> {
         let designator = self.normalize_designator(designator, local_symbols);
         let (line, column) = designator_position(&designator);
 
-        if designator
-            .selectors
-            .iter()
-            .any(|selector| matches!(selector, Selector::Call(_) | Selector::TypeGuard(_) | Selector::AmbiguousParen(_)))
-        {
+        // CP §8.4: a designator is an l-value when its FINAL selector
+        // yields a variable (Field / Index / Dereference / TypeGuard /
+        // AmbiguousParen-as-TypeGuard). Intermediate TypeGuard /
+        // AmbiguousParen selectors only narrow the static type — the
+        // underlying storage is still the same variable, so the chain
+        // can still be assigned through. Without this exemption,
+        // `b(Sub).field := value` (BlackBox-style narrowing pattern)
+        // is rejected, forcing callers to introduce an intermediate
+        // typed temporary.
+        //
+        // A trailing `Selector::Call(_)` IS rejected — the result of a
+        // call has no general storage backing.
+        if matches!(designator.selectors.last(), Some(Selector::Call(_))) {
             diagnostics.push(make_diagnostic(
                 procedure_name,
                 line,

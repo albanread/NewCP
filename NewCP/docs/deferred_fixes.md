@@ -579,21 +579,40 @@ gained the matching `BuiltinType::Set` arm.
 inline-record types. Surfaced by
 `M_Module_VAR_Record_DefaultZero`.
 
-**Status**: filed. `non-equality pointer comparison Add` — the
-inline-record slot's address arithmetic is mis-routed. Real code
-uses named TYPE records and works; the inline form is an unusual
-but legal CP idiom.
+**Status**: filed; investigated 2026-05-11. Root cause traced:
+`map_semantic_type` lowers `SemanticType::Record { layout: Tagged,
+.. }` (the layout produced by an inline `RECORD a, b, c: INTEGER
+END` declaration) to `IrType::Opaque("anon-record")`. The opaque
+type has no field layout, so `flatten_fields_for_ir_type` returns
+empty, the `.a` / `.b` / `.c` Field selectors fall through to the
+`GlobalRef("field:a", Ref(Opaque))` fallback, and the eventual
+BinOp adds two opaque pointers — which `emit_binop` correctly
+rejects as "non-equality pointer comparison Add".
 
-### 31. Type-guard designator as LHS of assignment rejected
+**Why deferred for now**: closing this is more invasive than the
+other matrix bugs. The fix needs (a) a synthetic Named type per
+inline record discovered at module-symbol walk time, (b) the
+synthetic name plumbed through `collect_named_types` so the LLVM
+planner registers a real struct, and (c) `base_symbol_ir_type`
+to return that Named type for the affected vars. Three layers
+all need to agree on the synthetic name. Real CP code uses named
+TYPE records and works correctly. Re-attempt when the broader
+"anonymous compound types" plumbing is being worked on.
 
-**Where**: sema's `validate_assignment_target`. Surfaced by
-`M_Expr_TypeGuard_AsLHS_Designator`.
+### 31. ~~Type-guard designator as LHS of assignment rejected~~ — FIXED
 
-**Status**: filed. `p(Sub).field := value` reports
-`assignment target is not assignable`. The type guard yields
-what should be an addressable narrowed view; sema is excluding
-it from valid LHS forms. Workaround: assign through an
-intermediate typed variable.
+**Status**: closed. `validate_assignment_target` was rejecting
+any designator that contained ANY `Selector::Call` /
+`Selector::TypeGuard` / `Selector::AmbiguousParen` anywhere in
+the selector chain. That over-broad rule killed the BlackBox-
+idiomatic narrowing pattern `b(Sub).field := value`, where the
+type guard is intermediate and the FINAL selector is an
+addressable `Field`. Fix: only reject when the LAST selector is
+`Selector::Call(_)` (a true call result has no storage); allow
+any intermediate type-narrowing selector.
+
+**Regression coverage**: matrix probe
+`M_Expr_TypeGuard_AsLHS_Designator` un-ignored.
 
 ### 32. SYSTEM.MOVE between arrays doesn't actually copy
 

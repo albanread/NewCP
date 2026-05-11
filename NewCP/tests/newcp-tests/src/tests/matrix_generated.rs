@@ -1933,7 +1933,6 @@ fn matrix_stmt_with_narrowing_per_iteration_inside_for() {
 
 /// CP §8.4 — `b(Sub).extra := 99` — type guard appears as the LHS of an assignment; complements M_AnyPtr_TypeGuard which only reads through the guard
 #[test]
-#[ignore = "KNOWN BUG #31: sema rejects a narrowed designator on the LHS of an assignment (`p(Sub).field := value`) with `assignment target is not assignable`. The type guard should yield an l-value that subsequent selectors can address. Workaround: assign via an intermediate typed variable."]
 fn matrix_expr_type_guard_as_lhs_designator() {
     assert_eq!(
         run_function("Mod/Tests/Matrix/M_Expr_TypeGuard_AsLHS_Designator.cp", "Run"),
