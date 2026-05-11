@@ -3570,21 +3570,26 @@ impl<'m> LowerCtx<'m> {
             if let IrType::Ref(inner) = ty {
                 ty = *inner;
             }
+            // CP `a[i, j]` is parsed as a single Selector::Index([i, j]); each
+            // index strips one Array/Ptr/Named wrapper. Loop here so the type
+            // walk matches what designator_addr emits (one IndexGep per index).
+            if let Selector::Index(indices) = selector {
+                for _ in 0..indices.len() {
+                    ty = match ty {
+                        IrType::Ptr(inner) | IrType::UntaggedPtr(inner) => *inner,
+                        IrType::Array { element, .. } => *element,
+                        IrType::Named(n) => match self.resolve_named_as_ptr_ir_type(&n) {
+                            Some(IrType::Ptr(elem)) | Some(IrType::UntaggedPtr(elem)) => *elem,
+                            _ => IrType::Opaque("indexed-named".to_string()),
+                        },
+                        other => other,
+                    };
+                }
+                continue;
+            }
             ty = match (selector, ty) {
                 (Selector::Dereference, IrType::Ptr(inner)) => *inner,
                 (Selector::Dereference, IrType::UntaggedPtr(inner)) => *inner,
-                (Selector::Index(_), IrType::Ptr(inner)) => *inner,
-                (Selector::Index(_), IrType::UntaggedPtr(inner)) => *inner,
-                (Selector::Index(_), IrType::Array { element, .. }) => *element,
-                // Named pointer alias — resolve through `Bag = POINTER TO
-                // ARRAY OF T` to find the element type. Same pattern as the
-                // designator_addr path uses for the same case.
-                (Selector::Index(_), IrType::Named(n)) => {
-                    match self.resolve_named_as_ptr_ir_type(&n) {
-                        Some(IrType::Ptr(elem)) | Some(IrType::UntaggedPtr(elem)) => *elem,
-                        _ => IrType::Opaque("indexed-named".to_string()),
-                    }
-                }
                 (Selector::Dereference, IrType::Named(n)) => {
                     match self.resolve_named_as_ptr_ir_type(&n) {
                         Some(IrType::Ptr(inner)) | Some(IrType::UntaggedPtr(inner)) => *inner,

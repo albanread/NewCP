@@ -426,25 +426,24 @@ bitwise identity `s1 <= s2 iff s1 * s2 = s1`.
 **Regression coverage**: matrix probe `M_Expr_SET_Equality` covers
 the operator pair on small overlapping sets.
 
-### 21. Multi-dimensional fixed-array indexing crashes codegen
+### 21. ~~Multi-dimensional fixed-array indexing crashes codegen~~ — FIXED
 
-**Where**: LLVM emit for `arr[i, j]` where `arr` is declared as
-`ARRAY M, N OF T`. Surfaced by matrix probe
-`M_MultiDim_FixedArray` (`#[ignore]`-flagged).
+**Status**: closed. `designator_addr` was already emitting one
+`IndexGep` per index in a multi-index selector, but
+`designator_ir_type` only stripped a single Array/Ptr wrapper
+per `Selector::Index(_)` arm regardless of how many indices
+the selector held. The mismatched final type meant the eventual
+`Load` was typed `[N x T]` (a whole row) rather than the scalar
+element, which is what triggered the `Found ArrayValue but
+expected the IntValue variant` panic downstream when the loaded
+row reached a binop. Fix: in
+`newcp-ir/src/lower.rs::designator_ir_type`, when the selector
+is `Selector::Index(indices)`, peel one Array/Ptr/Named
+wrapper per index — mirroring the IR emission walk in
+`designator_addr`.
 
-**Workaround**: probe ignored. Real code can use nested
-single-dim arrays (`ARRAY M OF ARRAY N OF T`) instead, which
-works because each dimension is its own GEP step.
-
-**Why deferred**: the comma-syntax `arr[i, j]` lowers to
-something that loads the inner `[N x T]` row as a value and then
-tries to use it as an index. The fix is to chain GEPs instead of
-materialising the inner row.
-
-**Closing it**: in `newcp-ir`'s multi-index lowering, emit a
-sequence of `IndexGep` instructions (one per dimension) instead
-of a single GEP that drops the trailing index. Un-ignore the
-probe to confirm; expected packed value 250.
+**Regression coverage**: matrix probe `M_MultiDim_FixedArray`
+un-ignored; computes the packed value 250 from a 3×3 grid.
 
 ### 22. ~~Method dispatch on a call-result receiver reads wild memory~~ — FIXED
 

@@ -1743,14 +1743,7 @@ END M_Record_With_Pointer_Field.
     END Run;
 END M_MultiDim_FixedArray.
 "#,
-        ignored: Some(
-            "KNOWN BUG: multi-dim fixed array indexing `arr[i, j]` panics in \
-             LLVM emit with `Found ArrayValue but expected the IntValue \
-             variant` — the code path loads a full row [N x T] and then \
-             tries to use it as an index. Single-dim arrays work fine; the \
-             multi-index lowering path needs to chain GEPs instead of \
-             loading the inner array. File under deferred_fixes #21.",
-        ),
+        ignored: None,
     },
 
     Probe {
