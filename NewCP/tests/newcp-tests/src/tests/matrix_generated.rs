@@ -970,7 +970,6 @@ fn matrix_expr_mixed_width_promotion() {
 
 /// CP §10 — method whose return type is the receiver's own pointer alias — classic builder-style chain
 #[test]
-#[ignore = "KNOWN BUG: sema mis-types the receiver inside a method body when the method's signature returns the receiver's pointer alias. `(b: Box) WithValue (): Box` body sees `b` as `BoxDesc` (the underlying record), so `RETURN b` reports `return type mismatch: expected Box, found BoxDesc`. The receiver itself is a pointer; this is a sema canonicalisation gap in the return-type check. File under deferred_fixes #23."]
 fn matrix_method_returns_pointer_to_self_type() {
     assert_eq!(
         run_function("Mod/Tests/Matrix/M_Method_Returns_Pointer.cp", "Run"),

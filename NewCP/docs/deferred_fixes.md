@@ -487,30 +487,19 @@ expression is itself a procedure call (rather than a designator),
 materialise its result into a synthetic Temp slot and use that
 Temp as the receiver pointer. Un-ignore the probe to confirm.
 
-### 23. Sema mis-types receiver as the underlying record when the method's return type is the receiver's pointer alias
+### 23. ~~Sema mis-types receiver as the underlying record when the method's return type is the receiver's pointer alias~~ — FIXED
 
-**Where**: sema's return-type checking. Surfaced by matrix probe
-`M_Method_Returns_Pointer` (`#[ignore]`-flagged).
+**Status**: closed. New helper
+`return_is_receiver_pointer_round_trip` in `newcp-sema`'s Return-
+statement check allows `RETURN <receiver>` when the receiver
+designator names a `SymbolKind::Receiver` formal and the
+expected return type's pointer target unwraps (through any
+alias chain) to the same Record as the receiver's canonicalised
+declared type.
 
-**Workaround**: probe shipped ignored. A method that returns
-`Box` (pointer alias) can be rewritten to return `BoxDesc` (the
-record) but that loses the BlackBox-faithful builder-pattern
-idiom; or the caller can wrap in `(b: Box) Method (): BoxDesc`
-and have callers narrow back. Neither is great.
-
-**Why deferred**: the receiver-canonicalisation work elsewhere in
-sema already chases pointer aliases to their record names so
-method dispatch lines up. The return-type check needs the
-mirror-image canonicalisation: when comparing `RETURN b` (where
-`b` is a pointer-aliased receiver) against the declared return
-type `Box`, sema must recognise that `b`'s type and `Box` agree.
-Currently it reports `expected Box, found BoxDesc`.
-
-**Closing it**: in sema's `check_return_type` / equivalent, when
-the actual type is a record and the expected type is a pointer
-alias to that same record, allow the implicit narrowing (or
-better: canonicalise both sides to the underlying record name
-before comparing). Un-ignore the probe to confirm.
+**Regression coverage**: matrix probe `M_Method_Returns_Pointer`
+exercises the BlackBox-style builder idiom
+`(b: Box) WithValue (n: INTEGER): Box; ... RETURN b`.
 
 ### 24. SHORTREAL mixed with REAL operand produces wild result
 

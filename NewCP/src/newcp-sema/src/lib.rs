@@ -2817,11 +2817,30 @@ impl<'a> Analyzer<'a> {
                             if let Some(actual) =
                                 self.infer_expr_type(expr, local_symbols, scope_type_names)
                             {
-                                if !self.types_are_assignment_compatible(
-                                    expected,
-                                    &actual,
-                                    local_symbols,
-                                ) {
+                                // CP §11.5 receiver-return special case:
+                                // `(b: Box) M (): Box; RETURN b` is valid
+                                // even though sema canonicalises the
+                                // receiver to its underlying record for
+                                // dispatch matching, which makes `b` look
+                                // like Record(BoxDesc) here and the
+                                // declared return type Pointer(Named).
+                                // Accept the pair when the expression IS
+                                // a receiver designator AND its record
+                                // matches the expected pointer's target.
+                                let receiver_round_trip = self
+                                    .return_is_receiver_pointer_round_trip(
+                                        expr,
+                                        expected,
+                                        &actual,
+                                        local_symbols,
+                                    );
+                                if !receiver_round_trip
+                                    && !self.types_are_assignment_compatible(
+                                        expected,
+                                        &actual,
+                                        local_symbols,
+                                    )
+                                {
                                     let (line, column) = statement_position(statement);
                                     diagnostics.push(make_diagnostic(
                                         procedure_name,
@@ -4563,6 +4582,62 @@ impl<'a> Analyzer<'a> {
             .rev()
             .chain(self.module_symbols.iter().rev())
             .find(|symbol| symbol.name == name)
+    }
+
+    /// CP §11.5 receiver-return-type compatibility check.
+    ///
+    /// Accept `RETURN <receiver>` from a method whose declared return
+    /// type is the receiver's pointer alias, even though sema
+    /// canonicalises the receiver to the underlying record (so dispatch
+    /// matching works uniformly across `(b: Box)` and `(b: BoxDesc)`).
+    /// Without this, code like
+    /// ```cp
+    /// PROCEDURE (b: Box) WithValue (n: INTEGER): Box, NEW;
+    /// BEGIN
+    ///     b.v := n;
+    ///     RETURN b
+    /// END WithValue;
+    /// ```
+    /// trips with `expected Box, found BoxDesc`.
+    ///
+    /// Returns `true` if the return expression is a bare designator
+    /// naming a receiver formal AND the expected type (after alias
+    /// unwrap) is `Pointer { target = Named(R) }` where R resolves
+    /// to the same Record `actual` is.
+    fn return_is_receiver_pointer_round_trip(
+        &self,
+        expr: &Expr,
+        expected: &SemanticType,
+        actual: &SemanticType,
+        local_symbols: &[SemanticSymbol],
+    ) -> bool {
+        let Expr::Designator(des) = expr else { return false; };
+        if des.base.module.is_some() || !des.selectors.is_empty() {
+            return false;
+        }
+        let Some(sym) = local_symbols.iter().find(|s| s.name == des.base.name) else {
+            return false;
+        };
+        if sym.kind != SymbolKind::Receiver {
+            return false;
+        }
+        // Unwrap both sides through any named-alias chain so we're
+        // comparing the underlying structural shapes.  `actual` lands
+        // as a Record (the receiver's canonical record); `expected`
+        // lands as a Pointer whose target resolves to the same Record.
+        let actual_unwrapped =
+            self.unwrap_named_aliases(actual.clone(), local_symbols);
+        if !matches!(actual_unwrapped, SemanticType::Record { .. }) {
+            return false;
+        }
+        let expected_unwrapped =
+            self.unwrap_named_aliases(expected.clone(), local_symbols);
+        let SemanticType::Pointer { target, .. } = expected_unwrapped else {
+            return false;
+        };
+        let target_resolved =
+            self.unwrap_named_aliases((*target).clone(), local_symbols);
+        target_resolved == actual_unwrapped
     }
 
     fn normalize_designator(

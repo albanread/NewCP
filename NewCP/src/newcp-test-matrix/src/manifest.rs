@@ -2727,15 +2727,7 @@ END M_Expr_MixedWidth_Arithmetic.
     END Run;
 END M_Method_Returns_Pointer.
 "#,
-        ignored: Some(
-            "KNOWN BUG: sema mis-types the receiver inside a method body when \
-             the method's signature returns the receiver's pointer alias. \
-             `(b: Box) WithValue (): Box` body sees `b` as `BoxDesc` (the \
-             underlying record), so `RETURN b` reports `return type mismatch: \
-             expected Box, found BoxDesc`. The receiver itself is a pointer; \
-             this is a sema canonicalisation gap in the return-type check. \
-             File under deferred_fixes #23.",
-        ),
+        ignored: None,
     },
 
 
