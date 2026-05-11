@@ -2146,8 +2146,29 @@ impl<'a> Analyzer<'a> {
         // type so callers passing the pointer-alias form (e.g. `Sub`)
         // walk the same chain as the Desc form (`SubDesc`).
         let canonical_start = self.canonical_receiver_record(type_name);
-        let mut current = self.record_type_info(&canonical_start).and_then(|(_, base)| base);
-        while let Some(base_name) = current {
+
+        // Walk the base chain using the QUALIFIED base info. When the
+        // base is in another module (`module: Some("Views")`), stop
+        // here — cross-module inheritance is the caller's
+        // `has_inherited_method_anywhere` path, not ours. Without this
+        // stop, `record_type_info` strips the module qualifier and
+        // every `base.name` like `Views.ViewDesc` collapses to plain
+        // `ViewDesc`; if the LOCAL module happens to declare a record
+        // ALSO named `ViewDesc` (which is exactly what happens when a
+        // module like `Containers` extends `Views.ViewDesc` with its
+        // own `ContainersViewDesc` — sema would walk into the local
+        // record and find its OWN methods as "inherited from itself").
+        let mut current = self
+            .record_type_info_qualified(&canonical_start)
+            .and_then(|(_, base)| base);
+        while let Some((base_module, base_name)) = current {
+            if base_module.is_some() {
+                // Cross-module base. Stop the local walk — the caller
+                // handles imported-method discovery via
+                // `has_inherited_method_anywhere`.
+                return None;
+            }
+
             // Match procedures whose receiver — written as either the
             // record-Desc form OR a pointer alias to it — binds to
             // `base_name`.
@@ -2164,7 +2185,9 @@ impl<'a> Analyzer<'a> {
             }) {
                 return Some(method);
             }
-            current = self.record_type_info(&base_name).and_then(|(_, base)| base);
+            current = self
+                .record_type_info_qualified(&base_name)
+                .and_then(|(_, base)| base);
         }
         None
     }

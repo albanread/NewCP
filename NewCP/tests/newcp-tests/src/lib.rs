@@ -3678,4 +3678,27 @@ mod tests {
             2,
         );
     }
+
+    /// 3-level cross-module vtable workout through Containers.
+    ///
+    /// Type chains:
+    ///   Stores.Store -> Models.Model -> Containers.Model -> MyModel
+    ///   Stores.Store -> Views.View  -> Containers.View  -> MyView
+    ///
+    /// Exercises:
+    /// - `Containers.View.InitModel` dispatching to overridden
+    ///   `AcceptableModel` via the cross-module vtable;
+    /// - 3-level super-call chains on Internalize (concrete leaf
+    ///   -> Containers layer -> Models/Views layer);
+    /// - both static-bound and virtual-bound entry points reach
+    ///   the same override.
+    ///
+    /// Packed expected value 111124 confirms each stage fired.
+    #[test]
+    fn containers_three_level_vtable_chain_dispatches_through_modules() {
+        assert_eq!(
+            run_function("Mod/Tests/ContainerExtBase.cp", "Run"),
+            111124,
+        );
+    }
 }
