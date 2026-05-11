@@ -3753,4 +3753,29 @@ mod tests {
             1001911,
         );
     }
+
+    /// BB-faithful TextViews-style slice round-tripping through
+    /// `Stores.CopyOf`.
+    ///
+    /// Type chain:
+    ///   Stores.Store -> Views.View -> Containers.View -> BbView (leaf)
+    ///
+    /// This is the integration test the Properties/Controllers/
+    /// Containers/Views/Stores.Reader extensions were building
+    /// toward: a 4-level inheritance chain rooted at Stores.Store,
+    /// crossing four modules, surviving a full
+    /// `Externalize -> in-memory buffer -> Internalize` round-trip
+    /// with every layer's super-call firing in order.
+    ///
+    /// The leaf's `Externalize2` / `Internalize2` body hooks
+    /// run last, mirroring `TextViews.StdView`'s structure.
+    /// Packed expected value 1042017 = hideMarks*1e6 +
+    /// org*1000 + dy on `(hideMarks=TRUE, org=42, dy=17)`.
+    #[test]
+    fn textviews_bb_faithful_chain_round_trips_through_copyof() {
+        assert_eq!(
+            run_function("Mod/Tests/TextViewsBbExt.cp", "Run"),
+            1042017,
+        );
+    }
 }
