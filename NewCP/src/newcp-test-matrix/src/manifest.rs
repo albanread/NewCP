@@ -4971,13 +4971,7 @@ END M_Module_VAR_FixedArray_DefaultZero.
     END Run;
 END M_Module_VAR_Record_DefaultZero.
 "#,
-        ignored: Some(
-            "KNOWN BUG #30: module-level VAR with an INLINE record type \
-             (`VAR r: RECORD a, b, c: INTEGER END;`) trips codegen with \
-             `non-equality pointer comparison Add` — the inline-record \
-             slot isn't being addressed correctly for field access. \
-             Real code uses named TYPE records instead.",
-        ),
+        ignored: None,
     },
 
     Probe {

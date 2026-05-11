@@ -349,6 +349,22 @@ struct LowerCtx<'m> {
     nested_proc_return_types: std::collections::HashMap<String, IrType>,
     /// Cache of already-parsed-and-analysed imported modules, keyed by module name.
     import_cache: std::collections::HashMap<String, SemanticModule>,
+    /// Name of the CP module currently being lowered. Used by
+    /// `synthetic_anon_record_name` to derive the registered IR type
+    /// name for inline-record module VARs.
+    module_name: String,
+}
+
+/// Build the synthetic IR type name for an inline anonymous record
+/// declared on a module-level VAR (e.g.
+/// `VAR r: RECORD a, b: INTEGER END;` in module `M` becomes
+/// `__anon_record_M_r`).  `collect_named_types` registers the
+/// flattened fields under this key so the LLVM planner can declare
+/// a real struct type; `base_symbol_ir_type` returns
+/// `IrType::Named(this)` for the VAR so field-Gep and Load see a
+/// real layout instead of `Opaque("anon-record")`.
+fn synthetic_anon_record_name(module: &str, var: &str) -> String {
+    format!("__anon_record_{module}_{var}")
 }
 
 impl<'m> LowerCtx<'m> {
@@ -360,6 +376,7 @@ impl<'m> LowerCtx<'m> {
         symbols: Vec<SemanticSymbol>,
         system_qualifiers: Vec<String>,
         module_symbols: &'m [SemanticSymbol],
+        module_name: String,
     ) -> Self {
         Self {
             proc: proc_ir,
@@ -375,6 +392,7 @@ impl<'m> LowerCtx<'m> {
             nested_proc_upvalues: std::collections::HashMap::new(),
             nested_proc_return_types: std::collections::HashMap::new(),
             import_cache: std::collections::HashMap::new(),
+            module_name,
         }
     }
 
@@ -709,12 +727,25 @@ impl<'m> LowerCtx<'m> {
             .find(|(name, _)| *name == qual.name)
             .map(|(_, ty)| ty.clone())
             .or_else(|| {
-                self.symbols
+                let symbol = self
+                    .symbols
                     .iter()
                     .rev()
-                    .find(|symbol| symbol.name == qual.name)
-                    .and_then(|symbol| symbol.declared_type.as_ref())
-                    .map(map_semantic_type)
+                    .find(|symbol| symbol.name == qual.name)?;
+                let sem_ty = symbol.declared_type.as_ref()?;
+                // Anonymous inline records (`VAR r: RECORD a, b: INTEGER END;`)
+                // would otherwise map to `Opaque("anon-record")`, losing the
+                // layout. `collect_named_types` registers their flattened
+                // fields under a synthetic `__anon_record_<module>_<var>`
+                // key, so return that Named here to keep the field-Gep /
+                // Load paths working.
+                if matches!(sem_ty, SemanticType::Record { .. }) {
+                    return Some(IrType::Named(synthetic_anon_record_name(
+                        &self.module_name,
+                        &qual.name,
+                    )));
+                }
+                Some(map_semantic_type(sem_ty))
             })
     }
 
@@ -730,7 +761,24 @@ impl<'m> LowerCtx<'m> {
                     cursor = inner.as_ref();
                 }
                 IrType::Named(n) => {
-                    let result = if let Some((module, name)) = n.split_once('.') {
+                    // Synthetic name for an inline anonymous record on a
+                    // module-level VAR. Look up the originating VAR symbol
+                    // (the suffix after the module name) and flatten its
+                    // declared record type. The synthetic name has the
+                    // shape `__anon_record_<module>_<var>` where <module>
+                    // is `self.module_name`.
+                    let anon_prefix = format!("__anon_record_{}_", self.module_name);
+                    let result = if let Some(var_name) = n.strip_prefix(&anon_prefix) {
+                        let sem_ty = self
+                            .module_symbols
+                            .iter()
+                            .find(|sym| {
+                                sym.kind == newcp_sema::SymbolKind::Variable
+                                    && sym.name == var_name
+                            })
+                            .and_then(|s| s.declared_type.as_ref());
+                        Self::flatten_sem_type_fields(sem_ty, self.module_symbols)
+                    } else if let Some((module, name)) = n.split_once('.') {
                         self.flatten_imported_record_fields(module, name)
                     } else {
                         // For local named types, use flatten_sem_type_fields which resolves
@@ -4676,6 +4724,7 @@ pub fn lower_procedure(
     system_qualifiers: Vec<String>,
     module_symbols: &[SemanticSymbol],
     all_sema_procs: &[SemanticProcedure],
+    module_name: &str,
 ) -> IrProcedure {
     use newcp_sema::SymbolKind;
 
@@ -4824,6 +4873,7 @@ pub fn lower_procedure(
         },
         system_qualifiers,
         module_symbols,
+        module_name.to_string(),
     );
     ctx.outer_proc_name = Some(outer_name_for_ctx);
     ctx.nested_proc_upvalues = nested_proc_upvalues;
@@ -5176,15 +5226,26 @@ pub fn lower_module(sema: &SemanticModule, ast: &ModuleAst) -> IrModule {
         .symbols
         .iter()
         .filter(|s| !matches!(s.kind, SymbolKind::Type | SymbolKind::Procedure | SymbolKind::Import))
-        .map(|s| IrGlobal {
-            name: s.name.clone(),
-            ty: s
-                .declared_type
-                .as_ref()
-                .map(map_semantic_type)
-                .unwrap_or(IrType::Opaque("unknown".to_string())),
-            exported: s.exported,
-            is_const: matches!(s.kind, SymbolKind::Constant),
+        .map(|s| {
+            // Match `base_symbol_ir_type`'s special-case for module-level
+            // VARs with an inline anonymous record type — emit a Named
+            // type pointing at the synthetic key that `collect_named_types`
+            // registers, so the global gets a proper struct slot in
+            // `%ModuleName.Data` (rather than the 8-byte ptr fallback
+            // that Opaque/UntaggedRecord lower to).
+            let ty = match (s.kind, s.declared_type.as_ref()) {
+                (SymbolKind::Variable, Some(SemanticType::Record { .. })) => {
+                    IrType::Named(synthetic_anon_record_name(&sema.name, &s.name))
+                }
+                (_, Some(sem_ty)) => map_semantic_type(sem_ty),
+                (_, None) => IrType::Opaque("unknown".to_string()),
+            };
+            IrGlobal {
+                name: s.name.clone(),
+                ty,
+                exported: s.exported,
+                is_const: matches!(s.kind, SymbolKind::Constant),
+            }
         })
         .collect();
 
@@ -5249,6 +5310,7 @@ pub fn lower_module(sema: &SemanticModule, ast: &ModuleAst) -> IrModule {
                     system_qualifiers.clone(),
                     &sema.symbols,
                     &sema.procedures,
+                    &sema.name,
                 ))
         })
         .collect();
@@ -5290,6 +5352,7 @@ pub fn lower_module(sema: &SemanticModule, ast: &ModuleAst) -> IrModule {
                 system_qualifiers.clone(),
                 &sema.symbols,
                 &sema.procedures,
+                &sema.name,
             ))
         })
         .collect();
@@ -5438,9 +5501,7 @@ fn lower_module_body(
     proc.entry = entry;
     proc.exit = function_exit;
 
-    // Suppress unused-arg warnings — kept as parameters in case future
-    // module-body lowering needs the import-cache or top-level-proc list.
-    let _ = (module_name, all_sema_procs);
+    let _ = all_sema_procs;
 
     let mut ctx = LowerCtx::new(
         proc,
@@ -5450,6 +5511,7 @@ fn lower_module_body(
         module_symbols.to_vec(),
         system_qualifiers,
         module_symbols,
+        module_name.to_string(),
     );
     // outer_proc_name stays None: the body isn't a nested proc.
     // nested_proc_upvalues / return_types stay empty: the body calls
@@ -5849,6 +5911,27 @@ fn collect_named_types(
                 map.insert(sym.name.clone(), flat);
             }
         }
+    }
+
+    // Inline anonymous records on module-level VARs need a registered
+    // struct type too, so `r.field` resolves through the same layout-
+    // aware paths as named records. `base_symbol_ir_type` already
+    // returns `Named(synthetic_anon_record_name(module, var))` for these
+    // VARs; this pass populates the matching named_types entry.
+    for sym in module_symbols {
+        if sym.kind != SymbolKind::Variable {
+            continue;
+        }
+        let Some(sem_ty) = &sym.declared_type else { continue };
+        if !matches!(sem_ty, SemanticType::Record { .. }) {
+            continue;
+        }
+        let flat = flatten_fields_deep(sem_ty, module_symbols, module_name, import_cache);
+        if flat.is_empty() {
+            continue;
+        }
+        let synth = synthetic_anon_record_name(module_name, &sym.name);
+        map.insert(synth, flat);
     }
 
     // Collect exported record types from imported modules, stored under "Module.Type" keys.

@@ -1892,7 +1892,6 @@ fn matrix_module_var_fixed_array_default_zero() {
 
 /// CP §7 / 11 — module-level VAR with an inline RECORD type — every field defaults to zero before any user code runs
 #[test]
-#[ignore = "KNOWN BUG #30: module-level VAR with an INLINE record type (`VAR r: RECORD a, b, c: INTEGER END;`) trips codegen with `non-equality pointer comparison Add` — the inline-record slot isn't being addressed correctly for field access. Real code uses named TYPE records instead."]
 fn matrix_module_var_inline_record_default_zero() {
     assert_eq!(
         run_function("Mod/Tests/Matrix/M_Module_VAR_Record_DefaultZero.cp", "Run"),
