@@ -614,15 +614,23 @@ any intermediate type-narrowing selector.
 **Regression coverage**: matrix probe
 `M_Expr_TypeGuard_AsLHS_Designator` un-ignored.
 
-### 32. SYSTEM.MOVE between arrays doesn't actually copy
+### 32. ~~SYSTEM.MOVE between arrays doesn't actually copy~~ — FIXED
 
-**Where**: runtime / IR lowering of SYSTEM.MOVE. Surfaced by
-`M_SYSTEM_MOVE_BetweenArrays`.
+**Status**: closed. The IR `MOVE` arm in
+`lower_system_statement` was reading `args[0]` as the destination
+and `args[1]` as the source — opposite to the CP signature
+`SYSTEM.MOVE(srcAdr, dstAdr, n)`. The resulting `Instr::MemCopy`
+then memmove'd the destination's zeros back over the source,
+leaving the destination untouched and the source clobbered.
+That's why the test sum was 0 (dst stayed zero) instead of 10.
 
-**Status**: filed. dst stays zero (observed sum=0 instead of 10
-after MOVE'ing 4 bytes between two arrays). Either the
-intrinsic dispatches to a no-op stub or the address arguments
-are being misread.
+Fix: swap the binding order so `args[0] → src`, `args[1] → dst`,
+matching the CP §SYSTEM.MOVE documented argument order
+(`docs/system-module.md` line 70 `MOVE(a0, a1, n)` →
+`a0 = source, a1 = destination`).
+
+**Regression coverage**: matrix probe
+`M_SYSTEM_MOVE_BetweenArrays` un-ignored.
 
 ---
 

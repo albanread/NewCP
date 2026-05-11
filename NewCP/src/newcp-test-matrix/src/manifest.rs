@@ -5201,12 +5201,7 @@ END M_SYSTEM_GET_AcrossByteOffset.
     END Run;
 END M_SYSTEM_MOVE_BetweenArrays.
 "#,
-        ignored: Some(
-            "KNOWN BUG #32: SYSTEM.MOVE doesn't copy bytes between arrays \
-             (dst stays zero — observed sum=0 instead of 10). Either the \
-             intrinsic is wired to a no-op or the address arguments are \
-             being misread. Investigate the SYSTEM.MOVE lowering.",
-        ),
+        ignored: None,
     },
 
     Probe {

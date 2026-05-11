@@ -1973,7 +1973,6 @@ fn matrix_system_get_put_round_trip_at_byte_offset() {
 
 /// CP §12 — SYSTEM.MOVE(srcAdr, dstAdr, n) copies n bytes between two byte arrays — BlackBox idiom for buffer-to-buffer blits
 #[test]
-#[ignore = "KNOWN BUG #32: SYSTEM.MOVE doesn't copy bytes between arrays (dst stays zero — observed sum=0 instead of 10). Either the intrinsic is wired to a no-op or the address arguments are being misread. Investigate the SYSTEM.MOVE lowering."]
 fn matrix_system_move_copies_bytes_between_arrays() {
     assert_eq!(
         run_function("Mod/Tests/Matrix/M_SYSTEM_MOVE_BetweenArrays.cp", "Run"),

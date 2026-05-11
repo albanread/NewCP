@@ -3528,9 +3528,15 @@ impl<'m> LowerCtx<'m> {
                 }
             }
             "MOVE" => {
-                if let (Some(dst_expr), Some(src_expr), Some(len_expr)) = (args.first(), args.get(1), args.get(2)) {
-                    let dst = self.lower_expr(dst_expr);
+                // CP §SYSTEM.MOVE(srcAdr, dstAdr, n) — args[0] is the
+                // source address, args[1] is the destination.  Previously
+                // these were swapped, causing the destination to stay
+                // unchanged (the SystemMove `dst` got the SOURCE address
+                // and the runtime memmove ran with src/dst inverted —
+                // copying the destination's zeros back over the source).
+                if let (Some(src_expr), Some(dst_expr), Some(len_expr)) = (args.first(), args.get(1), args.get(2)) {
                     let src = self.lower_expr(src_expr);
+                    let dst = self.lower_expr(dst_expr);
                     let len = self.lower_expr(len_expr);
                     self.push(Instr::MemCopy { dst, src, len });
                     return true;
