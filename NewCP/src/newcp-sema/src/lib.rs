@@ -4122,7 +4122,16 @@ impl<'a> Analyzer<'a> {
                 diagnostics,
             ),
             Selector::AmbiguousParen(guard) => {
-                if matches!(base, SemanticType::Procedure(_) | SemanticType::BuiltinProc(_)) {
+                // The base may be a Named alias of a procedure type
+                // (`TYPE Op = PROCEDURE(...): T; VAR f: Op; f(...)`) —
+                // unwrap one level so the call/guard disambiguation
+                // sees the underlying Procedure.
+                let base_unwrapped =
+                    self.unwrap_named_aliases(base.clone(), local_symbols);
+                if matches!(
+                    base_unwrapped,
+                    SemanticType::Procedure(_) | SemanticType::BuiltinProc(_)
+                ) {
                     let synthetic_arg = Expr::Designator(Designator {
                         span: guard.span,
                         base: guard.clone(),
@@ -4136,7 +4145,7 @@ impl<'a> Analyzer<'a> {
                         &mut Vec::new(),
                         diagnostics,
                     );
-                    match base {
+                    match &base_unwrapped {
                         SemanticType::Procedure(signature) => {
                             self.validate_call_arguments(
                                 signature,
@@ -4181,10 +4190,12 @@ impl<'a> Analyzer<'a> {
                     Some(self.resolve_named_type(guard, scope_type_names))
                 }
             }
-            Selector::Call(args) => match base {
+            Selector::Call(args) => match self
+                .unwrap_named_aliases(base.clone(), local_symbols)
+            {
                 SemanticType::Procedure(signature) => {
                     self.validate_call_arguments(
-                        signature,
+                        &signature,
                         args,
                         procedure_name,
                         local_symbols,
@@ -4195,7 +4206,7 @@ impl<'a> Analyzer<'a> {
                 }
                 SemanticType::BuiltinProc(proc) => {
                     self.validate_builtin_call(
-                        *proc,
+                        proc,
                         args,
                         procedure_name,
                         local_symbols,
@@ -4203,7 +4214,7 @@ impl<'a> Analyzer<'a> {
                         diagnostics,
                     );
                     builtin_proc_result_type(
-                        *proc,
+                        proc,
                         args,
                         local_symbols,
                         &self.module_symbols,
@@ -4533,29 +4544,36 @@ impl<'a> Analyzer<'a> {
             Selector::TypeGuard(guard) => {
                 Some(self.resolve_named_type(guard, scope_type_names))
             }
-            Selector::AmbiguousParen(guard) => match base {
-                SemanticType::Procedure(signature) => {
-                    signature.result_type.as_ref().map(|result| (**result).clone())
+            Selector::AmbiguousParen(guard) => {
+                // Unwrap Named-aliased procedure types (`TYPE Op =
+                // PROCEDURE(...)`) so a parameter declared with the
+                // alias is recognised as callable, not type-guard'd.
+                let base_unwrapped = self
+                    .unwrap_named_aliases(base.clone(), &[]);
+                match base_unwrapped {
+                    SemanticType::Procedure(signature) => {
+                        signature.result_type.as_ref().map(|result| (**result).clone())
+                    }
+                    SemanticType::BuiltinProc(proc) => builtin_proc_result_type(
+                        proc,
+                        &[Expr::Designator(Designator {
+                            span: guard.span,
+                            base: guard.clone(),
+                            selectors: Vec::new(),
+                        })],
+                        &[],
+                        &self.module_symbols,
+                        scope_type_names,
+                    ),
+                    _ => Some(self.resolve_named_type(guard, scope_type_names)),
                 }
-                SemanticType::BuiltinProc(proc) => builtin_proc_result_type(
-                    *proc,
-                    &[Expr::Designator(Designator {
-                        span: guard.span,
-                        base: guard.clone(),
-                        selectors: Vec::new(),
-                    })],
-                    &[],
-                    &self.module_symbols,
-                    scope_type_names,
-                ),
-                _ => Some(self.resolve_named_type(guard, scope_type_names)),
-            },
-            Selector::Call(_) => match base {
+            }
+            Selector::Call(_) => match self.unwrap_named_aliases(base.clone(), &[]) {
                 SemanticType::Procedure(signature) => {
                     signature.result_type.as_ref().map(|result| (**result).clone())
                 }
                 SemanticType::BuiltinProc(proc) => {
-                    builtin_proc_result_type(*proc, &[], &[], &self.module_symbols, scope_type_names)
+                    builtin_proc_result_type(proc, &[], &[], &self.module_symbols, scope_type_names)
                 }
                 _ => None,
             },

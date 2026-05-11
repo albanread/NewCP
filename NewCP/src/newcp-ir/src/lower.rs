@@ -1165,7 +1165,26 @@ impl<'m> LowerCtx<'m> {
         // `is_direct_callee` returned false because the symbol is a local var
         // (SymbolKind::LocalVar), not a Procedure.  We detect this case here
         // and emit a Load of the function pointer followed by an indirect Call.
-        if let Some(Selector::Call(call_args)) = des.selectors.first() {
+        //
+        // `Selector::AmbiguousParen(arg)` is the parser's tentative form
+        // when the single paren content could be either a type-guard or
+        // a one-argument call.  Once we know `base` is a procedure-typed
+        // value (handled by `base_proc_type`), the form is unambiguously
+        // an indirect call with one argument.
+        let single_arg_synth: Vec<Expr>;
+        let call_args_opt: Option<&Vec<Expr>> = match des.selectors.first() {
+            Some(Selector::Call(args)) => Some(args),
+            Some(Selector::AmbiguousParen(qual)) => {
+                single_arg_synth = vec![Expr::Designator(Designator {
+                    span: qual.span,
+                    base: qual.clone(),
+                    selectors: Vec::new(),
+                })];
+                Some(&single_arg_synth)
+            }
+            _ => None,
+        };
+        if let Some(call_args) = call_args_opt {
             if let Some(proc_sig) = self.base_proc_type(&base_name) {
                 let call_args = call_args.clone();
                 // Load the function pointer from the variable (strip the Call selector).
@@ -3707,6 +3726,36 @@ impl<'m> LowerCtx<'m> {
                     return true;
                 }
 
+                // POINTER TO ARRAY n OF T (fixed-size) — `record_ty`
+                // came back as `Array{len, elem}`.  Allocate the
+                // buffer the same way the two-arg form does
+                // (`NewArray { len = N }`) so the runtime gets a
+                // typed allocation it can free; `Instr::New` only
+                // handles record-shaped targets and would trip on
+                // `[N x T]`.
+                if let IrType::Array { element, len } = &record_ty {
+                    let elem_ty = (**element).clone();
+                    let elem_count = *len;
+                    let dst = self.fresh_temp();
+                    self.push(Instr::NewArray {
+                        dst,
+                        elem_ty: elem_ty.clone(),
+                        len: IrValue::ConstInt(elem_count as i128, IrType::I64),
+                    });
+                    // NewArray's result is a `ptr` to the buffer's
+                    // first element.  Type the Temp as `Ptr(elem)`
+                    // (NOT `Ptr(Array{N, elem})` — the latter is the
+                    // declared pointer-alias shape but doesn't match
+                    // what NewArray hands back at the LLVM level, and
+                    // a width mismatch trips emit_cast).
+                    let target_addr = self.designator_addr(target);
+                    self.push(Instr::Store {
+                        addr: target_addr,
+                        value: IrValue::Temp(dst, IrType::Ptr(Box::new(elem_ty))),
+                    });
+                    return true;
+                }
+
                 let dst = self.fresh_temp();
                 self.push(Instr::New { dst, record_ty: record_ty.clone() });
                 // Compute the concrete IR pointer type for storing back.
@@ -3836,9 +3885,21 @@ impl<'m> LowerCtx<'m> {
             addr: addr.clone(),
             ty: ty.clone(),
         });
-        let delta = delta_arg
+        let mut delta = delta_arg
             .map(|expr| self.lower_expr(expr))
             .unwrap_or_else(|| self.const_one(&ty));
+        // The delta expression may lower to a wider integer than the
+        // target's slot type (e.g. INTEGER literal 50 → i64; target
+        // is BYTE → i8).  Without narrowing, the BinOp gets a width-
+        // mismatched right operand and the store-back drops bits or
+        // emits a bad cast.  Insert a Cast when widths differ.
+        if delta.ty() != ty
+            && matches!(ty, IrType::U8 | IrType::I8 | IrType::I16 | IrType::I32 | IrType::I64)
+        {
+            let t_cast = self.fresh_temp();
+            self.push(Instr::Cast { dst: t_cast, value: delta, to_ty: ty.clone() });
+            delta = IrValue::Temp(t_cast, ty.clone());
+        }
         let next_tmp = self.fresh_temp();
         self.push(Instr::BinOp {
             dst: next_tmp,

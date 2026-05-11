@@ -679,16 +679,7 @@ END M_AnyPtr_IS_Test.
     END Run;
 END M_ProcType_Param_Callback.
 "#,
-        ignored: Some(
-            "KNOWN BUG: sema mis-types the argument of an indirect call \
-             through a procedure-typed parameter — `f(seed)` reports \
-             `found unresolved:seed` even though `seed` is a peer \
-             parameter in the same proc.  `M_ProcType_IndirectCall` \
-             works because that probe assigns the proc-value to a \
-             local first and calls the local — so the bug is specific \
-             to calling through a parameter, not through a local. \
-             File under deferred_fixes #18.",
-        ),
+        ignored: None,
     },
 
     Probe {
@@ -4524,12 +4515,7 @@ END M_Stmt_REPEAT_ManyIters.
     END Run;
 END M_Expr_INC_OnByte.
 "#,
-        ignored: Some(
-            "KNOWN BUG: INC(b, 50) on a BYTE variable doesn't update the \
-             variable (observed: b stays at 100 instead of 150). Either the \
-             INC IR builds the wrong type for the delta or the store path \
-             elides on width mismatch. File under deferred_fixes #27.",
-        ),
+        ignored: None,
     },
 
     Probe {
@@ -4744,11 +4730,14 @@ END M_Expr_SET_Constant_Membership.
 END M_Type_PointerTo_FixedArray.
 "#,
         ignored: Some(
-            "KNOWN BUG #29: NEW(p) where p is `POINTER TO ARRAY n OF T` \
-             (fixed-size array, not open) trips IR with \
-             `Instr::New: unknown record type [N x T]`. The NEW lowering \
-             expects a record-typed pointer target; fixed-array targets \
-             need their own allocator path.",
+            "KNOWN BUG #29 (partial fix): NEW(p) for `POINTER TO ARRAY n OF T` \
+             now goes through the NewArray path, but `p[i]` indexing still \
+             trips emit_cast (`i64 to [8 x i64]`).  The fixed-array \
+             dereference / IndexGep chain expects the IR type to be \
+             `Ptr(elem)` (open-array shape) — for the fixed-array \
+             pointer-alias it's `Named(Buf)` → `Ptr(Array{n, elem})` and \
+             the index-GEP path mis-loads.  Needs a sibling fix at the \
+             designator-deref / IndexGep IR layer.",
         ),
     },
 
@@ -4773,9 +4762,10 @@ END M_Type_PointerTo_FixedArray.
 END M_Type_PointerTo_FixedArray_AsField.
 "#,
         ignored: Some(
-            "KNOWN BUG (#29 family): same as M_Type_PointerTo_FixedArray, \
-             but the pointer-to-fixed-array lives as a record field. Both \
-             cases need NEW lowering to recognise the fixed-array target.",
+            "KNOWN BUG (#29 family): same indexing-path issue as \
+             M_Type_PointerTo_FixedArray, with the pointer-to-fixed-array \
+             field on a record. Un-ignore when the IndexGep lowering \
+             handles `POINTER TO ARRAY n OF T` correctly.",
         ),
     },
 

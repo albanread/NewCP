@@ -355,29 +355,23 @@ formal layout.
 **Regression coverage**: matrix probe `M_Param_IN_Pointer_Deref`
 un-ignored.
 
-### 18. Indirect call through a procedure-typed parameter mis-types its args
+### 18. ~~Indirect call through a procedure-typed parameter mis-types its args~~ — FIXED
 
-**Where**: sema's type resolution for call expressions whose callee
-is a procedure-typed parameter (not a local var or named
-procedure). Surfaced by matrix probe `M_ProcType_Param_Callback`
-(`#[ignore]`-flagged with this entry).
+**Status**: closed. Two coordinated fixes:
+- Sema (`apply_selector_type` and the
+  `validate_call_arguments`-driven path): unwrap Named alias
+  chains on `base` so a parameter declared with a procedure-type
+  alias (`f: Unary`) is recognised as callable instead of being
+  mis-interpreted as a type guard.
+- IR (`lower_designator`'s indirect-call path): accept
+  `Selector::AmbiguousParen(qual)` as a single-arg call form,
+  not just `Selector::Call(args)`.  The AmbiguousParen tentative
+  form survives when the parser couldn't tell call from
+  type-guard syntactically; once the IR knows the base is a
+  procedure value, the disambiguation is unambiguous.
 
-**Workaround**: probe shipped ignored. The other procedure-type
-probe (`M_ProcType_IndirectCall`) assigns the proc-value to a
-*local* before calling, which works — so production code paths
-have a clean workaround: copy the param to a local and call
-through that.
-
-**Why deferred**: surfaced by the matrix on first expansion. Sema
-reports `found unresolved:seed` for an argument that's a peer
-parameter in the same procedure — so the lookup scope is broken
-specifically when the call's callee is itself a procedure-typed
-parameter (not when it's a local var of the same type).
-
-**Closing it**: walk `lower_bound_proc_call_expr` / its sibling
-indirect-call resolution and make sure the surrounding scope's
-local symbols stay visible while the callee's signature is being
-matched. Un-ignore the probe to confirm; its `Run` returns 121.
+**Regression coverage**: matrix probe `M_ProcType_Param_Callback`
+un-ignored.
 
 ### 15. CHAR / SHORTCHAR width mismatch at call boundary (8 failures at `-O0`)
 
@@ -527,24 +521,17 @@ cmp helper, chained with an integer compare against 0).
 **Regression coverage**: matrix probe `M_Expr_String_Compare_Mixed`
 exercises `<`, `<=`, `>` between two `ARRAY 8 OF CHAR` variables.
 
-### 27. INC on BYTE doesn't update the variable
+### 27. ~~INC on BYTE doesn't update the variable~~ — FIXED
 
-**Where**: codegen of `INC(b, delta)` when b is BYTE.  Surfaced
-by matrix probe `M_Expr_INC_OnByte` (`#[ignore]`-flagged).
+**Status**: closed. `lower_inc_dec_statement` was passing the
+delta as its native lower_expr width (INTEGER → i64) to a BinOp
+whose result type was the target's slot type (BYTE → i8).  The
+width mismatch produced a BinOp the LLVM emit dropped on the
+floor.  Fix: emit an explicit `Cast` to narrow / widen the delta
+to the target's slot type before the BinOp.
 
-**Workaround**: probe ignored. Real code can read into INTEGER,
-compute, narrow with SHORT-chain.
-
-**Why deferred**: INC(b, 50) leaves b unchanged (observed:
-returns 100 instead of 150).  Likely an integer-width mismatch
-in the IR store path — the delta is INTEGER (i64) but the slot
-is BYTE (i8); something in the store either drops to the wrong
-slot or stores into a temp that's never read back.
-
-**Closing it**: trace INC's IR lowering for BYTE/SHORTINT/INTSHORT
-targets — verify the load+add+store chain types align and the
-final store lands in the named slot.  Un-ignore the probe;
-expected 150.
+**Regression coverage**: matrix probe `M_Expr_INC_OnByte`
+un-ignored.
 
 ### 28. SET constant membership wrong value
 

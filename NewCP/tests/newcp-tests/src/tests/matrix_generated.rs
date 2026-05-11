@@ -221,7 +221,6 @@ fn matrix_anyptr_is_test_distinguishes_types() {
 
 /// CP §6.5 / 10.1 — procedure-typed value passed as a parameter and invoked inside the callee (callback pattern)
 #[test]
-#[ignore = "KNOWN BUG: sema mis-types the argument of an indirect call through a procedure-typed parameter — `f(seed)` reports `found unresolved:seed` even though `seed` is a peer parameter in the same proc.  `M_ProcType_IndirectCall` works because that probe assigns the proc-value to a local first and calls the local — so the bug is specific to calling through a parameter, not through a local. File under deferred_fixes #18."]
 fn matrix_proc_type_param_invoked_as_callback() {
     assert_eq!(
         run_function("Mod/Tests/Matrix/M_ProcType_Param_Callback.cp", "Run"),
@@ -1705,7 +1704,6 @@ fn matrix_stmt_repeat_with_many_iterations() {
 
 /// CP §10.3 — INC on a BYTE variable stays within range
 #[test]
-#[ignore = "KNOWN BUG: INC(b, 50) on a BYTE variable doesn't update the variable (observed: b stays at 100 instead of 150). Either the INC IR builds the wrong type for the delta or the store path elides on width mismatch. File under deferred_fixes #27."]
 fn matrix_expr_inc_on_byte() {
     assert_eq!(
         run_function("Mod/Tests/Matrix/M_Expr_INC_OnByte.cp", "Run"),
@@ -1797,7 +1795,7 @@ fn matrix_expr_set_constant_membership_tests() {
 
 /// CP §6.4 — POINTER TO ARRAY n OF T (fixed size) — NEW(p) without a dim argument allocates a fixed-size heap buffer; distinct lowering from PT-OpenArray
 #[test]
-#[ignore = "KNOWN BUG #29: NEW(p) where p is `POINTER TO ARRAY n OF T` (fixed-size array, not open) trips IR with `Instr::New: unknown record type [N x T]`. The NEW lowering expects a record-typed pointer target; fixed-array targets need their own allocator path."]
+#[ignore = "KNOWN BUG #29 (partial fix): NEW(p) for `POINTER TO ARRAY n OF T` now goes through the NewArray path, but `p[i]` indexing still trips emit_cast (`i64 to [8 x i64]`).  The fixed-array dereference / IndexGep chain expects the IR type to be `Ptr(elem)` (open-array shape) — for the fixed-array pointer-alias it's `Named(Buf)` → `Ptr(Array{n, elem})` and the index-GEP path mis-loads.  Needs a sibling fix at the designator-deref / IndexGep IR layer."]
 fn matrix_type_pointer_to_fixed_array_new_no_dim() {
     assert_eq!(
         run_function("Mod/Tests/Matrix/M_Type_PointerTo_FixedArray.cp", "Run"),
@@ -1808,7 +1806,7 @@ fn matrix_type_pointer_to_fixed_array_new_no_dim() {
 
 /// CP §6.3 / 6.4 — POINTER TO ARRAY n OF T as a record field; NEW(rec.field), index, read-back
 #[test]
-#[ignore = "KNOWN BUG (#29 family): same as M_Type_PointerTo_FixedArray, but the pointer-to-fixed-array lives as a record field. Both cases need NEW lowering to recognise the fixed-array target."]
+#[ignore = "KNOWN BUG (#29 family): same indexing-path issue as M_Type_PointerTo_FixedArray, with the pointer-to-fixed-array field on a record. Un-ignore when the IndexGep lowering handles `POINTER TO ARRAY n OF T` correctly."]
 fn matrix_type_pointer_to_fixed_array_as_record_field() {
     assert_eq!(
         run_function("Mod/Tests/Matrix/M_Type_PointerTo_FixedArray_AsField.cp", "Run"),
