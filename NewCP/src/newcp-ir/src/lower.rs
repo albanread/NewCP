@@ -1972,6 +1972,13 @@ impl<'m> LowerCtx<'m> {
                                 // and dispatch the same way as the direct Ref(Ptr|Array|...) cases.
                                 // Required for `Bag = POINTER TO ARRAY OF SHORTINT` →
                                 // need to load the pointer, then index by element.
+                                //
+                                // For `Buf = POINTER TO ARRAY n OF T` (fixed-size), the
+                                // resolved type is `Ptr(Array{n, T})`. The IndexGep
+                                // wants element_ty=T (one scalar step per index), so
+                                // peel the Array{n, T} wrapper after loading.  The
+                                // declared length is preserved in `maybe_len` so bounds
+                                // checking still fires.
                                 IrType::Named(n) => {
                                     match self.resolve_named_as_ptr_ir_type(n) {
                                         Some(IrType::Ptr(elem)) => {
@@ -1982,7 +1989,11 @@ impl<'m> LowerCtx<'m> {
                                                 addr: addr.clone(),
                                                 ty: loaded_ptr_ty.clone(),
                                             });
-                                            (IrValue::Temp(t, loaded_ptr_ty), *elem, None)
+                                            let (final_elem, len_opt) = match *elem {
+                                                IrType::Array { element, len } => (*element, Some(len)),
+                                                other => (other, None),
+                                            };
+                                            (IrValue::Temp(t, loaded_ptr_ty), final_elem, len_opt)
                                         }
                                         Some(IrType::UntaggedPtr(elem)) => {
                                             let loaded_ptr_ty = IrType::UntaggedPtr(elem.clone());
@@ -1992,7 +2003,11 @@ impl<'m> LowerCtx<'m> {
                                                 addr: addr.clone(),
                                                 ty: loaded_ptr_ty.clone(),
                                             });
-                                            (IrValue::Temp(t, loaded_ptr_ty), *elem, None)
+                                            let (final_elem, len_opt) = match *elem {
+                                                IrType::Array { element, len } => (*element, Some(len)),
+                                                other => (other, None),
+                                            };
+                                            (IrValue::Temp(t, loaded_ptr_ty), final_elem, len_opt)
                                         }
                                         _ => (addr.clone(), IrType::Opaque("array-elem".to_string()), None),
                                     }
@@ -3595,8 +3610,20 @@ impl<'m> LowerCtx<'m> {
                     ty = match ty {
                         IrType::Ptr(inner) | IrType::UntaggedPtr(inner) => *inner,
                         IrType::Array { element, .. } => *element,
+                        // `Buf = POINTER TO ARRAY n OF T` resolves to
+                        // `Ptr(Array{n, T})`.  `p[i]` implicitly derefs
+                        // the pointer AND indexes the array — one index
+                        // consumes both layers, so peel `Ptr(Array{..})`
+                        // straight to `T`.  Plain `Ptr(elem)` (open array
+                        // alias `Bag = POINTER TO ARRAY OF T`) still peels
+                        // to `elem` (the open-array's element type).
                         IrType::Named(n) => match self.resolve_named_as_ptr_ir_type(&n) {
-                            Some(IrType::Ptr(elem)) | Some(IrType::UntaggedPtr(elem)) => *elem,
+                            Some(IrType::Ptr(elem)) | Some(IrType::UntaggedPtr(elem)) => {
+                                match *elem {
+                                    IrType::Array { element, .. } => *element,
+                                    other => other,
+                                }
+                            }
                             _ => IrType::Opaque("indexed-named".to_string()),
                         },
                         other => other,

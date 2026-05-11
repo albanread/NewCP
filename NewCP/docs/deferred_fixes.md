@@ -552,18 +552,26 @@ gained the matching `BuiltinType::Set` arm.
 **Regression coverage**: matrix probe
 `M_Expr_SET_Constant_Membership` un-ignored.
 
-### 29. NEW on `POINTER TO ARRAY n OF T` (fixed array) fails
+### 29. ~~NEW + indexing on `POINTER TO ARRAY n OF T` (fixed array)~~ — FIXED
 
-**Where**: IR's `Instr::New` resolution. Surfaced by matrix probes
+**Status**: closed. Two-stage fix:
+1. NEW side (already landed in an earlier wave): `lower_builtin_statement`
+   detects `record_ty = Array { n, T }` and dispatches to `NewArray` with
+   `len = n` instead of trying to emit `Instr::New` against the array
+   shape. The stored slot value is typed `Ptr(elem)` to match what the
+   runtime hands back.
+2. Indexing side (this fix): for `p[i]` where `p: Buf =
+   POINTER TO ARRAY n OF T`, one source index has to consume both the
+   pointer and the array layer. The `Ref(Named(...))` arm of the
+   IndexGep path now peels the resolved `Ptr(Array{n, T})` straight
+   to `T` after loading the pointer, and threads the declared length
+   through `maybe_len` so the runtime bounds check still fires.
+   `designator_ir_type` was updated to match (peel both wrappers per
+   index when the Named alias resolves to `Ptr(Array{..})`).
+
+**Regression coverage**: matrix probes
 `M_Type_PointerTo_FixedArray` and
-`M_Type_PointerTo_FixedArray_AsField` (both ignored).
-
-**Status**: filed. `Instr::New: unknown record type [N x T]`.  My
-recent #14 fix to walk the designator's IR type uncovered this
-case — when the target's underlying type is a fixed-array
-(`[N x T]`) rather than a record, the NEW lowering needs a
-different allocator path (basically just heap-alloc N*sizeof(T)
-bytes).
+`M_Type_PointerTo_FixedArray_AsField` both un-ignored.
 
 ### 30. Module-level VAR with INLINE record type fails codegen
 

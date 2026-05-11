@@ -1792,7 +1792,6 @@ fn matrix_expr_set_constant_membership_tests() {
 
 /// CP §6.4 — POINTER TO ARRAY n OF T (fixed size) — NEW(p) without a dim argument allocates a fixed-size heap buffer; distinct lowering from PT-OpenArray
 #[test]
-#[ignore = "KNOWN BUG #29 (partial fix): NEW(p) for `POINTER TO ARRAY n OF T` now goes through the NewArray path, but `p[i]` indexing still trips emit_cast (`i64 to [8 x i64]`).  The fixed-array dereference / IndexGep chain expects the IR type to be `Ptr(elem)` (open-array shape) — for the fixed-array pointer-alias it's `Named(Buf)` → `Ptr(Array{n, elem})` and the index-GEP path mis-loads.  Needs a sibling fix at the designator-deref / IndexGep IR layer."]
 fn matrix_type_pointer_to_fixed_array_new_no_dim() {
     assert_eq!(
         run_function("Mod/Tests/Matrix/M_Type_PointerTo_FixedArray.cp", "Run"),
@@ -1803,7 +1802,6 @@ fn matrix_type_pointer_to_fixed_array_new_no_dim() {
 
 /// CP §6.3 / 6.4 — POINTER TO ARRAY n OF T as a record field; NEW(rec.field), index, read-back
 #[test]
-#[ignore = "KNOWN BUG (#29 family): same indexing-path issue as M_Type_PointerTo_FixedArray, with the pointer-to-fixed-array field on a record. Un-ignore when the IndexGep lowering handles `POINTER TO ARRAY n OF T` correctly."]
 fn matrix_type_pointer_to_fixed_array_as_record_field() {
     assert_eq!(
         run_function("Mod/Tests/Matrix/M_Type_PointerTo_FixedArray_AsField.cp", "Run"),
