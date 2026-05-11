@@ -435,25 +435,15 @@ and `M_Expr_ShortCircuit_NilGuard` (the last one exercises the
 `IF (p # NIL) & (p.field > 0) THEN` BlackBox idiom that was
 silently dereferencing NIL before the fix).
 
-### 20. Sema rejects subset/superset (`<=` / `>=`) on SET operands
+### 20. ~~Sema rejects subset/superset (`<=` / `>=`) on SET operands~~ — FIXED
 
-**Where**: sema's relational-operator type table. Surfaced by
-matrix probe `M_Expr_SET_Equality` (`#[ignore]`-flagged).
+**Status**: closed. `are_ordered_relation_compatible` in
+`newcp-sema` now accepts (SET, SET); `lower_binary` in `newcp-ir`
+emits the subset / superset / strict-variant lowerings via the
+bitwise identity `s1 <= s2 iff s1 * s2 = s1`.
 
-**Workaround**: probe ignored. Real code that wants a subset test
-can use the equivalent `(a * b) = a` (intersection equals self).
-
-**Why deferred**: CP §8.2.5 defines `s1 <= s2` as "s1 is a subset
-of s2" and `s1 >= s2` as superset. The sema reports
-`invalid operands for <=: SET and SET`. Just needs adding the
-SET-SET pair to the relational-operator type table; the runtime
-already supports the operation through `(a * b) = a` so no
-codegen work is required.
-
-**Closing it**: extend the relational-operator type rules in
-`newcp-sema` to allow SET on both sides for `<=` / `>=` /
-`<` / `>`, lowering to the subset/superset semantics. Un-ignore
-the probe.
+**Regression coverage**: matrix probe `M_Expr_SET_Equality` covers
+the operator pair on small overlapping sets.
 
 ### 21. Multi-dimensional fixed-array indexing crashes codegen
 
@@ -562,24 +552,18 @@ designator resolves to a procedure-typed field — emit a Load of
 the field then an indirect Call, the same path a procedure-typed
 local variable uses. Un-ignore the probe to confirm; expected 49.
 
-### 26. Sema rejects relational `<` / `<=` / `>` / `>=` on ARRAY OF CHAR
+### 26. ~~Sema rejects relational `<` / `<=` / `>` / `>=` on ARRAY OF CHAR~~ — FIXED
 
-**Where**: sema's relational-operator type table. Surfaced by
-matrix probe `M_Expr_String_Compare_Mixed` (`#[ignore]`-flagged).
+**Status**: closed. `are_ordered_relation_compatible` now accepts
+the `is_string_like_type` pair (string builtins + ARRAY OF
+CHAR/SHORTCHAR).  New runtime helpers `__newcp_string_cmp_char`
+and `__newcp_string_cmp_shortchar` return -1/0/1; the
+`Instr::StringCompare` IR variant grew an op enum so the same
+node carries Eq/Ne (existing eq helper) and Lt/Le/Gt/Ge (new
+cmp helper, chained with an integer compare against 0).
 
-**Workaround**: probe ignored. Real code that wants
-lexicographic ordering can call a runtime helper directly.
-
-**Why deferred**: CP §8.2.5 defines `<` etc on `ARRAY OF CHAR`
-as character-by-character lexicographic. The string-equality
-helper (`__newcp_string_eq_char`) already exists; we'd need
-companion ordering helpers and sema acceptance of the operand
-pair.
-
-**Closing it**: add ARRAY-OF-CHAR-vs-ARRAY-OF-CHAR rows to the
-relational-operator sema table for `<`, `<=`, `>`, `>=`; emit
-calls to new runtime helpers (mirroring the `=` / `#` path).
-Un-ignore the probe to confirm; expected 111.
+**Regression coverage**: matrix probe `M_Expr_String_Compare_Mixed`
+exercises `<`, `<=`, `>` between two `ARRAY 8 OF CHAR` variables.
 
 ### 27. INC on BYTE doesn't update the variable
 

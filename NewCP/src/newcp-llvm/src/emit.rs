@@ -186,9 +186,9 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
                 dst,
                 lhs,
                 rhs,
-                eq,
+                op,
                 elem_is_short,
-            } => self.emit_string_compare_instr(*dst, lhs, rhs, *eq, *elem_is_short, value_map),
+            } => self.emit_string_compare_instr(*dst, lhs, rhs, *op, *elem_is_short, value_map),
             Instr::Safepoint => {
                 let helper = self.get_or_declare_safepoint();
                 self.cg
@@ -2586,54 +2586,123 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
     }
 
     /// Emit `Instr::StringCompare` — walk two NUL-terminated CHAR /
-    /// SHORTCHAR buffers via the runtime helper, then convert the i64
-    /// 1/0 return into an i1 (and invert when the op is `#`).
+    /// SHORTCHAR buffers via a runtime helper, then map the i64
+    /// return into an i1 result per the requested comparison.
+    ///
+    /// `Eq` / `Ne` use the existing `__newcp_string_eq_*` helpers
+    /// (1/0 return).  The four ordering ops route through
+    /// `__newcp_string_cmp_*` (-1/0/1 return) and are chained with
+    /// an integer compare against 0.
     fn emit_string_compare_instr(
         &mut self,
         dst: TempId,
         lhs: &IrValue,
         rhs: &IrValue,
-        eq: bool,
+        op: newcp_ir::StringCmpOp,
         elem_is_short: bool,
         value_map: &mut ValueMap<'ctx>,
     ) -> Result<(), CodegenError> {
+        use inkwell::IntPredicate;
+        use newcp_ir::StringCmpOp;
         let lhs_ptr = self.resolve_string_operand_ptr(lhs, value_map)?;
         let rhs_ptr = self.resolve_string_operand_ptr(rhs, value_map)?;
-        let helper = if elem_is_short {
-            self.get_or_declare_string_eq_shortchar()
+        let is_eq_class = matches!(op, StringCmpOp::Eq | StringCmpOp::Ne);
+        let helper = if is_eq_class {
+            if elem_is_short {
+                self.get_or_declare_string_eq_shortchar()
+            } else {
+                self.get_or_declare_string_eq_char()
+            }
+        } else if elem_is_short {
+            self.get_or_declare_string_cmp_shortchar()
         } else {
-            self.get_or_declare_string_eq_char()
+            self.get_or_declare_string_cmp_char()
+        };
+        let label = match op {
+            StringCmpOp::Eq => "streq",
+            StringCmpOp::Ne => "strne",
+            StringCmpOp::Lt => "strlt",
+            StringCmpOp::Le => "strle",
+            StringCmpOp::Gt => "strgt",
+            StringCmpOp::Ge => "strge",
         };
         let call = self
             .cg
             .builder
-            .build_call(helper, &[lhs_ptr.into(), rhs_ptr.into()], "streq")
+            .build_call(helper, &[lhs_ptr.into(), rhs_ptr.into()], label)
             .map_err(|e| CodegenError::Unsupported {
                 stage: "emit_string_compare",
                 detail: e.to_string(),
             })?;
-        let i64_eq = call.try_as_basic_value().unwrap_basic().into_int_value();
-        let i1_eq = self
-            .cg
-            .builder
-            .build_int_truncate(i64_eq, self.cg.context.bool_type(), "streq.bool")
-            .map_err(|e| CodegenError::Unsupported {
-                stage: "emit_string_compare",
-                detail: e.to_string(),
-            })?;
-        let result = if eq {
-            i1_eq
-        } else {
-            self.cg
-                .builder
-                .build_not(i1_eq, "strne")
-                .map_err(|e| CodegenError::Unsupported {
-                    stage: "emit_string_compare",
-                    detail: e.to_string(),
-                })?
+        let helper_i64 = call.try_as_basic_value().unwrap_basic().into_int_value();
+        let result = match op {
+            StringCmpOp::Eq | StringCmpOp::Ne => {
+                let i1_eq = self
+                    .cg
+                    .builder
+                    .build_int_truncate(helper_i64, self.cg.context.bool_type(), "streq.bool")
+                    .map_err(|e| CodegenError::Unsupported {
+                        stage: "emit_string_compare",
+                        detail: e.to_string(),
+                    })?;
+                if matches!(op, StringCmpOp::Eq) {
+                    i1_eq
+                } else {
+                    self.cg
+                        .builder
+                        .build_not(i1_eq, "strne")
+                        .map_err(|e| CodegenError::Unsupported {
+                            stage: "emit_string_compare",
+                            detail: e.to_string(),
+                        })?
+                }
+            }
+            ord_op => {
+                let predicate = match ord_op {
+                    StringCmpOp::Lt => IntPredicate::SLT,
+                    StringCmpOp::Le => IntPredicate::SLE,
+                    StringCmpOp::Gt => IntPredicate::SGT,
+                    StringCmpOp::Ge => IntPredicate::SGE,
+                    _ => unreachable!(),
+                };
+                let zero = self.cg.context.i64_type().const_int(0, true);
+                self.cg
+                    .builder
+                    .build_int_compare(predicate, helper_i64, zero, "strord")
+                    .map_err(|e| CodegenError::Unsupported {
+                        stage: "emit_string_compare",
+                        detail: e.to_string(),
+                    })?
+            }
         };
         value_map.temp_values.insert(dst, result.into());
         Ok(())
+    }
+
+    /// Get or declare `@__newcp_string_cmp_char(ptr, ptr) -> i64`.
+    /// Returns -1/0/1 for lexicographic ordering on NUL-terminated
+    /// CHAR (UTF-32) buffers.
+    fn get_or_declare_string_cmp_char(&self) -> FunctionValue<'ctx> {
+        const NAME: &str = "__newcp_string_cmp_char";
+        if let Some(function) = self.cg.module.get_function(NAME) {
+            return function;
+        }
+        let ptr_ty = self.cg.context.ptr_type(inkwell::AddressSpace::default());
+        let i64_ty = self.cg.context.i64_type();
+        let fn_ty = i64_ty.fn_type(&[ptr_ty.into(), ptr_ty.into()], false);
+        self.cg.module.add_function(NAME, fn_ty, Some(inkwell::module::Linkage::External))
+    }
+
+    /// SHORTCHAR (Latin-1) twin of `get_or_declare_string_cmp_char`.
+    fn get_or_declare_string_cmp_shortchar(&self) -> FunctionValue<'ctx> {
+        const NAME: &str = "__newcp_string_cmp_shortchar";
+        if let Some(function) = self.cg.module.get_function(NAME) {
+            return function;
+        }
+        let ptr_ty = self.cg.context.ptr_type(inkwell::AddressSpace::default());
+        let i64_ty = self.cg.context.i64_type();
+        let fn_ty = i64_ty.fn_type(&[ptr_ty.into(), ptr_ty.into()], false);
+        self.cg.module.add_function(NAME, fn_ty, Some(inkwell::module::Linkage::External))
     }
 
     /// Resolve a string-compare operand to a pointer.  ConstStr →

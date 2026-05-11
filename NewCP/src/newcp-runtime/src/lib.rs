@@ -1088,6 +1088,60 @@ pub extern "C" fn __newcp_string_eq_shortchar(lhs: *const u8, rhs: *const u8) ->
     }
 }
 
+/// Lexicographic compare for two NUL-terminated CHAR (UTF-32) buffers.
+/// Returns -1 if `lhs < rhs`, 0 if equal, 1 if `lhs > rhs` (in
+/// codepoint order, matching CP §8.2.5 for `ARRAY OF CHAR` operands).
+/// The caller chains this with an integer comparison against 0 to
+/// realise `<`, `<=`, `>`, `>=`.
+#[unsafe(no_mangle)]
+pub extern "C" fn __newcp_string_cmp_char(lhs: *const u32, rhs: *const u32) -> i64 {
+    if lhs.is_null() || rhs.is_null() {
+        if lhs == rhs {
+            return 0;
+        }
+        return if lhs.is_null() { -1 } else { 1 };
+    }
+    unsafe {
+        let mut i = 0usize;
+        loop {
+            let l = *lhs.add(i);
+            let r = *rhs.add(i);
+            if l != r {
+                return if l < r { -1 } else { 1 };
+            }
+            if l == 0 {
+                return 0;
+            }
+            i += 1;
+        }
+    }
+}
+
+/// SHORTCHAR (Latin-1) twin of `__newcp_string_cmp_char`.
+#[unsafe(no_mangle)]
+pub extern "C" fn __newcp_string_cmp_shortchar(lhs: *const u8, rhs: *const u8) -> i64 {
+    if lhs.is_null() || rhs.is_null() {
+        if lhs == rhs {
+            return 0;
+        }
+        return if lhs.is_null() { -1 } else { 1 };
+    }
+    unsafe {
+        let mut i = 0usize;
+        loop {
+            let l = *lhs.add(i);
+            let r = *rhs.add(i);
+            if l != r {
+                return if l < r { -1 } else { 1 };
+            }
+            if l == 0 {
+                return 0;
+            }
+            i += 1;
+        }
+    }
+}
+
 /// Smalltalk-style `doesNotUnderstand:` for vtable slots that the JIT
 /// couldn't bind to a concrete function (typically because the slot
 /// represents a concrete-but-inherited method whose body lives in a
@@ -1138,6 +1192,12 @@ pub fn runtime_symbol_address(symbol_name: &str) -> Option<usize> {
     }
     if symbol_name == "__newcp_string_eq_shortchar" {
         return Some(__newcp_string_eq_shortchar as *const () as usize);
+    }
+    if symbol_name == "__newcp_string_cmp_char" {
+        return Some(__newcp_string_cmp_char as *const () as usize);
+    }
+    if symbol_name == "__newcp_string_cmp_shortchar" {
+        return Some(__newcp_string_cmp_shortchar as *const () as usize);
     }
 
     let (module_name, export_name) = symbol_name.split_once('.')?;

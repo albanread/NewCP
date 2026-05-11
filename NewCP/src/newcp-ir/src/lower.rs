@@ -21,7 +21,7 @@ use newcp_parser::{
 use newcp_sema::{analyze_module_ast, BuiltinType, ConstValue, RecordLayout as SemanticRecordLayout, SemanticModule, SemanticProcedure, SemanticSymbol, SemanticType, SymbolKind};
 
 use crate::{
-    ir::{BinOp, BlockId, Instr, TempId, Terminator, TrapKind, UnOp},
+    ir::{BinOp, BlockId, Instr, StringCmpOp, TempId, Terminator, TrapKind, UnOp},
     ir::IrValue,
     procedure::{IrGlobal, IrModule, IrProcedure, LoweringDiagnostic},
     types::{IrType, RecordLayout},
@@ -2364,6 +2364,15 @@ impl<'m> LowerCtx<'m> {
         op: BinaryOp,
         right: &Expr,
     ) -> Option<IrValue> {
+        let cmp_op = match op {
+            BinaryOp::Equal => StringCmpOp::Eq,
+            BinaryOp::NotEqual => StringCmpOp::Ne,
+            BinaryOp::Less => StringCmpOp::Lt,
+            BinaryOp::LessEqual => StringCmpOp::Le,
+            BinaryOp::Greater => StringCmpOp::Gt,
+            BinaryOp::GreaterEqual => StringCmpOp::Ge,
+            _ => return None,
+        };
         let l_kind = self.string_compare_operand_kind(left)?;
         let r_kind = self.string_compare_operand_kind(right)?;
         if l_kind != r_kind {
@@ -2372,13 +2381,12 @@ impl<'m> LowerCtx<'m> {
         let lhs_ptr = self.lower_string_operand_ptr(left, l_kind)?;
         let rhs_ptr = self.lower_string_operand_ptr(right, r_kind)?;
         let dst = self.fresh_temp();
-        let eq = matches!(op, BinaryOp::Equal);
         let elem_is_short = matches!(l_kind, StringElemKind::ShortChar);
         self.push(Instr::StringCompare {
             dst,
             lhs: lhs_ptr,
             rhs: rhs_ptr,
-            eq,
+            op: cmp_op,
             elem_is_short,
         });
         Some(IrValue::Temp(dst, IrType::Bool))
@@ -2533,7 +2541,15 @@ impl<'m> LowerCtx<'m> {
         // the value-load path the regular lowering would use (loading
         // a 32xchar array as a value loses the address information
         // we need). See `__newcp_string_eq_char` in the runtime.
-        if matches!(op, BinaryOp::Equal | BinaryOp::NotEqual) {
+        if matches!(
+            op,
+            BinaryOp::Equal
+                | BinaryOp::NotEqual
+                | BinaryOp::Less
+                | BinaryOp::LessEqual
+                | BinaryOp::Greater
+                | BinaryOp::GreaterEqual
+        ) {
             if let Some(result) = self.try_lower_string_compare(left, op, right) {
                 return result;
             }
@@ -2624,6 +2640,57 @@ impl<'m> LowerCtx<'m> {
                     let t = self.fresh_temp();
                     self.push(Instr::BinOp { dst: t, op: ir_op, left: lv, right: rv, ty: IrType::Bool });
                     IrValue::Temp(t, IrType::Bool)
+                }
+                // <=, >= on SET: subset / superset.  Implemented via the
+                // bitwise identity:
+                //   s1 <= s2  iff  s1 * s2 = s1   (intersection equals s1)
+                //   s1 >= s2  iff  s1 * s2 = s2
+                // The strict variants `<` and `>` add a `s1 # s2` check.
+                BinaryOp::LessEqual | BinaryOp::GreaterEqual
+                | BinaryOp::Less | BinaryOp::Greater => {
+                    let strict = matches!(op, BinaryOp::Less | BinaryOp::Greater);
+                    let test_left_is_subset = matches!(op, BinaryOp::Less | BinaryOp::LessEqual);
+                    // intersect = lv AND rv
+                    let t_inter = self.fresh_temp();
+                    self.push(Instr::BinOp {
+                        dst: t_inter,
+                        op: BinOp::And,
+                        left: lv.clone(),
+                        right: rv.clone(),
+                        ty: IrType::Set(32),
+                    });
+                    // expected = (subset-test ? lv : rv)
+                    let expected = if test_left_is_subset { lv.clone() } else { rv.clone() };
+                    // subset-or-equal = (intersect = expected)
+                    let t_sub = self.fresh_temp();
+                    self.push(Instr::BinOp {
+                        dst: t_sub,
+                        op: BinOp::Eq,
+                        left: IrValue::Temp(t_inter, IrType::Set(32)),
+                        right: expected,
+                        ty: IrType::Bool,
+                    });
+                    if !strict {
+                        return IrValue::Temp(t_sub, IrType::Bool);
+                    }
+                    // strict variant: AND with (lv # rv)
+                    let t_neq = self.fresh_temp();
+                    self.push(Instr::BinOp {
+                        dst: t_neq,
+                        op: BinOp::Ne,
+                        left: lv,
+                        right: rv,
+                        ty: IrType::Bool,
+                    });
+                    let t_out = self.fresh_temp();
+                    self.push(Instr::BinOp {
+                        dst: t_out,
+                        op: BinOp::And,
+                        left: IrValue::Temp(t_sub, IrType::Bool),
+                        right: IrValue::Temp(t_neq, IrType::Bool),
+                        ty: IrType::Bool,
+                    });
+                    IrValue::Temp(t_out, IrType::Bool)
                 }
                 _ => {
                     self.record_diagnostic(&format!("unsupported SET binary operator {op:?}"));

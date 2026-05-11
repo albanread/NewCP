@@ -219,17 +219,36 @@ pub enum Instr {
     /// compare for two NUL-terminated CHAR / SHORTCHAR buffers.
     ///
     /// `lhs` and `rhs` are pointer-typed IrValues (Ref(T) or Ptr(T))
-    /// pointing at the first element of each buffer.  `eq` is `true`
-    /// for `=`, `false` for `#`.  `elem_is_short` selects the runtime
-    /// helper width: `false` → CHAR (UTF-32, i32 elements),
-    /// `true` → SHORTCHAR (Latin-1, i8 elements).
+    /// pointing at the first element of each buffer.  `op` selects
+    /// the comparison; `elem_is_short` selects the runtime helper
+    /// width: `false` → CHAR (UTF-32, i32 elements), `true` →
+    /// SHORTCHAR (Latin-1, i8 elements).
     ///
     /// Walks both buffers up to the first 0X codepoint on either side
-    /// and returns an i1 result: `true` iff `eq` matches the
-    /// terminator-aligned content equality.  Lowered to a CALL into
-    /// the `__newcp_string_eq_char` / `__newcp_string_eq_shortchar`
-    /// runtime helper.
-    StringCompare { dst: TempId, lhs: IrValue, rhs: IrValue, eq: bool, elem_is_short: bool },
+    /// and returns an i1 result. `Eq` / `Ne` go through the
+    /// `__newcp_string_eq_*` helpers (1/0 return); the ordering ops
+    /// (`Lt` / `Le` / `Gt` / `Ge`) go through `__newcp_string_cmp_*`
+    /// (-1/0/1 return) and are chained with the appropriate integer
+    /// compare against zero.
+    StringCompare {
+        dst: TempId,
+        lhs: IrValue,
+        rhs: IrValue,
+        op: StringCmpOp,
+        elem_is_short: bool,
+    },
+}
+
+/// Comparison ops supported by `Instr::StringCompare`.  Eq/Ne use the
+/// equality helper; Lt/Le/Gt/Ge use the ordering helper.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum StringCmpOp {
+    Eq,
+    Ne,
+    Lt,
+    Le,
+    Gt,
+    Ge,
 }
 
 /// The terminating instruction of a basic block.

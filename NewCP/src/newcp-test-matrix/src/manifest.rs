@@ -1564,12 +1564,7 @@ END M_Expr_LEN_OnString.
     END Run;
 END M_Expr_SET_Equality.
 "#,
-        ignored: Some(
-            "KNOWN BUG: sema rejects `<=` and `>=` on SET operands with \
-             `invalid operands for <=: SET and SET`. CP §8.2.5 defines these \
-             as subset / superset tests; needs to be wired through the \
-             relational-operator type table. File under deferred_fixes #20.",
-        ),
+        ignored: None,
     },
 
 
@@ -4153,12 +4148,7 @@ END M_Method_OnRecord_FromExternalCallable.
     END Run;
 END M_Expr_String_Compare_Mixed.
 "#,
-        ignored: Some(
-            "KNOWN BUG: sema rejects `<` / `<=` / `>` / `>=` on ARRAY OF CHAR \
-             operands with `invalid operands for <`. CP §8.2.5 defines \
-             lexicographic ordering on char arrays; needs to be added to the \
-             relational-operator type table. File under deferred_fixes #26.",
-        ),
+        ignored: None,
     },
 
     Probe {

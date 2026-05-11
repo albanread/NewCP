@@ -546,7 +546,6 @@ fn matrix_expr_len_on_string_literal_via_open_array() {
 
 /// CP §8.2.5 — SET equality (=) and subset/superset (<=, >=) compare by membership, not by literal construction
 #[test]
-#[ignore = "KNOWN BUG: sema rejects `<=` and `>=` on SET operands with `invalid operands for <=: SET and SET`. CP §8.2.5 defines these as subset / superset tests; needs to be wired through the relational-operator type table. File under deferred_fixes #20."]
 fn matrix_expr_set_equality_and_subset() {
     assert_eq!(
         run_function("Mod/Tests/Matrix/M_Expr_SET_Equality.cp", "Run"),
@@ -1547,7 +1546,6 @@ fn matrix_method_dispatch_then_indirect_call() {
 
 /// CP §8.2.5 — lexicographic ordering on ARRAY OF CHAR — `<`, `<=` etc compare codepoints up to the first 0X
 #[test]
-#[ignore = "KNOWN BUG: sema rejects `<` / `<=` / `>` / `>=` on ARRAY OF CHAR operands with `invalid operands for <`. CP §8.2.5 defines lexicographic ordering on char arrays; needs to be added to the relational-operator type table. File under deferred_fixes #26."]
 fn matrix_expr_string_compare_with_relational_operators() {
     assert_eq!(
         run_function("Mod/Tests/Matrix/M_Expr_String_Compare_Mixed.cp", "Run"),

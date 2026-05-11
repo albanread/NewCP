@@ -5803,10 +5803,21 @@ fn is_string_like_type(ty: &SemanticType) -> bool {
 }
 
 fn are_ordered_relation_compatible(left: &SemanticType, right: &SemanticType) -> bool {
+    // CP §8.2.5: `<` / `<=` / `>` / `>=` apply to numerics, CHAR/SHORTCHAR,
+    // string types (lexicographic — covers both `String` builtins and
+    // CHAR-arrays), and SETs (subset / superset).
     (is_numeric_type(left) && is_numeric_type(right))
         || (is_character_like_type(left) && is_character_like_type(right))
-        || (is_string_type(left) && is_string_type(right))
+        || (is_string_like_type(left) && is_string_like_type(right))
+        || matches!(
+            (left, right),
+            (
+                SemanticType::Builtin(BuiltinType::Set),
+                SemanticType::Builtin(BuiltinType::Set),
+            )
+        )
 }
+
 
 fn is_boolean_type(ty: &SemanticType) -> bool {
     matches!(ty, SemanticType::Builtin(BuiltinType::Boolean))

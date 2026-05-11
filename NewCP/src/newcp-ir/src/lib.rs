@@ -6,7 +6,7 @@ mod procedure;
 mod lower;
 
 pub use types::{IrType, RecordLayout};
-pub use ir::{BasicBlock, BinOp, BlockId, Instr, IrValue, TempId, Terminator, TrapKind, UnOp};
+pub use ir::{BasicBlock, BinOp, BlockId, Instr, IrValue, StringCmpOp, TempId, Terminator, TrapKind, UnOp};
 pub use procedure::{IrGlobal, IrModule, IrProcedure, LoweringDiagnostic};
 pub use lower::{lower_module, lower_procedure, map_semantic_type, OPEN_ARRAY_LEN_SUFFIX};
 

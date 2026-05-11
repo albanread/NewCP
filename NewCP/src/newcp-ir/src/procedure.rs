@@ -457,13 +457,20 @@ fn render_instr(instr: &Instr) -> String {
         StoreResult { value } => {
             format!("store result, {}", value.render())
         }
-        StringCompare { dst, lhs, rhs, eq, elem_is_short } => {
-            let op = if *eq { "streq" } else { "strne" };
+        StringCompare { dst, lhs, rhs, op, elem_is_short } => {
+            let op_str = match op {
+                crate::ir::StringCmpOp::Eq => "streq",
+                crate::ir::StringCmpOp::Ne => "strne",
+                crate::ir::StringCmpOp::Lt => "strlt",
+                crate::ir::StringCmpOp::Le => "strle",
+                crate::ir::StringCmpOp::Gt => "strgt",
+                crate::ir::StringCmpOp::Ge => "strge",
+            };
             let elem = if *elem_is_short { "shortchar" } else { "char" };
             format!(
                 "{} = {} {}, {} : {}",
                 dst.render(),
-                op,
+                op_str,
                 lhs.render(),
                 rhs.render(),
                 elem,
