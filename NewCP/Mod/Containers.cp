@@ -147,10 +147,10 @@ MODULE Containers;
         carry state outside the wire format override. *)
     PROCEDURE (m: Model) InitFrom* (source: Model), NEW, EMPTY;
 
-    (** EXTENSIBLE Internalize chain — super-calls into
-        `Models.ModelDesc.Internalize`.  BlackBox additionally
-        reads a `maxModelVersion` stamp here; we'll restore that
-        once `Stores.Reader.ReadVersion` lands. *)
+    (** EXTENSIBLE Internalize chain — super-call into
+        `Models.ModelDesc.Internalize`.  See the matching
+        Views.View Internalize comment on the deferred
+        `ReadVersion`. *)
     PROCEDURE (m: Model) Internalize* (VAR rd: Stores.Reader), EXTENSIBLE;
     BEGIN
         m.Internalize^(rd)
@@ -198,14 +198,28 @@ MODULE Containers;
     PROCEDURE (v: View) Internalize2* (VAR rd: Stores.Reader), NEW, EMPTY;
 
     (** Container-level Internalize.  Super-calls into
-        `Views.ViewDesc.Internalize`.  The BlackBox version also
-        reads a `maxViewVersion` stamp here, then reads the
-        embedded Model store and the (optional) Controller
-        store and binds them; the Reader extensions that needs
-        aren't ported yet. *)
+        `Views.ViewDesc.Internalize`, then defers to the
+        subclass-supplied `Internalize2`.
+
+        The BlackBox version additionally reads a
+        `maxViewVersion` stamp here, then reads the embedded
+        Model store, the (optional) Controller store, and binds
+        them on `v.model` / `v.controller` / `v.alienCtrl` —
+        with type-guard checks falling back to `TurnIntoAlien`
+        on mismatch.  That materialization step needs the
+        Kernel.NewObj-driven RTTI factory (the runtime side
+        that turns a `ReaderHandle` for an inline store into a
+        typed `Stores.Store`-rooted value); the host-side
+        equivalent `HostStores.NewStore` lives in a module that
+        can't be imported from here without an import cycle.
+        Until the RTTI factory lands, subclass Internalize2
+        bodies (`TextViews.View.Internalize2`) handle BOTH the
+        version stamp AND the child-store reads via
+        `rd.ReadVersion` / `rd.ReadStore` / SkipStore. *)
     PROCEDURE (v: View) Internalize* (VAR rd: Stores.Reader);
     BEGIN
         v.Internalize^(rd);
+        IF rd.cancelled THEN RETURN END;
         v.Internalize2(rd)
     END Internalize;
 

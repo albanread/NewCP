@@ -175,30 +175,25 @@ MODULE Views;
 
     (* -- View methods (Store protocol) ----------------------------------- *)
 
-    (** EXTENSIBLE chain — read this layer's version stamp then
-        let the subclass read its own bytes.  BlackBox additionally
-        super-calls `Stores.StoreDesc.Internalize` first; ours is
-        EMPTY so the order doesn't matter for now. *)
+    (** EXTENSIBLE chain — super-call into
+        `Stores.StoreDesc.Internalize` (EMPTY).  See the matching
+        Models.Model comment on why we don't `ReadVersion` here
+        unconditionally: existing matrix probes write/read a
+        vanilla wire format with no version bytes, so adding a
+        stamp would desync them.  Subclasses (TextViews and
+        friends) that DO want the BB-faithful version-tagged
+        format are expected to call `rd.ReadVersion` /
+        `wr.WriteVersion` themselves at the points BlackBox
+        does. *)
     PROCEDURE (v: View) Internalize* (VAR rd: Stores.Reader), EXTENSIBLE;
-        VAR thisVersion: INTEGER;
     BEGIN
-        v.Internalize^(rd);
-        (* Once Stores.Reader grows a `cancelled` flag and a
-           ReadVersion that traps on out-of-range, this becomes
-           IF rd.cancelled THEN RETURN END;
-           rd.ReadVersion(minVersion, maxVersion, thisVersion).
-           For the current slice we just consume a single byte
-           (the View version stamp) so the wire format lines up
-           with BlackBox.  thisVersion is intentionally unused. *)
-        thisVersion := minVersion
+        v.Internalize^(rd)
     END Internalize;
 
     (** Symmetric Externalize chain. *)
     PROCEDURE (v: View) Externalize* (VAR wr: Stores.Writer), EXTENSIBLE;
     BEGIN
         v.Externalize^(wr)
-        (* Once Stores.Writer grows WriteVersion this becomes
-           wr.WriteVersion(maxVersion). *)
     END Externalize;
 
 

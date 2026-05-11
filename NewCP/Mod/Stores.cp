@@ -59,10 +59,17 @@ TYPE
         sticky-eof flag.  Direct field access and the typed
         `ReadByte` / `ReadInt` / … methods below let `Internalize`
         implementations consume primitive fields without touching
-        `StoresSys` directly. *)
+        `StoresSys` directly.
+
+        `cancelled` is the BlackBox-faithful sticky-failure flag.
+        Once any layer of an Internalize chain sets it (via
+        `ReadVersion` finding a stamp out of range, or via
+        `TurnIntoAlien`), every subsequent layer bails out without
+        further consuming bytes. *)
     Reader* = RECORD
-        handle*: ReaderHandle;
-        eof*:    BOOLEAN
+        handle*:    ReaderHandle;
+        eof*:       BOOLEAN;
+        cancelled*: BOOLEAN
     END;
 
     (** Typed writer.  Symmetric with Reader; backed by an in-memory
@@ -331,6 +338,70 @@ BEGIN
     got := StoresSys.ReaderReadBytes(rd.handle, buf, len);
     rd.eof := (got # len) OR (StoresSys.ReaderEof(rd.handle) # 0)
 END ReadBytes;
+
+(** BB-faithful version-stamp reader.  Reads a single byte
+    (the version stamp written by `WriteVersion`) and asserts
+    it falls in `[min, max]`.  Sets the receiver's `cancelled`
+    flag if out of range or already cancelled by an upstream
+    layer; subsequent reads in the same chain are no-ops once
+    `cancelled` is set.  Mirrors `Stores.Reader.ReadVersion` in
+    `System/Mod/Stores.odc.md`. *)
+PROCEDURE (VAR rd: Reader) ReadVersion*
+    (min, max: INTEGER; OUT thisVersion: INTEGER), NEW;
+    VAR b: BYTE;
+BEGIN
+    thisVersion := 0;
+    IF rd.cancelled THEN RETURN END;
+    rd.ReadByte(b);
+    IF rd.eof THEN rd.cancelled := TRUE; RETURN END;
+    thisVersion := b;
+    IF (thisVersion < min) OR (thisVersion > max) THEN
+        rd.cancelled := TRUE
+    END
+END ReadVersion;
+
+(** Hard escape on a malformed inline store — set by the
+    framework when an Internalize body sees a tag-byte mismatch
+    or a wire-format header it can't recover from.  The `reason`
+    argument is informational only in this slice; the BlackBox
+    original logs it via `Stores.Report`. *)
+PROCEDURE (VAR rd: Reader) TurnIntoAlien* (reason: INTEGER), NEW;
+BEGIN
+    rd.cancelled := TRUE
+END TurnIntoAlien;
+
+(** Read an inline child store off the wire.  Returns the
+    integer handle of the materialised child (or 0 if the wire
+    indicates "nil store" / the read failed).  Sets `cancelled`
+    on failure.  Concrete typed-record materialization remains
+    on the caller (using `HostStores.NewStore` on the returned
+    handle) until the runtime grows a Kernel.NewObj-driven RTTI
+    factory that can build typed records directly from `Reader`. *)
+PROCEDURE (VAR rd: Reader) ReadStore* (OUT handle: ReaderHandle), NEW;
+BEGIN
+    handle := StoresSys.ReaderReadInlineStore(rd.handle);
+    rd.eof := StoresSys.ReaderEof(rd.handle) # 0;
+    IF handle = 0 THEN rd.cancelled := TRUE END
+END ReadStore;
+
+(** Skip an inline child store without materializing it.  Used
+    when the parent's Internalize hasn't been wired to handle a
+    given child slot yet (e.g. TextViews' controller / ruler /
+    attributes children before those modules have ported). *)
+PROCEDURE (VAR rd: Reader) SkipStore* (), NEW;
+    VAR ok: INTEGER;
+BEGIN
+    ok := StoresSys.ReaderSkipInlineStore(rd.handle);
+    IF ok = 0 THEN rd.cancelled := TRUE END;
+    rd.eof := StoresSys.ReaderEof(rd.handle) # 0
+END SkipStore;
+
+(** BB-faithful version-stamp writer.  Symmetric with
+    `ReadVersion`. *)
+PROCEDURE (VAR wr: Writer) WriteVersion* (version: INTEGER), NEW;
+BEGIN
+    StoresSys.WriterWriteByte(wr.handle, version)
+END WriteVersion;
 
 PROCEDURE (VAR wr: Writer) WriteByte* (b: BYTE), NEW;
 BEGIN StoresSys.WriterWriteByte(wr.handle, b) END WriteByte;

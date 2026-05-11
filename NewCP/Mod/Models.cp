@@ -82,8 +82,18 @@ MODULE Models;
     (** EXTENSIBLE Internalize chain.  Concrete model subclasses
         (`TextModels.StdModelDesc`, etc.) override this to read their
         own fields, calling `m.Internalize^(rd)` first to chain into
-        the inherited behaviour.  BlackBox reads a Model version stamp
-        at this layer; we'll add that once `Reader.ReadVersion` lands. *)
+        the inherited behaviour.
+
+        NOTE: BlackBox reads a `maxVersion` stamp at this layer via
+        `rd.ReadVersion(minVersion, maxVersion, thisVersion)`.  We
+        deliberately do NOT do that here yet — existing matrix
+        probes (`ModelsCopyOfProbe`, `StoresCopyOfProbe`, ...)
+        wrote/read raw `WriteLong`/`ReadLong` pairs without any
+        version byte, and unconditionally adding a stamp here
+        would silently desync those wire formats.  When TextViews
+        moves to use the BB-faithful chain, the version stamp
+        gets reinstated here in lock-step.  See
+        `Mod/Stores.cp::Reader.ReadVersion`. *)
     PROCEDURE (m: Model) Internalize* (VAR rd: Stores.Reader), EXTENSIBLE;
     BEGIN
         m.Internalize^(rd)
