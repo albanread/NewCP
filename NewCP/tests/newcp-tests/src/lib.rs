@@ -3640,4 +3640,42 @@ mod tests {
             4,
         );
     }
+
+    /// Cross-module vtable workout via Views.ViewDesc extension.
+    ///
+    /// `ViewExtBase.CountingView` extends `Views.ViewDesc`, overrides
+    /// `Restore` (ABSTRACT in Views) and `ThisModel` (EXTENSIBLE in
+    /// Views — with a super-call to the parent module's default).
+    /// `Run` widens to the base `Views.View` pointer and dispatches
+    /// both methods through the vtable, then packs the recorded
+    /// paint rectangle + dispatch counter into a single int.
+    ///
+    /// 21234 = paintCount(20) * 1000 + lastL(1)*1000 + lastT(2)*100
+    ///       + lastR(3)*10 + lastB(4)
+    #[test]
+    fn views_extension_chain_dispatches_through_vtable() {
+        assert_eq!(
+            run_function("Mod/Tests/ViewExtBase.cp", "Run"),
+            21234,
+        );
+    }
+
+    /// Three-level super-call chain crossing two modules.
+    ///
+    /// `ViewExtSuper.TaggedView` extends `Views.View` which extends
+    /// `Stores.Store`.  `TaggedView.Internalize` super-calls
+    /// `Views.View.Internalize` which super-calls
+    /// `Stores.Store.Internalize` (EMPTY at the base).  The driver
+    /// invokes the override twice — once through the concrete
+    /// pointer (static dispatch), once through the widened
+    /// `Views.View` base pointer (virtual dispatch via vtable).
+    /// Both should land in the subclass method body and increment
+    /// the counter.
+    #[test]
+    fn views_super_call_chain_resolves_through_two_modules() {
+        assert_eq!(
+            run_function("Mod/Tests/ViewExtSuper.cp", "Run"),
+            2,
+        );
+    }
 }
