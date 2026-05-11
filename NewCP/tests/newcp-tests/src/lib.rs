@@ -3736,4 +3736,21 @@ mod tests {
             1119,
         );
     }
+
+    /// Properties.PropertyDesc extension + StdProp inline-record
+    /// field round-trip.
+    ///
+    /// Workout for:
+    /// - extending an ABSTRACT `Properties.PropertyDesc` with a leaf
+    ///   and overriding its `IntersectWith` ABSTRACT method;
+    /// - reading/writing the inline-record `style: RECORD val, mask:
+    ///   SET END` field on `StdProp` — exercises the new
+    ///   `__anon_inline_` content-hash Named-type path.
+    #[test]
+    fn properties_extension_and_inline_field_round_trip() {
+        assert_eq!(
+            run_function("Mod/Tests/PropertiesExtBase.cp", "Run"),
+            1001911,
+        );
+    }
 }

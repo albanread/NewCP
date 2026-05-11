@@ -832,11 +832,49 @@ impl<'m> LowerCtx<'m> {
     /// `flatten_fields_for_ir_type` to recover the actual fields of an
     /// inline anonymous record whose only surface name is the
     /// `__anon_inline_<hash>` synthetic.
-    fn find_anonymous_inline_record(&self, target_name: &str) -> Option<SemanticType> {
+    ///
+    /// Walks both the local module and every imported module's
+    /// SemanticTypes — an inline record declared inside an
+    /// exported record (e.g. `Properties.StdPropDesc.style: RECORD
+    /// val, mask: SET END`) lives in the IMPORT's symbol table,
+    /// not the local one, so cross-module field access has to
+    /// find it there.
+    fn find_anonymous_inline_record(&mut self, target_name: &str) -> Option<SemanticType> {
+        // Local-module pass.
         for sym in self.module_symbols.iter().chain(self.symbols.iter()) {
             if let Some(ty) = sym.declared_type.as_ref() {
                 if let Some(found) = search_anonymous_inline(ty, target_name) {
                     return Some(found);
+                }
+            }
+        }
+        // Imported-module pass.  Clone the import-name list out
+        // first so we can mutate `import_cache` inside the loop.
+        let import_names: Vec<String> = self
+            .import_cache
+            .keys()
+            .cloned()
+            .collect();
+        // Also try every module the loader can reach via the
+        // standard search path, not just the ones already in the
+        // cache.  We use the module-symbol declared imports.
+        let extra: Vec<String> = self
+            .module_symbols
+            .iter()
+            .filter(|s| s.kind == newcp_sema::SymbolKind::Import)
+            .map(|s| s.name.clone())
+            .collect();
+        let names: std::collections::HashSet<String> =
+            import_names.into_iter().chain(extra.into_iter()).collect();
+        for name in names {
+            if let Some(sema) = load_cached_import(&name, &mut self.import_cache) {
+                let sema = sema.clone();
+                for sym in &sema.symbols {
+                    if let Some(ty) = sym.declared_type.as_ref() {
+                        if let Some(found) = search_anonymous_inline(ty, target_name) {
+                            return Some(found);
+                        }
+                    }
                 }
             }
         }
@@ -6084,6 +6122,19 @@ fn collect_named_types(
                 }
             }
         }
+        // Inline anonymous records buried inside an IMPORTED record's
+        // field list need their content-hash named_types entries too —
+        // otherwise a downstream consumer (`PropertiesExtBase` reading
+        // `Properties.StdProp.style.val`) can't resolve the inline
+        // record's field layout. Walk the import's symbols the same
+        // way `register_anonymous_inline_records` does for the local
+        // module.
+        register_anonymous_inline_records(
+            &sema.symbols,
+            import_name,
+            import_cache,
+            &mut map,
+        );
     }
 
     map
