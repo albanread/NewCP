@@ -473,25 +473,21 @@ declared type.
 exercises the BlackBox-style builder idiom
 `(b: Box) WithValue (n: INTEGER): Box; ... RETURN b`.
 
-### 24. SHORTREAL mixed with REAL operand produces wild result
+### 24. ~~SHORTREAL mixed with REAL operand produces wild result~~ — FIXED
 
-**Where**: codegen / IR lowering for mixed-precision float
-arithmetic. Surfaced by matrix probe
-`M_Expr_SHORTREAL_Arithmetic` (`#[ignore]`-flagged).
+**Status**: closed. `lower_binary` only promoted INT→FLOAT for
+mixed-type expressions and didn't widen SHORTREAL (f32) when the
+other operand was REAL (f64). The resulting `BinOp` had
+mismatched IR widths; LLVM emit interpreted the f32 bit pattern
+as the low 32 bits of an f64 (the high half coming from whatever
+register state was around), producing magnitudes like 2097152
+instead of 18.0. Fix: when both operands are floats but widths
+differ, emit a `Cast` to widen the narrower side to f64 before
+the BinOp.
 
-**Workaround**: probe ignored. Real code can stick to REAL
-throughout, which works.
-
-**Why deferred**: `SHORT(3.0) * SHORT(2.5) * 2.4` evaluates to
-2097152 instead of 18.0.  Either the SHORTREAL → REAL promotion
-on the third operand is wrong, or ENTIER on the REAL result
-truncates the wrong bits, or the IR is treating the f32 as f64
-without converting first.
-
-**Closing it**: trace the float-width-promotion lowering in
-`newcp-ir/src/lower.rs::lower_binary` (the existing
-`is_float_ir`-driven branch handles int→float but may be missing
-SHORTREAL→REAL). Un-ignore the probe to confirm; expected 18.
+**Regression coverage**: matrix probe
+`M_Expr_SHORTREAL_Arithmetic` un-ignored; `ENTIER(SHORT(3.0) *
+SHORT(2.5) * 2.4)` now produces 18.
 
 ### 25. ~~Calling a procedure-typed *record field* mis-routes through a direct call~~ — FIXED
 

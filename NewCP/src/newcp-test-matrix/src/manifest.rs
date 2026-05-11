@@ -2734,13 +2734,7 @@ END M_Stmt_Nested_IF_Inside_For.
     END Run;
 END M_Expr_SHORTREAL_Arithmetic.
 "#,
-        ignored: Some(
-            "KNOWN BUG: SHORTREAL arithmetic mixed with REAL operand produces \
-             wild result (observed: 2097152 instead of 18).  Either SHORTREAL \
-             arithmetic doesn't sign-extend / convert properly when mixed \
-             with REAL operands, or ENTIER on the resulting REAL drops bits. \
-             File under deferred_fixes #24.",
-        ),
+        ignored: None,
     },
 
     Probe {

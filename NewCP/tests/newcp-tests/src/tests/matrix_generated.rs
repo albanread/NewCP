@@ -622,7 +622,6 @@ fn matrix_record_with_pointer_field_initially_nil() {
 
 /// CP §6.2 / 8.4 — multi-dimensional fixed array — `ARRAY M, N OF T` indexed as `a[i, j]` (CP syntax) or `a[i][j]`
 #[test]
-#[ignore = "KNOWN BUG: multi-dim fixed array indexing `arr[i, j]` panics in LLVM emit with `Found ArrayValue but expected the IntValue variant` — the code path loads a full row [N x T] and then tries to use it as an index. Single-dim arrays work fine; the multi-index lowering path needs to chain GEPs instead of loading the inner array. File under deferred_fixes #21."]
 fn matrix_multi_dim_fixed_array_access() {
     assert_eq!(
         run_function("Mod/Tests/Matrix/M_MultiDim_FixedArray.cp", "Run"),
@@ -993,7 +992,6 @@ fn matrix_stmt_nested_if_inside_for() {
 
 /// CP §8.2.2 / 6.1 — SHORTREAL (32-bit float) arithmetic; round-trips through ENTIER to land in an INTEGER
 #[test]
-#[ignore = "KNOWN BUG: SHORTREAL arithmetic mixed with REAL operand produces wild result (observed: 2097152 instead of 18).  Either SHORTREAL arithmetic doesn't sign-extend / convert properly when mixed with REAL operands, or ENTIER on the resulting REAL drops bits. File under deferred_fixes #24."]
 fn matrix_expr_shortreal_arithmetic() {
     assert_eq!(
         run_function("Mod/Tests/Matrix/M_Expr_SHORTREAL_Arithmetic.cp", "Run"),

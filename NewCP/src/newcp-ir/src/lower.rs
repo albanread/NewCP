@@ -2780,6 +2780,22 @@ impl<'m> LowerCtx<'m> {
             let t = self.fresh_temp();
             self.push(Instr::Cast { dst: t, value: lv, to_ty: to.clone() });
             lv = IrValue::Temp(t, to);
+        } else if lf && rf && lv.ty() != rv.ty() {
+            // Mixed-width float: SHORTREAL (f32) ↔ REAL (f64). CP allows
+            // SHORTREAL operands to participate in REAL arithmetic; the
+            // narrower side is widened to f64.  Without this, LLVM emit
+            // builds an fmul over mismatched float widths, which on x86_64
+            // re-interprets the f32 bit pattern as the low 32 bits of an
+            // f64 — producing wild magnitudes (e.g. 7.5 * 2.4 → 2097152).
+            if matches!(lv.ty(), IrType::F32) {
+                let t = self.fresh_temp();
+                self.push(Instr::Cast { dst: t, value: lv, to_ty: IrType::F64 });
+                lv = IrValue::Temp(t, IrType::F64);
+            } else {
+                let t = self.fresh_temp();
+                self.push(Instr::Cast { dst: t, value: rv, to_ty: IrType::F64 });
+                rv = IrValue::Temp(t, IrType::F64);
+            }
         }
 
         let ty = lv.ty();
