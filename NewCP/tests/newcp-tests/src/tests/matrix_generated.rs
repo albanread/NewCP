@@ -131,7 +131,6 @@ fn matrix_param_in_record_field_readable() {
 
 /// CP §10.2 / 8.4 — method invoked through a record-field designator (obj.fld.Method()) — receiver lowering must descend through the field GEP
 #[test]
-#[ignore = "KNOWN BUG: NEW(record_field_pointer) trips IR codegen with `Instr::New: unknown record type opaque:new-ptr`. The IR layer can't resolve the destination's record type when the NEW target is a record field's pointer (vs. a plain local pointer). Surfaced by the matrix on first run — file under deferred_fixes and un-ignore once IR `lower_new` learns to chase the field type."]
 fn matrix_method_call_on_record_field_dispatches() {
     assert_eq!(
         run_function("Mod/Tests/Matrix/M_Method_On_RecordField.cp", "Run"),
@@ -192,7 +191,6 @@ fn matrix_param_var_pointer_can_be_swapped() {
 
 /// CP §10.1 — IN pointer param — callee may dereference and read fields (writing to the pointer itself is a sema error, covered separately)
 #[test]
-#[ignore = "KNOWN BUG: `IN p: PointerAlias` parameter crashes with STATUS_ACCESS_VIOLATION when the body dereferences `p`. Likely the param-lowering treats the pointer alias as a record value and skips the necessary heap-pointer Load (similar shape to the method-dispatch receiver fix but on the parameter-access path). File under deferred_fixes #17 and un-ignore once IN-pointer field access is fixed."]
 fn matrix_param_in_pointer_target_is_readable() {
     assert_eq!(
         run_function("Mod/Tests/Matrix/M_Param_IN_Pointer_Deref.cp", "Run"),
@@ -213,7 +211,6 @@ fn matrix_anyptr_narrowed_via_type_guard() {
 
 /// CP §8.5 — `IS` test on ANYPTR returns TRUE for the actual dynamic type and FALSE for an unrelated record
 #[test]
-#[ignore = "KNOWN BUG: `IS` test on ANYPTR against a record type whose TypeDesc has not been instantiated elsewhere in the module segfaults at runtime (STATUS_ACCESS_VIOLATION). Likely the type-test fast path dereferences a NIL TypeDesc when the Bag side of the test has never been registered. File under deferred_fixes #16 and un-ignore once the lookup hardens the NIL-TypeDesc case."]
 fn matrix_anyptr_is_test_distinguishes_types() {
     assert_eq!(
         run_function("Mod/Tests/Matrix/M_AnyPtr_IS_Test.cp", "Run"),
@@ -295,7 +292,6 @@ fn matrix_expr_set_union_intersect_difference() {
 
 /// CP §8.5 — IS test on a record-pointer narrows correctly across an extensible hierarchy
 #[test]
-#[ignore = "KNOWN BUG (same family as M_AnyPtr_IS_Test): IS test against a record type with no instantiated TypeDesc (Other is declared but never NEW'd) crashes with STATUS_ACCESS_VIOLATION. See deferred_fixes #16."]
 fn matrix_expr_is_test_on_pointer_to_extensible() {
     assert_eq!(
         run_function("Mod/Tests/Matrix/M_Expr_Pointer_IS_Test.cp", "Run"),
@@ -818,7 +814,6 @@ fn matrix_stmt_empty_if_arm_is_legal() {
 
 /// CP §10.2 / 8.4 — method dispatch on the return value of a procedure call (`Make().Method()`) — exercises temporary lifetime + receiver lowering
 #[test]
-#[ignore = "KNOWN BUG: method dispatch on a procedure-call result (`Make(99).Get()`) returns a wild value (uninitialised memory read) instead of 99. The receiver-lowering refactor for plain record method dispatch worked off `designator_addr`, but a call-as-prefix produces a Temp IrValue rather than a designator — so the dispatch path is reading the wrong slot. File under deferred_fixes #22 and un-ignore once call-result-as-receiver is wired up."]
 fn matrix_method_called_on_function_result() {
     assert_eq!(
         run_function("Mod/Tests/Matrix/M_Method_On_Function_Result.cp", "Run"),
@@ -829,7 +824,6 @@ fn matrix_method_called_on_function_result() {
 
 /// CP §10.2 / 8.4 — method dispatch on an element of `ARRAY N OF Ptr` — receiver lowering must descend through the index GEP before the vtable lookup
 #[test]
-#[ignore = "KNOWN BUG (same family as #14): NEW(arr[i]) where arr is an ARRAY OF Pointer trips IR codegen with `Instr::New: unknown record type [N x named:Item]`. The destination-type resolution doesn't walk past the index-GEP to find the pointer's referent record. See deferred_fixes #14."]
 fn matrix_method_called_on_array_element_pointer() {
     assert_eq!(
         run_function("Mod/Tests/Matrix/M_Method_On_ArrayElement.cp", "Run"),
@@ -1291,7 +1285,6 @@ fn matrix_proc_returns_real() {
 
 /// CP §6.3 / 6.5 — record field of procedure type — caller assigns and invokes through the field designator
 #[test]
-#[ignore = "KNOWN BUG: calling a procedure-typed *record field* (`d.f(7)`) tries to emit a direct call to a mangled name like `DispatcherDesc_f` instead of loading the field and doing an indirect call. The indirect-call path through a procedure-typed local variable works (M_ProcType_IndirectCall), so the bug is specific to call-through-field. File under deferred_fixes #25."]
 fn matrix_type_procedure_typed_field_in_record() {
     assert_eq!(
         run_function("Mod/Tests/Matrix/M_Type_ProcedureField_InRecord.cp", "Run"),
@@ -1312,7 +1305,6 @@ fn matrix_type_empty_record_compiles_and_allocs() {
 
 /// CP §6.4 — POINTER TO record whose field is itself a POINTER TO record — two levels of indirection from the outer pointer
 #[test]
-#[ignore = "KNOWN BUG (same family as #14): NEW(o.child) where o is a heap pointer and child is a record-field pointer trips IR codegen with `Instr::New: unknown record type opaque:new-ptr`."]
 fn matrix_type_pointer_to_pointer_field() {
     assert_eq!(
         run_function("Mod/Tests/Matrix/M_Type_Pointer_To_Pointer.cp", "Run"),
@@ -1443,7 +1435,6 @@ fn matrix_stmt_return_from_many_paths() {
 
 /// CP §6.3 / 8.5 — ANYPTR carrying various record-derived pointers can be discriminated with IS tests inside a single procedure
 #[test]
-#[ignore = "KNOWN BUG (#16 family): `IS A` against a record type whose TypeDesc has not been instantiated (here A is declared but never NEW'd) segfaults at runtime."]
 fn matrix_type_anyrec_pointer_param_dispatches_via_is() {
     assert_eq!(
         run_function("Mod/Tests/Matrix/M_Type_ANYREC_Param.cp", "Run"),
@@ -1514,7 +1505,6 @@ fn matrix_type_byte_primitive_arithmetic() {
 
 /// CP §8.5 / 9.6 — IS test inside a WITH arm — the narrowed local can be checked against a further-derived type
 #[test]
-#[ignore = "KNOWN BUG (#16 family / WITH variant): IS test inside a WITH arm segfaults — same TypeDesc-lookup issue but compounded by the WITH narrowing. Un-ignore when #16 is fixed."]
 fn matrix_stmt_is_test_inside_with_arm() {
     assert_eq!(
         run_function("Mod/Tests/Matrix/M_Stmt_IS_Inside_WITH.cp", "Run"),
@@ -1751,6 +1741,262 @@ fn matrix_expr_hex_high_bit_in_integer() {
         run_function("Mod/Tests/Matrix/M_Expr_HexBit_HighBit.cp", "Run"),
         2147483647,
         "matrix probe expr_hex_high_bit_in_integer (hex literal with the high INTEGER bit set; arithmetic still preserves the magnitude — §8.1 / 6.1) returned the wrong value",
+    );
+}
+
+/// CP §8.2.2 — the algebraic identity (a DIV b) * b + (a MOD b) = a must hold for every sign combination — pins floored-DIV against MOD sign in one probe
+#[test]
+fn matrix_expr_div_mod_algebraic_identity() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_DIV_MOD_Identity.cp", "Run"),
+        1111,
+        "matrix probe expr_div_mod_algebraic_identity (the algebraic identity (a DIV b) * b + (a MOD b) = a must hold for every sign combination — pins floored-DIV against MOD sign in one probe — §8.2.2) returned the wrong value",
+    );
+}
+
+/// CP §8.2.2 — MOD with a negative divisor yields a non-positive result (the divisor's sign); complements M_Expr_MOD_NonNegative which only covers positive divisors
+#[test]
+fn matrix_expr_mod_with_negative_divisor() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_MOD_NegativeDivisor.cp", "Run"),
+        11,
+        "matrix probe expr_mod_with_negative_divisor (MOD with a negative divisor yields a non-positive result (the divisor's sign); complements M_Expr_MOD_NonNegative which only covers positive divisors — §8.2.2) returned the wrong value",
+    );
+}
+
+/// CP §6.1 — LONGINT arithmetic at values that overflow i32 — surfaces any latent SHORT-induced narrowing along the IR path (companion to deferred-fix #12)
+#[test]
+fn matrix_expr_longint_value_overflows_i32() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_LONGINT_BigArithmetic.cp", "Run"),
+        1000000000000,
+        "matrix probe expr_longint_value_overflows_i32 (LONGINT arithmetic at values that overflow i32 — surfaces any latent SHORT-induced narrowing along the IR path (companion to deferred-fix #12) — §6.1) returned the wrong value",
+    );
+}
+
+/// CP §5 / 6.2 — CONST whose value is a folded mixed-arithmetic expression is consumed as an array dimension; LEN must reflect the folded result
+#[test]
+fn matrix_expr_constant_fold_used_as_array_size() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_Constant_Fold_InArraySize.cp", "Run"),
+        9,
+        "matrix probe expr_constant_fold_used_as_array_size (CONST whose value is a folded mixed-arithmetic expression is consumed as an array dimension; LEN must reflect the folded result — §5 / 6.2) returned the wrong value",
+    );
+}
+
+/// CP §8.2.5 — module-level CONST SET; IN-membership tests at runtime must see the same bits the constant-folder produced
+#[test]
+#[ignore = "KNOWN BUG #28: SET constant membership test produces wrong value (observed 101, expected differs). Either constant SET folding is buggy or `IN` on a constant LHS short-circuits incorrectly. File for investigation."]
+fn matrix_expr_set_constant_membership_tests() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_SET_Constant_Membership.cp", "Run"),
+        1111,
+        "matrix probe expr_set_constant_membership_tests (module-level CONST SET; IN-membership tests at runtime must see the same bits the constant-folder produced — §8.2.5) returned the wrong value",
+    );
+}
+
+/// CP §6.4 — POINTER TO ARRAY n OF T (fixed size) — NEW(p) without a dim argument allocates a fixed-size heap buffer; distinct lowering from PT-OpenArray
+#[test]
+#[ignore = "KNOWN BUG #29: NEW(p) where p is `POINTER TO ARRAY n OF T` (fixed-size array, not open) trips IR with `Instr::New: unknown record type [N x T]`. The NEW lowering expects a record-typed pointer target; fixed-array targets need their own allocator path."]
+fn matrix_type_pointer_to_fixed_array_new_no_dim() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Type_PointerTo_FixedArray.cp", "Run"),
+        77,
+        "matrix probe type_pointer_to_fixed_array_new_no_dim (POINTER TO ARRAY n OF T (fixed size) — NEW(p) without a dim argument allocates a fixed-size heap buffer; distinct lowering from PT-OpenArray — §6.4) returned the wrong value",
+    );
+}
+
+/// CP §6.3 / 6.4 — POINTER TO ARRAY n OF T as a record field; NEW(rec.field), index, read-back
+#[test]
+#[ignore = "KNOWN BUG (#29 family): same as M_Type_PointerTo_FixedArray, but the pointer-to-fixed-array lives as a record field. Both cases need NEW lowering to recognise the fixed-array target."]
+fn matrix_type_pointer_to_fixed_array_as_record_field() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Type_PointerTo_FixedArray_AsField.cp", "Run"),
+        55,
+        "matrix probe type_pointer_to_fixed_array_as_record_field (POINTER TO ARRAY n OF T as a record field; NEW(rec.field), index, read-back — §6.3 / 6.4) returned the wrong value",
+    );
+}
+
+/// CP §6.1 — scalar SHORTCHAR local — assign via SHORT(CHR(n)), read via ORD; pins the 8-bit-CHAR slot which has no other direct probe
+#[test]
+fn matrix_type_shortchar_local_round_trip() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Type_SHORTCHAR_RoundTrip.cp", "Run"),
+        88,
+        "matrix probe type_shortchar_local_round_trip (scalar SHORTCHAR local — assign via SHORT(CHR(n)), read via ORD; pins the 8-bit-CHAR slot which has no other direct probe — §6.1) returned the wrong value",
+    );
+}
+
+/// CP §10.1 / 8.2 — string literal passed directly to an IN ARRAY OF CHAR formal; LEN seen by the callee includes the trailing 0X terminator
+#[test]
+fn matrix_param_string_literal_passed_as_in_open_array_char() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Param_StringLiteral_To_OpenArrayCHAR.cp", "Run"),
+        6,
+        "matrix probe param_string_literal_passed_as_in_open_array_char (string literal passed directly to an IN ARRAY OF CHAR formal; LEN seen by the callee includes the trailing 0X terminator — §10.1 / 8.2) returned the wrong value",
+    );
+}
+
+/// CP §8.2.5 — `arr := "hi"` into an ARRAY 8 OF CHAR populates the characters and writes a NUL at the slot past the last character
+#[test]
+fn matrix_expr_string_assign_smaller_literal_zero_terminates() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_String_AssignSmallerLiteral.cp", "Run"),
+        111,
+        "matrix probe expr_string_assign_smaller_literal_zero_terminates (`arr := \"hi\"` into an ARRAY 8 OF CHAR populates the characters and writes a NUL at the slot past the last character — §8.2.5) returned the wrong value",
+    );
+}
+
+/// CP §10.2 — four-level inheritance chain A→B→C→D; each method calls SUPER^; D's result reflects exactly one super-hop per level, never skipping
+#[test]
+fn matrix_method_super_call_walks_one_level_at_a_time() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Method_SuperCall_ThreeLevels.cp", "Run"),
+        1111,
+        "matrix probe method_super_call_walks_one_level_at_a_time (four-level inheritance chain A→B→C→D; each method calls SUPER^; D's result reflects exactly one super-hop per level, never skipping — §10.2) returned the wrong value",
+    );
+}
+
+/// CP §10.2 / 6.3 — `bag.obj.Method()` where `obj` is a pointer field of a record — selector chain reaches dispatch on the pointed-to record
+#[test]
+fn matrix_method_dispatch_through_pointer_record_field() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Method_DispatchThrough_RecordField.cp", "Run"),
+        42,
+        "matrix probe method_dispatch_through_pointer_record_field (`bag.obj.Method()` where `obj` is a pointer field of a record — selector chain reaches dispatch on the pointed-to record — §10.2 / 6.3) returned the wrong value",
+    );
+}
+
+/// CP §10.2 / 6.3 — LIMITED record — NEW + method dispatch within the defining module; the LIMITED flavor is otherwise unexercised by the matrix
+#[test]
+fn matrix_method_limited_record_same_module_construction() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Method_LIMITED_Record.cp", "Run"),
+        99,
+        "matrix probe method_limited_record_same_module_construction (LIMITED record — NEW + method dispatch within the defining module; the LIMITED flavor is otherwise unexercised by the matrix — §10.2 / 6.3) returned the wrong value",
+    );
+}
+
+/// CP §10.2 / 6.4 — two pointers aliasing the same heap object — mutating method via one pointer must be visible through the other
+#[test]
+fn matrix_method_two_aliases_same_heap_object_see_mutation() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Method_TwoAliases_SameObject_SeeMutation.cp", "Run"),
+        22,
+        "matrix probe method_two_aliases_same_heap_object_see_mutation (two pointers aliasing the same heap object — mutating method via one pointer must be visible through the other — §10.2 / 6.4) returned the wrong value",
+    );
+}
+
+/// CP §7 / 11 — module-level VAR of fixed-array type defaults to all-zero — extends M_Module_VAR_DefaultZero (scalars/pointers) to arrays
+#[test]
+fn matrix_module_var_fixed_array_default_zero() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Module_VAR_FixedArray_DefaultZero.cp", "Run"),
+        0,
+        "matrix probe module_var_fixed_array_default_zero (module-level VAR of fixed-array type defaults to all-zero — extends M_Module_VAR_DefaultZero (scalars/pointers) to arrays — §7 / 11) returned the wrong value",
+    );
+}
+
+/// CP §7 / 11 — module-level VAR with an inline RECORD type — every field defaults to zero before any user code runs
+#[test]
+#[ignore = "KNOWN BUG #30: module-level VAR with an INLINE record type (`VAR r: RECORD a, b, c: INTEGER END;`) trips codegen with `non-equality pointer comparison Add` — the inline-record slot isn't being addressed correctly for field access. Real code uses named TYPE records instead."]
+fn matrix_module_var_inline_record_default_zero() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Module_VAR_Record_DefaultZero.cp", "Run"),
+        0,
+        "matrix probe module_var_inline_record_default_zero (module-level VAR with an inline RECORD type — every field defaults to zero before any user code runs — §7 / 11) returned the wrong value",
+    );
+}
+
+/// CP §9.7 — FOR i := 5 TO 3 DO ... — body must NOT execute; sum stays zero
+#[test]
+fn matrix_stmt_for_zero_iterations_when_end_less_than_start() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Stmt_FOR_ZeroIterations.cp", "Run"),
+        0,
+        "matrix probe stmt_for_zero_iterations_when_end_less_than_start (FOR i := 5 TO 3 DO ... — body must NOT execute; sum stays zero — §9.7) returned the wrong value",
+    );
+}
+
+/// CP §9.7 — FOR i := 0 TO 10 BY 3 iterates 0,3,6,9 (last <= end, not past it); pins that the loop stops correctly when step doesn't land on end
+#[test]
+fn matrix_stmt_for_with_by_step_that_does_not_divide_range() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Stmt_FOR_NonDivisor_BY_Step.cp", "Run"),
+        184,
+        "matrix probe stmt_for_with_by_step_that_does_not_divide_range (FOR i := 0 TO 10 BY 3 iterates 0,3,6,9 (last <= end, not past it); pins that the loop stops correctly when step doesn't land on end — §9.7) returned the wrong value",
+    );
+}
+
+/// CP §9.6 — WITH narrowing inside a FOR over a mixed array of base pointers — each iteration must re-evaluate the type test; catches codegen that lifts the narrowing out of the loop
+#[test]
+fn matrix_stmt_with_narrowing_per_iteration_inside_for() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Stmt_WITH_Rebind_PerIteration.cp", "Run"),
+        1111,
+        "matrix probe stmt_with_narrowing_per_iteration_inside_for (WITH narrowing inside a FOR over a mixed array of base pointers — each iteration must re-evaluate the type test; catches codegen that lifts the narrowing out of the loop — §9.6) returned the wrong value",
+    );
+}
+
+/// CP §8.4 — `b(Sub).extra := 99` — type guard appears as the LHS of an assignment; complements M_AnyPtr_TypeGuard which only reads through the guard
+#[test]
+#[ignore = "KNOWN BUG #31: sema rejects a narrowed designator on the LHS of an assignment (`p(Sub).field := value`) with `assignment target is not assignable`. The type guard should yield an l-value that subsequent selectors can address. Workaround: assign via an intermediate typed variable."]
+fn matrix_expr_type_guard_as_lhs_designator() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Expr_TypeGuard_AsLHS_Designator.cp", "Run"),
+        99,
+        "matrix probe expr_type_guard_as_lhs_designator (`b(Sub).extra := 99` — type guard appears as the LHS of an assignment; complements M_AnyPtr_TypeGuard which only reads through the guard — §8.4) returned the wrong value",
+    );
+}
+
+/// CP §10.2 — base method `Wrap` calls `b.Inner()` internally; when invoked through a base pointer to a Sub instance, the inner call must reach Sub.Inner via vtable (virtual dispatch from inside a method body)
+#[test]
+fn matrix_method_self_call_in_base_body_dispatches_to_sub_override() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Method_Calls_Self_ByName_DispatchesVirtual.cp", "Run"),
+        70,
+        "matrix probe method_self_call_in_base_body_dispatches_to_sub_override (base method `Wrap` calls `b.Inner()` internally; when invoked through a base pointer to a Sub instance, the inner call must reach Sub.Inner via vtable (virtual dispatch from inside a method body) — §10.2) returned the wrong value",
+    );
+}
+
+/// CP §10.2 / 8.4 — method declared to return ANYPTR; caller narrows the result via type-guard and reads a field on the narrowed pointer
+#[test]
+fn matrix_method_returns_anyptr_caller_narrows() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Method_Returns_AnyPtr.cp", "Run"),
+        77,
+        "matrix probe method_returns_anyptr_caller_narrows (method declared to return ANYPTR; caller narrows the result via type-guard and reads a field on the narrowed pointer — §10.2 / 8.4) returned the wrong value",
+    );
+}
+
+/// CP §12 — SYSTEM.PUT writes an INTEGER at byte-offset 4 of a BYTE buffer; SYSTEM.GET reads it back — the BlackBox `Files.ReadInt` idiom in miniature
+#[test]
+fn matrix_system_get_put_round_trip_at_byte_offset() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_SYSTEM_GET_AcrossByteOffset.cp", "Run"),
+        12345,
+        "matrix probe system_get_put_round_trip_at_byte_offset (SYSTEM.PUT writes an INTEGER at byte-offset 4 of a BYTE buffer; SYSTEM.GET reads it back — the BlackBox `Files.ReadInt` idiom in miniature — §12) returned the wrong value",
+    );
+}
+
+/// CP §12 — SYSTEM.MOVE(srcAdr, dstAdr, n) copies n bytes between two byte arrays — BlackBox idiom for buffer-to-buffer blits
+#[test]
+#[ignore = "KNOWN BUG #32: SYSTEM.MOVE doesn't copy bytes between arrays (dst stays zero — observed sum=0 instead of 10). Either the intrinsic is wired to a no-op or the address arguments are being misread. Investigate the SYSTEM.MOVE lowering."]
+fn matrix_system_move_copies_bytes_between_arrays() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_SYSTEM_MOVE_BetweenArrays.cp", "Run"),
+        10,
+        "matrix probe system_move_copies_bytes_between_arrays (SYSTEM.MOVE(srcAdr, dstAdr, n) copies n bytes between two byte arrays — BlackBox idiom for buffer-to-buffer blits — §12) returned the wrong value",
+    );
+}
+
+/// CP §10.3 — NEW(p, 0) allocates a zero-length open array; LEN(p^) must return 0 (not trap, not allocate a 1-element fallback)
+#[test]
+fn matrix_builtin_len_on_zero_length_open_array() {
+    assert_eq!(
+        run_function("Mod/Tests/Matrix/M_Builtin_LEN_OpenArray_Empty.cp", "Run"),
+        0,
+        "matrix probe builtin_len_on_zero_length_open_array (NEW(p, 0) allocates a zero-length open array; LEN(p^) must return 0 (not trap, not allocate a 1-element fallback) — §10.3) returned the wrong value",
     );
 }
 

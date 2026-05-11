@@ -392,15 +392,7 @@ END M_Param_IN_Record.
     END Run;
 END M_Method_On_RecordField.
 "#,
-        ignored: Some(
-            "KNOWN BUG: NEW(record_field_pointer) trips IR codegen with \
-             `Instr::New: unknown record type opaque:new-ptr`. The IR layer \
-             can't resolve the destination's record type when the NEW target \
-             is a record field's pointer (vs. a plain local pointer). \
-             Surfaced by the matrix on first run — file under deferred_fixes \
-             and un-ignore once IR `lower_new` learns to chase the field \
-             type.",
-        ),
+        ignored: None,
     },
 
     // ─── Procedure-typed value (indirect call) ──────────────────────
@@ -594,15 +586,7 @@ END M_Param_VAR_Pointer.
     END Run;
 END M_Param_IN_Pointer_Deref.
 "#,
-        ignored: Some(
-            "KNOWN BUG: `IN p: PointerAlias` parameter crashes with \
-             STATUS_ACCESS_VIOLATION when the body dereferences `p`. \
-             Likely the param-lowering treats the pointer alias as a \
-             record value and skips the necessary heap-pointer Load \
-             (similar shape to the method-dispatch receiver fix but \
-             on the parameter-access path). File under deferred_fixes \
-             #17 and un-ignore once IN-pointer field access is fixed.",
-        ),
+        ignored: None,
     },
 
     Probe {
@@ -662,15 +646,7 @@ END M_AnyPtr_TypeGuard.
     END Run;
 END M_AnyPtr_IS_Test.
 "#,
-        ignored: Some(
-            "KNOWN BUG: `IS` test on ANYPTR against a record type whose \
-             TypeDesc has not been instantiated elsewhere in the module \
-             segfaults at runtime (STATUS_ACCESS_VIOLATION). Likely the \
-             type-test fast path dereferences a NIL TypeDesc when the \
-             Bag side of the test has never been registered. File under \
-             deferred_fixes #16 and un-ignore once the lookup hardens \
-             the NIL-TypeDesc case.",
-        ),
+        ignored: None,
     },
 
     Probe {
@@ -905,12 +881,7 @@ END M_Expr_SET_Operators.
     END Run;
 END M_Expr_Pointer_IS_Test.
 "#,
-        ignored: Some(
-            "KNOWN BUG (same family as M_AnyPtr_IS_Test): IS test \
-             against a record type with no instantiated TypeDesc \
-             (Other is declared but never NEW'd) crashes with \
-             STATUS_ACCESS_VIOLATION. See deferred_fixes #16.",
-        ),
+        ignored: None,
     },
 
     Probe {
@@ -2307,16 +2278,7 @@ END M_Stmt_Empty_If_Arm.
     END Run;
 END M_Method_On_Function_Result.
 "#,
-        ignored: Some(
-            "KNOWN BUG: method dispatch on a procedure-call result \
-             (`Make(99).Get()`) returns a wild value (uninitialised memory \
-             read) instead of 99. The receiver-lowering refactor for plain \
-             record method dispatch worked off `designator_addr`, but a \
-             call-as-prefix produces a Temp IrValue rather than a \
-             designator — so the dispatch path is reading the wrong slot. \
-             File under deferred_fixes #22 and un-ignore once \
-             call-result-as-receiver is wired up.",
-        ),
+        ignored: None,
     },
 
     Probe {
@@ -2344,13 +2306,7 @@ END M_Method_On_Function_Result.
     END Run;
 END M_Method_On_ArrayElement.
 "#,
-        ignored: Some(
-            "KNOWN BUG (same family as #14): NEW(arr[i]) where arr is an \
-             ARRAY OF Pointer trips IR codegen with `Instr::New: unknown \
-             record type [N x named:Item]`. The destination-type resolution \
-             doesn't walk past the index-GEP to find the pointer's referent \
-             record. See deferred_fixes #14.",
-        ),
+        ignored: None,
     },
 
     Probe {
@@ -3492,14 +3448,7 @@ END M_Proc_Returns_REAL.
     END Run;
 END M_Type_ProcedureField_InRecord.
 "#,
-        ignored: Some(
-            "KNOWN BUG: calling a procedure-typed *record field* (`d.f(7)`) \
-             tries to emit a direct call to a mangled name like \
-             `DispatcherDesc_f` instead of loading the field and doing an \
-             indirect call. The indirect-call path through a procedure-typed \
-             local variable works (M_ProcType_IndirectCall), so the bug is \
-             specific to call-through-field. File under deferred_fixes #25.",
-        ),
+        ignored: None,
     },
 
     Probe {
@@ -3549,11 +3498,7 @@ END M_Type_EmptyRecord.
     END Run;
 END M_Type_Pointer_To_Pointer.
 "#,
-        ignored: Some(
-            "KNOWN BUG (same family as #14): NEW(o.child) where o is a heap \
-             pointer and child is a record-field pointer trips IR codegen \
-             with `Instr::New: unknown record type opaque:new-ptr`.",
-        ),
+        ignored: None,
     },
 
     Probe {
@@ -3859,11 +3804,7 @@ END M_Stmt_RETURN_Many_Paths.
     END Run;
 END M_Type_ANYREC_Param.
 "#,
-        ignored: Some(
-            "KNOWN BUG (#16 family): `IS A` against a record type whose \
-             TypeDesc has not been instantiated (here A is declared but \
-             never NEW'd) segfaults at runtime.",
-        ),
+        ignored: None,
     },
 
     Probe {
@@ -4051,11 +3992,7 @@ END M_Type_BYTE_Primitive.
     END Run;
 END M_Stmt_IS_Inside_WITH.
 "#,
-        ignored: Some(
-            "KNOWN BUG (#16 family / WITH variant): IS test inside a WITH arm \
-             segfaults — same TypeDesc-lookup issue but compounded by the \
-             WITH narrowing. Un-ignore when #16 is fixed.",
-        ),
+        ignored: None,
     },
 
     Probe {
@@ -4662,6 +4599,681 @@ END M_Method_OnExtensible_NoOverride.
         RETURN n
     END Run;
 END M_Expr_HexBit_HighBit.
+"#,
+        ignored: None,
+    },
+
+
+    // ─── Cycle 6: arithmetic / OO depth / SYSTEM / control-flow gaps ──
+
+    Probe {
+        module_name: "M_Expr_DIV_MOD_Identity",
+        test_name: "expr_div_mod_algebraic_identity",
+        spec_section: "8.2.2",
+        description: "the algebraic identity (a DIV b) * b + (a MOD b) = a must hold for every \
+                      sign combination — pins floored-DIV against MOD sign in one probe",
+        expected_value: 1111,
+        cp_source: r#"MODULE M_Expr_DIV_MOD_Identity;
+    PROCEDURE Holds (a, b: INTEGER): BOOLEAN;
+    BEGIN RETURN (a DIV b) * b + (a MOD b) = a END Holds;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR score: INTEGER;
+    BEGIN
+        score := 0;
+        IF Holds( 7,  3) THEN score := score + 1    END;
+        IF Holds(-7,  3) THEN score := score + 10   END;
+        IF Holds( 7, -3) THEN score := score + 100  END;
+        IF Holds(-7, -3) THEN score := score + 1000 END;
+        RETURN score                                   (* 1111 *)
+    END Run;
+END M_Expr_DIV_MOD_Identity.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Expr_MOD_NegativeDivisor",
+        test_name: "expr_mod_with_negative_divisor",
+        spec_section: "8.2.2",
+        description: "MOD with a negative divisor yields a non-positive result (the divisor's \
+                      sign); complements M_Expr_MOD_NonNegative which only covers positive divisors",
+        expected_value: 11,
+        cp_source: r#"MODULE M_Expr_MOD_NegativeDivisor;
+    PROCEDURE Run* (): INTEGER;
+        VAR a, b, score: INTEGER;
+    BEGIN
+        a :=    7  MOD (-3);     (* CP: -2  (7 = -3*-3 + -2 = 9 - 2) *)
+        b := (-7) MOD (-3);      (* CP: -1  (-7 = -3*3 + -1 = -6 - 1) *)
+        score := 0;
+        IF a = -2 THEN score := score + 1  END;
+        IF b = -1 THEN score := score + 10 END;
+        RETURN score             (* 11 *)
+    END Run;
+END M_Expr_MOD_NegativeDivisor.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Expr_LONGINT_BigArithmetic",
+        test_name: "expr_longint_value_overflows_i32",
+        spec_section: "6.1",
+        description: "LONGINT arithmetic at values that overflow i32 — surfaces any latent \
+                      SHORT-induced narrowing along the IR path (companion to deferred-fix #12)",
+        expected_value: 1000000000000,
+        cp_source: r#"MODULE M_Expr_LONGINT_BigArithmetic;
+    PROCEDURE Run* (): LONGINT;
+        VAR x: LONGINT;
+    BEGIN
+        x := 1000000;
+        RETURN x * x                                  (* 10^12; overflows i32 *)
+    END Run;
+END M_Expr_LONGINT_BigArithmetic.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Expr_Constant_Fold_InArraySize",
+        test_name: "expr_constant_fold_used_as_array_size",
+        spec_section: "5 / 6.2",
+        description: "CONST whose value is a folded mixed-arithmetic expression is consumed \
+                      as an array dimension; LEN must reflect the folded result",
+        expected_value: 9,
+        cp_source: r#"MODULE M_Expr_Constant_Fold_InArraySize;
+    CONST k = 2*3 + 4 - 1;                            (* folds to 9 *)
+
+    PROCEDURE Run* (): INTEGER;
+        VAR a: ARRAY k OF INTEGER;
+    BEGIN
+        RETURN LEN(a)
+    END Run;
+END M_Expr_Constant_Fold_InArraySize.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Expr_SET_Constant_Membership",
+        test_name: "expr_set_constant_membership_tests",
+        spec_section: "8.2.5",
+        description: "module-level CONST SET; IN-membership tests at runtime must see the same \
+                      bits the constant-folder produced",
+        expected_value: 1111,
+        cp_source: r#"MODULE M_Expr_SET_Constant_Membership;
+    CONST evens = {0, 2, 4, 6, 8};
+
+    PROCEDURE Run* (): INTEGER;
+        VAR score: INTEGER;
+    BEGIN
+        score := 0;
+        IF ~(3 IN evens) THEN score := score + 1    END;
+        IF   4 IN evens  THEN score := score + 10   END;
+        IF ~(5 IN evens) THEN score := score + 100  END;
+        IF   8 IN evens  THEN score := score + 1000 END;
+        RETURN score                                  (* 1111 *)
+    END Run;
+END M_Expr_SET_Constant_Membership.
+"#,
+        ignored: Some(
+            "KNOWN BUG #28: SET constant membership test produces wrong \
+             value (observed 101, expected differs). Either constant SET \
+             folding is buggy or `IN` on a constant LHS short-circuits \
+             incorrectly. File for investigation.",
+        ),
+    },
+
+    Probe {
+        module_name: "M_Type_PointerTo_FixedArray",
+        test_name: "type_pointer_to_fixed_array_new_no_dim",
+        spec_section: "6.4",
+        description: "POINTER TO ARRAY n OF T (fixed size) — NEW(p) without a dim argument \
+                      allocates a fixed-size heap buffer; distinct lowering from PT-OpenArray",
+        expected_value: 77,
+        cp_source: r#"MODULE M_Type_PointerTo_FixedArray;
+    TYPE Buf = POINTER TO ARRAY 8 OF INTEGER;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR p: Buf;
+    BEGIN
+        NEW(p);
+        p[3] := 77;
+        RETURN p[3]
+    END Run;
+END M_Type_PointerTo_FixedArray.
+"#,
+        ignored: Some(
+            "KNOWN BUG #29: NEW(p) where p is `POINTER TO ARRAY n OF T` \
+             (fixed-size array, not open) trips IR with \
+             `Instr::New: unknown record type [N x T]`. The NEW lowering \
+             expects a record-typed pointer target; fixed-array targets \
+             need their own allocator path.",
+        ),
+    },
+
+    Probe {
+        module_name: "M_Type_PointerTo_FixedArray_AsField",
+        test_name: "type_pointer_to_fixed_array_as_record_field",
+        spec_section: "6.3 / 6.4",
+        description: "POINTER TO ARRAY n OF T as a record field; NEW(rec.field), index, read-back",
+        expected_value: 55,
+        cp_source: r#"MODULE M_Type_PointerTo_FixedArray_AsField;
+    TYPE
+        Buf  = POINTER TO ARRAY 4 OF INTEGER;
+        Wrap = RECORD b: Buf END;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR w: Wrap;
+    BEGIN
+        NEW(w.b);
+        w.b[2] := 55;
+        RETURN w.b[2]
+    END Run;
+END M_Type_PointerTo_FixedArray_AsField.
+"#,
+        ignored: Some(
+            "KNOWN BUG (#29 family): same as M_Type_PointerTo_FixedArray, \
+             but the pointer-to-fixed-array lives as a record field. Both \
+             cases need NEW lowering to recognise the fixed-array target.",
+        ),
+    },
+
+    Probe {
+        module_name: "M_Type_SHORTCHAR_RoundTrip",
+        test_name: "type_shortchar_local_round_trip",
+        spec_section: "6.1",
+        description: "scalar SHORTCHAR local — assign via SHORT(CHR(n)), read via ORD; pins \
+                      the 8-bit-CHAR slot which has no other direct probe",
+        expected_value: 88,
+        cp_source: r#"MODULE M_Type_SHORTCHAR_RoundTrip;
+    PROCEDURE Run* (): INTEGER;
+        VAR c: SHORTCHAR;
+    BEGIN
+        c := SHORT(CHR(88));          (* CHR returns CHAR; SHORT narrows to SHORTCHAR *)
+        RETURN ORD(c)                 (* 88 *)
+    END Run;
+END M_Type_SHORTCHAR_RoundTrip.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Param_StringLiteral_To_OpenArrayCHAR",
+        test_name: "param_string_literal_passed_as_in_open_array_char",
+        spec_section: "10.1 / 8.2",
+        description: "string literal passed directly to an IN ARRAY OF CHAR formal; LEN seen \
+                      by the callee includes the trailing 0X terminator",
+        expected_value: 6,
+        cp_source: r#"MODULE M_Param_StringLiteral_To_OpenArrayCHAR;
+    PROCEDURE CountChars (IN s: ARRAY OF CHAR): INTEGER;
+    BEGIN RETURN LEN(s) END CountChars;
+
+    PROCEDURE Run* (): INTEGER;
+    BEGIN
+        RETURN CountChars("hello")            (* 5 chars + trailing 0X = 6 *)
+    END Run;
+END M_Param_StringLiteral_To_OpenArrayCHAR.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Expr_String_AssignSmallerLiteral",
+        test_name: "expr_string_assign_smaller_literal_zero_terminates",
+        spec_section: "8.2.5",
+        description: "`arr := \"hi\"` into an ARRAY 8 OF CHAR populates the characters and writes \
+                      a NUL at the slot past the last character",
+        expected_value: 111,
+        cp_source: r#"MODULE M_Expr_String_AssignSmallerLiteral;
+    PROCEDURE Run* (): INTEGER;
+        VAR arr: ARRAY 8 OF CHAR; score: INTEGER;
+    BEGIN
+        arr := "hi";
+        score := 0;
+        IF arr[0] = "h" THEN score := score + 1   END;
+        IF arr[1] = "i" THEN score := score + 10  END;
+        IF arr[2] = 0X  THEN score := score + 100 END;
+        RETURN score                              (* 111 *)
+    END Run;
+END M_Expr_String_AssignSmallerLiteral.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Method_SuperCall_ThreeLevels",
+        test_name: "method_super_call_walks_one_level_at_a_time",
+        spec_section: "10.2",
+        description: "four-level inheritance chain A→B→C→D; each method calls SUPER^; D's \
+                      result reflects exactly one super-hop per level, never skipping",
+        expected_value: 1111,
+        cp_source: r#"MODULE M_Method_SuperCall_ThreeLevels;
+    TYPE
+        ADesc* = EXTENSIBLE RECORD END;
+        A*     = POINTER TO ADesc;
+        BDesc* = EXTENSIBLE RECORD (ADesc) END;
+        B*     = POINTER TO BDesc;
+        CDesc* = EXTENSIBLE RECORD (BDesc) END;
+        C*     = POINTER TO CDesc;
+        DDesc* = RECORD (CDesc) END;
+        D*     = POINTER TO DDesc;
+
+    PROCEDURE (a: A) Tag* (): INTEGER, NEW, EXTENSIBLE;
+    BEGIN RETURN 1 END Tag;
+
+    PROCEDURE (b: B) Tag* (): INTEGER, EXTENSIBLE;
+    BEGIN RETURN b.Tag^() + 10 END Tag;
+
+    PROCEDURE (c: C) Tag* (): INTEGER, EXTENSIBLE;
+    BEGIN RETURN c.Tag^() + 100 END Tag;
+
+    PROCEDURE (d: D) Tag* (): INTEGER;
+    BEGIN RETURN d.Tag^() + 1000 END Tag;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR d: D;
+    BEGIN
+        NEW(d);
+        RETURN d.Tag()                            (* 1 + 10 + 100 + 1000 = 1111 *)
+    END Run;
+END M_Method_SuperCall_ThreeLevels.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Method_DispatchThrough_RecordField",
+        test_name: "method_dispatch_through_pointer_record_field",
+        spec_section: "10.2 / 6.3",
+        description: "`bag.obj.Method()` where `obj` is a pointer field of a record — selector \
+                      chain reaches dispatch on the pointed-to record",
+        expected_value: 42,
+        cp_source: r#"MODULE M_Method_DispatchThrough_RecordField;
+    TYPE
+        ItemDesc = RECORD value: INTEGER END;
+        Item     = POINTER TO ItemDesc;
+        Bag      = RECORD obj: Item END;
+
+    PROCEDURE (i: Item) Set* (v: INTEGER), NEW;
+    BEGIN i.value := v END Set;
+
+    PROCEDURE (i: Item) Get* (): INTEGER, NEW;
+    BEGIN RETURN i.value END Get;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR bag: Bag;
+    BEGIN
+        NEW(bag.obj);
+        bag.obj.Set(42);
+        RETURN bag.obj.Get()
+    END Run;
+END M_Method_DispatchThrough_RecordField.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Method_LIMITED_Record",
+        test_name: "method_limited_record_same_module_construction",
+        spec_section: "10.2 / 6.3",
+        description: "LIMITED record — NEW + method dispatch within the defining module; the \
+                      LIMITED flavor is otherwise unexercised by the matrix",
+        expected_value: 99,
+        cp_source: r#"MODULE M_Method_LIMITED_Record;
+    TYPE
+        BoxDesc* = LIMITED RECORD value*: INTEGER END;
+        Box*     = POINTER TO BoxDesc;
+
+    PROCEDURE (b: Box) Set* (v: INTEGER), NEW;
+    BEGIN b.value := v END Set;
+
+    PROCEDURE Make* (v: INTEGER): Box;
+        VAR b: Box;
+    BEGIN
+        NEW(b); b.Set(v); RETURN b
+    END Make;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR b: Box;
+    BEGIN
+        b := Make(99);
+        RETURN b.value
+    END Run;
+END M_Method_LIMITED_Record.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Method_TwoAliases_SameObject_SeeMutation",
+        test_name: "method_two_aliases_same_heap_object_see_mutation",
+        spec_section: "10.2 / 6.4",
+        description: "two pointers aliasing the same heap object — mutating method via one \
+                      pointer must be visible through the other",
+        expected_value: 22,
+        cp_source: r#"MODULE M_Method_TwoAliases_SameObject_SeeMutation;
+    TYPE
+        BoxDesc = RECORD value: INTEGER END;
+        Box     = POINTER TO BoxDesc;
+
+    PROCEDURE (b: Box) Bump* (n: INTEGER), NEW;
+    BEGIN b.value := b.value + n END Bump;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR p, q: Box;
+    BEGIN
+        NEW(p);
+        p.value := 10;
+        q := p;                       (* alias *)
+        p.Bump(5);                    (* mutate via p *)
+        q.Bump(7);                    (* mutate via q — same object *)
+        RETURN q.value                (* 10 + 5 + 7 = 22 *)
+    END Run;
+END M_Method_TwoAliases_SameObject_SeeMutation.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Module_VAR_FixedArray_DefaultZero",
+        test_name: "module_var_fixed_array_default_zero",
+        spec_section: "7 / 11",
+        description: "module-level VAR of fixed-array type defaults to all-zero — extends \
+                      M_Module_VAR_DefaultZero (scalars/pointers) to arrays",
+        expected_value: 0,
+        cp_source: r#"MODULE M_Module_VAR_FixedArray_DefaultZero;
+    VAR arr: ARRAY 4 OF INTEGER;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR i, sum: INTEGER;
+    BEGIN
+        sum := 0;
+        FOR i := 0 TO LEN(arr) - 1 DO sum := sum + arr[i] END;
+        RETURN sum
+    END Run;
+END M_Module_VAR_FixedArray_DefaultZero.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Module_VAR_Record_DefaultZero",
+        test_name: "module_var_inline_record_default_zero",
+        spec_section: "7 / 11",
+        description: "module-level VAR with an inline RECORD type — every field defaults to \
+                      zero before any user code runs",
+        expected_value: 0,
+        cp_source: r#"MODULE M_Module_VAR_Record_DefaultZero;
+    VAR r: RECORD a, b, c: INTEGER END;
+
+    PROCEDURE Run* (): INTEGER;
+    BEGIN
+        RETURN r.a + r.b + r.c
+    END Run;
+END M_Module_VAR_Record_DefaultZero.
+"#,
+        ignored: Some(
+            "KNOWN BUG #30: module-level VAR with an INLINE record type \
+             (`VAR r: RECORD a, b, c: INTEGER END;`) trips codegen with \
+             `non-equality pointer comparison Add` — the inline-record \
+             slot isn't being addressed correctly for field access. \
+             Real code uses named TYPE records instead.",
+        ),
+    },
+
+    Probe {
+        module_name: "M_Stmt_FOR_ZeroIterations",
+        test_name: "stmt_for_zero_iterations_when_end_less_than_start",
+        spec_section: "9.7",
+        description: "FOR i := 5 TO 3 DO ... — body must NOT execute; sum stays zero",
+        expected_value: 0,
+        cp_source: r#"MODULE M_Stmt_FOR_ZeroIterations;
+    PROCEDURE Run* (): INTEGER;
+        VAR i, sum: INTEGER;
+    BEGIN
+        sum := 0;
+        FOR i := 5 TO 3 DO sum := sum + 999 END;
+        RETURN sum
+    END Run;
+END M_Stmt_FOR_ZeroIterations.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Stmt_FOR_NonDivisor_BY_Step",
+        test_name: "stmt_for_with_by_step_that_does_not_divide_range",
+        spec_section: "9.7",
+        description: "FOR i := 0 TO 10 BY 3 iterates 0,3,6,9 (last <= end, not past it); pins \
+                      that the loop stops correctly when step doesn't land on end",
+        expected_value: 184,
+        cp_source: r#"MODULE M_Stmt_FOR_NonDivisor_BY_Step;
+    PROCEDURE Run* (): INTEGER;
+        VAR i, sum, count: INTEGER;
+    BEGIN
+        sum := 0; count := 0;
+        FOR i := 0 TO 10 BY 3 DO sum := sum + i; INC(count) END;
+        (* iterates i = 0, 3, 6, 9.  sum = 18, count = 4 *)
+        RETURN sum * 10 + count                       (* 184 *)
+    END Run;
+END M_Stmt_FOR_NonDivisor_BY_Step.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Stmt_WITH_Rebind_PerIteration",
+        test_name: "stmt_with_narrowing_per_iteration_inside_for",
+        spec_section: "9.6",
+        description: "WITH narrowing inside a FOR over a mixed array of base pointers — each \
+                      iteration must re-evaluate the type test; catches codegen that lifts the \
+                      narrowing out of the loop",
+        expected_value: 1111,
+        cp_source: r#"MODULE M_Stmt_WITH_Rebind_PerIteration;
+    TYPE
+        BaseDesc = EXTENSIBLE RECORD END;
+        Base     = POINTER TO BaseDesc;
+        ADesc    = RECORD (BaseDesc) av: INTEGER END;
+        A        = POINTER TO ADesc;
+        BDesc    = RECORD (BaseDesc) bv: INTEGER END;
+        B        = POINTER TO BDesc;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR arr: ARRAY 4 OF Base; pa: A; pb: B; p: Base; i, sum: INTEGER;
+    BEGIN
+        NEW(pa); pa.av :=    1;  arr[0] := pa;
+        NEW(pb); pb.bv :=   10;  arr[1] := pb;
+        NEW(pa); pa.av :=  100;  arr[2] := pa;
+        NEW(pb); pb.bv := 1000;  arr[3] := pb;
+
+        sum := 0;
+        FOR i := 0 TO 3 DO
+            p := arr[i];
+            WITH p: A DO sum := sum + p.av
+              |  p: B DO sum := sum + p.bv
+            END
+        END;
+        RETURN sum                                    (* 1 + 10 + 100 + 1000 = 1111 *)
+    END Run;
+END M_Stmt_WITH_Rebind_PerIteration.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Expr_TypeGuard_AsLHS_Designator",
+        test_name: "expr_type_guard_as_lhs_designator",
+        spec_section: "8.4",
+        description: "`b(Sub).extra := 99` — type guard appears as the LHS of an assignment; \
+                      complements M_AnyPtr_TypeGuard which only reads through the guard",
+        expected_value: 99,
+        cp_source: r#"MODULE M_Expr_TypeGuard_AsLHS_Designator;
+    TYPE
+        BaseDesc = EXTENSIBLE RECORD END;
+        Base     = POINTER TO BaseDesc;
+        SubDesc  = RECORD (BaseDesc) extra: INTEGER END;
+        Sub      = POINTER TO SubDesc;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR s: Sub; b: Base;
+    BEGIN
+        NEW(s);
+        b := s;
+        b(Sub).extra := 99;          (* type guard on the LHS *)
+        RETURN b(Sub).extra
+    END Run;
+END M_Expr_TypeGuard_AsLHS_Designator.
+"#,
+        ignored: Some(
+            "KNOWN BUG #31: sema rejects a narrowed designator on the LHS \
+             of an assignment (`p(Sub).field := value`) with \
+             `assignment target is not assignable`. The type guard should \
+             yield an l-value that subsequent selectors can address. \
+             Workaround: assign via an intermediate typed variable.",
+        ),
+    },
+
+    Probe {
+        module_name: "M_Method_Calls_Self_ByName_DispatchesVirtual",
+        test_name: "method_self_call_in_base_body_dispatches_to_sub_override",
+        spec_section: "10.2",
+        description: "base method `Wrap` calls `b.Inner()` internally; when invoked through a \
+                      base pointer to a Sub instance, the inner call must reach Sub.Inner via \
+                      vtable (virtual dispatch from inside a method body)",
+        expected_value: 70,
+        cp_source: r#"MODULE M_Method_Calls_Self_ByName_DispatchesVirtual;
+    TYPE
+        BaseDesc = EXTENSIBLE RECORD END;
+        Base     = POINTER TO BaseDesc;
+        SubDesc  = RECORD (BaseDesc) END;
+        Sub      = POINTER TO SubDesc;
+
+    PROCEDURE (b: Base) Inner* (): INTEGER, NEW, EXTENSIBLE;
+    BEGIN RETURN 1 END Inner;
+
+    PROCEDURE (b: Base) Wrap* (): INTEGER, NEW;
+    BEGIN RETURN b.Inner() * 10 END Wrap;
+
+    PROCEDURE (s: Sub) Inner* (): INTEGER;
+    BEGIN RETURN 7 END Inner;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR s: Sub; b: Base;
+    BEGIN
+        NEW(s);
+        b := s;
+        RETURN b.Wrap()                               (* Wrap calls b.Inner(); virtual → Sub.Inner = 7; * 10 = 70 *)
+    END Run;
+END M_Method_Calls_Self_ByName_DispatchesVirtual.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_Method_Returns_AnyPtr",
+        test_name: "method_returns_anyptr_caller_narrows",
+        spec_section: "10.2 / 8.4",
+        description: "method declared to return ANYPTR; caller narrows the result via type-guard \
+                      and reads a field on the narrowed pointer",
+        expected_value: 77,
+        cp_source: r#"MODULE M_Method_Returns_AnyPtr;
+    TYPE
+        BoxDesc    = RECORD value: INTEGER END;
+        Box        = POINTER TO BoxDesc;
+        HolderDesc = RECORD END;
+        Holder     = POINTER TO HolderDesc;
+
+    PROCEDURE (h: Holder) Make* (): ANYPTR, NEW;
+        VAR b: Box;
+    BEGIN
+        NEW(b); b.value := 77; RETURN b
+    END Make;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR h: Holder; ap: ANYPTR;
+    BEGIN
+        NEW(h);
+        ap := h.Make();
+        RETURN ap(Box).value
+    END Run;
+END M_Method_Returns_AnyPtr.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_SYSTEM_GET_AcrossByteOffset",
+        test_name: "system_get_put_round_trip_at_byte_offset",
+        spec_section: "12",
+        description: "SYSTEM.PUT writes an INTEGER at byte-offset 4 of a BYTE buffer; SYSTEM.GET \
+                      reads it back — the BlackBox `Files.ReadInt` idiom in miniature",
+        expected_value: 12345,
+        cp_source: r#"MODULE M_SYSTEM_GET_AcrossByteOffset;
+    IMPORT SYSTEM;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR arr: ARRAY 16 OF BYTE; n, r: INTEGER;
+    BEGIN
+        n := 12345;
+        SYSTEM.PUT(SYSTEM.ADR(arr[4]), n);
+        SYSTEM.GET(SYSTEM.ADR(arr[4]), r);
+        RETURN r                                      (* 12345 *)
+    END Run;
+END M_SYSTEM_GET_AcrossByteOffset.
+"#,
+        ignored: None,
+    },
+
+    Probe {
+        module_name: "M_SYSTEM_MOVE_BetweenArrays",
+        test_name: "system_move_copies_bytes_between_arrays",
+        spec_section: "12",
+        description: "SYSTEM.MOVE(srcAdr, dstAdr, n) copies n bytes between two byte arrays — \
+                      BlackBox idiom for buffer-to-buffer blits",
+        expected_value: 10,
+        cp_source: r#"MODULE M_SYSTEM_MOVE_BetweenArrays;
+    IMPORT SYSTEM;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR src, dst: ARRAY 4 OF BYTE; i, sum: INTEGER;
+    BEGIN
+        src[0] := SHORT(SHORT(SHORT(1)));
+        src[1] := SHORT(SHORT(SHORT(2)));
+        src[2] := SHORT(SHORT(SHORT(3)));
+        src[3] := SHORT(SHORT(SHORT(4)));
+        SYSTEM.MOVE(SYSTEM.ADR(src[0]), SYSTEM.ADR(dst[0]), 4);
+        sum := 0;
+        FOR i := 0 TO 3 DO sum := sum + dst[i] END;
+        RETURN sum                                    (* 1+2+3+4 = 10 *)
+    END Run;
+END M_SYSTEM_MOVE_BetweenArrays.
+"#,
+        ignored: Some(
+            "KNOWN BUG #32: SYSTEM.MOVE doesn't copy bytes between arrays \
+             (dst stays zero — observed sum=0 instead of 10). Either the \
+             intrinsic is wired to a no-op or the address arguments are \
+             being misread. Investigate the SYSTEM.MOVE lowering.",
+        ),
+    },
+
+    Probe {
+        module_name: "M_Builtin_LEN_OpenArray_Empty",
+        test_name: "builtin_len_on_zero_length_open_array",
+        spec_section: "10.3",
+        description: "NEW(p, 0) allocates a zero-length open array; LEN(p^) must return 0 \
+                      (not trap, not allocate a 1-element fallback)",
+        expected_value: 0,
+        cp_source: r#"MODULE M_Builtin_LEN_OpenArray_Empty;
+    TYPE Vec = POINTER TO ARRAY OF INTEGER;
+
+    PROCEDURE Run* (): INTEGER;
+        VAR p: Vec;
+    BEGIN
+        NEW(p, 0);
+        RETURN LEN(p^)
+    END Run;
+END M_Builtin_LEN_OpenArray_Empty.
 "#,
         ignored: None,
     },

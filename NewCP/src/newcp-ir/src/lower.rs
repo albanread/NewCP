@@ -382,6 +382,38 @@ impl<'m> LowerCtx<'m> {
         self.proc.fresh_temp()
     }
 
+    /// Resolve a Named type to its canonical record name — strips
+    /// one level of pointer-alias indirection.  Used by IS-test
+    /// lowering so `p IS Box` (where `Box = POINTER TO BoxDesc`)
+    /// looks up the TypeDesc keyed under `BoxDesc.desc` (the emitted
+    /// global) rather than the unresolved `Box.desc`.
+    ///
+    /// Returns the input name unchanged when the type isn't a
+    /// pointer alias (already a record, or unknown).  Cross-module
+    /// references go through `load_cached_import` so imported
+    /// pointer aliases canonicalise the same way.
+    fn canonical_named_record(&mut self, module: Option<&str>, name: &str) -> String {
+        use newcp_sema::SymbolKind;
+        let imported = module.and_then(|m| load_cached_import(m, &mut self.import_cache));
+        let symbols: &[SemanticSymbol] = match imported.as_ref() {
+            Some(sema) => sema.symbols.as_slice(),
+            None => self.module_symbols,
+        };
+        let Some(sym) = symbols
+            .iter()
+            .find(|s| s.kind == SymbolKind::Type && s.name == name)
+        else {
+            return name.to_string();
+        };
+        match sym.declared_type.as_ref() {
+            Some(SemanticType::Pointer { target, .. }) => match target.as_ref() {
+                SemanticType::Named { name: target_name, .. } => target_name.clone(),
+                _ => name.to_string(),
+            },
+            _ => name.to_string(),
+        }
+    }
+
     fn alloc_block(&mut self) -> BlockId {
         self.proc.alloc_block()
     }
@@ -1284,7 +1316,31 @@ impl<'m> LowerCtx<'m> {
             base: des.base.clone(),
             selectors: selectors[..method_field_idx].to_vec(),
         };
-        let prefix_ty = self.designator_ir_type(&prefix_des);
+        // `designator_ir_type` doesn't recognise a final Call selector as
+        // "type becomes the call's result type" because that would break
+        // the indirect-call lowering, which uses `final_ty` to type the
+        // function-pointer Load.  When the prefix DOES end in a Call,
+        // compute the prefix type from the called procedure's result
+        // signature directly.  This lets `Make(99).Get()`-style chained
+        // dispatch resolve the receiver record correctly.
+        let prefix_ends_in_call_for_ty = prefix_des
+            .selectors
+            .last()
+            .is_some_and(|sel| matches!(sel, Selector::Call(_) | Selector::AmbiguousParen(_)));
+        let prefix_ty = if prefix_ends_in_call_for_ty
+            && prefix_des.selectors.len() == 1
+        {
+            let proc_ty = self
+                .base_proc_type(&prefix_des.base.name)
+                .or_else(|| {
+                    prefix_des.base.module.as_ref().and_then(|m| {
+                        self.imported_callee_procedure_type(m, &prefix_des.base.name)
+                    })
+                });
+            proc_ty.and_then(|pt| pt.result_type.as_ref().map(|t| map_semantic_type(t)))
+        } else {
+            self.designator_ir_type(&prefix_des)
+        };
         if std::env::var("NEWCP_IR_DEBUG").is_ok() {
             eprintln!(
                 "[ir] lower_bound_proc_call_expr method={method_name} \
@@ -1349,6 +1405,86 @@ impl<'m> LowerCtx<'m> {
                 imported_sema_holder.is_some()
             );
         }
+        // Distinguish a method call from a call through a
+        // procedure-typed *field*.  `d.f(7)` where `d.f` is a record
+        // field of `PROCEDURE (x: INTEGER): INTEGER` type isn't a
+        // method dispatch — it's an indirect call.  Without this
+        // check the code below tries to emit a direct call to the
+        // mangled name `DispatcherDesc_f` (no such function).
+        //
+        // Look up `method_name` in the receiver record's flattened
+        // field list.  If it's there with a Procedure-typed value,
+        // detour to the indirect-call lowering: load the field's
+        // value, then emit an indirect Call.
+        let receiver_record_named_ir = IrType::Named(type_record_name.to_string());
+        let receiver_fields = self.flatten_fields_for_ir_type(&receiver_record_named_ir);
+        if let Some((_, field_ty)) = receiver_fields
+            .iter()
+            .find(|(n, _)| n == method_name)
+        {
+            // The field's sema type may be a Named alias of a procedure
+            // type (`TYPE Op = PROCEDURE (...): T; field: Op`).  Walk
+            // the alias chain (up to 8 hops) to land on the underlying
+            // Procedure signature.
+            fn unwrap_alias_to_proc<'a>(
+                ty: &'a SemanticType,
+                symbols: &'a [SemanticSymbol],
+            ) -> Option<newcp_sema::ProcedureType> {
+                let mut current = ty.clone();
+                for _ in 0..8 {
+                    match current {
+                        SemanticType::Procedure(pt) => return Some(pt),
+                        SemanticType::Named { name, module: None, .. } => {
+                            let sym = symbols.iter().find(|s| {
+                                matches!(s.kind, SymbolKind::Type) && s.name == name
+                            })?;
+                            current = sym.declared_type.clone()?;
+                        }
+                        _ => return None,
+                    }
+                }
+                None
+            }
+            let proc_ty_owned = unwrap_alias_to_proc(field_ty, self.module_symbols);
+            if let Some(proc_ty) = proc_ty_owned.as_ref() {
+                // Field-call lowering.  Re-emit the prefix designator
+                // PLUS the field selector as an expression to load
+                // the procedure value; then call it indirectly.
+                let proc_value_des = Designator {
+                    span: des.span,
+                    base: des.base.clone(),
+                    selectors: selectors[..=method_field_idx].to_vec(),
+                };
+                let fn_val = self.lower_expr(&Expr::Designator(proc_value_des));
+                let (expected_modes, expected_types) =
+                    flatten_param_modes_and_types(Some(proc_ty));
+                let lowered_args =
+                    self.lower_args_with_signature(call_args, &expected_modes, &expected_types);
+                let ret_ty = proc_ty
+                    .result_type
+                    .as_ref()
+                    .map(|t| map_semantic_type(t.as_ref()))
+                    .unwrap_or(IrType::Void);
+                if ret_ty == IrType::Void {
+                    self.push(Instr::Call {
+                        dst: None,
+                        callee: fn_val,
+                        args: lowered_args,
+                        ret_ty: IrType::Void,
+                    });
+                    return Some(IrValue::ConstBool(false));
+                }
+                let t = self.fresh_temp();
+                self.push(Instr::Call {
+                    dst: Some(t),
+                    callee: fn_val,
+                    args: lowered_args,
+                    ret_ty: ret_ty.clone(),
+                });
+                return Some(IrValue::Temp(t, ret_ty));
+            }
+        }
+
         // CP §6.4: a plain `RECORD` (no `EXTENSIBLE` / `ABSTRACT`
         // flavor) cannot be extended, so any method declared on it
         // has exactly one binding and the call is statically
@@ -1403,7 +1539,19 @@ impl<'m> LowerCtx<'m> {
                 .map(|t| matches!(t, SemanticType::Record { .. }))
                 .unwrap_or(false)
         }
-        let receiver_ptr: IrValue = {
+        // If the prefix ends in a Call / AmbiguousParen selector, the
+        // receiver is a function-call result — there's no addressable
+        // slot to take `designator_addr` against.  Lower the prefix
+        // designator as an expression (which evaluates the call and
+        // yields its return value — a heap pointer for a method that
+        // returns a typed pointer) and use that value directly as
+        // the receiver pointer.
+        let prefix_ends_in_call = prefix_des.selectors.last().is_some_and(|sel| {
+            matches!(sel, Selector::Call(_) | Selector::AmbiguousParen(_))
+        });
+        let receiver_ptr: IrValue = if prefix_ends_in_call {
+            self.lower_expr(&Expr::Designator(prefix_des.clone()))
+        } else {
             let addr = self.designator_addr(&prefix_des);
             let addr_ty = addr.ty();
             if slot_holds_record_value(&addr_ty, lookup_symbols) {
@@ -2196,6 +2344,20 @@ impl<'m> LowerCtx<'m> {
                     Expr::Designator(des) => self.designator_addr(des),
                     _ => self.lower_expr(arg),
                 };
+            } else if matches!(mode, Some(ParamMode::In)) && !is_open_array_param {
+                // IN parameter (non-open-array): pass by reference.
+                // The callee's formal IR type is `Ref(T)` whether T
+                // is a record, a pointer alias, or any other type;
+                // the slot address is what the callee expects.
+                //
+                // (Open-array IN is handled by the open-array branch
+                // below — it shares the open-array fat-pointer ABI
+                // with value mode, not the Ref-slot indirection of
+                // other IN params.)
+                value = match arg {
+                    Expr::Designator(des) => self.designator_addr(des),
+                    _ => self.lower_expr(arg),
+                };
             } else if is_open_array_param {
                 // IN or value open-array param.
                 if let Expr::Designator(des) = arg {
@@ -2713,9 +2875,18 @@ impl<'m> LowerCtx<'m> {
                         QualIdent { module: Some(m), name, .. } => (Some(m.clone()), name.clone()),
                         QualIdent { name, .. } => (None, name.clone()),
                     };
+                    // Canonicalise pointer aliases to their underlying
+                    // record name.  Without this, `p IS Box` (where
+                    // `Box = POINTER TO BoxDesc`) looks up a TypeDesc
+                    // global keyed on "Box" — but every emitted
+                    // `<Type>.desc` is keyed on the record name
+                    // (`BoxDesc.desc`).  The mismatch left the IS
+                    // path with an unresolved external symbol that
+                    // crashed at runtime when the test fired.
+                    let canonical = self.canonical_named_record(m_opt.as_deref(), &name);
                     match m_opt {
-                        Some(m) => IrType::Named(format!("{m}.{name}")),
-                        None => IrType::Named(name),
+                        Some(m) => IrType::Named(format!("{m}.{canonical}")),
+                        None => IrType::Named(canonical),
                     }
                 }
                 _ => IrType::Opaque("is-check".to_string()),
@@ -3484,8 +3655,18 @@ impl<'m> LowerCtx<'m> {
                 let Some(Expr::Designator(target)) = args.first() else {
                     return false;
                 };
-                // Resolve the pointer alias to get the record/element type to allocate.
-                let ptr_sym_ty = self.base_symbol_ir_type(&target.base)
+                // Resolve the pointer alias to get the record/element
+                // type to allocate.  For a bare local var the
+                // base-symbol type suffices; for a record field
+                // (`NEW(o.child)`) or an array element
+                // (`NEW(arr[i])`) we have to walk the selectors to
+                // find the final designator's type.  `designator_ir_type`
+                // does that walk and lands on either `Ptr(elem)` /
+                // `UntaggedPtr(elem)` (explicit POINTER TO …) or a
+                // `Named(N)` pointer alias.
+                let ptr_sym_ty = self
+                    .designator_ir_type(target)
+                    .or_else(|| self.base_symbol_ir_type(&target.base))
                     .unwrap_or(IrType::Opaque("new-ptr".to_string()));
                 let record_ty = match &ptr_sym_ty {
                     IrType::Ptr(inner) | IrType::UntaggedPtr(inner) => inner.as_ref().clone(),

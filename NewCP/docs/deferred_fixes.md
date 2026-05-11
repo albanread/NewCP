@@ -303,70 +303,57 @@ back-ends rely on.
 `dump-llvm` and add `Integers` tests covering `Sum`, `Difference`,
 `Product`, `Quotient`, `Power`, `ConvertFromString`/`ConvertToString`.
 
-### 14. `NEW(record_field_pointer)` — IR can't resolve destination record type
+### 14. ~~`NEW(record_field_pointer)` — IR can't resolve destination record type~~ — FIXED
 
-**Where**: `newcp-ir` lowering of `Instr::New`, exercised by the
-matrix probe `M_Method_On_RecordField` (currently
-`#[ignore]`-flagged in `src/newcp-test-matrix/src/manifest.rs`).
+**Status**: closed. The NEW lowering in `newcp-ir` now uses
+`designator_ir_type` (which walks selectors) to resolve the
+destination type, with `base_symbol_ir_type` as a fallback for
+bare locals. Handles record-field pointers, array-element
+pointers, and chains thereof.
 
-**Workaround**: probe is shipped ignored with the reason string
-pointing at this entry. Real code paths avoid the pattern by
-NEW-ing into a local pointer first then assigning into the field.
+**Regression coverage**: matrix probes
+`M_Method_On_RecordField`, `M_Type_Pointer_To_Pointer`,
+`M_Method_On_ArrayElement`, `M_Record_With_Pointer_Field` all
+un-ignored.
 
-**Why deferred**: surfaced by the matrix on its first run after the
-strategy in `docs/test_matrix.md` landed; the framework ports
-haven't tripped over it yet so it stays in the deferred list rather
-than blocking active work.
+### 16. ~~`IS` test against an uninstantiated record type crashes~~ — FIXED
 
-**Closing it**: in IR `lower_new`, when the destination designator
-ends in a field selector, follow the field's declared type to
-resolve the record name instead of falling back to
-`Opaque("new-ptr")`. Un-ignore the matrix probe to lock the fix in.
+**Status**: closed. The IR's IS-test lowering was using the
+pointer-alias name (`Box`) as the target type name, but every
+emitted `<Type>.desc` global is keyed under the *record* name
+(`BoxDesc.desc`).  The mismatch left the LLVM call site pointing
+at an unresolved external `@Box.desc` symbol; when the loader
+mapped it to a wild address, the runtime type-test segfaulted.
 
-### 16. `IS` test against an uninstantiated record type crashes
+New helper `LowerCtx::canonical_named_record` (same-module +
+imported, with the existing import cache) strips one level of
+pointer-alias indirection before the IS-test target is recorded.
+The runtime `__newcp_type_test` itself already handled NIL
+targets correctly; the bug was purely the name mismatch on the
+LLVM side.
 
-**Where**: IR / runtime type-test fast path. Surfaced by the matrix
-probes `M_AnyPtr_IS_Test` and `M_Expr_Pointer_IS_Test` (both
-`#[ignore]`-flagged with this entry as their reason).
+**Regression coverage**: four matrix probes un-ignored —
+`M_AnyPtr_IS_Test`, `M_Expr_Pointer_IS_Test`,
+`M_Type_ANYREC_Param`, `M_Stmt_IS_Inside_WITH`.
 
-**Workaround**: probes shipped ignored. Real code paths so far have
-only `IS`-tested against types that were also instantiated
-elsewhere in the same translation unit, so their `TypeDesc` was
-registered before the test ran.
+### 17. ~~`IN p: PointerAlias` dereference crashes at runtime~~ — FIXED
 
-**Why deferred**: surfaced by the matrix's first expansion pass.
-Easy to write a reduction (a 20-line probe) but the fix sits in
-the runtime type-test path — likely a NIL `TypeDesc` deref that
-needs to be hardened, or codegen needs to ensure every declared
-record type's `TypeDesc` is registered even when never NEW'd.
+**Status**: closed. The root cause was the call site, not the
+callee: `lower_args_with_signature` only passed slot addresses
+for VAR/OUT params and for IN open-arrays.  For `IN p: Box`
+(non-open-array IN), it fell through to a path that loaded the
+pointer value and passed it directly, so the callee got `p`'s
+value where it expected `&p`. The callee then dereferenced what
+it thought was a slot, treating the pointed-to byte as a slot
+address itself → segfault.
 
-**Closing it**: harden `__newcp_type_test` (or the IR
-`Instr::TypeCheck` lowering) so a NIL `TypeDesc` on the
-right-hand-side comparison returns `false` instead of segfaulting.
-Verify by un-ignoring both probes; their packed values are 110 and
-1010 respectively.
+Fix: extend the address-by-default branch to cover `Some(ParamMode::In)`
+for non-open-array params so the call site uniformly passes
+slot addresses for IN/VAR/OUT, matching the callee's `Ref(T)`
+formal layout.
 
-### 17. `IN p: PointerAlias` dereference crashes at runtime
-
-**Where**: parameter-access codegen. Surfaced by matrix probe
-`M_Param_IN_Pointer_Deref` (`#[ignore]`-flagged with this entry).
-
-**Workaround**: probe shipped ignored. Most real code uses `VAR`
-or value-mode (or method receivers) when it wants to deref a
-pointer in the callee.
-
-**Why deferred**: the codegen for `IN <pointer-alias>` parameters
-appears to misread the slot — treating it like a record value and
-skipping the heap-pointer Load — and the resulting bad address
-causes `STATUS_ACCESS_VIOLATION` on first field access. Shape is
-similar to the method-dispatch-receiver fix landed earlier in
-this round, but on the parameter-access path rather than the
-receiver path.
-
-**Closing it**: in `lower_designator` / param-slot lowering, when
-the formal's IR type is `Ref(Named(N))` and `N` resolves to a
-pointer alias (not a record), emit the load that fetches the heap
-pointer before GEPing for the field. Then un-ignore the probe.
+**Regression coverage**: matrix probe `M_Param_IN_Pointer_Deref`
+un-ignored.
 
 ### 18. Indirect call through a procedure-typed parameter mis-types its args
 
@@ -465,27 +452,19 @@ sequence of `IndexGep` instructions (one per dimension) instead
 of a single GEP that drops the trailing index. Un-ignore the
 probe to confirm; expected packed value 250.
 
-### 22. Method dispatch on a call-result receiver reads wild memory
+### 22. ~~Method dispatch on a call-result receiver reads wild memory~~ — FIXED
 
-**Where**: receiver lowering in `newcp-ir/src/lower.rs`. Surfaced
-by matrix probe `M_Method_On_Function_Result`
-(`#[ignore]`-flagged).
+**Status**: closed. Two-part fix in `lower_bound_proc_call_expr`:
+- When the prefix designator ends in a Call/AmbiguousParen
+  selector, lower the prefix via `lower_expr` (evaluates the
+  call) instead of `designator_addr` (which has no addressable
+  storage for a call result).
+- `designator_ir_type` gained a `Selector::Call` arm that
+  returns the procedure's declared result type, so the receiver-
+  type lookup succeeds for chained-call designators.
 
-**Workaround**: probe shipped ignored. Real code can assign the
-call result to a local first and call through the local — that
-path uses a designator-based receiver, which works.
-
-**Why deferred**: the plain-record-dispatch refactor (earlier in
-the test-matrix landing) lowers receivers via `designator_addr`.
-A call-as-prefix (`Make(99).Get()`) produces a Temp IrValue
-rather than a designator, so the receiver lookup reads the wrong
-slot and the body dereferences an uninitialised pointer
-(observed: `1881534181456` instead of `99`).
-
-**Closing it**: in the bound-proc-call lowering, when the prefix
-expression is itself a procedure call (rather than a designator),
-materialise its result into a synthetic Temp slot and use that
-Temp as the receiver pointer. Un-ignore the probe to confirm.
+**Regression coverage**: matrix probe `M_Method_On_Function_Result`
+un-ignored.
 
 ### 23. ~~Sema mis-types receiver as the underlying record when the method's return type is the receiver's pointer alias~~ — FIXED
 
@@ -521,25 +500,19 @@ without converting first.
 `is_float_ir`-driven branch handles int→float but may be missing
 SHORTREAL→REAL). Un-ignore the probe to confirm; expected 18.
 
-### 25. Calling a procedure-typed *record field* mis-routes through a direct call
+### 25. ~~Calling a procedure-typed *record field* mis-routes through a direct call~~ — FIXED
 
-**Where**: call-site lowering in `newcp-ir`. Surfaced by matrix
-probe `M_Type_ProcedureField_InRecord` (`#[ignore]`-flagged).
+**Status**: closed. `lower_bound_proc_call_expr` now checks
+whether the "method name" actually names a procedure-typed
+**field** of the receiver record (after unwrapping any Named
+alias chain to land on the underlying `Procedure(...)`). When it
+does, the lowering re-emits the prefix designator + field
+selector as a value expression (yielding the function pointer)
+and emits an indirect `Instr::Call` through it. Methods stay
+on the existing dispatch path.
 
-**Workaround**: probe ignored. Real code can copy the field into
-a local procedure-typed var first and call through the local
-(that path works — see `M_ProcType_IndirectCall`).
-
-**Why deferred**: `d.f(7)` where `d.f` is a record field of
-procedure type tries to emit `call DispatcherDesc_f` (a mangled
-method-style name) instead of loading the field and emitting an
-indirect call through the loaded function pointer.
-
-**Closing it**: in `lower_bound_proc_call_expr` (or its sibling
-that handles `obj.field` callables), recognise when the prefix
-designator resolves to a procedure-typed field — emit a Load of
-the field then an indirect Call, the same path a procedure-typed
-local variable uses. Un-ignore the probe to confirm; expected 49.
+**Regression coverage**: matrix probe
+`M_Type_ProcedureField_InRecord` un-ignored.
 
 ### 26. ~~Sema rejects relational `<` / `<=` / `>` / `>=` on ARRAY OF CHAR~~ — FIXED
 
@@ -572,6 +545,61 @@ slot or stores into a temp that's never read back.
 targets — verify the load+add+store chain types align and the
 final store lands in the named slot.  Un-ignore the probe;
 expected 150.
+
+### 28. SET constant membership wrong value
+
+**Where**: SET literal / constant membership lowering. Surfaced
+by matrix probe `M_Expr_SET_Constant_Membership`
+(`#[ignore]`-flagged).
+
+**Status**: filed for investigation. Probe returns 101 vs the
+expected packed value. Either constant SET folding is buggy or
+`IN` on a constant-LHS short-circuits incorrectly.
+
+### 29. NEW on `POINTER TO ARRAY n OF T` (fixed array) fails
+
+**Where**: IR's `Instr::New` resolution. Surfaced by matrix probes
+`M_Type_PointerTo_FixedArray` and
+`M_Type_PointerTo_FixedArray_AsField` (both ignored).
+
+**Status**: filed. `Instr::New: unknown record type [N x T]`.  My
+recent #14 fix to walk the designator's IR type uncovered this
+case — when the target's underlying type is a fixed-array
+(`[N x T]`) rather than a record, the NEW lowering needs a
+different allocator path (basically just heap-alloc N*sizeof(T)
+bytes).
+
+### 30. Module-level VAR with INLINE record type fails codegen
+
+**Where**: LLVM emit for assignment / comparison involving
+inline-record types. Surfaced by
+`M_Module_VAR_Record_DefaultZero`.
+
+**Status**: filed. `non-equality pointer comparison Add` — the
+inline-record slot's address arithmetic is mis-routed. Real code
+uses named TYPE records and works; the inline form is an unusual
+but legal CP idiom.
+
+### 31. Type-guard designator as LHS of assignment rejected
+
+**Where**: sema's `validate_assignment_target`. Surfaced by
+`M_Expr_TypeGuard_AsLHS_Designator`.
+
+**Status**: filed. `p(Sub).field := value` reports
+`assignment target is not assignable`. The type guard yields
+what should be an addressable narrowed view; sema is excluding
+it from valid LHS forms. Workaround: assign through an
+intermediate typed variable.
+
+### 32. SYSTEM.MOVE between arrays doesn't actually copy
+
+**Where**: runtime / IR lowering of SYSTEM.MOVE. Surfaced by
+`M_SYSTEM_MOVE_BetweenArrays`.
+
+**Status**: filed. dst stays zero (observed sum=0 instead of 10
+after MOVE'ing 4 bytes between two arrays). Either the
+intrinsic dispatches to a no-op stub or the address arguments
+are being misread.
 
 ---
 
