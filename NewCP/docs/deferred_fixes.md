@@ -639,6 +639,41 @@ matching the CP §SYSTEM.MOVE documented argument order
 **Regression coverage**: matrix probe
 `M_SYSTEM_MOVE_BetweenArrays` un-ignored.
 
+### 33. Chained-call receiver through a cross-module method result
+
+**Where**: IR's bound-call lowering (`lower_bound_proc_call_expr`)
+when the receiver of a method call is itself the result of an
+earlier method call whose return type lives in another module.
+
+**Surfaced by**: `TextMappers.Scanner.Skip` would naturally
+write `s.start := s.rider.Base().Length()`.  Here `s.rider` is
+`TextModels.Reader`, `Base()` returns `TextModels.Model`, and
+`Length()` is a method on that Model.  IR emits the inner
+`methodcall t[Base]()` correctly, but the outer `.Length()`
+falls into the `field:Length` GlobalRef fallback and codegen
+later trips with `cast ptr to i64`.
+
+**Why it's specific to cross-module**: the in-module
+"chained call result is the receiver of the next call" case
+is already handled (deferred_fixes #22 / `prefix_ends_in_call_for_ty`
+in `lower_bound_proc_call_expr`).  The cross-module variant
+hits the same code path but the prefix-type computation
+doesn't recognise an imported `Procedure` return type as the
+receiver of the trailing `.Method()` selector.
+
+**Workaround**: extract the intermediate Model into a local
+and call Length on it.  `TextMappers.Skip` does this — the
+at-EOT cursor position is left at the rider's last good
+position rather than the model's `Length()` for now.
+
+**Closing it**: extend the chained-call detection in
+`lower_bound_proc_call_expr` so that when the prefix
+designator ends in a `Selector::Call(_)` whose callee is a
+cross-module procedure / method, the receiver type comes from
+the IMPORTED module's procedure-return-type record.  Today
+the same logic exists for in-module calls; mirror it for
+imports via `imported_callee_procedure_type`.
+
 ---
 
 ## Conventions for adding entries

@@ -3844,4 +3844,21 @@ mod tests {
             112234,
         );
     }
+
+    /// TextMappers.Scanner / Formatter ConnectTo + cursor
+    /// round-trip through a concrete fake Reader / Writer /
+    /// Model trio.  Exercises cross-module vtable dispatch
+    /// from TextMappers calls (`s.SetPos`, `f.WriteChar`,
+    /// etc.) into the concrete leaf overrides defined in the
+    /// test fixture.
+    ///
+    /// Expected 17342 = 17 (posAfterSeek)*1000 + 3 (posAfterWrite)*100
+    ///                + 42 (m.simulatedLength).
+    #[test]
+    fn textmappers_scanner_formatter_round_trip_through_concrete_io() {
+        assert_eq!(
+            run_function("Mod/Tests/TextMappersExtBase.cp", "Run"),
+            17342,
+        );
+    }
 }

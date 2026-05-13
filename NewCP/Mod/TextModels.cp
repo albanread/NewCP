@@ -315,4 +315,64 @@ BEGIN
     m.result := OkComplete
 END Internalize;
 
+
+(* -- BB-faithful Reader / Writer / Model ABSTRACT method
+      declarations.  Concrete subclasses (a future
+      `StdReader` / `StdWriter` / `StdModel` ladder bridging
+      to the wire-format StdModelDesc above) will implement.
+      Surfaced here so framework callers (TextMappers,
+      TextRulers, TextControllers) can dispatch against the
+      abstract base without each having to repeat the
+      vtable shape. *)
+
+(** Read one character from the text under the cursor; sets
+    `eot := TRUE` and leaves `char := 0X` on end-of-text.  The
+    reader's `attr` / `view` / `w` / `h` fields are also
+    updated as a side-effect when the cursor lands on a
+    style-change or an embedded view. *)
+PROCEDURE (rd: Reader) ReadChar* (), NEW, ABSTRACT;
+
+(** Seek the cursor to absolute character position `pos`.
+    Implementations must clear `eot` if `pos` is within the
+    text, set `eot := TRUE` and `char := 0X` otherwise. *)
+PROCEDURE (rd: Reader) SetPos* (pos: INTEGER), NEW, ABSTRACT;
+
+(** Current character position. *)
+PROCEDURE (rd: Reader) Pos* (): INTEGER, NEW, ABSTRACT;
+
+(** The text model this reader was opened on. *)
+PROCEDURE (rd: Reader) Base* (): Model, NEW, ABSTRACT;
+
+
+(** Write one character via this writer, advancing its
+    cursor.  The writer's current `attr` is applied to the
+    character's run. *)
+PROCEDURE (wr: Writer) WriteChar* (ch: CHAR), NEW, ABSTRACT;
+
+(** Append an entire `ARRAY OF CHAR` (terminated by 0X). *)
+PROCEDURE (wr: Writer) WriteString* (IN s: ARRAY OF CHAR), NEW, ABSTRACT;
+
+(** Seek the writer's append cursor. *)
+PROCEDURE (wr: Writer) SetPos* (pos: INTEGER), NEW, ABSTRACT;
+
+(** Current write position. *)
+PROCEDURE (wr: Writer) Pos* (): INTEGER, NEW, ABSTRACT;
+
+(** Update the per-run attribute state. *)
+PROCEDURE (wr: Writer) SetAttr* (attr: Attributes), NEW, ABSTRACT;
+
+(** The text model this writer was opened on. *)
+PROCEDURE (wr: Writer) Base* (): Model, NEW, ABSTRACT;
+
+
+(** Open a streaming Reader on this model.  `old` is an
+    existing Reader to recycle (or NIL for a fresh one). *)
+PROCEDURE (m: Model) NewReader* (old: Reader): Reader, NEW, ABSTRACT;
+
+(** Open a streaming Writer on this model. *)
+PROCEDURE (m: Model) NewWriter* (old: Writer): Writer, NEW, ABSTRACT;
+
+(** Character length of the text. *)
+PROCEDURE (m: Model) Length* (): INTEGER, NEW, ABSTRACT;
+
 END TextModels.
