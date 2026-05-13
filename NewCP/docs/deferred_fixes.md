@@ -674,6 +674,36 @@ the IMPORTED module's procedure-return-type record.  Today
 the same logic exists for in-module calls; mirror it for
 imports via `imported_callee_procedure_type`.
 
+### 34. Field access on an array-element of a cross-module Named record
+
+**Where**: IR's designator-address lowering when the
+selector chain is `<base>.<arr-field>[<index>].<field>`,
+where `<arr-field>` has type `ARRAY n OF Foo` and `Foo` is
+a Named record declared in an imported module.
+
+**Surfaced by**: `Mod/Tests/TextRulersExtBase.cp` attempting
+`tabsBefore.tab[0].stop := 50` where `tab: ARRAY 32 OF Tab`
+and `Tab` is declared in `TextRulers`.  The IR emits the
+`gep tabsBefore, 1` (field access for `.tab`) but skips
+the `IndexGep` step and ends up resolving the trailing
+`.stop` as the unresolved-field stub `opaque:field:stop`.
+
+**Workaround**: TextRulersExtBase only reads/writes the
+`len` field of TabArray for now; the per-element access
+is deferred.
+
+**Closing it**: trace the selector chain in
+`designator_addr` — when the previous selector landed on a
+field whose IR type is `Array { element: Named, .. }`,
+the next `Selector::Index` should emit an `IndexGep` with
+element type Named, then the trailing `Selector::Field`
+should flatten the cross-module record's fields the same
+way single-level cross-module records resolve.  The bug
+appears to be in the "register cross-module Named element
+types so flatten_fields_for_ir_type finds them" path —
+similar to the inline-record-as-field fix (#30 / #f0e154c)
+but for an array element.
+
 ---
 
 ## Conventions for adding entries

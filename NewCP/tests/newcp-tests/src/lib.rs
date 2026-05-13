@@ -3861,4 +3861,35 @@ mod tests {
             17342,
         );
     }
+
+    /// Pointer-alias receiver type-checks as a pointer in
+    /// expression contexts.  `(a: Foo) Eq (b: Foo) ... a = b`
+    /// — inside the method body, `a` is the pointer (Foo),
+    /// not the underlying record (FooDesc).  Used to fail
+    /// with "invalid operands for =: RECORD … and POINTER
+    /// TO …" because sema canonicalised the receiver to the
+    /// descriptor for all uses, including value-comparison.
+    #[test]
+    fn pointer_alias_receiver_compares_as_pointer() {
+        assert_eq!(
+            run_function("Mod/Tests/PtrReceiverEqProbe.cp", "Run"),
+            1,
+        );
+    }
+
+    /// TextRulers extension test — four-level cross-module
+    /// chain (Stores → Models → TextRulers.Style → MyStyle),
+    /// concrete Directory factories dispatching via vtable,
+    /// CopyTabs through an inline 32-Tab fixed array, and a
+    /// Prop with the inline `opts: RECORD val, mask: SET END`
+    /// field.
+    ///
+    /// Expected 102010.
+    #[test]
+    fn textrulers_directory_factories_and_tabs_round_trip() {
+        assert_eq!(
+            run_function("Mod/Tests/TextRulersExtBase.cp", "Run"),
+            102010,
+        );
+    }
 }

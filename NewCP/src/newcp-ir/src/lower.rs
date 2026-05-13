@@ -822,6 +822,38 @@ impl<'m> LowerCtx<'m> {
                         &qual.name,
                     )));
                 }
+                // Receiver symbols carry the AS-WRITTEN type from sema
+                // so `a = b` inside a method body where the receiver is
+                // declared as a pointer alias type-checks as pointer
+                // comparison (not "Record = Pointer").  The IR layer,
+                // though, expects the receiver to be storage-shaped:
+                // a pointer to the underlying record.  Canonicalise
+                // pointer-alias receivers down to the record here so
+                // field-GEP / Load paths see a `ptr<Record>` rather
+                // than a `ptr<PointerAlias>` (which would double-
+                // indirect and write to the wrong field offsets).
+                let receiver_canonical = if matches!(symbol.kind, newcp_sema::SymbolKind::Receiver) {
+                    if let SemanticType::Named { module: None, name, .. } = sem_ty {
+                        Some(name.clone())
+                    } else {
+                        None
+                    }
+                } else {
+                    None
+                };
+                if let Some(name) = receiver_canonical {
+                    let canonical = self.canonical_named_record(None, &name);
+                    if canonical != name {
+                        return Some(IrType::Named(canonical));
+                    }
+                }
+                let sem_ty = self
+                    .symbols
+                    .iter()
+                    .rev()
+                    .find(|symbol| symbol.name == qual.name)?
+                    .declared_type
+                    .as_ref()?;
                 Some(map_semantic_type(sem_ty))
             })
     }
@@ -3877,6 +3909,7 @@ impl<'m> LowerCtx<'m> {
             "SHORTINT" => Some(IrType::I16),
             "REAL" => Some(IrType::F64),
             "SHORTREAL" => Some(IrType::F32),
+            "SET" => Some(IrType::Set(32)),
             _ => Some(IrType::Named(des.base.name.clone())),
         }
     }
@@ -5002,8 +5035,27 @@ pub fn lower_procedure(
         .iter()
         .find(|s| s.kind == SymbolKind::Receiver)
         .and_then(|s| {
-            let recv_ty = s.declared_type.as_ref().map(map_semantic_type)?;
-            Some((s.name.clone(), IrType::Ptr(Box::new(recv_ty))))
+            // The receiver symbol carries the AS-WRITTEN type
+            // (e.g. `Sub` when declared `(b: Sub)` where `Sub =
+            // POINTER TO SubDesc`).  At the IR / storage layer
+            // we need the canonical record form so the parameter
+            // is `ptr<SubDesc>`, not `ptr<Sub>` (which would
+            // double-indirect at every field-GEP and write to
+            // the wrong field offsets).
+            let recv_ty = s.declared_type.as_ref()?;
+            let canonical = match recv_ty {
+                SemanticType::Named { module: None, name, .. } => {
+                    let c = canonicalize_receiver_name(name, module_symbols);
+                    SemanticType::Named {
+                        module: None,
+                        name: c,
+                        kind: newcp_sema::NamedTypeKind::UserDefined,
+                    }
+                }
+                other => other.clone(),
+            };
+            let ir_ty = map_semantic_type(&canonical);
+            Some((s.name.clone(), IrType::Ptr(Box::new(ir_ty))))
         });
 
     // Nested procedures: captured outer variables are prepended as implicit Ref params,

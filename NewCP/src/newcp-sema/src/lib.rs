@@ -729,7 +729,13 @@ impl<'a> Analyzer<'a> {
                 kind: SymbolKind::Receiver,
                 exported: false,
                 read_only_export: false,
-                declared_type: Some(self.resolve_receiver_type(receiver.ty.as_str(), &scope_type_names)),
+                // Symbol carries the AS-WRITTEN receiver type
+                // (e.g. `Foo` when declared `(a: Foo)` where
+                // `Foo = POINTER TO FooDesc`).  Procedure
+                // signature.receiver below uses the canonical
+                // form via `resolve_procedure_signature` —
+                // method-dispatch / IR matching keep working.
+                declared_type: Some(self.resolve_receiver_symbol_type(receiver.ty.as_str(), &scope_type_names)),
                 const_value: None,
                 simd_shape: None,
                 param_mode: None,
@@ -1869,20 +1875,40 @@ impl<'a> Analyzer<'a> {
         receiver_type_name: &str,
         scope_type_names: &HashSet<String>,
     ) -> SemanticType {
-        // CP §11.5: a method receiver may be the record type or its
-        // pointer alias.  Both forms bind the method to the same
-        // record and have the same calling convention (the receiver
-        // is passed as a pointer to the record's payload).  Normalize
-        // the pointer-alias form to the underlying record so every
-        // downstream consumer (IR proc-name mangling, vtable slot
-        // lookup, override matching, etc.) sees a single canonical
-        // shape.
+        // Canonical Record form — used in the procedure's
+        // `signature.receiver` so the IR's receiver-matching
+        // (`canonicalize_receiver_name` at IR module-lower
+        // time) and the override / method-dispatch lookups
+        // see a single shape regardless of whether the
+        // receiver was declared via the record name or its
+        // pointer alias.
         let canonical = self.canonical_receiver_record(receiver_type_name);
         self.resolve_named_type(
             &QualIdent {
                 span: self.module.span,
                 module: None,
                 name: canonical,
+            },
+            scope_type_names,
+        )
+    }
+
+    /// Resolve the receiver's type as written (no canonicalisation).
+    /// Stored on the receiver SYMBOL so inside the method body
+    /// `a = b` (where `a: PointerAlias`) type-checks as pointer
+    /// comparison rather than "Record = Pointer".  Field-access
+    /// `a.field` still works because `apply_selector_type` unwraps
+    /// Pointer for Field selectors transparently.
+    fn resolve_receiver_symbol_type(
+        &self,
+        receiver_type_name: &str,
+        scope_type_names: &HashSet<String>,
+    ) -> SemanticType {
+        self.resolve_named_type(
+            &QualIdent {
+                span: self.module.span,
+                module: None,
+                name: receiver_type_name.to_string(),
             },
             scope_type_names,
         )

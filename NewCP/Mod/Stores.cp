@@ -20,7 +20,7 @@ MODULE Stores;
    `Stores.StoreDesc_Internalize` symbol the loader can publish.
 *)
 
-    IMPORT Kernel, StoresSys;
+    IMPORT SYSTEM, Kernel, StoresSys;
 
 CONST
     KindNil*     = 0;
@@ -402,6 +402,22 @@ PROCEDURE (VAR wr: Writer) WriteVersion* (version: INTEGER), NEW;
 BEGIN
     StoresSys.WriterWriteByte(wr.handle, version)
 END WriteVersion;
+
+(** Read / write SET — same i32 wire encoding as INTEGER but
+    typed as SET for the caller.  Used by TextRulers and
+    elsewhere to round-trip the `opts` masks. *)
+PROCEDURE (VAR rd: Reader) ReadSet* (OUT s: SET), NEW;
+    VAR x: INTEGER;
+BEGIN
+    x := StoresSys.ReaderReadInt(rd.handle);
+    s := SYSTEM.VAL(SET, x);
+    rd.eof := StoresSys.ReaderEof(rd.handle) # 0
+END ReadSet;
+
+PROCEDURE (VAR wr: Writer) WriteSet* (s: SET), NEW;
+BEGIN
+    StoresSys.WriterWriteInt(wr.handle, SYSTEM.VAL(INTEGER, s))
+END WriteSet;
 
 PROCEDURE (VAR wr: Writer) WriteByte* (b: BYTE), NEW;
 BEGIN StoresSys.WriterWriteByte(wr.handle, b) END WriteByte;
