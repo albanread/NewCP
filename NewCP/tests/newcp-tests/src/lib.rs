@@ -3825,4 +3825,23 @@ mod tests {
             99,
         );
     }
+
+    /// Mechanisms.Hook trampoline + cross-module hook
+    /// installation.
+    ///
+    /// `MyHookDesc` extends `Mechanisms.HookDesc` and overrides
+    /// every ABSTRACT method.  `Mechanisms.SetHook` installs
+    /// it.  The driver then calls three trampolines —
+    /// `MarkFocusBorder`, `FocusBorderCursor`, `SelBorderCursor`
+    /// — and verifies the overrides fire with the right
+    /// arguments via cross-module virtual dispatch.
+    ///
+    /// Expected packed value 112234.
+    #[test]
+    fn mechanisms_hook_trampoline_dispatches_through_vtable() {
+        assert_eq!(
+            run_function("Mod/Tests/MechanismsExtBase.cp", "Run"),
+            112234,
+        );
+    }
 }
