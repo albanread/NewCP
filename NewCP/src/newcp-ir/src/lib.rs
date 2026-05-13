@@ -34,7 +34,12 @@ fn format_lowering_diagnostics(ir_module: &IrModule) -> String {
 
 fn parse_and_analyze(path: &Path) -> Result<(newcp_sema::SemanticModule, newcp_parser::ModuleAst), String> {
     let ast = read_module_ast(path).map_err(|e| e.to_string())?;
-    let sema = newcp_sema::analyze_module_ast(&ast);
+    // Thread the source dir through so sema's import loader
+    // can find sibling fixtures (e.g. tests in `Mod/Tests/`
+    // importing other modules in `Mod/Tests/`).  Without this
+    // every imported-from-sibling const folds to None and the
+    // derived CONST drops out of the symbol table.
+    let sema = newcp_sema::analyze_module_ast_with_source_dir(&ast, path.parent());
     Ok((sema, ast))
 }
 

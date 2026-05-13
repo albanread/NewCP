@@ -1054,6 +1054,86 @@ impl<'m> LowerCtx<'m> {
 // == Expression lowering ==
 
 impl<'m> LowerCtx<'m> {
+    /// Helper for `Statement::ProcedureCall`: when the last
+    /// selector on `des` is a `Field(name)`, return true iff
+    /// `name` resolves to a METHOD (not a data field) on the
+    /// receiver's record type.  Used to detect the
+    /// parameterless-method-call shape `victim.Fire;` so we can
+    /// synthesize an empty `Call([])` and route through the
+    /// bound-call dispatch.
+    fn designator_field_is_method(&mut self, des: &Designator, name: &str) -> bool {
+        let prefix = Designator {
+            span: des.span,
+            base: des.base.clone(),
+            selectors: des
+                .selectors
+                .iter()
+                .take(des.selectors.len().saturating_sub(1))
+                .cloned()
+                .collect(),
+        };
+        let Some(prefix_ty) = self.designator_ir_type(&prefix) else {
+            return false;
+        };
+        // Strip pointer/ref wrappers to land on the record.
+        let mut cursor = &prefix_ty;
+        loop {
+            match cursor {
+                IrType::Ptr(inner) | IrType::UntaggedPtr(inner) | IrType::Ref(inner) => {
+                    cursor = inner.as_ref();
+                }
+                _ => break,
+            }
+        }
+        let type_name = match cursor {
+            IrType::Named(n) => n.as_str(),
+            _ => return false,
+        };
+        // Resolve pointer-alias `Foo = POINTER TO FooDesc` to
+        // FooDesc so the method-table lookup hits the record.
+        let canonical = match cursor {
+            IrType::Named(_) => {
+                let (mod_opt, base_name) = match type_name.split_once('.') {
+                    Some((m, n)) => (Some(m), n),
+                    None => (None, type_name),
+                };
+                self.canonical_named_record(mod_opt, base_name)
+            }
+            _ => type_name.to_string(),
+        };
+        // Walk the receiver record's method table — both the
+        // local-module copy and (for cross-module receivers) the
+        // imported semantic copy.  Match by method name.
+        let local_hit = self.module_symbols.iter().any(|s| {
+            matches!(s.kind, newcp_sema::SymbolKind::Type)
+                && s.name == canonical
+                && matches!(
+                    s.declared_type.as_ref(),
+                    Some(SemanticType::Record { methods, .. })
+                        if methods.iter().any(|m| m.name == name)
+                )
+        });
+        if local_hit {
+            return true;
+        }
+        // Cross-module: prefix is `Module.Record`.
+        if let Some((module, record)) = canonical.split_once('.') {
+            if let Some(sema) = load_cached_import(module, &mut self.import_cache) {
+                let sema = sema.clone();
+                return sema.symbols.iter().any(|s| {
+                    matches!(s.kind, newcp_sema::SymbolKind::Type)
+                        && s.name == record
+                        && matches!(
+                            s.declared_type.as_ref(),
+                            Some(SemanticType::Record { methods, .. })
+                                if methods.iter().any(|m| m.name == name)
+                        )
+                });
+            }
+        }
+        false
+    }
+
     fn normalize_designator(&mut self, des: &Designator) -> Designator {
         let Some(module_name) = des.base.module.as_ref() else {
             return des.clone();
@@ -4259,6 +4339,36 @@ impl<'m> LowerCtx<'m> {
                     && !self.lower_system_statement(designator)
                     && !self.lower_builtin_statement(designator)
                 {
+                    // The parser greedily packs `obj.Method` as a
+                    // module-qualified ident (`module: Some("obj")`,
+                    // `name: "Method"`) — but `obj` might actually
+                    // be a local variable / parameter / receiver.
+                    // `normalize_designator` rewrites the greedy
+                    // form into the structured `base + Field(Method)`
+                    // form whenever `obj` resolves locally; without
+                    // normalizing here, the `is_bare_proc_call` check
+                    // below would mistake a bare parameterless method
+                    // call (`victim.Fire;`) for an imported zero-arg
+                    // procedure call and emit
+                    // `IrValue::ImportRef("victim", "Fire", _)` —
+                    // which JIT-compiles to a call into thin air.
+                    let mut normalized = self.normalize_designator(designator);
+
+                    // In CP, a parameterless method may be called
+                    // without explicit `()` parens (`victim.Fire;`).
+                    // Synthesize an empty `Call([])` selector when
+                    // the trailing Field resolves to a method on the
+                    // receiver's record type — so the bound-call
+                    // dispatch path in `lower_designator` picks it
+                    // up uniformly with the `victim.Fire()` form.
+                    if let Some(Selector::Field(field_name)) = normalized.selectors.last().cloned() {
+                        if self.designator_field_is_method(&normalized, &field_name) {
+                            normalized.selectors.push(Selector::Call(Vec::new()));
+                        }
+                    }
+
+                    let designator = &normalized;
+
                     // In CP, a parameterless procedure may be called without `()`.
                     // Detect: qualified or local name with no selectors that resolves
                     // to a procedure type → emit a zero-arg call directly.

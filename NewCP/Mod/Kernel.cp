@@ -43,6 +43,12 @@ CONST
     (* Endianness — NewCP targets x86_64 only in this slice. *)
     littleEndian* = TRUE;
 
+    (* Resolution of `Kernel.Time()` — ticks per second.
+       BlackBox uses 1000 (millisecond resolution); we mirror
+       that.  Services rescales user-facing tick units against
+       this value. *)
+    timeResolution* = 1000;
+
     (* Loader result codes. Match the discriminants in
        `KernelSys.loader*` and `newcp-loader::LoaderFailurePhase`. *)
     none*           = 0;
@@ -66,6 +72,15 @@ TYPE
         `SizeOf` to read its fields. *)
     TypeDesc*  = ABSTRACT RECORD END;
     Type*      = POINTER TO TypeDesc;
+
+    (** Abstract hook base — every framework module that
+        installs a runtime callback (`Services.ActionHook`,
+        `Views.GetSpecHook`, `Dialog.GetHook`, …) extends this.
+        Identity-only; the hook type is the public interface
+        between a module's published `Set<X>Hook` setter and
+        whatever subclass the host installs. *)
+    HookDesc* = ABSTRACT RECORD END;
+    Hook*     = POINTER TO HookDesc;
 
     (** Trap-cleaner base. Subclasses override `Cleanup` to roll
         back transactional state when the runtime traps. The

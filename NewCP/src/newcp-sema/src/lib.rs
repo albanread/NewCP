@@ -590,7 +590,12 @@ impl<'a> Analyzer<'a> {
             match declaration {
                 Declaration::Const(item) => {
                     Self::record_identdef_duplicate(&mut scope_names, &item.name, None, "duplicate module-scope declaration", &mut self.diagnostics);
-                    let const_value = evaluate_const_expr(&item.value, &[], &self.module_symbols);
+                    let const_value = evaluate_const_expr_with_imports(
+                        &item.value,
+                        &[],
+                        &self.module_symbols,
+                        Some(&self.imported_modules),
+                    );
                     let declared_type = self
                         .infer_expr_type(&item.value, &[], &self.module_type_names)
                         .or_else(|| const_value_type(&const_value));
@@ -1452,7 +1457,12 @@ impl<'a> Analyzer<'a> {
             match declaration {
                 Declaration::Const(item) => {
                     Self::record_identdef_duplicate(scope_names, &item.name, procedure_name, "duplicate procedure-scope declaration", diagnostics);
-                    let const_value = evaluate_const_expr(&item.value, local_symbols, &self.module_symbols);
+                    let const_value = evaluate_const_expr_with_imports(
+                        &item.value,
+                        local_symbols,
+                        &self.module_symbols,
+                        Some(&self.imported_modules),
+                    );
                     let declared_type = self
                         .infer_expr_type(&item.value, local_symbols, scope_type_names)
                         .or_else(|| const_value_type(&const_value));
@@ -6087,6 +6097,18 @@ fn evaluate_const_expr(
     local_symbols: &[SemanticSymbol],
     module_symbols: &[SemanticSymbol],
 ) -> Option<ConstValue> {
+    evaluate_const_expr_with_imports(expr, local_symbols, module_symbols, None)
+}
+
+fn evaluate_const_expr_with_imports(
+    expr: &Expr,
+    local_symbols: &[SemanticSymbol],
+    module_symbols: &[SemanticSymbol],
+    imports: Option<&HashMap<String, Vec<SemanticSymbol>>>,
+) -> Option<ConstValue> {
+    let recur = |e: &Expr| {
+        evaluate_const_expr_with_imports(e, local_symbols, module_symbols, imports)
+    };
     match expr {
         Expr::Literal { value, .. } => match value {
             newcp_parser::Literal::Integer(s) => {
@@ -6113,6 +6135,22 @@ fn evaluate_const_expr(
             }
         },
         Expr::Nil { .. } => None,
+        // Module-qualified constant — `Kernel.timeResolution`,
+        // `Sequencers.clean`, etc.  Look up in the imported
+        // module's symbol table when we have one threaded
+        // through; otherwise fall through to None.  Without
+        // this branch, every derived const that mentions an
+        // imported const folded to None and the receiver
+        // dropped out of the local CONST symbol table —
+        // surfacing later as "identifier <derived> is not
+        // declared" at every use site.
+        Expr::Designator(d) if d.selectors.is_empty() && d.base.module.is_some() => {
+            let module_name = d.base.module.as_deref()?;
+            let module_syms = imports?.get(module_name)?;
+            module_syms.iter()
+                .find(|s| s.name == d.base.name && s.kind == SymbolKind::Constant)
+                .and_then(|s| s.const_value.clone())
+        }
         Expr::Designator(d) if d.selectors.is_empty() && d.base.module.is_none() => {
             // TRUE / FALSE are keyword-like but stored as builtin constants.
             match d.base.name.as_str() {
@@ -6126,7 +6164,7 @@ fn evaluate_const_expr(
                 .and_then(|s| s.const_value.clone())
         }
         Expr::Unary { op, expr, .. } => {
-            let inner = evaluate_const_expr(expr, local_symbols, module_symbols)?;
+            let inner = recur(expr)?;
             match (op, inner) {
                 (newcp_parser::UnaryOp::Plus,  ConstValue::Integer(v)) => Some(ConstValue::Integer(v)),
                 (newcp_parser::UnaryOp::Minus, ConstValue::Integer(v)) => v.checked_neg().map(ConstValue::Integer),
@@ -6139,12 +6177,12 @@ fn evaluate_const_expr(
         Expr::Set { elements, .. } => {
             let mut bits: u32 = 0;
             for elem in elements {
-                let start = match evaluate_const_expr(&elem.start, local_symbols, module_symbols)? {
+                let start = match recur(&elem.start)? {
                     ConstValue::Integer(n) if (0..32).contains(&n) => n as u32,
                     _ => return None,
                 };
                 let end = if let Some(end_expr) = &elem.end {
-                    match evaluate_const_expr(end_expr, local_symbols, module_symbols)? {
+                    match recur(end_expr)? {
                         ConstValue::Integer(n) if (0..32).contains(&n) => n as u32,
                         _ => return None,
                     }
@@ -6161,8 +6199,8 @@ fn evaluate_const_expr(
             Some(ConstValue::Set(bits))
         }
         Expr::Binary { left, op, right, .. } => {
-            let lv = evaluate_const_expr(left, local_symbols, module_symbols)?;
-            let rv = evaluate_const_expr(right, local_symbols, module_symbols)?;
+            let lv = recur(left)?;
+            let rv = recur(right)?;
             match (lv, rv) {
                 (ConstValue::Integer(l), ConstValue::Integer(r)) => {
                     match op {

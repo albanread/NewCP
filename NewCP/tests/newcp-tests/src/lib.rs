@@ -3778,4 +3778,51 @@ mod tests {
             1042017,
         );
     }
+
+    /// Services.Action extension + deferred-scheduler round-trip.
+    ///
+    /// Workout for the new Services slice:
+    /// - `CounterAction` extends `Services.ActionDesc` (ABSTRACT)
+    ///   and overrides `Do` — the override fires via vtable
+    ///   dispatch from inside `Services.Step`;
+    /// - `DoLater` with `now` / `immediately` schedules actions;
+    /// - `RemoveAction` cancels a pending action so it doesn't
+    ///   fire;
+    /// - a second `Step` on an empty queue is a no-op (idempotency).
+    ///
+    /// Expected 1022 = firedCount(1)*1000 + lastFired(22).
+    #[test]
+    fn services_action_scheduler_dispatches_through_vtable() {
+        assert_eq!(
+            run_function("Mod/Tests/ServicesExtBase.cp", "Run"),
+            1022,
+        );
+    }
+
+    /// Verifies the sema constant folder resolves a CONST
+    /// expression whose operand is a CONST imported from
+    /// another module.  Used to silently drop the receiver
+    /// from the symbol table, surfacing later as "identifier X
+    /// is not declared" at every use site (e.g. Services.scale
+    /// referencing Kernel.timeResolution).
+    #[test]
+    fn imported_const_is_foldable_in_derived_const() {
+        assert_eq!(
+            run_function("Mod/Tests/ImportedConstProbe.cp", "Run"),
+            500,
+        );
+    }
+
+    /// Parameterless method call on a local of pointer-alias-to-
+    /// abstract type — `victim.Fire;` (no parens) on a `Base`
+    /// pointing at a `Leaf`.  Used to mis-route through the
+    /// `is_bare_proc_call` path and emit a Call to thin air;
+    /// now lands on the bound-method vtable dispatch.
+    #[test]
+    fn parameterless_method_call_on_local_dispatches_through_vtable() {
+        assert_eq!(
+            run_function("Mod/Tests/AbstractLocalCallProbe.cp", "Run"),
+            99,
+        );
+    }
 }
