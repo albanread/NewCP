@@ -32,11 +32,18 @@ IMPORT HostStores, Stores, Models, Containers, Properties, Ports, Fonts, Views;
 CONST
     (** Special character codes used by the text stream — these
         live in the same CHAR space as ordinary letters but are
-        treated specially by Reader / Writer / TextMappers. *)
-    viewcode* = 02X;    (** placeholder for an embedded view *)
-    tab*      = 09X;    (** horizontal tabulator *)
-    line*     = 0DX;    (** line separator *)
-    para*     = 0EX;    (** paragraph separator *)
+        treated specially by Reader / Writer / TextMappers /
+        TextSetters. *)
+    viewcode*   = 02X;    (** placeholder for an embedded view *)
+    tab*        = 09X;    (** horizontal tabulator *)
+    line*       = 0DX;    (** line separator *)
+    para*       = 0EX;    (** paragraph separator *)
+    zwspace*    = 8BX;    (** zero-width space — word boundary, no glyph *)
+    digitspace* = 8FX;    (** digit-width space *)
+    hyphen*     = 90X;    (** real hyphen *)
+    nbhyphen*   = 91X;    (** non-breaking hyphen *)
+    nbspace*    = 0A0X;   (** non-breaking space *)
+    softhyphen* = 0ADX;   (** soft hyphen — break-here hint, no glyph *)
 
     (** Pref.opts — options of text-aware views. *)
     maskChar* = 0;

@@ -3919,4 +3919,27 @@ mod tests {
             42,
         );
     }
+
+    /// TextSetters extension — concrete Directory / Setter /
+    /// Reader leaves implementing every ABSTRACT method,
+    /// vtable dispatch through Directory.New + Setter.NewReader +
+    /// Setter.NextSequence/PreviousSequence, plus a LineBox
+    /// with inline-array-of-INTEGER `tabW` field-access (the
+    /// pattern #34 fixed).
+    ///
+    /// Expected 119425.
+    ///
+    /// Currently `#[ignore]`d: the LineBox `tabW` write path
+    /// traps "array index out of bounds" at runtime even
+    /// though the index (5) is well within the array's 32
+    /// slots.  Diagnosis to follow — separate from the port
+    /// landing.
+    #[test]
+    #[ignore]
+    fn textsetters_directory_dispatches_and_linebox_round_trips() {
+        assert_eq!(
+            run_function("Mod/Tests/TextSettersExtBase.cp", "Run"),
+            119425,
+        );
+    }
 }
