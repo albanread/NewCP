@@ -5502,7 +5502,7 @@ fn load_imported_module_symbols(
 /// type symbols defined by the imported module). This is the
 /// post-processing step that lets cross-module record-extends checks see
 /// the same canonical name on both sides of an inheritance edge.
-fn qualify_local_named_refs(
+pub fn qualify_local_named_refs(
     ty: &mut SemanticType,
     module_name: &str,
     local_type_names: &HashSet<String>,

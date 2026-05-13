@@ -639,70 +639,74 @@ matching the CP §SYSTEM.MOVE documented argument order
 **Regression coverage**: matrix probe
 `M_SYSTEM_MOVE_BetweenArrays` un-ignored.
 
-### 33. Chained-call receiver through a cross-module method result
+### 33. ~~Chained-call receiver through a cross-module method result~~ — FIXED
 
-**Where**: IR's bound-call lowering (`lower_bound_proc_call_expr`)
-when the receiver of a method call is itself the result of an
-earlier method call whose return type lives in another module.
+**Status**: closed.  The fix sits in `designator_ir_type`:
+when a `Selector::Field(name)` doesn't resolve to a data
+field, the lookup now tries to resolve `name` as a METHOD
+on the receiver's type (via the new `method_result_ir_type`
+helper).  If found, the method's return type is parked in
+`pending_call_result`; the next iteration's `Selector::Call`
+or `Selector::AmbiguousParen` consumes that and transitions
+`ty` accordingly.
 
-**Surfaced by**: `TextMappers.Scanner.Skip` would naturally
-write `s.start := s.rider.Base().Length()`.  Here `s.rider` is
-`TextModels.Reader`, `Base()` returns `TextModels.Model`, and
-`Length()` is a method on that Model.  IR emits the inner
-`methodcall t[Base]()` correctly, but the outer `.Length()`
-falls into the `field:Length` GlobalRef fallback and codegen
-later trips with `cast ptr to i64`.
+The method-result lookup walks both local and imported
+modules (mirroring the local-module path for in-module
+chains), and qualifies any unqualified Named refs in the
+result type against the imported module before mapping to
+IR.  That's what lets `o.Pick().Total()` resolve cleanly
+even when `Pick` returns a record from another module.
 
-**Why it's specific to cross-module**: the in-module
-"chained call result is the receiver of the next call" case
-is already handled (deferred_fixes #22 / `prefix_ends_in_call_for_ty`
-in `lower_bound_proc_call_expr`).  The cross-module variant
-hits the same code path but the prefix-type computation
-doesn't recognise an imported `Procedure` return type as the
-receiver of the trailing `.Method()` selector.
+The existing single-Call prefix path in
+`lower_bound_proc_call_expr` (which handled the `name().Method()`
+case for in-module callees and was the previous deferred_fixes
+#22) is now subsumed by the general `designator_ir_type`
+walk — chains of any length resolve uniformly.
 
-**Workaround**: extract the intermediate Model into a local
-and call Length on it.  `TextMappers.Skip` does this — the
-at-EOT cursor position is left at the rider's last good
-position rather than the model's `Length()` for now.
+**Regression coverage**:
+- `Mod/Tests/ChainedXModCallProbe.cp` — minimal repro
+  (`o.Pick().Total()` where Pick returns a record from
+  another module).
+- `Mod/TextMappers.cp::Scanner.Skip` — the BB-faithful
+  `s.start := s.rider.Base().Length()` body un-skipped.
 
-**Closing it**: extend the chained-call detection in
-`lower_bound_proc_call_expr` so that when the prefix
-designator ends in a `Selector::Call(_)` whose callee is a
-cross-module procedure / method, the receiver type comes from
-the IMPORTED module's procedure-return-type record.  Today
-the same logic exists for in-module calls; mirror it for
-imports via `imported_callee_procedure_type`.
+### 34. ~~Field access on an array-element of a cross-module Named record~~ — FIXED
 
-### 34. Field access on an array-element of a cross-module Named record
+**Status**: closed.  Root cause was that the IR's
+`flatten_imported_record_fields` returned the imported
+record's fields with their inner Named refs still
+UNQUALIFIED — because the IR's own `load_cached_import`
+calls `analyze_module_ast` without running sema's
+`qualify_local_named_refs` pass on the result.
 
-**Where**: IR's designator-address lowering when the
-selector chain is `<base>.<arr-field>[<index>].<field>`,
-where `<arr-field>` has type `ARRAY n OF Foo` and `Foo` is
-a Named record declared in an imported module.
+So for `TextRulers.TabArray.tab: ARRAY 32 OF Tab` (where
+`Tab` is local to TextRulers), the IR saw the field's
+element type as `Named { module: None, name: "Tab" }`.
+`map_semantic_type` then produced `IrType::Named("Tab")`
+with no module prefix.  When the consumer later tried to
+walk `tabsBefore.tab[i].stop`, the trailing `Field("stop")`
+looked up `Named("Tab")` locally (the wrong module), found
+nothing, and fell into the `opaque:field:stop` stub.
 
-**Surfaced by**: `Mod/Tests/TextRulersExtBase.cp` attempting
-`tabsBefore.tab[0].stop := 50` where `tab: ARRAY 32 OF Tab`
-and `Tab` is declared in `TextRulers`.  The IR emits the
-`gep tabsBefore, 1` (field access for `.tab`) but skips
-the `IndexGep` step and ends up resolving the trailing
-`.stop` as the unresolved-field stub `opaque:field:stop`.
+Fix: in `flatten_imported_record_fields`, after collecting
+the flattened fields, call `newcp_sema::qualify_local_named_refs`
+on each field's SemanticType using the imported module's
+name + that module's local type-name set.  The qualifier
+flips `Named { module: None, name: "Tab" }` to `Named
+{ module: Some("TextRulers"), name: "Tab" }`, which then
+maps to `IrType::Named("TextRulers.Tab")` — and downstream
+field-flatten finds Tab's fields in the import.
 
-**Workaround**: TextRulersExtBase only reads/writes the
-`len` field of TabArray for now; the per-element access
-is deferred.
+`qualify_local_named_refs` was made `pub` in sema for this.
 
-**Closing it**: trace the selector chain in
-`designator_addr` — when the previous selector landed on a
-field whose IR type is `Array { element: Named, .. }`,
-the next `Selector::Index` should emit an `IndexGep` with
-element type Named, then the trailing `Selector::Field`
-should flatten the cross-module record's fields the same
-way single-level cross-module records resolve.  The bug
-appears to be in the "register cross-module Named element
-types so flatten_fields_for_ir_type finds them" path —
-similar to the inline-record-as-field fix (#30 / #f0e154c)
-but for an array element.
+**Regression coverage**:
+- `Mod/Tests/ArrayOfXModRecordProbe.cp` — the minimal
+  repro (`bag.items[i].stop` where Bag is a cross-module
+  record with `items: ARRAY 8 OF Entry` and Entry is in
+  the same imported module).
+- `Mod/Tests/TextRulersExtBase.cp` — the full per-Tab
+  field access on `TabArray.tab[i].stop` un-skipped now
+  that the fix landed.
 
 ---
 

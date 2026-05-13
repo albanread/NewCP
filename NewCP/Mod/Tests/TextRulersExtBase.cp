@@ -83,16 +83,22 @@ MODULE TextRulersExtBase;
         IF ruler.style # style THEN RETURN -4 END;
 
         (* Stage 3: CopyTabs round-trips a TabArray containing
-           an inline ARRAY 32 OF Tab.  We only set / read the
-           `len` field — the per-element field access
-           (`tabsBefore.tab[0].stop`) currently falls into
-           an IR/sema gap when the array element is a
-           cross-module Named record (filed as a follow-up).
-           A future revision of this test will pin the full
-           per-tab round-trip. *)
-        tabsBefore.len := 7;
+           an inline ARRAY 32 OF Tab.  Verifies per-element
+           field access on a cross-module Named record (Tab
+           is declared in TextRulers; that's the path #34
+           closed). *)
+        tabsBefore.len := 3;
+        tabsBefore.tab[0].stop := 50;
+        tabsBefore.tab[0].type := {TextRulers.centerTab};
+        tabsBefore.tab[1].stop := 120;
+        tabsBefore.tab[1].type := {TextRulers.rightTab};
+        tabsBefore.tab[2].stop := 240;
+        tabsBefore.tab[2].type := {};
         TextRulers.CopyTabs(tabsBefore, tabsAfter);
-        IF tabsAfter.len # 7 THEN RETURN -5 END;
+        IF tabsAfter.len # 3 THEN RETURN -5 END;
+        IF tabsAfter.tab[0].stop # 50 THEN RETURN -6 END;
+        IF ~(TextRulers.centerTab IN tabsAfter.tab[0].type) THEN RETURN -7 END;
+        IF tabsAfter.tab[2].stop # 240 THEN RETURN -8 END;
 
         (* Stage 4: construct a Prop directly, set fields,
            verify they round-trip through the inline-record
@@ -114,10 +120,10 @@ MODULE TextRulersExtBase;
 
         (* Pack:
              p.first (100) * 1000 + p.left (200) * 10 + i (3)
-             + tabsAfter.len (7)
-             = 100000 + 2000 + 3 + 7 = 102010 *)
-        packed := p.first * 1000 + p.left * 10 + i + tabsAfter.len;
-        RETURN packed       (* expected 102010 *)
+             + tabsAfter.tab[1].stop (120)
+             = 100000 + 2000 + 3 + 120 = 102123 *)
+        packed := p.first * 1000 + p.left * 10 + i + tabsAfter.tab[1].stop;
+        RETURN packed       (* expected 102123 *)
     END Run;
 
 END TextRulersExtBase.

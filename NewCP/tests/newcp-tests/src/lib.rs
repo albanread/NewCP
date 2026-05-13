@@ -3884,12 +3884,39 @@ mod tests {
     /// Prop with the inline `opts: RECORD val, mask: SET END`
     /// field.
     ///
-    /// Expected 102010.
+    /// Expected 102123 (now that #34 closed: per-tab
+    /// `tabsAfter.tab[1].stop` resolves cleanly).
     #[test]
     fn textrulers_directory_factories_and_tabs_round_trip() {
         assert_eq!(
             run_function("Mod/Tests/TextRulersExtBase.cp", "Run"),
-            102010,
+            102123,
+        );
+    }
+
+    /// Repro / regression for deferred_fixes #34 — accessing
+    /// a field of an array element where the element type
+    /// is a cross-module Named record.  `bag.items[0].stop`
+    /// where `Bag.items: ARRAY 8 OF Entry` and Entry lives
+    /// in an imported module.
+    #[test]
+    fn field_of_array_element_of_xmod_record() {
+        assert_eq!(
+            run_function("Mod/Tests/ArrayOfXModRecordProbe.cp", "Run"),
+            1122,
+        );
+    }
+
+    /// Repro / regression for deferred_fixes #33 — chained
+    /// method call where the inner method's return type
+    /// lives in another module.  `o.Pick().Total()` where
+    /// `Pick` returns a `ChainedXModCallBase.Inner` and
+    /// `Total` is a method on that Inner.
+    #[test]
+    fn chained_xmod_method_call_resolves() {
+        assert_eq!(
+            run_function("Mod/Tests/ChainedXModCallProbe.cp", "Run"),
+            42,
         );
     }
 }

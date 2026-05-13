@@ -1001,7 +1001,26 @@ impl<'m> LowerCtx<'m> {
         let Some(sym) = sema.symbols.iter().find(|s| s.name == type_name && s.kind == SymbolKind::Type) else {
             return Vec::new();
         };
-        Self::flatten_sem_type_fields(sym.declared_type.as_ref(), &sema.symbols)
+        let mut fields = Self::flatten_sem_type_fields(sym.declared_type.as_ref(), &sema.symbols);
+        // Qualify unqualified Named refs in the returned field
+        // types to the imported module's name.  Required so that
+        // `Bag.items: ARRAY 8 OF Entry` (where `Entry` is local
+        // to the imported module) survives the IR's cross-module
+        // walk as `Array { Named { module: Some("Mod"), name:
+        // "Entry" } }` rather than collapsing the module
+        // qualifier and producing `Named("Entry")` later — which
+        // would defeat field-flatten at the next dot in the chain
+        // (e.g. `bag.items[0].stop`).
+        let local_type_names: std::collections::HashSet<String> = sema
+            .symbols
+            .iter()
+            .filter(|s| s.kind == SymbolKind::Type)
+            .map(|s| s.name.clone())
+            .collect();
+        for (_, field_ty) in fields.iter_mut() {
+            newcp_sema::qualify_local_named_refs(field_ty, module, &local_type_names);
+        }
+        fields
     }
 
     /// Recursively flatten a `SemanticType` (owned reference) with optional module symbols.
@@ -3914,15 +3933,139 @@ impl<'m> LowerCtx<'m> {
         }
     }
 
+    /// Look up the method `method_name` on the record reachable
+    /// from `base_ty` (unwrapping Ptr / Ref / Named-pointer-alias)
+    /// and return its result IR type, or None if the method
+    /// doesn't exist on this type's lineage.  Walks both
+    /// in-module and imported-module methods so chained calls
+    /// like `o.Pick().Total()` resolve when `Total` is on a
+    /// type returned from a cross-module method.
+    fn method_result_ir_type(&mut self, base_ty: &IrType, method_name: &str) -> Option<IrType> {
+        // Strip wrappers to find the Named record type.
+        let mut cursor = base_ty;
+        loop {
+            match cursor {
+                IrType::Ptr(inner) | IrType::UntaggedPtr(inner) | IrType::Ref(inner) => {
+                    cursor = inner.as_ref();
+                }
+                _ => break,
+            }
+        }
+        let type_name = match cursor {
+            IrType::Named(n) => n.clone(),
+            _ => return None,
+        };
+        // Resolve pointer-alias `Foo = POINTER TO FooDesc` to
+        // the underlying record name.
+        let (module_opt, base_name) = match type_name.split_once('.') {
+            Some((m, n)) => (Some(m), n),
+            None => (None, type_name.as_str()),
+        };
+        let canonical = self.canonical_named_record(module_opt, base_name);
+        // Search the right module's symbols.
+        let (search_module, search_record): (Option<String>, String) =
+            match canonical.split_once('.') {
+                Some((m, n)) => (Some(m.to_string()), n.to_string()),
+                None => (module_opt.map(str::to_string), canonical),
+            };
+        // Imported case.
+        if let Some(module_name) = &search_module {
+            let sema = load_cached_import(module_name, &mut self.import_cache)?;
+            let sema = sema.clone();
+            let methods = sema
+                .symbols
+                .iter()
+                .find(|s| s.kind == newcp_sema::SymbolKind::Type && s.name == search_record)
+                .and_then(|s| s.declared_type.as_ref())
+                .and_then(|ty| {
+                    let rec_ty = match ty {
+                        SemanticType::Record { .. } => Some(ty),
+                        SemanticType::Pointer { target, .. } => match target.as_ref() {
+                            SemanticType::Record { .. } => Some(target.as_ref()),
+                            _ => None,
+                        },
+                        _ => None,
+                    }?;
+                    if let SemanticType::Record { methods, .. } = rec_ty {
+                        Some(methods.clone())
+                    } else {
+                        None
+                    }
+                })?;
+            let method = methods.iter().find(|m| m.name == method_name)?;
+            let result_ty = method.signature.result_type.as_ref()?;
+            // Result type may carry unqualified Named refs — qualify
+            // against the imported module before mapping to IR.
+            let local_type_names: std::collections::HashSet<String> = sema
+                .symbols
+                .iter()
+                .filter(|s| s.kind == newcp_sema::SymbolKind::Type)
+                .map(|s| s.name.clone())
+                .collect();
+            let mut qualified = (**result_ty).clone();
+            newcp_sema::qualify_local_named_refs(&mut qualified, module_name, &local_type_names);
+            return Some(map_semantic_type(&qualified));
+        }
+        // Local case.
+        let methods = self
+            .module_symbols
+            .iter()
+            .find(|s| s.kind == newcp_sema::SymbolKind::Type && s.name == search_record)
+            .and_then(|s| s.declared_type.as_ref())
+            .and_then(|ty| {
+                let rec_ty = match ty {
+                    SemanticType::Record { .. } => Some(ty),
+                    SemanticType::Pointer { target, .. } => match target.as_ref() {
+                        SemanticType::Record { .. } => Some(target.as_ref()),
+                        _ => None,
+                    },
+                    _ => None,
+                }?;
+                if let SemanticType::Record { methods, .. } = rec_ty {
+                    Some(methods.clone())
+                } else {
+                    None
+                }
+            })?;
+        let method = methods.iter().find(|m| m.name == method_name)?;
+        let result_ty = method.signature.result_type.as_ref()?;
+        Some(map_semantic_type(result_ty.as_ref()))
+    }
+
     fn designator_ir_type(&mut self, des: &Designator) -> Option<IrType> {
         let des = self.normalize_designator(des);
         let mut ty = self.base_symbol_ir_type(&des.base)?;
+
+        // When the immediately-preceding selector was a Field
+        // naming a method, remember the method's return type so
+        // a trailing Call selector can transition `ty` to it.
+        // This handles chained method calls like
+        // `o.Pick().Total()` — including the cross-module
+        // variant where `Pick()` returns an Inner from a
+        // different module.  (deferred_fixes #33).
+        let mut pending_call_result: Option<IrType> = None;
 
         for selector in &des.selectors {
             // When traversing into a Ref (VAR param / upvalue), the first selector
             // implicitly dereferences one level.
             if let IrType::Ref(inner) = ty {
                 ty = *inner;
+            }
+            // Consume a previous-iteration's parked method-
+            // result type when the current selector is the
+            // Call that activates it.  `obj.Method()` —
+            // Field("Method") parks the result, Call([])
+            // applies it.
+            if pending_call_result.is_some() {
+                if matches!(selector, Selector::Call(_) | Selector::AmbiguousParen(_)) {
+                    ty = pending_call_result.take().unwrap();
+                    continue;
+                }
+                // Some other selector — the parked result
+                // never got consumed (e.g. `obj.Method` used
+                // as a procedure value without parens).
+                // Drop it; we keep the current `ty` unchanged.
+                pending_call_result = None;
             }
             // CP `a[i, j]` is parsed as a single Selector::Index([i, j]); each
             // index strips one Array/Ptr/Named wrapper. Loop here so the type
@@ -3968,7 +4111,19 @@ impl<'m> LowerCtx<'m> {
                     if let Some((_, field_sem_ty)) = flat.iter().find(|(n, _)| n == fname) {
                         map_semantic_type(field_sem_ty)
                     } else {
-                        IrType::Opaque(format!("field:{fname}"))
+                        // No data field of that name — try methods.
+                        // A method-result type only takes effect
+                        // when the NEXT selector is a Call, so we
+                        // park it in `pending_call_result` and
+                        // leave `ty` alone for this iteration.
+                        if let Some(method_result_ty) =
+                            self.method_result_ir_type(base_ty, fname)
+                        {
+                            pending_call_result = Some(method_result_ty);
+                            base_ty.clone()
+                        } else {
+                            IrType::Opaque(format!("field:{fname}"))
+                        }
                     }
                 }
                 // Type guard: `msg(PingMsg).tag` — narrows the static

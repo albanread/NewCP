@@ -149,16 +149,7 @@ MODULE TextMappers;
         placeholders, controlled by `opts`) advancing to the
         next significant character.  Sets `s.start` to the
         cursor of the next meaningful token, or `eot` if the
-        reader hit end-of-text.
-
-        TODO: BB-faithful body uses `s.rider.Base().Length()`
-        to compute the at-EOT cursor — that's a chained call
-        through a cross-module method-result receiver, a
-        codepath the IR's bound-call lowering doesn't handle
-        yet for cross-module chains.  Until then, the at-EOT
-        s.start is left at the rider's last good position.
-        Open bug: chained-call receiver through cross-module
-        method result. *)
+        reader hit end-of-text. *)
     PROCEDURE (VAR s: Scanner) Skip* (OUT ch: CHAR), NEW;
     BEGIN
         IF s.rider = NIL THEN
@@ -177,7 +168,8 @@ MODULE TextMappers;
         IF ~s.rider.eot THEN
             s.start := s.rider.Pos() - 1
         ELSE
-            s.type := eot
+            s.start := s.rider.Base().Length();
+            s.type  := eot
         END
     END Skip;
 
