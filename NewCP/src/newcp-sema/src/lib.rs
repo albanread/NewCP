@@ -2306,11 +2306,20 @@ impl<'a> Analyzer<'a> {
     }
 
     fn effective_methods_for_type(&self, type_name: &str) -> Vec<&'a ProcedureDecl> {
-        let mut methods = self
-            .record_type_info(type_name)
-            .and_then(|(_, base)| base)
-            .map(|base| self.effective_methods_for_type(&base))
-            .unwrap_or_default();
+        // Walk the LOCAL inheritance chain only.  `record_type_info`
+        // strips the module qualifier off the base, so when a local
+        // record happens to share its name with an imported one
+        // (e.g. `TextModels.UpdateMsg` extends `Models.UpdateMsg`),
+        // recursing with the stripped name circles back onto the
+        // type currently being analysed and spins forever.  Use the
+        // qualified form: if the base is cross-module, stop here
+        // (the local pass picks up only local-receiver methods,
+        // which is all this caller wants).
+        let mut methods = match self.record_type_info_qualified(type_name) {
+            Some((_, Some((Some(_module), _name)))) => Vec::new(),
+            Some((_, Some((None, base)))) => self.effective_methods_for_type(&base),
+            _ => Vec::new(),
+        };
 
         for declaration in &self.module.declarations {
             let Declaration::Procedure(procedure) = declaration else {

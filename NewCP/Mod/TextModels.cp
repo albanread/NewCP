@@ -27,9 +27,33 @@ MODULE TextModels;
    specification.
 *)
 
-IMPORT HostStores;
+IMPORT HostStores, Stores, Models, Containers, Properties, Ports, Fonts, Views;
 
 CONST
+    (** Special character codes used by the text stream — these
+        live in the same CHAR space as ordinary letters but are
+        treated specially by Reader / Writer / TextMappers. *)
+    viewcode* = 02X;    (** placeholder for an embedded view *)
+    tab*      = 09X;    (** horizontal tabulator *)
+    line*     = 0DX;    (** line separator *)
+    para*     = 0EX;    (** paragraph separator *)
+
+    (** Pref.opts — options of text-aware views. *)
+    maskChar* = 0;
+    hideable* = 1;
+
+    (** Prop.known / valid / readOnly bitmask positions. *)
+    offset* = 0;
+    code*   = 1;
+
+    (** InfoMsg.op *)
+    store* = 0;
+
+    (** UpdateMsg.op *)
+    replace* = 0;
+    insert*  = 1;
+    delete*  = 2;
+
     SuperVersionBytes* = 6;
     MaxPiecesTracked*  = 256;
     TextBufferChars*   = 65536;
@@ -52,6 +76,71 @@ CONST
     OkTooManyPieces*      = 8;
 
 TYPE
+    (** BB-faithful Attributes — text-run formatting state
+        (color, font, sub/superscript offset). *)
+    AttributesDesc* = EXTENSIBLE RECORD (Stores.StoreDesc)
+        init-:   BOOLEAN;
+        color-:  Ports.Color;
+        font-:   Fonts.Font;
+        offset-: INTEGER
+    END;
+    Attributes* = POINTER TO AttributesDesc;
+
+    (** Abstract Reader — single-char streaming cursor. *)
+    ReaderDesc* = ABSTRACT RECORD
+        eot*:    BOOLEAN;
+        attr*:   Attributes;
+        char*:   CHAR;
+        view*:   Views.View;
+        w*, h*:  INTEGER
+    END;
+    Reader* = POINTER TO ReaderDesc;
+
+    (** Abstract Writer — streaming cursor that appends. *)
+    WriterDesc* = ABSTRACT RECORD
+        attr-: Attributes
+    END;
+    Writer* = POINTER TO WriterDesc;
+
+    (** Abstract base for every text model. *)
+    ModelDesc* = ABSTRACT RECORD (Containers.ModelDesc) END;
+    Model* = POINTER TO ModelDesc;
+
+    (** Abstract embedding context for a text model. *)
+    ContextDesc* = ABSTRACT RECORD (Models.ContextDesc) END;
+    Context* = POINTER TO ContextDesc;
+
+    PropDesc* = RECORD (Properties.PropertyDesc)
+        offset*: INTEGER;
+        code*:   CHAR
+    END;
+    Prop* = POINTER TO PropDesc;
+
+    Pref* = RECORD (Properties.Preference)
+        opts*: SET;
+        mask*: CHAR
+    END;
+
+    UpdateMsg* = RECORD (Models.UpdateMsg)
+        op*:                 INTEGER;
+        beg*, end*, delta*:  INTEGER
+    END;
+
+    InfoMsg* = RECORD (Models.Message)
+        op*: INTEGER
+    END;
+
+    DirectoryDesc* = ABSTRACT RECORD
+        attr-: Attributes
+    END;
+    Directory* = POINTER TO DirectoryDesc;
+
+
+    (* -- Stage-1 wire-format-only StdModel (kept for the
+          existing TextViews probes that decode .odc bodies
+          through HostStores.StoreDesc).  Future slices will
+          flip this to extend ModelDesc and use the BB
+          Reader/Writer.  Two coexist for now. *)
     StdModelDesc* = RECORD (HostStores.StoreDesc)
         (** Concatenation of the 6 super-class version bytes. *)
         superVersions*: ARRAY 6 OF BYTE;
