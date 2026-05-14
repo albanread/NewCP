@@ -1952,9 +1952,17 @@ impl<'a> Analyzer<'a> {
                 lengths: lengths.iter().map(|len_expr| {
                     // Evaluate the length expression to a numeric constant if possible.
                     // Looks up CONSTs declared in the enclosing procedure first
-                    // (so `CONST N = 8; VAR a: ARRAY N OF INTEGER` resolves) and
-                    // then named module-level constants.
-                    if let Some(ConstValue::Integer(n)) = evaluate_const_expr(len_expr, local_symbols, &self.module_symbols) {
+                    // (so `CONST N = 8; VAR a: ARRAY N OF INTEGER` resolves), then
+                    // named module-level constants, then IMPORTED constants (so
+                    // `ARRAY TextRulers.maxTabs OF INTEGER` folds to its 32-slot
+                    // length rather than rendering the qualident name as a string —
+                    // which falls through to u64::parse and produces 0).
+                    if let Some(ConstValue::Integer(n)) = evaluate_const_expr_with_imports(
+                        len_expr,
+                        local_symbols,
+                        &self.module_symbols,
+                        Some(&self.imported_modules),
+                    ) {
                         n.to_string()
                     } else {
                         render_expr(len_expr)

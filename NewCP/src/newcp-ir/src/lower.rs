@@ -2808,10 +2808,31 @@ impl<'m> LowerCtx<'m> {
             // `41X` and similar hex literals are typed as SHORTCHAR but a CHAR
             // formal expects a 32-bit value at the ABI level.
             let expects_char = matches!(expected_types.get(index), Some(SemanticType::Builtin(BuiltinType::Char)));
+            let expects_shortchar = matches!(expected_types.get(index), Some(SemanticType::Builtin(BuiltinType::ShortChar)));
             let mut final_value = if expects_char && value.ty() == IrType::ShortChar {
                 let t = self.fresh_temp();
                 self.push(Instr::Cast { dst: t, value: value.clone(), to_ty: IrType::Char });
                 IrValue::Temp(t, IrType::Char)
+            } else if expects_shortchar && value.ty() == IrType::Char {
+                // Narrow CHAR -> SHORTCHAR at the call boundary.
+                // Folded CONST CHARs (e.g. `CONST digitspace = 08FX`) always
+                // surface as IrValue::ConstChar (IrType::Char / i32) because
+                // sema's ConstValue::Char carries no width tag. A SHORTCHAR
+                // formal expects i8; without a trunc the ABI mismatches and
+                // LLVM verification fails (or generates wrong-width loads at
+                // higher opt levels). CP §8.1 permits SHORTCHAR-assignment
+                // of CHAR values in 0..255 — sema already type-checked the
+                // call, so the narrow is always safe here.
+                let narrowed = match &value {
+                    IrValue::ConstChar(c) => IrValue::ConstInt(*c as i128, IrType::ShortChar),
+                    IrValue::ConstInt(n, _) => IrValue::ConstInt(*n, IrType::ShortChar),
+                    _ => {
+                        let t = self.fresh_temp();
+                        self.push(Instr::Cast { dst: t, value: value.clone(), to_ty: IrType::ShortChar });
+                        IrValue::Temp(t, IrType::ShortChar)
+                    }
+                };
+                narrowed
             } else {
                 value
             };
@@ -5435,7 +5456,18 @@ fn load_cached_import<'c>(
             let Ok(ast) = read_module_ast(&path) else {
                 continue;
             };
-            imported_module = Some(analyze_module_ast(&ast));
+            // Pass the imported module's source directory so its OWN
+            // imports (and recursively, their CONSTs used as array
+            // dimensions) resolve via sibling/parent-Mod lookup rather
+            // than relying on the process cwd. Without this,
+            // `ARRAY ImportedMod.someConst OF T` field declarations
+            // collapse to `[0 x T]` whenever the test runner's cwd is
+            // not the workspace root (e.g. `cargo test` sets cwd to
+            // the package dir, not the workspace root).
+            imported_module = Some(newcp_sema::analyze_module_ast_with_source_dir(
+                &ast,
+                path.parent(),
+            ));
             break;
         }
 
