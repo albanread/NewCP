@@ -90,6 +90,18 @@ TYPE
         current*: INTEGER
     END;
 
+    (** Wire-format reader for `.odc`'s embedded TextViews
+        StdView record.  Extends `HostStores.StoreDesc` so
+        `HostStores.NewStore` can allocate it from the
+        qualified-type name baked into the .odc.
+
+        BB collapses this functionality into `Pane` (below) via
+        the full Stores.Store → Views.View → Containers.View
+        chain.  We can't unify those yet because
+        `HostStores.StoreDesc` and `Stores.StoreDesc` are
+        currently separate hierarchies — single-inheritance CP
+        can't put `StdView` in both.  Once `HostStores.StoreDesc`
+        merges into the Stores side, this type and `Pane` fuse. *)
     StdViewDesc* = RECORD (HostStores.StoreDesc)
         (** Stage-1 super-class version chain (Stores.Store +
             Views.View + Containers.View). *)
@@ -111,6 +123,45 @@ TYPE
     END;
     StdView* = POINTER TO StdViewDesc;
 
+    (** Editor pane carrying the runtime state a framework-bound
+        text view needs: the model it's displaying, the scroll
+        origin (`org` is the top-of-view character offset; `dy`
+        is the sub-line pixel offset), the default ruler and
+        attributes to hand to fresh content, and the view-marks
+        visibility flag.
+
+        Named `Pane` (not `StdView`) to avoid colliding with the
+        existing wire-reader `StdView` above.  BB's `StdView`
+        unifies the two roles by riding the full Stores.Store →
+        Views.View → Containers.View → TextViews.View chain; our
+        port keeps them split until `HostStores.StoreDesc` can
+        merge into `Stores.StoreDesc`.  Functionally `Pane` IS
+        the BB editor pane prefix: same field meanings, same
+        abstract-method overrides.
+
+        BB's StdView also carries a cached setter / reader and a
+        line cache (`trailer`, `bot`, `setter`, `setter0`,
+        `cachedRd`).  Those are layout / display state — useless
+        without rendering — and stay deferred.  This slice is a
+        BB-faithful prefix: callers writing framework-style code
+        (`v.SetOrigin`, `v.SetDefaults`, `v.DisplayMarks`) get
+        the same field semantics they'd get from full BB. *)
+    PaneDesc* = RECORD (ViewDesc)
+        text-:      TextModels.Model;
+        org-:       INTEGER;
+        dy-:        INTEGER;
+        defRuler-:  TextRulers.Ruler;
+        defAttr-:   TextModels.Attributes;
+        hideMarks-: BOOLEAN
+    END;
+    Pane* = POINTER TO PaneDesc;
+
+    (** Concrete view-directory.  Builds fresh Pane instances on
+        `New(text)`, inheriting the default-attribute set
+        installed via `Set(defAttr)`. *)
+    PaneDirectoryDesc* = RECORD (DirectoryDesc) END;
+    PaneDirectory*     = POINTER TO PaneDirectoryDesc;
+
 VAR
     (** Container-side directory the framework hands to fresh
         StdView instances when they need a default controller. *)
@@ -120,6 +171,11 @@ VAR
         `dir`; `stdDir` is the framework-installed default and
         never gets replaced. *)
     dir-, stdDir-: Directory;
+
+    (** Module-private storage of the PaneDirectory instance so
+        the body can NEW it through its concrete type before
+        publishing through the abstract `dir-` / `stdDir-` slots. *)
+    std: PaneDirectory;
 
 PROCEDURE (v: StdViewDesc) Internalize* (rd: HostStores.Reader);
     VAR i: INTEGER;
@@ -223,10 +279,129 @@ PROCEDURE (v: View) ShowRangeIn*     (f: Views.Frame; beg, end: INTEGER),
 PROCEDURE (v: View) ShowRange*       (beg, end: INTEGER; focusOnly: BOOLEAN),
     NEW, ABSTRACT;
 
+(* ─── Pane concrete bodies ─────────────────────────────────────
+   Field-update implementations for the abstract View methods,
+   plus the two Containers.View abstracts (`AcceptableModel`,
+   `Restore`) that any concrete View must supply.
+
+   No layout / rendering yet — `GetThisLocation`, `GetRange`,
+   `ThisPos`, `ShowRangeIn`, `ShowRange`, `Restore` are all
+   safe no-ops so callers don't trap.  The state-update methods
+   (`DisplayMarks`, `SetSetter`, `SetOrigin`, `SetDefaults`)
+   and their pollers are BB-faithful and ready for use.
+*)
+
+(** Container-level: a Pane accepts any TextModels.Model
+    (typically a TextModels.StdModel).  TYPE-guard checks the
+    runtime type before binding. *)
+PROCEDURE (v: Pane) AcceptableModel* (m: Containers.Model): BOOLEAN;
+BEGIN
+    RETURN (m # NIL) & (m IS TextModels.Model)
+END AcceptableModel;
+
+(** Views-level: paint the rectangle.  Concrete Pane will render
+    text when the line cache + Ports drawing port; for now this
+    is an empty no-op so a Pane can be installed in a frame and
+    receive Restore broadcasts without trapping. *)
+PROCEDURE (v: Pane) Restore* (f: Views.Frame; l, t, r, b: INTEGER);
+BEGIN
+    (* EMPTY — rendering deferred. *)
+END Restore;
+
+PROCEDURE (v: Pane)DisplayMarks* (hide: BOOLEAN);
+BEGIN
+    v.hideMarks := hide
+END DisplayMarks;
+
+PROCEDURE (v: Pane)HidesMarks* (): BOOLEAN;
+BEGIN
+    RETURN v.hideMarks
+END HidesMarks;
+
+PROCEDURE (v: Pane)SetSetter* (setter: TextSetters.Setter);
+BEGIN
+    (* In the full BB StdView the setter+setter0 pair caches the
+       layout engine across frames and gets invalidated when the
+       model changes.  Storage is deferred to the StdView-with-
+       cache slice; for now the call is a no-op so callers that
+       hand-install a setter don't trap. *)
+END SetSetter;
+
+PROCEDURE (v: Pane)ThisSetter* (): TextSetters.Setter;
+BEGIN
+    RETURN NIL
+END ThisSetter;
+
+PROCEDURE (v: Pane)SetOrigin* (org, dy: INTEGER);
+BEGIN
+    v.org := org;
+    v.dy := dy
+END SetOrigin;
+
+PROCEDURE (v: Pane)PollOrigin* (OUT org, dy: INTEGER);
+BEGIN
+    org := v.org;
+    dy := v.dy
+END PollOrigin;
+
+PROCEDURE (v: Pane)SetDefaults* (r: TextRulers.Ruler; a: TextModels.Attributes);
+BEGIN
+    ASSERT(r # NIL, 20);
+    ASSERT(a # NIL, 21);
+    v.defRuler := r;
+    v.defAttr  := a
+END SetDefaults;
+
+PROCEDURE (v: Pane)PollDefaults* (OUT r: TextRulers.Ruler; OUT a: TextModels.Attributes);
+BEGIN
+    r := v.defRuler;
+    a := v.defAttr
+END PollDefaults;
+
+PROCEDURE (v: Pane)GetThisLocation* (f: Views.Frame; pos: INTEGER; OUT loc: Location);
+BEGIN
+    (* Geometry returned by a full StdView would walk the line
+       cache to find the rectangle around `pos`.  Without a line
+       cache we return a zero Location — callers that consult
+       `loc.x` / `loc.y` see (0, 0); type-guard-style consumers
+       checking `loc.view = NIL` correctly conclude "no embedded
+       child at this position". *)
+    loc.start := pos; loc.pos := pos;
+    loc.x := 0; loc.y := 0;
+    loc.asc := 0; loc.dsc := 0;
+    loc.view := NIL;
+    loc.l := 0; loc.t := 0; loc.r := 0; loc.b := 0
+END GetThisLocation;
+
+PROCEDURE (v: Pane)GetRange* (f: Views.Frame; OUT beg, end: INTEGER);
+BEGIN
+    (* Visible range = [org, org] — empty until rendering exists. *)
+    beg := v.org;
+    end := v.org
+END GetRange;
+
+PROCEDURE (v: Pane)ThisPos* (f: Views.Frame; x, y: INTEGER): INTEGER;
+BEGIN
+    (* No hit-testing without a line cache — every screen click
+       resolves to the scroll origin. *)
+    RETURN v.org
+END ThisPos;
+
+PROCEDURE (v: Pane)ShowRangeIn* (f: Views.Frame; beg, end: INTEGER);
+BEGIN
+    (* No-op until rendering lands. *)
+END ShowRangeIn;
+
+PROCEDURE (v: Pane)ShowRange* (beg, end: INTEGER; focusOnly: BOOLEAN);
+BEGIN
+    (* No-op until broadcast routing through Models.Broadcast
+       fires from a meaningful set of frames. *)
+END ShowRange;
+
 (* ─── Abstract Directory surface ───────────────────────────────
    `New(text)` is the BB-faithful "build me a fresh view for this
-   model" factory — supplied by the concrete StdDirectory once it
-   lands.  `Set` is concrete-EXTENSIBLE here: it just stores the
+   model" factory — supplied by the concrete StdDirectory below.
+   `Set` is concrete-EXTENSIBLE here: it just stores the
    default-attributes blob the framework will hand to fresh views.
 *)
 
@@ -237,6 +412,36 @@ BEGIN
     ASSERT(defAttr # NIL, 20);
     d.defAttr := defAttr
 END Set;
+
+(* ─── StdDirectory concrete factory ────────────────────────────
+   `New(text)` allocates a fresh StdView bound to `text` with
+   neutral display state (origin (0, 0), marks visible, no
+   defaults set yet).  BB calls `Set(defAttr)` on the directory
+   at boot to plant the initial attribute set; if the caller
+   hasn't done so, `defAttr` stays NIL and the StdView's
+   `defAttr-` field is NIL too — a downstream call to
+   `v.PollDefaults` will return NIL, which is the BB contract.
+*)
+
+PROCEDURE (d: PaneDirectoryDesc) New* (text: TextModels.Model): View;
+    VAR v: Pane;
+BEGIN
+    NEW(v);
+    IF text # NIL THEN
+        (* Bind through Containers' InitModel so the inherited
+           `model-` field gets set and ThisModel() returns the
+           bound text.  InitModel asserts via AcceptableModel
+           (overridden above) and runs the EMPTY InitModel2 hook. *)
+        v.InitModel(text)
+    END;
+    v.text     := text;
+    v.org      := 0;
+    v.dy       := 0;
+    v.defRuler := NIL;
+    v.defAttr  := d.defAttr;
+    v.hideMarks := FALSE;
+    RETURN v
+END New;
 
 PROCEDURE SetCtrlDir* (d: Containers.Directory);
 BEGIN
@@ -250,4 +455,12 @@ BEGIN
     dir := d
 END SetDir;
 
+BEGIN
+    (* Install StdDirectory as both the framework default and the
+       currently-active directory.  BB does this from an explicit
+       boot script; we install at module-init so importing
+       TextViews gives a working factory immediately. *)
+    NEW(std);
+    stdDir := std;
+    dir := std
 END TextViews.

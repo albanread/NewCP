@@ -3991,4 +3991,22 @@ mod tests {
             11111,
         );
     }
+
+    /// First slice where a concrete editor pane (Pane) and a
+    /// concrete controller (StdCtrl) bind to each other through
+    /// the framework's abstract Views.View / Controller dispatch
+    /// chain.  Six checks, bit-encoded:
+    ///   1  — dir.New(NIL) returns non-NIL
+    ///   2  — fresh Pane has org=0, dy=0, hideMarks=FALSE
+    ///   4  — DisplayMarks(TRUE) flips hideMarks via abstract dispatch
+    ///   8  — DisplayMarks(FALSE) flips back
+    ///   16 — SetOrigin/PollOrigin round-trip via abstract dispatch
+    ///   32 — InitView2 binds StdCtrl.view to the Pane
+    #[test]
+    fn textviews_pane_binds_to_textcontrollers_stdctrl() {
+        assert_eq!(
+            run_function("Mod/Tests/TextViewsPaneCtrl.cp", "Run"),
+            63,
+        );
+    }
 }
