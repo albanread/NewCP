@@ -2858,13 +2858,35 @@ impl<'m> LowerCtx<'m> {
                 ) {
                     if from_w < to_w {
                         let t = self.fresh_temp();
+                        let to_ty = expected_ir_ty.clone();
                         self.push(Instr::Cast {
                             dst: t,
                             value: final_value.clone(),
-                            to_ty: expected_ir_ty.clone(),
+                            to_ty: to_ty.clone(),
                         });
-                        final_value = IrValue::Temp(t, expected_ir_ty);
+                        final_value = IrValue::Temp(t, to_ty);
                     }
+                }
+                // Integer -> Float promotion at CALL boundary.
+                // CP §8.1: INTEGER is assignment-compatible with REAL
+                // (and SHORTREAL).  Binary-op lowering already promotes
+                // mixed-int/float operands via sitofp (see lower_binary
+                // around line 3140); the same promotion needs to happen
+                // when an integer value lands on a REAL formal — without
+                // it the LLVM CALL is emitted with a width-mismatched
+                // ABI slot and the callee reads garbage (typically NaN
+                // on f64).  Surfaced by HostPorts.HostRiderDesc.DrawRect
+                // passing INTEGER l/t/r/b to HostPortsSys.FillRect's
+                // REAL formals.
+                if is_int_ir(&final_value.ty()) && is_float_ir(&expected_ir_ty) {
+                    let t = self.fresh_temp();
+                    let to_ty = expected_ir_ty.clone();
+                    self.push(Instr::Cast {
+                        dst: t,
+                        value: final_value.clone(),
+                        to_ty: to_ty.clone(),
+                    });
+                    final_value = IrValue::Temp(t, to_ty);
                 }
             }
 

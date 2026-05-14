@@ -4064,4 +4064,24 @@ mod tests {
         );
     }
 
+    /// HostPorts → HostPortsSys → iGui dispatch chain.  No iGui
+    /// window opened — the test pushes commands into iGui's batch
+    /// queue and verifies the chain reached iGui without trapping.
+    /// Seven bit-encoded checks:
+    ///   1   — HostPort.Init sets unit + size
+    ///   2   — NewRider returned non-NIL
+    ///   4   — Rider.Base() round-trips to the port
+    ///   8   — UnpackColor produces (1,0,0,1) for Ports.red
+    ///   16  — DrawRect → HostPortsSys.FillRect → iGui returned cleanly
+    ///   32  — DrawLine returned cleanly
+    ///   64  — DrawString → narrow + font params + iGui returned cleanly
+    /// Expected: 127.
+    #[test]
+    fn hostports_rider_forwards_paint_through_igui() {
+        assert_eq!(
+            run_function("Mod/Tests/HostPortsSmoke.cp", "Run"),
+            127,
+        );
+    }
+
 }
