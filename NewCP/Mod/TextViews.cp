@@ -29,7 +29,7 @@ MODULE TextViews;
    specification.
 *)
 
-IMPORT HostStores, TextModels, TextRulers, TextSetters, Views, Containers;
+IMPORT HostStores, TextModels, TextRulers, TextSetters, Views, Containers, Ports;
 
 CONST
     OkComplete*           = 0;
@@ -299,13 +299,28 @@ BEGIN
     RETURN (m # NIL) & (m IS TextModels.Model)
 END AcceptableModel;
 
-(** Views-level: paint the rectangle.  Concrete Pane will render
-    text when the line cache + Ports drawing port; for now this
-    is an empty no-op so a Pane can be installed in a frame and
-    receive Restore broadcasts without trapping. *)
+(** Views-level: paint the rectangle.  First-pixels slice — emits
+    a white background fill for the dirty rectangle plus, if the
+    pane is bound to a model, a thin black bar along the top edge
+    as a "view exists here" indicator.  No real layout yet (that's
+    the line-cache slice); this proves the abstract-View → Frame
+    → Rider dispatch chain emits real paint calls.
+
+    Drawing port: every call goes through `f.DrawRect(...)`, which
+    Ports translates from user units to device dots before
+    forwarding to the bound Rider.  A recording rider can capture
+    the (l, t, r, b, color) tuple to verify the call landed. *)
 PROCEDURE (v: Pane) Restore* (f: Views.Frame; l, t, r, b: INTEGER);
+    CONST barH = 50;     (* indicator bar height in user units *)
 BEGIN
-    (* EMPTY — rendering deferred. *)
+    (* Background fill — solid white over the entire dirty rect. *)
+    f.DrawRect(l, t, r, b, Ports.fill, Ports.white);
+
+    (* Top-edge indicator bar — only when a model is bound and the
+       dirty rect actually intersects the bar's vertical span. *)
+    IF (v.text # NIL) & (t < barH) THEN
+        f.DrawRect(l, t, r, MIN(b, barH), Ports.fill, Ports.black)
+    END
 END Restore;
 
 PROCEDURE (v: Pane)DisplayMarks* (hide: BOOLEAN);

@@ -4009,4 +4009,35 @@ mod tests {
             63,
         );
     }
+
+    /// First-pixels: Pane.Restore on an unbound pane emits exactly
+    /// one DrawRect (the white background fill).  Verified via a
+    /// recording Rider attached to a TestFrame.  Four checks:
+    ///   1 — exactly one DrawRect call
+    ///   2 — color = Ports.white
+    ///   4 — rect = (0, 0, 800, 600) (matches the dirty rect)
+    ///   8 — stroke = Ports.fill
+    #[test]
+    fn textviews_pane_restore_unbound_emits_background_fill() {
+        assert_eq!(
+            run_function("Mod/Tests/TextViewsPanePixels.cp", "RestoreUnboundEmitsBackground"),
+            15,
+        );
+    }
+
+    /// First-pixels: Pane.Restore on a model-bound pane emits the
+    /// background fill PLUS the top-edge indicator bar.  Two
+    /// DrawRect calls in order (white, then black).  Four checks:
+    ///   1 — exactly two DrawRect calls
+    ///   2 — first call color = white
+    ///   4 — second call color = black
+    ///   8 — second call rect = (0, 0, 800, 50) (top-edge band)
+    #[test]
+    fn textviews_pane_restore_bound_emits_background_and_bar() {
+        assert_eq!(
+            run_function("Mod/Tests/TextViewsPanePixels.cp", "RestoreBoundEmitsBackgroundAndBar"),
+            15,
+        );
+    }
+
 }
