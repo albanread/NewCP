@@ -2504,17 +2504,35 @@ mod tests {
         write_synthetic_odc(&dst, qualified_type_name, body)
     }
 
+    /// Pin the process cwd to the workspace root the first time any
+    /// CP probe asks for it.  CP-level `Stores.OpenDocument(...)`
+    /// arguments are workspace-relative (`Mod/Tests/...`), so they
+    /// need cwd = workspace root.  Cargo launches the test binary
+    /// with cwd = the test crate dir, which would misroute the
+    /// lookups.
+    ///
+    /// We previously did this per-call with a save / chdir / chdir-
+    /// back dance, but `set_current_dir` is process-global state:
+    /// when two parallel test threads each entered the dance they
+    /// could end up restoring the cwd back to the wrong directory
+    /// (or interleaving such that the inner probe saw the wrong
+    /// cwd).  Pinning once is safe because no test in this crate
+    /// relies on the original cargo-supplied cwd surviving past the
+    /// first probe call.
+    fn ensure_workspace_root_cwd() {
+        use std::sync::Once;
+        static ONCE: Once = Once::new();
+        ONCE.call_once(|| {
+            std::env::set_current_dir(workspace_root()).expect("chdir to workspace root");
+        });
+    }
+
     /// Run a CP probe with the test process cwd pinned to the
-    /// workspace root. The CP probe's `OpenDocument` strings are
-    /// hard-coded relative to the workspace root (`Mod/Tests/...`);
-    /// without this the test-crate-relative cwd misroutes them.
-    /// Restores the original cwd on completion.
+    /// workspace root.  Idempotent across calls (see
+    /// [`ensure_workspace_root_cwd`]).
     fn run_function_at_workspace_root(module_ref: &str, proc_name: &str) -> i64 {
-        let saved = std::env::current_dir().expect("get cwd");
-        std::env::set_current_dir(workspace_root()).expect("chdir to workspace");
-        let result = run_function(module_ref, proc_name);
-        std::env::set_current_dir(&saved).expect("chdir back");
-        result
+        ensure_workspace_root_cwd();
+        run_function(module_ref, proc_name)
     }
 
     #[test]

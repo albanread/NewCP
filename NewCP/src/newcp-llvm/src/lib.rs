@@ -13,11 +13,34 @@ pub use options::{CodegenOptions, OptLevel};
 use std::collections::HashMap;
 use std::mem::ManuallyDrop;
 use std::path::{Path, PathBuf};
+use std::sync::{Mutex, MutexGuard};
 
 use inkwell::context::Context;
 use inkwell::targets::{CodeModel, RelocMode, Target, TargetMachine};
 
 use newcp_ir::{IrModule, IrType};
+
+/// Process-wide serializer for the parts of the LLVM pipeline that
+/// touch global state (target init, MCJIT engine construction, global
+/// symbol mapping registration).  LLVM's C bindings are not safe to
+/// drive from multiple OS threads without prior `LLVMStartMultithreaded`
+/// — cargo test runs every `#[test]` in its own thread by default, and
+/// concurrent compiles were observed corrupting function-pointer state
+/// across sessions (e.g. `TestSquare` returning `TestCircle`'s value
+/// under load).
+///
+/// Each `LoaderSession`/dump-driver call into `compile_ir_module` or
+/// `jit_module_with_symbol_mappings` takes this lock for the duration
+/// of the LLVM call.  The held region is short — IR optimisation +
+/// MCJIT engine bring-up — so per-thread throughput regression is
+/// minimal, while cross-thread isolation is restored.
+static LLVM_GLOBAL_LOCK: Mutex<()> = Mutex::new(());
+
+fn llvm_lock() -> MutexGuard<'static, ()> {
+    LLVM_GLOBAL_LOCK
+        .lock()
+        .unwrap_or_else(|poisoned| poisoned.into_inner())
+}
 
 fn create_target_machine(options: &CodegenOptions) -> Result<TargetMachine, CodegenError> {
     let triple = options
@@ -216,6 +239,10 @@ pub fn compile_ir_module(
     ir_module: &IrModule,
     options: &CodegenOptions,
 ) -> Result<CompiledModule, CodegenError> {
+    // Serialize LLVM-global access (target init, pass-manager
+    // construction, etc.) so parallel test threads don't race
+    // through unsynchronized C-ABI state.  See `LLVM_GLOBAL_LOCK`.
+    let _llvm_guard = llvm_lock();
     // Initialize LLVM native target once; safe to call multiple times.
     inkwell::targets::Target::initialize_native(&inkwell::targets::InitializationConfig::default())
         .map_err(|e| CodegenError::Jit(format!("target initialization failed: {e}")))?;
@@ -298,6 +325,10 @@ pub fn jit_module_with_symbol_mappings<'ctx>(
     options: &CodegenOptions,
     extra_symbol_mappings: &HashMap<String, usize>,
 ) -> Result<JitModule<'ctx>, CodegenError> {
+    // Serialize MCJIT engine bring-up + global-symbol mapping
+    // registration with other LLVM-touching threads.  See
+    // `LLVM_GLOBAL_LOCK`.
+    let _llvm_guard = llvm_lock();
     // Capture the vtable slot info and init-function name before consuming
     // `compiled` for IR parsing.
     let vtable_slot_functions = compiled.vtable_slot_functions.clone();
