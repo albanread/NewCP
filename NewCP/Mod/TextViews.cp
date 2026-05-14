@@ -29,7 +29,7 @@ MODULE TextViews;
    specification.
 *)
 
-IMPORT HostStores, TextModels, TextRulers, TextSetters, Views, Containers, Ports;
+IMPORT HostStores, TextModels, TextRulers, TextSetters, Views, Containers, Ports, Fonts;
 
 CONST
     OkComplete*           = 0;
@@ -299,27 +299,73 @@ BEGIN
     RETURN (m # NIL) & (m IS TextModels.Model)
 END AcceptableModel;
 
-(** Views-level: paint the rectangle.  First-pixels slice — emits
-    a white background fill for the dirty rectangle plus, if the
-    pane is bound to a model, a thin black bar along the top edge
-    as a "view exists here" indicator.  No real layout yet (that's
-    the line-cache slice); this proves the abstract-View → Frame
-    → Rider dispatch chain emits real paint calls.
+(** Views-level: paint the rectangle.  Two phases:
 
-    Drawing port: every call goes through `f.DrawRect(...)`, which
-    Ports translates from user units to device dots before
-    forwarding to the bound Rider.  A recording rider can capture
-    the (l, t, r, b, color) tuple to verify the call landed. *)
+      Phase 1 — scaffold: white background fill over the dirty
+        rect, plus a thin black indicator bar along the top
+        edge when the pane has a bound model.
+
+      Phase 2 — text content: walk the model via its abstract
+        Reader and emit one DrawString call per "line" (here
+        meaning "char run up to 0X / end-of-text").  Single-line
+        rendering only — no wrapping, no per-char attributes,
+        no actual layout.  But it's a real text-bearing paint
+        pipeline:
+
+          v.text.NewReader → ReadChar loop → DrawString
+
+        The line cache + setter integration that BB uses for
+        wrapped, multi-line, attribute-aware layout is the next
+        slice; everything else (bound-rider dispatch, coord
+        translation, font passing) is already real.
+
+    Drawing port: every call goes through `f.DrawRect` /
+    `f.DrawString`, which Ports translates from user units to
+    device dots before forwarding to the bound Rider.  A
+    recording rider can capture the call tuples to verify what
+    landed. *)
 PROCEDURE (v: Pane) Restore* (f: Views.Frame; l, t, r, b: INTEGER);
-    CONST barH = 50;     (* indicator bar height in user units *)
+    CONST
+        barH   = 50;     (* indicator bar height in user units *)
+        textY  = 100;    (* baseline of the single text line *)
+        maxLen = 256;    (* max chars to render in one Restore call *)
+    VAR rd: TextModels.Reader;
+        line: ARRAY 256 OF CHAR;
+        i: INTEGER;
+        font: Fonts.Font;
 BEGIN
-    (* Background fill — solid white over the entire dirty rect. *)
+    (* Phase 1: scaffold. *)
     f.DrawRect(l, t, r, b, Ports.fill, Ports.white);
-
-    (* Top-edge indicator bar — only when a model is bound and the
-       dirty rect actually intersects the bar's vertical span. *)
     IF (v.text # NIL) & (t < barH) THEN
         f.DrawRect(l, t, r, MIN(b, barH), Ports.fill, Ports.black)
+    END;
+
+    (* Phase 2: text content. *)
+    IF (v.text # NIL) & (v.text.Length() > 0) & (b > barH) THEN
+        rd := v.text.NewReader(NIL);
+        IF rd # NIL THEN
+            rd.SetPos(0);
+            i := 0;
+            rd.ReadChar();
+            WHILE ~rd.eot & (i < maxLen - 1) DO
+                line[i] := rd.char;
+                INC(i);
+                rd.ReadChar()
+            END;
+            line[i] := 0X;
+            (* Font selection: prefer the bound default-attr font,
+               then the framework's default-font directory.  Both
+               can be NIL in this slice (HostFonts not installed in
+               most probes); DrawString tolerates NIL font and the
+               recording rider records the (potentially NIL) ptr
+               for inspection.  Real rendering will assert non-NIL. *)
+            font := NIL;
+            IF v.defAttr # NIL THEN font := v.defAttr.font END;
+            IF (font = NIL) & (Fonts.dir # NIL) THEN
+                font := Fonts.dir.Default()
+            END;
+            f.DrawString(l, textY, Ports.black, line, font)
+        END
     END
 END Restore;
 

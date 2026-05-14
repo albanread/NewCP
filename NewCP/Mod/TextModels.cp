@@ -82,6 +82,11 @@ CONST
     OkLongCharOddBytes*   = 7;
     OkTooManyPieces*      = 8;
 
+    (** Maximum chars in a Doc's text buffer.  Small enough to
+        keep test allocations cheap; will grow when a paging /
+        rope-based StdModel lands. *)
+    DocCapacity* = 4096;
+
 TYPE
     (** BB-faithful Attributes — text-run formatting state
         (color, font, sub/superscript offset). *)
@@ -189,6 +194,33 @@ TYPE
         result*:        INTEGER
     END;
     StdModel* = POINTER TO StdModelDesc;
+
+
+    (* ─── Concrete Doc / DocReader / DocWriter ───────────────
+       First concrete TextModels.Model in the port.  Carries a
+       fixed-capacity in-memory CHAR buffer.  BB-faithful prefix
+       of what StdModel will eventually unify with (same naming-
+       gap as TextViews.Pane vs StdView). *)
+    DocDesc* = RECORD (ModelDesc)
+        (** In-memory text buffer.  `len` chars are valid;
+            `buf[len]` is always 0X (acts as a sentinel for
+            cursor-style traversal). *)
+        buf-: ARRAY DocCapacity OF CHAR;
+        len-: INTEGER
+    END;
+    Doc* = POINTER TO DocDesc;
+
+    DocReaderDesc* = RECORD (ReaderDesc)
+        doc-: Doc;
+        pos-: INTEGER       (** next char to read; 0 <= pos <= doc.len *)
+    END;
+    DocReader* = POINTER TO DocReaderDesc;
+
+    DocWriterDesc* = RECORD (WriterDesc)
+        doc-:  Doc;
+        wpos-: INTEGER      (** append cursor; 0 <= wpos <= doc.len *)
+    END;
+    DocWriter* = POINTER TO DocWriterDesc;
 
 PROCEDURE (m: StdModelDesc) Internalize* (rd: HostStores.Reader);
     VAR i, j, len, w, h, ascii, attrIdx: INTEGER;
@@ -381,5 +413,162 @@ PROCEDURE (m: Model) NewWriter* (old: Writer): Writer, NEW, ABSTRACT;
 
 (** Character length of the text. *)
 PROCEDURE (m: Model) Length* (): INTEGER, NEW, ABSTRACT;
+
+
+(* ─── Concrete Doc / DocReader / DocWriter ──────────────────────
+   First concrete TextModels.Model in the port.  `Doc` carries a
+   fixed-capacity in-memory CHAR buffer; `DocReader` walks it
+   one char at a time; `DocWriter` appends to it.  This is a
+   BB-faithful prefix of what `StdModel` will eventually be — the
+   wire-format reader and the in-memory model fuse once
+   `HostStores.StoreDesc` and `Stores.StoreDesc` unify (same
+   constraint that's keeping `StdView` and `Pane` separate in
+   TextViews).
+
+   Until then, `Doc` is the way framework code (and probes)
+   instantiate a real text model:
+
+     NEW(d);                    (* d.len = 0, empty *)
+     wr := d.NewWriter(NIL);
+     wr.WriteString("hello");   (* d.buf and d.len update *)
+     rd := d.NewReader(NIL);
+     rd.ReadChar();             (* rd.char = 'h', rd.pos = 1, etc *)
+*)
+
+
+(* -- DocReader concrete overrides ------------------------------ *)
+
+PROCEDURE (rd: DocReaderDesc) ReadChar* ();
+BEGIN
+    (* BB semantics: a successful ReadChar returns a real char and
+       leaves eot = FALSE; eot only trips when there's nothing
+       left to read.  The caller's loop pattern is:
+         rd.ReadChar();
+         WHILE ~rd.eot DO use(rd.char); rd.ReadChar() END
+       — which reads chars *until the next* ReadChar fails.  An
+       overly-eager "trip eot on the call that consumed the last
+       char" implementation drops the last char on the floor. *)
+    IF rd.pos >= rd.doc.len THEN
+        rd.eot  := TRUE;
+        rd.char := 0X
+    ELSE
+        rd.char := rd.doc.buf[rd.pos];
+        rd.pos  := rd.pos + 1;
+        rd.eot  := FALSE
+    END
+END ReadChar;
+
+PROCEDURE (rd: DocReaderDesc) SetPos* (pos: INTEGER);
+BEGIN
+    IF pos < 0 THEN pos := 0 END;
+    IF pos > rd.doc.len THEN pos := rd.doc.len END;
+    rd.pos := pos;
+    rd.eot := pos >= rd.doc.len;
+    IF ~rd.eot THEN rd.char := rd.doc.buf[pos] ELSE rd.char := 0X END
+END SetPos;
+
+PROCEDURE (rd: DocReaderDesc) Pos* (): INTEGER;
+BEGIN
+    RETURN rd.pos
+END Pos;
+
+PROCEDURE (rd: DocReaderDesc) Base* (): Model;
+BEGIN
+    RETURN rd.doc
+END Base;
+
+
+(* -- DocWriter concrete overrides ----------------------------- *)
+
+PROCEDURE (wr: DocWriterDesc) WriteChar* (ch: CHAR);
+BEGIN
+    IF wr.wpos < DocCapacity - 1 THEN
+        wr.doc.buf[wr.wpos] := ch;
+        wr.wpos := wr.wpos + 1;
+        IF wr.wpos > wr.doc.len THEN
+            wr.doc.len := wr.wpos;
+            wr.doc.buf[wr.doc.len] := 0X    (* keep sentinel *)
+        END
+    END
+END WriteChar;
+
+PROCEDURE (wr: DocWriterDesc) WriteString* (IN s: ARRAY OF CHAR);
+    VAR i: INTEGER;
+BEGIN
+    i := 0;
+    WHILE (i < LEN(s)) & (s[i] # 0X) DO
+        wr.WriteChar(s[i]);
+        INC(i)
+    END
+END WriteString;
+
+PROCEDURE (wr: DocWriterDesc) SetPos* (pos: INTEGER);
+BEGIN
+    IF pos < 0 THEN pos := 0 END;
+    IF pos > wr.doc.len THEN pos := wr.doc.len END;
+    wr.wpos := pos
+END SetPos;
+
+PROCEDURE (wr: DocWriterDesc) Pos* (): INTEGER;
+BEGIN
+    RETURN wr.wpos
+END Pos;
+
+PROCEDURE (wr: DocWriterDesc) SetAttr* (attr: Attributes);
+BEGIN
+    (* Attribute-aware writes are deferred — Doc carries plain
+       chars without per-run formatting until the run-list slice
+       ports.  The call is accepted as a no-op so callers using
+       BB-style WriteString-after-SetAttr patterns don't trap. *)
+END SetAttr;
+
+PROCEDURE (wr: DocWriterDesc) Base* (): Model;
+BEGIN
+    RETURN wr.doc
+END Base;
+
+
+(* -- Doc concrete overrides ----------------------------------- *)
+
+PROCEDURE (m: DocDesc) NewReader* (old: Reader): Reader;
+    VAR rd: DocReader;
+BEGIN
+    NEW(rd);
+    rd.doc  := m(Doc);
+    rd.pos  := 0;
+    rd.char := 0X;
+    rd.eot  := m.len = 0;
+    IF ~rd.eot THEN rd.char := m.buf[0] END;
+    RETURN rd
+END NewReader;
+
+PROCEDURE (m: DocDesc) NewWriter* (old: Writer): Writer;
+    VAR wr: DocWriter;
+BEGIN
+    NEW(wr);
+    wr.doc  := m(Doc);
+    wr.wpos := m.len;       (* append by default *)
+    RETURN wr
+END NewWriter;
+
+PROCEDURE (m: DocDesc) Length* (): INTEGER;
+BEGIN
+    RETURN m.len
+END Length;
+
+(* Containers.Model abstracts.  Doc has no embedded views yet. *)
+
+PROCEDURE (m: DocDesc) GetEmbeddingLimits*
+    (OUT minW, maxW, minH, maxH: INTEGER);
+BEGIN
+    minW := 0; maxW := 0;
+    minH := 0; maxH := 0
+END GetEmbeddingLimits;
+
+PROCEDURE (m: DocDesc) ReplaceView* (old, new: Views.View);
+BEGIN
+    (* No embedded views — nothing to replace. *)
+END ReplaceView;
+
 
 END TextModels.

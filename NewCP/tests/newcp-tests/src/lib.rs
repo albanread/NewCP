@@ -4040,4 +4040,28 @@ mod tests {
         );
     }
 
+    /// Real text rendering: Pane bound to a concrete Doc
+    /// populated via DocWriter.WriteString.  Pane.Restore opens a
+    /// Reader, walks the chars, and emits one DrawString call
+    /// containing "Hello, pixels!".  Four bit-encoded checks:
+    ///   1 — scaffold landed (2 DrawRect calls)
+    ///   2 — one DrawString call
+    ///   4 — DrawString color = black
+    ///   8 — captured text matches "Hello, pixels!\0"
+    /// Real text rendering: Pane bound to a concrete Doc populated
+    /// via DocWriter.WriteString.  Pane.Restore opens a Reader,
+    /// walks all chars, and emits one DrawString call containing
+    /// "Hello, pixels!".  Four bit-encoded checks:
+    ///   1 — scaffold landed (2 DrawRect calls)
+    ///   2 — one DrawString call
+    ///   4 — DrawString color = black
+    ///   8 — captured text matches "Hello, pixels!\0" exactly
+    #[test]
+    fn textviews_pane_restore_renders_doc_text_via_drawstring() {
+        assert_eq!(
+            run_function("Mod/Tests/TextViewsPanePixels.cp", "RestoreBoundEmitsText"),
+            15,
+        );
+    }
+
 }

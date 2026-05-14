@@ -51,6 +51,11 @@ MODULE TextViewsPanePixels;
         rectL-, rectT-, rectR-, rectB-: ARRAY 4 OF INTEGER;
         rectS-, rectColor-:              ARRAY 4 OF INTEGER;
 
+        (* Captured DrawString state. *)
+        stringCallCount-:                INTEGER;
+        stringX-, stringY-, stringColor-: INTEGER;
+        stringText-: ARRAY 256 OF CHAR;
+
 
     (* -- StubModel: minimal concrete TextModels.Model --------------------- *)
 
@@ -139,7 +144,16 @@ MODULE TextViewsPanePixels;
     PROCEDURE (rd: TestRiderDesc) DrawString*
         (x, y: INTEGER; col: Ports.Color; IN s: ARRAY OF CHAR;
          font: Fonts.Font);
-    BEGIN END DrawString;
+        VAR i: INTEGER;
+    BEGIN
+        stringX := x; stringY := y; stringColor := col;
+        i := 0;
+        WHILE (i < LEN(s) - 1) & (i < LEN(stringText) - 1) & (s[i] # 0X) DO
+            stringText[i] := s[i]; INC(i)
+        END;
+        stringText[i] := 0X;
+        INC(stringCallCount)
+    END DrawString;
     PROCEDURE (rd: TestRiderDesc) DrawSpace*
         (x, y, w: INTEGER; col: Ports.Color; font: Fonts.Font);
     BEGIN END DrawSpace;
@@ -173,7 +187,10 @@ MODULE TextViewsPanePixels;
             rectR[i] := 0; rectB[i] := 0;
             rectS[i] := 0; rectColor[i] := 0;
             INC(i)
-        END
+        END;
+        stringCallCount := 0;
+        stringX := 0; stringY := 0; stringColor := 0;
+        stringText[0] := 0X
     END ResetCapture;
 
     PROCEDURE BuildFrame (): TestFrame;
@@ -211,6 +228,42 @@ MODULE TextViewsPanePixels;
         RETURN result  (* expect 15 if every check passes *)
     END RestoreUnboundEmitsBackground;
 
+    (** Pane bound to a Doc with real text: Restore should emit
+        the scaffold (background + bar) AND a DrawString call
+        containing the model's chars. *)
+    PROCEDURE RestoreBoundEmitsText* (): INTEGER;
+        VAR d: TextModels.Doc;
+            wr: TextModels.Writer;
+            v: TextViews.View; f: TestFrame;
+            result: INTEGER;
+            ok: BOOLEAN;
+    BEGIN
+        ResetCapture;
+        NEW(d);
+        wr := d.NewWriter(NIL);
+        wr.WriteString("Hello, pixels!");
+        v := TextViews.dir.New(d);
+        IF v = NIL THEN RETURN -1 END;
+        f := BuildFrame();
+
+        v.Restore(f, 0, 0, 800, 600);
+
+        result := 0;
+        IF rectCallCount = 2 THEN INC(result, 1) END;          (* scaffold *)
+        IF stringCallCount = 1 THEN INC(result, 2) END;         (* one text call *)
+        IF stringColor = Ports.black THEN INC(result, 4) END;
+        ok := (stringText[0] = "H") & (stringText[1] = "e")
+            & (stringText[2] = "l") & (stringText[3] = "l")
+            & (stringText[4] = "o") & (stringText[5] = ",")
+            & (stringText[6] = " ") & (stringText[7] = "p")
+            & (stringText[8] = "i") & (stringText[9] = "x")
+            & (stringText[10] = "e") & (stringText[11] = "l")
+            & (stringText[12] = "s") & (stringText[13] = "!")
+            & (stringText[14] = 0X);
+        IF ok THEN INC(result, 8) END;
+        RETURN result  (* expect 15 *)
+    END RestoreBoundEmitsText;
+
     (** Pane bound to a real model: Restore emits background fill
         PLUS the top-edge indicator bar — two DrawRect calls in
         order (white background first, black bar second). *)
@@ -238,5 +291,6 @@ MODULE TextViewsPanePixels;
 
 
 BEGIN
-    rectCallCount := 0
+    rectCallCount := 0;
+    stringCallCount := 0
 END TextViewsPanePixels.
