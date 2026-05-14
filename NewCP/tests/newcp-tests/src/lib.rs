@@ -3943,4 +3943,18 @@ mod tests {
             119425,
         );
     }
+
+    /// Smoke-test the TextControllers first slice: import the abstract
+    /// surface, exercise the public message records (SetCaretMsg /
+    /// SetSelectionMsg field round-trip), and verify the BB-faithful
+    /// `none` constant equals -1.  Encoded result:
+    ///   pos=42, beg=1, end=5  →  42*10000 + 1*100 + 5 = 420105
+    ///   plus 1 for the `none = -1` constant check          = 420106
+    #[test]
+    fn textcontrollers_first_slice_abstract_surface_loads() {
+        assert_eq!(
+            run_function("Mod/Tests/TextControllersSmoke.cp", "Run"),
+            420106,
+        );
+    }
 }

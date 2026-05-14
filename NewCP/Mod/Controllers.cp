@@ -234,5 +234,22 @@ MODULE Controllers;
         RETURN NIL
     END Domain;
 
+    (** BB-faithful focus query — returns the currently-focused
+        view, or NIL when none.  This slice stubs the return at
+        NIL: real focus routing arrives with the windowing layer.
+        TextControllers / TextViews call this to find which
+        controller / pane the user is interacting with. *)
+    PROCEDURE FocusView* (): Views.View;
+    BEGIN
+        RETURN NIL
+    END FocusView;
+
+    (** BB-faithful — current focus model.  Stub returns NIL until
+        focus routing lands; framework callers tolerate NIL. *)
+    PROCEDURE FocusModel* (): Models.Model;
+    BEGIN
+        RETURN NIL
+    END FocusModel;
+
 
 END Controllers.

@@ -99,6 +99,15 @@ MODULE Containers;
         ControllerDesc* = ABSTRACT RECORD (Controllers.ControllerDesc) END;
         Controller*     = POINTER TO ControllerDesc;
 
+        (** Container-side abstract directory.  Concrete container
+            controllers' Directory types (`TextControllers.Directory`,
+            `FormControllers.Directory`, …) extend this.  BB-faithful
+            base type — empty record per the framework convention; the
+            specialisation methods (`NewController`, `New`) live on
+            the derived directories. *)
+        DirectoryDesc* = ABSTRACT RECORD END;
+        Directory*     = POINTER TO DirectoryDesc;
+
 
         (** Common base for the container-flavoured view messages
             below.  Distinguishes container-broadcast messages from

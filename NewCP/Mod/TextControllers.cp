@@ -1,0 +1,297 @@
+MODULE TextControllers;
+(*
+   First slice of the BlackBox `TextControllers` port.
+
+   `Controller` is the abstract mediator between a `TextViews.View`
+   (the visible editor pane) and its underlying `TextModels.Model`
+   text storage.  It owns the caret position, the selection range,
+   and the input filter chain — concrete implementations (`StdCtrl`
+   in BB) handle keystroke processing, mouse tracking, paste
+   filtering, and so on.
+
+   This slice carries:
+
+     - All the BB CONSTs the higher-level framework references
+       (`noAutoScroll`, `noAutoIndent`, `none`, key strings, version
+       gates).
+     - The abstract surface (`Controller`, `Directory`) plus the
+       inline `view-` / `text-` fields so importers can type-route
+       messages against them.
+     - The five public message records (`FilterPref`,
+       `FilterPollCursorMsg`, `FilterTrackMsg`, `SetCaretMsg`,
+       `SetSelectionMsg`) plus the abstract `ModelMessage` base.
+     - Abstract method declarations on Controller (`CaretPos`,
+       `SetCaret`, `GetSelection`, `SetSelection`) with deferred
+       bodies — the concrete `StdCtrl` implementation lands in a
+       follow-up slice.
+     - Concrete EXTENSIBLE-on-Controller methods (`Internalize2`,
+       `Externalize2`, `InitView2`, `ThisView`) that mirror BB's
+       wire-format and view-binding behaviour faithfully.
+     - The `dir-, stdDir-` module variables and the `SetDir`,
+       `Install`, `Focus`, `SetCaret`, `SetSelection` procedures
+       that drive controller dispatch from outside.
+
+   The concrete `StdCtrl` body — caret tracking, mouse / keyboard
+   handling, selection management, undo integration — is intentionally
+   not in this slice; landing it requires the full StdView slice for
+   `TextViews` to exist first.
+*)
+
+IMPORT
+    Stores, Models, Views, Controllers, Properties, Containers,
+    TextModels, TextRulers, TextSetters, TextViews;
+
+CONST
+    (** View options the Container framework consults (see
+        BB Containers.View): suppress auto-scroll on selection
+        change and auto-indent on RETURN. *)
+    noAutoScroll* = 16;
+    noAutoIndent* = 17;
+
+    (** Sentinel for SetCaret / SetSelection: -1 = "no position"
+        / "no selection".  BB-faithful. *)
+    none* = -1;
+
+    (* Track mode used internally by StdCtrl (later slice). *)
+    chars = 0; words = 1; lines = 2;
+
+    (* Special key codepoints the StdCtrl input filter recognises. *)
+    enter = 03X; rdel = 07X; ldel = 08X;
+
+    aL = 01CX; aR = 01DX; aU = 01EX; aD = 01FX;
+    pL = 010X; pR = 011X; pU = 012X; pD = 013X;
+    dL = 014X; dR = 015X; dU = 016X; dD = 017X;
+
+    viewcode = TextModels.viewcode;
+    tab      = TextModels.tab;
+    line     = TextModels.line;
+    para     = TextModels.para;
+
+    boundCaret = TRUE;
+
+    (** Max run length StdCtrl will inspect when fetching the
+        attribute span around the caret — keeps "what fonts are
+        selected" cheap on huge selections. *)
+    lenCutoff = 2000;
+
+    (* Property-message routing keys used by the BB framework. *)
+    attrChangeKey* = "#Text:AttributeChange";
+    resizingKey*   = "#System:Resizing";
+    insertingKey*  = "#System:Inserting";
+    deletingKey*   = "#System:Deleting";
+    movingKey*     = "#System:Moving";
+    copyingKey*    = "#System:Copying";
+    linkingKey*    = "#System:Linking";
+    replacingKey*  = "#System:Replacing";
+
+    minVersion    = 0;
+    maxVersion    = 0;
+    maxStdVersion = 0;
+
+TYPE
+    (** Abstract container-controller for a text view.  `view-` is
+        the visible pane this controller mediates; `text-` is the
+        underlying text storage (in BB this is always
+        `view.ThisText()` when `view # NIL`, so the field is
+        redundant cache rather than independent state). *)
+    ControllerDesc* = ABSTRACT RECORD (Containers.ControllerDesc)
+        view-: TextViews.View;
+        text-: TextModels.Model
+    END;
+    Controller*     = POINTER TO ControllerDesc;
+
+    (** Abstract directory — the framework factory that builds a
+        fresh controller for a given option set.  Concrete
+        `StdDirectory` (deferred to later slice) supplies
+        `NewController`. *)
+    DirectoryDesc* = ABSTRACT RECORD (Containers.DirectoryDesc) END;
+    Directory*     = POINTER TO DirectoryDesc;
+
+    (** Paste-filter property: ask the framework whether a given
+        cursor location should accept a paste of `controller`'s
+        current selection.  Filter chain sets `filter` to TRUE if
+        any handler vetoes the paste. *)
+    FilterPref* = RECORD (Properties.Preference)
+        controller*: Controller;
+        frame*:      Views.Frame;
+        x*, y*:      INTEGER;
+        filter*:     BOOLEAN
+    END;
+
+    (** Cursor-shape filter message.  Frameworks watching for it
+        can override the cursor at a particular pixel location;
+        `done` lets a handler short-circuit the rest of the chain. *)
+    FilterPollCursorMsg* = RECORD (Controllers.Message)
+        controller*: Controller;
+        x*, y*:      INTEGER;
+        cursor*:     INTEGER;
+        done*:       BOOLEAN
+    END;
+
+    (** Drag-tracking filter message — same flow as
+        `FilterPollCursorMsg` but for mouse-drag tracking. *)
+    FilterTrackMsg* = RECORD (Controllers.Message)
+        controller*: Controller;
+        x*, y*:      INTEGER;
+        modifiers*:  SET;
+        done*:       BOOLEAN
+    END;
+
+    (** Base for `SetCaretMsg`/`SetSelectionMsg` so virtual model
+        extensions (e.g. mark layers) can hook the same broadcast
+        the framework uses to drive caret / selection updates. *)
+    ModelMessage* = ABSTRACT RECORD (Models.Message) END;
+
+    (** Broadcast: move the caret to `pos`.  Sent by
+        `TextControllers.SetCaret` (the module-level proc) so
+        every controller bound to the model gets a chance to
+        respond. *)
+    SetCaretMsg* = EXTENSIBLE RECORD (ModelMessage)
+        pos*: INTEGER
+    END;
+
+    (** Broadcast: select the range `[beg, end)`.  Same chain as
+        `SetCaretMsg`. *)
+    SetSelectionMsg* = EXTENSIBLE RECORD (ModelMessage)
+        beg*, end*: INTEGER
+    END;
+
+VAR
+    (** Active controller-directory.  `SetDir` overrides; `stdDir`
+        is the framework default and never gets replaced. *)
+    dir-, stdDir-: Directory;
+
+(* ─── Controller surface ───────────────────────────────────────
+   `Internalize2`, `Externalize2`, `InitView2`, `ThisView` are
+   concrete EXTENSIBLE — they mirror BB's bodies faithfully so
+   wire-format and view-binding work as soon as the slice loads.
+   The caret / selection methods (`CaretPos`, `SetCaret`,
+   `GetSelection`, `SetSelection`) are NEW + ABSTRACT — concrete
+   `StdCtrl` supplies them later.
+*)
+
+PROCEDURE (c: Controller) Internalize2- (VAR rd: Stores.Reader), NEW, EXTENSIBLE;
+    VAR v: INTEGER;
+BEGIN
+    rd.ReadVersion(minVersion, maxVersion, v)
+END Internalize2;
+
+PROCEDURE (c: Controller) Externalize2- (VAR wr: Stores.Writer), NEW, EXTENSIBLE;
+BEGIN
+    wr.WriteVersion(maxVersion)
+END Externalize2;
+
+PROCEDURE (c: Controller) InitView2* (v: Views.View), NEW, EXTENSIBLE;
+    VAR m: Models.Model;
+BEGIN
+    ASSERT((v = NIL) # (c.view = NIL), 21);
+    IF c.view = NIL THEN ASSERT(v IS TextViews.View, 22) END;
+    IF v # NIL THEN
+        c.view := v(TextViews.View);
+        m := c.view.ThisModel();
+        IF m # NIL THEN
+            (* TextViews.View.ThisModel() returns the underlying
+               TextModels.Model widened through Containers.Model;
+               narrow it back here so c.text carries the concrete
+               text-model interface its callers expect. *)
+            c.text := m(TextModels.Model)
+        ELSE
+            c.text := NIL
+        END
+    ELSE
+        c.view := NIL;
+        c.text := NIL
+    END
+END InitView2;
+
+PROCEDURE (c: Controller) ThisView* (): TextViews.View, NEW, EXTENSIBLE;
+BEGIN
+    RETURN c.view
+END ThisView;
+
+(** Caret position (or `none`).  Concrete in StdCtrl. *)
+PROCEDURE (c: Controller) CaretPos* (): INTEGER, NEW, ABSTRACT;
+
+(** Move the caret to `pos` (or hide if `pos = none`).
+    pre: pos = none  OR  0 <= pos <= c.text.Length() *)
+PROCEDURE (c: Controller) SetCaret* (pos: INTEGER), NEW, ABSTRACT;
+
+(** Read the selection range; empty selection signaled by beg = end.
+    post: beg = end  OR  0 <= beg <= end <= c.text.Length() *)
+PROCEDURE (c: Controller) GetSelection* (OUT beg, end: INTEGER), NEW, ABSTRACT;
+
+(** Set the selection range; empty selection signaled by beg = end.
+    pre: beg = end  OR  0 <= beg < end <= c.text.Length() *)
+PROCEDURE (c: Controller) SetSelection* (beg, end: INTEGER), NEW, ABSTRACT;
+
+(* ─── Directory surface ────────────────────────────────────────
+   `NewController(opts)` builds a fresh controller carrying the
+   given option mask; `New()` is the convenience overload for
+   empty-options.  Concrete factory lives in `StdDirectory`. *)
+
+PROCEDURE (d: Directory) NewController* (opts: SET): Controller, NEW, ABSTRACT;
+
+PROCEDURE (d: Directory) New* (): Controller, NEW, EXTENSIBLE;
+BEGIN
+    RETURN d.NewController({})
+END New;
+
+(* ─── Module-level procedures ─────────────────────────────────
+   `SetDir` / `Install` are the host-side installation hooks;
+   `Focus`, `SetCaret`, `SetSelection` are the public entry points
+   external code uses to drive the controller chain. *)
+
+PROCEDURE SetDir* (d: Directory);
+BEGIN
+    ASSERT(d # NIL, 20);
+    dir := d
+END SetDir;
+
+PROCEDURE Install*;
+BEGIN
+    TextViews.SetCtrlDir(dir)
+END Install;
+
+PROCEDURE Focus* (): Controller;
+    VAR v: Views.View; c: Containers.Controller;
+BEGIN
+    v := Controllers.FocusView();
+    IF (v # NIL) & (v IS TextViews.View) THEN
+        c := v(TextViews.View).controller;
+        IF (c # NIL) & (c IS Controller) THEN
+            RETURN c(Controller)
+        ELSE
+            RETURN NIL
+        END
+    ELSE
+        RETURN NIL
+    END
+END Focus;
+
+PROCEDURE SetCaret* (text: TextModels.Model; pos: INTEGER);
+(** pre: text # NIL,  pos = none  OR  0 <= pos <= text.Length() *)
+    VAR cm: SetCaretMsg;
+BEGIN
+    ASSERT(text # NIL, 20);
+    ASSERT(none <= pos, 21);
+    ASSERT(pos <= text.Length(), 22);
+    cm.pos := pos;
+    Models.Broadcast(text, cm)
+END SetCaret;
+
+PROCEDURE SetSelection* (text: TextModels.Model; beg, end: INTEGER);
+(** pre: text # NIL,  beg = end  OR  0 <= beg < end <= text.Length() *)
+    VAR sm: SetSelectionMsg;
+BEGIN
+    ASSERT(text # NIL, 20);
+    IF beg # end THEN
+        ASSERT(0 <= beg, 21);
+        ASSERT(beg < end, 22);
+        ASSERT(end <= text.Length(), 23)
+    END;
+    sm.beg := beg;
+    sm.end := end;
+    Models.Broadcast(text, sm)
+END SetSelection;
+
+END TextControllers.

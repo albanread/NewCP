@@ -29,7 +29,7 @@ MODULE TextViews;
    specification.
 *)
 
-IMPORT HostStores, TextModels;
+IMPORT HostStores, TextModels, TextRulers, TextSetters, Views, Containers;
 
 CONST
     OkComplete*           = 0;
@@ -42,7 +42,54 @@ CONST
     OkAttrsSkipFail*      = 7;
     OkTrailerTrunc*       = 8;
 
+    minVersion = 0; maxVersion = 0;
+
 TYPE
+    (** Abstract text-view surface. BB-faithful descendant of
+        `Containers.View`; concrete editor panes (StdView once it
+        ports fully) extend it.  TextControllers's `Controller`
+        carries a `view-: View` field so the controller side can
+        type-route messages back to the visible pane without
+        knowing the concrete pane type. *)
+    ViewDesc* = ABSTRACT RECORD (Containers.ViewDesc) END;
+    View*     = POINTER TO ViewDesc;
+
+    (** Abstract text-view directory.  Carries the default
+        attributes a freshly-installed view should adopt; the
+        concrete factory method (`New`) is declared abstract here
+        and supplied by `StdDirectory` (later slice). *)
+    DirectoryDesc* = ABSTRACT RECORD
+        defAttr-: TextModels.Attributes
+    END;
+    Directory*     = POINTER TO DirectoryDesc;
+
+    (** Geometric location of a character position within a view.
+        `start`/`pos` are character offsets; `x`/`y` are pixel
+        coordinates inside the frame; `asc`/`dsc` are the line
+        metrics at the location; `view, l, t, r, b` describe an
+        embedded child view's rectangle if the position addresses
+        one.  Used by `GetThisLocation` and `GetRect`. *)
+    Location* = RECORD
+        start*, pos*: INTEGER;
+        x*, y*:       INTEGER;
+        asc*, dsc*:   INTEGER;
+        view*:        Views.View;
+        l*, t*, r*, b*: INTEGER
+    END;
+
+    (** Position-change broadcast.  Sent by `ShowRange` so all
+        frames displaying the affected text can re-scroll. *)
+    PositionMsg* = RECORD (Views.Message)
+        focusOnly*: BOOLEAN;
+        beg*, end*: INTEGER
+    END;
+
+    (** Per-page change broadcast — used by Printers / paginated
+        display to discover which page a position lands on. *)
+    PageMsg* = RECORD (Views.Message)
+        current*: INTEGER
+    END;
+
     StdViewDesc* = RECORD (HostStores.StoreDesc)
         (** Stage-1 super-class version chain (Stores.Store +
             Views.View + Containers.View). *)
@@ -63,6 +110,16 @@ TYPE
         result*: INTEGER
     END;
     StdView* = POINTER TO StdViewDesc;
+
+VAR
+    (** Container-side directory the framework hands to fresh
+        StdView instances when they need a default controller. *)
+    ctrlDir-: Containers.Directory;
+
+    (** Active and default view directories.  `SetDir` overrides
+        `dir`; `stdDir` is the framework-installed default and
+        never gets replaced. *)
+    dir-, stdDir-: Directory;
 
 PROCEDURE (v: StdViewDesc) Internalize* (rd: HostStores.Reader);
     VAR i: INTEGER;
@@ -134,5 +191,63 @@ BEGIN
 
     v.result := OkComplete
 END Internalize;
+
+(* ─── Abstract View surface ────────────────────────────────────
+   Method declarations TextControllers reaches through to ask the
+   concrete pane about display state and to drive scrolling.  All
+   bodies are deferred — concrete StdView slice will supply them.
+*)
+
+PROCEDURE (v: View) DisplayMarks* (hide: BOOLEAN), NEW, ABSTRACT;
+PROCEDURE (v: View) HidesMarks*   (): BOOLEAN,      NEW, ABSTRACT;
+
+PROCEDURE (v: View) SetSetter*  (setter: TextSetters.Setter), NEW, ABSTRACT;
+PROCEDURE (v: View) ThisSetter* (): TextSetters.Setter,        NEW, ABSTRACT;
+
+PROCEDURE (v: View) SetOrigin*  (org, dy: INTEGER),               NEW, ABSTRACT;
+PROCEDURE (v: View) PollOrigin* (OUT org, dy: INTEGER),           NEW, ABSTRACT;
+
+PROCEDURE (v: View) SetDefaults*  (r: TextRulers.Ruler; a: TextModels.Attributes),
+    NEW, ABSTRACT;
+PROCEDURE (v: View) PollDefaults* (OUT r: TextRulers.Ruler; OUT a: TextModels.Attributes),
+    NEW, ABSTRACT;
+
+PROCEDURE (v: View) GetThisLocation* (f: Views.Frame; pos: INTEGER; OUT loc: Location),
+    NEW, ABSTRACT;
+PROCEDURE (v: View) GetRange*        (f: Views.Frame; OUT beg, end: INTEGER),
+    NEW, ABSTRACT;
+PROCEDURE (v: View) ThisPos*         (f: Views.Frame; x, y: INTEGER): INTEGER,
+    NEW, ABSTRACT;
+PROCEDURE (v: View) ShowRangeIn*     (f: Views.Frame; beg, end: INTEGER),
+    NEW, ABSTRACT;
+PROCEDURE (v: View) ShowRange*       (beg, end: INTEGER; focusOnly: BOOLEAN),
+    NEW, ABSTRACT;
+
+(* ─── Abstract Directory surface ───────────────────────────────
+   `New(text)` is the BB-faithful "build me a fresh view for this
+   model" factory — supplied by the concrete StdDirectory once it
+   lands.  `Set` is concrete-EXTENSIBLE here: it just stores the
+   default-attributes blob the framework will hand to fresh views.
+*)
+
+PROCEDURE (d: Directory) New* (text: TextModels.Model): View, NEW, ABSTRACT;
+
+PROCEDURE (d: Directory) Set* (defAttr: TextModels.Attributes), NEW, EXTENSIBLE;
+BEGIN
+    ASSERT(defAttr # NIL, 20);
+    d.defAttr := defAttr
+END Set;
+
+PROCEDURE SetCtrlDir* (d: Containers.Directory);
+BEGIN
+    ASSERT(d # NIL, 20);
+    ctrlDir := d
+END SetCtrlDir;
+
+PROCEDURE SetDir* (d: Directory);
+BEGIN
+    ASSERT(d # NIL, 20);
+    dir := d
+END SetDir;
 
 END TextViews.
