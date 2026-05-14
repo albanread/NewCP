@@ -156,10 +156,49 @@ TYPE
         beg*, end*: INTEGER
     END;
 
+    (** Concrete-minimum controller body.  Carries the caret
+        position and selection range as plain integer state and
+        supplies the four abstract methods (`CaretPos`,
+        `SetCaret`, `GetSelection`, `SetSelection`) with direct
+        field-update bodies.
+
+        BB's `StdCtrl` is far larger — it tracks track-mode,
+        cached reader/writer, auto-scroll bounds, blink ticks,
+        selection pin points, modifier state, and a complete
+        keystroke / mouse / paste filter chain.  This slice is a
+        BB-faithful prefix: the fields' MEANING matches BB
+        (`carPos = none` when no caret, `selBeg = selEnd` when
+        no selection, both clamped to `text.Length()`), so a
+        later slice can grow the record without breaking
+        anything callers depend on today.  The non-prefix BB
+        fields (cachedRd, cachedWr, autoBeg/autoEnd, carLast,
+        carX/lastX, carTick, carVisible, aliasSel*, selPin*,
+        lastStep) intentionally aren't here — they're worthless
+        without input handling, which needs the StdView slice. *)
+    StdCtrlDesc = RECORD (ControllerDesc)
+        carPos: INTEGER;
+        selBeg, selEnd: INTEGER
+    END;
+    StdCtrl = POINTER TO StdCtrlDesc;
+
+    (** Concrete-minimum directory: `NewController` allocates a
+        fresh `StdCtrl` with no caret / no selection.  BB's
+        StdDirectory is also empty-record — the option-set
+        plumbing it gets via `NewController(opts)` is delegated
+        to the controller via inherited fields (which we don't
+        carry yet).  Adding `opts` support is a follow-up. *)
+    StdDirectoryDesc = RECORD (DirectoryDesc) END;
+    StdDirectory     = POINTER TO StdDirectoryDesc;
+
 VAR
     (** Active controller-directory.  `SetDir` overrides; `stdDir`
         is the framework default and never gets replaced. *)
     dir-, stdDir-: Directory;
+    (* Module-private storage of the StdDirectory instance so the
+       body can NEW it through its concrete type before exposing
+       it via `dir-`/`stdDir-` (which are typed as the abstract
+       Directory and can't take a NEW). *)
+    std: StdDirectory;
 
 (* ─── Controller surface ───────────────────────────────────────
    `Internalize2`, `Externalize2`, `InitView2`, `ThisView` are
@@ -224,10 +263,52 @@ PROCEDURE (c: Controller) GetSelection* (OUT beg, end: INTEGER), NEW, ABSTRACT;
     pre: beg = end  OR  0 <= beg < end <= c.text.Length() *)
 PROCEDURE (c: Controller) SetSelection* (beg, end: INTEGER), NEW, ABSTRACT;
 
+(* ─── StdCtrl concrete bodies ──────────────────────────────────
+   Field-update implementations of the four abstract methods.
+   Preconditions match BB and Controller's contract; callers
+   that violate them get ASSERT-driven traps so misuse is loud.
+*)
+
+PROCEDURE (c: StdCtrl) CaretPos* (): INTEGER;
+BEGIN
+    RETURN c.carPos
+END CaretPos;
+
+PROCEDURE (c: StdCtrl) SetCaret* (pos: INTEGER);
+BEGIN
+    (* BB precondition: `pos = none OR (0 <= pos <= text.Length())`.
+       The model-length check is skipped in this slice (c.text is
+       only populated after InitView2 binds a view); the module-
+       level TextControllers.SetCaret already asserts against the
+       model on the broadcast path. *)
+    ASSERT((pos = none) OR (pos >= 0), 20);
+    c.carPos := pos
+END SetCaret;
+
+PROCEDURE (c: StdCtrl) GetSelection* (OUT beg, end: INTEGER);
+BEGIN
+    beg := c.selBeg;
+    end := c.selEnd
+END GetSelection;
+
+PROCEDURE (c: StdCtrl) SetSelection* (beg, end: INTEGER);
+BEGIN
+    (* BB: `beg = end OR (0 <= beg < end <= text.Length())`.
+       Length check deferred for the same reason as SetCaret. *)
+    IF beg # end THEN
+        ASSERT(0 <= beg, 20);
+        ASSERT(beg < end, 21)
+    END;
+    c.selBeg := beg;
+    c.selEnd := end
+END SetSelection;
+
 (* ─── Directory surface ────────────────────────────────────────
    `NewController(opts)` builds a fresh controller carrying the
    given option mask; `New()` is the convenience overload for
-   empty-options.  Concrete factory lives in `StdDirectory`. *)
+   empty-options.  StdDirectory.NewController allocates a
+   StdCtrl with neutral caret/selection state.
+*)
 
 PROCEDURE (d: Directory) NewController* (opts: SET): Controller, NEW, ABSTRACT;
 
@@ -235,6 +316,16 @@ PROCEDURE (d: Directory) New* (): Controller, NEW, EXTENSIBLE;
 BEGIN
     RETURN d.NewController({})
 END New;
+
+PROCEDURE (d: StdDirectoryDesc) NewController* (opts: SET): Controller;
+    VAR c: StdCtrl;
+BEGIN
+    NEW(c);
+    c.carPos := none;
+    c.selBeg := 0;
+    c.selEnd := 0;
+    RETURN c
+END NewController;
 
 (* ─── Module-level procedures ─────────────────────────────────
    `SetDir` / `Install` are the host-side installation hooks;
@@ -294,4 +385,12 @@ BEGIN
     Models.Broadcast(text, sm)
 END SetSelection;
 
+BEGIN
+    (* Install StdDirectory as both the framework default and the
+       currently-active directory.  BB does this in StdInterpreter
+       at boot via an explicit SetDir call; doing it in the body
+       keeps the "import TextControllers and it works" property. *)
+    NEW(std);
+    stdDir := std;
+    dir := std
 END TextControllers.

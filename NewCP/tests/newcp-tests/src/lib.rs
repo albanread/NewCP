@@ -3975,4 +3975,20 @@ mod tests {
             420106,
         );
     }
+
+    /// End-to-end exercise of the concrete `StdCtrl` + `StdDirectory`
+    /// bodies via the abstract Controller / Directory dispatch chain.
+    /// Five checks, each contributing a decimal place:
+    ///   1     — fresh controller's CaretPos() = none
+    ///   10    — SetCaret(42) → CaretPos() = 42
+    ///   100   — SetCaret(none) → CaretPos() = none
+    ///   1000  — SetSelection(7,19) → GetSelection(7,19)
+    ///   10000 — SetSelection(3,3) → GetSelection(3,3) (empty range)
+    #[test]
+    fn textcontrollers_stdctrl_caret_and_selection_round_trip() {
+        assert_eq!(
+            run_function("Mod/Tests/TextControllersStdCtrl.cp", "Run"),
+            11111,
+        );
+    }
 }
