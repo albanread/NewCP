@@ -27,6 +27,7 @@
 
 use std::sync::atomic::{AtomicI64, Ordering};
 use std::time::{SystemTime, UNIX_EPOCH};
+use std::sync::Mutex;
 
 use crate::gc::{self, BlockHeader, TypeDesc};
 use crate::{
@@ -38,6 +39,27 @@ use crate::igui::channels::{self as igui_channels, IGuiEvent};
 
 /// Mask to strip the GC mark bit from a `BlockHeader.tag`.
 const MARK_BIT: usize = 1;
+
+#[derive(Debug, Clone)]
+struct LoaderResultState {
+    code: i64,
+    message1: String,
+    message2: String,
+    message3: String,
+}
+
+impl LoaderResultState {
+    const fn ok() -> Self {
+        Self {
+            code: 0,
+            message1: String::new(),
+            message2: String::new(),
+            message3: String::new(),
+        }
+    }
+}
+
+static LOADER_RESULT_STATE: Mutex<LoaderResultState> = Mutex::new(LoaderResultState::ok());
 
 // ─── Misc primitives ─────────────────────────────────────────────────────
 
@@ -466,6 +488,64 @@ fn read_cp_utf32_string(ptr: *const u32, max_len: i64) -> String {
     s
 }
 
+fn write_utf32_out(s: &str, dst: *mut u32, cap: i64) {
+    if dst.is_null() || cap <= 0 {
+        return;
+    }
+    let cap_chars = (cap as usize).saturating_sub(1);
+    let mut i = 0usize;
+    for c in s.chars() {
+        if i >= cap_chars {
+            break;
+        }
+        unsafe { *dst.add(i) = c as u32 };
+        i += 1;
+    }
+    unsafe { *dst.add(i) = 0 };
+}
+
+pub fn clear_loader_result() {
+    let mut state = LOADER_RESULT_STATE
+        .lock()
+        .expect("loader result mutex poisoned");
+    *state = LoaderResultState::ok();
+}
+
+pub fn record_loader_result(code: i64, m1: &str, m2: &str, m3: &str) {
+    let mut state = LOADER_RESULT_STATE
+        .lock()
+        .expect("loader result mutex poisoned");
+    state.code = code;
+    state.message1.clear();
+    state.message1.push_str(m1);
+    state.message2.clear();
+    state.message2.push_str(m2);
+    state.message3.clear();
+    state.message3.push_str(m3);
+}
+
+#[unsafe(no_mangle)]
+pub extern "C" fn kernel_sys_last_loader_result(
+    res: *mut i64,
+    m1: *mut u32,
+    m1_len: i64,
+    m2: *mut u32,
+    m2_len: i64,
+    m3: *mut u32,
+    m3_len: i64,
+) {
+    let state = LOADER_RESULT_STATE
+        .lock()
+        .expect("loader result mutex poisoned")
+        .clone();
+    if !res.is_null() {
+        unsafe { *res = state.code };
+    }
+    write_utf32_out(&state.message1, m1, m1_len);
+    write_utf32_out(&state.message2, m2, m2_len);
+    write_utf32_out(&state.message3, m3, m3_len);
+}
+
 /// `Kernel.ThisMod(IN name: ARRAY OF CHAR): Module`. Looks the name
 /// up in the module registry and returns a 1-based handle, or 0
 /// (NIL) if no such module is registered. The handle is opaque to
@@ -475,13 +555,26 @@ fn read_cp_utf32_string(ptr: *const u32, max_len: i64) -> String {
 pub extern "C" fn kernel_sys_this_mod(name_ptr: *const u32, name_len: i64) -> i64 {
     let name = read_cp_utf32_string(name_ptr, name_len);
     if name.is_empty() {
+        record_loader_result(3, "", "this-mod", "empty module name");
         return 0;
     }
+    match module_handle_from_name(&name) {
+        Some(handle) => {
+            clear_loader_result();
+            handle
+        }
+        None => {
+            record_loader_result(3, &name, "this-mod", "module not found");
+            0
+        }
+    }
+}
+
+fn module_handle_from_name(name: &str) -> Option<i64> {
     let reg = MODULE_REGISTRY.lock().expect("module registry mutex poisoned");
     reg.iter()
         .position(|n| n == &name)
         .map(|idx| (idx + 1) as i64)
-        .unwrap_or(0)
 }
 
 /// Reverse-map a Module handle (1-based registry index) back to its
@@ -492,6 +585,23 @@ fn module_name_from_handle(handle: i64) -> Option<String> {
     }
     let reg = MODULE_REGISTRY.lock().expect("module registry mutex poisoned");
     reg.get((handle - 1) as usize).cloned()
+}
+
+#[unsafe(no_mangle)]
+pub extern "C" fn kernel_sys_get_mod_name(handle: i64, name: *mut u32, name_len: i64) {
+    let module_name = module_name_from_handle(handle).unwrap_or_default();
+    write_utf32_out(&module_name, name, name_len);
+}
+
+#[unsafe(no_mangle)]
+pub extern "C" fn kernel_sys_type_mod(type_handle: i64) -> i64 {
+    let Some(qualified) = type_desc_qualified_name_string(type_handle) else {
+        return 0;
+    };
+    let Some((module_name, _)) = qualified.split_once('.') else {
+        return 0;
+    };
+    module_handle_from_name(module_name).unwrap_or(0)
 }
 
 /// Process-wide registry of known TypeDescs, keyed by qualified
@@ -588,20 +698,32 @@ pub extern "C" fn kernel_sys_this_type(
     type_name_len: i64,
 ) -> i64 {
     let Some(module_name) = module_name_from_handle(m) else {
+        record_loader_result(3, "", "this-type", "invalid module handle");
         return 0;
     };
     let type_name = read_cp_utf32_string(type_name_ptr, type_name_len);
     if type_name.is_empty() {
+        record_loader_result(3, &module_name, "this-type", "empty type name");
         return 0;
     }
     let qualified = format!("{module_name}.{type_name}");
     let reg = TYPE_DESC_REGISTRY
         .lock()
         .expect("type registry mutex poisoned");
-    reg.iter()
+    match reg
+        .iter()
         .find(|(n, _)| n == &qualified)
         .map(|(_, addr)| *addr)
-        .unwrap_or(0)
+    {
+        Some(addr) => {
+            clear_loader_result();
+            addr
+        }
+        None => {
+            record_loader_result(3, &module_name, &type_name, "type not found");
+            0
+        }
+    }
 }
 
 /// Look up a TypeDesc by its already-qualified name (e.g.
@@ -926,8 +1048,13 @@ fn kernel_exports() -> Vec<(&'static str, *const ())> {
         ("PopTrapCleaner",  kernel_sys_pop_trap_cleaner  as *const ()),
         ("GetTypeName",     kernel_sys_get_type_name     as *const ()),
         ("GetQualifiedTypeName", kernel_sys_get_qualified_type_name as *const ()),
+        ("GetModName",      kernel_sys_get_mod_name      as *const ()),
+        ("TypeMod",         kernel_sys_type_mod          as *const ()),
+        ("ModOf",           kernel_sys_type_mod          as *const ()),
         ("ThisMod",         kernel_sys_this_mod          as *const ()),
         ("ThisType",        kernel_sys_this_type         as *const ()),
+        ("LastLoaderResult", kernel_sys_last_loader_result as *const ()),
+        ("GetLoaderResult",  kernel_sys_last_loader_result as *const ()),
         ("Collect",         kernel_sys_collect           as *const ()),
         ("TrapCount",       kernel_sys_trap_count        as *const ()),
     ]
@@ -999,6 +1126,14 @@ mod tests {
         __newcp_init_gc, __newcp_new_rec, lock_tests_global, reset_for_test, Finalizer,
     };
 
+    fn read_utf32_buf(buf: &[u32]) -> String {
+        let end = buf.iter().position(|cp| *cp == 0).unwrap_or(buf.len());
+        buf[..end]
+            .iter()
+            .filter_map(|cp| char::from_u32(*cp))
+            .collect()
+    }
+
     fn lock_tests() -> std::sync::MutexGuard<'static, ()> {
         lock_tests_global()
     }
@@ -1059,6 +1194,47 @@ mod tests {
     fn beep_does_not_panic() {
         // Just verify we can call it without aborting.
         kernel_sys_beep();
+    }
+
+    #[test]
+    fn loader_result_round_trips_through_runtime_slot() {
+        let _t = lock_tests();
+        clear_loader_result();
+
+        let mut res = -1i64;
+        let mut m1 = [0u32; 32];
+        let mut m2 = [0u32; 32];
+        let mut m3 = [0u32; 64];
+        kernel_sys_last_loader_result(
+            &mut res as *mut _,
+            m1.as_mut_ptr(),
+            m1.len() as i64,
+            m2.as_mut_ptr(),
+            m2.len() as i64,
+            m3.as_mut_ptr(),
+            m3.len() as i64,
+        );
+        assert_eq!(res, 0);
+        assert_eq!(read_utf32_buf(&m1), "");
+        assert_eq!(read_utf32_buf(&m2), "");
+        assert_eq!(read_utf32_buf(&m3), "");
+
+        record_loader_result(2, "Root", "parse-module", "syntax error");
+        kernel_sys_last_loader_result(
+            &mut res as *mut _,
+            m1.as_mut_ptr(),
+            m1.len() as i64,
+            m2.as_mut_ptr(),
+            m2.len() as i64,
+            m3.as_mut_ptr(),
+            m3.len() as i64,
+        );
+        assert_eq!(res, 2);
+        assert_eq!(read_utf32_buf(&m1), "Root");
+        assert_eq!(read_utf32_buf(&m2), "parse-module");
+        assert_eq!(read_utf32_buf(&m3), "syntax error");
+
+        clear_loader_result();
     }
 
     #[test]
@@ -1251,6 +1427,7 @@ mod tests {
     fn this_mod_returns_handle_for_registered_module() {
         let _t = lock_tests();
         reset_module_registry_for_test();
+        clear_loader_result();
 
         register_known_module("Stores");
         register_known_module("TextModels");
@@ -1259,6 +1436,20 @@ mod tests {
         let stores_utf32: Vec<u32> = "Stores".chars().map(|c| c as u32).chain(std::iter::once(0)).collect();
         let h = kernel_sys_this_mod(stores_utf32.as_ptr(), stores_utf32.len() as i64);
         assert_eq!(h, 1, "first-registered module gets handle 1");
+        let mut res = -1i64;
+        let mut m1 = [0u32; 32];
+        let mut m2 = [0u32; 32];
+        let mut m3 = [0u32; 32];
+        kernel_sys_last_loader_result(
+            &mut res as *mut _,
+            m1.as_mut_ptr(),
+            m1.len() as i64,
+            m2.as_mut_ptr(),
+            m2.len() as i64,
+            m3.as_mut_ptr(),
+            m3.len() as i64,
+        );
+        assert_eq!(res, 0, "successful ThisMod should clear stale loader state");
 
         let textmodels_utf32: Vec<u32> =
             "TextModels".chars().map(|c| c as u32).chain(std::iter::once(0)).collect();
@@ -1270,6 +1461,19 @@ mod tests {
             "DoesNotExist".chars().map(|c| c as u32).chain(std::iter::once(0)).collect();
         let h3 = kernel_sys_this_mod(unknown_utf32.as_ptr(), unknown_utf32.len() as i64);
         assert_eq!(h3, 0);
+        kernel_sys_last_loader_result(
+            &mut res as *mut _,
+            m1.as_mut_ptr(),
+            m1.len() as i64,
+            m2.as_mut_ptr(),
+            m2.len() as i64,
+            m3.as_mut_ptr(),
+            m3.len() as i64,
+        );
+        assert_eq!(res, 3);
+        assert_eq!(read_utf32_buf(&m1), "DoesNotExist");
+        assert_eq!(read_utf32_buf(&m2), "this-mod");
+        assert_eq!(read_utf32_buf(&m3), "module not found");
 
         // Empty name returns 0.
         let empty: Vec<u32> = vec![0];
@@ -1278,10 +1482,36 @@ mod tests {
     }
 
     #[test]
+    fn get_mod_name_round_trips_module_handle() {
+        let _t = lock_tests();
+        reset_module_registry_for_test();
+
+        register_known_module("Stores");
+        register_known_module("TextModels");
+
+        let mut out = [0u32; 32];
+        kernel_sys_get_mod_name(1, out.as_mut_ptr(), out.len() as i64);
+        assert_eq!(read_utf32_buf(&out), "Stores");
+
+        out.fill(1);
+        kernel_sys_get_mod_name(2, out.as_mut_ptr(), out.len() as i64);
+        assert_eq!(read_utf32_buf(&out), "TextModels");
+
+        out.fill(1);
+        kernel_sys_get_mod_name(0, out.as_mut_ptr(), out.len() as i64);
+        assert_eq!(read_utf32_buf(&out), "");
+
+        out.fill(1);
+        kernel_sys_get_mod_name(99, out.as_mut_ptr(), out.len() as i64);
+        assert_eq!(read_utf32_buf(&out), "");
+    }
+
+    #[test]
     fn this_type_resolves_registered_typedesc() {
         let _t = lock_tests();
         reset_module_registry_for_test();
         reset_type_registry_for_test();
+        clear_loader_result();
 
         register_known_module("MyMod");
         // Use a fake TypeDesc address (just a non-zero value).
@@ -1299,16 +1529,57 @@ mod tests {
             "MyDesc".chars().map(|c| c as u32).chain(std::iter::once(0)).collect();
         let found = kernel_sys_this_type(m, type_utf32.as_ptr(), type_utf32.len() as i64);
         assert_eq!(found, fake_td_addr);
+        let mut res = -1i64;
+        let mut m1 = [0u32; 32];
+        let mut m2 = [0u32; 32];
+        let mut m3 = [0u32; 32];
+        kernel_sys_last_loader_result(
+            &mut res as *mut _,
+            m1.as_mut_ptr(),
+            m1.len() as i64,
+            m2.as_mut_ptr(),
+            m2.len() as i64,
+            m3.as_mut_ptr(),
+            m3.len() as i64,
+        );
+        assert_eq!(res, 0, "successful ThisType should clear stale loader state");
 
         // Unknown type returns 0.
         let bogus_utf32: Vec<u32> =
             "Bogus".chars().map(|c| c as u32).chain(std::iter::once(0)).collect();
         let bogus = kernel_sys_this_type(m, bogus_utf32.as_ptr(), bogus_utf32.len() as i64);
         assert_eq!(bogus, 0);
+        kernel_sys_last_loader_result(
+            &mut res as *mut _,
+            m1.as_mut_ptr(),
+            m1.len() as i64,
+            m2.as_mut_ptr(),
+            m2.len() as i64,
+            m3.as_mut_ptr(),
+            m3.len() as i64,
+        );
+        assert_eq!(res, 3);
+        assert_eq!(read_utf32_buf(&m1), "MyMod");
+        assert_eq!(read_utf32_buf(&m2), "Bogus");
+        assert_eq!(read_utf32_buf(&m3), "type not found");
 
         // Bad module handle returns 0.
         let bad = kernel_sys_this_type(99999, type_utf32.as_ptr(), type_utf32.len() as i64);
         assert_eq!(bad, 0);
+
+        // A succeeding lookup clears the prior failure again.
+        let found_again = kernel_sys_this_type(m, type_utf32.as_ptr(), type_utf32.len() as i64);
+        assert_eq!(found_again, fake_td_addr);
+        kernel_sys_last_loader_result(
+            &mut res as *mut _,
+            m1.as_mut_ptr(),
+            m1.len() as i64,
+            m2.as_mut_ptr(),
+            m2.len() as i64,
+            m3.as_mut_ptr(),
+            m3.len() as i64,
+        );
+        assert_eq!(res, 0);
     }
 
     #[test]
@@ -1363,6 +1634,45 @@ mod tests {
             .map(|&c| char::from_u32(c).unwrap())
             .collect();
         assert_eq!(bare, "StoreDesc");
+    }
+
+    #[test]
+    fn type_mod_recovers_owner_from_qualified_type_name() {
+        let _t = lock_tests();
+        reset_module_registry_for_test();
+        register_known_module("Stores");
+        register_known_module("TextModels");
+
+        let utf32: Vec<u32> = "Stores.StoreDesc"
+            .chars()
+            .map(|c| c as u32)
+            .chain(std::iter::once(0u32))
+            .collect();
+        let utf32_box = utf32.into_boxed_slice();
+        let utf32_ptr = Box::leak(utf32_box).as_ptr();
+
+        #[repr(C)]
+        struct LeafTd {
+            base: TypeDesc,
+            sentinel: isize,
+        }
+        let td = Box::new(LeafTd {
+            base: TypeDesc {
+                size: 16,
+                module: std::ptr::null(),
+                finalizer: None as Option<Finalizer>,
+                base: std::ptr::null(),
+                vtable: std::ptr::null(),
+                vtable_len: 0,
+                name: utf32_ptr,
+                ptroffs: [],
+            },
+            sentinel: -1,
+        });
+        let td_ptr = Box::into_raw(td) as *const TypeDesc;
+
+        assert_eq!(kernel_sys_type_mod(td_ptr as i64), 1);
+        assert_eq!(kernel_sys_type_mod(0), 0);
     }
 
     // Note: there is no unit test for the imbalance-traps case.

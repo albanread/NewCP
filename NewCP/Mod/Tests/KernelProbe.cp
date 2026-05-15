@@ -181,4 +181,171 @@ BEGIN
   RETURN 1
 END ThisTypeFindsRegisteredType;
 
+PROCEDURE GetModNameMatchesRegisteredModule*(): INTEGER;
+  VAR m: Kernel.Module; name: Kernel.Name;
+      i: INTEGER; expected: ARRAY 16 OF CHAR;
+BEGIN
+  m := Kernel.ThisMod("Console");
+  IF m = NIL THEN RETURN 0 END;
+  Kernel.GetModName(m, name);
+  expected := "Console";
+  i := 0;
+  WHILE expected[i] # 0X DO
+    IF name[i] # expected[i] THEN RETURN 0 END;
+    INC(i)
+  END;
+  IF name[i] # 0X THEN RETURN 0 END;
+  RETURN 1
+END GetModNameMatchesRegisteredModule;
+
+PROCEDURE ModOfMatchesTypeOwner*(): INTEGER;
+  VAR w: Widget; t: Kernel.Type; m: Kernel.Module;
+      name: Kernel.Name;
+      i: INTEGER; expected: ARRAY 16 OF CHAR;
+BEGIN
+  NEW(w);
+  t := Kernel.TypeOf(w);
+  IF t = NIL THEN RETURN 0 END;
+  m := Kernel.ModOf(t);
+  IF m = NIL THEN RETURN 0 END;
+  Kernel.GetModName(m, name);
+  expected := "KernelProbe";
+  i := 0;
+  WHILE expected[i] # 0X DO
+    IF name[i] # expected[i] THEN RETURN 0 END;
+    INC(i)
+  END;
+  IF name[i] # 0X THEN RETURN 0 END;
+  RETURN 1
+END ModOfMatchesTypeOwner;
+
+PROCEDURE ThisModFailureSetsLoaderResult*(): INTEGER;
+  VAR m: Kernel.Module; res: INTEGER;
+      m1, m2, m3: Kernel.Name;
+      i: INTEGER;
+      expected1: ARRAY 24 OF CHAR;
+      expected2: ARRAY 16 OF CHAR;
+      expected3: ARRAY 24 OF CHAR;
+BEGIN
+  m := Kernel.ThisMod("DefinitelyDoesNotExist");
+  IF m # NIL THEN RETURN 0 END;
+
+  Kernel.GetLoaderResult(res, m1, m2, m3);
+  IF res # Kernel.objNotFound THEN RETURN 0 END;
+
+  expected1 := "DefinitelyDoesNotExist";
+  i := 0;
+  WHILE expected1[i] # 0X DO
+    IF m1[i] # expected1[i] THEN RETURN 0 END;
+    INC(i)
+  END;
+  IF m1[i] # 0X THEN RETURN 0 END;
+
+  expected2 := "this-mod";
+  i := 0;
+  WHILE expected2[i] # 0X DO
+    IF m2[i] # expected2[i] THEN RETURN 0 END;
+    INC(i)
+  END;
+  IF m2[i] # 0X THEN RETURN 0 END;
+
+  expected3 := "module not found";
+  i := 0;
+  WHILE expected3[i] # 0X DO
+    IF m3[i] # expected3[i] THEN RETURN 0 END;
+    INC(i)
+  END;
+  IF m3[i] # 0X THEN RETURN 0 END;
+  RETURN 1
+END ThisModFailureSetsLoaderResult;
+
+PROCEDURE ThisTypeFailureSetsLoaderResult*(): INTEGER;
+  VAR m: Kernel.Module; t: Kernel.Type; res: INTEGER;
+      m1, m2, m3: Kernel.Name;
+      i: INTEGER;
+      expected1: ARRAY 16 OF CHAR;
+      expected2: ARRAY 16 OF CHAR;
+      expected3: ARRAY 24 OF CHAR;
+BEGIN
+  m := Kernel.ThisMod("KernelProbe");
+  IF m = NIL THEN RETURN 0 END;
+
+  t := Kernel.ThisType(m, "NoSuchTypeDesc");
+  IF t # NIL THEN RETURN 0 END;
+
+  Kernel.GetLoaderResult(res, m1, m2, m3);
+  IF res # Kernel.objNotFound THEN RETURN 0 END;
+
+  expected1 := "KernelProbe";
+  i := 0;
+  WHILE expected1[i] # 0X DO
+    IF m1[i] # expected1[i] THEN RETURN 0 END;
+    INC(i)
+  END;
+  IF m1[i] # 0X THEN RETURN 0 END;
+
+  expected2 := "NoSuchTypeDesc";
+  i := 0;
+  WHILE expected2[i] # 0X DO
+    IF m2[i] # expected2[i] THEN RETURN 0 END;
+    INC(i)
+  END;
+  IF m2[i] # 0X THEN RETURN 0 END;
+
+  expected3 := "type not found";
+  i := 0;
+  WHILE expected3[i] # 0X DO
+    IF m3[i] # expected3[i] THEN RETURN 0 END;
+    INC(i)
+  END;
+  IF m3[i] # 0X THEN RETURN 0 END;
+  RETURN 1
+END ThisTypeFailureSetsLoaderResult;
+
+PROCEDURE ReflectionSuccessClearsLoaderResult*(): INTEGER;
+  VAR m: Kernel.Module; t: Kernel.Type; res: INTEGER;
+      m1, m2, m3: Kernel.Name;
+BEGIN
+  IF Kernel.ThisMod("DefinitelyDoesNotExist") # NIL THEN RETURN 0 END;
+  Kernel.GetLoaderResult(res, m1, m2, m3);
+  IF res = Kernel.none THEN RETURN 0 END;
+
+  m := Kernel.ThisMod("KernelProbe");
+  IF m = NIL THEN RETURN 0 END;
+  t := Kernel.ThisType(m, "WidgetDesc");
+  IF t = NIL THEN RETURN 0 END;
+
+  Kernel.GetLoaderResult(res, m1, m2, m3);
+  IF res # Kernel.none THEN RETURN 0 END;
+  IF (m1[0] # 0X) OR (m2[0] # 0X) OR (m3[0] # 0X) THEN RETURN 0 END;
+  RETURN 1
+END ReflectionSuccessClearsLoaderResult;
+
+PROCEDURE GetModNameNilYieldsEmptyString*(): INTEGER;
+  VAR name: Kernel.Name;
+BEGIN
+  Kernel.GetModName(NIL, name);
+  IF name[0] # 0X THEN RETURN 0 END;
+  RETURN 1
+END GetModNameNilYieldsEmptyString;
+
+PROCEDURE ModOfNilYieldsNil*(): INTEGER;
+BEGIN
+  IF Kernel.ModOf(NIL) # NIL THEN RETURN 0 END;
+  RETURN 1
+END ModOfNilYieldsNil;
+
+PROCEDURE CleanLookupLeavesLoaderResultClear*(): INTEGER;
+  VAR m: Kernel.Module; res: INTEGER;
+      m1, m2, m3: Kernel.Name;
+BEGIN
+  m := Kernel.ThisMod("Console");
+  IF m = NIL THEN RETURN 0 END;
+
+  Kernel.GetLoaderResult(res, m1, m2, m3);
+  IF res # Kernel.none THEN RETURN 0 END;
+  IF (m1[0] # 0X) OR (m2[0] # 0X) OR (m3[0] # 0X) THEN RETURN 0 END;
+  RETURN 1
+END CleanLookupLeavesLoaderResultClear;
+
 END KernelProbe.

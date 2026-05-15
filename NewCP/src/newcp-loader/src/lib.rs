@@ -26,6 +26,7 @@ static RETAINED_IMAGES: Mutex<Vec<RetainedImage>> = Mutex::new(Vec::new());
 
 use newcp_llvm::{CodegenOptions, CompiledModule, OptLevel, OwnedJitModule};
 use newcp_parser::{parse_source_module, SourceExportKind, SourceModuleSpec};
+use newcp_runtime::kernel_sys;
 use newcp_runtime::{
     BootstrapReport, CompilerService, ExportEntry, ExportDirectory, ExportKind,
     HostedModuleArtifact, KernelState, ModuleKind, ResidentCompiler, RustCommandHandlerSpec, CommandInvocation,
@@ -307,6 +308,43 @@ pub struct LoaderSession {
 }
 
 impl LoaderSession {
+    fn sync_loader_result_slot(failure: Option<&LoaderFailureRecord>) {
+        match failure {
+            None => kernel_sys::clear_loader_result(),
+            Some(failure) => {
+                let code = match failure.phase {
+                    LoaderFailurePhase::ReadModuleSource => 1,
+                    LoaderFailurePhase::ParseModule => 2,
+                    LoaderFailurePhase::DiscoverGraph => {
+                        if failure.detail.to_ascii_lowercase().contains("cyclic") {
+                            5
+                        } else {
+                            3
+                        }
+                    }
+                    LoaderFailurePhase::AnalyzeModule
+                    | LoaderFailurePhase::CodegenModule
+                    | LoaderFailurePhase::MaterializeModule
+                    | LoaderFailurePhase::RegisterRootModule => 6,
+                };
+                kernel_sys::record_loader_result(
+                    code,
+                    failure.module_name.as_deref().unwrap_or(""),
+                    match failure.phase {
+                        LoaderFailurePhase::DiscoverGraph => "discover-graph",
+                        LoaderFailurePhase::ReadModuleSource => "read-module-source",
+                        LoaderFailurePhase::ParseModule => "parse-module",
+                        LoaderFailurePhase::AnalyzeModule => "analyze-module",
+                        LoaderFailurePhase::CodegenModule => "codegen-module",
+                        LoaderFailurePhase::MaterializeModule => "materialize-module",
+                        LoaderFailurePhase::RegisterRootModule => "register-root-module",
+                    },
+                    &failure.detail,
+                );
+            }
+        }
+    }
+
     pub fn new() -> Self {
         let mut session = Self {
             report: BootstrapReport::new(),
@@ -1144,6 +1182,7 @@ impl LoaderSession {
 
     fn clear_failure(&mut self) {
         self.last_failure = None;
+        Self::sync_loader_result_slot(None);
     }
 
     fn record_failure(
@@ -1157,10 +1196,12 @@ impl LoaderSession {
             phase,
             detail,
         });
+        Self::sync_loader_result_slot(self.last_failure.as_ref());
     }
 
     fn record_failure_record(&mut self, failure: LoaderFailureRecord) {
         self.last_failure = Some(failure);
+        Self::sync_loader_result_slot(self.last_failure.as_ref());
     }
 }
 
@@ -1720,6 +1761,14 @@ pub fn blackbox_like_bootstrap_demo() -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    fn read_utf32_buf(buf: &[u32]) -> String {
+        let end = buf.iter().position(|cp| *cp == 0).unwrap_or(buf.len());
+        buf[..end]
+            .iter()
+            .filter_map(|cp| char::from_u32(*cp))
+            .collect()
+    }
 
     #[test]
     fn bootstrap_plan_mentions_compiling_base_modules() {
@@ -2610,6 +2659,55 @@ mod tests {
         assert!(recovered_status.dirty_modules.iter().all(|module| module.state == DirtyModuleState::Clean));
 
         let _ = std::fs::remove_dir_all(&root_dir);
+    }
+
+    #[test]
+    fn loader_session_syncs_kernel_loader_result_slot() {
+        newcp_runtime::kernel_sys::clear_loader_result();
+
+        let root_dir = std::env::temp_dir().join("newcp-loader-kernel-result-slot");
+        let _ = std::fs::remove_dir_all(&root_dir);
+        std::fs::create_dir_all(&root_dir).expect("create loader result temp dir");
+        std::fs::write(
+            root_dir.join("Root.cp"),
+            concat!(
+                "MODULE Root;\n",
+                "PROCEDURE Run*;\n",
+                "BEGIN\n",
+                "  MissingProc(\n",
+                "END Run;\n",
+                "END Root."
+            ),
+        )
+        .expect("write invalid Root.cp");
+
+        let mut session = LoaderSession::new();
+        let error = session
+            .ensure_import_graph_loaded(root_dir.join("Root.cp").to_str().expect("utf-8 temp path"))
+            .expect_err("invalid source should fail");
+        assert!(!error.is_empty());
+
+        let mut res = -1i64;
+        let mut m1 = [0u32; 32];
+        let mut m2 = [0u32; 32];
+        let mut m3 = [0u32; 256];
+        newcp_runtime::kernel_sys::kernel_sys_last_loader_result(
+            &mut res as *mut _,
+            m1.as_mut_ptr(),
+            m1.len() as i64,
+            m2.as_mut_ptr(),
+            m2.len() as i64,
+            m3.as_mut_ptr(),
+            m3.len() as i64,
+        );
+
+        assert_eq!(res, 2);
+        assert_eq!(read_utf32_buf(&m1), "Root");
+        assert_eq!(read_utf32_buf(&m2), "parse-module");
+        assert_eq!(read_utf32_buf(&m3), error);
+
+        let _ = std::fs::remove_dir_all(&root_dir);
+        newcp_runtime::kernel_sys::clear_loader_result();
     }
 
     #[test]

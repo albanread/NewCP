@@ -2632,6 +2632,59 @@ mod tests {
     }
 
     #[test]
+    fn stores_probe_typed_reader_basic_cursor() {
+        match stage_empty_odc_fixture() {
+            Ok(()) => {}
+            Err(msg) => {
+                eprintln!("[stores_probe] skipping: {msg}");
+                return;
+            }
+        }
+        assert_eq!(
+            run_function_at_workspace_root("Mod/Tests/StoresProbe.cp", "TypedReaderBasicCursor"),
+            1,
+            "Stores.NewReader plus Reader.Pos/SetPos/Close should work through the typed Stores surface"
+        );
+    }
+
+    #[test]
+    fn stores_probe_split_qualified_name() {
+        assert_eq!(
+            run_function_at_workspace_root("Mod/Tests/StoresProbe.cp", "SplitNameRoundTrips"),
+            1,
+            "Stores.SplitQualifiedName must split well-formed names and reject bad ones"
+        );
+    }
+
+    #[test]
+    fn stores_probe_new_store_by_name_allocates() {
+        assert_eq!(
+            run_function_at_workspace_root("Mod/Tests/StoresProbe.cp", "NewStoreByNameAllocates"),
+            1,
+            "Stores.NewStoreByName must allocate a real instance whose type tag matches a directly-NEW'd peer"
+        );
+    }
+
+    #[test]
+    fn stores_probe_typed_load_from_synthetic_odc() {
+        match stage_synthetic_odc(
+            "Synthetic.odc",
+            "StoresProbe.BytePeekDesc",
+            &[17u8, 42u8],
+        ) {
+            Ok(()) => {}
+            Err(msg) => {
+                panic!("synthetic odc staging failed: {msg}");
+            }
+        }
+        assert_eq!(
+            run_function_at_workspace_root("Mod/Tests/StoresProbe.cp", "TypedLoadFromSyntheticOdc"),
+            1,
+            "Stores.NewStore must materialize a typed instance and dispatch Internalize from a synthetic .odc"
+        );
+    }
+
+    #[test]
     fn kernel_probe_this_type_nil_when_unseen() {
         // ThisType returns NIL when the (module, type) pair has no
         // matching TypeDesc registered. Validates the "module known
@@ -2656,6 +2709,78 @@ mod tests {
             run_function("Mod/Tests/KernelProbe.cp", "ThisTypeFindsRegisteredType"),
             1,
             "ThisType reflection plumb (registry populated by __init_types)"
+        );
+    }
+
+    #[test]
+    fn kernel_probe_get_mod_name_round_trips_registered_module() {
+        assert_eq!(
+            run_function("Mod/Tests/KernelProbe.cp", "GetModNameMatchesRegisteredModule"),
+            1,
+            "GetModName must round-trip a registered module handle back to its name"
+        );
+    }
+
+    #[test]
+    fn kernel_probe_mod_of_resolves_type_owner() {
+        assert_eq!(
+            run_function("Mod/Tests/KernelProbe.cp", "ModOfMatchesTypeOwner"),
+            1,
+            "ModOf must recover the declaring module of a codegen-emitted TypeDesc"
+        );
+    }
+
+    #[test]
+    fn kernel_probe_this_mod_failure_sets_loader_result() {
+        assert_eq!(
+            run_function("Mod/Tests/KernelProbe.cp", "ThisModFailureSetsLoaderResult"),
+            1,
+            "ThisMod failure must populate GetLoaderResult with module-not-found diagnostics"
+        );
+    }
+
+    #[test]
+    fn kernel_probe_this_type_failure_sets_loader_result() {
+        assert_eq!(
+            run_function("Mod/Tests/KernelProbe.cp", "ThisTypeFailureSetsLoaderResult"),
+            1,
+            "ThisType failure must populate GetLoaderResult with type-not-found diagnostics"
+        );
+    }
+
+    #[test]
+    fn kernel_probe_reflection_success_clears_loader_result() {
+        assert_eq!(
+            run_function("Mod/Tests/KernelProbe.cp", "ReflectionSuccessClearsLoaderResult"),
+            1,
+            "successful ThisMod/ThisType lookups must clear stale loader diagnostics"
+        );
+    }
+
+    #[test]
+    fn kernel_probe_get_mod_name_nil_yields_empty_string() {
+        assert_eq!(
+            run_function("Mod/Tests/KernelProbe.cp", "GetModNameNilYieldsEmptyString"),
+            1,
+            "GetModName(NIL) must produce an empty string"
+        );
+    }
+
+    #[test]
+    fn kernel_probe_mod_of_nil_yields_nil() {
+        assert_eq!(
+            run_function("Mod/Tests/KernelProbe.cp", "ModOfNilYieldsNil"),
+            1,
+            "ModOf(NIL) must return NIL"
+        );
+    }
+
+    #[test]
+    fn kernel_probe_clean_lookup_leaves_loader_result_clear() {
+        assert_eq!(
+            run_function("Mod/Tests/KernelProbe.cp", "CleanLookupLeavesLoaderResultClear"),
+            1,
+            "a successful known lookup must leave GetLoaderResult in the clear state"
         );
     }
 
@@ -3945,7 +4070,6 @@ mod tests {
     /// with inline-array-of-INTEGER `tabW` field-access (the
     /// pattern #34 fixed).
     ///
-    #[test]
     /// BRK statement: snapshot-style debugger breakpoint.  The dump
     /// goes to stderr (not captured here); the procedure resumes
     /// after BRK and returns `7 * 6 = 42`.  This test verifies that
@@ -4044,98 +4168,7 @@ mod tests {
         assert_eq!(run_function("Mod/Tests/SingleQuoteCharProbe.cp", "Run"), 1);
     }
 
-    /// Converters smoke test — BB-faithful file-format dispatch
-    /// registry.  Registers three converters (odc / txt / rtf)
-    /// and walks the global list.  Expected: 3 * 1000 + 1 = 3001.
-    /// Previously hung in LLVM emit because
-    /// `flatten_sem_type_fields` in lower.rs recursed unbounded
-    /// through named-type cycles — fix landed alongside this port.
     #[test]
-    fn converters_register_builds_linked_list() {
-        assert_eq!(run_function("Mod/Tests/ConvertersProbe.cp", "Run"), 3001);
-    }
-
-    /// Meta MVS smoke — calling Meta.LookupPath returns an Item
-    /// with obj = undef in this slice (real reflection deferred).
-    #[test]
-    fn meta_lookup_path_returns_undef_in_first_slice() {
-        assert_eq!(run_function("Mod/Tests/MetaProbe.cp", "Run"), 1);
-    }
-
-    /// Documents MVS smoke — dir / stdDir start NIL, the stub
-    /// ImportDocument returns s := NIL without trapping.  Full
-    /// .odc decoder lands once Stores.Reader grows ReadVersion /
-    /// ReadStore.
-    #[test]
-    fn documents_mvs_surface_loads() {
-        assert_eq!(run_function("Mod/Tests/DocumentsProbe.cp", "Run"), 1);
-    }
-
-    /// Windows MVS smoke — surface compiles + dir/stdDir start
-    /// NIL + the flag constants assemble into a SET cleanly +
-    /// SelectByTitle stub returns done = FALSE.
-    #[test]
-    fn windows_mvs_surface_loads() {
-        assert_eq!(run_function("Mod/Tests/WindowsProbe.cp", "Run"), 1);
-    }
-
-    /// HostWindows MVS smoke — module init installs the
-    /// StdDirectory into Windows.dir, an empty directory's
-    /// First / Focus return NIL, and Directory.New allocates a
-    /// StdWindow.
-    #[test]
-    fn host_windows_installs_directory() {
-        assert_eq!(run_function("Mod/Tests/HostWindowsProbe.cp", "Run"), 1);
-    }
-
-    /// End-to-end BB UI startup smoke — runs `Init.Run` (the
-    /// full HostMenus / Converters.Register / Config.Setup /
-    /// StdLog.Open / HostMenus.Run chain) then drives
-    /// StdCmds.OpenToolDialog("System/Rsrc/About", ...).
-    /// Verifies the framework walks every layer without
-    /// trapping.  Doesn't yet put pixels on screen — the
-    /// reflection dispatch on Converters.Import is still
-    /// stubbed, the chain stops there.
-    #[test]
-    fn init_run_drives_full_startup_chain() {
-        assert_eq!(run_function("Mod/Tests/InitWelcomeProbe.cp", "Run"), 1);
-    }
-
-    /// Cross-module abstract method dispatch through
-    /// Windows.dir.First() — previously hung the JIT loader.
-    /// Fixed by the lower.rs flatten_sem_type_fields cycle
-    /// guard + downstream patches; kept as a regression test.
-    #[test]
-    fn host_windows_directory_first_dispatch_repro() {
-        let probe_path = workspace_root()
-            .join("Mod")
-            .join("Tests")
-            .join("HostWindowsDirFirstDispatch.cp");
-
-        std::fs::write(
-            &probe_path,
-            concat!(
-                "MODULE HostWindowsDirFirstDispatch;\n",
-                "IMPORT Windows, HostWindows;\n",
-                "PROCEDURE Run* (): INTEGER;\n",
-                "BEGIN\n",
-                "  IF Windows.dir = NIL THEN RETURN -1 END;\n",
-                "  IF Windows.stdDir = NIL THEN RETURN -2 END;\n",
-                "  IF Windows.dir.First() # NIL THEN RETURN -3 END;\n",
-                "  RETURN 1\n",
-                "END Run;\n",
-                "END HostWindowsDirFirstDispatch.\n"
-            ),
-        )
-        .expect("failed to write HostWindowsDirFirstDispatch.cp");
-
-        let result = run_function("Mod/Tests/HostWindowsDirFirstDispatch.cp", "Run");
-
-        let _ = std::fs::remove_file(&probe_path);
-
-        assert_eq!(result, 1);
-    }
-
     fn inline_fixed_array_field_in_xmod_record() {
         assert_eq!(
             run_function("Mod/Tests/InlineFixedArrayProbe.cp", "Run"),

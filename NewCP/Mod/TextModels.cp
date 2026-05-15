@@ -2,7 +2,7 @@ MODULE TextModels;
 (*
    First slice of the BlackBox `TextModels` port.
 
-   `StdModel` extends the typed `HostStores.Store` abstract base
+    `StdModel` extends the typed `Stores.Store` abstract base
    and reads the wire-format BlackBox writes for every persisted
    text model:
 
@@ -27,7 +27,7 @@ MODULE TextModels;
    specification.
 *)
 
-IMPORT HostStores, Stores, Models, Containers, Properties, Ports, Fonts, Views;
+IMPORT Stores, Models, Containers, Properties, Ports, Fonts, Views;
 
 CONST
     (** Special character codes used by the text stream — these
@@ -149,11 +149,11 @@ TYPE
 
 
     (* -- Stage-1 wire-format-only StdModel (kept for the
-          existing TextViews probes that decode .odc bodies
-          through HostStores.StoreDesc).  Future slices will
+            existing TextViews probes that decode .odc bodies
+            through Stores.StoreDesc).  Future slices will
           flip this to extend ModelDesc and use the BB
           Reader/Writer.  Two coexist for now. *)
-    StdModelDesc* = RECORD (HostStores.StoreDesc)
+        StdModelDesc* = RECORD (Stores.StoreDesc)
         (** Concatenation of the 6 super-class version bytes. *)
         superVersions*: ARRAY 6 OF BYTE;
         (** Length of the encoded run list in bytes (the i32 the
@@ -222,7 +222,12 @@ TYPE
     END;
     DocWriter* = POINTER TO DocWriterDesc;
 
-PROCEDURE (m: StdModelDesc) Internalize* (rd: HostStores.Reader);
+PROCEDURE (m: StdModelDesc) Domain* (): Stores.Domain;
+BEGIN
+    RETURN NIL
+END Domain;
+
+PROCEDURE (m: StdModelDesc) Internalize* (VAR rd: Stores.Reader);
     VAR i, j, len, w, h, ascii, attrIdx: INTEGER;
         attrPoolSize, totalBufBytes: INTEGER;
         b, ano: BYTE;
@@ -262,7 +267,8 @@ BEGIN
         IF ano = AnoTerminator THEN EXIT END;
 
         IF ano = attrPoolSize THEN
-            IF ~rd.SkipInlineStore() THEN
+            rd.SkipStore();
+            IF rd.cancelled THEN
                 m.result := OkUnsupportedNewAttr;
                 RETURN
             END;
@@ -302,7 +308,8 @@ BEGIN
             (* len = 0 → embedded view: w (i32), h (i32), inline store. *)
             rd.ReadInt(w); IF rd.eof THEN RETURN END;
             rd.ReadInt(h); IF rd.eof THEN RETURN END;
-            IF ~rd.SkipInlineStore() THEN
+            rd.SkipStore();
+            IF rd.cancelled THEN
                 m.result := OkUnsupportedView;
                 RETURN
             END;
@@ -419,11 +426,11 @@ PROCEDURE (m: Model) Length* (): INTEGER, NEW, ABSTRACT;
    First concrete TextModels.Model in the port.  `Doc` carries a
    fixed-capacity in-memory CHAR buffer; `DocReader` walks it
    one char at a time; `DocWriter` appends to it.  This is a
-   BB-faithful prefix of what `StdModel` will eventually be — the
-   wire-format reader and the in-memory model fuse once
-   `HostStores.StoreDesc` and `Stores.StoreDesc` unify (same
-   constraint that's keeping `StdView` and `Pane` separate in
-   TextViews).
+    BB-faithful prefix of what `StdModel` will eventually be — the
+    wire-format reader and the in-memory model fuse once the
+    persisted `StdModelDesc` and the in-memory `ModelDesc` ladder
+    collapse into one chain (same constraint that's keeping
+    `StdView` and `Pane` separate in TextViews).
 
    Until then, `Doc` is the way framework code (and probes)
    instantiate a real text model:

@@ -301,42 +301,90 @@ END CopyOf;
    TRUE.  We mirror that here by polling the runtime after each
    primitive read so callers can branch on `rd.eof`. *)
 
-PROCEDURE (VAR rd: Reader) ReadByte* (OUT b: BYTE), NEW;
+PROCEDURE NewReader* (s: StoreHandle; VAR rd: Reader);
 BEGIN
-    b := SHORT(SHORT(StoresSys.ReaderReadByte(rd.handle)));
-    rd.eof := StoresSys.ReaderEof(rd.handle) # 0
+    rd.handle := OpenReader(s);
+    rd.eof := FALSE;
+    rd.cancelled := FALSE
+END NewReader;
+
+PROCEDURE (VAR rd: Reader) Close* (), NEW;
+BEGIN
+    IF rd.handle # 0 THEN
+        CloseReader(rd.handle);
+        rd.handle := 0
+    END;
+    rd.eof := TRUE;
+    rd.cancelled := TRUE
+END Close;
+
+PROCEDURE (rd: Reader) Pos* (): INTEGER, NEW;
+BEGIN RETURN ReaderPos(rd.handle) END Pos;
+
+PROCEDURE (VAR rd: Reader) SetPos* (pos: INTEGER), NEW;
+BEGIN
+    ReaderSetPos(rd.handle, pos);
+    rd.eof := ReaderEof(rd.handle) # 0
+END SetPos;
+
+PROCEDURE (VAR rd: Reader) ReadByte* (OUT b: BYTE), NEW;
+    VAR x, posBefore, posAfter: INTEGER;
+BEGIN
+    IF rd.eof THEN b := 0X; RETURN END;
+    posBefore := ReaderPos(rd.handle);
+    x := StoresSys.ReaderReadByte(rd.handle);
+    posAfter := ReaderPos(rd.handle);
+    IF posAfter = posBefore THEN rd.eof := TRUE; b := 0X; RETURN END;
+    b := SHORT(SHORT(SHORT(x)))
 END ReadByte;
 
 PROCEDURE (VAR rd: Reader) ReadInt* (OUT x: INTEGER), NEW;
+    VAR posBefore, posAfter: INTEGER;
 BEGIN
+    IF rd.eof THEN x := 0; RETURN END;
+    posBefore := ReaderPos(rd.handle);
     x := StoresSys.ReaderReadInt(rd.handle);
-    rd.eof := StoresSys.ReaderEof(rd.handle) # 0
+    posAfter := ReaderPos(rd.handle);
+    IF posAfter = posBefore THEN rd.eof := TRUE; x := 0 END
 END ReadInt;
 
 PROCEDURE (VAR rd: Reader) ReadXInt* (OUT x: INTEGER), NEW;
+    VAR posBefore, posAfter: INTEGER;
 BEGIN
+    IF rd.eof THEN x := 0; RETURN END;
+    posBefore := ReaderPos(rd.handle);
     x := StoresSys.ReaderReadXInt(rd.handle);
-    rd.eof := StoresSys.ReaderEof(rd.handle) # 0
+    posAfter := ReaderPos(rd.handle);
+    IF posAfter = posBefore THEN rd.eof := TRUE; x := 0 END
 END ReadXInt;
 
 PROCEDURE (VAR rd: Reader) ReadLong* (OUT x: INTEGER), NEW;
+    VAR posBefore, posAfter: INTEGER;
 BEGIN
+    IF rd.eof THEN x := 0; RETURN END;
+    posBefore := ReaderPos(rd.handle);
     x := StoresSys.ReaderReadLong(rd.handle);
-    rd.eof := StoresSys.ReaderEof(rd.handle) # 0
+    posAfter := ReaderPos(rd.handle);
+    IF posAfter = posBefore THEN rd.eof := TRUE; x := 0 END
 END ReadLong;
 
 PROCEDURE (VAR rd: Reader) ReadBool* (OUT b: BOOLEAN), NEW;
+    VAR posBefore, posAfter: INTEGER;
 BEGIN
+    IF rd.eof THEN b := FALSE; RETURN END;
+    posBefore := ReaderPos(rd.handle);
     b := StoresSys.ReaderReadBool(rd.handle) # 0;
-    rd.eof := StoresSys.ReaderEof(rd.handle) # 0
+    posAfter := ReaderPos(rd.handle);
+    IF posAfter = posBefore THEN rd.eof := TRUE; b := FALSE END
 END ReadBool;
 
 PROCEDURE (VAR rd: Reader) ReadBytes*
     (VAR buf: ARRAY OF BYTE; len: INTEGER), NEW;
     VAR got: INTEGER;
 BEGIN
+    IF rd.eof OR (len <= 0) THEN RETURN END;
     got := StoresSys.ReaderReadBytes(rd.handle, buf, len);
-    rd.eof := (got # len) OR (StoresSys.ReaderEof(rd.handle) # 0)
+    IF got # len THEN rd.eof := TRUE END
 END ReadBytes;
 
 (** BB-faithful version-stamp reader.  Reads a single byte
@@ -396,6 +444,69 @@ BEGIN
     rd.eof := StoresSys.ReaderEof(rd.handle) # 0
 END SkipStore;
 
+PROCEDURE SplitQualifiedName* (IN q: ARRAY OF CHAR;
+                                OUT modName, typeName: ARRAY OF CHAR): BOOLEAN;
+    VAR i, j: INTEGER;
+BEGIN
+    i := 0;
+    WHILE (q[i] # 0X) & (q[i] # ".") DO
+        modName[i] := q[i];
+        INC(i)
+    END;
+    IF q[i] # "." THEN RETURN FALSE END;
+    modName[i] := 0X;
+    INC(i);
+    j := 0;
+    WHILE q[i] # 0X DO
+        typeName[j] := q[i];
+        INC(i); INC(j)
+    END;
+    typeName[j] := 0X;
+    RETURN (modName[0] # 0X) & (typeName[0] # 0X)
+END SplitQualifiedName;
+
+PROCEDURE NewStoreByName* (IN qualifiedName: ARRAY OF CHAR): Store;
+    VAR mod: Kernel.Module; t: Kernel.Type; s: Store;
+        modName, typeName: Kernel.Name;
+BEGIN
+    IF ~SplitQualifiedName(qualifiedName, modName, typeName) THEN RETURN NIL END;
+    mod := Kernel.ThisMod(modName);
+    IF mod = NIL THEN RETURN NIL END;
+    t := Kernel.ThisType(mod, typeName);
+    IF t = NIL THEN RETURN NIL END;
+    Kernel.NewObj(s, t);
+    RETURN s
+END NewStoreByName;
+
+PROCEDURE NewLikeOf* (template: Store): Store;
+BEGIN
+    RETURN NewExt(template)
+END NewLikeOf;
+
+PROCEDURE InternalizeFrom* (src: StoreHandle; dst: Store): BOOLEAN;
+    VAR rd: Reader; eof: BOOLEAN;
+BEGIN
+    NewReader(src, rd);
+    IF rd.handle = 0 THEN RETURN TRUE END;
+    dst.Internalize(rd);
+    eof := rd.eof;
+    rd.Close();
+    RETURN eof
+END InternalizeFrom;
+
+PROCEDURE NewStore* (src: StoreHandle): Store;
+    VAR name: Kernel.Name; s: Store; eof: BOOLEAN;
+BEGIN
+    IF src = 0 THEN RETURN NIL END;
+    GetTypeName(src, name);
+    IF name[0] = 0X THEN RETURN NIL END;
+    s := NewStoreByName(name);
+    IF s = NIL THEN RETURN NIL END;
+    eof := InternalizeFrom(src, s);
+    IF eof THEN END;
+    RETURN s
+END NewStore;
+
 (** BB-faithful version-stamp writer.  Symmetric with
     `ReadVersion`. *)
 PROCEDURE (VAR wr: Writer) WriteVersion* (version: INTEGER), NEW;
@@ -409,9 +520,8 @@ END WriteVersion;
 PROCEDURE (VAR rd: Reader) ReadSet* (OUT s: SET), NEW;
     VAR x: INTEGER;
 BEGIN
-    x := StoresSys.ReaderReadInt(rd.handle);
+    rd.ReadInt(x);
     s := SYSTEM.VAL(SET, x);
-    rd.eof := StoresSys.ReaderEof(rd.handle) # 0
 END ReadSet;
 
 PROCEDURE (VAR wr: Writer) WriteSet* (s: SET), NEW;

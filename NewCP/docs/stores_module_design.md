@@ -42,6 +42,81 @@ Two facts worth carrying forward:
 
 This is the canonical wire codec. The NewCP `Stores` module sits **on top of** it, not next to it. Anything wire-format-related (kind dispatch, path encoding, type/store dictionary on-wire shape) must call into `newcp-odc`; we do not duplicate the codec into a separate crate.
 
+## A2 merge note: collapse `HostStores` back into `Stores`
+
+The repository is currently carrying a transitional split that is useful for bring-up but wrong as an end state:
+
+- [Mod/Stores.cp](../Mod/Stores.cp) owns the public module name, the flat handle facade, and one abstract OO hierarchy (`StoreDesc`, `Reader`, `Writer`, `DomainDesc`, `OperationDesc`).
+- [Mod/HostStores.cp](../Mod/HostStores.cp) owns the typed allocation and typed `Internalize` path the framework actually uses today (`ReaderDesc`, `StoreDesc`, `NewStoreByName`, `InternalizeFrom`, `NewStore`).
+
+Progress update (2026-05-15):
+
+- the typed reader/materialization helpers have now been copied into [Mod/Stores.cp](../Mod/Stores.cp)
+- [Mod/TextModels.cp](../Mod/TextModels.cp) and [Mod/TextViews.cp](../Mod/TextViews.cp) have been switched onto `Stores.StoreDesc`
+- the remaining merge work is now about thinning/removing `HostStores`, not about deciding who owns the typed path
+
+- consumers originally like [Mod/TextModels.cp](../Mod/TextModels.cp), [Mod/TextViews.cp](../Mod/TextViews.cp), and the early typed probes extended `HostStores.StoreDesc`; that migration is now underway and `HostStores` should be treated as a compatibility layer, not the target architecture.
+
+That split is the reason types like `TextViews.StdViewDesc` and the future real pane hierarchy cannot sit in the single BlackBox-faithful inheritance chain yet. The merge goal is therefore not "make HostStores nicer"; it is to make `Stores` the only typed-store surface again.
+
+### APIs that stay on `Stores`
+
+These remain the long-term public API and should absorb the typed path rather than being bypassed:
+
+- the public module name `Stores`
+- the flat document / store-handle facade already used for low-level ODC walking (`OpenDocument`, `RootStore`, `FirstChild`, `NextSibling`, `GetTypeName`, reader / writer handle primitives)
+- the BlackBox-facing typed records and methods declared in [Mod/Stores.cp](../Mod/Stores.cp): `StoreDesc`, `Store`, `Reader`, `Writer`, `DomainDesc`, `Domain`, `OperationDesc`, `Operation`, `ReadVersion`, `TurnIntoAlien`, `ReadStore`, `NewExt`, and later clone / alien / domain logic
+- all framework-visible inheritance roots: model/view/document classes should ultimately descend from `Stores.StoreDesc`, not a parallel host-only base
+
+### Typed responsibilities that currently live in `HostStores`
+
+These are the pieces to fold into `Stores`, not keep as a second permanent abstraction layer:
+
+- typed reader wrapper over integer handles: `HostStores.ReaderDesc`, `NewReader`, and its typed primitive methods
+- typed store allocation by qualified runtime type: `HostStores.SplitQualifiedName`, `NewStoreByName`, `NewLikeOf`
+- typed materialization from a wire store handle: `HostStores.InternalizeFrom`, `HostStores.NewStore`
+- the currently active typed abstract base `HostStores.StoreDesc`, which `TextModels.StdModelDesc`, `TextViews.StdViewDesc`, and several test-only records extend today
+
+### Symbol moves and deletions
+
+Planned shape:
+
+- move `HostStores.ReaderDesc` functionality onto `Stores.Reader`; there should be one typed reader record, not `Stores.Reader` plus `HostStores.Reader`
+- move `HostStores.StoreDesc` functionality onto `Stores.StoreDesc`; all typed persisted classes inherit from the `Stores` root
+- move `HostStores.NewReader`, `SplitQualifiedName`, `NewStoreByName`, `NewLikeOf`, `InternalizeFrom`, and `NewStore` into [Mod/Stores.cp](../Mod/Stores.cp)
+- once call sites are migrated, delete the duplicate type roots from [Mod/HostStores.cp](../Mod/HostStores.cp) and either remove the module or leave only a short transitional compatibility shim that forwards to `Stores`
+- remove comments and code paths that describe the split hierarchy as expected architecture; it is only a bring-up scaffold
+
+What does **not** move:
+
+- the wire codec stays in `newcp-odc`
+- the low-level runtime bridge stays under `StoresSys` / runtime code
+- `Stores` remains the owner of alien, clone, domain, and reader/writer semantics even when their early implementations temporarily call into runtime helpers
+
+### Call sites to change first
+
+The first edits after this note should target the places that currently prove the split is load-bearing:
+
+1. [Mod/TextModels.cp](../Mod/TextModels.cp): flip `StdModelDesc` and related typed `Internalize` signatures from `HostStores.*` to `Stores.*`.
+2. [Mod/TextViews.cp](../Mod/TextViews.cp): flip `StdViewDesc` and its child-store materialization path from `HostStores.NewStore` / `HostStores.StoreDesc` to the `Stores` equivalents.
+3. [Mod/Containers.cp](../Mod/Containers.cp): remove commentary and fallback assumptions that child-store materialization must live outside `Stores` to avoid the split.
+4. [Mod/Tests/HostStoresProbe.cp](../Mod/Tests/HostStoresProbe.cp), [Mod/Tests/TextModelsProbe.cp](../Mod/Tests/TextModelsProbe.cp), and [Mod/Tests/TextViewsProbe.cp](../Mod/Tests/TextViewsProbe.cp): migrate probes so they validate `Stores` as the typed entry point, then shrink or delete HostStores-specific tests.
+
+Recommended local merge order:
+
+1. copy the typed reader and typed allocation helpers into `Stores` without deleting `HostStores`
+2. migrate `TextModels` and `TextViews` inheritance and `Internalize` signatures to `Stores`
+3. move probe coverage to `Stores`
+4. thin `HostStores` to forwarding wrappers
+5. delete `HostStores` only after no framework module needs the duplicate root types
+
+Definition of done for A2:
+
+- no framework-owned persisted type extends `HostStores.StoreDesc`
+- no framework-owned `Internalize` override requires `HostStores.Reader`
+- `Stores.NewStore` is the canonical typed materialization entry point
+- `HostStores` is either gone or trivially forwarding, with no unique type roots or allocation logic left in it
+
 ## What changes for NewCP
 
 ### 1. Two-layer split: native helpers + CP shell

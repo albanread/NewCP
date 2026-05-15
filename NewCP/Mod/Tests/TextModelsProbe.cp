@@ -5,7 +5,7 @@ MODULE TextModelsProbe;
    are the version-chain placeholder, followed by a 4-byte LE
    run-list length we can verify against. *)
 
-IMPORT Stores, HostStores, TextModels, Kernel;
+IMPORT Stores, TextModels, Kernel;
 
 (** Type-resolution sanity: ThisMod("TextModels") and
     ThisType(_, "StdModelDesc") must both succeed once the
@@ -30,7 +30,7 @@ END TypeResolves;
     is 7. *)
 PROCEDURE LoadStdModel* (): INTEGER;
     VAR doc, root: INTEGER;
-        s: HostStores.Store;
+    s: Stores.Store;
         sm: TextModels.StdModel;
 BEGIN
     doc := Stores.OpenDocument("Mod/Tests/_fixtures/TextModelsStub.odc");
@@ -38,7 +38,7 @@ BEGIN
     root := Stores.RootStore(doc);
     IF root = 0 THEN Stores.CloseDocument(doc); RETURN 0 END;
 
-    s := HostStores.NewStore(root);
+    s := Stores.NewStore(root);
     Stores.CloseDocument(doc);
     IF s = NIL THEN RETURN 0 END;
 
@@ -66,7 +66,7 @@ END LoadStdModel;
     materialize. *)
 PROCEDURE LoadStdModelText* (): INTEGER;
     VAR doc, root: INTEGER;
-        s: HostStores.Store;
+    s: Stores.Store;
         sm: TextModels.StdModel;
 BEGIN
     doc := Stores.OpenDocument("Mod/Tests/_fixtures/TextModelsHello.odc");
@@ -74,7 +74,7 @@ BEGIN
     root := Stores.RootStore(doc);
     IF root = 0 THEN Stores.CloseDocument(doc); RETURN 0 END;
 
-    s := HostStores.NewStore(root);
+    s := Stores.NewStore(root);
     Stores.CloseDocument(doc);
     IF s = NIL THEN RETURN 0 END;
 
@@ -95,13 +95,13 @@ END LoadStdModelText;
     (with its garbage run-list-length); make the contract explicit. *)
 PROCEDURE LoadStdModelEmpty* (): INTEGER;
     VAR doc, root: INTEGER;
-        s: HostStores.Store;
+    s: Stores.Store;
         sm: TextModels.StdModel;
 BEGIN
     doc := Stores.OpenDocument("Mod/Tests/_fixtures/TextModelsEmpty.odc");
     IF doc = 0 THEN RETURN 0 END;
     root := Stores.RootStore(doc);
-    s := HostStores.NewStore(root);
+    s := Stores.NewStore(root);
     Stores.CloseDocument(doc);
     IF s = NIL THEN RETURN 0 END;
 
@@ -146,7 +146,7 @@ END FindStdModelIn;
             so e.g. 25 = OkUnsupportedNewAttr) *)
 PROCEDURE LoadStdModelFromEmptyOdc* (): INTEGER;
     VAR doc, modelStore: INTEGER;
-        s: HostStores.Store;
+    s: Stores.Store;
         sm: TextModels.StdModel;
         rc: INTEGER;
 BEGIN
@@ -155,7 +155,7 @@ BEGIN
     modelStore := FindStdModelIn(Stores.RootStore(doc));
     IF modelStore = 0 THEN Stores.CloseDocument(doc); RETURN 10 END;
 
-    s := HostStores.NewStore(modelStore);
+    s := Stores.NewStore(modelStore);
     Stores.CloseDocument(doc);
     IF s = NIL THEN RETURN 11 END;
 
@@ -172,7 +172,7 @@ END LoadStdModelFromEmptyOdc;
     failed, 20+result for non-Ok decoder outcomes. *)
 PROCEDURE LoadStdModelFromTourOdc* (): INTEGER;
     VAR doc, modelStore: INTEGER;
-        s: HostStores.Store;
+    s: Stores.Store;
         sm: TextModels.StdModel;
         rc: INTEGER;
 BEGIN
@@ -181,7 +181,7 @@ BEGIN
     modelStore := FindStdModelIn(Stores.RootStore(doc));
     IF modelStore = 0 THEN Stores.CloseDocument(doc); RETURN 10 END;
 
-    s := HostStores.NewStore(modelStore);
+    s := Stores.NewStore(modelStore);
     Stores.CloseDocument(doc);
     IF s = NIL THEN RETURN 11 END;
 
@@ -199,14 +199,14 @@ END LoadStdModelFromTourOdc;
     (the default attribute) and textPieceCount >= 1. *)
 PROCEDURE TourOdcModelSummary* (): INTEGER;
     VAR doc, modelStore: INTEGER;
-        s: HostStores.Store;
+    s: Stores.Store;
         sm: TextModels.StdModel;
 BEGIN
     doc := Stores.OpenDocument("Mod/Tests/_fixtures/Tour.odc");
     IF doc = 0 THEN RETURN -1 END;
     modelStore := FindStdModelIn(Stores.RootStore(doc));
     IF modelStore = 0 THEN Stores.CloseDocument(doc); RETURN -2 END;
-    s := HostStores.NewStore(modelStore);
+    s := Stores.NewStore(modelStore);
     Stores.CloseDocument(doc);
     IF s = NIL THEN RETURN -3 END;
     sm := s(TextModels.StdModel);
@@ -219,14 +219,14 @@ END TourOdcModelSummary;
     buffer — every 1-byte text-run piece widened to CHAR. *)
 PROCEDURE TourOdcTextLength* (): INTEGER;
     VAR doc, modelStore: INTEGER;
-        s: HostStores.Store;
+    s: Stores.Store;
         sm: TextModels.StdModel;
 BEGIN
     doc := Stores.OpenDocument("Mod/Tests/_fixtures/Tour.odc");
     IF doc = 0 THEN RETURN -1 END;
     modelStore := FindStdModelIn(Stores.RootStore(doc));
     IF modelStore = 0 THEN Stores.CloseDocument(doc); RETURN -2 END;
-    s := HostStores.NewStore(modelStore);
+    s := Stores.NewStore(modelStore);
     Stores.CloseDocument(doc);
     IF s = NIL THEN RETURN -3 END;
     sm := s(TextModels.StdModel);
@@ -241,7 +241,7 @@ END TourOdcTextLength;
     back through the test ABI. *)
 PROCEDURE TourOdcTextDigest* (): INTEGER;
     VAR doc, modelStore: INTEGER;
-        s: HostStores.Store;
+    s: Stores.Store;
         sm: TextModels.StdModel;
         i, digest: INTEGER;
 BEGIN
@@ -249,7 +249,7 @@ BEGIN
     IF doc = 0 THEN RETURN -1 END;
     modelStore := FindStdModelIn(Stores.RootStore(doc));
     IF modelStore = 0 THEN Stores.CloseDocument(doc); RETURN -2 END;
-    s := HostStores.NewStore(modelStore);
+    s := Stores.NewStore(modelStore);
     Stores.CloseDocument(doc);
     IF s = NIL THEN RETURN -3 END;
     sm := s(TextModels.StdModel);

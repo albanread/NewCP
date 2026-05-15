@@ -30,7 +30,7 @@ The original BlackBox loader worked with object files, symbol files, type descri
 
 Memory is no longer the scarce resource that shaped the original loader. BlackBox is small enough now that the whole environment can live in memory.
 
-## Current status (2026-05-10)
+## Current status (2026-05-15)
 
 NewCP is past the bootstrap-shape phase. The compiler pipeline, JIT, runtime, and a usable framework slice are all live in one process.
 
@@ -73,13 +73,13 @@ Working on the JIT today, with regression tests in [`Mod/Tests`](Mod/Tests) and 
 
 CP modules currently live in [`Mod/`](Mod) and run on the JIT:
 
-- **`Kernel`** — the BlackBox-equivalent runtime surface. Bound to Rust today: `Time`, `Beep`, `TypeOf`, `BaseOf`, `SizeOf`, `LevelOf`, `NewObj`, `Loop`, `Quit`, `Event`, `EventHandler`, `PushTrapCleaner`, `PopTrapCleaner`, `GetTypeName`, `GetQualifiedTypeName`, `ThisMod`, `ThisType`. Still declared-only: `GetModName`, `ModOf`, `GetLoaderResult`.
+- **`Kernel`** — the BlackBox-equivalent runtime surface. Bound to Rust today: `Time`, `Beep`, `TypeOf`, `BaseOf`, `SizeOf`, `LevelOf`, `NewObj`, `Loop`, `Quit`, `Event`, `EventHandler`, `PushTrapCleaner`, `PopTrapCleaner`, `GetTypeName`, `GetQualifiedTypeName`, `ThisMod`, `ThisType`, `GetModName`, `ModOf`, `GetLoaderResult`. Reflection lookup failures now also update the loader-result slot Stores uses for module/type diagnostics.
 - **`Files`** + **`HostFiles`** — abstract interface module + concrete subclass; cross-module OOP is exercised here.
 - **`Dates`** + **`HostDates`** — abstract surface plus host-backed implementation; `DatesArith` / `DatesClock` integration tests pass on the JIT.
 - **`Fonts`** + **`HostFonts`** — full `HostFonts` impl with `FontProbe` smoke test. `HostFonts` ships with renamed local types as a workaround for the documented sema name-collision case.
 - **`Math`**, **`SMath`**, **`Strings`** — full `RealToStringForm`, `StringIntFmt`, etc.
 - **`Console`**, **`Log`**, **`Integers`**
-- **`Stores`** + **`StoresSys`** — Stage S1 read-only envelope walker (`OpenDocument` / `RootStore` / `FirstChild` / `NextSibling` / `GetTypeName` / `GetBodyLen` / `GetKind`). Stage S2 (typed `Internalize`/`Externalize`/`CopyFrom`, `Reader`, `Writer`, `Domain`) is the next headline port.
+- **`Stores`** + **`StoresSys`** — the Stage S1 envelope walker is live, and the first S2 merge seam is now real: `Stores` owns typed reader lifecycle and typed materialization helpers (`NewReader`, `SplitQualifiedName`, `NewStoreByName`, `NewLikeOf`, `InternalizeFrom`, `NewStore`). `TextModels.StdModelDesc` and `TextViews.StdViewDesc` now hang off the `Stores.StoreDesc` path; `HostStores` is now transitional and slated for thinning.
 - **`iGui`** — the integrated GUI; see below.
 
 The `HostXxxSys` layering pattern is honored: abstract `Xxx.cp` stays import-free, `HostXxx.cp` imports `HostXxxSys.cp`, and only the `Sys` module imports `iGui`.
@@ -113,10 +113,11 @@ A Rust-thread `redit` UI-thread fail-safe editor for CP source ships alongside i
 
 See [`docs/next_milestones.md`](docs/next_milestones.md) for the rolling plan. The current sequence:
 
-1. **Stores Stage S2** — typed `Internalize`/`Externalize`/`CopyFrom`, `Reader`, `Writer`, `Domain`. The headline port. Multi-day.
-2. **Heap-side dangling-TypeDesc probe** before S2 ships, so the hot-reload story stays sound while CP records start populating the heap.
-3. **`Kernel.ModOf` / `Kernel.GetModName` / `Kernel.GetLoaderResult`** — close out the reflection surface using the name-based workaround (no codegen-side `ModuleDesc` emission for now).
-4. **`HostMenus` from CP on top of `Kernel.Loop`** — a separate work-stream once `iGui.OpenChild` and the MDI plumbing it needs are in place.
+1. **Finish the Stores/HostStores merge** — keep migrating remaining call sites, revalidate the migrated typed-load paths on real fixtures, and thin `HostStores` down to forwarding wrappers or remove it.
+2. **Stores reader/writer audit** — finish the remaining eof/cancel / inline-child / version-stamp semantics against real `.odc` fixtures.
+3. **Alien fallback (A2 then A3)** — preserve unknown or version-skewed stores without corrupting documents.
+4. **Heap-side dangling-TypeDesc probe** while more CP records start surviving on the heap across reload boundaries.
+5. **`HostMenus` from CP on top of `Kernel.Loop`** — a separate work-stream once `iGui.OpenChild` and the MDI plumbing it needs are in place.
 
 Documented background:
 

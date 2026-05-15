@@ -17,7 +17,34 @@ MODULE StoresProbe;
    - Negative paths: invalid handles return 0 / empty.
 *)
 
-IMPORT Stores;
+IMPORT Stores, Kernel;
+
+TYPE
+  BytePeekDesc* = RECORD (Stores.StoreDesc)
+    first*:  INTEGER;
+    second*: INTEGER;
+    count*:  INTEGER
+  END;
+  BytePeek* = POINTER TO BytePeekDesc;
+
+PROCEDURE (p: BytePeekDesc) Domain*(): Stores.Domain;
+BEGIN
+  RETURN NIL
+END Domain;
+
+PROCEDURE (p: BytePeekDesc) Internalize*(VAR rd: Stores.Reader);
+  VAR b: BYTE;
+BEGIN
+  p.count := 0;
+  rd.ReadByte(b);
+  IF rd.eof THEN RETURN END;
+  p.first := b;
+  p.count := 1;
+  rd.ReadByte(b);
+  IF rd.eof THEN RETURN END;
+  p.second := b;
+  p.count := 2
+END Internalize;
 
 (** Open a valid `.odc`, root must be non-NIL with a sane shape,
     close cleanly. Returns 1 on full success, 0 otherwise. *)
@@ -242,5 +269,101 @@ BEGIN
   IF Stores.ReaderReadBytes(0, bbuf, 4) # 0 THEN RETURN 0 END;
   RETURN 1
 END InvalidReaderHandlesReturnZero;
+
+PROCEDURE TypedReaderBasicCursor*(): INTEGER;
+  VAR doc, root: INTEGER;
+      rd: Stores.Reader;
+      b0, b0again: BYTE;
+      b1: BYTE;
+BEGIN
+  doc := Stores.OpenDocument("Mod/Tests/_fixtures/Empty.odc");
+  IF doc = 0 THEN RETURN 0 END;
+  root := Stores.RootStore(doc);
+  IF root = 0 THEN Stores.CloseDocument(doc); RETURN 0 END;
+  IF Stores.GetBodyLen(root) < 2 THEN Stores.CloseDocument(doc); RETURN 0 END;
+
+  Stores.NewReader(root, rd);
+  IF rd.handle = 0 THEN Stores.CloseDocument(doc); RETURN 0 END;
+  IF rd.eof OR rd.cancelled THEN rd.Close(); Stores.CloseDocument(doc); RETURN 0 END;
+  IF rd.Pos() # 0 THEN rd.Close(); Stores.CloseDocument(doc); RETURN 0 END;
+
+  rd.ReadByte(b0);
+  IF rd.Pos() # 1 THEN rd.Close(); Stores.CloseDocument(doc); RETURN 0 END;
+
+  rd.ReadByte(b1);
+  IF rd.Pos() # 2 THEN rd.Close(); Stores.CloseDocument(doc); RETURN 0 END;
+
+  rd.SetPos(0);
+  IF rd.Pos() # 0 THEN rd.Close(); Stores.CloseDocument(doc); RETURN 0 END;
+
+  rd.ReadByte(b0again);
+  IF b0again # b0 THEN rd.Close(); Stores.CloseDocument(doc); RETURN 0 END;
+
+  IF b1 < 0 THEN RETURN 0 END;
+
+  rd.Close();
+  Stores.CloseDocument(doc);
+  RETURN 1
+END TypedReaderBasicCursor;
+
+PROCEDURE SplitNameRoundTrips*(): INTEGER;
+  VAR modName, typeName: ARRAY 64 OF CHAR;
+      ok: BOOLEAN;
+BEGIN
+  ok := Stores.SplitQualifiedName("Foo.Bar", modName, typeName);
+  IF ~ok THEN RETURN 0 END;
+  IF (modName # "Foo") OR (typeName # "Bar") THEN RETURN 0 END;
+
+  ok := Stores.SplitQualifiedName("StoresProbe.BytePeekDesc", modName, typeName);
+  IF ~ok THEN RETURN 0 END;
+  IF modName # "StoresProbe" THEN RETURN 0 END;
+  IF typeName # "BytePeekDesc" THEN RETURN 0 END;
+
+  ok := Stores.SplitQualifiedName("NoDotHere", modName, typeName);
+  IF ok THEN RETURN 0 END;
+
+  ok := Stores.SplitQualifiedName(".OnlyType", modName, typeName);
+  IF ok THEN RETURN 0 END;
+
+  ok := Stores.SplitQualifiedName("OnlyMod.", modName, typeName);
+  IF ok THEN RETURN 0 END;
+
+  RETURN 1
+END SplitNameRoundTrips;
+
+PROCEDURE NewStoreByNameAllocates*(): INTEGER;
+  VAR s: Stores.Store; t1, t2: Kernel.Type;
+      bp: BytePeek;
+BEGIN
+  s := Stores.NewStoreByName("StoresProbe.BytePeekDesc");
+  IF s = NIL THEN RETURN 0 END;
+
+  NEW(bp);
+  t1 := Kernel.TypeOf(s);
+  t2 := Kernel.TypeOf(bp);
+  IF (t1 = NIL) OR (t1 # t2) THEN RETURN 0 END;
+  RETURN 1
+END NewStoreByNameAllocates;
+
+PROCEDURE TypedLoadFromSyntheticOdc*(): INTEGER;
+  VAR doc, root: INTEGER;
+      s: Stores.Store;
+      bp: BytePeek;
+BEGIN
+  doc := Stores.OpenDocument("Mod/Tests/_fixtures/Synthetic.odc");
+  IF doc = 0 THEN RETURN 0 END;
+  root := Stores.RootStore(doc);
+  IF root = 0 THEN Stores.CloseDocument(doc); RETURN 0 END;
+
+  s := Stores.NewStore(root);
+  Stores.CloseDocument(doc);
+  IF s = NIL THEN RETURN 0 END;
+
+  bp := s(BytePeek);
+  IF bp.count # 2 THEN RETURN 0 END;
+  IF bp.first # 17 THEN RETURN 0 END;
+  IF bp.second # 42 THEN RETURN 0 END;
+  RETURN 1
+END TypedLoadFromSyntheticOdc;
 
 END StoresProbe.

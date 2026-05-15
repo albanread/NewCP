@@ -4,7 +4,7 @@ MODULE TextViewsProbe;
    via NewStore — which dispatches Internalize, which in turn
    recursively materializes the embedded TextModels.StdModel. *)
 
-IMPORT Stores, HostStores, TextModels, TextViews;
+IMPORT Stores, TextModels, TextViews;
 
 (** DFS through `s` looking for a `TextViews.StdViewDesc`. *)
 PROCEDURE FindStdViewIn (s: Stores.StoreHandle): Stores.StoreHandle;
@@ -39,7 +39,7 @@ END TypeResolves;
       - the model's own Internalize ran to OkComplete *)
 PROCEDURE LoadStdViewFromTourOdc* (): INTEGER;
     VAR doc, viewStore: INTEGER;
-        s: HostStores.Store;
+    s: Stores.Store;
         sv: TextViews.StdView;
 BEGIN
     doc := Stores.OpenDocument("Mod/Tests/_fixtures/Tour.odc");
@@ -47,7 +47,7 @@ BEGIN
     viewStore := FindStdViewIn(Stores.RootStore(doc));
     IF viewStore = 0 THEN Stores.CloseDocument(doc); RETURN -2 END;
 
-    s := HostStores.NewStore(viewStore);
+    s := Stores.NewStore(viewStore);
     Stores.CloseDocument(doc);
     IF s = NIL THEN RETURN -3 END;
 
@@ -68,14 +68,14 @@ END LoadStdViewFromTourOdc;
     org >= 0, dy >= 0. *)
 PROCEDURE TourStdViewSummary* (): INTEGER;
     VAR doc, viewStore: INTEGER;
-        s: HostStores.Store;
+    s: Stores.Store;
         sv: TextViews.StdView;
 BEGIN
     doc := Stores.OpenDocument("Mod/Tests/_fixtures/Tour.odc");
     IF doc = 0 THEN RETURN -1 END;
     viewStore := FindStdViewIn(Stores.RootStore(doc));
     IF viewStore = 0 THEN Stores.CloseDocument(doc); RETURN -2 END;
-    s := HostStores.NewStore(viewStore);
+    s := Stores.NewStore(viewStore);
     Stores.CloseDocument(doc);
     IF s = NIL THEN RETURN -3 END;
     sv := s(TextViews.StdView);

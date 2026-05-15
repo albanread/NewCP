@@ -19,9 +19,9 @@ MODULE TextViews;
      4 bytes   org  INTEGER  (top-of-view character offset)
      4 bytes   dy   INTEGER  (sub-line scroll offset, in pixels)
 
-   This slice materializes the embedded `TextModels.StdModel`
-   typed instance via `Reader.ReadInlineStore` followed by
-   `HostStores.NewStore`, and skips past the controller / ruler /
+    This slice materializes the embedded `TextModels.StdModel`
+    typed instance via `Reader.ReadStore` followed by
+    `Stores.NewStore`, and skips past the controller / ruler /
    attributes children (which need their own typed records,
    slated for later slices).
 
@@ -29,7 +29,7 @@ MODULE TextViews;
    specification.
 *)
 
-IMPORT HostStores, TextModels, TextRulers, TextSetters, Views, Containers, Ports, Fonts;
+IMPORT Stores, TextModels, TextRulers, TextSetters, Views, Containers, Ports, Fonts;
 
 CONST
     OkComplete*           = 0;
@@ -91,18 +91,16 @@ TYPE
     END;
 
     (** Wire-format reader for `.odc`'s embedded TextViews
-        StdView record.  Extends `HostStores.StoreDesc` so
-        `HostStores.NewStore` can allocate it from the
+        StdView record.  Extends `Stores.StoreDesc` so
+        `Stores.NewStore` can allocate it from the
         qualified-type name baked into the .odc.
 
         BB collapses this functionality into `Pane` (below) via
         the full Stores.Store → Views.View → Containers.View
-        chain.  We can't unify those yet because
-        `HostStores.StoreDesc` and `Stores.StoreDesc` are
-        currently separate hierarchies — single-inheritance CP
-        can't put `StdView` in both.  Once `HostStores.StoreDesc`
-        merges into the Stores side, this type and `Pane` fuse. *)
-    StdViewDesc* = RECORD (HostStores.StoreDesc)
+        chain.  We still keep the persisted wire reader (`StdView`)
+        and the live pane (`Pane`) separate, but they now share the
+        `Stores.StoreDesc` root. *)
+    StdViewDesc* = RECORD (Stores.StoreDesc)
         (** Stage-1 super-class version chain (Stores.Store +
             Views.View + Containers.View). *)
         v1*: ARRAY 3 OF BYTE;
@@ -134,8 +132,8 @@ TYPE
         existing wire-reader `StdView` above.  BB's `StdView`
         unifies the two roles by riding the full Stores.Store →
         Views.View → Containers.View → TextViews.View chain; our
-        port keeps them split until `HostStores.StoreDesc` can
-        merge into `Stores.StoreDesc`.  Functionally `Pane` IS
+        port keeps them split until the persisted wire reader and
+        live pane can merge into one hierarchy. Functionally `Pane` IS
         the BB editor pane prefix: same field meanings, same
         abstract-method overrides.
 
@@ -177,11 +175,16 @@ VAR
         publishing through the abstract `dir-` / `stdDir-` slots. *)
     std: PaneDirectory;
 
-PROCEDURE (v: StdViewDesc) Internalize* (rd: HostStores.Reader);
+PROCEDURE (v: StdViewDesc) Domain* (): Stores.Domain;
+BEGIN
+    RETURN NIL
+END Domain;
+
+PROCEDURE (v: StdViewDesc) Internalize* (VAR rd: Stores.Reader);
     VAR i: INTEGER;
         b: BYTE;
         modelStoreHandle: INTEGER;
-        modelStore: HostStores.Store;
+        modelStore: Stores.Store;
         bool: BOOLEAN;
 BEGIN
     v.model := NIL;
@@ -201,11 +204,11 @@ BEGIN
 
     (* Inline Model store. *)
     v.result := OkModelMissing;
-    modelStoreHandle := rd.ReadInlineStore();
+    rd.ReadStore(modelStoreHandle);
     IF modelStoreHandle = 0 THEN RETURN END;
 
     v.result := OkModelLoadFailed;
-    modelStore := HostStores.NewStore(modelStoreHandle);
+    modelStore := Stores.NewStore(modelStoreHandle);
     IF modelStore = NIL THEN RETURN END;
     (* Type-guard down to a concrete StdModel — anything else is
        a wire-format mismatch we don't handle yet. *)
@@ -213,7 +216,8 @@ BEGIN
 
     (* Inline Controller store — skip without materializing. *)
     v.result := OkControllerSkipFail;
-    IF ~rd.SkipInlineStore() THEN RETURN END;
+    rd.SkipStore();
+    IF rd.cancelled THEN RETURN END;
 
     (* Stage-2 version bytes. *)
     v.result := OkInternalize2Trunc;
@@ -232,11 +236,13 @@ BEGIN
 
     (* Default Ruler — skip. *)
     v.result := OkRulerSkipFail;
-    IF ~rd.SkipInlineStore() THEN RETURN END;
+    rd.SkipStore();
+    IF rd.cancelled THEN RETURN END;
 
     (* Default Attributes — skip. *)
     v.result := OkAttrsSkipFail;
-    IF ~rd.SkipInlineStore() THEN RETURN END;
+    rd.SkipStore();
+    IF rd.cancelled THEN RETURN END;
 
     (* org / dy trailer. *)
     v.result := OkTrailerTrunc;
