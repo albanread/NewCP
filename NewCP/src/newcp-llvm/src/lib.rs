@@ -490,16 +490,35 @@ pub fn dump_asm_with_options(path: &Path, options: &CodegenOptions) -> String {
 
 #[cfg(test)]
 mod tests {
+    use std::fs;
+    use std::path::Path;
     use std::path::PathBuf;
+    use std::time::{SystemTime, UNIX_EPOCH};
 
     use inkwell::context::Context;
 
     use newcp_runtime::console;
 
-    use super::{compile_from_path, jit_module, CodegenOptions};
+    use super::{compile_from_path, compile_ir_module, jit_module, CodegenOptions};
 
     fn temp_source_path(file_name: &str) -> PathBuf {
         std::env::temp_dir().join(file_name)
+    }
+
+    fn temp_test_dir(name: &str) -> PathBuf {
+        let nonce = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .expect("system clock should be after unix epoch")
+            .as_nanos();
+        std::env::temp_dir().join(format!("newcp-llvm-{name}-{nonce}"))
+    }
+
+    fn workspace_root() -> PathBuf {
+        Path::new(env!("CARGO_MANIFEST_DIR"))
+            .parent()
+            .and_then(Path::parent)
+            .expect("workspace layout should be <root>/src/newcp-llvm")
+            .to_path_buf()
     }
 
     #[test]
@@ -539,5 +558,57 @@ mod tests {
         console::reset();
 
         let _ = std::fs::remove_file(&source_path);
+    }
+
+    #[test]
+    fn compiles_cross_module_abstract_method_return_dispatch() {
+        let test_dir = temp_test_dir("xmod-method-return");
+        fs::create_dir_all(&test_dir).expect("temporary test directory should be creatable");
+
+        let root = workspace_root();
+        let windows_path = test_dir.join("Windows.cp");
+        let host_windows_path = test_dir.join("HostWindows.cp");
+        let probe_path = test_dir.join("Probe.cp");
+
+        fs::copy(root.join("Mod").join("Windows.cp"), &windows_path)
+            .expect("Windows fixture should be copyable from the workspace");
+        fs::copy(root.join("Mod").join("HostWindows.cp"), &host_windows_path)
+            .expect("HostWindows fixture should be copyable from the workspace");
+
+        fs::write(
+            &probe_path,
+            concat!(
+                "MODULE Probe;\n",
+                "IMPORT Windows, HostWindows;\n",
+                "PROCEDURE Run* (): INTEGER;\n",
+                "BEGIN\n",
+                "  IF Windows.dir = NIL THEN RETURN -1 END;\n",
+                "  IF Windows.stdDir = NIL THEN RETURN -2 END;\n",
+                "  IF Windows.dir.First() # NIL THEN RETURN -3 END;\n",
+                "  RETURN 1\n",
+                "END Run;\n",
+                "END Probe.\n"
+            ),
+        )
+        .expect("Probe fixture should be writable");
+
+        let options = CodegenOptions::default();
+        eprintln!("[test] lowering probe module");
+        let ir_module = newcp_ir::lower_from_path(&probe_path)
+            .expect("cross-module abstract method dispatch should lower to IR");
+        eprintln!("[test] compiling lowered IR");
+        let compiled = compile_ir_module(&ir_module, &options)
+            .expect("cross-module abstract method dispatch should compile");
+        eprintln!("[test] compile finished");
+
+        assert!(
+            compiled.exported_functions.iter().any(|export| export.public_name == "Probe.Run"),
+            "expected Probe.Run export in compiled fixture"
+        );
+
+        let _ = fs::remove_file(&probe_path);
+        let _ = fs::remove_file(&host_windows_path);
+        let _ = fs::remove_file(&windows_path);
+        let _ = fs::remove_dir(&test_dir);
     }
 }

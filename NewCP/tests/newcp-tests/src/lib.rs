@@ -4079,6 +4079,47 @@ mod tests {
         assert_eq!(run_function("Mod/Tests/WindowsProbe.cp", "Run"), 1);
     }
 
+    /// HostWindows MVS smoke — module init installs the
+    /// StdDirectory into Windows.dir, an empty directory's
+    /// First / Focus return NIL, and Directory.New allocates a
+    /// StdWindow.
+    #[test]
+    fn host_windows_installs_directory() {
+        assert_eq!(run_function("Mod/Tests/HostWindowsProbe.cp", "Run"), 1);
+    }
+
+    #[test]
+    #[ignore = "manual repro for loader/JIT hang on Windows.dir.First() cross-module dispatch"]
+    fn host_windows_directory_first_dispatch_repro() {
+        let probe_path = workspace_root()
+            .join("Mod")
+            .join("Tests")
+            .join("HostWindowsDirFirstDispatch.cp");
+
+        std::fs::write(
+            &probe_path,
+            concat!(
+                "MODULE HostWindowsDirFirstDispatch;\n",
+                "IMPORT Windows, HostWindows;\n",
+                "PROCEDURE Run* (): INTEGER;\n",
+                "BEGIN\n",
+                "  IF Windows.dir = NIL THEN RETURN -1 END;\n",
+                "  IF Windows.stdDir = NIL THEN RETURN -2 END;\n",
+                "  IF Windows.dir.First() # NIL THEN RETURN -3 END;\n",
+                "  RETURN 1\n",
+                "END Run;\n",
+                "END HostWindowsDirFirstDispatch.\n"
+            ),
+        )
+        .expect("failed to write HostWindowsDirFirstDispatch.cp");
+
+        let result = run_function("Mod/Tests/HostWindowsDirFirstDispatch.cp", "Run");
+
+        let _ = std::fs::remove_file(&probe_path);
+
+        assert_eq!(result, 1);
+    }
+
     fn inline_fixed_array_field_in_xmod_record() {
         assert_eq!(
             run_function("Mod/Tests/InlineFixedArrayProbe.cp", "Run"),
