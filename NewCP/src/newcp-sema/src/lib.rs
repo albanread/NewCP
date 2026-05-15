@@ -613,6 +613,17 @@ impl<'a> Analyzer<'a> {
                 Declaration::Type(item) => {
                     Self::record_identdef_duplicate(&mut scope_names, &item.name, None, "duplicate module-scope declaration", &mut self.diagnostics);
                     Self::validate_type_expr(&item.ty, &self.module_type_names, self.has_system_import, None, &mut self.diagnostics);
+                    // CP §6.3: a user TYPE shadows any builtin pseudo-type
+                    // with the same casing.  This matters for "String" /
+                    // "Shortstring" (the internal labels for multi-char
+                    // string literals) — when CP code does
+                    // `TYPE String = ARRAY N OF CHAR`, downstream alias
+                    // chasing through `resolve_named_type_alias` must see
+                    // the array, not the builtin.  Remove any pre-seeded
+                    // builtin Type symbol with this exact name before
+                    // pushing the user's version.
+                    self.module_symbols
+                        .retain(|sym| !(sym.kind == SymbolKind::Type && sym.name == item.name.name));
                     self.module_symbols.push(SemanticSymbol {
                         name: item.name.name.clone(),
                         kind: SymbolKind::Type,
@@ -2395,20 +2406,30 @@ impl<'a> Analyzer<'a> {
     fn resolve_named_type(
         &self,
         ident: &QualIdent,
-        scope_type_names: &HashSet<String>,
+        _scope_type_names: &HashSet<String>,
     ) -> SemanticType {
         if ident.module.is_none() {
-            if let Some(builtin) = builtin_type_by_name(&ident.name) {
-                return SemanticType::Builtin(builtin);
-            }
-            if scope_type_names.contains(&ident.name) {
-                // CP §6.3: a TYPE T = U declaration where U is a basic type
-                // (INTEGER, SHORTINT, …) makes T a transparent alias for U.
-                // Resolve to the builtin so downstream numeric checks (binary
-                // operators, ARRAY indices, MOD/DIV) see the underlying type
-                // rather than an opaque named handle. Record/array/pointer
-                // aliases keep their Named identity to preserve nominal
-                // dispatch and assignment compatibility.
+            // CP §6.3 scoping: a user-defined TYPE in scope shadows any
+            // builtin with the same name.  This matters for the pseudo-
+            // builtin pseudo-types "String" / "Shortstring" (internal
+            // labels for multi-char string-literal types) — when CP code
+            // does `TYPE String = ARRAY N OF CHAR`, that alias must win,
+            // otherwise downstream code that indexes `: String` field
+            // sees the opaque builtin instead of an array.  Surfaced by
+            // TextMappers.Scanner's `string*: String` field and
+            // Scanner.Scan's `s.string[i] := ch` write.
+            //
+            // Note: scope_type_names already includes every builtin name
+            // (CHAR / INTEGER / BOOLEAN / …), so we can't gate on that
+            // set alone — that would re-route primitives through the
+            // user-alias path and break the type system.  Check
+            // module-level TYPE declarations directly instead.
+            let user_declared = self
+                .module
+                .declarations
+                .iter()
+                .any(|d| matches!(d, Declaration::Type(t) if t.name.name == ident.name));
+            if user_declared {
                 if let Some(builtin) = self.resolve_alias_to_builtin_target(&ident.name) {
                     return SemanticType::Builtin(builtin);
                 }
@@ -2417,6 +2438,9 @@ impl<'a> Analyzer<'a> {
                     name: ident.name.clone(),
                     kind: NamedTypeKind::UserDefined,
                 };
+            }
+            if let Some(builtin) = builtin_type_by_name(&ident.name) {
+                return SemanticType::Builtin(builtin);
             }
         }
 

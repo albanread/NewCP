@@ -3976,6 +3976,71 @@ mod tests {
         assert_eq!(run_function("Mod/Tests/OutProbe.cp", "Run"), 1);
     }
 
+    /// In module smoke test — BB-faithful textual-input API.
+    /// Controllers.FocusView returns NIL in this slice (no GUI
+    /// focus routing yet), so In.Open sets Done := FALSE and
+    /// every read proc becomes a no-op.  Verifies that Char /
+    /// Int / LongInt / Real / String all respect the Done
+    /// flag and leave their OUT slots untouched.
+    #[test]
+    fn in_module_no_focus_path_no_ops_read_procs() {
+        assert_eq!(run_function("Mod/Tests/InProbe.cp", "Run"), 1);
+    }
+
+    /// Scanner round-trip — writes a multi-token stream into a
+    /// TextModels.Doc through a Formatter, then reads it back
+    /// through a Scanner.  Verifies positive int, negative int,
+    /// double-quoted and single-quoted strings, lone-sign-as-char,
+    /// punctuation fallthrough, and EOT detection.  Expected =
+    /// 2 ints * 10000 + 2 strings * 100 + 2 chars = 20202.
+    #[test]
+    fn textmappers_scan_round_trip_through_doc_buffer() {
+        assert_eq!(run_function("Mod/Tests/ScanProbe.cp", "Run"), 20202);
+    }
+
+    /// Repro for the bare-method-call dispatch bug.  CP allows
+    /// `r.Touch` (no parens) when Touch is a parameterless
+    /// method on r.  Without the fix, this lowers to a no-op
+    /// designator-as-statement and r.x stays 0.
+    #[test]
+    fn bare_method_call_dispatches_without_parens() {
+        assert_eq!(run_function("Mod/Tests/TestBareCall.cp", "Run"), 42);
+    }
+
+    /// Cross-module repro of the bare-method-call bug.  Imports
+    /// a record + method from another module; calls
+    /// `r.Touch` (no parens).
+    #[test]
+    fn bare_method_call_xmod_dispatches_without_parens() {
+        assert_eq!(run_function("Mod/Tests/BareCallXmodProbe.cp", "Run"), 42);
+    }
+
+    /// VAR-receiver method calling a VAR-param top-level proc,
+    /// passing the receiver through.  The proc mutates a field;
+    /// the mutation must survive at the call site.
+    #[test]
+    fn var_receiver_method_passes_self_to_var_param_proc() {
+        assert_eq!(run_function("Mod/Tests/VarRefChainProbe.cp", "Run"), 42);
+    }
+
+    /// POINTER-TO-record local passed as `p^` to a VAR record
+    /// argument.  Tests whether the dereferenced pointer
+    /// correctly identifies the heap record for VAR mutation.
+    /// XXX: currently triggers STATUS_ACCESS_VIOLATION.
+    #[test]
+    #[ignore]
+    fn ptr_local_dereferenced_as_var_record_arg() {
+        assert_eq!(run_function("Mod/Tests/PtrVarArgProbe.cp", "Run"), 42);
+    }
+
+    /// Sanity: comparing a CHAR variable to a single-quoted char
+    /// literal `"'"`.  Should produce TRUE when the variable
+    /// holds the single-quote char (27X).
+    #[test]
+    fn char_compare_against_single_quote_literal() {
+        assert_eq!(run_function("Mod/Tests/SingleQuoteCharProbe.cp", "Run"), 1);
+    }
+
     fn inline_fixed_array_field_in_xmod_record() {
         assert_eq!(
             run_function("Mod/Tests/InlineFixedArrayProbe.cp", "Run"),

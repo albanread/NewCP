@@ -1188,32 +1188,58 @@ impl<'m> LowerCtx<'m> {
         };
         // Resolve pointer-alias `Foo = POINTER TO FooDesc` to
         // FooDesc so the method-table lookup hits the record.
+        // `canonical_named_record` returns the bare type name
+        // (it strips any qualifier), so preserve the original
+        // module hint here and pass it forward for the import
+        // lookup below.  Without this, a cross-module receiver
+        // `r: M.R` resolves canonical to "R", and the
+        // `split_once('.')` cross-module branch never fires —
+        // so a bare `r.Touch` is silently dropped.
+        let (orig_module, base_name) = match type_name.split_once('.') {
+            Some((m, n)) => (Some(m), n),
+            None => (None, type_name),
+        };
         let canonical = match cursor {
-            IrType::Named(_) => {
-                let (mod_opt, base_name) = match type_name.split_once('.') {
-                    Some((m, n)) => (Some(m), n),
-                    None => (None, type_name),
-                };
-                self.canonical_named_record(mod_opt, base_name)
-            }
+            IrType::Named(_) => self.canonical_named_record(orig_module, base_name),
             _ => type_name.to_string(),
         };
         // Walk the receiver record's method table — both the
         // local-module copy and (for cross-module receivers) the
         // imported semantic copy.  Match by method name.
-        let local_hit = self.module_symbols.iter().any(|s| {
-            matches!(s.kind, newcp_sema::SymbolKind::Type)
-                && s.name == canonical
-                && matches!(
-                    s.declared_type.as_ref(),
-                    Some(SemanticType::Record { methods, .. })
-                        if methods.iter().any(|m| m.name == name)
-                )
-        });
-        if local_hit {
-            return true;
+        if orig_module.is_none() {
+            let local_hit = self.module_symbols.iter().any(|s| {
+                matches!(s.kind, newcp_sema::SymbolKind::Type)
+                    && s.name == canonical
+                    && matches!(
+                        s.declared_type.as_ref(),
+                        Some(SemanticType::Record { methods, .. })
+                            if methods.iter().any(|m| m.name == name)
+                    )
+            });
+            if local_hit {
+                return true;
+            }
         }
-        // Cross-module: prefix is `Module.Record`.
+        // Cross-module: the original IR name was `Module.Record`
+        // and we kept the module-side hint above.  Use it to load
+        // the imported sema directly — canonical here is the bare
+        // record / record-desc name in that imported module.
+        if let Some(module) = orig_module {
+            if let Some(sema) = load_cached_import(module, &mut self.import_cache) {
+                let sema = sema.clone();
+                return sema.symbols.iter().any(|s| {
+                    matches!(s.kind, newcp_sema::SymbolKind::Type)
+                        && s.name == canonical
+                        && matches!(
+                            s.declared_type.as_ref(),
+                            Some(SemanticType::Record { methods, .. })
+                                if methods.iter().any(|m| m.name == name)
+                        )
+                });
+            }
+        }
+        // Legacy fallback: canonical itself contains a "Module.Name"
+        // form (some paths preserve it that way).
         if let Some((module, record)) = canonical.split_once('.') {
             if let Some(sema) = load_cached_import(module, &mut self.import_cache) {
                 let sema = sema.clone();
@@ -1381,7 +1407,7 @@ impl<'m> LowerCtx<'m> {
                 }
             }
             Literal::String(s) => {
-                let inner = s.trim_matches('"').trim_matches('\'');
+                let inner = strip_string_literal_delims(s);
                 let mut chars = inner.chars();
                 if let (Some(c), None) = (chars.next(), chars.next()) {
                     IrValue::ConstChar(c)
@@ -2360,6 +2386,8 @@ impl<'m> LowerCtx<'m> {
                                 // declared length is preserved in `maybe_len` so bounds
                                 // checking still fires.
                                 IrType::Named(n) => {
+                                    // First try pointer-alias resolution
+                                    // (`Bag = POINTER TO ARRAY OF T`).
                                     match self.resolve_named_as_ptr_ir_type(n) {
                                         Some(IrType::Ptr(elem)) => {
                                             let loaded_ptr_ty = IrType::Ptr(elem.clone());
@@ -2389,7 +2417,27 @@ impl<'m> LowerCtx<'m> {
                                             };
                                             (IrValue::Temp(t, loaded_ptr_ty), final_elem, len_opt)
                                         }
-                                        _ => (addr.clone(), IrType::Opaque("array-elem".to_string()), None),
+                                        _ => {
+                                            // Direct array alias
+                                            // (`TYPE String = ARRAY N OF CHAR`).
+                                            // Chase the alias through the
+                                            // semantic table to recover
+                                            // element type + length; ref
+                                            // is already pointing at the
+                                            // inline array start.
+                                            let alias_sem = SemanticType::Named {
+                                                module: None,
+                                                name: n.clone(),
+                                                kind: newcp_sema::NamedTypeKind::UserDefined,
+                                            };
+                                            let resolved = self.resolve_named_sem_type(&alias_sem);
+                                            match map_semantic_type(&resolved) {
+                                                IrType::Array { element, len } => {
+                                                    (addr.clone(), *element, Some(len))
+                                                }
+                                                _ => (addr.clone(), IrType::Opaque("array-elem".to_string()), None),
+                                            }
+                                        }
                                     }
                                 }
                                 _ => (addr.clone(), IrType::Opaque("array-elem".to_string()), None),
@@ -2754,9 +2802,53 @@ impl<'m> LowerCtx<'m> {
             // Compute the value (pointer) IR.
             let value: IrValue;
             if matches!(mode, Some(ParamMode::Var) | Some(ParamMode::Out)) {
-                // VAR/OUT: always pass address
+                // VAR/OUT: always pass address.
+                //
+                // Special case: when the source designator's IR type
+                // is a pointer-to-record (a `POINTER TO R` local, a
+                // VAR-receiver `self` which IR-lowers to `Ptr(R)`, or
+                // the dereferenced form of either), `designator_addr`
+                // returns the slot address — but the slot CONTAINS the
+                // pointer, not the record.  Passing the slot address
+                // to a `VAR r: R` callee makes the callee write into
+                // the pointer-storage instead of the heap record.
+                // Detect this and emit an explicit Load so we pass the
+                // pointer value itself.  Surfaced by VAR-receiver
+                // methods that forward `self` into a helper procedure
+                // (see VarRefChainProbe.cp and TextMappers.Scan →
+                // ScanNumber).
+                let expected_type = expected_types.get(index);
+                let expects_record_or_named = expected_type
+                    .map(|t| matches!(t, SemanticType::Record { .. } | SemanticType::Named { .. }))
+                    .unwrap_or(false);
                 value = match arg {
-                    Expr::Designator(des) => self.designator_addr(des),
+                    Expr::Designator(des) => {
+                        let addr = self.designator_addr(des);
+                        // When the source slot stores a pointer-to-record
+                        // (Ref(Ptr/UntaggedPtr(_)) but the callee wants a
+                        // VAR record, we have to LOAD the slot first.
+                        // Surfaced by VAR-receiver methods (`self`
+                        // lowers to `Ptr(R)`) forwarding the receiver
+                        // to a helper proc declared `(VAR r: R)`.
+                        let needs_load = match addr.ty() {
+                            IrType::Ref(slot_inner) => {
+                                matches!(slot_inner.as_ref(), IrType::Ptr(_) | IrType::UntaggedPtr(_))
+                                    && expects_record_or_named
+                            }
+                            _ => false,
+                        };
+                        if needs_load {
+                            let inner = match addr.ty() {
+                                IrType::Ref(inner) => *inner,
+                                other => other,
+                            };
+                            let t = self.fresh_temp();
+                            self.push(Instr::Load { dst: t, addr, ty: inner.clone() });
+                            IrValue::Temp(t, inner)
+                        } else {
+                            addr
+                        }
+                    }
                     _ => self.lower_expr(arg),
                 };
             } else if matches!(mode, Some(ParamMode::In)) && !is_open_array_param {
@@ -3053,7 +3145,7 @@ impl<'m> LowerCtx<'m> {
     fn string_compare_operand_kind(&mut self, expr: &Expr) -> Option<StringElemKind> {
         match expr {
             Expr::Literal { value: Literal::String(s), .. } => {
-                let inner = s.trim_matches('"').trim_matches('\'');
+                let inner = strip_string_literal_delims(s);
                 if inner.chars().count() > 1 {
                     Some(StringElemKind::Char)
                 } else {
@@ -3085,7 +3177,7 @@ impl<'m> LowerCtx<'m> {
         };
         match expr {
             Expr::Literal { value: Literal::String(s), .. } => {
-                let inner = s.trim_matches('"').trim_matches('\'');
+                let inner = strip_string_literal_delims(s);
                 Some(IrValue::ConstStr(inner.to_string(), elem_ty))
             }
             Expr::Literal { value: Literal::Character(s), .. } => {
@@ -3830,6 +3922,28 @@ impl<'m> LowerCtx<'m> {
                     }
                 }
                 let ir_ty = self.designator_ir_type(des)?;
+                // CP TYPE alias `TYPE String = ARRAY N OF CHAR` lowers a
+                // field of declared type `String` as `IrType::Named("String")`
+                // (surface alias, not the underlying ARRAY).  Chase the
+                // alias to its declared SemanticType and re-map so the
+                // `IrType::Array { len, .. }` arm fires.  Surfaced by
+                // TextMappers.ScanQuotedString's `LEN(s.string)` where
+                // `string: String` is a 256-char user alias.
+                let ir_ty = if let IrType::Named(name) = &ir_ty {
+                    let alias_sem = SemanticType::Named {
+                        module: None,
+                        name: name.clone(),
+                        kind: newcp_sema::NamedTypeKind::UserDefined,
+                    };
+                    let resolved = self.resolve_named_sem_type(&alias_sem);
+                    if matches!(resolved, SemanticType::Named { .. }) {
+                        ir_ty
+                    } else {
+                        map_semantic_type(&resolved)
+                    }
+                } else {
+                    ir_ty
+                };
                 if let IrType::Array { len, .. } = ir_ty {
                     return Some(IrValue::ConstInt(len as i128, IrType::I64));
                 }
@@ -5886,10 +6000,26 @@ fn string_elem_kind_from_array_ir_type(ty: &IrType) -> Option<StringElemKind> {
 /// compare runtime helper, not an int compare.  Without this opt-in
 /// the integer-compare path mis-emits `eq <whole-array>, <i32>` and
 /// LLVM panics on the type mismatch.
+/// Strip the matching outer quote pair from a CP string literal.
+/// Crucially: only strip one delimiter type per call, never chain
+/// trims that would over-strip a single-quote-inside-double-quote
+/// (or vice versa).  E.g. the source `"'"` arrives here as the
+/// 3-char string `"'"` (literal " then ' then ").  After this it
+/// becomes `'` — the single-quote char.
+fn strip_string_literal_delims(s: &str) -> &str {
+    if let Some(stripped) = s.strip_prefix('"').and_then(|t| t.strip_suffix('"')) {
+        stripped
+    } else if let Some(stripped) = s.strip_prefix('\'').and_then(|t| t.strip_suffix('\'')) {
+        stripped
+    } else {
+        s
+    }
+}
+
 fn single_char_literal_kind(expr: &Expr) -> Option<StringElemKind> {
     match expr {
         Expr::Literal { value: Literal::String(s), .. } => {
-            let inner = s.trim_matches('"').trim_matches('\'');
+            let inner = strip_string_literal_delims(s);
             if inner.chars().count() == 1 {
                 Some(StringElemKind::Char)
             } else {

@@ -460,11 +460,18 @@ END ReadChar;
 
 PROCEDURE (rd: DocReaderDesc) SetPos* (pos: INTEGER);
 BEGIN
+    (* BB-faithful: SetPos only moves the cursor; `char` is reset
+       to 0X and `eot` to FALSE.  The caller must invoke ReadChar
+       to load the char at the new position.  Pre-loading here
+       causes a double-read against TextMappers-style scanners
+       whose ReadChar advances `pos` past the just-loaded char,
+       so the first iteration of any tokenization loop would
+       see the same char twice.  See StdReader.SetPos in BB. *)
     IF pos < 0 THEN pos := 0 END;
     IF pos > rd.doc.len THEN pos := rd.doc.len END;
-    rd.pos := pos;
-    rd.eot := pos >= rd.doc.len;
-    IF ~rd.eot THEN rd.char := rd.doc.buf[pos] ELSE rd.char := 0X END
+    rd.pos  := pos;
+    rd.eot  := FALSE;
+    rd.char := 0X
 END SetPos;
 
 PROCEDURE (rd: DocReaderDesc) Pos* (): INTEGER;
@@ -533,12 +540,18 @@ END Base;
 PROCEDURE (m: DocDesc) NewReader* (old: Reader): Reader;
     VAR rd: DocReader;
 BEGIN
+    (* BB-faithful: NewReader returns a rider positioned at 0
+       with no char yet loaded — the caller (typically via
+       Scanner.ConnectTo → SetPos → ReadChar, or an explicit
+       ReadChar in In.Open's pattern) must read the first char.
+       Pre-loading `rd.char := buf[0]` here would double-read
+       against the BB convention where ReadChar reads buf[pos]
+       then increments pos. *)
     NEW(rd);
     rd.doc  := m(Doc);
     rd.pos  := 0;
     rd.char := 0X;
-    rd.eot  := m.len = 0;
-    IF ~rd.eot THEN rd.char := m.buf[0] END;
+    rd.eot  := FALSE;
     RETURN rd
 END NewReader;
 

@@ -173,6 +173,116 @@ MODULE TextMappers;
         END
     END Skip;
 
+    (** Tokenize an integer literal at the current cursor.
+        Assumes the first digit has already been peeked (and that
+        any leading sign was consumed by the caller).  Always sets
+        s.type = int.  Real-with-decimal-point and hex literals
+        deferred. *)
+    PROCEDURE ScanNumber (VAR s: Scanner; neg: BOOLEAN);
+        VAR ch: CHAR; v: INTEGER;
+    BEGIN
+        v := 0;
+        ch := s.rider.char;
+        WHILE (ch >= "0") & (ch <= "9") & ~s.rider.eot DO
+            v := v * 10 + (ORD(ch) - ORD("0"));
+            s.rider.ReadChar();
+            ch := s.rider.char
+        END;
+        IF neg THEN v := -v END;
+        s.type := int;
+        s.int  := v;
+        s.lint := v;
+        s.base := 10
+    END ScanNumber;
+
+    (** Tokenize a quoted string at the current cursor.  `quote`
+        is the opening quote char (already at s.rider.char).
+        Sets s.type = string and copies the inner chars into
+        s.string up to the closing quote or buffer capacity. *)
+    PROCEDURE ScanQuotedString (VAR s: Scanner; quote: CHAR);
+        VAR ch: CHAR; i, cap: INTEGER;
+    BEGIN
+        cap := LEN(s.string) - 1;     (* keep room for NUL *)
+        s.rider.ReadChar();           (* skip opening quote *)
+        ch := s.rider.char;
+        i := 0;
+        WHILE (ch # quote) & ~s.rider.eot & (i < cap) DO
+            s.string[i] := ch;
+            INC(i);
+            s.rider.ReadChar();
+            ch := s.rider.char
+        END;
+        s.string[i] := 0X;
+        s.len  := i;
+        s.type := string;
+        IF ch = quote THEN
+            s.rider.ReadChar()        (* skip closing quote *)
+        END
+    END ScanQuotedString;
+
+    (** Scan the next CP-style token starting at the current
+        reading cursor.  Sets:
+          s.type   ← one of {int, real, string, char, eot}
+          s.int    ← integer value (if type = int)
+          s.real   ← real value (if type = real)
+          s.string ← string content with NUL terminator
+                     (if type = string or name-like)
+          s.char   ← single-char value (if type = char)
+        Stops at the first character past the token.
+
+        This slice handles the BB-common cases — signed integers,
+        double-quoted and single-quoted strings, and falls back to
+        `type := char` for anything else (operators, punctuation).
+        The full BB Scanner.Scan additionally recognises identifiers,
+        reals with exponents, hex / set / boolean literals, embedded
+        view placeholders, and TAB / LINE / PARA pseudo-tokens —
+        those land in follow-up slices. *)
+    PROCEDURE (VAR s: Scanner) Scan*, NEW;
+        VAR ch: CHAR; neg: BOOLEAN;
+    BEGIN
+        s.Skip(ch);
+        IF s.type = eot THEN RETURN END;
+
+        (* Number?  Optional sign followed by digits.  We peek for
+           "+"/"-" and commit only when a digit follows; otherwise
+           treat the sign as a one-char token (CP-faithful: lone
+           "-" in a stream becomes type=char). *)
+        neg := FALSE;
+        IF (ch = "-") OR (ch = "+") THEN
+            (* Save the sign char; peek the next. *)
+            IF ch = "-" THEN neg := TRUE END;
+            s.rider.ReadChar();
+            ch := s.rider.char;
+            IF (ch < "0") OR (ch > "9") OR s.rider.eot THEN
+                (* Lone sign — return as char. *)
+                s.type := char;
+                IF neg THEN s.char := "-" ELSE s.char := "+" END;
+                s.string[0] := s.char;
+                s.string[1] := 0X;
+                s.len := 1;
+                RETURN
+            END
+        END;
+
+        IF (ch >= "0") & (ch <= "9") THEN
+            ScanNumber(s, neg);
+            RETURN
+        END;
+
+        IF (ch = '"') OR (ch = "'") THEN
+            ScanQuotedString(s, ch);
+            RETURN
+        END;
+
+        (* Anything else: one-char token. *)
+        s.type := char;
+        s.char := ch;
+        s.string[0] := ch;
+        s.string[1] := 0X;
+        s.len  := 1;
+        s.rider.ReadChar()
+    END Scan;
+
 
     (* -- Formatter methods --------------------------------------------- *)
 
