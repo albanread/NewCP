@@ -1,10 +1,9 @@
 MODULE HostStoresProbe;
-(* Smoke probes for the typed `HostStores.Reader` facade.  These
-   sit alongside `StoresProbe` (which exercises the flat handle
-   surface).  The fixture path is hard-coded; the Rust integration
-   test stages `Empty.odc` before invoking. *)
+(* Smoke probes for the typed Stores reader and factory surface.
+   The fixture path is hard-coded; the Rust integration test stages
+   `Empty.odc` before invoking. *)
 
-IMPORT Stores, HostStores;
+IMPORT Stores, Kernel;
 
 TYPE
     (** Concrete Stores.StoreDesc subclass used by
@@ -32,7 +31,7 @@ BEGIN
     IF root = 0 THEN Stores.CloseDocument(doc); RETURN 0 END;
     IF Stores.GetBodyLen(root) < 2 THEN Stores.CloseDocument(doc); RETURN 0 END;
 
-    HostStores.NewReader(root, r);
+    Stores.NewReader(root, r);
     IF r.handle = 0 THEN Stores.CloseDocument(doc); RETURN 0 END;
     IF r.eof THEN r.Close(); Stores.CloseDocument(doc); RETURN 0 END;
     IF r.Pos() # 0 THEN r.Close(); Stores.CloseDocument(doc); RETURN 0 END;
@@ -70,7 +69,7 @@ BEGIN
     bodyLen := Stores.GetBodyLen(root);
     IF bodyLen <= 0 THEN Stores.CloseDocument(doc); RETURN 0 END;
 
-    HostStores.NewReader(root, r);
+    Stores.NewReader(root, r);
     IF r.handle = 0 THEN Stores.CloseDocument(doc); RETURN 0 END;
 
     r.SetPos(bodyLen);
@@ -101,13 +100,13 @@ BEGIN
     root := Stores.RootStore(doc);
     IF Stores.GetBodyLen(root) < N THEN Stores.CloseDocument(doc); RETURN 0 END;
 
-    HostStores.NewReader(root, r1);
+    Stores.NewReader(root, r1);
     IF r1.handle = 0 THEN Stores.CloseDocument(doc); RETURN 0 END;
     i := 0;
     WHILE i < N DO r1.ReadByte(single[i]); INC(i) END;
     r1.Close();
 
-    HostStores.NewReader(root, r2);
+    Stores.NewReader(root, r2);
     IF r2.handle = 0 THEN Stores.CloseDocument(doc); RETURN 0 END;
     r2.ReadBytes(bbuf, N);
     IF r2.Pos() # N THEN r2.Close(); Stores.CloseDocument(doc); RETURN 0 END;
@@ -160,14 +159,14 @@ BEGIN
     (* Read the two expected bytes through the flat surface for
        comparison — the typed dispatch must produce the same
        values when reading the same store. *)
-    HostStores.NewReader(root, rd);
+    Stores.NewReader(root, rd);
     IF rd.handle = 0 THEN Stores.CloseDocument(doc); RETURN 0 END;
     rd.ReadByte(expected0);
     rd.ReadByte(expected1);
     rd.Close();
 
     NEW(p);
-    eof := HostStores.InternalizeFrom(root, p);
+    eof := Stores.InternalizeFrom(root, p);
     IF p.count # 2 THEN Stores.CloseDocument(doc); RETURN 0 END;
     IF p.first # expected0 THEN Stores.CloseDocument(doc); RETURN 0 END;
     IF p.second # expected1 THEN Stores.CloseDocument(doc); RETURN 0 END;
@@ -186,7 +185,7 @@ PROCEDURE InternalizeFromNilStoreSetsEof* (): INTEGER;
 BEGIN
     NEW(p);
     p.count := 99;
-    IF ~HostStores.InternalizeFrom(0, p) THEN RETURN 0 END;
+    IF ~Stores.InternalizeFrom(0, p) THEN RETURN 0 END;
     (* Internalize was not dispatched (NewReader returned NIL),
        so count stays at the sentinel value. *)
     IF p.count # 99 THEN RETURN 0 END;
@@ -200,23 +199,23 @@ PROCEDURE SplitNameRoundTrips* (): INTEGER;
     VAR modName, typeName: ARRAY 64 OF CHAR;
         ok: BOOLEAN;
 BEGIN
-    ok := HostStores.SplitQualifiedName("Foo.Bar", modName, typeName);
+    ok := Stores.SplitQualifiedName("Foo.Bar", modName, typeName);
     IF ~ok THEN RETURN 0 END;
     IF (modName # "Foo") OR (typeName # "Bar") THEN RETURN 0 END;
 
-    ok := HostStores.SplitQualifiedName("HostStoresProbe.BytePeekDesc",
+    ok := Stores.SplitQualifiedName("HostStoresProbe.BytePeekDesc",
                                         modName, typeName);
     IF ~ok THEN RETURN 0 END;
     IF modName # "HostStoresProbe" THEN RETURN 0 END;
     IF typeName # "BytePeekDesc" THEN RETURN 0 END;
 
-    ok := HostStores.SplitQualifiedName("NoDotHere", modName, typeName);
+    ok := Stores.SplitQualifiedName("NoDotHere", modName, typeName);
     IF ok THEN RETURN 0 END;
 
-    ok := HostStores.SplitQualifiedName(".OnlyType", modName, typeName);
+    ok := Stores.SplitQualifiedName(".OnlyType", modName, typeName);
     IF ok THEN RETURN 0 END;
 
-    ok := HostStores.SplitQualifiedName("OnlyMod.", modName, typeName);
+    ok := Stores.SplitQualifiedName("OnlyMod.", modName, typeName);
     IF ok THEN RETURN 0 END;
 
     RETURN 1
@@ -229,7 +228,7 @@ PROCEDURE NewStoreByNameAllocates* (): INTEGER;
     VAR s: Stores.Store; t1, t2: Kernel.Type;
         bp: BytePeek;
 BEGIN
-    s := HostStores.NewStoreByName("HostStoresProbe.BytePeekDesc");
+    s := Stores.NewStoreByName("HostStoresProbe.BytePeekDesc");
     IF s = NIL THEN RETURN 0 END;
 
     (* The runtime type tag must match a freshly NEW'd BytePeek. *)
@@ -243,9 +242,9 @@ END NewStoreByNameAllocates;
 (** Negative paths: malformed name, unknown module, unknown type. *)
 PROCEDURE NewStoreByNameRejectsBadInput* (): INTEGER;
 BEGIN
-    IF HostStores.NewStoreByName("NoDotHere") # NIL THEN RETURN 0 END;
-    IF HostStores.NewStoreByName("ModuleThatDoesNotExist.X") # NIL THEN RETURN 0 END;
-    IF HostStores.NewStoreByName("Kernel.NoSuchType") # NIL THEN RETURN 0 END;
+    IF Stores.NewStoreByName("NoDotHere") # NIL THEN RETURN 0 END;
+    IF Stores.NewStoreByName("ModuleThatDoesNotExist.X") # NIL THEN RETURN 0 END;
+    IF Stores.NewStoreByName("Kernel.NoSuchType") # NIL THEN RETURN 0 END;
     RETURN 1
 END NewStoreByNameRejectsBadInput;
 
@@ -260,7 +259,7 @@ BEGIN
     template.second := 22;
     template.count := 33;
 
-    clone := HostStores.NewLikeOf(template);
+    clone := Stores.NewLikeOf(template);
     IF clone = NIL THEN RETURN 0 END;
     IF Kernel.TypeOf(clone) # Kernel.TypeOf(template) THEN RETURN 0 END;
 
@@ -282,7 +281,7 @@ BEGIN
     root := Stores.RootStore(doc);
     IF root = 0 THEN Stores.CloseDocument(doc); RETURN 0 END;
 
-    s := HostStores.NewStore(root);
+    s := Stores.NewStore(root);
     Stores.CloseDocument(doc);
     IF s # NIL THEN RETURN 0 END;
     RETURN 1
@@ -303,7 +302,7 @@ BEGIN
     root := Stores.RootStore(doc);
     IF root = 0 THEN Stores.CloseDocument(doc); RETURN 0 END;
 
-    s := HostStores.NewStore(root);
+    s := Stores.NewStore(root);
     Stores.CloseDocument(doc);
     IF s = NIL THEN RETURN 0 END;
 
