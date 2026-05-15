@@ -1,7 +1,7 @@
 use std::collections::{HashMap, HashSet};
 use std::fs;
 use std::path::{Path, PathBuf};
-use std::sync::Mutex;
+use std::sync::{Arc, Mutex};
 use std::time::UNIX_EPOCH;
 
 /// JIT images retained beyond their owning `LoaderSession`'s lifetime.
@@ -23,6 +23,29 @@ unsafe impl Send for RetainedImage {}
 unsafe impl Sync for RetainedImage {}
 
 static RETAINED_IMAGES: Mutex<Vec<RetainedImage>> = Mutex::new(Vec::new());
+
+/// Key for the process-global compiled-module cache.
+///
+/// Two sessions compiling the same source file at the same stamp with the
+/// same opt level and same generation get identical LLVM IR (generation is
+/// baked into exported symbol names, so it must be part of the key).
+#[derive(Clone, PartialEq, Eq, Hash)]
+struct CompileImageCacheKey {
+    path: PathBuf,
+    stamp: SourceFileStamp,
+    opt_level: OptLevel,
+    generation: u64,
+}
+
+/// Process-global cache of compiled LLVM IR modules.
+///
+/// Every LoaderSession creates its own JIT image from scratch (because
+/// JIT modules are per-context and symbol mappings differ between sessions).
+/// But the expensive sema + IR-lowering + LLVM codegen step produces the same
+/// `CompiledModule` whenever the source file and options are identical. This
+/// cache lets subsequent sessions skip straight to the JIT step.
+static COMPILE_IMAGE_CACHE: Mutex<Option<HashMap<CompileImageCacheKey, Arc<CompiledModule>>>> =
+    Mutex::new(None);
 
 use newcp_llvm::{CodegenOptions, CompiledModule, OptLevel, OwnedJitModule};
 use newcp_parser::{parse_source_module, SourceExportKind, SourceModuleSpec};
@@ -102,7 +125,7 @@ pub enum RetirementReason {
     DependencyChanged,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct SourceFileStamp {
     pub size_bytes: u64,
     pub modified_unix_ms: u128,
@@ -893,7 +916,7 @@ impl LoaderSession {
                     &staged_export_addresses,
                     &staged_method_addresses,
                 );
-            let compiled = compile_executable_image(&module.path, generation).map_err(|error| {
+            let compiled = compile_executable_image(&module.path, &stamp, generation).map_err(|error| {
                 self.record_failure(
                     Some(module.spec.name.clone()),
                     LoaderFailurePhase::CodegenModule,
@@ -1583,7 +1606,11 @@ fn materialized_module_state(module: &MaterializedModuleRecord) -> DirtyModuleSt
     }
 }
 
-fn compile_executable_image(path: &Path, generation: u64) -> Result<CompiledModule, String> {
+fn compile_executable_image(
+    path: &Path,
+    stamp: &SourceFileStamp,
+    generation: u64,
+) -> Result<CompiledModule, String> {
     #[cfg(test)]
     {
         let source_text = fs::read_to_string(path)
@@ -1597,8 +1624,38 @@ fn compile_executable_image(path: &Path, generation: u64) -> Result<CompiledModu
     }
 
     let options = loader_codegen_options(generation);
-    newcp_llvm::compile_from_path(path, &options)
-        .map_err(|error| format!("failed to compile executable image from {}: {error}", path.display()))
+
+    let cache_key = CompileImageCacheKey {
+        path: path.to_path_buf(),
+        stamp: stamp.clone(),
+        opt_level: options.opt_level,
+        generation,
+    };
+
+    // Check cache: skip sema + IR lowering + LLVM codegen on hit.
+    {
+        let mut guard = COMPILE_IMAGE_CACHE.lock()
+            .unwrap_or_else(|p| p.into_inner());
+        let map = guard.get_or_insert_with(HashMap::new);
+        if let Some(cached) = map.get(&cache_key) {
+            let mut compiled = (**cached).clone();
+            compiled.source_path = Some(path.to_path_buf());
+            return Ok(compiled);
+        }
+    }
+
+    let compiled = newcp_llvm::compile_from_path(path, &options)
+        .map_err(|error| format!("failed to compile executable image from {}: {error}", path.display()))?;
+
+    // Populate cache so later sessions skip codegen for this module.
+    {
+        let mut guard = COMPILE_IMAGE_CACHE.lock()
+            .unwrap_or_else(|p| p.into_inner());
+        let map = guard.get_or_insert_with(HashMap::new);
+        map.entry(cache_key).or_insert_with(|| Arc::new(compiled.clone()));
+    }
+
+    Ok(compiled)
 }
 
 /// Build the `CodegenOptions` the loader uses for every JIT compile.

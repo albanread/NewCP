@@ -640,7 +640,7 @@ pub extern "C" fn stores_sys_reader_skip_inline_store(reader: i64) -> i64 {
     let cursor = r.cursor;
     // Snapshot reader fields then drop &mut so we can search the
     // documents table without overlapping borrows.
-    drop(r);
+    let _ = r;
     let advance_to = match find_child_at_cursor(&state, doc_handle, parent_node_idx, cursor) {
         Some((_child_idx, end)) => end,
         None => return 0,
@@ -675,7 +675,7 @@ pub extern "C" fn stores_sys_reader_read_inline_store(reader: i64) -> i64 {
         ReaderSource::Buffer { .. } => return 0,
     };
     let cursor = r.cursor;
-    drop(r);
+    let _ = r;
     let (child_idx, advance_to) =
         match find_child_at_cursor(&state, doc_handle, parent_node_idx, cursor) {
             Some(p) => p,

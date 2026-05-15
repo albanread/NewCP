@@ -70,6 +70,7 @@ fn create_target_machine(options: &CodegenOptions) -> Result<TargetMachine, Code
 }
 
 /// A compiled module: the verified LLVM IR text and exported symbol manifest.
+#[derive(Clone)]
 pub struct CompiledModule {
     pub module_name: String,
     pub source_path: Option<PathBuf>,
@@ -560,55 +561,98 @@ mod tests {
         let _ = std::fs::remove_file(&source_path);
     }
 
+    /// Regression test for the cross-module abstract method
+    /// dispatch hang: a method on an abstract record that
+    /// RETURNS an abstract-pointer typed value, called across
+    /// the module boundary.  Previously this looped unbounded
+    /// in `lower.rs` `flatten_sem_type_fields` chasing a
+    /// named-type cycle that crossed an import edge.  The
+    /// cycle guard fix (already covered at the lower.rs unit-
+    /// test level as `flatten_sem_type_fields_breaks_local_named_cycles`)
+    /// resolves it; this is the LLVM-emit-level regression.
+    /// Self-contained — does not depend on any Mod/*.cp.
     #[test]
     fn compiles_cross_module_abstract_method_return_dispatch() {
         let test_dir = temp_test_dir("xmod-method-return");
         fs::create_dir_all(&test_dir).expect("temporary test directory should be creatable");
 
-        let root = workspace_root();
-        let windows_path = test_dir.join("Windows.cp");
-        let host_windows_path = test_dir.join("HostWindows.cp");
-        let probe_path = test_dir.join("Probe.cp");
+        let iface_path = test_dir.join("XmodIface.cp");
+        let host_path = test_dir.join("XmodHost.cp");
+        let probe_path = test_dir.join("XmodProbe.cp");
 
-        fs::copy(root.join("Mod").join("Windows.cp"), &windows_path)
-            .expect("Windows fixture should be copyable from the workspace");
-        fs::copy(root.join("Mod").join("HostWindows.cp"), &host_windows_path)
-            .expect("HostWindows fixture should be copyable from the workspace");
+        fs::write(
+            &iface_path,
+            concat!(
+                "MODULE XmodIface;\n",
+                "TYPE\n",
+                "    NodeDesc* = ABSTRACT RECORD\n",
+                "        link-: Node\n",
+                "    END;\n",
+                "    Node* = POINTER TO NodeDesc;\n",
+                "    DirDesc* = ABSTRACT RECORD END;\n",
+                "    Dir*     = POINTER TO DirDesc;\n",
+                "PROCEDURE (d: Dir) First* (): Node, NEW, ABSTRACT;\n",
+                "VAR\n",
+                "    dir-: Dir;\n",
+                "PROCEDURE SetDir* (d: Dir);\n",
+                "BEGIN dir := d END SetDir;\n",
+                "END XmodIface.\n"
+            ),
+        )
+        .expect("iface fixture should be writable");
+
+        fs::write(
+            &host_path,
+            concat!(
+                "MODULE XmodHost;\n",
+                "IMPORT XmodIface;\n",
+                "TYPE\n",
+                "    StdDirDesc = RECORD (XmodIface.DirDesc)\n",
+                "        head: XmodIface.Node\n",
+                "    END;\n",
+                "    StdDir = POINTER TO StdDirDesc;\n",
+                "PROCEDURE (d: StdDir) First* (): XmodIface.Node;\n",
+                "BEGIN RETURN d.head END First;\n",
+                "VAR std: StdDir;\n",
+                "BEGIN\n",
+                "    NEW(std);\n",
+                "    std.head := NIL;\n",
+                "    XmodIface.SetDir(std)\n",
+                "END XmodHost.\n"
+            ),
+        )
+        .expect("host fixture should be writable");
 
         fs::write(
             &probe_path,
             concat!(
-                "MODULE Probe;\n",
-                "IMPORT Windows, HostWindows;\n",
+                "MODULE XmodProbe;\n",
+                "IMPORT XmodIface, XmodHost;\n",
                 "PROCEDURE Run* (): INTEGER;\n",
                 "BEGIN\n",
-                "  IF Windows.dir = NIL THEN RETURN -1 END;\n",
-                "  IF Windows.stdDir = NIL THEN RETURN -2 END;\n",
-                "  IF Windows.dir.First() # NIL THEN RETURN -3 END;\n",
+                "  IF XmodIface.dir = NIL THEN RETURN -1 END;\n",
+                "  IF XmodIface.dir.First() # NIL THEN RETURN -2 END;\n",
                 "  RETURN 1\n",
                 "END Run;\n",
-                "END Probe.\n"
+                "END XmodProbe.\n"
             ),
         )
-        .expect("Probe fixture should be writable");
+        .expect("probe fixture should be writable");
 
         let options = CodegenOptions::default();
-        eprintln!("[test] lowering probe module");
         let ir_module = newcp_ir::lower_from_path(&probe_path)
             .expect("cross-module abstract method dispatch should lower to IR");
-        eprintln!("[test] compiling lowered IR");
         let compiled = compile_ir_module(&ir_module, &options)
             .expect("cross-module abstract method dispatch should compile");
-        eprintln!("[test] compile finished");
 
         assert!(
-            compiled.exported_functions.iter().any(|export| export.public_name == "Probe.Run"),
-            "expected Probe.Run export in compiled fixture"
+            compiled.exported_functions.iter().any(|export| export.public_name == "XmodProbe.Run"),
+            "expected XmodProbe.Run export in compiled fixture"
         );
 
         let _ = fs::remove_file(&probe_path);
-        let _ = fs::remove_file(&host_windows_path);
-        let _ = fs::remove_file(&windows_path);
+        let _ = fs::remove_file(&host_path);
+        let _ = fs::remove_file(&iface_path);
         let _ = fs::remove_dir(&test_dir);
     }
 }
