@@ -558,6 +558,15 @@ unsafe impl Send for Heap {}
 
 static HEAP_CELL: OnceLock<Mutex<Heap>> = OnceLock::new();
 
+/// Snapshot the per-TypeDesc live-block counts.  Used by BRK to
+/// dump "what's actually on the heap right now, grouped by type".
+/// Returns owned data so we don't hold the heap lock across the
+/// dump (which writes to stderr and could be slow).
+pub(crate) fn type_desc_blocks_snapshot() -> Vec<TypeDescEntry> {
+    let heap = heap_lock();
+    heap.type_descs.snapshot()
+}
+
 fn heap_lock() -> std::sync::MutexGuard<'static, Heap> {
     HEAP_CELL
         .get_or_init(|| {

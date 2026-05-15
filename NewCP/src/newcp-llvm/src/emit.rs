@@ -201,42 +201,43 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
                 Ok(())
             }
             Instr::Brk { proc_name, line } => {
-                // BRK lowers to a call to `__newcp_brk(name_ptr, line)`.
-                // We intern the proc-name as a private NUL-terminated
-                // i8 string global; the runtime reads bytes up to the
-                // terminator.  Caps name length at 256 in the runtime
-                // so a garbage pointer can't run the dump forever.
                 let helper = self.get_or_declare_brk();
-                let bytes = std::ffi::CString::new(proc_name.as_str())
-                    .unwrap_or_else(|_| std::ffi::CString::new("<bad-name>").unwrap());
-                let name_global = self
-                    .cg
+                let (name_global, line_val) =
+                    self.emit_brk_name_and_line(proc_name, *line)?;
+                self.cg
                     .builder
-                    .build_global_string_ptr(
-                        bytes.to_str().unwrap_or("<bad-name>"),
-                        ".brk.name",
+                    .build_call(
+                        helper,
+                        &[name_global.into(), line_val.into()],
+                        "brk",
                     )
                     .map_err(|e| CodegenError::Unsupported {
                         stage: "emit_brk",
                         detail: e.to_string(),
                     })?;
-                let line_val = self
-                    .cg
-                    .context
-                    .i64_type()
-                    .const_int(*line as u64, false);
+                Ok(())
+            }
+            Instr::BrkAt { proc_name, line, target } => {
+                // BRK(target) — call `__newcp_brk_at(name, line, ptr)`.
+                // Runtime reads the block header at `ptr - HEADER_BYTES`
+                // and walks fields via the TypeDesc.
+                let helper = self.get_or_declare_brk_at();
+                let (name_global, line_val) =
+                    self.emit_brk_name_and_line(proc_name, *line)?;
+                let target_ptr = self.resolve_pointer(target, value_map)?;
                 self.cg
                     .builder
                     .build_call(
                         helper,
                         &[
-                            name_global.as_pointer_value().into(),
+                            name_global.into(),
                             line_val.into(),
+                            target_ptr.into(),
                         ],
-                        "brk",
+                        "brk_at",
                     )
                     .map_err(|e| CodegenError::Unsupported {
-                        stage: "emit_brk",
+                        stage: "emit_brk_at",
                         detail: e.to_string(),
                     })?;
                 Ok(())
@@ -2595,6 +2596,48 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
         self.cg
             .module
             .add_function(NAME, fn_ty, Some(inkwell::module::Linkage::External))
+    }
+
+    /// Get or declare `@__newcp_brk_at(ptr, i64, ptr) -> void` — the
+    /// `BRK(target)` form.  Same as `__newcp_brk` plus a typed
+    /// field-dump of the heap block at `target`.
+    fn get_or_declare_brk_at(&self) -> FunctionValue<'ctx> {
+        const NAME: &str = "__newcp_brk_at";
+        if let Some(f) = self.cg.module.get_function(NAME) {
+            return f;
+        }
+        let void_ty = self.cg.context.void_type();
+        let ptr_ty = self.cg.context.ptr_type(inkwell::AddressSpace::default());
+        let i64_ty = self.cg.context.i64_type();
+        let fn_ty =
+            void_ty.fn_type(&[ptr_ty.into(), i64_ty.into(), ptr_ty.into()], false);
+        self.cg
+            .module
+            .add_function(NAME, fn_ty, Some(inkwell::module::Linkage::External))
+    }
+
+    /// Materialise the BRK procedure-name string global and source-
+    /// line constant.  Shared between `Brk` and `BrkAt` emission.
+    fn emit_brk_name_and_line(
+        &self,
+        proc_name: &str,
+        line: u32,
+    ) -> Result<(inkwell::values::PointerValue<'ctx>, inkwell::values::IntValue<'ctx>), CodegenError> {
+        let bytes = std::ffi::CString::new(proc_name)
+            .unwrap_or_else(|_| std::ffi::CString::new("<bad-name>").unwrap());
+        let name_global = self
+            .cg
+            .builder
+            .build_global_string_ptr(
+                bytes.to_str().unwrap_or("<bad-name>"),
+                ".brk.name",
+            )
+            .map_err(|e| CodegenError::Unsupported {
+                stage: "emit_brk",
+                detail: e.to_string(),
+            })?;
+        let line_val = self.cg.context.i64_type().const_int(line as u64, false);
+        Ok((name_global.as_pointer_value(), line_val))
     }
 
     /// Get or declare `@__newcp_lookup_typedesc(ptr) -> i64` —

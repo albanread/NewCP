@@ -4822,13 +4822,20 @@ impl<'m> LowerCtx<'m> {
                 self.lower_exit();
             }
 
-            Statement::Brk { span } => {
+            Statement::Brk { span, target } => {
                 // BRK is snapshot-only: emit the runtime call, then
                 // fall through.  Routine name + source line let the
-                // dump locate the call site.
+                // dump locate the call site.  Optional pointer
+                // argument routes through __newcp_brk_at for an
+                // additional typed-field dump of the heap block.
                 let proc_name = self.proc.name.clone();
                 let line = span.start.line as u32;
-                self.push(Instr::Brk { proc_name, line });
+                if let Some(expr) = target {
+                    let target_val = self.lower_expr(expr);
+                    self.push(Instr::BrkAt { proc_name, line, target: target_val });
+                } else {
+                    self.push(Instr::Brk { proc_name, line });
+                }
             }
 
             Statement::Return { expr, .. } => {

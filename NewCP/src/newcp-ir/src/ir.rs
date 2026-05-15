@@ -221,6 +221,12 @@ pub enum Instr {
     /// returns.  Modelled on BCPL's BRK; lets framework code drop
     /// probes for runtime inspection without an attached debugger.
     Brk { proc_name: String, line: u32 },
+    /// `BRK(p)` statement — same as `Brk` plus a typed field-dump
+    /// of the heap block `target` points at.  Lowers to a call to
+    /// `__newcp_brk_at(routine_name_ptr, line, target_ptr)`.  The
+    /// runtime reads the block header at `target - HEADER_BYTES`,
+    /// resolves the TypeDesc, and walks each field by name + value.
+    BrkAt { proc_name: String, line: u32, target: IrValue },
     /// `t = streq lhs, rhs : elem` — Component Pascal string-content
     /// compare for two NUL-terminated CHAR / SHORTCHAR buffers.
     ///

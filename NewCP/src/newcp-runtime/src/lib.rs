@@ -1197,6 +1197,9 @@ pub fn runtime_symbol_address(symbol_name: &str) -> Option<usize> {
     if symbol_name == "__newcp_brk" {
         return Some(brk::__newcp_brk as *const () as usize);
     }
+    if symbol_name == "__newcp_brk_at" {
+        return Some(brk::__newcp_brk_at as *const () as usize);
+    }
     if symbol_name == "__newcp_type_test" {
         return Some(gc::__newcp_type_test as *const () as usize);
     }

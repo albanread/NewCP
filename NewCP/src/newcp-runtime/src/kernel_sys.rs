@@ -739,6 +739,27 @@ pub extern "C" fn kernel_sys_get_qualified_type_name(t: i64, name: *mut u32, nam
     write_codepoints_to_out_array(src, len, name, name_len);
 }
 
+/// Snapshot of the module registry — list of every CP module that
+/// has registered with the kernel (resident + JIT'd).  Used by BRK
+/// to show "what modules are loaded right now".  Returns a sorted
+/// copy so we don't hold the registry lock across the dump.
+pub(crate) fn module_registry_snapshot() -> Vec<String> {
+    let reg = MODULE_REGISTRY.lock().expect("module registry mutex poisoned");
+    let mut out: Vec<String> = reg.clone();
+    out.sort();
+    out
+}
+
+/// Snapshot of the typedesc registry — every registered
+/// (qualified-name, td-address) pair.  Used by BRK to show "what
+/// types are alive right now".  Returns a sorted copy.
+pub(crate) fn type_registry_snapshot() -> Vec<(String, i64)> {
+    let reg = TYPE_DESC_REGISTRY.lock().expect("type registry mutex poisoned");
+    let mut out: Vec<(String, i64)> = reg.clone();
+    out.sort_by(|a, b| a.0.cmp(&b.0));
+    out
+}
+
 /// Internal helper for `heap_introspect`: build a Rust `String` from
 /// a TypeDesc address. ASCII-only by language rule, so the
 /// codepoint→char conversion is lossless.

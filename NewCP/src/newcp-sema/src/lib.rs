@@ -2443,7 +2443,12 @@ impl<'a> Analyzer<'a> {
     ) {
         for statement in statements {
             match statement {
-                Statement::Empty { .. } | Statement::Exit { .. } | Statement::Brk { .. } => {}
+                Statement::Empty { .. } | Statement::Exit { .. } | Statement::Brk { .. } => {
+                    // BRK / BRK(expr): no sema constraints.  The IR
+                    // layer lowers the optional pointer expression
+                    // through its own lower_expr path which performs
+                    // designator resolution.
+                }
                 Statement::Assignment { target, value, .. } => {
                     self.walk_designator_expressions(
                         target,
@@ -6500,7 +6505,7 @@ fn statement_position(statement: &Statement) -> (usize, usize) {
         | Statement::Loop { span, .. }
         | Statement::With { span, .. }
         | Statement::Exit { span }
-        | Statement::Brk { span }
+        | Statement::Brk { span, .. }
         | Statement::Return { span, .. } => (span.start.line, span.start.column),
     }
 }

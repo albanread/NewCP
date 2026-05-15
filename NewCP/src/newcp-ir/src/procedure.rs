@@ -478,6 +478,9 @@ fn render_instr(instr: &Instr) -> String {
         }
         Safepoint => "safepoint".to_string(),
         Brk { proc_name, line } => format!("brk {} @ {}", proc_name, line),
+        BrkAt { proc_name, line, target } => {
+            format!("brk_at {} @ {} target={}", proc_name, line, target.render())
+        }
     }
 }
 

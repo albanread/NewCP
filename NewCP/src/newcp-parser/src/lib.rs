@@ -345,8 +345,14 @@ pub enum Statement {
     /// halt): emits a call to the runtime `__newcp_brk` helper which
     /// writes heap / register / stack state to stderr and returns.
     /// Modelled on BCPL's BRK; lets framework code drop probes for
-    /// runtime inspection without an attached debugger.  No operand.
-    Brk { span: SourceSpan },
+    /// runtime inspection without an attached debugger.
+    ///
+    /// Two forms:
+    ///   BRK            — process-wide snapshot
+    ///   BRK(expr)      — same plus a field-dump of the record `expr`
+    ///                     points at (uses the heap block's TypeDesc
+    ///                     to walk fields).
+    Brk { span: SourceSpan, target: Option<Expr> },
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -1063,10 +1069,20 @@ impl Parser {
             });
         }
         if self.match_keyword("BRK") {
-            // `BRK` debugger-breakpoint statement.  No operand.
-            // Lowered to a runtime call that snapshots state to stderr.
+            // `BRK` debugger-breakpoint statement.  Optionally takes
+            // a pointer expression in parens — `BRK(p)` adds a typed
+            // field-dump of the heap block `p` references on top of
+            // the regular process-state snapshot.
+            let target = if self.match_symbol("(") {
+                let expr = self.parse_expr()?;
+                self.expect_symbol(")")?;
+                Some(expr)
+            } else {
+                None
+            };
             return Ok(Statement::Brk {
                 span: self.span_from(statement_start),
+                target,
             });
         }
         if self.match_keyword("RETURN") {
@@ -1838,7 +1854,10 @@ fn render_statements(statements: &[Statement], indent: usize, lines: &mut Vec<St
                 lines.push(format!("{}call {}", prefix, render_designator(designator)))
             }
             Statement::Exit { .. } => lines.push(format!("{}exit", prefix)),
-            Statement::Brk { .. } => lines.push(format!("{}brk", prefix)),
+            Statement::Brk { target, .. } => lines.push(match target {
+                Some(e) => format!("{}brk({})", prefix, render_expr(e)),
+                None => format!("{}brk", prefix),
+            }),
             Statement::Return { expr, .. } => lines.push(format!(
                 "{}return {}",
                 prefix,
@@ -2263,7 +2282,7 @@ fn statement_span(statement: &Statement) -> SourceSpan {
         | Statement::Loop { span, .. }
         | Statement::With { span, .. }
         | Statement::Exit { span }
-        | Statement::Brk { span }
+        | Statement::Brk { span, .. }
         | Statement::Return { span, .. } => *span,
     }
 }
