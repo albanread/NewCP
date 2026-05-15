@@ -4062,6 +4062,23 @@ mod tests {
         assert_eq!(run_function("Mod/Tests/MetaProbe.cp", "Run"), 1);
     }
 
+    /// Documents MVS smoke — dir / stdDir start NIL, the stub
+    /// ImportDocument returns s := NIL without trapping.  Full
+    /// .odc decoder lands once Stores.Reader grows ReadVersion /
+    /// ReadStore.
+    #[test]
+    fn documents_mvs_surface_loads() {
+        assert_eq!(run_function("Mod/Tests/DocumentsProbe.cp", "Run"), 1);
+    }
+
+    /// Windows MVS smoke — surface compiles + dir/stdDir start
+    /// NIL + the flag constants assemble into a SET cleanly +
+    /// SelectByTitle stub returns done = FALSE.
+    #[test]
+    fn windows_mvs_surface_loads() {
+        assert_eq!(run_function("Mod/Tests/WindowsProbe.cp", "Run"), 1);
+    }
+
     fn inline_fixed_array_field_in_xmod_record() {
         assert_eq!(
             run_function("Mod/Tests/InlineFixedArrayProbe.cp", "Run"),
