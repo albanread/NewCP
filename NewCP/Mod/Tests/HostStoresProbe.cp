@@ -32,8 +32,8 @@ BEGIN
     IF root = 0 THEN Stores.CloseDocument(doc); RETURN 0 END;
     IF Stores.GetBodyLen(root) < 2 THEN Stores.CloseDocument(doc); RETURN 0 END;
 
-    r := HostStores.NewReader(root);
-    IF r = NIL THEN Stores.CloseDocument(doc); RETURN 0 END;
+    HostStores.NewReader(root, r);
+    IF r.handle = 0 THEN Stores.CloseDocument(doc); RETURN 0 END;
     IF r.eof THEN r.Close(); Stores.CloseDocument(doc); RETURN 0 END;
     IF r.Pos() # 0 THEN r.Close(); Stores.CloseDocument(doc); RETURN 0 END;
 
@@ -70,8 +70,8 @@ BEGIN
     bodyLen := Stores.GetBodyLen(root);
     IF bodyLen <= 0 THEN Stores.CloseDocument(doc); RETURN 0 END;
 
-    r := HostStores.NewReader(root);
-    IF r = NIL THEN Stores.CloseDocument(doc); RETURN 0 END;
+    HostStores.NewReader(root, r);
+    IF r.handle = 0 THEN Stores.CloseDocument(doc); RETURN 0 END;
 
     r.SetPos(bodyLen);
     IF ~r.eof THEN r.Close(); Stores.CloseDocument(doc); RETURN 0 END;
@@ -101,14 +101,14 @@ BEGIN
     root := Stores.RootStore(doc);
     IF Stores.GetBodyLen(root) < N THEN Stores.CloseDocument(doc); RETURN 0 END;
 
-    r1 := HostStores.NewReader(root);
-    IF r1 = NIL THEN Stores.CloseDocument(doc); RETURN 0 END;
+    HostStores.NewReader(root, r1);
+    IF r1.handle = 0 THEN Stores.CloseDocument(doc); RETURN 0 END;
     i := 0;
     WHILE i < N DO r1.ReadByte(single[i]); INC(i) END;
     r1.Close();
 
-    r2 := HostStores.NewReader(root);
-    IF r2 = NIL THEN Stores.CloseDocument(doc); RETURN 0 END;
+    HostStores.NewReader(root, r2);
+    IF r2.handle = 0 THEN Stores.CloseDocument(doc); RETURN 0 END;
     r2.ReadBytes(bbuf, N);
     IF r2.Pos() # N THEN r2.Close(); Stores.CloseDocument(doc); RETURN 0 END;
     i := 0;
@@ -127,7 +127,7 @@ END BulkReadMatchesByteByByte;
     from the body and records them; tracks how many were actually
     available so the test can distinguish full-success from
     truncated reads. *)
-PROCEDURE (p: BytePeekDesc) Internalize* (rd: HostStores.Reader);
+PROCEDURE (p: BytePeekDesc) Internalize* (VAR rd: HostStores.Reader);
     VAR b: BYTE;
 BEGIN
     p.count := 0;
@@ -160,8 +160,8 @@ BEGIN
     (* Read the two expected bytes through the flat surface for
        comparison — the typed dispatch must produce the same
        values when reading the same store. *)
-    rd := HostStores.NewReader(root);
-    IF rd = NIL THEN Stores.CloseDocument(doc); RETURN 0 END;
+    HostStores.NewReader(root, rd);
+    IF rd.handle = 0 THEN Stores.CloseDocument(doc); RETURN 0 END;
     rd.ReadByte(expected0);
     rd.ReadByte(expected1);
     rd.Close();

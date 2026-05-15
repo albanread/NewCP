@@ -215,13 +215,12 @@ MODULE Containers;
         Model store, the (optional) Controller store, and binds
         them on `v.model` / `v.controller` / `v.alienCtrl` —
         with type-guard checks falling back to `TurnIntoAlien`
-        on mismatch.  That materialization step needs the
-        Kernel.NewObj-driven RTTI factory (the runtime side
-        that turns a `ReaderHandle` for an inline store into a
-        typed `Stores.Store`-rooted value); the host-side
-        equivalent `HostStores.NewStore` lives in a module that
-        can't be imported from here without an import cycle.
-        Until the RTTI factory lands, subclass Internalize2
+        on mismatch.  That materialization step still needs the
+        Kernel.NewObj-driven RTTI factory that turns a
+        `ReaderHandle` for an inline store into a typed
+        `Stores.Store`-rooted value without introducing an import
+        cycle here.  Until that direct runtime path lands,
+        subclass Internalize2
         bodies (`TextViews.View.Internalize2`) handle BOTH the
         version stamp AND the child-store reads via
         `rd.ReadVersion` / `rd.ReadStore` / SkipStore. *)

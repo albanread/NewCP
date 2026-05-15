@@ -1,8 +1,8 @@
 MODULE ExtendModelsUpdateMsgProbe;
-IMPORT HostStores, Stores, Models, Containers, Properties, Ports, Fonts, Views;
+IMPORT Stores, Models, Containers, Properties, Ports, Fonts, Views;
 
 TYPE
-    OtherDesc* = RECORD (HostStores.StoreDesc) x*: INTEGER END;
+    OtherDesc* = RECORD (Stores.StoreDesc) x*: INTEGER END;
     Bar* = RECORD (Models.UpdateMsg) op*: INTEGER END;
 
 END ExtendModelsUpdateMsgProbe.

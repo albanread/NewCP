@@ -422,9 +422,9 @@ END TurnIntoAlien;
     integer handle of the materialised child (or 0 if the wire
     indicates "nil store" / the read failed).  Sets `cancelled`
     on failure.  Concrete typed-record materialization remains
-    on the caller (using `HostStores.NewStore` on the returned
-    handle) until the runtime grows a Kernel.NewObj-driven RTTI
-    factory that can build typed records directly from `Reader`. *)
+    on the caller (using `Stores.NewStore` on the returned
+    handle) until the runtime grows a direct Reader-to-object RTTI
+    factory. *)
 PROCEDURE (VAR rd: Reader) ReadStore* (OUT handle: ReaderHandle), NEW;
 BEGIN
     handle := StoresSys.ReaderReadInlineStore(rd.handle);
