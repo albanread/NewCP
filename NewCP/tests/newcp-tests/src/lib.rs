@@ -3946,6 +3946,16 @@ mod tests {
     /// pattern #34 fixed).
     ///
     #[test]
+    /// BRK statement: snapshot-style debugger breakpoint.  The dump
+    /// goes to stderr (not captured here); the procedure resumes
+    /// after BRK and returns `7 * 6 = 42`.  This test verifies that
+    /// the BRK call doesn't trap, doesn't corrupt locals, and that
+    /// the surrounding state survives the snapshot.
+    #[test]
+    fn brk_statement_returns_normally() {
+        assert_eq!(run_function("Mod/BrkProbe.cp", "Run"), 42);
+    }
+
     fn inline_fixed_array_field_in_xmod_record() {
         assert_eq!(
             run_function("Mod/Tests/InlineFixedArrayProbe.cp", "Run"),

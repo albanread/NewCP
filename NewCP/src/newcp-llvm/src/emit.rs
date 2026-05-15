@@ -200,6 +200,47 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
                     })?;
                 Ok(())
             }
+            Instr::Brk { proc_name, line } => {
+                // BRK lowers to a call to `__newcp_brk(name_ptr, line)`.
+                // We intern the proc-name as a private NUL-terminated
+                // i8 string global; the runtime reads bytes up to the
+                // terminator.  Caps name length at 256 in the runtime
+                // so a garbage pointer can't run the dump forever.
+                let helper = self.get_or_declare_brk();
+                let bytes = std::ffi::CString::new(proc_name.as_str())
+                    .unwrap_or_else(|_| std::ffi::CString::new("<bad-name>").unwrap());
+                let name_global = self
+                    .cg
+                    .builder
+                    .build_global_string_ptr(
+                        bytes.to_str().unwrap_or("<bad-name>"),
+                        ".brk.name",
+                    )
+                    .map_err(|e| CodegenError::Unsupported {
+                        stage: "emit_brk",
+                        detail: e.to_string(),
+                    })?;
+                let line_val = self
+                    .cg
+                    .context
+                    .i64_type()
+                    .const_int(*line as u64, false);
+                self.cg
+                    .builder
+                    .build_call(
+                        helper,
+                        &[
+                            name_global.as_pointer_value().into(),
+                            line_val.into(),
+                        ],
+                        "brk",
+                    )
+                    .map_err(|e| CodegenError::Unsupported {
+                        stage: "emit_brk",
+                        detail: e.to_string(),
+                    })?;
+                Ok(())
+            }
             Instr::UnOp { dst, op, operand, ty } => {
                 let value = self.emit_unop(*op, operand, ty, value_map)?;
                 value_map.temp_values.insert(*dst, value);
@@ -2534,6 +2575,23 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
         }
         let void_ty = self.cg.context.void_type();
         let fn_ty = void_ty.fn_type(&[], false);
+        self.cg
+            .module
+            .add_function(NAME, fn_ty, Some(inkwell::module::Linkage::External))
+    }
+
+    /// Get or declare `@__newcp_brk(ptr, i64) -> void` — BRK
+    /// statement's runtime handler.  Dumps heap / registers /
+    /// stack walk to stderr and returns.
+    fn get_or_declare_brk(&self) -> FunctionValue<'ctx> {
+        const NAME: &str = "__newcp_brk";
+        if let Some(f) = self.cg.module.get_function(NAME) {
+            return f;
+        }
+        let void_ty = self.cg.context.void_type();
+        let ptr_ty = self.cg.context.ptr_type(inkwell::AddressSpace::default());
+        let i64_ty = self.cg.context.i64_type();
+        let fn_ty = void_ty.fn_type(&[ptr_ty.into(), i64_ty.into()], false);
         self.cg
             .module
             .add_function(NAME, fn_ty, Some(inkwell::module::Linkage::External))

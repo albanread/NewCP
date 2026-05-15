@@ -341,6 +341,12 @@ pub enum Statement {
     },
     Exit { span: SourceSpan },
     Return { span: SourceSpan, expr: Option<Expr> },
+    /// `BRK` — debugger-breakpoint statement.  Snapshot-style (no
+    /// halt): emits a call to the runtime `__newcp_brk` helper which
+    /// writes heap / register / stack state to stderr and returns.
+    /// Modelled on BCPL's BRK; lets framework code drop probes for
+    /// runtime inspection without an attached debugger.  No operand.
+    Brk { span: SourceSpan },
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -1053,6 +1059,13 @@ impl Parser {
         }
         if self.match_keyword("EXIT") {
             return Ok(Statement::Exit {
+                span: self.span_from(statement_start),
+            });
+        }
+        if self.match_keyword("BRK") {
+            // `BRK` debugger-breakpoint statement.  No operand.
+            // Lowered to a runtime call that snapshots state to stderr.
+            return Ok(Statement::Brk {
                 span: self.span_from(statement_start),
             });
         }
@@ -1825,6 +1838,7 @@ fn render_statements(statements: &[Statement], indent: usize, lines: &mut Vec<St
                 lines.push(format!("{}call {}", prefix, render_designator(designator)))
             }
             Statement::Exit { .. } => lines.push(format!("{}exit", prefix)),
+            Statement::Brk { .. } => lines.push(format!("{}brk", prefix)),
             Statement::Return { expr, .. } => lines.push(format!(
                 "{}return {}",
                 prefix,
@@ -2249,6 +2263,7 @@ fn statement_span(statement: &Statement) -> SourceSpan {
         | Statement::Loop { span, .. }
         | Statement::With { span, .. }
         | Statement::Exit { span }
+        | Statement::Brk { span }
         | Statement::Return { span, .. } => *span,
     }
 }

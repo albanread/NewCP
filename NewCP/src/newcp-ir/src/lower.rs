@@ -4822,6 +4822,15 @@ impl<'m> LowerCtx<'m> {
                 self.lower_exit();
             }
 
+            Statement::Brk { span } => {
+                // BRK is snapshot-only: emit the runtime call, then
+                // fall through.  Routine name + source line let the
+                // dump locate the call site.
+                let proc_name = self.proc.name.clone();
+                let line = span.start.line as u32;
+                self.push(Instr::Brk { proc_name, line });
+            }
+
             Statement::Return { expr, .. } => {
                 self.lower_return(expr.as_ref());
             }

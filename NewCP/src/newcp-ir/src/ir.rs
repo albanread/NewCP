@@ -215,6 +215,12 @@ pub enum Instr {
     /// path parks the thread for the duration of an in-flight
     /// stop-the-world collection cycle.
     Safepoint,
+    /// `BRK` statement — snapshot-style debugger breakpoint.
+    /// Lowers to a call to `__newcp_brk(routine_name_ptr, line)`
+    /// which dumps heap / register / stack state to stderr and
+    /// returns.  Modelled on BCPL's BRK; lets framework code drop
+    /// probes for runtime inspection without an attached debugger.
+    Brk { proc_name: String, line: u32 },
     /// `t = streq lhs, rhs : elem` — Component Pascal string-content
     /// compare for two NUL-terminated CHAR / SHORTCHAR buffers.
     ///

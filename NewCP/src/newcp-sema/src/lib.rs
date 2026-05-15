@@ -2443,7 +2443,7 @@ impl<'a> Analyzer<'a> {
     ) {
         for statement in statements {
             match statement {
-                Statement::Empty { .. } | Statement::Exit { .. } => {}
+                Statement::Empty { .. } | Statement::Exit { .. } | Statement::Brk { .. } => {}
                 Statement::Assignment { target, value, .. } => {
                     self.walk_designator_expressions(
                         target,
@@ -5166,7 +5166,7 @@ fn collect_free_names_in_stmts(stmts: &[newcp_parser::Statement]) -> HashSet<Str
                     for arm in arms { walk_stmts(&arm.body, names); }
                     if let Some(eb) = else_branch { walk_stmts(eb, names); }
                 }
-                Statement::Empty { .. } | Statement::Exit { .. } => {}
+                Statement::Empty { .. } | Statement::Exit { .. } | Statement::Brk { .. } => {}
             }
         }
     }
@@ -6500,6 +6500,7 @@ fn statement_position(statement: &Statement) -> (usize, usize) {
         | Statement::Loop { span, .. }
         | Statement::With { span, .. }
         | Statement::Exit { span }
+        | Statement::Brk { span }
         | Statement::Return { span, .. } => (span.start.line, span.start.column),
     }
 }

@@ -488,6 +488,7 @@ fn is_keyword(upper: &str) -> bool {
         "ABSTRACT"
             | "ARRAY"
             | "BEGIN"
+            | "BRK"
             | "BY"
             | "CASE"
             | "CLOSE"

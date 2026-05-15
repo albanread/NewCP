@@ -99,6 +99,26 @@ impl<'ctx> JitModule<'ctx> {
         // `finalizeObject()`; no user constructors run.
         engine.run_static_constructors();
 
+        // Walk every function in the module and register its code-
+        // section address with the runtime's BRK JIT-symbol registry.
+        // BRK's stack walk reads this to map RIPs back to CP procedure
+        // names.  Functions emitted without a body (extern declarations
+        // for runtime builtins) return address 0 and are skipped.
+        let mut fopt = module.get_first_function();
+        while let Some(f) = fopt {
+            let name = f.get_name().to_string_lossy().into_owned();
+            if !name.is_empty() && f.get_first_basic_block().is_some() {
+                // SAFETY: `f` belongs to the module owned by `engine`.
+                let addr = unsafe {
+                    LLVMGetPointerToGlobal(engine.as_mut_ptr(), f.as_value_ref())
+                } as u64;
+                if addr != 0 {
+                    newcp_runtime::brk::register_jit_symbol(addr, &name);
+                }
+            }
+            fopt = f.get_next_function();
+        }
+
         // Returns `Ok(Some(addr))` for a resolvable method, `Ok(None)` if
         // the method is inherited from a base in another module *and* its
         // address is not in the cross-module map (the slot then gets the
