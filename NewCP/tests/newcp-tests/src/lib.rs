@@ -4088,6 +4088,19 @@ mod tests {
         assert_eq!(run_function("Mod/Tests/HostWindowsProbe.cp", "Run"), 1);
     }
 
+    /// End-to-end BB UI startup smoke — runs `Init.Run` (the
+    /// full HostMenus / Converters.Register / Config.Setup /
+    /// StdLog.Open / HostMenus.Run chain) then drives
+    /// StdCmds.OpenToolDialog("System/Rsrc/About", ...).
+    /// Verifies the framework walks every layer without
+    /// trapping.  Doesn't yet put pixels on screen — the
+    /// reflection dispatch on Converters.Import is still
+    /// stubbed, the chain stops there.
+    #[test]
+    fn init_run_drives_full_startup_chain() {
+        assert_eq!(run_function("Mod/Tests/InitWelcomeProbe.cp", "Run"), 1);
+    }
+
     #[test]
     #[ignore = "manual repro for loader/JIT hang on Windows.dir.First() cross-module dispatch"]
     fn host_windows_directory_first_dispatch_repro() {

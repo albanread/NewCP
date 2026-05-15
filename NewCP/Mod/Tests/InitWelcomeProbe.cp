@@ -23,7 +23,7 @@ MODULE InitWelcomeProbe;
         Init, Windows, Converters, StdCmds;
 
     PROCEDURE Run* (): INTEGER;
-        VAR c: Converters.Converter; count: INTEGER;
+        VAR count: INTEGER; first: BOOLEAN;
     BEGIN
         Init.Run;
 
@@ -31,12 +31,10 @@ MODULE InitWelcomeProbe;
            and the .odc + .txt converters registered. *)
         IF Windows.dir = NIL THEN RETURN -1 END;
 
-        (* Count converters by walking the chain in Converters'
-           own scope (cross-module read still trips the dispatch
-           hang). *)
-        c := Converters.list;
-        count := 0;
-        WHILE c # NIL DO INC(count); c := c.next END;
+        (* Count converters via the in-module helper — direct
+           Converters.list walks from outside trigger the
+           unresolved cross-module dispatch hang. *)
+        count := Converters.CountAndFirstType(first);
         IF count < 2 THEN RETURN -2 END;
 
         (* Try opening the welcome page.  The chain stops at
