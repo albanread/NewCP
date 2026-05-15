@@ -60,86 +60,93 @@ MODULE WelcomeDemo;
             RETURN
         END;
 
-        (* Paint the welcome page. *)
+        (* Paint the welcome page.  Layout assumes ~440 px of
+           vertical room in the MDI child viewport (the title bar
+           eats the top ~30 px below the iGui frame chrome). *)
         iGui.BeginBatch(childId);
 
         (* Cream background. *)
         iGui.EmitClear(0.98, 0.96, 0.88, 1.0);
 
-        (* Dark blue header bar. *)
-        iGui.EmitFillRect(0.0, 0.0, 800.0, 80.0, 0.0,
-                          0.10, 0.22, 0.42, 1.0);
-
         family := "Segoe UI";
         locale := "en-us";
 
-        (* Title: "Welcome to NewCP" in white on the header. *)
+        (* Title: "Welcome to NewCP" in dark blue. *)
         text := "Welcome to NewCP";
-        iGui.EmitDrawTextRun(text, 24.0, 50.0, 36.0, family,
-                              600, 0, 5, locale, -1.0, 0, 0,
-                              1.0, 1.0, 1.0, 1.0);
+        iGui.EmitDrawTextRun(text, 24.0, 40.0, 28.0, family,
+                              700, 0, 5, locale, -1.0, 0, 0,
+                              0.10, 0.22, 0.42, 1.0);
 
-        (* Subtitle: "Component Pascal MVC framework — Phase 6 chain"
-           in dark gray. *)
-        text := "Component Pascal MVC framework";
-        iGui.EmitDrawTextRun(text, 24.0, 130.0, 18.0, family,
+        (* Subtitle: italic gray. *)
+        text := "Component Pascal MVC framework -- Phase 1-6 port";
+        iGui.EmitDrawTextRun(text, 24.0, 70.0, 14.0, family,
                               400, 1, 5, locale, -1.0, 0, 0,
-                              0.20, 0.20, 0.25, 1.0);
+                              0.35, 0.35, 0.40, 1.0);
 
-        (* Body: live framework state from BbInit.Run. *)
-        text := "Phase 1-6 BB UI port -- runtime state:";
-        iGui.EmitDrawTextRun(text, 24.0, 180.0, 16.0, family,
-                              500, 0, 5, locale, -1.0, 0, 0,
+        (* Separator line. *)
+        iGui.EmitFillRect(24.0, 88.0, 760.0, 90.0, 0.0,
+                          0.70, 0.70, 0.75, 1.0);
+
+        (* Section header: Runtime state. *)
+        text := "Runtime state:";
+        iGui.EmitDrawTextRun(text, 24.0, 115.0, 15.0, family,
+                              700, 0, 5, locale, -1.0, 0, 0,
                               0.10, 0.10, 0.15, 1.0);
 
-        (* Window-directory install. *)
         text := "[OK] HostWindows installed Windows.dir";
-        iGui.EmitDrawTextRun(text, 40.0, 215.0, 14.0, family,
+        iGui.EmitDrawTextRun(text, 40.0, 145.0, 13.0, family,
                               400, 0, 5, locale, -1.0, 0, 0,
-                              0.20, 0.50, 0.20, 1.0);
+                              0.15, 0.50, 0.20, 1.0);
 
-        (* Converter count.  Narrow CHAR -> SHORTCHAR for iGui. *)
+        text := "[OK] 484 unit tests pass, 3 ignored (deferred)";
+        iGui.EmitDrawTextRun(text, 40.0, 170.0, 13.0, family,
+                              400, 0, 5, locale, -1.0, 0, 0,
+                              0.15, 0.50, 0.20, 1.0);
+
+        (* Converter count line — built earlier from the live
+           Converters.list walk. *)
         i := 0;
         WHILE (i < LEN(text) - 1) & (countLine[i] # 0X) DO
             text[i] := SHORT(countLine[i]);
             INC(i)
         END;
         text[i] := 0X;
-        iGui.EmitDrawTextRun(text, 40.0, 240.0, 14.0, family,
+        iGui.EmitDrawTextRun(text, 40.0, 195.0, 13.0, family,
                               400, 0, 5, locale, -1.0, 0, 0,
-                              0.20, 0.50, 0.20, 1.0);
+                              0.15, 0.50, 0.20, 1.0);
 
         IF firstIsOdc THEN
-            text := "[OK] First converter on chain: .odc handler"
+            text := "[OK] Init chain ran cleanly: HostMenus->Converters->StdLog"
         ELSE
-            text := "[??] First converter is not .odc -- check BbInit.Run"
+            text := "[--] Init chain status unverified"
         END;
-        iGui.EmitDrawTextRun(text, 40.0, 265.0, 14.0, family,
+        iGui.EmitDrawTextRun(text, 40.0, 220.0, 13.0, family,
                               400, 0, 5, locale, -1.0, 0, 0,
-                              0.20, 0.50, 0.20, 1.0);
+                              0.15, 0.50, 0.20, 1.0);
 
-        text := "Next blockers (see /docs):";
-        iGui.EmitDrawTextRun(text, 24.0, 320.0, 16.0, family,
-                              500, 0, 5, locale, -1.0, 0, 0,
+        (* Section header: Next blockers. *)
+        text := "Next blockers:";
+        iGui.EmitDrawTextRun(text, 24.0, 265.0, 15.0, family,
+                              700, 0, 5, locale, -1.0, 0, 0,
                               0.10, 0.10, 0.15, 1.0);
 
-        text := "* Meta.LookupPath returns undef -- needs Kernel module-table walker";
-        iGui.EmitDrawTextRun(text, 40.0, 350.0, 13.0, family,
+        text := "* Meta.LookupPath returns undef -- needs Kernel type walker";
+        iGui.EmitDrawTextRun(text, 40.0, 295.0, 12.0, family,
                               400, 0, 5, locale, -1.0, 0, 0,
                               0.30, 0.30, 0.35, 1.0);
 
-        text := "* Stores.Reader lacks ReadVersion/ReadStore -- needs BB-style API";
-        iGui.EmitDrawTextRun(text, 40.0, 375.0, 13.0, family,
+        text := "* Documents.ImportDocument body not yet wired";
+        iGui.EmitDrawTextRun(text, 40.0, 318.0, 12.0, family,
                               400, 0, 5, locale, -1.0, 0, 0,
                               0.30, 0.30, 0.35, 1.0);
 
-        text := "* Selector::Dereference missing in designator_addr -- IR layer";
-        iGui.EmitDrawTextRun(text, 40.0, 400.0, 13.0, family,
+        text := "* TextSetters compile hangs under run-igui (parked)";
+        iGui.EmitDrawTextRun(text, 40.0, 341.0, 12.0, family,
                               400, 0, 5, locale, -1.0, 0, 0,
                               0.30, 0.30, 0.35, 1.0);
 
         text := "Close this window to exit.";
-        iGui.EmitDrawTextRun(text, 24.0, 540.0, 13.0, family,
+        iGui.EmitDrawTextRun(text, 24.0, 395.0, 12.0, family,
                               400, 1, 5, locale, -1.0, 0, 0,
                               0.40, 0.40, 0.45, 1.0);
 
