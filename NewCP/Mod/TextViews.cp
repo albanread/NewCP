@@ -292,8 +292,8 @@ PROCEDURE (v: View) ShowRange*       (beg, end: INTEGER; focusOnly: BOOLEAN),
 
    No layout / rendering yet — `GetThisLocation`, `GetRange`,
    `ThisPos`, `ShowRangeIn`, `ShowRange`, `Restore` are all
-   safe no-ops so callers don't trap.  The state-update methods
-   (`DisplayMarks`, `SetSetter`, `SetOrigin`, `SetDefaults`)
+    safe no-ops so callers don't trap.  The state-update methods
+    (`DisplayMarks`, `SetSetter`, `SetOrigin`, `SetDefaults`)
    and their pollers are BB-faithful and ready for use.
 *)
 
