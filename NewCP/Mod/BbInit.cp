@@ -1,4 +1,4 @@
-MODULE Init;
+MODULE BbInit;
 (*
    First slice of the BlackBox `Init` port.
 
@@ -69,4 +69,4 @@ MODULE Init;
         HostMenus.Run
     END Run;
 
-END Init.
+END BbInit.

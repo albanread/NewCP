@@ -1,7 +1,7 @@
 MODULE InitWelcomeProbe;
 (* End-to-end smoke test for the BB UI startup chain.
 
-   Runs `Init.Run` which:
+   Runs `BbInit.Run` which:
      1. HostMenus.OpenApp                (no-op stub)
      2. Converters.Register("Documents.ImportDocument", ...)
      3. StdMenuTool.UpdateAllMenus       (no-op stub)
@@ -20,20 +20,21 @@ MODULE InitWelcomeProbe;
    Returns 1 on success, negative on first surprise. *)
 
     IMPORT
-        Init, Windows, Converters, StdCmds;
+        BbInit, Windows, Converters, StdCmds;
 
     PROCEDURE Run* (): INTEGER;
         VAR count: INTEGER; first: BOOLEAN;
     BEGIN
-        Init.Run;
+        BbInit.Run;
 
-        (* After Init.Run the StdDirectory should be installed
+        (* After BbInit.Run the StdDirectory should be installed
            and the .odc + .txt converters registered. *)
         IF Windows.dir = NIL THEN RETURN -1 END;
 
-        (* Count converters via the in-module helper — direct
-           Converters.list walks from outside trigger the
-           unresolved cross-module dispatch hang. *)
+        (* Count converters via the in-module helper — abstract
+           method dispatch through Windows.dir works now but
+           walking an imported list's record-field chain
+           cross-module still trips somewhere. *)
         count := Converters.CountAndFirstType(first);
         IF count < 2 THEN RETURN -2 END;
 

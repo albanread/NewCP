@@ -4101,8 +4101,11 @@ mod tests {
         assert_eq!(run_function("Mod/Tests/InitWelcomeProbe.cp", "Run"), 1);
     }
 
+    /// Cross-module abstract method dispatch through
+    /// Windows.dir.First() — previously hung the JIT loader.
+    /// Fixed by the lower.rs flatten_sem_type_fields cycle
+    /// guard + downstream patches; kept as a regression test.
     #[test]
-    #[ignore = "manual repro for loader/JIT hang on Windows.dir.First() cross-module dispatch"]
     fn host_windows_directory_first_dispatch_repro() {
         let probe_path = workspace_root()
             .join("Mod")
