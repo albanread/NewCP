@@ -2370,7 +2370,31 @@ impl<'m> LowerCtx<'m> {
                                             });
                                             (IrValue::Temp(t, loaded_ptr_ty), *elem, None)
                                         }
-                                        _ => (addr.clone(), IrType::Opaque("array-elem".to_string()), None),
+                                        _ => {
+                                            // VAR/OUT param of a direct array
+                                            // alias (`TYPE Name = ARRAY N OF
+                                            // CHAR`).  Chase the alias to its
+                                            // underlying Array semantic and
+                                            // map back so we can index it.
+                                            // Mirrors the same fallback added
+                                            // to the outer `Ref(Named)` arm.
+                                            // Surfaced by Meta.GetTypeName(
+                                            // OUT mod, type: Name) where
+                                            // mod[0] := 0X would otherwise
+                                            // hit `opaque:array-elem`.
+                                            let alias_sem = SemanticType::Named {
+                                                module: None,
+                                                name: n.clone(),
+                                                kind: newcp_sema::NamedTypeKind::UserDefined,
+                                            };
+                                            let resolved = self.resolve_named_sem_type(&alias_sem);
+                                            match map_semantic_type(&resolved) {
+                                                IrType::Array { element, len } => {
+                                                    (addr.clone(), *element, Some(len))
+                                                }
+                                                _ => (addr.clone(), IrType::Opaque("array-elem".to_string()), None),
+                                            }
+                                        }
                                     },
                                     _ => (addr.clone(), IrType::Opaque("array-elem".to_string()), None),
                                 },

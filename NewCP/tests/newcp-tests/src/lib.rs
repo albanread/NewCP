@@ -4044,6 +4044,24 @@ mod tests {
         assert_eq!(run_function("Mod/Tests/SingleQuoteCharProbe.cp", "Run"), 1);
     }
 
+    /// Converters smoke test — BB-faithful file-format dispatch
+    /// registry.  Registers three converters (odc / txt / rtf)
+    /// and walks the global list.  Expected: 3 * 1000 + 1 = 3001.
+    /// Previously hung in LLVM emit because
+    /// `flatten_sem_type_fields` in lower.rs recursed unbounded
+    /// through named-type cycles — fix landed alongside this port.
+    #[test]
+    fn converters_register_builds_linked_list() {
+        assert_eq!(run_function("Mod/Tests/ConvertersProbe.cp", "Run"), 3001);
+    }
+
+    /// Meta MVS smoke — calling Meta.LookupPath returns an Item
+    /// with obj = undef in this slice (real reflection deferred).
+    #[test]
+    fn meta_lookup_path_returns_undef_in_first_slice() {
+        assert_eq!(run_function("Mod/Tests/MetaProbe.cp", "Run"), 1);
+    }
+
     fn inline_fixed_array_field_in_xmod_record() {
         assert_eq!(
             run_function("Mod/Tests/InlineFixedArrayProbe.cp", "Run"),
