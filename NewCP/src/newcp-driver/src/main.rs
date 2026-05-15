@@ -341,15 +341,32 @@ fn cp_worker_thread(command_path: String) {
     eprintln!("[igui-worker] starting LoaderSession for {command_path}");
     let mut session = newcp_loader::LoaderSession::new();
     eprintln!("{}", session.report().render());
-    match session.invoke_command(&command_path) {
-        Ok(result) => {
+    // Catch panics from invoke_command (including ones propagated up
+    // from JIT traps via resume_unwind) so we can log them and still
+    // close the iGui frame instead of dying silently and leaving the
+    // user staring at an empty MDI shell.
+    let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+        session.invoke_command(&command_path)
+    }));
+    match result {
+        Ok(Ok(result)) => {
             let mut log = result.load_log;
             log.extend(result.execution_log);
             if !log.is_empty() {
                 eprintln!("[igui-worker] {}", log.join(" | "));
             }
         }
-        Err(err) => eprintln!("[igui-worker] command-error: {err}"),
+        Ok(Err(err)) => eprintln!("[igui-worker] command-error: {err}"),
+        Err(payload) => {
+            let msg = if let Some(s) = payload.downcast_ref::<String>() {
+                s.clone()
+            } else if let Some(s) = payload.downcast_ref::<&'static str>() {
+                (*s).to_string()
+            } else {
+                "<non-string panic payload>".to_string()
+            };
+            eprintln!("[igui-worker] command-panic: {msg}");
+        }
     }
     // Command finished — close the frame.
     newcp_runtime::igui::cp_exports::igui_quit();

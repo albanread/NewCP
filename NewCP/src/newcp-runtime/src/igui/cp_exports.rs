@@ -83,15 +83,21 @@ pub extern "C" fn igui_open_child(
     out_child: *mut i64,
 ) -> i32 {
     if title.is_null() || out_child.is_null() {
+        eprintln!("[igui-export] OpenChild: NULL title or out_child");
         return 0;
     }
     let title_str = unsafe { read_cp_shortstr(title) };
+    eprintln!("[igui-export] OpenChild title={title_str:?}");
     match super::window::open_child(&title_str) {
         Some(id) => {
+            eprintln!("[igui-export] OpenChild ok, id={id}");
             unsafe { *out_child = id };
             1
         }
-        None => 0,
+        None => {
+            eprintln!("[igui-export] OpenChild failed (open_child returned None)");
+            0
+        }
     }
 }
 

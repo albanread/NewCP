@@ -602,6 +602,13 @@ impl KernelState {
 
         let imports = self.modules[index].imports.clone();
         for import_name in imports {
+            // SYSTEM is the CP pseudo-module providing unsafe / low-level
+            // primitives (SYSTEM.VAL, SYSTEM.ADR, SYSTEM.MOVE).  It has no
+            // body and isn't registered as a real module — every module
+            // implicitly has it available.  Skip the lookup.
+            if import_name == "SYSTEM" {
+                continue;
+            }
             let import_index = self
                 .modules
                 .iter()
@@ -1023,7 +1030,9 @@ pub extern "C" fn __newcp_trap(code: i32) -> ! {
 }
 
 fn panic_trap(message: String) -> ! {
+    use std::io::Write;
     eprintln!("newcp trap: {message}");
+    let _ = std::io::stderr().flush();
     std::process::abort();
 }
 

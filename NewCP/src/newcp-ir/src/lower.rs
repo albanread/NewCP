@@ -650,6 +650,52 @@ impl<'m> LowerCtx<'m> {
         ty
     }
 
+    /// Like `resolve_named_to_underlying_ir` but if the local /
+    /// module-symbol lookup misses, fall back to searching every
+    /// imported module's symbol table.  Needed for shape-equality
+    /// checks where an unqualified `Named("Typeface")` IR type
+    /// refers to a type declared in an imported module (e.g. a
+    /// procedure parameter typed `Fonts.Typeface` lowers to
+    /// `Named("Typeface")` without the module prefix).
+    fn resolve_named_anywhere(&mut self, mut ty: IrType) -> IrType {
+        for _ in 0..16 {
+            let IrType::Named(name) = &ty else {
+                return ty;
+            };
+            // First try the qualified path / local resolver.
+            let local = self.resolve_named_to_underlying_ir(ty.clone());
+            if local != ty {
+                ty = local;
+                continue;
+            }
+            // Fallback: search every already-cached imported module
+            // for an exported type with this bare name.  The import
+            // cache is populated lazily as `load_cached_import` runs
+            // — by the time we hit an Assignment statement we've
+            // already lowered the procedure's signatures and field
+            // accesses, so every relevant import is in the cache.
+            let modules: Vec<String> = self.import_cache.keys().cloned().collect();
+            let mut resolved: Option<IrType> = None;
+            for module in &modules {
+                let Some(sema) = self.import_cache.get(module) else {
+                    continue;
+                };
+                if let Some(found) = sema.symbols.iter()
+                    .find(|s| s.kind == SymbolKind::Type && &s.name == name)
+                    .and_then(|s| s.declared_type.as_ref())
+                {
+                    resolved = Some(map_semantic_type(found));
+                    break;
+                }
+            }
+            match resolved {
+                Some(next) if next != ty => ty = next,
+                _ => return ty,
+            }
+        }
+        ty
+    }
+
     fn resolve_named_as_ptr_ir_type(&self, type_name: &str) -> Option<IrType> {
         // Cross-module type alias `"Module.Type"` — load the imported
         // module's sema and resolve there. Required so field-access on a
@@ -2947,11 +2993,42 @@ impl<'m> LowerCtx<'m> {
             BinaryOp::GreaterEqual => StringCmpOp::Ge,
             _ => return None,
         };
-        let l_kind = self.string_compare_operand_kind(left)?;
-        let r_kind = self.string_compare_operand_kind(right)?;
-        if l_kind != r_kind {
-            return None;
-        }
+        // Determine each operand's element kind.  We pass-through to
+        // `single_char_literal_kind` AND `single_char_designator_kind`
+        // as fallbacks so that `array = "*"`, `array = 'X'`, and
+        // `array = MyConstChar` all take the string-compare path when
+        // the *other* operand is an array.  Without that fallback
+        // `try_lower_string_compare` would punt single-char-vs-array
+        // compares to the integer-compare path, which then mis-emits
+        // `load [N x i32]; eq <array>, <char>` and the LLVM emit
+        // panics with "Found ArrayValue but expected IntValue".
+        // Surfaced by `HostFonts.dirImpl.This`:
+        //     IF typeface = Fonts.default THEN ...
+        // where `Fonts.default = "*"` is a 1-char CONST that sema
+        // classifies as CHAR (per CP convention for 1-char string
+        // literals), not as ARRAY OF CHAR.
+        let l_array = self.string_compare_operand_kind(left);
+        let r_array = self.string_compare_operand_kind(right);
+        let single_or_lit = |this: &mut Self, e: &Expr| -> Option<StringElemKind> {
+            if let Some(k) = single_char_literal_kind(e) {
+                return Some(k);
+            }
+            this.single_char_designator_kind(e)
+        };
+        let (l_kind, r_kind) = match (l_array, r_array) {
+            (Some(l), Some(r)) if l == r => (l, r),
+            (Some(l), None) => {
+                let r_single = single_or_lit(self, right)?;
+                if l != r_single { return None; }
+                (l, r_single)
+            }
+            (None, Some(r)) => {
+                let l_single = single_or_lit(self, left)?;
+                if l_single != r { return None; }
+                (l_single, r)
+            }
+            _ => return None,
+        };
         let lhs_ptr = self.lower_string_operand_ptr(left, l_kind)?;
         let rhs_ptr = self.lower_string_operand_ptr(right, r_kind)?;
         let dst = self.fresh_temp();
@@ -3002,18 +3079,85 @@ impl<'m> LowerCtx<'m> {
         expr: &Expr,
         kind: StringElemKind,
     ) -> Option<IrValue> {
+        let elem_ty = match kind {
+            StringElemKind::Char => IrType::Char,
+            StringElemKind::ShortChar => IrType::ShortChar,
+        };
         match expr {
             Expr::Literal { value: Literal::String(s), .. } => {
                 let inner = s.trim_matches('"').trim_matches('\'');
-                let elem_ty = match kind {
-                    StringElemKind::Char => IrType::Char,
-                    StringElemKind::ShortChar => IrType::ShortChar,
-                };
                 Some(IrValue::ConstStr(inner.to_string(), elem_ty))
             }
-            Expr::Designator(des) => Some(self.designator_addr(des)),
+            Expr::Literal { value: Literal::Character(s), .. } => {
+                // Single-char literal participating in an array compare.
+                // Materialise as a 1-codepoint ConstStr so the runtime
+                // string-compare helper walks it like any other string.
+                let ch = if s.starts_with('"') || s.starts_with('\'') {
+                    s[1..s.len() - 1].chars().next().unwrap_or('\0')
+                } else {
+                    let hex = s.strip_suffix('X').unwrap_or(s);
+                    let n = u32::from_str_radix(hex, 16).unwrap_or(0);
+                    char::from_u32(n).unwrap_or('\0')
+                };
+                Some(IrValue::ConstStr(ch.to_string(), elem_ty))
+            }
+            Expr::Designator(des) => {
+                // CONST designators whose value is a single CHAR or
+                // 1-char String need to be materialised as a ConstStr
+                // for the runtime string-compare helper to walk them.
+                // Walking via `designator_addr` would give the address
+                // of a synthetic stack temp without the trailing 0X
+                // terminator the helper relies on.
+                if let Some(s) = self.const_designator_as_string(des) {
+                    return Some(IrValue::ConstStr(s, elem_ty));
+                }
+                Some(self.designator_addr(des))
+            }
             _ => None,
         }
+    }
+
+    /// If `des` refers to a CONST whose value is a CHAR or 1-char
+    /// String, return that 1-char string.  Used by
+    /// `lower_string_operand_ptr` to materialise a synthetic 1-elem
+    /// string for the runtime string-compare helper.  Returns `None`
+    /// for anything else (locals, fields, multi-char CONSTs, etc.).
+    fn const_designator_as_string(&mut self, des: &Designator) -> Option<String> {
+        if !des.selectors.is_empty() {
+            return None;
+        }
+        let (module_opt, base_name) = match &des.base {
+            QualIdent { module: Some(m), name, .. } => (Some(m.clone()), name.clone()),
+            QualIdent { name, .. } => (None, name.clone()),
+        };
+        let const_value = if let Some(module) = module_opt {
+            let sema = load_cached_import(&module, &mut self.import_cache)?;
+            sema.symbols.iter().find(|s| s.name == base_name)?.const_value.clone()?
+        } else {
+            self.symbols.iter().rev()
+                .find(|s| s.name == base_name)?.const_value.clone()?
+        };
+        match const_value {
+            ConstValue::Char(c) => Some(c.to_string()),
+            ConstValue::String(s) if s.chars().count() == 1 => Some(s),
+            _ => None,
+        }
+    }
+
+    /// Companion to `string_compare_operand_kind` for the
+    /// single-char-CONST fallback in `try_lower_string_compare`.
+    /// Recognises a Designator that resolves (via the local or
+    /// imported-module symbol table) to a CONST with a CHAR or
+    /// 1-char String value.  Returns the matching element kind
+    /// (always Char in this slice — SHORTCHAR CONSTs are rare and
+    /// can be added if a probe surfaces one).
+    fn single_char_designator_kind(&mut self, expr: &Expr) -> Option<StringElemKind> {
+        if let Expr::Designator(des) = expr {
+            if self.const_designator_as_string(des).is_some() {
+                return Some(StringElemKind::Char);
+            }
+        }
+        None
     }
 
     /// CFG-based short-circuit lowering for the boolean `&` / `OR`
@@ -4553,9 +4697,28 @@ impl<'m> LowerCtx<'m> {
                 }
                 let rhs = if let Some(slot_ty) = slot_ty {
                     if slot_ty != rhs.ty() {
-                        let t = self.fresh_temp();
-                        self.push(Instr::Cast { dst: t, value: rhs, to_ty: slot_ty.clone() });
-                        IrValue::Temp(t, slot_ty)
+                        // Same underlying shape, just wrapped in a Named
+                        // alias: e.g. slot is `named:Typeface` and rhs
+                        // is `[64 x char]`.  No physical cast needed —
+                        // they share the same LLVM layout.  Surfaced by
+                        // `f.typeface := typeface` in HostFonts.This,
+                        // where the field's named-type wrapper differed
+                        // from the local parameter's resolved IR type.
+                        // resolve_through_imports peeks across the
+                        // imported-modules table too, since unqualified
+                        // Named types pointing at imported aliases
+                        // (`Typeface` rather than `Fonts.Typeface`) don't
+                        // resolve through `resolve_named_to_underlying_ir`
+                        // alone.
+                        let resolved_slot = self.resolve_named_anywhere(slot_ty.clone());
+                        let resolved_rhs  = self.resolve_named_anywhere(rhs.ty());
+                        if resolved_slot == resolved_rhs {
+                            rhs
+                        } else {
+                            let t = self.fresh_temp();
+                            self.push(Instr::Cast { dst: t, value: rhs, to_ty: slot_ty.clone() });
+                            IrValue::Temp(t, slot_ty)
+                        }
                     } else {
                         rhs
                     }
@@ -5695,6 +5858,42 @@ fn string_elem_kind_from_array_ir_type(ty: &IrType) -> Option<StringElemKind> {
         },
         IrType::Ptr(inner) | IrType::UntaggedPtr(inner) | IrType::Ref(inner) => {
             string_elem_kind_from_array_ir_type(inner)
+        }
+        _ => None,
+    }
+}
+
+/// Element-kind for a single-codepoint string or character literal.
+/// Used by `try_lower_string_compare`'s fallback path: when one side
+/// of the compare is an ARRAY OF CHAR designator and the other is a
+/// 1-char literal (`"*"` or `'X'` or `21X`), we want the string-
+/// compare runtime helper, not an int compare.  Without this opt-in
+/// the integer-compare path mis-emits `eq <whole-array>, <i32>` and
+/// LLVM panics on the type mismatch.
+fn single_char_literal_kind(expr: &Expr) -> Option<StringElemKind> {
+    match expr {
+        Expr::Literal { value: Literal::String(s), .. } => {
+            let inner = s.trim_matches('"').trim_matches('\'');
+            if inner.chars().count() == 1 {
+                Some(StringElemKind::Char)
+            } else {
+                None
+            }
+        }
+        Expr::Literal { value: Literal::Character(s), .. } => {
+            // Hex char literal `NNX`: ordinal <= 0xFF → SHORTCHAR;
+            // larger codepoints → CHAR.  Quoted `'x'` → CHAR.
+            if s.starts_with('"') || s.starts_with('\'') {
+                Some(StringElemKind::Char)
+            } else {
+                let hex = s.strip_suffix('X').unwrap_or(s);
+                let ordinal = u32::from_str_radix(hex, 16).unwrap_or(0);
+                if ordinal <= 0xFF {
+                    Some(StringElemKind::ShortChar)
+                } else {
+                    Some(StringElemKind::Char)
+                }
+            }
         }
         _ => None,
     }
