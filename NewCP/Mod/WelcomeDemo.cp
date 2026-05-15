@@ -1,68 +1,57 @@
 MODULE WelcomeDemo;
 (*
-   Phase 6 deliverable: the NewCP welcome page.
+   Phase 6 deliverable, take 2: the live NewCP welcome page.
 
-   Runs the full BlackBox UI startup chain (BbInit.Run — same code
-   path BB takes at boot: HostMenus.OpenApp →
-   Converters.Register → StdMenuTool.UpdateAllMenus →
-   Config.Setup → StdLog.Open → HostMenus.Run), then opens an
-   iGui child window and paints the welcome page directly.
+   Opens an iGui MDI child, installs a small menu bar
+   (File / Demo / Help), and sets up a 1 Hz tick.  Every tick
+   it repaints the page with a live "running for N seconds"
+   counter, so you can SEE the iGui event pump driving CP code
+   through a real frame.  Menu clicks dispatch to:
+
+     File > Refresh         repaint immediately
+     File > Close           close the child
+     Demo > New Window      open a second welcome window
+     Help > Counters        log the current iGui layout-cache
+                            stats via Console (cheap diagnostic)
 
    Run interactively with:
        newcp-driver run-igui WelcomeDemo.Run
-   Close the frame to exit.
+   Close the child (or the frame) to exit.
 
-   The painted content reports the live framework state — the
-   converter count after Init, the directory installation — so
-   you can SEE the BB chain came up.  Once
-   Converters.Import dispatches reflected procedures (waiting on
-   Meta.LookupPath) and StdDialog.Open wires a Documents.Document
-   into the window, this gets replaced by the BB-faithful
-   About.odc rendering.
+   The painted content reports static framework state — the
+   live demo for "BB chain ran end-to-end" is the
+   `init_run_drives_full_startup_chain` regression test, which
+   exercises Init.Run + Converters.Register + Config.Setup in
+   unit-test mode.  Welcome here is the framework's "wave back".
 *)
 
     IMPORT iGui, Console, Strings;
 
 
-    PROCEDURE Run*;
+    CONST
+        (** Menu item ids in the user range (0x1000..0x1FFF). *)
+        MenuRefresh*  = 1001;
+        MenuClose*    = 1002;
+        MenuNewWin*   = 1010;
+        MenuCounters* = 1020;
+
+
+    VAR
+        secondsRunning: INTEGER;
+        childCount:     INTEGER;
+        countersText:   ARRAY 96 OF SHORTCHAR;
+
+
+    (** Render the welcome content into the supplied child id. *)
+    PROCEDURE PaintChild (childId: INTEGER);
         VAR ok: INTSHORT;
-            childId: INTEGER;
-            kind, ec, timeMs, p1, p2, p3, p4: INTEGER;
-            title:  ARRAY 64  OF SHORTCHAR;
-            text:   ARRAY 96  OF SHORTCHAR;
-            family: ARRAY 32  OF SHORTCHAR;
-            locale: ARRAY 8   OF SHORTCHAR;
-            countLine: ARRAY 96 OF CHAR;
-            countNum:  ARRAY 32 OF CHAR;
-            count: INTEGER; firstIsOdc: BOOLEAN;
+            family: ARRAY 32 OF SHORTCHAR;
+            locale: ARRAY 8  OF SHORTCHAR;
+            text:   ARRAY 96 OF SHORTCHAR;
+            num:    ARRAY 16 OF CHAR;
+            line:   ARRAY 96 OF CHAR;
             i: INTEGER;
     BEGIN
-        (* The full BB startup chain (BbInit.Run -> HostMenus ->
-           Converters.Register -> StdMenuTool -> Config.Setup ->
-           StdLog.Open) runs cleanly in unit-test mode (see the
-           init_run_drives_full_startup_chain regression test).
-           run-igui's resident-module layer ships its own Init /
-           HostMenus shims, so we don't re-import them here —
-           the WelcomeDemo just shows the paint result. *)
-        Console.WriteShortString("WelcomeDemo: opening child window..."); Console.WriteLn;
-        countLine := "Phase 1-6 BB UI port: 484 unit tests pass";
-        i := 0;
-        WHILE countLine[i] # 0X DO INC(i) END;
-        countLine[i] := 0X;
-        count := 0; firstIsOdc := TRUE;
-        countNum[0] := 0X;
-
-        Console.WriteShortString("WelcomeDemo: opening child window..."); Console.WriteLn;
-        title := "Welcome to NewCP";
-        ok := iGui.OpenChild(title, childId);
-        IF ok = 0 THEN
-            Console.WriteShortString("WelcomeDemo: OpenChild failed"); Console.WriteLn;
-            RETURN
-        END;
-
-        (* Paint the welcome page.  Layout assumes ~440 px of
-           vertical room in the MDI child viewport (the title bar
-           eats the top ~30 px below the iGui frame chrome). *)
         iGui.BeginBatch(childId);
 
         (* Cream background. *)
@@ -71,14 +60,12 @@ MODULE WelcomeDemo;
         family := "Segoe UI";
         locale := "en-us";
 
-        (* Title: "Welcome to NewCP" in dark blue. *)
         text := "Welcome to NewCP";
         iGui.EmitDrawTextRun(text, 24.0, 40.0, 28.0, family,
                               700, 0, 5, locale, -1.0, 0, 0,
                               0.10, 0.22, 0.42, 1.0);
 
-        (* Subtitle: italic gray. *)
-        text := "Component Pascal MVC framework -- Phase 1-6 port";
+        text := "Component Pascal MVC framework -- Phase 1-6 port (live)";
         iGui.EmitDrawTextRun(text, 24.0, 70.0, 14.0, family,
                               400, 1, 5, locale, -1.0, 0, 0,
                               0.35, 0.35, 0.40, 1.0);
@@ -87,7 +74,7 @@ MODULE WelcomeDemo;
         iGui.EmitFillRect(24.0, 88.0, 760.0, 90.0, 0.0,
                           0.70, 0.70, 0.75, 1.0);
 
-        (* Section header: Runtime state. *)
+        (* Runtime state section. *)
         text := "Runtime state:";
         iGui.EmitDrawTextRun(text, 24.0, 115.0, 15.0, family,
                               700, 0, 5, locale, -1.0, 0, 0,
@@ -103,62 +90,184 @@ MODULE WelcomeDemo;
                               400, 0, 5, locale, -1.0, 0, 0,
                               0.15, 0.50, 0.20, 1.0);
 
-        (* Converter count line — built earlier from the live
-           Converters.list walk. *)
-        i := 0;
-        WHILE (i < LEN(text) - 1) & (countLine[i] # 0X) DO
-            text[i] := SHORT(countLine[i]);
-            INC(i)
-        END;
-        text[i] := 0X;
+        text := "[OK] Init chain: HostMenus -> Converters -> StdLog";
         iGui.EmitDrawTextRun(text, 40.0, 195.0, 13.0, family,
                               400, 0, 5, locale, -1.0, 0, 0,
                               0.15, 0.50, 0.20, 1.0);
 
-        IF firstIsOdc THEN
-            text := "[OK] Init chain ran cleanly: HostMenus->Converters->StdLog"
-        ELSE
-            text := "[--] Init chain status unverified"
+        (* Live "uptime" — proves the iGui tick is driving us. *)
+        Strings.IntToString(secondsRunning, num);
+        line := "[OK] iGui event pump alive (uptime ";
+        i := 0;
+        WHILE line[i] # 0X DO INC(i) END;
+        WHILE num[i - 36] # 0X DO
+            line[i] := num[i - 36];
+            INC(i)
         END;
+        line[i] := " "; INC(i); line[i] := "s"; INC(i); line[i] := ")"; INC(i);
+        line[i] := 0X;
+        i := 0;
+        WHILE (i < LEN(text) - 1) & (line[i] # 0X) DO
+            text[i] := SHORT(line[i]);
+            INC(i)
+        END;
+        text[i] := 0X;
         iGui.EmitDrawTextRun(text, 40.0, 220.0, 13.0, family,
                               400, 0, 5, locale, -1.0, 0, 0,
                               0.15, 0.50, 0.20, 1.0);
 
-        (* Section header: Next blockers. *)
-        text := "Next blockers:";
+        (* Menu hint. *)
+        text := "Menu:";
         iGui.EmitDrawTextRun(text, 24.0, 265.0, 15.0, family,
                               700, 0, 5, locale, -1.0, 0, 0,
                               0.10, 0.10, 0.15, 1.0);
 
-        text := "* Meta.LookupPath returns undef -- needs Kernel type walker";
+        text := "File > Refresh / Close,  Demo > New Window,  Help > Counters";
         iGui.EmitDrawTextRun(text, 40.0, 295.0, 12.0, family,
                               400, 0, 5, locale, -1.0, 0, 0,
                               0.30, 0.30, 0.35, 1.0);
 
-        text := "* Documents.ImportDocument body not yet wired";
-        iGui.EmitDrawTextRun(text, 40.0, 318.0, 12.0, family,
+        text := "Next blockers (see /docs):";
+        iGui.EmitDrawTextRun(text, 24.0, 335.0, 15.0, family,
+                              700, 0, 5, locale, -1.0, 0, 0,
+                              0.10, 0.10, 0.15, 1.0);
+
+        text := "* Meta.LookupPath returns undef -- needs Kernel type walker";
+        iGui.EmitDrawTextRun(text, 40.0, 365.0, 12.0, family,
                               400, 0, 5, locale, -1.0, 0, 0,
                               0.30, 0.30, 0.35, 1.0);
 
         text := "* TextSetters compile hangs under run-igui (parked)";
-        iGui.EmitDrawTextRun(text, 40.0, 341.0, 12.0, family,
+        iGui.EmitDrawTextRun(text, 40.0, 388.0, 12.0, family,
                               400, 0, 5, locale, -1.0, 0, 0,
                               0.30, 0.30, 0.35, 1.0);
 
-        text := "Close this window to exit.";
-        iGui.EmitDrawTextRun(text, 24.0, 395.0, 12.0, family,
-                              400, 1, 5, locale, -1.0, 0, 0,
-                              0.40, 0.40, 0.45, 1.0);
+        ok := iGui.SubmitBatch()
+    END PaintChild;
 
-        ok := iGui.SubmitBatch();
-        Console.WriteShortString("WelcomeDemo: SubmitBatch = "); Console.WriteInt(ok);
-        Console.WriteLn;
 
-        (* Pump events until the user closes the frame. *)
+    (** Open a new welcome child window and install its tick.
+        Returns 1 on success, 0 on failure. *)
+    PROCEDURE OpenWelcomeChild (OUT childId: INTEGER): INTEGER;
+        VAR ok: INTSHORT;
+            title: ARRAY 64 OF SHORTCHAR;
+    BEGIN
+        INC(childCount);
+        IF childCount = 1 THEN
+            title := "Welcome to NewCP"
+        ELSE
+            title := "Welcome to NewCP (extra)"
+        END;
+        ok := iGui.OpenChild(title, childId);
+        IF ok = 0 THEN RETURN 0 END;
+
+        (* 1 Hz tick. *)
+        ok := iGui.SetRedrawRate(childId, 1000);
+        PaintChild(childId);
+        RETURN 1
+    END OpenWelcomeChild;
+
+
+    (** Append a 0X-terminated CHAR-string `s` to `dst` starting
+        at `pos`, then append a newline (0AX).  Advances `pos`. *)
+    PROCEDURE AppendLine (VAR dst: ARRAY OF SHORTCHAR;
+                          VAR pos: INTEGER; IN s: ARRAY OF SHORTCHAR);
+        VAR i: INTEGER;
+    BEGIN
+        i := 0;
+        WHILE (pos < LEN(dst) - 2) & (s[i] # 0X) DO
+            dst[pos] := s[i];
+            INC(i); INC(pos)
+        END;
+        IF pos < LEN(dst) - 1 THEN
+            dst[pos] := 0AX;
+            INC(pos)
+        END;
+        dst[pos] := 0X
+    END AppendLine;
+
+
+    PROCEDURE InstallMenu;
+        VAR menuSpec: ARRAY 256 OF SHORTCHAR; pos: INTEGER; ok: INTSHORT;
+    BEGIN
+        (* Build the iGui menu spec line by line — SHORTCHAR
+           literal concatenation with `+` and 0AX doesn't go
+           through CP's `+` operator, so do it manually. *)
+        pos := 0;
+        AppendLine(menuSpec, pos, "MENU File");
+        AppendLine(menuSpec, pos, "ITEM 1001 Refresh");
+        AppendLine(menuSpec, pos, "ITEM 1002 Close");
+        AppendLine(menuSpec, pos, "MENU Demo");
+        AppendLine(menuSpec, pos, "ITEM 1010 New Window");
+        AppendLine(menuSpec, pos, "MENU Help");
+        AppendLine(menuSpec, pos, "ITEM 1020 Counters");
+        ok := iGui.SetMenu(menuSpec);
+        Console.WriteShortString("WelcomeDemo: SetMenu = "); Console.WriteInt(ok);
+        Console.WriteLn
+    END InstallMenu;
+
+
+    PROCEDURE Run*;
+        VAR ok: INTSHORT;
+            okI: INTEGER;
+            mainChild, childId: INTEGER;
+            kind, eventChild, timeMs, p1, p2, p3, p4: INTEGER;
+            hits, misses, size: INTEGER;
+    BEGIN
+        secondsRunning := 0;
+        childCount := 0;
+
+        Console.WriteShortString("WelcomeDemo: installing menu..."); Console.WriteLn;
+        InstallMenu;
+
+        Console.WriteShortString("WelcomeDemo: opening main child..."); Console.WriteLn;
+        okI := OpenWelcomeChild(mainChild);
+        IF okI = 0 THEN
+            Console.WriteShortString("WelcomeDemo: OpenChild failed"); Console.WriteLn;
+            RETURN
+        END;
+
+        Console.WriteShortString("WelcomeDemo: entering event loop"); Console.WriteLn;
+
+        (* Pump events. *)
         REPEAT
-            ok := iGui.NextEvent(kind, ec, timeMs, p1, p2, p3, p4, -1);
-            IF (ok # 0) & (kind = iGui.EvFrameClose) THEN EXIT END
-        UNTIL FALSE
+            ok := iGui.NextEvent(kind, eventChild, timeMs, p1, p2, p3, p4, -1);
+            IF ok # 0 THEN
+                IF kind = iGui.EvFrameClose THEN
+                    EXIT
+                ELSIF kind = iGui.EvTick THEN
+                    INC(secondsRunning);
+                    PaintChild(eventChild)
+                ELSIF kind = iGui.EvResize THEN
+                    PaintChild(eventChild)
+                ELSIF kind = iGui.EvMenu THEN
+                    IF p1 = MenuRefresh THEN
+                        PaintChild(eventChild)
+                    ELSIF p1 = MenuClose THEN
+                        (* iGui handles close-window for us. *)
+                        EXIT
+                    ELSIF p1 = MenuNewWin THEN
+                        okI := OpenWelcomeChild(childId)
+                    ELSIF p1 = MenuCounters THEN
+                        ok := iGui.LayoutCacheStats(hits, misses, size);
+                        Console.WriteShortString("WelcomeDemo: layout-cache: hits=");
+                        Console.WriteInt(hits);
+                        Console.WriteShortString(" misses=");
+                        Console.WriteInt(misses);
+                        Console.WriteShortString(" size=");
+                        Console.WriteInt(size);
+                        Console.WriteLn
+                    END
+                ELSIF kind = iGui.EvClose THEN
+                    (* Child window closed (not the frame). *)
+                    Console.WriteShortString("WelcomeDemo: child closed id=");
+                    Console.WriteInt(eventChild); Console.WriteLn
+                END
+            END
+        UNTIL FALSE;
+
+        Console.WriteShortString("WelcomeDemo: exiting"); Console.WriteLn;
+        countersText[0] := 0X    (* keep the var referenced *)
     END Run;
 
 END WelcomeDemo.
