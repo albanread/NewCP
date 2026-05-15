@@ -4026,7 +4026,10 @@ mod tests {
     /// POINTER-TO-record local passed as `p^` to a VAR record
     /// argument.  Tests whether the dereferenced pointer
     /// correctly identifies the heap record for VAR mutation.
-    /// XXX: currently triggers STATUS_ACCESS_VIOLATION.
+    /// XXX deferred: `Selector::Dereference` isn't handled in
+    /// `designator_addr`, so `p^` passed by VAR loses the deref
+    /// hop.  Needs broader audit of pointer-deref paths in IR
+    /// lowering — currently triggers STATUS_ACCESS_VIOLATION.
     #[test]
     #[ignore]
     fn ptr_local_dereferenced_as_var_record_arg() {
