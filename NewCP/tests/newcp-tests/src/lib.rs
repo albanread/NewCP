@@ -3967,6 +3967,15 @@ mod tests {
         assert_eq!(run_function("Mod/Tests/BrkMvcProbe.cp", "Run"), 1);
     }
 
+    /// Out module smoke test — BB-faithful textual-output API
+    /// routed through Console.  Exercises Open/Char/Ln/String/
+    /// Int/Real on a captured Console buffer.  Test passes if
+    /// the procedure returns 1 (every path emits without trapping).
+    #[test]
+    fn out_module_routes_to_console_without_trapping() {
+        assert_eq!(run_function("Mod/Tests/OutProbe.cp", "Run"), 1);
+    }
+
     fn inline_fixed_array_field_in_xmod_record() {
         assert_eq!(
             run_function("Mod/Tests/InlineFixedArrayProbe.cp", "Run"),

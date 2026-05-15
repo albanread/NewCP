@@ -263,6 +263,17 @@ PROCEDURE (c: Controller) GetSelection* (OUT beg, end: INTEGER), NEW, ABSTRACT;
     pre: beg = end  OR  0 <= beg < end <= c.text.Length() *)
 PROCEDURE (c: Controller) SetSelection* (beg, end: INTEGER), NEW, ABSTRACT;
 
+(** TRUE iff `c` has a non-empty selection.  Concrete EXTENSIBLE
+    default: calls GetSelection and tests `beg # end`.  BB-faithful.
+    Used by every reader-side BB module (In, ETHConv, search, etc.)
+    to decide whether to pull from the selection or the whole text. *)
+PROCEDURE (c: Controller) HasSelection* (): BOOLEAN, NEW, EXTENSIBLE;
+    VAR beg, end: INTEGER;
+BEGIN
+    c.GetSelection(beg, end);
+    RETURN beg # end
+END HasSelection;
+
 (* ─── StdCtrl concrete bodies ──────────────────────────────────
    Field-update implementations of the four abstract methods.
    Preconditions match BB and Controller's contract; callers
