@@ -3956,6 +3956,17 @@ mod tests {
         assert_eq!(run_function("Mod/BrkProbe.cp", "Run"), 42);
     }
 
+    /// BRK(pointer) used to inspect MVC framework wiring at three
+    /// points: fresh Pane, fresh StdCtrl, after InitView2 binds.
+    /// The stderr dump shows TypeDesc + payload bytes at each point;
+    /// run with `cargo test -- --nocapture` to read it.  Test passes
+    /// if the procedure completes normally (the inspection is the
+    /// product, not the return value).
+    #[test]
+    fn brk_mvc_probe_dumps_pane_and_controller() {
+        assert_eq!(run_function("Mod/Tests/BrkMvcProbe.cp", "Run"), 1);
+    }
+
     fn inline_fixed_array_field_in_xmod_record() {
         assert_eq!(
             run_function("Mod/Tests/InlineFixedArrayProbe.cp", "Run"),
