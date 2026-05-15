@@ -11,7 +11,7 @@ TYPE
         InternalizeDispatches: `Internalize` reads two body bytes
         and records them.  Lives at module scope because CP requires
         all TYPE declarations to precede the procedures. *)
-    BytePeekDesc* = RECORD (HostStores.StoreDesc)
+    BytePeekDesc* = RECORD (Stores.StoreDesc)
         first*:  INTEGER;
         second*: INTEGER;
         count*:  INTEGER
@@ -22,7 +22,7 @@ TYPE
     read a couple of bytes, seek back to 0, re-read, close. *)
 PROCEDURE BasicCursor* (): INTEGER;
     VAR doc, root: INTEGER;
-        r: HostStores.Reader;
+        r: Stores.Reader;
         b0, b0again: BYTE;
         b1: BYTE;
 BEGIN
@@ -61,7 +61,7 @@ END BasicCursor;
     transition to TRUE and subsequent reads must be no-ops. *)
 PROCEDURE EofTransitions* (): INTEGER;
     VAR doc, root: INTEGER;
-        r: HostStores.Reader;
+        r: Stores.Reader;
         b: BYTE; bodyLen: INTEGER;
 BEGIN
     doc := Stores.OpenDocument("Mod/Tests/_fixtures/Empty.odc");
@@ -91,7 +91,7 @@ END EofTransitions;
 PROCEDURE BulkReadMatchesByteByByte* (): INTEGER;
     CONST N = 8;
     VAR doc, root: INTEGER;
-        r1, r2: HostStores.Reader;
+        r1, r2: Stores.Reader;
         i: INTEGER;
         bbuf: ARRAY N OF BYTE;
         single: ARRAY N OF BYTE;
@@ -123,11 +123,11 @@ END BulkReadMatchesByteByByte;
 
 (* --- Typed subclass + Internalize dispatch (S2 slice 2B) -------------- *)
 
-(** Override of HostStores.StoreDesc.Internalize.  Reads two bytes
+(** Override of Stores.StoreDesc.Internalize.  Reads two bytes
     from the body and records them; tracks how many were actually
     available so the test can distinguish full-success from
     truncated reads. *)
-PROCEDURE (p: BytePeekDesc) Internalize* (VAR rd: HostStores.Reader);
+PROCEDURE (p: BytePeekDesc) Internalize* (VAR rd: Stores.Reader);
     VAR b: BYTE;
 BEGIN
     p.count := 0;
@@ -142,14 +142,14 @@ BEGIN
 END Internalize;
 
 (** Allocate a BytePeek, dispatch through the abstract Internalize
-    of HostStores.StoreDesc on Empty.odc's root store, and verify
+    of Stores.StoreDesc on Empty.odc's root store, and verify
     the override ran (count = 2 means both bytes landed). *)
 PROCEDURE InternalizeDispatches* (): INTEGER;
     VAR doc, root: INTEGER;
         p: BytePeek;
         eof: BOOLEAN;
         expected0, expected1: BYTE;
-        rd: HostStores.Reader;
+        rd: Stores.Reader;
 BEGIN
     doc := Stores.OpenDocument("Mod/Tests/_fixtures/Empty.odc");
     IF doc = 0 THEN RETURN 0 END;
@@ -226,7 +226,7 @@ END SplitNameRoundTrips;
     name resolves to a registered TypeDesc.  Verifies the
     Kernel.ThisMod + ThisType + NewObj chain end-to-end. *)
 PROCEDURE NewStoreByNameAllocates* (): INTEGER;
-    VAR s: HostStores.Store; t1, t2: Kernel.Type;
+    VAR s: Stores.Store; t1, t2: Kernel.Type;
         bp: BytePeek;
 BEGIN
     s := HostStores.NewStoreByName("HostStoresProbe.BytePeekDesc");
@@ -253,7 +253,7 @@ END NewStoreByNameRejectsBadInput;
     The fresh allocation has the same TypeOf and is a distinct
     object from the template. *)
 PROCEDURE NewLikeOfClonesType* (): INTEGER;
-    VAR template: BytePeek; clone: HostStores.Store;
+    VAR template: BytePeek; clone: Stores.Store;
 BEGIN
     NEW(template);
     template.first := 11;
@@ -275,7 +275,7 @@ END NewLikeOfClonesType;
     return NIL — *cleanly*, not by trapping. *)
 PROCEDURE NewStoreOnUnknownTypeReturnsNil* (): INTEGER;
     VAR doc, root: INTEGER;
-        s: HostStores.Store;
+        s: Stores.Store;
 BEGIN
     doc := Stores.OpenDocument("Mod/Tests/_fixtures/Empty.odc");
     IF doc = 0 THEN RETURN 0 END;
@@ -295,7 +295,7 @@ END NewStoreOnUnknownTypeReturnsNil;
     the test harness wrote. *)
 PROCEDURE TypedLoadFromSyntheticOdc* (): INTEGER;
     VAR doc, root: INTEGER;
-        s: HostStores.Store;
+        s: Stores.Store;
         bp: BytePeek;
 BEGIN
     doc := Stores.OpenDocument("Mod/Tests/_fixtures/Synthetic.odc");
