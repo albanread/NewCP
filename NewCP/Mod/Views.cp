@@ -26,11 +26,17 @@ MODULE Views;
    - The `Frame` record extending `Ports.Frame` so subclass Restore
      methods can accept the right type.
 
+   Now implemented (Track 12 B12):
+
+   - Frame chain: `ViewDesc.frames` / `FrameDesc.next` linked list.
+   - `OpenFrame` / `CloseFrame` (private): bind/unbind a frame.
+   - `Broadcast` / `BroadcastMsg` / `Update` / `Restore` (exported).
+
    Deferred (and explicitly NOT in this slice):
 
    - Module-level procedures (`Open`, `OldView`, `RegisterView`,
-     `Update`, `Restore`, `Background`, …) — depend on
-     Files/Converters/Dialog and the View-producer queue.
+     `Background`, …) — depend on Files/Converters/Dialog and the
+     View-producer queue.
    - The `Region` / `Rect` / `RootFrame` / `StdFrame` / `QueueElem`
      internal types — only the View dispatch chain needs to compile.
    - The `GetSpecHook` / `ViewHook` / `MsgHook` / `NotifyHook`
@@ -41,7 +47,7 @@ MODULE Views;
      the typedesc ABI is documented.
 *)
 
-    IMPORT Stores, Models, Ports, Sequencers;
+    IMPORT Kernel, Models, Ports, Sequencers, Stores;
 
     CONST
         (** View.Background color *)
@@ -96,7 +102,8 @@ MODULE Views;
             context-: Models.Context;   (** stable context # NIL **)
             era-:     INTEGER;
             guard-:   INTEGER;          (* TrapCount()+1 if broadcasting *)
-            bad-:     SET
+            bad-:     SET;
+            frames:   Frame            (* head of frame chain *)
         END;
         View* = POINTER TO ViewDesc;
 
@@ -115,7 +122,8 @@ MODULE Views;
             x-, y-:         INTEGER;    (* origin in env coords *)
             gx0-, gy0-:     INTEGER;    (* global origin w/o scroll *)
             sx-, sy-:       INTEGER;    (* sub-pixel scroll comp *)
-            level-:         INTEGER     (* partial z-ordering *)
+            level-:         INTEGER;    (* partial z-ordering *)
+            next:           Frame       (* next frame displaying same view *)
         END;
         Frame* = POINTER TO FrameDesc;
 
@@ -267,6 +275,74 @@ MODULE Views;
     BEGIN
         RETURN NIL
     END Domain;
+
+
+    (* -- Frame chain and module-level dispatch --------------------------------- *)
+
+    PROCEDURE OpenFrame (v: View; f: Frame);
+    BEGIN
+        ASSERT(v # NIL, 20);
+        ASSERT(f # NIL, 21);
+        ASSERT(f.view = NIL, 22);
+        f.view := v;
+        f.next := v.frames;
+        v.frames := f
+    END OpenFrame;
+
+    PROCEDURE CloseFrame (f: Frame);
+        VAR v: View; g: Frame;
+    BEGIN
+        ASSERT(f # NIL, 20);
+        ASSERT(f.view # NIL, 21);
+        v := f.view;
+        IF v.frames = f THEN
+            v.frames := f.next
+        ELSE
+            g := v.frames;
+            WHILE (g # NIL) & (g.next # f) DO g := g.next END;
+            IF g # NIL THEN g.next := f.next END
+        END;
+        f.view := NIL;
+        f.next := NIL
+    END CloseFrame;
+
+    PROCEDURE Broadcast* (v: View; VAR msg: Models.Message);
+    BEGIN
+        ASSERT(v # NIL, 20);
+        IF v.guard > 0 THEN ASSERT(v.guard # Kernel.TrapCount() + 1, 100) END;
+        v.guard := Kernel.TrapCount() + 1;
+        v.HandleModelMsg(msg);
+        v.guard := 0
+    END Broadcast;
+
+    PROCEDURE BroadcastMsg* (v: View; VAR msg: Message);
+        VAR f: Frame;
+    BEGIN
+        ASSERT(v # NIL, 20);
+        f := v.frames;
+        WHILE f # NIL DO
+            v.HandleViewMsg(f, msg);
+            f := f.next
+        END
+    END BroadcastMsg;
+
+    PROCEDURE Update* (v: View; rebuild: BOOLEAN);
+        VAR f: Frame; ucm: UpdateCachesMsg;
+    BEGIN
+        ASSERT(v # NIL, 20);
+        f := v.frames;
+        WHILE f # NIL DO
+            v.HandleViewMsg(f, ucm);
+            f := f.next
+        END
+    END Update;
+
+    PROCEDURE Restore* (f: Frame; l, t, r, b: INTEGER);
+    BEGIN
+        ASSERT(f # NIL, 20);
+        ASSERT(f.view # NIL, 21);
+        f.view.Restore(f, l, t, r, b)
+    END Restore;
 
 
 END Views.
