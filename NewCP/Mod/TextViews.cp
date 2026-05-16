@@ -556,6 +556,38 @@ BEGIN
        fires from a meaningful set of frames. *)
 END ShowRange;
 
+PROCEDURE (v: Pane) Externalize2* (VAR wr: Stores.Writer);
+BEGIN
+    wr.WriteBool(v.text # NIL);
+    IF v.text # NIL THEN wr.WriteStore(v.text) END;
+    wr.WriteBool(v.hideMarks);
+    wr.WriteLong(v.org);
+    wr.WriteLong(v.dy)
+END Externalize2;
+
+PROCEDURE (v: Pane) Internalize2* (VAR rd: Stores.Reader);
+    VAR hasModel: BOOLEAN; handle: INTEGER; s: Stores.Store;
+BEGIN
+    rd.ReadBool(hasModel);
+    IF rd.eof THEN RETURN END;
+    IF hasModel THEN
+        rd.ReadStore(handle);
+        IF rd.cancelled THEN RETURN END;
+        IF handle # 0 THEN
+            s := Stores.NewStore(handle);
+            IF (s # NIL) & (s IS TextModels.Doc) THEN
+                v.text := s(TextModels.Doc);
+                v.InitModel(v.text)
+            END
+        END
+    END;
+    rd.ReadBool(v.hideMarks);
+    IF rd.eof THEN RETURN END;
+    rd.ReadLong(v.org);
+    IF rd.eof THEN RETURN END;
+    rd.ReadLong(v.dy)
+END Internalize2;
+
 (* ─── Abstract Directory surface ───────────────────────────────
    `New(text)` is the BB-faithful "build me a fresh view for this
    model" factory — supplied by the concrete StdDirectory below.

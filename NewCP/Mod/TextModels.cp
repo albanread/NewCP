@@ -62,6 +62,7 @@ CONST
     delete*  = 2;
 
     minAttrVersion = 0; maxAttrVersion = 0;
+    minDocVersion = 0; maxDocVersion = 0;
 
     SuperVersionBytes* = 6;
     MaxPiecesTracked*  = 256;
@@ -672,6 +673,41 @@ PROCEDURE (m: DocDesc) Length* (): INTEGER;
 BEGIN
     RETURN m.len
 END Length;
+
+PROCEDURE (m: DocDesc) Externalize* (VAR wr: Stores.Writer);
+    VAR i: INTEGER;
+BEGIN
+    m.Externalize^(wr);
+    wr.WriteVersion(maxDocVersion);
+    wr.WriteLong(m.len);
+    i := 0;
+    WHILE i < m.len DO
+        wr.WriteByte(SHORT(SHORT(ORD(m.buf[i]))));
+        INC(i)
+    END
+END Externalize;
+
+PROCEDURE (m: DocDesc) Internalize* (VAR rd: Stores.Reader);
+    VAR ver, len, i: INTEGER; b: BYTE;
+BEGIN
+    m.Internalize^(rd);
+    rd.ReadVersion(minDocVersion, maxDocVersion, ver);
+    IF rd.cancelled THEN RETURN END;
+    rd.ReadLong(len);
+    IF rd.eof THEN RETURN END;
+    IF len < 0 THEN len := 0
+    ELSIF len > DocCapacity - 1 THEN len := DocCapacity - 1
+    END;
+    i := 0;
+    WHILE i < len DO
+        rd.ReadByte(b);
+        IF rd.eof THEN RETURN END;
+        m.buf[i] := CHR(b);
+        INC(i)
+    END;
+    m.len := len;
+    m.buf[m.len] := 0X
+END Internalize;
 
 (* Containers.Model abstracts.  Doc has no embedded views yet. *)
 
