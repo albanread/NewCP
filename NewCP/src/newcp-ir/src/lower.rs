@@ -3018,7 +3018,7 @@ impl<'m> LowerCtx<'m> {
                     integer_ir_bit_width(&final_value.ty()),
                     integer_ir_bit_width(&expected_ir_ty),
                 ) {
-                    if from_w < to_w {
+                    if from_w != to_w {
                         let t = self.fresh_temp();
                         let to_ty = expected_ir_ty.clone();
                         self.push(Instr::Cast {

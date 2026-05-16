@@ -55,7 +55,7 @@ MODULE Documents;
         END;
         StdContext = POINTER TO StdContextDesc;
 
-        StdDocumentDesc = RECORD (DocumentDesc)
+        StdDocumentDesc = EXTENSIBLE RECORD (DocumentDesc)
             view:             Views.View;
             w, h:             INTEGER;
             vl, vt, vr, vb:  INTEGER;
