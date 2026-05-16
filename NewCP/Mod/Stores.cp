@@ -565,4 +565,38 @@ PROCEDURE (VAR wr: Writer) WriteBytes*
     VAR ignore: INTEGER;
 BEGIN ignore := StoresSys.WriterWriteBytes(wr.handle, buf, len) END WriteBytes;
 
+(** Write an inline child store `s` into the receiver.  Symmetric
+    with `Reader.ReadStore`: round-trips the child through an inner
+    Writer/Reader pair so that `Stores.CopyOf` (and any path that
+    reads the outer buffer back through `Stores.NewStore`) can
+    materialise the child.
+
+    Algorithm:
+      1. Get `s`'s qualified type name from the runtime RTTI.
+      2. Allocate an inner Writer and call `s.Externalize` into it.
+      3. Hand the inner Writer's buffer to
+         `StoresSys.WriterWriteInlineStore`, which appends a sentinel
+         marker + side-table entry to the outer buffer.
+      4. Close the inner Writer (the buffer has been consumed).
+
+    Nil stores are not supported: `s` MUST be non-NIL.  Passing NIL
+    traps (ASSERT 20).  In practice the inline children written by
+    `TextRulers.StdStyleDesc.Externalize` (the Attributes) and
+    `TextRulers.StdRulerDesc.Externalize` (the Style) are never NIL
+    in a valid document. *)
+PROCEDURE (VAR wr: Writer) WriteStore* (s: Store), NEW;
+    VAR typeName: Kernel.Name;
+        t: Kernel.Type;
+        innerWr: Writer;
+        ok: INTEGER;
+BEGIN
+    ASSERT(s # NIL, 20);
+    t := Kernel.TypeOf(s);
+    Kernel.GetQualifiedTypeName(t, typeName);
+    innerWr.handle := NewWriter();
+    s.Externalize(innerWr);
+    ok := StoresSys.WriterWriteInlineStore(wr.handle, typeName, innerWr.handle);
+    CloseWriter(innerWr.handle)
+END WriteStore;
+
 END Stores.

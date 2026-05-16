@@ -87,6 +87,19 @@ PROCEDURE WriterWriteLong*  (writer: INTEGER; x: INTEGER);   (* 8-byte LE *)
 PROCEDURE WriterWriteBool*  (writer: INTEGER; x: INTEGER);   (* 0/1 *)
 PROCEDURE WriterWriteBytes* (writer: INTEGER; IN buf: ARRAY OF BYTE; len: INTEGER): INTEGER;
 
+(** Write an inline child store into `outerWriter`.  The child's
+    serialised body must already reside in `innerWriter` (populated by
+    calling the child's `Externalize`); `typeName` is the child's
+    fully-qualified type name (e.g. "TextRulers.AttributesDesc").
+    Appends an 8-byte sentinel marker into `outerWriter`'s buffer
+    and records the (typeName, body) pair in an internal side-table.
+    When `outerWriter` is later turned into a Reader via
+    `OpenReaderFromWriter`, `ReaderReadInlineStore` on that Reader
+    will detect the sentinel and materialise a synthetic store handle.
+    `innerWriter` is NOT closed by this call.
+    Returns 1 on success, 0 on failure. *)
+PROCEDURE WriterWriteInlineStore* (outerWriter: INTEGER; IN typeName: ARRAY OF CHAR; innerWriter: INTEGER): INTEGER;
+
 PROCEDURE OpenReaderFromWriter* (writer: INTEGER): INTEGER;
 
 END StoresSys.

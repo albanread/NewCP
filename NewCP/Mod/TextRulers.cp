@@ -431,8 +431,8 @@ MODULE TextRulers;
     PROCEDURE (s: StdStyleDesc) Externalize* (VAR wr: Stores.Writer);
     BEGIN
         s.Externalize^(wr);
-        wr.WriteVersion(maxStdStyleVersion)
-        (* WriteStore(s.attr) — deferred; WriteStore not yet ported. *)
+        wr.WriteVersion(maxStdStyleVersion);
+        wr.WriteStore(s.attr)
     END Externalize;
 
 
@@ -466,8 +466,8 @@ MODULE TextRulers;
     PROCEDURE (r: StdRulerDesc) Externalize* (VAR wr: Stores.Writer);
     BEGIN
         r.Externalize^(wr);
-        wr.WriteVersion(maxStdRulerVersion)
-        (* WriteStore(r.style) — deferred; WriteStore not yet ported. *)
+        wr.WriteVersion(maxStdRulerVersion);
+        wr.WriteStore(r.style)
     END Externalize;
 
 

@@ -24,7 +24,7 @@ mod writer;
 mod yaml;
 
 pub use controls::{decode_control, encode_control, matches_control, Control, CtrlString};
-pub use envelope::{read_bytes, read_document, Document, StoreKind, StoreNode};
+pub use envelope::{build_synthetic_document, read_bytes, read_document, Document, StoreKind, StoreNode};
 pub use error::{OdcError, Result};
 pub use lifted::{lift_text_model, LiftedPiece};
 pub use std_folds::{decode_fold, encode_fold_prefix, matches_fold, Fold, FoldLabel};

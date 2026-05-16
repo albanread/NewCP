@@ -199,6 +199,40 @@ pub fn read_bytes(bytes: Vec<u8>) -> Result<Document> {
     Ok(Document { source_path: None, size, root, bytes })
 }
 
+/// Build a synthetic [`Document`] that wraps a single body buffer.
+///
+/// Used by the stores-sys runtime to materialise an inline child store
+/// that was written into a Writer buffer via `writer_write_inline_store`.
+/// The resulting document has no `.odc` magic, no type-path dict, and
+/// no wire envelope — only the raw body bytes of one store.  The
+/// `stores_sys` layer constructs the matching [`FlatNode`] separately
+/// (it knows the type name and body bounds) and installs both together
+/// in the global documents table.
+///
+/// `body_pos` in the companion `FlatNode` MUST be set to 0 so that
+/// `stores_sys_open_reader` computes the right slice into `doc.bytes`.
+pub fn build_synthetic_document(type_name: String, body: Vec<u8>) -> Document {
+    let size = body.len() as u64;
+    // The FlatNode companion will have body_pos = 0 and body_len = size.
+    // We synthesise a minimal root StoreNode whose body spans the entire
+    // buffer so `open_reader` can create a valid Reader cursor.
+    let root = StoreNode {
+        kind: StoreKind::Store,
+        type_path: vec![type_name],
+        wire_path: None,
+        header_pos: 0,
+        body_pos: 0,
+        body_len: size,
+        id: 0,
+        link_target: None,
+        comment: 0,
+        raw_next: 0,
+        raw_down: 0,
+        children: Vec::new(),
+    };
+    Document { source_path: None, size, root, bytes: body }
+}
+
 /// Read one store at the current cursor position. Returns the parsed node
 /// and the absolute file offset of its next sibling (or 0 if there is no
 /// sibling — chain end). On return the cursor sits at `body_end` for full

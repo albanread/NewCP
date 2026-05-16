@@ -61,6 +61,8 @@ CONST
     insert*  = 1;
     delete*  = 2;
 
+    minAttrVersion = 0; maxAttrVersion = 0;
+
     SuperVersionBytes* = 6;
     MaxPiecesTracked*  = 256;
     TextBufferChars*   = 65536;
@@ -221,6 +223,78 @@ TYPE
         wpos-: INTEGER      (** append cursor; 0 <= wpos <= doc.len *)
     END;
     DocWriter* = POINTER TO DocWriterDesc;
+
+PROCEDURE (a: AttributesDesc) Internalize* (VAR rd: Stores.Reader);
+    VAR ver, col, offset, size, weight: INTEGER;
+        style: SET;
+        hasFont: BOOLEAN;
+        typeface: Fonts.Typeface;
+        i: INTEGER;
+        b: BYTE;
+BEGIN
+    a.Internalize^(rd);
+    rd.ReadVersion(minAttrVersion, maxAttrVersion, ver);
+    IF rd.cancelled THEN RETURN END;
+    rd.ReadLong(col);
+    IF rd.eof THEN RETURN END;
+    a.color := col;
+    (* font *)
+    rd.ReadBool(hasFont);
+    IF rd.eof THEN RETURN END;
+    IF hasFont THEN
+        rd.ReadXInt(size);
+        IF rd.eof THEN RETURN END;
+        rd.ReadSet(style);
+        IF rd.eof THEN RETURN END;
+        rd.ReadInt(weight);
+        IF rd.eof THEN RETURN END;
+        (* typeface: sequence of bytes terminated by 0 *)
+        i := 0;
+        rd.ReadByte(b);
+        WHILE (b # 0) & ~rd.eof & (i < LEN(typeface) - 1) DO
+            typeface[i] := CHR(b);
+            INC(i);
+            rd.ReadByte(b)
+        END;
+        typeface[i] := 0X;
+        IF rd.eof THEN RETURN END;
+        (* obtain font via factory if available, else leave NIL *)
+        IF Fonts.dir # NIL THEN
+            a.font := Fonts.dir.This(typeface, size, style, weight)
+        ELSE
+            a.font := NIL
+        END
+    ELSE
+        a.font := NIL
+    END;
+    rd.ReadInt(offset);
+    IF rd.eof THEN RETURN END;
+    a.offset := offset;
+    a.init := TRUE
+END Internalize;
+
+PROCEDURE (a: AttributesDesc) Externalize* (VAR wr: Stores.Writer);
+    VAR i: INTEGER;
+BEGIN
+    a.Externalize^(wr);
+    wr.WriteVersion(maxAttrVersion);
+    wr.WriteLong(a.color);
+    wr.WriteBool(a.font # NIL);
+    IF a.font # NIL THEN
+        wr.WriteXInt(a.font.size);
+        wr.WriteSet(a.font.style);
+        wr.WriteInt(a.font.weight);
+        (* typeface: write each char as a byte, terminate with 0 *)
+        i := 0;
+        WHILE (i < LEN(a.font.typeface)) & (a.font.typeface[i] # 0X) DO
+            wr.WriteByte(SHORT(SHORT(ORD(a.font.typeface[i]))));
+            INC(i)
+        END;
+        wr.WriteByte(0)   (* NUL terminator *)
+    END;
+    wr.WriteInt(a.offset)
+END Externalize;
+
 
 PROCEDURE (m: StdModelDesc) Domain* (): Stores.Domain;
 BEGIN

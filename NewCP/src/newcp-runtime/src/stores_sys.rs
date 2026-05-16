@@ -24,6 +24,7 @@
 //! invalidates all of its store handles; calling a Get* shim with
 //! a stale handle returns 0 / empty string.
 
+use std::collections::HashMap;
 use std::sync::Mutex;
 
 use newcp_odc::{read_document, Document, StoreKind, StoreNode};
@@ -94,19 +95,53 @@ enum ReaderSource {
 /// current read position.  `body_start` / `body_end` / `cursor` are
 /// always absolute offsets into whatever buffer the source resolves
 /// to (file bytes or in-memory buffer).
+///
+/// `owned_doc` is set when the reader was created from a synthetic
+/// document that was materialised just for this read (e.g. inline
+/// child stores embedded in a Writer buffer).  The document slot is
+/// freed when the reader is closed.
 struct ReaderState {
     source: ReaderSource,
     body_start: u64,
     body_end: u64,
     cursor: u64,
+    /// Synthetic document to free when this reader is closed (1-based
+    /// doc handle, or 0 = no owned doc).
+    owned_doc: u32,
 }
 
 /// In-memory writer.  Bytes are appended via `writer_write_*`; the
 /// final buffer is consumed by `open_reader_from_writer`, which
 /// moves it into `StoresState.buffers` and hands back a Reader
 /// whose source points at that buffer.
+///
+/// `inline_stores` accumulates inline child-store entries as
+/// `writer_write_inline_store` appends sentinel markers to `buffer`.
+/// Each entry carries the child's qualified type name (e.g.
+/// "TextRulers.AttributesDesc") and its pre-serialised body bytes.
+/// When the writer's buffer is moved to a buffer slot the entries
+/// move with it (keyed by the absolute byte offset of their
+/// sentinel marker in the buffer).
 struct WriterState {
     buffer: Vec<u8>,
+    inline_stores: Vec<(u64, String, Vec<u8>)>, // (sentinel_offset, type_name, body)
+}
+
+/// Magic sentinel emitted by `writer_write_inline_store` into the
+/// writer buffer to mark the position of an inline child store.
+/// Four bytes chosen to be unlikely to appear in primitive data;
+/// followed by a 4-byte little-endian index into the writer's
+/// `inline_stores` Vec.
+const INLINE_STORE_SENTINEL: [u8; 4] = [0xAA, 0xBB, 0xCC, 0xDD];
+const INLINE_STORE_RECORD_BYTES: u64 = 8; // 4 sentinel + 4 index
+
+/// Per-buffer side table: maps buffer-offset of a sentinel to the
+/// (type_name, body) pair it represents.  Populated by
+/// `open_reader_from_writer` when it consumes a writer's buffer.
+/// Released when the owning buffer slot is freed (reader close).
+struct BufferInlineEntry {
+    type_name: String,
+    body: Vec<u8>,
 }
 
 struct DocumentEntry {
@@ -114,6 +149,11 @@ struct DocumentEntry {
     /// cursors read from. Stays alive until the document closes.
     doc: Document,
     nodes: Vec<FlatNode>,
+    /// When `true`, this entry was synthesised for a single inline
+    /// child-store read and should be freed as soon as the reader
+    /// that consumed it is closed.  Regular documents opened via
+    /// `stores_sys_open_document` leave this `false`.
+    synthetic: bool,
 }
 
 struct StoresState {
@@ -123,6 +163,11 @@ struct StoresState {
     /// Backing storage for buffer-sourced readers.  Owned `Vec<u8>`
     /// per slot so the Reader can borrow `&[u8]` slices through it.
     buffers: Vec<Option<Vec<u8>>>,
+    /// Per-buffer inline-store side tables.  Index = buffer_handle - 1.
+    /// Each entry maps sentinel-offset (within the buffer) to the
+    /// (type_name, body) that `writer_write_inline_store` recorded.
+    /// Freed when the buffer's Reader is closed.
+    buffer_inline_maps: Vec<Option<HashMap<u64, BufferInlineEntry>>>,
 }
 
 impl StoresState {
@@ -132,6 +177,7 @@ impl StoresState {
             readers: Vec::new(),
             writers: Vec::new(),
             buffers: Vec::new(),
+            buffer_inline_maps: Vec::new(),
         }
     }
 }
@@ -237,11 +283,11 @@ pub extern "C" fn stores_sys_open_document(path_ptr: *const u32, path_len: i64) 
     // Reuse a vacated slot if there is one.
     for (i, slot) in state.documents.iter_mut().enumerate() {
         if slot.is_none() {
-            *slot = Some(DocumentEntry { doc, nodes });
+            *slot = Some(DocumentEntry { doc, nodes, synthetic: false });
             return (i + 1) as i64;
         }
     }
-    state.documents.push(Some(DocumentEntry { doc, nodes }));
+    state.documents.push(Some(DocumentEntry { doc, nodes, synthetic: false }));
     state.documents.len() as i64
 }
 
@@ -373,11 +419,24 @@ pub extern "C" fn stores_sys_open_reader(store: i64) -> i64 {
     let body_end = body_start + body_len;
 
     let mut state = STATE.lock().expect("stores state mutex poisoned");
+
+    // Check whether the document this store belongs to is synthetic
+    // (created by `reader_read_inline_store` for a buffer-embedded
+    // child).  If so, the reader takes ownership of the doc slot and
+    // frees it when closed.
+    let doc_is_synthetic = state
+        .documents
+        .get((doc_handle as usize).saturating_sub(1))
+        .and_then(|s| s.as_ref())
+        .map(|e| e.synthetic)
+        .unwrap_or(false);
+
     let reader = ReaderState {
         source: ReaderSource::Document { doc_handle, parent_node_idx: node_idx },
         body_start,
         body_end,
         cursor: body_start,
+        owned_doc: if doc_is_synthetic { doc_handle } else { 0 },
     };
     for (i, slot) in state.readers.iter_mut().enumerate() {
         if slot.is_none() {
@@ -392,8 +451,12 @@ pub extern "C" fn stores_sys_open_reader(store: i64) -> i64 {
 /// `StoresSys.CloseReader(r: INTEGER)`. Releases the reader handle.
 /// Subsequent reads against `r` return 0 / set EOF.  For
 /// buffer-sourced readers (created by `open_reader_from_writer`)
-/// the backing buffer slot is released too — otherwise the bytes
-/// leak for the lifetime of the process.
+/// the backing buffer slot and its inline-store side table are
+/// released too — otherwise the bytes leak for the lifetime of the
+/// process.  For document-sourced readers that own a synthetic
+/// document (created by `reader_read_inline_store` for buffer-
+/// embedded inline children), the synthetic document slot is also
+/// freed.
 #[unsafe(no_mangle)]
 pub extern "C" fn stores_sys_close_reader(reader: i64) {
     if reader <= 0 {
@@ -401,7 +464,7 @@ pub extern "C" fn stores_sys_close_reader(reader: i64) {
     }
     let mut state = STATE.lock().expect("stores state mutex poisoned");
     let idx = (reader - 1) as usize;
-    let backing_buffer = match state.readers.get_mut(idx) {
+    let (backing_buffer, owned_doc) = match state.readers.get_mut(idx) {
         Some(slot) => {
             let bh = slot
                 .as_ref()
@@ -409,14 +472,26 @@ pub extern "C" fn stores_sys_close_reader(reader: i64) {
                     ReaderSource::Buffer { buffer_handle } => Some(buffer_handle),
                     _ => None,
                 });
+            let od = slot.as_ref().map(|r| r.owned_doc).unwrap_or(0);
             *slot = None;
-            bh
+            (bh, od)
         }
-        None => None,
+        None => (None, 0),
     };
     if let Some(bh) = backing_buffer {
         let buf_idx = (bh as usize).saturating_sub(1);
         if let Some(slot) = state.buffers.get_mut(buf_idx) {
+            *slot = None;
+        }
+        // Also free the matching inline-store side table.
+        if let Some(slot) = state.buffer_inline_maps.get_mut(buf_idx) {
+            *slot = None;
+        }
+    }
+    // Free synthetic document once its reader is done.
+    if owned_doc > 0 {
+        let doc_idx = (owned_doc as usize) - 1;
+        if let Some(slot) = state.documents.get_mut(doc_idx) {
             *slot = None;
         }
     }
@@ -671,8 +746,17 @@ pub extern "C" fn stores_sys_reader_skip_inline_store(reader: i64) -> i64 {
 /// `StoresSys.ReaderReadInlineStore(reader): INTEGER`. Like
 /// `SkipInlineStore`, but instead of just advancing the cursor
 /// returns the inline child's `Stores.Store` handle so the caller
-/// can pass it to `HostStores.NewStore` for typed materialization.
+/// can pass it to `Stores.NewStore` for typed materialization.
 /// Returns 0 when the cursor isn't sitting at a child's header.
+///
+/// For document-sourced readers the child is located by matching the
+/// cursor against the pre-built flat node tree (`find_child_at_cursor`).
+///
+/// For buffer-sourced readers (produced by `open_reader_from_writer`)
+/// the cursor may sit at an 8-byte inline-store sentinel written by
+/// `writer_write_inline_store`.  In that case the child's type name
+/// and body are looked up in `buffer_inline_maps`, a synthetic
+/// document node is created, and a StoreHandle for it is returned.
 #[unsafe(no_mangle)]
 pub extern "C" fn stores_sys_reader_read_inline_store(reader: i64) -> i64 {
     if reader <= 0 {
@@ -684,23 +768,100 @@ pub extern "C" fn stores_sys_reader_read_inline_store(reader: i64) -> i64 {
         Some(r) => r,
         None => return 0,
     };
-    let (doc_handle, parent_node_idx) = match r.source {
-        ReaderSource::Document { doc_handle, parent_node_idx } => (doc_handle, parent_node_idx),
-        ReaderSource::Buffer { .. } => return 0,
-    };
-    let cursor = r.cursor;
-    let _ = r;
-    let (child_idx, advance_to) =
-        match find_child_at_cursor(&state, doc_handle, parent_node_idx, cursor) {
-            Some(p) => p,
-            None => return 0,
-        };
-    let r = state.readers[idx].as_mut().expect("reader vacated mid-call");
-    if advance_to > r.body_end {
-        return 0;
+    match r.source {
+        ReaderSource::Document { doc_handle, parent_node_idx } => {
+            let cursor = r.cursor;
+            let _ = r;
+            let (child_idx, advance_to) =
+                match find_child_at_cursor(&state, doc_handle, parent_node_idx, cursor) {
+                    Some(p) => p,
+                    None => return 0,
+                };
+            let r = state.readers[idx].as_mut().expect("reader vacated mid-call");
+            if advance_to > r.body_end {
+                return 0;
+            }
+            r.cursor = advance_to;
+            pack_store_handle(doc_handle, child_idx)
+        }
+        ReaderSource::Buffer { buffer_handle } => {
+            // For buffer-sourced readers the cursor may sit at a
+            // sentinel written by `writer_write_inline_store`.
+            // Peek 4 bytes to check for the magic without advancing.
+            let cursor = r.cursor;
+            if cursor + INLINE_STORE_RECORD_BYTES > r.body_end {
+                return 0;
+            }
+            let buf_idx = (buffer_handle as usize).saturating_sub(1);
+            // Read 4 bytes of potential sentinel from the buffer.
+            let sentinel_match = {
+                let buf_ptr: *const Option<Vec<u8>> = &state.buffers[buf_idx];
+                let buf_ref = unsafe { (*buf_ptr).as_ref() };
+                match buf_ref {
+                    Some(buf) => {
+                        let c = cursor as usize;
+                        if c + 4 <= buf.len() {
+                            buf[c..c + 4] == INLINE_STORE_SENTINEL
+                        } else {
+                            false
+                        }
+                    }
+                    None => false,
+                }
+            };
+            if !sentinel_match {
+                return 0;
+            }
+            // Advance cursor past the 8-byte sentinel record.
+            let r = state.readers[idx].as_mut().expect("reader vacated mid-call");
+            r.cursor += INLINE_STORE_RECORD_BYTES;
+            let sentinel_offset = cursor;
+
+            // Look up the inline-store entry.
+            let map_idx = (buffer_handle as usize).saturating_sub(1);
+            let entry = match state.buffer_inline_maps.get_mut(map_idx) {
+                Some(Some(map)) => map.remove(&sentinel_offset),
+                _ => None,
+            };
+            let Some(BufferInlineEntry { type_name, body }) = entry else {
+                return 0;
+            };
+
+            // Materialise the entry as a synthetic DocumentEntry with
+            // a single root FlatNode whose body is the child's bytes.
+            let body_len = body.len() as u64;
+            let node = FlatNode {
+                type_name: type_name.clone(),
+                header_pos: 0,
+                body_pos: 0,
+                body_len,
+                kind: StoreKind::Store,
+                first_child: None,
+                next_sibling: None,
+            };
+            // Build a minimal Document whose `bytes` IS the body so
+            // `open_reader` can slice into it.
+            let doc = newcp_odc::build_synthetic_document(type_name, body);
+            let mut pending_entry: Option<DocumentEntry> =
+                Some(DocumentEntry { doc, nodes: vec![node], synthetic: true });
+
+            // Install the synthetic document in the documents table.
+            let mut doc_handle = 0u32;
+            for (i, slot) in state.documents.iter_mut().enumerate() {
+                if slot.is_none() {
+                    *slot = pending_entry.take();
+                    doc_handle = (i + 1) as u32;
+                    break;
+                }
+            }
+            if let Some(e) = pending_entry {
+                state.documents.push(Some(e));
+                doc_handle = state.documents.len() as u32;
+            }
+            // Node index 0 is the root of the synthetic document.
+            pack_store_handle(doc_handle, 0)
+        }
     }
-    r.cursor = advance_to;
-    pack_store_handle(doc_handle, child_idx)
 }
 
 /// `StoresSys.ReaderReadBytes(r: INTEGER; VAR buf: ARRAY OF BYTE; len: INTEGER): INTEGER`.
@@ -740,7 +901,7 @@ pub extern "C" fn stores_sys_reader_read_bytes(
 #[unsafe(no_mangle)]
 pub extern "C" fn stores_sys_new_writer() -> i64 {
     let mut state = STATE.lock().expect("stores state mutex poisoned");
-    let writer = WriterState { buffer: Vec::new() };
+    let writer = WriterState { buffer: Vec::new(), inline_stores: Vec::new() };
     for (i, slot) in state.writers.iter_mut().enumerate() {
         if slot.is_none() {
             *slot = Some(writer);
@@ -857,11 +1018,81 @@ pub extern "C" fn stores_sys_writer_write_bytes(
     .unwrap_or(0)
 }
 
+/// `StoresSys.WriterWriteInlineStore(outerWriter, IN typeName, innerWriter)`.
+///
+/// Serialise an inline child store into `outer_writer`'s buffer in two
+/// steps:
+///
+///   1. Drain `inner_writer`'s accumulated bytes (the child's
+///      `Externalize` output) into a side-table entry keyed by the
+///      *current offset* in the outer buffer.
+///   2. Append an 8-byte sentinel marker into the outer buffer:
+///      4 magic bytes (`INLINE_STORE_SENTINEL`) followed by a
+///      4-byte LE index that identifies the side-table entry.
+///
+/// When the outer writer is later converted to a Reader via
+/// `open_reader_from_writer`, the side table migrates to the buffer's
+/// `buffer_inline_maps` slot.  `reader_read_inline_store` for buffer-
+/// sourced readers then detects the sentinel, looks up the entry, and
+/// materializes the child as a synthetic document node — letting
+/// `Stores.NewStore` / `InternalizeFrom` on the CP side work normally.
+///
+/// `inner_writer` is *not* closed by this call; the CP layer must call
+/// `StoresSys.CloseWriter(innerWriter)` afterwards.
+///
+/// The `type_name` open-array is encoded as UTF-32 (CP's native CHAR
+/// wire ABI) and its element count is passed as `type_name_len`.
+///
+/// Returns 1 on success, 0 if either handle is invalid.
+#[unsafe(no_mangle)]
+pub extern "C" fn stores_sys_writer_write_inline_store(
+    outer_writer: i64,
+    type_name_ptr: *const u32,
+    type_name_len: i64,
+    inner_writer: i64,
+) -> i64 {
+    if outer_writer <= 0 || inner_writer <= 0 {
+        return 0;
+    }
+    // Decode the type name from the CP UTF-32 open-array.
+    let type_name = decode_path(type_name_ptr, type_name_len);
+    if type_name.is_empty() {
+        return 0;
+    }
+    let mut state = STATE.lock().expect("stores state mutex poisoned");
+
+    // Drain inner_writer's buffer.
+    let inner_idx = (inner_writer - 1) as usize;
+    let body: Vec<u8> = match state.writers.get_mut(inner_idx).and_then(|s| s.as_mut()) {
+        Some(w) => std::mem::take(&mut w.buffer),
+        None => return 0,
+    };
+
+    // Append the sentinel + index to the outer writer's buffer and
+    // record the entry in the outer writer's inline_stores Vec.
+    let outer_idx = (outer_writer - 1) as usize;
+    match state.writers.get_mut(outer_idx).and_then(|s| s.as_mut()) {
+        Some(w) => {
+            let sentinel_offset = w.buffer.len() as u64;
+            let entry_index = w.inline_stores.len() as u32;
+            w.buffer.extend_from_slice(&INLINE_STORE_SENTINEL);
+            w.buffer.extend_from_slice(&entry_index.to_le_bytes());
+            w.inline_stores.push((sentinel_offset, type_name, body));
+        }
+        None => return 0,
+    }
+    1
+}
+
 /// Consume the writer's buffer, install it in a fresh buffer slot,
 /// and return a Reader handle whose body covers the entire buffer.
 /// The writer's own buffer is left empty (not closed); callers who
 /// no longer need the writer should follow up with
 /// `stores_sys_close_writer`.  Returns 0 if `w` is invalid.
+///
+/// Also transfers the writer's `inline_stores` side-table into the
+/// corresponding `buffer_inline_maps` slot so buffer-sourced readers
+/// can resolve inline child sentinels.
 #[unsafe(no_mangle)]
 pub extern "C" fn stores_sys_open_reader_from_writer(writer: i64) -> i64 {
     if writer <= 0 {
@@ -869,11 +1100,21 @@ pub extern "C" fn stores_sys_open_reader_from_writer(writer: i64) -> i64 {
     }
     let mut state = STATE.lock().expect("stores state mutex poisoned");
     let idx = (writer - 1) as usize;
-    let buffer: Vec<u8> = match state.writers.get_mut(idx).and_then(|s| s.as_mut()) {
-        Some(w) => std::mem::take(&mut w.buffer),
-        None => return 0,
-    };
+    let (buffer, raw_inline): (Vec<u8>, Vec<(u64, String, Vec<u8>)>) =
+        match state.writers.get_mut(idx).and_then(|s| s.as_mut()) {
+            Some(w) => (
+                std::mem::take(&mut w.buffer),
+                std::mem::take(&mut w.inline_stores),
+            ),
+            None => return 0,
+        };
     let body_len = buffer.len() as u64;
+
+    // Build the per-buffer inline-store side table (keyed by offset).
+    let inline_map: HashMap<u64, BufferInlineEntry> = raw_inline
+        .into_iter()
+        .map(|(offset, type_name, body)| (offset, BufferInlineEntry { type_name, body }))
+        .collect();
 
     // Install the buffer in the buffers Vec.  `buffer` is moved
     // exactly once: into the matching free slot, or pushed on the
@@ -892,12 +1133,21 @@ pub extern "C" fn stores_sys_open_reader_from_writer(writer: i64) -> i64 {
         buffer_handle = state.buffers.len() as u32;
     }
 
+    // Install the matching inline map at the same 1-based index.
+    let buf_idx = (buffer_handle as usize) - 1;
+    // Extend buffer_inline_maps if needed, then set the slot.
+    while state.buffer_inline_maps.len() <= buf_idx {
+        state.buffer_inline_maps.push(None);
+    }
+    state.buffer_inline_maps[buf_idx] = Some(inline_map);
+
     // Allocate a Reader whose source points at that buffer.
     let reader = ReaderState {
         source: ReaderSource::Buffer { buffer_handle },
         body_start: 0,
         body_end: body_len,
         cursor: 0,
+        owned_doc: 0,
     };
     for (i, slot) in state.readers.iter_mut().enumerate() {
         if slot.is_none() {
@@ -952,6 +1202,7 @@ fn stores_exports() -> &'static [(&'static str, *const ())] {
         ("WriterWriteLong",  stores_sys_writer_write_long as *const ()),
         ("WriterWriteBool",  stores_sys_writer_write_bool as *const ()),
         ("WriterWriteBytes", stores_sys_writer_write_bytes as *const ()),
+        ("WriterWriteInlineStore", stores_sys_writer_write_inline_store as *const ()),
         ("OpenReaderFromWriter", stores_sys_open_reader_from_writer as *const ()),
     ]
 }
