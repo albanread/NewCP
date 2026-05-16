@@ -236,6 +236,11 @@ MODULE TextRulers;
         END;
         StdRuler*     = POINTER TO StdRulerDesc;
 
+        (** Concrete Directory — default factory used by the
+            framework when no host-specific directory is installed. *)
+        StdDirectoryDesc* = RECORD (DirectoryDesc) END;
+        StdDirectory*     = POINTER TO StdDirectoryDesc;
+
 
     VAR
         (** Currently-installed factories — `dir` is mutable
@@ -243,6 +248,7 @@ MODULE TextRulers;
             is the immutable default the framework falls back
             on. *)
         dir-, stdDir-: Directory;
+        std: StdDirectory;
 
 
     (* -- Tab helpers ---------------------------------------------------- *)
@@ -471,6 +477,28 @@ MODULE TextRulers;
     END Externalize;
 
 
+    (* -- StdDirectory methods ------------------------------------------ *)
+
+    PROCEDURE (d: StdDirectoryDesc) NewStyle* (attr: Attributes): Style;
+        VAR s: StdStyle;
+    BEGIN
+        ASSERT(attr # NIL, 20);
+        ASSERT(attr.init, 21);
+        NEW(s);
+        s.attr := attr;
+        RETURN s
+    END NewStyle;
+
+    PROCEDURE (d: StdDirectoryDesc) New* (style: Style): Ruler;
+        VAR r: StdRuler;
+    BEGIN
+        ASSERT(style # NIL, 20);
+        NEW(r);
+        r.InitStyle(style);
+        RETURN r
+    END New;
+
+
     (* -- Style methods (declarations only) ------------------------------ *)
 
     (** Bind new Attributes onto this Style and broadcast a
@@ -556,5 +584,22 @@ MODULE TextRulers;
     PROCEDURE SetPageBreak*   (r: Ruler); BEGIN END SetPageBreak;
     PROCEDURE SetParJoin*     (r: Ruler); BEGIN END SetParJoin;
 
+
+BEGIN
+    NEW(std);
+    (* Build a default Attributes — left-flush, zero margins, no tabs. *)
+    NEW(std.attr);
+    std.attr.init   := TRUE;
+    std.attr.opts   := {leftAdjust};
+    std.attr.first  := 0;
+    std.attr.left   := 0;
+    std.attr.right  := 0;
+    std.attr.lead   := 0;
+    std.attr.asc    := 0;
+    std.attr.dsc    := 0;
+    std.attr.grid   := 0;
+    std.attr.tabs.len := 0;
+    stdDir := std;
+    dir    := std
 
 END TextRulers.
