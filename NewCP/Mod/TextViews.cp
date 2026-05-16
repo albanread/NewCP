@@ -410,11 +410,11 @@ END AcceptableModel;
 PROCEDURE (v: Pane) Restore* (f: Views.Frame; l, t, r, b: INTEGER);
     CONST
         barH   = 50;     (* indicator bar height in user units *)
-        textY  = 100;    (* baseline of the single text line *)
-        maxLen = 256;    (* max chars to render in one Restore call *)
+        lineH  = 120;    (* approximate line height in user units (~1.2 mm) *)
+        maxLen = 256;    (* max chars to render per line *)
     VAR rd: TextModels.Reader;
         line: ARRAY 256 OF CHAR;
-        i: INTEGER;
+        i, y: INTEGER;
         font: Fonts.Font;
 BEGIN
     (* Phase 1: scaffold. *)
@@ -423,19 +423,11 @@ BEGIN
         f.DrawRect(l, t, r, MIN(b, barH), Ports.fill, Ports.black)
     END;
 
-    (* Phase 2: text content. *)
+    (* Phase 2: text content — multi-line from v.org. *)
     IF (v.text # NIL) & (v.text.Length() > 0) & (b > barH) THEN
         rd := v.text.NewReader(NIL);
         IF rd # NIL THEN
-            rd.SetPos(0);
-            i := 0;
-            rd.ReadChar();
-            WHILE ~rd.eot & (i < maxLen - 1) DO
-                line[i] := rd.char;
-                INC(i);
-                rd.ReadChar()
-            END;
-            line[i] := 0X;
+            rd.SetPos(v.org);
             (* Font selection: prefer the bound default-attr font,
                then the framework's default-font directory.  Both
                can be NIL in this slice (HostFonts not installed in
@@ -447,7 +439,29 @@ BEGIN
             IF (font = NIL) & (Fonts.dir # NIL) THEN
                 font := Fonts.dir.Default()
             END;
-            f.DrawString(l, textY, Ports.black, line, font)
+            y := barH + lineH;
+            rd.ReadChar();   (* prime the reader *)
+            WHILE ~rd.eot & (y <= b) DO
+                (* Collect visible chars up to EOL/EOT. *)
+                i := 0;
+                WHILE ~rd.eot
+                    & (rd.char # TextModels.line)
+                    & (rd.char # TextModels.para)
+                    & (i < maxLen - 1) DO
+                    IF rd.char >= ' ' THEN
+                        line[i] := rd.char;
+                        INC(i)
+                    END;
+                    rd.ReadChar()
+                END;
+                line[i] := 0X;
+                IF i > 0 THEN
+                    f.DrawString(l, y, Ports.black, line, font)
+                END;
+                INC(y, lineH);
+                (* Consume the EOL separator to advance to next line. *)
+                IF ~rd.eot THEN rd.ReadChar() END
+            END
         END
     END
 END Restore;

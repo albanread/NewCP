@@ -63,10 +63,17 @@ TYPE
   DirectoryDesc* = ABSTRACT RECORD END;
   Directory*     = POINTER TO DirectoryDesc;
 
+  StdFontDesc* = RECORD (FontDesc) END;
+  StdFont*     = POINTER TO StdFontDesc;
+
+  StdDirectoryDesc* = RECORD (DirectoryDesc) END;
+  StdDirectory*     = POINTER TO StdDirectoryDesc;
+
 VAR
   (* Read-only public. HostFonts.Init registers the concrete
      directory by calling SetDir below. *)
-  dir-: Directory;
+  dir-:    Directory;
+  stdDir-: StdDirectory;
 
 (* Set the immutable fields on a Font. Called once during construction
    from a Directory.This / Default factory. *)
@@ -101,6 +108,71 @@ PROCEDURE (d: DirectoryDesc) Default* (): Font, NEW, ABSTRACT;
 
 PROCEDURE (d: DirectoryDesc) TypefaceList* (): TypefaceInfo, NEW, ABSTRACT;
 
+(* --- StdFont concrete implementation --- *)
+
+PROCEDURE (f: StdFontDesc) GetBounds*
+  (OUT asc, dsc, w: INTEGER);
+BEGIN
+  (* Stub: report a plausible cap-height / descender for 12 pt.
+     Real metrics come from HostFonts once it registers its directory. *)
+  asc := f.size * 4 DIV 5;
+  dsc := f.size     DIV 5;
+  w   := f.size * 3 DIV 5
+END GetBounds;
+
+PROCEDURE (f: StdFontDesc) StringWidth*
+  (IN s: ARRAY OF CHAR): INTEGER;
+  VAR i, w: INTEGER;
+BEGIN
+  w := 0; i := 0;
+  WHILE (i < LEN(s)) & (s[i] # 0X) DO
+    INC(w, f.size * 3 DIV 5);
+    INC(i)
+  END;
+  RETURN w
+END StringWidth;
+
+PROCEDURE (f: StdFontDesc) SStringWidth*
+  (IN s: ARRAY OF SHORTCHAR): INTEGER;
+  VAR i, w: INTEGER;
+BEGIN
+  w := 0; i := 0;
+  WHILE (i < LEN(s)) & (s[i] # 0SX) DO
+    INC(w, f.size * 3 DIV 5);
+    INC(i)
+  END;
+  RETURN w
+END SStringWidth;
+
+PROCEDURE (f: StdFontDesc) IsAlien* (): BOOLEAN;
+BEGIN
+  RETURN FALSE
+END IsAlien;
+
+(* --- StdDirectory concrete implementation --- *)
+
+PROCEDURE (d: StdDirectoryDesc) This*
+  (typeface: Typeface; size: INTEGER;
+   style: SET; weight: INTEGER): Font;
+  VAR f: StdFont;
+BEGIN
+  NEW(f);
+  f.Init(typeface, size, style, weight);
+  RETURN f
+END This;
+
+PROCEDURE (d: StdDirectoryDesc) Default* (): Font;
+  VAR tf: Typeface;
+BEGIN
+  tf := "Segoe UI";
+  RETURN d.This(tf, 12 * point, {}, normal)
+END Default;
+
+PROCEDURE (d: StdDirectoryDesc) TypefaceList* (): TypefaceInfo;
+BEGIN
+  RETURN NIL
+END TypefaceList;
+
 (* Install the host-supplied font directory. HostFonts.Init calls
    this exactly once during startup. *)
 PROCEDURE SetDir* (d: Directory);
@@ -108,5 +180,9 @@ BEGIN
   ASSERT(d # NIL, 20);
   dir := d
 END SetDir;
+
+BEGIN
+  NEW(stdDir);
+  dir := stdDir
 
 END Fonts.
