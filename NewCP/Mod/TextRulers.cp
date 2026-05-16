@@ -47,7 +47,7 @@ MODULE TextRulers;
    - `Stores.Join` calls — that runtime helper isn't ported.
 *)
 
-    IMPORT Kernel, Strings, Services, Fonts, Ports, Stores,
+    IMPORT SYSTEM, Kernel, Strings, Services, Fonts, Ports, Stores,
         Models, Views, Controllers, Properties, Dialog,
         TextModels;
 
@@ -319,6 +319,81 @@ MODULE TextRulers;
     PROCEDURE (a: Attributes) ModifyFromProp* (p: Properties.Property), NEW, EXTENSIBLE;
     BEGIN
     END ModifyFromProp;
+
+    (** Deserialise this Attributes from `rd`.
+        Wire layout (BlackBox-faithful):
+          1 byte   — version stamp (0 .. maxAttrVersion)
+          2 bytes  — first  (i16)
+          2 bytes  — left   (i16)
+          2 bytes  — right  (i16)
+          2 bytes  — lead   (i16)
+          2 bytes  — grid   (i16)
+          4 bytes  — opts   (i32 / SET)
+          2 bytes  — dsc    (i16)
+          xint     — tab count (compressed)
+          per tab: 2 bytes stop (i16) + 1 byte type
+        No AlienAttributes fallback — Stores.Alien is not ported. *)
+    PROCEDURE (a: AttributesDesc) Internalize* (VAR rd: Stores.Reader);
+        VAR ver, n, i, stop: INTEGER; b: BYTE; opts: SET;
+    BEGIN
+        a.Internalize^(rd);
+        rd.ReadVersion(minVersion, maxAttrVersion, ver);
+        IF rd.cancelled THEN RETURN END;
+        rd.ReadInt(a.first);
+        IF rd.eof THEN RETURN END;
+        rd.ReadInt(a.left);
+        IF rd.eof THEN RETURN END;
+        rd.ReadInt(a.right);
+        IF rd.eof THEN RETURN END;
+        rd.ReadInt(a.lead);
+        IF rd.eof THEN RETURN END;
+        rd.ReadInt(a.grid);
+        IF rd.eof THEN RETURN END;
+        rd.ReadSet(opts);
+        IF rd.eof THEN RETURN END;
+        a.opts := opts;
+        rd.ReadInt(a.dsc);
+        IF rd.eof THEN RETURN END;
+        rd.ReadXInt(n);
+        IF rd.eof THEN RETURN END;
+        IF n > maxTabs THEN n := maxTabs END;
+        a.tabs.len := n;
+        i := 0;
+        WHILE i < n DO
+            rd.ReadInt(stop);
+            IF rd.eof THEN a.tabs.len := i; RETURN END;
+            a.tabs.tab[i].stop := stop;
+            rd.ReadByte(b);
+            IF rd.eof THEN a.tabs.len := i; RETURN END;
+            a.tabs.tab[i].type := SYSTEM.VAL(SET, ORD(b));
+            INC(i)
+        END;
+        a.init := TRUE
+    END Internalize;
+
+    (** Serialise this Attributes to `wr`.  Symmetric with Internalize. *)
+    PROCEDURE (a: AttributesDesc) Externalize* (VAR wr: Stores.Writer);
+        VAR i, n: INTEGER; b: BYTE;
+    BEGIN
+        a.Externalize^(wr);
+        wr.WriteVersion(maxAttrVersion);
+        wr.WriteInt(a.first);
+        wr.WriteInt(a.left);
+        wr.WriteInt(a.right);
+        wr.WriteInt(a.lead);
+        wr.WriteInt(a.grid);
+        wr.WriteSet(a.opts);
+        wr.WriteInt(a.dsc);
+        n := a.tabs.len;
+        wr.WriteXInt(n);
+        i := 0;
+        WHILE i < n DO
+            wr.WriteInt(a.tabs.tab[i].stop);
+            b := SHORT(SHORT(SYSTEM.VAL(INTEGER, a.tabs.tab[i].type)));
+            wr.WriteByte(b);
+            INC(i)
+        END
+    END Externalize;
 
 
     (* -- Style methods (declarations only) ------------------------------ *)

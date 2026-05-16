@@ -117,6 +117,11 @@ TYPE
             specific failure. *)
         model*: TextModels.StdModel;
 
+        (** Live Doc converted from `model` by `StdModelToDoc` at
+            the end of a successful Internalize.  NIL when model
+            was absent or decoding failed. *)
+        doc*:   TextModels.Doc;
+
         result*: INTEGER
     END;
     StdView* = POINTER TO StdViewDesc;
@@ -175,6 +180,52 @@ VAR
         publishing through the abstract `dir-` / `stdDir-` slots. *)
     std: PaneDirectory;
 
+(* ─── StdModel → Doc bridge ────────────────────────────────────
+   Converts a decoded wire-format StdModel into the concrete
+   TextModels.Doc that Pane.Restore can drive through NewReader.
+   Population goes through DocWriter.WriteChar because DocDesc.buf
+   and DocDesc.len carry the `-` read-only export mark, making
+   direct assignment illegal from this module.  WriteChar already
+   caps at DocCapacity - 1 and maintains the 0X sentinel. *)
+
+PROCEDURE StdModelToDoc* (m: TextModels.StdModel): TextModels.Doc;
+    VAR d:  TextModels.Doc;
+        wr: TextModels.Writer;
+        i:  INTEGER;
+BEGIN
+    IF (m = NIL) OR (m.result # TextModels.OkComplete) THEN
+        RETURN NIL
+    END;
+    NEW(d);
+    wr := d.NewWriter(NIL);
+    i := 0;
+    WHILE (i < m.textLen) & (i < TextModels.DocCapacity - 1) DO
+        wr.WriteChar(m.text[i]);
+        INC(i)
+    END;
+    RETURN d
+END StdModelToDoc;
+
+(* ─── Pane factory from a decoded StdView ──────────────────────
+   Builds a live Pane from a successfully-decoded StdView, binding
+   the converted Doc as the text model and copying the scroll/
+   display state (org, dy, hideMarks) from the wire record.
+   Returns NIL when `sv` is absent, incomplete, or model-less. *)
+
+PROCEDURE NewPane* (sv: StdView): Pane;
+    VAR p: Pane;
+BEGIN
+    IF (sv = NIL) OR (sv.result # OkComplete) OR (sv.model = NIL) THEN
+        RETURN NIL
+    END;
+    NEW(p);
+    p.text      := StdModelToDoc(sv.model);
+    p.org       := sv.org;
+    p.dy        := sv.dy;
+    p.hideMarks := sv.hideMarks;
+    RETURN p
+END NewPane;
+
 PROCEDURE (v: StdViewDesc) Domain* (): Stores.Domain;
 BEGIN
     RETURN NIL
@@ -188,6 +239,7 @@ PROCEDURE (v: StdViewDesc) Internalize* (VAR rd: Stores.Reader);
         bool: BOOLEAN;
 BEGIN
     v.model := NIL;
+    v.doc   := NIL;
     v.org := 0;
     v.dy := 0;
     v.hideMarks := FALSE;
@@ -251,6 +303,7 @@ BEGIN
     rd.ReadLong(v.dy);
     IF rd.eof THEN RETURN END;
 
+    v.doc    := StdModelToDoc(v.model);
     v.result := OkComplete
 END Internalize;
 
