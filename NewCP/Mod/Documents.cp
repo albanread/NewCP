@@ -71,8 +71,9 @@ MODULE Documents;
 
 
     VAR
-        dir-:    Directory;
-        stdDir-: Directory;
+        dir-:       Directory;
+        stdDir-:    Directory;
+        defaultDir: StdDirectory;   (* private backing; set in BEGIN *)
 
 
     (* -- Document abstract overrides --------------------------------------- *)
@@ -309,6 +310,6 @@ MODULE Documents;
 
 
 BEGIN
-    dir    := NIL;
-    stdDir := NIL
+    NEW(defaultDir);
+    SetDir(defaultDir)
 END Documents.
