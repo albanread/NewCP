@@ -171,6 +171,11 @@ TYPE
     PaneDirectoryDesc* = RECORD (DirectoryDesc) END;
     PaneDirectory*     = POINTER TO PaneDirectoryDesc;
 
+    ViewObserverDesc = RECORD (Models.ModelObserverDesc)
+        pane: Pane
+    END;
+    ViewObserver = POINTER TO ViewObserverDesc;
+
 VAR
     (** Container-side directory the framework hands to fresh
         StdView instances when they need a default controller. *)
@@ -571,6 +576,19 @@ BEGIN
     ELSE
     END
 END HandleViewMsg;
+
+PROCEDURE (obs: ViewObserver) Notify* (m: Models.Model; VAR msg: Models.Message);
+BEGIN
+    obs.pane.HandleModelMsg(msg)
+END Notify;
+
+PROCEDURE (v: Pane) InitModel2* (m: Containers.Model);
+    VAR obs: ViewObserver;
+BEGIN
+    NEW(obs);
+    obs.pane := v;
+    Models.InstallObserver(m, obs)
+END InitModel2;
 
 PROCEDURE (v: Pane) Externalize2* (VAR wr: Stores.Writer);
 BEGIN

@@ -43,6 +43,11 @@ MODULE Models;
         invisible*   = Sequencers.invisible;
 
     TYPE
+        ModelObserverDesc* = ABSTRACT RECORD
+            next: ModelObserver
+        END;
+        ModelObserver* = POINTER TO ModelObserverDesc;
+
         (** Abstract document model.  Extends `Stores.Store` so every
             Model is also persistable — Internalize / Externalize chain
             into the Stores.StoreDesc base via super calls, which is
@@ -52,9 +57,10 @@ MODULE Models;
             model dispatches messages through (ANYPTR so we don't drag
             every model concrete-type into a Sequencers dependency). *)
         ModelDesc* = ABSTRACT RECORD (Stores.StoreDesc)
-            era-:   INTEGER;
-            guard-: INTEGER;
-            seq-:   ANYPTR
+            era-:      INTEGER;
+            guard-:    INTEGER;
+            seq-:      ANYPTR;
+            observers: ModelObserver
         END;
         Model* = POINTER TO ModelDesc;
 
@@ -75,6 +81,9 @@ MODULE Models;
     VAR
         domainGuard: INTEGER;       (* = Kernel.TrapCount() + 1 if a
                                        Domaincast is in flight *)
+
+
+    PROCEDURE (obs: ModelObserver) Notify* (m: Model; VAR msg: Message), NEW, ABSTRACT;
 
 
     (* -- Model methods (extending Stores.StoreDesc) ----------------------- *)
@@ -156,6 +165,15 @@ MODULE Models;
         ASSERT(m # NIL, 20);
         m.seq := s
     END SetSequencer;
+
+
+    PROCEDURE InstallObserver* (m: Model; obs: ModelObserver);
+    BEGIN
+        ASSERT(m # NIL, 20);
+        ASSERT(obs # NIL, 21);
+        obs.next := m.observers;
+        m.observers := obs
+    END InstallObserver;
 
 
     (* -- Sequencer-driven dispatch --------------------------------------- *)
@@ -318,7 +336,7 @@ MODULE Models;
         per-model `guard` field implements BlackBox's reentry trap
         for nested broadcasts on the same model. *)
     PROCEDURE Broadcast* (m: Model; VAR msg: Message);
-        VAR s: ANYPTR; g: INTEGER;
+        VAR s: ANYPTR; g: INTEGER; o: ModelObserver;
     BEGIN
         ASSERT(m # NIL, 20);
         msg.model := m;
@@ -334,6 +352,11 @@ MODULE Models;
                 m.guard := 0
             ELSE
             END
+        END;
+        o := m.observers;
+        WHILE o # NIL DO
+            o.Notify(m, msg);
+            o := o.next
         END
     END Broadcast;
 
