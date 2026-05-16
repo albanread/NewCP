@@ -45,6 +45,9 @@ pub enum Reply {
     Failed {
         message: String,
     },
+    PngDone {
+        success: bool,
+    },
 }
 
 static NEXT_REQUEST_ID: AtomicU32 = AtomicU32::new(1);

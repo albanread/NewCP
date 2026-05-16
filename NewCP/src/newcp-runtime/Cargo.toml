@@ -6,6 +6,7 @@ edition = "2024"
 [dependencies]
 serde_json = "1"
 newcp-odc = { path = "../newcp-odc" }
+png = "0.17"
 
 [target.'cfg(windows)'.dependencies]
 windows-numerics = "0.3"
@@ -39,4 +40,5 @@ features = [
     "Win32_System_Memory",
     "Win32_System_Ole",
     "Win32_Storage_FileSystem",
+    "Win32_Storage_Xps",
 ]

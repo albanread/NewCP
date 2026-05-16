@@ -243,6 +243,10 @@ pub fn execute(batch: &PaneBatch) -> Result<bool, IGuiError> {
             | SurfaceCmd::DrawPath { .. } => {
                 eprintln!("[igui-executor] Phase 5 command on dormant DC path — ignored");
             }
+            // PNG capture is handled in the child's WM_PAINT render path, not here.
+            SurfaceCmd::CapturePng { reply_id, .. } => {
+                super::replies::deliver(*reply_id, super::replies::Reply::PngDone { success: false });
+            }
         }
     }
 

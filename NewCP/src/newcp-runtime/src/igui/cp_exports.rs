@@ -1083,6 +1083,44 @@ pub extern "C" fn igui_point_at_char_index(
     }
 }
 
+// ─── PNG capture ─────────────────────────────────────────────────────
+
+/// `iGui.CaptureBatchToPng(childId: INTEGER; path: ARRAY OF SHORTCHAR): INTSHORT`.
+///
+/// Finishes and submits the current batch for `child_id`, blocks until
+/// the GUI thread has rendered it, captured the pixels, and saved the
+/// PNG to `path`. Returns 1 on success, 0 on failure / timeout.
+#[unsafe(export_name = "iGui.CaptureBatchToPng")]
+pub extern "C" fn igui_capture_batch_to_png(
+    child_id: i64,
+    path: *const u8,
+    _path_len: i64,
+) -> i32 {
+    let path_str = unsafe { read_cp_shortstr(path) };
+    if path_str.is_empty() {
+        return 0;
+    }
+    let reply_id = replies::alloc_id();
+    let rx = replies::install(reply_id);
+    batch_mod::push(SurfaceCmd::CapturePng {
+        path: path_str,
+        reply_id,
+    });
+    let batch = match batch_mod::finish() {
+        Some(b) => b,
+        None => return 0,
+    };
+    if !batch_mod::submit(batch) {
+        return 0;
+    }
+    match replies::wait(rx) {
+        Some(replies::Reply::PngDone { success }) => {
+            if success { 1 } else { 0 }
+        }
+        _ => 0,
+    }
+}
+
 // ─── Phase 3c: DPI + cursor ──────────────────────────────────────────
 
 /// `iGui.GetDpi(childId: INTEGER; VAR dpiX, dpiY: REAL): INTSHORT`.
@@ -1338,6 +1376,7 @@ pub fn native_module_artifact() -> NativeModuleArtifact {
                 ExportEntry::procedure("LogAppend"),
                 ExportEntry::procedure("MeasureFont"),
                 ExportEntry::procedure("MeasureString"),
+                ExportEntry::procedure("CaptureBatchToPng"),
             ]),
             "iGui.bootstrap",
             "Integrated GUI: MDI frame, Direct2D surfaces, typed event mailbox",
@@ -1545,6 +1584,10 @@ pub fn native_module_artifact() -> NativeModuleArtifact {
             NativeExportBinding::procedure(
                 "MeasureString",
                 igui_measure_string as *const () as usize,
+            ),
+            NativeExportBinding::procedure(
+                "CaptureBatchToPng",
+                igui_capture_batch_to_png as *const () as usize,
             ),
         ],
     )

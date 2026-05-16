@@ -277,6 +277,10 @@ pub enum SurfaceCmd {
         fill: Option<Rgba>,
         stroke: Option<(StrokeStyle, Rgba)>,
     },
+    CapturePng {
+        path: String,
+        reply_id: u32,
+    },
 }
 
 #[derive(Debug, Clone)]

@@ -36,11 +36,14 @@ use windows::Win32::Graphics::Direct2D::{
 };
 use windows::Win32::Foundation::COLORREF;
 use windows::Win32::Graphics::Gdi::{
-    BeginPaint, CreatePen, CreateSolidBrush, DeleteObject, EndPaint, FillRect, FrameRect,
+    BeginPaint, CreateCompatibleDC, CreateDIBSection, CreatePen, CreateSolidBrush, DeleteDC,
+    DeleteObject, EndPaint, FillRect, FrameRect,
+    BITMAPINFO, BITMAPINFOHEADER, BI_RGB, DIB_RGB_COLORS,
     HBRUSH, LineTo, MoveToEx, PAINTSTRUCT, PS_SOLID, RoundRect, SelectObject,
 };
 use windows::Win32::System::LibraryLoader::GetModuleHandleW;
 use windows::Win32::System::Threading::GetCurrentThreadId;
+use windows::Win32::Storage::Xps::{PrintWindow, PW_CLIENTONLY};
 use windows::Win32::UI::WindowsAndMessaging::{
     CreateWindowExW, DefMDIChildProcW, DefWindowProcW, GetClientRect, GetParent,
     GetWindowLongPtrW, IsWindow, IsWindowVisible, KillTimer, LoadCursorW, RegisterClassExW,
@@ -117,7 +120,7 @@ impl ChildState {
         }
 
         if let Some(target) = self.target.as_ref() {
-            match render_d2d_frame(target, self.child_id, pending.as_deref()) {
+            match render_d2d_frame(target, self.child_id, self.hwnd, pending.as_deref()) {
                 Ok(()) => return Ok(()),
                 Err(err) => {
                     eprintln!(
@@ -183,11 +186,152 @@ impl ChildState {
     }
 }
 
+/// Capture the client area of `hwnd` to a PNG file at `path`.
+/// Uses GDI PrintWindow (PW_CLIENTONLY) to get pixels into a DIB section,
+/// converts BGRA → RGBA, then encodes with the `png` crate.
+fn capture_child_to_png(hwnd: HWND, path: &str) -> bool {
+    // Get client area dimensions.
+    let mut rect = RECT::default();
+    if unsafe { GetClientRect(hwnd, &mut rect) }.is_err() {
+        eprintln!("[igui-png] GetClientRect failed: {}", windows::core::Error::from_thread());
+        return false;
+    }
+    let width = (rect.right - rect.left) as i32;
+    let height = (rect.bottom - rect.top) as i32;
+    if width <= 0 || height <= 0 {
+        eprintln!("[igui-png] zero-size client area: {width}x{height}");
+        return false;
+    }
+
+    // Create a memory DC.
+    let mem_dc = unsafe { CreateCompatibleDC(None) };
+    if mem_dc.0.is_null() {
+        eprintln!("[igui-png] CreateCompatibleDC failed: {}", windows::core::Error::from_thread());
+        return false;
+    }
+
+    // Create a top-down DIB section (negative height = top-down) with 32bpp BGRA.
+    let bmi = BITMAPINFO {
+        bmiHeader: BITMAPINFOHEADER {
+            biSize: std::mem::size_of::<BITMAPINFOHEADER>() as u32,
+            biWidth: width,
+            biHeight: -height, // negative = top-down
+            biPlanes: 1,
+            biBitCount: 32,
+            biCompression: BI_RGB.0,
+            biSizeImage: 0,
+            biXPelsPerMeter: 0,
+            biYPelsPerMeter: 0,
+            biClrUsed: 0,
+            biClrImportant: 0,
+        },
+        bmiColors: [Default::default()],
+    };
+
+    let mut bits_ptr: *mut std::ffi::c_void = std::ptr::null_mut();
+    let hbm = unsafe {
+        CreateDIBSection(
+            Some(mem_dc),
+            &bmi,
+            DIB_RGB_COLORS,
+            &mut bits_ptr,
+            None,
+            0,
+        )
+    };
+    let hbm = match hbm {
+        Ok(h) => h,
+        Err(e) => {
+            eprintln!("[igui-png] CreateDIBSection failed: {e}");
+            unsafe { DeleteDC(mem_dc) };
+            return false;
+        }
+    };
+    if bits_ptr.is_null() {
+        eprintln!("[igui-png] CreateDIBSection returned null bits pointer");
+        unsafe {
+            DeleteObject(hbm.into());
+            DeleteDC(mem_dc);
+        }
+        return false;
+    }
+
+    // Select the DIB into the memory DC.
+    let old_obj = unsafe { SelectObject(mem_dc, hbm.into()) };
+
+    // Capture via PrintWindow(PW_CLIENTONLY = 1).
+    let pw_result = unsafe { PrintWindow(hwnd, mem_dc, PW_CLIENTONLY) };
+    if !pw_result.as_bool() {
+        eprintln!("[igui-png] PrintWindow failed: {}", windows::core::Error::from_thread());
+        unsafe {
+            SelectObject(mem_dc, old_obj);
+            DeleteObject(hbm.into());
+            DeleteDC(mem_dc);
+        }
+        return false;
+    }
+
+    // Read BGRA pixels and convert to RGBA.
+    let pixel_count = (width * height) as usize;
+    let bgra_bytes = unsafe {
+        std::slice::from_raw_parts(bits_ptr as *const u8, pixel_count * 4)
+    };
+    let mut rgba_pixels: Vec<u8> = Vec::with_capacity(pixel_count * 4);
+    for chunk in bgra_bytes.chunks_exact(4) {
+        rgba_pixels.push(chunk[2]); // R
+        rgba_pixels.push(chunk[1]); // G
+        rgba_pixels.push(chunk[0]); // B
+        rgba_pixels.push(chunk[3]); // A
+    }
+
+    // Clean up GDI resources before writing the file.
+    unsafe {
+        SelectObject(mem_dc, old_obj);
+        DeleteObject(hbm.into());
+        DeleteDC(mem_dc);
+    }
+
+    // Encode PNG using the `png` crate.
+    let result = (|| -> std::io::Result<()> {
+        let file = std::fs::File::create(path)?;
+        let mut enc = png::Encoder::new(file, width as u32, height as u32);
+        enc.set_color(png::ColorType::Rgba);
+        enc.set_depth(png::BitDepth::Eight);
+        let mut writer = enc.write_header()?;
+        writer.write_image_data(&rgba_pixels)?;
+        Ok(())
+    })();
+
+    match result {
+        Ok(()) => {
+            eprintln!("[igui-png] saved {width}x{height} PNG → {path}");
+            true
+        }
+        Err(e) => {
+            eprintln!("[igui-png] PNG write failed for {path}: {e}");
+            false
+        }
+    }
+}
+
 fn render_d2d_frame(
     target: &ID2D1HwndRenderTarget,
     child_id: i64,
+    hwnd: HWND,
     batch: Option<&batch_mod::PaneBatch>,
 ) -> Result<(), IGuiError> {
+    // Extract any CapturePng command before rendering so the D2D batch
+    // loop doesn't encounter it. Store it aside; execute after EndDraw.
+    let capture_cmd: Option<(String, u32)> = batch.and_then(|b| {
+        b.cmds.iter().find_map(|cmd| {
+            if let SurfaceCmd::CapturePng { path, reply_id } = cmd {
+                Some((path.clone(), *reply_id))
+            } else {
+                None
+            }
+        })
+    });
+
     unsafe { target.BeginDraw() };
 
     match batch {
@@ -207,6 +351,13 @@ fn render_d2d_frame(
 
     unsafe { target.EndDraw(None, None) }
         .map_err(|e| IGuiError::D2D(format!("ID2D1HwndRenderTarget::EndDraw failed: {e}")))?;
+
+    // After EndDraw the frame is on screen; now capture if requested.
+    if let Some((path, reply_id)) = capture_cmd {
+        let success = capture_child_to_png(hwnd, &path);
+        super::replies::deliver(reply_id, super::replies::Reply::PngDone { success });
+    }
+
     Ok(())
 }
 
@@ -533,6 +684,9 @@ fn execute_d2d_batch(
             SurfaceCmd::DrawPath { commands, fill, stroke } => {
                 draw_path(target, commands, fill, stroke.as_ref())?;
             }
+            // Extracted before BeginDraw and executed after EndDraw —
+            // skip here so it doesn't confuse the render loop.
+            SurfaceCmd::CapturePng { .. } => {}
         }
     }
     Ok(())
@@ -1201,6 +1355,9 @@ fn log_ui_batch(child_id: i64, batch: &batch_mod::PaneBatch) {
                 fill.is_some(),
                 stroke.is_some()
             ),
+            SurfaceCmd::CapturePng { path, reply_id } => eprintln!(
+                "[igui-batch-ui]   #{index} CapturePng reply_id={reply_id} path=\"{path}\""
+            ),
         }
     }
 }
@@ -1519,6 +1676,14 @@ fn execute_gdi_batch(
             | SurfaceCmd::FocusRing { .. }
             | SurfaceCmd::DrawPath { .. } => {
                 eprintln!("[igui-gdi] Phase 5 primitive in GDI fallback — skipped");
+            }
+            // CapturePng is not supported on the GDI fallback path —
+            // deliver a failure reply so the CP caller doesn't block.
+            SurfaceCmd::CapturePng { reply_id, .. } => {
+                super::replies::deliver(
+                    *reply_id,
+                    super::replies::Reply::PngDone { success: false },
+                );
             }
         }
     }
