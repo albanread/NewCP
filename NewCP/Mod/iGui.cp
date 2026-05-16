@@ -397,4 +397,15 @@ PROCEDURE MeasureString*(
     italic: INTSHORT;
     OUT width: REAL): INTSHORT;
 
+(* ── PNG capture ──────────────────────────────────────────────────
+   Finishes and submits the current batch for childId (triggering
+   WM_PAINT on the GUI thread), blocks until the GUI thread has
+   rendered the batch, captured the client-area pixels via
+   PrintWindow, and saved them as a PNG file at `path`.
+   Returns 1 on success, 0 on failure.
+   Must be called after iGui.BeginBatch + Emit* calls but INSTEAD
+   of iGui.SubmitBatch — it does the submit internally. *)
+PROCEDURE CaptureBatchToPng*(childId: INTEGER;
+                             path: ARRAY OF SHORTCHAR): INTSHORT;
+
 END iGui.
