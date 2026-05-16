@@ -29,6 +29,8 @@ CONST
     KindStore*   = 3;
     KindElem*    = 4;
 
+    minStoreVersion = 0; maxStoreVersion = 0;
+
 TYPE
     (* -- Low-level handle types ----------------------------------------- *)
 
@@ -105,16 +107,26 @@ PROCEDURE (op: Operation) Do*, NEW, ABSTRACT;
 
 (* -- StoreDesc abstract surface ----------------------------------------- *)
 
-PROCEDURE (s: Store) Internalize* (VAR rd: Reader), NEW, EMPTY;
+PROCEDURE (s: Store) Internalize* (VAR rd: Reader), NEW, EXTENSIBLE;
     (** Read this Store's body bytes off `rd` and populate the
-        receiver's fields.  The base implementation is empty;
-        concrete framework layers (`Models.ModelDesc`,
+        receiver's fields.  Consumes the `Stores.Store` version byte
+        (byte 0 of every store body in the `.odc` wire format).
+        Concrete framework layers (`Models.ModelDesc`,
         `TextModels.StdModelDesc`, etc.) override and chain via
         super calls (`s.Internalize^(rd)`) to read their own
         version stamps before / after their fields. *)
+    VAR ver: INTEGER;
+BEGIN
+    rd.ReadVersion(minStoreVersion, maxStoreVersion, ver);
+    IF rd.cancelled THEN RETURN END
+END Internalize;
 
-PROCEDURE (s: Store) Externalize* (VAR wr: Writer), NEW, EMPTY;
-    (** Symmetric with `Internalize`. *)
+PROCEDURE (s: Store) Externalize* (VAR wr: Writer), NEW, EXTENSIBLE;
+    (** Symmetric with `Internalize` — writes the `Stores.Store`
+        version stamp (byte 0) into every store body. *)
+BEGIN
+    wr.WriteVersion(maxStoreVersion)
+END Externalize;
 
 PROCEDURE (s: Store) CopyFrom* (source: Store), NEW, EMPTY;
     (** Deep-copy `source`'s fields into the receiver.  Used by
