@@ -12,12 +12,12 @@ MODULE Containers;
    pieces that need modules not yet ported:
 
    - `Containers.Controller` (extends `Controllers.Controller`)
-     is included as an abstract base now that `Controllers` has
-     landed; its concrete method shape (`SetController`,
-     `ThisController`, the focus / mark protocol, the controller
-     half of Internalize/Externalize) is still deferred until
-     `Controllers.Forwarder` and the module-level routing
-     procedures port.
+     carries `opts`, `model`, `view` fields plus `SetView`,
+     `ThisFocus`, `GetOpts`, `SetOpts`, `HandlePropMsg`,
+     `Internalize`, `Externalize`, and ABSTRACT `Mark`,
+     `Restore`, `SelectAll`.  Module-level routing procedures
+     (`BroadcastMessage`, `PassFocus`, …) remain deferred until
+     `Controllers.Forwarder` lands.
    - `DropPref` (extends `Properties.Preference`).
    - `ViewOp` / `ControllerOp` undo operations.
    - The Internalize/Externalize bodies that call `rd.ReadVersion`
@@ -90,13 +90,14 @@ MODULE Containers;
 
         (** Container-side abstract controller.  Concrete container
             controllers (`TextControllers.Controller`, …) extend
-            this.  The full BlackBox surface adds `opts`, `model`,
-            `view`, `focus`, `singleton`, `bVis` instance fields
-            and a large method bundle; this slice carries just the
-            type so `Containers.ViewDesc.controller` can be typed
-            against it.  Subsequent slices grow the field set as
-            `Forwarder` and the routing procs port. *)
-        ControllerDesc* = ABSTRACT RECORD (Controllers.ControllerDesc) END;
+            this.  Carries the option bits, bound model and bound
+            view; the full focus/mark/selection surface is declared
+            below as ABSTRACT / EXTENSIBLE methods. *)
+        ControllerDesc* = ABSTRACT RECORD (Controllers.ControllerDesc)
+            opts-:  SET;
+            model-: Model;
+            view-:  View
+        END;
         Controller*     = POINTER TO ControllerDesc;
 
         (** Container-side abstract directory.  Concrete container
@@ -138,6 +139,69 @@ MODULE Containers;
         SetOpts* = RECORD (Views.PropMessage)
             valid*, opts*: SET
         END;
+
+
+    (* -- ControllerDesc methods ----------------------------------------- *)
+
+    (** Bind the controller to its view and model. *)
+    PROCEDURE (c: Controller) SetView* (v: View; m: Model), NEW;
+    BEGIN
+        c.view  := v;
+        c.model := m
+    END SetView;
+
+    (** Return the currently focused embedded view (NIL until routing lands). *)
+    PROCEDURE (c: Controller) ThisFocus* (): Views.View, NEW, EXTENSIBLE;
+    BEGIN
+        RETURN NIL
+    END ThisFocus;
+
+    (** Return current option bits. *)
+    PROCEDURE (c: Controller) GetOpts* (OUT opts: SET), NEW, EXTENSIBLE;
+    BEGIN
+        opts := c.opts
+    END GetOpts;
+
+    (** Set option bits within the `valid` mask. *)
+    PROCEDURE (c: Controller) SetOpts* (opts, valid: SET), NEW, EXTENSIBLE;
+    BEGIN
+        c.opts := (c.opts - valid) + (opts * valid)
+    END SetOpts;
+
+    (** Handle Containers.GetOpts / Containers.SetOpts property round-trips. *)
+    PROCEDURE (c: Controller) HandlePropMsg* (VAR msg: Views.PropMessage), NEW, EXTENSIBLE;
+    BEGIN
+        WITH msg: GetOpts DO
+            msg.valid := modeOpts;
+            msg.opts  := c.opts * modeOpts
+        | msg: SetOpts DO
+            c.SetOpts(msg.opts, msg.valid * modeOpts)
+        ELSE
+        END
+    END HandlePropMsg;
+
+    PROCEDURE (c: Controller) Internalize* (VAR rd: Stores.Reader), EXTENSIBLE;
+        VAR ver: INTEGER;
+    BEGIN
+        c.Internalize^(rd);
+        rd.ReadVersion(minVersion, maxCtrlVersion, ver);
+        IF rd.cancelled THEN RETURN END
+    END Internalize;
+
+    PROCEDURE (c: Controller) Externalize* (VAR wr: Stores.Writer), EXTENSIBLE;
+    BEGIN
+        c.Externalize^(wr);
+        wr.WriteVersion(maxCtrlVersion)
+    END Externalize;
+
+    (** Mark the focus/selection in a frame.  ABSTRACT — subclasses implement. *)
+    PROCEDURE (c: Controller) Mark* (f: Views.Frame; focus: Views.View; show: BOOLEAN), NEW, ABSTRACT;
+
+    (** Paint controller-owned marks into a frame.  ABSTRACT — subclasses implement. *)
+    PROCEDURE (c: Controller) Restore* (f: Views.Frame; l, t, r, b: INTEGER), NEW, ABSTRACT;
+
+    (** Select or deselect all content.  ABSTRACT — subclasses implement. *)
+    PROCEDURE (c: Controller) SelectAll* (select: BOOLEAN), NEW, ABSTRACT;
 
 
     (* -- ModelDesc abstract surface ------------------------------------- *)
@@ -249,5 +313,18 @@ MODULE Containers;
         other view, here's the cloned model" hook.  EMPTY default.
         Mirrors the Container shape of `View.CopyFromModelView`. *)
     PROCEDURE (v: View) CopyFromModelView2* (source: Views.View; model: Models.Model), NEW, EMPTY;
+
+    (** Bind a controller to the view and wire it back to view/model. *)
+    PROCEDURE (v: View) SetController* (c: Controller), NEW, EXTENSIBLE;
+    BEGIN
+        v.controller := c;
+        IF c # NIL THEN c.SetView(v, v.model) END
+    END SetController;
+
+    (** Return the bound controller. *)
+    PROCEDURE (v: View) ThisController* (): Controller, NEW, EXTENSIBLE;
+    BEGIN
+        RETURN v.controller
+    END ThisController;
 
 END Containers.
