@@ -63,15 +63,15 @@ MODULE TextViewsBbExt;
     PROCEDURE (v: BbViewDesc) Externalize2* (VAR wr: Stores.Writer);
     BEGIN
         wr.WriteBool(v.hideMarks);
-        wr.WriteInt(v.org);
-        wr.WriteInt(v.dy)
+        wr.WriteLong(v.org);
+        wr.WriteLong(v.dy)
     END Externalize2;
 
     PROCEDURE (v: BbViewDesc) Internalize2* (VAR rd: Stores.Reader);
     BEGIN
         rd.ReadBool(v.hideMarks);
-        rd.ReadInt(v.org);
-        rd.ReadInt(v.dy)
+        rd.ReadLong(v.org);
+        rd.ReadLong(v.dy)
     END Internalize2;
 
 

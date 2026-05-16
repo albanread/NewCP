@@ -244,11 +244,11 @@ BEGIN
     rd.SkipStore();
     IF rd.cancelled THEN RETURN END;
 
-    (* org / dy trailer. *)
+    (* org / dy trailer — 4-byte i32 each in the BB wire format. *)
     v.result := OkTrailerTrunc;
-    rd.ReadInt(v.org);
+    rd.ReadLong(v.org);
     IF rd.eof THEN RETURN END;
-    rd.ReadInt(v.dy);
+    rd.ReadLong(v.dy);
     IF rd.eof THEN RETURN END;
 
     v.result := OkComplete

@@ -514,19 +514,19 @@ BEGIN
     StoresSys.WriterWriteByte(wr.handle, version)
 END WriteVersion;
 
-(** Read / write SET — same i32 wire encoding as INTEGER but
-    typed as SET for the caller.  Used by TextRulers and
-    elsewhere to round-trip the `opts` masks. *)
+(** Read / write SET — 4-byte i32 wire encoding (BlackBox stores
+    SET as LONGINT).  Used by TextRulers and elsewhere to round-trip
+    the `opts` masks. *)
 PROCEDURE (VAR rd: Reader) ReadSet* (OUT s: SET), NEW;
     VAR x: INTEGER;
 BEGIN
-    rd.ReadInt(x);
+    rd.ReadLong(x);
     s := SYSTEM.VAL(SET, x);
 END ReadSet;
 
 PROCEDURE (VAR wr: Writer) WriteSet* (s: SET), NEW;
 BEGIN
-    StoresSys.WriterWriteInt(wr.handle, SYSTEM.VAL(INTEGER, s))
+    StoresSys.WriterWriteLong(wr.handle, SYSTEM.VAL(INTEGER, s))
 END WriteSet;
 
 PROCEDURE (VAR wr: Writer) WriteByte* (b: BYTE), NEW;
