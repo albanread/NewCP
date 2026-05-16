@@ -293,7 +293,7 @@ BEGIN
     locale[0] := 0X;
     ok := HostPortsSys.PointAtCharIndex(rd.base.childId, text, size,
               family, weight, 0, index, px, py, height);
-    IF ok = 1 THEN RETURN x + ENTIER(px) ELSE RETURN x END
+    IF ok = 1 THEN RETURN x + SHORT(ENTIER(px)) ELSE RETURN x END
 END CharPos;
 
 PROCEDURE (rd: HostRiderDesc) SCharIndex*
@@ -329,7 +329,7 @@ BEGIN
     locale[0] := 0X;
     ok := HostPortsSys.PointAtCharIndex(rd.base.childId, s, size,
               family, weight, 0, index, px, py, height);
-    IF ok = 1 THEN RETURN x + ENTIER(px) ELSE RETURN x END
+    IF ok = 1 THEN RETURN x + SHORT(ENTIER(px)) ELSE RETURN x END
 END SCharPos;
 
 
