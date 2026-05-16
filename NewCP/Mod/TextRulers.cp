@@ -225,6 +225,17 @@ MODULE TextRulers;
             selection / drag state. *)
         NeutralizeMsg* = RECORD (Views.Message) END;
 
+        (** Concrete Style — no additional state beyond StyleDesc. *)
+        StdStyleDesc* = RECORD (StyleDesc) END;
+        StdStyle*     = POINTER TO StdStyleDesc;
+
+        (** Concrete Ruler — records the painted width/height of the
+            ruler strip in user units once the geometry slice lands. *)
+        StdRulerDesc* = RECORD (RulerDesc)
+            w-, h-: INTEGER
+        END;
+        StdRuler*     = POINTER TO StdRulerDesc;
+
 
     VAR
         (** Currently-installed factories — `dir` is mutable
@@ -393,6 +404,70 @@ MODULE TextRulers;
             wr.WriteByte(b);
             INC(i)
         END
+    END Externalize;
+
+
+    (* -- StdStyle methods ----------------------------------------------- *)
+
+    PROCEDURE (s: StdStyleDesc) Domain* (): Stores.Domain;
+    BEGIN RETURN NIL END Domain;
+
+    PROCEDURE (s: StdStyleDesc) Internalize* (VAR rd: Stores.Reader);
+        VAR ver, handle: INTEGER; store: Stores.Store;
+    BEGIN
+        s.Internalize^(rd);
+        rd.ReadVersion(minVersion, maxStdStyleVersion, ver);
+        IF rd.cancelled THEN RETURN END;
+        rd.ReadStore(handle);
+        IF rd.cancelled THEN RETURN END;
+        IF handle # 0 THEN
+            store := Stores.NewStore(handle);
+            IF (store # NIL) & (store IS Attributes) THEN
+                s.attr := store(Attributes)
+            END
+        END
+    END Internalize;
+
+    PROCEDURE (s: StdStyleDesc) Externalize* (VAR wr: Stores.Writer);
+    BEGIN
+        s.Externalize^(wr);
+        wr.WriteVersion(maxStdStyleVersion)
+        (* WriteStore(s.attr) — deferred; WriteStore not yet ported. *)
+    END Externalize;
+
+
+    (* -- StdRuler methods ----------------------------------------------- *)
+
+    PROCEDURE (r: StdRulerDesc) Domain* (): Stores.Domain;
+    BEGIN RETURN NIL END Domain;
+
+    PROCEDURE (r: StdRulerDesc) Restore* (f: Views.Frame; l, t, r, b: INTEGER);
+    BEGIN
+        (* Ruler painting deferred — geometry slice not yet ported. *)
+    END Restore;
+
+    PROCEDURE (r: StdRulerDesc) Internalize* (VAR rd: Stores.Reader);
+        VAR ver, handle: INTEGER; store: Stores.Store;
+    BEGIN
+        r.Internalize^(rd);
+        IF rd.cancelled THEN RETURN END;
+        rd.ReadVersion(minVersion, maxStdRulerVersion, ver);
+        IF rd.cancelled THEN RETURN END;
+        rd.ReadStore(handle);
+        IF rd.cancelled THEN RETURN END;
+        IF handle # 0 THEN
+            store := Stores.NewStore(handle);
+            IF (store # NIL) & (store IS Style) THEN
+                r.InitStyle(store(Style))
+            END
+        END
+    END Internalize;
+
+    PROCEDURE (r: StdRulerDesc) Externalize* (VAR wr: Stores.Writer);
+    BEGIN
+        r.Externalize^(wr);
+        wr.WriteVersion(maxStdRulerVersion)
+        (* WriteStore(r.style) — deferred; WriteStore not yet ported. *)
     END Externalize;
 
 
