@@ -7230,7 +7230,8 @@ impl<'a> Analyzer<'a> {
                         self.infer_expr_type(&args[0], local_symbols, scope_type_names)
                     && !matches!(
                         arg_type,
-                        SemanticType::Builtin(BuiltinType::Char)
+                        SemanticType::Builtin(BuiltinType::Byte)
+                            | SemanticType::Builtin(BuiltinType::Char)
                             | SemanticType::Builtin(BuiltinType::ShortChar)
                             | SemanticType::Builtin(BuiltinType::Set)
                     )
@@ -7241,7 +7242,7 @@ impl<'a> Analyzer<'a> {
                         line,
                         column,
                         format!(
-                            "ORD argument 1 must be CHAR, SHORTCHAR, or SET, found {}",
+                            "ORD argument 1 must be BYTE, CHAR, SHORTCHAR, or SET, found {}",
                             render_semantic_type(&arg_type)
                         ),
                     ));

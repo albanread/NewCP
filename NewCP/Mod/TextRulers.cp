@@ -447,7 +447,7 @@ MODULE TextRulers;
     PROCEDURE (r: StdRulerDesc) Domain* (): Stores.Domain;
     BEGIN RETURN NIL END Domain;
 
-    PROCEDURE (r: StdRulerDesc) Restore* (f: Views.Frame; l, t, r, b: INTEGER);
+    PROCEDURE (v: StdRulerDesc) Restore* (f: Views.Frame; l, t, r, b: INTEGER);
     BEGIN
         (* Ruler painting deferred — geometry slice not yet ported. *)
     END Restore;
