@@ -149,6 +149,9 @@ TYPE
     END;
     Directory* = POINTER TO DirectoryDesc;
 
+    StdDirectoryDesc* = RECORD (DirectoryDesc) END;
+    StdDirectory*     = POINTER TO StdDirectoryDesc;
+
 
     (* -- Stage-1 wire-format-only StdModel (kept for the
             existing TextViews probes that decode .odc bodies
@@ -223,6 +226,10 @@ TYPE
         wpos-: INTEGER      (** append cursor; 0 <= wpos <= doc.len *)
     END;
     DocWriter* = POINTER TO DocWriterDesc;
+
+VAR
+    dir-,    stdDir-: Directory;
+    std:              StdDirectory;
 
 PROCEDURE (a: AttributesDesc) Internalize* (VAR rd: Stores.Reader);
     VAR ver, col, offset, size, weight: INTEGER;
@@ -680,5 +687,15 @@ BEGIN
     (* No embedded views — nothing to replace. *)
 END ReplaceView;
 
+
+BEGIN
+    NEW(std);
+    NEW(std.attr);
+    std.attr.init   := TRUE;
+    std.attr.color  := 0;       (* Ports.black — packed 0 = opaque black *)
+    std.attr.font   := NIL;     (* no font until Fonts.dir is installed *)
+    std.attr.offset := 0;
+    stdDir := std;
+    dir    := std
 
 END TextModels.
