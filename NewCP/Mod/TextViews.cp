@@ -122,6 +122,12 @@ TYPE
             was absent or decoding failed. *)
         doc*:   TextModels.Doc;
 
+        (** Loaded inline default ruler/attributes stores.  NIL
+            when the on-disk child store is absent or its type
+            doesn't match the expected pointer type. *)
+        defRuler*: TextRulers.Ruler;
+        defAttr*:  TextModels.Attributes;
+
         result*: INTEGER
     END;
     StdView* = POINTER TO StdViewDesc;
@@ -223,6 +229,8 @@ BEGIN
     p.org       := sv.org;
     p.dy        := sv.dy;
     p.hideMarks := sv.hideMarks;
+    p.defRuler  := sv.defRuler;
+    p.defAttr   := sv.defAttr;
     RETURN p
 END NewPane;
 
@@ -237,9 +245,13 @@ PROCEDURE (v: StdViewDesc) Internalize* (VAR rd: Stores.Reader);
         modelStoreHandle: INTEGER;
         modelStore: Stores.Store;
         bool: BOOLEAN;
+        rulerHandle, attrHandle: INTEGER;
+        rulerStore, attrStore: Stores.Store;
 BEGIN
-    v.model := NIL;
-    v.doc   := NIL;
+    v.model    := NIL;
+    v.doc      := NIL;
+    v.defRuler := NIL;
+    v.defAttr  := NIL;
     v.org := 0;
     v.dy := 0;
     v.hideMarks := FALSE;
@@ -286,15 +298,27 @@ BEGIN
     IF rd.eof THEN RETURN END;
     v.hideMarks := bool;
 
-    (* Default Ruler — skip. *)
+    (* Default Ruler — load if present. *)
     v.result := OkRulerSkipFail;
-    rd.SkipStore();
+    rd.ReadStore(rulerHandle);
     IF rd.cancelled THEN RETURN END;
+    IF rulerHandle # 0 THEN
+        rulerStore := Stores.NewStore(rulerHandle);
+        IF (rulerStore # NIL) & (rulerStore IS TextRulers.Ruler) THEN
+            v.defRuler := rulerStore(TextRulers.Ruler)
+        END
+    END;
 
-    (* Default Attributes — skip. *)
+    (* Default Attributes — load if present. *)
     v.result := OkAttrsSkipFail;
-    rd.SkipStore();
+    rd.ReadStore(attrHandle);
     IF rd.cancelled THEN RETURN END;
+    IF attrHandle # 0 THEN
+        attrStore := Stores.NewStore(attrHandle);
+        IF (attrStore # NIL) & (attrStore IS TextModels.Attributes) THEN
+            v.defAttr := attrStore(TextModels.Attributes)
+        END
+    END;
 
     (* org / dy trailer — 4-byte i32 each in the BB wire format. *)
     v.result := OkTrailerTrunc;

@@ -207,35 +207,35 @@ MODULE Containers;
     PROCEDURE (v: View) Internalize2* (VAR rd: Stores.Reader), NEW, EMPTY;
 
     (** Container-level Internalize.  Super-calls into
-        `Views.ViewDesc.Internalize`, then defers to the
+        `Views.ViewDesc.Internalize` (which reads the
+        `Views.View` version stamp), reads this layer's own
+        `maxViewVersion` stamp, then defers to the
         subclass-supplied `Internalize2`.
 
-        The BlackBox version additionally reads a
-        `maxViewVersion` stamp here, then reads the embedded
-        Model store, the (optional) Controller store, and binds
-        them on `v.model` / `v.controller` / `v.alienCtrl` —
-        with type-guard checks falling back to `TurnIntoAlien`
-        on mismatch.  That materialization step still needs the
-        Kernel.NewObj-driven RTTI factory that turns a
-        `ReaderHandle` for an inline store into a typed
-        `Stores.Store`-rooted value without introducing an import
-        cycle here.  Until that direct runtime path lands,
-        subclass Internalize2
-        bodies (`TextViews.View.Internalize2`) handle BOTH the
-        version stamp AND the child-store reads via
-        `rd.ReadVersion` / `rd.ReadStore` / SkipStore. *)
+        In BlackBox the version stamp is immediately followed by
+        the embedded Model store and the (optional) Controller
+        store; their materialisation (`rd.ReadStore` /
+        `Stores.NewStore` / `TurnIntoAlien`) is deferred until
+        the Kernel RTTI factory lands.  Subclass
+        `Internalize2` bodies (`TextViews.StdView`) read those
+        child stores directly after the stamp. *)
     PROCEDURE (v: View) Internalize* (VAR rd: Stores.Reader);
+        VAR ver: INTEGER;
     BEGIN
         v.Internalize^(rd);
+        IF rd.cancelled THEN RETURN END;
+        rd.ReadVersion(minVersion, maxViewVersion, ver);
         IF rd.cancelled THEN RETURN END;
         v.Internalize2(rd)
     END Internalize;
 
-    (** Symmetric Externalize.  Subclass-supplied
-        `Externalize2` runs at the end. *)
+    (** Symmetric Externalize — writes the `Containers.View`
+        version stamp after the super layer's stamp, then
+        delegates to `Externalize2` for subclass fields. *)
     PROCEDURE (v: View) Externalize* (VAR wr: Stores.Writer);
     BEGIN
         v.Externalize^(wr);
+        wr.WriteVersion(maxViewVersion);
         v.Externalize2(wr)
     END Externalize;
 

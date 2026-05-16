@@ -175,25 +175,32 @@ MODULE Views;
 
     (* -- View methods (Store protocol) ----------------------------------- *)
 
-    (** EXTENSIBLE chain — super-call into
-        `Stores.StoreDesc.Internalize` (EMPTY).  See the matching
-        Models.Model comment on why we don't `ReadVersion` here
-        unconditionally: existing matrix probes write/read a
-        vanilla wire format with no version bytes, so adding a
-        stamp would desync them.  Subclasses (TextViews and
-        friends) that DO want the BB-faithful version-tagged
-        format are expected to call `rd.ReadVersion` /
-        `wr.WriteVersion` themselves at the points BlackBox
-        does. *)
+    (** EXTENSIBLE Internalize chain — super-calls into
+        `Stores.StoreDesc.Internalize` (EMPTY), then reads the
+        BB-faithful `Views.View` version stamp.  Every concrete
+        view store body starts with this byte in the wire format
+        (after the `Stores.Store` version byte that the super
+        layer's ReadVersion will eventually consume).
+        Subclasses (`TextViews.StdView`) that materialise all
+        version bytes themselves with raw `ReadByte` loops do
+        NOT go through this chain — they override Internalize
+        outright, so the version stamp here is consumed
+        exclusively by views that use the normal super-call
+        protocol (`Containers.View`, `TextRulers.StdRuler`, …). *)
     PROCEDURE (v: View) Internalize* (VAR rd: Stores.Reader), EXTENSIBLE;
+        VAR ver: INTEGER;
     BEGIN
-        v.Internalize^(rd)
+        v.Internalize^(rd);
+        rd.ReadVersion(minVersion, maxVersion, ver);
+        IF rd.cancelled THEN RETURN END
     END Internalize;
 
-    (** Symmetric Externalize chain. *)
+    (** Symmetric Externalize chain — writes the `Views.View`
+        version stamp after the super layer's stamp. *)
     PROCEDURE (v: View) Externalize* (VAR wr: Stores.Writer), EXTENSIBLE;
     BEGIN
-        v.Externalize^(wr)
+        v.Externalize^(wr);
+        wr.WriteVersion(maxVersion)
     END Externalize;
 
 
