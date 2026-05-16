@@ -27,7 +27,7 @@ MODULE TextModels;
    specification.
 *)
 
-IMPORT Stores, Models, Containers, Properties, Ports, Fonts, Views;
+IMPORT Stores, Models, Containers, Properties, Ports, Fonts, Sequencers, Views;
 
 CONST
     (** Special character codes used by the text stream — these
@@ -593,14 +593,21 @@ END Base;
 (* -- DocWriter concrete overrides ----------------------------- *)
 
 PROCEDURE (wr: DocWriterDesc) WriteChar* (ch: CHAR);
+    VAR pos: INTEGER; msg: UpdateMsg;
 BEGIN
     IF wr.wpos < DocCapacity - 1 THEN
+        pos := wr.wpos;
         wr.doc.buf[wr.wpos] := ch;
         wr.wpos := wr.wpos + 1;
         IF wr.wpos > wr.doc.len THEN
             wr.doc.len := wr.wpos;
             wr.doc.buf[wr.doc.len] := 0X    (* keep sentinel *)
-        END
+        END;
+        msg.op    := insert;
+        msg.beg   := pos;
+        msg.end   := pos + 1;
+        msg.delta := 1;
+        Models.Broadcast(wr.doc, msg)
     END
 END WriteChar;
 
@@ -666,6 +673,9 @@ BEGIN
     NEW(wr);
     wr.doc  := m(Doc);
     wr.wpos := m.len;       (* append by default *)
+    IF m.seq = NIL THEN
+        Models.SetSequencer(m, Sequencers.dir.New())
+    END;
     RETURN wr
 END NewWriter;
 

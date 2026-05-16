@@ -29,7 +29,7 @@ MODULE TextViews;
    specification.
 *)
 
-IMPORT Stores, TextModels, TextRulers, TextSetters, Views, Containers, Ports, Fonts;
+IMPORT Stores, Models, TextModels, TextRulers, TextSetters, Views, Containers, Ports, Fonts;
 
 CONST
     OkComplete*           = 0;
@@ -555,6 +555,22 @@ BEGIN
     (* No-op until broadcast routing through Models.Broadcast
        fires from a meaningful set of frames. *)
 END ShowRange;
+
+PROCEDURE (v: Pane) HandleModelMsg* (VAR msg: Models.Message);
+BEGIN
+    WITH msg: TextModels.UpdateMsg DO
+        Views.Update(v, Views.keepFrames)
+    ELSE
+    END
+END HandleModelMsg;
+
+PROCEDURE (v: Pane) HandleViewMsg* (f: Views.Frame; VAR msg: Views.Message);
+BEGIN
+    WITH msg: Views.UpdateCachesMsg DO
+        v.Restore(f, f.l, f.t, f.r, f.b)
+    ELSE
+    END
+END HandleViewMsg;
 
 PROCEDURE (v: Pane) Externalize2* (VAR wr: Stores.Writer);
 BEGIN
