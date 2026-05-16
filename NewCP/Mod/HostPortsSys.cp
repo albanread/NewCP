@@ -99,6 +99,68 @@ BEGIN
                          maxWidth, alignment, trimming, r, g, b, a)
 END DrawTextRun;
 
+(** Oval primitive.  s = Ports.fill (-1) means filled; s > 0 is
+    halfThickness in device dots. *)
+PROCEDURE DrawOval* (x0, y0, x1, y1: REAL; s: INTEGER; col: INTEGER);
+    VAR r, g, b, a: REAL;
+BEGIN
+    UnpackColor(col, r, g, b, a);
+    IF s = -1 THEN
+        iGui.EmitFillOval(x0, y0, x1, y1, r, g, b, a)
+    ELSE
+        iGui.EmitStrokeOval(x0, y0, x1, y1, s / 2.0, r, g, b, a)
+    END
+END DrawOval;
+
+(** MarkRect overlay.  show = FALSE is a no-op (immediate-mode: next
+    repaint erases naturally).  mode maps Ports.invert/hilite/dimNN
+    to a translucent overlay fill. *)
+PROCEDURE MarkRect* (x0, y0, x1, y1: REAL; mode: INTEGER; show: BOOLEAN);
+BEGIN
+    IF ~show THEN RETURN END;
+    CASE mode OF
+      0: iGui.EmitFillRect(x0, y0, x1, y1, 0.0, 1.0, 1.0, 1.0, 0.5)  (* invert *)
+    | 1: iGui.EmitFillRect(x0, y0, x1, y1, 0.0, 0.2, 0.5, 0.9, 0.3)  (* hilite *)
+    | 2: iGui.EmitFillRect(x0, y0, x1, y1, 0.0, 0.0, 0.0, 0.0, 0.25) (* dim25  *)
+    | 3: iGui.EmitFillRect(x0, y0, x1, y1, 0.0, 0.0, 0.0, 0.0, 0.5)  (* dim50  *)
+    | 4: iGui.EmitFillRect(x0, y0, x1, y1, 0.0, 0.0, 0.0, 0.0, 0.75) (* dim75  *)
+    ELSE END
+END MarkRect;
+
+(** Hit-test: character index at a layout-relative x position.
+    `x` is pos - stringLeft (relative to the layout origin).
+    `y` = 0.0 for single-line queries.  Returns 1 on success. *)
+PROCEDURE CharIndexAtPoint* (childId: INTEGER;
+                             IN text: ARRAY OF SHORTCHAR;
+                             fontSize: REAL;
+                             IN family: ARRAY OF SHORTCHAR;
+                             weight, style, stretch: INTSHORT;
+                             IN locale: ARRAY OF SHORTCHAR;
+                             x, y: REAL;
+                             VAR charIndex: INTEGER;
+                             VAR isInside, isTrailing: INTSHORT): INTSHORT;
+BEGIN
+    RETURN iGui.CharIndexAtPoint(childId, text, fontSize, family,
+                                 weight, style, stretch, locale,
+                                 x, y, charIndex, isInside, isTrailing)
+END CharIndexAtPoint;
+
+(** Hit-test: pixel x of the left edge of character `charIndex`.
+    Returns 1 on success; on success `x` is the DIP offset from
+    the layout origin (i.e. add your string's left edge for screen
+    coords). *)
+PROCEDURE PointAtCharIndex* (childId: INTEGER;
+                              IN text: ARRAY OF SHORTCHAR;
+                              fontSize: REAL;
+                              IN family: ARRAY OF SHORTCHAR;
+                              weight, style: INTSHORT;
+                              charIndex: INTEGER;
+                              VAR x, y, height: REAL): INTSHORT;
+BEGIN
+    RETURN iGui.PointAtCharIndex(childId, text, fontSize, family,
+                                  weight, style, charIndex, x, y, height)
+END PointAtCharIndex;
+
 (** Solid-color clear for a child's full bitmap surface. *)
 PROCEDURE Clear* (col: INTEGER);
     VAR r, g, b, a: REAL;

@@ -545,33 +545,47 @@ pub extern "C" fn stores_sys_reader_read_byte(reader: i64) -> i64 {
     reader_read_n(reader, 1).map(|b| b[0] as i64).unwrap_or(0)
 }
 
-/// `StoresSys.ReaderReadInt(r: INTEGER): INTEGER`. Reads a 4-byte
-/// little-endian signed integer. Wire format is always LE
-/// regardless of host endianness; CP `INTEGER` is i64-clean here.
+/// `StoresSys.ReaderReadInt(r: INTEGER): INTEGER`. Reads a 2-byte
+/// little-endian signed integer (BlackBox `Reader.ReadInt` wire
+/// width = i16, sign-extended to i64 for CP `INTEGER`).
 #[unsafe(no_mangle)]
 pub extern "C" fn stores_sys_reader_read_int(reader: i64) -> i64 {
-    reader_read_n(reader, 4)
-        .map(|b| i32::from_le_bytes([b[0], b[1], b[2], b[3]]) as i64)
-        .unwrap_or(0)
-}
-
-/// `StoresSys.ReaderReadXInt(r: INTEGER): INTEGER`. Reads a 2-byte
-/// little-endian signed short. CP `INTSHORT`/`SHORTINT` callers
-/// widen to INTEGER at the call site; the shim returns the
-/// decoded value as i64.
-#[unsafe(no_mangle)]
-pub extern "C" fn stores_sys_reader_read_xint(reader: i64) -> i64 {
     reader_read_n(reader, 2)
         .map(|b| i16::from_le_bytes([b[0], b[1]]) as i64)
         .unwrap_or(0)
 }
 
-/// `StoresSys.ReaderReadLong(r: INTEGER): LONGINT`. Reads an
-/// 8-byte little-endian signed integer.
+/// `StoresSys.ReaderReadXInt(r: INTEGER): INTEGER`. Reads a
+/// BlackBox-compressed short integer:
+///   - Read 1 byte (b0).  If b0 is in [-128, 127] when interpreted
+///     as i8, that is the value (1-byte encoding).
+///   - Otherwise b0 == -128 (0x80) is a sentinel meaning "read one
+///     more byte and combine as LE i16" — the two bytes together
+///     give the value.
+/// Sign-extended to i64 for CP `INTEGER`.
+#[unsafe(no_mangle)]
+pub extern "C" fn stores_sys_reader_read_xint(reader: i64) -> i64 {
+    let Some(first) = reader_read_n(reader, 1) else {
+        return 0;
+    };
+    let b0 = first[0] as i8;
+    if b0 != -128i8 {
+        // Single-byte encoding: value fits in [-127, 127].
+        return b0 as i64;
+    }
+    // Two-byte encoding: sentinel 0x80 means read a full LE i16.
+    reader_read_n(reader, 2)
+        .map(|b| i16::from_le_bytes([b[0], b[1]]) as i64)
+        .unwrap_or(0)
+}
+
+/// `StoresSys.ReaderReadLong(r: INTEGER): LONGINT`. Reads a 4-byte
+/// little-endian signed integer (BlackBox `Reader.ReadLong` wire
+/// width = i32, sign-extended to i64 for CP `INTEGER`).
 #[unsafe(no_mangle)]
 pub extern "C" fn stores_sys_reader_read_long(reader: i64) -> i64 {
-    reader_read_n(reader, 8)
-        .map(|b| i64::from_le_bytes([b[0], b[1], b[2], b[3], b[4], b[5], b[6], b[7]]))
+    reader_read_n(reader, 4)
+        .map(|b| i32::from_le_bytes([b[0], b[1], b[2], b[3]]) as i64)
         .unwrap_or(0)
 }
 
@@ -778,26 +792,39 @@ pub extern "C" fn stores_sys_writer_write_byte(writer: i64, b: i64) {
     let _ = with_writer_mut(writer, |w| w.buffer.push(b as u8));
 }
 
-/// Append a 4-byte little-endian signed integer (mirrors `ReaderReadInt`).
+/// Append a 2-byte little-endian signed integer (mirrors
+/// `ReaderReadInt`; BlackBox wire width = i16).
 #[unsafe(no_mangle)]
 pub extern "C" fn stores_sys_writer_write_int(writer: i64, x: i64) {
-    let _ = with_writer_mut(writer, |w| {
-        w.buffer.extend_from_slice(&(x as i32).to_le_bytes())
-    });
-}
-
-/// Append a 2-byte little-endian signed short (mirrors `ReaderReadXInt`).
-#[unsafe(no_mangle)]
-pub extern "C" fn stores_sys_writer_write_xint(writer: i64, x: i64) {
     let _ = with_writer_mut(writer, |w| {
         w.buffer.extend_from_slice(&(x as i16).to_le_bytes())
     });
 }
 
-/// Append an 8-byte little-endian signed integer (mirrors `ReaderReadLong`).
+/// Append a BlackBox-compressed short integer (mirrors
+/// `ReaderReadXInt`):
+///   - If `x` fits in [-127, 127], write 1 byte (the i8 value).
+///   - Otherwise write 0x80 sentinel followed by 2 bytes (LE i16).
+/// Note: -128 (0x80 as i8) is the sentinel byte and therefore
+/// cannot be encoded in the 1-byte form; values in [-128, -128]
+/// fall through to the 2-byte path.
+#[unsafe(no_mangle)]
+pub extern "C" fn stores_sys_writer_write_xint(writer: i64, x: i64) {
+    let _ = with_writer_mut(writer, |w| {
+        if x >= -127 && x <= 127 {
+            w.buffer.push(x as i8 as u8);
+        } else {
+            w.buffer.push(0x80u8); // sentinel
+            w.buffer.extend_from_slice(&(x as i16).to_le_bytes());
+        }
+    });
+}
+
+/// Append a 4-byte little-endian signed integer (mirrors `ReaderReadLong`;
+/// BlackBox wire width = i32).
 #[unsafe(no_mangle)]
 pub extern "C" fn stores_sys_writer_write_long(writer: i64, x: i64) {
-    let _ = with_writer_mut(writer, |w| w.buffer.extend_from_slice(&x.to_le_bytes()));
+    let _ = with_writer_mut(writer, |w| w.buffer.extend_from_slice(&(x as i32).to_le_bytes()));
 }
 
 /// Append a single byte: 1 if `x != 0`, 0 otherwise (mirrors `ReaderReadBool`).

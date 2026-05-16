@@ -141,7 +141,7 @@ END DrawRect;
 PROCEDURE (rd: HostRiderDesc) DrawOval*
     (l, t, r, b, s: INTEGER; col: Ports.Color);
 BEGIN
-    (* Deferred to the geometry-completion slice. *)
+    HostPortsSys.DrawOval(l, t, r, b, s, col)
 END DrawOval;
 
 PROCEDURE (rd: HostRiderDesc) DrawLine*
@@ -157,7 +157,9 @@ BEGIN END DrawPath;
 
 PROCEDURE (rd: HostRiderDesc) MarkRect*
     (l, t, r, b, s, mode: INTEGER; show: BOOLEAN);
-BEGIN END MarkRect;
+BEGIN
+    HostPortsSys.MarkRect(l, t, r, b, mode, show)
+END MarkRect;
 
 PROCEDURE (rd: HostRiderDesc) Scroll* (dx, dy: INTEGER);
 BEGIN END Scroll;
@@ -254,27 +256,81 @@ BEGIN
                              weight, 0, 5, locale, -1.0, 0, 0, col)
 END DrawSString;
 
-(* Hit-test methods — return 0 until DirectWrite layout caches
-   land via iGui.MeasureTextRun. *)
 PROCEDURE (rd: HostRiderDesc) CharIndex*
     (x, pos: INTEGER; IN s: ARRAY OF CHAR;
      font: Fonts.Font): INTEGER;
-BEGIN RETURN 0 END CharIndex;
+    VAR text: ARRAY 1024 OF SHORTCHAR;
+        family: ARRAY 64 OF SHORTCHAR;
+        locale: ARRAY 16 OF SHORTCHAR;
+        size: REAL;
+        weight: INTSHORT;
+        charIndex: INTEGER;
+        isInside, isTrailing: INTSHORT;
+        ok: INTSHORT;
+BEGIN
+    Narrow(s, text);
+    FontParams(font, family, size, weight);
+    locale[0] := 0X;
+    ok := HostPortsSys.CharIndexAtPoint(rd.base.childId, text, size,
+              family, weight, 0, 5, locale,
+              pos - x, 0.0, charIndex, isInside, isTrailing);
+    IF ok = 1 THEN RETURN charIndex ELSE RETURN 0 END
+END CharIndex;
 
 PROCEDURE (rd: HostRiderDesc) CharPos*
     (x, index: INTEGER; IN s: ARRAY OF CHAR;
      font: Fonts.Font): INTEGER;
-BEGIN RETURN 0 END CharPos;
+    VAR text: ARRAY 1024 OF SHORTCHAR;
+        family: ARRAY 64 OF SHORTCHAR;
+        locale: ARRAY 16 OF SHORTCHAR;
+        size: REAL;
+        weight: INTSHORT;
+        px, py, height: REAL;
+        ok: INTSHORT;
+BEGIN
+    Narrow(s, text);
+    FontParams(font, family, size, weight);
+    locale[0] := 0X;
+    ok := HostPortsSys.PointAtCharIndex(rd.base.childId, text, size,
+              family, weight, 0, index, px, py, height);
+    IF ok = 1 THEN RETURN x + ENTIER(px) ELSE RETURN x END
+END CharPos;
 
 PROCEDURE (rd: HostRiderDesc) SCharIndex*
     (x, pos: INTEGER; IN s: ARRAY OF SHORTCHAR;
      font: Fonts.Font): INTEGER;
-BEGIN RETURN 0 END SCharIndex;
+    VAR family: ARRAY 64 OF SHORTCHAR;
+        locale: ARRAY 16 OF SHORTCHAR;
+        size: REAL;
+        weight: INTSHORT;
+        charIndex: INTEGER;
+        isInside, isTrailing: INTSHORT;
+        ok: INTSHORT;
+BEGIN
+    FontParams(font, family, size, weight);
+    locale[0] := 0X;
+    ok := HostPortsSys.CharIndexAtPoint(rd.base.childId, s, size,
+              family, weight, 0, 5, locale,
+              pos - x, 0.0, charIndex, isInside, isTrailing);
+    IF ok = 1 THEN RETURN charIndex ELSE RETURN 0 END
+END SCharIndex;
 
 PROCEDURE (rd: HostRiderDesc) SCharPos*
     (x, index: INTEGER; IN s: ARRAY OF SHORTCHAR;
      font: Fonts.Font): INTEGER;
-BEGIN RETURN 0 END SCharPos;
+    VAR family: ARRAY 64 OF SHORTCHAR;
+        locale: ARRAY 16 OF SHORTCHAR;
+        size: REAL;
+        weight: INTSHORT;
+        px, py, height: REAL;
+        ok: INTSHORT;
+BEGIN
+    FontParams(font, family, size, weight);
+    locale[0] := 0X;
+    ok := HostPortsSys.PointAtCharIndex(rd.base.childId, s, size,
+              family, weight, 0, index, px, py, height);
+    IF ok = 1 THEN RETURN x + ENTIER(px) ELSE RETURN x END
+END SCharPos;
 
 
 (* ─── Lifecycle ──────────────────────────────────────────────── *)

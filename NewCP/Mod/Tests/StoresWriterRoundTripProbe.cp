@@ -25,14 +25,14 @@ MODULE StoresWriterRoundTripProbe;
         wr.handle := Stores.NewWriter();
         ASSERT(wr.handle # 0, 20);
 
-        (* Serialise: 1 byte (0x2A = 42), 4-byte int 1234, 8-byte
-           long 9_999_999_999, BOOLEAN TRUE.  Total = 1 + 4 + 8 + 1
-           = 14 bytes. *)
+        (* Serialise: 1 byte (0x2A = 42), 2-byte int 1234 (BB i16 LE),
+           4-byte long 999999999 (BB i32 LE), BOOLEAN TRUE.
+           Total = 1 + 2 + 4 + 1 = 8 bytes. *)
         wr.WriteByte(2AX);
         wr.WriteInt(1234);
-        wr.WriteLong(9999999999);
+        wr.WriteLong(999999999);
         wr.WriteBool(TRUE);
-        ASSERT(Stores.WriterPos(wr.handle) = 14, 21);
+        ASSERT(Stores.WriterPos(wr.handle) = 8, 21);
 
         (* Hand the buffer over to a Reader and drain it back. *)
         rd.handle := Stores.OpenReaderFromWriter(wr.handle);
@@ -51,13 +51,13 @@ MODULE StoresWriterRoundTripProbe;
            if every field round-tripped:
                byte (42) * 100_000_000
              + i    (1234) * 100
-             + (l - 9999999900) * 10   (= 99 * 10 = 990)
+             + (l - 999999900) * 10    (= 99 * 10 = 990)
              + (IF b THEN 7 ELSE 0)
              = 4_200_000_000 + 123_400 + 990 + 7
              = 4_200_124_397 *)
         IF ~b THEN RETURN -1 END;
         RETURN (byte * 100000000) + (i * 100)
-             + (l - 9999999900) * 10 + 7
+             + (l - 999999900) * 10 + 7
     END Run;
 
 END StoresWriterRoundTripProbe.

@@ -230,7 +230,7 @@ END Domain;
 PROCEDURE (m: StdModelDesc) Internalize* (VAR rd: Stores.Reader);
     VAR i, j, len, w, h, ascii, attrIdx: INTEGER;
         attrPoolSize, totalBufBytes: INTEGER;
-        b, ano: BYTE;
+        b, ano, lo, hi: BYTE;
 BEGIN
     m.runListLen := -1;
     m.textPieceCount := 0;
@@ -250,9 +250,9 @@ BEGIN
         INC(i)
     END;
 
-    (* Run-list length prefix. *)
+    (* Run-list length prefix — 4-byte i32 in the BB wire format. *)
     m.result := OkRunListLenTrunc;
-    rd.ReadInt(m.runListLen);
+    rd.ReadLong(m.runListLen);
     IF rd.eof THEN RETURN END;
 
     (* Run-list pieces.  Each piece is an (ano, len[, w, h]) triple;
@@ -306,8 +306,8 @@ BEGIN
             INC(m.totalChars, (-len) DIV 2)
         ELSE
             (* len = 0 → embedded view: w (i32), h (i32), inline store. *)
-            rd.ReadInt(w); IF rd.eof THEN RETURN END;
-            rd.ReadInt(h); IF rd.eof THEN RETURN END;
+            rd.ReadLong(w); IF rd.eof THEN RETURN END;
+            rd.ReadLong(h); IF rd.eof THEN RETURN END;
             rd.SkipStore();
             IF rd.cancelled THEN
                 m.result := OkUnsupportedView;
@@ -344,9 +344,25 @@ BEGIN
                 INC(j)
             END;
             INC(totalBufBytes, m.pieceCharLen[i])
+        ELSIF m.pieceKind[i] = PieceKindText2 THEN
+            (* 2-byte UCS-2 LE: read lo then hi byte per char. *)
+            j := 0;
+            WHILE j < m.pieceCharLen[i] DO
+                rd.ReadByte(lo);
+                IF rd.eof THEN RETURN END;
+                rd.ReadByte(hi);
+                IF rd.eof THEN RETURN END;
+                ascii := lo + hi * 256;
+                IF m.textLen < TextBufferChars - 1 THEN
+                    m.text[m.textLen] := CHR(ascii);
+                    INC(m.textLen)
+                END;
+                INC(j)
+            END;
+            INC(totalBufBytes, m.pieceBufBytes[i])
         ELSE
             (* Skip the bytes this piece reserved in the chars
-               buffer (2-byte text or view placeholder). *)
+               buffer (view placeholder: 1 byte). *)
             j := 0;
             WHILE j < m.pieceBufBytes[i] DO
                 rd.ReadByte(b);
