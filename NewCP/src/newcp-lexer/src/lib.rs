@@ -334,6 +334,14 @@ impl<'a> Lexer<'a> {
                 lexeme.push(self.bump_char().expect("suffix should exist"));
                 TokenKind::Character
             }
+            // SX suffix — BlackBox SHORTCHAR character literal (e.g. 0SX, 41SX).
+            // Represented as TokenKind::Character; the lexeme ends in "SX" so
+            // the parser/sema can distinguish it from CHAR literals ending in "X".
+            Some('S') if self.peek_next_char() == Some('X') => {
+                lexeme.push(self.bump_char().expect("S suffix should exist"));
+                lexeme.push(self.bump_char().expect("X suffix should exist"));
+                TokenKind::Character
+            }
             Some(character) if is_identifier_start(character) => {
                 return Err(LexError::new(
                     format!("invalid numeric literal: {}", lexeme),
