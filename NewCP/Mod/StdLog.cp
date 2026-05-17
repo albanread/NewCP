@@ -19,7 +19,7 @@ MODULE StdLog;
        must invoke StdLog.Open explicitly.
 *)
 
-    IMPORT Documents, Windows, TextModels, TextViews, Strings;
+    IMPORT Documents, Views, Windows, TextModels, TextViews, Strings;
 
     CONST
         winWidth  = 700;
@@ -45,11 +45,19 @@ MODULE StdLog;
     END EnsureModel;
 
 
-    (* ---- Private: repaint log window if open --------------------------- *)
+    (* ---- Private: scroll log to end and repaint ------------------------ *)
 
     PROCEDURE RepaintLog;
+        VAR v: Views.View;
     BEGIN
         IF (logWin # NIL) & logWin.IsValid() THEN
+            (* Auto-scroll: move the pane origin so the newest text is visible. *)
+            IF logDoc # NIL THEN
+                v := logWin.ThisDoc().ThisView();
+                IF (v # NIL) & (v IS TextViews.Pane) THEN
+                    v(TextViews.Pane).ShowRange(logDoc.Length(), logDoc.Length(), FALSE)
+                END
+            END;
             logWin.Repaint()
         END
     END RepaintLog;

@@ -316,6 +316,38 @@ BEGIN
     c.selEnd := end
 END SetSelection;
 
+(* ─── Required Containers.Controller overrides ─────────────────
+   Mark: show/hide the focus/selection border.  In our rendering
+   the view handles its own selection highlight, so this is empty.
+   Restore: paint controller-owned marks into a frame.  Also empty
+   since the text pane's Restore already covers caret and selection.
+   SelectAll: select or deselect all text in the focused model. *)
+PROCEDURE (c: StdCtrl) Mark* (f: Views.Frame; focus: Views.View;
+                               show: BOOLEAN);
+BEGIN
+    (* Nothing to do — TextViews.Pane.Restore renders selection. *)
+END Mark;
+
+PROCEDURE (c: StdCtrl) Restore* (f: Views.Frame; l, t, r, b: INTEGER);
+BEGIN
+    (* Nothing to do — TextViews.Pane.Restore renders everything. *)
+END Restore;
+
+PROCEDURE (c: StdCtrl) SelectAll* (select: BOOLEAN);
+    VAR len: INTEGER;
+BEGIN
+    IF select THEN
+        IF c.text # NIL THEN
+            len := c.text.Length();
+            IF len > 0 THEN c.selBeg := 0; c.selEnd := len END
+        END
+    ELSE
+        c.selBeg := c.carPos;
+        c.selEnd := c.carPos
+    END
+END SelectAll;
+
+
 (* ─── StdCtrl keyboard input ───────────────────────────────────
    HandleKey processes typed characters and editing keys.  The model
    must be a TextModels.Doc (our concrete editable type); if the

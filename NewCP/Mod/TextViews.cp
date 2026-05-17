@@ -638,13 +638,49 @@ END ThisPos;
 
 PROCEDURE (v: Pane)ShowRangeIn* (f: Views.Frame; beg, end: INTEGER);
 BEGIN
-    (* No-op until rendering lands. *)
+    v.ShowRange(beg, end, FALSE)
 END ShowRangeIn;
 
+(** Scroll the pane so that position `beg` is visible.
+    Sets `v.org` to the start of the line that contains `beg`,
+    biased so `beg` is not the very first line (one context line
+    above is preserved when beg is mid-document). *)
 PROCEDURE (v: Pane)ShowRange* (beg, end: INTEGER; focusOnly: BOOLEAN);
+    CONST visLines = 20;   (* default assumed visible line count *)
+    VAR rd: TextModels.Reader;
+        pos, lineNo, targetLine, newOrg: INTEGER;
 BEGIN
-    (* No-op until broadcast routing through Models.Broadcast
-       fires from a meaningful set of frames. *)
+    IF v.text = NIL THEN RETURN END;
+    rd := v.text.NewReader(NIL);
+    IF rd = NIL THEN RETURN END;
+    (* Count the line number of `beg` (0-based). *)
+    rd.SetPos(0); rd.ReadChar();
+    pos := 0; lineNo := 0; newOrg := 0;
+    WHILE ~rd.eot & (pos < beg) DO
+        IF (rd.char = TextModels.line) OR (rd.char = TextModels.para) THEN
+            INC(lineNo)
+        END;
+        INC(pos); rd.ReadChar()
+    END;
+    (* Choose org so that `beg` is on the last visible line
+       (or on line 0 when the document is short enough). *)
+    IF lineNo < visLines THEN
+        v.org := 0;
+        v.dy  := 0;
+        RETURN
+    END;
+    targetLine := lineNo - visLines + 1;
+    rd.SetPos(0); rd.ReadChar();
+    pos := 0; lineNo := 0; newOrg := 0;
+    WHILE ~rd.eot & (lineNo < targetLine) DO
+        IF (rd.char = TextModels.line) OR (rd.char = TextModels.para) THEN
+            INC(lineNo);
+            IF lineNo = targetLine THEN newOrg := rd.Pos() END
+        END;
+        INC(pos); rd.ReadChar()
+    END;
+    v.org := newOrg;
+    v.dy  := 0
 END ShowRange;
 
 PROCEDURE (v: Pane) HandleModelMsg* (VAR msg: Models.Message);
