@@ -272,6 +272,18 @@ TYPE
     END;
     DeleteOp = POINTER TO DeleteOpDesc;
 
+    (** Undo operation for SetAttrRange.  Saves the old per-char attrs
+        so Undo restores them and Redo re-applies `newAttr`. *)
+    AttrRangeOpDesc = RECORD (Stores.OperationDesc)
+        doc:     Doc;
+        beg:     INTEGER;
+        n:       INTEGER;
+        newAttr: Attributes;   (** attr applied by Redo; NIL = plain *)
+        oldBuf:  AttrBuf;      (** saved old attrs, LEN = n *)
+        done:    BOOLEAN
+    END;
+    AttrRangeOp = POINTER TO AttrRangeOpDesc;
+
 VAR
     dir-,    stdDir-: Directory;
     std:              StdDirectory;
@@ -939,24 +951,57 @@ BEGIN
 END DeleteRange;
 
 
-(** Apply `attr` to every character in [beg, end).
-    NIL resets those characters to the view's default attribute
-    (plain style).  Broadcasts a `replace` update so views repaint.
-    This call is NOT undoable — use it for formatting commands that
-    operate on selections. *)
+(* ─── AttrRangeOp: undo/redo for SetAttrRange ───────────────── *)
+
+PROCEDURE (op: AttrRangeOp) Do*;
+    VAR i: INTEGER; swap: Attributes; msg: UpdateMsg;
+BEGIN
+    IF op.done THEN
+        (* Undo: restore saved old attrs. *)
+        i := 0;
+        WHILE i < op.n DO
+            swap := op.doc.attrs[op.beg + i];
+            op.doc.attrs[op.beg + i] := op.oldBuf[i];
+            op.oldBuf[i] := swap;      (* keep old for potential re-redo *)
+            INC(i)
+        END
+    ELSE
+        (* Do / Redo: apply newAttr to the range (save current in oldBuf). *)
+        i := 0;
+        WHILE i < op.n DO
+            op.oldBuf[i] := op.doc.attrs[op.beg + i];
+            op.doc.attrs[op.beg + i] := op.newAttr;
+            INC(i)
+        END
+    END;
+    op.done := ~op.done;
+    msg.op := replace; msg.beg := op.beg; msg.end := op.beg + op.n; msg.delta := 0;
+    Models.Broadcast(op.doc, msg)
+END Do;
+
+
+(** Apply `attr` to every character in [beg, end).  Creates an undoable
+    operation through the model's sequencer.  NIL attr resets to the
+    view's default (plain style).  Broadcasts a `replace` update. *)
 PROCEDURE (m: DocDesc) SetAttrRange* (beg, end: INTEGER; attr: Attributes), NEW;
-    VAR i: INTEGER; msg: UpdateMsg;
+    VAR op: AttrRangeOp; n: INTEGER;
 BEGIN
     IF beg < 0 THEN beg := 0 END;
     IF end > m.len THEN end := m.len END;
     IF beg >= end THEN RETURN END;
-    i := beg;
-    WHILE i < end DO m.attrs[i] := attr; INC(i) END;
-    msg.op    := replace;
-    msg.beg   := beg;
-    msg.end   := end;
-    msg.delta := 0;
-    Models.Broadcast(m, msg)
+    n := end - beg;
+    IF m.seq = NIL THEN
+        Models.SetSequencer(m, Sequencers.dir.New())
+    END;
+    NEW(op);
+    op.doc     := m(Doc);
+    op.beg     := beg;
+    op.n       := n;
+    op.newAttr := attr;
+    op.done    := FALSE;
+    NEW(op.oldBuf, n + 1);   (* +1 for safety *)
+    (* Do not pre-fill oldBuf here — AttrRangeOp.Do fills it on first call. *)
+    Models.Do(m, "Attr", op)
 END SetAttrRange;
 
 

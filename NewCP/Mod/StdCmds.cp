@@ -227,6 +227,7 @@ MODULE StdCmds;
         VAR filter:   ARRAY 4 OF SHORTCHAR;
             empty:    ARRAY 4 OF CHAR;
             path:     ARRAY maxPath OF CHAR;
+            title:    ARRAY 256 OF CHAR;
             w:        Windows.Window;
             innerV:   Views.View;
             focV:     Views.View;
@@ -239,8 +240,21 @@ MODULE StdCmds;
             ch:       CHAR;
             b:        BYTE;
     BEGIN
-        (* Prefer the focused view's model; fall back to first valid window. *)
+        (* Find the focused window so we can update its title after save. *)
         focV := Controllers.FocusView();
+        w    := NIL;
+        IF focV # NIL THEN
+            w := Windows.first;
+            WHILE w # NIL DO
+                IF w.IsValid() THEN
+                    d := w.ThisDoc();
+                    IF (d # NIL) & (d.ThisView() = focV) THEN EXIT END
+                END;
+                w := w.next
+            END
+        END;
+
+        (* Prefer the focused view's model; fall back to first valid window. *)
         IF (focV # NIL) & (focV IS TextViews.View) THEN
             m := focV(TextViews.View).ThisModel()
         ELSE
@@ -285,6 +299,12 @@ MODULE StdCmds;
                 WriteUtf8Char(wr, ORD(ch))
             END;
             rd.ReadChar()
+        END;
+
+        (* Update the window title to the saved filename. *)
+        IF w # NIL THEN
+            ExtractName(path, title);
+            w.SetTitle(title)
         END
     END Save;
 
