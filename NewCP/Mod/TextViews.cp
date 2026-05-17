@@ -210,7 +210,7 @@ BEGIN
     NEW(d);
     wr := d.NewWriter(NIL);
     i := 0;
-    WHILE (i < m.textLen) & (i < TextModels.DocCapacity - 1) DO
+    WHILE i < m.textLen DO
         wr.WriteChar(m.text[i]);
         INC(i)
     END;

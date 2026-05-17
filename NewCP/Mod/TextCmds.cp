@@ -160,7 +160,7 @@ MODULE TextCmds;
         IF ~HostClipboard.GetText(clip) THEN RETURN END;
         pos := DeleteSelection(c, doc);
         i := 0;
-        WHILE (clip[i] # 0X) & (doc.len < TextModels.DocCapacity - 1) DO
+        WHILE clip[i] # 0X DO
             doc.InsertChar(pos, clip[i]);
             INC(pos); INC(i)
         END;
@@ -177,6 +177,7 @@ MODULE TextCmds;
     PROCEDURE Find*;
         VAR c: TextControllers.Controller;
             doc: TextModels.Doc;
+            rd:  TextModels.Reader;
             beg, end, i: INTEGER;
     BEGIN
         c := TextControllers.Focus();
@@ -184,23 +185,28 @@ MODULE TextCmds;
         doc := c.text(TextModels.Doc);
         c.GetSelection(beg, end);
         IF beg < end THEN
-            (* Copy selection into findTerm. *)
-            i := 0;
-            WHILE (beg + i < end) & (i < LEN(findTerm) - 1) DO
-                findTerm[i] := doc.buf[beg + i]; INC(i)
+            (* Copy selection into findTerm via the Reader API. *)
+            rd := doc.NewReader(NIL);
+            IF rd # NIL THEN
+                rd.SetPos(beg); rd.ReadChar();
+                i := 0;
+                WHILE ~rd.eot & (beg + i < end) & (i < LEN(findTerm) - 1) DO
+                    findTerm[i] := rd.char; INC(i); rd.ReadChar()
+                END;
+                findTerm[i] := 0X
             END;
-            findTerm[i] := 0X;
             findFrom := end   (* start searching after the selection *)
         END;
         FindAgain
     END Find;
 
     (** Find next occurrence of findTerm starting from findFrom.
-        Selects the match and advances findFrom past it.
-        Wraps around to the beginning of the document if not found forward. *)
+        Uses the Reader API so no direct buffer access is needed.
+        Wraps around to the beginning of the document if not found. *)
     PROCEDURE FindAgain*;
         VAR c: TextControllers.Controller;
             doc: TextModels.Doc;
+            rd:  TextModels.Reader;
             i, termLen, pos: INTEGER;
             found: BOOLEAN;
     BEGIN
@@ -208,31 +214,32 @@ MODULE TextCmds;
         c := TextControllers.Focus();
         IF (c = NIL) OR (c.text = NIL) OR ~(c.text IS TextModels.Doc) THEN RETURN END;
         doc := c.text(TextModels.Doc);
-        (* Measure the search term. *)
         termLen := 0;
         WHILE (termLen < LEN(findTerm)) & (findTerm[termLen] # 0X) DO INC(termLen) END;
         IF termLen = 0 THEN RETURN END;
+        rd := doc.NewReader(NIL);
+        IF rd = NIL THEN RETURN END;
         (* Forward search from findFrom. *)
         found := FALSE;
         pos := findFrom;
         WHILE (pos + termLen <= doc.len) & ~found DO
+            rd.SetPos(pos); rd.ReadChar();
             i := 0;
-            WHILE (i < termLen) & (doc.buf[pos + i] = findTerm[i]) DO INC(i) END;
-            IF i = termLen THEN
-                found := TRUE
-            ELSE
-                INC(pos)
-            END
+            WHILE ~rd.eot & (i < termLen) & (rd.char = findTerm[i]) DO
+                INC(i); rd.ReadChar()
+            END;
+            IF i = termLen THEN found := TRUE ELSE INC(pos) END
         END;
         IF ~found THEN
             (* Wrap around: search from 0 up to findFrom. *)
             pos := 0;
             WHILE (pos + termLen <= findFrom) & ~found DO
+                rd.SetPos(pos); rd.ReadChar();
                 i := 0;
-                WHILE (i < termLen) & (doc.buf[pos + i] = findTerm[i]) DO INC(i) END;
-                IF i = termLen THEN found := TRUE
-                ELSE INC(pos)
-                END
+                WHILE ~rd.eot & (i < termLen) & (rd.char = findTerm[i]) DO
+                    INC(i); rd.ReadChar()
+                END;
+                IF i = termLen THEN found := TRUE ELSE INC(pos) END
             END
         END;
         IF found THEN

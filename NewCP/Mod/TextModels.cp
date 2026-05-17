@@ -85,10 +85,12 @@ CONST
     OkLongCharOddBytes*   = 7;
     OkTooManyPieces*      = 8;
 
-    (** Maximum chars in a Doc's text buffer.  Small enough to
-        keep test allocations cheap; will grow when a paging /
-        rope-based StdModel lands. *)
-    DocCapacity* = 4096;
+    (** Initial capacity of a Doc's dynamic text buffer.
+        The buffer doubles whenever it fills; there is no hard upper
+        bound beyond available memory.  Kept exported so callers that
+        used to check against it still compile; the value now means
+        "initial allocation" rather than "hard cap". *)
+    DocCapacity* = 256;
 
 TYPE
     (** BB-faithful Attributes — text-run formatting state
@@ -202,22 +204,32 @@ TYPE
     StdModel* = POINTER TO StdModelDesc;
 
 
+    (* ─── Dynamic-buffer helpers ────────────────────────────
+       Open-array pointer types used by DocDesc and DeleteOpDesc
+       so the text buffer can grow beyond any compile-time cap. *)
+    TextBufDesc  = ARRAY OF CHAR;
+    TextBuf      = POINTER TO TextBufDesc;
+    AttrBufDesc  = ARRAY OF Attributes;
+    AttrBuf      = POINTER TO AttrBufDesc;
+
     (* ─── Concrete Doc / DocReader / DocWriter ───────────────
        First concrete TextModels.Model in the port.  Carries a
-       fixed-capacity in-memory CHAR buffer.  BB-faithful prefix
-       of what StdModel will eventually unify with (same naming-
-       gap as TextViews.Pane vs StdView). *)
+       dynamically-growing in-memory CHAR buffer that starts at
+       DocCapacity elements and doubles on demand.  BB-faithful
+       prefix of what StdModel will eventually unify with. *)
     DocDesc* = RECORD (ModelDesc)
         (** In-memory text buffer.  `len` chars are valid;
-            `buf[len]` is always 0X (acts as a sentinel for
-            cursor-style traversal). *)
-        buf-:  ARRAY DocCapacity OF CHAR;
+            `buf[len]` is always 0X (sentinel).  `cap` is the
+            number of usable slots (buf has cap+1 elements to
+            hold the sentinel).  Both NIL when len = 0 and no
+            write has happened yet. *)
+        buf-:  TextBuf;
         len-:  INTEGER;
-        (** Per-character attribute.  `attrs[i]` applies to
-            `buf[i]`.  NIL means "inherit the view's default
-            attribute" (normal typeface/weight/style).  Set
-            by `DocWriter.WriteChar` or `SetAttrRange`. *)
-        attrs: ARRAY DocCapacity OF Attributes
+        cap-:  INTEGER;
+        (** Per-character attribute parallel to buf.  `attrs[i]`
+            applies to `buf[i]`.  NIL entry means "inherit the
+            view's default attribute". *)
+        attrs: AttrBuf
     END;
     Doc* = POINTER TO DocDesc;
 
@@ -246,15 +258,16 @@ TYPE
     END;
     InsertOp = POINTER TO InsertOpDesc;
 
-    (** Undo operation for a DeleteRange.  Saves up to DocCapacity chars
-        for reversal.  `nSaved = 0` marks a deletion too large to undo. *)
+    (** Undo operation for a DeleteRange.  Always saves the full
+        deleted range (buf/attrBuf are dynamically sized to n).
+        `nSaved = 0` only when n = 0. *)
     DeleteOpDesc = RECORD (Stores.OperationDesc)
         doc:     Doc;
         beg:     INTEGER;
         n:       INTEGER;
         nSaved:  INTEGER;
-        buf:     ARRAY DocCapacity OF CHAR;
-        attrBuf: ARRAY DocCapacity OF Attributes;  (** saved per-char attrs *)
+        buf:     TextBuf;     (** saved chars — LEN(buf^) = n *)
+        attrBuf: AttrBuf;     (** saved per-char attrs *)
         done:    BOOLEAN
     END;
     DeleteOp = POINTER TO DeleteOpDesc;
@@ -628,21 +641,20 @@ END Base;
 PROCEDURE (wr: DocWriterDesc) WriteChar* (ch: CHAR);
     VAR pos: INTEGER; msg: UpdateMsg;
 BEGIN
-    IF wr.wpos < DocCapacity - 1 THEN
-        pos := wr.wpos;
-        wr.doc.buf[wr.wpos]   := ch;
-        wr.doc.attrs[wr.wpos] := wr.attr;   (* apply current attr to char *)
-        wr.wpos := wr.wpos + 1;
-        IF wr.wpos > wr.doc.len THEN
-            wr.doc.len := wr.wpos;
-            wr.doc.buf[wr.doc.len] := 0X    (* keep sentinel *)
-        END;
-        msg.op    := insert;
-        msg.beg   := pos;
-        msg.end   := pos + 1;
-        msg.delta := 1;
-        Models.Broadcast(wr.doc, msg)
-    END
+    EnsureCap(wr.doc, wr.wpos + 1);
+    pos := wr.wpos;
+    wr.doc.buf[wr.wpos]   := ch;
+    wr.doc.attrs[wr.wpos] := wr.attr;   (* apply current attr to char *)
+    wr.wpos := wr.wpos + 1;
+    IF wr.wpos > wr.doc.len THEN
+        wr.doc.len := wr.wpos;
+        wr.doc.buf[wr.doc.len] := 0X    (* keep sentinel *)
+    END;
+    msg.op    := insert;
+    msg.beg   := pos;
+    msg.end   := pos + 1;
+    msg.delta := 1;
+    Models.Broadcast(wr.doc, msg)
 END WriteChar;
 
 PROCEDURE (wr: DocWriterDesc) WriteString* (IN s: ARRAY OF CHAR);
@@ -738,9 +750,8 @@ BEGIN
     IF rd.cancelled THEN RETURN END;
     rd.ReadLong(len);
     IF rd.eof THEN RETURN END;
-    IF len < 0 THEN len := 0
-    ELSIF len > DocCapacity - 1 THEN len := DocCapacity - 1
-    END;
+    IF len < 0 THEN len := 0 END;
+    EnsureCap(m(Doc), len);
     i := 0;
     WHILE i < len DO
         rd.ReadByte(b);
@@ -767,6 +778,35 @@ BEGIN
 END ReplaceView;
 
 
+(* ─── Buffer capacity management ─────────────────────────────────────
+   EnsureCap guarantees m.buf and m.attrs can hold at least `needed`
+   characters plus the 0X sentinel.  Doubles capacity starting from
+   DocCapacity.  No-op if already large enough. *)
+PROCEDURE EnsureCap (m: Doc; needed: INTEGER);
+    VAR newCap, i: INTEGER; nb: TextBuf; na: AttrBuf;
+BEGIN
+    IF m.cap > needed THEN RETURN END;
+    newCap := DocCapacity;
+    WHILE newCap <= needed DO newCap := newCap * 2 END;
+    NEW(nb, newCap + 1);   (* +1 for 0X sentinel slot *)
+    NEW(na, newCap + 1);
+    i := 0;
+    IF m.buf # NIL THEN
+        WHILE i <= m.len DO
+            nb[i] := m.buf[i];
+            na[i] := m.attrs[i];
+            INC(i)
+        END
+    ELSE
+        nb[0] := 0X;
+        na[0] := NIL
+    END;
+    m.buf   := nb;
+    m.attrs := na;
+    m.cap   := newCap
+END EnsureCap;
+
+
 (* ─── Direct buffer operations (bypass sequencer / undo) ──────────────
    Called from InsertOp.Do / DeleteOp.Do to apply the actual edit
    without recursively creating more undo ops. *)
@@ -774,6 +814,7 @@ END ReplaceView;
 PROCEDURE InsertDirect (m: Doc; pos: INTEGER; ch: CHAR; attr: Attributes);
     VAR i: INTEGER; msg: UpdateMsg;
 BEGIN
+    EnsureCap(m, m.len + 1);
     i := m.len;
     WHILE i > pos DO
         m.buf[i]   := m.buf[i - 1];
@@ -847,12 +888,12 @@ END Do;
 (** Insert one character at position `pos`, shifting everything from
     `pos` onwards one place to the right.  Creates an undo operation
     via the model's sequencer (or calls direct if none installed).
-    pre: 0 <= pos <= m.len  AND  m.len < DocCapacity - 1 *)
+    pre: 0 <= pos <= m.len *)
 PROCEDURE (m: DocDesc) InsertChar* (pos: INTEGER; ch: CHAR), NEW;
     VAR op: InsertOp;
 BEGIN
     IF (pos < 0) OR (pos > m.len) THEN RETURN END;
-    IF m.len >= DocCapacity - 1 THEN RETURN END;
+    (* No capacity cap: EnsureCap in InsertDirect grows the buffer. *)
     IF m.seq = NIL THEN
         Models.SetSequencer(m, Sequencers.dir.New())
     END;
@@ -864,9 +905,8 @@ BEGIN
 END InsertChar;
 
 
-(** Delete characters in [beg, end).  Creates an undo operation that
-    saves the deleted chars for reversal.  If the range is too large
-    to save (> DocCapacity), the deletion is applied but is not undoable.
+(** Delete characters in [beg, end).  Creates a fully undoable
+    operation regardless of range size (buf is dynamically sized to n).
     pre: 0 <= beg <= end <= m.len *)
 PROCEDURE (m: DocDesc) DeleteRange* (beg, end: INTEGER), NEW;
     VAR op: DeleteOp; i, n: INTEGER;
@@ -880,17 +920,20 @@ BEGIN
     END;
     NEW(op);
     op.doc := m(Doc); op.beg := beg; op.n := n; op.done := FALSE;
-    (* Save chars and attrs for reversal. *)
-    IF n <= DocCapacity THEN
+    (* Allocate undo buffers exactly sized to the deleted range. *)
+    IF n > 0 THEN
+        NEW(op.buf, n + 1);      (* +1 for sentinel *)
+        NEW(op.attrBuf, n + 1);
         i := 0;
         WHILE i < n DO
             op.buf[i]     := m.buf[beg + i];
             op.attrBuf[i] := m.attrs[beg + i];
             INC(i)
         END;
+        op.buf[n] := 0X;         (* sentinel *)
         op.nSaved := n
     ELSE
-        op.nSaved := 0   (* too large to save — deletion is not undoable *)
+        op.nSaved := 0
     END;
     Models.Do(m, "Delete", op)
 END DeleteRange;
