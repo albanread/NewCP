@@ -2501,7 +2501,8 @@ impl<'a> Analyzer<'a> {
                             &target_type,
                             &value_type,
                             local_symbols,
-                        ) || integer_literal_fits_target(value, &target_type);
+                        ) || integer_literal_fits_target(value, &target_type)
+                          || self.named_const_fits_target(value, &target_type, local_symbols);
                         if !compatible {
                             let (line, column) = statement_position(statement);
                             diagnostics.push(make_diagnostic(
@@ -3144,12 +3145,23 @@ impl<'a> Analyzer<'a> {
                 newcp_parser::Literal::Real(_) => false,
                 _ => true,
             },
-            Expr::Designator(designator) => {
-                designator.base.module.is_none()
-                    && designator.selectors.is_empty()
-                    && self
-                        .lookup_symbol(&designator.base.name, local_symbols)
+            Expr::Designator(designator) if designator.selectors.is_empty() => {
+                if let Some(module_name) = &designator.base.module {
+                    // Qualified import constant: Module.Name
+                    // Look the name up in the imported module's symbol table.
+                    self.imported_modules
+                        .get(module_name.as_str())
+                        .is_some_and(|syms| {
+                            syms.iter().any(|s| {
+                                s.name == designator.base.name
+                                    && s.kind == SymbolKind::Constant
+                            })
+                        })
+                } else {
+                    // Unqualified: local or module-level constant
+                    self.lookup_symbol(&designator.base.name, local_symbols)
                         .is_some_and(|symbol| symbol.kind == SymbolKind::Constant)
+                }
             }
             Expr::Unary { op, expr, .. } => {
                 matches!(op, newcp_parser::UnaryOp::Plus | newcp_parser::UnaryOp::Minus)
@@ -3168,6 +3180,38 @@ impl<'a> Analyzer<'a> {
             }
             _ => false,
         }
+    }
+
+    /// True when `expr` is a named CONST whose compile-time integer value
+    /// fits in the range of `target`.  Supplements `integer_literal_fits_target`
+    /// which only handles bare literals; this handles identifiers that resolve
+    /// to integer constants (both local and imported via `Module.Name`).
+    fn named_const_fits_target(
+        &self,
+        expr: &Expr,
+        target: &SemanticType,
+        local_symbols: &[SemanticSymbol],
+    ) -> bool {
+        let Expr::Designator(des) = expr else { return false };
+        if !des.selectors.is_empty() { return false; }
+
+        let const_value: Option<ConstValue> = if let Some(module_name) = &des.base.module {
+            self.imported_modules
+                .get(module_name.as_str())
+                .and_then(|syms| {
+                    syms.iter()
+                        .find(|s| s.name == des.base.name && s.kind == SymbolKind::Constant)
+                        .and_then(|s| s.const_value.clone())
+                })
+        } else {
+            self.lookup_symbol(&des.base.name, local_symbols)
+                .filter(|s| s.kind == SymbolKind::Constant)
+                .and_then(|s| s.const_value.clone())
+        };
+
+        let Some(ConstValue::Integer(value)) = const_value else { return false };
+        let Some((lo, hi)) = integer_type_range(target) else { return false };
+        value >= lo && value <= hi
     }
 
     fn walk_guard(
@@ -4501,6 +4545,7 @@ impl<'a> Analyzer<'a> {
                 };
                 let compatible = self.types_are_assignment_compatible(&expected.ty, &actual, local_symbols)
                     || integer_literal_fits_target(actual_expr, &expected.ty)
+                    || self.named_const_fits_target(actual_expr, &expected.ty, local_symbols)
                     || record_extension_ok;
                 if !compatible {
                     let (line, column) = expr_position(actual_expr);

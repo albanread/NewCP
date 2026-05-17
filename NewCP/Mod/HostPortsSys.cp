@@ -169,6 +169,23 @@ BEGIN
     iGui.EmitClear(r, g, b, a)
 END Clear;
 
+(** Scroll a clip-bounded sub-region by (dx, dy) DIPs.
+    Equivalent to `iGui.EmitScrollRect` — the batch command that
+    shifts pixel content without a full repaint.  The region
+    `(x0,y0)–(x1,y1)` is the clip rectangle in DIPs; `dx`/`dy`
+    are the shift offsets, also in DIPs. *)
+PROCEDURE ScrollRect* (x0, y0, x1, y1, dx, dy: REAL);
+BEGIN
+    iGui.EmitScrollRect(x0, y0, x1, y1, dx, dy)
+END ScrollRect;
+
+(** Set the cursor shape shown while the pointer is over child
+    `childId`.  `kind` is one of the iGui Cr* constants. *)
+PROCEDURE SetCursor* (childId: INTEGER; kind: INTSHORT);
+BEGIN
+    iGui.SetCursor(childId, kind)
+END SetCursor;
+
 (** Bracket a sequence of paint calls.  Returns the SubmitBatch
     result — 1 on success, 0 on failure. *)
 PROCEDURE BeginBatch* (childId: INTEGER);

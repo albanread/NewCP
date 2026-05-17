@@ -317,24 +317,60 @@ MODULE TextRulers;
 
     (** Initialise the attributes from a Prop — only used
         on a freshly-NEW'd Attributes (pre-`init`).  Sets
-        every axis from the Prop, marks `init`. *)
+        every axis whose bit is in `p.known` to the Prop's
+        value, then marks `init`.  Axes absent from `known`
+        keep their zero-init values. *)
     PROCEDURE (a: Attributes) InitFromProp* (p: Properties.Property), NEW, EXTENSIBLE;
+        VAR q: Prop;
     BEGIN
         ASSERT(~a.init, 20);
+        WITH p: Prop DO
+            q := p;
+            IF first IN q.known THEN a.first := q.first END;
+            IF left  IN q.known THEN a.left  := q.left  END;
+            IF right IN q.known THEN a.right := q.right END;
+            IF lead  IN q.known THEN a.lead  := q.lead  END;
+            IF asc   IN q.known THEN a.asc   := q.asc   END;
+            IF dsc   IN q.known THEN a.dsc   := q.dsc   END;
+            IF grid  IN q.known THEN a.grid  := q.grid  END;
+            IF opts  IN q.known THEN
+                a.opts := (a.opts - q.opts.mask) + (q.opts.val * q.opts.mask)
+            END;
+            IF tabs  IN q.known THEN CopyTabs(q.tabs, a.tabs) END
+        ELSE
+            (* Not a TextRulers.Prop: nothing to import. *)
+        END;
         a.init := TRUE
-        (* Full BlackBox body walks the Prop's `known` mask
-           and sets each axis on `a` to the Prop's value.
-           Deferred here pending the helper plumbing — most
-           callers go through ModifiedAttr/CopyFrom which use
-           the BB body in a separate slice. *)
     END InitFromProp;
 
     (** Apply a Prop's mutations on top of this Attributes.
-        The actual BB body lives in a follow-up slice — it's
-        a long axis-by-axis ModifyFromProp routine.  EMPTY
-        here so subclasses compile. *)
+        Only axes present in both `p.known` and `p.valid` are
+        touched; the rest are left unchanged.  Unlike
+        `InitFromProp`, `init` is already TRUE and is NOT
+        re-asserted here — callers must clone via `NewAttrFrom`
+        first. *)
     PROCEDURE (a: Attributes) ModifyFromProp* (p: Properties.Property), NEW, EXTENSIBLE;
+        VAR q: Prop; v: SET;
     BEGIN
+        ASSERT(a.init, 20);
+        WITH p: Prop DO
+            q := p;
+            v := q.valid * q.known;
+            IF first IN v THEN a.first := q.first END;
+            IF left  IN v THEN a.left  := q.left  END;
+            IF right IN v THEN a.right := q.right END;
+            IF lead  IN v THEN a.lead  := q.lead  END;
+            IF asc   IN v THEN a.asc   := q.asc   END;
+            IF dsc   IN v THEN a.dsc   := q.dsc   END;
+            IF grid  IN v THEN a.grid  := q.grid  END;
+            IF opts  IN v THEN
+                (* Apply only the bits in q.opts.mask — leave others alone. *)
+                a.opts := (a.opts - q.opts.mask) + (q.opts.val * q.opts.mask)
+            END;
+            IF tabs  IN v THEN CopyTabs(q.tabs, a.tabs) END
+        ELSE
+            (* Not a TextRulers.Prop: nothing to apply. *)
+        END
     END ModifyFromProp;
 
     (** Deserialise this Attributes from `rd`.

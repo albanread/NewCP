@@ -191,10 +191,37 @@ BEGIN
 END MarkRect;
 
 PROCEDURE (rd: HostRiderDesc) Scroll* (dx, dy: INTEGER);
-BEGIN END Scroll;
+BEGIN
+    (* Shift the clip rectangle's content by (dx, dy) device dots.
+       Negative dy = scroll up; positive = scroll down.
+       The batch-level scroll primitive reuses the existing surface
+       pixels, avoiding a full repaint of the shifted region. *)
+    HostPortsSys.ScrollRect(rd.clipL, rd.clipT, rd.clipR, rd.clipB,
+                             dx, dy)
+END Scroll;
 
 PROCEDURE (rd: HostRiderDesc) SetCursor* (cursor: INTEGER);
-BEGIN END SetCursor;
+    CONST
+        (** Mapping from Ports cursor constants to iGui Cr* kinds.
+            Ports.arrowCursor    = 0 → CrArrow  = 0
+            Ports.textCursor     = 1 → CrIBeam  = 1
+            Ports.graphicsCursor = 2 → CrCross  = 2
+            Ports.tableCursor    = 3 → CrHand   = 3
+            Ports.bitmapCursor   = 4 → CrArrow  = 0 (no exact map)
+            Ports.refCursor      = 5 → CrArrow  = 0 (no exact map) *)
+        crArrow = 0; crIBeam = 1; crCross = 2; crHand = 3;
+    VAR kind: INTSHORT;
+BEGIN
+    CASE cursor OF
+      Ports.arrowCursor:    kind := crArrow
+    | Ports.textCursor:     kind := crIBeam
+    | Ports.graphicsCursor: kind := crCross
+    | Ports.tableCursor:    kind := crHand
+    ELSE
+        kind := crArrow
+    END;
+    HostPortsSys.SetCursor(rd.base.childId, kind)
+END SetCursor;
 
 PROCEDURE (rd: HostRiderDesc) Input*
     (OUT x, y: INTEGER; OUT modifiers: SET; OUT isDown: BOOLEAN);
