@@ -734,6 +734,58 @@ BEGIN
 END ReplaceView;
 
 
+(** Insert one character at position `pos`, shifting everything from
+    `pos` onwards one place to the right.
+    pre: 0 <= pos <= m.len  AND  m.len < DocCapacity - 1
+    Broadcasts an `insert` UpdateMsg so bound views repaint. *)
+PROCEDURE (m: DocDesc) InsertChar* (pos: INTEGER; ch: CHAR), NEW;
+    VAR i: INTEGER; msg: UpdateMsg;
+BEGIN
+    IF (pos < 0) OR (pos > m.len) THEN RETURN END;
+    IF m.len >= DocCapacity - 1 THEN RETURN END;   (* buffer full *)
+    (* Shift [pos .. len] right by 1. *)
+    i := m.len;
+    WHILE i > pos DO
+        m.buf[i] := m.buf[i - 1];
+        DEC(i)
+    END;
+    m.buf[pos] := ch;
+    INC(m.len);
+    m.buf[m.len] := 0X;   (* maintain sentinel *)
+    msg.op    := insert;
+    msg.beg   := pos;
+    msg.end   := pos + 1;
+    msg.delta := 1;
+    Models.Broadcast(m, msg)
+END InsertChar;
+
+
+(** Delete characters in [beg, end), shifting what follows left.
+    pre: 0 <= beg <= end <= m.len
+    Broadcasts a `delete` UpdateMsg so bound views repaint. *)
+PROCEDURE (m: DocDesc) DeleteRange* (beg, end: INTEGER), NEW;
+    VAR i, n: INTEGER; msg: UpdateMsg;
+BEGIN
+    IF beg < 0 THEN beg := 0 END;
+    IF end > m.len THEN end := m.len END;
+    IF beg >= end THEN RETURN END;
+    n := end - beg;
+    (* Shift [end .. len] left by n. *)
+    i := beg;
+    WHILE i + n <= m.len DO
+        m.buf[i] := m.buf[i + n];
+        INC(i)
+    END;
+    m.len := m.len - n;
+    m.buf[m.len] := 0X;   (* maintain sentinel *)
+    msg.op    := delete;
+    msg.beg   := beg;
+    msg.end   := beg;    (* after-delete position *)
+    msg.delta := -n;
+    Models.Broadcast(m, msg)
+END DeleteRange;
+
+
 BEGIN
     NEW(std);
     NEW(std.attr);

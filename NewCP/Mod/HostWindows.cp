@@ -10,7 +10,7 @@ MODULE HostWindows;
    Pass 1: Scroll is EMPTY; iGui-side resize is deferred.
 *)
 
-    IMPORT Documents, Windows, Views, Ports, HostPorts, HostWindowsSys;
+    IMPORT Documents, Windows, Views, Controllers, TextModels, TextViews, TextControllers, Ports, HostPorts, HostWindowsSys;
 
 
     (* -- Types ------------------------------------------------------------ *)
@@ -39,7 +39,18 @@ MODULE HostWindows;
         stdHostDir: HostDirectory;
 
 
-    (* -- Private helper --------------------------------------------------- *)
+    (* -- Private helpers -------------------------------------------------- *)
+
+    (** Copy a wide string (ARRAY OF CHAR) into a fixed buffer. *)
+    PROCEDURE CopyStr (IN src: ARRAY OF CHAR; VAR dst: ARRAY OF CHAR);
+        VAR i: INTEGER;
+    BEGIN
+        i := 0;
+        WHILE (i < LEN(dst) - 1) & (i < LEN(src)) & (src[i] # 0X) DO
+            dst[i] := src[i]; INC(i)
+        END;
+        dst[i] := 0X
+    END CopyStr;
 
     (* Scan Windows.first list for the HostWindow whose port.childId matches. *)
     PROCEDURE FindByChildId (childId: INTEGER): HostWindow;
@@ -71,7 +82,7 @@ MODULE HostWindows;
 
     PROCEDURE (w: HostWindow) SetTitle* (IN title: ARRAY OF CHAR);
     BEGIN
-        w.title := title;
+        CopyStr(title, w.title);
         IF w.port # NIL THEN
             HostWindowsSys.SetTitle(w.port.childId, title)
         END
@@ -109,7 +120,7 @@ MODULE HostWindows;
 
     (* -- HostWindow.Repaint ----------------------------------------------- *)
 
-    PROCEDURE (w: HostWindow) Repaint*, NEW;
+    PROCEDURE (w: HostWindow) Repaint*;
         VAR ok: INTSHORT;
     BEGIN
         IF (w.port = NIL) OR (w.doc = NIL) THEN RETURN END;
@@ -140,7 +151,7 @@ MODULE HostWindows;
         IF win.port = NIL THEN RETURN NIL END;
         win.port.Init(1, FALSE);   (* 1 unit = 1 DIP, no scaling *)
         win.doc   := doc;
-        win.title := title;
+        CopyStr(title, win.title);
         win.w     := w;
         win.h     := h;
 
@@ -183,6 +194,74 @@ MODULE HostWindows;
         w := FindByChildId(childId);
         IF w # NIL THEN w.Close() END
     END CloseChild;
+
+    (* Map a left-mouse-down at (x, y) DIPs to a caret position and set it.
+       Uses the TextViews.Restore rendering geometry:
+         barH = 50  — indicator bar at the top
+         lineH = 120 — height per rendered line
+       Within a line, rough character width ≈ 8 DIPs (12px Segoe UI estimate).
+       Silently returns if the focused view is not a text pane. *)
+    PROCEDURE HandleMouseDown* (childId, x, y: INTEGER);
+        CONST barH = 50; lineH = 120;
+        VAR w: HostWindow; v: Views.View;
+            pane: TextViews.Pane; ctrl: TextControllers.Controller;
+            rd: TextModels.Reader;
+            lineIdx, pos, lineStart, col, lineLen: INTEGER;
+    BEGIN
+        w := FindByChildId(childId);
+        IF w = NIL THEN RETURN END;
+        v := w.doc.ThisView();
+        IF (v = NIL) OR ~(v IS TextViews.Pane) THEN RETURN END;
+        pane := v(TextViews.Pane);
+        (* Set focus to this window's view. *)
+        Controllers.SetFocusView(v);
+        IF pane.text = NIL THEN RETURN END;
+        (* Compute line index from y coordinate. *)
+        IF y < barH + lineH THEN lineIdx := 0
+        ELSE lineIdx := (y - barH - lineH) DIV lineH
+        END;
+        (* Walk the text model to find the start of lineIdx-th line. *)
+        rd := pane.text.NewReader(NIL);
+        IF rd = NIL THEN RETURN END;
+        rd.SetPos(0); rd.ReadChar();
+        pos := 0;
+        WHILE (lineIdx > 0) & ~rd.eot DO
+            WHILE ~rd.eot & (rd.char # TextModels.line) & (rd.char # TextModels.para) DO
+                INC(pos); rd.ReadChar()
+            END;
+            IF rd.eot THEN lineIdx := 0  (* clamp to last line *)
+            ELSE INC(pos); DEC(lineIdx); rd.ReadChar()  (* skip line separator *)
+            END
+        END;
+        lineStart := pos;
+        (* Within the line, estimate col from x using ~8 DIPs/char. *)
+        col := x DIV 8;
+        IF col < 0 THEN col := 0 END;
+        (* Count visible chars in this line to clamp col. *)
+        lineLen := 0;
+        WHILE ~rd.eot & (rd.char # TextModels.line) & (rd.char # TextModels.para) DO
+            INC(lineLen); rd.ReadChar()
+        END;
+        IF col > lineLen THEN col := lineLen END;
+        (* Set caret via TextControllers.Controller (type-guard the controller). *)
+        IF (pane.controller # NIL) & (pane.controller IS TextControllers.Controller) THEN
+            ctrl := pane.controller(TextControllers.Controller);
+            ctrl.SetCaret(lineStart + col);
+            ctrl.SetSelection(lineStart + col, lineStart + col)
+        END
+    END HandleMouseDown;
+
+    (* Route focus to the inner view of the MDI child that gained focus.
+       This allows TextControllers.Focus() to find the active controller. *)
+    PROCEDURE FocusChild* (childId: INTEGER);
+        VAR w: HostWindow; v: Views.View;
+    BEGIN
+        w := FindByChildId(childId);
+        IF w # NIL THEN
+            v := w.doc.ThisView();
+            Controllers.SetFocusView(v)
+        END
+    END FocusChild;
 
 
 BEGIN

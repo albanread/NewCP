@@ -224,6 +224,12 @@ MODULE Controllers;
         Controller*     = POINTER TO ControllerDesc;
 
 
+    VAR
+        (** Module-level focused view — set by HostWindows.FocusChild
+            on EvFocus events, read by FocusView() below. *)
+        focusedView: Views.View;
+
+
     (* -- ControllerDesc methods ------------------------------------------ *)
 
     (** Required by `Stores.Store` (ABSTRACT there).  Controllers
@@ -235,14 +241,18 @@ MODULE Controllers;
     END Domain;
 
     (** BB-faithful focus query — returns the currently-focused
-        view, or NIL when none.  This slice stubs the return at
-        NIL: real focus routing arrives with the windowing layer.
-        TextControllers / TextViews call this to find which
-        controller / pane the user is interacting with. *)
+        view, or NIL when none. *)
     PROCEDURE FocusView* (): Views.View;
     BEGIN
-        RETURN NIL
+        RETURN focusedView
     END FocusView;
+
+    (** Set the currently focused view.  Called by the host
+        windowing layer when an MDI child receives focus. *)
+    PROCEDURE SetFocusView* (v: Views.View);
+    BEGIN
+        focusedView := v
+    END SetFocusView;
 
     (** BB-faithful — current focus model.  Stub returns NIL until
         focus routing lands; framework callers tolerate NIL. *)
@@ -252,4 +262,6 @@ MODULE Controllers;
     END FocusModel;
 
 
+BEGIN
+    focusedView := NIL
 END Controllers.

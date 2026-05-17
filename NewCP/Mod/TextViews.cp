@@ -414,13 +414,21 @@ END AcceptableModel;
     landed. *)
 PROCEDURE (v: Pane) Restore* (f: Views.Frame; l, t, r, b: INTEGER);
     CONST
-        barH   = 50;     (* indicator bar height in user units *)
-        lineH  = 120;    (* approximate line height in user units (~1.2 mm) *)
-        maxLen = 256;    (* max chars to render per line *)
+        barH     = 50;      (* indicator bar height in user units *)
+        lineH    = 120;     (* approximate line height in user units *)
+        maxLen   = 256;     (* max chars to render per line *)
+        charW    = 8;       (* rough char width in DIPs *)
+        selColor = 0FFD6ADH; (* light-blue selection: R=0xAD, G=0xD6, B=0xFF *)
     VAR rd: TextModels.Reader;
         line: ARRAY 256 OF CHAR;
         i, y: INTEGER;
         font: Fonts.Font;
+        carPos: INTEGER;
+        selBeg, selEnd: INTEGER;
+        linePos: INTEGER;
+        caretX, caretYTop, caretYBot: INTEGER;
+        caretDrawn: BOOLEAN;
+        hlBeg, hlEnd: INTEGER;  (* selection overlap on current line [chars] *)
 BEGIN
     (* Phase 1: scaffold. *)
     f.DrawRect(l, t, r, b, Ports.fill, Ports.white);
@@ -428,23 +436,29 @@ BEGIN
         f.DrawRect(l, t, r, MIN(b, barH), Ports.fill, Ports.black)
     END;
 
+    (* Get caret and selection from controller. *)
+    carPos := -1; selBeg := -1; selEnd := -1;
+    IF v.controller # NIL THEN
+        carPos := v.controller.CaretPos();
+        v.controller.GetSelection(selBeg, selEnd)
+    END;
+    IF selBeg > selEnd THEN  (* normalise *)
+        i := selBeg; selBeg := selEnd; selEnd := i
+    END;
+
     (* Phase 2: text content — multi-line from v.org. *)
-    IF (v.text # NIL) & (v.text.Length() > 0) & (b > barH) THEN
+    IF (v.text # NIL) & (b > barH) THEN
         rd := v.text.NewReader(NIL);
         IF rd # NIL THEN
             rd.SetPos(v.org);
-            (* Font selection: prefer the bound default-attr font,
-               then the framework's default-font directory.  Both
-               can be NIL in this slice (HostFonts not installed in
-               most probes); DrawString tolerates NIL font and the
-               recording rider records the (potentially NIL) ptr
-               for inspection.  Real rendering will assert non-NIL. *)
             font := NIL;
             IF v.defAttr # NIL THEN font := v.defAttr.font END;
             IF (font = NIL) & (Fonts.dir # NIL) THEN
                 font := Fonts.dir.Default()
             END;
             y := barH + lineH;
+            linePos := v.org;
+            caretDrawn := FALSE;
             rd.ReadChar();   (* prime the reader *)
             WHILE ~rd.eot & (y <= b) DO
                 (* Collect visible chars up to EOL/EOT. *)
@@ -460,12 +474,40 @@ BEGIN
                     rd.ReadChar()
                 END;
                 line[i] := 0X;
+
+                (* Draw selection highlight if this line overlaps [selBeg, selEnd). *)
+                IF (selBeg >= 0) & (selBeg < selEnd)
+                 & (linePos + i > selBeg) & (linePos < selEnd) THEN
+                    hlBeg := selBeg - linePos; IF hlBeg < 0 THEN hlBeg := 0 END;
+                    hlEnd := selEnd - linePos; IF hlEnd > i THEN hlEnd := i END;
+                    f.DrawRect(l + hlBeg * charW, y - lineH + 10,
+                               l + hlEnd * charW, y + 10,
+                               Ports.fill, selColor)
+                END;
+
                 IF i > 0 THEN
                     f.DrawString(l, y, Ports.black, line, font)
                 END;
+
+                (* Draw caret if it falls on this line. *)
+                IF (carPos >= linePos) & (carPos <= linePos + i) THEN
+                    caretX := l + (carPos - linePos) * charW;
+                    caretYTop := y - lineH + 10;
+                    caretYBot := y + 10;
+                    f.DrawLine(caretX, caretYTop, caretX, caretYBot, 2, Ports.black);
+                    caretDrawn := TRUE
+                END;
+
+                linePos := linePos + i + 1;  (* +1 for line separator *)
                 INC(y, lineH);
-                (* Consume the EOL separator to advance to next line. *)
                 IF ~rd.eot THEN rd.ReadChar() END
+            END;
+            (* Draw caret at end-of-text if not placed yet. *)
+            IF ~caretDrawn & (carPos >= 0) THEN
+                caretX := l;
+                caretYTop := y - lineH + 10;
+                caretYBot := y + 10;
+                f.DrawLine(caretX, caretYTop, caretX, caretYBot, 2, Ports.black)
             END
         END
     END

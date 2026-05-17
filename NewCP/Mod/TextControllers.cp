@@ -248,16 +248,18 @@ BEGIN
     RETURN c.view
 END ThisView;
 
-(** Caret position (or `none`).  Concrete in StdCtrl. *)
-PROCEDURE (c: Controller) CaretPos* (): INTEGER, NEW, ABSTRACT;
+(** Caret position (or `none`).  Concrete in StdCtrl.
+    Overrides Containers.Controller.CaretPos (base returns -1 = none). *)
+PROCEDURE (c: Controller) CaretPos* (): INTEGER, ABSTRACT;
 
 (** Move the caret to `pos` (or hide if `pos = none`).
     pre: pos = none  OR  0 <= pos <= c.text.Length() *)
 PROCEDURE (c: Controller) SetCaret* (pos: INTEGER), NEW, ABSTRACT;
 
 (** Read the selection range; empty selection signaled by beg = end.
-    post: beg = end  OR  0 <= beg <= end <= c.text.Length() *)
-PROCEDURE (c: Controller) GetSelection* (OUT beg, end: INTEGER), NEW, ABSTRACT;
+    post: beg = end  OR  0 <= beg <= end <= c.text.Length()
+    Overrides Containers.Controller.GetSelection (base returns -1,-1). *)
+PROCEDURE (c: Controller) GetSelection* (OUT beg, end: INTEGER), ABSTRACT;
 
 (** Set the selection range; empty selection signaled by beg = end.
     pre: beg = end  OR  0 <= beg < end <= c.text.Length() *)
@@ -313,6 +315,80 @@ BEGIN
     c.selBeg := beg;
     c.selEnd := end
 END SetSelection;
+
+(* ─── StdCtrl keyboard input ───────────────────────────────────
+   HandleKey processes typed characters and editing keys.  The model
+   must be a TextModels.Doc (our concrete editable type); if the
+   controller's `text` field is NIL or is not a Doc, the call is
+   a no-op.
+
+   Special codepoints handled (matching BB StdCtrl conventions):
+     ldel  (08X) — delete char before caret (backspace)
+     rdel  (07X) — delete char after caret (forward delete)
+     line  (0DX) — insert line separator
+     para  (0EX) — insert paragraph separator
+     Any other printable CHAR — insert at caret
+*)
+
+PROCEDURE (c: StdCtrl) HandleKey* (ch: CHAR), NEW;
+    VAR doc:  TextModels.Doc;
+        beg, end, pos: INTEGER;
+BEGIN
+    IF (c.text = NIL) OR ~(c.text IS TextModels.Doc) THEN RETURN END;
+    doc := c.text(TextModels.Doc);
+
+    (* If there is a selection, delete it first for any editing op. *)
+    beg := c.selBeg; end := c.selEnd;
+    IF beg # end THEN
+        IF beg > end THEN pos := beg; beg := end; end := pos END;
+        doc.DeleteRange(beg, end);
+        c.carPos := beg;
+        c.selBeg := beg; c.selEnd := beg
+    END;
+
+    pos := c.carPos;
+    IF pos = none THEN pos := 0 END;
+    IF pos < 0 THEN pos := 0 END;
+    IF pos > doc.len THEN pos := doc.len END;
+
+    IF ch = ldel THEN
+        (* Backspace: delete the character before the caret. *)
+        IF pos > 0 THEN
+            doc.DeleteRange(pos - 1, pos);
+            DEC(pos)
+        END
+    ELSIF ch = rdel THEN
+        (* Forward delete: delete the character at the caret. *)
+        IF pos < doc.len THEN
+            doc.DeleteRange(pos, pos + 1)
+        END
+    ELSIF ch >= ' ' THEN
+        (* Printable character: insert at caret. *)
+        doc.InsertChar(pos, ch);
+        INC(pos)
+    ELSIF (ch = line) OR (ch = para) THEN
+        (* Line or paragraph separator: insert as-is. *)
+        doc.InsertChar(pos, ch);
+        INC(pos)
+    END;
+    c.carPos := pos
+END HandleKey;
+
+
+(* ─── Module-level HandleKey dispatch ─────────────────────────
+   Convenience: type a character into the focused StdCtrl.
+   Returns FALSE if no focused StdCtrl is available. *)
+PROCEDURE HandleKey* (ch: CHAR): BOOLEAN;
+    VAR c: Controller;
+BEGIN
+    c := Focus();
+    IF (c # NIL) & (c IS StdCtrl) THEN
+        c(StdCtrl).HandleKey(ch);
+        RETURN TRUE
+    END;
+    RETURN FALSE
+END HandleKey;
+
 
 (* ─── Directory surface ────────────────────────────────────────
    `NewController(opts)` builds a fresh controller carrying the

@@ -194,6 +194,21 @@ MODULE Containers;
         wr.WriteVersion(maxCtrlVersion)
     END Externalize;
 
+    (** Return current caret position, or -1 if no caret.
+        Extensible: base returns -1; TextControllers.Controller overrides. *)
+    PROCEDURE (c: Controller) CaretPos* (): INTEGER, NEW, EXTENSIBLE;
+    BEGIN
+        RETURN -1
+    END CaretPos;
+
+    (** Return the current selection range [beg, end).
+        Extensible: base returns beg = end = -1 (no selection);
+        TextControllers.Controller overrides. *)
+    PROCEDURE (c: Controller) GetSelection* (OUT beg, end: INTEGER), NEW, EXTENSIBLE;
+    BEGIN
+        beg := -1; end := -1
+    END GetSelection;
+
     (** Mark the focus/selection in a frame.  ABSTRACT — subclasses implement. *)
     PROCEDURE (c: Controller) Mark* (f: Views.Frame; focus: Views.View; show: BOOLEAN), NEW, ABSTRACT;
 

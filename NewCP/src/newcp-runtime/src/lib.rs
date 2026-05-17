@@ -12,6 +12,12 @@ pub mod stores_sys;
 #[cfg(windows)]
 pub mod igui;
 
+#[cfg(windows)]
+pub mod host_dialog_sys;
+
+#[cfg(windows)]
+pub mod host_clipboard_sys;
+
 use std::collections::HashMap;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
@@ -871,6 +877,10 @@ impl BootstrapReport {
         // `Mod/Stores.cp`.
         #[cfg(windows)]
         kernel_sys::register_known_module("iGui");
+        #[cfg(windows)]
+        kernel_sys::register_known_module("HostDialogSys");
+        #[cfg(windows)]
+        kernel_sys::register_known_module("HostClipboardSys");
         kernel_sys::register_known_module("HostMenus");
         kernel.register_compiled_module(system_artifact);
         kernel.register_compiled_module(init_shell_artifact);
@@ -997,6 +1007,10 @@ fn builtin_native_modules() -> Vec<NativeModuleArtifact> {
     ];
     #[cfg(windows)]
     modules.push(igui::native_module_artifact());
+    #[cfg(windows)]
+    modules.push(host_dialog_sys::native_module_artifact());
+    #[cfg(windows)]
+    modules.push(host_clipboard_sys::native_module_artifact());
     modules
 }
 

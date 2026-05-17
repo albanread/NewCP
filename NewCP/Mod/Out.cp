@@ -1,50 +1,51 @@
 MODULE Out;
 (* BB-faithful Out — the standard textual-output module.
+   Routes through StdLog (a text-model-backed window).
 
-   BB's Out routes through StdLog (a text view).  Until StdLog
-   ports, this slice routes through Console.cp instead — same
-   public surface, output lands on the host's stdout (or wherever
-   Console is captured).  Once StdLog is up and the view-side
-   formatting machinery (TextMappers.Formatter.WriteIntForm /
-   WriteRealForm) ports, Out's bodies switch back to the
-   StdLog-via-Formatter path without changing the surface.
+   BB-faithful public surface is preserved so callers don't change.
+   `Open` raises (or re-raises) the StdLog window; subsequent
+   `String` / `Int` / `Real` / `Ln` / `Char` calls append to the
+   log model.  Content appears at the next repaint of the log window.
 
    The 0FFX (`digitspace`) "non-breaking-space" character BB uses
-   for the padding in formatted ints / reals is preserved at the
-   signature level; the Console-routed bodies just emit it as a
-   regular space to stdout for now. *)
+   for the padding in formatted ints / reals is emitted as a plain
+   space ('  ') until TextMappers.Formatter.WriteIntForm ports. *)
 
-IMPORT Console;
+IMPORT StdLog;
 
 CONST
     digitspace* = 08FX;
 
-(* `Open` in BB raises StdLog.  With no StdLog, the call is a
-   no-op — Console output is always available. *)
+(** Open / raise the log window. *)
 PROCEDURE Open*;
 BEGIN
-    (* no-op — Console is always live *)
+    StdLog.Open
 END Open;
 
+(** Append a single CHAR to the log. *)
 PROCEDURE Char* (ch: CHAR);
+    VAR s: ARRAY 2 OF CHAR;
 BEGIN
-    Console.WriteChar(ch)
+    s[0] := ch;
+    s[1] := 0X;
+    StdLog.String(s)
 END Char;
 
+(** Append a line terminator. *)
 PROCEDURE Ln*;
 BEGIN
-    Console.WriteLn
+    StdLog.Ln
 END Ln;
 
+(** Append a wide string. *)
 PROCEDURE String* (IN str: ARRAY OF CHAR);
 BEGIN
-    Console.WriteString(str)
+    StdLog.String(str)
 END String;
 
-(* BB signature: `Int(i: LONGINT; n: INTEGER)` — `n` is the minimum
-   field width.  We pad with space (not 8FX) since Console writes
-   raw to stdout.  Negative n in BB means left-align; we accept
-   any n but always right-align in this slice. *)
+(** Append an integer with minimum field width `n`.
+    Right-aligned; padded with spaces on the left.
+    Negative `n` is treated as 0 (no padding). *)
 PROCEDURE Int* (i: INTEGER; n: INTEGER);
     VAR digits: ARRAY 24 OF CHAR;
         v, k, j, sign: INTEGER;
@@ -59,31 +60,33 @@ BEGIN
         INC(k)
     UNTIL v = 0;
     IF sign < 0 THEN digits[k] := "-"; INC(k) END;
-    (* `k` now holds the digit count.  Pad to total width `n` with
-       spaces.  Crucially we need a SEPARATE counter for the
-       padding so `k` stays as "how many digits to emit" — without
-       that, the digit-reverse loop walks past the end of valid
-       chars and emits whatever was in the uninitialised slots. *)
+    (* Pad to width n with spaces. *)
     j := k;
     WHILE j < n DO
-        Console.WriteChar(" ");
+        StdLog.SString(" ");
         INC(j)
     END;
-    (* Emit digits reversed (they were stored
-       least-significant-first). *)
+    (* Append digits in reverse to StdLog. *)
     WHILE k > 0 DO
         DEC(k);
-        Console.WriteChar(digits[k])
+        Char(digits[k])
     END
 END Int;
 
+(** Append a real number formatted as an integer part and decimal
+    fraction.  Full IEEE formatting is a follow-up once
+    TextMappers.Formatter.WriteRealForm ports.  For now emits the
+    integer part followed by ".0". *)
 PROCEDURE Real* (x: REAL; n: INTEGER);
+    VAR ipart: INTEGER;
 BEGIN
-    (* Padding semantics matching Int.  Console.WriteReal does
-       the actual formatting — width-honoring real output is a
-       follow-up once TextMappers.Formatter.WriteRealForm ports. *)
-    WHILE n > 16 DO Console.WriteChar(" "); DEC(n) END;
-    Console.WriteReal(x)
+    IF x < 0.0 THEN
+        StdLog.SString("-");
+        x := -x
+    END;
+    ipart := SHORT(ENTIER(x));
+    Int(ipart, 0);
+    StdLog.SString(".0")
 END Real;
 
 END Out.

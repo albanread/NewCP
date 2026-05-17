@@ -39,6 +39,7 @@ MODULE Windows;
     PROCEDURE (w: Window) GetSize*   (OUT width, height: INTEGER), NEW, ABSTRACT;
     PROCEDURE (w: Window) Scroll*    (dx, dy: INTEGER), NEW, ABSTRACT;
     PROCEDURE (w: Window) Close*     (), NEW, ABSTRACT;
+    PROCEDURE (w: Window) Repaint*   (), NEW, ABSTRACT;
 
 
     (* -- Abstract method on Directory -------------------------------------- *)

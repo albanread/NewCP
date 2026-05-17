@@ -18,7 +18,7 @@ MODULE StdScrollers;
         END;
         StdScrollerObserver = POINTER TO StdScrollerObserverDesc;
 
-        ViewDesc* = RECORD (Views.ViewDesc)
+        ViewDesc* = EXTENSIBLE RECORD (Views.ViewDesc)
             inner-: Views.View;
             org-:   INTEGER;
             orgX-:  INTEGER
