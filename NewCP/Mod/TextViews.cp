@@ -417,15 +417,21 @@ PROCEDURE (v: Pane) Restore* (f: Views.Frame; l, t, r, b: INTEGER);
         barH     = 50;      (* indicator bar height in user units *)
         lineH    = 120;     (* approximate line height in user units *)
         maxLen   = 256;     (* max chars to render per line *)
-        charW    = 8;       (* rough char width in DIPs *)
+        charW    = 8;       (* rough char width in DIPs per printable char *)
         selColor = 0FFD6ADH; (* light-blue selection: R=0xAD, G=0xD6, B=0xFF *)
     VAR rd: TextModels.Reader;
-        line: ARRAY 256 OF CHAR;
-        i, y: INTEGER;
-        font: Fonts.Font;
+        line:      ARRAY 256 OF CHAR;
+        lineAttrs: ARRAY 256 OF TextModels.Attributes;  (* per-printable-char attr *)
+        runBuf:    ARRAY 256 OF CHAR;
+        i, y, j: INTEGER;
+        lineChars: INTEGER;  (* total model chars on line, including non-printable *)
+        defFont, font: Fonts.Font;
+        runFont, charFont: Fonts.Font;
+        runStart, runEnd, runLen: INTEGER;
         carPos: INTEGER;
         selBeg, selEnd: INTEGER;
         linePos: INTEGER;
+        lastLineStart: INTEGER;  (* model pos of first char of last rendered line *)
         caretX, caretYTop, caretYBot: INTEGER;
         caretDrawn: BOOLEAN;
         hlBeg, hlEnd: INTEGER;  (* selection overlap on current line [chars] *)
@@ -451,46 +457,82 @@ BEGIN
         rd := v.text.NewReader(NIL);
         IF rd # NIL THEN
             rd.SetPos(v.org);
-            font := NIL;
-            IF v.defAttr # NIL THEN font := v.defAttr.font END;
-            IF (font = NIL) & (Fonts.dir # NIL) THEN
-                font := Fonts.dir.Default()
+            (* Resolve the pane's default font — used for chars whose attr is NIL. *)
+            defFont := NIL;
+            IF v.defAttr # NIL THEN defFont := v.defAttr.font END;
+            IF (defFont = NIL) & (Fonts.dir # NIL) THEN
+                defFont := Fonts.dir.Default()
             END;
+            font := defFont;
+
             y := barH + lineH;
             linePos := v.org;
+            lastLineStart := v.org;
             caretDrawn := FALSE;
             rd.ReadChar();   (* prime the reader *)
             WHILE ~rd.eot & (y <= b) DO
-                (* Collect visible chars up to EOL/EOT. *)
-                i := 0;
+                (* Collect printable chars and their resolved fonts.
+                   `i` = printable chars; `lineChars` = total model chars read. *)
+                lastLineStart := linePos;
+                i := 0; lineChars := 0;
                 WHILE ~rd.eot
                     & (rd.char # TextModels.line)
                     & (rd.char # TextModels.para)
                     & (i < maxLen - 1) DO
                     IF rd.char >= ' ' THEN
-                        line[i] := rd.char;
+                        line[i]      := rd.char;
+                        lineAttrs[i] := rd.attr;  (* may be NIL → use defFont *)
                         INC(i)
                     END;
+                    INC(lineChars);
                     rd.ReadChar()
                 END;
                 line[i] := 0X;
 
                 (* Draw selection highlight if this line overlaps [selBeg, selEnd). *)
                 IF (selBeg >= 0) & (selBeg < selEnd)
-                 & (linePos + i > selBeg) & (linePos < selEnd) THEN
+                 & (linePos + lineChars > selBeg) & (linePos < selEnd) THEN
                     hlBeg := selBeg - linePos; IF hlBeg < 0 THEN hlBeg := 0 END;
-                    hlEnd := selEnd - linePos; IF hlEnd > i THEN hlEnd := i END;
+                    hlEnd := selEnd - linePos; IF hlEnd > lineChars THEN hlEnd := lineChars END;
+                    IF hlEnd > i THEN hlEnd := i END;  (* cap to printable range *)
                     f.DrawRect(l + hlBeg * charW, y - lineH + 10,
                                l + hlEnd * charW, y + 10,
                                Ports.fill, selColor)
                 END;
 
+                (* Render the line in consecutive same-font runs. *)
                 IF i > 0 THEN
-                    f.DrawString(l, y, Ports.black, line, font)
+                    runStart := 0;
+                    WHILE runStart < i DO
+                        (* Determine this run's font. *)
+                        runFont := defFont;
+                        IF (lineAttrs[runStart] # NIL) & (lineAttrs[runStart].font # NIL) THEN
+                            runFont := lineAttrs[runStart].font
+                        END;
+                        (* Extend run while font is the same. *)
+                        runEnd := runStart + 1;
+                        WHILE runEnd < i DO
+                            charFont := defFont;
+                            IF (lineAttrs[runEnd] # NIL) & (lineAttrs[runEnd].font # NIL) THEN
+                                charFont := lineAttrs[runEnd].font
+                            END;
+                            IF charFont # runFont THEN EXIT END;
+                            INC(runEnd)
+                        END;
+                        (* Build run buffer and draw. *)
+                        runLen := runEnd - runStart;
+                        j := 0;
+                        WHILE j < runLen DO
+                            runBuf[j] := line[runStart + j]; INC(j)
+                        END;
+                        runBuf[runLen] := 0X;
+                        f.DrawString(l + runStart * charW, y, Ports.black, runBuf, runFont);
+                        runStart := runEnd
+                    END
                 END;
 
-                (* Draw caret if it falls on this line. *)
-                IF (carPos >= linePos) & (carPos <= linePos + i) THEN
+                (* Draw caret if it falls on this line (uses model position). *)
+                IF (carPos >= linePos) & (carPos <= linePos + lineChars) THEN
                     caretX := l + (carPos - linePos) * charW;
                     caretYTop := y - lineH + 10;
                     caretYBot := y + 10;
@@ -498,13 +540,15 @@ BEGIN
                     caretDrawn := TRUE
                 END;
 
-                linePos := linePos + i + 1;  (* +1 for line separator *)
+                linePos := linePos + lineChars + 1;  (* +1 for line separator *)
                 INC(y, lineH);
                 IF ~rd.eot THEN rd.ReadChar() END
             END;
-            (* Draw caret at end-of-text if not placed yet. *)
+            (* Draw caret at end-of-text if not placed yet.
+               Use lastLineStart to get the correct X position. *)
             IF ~caretDrawn & (carPos >= 0) THEN
-                caretX := l;
+                caretX := l + (carPos - lastLineStart) * charW;
+                IF caretX < l THEN caretX := l END;
                 caretYTop := y - lineH + 10;
                 caretYBot := y + 10;
                 f.DrawLine(caretX, caretYTop, caretX, caretYBot, 2, Ports.black)
@@ -706,6 +750,13 @@ BEGIN
     v.defRuler := NIL;
     v.defAttr  := d.defAttr;
     v.hideMarks := FALSE;
+    (* Install a default controller so the pane can accept keyboard
+       and mouse input immediately.  ctrlDir is set by TextControllers
+       in its module body via SetCtrlDir(dir); it is NIL only before
+       TextControllers has been imported. *)
+    IF ctrlDir # NIL THEN
+        v.SetController(ctrlDir.NewController({}))
+    END;
     RETURN v
 END New;
 

@@ -102,10 +102,10 @@ MODULE Containers;
 
         (** Container-side abstract directory.  Concrete container
             controllers' Directory types (`TextControllers.Directory`,
-            `FormControllers.Directory`, …) extend this.  BB-faithful
-            base type — empty record per the framework convention; the
-            specialisation methods (`NewController`, `New`) live on
-            the derived directories. *)
+            `FormControllers.Directory`, …) extend this.  Carries the
+            abstract `NewController` factory so `TextViews` can install
+            a default controller without importing `TextControllers`
+            (which would create a circular dependency). *)
         DirectoryDesc* = ABSTRACT RECORD END;
         Directory*     = POINTER TO DirectoryDesc;
 
@@ -141,6 +141,14 @@ MODULE Containers;
         END;
 
 
+    (* -- DirectoryDesc methods ------------------------------------------ *)
+
+    (** Build a fresh controller carrying `opts` as the initial option
+        mask.  ABSTRACT — concrete directories (StdDirectoryDesc in
+        TextControllers, etc.) supply the implementation. *)
+    PROCEDURE (d: Directory) NewController* (opts: SET): Controller, NEW, ABSTRACT;
+
+
     (* -- ControllerDesc methods ----------------------------------------- *)
 
     (** Bind the controller to its view and model. *)
@@ -149,6 +157,15 @@ MODULE Containers;
         c.view  := v;
         c.model := m
     END SetView;
+
+    (** Post-bind initialisation hook.  Called by `SetController`
+        immediately after `SetView` so subclasses can populate
+        type-specific fields (e.g. TextControllers.Controller sets
+        `text-` from the view's model).  EMPTY default. *)
+    PROCEDURE (c: Controller) InitView2* (v: Views.View), NEW, EXTENSIBLE;
+    BEGIN
+        (* EMPTY — TextControllers.Controller overrides. *)
+    END InitView2;
 
     (** Return the currently focused embedded view (NIL until routing lands). *)
     PROCEDURE (c: Controller) ThisFocus* (): Views.View, NEW, EXTENSIBLE;
@@ -329,11 +346,17 @@ MODULE Containers;
         Mirrors the Container shape of `View.CopyFromModelView`. *)
     PROCEDURE (v: View) CopyFromModelView2* (source: Views.View; model: Models.Model), NEW, EMPTY;
 
-    (** Bind a controller to the view and wire it back to view/model. *)
+    (** Bind a controller to the view and wire it back to view/model.
+        Calls `c.SetView` first (base-level view/model binding), then
+        `c.InitView2` so the concrete controller can populate its own
+        type-specific fields from the now-bound view. *)
     PROCEDURE (v: View) SetController* (c: Controller), NEW, EXTENSIBLE;
     BEGIN
         v.controller := c;
-        IF c # NIL THEN c.SetView(v, v.model) END
+        IF c # NIL THEN
+            c.SetView(v, v.model);
+            c.InitView2(v)
+        END
     END SetController;
 
     (** Return the bound controller. *)

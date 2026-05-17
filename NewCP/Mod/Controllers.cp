@@ -32,7 +32,7 @@ MODULE Controllers;
    isn't reachable until we have a host UI surface.
 *)
 
-    IMPORT Stores, Views;
+    IMPORT Stores, Models, Views;
 
     CONST
         (** ForwardTarget — controller-list traversal mode. *)

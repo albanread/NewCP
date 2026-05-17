@@ -39,7 +39,7 @@ MODULE BbApp;
 
     IMPORT iGui, Console, HostWindows,
            Documents, Windows, TextModels, TextViews,
-           StdCmds, TextCmds, TextControllers, StdLog;
+           StdCmds, TextCmds, TextControllers, StdLog, Services;
 
     CONST
         (* File menu *)
@@ -51,6 +51,7 @@ MODULE BbApp;
 
         (* Edit menu *)
         CmdUndo    = 1100;
+        CmdRedo    = 1108;
         CmdSelAll  = 1101;
         CmdDesel   = 1102;
         CmdFind    = 1103;
@@ -107,7 +108,7 @@ MODULE BbApp;
         Console.WriteShortString("BbApp: starting"); Console.WriteLn;
 
         (* Install the menu bar — single literal, no & concatenation. *)
-        ok := iGui.SetMenu("MENU &File;ITEM 1001 &New;ITEM 1002 &Open...;ITEM 1003 Save &As...;ITEM 1004 &Close Window;SEP;ITEM 1099 &Quit;MENU &Edit;ITEM 1100 &Undo;SEP;ITEM 1101 Select &All;ITEM 1102 &Deselect;SEP;ITEM 1105 Cu&t;ITEM 1106 &Copy;ITEM 1107 &Paste;SEP;ITEM 1103 &Find...;ITEM 1104 Find &Again;SEP;ITEM 1110 &Bold;ITEM 1111 &Italic;ITEM 1112 P&lain;MENU &Log;ITEM 1200 &Show Log;MENU &Window;MDI cascade;MDI tile-h;MDI tile-v;SEP;MDI close-all;MDI arrange-icons");
+        ok := iGui.SetMenu("MENU &File;ITEM 1001 &New;ITEM 1002 &Open...;ITEM 1003 Save &As...;ITEM 1004 &Close Window;SEP;ITEM 1099 &Quit;MENU &Edit;ITEM 1100 &Undo;ITEM 1108 &Redo;SEP;ITEM 1101 Select &All;ITEM 1102 &Deselect;SEP;ITEM 1105 Cu&t;ITEM 1106 &Copy;ITEM 1107 &Paste;SEP;ITEM 1103 &Find...;ITEM 1104 Find &Again;SEP;ITEM 1110 &Bold;ITEM 1111 &Italic;ITEM 1112 P&lain;MENU &Log;ITEM 1200 &Show Log;MENU &Window;MDI cascade;MDI tile-h;MDI tile-v;SEP;MDI close-all;MDI arrange-icons");
         IF ok = 0 THEN
             Console.WriteShortString("BbApp: SetMenu failed"); Console.WriteLn
         END;
@@ -118,9 +119,12 @@ MODULE BbApp;
         Console.WriteShortString("BbApp: running — close the frame to exit");
         Console.WriteLn;
 
-        (* Event loop. *)
+        (* Event loop.
+           50 ms timeout so Services.Step drains deferred actions
+           even when the UI is idle.  ok = 0 means timeout with
+           no event; ok ≠ 0 means an event was delivered. *)
         REPEAT
-            ok := iGui.NextEvent(kind, childId, timeMs, p1, p2, p3, p4, -1);
+            ok := iGui.NextEvent(kind, childId, timeMs, p1, p2, p3, p4, 50);
             IF ok # 0 THEN
                 IF    kind = iGui.EvPaint      THEN HostWindows.PaintChild(childId)
                 ELSIF kind = iGui.EvResize     THEN HostWindows.ResizeChild(childId, p1, p2)
@@ -160,11 +164,33 @@ MODULE BbApp;
                             TextCmds.Paste; HostWindows.PaintChild(childId)
                         ELSIF (p1 = ORD('a')) OR (p1 = ORD('A')) THEN
                             TextCmds.SelectAll; HostWindows.PaintChild(childId)
+                        ELSIF (p1 = ORD('z')) OR (p1 = ORD('Z')) THEN
+                            TextCmds.Undo; HostWindows.PaintChild(childId)
+                        ELSIF (p1 = ORD('y')) OR (p1 = ORD('Y')) THEN
+                            TextCmds.Redo; HostWindows.PaintChild(childId)
+                        ELSIF (p1 = ORD('f')) OR (p1 = ORD('F')) THEN
+                            TextCmds.Find; HostWindows.PaintChild(childId)
+                        ELSIF (p1 = ORD('g')) OR (p1 = ORD('G')) THEN
+                            TextCmds.FindAgain; HostWindows.PaintChild(childId)
+                        ELSIF (p1 = ORD('b')) OR (p1 = ORD('B')) THEN
+                            TextCmds.Bold; HostWindows.PaintChild(childId)
+                        ELSIF (p1 = ORD('i')) OR (p1 = ORD('I')) THEN
+                            TextCmds.Italic; HostWindows.PaintChild(childId)
+                        ELSIF (p1 = ORD('m')) OR (p1 = ORD('M')) THEN
+                            TextCmds.Plain; HostWindows.PaintChild(childId)
                         END
                     ELSE
-                        ch := CHR(p1);
-                        IF TextControllers.HandleKey(ch) THEN
-                            HostWindows.PaintChild(childId)
+                        (* Pass printable chars, Tab (9), and Enter (13) to
+                           HandleKey.  Skip Backspace (8) — it arrives as both
+                           EvKey (handled by HandleNavKey/VkBack) and EvChar;
+                           passing it here too would cause a double-delete.
+                           All other control chars (< 32 except 9, 13) are
+                           silently discarded. *)
+                        IF (p1 >= 32) OR (p1 = 9) OR (p1 = 13) THEN
+                            ch := CHR(p1);
+                            IF TextControllers.HandleKey(ch) THEN
+                                HostWindows.PaintChild(childId)
+                            END
                         END
                     END
                 ELSIF kind = iGui.EvMenu       THEN
@@ -173,21 +199,25 @@ MODULE BbApp;
                     ELSIF p2 = CmdSave    THEN StdCmds.Save
                     ELSIF p2 = CmdCloseW  THEN StdCmds.CloseWin
                     ELSIF p2 = CmdQuit    THEN StdCmds.Quit; EXIT
-                    ELSIF p2 = CmdUndo    THEN (* stub *)
-                    ELSIF p2 = CmdSelAll  THEN TextCmds.SelectAll
-                    ELSIF p2 = CmdDesel   THEN TextCmds.Deselect
-                    ELSIF p2 = CmdCut     THEN TextCmds.Cut
+                    ELSIF p2 = CmdUndo    THEN TextCmds.Undo; HostWindows.PaintChild(childId)
+                    ELSIF p2 = CmdRedo    THEN TextCmds.Redo; HostWindows.PaintChild(childId)
+                    ELSIF p2 = CmdSelAll  THEN TextCmds.SelectAll;               HostWindows.PaintChild(childId)
+                    ELSIF p2 = CmdDesel   THEN TextCmds.Deselect;                HostWindows.PaintChild(childId)
+                    ELSIF p2 = CmdCut     THEN TextCmds.Cut;                     HostWindows.PaintChild(childId)
                     ELSIF p2 = CmdCopy    THEN TextCmds.Copy
-                    ELSIF p2 = CmdPaste   THEN TextCmds.Paste
-                    ELSIF p2 = CmdFind    THEN TextCmds.Find
-                    ELSIF p2 = CmdFindAgn THEN TextCmds.FindAgain
-                    ELSIF p2 = CmdBold    THEN TextCmds.Bold
-                    ELSIF p2 = CmdItalic  THEN TextCmds.Italic
-                    ELSIF p2 = CmdPlain   THEN TextCmds.Plain
+                    ELSIF p2 = CmdPaste   THEN TextCmds.Paste;                   HostWindows.PaintChild(childId)
+                    ELSIF p2 = CmdFind    THEN TextCmds.Find;                    HostWindows.PaintChild(childId)
+                    ELSIF p2 = CmdFindAgn THEN TextCmds.FindAgain;               HostWindows.PaintChild(childId)
+                    ELSIF p2 = CmdBold    THEN TextCmds.Bold;                    HostWindows.PaintChild(childId)
+                    ELSIF p2 = CmdItalic  THEN TextCmds.Italic;                  HostWindows.PaintChild(childId)
+                    ELSIF p2 = CmdPlain   THEN TextCmds.Plain;                   HostWindows.PaintChild(childId)
                     ELSIF p2 = CmdShowLog THEN StdLog.Open
                     END
                 END
-            END
+            END;
+            (* Drain any deferred Services.Action items that
+               became due during this tick. *)
+            Services.Step
         UNTIL FALSE;
 
         Console.WriteShortString("BbApp: done"); Console.WriteLn

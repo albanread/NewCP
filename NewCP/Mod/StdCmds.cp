@@ -20,7 +20,7 @@ MODULE StdCmds;
    first 256 code-points.  Full UTF-8 I/O is a follow-up.
 *)
 
-    IMPORT Models, Views, Documents, Windows, Files, TextModels, TextViews, HostDialog, iGui;
+    IMPORT Models, Views, Controllers, Documents, Windows, Files, TextModels, TextViews, HostDialog, iGui;
 
     CONST
         defWidth  = 800;   (** Default new-window width in DIPs  *)
@@ -50,6 +50,83 @@ MODULE StdCmds;
         END;
         name[j] := 0X
     END ExtractName;
+
+
+    (* ---- UTF-8 codec helpers -------------------------------------------- *)
+
+    (** Decode one UTF-8 codepoint from `rd`.
+        `b` IN: first byte of the current sequence (already loaded).
+        `b` OUT: first byte of the next sequence (0 if eof).
+        `cp` OUT: decoded codepoint 0..10FFFFh, or ORD('?') on error. *)
+    PROCEDURE ReadUtf8Char (rd: Files.Reader; VAR b: BYTE; OUT cp: INTEGER);
+        VAR bv, c1, c2, c3: INTEGER; cb: BYTE;
+    BEGIN
+        bv := b MOD 256;
+        IF bv < 80H THEN
+            (* Single-byte ASCII. *)
+            cp := bv;
+            rd.ReadByte(b)
+        ELSIF bv < 0C0H THEN
+            (* Spurious continuation byte — replace and advance. *)
+            cp := ORD('?');
+            rd.ReadByte(b)
+        ELSIF bv < 0E0H THEN
+            (* 2-byte: 110xxxxx 10xxxxxx *)
+            cp := bv MOD 32;
+            rd.ReadByte(cb); c1 := cb MOD 256;
+            IF ~rd.eof & (c1 >= 80H) & (c1 < 0C0H) THEN
+                cp := cp * 64 + (c1 MOD 64)
+            ELSE cp := ORD('?')
+            END;
+            rd.ReadByte(b)
+        ELSIF bv < 0F0H THEN
+            (* 3-byte: 1110xxxx 10xxxxxx 10xxxxxx *)
+            cp := bv MOD 16;
+            rd.ReadByte(cb); c1 := cb MOD 256;
+            rd.ReadByte(cb); c2 := cb MOD 256;
+            IF ~rd.eof & (c1 >= 80H) & (c1 < 0C0H)
+                       & (c2 >= 80H) & (c2 < 0C0H) THEN
+                cp := ((cp * 64 + (c1 MOD 64)) * 64) + (c2 MOD 64)
+            ELSE cp := ORD('?')
+            END;
+            rd.ReadByte(b)
+        ELSE
+            (* 4-byte: 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx *)
+            cp := bv MOD 8;
+            rd.ReadByte(cb); c1 := cb MOD 256;
+            rd.ReadByte(cb); c2 := cb MOD 256;
+            rd.ReadByte(cb); c3 := cb MOD 256;
+            IF ~rd.eof & (c1 >= 80H) & (c1 < 0C0H)
+                       & (c2 >= 80H) & (c2 < 0C0H)
+                       & (c3 >= 80H) & (c3 < 0C0H) THEN
+                cp := (((cp * 64 + (c1 MOD 64)) * 64 + (c2 MOD 64)) * 64) + (c3 MOD 64)
+            ELSE cp := ORD('?')
+            END;
+            rd.ReadByte(b)
+        END
+    END ReadUtf8Char;
+
+    (** Encode codepoint `cp` as UTF-8 bytes and write to `wr`. *)
+    PROCEDURE WriteUtf8Char (wr: Files.Writer; cp: INTEGER);
+        VAR b: BYTE;
+    BEGIN
+        IF cp < 0 THEN RETURN END;
+        IF cp < 80H THEN
+            b := SHORT(cp); wr.WriteByte(b)
+        ELSIF cp < 800H THEN
+            b := SHORT(0C0H + cp DIV 64); wr.WriteByte(b);
+            b := SHORT(80H + cp MOD 64);  wr.WriteByte(b)
+        ELSIF cp < 10000H THEN
+            b := SHORT(0E0H + cp DIV 4096);           wr.WriteByte(b);
+            b := SHORT(80H + (cp DIV 64) MOD 64);     wr.WriteByte(b);
+            b := SHORT(80H + cp MOD 64);               wr.WriteByte(b)
+        ELSE
+            b := SHORT(0F0H + cp DIV 262144);          wr.WriteByte(b);
+            b := SHORT(80H + (cp DIV 4096) MOD 64);   wr.WriteByte(b);
+            b := SHORT(80H + (cp DIV 64) MOD 64);     wr.WriteByte(b);
+            b := SHORT(80H + cp MOD 64);               wr.WriteByte(b)
+        END
+    END WriteUtf8Char;
 
 
     (* ---- New --------------------------------------------------------------- *)
@@ -97,6 +174,7 @@ MODULE StdCmds;
             doc:    Documents.Document;
             win:    Windows.Window;
             b:      BYTE;
+            cp:     INTEGER;
     BEGIN
         filter[0] := 0X;   (* empty → "All Files" in the Rust shim *)
         IF ~HostDialog.GetOpenFileName(filter, path) THEN RETURN END;
@@ -109,19 +187,22 @@ MODULE StdCmds;
         rd := f.NewReader(NIL);
         IF rd = NIL THEN RETURN END;
 
-        (* Read the file byte-by-byte into a fresh text model. *)
+        (* Read the file as UTF-8 into a fresh text model.
+           U+FEFF (BOM / ZWNBSP) and CR (0Dh) are skipped silently;
+           LF (0Ah) maps to TextModels.line; tab (09h) and all
+           printable codepoints pass through as-is. *)
         NEW(text);
         wr := text.NewWriter(NIL);
         rd.ReadByte(b);
         WHILE ~rd.eof DO
-            IF b = 0AH THEN
+            ReadUtf8Char(rd, b, cp);
+            IF (cp = 0DH) OR (cp = 0FEFFH) THEN
+                (* CR or BOM: skip *)
+            ELSIF cp = 0AH THEN
                 wr.WriteChar(TextModels.line)
-            ELSIF b = 0DH THEN
-                (* swallow CR; LF (above) will insert the line break *)
-            ELSIF (b >= 20H) OR (b = 9) THEN   (* printable or HT *)
-                wr.WriteChar(CHR(b))
-            END;
-            rd.ReadByte(b)
+            ELSIF (cp >= 20H) OR (cp = 9) THEN
+                wr.WriteChar(CHR(cp))
+            END
         END;
 
         (* Title = last path component (filename). *)
@@ -138,18 +219,17 @@ MODULE StdCmds;
 
     (* ---- Save -------------------------------------------------------------- *)
 
-    (** Save the text from the first valid window to a user-chosen file.
-        Characters <= 0FFH are written as a single Latin-1 byte.
-        Characters > 0FFH are replaced by '?'.
-        TextModels.line (0DX) is written as CR+LF (0DH + 0AH).
-        If no valid window or TextViews.View is found, the call is a
-        silent no-op. *)
+    (** Save the focused text view to a user-chosen file.
+        Falls back to the first valid window if no text view is focused.
+        TextModels.line (0DX) is written as CR+LF; all other codepoints
+        are encoded as UTF-8. *)
     PROCEDURE Save*;
         VAR filter:   ARRAY 4 OF SHORTCHAR;
             empty:    ARRAY 4 OF CHAR;
             path:     ARRAY maxPath OF CHAR;
             w:        Windows.Window;
             innerV:   Views.View;
+            focV:     Views.View;
             m:        Models.Model;
             d:        Documents.Document;
             loc:      Files.Locator;
@@ -159,15 +239,24 @@ MODULE StdCmds;
             ch:       CHAR;
             b:        BYTE;
     BEGIN
-        (* Find first valid window. *)
-        w := Windows.first;
-        WHILE (w # NIL) & ~w.IsValid() DO w := w.next END;
-        IF w = NIL THEN RETURN END;
-        d := w.ThisDoc();
-        IF d = NIL THEN RETURN END;
-        innerV := d.ThisView();
-        IF (innerV = NIL) OR ~(innerV IS TextViews.View) THEN RETURN END;
-        m := innerV(TextViews.View).ThisModel();
+        (* Prefer the focused view's model; fall back to first valid window. *)
+        focV := Controllers.FocusView();
+        IF (focV # NIL) & (focV IS TextViews.View) THEN
+            m := focV(TextViews.View).ThisModel()
+        ELSE
+            m := NIL
+        END;
+        IF (m = NIL) OR ~(m IS TextModels.Model) THEN
+            (* Fallback: walk window list. *)
+            w := Windows.first;
+            WHILE (w # NIL) & ~w.IsValid() DO w := w.next END;
+            IF w = NIL THEN RETURN END;
+            d := w.ThisDoc();
+            IF d = NIL THEN RETURN END;
+            innerV := d.ThisView();
+            IF (innerV = NIL) OR ~(innerV IS TextViews.View) THEN RETURN END;
+            m := innerV(TextViews.View).ThisModel()
+        END;
         IF (m = NIL) OR ~(m IS TextModels.Model) THEN RETURN END;
 
         filter[0] := 0X;
@@ -182,7 +271,7 @@ MODULE StdCmds;
         wr := f.NewWriter(NIL);
         IF wr = NIL THEN RETURN END;
 
-        (* Write text model as Latin-1 with CR+LF line endings. *)
+        (* Write text model as UTF-8 with CR+LF line endings. *)
         rd := m(TextModels.Model).NewReader(NIL);
         IF rd = NIL THEN RETURN END;
         rd.SetPos(0);
@@ -192,11 +281,8 @@ MODULE StdCmds;
             IF ch = TextModels.line THEN
                 wr.WriteByte(0DH);
                 wr.WriteByte(0AH)
-            ELSIF ORD(ch) > 0FFH THEN
-                wr.WriteByte(3FH)   (* '?' *)
             ELSE
-                b := SHORT(ORD(ch));
-                wr.WriteByte(b)
+                WriteUtf8Char(wr, ORD(ch))
             END;
             rd.ReadChar()
         END
@@ -205,12 +291,30 @@ MODULE StdCmds;
 
     (* ---- CloseWin ---------------------------------------------------------- *)
 
-    (** Close the first valid (open) window in the window list.
-        Walks past any already-closed entries (port = NIL → IsValid = FALSE)
-        until it finds one that is still live. *)
+    (** Close the window containing the currently-focused view.
+        Falls back to the first valid window if the focused view
+        cannot be matched to any open window. *)
     PROCEDURE CloseWin*;
-        VAR w: Windows.Window;
+        VAR focV: Views.View;
+            w:    Windows.Window;
+            d:    Documents.Document;
     BEGIN
+        (* First pass: find the window that holds the focused view. *)
+        focV := Controllers.FocusView();
+        IF focV # NIL THEN
+            w := Windows.first;
+            WHILE w # NIL DO
+                IF w.IsValid() THEN
+                    d := w.ThisDoc();
+                    IF (d # NIL) & (d.ThisView() = focV) THEN
+                        w.Close();
+                        RETURN
+                    END
+                END;
+                w := w.next
+            END
+        END;
+        (* Fallback: close the first still-open window. *)
         w := Windows.first;
         WHILE (w # NIL) & ~w.IsValid() DO w := w.next END;
         IF w # NIL THEN w.Close() END

@@ -220,7 +220,7 @@ BEGIN
     wr.WriteVersion(maxVersion)
 END Externalize2;
 
-PROCEDURE (c: Controller) InitView2* (v: Views.View), NEW, EXTENSIBLE;
+PROCEDURE (c: Controller) InitView2* (v: Views.View), EXTENSIBLE;
     VAR m: Models.Model;
 BEGIN
     ASSERT((v = NIL) # (c.view = NIL), 21);
@@ -362,8 +362,8 @@ BEGIN
         IF pos < doc.len THEN
             doc.DeleteRange(pos, pos + 1)
         END
-    ELSIF ch >= ' ' THEN
-        (* Printable character: insert at caret. *)
+    ELSIF (ch >= ' ') OR (ch = tab) THEN
+        (* Printable character or tab: insert at caret. *)
         doc.InsertChar(pos, ch);
         INC(pos)
     ELSIF (ch = line) OR (ch = para) THEN
@@ -396,13 +396,17 @@ END HandleKey;
    Returns TRUE if the key was handled. *)
 PROCEDURE HandleNavKey* (vkey: INTEGER; withShift: BOOLEAN): BOOLEAN;
     CONST
-        VkLeft  = 37; VkRight = 39;
-        VkUp    = 38; VkDown  = 40;
-        VkHome  = 36; VkEnd   = 35;
+        VkLeft   = 37; VkRight = 39;
+        VkUp     = 38; VkDown  = 40;
+        VkHome   = 36; VkEnd   = 35;
+        VkDelete = 46; VkBack  = 8;
+        VkPageUp = 33; VkPageDown = 34;
+        pageLines = 20;  (* lines per Page Up / Page Down step *)
     VAR c: Controller;
         doc: TextModels.Doc;
         pos, beg, end, old: INTEGER;
         rd: TextModels.Reader;
+        anchor, count, origPos: INTEGER;  (* shift-select anchor; page-nav counter; saved caret *)
 BEGIN
     c := Focus();
     IF (c = NIL) OR ~(c IS StdCtrl) THEN RETURN FALSE END;
@@ -411,6 +415,7 @@ BEGIN
     old := c(StdCtrl).carPos;
     IF old = none THEN old := 0 END;
     pos := old;
+    origPos := old;  (* saved for shift-select anchor below *)
 
     IF vkey = VkLeft THEN
         IF pos > 0 THEN DEC(pos) END
@@ -444,6 +449,163 @@ BEGIN
                 INC(pos); rd.ReadChar()
             END
         END
+    ELSIF vkey = VkUp THEN
+        (* Move up one line, preserving column. *)
+        rd := doc.NewReader(NIL);
+        IF rd # NIL THEN
+            (* Single forward pass: track start of previous and current line. *)
+            rd.SetPos(0); rd.ReadChar();
+            beg := 0;   (* start of current line *)
+            old := -1;  (* start of previous line; -1 = none *)
+            WHILE ~rd.eot & (rd.Pos() - 1 < pos) DO
+                IF (rd.char = TextModels.line) OR (rd.char = TextModels.para) THEN
+                    old := beg;          (* prev line start = former cur *)
+                    beg := rd.Pos()      (* cur line start = char after sep *)
+                END;
+                rd.ReadChar()
+            END;
+            IF old < 0 THEN
+                pos := 0   (* already on first line: jump to text start *)
+            ELSE
+                (* Walk from prev line start by column chars. *)
+                end := pos - beg;   (* column in current line *)
+                IF end < 0 THEN end := 0 END;
+                rd.SetPos(old); rd.ReadChar();
+                pos := old;
+                WHILE (end > 0) & ~rd.eot
+                    & (rd.char # TextModels.line) & (rd.char # TextModels.para) DO
+                    INC(pos); DEC(end); rd.ReadChar()
+                END
+            END
+        END
+    ELSIF vkey = VkDown THEN
+        (* Move down one line, preserving column. *)
+        rd := doc.NewReader(NIL);
+        IF rd # NIL THEN
+            (* Find start of current line via forward scan. *)
+            rd.SetPos(0); rd.ReadChar();
+            beg := 0;
+            WHILE ~rd.eot & (rd.Pos() - 1 < pos) DO
+                IF (rd.char = TextModels.line) OR (rd.char = TextModels.para) THEN
+                    beg := rd.Pos()
+                END;
+                rd.ReadChar()
+            END;
+            end := pos - beg;   (* column in current line *)
+            IF end < 0 THEN end := 0 END;
+            (* Advance from pos to the next line separator. *)
+            rd.SetPos(pos); rd.ReadChar();
+            WHILE ~rd.eot & (rd.char # TextModels.line) & (rd.char # TextModels.para) DO
+                rd.ReadChar()
+            END;
+            IF ~rd.eot THEN
+                (* rd.char is the line sep; next line starts at rd.Pos(). *)
+                rd.ReadChar();           (* load first char of next line *)
+                pos := rd.Pos() - 1;    (* position of that first char *)
+                old := end;             (* column counter *)
+                WHILE (old > 0) & ~rd.eot
+                    & (rd.char # TextModels.line) & (rd.char # TextModels.para) DO
+                    INC(pos); DEC(old); rd.ReadChar()
+                END
+            END
+            (* If eot: no next line — pos stays unchanged *)
+        END
+    ELSIF vkey = VkDelete THEN
+        (* Delete forward: if selection non-empty, delete it; else delete char at caret. *)
+        beg := c(StdCtrl).selBeg; end := c(StdCtrl).selEnd;
+        IF beg # end THEN
+            IF beg > end THEN old := beg; beg := end; end := old END;
+            doc.DeleteRange(beg, end);
+            pos := beg
+        ELSIF pos < doc.len THEN
+            doc.DeleteRange(pos, pos + 1)
+        END;
+        c(StdCtrl).carPos := pos;
+        c(StdCtrl).selBeg := pos; c(StdCtrl).selEnd := pos;
+        RETURN TRUE
+    ELSIF vkey = VkBack THEN
+        (* Delete backward: if selection non-empty, delete it; else delete char before caret. *)
+        beg := c(StdCtrl).selBeg; end := c(StdCtrl).selEnd;
+        IF beg # end THEN
+            IF beg > end THEN old := beg; beg := end; end := old END;
+            doc.DeleteRange(beg, end);
+            pos := beg
+        ELSIF pos > 0 THEN
+            doc.DeleteRange(pos - 1, pos);
+            DEC(pos)
+        END;
+        c(StdCtrl).carPos := pos;
+        c(StdCtrl).selBeg := pos; c(StdCtrl).selEnd := pos;
+        RETURN TRUE
+    ELSIF vkey = VkPageDown THEN
+        (* Move down pageLines lines, preserving column. *)
+        rd := doc.NewReader(NIL);
+        IF rd # NIL THEN
+            (* Find column within current line. *)
+            rd.SetPos(0); rd.ReadChar();
+            beg := 0;
+            WHILE ~rd.eot & (rd.Pos() - 1 < pos) DO
+                IF (rd.char = TextModels.line) OR (rd.char = TextModels.para) THEN
+                    beg := rd.Pos()
+                END;
+                rd.ReadChar()
+            END;
+            end := pos - beg; IF end < 0 THEN end := 0 END;
+            (* Walk forward counting line separators. *)
+            rd.SetPos(pos); rd.ReadChar();
+            count := 0;
+            WHILE ~rd.eot & (count < pageLines) DO
+                IF (rd.char = TextModels.line) OR (rd.char = TextModels.para) THEN INC(count) END;
+                rd.ReadChar()
+            END;
+            IF rd.eot THEN
+                pos := doc.len  (* fewer than pageLines lines remain — clamp to end *)
+            ELSE
+                (* rd.char is the first char of the target line; rd.Pos()-1 is its position. *)
+                pos := rd.Pos() - 1;
+                old := end;     (* reuse old as column counter *)
+                WHILE (old > 0) & ~rd.eot
+                    & (rd.char # TextModels.line) & (rd.char # TextModels.para) DO
+                    INC(pos); DEC(old); rd.ReadChar()
+                END
+            END
+        END
+    ELSIF vkey = VkPageUp THEN
+        (* Move up pageLines lines, preserving column. *)
+        rd := doc.NewReader(NIL);
+        IF rd # NIL THEN
+            (* Count line number and column of current pos. *)
+            rd.SetPos(0); rd.ReadChar();
+            beg := 0; count := 0;  (* beg = line start; count = line number *)
+            WHILE ~rd.eot & (rd.Pos() - 1 < pos) DO
+                IF (rd.char = TextModels.line) OR (rd.char = TextModels.para) THEN
+                    beg := rd.Pos(); INC(count)
+                END;
+                rd.ReadChar()
+            END;
+            end := pos - beg; IF end < 0 THEN end := 0 END;  (* column *)
+            (* Target line number: max(0, count - pageLines). *)
+            old := count - pageLines;
+            IF old < 0 THEN old := 0 END;
+            (* Scan from start to reach target line. *)
+            rd.SetPos(0); rd.ReadChar();
+            pos := 0; count := 0;
+            WHILE ~rd.eot & (count < old) DO
+                IF (rd.char = TextModels.line) OR (rd.char = TextModels.para) THEN INC(count) END;
+                rd.ReadChar()
+            END;
+            (* rd.char is the first char of the target line. *)
+            IF ~rd.eot THEN
+                pos := rd.Pos() - 1;
+                old := end;    (* advance by column *)
+                WHILE (old > 0) & ~rd.eot
+                    & (rd.char # TextModels.line) & (rd.char # TextModels.para) DO
+                    INC(pos); DEC(old); rd.ReadChar()
+                END
+            ELSE
+                pos := 0
+            END
+        END
     ELSE
         RETURN FALSE
     END;
@@ -454,9 +616,25 @@ BEGIN
         c(StdCtrl).selBeg := pos;
         c(StdCtrl).selEnd := pos
     ELSE
-        (* Extend selection from the anchor. *)
-        c(StdCtrl).selBeg := c(StdCtrl).selBeg;  (* keep existing selBeg *)
-        c(StdCtrl).selEnd := pos
+        (* Determine anchor: the selection endpoint that should stay fixed.
+           - No prior selection → anchor is the pre-move caret (origPos).
+           - Caret was at selEnd → anchor is selBeg.
+           - Otherwise → anchor is selEnd. *)
+        IF c(StdCtrl).selBeg = c(StdCtrl).selEnd THEN
+            anchor := origPos
+        ELSIF origPos = c(StdCtrl).selEnd THEN
+            anchor := c(StdCtrl).selBeg
+        ELSE
+            anchor := c(StdCtrl).selEnd
+        END;
+        (* Set selection from min to max, so beg <= end always. *)
+        IF pos <= anchor THEN
+            c(StdCtrl).selBeg := pos;
+            c(StdCtrl).selEnd := anchor
+        ELSE
+            c(StdCtrl).selBeg := anchor;
+            c(StdCtrl).selEnd := pos
+        END
     END;
     RETURN TRUE
 END HandleNavKey;
@@ -469,7 +647,7 @@ END HandleNavKey;
    StdCtrl with neutral caret/selection state.
 *)
 
-PROCEDURE (d: Directory) NewController* (opts: SET): Controller, NEW, ABSTRACT;
+PROCEDURE (d: Directory) NewController* (opts: SET): Controller, ABSTRACT;
 
 PROCEDURE (d: Directory) New* (): Controller, NEW, EXTENSIBLE;
 BEGIN
@@ -551,5 +729,9 @@ BEGIN
        keeps the "import TextControllers and it works" property. *)
     NEW(std);
     stdDir := std;
-    dir := std
+    dir    := std;
+    (* Wire our directory into TextViews so PaneDirectory.New can
+       install a default StdCtrl on every fresh Pane.  Equivalent
+       to calling TextControllers.Install at boot. *)
+    TextViews.SetCtrlDir(dir)
 END TextControllers.
