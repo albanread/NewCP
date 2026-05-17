@@ -144,6 +144,12 @@ MODULE BbApp;
                     IF mouseOp = iGui.MouseLeftDown THEN
                         HostWindows.HandleMouseDown(childId, p1, p2);
                         HostWindows.PaintChild(childId)
+                    ELSIF mouseOp = iGui.MouseLeftUp THEN
+                        HostWindows.HandleMouseUp(childId)
+                    ELSIF mouseOp = iGui.MouseMove THEN
+                        (* Drag selection: extend from the click anchor to here. *)
+                        HostWindows.HandleMouseDrag(childId, p1, p2);
+                        HostWindows.PaintChild(childId)
                     ELSIF mouseOp = iGui.MouseWheel THEN
                         (* p4 = wheel_delta | wheel_lines<<16
                            positive = up (wheel_delta > 0 → scroll up = lines < 0) *)

@@ -38,6 +38,13 @@ MODULE HostWindows;
     VAR
         stdHostDir: HostDirectory;
 
+        (** Drag-selection state.  Set by HandleMouseDown on every
+            left-click; HandleMouseDrag updates the selection by
+            extending from this anchor to the current click position.
+            HandleMouseUp clears isDragging. *)
+        dragAnchor: INTEGER;
+        isDragging: BOOLEAN;
+
 
     (* -- Private helpers -------------------------------------------------- *)
 
@@ -263,61 +270,102 @@ MODULE HostWindows;
         IF w # NIL THEN w.Close() END
     END CloseChild;
 
-    (* Map a left-mouse-down at (x, y) DIPs to a caret position and set it.
+    (* Map (x, y) DIPs to a text model position within a Pane.
        Uses the TextViews.Restore rendering geometry:
          barH = 50  — indicator bar at the top
          lineH = 120 — height per rendered line
-       Within a line, rough character width ≈ 8 DIPs (12px Segoe UI estimate).
-       Silently returns if the focused view is not a text pane. *)
-    PROCEDURE HandleMouseDown* (childId, x, y: INTEGER);
+       Within a line, rough character width ≈ 8 DIPs.
+       `pane.org` is honoured: the first visible line is at `pane.org`.
+       Returns -1 if the pane has no text. *)
+    PROCEDURE HitTestPos (pane: TextViews.Pane; x, y: INTEGER): INTEGER;
         CONST barH = 50; lineH = 120;
+        VAR rd: TextModels.Reader;
+            lineIdx, pos, lineStart, col, lineLen: INTEGER;
+    BEGIN
+        IF pane.text = NIL THEN RETURN -1 END;
+        IF y < barH + lineH THEN lineIdx := 0
+        ELSE lineIdx := (y - barH - lineH) DIV lineH
+        END;
+        rd := pane.text.NewReader(NIL);
+        IF rd = NIL THEN RETURN -1 END;
+        (* Start from the scroll origin `pane.org`. *)
+        rd.SetPos(pane.org); rd.ReadChar();
+        pos := pane.org;
+        WHILE (lineIdx > 0) & ~rd.eot DO
+            WHILE ~rd.eot & (rd.char # TextModels.line) & (rd.char # TextModels.para) DO
+                INC(pos); rd.ReadChar()
+            END;
+            IF rd.eot THEN lineIdx := 0  (* clamp to last line *)
+            ELSE INC(pos); DEC(lineIdx); rd.ReadChar()
+            END
+        END;
+        lineStart := pos;
+        col := x DIV 8;
+        IF col < 0 THEN col := 0 END;
+        lineLen := 0;
+        WHILE ~rd.eot & (rd.char # TextModels.line) & (rd.char # TextModels.para) DO
+            INC(lineLen); rd.ReadChar()
+        END;
+        IF col > lineLen THEN col := lineLen END;
+        RETURN lineStart + col
+    END HitTestPos;
+
+    (* Map a left-mouse-down at (x, y) DIPs to a caret position and set it.
+       Records the click position as the drag anchor for subsequent drag events. *)
+    PROCEDURE HandleMouseDown* (childId, x, y: INTEGER);
         VAR w: HostWindow; v: Views.View;
             pane: TextViews.Pane; ctrl: TextControllers.Controller;
-            rd: TextModels.Reader;
-            lineIdx, pos, lineStart, col, lineLen: INTEGER;
+            pos: INTEGER;
     BEGIN
         w := FindByChildId(childId);
         IF w = NIL THEN RETURN END;
         v := w.doc.ThisView();
         IF (v = NIL) OR ~(v IS TextViews.Pane) THEN RETURN END;
         pane := v(TextViews.Pane);
-        (* Set focus to this window's view. *)
         Controllers.SetFocusView(v);
-        IF pane.text = NIL THEN RETURN END;
-        (* Compute line index from y coordinate. *)
-        IF y < barH + lineH THEN lineIdx := 0
-        ELSE lineIdx := (y - barH - lineH) DIV lineH
-        END;
-        (* Walk the text model to find the start of lineIdx-th line. *)
-        rd := pane.text.NewReader(NIL);
-        IF rd = NIL THEN RETURN END;
-        rd.SetPos(0); rd.ReadChar();
-        pos := 0;
-        WHILE (lineIdx > 0) & ~rd.eot DO
-            WHILE ~rd.eot & (rd.char # TextModels.line) & (rd.char # TextModels.para) DO
-                INC(pos); rd.ReadChar()
-            END;
-            IF rd.eot THEN lineIdx := 0  (* clamp to last line *)
-            ELSE INC(pos); DEC(lineIdx); rd.ReadChar()  (* skip line separator *)
-            END
-        END;
-        lineStart := pos;
-        (* Within the line, estimate col from x using ~8 DIPs/char. *)
-        col := x DIV 8;
-        IF col < 0 THEN col := 0 END;
-        (* Count visible chars in this line to clamp col. *)
-        lineLen := 0;
-        WHILE ~rd.eot & (rd.char # TextModels.line) & (rd.char # TextModels.para) DO
-            INC(lineLen); rd.ReadChar()
-        END;
-        IF col > lineLen THEN col := lineLen END;
-        (* Set caret via TextControllers.Controller (type-guard the controller). *)
+        pos := HitTestPos(pane, x, y);
+        IF pos < 0 THEN RETURN END;
         IF (pane.controller # NIL) & (pane.controller IS TextControllers.Controller) THEN
             ctrl := pane.controller(TextControllers.Controller);
-            ctrl.SetCaret(lineStart + col);
-            ctrl.SetSelection(lineStart + col, lineStart + col)
-        END
+            ctrl.SetCaret(pos);
+            ctrl.SetSelection(pos, pos)
+        END;
+        dragAnchor := pos;
+        isDragging := TRUE
     END HandleMouseDown;
+
+    (* End a drag: clear the isDragging flag so subsequent mouse-move
+       events no longer extend the selection. *)
+    PROCEDURE HandleMouseUp* (childId: INTEGER);
+    BEGIN
+        isDragging := FALSE
+    END HandleMouseUp;
+
+    (* Update the selection while the left button is dragged.
+       Extends from dragAnchor to the current (x, y) position. *)
+    PROCEDURE HandleMouseDrag* (childId, x, y: INTEGER);
+        VAR w: HostWindow; v: Views.View;
+            pane: TextViews.Pane; ctrl: TextControllers.Controller;
+            pos: INTEGER;
+    BEGIN
+        IF ~isDragging THEN RETURN END;
+        w := FindByChildId(childId);
+        IF w = NIL THEN RETURN END;
+        v := w.doc.ThisView();
+        IF (v = NIL) OR ~(v IS TextViews.Pane) THEN RETURN END;
+        pane := v(TextViews.Pane);
+        pos := HitTestPos(pane, x, y);
+        IF pos < 0 THEN RETURN END;
+        IF (pane.controller # NIL) & (pane.controller IS TextControllers.Controller) THEN
+            ctrl := pane.controller(TextControllers.Controller);
+            ctrl.SetCaret(pos);
+            IF pos <= dragAnchor THEN
+                ctrl.SetSelection(pos, dragAnchor)
+            ELSE
+                ctrl.SetSelection(dragAnchor, pos)
+            END
+        END
+    END HandleMouseDrag;
 
     (* Route focus to the inner view of the MDI child that gained focus.
        This allows TextControllers.Focus() to find the active controller. *)
@@ -398,5 +446,7 @@ MODULE HostWindows;
 
 BEGIN
     NEW(stdHostDir);
-    Windows.SetDir(stdHostDir)
+    Windows.SetDir(stdHostDir);
+    dragAnchor := 0;
+    isDragging := FALSE
 END HostWindows.
