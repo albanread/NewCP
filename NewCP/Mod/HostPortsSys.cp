@@ -194,4 +194,51 @@ BEGIN
     RETURN iGui.CloseChild(childId)
 END CloseChild;
 
+
+(** Path builder — wrappers over iGui.Path* for use by HostPorts.DrawPath.
+    Callers must bracket: PathBegin → PathMoveTo/PathLineTo/PathQuadTo/
+    PathClose → EmitPath.  Coordinates are in DIPs (REAL). *)
+
+PROCEDURE PathBegin*;
+BEGIN
+    iGui.PathBegin
+END PathBegin;
+
+PROCEDURE PathMoveTo* (x, y: REAL);
+BEGIN
+    iGui.PathMoveTo(x, y)
+END PathMoveTo;
+
+PROCEDURE PathLineTo* (x, y: REAL);
+BEGIN
+    iGui.PathLineTo(x, y)
+END PathLineTo;
+
+(** Quadratic Bézier to (ex, ey) via control point (cx, cy). *)
+PROCEDURE PathQuadTo* (cx, cy, ex, ey: REAL);
+BEGIN
+    iGui.PathQuadTo(cx, cy, ex, ey)
+END PathQuadTo;
+
+PROCEDURE PathClose*;
+BEGIN
+    iGui.PathClose
+END PathClose;
+
+(** Emit the built path.  fillMode=1 fills, strokeMode=1 strokes.
+    Both modes use `col`; `halfThick` is the stroke half-width in DIPs.
+    Uses flat caps, miter joins, miter limit 4, no dash. *)
+PROCEDURE EmitPath* (fillMode, strokeMode: INTSHORT;
+                     halfThick: REAL;
+                     col: INTEGER): INTSHORT;
+    VAR r, g, b, a: REAL;
+BEGIN
+    UnpackColor(col, r, g, b, a);
+    RETURN iGui.EmitPath(fillMode, r, g, b, a,
+                         strokeMode, halfThick,
+                         0, 0, 4.0, 0,
+                         r, g, b, a)
+END EmitPath;
+
+
 END HostPortsSys.

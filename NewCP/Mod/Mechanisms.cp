@@ -138,14 +138,18 @@ MODULE Mechanisms;
         (host: Views.Frame; focus: Views.View;
          l, t, r, b: INTEGER; show: BOOLEAN);
     BEGIN
-        hook.MarkFocusBorder(host, focus, l, t, r, b, show)
+        IF hook # NIL THEN
+            hook.MarkFocusBorder(host, focus, l, t, r, b, show)
+        END
     END MarkFocusBorder;
 
     PROCEDURE MarkSingletonBorder*
         (host: Views.Frame; view: Views.View;
          l, t, r, b: INTEGER; show: BOOLEAN);
     BEGIN
-        hook.MarkSingletonBorder(host, view, l, t, r, b, show)
+        IF hook # NIL THEN
+            hook.MarkSingletonBorder(host, view, l, t, r, b, show)
+        END
     END MarkSingletonBorder;
 
     PROCEDURE FocusBorderCursor*
@@ -153,7 +157,10 @@ MODULE Mechanisms;
          l, t, r, b: INTEGER;
          x, y: INTEGER): INTEGER;
     BEGIN
-        RETURN hook.FocusBorderCursor(host, view, l, t, r, b, x, y)
+        IF hook # NIL THEN
+            RETURN hook.FocusBorderCursor(host, view, l, t, r, b, x, y)
+        END;
+        RETURN outside
     END FocusBorderCursor;
 
     PROCEDURE SelBorderCursor*
@@ -161,7 +168,10 @@ MODULE Mechanisms;
          l, t, r, b: INTEGER;
          x, y: INTEGER): INTEGER;
     BEGIN
-        RETURN hook.SelBorderCursor(host, view, l, t, r, b, x, y)
+        IF hook # NIL THEN
+            RETURN hook.SelBorderCursor(host, view, l, t, r, b, x, y)
+        END;
+        RETURN outside
     END SelBorderCursor;
 
     PROCEDURE TrackToResize*
@@ -172,8 +182,12 @@ MODULE Mechanisms;
          VAR x, y: INTEGER;
          VAR buttons: SET);
     BEGIN
-        hook.TrackToResize(host, view, minW, maxW, minH, maxH,
-                           l, t, r, b, op, x, y, buttons)
+        IF hook # NIL THEN
+            hook.TrackToResize(host, view, minW, maxW, minH, maxH,
+                               l, t, r, b, op, x, y, buttons)
+        ELSE
+            op := cancelResize
+        END
     END TrackToResize;
 
     PROCEDURE TrackToDrop*
@@ -184,8 +198,12 @@ MODULE Mechanisms;
          VAR x, y: INTEGER;
          VAR buttons: SET);
     BEGIN
-        hook.TrackToDrop(source, view, isSingle, w, h, rx, ry,
-                         dest, destX, destY, op, x, y, buttons)
+        IF hook # NIL THEN
+            hook.TrackToDrop(source, view, isSingle, w, h, rx, ry,
+                             dest, destX, destY, op, x, y, buttons)
+        ELSE
+            op := cancelDrop; dest := NIL
+        END
     END TrackToDrop;
 
     PROCEDURE TrackToPick*
@@ -195,8 +213,12 @@ MODULE Mechanisms;
          VAR x, y: INTEGER;
          VAR buttons: SET);
     BEGIN
-        hook.TrackToPick(source, dest, destX, destY,
-                         op, x, y, buttons)
+        IF hook # NIL THEN
+            hook.TrackToPick(source, dest, destX, destY,
+                             op, x, y, buttons)
+        ELSE
+            op := cancelPick; dest := NIL
+        END
     END TrackToPick;
 
     PROCEDURE PopUpAndSelect*
@@ -208,8 +230,12 @@ MODULE Mechanisms;
          VAR x, y: INTEGER;
          VAR buttons: SET);
     BEGIN
-        hook.PopUpAndSelect(f, n, this, s, enabled, checked,
-                            i, x, y, buttons)
+        IF hook # NIL THEN
+            hook.PopUpAndSelect(f, n, this, s, enabled, checked,
+                                i, x, y, buttons)
+        ELSE
+            i := -1   (* no selection — caller should treat as cancel *)
+        END
     END PopUpAndSelect;
 
 

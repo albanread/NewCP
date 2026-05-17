@@ -21,7 +21,9 @@ MODULE TextCmds;
 
     VAR
         (** Last-used search term (set by Find from the selection). *)
-        findTerm: ARRAY 256 OF CHAR;
+        findTerm:    ARRAY 256 OF CHAR;
+        (** Replacement string; set programmatically via SetReplaceTerm. *)
+        replaceTerm-: ARRAY 256 OF CHAR;
         (** Position to start the next FindAgain search from. *)
         findFrom: INTEGER;
 
@@ -249,8 +251,76 @@ MODULE TextCmds;
         END
     END FindAgain;
 
-    PROCEDURE Replace*;
+    (** Set the search and replacement terms for use by Find,
+        FindAgain, and Replace. *)
+    PROCEDURE SetFindReplace* (IN find, replace: ARRAY OF CHAR);
+        VAR i: INTEGER;
     BEGIN
+        i := 0;
+        WHILE (i < LEN(findTerm) - 1) & (find[i] # 0X) DO
+            findTerm[i] := find[i]; INC(i)
+        END;
+        findTerm[i] := 0X;
+        findFrom := 0;
+        i := 0;
+        WHILE (i < LEN(replaceTerm) - 1) & (replace[i] # 0X) DO
+            replaceTerm[i] := replace[i]; INC(i)
+        END;
+        replaceTerm[i] := 0X
+    END SetFindReplace;
+
+    (** Replace the current selection with `replaceTerm` if it matches
+        `findTerm`, then find the next occurrence.  If the selection does
+        not match (or there is none), just advances to the next match. *)
+    PROCEDURE Replace*;
+        VAR c: TextControllers.Controller;
+            doc: TextModels.Doc;
+            rd: TextModels.Reader;
+            beg, end, i, termLen, rlen: INTEGER;
+            matches: BOOLEAN;
+    BEGIN
+        IF findTerm[0] = 0X THEN RETURN END;
+        c := TextControllers.Focus();
+        IF (c = NIL) OR (c.text = NIL) OR ~(c.text IS TextModels.Doc) THEN RETURN END;
+        doc := c.text(TextModels.Doc);
+        (* Measure findTerm length. *)
+        termLen := 0;
+        WHILE (termLen < LEN(findTerm)) & (findTerm[termLen] # 0X) DO
+            INC(termLen)
+        END;
+        IF termLen = 0 THEN RETURN END;
+        (* Check whether the current selection is findTerm. *)
+        c.GetSelection(beg, end);
+        matches := (end - beg = termLen);
+        IF matches THEN
+            rd := doc.NewReader(NIL);
+            IF rd # NIL THEN
+                rd.SetPos(beg); rd.ReadChar();
+                i := 0;
+                WHILE ~rd.eot & (i < termLen) & (rd.char = findTerm[i]) DO
+                    INC(i); rd.ReadChar()
+                END;
+                matches := (i = termLen)
+            ELSE
+                matches := FALSE
+            END
+        END;
+        IF matches THEN
+            (* Delete selection, insert replaceTerm. *)
+            doc.DeleteRange(beg, end);
+            rlen := 0;
+            WHILE (rlen < LEN(replaceTerm)) & (replaceTerm[rlen] # 0X) DO
+                INC(rlen)
+            END;
+            i := 0;
+            WHILE i < rlen DO
+                doc.InsertChar(beg + i, replaceTerm[i]);
+                INC(i)
+            END;
+            c.SetCaret(beg + rlen);
+            findFrom := beg + rlen
+        END;
+        FindAgain
     END Replace;
 
 
@@ -394,7 +464,8 @@ MODULE TextCmds;
 
 
 BEGIN
-    findTerm[0] := 0X;
-    findFrom := 0
+    findTerm[0]    := 0X;
+    replaceTerm[0] := 0X;
+    findFrom       := 0
 
 END TextCmds.

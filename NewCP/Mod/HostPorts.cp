@@ -153,7 +153,36 @@ END DrawLine;
 PROCEDURE (rd: HostRiderDesc) DrawPath*
     (IN p: ARRAY OF Ports.Point; n, s: INTEGER; col: Ports.Color;
      path: INTEGER);
-BEGIN END DrawPath;
+    VAR i: INTEGER; ok: INTSHORT;
+BEGIN
+    IF n < 1 THEN RETURN END;
+    HostPortsSys.PathBegin;
+    HostPortsSys.PathMoveTo(p[0].x, p[0].y);
+    IF (path = Ports.openBezier) OR (path = Ports.closedBezier) THEN
+        (* Quadratic Bézier: each segment is (control, endpoint) *)
+        i := 1;
+        WHILE i + 1 < n DO
+            HostPortsSys.PathQuadTo(p[i].x, p[i].y,
+                                    p[i+1].x, p[i+1].y);
+            INC(i, 2)
+        END
+    ELSE
+        (* Polygon: straight lines to each vertex *)
+        i := 1;
+        WHILE i < n DO
+            HostPortsSys.PathLineTo(p[i].x, p[i].y);
+            INC(i)
+        END
+    END;
+    IF (path = Ports.closedPoly) OR (path = Ports.closedBezier) THEN
+        HostPortsSys.PathClose
+    END;
+    IF s = Ports.fill THEN
+        ok := HostPortsSys.EmitPath(1, 0, 0.0, col)
+    ELSE
+        ok := HostPortsSys.EmitPath(0, 1, s / 2.0, col)
+    END
+END DrawPath;
 
 PROCEDURE (rd: HostRiderDesc) MarkRect*
     (l, t, r, b, s, mode: INTEGER; show: BOOLEAN);

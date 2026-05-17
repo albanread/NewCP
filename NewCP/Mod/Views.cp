@@ -458,4 +458,17 @@ MODULE Views;
     END SetDirty;
 
 
+    (* ---- Module-level property-message dispatch ----------------------------- *)
+
+    (** Deliver a property message to view `v`.  Mirrors BlackBox
+        `Views.HandlePropMsg` — a thin wrapper that calls the virtual
+        method so callers don't have to write `v.HandlePropMsg(msg)`
+        themselves (they may not know the concrete type). *)
+    PROCEDURE HandlePropMsg* (v: View; VAR msg: PropMessage);
+    BEGIN
+        ASSERT(v # NIL, 20);
+        v.HandlePropMsg(msg)
+    END HandlePropMsg;
+
+
 END Views.

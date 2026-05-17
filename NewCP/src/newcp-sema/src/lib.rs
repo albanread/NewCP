@@ -3834,7 +3834,15 @@ impl<'a> Analyzer<'a> {
                 && (self.is_record_type(&resolved, local_symbols)
                     || matches!(resolved, SemanticType::Named { kind: NamedTypeKind::Imported, .. })) =>
             {
-                Some(resolved)
+                // Return the NAMED type rather than the resolved structural Record.
+                // record_type_extends compares by SemanticType equality; two
+                // distinct record types that happen to be structurally identical
+                // (e.g. both empty records) would otherwise compare as the same
+                // type, producing false "extends" results.  Preserving the Named
+                // wrapper keeps nominal-type identity (Base ≠ Other even when
+                // both are `RECORD END`) and also lets render_semantic_type
+                // produce "type:Base" in error messages.
+                Some(subject_type.clone())
             }
             _ => None,
         }
@@ -7255,8 +7263,7 @@ impl<'a> Analyzer<'a> {
                         self.infer_expr_type(&args[0], local_symbols, scope_type_names)
                     && !matches!(
                         arg_type,
-                        SemanticType::Builtin(BuiltinType::Byte)
-                            | SemanticType::Builtin(BuiltinType::Char)
+                        SemanticType::Builtin(BuiltinType::Char)
                             | SemanticType::Builtin(BuiltinType::ShortChar)
                             | SemanticType::Builtin(BuiltinType::Set)
                     )
@@ -7267,7 +7274,7 @@ impl<'a> Analyzer<'a> {
                         line,
                         column,
                         format!(
-                            "ORD argument 1 must be BYTE, CHAR, SHORTCHAR, or SET, found {}",
+                            "ORD argument 1 must be CHAR, SHORTCHAR, or SET, found {}",
                             render_semantic_type(&arg_type)
                         ),
                     ));

@@ -499,14 +499,41 @@ MODULE TextRulers;
     END New;
 
 
-    (* -- Style methods (declarations only) ------------------------------ *)
+    (* -- SetAttrOp operation ------------------------------------------- *)
+
+    (** Undo/redo toggle for a ruler attribute change.
+        Swaps style.attr with the saved attr copy and broadcasts
+        an UpdateMsg so all watchers (ruler views, text views)
+        can repaint. *)
+    PROCEDURE (op: SetAttrOp) Do*;
+        VAR old: Attributes; msg: UpdateMsg;
+    BEGIN
+        old := op.style.attr;
+        op.style.attr := op.attr;   (* install the new / restored attrs  *)
+        op.attr := old;             (* op now holds the old for reversal  *)
+        msg.style   := op.style;
+        msg.oldAttr := old;
+        Models.Broadcast(op.style, msg)
+    END Do;
+
+
+    (* -- Style methods ------------------------------------------------- *)
 
     (** Bind new Attributes onto this Style and broadcast a
-        TextRulers.UpdateMsg.  EMPTY in this slice; the BB
-        body builds the SetAttrOp + Stores.Do + domaincast
-        sequence. *)
+        TextRulers.UpdateMsg through the model's sequencer.
+        Idempotent: does nothing when the new attrs equal the
+        current ones (avoids spurious undo entries). *)
     PROCEDURE (s: Style) SetAttr* (attr: Attributes), NEW, EXTENSIBLE;
+        VAR op: SetAttrOp;
     BEGIN
+        ASSERT(attr # NIL, 20);
+        ASSERT(attr.init, 21);
+        IF ~s.attr.Equals(attr) THEN
+            NEW(op);
+            op.style := s;
+            op.attr  := attr;
+            Models.Do(s, rulerChangeKey, op)
+        END
     END SetAttr;
 
 
@@ -548,41 +575,223 @@ MODULE TextRulers;
         to bits both agree on.  Concrete override of the
         ABSTRACT IntersectWith on Properties.Property. *)
     PROCEDURE (p: Prop) IntersectWith* (q: Properties.Property; OUT equal: BOOLEAN);
+        VAR valid: SET; c, m: SET; eq: BOOLEAN; i: INTEGER;
     BEGIN
-        equal := TRUE
-        (* Full BB body lives in a follow-up slice — long
-           per-axis intersection.  EMPTY-equivalent stub
-           here keeps the leaf concrete. *)
+        WITH q: Prop DO
+            valid := p.valid * q.valid; equal := TRUE;
+            IF (first IN valid) & (p.first # q.first) THEN EXCL(valid, first) END;
+            IF (left  IN valid) & (p.left  # q.left)  THEN EXCL(valid, left)  END;
+            IF (right IN valid) & (p.right # q.right) THEN EXCL(valid, right) END;
+            IF (lead  IN valid) & (p.lead  # q.lead)  THEN EXCL(valid, lead)  END;
+            IF (asc   IN valid) & (p.asc   # q.asc)   THEN EXCL(valid, asc)   END;
+            IF (dsc   IN valid) & (p.dsc   # q.dsc)   THEN EXCL(valid, dsc)   END;
+            IF (grid  IN valid) & (p.grid  # q.grid)  THEN EXCL(valid, grid)  END;
+            IF opts IN valid THEN
+                Properties.IntersectSelections(p.opts.val, p.opts.mask,
+                                               q.opts.val, q.opts.mask, c, m, eq);
+                IF m = {} THEN
+                    EXCL(valid, opts)
+                ELSIF ~eq THEN
+                    p.opts.mask := m; equal := FALSE
+                END
+            END;
+            IF tabs IN valid THEN
+                IF p.tabs.len = q.tabs.len THEN
+                    i := 0;
+                    WHILE (i < p.tabs.len)
+                        & (p.tabs.tab[i].stop = q.tabs.tab[i].stop)
+                        & (p.tabs.tab[i].type = q.tabs.tab[i].type) DO
+                        INC(i)
+                    END;
+                    IF i < p.tabs.len THEN
+                        EXCL(valid, tabs); equal := FALSE
+                    END
+                ELSE
+                    EXCL(valid, tabs); equal := FALSE
+                END
+            END;
+            IF p.valid # valid THEN p.valid := valid; equal := FALSE END
+        END
     END IntersectWith;
 
 
-    (* -- Convenience setters operating on an Attributes-derived
-          fresh Prop applied to a Ruler's style.  These wrap the
-          common pattern "I want to tweak ONE axis of a ruler" so
-          host commands don't need to build a Prop manually.
+    (* -- Convenience setters ------------------------------------------- *)
 
-          All of them are deferred bodies (EMPTY) in this slice
-          because the real work — building a Prop, calling
-          SetAttr, propagating the SetAttrOp through the
-          Sequencer — needs Stores.Do / Models.Do, neither of
-          which has its full BB shape ported yet.  The
-          signatures are here so callers compile. *)
+    (** Allocate a fresh Attributes pre-loaded with every axis from `a`.
+        The caller then mutates the single axis it cares about and passes
+        the result to `r.style.SetAttr`. *)
+    PROCEDURE NewAttrFrom (a: Attributes): Attributes;
+        VAR b: Attributes;
+    BEGIN
+        ASSERT(a # NIL, 20);
+        ASSERT(a.init, 21);
+        NEW(b);
+        b.init  := TRUE;
+        b.first := a.first;
+        b.left  := a.left;
+        b.right := a.right;
+        b.lead  := a.lead;
+        b.asc   := a.asc;
+        b.dsc   := a.dsc;
+        b.grid  := a.grid;
+        b.opts  := a.opts;
+        CopyTabs(a.tabs, b.tabs);
+        RETURN b
+    END NewAttrFrom;
 
-    PROCEDURE SetFirst*       (r: Ruler; x: INTEGER); BEGIN END SetFirst;
-    PROCEDURE SetLeft*        (r: Ruler; x: INTEGER); BEGIN END SetLeft;
-    PROCEDURE SetRight*       (r: Ruler; x: INTEGER); BEGIN END SetRight;
-    PROCEDURE SetFixedRight*  (r: Ruler; x: INTEGER); BEGIN END SetFixedRight;
-    PROCEDURE SetLead*        (r: Ruler; h: INTEGER); BEGIN END SetLead;
-    PROCEDURE SetAsc*         (r: Ruler; h: INTEGER); BEGIN END SetAsc;
-    PROCEDURE SetDsc*         (r: Ruler; h: INTEGER); BEGIN END SetDsc;
-    PROCEDURE SetGrid*        (r: Ruler; h: INTEGER); BEGIN END SetGrid;
-    PROCEDURE SetLeftFlush*   (r: Ruler); BEGIN END SetLeftFlush;
-    PROCEDURE SetRightFlush*  (r: Ruler); BEGIN END SetRightFlush;
-    PROCEDURE SetCentered*    (r: Ruler); BEGIN END SetCentered;
-    PROCEDURE SetJustified*   (r: Ruler); BEGIN END SetJustified;
-    PROCEDURE SetNoBreakInside*(r: Ruler); BEGIN END SetNoBreakInside;
-    PROCEDURE SetPageBreak*   (r: Ruler); BEGIN END SetPageBreak;
-    PROCEDURE SetParJoin*     (r: Ruler); BEGIN END SetParJoin;
+
+    PROCEDURE SetFirst* (r: Ruler; x: INTEGER);
+        VAR a: Attributes;
+    BEGIN
+        ASSERT(r # NIL, 20); ASSERT(r.style # NIL, 21);
+        a := NewAttrFrom(r.style.attr);
+        a.first := x;
+        r.style.SetAttr(a)
+    END SetFirst;
+
+    PROCEDURE SetLeft* (r: Ruler; x: INTEGER);
+        VAR a: Attributes;
+    BEGIN
+        ASSERT(r # NIL, 20); ASSERT(r.style # NIL, 21);
+        a := NewAttrFrom(r.style.attr);
+        a.left := x;
+        r.style.SetAttr(a)
+    END SetLeft;
+
+    (** Set the right margin without touching the rightFixed flag. *)
+    PROCEDURE SetRight* (r: Ruler; x: INTEGER);
+        VAR a: Attributes;
+    BEGIN
+        ASSERT(r # NIL, 20); ASSERT(r.style # NIL, 21);
+        a := NewAttrFrom(r.style.attr);
+        a.right := x;
+        r.style.SetAttr(a)
+    END SetRight;
+
+    (** Set the right margin AND mark it as fixed (rightFixed flag). *)
+    PROCEDURE SetFixedRight* (r: Ruler; x: INTEGER);
+        VAR a: Attributes;
+    BEGIN
+        ASSERT(r # NIL, 20); ASSERT(r.style # NIL, 21);
+        a := NewAttrFrom(r.style.attr);
+        a.right := x;
+        INCL(a.opts, rightFixed);
+        r.style.SetAttr(a)
+    END SetFixedRight;
+
+    PROCEDURE SetLead* (r: Ruler; h: INTEGER);
+        VAR a: Attributes;
+    BEGIN
+        ASSERT(r # NIL, 20); ASSERT(r.style # NIL, 21);
+        a := NewAttrFrom(r.style.attr);
+        a.lead := h;
+        r.style.SetAttr(a)
+    END SetLead;
+
+    PROCEDURE SetAsc* (r: Ruler; h: INTEGER);
+        VAR a: Attributes;
+    BEGIN
+        ASSERT(r # NIL, 20); ASSERT(r.style # NIL, 21);
+        a := NewAttrFrom(r.style.attr);
+        a.asc := h;
+        r.style.SetAttr(a)
+    END SetAsc;
+
+    PROCEDURE SetDsc* (r: Ruler; h: INTEGER);
+        VAR a: Attributes;
+    BEGIN
+        ASSERT(r # NIL, 20); ASSERT(r.style # NIL, 21);
+        a := NewAttrFrom(r.style.attr);
+        a.dsc := h;
+        r.style.SetAttr(a)
+    END SetDsc;
+
+    PROCEDURE SetGrid* (r: Ruler; h: INTEGER);
+        VAR a: Attributes;
+    BEGIN
+        ASSERT(r # NIL, 20); ASSERT(r.style # NIL, 21);
+        a := NewAttrFrom(r.style.attr);
+        a.grid := h;
+        r.style.SetAttr(a)
+    END SetGrid;
+
+    (** Paragraph alignment: left-flush only (leftAdjust set,
+        rightAdjust cleared). *)
+    PROCEDURE SetLeftFlush* (r: Ruler);
+        VAR a: Attributes;
+    BEGIN
+        ASSERT(r # NIL, 20); ASSERT(r.style # NIL, 21);
+        a := NewAttrFrom(r.style.attr);
+        a.opts := (a.opts - adjMask) + {leftAdjust};
+        r.style.SetAttr(a)
+    END SetLeftFlush;
+
+    (** Paragraph alignment: right-flush only (rightAdjust set,
+        leftAdjust cleared). *)
+    PROCEDURE SetRightFlush* (r: Ruler);
+        VAR a: Attributes;
+    BEGIN
+        ASSERT(r # NIL, 20); ASSERT(r.style # NIL, 21);
+        a := NewAttrFrom(r.style.attr);
+        a.opts := (a.opts - adjMask) + {rightAdjust};
+        r.style.SetAttr(a)
+    END SetRightFlush;
+
+    (** Paragraph alignment: centered (both adjust bits cleared). *)
+    PROCEDURE SetCentered* (r: Ruler);
+        VAR a: Attributes;
+    BEGIN
+        ASSERT(r # NIL, 20); ASSERT(r.style # NIL, 21);
+        a := NewAttrFrom(r.style.attr);
+        a.opts := a.opts - adjMask;
+        r.style.SetAttr(a)
+    END SetCentered;
+
+    (** Paragraph alignment: fully justified (both adjust bits set). *)
+    PROCEDURE SetJustified* (r: Ruler);
+        VAR a: Attributes;
+    BEGIN
+        ASSERT(r # NIL, 20); ASSERT(r.style # NIL, 21);
+        a := NewAttrFrom(r.style.attr);
+        a.opts := a.opts + adjMask;
+        r.style.SetAttr(a)
+    END SetJustified;
+
+    (** Toggle the noBreakInside flag. *)
+    PROCEDURE SetNoBreakInside* (r: Ruler);
+        VAR a: Attributes;
+    BEGIN
+        ASSERT(r # NIL, 20); ASSERT(r.style # NIL, 21);
+        a := NewAttrFrom(r.style.attr);
+        IF noBreakInside IN a.opts THEN EXCL(a.opts, noBreakInside)
+        ELSE INCL(a.opts, noBreakInside)
+        END;
+        r.style.SetAttr(a)
+    END SetNoBreakInside;
+
+    (** Toggle the pageBreak flag. *)
+    PROCEDURE SetPageBreak* (r: Ruler);
+        VAR a: Attributes;
+    BEGIN
+        ASSERT(r # NIL, 20); ASSERT(r.style # NIL, 21);
+        a := NewAttrFrom(r.style.attr);
+        IF pageBreak IN a.opts THEN EXCL(a.opts, pageBreak)
+        ELSE INCL(a.opts, pageBreak)
+        END;
+        r.style.SetAttr(a)
+    END SetPageBreak;
+
+    (** Toggle the parJoin flag. *)
+    PROCEDURE SetParJoin* (r: Ruler);
+        VAR a: Attributes;
+    BEGIN
+        ASSERT(r # NIL, 20); ASSERT(r.style # NIL, 21);
+        a := NewAttrFrom(r.style.attr);
+        IF parJoin IN a.opts THEN EXCL(a.opts, parJoin)
+        ELSE INCL(a.opts, parJoin)
+        END;
+        r.style.SetAttr(a)
+    END SetParJoin;
 
 
 BEGIN

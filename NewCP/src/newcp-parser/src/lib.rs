@@ -621,6 +621,9 @@ impl Parser {
                     span: self.span_from(forward_start),
                     heading,
                 }));
+                // Forward declarations are terminated by ";" — same as regular
+                // procedure declarations in definition-module style.
+                self.expect_symbol(";")?;
             } else {
                 let proc = self.parse_procedure_declaration()?;
                 let has_body = proc.body.is_some();
