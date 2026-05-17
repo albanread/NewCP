@@ -345,4 +345,117 @@ MODULE Views;
     END Restore;
 
 
+    (* -- Sequencer helpers --------------------------------------------------- *)
+
+    (** Return the Sequencer attached to `v`'s model, or NIL if none.
+        Walks the chain: view → context → model → seq. *)
+    PROCEDURE SeqOf (v: View): Sequencers.Sequencer;
+        VAR m: Models.Model; s: ANYPTR;
+    BEGIN
+        IF (v # NIL) & (v.context # NIL) THEN
+            m := v.context.ThisModel();
+            IF m # NIL THEN
+                s := m.seq;
+                IF (s # NIL) & (s IS Sequencers.Sequencer) THEN
+                    RETURN s(Sequencers.Sequencer)
+                END
+            END
+        END;
+        RETURN NIL
+    END SeqOf;
+
+    (** Open an undo script on the sequencer associated with `v`.
+        If `v` has no sequencer the call is a no-op (script = NIL). *)
+    PROCEDURE BeginScript* (v: View; IN name: Stores.OpName;
+                             OUT script: Stores.Operation);
+        VAR seq: Sequencers.Sequencer;
+    BEGIN
+        ASSERT(v # NIL, 20);
+        seq := SeqOf(v);
+        IF seq # NIL THEN seq.BeginScript(name, script)
+        ELSE script := NIL
+        END
+    END BeginScript;
+
+    (** Execute `op` through the sequencer so it lands on the undo stack.
+        Falls through to `op.Do` if the view has no sequencer. *)
+    PROCEDURE Do* (v: View; IN name: Stores.OpName; op: Stores.Operation);
+        VAR seq: Sequencers.Sequencer;
+    BEGIN
+        ASSERT(v # NIL, 20);
+        ASSERT(op # NIL, 21);
+        seq := SeqOf(v);
+        IF seq # NIL THEN seq.Do(NIL, name, op)
+        ELSE op.Do()
+        END
+    END Do;
+
+    (** Return the last operation pushed to the sequencer by this view,
+        or NIL. *)
+    PROCEDURE LastOp* (v: View): Stores.Operation;
+        VAR seq: Sequencers.Sequencer;
+    BEGIN
+        ASSERT(v # NIL, 20);
+        seq := SeqOf(v);
+        IF seq # NIL THEN RETURN seq.LastOp(NIL)
+        ELSE RETURN NIL
+        END
+    END LastOp;
+
+    (** Merge the next Do call with the preceding undo entry ("bunch"). *)
+    PROCEDURE Bunch* (v: View);
+        VAR seq: Sequencers.Sequencer;
+    BEGIN
+        ASSERT(v # NIL, 20);
+        seq := SeqOf(v);
+        IF seq # NIL THEN seq.Bunch(NIL) END
+    END Bunch;
+
+    (** Cancel a pending Bunch. *)
+    PROCEDURE StopBunching* (v: View);
+        VAR seq: Sequencers.Sequencer;
+    BEGIN
+        ASSERT(v # NIL, 20);
+        seq := SeqOf(v);
+        IF seq # NIL THEN seq.StopBunching() END
+    END StopBunching;
+
+    (** Close a script previously opened by BeginScript. *)
+    PROCEDURE EndScript* (v: View; script: Stores.Operation);
+        VAR seq: Sequencers.Sequencer;
+    BEGIN
+        ASSERT(v # NIL, 20);
+        seq := SeqOf(v);
+        IF seq # NIL THEN seq.EndScript(script) END
+    END EndScript;
+
+    (** Signal that a modification of type `type` is starting.
+        `type` one of `clean`, `notUndoable`, `invisible`. *)
+    PROCEDURE BeginModification* (type: INTEGER; v: View);
+        VAR seq: Sequencers.Sequencer;
+    BEGIN
+        ASSERT(v # NIL, 20);
+        seq := SeqOf(v);
+        IF seq # NIL THEN seq.BeginModification(type, NIL) END
+    END BeginModification;
+
+    (** Paired with BeginModification. *)
+    PROCEDURE EndModification* (type: INTEGER; v: View);
+        VAR seq: Sequencers.Sequencer;
+    BEGIN
+        ASSERT(v # NIL, 20);
+        seq := SeqOf(v);
+        IF seq # NIL THEN seq.EndModification(type, NIL) END
+    END EndModification;
+
+    (** Mark the view's document as dirty (unsaved changes). *)
+    PROCEDURE SetDirty* (v: View);
+        VAR seq: Sequencers.Sequencer;
+    BEGIN
+        ASSERT(v # NIL, 20);
+        seq := SeqOf(v);
+        IF seq # NIL THEN seq.SetDirty(TRUE) END
+    END SetDirty;
+
+
 END Views.

@@ -29,7 +29,8 @@ MODULE TextViews;
    specification.
 *)
 
-IMPORT Stores, Models, TextModels, TextRulers, TextSetters, Views, Containers, Ports, Fonts;
+IMPORT Stores, Models, Controllers, TextModels, TextRulers, TextSetters,
+       Views, Containers, Ports, Fonts;
 
 CONST
     OkComplete*           = 0;
@@ -795,6 +796,49 @@ BEGIN
     END;
     RETURN v
 END New;
+
+(** Return the focused TextViews.View, or NIL if the focused view is
+    not a text view (or nothing is focused). *)
+PROCEDURE Focus* (): View;
+    VAR v: Views.View;
+BEGIN
+    v := Controllers.FocusView();
+    IF (v # NIL) & (v IS View) THEN RETURN v(View) END;
+    RETURN NIL
+END Focus;
+
+(** Return the text model of the focused text view, or NIL. *)
+PROCEDURE FocusText* (): TextModels.Model;
+    VAR v: View; m: Models.Model;
+BEGIN
+    v := Focus();
+    IF v # NIL THEN
+        m := v.ThisModel();
+        IF (m # NIL) & (m IS TextModels.Model) THEN
+            RETURN m(TextModels.Model)
+        END
+    END;
+    RETURN NIL
+END FocusText;
+
+(** Module-level ShowRange: scroll the focused text view (or any view
+    displaying `text`) so that [beg, end) is visible.  If `focusOnly`
+    then only acts on the focused view; otherwise acts on the first
+    view displaying `text`. *)
+PROCEDURE ShowRange* (text: TextModels.Model; beg, end: INTEGER;
+                      focusOnly: BOOLEAN);
+    VAR v: View;
+BEGIN
+    IF focusOnly THEN
+        v := Focus()
+    ELSE
+        (* For now, fall back to the focused view regardless. *)
+        v := Focus()
+    END;
+    IF v # NIL THEN
+        v.ShowRange(beg, end, focusOnly)
+    END
+END ShowRange;
 
 PROCEDURE SetCtrlDir* (d: Containers.Directory);
 BEGIN

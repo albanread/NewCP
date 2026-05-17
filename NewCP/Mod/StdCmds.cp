@@ -20,7 +20,8 @@ MODULE StdCmds;
    first 256 code-points.  Full UTF-8 I/O is a follow-up.
 *)
 
-    IMPORT Models, Views, Controllers, Documents, Windows, Files, TextModels, TextViews, HostDialog, iGui;
+    IMPORT Models, Views, Controllers, Documents, Windows, Files,
+           TextModels, TextViews, Sequencers, HostDialog, iGui;
 
     CONST
         defWidth  = 800;   (** Default new-window width in DIPs  *)
@@ -143,6 +144,10 @@ MODULE StdCmds;
             win:  Windows.Window;
     BEGIN
         NEW(text);
+        (* Attach a fresh sequencer so Undo/Redo work on this document. *)
+        IF Sequencers.dir # NIL THEN
+            Models.SetSequencer(text, Sequencers.dir.New())
+        END;
         IF TextViews.dir = NIL THEN RETURN END;
         view := TextViews.dir.New(text);
         IF view = NIL THEN RETURN END;
@@ -192,6 +197,9 @@ MODULE StdCmds;
            LF (0Ah) maps to TextModels.line; tab (09h) and all
            printable codepoints pass through as-is. *)
         NEW(text);
+        IF Sequencers.dir # NIL THEN
+            Models.SetSequencer(text, Sequencers.dir.New())
+        END;
         wr := text.NewWriter(NIL);
         rd.ReadByte(b);
         WHILE ~rd.eof DO

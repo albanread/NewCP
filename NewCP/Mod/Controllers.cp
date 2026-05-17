@@ -32,7 +32,7 @@ MODULE Controllers;
    isn't reachable until we have a host UI surface.
 *)
 
-    IMPORT Stores, Models, Views;
+    IMPORT Kernel, Stores, Models, Views, Sequencers;
 
     CONST
         (** ForwardTarget — controller-list traversal mode. *)
@@ -223,14 +223,81 @@ MODULE Controllers;
         ControllerDesc* = ABSTRACT RECORD (Stores.StoreDesc) END;
         Controller*     = POINTER TO ControllerDesc;
 
+        (** Abstract forwarder — registered with Register/Delete;
+            each forwarder's Forward method is called by ForwardVia.
+            The host windowing layer registers a concrete forwarder
+            that routes to the focused window's view tree. *)
+        ForwarderDesc* = ABSTRACT RECORD
+            next: Forwarder
+        END;
+        Forwarder* = POINTER TO ForwarderDesc;
+
+        (* Path stack entry — tracks the previous path flag during
+           SetCurrentPath/ResetCurrentPath nesting. *)
+        PathInfo = POINTER TO RECORD
+            path: BOOLEAN;
+            prev: PathInfo
+        END;
+
+        (* TrapCleaner — restores path state if a trap fires
+           inside a SetCurrentPath..ResetCurrentPath bracket. *)
+        CtrlTrapCleanerDesc = RECORD (Kernel.TrapCleanerDesc) END;
+        CtrlTrapCleaner     = POINTER TO CtrlTrapCleanerDesc;
+
 
     VAR
+        (** TRUE while the controller dispatch is on the target path
+            (= focus-bearing frame); FALSE on the front path. *)
+        path*:      BOOLEAN;
+
         (** Module-level focused view — set by HostWindows.FocusChild
-            on EvFocus events, read by FocusView() below. *)
+            on EvFocus events, also returned by FocusView(). *)
         focusedView: Views.View;
 
+        list:      Forwarder;    (* head of the registered-forwarder chain *)
+        cleaner:   CtrlTrapCleaner;
+        prevPath:  PathInfo;
+        cache:     PathInfo;     (* free-list for PathInfo nodes *)
 
-    (* -- ControllerDesc methods ------------------------------------------ *)
+
+    (* -- Forwarder abstract methods --------------------------------------- *)
+
+    (** Broadcast `msg` along the given focus path.  Concrete
+        forwarders override to route into the view tree. *)
+    PROCEDURE (f: Forwarder) Forward* (target: BOOLEAN;
+                                       VAR msg: Message), NEW, ABSTRACT;
+
+    (** Broadcast a transfer (drag/drop) message. *)
+    PROCEDURE (f: Forwarder) Transfer* (VAR msg: TransferMessage), NEW, ABSTRACT;
+
+
+    (* -- TrapCleaner -------------------------------------------------------- *)
+
+    PROCEDURE (c: CtrlTrapCleanerDesc) Cleanup*;
+    BEGIN
+        path    := frontPath;
+        prevPath := NIL
+    END Cleanup;
+
+
+    (* -- PathInfo helpers --------------------------------------------------- *)
+
+    PROCEDURE NewPathInfo (): PathInfo;
+        VAR p: PathInfo;
+    BEGIN
+        IF cache = NIL THEN NEW(p)
+        ELSE p := cache; cache := cache.prev
+        END;
+        RETURN p
+    END NewPathInfo;
+
+    PROCEDURE DisposePathInfo (p: PathInfo);
+    BEGIN
+        p.prev := cache; cache := p
+    END DisposePathInfo;
+
+
+    (* -- Controller store protocol ----------------------------------------- *)
 
     (** Required by `Stores.Store` (ABSTRACT there).  Controllers
         without their own domain don't return one — concrete
@@ -240,28 +307,198 @@ MODULE Controllers;
         RETURN NIL
     END Domain;
 
-    (** BB-faithful focus query — returns the currently-focused
-        view, or NIL when none. *)
-    PROCEDURE FocusView* (): Views.View;
+    (** Internalize chain — reads the version byte written by Externalize. *)
+    PROCEDURE (c: Controller) Internalize* (VAR rd: Stores.Reader), EXTENSIBLE;
+        VAR v: INTEGER;
     BEGIN
+        c.Internalize^(rd);
+        rd.ReadVersion(minVersion, maxVersion, v)
+    END Internalize;
+
+    (** Externalize chain — writes a version byte. *)
+    PROCEDURE (c: Controller) Externalize* (VAR wr: Stores.Writer), EXTENSIBLE;
+    BEGIN
+        c.Externalize^(wr);
+        wr.WriteVersion(maxVersion)
+    END Externalize;
+
+
+    (* -- Forwarder registration --------------------------------------------- *)
+
+    (** Add `f` to the registered-forwarder list.  Idempotent: registering
+        the same forwarder twice is a no-op. *)
+    PROCEDURE Register* (f: Forwarder);
+        VAR t: Forwarder;
+    BEGIN
+        ASSERT(f # NIL, 20);
+        t := list;
+        WHILE (t # NIL) & (t # f) DO t := t.next END;
+        IF t = NIL THEN f.next := list; list := f END
+    END Register;
+
+    (** Remove `f` from the registered-forwarder list. *)
+    PROCEDURE Delete* (f: Forwarder);
+        VAR t: Forwarder;
+    BEGIN
+        ASSERT(f # NIL, 20);
+        IF f = list THEN
+            list := list.next
+        ELSE
+            t := list;
+            WHILE (t # NIL) & (t.next # f) DO t := t.next END;
+            IF t # NIL THEN t.next := f.next END
+        END;
+        f.next := NIL
+    END Delete;
+
+    (** Broadcast `msg` to every forwarder using `target` as the path flag. *)
+    PROCEDURE ForwardVia* (target: BOOLEAN; VAR msg: Message);
+        VAR t: Forwarder;
+    BEGIN
+        t := list;
+        WHILE t # NIL DO
+            t.Forward(target, msg);
+            t := t.next
+        END
+    END ForwardVia;
+
+    (** Push a new path value onto the path stack.  A matching
+        `ResetCurrentPath` must be called before the next event. *)
+    PROCEDURE SetCurrentPath* (target: BOOLEAN);
+        VAR p: PathInfo;
+    BEGIN
+        IF prevPath = NIL THEN Kernel.PushTrapCleaner(cleaner) END;
+        p := NewPathInfo();
+        p.prev := prevPath;
+        p.path := path;
+        prevPath := p;
+        path := target
+    END SetCurrentPath;
+
+    (** Pop the path stack, restoring the previous path flag. *)
+    PROCEDURE ResetCurrentPath*;
+        VAR p: PathInfo;
+    BEGIN
+        IF prevPath # NIL THEN
+            p := prevPath;
+            prevPath := p.prev;
+            path := p.path;
+            IF prevPath = NIL THEN Kernel.PopTrapCleaner(cleaner) END;
+            DisposePathInfo(p)
+        END
+    END ResetCurrentPath;
+
+    (** Broadcast `msg` along the current path. *)
+    PROCEDURE Forward* (VAR msg: Message);
+    BEGIN
+        ForwardVia(path, msg)
+    END Forward;
+
+
+    (* -- High-level message helpers ----------------------------------------- *)
+
+    (** Probe which clipboard operations are available. *)
+    PROCEDURE PollOps* (VAR msg: PollOpsMsg);
+    BEGIN
+        msg.type      := "";
+        msg.pasteType := "";
+        msg.singleton := NIL;
+        msg.selectable := FALSE;
+        msg.valid     := {};
+        Forward(msg)
+    END PollOps;
+
+    (** Probe the cursor shape at (x, y) with the given modifier keys. *)
+    PROCEDURE PollCursor* (x, y: INTEGER; modifiers: SET; OUT cursor: INTEGER);
+        VAR msg: PollCursorMsg;
+    BEGIN
+        msg.x := x; msg.y := y;
+        msg.cursor := Ports.arrowCursor;
+        msg.modifiers := modifiers;
+        Forward(msg);
+        cursor := msg.cursor
+    END PollCursor;
+
+    (** Broadcast a transfer (drag-drop) message. *)
+    PROCEDURE Transfer* (x, y: INTEGER;
+                         source: Views.Frame;
+                         sourceX, sourceY: INTEGER;
+                         VAR msg: TransferMessage);
+        VAR t: Forwarder;
+    BEGIN
+        ASSERT(source # NIL, 20);
+        msg.x := x; msg.y := y;
+        msg.source := source;
+        msg.sourceX := sourceX;
+        msg.sourceY := sourceY;
+        t := list;
+        WHILE t # NIL DO t.Transfer(msg); t := t.next END
+    END Transfer;
+
+    (** Broadcast a paste-view edit message to the focused controller. *)
+    PROCEDURE PasteView* (view: Views.View; w, h: INTEGER; clipboard: BOOLEAN);
+        VAR msg: EditMsg;
+    BEGIN
+        ASSERT(view # NIL, 20);
+        msg.op        := paste;
+        msg.isSingle  := TRUE;
+        msg.clipboard := clipboard;
+        msg.view      := view;
+        msg.w         := w;
+        msg.h         := h;
+        Forward(msg)
+    END PasteView;
+
+
+    (* -- Focus queries ------------------------------------------------------- *)
+
+    (** Return the focused frame by broadcasting a PollFocusMsg.
+        Falls back to NIL if no forwarder is registered (i.e. on the
+        simplified dispatch path where HostWindows sets focusedView
+        directly). *)
+    PROCEDURE FocusFrame* (): Views.Frame;
+        VAR msg: PollFocusMsg;
+    BEGIN
+        msg.focus := NIL;
+        Forward(msg);
+        RETURN msg.focus
+    END FocusFrame;
+
+    (** Return the currently-focused view.  First tries the forwarder
+        chain (FocusFrame); falls back to the directly-tracked
+        `focusedView` so that our simplified HostWindows dispatch path
+        continues to work even without a registered forwarder. *)
+    PROCEDURE FocusView* (): Views.View;
+        VAR f: Views.Frame;
+    BEGIN
+        f := FocusFrame();
+        IF f # NIL THEN RETURN f.view END;
         RETURN focusedView
     END FocusView;
 
-    (** Set the currently focused view.  Called by the host
-        windowing layer when an MDI child receives focus. *)
+    (** Set the currently focused view.  Called by the host windowing
+        layer on focus events. *)
     PROCEDURE SetFocusView* (v: Views.View);
     BEGIN
         focusedView := v
     END SetFocusView;
 
-    (** BB-faithful — current focus model.  Stub returns NIL until
-        focus routing lands; framework callers tolerate NIL. *)
+    (** Return the model of the focused view, or NIL. *)
     PROCEDURE FocusModel* (): Models.Model;
+        VAR f: Views.Frame;
     BEGIN
+        f := FocusFrame();
+        IF f # NIL THEN RETURN f.view.ThisModel() END;
+        IF focusedView # NIL THEN RETURN focusedView.ThisModel() END;
         RETURN NIL
     END FocusModel;
 
 
 BEGIN
-    focusedView := NIL
+    path     := frontPath;
+    list     := NIL;
+    prevPath := NIL;
+    cache    := NIL;
+    focusedView := NIL;
+    NEW(cleaner)
 END Controllers.

@@ -3940,6 +3940,27 @@ impl<'a> Analyzer<'a> {
         .unwrap_or_else(|| ty.clone())
     }
 
+    /// Resolve a named type alias chain all the way to the first
+    /// non-`Named` concrete type.  Used where we need to inspect the
+    /// *kind* of a type (e.g. "is it a Record?") even when the name is
+    /// an alias chain that crosses module boundaries.
+    fn resolve_named_type_fully(
+        &self,
+        ty: &SemanticType,
+        local_symbols: &[SemanticSymbol],
+    ) -> SemanticType {
+        let mut current = ty.clone();
+        let mut steps = 0usize;
+        loop {
+            let resolved = self.resolve_named_type_one_level(&current, local_symbols);
+            if resolved == current || steps > 32 {
+                return current;
+            }
+            current = resolved;
+            steps += 1;
+        }
+    }
+
     fn is_managed_pointer_type(&self, ty: &SemanticType, local_symbols: &[SemanticSymbol]) -> bool {
         match self.resolve_named_type_one_level(ty, local_symbols) {
             SemanticType::Pointer { untagged, .. } => !untagged,
@@ -4460,7 +4481,11 @@ impl<'a> Analyzer<'a> {
                     expected.mode,
                     Some(ParamMode::Var) | Some(ParamMode::In) | Some(ParamMode::Out)
                 ) && {
-                    let exp = self.resolve_named_type_one_level(&expected.ty, local_symbols);
+                    // Resolve the expected type FULLY (follow alias chains
+                    // across module boundaries) so that a type alias such as
+                    // `Message* = Views.CtrlMessage` correctly resolves to
+                    // the underlying Record and not to a Named stub.
+                    let exp = self.resolve_named_type_fully(&expected.ty, local_symbols);
                     let act = self.resolve_named_type_one_level(&actual, local_symbols);
                     matches!(exp, SemanticType::Record { .. })
                         && matches!(act, SemanticType::Record { .. })

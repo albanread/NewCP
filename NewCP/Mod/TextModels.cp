@@ -1021,6 +1021,117 @@ BEGIN
 END NewAttributes;
 
 
+(** Return a new Attributes identical to `a` but with the color replaced. *)
+PROCEDURE NewColor* (a: Attributes; color: Ports.Color): Attributes;
+BEGIN
+    ASSERT(a # NIL, 20);
+    RETURN NewAttributes(color, a.font, a.offset)
+END NewColor;
+
+(** Return a new Attributes identical to `a` but with the font replaced.
+    The font's typeface, size, style and weight all change together. *)
+PROCEDURE NewFont* (a: Attributes; font: Fonts.Font): Attributes;
+BEGIN
+    ASSERT(a # NIL, 20);
+    RETURN NewAttributes(a.color, font, a.offset)
+END NewFont;
+
+(** Return a new Attributes identical to `a` but with the offset replaced. *)
+PROCEDURE NewOffset* (a: Attributes; offset: INTEGER): Attributes;
+BEGIN
+    ASSERT(a # NIL, 20);
+    RETURN NewAttributes(a.color, a.font, offset)
+END NewOffset;
+
+(** Return a new Attributes identical to `a` but with the typeface replaced.
+    Size, style and weight are preserved from `a.font` if available. *)
+PROCEDURE NewTypeface* (a: Attributes; typeface: Fonts.Typeface): Attributes;
+    VAR f: Fonts.Font; sz: INTEGER; st: SET; wt: INTEGER;
+BEGIN
+    ASSERT(a # NIL, 20);
+    IF a.font # NIL THEN
+        sz := a.font.size; st := a.font.style; wt := a.font.weight
+    ELSE
+        sz := 12 * Fonts.point; st := {}; wt := Fonts.normal
+    END;
+    IF Fonts.dir # NIL THEN
+        f := Fonts.dir.This(typeface, sz, st, wt)
+    ELSE
+        f := a.font
+    END;
+    RETURN NewAttributes(a.color, f, a.offset)
+END NewTypeface;
+
+(** Return a new Attributes identical to `a` but with the font size replaced.
+    Typeface, style and weight are preserved. *)
+PROCEDURE NewSize* (a: Attributes; size: INTEGER): Attributes;
+    VAR f: Fonts.Font; tf: Fonts.Typeface; st: SET; wt: INTEGER;
+BEGIN
+    ASSERT(a # NIL, 20);
+    IF a.font # NIL THEN
+        tf := a.font.typeface; st := a.font.style; wt := a.font.weight
+    ELSE
+        tf := Fonts.default; st := {}; wt := Fonts.normal
+    END;
+    IF Fonts.dir # NIL THEN
+        f := Fonts.dir.This(tf, size, st, wt)
+    ELSE
+        f := a.font
+    END;
+    RETURN NewAttributes(a.color, f, a.offset)
+END NewSize;
+
+(** Return a new Attributes identical to `a` but with the font style replaced.
+    Typeface, size and weight are preserved. *)
+PROCEDURE NewStyle* (a: Attributes; style: SET): Attributes;
+    VAR f: Fonts.Font; tf: Fonts.Typeface; sz, wt: INTEGER;
+BEGIN
+    ASSERT(a # NIL, 20);
+    IF a.font # NIL THEN
+        tf := a.font.typeface; sz := a.font.size; wt := a.font.weight
+    ELSE
+        tf := Fonts.default; sz := 12 * Fonts.point; wt := Fonts.normal
+    END;
+    IF Fonts.dir # NIL THEN
+        f := Fonts.dir.This(tf, sz, style, wt)
+    ELSE
+        f := a.font
+    END;
+    RETURN NewAttributes(a.color, f, a.offset)
+END NewStyle;
+
+(** Return a new Attributes identical to `a` but with the font weight replaced.
+    Typeface, size and style are preserved. *)
+PROCEDURE NewWeight* (a: Attributes; weight: INTEGER): Attributes;
+    VAR f: Fonts.Font; tf: Fonts.Typeface; sz: INTEGER; st: SET;
+BEGIN
+    ASSERT(a # NIL, 20);
+    IF a.font # NIL THEN
+        tf := a.font.typeface; sz := a.font.size; st := a.font.style
+    ELSE
+        tf := Fonts.default; sz := 12 * Fonts.point; st := {}
+    END;
+    IF Fonts.dir # NIL THEN
+        f := Fonts.dir.This(tf, sz, st, weight)
+    ELSE
+        f := a.font
+    END;
+    RETURN NewAttributes(a.color, f, a.offset)
+END NewWeight;
+
+(** Return TRUE iff `ch` is a character that may be inserted into a text model.
+    Matches the inline test in DocWriter.WriteChar. *)
+PROCEDURE WriteableChar* (ch: CHAR): BOOLEAN;
+BEGIN
+    RETURN
+        (ch >= 20X) & (ch < 7FX) OR
+        (ch = tab) OR (ch = line) OR (ch = para) OR
+        (ch = zwspace) OR (ch = digitspace) OR
+        (ch = hyphen) OR (ch = nbhyphen) OR
+        (ch >= 0A0X)
+END WriteableChar;
+
+
 BEGIN
     NEW(std);
     NEW(std.attr);
