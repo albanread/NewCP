@@ -127,12 +127,27 @@ MODULE BbApp;
                 ELSIF kind = iGui.EvClose      THEN HostWindows.CloseChild(childId)
                 ELSIF kind = iGui.EvFrameClose THEN EXIT
                 ELSIF kind = iGui.EvFocus      THEN HostWindows.FocusChild(childId)
+                ELSIF kind = iGui.EvKey        THEN
+                    (* p4 high bit 0 = key-down; p3 = mods *)
+                    IF p4 MOD 2 = 1 THEN  (* key down *)
+                        IF TextControllers.HandleNavKey(p1, ODD(p3 DIV iGui.ModShift)) THEN
+                            HostWindows.PaintChild(childId)
+                        END
+                    END
                 ELSIF kind = iGui.EvMouse      THEN
                     (* p3 = mods | button<<8 | op<<16 *)
                     mouseOp := p3 DIV 65536;
                     IF mouseOp = iGui.MouseLeftDown THEN
                         HostWindows.HandleMouseDown(childId, p1, p2);
                         HostWindows.PaintChild(childId)
+                    ELSIF mouseOp = iGui.MouseWheel THEN
+                        (* p4 = wheel_delta | wheel_lines<<16
+                           positive = up (wheel_delta > 0 → scroll up = lines < 0) *)
+                        IF p4 > 0 THEN
+                            HostWindows.ScrollLines(childId, -3)
+                        ELSE
+                            HostWindows.ScrollLines(childId, 3)
+                        END
                     END
                 ELSIF kind = iGui.EvChar       THEN
                     (* p2 = modifier bits; ODD(p2 DIV 2) = Ctrl held *)

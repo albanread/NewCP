@@ -264,6 +264,70 @@ MODULE HostWindows;
     END FocusChild;
 
 
+    (* Scroll the text pane in childId by `lines` lines (positive = down,
+       negative = up).  Adjusts pane.org to skip/back over line separators.
+       Silently returns if the view is not a text pane. *)
+    PROCEDURE ScrollLines* (childId, lines: INTEGER);
+        VAR w: HostWindow; v: Views.View;
+            pane: TextViews.Pane;
+            rd: TextModels.Reader;
+            pos, n: INTEGER;
+    BEGIN
+        w := FindByChildId(childId);
+        IF w = NIL THEN RETURN END;
+        v := w.doc.ThisView();
+        IF (v = NIL) OR ~(v IS TextViews.Pane) THEN RETURN END;
+        pane := v(TextViews.Pane);
+        IF pane.text = NIL THEN RETURN END;
+        pos := pane.org;
+        IF lines > 0 THEN
+            (* Scroll down: advance org past `lines` line separators. *)
+            rd := pane.text.NewReader(NIL);
+            IF rd = NIL THEN RETURN END;
+            rd.SetPos(pos); rd.ReadChar();
+            n := lines;
+            WHILE (n > 0) & ~rd.eot DO
+                WHILE ~rd.eot & (rd.char # TextModels.line) & (rd.char # TextModels.para) DO
+                    INC(pos); rd.ReadChar()
+                END;
+                IF ~rd.eot THEN INC(pos); DEC(n); rd.ReadChar() END
+            END
+        ELSIF lines < 0 THEN
+            (* Scroll up by N lines: scan from text start counting
+               line separators, find the position of the (lineNo - N)-th
+               line where lineNo is the current org's line number.
+               This is O(text) but simple and correct. *)
+            rd := pane.text.NewReader(NIL);
+            IF rd = NIL THEN RETURN END;
+            (* Count what line number org is at. *)
+            rd.SetPos(0); rd.ReadChar();
+            n := 0;  (* current line counter from start *)
+            pos := 0;
+            WHILE ~rd.eot & (pos < pane.org) DO
+                IF (rd.char = TextModels.line) OR (rd.char = TextModels.para) THEN
+                    INC(n)
+                END;
+                INC(pos); rd.ReadChar()
+            END;
+            (* Target line = max(0, n + lines) where lines is negative. *)
+            n := n + lines;
+            IF n < 0 THEN n := 0 END;
+            (* Scan from start to find start of target line. *)
+            rd.SetPos(0); rd.ReadChar();
+            pos := 0;
+            WHILE ~rd.eot & (n > 0) DO
+                IF (rd.char = TextModels.line) OR (rd.char = TextModels.para) THEN
+                    DEC(n)
+                END;
+                INC(pos); rd.ReadChar()
+            END
+            (* pos is now the start of the target line *)
+        END;
+        pane.SetOrigin(pos, 0);
+        w.Repaint()
+    END ScrollLines;
+
+
 BEGIN
     NEW(stdHostDir);
     Windows.SetDir(stdHostDir)

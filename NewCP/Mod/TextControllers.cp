@@ -390,6 +390,78 @@ BEGIN
 END HandleKey;
 
 
+(* ─── Navigation key handler ───────────────────────────────────
+   Handle arrow keys / Home / End using Windows VK_ codes.
+   VkLeft=37, VkRight=39, VkUp=38, VkDown=40, VkHome=36, VkEnd=35.
+   Returns TRUE if the key was handled. *)
+PROCEDURE HandleNavKey* (vkey: INTEGER; withShift: BOOLEAN): BOOLEAN;
+    CONST
+        VkLeft  = 37; VkRight = 39;
+        VkUp    = 38; VkDown  = 40;
+        VkHome  = 36; VkEnd   = 35;
+    VAR c: Controller;
+        doc: TextModels.Doc;
+        pos, beg, end, old: INTEGER;
+        rd: TextModels.Reader;
+BEGIN
+    c := Focus();
+    IF (c = NIL) OR ~(c IS StdCtrl) THEN RETURN FALSE END;
+    IF (c.text = NIL) OR ~(c.text IS TextModels.Doc) THEN RETURN FALSE END;
+    doc := c.text(TextModels.Doc);
+    old := c(StdCtrl).carPos;
+    IF old = none THEN old := 0 END;
+    pos := old;
+
+    IF vkey = VkLeft THEN
+        IF pos > 0 THEN DEC(pos) END
+    ELSIF vkey = VkRight THEN
+        IF pos < doc.len THEN INC(pos) END
+    ELSIF vkey = VkHome THEN
+        (* Scan backwards from pos to find the first char after a line sep (or 0). *)
+        rd := doc.NewReader(NIL);
+        IF rd # NIL THEN
+            beg := pos;  (* reuse beg as scan cursor *)
+            WHILE beg > 0 DO
+                rd.SetPos(beg - 1); rd.ReadChar();
+                IF (rd.char = TextModels.line) OR (rd.char = TextModels.para) THEN
+                    beg := -beg  (* encode stop: negate to break loop *)
+                ELSE
+                    DEC(beg)
+                END
+            END;
+            IF beg < 0 THEN pos := -beg  (* char after the line separator *)
+            ELSE pos := 0
+            END
+        ELSE
+            pos := 0
+        END
+    ELSIF vkey = VkEnd THEN
+        (* Advance to end of line. *)
+        rd := doc.NewReader(NIL);
+        IF rd # NIL THEN
+            rd.SetPos(pos); rd.ReadChar();
+            WHILE ~rd.eot & (rd.char # TextModels.line) & (rd.char # TextModels.para) DO
+                INC(pos); rd.ReadChar()
+            END
+        END
+    ELSE
+        RETURN FALSE
+    END;
+
+    (* Update caret, collapse selection unless Shift held. *)
+    c(StdCtrl).carPos := pos;
+    IF ~withShift THEN
+        c(StdCtrl).selBeg := pos;
+        c(StdCtrl).selEnd := pos
+    ELSE
+        (* Extend selection from the anchor. *)
+        c(StdCtrl).selBeg := c(StdCtrl).selBeg;  (* keep existing selBeg *)
+        c(StdCtrl).selEnd := pos
+    END;
+    RETURN TRUE
+END HandleNavKey;
+
+
 (* ─── Directory surface ────────────────────────────────────────
    `NewController(opts)` builds a fresh controller carrying the
    given option mask; `New()` is the convenience overload for
