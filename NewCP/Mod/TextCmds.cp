@@ -17,7 +17,13 @@ MODULE TextCmds;
      Bold*, Italic*, Plain*       — EMPTY stubs (need attribute ops)
 *)
 
-    IMPORT TextModels, TextControllers, HostClipboard;
+    IMPORT Models, Sequencers, TextModels, TextControllers, HostClipboard, Fonts, Ports;
+
+    VAR
+        (** Last-used search term (set by Find from the selection). *)
+        findTerm: ARRAY 256 OF CHAR;
+        (** Position to start the next FindAgain search from. *)
+        findFrom: INTEGER;
 
 
     (* ---- Helpers -------------------------------------------------------- *)
@@ -162,16 +168,78 @@ MODULE TextCmds;
     END Paste;
 
 
-    (* ---- Search / replace stubs --------------------------------------- *)
+    (* ---- Search ------------------------------------------------------- *)
 
-    (** Open a search dialog.  EMPTY in this slice — requires the
-        full TextMappers scanner and a host dialog surface. *)
+    (** Find: if there is a selection, use it as the new search term and
+        search for the next occurrence from just after the selection.
+        If there is no selection, re-run FindAgain using the last term.
+        The search is case-sensitive and wraps around on failure. *)
     PROCEDURE Find*;
+        VAR c: TextControllers.Controller;
+            doc: TextModels.Doc;
+            beg, end, i: INTEGER;
     BEGIN
+        c := TextControllers.Focus();
+        IF (c = NIL) OR (c.text = NIL) OR ~(c.text IS TextModels.Doc) THEN RETURN END;
+        doc := c.text(TextModels.Doc);
+        c.GetSelection(beg, end);
+        IF beg < end THEN
+            (* Copy selection into findTerm. *)
+            i := 0;
+            WHILE (beg + i < end) & (i < LEN(findTerm) - 1) DO
+                findTerm[i] := doc.buf[beg + i]; INC(i)
+            END;
+            findTerm[i] := 0X;
+            findFrom := end   (* start searching after the selection *)
+        END;
+        FindAgain
     END Find;
 
+    (** Find next occurrence of findTerm starting from findFrom.
+        Selects the match and advances findFrom past it.
+        Wraps around to the beginning of the document if not found forward. *)
     PROCEDURE FindAgain*;
+        VAR c: TextControllers.Controller;
+            doc: TextModels.Doc;
+            i, termLen, pos: INTEGER;
+            found: BOOLEAN;
     BEGIN
+        IF findTerm[0] = 0X THEN RETURN END;
+        c := TextControllers.Focus();
+        IF (c = NIL) OR (c.text = NIL) OR ~(c.text IS TextModels.Doc) THEN RETURN END;
+        doc := c.text(TextModels.Doc);
+        (* Measure the search term. *)
+        termLen := 0;
+        WHILE (termLen < LEN(findTerm)) & (findTerm[termLen] # 0X) DO INC(termLen) END;
+        IF termLen = 0 THEN RETURN END;
+        (* Forward search from findFrom. *)
+        found := FALSE;
+        pos := findFrom;
+        WHILE (pos + termLen <= doc.len) & ~found DO
+            i := 0;
+            WHILE (i < termLen) & (doc.buf[pos + i] = findTerm[i]) DO INC(i) END;
+            IF i = termLen THEN
+                found := TRUE
+            ELSE
+                INC(pos)
+            END
+        END;
+        IF ~found THEN
+            (* Wrap around: search from 0 up to findFrom. *)
+            pos := 0;
+            WHILE (pos + termLen <= findFrom) & ~found DO
+                i := 0;
+                WHILE (i < termLen) & (doc.buf[pos + i] = findTerm[i]) DO INC(i) END;
+                IF i = termLen THEN found := TRUE
+                ELSE INC(pos)
+                END
+            END
+        END;
+        IF found THEN
+            c.SetSelection(pos, pos + termLen);
+            c.SetCaret(pos + termLen);
+            findFrom := pos + termLen
+        END
     END FindAgain;
 
     PROCEDURE Replace*;
@@ -179,22 +247,147 @@ MODULE TextCmds;
     END Replace;
 
 
-    (* ---- Attribute-change stubs --------------------------------------- *)
+    (* ---- Undo / Redo ------------------------------------------------- *)
 
-    (** Set the selection's font to bold.  EMPTY in this slice —
-        requires StdProperties and attribute-write operations. *)
-    PROCEDURE Bold*;
+    (** Undo the last edit in the focused text model's sequencer. *)
+    PROCEDURE Undo*;
+        VAR c: TextControllers.Controller;
+            s: ANYPTR;
     BEGIN
+        c := TextControllers.Focus();
+        IF (c = NIL) OR (c.text = NIL) THEN RETURN END;
+        s := c.text.seq;
+        WITH s: Sequencers.Sequencer DO
+            IF s.CanUndo() THEN s.Undo() END
+        ELSE
+        END
+    END Undo;
+
+    (** Redo the last undone edit. *)
+    PROCEDURE Redo*;
+        VAR c: TextControllers.Controller;
+            s: ANYPTR;
+    BEGIN
+        c := TextControllers.Focus();
+        IF (c = NIL) OR (c.text = NIL) THEN RETURN END;
+        s := c.text.seq;
+        WITH s: Sequencers.Sequencer DO
+            IF s.CanRedo() THEN s.Redo() END
+        ELSE
+        END
+    END Redo;
+
+
+    (* ---- Attribute helpers -------------------------------------------- *)
+
+    (** Resolve the base font for the selection, falling back through:
+        1. the character attribute at `beg` (read via NewReader)
+        2. the text directory's default attribute
+        3. the Fonts directory's Default() font
+        Returns NIL if no font can be determined. *)
+    PROCEDURE SelectionBaseFont (doc: TextModels.Doc; beg: INTEGER): Fonts.Font;
+        VAR rd: TextModels.Reader; f: Fonts.Font;
+    BEGIN
+        f := NIL;
+        rd := doc.NewReader(NIL);
+        IF rd # NIL THEN
+            rd.SetPos(beg);
+            rd.ReadChar();
+            IF ~rd.eot & (rd.attr # NIL) & (rd.attr.font # NIL) THEN
+                f := rd.attr.font
+            END
+        END;
+        IF (f = NIL) & (TextModels.dir # NIL) & (TextModels.dir.attr # NIL) THEN
+            f := TextModels.dir.attr.font
+        END;
+        IF (f = NIL) & (Fonts.dir # NIL) THEN
+            f := Fonts.dir.Default()
+        END;
+        RETURN f
+    END SelectionBaseFont;
+
+    (** Create an Attributes record derived from `baseFont` but with
+        `weight` and `style` overridden.  Uses the directory default
+        color and zero offset. *)
+    PROCEDURE DerivedAttr (baseFont: Fonts.Font; weight: INTEGER; style: SET):
+        TextModels.Attributes;
+        VAR tf: Fonts.Typeface; sz: INTEGER; newFont: Fonts.Font;
+    BEGIN
+        IF baseFont # NIL THEN
+            tf := baseFont.typeface;
+            sz := baseFont.size
+        ELSE
+            tf := Fonts.default;
+            sz := 12 * Fonts.point
+        END;
+        IF Fonts.dir = NIL THEN RETURN NIL END;
+        newFont := Fonts.dir.This(tf, sz, style, weight);
+        RETURN TextModels.NewAttributes(0, newFont, 0)
+    END DerivedAttr;
+
+
+    (* ---- Attribute-change commands ------------------------------------ *)
+
+    (** Set the selection's font weight to Bold (700).
+        The base typeface, size, and italic state are preserved. *)
+    PROCEDURE Bold*;
+        VAR c: TextControllers.Controller;
+            doc: TextModels.Doc;
+            beg, end: INTEGER;
+            base: Fonts.Font;
+            attr: TextModels.Attributes;
+            style: SET;
+    BEGIN
+        c := TextControllers.Focus();
+        IF (c = NIL) OR (c.text = NIL) OR ~(c.text IS TextModels.Doc) THEN RETURN END;
+        doc := c.text(TextModels.Doc);
+        c.GetSelection(beg, end);
+        IF beg >= end THEN RETURN END;
+        base := SelectionBaseFont(doc, beg);
+        IF base # NIL THEN style := base.style ELSE style := {} END;
+        attr := DerivedAttr(base, Fonts.bold, style);
+        IF attr # NIL THEN doc.SetAttrRange(beg, end, attr) END
     END Bold;
 
+    (** Set the selection's font style to Italic.
+        The base typeface, size, and weight are preserved. *)
     PROCEDURE Italic*;
+        VAR c: TextControllers.Controller;
+            doc: TextModels.Doc;
+            beg, end: INTEGER;
+            base: Fonts.Font;
+            attr: TextModels.Attributes;
+            weight: INTEGER;
     BEGIN
+        c := TextControllers.Focus();
+        IF (c = NIL) OR (c.text = NIL) OR ~(c.text IS TextModels.Doc) THEN RETURN END;
+        doc := c.text(TextModels.Doc);
+        c.GetSelection(beg, end);
+        IF beg >= end THEN RETURN END;
+        base := SelectionBaseFont(doc, beg);
+        IF base # NIL THEN weight := base.weight ELSE weight := Fonts.normal END;
+        attr := DerivedAttr(base, weight, {Fonts.italic});
+        IF attr # NIL THEN doc.SetAttrRange(beg, end, attr) END
     END Italic;
 
-    (** Remove bold/italic from the selection. *)
+    (** Remove bold and italic from the selection — reset to plain.
+        Sets attr to NIL so the view's default attribute applies. *)
     PROCEDURE Plain*;
+        VAR c: TextControllers.Controller;
+            doc: TextModels.Doc;
+            beg, end: INTEGER;
     BEGIN
+        c := TextControllers.Focus();
+        IF (c = NIL) OR (c.text = NIL) OR ~(c.text IS TextModels.Doc) THEN RETURN END;
+        doc := c.text(TextModels.Doc);
+        c.GetSelection(beg, end);
+        IF beg >= end THEN RETURN END;
+        doc.SetAttrRange(beg, end, NIL)   (* NIL = use view's default attr *)
     END Plain;
 
+
+BEGIN
+    findTerm[0] := 0X;
+    findFrom := 0
 
 END TextCmds.

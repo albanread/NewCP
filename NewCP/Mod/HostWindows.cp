@@ -166,12 +166,80 @@ MODULE HostWindows;
 
     (* -- Public event-dispatch helpers (called by BbInit/event loop) ------- *)
 
-    (* Find window by childId and trigger a repaint. *)
+    (* Caret-follow scroll: adjust pane.org so the caret is in the visible area.
+       `windowH` = current window height in DIPs.
+       barH / lineH must match the constants in TextViews.Pane.Restore. *)
+    PROCEDURE EnsureCaretVisible (pane: TextViews.Pane; windowH: INTEGER);
+        CONST barH = 50; lineH = 120;
+        VAR carPos, org, pos, n, target, newOrg: INTEGER;
+            rd: TextModels.Reader; visLines: INTEGER;
+    BEGIN
+        IF pane.text = NIL THEN RETURN END;
+        IF pane.controller = NIL THEN RETURN END;
+        carPos := pane.controller.CaretPos();
+        IF carPos = TextControllers.none THEN RETURN END;
+        org := pane.org;
+        visLines := (windowH - barH) DIV lineH;
+        IF visLines < 1 THEN visLines := 1 END;
+
+        (* Case 1: caret is before the visible area — scroll up. *)
+        IF carPos < org THEN
+            rd := pane.text.NewReader(NIL);
+            IF rd = NIL THEN RETURN END;
+            rd.SetPos(0); rd.ReadChar();
+            pos := 0; newOrg := 0;
+            WHILE ~rd.eot & (pos < carPos) DO
+                IF (rd.char = TextModels.line) OR (rd.char = TextModels.para) THEN
+                    newOrg := rd.Pos()   (* start of the next line *)
+                END;
+                INC(pos); rd.ReadChar()
+            END;
+            pane.SetOrigin(newOrg, 0);
+            RETURN
+        END;
+
+        (* Count line seps in [org, carPos) to find the caret's line number. *)
+        rd := pane.text.NewReader(NIL);
+        IF rd = NIL THEN RETURN END;
+        rd.SetPos(org); rd.ReadChar();
+        pos := org; n := 0;
+        WHILE ~rd.eot & (pos < carPos) DO
+            IF (rd.char = TextModels.line) OR (rd.char = TextModels.para) THEN INC(n) END;
+            INC(pos); rd.ReadChar()
+        END;
+
+        (* Case 2: caret is below the visible area — scroll down. *)
+        IF n >= visLines THEN
+            (* New org = start of line (n - visLines + 1) from current org. *)
+            target := n - visLines + 1;
+            rd.SetPos(org); rd.ReadChar();
+            pos := org; newOrg := org;
+            WHILE ~rd.eot & (target > 0) DO
+                IF (rd.char = TextModels.line) OR (rd.char = TextModels.para) THEN
+                    DEC(target);
+                    IF target = 0 THEN newOrg := rd.Pos() END
+                END;
+                INC(pos); rd.ReadChar()
+            END;
+            pane.SetOrigin(newOrg, 0)
+        END
+    END EnsureCaretVisible;
+
+
+    (* Find window by childId, adjust scroll for caret visibility, then repaint. *)
     PROCEDURE PaintChild* (childId: INTEGER);
-        VAR w: HostWindow;
+        VAR w: HostWindow; v: Views.View;
     BEGIN
         w := FindByChildId(childId);
-        IF w # NIL THEN w.Repaint() END
+        IF w = NIL THEN RETURN END;
+        (* Caret-follow: scroll the pane so the caret is on screen. *)
+        IF w.doc # NIL THEN
+            v := w.doc.ThisView();
+            IF (v # NIL) & (v IS TextViews.Pane) THEN
+                EnsureCaretVisible(v(TextViews.Pane), w.h)
+            END
+        END;
+        w.Repaint()
     END PaintChild;
 
     (* Update size cache and repaint. *)

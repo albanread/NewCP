@@ -127,4 +127,31 @@ MODULE In;
         END
     END String;
 
+    (** Read a qualified identifier (e.g. "Module.Proc" or just "Name").
+        Uses returnQualIdents so the scanner treats the period as part of
+        the token.  On success `name` receives the NUL-terminated ident
+        and Done remains TRUE.  On failure (no ident at cursor) Done is
+        set to FALSE. *)
+    PROCEDURE Name* (OUT name: ARRAY OF CHAR);
+        VAR savedOpts: SET; i, cap: INTEGER;
+    BEGIN
+        IF Done THEN
+            savedOpts := s.opts;
+            s.SetOpts(s.opts + {TextMappers.returnQualIdents});
+            s.Scan;
+            s.SetOpts(savedOpts);
+            IF s.type = TextMappers.string THEN
+                cap := LEN(name) - 1;
+                i := 0;
+                WHILE (i < cap) & (s.string[i] # 0X) DO
+                    name[i] := s.string[i];
+                    INC(i)
+                END;
+                name[i] := 0X
+            ELSE
+                Done := FALSE
+            END
+        END
+    END Name;
+
 END In.

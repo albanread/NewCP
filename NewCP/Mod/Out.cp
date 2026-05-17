@@ -11,7 +11,7 @@ MODULE Out;
    for the padding in formatted ints / reals is emitted as a plain
    space ('  ') until TextMappers.Formatter.WriteIntForm ports. *)
 
-IMPORT StdLog;
+IMPORT StdLog, Strings;
 
 CONST
     digitspace* = 08FX;
@@ -73,20 +73,16 @@ BEGIN
     END
 END Int;
 
-(** Append a real number formatted as an integer part and decimal
-    fraction.  Full IEEE formatting is a follow-up once
-    TextMappers.Formatter.WriteRealForm ports.  For now emits the
-    integer part followed by ".0". *)
+(** Append a real number with minimum field width `n`.
+    Uses 16 digits of precision in automatic-exponent format, padded
+    with the BB digitspace character (CHR(08FH)) on the left.
+    Negative `n` is treated as 0 (no padding). *)
 PROCEDURE Real* (x: REAL; n: INTEGER);
-    VAR ipart: INTEGER;
+    VAR s: ARRAY 80 OF CHAR; minW: INTEGER;
 BEGIN
-    IF x < 0.0 THEN
-        StdLog.SString("-");
-        x := -x
-    END;
-    ipart := SHORT(ENTIER(x));
-    Int(ipart, 0);
-    StdLog.SString(".0")
+    IF n < 0 THEN minW := 0 ELSE minW := n END;
+    Strings.RealToStringForm(x, 16, minW, 0, CHR(08FH), s);
+    StdLog.String(s)
 END Real;
 
 END Out.

@@ -211,8 +211,13 @@ TYPE
         (** In-memory text buffer.  `len` chars are valid;
             `buf[len]` is always 0X (acts as a sentinel for
             cursor-style traversal). *)
-        buf-: ARRAY DocCapacity OF CHAR;
-        len-: INTEGER
+        buf-:  ARRAY DocCapacity OF CHAR;
+        len-:  INTEGER;
+        (** Per-character attribute.  `attrs[i]` applies to
+            `buf[i]`.  NIL means "inherit the view's default
+            attribute" (normal typeface/weight/style).  Set
+            by `DocWriter.WriteChar` or `SetAttrRange`. *)
+        attrs: ARRAY DocCapacity OF Attributes
     END;
     Doc* = POINTER TO DocDesc;
 
@@ -225,8 +230,34 @@ TYPE
     DocWriterDesc* = RECORD (WriterDesc)
         doc-:  Doc;
         wpos-: INTEGER      (** append cursor; 0 <= wpos <= doc.len *)
+        (** curAttr shadows the base `attr-` field so the per-char
+            store in WriteChar picks it up without a local variable. *)
     END;
     DocWriter* = POINTER TO DocWriterDesc;
+
+    (** Undo operation for a single InsertChar.  `Done` toggles between
+        forward (insert) and backward (delete) on successive calls. *)
+    InsertOpDesc = RECORD (Stores.OperationDesc)
+        doc:  Doc;
+        pos:  INTEGER;
+        ch:   CHAR;
+        attr: Attributes;   (** attribute for the inserted char *)
+        done: BOOLEAN
+    END;
+    InsertOp = POINTER TO InsertOpDesc;
+
+    (** Undo operation for a DeleteRange.  Saves up to DocCapacity chars
+        for reversal.  `nSaved = 0` marks a deletion too large to undo. *)
+    DeleteOpDesc = RECORD (Stores.OperationDesc)
+        doc:     Doc;
+        beg:     INTEGER;
+        n:       INTEGER;
+        nSaved:  INTEGER;
+        buf:     ARRAY DocCapacity OF CHAR;
+        attrBuf: ARRAY DocCapacity OF Attributes;  (** saved per-char attrs *)
+        done:    BOOLEAN
+    END;
+    DeleteOp = POINTER TO DeleteOpDesc;
 
 VAR
     dir-,    stdDir-: Directory;
@@ -555,9 +586,11 @@ BEGIN
        char" implementation drops the last char on the floor. *)
     IF rd.pos >= rd.doc.len THEN
         rd.eot  := TRUE;
-        rd.char := 0X
+        rd.char := 0X;
+        rd.attr := NIL
     ELSE
         rd.char := rd.doc.buf[rd.pos];
+        rd.attr := rd.doc.attrs[rd.pos];   (* per-char attribute, NIL = default *)
         rd.pos  := rd.pos + 1;
         rd.eot  := FALSE
     END
@@ -597,7 +630,8 @@ PROCEDURE (wr: DocWriterDesc) WriteChar* (ch: CHAR);
 BEGIN
     IF wr.wpos < DocCapacity - 1 THEN
         pos := wr.wpos;
-        wr.doc.buf[wr.wpos] := ch;
+        wr.doc.buf[wr.wpos]   := ch;
+        wr.doc.attrs[wr.wpos] := wr.attr;   (* apply current attr to char *)
         wr.wpos := wr.wpos + 1;
         IF wr.wpos > wr.doc.len THEN
             wr.doc.len := wr.wpos;
@@ -635,10 +669,9 @@ END Pos;
 
 PROCEDURE (wr: DocWriterDesc) SetAttr* (attr: Attributes);
 BEGIN
-    (* Attribute-aware writes are deferred — Doc carries plain
-       chars without per-run formatting until the run-list slice
-       ports.  The call is accepted as a no-op so callers using
-       BB-style WriteString-after-SetAttr patterns don't trap. *)
+    (* Store the attribute on the base-class slot; WriteChar reads
+       it from `wr.attr` and stamps it onto each char written. *)
+    wr.attr := attr
 END SetAttr;
 
 PROCEDURE (wr: DocWriterDesc) Base* (): Model;
@@ -734,56 +767,170 @@ BEGIN
 END ReplaceView;
 
 
-(** Insert one character at position `pos`, shifting everything from
-    `pos` onwards one place to the right.
-    pre: 0 <= pos <= m.len  AND  m.len < DocCapacity - 1
-    Broadcasts an `insert` UpdateMsg so bound views repaint. *)
-PROCEDURE (m: DocDesc) InsertChar* (pos: INTEGER; ch: CHAR), NEW;
+(* ─── Direct buffer operations (bypass sequencer / undo) ──────────────
+   Called from InsertOp.Do / DeleteOp.Do to apply the actual edit
+   without recursively creating more undo ops. *)
+
+PROCEDURE InsertDirect (m: Doc; pos: INTEGER; ch: CHAR; attr: Attributes);
     VAR i: INTEGER; msg: UpdateMsg;
 BEGIN
-    IF (pos < 0) OR (pos > m.len) THEN RETURN END;
-    IF m.len >= DocCapacity - 1 THEN RETURN END;   (* buffer full *)
-    (* Shift [pos .. len] right by 1. *)
     i := m.len;
     WHILE i > pos DO
-        m.buf[i] := m.buf[i - 1];
+        m.buf[i]   := m.buf[i - 1];
+        m.attrs[i] := m.attrs[i - 1];   (* shift per-char attrs along with chars *)
         DEC(i)
     END;
-    m.buf[pos] := ch;
+    m.buf[pos]   := ch;
+    m.attrs[pos] := attr;               (* stamp the attribute onto the char *)
     INC(m.len);
-    m.buf[m.len] := 0X;   (* maintain sentinel *)
-    msg.op    := insert;
-    msg.beg   := pos;
-    msg.end   := pos + 1;
-    msg.delta := 1;
+    m.buf[m.len] := 0X;
+    msg.op := insert; msg.beg := pos; msg.end := pos + 1; msg.delta := 1;
     Models.Broadcast(m, msg)
-END InsertChar;
+END InsertDirect;
 
-
-(** Delete characters in [beg, end), shifting what follows left.
-    pre: 0 <= beg <= end <= m.len
-    Broadcasts a `delete` UpdateMsg so bound views repaint. *)
-PROCEDURE (m: DocDesc) DeleteRange* (beg, end: INTEGER), NEW;
+PROCEDURE DeleteDirect (m: Doc; beg, end: INTEGER);
     VAR i, n: INTEGER; msg: UpdateMsg;
 BEGIN
     IF beg < 0 THEN beg := 0 END;
     IF end > m.len THEN end := m.len END;
     IF beg >= end THEN RETURN END;
     n := end - beg;
-    (* Shift [end .. len] left by n. *)
     i := beg;
     WHILE i + n <= m.len DO
-        m.buf[i] := m.buf[i + n];
+        m.buf[i]   := m.buf[i + n];
+        m.attrs[i] := m.attrs[i + n];   (* shift per-char attrs along with chars *)
         INC(i)
     END;
     m.len := m.len - n;
-    m.buf[m.len] := 0X;   (* maintain sentinel *)
-    msg.op    := delete;
-    msg.beg   := beg;
-    msg.end   := beg;    (* after-delete position *)
-    msg.delta := -n;
+    m.buf[m.len] := 0X;
+    msg.op := delete; msg.beg := beg; msg.end := beg; msg.delta := -n;
     Models.Broadcast(m, msg)
+END DeleteDirect;
+
+
+(* ─── InsertOp: undo/redo for InsertChar ─────────────────────── *)
+
+PROCEDURE (op: InsertOp) Do*;
+BEGIN
+    IF ~op.done THEN
+        InsertDirect(op.doc, op.pos, op.ch, op.attr)
+    ELSE
+        DeleteDirect(op.doc, op.pos, op.pos + 1)
+    END;
+    op.done := ~op.done
+END Do;
+
+
+(* ─── DeleteOp: undo/redo for DeleteRange ────────────────────── *)
+
+PROCEDURE (op: DeleteOp) Do*;
+    VAR i: INTEGER;
+BEGIN
+    IF ~op.done THEN
+        (* Apply: delete [beg, beg+n). *)
+        DeleteDirect(op.doc, op.beg, op.beg + op.n)
+    ELSE
+        (* Revert: re-insert saved chars at beg (in reverse to rebuild
+           the original left-to-right sequence); restore saved attrs. *)
+        IF op.nSaved > 0 THEN
+            i := op.nSaved - 1;
+            WHILE i >= 0 DO
+                InsertDirect(op.doc, op.beg, op.buf[i], op.attrBuf[i]);
+                DEC(i)
+            END
+        END
+    END;
+    op.done := ~op.done
+END Do;
+
+
+(** Insert one character at position `pos`, shifting everything from
+    `pos` onwards one place to the right.  Creates an undo operation
+    via the model's sequencer (or calls direct if none installed).
+    pre: 0 <= pos <= m.len  AND  m.len < DocCapacity - 1 *)
+PROCEDURE (m: DocDesc) InsertChar* (pos: INTEGER; ch: CHAR), NEW;
+    VAR op: InsertOp;
+BEGIN
+    IF (pos < 0) OR (pos > m.len) THEN RETURN END;
+    IF m.len >= DocCapacity - 1 THEN RETURN END;
+    IF m.seq = NIL THEN
+        Models.SetSequencer(m, Sequencers.dir.New())
+    END;
+    NEW(op);
+    op.doc  := m(Doc); op.pos := pos; op.ch := ch;
+    op.attr := NIL;   (* keyboard input inherits the view's default attr *)
+    op.done := FALSE;
+    Models.Do(m, "Insert", op)
+END InsertChar;
+
+
+(** Delete characters in [beg, end).  Creates an undo operation that
+    saves the deleted chars for reversal.  If the range is too large
+    to save (> DocCapacity), the deletion is applied but is not undoable.
+    pre: 0 <= beg <= end <= m.len *)
+PROCEDURE (m: DocDesc) DeleteRange* (beg, end: INTEGER), NEW;
+    VAR op: DeleteOp; i, n: INTEGER;
+BEGIN
+    IF beg < 0 THEN beg := 0 END;
+    IF end > m.len THEN end := m.len END;
+    IF beg >= end THEN RETURN END;
+    n := end - beg;
+    IF m.seq = NIL THEN
+        Models.SetSequencer(m, Sequencers.dir.New())
+    END;
+    NEW(op);
+    op.doc := m(Doc); op.beg := beg; op.n := n; op.done := FALSE;
+    (* Save chars and attrs for reversal. *)
+    IF n <= DocCapacity THEN
+        i := 0;
+        WHILE i < n DO
+            op.buf[i]     := m.buf[beg + i];
+            op.attrBuf[i] := m.attrs[beg + i];
+            INC(i)
+        END;
+        op.nSaved := n
+    ELSE
+        op.nSaved := 0   (* too large to save — deletion is not undoable *)
+    END;
+    Models.Do(m, "Delete", op)
 END DeleteRange;
+
+
+(** Apply `attr` to every character in [beg, end).
+    NIL resets those characters to the view's default attribute
+    (plain style).  Broadcasts a `replace` update so views repaint.
+    This call is NOT undoable — use it for formatting commands that
+    operate on selections. *)
+PROCEDURE (m: DocDesc) SetAttrRange* (beg, end: INTEGER; attr: Attributes), NEW;
+    VAR i: INTEGER; msg: UpdateMsg;
+BEGIN
+    IF beg < 0 THEN beg := 0 END;
+    IF end > m.len THEN end := m.len END;
+    IF beg >= end THEN RETURN END;
+    i := beg;
+    WHILE i < end DO m.attrs[i] := attr; INC(i) END;
+    msg.op    := replace;
+    msg.beg   := beg;
+    msg.end   := end;
+    msg.delta := 0;
+    Models.Broadcast(m, msg)
+END SetAttrRange;
+
+
+(** Construct a fresh Attributes record with the given fields.
+    Callers that need a styled attribute (Bold, Italic, …) use this
+    factory rather than accessing the read-only `-` fields directly. *)
+PROCEDURE NewAttributes* (color: Ports.Color; font: Fonts.Font;
+                          offset: INTEGER): Attributes;
+    VAR a: Attributes;
+BEGIN
+    NEW(a);
+    a.init   := TRUE;
+    a.color  := color;
+    a.font   := font;
+    a.offset := offset;
+    RETURN a
+END NewAttributes;
 
 
 BEGIN

@@ -19,7 +19,7 @@ MODULE StdLog;
        must invoke StdLog.Open explicitly.
 *)
 
-    IMPORT Documents, Windows, TextModels, TextViews;
+    IMPORT Documents, Windows, TextModels, TextViews, Strings;
 
     CONST
         winWidth  = 700;
@@ -135,6 +135,23 @@ MODULE StdLog;
         logWr.WriteChar(TextModels.line);
         RepaintLog
     END Ln;
+
+
+    (** Append a real number to the log.
+        `n` is the minimum field width (same semantics as Out.Real);
+        uses 16-digit precision and automatic exponent format. *)
+    PROCEDURE Real* (x: REAL; n: INTEGER);
+        VAR s: ARRAY 80 OF CHAR; minW: INTEGER; i: INTEGER;
+    BEGIN
+        IF n < 0 THEN minW := 0 ELSE minW := n END;
+        Strings.RealToStringForm(x, 16, minW, 0, CHR(08FH), s);
+        EnsureModel;
+        i := 0;
+        WHILE (i < LEN(s)) & (s[i] # 0X) DO
+            logWr.WriteChar(s[i]); INC(i)
+        END;
+        RepaintLog
+    END Real;
 
 
     (** Reset the log — allocates a fresh empty model.
