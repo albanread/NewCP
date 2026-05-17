@@ -29,10 +29,12 @@ use windows::Win32::Graphics::Direct2D::Common::{
     D2D1_PIXEL_FORMAT, D2D_RECT_F, D2D_SIZE_F, D2D_SIZE_U,
 };
 use windows::Win32::Graphics::Direct2D::{
-    ID2D1HwndRenderTarget, D2D1_ARC_SEGMENT, D2D1_ARC_SIZE_LARGE, D2D1_ARC_SIZE_SMALL,
+    ID2D1DCRenderTarget, ID2D1HwndRenderTarget, ID2D1RenderTarget,
+    D2D1_ARC_SEGMENT, D2D1_ARC_SIZE_LARGE, D2D1_ARC_SIZE_SMALL,
     D2D1_ELLIPSE, D2D1_FEATURE_LEVEL_DEFAULT, D2D1_HWND_RENDER_TARGET_PROPERTIES,
     D2D1_PRESENT_OPTIONS_NONE, D2D1_RENDER_TARGET_PROPERTIES, D2D1_RENDER_TARGET_TYPE_DEFAULT,
-    D2D1_RENDER_TARGET_USAGE_NONE, D2D1_ROUNDED_RECT, D2D1_SWEEP_DIRECTION_CLOCKWISE,
+    D2D1_RENDER_TARGET_TYPE_SOFTWARE, D2D1_RENDER_TARGET_USAGE_NONE,
+    D2D1_ROUNDED_RECT, D2D1_SWEEP_DIRECTION_CLOCKWISE,
 };
 use windows::Win32::Foundation::COLORREF;
 use windows::Win32::Graphics::Gdi::{
@@ -43,7 +45,6 @@ use windows::Win32::Graphics::Gdi::{
 };
 use windows::Win32::System::LibraryLoader::GetModuleHandleW;
 use windows::Win32::System::Threading::GetCurrentThreadId;
-use windows::Win32::Storage::Xps::{PrintWindow, PW_CLIENTONLY};
 use windows::Win32::UI::WindowsAndMessaging::{
     CreateWindowExW, DefMDIChildProcW, DefWindowProcW, GetClientRect, GetParent,
     GetWindowLongPtrW, IsWindow, IsWindowVisible, KillTimer, LoadCursorW, RegisterClassExW,
@@ -186,36 +187,33 @@ impl ChildState {
     }
 }
 
-/// Capture the client area of `hwnd` to a PNG file at `path`.
-/// Uses GDI PrintWindow (PW_CLIENTONLY) to get pixels into a DIB section,
-/// converts BGRA → RGBA, then encodes with the `png` crate.
-fn capture_child_to_png(hwnd: HWND, path: &str) -> bool {
-    // Get client area dimensions.
-    let mut rect = RECT::default();
-    if unsafe { GetClientRect(hwnd, &mut rect) }.is_err() {
-        eprintln!("[igui-png] GetClientRect failed: {}", windows::core::Error::from_thread());
-        return false;
-    }
-    let width = (rect.right - rect.left) as i32;
-    let height = (rect.bottom - rect.top) as i32;
-    if width <= 0 || height <= 0 {
-        eprintln!("[igui-png] zero-size client area: {width}x{height}");
-        return false;
-    }
+/// Re-render `batch` into an off-screen GDI DIB via a software
+/// `ID2D1DCRenderTarget` and encode the result as a PNG file at `path`.
+///
+/// Unlike the old `PrintWindow` approach, this re-executes the batch
+/// commands directly on a CPU-accessible D2D surface, so D2D-rendered
+/// content (text, rectangles, paths) is captured correctly.
+fn capture_to_png_via_d2d(
+    batch: &batch_mod::PaneBatch,
+    width: u32,
+    height: u32,
+    path: &str,
+) -> bool {
+    let w = width as i32;
+    let h = height as i32;
 
-    // Create a memory DC.
+    // ── 1. GDI memory DC + top-down 32-bpp DIB ──────────────────────
     let mem_dc = unsafe { CreateCompatibleDC(None) };
     if mem_dc.0.is_null() {
-        eprintln!("[igui-png] CreateCompatibleDC failed: {}", windows::core::Error::from_thread());
+        eprintln!("[igui-png] CreateCompatibleDC failed: {}",
+            windows::core::Error::from_thread());
         return false;
     }
-
-    // Create a top-down DIB section (negative height = top-down) with 32bpp BGRA.
     let bmi = BITMAPINFO {
         bmiHeader: BITMAPINFOHEADER {
             biSize: std::mem::size_of::<BITMAPINFOHEADER>() as u32,
-            biWidth: width,
-            biHeight: -height, // negative = top-down
+            biWidth: w,
+            biHeight: -h,   // negative = top-down scan order
             biPlanes: 1,
             biBitCount: 32,
             biCompression: BI_RGB.0,
@@ -227,19 +225,10 @@ fn capture_child_to_png(hwnd: HWND, path: &str) -> bool {
         },
         bmiColors: [Default::default()],
     };
-
     let mut bits_ptr: *mut std::ffi::c_void = std::ptr::null_mut();
-    let hbm = unsafe {
-        CreateDIBSection(
-            Some(mem_dc),
-            &bmi,
-            DIB_RGB_COLORS,
-            &mut bits_ptr,
-            None,
-            0,
-        )
-    };
-    let hbm = match hbm {
+    let hbm = match unsafe {
+        CreateDIBSection(Some(mem_dc), &bmi, DIB_RGB_COLORS, &mut bits_ptr, None, 0)
+    } {
         Ok(h) => h,
         Err(e) => {
             eprintln!("[igui-png] CreateDIBSection failed: {e}");
@@ -249,56 +238,85 @@ fn capture_child_to_png(hwnd: HWND, path: &str) -> bool {
     };
     if bits_ptr.is_null() {
         eprintln!("[igui-png] CreateDIBSection returned null bits pointer");
-        unsafe {
-            DeleteObject(hbm.into());
-            DeleteDC(mem_dc);
-        }
+        unsafe { DeleteObject(hbm.into()); DeleteDC(mem_dc); }
         return false;
     }
-
-    // Select the DIB into the memory DC.
     let old_obj = unsafe { SelectObject(mem_dc, hbm.into()) };
 
-    // Capture via PrintWindow(PW_CLIENTONLY = 1).
-    let pw_result = unsafe { PrintWindow(hwnd, mem_dc, PW_CLIENTONLY) };
-    if !pw_result.as_bool() {
-        eprintln!("[igui-png] PrintWindow failed: {}", windows::core::Error::from_thread());
-        unsafe {
-            SelectObject(mem_dc, old_obj);
-            DeleteObject(hbm.into());
-            DeleteDC(mem_dc);
+    // ── 2. Software D2D DC render target bound to the DIB ───────────
+    let factory = &renderer::ctx().d2d.factory;
+    let dc_target: ID2D1DCRenderTarget = match unsafe {
+        factory.CreateDCRenderTarget(
+            &D2D1_RENDER_TARGET_PROPERTIES {
+                // SOFTWARE forces CPU-side rasterisation — guaranteed to
+                // flush pixel values into the GDI DC after EndDraw.
+                r#type: D2D1_RENDER_TARGET_TYPE_SOFTWARE,
+                pixelFormat: D2D1_PIXEL_FORMAT {
+                    format: windows::Win32::Graphics::Dxgi::Common::DXGI_FORMAT_B8G8R8A8_UNORM,
+                    alphaMode: D2D1_ALPHA_MODE_IGNORE,
+                },
+                dpiX: 96.0,
+                dpiY: 96.0,
+                usage: D2D1_RENDER_TARGET_USAGE_NONE,
+                minLevel: D2D1_FEATURE_LEVEL_DEFAULT,
+            },
+        )
+    } {
+        Ok(t) => t,
+        Err(e) => {
+            eprintln!("[igui-png] CreateDCRenderTarget failed: {e}");
+            unsafe { SelectObject(mem_dc, old_obj); DeleteObject(hbm.into()); DeleteDC(mem_dc); }
+            return false;
         }
+    };
+
+    let sub_rect = RECT { left: 0, top: 0, right: w, bottom: h };
+    if let Err(e) = unsafe { dc_target.BindDC(mem_dc, &sub_rect) } {
+        eprintln!("[igui-png] BindDC failed: {e}");
+        unsafe { SelectObject(mem_dc, old_obj); DeleteObject(hbm.into()); DeleteDC(mem_dc); }
         return false;
     }
 
-    // Read BGRA pixels and convert to RGBA.
-    let pixel_count = (width * height) as usize;
-    let bgra_bytes = unsafe {
-        std::slice::from_raw_parts(bits_ptr as *const u8, pixel_count * 4)
-    };
-    let mut rgba_pixels: Vec<u8> = Vec::with_capacity(pixel_count * 4);
-    for chunk in bgra_bytes.chunks_exact(4) {
-        rgba_pixels.push(chunk[2]); // R
-        rgba_pixels.push(chunk[1]); // G
-        rgba_pixels.push(chunk[0]); // B
-        rgba_pixels.push(chunk[3]); // A
+    // ── 3. Execute batch into the off-screen target ──────────────────
+    unsafe { dc_target.BeginDraw() };
+    if let Err(e) = execute_d2d_batch(&dc_target, batch) {
+        eprintln!("[igui-png] execute_d2d_batch on DC target failed: {e}");
+        // Don't return early — EndDraw still needed to release the DC.
+    }
+    if let Err(e) = unsafe { dc_target.EndDraw(None, None) } {
+        eprintln!("[igui-png] DC target EndDraw failed: {e}");
+        unsafe { SelectObject(mem_dc, old_obj); DeleteObject(hbm.into()); DeleteDC(mem_dc); }
+        return false;
     }
 
-    // Clean up GDI resources before writing the file.
+    // ── 4. Read BGRA pixels from DIB section, convert to RGBA ───────
+    let pixel_count = (w * h) as usize;
+    let bgra = unsafe {
+        std::slice::from_raw_parts(bits_ptr as *const u8, pixel_count * 4)
+    };
+    let mut rgba: Vec<u8> = Vec::with_capacity(pixel_count * 4);
+    for chunk in bgra.chunks_exact(4) {
+        rgba.push(chunk[2]); // R  (BGRA[2])
+        rgba.push(chunk[1]); // G
+        rgba.push(chunk[0]); // B  (BGRA[0])
+        rgba.push(255u8);    // A  — always opaque (ALPHA_MODE_IGNORE)
+    }
+
+    // ── 5. Release GDI resources ─────────────────────────────────────
     unsafe {
         SelectObject(mem_dc, old_obj);
         DeleteObject(hbm.into());
         DeleteDC(mem_dc);
     }
 
-    // Encode PNG using the `png` crate.
+    // ── 6. Encode and write PNG ──────────────────────────────────────
     let result = (|| -> std::io::Result<()> {
         let file = std::fs::File::create(path)?;
-        let mut enc = png::Encoder::new(file, width as u32, height as u32);
+        let mut enc = png::Encoder::new(file, width, height);
         enc.set_color(png::ColorType::Rgba);
         enc.set_depth(png::BitDepth::Eight);
         let mut writer = enc.write_header()?;
-        writer.write_image_data(&rgba_pixels)?;
+        writer.write_image_data(&rgba)?;
         Ok(())
     })();
 
@@ -353,8 +371,13 @@ fn render_d2d_frame(
         .map_err(|e| IGuiError::D2D(format!("ID2D1HwndRenderTarget::EndDraw failed: {e}")))?;
 
     // After EndDraw the frame is on screen; now capture if requested.
+    // Re-render the batch into an off-screen D2D software target so that
+    // the PNG reflects actual D2D output rather than a GDI PrintWindow copy.
     if let Some((path, reply_id)) = capture_cmd {
-        let success = capture_child_to_png(hwnd, &path);
+        let success = batch.map_or(false, |b| {
+            let size = unsafe { target.GetPixelSize() };
+            capture_to_png_via_d2d(b, size.width, size.height, &path)
+        });
         super::replies::deliver(reply_id, super::replies::Reply::PngDone { success });
     }
 
@@ -362,7 +385,7 @@ fn render_d2d_frame(
 }
 
 fn execute_d2d_batch(
-    target: &ID2D1HwndRenderTarget,
+    target: &ID2D1RenderTarget,
     batch: &batch_mod::PaneBatch,
 ) -> Result<(), IGuiError> {
     for cmd in &batch.cmds {
@@ -695,7 +718,7 @@ fn execute_d2d_batch(
 // ─── Phase 4 text execution helpers ──────────────────────────────────
 
 fn draw_text_run(
-    target: &ID2D1HwndRenderTarget,
+    target: &ID2D1RenderTarget,
     run: &batch_mod::TextRun,
 ) -> Result<(), IGuiError> {
     let layout = super::dwrite::layout_for(run)?;
@@ -803,7 +826,7 @@ thread_local! {
         RefCell::new(Vec::new());
 }
 
-fn push_offset(target: &ID2D1HwndRenderTarget, dx: f32, dy: f32) {
+fn push_offset(target: &ID2D1RenderTarget, dx: f32, dy: f32) {
     let mut current = windows_numerics::Matrix3x2::default();
     unsafe { target.GetTransform(&mut current) };
     OFFSET_STACK.with(|st| st.borrow_mut().push(current));
@@ -816,7 +839,7 @@ fn push_offset(target: &ID2D1HwndRenderTarget, dx: f32, dy: f32) {
     unsafe { target.SetTransform(&new_t) };
 }
 
-fn pop_offset(target: &ID2D1HwndRenderTarget) {
+fn pop_offset(target: &ID2D1RenderTarget) {
     if let Some(prev) = OFFSET_STACK.with(|st| st.borrow_mut().pop()) {
         unsafe { target.SetTransform(&prev) };
     } else {
@@ -855,7 +878,7 @@ thread_local! {
 }
 
 fn save_rect_slot(
-    target: &ID2D1HwndRenderTarget,
+    target: &ID2D1RenderTarget,
     slot: u8,
     rect: batch_mod::Rect,
 ) -> Result<(), IGuiError> {
@@ -902,7 +925,7 @@ fn save_rect_slot(
 }
 
 fn restore_rect_slot(
-    target: &ID2D1HwndRenderTarget,
+    target: &ID2D1RenderTarget,
     slot: u8,
 ) -> Result<(), IGuiError> {
     let entry = SLOTS.with(|s| {
@@ -952,7 +975,7 @@ pub(crate) fn child_bounds_lookup(child_view_id: u32) -> Option<batch_mod::Rect>
 // ─── DrawPath via ID2D1PathGeometry ─────────────────────────────────
 
 fn draw_path(
-    target: &ID2D1HwndRenderTarget,
+    target: &ID2D1RenderTarget,
     commands: &[batch_mod::PathCmd],
     fill: &Option<batch_mod::Rgba>,
     stroke: Option<&(batch_mod::StrokeStyle, batch_mod::Rgba)>,
@@ -1123,7 +1146,7 @@ fn run_hit_test_position(request_id: u32, run: &batch_mod::TextRun, char_index: 
 }
 
 fn solid_brush(
-    target: &ID2D1HwndRenderTarget,
+    target: &ID2D1RenderTarget,
     color: batch_mod::Rgba,
 ) -> Result<windows::Win32::Graphics::Direct2D::ID2D1SolidColorBrush, IGuiError> {
     unsafe {
@@ -1153,7 +1176,7 @@ fn ellipse_from_rect(rect: &batch_mod::Rect) -> D2D1_ELLIPSE {
 }
 
 fn draw_arc_hwnd(
-    target: &ID2D1HwndRenderTarget,
+    target: &ID2D1RenderTarget,
     center: batch_mod::Point,
     radius: f32,
     rotation_rad: f32,
