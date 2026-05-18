@@ -1967,6 +1967,32 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
         self.cg.module.add_function(&name, fn_ty, None)
     }
 
+    /// Coerce a resolved BasicValueEnum to an LLVM `ptr` suitable for use as
+    /// a memmove address.  Integers are converted via `inttoptr`; values that
+    /// are already pointers are returned as-is.
+    fn coerce_to_ptr(
+        &mut self,
+        value: BasicValueEnum<'ctx>,
+        name: &str,
+    ) -> Result<inkwell::values::PointerValue<'ctx>, CodegenError> {
+        let ptr_ty = self.cg.context.ptr_type(inkwell::AddressSpace::default());
+        match value {
+            BasicValueEnum::PointerValue(p) => Ok(p),
+            BasicValueEnum::IntValue(i) => self
+                .cg
+                .builder
+                .build_int_to_ptr(i, ptr_ty, name)
+                .map_err(|e| CodegenError::Unsupported {
+                    stage: "emit_instr",
+                    detail: e.to_string(),
+                }),
+            other => Err(CodegenError::Unsupported {
+                stage: "emit_instr",
+                detail: format!("MOVE address operand must be an int or pointer, got {:?}", other),
+            }),
+        }
+    }
+
     fn emit_memcopy(
         &mut self,
         dst: &IrValue,
@@ -1974,28 +2000,13 @@ impl<'ctx, 'm> ProcedureEmitter<'ctx, 'm> {
         len: &IrValue,
         value_map: &mut ValueMap<'ctx>,
     ) -> Result<(), CodegenError> {
-        let ptr_ty = self.cg.context.ptr_type(inkwell::AddressSpace::default());
         let i64_ty = self.cg.context.i64_type();
         let i1_ty = self.cg.context.bool_type();
-        let dst_addr = self.resolve_basic_value(dst, value_map)?.into_int_value();
-        let src_addr = self.resolve_basic_value(src, value_map)?.into_int_value();
+        let dst_raw = self.resolve_basic_value(dst, value_map)?;
+        let src_raw = self.resolve_basic_value(src, value_map)?;
         let len_value = self.resolve_basic_value(len, value_map)?.into_int_value();
-        let dst_ptr = self
-            .cg
-            .builder
-            .build_int_to_ptr(dst_addr, ptr_ty, "memmove.dst")
-            .map_err(|e| CodegenError::Unsupported {
-                stage: "emit_instr",
-                detail: e.to_string(),
-            })?;
-        let src_ptr = self
-            .cg
-            .builder
-            .build_int_to_ptr(src_addr, ptr_ty, "memmove.src")
-            .map_err(|e| CodegenError::Unsupported {
-                stage: "emit_instr",
-                detail: e.to_string(),
-            })?;
+        let dst_ptr = self.coerce_to_ptr(dst_raw, "memmove.dst")?;
+        let src_ptr = self.coerce_to_ptr(src_raw, "memmove.src")?;
         let len_i64 = self.cast_shift_to_width(len_value, i64_ty, "memmove.len")?;
         let memmove = self.get_or_declare_memmove();
         self.cg

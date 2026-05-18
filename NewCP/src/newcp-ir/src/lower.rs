@@ -2647,7 +2647,15 @@ impl<'m> LowerCtx<'m> {
         let mut signature = sema
             .procedures
             .iter()
-            .find(|proc| proc.name == name && proc.exported)
+            // Exclude bound methods (receiver is Some): we are looking for
+            // a module-level procedure.  A bound method shares its name with
+            // the matching module-level wrapper (e.g. Controllers has both
+            // `PROCEDURE (f: Forwarder) Forward*` and `PROCEDURE Forward*`).
+            // Without this filter, the method is found first — its param
+            // count differs from the wrapper's, which corrupts the expected
+            // mode/type vectors and causes record arguments to be passed by
+            // value (struct) instead of by reference.
+            .find(|proc| proc.name == name && proc.exported && proc.signature.receiver.is_none())
             .map(|proc| proc.signature.clone())?;
         for param in &mut signature.parameters {
             qualify_local_named_refs_in_sem_type(&mut param.ty, module, &local_type_names);
@@ -4799,8 +4807,14 @@ impl<'m> LowerCtx<'m> {
                 // array (`digits := "0123456789ABCDEF"`). The default Cast path
                 // can't lower ptr -> [N x char]; instead emit a memcpy from the
                 // string literal's private global into the array slot.
+                // Resolve Named aliases first (e.g. `Typeface = ARRAY 64 OF CHAR`)
+                // so that `tf := "Segoe UI"` where `tf: Typeface` is a local or
+                // imported array alias also takes this path instead of falling
+                // through to the spurious Cast generation below.
+                let resolved_slot_for_conststr = slot_ty.as_ref()
+                    .map(|st| self.resolve_named_anywhere(st.clone()));
                 if let (Some(IrType::Array { element, len }), IrValue::ConstStr(s, lit_elem)) =
-                    (slot_ty.clone(), &rhs)
+                    (resolved_slot_for_conststr, &rhs)
                 {
                     let elem = *element.clone();
                     let elem_size: usize = match elem {

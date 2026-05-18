@@ -7099,8 +7099,10 @@ impl<'a> Analyzer<'a> {
             BuiltinProc::SystemMove => {
                 self.require_builtin_exact_arity(proc, args, 3, procedure_name, diagnostics);
                 if args.len() == 3 {
-                    self.require_builtin_integer_arg(proc, 1, &args[0], procedure_name, local_symbols, scope_type_names, diagnostics);
-                    self.require_builtin_integer_arg(proc, 2, &args[1], procedure_name, local_symbols, scope_type_names, diagnostics);
+                    // Args 1 & 2 are addresses: accept either integer (raw address) or pointer.
+                    self.require_builtin_address_arg(proc, 1, &args[0], procedure_name, local_symbols, scope_type_names, diagnostics);
+                    self.require_builtin_address_arg(proc, 2, &args[1], procedure_name, local_symbols, scope_type_names, diagnostics);
+                    // Arg 3 is the byte count: must be an integer.
                     self.require_builtin_integer_arg(proc, 3, &args[2], procedure_name, local_symbols, scope_type_names, diagnostics);
                 }
             }
@@ -7395,6 +7397,40 @@ impl<'a> Analyzer<'a> {
                     render_semantic_type(&arg_type)
                 ),
             ));
+        }
+    }
+
+    /// Like `require_builtin_integer_arg` but also accepts pointer types.
+    /// Used for SYSTEM.MOVE address operands where either an integer address
+    /// or a pointer variable is valid.
+    fn require_builtin_address_arg(
+        &self,
+        proc: BuiltinProc,
+        index: usize,
+        expr: &Expr,
+        procedure_name: Option<&str>,
+        local_symbols: &[SemanticSymbol],
+        scope_type_names: &HashSet<String>,
+        diagnostics: &mut Vec<SemanticDiagnostic>,
+    ) {
+        if let Some(arg_type) = self.infer_expr_type(expr, local_symbols, scope_type_names) {
+            let resolved = self.resolve_named_type_one_level(&arg_type, local_symbols);
+            let ok = is_integer_type(&arg_type)
+                || matches!(resolved, SemanticType::Pointer { .. });
+            if !ok {
+                let (line, column) = expr_position(expr);
+                diagnostics.push(make_diagnostic(
+                    procedure_name,
+                    line,
+                    column,
+                    format!(
+                        "{} argument {} must be an integer or pointer type, found {}",
+                        proc.name(),
+                        index,
+                        render_semantic_type(&arg_type)
+                    ),
+                ));
+            }
         }
     }
 
