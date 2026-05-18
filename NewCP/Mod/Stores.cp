@@ -293,8 +293,9 @@ BEGIN
     wr.handle := NewWriter();
     s.Externalize(wr);
 
-    rd.handle := OpenReaderFromWriter(wr.handle);
-    rd.eof    := FALSE;
+    rd.handle    := OpenReaderFromWriter(wr.handle);
+    rd.eof       := FALSE;
+    rd.cancelled := FALSE;
     CloseWriter(wr.handle);
 
     copy.Internalize(rd);
