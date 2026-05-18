@@ -1,6 +1,6 @@
 # NewCP — a personal recreation of Component Pascal and the BlackBox environment
 
-This does not work, may take years, and has an incompetent gc. But we will see.
+## This does not work, may take years, and has an incompetent gc. But we will see. ##
 
 This repository is a from-scratch recreation of the Component Pascal language and the BlackBox Component Builder environment, implemented on a modern toolchain (Rust + LLVM) and aimed at modern hardware (64-bit, JIT-first, multi-gigabyte address spaces).
 
