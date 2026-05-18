@@ -1,5 +1,7 @@
 # NewCP — a personal recreation of Component Pascal and the BlackBox environment
 
+This does not work, may take years, and has an incompetent gc. But we will see.
+
 This repository is a from-scratch recreation of the Component Pascal language and the BlackBox Component Builder environment, implemented on a modern toolchain (Rust + LLVM) and aimed at modern hardware (64-bit, JIT-first, multi-gigabyte address spaces).
 
 The work in this tree is a personal project. I always liked Oberon/F. I find Component Pascal one of the easiest languages to read and to understand, and I want to recreate it — but for the machines that exist now, not the ones it was originally squeezed onto.
