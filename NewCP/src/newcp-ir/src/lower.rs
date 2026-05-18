@@ -721,7 +721,58 @@ impl<'m> LowerCtx<'m> {
             // lookups know to route to the imported module's symbols.
             qualify_local_named_refs_in_sem_type(&mut ty, module, &local_type_names);
             return match ty {
-                SemanticType::Pointer { .. } => Some(map_semantic_type(&ty)),
+                SemanticType::Pointer { target, untagged } => {
+                    // If the pointer's target is a Named alias that resolves to
+                    // an open array (e.g. `TextBufDesc = ARRAY OF CHAR`), substitute
+                    // the resolved Array type so the open-array-pointer collapsing in
+                    // map_semantic_type fires:
+                    //   TextBuf = POINTER TO TextBufDesc  →  Ptr(Char)
+                    // NOT:
+                    //   Ptr(map(Named(TextBufDesc))) = Ptr(Ptr(Char))   (double wrap!)
+                    //
+                    // IMPORTANT: only substitute when the target resolves to an open
+                    // Array.  For record-typed targets (most pointer aliases), leave
+                    // the Named wrapper intact so the LLVM backend's named-struct
+                    // registry lookup stays on the `Named("Mod.Desc")` path.
+                    let resolved_target =
+                        if let SemanticType::Named { name: ref tname, module: ref tmod, .. } = *target {
+                            let target_name = tname.clone();
+                            let target_module = tmod.as_deref().unwrap_or(module);
+                            let maybe_resolved = find_imported_module_sema(target_module)
+                                .and_then(|s| {
+                                    s.symbols.iter()
+                                        .find(|sym| {
+                                            sym.kind == SymbolKind::Type
+                                                && sym.name == target_name
+                                        })
+                                        .and_then(|sym| sym.declared_type.as_ref())
+                                        .cloned()
+                                })
+                                .map(|mut r| {
+                                    qualify_local_named_refs_in_sem_type(
+                                        &mut r, target_module, &local_type_names,
+                                    );
+                                    r
+                                });
+                            // Only use the resolved type when it's an open array —
+                            // records and other types must keep their Named form.
+                            match maybe_resolved {
+                                Some(SemanticType::Array { ref lengths, .. })
+                                    if lengths.is_empty() =>
+                                {
+                                    maybe_resolved.unwrap()
+                                }
+                                _ => *target,
+                            }
+                        } else {
+                            *target
+                        };
+                    let resolved_ty = SemanticType::Pointer {
+                        target: Box::new(resolved_target),
+                        untagged,
+                    };
+                    Some(map_semantic_type(&resolved_ty))
+                }
                 _ => None,
             };
         }
@@ -3752,7 +3803,8 @@ impl<'m> LowerCtx<'m> {
                 Some(IrValue::Temp(dst, IrType::Char))
             }
             // SHORT: narrows one step in the type hierarchy
-            //   CHAR → SHORTCHAR,  INTEGER → I32,  REAL → F32
+            //   CHAR → SHORTCHAR,  INTEGER(I64) → I32,  I32 → I16,  I16 → U8,  REAL → F32
+            // Mirrors the sema chain: LongInt→Integer→IntShort→ShortInt→Byte
             "SHORT" => {
                 let x = self.lower_expr(args.first()?);
                 let from_ty = x.ty();
@@ -3761,6 +3813,7 @@ impl<'m> LowerCtx<'m> {
                     IrType::I64 => IrType::I32,
                     IrType::F64 => IrType::F32,
                     IrType::I32 => IrType::I16,
+                    IrType::I16 => IrType::U8,
                     other => other.clone(),
                 };
                 if to_ty == from_ty {
@@ -4813,8 +4866,9 @@ impl<'m> LowerCtx<'m> {
                 // through to the spurious Cast generation below.
                 let resolved_slot_for_conststr = slot_ty.as_ref()
                     .map(|st| self.resolve_named_anywhere(st.clone()));
+                // ConstStr → fixed char-array: emit a memcpy from the string global.
                 if let (Some(IrType::Array { element, len }), IrValue::ConstStr(s, lit_elem)) =
-                    (resolved_slot_for_conststr, &rhs)
+                    (resolved_slot_for_conststr.clone(), &rhs)
                 {
                     let elem = *element.clone();
                     let elem_size: usize = match elem {
@@ -4830,11 +4884,40 @@ impl<'m> LowerCtx<'m> {
                         } else {
                             rhs.clone()
                         };
-                        let lit_units = s.chars().count() + 1;	// + NUL terminator
+                        let lit_units = s.chars().count() + 1; // + NUL terminator
                         let copy_units = lit_units.min(len as usize);
                         let bytes = (copy_units * elem_size) as i128;
-
-                        // Convert pointer-typed dst/src to i64 addresses for MemCopy.
+                        let dst_t = self.fresh_temp();
+                        self.push(Instr::AddrOf { dst: dst_t, sym: addr.clone() });
+                        let src_t = self.fresh_temp();
+                        self.push(Instr::AddrOf { dst: src_t, sym: src });
+                        self.push(Instr::MemCopy {
+                            dst: IrValue::Temp(dst_t, IrType::I64),
+                            src: IrValue::Temp(src_t, IrType::I64),
+                            len: IrValue::ConstInt(bytes, IrType::I64),
+                        });
+                        return;
+                    }
+                }
+                // ConstChar → fixed char-array: a 1-character string constant
+                // (e.g. `Fonts.default = "*"`) stored as ConstValue::Char in sema
+                // produces ConstChar with IR type Char (i32), bypassing the ConstStr
+                // check above.  Treat it as a 1-char string + NUL and emit the same
+                // memcpy so the assignment stores into the array correctly.
+                if let (Some(IrType::Array { element, len }), IrValue::ConstChar(c)) =
+                    (resolved_slot_for_conststr, &rhs)
+                {
+                    let elem = *element.clone();
+                    let elem_size: usize = match elem {
+                        IrType::Char => 4,
+                        IrType::ShortChar | IrType::U8 | IrType::I8 => 1,
+                        _ => 0,
+                    };
+                    if elem_size > 0 {
+                        let s = c.to_string(); // 1-char string; NUL terminator added by ConstStr
+                        let copy_units = 2usize.min(len as usize); // char + NUL, capped by array len
+                        let bytes = (copy_units * elem_size) as i128;
+                        let src = IrValue::ConstStr(s, elem);
                         let dst_t = self.fresh_temp();
                         self.push(Instr::AddrOf { dst: dst_t, sym: addr.clone() });
                         let src_t = self.fresh_temp();
@@ -4867,6 +4950,8 @@ impl<'m> LowerCtx<'m> {
                         if resolved_slot == resolved_rhs {
                             rhs
                         } else {
+                            eprintln!("[DEBUG cast] addr={:?}  slot_ty={:?}  resolved_slot={:?}  rhs_ty={:?}  resolved_rhs={:?}  addr_ty={:?}",
+                                addr, slot_ty, resolved_slot, rhs.ty(), resolved_rhs, addr.ty());
                             let t = self.fresh_temp();
                             self.push(Instr::Cast { dst: t, value: rhs, to_ty: slot_ty.clone() });
                             IrValue::Temp(t, slot_ty)

@@ -5476,6 +5476,17 @@ fn resolve_named_type_alias<'a>(
             // CHAR accepts Files.Name (= ARRAY 16 OF CHAR)" succeed —
             // without this the check sees `imported:Files.Name` as an
             // opaque named type and fails.
+            //
+            // NOTE: we intentionally do NOT filter by `symbol.exported` here.
+            // An unexported type alias (e.g. `TextBuf = POINTER TO ARRAY OF
+            // CHAR` in TextModels.cp) may appear as the declared_type of an
+            // exported field (`buf-: TextBuf`).  We need to resolve the alias
+            // structurally — not to expose the name externally, but so that
+            // indexing through `d.buf[i]` or pointer-deref via `d.buf^`
+            // correctly sees the underlying `POINTER TO ARRAY OF T` shape.
+            // The `imported_modules` table already includes the full symbol
+            // table of each imported module (not just the exported subset),
+            // so the lookup succeeds for private alias types.
             let key = format!("{module_name}::{name}");
             if !seen_named.insert(key.clone()) {
                 return None;
@@ -5488,7 +5499,6 @@ fn resolve_named_type_alias<'a>(
                         .find(|symbol| {
                             symbol.kind == SymbolKind::Type
                                 && symbol.name == *name
-                                && symbol.exported
                         })
                         .and_then(|symbol| symbol.declared_type.as_ref())
                 });
@@ -7313,6 +7323,7 @@ impl<'a> Analyzer<'a> {
                         SemanticType::Builtin(BuiltinType::Char)
                             | SemanticType::Builtin(BuiltinType::ShortChar)
                             | SemanticType::Builtin(BuiltinType::Set)
+                            | SemanticType::Builtin(BuiltinType::Byte)
                     )
                 {
                     let (line, column) = expr_position(&args[0]);
@@ -7321,7 +7332,7 @@ impl<'a> Analyzer<'a> {
                         line,
                         column,
                         format!(
-                            "ORD argument 1 must be CHAR, SHORTCHAR, or SET, found {}",
+                            "ORD argument 1 must be CHAR, SHORTCHAR, SET, or BYTE, found {}",
                             render_semantic_type(&arg_type)
                         ),
                     ));
@@ -7535,7 +7546,19 @@ impl<'a> Analyzer<'a> {
             return;
         }
 
-        if let Some(symbol) = self.lookup_symbol(&designator.base.name, local_symbols) {
+        // The parser greedily packs `a.opts` as
+        // `QualIdent{module: Some("a"), name: "opts"}`.  Looking up
+        // `base.name` ("opts") would find the CONSTANT `opts = 7` instead
+        // of the variable `a`.  Use the module part as the root when it
+        // exists (the module is a local variable, not an actual import);
+        // fall back to `base.name` when there is no module qualifier
+        // (bare `opts` with no prefix would be a genuine constant error).
+        let root_name = designator
+            .base
+            .module
+            .as_deref()
+            .unwrap_or(designator.base.name.as_str());
+        if let Some(symbol) = self.lookup_symbol(root_name, local_symbols) {
             if !matches!(symbol.kind, SymbolKind::Variable | SymbolKind::Parameter | SymbolKind::Receiver) {
                 let (line, column) = designator_position(designator);
                 diagnostics.push(make_diagnostic(
@@ -8667,7 +8690,7 @@ mod tests {
             messages
         );
         assert!(
-            sema.diagnostics.iter().any(|item| item.message.contains("ORD argument 1 must be CHAR, SHORTCHAR, or SET")),
+            sema.diagnostics.iter().any(|item| item.message.contains("ORD argument 1 must be CHAR, SHORTCHAR")),
             "{}",
             messages
         );

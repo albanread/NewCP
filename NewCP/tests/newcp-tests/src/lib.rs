@@ -3254,7 +3254,7 @@ mod tests {
         body.extend_from_slice(&[0u8, 1, 2, 3, 4, 5]); // super-versions
         body.extend_from_slice(&6i32.to_le_bytes());   // run-list length
         body.push(1);                                   // ano = 1
-        body.extend_from_slice(&5i32.to_le_bytes());   // len = 5
+        body.extend_from_slice(&5i16.to_le_bytes());   // len = 5 (ReadInt = 2-byte i16 BB wire)
         body.push(0xFF);                                // terminator
         body.extend_from_slice(b"Hello");
         match stage_synthetic_odc(

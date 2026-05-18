@@ -30,7 +30,7 @@ The original BlackBox loader worked with object files, symbol files, type descri
 
 Memory is no longer the scarce resource that shaped the original loader. BlackBox is small enough now that the whole environment can live in memory.
 
-## Current status (2026-05-15)
+## Current status (2026-05-18)
 
 NewCP is past the bootstrap-shape phase. The compiler pipeline, JIT, runtime, and a usable framework slice are all live in one process.
 
@@ -107,7 +107,14 @@ A Rust-thread `redit` UI-thread fail-safe editor for CP source ships alongside i
 - 188 / 188 integration tests
 - 50 / 50 runtime tests
 - 29 / 29 loader tests
+- 474 / 490 newcp-tests pass (16 under active work — TextViews pointer-cast IR bug + Tour.odc decode)
 - all other crates green
+
+Recent compiler fixes (May 2026):
+- `ORD` builtin now accepts `BYTE` (CP §10.2 BlackBox extension), unblocking TextRulers and its dependents
+- `SHORT` type chain correctly narrows `ShortInt → Byte` (`IrType::I16 → U8`)
+- `INCL` / `EXCL` sema now resolves root variable names for qualified-field designators (`a.opts`)
+- BlackBox wire format: `ReadInt` correctly reads 2-byte i16 (not 4-byte i32)
 
 ## What's next
 
@@ -136,7 +143,7 @@ Documented background:
 
 Open issues worth knowing about:
 
-- [`docs/bug_report_short.md`](docs/bug_report_short.md) — `SHORT(LONGINT)` truncation; affects `Mod/Integers.cp`, not blocking Stores
+- [`docs/bug_report_short.md`](docs/bug_report_short.md) — `SHORT(LONGINT)` truncation; the full chain (`I64→I32→I16→U8`) is now fixed in the IR lowering
 - [`docs/bug_report_sema_name_collision.md`](docs/bug_report_sema_name_collision.md) — sema infinite recursion on certain local-vs-import name collisions; `HostFonts` works around it with renamed locals
 - [`docs/deferred_fixes.md`](docs/deferred_fixes.md) — index of known shipped workarounds
 

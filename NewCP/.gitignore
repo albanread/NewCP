@@ -12,3 +12,15 @@
 # HostFiles round-trip test artifacts (each test writes + deletes its
 # own bin file in cwd, but a crashed test can leave one behind).
 /tests/newcp-tests/*.bin
+
+# Scratch / probe artifacts left by test runs and driver sessions.
+*probe_stdout.txt
+*probe_stderr.txt
+_pixels_sweep.txt
+test_render.png
+textviews_probe_tail.txt
+*.png
+
+# Scratch CP modules (T6, T7, T8, TinyDemo*) — uncommitted throwaway files.
+/Mod/T[0-9]*.cp
+/Mod/TinyDemo*.cp
